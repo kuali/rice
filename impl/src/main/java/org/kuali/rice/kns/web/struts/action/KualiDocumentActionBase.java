@@ -359,8 +359,8 @@ public class KualiDocumentActionBase extends KualiAction {
         Document document = kualiDocumentFormBase.getDocument();
 
         // check authorization
-        DocumentActionFlags flags = getDocumentActionFlags(document);
-        if (!flags.getCanAdHocRoute()) {
+        //DocumentActionFlags flags = getDocumentActionFlags(document);
+        if (!kualiDocumentFormBase.getDocumentActions().containsKey(KNSConstants.KUALI_ACTION_CAN_AD_HOC_ROUTE)) {
             throw buildAuthorizationException("ad-hoc route", document);
         }
 
@@ -395,8 +395,8 @@ public class KualiDocumentActionBase extends KualiAction {
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
         Document document = kualiDocumentFormBase.getDocument();
 
-        DocumentActionFlags flags = getDocumentActionFlags(document);
-        if (!flags.getCanAdHocRoute()) {
+        //DocumentActionFlags flags = getDocumentActionFlags(document);
+        if (!kualiDocumentFormBase.getDocumentActions().containsKey(KNSConstants.KUALI_ACTION_CAN_AD_HOC_ROUTE)) {
             throw buildAuthorizationException("delete ad-hoc route persons", document);
         }
 
@@ -420,8 +420,8 @@ public class KualiDocumentActionBase extends KualiAction {
         Document document = kualiDocumentFormBase.getDocument();
 
         // check authorization
-        DocumentActionFlags flags = getDocumentActionFlags(document);
-        if (!flags.getCanAdHocRoute()) {
+        //DocumentActionFlags flags = getDocumentActionFlags(document);
+        if (!kualiDocumentFormBase.getDocumentActions().containsKey(KNSConstants.KUALI_ACTION_CAN_AD_HOC_ROUTE)) {
             throw buildAuthorizationException("add ad-hoc routing", document);
         }
 
@@ -453,8 +453,8 @@ public class KualiDocumentActionBase extends KualiAction {
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
         Document document = kualiDocumentFormBase.getDocument();
 
-        DocumentActionFlags flags = getDocumentActionFlags(document);
-        if (!flags.getCanAdHocRoute()) {
+        //DocumentActionFlags flags = getDocumentActionFlags(document);
+        if (!kualiDocumentFormBase.getDocumentActions().containsKey(KNSConstants.KUALI_ACTION_CAN_AD_HOC_ROUTE)) {
             throw buildAuthorizationException("delete ad-hoc route workgroups", document);
         }
 
@@ -479,7 +479,7 @@ public class KualiDocumentActionBase extends KualiAction {
 
         // check authorization for reloading document
         DocumentActionFlags flags = getDocumentActionFlags(document);
-        if (!flags.getCanReload()) {
+        if (!kualiDocumentFormBase.getDocumentActions().containsKey(KNSConstants.KUALI_ACTION_CAN_RELOAD)) {
             throw buildAuthorizationException("reload", document);
         }
 
@@ -576,8 +576,8 @@ public class KualiDocumentActionBase extends KualiAction {
         }
         Document document = kualiDocumentFormBase.getDocument();
         // check authorization for reloading document
-        DocumentActionFlags flags = getDocumentActionFlags(document);
-        if (!flags.isCanPerformRouteReport()) {
+        //DocumentActionFlags flags = getDocumentActionFlags(document);
+        if (!kualiDocumentFormBase.getDocumentActions().containsKey(KNSConstants.KUALI_ACTION_PERFORM_ROUTE_REPORT)) {
             throw buildAuthorizationException("perform route report", document);
         }
 
@@ -1068,8 +1068,8 @@ public class KualiDocumentActionBase extends KualiAction {
         Document document = kualiDocumentFormBase.getDocument();
 
         // check authorization for adding notes
-        DocumentActionFlags flags = getDocumentActionFlags(document);
-        if (!flags.getCanAnnotate()) {
+        //DocumentActionFlags flags = getDocumentActionFlags(document);
+        if (!kualiDocumentFormBase.getDocumentActions().containsKey(KNSConstants.KUALI_ACTION_CAN_AD_HOC_ROUTE)) {
             buildAuthorizationException("annotate", document);
         }
 
@@ -1201,8 +1201,8 @@ public class KualiDocumentActionBase extends KualiAction {
         DocumentEntry entry = dataDictionary.getDocumentEntry(document.getClass().getName());
 
         // check authorization for adding notes
-        DocumentActionFlags flags = getDocumentActionFlags(document);
-        if (!flags.getCanAnnotate() || !entry.getAllowsNoteDelete()) {
+        //DocumentActionFlags flags = getDocumentActionFlags(document);
+        if (!kualiDocumentFormBase.getDocumentActions().containsKey(KNSConstants.KUALI_ACTION_CAN_ANNOTATE) || !entry.getAllowsNoteDelete()) {
             buildAuthorizationException("annotate", document);
             return mapping.findForward(RiceConstants.MAPPING_BASIC);
         }
@@ -1383,10 +1383,10 @@ public class KualiDocumentActionBase extends KualiAction {
      */
     protected DocumentActionFlags getDocumentActionFlags(Document document) {
         Person kualiUser = GlobalVariables.getUserSession().getPerson();
-
-        DocumentAuthorizationService documentAuthorizationService = KNSServiceLocator.getDocumentAuthorizationService();
-        DocumentActionFlags flags = documentAuthorizationService.getDocumentAuthorizer(document).getDocumentActionFlags(document, kualiUser);
-        return flags;
+        //TODO: need remove this method later
+        //DocumentAuthorizationService documentAuthorizationService = KNSServiceLocator.getDocumentAuthorizationService();
+        //DocumentActionFlags flags = documentAuthorizationService.getDocumentAuthorizer(document).getDocumentActionFlags(document, kualiUser);
+        return new DocumentActionFlags();
     }
 
     /**
@@ -1441,7 +1441,7 @@ public class KualiDocumentActionBase extends KualiAction {
             Set<String> documentActions =  documentPresentationController.getDocumentActions(document);
             documentActions = documentAuthorizer.getDocumentActionFlags(document, user, documentActions);
             //DocumentActionFlags flags = new DocumentActionFlags();
-			//formBase.setDocumentActionFlags(flags);
+			formBase.setDocumentActions(convertSetToMap(documentActions));
            
         }
     }

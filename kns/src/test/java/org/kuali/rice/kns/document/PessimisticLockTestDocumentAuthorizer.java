@@ -41,7 +41,7 @@ public class PessimisticLockTestDocumentAuthorizer extends DocumentAuthorizerBas
     }
 
     @Override
-    public Map getEditMode(Document d, Person u, Set<String> editModes) {
+    public Map getEditMode(Document d, Person u) {
         return editMode;
     }
     

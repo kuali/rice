@@ -36,6 +36,7 @@ import org.kuali.rice.kns.document.authorization.TransactionalDocumentAuthorizer
 import org.kuali.rice.kns.exception.DocumentAuthorizationException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiTransactionalDocumentFormBase;
 
@@ -59,8 +60,8 @@ public class KualiTransactionalDocumentActionBase extends KualiDocumentActionBas
         KualiTransactionalDocumentFormBase tmpForm = (KualiTransactionalDocumentFormBase) form;
 
         Document document = tmpForm.getDocument();
-        DocumentActionFlags flags = getDocumentActionFlags(document);
-        if (!flags.getCanCopy()) {
+        
+        if (!tmpForm.getDocumentActions().containsKey(KNSConstants.KUALI_ACTION_CAN_COPY)) {
             throw buildAuthorizationException("copy", document);
         }
 

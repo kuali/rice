@@ -303,7 +303,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
         if ( (KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(this.getClass().getName()).getUseWorkflowPessimisticLocking()) && (!getNonLockingActionTakenCodes().contains(event.getActionTaken().getActionTaken())) ) {
             //DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(this);
             //documentAuthorizer.establishWorkflowPessimisticLocking(this);
-        	KNSServiceLocator.getDocumentPessimisticLocker().establishWorkflowPessimisticLocking(this);
+        	KNSServiceLocator.getDocumentPessimisticLockerService().establishWorkflowPessimisticLocking(this);
         }
     }
     
@@ -329,7 +329,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
             if (successfullyProcessed) {
                 //DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(this);
                 //documentAuthorizer.releaseWorkflowPessimisticLocking(this);
-            	KNSServiceLocator.getDocumentPessimisticLocker().releaseWorkflowPessimisticLocking(this);
+            	KNSServiceLocator.getDocumentPessimisticLockerService().releaseWorkflowPessimisticLocking(this);
             }
         }
     }

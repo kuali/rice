@@ -81,6 +81,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
     protected FormFile attachmentFile = new BlankFormFile();
 
     protected Map editingMode;
+    protected Map documentActions;
     protected boolean suppressAllButtons;
     protected DocumentActionFlags documentActionFlags;
 
@@ -134,6 +135,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 
         // create a blank DocumentActionFlags instance, since form-recreation needs it
         setDocumentActionFlags(new DocumentActionFlags());
+        setDocumentActions(new HashMap());
         suppressAllButtons = false;
     }
 
@@ -379,7 +381,22 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
     }
 
 
+    
     /**
+	 * @return the documentActions
+	 */
+	public Map getDocumentActions() {
+		return this.documentActions;
+	}
+
+	/**
+	 * @param documentActions the documentActions to set
+	 */
+	public void setDocumentActions(Map documentActions) {
+		this.documentActions = documentActions;
+	}
+
+	/**
      * @return a map of the possible action request codes that takes into account the users context on the document
      */
     public Map getAdHocActionRequestCodes() {

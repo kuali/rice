@@ -60,6 +60,11 @@ public interface IdentityManagementService {
 	List<String> getGroupMemberPrincipalIds(String groupId);
 	List<String> getDirectGroupMemberPrincipalIds(String groupId);
     
+    boolean addGroupToGroup(String childId, String parentId);    
+    boolean removeGroupFromGroup(String childId, String parentId);  
+    boolean addPrincipalToGroup(String principalId, String groupId);   
+    boolean removePrincipalFromGroup(String principalId, String groupId);
+	
 	// *******************************
 	// AuthenticationService
 	// *******************************

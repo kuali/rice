@@ -498,6 +498,24 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     public List<String> getDirectParentGroupIds(String groupId) {
 		return getGroupService().getDirectParentGroupIds( groupId );
 	}
+    
+    
+    public boolean addGroupToGroup(String childId, String parentId) {
+        return getGroupService().addGroupToGroup(childId, parentId);
+    }
+
+    public boolean addPrincipalToGroup(String principalId, String groupId) {
+        return getGroupService().addPrincipalToGroup(principalId, groupId);
+    }
+
+    public boolean removeGroupFromGroup(String childId, String parentId) {
+        return getGroupService().removeGroupFromGroup(childId, parentId);
+    }
+
+    public boolean removePrincipalFromGroup(String principalId, String groupId) {
+        return getGroupService().removePrincipalFromGroup(principalId, groupId);
+    }
+
 
     
     // IDENTITY SERVICE

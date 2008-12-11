@@ -32,9 +32,11 @@ import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
+import org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleRelationshipImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.dao.KimRoleDao;
 import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -43,6 +45,7 @@ import org.kuali.rice.kim.service.support.KimDelegationTypeService;
 import org.kuali.rice.kim.service.support.KimRoleTypeService;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.SequenceAccessorService;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -54,7 +57,11 @@ public class RoleServiceImpl implements RoleService {
 
 //	private static final Logger LOG = Logger.getLogger( RoleServiceImpl.class );
 	
+	protected static final String ROLE_MEMBER_SEQUENCE = "KRIM_ROLE_MBR_ID_S";
+	protected static final String ROLE_MEMBER_DATA_SEQUENCE = "KRIM_ATTR_DATA_ID_S";
+	
 	private BusinessObjectService businessObjectService;
+	private SequenceAccessorService sequenceAccessorService;
 	private GroupService groupService;
 	private KimRoleDao roleDao; 
 
@@ -98,6 +105,14 @@ public class RoleServiceImpl implements RoleService {
 	 */
 	@SuppressWarnings("unchecked")
 	public KimRoleInfo getRoleByName( String namespaceCode, String roleName ) {
+		KimRoleImpl role = getRoleImplByName( namespaceCode, roleName );
+		if ( role != null ) {
+			return role.toSimpleInfo();
+		}
+		return null;
+	}
+	
+	protected KimRoleImpl getRoleImplByName( String namespaceCode, String roleName ) {
 		if ( StringUtils.isBlank( namespaceCode ) 
 				|| StringUtils.isBlank( roleName ) ) {
 			return null;
@@ -106,11 +121,7 @@ public class RoleServiceImpl implements RoleService {
 		criteria.put("namespaceCode", namespaceCode);
 		criteria.put("roleName", roleName);
 		criteria.put("active", "Y");
-		KimRoleImpl role = (KimRoleImpl)getBusinessObjectService().findByPrimaryKey(KimRoleImpl.class, criteria);
-		if ( role != null ) {
-			return role.toSimpleInfo();
-		}
-		return null;
+		return (KimRoleImpl)getBusinessObjectService().findByPrimaryKey(KimRoleImpl.class, criteria);		
 	}
 	
    	
@@ -781,11 +792,7 @@ public class RoleServiceImpl implements RoleService {
 			}
 		}
 	}
-	
-    // getRoleIdsForPrincipal(prin)
-    // getRolePermissionIdsForRoleAndPermission(role,perm)
-    // List<AttributeSet> getPermissionQualifiers( List<String> rolePermissionIds )
-    
+	    
 	/**
 	 * Gets the roles directly assigned to the given role.
 	 */
@@ -805,27 +812,127 @@ public class RoleServiceImpl implements RoleService {
     // Persistence Methods
     // --------------------
 
-    public void assignPrincipalToRole(String principalId, String namespaceCode, String roleName, AttributeSet qualifications) {
+	// TODO: pulling attribute IDs repeadedly is inefficient - consider caching the entire list as a map
+	
+	@SuppressWarnings("unchecked")
+	protected String getKimAttributeId( String attributeName ) {
+		Map<String,Object> critieria = new HashMap<String,Object>( 1 );
+		critieria.put( "attributeName", attributeName );
+		Collection<KimAttributeImpl> defs = getBusinessObjectService().findMatching( KimAttributeImpl.class, critieria );
+		return defs.iterator().next().getKimAttributeId();
+	}
+	
+	protected void addMemberAttributeData( RoleMemberImpl roleMember, AttributeSet qualifier, String kimTypeId ) {
+		List<RoleMemberAttributeDataImpl> attributes = new ArrayList<RoleMemberAttributeDataImpl>();
+		for ( String attributeName : qualifier.keySet() ) {
+			RoleMemberAttributeDataImpl a = new RoleMemberAttributeDataImpl();
+			a.setAttributeValue( qualifier.get( attributeName ) );
+			a.setKimTypeId( kimTypeId );
+			a.setTargetPrimaryKey( roleMember.getRoleMemberId() );
+			// look up the attribute ID
+			a.setKimAttributeId( getKimAttributeId( attributeName ) );
+			// pull the next sequence number for the data ID
+			a.setAttributeDataId( getSequenceAccessorService().getNextAvailableSequenceNumber( ROLE_MEMBER_DATA_SEQUENCE ).toString() );
+			attributes.add( a );
+		}
+		roleMember.setAttributes( attributes );
+	}
+	
+	protected boolean doesMemberMatch( RoleMemberImpl roleMember, String memberId, String memberTypeCode, AttributeSet qualifier ) {
+		if ( roleMember.getMemberId().equals( memberId ) && roleMember.getMemberTypeCode().equals( memberTypeCode ) ) {
+			// member ID/type match
+    		AttributeSet roleQualifier = roleMember.getQualifier();
+    		if ( (qualifier == null || qualifier.isEmpty()) 
+    				&& (roleQualifier == null || roleQualifier.isEmpty()) ) {
+    			return true; // blank qualifier match
+    		} else {
+    			if ( qualifier != null && roleQualifier != null && qualifier.equals( roleQualifier ) ) {
+    				return true; // qualifier match
+    			}
+    		}
+		}
+		return false;
+	}
+	
+	protected boolean doAnyMemberRecordsMatch( List<RoleMemberImpl> roleMembers, String memberId, String memberTypeCode, AttributeSet qualifier ) {
+		for ( RoleMemberImpl rm : roleMembers ) {
+			if ( doesMemberMatch( rm, memberId, memberTypeCode, qualifier ) ) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+    public void assignPrincipalToRole(String principalId, String namespaceCode, String roleName, AttributeSet qualifier) {
     	// look up the role
+    	KimRoleImpl role = getRoleImplByName( namespaceCode, roleName );
+    	// check that identical member does not already exist
+    	if ( doAnyMemberRecordsMatch( role.getMembers(), principalId, KimRole.PRINCIPAL_MEMBER_TYPE, qualifier ) ) {
+    		return;
+    	}
+    	// create the new role member object
+    	RoleMemberImpl newRoleMember = new RoleMemberImpl();
+    	// get a new ID from the sequence    	
+    	newRoleMember.setRoleMemberId( getSequenceAccessorService().getNextAvailableSequenceNumber( ROLE_MEMBER_SEQUENCE ).toString() );
+
+    	newRoleMember.setRoleId( role.getRoleId() );
+    	newRoleMember.setMemberId( principalId );
+    	newRoleMember.setMemberTypeCode( KimRole.PRINCIPAL_MEMBER_TYPE );
+
+    	// build role member attribute objects from the given AttributeSet
+    	addMemberAttributeData( newRoleMember, qualifier, role.getKimTypeId() );
+    	    	
     	// add row to member table
-    	// iterate over qualifiers, adding them to the member attrib table
-    	throw new UnsupportedOperationException();
+    	getBusinessObjectService().save( newRoleMember );
     }
 
-    public void assignGroupToRole(String groupId, String namespaceCode, String roleName, AttributeSet qualifications) {
-    	throw new UnsupportedOperationException();
+    public void assignGroupToRole(String groupId, String namespaceCode, String roleName, AttributeSet qualifier) {
+    	// look up the role
+    	KimRoleImpl role = getRoleImplByName( namespaceCode, roleName );
+    	// check that identical member does not already exist
+    	if ( doAnyMemberRecordsMatch( role.getMembers(), groupId, KimRole.GROUP_MEMBER_TYPE, qualifier ) ) {
+    		return;
+    	}
+    	// create the new role member object
+    	RoleMemberImpl newRoleMember = new RoleMemberImpl();
+    	// get a new ID from the sequence    	
+    	newRoleMember.setRoleMemberId( getSequenceAccessorService().getNextAvailableSequenceNumber( ROLE_MEMBER_SEQUENCE ).toString() );
+
+    	newRoleMember.setRoleId( role.getRoleId() );
+    	newRoleMember.setMemberId( groupId );
+    	newRoleMember.setMemberTypeCode( KimRole.GROUP_MEMBER_TYPE );
+
+    	// build role member attribute objects from the given AttributeSet
+    	addMemberAttributeData( newRoleMember, qualifier, role.getKimTypeId() );
+    	    	
+    	// add row to member table
+    	getBusinessObjectService().save( newRoleMember );
     }
 
-    public void removePrincipalFromRole(String principalId, String namespaceCode, String roleName, AttributeSet qualifications) {
-    	// find the role
+    public void removePrincipalFromRole(String principalId, String namespaceCode, String roleName, AttributeSet qualifier ) {
+    	// look up the role
+    	KimRoleImpl role = getRoleImplByName( namespaceCode, roleName );
     	// pull all the principal members
     	// look for an exact qualifier match
-    	// if found, remove
-    	throw new UnsupportedOperationException();
+		for ( RoleMemberImpl rm : role.getMembers() ) {
+			if ( doesMemberMatch( rm, principalId, KimRole.PRINCIPAL_MEMBER_TYPE, qualifier ) ) {
+		    	// if found, remove
+				getBusinessObjectService().delete( rm );
+			}
+		}
     }
 
-    public void removeGroupFromRole(String groupId, String namespaceCode, String roleName, AttributeSet qualifications) {
-    	throw new UnsupportedOperationException();
+    public void removeGroupFromRole(String groupId, String namespaceCode, String roleName, AttributeSet qualifier) {
+    	// look up the role
+    	KimRoleImpl role = getRoleImplByName( namespaceCode, roleName );
+    	// pull all the group role members
+    	// look for an exact qualifier match
+		for ( RoleMemberImpl rm : role.getMembers() ) {
+			if ( doesMemberMatch( rm, groupId, KimRole.GROUP_MEMBER_TYPE, qualifier ) ) {
+		    	// if found, remove
+				getBusinessObjectService().delete( rm );
+			}
+		}
     }
     
     // --------------------
@@ -848,6 +955,13 @@ public class RoleServiceImpl implements RoleService {
 		return groupService;
 	}
 
+	protected SequenceAccessorService getSequenceAccessorService() {
+		if ( sequenceAccessorService == null ) {
+			sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
+		}
+		return sequenceAccessorService;
+	}
+	
 	/**
 	 * @return the roleDao
 	 */

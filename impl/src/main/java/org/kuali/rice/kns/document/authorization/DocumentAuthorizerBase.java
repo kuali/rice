@@ -130,7 +130,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
     	   documentActions.add(KNSConstants.KUALI_ACTION_CAN_FYI);
        }
        
-       if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_AD_HOC_ROUTE) && (documentActions.contains(KNSConstants.KUALI_ACTION_CAN_SAVE)|| documentActions.contains(KNSConstants.KUALI_ACTION_CAN_ROUTE))){
+       if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_AD_HOC_ROUTE) && (documentActions.contains(KNSConstants.KUALI_ACTION_CAN_EDIT))){
     	   documentActions.add(KNSConstants.KUALI_ACTION_CAN_AD_HOC_ROUTE);
        }
         

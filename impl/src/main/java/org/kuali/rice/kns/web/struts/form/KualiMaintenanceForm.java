@@ -29,6 +29,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts.upload.FormFile;
 import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.authorization.AuthorizationConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.document.Document;
@@ -294,7 +296,7 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
         useDocumentAuthorizer(documentAuthorizer);
     }
 
-    @Override
+    
     protected void useDocumentAuthorizer(DocumentAuthorizer documentAuthorizer) {
 
         // init some things we'll need
@@ -303,7 +305,7 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
         MaintenanceDocumentAuthorizer maintenanceDocumentAuthorizer = (MaintenanceDocumentAuthorizer) documentAuthorizer;
 
         // set the overall document editing mode
-        setEditingMode(documentAuthorizer.getEditMode(maintenanceDocument, kualiUser ));
+        //setEditingMode(documentAuthorizer.getEditMode(maintenanceDocument, kualiUser ));
 
         // WHY IS THIS READONLY STUFF HERE YOU ASK, GIVEN THE EDITMODE
         //
@@ -313,25 +315,30 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
         //
         // ITS IMPORTANT TO NOTE that the readOnly flag is ALWAYS dependent on the EditingMode
         // data. So EditingMode is authoritative, readOnly is there for convenience.
-        //
+        //        
+        //String editMode;
+        //editMode = (String) editingMode.get(AuthorizationConstants.MaintenanceEditMode.APPROVER_EDIT_ENTRY);
+        //if ("TRUE".equalsIgnoreCase(editMode)) {
+        //    setReadOnly(false);
+        //}
+        //editMode = (String) editingMode.get(AuthorizationConstants.MaintenanceEditMode.FULL_ENTRY);
+        //if ("TRUE".equalsIgnoreCase(editMode)) {
+        //    setReadOnly(false);
+        //}
 
         // set the readOnly flag for this document, default to readOnly = true
         setReadOnly(true);
-        String editMode;
-        editMode = (String) editingMode.get(AuthorizationConstants.MaintenanceEditMode.APPROVER_EDIT_ENTRY);
-        if ("TRUE".equalsIgnoreCase(editMode)) {
-            setReadOnly(false);
-        }
-        editMode = (String) editingMode.get(AuthorizationConstants.MaintenanceEditMode.FULL_ENTRY);
-        if ("TRUE".equalsIgnoreCase(editMode)) {
-            setReadOnly(false);
-        }
-
+        
+        // Check overall document edit permission
+        //if(maintenanceDocumentAuthorizer.canEdit(getDocument(), kualiUser)){
+        	setReadOnly(false);
+        //}
+        
         // set field permissions
         setAuthorizations(maintenanceDocumentAuthorizer.getFieldAuthorizations(maintenanceDocument, kualiUser));
 
         // set the overall document action flags
-        setDocumentActionFlags(maintenanceDocumentAuthorizer.getDocumentActionFlags(maintenanceDocument, kualiUser));
+        //setDocumentActionFlags(maintenanceDocumentAuthorizer.getDocumentActionFlags(maintenanceDocument, kualiUser));
     }
 
     /**

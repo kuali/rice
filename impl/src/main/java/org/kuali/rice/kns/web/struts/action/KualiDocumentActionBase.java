@@ -20,9 +20,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,8 +37,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
 import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kew.dto.WorkflowGroupIdDTO;
-import org.kuali.rice.kew.dto.WorkgroupDTO;
 import org.kuali.rice.kew.exception.InvalidWorkgroupException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -56,6 +56,7 @@ import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.authorization.DocumentActionFlags;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase;
+import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
 import org.kuali.rice.kns.document.authorization.PessimisticLock;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.exception.DocumentAuthorizationException;
@@ -163,8 +164,9 @@ public class KualiDocumentActionBase extends KualiAction {
             } else {
         // populates authorization-related fields in KualiDocumentFormBase instances, which are derived from
         // information which is contained in the form but which may be unavailable until this point
-            DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(document);
-            formBase.populateAuthorizationFields(documentAuthorizer);
+            //DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(document);
+            //formBase.populateAuthorizationFields(documentAuthorizer);
+             populateAuthorizationFields(formBase);	
 
             // below used by KualiHttpSessionListener to handle lock expiration
                 request.getSession().setAttribute(KNSConstants.DOCUMENT_HTTP_SESSION_KEY, document.getDocumentNumber());
@@ -1384,7 +1386,6 @@ public class KualiDocumentActionBase extends KualiAction {
 
         DocumentAuthorizationService documentAuthorizationService = KNSServiceLocator.getDocumentAuthorizationService();
         DocumentActionFlags flags = documentAuthorizationService.getDocumentAuthorizer(document).getDocumentActionFlags(document, kualiUser);
-
         return flags;
     }
 
@@ -1429,6 +1430,30 @@ public class KualiDocumentActionBase extends KualiAction {
 
         setupDocumentExit();
         return dest;
+    }
+    
+    protected void populateAuthorizationFields(KualiDocumentFormBase formBase){
+    	Document document = formBase.getDocument();
+    	Person user = GlobalVariables.getUserSession().getPerson();
+    	if (formBase.isFormDocumentInitialized()) {
+    		DocumentPresentationController documentPresentationController = KNSServiceLocator.getDocumentPresentationControllerService().getDocumentPresentationController(document);
+            DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(document);
+            Set<String> documentActions =  documentPresentationController.getDocumentActions(document);
+            documentActions = documentAuthorizer.getDocumentActionFlags(document, user, documentActions);
+            //DocumentActionFlags flags = new DocumentActionFlags();
+			//formBase.setDocumentActionFlags(flags);
+           
+        }
+    }
+    
+    protected Map convertSetToMap(Set s){
+    	Map map = new HashMap();
+    	Iterator i = s.iterator();
+        while(i.hasNext()) {
+        	Object key = i.next();
+           map.put(key,KNSConstants.KUALI_DEFAULT_TRUE_VALUE);
+        }
+        return map;
     }
 }
 

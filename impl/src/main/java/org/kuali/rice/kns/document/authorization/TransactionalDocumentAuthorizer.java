@@ -15,9 +15,39 @@
  */
 package org.kuali.rice.kns.document.authorization;
 
+import java.util.Map;
+import java.util.Set;
+
+import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kns.document.Document;
+
 
 /**
  * Extension to DocumentAuthorizer interface which adds transactional-document-specific methods.
  */
 public interface TransactionalDocumentAuthorizer extends DocumentAuthorizer {
+	
+	/**
+     * @param document
+     * @return Map of operations that allow to take on that document.
+     */
+    public Set getEditMode(Document document, Person user, Set<String> editModes);
+    
+    
+	/**
+	 * 
+	 * @param editMode
+	 * @param user
+     * @return boolean indicating whether the user has permission to use this edit mode
+     */
+
+	public boolean canUseEditMode(Document document, Person user, String editMode); 
+
+	 /**
+     * @param document
+     * @param user
+     * @return true if the given user is allowed to correct errors for the document
+     */
+    public boolean canErrorCorrect(Document document, Person user); 
+    
 }

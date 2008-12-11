@@ -35,7 +35,26 @@ public class KNSConstants extends JSTLConstants {
 
     public static final String KNS_NAMESPACE = "KR-NS";
     public static final String KUALI_RICE_SYSTEM_NAMESPACE = "KR-SYS";
-
+    public static final String KUALI_RICE_WORKFLOW_NAMESPACE = "KR-WKFLW";
+    
+    public static final String KUALI_ACTION_CAN_EDIT = "canEdit";
+    public static final String KUALI_ACTION_CAN_ANNOTATE = "canAnnotate";
+	public static final String KUALI_ACTION_CAN_CLOSE = "canClose";
+	public static final String KUALI_ACTION_CAN_SAVE = "canSave";
+	public static final String KUALI_ACTION_CAN_ROUTE = "canRoute";
+	public static final String KUALI_ACTION_CAN_CANCEL = "canCancel";
+	public static final String KUALI_ACTION_CAN_RELOAD = "canReload";
+	public static final String KUALI_ACTION_CAN_COPY ="canCopy";
+	public static final String KUALI_ACTION_PERFORM_ROUTE_REPORT = "canPerformRouteReport";
+	public static final String KUALI_ACTION_CAN_AD_HOC_ROUTE = "canAdHocRoute";
+	public static final String KUALI_ACTION_CAN_ERROR_CORRECT = "canErrorCorrect";
+    public static final String KUALI_ACTION_CAN_BLANKET_APPROVE ="canBlanketApprove";
+    public static final String KUALI_ACTION_CAN_ACKNOWLEDGE = "canAcknowledge";
+    public static final String KUALI_ACTION_CAN_FYI = "canFYI";
+    public static final String KUALI_ACTION_CAN_APPROVE = "canApprove";
+    public static final String KUALI_ACTION_CAN_DISAPPROVE = "canDisapprove";
+    public static final String KUALI_DEFAULT_TRUE_VALUE = "true";
+    
     public static class DetailTypes {
         public static final String NA_PARM_DETAIL_TYPE = "N/A";
         public static final String ALL_DETAIL_TYPE = "All";

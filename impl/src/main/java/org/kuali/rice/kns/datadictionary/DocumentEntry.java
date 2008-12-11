@@ -28,6 +28,7 @@ import org.kuali.rice.kns.datadictionary.exception.ClassValidationException;
 import org.kuali.rice.kns.datadictionary.exception.DuplicateEntryException;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
+import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.rule.BusinessRule;
 import org.kuali.rice.kns.rule.PreRulesCheck;
@@ -79,6 +80,7 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     protected Map<String,ReferenceDefinition> defaultExistenceCheckMap = new LinkedHashMap<String, ReferenceDefinition>();
 
     protected boolean sessionDocument = false;
+    protected Class<? extends DocumentPresentationController> documentPresentationControllerClass;
 
     /**
      * @see org.kuali.rice.kns.datadictionary.DataDictionaryEntry#getJstlKey()
@@ -569,5 +571,21 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
 	public void setSessionDocument(boolean sessionDocument) {
 		this.sessionDocument = sessionDocument;
 	}
+
+	/**
+	 * @return the documentPresentationControllerClass
+	 */
+	public Class<? extends DocumentPresentationController> getDocumentPresentationControllerClass() {
+		return this.documentPresentationControllerClass;
+	}
+
+	/**
+	 * @param documentPresentationControllerClass the documentPresentationControllerClass to set
+	 */
+	public void setDocumentPresentationControllerClass(
+			Class<? extends DocumentPresentationController> documentPresentationControllerClass) {
+		this.documentPresentationControllerClass = documentPresentationControllerClass;
+	}
     
+	
 }

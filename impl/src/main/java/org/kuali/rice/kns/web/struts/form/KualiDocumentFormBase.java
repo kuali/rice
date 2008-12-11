@@ -284,7 +284,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
      */
     public void populateAuthorizationFields(DocumentAuthorizer documentAuthorizer) {
         if (isFormDocumentInitialized()) {
-            useDocumentAuthorizer(documentAuthorizer);
+            //useDocumentAuthorizer(documentAuthorizer);
 
             // graceless hack which takes advantage of the fact that here and only here will we have guaranteed access to the
             // correct DocumentAuthorizer
@@ -293,7 +293,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
             }
         }
     }
-
+    
 
     /**
      * @see org.apache.struts.action.ActionForm#validate(org.apache.struts.action.ActionMapping,
@@ -316,21 +316,21 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
      *
      * @param documentAuthorizer
      */
-    protected void useDocumentAuthorizer(DocumentAuthorizer documentAuthorizer) {
-        Person kualiUser = GlobalVariables.getUserSession().getPerson();
+     protected void useDocumentAuthorizer(DocumentAuthorizer documentAuthorizer) {
+        /*Person kualiUser = GlobalVariables.getUserSession().getPerson();
         Map editMode = documentAuthorizer.getEditMode(document, kualiUser);
         if (KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(document.getClass().getName()).getUsePessimisticLocking()) {
             editMode = documentAuthorizer.establishLocks(document, editMode, kualiUser);
         }
         setEditingMode(editMode);
-        setDocumentActionFlags(documentAuthorizer.getDocumentActionFlags(document, kualiUser));
+        setDocumentActionFlags(documentAuthorizer.getDocumentActionFlags(document, kualiUser)); */
     }
-
+    
 
     /**
      * @return true if this document was properly initialized with a DocumentHeader and related KualiWorkflowDocument
      */
-    final protected boolean isFormDocumentInitialized() {
+    final public boolean isFormDocumentInitialized() {
         boolean initialized = false;
 
         if (document != null) {
@@ -368,10 +368,13 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         return documentActionFlags;
     }
 
+   
     /**
-     * Protected, since no external code should need to set it.
+     * set document action flags
+     * 
+     * @param documentActionFlags
      */
-    protected void setDocumentActionFlags(DocumentActionFlags documentActionFlags) {
+    public void setDocumentActionFlags(DocumentActionFlags documentActionFlags) {
         this.documentActionFlags = documentActionFlags;
     }
 

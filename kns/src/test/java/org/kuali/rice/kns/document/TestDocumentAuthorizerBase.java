@@ -37,18 +37,18 @@ public class TestDocumentAuthorizerBase extends DocumentAuthorizerBase {
     /**
      * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase#getCustomLockDescriptor(org.kuali.rice.kns.document.Document, java.util.Map, org.kuali.rice.kim.bo.Person)
      */
-    @Override
-    protected String getCustomLockDescriptor(Document document, Map editMode, Person user) {
-        return (String)GlobalVariables.getUserSession().retrieveObject(USER_SESSION_OBJECT_KEY);
-    }
+    //@Override
+    //protected String getCustomLockDescriptor(Document document, Map editMode, Person user) {
+    //    return (String)GlobalVariables.getUserSession().retrieveObject(USER_SESSION_OBJECT_KEY);
+    //}
 
     /**
      * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase#useCustomLockDescriptors()
      */
-    @Override
-    protected boolean useCustomLockDescriptors() {
-        return true;
-    }
+    //@Override
+   // protected boolean useCustomLockDescriptors() {
+    //    return true;
+  //  }
 
 }
 

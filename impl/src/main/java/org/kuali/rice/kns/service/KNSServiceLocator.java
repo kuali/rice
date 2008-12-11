@@ -438,9 +438,23 @@ public class KNSServiceLocator<T extends Object> {
         return (BusinessObjectDao) getService(BUSINESS_OBJECT_DAO);
     }
     
-    public static final String DB_PLATFORM = "dbPlatform";
+
+   public static final String DB_PLATFORM = "dbPlatform";
     
     public static KualiDBPlatform getKualiDbPlatform() {
         return (KualiDBPlatform) getService(DB_PLATFORM);
+    }
+    
+    // DocumentPresentationControllerService
+    public static final String DOCUMENT_PRESENTATION_CONTROLLER_SERVICE = "documentPresentationControllerService";
+
+    public static DocumentPresentationControllerService getDocumentPresentationControllerService() {
+	return (DocumentPresentationControllerService) getService(DOCUMENT_PRESENTATION_CONTROLLER_SERVICE);
+    }
+    
+    public static final String DOCUMENT_PESSIMISTIC_LOCKER_SERVICE = "documentPessimisticLockerService";
+    
+    public static DocumentPessimisticLockerService getDocumentPessimisticLockerService() {
+        return (DocumentPessimisticLockerService) getService(DOCUMENT_PESSIMISTIC_LOCKER_SERVICE);
     }
 }

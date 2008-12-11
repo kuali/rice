@@ -15,30 +15,17 @@
  */
 package org.kuali.rice.kns.document.authorization;
 
+import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.document.MaintenanceDocument;
 
 /**
- * Extension to DocumentAuthorizer for Maintenance Document specific methods
+ * The DocumentPresentationController class is used for non-user related lock down 
  * 
  * 
  */
-public interface MaintenanceDocumentAuthorizer extends DocumentAuthorizer {
-
-    /**
-     * 
-     * This method returns the set of authorization restrictions (if any) that apply to this object in this context.
-     * 
-     * @param document
-     * @param user
-     * @return MaintenanceDocumentAuthorizations
-     * 
-     */
-    public MaintenanceDocumentAuthorizations getFieldAuthorizations(MaintenanceDocument document, Person user);
-    
-   
+public interface TransactionalDocumentPresentationController extends DocumentPresentationController {
+	
 }
 

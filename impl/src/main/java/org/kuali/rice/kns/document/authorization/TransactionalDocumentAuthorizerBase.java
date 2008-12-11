@@ -15,12 +15,20 @@
  */
 package org.kuali.rice.kns.document.authorization;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.document.TransactionalDocument;
-import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
+import org.kuali.rice.kns.exception.DocumentInitiationAuthorizationException;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * Base class for all TransactionalDocumentAuthorizers.
@@ -28,29 +36,69 @@ import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 public class TransactionalDocumentAuthorizerBase extends DocumentAuthorizerBase implements TransactionalDocumentAuthorizer {
     private static Log LOG = LogFactory.getLog(TransactionalDocumentAuthorizerBase.class);
 
-    /**
-     * Adds settings for transactional-document-specific flags.
-     * 
-     * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#getDocumentActionFlags(Document, Person)
-     */
-    @Override
-    public DocumentActionFlags getDocumentActionFlags(Document document, Person user) {
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling TransactionalDocumentAuthorizerBase.getDocumentActionFlags for document '" + document.getDocumentNumber() + "'. user '" + user.getPrincipalName() + "'");
+    
+   
+    public Set getEditMode(Document d, Person u, Set<String> editModes) {
+        Iterator i = editModes.iterator();
+        while(i.hasNext()) {
+          String editMode = (String)i.next();
+          if(!canUseEditMode(d, u, editMode)){
+        	  editModes.remove(editMode);
+          }
         }
-        TransactionalDocumentActionFlags flags = new TransactionalDocumentActionFlags(super.getDocumentActionFlags(document, user));
-
-        TransactionalDocument transactionalDocument = (TransactionalDocument) document;
-        KualiWorkflowDocument workflowDocument = transactionalDocument.getDocumentHeader().getWorkflowDocument();
-
-        if (!canCopy(workflowDocument.getDocumentType(), user)) {
-            flags.setCanCopy(false);
-            flags.setCanErrorCorrect(false);
-        }
-        else {
-            flags.setCanCopy(transactionalDocument.getAllowsCopy() && !workflowDocument.stateIsInitiated());
-            flags.setCanErrorCorrect(transactionalDocument.getAllowsErrorCorrection() && (workflowDocument.stateIsApproved() || workflowDocument.stateIsProcessed() || workflowDocument.stateIsFinal()));
-        }
-        return flags;
+        
+        return editModes;
     }
+    
+    
+    /**
+     * 
+     * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase#getDocumentActionFlags(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
+     */
+    public Set getDocumentActionFlags(Document document, Person user, Set<String> documentActions) {
+         Set docActions = super.getDocumentActionFlags(document, user, documentActions);
+         if(canErrorCorrect(document, user)){
+        	docActions.add(KNSConstants.KUALI_ACTION_CAN_ERROR_CORRECT); 
+         }
+        //flags.setCanErrorCorrect(canErrorCorrect(document, user));
+      
+        return docActions;
+
+    }
+    
+    /**
+     * DocumentTypeAuthorizationException can be extended to customize the initiate error message
+     * @see org.kuali.rice.kns.authorization.DocumentAuthorizer#canInitiate(java.lang.String, org.kuali.rice.kns.bo.user.KualiUser)
+     */
+    public void canInitiate(String documentTypeName, Person user) {
+    	
+    	String nameSpaceCode = KNSConstants.KUALI_RICE_SYSTEM_NAMESPACE;
+    	
+    	AttributeSet permissionDetails = new AttributeSet();
+    	permissionDetails.put(KimConstants.KIM_ATTRIB_DOCUMENT_TYPE_NAME, documentTypeName);
+    	
+        if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_INITIATE_DOCUMENT, permissionDetails, null)){
+        	
+        	//TODO:
+        	// build authorized workgroup list for error message
+            Set authorizedWorkgroups = getAuthorizationService().getAuthorizedWorkgroups("initiate", documentTypeName);
+            String workgroupList = StringUtils.join(authorizedWorkgroups.toArray(), ",");
+            throw new DocumentInitiationAuthorizationException(new String[] {workgroupList,documentTypeName});
+        }
+    }
+    
+    /**
+     * 
+     * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#canAnnotate(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
+     */
+    public boolean canErrorCorrect(Document document, Person user){
+	     return isAuthorizedByTemplate(document, KNSConstants.KNS_NAMESPACE, KimConstants.PERMISSION_ERROR_CORRECT_DOCUMENT, user.getPrincipalId());
+ 	  	 
+    }
+    
+    public boolean canUseEditMode(Document document, Person user,  String editMode){
+	    return isAuthorizedByTemplate(document, KNSConstants.KNS_NAMESPACE, KimConstants.PERMISSION_USE_TRANSACTIONAL_DOCUMENT, user.getPrincipalId());
+	  	    	
+    }
+
 }

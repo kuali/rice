@@ -15,30 +15,17 @@
  */
 package org.kuali.rice.kns.document.authorization;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.kuali.rice.kim.bo.Person;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.document.MaintenanceDocument;
 
 /**
- * Extension to DocumentAuthorizer for Maintenance Document specific methods
- * 
- * 
+ * Base class for all TransactionalDocumentPresentationControllers.
  */
-public interface MaintenanceDocumentAuthorizer extends DocumentAuthorizer {
+public class TransactionalDocumentPresentationControllerBase extends DocumentPresentationControllerBase implements TransactionalDocumentPresentationController {
+    private static Log LOG = LogFactory.getLog(TransactionalDocumentPresentationControllerBase.class);
 
-    /**
-     * 
-     * This method returns the set of authorization restrictions (if any) that apply to this object in this context.
-     * 
-     * @param document
-     * @param user
-     * @return MaintenanceDocumentAuthorizations
-     * 
-     */
-    public MaintenanceDocumentAuthorizations getFieldAuthorizations(MaintenanceDocument document, Person user);
-    
-   
 }
-

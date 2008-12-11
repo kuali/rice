@@ -301,8 +301,9 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      */
     public void doActionTaken(ActionTakenEventDTO event) {
         if ( (KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(this.getClass().getName()).getUseWorkflowPessimisticLocking()) && (!getNonLockingActionTakenCodes().contains(event.getActionTaken().getActionTaken())) ) {
-            DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(this);
-            documentAuthorizer.establishWorkflowPessimisticLocking(this);
+            //DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(this);
+            //documentAuthorizer.establishWorkflowPessimisticLocking(this);
+        	KNSServiceLocator.getDocumentPessimisticLocker().establishWorkflowPessimisticLocking(this);
         }
     }
     
@@ -326,8 +327,9 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     public void afterWorkflowEngineProcess(boolean successfullyProcessed) {
         if (KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(this.getClass().getName()).getUseWorkflowPessimisticLocking()) {
             if (successfullyProcessed) {
-                DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(this);
-                documentAuthorizer.releaseWorkflowPessimisticLocking(this);
+                //DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(this);
+                //documentAuthorizer.releaseWorkflowPessimisticLocking(this);
+            	KNSServiceLocator.getDocumentPessimisticLocker().releaseWorkflowPessimisticLocking(this);
             }
         }
     }

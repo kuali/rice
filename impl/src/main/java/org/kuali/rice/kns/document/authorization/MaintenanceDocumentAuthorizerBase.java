@@ -15,34 +15,29 @@
  */
 package org.kuali.rice.kns.document.authorization;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.FieldAttributeSecurity;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.util.DocumentAttributeSecurityUtils;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.authorization.AuthorizationConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeSecurity;
-import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
-import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
-import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.datadictionary.mask.MaskFormatter;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
+import org.kuali.rice.kns.exception.DocumentInitiationAuthorizationException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
-import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 
 public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase implements MaintenanceDocumentAuthorizer {
 
@@ -69,7 +64,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
            
            //TODO:Should use ParameterService.getDetailType to get the componentName
            String componentName = fieldAttributeSecurity.getBusinessObjectClass().getSimpleName();     
-           String nameSpaceCode = "KR-NS";
+           String nameSpaceCode = KNSConstants.KNS_NAMESPACE;
            
            AttributeSecurity maintainableFieldAttributeSecurity = (AttributeSecurity) fieldAttributeSecurity.getMaintainableFieldAttributeSecurity();
            AttributeSecurity  businessObjectAttributeSecurity = (AttributeSecurity) fieldAttributeSecurity.getBusinessObjectAttributeSecurity();
@@ -148,10 +143,18 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
      * @see org.kuali.rice.kns.authorization.DocumentAuthorizer#getDocumentActionFlags(org.kuali.rice.kns.document.Document,
      *      org.kuali.rice.kns.bo.user.KualiUser)
      */
-    public DocumentActionFlags getDocumentActionFlags(Document document, Person user) {
+    public Set getDocumentActionFlags(Document document, Person user, Set<String> documentActions) {
 
-        // run the super, let the common flags be set
-        MaintenanceDocumentActionFlags docActionFlags = new MaintenanceDocumentActionFlags(super.getDocumentActionFlags(document, user));
+        Set docActions = super.getDocumentActionFlags(document, user, documentActions);
+        MaintenanceDocument maintDoc = (MaintenanceDocument) document;
+        MaintenanceDocumentAuthorizations docAuths = getFieldAuthorizations(maintDoc, user);
+        if (docActions.contains(KNSConstants.KUALI_ACTION_CAN_BLANKET_APPROVE)&& docAuths.hasAnyFieldRestrictions()) {
+            docActions.remove(KNSConstants.KUALI_ACTION_CAN_BLANKET_APPROVE);
+        }
+        
+    	// run the super, let the common flags be set
+
+    	/*MaintenanceDocumentActionFlags docActionFlags = new MaintenanceDocumentActionFlags(super.getDocumentActionFlags(document, user, documentActions));
 
         // run the fieldAuthorizations
         MaintenanceDocument maintDoc = (MaintenanceDocument) document;
@@ -163,90 +166,27 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
         if (docAuths.hasAnyFieldRestrictions()) {
             docActionFlags.setCanBlanketApprove(false);
         }
-
-        KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
-
-        // if a user can't initiate a document of this type then they can't copy one, either
-        if (!canCopy(workflowDocument.getDocumentType(), user)) {
-            docActionFlags.setCanCopy(false);
-        }
-        else {
-            docActionFlags.setCanCopy(document.getAllowsCopy() && (!workflowDocument.stateIsInitiated() && !workflowDocument.stateIsEnroute() && !workflowDocument.stateIsException() && !workflowDocument.stateIsSaved()));
-        }
-
-        return docActionFlags;
+		*/
+        return docActions;
     }
 
+
+    
     /**
-     * @see org.kuali.rice.kns.authorization.DocumentAuthorizer#getEditMode(org.kuali.rice.kns.document.Document,
-     *      org.kuali.rice.kns.bo.user.KualiUser)
-     */
-    public Map getEditMode(Document document, Person user) {
-
-        // if this is not a MaintenanceDocument, then fail loudly, something is badly wrong
-        if (!MaintenanceDocument.class.isAssignableFrom(document.getClass())) {
-            throw new IllegalArgumentException("A document was passed into MaintenanceDocumentAuthorizerBase.getEditMode() " + "that is not a MaintenanceDocument descendent.  Processing cannot continue.");
-        }
-
-        Map editMode = new HashMap();
-        
-        // cast the document as a MaintenanceDocument, and get a handle on the workflowDocument
-        MaintenanceDocument maintenanceDocument = (MaintenanceDocument) document;
-        KualiWorkflowDocument workflowDocument = maintenanceDocument.getDocumentHeader().getWorkflowDocument();
-
-        // default to view-only, as a safety precaution
-        String editModeKey = AuthorizationConstants.MaintenanceEditMode.VIEW_ONLY;
-
-        // if the document is cancelled, then its view only
-        if (workflowDocument.stateIsCanceled()) {
-            editModeKey = AuthorizationConstants.MaintenanceEditMode.VIEW_ONLY;
-        }
-
-        // if the document is being edited, then its full entry, or if the current user is
-        // the system supervisor
-        else if (workflowDocument.stateIsInitiated() || workflowDocument.stateIsSaved()) {
-            if (workflowDocument.userIsInitiator(user)) {
-                editModeKey = AuthorizationConstants.MaintenanceEditMode.FULL_ENTRY;
-                
-                // initiators of documents for new records can view these fields for the documents while they're sitll under the control
-                // of the initiators.  If they are always allowed access to the document, then they would be able to view the changes that
-                // were made during routing, which would be a bad idea, as the router may have edited sensitive information enroute
-                if (isDocumentForCreatingNewEntry(maintenanceDocument)) {
-                    addAllMaintDocDefinedEditModesToMap(editMode, maintenanceDocument);
-                }
-            }
-        }
-
-        // if the document is in routing, then we have some special rules
-        else if (workflowDocument.stateIsEnroute()) {
-
-            // the person who has the approval request in their Actiong List
-            // should be able to modify the document
-            if (workflowDocument.isApprovalRequested()) {
-                editModeKey = AuthorizationConstants.MaintenanceEditMode.APPROVER_EDIT_ENTRY;
-            }
-        }
-
-        // save the editmode
-        editMode.put(editModeKey, "TRUE");
-        return editMode;
-    }
-
-    protected void addAllMaintDocDefinedEditModesToMap(Map editModes, MaintenanceDocument maintDoc) {
-        String docTypeName = maintDoc.getDocumentHeader().getWorkflowDocument().getDocumentType();
-        List<MaintainableSectionDefinition> sectionDefinitions = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getMaintainableSections(docTypeName);
-        
-        for ( MaintainableSectionDefinition sectionDefinition : sectionDefinitions ) {
-            for ( MaintainableItemDefinition itemDefinition : sectionDefinition.getMaintainableItems() ) {
-                if (itemDefinition instanceof MaintainableFieldDefinition) {
-                    String displayEditMode = ((MaintainableFieldDefinition) itemDefinition).getDisplayEditMode();
-                    if (StringUtils.isNotBlank(displayEditMode)) {
-                        editModes.put(displayEditMode, "TRUE");
-                    }
-                }
-                // TODO: what about MaintainableCollectionDefinition?
-            }
-        }
+     * DocumentTypeAuthorizationException can be extended to customize the initiate error message
+     * @see org.kuali.rice.kns.authorization.DocumentAuthorizer#canInitiate(java.lang.String, org.kuali.rice.kns.bo.user.KualiUser)
+    */
+    public void canInitiate(String documentTypeName, Person user) {
+    	String nameSpaceCode = KNSConstants.KUALI_RICE_SYSTEM_NAMESPACE;
+    	String action = (String) GlobalVariables.getUserSession().retrieveObject(DocumentAuthorizerBase.USER_SESSION_METHOD_TO_CALL_OBJECT_KEY);
+    	AttributeSet permissionDetails = new AttributeSet();
+    	permissionDetails.put(KimConstants.KIM_ATTRIB_DOCUMENT_TYPE_NAME, documentTypeName);
+    	permissionDetails.put(KimConstants.KIM_ATTRIB_ACTION, action);    
+    		if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_INITIATE_DOCUMENT, permissionDetails, null)){ 	
+    			String userName = (String) GlobalVariables.getUserSession().getPrincipalName();
+    			throw new DocumentInitiationAuthorizationException(new String[] {userName,documentTypeName});
+    		}
+    	
     }
     
     /**
@@ -341,6 +281,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
         }
         return persistenceStructureService;
     }
+    
     
 }
 

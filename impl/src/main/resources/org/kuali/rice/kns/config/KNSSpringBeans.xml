@@ -471,6 +471,12 @@
 			<ref bean="dataDictionaryService" />
 		</property>
 	</bean>
+	
+	<bean id="documentPresentationControllerService" class="org.kuali.rice.kns.service.impl.DocumentPresentationControllerServiceImpl">
+		<property name="dataDictionaryService">
+			<ref bean="dataDictionaryService" />
+		</property>
+	</bean>
 
 	<bean id="sequenceAccessorDao" parent="platformAwareDaoJdbc" class="org.kuali.rice.kns.dao.jdbc.SequenceAccessorDaoJdbc" />
 
@@ -855,6 +861,7 @@
 		</property>
 	</bean>
 
+   <bean id="documentPessimisticLockerService" class="org.kuali.rice.kns.service.impl.DocumentPessimisticLockerServiceImpl" />
   <!-- START JPA CONFIGURATION -->
 
   <!-- Used for @PersistenceContext auto-injection -->
@@ -917,7 +924,7 @@
     	<property name="moduleConfiguration" ref="knsModuleConfiguration"/>
     	<property name="kualiModuleService" ref="kualiModuleService" />
     </bean>
-
+    
     <bean id="namespaceRoleTypeService" class="org.kuali.rice.kns.service.impl.NamespaceRoleTypeServiceImpl"/>
 
     <bean id="documentTypePermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl"/>

@@ -17,10 +17,10 @@ package org.kuali.rice.kns.document;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
-import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase;
 
 /**
@@ -41,7 +41,7 @@ public class PessimisticLockTestDocumentAuthorizer extends DocumentAuthorizerBas
     }
 
     @Override
-    public Map getEditMode(Document d, Person u) {
+    public Map getEditMode(Document d, Person u, Set<String> editModes) {
         return editMode;
     }
     

@@ -49,6 +49,8 @@ public class KimConstants {
 	public static final String PERMISSION_APPROVE_DOCUMENT = "Approve Document";
 	public static final String PERMISSION_ADD_NOTE = "Add Note";
 	public static final String PERMISSION_ERROR_CORRECT_DOCUMENT = "Error Correct Document";
+	public static final String PERMISSION_AD_HOC_REVIEW_DOCUMENT = "Ad Hoc Review Document";
+
 	public static final String PERMISSION_USE_TRANSACTIONAL_DOCUMENT = "Use Transactional Document";
 	public static final String DOCUMENT_STATUS_PERMISSION_TYPE = "DocumentStatusComponentAttributePermissionType";
 	public static final String KIM_ATTRIB_EDIT_MODE = "editMode";
@@ -105,6 +107,7 @@ public class KimConstants {
 	public static final String FYI_ACTION_REQUEST = "FYI";
 	public static final String ACKNOWLEDGE_ACTION_REQUEST = "Acknowledge";
 	public static final String APPROVE_ACTION_REQUEST = "Approve";
+	public static final String COMPLETE_ACTION_REQUEST = "Complete";
 	
 	@Deprecated
 	public static final String TEMP_GROUP_NAMESPACE = "KFS";

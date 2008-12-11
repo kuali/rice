@@ -189,15 +189,6 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
     }
 
     /**
-     * Helper method to set the annotate flag based on other workflow tags
-     * @param flags
-     */
-    public void setAnnotateFlag(DocumentActionFlags flags) {
-        boolean canWorkflow = flags.getCanSave() || flags.getCanRoute() || flags.getCanCancel() || flags.getCanBlanketApprove() || flags.getCanApprove() || flags.getCanDisapprove() || flags.getCanAcknowledge() || flags.getCanAdHocRoute();
-        flags.setCanAnnotate(canWorkflow);
-    }
-
-    /**
      * DocumentTypeAuthorizationException can be extended to customize the initiate error message
      * @see org.kuali.rice.kns.authorization.DocumentAuthorizer#canInitiate(java.lang.String, org.kuali.rice.kns.bo.user.KualiUser)
      */
@@ -341,7 +332,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
 	 * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#canReceiveAdHoc(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
 	 */
 	public boolean canReceiveAdHoc(Document document, Person user, String actionRequestCode){
-	     return isAuthorizedByTemplate(document, KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE, KimConstants.PERMISSION_BLANKET_APPROVE_DOCUMENT, user.getPrincipalId());
+	     return isAuthorizedByTemplate(document, KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE, KimConstants.PERMISSION_AD_HOC_REVIEW_DOCUMENT, user.getPrincipalId());
 	   	    	
 	 }
 	 
@@ -350,8 +341,13 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
 	 * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#canApprove(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
 	 */
 	public boolean canApprove(Document document, Person user){
-	     return isAuthorizedByTemplate(document, KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE, KimConstants.PERMISSION_TAKE_REQUESTED_ACTION, user.getPrincipalId());
-	    	  	
+		AttributeSet permissionDetails = getPermissionDetailValues(document);
+		if(permissionDetails.containsKey(KimAttributes.ACTION_REQUEST_CD) && KimConstants.APPROVE_ACTION_REQUEST.equals(permissionDetails.get(KimAttributes.ACTION_REQUEST_CD))){
+			return canTakeRequestedAction(document, user);
+		}else{
+			return false;
+		}
+		
 	 }
 	 
 	 /**
@@ -359,49 +355,25 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
 	 * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#canClearFYI(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
 	 */
 	public boolean canClearFYI(Document document, Person user){
-		 KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
-		 String documentTypeName = workflowDocument.getDocumentType();
-	     String docStatus = workflowDocument.getRouteHeader().getDocRouteStatus();      	 
-	     String documentNumber = document.getDocumentNumber();
-	     String routeNodeNames = workflowDocument.getCurrentRouteNodeNames();
-		 String nameSpaceCode = KNSConstants.KNS_NAMESPACE;
-		 
-	     AttributeSet permissionDetails = new AttributeSet();
-	     permissionDetails.put(KimConstants.KIM_ATTRIB_DOCUMENT_TYPE_NAME, documentTypeName);
-	     permissionDetails.put(KimConstants.KIM_ATTRIB_ROUTE_STATUS_CODE, docStatus);
-	     permissionDetails.put(KimConstants.KIM_ATTRIB_ROUTE_NODE_NAME, routeNodeNames);
-	     permissionDetails.put(KimConstants.KIM_ATTRIB_ACTION_REQUEST_CODE, KEWConstants.ACTION_REQUEST_FYI_REQ);
-	    
-	     AttributeSet qualifications = new AttributeSet();
-     	 qualifications.put(KimConstants.KIM_ATTRIB_DOCUMENT_NUMBER, documentNumber);
-     	
-	     return getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_TAKE_REQUESTED_ACTION, permissionDetails, qualifications);
-	        	
-	 }
+		AttributeSet permissionDetails = getPermissionDetailValues(document);
+		if(permissionDetails.containsKey(KimAttributes.ACTION_REQUEST_CD) && KimConstants.FYI_ACTION_REQUEST.equals(permissionDetails.get(KimAttributes.ACTION_REQUEST_CD))){
+			return canTakeRequestedAction(document, user);
+		}else{
+			return false;
+		}
+	}
 	
 	 /**
 	 * 
 	 * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#canAcknowledge(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
 	 */
 	public boolean canAcknowledge(Document document, Person user){
-		 KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
-		 String documentTypeName = workflowDocument.getDocumentType();
-	     String docStatus = workflowDocument.getRouteHeader().getDocRouteStatus();      	 
-	     String documentNumber = document.getDocumentNumber();
-	     String routeNodeNames = workflowDocument.getCurrentRouteNodeNames();
-		 String nameSpaceCode = KNSConstants.KNS_NAMESPACE;
-		 
-	     AttributeSet permissionDetails = new AttributeSet();
-	     permissionDetails.put(KimConstants.KIM_ATTRIB_DOCUMENT_TYPE_NAME, documentTypeName);
-	     permissionDetails.put(KimConstants.KIM_ATTRIB_ROUTE_STATUS_CODE, docStatus);
-	     permissionDetails.put(KimConstants.KIM_ATTRIB_ROUTE_NODE_NAME, routeNodeNames);
-	     permissionDetails.put(KimConstants.KIM_ATTRIB_ACTION_REQUEST_CODE, KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
-	    
-	     AttributeSet qualifications = new AttributeSet();
-     	 qualifications.put(KimConstants.KIM_ATTRIB_DOCUMENT_NUMBER, documentNumber);
-     	
-	     return getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_TAKE_REQUESTED_ACTION, permissionDetails, qualifications);
-	        	
+		AttributeSet permissionDetails = getPermissionDetailValues(document);
+		if(permissionDetails.containsKey(KimAttributes.ACTION_REQUEST_CD) && KimConstants.ACKNOWLEDGE_ACTION_REQUEST.equals(permissionDetails.get(KimAttributes.ACTION_REQUEST_CD))){
+			return canTakeRequestedAction(document, user);
+		}else{
+			return false;
+		}
 	 }
 	
 	 /**
@@ -409,24 +381,12 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
 	 * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#canComplete(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
 	 */
 	public boolean canComplete(Document document, Person user ){
-		 KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
-		 String documentTypeName = workflowDocument.getDocumentType();
-	     String docStatus = workflowDocument.getRouteHeader().getDocRouteStatus();      	 
-	     String documentNumber = document.getDocumentNumber();
-	     String routeNodeNames = workflowDocument.getCurrentRouteNodeNames();
-		 String nameSpaceCode = KNSConstants.KNS_NAMESPACE;
-		 
-	     AttributeSet permissionDetails = new AttributeSet();
-	     permissionDetails.put(KimConstants.KIM_ATTRIB_DOCUMENT_TYPE_NAME, documentTypeName);
-	     permissionDetails.put(KimConstants.KIM_ATTRIB_ROUTE_STATUS_CODE, docStatus);
-	     permissionDetails.put(KimConstants.KIM_ATTRIB_ROUTE_NODE_NAME, routeNodeNames);
-	     permissionDetails.put(KimConstants.KIM_ATTRIB_ACTION_REQUEST_CODE, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
-	    
-	     AttributeSet qualifications = new AttributeSet();
-     	 qualifications.put(KimConstants.KIM_ATTRIB_DOCUMENT_NUMBER, documentNumber);
-     	
-	     return getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_TAKE_REQUESTED_ACTION, permissionDetails, qualifications);
-	        	
+		AttributeSet permissionDetails = getPermissionDetailValues(document);
+		if(permissionDetails.containsKey(KimAttributes.ACTION_REQUEST_CD) && KimConstants.COMPLETE_ACTION_REQUEST.equals(permissionDetails.get(KimAttributes.ACTION_REQUEST_CD))){
+			return canTakeRequestedAction(document, user);
+		}else{
+			return false;
+		}
 	 }
 	
 	 /**
@@ -489,6 +449,8 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
             attributes.put(KimAttributes.ACTION_REQUEST_CD, KimConstants.ACKNOWLEDGE_ACTION_REQUEST );
         } else if ( wd.isFYIRequested() ) {
             attributes.put(KimAttributes.ACTION_REQUEST_CD, KimConstants.FYI_ACTION_REQUEST );
+        } else if (wd.isCompletionRequested()){
+        	attributes.put(KimAttributes.ACTION_REQUEST_CD, KimConstants.COMPLETE_ACTION_REQUEST);
         }
         attributes.put(KimAttributes.NAMESPACE_CODE, getNamespaceForClass(getComponentClass(document)) );
         attributes.put(KimAttributes.COMPONENT_NAME, getComponentClass(document).getName() );
@@ -605,5 +567,9 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
         }
         return kualiModuleService;
     }
+    
+    private boolean canTakeRequestedAction(Document document, Person user){
+		return isAuthorizedByTemplate(document, KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE, KimConstants.PERMISSION_TAKE_REQUESTED_ACTION, user.getPrincipalId());
+	}
     
 }

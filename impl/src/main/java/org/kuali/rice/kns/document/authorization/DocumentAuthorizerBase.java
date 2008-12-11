@@ -187,7 +187,16 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
         KualiConfigurationService kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
         return kualiConfigurationService.getIndicatorParameter( KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.DEFAULT_CAN_PERFORM_ROUTE_REPORT_IND);
     }
-
+    
+     /**
+     * Helper method to set the annotate flag based on other workflow tags
+     * @param flags
+     */
+    public void setAnnotateFlag(DocumentActionFlags flags) {
+        boolean canWorkflow = flags.getCanSave() || flags.getCanRoute() || flags.getCanCancel() || flags.getCanBlanketApprove() || flags.getCanApprove() || flags.getCanDisapprove() || flags.getCanAcknowledge() || flags.getCanAdHocRoute();
+        flags.setCanAnnotate(canWorkflow);
+    }
+    
     /**
      * DocumentTypeAuthorizationException can be extended to customize the initiate error message
      * @see org.kuali.rice.kns.authorization.DocumentAuthorizer#canInitiate(java.lang.String, org.kuali.rice.kns.bo.user.KualiUser)

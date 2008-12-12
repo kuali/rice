@@ -144,7 +144,7 @@ public class Criteria {
 	public void in(String attribute, List values) {
 		String in = "";
 		for (Object object : values) {
-			in += object + ",";
+			in += "'"+object + "',";
 		}
 		if (!"".equals(in)) {
 			in = in.substring(0, in.length()-1);
@@ -155,7 +155,7 @@ public class Criteria {
 	public void notIn(String attribute, List values) {
 		String in = "";
 		for (Object object : values) {
-			in += object + ",";
+			in += "'"+object + "',";
 		}
 		if (!"".equals(in)) {
 			in = in.substring(in.length()-1);

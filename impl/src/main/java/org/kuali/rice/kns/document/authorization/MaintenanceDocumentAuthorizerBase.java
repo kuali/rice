@@ -178,10 +178,10 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
     */
     public void canInitiate(String documentTypeName, Person user) {
     	String nameSpaceCode = KNSConstants.KUALI_RICE_SYSTEM_NAMESPACE;
-    	String action = (String) GlobalVariables.getUserSession().retrieveObject(DocumentAuthorizerBase.USER_SESSION_METHOD_TO_CALL_OBJECT_KEY);
+    	//String action = (String) GlobalVariables.getUserSession().retrieveObject(DocumentAuthorizerBase.USER_SESSION_METHOD_TO_CALL_OBJECT_KEY);
     	AttributeSet permissionDetails = new AttributeSet();
     	permissionDetails.put(KimConstants.KIM_ATTRIB_DOCUMENT_TYPE_NAME, documentTypeName);
-    	permissionDetails.put(KimConstants.KIM_ATTRIB_ACTION, action);    
+    	//permissionDetails.put(KimConstants.KIM_ATTRIB_ACTION, action);    
     		if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_INITIATE_DOCUMENT, permissionDetails, null)){ 	
     			String userName = (String) GlobalVariables.getUserSession().getPrincipalName();
     			throw new DocumentInitiationAuthorizationException(new String[] {userName,documentTypeName});

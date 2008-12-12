@@ -80,7 +80,7 @@ public class KimConstants {
     @Deprecated
 	public static final String KIM_ATTRIB_NAMESPACE_CODE = "Namespace Code";
     @Deprecated
-	public static final String KIM_ATTRIB_DOCUMENT_TYPE_NAME = "name";
+	public static final String KIM_ATTRIB_DOCUMENT_TYPE_NAME = "documentTypeName";
     @Deprecated
 	public static final String KIM_ATTRIB_ROUTE_STATUS_CODE = "docRouteStatus";
     @Deprecated

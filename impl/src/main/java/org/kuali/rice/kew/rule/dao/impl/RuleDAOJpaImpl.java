@@ -33,7 +33,6 @@ import javax.persistence.Query;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
-import org.kuali.rice.core.jpa.criteria.QueryByObject;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.rule.RuleBaseValues;
@@ -217,11 +216,11 @@ public class RuleDAOJpaImpl implements RuleDAO {
 	}
 
 	//FIXME nothing uses this, it's not in ruleDAO interface
-	public List findRuleBaseValuesByObjectGraph(RuleBaseValues ruleBaseValues) {
-		ruleBaseValues.setCurrentInd(new Boolean(true));
-		ruleBaseValues.setTemplateRuleInd(Boolean.FALSE);
-		return (List) new QueryByObject(entityManager,ruleBaseValues).toQuery().getResultList();
-	}
+//	public List findRuleBaseValuesByObjectGraph(RuleBaseValues ruleBaseValues) {
+//		ruleBaseValues.setCurrentInd(new Boolean(true));
+//		ruleBaseValues.setTemplateRuleInd(Boolean.FALSE);
+//		return (List) new QueryByObject(entityManager,ruleBaseValues).toQuery().getResultList();
+//	}
 
 	public RuleResponsibility findRuleResponsibility(Long responsibilityId) {
 		Criteria crit = new Criteria(RuleResponsibility.class.getName());

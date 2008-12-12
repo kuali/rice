@@ -105,7 +105,11 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
         if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_COPY) && !canCopy(document, user)){
         	documentActions.remove(KNSConstants.KUALI_ACTION_CAN_COPY);
         }
-
+        
+        if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_EDIT) && !canEdit(document, user)){
+        	documentActions.remove(KNSConstants.KUALI_ACTION_CAN_EDIT);
+        }
+        
        if(canBlanketApprove(document, user)){
     	   documentActions.add(KNSConstants.KUALI_ACTION_CAN_BLANKET_APPROVE);
        }

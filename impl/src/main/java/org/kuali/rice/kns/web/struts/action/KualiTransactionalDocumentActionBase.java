@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.web.struts.action;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -29,8 +30,6 @@ import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.authorization.AuthorizationConstants;
 import org.kuali.rice.kns.document.Copyable;
 import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.document.TransactionalDocument;
-import org.kuali.rice.kns.document.authorization.DocumentActionFlags;
 import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
 import org.kuali.rice.kns.document.authorization.TransactionalDocumentAuthorizer;
 import org.kuali.rice.kns.exception.DocumentAuthorizationException;
@@ -73,6 +72,8 @@ public class KualiTransactionalDocumentActionBase extends KualiDocumentActionBas
     protected void populateAuthorizationFields(KualiDocumentFormBase formBase){
     	super.populateAuthorizationFields(formBase);
     	Document document = formBase.getDocument();
+    	Map editMode = new HashMap();
+    	
     	if (formBase.isFormDocumentInitialized()) {
     		
         	Person user = GlobalVariables.getUserSession().getPerson();
@@ -80,13 +81,17 @@ public class KualiTransactionalDocumentActionBase extends KualiDocumentActionBas
         	DocumentPresentationController documentPresentationController = KNSServiceLocator.getDocumentPresentationControllerService().getDocumentPresentationController(document);
             TransactionalDocumentAuthorizer documentAuthorizer = (TransactionalDocumentAuthorizer) KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(document);
             Set<String> editModes = documentPresentationController.getEditMode(document);
-            Map editMode = this.convertSetToMap(editModes);
+            editMode = this.convertSetToMap(editModes);
             
             if (KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(document.getClass().getName()).getUsePessimisticLocking()) {
                 editMode = KNSServiceLocator.getDocumentPessimisticLockerService().establishLocks(document, editMode, user);
             }
-            formBase.setEditingMode(editMode);
+            
     	}
+    	if(formBase.getDocumentActions().containsKey(KNSConstants.KUALI_ACTION_CAN_EDIT)){
+    		editMode.put(AuthorizationConstants.EditMode.FULL_ENTRY, KNSConstants.KUALI_DEFAULT_TRUE_VALUE);
+    	}
+    	formBase.setEditingMode(editMode);
     	
       
         if (formBase.getEditingMode().containsKey(AuthorizationConstants.EditMode.UNVIEWABLE)) {

@@ -16,8 +16,16 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 <%@ attribute name="editingMode" required="true" description="used to decide editability of overview fields" type="java.util.Map"%>
+<c:set var="isMaintenance" value="${KualiForm.class.name eq 'org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm' || maintenanceViewMode eq Constants.PARAM_MAINTENANCE_VIEW_MODE_MAINTENANCE}" />
+<c:choose>
+	<c:when test="${isMaintenance}">
+		<c:set var="readOnly" value="${KualiForm.readOnly}" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="readOnly" value="${empty editingMode['fullEntry']}" />
+	</c:otherwise>
+</c:choose>
 
-<c:set var="readOnly" value="${empty editingMode['fullEntry']}" />
 <c:set var="docHeaderAttributes" value="${DataDictionary.DocumentHeader.attributes}" />
 <c:set var="documentTypeName" value="${KualiForm.docTypeName}" />
 <c:set var="documentEntry" value="${DataDictionary[documentTypeName]}" />

@@ -45,9 +45,7 @@ public class RuleAttributeDAOJpaImpl implements RuleAttributeDAO {
     }
 
     public void delete(Long ruleAttributeId) {
-        RuleAttribute ruleAttribute = findByRuleAttributeId(ruleAttributeId);
-        //HelpEntry reattatched = entityManager.merge(helpEntry);
-        entityManager.remove(ruleAttributeId);
+        entityManager.remove(findByRuleAttributeId(ruleAttributeId));
     }
 
     public RuleAttribute findByRuleAttributeId(Long ruleAttributeId) {

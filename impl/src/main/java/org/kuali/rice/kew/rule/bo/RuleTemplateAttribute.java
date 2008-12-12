@@ -23,11 +23,15 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
@@ -54,10 +58,12 @@ public class RuleTemplateAttribute extends PersistableBusinessObjectBase impleme
     private static final long serialVersionUID = -3580049225424553828L;
     @Id
 	@Column(name="RULE_TMPL_ATTR_ID")
+	@GeneratedValue(strategy=GenerationType.AUTO, generator="KREW_RTE_TMPL_SEQ_GEN")
+    @SequenceGenerator(name="KREW_RTE_TMPL_SEQ_GEN", sequenceName="KREW_RTE_TMPL_S") 
 	private Long ruleTemplateAttributeId;
-    @Column(name="RULE_TMPL_ID")
+    @Column(name="RULE_TMPL_ID", insertable=false, updatable=false)
 	private Long ruleTemplateId;
-    @Column(name="RULE_ATTR_ID")
+    @Column(name="RULE_ATTR_ID", insertable=false, updatable=false)
 	private Long ruleAttributeId;
     @Column(name="REQ_IND")
 	private Boolean required;
@@ -68,15 +74,21 @@ public class RuleTemplateAttribute extends PersistableBusinessObjectBase impleme
     @Column(name="DFLT_VAL")
 	private String defaultValue;
 
-    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="RULE_TMPL_ID", insertable=false, updatable=false)
+    @ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="RULE_TMPL_ID")
 	private RuleTemplate ruleTemplate;
-    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="RULE_ATTR_ID", insertable=false, updatable=false)
+    @ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="RULE_ATTR_ID")
 	private RuleAttribute ruleAttribute;
     @OneToMany(targetEntity=org.kuali.rice.kew.rule.RuleExtension.class, mappedBy="ruleTemplateAttribute")
 	private List ruleExtensions;
 
+    @Transient
+    protected Long versionNumber;
+    @Transient
+    protected String objectId;
+    
+    
     public RuleTemplateAttribute() {
 	this.required = Boolean.FALSE;
 	this.active = Boolean.TRUE;

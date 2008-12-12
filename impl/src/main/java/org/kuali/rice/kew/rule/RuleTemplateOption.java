@@ -47,7 +47,7 @@ public class RuleTemplateOption implements WorkflowPersistable {
 	@Id
 	@Column(name="RULE_TMPL_OPTN_ID")
 	private Long ruleTemplateOptionId;
-    @Column(name="RULE_TMPL_ID")
+    @Column(name="RULE_TMPL_ID", insertable=false, updatable=false)
 	private Long ruleTemplateId;
     @Column(name="KEY_CD")
 	private String key;
@@ -57,8 +57,8 @@ public class RuleTemplateOption implements WorkflowPersistable {
 	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
 
-    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="RULE_TMPL_ID", insertable=false, updatable=false)
+    @ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="RULE_TMPL_ID")
 	private RuleTemplate ruleTemplate;
     
     public RuleTemplateOption(){}

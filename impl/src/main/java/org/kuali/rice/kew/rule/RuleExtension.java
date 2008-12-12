@@ -16,10 +16,14 @@
  */
 package org.kuali.rice.kew.rule;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.OneToMany;
 import javax.persistence.JoinColumn;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 import javax.persistence.Column;
 import javax.persistence.Id;
@@ -56,27 +60,29 @@ public class RuleExtension implements WorkflowPersistable {
 
 	@Id
 	@Column(name="RULE_EXT_ID")
+	@GeneratedValue(strategy=GenerationType.AUTO, generator="KREW_RTE_TMPL_SEQ_GEN")
+    @SequenceGenerator(name="KREW_RTE_TMPL_SEQ_GEN", sequenceName="KREW_RTE_TMPL_S") 
 	private Long ruleExtensionId;
 
-	@Column(name="RULE_TMPL_ATTR_ID")
+	@Column(name="RULE_TMPL_ATTR_ID", insertable=false, updatable=false)
 	private Long ruleTemplateAttributeId;
 
-	@Column(name="RULE_ID")
+	@Column(name="RULE_ID", insertable=false, updatable=false)
 	private Long ruleBaseValuesId;
 
 	@Version
 	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
 
-	@ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="RULE_ID", insertable=false, updatable=false)
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="RULE_ID")
 	private RuleBaseValues ruleBaseValues;
 
-	@ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="RULE_TMPL_ATTR_ID", insertable=false, updatable=false)
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="RULE_TMPL_ATTR_ID")
 	private RuleTemplateAttribute ruleTemplateAttribute;
 
-	@OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
+	@OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
            targetEntity=org.kuali.rice.kew.rule.RuleExtensionValue.class, mappedBy="extension")
 	private List<RuleExtensionValue> extensionValues;
 

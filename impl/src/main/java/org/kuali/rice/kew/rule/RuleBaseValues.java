@@ -27,16 +27,21 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.lookupable.Field;
@@ -66,13 +71,15 @@ public class RuleBaseValues implements WorkflowPersistable {
     private static final long serialVersionUID = 6137765574728530156L;
     @Id
 	@Column(name="RULE_ID")
+    @GeneratedValue(strategy=GenerationType.AUTO, generator="KREW_RTE_TMPL_SEQ_GEN")
+    @SequenceGenerator(name="KREW_RTE_TMPL_SEQ_GEN", sequenceName="KREW_RTE_TMPL_S") 
 	private Long ruleBaseValuesId;
     /**
      * Unique Rule name
      */
     @Column(name="NM")
 	private String name;
-    @Column(name="RULE_TMPL_ID")
+    @Column(name="RULE_TMPL_ID", insertable=false, updatable=false)
 	private Long ruleTemplateId;
     @Column(name="PREV_RULE_VER_NBR")
 	private Long previousVersionId;
@@ -102,14 +109,16 @@ public class RuleBaseValues implements WorkflowPersistable {
 	private Integer lockVerNbr;
     @Column(name="IGNR_PRVS")
 	private Boolean ignorePrevious;
-    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
+    @Fetch(value = FetchMode.SUBSELECT) 
+    @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
            targetEntity=org.kuali.rice.kew.rule.RuleResponsibility.class, mappedBy="ruleBaseValues")
 	private List<RuleResponsibility> responsibilities;
-    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
+    @Fetch(value = FetchMode.SUBSELECT) 
+    @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
            targetEntity=org.kuali.rice.kew.rule.RuleExtension.class, mappedBy="ruleBaseValues")
 	private List<RuleExtension> ruleExtensions;
-    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="RULE_TMPL_ID", insertable=false, updatable=false)
+    @ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="RULE_TMPL_ID")
 	private RuleTemplate ruleTemplate;
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})
 	@JoinColumn(name="RULE_EXPR_ID")

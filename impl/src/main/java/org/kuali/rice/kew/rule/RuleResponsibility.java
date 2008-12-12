@@ -24,9 +24,13 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
@@ -62,11 +66,13 @@ public class RuleResponsibility implements WorkflowPersistable {
 	private static final long serialVersionUID = -1565688857123316797L;
 	@Id
 	@Column(name="RULE_RSP_ID")
+	@GeneratedValue(strategy=GenerationType.AUTO, generator="KREW_RSP_SEQ_GEN")
+    @SequenceGenerator(name="KREW_RSP_SEQ_GEN", sequenceName="KREW_RSP_S") 
 	private Long ruleResponsibilityKey;
     @Column(name="RSP_ID")
 	private Long responsibilityId;
-    @Column(name="RULE_ID")
-	private Long ruleBaseValuesId;
+    @Column(name="RULE_ID", insertable=false, updatable=false)
+    private Long ruleBaseValuesId;
     @Column(name="ACTN_RQST_CD")
 	private String actionRequestedCd;
     @Column(name="NM")
@@ -81,10 +87,12 @@ public class RuleResponsibility implements WorkflowPersistable {
     @Column(name="APPR_PLCY")
 	private String approvePolicy;
 
-    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="RULE_ID", insertable=false, updatable=false)
+    @ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="RULE_ID")
 	private RuleBaseValues ruleBaseValues;
-    @Transient
+    //@Transient
+    @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
+            targetEntity=org.kuali.rice.kew.rule.RuleDelegation.class, mappedBy="ruleResponsibility")
     private List delegationRules = new ArrayList();
 
     public WorkflowUser getWorkflowUser() throws KEWUserNotFoundException {

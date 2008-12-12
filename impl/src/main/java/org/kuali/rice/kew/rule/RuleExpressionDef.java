@@ -16,8 +16,11 @@
 package org.kuali.rice.kew.rule;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.CascadeType;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Entity;
 
@@ -35,6 +38,8 @@ public class RuleExpressionDef {
      */
     @Id
 	@Column(name="RULE_EXPR_ID")
+	@GeneratedValue(strategy=GenerationType.AUTO, generator="KREW_RULE_EXPR_SEQ_GEN")
+	@SequenceGenerator(name="KREW_RULE_EXPR_SEQ_GEN", sequenceName="KREW_RULE_EXPR_S") 
 	private Long id;
     /**
      * The type of the expression

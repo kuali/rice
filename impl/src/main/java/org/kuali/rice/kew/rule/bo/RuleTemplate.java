@@ -27,15 +27,22 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.rule.RuleTemplateOption;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -51,6 +58,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  */
 @Entity
 @Table(name="KREW_RULE_TMPL_T")
+@NamedQueries({@NamedQuery(name="findAllOrderedByName", query="SELECT rt FROM RuleTemplate rt ORDER BY rt.name ASC")})
 public class RuleTemplate  extends PersistableBusinessObjectBase implements WorkflowPersistable  {
 
     private static final long serialVersionUID = -3387940485523951302L;
@@ -69,19 +77,21 @@ public class RuleTemplate  extends PersistableBusinessObjectBase implements Work
     
     @Id
 	@Column(name="RULE_TMPL_ID")
+	@GeneratedValue(strategy=GenerationType.AUTO, generator="KREW_RTE_TMPL_SEQ_GEN")
+    @SequenceGenerator(name="KREW_RTE_TMPL_SEQ_GEN", sequenceName="KREW_RTE_TMPL_S") 
 	private Long ruleTemplateId;
     @Column(name="NM")
 	private String name;
     @Column(name="RULE_TMPL_DESC")
 	private String description;
 
-    @Column(name="DLGN_RULE_TMPL_ID")
+    @Column(name="DLGN_RULE_TMPL_ID", insertable=false, updatable=false)
 	private Long delegationTemplateId;
-    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="DLGN_RULE_TMPL_ID", insertable=false, updatable=false)
+    @OneToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="DLGN_RULE_TMPL_ID")
 	private RuleTemplate delegationTemplate;
-
-    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
+    @Fetch(value = FetchMode.SUBSELECT)
+    @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
            targetEntity=org.kuali.rice.kew.rule.bo.RuleTemplateAttribute.class, mappedBy="ruleTemplate")
 	private List<RuleTemplateAttribute> ruleTemplateAttributes;
     @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},

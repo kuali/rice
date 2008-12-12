@@ -16,9 +16,13 @@
  */
 package org.kuali.rice.kew.rule;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.JoinColumn;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 import javax.persistence.Column;
 import javax.persistence.Id;
@@ -47,8 +51,10 @@ public class RuleExtensionValue implements WorkflowPersistable {
 	private static final long serialVersionUID = 8909789087052290261L;
 	@Id
 	@Column(name="RULE_EXT_VAL_ID")
+	@GeneratedValue(strategy=GenerationType.AUTO, generator="KREW_RTE_TMPL_SEQ_GEN")
+    @SequenceGenerator(name="KREW_RTE_TMPL_SEQ_GEN", sequenceName="KREW_RTE_TMPL_S") 
 	private Long ruleExtensionValueId;
-    @Column(name="RULE_EXT_ID")
+    @Column(name="RULE_EXT_ID", insertable=false, updatable=false)
 	private Long ruleExtensionId;
     @Column(name="VAL")
 	private String value;
@@ -59,7 +65,7 @@ public class RuleExtensionValue implements WorkflowPersistable {
 	private Integer lockVerNbr;
     
     @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="RULE_EXT_ID", insertable=false, updatable=false)
+	@JoinColumn(name="RULE_EXT_ID")
 	private RuleExtension extension;
     
     public RuleExtensionValue() {

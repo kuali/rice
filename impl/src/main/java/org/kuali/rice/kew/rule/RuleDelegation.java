@@ -20,10 +20,13 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
@@ -46,10 +49,12 @@ public class RuleDelegation implements WorkflowPersistable {
 	private static final long serialVersionUID = 7989203310473741293L;
 	@Id
 	@Column(name="DLGN_RULE_ID")
+	@GeneratedValue(strategy=GenerationType.AUTO, generator="KREW_RTE_TMPL_SEQ_GEN")
+    @SequenceGenerator(name="KREW_RTE_TMPL_SEQ_GEN", sequenceName="KREW_RTE_TMPL_S") 
 	private Long ruleDelegationId;
-    @Column(name="RULE_RSP_ID")
+    @Column(name="RULE_RSP_ID", insertable=false, updatable=false)
 	private Long ruleResponsibilityId;
-    @Column(name="DLGN_RULE_BASE_VAL_ID")
+    @Column(name="DLGN_RULE_BASE_VAL_ID", insertable=false, updatable=false)
 	private Long delegateRuleId;
     @Column(name="DLGN_TYP")
     private String delegationType = KEWConstants.DELEGATION_PRIMARY;
@@ -58,10 +63,10 @@ public class RuleDelegation implements WorkflowPersistable {
 	private Integer lockVerNbr;
     
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="DLGN_RULE_BASE_VAL_ID", insertable=false, updatable=false)
+	@JoinColumn(name="DLGN_RULE_BASE_VAL_ID")
 	private RuleBaseValues delegationRuleBaseValues;
     @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="RULE_RSP_ID", insertable=false, updatable=false)
+	@JoinColumn(name="RULE_RSP_ID")
 	private RuleResponsibility ruleResponsibility;
     
     public RuleDelegation() {

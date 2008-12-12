@@ -25,11 +25,15 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
@@ -38,6 +42,10 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.log4j.Logger;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.CustomActionListAttribute;
 import org.kuali.rice.kew.actionlist.DefaultCustomActionListAttribute;
@@ -71,6 +79,7 @@ import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 
 /**
@@ -109,6 +118,10 @@ import org.kuali.rice.kew.util.Utilities;
  */
 @Entity
 @Table(name="KREW_DOC_HDR_T")
+@Sequence(name="KREW_DOC_HDR_S", property="routeHeaderId")
+@NamedQueries({
+	@NamedQuery(name="DocumentRouteHeaderValue.FindByRouteHeaderId", query="select d from DocumentRouteHeaderValue as d where d.routeHeaderId = :routeHeaderId")
+})
 public class DocumentRouteHeaderValue implements WorkflowPersistable {
     private static final long serialVersionUID = -4700736340527913220L;
     private static final Logger LOG = Logger.getLogger(DocumentRouteHeaderValue.class);
@@ -173,7 +186,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
     protected static final HashMap<String,String> stateTransitionMap;
 
     /* New Workflow 2.1 Field */
-    @ManyToMany(cascade = {CascadeType.REMOVE, CascadeType.MERGE})
+    @ManyToMany(fetch=FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JoinTable(name = "KREW_INIT_RTE_NODE_INSTN_T", joinColumns = @JoinColumn(name = "DOC_HDR_ID"), inverseJoinColumns = @JoinColumn(name = "RTE_NODE_INSTN_ID"))    
     private List<RouteNodeInstance> initialRouteNodeInstances = new ArrayList<RouteNodeInstance>();
 
@@ -911,5 +924,10 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
             .append("finalizedDate", finalizedDate)
             .append("appDocId", appDocId)
             .toString();
+	}
+	
+	@PrePersist
+	public void beforeInsert(){
+		OrmUtils.populateAutoIncValue(this, KNSServiceLocator.getEntityManagerFactory().createEntityManager());
 	}
 }

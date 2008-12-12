@@ -49,6 +49,20 @@ public class KEWPropertyConstants extends JSTLConstants {
     public static final String SERVICE_NAMESPACE = "serviceNamespace";
     public static final String DOC_FORM_KEY = "docFormKey";
     
+    //Constants used by RouteNode
+    public static final String ROUTE_NODE_ID = "routeNodeId";
+    public static final String ROUTE_NODE_INSTANCE_ID = "routeNodeInstanceId";
+    public static final String NODE_INSTANCE_ID = "nodeInstanceId";
+    public static final String DOCUMENT_ID = "documentId";
+    public static final String ROUTE_HEADER_ID = "routeHeaderId";
+    public static final String ROUTE_NODE_NAME = "routeNodeName";
+    public static final String PROCESS_ID = "processId";
+    public static final String COMPLETE = "complete";
+    public static final String FINAL_APPROVAL = "finalApprovalInd";
+    public static final String KEY = "key";
+    public static final String ROUTE_NODE_STATE_ID = "nodeStateId";
+    
+    
     public static final Set<String> DOC_SEARCH_RESULT_PROPERTY_NAME_SET = new HashSet<String>();
     static {
         DOC_SEARCH_RESULT_PROPERTY_NAME_SET.add(DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID);

@@ -57,8 +57,9 @@ public class DocumentTypePolicy implements WorkflowPersistable {
     @Version
 	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
-    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="DOC_TYP_ID")
+
+    @ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="DOC_TYP_ID",updatable=false,insertable=false)
 	private DocumentType documentType;
     
     public DocumentTypePolicy() {

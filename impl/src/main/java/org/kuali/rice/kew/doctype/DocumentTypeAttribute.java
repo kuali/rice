@@ -51,12 +51,12 @@ public class DocumentTypeAttribute implements WorkflowPersistable, Comparable {
 	private Long documentTypeAttributeId; 
     @Column(name="RULE_ATTR_ID")
 	private Long ruleAttributeId;
-    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+    @ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="RULE_ATTR_ID", insertable=false, updatable=false)
 	private RuleAttribute ruleAttribute;
     @Column(name="DOC_TYP_ID")
 	private Long documentTypeId;
-    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+    @ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="DOC_TYP_ID", insertable=false, updatable=false)
 	private DocumentType documentType;
     @Column(name="ORD_INDX")

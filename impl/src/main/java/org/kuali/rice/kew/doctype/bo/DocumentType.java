@@ -30,12 +30,15 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.actionlist.CustomActionListAttribute;
@@ -79,6 +82,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
+@Sequence(name="KREW_RTE_NODE_S", property="documentTypeId")
 @Table(name="KREW_DOC_TYP_T")
 public class DocumentType extends PersistableBusinessObjectBase
 {
@@ -141,8 +145,8 @@ public class DocumentType extends PersistableBusinessObjectBase
     private KimGroup defaultExceptionWorkgroup;
 
     @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
-           targetEntity=org.kuali.rice.kew.doctype.DocumentTypePolicy.class, mappedBy="documentType")
-	private Collection policies;
+    		targetEntity=org.kuali.rice.kew.doctype.DocumentTypePolicy.class, mappedBy="documentType")
+    private Collection policies;
     @Transient
     private List routeLevels;
     @Transient

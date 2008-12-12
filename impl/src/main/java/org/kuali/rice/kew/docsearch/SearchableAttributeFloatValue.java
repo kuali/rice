@@ -33,13 +33,19 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 
 /**
@@ -48,6 +54,11 @@ import org.kuali.rice.kew.util.Utilities;
  */
 @Entity
 @Table(name="KREW_DOC_HDR_EXT_FLT_T")
+@Sequence(name="KREW_SRCH_ATTR_S",property="searchableAttributeValueId")
+@NamedQueries({
+	@NamedQuery(name="SearchableAttributeFloatValue.FindByRouteHeaderId", query="select s from SearchableAttributeFloatValue as s where s.routeHeaderId = :routHeaderId"),	
+	@NamedQuery(name="SearchableAttributeFloatValue.FindByKey", query="select s from SearchableAttributeFloatValue as s where s.routeHeaderId = :routHeaderId and s.searchableAttributeKey = :searchableAttributeKey")
+})
 public class SearchableAttributeFloatValue implements WorkflowPersistable, SearchableAttributeValue {
 
     private static final long serialVersionUID = -6682101853805320760L;
@@ -254,5 +265,11 @@ public class SearchableAttributeFloatValue implements WorkflowPersistable, Searc
     public Object copy(boolean preserveKeys) {
         return null;
     }
+    
+    @PrePersist
+    public void beforeInsert(){
+    	OrmUtils.populateAutoIncValue(this, KNSServiceLocator.getEntityManagerFactory().createEntityManager());
+    }
+    
 }
 

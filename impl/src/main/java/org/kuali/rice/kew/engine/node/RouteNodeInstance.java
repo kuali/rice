@@ -29,16 +29,23 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 
 /**
@@ -50,38 +57,54 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
  */
 @Entity
 @Table(name="KREW_RTE_NODE_INSTN_T")
+@Sequence(name="KREW_RTE_NODE_S",property="routeNodeInstanceId")
+@NamedQueries({
+	@NamedQuery(name="RouteNodeInstance.FindByRouteNodeInstanceId",query="select r from RouteNodeInstance r where r.routeNodeInstanceId = :roudeNodeInstanceId"),
+	@NamedQuery(name="RouteNodeInstance.FindActiveNodeInstances",query="select r from RouteNodeInstance r where r.documentId = :documentId and r.active = TRUE"),
+	@NamedQuery(name="RouteNodeInstance.FindTerminalNodeInstances",query="select r from RouteNodeInstance r where r.documentId = :documentId and r.active = TRUE and r.complete = TRUE"),
+	@NamedQuery(name="RouteNodeInstance.FindInitialNodeInstances",query="select d.initialRouteNodeInstances from DocumentRouteHeaderValue d where d.routeHeaderId = :routeHeaderId"),
+	@NamedQuery(name="RouteNodeInstance.FindProcessNodeInstances", query="select r from RouteNodeInstance r where r.process.routeNodeInstanceId = :processId"),
+	@NamedQuery(name="RouteNodeInstance.FindRouteNodeInstances", query="select r from RouteNodeInstance r where r.documentId = :documentId")
+})
 public class RouteNodeInstance implements Serializable {
     
 	private static final long serialVersionUID = 7183670062805580420L;
 	
 	@Id
 	@Column(name="RTE_NODE_INSTN_ID")
+	//@GeneratedValue(strategy=javax.persistence.GenerationType.SEQUENCE, generator="KREWSeq")
+	//@SequenceGenerator(name="KREWSeq",sequenceName="KREW_RTE_NODE_S", allocationSize=1)
 	private Long routeNodeInstanceId;
     @Column(name="DOC_HDR_ID")
 	private Long documentId;
-    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name="BRCH_ID")
 	private Branch branch;
-    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+    @OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="RTE_NODE_ID")
-	private RouteNode routeNode;
+    private RouteNode routeNode;
     @Column(name="ACTV_IND")
     private boolean active = false;
     @Column(name="CMPLT_IND")
     private boolean complete = false;
     @Column(name="INIT_IND")
     private boolean initial = true;
-    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToOne(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name="PROC_RTE_NODE_INSTN_ID")
 	private RouteNodeInstance process;
-    @ManyToMany(cascade = {CascadeType.REMOVE, CascadeType.MERGE})
-    @JoinTable(name = "KREW_RTE_NODE_INSTN_LNK_T", joinColumns = @JoinColumn(name = "TO_RTE_NODE_INSTN_ID"), inverseJoinColumns = @JoinColumn(name = "FROM_RTE_NODE_INSTN_ID"))    
+    
+    @ManyToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @JoinTable(name = "KREW_RTE_NODE_INSTN_LNK_T", joinColumns = @JoinColumn(name = "TO_RTE_NODE_INSTN_ID"), inverseJoinColumns = @JoinColumn(name = "FROM_RTE_NODE_INSTN_ID"))        
+    @Fetch(value = FetchMode.SUBSELECT)
     private List<RouteNodeInstance> nextNodeInstances = new ArrayList<RouteNodeInstance>();
-    @ManyToMany(cascade = {CascadeType.REMOVE, CascadeType.MERGE})
+    
+    @ManyToMany(fetch=FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(name = "KREW_RTE_NODE_INSTN_LNK_T", joinColumns = @JoinColumn(name = "FROM_RTE_NODE_INSTN_ID"), inverseJoinColumns = @JoinColumn(name = "TO_RTE_NODE_INSTN_ID"))    
     private List<RouteNodeInstance> previousNodeInstances = new ArrayList<RouteNodeInstance>();
-    //@OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, mappedBy="nodeInstance")    
-    @Transient
+
+    @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, mappedBy="nodeInstance")    
+    @Fetch(value = FetchMode.SUBSELECT)
     private List<NodeState> state = new ArrayList<NodeState>();
     	
     @Version
@@ -259,5 +282,11 @@ public class RouteNodeInstance implements Serializable {
             .append("state", state == null ? null : state.size())
             .toString();
     }
+    
+	@PrePersist
+	public void beforeInsert(){
+		OrmUtils.populateAutoIncValue(this, KNSServiceLocator.getEntityManagerFactory().createEntityManager());		
+	}
+    
 }
 

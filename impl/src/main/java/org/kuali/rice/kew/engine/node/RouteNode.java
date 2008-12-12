@@ -30,11 +30,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.rule.service.RuleTemplateService;
@@ -43,6 +50,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * Represents the prototype definition of a node in the route path of {@link DocumentType}.
@@ -51,6 +59,12 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  */
 @Entity
 @Table(name="KREW_RTE_NODE_T")
+@Sequence(name="KREW_RTE_NODE_S", property="routeNodeId")
+@NamedQueries({
+	@NamedQuery(name="RouteNode.FindByRouteNodeId",query="select r from RouteNode as r where r.routeNodeId = :roudeNodeId"),
+	@NamedQuery(name="RouteNode.FindRouteNodeByName", query="select r from RouteNode as r where r.routeNodeName = :routeNodeName and r.documentTypeId = :documentTypeId"),
+	@NamedQuery(name="RouteNode.FindApprovalRouteNodes", query="select r from RouteNode as r where r.documentTypeId = :documentTypeId and r.finalApprovalInd = :finalApprovalInd")
+})
 public class RouteNode implements Serializable {    
 
     private static final long serialVersionUID = 4891233177051752726L;
@@ -81,7 +95,7 @@ public class RouteNode implements Serializable {
     @Version
 	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
-    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+    @ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="DOC_TYP_ID", insertable=false, updatable=false)
 	private DocumentType documentType;
     @Transient
@@ -93,9 +107,11 @@ public class RouteNode implements Serializable {
     private String nodeType = RequestsNode.class.getName();
     
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(name = "KREW_RTE_NODE_LNK_T", joinColumns = @JoinColumn(name = "TO_RTE_NODE_ID"), inverseJoinColumns = @JoinColumn(name = "FROM_RTE_NODE_ID"))
     private List<RouteNode> previousNodes = new ArrayList<RouteNode>();
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(name = "KREW_RTE_NODE_LNK_T", joinColumns = @JoinColumn(name = "FROM_RTE_NODE_ID"), inverseJoinColumns = @JoinColumn(name = "TO_RTE_NODE_ID"))
     private List<RouteNode> nextNodes = new ArrayList<RouteNode>();
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.MERGE})
@@ -323,4 +339,8 @@ public class RouteNode implements Serializable {
         this.branch = branch;
     }
 
+    @PrePersist
+    public void beforeInsert(){
+		OrmUtils.populateAutoIncValue(this, KNSServiceLocator.getEntityManagerFactory().createEntityManager());    	
+    }
 }

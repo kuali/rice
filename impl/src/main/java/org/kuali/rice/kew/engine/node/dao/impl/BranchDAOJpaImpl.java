@@ -33,7 +33,7 @@ import org.kuali.rice.kew.engine.node.dao.BranchDAO;
  */
 public class BranchDAOJpaImpl implements BranchDAO {
 
-	 @PersistenceContext
+	 @PersistenceContext(unitName="kew-unit")
 	 private EntityManager entityManager;
 	
 	/**
@@ -58,7 +58,7 @@ public class BranchDAOJpaImpl implements BranchDAO {
 	        	OrmUtils.populateAutoIncValue(branch, entityManager);
 	            entityManager.persist(branch);
 	        } else {
-	            entityManager.merge(branch);
+	            OrmUtils.reattach(branch,entityManager.merge(branch));
 	        }
 
 	}

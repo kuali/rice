@@ -38,6 +38,47 @@ public class RuleTargetId implements Serializable {
 
     public Long getRuleId() { return ruleId; }
 
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((this.documentId == null) ? 0 : this.documentId.hashCode());
+		result = prime * result
+				+ ((this.ruleId == null) ? 0 : this.ruleId.hashCode());
+		return result;
+	}
+
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final RuleTargetId other = (RuleTargetId) obj;
+		if (this.documentId == null) {
+			if (other.documentId != null)
+				return false;
+		} else if (!this.documentId.equals(other.documentId))
+			return false;
+		if (this.ruleId == null) {
+			if (other.ruleId != null)
+				return false;
+		} else if (!this.ruleId.equals(other.ruleId))
+			return false;
+		return true;
+	}
+
+    /* Replaced these with eclipse generated code above
+  
     public boolean equals(Object o) {
         if (o == this) return true;
         if (!(o instanceof RuleTargetId)) return false;
@@ -51,6 +92,6 @@ public class RuleTargetId implements Serializable {
         // TODO: Implement this method
         throw new UnsupportedOperationException("Please implement me!");
     }
-
+	*/
 }
 

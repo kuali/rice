@@ -28,9 +28,14 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
+
+import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.kuali.rice.core.util.OrmUtils;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * Represents a branch in the routing path of the document.
@@ -38,6 +43,7 @@ import javax.persistence.Version;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
+@Sequence(name="KREW_RTE_NODE_S",property="branchId")
 @Table(name="KREW_RTE_BRCH_T")
 public class Branch implements Serializable {
 
@@ -60,13 +66,13 @@ public class Branch implements Serializable {
 //					return new BranchState();
 //				}
 //			});
-    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+    @OneToOne
 	@JoinColumn(name="INIT_RTE_NODE_INSTN_ID", insertable=false, updatable=false)
 	private RouteNodeInstance initialNode;
-    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+    @OneToOne
 	@JoinColumn(name="SPLT_RTE_NODE_INSTN_ID", insertable=false, updatable=false)
 	private RouteNodeInstance splitNode;
-	@OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.MERGE})
+	@OneToOne
 	@JoinColumn(name="JOIN_RTE_NODE_INSTN_ID", insertable=false, updatable=false)
 	private RouteNodeInstance joinNode;
 	
@@ -154,6 +160,11 @@ public class Branch implements Serializable {
         return "[Branch: branchId=" + branchId +
                       ", parentBranch=" + (parentBranch == null ? "null" : parentBranch.getBranchId()) +
                       "]";
+    }
+    
+    @PrePersist
+    public void beforeInsert(){
+    	OrmUtils.populateAutoIncValue(this, KNSServiceLocator.getEntityManagerFactory().createEntityManager());
     }
 }
 

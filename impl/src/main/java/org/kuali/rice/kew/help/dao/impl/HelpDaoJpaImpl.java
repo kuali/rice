@@ -30,7 +30,7 @@ import org.kuali.rice.kew.help.dao.HelpDAO;
 
 public class HelpDaoJpaImpl implements HelpDAO {
 	
-    @PersistenceContext
+    @PersistenceContext(unitName="kew-unit")
     private EntityManager entityManager;
     
     public void save(HelpEntry helpEntry) {

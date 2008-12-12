@@ -25,9 +25,16 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
+
+import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.kuali.rice.core.util.OrmUtils;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * An attachment which is attached to a {@link Note}.
@@ -38,12 +45,16 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="KREW_ATT_T")
+@Sequence(name="KREW_DOC_NTE_S",property="attachmentId")
+@NamedQueries({
+	@NamedQuery(name="Attachment.FindAttachmentById",query="select a from Attachment as a where a.attachmentId = :attachmentId")
+})
 public class Attachment {
 
 	@Id
 	@Column(name="ATTACHMENT_ID")
 	private Long attachmentId;
-	@Column(name="NTE_ID")
+	@Transient
 	private Long noteId;
 	@Column(name="FILE_NM")
 	private String fileName;
@@ -56,8 +67,8 @@ public class Attachment {
 	private Integer lockVerNbr;
     @Transient
 	private InputStream attachedObject;
-	@ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="NTE_ID", insertable=false, updatable=false)
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="NTE_ID")
 	private Note note;
 	
 	public Long getAttachmentId() {
@@ -91,6 +102,10 @@ public class Attachment {
 		this.mimeType = mimeType;
 	}
 	public Long getNoteId() {
+		//noteId field not mapped in JPA 
+		if (noteId == null && note != null){
+			return note.getNoteId();
+		}
 		return noteId;
 	}
 	public void setNoteId(Long noteId) {
@@ -109,7 +124,10 @@ public class Attachment {
 		this.attachedObject = attachedObject;
 	}
 	
-	
-	
+	@PrePersist
+	public void beforeInsert(){
+		OrmUtils.populateAutoIncValue(this, KNSServiceLocator.getEntityManagerFactory().createEntityManager());		
+	}
+
 }
 

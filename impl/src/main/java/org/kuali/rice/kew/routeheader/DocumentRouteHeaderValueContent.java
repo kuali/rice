@@ -16,19 +16,22 @@
  */
 package org.kuali.rice.kew.routeheader;
 
-import javax.persistence.FetchType;
-import javax.persistence.Basic;
-import javax.persistence.Lob;
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.CascadeType;
-import javax.persistence.Table;
-import javax.persistence.Entity;
-
 import java.io.Serializable;
+
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+
+import org.kuali.rice.core.jpa.annotations.Sequence;
 
 @Entity
 @Table(name="KREW_DOC_HDR_CNTNT_T")
+@NamedQuery(name="DocumentRouteHeaderValueContent.FindByRouteHeaderId", query="select d from DocumentRouteHeaderValueContent as d where d.routeHeaderId = :routeHeaderId")
 public class DocumentRouteHeaderValueContent implements Serializable {
 
 	/**

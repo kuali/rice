@@ -38,6 +38,48 @@ public class WorkgroupTargetId implements Serializable {
 
     public Long getWorkgroupId() { return workgroupId; }
 
+    
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((this.documentId == null) ? 0 : this.documentId.hashCode());
+		result = prime
+				* result
+				+ ((this.workgroupId == null) ? 0 : this.workgroupId.hashCode());
+		return result;
+	}
+
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final WorkgroupTargetId other = (WorkgroupTargetId) obj;
+		if (this.documentId == null) {
+			if (other.documentId != null)
+				return false;
+		} else if (!this.documentId.equals(other.documentId))
+			return false;
+		if (this.workgroupId == null) {
+			if (other.workgroupId != null)
+				return false;
+		} else if (!this.workgroupId.equals(other.workgroupId))
+			return false;
+		return true;
+	}   
+    
+    /* Replace these eclipse generated code above
     public boolean equals(Object o) {
         if (o == this) return true;
         if (!(o instanceof WorkgroupTargetId)) return false;
@@ -51,6 +93,6 @@ public class WorkgroupTargetId implements Serializable {
         // TODO: Implement this method
         throw new UnsupportedOperationException("Please implement me!");
     }
-
+    */
 }
 

@@ -24,16 +24,28 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
+import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 
 /**
@@ -45,6 +57,11 @@ import org.kuali.rice.kew.util.KEWConstants;
  */
 @Entity
 @Table(name="KREW_DOC_NTE_T")
+@Sequence(name="KREW_DOC_NTE_S",property="noteId")
+@NamedQueries({
+	@NamedQuery(name="KewNote.FindNoteByNoteId",query="select n from Note as n where n.noteId = :noteId"),
+	@NamedQuery(name="KewNote.FindNoteByRouteHeaderId", query="select n from Note as n where n.routeHeaderId = :routeHeaderId order by n.noteId")
+})
 public class Note implements WorkflowPersistable {
 
 	private static final long serialVersionUID = -6136544551121011531L;
@@ -63,9 +80,10 @@ public class Note implements WorkflowPersistable {
     @Version
 	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
-    
-    @Transient
-    private List attachments = new ArrayList();
+        
+    @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST},
+    	targetEntity=org.kuali.rice.kew.notes.Attachment.class, mappedBy="note")
+    private List<Attachment> attachments = new ArrayList();
 
     //additional data not in database
     @Transient
@@ -215,6 +233,12 @@ public class Note implements WorkflowPersistable {
 	public void setAttachments(List attachments) {
 		this.attachments = attachments;
 	}
+	
+	@PrePersist
+	public void beforeInsert(){
+		OrmUtils.populateAutoIncValue(this, KNSServiceLocator.getEntityManagerFactory().createEntityManager());		
+	}
+	
 
 }
 

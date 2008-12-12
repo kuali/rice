@@ -17,12 +17,13 @@
 package org.kuali.rice.kew.engine.node;
 
 import javax.persistence.AttributeOverride;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -34,11 +35,15 @@ import javax.persistence.Version;
 @Entity
 @Table(name="KREW_RTE_NODE_INSTN_ST_T")
 @AttributeOverride(name="stateId", column=@Column(name="RTE_NODE_INSTN_ST_ID"))
+@NamedQueries({
+	@NamedQuery(name="NodeState.FindNodeState", query="select n from NodeState as n where n.nodeInstance.routeNodeInstanceId = :routeNodeInstanceId and n.key = :key"),
+	@NamedQuery(name="NodeState.FindNodeStateById", query="select n from NodeState as n where n.stateId = :nodeStateId")
+})
 public class NodeState extends State {
 
     private static final long serialVersionUID = -4382379569851955918L;
 
-    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+    @ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="RTE_NODE_INSTN_ID")
 	private RouteNodeInstance nodeInstance;
     @Version

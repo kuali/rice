@@ -38,6 +38,52 @@ public class DocumentTypePolicyId implements Serializable {
 
     public String getPolicyName() { return policyName; }
 
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime
+				* result
+				+ ((this.documentTypeId == null) ? 0 : this.documentTypeId
+						.hashCode());
+		result = prime * result
+				+ ((this.policyName == null) ? 0 : this.policyName.hashCode());
+		return result;
+	}
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final DocumentTypePolicyId other = (DocumentTypePolicyId) obj;
+		if (this.documentTypeId == null) {
+			if (other.documentTypeId != null)
+				return false;
+		} else if (!this.documentTypeId.equals(other.documentTypeId))
+			return false;
+		if (this.policyName == null) {
+			if (other.policyName != null)
+				return false;
+		} else if (!this.policyName.equals(other.policyName))
+			return false;
+		return true;
+	}
+
+/*
     public boolean equals(Object o) {
         if (o == this) return true;
         if (!(o instanceof DocumentTypePolicyId)) return false;
@@ -51,6 +97,7 @@ public class DocumentTypePolicyId implements Serializable {
         // TODO: Implement this method
         throw new UnsupportedOperationException("Please implement me!");
     }
+*/    
 
 }
 

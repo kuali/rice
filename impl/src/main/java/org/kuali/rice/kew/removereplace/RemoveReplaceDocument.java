@@ -15,17 +15,18 @@
  */
 package org.kuali.rice.kew.removereplace;
 
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import javax.persistence.Version;
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.CascadeType;
-import javax.persistence.Table;
-import javax.persistence.Entity;
-
 import java.io.Serializable;
 import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Version;
 
 /**
  * A Remove/Replace document.
@@ -34,6 +35,9 @@ import java.util.List;
  */
 @Entity
 @Table(name="KREW_RMV_RPLC_DOC_T")
+@NamedQueries({
+	@NamedQuery(name="RemoveReplaceDocument.FindByDocumentId",query="select r from RemoveReplaceDocument as r where r.documentId = :documentId")
+})
 public class RemoveReplaceDocument implements Serializable {
 
     private static final long serialVersionUID = 6671410167992149054L;

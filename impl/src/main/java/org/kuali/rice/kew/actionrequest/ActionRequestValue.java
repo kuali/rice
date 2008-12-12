@@ -179,7 +179,7 @@ public class ActionRequestValue implements WorkflowPersistable {
 
     /* New Workflow 2.1 Field */
     // The node instance at which this request was generated
-    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+    @OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="RTE_NODE_INSTN_ID")
 	private RouteNodeInstance nodeInstance;
 

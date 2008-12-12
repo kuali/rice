@@ -32,7 +32,7 @@ import org.kuali.rice.kew.applicationconstants.dao.ApplicationConstantsDAO;
  */
 public class ApplicationConstantsDaoJpaImpl implements ApplicationConstantsDAO {
 
-    @PersistenceContext
+    @PersistenceContext(unitName="kew-unit")
     private EntityManager entityManager;
 
     public void saveConstant(ApplicationConstant applicationConstant) {

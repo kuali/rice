@@ -28,12 +28,13 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 public class RoleResponsibilityActionImpl extends PersistableBusinessObjectBase {
 
 	protected String roleResponsibilityActionId;
-	protected String responsibilityId;
-	protected String roleId;
+	protected String roleResponsibilityId;
 	protected String roleMemberId;
 	protected String actionTypeCode;
 	protected String actionPolicyCode;
 	protected Integer priorityNumber;
+	
+	protected RoleResponsibilityImpl roleResponsibility;
 	
 	public String getRoleResponsibilityActionId() {
 		return this.roleResponsibilityActionId;
@@ -41,17 +42,11 @@ public class RoleResponsibilityActionImpl extends PersistableBusinessObjectBase 
 	public void setRoleResponsibilityActionId(String roleResponsibilityResolutionId) {
 		this.roleResponsibilityActionId = roleResponsibilityResolutionId;
 	}
-	public String getResponsibilityId() {
-		return this.responsibilityId;
+	public String getRoleResponsibilityId() {
+		return this.roleResponsibilityId;
 	}
-	public void setResponsibilityId(String responsibilityId) {
-		this.responsibilityId = responsibilityId;
-	}
-	public String getRoleId() {
-		return this.roleId;
-	}
-	public void setRoleId(String roleId) {
-		this.roleId = roleId;
+	public void setRoleResponsibilityId(String roleResponsibilityId) {
+		this.roleResponsibilityId = roleResponsibilityId;
 	}
 	public String getActionTypeCode() {
 		return this.actionTypeCode;
@@ -73,10 +68,10 @@ public class RoleResponsibilityActionImpl extends PersistableBusinessObjectBase 
 	@Override
 	protected LinkedHashMap toStringMapper() {
 		LinkedHashMap lhm = new LinkedHashMap();
-		lhm.put( "roleResponsibilityResolutionId", roleResponsibilityActionId );
-		lhm.put( "responsibilityName", responsibilityId );
-		lhm.put( "roleId", roleId );
+		lhm.put( "roleResponsibilityActionId", roleResponsibilityActionId );
+		lhm.put( "roleResponsibilityId", roleResponsibilityId );
 		lhm.put( "roleMemberId", roleMemberId );
+		lhm.put( "actionTypeCode", actionTypeCode );
 		return lhm;
 	}
 	public String getActionPolicyCode() {
@@ -90,5 +85,11 @@ public class RoleResponsibilityActionImpl extends PersistableBusinessObjectBase 
 	}
 	public void setRoleMemberId(String roleMemberId) {
 		this.roleMemberId = roleMemberId;
+	}
+	public RoleResponsibilityImpl getRoleResponsibility() {
+		return this.roleResponsibility;
+	}
+	public void setRoleResponsibility(RoleResponsibilityImpl roleResponsibility) {
+		this.roleResponsibility = roleResponsibility;
 	}
 }

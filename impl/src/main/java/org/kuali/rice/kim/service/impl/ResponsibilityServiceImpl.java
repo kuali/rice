@@ -180,7 +180,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     			rai = new ResponsibilityActionInfo( null, rm.getMemberId(), rm.getEmbeddedRoleId(), responsibility, rm.getRoleId(), rm.getQualifier(), rm.getDelegates() );
     		}
     		// get associated resp resolution objects
-    		RoleResponsibilityActionImpl action = responsibilityDao.getResponsibilityAction( responsibility.getResponsibilityId(), rm.getRoleMemberId() );
+    		RoleResponsibilityActionImpl action = responsibilityDao.getResponsibilityAction( rm.getRoleId(), responsibility.getResponsibilityId(), rm.getRoleMemberId() );
     		// add the data to the ResponsibilityActionInfo objects
     		rai.setActionTypeCode( action.getActionTypeCode() );
     		rai.setActionPolicyCode( action.getActionPolicyCode() );

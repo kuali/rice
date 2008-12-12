@@ -77,16 +77,17 @@ public class KimResponsibilityDaoOjb extends PlatformAwareDaoBaseOjb implements 
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.dao.KimResponsibilityDao#getResponsibilityAction(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 * @see org.kuali.rice.kim.dao.KimResponsibilityDao#getResponsibilityAction(String, String)
 	 */
 	@SuppressWarnings("unchecked")
-	public RoleResponsibilityActionImpl getResponsibilityAction(String responsibilityId, String roleMemberId ) {
+	public RoleResponsibilityActionImpl getResponsibilityAction(String roleId, String responsibilityId, String roleMemberId ) {
 		if ( roleMemberId == null || responsibilityId == null ) {
 			return null;
 		}
 		
 		Criteria c = new Criteria();
-		c.addEqualTo( "responsibilityId", responsibilityId );
+		c.addEqualTo( "roleResponsibility.responsibilityId", responsibilityId );
+		c.addEqualTo( "roleResponsibility.roleId", roleId );
 		Criteria idCriteria = new Criteria();
 		idCriteria.addEqualTo( "roleMemberId", roleMemberId );
 		// also handle when roleMemberId is "*" in table

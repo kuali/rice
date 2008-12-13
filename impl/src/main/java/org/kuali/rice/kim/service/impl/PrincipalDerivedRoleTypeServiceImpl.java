@@ -98,21 +98,25 @@ public class PrincipalDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServi
 		qualification = translateInputAttributeSet(qualification);
 		// check that the principal ID is not null
 		String principalId = qualification.get( "principalId" );
-		if ( StringUtils.isBlank( principalId )  ) {
-			return tempIdList;
+		if ( hasApplicationRole(principalId, null, namespaceCode, roleName, qualification)) {
+	        tempIdList.add( principalId );
 		}
-		// check that the principal exists and is active
-		KimPrincipal principal = getIdentityManagementService().getPrincipal( principalId );
-		if ( principal == null || !principal.isActive() ) {
-			return tempIdList;
-		}
-		// check that the entity is active
-		KimEntity entity = getIdentityManagementService().getEntity( principal.getEntityId() );
-		if ( entity == null || !entity.isActive() ) {
-			return tempIdList;
-		}
-		tempIdList.add( principalId );
 		return tempIdList;
+	}
+	
+	@Override
+	public boolean hasApplicationRole(String principalId, List<String> groupIds, String namespaceCode, String roleName, AttributeSet qualification) {
+        // check that the principal exists and is active
+        KimPrincipal principal = getIdentityManagementService().getPrincipal( principalId );
+        if ( principal == null || !principal.isActive() ) {
+            return false;
+        }
+        // check that the entity is active
+        KimEntity entity = getIdentityManagementService().getEntity( principal.getEntityId() );
+        if ( entity == null || !entity.isActive() ) {
+            return false;
+        }
+        return true;
 	}
 	
 	/**

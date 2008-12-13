@@ -41,7 +41,7 @@ public class RemoveReplaceDocumentDAOJpaImpl implements RemoveReplaceDocumentDAO
 
     public RemoveReplaceDocument findById(Long documentId) {
     	Query query = entityManager.createNamedQuery("RemoveReplaceDocument.FindByDocumentId");
-    	query.setParameter("documentId", documentId)
+    	query.setParameter("documentId", documentId);
     	return (RemoveReplaceDocument)query.getSingleResult();
     }
 

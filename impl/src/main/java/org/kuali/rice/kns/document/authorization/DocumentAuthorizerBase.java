@@ -101,6 +101,17 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
         LOG.debug("calling DocumentAuthorizerBase.getDocumentActionFlags for document '" + document.getDocumentNumber() + "'. user '" + user.getPrincipalName() + "'");
         }
         Set docActions = new HashSet();
+        
+        
+    	if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_CLOSE)){
+    		docActions.add(KNSConstants.KUALI_ACTION_CAN_CLOSE);
+    	}
+    	if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_RELOAD)){
+    		docActions.add(KNSConstants.KUALI_ACTION_CAN_RELOAD);    	
+    	}
+    	if(documentActions.contains(KNSConstants.KUALI_ACTION_PERFORM_ROUTE_REPORT)){
+    		docActions.add(KNSConstants.KUALI_ACTION_PERFORM_ROUTE_REPORT);    	
+    	}
 
         if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_COPY) && canCopy(document, user)){
         	docActions.add(KNSConstants.KUALI_ACTION_CAN_COPY);

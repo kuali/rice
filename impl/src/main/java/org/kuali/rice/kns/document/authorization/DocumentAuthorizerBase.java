@@ -464,11 +464,10 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
         attributes.put(KimAttributes.DOCUMENT_TYPE_CODE, wd.getDocumentType());
         if ( wd.stateIsInitiated() || wd.stateIsSaved() ) {
         	attributes.put(KimAttributes.ROUTE_NODE_NAME, KimConstants.PRE_ROUTING_ROUT_NAME );
-        	attributes.put(KimAttributes.ROUTE_STATUS_CODE,  KimConstants.AD_HOC_ROUTE_STATUS);
         } else {
         	attributes.put(KimAttributes.ROUTE_NODE_NAME, wd.getCurrentRouteNodeNames() );
-        	attributes.put(KimAttributes.ROUTE_STATUS_CODE, wd.getStatusDisplayValue() );
         }
+        attributes.put(KimAttributes.ROUTE_STATUS_CODE, wd.getRouteHeader().getDocRouteStatus());
         
         
         if ( wd.isCompletionRequested() ){

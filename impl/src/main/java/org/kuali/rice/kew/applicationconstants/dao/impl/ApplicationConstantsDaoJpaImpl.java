@@ -32,7 +32,9 @@ import org.kuali.rice.kew.applicationconstants.dao.ApplicationConstantsDAO;
  */
 public class ApplicationConstantsDaoJpaImpl implements ApplicationConstantsDAO {
 
-    @PersistenceContext(unitName="kew-unit")
+    // Changed by wliang because causing KFS to not start up
+    // was: @PersistenceContext(unitName="kew-unit")
+    @PersistenceContext
     private EntityManager entityManager;
 
     public void saveConstant(ApplicationConstant applicationConstant) {

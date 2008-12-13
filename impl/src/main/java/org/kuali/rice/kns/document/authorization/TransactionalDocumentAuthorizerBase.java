@@ -24,6 +24,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.document.Document;
@@ -75,7 +76,7 @@ public class TransactionalDocumentAuthorizerBase extends DocumentAuthorizerBase 
     	String nameSpaceCode = KNSConstants.KUALI_RICE_SYSTEM_NAMESPACE;
     	
     	AttributeSet permissionDetails = new AttributeSet();
-    	permissionDetails.put(KimConstants.KIM_ATTRIB_DOCUMENT_TYPE_NAME, documentTypeName);
+    	permissionDetails.put(KimAttributes.DOCUMENT_TYPE_CODE, documentTypeName);
     	
         if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_INITIATE_DOCUMENT, permissionDetails, null)){
         	

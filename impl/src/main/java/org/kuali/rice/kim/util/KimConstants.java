@@ -139,7 +139,9 @@ public class KimConstants {
 	
 	public static final String DEFAULT_PERMISSION_TYPE_SERVICE = "defaultPermissionTypeService";
 	
-	public static final String PRE_ROUTING_DOC_STATUS = "PreRoute";
+	public static final String PRE_ROUTING_ROUT_NAME = "PreRoute";
+	
+	public static final String AD_HOC_ROUTE_STATUS = "AdHoc";
 	
 	@Deprecated
 	public static final String TEMP_GROUP_NAMESPACE = "KFS";

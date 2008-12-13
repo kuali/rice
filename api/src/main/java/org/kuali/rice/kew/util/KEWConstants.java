@@ -831,10 +831,10 @@ public class KEWConstants {
 
 	// Permission Details
 
-	public static final String DOCUMENT_TYPE_NAME_DETAIL = "name";
+	public static final String DOCUMENT_TYPE_NAME_DETAIL = "documentTypeName";
 	public static final String ACTION_REQUEST_CD_DETAIL = "actionRequestCd";
 	public static final String ROUTE_NODE_NAME_DETAIL = "routeNodeName";
-	public static final String DOCUMENT_STATUS_DETAIL = "docRouteStatus";
+	public static final String DOCUMENT_STATUS_DETAIL = "routeStatusCode";
 
 	// Permissions
 

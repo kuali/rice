@@ -22,6 +22,7 @@ import java.util.Set;
 
 import org.kuali.rice.kim.bo.FieldAttributeSecurity;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.util.DocumentAttributeSecurityUtils;
 import org.kuali.rice.kim.util.KimConstants;
@@ -180,7 +181,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
     	String nameSpaceCode = KNSConstants.KUALI_RICE_SYSTEM_NAMESPACE;
     	//String action = (String) GlobalVariables.getUserSession().retrieveObject(DocumentAuthorizerBase.USER_SESSION_METHOD_TO_CALL_OBJECT_KEY);
     	AttributeSet permissionDetails = new AttributeSet();
-    	permissionDetails.put(KimConstants.KIM_ATTRIB_DOCUMENT_TYPE_NAME, documentTypeName);
+    	permissionDetails.put(KimAttributes.DOCUMENT_TYPE_CODE, documentTypeName);
     	//permissionDetails.put(KimConstants.KIM_ATTRIB_ACTION, action);    
     		if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_INITIATE_DOCUMENT, permissionDetails, null)){ 	
     			String userName = (String) GlobalVariables.getUserSession().getPrincipalName();

@@ -17,13 +17,13 @@
 package org.kuali.rice.kns.document.authorization;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.kuali.rice.ken.util.NotificationConstants.KEW_CONSTANTS;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
@@ -100,52 +100,52 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
         if ( LOG.isDebugEnabled() ) {
         LOG.debug("calling DocumentAuthorizerBase.getDocumentActionFlags for document '" + document.getDocumentNumber() + "'. user '" + user.getPrincipalName() + "'");
         }
-        
-       
-        if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_COPY) && !canCopy(document, user)){
-        	documentActions.remove(KNSConstants.KUALI_ACTION_CAN_COPY);
+        Set docActions = new HashSet();
+
+        if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_COPY) && canCopy(document, user)){
+        	docActions.add(KNSConstants.KUALI_ACTION_CAN_COPY);
         }
         
-        if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_EDIT) && !canEdit(document, user)){
-        	documentActions.remove(KNSConstants.KUALI_ACTION_CAN_EDIT);
+        if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_EDIT) && canEdit(document, user)){
+        	docActions.add(KNSConstants.KUALI_ACTION_CAN_EDIT);
         }
         
        if(canBlanketApprove(document, user)){
-    	   documentActions.add(KNSConstants.KUALI_ACTION_CAN_BLANKET_APPROVE);
+    	   docActions.add(KNSConstants.KUALI_ACTION_CAN_BLANKET_APPROVE);
        }
        
        if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_CANCEL)&& hasPreRouteEditAuthorization(document, user) && canCancel(document, user)){
-    	   documentActions.add(KNSConstants.KUALI_ACTION_CAN_CANCEL);
+    	   docActions.add(KNSConstants.KUALI_ACTION_CAN_CANCEL);
        }
        
        if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_SAVE)&& hasPreRouteEditAuthorization(document, user) && canSave(document, user)){
-    	   documentActions.add(KNSConstants.KUALI_ACTION_CAN_SAVE);
+    	   docActions.add(KNSConstants.KUALI_ACTION_CAN_SAVE);
        }
        
        if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_ROUTE)&& hasPreRouteEditAuthorization(document, user) && canRoute(document, user)){
-    	   documentActions.add(KNSConstants.KUALI_ACTION_CAN_ROUTE);
+    	   docActions.add(KNSConstants.KUALI_ACTION_CAN_ROUTE);
        }
         
        if(canAcknowledge(document, user)){
-    	   documentActions.add(KNSConstants.KUALI_ACTION_CAN_ACKNOWLEDGE);
+    	   docActions.add(KNSConstants.KUALI_ACTION_CAN_ACKNOWLEDGE);
        }
 
        if(canClearFYI(document, user)){
-    	   documentActions.add(KNSConstants.KUALI_ACTION_CAN_FYI);
+    	   docActions.add(KNSConstants.KUALI_ACTION_CAN_FYI);
        }
        
-       if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_AD_HOC_ROUTE) && (documentActions.contains(KNSConstants.KUALI_ACTION_CAN_EDIT))){
-    	   documentActions.add(KNSConstants.KUALI_ACTION_CAN_AD_HOC_ROUTE);
+       if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_AD_HOC_ROUTE) && canEdit(document, user)){
+    	   docActions.add(KNSConstants.KUALI_ACTION_CAN_AD_HOC_ROUTE);
        }
         
        if(canApprove(document, user)){
-    	   documentActions.add(KNSConstants.KUALI_ACTION_CAN_APPROVE);
-    	   documentActions.add(KNSConstants.KUALI_ACTION_CAN_DISAPPROVE);
+    	   docActions.add(KNSConstants.KUALI_ACTION_CAN_APPROVE);
+    	   docActions.add(KNSConstants.KUALI_ACTION_CAN_DISAPPROVE);
        }
        if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_ANNOTATE) && canAnnotate(document, user)){
-    	   documentActions.add(KNSConstants.KUALI_ACTION_CAN_ANNOTATE);
+    	   docActions.add(KNSConstants.KUALI_ACTION_CAN_ANNOTATE);
        }
-        return documentActions;
+        return docActions;
     }
     
     public DocumentActionFlags getDocumentActionFlags(Document document, Person user) {
@@ -452,11 +452,14 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
         attributes.put(KimAttributes.DOCUMENT_NUMBER, document.getDocumentNumber() );
         attributes.put(KimAttributes.DOCUMENT_TYPE_CODE, wd.getDocumentType());
         if ( wd.stateIsInitiated() || wd.stateIsSaved() ) {
-            attributes.put(KimAttributes.ROUTE_STATUS_CODE, KimConstants.PRE_ROUTING_DOC_STATUS );
+        	attributes.put(KimAttributes.ROUTE_NODE_NAME, KimConstants.PRE_ROUTING_ROUT_NAME );
+        	attributes.put(KimAttributes.ROUTE_STATUS_CODE,  KimConstants.AD_HOC_ROUTE_STATUS);
         } else {
-            attributes.put(KimAttributes.ROUTE_STATUS_CODE, wd.getStatusDisplayValue() );
+        	attributes.put(KimAttributes.ROUTE_NODE_NAME, wd.getCurrentRouteNodeNames() );
+        	attributes.put(KimAttributes.ROUTE_STATUS_CODE, wd.getStatusDisplayValue() );
         }
-        attributes.put(KimAttributes.ROUTE_NODE_NAME, wd.getCurrentRouteNodeNames() );
+        
+        
         if ( wd.isCompletionRequested() ){
             attributes.put(KimAttributes.ACTION_REQUEST_CD, KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
         } else if ( wd.isApprovalRequested() ) {

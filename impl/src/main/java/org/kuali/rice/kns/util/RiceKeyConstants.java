@@ -661,6 +661,9 @@ public class RiceKeyConstants {
     // kim person document 
     public static final String ERROR_MULTIPLE_DEFAULT_SELETION = "error.multiple.default.selection";
     public static final String ERROR_MULTIPLE_PRIMARY_EMPLOYMENT = "error.multiple.primary.employment";
+    public static final String ERROR_DUPLICATE_ENTRY = "error.duplicate.entry";
+    public static final String ERROR_EMPTY_ENTRY = "error.empty.entry";
+    public static final String ERROR_EXIST_PRINCIPAL_NAME = "error.exist.principalName";
 
     public static final class AdvanceDeposit {
         public static final String ERROR_DOCUMENT_ADVANCE_DEPOSIT_TOTAL_INVALID = "error.document.advanceDeposit.depositTotalInvalid";

@@ -204,7 +204,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 	                String fieldName = (String) iter.next();
 	                String fieldValue = (String) fieldValues.get(fieldName);
 
-	                if (fieldValue != null && fieldValue.endsWith(EncryptionService.ENCRYPTION_POST_PREFIX)){
+	                if (fieldValue != null &&!"".equals(fieldValue) && fieldValue.endsWith(EncryptionService.ENCRYPTION_POST_PREFIX)){
 	                	if(shouldFieldBeEncrypted(maintenanceDocument, fieldName)){
 		                    String encryptedValue = fieldValue;
 		
@@ -216,7 +216,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 	                	} else
 	                		throw new RuntimeException(
 	                			"The field value for field name "+fieldName+" should not be encrypted. Value received: "+fieldValue);
-                	} else if(fieldValue != null && shouldFieldBeEncrypted(maintenanceDocument, fieldName))
+                	} else if(fieldValue != null &&!"".equals(fieldValue)  && shouldFieldBeEncrypted(maintenanceDocument, fieldName))
                 		throw new RuntimeException(
                 			"The field value for field name "+fieldName+" should be encrypted. Value received: "+fieldValue);
 	        	} 

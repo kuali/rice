@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.PersistenceException;
 import javax.servlet.http.HttpServletRequest;
@@ -43,6 +44,7 @@ import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kns.authorization.AuthorizationConstants;
 import org.kuali.rice.kns.authorization.AuthorizationType;
 import org.kuali.rice.kns.authorization.FieldAuthorization;
 import org.kuali.rice.kns.bo.DocumentAttachment;
@@ -55,9 +57,12 @@ import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.MaintenanceDocumentBase;
+import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizations;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizer;
+import org.kuali.rice.kns.document.authorization.TransactionalDocumentAuthorizer;
 import org.kuali.rice.kns.exception.AuthorizationException;
+import org.kuali.rice.kns.exception.DocumentAuthorizationException;
 import org.kuali.rice.kns.exception.MaintenanceNewCopyAuthorizationException;
 import org.kuali.rice.kns.exception.ModuleAuthorizationException;
 import org.kuali.rice.kns.maintenance.Maintainable;
@@ -987,5 +992,25 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         KNSServiceLocator.getBusinessObjectService().linkUserFields(bo);
 
         maintainable.processAfterPost(document, parameters );
+    }
+    
+    protected void populateAuthorizationFields(KualiDocumentFormBase formBase){
+    	super.populateAuthorizationFields(formBase);
+    	
+    	KualiMaintenanceForm maintenanceForm = (KualiMaintenanceForm) formBase;
+    	MaintenanceDocument maintenanceDocument = (MaintenanceDocument) maintenanceForm.getDocument();
+    	MaintenanceDocumentAuthorizer maintenanceDocumentAuthorizer = (MaintenanceDocumentAuthorizer) KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(maintenanceDocument);
+    	Person user = GlobalVariables.getUserSession().getPerson();
+    	//Default form-level editMode to readOnly
+    	maintenanceForm.setReadOnly(true);
+    	if(formBase.getDocumentActions().containsKey(KNSConstants.KUALI_ACTION_CAN_EDIT)){
+    		maintenanceForm.setReadOnly(false);
+    		
+    	}
+    	
+    	maintenanceForm.setAuthorizations(maintenanceDocumentAuthorizer.getFieldAuthorizations(maintenanceDocument, user));
+    	
+            
+        
     }
 }

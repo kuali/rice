@@ -267,9 +267,9 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
         }
 
         // if the authorization stuff hasnt been applied yet, then apply it
-        if (authorizations == null) {
-            applyAuthorizations();
-        }
+        //if (authorizations == null) {
+        //    applyAuthorizations();
+        //}
 
         // get business object being maintained and its keys
         List keyFieldNames = KNSServiceLocator.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(((MaintenanceDocumentBase) getDocument()).getNewMaintainableObject().getBusinessObject().getClass());

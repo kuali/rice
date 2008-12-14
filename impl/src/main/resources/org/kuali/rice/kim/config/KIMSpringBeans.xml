@@ -371,8 +371,6 @@
 
   <bean id="documentTypeAndNodeOrStatePermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypeAndNodeOrStatePermissionTypeServiceImpl" />
 
-  <bean id="documentTypeAndExistingRecordsOnlyPermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypeAndExistingRecordsOnlyPermissionTypeServiceImpl" />
-
   <bean id="defaultPermissionTypeService" class="org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase" />
 
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">

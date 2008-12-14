@@ -36,7 +36,9 @@ import org.kuali.rice.kim.util.KimCommonUtils;
 public class DocumentTypePermissionTypeServiceImpl extends KimPermissionTypeServiceBase {
 
 	protected List<String> requiredAttributes = new ArrayList<String>();
-	{
+	
+	
+	public DocumentTypePermissionTypeServiceImpl() {
 		requiredAttributes.add(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL);
 	}
 

@@ -949,8 +949,6 @@
 
     <bean id="componentFieldPermissionTypeService" class="org.kuali.rice.kns.service.impl.ComponentFieldPermissionTypeServiceImpl"/>
 
-    <bean id="documentTypeAndExistingRecordsOnlyPermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypeAndExistingRecordsOnlyPermissionTypeServiceImpl"/>
-
     <bean id="documentTypeAndNodeAndFieldsPermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypeAndNodeAndFieldsPermissionTypeServiceImpl"/>
 
 </beans>

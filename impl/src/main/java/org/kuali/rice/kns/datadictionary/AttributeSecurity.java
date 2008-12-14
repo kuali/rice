@@ -24,8 +24,8 @@ import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.kns.datadictionary.mask.MaskFormatter;
 
 /**
- * This is a description of what this class does - mpham don't forget to fill
- * this in.
+ * This class defines a set of restrictions that are possible on an attribute in a 
+ * {@link BusinessObjectEntry} or a maintainable field in a {@link MaintenanceDocumentEntry}
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
@@ -147,4 +147,10 @@ public class AttributeSecurity extends DataDictionaryDefinitionBase {
 		}
 	}
 
+	/**
+	 * Returns whether any of the restrictions defined in this class are true.
+	 */
+	public boolean hasAnyRestriction() {
+		return readOnly || mask || partialMask || hide;
+	}
 }

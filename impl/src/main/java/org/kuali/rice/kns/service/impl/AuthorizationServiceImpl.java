@@ -22,6 +22,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -143,8 +144,8 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         String nameSpaceCode = "KR-NS";
         
         AttributeSet permissionDetails = new AttributeSet();
-    	permissionDetails.put(KimConstants.KIM_ATTRIB_COMPONENT_NAME, entryName);
- 	    permissionDetails.put(KimConstants.KIM_ATTRIB_PROPERTY_NAME, attributeName);
+    	permissionDetails.put(KimAttributes.COMPONENT_NAME, entryName);
+ 	    permissionDetails.put(KimAttributes.PROPERTY_NAME, attributeName);
  	    
 	   if(getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_UNMASK_PROPERTY, permissionDetails, null)){
 	       authorized = true;

@@ -462,6 +462,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
         KualiWorkflowDocument wd = document.getDocumentHeader().getWorkflowDocument();
         attributes.put(KimAttributes.DOCUMENT_NUMBER, document.getDocumentNumber() );
         attributes.put(KimAttributes.DOCUMENT_TYPE_CODE, wd.getDocumentType());
+        attributes.put(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL, wd.getDocumentType());
         if ( wd.stateIsInitiated() || wd.stateIsSaved() ) {
         	attributes.put(KimAttributes.ROUTE_NODE_NAME, KimConstants.PRE_ROUTING_ROUT_NAME );
         } else {

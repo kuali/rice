@@ -1046,7 +1046,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
                 if(attributeSecurity != null && attributeSecurity.isPartialMask()){
                 	boolean viewAuthorized = getAuthorizationService().isAuthorizedToPartiallyUnmaskAttribute(GlobalVariables.getUserSession().getPerson(), element.getClass().getSimpleName(), col.getPropertyName());
                 	if(!viewAuthorized){
-                		propValue = attributeSecurity.getMaskFormatter().maskValue(propValue);
+                		propValue = attributeSecurity.getPartialMaskFormatter().maskValue(propValue);
                 	}
                 }
                 if(attributeSecurity != null && attributeSecurity.isMask()){

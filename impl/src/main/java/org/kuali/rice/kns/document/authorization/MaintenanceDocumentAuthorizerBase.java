@@ -71,25 +71,24 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
            AttributeSecurity  businessObjectAttributeSecurity = (AttributeSecurity) fieldAttributeSecurity.getBusinessObjectAttributeSecurity();
            
            AttributeSet permissionDetails = new AttributeSet();
-    	   permissionDetails.put(KimConstants.KIM_ATTRIB_PROPERTY_NAME, fieldName);
-    	  
+    	   permissionDetails.put(KimAttributes.PROPERTY_NAME, fieldName);
     	   
     	   if(businessObjectAttributeSecurity != null && businessObjectAttributeSecurity.isReadOnly()){
-    		   permissionDetails.put(KimConstants.KIM_ATTRIB_COMPONENT_NAME, componentName);
+    		   permissionDetails.put(KimAttributes.COMPONENT_NAME, componentName);
     		   if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_EDIT_PROPERTY, permissionDetails, null)){
     			   auths.addReadonlyAuthField(fullFieldName);
     		   }
     	   }
     	   
     	   if(maintainableFieldAttributeSecurity != null && maintainableFieldAttributeSecurity.isReadOnly()){
-    		   permissionDetails.put(KimConstants.KIM_ATTRIB_COMPONENT_NAME, documentType);
+    		   permissionDetails.put(KimAttributes.COMPONENT_NAME, documentType);
     		   if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_EDIT_PROPERTY, permissionDetails, null)){
     			   auths.addReadonlyAuthField(fullFieldName);
     		   }
     	   }
     	   
     	   if(businessObjectAttributeSecurity != null && businessObjectAttributeSecurity.isPartialMask()){
-    		   permissionDetails.put(KimConstants.KIM_ATTRIB_COMPONENT_NAME, componentName);
+    		   permissionDetails.put(KimAttributes.COMPONENT_NAME, componentName);
     		   if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_PARTIALLY_UNMASK_PROPERTY, permissionDetails, null)){
     			   MaskFormatter partialMaskFormatter = businessObjectAttributeSecurity.getPartialMaskFormatter();
     			   auths.addPartiallyMaskedAuthField(fullFieldName, partialMaskFormatter);
@@ -97,7 +96,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
     	   }
     	   
     	   if(maintainableFieldAttributeSecurity != null  && maintainableFieldAttributeSecurity.isPartialMask()){
-    		   permissionDetails.put(KimConstants.KIM_ATTRIB_COMPONENT_NAME, documentType);
+    		   permissionDetails.put(KimAttributes.COMPONENT_NAME, documentType);
 			   if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_PARTIALLY_UNMASK_PROPERTY, permissionDetails, null)){
 				   MaskFormatter partialMaskFormatter = maintainableFieldAttributeSecurity.getPartialMaskFormatter();
 				   auths.addPartiallyMaskedAuthField(fullFieldName, partialMaskFormatter);
@@ -105,7 +104,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
 		   }
     	   
     	   if(businessObjectAttributeSecurity != null && businessObjectAttributeSecurity.isMask()){
-    		   permissionDetails.put(KimConstants.KIM_ATTRIB_COMPONENT_NAME, componentName);
+    		   permissionDetails.put(KimAttributes.COMPONENT_NAME, componentName);
     		   if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_UNMASK_PROPERTY, permissionDetails, null)){
     		       MaskFormatter maskFormatter = businessObjectAttributeSecurity.getMaskFormatter();
     			   auths.addMaskedAuthField(fullFieldName, maskFormatter);
@@ -113,7 +112,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
     	   }
     	   
     	   if(maintainableFieldAttributeSecurity != null  && maintainableFieldAttributeSecurity.isMask()){  
-    		   permissionDetails.put(KimConstants.KIM_ATTRIB_COMPONENT_NAME, documentType);
+    		   permissionDetails.put(KimAttributes.COMPONENT_NAME, documentType);
 			   if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_UNMASK_PROPERTY, permissionDetails, null)){
 				   MaskFormatter maskFormatter = maintainableFieldAttributeSecurity.getMaskFormatter();
 				   auths.addMaskedAuthField(fullFieldName, maskFormatter);
@@ -121,14 +120,14 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
 		   }
     	
     	   if(businessObjectAttributeSecurity != null && businessObjectAttributeSecurity.isHide()){
-    		   permissionDetails.put(KimConstants.KIM_ATTRIB_COMPONENT_NAME, componentName);
+    		   permissionDetails.put(KimAttributes.COMPONENT_NAME, componentName);
     		   if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_VIEW_PROPERTY, permissionDetails, null)){
     			   auths.addHiddenAuthField(fullFieldName);	  
     		   }
     	   }   
 
     	   if(maintainableFieldAttributeSecurity != null  && maintainableFieldAttributeSecurity.isHide()){
-    		   permissionDetails.put(KimConstants.KIM_ATTRIB_COMPONENT_NAME, documentType);
+    		   permissionDetails.put(KimAttributes.COMPONENT_NAME, documentType);
 			   if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_VIEW_PROPERTY, permissionDetails, null)){
 				   auths.addHiddenAuthField(fullFieldName);	  
 			   }

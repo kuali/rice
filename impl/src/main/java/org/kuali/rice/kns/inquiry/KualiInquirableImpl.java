@@ -302,36 +302,17 @@ public class KualiInquirableImpl implements Inquirable {
                 keyValue = keyValue.toString();
             }
 
-            // Encrypt value if it is a secure field
-            //String displayWorkgroup = getDataDictionaryService().getAttributeDisplayWorkgroup(businessObject.getClass(), keyName);
-            //boolean viewAuthorized = KNSServiceLocator.getAuthorizationService().isAuthorizedToViewAttribute(
-			//		GlobalVariables.getUserSession().getPerson(), businessObject.getClass().getName(), keyName);
-            //if (!viewAuthorized) {
+            // Encrypt value if it is a field that has any restriction, because we don't want the browser history to store the restricted attribute's value 
             AttributeSecurity attributeSecurity = KNSServiceLocator.getDataDictionaryService().getAttributeSecurity(businessObject.getClass().getName(), keyName);
-            if(attributeSecurity != null && attributeSecurity.isMask()){
-            	boolean viewAuthorized =  KNSServiceLocator.getAuthorizationService().isAuthorizedToUnmaskAttribute(GlobalVariables.getUserSession().getPerson(), businessObject.getClass().getSimpleName(), keyName);
-            	if(!viewAuthorized){
-            		try {
-                        keyValue = getEncryptionService().encrypt(keyValue);
-                    }
-                    catch (GeneralSecurityException e) {
-                        LOG.error("Exception while trying to encrypted value for inquiry framework.", e);
-                        throw new RuntimeException(e);
-                    }
-            	}
-            }
-            if(attributeSecurity != null && attributeSecurity.isPartialMask()){
-            	boolean viewAuthorized =  KNSServiceLocator.getAuthorizationService().isAuthorizedToPartiallyUnmaskAttribute(GlobalVariables.getUserSession().getPerson(), businessObject.getClass().getSimpleName(), keyName);
-                if(!viewAuthorized){
-                	try {
-                        keyValue = getEncryptionService().encrypt(keyValue);
-                    }
-                    catch (GeneralSecurityException e) {
-                        LOG.error("Exception while trying to encrypted value for inquiry framework.", e);
-                        throw new RuntimeException(e);
-                    }
+            if(attributeSecurity != null && attributeSecurity.hasAnyRestriction()){
+            	try {
+                    keyValue = getEncryptionService().encrypt(keyValue);
                 }
-			}
+                catch (GeneralSecurityException e) {
+                    LOG.error("Exception while trying to encrypted value for inquiry framework.", e);
+                    throw new RuntimeException(e);
+                }
+            }
             
             parameters.put(keyName, keyValue);
             fieldList.put(keyName, keyValue.toString());

@@ -17,6 +17,7 @@
         <ref bean="DocGroup-groupId" />
         <ref bean="DocGroup-kimTypeId" />
         <ref bean="DocGroup-groupName" />
+        <ref bean="DocGroup-namespaceCode" />
         <ref bean="DocGroup-active" />
         <ref bean="DocGroup-kimGroupType.name" />
       </list>
@@ -68,8 +69,8 @@
   <bean id="DocGroup-kimTypeId-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="kimTypeId"
         p:forceUppercase="true"
-        p:label="Group Type"
-        p:shortLabel="Group Type"
+        p:label="Type"
+        p:shortLabel="Type"
         p:maxLength="40"
         p:required="false" >
     <property name="control" >
@@ -81,14 +82,28 @@
   <bean id="DocGroup-groupName-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="groupName"
         p:forceUppercase="true"
-        p:label="Group Name"
-        p:shortLabel="Group Name"
+        p:label="Name"
+        p:shortLabel="Name"
         p:maxLength="80"
         p:required="false" >
     <property name="control" >
       <bean parent="TextControlDefinition" p:size="10" />
     </property>
   </bean>
+  
+    <bean id="DocGroup-namespaceCode" parent="DocGroup-namespaceCode-parentBean" />
+  <bean id="DocGroup-namespaceCode-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="namespaceCode"
+        p:forceUppercase="true"
+        p:label="Namespace Code"
+        p:shortLabel="Namespace Code"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="10" />
+    </property>
+  </bean>
+  
   
      <bean id="DocGroup-active" parent="DocGroup-active-parentBean" />
   <bean id="DocGroup-active-parentBean" abstract="true" parent="AttributeReferenceDummy-genericBoolean">
@@ -129,6 +144,7 @@
             <list>
               <bean parent="FieldDefinition" p:attributeName="groupId" />
               <bean parent="FieldDefinition" p:attributeName="groupName" />
+              <bean parent="FieldDefinition" p:attributeName="namespaceCode" />
               <bean parent="FieldDefinition" p:attributeName="kimTypeId" />
             </list>
           </property>
@@ -156,6 +172,7 @@
       <list>
         <bean parent="FieldDefinition" p:attributeName="groupId" />
         <bean parent="FieldDefinition" p:attributeName="groupName" />
+        <bean parent="FieldDefinition" p:attributeName="namespaceCode" />
         <bean parent="FieldDefinition" p:attributeName="kimTypeId" />
       </list>
     </property>
@@ -163,6 +180,7 @@
       <list>
         <bean parent="FieldDefinition" p:attributeName="groupId" />
         <bean parent="FieldDefinition" p:attributeName="groupName" />
+        <bean parent="FieldDefinition" p:attributeName="namespaceCode" />
         <bean parent="FieldDefinition" p:attributeName="kimTypeId" />
       </list>
     </property>

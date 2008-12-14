@@ -74,7 +74,7 @@
 								<td class="infoline">
 								<div align=center>
 				        	     <c:choose>
-				        	       <c:when test="${qualifier.edit}">
+				        	       <c:when test="${rolePrncpl.edit}">
 				        	          <img class='nobord' src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete2.gif' styleClass='tinybutton'/>
 				        	       </c:when>
 				        	       <c:otherwise>

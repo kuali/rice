@@ -5,8 +5,8 @@
         <table cellpadding=0 cellspacing=0 summary="">
           	<tr>
           		<th><div align="left">&nbsp</div></th> 
-          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docEmailAttributes.emailTypeCode}" noColon="true" /></div></th>
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docEmailAttributes.emailAddress}" noColon="true" /></div></th>
+          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docEmailAttributes.emailTypeCode}" noColon="true" /></div></th>
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docEmailAttributes.dflt}" noColon="true" /></div></th>
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docEmailAttributes.active}" noColon="true" /></div></th>
               	<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
@@ -18,15 +18,15 @@
 					<c:out value="Add:" />
 				</th>
 
-                <td align="left" valign="middle" class="infoline">
-                <div align="center">
-                	<kul:htmlControlAttribute property="newEmail.emailTypeCode" attributeEntry="${docEmailAttributes.emailTypeCode}"/>
-	            </div>
-				</td>
                 <td class="infoline">   
                 <div align="center">             	
                   <kul:htmlControlAttribute property="newEmail.emailAddress" attributeEntry="${docEmailAttributes.emailAddress}" />
 				</div>
+				</td>
+                <td align="left" valign="middle" class="infoline">
+                <div align="center">
+                	<kul:htmlControlAttribute property="newEmail.emailTypeCode" attributeEntry="${docEmailAttributes.emailTypeCode}"/>
+	            </div>
 				</td>
                 <td class="infoline">   
                 <div align="center">             	
@@ -52,13 +52,13 @@
 					<th class="infoline">
 						<c:out value="${status.index+1}" />
 					</th>
-	                <td align="left" valign="middle">
-	                	<div align="center"> <kul:htmlControlAttribute property="document.emails[${status.index}].emailTypeCode"  attributeEntry="${docEmailAttributes.emailTypeCode}"  />
-					</div>
-					</td>
 	                <td>     
 	                <div align="center">           	
 	                  <kul:htmlControlAttribute property="document.emails[${status.index}].emailAddress" attributeEntry="${docEmailAttributes.emailAddress}" />
+					</div>
+					</td>
+	                <td align="left" valign="middle">
+	                	<div align="center"> <kul:htmlControlAttribute property="document.emails[${status.index}].emailTypeCode"  attributeEntry="${docEmailAttributes.emailTypeCode}"  />
 					</div>
 					</td>
 					<td>

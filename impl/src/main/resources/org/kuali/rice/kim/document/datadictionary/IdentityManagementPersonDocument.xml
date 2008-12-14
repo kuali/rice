@@ -16,6 +16,7 @@
     <property name="documentTypeName" value="IdentityManagementPersonDocument" />
     <property name="documentClass" value="org.kuali.rice.kim.document.IdentityManagementPersonDocument" />
     <property name="businessRulesClass" value="org.kuali.rice.kim.document.rule.IdentityManagementPersonDocumentRule" /> 
+    <property name="documentPresentationControllerClass" value="org.kuali.rice.kim.document.authorization.IdentityManagementPersonDocumentPresentationController" /> 
     <property name="documentAuthorizerClass" value="org.kuali.rice.kim.document.authorization.IdentityManagementPersonDocumentAuthorizer" />
     <!-- <property name="documentTypeCode" value="IMPN" /> -->
     <property name="displayTopicFieldInNotes" value="true" />

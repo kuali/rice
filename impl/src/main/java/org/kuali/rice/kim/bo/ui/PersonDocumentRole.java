@@ -42,6 +42,8 @@ public class PersonDocumentRole extends PersonDocumentBoBase {
 	protected String roleId;
 	protected String kimTypeId;
 	protected String roleName;
+	@Column(name="NMSPC_CD")
+	protected String namespaceCode;
 	protected KimTypeImpl kimRoleType;
 	protected List<KimAttributeImpl> attributes;
 	protected AttributeDefinitionMap definitions;
@@ -149,6 +151,14 @@ public class PersonDocumentRole extends PersonDocumentBoBase {
 
 	public void setNewRolePrncpl(PersonDocumentRolePrncpl newRolePrncpl) {
 		this.newRolePrncpl = newRolePrncpl;
+	}
+
+	public String getNamespaceCode() {
+		return this.namespaceCode;
+	}
+
+	public void setNamespaceCode(String namespaceCode) {
+		this.namespaceCode = namespaceCode;
 	}
 
 }

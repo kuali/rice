@@ -55,24 +55,5 @@ public interface UiDocumentService {
 	 */
 	public void loadEntityToPersonDoc(IdentityManagementPersonDocument identityManagementPersonDocument, KimEntityImpl kimEntity);
 	
-	/**
-	 * 
-	 * This method load related group data to pending document when usert initiate the 'edit'.
-	 * 
-	 * @param identityManagementPersonDocument
-	 * @param groups
-	 */
-	public void loadGroupToPersonDoc(IdentityManagementPersonDocument identityManagementPersonDocument, List<? extends KimGroup> groups);
 	
-	/**
-	 * 
-	 * This method is to get groups for this principal.  It return a list of 'KimGroupImpl'
-	 * IdentityManagementService has a similar method, but it return a list of DTO (GroupInfo)
-	 * which does not have 'groupMembers' data. 
-	 * 
-	 * @param principalId
-	 * @return
-	 */
-	public List <KimGroupImpl> getGroupsForPrincipal(String principalId);
-
 }

@@ -31,7 +31,7 @@ public class PersonLookupableImpl extends KualiLookupableImpl {
 
 	@Override
 	public String getCreateNewUrl() {
-        String url = "../identityManagementPersonDocument.do?methodToCall=docHandler&command=initiate&docTypeName=IdentityManagementPersonDocument";
+        String url = "../kim/identityManagementPersonDocument.do?methodToCall=docHandler&command=initiate&docTypeName=IdentityManagementPersonDocument";
 
         return "<a href=\"" + url + "\"><img src=\"images/tinybutton-createnew.gif\" alt=\"create new\" width=\"70\" height=\"15\"/></a>";
 

@@ -28,7 +28,7 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentName;
 import org.kuali.rice.kim.bo.ui.PersonDocumentPhone;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
-import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
+import org.kuali.rice.kns.web.struts.form.KualiTransactionalDocumentFormBase;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -36,7 +36,7 @@ import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class IdentityManagementPersonDocumentForm extends KualiDocumentFormBase {
+public class IdentityManagementPersonDocumentForm extends KualiTransactionalDocumentFormBase {
 
     private PersonDocumentAffiliation newAffln;
     private PersonDocumentEmploymentInfo newEmpInfo;

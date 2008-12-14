@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kim.web.struts.action;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -27,7 +25,6 @@ import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAddress;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAffiliation;
@@ -41,12 +38,15 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRolePrncpl;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRoleQualifier;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
+import org.kuali.rice.kim.rule.event.ui.AddGroupEvent;
+import org.kuali.rice.kim.rule.event.ui.AddRoleEvent;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementPersonDocumentForm;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.web.struts.action.KualiDocumentActionBase;
+import org.kuali.rice.kns.web.struts.action.KualiTransactionalDocumentActionBase;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -54,7 +54,7 @@ import org.kuali.rice.kns.web.struts.action.KualiDocumentActionBase;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class IdentityManagementPersonDocumentAction extends KualiDocumentActionBase {
+public class IdentityManagementPersonDocumentAction extends KualiTransactionalDocumentActionBase {
 
 	
     @Override
@@ -66,17 +66,18 @@ public class IdentityManagementPersonDocumentAction extends KualiDocumentActionB
 		// get set up person document
         IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
         IdentityManagementPersonDocument personDoc = (IdentityManagementPersonDocument)personDocumentForm.getDocument();
-		if (StringUtils.isNotBlank(request.getParameter("command")) && request.getParameter("command").equals("initiate") && StringUtils.isNotBlank(request.getParameter("principalId"))) {
+        String commandParam = request.getParameter("command");
+		if (StringUtils.isNotBlank(commandParam) && commandParam.equals("initiate") && StringUtils.isNotBlank(request.getParameter("principalId"))) {
 	        KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(request.getParameter("principalId"));
 	        personDoc.setPrincipalId(principal.getPrincipalId());
 	        personDoc.setPrincipalName(principal.getPrincipalName());
 	        personDoc.setPassword(principal.getPassword());
 			KimEntityImpl entity = (KimEntityImpl)KIMServiceLocator.getIdentityManagementService().getEntity(principal.getEntityId());
 			KIMServiceLocator.getUiDocumentService().loadEntityToPersonDoc(personDoc, entity);
-			List<? extends KimGroup> groups = KIMServiceLocator.getIdentityManagementService().getGroupsForPrincipal(principal.getPrincipalId());
-			KIMServiceLocator.getUiDocumentService().loadGroupToPersonDoc(personDoc, groups);
+			//List<? extends KimGroup> groups = KIMServiceLocator.getIdentityManagementService().getGroupsForPrincipal(principal.getPrincipalId());
+			//KIMServiceLocator.getUiDocumentService().loadGroupToPersonDoc(personDoc, groups);
 		}
-		if (StringUtils.isNotBlank(request.getParameter("command")) && request.getParameter("command").equals("displayDocSearchView")) {
+		if (StringUtils.isNotBlank(commandParam) && (commandParam.equals("displayDocSearchView") || commandParam.equals("displayActionListView"))) {
 			for (PersonDocumentRole role : personDoc.getRoles()) {
 		        KimTypeService kimTypeService = (KimTypeServiceBase)KIMServiceLocator.getService(role.getKimRoleType().getKimTypeServiceName());
 				role.setDefinitions(kimTypeService.getAttributeDefinitions(role.getKimRoleType()));
@@ -107,6 +108,23 @@ public class IdentityManagementPersonDocumentAction extends KualiDocumentActionB
 		return forward;
     }
     
+    /**
+     * 
+     * This overridden method is to add 'kim/" to the return path
+     * 
+     * @see org.kuali.rice.kns.web.struts.action.KualiAction#performLookup(org.apache.struts.action.ActionMapping, org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+     */
+	@Override
+	public ActionForward performLookup(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		ActionForward forward =  super.performLookup(mapping, form, request, response);
+		String path = forward.getPath();
+		path = path.replace("identityManagementPersonDocument.do", "kim/identityManagementPersonDocument.do");
+		forward.setPath(path);
+		return forward;
+	}
+
 	public ActionForward addAffln(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
         PersonDocumentAffiliation newAffln = personDocumentForm.getNewAffln();
@@ -244,9 +262,10 @@ public class IdentityManagementPersonDocumentAction extends KualiDocumentActionB
     public ActionForward addGroup(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
         PersonDocumentGroup newGroup = personDocumentForm.getNewGroup();
-        personDocumentForm.getPersonDocument().getGroups().add(newGroup);
-        personDocumentForm.setNewGroup(new PersonDocumentGroup());
-        
+        if (KNSServiceLocator.getKualiRuleService().applyRules(new AddGroupEvent("",personDocumentForm.getPersonDocument(), newGroup))) {
+	        personDocumentForm.getPersonDocument().getGroups().add(newGroup);
+	        personDocumentForm.setNewGroup(new PersonDocumentGroup());
+        }
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
     public ActionForward deleteGroup(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -259,24 +278,25 @@ public class IdentityManagementPersonDocumentAction extends KualiDocumentActionB
     public ActionForward addRole(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
         PersonDocumentRole newRole = personDocumentForm.getNewRole();
-        KimTypeService kimTypeService = (KimTypeServiceBase)KIMServiceLocator.getService(newRole.getKimRoleType().getKimTypeServiceName());
-        //AttributeDefinitionMap definitions = kimTypeService.getAttributeDefinitions();
-        // role type populated from form is not a complete record
-        newRole.getKimRoleType().setKimTypeId(newRole.getKimTypeId());
-        newRole.getKimRoleType().refreshReferenceObject("attributeDefinitions");
-        newRole.setDefinitions(kimTypeService.getAttributeDefinitions(newRole.getKimRoleType()));
-        PersonDocumentRolePrncpl newRolePrncpl = new PersonDocumentRolePrncpl();
-        
-        for (String key : newRole.getDefinitions().keySet()) {
-        	PersonDocumentRoleQualifier qualifier = new PersonDocumentRoleQualifier();
-        	qualifier.setQualifierKey(key);
-        	newRolePrncpl.getQualifiers().add(qualifier);
+        if (KNSServiceLocator.getKualiRuleService().applyRules(new AddRoleEvent("",personDocumentForm.getPersonDocument(), newRole))) {
+	        KimTypeService kimTypeService = (KimTypeServiceBase)KIMServiceLocator.getService(newRole.getKimRoleType().getKimTypeServiceName());
+	        //AttributeDefinitionMap definitions = kimTypeService.getAttributeDefinitions();
+	        // role type populated from form is not a complete record
+	        newRole.getKimRoleType().setKimTypeId(newRole.getKimTypeId());
+	        newRole.getKimRoleType().refreshReferenceObject("attributeDefinitions");
+	        newRole.setDefinitions(kimTypeService.getAttributeDefinitions(newRole.getKimRoleType()));
+	        PersonDocumentRolePrncpl newRolePrncpl = new PersonDocumentRolePrncpl();
+	        
+	        for (String key : newRole.getDefinitions().keySet()) {
+	        	PersonDocumentRoleQualifier qualifier = new PersonDocumentRoleQualifier();
+	        	qualifier.setQualifierKey(key);
+	        	newRolePrncpl.getQualifiers().add(qualifier);
+	        }
+	        newRole.setNewRolePrncpl(newRolePrncpl);
+	        KIMServiceLocator.getUiDocumentService().setAttributeEntry(newRole);
+	        personDocumentForm.getPersonDocument().getRoles().add(newRole);
+	        personDocumentForm.setNewRole(new PersonDocumentRole());
         }
-        newRole.setNewRolePrncpl(newRolePrncpl);
-        KIMServiceLocator.getUiDocumentService().setAttributeEntry(newRole);
-        personDocumentForm.getPersonDocument().getRoles().add(newRole);
-        personDocumentForm.setNewRole(new PersonDocumentRole());
-        
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
     

@@ -41,6 +41,9 @@ public class PersonDocumentGroup extends PersonDocumentBoBase {
 	protected String groupId;
 	@Column(name="GRP_NAME")
 	protected String groupName;
+	@Column(name="NMSPC_CD")
+	protected String namespaceCode;
+
 	protected String principalId;
 	protected KimTypeImpl kimGroupType;
 	protected String kimTypeId;
@@ -99,6 +102,14 @@ public class PersonDocumentGroup extends PersonDocumentBoBase {
 
 	public void setGroupType(String groupType) {
 		this.groupType = groupType;
+	}
+
+	public String getNamespaceCode() {
+		return this.namespaceCode;
+	}
+
+	public void setNamespaceCode(String namespaceCode) {
+		this.namespaceCode = namespaceCode;
 	}
 
 }

@@ -231,7 +231,7 @@
   <bean id="PersonImpl-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition"
         p:title="Person Lookup" 
         p:instructions="Lookup a Person" >
-   <property name="lookupableID" value="personLookupable" />
+   <property name="lookupableID" value="kimPersonLookupable" />
     <property name="defaultSort" >
       <bean parent="SortDefinition">
         <property name="attributeNames" >

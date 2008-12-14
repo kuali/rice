@@ -33,15 +33,15 @@
   <bean id="DocEmploymentInfo-primaryDepartmentCode-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="primaryDepartmentCode"
         p:forceUppercase="true"
-        p:label="Campus Code"
-        p:shortLabel="Campus Code"
+        p:label="Primary Department Code"
+        p:shortLabel="Primary Department Code"
         p:maxLength="40"
         p:required="false" >
     <property name="validationPattern" >
       <bean parent="AnyCharacterValidationPattern" />
     </property>
     <property name="control" >
-      <bean parent="TextControlDefinition" p:size="3" />
+      <bean parent="TextControlDefinition" p:size="10" />
     </property>
   </bean>
   
@@ -157,7 +157,7 @@
   <bean id="DocEmploymentInfo-baseSalaryAmount" parent="DocEmploymentInfo-baseSalaryAmount-parentBean" />
   <bean id="DocEmploymentInfo-baseSalaryAmount-parentBean" abstract="true" parent="AttributeReferenceDummy-genericAmount">
     <property name="name" value="baseSalaryAmount" />
-    <property name="label" value="Base Salary" />
+    <property name="label" value="Base Salary Amount" />
     <property name="shortLabel" value="Base Salary" />
     <property name="required" value="true" />
     <property name="summary" value="Base Salary" />

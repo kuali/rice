@@ -8,6 +8,7 @@
     	<!--
 	    <form-bean name="TravelDocumentForm2" type="edu.sampleu.travel.web.form.TravelDocumentForm2" />
 	    -->
+	    <form-bean name="IdentityManagementPersonDocumentForm" type="org.kuali.rice.kim.web.struts.form.IdentityManagementPersonDocumentForm" />
     </form-beans>
 
     <global-exceptions />
@@ -28,6 +29,10 @@
 			<forward name="basic" path="/WEB-INF/jsp/travelDocument2.jsp" />
 		</action>
 		-->
+		<action path="/identityManagementPersonDocument" name="IdentityManagementPersonDocumentForm" input="/kim/WEB-INF/jsp/identityManagementPersonDocument.jsp" type="org.kuali.rice.kim.web.struts.action.IdentityManagementPersonDocumentAction"
+			scope="request" parameter="methodToCall" validate="true" attribute="KualiForm">
+			<forward name="basic" path="/WEB-INF/jsp/identityManagementPersonDocument.jsp" />
+		</action>
     </action-mappings>
 
     <controller processorClass="org.kuali.rice.kns.web.struts.action.KualiRequestProcessor" />

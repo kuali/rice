@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.EntityAffiliation;
 import org.kuali.rice.kim.bo.entity.EntityBioDemographics;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAddress;
@@ -279,10 +280,8 @@ public class IdentityManagementPersonDocument extends TransactionalDocumentBase 
 			DocumentRouteStatusChangeDTO statusChangeEvent) throws Exception {
 		// TODO shyu - THIS METHOD NEEDS JAVADOCS
 		super.doRouteStatusChange(statusChangeEvent);
-		// if
-		// (statusChangeEvent.getNewRouteStatus().equals(KEWConstants.ROUTE_HEADER_APPROVED_CD))
-		// {
-		if (statusChangeEvent.getNewRouteStatus().equals("R")) {
+	    if (statusChangeEvent.getNewRouteStatus().equals(KEWConstants.ROUTE_HEADER_APPROVED_CD)) {
+		//if (statusChangeEvent.getNewRouteStatus().equals("R")) {
 			KIMServiceLocator.getUiDocumentService().saveEntityPerson(this);
 			
 		}

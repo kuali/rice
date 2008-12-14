@@ -2,7 +2,7 @@
 
 <c:set var="personAttributes" value="${DataDictionary.IdentityManagementPersonDocument.attributes}" />
 
-	<kul:tab tabTitle="Membership" defaultOpen="true" tabErrorKey="document.groups*, document.roles*">
+	<kul:tab tabTitle="Membership" defaultOpen="true" tabErrorKey="document.groups*,document.roles*,newGroup.*,newRole.*">
 	<div class="tab-container" align="center">
     	<h3>
     		<span class="subhead-left">Membership</span>

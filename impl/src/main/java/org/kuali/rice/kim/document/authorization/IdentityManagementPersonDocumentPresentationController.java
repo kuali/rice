@@ -16,19 +16,19 @@
 package org.kuali.rice.kim.document.authorization;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.authorization.AuthorizationConstants;
 import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.document.authorization.TransactionalDocumentAuthorizerBase;
-import org.kuali.rice.kns.exception.DocumentTypeAuthorizationException;
-import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.document.authorization.TransactionalDocumentPresentationControllerBase;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 
 /**
@@ -37,35 +37,33 @@ import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class IdentityManagementPersonDocumentAuthorizer extends TransactionalDocumentAuthorizerBase {
+public class IdentityManagementPersonDocumentPresentationController extends TransactionalDocumentPresentationControllerBase {
 
+	// this controller class is not quite clear yet.
 	@Override
-    public void canInitiate(String documentTypeName, Person user) {
-        super.canInitiate(documentTypeName, user);
-        if (!canCreatePersonDocument(user)) {
-        	throw new DocumentTypeAuthorizationException(user.getPrincipalName(),"Initiate", documentTypeName);
+    public Set<String> getEditMode(Document document){
+    	Set<String> editModes = super.getEditMode(document);
+		IdentityManagementPersonDocument personDoc = (IdentityManagementPersonDocument) document;
+		IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
+		Person user = GlobalVariables.getUserSession().getPerson();
+		
+		// this should be done at the super class's 
+		// this is a copy fro documentauthorizerbase
+        String editMode = AuthorizationConstants.EditMode.VIEW_ONLY;
+        KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
+        if (workflowDocument.stateIsInitiated() || workflowDocument.stateIsSaved()) {
+            if (hasInitiateAuthorization(document, user)) {
+                editMode = AuthorizationConstants.EditMode.FULL_ENTRY;
+            }
         }
-    }
-	
-    private boolean canCreatePersonDocument(Person user) {
-		IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
-		AttributeSet permDetail = new AttributeSet();
-		permDetail.put("entityTypeCode", "Person");
-		// TODO : get qualification what should be here?
-		AttributeSet qualification = new AttributeSet();
-		qualification.put("principalId", user.getPrincipalId());
-		List<? extends KimPermission> permissions = identityManagementService.getAuthorizedPermissionsByTemplateName(user.getPrincipalId(), "KR-IDM", "Modify Entity", permDetail, qualification);
-		// TODO : WIP finish it.
-		return (!permissions.isEmpty());
-    }
+        else if (workflowDocument.stateIsEnroute() && workflowDocument.isApprovalRequested()) {
+            editMode = AuthorizationConstants.EditMode.FULL_ENTRY;
+        }
+        editModes.add(editMode);
 
-	@Override
-	public Map getEditMode(Document doc, Person user) {
-        Map editModeMap = super.getEditMode(doc, user);
-		IdentityManagementPersonDocument personDoc = (IdentityManagementPersonDocument) doc;
-		IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
-
-        if (editModeMap.get("modifyEntity") == null) {
+		
+        // idmpersondoc's edit mode check
+		if (!editModes.contains("modifyEntity")) {
 			AttributeSet permDetail = new AttributeSet();
 			permDetail.put("entityTypeCode", "Person");
 			// TODO : get qualification what should be here?
@@ -73,7 +71,7 @@ public class IdentityManagementPersonDocumentAuthorizer extends TransactionalDoc
 			qualification.put("principalId", user.getPrincipalId());
 			List<? extends KimPermission> modifyEntityPerm = identityManagementService.getAuthorizedPermissionsByTemplateName(user.getPrincipalId(), "KR-IDM", "Modify Entity", permDetail, qualification);
 	        if (!modifyEntityPerm.isEmpty()) {
-	        	editModeMap.put("modifyEntity", true);
+	        	editModes.add("modifyEntity");
 	        } else {
 	            throw new RuntimeException("Can Not Edit Person Document");
 	        }
@@ -88,47 +86,26 @@ public class IdentityManagementPersonDocumentAuthorizer extends TransactionalDoc
 		// modify entity fields are not finalized yet.  if permattribute is null, then it will return all 'modify entity fields' perms assigned to user
 		List<? extends KimPermission> permissions = identityManagementService.getAuthorizedPermissionsByTemplateName(user.getPrincipalId(), "KR-KIM", "Modify Entity Field(s)", permDetail, qualification);
         if (!permissions.isEmpty()) {
-        	editModeMap.put("line3", true);
+        	editModes.add("line3");
         }
         // TODO : get assign role
 		List<? extends KimPermission> assignRolePerms = identityManagementService.getAuthorizedPermissionsByTemplateName(user.getPrincipalId(), "KR-KIM", "Assign Role", null, qualification);
         if (!assignRolePerms.isEmpty()) {
-        	editModeMap.put("assignRole", true);
+        	editModes.add("assignRole");
         }
         // TODO : get populate group
 		List<? extends KimPermission> populateGroupPerms = identityManagementService.getAuthorizedPermissionsByTemplateName(user.getPrincipalId(), "KR-KIM", "Populate Group", null, qualification);
         if (!populateGroupPerms.isEmpty()) {
-        	editModeMap.put("populateGroup", true);
+        	editModes.add("populateGroup");
         }
 
-		return editModeMap;
-	}
+		return editModes;
 
-	/**
-	 *
-	 * TODO : too much change right now.  temporarily set these up for testing for now.
-	 * 
-	 * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase#getDocumentActionFlags(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
-	 */
-    @Override
-    public Set getDocumentActionFlags(Document document, Person user, Set<String> documentActions) {
-        Set docActions = super.getDocumentActionFlags(document, user, documentActions);
-        KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
-        boolean hasInitiateAuthorization = hasInitiateAuthorization(document, user);
-        if(hasInitiateAuthorization(document, user)){
-        	docActions.add(KNSConstants.KUALI_ACTION_CAN_CANCEL);
-        	docActions.add(KNSConstants.KUALI_ACTION_CAN_SAVE);
-        	docActions.add(KNSConstants.KUALI_ACTION_CAN_ROUTE);
-        	docActions.add(KNSConstants.KUALI_ACTION_CAN_ACKNOWLEDGE);
-        	docActions.add(KNSConstants.KUALI_ACTION_CAN_FYI);
-        	docActions.add(KNSConstants.KUALI_ACTION_CAN_AD_HOC_ROUTE);
-        	docActions.add(KNSConstants.KUALI_ACTION_CAN_APPROVE);
-        	docActions.add(KNSConstants.KUALI_ACTION_CAN_DISAPPROVE);
-        	docActions.add(KNSConstants.KUALI_ACTION_CAN_ANNOTATE);
-        }
-        
-        return docActions;
     }
 
+    private boolean hasInitiateAuthorization(Document document, Person user) {
+        KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
+        return workflowDocument.getInitiatorNetworkId().equalsIgnoreCase(user.getPrincipalName());
+    }
 
 }

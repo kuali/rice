@@ -8,7 +8,6 @@
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docGroupPersonAttributes.groupId}" noColon="true" /></div></th>
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docGroupPersonAttributes.kimTypeId}" noColon="true" /></div></th>
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docGroupPersonAttributes.groupName}" noColon="true" /></div></th>
-          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docGroupPersonAttributes.active}" noColon="true" /></div></th>
               	<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
           	
           	</tr>     
@@ -18,27 +17,26 @@
 					<c:out value="Add:" />
 				</th>
 
-                <td align="left" valign="middle" class="infoline" colspan=2>
+                <td align="left" valign="middle" class="infoline" colspan=3>
                 <div align="center">
                 	<kul:htmlControlAttribute property="newGroup.groupId" attributeEntry="${docGroupPersonAttributes.groupId}"/>
-                	<kul:lookup boClassName="org.kuali.rice.kim.bo.group.impl.KimGroupImpl" fieldConversions="groupId:newGroup.groupId,kimTypeId:newGroup.groupType,groupName:newGroup.groupName" anchor="${tabKey}" />
-					</div></td><td><html:hidden property="newGroup.groupName" /></td>
+                	<kul:lookup boClassName="org.kuali.rice.kim.bo.group.impl.KimGroupImpl" fieldConversions="groupId:newGroup.groupId,kimTypeId:newGroup.groupType,groupName:newGroup.groupName,namespaceCode:newGroup.namespaceCode" anchor="${tabKey}" />
+					${KualiForm.newGroup.groupName}
+					</div></td>
+					<html:hidden property="newGroup.groupName" />
 					<html:hidden property="newGroup.groupType" />
+					<html:hidden property="newGroup.namespaceCode" />
 				
-				
-                 <td> <div align=center>
-                     <kul:htmlControlAttribute property="newGroup.active" attributeEntry="${docGroupPersonAttributes.active}"/>
-                  </div> </td>
-                                
+				                                
                 <td class="infoline">
 					<div align=center>
 	        	     <c:choose>
 	        	       <c:when test="${KualiForm.editingMode['populateGroup']}">
-	        	          <!-- <img class='nobord' src='${ConfigProperties.kr.externalizable.images.url}tinybutton-add2.gif' styleClass='tinybutton'/> -->
-	        	       </c:when>
-	        	       <c:otherwise>
 							<html:image property="methodToCall.addGroup.anchor${tabKey}"
 							src='${ConfigProperties.kr.externalizable.images.url}tinybutton-add1.gif' styleClass="tinybutton"/>
+	        	       </c:when>
+	        	       <c:otherwise>
+	        	          <!-- <img class='nobord' src='${ConfigProperties.kr.externalizable.images.url}tinybutton-add2.gif' styleClass='tinybutton'/> -->
 	        	       </c:otherwise>
 	        	     </c:choose>  
 					</div>
@@ -60,10 +58,6 @@
 					</td>
 	                <td align="left" valign="middle">
 	                	<div align="center"> <kul:htmlControlAttribute property="document.groups[${status.index}].groupName"  attributeEntry="${docGroupAttributes.roleName}" readOnly="true"  />
-					</div>
-					</td>
-	                <td align="left" valign="middle">
-	                	<div align="center"> <kul:htmlControlAttribute property="document.groups[${status.index}].active"  attributeEntry="${docGroupPersonAttributes.active}"  />
 					</div>
 					</td>
 					

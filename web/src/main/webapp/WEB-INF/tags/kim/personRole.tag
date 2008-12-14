@@ -20,8 +20,9 @@
                 <td align="left" valign="middle" class="infoline" colspan=3>
                 <div align="center">
                 	<kul:htmlControlAttribute property="newRole.roleId" attributeEntry="${docRoleAttributes.roleId}"/>
-                	<kul:lookup boClassName="org.kuali.rice.kim.bo.role.impl.KimRoleImpl" fieldConversions="roleId:newRole.roleId,kimTypeId:newRole.kimTypeId,roleName:newRole.roleName,kimRoleType.name:newRole.kimRoleType.name,kimRoleType.kimTypeServiceName:newRole.kimRoleType.kimTypeServiceName" anchor="${tabKey}" />
+                	<kul:lookup boClassName="org.kuali.rice.kim.bo.role.impl.KimRoleImpl" fieldConversions="roleId:newRole.roleId,kimTypeId:newRole.kimTypeId,roleName:newRole.roleName,namespaceCode:newRole.namespaceCode,kimRoleType.name:newRole.kimRoleType.name,kimRoleType.kimTypeServiceName:newRole.kimRoleType.kimTypeServiceName" anchor="${tabKey}" />
 					<html:hidden property="newRole.roleName" />
+					<html:hidden property="newRole.namespaceCode" />
 					<html:hidden property="newRole.kimTypeId" />
 					<html:hidden property="newRole.kimRoleType.name" />
 					<html:hidden property="newRole.kimRoleType.kimTypeServiceName" />
@@ -32,11 +33,11 @@
 					<div align=center>
 	        	     <c:choose>
 	        	       <c:when test="${KualiForm.editingMode['assignRole']}">
-	        	          <!-- <img class='nobord' src='${ConfigProperties.kr.externalizable.images.url}tinybutton-add2.gif' styleClass='tinybutton'/> -->
-	        	       </c:when>
-	        	       <c:otherwise>
 							<html:image property="methodToCall.addRole.anchor${tabKey}"
 							src='${ConfigProperties.kr.externalizable.images.url}tinybutton-add1.gif' styleClass="tinybutton"/>
+	        	       </c:when>
+	        	       <c:otherwise>
+	        	          <!-- <img class='nobord' src='${ConfigProperties.kr.externalizable.images.url}tinybutton-add2.gif' styleClass='tinybutton'/> -->
 	        	       </c:otherwise>
 	        	     </c:choose>  
 					</div>

@@ -17,10 +17,19 @@ package org.kuali.rice.kim.document.rule;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAffiliation;
 import org.kuali.rice.kim.bo.ui.PersonDocumentBoDefaultBase;
 import org.kuali.rice.kim.bo.ui.PersonDocumentEmploymentInfo;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
+import org.kuali.rice.kim.rule.event.ui.AddGroupEvent;
+import org.kuali.rice.kim.rule.event.ui.AddRoleEvent;
+import org.kuali.rice.kim.rule.ui.AddGroupRule;
+import org.kuali.rice.kim.rule.ui.AddRoleRule;
+import org.kuali.rice.kim.rules.ui.PersonDocumentGroupRule;
+import org.kuali.rice.kim.rules.ui.PersonDocumentRoleRule;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.rules.TransactionalDocumentRuleBase;
 import org.kuali.rice.kns.util.ErrorMap;
@@ -33,7 +42,7 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class IdentityManagementPersonDocumentRule extends TransactionalDocumentRuleBase {
+public class IdentityManagementPersonDocumentRule extends TransactionalDocumentRuleBase implements AddGroupRule,AddRoleRule {
 
     @Override
     protected boolean processCustomSaveDocumentBusinessRules(Document document) {
@@ -54,7 +63,9 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
         valid &= checkMultipleDefault (personDoc.getPhones(), "phones");
         valid &= checkMultipleDefault (personDoc.getEmails(), "emails");
         valid &= checkPeimaryEmploymentInfo (personDoc.getAffiliations());
-
+        if (StringUtils.isNotBlank(personDoc.getPrincipalName())) { 
+        	valid &= isPrincipalNameExist (personDoc.getPrincipalName(), personDoc.getPrincipalId());
+        }
         GlobalVariables.getErrorMap().removeFromErrorPath("document");
 
         return valid;
@@ -105,5 +116,23 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	return valid;
     }
     
-    
+    private boolean isPrincipalNameExist (String principalName, String principalId) {
+        ErrorMap errorMap = GlobalVariables.getErrorMap();
+    	boolean valid = true;
+    	KimPrincipal principal = KIMServiceLocator.getIdentityService().getPrincipalByPrincipalName(principalName);
+    	if (principal != null && (StringUtils.isBlank(principalId) || !principal.getPrincipalId().equals(principalId))) {
+            errorMap.putError("document.principalName",RiceKeyConstants.ERROR_EXIST_PRINCIPAL_NAME, principalName);
+			valid = false;
+    	}
+    	return valid;
+    }
+
+    public boolean processAddGroup(AddGroupEvent addGroupEvent) {
+        return new PersonDocumentGroupRule().processAddGroup(addGroupEvent);    
+    }
+
+    public boolean processAddRole(AddRoleEvent addRoleEvent) {
+        return new PersonDocumentRoleRule().processAddRole(addRoleEvent);    
+    }
+
 }

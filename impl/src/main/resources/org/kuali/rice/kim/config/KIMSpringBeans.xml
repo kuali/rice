@@ -396,7 +396,7 @@
         </property>
     </bean>
   
-        <bean id="personLookupable" class="org.kuali.rice.kim.lookup.PersonLookupableImpl" parent="kualiLookupable">
+        <bean id="kimPersonLookupable" class="org.kuali.rice.kim.lookup.PersonLookupableImpl" parent="kualiLookupable">
         <property name="lookupableHelperService">
             <bean class="org.kuali.rice.kim.lookup.PersonLookupableHelperServiceImpl"
                 parent="lookupableHelperService">

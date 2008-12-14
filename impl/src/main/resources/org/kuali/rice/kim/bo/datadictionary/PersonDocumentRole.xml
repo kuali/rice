@@ -17,6 +17,7 @@
         <ref bean="DocRole-roleId" />
         <ref bean="DocRole-kimTypeId" />
         <ref bean="DocRole-roleName" />
+        <ref bean="DocRole-namespaceCode" />
         <ref bean="DocRole-kimRoleType.name" />
         <ref bean="DocRole-kimRoleType.kimTypeServiceName" />
       </list>
@@ -69,8 +70,8 @@
   <bean id="DocRole-kimTypeId-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="kimTypeId"
         p:forceUppercase="true"
-        p:label="Role Type"
-        p:shortLabel="Role Type"
+        p:label="Type"
+        p:shortLabel="Type"
         p:maxLength="40"
         p:required="false" >
     <property name="control" >
@@ -82,8 +83,8 @@
   <bean id="DocRole-roleName-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="roleName"
         p:forceUppercase="true"
-        p:label="Role Name"
-        p:shortLabel="Role Name"
+        p:label="Name"
+        p:shortLabel="Name"
         p:maxLength="80"
         p:required="false" >
     <property name="control" >
@@ -98,6 +99,22 @@
     <property name="label" value="Type" />
     <property name="shortLabel" value="Type" />
   </bean>
+   
+   
+  <bean id="DocRole-namespaceCode" parent="DocRole-namespaceCode-parentBean" />
+  <bean id="DocRole-namespaceCode-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="namespaceCode"
+        p:forceUppercase="true"
+        p:label="Namespace Code"
+        p:shortLabel="Namespace Code"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="10" />
+    </property>
+  </bean>
+   
+   
    
 <bean id="DocRole-kimRoleType.kimTypeServiceName" parent="DocRole-kimRoleType.kimTypeServiceName-parentBean" />
 
@@ -121,6 +138,7 @@
             <list>
               <bean parent="FieldDefinition" p:attributeName="roleId" />
               <bean parent="FieldDefinition" p:attributeName="roleName" />
+              <bean parent="FieldDefinition" p:attributeName="namespaceCode" />
               <bean parent="FieldDefinition" p:attributeName="kimTypeId" />
             </list>
           </property>
@@ -148,6 +166,7 @@
       <list>
         <bean parent="FieldDefinition" p:attributeName="roleId" />
         <bean parent="FieldDefinition" p:attributeName="roleName" />
+        <bean parent="FieldDefinition" p:attributeName="namespaceCode" />
         <bean parent="FieldDefinition" p:attributeName="kimTypeId" />
       </list>
     </property>
@@ -155,6 +174,7 @@
       <list>
         <bean parent="FieldDefinition" p:attributeName="roleId" />
         <bean parent="FieldDefinition" p:attributeName="roleName" />
+        <bean parent="FieldDefinition" p:attributeName="namespaceCode" />
         <bean parent="FieldDefinition" p:attributeName="kimTypeId" />
       </list>
     </property>

@@ -1,9 +1,11 @@
 package org.kuali.rice.kim.service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
+import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
 
 public interface GroupService {
 
@@ -118,4 +120,6 @@ public interface GroupService {
     boolean addPrincipalToGroup(String principalId, String groupId);
     
     boolean removePrincipalFromGroup(String principalId, String groupId);
+    
+    Collection<GroupMembershipInfo> getGroupMembers( List<String> groupIds );
 }

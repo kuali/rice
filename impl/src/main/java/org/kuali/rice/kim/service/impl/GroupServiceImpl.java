@@ -10,6 +10,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
+import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
 import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
 import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
 import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
@@ -633,6 +634,39 @@ public class GroupServiceImpl implements GroupService {
         }
         
         return attrList;
+    }
+
+    public Collection<GroupMembershipInfo> getGroupMembers( List<String> groupIds ) {
+    	List<GroupMembershipInfo> groupMembers = new ArrayList<GroupMembershipInfo>();
+    	for (String groupId : groupIds) {
+    		for (GroupMemberImpl groupMember : getGroupMembers(groupId)) {
+    			if (groupMember != null) {
+    				groupMembers.add(toGroupMemberInfo(groupMember));
+    			}
+    		}
+    	}
+    	return groupMembers;
+    }
+
+    
+	protected List<GroupMemberImpl> getGroupMembers( String groupId) {
+		if ( groupId == null ) {
+			return new ArrayList<GroupMemberImpl>(0);
+		}
+		Map<String,String> criteria = new HashMap<String,String>( 3 );
+		criteria.put("groupId", groupId);
+		return (List<GroupMemberImpl>)getBusinessObjectService().findMatching(GroupMemberImpl.class, criteria);
+	}
+		
+    protected GroupMembershipInfo toGroupMemberInfo(GroupMemberImpl kimGroupMember) {
+    	GroupMembershipInfo groupMemberinfo = null;
+
+        if (kimGroupMember != null) {
+        	groupMemberinfo = new GroupMembershipInfo(kimGroupMember.getGroupId(), kimGroupMember.getGroupMemberId(),kimGroupMember.getMemberId(),kimGroupMember.getMemberTypeCode());
+        	groupMemberinfo.setVersionNumber(kimGroupMember.getVersionNumber());
+        }
+
+        return groupMemberinfo;
     }
 
 }

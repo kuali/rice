@@ -34,7 +34,7 @@ public class DocumentInitiationAuthorizationException extends KualiException {
     }
     
     public DocumentInitiationAuthorizationException(String[] messageParameters) {
-        this(RiceKeyConstants.AUTHORIZATION_ERROR_DOCUMENT_WORKGROUP, messageParameters);
+        this(RiceKeyConstants.AUTHORIZATION_ERROR_DOCTYPE, messageParameters);
      }
 
     /**

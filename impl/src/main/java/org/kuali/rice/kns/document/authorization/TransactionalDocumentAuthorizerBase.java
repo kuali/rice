@@ -82,9 +82,9 @@ public class TransactionalDocumentAuthorizerBase extends DocumentAuthorizerBase 
         	
         	//TODO:
         	// build authorized workgroup list for error message
-            Set authorizedWorkgroups = getAuthorizationService().getAuthorizedWorkgroups("initiate", documentTypeName);
-            String workgroupList = StringUtils.join(authorizedWorkgroups.toArray(), ",");
-            throw new DocumentInitiationAuthorizationException(new String[] {workgroupList,documentTypeName});
+            //Set authorizedWorkgroups = getAuthorizationService().getAuthorizedWorkgroups("initiate", documentTypeName);
+            //String workgroupList = StringUtils.join(authorizedWorkgroups.toArray(), ",");
+            throw new DocumentInitiationAuthorizationException(new String[] {user.getPrincipalName(),documentTypeName});
         }
     }
     

@@ -24,11 +24,11 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypePermissionService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PermissionService;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -225,7 +225,7 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 	
 	protected AttributeSet buildRouteHeaderIdRoleDocumentTypeDocumentStatusQualifiers(DocumentType documentType, String documentStatus, String routeHeaderId) {
 		AttributeSet qualifiers = new AttributeSet();
-		qualifiers.put(KimConstants.KIM_ATTRIB_DOCUMENT_NUMBER, routeHeaderId);
+		qualifiers.put(KimAttributes.DOCUMENT_NUMBER, routeHeaderId);
 		if (!StringUtils.isBlank(documentStatus)) {
 			qualifiers.put(KEWConstants.DOCUMENT_STATUS_DETAIL, documentStatus);
 		}

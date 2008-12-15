@@ -16,6 +16,7 @@
 package org.kuali.rice.kns.service.impl;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.util.KimConstants;
 
@@ -32,12 +33,12 @@ public class ParameterPermissionTypeServiceImpl extends NamespaceOrComponentPerm
 		boolean match = super.performMatch(inputAttributeSet, storedAttributeSet);
 		
 		if (!match 
-				&& StringUtils.isNotEmpty(inputAttributeSet.get(KimConstants.KIM_ATTRIB_NAMESPACE_CODE))
+				&& StringUtils.isNotEmpty(inputAttributeSet.get(KimAttributes.NAMESPACE_CODE))
 				&& StringUtils.isNotEmpty(inputAttributeSet.get(KimConstants.KIM_ATTRIB_COMPONENT_CLASS))
-				&& StringUtils.isNotEmpty(inputAttributeSet.get(KimConstants.KIM_ATTRIB_PARAMETER_NAME))) {			
-			match = inputAttributeSet.get(KimConstants.KIM_ATTRIB_NAMESPACE_CODE).equals(storedAttributeSet.get(KimConstants.KIM_ATTRIB_NAMESPACE_CODE));
+				&& StringUtils.isNotEmpty(inputAttributeSet.get(KimAttributes.PARAMETER_NAME))) {			
+			match = inputAttributeSet.get(KimAttributes.NAMESPACE_CODE).equals(storedAttributeSet.get(KimAttributes.NAMESPACE_CODE));
 			match &= inputAttributeSet.get(KimConstants.KIM_ATTRIB_COMPONENT_CLASS).equals(storedAttributeSet.get(KimConstants.KIM_ATTRIB_COMPONENT_CLASS));
-			match &= inputAttributeSet.get(KimConstants.KIM_ATTRIB_PARAMETER_NAME).equals(storedAttributeSet.get(KimConstants.KIM_ATTRIB_PARAMETER_NAME));			
+			match &= inputAttributeSet.get(KimAttributes.PARAMETER_NAME).equals(storedAttributeSet.get(KimAttributes.PARAMETER_NAME));			
 		}
 		
 		return match;

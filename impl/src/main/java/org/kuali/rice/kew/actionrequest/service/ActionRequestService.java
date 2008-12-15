@@ -97,6 +97,16 @@ public interface ActionRequestService {
 
     public List findPendingByActionRequestedAndDocId(String actionRequestedCdCd, Long routeHeaderId);
     
+    /**
+     * 
+     * This method gets a list of ids of all principals who have a pending action request for a document.
+     * 
+     * @param actionRequestedCd
+     * @param routeHeaderId
+     * @return
+     */
+    public List<String> getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(String actionRequestedCd, Long routeHeaderId);
+    
     public List findByStatusAndDocId(String statusCd, Long routeHeaderId);
 
     public void alterActionRequested(List actionRequests, String actionRequestCd)throws KEWUserNotFoundException;

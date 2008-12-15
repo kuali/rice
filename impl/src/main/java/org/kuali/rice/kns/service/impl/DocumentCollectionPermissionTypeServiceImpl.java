@@ -16,6 +16,7 @@
 package org.kuali.rice.kns.service.impl;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.util.KimConstants;
@@ -39,14 +40,14 @@ public class DocumentCollectionPermissionTypeServiceImpl extends DocumentTypePer
 		}
 		
 		boolean addTemplate = "Add Attachment".equals(permission.getTemplate().getName()) || "Add Note".equals(permission.getTemplate().getName());		
-		if (!addTemplate && StringUtils.isEmpty(requestedDetails.get(KimConstants.KIM_ATTRIB_CREATED_SELF_ONLY))) {
-			throw new RuntimeException(KimConstants.KIM_ATTRIB_CREATED_SELF_ONLY + " should not be blank or null.");
+		if (!addTemplate && StringUtils.isEmpty(requestedDetails.get(KimAttributes.CREATE_BY_SELF_ONLY))) {
+			throw new RuntimeException(KimAttributes.CREATE_BY_SELF_ONLY + " should not be blank or null.");
 		}
 		
 		boolean match = requestedDetails.get(KimConstants.KIM_ATTRIB_COMPONENT_CLASS).equals(permission.getDetails().get(KimConstants.KIM_ATTRIB_COMPONENT_CLASS));
 		match &=  requestedDetails.get(KimConstants.KIM_ATTRIB_TYPE_CODE).equals(permission.getDetails().get(KimConstants.KIM_ATTRIB_TYPE_CODE));
 		if (!addTemplate) {
-			match &= requestedDetails.get(KimConstants.KIM_ATTRIB_CREATED_SELF_ONLY).startsWith(permission.getDetails().get(KimConstants.KIM_ATTRIB_CREATED_SELF_ONLY));
+			match &= requestedDetails.get(KimAttributes.CREATE_BY_SELF_ONLY).startsWith(permission.getDetails().get(KimAttributes.CREATE_BY_SELF_ONLY));
 		}
 		return match;
 	}

@@ -16,8 +16,8 @@
 package org.kuali.rice.kns.service.impl;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -39,11 +39,11 @@ public class BatchFeedOrJobPermissionTypeServiceImpl extends NamespacePermission
 		}
 		
 		// Namespace not a match. Checking bean name.
-		if (StringUtils.isEmpty(inputAttributeSet.get(KimConstants.KIM_ATTRIB_BEAN_NAME))) {
-        	throw new RuntimeException("Both " + KimConstants.KIM_ATTRIB_NAMESPACE_CODE + " and " + KimConstants.KIM_ATTRIB_BEAN_NAME + " should not be blank or null.");
+		if (StringUtils.isEmpty(inputAttributeSet.get(KimAttributes.BEAN_NAME))) {
+        	throw new RuntimeException("Both " + KimAttributes.NAMESPACE_CODE + " and " + KimAttributes.BEAN_NAME + " should not be blank or null.");
 		}
 		
-		return inputAttributeSet.get(KimConstants.KIM_ATTRIB_BEAN_NAME).equals(storedAttributeSet.get(KimConstants.KIM_ATTRIB_BEAN_NAME));
+		return inputAttributeSet.get(KimAttributes.BEAN_NAME).equals(storedAttributeSet.get(KimAttributes.BEAN_NAME));
 	}
 	
 }

@@ -21,10 +21,10 @@ import java.util.List;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.impl.KimResponsibilityTypeServiceBase;
 import org.kuali.rice.kim.util.KimCommonUtils;
-import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -33,11 +33,11 @@ public class ResponsibilityResponsibilityTypeServiceImpl extends KimResponsibili
 
 	protected List<String> requiredAttributes = new ArrayList<String>();
 	{
-		requiredAttributes.add(KimConstants.KIM_ATTRIB_DOCUMENT_TYPE_NAME);
-		requiredAttributes.add(KimConstants.KIM_ATTRIB_ROUTE_NODE_NAME);
+		requiredAttributes.add(KimAttributes.DOCUMENT_TYPE_NAME);
+		requiredAttributes.add(KimAttributes.ROUTE_NODE_NAME);
 		// NOTE: The following below is comment per comments on KFSMI-1996
-		//requiredAttributes.add(KimConstants.KIM_ATTRIB_REQUIRED);
-		//requiredAttributes.add(KimConstants.KIM_ATTRIB_ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL);
+		//requiredAttributes.add(KimAttributes.REQUIRED);
+		//requiredAttributes.add(KimAttributes.ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL);
 	}
 	
 	/**
@@ -54,10 +54,10 @@ public class ResponsibilityResponsibilityTypeServiceImpl extends KimResponsibili
 		
 		DocumentType currentDocType = KEWServiceLocator.getDocumentTypeService().findByName(inputAttributeSet.get(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL));
 		boolean match = KimCommonUtils.checkPermissionDetailMatch(currentDocType, storedAttributeSet);
-		match &= inputAttributeSet.get(KimConstants.KIM_ATTRIB_DOCUMENT_TYPE_NAME).equals(storedAttributeSet.get(KimConstants.KIM_ATTRIB_DOCUMENT_TYPE_NAME));
-		match &= inputAttributeSet.get(KimConstants.KIM_ATTRIB_ROUTE_NODE_NAME).equals(storedAttributeSet.get(KimConstants.KIM_ATTRIB_ROUTE_NODE_NAME));
-		//match &= inputAttributeSet.get(KimConstants.KIM_ATTRIB_REQUIRED).equals(storedAttributeSet.get(KimConstants.KIM_ATTRIB_REQUIRED));
-		//match &= inputAttributeSet.get(KimConstants.KIM_ATTRIB_ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL).equals(storedAttributeSet.get(KimConstants.KIM_ATTRIB_ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL));
+		match &= inputAttributeSet.get(KimAttributes.DOCUMENT_TYPE_NAME).equals(storedAttributeSet.get(KimAttributes.DOCUMENT_TYPE_NAME));
+		match &= inputAttributeSet.get(KimAttributes.ROUTE_NODE_NAME).equals(storedAttributeSet.get(KimAttributes.ROUTE_NODE_NAME));
+		//match &= inputAttributeSet.get(KimAttributes.REQUIRED).equals(storedAttributeSet.get(KimAttributes.REQUIRED));
+		//match &= inputAttributeSet.get(KimAttributes.ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL).equals(storedAttributeSet.get(KimAttributes.ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL));
 		return match;
 	}
 

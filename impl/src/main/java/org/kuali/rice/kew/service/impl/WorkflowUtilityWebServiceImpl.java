@@ -79,7 +79,6 @@ import org.kuali.rice.kew.service.WorkflowUtility;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 
 @SuppressWarnings("deprecation")
@@ -435,6 +434,55 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return authorized;
     }
 
+    /**
+     * @see org.kuali.rice.kew.service.WorkflowUtility#getPrincipalIdsInRouteLog(java.lang.Long, boolean)
+     */
+    public List<String> getPrincipalIdsInRouteLog(Long routeHeaderId, boolean lookFuture) throws WorkflowException {
+        if (routeHeaderId == null) {
+            LOG.error("null routeHeaderId passed in.");
+            throw new RuntimeException("null routeHeaderId passed in.");
+        }
+    	List<String> principalIds = new ArrayList<String>();
+        try {
+        	LOG.debug("Evaluating isUserInRouteLog [docId=" + routeHeaderId + ", lookFuture=" + lookFuture + "]");
+            DocumentRouteHeaderValue routeHeader = loadDocument(routeHeaderId);
+            List<ActionTakenValue> actionsTakens = 
+            	(List<ActionTakenValue>)KEWServiceLocator.getActionTakenService().findByRouteHeaderId(routeHeaderId);
+            //TODO: confirm that the initiator is not already there in the actionstaken
+            principalIds.add(routeHeader.getInitiatorWorkflowId());
+            for(ActionTakenValue actionTaken: actionsTakens){
+            	principalIds.add(actionTaken.getWorkflowId());
+            }
+            List<ActionRequestValue> actionRequests = 
+            	KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(routeHeaderId);
+            for(ActionRequestValue actionRequest: actionRequests){
+            	principalIds.add(actionRequest.getWorkflowId());
+            }
+            if (!lookFuture) {
+                return principalIds;
+            }
+            SimulationEngine simulationEngine = new SimulationEngine();
+            SimulationCriteria criteria = new SimulationCriteria(routeHeaderId);
+            criteria.setDestinationNodeName(null); // process entire document to conclusion
+            SimulationResults results = simulationEngine.runSimulation(criteria);
+            actionRequests = (List<ActionRequestValue>)results.getSimulatedActionRequests();
+            for(ActionRequestValue actionRequest: actionRequests){
+                principalIds.add(actionRequest.getWorkflowId());
+            }
+        } catch (Exception ex) {
+            LOG.warn("Problems getting principalIds in Route Log for routeHeaderId: "+routeHeaderId+". Exception:"+ex.getMessage(),ex);
+        }
+        return principalIds;
+    }
+
+    /***
+     * @see org.kuali.rice.kew.service.WorkflowUtility#getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(java.lang.String, java.lang.Long)
+     */
+    public List<String> getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(String actionRequestedCd, Long routeHeaderId){
+    	return KEWServiceLocator.getActionRequestService().
+    				getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(actionRequestedCd, routeHeaderId);
+    }
+    
     private boolean actionRequestListHasUser(WorkflowUser user, List actionRequests) throws WorkflowException {
         for (Iterator iter = actionRequests.iterator(); iter.hasNext();) {
             ActionRequestValue actionRequest = (ActionRequestValue) iter.next();

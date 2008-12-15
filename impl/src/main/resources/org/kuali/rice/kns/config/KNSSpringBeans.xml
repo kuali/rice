@@ -925,30 +925,139 @@
     	<property name="kualiModuleService" ref="kualiModuleService" />
     </bean>
     
+    <bean id="knsService" class="org.kuali.rice.ksb.messaging.JavaServiceDefinition" abstract="true">
+      <property name="serviceNameSpaceURI" value="KNS" />
+      <property name="retryAttempts" value="0" />
+    </bean>
+    
     <bean id="namespaceRoleTypeService" class="org.kuali.rice.kns.service.impl.NamespaceRoleTypeServiceImpl"/>
+	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+	  <property name="serviceDefinition">
+	    <bean parent="knsService"
+	      p:service-ref="namespaceRoleTypeService"
+	      p:localServiceName="namespaceRoleTypeService" />
+	  </property>
+	</bean>
 
     <bean id="documentTypePermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl"/>
+	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+	  <property name="serviceDefinition">
+	    <bean parent="knsService"
+	      p:service-ref="documentTypePermissionTypeService"
+	      p:localServiceName="documentTypePermissionTypeService" />
+	  </property>
+	</bean>
 
     <bean id="documentCollectionPermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentCollectionPermissionTypeServiceImpl"/>
+	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+	  <property name="serviceDefinition">
+	    <bean parent="knsService"
+	      p:service-ref="documentCollectionPermissionTypeService"
+	      p:localServiceName="documentCollectionPermissionTypeService" />
+	  </property>
+	</bean>
 
     <bean id="documentTypeAndNodeOrStatePermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypeAndNodeOrStatePermissionTypeServiceImpl"/>
-
+	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+	  <property name="serviceDefinition">
+	    <bean parent="knsService"
+	      p:service-ref="documentTypeAndNodeOrStatePermissionTypeService"
+	      p:localServiceName="documentTypeAndNodeOrStatePermissionTypeService" />
+	  </property>
+	</bean>
+	
     <bean id="namespaceOrComponentPermissionTypeService" class="org.kuali.rice.kns.service.impl.NamespaceOrComponentPermissionTypeServiceImpl"/>
+	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+	  <property name="serviceDefinition">
+	    <bean parent="knsService"
+	      p:service-ref="namespaceOrComponentPermissionTypeService"
+	      p:localServiceName="namespaceOrComponentPermissionTypeService" />
+	  </property>
+	</bean>
 
     <bean id="parameterPermissionTypeService" class="org.kuali.rice.kns.service.impl.ParameterPermissionTypeServiceImpl"/>
-
+	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+	  <property name="serviceDefinition">
+	    <bean parent="knsService"
+	      p:service-ref="parameterPermissionTypeService"
+	      p:localServiceName="parameterPermissionTypeService" />
+	  </property>
+	</bean>
+	
     <bean id="batchFeedOrJobPermissionTypeService" class="org.kuali.rice.kns.service.impl.BatchFeedOrJobPermissionTypeServiceImpl"/>
-
+	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+	  <property name="serviceDefinition">
+	    <bean parent="knsService"
+	      p:service-ref="batchFeedOrJobPermissionTypeService"
+	      p:localServiceName="batchFeedOrJobPermissionTypeService" />
+	  </property>
+	</bean>
+	
     <bean id="buttonPermissionTypeService" class="org.kuali.rice.kns.service.impl.ButtonPermissionTypeServiceImpl"/>
-
+	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+	  <property name="serviceDefinition">
+	    <bean parent="knsService"
+	      p:service-ref="buttonPermissionTypeService"
+	      p:localServiceName="buttonPermissionTypeService" />
+	  </property>
+	</bean>
+	
     <bean id="actionRequestTypePermissionTypeService" class="org.kuali.rice.kns.service.impl.ActionRequestTypePermissionTypeServiceImpl"/>
-
+	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+	  <property name="serviceDefinition">
+	    <bean parent="knsService"
+	      p:service-ref="actionRequestTypePermissionTypeService"
+	      p:localServiceName="actionRequestTypePermissionTypeService" />
+	  </property>
+	</bean>
+	
     <bean id="namespaceOrActionPermissionTypeService" class="org.kuali.rice.kns.service.impl.NamespaceOrActionPermissionTypeServiceImpl"/>
-
+	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+	  <property name="serviceDefinition">
+	    <bean parent="knsService"
+	      p:service-ref="namespaceOrActionPermissionTypeService"
+	      p:localServiceName="namespaceOrActionPermissionTypeService" />
+	  </property>
+	</bean>
+	
     <bean id="editModePermissionTypeService" class="org.kuali.rice.kns.service.impl.EditModePermissionTypeServiceImpl"/>
-
+	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+	  <property name="serviceDefinition">
+	    <bean parent="knsService"
+	      p:service-ref="editModePermissionTypeService"
+	      p:localServiceName="editModePermissionTypeService" />
+	  </property>
+	</bean>
+	
     <bean id="componentFieldPermissionTypeService" class="org.kuali.rice.kns.service.impl.ComponentFieldPermissionTypeServiceImpl"/>
-
+	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+	  <property name="serviceDefinition">
+	    <bean parent="knsService"
+	      p:service-ref="componentFieldPermissionTypeService"
+	      p:localServiceName="componentFieldPermissionTypeService" />
+	  </property>
+	</bean>
+	
     <bean id="documentTypeAndNodeAndFieldsPermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypeAndNodeAndFieldsPermissionTypeServiceImpl"/>
+	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+	  <property name="serviceDefinition">
+	    <bean parent="knsService"
+	      p:service-ref="documentTypeAndNodeAndFieldsPermissionTypeService"
+	      p:localServiceName="documentTypeAndNodeAndFieldsPermissionTypeService" />
+	  </property>
+	</bean>
 
 </beans>

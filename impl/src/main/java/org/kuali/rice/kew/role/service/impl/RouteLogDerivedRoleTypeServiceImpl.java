@@ -19,76 +19,96 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.actiontaken.ActionTakenValue;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
-import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.dto.RouteHeaderDTO;
+import org.kuali.rice.kew.dto.UserIdDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.service.WorkflowInfo;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
 
 /**
- * This is a description of what this class does - wliang don't forget to fill this in. 
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServiceBase {
 	
+	protected List<String> requiredAttributes = new ArrayList<String>();
+	{
+		requiredAttributes.add(KimAttributes.DOCUMENT_NUMBER);
+	}
+	
 	/**
 	 *	- qualifier is document number
 	 *	- the roles that will be of this type are KR-WKFLW Initiator and KR-WKFLW Initiator or Reviewer, KR-WKFLW Router
 	 *	- only the initiator of the document in question gets the KR-WKFLW Initiator role
 	 *	- user who routed the document according to the route log should get the KR-WKFLW Router role
-	 *	- users who are authorized by the route log, i.e. initiators, people who have taken action, people with a pending action request
-	 *		, or people who will receive an action request for the document in question get the KR-WKFLW Initiator or Reviewer Role 
+	 *	- users who are authorized by the route log, 
+	 *		i.e. initiators, people who have taken action, people with a pending action request, 
+	 *		or people who will receive an action request for the document in question get the KR-WKFLW Initiator or Reviewer Role 
 	 * 
 	 * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#getPrincipalIdsFromApplicationRole(java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
 	 */
 	@Override
 	public List<String> getPrincipalIdsFromApplicationRole(
 			String namespaceCode, String roleName, AttributeSet qualification) {
-		String documentNumber = qualification.get(KimConstants.KIM_ATTRIB_DOCUMENT_NUMBER);
-		List<String> principalIds = new ArrayList<String>();
+		validateRequiredAttributesAgainstReceived(requiredAttributes, qualification, QUALIFICATION_RECEIVED_ATTIBUTES_NAME);
 		
+		String documentNumber = qualification.get(KimAttributes.DOCUMENT_NUMBER);
+		List<String> principalIds = new ArrayList<String>();
 		if (StringUtils.isNotBlank(documentNumber)) {
 			Long documentNumberLong = Long.parseLong(documentNumber);
-			DocumentRouteHeaderValue documentRouteHeaderValue = 
-				KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentNumberLong);
-			if (KimConstants.KIM_ROLE_NAME_INITIATOR.equals(roleName))
-				fillPrincipalIdsForInitiator(principalIds, documentRouteHeaderValue);
-			else if(KimConstants.KIM_ROLE_NAME_INITIATOR_OR_REVIEWER.equals(roleName))
-				fillPrincipalIdsForInitiatorOrReviewer(principalIds, documentRouteHeaderValue);
-			else if(KimConstants.KIM_ROLE_NAME_ROUTER.equals(roleName))
-				fillPrincipalIdsForRouter(principalIds, documentRouteHeaderValue);
+			try{
+				WorkflowInfo workflowInfo = new WorkflowInfo();
+				RouteHeaderDTO routeHeaderDTO = workflowInfo.getRouteHeader(documentNumberLong);
+				if (KimConstants.KIM_ROLE_NAME_INITIATOR.equals(roleName))
+					principalIds.add(routeHeaderDTO.getInitiator().getWorkflowId());
+				else if(KimConstants.KIM_ROLE_NAME_INITIATOR_OR_REVIEWER.equals(roleName)){
+						principalIds.addAll(workflowInfo.getPrincipalIdsInRouteLog(documentNumberLong, true));
+				} else if(KimConstants.KIM_ROLE_NAME_ROUTER.equals(roleName))
+					principalIds.add(routeHeaderDTO.getRoutedByUser().getWorkflowId());
+			} catch(WorkflowException wex){
+				throw new RuntimeException(
+				"Error in getting principal Ids in route log for document number: "+documentNumber+" :"+wex.getLocalizedMessage());
+			}
 		}
 		return principalIds;
 	}
 
-	protected void fillPrincipalIdsForInitiator(List<String> principalIds, DocumentRouteHeaderValue documentRouteHeaderValue){
-		principalIds.add(documentRouteHeaderValue.getInitiatorWorkflowId());
-	}
+	/***
+	 * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#hasApplicationRole(java.lang.String, java.util.List, java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 */
+	@Override
+	public boolean hasApplicationRole(
+			String principalId, List<String> groupIds, String namespaceCode, String roleName, AttributeSet qualification){
+		validateRequiredAttributesAgainstReceived(requiredAttributes, qualification, QUALIFICATION_RECEIVED_ATTIBUTES_NAME);
 
-	protected void fillPrincipalIdsForInitiatorOrReviewer(List<String> principalIds, DocumentRouteHeaderValue documentRouteHeaderValue){
-		for(ActionTakenValue actionTaken: documentRouteHeaderValue.getActionsTaken()){
-			try{
-				principalIds.add(actionTaken.getWorkflowUser().getWorkflowUserId().getId());
-			} catch(KEWUserNotFoundException uex){
-				//ignore if the user cannot be found by kew
+		boolean isUserInRouteLog = false;
+		String documentNumber = qualification.get(KimAttributes.DOCUMENT_NUMBER);
+		WorkflowInfo info = new WorkflowInfo();
+		try {
+			Long documentNumberLong = Long.parseLong(documentNumber);
+			UserIdDTO userIdVO = new NetworkIdDTO(principalId);
+			WorkflowInfo workflowInfo = new WorkflowInfo();
+			if (KimConstants.KIM_ROLE_NAME_INITIATOR.equals(roleName)){
+				RouteHeaderDTO routeHeaderDTO = workflowInfo.getRouteHeader(documentNumberLong);
+				isUserInRouteLog = principalId.equals(routeHeaderDTO.getInitiator().getWorkflowId());
+			} else if(KimConstants.KIM_ROLE_NAME_INITIATOR_OR_REVIEWER.equals(roleName)){
+				isUserInRouteLog = info.isUserAuthenticatedByRouteLog(documentNumberLong, userIdVO, true);
+			} else if(KimConstants.KIM_ROLE_NAME_ROUTER.equals(roleName)){
+				RouteHeaderDTO routeHeaderDTO = workflowInfo.getRouteHeader(documentNumberLong);
+				isUserInRouteLog = principalId.equals(routeHeaderDTO.getRoutedByUser().getWorkflowId());
 			}
+		} catch (NumberFormatException e) {
+			throw new RuntimeException("Invalid (non-numeric) document number: "+documentNumber);
+		} catch (WorkflowException wex) {
+			throw new RuntimeException("Error in determining whether the principal Id: "+principalId+" is in route log " +
+					"for document number: "+documentNumber+" :"+wex.getLocalizedMessage());
 		}
-		for(ActionRequestValue actionRequest: documentRouteHeaderValue.getActionRequests()){
-			try{
-				principalIds.add(actionRequest.getWorkflowUser().getWorkflowUserId().getId());
-			} catch(KEWUserNotFoundException uex){
-				//ignore if the user cannot be found by kew
-			}
-		}
-	}
-
-	protected void fillPrincipalIdsForRouter(List<String> principalIds, DocumentRouteHeaderValue documentRouteHeaderValue){
-		principalIds.add(documentRouteHeaderValue.getRoutedByUserWorkflowId());
+		return isUserInRouteLog;
 	}
 
 }

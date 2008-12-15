@@ -50,6 +50,7 @@ public class KimAttributes extends TransientBusinessObjectBase {
 	public static final String REQUIRED = "required";
 	public static final String ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL = "actionDetailsAtRoleMemberLevel";
 	public static final String DOCUMENT_NUMBER = "documentNumber";	
+	public static final String DOCUMENT_TYPE_NAME = "documentTypeName";
 	
 	protected String methodToCall;
 	protected String beanName;

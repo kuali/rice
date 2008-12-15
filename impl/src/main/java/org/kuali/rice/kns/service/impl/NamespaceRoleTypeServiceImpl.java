@@ -18,10 +18,10 @@ package org.kuali.rice.kns.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase;
 import org.kuali.rice.kim.util.KimCommonUtils;
-import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * This is a description of what this class does - bhargavp don't forget to fill this in. 
@@ -33,7 +33,7 @@ public class NamespaceRoleTypeServiceImpl extends KimRoleTypeServiceBase {
 
 	protected List<String> requiredAttributes = new ArrayList<String>();
 	{
-		requiredAttributes.add(KimConstants.KIM_ATTRIB_NAMESPACE_CODE);
+		requiredAttributes.add(KimAttributes.NAMESPACE_CODE);
 	}
 	
 	/**
@@ -48,8 +48,8 @@ public class NamespaceRoleTypeServiceImpl extends KimRoleTypeServiceBase {
 		//In this case we DO want partial value matching (as in KFS-* should match all namespaces which begin with KFS.)
 		//Assuming that a namespace can contain digits (0-9), alphabets (a-z and A-Z), -, _ and $.
 		return KimCommonUtils.matchInputWithWildcard(
-				qualification.get(KimConstants.KIM_ATTRIB_NAMESPACE_CODE), 
-				roleQualifier.get(KimConstants.KIM_ATTRIB_NAMESPACE_CODE));
+				qualification.get(KimAttributes.NAMESPACE_CODE), 
+				roleQualifier.get(KimAttributes.NAMESPACE_CODE));
 	}
 
 }

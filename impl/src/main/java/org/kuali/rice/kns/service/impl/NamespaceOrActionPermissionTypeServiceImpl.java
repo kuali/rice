@@ -16,8 +16,8 @@
 package org.kuali.rice.kns.service.impl;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -39,11 +39,11 @@ public class NamespaceOrActionPermissionTypeServiceImpl extends NamespacePermiss
 		}
 		
 		// Namespace not a match. Checking action class.
-		if (StringUtils.isEmpty(inputAttributeSet.get(KimConstants.KIM_ATTRIB_ACTION_CLASS))) {
-        	throw new RuntimeException("Both " + KimConstants.KIM_ATTRIB_NAMESPACE_CODE + " and " + KimConstants.KIM_ATTRIB_ACTION_CLASS + " should not be blank or null.");
+		if (StringUtils.isEmpty(inputAttributeSet.get(KimAttributes.ACTION_CLASS))) {
+        	throw new RuntimeException("Both " + KimAttributes.NAMESPACE_CODE + " and " + KimAttributes.ACTION_CLASS + " should not be blank or null.");
 		}
 		
-		return inputAttributeSet.get(KimConstants.KIM_ATTRIB_ACTION_CLASS).equals(storedAttributeSet.get(KimConstants.KIM_ATTRIB_ACTION_CLASS));
+		return inputAttributeSet.get(KimAttributes.ACTION_CLASS).equals(storedAttributeSet.get(KimAttributes.ACTION_CLASS));
 	}
 
 }

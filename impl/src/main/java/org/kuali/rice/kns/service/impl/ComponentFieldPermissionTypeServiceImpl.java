@@ -18,6 +18,7 @@ package org.kuali.rice.kns.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
@@ -30,7 +31,7 @@ public class ComponentFieldPermissionTypeServiceImpl extends KimPermissionTypeSe
 	protected List<String> requiredAttributes = new ArrayList<String>();
 	{
 		requiredAttributes.add(KimConstants.KIM_ATTRIB_COMPONENT_CLASS);
-		requiredAttributes.add(KimConstants.KIM_ATTRIB_PROPERTY_NAME);
+		requiredAttributes.add(KimAttributes.PROPERTY_NAME);
 	}
 	/**
 	 * @see org.kuali.rice.kim.service.support.impl.KimTypeServiceBase#performMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)
@@ -41,7 +42,7 @@ public class ComponentFieldPermissionTypeServiceImpl extends KimPermissionTypeSe
 		validateRequiredAttributesAgainstReceived(requiredAttributes, storedAttributeSet, STORED_DETAILS_RECEIVED_ATTIBUTES_NAME);
 		
 		return inputAttributeSet.get(KimConstants.KIM_ATTRIB_COMPONENT_CLASS).equals(storedAttributeSet.get(KimConstants.KIM_ATTRIB_COMPONENT_CLASS))
-			&& inputAttributeSet.get(KimConstants.KIM_ATTRIB_PROPERTY_NAME).startsWith(storedAttributeSet.get(KimConstants.KIM_ATTRIB_PROPERTY_NAME));
+			&& inputAttributeSet.get(KimAttributes.PROPERTY_NAME).startsWith(storedAttributeSet.get(KimAttributes.PROPERTY_NAME));
 	}
 
 }

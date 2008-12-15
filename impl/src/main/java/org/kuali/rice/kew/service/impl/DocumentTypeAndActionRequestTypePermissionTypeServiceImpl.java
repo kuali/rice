@@ -16,9 +16,9 @@
 package org.kuali.rice.kew.service.impl;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl;
 
 /**
@@ -35,16 +35,16 @@ public class DocumentTypeAndActionRequestTypePermissionTypeServiceImpl extends D
 			return false;
 		}
 		
-		if (StringUtils.isEmpty(requestedDetails.get(KimConstants.KIM_ATTRIB_DOCUMENT_TYPE_NAME)) || StringUtils.isEmpty(requestedDetails.get(KimConstants.KIM_ATTRIB_ACTION_REQUEST_TYPE_CODE))) {
-        	throw new RuntimeException("Both " + KimConstants.KIM_ATTRIB_DOCUMENT_TYPE_NAME + " and " + KimConstants.KIM_ATTRIB_ACTION_REQUEST_TYPE_CODE + " should not be blank or null.");
+		if (StringUtils.isEmpty(requestedDetails.get(KimAttributes.DOCUMENT_TYPE_NAME)) || StringUtils.isEmpty(requestedDetails.get(KimAttributes.ACTION_REQUEST_CD))) {
+        	throw new RuntimeException("Both " + KimAttributes.DOCUMENT_TYPE_NAME + " and " + KimAttributes.ACTION_REQUEST_CD + " should not be blank or null.");
 		}	
 		
-		if (!permission.getDetails().get(KimConstants.KIM_ATTRIB_DOCUMENT_TYPE_NAME).equals(requestedDetails.get(KimConstants.KIM_ATTRIB_DOCUMENT_TYPE_NAME))) {
+		if (!permission.getDetails().get(KimAttributes.DOCUMENT_TYPE_NAME).equals(requestedDetails.get(KimAttributes.DOCUMENT_TYPE_NAME))) {
 			return false;
 		}
 		
-		if (StringUtils.isNotEmpty(permission.getDetails().get(KimConstants.KIM_ATTRIB_ACTION_REQUEST_TYPE_CODE)) && 
-				!permission.getDetails().get(KimConstants.KIM_ATTRIB_ACTION_REQUEST_TYPE_CODE).equals(requestedDetails.get(KimConstants.KIM_ATTRIB_ACTION_REQUEST_TYPE_CODE))) {
+		if (StringUtils.isNotEmpty(permission.getDetails().get(KimAttributes.ACTION_REQUEST_CD)) && 
+				!permission.getDetails().get(KimAttributes.ACTION_REQUEST_CD).equals(requestedDetails.get(KimAttributes.ACTION_REQUEST_CD))) {
 			return false;
 		}
 		

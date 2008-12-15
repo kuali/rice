@@ -16,10 +16,10 @@
 package org.kuali.rice.kns.service.impl;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
 import org.kuali.rice.kim.util.KimCommonUtils;
-import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -31,11 +31,11 @@ public class NamespacePermissionTypeServiceImpl extends KimPermissionTypeService
 	 */
 	@Override
 	protected boolean performMatch(AttributeSet inputAttributeSet, AttributeSet storedAttributeSet) {
-		if (StringUtils.isEmpty(inputAttributeSet.get(KimConstants.KIM_ATTRIB_NAMESPACE_CODE))) {
-        	throw new RuntimeException(KimConstants.KIM_ATTRIB_NAMESPACE_CODE + " should not be blank or null.");
+		if (StringUtils.isEmpty(inputAttributeSet.get(KimAttributes.NAMESPACE_CODE))) {
+        	throw new RuntimeException(KimAttributes.NAMESPACE_CODE + " should not be blank or null.");
 		}
 		
-		return KimCommonUtils.matchInputWithWildcard(inputAttributeSet.get(KimConstants.KIM_ATTRIB_NAMESPACE_CODE), storedAttributeSet.get(KimConstants.KIM_ATTRIB_NAMESPACE_CODE));
+		return KimCommonUtils.matchInputWithWildcard(inputAttributeSet.get(KimAttributes.NAMESPACE_CODE), storedAttributeSet.get(KimAttributes.NAMESPACE_CODE));
 	}
 	
 }

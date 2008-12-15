@@ -986,11 +986,67 @@
   <!-- END JPA CONFIGURATION -->
 
   <bean id="routeLogDerivedRoleTypeService" class="org.kuali.rice.kew.role.service.impl.RouteLogDerivedRoleTypeServiceImpl" />
+  <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+		<property name="serviceDefinition">
+	       <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+	         <property name="service">
+	           <ref bean="routeLogDerivedRoleTypeService" />
+	         </property>
+	         <property name="localServiceName" value="routeLogDerivedRoleTypeService" />
+	         <property name="priority" value="3" />
+	         <property name="retryAttempts" value="0" />
+	         <property name="busSecurity" value="${secure.workflowdocument.javaservice.endpoint}"/>
+	       </bean>
+		</property>
+  </bean>
 
   <bean id="actionRequestDerivedRoleTypeService" class="org.kuali.rice.kew.role.service.impl.ActionRequestDerivedRoleTypeServiceImpl" />
-
+  <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+		<property name="serviceDefinition">
+	       <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+	         <property name="service">
+	           <ref bean="actionRequestDerivedRoleTypeService" />
+	         </property>
+	         <property name="localServiceName" value="actionRequestDerivedRoleTypeService" />
+	         <property name="priority" value="3" />
+	         <property name="retryAttempts" value="0" />
+	         <property name="busSecurity" value="${secure.workflowdocument.javaservice.endpoint}"/>
+	       </bean>
+		</property>
+  </bean>
+  
   <bean id="documentTypeAndActionRequestTypePermissionTypeService" class="org.kuali.rice.kew.service.impl.DocumentTypeAndActionRequestTypePermissionTypeServiceImpl" />
-
+  <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+		<property name="serviceDefinition">
+	       <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+	         <property name="service">
+	           <ref bean="documentTypeAndActionRequestTypePermissionTypeService" />
+	         </property>
+	         <property name="localServiceName" value="documentTypeAndActionRequestTypePermissionTypeService" />
+	         <property name="priority" value="3" />
+	         <property name="retryAttempts" value="0" />
+	         <property name="busSecurity" value="${secure.workflowdocument.javaservice.endpoint}"/>
+	       </bean>
+		</property>
+  </bean>
+  
   <bean id="responsibilityResponsibilityTypeService" class="org.kuali.rice.kew.service.impl.ResponsibilityResponsibilityTypeServiceImpl" />
-
+  <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+		<property name="serviceDefinition">
+	       <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+	         <property name="service">
+	           <ref bean="responsibilityResponsibilityTypeService" />
+	         </property>
+	         <property name="localServiceName" value="responsibilityResponsibilityTypeService" />
+	         <property name="priority" value="3" />
+	         <property name="retryAttempts" value="0" />
+	         <property name="busSecurity" value="${secure.workflowdocument.javaservice.endpoint}"/>
+	       </bean>
+		</property>
+  </bean>
+  
 </beans>

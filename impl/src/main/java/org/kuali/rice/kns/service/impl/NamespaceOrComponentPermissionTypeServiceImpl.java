@@ -16,6 +16,7 @@
 package org.kuali.rice.kns.service.impl;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.util.KimConstants;
 
@@ -44,7 +45,7 @@ public class NamespaceOrComponentPermissionTypeServiceImpl extends NamespacePerm
         	if (namespaceMatch) {
         		return true;
         	} else {
-        		throw new RuntimeException("Both " + KimConstants.KIM_ATTRIB_NAMESPACE_CODE + " and " + KimConstants.KIM_ATTRIB_COMPONENT_CLASS + " should not be blank or null.");
+        		throw new RuntimeException("Both " + KimAttributes.NAMESPACE_CODE + " and " + KimConstants.KIM_ATTRIB_COMPONENT_CLASS + " should not be blank or null.");
         	}
 		}
 		

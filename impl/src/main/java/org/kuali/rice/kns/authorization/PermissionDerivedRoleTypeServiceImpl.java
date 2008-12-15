@@ -129,6 +129,23 @@ public class PermissionDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServ
 		return principalIds;
 	}
 	
+    /***
+     * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#hasApplicationRole(java.lang.String, java.util.List, java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+     */
+    @Override
+    public boolean hasApplicationRole(
+            String principalId, List<String> groupIds, String namespaceCode, String roleName, AttributeSet qualification){
+    	boolean hasApplicationRole = false;
+    	List<PermissionAssigneeInfo> permissionAssignees = getPermissionAssignees(namespaceCode, roleName, qualification);
+		for (PermissionAssigneeInfo permissionAssigneeInfo : permissionAssignees) {
+			if (StringUtils.isNotBlank(permissionAssigneeInfo.getPrincipalId())) {
+				hasApplicationRole = principalId.equals(permissionAssigneeInfo.getPrincipalId());
+				break;
+			}
+		}
+		return hasApplicationRole;
+    }
+    
 	protected PermissionService getPermissionService() {
 		return KIMServiceLocator.getPermissionService();
 	}

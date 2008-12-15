@@ -25,11 +25,9 @@ import java.util.Set;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actionrequest.dao.ActionRequestDAO;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.actionrequest.service.DocumentRequeuerService;
@@ -41,7 +39,6 @@ import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
-import org.kuali.rice.kew.notification.service.NotificationService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.routemodule.RouteModule;
@@ -509,6 +506,23 @@ public class ActionRequestServiceImpl implements ActionRequestService {
 
     public List findPendingByActionRequestedAndDocId(String actionRequestedCd, Long routeHeaderId) {
         return getActionRequestDAO().findPendingByActionRequestedAndDocId(actionRequestedCd, routeHeaderId);
+    }
+
+    /**
+     * @see org.kuali.rice.kew.actionrequest.service.ActionRequestService#getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(java.lang.String, java.lang.Long)
+     */
+    public List<String> getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(String actionRequestedCd, Long routeHeaderId) {
+    	List<String> principalIds = new ArrayList<String>();
+    	List<ActionRequestValue> actionRequests = findPendingByActionRequestedAndDocId(actionRequestedCd, routeHeaderId);
+		for(ActionRequestValue actionRequest: actionRequests){
+			if(actionRequest.isUserRequest()){
+				principalIds.add(actionRequest.getWorkflowId());
+			} else if(actionRequest.isGroupRequest()){
+				principalIds.addAll(
+						KIMServiceLocator.getIdentityManagementService().getGroupMemberPrincipalIds(actionRequest.getGroupId()));
+			}
+		}
+    	return principalIds;
     }
 
     public List findPendingByDocIdAtOrBelowRouteLevel(Long routeHeaderId, Integer routeLevel) {

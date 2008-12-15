@@ -18,11 +18,11 @@ package org.kuali.rice.kew.role.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
-import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.service.WorkflowInfo;
+import org.kuali.rice.kew.user.BaseWorkflowUser;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
@@ -36,8 +36,8 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeS
 
 	protected List<String> requiredAttributes = new ArrayList<String>();
 	{
-		requiredAttributes.add(KimConstants.KIM_ATTRIB_DOCUMENT_NUMBER);
-		requiredAttributes.add(KimConstants.KIM_ATTRIB_ACTION_REQUEST_CODE);
+		requiredAttributes.add(KimAttributes.DOCUMENT_NUMBER);
+		requiredAttributes.add(KimAttributes.ACTION_REQUEST_CD);
 	}
 	
     /**
@@ -57,50 +57,36 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeS
     public List<String> getPrincipalIdsFromApplicationRole(String namespaceCode, String roleName, AttributeSet qualification){
     	validateRequiredAttributesAgainstReceived(requiredAttributes, qualification, QUALIFICATION_RECEIVED_ATTIBUTES_NAME);
 
-    	String documentNumber = qualification.get(KimConstants.KIM_ATTRIB_DOCUMENT_NUMBER);
-		String actionRequestCode = qualification.get(KimConstants.KIM_ATTRIB_ACTION_REQUEST_CODE);
+    	String documentNumber = qualification.get(KimAttributes.DOCUMENT_NUMBER);
+		String actionRequestCode = qualification.get(KimAttributes.ACTION_REQUEST_CD);
 		List<String> principalIds = new ArrayList<String>();
 		if(KimConstants.KIM_ROLE_NAME_ACTION_REQUEST_RECIPIENT.equals(roleName)){
-			Long documentNumberLong = Long.parseLong(documentNumber);
-			DocumentRouteHeaderValue documentRouteHeaderValue = 
-				KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentNumberLong);
-			principalIds.addAll(getPrincipalIdsForActionRequest(documentRouteHeaderValue.getActionRequests(), actionRequestCode));
+			try{
+				WorkflowInfo workflowInfo = new WorkflowInfo();
+				principalIds.addAll(
+						workflowInfo.getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(
+								actionRequestCode, Long.parseLong(documentNumber)));
+			} catch (NumberFormatException e) {
+				throw new RuntimeException("Invalid (non-numeric) document number: "+documentNumber);
+			} catch(WorkflowException wex){
+				throw new RuntimeException("Unable to get principal Ids with pending request " +
+						"for actionRequestCode: "+actionRequestCode+" and document number: "+documentNumber);
+			}
 		}
 		return principalIds;
     }
-	
-    protected List<String> getPrincipalIdsForActionRequest(List<ActionRequestValue> actionRequests, String actionRequestValue){
-    	List<String> principalIds = new ArrayList<String>();
-    	if(KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(actionRequestValue)){
-    		for(ActionRequestValue actionRequest: actionRequests){
-    			if(actionRequest.isApproveRequest())
-    				fillPrincipalIdsList(principalIds, actionRequest);
-    		}
-    	} else if(KEWConstants.ACTION_REQUEST_FYI_REQ.equals(actionRequestValue)){
-    		for(ActionRequestValue actionRequest: actionRequests){
-    			if(actionRequest.isFYIRequest())
-    				fillPrincipalIdsList(principalIds, actionRequest);
-    		}
-    	} else if(KEWConstants.ACTION_REQUEST_COMPLETE_REQ.equals(actionRequestValue)){
-    		for(ActionRequestValue actionRequest: actionRequests){
-    			if(actionRequest.isCompleteRequst())
-    				fillPrincipalIdsList(principalIds, actionRequest);
-    		}
-    	} else if(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ.equals(actionRequestValue)){
-    		for(ActionRequestValue actionRequest: actionRequests){
-    			if(actionRequest.isAcknowledgeRequest())
-    				fillPrincipalIdsList(principalIds, actionRequest);
-    		}
-    	}
-    	return principalIds;
-    }
     
-    private void fillPrincipalIdsList(List<String> principalIds, ActionRequestValue actionRequest){
-		try{
-			principalIds.add(actionRequest.getWorkflowUser().getWorkflowUserId().getId());
-		} catch(KEWUserNotFoundException uex){
-			
-		}
-    }
-
+    /***
+     * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#hasApplicationRole(java.lang.String, java.util.List, java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+     */
+    @Override
+	public boolean hasApplicationRole(
+			String principalId, List<String> groupIds, String namespaceCode, String roleName, AttributeSet qualification){
+		validateRequiredAttributesAgainstReceived(requiredAttributes, qualification, QUALIFICATION_RECEIVED_ATTIBUTES_NAME);
+		BaseWorkflowUser user = new BaseWorkflowUser();
+		user.setWorkflowId(principalId);
+		String documentNumber = qualification.get(KimAttributes.DOCUMENT_NUMBER);
+		return KEWServiceLocator.getActionRequestService().doesUserHaveRequest(user, Long.parseLong(documentNumber));
+	}
+	
 }

@@ -17,6 +17,7 @@
 package org.kuali.rice.kew.service;
 
 import java.rmi.RemoteException;
+import java.util.List;
 
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
@@ -40,13 +41,8 @@ import org.kuali.rice.kew.dto.UserDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
-import org.kuali.rice.kew.dto.WorkflowGroupIdDTO;
-import org.kuali.rice.kew.dto.WorkgroupDTO;
-import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
-import org.kuali.rice.kew.exception.InvalidWorkgroupException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.Utilities;
 
 
 /**
@@ -680,6 +676,43 @@ public class WorkflowInfo implements java.io.Serializable {
         try {
             return getWorkflowUtility().routeLevelHasApproverActionRequest(docType, docContent, routeLevel);
         } catch (Exception e) {
+            throw handleException(e);
+        }
+    }
+    
+    /**
+     * 
+     * This method gets a list of ids of all principals who have a pending action request for a document.
+     * 
+     * @param actionRequestedCd
+     * @param routeHeaderId
+     * @return
+     * @throws WorkflowException
+     */
+    public List<String> getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(String actionRequestedCd, Long routeHeaderId) throws WorkflowException {
+    	try{
+    		return getWorkflowUtility().getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(actionRequestedCd, routeHeaderId);
+    	} catch (Exception e) {
+            throw handleException(e);
+        }
+    }
+
+    /**
+     * This method gets a list of ids of all principals in the route log - 
+     * - initiators, 
+     * - people who have taken action, 
+     * - people with a pending action request, 
+	 * - people who will receive an action request for the document in question
+	 * 
+     * @param routeHeaderId
+     * @param lookFuture
+     * @return
+     * @throws WorkflowException
+     */
+    public List<String> getPrincipalIdsInRouteLog(Long routeHeaderId, boolean lookFuture) throws WorkflowException {
+    	try{
+    		return getWorkflowUtility().getPrincipalIdsInRouteLog(routeHeaderId, lookFuture);
+    	} catch (Exception e) {
             throw handleException(e);
         }
     }

@@ -17,9 +17,9 @@ package org.kuali.rice.kns.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.impl.KimAttributesTranslatorBase;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
@@ -37,14 +37,14 @@ public class DocumentStatusComponentAttributePermissionTypeTranslator extends Ki
      */
     public AttributeSet translateAttributes(final AttributeSet attributes){
         //Translate document number property to routingStatus, routingNode, and documentTypeName attributes
-    	String documentNumber = attributes.get(KimConstants.KIM_ATTRIB_DOCUMENT_NUMBER);
+    	String documentNumber = attributes.get(KimAttributes.DOCUMENT_NUMBER);
         if(StringUtils.isEmpty(documentNumber) 
-        		|| StringUtils.isEmpty(attributes.get(KimConstants.KIM_ATTRIB_COMPONENT_NAME))
-        		|| StringUtils.isEmpty(attributes.get(KimConstants.KIM_ATTRIB_PROPERTY_NAME)))
+        		|| StringUtils.isEmpty(attributes.get(KimAttributes.COMPONENT_NAME))
+        		|| StringUtils.isEmpty(attributes.get(KimAttributes.PROPERTY_NAME)))
         	throw new RuntimeException(
-        			KimConstants.KIM_ATTRIB_DOCUMENT_NUMBER+", "+
-        			KimConstants.KIM_ATTRIB_COMPONENT_NAME+", and "+
-        			KimConstants.KIM_ATTRIB_PROPERTY_NAME+" should not be blank or null.");
+        			KimAttributes.DOCUMENT_NUMBER+", "+
+        			KimAttributes.COMPONENT_NAME+", and "+
+        			KimAttributes.PROPERTY_NAME+" should not be blank or null.");
         KualiWorkflowDocument workflowDocument = null;
         try{
 	        workflowDocument = KNSServiceLocator.getWorkflowDocumentService().createWorkflowDocument(
@@ -55,11 +55,11 @@ public class DocumentStatusComponentAttributePermissionTypeTranslator extends Ki
 
         AttributeSet translatedAttributes = new AttributeSet();
         translatedAttributes.putAll(attributes);
-        //translatedAttributes.put(KimConstants.KIM_ATTRIB_NAMESPACE_CODE, workflowDocument.get);
-        //translatedAttributes.put(KimConstants.KIM_ATTRIB_COMPONENT, workflowDocument.get);
-        translatedAttributes.put(KimConstants.KIM_ATTRIB_DOCUMENT_TYPE_NAME, workflowDocument.getDocumentType());
-        translatedAttributes.put(KimConstants.KIM_ATTRIB_ROUTE_STATUS_CODE, workflowDocument.getRouteHeader().getDocRouteStatus());
-        translatedAttributes.put(KimConstants.KIM_ATTRIB_ROUTE_NODE_NAME, workflowDocument.getCurrentRouteNodeNames());
+        //translatedAttributes.put(KimAttributes.NAMESPACE_CODE, workflowDocument.get);
+        //translatedAttributes.put(KimAttributes.COMPONENT, workflowDocument.get);
+        translatedAttributes.put(KimAttributes.DOCUMENT_TYPE_NAME, workflowDocument.getDocumentType());
+        translatedAttributes.put(KimAttributes.ROUTE_STATUS_CODE, workflowDocument.getRouteHeader().getDocRouteStatus());
+        translatedAttributes.put(KimAttributes.ROUTE_NODE_NAME, workflowDocument.getCurrentRouteNodeNames());
 
         return translatedAttributes;
     }

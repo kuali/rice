@@ -30,7 +30,6 @@ import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.authorization.AuthorizationStore;
 import org.kuali.rice.kns.datadictionary.AuthorizationDefinition;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
-import org.kuali.rice.kns.datadictionary.mask.MaskFormatter;
 import org.kuali.rice.kns.service.AuthorizationService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 
@@ -166,7 +165,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         
         AttributeSet permissionDetails = new AttributeSet();
     	permissionDetails.put(KimConstants.KIM_ATTRIB_COMPONENT_NAME, entryName);
- 	    permissionDetails.put(KimConstants.KIM_ATTRIB_PROPERTY_NAME, attributeName);
+ 	    permissionDetails.put(KimAttributes.PROPERTY_NAME, attributeName);
  	    
 	   if(getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_UNMASK_PROPERTY, permissionDetails, null)){
 	       authorized = true;

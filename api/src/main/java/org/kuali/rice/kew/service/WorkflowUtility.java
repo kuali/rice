@@ -16,6 +16,8 @@
  */
 package org.kuali.rice.kew.service;
 
+import java.util.List;
+
 import org.kuali.rice.kew.dto.ActionItemDTO;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.ActionTakenDTO;
@@ -115,4 +117,31 @@ public interface WorkflowUtility {
     
     // added for KS per Scott
     ActionItemDTO[] getActionItemsForUser(UserIdDTO userId) throws WorkflowException;
+    
+    /**
+     * 
+     * This method gets a list of ids of all principals who have a pending action request for a document.
+     * 
+     * @param actionRequestedCd
+     * @param routeHeaderId
+     * @return
+     * @throws WorkflowException
+     */
+    public List<String> getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(
+    		String actionRequestedCd, Long routeHeaderId) throws WorkflowException;
+
+    /**
+     * This method gets a list of ids of all principals in the route log - 
+     * - initiators, 
+     * - people who have taken action, 
+     * - people with a pending action request, 
+	 * - people who will receive an action request for the document in question
+     * 
+     * @param routeHeaderId
+     * @param lookFuture
+     * @return
+     * @throws WorkflowException
+     */
+    public List<String> getPrincipalIdsInRouteLog(Long routeHeaderId, boolean lookFuture) throws WorkflowException;
+
 }

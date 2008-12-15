@@ -18,6 +18,7 @@ package org.kuali.rice.kns.document.authorization;
 /**
  * TransactionalDocument-specific flags used for authorization checks.
  */
+@Deprecated
 final public class TransactionalDocumentActionFlags extends DocumentActionFlags {
     private boolean canErrorCorrect;
 

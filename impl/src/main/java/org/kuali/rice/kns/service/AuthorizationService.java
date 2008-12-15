@@ -40,6 +40,7 @@ public interface AuthorizationService {
      * @param targetType
      * @return Set containing the names of the workgroups authorized for the action on the target type.
      */
+    @Deprecated
     public Set getAuthorizedWorkgroups(String action, String targetType);
 
     /**
@@ -47,6 +48,7 @@ public interface AuthorizationService {
      * 
      * @return true if user is authorized to view attribute
      */
+    @Deprecated
     public boolean isAuthorizedToViewAttribute(Person user, String entryName, String attributeName);
     
     /**

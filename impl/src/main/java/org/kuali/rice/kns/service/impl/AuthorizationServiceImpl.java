@@ -32,6 +32,7 @@ import org.kuali.rice.kns.datadictionary.AuthorizationDefinition;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.service.AuthorizationService;
 import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.util.KNSConstants;
 
 
 /**
@@ -109,6 +110,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     /**
      * @see org.kuali.rice.kns.service.AuthorizationService#getAuthorizedWorkgroups(java.lang.String, java.lang.String)
      */
+    @Deprecated
     public Set getAuthorizedWorkgroups(String action, String targetType) {
         Map authorizedActions = authorizationStore.authorizedActions(targetType);
         return authorizationStore.authorizedGroups(authorizedActions, action);
@@ -118,6 +120,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
      * @see org.kuali.rice.kns.service.AuthorizationService#isAuthorizedToViewAttribute(org.kuali.rice.kns.bo.user.KualiUser,
      *      java.lang.String, java.lang.String)
      */
+   @Deprecated
    public boolean isAuthorizedToViewAttribute(Person user, String entryName, String attributeName) {
         boolean authorized = true;
 
@@ -140,7 +143,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         //TODO:Should use ParameterService.getDetailType to get the componentName
         String componentName = entryName;
         //TODO: Should use ParameterService getNameSpace to get name space
-        String nameSpaceCode = "KR-NS";
+        String nameSpaceCode = KNSConstants.KNS_NAMESPACE;
         
         AttributeSet permissionDetails = new AttributeSet();
     	permissionDetails.put(KimAttributes.COMPONENT_NAME, entryName);
@@ -161,7 +164,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         //TODO:Should use ParameterService.getDetailType to get the componentName
         String componentName = entryName;
         //TODO: Should use ParameterService getNameSpace to get name space
-        String nameSpaceCode = "KR-NS";
+        String nameSpaceCode = KNSConstants.KNS_NAMESPACE;
         
         AttributeSet permissionDetails = new AttributeSet();
     	permissionDetails.put(KimAttributes.COMPONENT_NAME, entryName);

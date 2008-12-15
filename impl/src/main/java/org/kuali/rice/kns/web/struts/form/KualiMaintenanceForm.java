@@ -288,7 +288,8 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
 
         return meshedSections;
     }
-
+    
+    @Deprecated
     protected void applyAuthorizations() {
         Document document = getDocument();
         DocumentAuthorizationService docAuthService = KNSServiceLocator.getDocumentAuthorizationService();
@@ -296,7 +297,8 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
         useDocumentAuthorizer(documentAuthorizer);
     }
 
-    
+    @Override
+    @Deprecated
     protected void useDocumentAuthorizer(DocumentAuthorizer documentAuthorizer) {
 
         // init some things we'll need

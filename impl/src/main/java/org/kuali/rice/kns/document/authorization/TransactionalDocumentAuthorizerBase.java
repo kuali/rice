@@ -68,27 +68,6 @@ public class TransactionalDocumentAuthorizerBase extends DocumentAuthorizerBase 
     }
     
     /**
-     * DocumentTypeAuthorizationException can be extended to customize the initiate error message
-     * @see org.kuali.rice.kns.authorization.DocumentAuthorizer#canInitiate(java.lang.String, org.kuali.rice.kns.bo.user.KualiUser)
-     */
-    public void canInitiate(String documentTypeName, Person user) {
-    	
-    	String nameSpaceCode = KNSConstants.KUALI_RICE_SYSTEM_NAMESPACE;
-    	
-    	AttributeSet permissionDetails = new AttributeSet();
-    	permissionDetails.put(KimAttributes.DOCUMENT_TYPE_CODE, documentTypeName);
-    	
-        if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_INITIATE_DOCUMENT, permissionDetails, null)){
-        	
-        	//TODO:
-        	// build authorized workgroup list for error message
-            //Set authorizedWorkgroups = getAuthorizationService().getAuthorizedWorkgroups("initiate", documentTypeName);
-            //String workgroupList = StringUtils.join(authorizedWorkgroups.toArray(), ",");
-            throw new DocumentInitiationAuthorizationException(new String[] {user.getPrincipalName(),documentTypeName});
-        }
-    }
-    
-    /**
      * 
      * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#canAnnotate(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
      */

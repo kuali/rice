@@ -152,42 +152,10 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
             docActions.remove(KNSConstants.KUALI_ACTION_CAN_BLANKET_APPROVE);
         }
         
-    	// run the super, let the common flags be set
-
-    	/*MaintenanceDocumentActionFlags docActionFlags = new MaintenanceDocumentActionFlags(super.getDocumentActionFlags(document, user, documentActions));
-
-        // run the fieldAuthorizations
-        MaintenanceDocument maintDoc = (MaintenanceDocument) document;
-        MaintenanceDocumentAuthorizations docAuths = getFieldAuthorizations(maintDoc, user);
-
-        // if there are any field restrictions for this user, then we need to turn off the
-        // ability to BlanketApprove, as this person doesnt have access to all the fields, so
-        // they certainly cant blanket approve it.
-        if (docAuths.hasAnyFieldRestrictions()) {
-            docActionFlags.setCanBlanketApprove(false);
-        }
-		*/
         return docActions;
     }
 
 
-    
-    /**
-     * DocumentTypeAuthorizationException can be extended to customize the initiate error message
-     * @see org.kuali.rice.kns.authorization.DocumentAuthorizer#canInitiate(java.lang.String, org.kuali.rice.kns.bo.user.KualiUser)
-    */
-    public void canInitiate(String documentTypeName, Person user) {
-    	String nameSpaceCode = KNSConstants.KUALI_RICE_SYSTEM_NAMESPACE;
-    	//String action = (String) GlobalVariables.getUserSession().retrieveObject(DocumentAuthorizerBase.USER_SESSION_METHOD_TO_CALL_OBJECT_KEY);
-    	AttributeSet permissionDetails = new AttributeSet();
-    	permissionDetails.put(KimAttributes.DOCUMENT_TYPE_CODE, documentTypeName);
-    	//permissionDetails.put(KimConstants.KIM_ATTRIB_ACTION, action);    
-    		if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_INITIATE_DOCUMENT, permissionDetails, null)){ 	
-    			String userName = (String) GlobalVariables.getUserSession().getPrincipalName();
-    			throw new DocumentInitiationAuthorizationException(new String[] {userName,documentTypeName});
-    		}
-    	
-    }
     
     /**
      * This method returns whether this document is creating a new entry in the maintenible/underlying table
@@ -248,31 +216,6 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
         MaintenanceDocument md = (MaintenanceDocument)document;
         return md.getNewMaintainableObject().getBoClass();        
 	}
-
-	/**
-	 * Add the business object's primary keys and the maintenance action to the qualifier attributes.
-	 * 
-	 * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase#populatePermissionDetails(org.kuali.rice.kns.document.Document, java.util.Map)
-	 */
-    @Override
-    protected void populatePermissionDetails(Document document, Map<String,String> attributes) {
-        super.populatePermissionDetails(document, attributes);
-        MaintenanceDocument md = (MaintenanceDocument)document;
-        attributes.put(KimConstants.KIM_ATTRIB_ACTION, md.getNewMaintainableObject().getMaintenanceAction() );
-        addPrimaryKeysToMap(md.getNewMaintainableObject().getBusinessObject(), attributes);
-    }
-    
-    /**
-     * Add the maintenance action to the permission details.
-     * 
-     * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase#populateRoleQualification(org.kuali.rice.kns.document.Document, java.util.Map)
-     */
-    @Override
-    protected void populateRoleQualification(Document document, Map<String,String> attributes) {
-        super.populateRoleQualification(document, attributes);
-        MaintenanceDocument md = (MaintenanceDocument)document;
-        attributes.put(KimConstants.KIM_ATTRIB_ACTION, md.getNewMaintainableObject().getMaintenanceAction() );
-    }
 
 
     public static PersistenceStructureService getPersistenceStructureService() {

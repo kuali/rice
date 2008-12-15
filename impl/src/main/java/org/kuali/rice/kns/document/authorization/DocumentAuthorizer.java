@@ -35,6 +35,7 @@ public interface DocumentAuthorizer {
      * @return Map with keys AuthorizationConstants.EditMode value (String) which indicates what operations the user is currently
      *         allowed to take on that document.
      */
+	@Deprecated
     public Map getEditMode(Document document, Person user);
  
     /**
@@ -44,6 +45,7 @@ public interface DocumentAuthorizer {
      */
     public Set getDocumentActionFlags(Document document, Person user, Set<String> documentActions);
     
+    @Deprecated
     public DocumentActionFlags getDocumentActionFlags(Document document, Person user);
     
 

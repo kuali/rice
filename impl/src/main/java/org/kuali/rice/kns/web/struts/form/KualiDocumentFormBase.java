@@ -284,6 +284,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
     /**
      * Updates authorization-related form fields based on the current form contents
      */
+    @Deprecated
     public void populateAuthorizationFields(DocumentAuthorizer documentAuthorizer) {
         if (isFormDocumentInitialized()) {
             //useDocumentAuthorizer(documentAuthorizer);
@@ -318,6 +319,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
      *
      * @param documentAuthorizer
      */
+    @Deprecated
      protected void useDocumentAuthorizer(DocumentAuthorizer documentAuthorizer) {
         /*Person kualiUser = GlobalVariables.getUserSession().getPerson();
         Map editMode = documentAuthorizer.getEditMode(document, kualiUser);

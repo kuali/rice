@@ -51,8 +51,9 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase {
     protected Boolean required = Boolean.FALSE;
 
     protected ControlDefinition control;
-
+    @Deprecated
     protected String displayWorkgroup = "";
+    @Deprecated
     protected Mask displayMask;
 
     protected String summary;
@@ -345,6 +346,7 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase {
      * 
      * @return Returns the displayMask.
      */
+    @Deprecated
     public Mask getDisplayMask() {
         return displayMask;
     }
@@ -355,6 +357,7 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase {
                     be used to hide the value from un-authorized users.
                     There are three types of masking.
      */
+    @Deprecated
     public void setDisplayMask(Mask displayMask) {
         this.displayMask = displayMask;
     }
@@ -365,6 +368,7 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase {
                     workgroup.  Only users in this workgroup will be able
                     to view the un-masked value.
      */
+    @Deprecated
     public String getDisplayWorkgroup() {
         return displayWorkgroup;
     }
@@ -375,6 +379,7 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase {
                     workgroup.  Only users in this workgroup will be able
                     to view the un-masked value.
      */
+    @Deprecated
     public void setDisplayWorkgroup(String displayWorkgroup) {
         this.displayWorkgroup = displayWorkgroup;
     }

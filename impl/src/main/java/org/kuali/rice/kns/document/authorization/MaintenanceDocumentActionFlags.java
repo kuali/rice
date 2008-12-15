@@ -21,6 +21,7 @@ package org.kuali.rice.kns.document.authorization;
  * 
  * 
  */
+@Deprecated
 final public class MaintenanceDocumentActionFlags extends DocumentActionFlags {
 
     private boolean canReopen;

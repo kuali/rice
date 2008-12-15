@@ -16,7 +16,7 @@
 package org.kuali.rice.kns.document.authorization;
 
 import java.io.Serializable;
-
+@Deprecated
 /**
  * Simple bean used to indicate which operations are allowed for the current user on the associated document.
  */

@@ -34,11 +34,13 @@ import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.authorization.AuthorizationConstants;
 import org.kuali.rice.kns.document.Document;
+import org.kuali.rice.kns.exception.DocumentInitiationAuthorizationException;
 import org.kuali.rice.kns.service.AuthorizationService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.ModuleService;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
@@ -68,7 +70,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
     private static KualiModuleService kualiModuleService;
    
     
-    
+    @Deprecated
      public Map getEditMode(Document d, Person u) {
         Map editModeMap = new HashMap();
         String editMode = AuthorizationConstants.EditMode.VIEW_ONLY;
@@ -159,6 +161,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
         return docActions;
     }
     
+    @Deprecated
     public DocumentActionFlags getDocumentActionFlags(Document document, Person user) {
         if ( LOG.isDebugEnabled() ) {
             LOG.debug("calling DocumentAuthorizerBase.getDocumentActionFlags for document '" + document.getDocumentNumber() + "'. user '" + user.getPrincipalName() + "'");
@@ -208,6 +211,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
      * Helper method to set the annotate flag based on other workflow tags
      * @param flags
      */
+    @Deprecated
     public void setAnnotateFlag(DocumentActionFlags flags) {
         boolean canWorkflow = flags.getCanSave() || flags.getCanRoute() || flags.getCanCancel() || flags.getCanBlanketApprove() || flags.getCanApprove() || flags.getCanDisapprove() || flags.getCanAcknowledge() || flags.getCanAdHocRoute();
         flags.setCanAnnotate(canWorkflow);
@@ -218,8 +222,14 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
      * @see org.kuali.rice.kns.authorization.DocumentAuthorizer#canInitiate(java.lang.String, org.kuali.rice.kns.bo.user.KualiUser)
      */
     public void canInitiate(String documentTypeName, Person user) {
-    	
-    }
+    	String nameSpaceCode = KNSConstants.KUALI_RICE_SYSTEM_NAMESPACE;
+        AttributeSet permissionDetails = new AttributeSet();
+        permissionDetails.put(KimAttributes.DOCUMENT_TYPE_CODE, documentTypeName);    
+        if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_INITIATE_DOCUMENT, permissionDetails, null)){ 	
+        	throw new DocumentInitiationAuthorizationException(new String[] {user.getPrincipalName(),documentTypeName});
+        }
+    }    	
+
 
     /**
      * Default implementation here is if a user cannot initiate a document they cannot copy one.

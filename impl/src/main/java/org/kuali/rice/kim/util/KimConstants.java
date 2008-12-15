@@ -59,8 +59,6 @@ public class KimConstants {
 	public static final String USER_IS_INITIATOR = "userIsInitiator";
 	public static final String KIM_ATTRIB_PRINCIPAL_ID = "principalId";
 	
-    @Deprecated
-	public static final String KIM_ATTRIB_ACTION = "action";
 	public static final String KIM_ROLE_NAME_USER = "User";
     public static final String KIM_ROLE_NAME_ACTION_REQUEST_RECIPIENT = "Action Request Recipient";
     public static final String KIM_ROLE_NAME_INITIATOR = "Initiator";

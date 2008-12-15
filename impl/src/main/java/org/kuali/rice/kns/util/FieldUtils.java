@@ -806,6 +806,7 @@ public class FieldUtils {
                 	MaskFormatter maskFormatter = fieldAuth.getMaskFormatter();
                 	String displayMaskValue = maskFormatter.maskValue(field.getPropertyValue());
                 	field.setDisplayMaskValue(displayMaskValue);
+                	populateSecureField(field, field.getPropertyValue());
                 	
                 }
                 
@@ -814,6 +815,7 @@ public class FieldUtils {
                 	MaskFormatter maskFormatter = fieldAuth.getMaskFormatter();
                 	String displayMaskValue = maskFormatter.maskValue(field.getPropertyValue());
                 	field.setDisplayMaskValue(displayMaskValue);
+                	populateSecureField(field, field.getPropertyValue());
                 }
                 
                 // if its an editable field, allow decreasing availability to readonly or hidden
@@ -849,6 +851,24 @@ public class FieldUtils {
             // if the field is restricted somehow
             if (auths.hasAuthFieldRestricted(fieldName)) {
                 fieldAuth = auths.getAuthFieldAuthorization(fieldName);
+                if(fieldAuth.isPartiallyMasked()){
+                    field.setSecure(true);
+                    MaskFormatter maskFormatter = fieldAuth.getMaskFormatter();
+                    String displayMaskValue = maskFormatter.maskValue(field.getPropertyValue());
+                    field.setDisplayMaskValue(displayMaskValue);
+                    field.setPropertyValue(displayMaskValue);
+                    populateSecureField(field, field.getPropertyValue());
+                    	
+               }
+                    
+               if(fieldAuth.isMasked()){
+                    field.setSecure(true);
+                    MaskFormatter maskFormatter = fieldAuth.getMaskFormatter();
+                    String displayMaskValue = maskFormatter.maskValue(field.getPropertyValue());
+                    field.setDisplayMaskValue(displayMaskValue);
+                    field.setPropertyValue(displayMaskValue);
+                    populateSecureField(field, field.getPropertyValue());
+                }
 
                 if (fieldAuth.isHidden()) {
                     field.setFieldType(Field.HIDDEN);

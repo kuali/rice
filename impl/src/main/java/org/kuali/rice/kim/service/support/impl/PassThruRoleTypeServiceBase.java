@@ -28,6 +28,8 @@ import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
 public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService {
 
+    public abstract AttributeSet convertQualificationForMemberRoles(String namespaceCode, String roleName, AttributeSet qualification);
+    
     public AttributeSet convertQualificationAttributesToRequired(AttributeSet qualificationAttributes) {
         return qualificationAttributes;
     }

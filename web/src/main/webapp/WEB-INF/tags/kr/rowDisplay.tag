@@ -180,7 +180,7 @@
 				  		</c:when>
 				  		<c:otherwise>
 							<c:if test="${not fn:contains(field.propertyName, Constants.MAINTENANCE_OLD_MAINTAINABLE)}">
-								<input type="hidden" name="${field.propertyName}" 
+								<input type="hidden" name="${field.propertyName}"  
 									   value='<c:out value="${fieldValue}"/>' />
 							</c:if>
 						</c:otherwise>
@@ -214,9 +214,9 @@
 						fieldLabel="${field.fieldLabel}" />
 						
 					<td class="grid" width="${dataCellWidth}%">
-						
-						<c:out value="${field.displayMaskValue}"/>
-			
+						<c:if test="${not isActionNew }" >
+							<c:out value="${field.displayMaskValue}"/>
+						</c:if>
 						<kul:fieldShowIcons isReadOnly="${isFieldReadOnly}" field="${field}" addHighlighting="${addHighlighting}" />
 			
 					</td>

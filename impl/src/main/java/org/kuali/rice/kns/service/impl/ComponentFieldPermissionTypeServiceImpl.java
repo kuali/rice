@@ -30,7 +30,7 @@ public class ComponentFieldPermissionTypeServiceImpl extends KimPermissionTypeSe
 
 	protected List<String> requiredAttributes = new ArrayList<String>();
 	{
-		requiredAttributes.add(KimConstants.KIM_ATTRIB_COMPONENT_CLASS);
+		requiredAttributes.add(KimAttributes.COMPONENT_NAME);
 		requiredAttributes.add(KimAttributes.PROPERTY_NAME);
 	}
 	/**
@@ -41,7 +41,7 @@ public class ComponentFieldPermissionTypeServiceImpl extends KimPermissionTypeSe
 		validateRequiredAttributesAgainstReceived(requiredAttributes, inputAttributeSet, REQUESTED_DETAILS_RECEIVED_ATTIBUTES_NAME);
 		validateRequiredAttributesAgainstReceived(requiredAttributes, storedAttributeSet, STORED_DETAILS_RECEIVED_ATTIBUTES_NAME);
 		
-		return inputAttributeSet.get(KimConstants.KIM_ATTRIB_COMPONENT_CLASS).equals(storedAttributeSet.get(KimConstants.KIM_ATTRIB_COMPONENT_CLASS))
+		return inputAttributeSet.get(KimAttributes.COMPONENT_NAME).equals(storedAttributeSet.get(KimAttributes.COMPONENT_NAME))
 			&& inputAttributeSet.get(KimAttributes.PROPERTY_NAME).startsWith(storedAttributeSet.get(KimAttributes.PROPERTY_NAME));
 	}
 

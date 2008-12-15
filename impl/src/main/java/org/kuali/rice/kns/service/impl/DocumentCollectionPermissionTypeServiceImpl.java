@@ -27,7 +27,7 @@ import org.kuali.rice.kim.util.KimConstants;
 public class DocumentCollectionPermissionTypeServiceImpl extends DocumentTypePermissionTypeServiceImpl {
 
 	{
-		requiredAttributes.add(KimConstants.KIM_ATTRIB_TYPE_CODE);
+		requiredAttributes.add(KimAttributes.COLLECTION_ITEM_TYPE_CODE);
 	}
 	
 	/**
@@ -44,8 +44,8 @@ public class DocumentCollectionPermissionTypeServiceImpl extends DocumentTypePer
 			throw new RuntimeException(KimAttributes.CREATE_BY_SELF_ONLY + " should not be blank or null.");
 		}
 		
-		boolean match = requestedDetails.get(KimConstants.KIM_ATTRIB_COMPONENT_CLASS).equals(permission.getDetails().get(KimConstants.KIM_ATTRIB_COMPONENT_CLASS));
-		match &=  requestedDetails.get(KimConstants.KIM_ATTRIB_TYPE_CODE).equals(permission.getDetails().get(KimConstants.KIM_ATTRIB_TYPE_CODE));
+		boolean match = requestedDetails.get(KimAttributes.COMPONENT_NAME).equals(permission.getDetails().get(KimAttributes.COMPONENT_NAME));
+		match &=  requestedDetails.get(KimAttributes.COLLECTION_ITEM_TYPE_CODE).equals(permission.getDetails().get(KimAttributes.COLLECTION_ITEM_TYPE_CODE));
 		if (!addTemplate) {
 			match &= requestedDetails.get(KimAttributes.CREATE_BY_SELF_ONLY).startsWith(permission.getDetails().get(KimAttributes.CREATE_BY_SELF_ONLY));
 		}

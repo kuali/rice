@@ -164,7 +164,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         String nameSpaceCode = "KR-NS";
         
         AttributeSet permissionDetails = new AttributeSet();
-    	permissionDetails.put(KimConstants.KIM_ATTRIB_COMPONENT_NAME, entryName);
+    	permissionDetails.put(KimAttributes.COMPONENT_NAME, entryName);
  	    permissionDetails.put(KimAttributes.PROPERTY_NAME, attributeName);
  	    
 	   if(getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_UNMASK_PROPERTY, permissionDetails, null)){

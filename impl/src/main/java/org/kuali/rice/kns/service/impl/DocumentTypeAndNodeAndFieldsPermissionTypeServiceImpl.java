@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.util.KimConstants;
@@ -35,7 +36,7 @@ public class DocumentTypeAndNodeAndFieldsPermissionTypeServiceImpl extends Docum
 	{
 		requiredAttributes.add(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL);
 		requiredAttributes.add(KEWConstants.ROUTE_NODE_NAME_DETAIL);
-		requiredAttributes.add(KimConstants.KIM_ATTRIB_FIELD_NAME);
+		requiredAttributes.add(KimAttributes.PROPERTY_NAME);
 	}
 
 	/**
@@ -75,11 +76,11 @@ public class DocumentTypeAndNodeAndFieldsPermissionTypeServiceImpl extends Docum
 	 * @return
 	 */
 	protected boolean fieldMatches(AttributeSet requestedDetails, AttributeSet permissionDetails) {
-		if (!permissionDetails.containsKey(KimConstants.KIM_ATTRIB_FIELD_NAME)) {
+		if (!permissionDetails.containsKey(KimAttributes.PROPERTY_NAME)) {
 			return true;
 		}
-		String requestedFieldName = requestedDetails.get(KimConstants.KIM_ATTRIB_FIELD_NAME);
-		String permissionFieldName = permissionDetails.get(KimConstants.KIM_ATTRIB_FIELD_NAME);
+		String requestedFieldName = requestedDetails.get(KimAttributes.PROPERTY_NAME);
+		String permissionFieldName = permissionDetails.get(KimAttributes.PROPERTY_NAME);
 		return requestedFieldName.equals(permissionFieldName) 
 			|| (requestedFieldName.startsWith(permissionFieldName) 
 					&& (requestedFieldName.substring(

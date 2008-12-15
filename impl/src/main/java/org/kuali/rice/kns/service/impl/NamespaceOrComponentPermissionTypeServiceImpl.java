@@ -41,16 +41,16 @@ public class NamespaceOrComponentPermissionTypeServiceImpl extends NamespacePerm
 		}
 		
 		// Checking component class.
-		if (StringUtils.isEmpty(inputAttributeSet.get(KimConstants.KIM_ATTRIB_COMPONENT_CLASS))) {
+		if (StringUtils.isEmpty(inputAttributeSet.get(KimAttributes.COMPONENT_NAME))) {
         	if (namespaceMatch) {
         		return true;
         	} else {
-        		throw new RuntimeException("Both " + KimAttributes.NAMESPACE_CODE + " and " + KimConstants.KIM_ATTRIB_COMPONENT_CLASS + " should not be blank or null.");
+        		throw new RuntimeException("Both " + KimAttributes.NAMESPACE_CODE + " and " + KimAttributes.COMPONENT_NAME + " should not be blank or null.");
         	}
 		}
 		
 		// Both must match at this point
-		return namespaceMatch && inputAttributeSet.get(KimConstants.KIM_ATTRIB_COMPONENT_CLASS).equals(storedAttributeSet.get(KimConstants.KIM_ATTRIB_COMPONENT_CLASS));
+		return namespaceMatch && inputAttributeSet.get(KimAttributes.COMPONENT_NAME).equals(storedAttributeSet.get(KimAttributes.COMPONENT_NAME));
 	}
 
 }

@@ -57,18 +57,7 @@ public class KimConstants {
 	// JHK: Deprecated constants which need to be moved to KimAttributes or KFS
 
 	public static final String USER_IS_INITIATOR = "userIsInitiator";
-    @Deprecated
-	public static final String KIM_ATTRIB_COMPONENT_CLASS ="componentClass";		
-    @Deprecated
-	public static final String KIM_ATTRIB_TYPE_CODE ="typeCd";
-    @Deprecated
-	public static final String KIM_ATTRIB_ROUTE_NODE_NAME = "docRouteName";
-    @Deprecated
-	public static final String KIM_ATTRIB_COMPONENT_NAME = "parameterDetailTypeCode";
-    @Deprecated
 	public static final String KIM_ATTRIB_PRINCIPAL_ID = "principalId";
-    @Deprecated
-	public static final String KIM_ATTRIB_FIELD_NAME = "fieldName";
 	
     @Deprecated
 	public static final String KIM_ATTRIB_ACTION = "action";

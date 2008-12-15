@@ -34,10 +34,10 @@ public class ParameterPermissionTypeServiceImpl extends NamespaceOrComponentPerm
 		
 		if (!match 
 				&& StringUtils.isNotEmpty(inputAttributeSet.get(KimAttributes.NAMESPACE_CODE))
-				&& StringUtils.isNotEmpty(inputAttributeSet.get(KimConstants.KIM_ATTRIB_COMPONENT_CLASS))
+				&& StringUtils.isNotEmpty(inputAttributeSet.get(KimAttributes.COMPONENT_NAME))
 				&& StringUtils.isNotEmpty(inputAttributeSet.get(KimAttributes.PARAMETER_NAME))) {			
 			match = inputAttributeSet.get(KimAttributes.NAMESPACE_CODE).equals(storedAttributeSet.get(KimAttributes.NAMESPACE_CODE));
-			match &= inputAttributeSet.get(KimConstants.KIM_ATTRIB_COMPONENT_CLASS).equals(storedAttributeSet.get(KimConstants.KIM_ATTRIB_COMPONENT_CLASS));
+			match &= inputAttributeSet.get(KimAttributes.COMPONENT_NAME).equals(storedAttributeSet.get(KimAttributes.COMPONENT_NAME));
 			match &= inputAttributeSet.get(KimAttributes.PARAMETER_NAME).equals(storedAttributeSet.get(KimAttributes.PARAMETER_NAME));			
 		}
 		

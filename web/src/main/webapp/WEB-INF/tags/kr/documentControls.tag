@@ -73,7 +73,7 @@
 	            <c:if test="${KualiForm.documentActionFlags.canSupervise and not suppressRoutingControls}">
 				    <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_supervfunct.gif" styleClass="globalbuttons" property="methodToCall.supervisorFunctions" title="Supervisor Functions" alt="Supervisor Functions" />
 	            </c:if>
-	            <c:if test="${!empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_AD_HOC_ROUTE] and not suppressRoutingControls}">
+	            <c:if test="${!empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_ROUTE] and not suppressRoutingControls}">
 	                <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_submit.gif" styleClass="globalbuttons" property="methodToCall.route" title="submit" alt="submit"/>
 	            </c:if>
 	            <c:if test="${!empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_SAVE] and not viewOnly}">

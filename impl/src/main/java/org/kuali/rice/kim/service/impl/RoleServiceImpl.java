@@ -37,6 +37,7 @@ import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleRelationshipImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
+import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.dao.KimRoleDao;
 import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -693,12 +694,15 @@ public class RoleServiceImpl implements RoleService {
     protected Map<String,KimDelegationTypeService> getDelegationTypeServicesByDelegationId( Collection<String> delegationIds, Map<String,KimDelegationImpl> delegations ) {
     	Map<String,KimDelegationTypeService> roleTypeServices = new HashMap<String, KimDelegationTypeService>( delegationIds.size() );
     	for ( String delegationId : delegationIds ) {
-    		String serviceName = delegations.get(delegationId).getKimType().getKimTypeServiceName();
-    		if ( serviceName != null ) {
-    			KimDelegationTypeService delegationTypeService = (KimDelegationTypeService)KIMServiceLocator.getService( serviceName );
-    			if ( delegationTypeService != null ) {
-    	    		roleTypeServices.put(delegationId, delegationTypeService );    				
-    			}
+    		KimTypeImpl delegationType = delegations.get(delegationId).getKimType();
+    		if ( delegationType != null ) {
+	    		String serviceName = delegationType.getKimTypeServiceName();
+	    		if ( serviceName != null ) {
+	    			KimDelegationTypeService delegationTypeService = (KimDelegationTypeService)KIMServiceLocator.getService( serviceName );
+	    			if ( delegationTypeService != null ) {
+	    	    		roleTypeServices.put(delegationId, delegationTypeService );    				
+	    			}
+	    		}
     		}
     	}
     	return roleTypeServices;

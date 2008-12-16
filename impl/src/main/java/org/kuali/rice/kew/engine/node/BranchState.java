@@ -43,7 +43,7 @@ public class BranchState extends State {
 
     private static final long serialVersionUID = -7642477013444817952L;
 
-    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+    @OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="RTE_BRCH_ID")
 	private Branch branch;
     @Version

@@ -32,7 +32,9 @@ import javax.persistence.Query;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
+import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
+import org.kuali.rice.kew.doctype.DocumentTypePolicy;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.dao.DocumentTypeDAO;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -56,15 +58,19 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 	public DocumentType findByDocId(Long docId) {
 		Criteria crit = new Criteria(DocumentType.class.getName());
 		crit.eq("documentTypeId", docId);
-		return (DocumentType) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
+		return (DocumentType) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
 	}
 
 	public DocumentType findByName(String name) {
 		Criteria crit = new Criteria(DocumentType.class.getName());
 		crit.eq("name", name);
 		crit.eq("currentInd", new Boolean(true));
-		DocumentType docType = (DocumentType) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
-		return docType;
+		try{
+			DocumentType docType = (DocumentType) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
+			return docType;
+		}catch (javax.persistence.NoResultException e){
+		   return null;
+		}
 	}
 
 	public Integer getMaxVersionNumber(String docTypeName) {
@@ -99,11 +105,26 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 	}
 
 	public void save(DocumentType documentType) {
+		Collection<DocumentTypePolicy> docPolicies = documentType.getPolicies();
+		documentType.setPolicies(new ArrayList<DocumentTypePolicy>());
+			
 		if (documentType.getDocumentTypeId() == null){
 			entityManager.persist(documentType);
 		} else {
-			entityManager.merge(documentType);
+			OrmUtils.reattach(documentType, entityManager.merge(documentType));
 		}
+
+		for (DocumentTypePolicy docTypePolicy:docPolicies){
+			if (docTypePolicy.getDocumentTypeId() == null){
+				docTypePolicy.setDocumentTypeId(documentType.getDocumentTypeId());
+				entityManager.persist(docTypePolicy);
+			} else {
+				OrmUtils.reattach(docTypePolicy, entityManager.merge(docTypePolicy));
+			}
+		}
+		
+		documentType.setPolicies(docPolicies);
+
 	}
 
 	public List findByRouteHeaderId(Long routeHeaderId) {
@@ -214,7 +235,7 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
     }
     
     public List findDocumentTypeAttributes(RuleAttribute ruleAttribute) {
-    	Criteria crit = new Criteria(DocumentType.class.getName());
+    	Criteria crit = new Criteria(DocumentTypeAttribute.class.getName());
     	crit.eq("ruleAttributeId", ruleAttribute.getRuleAttributeId());
     	return (List) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
     }

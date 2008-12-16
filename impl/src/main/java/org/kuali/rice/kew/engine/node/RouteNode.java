@@ -75,7 +75,7 @@ public class RouteNode implements Serializable {
     @Id
 	@Column(name="RTE_NODE_ID")
 	private Long routeNodeId;
-    @Column(name="DOC_TYP_ID")
+    @Column(name="DOC_TYP_ID",insertable=false, updatable=false)
 	private Long documentTypeId;
     @Column(name="NM")
 	private String routeNodeName;
@@ -96,7 +96,7 @@ public class RouteNode implements Serializable {
 	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
     @ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="DOC_TYP_ID", insertable=false, updatable=false)
+	@JoinColumn(name="DOC_TYP_ID")
 	private DocumentType documentType;
     @Transient
     private String exceptionWorkgroupName;

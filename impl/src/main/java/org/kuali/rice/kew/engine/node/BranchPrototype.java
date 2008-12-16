@@ -16,12 +16,17 @@
  */
 package org.kuali.rice.kew.engine.node;
 
+import javax.persistence.PrePersist;
 import javax.persistence.Version;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.CascadeType;
 import javax.persistence.Table;
 import javax.persistence.Entity;
+
+import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.kuali.rice.core.util.OrmUtils;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 import java.io.Serializable;
 
@@ -33,6 +38,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name="KREW_RTE_BRCH_PROTO_T")
+@Sequence(name="KREW_RTE_NODE_S",property="branchId")
 public class BranchPrototype implements Serializable {
 
 	private static final long serialVersionUID = 8645994738204838275L;
@@ -68,6 +74,11 @@ public class BranchPrototype implements Serializable {
 
 	public void setLockVerNbr(Integer lockVerNbr) {
 		this.lockVerNbr = lockVerNbr;
+	}
+	
+	@PrePersist
+	public void beforeInsert(){
+		OrmUtils.populateAutoIncValue(this, KNSServiceLocator.getEntityManagerFactory().createEntityManager());		
 	}
 	
 }

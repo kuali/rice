@@ -164,9 +164,11 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
     @Id
 	@Column(name="DOC_HDR_ID")
 	private java.lang.Long routeHeaderId;
-    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy="routeHeader")
+    @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy="routeHeader")
+    @Fetch(value = FetchMode.SUBSELECT)
     private List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
-    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy="routeHeader")
+    @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy="routeHeader")
+    @Fetch(value = FetchMode.SUBSELECT)
     private List<ActionTakenValue> actionsTaken = new ArrayList<ActionTakenValue>();
     //@OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy="routeHeader")
     @Transient

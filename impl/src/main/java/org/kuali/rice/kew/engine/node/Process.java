@@ -25,11 +25,15 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
+import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 
 /**
@@ -41,6 +45,7 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
  */
 @Entity
 @Table(name="KREW_DOC_TYP_PROC_T")
+@Sequence(name="KREW_RTE_NODE_S",property="processId")
 public class Process implements Serializable {
 
 	private static final long serialVersionUID = -6338857095673479752L;
@@ -98,4 +103,10 @@ public class Process implements Serializable {
 	public void setLockVerNbr(Integer lockVerNbr) {
 		this.lockVerNbr = lockVerNbr;
 	}
+
+	@PrePersist
+    public void beforeInsert(){
+    	OrmUtils.populateAutoIncValue(this, KNSServiceLocator.getEntityManagerFactory().createEntityManager());
+    }
+
 }

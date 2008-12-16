@@ -144,20 +144,20 @@ public class DocumentType extends PersistableBusinessObjectBase
     @Transient
     private KimGroup defaultExceptionWorkgroup;
 
-    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
-    		targetEntity=org.kuali.rice.kew.doctype.DocumentTypePolicy.class, mappedBy="documentType")
+    @OneToMany(targetEntity=org.kuali.rice.kew.doctype.DocumentTypePolicy.class, mappedBy="documentType")
     private Collection policies;
     @Transient
     private List routeLevels;
     @Transient
     private Collection childrenDocTypes;
-    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
+    @OneToMany(cascade={CascadeType.REMOVE, CascadeType.MERGE},
            targetEntity=org.kuali.rice.kew.doctype.DocumentTypeAttribute.class, mappedBy="documentType")
 	private List<DocumentTypeAttribute> documentTypeAttributes;
 
     /* New Workflow 2.1 Field */
-    @Transient
-    private List processes = new ArrayList();
+    @OneToMany(cascade={CascadeType.REMOVE, CascadeType.MERGE},
+            targetEntity=org.kuali.rice.kew.engine.node.Process.class, mappedBy="documentType")
+    private List<Process> processes = new ArrayList();
     @Column(name="RTE_VER_NBR")
     private String routingVersion = KEWConstants.CURRENT_ROUTING_VERSION;
 

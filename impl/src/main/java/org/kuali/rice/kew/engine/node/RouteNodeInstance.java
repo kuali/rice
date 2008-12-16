@@ -80,7 +80,7 @@ public class RouteNodeInstance implements Serializable {
     @OneToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name="BRCH_ID")
 	private Branch branch;
-    @OneToOne(fetch=FetchType.EAGER)
+    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.MERGE, CascadeType.PERSIST})
 	@JoinColumn(name="RTE_NODE_ID")
     private RouteNode routeNode;
     @Column(name="ACTV_IND")

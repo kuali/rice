@@ -27,12 +27,14 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.persistence.Version;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -57,7 +59,9 @@ public class Branch implements Serializable {
 	private Branch parentBranch;
 	@Column(name="NM")
 	private String name;
-    @Transient
+    @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST,CascadeType.MERGE})
+    @JoinColumn(name="RTE_BRCH_ST_ID")
+    @Fetch(value=FetchMode.SUBSELECT)
 	private List<BranchState> branchState = new ArrayList<BranchState>();
 //	  apache lazy list commented out due to not being serializable
 //    private List branchState = ListUtils.lazyList(new ArrayList(),
@@ -67,16 +71,16 @@ public class Branch implements Serializable {
 //				}
 //			});
     @OneToOne
-	@JoinColumn(name="INIT_RTE_NODE_INSTN_ID", insertable=false, updatable=false)
+	@JoinColumn(name="INIT_RTE_NODE_INSTN_ID")
 	private RouteNodeInstance initialNode;
     @OneToOne
-	@JoinColumn(name="SPLT_RTE_NODE_INSTN_ID", insertable=false, updatable=false)
+	@JoinColumn(name="SPLT_RTE_NODE_INSTN_ID")
 	private RouteNodeInstance splitNode;
 	@OneToOne
-	@JoinColumn(name="JOIN_RTE_NODE_INSTN_ID", insertable=false, updatable=false)
+	@JoinColumn(name="JOIN_RTE_NODE_INSTN_ID")
 	private RouteNodeInstance joinNode;
 	
-	@Column(name="INIT_RTE_NODE_INSTN_ID")
+	@Column(name="INIT_RTE_NODE_INSTN_ID", insertable=false, updatable=false)
 	private Long initialNodeId;
 	
 	@Version

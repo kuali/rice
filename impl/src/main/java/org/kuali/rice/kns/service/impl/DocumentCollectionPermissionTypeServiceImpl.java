@@ -19,7 +19,6 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -44,10 +43,12 @@ public class DocumentCollectionPermissionTypeServiceImpl extends DocumentTypePer
 			throw new RuntimeException(KimAttributes.CREATE_BY_SELF_ONLY + " should not be blank or null.");
 		}
 		
-		boolean match = requestedDetails.get(KimAttributes.COMPONENT_NAME).equals(permission.getDetails().get(KimAttributes.COMPONENT_NAME));
-		match &=  requestedDetails.get(KimAttributes.COLLECTION_ITEM_TYPE_CODE).equals(permission.getDetails().get(KimAttributes.COLLECTION_ITEM_TYPE_CODE));
+		boolean match = StringUtils.equals(requestedDetails.get(KimAttributes.COMPONENT_NAME), permission.getDetails().get(KimAttributes.COMPONENT_NAME));
+		match &= StringUtils.equals(requestedDetails.get(KimAttributes.COLLECTION_ITEM_TYPE_CODE), permission.getDetails().get(KimAttributes.COLLECTION_ITEM_TYPE_CODE));
 		if (!addTemplate) {
-			match &= requestedDetails.get(KimAttributes.CREATE_BY_SELF_ONLY).startsWith(permission.getDetails().get(KimAttributes.CREATE_BY_SELF_ONLY));
+			if (requestedDetails.get(KimAttributes.CREATE_BY_SELF_ONLY) != null && permission.getDetails().get(KimAttributes.CREATE_BY_SELF_ONLY) != null) {
+				match &= requestedDetails.get(KimAttributes.CREATE_BY_SELF_ONLY).startsWith(permission.getDetails().get(KimAttributes.CREATE_BY_SELF_ONLY));
+			}
 		}
 		return match;
 	}

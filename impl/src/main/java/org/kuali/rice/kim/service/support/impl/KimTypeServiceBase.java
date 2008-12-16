@@ -368,7 +368,7 @@ public class KimTypeServiceBase implements KimTypeService {
 
 	protected void validateRequiredAttributesAgainstReceived(
 			List<String> requiredAttributes, AttributeSet receivedAttributes, String receivedAttributesName){
-		List<String> missingAttributes = new ArrayList<String>();
+		/*List<String> missingAttributes = new ArrayList<String>();
 		for(String requiredAttribute: requiredAttributes){
 			if(!receivedAttributes.containsKey(requiredAttribute))
 				missingAttributes.add(requiredAttribute);
@@ -381,7 +381,7 @@ public class KimTypeServiceBase implements KimTypeService {
         	errorMessage = errorMessage.substring(0, 
         			errorMessage.length()-COMMA_SEPARATOR.length()) + " not found in "+receivedAttributesName+" .";
             throw new RuntimeException(errorMessage);
-        }
+        }*/
 	}
 	
 }

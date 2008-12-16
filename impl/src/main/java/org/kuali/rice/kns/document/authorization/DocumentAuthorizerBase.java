@@ -606,7 +606,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
     }
     
     private boolean canTakeRequestedAction(Document document, Person user){
-		return isAuthorizedByTemplate(document, KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE, KimConstants.PERMISSION_TAKE_REQUESTED_ACTION, user.getPrincipalId());
+		return isAuthorizedByTemplate(document, KNSConstants.KNS_NAMESPACE, KimConstants.PERMISSION_TAKE_REQUESTED_ACTION, user.getPrincipalId());
 	}
     
 }

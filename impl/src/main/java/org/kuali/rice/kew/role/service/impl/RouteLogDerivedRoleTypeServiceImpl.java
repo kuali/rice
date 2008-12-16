@@ -19,9 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
+import org.kuali.rice.kew.dto.UuIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
@@ -91,7 +91,7 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
 		WorkflowInfo info = new WorkflowInfo();
 		try {
 			Long documentNumberLong = Long.parseLong(documentNumber);
-			UserIdDTO userIdVO = new NetworkIdDTO(principalId);
+			UserIdDTO userIdVO = new UuIdDTO(principalId);
 			WorkflowInfo workflowInfo = new WorkflowInfo();
 			if (KimConstants.KIM_ROLE_NAME_INITIATOR.equals(roleName)){
 				RouteHeaderDTO routeHeaderDTO = workflowInfo.getRouteHeader(documentNumberLong);

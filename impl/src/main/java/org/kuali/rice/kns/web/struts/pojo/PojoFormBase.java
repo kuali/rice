@@ -498,7 +498,6 @@ public class PojoFormBase extends ActionForm implements PojoForm {
     // end Kuali Foundation modification
     
     public void registerEditableProperty(String editablePropertyName){
-    	System.out.println("Registering: " + editablePropertyName);
     	editableProperties.add(editablePropertyName);
     }
     

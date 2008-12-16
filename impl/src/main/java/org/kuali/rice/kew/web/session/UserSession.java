@@ -186,7 +186,7 @@ public class UserSession implements Serializable {
     	if (user == null) {
     		return null;
     	}
-    	return KIMServiceLocator.getPersonService().getPerson(user.getAuthenticationUserId().getId());
+    	return KIMServiceLocator.getPersonService().getPersonByPrincipalName(user.getAuthenticationUserId().getId());
     }
 
     @Deprecated

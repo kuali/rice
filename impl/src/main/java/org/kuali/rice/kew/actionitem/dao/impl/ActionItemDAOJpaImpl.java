@@ -25,6 +25,7 @@ import javax.persistence.PersistenceContext;
 import org.apache.commons.collections.CollectionUtils;
 import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
+import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionitem.dao.ActionItemDAO;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
@@ -48,9 +49,6 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
 	private EntityManager entityManager;
 	
     public ActionItem findByActionItemId(Long actionItemId) {
-//        Criteria crit = new Criteria();
-//        crit.addEqualTo("actionItemId", actionItemId);
-        //return (ActionItem) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(ActionItem.class, crit));
     	return entityManager.find(ActionItem.class, actionItemId);
     }
 
@@ -64,12 +62,12 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
     }
 
     public void deleteActionItem(ActionItem actionItem) {
-    	entityManager.remove(actionItem);
+    	entityManager.remove(findByActionItemId(actionItem.getActionItemId()));
     }
 
     public void deleteByRouteHeaderIdWorkflowUserId(Long routeHeaderId, String workflowUserId) {
         Criteria crit = new Criteria(ActionItem.class.getName());
-        crit.eq("routeHeaderId", routeHeaderId);
+        crit.eq("routeHeader.routeHeaderId", routeHeaderId);
         crit.eq("principalId", workflowUserId);
         for(Object actionItem: new QueryByCriteria(entityManager,crit).toQuery().getResultList()){
         	entityManager.remove(actionItem);
@@ -78,7 +76,7 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
 
     public void deleteByRouteHeaderId(Long routeHeaderId) {
         Criteria crit = new Criteria(ActionItem.class.getName());
-        crit.eq("routeHeaderId", routeHeaderId);
+        crit.eq("routeHeader.routeHeaderId", routeHeaderId);
         for(Object actionItem: new QueryByCriteria(entityManager,crit).toQuery().getResultList()){
         	entityManager.remove(actionItem);
         }
@@ -87,29 +85,20 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
     public Collection<ActionItem> findByWorkflowUser(WorkflowUser workflowUser) {
         Criteria crit = new Criteria(ActionItem.class.getName());
         crit.eq("principalId", workflowUser.getWorkflowUserId().getWorkflowId());
-        crit.orderBy("routeHeaderId", true);
+        crit.orderBy("routeHeader.routeHeaderId", true);
         return new QueryByCriteria(entityManager, crit).toQuery().getResultList();
-
-//        javax.persistence.Query q = entityManager.createQuery("SELECT a.routeHeader FROM ActionItem a " +
-//        		                         //   " 			  a.routeHeader o " +
-//        									" WHERE a.principalId = :principalId ");// +
-//        									//" ORDER BY o.routeHeaderId ASC");
-//        q.setParameter("principalId", workflowUser.getWorkflowUserId().getWorkflowId());
-//        
-//        
-//        return q.getResultList();
     }
 
     public Collection<ActionItem> findByWorkflowUserRouteHeaderId(String workflowId, Long routeHeaderId) {
         Criteria crit = new Criteria(ActionItem.class.getName());
         crit.eq("principalId", workflowId);
-        crit.eq("routeHeaderId", routeHeaderId);
+        crit.eq("routeHeader.routeHeaderId", routeHeaderId);
         return new QueryByCriteria(entityManager, crit).toQuery().getResultList();
     }
 
     public Collection<ActionItem> findByRouteHeaderId(Long routeHeaderId) {
         Criteria crit = new Criteria(ActionItem.class.getName());
-        crit.eq("routeHeaderId", routeHeaderId);
+        crit.eq("routeHeader.routeHeaderId", routeHeaderId);
         return new QueryByCriteria(entityManager, crit).toQuery().getResultList();
     }
 
@@ -120,7 +109,12 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
     }
 
     public void saveActionItem(ActionItem actionItem) {
-    	entityManager.merge(actionItem);
+//    	OrmUtils.reattach(actionItem, entityManager.merge(actionItem));
+    	if(actionItem.getActionItemId()==null){
+        	entityManager.persist(actionItem);
+    	}else{
+    		OrmUtils.reattach(actionItem, entityManager.merge(actionItem));
+    	}
     }
 
     public Collection<Recipient> findSecondaryDelegators(WorkflowUser user) throws KEWUserNotFoundException {
@@ -179,22 +173,6 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
             }
         }
         
-//        ReportQueryByCriteria query = QueryFactory.newReportQuery(ActionItem.class, criteria, true);
-//
-//        query.setAttributes(new String[]{"workflowId"});
-//        Map<Object, Recipient> delegators = new HashMap<Object, Recipient>();
-//        Iterator iterator = this.getPersistenceBrokerTemplate().getReportQueryIteratorByQuery(query);
-//        while (iterator.hasNext()) {
-//            Object[] ids = (Object[]) iterator.next();
-//            if (ids[0] != null && !delegators.containsKey((String) ids[0])) {
-//                delegators.put((String) ids[0], getUserService().getWorkflowUser(new WorkflowUserId((String) ids[0])));
-//            } else if (ids[1] != null) {
-//                Long workgroupId = new Long(ids[1].toString());
-//                if (!delegators.containsKey(workgroupId)) {
-//                    delegators.put(workgroupId, getWorkgroupService().getWorkgroup(new WorkflowGroupId(workgroupId)));
-//                }
-//            }
-//        }
         return delegators.values();
     }
 

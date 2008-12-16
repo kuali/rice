@@ -19,10 +19,9 @@ package org.kuali.rice.kew.rule.dao.impl;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.apache.ojb.broker.query.QueryByCriteria;
+import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.rule.RuleTemplateOption;
 import org.kuali.rice.kew.rule.dao.RuleTemplateOptionDAO;
-import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
 
 public class RuleTemplateOptionDAOJpaImpl implements RuleTemplateOptionDAO {
@@ -47,6 +46,10 @@ public class RuleTemplateOptionDAOJpaImpl implements RuleTemplateOptionDAO {
   }
   
   public void save (RuleTemplateOption ruleTemplateOption){
-	  entityManager.persist(ruleTemplateOption);
+	  if(ruleTemplateOption.getRuleTemplateOptionId()==null){
+		  entityManager.persist(ruleTemplateOption);
+	  }else{
+		  OrmUtils.reattach(ruleTemplateOption, entityManager.merge(ruleTemplateOption));
+	  }
   }
 }

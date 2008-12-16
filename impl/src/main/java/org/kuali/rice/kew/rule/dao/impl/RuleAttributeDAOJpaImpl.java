@@ -40,7 +40,7 @@ public class RuleAttributeDAOJpaImpl implements RuleAttributeDAO {
             OrmUtils.populateAutoIncValue(ruleAttribute, entityManager);
             entityManager.persist(ruleAttribute);
         } else {
-            entityManager.merge(ruleAttribute);
+            OrmUtils.reattach(ruleAttribute,entityManager.merge(ruleAttribute));
         }
     }
 

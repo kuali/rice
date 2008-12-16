@@ -19,9 +19,9 @@ package org.kuali.rice.kew.rule.dao.impl;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
 import org.kuali.rice.kew.rule.dao.RuleTemplateAttributeDAO;
-import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
 public class RuleTemplateAttributeDAOJpaImpl implements RuleTemplateAttributeDAO {
 
@@ -35,6 +35,10 @@ public class RuleTemplateAttributeDAOJpaImpl implements RuleTemplateAttributeDAO
 	}
 
 	public void save(RuleTemplateAttribute ruleTemplateAttribute) {
-		entityManager.merge(ruleTemplateAttribute);
+		if(ruleTemplateAttribute.getRuleTemplateAttributeId()==null){
+			entityManager.persist(ruleTemplateAttribute);
+		}else{
+			OrmUtils.reattach(ruleTemplateAttribute, entityManager.merge(ruleTemplateAttribute));
+		}
 	}
 }

@@ -33,6 +33,7 @@ import javax.persistence.Query;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
+import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.rule.RuleBaseValues;
@@ -64,10 +65,10 @@ public class RuleDAOJpaImpl implements RuleDAO {
 		"newRsp.rule_rsp_id=newDel.rule_rsp_id)";
 
 	public void save(RuleBaseValues ruleBaseValues) {
-		if(ruleBaseValues.getRuleBaseValuesId()==null&&!entityManager.contains(ruleBaseValues)){
+		if(ruleBaseValues.getRuleBaseValuesId()==null){
 			entityManager.persist(ruleBaseValues);
 		}else{
-			entityManager.merge(ruleBaseValues);
+			OrmUtils.reattach(ruleBaseValues, entityManager.merge(ruleBaseValues));
 		}
 	}
 

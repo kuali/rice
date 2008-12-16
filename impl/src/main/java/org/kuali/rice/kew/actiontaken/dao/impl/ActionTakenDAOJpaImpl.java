@@ -1,0 +1,143 @@
+/*
+ * Copyright 2005-2006 The Kuali Foundation.
+ *
+ *
+ * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl1.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.kuali.rice.kew.actiontaken.dao.impl;
+
+import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.kuali.rice.core.jpa.criteria.Criteria;
+import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
+import org.kuali.rice.core.util.OrmUtils;
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.actiontaken.dao.ActionTakenDAO;
+
+
+/**
+ * OJB implementation of the {@link ActionTakenDAO}.
+ *
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ */
+public class ActionTakenDAOJpaImpl implements ActionTakenDAO {
+	
+	@PersistenceContext(unitName="kew-unit")
+	private EntityManager entityManager;
+	
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ActionTakenDAOOjbImpl.class);
+
+    public ActionTakenValue load(Long id) {
+        LOG.debug("Loading Action Taken for the given id " + id);
+        return entityManager.find(ActionTakenValue.class, id);
+    }
+
+    public void deleteActionTaken(ActionTakenValue actionTaken) {
+        LOG.debug("deleting ActionTaken " + actionTaken.getActionTakenId());
+        entityManager.remove(entityManager.find(ActionTakenValue.class, actionTaken.getActionTakenId()));
+    }
+
+    public ActionTakenValue findByActionTakenId(Long actionTakenId) {
+        LOG.debug("finding Action Taken by actionTakenId " + actionTakenId);
+        Criteria crit = new Criteria(ActionTakenValue.class.getName());
+        crit.eq("actionTakenId", actionTakenId);
+        crit.eq("currentIndicator", new Boolean(true));
+        return (ActionTakenValue) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
+    }
+
+    public Collection findByDocIdAndAction(Long routeHeaderId, String action) {
+        LOG.debug("finding Action Taken by routeHeaderId " + routeHeaderId + " and action " + action);
+        Criteria crit = new Criteria(ActionTakenValue.class.getName());
+        crit.eq("routeHeaderId", routeHeaderId);
+        crit.eq("actionTaken", action);
+        crit.eq("currentIndicator", new Boolean(true));
+        return new QueryByCriteria(entityManager, crit).toQuery().getResultList();
+    }
+
+    public Collection findByRouteHeaderId(Long routeHeaderId) {
+        LOG.debug("finding Action Takens by routeHeaderId " + routeHeaderId);
+        Criteria crit = new Criteria(ActionTakenValue.class.getName());
+        crit.eq("routeHeaderId", routeHeaderId);
+        crit.eq("currentIndicator", new Boolean(true));
+        return new QueryByCriteria(entityManager, crit).toQuery().getResultList();
+    }
+
+    public List findByRouteHeaderIdWorkflowId(Long routeHeaderId, String workflowId) {
+        LOG.debug("finding Action Takens by routeHeaderId " + routeHeaderId + " and workflowId" + workflowId);
+        Criteria crit = new Criteria(ActionTakenValue.class.getName());
+        crit.eq("routeHeaderId", routeHeaderId);
+        crit.eq("workflowId", workflowId);
+        crit.eq("currentIndicator", new Boolean(true));
+        return (List) new QueryByCriteria(entityManager, crit);
+    }
+
+    public List findByRouteHeaderIdIgnoreCurrentInd(Long routeHeaderId) {
+        LOG.debug("finding ActionsTaken ignoring currentInd by routeHeaderId:" + routeHeaderId);
+        Criteria crit = new Criteria(ActionTakenValue.class.getName());
+        crit.eq("routeHeaderId", routeHeaderId);
+        return (List) new QueryByCriteria(entityManager, crit);
+    }
+
+    public void saveActionTaken(ActionTakenValue actionTaken) {
+        LOG.debug("saving ActionTaken");
+        checkNull(actionTaken.getRouteHeaderId(), "Document ID");
+        checkNull(actionTaken.getActionTaken(), "action taken code");
+        checkNull(actionTaken.getDocVersion(), "doc version");
+        checkNull(actionTaken.getWorkflowId(), "user workflowId");
+
+        if (actionTaken.getActionDate() == null) {
+            actionTaken.setActionDate(new Timestamp(System.currentTimeMillis()));
+        }
+        if (actionTaken.getCurrentIndicator() == null) {
+            actionTaken.setCurrentIndicator(new Boolean(true));
+        }
+        LOG.debug("saving ActionTaken: routeHeader " + actionTaken.getRouteHeaderId() +
+                ", actionTaken " + actionTaken.getActionTaken() + ", workflowId " + actionTaken.getWorkflowId());
+        
+        if(actionTaken.getActionTakenId()==null){
+        	entityManager.persist(actionTaken);
+        }else{
+        	OrmUtils.reattach(actionTaken, entityManager.merge(actionTaken));
+        }
+    }
+
+    //TODO perhaps runtime isn't the best here, maybe a dao runtime exception
+    private void checkNull(Object value, String valueName) throws RuntimeException {
+        if (value == null) {
+            throw new RuntimeException("Null value for " + valueName);
+        }
+    }
+
+    public void deleteByRouteHeaderId(Long routeHeaderId){
+	    Criteria crit = new Criteria(ActionRequestValue.class.getName());
+	    crit.eq("routeHeaderId", routeHeaderId);
+	    ActionRequestValue actionRequestValue = (ActionRequestValue) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
+	    entityManager.remove(actionRequestValue);
+    }
+
+    public boolean hasUserTakenAction(String workflowId, Long routeHeaderId) {
+    	Criteria crit = new Criteria(ActionTakenValue.class.getName());
+	    crit.eq("routeHeaderId", routeHeaderId);
+	    crit.eq("workflowId", workflowId);
+	    crit.eq("currentIndicator", Boolean.TRUE);
+	    int count = (Integer) new QueryByCriteria(entityManager, crit).toCountQuery().getSingleResult();
+        return count > 0;
+    }
+
+}

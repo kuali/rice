@@ -23,6 +23,7 @@ import javax.persistence.PersistenceContext;
 
 import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
+import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.dao.RuleDelegationDAO;
 
@@ -39,7 +40,11 @@ public class RuleDelegationDAOJpaImpl implements RuleDelegationDAO {
     }
 
     public void save(RuleDelegation ruleDelegation) {
-    	entityManager.merge(ruleDelegation);
+    	if(ruleDelegation.getDelegateRuleId()==null){
+    		entityManager.persist(ruleDelegation);
+    	}else{
+    		OrmUtils.reattach(ruleDelegation, entityManager.merge(ruleDelegation));
+    	}
     }
     public List findAllRuleDelegations(){
         Criteria crit = new Criteria(RuleDelegation.class.getName());

@@ -25,6 +25,7 @@ import org.kuali.rice.core.database.platform.Platform;
 import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.rule.dao.RuleTemplateDAO;
@@ -77,7 +78,7 @@ public class RuleTemplateDAOJpaImpl implements RuleTemplateDAO {
     	if(ruleTemplate.getRuleTemplateId()==null){
     		entityManager.persist(ruleTemplate);
     	}else{
-    		entityManager.merge(ruleTemplate);
+    		OrmUtils.reattach(ruleTemplate, entityManager.merge(ruleTemplate));
     	}
     }
 

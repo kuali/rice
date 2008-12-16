@@ -1,3 +1,41 @@
+CREATE OR REPLACE VIEW krim_grp_v AS
+SELECT g.NMSPC_CD AS namespace_code
+     , g.grp_nm   AS group_name
+     , t.NM       AS group_type_name
+	 , a.NM       AS attribute_name
+	 , d.ATTR_VAL AS attribute_value 
+  FROM krim_grp_t g
+  LEFT OUTER JOIN KRIM_ROLE_MBR_ATTR_DATA_T d
+    ON d.TARGET_PRIMARY_KEY = g.GRP_ID
+  LEFT OUTER JOIN KRIM_ATTR_DEFN_T a
+    ON a.KIM_ATTR_DEFN_ID = d.KIM_ATTR_DEFN_ID 
+  LEFT OUTER JOIN KRIM_TYP_T t
+    ON g.KIM_TYP_ID = t.KIM_TYP_ID
+/
+CREATE OR REPLACE VIEW krim_grp_mbr_v AS
+SELECT g.NMSPC_CD AS namespace_code
+     , g.grp_nm AS group_name
+     , g.GRP_ID AS group_id
+     , p.PRNCPL_NM AS principal_name
+     , p.PRNCPL_ID AS principal_id
+     , mg.GRP_NM AS member_group_name
+     , mg.GRP_ID AS member_group_id
+    FROM KRIM_GRP_MBR_T gm
+    LEFT JOIN krim_grp_t g
+      ON g.GRP_ID = gm.GRP_ID
+    LEFT OUTER JOIN krim_grp_t mg
+      ON mg.GRP_ID = gm.MBR_ID
+      AND gm.MBR_TYP_CD = 'G'
+    LEFT OUTER JOIN krim_prncpl_t p
+      ON p.PRNCPL_ID = gm.MBR_ID
+      AND gm.MBR_TYP_CD = 'P'
+    LEFT OUTER JOIN krim_entity_nm_t en
+      ON en.ENTITY_ID = p.ENTITY_ID
+      AND en.DFLT_IND = 'Y'
+      AND en.ACTV_IND = 'Y'
+ORDER BY namespace_code, group_name
+/
+
 CREATE OR REPLACE VIEW krim_perm_v AS
 SELECT 
 	  KRIM_PERM_TMPL_T.NM AS PERM_TEMPLATE_NAME
@@ -56,17 +94,17 @@ FROM KRIM_PERM_T KRIM_PERM_T
 /
 
 
-CREATE OR REPLACE VIEW IU_KULDEV.KRIM_ROLE_PRNCPL_V
+CREATE OR REPLACE VIEW KRIM_ROLE_PRNCPL_V
 AS
 SELECT KRIM_ROLE_T.NMSPC_CD                 AS namespace_code
 	, KRIM_ROLE_T.ROLE_NM                  AS role_name
 	, KRIM_ROLE_T.ROLE_ID                  AS role_id
-	, KRIM_ATTR_DEFN_T.NM           AS qualifier_name
-	, KRIM_ROLE_MBR_ATTR_DATA_T.ATTR_VAL AS qualifier_value
 	, KRIM_PRNCPL_T.PRNCPL_NM           AS principal_name
     , KRIM_PRNCPL_T.PRNCPL_ID           AS principal_id
-	, KRIM_ENTITY_NM_T.FIRST_NM
-	, KRIM_ENTITY_NM_T.LAST_NM 
+	, KRIM_ENTITY_NM_T.FIRST_NM AS first_name
+	, KRIM_ENTITY_NM_T.LAST_NM  AS last_name
+	, KRIM_ATTR_DEFN_T.NM           AS qualifier_name
+	, KRIM_ROLE_MBR_ATTR_DATA_T.ATTR_VAL AS qualifier_value
 FROM KRIM_ROLE_T KRIM_ROLE_T 
 		LEFT OUTER JOIN KRIM_ROLE_MBR_T KRIM_ROLE_MBR_T 
 		ON KRIM_ROLE_T.ROLE_ID = KRIM_ROLE_MBR_T.ROLE_ID 
@@ -82,27 +120,49 @@ FROM KRIM_ROLE_T KRIM_ROLE_T
 						LEFT OUTER JOIN KRIM_ENTITY_NM_T KRIM_ENTITY_NM_T 
 						ON KRIM_PRNCPL_T.ENTITY_ID = KRIM_ENTITY_NM_T.ENTITY_ID 
 WHERE (KRIM_ENTITY_NM_T.DFLT_IND = 'Y')
-
+ORDER BY namespace_code, role_name, principal_name, qualifier_name
 /
 
 CREATE OR REPLACE VIEW krim_role_grp_v AS
-SELECT KRIM_ROLE_T.NMSPC_CD                 AS namespace_code
-	, KRIM_ROLE_T.ROLE_NM                  AS role_name
-	, KRIM_GRP_T.NMSPC_CD                AS group_namespace
-	, KRIM_GRP_T.GRP_NM                  AS group_name
-	, KRIM_ATTR_DEFN_T.NM           AS qualifier_name
-	, KRIM_ROLE_MBR_ATTR_DATA_T.ATTR_VAL AS qualifier_value 
-FROM KRIM_ROLE_MBR_ATTR_DATA_T KRIM_ROLE_MBR_ATTR_DATA_T 
-		RIGHT OUTER JOIN KRIM_ROLE_GRP_T KRIM_ROLE_GRP_T 
-		ON KRIM_ROLE_MBR_ATTR_DATA_T.TARGET_PRIMARY_KEY = KRIM_ROLE_GRP_T.
-		ROLE_MBR_ID 
-			LEFT OUTER JOIN KRIM_ATTR_DEFN_T KRIM_ATTR_DEFN_T 
-			ON KRIM_ROLE_MBR_ATTR_DATA_T.KIM_ATTR_DEFN_ID = KRIM_ATTR_DEFN_T.KIM_ATTR_DEFN_ID 
-				LEFT OUTER JOIN KRIM_ROLE_T KRIM_ROLE_T 
-				ON KRIM_ROLE_T.ROLE_ID = KRIM_ROLE_GRP_T.ROLE_ID 
-					INNER JOIN KRIM_GRP_T KRIM_GRP_T 
-					ON KRIM_ROLE_GRP_T.GRP_ID = KRIM_GRP_T.GRP_ID
+SELECT r.NMSPC_CD                 AS namespace_code
+	, r.ROLE_NM                  AS role_name
+    , g.NMSPC_CD                AS group_namespace
+	, g.GRP_NM                  AS group_name
+	, a.NM           AS qualifier_name
+	, d.ATTR_VAL AS qualifier_value 
+FROM KRIM_ROLE_MBR_T rm
+     LEFT JOIN KRIM_ROLE_T r
+		ON r.ROLE_ID = rm.ROLE_ID 
+     LEFT JOIN KRIM_GRP_T g
+        ON g.GRP_ID = rm.MBR_ID
+     LEFT OUTER JOIN KRIM_ROLE_MBR_ATTR_DATA_T d
+        ON d.TARGET_PRIMARY_KEY = rm.ROLE_MBR_ID
+    LEFT OUTER JOIN KRIM_ATTR_DEFN_T a
+        ON a.KIM_ATTR_DEFN_ID = d.KIM_ATTR_DEFN_ID 
+WHERE rm.MBR_TYP_CD = 'G'
+ORDER BY namespace_code, role_name, group_namespace, group_name, qualifier_name
 /
+
+CREATE OR REPLACE VIEW krim_role_role_v AS
+SELECT r.NMSPC_CD                 AS namespace_code
+	, r.ROLE_NM                  AS role_name
+    , g.NMSPC_CD                AS member_role_namespace
+	, g.role_NM                  AS member_role_name
+	, a.NM           AS qualifier_name
+	, d.ATTR_VAL AS qualifier_value 
+FROM KRIM_ROLE_MBR_T rm
+     LEFT JOIN KRIM_ROLE_T r
+		ON r.ROLE_ID = rm.ROLE_ID 
+     LEFT JOIN KRIM_role_T g
+        ON g.role_ID = rm.MBR_ID
+     LEFT OUTER JOIN KRIM_ROLE_MBR_ATTR_DATA_T d
+        ON d.TARGET_PRIMARY_KEY = rm.ROLE_MBR_ID
+    LEFT OUTER JOIN KRIM_ATTR_DEFN_T a
+        ON a.KIM_ATTR_DEFN_ID = d.KIM_ATTR_DEFN_ID 
+WHERE rm.MBR_TYP_CD = 'R'
+ORDER BY namespace_code, role_name, member_role_namespace, member_role_name, qualifier_name
+/
+
 CREATE OR REPLACE VIEW krim_prncpl_v AS
 SELECT 
 	  KRIM_PRNCPL_T.PRNCPL_ID
@@ -122,13 +182,53 @@ FROM KRIM_ENTITY_AFLTN_T KRIM_ENTITY_AFLTN_T
 				ON KRIM_PRNCPL_T.ENTITY_ID = KRIM_ENTITY_NM_T.ENTITY_ID 
 WHERE (KRIM_ENTITY_NM_T.DFLT_IND = 'Y') 
 /
-CREATE OR REPLACE KRIM_ROLE_V AS
+
+CREATE OR REPLACE VIEW KRIM_ROLE_V AS
 SELECT r.ROLE_ID, r.NMSPC_CD AS namespace_code, r.ROLE_NM AS role_name, t.nm AS type_name, t.SRVC_NM AS service_name, t.KIM_TYP_ID AS role_type_id
     FROM KRIM_ROLE_T r, KRIM_TYP_T t
     WHERE t.KIM_TYP_ID = r.KIM_TYP_ID
       AND r.ACTV_IND = 'Y'
-    ORDER BY 2, 3
+    ORDER BY namespace_code, role_name
 /
 
 
+CREATE OR REPLACE VIEW KRIM_ROLE_RSP_V AS
+SELECT KRIM_ROLE_T.NMSPC_CD             AS role_namespace
+	, KRIM_ROLE_T.ROLE_NM              AS role_name
+	, KRIM_rsp_TMPL_T.NM            AS rsp_template_name
+	, KRIM_rsp_T.NM                 AS rsp_name
+	, KRIM_ATTR_DEFN_T.NM       AS attribute_name
+	, KRIM_rsp_ATTR_DATA_T.ATTR_VAL AS attribute_value
+FROM KRIM_rsp_T KRIM_rsp_T
+    INNER JOIN KRIM_rsp_TMPL_T KRIM_rsp_TMPL_T
+        ON KRIM_rsp_T.rsp_TMPL_ID = KRIM_rsp_TMPL_T.rsp_TMPL_ID
+    LEFT OUTER JOIN KRIM_rsp_ATTR_DATA_T KRIM_rsp_ATTR_DATA_T
+        ON KRIM_rsp_T.rsp_ID = KRIM_rsp_ATTR_DATA_T.TARGET_PRIMARY_KEY
+    INNER JOIN KRIM_ATTR_DEFN_T KRIM_ATTR_DEFN_T
+        ON KRIM_rsp_ATTR_DATA_T.KIM_ATTR_DEFN_ID = KRIM_ATTR_DEFN_T.KIM_ATTR_DEFN_ID
+    INNER JOIN KRIM_ROLE_rsp_T KRIM_ROLE_rsp_T
+        ON KRIM_ROLE_rsp_T.rsp_ID = KRIM_rsp_T.rsp_ID
+    RIGHT OUTER JOIN KRIM_ROLE_T KRIM_ROLE_T
+        ON KRIM_ROLE_rsp_T.ROLE_ID = KRIM_ROLE_T.ROLE_ID
+ORDER BY role_namespace, role_name, rsp_template_name, rsp_name, attribute_name
+/
 
+CREATE OR REPLACE VIEW krim_perm_attr_v AS
+SELECT 
+      krim_typ_t.NM      AS responsibility_type_name
+	, KRIM_rsp_TMPL_T.NM AS rsp_TEMPLATE_NAME
+    , KRIM_rsp_T.NM      AS rsp_NAME
+    , krim_rsp_t.RSP_ID  AS rsp_id
+	, KRIM_ATTR_DEFN_T.NM AS attribute_name 
+	, KRIM_rsp_ATTR_DATA_T.ATTR_VAL AS attribute_value
+FROM KRIM_rsp_T KRIM_rsp_T 
+    INNER JOIN KRIM_rsp_ATTR_DATA_T KRIM_rsp_ATTR_DATA_T 
+        ON KRIM_rsp_T.rsp_ID = KRIM_rsp_ATTR_DATA_T.TARGET_PRIMARY_KEY 
+    INNER JOIN KRIM_ATTR_DEFN_T KRIM_ATTR_DEFN_T 
+        ON KRIM_rsp_ATTR_DATA_T.KIM_ATTR_DEFN_ID = KRIM_ATTR_DEFN_T.KIM_ATTR_DEFN_ID 
+    INNER JOIN KRIM_rsp_TMPL_T KRIM_rsp_TMPL_T 
+        ON KRIM_rsp_T.rsp_TMPL_ID = KRIM_rsp_TMPL_T.rsp_TMPL_ID 
+    INNER JOIN KRIM_TYP_T KRIM_TYP_T 
+        ON KRIM_rsp_TMPL_T.KIM_TYP_ID = KRIM_TYP_T.KIM_TYP_ID
+ORDER BY rsp_TEMPLATE_NAME, rsp_NAME, attribute_name
+/

@@ -94,7 +94,12 @@ public class AttributesMapBuilder {
         }
         
         if(attribute.hasAttributeSecurity()){
-        	attributeMap.set("attributeSecurityClass", attribute.getDisplayMask().getClass().toString());
+        	attributeMap.set("attributeSecurityMask", String.valueOf(attribute.getAttributeSecurity().isMask()));
+        	attributeMap.set("attributeSecurityPartialMask", String.valueOf(attribute.getAttributeSecurity().isPartialMask()));
+        	attributeMap.set("attributeSecurityHide", String.valueOf(attribute.getAttributeSecurity().isHide()));
+        	attributeMap.set("attributeSecurityReadOnly", String.valueOf(attribute.getAttributeSecurity().isReadOnly()));
+        	
+        	// TODO: consider whether to export class names from the attribute security
         }
 
         attributeMap.set(buildControlMap(attribute));

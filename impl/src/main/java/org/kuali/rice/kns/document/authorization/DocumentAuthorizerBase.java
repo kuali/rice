@@ -123,7 +123,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
         	docActions.add(KNSConstants.KUALI_ACTION_CAN_EDIT);
         }
         
-       if(canBlanketApprove(document, user)){
+       if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_BLANKET_APPROVE) && canBlanketApprove(document, user)){
     	   docActions.add(KNSConstants.KUALI_ACTION_CAN_BLANKET_APPROVE);
        }
        

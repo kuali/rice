@@ -145,6 +145,14 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
     	return (canEdit(document)&& !workflowDocument.stateIsException());
     }
     
+   
+    /**
+     * 
+     * @see org.kuali.rice.kns.document.authorization.DocumentPresentationController#canBlanketApprove(org.kuali.rice.kns.document.Document)
+     */
+    public boolean canBlanketApprove(Document document){
+    	return canEdit(document);
+    }
     
     /**
      
@@ -187,6 +195,10 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
     	
     	if(canAdHocRoute(document)){
     		documentActions.add(KNSConstants.KUALI_ACTION_CAN_AD_HOC_ROUTE);
+    	}
+    	
+    	if(canBlanketApprove(document)){
+    		documentActions.add(KNSConstants.KUALI_ACTION_CAN_BLANKET_APPROVE);
     	}
     	return documentActions;
     }

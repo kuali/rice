@@ -92,6 +92,12 @@ public interface DocumentPresentationController {
     
     /**
      * @param document
+     * @return boolean indicating whether can be blanketApproved
+     */
+    public boolean canBlanketApprove(Document document);
+    
+    /**
+     * @param document
      * @return Set of actions that allow to take on that document.
      */
     public Set<String> getDocumentActions(Document document);

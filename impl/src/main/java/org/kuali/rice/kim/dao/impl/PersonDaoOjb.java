@@ -35,6 +35,7 @@ import org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.LookupService;
+import org.springframework.orm.ObjectRetrievalFailureException;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -358,6 +359,9 @@ public class PersonDaoOjb<T extends PersonImpl> extends PlatformAwareDaoBaseOjb 
 			Constructor<? extends T> copyConstructor = getPersonImplementationClass().getConstructor( PersonCacheImpl.class );
 			T person = copyConstructor.newInstance( pci );			
 			return person;
+		} catch ( ObjectRetrievalFailureException ex ) {
+			// if not found, just return null
+			return null;
 		} catch ( Exception ex ) {
 			// allow runtime exceptions to pass through
 			if ( ex instanceof RuntimeException ) {

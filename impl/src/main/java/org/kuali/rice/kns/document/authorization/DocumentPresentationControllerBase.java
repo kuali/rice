@@ -81,11 +81,7 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
      * @see org.kuali.rice.kns.document.authorization.DocumentPresentationController#canSave(org.kuali.rice.kns.document.Document)
      */
     public boolean canSave(Document document){
-    	KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
-        if (workflowDocument.stateIsInitiated() || workflowDocument.stateIsSaved()) {
-        	return true;
-        }
-    	return false;
+    	return canEdit(document);
     }
     
    

@@ -53,6 +53,17 @@ public class InquiryForm extends KualiForm {
     private String formKey;
     private boolean canExport;
     
+    @Override
+    public void addRequiredNonEditableProperties(){
+    	super.addRequiredNonEditableProperties();
+    	registerRequiredNonEditableProperty(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE);
+    	registerRequiredNonEditableProperty(KNSConstants.DISPATCH_REQUEST_PARAMETER);
+    	registerRequiredNonEditableProperty(KNSConstants.DOC_FORM_KEY);
+    	registerRequiredNonEditableProperty(KNSConstants.FORM_KEY);
+    	registerRequiredNonEditableProperty(KNSConstants.FIELDS_CONVERSION_PARAMETER);
+    	registerRequiredNonEditableProperty(KNSConstants.BACK_LOCATION);
+    }
+    
     /**
      * The following map is used to pass primary key values between invocations of the inquiry screens after the start method has been called.  Values in this map will remain encrypted
      * if the value was passed in as encrypted 

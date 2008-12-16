@@ -464,7 +464,11 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         super.processAfterRetrieve();
         
         populateMaintainablesFromXmlDocumentContents();
+        if (oldMaintainableObject != null) {
+        	oldMaintainableObject.setDocumentNumber(documentNumber);
+        }
         if (newMaintainableObject != null) {
+        	newMaintainableObject.setDocumentNumber(documentNumber);
             newMaintainableObject.processAfterRetrieve();
         }
     }

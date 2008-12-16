@@ -16,7 +16,6 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 <%@ attribute name="resultsList" required="true" type="java.util.List" description="The rows of fields that we'll iterate to display." %>
-
 <c:if test="${empty resultsList && KualiForm.methodToCall != 'start' && KualiForm.methodToCall != 'refresh'}">
 	There were no results found.
 </c:if>
@@ -74,7 +73,9 @@
 					<tr class="${rowclass}">
 					<td class="infocell">
 							<c:if test="${ row.rowReturnable }" >
+								<c:set var="returnValue" value="${row.rowId}" />
 								${row.returnUrl}
+								${kfunc:registerEditableProperty(KualiForm, returnValue)} 
 								<input type="hidden" name="${Constants.MULTIPLE_VALUE_LOOKUP_DISPLAYED_OBJ_ID_PARAM_PREFIX}${row.objectId}" value="onscreen"/>
 							</c:if>
 						</td>

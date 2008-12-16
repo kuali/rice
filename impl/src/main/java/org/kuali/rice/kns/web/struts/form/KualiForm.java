@@ -22,7 +22,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.datadictionary.HeaderNavigation;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.ActionFormUtilMap;
@@ -41,6 +40,8 @@ import org.kuali.rice.kns.web.ui.HeaderField;
 public class KualiForm extends PojoFormBase {
     private static final long serialVersionUID = 1L;
     private String methodToCall;
+    private boolean currentMethodToCallIsRefresh;
+    private boolean nextMethodToCallIsRefresh;
     private String refreshCaller;
     private String anchor;
     private Map<String, String> tabStates;
@@ -57,6 +58,15 @@ public class KualiForm extends PojoFormBase {
     
     private List<HeaderField> docInfo;
     private int numColumns = 2;
+    
+    /**
+     * @see org.kuali.rice.kns.web.struts.pojo.PojoFormBase#addRequiredNonEditableProperties()
+     */
+    @Override
+    public void addRequiredNonEditableProperties(){
+    	super.addRequiredNonEditableProperties();
+    	registerRequiredNonEditableProperty(KNSConstants.REFRESH_CALLER);
+    }
     
     public int getNumColumns() {
         return this.numColumns;
@@ -81,18 +91,18 @@ public class KualiForm extends PojoFormBase {
         this.tabStates = new HashMap<String, String>();
         this.actionFormUtilMap = new ActionFormUtilMap();
         this.docInfo = new ArrayList<HeaderField>();
+        this.nextMethodToCallIsRefresh = false;
     }
 
     /**
      * Checks for methodToCall parameter, and if not populated in form calls utility method to parse the string from the request.
      */
     public void populate(HttpServletRequest request) {
+        setMethodToCall(WebUtils.parseMethodToCall(this, request));
+        this.nextMethodToCallIsRefresh = false;
+        
         super.populate(request);
 
-        if (StringUtils.isEmpty(this.getMethodToCall())) {
-            // call utility method to parse the methodToCall from the request.
-            setMethodToCall(WebUtils.parseMethodToCall(request));
-        }
         populateFieldLevelHelpEnabled(request);
         
         if (actionFormUtilMap instanceof ActionFormUtilMap) {
@@ -319,4 +329,65 @@ public class KualiForm extends PojoFormBase {
 		Formatter formatter = Formatter.getFormatter(value.getClass());
 		return (String) formatter.format(value);	
     }
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.web.struts.pojo.PojoFormBase#shouldPropertyBePopulatedInForm(java.lang.String, javax.servlet.http.HttpServletRequest)
+	 */
+	@Override
+	public boolean shouldPropertyBePopulatedInForm(
+			String requestParameterName, HttpServletRequest request) {
+		if (requestParameterName.startsWith(KNSConstants.TAB_STATES)) {
+			return true;
+		}
+		return super.shouldPropertyBePopulatedInForm(requestParameterName, request);
+	}
+    
+    public boolean shouldMethodToCallParameterBeUsed(String methodToCallParameterName, String methodToCallParameterValue, HttpServletRequest request) {
+    	
+    	if (shouldPropertyBePopulatedInForm(methodToCallParameterName, request)) {
+    		return true;
+    	}
+    	if (methodToCallParameterName != null && methodToCallParameterName.endsWith(WebUtils.IMAGE_COORDINATE_CLICKED_X_EXTENSION)) {
+    		methodToCallParameterName = methodToCallParameterName.substring(0, methodToCallParameterName.lastIndexOf(WebUtils.IMAGE_COORDINATE_CLICKED_X_EXTENSION));
+        	if (shouldPropertyBePopulatedInForm(methodToCallParameterName, request)) {
+        		return true;
+        	}
+    	}
+    	if (KNSConstants.METHOD_TO_CALL_PATH.equals(methodToCallParameterName)) {
+    		if (shouldPropertyBePopulatedInForm(methodToCallParameterValue, request)) {
+    			return true;
+    		}
+    		if (methodToCallParameterValue != null && methodToCallParameterValue.endsWith(WebUtils.IMAGE_COORDINATE_CLICKED_X_EXTENSION)) {
+    			methodToCallParameterValue = methodToCallParameterValue.substring(0, methodToCallParameterValue.lastIndexOf(WebUtils.IMAGE_COORDINATE_CLICKED_X_EXTENSION));
+    			if (shouldPropertyBePopulatedInForm(methodToCallParameterValue, request)) {
+        			return true;
+        		}
+    		}
+    	}
+    	return false;
+    }
+
+	/**
+	 * @see org.kuali.rice.kns.web.struts.pojo.PojoFormBase#switchEditablePropertyInformationToPreviousRequestInformation()
+	 */
+	@Override
+	public void switchEditablePropertyInformationToPreviousRequestInformation() {
+		super.switchEditablePropertyInformationToPreviousRequestInformation();
+		currentMethodToCallIsRefresh = nextMethodToCallIsRefresh;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.web.struts.pojo.PojoFormBase#clearEditablePropertyInformation()
+	 */
+	@Override
+	public void clearEditablePropertyInformation() {
+		super.clearEditablePropertyInformation();
+		nextMethodToCallIsRefresh = false;
+	}
+	
+	public void registerNextMethodToCallIsRefresh(boolean nextMethodToCallIsRefresh) {
+		this.nextMethodToCallIsRefresh = nextMethodToCallIsRefresh;
+	}
 }

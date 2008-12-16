@@ -75,7 +75,7 @@ public abstract class DocumentEntryMapper {
         
         entryMap.set("usePessimisticLocking", Boolean.toString(entry.getUsePessimisticLocking()));
         entryMap.set("useWorkflowPessimisticLocking", Boolean.toString(entry.getUseWorkflowPessimisticLocking()));
-        entryMap.set("sessionDocument", Boolean.toString(entry.getSessionDocument()));
+        entryMap.set("sessionDocument", Boolean.toString(entry.isSessionDocument()));
         
         entryMap.set(new AttributesMapBuilder().buildAttributesMap(entry));
         entryMap.set(new CollectionsMapBuilder().buildCollectionsMap(entry));

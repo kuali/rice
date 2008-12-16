@@ -26,10 +26,12 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.jsp.PageContext;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Level;
@@ -40,10 +42,17 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionServletWrapper;
 import org.apache.struts.upload.MultipartRequestHandler;
 import org.apache.struts.upload.MultipartRequestWrapper;
+import org.kuali.rice.kns.datadictionary.DataDictionary;
+import org.kuali.rice.kns.datadictionary.DocumentEntry;
+import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.exception.FileUploadLimitExceededException;
 import org.kuali.rice.kns.exception.ValidationException;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.web.struts.action.KualiMultipartRequestHandler;
+import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
+import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
+import org.kuali.rice.kns.web.struts.pojo.PojoForm;
 import org.kuali.rice.kns.web.struts.pojo.PojoFormBase;
 
 /**
@@ -54,27 +63,47 @@ import org.kuali.rice.kns.web.struts.pojo.PojoFormBase;
 public class WebUtils {
     private static final Logger LOG = Logger.getLogger(WebUtils.class);
 
+    public static final String IMAGE_COORDINATE_CLICKED_X_EXTENSION = ".x";
+    public static final String IMAGE_COORDINATE_CLICKED_Y_EXTENSION = ".y";
+    
     /**
      * Checks for methodToCall parameter, and picks off the value using set dot notation. Handles the problem of image submits.
      * 
      * @param request
      * @return methodToCall String
      */
-    public static String parseMethodToCall(HttpServletRequest request) {
+    public static String parseMethodToCall(ActionForm form, HttpServletRequest request) {
         String methodToCall = null;
-
+        
         // check if is specified cleanly
         if (StringUtils.isNotBlank(request.getParameter(KNSConstants.DISPATCH_REQUEST_PARAMETER))) {
-            methodToCall = request.getParameter(KNSConstants.DISPATCH_REQUEST_PARAMETER);
+        	if (form instanceof KualiForm && !((KualiForm) form).shouldMethodToCallParameterBeUsed(KNSConstants.DISPATCH_REQUEST_PARAMETER,
+        				request.getParameter(KNSConstants.DISPATCH_REQUEST_PARAMETER), request)) {
+    			throw new RuntimeException("Cannot verify that the methodToCall should be " + request.getParameter(KNSConstants.DISPATCH_REQUEST_PARAMETER));
+        	}
+    		methodToCall = request.getParameter(KNSConstants.DISPATCH_REQUEST_PARAMETER);
+    		// include .x at the end of the parameter to make it consistent w/ other parameters
+    		request.setAttribute(KNSConstants.METHOD_TO_CALL_ATTRIBUTE, KNSConstants.DISPATCH_REQUEST_PARAMETER + "." + methodToCall + IMAGE_COORDINATE_CLICKED_X_EXTENSION);
         }
 
+        /**
+         * The reason why we are checking for a ".x" at the end of the parameter name:
+         * It is for the image names that in addition to sending the form data, 
+         * the web browser sends the x,y coordinate of where the user clicked on the image. 
+         * If the image input is not given a name then the browser sends the x and y coordinates as the "x" and "y" input fields. 
+         * If the input image does have a name, the x and y coordinates are sent using the format name.x and name.y. 
+         */
         if (methodToCall == null) {
             // iterate through parameters looking for methodToCall
             for (Enumeration i = request.getParameterNames(); i.hasMoreElements();) {
                 String parameterName = (String) i.nextElement();
 
                 // check if the parameter name is a specifying the methodToCall
-                if (parameterName.startsWith(KNSConstants.DISPATCH_REQUEST_PARAMETER) && parameterName.endsWith(".x")) {
+                if (parameterName.startsWith(KNSConstants.DISPATCH_REQUEST_PARAMETER) 
+                		&& parameterName.endsWith(IMAGE_COORDINATE_CLICKED_X_EXTENSION)) {
+                	if (form instanceof ActionForm && !((KualiForm) form).shouldMethodToCallParameterBeUsed(parameterName, request.getParameter(parameterName), request)) {
+            			throw new RuntimeException("Cannot verify that the methodToCall should be " + parameterName);
+            		}
                     methodToCall = StringUtils.substringBetween(parameterName, KNSConstants.DISPATCH_REQUEST_PARAMETER + ".", ".");
                     request.setAttribute(KNSConstants.METHOD_TO_CALL_ATTRIBUTE, parameterName);
                     // Fix for KRACOEUS-267, KULRICE-1412, KULRICE-1425, and KFSMI-110
@@ -83,7 +112,11 @@ public class WebUtils {
                 } else { 
                     // KULRICE-1218: Check if the parameter's values match (not just the name)
                     for (String value : request.getParameterValues(parameterName)) {
-                        if (value.startsWith(KNSConstants.DISPATCH_REQUEST_PARAMETER) && value.endsWith(".x")) {
+                        if (value.startsWith(KNSConstants.DISPATCH_REQUEST_PARAMETER) 
+                        		&& value.endsWith(IMAGE_COORDINATE_CLICKED_X_EXTENSION)) {
+                        	if (form instanceof ActionForm && !((KualiForm) form).shouldMethodToCallParameterBeUsed(parameterName, value, request)) {
+                        		throw new RuntimeException("Cannot verify that the methodToCall should be " + value);
+                        	}
                             methodToCall = StringUtils.substringBetween(value, KNSConstants.DISPATCH_REQUEST_PARAMETER + ".", ".");
                             request.setAttribute(KNSConstants.METHOD_TO_CALL_ATTRIBUTE, value);
                         }
@@ -340,4 +373,62 @@ public class WebUtils {
 
 
     // end multipart
+    
+    public static void registerEditableProperty(PojoFormBase form, String editablePropertyName){
+    	form.registerEditableProperty(editablePropertyName);
+    }
+    
+    public static boolean isDocumentSession(Document document, PojoFormBase docForm){
+		boolean sessionDoc = document instanceof org.kuali.rice.kns.document.SessionDocument;
+		boolean dataDictionarySessionDoc = false;
+		if (!sessionDoc) {
+			DocumentEntry documentEntry = null;
+			DataDictionary dataDictionary = KNSServiceLocator.getDataDictionaryService().getDataDictionary();
+			if (docForm instanceof KualiMaintenanceForm) {
+				KualiMaintenanceForm maintenanceForm = (KualiMaintenanceForm) docForm;
+				if (dataDictionary != null) {
+					documentEntry = dataDictionary.getDocumentEntry(maintenanceForm.getDocTypeName());
+					dataDictionarySessionDoc = documentEntry.isSessionDocument();
+				}
+			} else {
+				if (document!=null && dataDictionary != null) {
+					documentEntry = dataDictionary.getDocumentEntry(document.getClass().getName());
+					dataDictionarySessionDoc = documentEntry.isSessionDocument();
+				}
+			}
+		}
+		return sessionDoc || dataDictionarySessionDoc;
+    }
+    
+    public static boolean isFormSessionDocument(PojoFormBase form){
+    	Document document = null;
+    	if (KualiDocumentFormBase.class.isAssignableFrom(form.getClass())) {
+			KualiDocumentFormBase docForm = (KualiDocumentFormBase)form;
+			document = docForm.getDocument();
+    	}
+    	return isDocumentSession(document, form);
+    }
+    
+    public static String KEY_KUALI_FORM_IN_SESSION = "KualiForm";
+    public static ActionForm getKualiForm(PageContext pageContext){
+    	return getKualiForm((HttpServletRequest)pageContext.getRequest());
+    }
+    
+    public static ActionForm getKualiForm(HttpServletRequest request){
+    	if(request.getAttribute(KEY_KUALI_FORM_IN_SESSION)!=null)
+    		return (ActionForm)request.getAttribute(KEY_KUALI_FORM_IN_SESSION);
+    	else
+    		return (ActionForm)request.getSession().getAttribute(KEY_KUALI_FORM_IN_SESSION);
+    }
+    
+    public static boolean isPropertyEditable(Set<String> editableProperties, String propertyName){
+    	if (LOG.isDebugEnabled()) {
+    		LOG.debug("editableProperties: "+editableProperties);
+    	}
+    	boolean returnVal =  editableProperties.contains(propertyName) ||
+    			(propertyName.lastIndexOf(WebUtils.IMAGE_COORDINATE_CLICKED_X_EXTENSION)==-1?false:
+    				editableProperties.contains(
+    						propertyName.substring(0, propertyName.lastIndexOf(WebUtils.IMAGE_COORDINATE_CLICKED_X_EXTENSION))));
+    	return returnVal;
+    }
 }

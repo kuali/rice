@@ -52,4 +52,11 @@
         <function-signature>void incrementTabIndex(org.kuali.rice.kns.web.struts.form.KualiForm, java.lang.String)</function-signature>
         <example>${kfunc:incrementTabIndex(kualiForm)}</example>
     </function>
+    <function>
+    	<description>Registers that a property was editable on the page.</description>
+    	<name>registerEditableProperty</name>
+	    <function-class>org.kuali.rice.kns.util.WebUtils</function-class>
+	    <function-signature>void registerEditableProperty(org.kuali.rice.kns.web.struts.pojo.PojoFormBase, java.lang.String)</function-signature>
+	    <example>${kfunc:registerEditableProperty(KualiForm, editablePropertyName)}</example>
+	</function>
 </taglib>

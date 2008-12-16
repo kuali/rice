@@ -1065,7 +1065,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
             }
 
             ResultRow row = new ResultRow(columns, returnUrl.constructCompleteHtmlTag(), actionUrls);
-
+            row.setRowId(returnUrl.getName());
         	// because of concerns of the BO being cached in session on the ResultRow,
         	// let's only attach it when needed (currently in the case of export)
             if (getBusinessObjectDictionaryService().isExportable(getBusinessObjectClass())) {

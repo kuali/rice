@@ -41,6 +41,16 @@ public class MultipleValueLookupForm extends LookupForm {
     private String lookupResultsSequenceNumber;
     
     /**
+     * @see org.kuali.rice.kns.web.struts.form.LookupForm#addRequiredNonEditableProperties()
+     */
+    @Override
+    public void addRequiredNonEditableProperties(){
+    	super.addRequiredNonEditableProperties();
+    	registerRequiredNonEditableProperty(KNSConstants.LOOKUP_RESULTS_SEQUENCE_NUMBER);
+    	registerRequiredNonEditableProperty(KNSConstants.LOOKED_UP_COLLECTION_NAME);
+    }
+    
+    /**
      * The number of rows that match the query criteria
      */
     private int resultsActualSize;

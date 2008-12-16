@@ -17,6 +17,7 @@
 
 <%@ attribute name="field" required="true" type="org.kuali.rice.kns.web.ui.Field"%>
 
+${kfunc:registerEditableProperty(KualiForm, field.propertyName)}
 <c:forEach items="${field.fieldValidValues}" var="radio">
   <c:if test="${!empty radio.label}">
     <input type="radio"

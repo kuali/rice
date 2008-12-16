@@ -104,7 +104,7 @@ public class KualiExceptionHandlerAction extends KualiAction {
             LOG.trace(lm);
         }
                         
-        String methodToCall=WebUtils.parseMethodToCall(request);
+        String methodToCall=WebUtils.parseMethodToCall(form, request);
         
         ActionForward forward;
         if (methodToCall == null) {

@@ -375,8 +375,8 @@ public class ActionRequestDTO implements Serializable {
 	public void setGroupId(String groupId) {
 		this.groupId = groupId;
 	}
-
-	public boolean isDelegateRequest() {
+	
+    public boolean isDelegateRequest() {
         if (getParentActionRequest() != null) {
             if (getParentActionRequest().isRoleRequest()) {
                 return getParentActionRequest().isDelegateRequest();

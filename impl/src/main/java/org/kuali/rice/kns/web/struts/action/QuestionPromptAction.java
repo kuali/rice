@@ -92,7 +92,7 @@ public class QuestionPromptAction extends KualiAction {
         }
         if (StringUtils.isNotBlank(questionPromptForm.getMethodToCallPath())) {
             // For header tab navigation. Leaving it blank will just kick user back to page.
-            parameters.put(KNSConstants.METHOD_TO_CALL_PATH, questionPromptForm.getMethodToCallPath());
+            parameters.put(questionPromptForm.getMethodToCallPath(), "present");
         }
 
         String returnUrl = UrlFactory.parameterizeUrl(questionPromptForm.getBackLocation(), parameters);

@@ -62,6 +62,30 @@ public class LookupForm extends KualiForm {
     private String docNum;
     private String htmlDataType;
     private String lookupObjectId;
+
+    /**
+     * @see org.kuali.rice.kns.web.struts.form.KualiForm#addRequiredNonEditableProperties()
+     */
+    public void addRequiredNonEditableProperties(){
+    	super.addRequiredNonEditableProperties();
+    	registerRequiredNonEditableProperty(KNSConstants.LOOKUPABLE_IMPL_ATTRIBUTE_NAME);
+    	registerRequiredNonEditableProperty(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE);
+    	registerRequiredNonEditableProperty(KNSConstants.DISPATCH_REQUEST_PARAMETER);
+    	registerRequiredNonEditableProperty(KNSConstants.DOC_FORM_KEY);
+    	registerRequiredNonEditableProperty(KNSConstants.REFRESH_CALLER);
+    	registerRequiredNonEditableProperty(KNSConstants.DOC_NUM);
+    	registerRequiredNonEditableProperty(KNSConstants.REFERENCES_TO_REFRESH);
+    	registerRequiredNonEditableProperty(KNSConstants.FORM_KEY);
+    	registerRequiredNonEditableProperty(KNSConstants.CONVERSION_FIELDS_PARAMETER);
+    	registerRequiredNonEditableProperty(KNSConstants.FIELDS_CONVERSION_PARAMETER);
+    	registerRequiredNonEditableProperty(KNSConstants.HIDE_LOOKUP_RETURN_LINK);
+    	registerRequiredNonEditableProperty(KNSConstants.MULTIPLE_VALUE);
+    	registerRequiredNonEditableProperty(KNSConstants.BACK_LOCATION);
+    	registerRequiredNonEditableProperty(KNSConstants.LOOKUP_ANCHOR);
+    	registerRequiredNonEditableProperty("searchUsingOnlyPrimaryKeyValues");
+    	registerRequiredNonEditableProperty(KNSConstants.MULTIPLE_VALUE_LOOKUP_PREVIOUSLY_SELECTED_OBJ_IDS_PARAM);
+    	registerRequiredNonEditableProperty(KNSConstants.TableRenderConstants.VIEWED_PAGE_NUMBER);
+    }
     
     /**
 	 * @return the htmlDataType
@@ -119,9 +143,9 @@ public class LookupForm extends KualiForm {
 
         try {
             Lookupable localLookupable = null;
-            if (StringUtils.isBlank(request.getParameter(KNSConstants.LOOKUPABLE_IMPL_ATTRIBUTE_NAME)) && StringUtils.isBlank(getLookupableImplServiceName())) {
+            if (StringUtils.isBlank(getParameter(request, KNSConstants.LOOKUPABLE_IMPL_ATTRIBUTE_NAME)) && StringUtils.isBlank(getLookupableImplServiceName())) {
                 // get the business object class for the lookup
-                String localBusinessObjectClassName = request.getParameter(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE);
+                String localBusinessObjectClassName = getParameter(request, KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE);
                 if ( ExternalizableBusinessObjectUtils.isExternalizableBusinessObjectInterface(localBusinessObjectClassName) ) {
                 	Class localBusinessObjectClass = Class.forName(localBusinessObjectClassName);
                 	localBusinessObjectClassName = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService(localBusinessObjectClass).getExternalizableBusinessObjectImplementation(localBusinessObjectClass).getName();
@@ -151,53 +175,53 @@ public class LookupForm extends KualiForm {
             localLookupable.setParameters(requestParameters);
             requestParameters = null;
             
-            if (request.getParameter(KNSConstants.LOOKUPABLE_IMPL_ATTRIBUTE_NAME) != null) {
-                setLookupableImplServiceName(request.getParameter(KNSConstants.LOOKUPABLE_IMPL_ATTRIBUTE_NAME));
+            if (getParameter(request, KNSConstants.LOOKUPABLE_IMPL_ATTRIBUTE_NAME) != null) {
+                setLookupableImplServiceName(getParameter(request, KNSConstants.LOOKUPABLE_IMPL_ATTRIBUTE_NAME));
             }
 
-            if (request.getParameter(KNSConstants.LOOKUPABLE_IMPL_ATTRIBUTE_NAME) != null) {
-                setLookupableImplServiceName(request.getParameter(KNSConstants.LOOKUPABLE_IMPL_ATTRIBUTE_NAME));
+            if (getParameter(request, KNSConstants.LOOKUPABLE_IMPL_ATTRIBUTE_NAME) != null) {
+                setLookupableImplServiceName(getParameter(request, KNSConstants.LOOKUPABLE_IMPL_ATTRIBUTE_NAME));
             }
 
             // check the doc form key is empty before setting so we don't override a restored lookup form
             if (request.getAttribute(KNSConstants.DOC_FORM_KEY) != null && StringUtils.isBlank(this.getFormKey())) {
                 setFormKey((String) request.getAttribute(KNSConstants.DOC_FORM_KEY));
             }
-            else if (request.getParameter(KNSConstants.DOC_FORM_KEY) != null && StringUtils.isBlank(this.getFormKey())) {
-                setFormKey(request.getParameter(KNSConstants.DOC_FORM_KEY));
+            else if (getParameter(request, KNSConstants.DOC_FORM_KEY) != null && StringUtils.isBlank(this.getFormKey())) {
+                setFormKey(getParameter(request, KNSConstants.DOC_FORM_KEY));
             }
             
-            if (request.getParameter(KNSConstants.DOC_NUM) != null) {
-                setDocNum(request.getParameter(KNSConstants.DOC_NUM));
+            if (getParameter(request, KNSConstants.DOC_NUM) != null) {
+                setDocNum(getParameter(request, KNSConstants.DOC_NUM));
            }
 
-            if (request.getParameter("returnLocation") != null) {
-                setBackLocation(request.getParameter("returnLocation"));
+            if (getParameter(request, "returnLocation") != null) {
+                setBackLocation(getParameter(request, "returnLocation"));
             }
-            if (request.getParameter("conversionFields") != null) {
-                setConversionFields(request.getParameter("conversionFields"));
+            if (getParameter(request, "conversionFields") != null) {
+                setConversionFields(getParameter(request, "conversionFields"));
             }
-            if (request.getParameter(KNSConstants.EXTRA_BUTTON_SOURCE) != null) {
-                setExtraButtonSource(request.getParameter(KNSConstants.EXTRA_BUTTON_SOURCE));
+            if (getParameter(request, KNSConstants.EXTRA_BUTTON_SOURCE) != null) {
+                setExtraButtonSource(getParameter(request, KNSConstants.EXTRA_BUTTON_SOURCE));
             }
-            if (request.getParameter(KNSConstants.EXTRA_BUTTON_PARAMS) != null) {
-                setExtraButtonParams(request.getParameter(KNSConstants.EXTRA_BUTTON_PARAMS));
+            if (getParameter(request, KNSConstants.EXTRA_BUTTON_PARAMS) != null) {
+                setExtraButtonParams(getParameter(request, KNSConstants.EXTRA_BUTTON_PARAMS));
             }
-            String value = request.getParameter("multipleValues");
+            String value = getParameter(request, "multipleValues");
             if (value != null) {
                 if ("YES".equals(value.toUpperCase())) {
                     setMultipleValues(true);
                 }
                 else {
-                    setMultipleValues(new Boolean(request.getParameter("multipleValues")).booleanValue());
+                    setMultipleValues(new Boolean(getParameter(request, "multipleValues")).booleanValue());
                 }
             }
-            if (request.getParameter(KNSConstants.REFERENCES_TO_REFRESH) != null) {
-                setReferencesToRefresh(request.getParameter(KNSConstants.REFERENCES_TO_REFRESH));
+            if (getParameter(request, KNSConstants.REFERENCES_TO_REFRESH) != null) {
+                setReferencesToRefresh(getParameter(request, KNSConstants.REFERENCES_TO_REFRESH));
             }
 
-            if (request.getParameter("readOnlyFields") != null) {
-                setReadOnlyFields(request.getParameter("readOnlyFields"));
+            if (getParameter(request, "readOnlyFields") != null) {
+                setReadOnlyFields(getParameter(request, "readOnlyFields"));
                 setReadOnlyFieldsList(LookupUtils.translateReadOnlyFieldsToList(this.readOnlyFields));
                 localLookupable.setReadOnlyFieldsList(getReadOnlyFieldsList());
             }
@@ -220,8 +244,8 @@ public class LookupForm extends KualiForm {
                     }
 
                     // override values with request
-                    if (request.getParameter(field.getPropertyName()) != null) {
-                        field.setPropertyValue(request.getParameter(field.getPropertyName()).trim());
+                    if (getParameter(request, field.getPropertyName()) != null) {
+                        field.setPropertyValue(getParameter(request, field.getPropertyName()).trim());
                     }
 
                     // force uppercase if necessary
@@ -243,8 +267,8 @@ public class LookupForm extends KualiForm {
                         }
 
                         // override values with request
-                        if (request.getParameter(field.getPropertyName()) != null) {
-                            field.setPropertyValue(request.getParameter(field.getPropertyName()).trim());
+                        if (getParameter(request, field.getPropertyName()) != null) {
+                            field.setPropertyValue(getParameter(request, field.getPropertyName()).trim());
                         }
                         fieldValues.put(field.getPropertyName(), field.getPropertyValue());
                     }

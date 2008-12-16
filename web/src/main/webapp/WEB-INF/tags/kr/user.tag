@@ -49,6 +49,9 @@
     <c:out value="${userId}" />&nbsp;
   </c:when>
   <c:otherwise>
+    ${kfunc:registerEditableProperty(KualiForm, userIdFieldName)}
+    ${kfunc:registerEditableProperty(KualiForm, universalIdFieldName)}
+    ${kfunc:registerEditableProperty(KualiForm, userNameFieldName)}
     <input type="text" id='<c:out value="${userIdFieldName}"/>' name='<c:out value="${userIdFieldName}"/>' value='<c:out value="${userId}"/>'
     title='${DataDictionary.PersonImpl.attributes.principalName.label}'
     size='${DataDictionary.PersonImpl.attributes.principalName.control.size}' 

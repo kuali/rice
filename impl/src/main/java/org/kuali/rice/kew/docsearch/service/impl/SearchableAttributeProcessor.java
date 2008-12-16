@@ -81,7 +81,7 @@ public class SearchableAttributeProcessor implements SearchableAttributeProcessi
 		for (Iterator iterator = docType.getSearchableAttributes().iterator(); iterator.hasNext();) {
 			SearchableAttribute searchableAttribute = (SearchableAttribute) iterator.next();
 			List searchStorageValues = searchableAttribute.getSearchStorageValues(
-					DocSearchUtils.getDocumentSearchContext(document.getAppDocId(), docType.getName(), docContent));
+					DocSearchUtils.getDocumentSearchContext(document.getRouteHeaderId().toString(), docType.getName(), docContent));
 			if (searchStorageValues != null) {
 				for (Iterator iterator2 = searchStorageValues.iterator(); iterator2.hasNext();) {
 					SearchableAttributeValue searchableAttributeValue = (SearchableAttributeValue) iterator2.next();

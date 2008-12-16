@@ -32,12 +32,14 @@ import org.apache.struts.actions.DispatchAction;
 import org.kuali.rice.core.service.Demonstration;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kns.authorization.AuthorizationType;
+import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.exception.ModuleAuthorizationException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.ModuleService;
+import org.kuali.rice.kns.service.SessionDocumentService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.UrlFactory;
@@ -46,6 +48,8 @@ import org.kuali.rice.kns.web.format.Formatter;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
+import org.kuali.rice.kns.web.struts.pojo.PojoForm;
+import org.kuali.rice.kns.web.struts.pojo.PojoFormBase;
 
 /**
  * This class is the base action class for all kuali actions. Overrides execute to set methodToCall for image submits. Other setup
@@ -134,7 +138,7 @@ public abstract class KualiAction extends DispatchAction {
         }
         else {
             // call utility method to parse the methodToCall from the request.
-            methodToCall = WebUtils.parseMethodToCall(request);
+            methodToCall = WebUtils.parseMethodToCall(form, request);
         }
         return methodToCall;
     }
@@ -371,7 +375,14 @@ public abstract class KualiAction extends DispatchAction {
     public ActionForward performLookup(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         // parse out the important strings from our methodToCall parameter
         String fullParameter = (String) request.getAttribute(KNSConstants.METHOD_TO_CALL_ATTRIBUTE);
-
+        validateLookupInquiryFullParameter(request, form, fullParameter);
+        
+        KualiForm kualiForm = (KualiForm) form;
+        
+        // when we return from the lookup, our next request's method to call is going to be refresh
+        kualiForm.registerEditableProperty(KNSConstants.DISPATCH_REQUEST_PARAMETER);
+        kualiForm.registerNextMethodToCallIsRefresh(true);
+        
         // parse out business object class name for lookup
         String boClassName = StringUtils.substringBetween(fullParameter, KNSConstants.METHOD_TO_CALL_BOPARM_LEFT_DEL, KNSConstants.METHOD_TO_CALL_BOPARM_RIGHT_DEL);
         if (StringUtils.isBlank(boClassName)) {
@@ -383,6 +394,13 @@ public abstract class KualiAction extends DispatchAction {
         String conversionFields = StringUtils.substringBetween(fullParameter, KNSConstants.METHOD_TO_CALL_PARM1_LEFT_DEL, KNSConstants.METHOD_TO_CALL_PARM1_RIGHT_DEL);
         if (StringUtils.isNotBlank(conversionFields)) {
             parameters.put(KNSConstants.CONVERSION_FIELDS_PARAMETER, conversionFields);
+            
+            // register each of the destination parameters of the field conversion string as editable
+            String[] fieldConversions = conversionFields.split(KNSConstants.FIELD_CONVERSIONS_SEPERATOR);
+            for (int i = 0; i < fieldConversions.length; i++) {
+            	String destination = fieldConversions[i].split(KNSConstants.FIELD_CONVERSION_PAIR_SEPERATOR)[1];
+            	kualiForm.registerEditableProperty(destination);
+            }
         }
 
         // pass values from form that should be pre-populated on lookup search
@@ -521,11 +539,21 @@ public abstract class KualiAction extends DispatchAction {
         return new ActionForward(lookupUrl, true);
     }
 
+    protected void validateLookupInquiryFullParameter(HttpServletRequest request, ActionForm form, String fullParameter){
+    	PojoFormBase pojoFormBase = (PojoFormBase) form;
+        if(WebUtils.isFormSessionDocument((PojoFormBase)form)){
+        	if(!pojoFormBase.isPropertyEditable(fullParameter)) {
+        		throw new RuntimeException("The methodToCallAttribute is not registered as an editable property.");
+        	}
+        }
+    }
+    
     public ActionForward performInquiry(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
         // parse out the important strings from our methodToCall parameter
         String fullParameter = (String) request.getAttribute(KNSConstants.METHOD_TO_CALL_ATTRIBUTE);
-
+        validateLookupInquiryFullParameter(request, form, fullParameter);
+        
         // parse out business object class name for lookup
         String boClassName = StringUtils.substringBetween(fullParameter, KNSConstants.METHOD_TO_CALL_BOPARM_LEFT_DEL, KNSConstants.METHOD_TO_CALL_BOPARM_RIGHT_DEL);
         if (StringUtils.isBlank(boClassName)) {
@@ -677,6 +705,7 @@ public abstract class KualiAction extends DispatchAction {
         Object methodToCallAttribute = request.getAttribute(KNSConstants.METHOD_TO_CALL_ATTRIBUTE);
         if (methodToCallAttribute != null) {
             parameters.put(KNSConstants.METHOD_TO_CALL_PATH, methodToCallAttribute);
+            ((PojoForm) form).registerEditableProperty(String.valueOf(methodToCallAttribute));
         }
         
     	if (form instanceof KualiDocumentFormBase) {

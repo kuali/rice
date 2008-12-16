@@ -49,6 +49,7 @@ import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
+import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.format.FormatException;
 import org.kuali.rice.kns.web.format.Formatter;
 
@@ -70,6 +71,18 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
     private Map newMaintainableValues;
     private String maintenanceAction;
     
+    /**
+     * @see org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase#addRequiredNonEditableProperties()
+     */
+    @Override
+    public void addRequiredNonEditableProperties(){
+    	super.addRequiredNonEditableProperties();
+    	registerRequiredNonEditableProperty(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE);
+    	registerRequiredNonEditableProperty(KNSConstants.LOOKUP_RESULTS_BO_CLASS_NAME);
+    	registerRequiredNonEditableProperty(KNSConstants.LOOKED_UP_COLLECTION_NAME);
+    	registerRequiredNonEditableProperty(KNSConstants.LOOKUP_RESULTS_SEQUENCE_NUMBER);
+    }
+
     /**
      * Used to indicate which result set we're using when refreshing/returning from a multi-value lookup
      */
@@ -178,12 +191,16 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
             for (Enumeration i = request.getParameterNames(); i.hasMoreElements();) {
                 String parameter = (String) i.nextElement();
                 if (parameter.toUpperCase().startsWith(KNSConstants.MAINTENANCE_OLD_MAINTAINABLE.toUpperCase())) {
-                    String propertyName = parameter.substring(KNSConstants.MAINTENANCE_OLD_MAINTAINABLE.length());
-                    localOldMaintainableValues.put(propertyName, request.getParameter(parameter));
+                	if (shouldPropertyBePopulatedInForm(parameter, request)) {
+                        String propertyName = parameter.substring(KNSConstants.MAINTENANCE_OLD_MAINTAINABLE.length());
+                        localOldMaintainableValues.put(propertyName, request.getParameter(parameter));
+                    }
                 }
                 if (parameter.toUpperCase().startsWith(KNSConstants.MAINTENANCE_NEW_MAINTAINABLE.toUpperCase())) {
-                    String propertyName = parameter.substring(KNSConstants.MAINTENANCE_NEW_MAINTAINABLE.length());
-                    localNewMaintainableValues.put(propertyName, request.getParameter(parameter));
+                	if (shouldPropertyBePopulatedInForm(parameter, request)) {
+                        String propertyName = parameter.substring(KNSConstants.MAINTENANCE_NEW_MAINTAINABLE.length());
+                        localNewMaintainableValues.put(propertyName, request.getParameter(parameter));
+                    }
                 }
             }
             
@@ -534,5 +551,45 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
             }
         }
 		return super.retrieveFormValueForLookupInquiryParameters(parameterName, parameterValueLocation);
+	}
+
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase#shouldPropertyBePopulatedInForm(java.lang.String, javax.servlet.http.HttpServletRequest)
+	 */
+	@Override
+	public boolean shouldPropertyBePopulatedInForm(
+			String requestParameterName, HttpServletRequest request) {
+		// the user clicked on a document initiation link
+		String methodToCallParameterName = request.getParameter(KNSConstants.DISPATCH_REQUEST_PARAMETER);
+		if (StringUtils.equals(methodToCallParameterName, KNSConstants.MAINTENANCE_COPY_METHOD_TO_CALL) ||
+				StringUtils.equals(methodToCallParameterName, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL) ||
+				StringUtils.equals(methodToCallParameterName, KNSConstants.MAINTENANCE_NEW_METHOD_TO_CALL) ||
+				StringUtils.equals(methodToCallParameterName, KNSConstants.MAINTENANCE_NEWWITHEXISTING_ACTION)) {
+			return true;
+		}
+		return super.shouldPropertyBePopulatedInForm(requestParameterName, request);
+	}
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase#shouldMethodToCallParameterBeUsed(java.lang.String, java.lang.String, javax.servlet.http.HttpServletRequest)
+	 */
+	@Override
+	public boolean shouldMethodToCallParameterBeUsed(
+			String methodToCallParameterName,
+			String methodToCallParameterValue, HttpServletRequest request) {
+		// the user clicked on a document initiation link
+		if (StringUtils.equals(methodToCallParameterName, KNSConstants.MAINTENANCE_COPY_METHOD_TO_CALL) ||
+				StringUtils.equals(methodToCallParameterName, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL) ||
+				StringUtils.equals(methodToCallParameterName, KNSConstants.MAINTENANCE_NEW_METHOD_TO_CALL) ||
+				StringUtils.equals(methodToCallParameterName, KNSConstants.MAINTENANCE_NEWWITHEXISTING_ACTION)) {
+			return true;
+		}
+		return super.shouldMethodToCallParameterBeUsed(methodToCallParameterName,
+				methodToCallParameterValue, request);
 	}
 }

@@ -59,6 +59,7 @@ import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
 import org.kuali.rice.kns.web.struts.pojo.PojoForm;
+import org.kuali.rice.kns.web.struts.pojo.PojoFormBase;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -89,6 +90,29 @@ public class KualiRequestProcessor extends RequestProcessor {
 			super.process(request, response);
 		} finally {
 			GlobalVariables.setKualiForm(null);
+		}
+
+		ActionForm form = WebUtils.getKualiForm(request);
+		String refreshCaller = request.getParameter(KNSConstants.REFRESH_CALLER);
+		if (form!=null && KualiDocumentFormBase.class.isAssignableFrom(form.getClass()) 
+				&& !KNSConstants.QUESTION_REFRESH.equalsIgnoreCase(refreshCaller)) {
+			KualiDocumentFormBase docForm = (KualiDocumentFormBase) form;
+			Document document = docForm.getDocument();
+			String docFormKey = docForm.getFormKey();
+
+			UserSession userSession = (UserSession) request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY);
+
+			if (WebUtils.isDocumentSession(document, docForm)) {
+				getSessionDocumentService().setDocumentForm(docForm, userSession);
+			}
+
+			Boolean exitingDocument = (Boolean) request.getAttribute(KNSConstants.EXITING_DOCUMENT);
+
+			if (exitingDocument != null && exitingDocument.booleanValue()) {
+				// remove KualiDocumentFormBase object from session and
+				// table.
+				getSessionDocumentService().purgeDocumentForm(docForm.getDocument().getDocumentNumber(), docFormKey, userSession);
+			}
 		}
 
 		if ( LOG.isInfoEnabled() ) {
@@ -192,7 +216,10 @@ public class KualiRequestProcessor extends RequestProcessor {
 			super.processPopulate(request, response, form, mapping);
 			return;
 		}
-
+		((PojoForm)form).switchEditablePropertyInformationToPreviousRequestInformation();
+		((PojoForm)form).clearEditablePropertyInformation();
+		((PojoForm)form).registerStrutsActionMappingScope(mapping.getScope());
+		
 		String multipart = mapping.getMultipartClass();
 		if (multipart != null) {
 			request.setAttribute(Globals.MULTIPART_KEY, multipart);
@@ -427,53 +454,11 @@ public class KualiRequestProcessor extends RequestProcessor {
 				forward = e.getActionForward();
 			}
 
-			String methodToCall = request.getParameter(KNSConstants.DISPATCH_REQUEST_PARAMETER);
-			String refreshCaller = request.getParameter(KNSConstants.REFRESH_CALLER);
-
-			if (form instanceof KualiDocumentFormBase && !KNSConstants.QUESTION_REFRESH.equalsIgnoreCase(refreshCaller)) {
-				KualiDocumentFormBase docForm = (KualiDocumentFormBase) form;
-				Document document = docForm.getDocument();
-				String docFormKey = docForm.getFormKey();
-
-				UserSession userSession = (UserSession) request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY);
-
-				boolean sessionDoc = document instanceof org.kuali.rice.kns.document.SessionDocument;
-				boolean dataDictionarySessionDoc = false;
-				if (!sessionDoc) {
-					DataDictionary dataDictionary = getDataDictionaryService().getDataDictionary();
-					DocumentEntry documentEntry = null;
-
-					if (docForm instanceof KualiMaintenanceForm) {
-						KualiMaintenanceForm maintenanceForm = (KualiMaintenanceForm) docForm;
-						if (dataDictionary != null) {
-							documentEntry = dataDictionary.getDocumentEntry(maintenanceForm.getDocTypeName());
-							dataDictionarySessionDoc = documentEntry.getSessionDocument();
-						}
-					} else {
-						if (dataDictionary != null) {
-							documentEntry = dataDictionary.getDocumentEntry(document.getClass().getName());
-							dataDictionarySessionDoc = documentEntry.getSessionDocument();
-						}
-					}
-				}
-
-				if (sessionDoc || dataDictionarySessionDoc) {
-					getSessionDocumentService().setDocumentForm(docForm, userSession);
-				}
-
-				Boolean exitingDocument = (Boolean) request.getAttribute(KNSConstants.EXITING_DOCUMENT);
-
-				if (exitingDocument != null && exitingDocument.booleanValue()) {
-					// remove KualiDocumentFormBase object from session and
-					// table.
-					getSessionDocumentService().purgeDocumentForm(docForm.getDocument().getDocumentNumber(), docFormKey, userSession);
-				}
-			}
 
 			publishErrorMessages(request);
 			saveMessages(request);
 			saveAuditErrors(request);
-
+			
 			return forward;
 
 		} catch (Exception e) {

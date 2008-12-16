@@ -21,33 +21,33 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.apache.struts.Globals;
 import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionServletWrapper;
 import org.apache.struts.upload.MultipartRequestHandler;
 import org.apache.struts.upload.MultipartRequestWrapper;
-import org.kuali.rice.kns.exception.FileUploadLimitExceededException;
+import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.Timer;
+import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.format.EncryptionFormatter;
 import org.kuali.rice.kns.web.format.FormatException;
 import org.kuali.rice.kns.web.format.Formatter;
-import org.kuali.rice.kns.web.struts.action.KualiMultipartRequestHandler;
+import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 
 /**
  * This class is the base form which implements the PojoForm interface.
@@ -73,6 +73,10 @@ public class PojoFormBase extends ActionForm implements PojoForm {
     private Map formatterTypes = new HashMap();
     private Map encryptedProperties = new HashMap();
     private List<String> maxUploadFileSizes = new ArrayList<String>();
+    private Set<String> editableProperties = new HashSet<String>();
+    private transient Set<String> editablePropertiesFromPreviousRequest;
+    protected Set<String> requiredNonEditableProperties = new HashSet<String>();
+    private String strutsActionMappingScope; 
 
     // removed methods: PojoFormBase()/SLActionForm(), addFormLevelMessageInfo, addGlobalMessage, addIgnoredKey, addIgnoredKeys, addLengthValidation, addMessageIfAbsent
     //     addPatternValidation, addPropertyValidationRules, addRangeValidation, addRequiredField, addRequiredFields
@@ -117,7 +121,7 @@ public class PojoFormBase extends ActionForm implements PojoForm {
         Timer t0 = new Timer("PojoFormBase.populate");
         unconvertedValues.clear();
         unknownKeys = new ArrayList();
-
+        addRequiredNonEditableProperties();
         Map params = request.getParameterMap();
 
         String contentType = request.getContentType();
@@ -141,51 +145,53 @@ public class PojoFormBase extends ActionForm implements PojoForm {
          */
         for (Iterator iter = params.keySet().iterator(); iter.hasNext();) {
             String keypath = (String) iter.next();
-            Object param = params.get(keypath);
-            //LOG.debug("(keypath,paramType)=(" + keypath + "," + param.getClass().getName() + ")");
-
-            // get type for property
-            Class type = null;
-            try {
-                // TODO: see KULOWF-194
-                //testForPojoHack(this, keypath);
-                type = getPropertyType(keypath);
-            }
-            catch (Exception e) {
-                // deleted redundant unknownKeys.add(keypath)
-            }
-
-            // keypath does not match anything on form
-            if (type == null) {
-                unknownKeys.add(keypath);
-            }
-            else {
-                Formatter formatter = null;
-                try {
-                    formatter = buildFormatter(keypath, type, params);
-
-                    ObjectUtils.setObjectProperty(formatter, this, keypath, type, param);
-                }
-                catch (FormatException e1) {
-                    GlobalVariables.getErrorMap().putError(keypath, e1.getErrorKey(), e1.getErrorArgs());
-                    cacheUnconvertedValue(keypath, param);
-                }
-                catch (InvocationTargetException e1) {
-                    if (e1.getTargetException().getClass().equals(FormatException.class)) {
-                        // Handle occasional case where FormatException is wrapped in an InvocationTargetException
-                        FormatException formatException = (FormatException) e1.getTargetException();
-                        GlobalVariables.getErrorMap().putError(keypath, formatException.getErrorKey(), formatException.getErrorArgs());
-                        cacheUnconvertedValue(keypath, param);
-                    }
-                    else {
-                        LOG.error("Error occurred in populate " + e1.getMessage());
-                        throw new RuntimeException(e1.getMessage(), e1);
-                    }
-                }
-                catch (Exception e1) {
-                    LOG.error("Error occurred in populate " + e1.getMessage());
-                    throw new RuntimeException(e1.getMessage(), e1);
-                }
+            if (shouldPropertyBePopulatedInForm(keypath, request)) {
+	            Object param = params.get(keypath);
+	            //LOG.debug("(keypath,paramType)=(" + keypath + "," + param.getClass().getName() + ")");
+	
+	            // get type for property
+	            Class type = null;
+	            try {
+	                // TODO: see KULOWF-194
+	                //testForPojoHack(this, keypath);
+	                type = getPropertyType(keypath);
+	            }
+	            catch (Exception e) {
+	                // deleted redundant unknownKeys.add(keypath)
+	            }
+	
+	            // keypath does not match anything on form
+	            if (type == null) {
+	                unknownKeys.add(keypath);
+	            }
+	            else {
+	                Formatter formatter = null;
+	                try {
+	                    formatter = buildFormatter(keypath, type, params);
+	
+	                    ObjectUtils.setObjectProperty(formatter, this, keypath, type, param);
+	                	}
+	                catch (FormatException e1) {
+	                    GlobalVariables.getErrorMap().putError(keypath, e1.getErrorKey(), e1.getErrorArgs());
+	                    cacheUnconvertedValue(keypath, param);
+	                }
+	                catch (InvocationTargetException e1) {
+	                    if (e1.getTargetException().getClass().equals(FormatException.class)) {
+	                        // Handle occasional case where FormatException is wrapped in an InvocationTargetException
+	                        FormatException formatException = (FormatException) e1.getTargetException();
+	                        GlobalVariables.getErrorMap().putError(keypath, formatException.getErrorKey(), formatException.getErrorArgs());
+	                        cacheUnconvertedValue(keypath, param);
+	                    }
+	                    else {
+	                        LOG.error("Error occurred in populate " + e1.getMessage());
+	                        throw new RuntimeException(e1.getMessage(), e1);
+	                    }
+	                }
+	                catch (Exception e1) {
+	                    LOG.error("Error occurred in populate " + e1.getMessage());
+	                    throw new RuntimeException(e1.getMessage(), e1);
+	                }
+	            }
             }
         }
         t0.log();
@@ -491,4 +497,79 @@ public class PojoFormBase extends ActionForm implements PojoForm {
     }
     // end Kuali Foundation modification
     
+    public void registerEditableProperty(String editablePropertyName){
+    	System.out.println("Registering: " + editablePropertyName);
+    	editableProperties.add(editablePropertyName);
+    }
+    
+    public void registerRequiredNonEditableProperty(String requiredNonEditableProperty) {
+    	requiredNonEditableProperties.add(requiredNonEditableProperty);
+    }
+    
+    public void clearEditablePropertyInformation(){
+    	editableProperties = new HashSet<String>();
+    }
+    
+    public Set<String> getEditableProperties(){
+    	return editableProperties;
+    }
+ 
+    public boolean isPropertyEditable(String propertyName) {
+        return WebUtils.isPropertyEditable(getEditablePropertiesFromPreviousRequest(), propertyName);
+    }
+    
+    /***
+     * @see org.kuali.rice.kns.web.struts.pojo.PojoForm#addRequiredNonEditableProperties()
+     */
+    public void addRequiredNonEditableProperties(){
+    }
+    
+    public boolean isPropertyNonEditableButRequired(String propertyName) {
+        return WebUtils.isPropertyEditable(requiredNonEditableProperties, propertyName);
+    }
+    
+    protected String getParameter(HttpServletRequest request, String parameterName){
+    	return request.getParameter(parameterName);
+    }
+    
+    public Set<String> getRequiredNonEditableProperties(){
+    	return requiredNonEditableProperties;
+    }
+    
+	/**
+	 * @see PojoForm#registerStrutsActionMappingScope(String)
+	 */
+	public void registerStrutsActionMappingScope(String strutsActionMappingScope) {
+		this.strutsActionMappingScope = strutsActionMappingScope;
+	}
+	
+	public String getStrutsActionMappingScope() {
+		return strutsActionMappingScope;
+	}
+	
+	/**
+	 * @see org.kuali.rice.kns.web.struts.pojo.PojoForm#shouldPropertyBePopulatedInForm(java.lang.String, javax.servlet.http.HttpServletRequest)
+	 */
+	public boolean shouldPropertyBePopulatedInForm(String requestParameterName, HttpServletRequest request) {
+		if (StringUtils.equalsIgnoreCase("scope", getStrutsActionMappingScope())) {
+			return isPropertyEditable(requestParameterName) || isPropertyNonEditableButRequired(requestParameterName);
+		}
+    	return true;
+	}
+	
+	/**
+	 * @see org.kuali.rice.kns.web.struts.pojo.PojoForm#switchEditablePropertiesToEditablePropertiesFromPreviousRequest()
+	 */
+	public void switchEditablePropertyInformationToPreviousRequestInformation() {
+		editablePropertiesFromPreviousRequest = editableProperties;
+	}
+	
+	/**
+	 * Returns the list of properties that were editable when the webpage for the previous request was rendered.
+	 * 
+	 * @return
+	 */
+	public Set<String> getEditablePropertiesFromPreviousRequest() {
+		return editablePropertiesFromPreviousRequest;
+	}
 }

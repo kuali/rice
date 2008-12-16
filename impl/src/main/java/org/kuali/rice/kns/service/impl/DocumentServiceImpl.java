@@ -24,9 +24,10 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigurationException;
-import org.kuali.rice.core.util.RiceService;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kns.bo.AdHocRouteRecipient;
 import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.bo.DocumentType;
@@ -35,7 +36,6 @@ import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.dao.DocumentDao;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocumentBase;
-import org.kuali.rice.kns.document.authorization.DocumentActionFlags;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.exception.DocumentAuthorizationException;
 import org.kuali.rice.kns.exception.InactiveDocumentTypeAuthorizationException;
@@ -96,6 +96,8 @@ public class DocumentServiceImpl implements DocumentService {
     private DataDictionaryService dataDictionaryService;
     
     private DocumentHeaderService documentHeaderService;
+
+    private PersonService personService;
 
     /**
      * @see org.kuali.rice.kns.service.DocumentService#saveDocument(org.kuali.rice.kns.document.Document)
@@ -528,6 +530,29 @@ public class DocumentServiceImpl implements DocumentService {
         return postProcessDocument(documentHeaderId, workflowDocument, document);
     }
     
+	/**
+	 * @see org.kuali.rice.kns.service.DocumentService#getByDocumentHeaderIdSessionless(java.lang.String)
+	 */
+	public Document getByDocumentHeaderIdSessionless(String documentHeaderId)
+			throws WorkflowException {
+        if (documentHeaderId == null) {
+            throw new IllegalArgumentException("invalid (null) documentHeaderId");
+        }
+
+        KualiWorkflowDocument workflowDocument = null;
+
+            LOG.info("Retrieving doc id: " + documentHeaderId + " from workflow service.");
+            
+        Person person = getPersonService().getPersonByPrincipalName(KNSConstants.SYSTEM_USER);
+            workflowDocument = workflowDocumentService.createWorkflowDocument(Long.valueOf(documentHeaderId), person);
+
+        Class documentClass = getDocumentClassByTypeName(workflowDocument.getDocumentType());
+
+        // retrieve the Document
+        Document document = documentDao.findByDocumentHeaderId(documentClass, documentHeaderId);
+        return postProcessDocument(documentHeaderId, workflowDocument, document);
+	}
+
     private Class getDocumentClassByTypeName(String documentTypeName) {
         if (StringUtils.isBlank(documentTypeName)) {
             throw new IllegalArgumentException("invalid (blank) documentTypeName");
@@ -936,4 +961,14 @@ public class DocumentServiceImpl implements DocumentService {
         }
         return this.documentHeaderService;
     }
+
+    /**
+	 * @param personService the personService to set
+	 */
+	public PersonService getPersonService() {
+		if (personService == null) {
+			personService = KIMServiceLocator.getPersonService();
+		}
+		return personService;
+	}
 }

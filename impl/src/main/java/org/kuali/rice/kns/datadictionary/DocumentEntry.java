@@ -564,7 +564,7 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
 
 
 
-	public boolean getSessionDocument() {
+	public boolean isSessionDocument() {
 		return this.sessionDocument;
 	}
 

@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.document.Document;
@@ -68,6 +69,16 @@ public interface DocumentService {
      * @throws KEWUserNotFoundException
      */
     public Document getByDocumentHeaderId(String documentHeaderId) throws WorkflowException;
+    /**
+     * get a document based on the document header id which is the primary key for all document types.  Using this method
+     * does not require that GlobalVariables.getUserSession() be populated.  Therefore, this method can be used when a HTTP request
+     * is not being processed (e.g. during workflow indexing/post-processing).
+     *
+     * @param documentHeaderId
+     * @return
+     * @throws KEWUserNotFoundException
+     */
+    public Document getByDocumentHeaderIdSessionless(String documentHeaderId) throws WorkflowException;
 
     /**
      * This method retrieves a list of fully-populated documents given a list of document header id values.

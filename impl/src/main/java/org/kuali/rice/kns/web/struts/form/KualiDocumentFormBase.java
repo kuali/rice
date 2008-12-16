@@ -48,6 +48,7 @@ import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.UrlFactory;
+import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.util.spring.AutoPopulatingList;
 import org.kuali.rice.kns.web.format.NoOpStringFormatter;
 import org.kuali.rice.kns.web.format.TimestampAMPMFormatter;
@@ -90,7 +91,17 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
     // for session enhancement
     private String formKey;
     private String docNum;
-    
+
+    /***
+     * @see org.kuali.rice.kns.web.struts.form.KualiForm#addRequiredNonEditableProperties()
+     */
+    @Override
+    public void addRequiredNonEditableProperties(){
+    	super.addRequiredNonEditableProperties();
+    	registerRequiredNonEditableProperty(KNSConstants.DOCUMENT_TYPE_NAME);
+    	registerRequiredNonEditableProperty(KNSConstants.FORM_KEY);
+    }
+
 	/**
 	 * @return the docNum
 	 */
@@ -777,5 +788,44 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         super.customInitMaxUploadSizes();
         addMaxUploadSize(KNSServiceLocator.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.ATTACHMENT_MAX_FILE_SIZE_PARM_NM));
     }
+
+	/**
+	 * This overridden method ...
+	 * IMPORTANT: any overrides of this method must ensure that nothing in the HTTP request will be used to determine whether document is in session 
+	 * 
+	 * @see org.kuali.rice.kns.web.struts.pojo.PojoFormBase#shouldPropertyBePopulatedInForm(java.lang.String, javax.servlet.http.HttpServletRequest)
+	 */
+	@Override
+	public boolean shouldPropertyBePopulatedInForm(String requestParameterName, HttpServletRequest request) {
+		if (requestParameterName.startsWith(KNSConstants.TAB_STATES)) {
+			return true;
+		}
+		if (StringUtils.equalsIgnoreCase(getMethodToCall(), KNSConstants.DOC_HANDLER_METHOD)) {
+			return true;
+		}
+		if (WebUtils.isDocumentSession(getDocument(), this) || StringUtils.equalsIgnoreCase(getStrutsActionMappingScope(), "scope")) {
+			return isPropertyEditable(requestParameterName) || isPropertyNonEditableButRequired(requestParameterName);
+		}
+		return true;
+	}
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.web.struts.form.KualiForm#shouldMethodToCallParameterBeUsed(java.lang.String, java.lang.String, javax.servlet.http.HttpServletRequest)
+	 */
+	@Override
+	public boolean shouldMethodToCallParameterBeUsed(
+			String methodToCallParameterName,
+			String methodToCallParameterValue, HttpServletRequest request) {
+		if (StringUtils.equals(methodToCallParameterName, KNSConstants.DISPATCH_REQUEST_PARAMETER) &&
+				StringUtils.equals(methodToCallParameterValue, KNSConstants.DOC_HANDLER_METHOD)) {
+			return true;
+		}
+		return super.shouldMethodToCallParameterBeUsed(methodToCallParameterName,
+				methodToCallParameterValue, request);
+	}
+	
+	
 }
 

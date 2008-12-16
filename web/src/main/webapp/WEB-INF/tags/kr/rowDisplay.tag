@@ -320,7 +320,7 @@
 							</c:when>
 
 							<c:otherwise>
-
+                                ${kfunc:registerEditableProperty(KualiForm, field.propertyName)}
 								<input type="text" id='${field.propertyName}' name='${field.propertyName}'
 									value='<c:out value="${fieldValue}"/>'
 									size='${field.size}'
@@ -353,7 +353,7 @@
 							</c:when>
 									
 							<c:otherwise>
-									
+								${kfunc:registerEditableProperty(KualiForm, field.propertyName)}									
 								<input type="text" name='${field.propertyName}'
 									id='${field.propertyName}'
 									value='<c:out value="${fieldValue}"/>'
@@ -411,7 +411,7 @@
 							</c:when>
 
 							<c:otherwise>
-
+								${kfunc:registerEditableProperty(KualiForm, field.propertyName)}
 								<textarea id='${field.propertyName}' name='${field.propertyName}'
 									rows='${field.rows}'
 									cols='${field.cols}'
@@ -446,7 +446,7 @@
 							</c:when>
 									
 							<c:otherwise>
-									
+								${kfunc:registerEditableProperty(KualiForm, field.propertyName)}																		
 								<input type="checkbox" id='${field.propertyName}' name="${field.propertyName}" 
 									${field.propertyValue eq 'Yes' || field.propertyValue eq 'YES' ? 'checked="checked"' : ''}
 									${onblurcall} />
@@ -477,6 +477,7 @@
 							</c:when>
 										
 							<c:otherwise>
+								${kfunc:registerEditableProperty(KualiForm, field.propertyName)}
 								<select id='${field.propertyName}' name='${field.propertyName}' style="${textStyle}" ${onblurcall}>
 									<c:if test="${!field.hasBlankValidValue}">
 										<option value=""></option>
@@ -500,7 +501,7 @@
 						fieldLabel="${field.fieldLabel}" />
 				
 					<td class="grid" width="${dataCellWidth}%">
-
+						${kfunc:registerEditableProperty(KualiForm, field.propertyName)}
 						<select id='${field.propertyName}' name='${field.propertyName}'
 							onchange="document.forms[0].submit();" style="${textStyle}">
 
@@ -527,6 +528,7 @@
                                 <kul:fieldShowReadOnly field="${field}" addHighlighting="${addHighlighting}" />
                             </c:when>
                             <c:otherwise>
+                            	${kfunc:registerEditableProperty(KualiForm, field.propertyName)}
                                 <select id='${field.propertyName}' name='${field.propertyName}'
                                         onchange="${field.script}" style="${textStyle}">
                                     <kul:fieldSelectValues field="${field}"/>
@@ -636,6 +638,7 @@
 							</c:when>
 									
 							<c:otherwise>
+								${kfunc:registerEditableProperty(KualiForm, field.propertyName)}
 								<input type="text" name='${field.propertyName}'
 									id='${field.propertyName}'
 									value='<c:out value="${fieldValue}"/>'
@@ -673,6 +676,7 @@
 									<c:choose>
 										<c:when test="${empty fieldValue}" >
 											<c:if test="${isMaintenance}" >
+											${kfunc:registerEditableProperty(KualiForm, field.propertyName)}
 											<input type="file" name='${field.propertyName}'
 												id='${field.propertyName}' 
 												size='${field.size}'
@@ -696,6 +700,7 @@
 	                                    	<html:link linkName="replaceAttachment" onclick="javascript: replaceAttachment();" href="" anchor="" property="methodToCall.replaceAttachment">replace</html:link>
 	                                    </div>
                                     	<div id="replaceFileDiv" valign="middle" style="display:none;">
+                                    		${kfunc:registerEditableProperty(KualiForm, field.propertyName)}
 				                			<input type="file" name='${field.propertyName}'
 												id='${field.propertyName}' 
 												size='${field.size}'
@@ -757,8 +762,10 @@
                     	<c:set var="anchorTabIndex" value="${topLevelTabIndex}"/>
                     </c:if>
 					<th class="grid" colspan="4" align="${cellAlign}" >
+					    <c:set var="imageButtonName" value="${field.propertyName}.${Constants.METHOD_TO_CALL_PARM13_LEFT_DEL}${currentTabIndex}${Constants.METHOD_TO_CALL_PARM13_RIGHT_DEL}.anchor${anchorTabIndex}" />
+						${kfunc:registerEditableProperty(KualiForm, imageButtonName)}
 						<input type="image" 
-							id='${field.propertyName}' name='${field.propertyName}.${Constants.METHOD_TO_CALL_PARM13_LEFT_DEL}${currentTabIndex}${Constants.METHOD_TO_CALL_PARM13_RIGHT_DEL}.anchor${anchorTabIndex}'
+							id='${field.propertyName}' name='${imageButtonName}'
 							src='<c:out value="${fieldValue}"/>'/>
 						<kul:fieldShowIcons isReadOnly="${isFieldReadOnly}" field="${field}" addHighlighting="false"/>
 					</th>

@@ -142,6 +142,7 @@ public class KNSConstants extends JSTLConstants {
     public static final String CONFIGURATION_SERVICE_DATA_FILE_NAME = "configurationServiceData.xml";
 //    public static final String CONSOLIDATED_SUBACCOUNT = "*ALL*";
     public static final String CONVERSION_FIELDS_PARAMETER = "conversionFields";
+    public static final String FIELDS_CONVERSION_PARAMETER = "fieldConversions";
     public static final String LOOKUP_READ_ONLY_FIELDS = "readOnlyFields";
     public static final String LOOKUP_AUTO_SEARCH = "autoSearch";
 //    public static final String COST_SHARE = "CS";
@@ -154,6 +155,7 @@ public class KNSConstants extends JSTLConstants {
     public static final String DISPATCH_REQUEST_PARAMETER = "methodToCall";
     public static final String CUSTOM_ACTION = "customAction";
     public static final String DOC_FORM_KEY = "docFormKey";
+    public static final String FORM_KEY = "formKey";
     public static final String DOCUMENT_CANCEL_QUESTION = "DocCancel";
 //    public static final String DOCUMENT_DELETE_QUESTION = "DocDelete";
     public static final String DOCUMENT_DISAPPROVE_QUESTION = "DocDisapprove";
@@ -570,4 +572,6 @@ public class KNSConstants extends JSTLConstants {
         public static final String PREVIOUSLY_SORTED_COLUMN_INDEX_PARAM = "previouslySortedColumnIndex";
         public static final String VIEWED_PAGE_NUMBER = "viewedPageNumber";
     }
+
+    public static final String TAB_STATES = "tabStates";
 }

@@ -30,6 +30,7 @@ public class ResultRow implements Serializable {
     private String returnUrl;
     private String actionUrls;
     private String objectId;
+    private String rowId;
     private BusinessObject businessObject;
     /**
      * Whether to show the return URL (for single value lookups invoked from a document or nested lookup) or the return checkbox (for
@@ -136,6 +137,20 @@ public class ResultRow implements Serializable {
 	 */
 	public void setBusinessObject(BusinessObject businessObject) {
 		this.businessObject = businessObject;
+	}
+
+	/**
+	 * @return the rowId
+	 */
+	public String getRowId() {
+		return this.rowId;
+	}
+
+	/**
+	 * @param rowId the rowId to set
+	 */
+	public void setRowId(String rowId) {
+		this.rowId = rowId;
 	}
 
 }

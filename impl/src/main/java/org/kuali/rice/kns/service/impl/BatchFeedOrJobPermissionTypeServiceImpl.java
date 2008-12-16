@@ -18,6 +18,7 @@ package org.kuali.rice.kns.service.impl;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.service.impl.NamespacePermissionTypeServiceImpl;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -25,7 +26,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 public class BatchFeedOrJobPermissionTypeServiceImpl extends NamespacePermissionTypeServiceImpl {
 
 	/**
-	 * @see org.kuali.rice.kns.service.impl.NamespacePermissionTypeServiceImpl#performMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 * @see org.kuali.rice.kim.service.impl.NamespacePermissionTypeServiceImpl#performMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)
 	 */
 	@Override
 	protected boolean performMatch(AttributeSet inputAttributeSet, AttributeSet storedAttributeSet) {

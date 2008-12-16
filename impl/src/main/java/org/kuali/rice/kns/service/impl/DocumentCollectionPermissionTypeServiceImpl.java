@@ -27,8 +27,7 @@ import org.kuali.rice.kim.util.KimConstants;
 public class DocumentCollectionPermissionTypeServiceImpl extends DocumentTypePermissionTypeServiceImpl {
 
 	{
-		// TODO: uncomment following line of code
-		// requiredAttributes.add(KimAttributes.COLLECTION_ITEM_TYPE_CODE);
+		inputRequiredAttributes.add(KimAttributes.COLLECTION_ITEM_TYPE_CODE);
 	}
 	
 	/**
@@ -36,8 +35,7 @@ public class DocumentCollectionPermissionTypeServiceImpl extends DocumentTypePer
 	 */
 	@Override
 	protected boolean performPermissionMatch(AttributeSet requestedDetails, KimPermission permission) {
-		return true;
-		/*if (!super.performPermissionMatch(requestedDetails, permission)) {
+		if (!super.performPermissionMatch(requestedDetails, permission)) {
 			return false;
 		}
 		
@@ -51,7 +49,7 @@ public class DocumentCollectionPermissionTypeServiceImpl extends DocumentTypePer
 		if (!addTemplate) {
 			match &= requestedDetails.get(KimAttributes.CREATE_BY_SELF_ONLY).startsWith(permission.getDetails().get(KimAttributes.CREATE_BY_SELF_ONLY));
 		}
-		return match;*/
+		return match;
 	}
 	
 }

@@ -18,12 +18,16 @@ package org.kuali.rice.kns.service.impl;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kim.service.impl.NamespacePermissionTypeServiceImpl;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NamespaceOrComponentPermissionTypeServiceImpl extends NamespacePermissionTypeServiceImpl {
+
+	{
+		inputRequiredAttributes.add(KimAttributes.COMPONENT_NAME);
+	}
 
 	/**
 	 * @see org.kuali.rice.kns.service.impl.NamespaceCodePermissionTypeServiceImpl#performMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)
@@ -31,26 +35,16 @@ public class NamespaceOrComponentPermissionTypeServiceImpl extends NamespacePerm
 	@Override
 	protected boolean performMatch(AttributeSet inputAttributeSet, AttributeSet storedAttributeSet) {
 		// Checking the namespace first
-		boolean namespaceMatch = false;
-		try {
-			if (super.performMatch(inputAttributeSet, storedAttributeSet)) {
-				namespaceMatch = true;
-			}
-		} catch (Exception e) {
-			// Ignoring the possible empty namespace code exception in the case that action class was passed in.
-		}
-		
+		boolean namespaceMatch = super.performMatch(inputAttributeSet, storedAttributeSet);
+
 		// Checking component class.
-		if (StringUtils.isEmpty(inputAttributeSet.get(KimAttributes.COMPONENT_NAME))) {
-        	if (namespaceMatch) {
-        		return true;
-        	} else {
-        		throw new RuntimeException("Both " + KimAttributes.NAMESPACE_CODE + " and " + KimAttributes.COMPONENT_NAME + " should not be blank or null.");
-        	}
+		if (StringUtils.isEmpty(storedAttributeSet.get(KimAttributes.COMPONENT_NAME))) {
+        	return namespaceMatch;
 		}
-		
+
 		// Both must match at this point
-		return namespaceMatch && inputAttributeSet.get(KimAttributes.COMPONENT_NAME).equals(storedAttributeSet.get(KimAttributes.COMPONENT_NAME));
+		return namespaceMatch 
+				&& inputAttributeSet.get(KimAttributes.COMPONENT_NAME).equals(storedAttributeSet.get(KimAttributes.COMPONENT_NAME));
 	}
 
 }

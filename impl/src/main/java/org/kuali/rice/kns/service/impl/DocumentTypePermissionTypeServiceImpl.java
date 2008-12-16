@@ -35,11 +35,12 @@ import org.kuali.rice.kim.util.KimCommonUtils;
  */
 public class DocumentTypePermissionTypeServiceImpl extends KimPermissionTypeServiceBase {
 
-	protected List<String> requiredAttributes = new ArrayList<String>();
-	
+	protected List<String> inputRequiredAttributes = new ArrayList<String>();
+	protected List<String> storedRequiredAttributes = new ArrayList<String>();
 	
 	public DocumentTypePermissionTypeServiceImpl() {
-		requiredAttributes.add(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL);
+		inputRequiredAttributes.add(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL);
+		storedRequiredAttributes.add(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL);
 	}
 
 	/***
@@ -50,9 +51,9 @@ public class DocumentTypePermissionTypeServiceImpl extends KimPermissionTypeServ
 	 */
 	@Override
 	protected boolean performPermissionMatch(AttributeSet requestedDetails, KimPermission permission) {
-		validateRequiredAttributesAgainstReceived(requiredAttributes, requestedDetails, REQUESTED_DETAILS_RECEIVED_ATTIBUTES_NAME);
+		validateRequiredAttributesAgainstReceived(inputRequiredAttributes, requestedDetails, REQUESTED_DETAILS_RECEIVED_ATTIBUTES_NAME);
 		validateRequiredAttributesAgainstReceived(
-				requiredAttributes, permission.getDetails(), STORED_DETAILS_RECEIVED_ATTIBUTES_NAME);
+				storedRequiredAttributes, permission.getDetails(), STORED_DETAILS_RECEIVED_ATTIBUTES_NAME);
 
 		if(requestedDetails.get(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL).equals("*")){
 			return true;

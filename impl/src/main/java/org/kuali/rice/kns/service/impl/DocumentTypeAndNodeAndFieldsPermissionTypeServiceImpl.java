@@ -32,11 +32,9 @@ import org.kuali.rice.kim.util.KimConstants;
  */
 public class DocumentTypeAndNodeAndFieldsPermissionTypeServiceImpl extends DocumentTypePermissionTypeServiceImpl {
 
-	protected List<String> requiredAttributes = new ArrayList<String>();
 	{
-		requiredAttributes.add(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL);
-		requiredAttributes.add(KEWConstants.ROUTE_NODE_NAME_DETAIL);
-		requiredAttributes.add(KimAttributes.PROPERTY_NAME);
+		inputRequiredAttributes.add(KEWConstants.ROUTE_NODE_NAME_DETAIL);
+		inputRequiredAttributes.add(KimAttributes.PROPERTY_NAME);
 	}
 
 	/**

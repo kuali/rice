@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.kns.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.role.KimPermission;
@@ -30,11 +27,9 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
  */
 public class DocumentTypeAndNodeOrStatePermissionTypeServiceImpl extends DocumentTypePermissionTypeServiceImpl {
 
-	protected List<String> requiredAttributes = new ArrayList<String>();
 	{
-		requiredAttributes.add(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL);
-		requiredAttributes.add(KEWConstants.ROUTE_NODE_NAME_DETAIL);
-		requiredAttributes.add(KEWConstants.DOCUMENT_STATUS_DETAIL);
+		inputRequiredAttributes.add(KEWConstants.ROUTE_NODE_NAME_DETAIL);
+		inputRequiredAttributes.add(KEWConstants.DOCUMENT_STATUS_DETAIL);
 	}
 
 	/**

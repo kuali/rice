@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.service.impl;
+package org.kuali.rice.kim.service.impl;
 
-import org.apache.commons.lang.StringUtils;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
@@ -26,15 +28,21 @@ import org.kuali.rice.kim.util.KimCommonUtils;
  */
 public class NamespacePermissionTypeServiceImpl extends KimPermissionTypeServiceBase {
 
+	protected List<String> inputRequiredAttributes = new ArrayList<String>();
+	protected List<String> storedRequiredAttributes = new ArrayList<String>();
+	{
+		storedRequiredAttributes.add(KimAttributes.NAMESPACE_CODE);
+		inputRequiredAttributes.add(KimAttributes.NAMESPACE_CODE);
+	}
+	
 	/**
 	 * @see org.kuali.rice.kim.service.support.impl.KimTypeServiceBase#performMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)
 	 */
 	@Override
 	protected boolean performMatch(AttributeSet inputAttributeSet, AttributeSet storedAttributeSet) {
-		if (StringUtils.isEmpty(inputAttributeSet.get(KimAttributes.NAMESPACE_CODE))) {
-        	throw new RuntimeException(KimAttributes.NAMESPACE_CODE + " should not be blank or null.");
-		}
-		
+		validateRequiredAttributesAgainstReceived(inputRequiredAttributes, inputAttributeSet, REQUESTED_DETAILS_RECEIVED_ATTIBUTES_NAME);
+		validateRequiredAttributesAgainstReceived(storedRequiredAttributes, storedAttributeSet, STORED_DETAILS_RECEIVED_ATTIBUTES_NAME);
+
 		return KimCommonUtils.matchInputWithWildcard(inputAttributeSet.get(KimAttributes.NAMESPACE_CODE), storedAttributeSet.get(KimAttributes.NAMESPACE_CODE));
 	}
 	

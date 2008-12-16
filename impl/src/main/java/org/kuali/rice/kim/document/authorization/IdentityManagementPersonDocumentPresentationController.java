@@ -41,8 +41,8 @@ public class IdentityManagementPersonDocumentPresentationController extends Tran
 
 	// this controller class is not quite clear yet.
 	@Override
-    public Set<String> getEditMode(Document document){
-    	Set<String> editModes = super.getEditMode(document);
+    public Set<String> getEditModes(Document document){
+    	Set<String> editModes = super.getEditModes(document);
 		IdentityManagementPersonDocument personDoc = (IdentityManagementPersonDocument) document;
 		IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
 		Person user = GlobalVariables.getUserSession().getPerson();

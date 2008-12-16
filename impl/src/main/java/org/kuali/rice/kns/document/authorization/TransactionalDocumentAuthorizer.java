@@ -31,7 +31,7 @@ public interface TransactionalDocumentAuthorizer extends DocumentAuthorizer {
      * @param document
      * @return Map of operations that allow to take on that document.
      */
-    public Set getEditMode(Document document, Person user, Set<String> editModes);
+    public Set getEditModes(Document document, Person user, Set<String> editModes);
     
     
 	/**
@@ -43,11 +43,5 @@ public interface TransactionalDocumentAuthorizer extends DocumentAuthorizer {
 
 	public boolean canUseEditMode(Document document, Person user, String editMode); 
 
-	 /**
-     * @param document
-     * @param user
-     * @return true if the given user is allowed to correct errors for the document
-     */
-    public boolean canErrorCorrect(Document document, Person user); 
     
 }

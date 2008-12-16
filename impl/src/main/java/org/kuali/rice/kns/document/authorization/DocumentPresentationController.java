@@ -92,12 +92,6 @@ public interface DocumentPresentationController {
     
     /**
      * @param document
-     * @return Set of operations that allow to take on that document.
-     */
-    public Set<String> getEditMode(Document document);
-    
-    /**
-     * @param document
      * @return Set of actions that allow to take on that document.
      */
     public Set<String> getDocumentActions(Document document);

@@ -145,14 +145,6 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
     	return (canEdit(document)&& !workflowDocument.stateIsException());
     }
     
-    /**
-     * 
-     * @see org.kuali.rice.kns.document.authorization.DocumentPresentationController#getEditMode(org.kuali.rice.kns.document.Document)
-     */
-    public Set<String> getEditMode(Document document){
-    	Set<String> editModes = new HashSet();
-    	return editModes;
-    }
     
     /**
      

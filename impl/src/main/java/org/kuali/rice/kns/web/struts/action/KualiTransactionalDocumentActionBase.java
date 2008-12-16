@@ -30,8 +30,8 @@ import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.authorization.AuthorizationConstants;
 import org.kuali.rice.kns.document.Copyable;
 import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
 import org.kuali.rice.kns.document.authorization.TransactionalDocumentAuthorizer;
+import org.kuali.rice.kns.document.authorization.TransactionalDocumentPresentationController;
 import org.kuali.rice.kns.exception.DocumentAuthorizationException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -78,9 +78,9 @@ public class KualiTransactionalDocumentActionBase extends KualiDocumentActionBas
     		
         	Person user = GlobalVariables.getUserSession().getPerson();
         	
-        	DocumentPresentationController documentPresentationController = KNSServiceLocator.getDocumentPresentationControllerService().getDocumentPresentationController(document);
+        	TransactionalDocumentPresentationController documentPresentationController = (TransactionalDocumentPresentationController) KNSServiceLocator.getDocumentPresentationControllerService().getDocumentPresentationController(document);
             TransactionalDocumentAuthorizer documentAuthorizer = (TransactionalDocumentAuthorizer) KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(document);
-            Set<String> editModes = documentPresentationController.getEditMode(document);
+            Set<String> editModes = documentPresentationController.getEditModes(document);
             editModes = documentAuthorizer.getEditMode(document, user, editModes);
             editMode = this.convertSetToMap(editModes);
             

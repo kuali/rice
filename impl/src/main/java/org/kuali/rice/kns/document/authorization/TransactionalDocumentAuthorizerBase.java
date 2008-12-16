@@ -39,7 +39,7 @@ public class TransactionalDocumentAuthorizerBase extends DocumentAuthorizerBase 
 
     
    
-    public Set getEditMode(Document d, Person u, Set<String> editModes) {
+    public Set getEditModes(Document d, Person u, Set<String> editModes) {
         Iterator i = editModes.iterator();
         while(i.hasNext()) {
           String editMode = (String)i.next();
@@ -52,29 +52,6 @@ public class TransactionalDocumentAuthorizerBase extends DocumentAuthorizerBase 
     }
     
     
-    /**
-     * 
-     * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase#getDocumentActionFlags(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
-     */
-    public Set getDocumentActionFlags(Document document, Person user, Set<String> documentActions) {
-         Set docActions = super.getDocumentActionFlags(document, user, documentActions);
-         if(canErrorCorrect(document, user)){
-        	docActions.add(KNSConstants.KUALI_ACTION_CAN_ERROR_CORRECT); 
-         }
-        //flags.setCanErrorCorrect(canErrorCorrect(document, user));
-      
-        return docActions;
-
-    }
-    
-    /**
-     * 
-     * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#canAnnotate(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
-     */
-    public boolean canErrorCorrect(Document document, Person user){
-	     return isAuthorizedByTemplate(document, KNSConstants.KNS_NAMESPACE, KimConstants.PERMISSION_ERROR_CORRECT_DOCUMENT, user.getPrincipalId());
- 	  	 
-    }
     
     public boolean canUseEditMode(Document document, Person user,  String editMode){
 	    return isAuthorizedByTemplate(document, KNSConstants.KNS_NAMESPACE, KimConstants.PERMISSION_USE_TRANSACTIONAL_DOCUMENT, user.getPrincipalId());

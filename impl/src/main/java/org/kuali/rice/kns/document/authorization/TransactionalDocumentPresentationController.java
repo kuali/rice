@@ -17,6 +17,7 @@ package org.kuali.rice.kns.document.authorization;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.kuali.rice.kns.document.Document;
 
@@ -26,6 +27,12 @@ import org.kuali.rice.kns.document.Document;
  * 
  */
 public interface TransactionalDocumentPresentationController extends DocumentPresentationController {
+	 /**
+     * @param document
+     * @return Set of operations that allow to take on that document.
+     */
+    public Set<String> getEditModes(Document document);
+    
 	
 }
 

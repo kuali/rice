@@ -16,7 +16,9 @@
 package org.kuali.rice.kns.document.authorization;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,5 +29,13 @@ import org.kuali.rice.kns.document.Document;
  */
 public class TransactionalDocumentPresentationControllerBase extends DocumentPresentationControllerBase implements TransactionalDocumentPresentationController {
     private static Log LOG = LogFactory.getLog(TransactionalDocumentPresentationControllerBase.class);
-
+    
+    /**
+     * 
+     * @see org.kuali.rice.kns.document.authorization.DocumentPresentationController#getEditMode(org.kuali.rice.kns.document.Document)
+     */
+    public Set<String> getEditModes(Document document){
+    	Set<String> editModes = new HashSet();
+    	return editModes;
+    }
 }

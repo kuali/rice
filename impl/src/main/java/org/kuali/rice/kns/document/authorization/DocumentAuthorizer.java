@@ -61,6 +61,7 @@ public interface DocumentAuthorizer {
      * @param user
      * @returns boolean indicating whether a user can copy a document
      */
+    @Deprecated
     public boolean canCopy(String documentTypeName, Person user);
 
     /**

@@ -143,16 +143,12 @@ public class RoleServiceImpl implements RoleService {
     	Map<String,KimRoleImpl> roles = roleDao.getRoleImplMap(roleIds);
     	Map<String,KimRoleTypeService> roleTypeServices = getRoleTypeServicesByRoleId( roles.values() );
     	
-    	List<RoleMemberImpl> rms = roleDao.getRoleMembersForRoleIds( roleIds, null );
+    	// TODO: ? get groups for principal and get those as well?
+    	// this implementation may be incomplete, as groups and sub-roles are not considered
+    	List<RoleMemberImpl> rms = roleDao.getRoleMembersForRoleIdsWithFilters(roleIds, principalId, null);
 
     	Map<String,List<RoleMembershipInfo>> roleIdToMembershipMap = new HashMap<String,List<RoleMembershipInfo>>();
     	for ( RoleMemberImpl rm : rms ) {
-    		if (!rm.getMemberTypeCode().equals( KimRole.PRINCIPAL_MEMBER_TYPE ) || !rm.getMemberId().equals(principalId)) {
-    			continue;
-    		}
-    		if ( qualification == null || qualification.isEmpty() ) {
-    			results.add(rm.getQualifier());
-    		}
     		// gather up the qualifier sets and the service they go with
     		KimRoleTypeService roleTypeService = roleTypeServices.get( rm.getRoleId() );
     		if ( roleTypeService != null ) {
@@ -167,18 +163,13 @@ public class RoleServiceImpl implements RoleService {
     			results.add(rm.getQualifier());
     		}
     	}
-    	// if no qualifications, then can skip the service checking
-    	if ( qualification == null || qualification.isEmpty() ) {
-    		return results;
-    	} else {
-    		for ( String roleId : roleIdToMembershipMap.keySet() ) {
-    			KimRoleTypeService roleTypeService = roleTypeServices.get( roleId );
-    			List<RoleMembershipInfo> matchingMembers = roleTypeService.doRoleQualifiersMatchQualification( qualification, roleIdToMembershipMap.get( roleId ) );
-    			for ( RoleMembershipInfo rmi : matchingMembers ) {
-    				results.add( rmi.getQualifier() );
-    			}
-    		}
-    	}
+		for ( String roleId : roleIdToMembershipMap.keySet() ) {
+			KimRoleTypeService roleTypeService = roleTypeServices.get( roleId );
+			List<RoleMembershipInfo> matchingMembers = roleTypeService.doRoleQualifiersMatchQualification( qualification, roleIdToMembershipMap.get( roleId ) );
+			for ( RoleMembershipInfo rmi : matchingMembers ) {
+				results.add( rmi.getQualifier() );
+			}
+		}
     	return results;    	
 	}
 

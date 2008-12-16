@@ -235,6 +235,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
      * Default implementation here is if a user cannot initiate a document they cannot copy one.
      * @see org.kuali.rice.kns.authorization.DocumentAuthorizer#canCopy(java.lang.String, org.kuali.rice.kns.bo.user.KualiUser)
      */
+    @Deprecated
     public boolean canCopy(String documentTypeName, Person user) {
         return false;
     }

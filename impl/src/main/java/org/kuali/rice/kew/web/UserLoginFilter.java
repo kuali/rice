@@ -174,10 +174,10 @@ public class UserLoginFilter implements Filter {
 
             UserSession userSession = new UserSession(workflowUser);
             // load the users preferences. The preferences action will update them if necessary
-            Preferences preferences = KEWServiceLocator.getPreferencesService().getPreferences(principal.getEntityId());
+            Preferences preferences = KEWServiceLocator.getPreferencesService().getPreferences(principal.getPrincipalId());
             if (preferences.isRequiresSave()) {
                 LOG.info("Detected that user preferences require saving.");
-                KEWServiceLocator.getPreferencesService().savePreferences(principal.getEntityId(), preferences);
+                KEWServiceLocator.getPreferencesService().savePreferences(principal.getPrincipalId(), preferences);
                 preferences = KEWServiceLocator.getPreferencesService().getPreferences(principal.getPrincipalId());
             }
             userSession.setPreferences(preferences);

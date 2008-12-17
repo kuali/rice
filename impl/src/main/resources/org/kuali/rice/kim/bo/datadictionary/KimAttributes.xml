@@ -8,7 +8,7 @@
 
   <bean id="KimAttributes-parentBean" abstract="true" parent="BusinessObjectEntry"
         p:businessObjectClass="org.kuali.rice.kim.bo.impl.KimAttributes"
-        p:objectLabel="Kim Attributes">
+        p:objectLabel="KIM Attributes">
     <property name="attributes">
       <list>
         <ref bean="KimAttributes-methodToCall" />
@@ -39,47 +39,34 @@
     </property>
   </bean>
 
-  <bean id="KimAttributes-campusCode" parent="KimAttributes-campusCode-parentBean" />
-  <bean id="KimAttributes-campusCode-parentBean" abstract="true" parent="Campus-campusCode" />
-  
-  <bean id="KimAttributes-namespaceCode" parent="KimAttributes-namespaceCode-parentBean" />
-  <bean id="KimAttributes-namespaceCode-parentBean" abstract="true" parent="ParameterNamespace-name" />
-
-  <bean id="KimAttributes-componentName" parent="KimAttributes-componentName-parentBean" />
-  <bean id="KimAttributes-componentName-parentBean" abstract="true" parent="ParameterDetailType-parameterDetailTypeCode" />
-
-  <bean id="KimAttributes-roleName" parent="KimAttributes-roleName-parentBean" />
-  <bean id="KimAttributes-roleName-parentBean" abstract="true" parent="KimRoleImpl-roleName" />
-
-  <bean id="KimAttributes-groupName" parent="KimAttributes-groupName-parentBean" />
-  <bean id="KimAttributes-groupName-parentBean" abstract="true" parent="KimGroupImpl-groupName" />
-
-  <bean id="KimAttributes-documentNumber" parent="KimAttributes-documentNumber-parentBean" />
-  <bean id="KimAttributes-documentNumber-parentBean" abstract="true" parent="DocumentHeader-documentNumber" />
-
-  <bean id="KimAttributes-parameterName" parent="KimAttributes-parameterName-parentBean" />
-  <bean id="KimAttributes-parameterName-parentBean" abstract="true" parent="Parameter-parameterName" />
+  <bean id="KimAttributes-campusCode" parent="Campus-campusCode" /> 
+  <bean id="KimAttributes-namespaceCode" parent="ParameterNamespace-code" p:name="namespaceCode" />
+  <bean id="KimAttributes-componentName" parent="ParameterDetailType-parameterDetailTypeCode" p:name="componentName" />
+  <bean id="KimAttributes-roleName" parent="KimRoleImpl-roleName" />
+  <bean id="KimAttributes-groupName" parent="KimGroupImpl-groupName" />
+  <bean id="KimAttributes-documentNumber" parent="DocumentHeader-documentNumber" />
+  <bean id="KimAttributes-parameterName" parent="Parameter-parameterName" />
 
   <bean id="KimAttributes-existingRecordsOnly" parent="KimAttributes-existingRecordsOnly-parentBean" />
-  <bean id="KimAttributes-existingRecordsOnly-parentBean" abstract="true" parent="GenericAttributes-genericBoolean"
+  <bean id="KimAttributes-existingRecordsOnly-parentBean" abstract="true" parent="AttributeReferenceDummy-genericBoolean"
     p:name="existingRecordsOnly"
     p:label="Existing Records Only"
     p:shortLabel="Existing Records Only" />
 
   <bean id="KimAttributes-createdBySelfOnly" parent="KimAttributes-createdBySelfOnly-parentBean" />
-  <bean id="KimAttributes-createdBySelfOnly-parentBean" abstract="true" parent="GenericAttributes-genericBoolean"
+  <bean id="KimAttributes-createdBySelfOnly-parentBean" abstract="true" parent="AttributeReferenceDummy-genericBoolean"
     p:name="createdBySelfOnly"
     p:label="Created By Self Only"
     p:shortLabel="Created By Self Only" />
 
   <bean id="KimAttributes-required" parent="KimAttributes-required-parentBean" />
-  <bean id="KimAttributes-required-parentBean" abstract="true" parent="GenericAttributes-genericBoolean"
+  <bean id="KimAttributes-required-parentBean" abstract="true" parent="AttributeReferenceDummy-genericBoolean"
     p:name="required"
     p:label="Required"
     p:shortLabel="Required" />
   
   <bean id="KimAttributes-actionDetailsAtRoleMemberLevel" parent="KimAttributes-actionDetailsAtRoleMemberLevel-parentBean" />
-  <bean id="KimAttributes-actionDetailsAtRoleMemberLevel-parentBean" abstract="true" parent="GenericAttributes-genericBoolean"
+  <bean id="KimAttributes-actionDetailsAtRoleMemberLevel-parentBean" abstract="true" parent="AttributeReferenceDummy-genericBoolean"
     p:name="actionDetailsAtRoleMemberLevel"
     p:label="Action Details At Role Member Level"
     p:shortLabel="Action Details At Role Member Level" />

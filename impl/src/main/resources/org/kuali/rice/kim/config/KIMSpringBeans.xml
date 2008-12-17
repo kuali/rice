@@ -47,6 +47,7 @@
 		<property name="dataDictionaryPackages">
 			<list>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonImpl.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimAttributes.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimBaseBeans.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentAffiliation.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentEmploymentInfo.xml</value>

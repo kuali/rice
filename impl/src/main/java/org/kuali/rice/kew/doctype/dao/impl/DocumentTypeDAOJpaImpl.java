@@ -82,7 +82,10 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 		try {
 			String sql = "select DOC_TYP_ID from KREW_DOC_TYP_T where CUR_IND = 1 and PARNT_ID = " + parentDocumentTypeId;
 			Query query = entityManager.createNativeQuery(sql);
-	    	childrenIds = (List<Long>)query.getResultList();
+			List resultIds = query.getResultList();
+			for (Object id:resultIds){
+				childrenIds.add(new Long(id.toString()));
+			}
 			
 		} catch (Exception e) {
 			LOG.error("Error occured fetching children document type ids for document type " + parentDocumentTypeId, e);

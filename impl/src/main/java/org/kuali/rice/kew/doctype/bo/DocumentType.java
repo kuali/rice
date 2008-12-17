@@ -37,6 +37,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.reflect.ObjectDefinition;
@@ -144,7 +146,8 @@ public class DocumentType extends PersistableBusinessObjectBase
     @Transient
     private KimGroup defaultExceptionWorkgroup;
 
-    @OneToMany(targetEntity=org.kuali.rice.kew.doctype.DocumentTypePolicy.class, mappedBy="documentType")
+    @OneToMany(fetch=FetchType.EAGER,targetEntity=org.kuali.rice.kew.doctype.DocumentTypePolicy.class, mappedBy="documentType")
+    @Fetch(value=FetchMode.SUBSELECT)
     private Collection policies;
     @Transient
     private List routeLevels;

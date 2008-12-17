@@ -11,7 +11,7 @@
     <property name="shortLabel" value="Person Doc" />
     <property name="summary" value="&amp;nbsp;" />
     <property name="description" value="KIM entity person document" />
-    <property name="usePessimisticLocking" value="true" />
+    <property name="usePessimisticLocking" value="false" />
     <property name="useWorkflowPessimisticLocking" value="true" />
     <property name="documentTypeName" value="IdentityManagementPersonDocument" />
     <property name="documentClass" value="org.kuali.rice.kim.document.IdentityManagementPersonDocument" />

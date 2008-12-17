@@ -22,7 +22,7 @@
 					<validation required="false" />
 					<fieldEvaluation>
 						<xpathexpression>
-						  	wf:xstreamsafe('//document/roles/namespaceCode')= wf:ruledata('namespaceCode')
+						  	wf:xstreamsafe('//document/roles/org.kuali.rice.kim.bo.ui.PersonDocumentRole/namespaceCode')= wf:ruledata('namespaceCode')
 						</xpathexpression>
 					</fieldEvaluation>
 				</fieldDef>
@@ -93,7 +93,7 @@
 	</ruleTemplates>
   
   
- 
+
   <rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
     <rule>
        <documentType>IdentityManagementPersonDocument</documentType>
@@ -108,7 +108,8 @@
         </responsibility>
       </responsibilities>
     </rule>
-    
+
+
    <rule>
       <documentType>IdentityManagementPersonDocument</documentType>
       <ruleTemplate>NameSpaceApproval</ruleTemplate>
@@ -121,14 +122,14 @@
           <ruleExtensionValues>
             <ruleExtensionValue>
               <key>namespaceCode</key>
-              <value>KC-SYS</value>
+              <value>KRA-KIM</value>
             </ruleExtensionValue>
           </ruleExtensionValues>
         </ruleExtension>
       </ruleExtensions>
       <responsibilities>
                 <responsibility>
-                  <user>admin</user>
+                  <user>admin1</user>
                 </responsibility>
        </responsibilities>
     </rule>

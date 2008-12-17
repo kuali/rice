@@ -76,11 +76,13 @@
 					</div>
 	                </td>
 	            </tr>
-	            <tr>
-	              <td colspan=5 style="padding:0px;">
-	              <kim:personRoleQualifier roleIdx="${status.index}"></kim:personRoleQualifier>
-		          </td>
-		        </tr>
+	            <c:if test="${!empty role.definitions  and fn:length(role.definitions) > 0}" >
+		            <tr>
+		              <td colspan=5 style="padding:0px;">
+		              <kim:personRoleQualifier roleIdx="${status.index}"></kim:personRoleQualifier>
+			          </td>
+			        </tr>
+		        </c:if>
         	</c:forEach>        
 
             

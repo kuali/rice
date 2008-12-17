@@ -51,6 +51,9 @@ public class IdentityManagementPersonDocumentForm extends KualiTransactionalDocu
     
     public IdentityManagementPersonDocumentForm() {
         super();
+        this.registerEditableProperty("methodToCall.approve.x");
+        // TODO : from action list, and load document, and approve, this field is empty
+        this.setDocTypeName("IdentityManagementPersonDocument");
         this.setDocument(new IdentityManagementPersonDocument());
     }
 
@@ -72,6 +75,7 @@ public class IdentityManagementPersonDocumentForm extends KualiTransactionalDocu
 		// TODO shyu - THIS METHOD NEEDS JAVADOCS
 		super.populate(request);
 	}
+
 
 	public IdentityManagementPersonDocument getPersonDocument() {
         return (IdentityManagementPersonDocument) this.getDocument();

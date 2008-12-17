@@ -38,7 +38,9 @@ ORDER BY namespace_code, group_name
 
 CREATE OR REPLACE VIEW krim_perm_v AS
 SELECT 
-	  KRIM_PERM_TMPL_T.NM AS PERM_TEMPLATE_NAME
+      krim_perm_tmpl_t.nmspc_cd AS template_namespace_code
+	, KRIM_PERM_TMPL_T.NM AS PERM_TEMPLATE_NAME
+    , krim_perm_t.nmspc_cd AS perm_namespace_code
     , KRIM_PERM_T.NM      AS PERM_NAME
 	, KRIM_TYP_T.NM   AS PERM_TYPE_NAME 
 	, KRIM_TYP_T.SRVC_NM   AS PERM_TYPE_SERVICE_NAME
@@ -50,7 +52,9 @@ FROM KRIM_PERM_T KRIM_PERM_T
 /
 CREATE OR REPLACE VIEW krim_perm_attr_v AS
 SELECT 
-	  KRIM_PERM_TMPL_T.NM AS PERM_TEMPLATE_NAME
+      krim_perm_tmpl_t.nmspc_cd AS template_namespace_code
+	, KRIM_PERM_TMPL_T.NM AS TEMPLATE_NAME
+    , krim_perm_t.nmspc_cd AS perm_namespace_code
     , KRIM_PERM_T.NM      AS PERM_NAME
 	, KRIM_ATTR_DEFN_T.NM AS attribute_name 
 	, KRIM_PERM_ATTR_DATA_T.ATTR_VAL AS attribute_value
@@ -213,7 +217,7 @@ FROM KRIM_rsp_T KRIM_rsp_T
 ORDER BY role_namespace, role_name, rsp_template_name, rsp_name, attribute_name
 /
 
-CREATE OR REPLACE VIEW krim_perm_attr_v AS
+CREATE OR REPLACE VIEW krim_rsp_attr_v AS
 SELECT 
       krim_typ_t.NM      AS responsibility_type_name
 	, KRIM_rsp_TMPL_T.NM AS rsp_TEMPLATE_NAME

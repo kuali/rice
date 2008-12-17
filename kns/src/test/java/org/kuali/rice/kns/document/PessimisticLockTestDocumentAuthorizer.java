@@ -35,7 +35,7 @@ public class PessimisticLockTestDocumentAuthorizer extends DocumentAuthorizerBas
     
     private Map editMode = new HashMap();
 
-    @Override
+   
     protected boolean usesPessimisticLocking(Document document) {
         return USES_PESSIMISTIC_LOCKING;
     }

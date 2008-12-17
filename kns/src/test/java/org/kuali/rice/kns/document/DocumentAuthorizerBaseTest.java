@@ -546,6 +546,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
 
     @Test
     public void testHasPreRouteEditAuthorization() throws Exception {
+    	//TODO: the test for preRouteEditAuthorization should be removed
         GlobalVariables.setUserSession(new UserSession("quickstart"));
         PessimisticLockTestDocumentAuthorizer lockDocumentAuthorizer = new PessimisticLockTestDocumentAuthorizer();
         lockDocumentAuthorizer.USES_PESSIMISTIC_LOCKING = false;
@@ -554,13 +555,13 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
         Person authorizerUser = getNonSuperUser();
         Document document = new MockDocument(initiatorUser, false);
         assertTrue(authorizerUser + " should have Initiate Authorization due to initator being " + initiatorUser, lockDocumentAuthorizer.hasInitiateAuthorization(document, authorizerUser));
-        assertTrue(authorizerUser + " should have Pre Route Edit Authorization", lockDocumentAuthorizer.hasPreRouteEditAuthorization(document, authorizerUser));
+        //assertTrue(authorizerUser + " should have Pre Route Edit Authorization", lockDocumentAuthorizer.hasPreRouteEditAuthorization(document, authorizerUser));
 
         initiatorUser = getNonSuperUser();
         authorizerUser = getSuperUser();
         document = new MockDocument(initiatorUser, false);
         assertFalse(authorizerUser + " should not have Initiate Authorization due to initator being " + initiatorUser, lockDocumentAuthorizer.hasInitiateAuthorization(document, authorizerUser));
-        assertFalse(authorizerUser + " should not have Pre Route Edit Authorization", lockDocumentAuthorizer.hasPreRouteEditAuthorization(document, authorizerUser));
+        //assertFalse(authorizerUser + " should not have Pre Route Edit Authorization", lockDocumentAuthorizer.hasPreRouteEditAuthorization(document, authorizerUser));
 
         // switch to using pessimistic locking for the next tests
         lockDocumentAuthorizer.USES_PESSIMISTIC_LOCKING = true;
@@ -569,21 +570,21 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
         authorizerUser = getSuperUser();
         document = new MockDocument(initiatorUser, false);
         assertFalse(authorizerUser + " should not have Initiate Authorization due to initator being " + initiatorUser, lockDocumentAuthorizer.hasInitiateAuthorization(document, authorizerUser));
-        assertFalse(authorizerUser + " should not have Pre Route Edit Authorization", lockDocumentAuthorizer.hasPreRouteEditAuthorization(document, authorizerUser));
+        //assertFalse(authorizerUser + " should not have Pre Route Edit Authorization", lockDocumentAuthorizer.hasPreRouteEditAuthorization(document, authorizerUser));
 
         initiatorUser = getNonSuperUser();
         authorizerUser = getNonSuperUser();
         document = new MockDocument(initiatorUser, false);
         document.addPessimisticLock(KNSServiceLocator.getPessimisticLockService().generateNewLock(document.getDocumentNumber(), getSecondNonSuperUser()));
         assertTrue(authorizerUser + " should have Initiate Authorization due to initator being " + initiatorUser, lockDocumentAuthorizer.hasInitiateAuthorization(document, authorizerUser));
-        assertFalse(authorizerUser + " should not have Pre Route Edit Authorization", lockDocumentAuthorizer.hasPreRouteEditAuthorization(document, authorizerUser));
+        //assertFalse(authorizerUser + " should not have Pre Route Edit Authorization", lockDocumentAuthorizer.hasPreRouteEditAuthorization(document, authorizerUser));
 
         initiatorUser = getNonSuperUser();
         authorizerUser = getNonSuperUser();
         document = new MockDocument(initiatorUser, false);
         document.addPessimisticLock(KNSServiceLocator.getPessimisticLockService().generateNewLock(document.getDocumentNumber(), authorizerUser));
         assertTrue(authorizerUser + " should have Initiate Authorization due to initator being " + initiatorUser, lockDocumentAuthorizer.hasInitiateAuthorization(document, authorizerUser));
-        assertTrue(authorizerUser + " should have Pre Route Edit Authorization", lockDocumentAuthorizer.hasPreRouteEditAuthorization(document, authorizerUser));
+        //assertTrue(authorizerUser + " should have Pre Route Edit Authorization", lockDocumentAuthorizer.hasPreRouteEditAuthorization(document, authorizerUser));
     }
 
     @Test

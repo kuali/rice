@@ -106,9 +106,9 @@ public class RouteNode implements Serializable {
     @Column(name="TYP")
     private String nodeType = RequestsNode.class.getName();
     
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
-    @JoinTable(name = "KREW_RTE_NODE_LNK_T", joinColumns = @JoinColumn(name = "TO_RTE_NODE_ID"), inverseJoinColumns = @JoinColumn(name = "FROM_RTE_NODE_ID"))
+    @JoinTable(name = "KREW_RTE_NODE_P_LNK_T", joinColumns = @JoinColumn(name = "TO_RTE_NODE_ID"), inverseJoinColumns = @JoinColumn(name = "FROM_RTE_NODE_ID"))
     private List<RouteNode> previousNodes = new ArrayList<RouteNode>();
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @Fetch(value = FetchMode.SUBSELECT)

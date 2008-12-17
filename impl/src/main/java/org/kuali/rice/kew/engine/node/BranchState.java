@@ -17,7 +17,6 @@
 package org.kuali.rice.kew.engine.node;
 
 import javax.persistence.AttributeOverride;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -83,5 +82,7 @@ public class BranchState extends State {
     public String toString() {
         return "[BranchState: stateId=" + getStateId() + ", branch=" + branch + ", key=" + key + ", value=" + value + "]"; 
     }
+    
+    
 }
 

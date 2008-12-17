@@ -18,9 +18,10 @@ package org.kuali.rice.kew.engine.node;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.SequenceGenerator;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 
@@ -32,6 +33,8 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @MappedSuperclass
 public abstract class State extends KeyValuePair implements Serializable {
     @Id
+	@GeneratedValue(strategy=javax.persistence.GenerationType.SEQUENCE, generator="KREWSeq")
+	@SequenceGenerator(name="KREWSeq",sequenceName="KREW_RTE_NODE_S", allocationSize=1)
     protected Long stateId;
 
     public State() {}

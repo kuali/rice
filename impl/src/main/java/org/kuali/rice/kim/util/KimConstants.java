@@ -70,8 +70,6 @@ public class KimConstants {
 	
 	public static final String PRE_ROUTING_ROUT_NAME = "PreRoute";
 	
-	public static final String AD_HOC_ROUTE_STATUS = "AdHoc";
-	
 	@Deprecated
 	public static final String TEMP_GROUP_NAMESPACE = "KFS";
 	

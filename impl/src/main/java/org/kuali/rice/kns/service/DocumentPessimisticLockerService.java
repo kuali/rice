@@ -16,6 +16,7 @@
 package org.kuali.rice.kns.service;
 
 import java.util.Map;
+import java.util.Set;
 
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.document.Document;
@@ -48,6 +49,12 @@ public interface DocumentPessimisticLockerService {
      */
     public void releaseWorkflowPessimisticLocking(Document document);
     
+    /**
+     * @param document
+     * @param user
+     * @return Set of actions are permitted the given user on the given document
+     */
+    public Set getDocumentActions(Document document, Person user, Set<String> documentActions);
   
 }
 

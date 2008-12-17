@@ -111,8 +111,8 @@ public class IdentityManagementPersonDocumentAuthorizer extends TransactionalDoc
 	 * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase#getDocumentActionFlags(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
 	 */
     @Override
-    public Set getDocumentActionFlags(Document document, Person user, Set<String> documentActions) {
-        Set docActions = super.getDocumentActionFlags(document, user, documentActions);
+    public Set getDocumentActions(Document document, Person user, Set<String> documentActions) {
+        Set docActions = super.getDocumentActions(document, user, documentActions);
         KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
         boolean hasInitiateAuthorization = hasInitiateAuthorization(document, user);
         if(hasInitiateAuthorization(document, user)){

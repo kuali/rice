@@ -143,9 +143,9 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
      * @see org.kuali.rice.kns.authorization.DocumentAuthorizer#getDocumentActionFlags(org.kuali.rice.kns.document.Document,
      *      org.kuali.rice.kns.bo.user.KualiUser)
      */
-    public Set getDocumentActionFlags(Document document, Person user, Set<String> documentActions) {
+    public Set getDocumentActions(Document document, Person user, Set<String> documentActions) {
 
-        Set docActions = super.getDocumentActionFlags(document, user, documentActions);
+        Set docActions = super.getDocumentActions(document, user, documentActions);
         MaintenanceDocument maintDoc = (MaintenanceDocument) document;
         MaintenanceDocumentAuthorizations docAuths = getFieldAuthorizations(maintDoc, user);
         if (docActions.contains(KNSConstants.KUALI_ACTION_CAN_BLANKET_APPROVE)&& docAuths.hasAnyFieldRestrictions()) {

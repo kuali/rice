@@ -43,7 +43,7 @@ public interface DocumentAuthorizer {
      * @param user
      * @return Set of actions are permitted the given user on the given document
      */
-    public Set getDocumentActionFlags(Document document, Person user, Set<String> documentActions);
+    public Set getDocumentActions(Document document, Person user, Set<String> documentActions);
     
     @Deprecated
     public DocumentActionFlags getDocumentActionFlags(Document document, Person user);

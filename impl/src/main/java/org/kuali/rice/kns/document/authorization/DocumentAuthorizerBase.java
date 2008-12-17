@@ -98,7 +98,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
      * @see org.kuali.rice.kns.authorization.DocumentAuthorizer#getDocumentActionFlags(org.kuali.rice.kns.document.Document,
      *      org.kuali.rice.kns.bo.user.KualiUser)
      */
-    public Set getDocumentActionFlags(Document document, Person user, Set<String> documentActions) {
+    public Set getDocumentActions(Document document, Person user, Set<String> documentActions) {
         if ( LOG.isDebugEnabled() ) {
         LOG.debug("calling DocumentAuthorizerBase.getDocumentActionFlags for document '" + document.getDocumentNumber() + "'. user '" + user.getPrincipalName() + "'");
         }
@@ -127,15 +127,15 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
     	   docActions.add(KNSConstants.KUALI_ACTION_CAN_BLANKET_APPROVE);
        }
        
-       if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_CANCEL)&& hasPreRouteEditAuthorization(document, user) && canCancel(document, user)){
+       if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_CANCEL) && canCancel(document, user)){
     	   docActions.add(KNSConstants.KUALI_ACTION_CAN_CANCEL);
        }
        
-       if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_SAVE)&& hasPreRouteEditAuthorization(document, user) && canSave(document, user)){
+       if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_SAVE) && canSave(document, user)){
     	   docActions.add(KNSConstants.KUALI_ACTION_CAN_SAVE);
        }
        
-       if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_ROUTE)&& hasPreRouteEditAuthorization(document, user) && canRoute(document, user)){
+       if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_ROUTE)&& canRoute(document, user)){
     	   docActions.add(KNSConstants.KUALI_ACTION_CAN_ROUTE);
        }
         
@@ -196,16 +196,6 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
     return kualiWorkflowInfo;
     }
     
-    /**
-     * Helper method to disallow the perform route report button globally for a particular authorizer class
-     * @param document - current document
-     * @param user - current user
-     * @return boolean to allow or disallow route report button to show for user
-     */
-    public boolean allowsPerformRouteReport(Document document, Person user) {
-        KualiConfigurationService kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
-        return kualiConfigurationService.getIndicatorParameter( KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.DEFAULT_CAN_PERFORM_ROUTE_REPORT_IND);
-    }
     
      /**
      * Helper method to set the annotate flag based on other workflow tags
@@ -240,38 +230,6 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
         return false;
     }
 
-    /**
-     * This method checks to see if a document is using Pessimistic Locking first. If the document is not using Pessimistic
-     * Locking this method will return the value returned by {@link #hasInitiateAuthorization(Document, Person)}. If
-     * the document is using pessimistic locking and the value of {@link #hasInitiateAuthorization(Document, Person)}
-     * is true, the system will check to see that the given user has a lock on the document and return true if one is found.
-     * 
-     * @param document - document to check
-     * @param user - current user
-     * @return true if the document is using Pessimistic Locking, the user has initiate authorization (see
-     *         {@link #hasInitiateAuthorization(Document, Person)}), and the document has a lock owned by the given
-     *         user. If the document is not using Pessimistic Locking the value returned will be that returned by
-     *         {@link #hasInitiateAuthorization(Document, Person)}.
-     */
-    public boolean hasPreRouteEditAuthorization(Document document, Person user) {
-        if (usesPessimisticLocking(document)) {
-            if (hasInitiateAuthorization(document, user)) {
-                for (Iterator iterator = document.getPessimisticLocks().iterator(); iterator.hasNext();) {
-                    PessimisticLock lock = (PessimisticLock) iterator.next();
-                    if (lock.isOwnedByUser(user)) {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        } else {
-            return hasInitiateAuthorization(document, user);
-        }
-    }
-    
-    protected boolean usesPessimisticLocking(Document document) {
-        return KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(document.getClass().getName()).getUsePessimisticLocking();
-    }
     
     /**
      * Determines whether the given user should have initiate permissions on the given document.

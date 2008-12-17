@@ -69,6 +69,46 @@ public class DocumentPessimisticLockerServiceImpl implements DocumentPessimistic
    
     private static PersonService personService;
     private static KualiModuleService kualiModuleService;
+    
+    /**
+     * @param document
+     * @param user
+     * @return Set of actions are permitted the given user on the given document
+     */
+    public Set getDocumentActions(Document document, Person user, Set<String> documentActions){
+    	if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_CANCEL) && !hasPreRouteEditAuthorization(document, user) ){
+    		documentActions.remove(KNSConstants.KUALI_ACTION_CAN_CANCEL);
+    		
+    	}
+    	if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_SAVE)  && !hasPreRouteEditAuthorization(document, user)){
+    		documentActions.remove(KNSConstants.KUALI_ACTION_CAN_SAVE);
+    	}
+        if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_ROUTE) && !hasPreRouteEditAuthorization(document, user)){
+        	documentActions.remove(KNSConstants.KUALI_ACTION_CAN_ROUTE);
+        }
+    	return documentActions;
+    }
+    
+    
+    /**
+     * This method checks to see that the given user has a lock on the document and return true if one is found.
+     * 
+     * @param document - document to check
+     * @param user - current user
+     * @return true if the document is using Pessimistic Locking, the user has initiate authorization (see
+     *         {@link #hasInitiateAuthorization(Document, Person)}), and the document has a lock owned by the given
+     *         user. If the document is not using Pessimistic Locking the value returned will be that returned by
+     *         {@link #hasInitiateAuthorization(Document, Person)}.
+     */
+    protected boolean hasPreRouteEditAuthorization(Document document, Person user) {
+    	for (Iterator iterator = document.getPessimisticLocks().iterator(); iterator.hasNext();) {
+    		PessimisticLock lock = (PessimisticLock) iterator.next();
+    		if (lock.isOwnedByUser(user)) {
+    			return true;
+            }
+        }
+        return false;
+    }
    
  
     protected boolean usesPessimisticLocking(Document document) {

@@ -1439,7 +1439,12 @@ public class KualiDocumentActionBase extends KualiAction {
     		DocumentPresentationController documentPresentationController = KNSServiceLocator.getDocumentPresentationControllerService().getDocumentPresentationController(document);
             DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(document);
             Set<String> documentActions =  documentPresentationController.getDocumentActions(document);
-            documentActions = documentAuthorizer.getDocumentActionFlags(document, user, documentActions);
+            documentActions = documentAuthorizer.getDocumentActions(document, user, documentActions);
+            
+            if (KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(document.getClass().getName()).getUsePessimisticLocking()) {
+                documentActions = KNSServiceLocator.getDocumentPessimisticLockerService().getDocumentActions(document, user, documentActions);
+            }
+            
             //DocumentActionFlags flags = new DocumentActionFlags();
 			formBase.setDocumentActions(convertSetToMap(documentActions));
            

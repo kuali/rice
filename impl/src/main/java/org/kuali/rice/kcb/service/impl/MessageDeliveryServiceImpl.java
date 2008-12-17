@@ -23,7 +23,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.query.Criteria;
-import org.kuali.rice.core.database.platform.Platform;
+import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kcb.bo.Message;
 import org.kuali.rice.kcb.bo.MessageDelivery;
 import org.kuali.rice.kcb.bo.MessageDeliveryStatus;
@@ -131,7 +131,7 @@ public class MessageDeliveryServiceImpl extends BusinessObjectServiceImpl implem
         }
         criteria.addIn(MessageDelivery.DELIVERY_STATUS, statusCollection);
         // implement our select for update hack
-        Collection<MessageDelivery> messageDeliveries = dao.findMatching(MessageDelivery.class, criteria, true, Platform.NO_WAIT);
+        Collection<MessageDelivery> messageDeliveries = dao.findMatching(MessageDelivery.class, criteria, true, RiceConstants.NO_WAIT);
 
         //LOG.debug("Retrieved " + messageDeliveries.size() + " available message deliveries: " + System.currentTimeMillis());
 

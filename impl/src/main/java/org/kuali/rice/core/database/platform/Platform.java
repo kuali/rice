@@ -29,14 +29,18 @@ import org.apache.ojb.broker.PersistenceBroker;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface Platform {
-
-	// TODO: Refactor constants out of the interface
-    public static final long WAIT_FOREVER = -1;
-    public static final long NO_WAIT = 0;
+    
+    /**
+     * Returns the name of a function for shifting a string to uppercase on 
+     * the relevant platform.
+     * @return the name of a function as a String
+     */ 
+    String getUpperCaseFunction();
+    
     /**
      * Supplies a parameterized sequence incrementation query
      * @param sequenceName name of the sequence to be incremented
-     * @return paramaterized sequence incrementation query
+     * @return parameterized sequence incrementation query
      */
     Long getNextValSQL(String sequenceName, PersistenceBroker persistenceBroker);
     Long getNextValSQL(String sequenceName, EntityManager entityManager);
@@ -46,6 +50,7 @@ public interface Platform {
      * @param wait whether to block until lock is released
      * @return the query used to select route header rows for update
      */
+    
     String getLockRouteHeaderQuerySQL(Long routeHeaderId, boolean wait);
     /**
      * Supplies the sql for a given date string that will satisfy a where clause
@@ -66,4 +71,45 @@ public interface Platform {
      * @return the suffix to append to a SQL query in order to perform a "select for update" lock on the table
      */
     String getSelectForUpdateSuffix(long waitMillis);
+    
+    /**
+     * @param tableToCreate the String name for the table to be created
+     * @param fromTable the String name of the original table
+     * @return the SQL string for creating the specified table from the second 
+     * specified table 
+     */
+    String getCreateTableFromTableSql(String tableToCreate, String fromTable);
+    
+    /**
+     * @param tableName the name of the table to be truncated
+     * @return a String of SQL for truncating a table 
+     * @see <a href="http://en.wikipedia.org/wiki/Truncate_(SQL)">Truncate (SQL)</a>
+     */
+    String getTruncateTableSql(String tableName);
+
+    /**
+     * @param receivingTable the name of the table receiving inserted data
+     * @param fromTable the name of the originating table
+     * @return an "INSERT INTO" SQL command 
+     */
+    String getInsertDataFromTableSql(String restoreTableName, String fromTableName);
+    
+    /**
+     * @param tableName the table to drop
+     * @return an SQL command for dropping the specified table
+     */
+    String getDropTableSql(String tableName);
+    
+    /**
+     * Returns a SQL expression that acts like nvl(exprToTest, exprToReplaceIfTestExprNull) on oracle.  That is,
+     * an expression that will return exprToTest does not evaluate to null, and will return exprToReplaceIfTestExprNull
+     * if exprToTest does evaluate to null.  NOTE: this method does not provide any protection against SQL injection
+     * attacks, nor does it validate any of the parameters.
+     * 
+     * @param exprToTest a SQL expression that will either evaluate to null or non-null
+     * @param exprToReplaceIfTestExprNull the value to return if 
+     * @return a SQL expression that acts like nvl on oracle or ifnull() on MySQL
+     */
+    String getIsNullFunction(String exprToTest, String exprToReplaceIfTestExprNull);
+
 }

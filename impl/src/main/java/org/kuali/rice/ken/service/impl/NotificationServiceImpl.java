@@ -22,7 +22,7 @@ import java.util.HashMap;
 
 import org.apache.ojb.broker.query.Criteria;
 import org.kuali.rice.core.dao.GenericDao;
-import org.kuali.rice.core.database.platform.Platform;
+import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.ken.bo.Notification;
 import org.kuali.rice.ken.bo.NotificationMessageDelivery;
 import org.kuali.rice.ken.bo.NotificationRecipient;
@@ -262,7 +262,7 @@ public class NotificationServiceImpl implements NotificationService {
         criteria.addIsNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
         //criteria = Util.makeSelectForUpdate(criteria);
         
-        Collection<Notification> available_notifications = businessObjectDao.findMatching(Notification.class, criteria, true, Platform.NO_WAIT);
+        Collection<Notification> available_notifications = businessObjectDao.findMatching(Notification.class, criteria, true, RiceConstants.NO_WAIT);
         
         LOG.debug("Available notifications: " + available_notifications.size());
 
@@ -285,7 +285,7 @@ public class NotificationServiceImpl implements NotificationService {
         criteria.addEqualTo(NotificationConstants.BO_PROPERTY_NAMES.ID, notification.getId());
         //criteria = Util.makeSelectForUpdate(criteria);
 
-        Collection<Notification> notifications = businessObjectDao.findMatching(Notification.class, criteria, true, Platform.NO_WAIT);
+        Collection<Notification> notifications = businessObjectDao.findMatching(Notification.class, criteria, true, RiceConstants.NO_WAIT);
         if (notifications == null || notifications.size() == 0) {
             throw new RuntimeException("Notification #" + notification.getId() + " not found to unlock");
         }

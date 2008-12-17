@@ -27,6 +27,7 @@ import javax.persistence.EntityManager;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.accesslayer.LookupException;
 import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.util.RiceConstants;
 
 /**
  * Platform implementation that generates Oracle-compliant SQL
@@ -36,7 +37,7 @@ public class OraclePlatform extends ANSISqlPlatform {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(OraclePlatform.class);
 	private static final long DEFAULT_TIMEOUT_SECONDS = 60 * 60; // default to 1 hour
-
+	public static final long WAIT_FOREVER = -1;
 	
     public Long getNextValSQL(String sequenceName,  EntityManager entityManager) {
         return new Long(((BigDecimal) entityManager.createNativeQuery("select " + sequenceName + ".nextval from dual").getSingleResult()).longValue());
@@ -109,7 +110,7 @@ public class OraclePlatform extends ANSISqlPlatform {
         if (WAIT_FOREVER == waitMillis) {
             // do nothing
             LOG.warn("Selecting for update and waiting forever...");
-        } else if (NO_WAIT == waitMillis) {
+        } else if (RiceConstants.NO_WAIT == waitMillis) {
             sql += " nowait";
         } else {
             // Oracle only supports wait time in seconds...

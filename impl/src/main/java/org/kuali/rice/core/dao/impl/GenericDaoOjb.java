@@ -30,6 +30,7 @@ import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.dao.GenericDao;
 import org.kuali.rice.core.database.platform.Platform;
 import org.kuali.rice.core.ojb.SuffixableQueryByCriteria;
+import org.kuali.rice.core.util.RiceConstants;
 import org.springframework.dao.DataAccessException;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
@@ -212,7 +213,7 @@ public class GenericDaoOjb extends PersistenceBrokerDaoSupport implements Generi
      * @see org.kuali.rice.core.dao.GenericDao#findMatching(java.lang.Class, org.apache.ojb.broker.query.Criteria)
      */
     public Collection findMatching(Class clazz, Criteria criteria) {
-        return findMatching(clazz, criteria, false, Platform.NO_WAIT);
+        return findMatching(clazz, criteria, false, RiceConstants.NO_WAIT);
         /*return getPersistenceBrokerTemplate().getCollectionByQuery(
         QueryFactory.newQuery(clazz, criteria));*/
     }

@@ -21,7 +21,7 @@ import java.util.HashMap;
 
 import org.apache.ojb.broker.query.Criteria;
 import org.kuali.rice.core.dao.GenericDao;
-import org.kuali.rice.core.database.platform.Platform;
+import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.ken.bo.Notification;
 import org.kuali.rice.ken.bo.NotificationMessageDelivery;
 import org.kuali.rice.ken.service.NotificationMessageDeliveryService;
@@ -108,7 +108,7 @@ public class NotificationMessageDeliveryServiceImpl implements NotificationMessa
         criteria.addIsNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
         // implement our select for update hack
         //criteria = Util.makeSelectForUpdate(criteria);
-        Collection<NotificationMessageDelivery> messageDeliveries = businessObjectDao.findMatching(NotificationMessageDelivery.class, criteria, true, Platform.NO_WAIT);
+        Collection<NotificationMessageDelivery> messageDeliveries = businessObjectDao.findMatching(NotificationMessageDelivery.class, criteria, true, RiceConstants.NO_WAIT);
 
         LOG.debug("Retrieved " + messageDeliveries.size() + " available message deliveries: " + System.currentTimeMillis());
 
@@ -152,7 +152,7 @@ public class NotificationMessageDeliveryServiceImpl implements NotificationMessa
         
         //fullQueryCriteria = Util.makeSelectForUpdate(fullQueryCriteria);
         
-        Collection<NotificationMessageDelivery> messageDeliveries = businessObjectDao.findMatching(NotificationMessageDelivery.class, fullQueryCriteria, true, Platform.NO_WAIT);
+        Collection<NotificationMessageDelivery> messageDeliveries = businessObjectDao.findMatching(NotificationMessageDelivery.class, fullQueryCriteria, true, RiceConstants.NO_WAIT);
         
         for (NotificationMessageDelivery d: messageDeliveries) {
             d.setLockedDate(new Timestamp(System.currentTimeMillis()));
@@ -171,7 +171,7 @@ public class NotificationMessageDeliveryServiceImpl implements NotificationMessa
         criteria.addEqualTo(NotificationConstants.BO_PROPERTY_NAMES.ID, messageDelivery.getId());
         //criteria = Util.makeSelectForUpdate(criteria);
 
-        Collection<NotificationMessageDelivery> deliveries = businessObjectDao.findMatching(NotificationMessageDelivery.class, criteria, true, Platform.NO_WAIT);
+        Collection<NotificationMessageDelivery> deliveries = businessObjectDao.findMatching(NotificationMessageDelivery.class, criteria, true, RiceConstants.NO_WAIT);
         if (deliveries == null || deliveries.size() == 0) {
             throw new RuntimeException("NotificationMessageDelivery #" + messageDelivery.getId() + " not found to unlock");
         }

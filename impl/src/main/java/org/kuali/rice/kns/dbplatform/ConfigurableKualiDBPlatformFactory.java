@@ -5,6 +5,14 @@ import javax.sql.DataSource;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
+/**
+ * 
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ *
+ * @deprecated Use Spring-based configuration to obtain an implementation under the org.kuali.rice.core.database package
+ * @see org.kuali.rice.core.database.SpringConnectionFactoryManagedImpl
+ * @see org.kuali.rice.core.database.PrimaryDataSourceFactoryBean
+ */
 public class ConfigurableKualiDBPlatformFactory {
 	private static final Logger LOG = Logger.getLogger( ConfigurableKualiDBPlatformFactory.class );
 	

@@ -19,28 +19,45 @@ import org.apache.ojb.broker.query.Criteria;
 import org.kuali.rice.kns.dao.jdbc.KualiDBPlatformBase;
 
 /**
+ * @deprecated
+ * @see org.kuali.rice.core.database.platform.MySQLPlatform
  * This class is just for MySQL DB code - should be used only as last resort
  */
 public class KualiDBPlatformMySQL extends KualiDBPlatformBase implements KualiDBPlatform {
-    public void applyLimit(Integer limit, Criteria criteria) {
+    
+	//copied to org.kuali.rice.core.database.platform.MySQLPlatform
+	public void applyLimit(Integer limit, Criteria criteria) {
         if (limit != null) {
             criteria.addSql(" 1 LIMIT 0," + limit.intValue()); // 1 has to be there because the criteria is ANDed
         }
     }
     
+	/**
+	 * @see org.kuali.rice.core.database.platform.MySQLPlatform#getNextValSQL(String, javax.persistence.EntityManager)
+	 * @see org.kuali.rice.core.database.platform.MySQLPlatform#getNextValSQL(String, org.apache.ojb.broker.PersistenceBroker)
+	 */
     public Long getNextAvailableSequenceNumber(String sequenceName) {
         getJdbcTemplate().execute(new StringBuffer("INSERT INTO ").append(sequenceName).append(" VALUES (NULL)").toString());
         return getJdbcTemplate().queryForLong("SELECT LAST_INSERT_ID()");
     }
 
+    //not copied--no references
     public String getStrToDateFunction() {
         return "STR_TO_DATE";
     }
 
+    /**
+	 * @see org.kuali.rice.core.database.platform.ANSISqlPlatform#getUpperCaseFunction()
+	 */
     public String getUpperCaseFunction() {
     	return "UPPER";
     }
     
+    //copied
+    /**
+     * @deprecated
+     * @see org.kuali.rice.core.database.platform.ANSISqlPlatform#getDateFormatString(String s)
+     */
     public String getDateFormatString(String dateFormatString) {
         String newString = "";
         if ("yyyy-mm-dd".equalsIgnoreCase(dateFormatString)) {

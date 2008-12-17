@@ -57,4 +57,6 @@ public class RiceConstants {
     public static DateFormat getDefaultDateAndTimeFormat() {
         return new SimpleDateFormat(DEFAULT_DATE_FORMAT_PATTERN);
     }
+
+	public static final long NO_WAIT = 0;
 }

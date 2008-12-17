@@ -16,29 +16,37 @@ import org.kuali.rice.kns.dbplatform.KualiDBPlatform;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
 /**
+ * @deprecated
+ * @see org.kuali.rice.core.database.platform.ANSISqlPlatform
+ * 
  * This class is responsible for low level DB operations that are currently commonly implementable for the DB platforms Kuali
  * supports.
  */
 public abstract class KualiDBPlatformBase extends SimpleJdbcDaoSupport implements KualiDBPlatform {
+   
+    //copied to org.kuali.rice.core.database.platform.ANSISqlPlatform
     public String getCreateTableFromTableSql(String createTableName, String fromTableName) {
 	return new StringBuffer("create table ").append(createTableName).append(" as select * from ").append(fromTableName)
 		.toString();
     }
-
+    
+    //copied to org.kuali.rice.core.database.platform.ANSISqlPlatform
     public String getTruncateTableSql(String tableName) {
 	return "truncate table " + tableName;
     }
-
+    
+    //copied to org.kuali.rice.core.database.platform.ANSISqlPlatform
     public String getInsertDataFromTableSql(String restoreTableName, String fromTableName) {
 	return new StringBuffer("insert into ").append(restoreTableName).append(" select * from ").append(fromTableName)
 		.toString();
     }
 
+    //copied to org.kuali.rice.core.database.platform.ANSISqlPlatform
     public String getDropTableSql(String tableName) {
 	return new StringBuffer("drop table ").append(tableName).toString();
     }
 
-    
+    //copied
     /**
      * Returns an expression equivalent to oracle's NVL statement using the CASE and IS NULL expressions, which should
      * be supported by many database systems

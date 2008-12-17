@@ -19,6 +19,8 @@ import org.apache.ojb.broker.query.Criteria;
 import org.kuali.rice.kns.dao.jdbc.KualiDBPlatformBase;
 
 /**
+ * @deprecated
+ * @see org.kuali.rice.core.database.platform.OraclePlatform
  * This class is just for Oracle DB code - should be used only as last resort
  */
 public class KualiDBPlatformOracle extends KualiDBPlatformBase implements KualiDBPlatform {
@@ -36,14 +38,25 @@ public class KualiDBPlatformOracle extends KualiDBPlatformBase implements KualiD
         return "TO_DATE";
     }
 
+    /**
+     * @see org.kuali.rice.core.database.platform.ANSISqlPlatform#getDateSQL(String, String)
+     */
+    //not copied over
     public String getDateFormatString(String dateFormatString) {
         return "'" + dateFormatString + "'";
     }
-
+    
+    /*
+     * NOT copied to corresponding Oracle impl in *.core.database.platform.*;
+     * nb: this doesn't return the time as would CURRENT_TIME or CURTIME
+     */
     public String getCurTimeFunction() {
         return "sysdate";
     }
     
+    /**
+     * @see org.kuali.rice.core.database.platform.ANSISqlPlatform#getUpperCaseFunction()
+     */
     public String getUpperCaseFunction() {
     	return "UPPER";
     }

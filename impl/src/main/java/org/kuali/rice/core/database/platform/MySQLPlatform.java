@@ -26,6 +26,7 @@ import javax.persistence.EntityManager;
 
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.accesslayer.LookupException;
+import org.apache.ojb.broker.query.Criteria;
 
 public class MySQLPlatform extends ANSISqlPlatform {
 
@@ -33,6 +34,12 @@ public class MySQLPlatform extends ANSISqlPlatform {
         return "SELECT DOC_HDR_ID FROM KREW_DOC_HDR_T WHERE DOC_HDR_ID=? FOR UPDATE";
     }
 
+    public void applyLimit(Integer limit, Criteria criteria) {
+        if (limit != null) {
+            criteria.addSql(" 1 LIMIT 0," + limit.intValue()); // 1 has to be there because the criteria is ANDed
+        }
+    }
+    
     public Long getNextValSQL(String sequenceName,	PersistenceBroker persistenceBroker) {
   		PreparedStatement statement = null;
   		ResultSet resultSet = null;
@@ -82,6 +89,17 @@ public class MySQLPlatform extends ANSISqlPlatform {
     
     public String getSelectForUpdateSuffix(long waitMillis) {
         return "for update";
+    }
+    
+    public String getDateFormatString(String dateFormatString) {
+        String newString = "";
+        if ("yyyy-mm-dd".equalsIgnoreCase(dateFormatString)) {
+            newString = "'%Y-%m-%d'";
+        }
+        else if ("DD/MM/YYYY HH12:MI:SS PM".equalsIgnoreCase(dateFormatString)) {
+            newString = "'%d/%m/%Y %r'";
+        }
+        return newString;
     }
 
 }

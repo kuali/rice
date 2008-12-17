@@ -33,15 +33,6 @@ public interface TransactionalDocumentDictionaryService {
     public Boolean getAllowsCopy(TransactionalDocument document);
 
     /**
-     * Returns whether or not this document's data dictionary file has flagged it to allow document error correction of a document
-     * (copy and reversal).
-     * 
-     * @param document
-     * @return True if error correction is allowed, false otherwise.
-     */
-    public Boolean getAllowsErrorCorrection(TransactionalDocument document);
-
-    /**
      * Retrieves a document instance by it's class name.
      * 
      * @param documentTypeName

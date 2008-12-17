@@ -47,7 +47,6 @@ public class KNSConstants extends JSTLConstants {
 	public static final String KUALI_ACTION_CAN_COPY ="canCopy";
 	public static final String KUALI_ACTION_PERFORM_ROUTE_REPORT = "canPerformRouteReport";
 	public static final String KUALI_ACTION_CAN_AD_HOC_ROUTE = "canAdHocRoute";
-	public static final String KUALI_ACTION_CAN_ERROR_CORRECT = "canErrorCorrect";
     public static final String KUALI_ACTION_CAN_BLANKET_APPROVE ="canBlanketApprove";
     public static final String KUALI_ACTION_CAN_ACKNOWLEDGE = "canAcknowledge";
     public static final String KUALI_ACTION_CAN_FYI = "canFYI";
@@ -371,33 +370,17 @@ public class KNSConstants extends JSTLConstants {
     // specialized method 'delete' used only for PessimisticLocks currently
     public static final String DELETE_METHOD = "delete";
     public static final String START_METHOD = "start";
-//    public static final String SEARCH_METHOD = "search";
-//    public static final String COPY_METHOD = "copy";
-//    public static final String ERRORCORRECT_METHOD = "correct";
-//    public static final String SOURCE = "Source";
-//    public static final String SQUARE_BRACKET_LEFT = "[";
-//    public static final String SQUARE_BRACKET_RIGHT = "]";
-//    public static final String TARGET = "Target";
-//    public static final String TO = "To";
     public static final String USER_SESSION_KEY = "UserSession";
     public static final String KUALI_SESSION_ID = "kualiSessionId";
     public static final String EXITING_DOCUMENT = "exitingDocument";
     public static final String DOCUMENT_DOCUMENT_NUMBER = "document.documentNumber";
     public static final String DOC_NUM = "docNum";
 
-//    public static final String VERSION_NUMBER = "versionNumber";
-
     public static final String SEARCH_LIST_KEY_PREFIX = "searchResults";
     public static final String SEARCH_LIST_REQUEST_KEY = "searchResultKey";
 
     public static final String METHOD_DISPLAY_ALL_INACTIVATION_BLOCKERS = "displayAllInactivationBlockers";
     public static final String DISPLAY_ALL_INACTIVATION_BLOCKERS_ACTION = "inactivationBlockers.do";
-
-//    public static final String CORRECTION_FORM_KEY = "correctionFormKey";
-//    public static final int CORRECTION_RECENT_GROUPS_DAY = 10;
-//
-//    public static final String SEARCH_DATA_KEY_PREFIX = "dataSearchResults";
-//    public static final String SEARCH_DATA_REQUEST_KEY = "searchResultDataKey";
 
     public static final String GLOBAL_ERRORS = "GLOBAL_ERRORS";
     public static final String GLOBAL_MESSAGES = "GlobalMessages";

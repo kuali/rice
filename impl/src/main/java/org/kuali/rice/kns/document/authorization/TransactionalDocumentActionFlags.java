@@ -20,7 +20,6 @@ package org.kuali.rice.kns.document.authorization;
  */
 @Deprecated
 final public class TransactionalDocumentActionFlags extends DocumentActionFlags {
-    private boolean canErrorCorrect;
 
     /**
      * Default constructor.
@@ -38,23 +37,7 @@ final public class TransactionalDocumentActionFlags extends DocumentActionFlags 
 
         if (flags instanceof TransactionalDocumentActionFlags) {
             TransactionalDocumentActionFlags tflags = (TransactionalDocumentActionFlags) flags;
-
-            this.canErrorCorrect = tflags.canErrorCorrect;
         }
-    }
-
-    /**
-     * @return boolean
-     */
-    public boolean getCanErrorCorrect() {
-        return canErrorCorrect;
-    }
-
-    /**
-     * @param canErrorCorrect
-     */
-    public void setCanErrorCorrect(boolean canErrorCorrect) {
-        this.canErrorCorrect = canErrorCorrect;
     }
 
     /**
@@ -68,10 +51,6 @@ final public class TransactionalDocumentActionFlags extends DocumentActionFlags 
 
         if (other instanceof TransactionalDocumentActionFlags) {
             TransactionalDocumentActionFlags tother = (TransactionalDocumentActionFlags) other;
-
-            if (canErrorCorrect != tother.canErrorCorrect) {
-                s.append("canErrorCorrect=(" + canErrorCorrect + "," + tother.canErrorCorrect + ")");
-            }
         }
 
         return s.toString();

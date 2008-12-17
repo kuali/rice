@@ -33,7 +33,6 @@ public class TransactionalDocumentEntryMapper extends DocumentEntryMapper {
         entryMap.set("transactionalDocument", "true");
         entryMap.set("documentClass", entry.getDocumentClass().getName());
         entryMap.set("allowsCopy", Boolean.toString(entry.getAllowsCopy()));
-        entryMap.set("allowsErrorCorrection", Boolean.toString(entry.getAllowsErrorCorrection()));
 
         return entryMap;
     }

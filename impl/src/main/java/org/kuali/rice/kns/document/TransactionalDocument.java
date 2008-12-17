@@ -21,11 +21,4 @@ package org.kuali.rice.kns.document;
  */
 public interface TransactionalDocument extends Document {
 
-    /**
-     * This method returns whether or not this document is allowed to be corrected.
-     * 
-     * @return True if it can be corrected, false otherwise.
-     */
-    public boolean getAllowsErrorCorrection();
-
 }

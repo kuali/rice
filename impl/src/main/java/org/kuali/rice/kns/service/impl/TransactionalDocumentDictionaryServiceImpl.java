@@ -60,20 +60,6 @@ public class TransactionalDocumentDictionaryServiceImpl implements Transactional
     }
 
     /**
-     * @see org.kuali.rice.kns.service.TransactionalDocumentDictionaryService#getAllowsErrorCorrection(org.kuali.bo.TransactionalDocument)
-     */
-    public Boolean getAllowsErrorCorrection(TransactionalDocument document) {
-        Boolean allowsErrorCorrections = null;
-
-        TransactionalDocumentEntry entry = getTransactionalDocumentEntry(document);
-        if (entry != null) {
-            allowsErrorCorrections = Boolean.valueOf(entry.getAllowsErrorCorrection());
-        }
-
-        return allowsErrorCorrections;
-    }
-
-    /**
      * @see org.kuali.rice.kns.service.TransactionalDocumentDictionaryService#getSummary(org.kuali.bo.TransactionalDocument)
      */
     public String getSummary(String transactionalDocumentTypeName) {

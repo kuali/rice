@@ -22,17 +22,7 @@ package org.kuali.rice.kns.datadictionary;
  */
 public class TransactionalDocumentEntry extends DocumentEntry {
 
-    protected boolean allowsErrorCorrection = false;
-
     public TransactionalDocumentEntry() {}
-
-    /**
-            This field contains a value of true or false.
-            If true, then error correction is allowed for the document.
-     */
-    public void setAllowsErrorCorrection(boolean allowsErrorCorrection) {
-        this.allowsErrorCorrection = allowsErrorCorrection;
-    }
 
     /**
 	 * This overridden method ...
@@ -46,10 +36,6 @@ public class TransactionalDocumentEntry extends DocumentEntry {
             reference.completeValidation(documentClass, null);
         }
 	}
-
-	public boolean getAllowsErrorCorrection() {
-        return allowsErrorCorrection;
-    }
 
 	@Override
     public String toString() {

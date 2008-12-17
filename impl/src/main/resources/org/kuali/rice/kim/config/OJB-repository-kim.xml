@@ -743,7 +743,7 @@
     <field-descriptor name="priorityNumber" column="PRIORITY_NBR" jdbc-type="INTEGER" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
-    <reference-descriptor name="roleResponsibility" class-ref="org.kuali.rice.kim.bo.types.impl.KimResponsibilityImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
+    <reference-descriptor name="roleResponsibility" class-ref="org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
       <foreignkey field-ref="roleResponsibilityId" />
     </reference-descriptor>
   </class-descriptor>

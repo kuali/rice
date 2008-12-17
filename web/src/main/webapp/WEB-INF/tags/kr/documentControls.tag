@@ -30,33 +30,6 @@
         <c:set var="saveButtonValue" value="save" />
         <c:if test="${not empty saveButtonOverride}"><c:set var="saveButtonValue" value="${saveButtonOverride}" /></c:if>
 		
-        <%--c:if test="${KualiForm.documentActionFlags.canAnnotate and not suppressRoutingControls and not KualiForm.suppressAllButtons}">
-            <div class="annotate">
-              <table width="100%" cellpadding="0" cellspacing="0" class="annotate-top" summary="">
-                <tr>
-                  <td class="annotate-t"><img src="${ConfigProperties.kr.externalizable.images.url}annotate-tl1.gif" alt="" width="12" height="24" align="middle" class="annotate-t">
-                    <label for="routing annotation">Routing Annotation:</label></td>
-                  <td class="annotate-t"><div align="right"><img src="${ConfigProperties.kr.externalizable.images.url}annotate-tr1.gif" alt="" width="12" height="24" align="middle"></div></td>
-                </tr>
-              </table>
-              
-              <div class="annotate-container">
-                <kul:displayIfErrors keyMatch="annotation">
-                  <kul:errors keyMatch="annotation" />
-                </kul:displayIfErrors>
-                <br>
-                <html:textarea property="annotation" cols="60" rows="3" />
-              </div>
-              
-              <table width="100%" cellpadding="0" cellspacing="0" class="annotate-top" summary="">
-                <tr>
-                  <td class="annotate-b"><img src="${ConfigProperties.kr.externalizable.images.url}annotate-bl1.gif" alt="" width="12" height="24"></td>
-                  <td class="annotate-b"><div align="right"><img src="${ConfigProperties.kr.externalizable.images.url}annotate-br1.gif" alt="" width="12" height="24"></div></td>
-                </tr>
-              </table>
-            </div>
-        </c:if--%>
-
 		<c:if test="${not KualiForm.suppressAllButtons}">
 	        <div id="globalbuttons" class="globalbuttons">
 	        	<c:if test="${!empty extraButtonSource}">
@@ -104,14 +77,9 @@
 	            <c:if test="${!empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_CANCEL]}">
 	                <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_cancel.gif" styleClass="globalbuttons" property="methodToCall.cancel" title="cancel" alt="cancel"/>
 	            </c:if>
-	                <c:if test="${!empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_COPY]}">
-                    <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_copy.gif" styleClass="globalbuttons" property="methodToCall.copy" title="Copy current document" alt="Copy current document"/>
-	                </c:if>
-	            <c:if test="${transactionalDocument}">
-	                <c:if test="${!empty KualiForm.documentActions[KUALI_ACTION_CAN_ERROR_CORRECT]}">
-	                    <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_errcorr.gif" styleClass="globalbuttons" property="methodToCall.correct" title="Create error correction document from current document" alt="Create error correction document from current document"/>
-	                </c:if>
-	            </c:if>
+                <c:if test="${!empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_COPY]}">
+                   <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_copy.gif" styleClass="globalbuttons" property="methodToCall.copy" title="Copy current document" alt="Copy current document"/>
+                </c:if>
 	        </div>
         </c:if>
         

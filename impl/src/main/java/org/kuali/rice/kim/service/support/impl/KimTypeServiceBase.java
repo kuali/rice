@@ -368,6 +368,7 @@ public class KimTypeServiceBase implements KimTypeService {
 
 	protected void validateRequiredAttributesAgainstReceived(
 			List<String> requiredAttributes, AttributeSet receivedAttributes, String receivedAttributesName){
+		//TODO: Remove comment
 		/*List<String> missingAttributes = new ArrayList<String>();
 		for(String requiredAttribute: requiredAttributes){
 			if(!receivedAttributes.containsKey(requiredAttribute))

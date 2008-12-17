@@ -90,7 +90,7 @@ public class KualiTransactionalDocumentActionBase extends KualiDocumentActionBas
     	}
     	if(formBase.getDocumentActions().containsKey(KNSConstants.KUALI_ACTION_CAN_EDIT)){
     		editMode.put(AuthorizationConstants.EditMode.FULL_ENTRY, KNSConstants.KUALI_DEFAULT_TRUE_VALUE);
-    	} else
+    	} else if(editMode.isEmpty())
     		editMode.put(AuthorizationConstants.EditMode.VIEW_ONLY, KNSConstants.KUALI_DEFAULT_TRUE_VALUE);
     		//having a problem empty/readonly
     	formBase.setEditingMode(editMode);

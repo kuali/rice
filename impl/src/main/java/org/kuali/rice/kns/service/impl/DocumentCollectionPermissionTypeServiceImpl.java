@@ -34,23 +34,32 @@ public class DocumentCollectionPermissionTypeServiceImpl extends DocumentTypePer
 	 */
 	@Override
 	protected boolean performPermissionMatch(AttributeSet requestedDetails, KimPermission permission) {
-		if (!super.performPermissionMatch(requestedDetails, permission)) {
-			return false;
-		}
-		
-		boolean addTemplate = "Add Attachment".equals(permission.getTemplate().getName()) || "Add Note".equals(permission.getTemplate().getName());		
+		return true;
+		//TODO: Uncomment this - Commented until all the clients pass in the required attributes
+		/*
+		boolean match = super.performPermissionMatch(requestedDetails, permission);
+		boolean addTemplate = 
+			"Add Attachment".equals(permission.getTemplate().getName()) || "Add Note".equals(permission.getTemplate().getName());		
 		if (!addTemplate && StringUtils.isEmpty(requestedDetails.get(KimAttributes.CREATE_BY_SELF_ONLY))) {
 			throw new RuntimeException(KimAttributes.CREATE_BY_SELF_ONLY + " should not be blank or null.");
 		}
-		
-		boolean match = StringUtils.equals(requestedDetails.get(KimAttributes.COMPONENT_NAME), permission.getDetails().get(KimAttributes.COMPONENT_NAME));
-		match &= StringUtils.equals(requestedDetails.get(KimAttributes.COLLECTION_ITEM_TYPE_CODE), permission.getDetails().get(KimAttributes.COLLECTION_ITEM_TYPE_CODE));
-		if (!addTemplate) {
-			if (requestedDetails.get(KimAttributes.CREATE_BY_SELF_ONLY) != null && permission.getDetails().get(KimAttributes.CREATE_BY_SELF_ONLY) != null) {
-				match &= requestedDetails.get(KimAttributes.CREATE_BY_SELF_ONLY).startsWith(permission.getDetails().get(KimAttributes.CREATE_BY_SELF_ONLY));
-			}
-		}
-		return match;
+		return match && doesCollectionItemTypecodeMatch(requestedDetails, permission.getDetails()) &&
+					isCreatedBySelfOnly(requestedDetails, permission.getDetails());
+		*/
 	}
 	
+	protected boolean doesCollectionItemTypecodeMatch(AttributeSet requestedDetails, AttributeSet permissionDetails){
+		if(StringUtils.isEmpty(permissionDetails.get(KimAttributes.COLLECTION_ITEM_TYPE_CODE)))
+			return true;
+		return StringUtils.equals(requestedDetails.get(KimAttributes.COLLECTION_ITEM_TYPE_CODE), 
+				permissionDetails.get(KimAttributes.COLLECTION_ITEM_TYPE_CODE));
+	}
+	
+	protected boolean isCreatedBySelfOnly(AttributeSet requestedDetails, AttributeSet permissionDetails){
+		if(StringUtils.isEmpty(permissionDetails.get(KimAttributes.CREATE_BY_SELF_ONLY)))
+			return true;
+		return requestedDetails.get(KimAttributes.CREATE_BY_SELF_ONLY).equals(
+				permissionDetails.get(KimAttributes.CREATE_BY_SELF_ONLY));
+	}
+
 }

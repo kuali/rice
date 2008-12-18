@@ -107,7 +107,10 @@ public class DocumentTypeXmlExporter implements XmlExporter, XmlConstants {
             renderer.renderTextElement(docTypeElement, REPORTING_WORKGROUP_NAME, reportingWorkgroup.getGroupName());
         }
         if (!flattenedNodes.isEmpty() && hasDefaultExceptionWorkgroup) {
-            renderer.renderTextElement(docTypeElement, DEFAULT_EXCEPTION_WORKGROUP_NAME, ((RouteNode)flattenedNodes.get(0)).getExceptionWorkgroupName());
+        	String exceptionWorkgroupName = ((RouteNode)flattenedNodes.get(0)).getExceptionWorkgroupName();
+        	if (!StringUtils.isBlank(exceptionWorkgroupName)) {
+        		renderer.renderTextElement(docTypeElement, DEFAULT_EXCEPTION_WORKGROUP_NAME, exceptionWorkgroupName);
+        	}
         }
         if (!StringUtils.isBlank(documentType.getUnresolvedDocHandlerUrl())) {
             renderer.renderTextElement(docTypeElement, DOC_HANDLER, documentType.getUnresolvedDocHandlerUrl());
@@ -198,7 +201,7 @@ public class DocumentTypeXmlExporter implements XmlExporter, XmlConstants {
             if (exceptionWorkgroupName == null) {
                 exceptionWorkgroupName = node.getExceptionWorkgroupName();
             }
-            if (!exceptionWorkgroupName.equals(node.getExceptionWorkgroupName())) {
+            if (exceptionWorkgroupName == null || !exceptionWorkgroupName.equals(node.getExceptionWorkgroupName())) {
                 hasDefaultExceptionWorkgroup = false;
                 break;
             }
@@ -304,7 +307,9 @@ public class DocumentTypeXmlExporter implements XmlExporter, XmlConstants {
         Element nodeElement = renderer.renderElement(parent, nodeType.getName());
         renderer.renderAttribute(nodeElement, NAME, node.getRouteNodeName());
         if (!hasDefaultExceptionWorkgroup) {
-            renderer.renderTextElement(nodeElement, EXCEPTION_WORKGROUP_NAME, node.getExceptionWorkgroupName());
+        	if (!StringUtils.isBlank(node.getExceptionWorkgroupName())) {
+        		renderer.renderTextElement(nodeElement, EXCEPTION_WORKGROUP_NAME, node.getExceptionWorkgroupName());
+        	}
         }
         if (supportsActivationType(nodeType) && !StringUtils.isBlank(node.getActivationType())) {
             renderer.renderTextElement(nodeElement, ACTIVATION_TYPE, node.getActivationType());

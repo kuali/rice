@@ -38,6 +38,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.kuali.rice.core.jpa.annotations.Sequence;
@@ -189,7 +190,10 @@ public class RouteNode implements Serializable {
     }
 
     public KimGroup getExceptionWorkgroup() {
-        return KIMServiceLocator.getIdentityManagementService().getGroup(exceptionWorkgroupId);
+    	if (!StringUtils.isBlank(exceptionWorkgroupId)) {
+    		return KIMServiceLocator.getIdentityManagementService().getGroup(exceptionWorkgroupId);
+    	}
+    	return null;
     }
     
     public boolean isExceptionGroupDefined() {

@@ -71,107 +71,17 @@ public interface DocumentAuthorizer {
      * @param user
      * @return
      */
+    @Deprecated
     public boolean canViewAttachment(String attachmentTypeName, Document document, Person user);
     
-    /**
-     * @param document
-     * @param user
-     * @return true if the given user is allowed to open the document
-     */
-    public boolean canOpen(Document document, Person user);
-    
-    /**
-     * @param document
-     * @param user
-     * @return true if the given user is allowed to edit the document
-     */
-    public boolean canEdit(Document document, Person user);
-    
-    /**
-     * @param document
-     * @param user
-     * @return true if the given user is allowed to copy the document
-     */
-    public boolean canCopy(Document document, Person user);
-    
-    /**
-     * @param document
-     * @param user
-     * @return true if the given user is allowed to cancel the document
-     */
-    public boolean canCancel(Document document, Person user);
-    
-    /**
-     * @param document
-     * @param user
-     * @return true if the given user is allowed to Route the document
-     */
-    public boolean canRoute(Document document, Person user);
-    
-    /**
-     * @param document
-     * @param user
-     * @return true if the given user is allowed to save the document
-     */
-    public boolean canSave(Document document, Person user);
-    
-    /**
-     * @param document
-     * @param user
-     * @return true if the given user is allowed to approve the document
-     */
-    public boolean canBlanketApprove(Document document, Person user); 
     
     /**
      * @param document
      * @param user
      * @param actionRequestCode
-     * @return true if the given user is allowed to receive ad hoc
+     * @return boolean (true if user can receive ad hoc for this document)
      */
     public boolean canReceiveAdHoc(Document document, Person user, String actionRequestCode);
-    
-    /**
-     * @param document
-     * @param user
-     * @return true if the given user is allowed to approve the document
-     */
-    public boolean canApprove(Document document, Person user); 
-    
-    /**
-     * @param document
-     * @param user
-     * @return true if the given user is allowed to clear FYI
-     */
-    public boolean canClearFYI(Document document, Person user);
-    
-    /**
-     * @param document
-     * @param user
-     * @return true if the given user is allowed to acknowledge
-     */
-    public boolean canAcknowledge(Document document, Person user); 
-    
-    /**
-     * @param document
-     * @param user
-     * @return true if the given user is allowed to complete the document
-     */
-    public boolean canComplete(Document document, Person user ); 
-    
-    /**
-     * @param document
-     * @param user
-     * @return true if the given user is allowed to disapprove the document
-     */
-    public boolean canDisapprove(Document document, Person user); 
-    
-    
-    /**
-     * @param document
-     * @param user
-     * @return true if the given user is allowed to annotate the document
-     */
-    public boolean canAnnotate(Document document, Person user); 
     
        
       /**

@@ -170,6 +170,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
      * @param user
      * @return
      */
+    @Deprecated
     protected boolean isDocumentForCreatingNewEntry(MaintenanceDocument maintDoc) {
         // the rule is as follows: if the maint doc represents a new record AND the user is the same user who initiated the maintenance doc
         // if the user check is not added, then it would be pointless to do any encryption since I can just pull up a document to view the encrypted values
@@ -191,20 +192,6 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
 		return maintenanceDocumentDictionaryService;
 	}
 
-	protected void addPrimaryKeysToMap( BusinessObject bo, Map<String,String> attributes ) {
-	    if ( bo == null ) {
-	        return;
-	    }
-	    List<String> pkFields = getPersistenceStructureService().getPrimaryKeys(bo.getClass());
-	    for ( String field : pkFields ) {
-	        try {
-	            Object fieldValue = ObjectUtils.getPropertyValue(bo, field);
-	            attributes.put(field, (fieldValue==null)?"":fieldValue.toString() );
-	        } catch ( RuntimeException ex ) {
-	            // do nothing - just skip the attribute - ObjectUtils has already logged the error
-	        }
-	    }
-	}
 
 	/**
 	 * Return the class of the maintained business object.

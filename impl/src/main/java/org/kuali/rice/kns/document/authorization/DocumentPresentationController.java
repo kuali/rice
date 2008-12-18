@@ -25,77 +25,7 @@ import org.kuali.rice.kns.document.Document;
  * 
  */
 public interface DocumentPresentationController {
-    /**
-     * @param document
-     * @return boolean indicating whether the document can be edited 
-     */
-    public boolean canEdit(Document document);
-    
-    /**
-     * @param document
-     * @return boolean indicating whether the document can be annotated
-     */
-    public boolean canAnnotate(Document document);
-    
-    /**
-     * @param document
-     * @return boolean indicating whether the document can be reloaded
-     */
-    public boolean canReload(Document document);
-    
-    /**
-     * @param document
-     * @return boolean indicating whether the document can be closed
-     */
-    public boolean canClose(Document document);
-    
-    
-    /**
-     * @param document
-     * @return boolean indicating whether the document can be saved
-     */
-    public boolean canSave(Document document);
-    
-    
-    /**
-     * @param document
-     * @return boolean indicating whether the document can be routed
-     */
-    public boolean canRoute(Document document);
-    
-  
-    
-    /**
-     * @param document
-     * @return boolean indicating whether the document can be canceled
-     */
-    public boolean canCancel(Document document);
-    
-    /**
-     * @param document
-     * @return boolean indicating whether the document can be copied
-     */
-    public boolean canCopy(Document document);
-    
-    
-    /**
-     * @param document
-     * @return boolean indicating whether can perform route report
-     */
-    public boolean canPerformRouteReport(Document document);
-    
-    /**
-     * @param document
-     * @return boolean indicating whether can ad hoc route
-     */
-    public boolean canAdHocRoute(Document document);
-    
-    /**
-     * @param document
-     * @return boolean indicating whether can be blanketApproved
-     */
-    public boolean canBlanketApprove(Document document);
-    
+   
     /**
      * @param document
      * @return Set of actions that allow to take on that document.

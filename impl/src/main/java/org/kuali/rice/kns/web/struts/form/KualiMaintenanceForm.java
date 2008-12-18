@@ -349,10 +349,10 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
         setReadOnly(true);
         
         // Check overall document edit permission
-        if(maintenanceDocumentAuthorizer.canEdit(getDocument(), kualiUser)){
-        	setReadOnly(false);
+        //if(maintenanceDocumentAuthorizer.canEdit(getDocument(), kualiUser)){
+        //	setReadOnly(false);
         	
-        }
+        //}
         
         // set field permissions
         setAuthorizations(maintenanceDocumentAuthorizer.getFieldAuthorizations(maintenanceDocument, kualiUser));

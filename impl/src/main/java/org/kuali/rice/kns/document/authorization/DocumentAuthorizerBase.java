@@ -175,27 +175,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
         return flags;
     }
     
-    protected KualiConfigurationService getKualiConfigurationService() {
-    if ( kualiConfigurationService == null ) {
-        kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
-    }
-    return kualiConfigurationService;
-    }
-    
-    protected AuthorizationService getAuthorizationService() {
-    if ( authorizationService == null ) {
-        authorizationService = KNSServiceLocator.getAuthorizationService();
-    }
-    return authorizationService;
-    }
-    
-    protected KualiWorkflowInfo getKualiWorkflowInfo() {
-    if ( kualiWorkflowInfo == null ) {
-        kualiWorkflowInfo = KNSServiceLocator.getWorkflowInfoService();
-    }
-    return kualiWorkflowInfo;
-    }
-    
+   
     
      /**
      * Helper method to set the annotate flag based on other workflow tags
@@ -256,85 +236,104 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
 
 
     /**
-     * 
-     * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#canOpen(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
+     * @param document
+     * @param user
+     * @return boolean (true if user has permission to open a document)
      */
-    public boolean canOpen(Document document, Person user){
+    protected boolean canOpen(Document document, Person user){
     	
 	     return isAuthorizedByTemplate(document, KNSConstants.KNS_NAMESPACE, KimConstants.PERMISSION_OPEN_DOCUMENT, user.getPrincipalId());
 	        	
 	 }
 	    
-	 /**
+	/**
 	 * 
-	 * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#canEdit(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
+	 * @param document
+	 * @param user
+	 * @return boolean (true if user has permission to edit a document)
 	 */
-	public boolean canEdit(Document document, Person user){
+	protected boolean canEdit(Document document, Person user){
 		   
 	    return isAuthorizedByTemplate(document, KNSConstants.KNS_NAMESPACE, KimConstants.PERMISSION_EDIT_DOCUMENT, user.getPrincipalId());
     
 	 }
 	 
-	 /**
-	 * 
-	 * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#canCopy(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
+	
+	/**
+	 * @param document
+	 * @param user
+	 * @return boolean (true if user has permission to copy a document)
 	 */
-	public boolean canCopy(Document document, Person user){
+	protected boolean canCopy(Document document, Person user){
 	     return isAuthorizedByTemplate(document, KNSConstants.KNS_NAMESPACE, KimConstants.PERMISSION_COPY_DOCUMENT, user.getPrincipalId());
 	     	
 	 }
 	    
-	 /**
-	 * 
-	 * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#canCancel(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
+	
+	/**
+	 * @param document
+	 * @param user
+	 * @return boolean (true if user has permission to cancel a document)
 	 */
-	public boolean canCancel(Document document, Person user){
+	protected boolean canCancel(Document document, Person user){
 	     return isAuthorizedByTemplate(document, KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE, KimConstants.PERMISSION_CANCEL_DOCUMENT, user.getPrincipalId());
 	     	  	
 	 }
 	 
-	 /**
+
+	/**
 	 * 
-	 * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#canRoute(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
+	 * @param document
+	 * @param user
+	 * @return boolean (true if user has permission to route a document)
 	 */
-	public boolean canRoute(Document document, Person user){
+	protected boolean canRoute(Document document, Person user){
 	     return isAuthorizedByTemplate(document, KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE, KimConstants.PERMISSION_ROUTE_DOCUMENT, user.getPrincipalId());
   	  	   	
 	 }
 	
 	
-	 /**
+	/**
 	 * 
-	 * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#canSave(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
+	 * @param document
+	 * @param user
+	 * @return boolean (true if user has permission to save a document)
 	 */
-	public boolean canSave(Document document, Person user){
+	protected boolean canSave(Document document, Person user){
 	     return isAuthorizedByTemplate(document, KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE, KimConstants.PERMISSION_SAVE_DOCUMENT, user.getPrincipalId());
 	  	   	   	
 	 }
 	 
-	 /**
+	/**
 	 * 
-	 * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#canBlanketApprove(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
+	 * @param document
+	 * @param user
+	 * @return boolean (true if user has permission to blanket approve a document)
 	 */
-	public boolean canBlanketApprove(Document document, Person user){
+	protected boolean canBlanketApprove(Document document, Person user){
 	     return isAuthorizedByTemplate(document, KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE, KimConstants.PERMISSION_BLANKET_APPROVE_DOCUMENT, user.getPrincipalId());
 	   	     	
 	 }
 	 
-	 /**
+	/**
 	 * 
-	 * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#canReceiveAdHoc(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
+	 * @param document
+	 * @param user
+	 * @param actionRequestCode
+	 * @return boolean (true if user has permission to recieve ad hoc for a document)
 	 */
 	public boolean canReceiveAdHoc(Document document, Person user, String actionRequestCode){
 	     return isAuthorizedByTemplate(document, KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE, KimConstants.PERMISSION_AD_HOC_REVIEW_DOCUMENT, user.getPrincipalId());
 	   	    	
 	 }
 	 
-	 /**
-	 * 
-	 * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#canApprove(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
+	/**
+	 
+	 * @param document
+	 * @param user
+	 * @return boolean (true if user has permission to approve a document)
 	 */
-	public boolean canApprove(Document document, Person user){
+	protected boolean canApprove(Document document, Person user){
 		AttributeSet permissionDetails = getPermissionDetailValues(document);
 		if(permissionDetails.containsKey(KimAttributes.ACTION_REQUEST_CD) && KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(permissionDetails.get(KimAttributes.ACTION_REQUEST_CD))){
 			return canTakeRequestedAction(document, user);
@@ -344,11 +343,14 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
 		
 	 }
 	 
-	 /**
+	 
+	/**
 	 * 
-	 * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#canClearFYI(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
+	 * @param document
+	 * @param user
+	 * @return boolean (true if user has permission to FYI a document)
 	 */
-	public boolean canClearFYI(Document document, Person user){
+	protected boolean canClearFYI(Document document, Person user){
 		AttributeSet permissionDetails = getPermissionDetailValues(document);
 		if(permissionDetails.containsKey(KimAttributes.ACTION_REQUEST_CD) && KEWConstants.ACTION_REQUEST_FYI_REQ.equals(permissionDetails.get(KimAttributes.ACTION_REQUEST_CD))){
 			return canTakeRequestedAction(document, user);
@@ -357,11 +359,14 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
 		}
 	}
 	
-	 /**
+	
+	/**
 	 * 
-	 * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#canAcknowledge(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
+	 * @param document
+	 * @param user
+	 * @return boolean (true if user has permission to acknowledge a document)
 	 */
-	public boolean canAcknowledge(Document document, Person user){
+	protected boolean canAcknowledge(Document document, Person user){
 		AttributeSet permissionDetails = getPermissionDetailValues(document);
 		if(permissionDetails.containsKey(KimAttributes.ACTION_REQUEST_CD) && KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ.equals(permissionDetails.get(KimAttributes.ACTION_REQUEST_CD))){
 			return canTakeRequestedAction(document, user);
@@ -370,11 +375,14 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
 		}
 	 }
 	
-	 /**
+	
+	/**
 	 * 
-	 * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#canComplete(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
+	 * @param document
+	 * @param user
+	 * @return boolean (true if user has permission to complete a document)
 	 */
-	public boolean canComplete(Document document, Person user ){
+	protected boolean canComplete(Document document, Person user ){
 		AttributeSet permissionDetails = getPermissionDetailValues(document);
 		if(permissionDetails.containsKey(KimAttributes.ACTION_REQUEST_CD) && KEWConstants.ACTION_REQUEST_COMPLETE_REQ.equals(permissionDetails.get(KimAttributes.ACTION_REQUEST_CD))){
 			return canTakeRequestedAction(document, user);
@@ -383,20 +391,23 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
 		}
 	 }
 	
-	 /**
-	 * 
-	 * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#canDisapprove(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
+	/**
+	 * @param document
+	 * @param user
+	 * @return boolean (true if user has permission to disapprove a document)
 	 */
-	public boolean canDisapprove(Document document, Person user){
+	protected boolean canDisapprove(Document document, Person user){
 		 return canApprove(document, user);
 	 }
 	
 	
     /**
      * 
-     * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#canAnnotate(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
+     * @param document
+     * @param user
+     * @return boolean (true if user has permission to add notes to a document)
      */
-    public boolean canAnnotate(Document document, Person user){
+    protected boolean canAnnotate(Document document, Person user){
 	     return isAuthorizedByTemplate(document, KNSConstants.KNS_NAMESPACE, KimConstants.PERMISSION_ADD_NOTE, user.getPrincipalId());
 	        	
     }
@@ -567,5 +578,26 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
     private boolean canTakeRequestedAction(Document document, Person user){
 		return isAuthorizedByTemplate(document, KNSConstants.KNS_NAMESPACE, KimConstants.PERMISSION_TAKE_REQUESTED_ACTION, user.getPrincipalId());
 	}
+    
+    protected KualiConfigurationService getKualiConfigurationService() {
+        if ( kualiConfigurationService == null ) {
+            kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
+        }
+        return kualiConfigurationService;
+    }
+        
+    protected AuthorizationService getAuthorizationService() {
+        if ( authorizationService == null ) {
+            authorizationService = KNSServiceLocator.getAuthorizationService();
+        }
+        return authorizationService;
+    }
+        
+    protected KualiWorkflowInfo getKualiWorkflowInfo() {
+        if ( kualiWorkflowInfo == null ) {
+            kualiWorkflowInfo = KNSServiceLocator.getWorkflowInfoService();
+        }
+        return kualiWorkflowInfo;
+    }
     
 }

@@ -53,7 +53,7 @@ public class TransactionalDocumentAuthorizerBase extends DocumentAuthorizerBase 
     
     
     
-    public boolean canUseEditMode(Document document, Person user,  String editMode){
+    protected boolean canUseEditMode(Document document, Person user,  String editMode){
 	    return isAuthorizedByTemplate(document, KNSConstants.KNS_NAMESPACE, KimConstants.PERMISSION_USE_TRANSACTIONAL_DOCUMENT, user.getPrincipalId());
 	  	    	
     }

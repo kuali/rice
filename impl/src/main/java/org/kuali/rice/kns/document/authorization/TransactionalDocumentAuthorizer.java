@@ -34,14 +34,4 @@ public interface TransactionalDocumentAuthorizer extends DocumentAuthorizer {
     public Set getEditModes(Document document, Person user, Set<String> editModes);
     
     
-	/**
-	 * 
-	 * @param editMode
-	 * @param user
-     * @return boolean indicating whether the user has permission to use this edit mode
-     */
-
-	public boolean canUseEditMode(Document document, Person user, String editMode); 
-
-    
 }

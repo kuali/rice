@@ -33,9 +33,10 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
   
     /**
      * 
-     * @see org.kuali.rice.kns.document.authorization.DocumentPresentationController#getEdit(org.kuali.rice.kns.document.Document)
+     * @param document
+     * @return boolean (true if can edit the document)
      */
-    public boolean canEdit(Document document){
+    protected boolean canEdit(Document document){
     	boolean canEdit = false;
     	KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
         if (workflowDocument.stateIsInitiated() || workflowDocument.stateIsSaved() || workflowDocument.stateIsEnroute() || workflowDocument.stateIsException()) {
@@ -48,18 +49,20 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
     
     /**
      * 
-     * @see org.kuali.rice.kns.document.authorization.DocumentPresentationController#canAnnotate(org.kuali.rice.kns.document.Document)
+     * @param document
+     * @return boolean (true if can add notes to the document)
      */
-    public boolean canAnnotate(Document document){
+    protected boolean canAnnotate(Document document){
     	return canEdit(document);
     }
     
    
     /**
      * 
-     * @see org.kuali.rice.kns.document.authorization.DocumentPresentationController#canReload(org.kuali.rice.kns.document.Document)
+     * @param document
+     * @return boolean (true if can reload the document)
      */
-    public boolean canReload(Document document){
+    protected boolean canReload(Document document){
     	KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
     	return (canEdit(document) && !workflowDocument.stateIsInitiated()) ;
              
@@ -68,9 +71,10 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
     
     /**
      * 
-     * @see org.kuali.rice.kns.document.authorization.DocumentPresentationController#canClose(org.kuali.rice.kns.document.Document)
+     * @param document
+     * @return boolean (true if can close the document)
      */
-    public boolean canClose(Document document){
+    protected boolean canClose(Document document){
     	return true;
     }
     
@@ -78,18 +82,20 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
    
     /**
      * 
-     * @see org.kuali.rice.kns.document.authorization.DocumentPresentationController#canSave(org.kuali.rice.kns.document.Document)
+     * @param document
+     * @return boolean (true if can save the document)
      */
-    public boolean canSave(Document document){
+    protected boolean canSave(Document document){
     	return canEdit(document);
     }
     
-   
+  
     /**
      * 
-     * @see org.kuali.rice.kns.document.authorization.DocumentPresentationController#canRoute(org.kuali.rice.kns.document.Document)
+     * @param document
+     * @return boolean (true if can route the document)
      */
-    public boolean canRoute(Document document){
+    protected boolean canRoute(Document document){
     	boolean canRoute = false;
     	KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
     	if (workflowDocument.stateIsInitiated() || workflowDocument.stateIsSaved()){
@@ -101,18 +107,20 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
    
     /**
      * 
-     * @see org.kuali.rice.kns.document.authorization.DocumentPresentationController#canCancel(org.kuali.rice.kns.document.Document)
+     * @param document
+     * @return boolean (true if can cancel the document)
      */
-    public boolean canCancel(Document document){
+    protected boolean canCancel(Document document){
     	return canEdit(document);
     }
     
    
     /**
      * 
-     * @see org.kuali.rice.kns.document.authorization.DocumentPresentationController#canCopy(org.kuali.rice.kns.document.Document)
+     * @param document
+     * @return boolean (true if can copy the document)
      */
-    public boolean canCopy(Document document){
+    protected boolean canCopy(Document document){
     	 boolean canCopy = false;
     	 if(document.getAllowsCopy()){
     		 canCopy = true;
@@ -124,9 +132,10 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
    
     /**
      * 
-     * @see org.kuali.rice.kns.document.authorization.DocumentPresentationController#canPerformRouteReport(org.kuali.rice.kns.document.Document)
+     * @param document
+     * @return boolean (true if can perform route report)
      */
-    public boolean canPerformRouteReport(Document document){
+    protected boolean canPerformRouteReport(Document document){
     	KualiConfigurationService kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
         return kualiConfigurationService.getIndicatorParameter( KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.DEFAULT_CAN_PERFORM_ROUTE_REPORT_IND);
     }
@@ -134,19 +143,22 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
    
     /**
      * 
-     * @see org.kuali.rice.kns.document.authorization.DocumentPresentationController#canAdHocRoute(org.kuali.rice.kns.document.Document)
+     * @param document
+     * @return boolean (true if can do ad hoc route)
      */
-    public boolean canAdHocRoute(Document document){
+    protected boolean canAdHocRoute(Document document){
     	KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
     	return (canEdit(document)&& !workflowDocument.stateIsException());
     }
     
    
     /**
+     * This method ...
      * 
-     * @see org.kuali.rice.kns.document.authorization.DocumentPresentationController#canBlanketApprove(org.kuali.rice.kns.document.Document)
+     * @param document
+     * @return boolean (true if can blanket approve the document)
      */
-    public boolean canBlanketApprove(Document document){
+    protected boolean canBlanketApprove(Document document){
     	return canEdit(document);
     }
     

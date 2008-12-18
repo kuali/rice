@@ -54,7 +54,6 @@ public class StatsDaoJpaImpl implements StatsDAO {
     @PersistenceContext
     private EntityManager entityManager;
     
-    @Override
     public void DocumentsRoutedReport(Stats stats, Date begDate, Date endDate) throws SQLException, LookupException {
         Query query = entityManager.createQuery("select count(*) as count, drhv.docRouteStatus from DocumentRouteHeaderValue drhv where drhv.createDate between :beginDate and :endDate group by docRouteStatus");
 //        Query query = entityManager.createNamedQuery("Stats.DocumentsRoutedReport");
@@ -89,13 +88,11 @@ public class StatsDaoJpaImpl implements StatsDAO {
         }
     }
 
-    @Override
     public void NumActiveItemsReport(Stats stats) throws SQLException, LookupException {
         stats.setNumActionItems(entityManager.createNamedQuery("select count(*) from ActionItem ai").getSingleResult().toString());
 //        stats.setNumActionItems(entityManager.createNamedQuery("Stats.NumActiveItemsReport").getSingleResult().toString());
     }
 
-    @Override
     public void NumInitiatedDocsByDocTypeReport(Stats stats) throws SQLException, LookupException {
         Query query = entityManager.createNamedQuery("select count(*), dt.name from DocumentRouteHeaderValue drhv, DocumentType dt where drhv.createDate > :createDate and drhv.documentTypeId = dt.documentTypeId group by dt.name");
 //        Query query = entityManager.createNamedQuery("Stats.NumInitiatedDocsByDocTypeReport");
@@ -118,13 +115,11 @@ public class StatsDaoJpaImpl implements StatsDAO {
         stats.setNumInitiatedDocsByDocType(numDocs);
     }
 
-    @Override
     public void NumUsersReport(Stats stats) throws SQLException, LookupException {
         stats.setNumUsers(entityManager.createNamedQuery("select count(distinct workflowId) from UserOptions uo").getSingleResult().toString());
 //        stats.setNumUsers(entityManager.createNamedQuery("Stats.NumUsersReport").getSingleResult().toString());
     }
 
-    @Override
     public void NumberOfDocTypesReport(Stats stats) throws SQLException, LookupException {
         stats.setNumDocTypes(entityManager.createNamedQuery("select count(*) from DocumentType dt where dt.currentInd = true").getSingleResult().toString());
 //        stats.setNumDocTypes(entityManager.createNamedQuery("Stats.NumberOfDocTypesReport").getSingleResult().toString());

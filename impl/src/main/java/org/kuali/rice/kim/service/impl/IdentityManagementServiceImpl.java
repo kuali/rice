@@ -1,6 +1,7 @@
 package org.kuali.rice.kim.service.impl;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -259,7 +260,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	}
 	
 	protected void addIsMemberOfGroupByNameToCache( String principalId, String namespaceCode, String groupName, boolean member ) {
-		isMemberOfGroupCache.put( principalId + "-" + namespaceCode + "-" + groupName, new MaxAgeSoftReference<Boolean>( groupCacheMaxAge, member ) );
+		isMemberOfGroupByNameCache.put( principalId + "-" + namespaceCode + "-" + groupName, new MaxAgeSoftReference<Boolean>( groupCacheMaxAge, member ) );
 	}
 	
 	protected void addGroupMemberPrincipalIdsToCache( String groupId, List<String> ids ) {
@@ -499,20 +500,46 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		return getGroupService().getDirectParentGroupIds( groupId );
 	}
     
+    protected void clearGroupCachesForPrincipalAndGroup( String principalId, String groupId ) {
+    	if ( principalId != null ) {
+	    	groupIdsForPrincipalCache.remove(principalId);
+	    	groupsForPrincipalCache.remove(principalId);
+	    	isMemberOfGroupCache.remove(principalId + "-" + groupId);
+    	} else {
+    		// added or removed a group - perform a more extensive purge
+    		Iterator<String> keys = isMemberOfGroupCache.keySet().iterator();
+    		while ( keys.hasNext() ) {
+    			String key = keys.next();
+    			if ( key.endsWith("-"+groupId) ) {
+    				keys.remove();
+    			}
+    		}
+    		// NOTE: There's no good way to selectively purge the other two group caches or the permission caches which could be
+    		// affected - is this necessary or do we just wait for the cache items to expire    		
+    	}
+    	groupMemberPrincipalIdsCache.remove(groupId);
+    	KimGroup group = getGroup(groupId);
+    	isMemberOfGroupByNameCache.remove(principalId + "-" + group.getNamespaceCode() + "-" + group.getGroupName() );
+    }
+    
     
     public boolean addGroupToGroup(String childId, String parentId) {
+    	clearGroupCachesForPrincipalAndGroup(null, parentId);
         return getGroupService().addGroupToGroup(childId, parentId);
     }
 
     public boolean addPrincipalToGroup(String principalId, String groupId) {
+    	clearGroupCachesForPrincipalAndGroup(principalId, groupId);
         return getGroupService().addPrincipalToGroup(principalId, groupId);
     }
 
     public boolean removeGroupFromGroup(String childId, String parentId) {
+    	clearGroupCachesForPrincipalAndGroup(null, parentId);
         return getGroupService().removeGroupFromGroup(childId, parentId);
     }
 
     public boolean removePrincipalFromGroup(String principalId, String groupId) {
+    	clearGroupCachesForPrincipalAndGroup(principalId, groupId);
         return getGroupService().removePrincipalFromGroup(principalId, groupId);
     }
 

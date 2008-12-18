@@ -29,7 +29,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 public class KimCommonUtils {
 
 	public static boolean matchInputWithWildcard(String inputStr, String matchStr){
-		inputStr.replaceAll("*", "([0-9a-zA-Z-_$]*)");
+		inputStr = inputStr.replaceAll("\\*", ".*");
 		if(matchStr.matches(inputStr)){
 			return true;
 		}

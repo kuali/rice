@@ -112,12 +112,14 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
 	 */
 	public void start() throws Exception {
 		//Add the configurers to modules list in the desired sequence.
-		if(getKsbConfigurer()!=null) modules.add(getKsbConfigurer());
-		if(getKnsConfigurer()!=null) modules.add(getKnsConfigurer());
-		if(getKimConfigurer()!=null) modules.add(getKimConfigurer());
-		if(getKcbConfigurer()!=null) modules.add(getKcbConfigurer());
-		if(getKewConfigurer()!=null) modules.add(getKewConfigurer());
-		if(getKenConfigurer()!=null) modules.add(getKenConfigurer());
+		// and at the beginning if any other modules were specified
+		int index = 0;
+		if(getKsbConfigurer()!=null) modules.add(index++,getKsbConfigurer());
+		if(getKnsConfigurer()!=null) modules.add(index++,getKnsConfigurer());
+		if(getKimConfigurer()!=null) modules.add(index++,getKimConfigurer());
+		if(getKcbConfigurer()!=null) modules.add(index++,getKcbConfigurer());
+		if(getKewConfigurer()!=null) modules.add(index++,getKewConfigurer());
+		if(getKenConfigurer()!=null) modules.add(index++,getKenConfigurer());
 
 	    notify(new BeforeStartEvent());
 		initializeConfiguration();

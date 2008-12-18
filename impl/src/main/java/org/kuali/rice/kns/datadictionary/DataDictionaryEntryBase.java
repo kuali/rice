@@ -287,7 +287,7 @@ abstract public class DataDictionaryEntryBase implements DataDictionaryEntry {
             if (StringUtils.isBlank(relationshipName)) {
                 throw new ValidationException("invalid (blank) relationshipName");
             }
-    
+            relationship.setSourceClass(getEntryClass());
             relationshipMap.put(relationshipName, relationship);
         }
         

@@ -29,13 +29,24 @@ import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
-public class KualiModuleServiceImpl implements KualiModuleService, InitializingBean {
+public class KualiModuleServiceImpl implements KualiModuleService, InitializingBean, ApplicationContextAware {
 
     private List<ModuleService> installedModuleServices = new ArrayList<ModuleService>();;
     private boolean loadRiceInstalledModuleServices;
+    private ApplicationContext applicationContext;
     
-    public List<ModuleService> getInstalledModuleServices() {
+    /**
+	 * @param applicationContext the applicationContext to set
+	 */
+	public void setApplicationContext(ApplicationContext applicationContext) {
+		this.applicationContext = applicationContext;
+	}
+
+	public List<ModuleService> getInstalledModuleServices() {
         return installedModuleServices;
     }
 
@@ -154,8 +165,12 @@ public class KualiModuleServiceImpl implements KualiModuleService, InitializingB
 	 */
 	public void afterPropertiesSet() throws Exception {
 		if(loadRiceInstalledModuleServices){
-			installedModuleServices.addAll(
-					KNSServiceLocator.getNervousSystemContextBean(KualiModuleService.class).getInstalledModuleServices());
+			try {
+				installedModuleServices.addAll(
+						KNSServiceLocator.getNervousSystemContextBean(KualiModuleService.class).getInstalledModuleServices());
+			} catch ( NoSuchBeanDefinitionException ex ) {
+				installedModuleServices.addAll( ((KualiModuleService)applicationContext.getBean( KNSServiceLocator.KUALI_MODULE_SERVICE )).getInstalledModuleServices() );
+			}
 		}
 	}
 

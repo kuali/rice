@@ -23,7 +23,10 @@ import org.kuali.rice.core.config.ModuleConfigurer;
 import org.kuali.rice.core.config.event.AfterStartEvent;
 import org.kuali.rice.core.config.event.RiceConfigEvent;
 import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.core.resourceloader.RiceResourceLoaderFactory;
+import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.PersistenceService;
 import org.kuali.rice.kns.web.servlet.dwr.GlobalResourceDelegatingSpringCreator;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
@@ -38,7 +41,8 @@ public class KNSConfigurer extends ModuleConfigurer implements BeanFactoryAware 
 
 	private List<String> dataDictionaryPackages;
 
-	private boolean loadDataDictionary;
+	private boolean loadDataDictionary = true;
+	private boolean validateDataDictionary = false;
 	
 	private BeanFactory beanFactory;
 
@@ -60,7 +64,7 @@ public class KNSConfigurer extends ModuleConfigurer implements BeanFactoryAware 
 		GlobalResourceDelegatingSpringCreator.APPLICATION_BEAN_FACTORY = beanFactory;
 		//lifecycles.add(new OJBConfigurer());
 		//lifecycles.add(KNSResourceLoaderFactory.createRootKNSResourceLoader());
-		if (!isLoadDataDictionary()) {
+		if (isLoadDataDictionary()) {
 			lifecycles.add(new Lifecycle() {
 				boolean started = false;
 
@@ -71,22 +75,14 @@ public class KNSConfigurer extends ModuleConfigurer implements BeanFactoryAware 
 				public void start() throws Exception {
 					if (getDatabaseRepositoryFilePaths() != null) {
 						for (String repositoryFilePath : getDatabaseRepositoryFilePaths()) {
-							KNSServiceLocator.getPersistenceServiceOjb().loadRepositoryDescriptor(repositoryFilePath);
+					    	PersistenceService persistenceService = KNSServiceLocator.getPersistenceServiceOjb();
+					    	if ( persistenceService == null ) {
+					    		persistenceService = (PersistenceService)RiceResourceLoaderFactory.getSpringResourceLoader().getContext().getBean( KNSServiceLocator.PERSISTENCE_SERVICE_OJB  );
+					    	}
+					    	persistenceService.loadRepositoryDescriptor( repositoryFilePath );
 						}
 					}
 					
-					//ModuleConfiguration moduleConfiguration = new ModuleConfiguration();
-					//moduleConfiguration.setNamespaceCode(ConfigContext.getCurrentContextConfig().getServiceNamespace());
-					//moduleConfiguration.setDatabaseRepositoryFilePaths(getDatabaseRepositoryFilePaths());
-					//if (getDataDictionaryPackages() != null && !getDataDictionaryPackages().isEmpty()) {
-					//	moduleConfiguration.setDataDictionaryPackages(getDataDictionaryPackages());
-					//	moduleConfiguration.setInitializeDataDictionary(true);
-					//}					
-					//ModuleServiceBase moduleService = new ModuleServiceBase();
-					//moduleService.setModuleConfiguration(moduleConfiguration);					
-					//moduleService.afterPropertiesSet();
-					
-					//KNSServiceLocator.getDataDictionaryService().getDataDictionary().parseDataDictionaryConfigurationFiles(true);
 					this.started = true;
 				}
 
@@ -105,9 +101,18 @@ public class KNSConfigurer extends ModuleConfigurer implements BeanFactoryAware 
     @Override
     public void onEvent(RiceConfigEvent event) throws Exception {
         if (event instanceof AfterStartEvent) {
-            LOG.info("Processing any remaining Data Dictionary configuration.");
-    		if (!isLoadDataDictionary()) {
-    			KNSServiceLocator.getDataDictionaryService().getDataDictionary().parseDataDictionaryConfigurationFiles(false);
+    		if (isLoadDataDictionary()) {
+                LOG.info("KNS Configurer - Loading DD");
+    			DataDictionaryService dds = KNSServiceLocator.getDataDictionaryService();
+    			if ( dds == null ) {
+    				dds = (DataDictionaryService)RiceResourceLoaderFactory.getSpringResourceLoader().getContext().getBean( KNSServiceLocator.DATA_DICTIONARY_SERVICE );
+    			}
+    			dds.getDataDictionary().parseDataDictionaryConfigurationFiles(false);
+    			
+    			if ( isValidateDataDictionary() ) {
+                    LOG.info("KNS Configurer - Validating DD");
+    				dds.getDataDictionary().validateDD();
+    			}
     		}
     	}
     }
@@ -144,5 +149,19 @@ public class KNSConfigurer extends ModuleConfigurer implements BeanFactoryAware 
 
 	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
 		this.beanFactory = beanFactory;
+	}
+
+	/**
+	 * @return the validateDataDictionary
+	 */
+	public boolean isValidateDataDictionary() {
+		return this.validateDataDictionary;
+	}
+
+	/**
+	 * @param validateDataDictionary the validateDataDictionary to set
+	 */
+	public void setValidateDataDictionary(boolean validateDataDictionary) {
+		this.validateDataDictionary = validateDataDictionary;
 	}
 }

@@ -25,6 +25,7 @@ import javax.persistence.EntityManagerFactory;
 
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.RiceResourceLoaderFactory;
+import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.dao.BusinessObjectDao;
 import org.kuali.rice.kns.dao.DocumentDao;
@@ -39,6 +40,7 @@ import org.kuali.rice.kns.util.spring.NamedOrderedListBean;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
 import org.kuali.rice.kns.workflow.service.WorkflowDocumentService;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.context.ApplicationContext;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -71,7 +73,12 @@ public class KNSServiceLocator<T extends Object> {
 
     @SuppressWarnings("unchecked")
     public static <T> Map<String, T> getBeansOfType(Class<T> type) {
-	return new HashMap((Map) RiceResourceLoaderFactory.getSpringResourceLoader().getContext().getBeansOfType(type));
+    	SpringResourceLoader springResourceLoader = RiceResourceLoaderFactory.getSpringResourceLoader();
+    	if ( springResourceLoader != null ) {
+    		return new HashMap((Map) springResourceLoader.getContext().getBeansOfType(type));
+    	} else {
+    		return new HashMap(0);
+    	}
     }
 
     public static String[] getBeanNames() {

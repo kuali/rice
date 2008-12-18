@@ -18,27 +18,35 @@ package org.kuali.rice.ksb.messaging;
 
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 /**
  * Used from Spring to register service definitions from an already configured and started KSB.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class KSBExporter implements InitializingBean {
+public class KSBExporter implements InitializingBean, ApplicationContextAware {
 	
 	private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KSBExporter.class);
 	
 	private ServiceDefinition serviceDefinition;
 	private boolean forceRefresh = false;
 	protected RemotedServiceRegistry remotedServiceRegistry;
+	protected ApplicationContext applicationContext;
 
 	public void afterPropertiesSet() throws Exception {
 		this.getServiceDefinition().validate();
-		LOG.info("Attempting to expose service with localServiceName '" + this.getServiceDefinition().getLocalServiceName() + "' and QName '" + this.getServiceDefinition().getServiceName() + "'");
-		if(getRemotedServiceRegistry()!=null)
+		if ( LOG.isInfoEnabled() ) {
+			LOG.info("Attempting to expose service with localServiceName '" + this.getServiceDefinition().getLocalServiceName() + "' and QName '" + this.getServiceDefinition().getServiceName() + "'");
+		}
+		if(getRemotedServiceRegistry()!=null) {
 			getRemotedServiceRegistry().registerService(this.getServiceDefinition(), this.isForceRefresh());
-		else
+		} else if ( KSBServiceLocator.getServiceDeployer() != null ) {
 			KSBServiceLocator.getServiceDeployer().registerService(this.getServiceDefinition(), this.isForceRefresh());
+		} else {
+			((RemotedServiceRegistry)applicationContext.getBean( KSBServiceLocator.REMOTED_SERVICE_REGISTRY )).registerService(this.getServiceDefinition(), this.isForceRefresh());
+		}
 	}
 
 	public ServiceDefinition getServiceDefinition() {
@@ -70,6 +78,10 @@ public class KSBExporter implements InitializingBean {
 	public void setRemotedServiceRegistry(
 			RemotedServiceRegistry remotedServiceRegistry) {
 		this.remotedServiceRegistry = remotedServiceRegistry;
+	}
+
+	public void setApplicationContext(ApplicationContext applicationContext) {
+		this.applicationContext = applicationContext;
 	}
 
 }

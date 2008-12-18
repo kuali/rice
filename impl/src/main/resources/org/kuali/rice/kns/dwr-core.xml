@@ -24,7 +24,7 @@
         <param name="include" value="principalId,principalName,name,firstName,lastName,campusCode,middleName,emailAddress" />
       </convert>
       <create creator="spring" javascript="PersonService">
-        <param name="beanName" value="kimPersonService" />
+        <param name="beanName" value="personService" />
         <include method="getPersonByPrincipalName" />
       </create>
       <convert converter="bean" match="org.kuali.rice.kns.bo.DocumentType">

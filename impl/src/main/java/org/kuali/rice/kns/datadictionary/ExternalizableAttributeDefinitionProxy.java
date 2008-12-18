@@ -85,8 +85,35 @@ public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition 
 	 *         AttributeReferenceDefinition
 	 */
 	AttributeDefinition getDelegate() {
-		if (delegate == null) {
-			throw new IllegalStateException("unable to retrieve null delegate");
+		BusinessObjectEntry delegateEntry = null;
+		if ( delegate == null ) {
+			try {
+				delegateEntry = KNSServiceLocator
+						.getKualiModuleService()
+						.getResponsibleModuleService(
+								Class
+										.forName(getSourceExternalizableBusinessObjectInterface()))
+						.getExternalizableBusinessObjectDictionaryEntry(
+								Class
+										.forName(getSourceExternalizableBusinessObjectInterface()));
+			} catch (ClassNotFoundException e) {
+				LOG.error("Unable to get delegate entry for sourceExternalizableBusinessObjectInterface",e);
+			}
+	
+			if (delegateEntry == null) {
+				throw new CompletionException(
+						"no BusinessObjectEntry exists for sourceClassName '"
+								+ getSourceExternalizableBusinessObjectInterface()
+								+ "'");
+			}
+			delegate = delegateEntry
+					.getAttributeDefinition(getSourceAttributeName());
+			if (delegate == null) {
+				throw new CompletionException(
+						"no AttributeDefnintion exists for sourceAttributeName '"
+								+ getSourceExternalizableBusinessObjectInterface()
+								+ "." + getSourceAttributeName() + "'");
+			}
 		}
 
 		return delegate;
@@ -347,37 +374,8 @@ public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition 
 					"invalid (blank) sourceAttributeName for attribute '"
 							+ rootObjectClass.getName() + "." + getName() + "'");
 		}
-		BusinessObjectEntry delegateEntry = null;
-		
-		try {
-			delegateEntry = KNSServiceLocator
-					.getKualiModuleService()
-					.getResponsibleModuleService(
-							Class
-									.forName(getSourceExternalizableBusinessObjectInterface()))
-					.getExternalizableBusinessObjectDictionaryEntry(
-							Class
-									.forName(getSourceExternalizableBusinessObjectInterface()));
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
 
-		if (delegateEntry == null) {
-			throw new CompletionException(
-					"no BusinessObjectEntry exists for sourceClassName '"
-							+ getSourceExternalizableBusinessObjectInterface()
-							+ "'");
-		}
-		AttributeDefinition delegateDefinition = delegateEntry
-				.getAttributeDefinition(getSourceAttributeName());
-		if (delegateDefinition == null) {
-			throw new CompletionException(
-					"no AttributeDefnintion exists for sourceAttributeName '"
-							+ getSourceExternalizableBusinessObjectInterface()
-							+ "." + getSourceAttributeName() + "'");
-		}
-
-		setDelegate(delegateDefinition);
+		getDelegate(); // forces validation
 		super.completeValidation(rootObjectClass, otherObjectClass);
 
 	}
@@ -391,7 +389,7 @@ public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition 
 		// workaround for the mysterious,
 		// still-unreproducible-on-my-machine, null delegate exception on
 		// Tomcat startup
-		if ((name == null) && (delegate != null)) {
+		if ((name == null) && (getDelegate() != null)) {
 			name = getDelegate().getName();
 		}
 		return "AttributeReferenceDefinition for attribute " + name;

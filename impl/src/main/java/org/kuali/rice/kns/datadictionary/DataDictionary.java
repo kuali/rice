@@ -166,9 +166,9 @@ public class DataDictionary {
             LOG.info( "Starting DD Index Building" );
             buildDDIndicies();
             LOG.info( "Completed DD Index Building" );
-            LOG.info( "Starting DD Validation" );
-            validateDD();
-            LOG.info( "Ending DD Validation" );
+//            LOG.info( "Starting DD Validation" );
+//            validateDD();
+//            LOG.info( "Ending DD Validation" );
             LOG.info( "Started DD Inactivation Blocking Index Building" );
             buildDDInactivationBlockingIndices();
             LOG.info( "Completed DD Inactivation Blocking Index Building" );
@@ -242,7 +242,7 @@ public class DataDictionary {
         }
     }
     
-    private void validateDD() {
+    public void validateDD() {
         Map<String,BusinessObjectEntry> boBeans = ddBeans.getBeansOfType(BusinessObjectEntry.class);
         for ( BusinessObjectEntry entry : boBeans.values() ) {
             entry.completeValidation();

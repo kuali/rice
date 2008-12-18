@@ -75,6 +75,18 @@ public class RelationshipDefinition extends DataDictionaryDefinitionBase {
      * @param targetClass
      */
     public Class<? extends BusinessObject> getTargetClass() {
+        if (targetClass == null) {
+	        Class propertyClass = DataDictionary.getAttributeClass(sourceClass, objectAttributeName);
+	        if (propertyClass == null) {
+	            throw new AttributeValidationException("cannot get valid class for property '" + objectAttributeName + "' as an attribute of '" + sourceClass + "'");
+	        }
+	        if (!BusinessObject.class.isAssignableFrom(propertyClass)) {
+	            throw new AttributeValidationException("property '" + objectAttributeName + "' is not a BusinessObject (" + "" + ")");
+	        }
+	
+	
+	        targetClass = propertyClass;
+        }
         return targetClass;
     }
 
@@ -135,21 +147,8 @@ public class RelationshipDefinition extends DataDictionaryDefinitionBase {
         if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, propertyName)) {
             throw new AttributeValidationException("property '" + propertyName + "' is not an attribute of class '" + rootBusinessObjectClass + "' (" + "" + ")");
         }
-        
-        sourceClass = rootBusinessObjectClass;
-        
-        if (targetClass == null) {
-	        Class propertyClass = DataDictionary.getAttributeClass(rootBusinessObjectClass, propertyName);
-	        if (propertyClass == null) {
-	            throw new AttributeValidationException("cannot get valid class for property '" + propertyName + "' as an attribute of '" + rootBusinessObjectClass + "'");
-	        }
-	        if (!BusinessObject.class.isAssignableFrom(propertyClass)) {
-	            throw new AttributeValidationException("property '" + propertyName + "' is not a BusinessObject (" + "" + ")");
-	        }
-	
-	
-	        targetClass = propertyClass;
-        }
+
+        getTargetClass(); // performs validation when this is called the first time
 
         for (PrimitiveAttributeDefinition primitiveAttributeDefinition : primitiveAttributes) {
             primitiveAttributeDefinition.completeValidation(rootBusinessObjectClass, targetClass);
@@ -205,5 +204,12 @@ public class RelationshipDefinition extends DataDictionaryDefinitionBase {
     public void setSupportAttributes(List<SupportAttributeDefinition> supportAttributes) {
         this.supportAttributes = supportAttributes;
     }
+
+	/**
+	 * @param sourceClass the sourceClass to set
+	 */
+	public void setSourceClass(Class<? extends BusinessObject> sourceClass) {
+		this.sourceClass = sourceClass;
+	}
 }
 

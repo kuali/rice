@@ -24,6 +24,9 @@ import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.PersistenceService;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.ConfigurableApplicationContext;
 
 /**
  * This is a description of what this class does - bhargavp don't forget to fill this in. 
@@ -31,11 +34,12 @@ import org.springframework.beans.factory.InitializingBean;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class ModuleConfiguration implements InitializingBean {
+public class ModuleConfiguration implements InitializingBean, ApplicationContextAware {
 
 	//protected static Logger LOG = Logger.getLogger(ModuleConfiguration.class);
 	
 	protected String namespaceCode;
+	protected ApplicationContext applicationContext;
 	
 	protected List<String> packagePrefixes;
 
@@ -52,10 +56,6 @@ public class ModuleConfiguration implements InitializingBean {
 	protected Map<Class, Class> externalizableBusinessObjectImplementations;
 	
 	protected boolean initializeDataDictionary;
-
-	protected PersistenceService persistenceService;
-	
-	protected DataDictionaryService dataDictionaryService;
 
 	public ModuleConfiguration() {
 		databaseRepositoryFilePaths = new ArrayList<String>();
@@ -170,18 +170,23 @@ public class ModuleConfiguration implements InitializingBean {
 	}
 	
 	public void afterPropertiesSet() throws Exception {
-		if (isInitializeDataDictionary()) {
-			DataDictionaryLocationConfigurer ddl = new DataDictionaryLocationConfigurer(dataDictionaryService);
+		if (isInitializeDataDictionary() && getDataDictionaryPackages() != null && !getDataDictionaryPackages().isEmpty() ) {
+			DataDictionaryService dds = KNSServiceLocator.getDataDictionaryService();
+			if ( dds == null ) {
+				dds = (DataDictionaryService)applicationContext.getBean( KNSServiceLocator.DATA_DICTIONARY_SERVICE );
+			}
+			DataDictionaryLocationConfigurer ddl = new DataDictionaryLocationConfigurer( dds );
 			ddl.setDataDictionaryPackages(getDataDictionaryPackages());
 			ddl.afterPropertiesSet();
 		}
 		if (getDatabaseRepositoryFilePaths() != null) {
 		    for (String repositoryLocation : getDatabaseRepositoryFilePaths()) {
 				// Need the OJB persistence service because it is the only one ever using the database repository files
-		    	if(persistenceService!=null)
-		    		persistenceService.loadRepositoryDescriptor(repositoryLocation);
-		    	else
-		    		KNSServiceLocator.getPersistenceServiceOjb().loadRepositoryDescriptor(repositoryLocation);
+		    	PersistenceService persistenceService = KNSServiceLocator.getPersistenceServiceOjb();
+		    	if ( persistenceService == null ) {
+		    		persistenceService = (PersistenceService)applicationContext.getBean( KNSServiceLocator.PERSISTENCE_SERVICE_OJB  );
+		    	}
+		    	persistenceService.loadRepositoryDescriptor( repositoryLocation );
 			}
 		}
 	}
@@ -200,31 +205,8 @@ public class ModuleConfiguration implements InitializingBean {
 		this.namespaceCode = namespaceCode;
 	}
 
-	/**
-	 * @return the dataDictionaryService
-	 */
-	public DataDictionaryService getDataDictionaryService() {
-		return this.dataDictionaryService;
+	public void setApplicationContext(ApplicationContext applicationContext) {
+		this.applicationContext = applicationContext;
 	}
 
-	/**
-	 * @param dataDictionaryService the dataDictionaryService to set
-	 */
-	public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
-		this.dataDictionaryService = dataDictionaryService;
-	}
-
-	/**
-	 * @return the persistenceService
-	 */
-	public PersistenceService getPersistenceService() {
-		return this.persistenceService;
-	}
-
-	/**
-	 * @param persistenceService the persistenceService to set
-	 */
-	public void setPersistenceService(PersistenceService persistenceService) {
-		this.persistenceService = persistenceService;
-	}
 }

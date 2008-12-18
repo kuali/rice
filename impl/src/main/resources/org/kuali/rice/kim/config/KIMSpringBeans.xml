@@ -42,8 +42,6 @@
 	<bean id="kimModuleConfiguration-parentBean" class="org.kuali.rice.kns.bo.ModuleConfiguration" abstract="true">
 		<property name="namespaceCode" value="KR-KIM" />
 		<property name="initializeDataDictionary" value="true"/>
-		<property name="dataDictionaryService" ref="dataDictionaryService" />
-		<property name="persistenceService" ref="persistenceServiceOjb" />
 		<property name="dataDictionaryPackages">
 			<list>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonImpl.xml</value>
@@ -79,7 +77,7 @@
 
 	<bean id="kimModule" class="org.kuali.rice.kim.service.impl.KimModuleService"
         p:moduleConfiguration-ref="kimModuleConfiguration"
-        p:personService-ref="kimPersonService"
+        p:personService-ref="personService"
         p:kualiModuleService-ref="kualiModuleService" />
 
 	<bean id="kimDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean" lazy-init="true"/>
@@ -126,7 +124,7 @@
         <property name="dbPlatform" ref="dbPlatform" />
     </bean>
 
-
+<!-- 
 	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator" lazy-init="true">
 		<property name="interceptorNames">
 			<list>
@@ -135,8 +133,8 @@
 		</property>
 		<property name="beanNames">
 			<list>
-				<idref local="kimPersonService" />
-				<!-- these too?
+        <!- these too?
+				<idref local="personService" />
 				<idref local="kimWorkgroupService" />
 				<idref local="kimUserService" />
 				<idref local="kimAuthenticationService" />
@@ -146,11 +144,11 @@
 				<idref local="kimGroupService" />
 				<idref local="kimPermissionService" />
 				<idref local="kimResponsibilityService" />
-				-->
+				->
 			</list>
 		</property>
 	</bean>
-
+ -->
     <bean id="kimSoapService" class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition" abstract="true">
        <property name="serviceNameSpaceURI" value="KIM"/>
        <property name="priority" value="3" />
@@ -290,7 +288,7 @@
     </property>
   </bean>
 
-  <bean id="kimPersonService" class="org.kuali.rice.kim.service.impl.PersonServiceImpl"
+  <bean id="personService" class="org.kuali.rice.kim.service.impl.PersonServiceImpl"
   	p:identityManagementService-ref="kimIdentityManagementService"
     p:personDao-ref="kimPersonDao"
     p:personCacheMaxSize="200"
@@ -300,8 +298,8 @@
 	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
     <property name="serviceDefinition">
       <bean parent="kimService"
-      	p:service-ref="kimPersonService"
-      	p:localServiceName="kimPersonService" />
+      	p:service-ref="personService"
+      	p:localServiceName="personService" />
     </property>
   </bean>
 

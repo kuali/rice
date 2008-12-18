@@ -21,7 +21,7 @@ public final class KIMServiceLocator {
 	public static final String KIM_IDENTITY_SERVICE = "kimIdentityService";
 	public static final String KIM_GROUP_SERVICE = "kimGroupService";
 	public static final String KIM_ROLE_SERVICE = "kimRoleService";
-	public static final String KIM_PERSON_SERVICE = "kimPersonService";
+	public static final String KIM_PERSON_SERVICE = "personService";
 	public static final String KIM_AUTHENTICATION_SERVICE = "kimAuthenticationService";
 	public static final String KIM_PERMISSION_SERVICE = "kimPermissionService";
 	public static final String KIM_RESPONSIBILITY_SERVICE = "kimResponsibilityService";

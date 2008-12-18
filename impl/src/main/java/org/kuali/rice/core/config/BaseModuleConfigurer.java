@@ -34,9 +34,16 @@ public class BaseModuleConfigurer extends ModuleConfigurer {
      */
     protected final Logger LOG = Logger.getLogger(getClass());
 
-    protected final String moduleName;
+    protected String moduleName = "UNSET";
     protected boolean testMode;
+    protected String springFileLocations = "";
 
+    /**
+	 * 
+	 */
+	public BaseModuleConfigurer() {
+	}
+    
     /**
      * Constructor that accepts the module name
      * @param moduleName the module name
@@ -73,22 +80,34 @@ public class BaseModuleConfigurer extends ModuleConfigurer {
      */
     @Override
     public Config loadConfig(Config parentConfig) throws Exception {
-        LOG.info("Starting configuration of " + getModuleName() + " for service namespace " + parentConfig.getServiceNamespace());
+    	if ( LOG.isInfoEnabled() ) {
+    		LOG.info("Starting configuration of " + getModuleName() + " for service namespace " + parentConfig.getServiceNamespace());
+    	}
         return ConfigContext.getCurrentContextConfig();
     }
     
-    @Override
-	public String getSpringFileLocations(){
-		return "";
-	}
 	
-    /**
+    public String getSpringFileLocations() {
+		return this.springFileLocations;
+	}
+
+	public void setSpringFileLocations(String springFileLocations) {
+		this.springFileLocations = springFileLocations;
+	}
+
+	public void setModuleName(String moduleName) {
+		this.moduleName = moduleName;
+	}
+
+	/**
      * Registers an OjbConfigurer and ResourceLoader for the module, adding it first to the GlobalResourceLoader.
      * @see org.kuali.rice.core.lifecycle.BaseCompositeLifecycle#loadLifecycles()
      */
     @Override
     protected List<Lifecycle> loadLifecycles() throws Exception {
-        LOG.info("Loading " + getModuleName() + " module lifecycles");
+    	if ( LOG.isInfoEnabled() ) {
+    		LOG.info("Loading " + getModuleName() + " module lifecycles");
+    	}
         List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
         lifecycles.add(new BaseOjbConfigurer(getModuleName()));
         return lifecycles;

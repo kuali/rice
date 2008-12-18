@@ -15,7 +15,10 @@
 				</bean>
 		</property>
 		<property name="knsConfigurer">
-	        <bean class="org.kuali.rice.kns.config.KNSConfigurer"/>
+	        <bean class="org.kuali.rice.kns.config.KNSConfigurer">
+	            <property name="loadDataDictionary" value="true" />
+	            <property name="validateDataDictionary" value="true" />
+	        </bean>
 		</property>
 		<property name="kimConfigurer">
 	        <bean class="org.kuali.rice.kim.config.KIMConfigurer" />

@@ -225,8 +225,6 @@
   <bean id="ksbModuleConfiguration" class="org.kuali.rice.kns.bo.ModuleConfiguration">
 		<property name="namespaceCode" value="KR-BUS" />
 		<property name="initializeDataDictionary" value="false"/>
-		<property name="dataDictionaryService" ref="dataDictionaryService" />
-		<property name="persistenceService" ref="persistenceServiceOjb" />
         <property name="packagePrefixes">
             <list>
                 <value>org.kuali.rice.ksb.</value>

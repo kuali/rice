@@ -25,6 +25,7 @@ import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.authorization.AuthorizationType;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.ApplicationContextAware;
 
 /**
  * This interface defines service methods for modules.  
@@ -32,7 +33,7 @@ import org.springframework.beans.factory.InitializingBean;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public interface ModuleService extends InitializingBean {
+public interface ModuleService extends InitializingBean, ApplicationContextAware {
 
 	/**
 	 * 

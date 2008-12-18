@@ -86,6 +86,11 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
         if (businessObjectClass == null) {
             throw new IllegalArgumentException("invalid (null) businessObjectClass");
         }
+        if ( getRelationships() != null ) {
+        	for ( RelationshipDefinition rd : getRelationships() ) {
+        		rd.setSourceClass(businessObjectClass);
+        	}
+        }
 
         this.businessObjectClass = businessObjectClass;
     }

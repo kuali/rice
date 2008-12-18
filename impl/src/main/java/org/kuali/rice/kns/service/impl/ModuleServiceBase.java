@@ -24,12 +24,12 @@ import java.util.Properties;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.authorization.AuthorizationType;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 import org.kuali.rice.kns.bo.ModuleConfiguration;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.PrimitiveAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.RelationshipDefinition;
@@ -44,6 +44,9 @@ import org.kuali.rice.kns.util.ExternalizableBusinessObjectUtils;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.UrlFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.context.ApplicationContext;
 
 /**
  * This class implements ModuleService interface. 
@@ -60,6 +63,7 @@ public class ModuleServiceBase implements ModuleService {
 	protected LookupService lookupService;
 	protected BusinessObjectDictionaryService businessObjectDictionaryService;
 	protected KualiModuleService kualiModuleService;
+	protected ApplicationContext applicationContext;
 	
 	/***
 	 * @see org.kuali.rice.kns.service.ModuleService#isResponsibleFor(java.lang.Class)
@@ -340,10 +344,13 @@ public class ModuleServiceBase implements ModuleService {
 	 * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
 	 */
 	public void afterPropertiesSet() throws Exception {
-		if(getKualiModuleService()!=null)
-			getKualiModuleService().getInstalledModuleServices().add(this);
-		else
-			KNSServiceLocator.getKualiModuleService().getInstalledModuleServices().add(this);
+		KualiModuleService kualiModuleService = null;
+		try {
+			kualiModuleService = KNSServiceLocator.getKualiModuleService();
+		} catch ( NoSuchBeanDefinitionException ex ) {
+			kualiModuleService = ((KualiModuleService)applicationContext.getBean( KNSServiceLocator.KUALI_MODULE_SERVICE ));
+		}
+		kualiModuleService.getInstalledModuleServices().add( this );
 	}
 
 	/**
@@ -429,5 +436,11 @@ public class ModuleServiceBase implements ModuleService {
 		this.kualiModuleService = kualiModuleService;
 	}
 
+	/**
+	 * @see org.springframework.context.ApplicationContextAware#setApplicationContext(org.springframework.context.ApplicationContext)
+	 */
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.applicationContext = applicationContext; 
+	}
 }
 

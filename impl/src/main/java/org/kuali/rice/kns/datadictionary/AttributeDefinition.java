@@ -464,13 +464,6 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase {
             }
     
     
-            // set default values
-            if (getForceUppercase() == null) {
-                setForceUppercase(Boolean.FALSE);
-            }
-            if (isRequired() == null) {
-                setRequired(Boolean.FALSE);
-            }
             if(attributeSecurity != null){
             	attributeSecurity.completeValidation(rootObjectClass, otherObjectClass);
             }

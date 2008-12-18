@@ -347,6 +347,9 @@ public class ModuleServiceBase implements ModuleService {
 		KualiModuleService kualiModuleService = null;
 		try {
 			kualiModuleService = KNSServiceLocator.getKualiModuleService();
+			if ( kualiModuleService == null ) {
+				kualiModuleService = ((KualiModuleService)applicationContext.getBean( KNSServiceLocator.KUALI_MODULE_SERVICE ));
+			}
 		} catch ( NoSuchBeanDefinitionException ex ) {
 			kualiModuleService = ((KualiModuleService)applicationContext.getBean( KNSServiceLocator.KUALI_MODULE_SERVICE ));
 		}

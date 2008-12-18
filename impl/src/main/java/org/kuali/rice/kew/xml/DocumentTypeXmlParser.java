@@ -695,11 +695,11 @@ public class DocumentTypeXmlParser implements XmlConstants {
                 throw new InvalidWorkgroupException("Could not locate exception workgroup by name " + exceptionWorkgroupName);
             }
         }
-        if (exceptionWorkgroup == null) {
-            throw new InvalidXmlException("No exception workgroup specified at node " + routeNode.getRouteNodeName() + ".  Either specify an exceptionWorkgroupName for each node or specify the defaultExceptionWorkgroupName.\n" + XmlHelper.jotNode(node));
+        if (exceptionWorkgroup != null) {
+        	routeNode.setExceptionWorkgroupName(exceptionWorkgroup.getGroupName());
+            routeNode.setExceptionWorkgroupId(exceptionWorkgroup.getGroupId());
         }
-        routeNode.setExceptionWorkgroupName(exceptionWorkgroup.getGroupName());
-        routeNode.setExceptionWorkgroupId(exceptionWorkgroup.getGroupId());
+        
         if (((Boolean) xpath.evaluate("./mandatoryRoute", node, XPathConstants.BOOLEAN)).booleanValue()) {
             routeNode.setMandatoryRouteInd(Boolean.valueOf((String)xpath.evaluate("./mandatoryRoute", node, XPathConstants.STRING)));
         } else {

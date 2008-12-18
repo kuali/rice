@@ -32,6 +32,8 @@ import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
  *
  */
 public class PermissionDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServiceBase {
+
+	private static PermissionService permissionService;
 	private String roleNamesapce;
 	private String roleName;
 	private String permissionTemplateNamespace;
@@ -146,8 +148,14 @@ public class PermissionDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServ
 		return hasApplicationRole;
     }
     
-	protected PermissionService getPermissionService() {
-		return KIMServiceLocator.getPermissionService();
-	}
+    /**
+     * @return the documentService
+     */
+     protected static PermissionService getPermissionService(){
+        if (permissionService == null ) {
+        	permissionService = KIMServiceLocator.getPermissionService();
+        }
+        return permissionService;
+    }
 	
 }

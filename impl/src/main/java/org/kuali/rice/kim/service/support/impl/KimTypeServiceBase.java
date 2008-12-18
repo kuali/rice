@@ -371,7 +371,7 @@ public class KimTypeServiceBase implements KimTypeService {
 		//TODO: Remove comment
 		/*List<String> missingAttributes = new ArrayList<String>();
 		for(String requiredAttribute: requiredAttributes){
-			if(!receivedAttributes.containsKey(requiredAttribute))
+			if(receivedAttributes==null || !receivedAttributes.containsKey(requiredAttribute))
 				missingAttributes.add(requiredAttribute);
 		}
         if(missingAttributes.size()>0) {

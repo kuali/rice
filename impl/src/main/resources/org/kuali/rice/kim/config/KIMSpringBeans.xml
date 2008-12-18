@@ -380,6 +380,56 @@
         p:localServiceName="activePrincipalRoleTypeService" />
     </property>
   </bean>
+
+  <bean id="permissionPermissionTypeService" class="org.kuali.rice.kim.service.impl.PermissionPermissionTypeServiceImpl" />
+  <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+    <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+    <property name="serviceDefinition">
+      <bean parent="kimService"
+        p:service-ref="permissionPermissionTypeService"
+        p:localServiceName="permissionPermissionTypeService" />
+    </property>
+  </bean>
+  
+  <bean id="responsibilityPermissionTypeService" class="org.kuali.rice.kim.service.impl.ResponsibilityPermissionTypeServiceImpl" />
+  <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+    <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+    <property name="serviceDefinition">
+      <bean parent="kimService"
+        p:service-ref="responsibilityPermissionTypeService"
+        p:localServiceName="responsibilityPermissionTypeService" />
+    </property>
+  </bean>
+  
+  <bean id="rolePermissionTypeService" class="org.kuali.rice.kim.service.impl.RolePermissionTypeServiceImpl" />
+  <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+    <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+    <property name="serviceDefinition">
+      <bean parent="kimService"
+        p:service-ref="rolePermissionTypeService"
+        p:localServiceName="rolePermissionTypeService" />
+    </property>
+  </bean>
+  
+  <bean id="entityPermissionTypeService" class="org.kuali.rice.kim.service.impl.EntityPermissionTypeServiceImpl" />
+  <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+    <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+    <property name="serviceDefinition">
+      <bean parent="kimService"
+        p:service-ref="entityPermissionTypeService"
+        p:localServiceName="entityPermissionTypeService" />
+    </property>
+  </bean>
+  
+  <bean id="groupPermissionTypeService" class="org.kuali.rice.kim.service.impl.GroupPermissionTypeServiceImpl" />
+  <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+    <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+    <property name="serviceDefinition">
+      <bean parent="kimService"
+        p:service-ref="groupPermissionTypeService"
+        p:localServiceName="groupPermissionTypeService" />
+    </property>
+  </bean>
   
   <!-- for person Doc UI  -->
   <bean id="kimTypeService" class="org.kuali.rice.kim.service.support.impl.KimTypeServiceBase" />

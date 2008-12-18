@@ -36,6 +36,17 @@ public class MaintenanceDocumentPresentationControllerBase extends DocumentPrese
 
     private static MaintenanceDocumentDictionaryService  maintenanceDocumentDictionaryService;
     
+
+   /**
+    * 
+    * @see org.kuali.rice.kns.document.authorization.DocumentPresentationControllerBase#canCreate(org.kuali.rice.kns.document.Document)
+    */
+    public boolean canCreate(Class boClass){
+    	//TODO: 
+    	return true;
+    }
+   
+
 	/**
 	 * 
 	 * @param document

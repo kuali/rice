@@ -184,7 +184,13 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         LOG.info("processRouteDocument called");
 
         MaintenanceDocument maintenanceDocument = (MaintenanceDocument) document;
-
+        
+        // get the documentAuthorizer for this document
+        MaintenanceDocumentAuthorizer documentAuthorizer = (MaintenanceDocumentAuthorizer) documentAuthorizationService.getDocumentAuthorizer(document);
+        
+        
+        Map primaryKeys = persistenceService.getPrimaryKeyFieldValues(newBo);
+        
         // remove all items from the errorPath temporarily (because it may not
         // be what we expect, or what we need)
         clearErrorPath();
@@ -198,7 +204,8 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         // from here on, it is in a default-success mode, and will route unless one of the
         // business rules stop it.
         boolean success = true;
-
+        
+        success &= documentAuthorizer.canCreateOrMaintain(boClass, primaryKeys, GlobalVariables.getUserSession().getPerson());
         // apply rules that are common across all maintenance documents, regardless of class
         success &= processGlobalRouteDocumentBusinessRules(maintenanceDocument);
 

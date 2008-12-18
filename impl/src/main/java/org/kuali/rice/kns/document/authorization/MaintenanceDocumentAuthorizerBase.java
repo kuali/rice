@@ -154,6 +154,36 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
         
         return docActions;
     }
+    
+   
+    /**
+     * 
+     * @see org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizer#canCreate(java.lang.Class, org.kuali.rice.kim.bo.Person)
+     */
+    public boolean canCreate(Class boClass, Person user){
+    	//TODO:
+    	return true;
+    	
+    }
+    
+    
+    /**
+     * 
+     * @see org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizer#canMaintain(java.lang.Class, java.util.Map, org.kuali.rice.kim.bo.Person)
+     */
+    public boolean canMaintain(Class boClass, Map primaryKeys, Person user){
+    	//TODO:
+    	return true;
+    }
+    
+    /**
+     * 
+     * @see org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizer#canCreateOrMaintain(java.lang.Class, java.util.Map, org.kuali.rice.kim.bo.Person)
+     */
+    public boolean canCreateOrMaintain(Class boClass, Map primaryKeys, Person user){
+    	//TODO: 
+    	return true;
+    }
 
 
     
@@ -203,8 +233,8 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
         MaintenanceDocument md = (MaintenanceDocument)document;
         return md.getNewMaintainableObject().getBoClass();        
 	}
-
-
+	
+   
     public static PersistenceStructureService getPersistenceStructureService() {
         if ( persistenceStructureService == null ) {
             persistenceStructureService = KNSServiceLocator.getPersistenceStructureService();

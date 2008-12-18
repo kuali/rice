@@ -29,10 +29,19 @@ public interface MaintenanceDocumentPresentationController extends DocumentPrese
 	
 	/**
 	 * 
+	 * @param boClass
+	 * @return boolean (true is can create new records)
+	 */
+	public boolean canCreate(Class boClass);
+	
+	/**
+	 * 
 	 * 
 	 * @param document
 	 * @return the list of uncondionallyReadOnly fields
 	 */
 	public List getReadOnlyFields(Document document);
+	
+	
 }
 

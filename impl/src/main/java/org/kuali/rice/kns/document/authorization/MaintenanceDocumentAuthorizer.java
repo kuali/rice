@@ -28,7 +28,7 @@ import org.kuali.rice.kns.document.MaintenanceDocument;
  */
 public interface MaintenanceDocumentAuthorizer extends DocumentAuthorizer {
 
-    /**
+	/**
      * 
      * This method returns the set of authorization restrictions (if any) that apply to this object in this context.
      * 
@@ -39,6 +39,28 @@ public interface MaintenanceDocumentAuthorizer extends DocumentAuthorizer {
      */
     public MaintenanceDocumentAuthorizations getFieldAuthorizations(MaintenanceDocument document, Person user);
     
-   
+    /**
+     * @param boClass
+     * @param user
+     * @returns boolean indicating whether a user can create a new record
+     */
+    public boolean canCreate(Class boClass, Person user);
+    
+    /**
+     * @param boClass
+     * @param primaryKeys
+     * @param user
+     * @returns boolean indicating whether a user can maintain existing record
+     */
+    public boolean canMaintain(Class boClass, Map primaryKeys, Person user);
+    
+    /**
+     * @param document
+     * @param primaryKeys
+     * @param user
+     * @returns boolean indicating whether a user can create new record or maintain existing record
+     */
+    public boolean canCreateOrMaintain(Class boClass, Map primaryKeys, Person user);
+    
 }
 

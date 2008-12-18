@@ -19,8 +19,9 @@
 
                 <td align="left" valign="middle" class="infoline" colspan=3>
                 <div align="center">
-                	<kul:htmlControlAttribute property="newRole.roleId" attributeEntry="${docRoleAttributes.roleId}"/>
+                	<kul:htmlControlAttribute property="newRole.roleId" attributeEntry="${docRoleAttributes.roleId}" disabled="true"/>
                 	<kul:lookup boClassName="org.kuali.rice.kim.bo.role.impl.KimRoleImpl" fieldConversions="roleId:newRole.roleId,kimTypeId:newRole.kimTypeId,roleName:newRole.roleName,namespaceCode:newRole.namespaceCode,kimRoleType.name:newRole.kimRoleType.name,kimRoleType.kimTypeServiceName:newRole.kimRoleType.kimTypeServiceName" anchor="${tabKey}" />
+					${KualiForm.newRole.roleName}
 					<html:hidden property="newRole.roleName" />
 					<html:hidden property="newRole.namespaceCode" />
 					<html:hidden property="newRole.kimTypeId" />

@@ -84,17 +84,17 @@ public class IdentityManagementPersonDocumentPresentationController extends Tran
 		qualification.put("principalId", user.getPrincipalId());
 
 		// modify entity fields are not finalized yet.  if permattribute is null, then it will return all 'modify entity fields' perms assigned to user
-		List<? extends KimPermission> permissions = identityManagementService.getAuthorizedPermissionsByTemplateName(user.getPrincipalId(), "KR-KIM", "Modify Entity Field(s)", permDetail, qualification);
+		List<? extends KimPermission> permissions = identityManagementService.getAuthorizedPermissionsByTemplateName(user.getPrincipalId(), "KR-IDM", "Modify Entity Field(s)", permDetail, qualification);
         if (!permissions.isEmpty()) {
         	editModes.add("line3");
         }
         // TODO : get assign role
-		List<? extends KimPermission> assignRolePerms = identityManagementService.getAuthorizedPermissionsByTemplateName(user.getPrincipalId(), "KR-KIM", "Assign Role", null, qualification);
+		List<? extends KimPermission> assignRolePerms = identityManagementService.getAuthorizedPermissionsByTemplateName(user.getPrincipalId(), "KR-IDM", "Assign Role", null, qualification);
         if (!assignRolePerms.isEmpty()) {
         	editModes.add("assignRole");
         }
         // TODO : get populate group
-		List<? extends KimPermission> populateGroupPerms = identityManagementService.getAuthorizedPermissionsByTemplateName(user.getPrincipalId(), "KR-KIM", "Populate Group", null, qualification);
+		List<? extends KimPermission> populateGroupPerms = identityManagementService.getAuthorizedPermissionsByTemplateName(user.getPrincipalId(), "KR-IDM", "Populate Group", null, qualification);
         if (!populateGroupPerms.isEmpty()) {
         	editModes.add("populateGroup");
         }

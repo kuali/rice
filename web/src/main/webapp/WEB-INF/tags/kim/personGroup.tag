@@ -19,7 +19,7 @@
 
                 <td align="left" valign="middle" class="infoline" colspan=3>
                 <div align="center">
-                	<kul:htmlControlAttribute property="newGroup.groupId" attributeEntry="${docGroupPersonAttributes.groupId}"/>
+                	<kul:htmlControlAttribute property="newGroup.groupId" attributeEntry="${docGroupPersonAttributes.groupId}" disabled="true"/>
                 	<kul:lookup boClassName="org.kuali.rice.kim.bo.group.impl.KimGroupImpl" fieldConversions="groupId:newGroup.groupId,kimTypeId:newGroup.groupType,groupName:newGroup.groupName,namespaceCode:newGroup.namespaceCode" anchor="${tabKey}" />
 					${KualiForm.newGroup.groupName}
 					</div></td>

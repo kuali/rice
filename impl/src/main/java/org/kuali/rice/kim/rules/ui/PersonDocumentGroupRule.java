@@ -41,7 +41,7 @@ public class PersonDocumentGroupRule extends DocumentRuleBase implements AddGrou
 	    String errorPath = NEW_GROUP;
         ErrorMap errorMap = GlobalVariables.getErrorMap();
 
-        if (StringUtils.isBlank(newGroup.getGroupId())) {
+        if (newGroup == null || StringUtils.isBlank(newGroup.getGroupId())) {
             rulePassed = false;
             errorMap.putError(errorPath+".groupId", RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Group"});
         	

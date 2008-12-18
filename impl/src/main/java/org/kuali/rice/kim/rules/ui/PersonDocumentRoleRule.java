@@ -40,7 +40,7 @@ public class PersonDocumentRoleRule extends DocumentRuleBase implements AddRoleR
 	    boolean rulePassed = true;
         ErrorMap errorMap = GlobalVariables.getErrorMap();
 
-        if (StringUtils.isBlank(newRole.getRoleId())) {
+        if (newRole == null || StringUtils.isBlank(newRole.getRoleId())) {
             rulePassed = false;
             errorMap.putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Role"});
         	

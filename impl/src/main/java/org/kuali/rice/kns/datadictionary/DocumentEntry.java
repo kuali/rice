@@ -544,7 +544,7 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
             if (defaultExistenceCheckMap.containsKey(keyName)) {
                 throw new DuplicateEntryException("duplicate defaultExistenceCheck entry for attribute '" + keyName + "'");
             }
-    
+            reference.setBusinessObjectClass(getEntryClass());
             defaultExistenceCheckMap.put(keyName, reference);
         }
         this.defaultExistenceChecks = defaultExistenceChecks;

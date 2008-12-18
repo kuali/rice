@@ -41,6 +41,7 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
     protected String displayFieldName;
     protected String collection;
     protected Class<? extends BusinessObject> collectionBusinessObjectClass;
+    protected Class<? extends BusinessObject> businessObjectClass;
     
     public ReferenceDefinition() {}
 
@@ -130,6 +131,10 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
     }
 
     public Class<? extends BusinessObject> getCollectionBusinessObjectClass() {
+        if( collectionBusinessObjectClass == null && isCollectionReference() ){
+            collectionBusinessObjectClass=DataDictionary.getCollectionElementClass(businessObjectClass, collection);
+        }
+
         return collectionBusinessObjectClass;
     }
 
@@ -158,7 +163,11 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
         }
         // make sure the attributeToHighlightOnFail is actually a property of the BO
         if (isCollectionReference()) {
-
+            getCollectionBusinessObjectClass(); // forces loading of the class
+            if ( collectionBusinessObjectClass == null ) {
+                throw new AttributeValidationException("Unable to determine collectionBusinessObjectClass for collection '" + businessObjectClass.getName() + "." + collection + "'");
+            }
+            
             if (!DataDictionary.isPropertyOf(collectionBusinessObjectClass, attributeToHighlightOnFail)) {
                 throw new AttributeValidationException("unable to find attribute '" + attributeToHighlightOnFail + "' in collectionBusinessObjectClass '" + collectionBusinessObjectClass.getName() + "' (" + "" + ")");
             }
@@ -177,5 +186,13 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
      */
     public String toString() {
         return "ReferenceDefinition for attribute " + getAttributeName();
+    }
+
+    public Class<? extends BusinessObject> getBusinessObjectClass() {
+        return businessObjectClass;
+    }
+
+    public void setBusinessObjectClass(Class<? extends BusinessObject> businessObjectClass) {
+        this.businessObjectClass = businessObjectClass;
     }
 }

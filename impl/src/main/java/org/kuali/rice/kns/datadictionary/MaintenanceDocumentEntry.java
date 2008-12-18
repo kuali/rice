@@ -73,6 +73,13 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
         return businessObjectClass;
     }
 
+    /**
+     * @see org.kuali.rice.kns.datadictionary.DocumentEntry#getEntryClass()
+     */
+    @Override
+    public Class getEntryClass() {
+    	return businessObjectClass;
+    }
 
     /*
             The maintainableClass element specifies the name of the

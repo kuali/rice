@@ -23,6 +23,7 @@ import java.util.Map;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.resourceloader.ContextClassLoaderBinder;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
@@ -37,6 +38,11 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -126,9 +132,43 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 			personByPrincipalIdCache.put( person.getPrincipalId(), new MaxAgeSoftReference<PersonImpl>( personCacheMaxAge, person ) );
 			personByEmployeeIdCache.put( person.getEmployeeId(), new MaxAgeSoftReference<PersonImpl>( personCacheMaxAge, person ) );
 			// store the person to the database cache
-			personDao.savePersonToCache( person );
+			
+			// but do this an alternate thread to prevent transaction issues since this service is non-transactional
+			
+			KSBServiceLocator.getThreadPool().execute( new SavePersonToCacheRunnable( personDao, person ) );
 		}
 	}
+	
+	private static class SavePersonToCacheRunnable implements Runnable {
+		PersonDao personDao;
+		PersonImpl person;
+		/**
+		 * 
+		 */
+		public SavePersonToCacheRunnable( PersonDao personDao, PersonImpl person ) {
+			this.personDao = personDao;
+			this.person = person;
+		}
+		
+		/**
+		 * @see java.lang.Runnable#run()
+		 */
+		public void run() {
+			try {
+				PlatformTransactionManager transactionManager = KNSServiceLocator.getTransactionManager();
+				TransactionTemplate template = new TransactionTemplate(transactionManager);
+				template.execute(new TransactionCallback() {
+					public Object doInTransaction(TransactionStatus status) {
+						personDao.savePersonToCache( person );
+						return null;
+					}
+				});
+			} catch (Throwable t) {
+				LOG.error("Failed to load transaction manager.", t);
+			}
+		}
+	}
+	
 	
 	/**
 	 * @see org.kuali.rice.kim.service.PersonService#getPersonByPrincipalName(java.lang.String)

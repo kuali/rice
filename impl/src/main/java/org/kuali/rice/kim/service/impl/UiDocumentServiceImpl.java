@@ -87,8 +87,9 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 		kimEntity.setActive(identityManagementPersonDocument.isActive());
 		kimEntity.setEntityId(identityManagementPersonDocument.getEntityId());
-		// patchwork to set version# for now 
-		// for all the related tables
+		// TODO : in order to resolve optimistic locking issue. has to get entity and set the version number if entity records matched
+		// Need to look into this.
+
 		kimEntity.setVersionNumber(origEntity.getVersionNumber());
 
 		// principal
@@ -354,6 +355,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			docName.setFirstName(name.getFirstName());
 			docName.setLastName(name.getLastName());
 			docName.setMiddleName(name.getMiddleName());
+			docName.setTitle(name.getTitle());
+			docName.setSuffix(name.getSuffix());
 			docName.setActive(name.isActive());
 			docName.setDflt(name.isDefault());
 			docName.setEdit(true);
@@ -485,6 +488,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			entityName.setFirstName(name.getFirstName());
 			entityName.setLastName(name.getLastName());
 			entityName.setMiddleName(name.getMiddleName());
+			entityName.setTitle(name.getTitle());
+			entityName.setSuffix(name.getSuffix());
 			entityName.setActive(name.isActive());
 			entityName.setDefault(name.isDflt());
 			entityName.setEntityNameId(name.getEntityNameId());

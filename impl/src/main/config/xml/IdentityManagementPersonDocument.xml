@@ -129,7 +129,7 @@
       </ruleExtensions>
       <responsibilities>
                 <responsibility>
-                  <user>admin1</user>
+                  <user>admin</user>
                 </responsibility>
        </responsibilities>
     </rule>

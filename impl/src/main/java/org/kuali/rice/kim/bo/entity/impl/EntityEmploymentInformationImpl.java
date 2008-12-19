@@ -76,11 +76,15 @@ public class EntityEmploymentInformationImpl extends InactivatableEntityDataBase
 
 	@ManyToOne(targetEntity=EmploymentTypeImpl.class, fetch = FetchType.EAGER, cascade = {})
 	@JoinColumn(name = "EMP_TYP_CD", insertable = false, updatable = false)
-	protected EmploymentType employmentType;
+	protected EmploymentTypeImpl employmentType;
 
 	@ManyToOne(targetEntity=EmploymentStatusImpl.class, fetch = FetchType.EAGER, cascade = {})
 	@JoinColumn(name = "EMP_STAT_CD", insertable = false, updatable = false)
-	protected EmploymentStatus employmentStatus;
+	protected EmploymentStatusImpl employmentStatus;
+	
+	@ManyToOne(targetEntity=EntityAffiliationImpl.class, fetch = FetchType.EAGER, cascade = {})
+	@JoinColumn(name = "ENTITY_AFLTN_ID", insertable = false, updatable = false)
+	protected EntityAffiliationImpl affiliation;
 	
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.EntityEmploymentInformation#getBaseSalaryAmount()
@@ -124,37 +128,22 @@ public class EntityEmploymentInformationImpl extends InactivatableEntityDataBase
 		return primary;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityEmploymentInformation#setAffiliationId(java.lang.String)
-	 */
 	public void setEntityAffiliationId(String entityAffiliationId) {
 		this.entityAffiliationId = entityAffiliationId;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityEmploymentInformation#setBaseSalaryAmount(java.math.BigDecimal)
-	 */
 	public void setBaseSalaryAmount(KualiDecimal baseSalaryAmount) {
 		this.baseSalaryAmount = baseSalaryAmount;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityEmploymentInformation#setEmployeeStatusCode(java.lang.String)
-	 */
 	public void setEmployeeStatusCode(String employeeStatusCode) {
 		this.employeeStatusCode = employeeStatusCode;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityEmploymentInformation#setEmployeeTypeCode(java.lang.String)
-	 */
 	public void setEmployeeTypeCode(String employeeTypeCode) {
 		this.employeeTypeCode = employeeTypeCode;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityEmploymentInformation#setPrimary(boolean)
-	 */
 	public void setPrimary(boolean primary) {
 		this.primary = primary;
 	}
@@ -188,19 +177,19 @@ public class EntityEmploymentInformationImpl extends InactivatableEntityDataBase
 		this.entityId = entityId;
 	}
 
-	public EmploymentType getEmploymentType() {
+	public EmploymentTypeImpl getEmploymentType() {
 		return this.employmentType;
 	}
 
-	public void setEmploymentType(EmploymentType employmentType) {
+	public void setEmploymentType(EmploymentTypeImpl employmentType) {
 		this.employmentType = employmentType;
 	}
 
-	public EmploymentStatus getEmploymentStatus() {
+	public EmploymentStatusImpl getEmploymentStatus() {
 		return this.employmentStatus;
 	}
 
-	public void setEmploymentStatus(EmploymentStatus employmentStatus) {
+	public void setEmploymentStatus(EmploymentStatusImpl employmentStatus) {
 		this.employmentStatus = employmentStatus;
 	}
 
@@ -226,6 +215,14 @@ public class EntityEmploymentInformationImpl extends InactivatableEntityDataBase
 
 	public void setEmploymentRecordId(String employmentRecordId) {
 		this.employmentRecordId = employmentRecordId;
+	}
+
+	public EntityAffiliationImpl getAffiliation() {
+		return this.affiliation;
+	}
+
+	public void setAffiliation(EntityAffiliationImpl affiliation) {
+		this.affiliation = affiliation;
 	}
 
 }

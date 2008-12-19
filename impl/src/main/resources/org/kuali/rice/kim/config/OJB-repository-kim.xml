@@ -274,6 +274,9 @@
     <reference-descriptor name="employmentStatus" class-ref="org.kuali.rice.kim.bo.reference.impl.EmploymentStatusImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
       <foreignkey field-ref="employeeStatusCode" />
     </reference-descriptor>
+    <reference-descriptor name="affiliation" class-ref="org.kuali.rice.kim.bo.entity.impl.EntityAffiliationImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
+      <foreignkey field-ref="entityAffiliationId" />
+    </reference-descriptor>
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.bo.entity.impl.EntityExternalIdentifierImpl" table="KRIM_ENTITY_EXT_ID_T">

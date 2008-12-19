@@ -52,7 +52,7 @@ public class IdentityServiceImpl implements IdentityService {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<KimEntity> lookupEntitys(Map<String, String> searchCriteria) {
-        return (List<KimEntity>) getBusinessObjectService().findMatching(KimEntityImpl.class, searchCriteria);
+		return new ArrayList(KNSServiceLocator.getLookupService().findCollectionBySearchUnbounded( KimEntityImpl.class, searchCriteria ));
 	}
 
 	/**

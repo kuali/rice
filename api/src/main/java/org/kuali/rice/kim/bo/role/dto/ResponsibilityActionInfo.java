@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.bo.role.dto;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +30,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class ResponsibilityActionInfo implements ResponsibilityAction {
+public class ResponsibilityActionInfo implements ResponsibilityAction, Serializable {
 
 	protected String principalId;
 	protected String groupId;

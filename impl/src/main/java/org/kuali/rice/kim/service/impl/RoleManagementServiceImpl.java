@@ -17,8 +17,10 @@ package org.kuali.rice.kim.service.impl;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
@@ -297,28 +299,78 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 
 	// Helper methods
 	
+	protected void removeCacheEntries( String roleId, String principalId ) {
+		if ( principalId != null ) {
+			String key = principalId + "-";
+			Iterator<String> cacheIterator = principalHasRoleCache.keySet().iterator();
+			while ( cacheIterator.hasNext() ) {
+				String cacheKey = cacheIterator.next();
+				if ( cacheKey.startsWith( key ) ) {
+					cacheIterator.remove();
+				}
+			}
+			cacheIterator = roleQualifiersForPrincipalCache.keySet().iterator();
+			while ( cacheIterator.hasNext() ) {
+				String cacheKey = cacheIterator.next();
+				if ( cacheKey.startsWith( key ) ) {
+					cacheIterator.remove();
+				}
+			}
+		}
+		if ( roleId != null ) {
+			// Yes, this pattern will get too many entries if one role ID is a substring of another
+			// But...better too many than too few  :-)
+			Pattern matchPattern = Pattern.compile( ".*-.*" + roleId + ".*-.*" );
+			Iterator<String> cacheIterator = principalHasRoleCache.keySet().iterator();
+			while ( cacheIterator.hasNext() ) {
+				String cacheKey = cacheIterator.next();
+				if ( matchPattern.matcher( cacheKey ).matches() ) {
+					cacheIterator.remove();
+				}
+			}
+			cacheIterator = roleQualifiersForPrincipalCache.keySet().iterator();
+			while ( cacheIterator.hasNext() ) {
+				String cacheKey = cacheIterator.next();
+				if ( matchPattern.matcher( cacheKey ).matches() ) {
+					cacheIterator.remove();
+				}
+			}
+			Pattern.compile( ".*" + roleId + ".*-.*" );
+			cacheIterator = roleMembersWithDelegationCache.keySet().iterator();
+			while ( cacheIterator.hasNext() ) {
+				String cacheKey = cacheIterator.next();
+				if ( matchPattern.matcher( cacheKey ).matches() ) {
+					cacheIterator.remove();
+				}
+			}
+			
+		}
+	}
+	
 	public void assignGroupToRole(String groupId, String namespaceCode, String roleName,
 			AttributeSet qualifications) {
 		getRoleService().assignGroupToRole( groupId, namespaceCode, roleName, qualifications );
-		// TODO: expire the appropriate cache entries
+		KimRoleInfo role = getRoleByName( namespaceCode, roleName );
+		removeCacheEntries( role.getRoleId(), null );
 	}
 
 	public void assignPrincipalToRole(String principalId, String namespaceCode, String roleName,
 			AttributeSet qualifications) {
 		getRoleService().assignPrincipalToRole( principalId, namespaceCode, roleName, qualifications );
-		// TODO: expire the appropriate cache entries
+		removeCacheEntries( null, principalId );
 	}
 
 	public void removeGroupFromRole(String groupId, String namespaceCode, String roleName,
 			AttributeSet qualifications) {
 		getRoleService().removeGroupFromRole( groupId, namespaceCode, roleName, qualifications );
-		// TODO: expire the appropriate cache entries
+		KimRoleInfo role = getRoleByName( namespaceCode, roleName );
+		removeCacheEntries( role.getRoleId(), null );
 	}
 
 	public void removePrincipalFromRole(String principalId, String namespaceCode, String roleName,
 			AttributeSet qualifications) {
 		getRoleService().removePrincipalFromRole( principalId, namespaceCode, roleName, qualifications );
-		// TODO: expire the appropriate cache entries
+		removeCacheEntries( null, principalId );
 	}
 
 	private String buildIdsKey(List<String> roleIds) {

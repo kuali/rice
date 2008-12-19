@@ -3,8 +3,8 @@
 	<workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
 		<workgroup>
 			<id>100</id>
-			<workgroupName>ExceptionRoutingWorkgroup</workgroupName>
-			<description>ExceptionRoutingWorkgroup</description>
+			<workgroupName>ExceptionRoutingGroup</workgroupName>
+			<description>ExceptionRoutingGroup</description>
 			<members>
 				<authenticationId>user3</authenticationId>
 			</members>
@@ -18,7 +18,7 @@
 			<description>ExplodingRuleAttribute</description>
 			<type>RuleAttribute</type>
 		</ruleAttribute>
-	</ruleAttributes>	
+	</ruleAttributes>
 	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
 		<!--  ExceptionRoutingTest  -->
 		<documentType>
@@ -29,7 +29,7 @@
 			<docHandler>_blank</docHandler>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>ExceptionRoutingWorkgroup</defaultExceptionWorkgroupName>
+			<defaultExceptionWorkgroupName>ExceptionRoutingGroup</defaultExceptionWorkgroupName>
 			<active>true</active>
 			<policies>
 				<policy>
@@ -110,7 +110,7 @@
 					<ruleTemplate>RouteNode1</ruleTemplate>
 				</requests>
 				<requests name="Explode">
-					<exceptionWorkgroupName>ExceptionRoutingWorkgroup</exceptionWorkgroupName>
+					<exceptionWorkgroupName>ExceptionRoutingGroup</exceptionWorkgroupName>
 					<activationType>P</activationType>
 					<ruleTemplate>Explode</ruleTemplate>
 				</requests>
@@ -126,9 +126,9 @@
 				</requests>
 			</routeNodes>
 		</documentType>
-		
+
 		<!-- adhoc transition test document -->
-		
+
 		<documentType>
 			<name>AdhocTransitionTestDocument</name>
 			<description>AdhocTransitionTestDocument</description>
@@ -167,7 +167,7 @@
 			</routeNodes>
 		</documentType>
 		<!-- end adhoc transition test document -->
-		
+
 	</documentTypes>
 	<ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
 		<!--  ExceptionRoutingTest  -->
@@ -249,7 +249,7 @@
 				</responsibility>
 			</responsibilities>
 		</rule>
-		
+
 		<!--  -->
 		<rule>
 			<documentType>AdhocTransitionTestDocument</documentType>
@@ -264,7 +264,7 @@
 				</responsibility>
 			</responsibilities>
 		</rule>
-		
+
 		<!--  -->
 	</rules>
 </data>

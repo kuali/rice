@@ -75,10 +75,10 @@ public class RuleXmlExporterTest extends XmlExporterTestCase {
 
         // now clear the tables
         ClearDatabaseLifecycle clearLifeCycle = new ClearDatabaseLifecycle();
-        clearLifeCycle.getTablesToClear().add("EN_RULE_BASE_VAL_T");
-        clearLifeCycle.getTablesToClear().add("EN_RULE_ATTRIB_T");
-        clearLifeCycle.getTablesToClear().add("EN_RULE_TMPL_T");
-        clearLifeCycle.getTablesToClear().add("EN_DOC_TYP_T");
+        clearLifeCycle.getTablesToClear().add("KREW_RULE_T");
+        clearLifeCycle.getTablesToClear().add("KREW_RULE_ATTR_T");
+        clearLifeCycle.getTablesToClear().add("KREW_RULE_TMPL_T");
+        clearLifeCycle.getTablesToClear().add("KREW_DOC_TYP_T");
         clearLifeCycle.start();
         new ClearCacheLifecycle().stop();
 
@@ -117,7 +117,7 @@ public class RuleXmlExporterTest extends XmlExporterTestCase {
         assertEquals(oldRule.getRouteHeaderId(), newRule.getRouteHeaderId());
         if (oldRule.getRuleTemplate() == null) {
             assertNull(newRule.getRuleTemplate());
-        } else { 
+        } else {
             assertEquals(oldRule.getRuleTemplate().getName(), newRule.getRuleTemplate().getName());
         }
         if (oldRule.getRuleExpressionDef() == null) {

@@ -26,7 +26,7 @@ public class KNSConstants extends JSTLConstants {
 //    public static final String AD_HOC_ROUTE_ERRORS = null;
 
     // special user used in the post-processor
-    public static final String SYSTEM_USER = "kuluser";
+    public static final String SYSTEM_USER = "kr";
 
     public static final String PARAM_MAINTENANCE_VIEW_MODE = "maintenanceViewMode";
     public static final String PARAM_MAINTENANCE_VIEW_MODE_MAINTENANCE = "maintenance";

@@ -19,10 +19,16 @@ import java.sql.Timestamp;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
+import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.kuali.rice.core.util.OrmUtils;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 /**
@@ -32,6 +38,12 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
  */
 @Entity
 @Table(name="KRSB_MSG_QUE_T")
+@Sequence(name="SEQ_ROUTE_QUEUE", property="routeQueueId")
+@NamedQueries({
+  @NamedQuery(name="PersistedMessage.FindAll", query="select pm from PersistedMessage pm"),
+  @NamedQuery(name="PersistedMessage.FindByServiceName", query="select pm from PersistedMessage pm where pm.serviceName = :serviceName and pm.methodName = :methodName"),
+  @NamedQuery(name="PersistedMessage.GetNextDocuments", query="select pm from PersistedMessage pm where pm.serviceNamespace = :serviceNamespace and pm.queueStatus <> :queueStatus and pm.ipNumber = :ipNumber order by queuePriority asc, routeQueueId asc, queueDate asc")
+})
 public class PersistedMessage implements Serializable {
 
 	private static final long serialVersionUID = -7047766894738304195L;
@@ -73,6 +85,11 @@ public class PersistedMessage implements Serializable {
     
     public PersistedMessage() {
         // default constructor
+    }
+    
+//    @PrePersist
+    public void beforeInsert(){
+        OrmUtils.populateAutoIncValue(this, KNSServiceLocator.getEntityManagerFactory().createEntityManager());
     }
     
 	public String getServiceNamespace() {

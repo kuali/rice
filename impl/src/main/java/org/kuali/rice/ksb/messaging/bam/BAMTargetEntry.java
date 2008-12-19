@@ -22,14 +22,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.kuali.rice.core.util.OrmUtils;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.ksb.messaging.AsynchronousCallback;
 
 
@@ -40,6 +46,7 @@ import org.kuali.rice.ksb.messaging.AsynchronousCallback;
  */
 @Entity
 @Table(name="KRSB_BAM_T")
+@Sequence(name="KRSB_BAM_S", property="bamId")
 public class BAMTargetEntry implements Serializable {
 
 	private static final long serialVersionUID = -8376674801367598316L;
@@ -68,11 +75,17 @@ public class BAMTargetEntry implements Serializable {
 	private String exceptionMessage;
 	@Column(name="SRVR_IND")
 	private Boolean serverInvocation;
-    @Transient
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="bamParamId")
 	private List<BAMParam> bamParams = new ArrayList<BAMParam>();
 	
 	//for async calls not bam
+	@Transient
 	private AsynchronousCallback callback;
+	
+	@PrePersist
+    public void beforeInsert(){
+        OrmUtils.populateAutoIncValue(this, KNSServiceLocator.getEntityManagerFactory().createEntityManager());
+    }
 	
 	public void addBamParam(BAMParam bamParam) {
 		this.bamParams.add(bamParam);

@@ -16,16 +16,20 @@
  */
 package org.kuali.rice.ksb.messaging.bam;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.FetchType;
-import javax.persistence.OneToOne;
-import javax.persistence.Column;
-import javax.persistence.Id;
 import javax.persistence.CascadeType;
-import javax.persistence.Table;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.Table;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.kuali.rice.core.util.OrmUtils;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * A parameter of a method invocation recorded by the BAM.
@@ -34,17 +38,22 @@ import org.apache.commons.lang.StringUtils;
  */
 @Entity
 @Table(name="KRSB_BAM_PARM_T")
+@Sequence(name="KRSB_BAM_PARM_S", property="bamParamId")
 public class BAMParam {
 
 	@Id
 	@Column(name="BAM_PARM_ID")
 	private Long bamParamId;
-	@OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
 	@JoinColumn(name="BAM_ID")
 	private BAMTargetEntry bamTargetEntry;
 	@Column(name="PARM")
 	private String param;
 	
+	@PrePersist
+    public void beforeInsert(){
+        OrmUtils.populateAutoIncValue(this, KNSServiceLocator.getEntityManagerFactory().createEntityManager());
+    }
 	
 	public BAMTargetEntry getBamTargetEntry() {
 		return this.bamTargetEntry;

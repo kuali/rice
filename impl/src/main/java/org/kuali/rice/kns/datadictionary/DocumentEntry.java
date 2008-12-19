@@ -249,10 +249,6 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
         super.completeValidation();
         // TODO: validate documentTypeCode against some external source
 
-        for ( AuthorizationDefinition auth : authorizations ) {
-            auth.completeValidation(null, null);
-        }
-        
         if (workflowProperties != null && workflowAttributes != null) {
         	throw new DataDictionaryException("workflowProperties and workflowAttributes cannot both be defined for a document");
         }

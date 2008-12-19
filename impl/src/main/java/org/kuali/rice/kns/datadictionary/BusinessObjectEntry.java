@@ -327,6 +327,9 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
     }
 
     public void setInactivationBlockingDefinitions(List<InactivationBlockingDefinition> inactivationBlockingDefinitions) {
+    	for ( InactivationBlockingDefinition ibd : inactivationBlockingDefinitions ) {
+    		ibd.setBusinessObjectClass( getBusinessObjectClass() );
+    	}
         this.inactivationBlockingDefinitions = inactivationBlockingDefinitions;
     }
 }

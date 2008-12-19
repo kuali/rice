@@ -18,8 +18,6 @@ package org.kuali.rice.kns.datadictionary;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.PersistenceStructureService;
 
 /**
  * This is a description of what this class does - wliang don't forget to fill this in. 
@@ -28,11 +26,12 @@ import org.kuali.rice.kns.service.PersistenceStructureService;
  *
  */
 public class InactivationBlockingDefinition extends DataDictionaryDefinitionBase implements InactivationBlockingMetadata {
-    private Class blockingReferenceBusinessObjectClass;
-    private String blockedReferencePropertyName;
-    private Class blockedBusinessObjectClass;
-    private String inactivationBlockingDetectionServiceBeanName;
-    private String relationshipLabel;
+	protected  Class blockingReferenceBusinessObjectClass;
+    protected  String blockedReferencePropertyName;
+    protected  Class blockedBusinessObjectClass;
+    protected  String inactivationBlockingDetectionServiceBeanName;
+    protected  String relationshipLabel;
+    protected Class<? extends BusinessObject> businessObjectClass;
 
     public InactivationBlockingDefinition() {
     }    
@@ -52,18 +51,14 @@ public class InactivationBlockingDefinition extends DataDictionaryDefinitionBase
 	                    rootBusinessObjectClass.getClass().getName());
         	}
         }
-        if (StringUtils.isNotBlank(blockedReferencePropertyName) && blockedBusinessObjectClass == null) {
-            // if the user didn't specify a class name for the blocked reference, determine it here
-            blockedBusinessObjectClass = DataDictionary.getAttributeClass(rootBusinessObjectClass, blockedReferencePropertyName);
-        }
-        if (blockedBusinessObjectClass == null) {
+        if (getBlockedBusinessObjectClass() == null) {
         	throw new AttributeValidationException("Unable to determine blockedReferenceBusinessObjectClass in InactivationBlockingDefinition for class " +
 	                    rootBusinessObjectClass.getClass().getName());
         }
-        if (!BusinessObject.class.isAssignableFrom(blockedBusinessObjectClass)) {
+        if (!BusinessObject.class.isAssignableFrom(getBlockedBusinessObjectClass())) {
             throw new AttributeValidationException("InactivationBlockingDefinitions must block a reference of type BusinessObject.  Class name: " +
                     rootBusinessObjectClass.getClass().getName() + " blockedReferencePropertyName " + blockedReferencePropertyName + 
-                    " class that should have been a BusinessObject: " + blockedBusinessObjectClass);
+                    " class that should have been a BusinessObject: " + getBlockedBusinessObjectClass());
         }
     }
 
@@ -86,6 +81,10 @@ public class InactivationBlockingDefinition extends DataDictionaryDefinitionBase
      * @see org.kuali.rice.kns.datadictionary.InactivationBlockingMetadata#getBlockedBusinessObjectClass()
      */
     public Class getBlockedBusinessObjectClass() {
+        if (StringUtils.isNotBlank(blockedReferencePropertyName) && blockedBusinessObjectClass == null) {
+            // if the user didn't specify a class name for the blocked reference, determine it here
+            blockedBusinessObjectClass = DataDictionary.getAttributeClass(businessObjectClass, blockedReferencePropertyName);
+        }
         return this.blockedBusinessObjectClass;
     }
 
@@ -125,5 +124,13 @@ public class InactivationBlockingDefinition extends DataDictionaryDefinitionBase
 
 	public void setRelationshipLabel(String relationshipLabel) {
 		this.relationshipLabel = relationshipLabel;
+	}
+
+	public Class<? extends BusinessObject> getBusinessObjectClass() {
+		return this.businessObjectClass;
+	}
+
+	public void setBusinessObjectClass(Class<? extends BusinessObject> businessObjectClass) {
+		this.businessObjectClass = businessObjectClass;
 	}
 }

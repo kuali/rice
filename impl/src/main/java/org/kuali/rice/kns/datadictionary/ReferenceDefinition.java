@@ -158,9 +158,6 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
         if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, tmpAttributeName)) {
             throw new AttributeValidationException("unable to find attribute '" + tmpAttributeName + "' in rootBusinessObjectClass '" + rootBusinessObjectClass.getName() + "' (" + "" + ")");
         }
-        if(isCollectionReference()){
-            collectionBusinessObjectClass=DataDictionary.getCollectionElementClass(rootBusinessObjectClass, collection);
-        }
         // make sure the attributeToHighlightOnFail is actually a property of the BO
         if (isCollectionReference()) {
             getCollectionBusinessObjectClass(); // forces loading of the class

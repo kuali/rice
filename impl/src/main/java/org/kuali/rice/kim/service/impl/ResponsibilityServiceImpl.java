@@ -44,7 +44,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  *
  */
 public class ResponsibilityServiceImpl implements ResponsibilityService {
-
+	private static final Integer DEFAULT_PRIORITY_NUMBER = new Integer(1);
 	private BusinessObjectService businessObjectService;
 	private GroupService groupService;
 	private RoleService roleService;
@@ -184,27 +184,11 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     		// add the data to the ResponsibilityActionInfo objects
     		rai.setActionTypeCode( action.getActionTypeCode() );
     		rai.setActionPolicyCode( action.getActionPolicyCode() );
-    		rai.setPriorityNumber( action.getPriorityNumber() );
-
+    		rai.setPriorityNumber(action.getPriorityNumber() == null ? DEFAULT_PRIORITY_NUMBER : action.getPriorityNumber());
     		results.add( rai );
     	}
     	return results;
     }
-    
-//    /**
-//     * @see org.kuali.rice.kim.service.ResponsibilityService#getResponsibilityInfo(java.lang.String, java.util.Map, java.util.Map)
-//     */
-//    public List<ResponsibilityActionInfo> getResponsibilityInfo(String responsibilityId,
-//    		Map<String,String> qualification, Map<String,String> responsibilityDetails) {
-//
-//    	// find matching role/resp records based on resp details (use resp service)
-//    	// group the results by role
-//    	// for each role, determine the associated principals from the role service
-//    	// build ResponsibilityResolutionInfo objects which match the principals with the appropriate responsibility and details
-//    	
-//    	throw new UnsupportedOperationException();
-//    }
-    
     
     /**
      * Compare each of the passed in responsibilities with the given responsibilityDetails.  Those that

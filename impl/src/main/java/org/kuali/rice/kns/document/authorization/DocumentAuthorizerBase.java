@@ -488,6 +488,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
         if ( roleQualification.get() == null ) {
             AttributeSet attributes = new AttributeSet();
             populateRoleQualification( document, attributes );
+            attributes.put(KimConstants.KIM_ATTRIB_PRINCIPAL_ID, GlobalVariables.getUserSession().getPerson().getPrincipalId());
             roleQualification.set( attributes );
         }
         return roleQualification.get();

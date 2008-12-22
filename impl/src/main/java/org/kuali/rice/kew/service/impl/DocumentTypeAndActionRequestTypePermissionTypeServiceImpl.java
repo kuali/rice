@@ -17,7 +17,7 @@ package org.kuali.rice.kew.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
-import org.kuali.rice.kim.bo.role.KimPermission;
+import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl;
 
@@ -30,7 +30,7 @@ public class DocumentTypeAndActionRequestTypePermissionTypeServiceImpl extends D
 	 * @see org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl#performPermissionMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.role.KimPermission)
 	 */
 	@Override
-	protected boolean performPermissionMatch(AttributeSet requestedDetails, KimPermission permission) {
+	protected boolean performPermissionMatch(AttributeSet requestedDetails, KimPermissionInfo permission) {
 		if (!super.performPermissionMatch(requestedDetails, permission)) {
 			return false;
 		}

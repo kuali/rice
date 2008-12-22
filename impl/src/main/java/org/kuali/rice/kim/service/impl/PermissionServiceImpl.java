@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -53,6 +54,7 @@ public class PermissionServiceImpl implements PermissionService {
 	private GroupService groupService;
 	private RoleService roleService;
 	private KimPermissionDao permissionDao;
+    private KimPermissionTypeService defaultPermissionTypeService;
 
     // --------------------
     // Authorization Checks
@@ -95,7 +97,7 @@ public class PermissionServiceImpl implements PermissionService {
     	// get all the permission objects whose name match that requested
     	List<KimPermissionImpl> permissions = getPermissionImplsByName( namespaceCode, permissionName );
     	// now, filter the full list by the detail passed
-    	List<KimPermissionImpl> applicablePermissions = getMatchingPermissions( permissions, permissionDetails );  
+    	List<KimPermissionInfo> applicablePermissions = getMatchingPermissions( permissions, permissionDetails );  
     	return getPermissionsForUser(principalId, applicablePermissions, qualification);
     }
 
@@ -106,23 +108,26 @@ public class PermissionServiceImpl implements PermissionService {
     	// get all the permission objects whose name match that requested
     	List<KimPermissionImpl> permissions = getPermissionImplsByTemplateName( namespaceCode, permissionTemplateName );
     	// now, filter the full list by the detail passed
-    	List<KimPermissionImpl> applicablePermissions = getMatchingPermissions( permissions, permissionDetails );  
+    	List<KimPermissionInfo> applicablePermissions = getMatchingPermissions( permissions, permissionDetails );  
     	return getPermissionsForUser(principalId, applicablePermissions, qualification);
     }
     
     /**
-     * Checks the list of permisions against the principal's roles and returns a subset of the list which match.
+     * Checks the list of permissions against the principal's roles and returns a subset of the list which match.
      */
-    protected List<KimPermissionInfo> getPermissionsForUser( String principalId, List<KimPermissionImpl> permissions, AttributeSet qualification ) {
+    protected List<KimPermissionInfo> getPermissionsForUser( String principalId, List<KimPermissionInfo> permissions, AttributeSet qualification ) {
     	ArrayList<KimPermissionInfo> results = new ArrayList<KimPermissionInfo>();
-    	List<KimPermissionImpl> tempList = new ArrayList<KimPermissionImpl>(1);
-    	for ( KimPermissionImpl perm : permissions ) {
+    	List<KimPermissionInfo> tempList = new ArrayList<KimPermissionInfo>(1);
+    	for ( KimPermissionInfo perm : permissions ) {
     		tempList.clear();
     		tempList.add( perm );
     		List<String> roleIds = permissionDao.getRoleIdsForPermissions( tempList );
+    		// TODO: This could be made a little better by collecting the role IDs into
+    		// a set and then processing the distinct list rather than a check
+    		// for every permission
     		if ( roleIds != null && !roleIds.isEmpty() ) {
     			if ( getRoleService().principalHasRole( principalId, roleIds, qualification ) ) {
-    				results.add( perm.toSimpleInfo() );
+    				results.add( perm );
     			}
     		}
     	}
@@ -130,38 +135,69 @@ public class PermissionServiceImpl implements PermissionService {
     	return results;    	
     }
     
-    /**
+    public KimPermissionTypeService getDefaultPermissionTypeService() {
+    	if ( defaultPermissionTypeService == null ) {
+    		defaultPermissionTypeService = (KimPermissionTypeService)KIMServiceLocator.getBean( KimConstants.DEFAULT_PERMISSION_TYPE_SERVICE );
+    	}
+		return defaultPermissionTypeService;
+	}
+
+    protected Map<String,KimPermissionTypeService> getPermissionTypeServicesByTemplateId( Collection<KimPermissionImpl> permissions ) {
+    	Map<String,KimPermissionTypeService> permissionTypeServices = new HashMap<String, KimPermissionTypeService>( permissions.size() );
+    	for ( KimPermissionImpl perm : permissions ) {
+    		String serviceName = perm.getTemplate().getKimType().getKimTypeServiceName();
+    		if ( serviceName != null ) {
+    			KimPermissionTypeService permissionTypeService = (KimPermissionTypeService)KIMServiceLocator.getService( serviceName );
+    			if ( permissionTypeService != null ) {
+    	    		permissionTypeServices.put(perm.getTemplateId(), permissionTypeService );    				
+    			} else {
+					LOG.error("Can't find permission type service for " + perm + " permission type service bean name " + serviceName);
+					throw new RuntimeException("Can't find permission type service for " + perm + " permission type service bean name " + serviceName);
+    			}
+    		}
+    	}
+    	return permissionTypeServices;
+    }
+    
+    protected Map<String,List<KimPermissionInfo>> groupPermissionsByTemplate( Collection<KimPermissionImpl> permissions ) {
+    	Map<String,List<KimPermissionInfo>> results = new HashMap<String,List<KimPermissionInfo>>();
+    	for ( KimPermissionImpl perm : permissions ) {
+    		List<KimPermissionInfo> perms = results.get( perm.getTemplateId() );
+    		if ( perms == null ) {
+    			perms = new ArrayList<KimPermissionInfo>();
+    			results.put( perm.getTemplateId(), perms );
+    		}
+    		perms.add( perm.toSimpleInfo() );
+    	}
+    	return results;
+    }
+    
+	/**
      * Compare each of the passed in permissions with the given permissionDetails.  Those that
      * match are added to the result list.
      */
-    protected List<KimPermissionImpl> getMatchingPermissions( List<KimPermissionImpl> permissions, AttributeSet permissionDetails ) {
-    	List<KimPermissionImpl> applicablePermissions;    	
+    protected List<KimPermissionInfo> getMatchingPermissions( List<KimPermissionImpl> permissions, AttributeSet permissionDetails ) {
+    	List<KimPermissionInfo> applicablePermissions = new ArrayList<KimPermissionInfo>();    	
     	if ( permissionDetails == null || permissionDetails.isEmpty() ) {
     		// if no details passed, assume that all match
-    		applicablePermissions = permissions;
-    	} else {
-    		// otherwise, attempt to match the premission details
-    		applicablePermissions = new ArrayList<KimPermissionImpl>();
-    		
-    		KimPermissionTypeService defaultPermissionTypeService = (KimPermissionTypeService)KIMServiceLocator.getBean( KimConstants.DEFAULT_PERMISSION_TYPE_SERVICE );
-
     		for ( KimPermissionImpl perm : permissions ) {
-    			String serviceName = perm.getTemplate().getKimType().getKimTypeServiceName();
-    			if ( serviceName == null ) { // no service - use default service
-    				if ( defaultPermissionTypeService.doesPermissionDetailMatch( permissionDetails, perm ) ) {
-    					applicablePermissions.add( perm );
-    				}
-    			} else {
-    				KimPermissionTypeService permissionTypeService = (KimPermissionTypeService)KIMServiceLocator.getBean( serviceName );
-    				if ( permissionTypeService == null ) { // can't find the service - throw error
-    					LOG.error("Can't find permission type service for " + perm + " permission type service bean name " + serviceName);
-    					throw new RuntimeException("Can't find permission type service for " + perm + " permission type service bean name " + serviceName);
-    				} else { // got a service - check with it
-    					if ( permissionTypeService.doesPermissionDetailMatch( permissionDetails, perm ) ) {
-    						applicablePermissions.add( perm );
-    					}
-    				}
+    			applicablePermissions.add( perm.toSimpleInfo() );
+    		}
+    	} else {
+    		// otherwise, attempt to match the permission details
+    		// build a map of the template IDs to the type services
+    		Map<String,KimPermissionTypeService> permissionTypeServices = getPermissionTypeServicesByTemplateId( permissions );
+    		// build a map of permissions by template ID
+    		Map<String,List<KimPermissionInfo>> permissionMap = groupPermissionsByTemplate( permissions );
+    		// loop over the different templates, matching all of the same template against the type
+    		// service at once
+    		for ( String templateId : permissionMap.keySet() ) {
+    			KimPermissionTypeService permissionTypeService = permissionTypeServices.get( templateId );
+    			List<KimPermissionInfo> permissionList = permissionMap.get( templateId );
+    			if ( permissionTypeService == null ) {
+    				permissionTypeService = getDefaultPermissionTypeService();
     			}
+				applicablePermissions.addAll( permissionTypeService.doPermissionDetailsMatch( permissionDetails, permissionList ) );    				
     		}
     	}
     	return applicablePermissions;
@@ -177,7 +213,7 @@ public class PermissionServiceImpl implements PermissionService {
     	for ( RoleMembershipInfo rm : roleMembers ) {
     		if ( rm.getMemberTypeCode().equals( KimRole.PRINCIPAL_MEMBER_TYPE ) ) {
     			results.add( new PermissionAssigneeInfo( rm.getMemberId(), null, rm.getDelegates() ) );
-    		} else { // a group membership
+    		} else if ( rm.getMemberTypeCode().equals( KimRole.GROUP_MEMBER_TYPE ) ) {
     			results.add( new PermissionAssigneeInfo( null, rm.getMemberId(), rm.getDelegates() ) );
     		}
     	}
@@ -220,7 +256,7 @@ public class PermissionServiceImpl implements PermissionService {
     	// get all the permission objects whose name match that requested
     	List<KimPermissionImpl> permissions = getPermissionImplsByName( namespaceCode, permissionName );
     	// now, filter the full list by the detail passed
-    	List<KimPermissionImpl> applicablePermissions = getMatchingPermissions( permissions, permissionDetails );    	
+    	List<KimPermissionInfo> applicablePermissions = getMatchingPermissions( permissions, permissionDetails );    	
     	return permissionDao.getRoleIdsForPermissions( applicablePermissions );    	
     }
 
@@ -228,8 +264,8 @@ public class PermissionServiceImpl implements PermissionService {
     	// get all the permission objects whose name match that requested
     	List<KimPermissionImpl> permissions = getPermissionImplsByTemplateName( namespaceCode, permissionTemplateName );
     	// now, filter the full list by the detail passed
-    	// FIXME: certain generic permissions (live view and edit) could have thousands of rows - this will not scale
-    	List<KimPermissionImpl> applicablePermissions = getMatchingPermissions( permissions, permissionDetails );    	
+    	// FIXME: certain generic permissions (like view and edit) could have hundreds of rows - this will not scale
+    	List<KimPermissionInfo> applicablePermissions = getMatchingPermissions( permissions, permissionDetails );    	
     	return permissionDao.getRoleIdsForPermissions( applicablePermissions );    	
     }
     
@@ -295,14 +331,14 @@ public class PermissionServiceImpl implements PermissionService {
 
     public List<AttributeSet> getRoleQualifiersByPermissionName( String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
     	List<KimPermissionImpl> impls = getPermissionImplsByName( namespaceCode, permissionName );    	
-    	List<KimPermissionImpl> applicablePermissions = getMatchingPermissions( impls, permissionDetails );    	
+    	List<KimPermissionInfo> applicablePermissions = getMatchingPermissions( impls, permissionDetails );    	
     	List<String> roleIds = permissionDao.getRoleIdsForPermissions(applicablePermissions);
     	return getRoleService().getRoleQualifiersForPrincipal(principalId, roleIds, qualification);    	
     }
 
     public List<AttributeSet> getRoleQualifiersByTemplateName( String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification ) {
     	List<KimPermissionImpl> impls = getPermissionImplsByTemplateName( namespaceCode, permissionTemplateName );    	
-    	List<KimPermissionImpl> applicablePermissions = getMatchingPermissions( impls, permissionDetails );    	
+    	List<KimPermissionInfo> applicablePermissions = getMatchingPermissions( impls, permissionDetails );    	
     	List<String> roleIds = permissionDao.getRoleIdsForPermissions(applicablePermissions);
     	return getRoleService().getRoleQualifiersForPrincipal(principalId, roleIds, qualification);
     }

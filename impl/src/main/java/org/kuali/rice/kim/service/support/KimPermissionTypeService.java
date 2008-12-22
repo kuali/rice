@@ -17,7 +17,7 @@ package org.kuali.rice.kim.service.support;
 
 import java.util.List;
 
-import org.kuali.rice.kim.bo.role.KimPermission;
+import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 
@@ -41,37 +41,10 @@ public interface KimPermissionTypeService extends KimTypeService {
      *   
      * TODO: clarify this description
      */
-    boolean doesPermissionDetailMatch( AttributeSet requestedDetails, KimPermission permission );
+    boolean doesPermissionDetailMatch( AttributeSet requestedDetails, KimPermissionInfo permission );
 
-    /** Same as {@link #doesPermissionDetailMatch(AttributeSet, KimPermission)} except that it takes a list of details to check.
+    /** Same as {@link #doesPermissionDetailMatch(AttributeSet, KimPermissionInfo)} except that it takes a list of details to check.
      */
-    <E extends KimPermission> boolean doPermissionDetailsMatch( AttributeSet requestedDetails, List<E> permissionsList );
-
-    /**
-     * This method would return all permission details that the given details imply. (down)
-     */
-    List<AttributeSet> getAllImpliedDetails( AttributeSet requestedDetails );
-
-    /**
-     * This method would return all detail entries that imply this set of detail attributes. (up)
-     * 
-     * TODO: 
-     * Allowing?
-     * Allowed?
-     * Granting?
-     */
-    List<AttributeSet> getAllImplyingDetails( AttributeSet requestedDetails );
-    // TODO: need list versions of the implyed/ing methods?
-
-
- // TODO: uncomment this and implement a storage mechanism
-// 	/**
-// 	 * Returns a list of attribute names that must be passed when checking for 
-// 	 * this permission.  This will be used to ensure that the calls for permission
-// 	 * checks (when qualified) are executed properly.  It will also be used by
-// 	 * the user interface to ensure that the role to which this permission is assigned
-// 	 * can understand these attributes.
-// 	 */
-// 	List<String> getRequiredQualificationAttributeNames();
+    List<KimPermissionInfo> doPermissionDetailsMatch( AttributeSet requestedDetails, List<KimPermissionInfo> permissionsList );
 
 }

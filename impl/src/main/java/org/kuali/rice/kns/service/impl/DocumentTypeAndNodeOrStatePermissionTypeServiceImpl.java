@@ -17,7 +17,7 @@ package org.kuali.rice.kns.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.role.KimPermission;
+import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 /**
@@ -41,10 +41,10 @@ public class DocumentTypeAndNodeOrStatePermissionTypeServiceImpl extends Documen
 	 *	consider the document type hierarchy - check for a permission that just specifies the document type first at each level 
 	 *	- then if you don't find that, check for the doc type and the node, then the doc type and the state. 
 	 * 
-	 * @see org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase#doesPermissionDetailMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, KimPermission)
+	 * @see org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase#doesPermissionDetailMatch(AttributeSet, KimPermissionInfo)
 	 */
 	@Override
-	public boolean performPermissionMatch(AttributeSet requestedDetails, KimPermission permission) {
+	public boolean performPermissionMatch(AttributeSet requestedDetails, KimPermissionInfo permission) {
 		boolean documentTypeMatch = super.performPermissionMatch(requestedDetails, permission);
 		if (documentTypeMatch && 
 				routeNodeMatches(requestedDetails, permission.getDetails()) && 

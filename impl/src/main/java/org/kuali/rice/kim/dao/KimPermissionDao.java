@@ -18,7 +18,7 @@ package org.kuali.rice.kim.dao;
 import java.util.Collection;
 import java.util.List;
 
-import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
+import org.kuali.rice.kim.bo.role.KimPermission;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -28,5 +28,5 @@ import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
  */
 public interface KimPermissionDao {
 
-	List<String> getRoleIdsForPermissions( Collection<KimPermissionImpl> permissions );
+	List<String> getRoleIdsForPermissions( Collection<? extends KimPermission> permissions );
 }

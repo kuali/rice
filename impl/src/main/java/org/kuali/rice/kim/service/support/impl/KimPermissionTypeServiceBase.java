@@ -18,7 +18,7 @@ package org.kuali.rice.kim.service.support.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.kim.bo.role.KimPermission;
+import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.KimPermissionTypeService;
 
@@ -33,50 +33,31 @@ public class KimPermissionTypeServiceBase extends KimTypeServiceBase implements 
 	/**
 	 * @see org.kuali.rice.kim.service.support.KimPermissionTypeService#doPermissionDetailsMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, java.util.List)
 	 */
-	public <E extends KimPermission> boolean doPermissionDetailsMatch(AttributeSet requestedDetails, List<E> permissionsList) {
+	public List<KimPermissionInfo> doPermissionDetailsMatch( AttributeSet requestedDetails, List<KimPermissionInfo> permissionsList ) {
 		return performPermissionMatches(translateInputAttributeSet(requestedDetails), permissionsList);
 	}
 
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kim.service.support.KimPermissionTypeService#doesPermissionDetailMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, KimPermission)
+	 * @see org.kuali.rice.kim.service.support.KimPermissionTypeService#doesPermissionDetailMatch(AttributeSet, KimPermissionInfo)
 	 */
-	public boolean doesPermissionDetailMatch(AttributeSet requestedDetails, KimPermission permission) {
+	public boolean doesPermissionDetailMatch(AttributeSet requestedDetails, KimPermissionInfo permission) {
 		return performPermissionMatch(translateInputAttributeSet(requestedDetails), permission);
 	}
 
-	protected <E extends KimPermission> boolean performPermissionMatches(AttributeSet requestedDetails, List<E> permissionsList) {
-		List<AttributeSet> permissionDetailList = new ArrayList<AttributeSet>();
-		for (KimPermission permission : permissionsList) {
-			permissionDetailList.add(permission.getDetails());
+	protected List<KimPermissionInfo> performPermissionMatches(AttributeSet requestedDetails, List<KimPermissionInfo> permissionsList) {
+		List<KimPermissionInfo> matchingPermissions = new ArrayList<KimPermissionInfo>();
+		for (KimPermissionInfo permission : permissionsList) {
+			if ( performPermissionMatch( requestedDetails, permission ) ) {
+				matchingPermissions.add( permission );
+			}
 		}
-		return performMatches(requestedDetails, permissionDetailList);
+		return matchingPermissions;
 	}
 
-	protected boolean performPermissionMatch(AttributeSet requestedDetails, KimPermission permission) {
+	protected boolean performPermissionMatch(AttributeSet requestedDetails, KimPermissionInfo permission) {
 		return performMatch(requestedDetails, permission.getDetails());
-	}
-	
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kim.service.support.KimPermissionTypeService#getAllImpliedDetails(org.kuali.rice.kim.bo.types.dto.AttributeSet)
-	 */
-	public List<AttributeSet> getAllImpliedDetails(AttributeSet requestedDetails) {
-		// TODO bhargavp - THIS METHOD NEEDS JAVADOCS
-		return null;
-	}
-
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kim.service.support.KimPermissionTypeService#getAllImplyingDetails(org.kuali.rice.kim.bo.types.dto.AttributeSet)
-	 */
-	public List<AttributeSet> getAllImplyingDetails(
-			AttributeSet requestedDetails) {
-		// TODO bhargavp - THIS METHOD NEEDS JAVADOCS
-		return null;
 	}
 
 }

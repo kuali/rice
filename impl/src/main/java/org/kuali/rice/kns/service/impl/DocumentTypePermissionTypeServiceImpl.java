@@ -21,7 +21,6 @@ import java.util.List;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
 import org.kuali.rice.kim.util.KimCommonUtils;
@@ -42,25 +41,25 @@ public class DocumentTypePermissionTypeServiceImpl extends KimPermissionTypeServ
 		inputRequiredAttributes.add(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL);
 		storedRequiredAttributes.add(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL);
 	}
-
-	/***
+	
+	/**
 	 * 
 	 * This overridden method checks the document type hierarchy to match the permission details.
 	 * 
-	 * @see org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase#performPermissionMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.role.KimPermission)
+	 * @see org.kuali.rice.kim.service.support.impl.KimTypeServiceBase#performMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)
 	 */
 	@Override
-	protected boolean performPermissionMatch(AttributeSet requestedDetails, KimPermission permission) {
+	protected boolean performMatch(AttributeSet requestedDetails, AttributeSet permissionDetails) {
 		validateRequiredAttributesAgainstReceived(inputRequiredAttributes, requestedDetails, REQUESTED_DETAILS_RECEIVED_ATTIBUTES_NAME);
 		validateRequiredAttributesAgainstReceived(
-				storedRequiredAttributes, permission.getDetails(), STORED_DETAILS_RECEIVED_ATTIBUTES_NAME);
+				storedRequiredAttributes, permissionDetails, STORED_DETAILS_RECEIVED_ATTIBUTES_NAME);
 
 		if(requestedDetails.get(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL).equals("*")){
 			return true;
 		}
 		DocumentType currentDocType = KEWServiceLocator.getDocumentTypeService().findByName(
 				requestedDetails.get(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL));
-		return KimCommonUtils.checkPermissionDetailMatch(currentDocType, permission.getDetails());
+		return KimCommonUtils.checkPermissionDetailMatch(currentDocType, permissionDetails);
 	}
 
 }

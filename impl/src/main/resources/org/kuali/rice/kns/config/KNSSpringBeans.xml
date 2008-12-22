@@ -859,7 +859,6 @@
 		</property>
 	</bean>
 
-   <bean id="documentPessimisticLockerService" class="org.kuali.rice.kns.service.impl.DocumentPessimisticLockerServiceImpl" />
   <!-- START JPA CONFIGURATION -->
 
   <!-- Used for @PersistenceContext auto-injection -->

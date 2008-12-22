@@ -1442,7 +1442,7 @@ public class KualiDocumentActionBase extends KualiAction {
             documentActions = documentAuthorizer.getDocumentActions(document, user, documentActions);
             
             if (KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(document.getClass().getName()).getUsePessimisticLocking()) {
-                documentActions = KNSServiceLocator.getDocumentPessimisticLockerService().getDocumentActions(document, user, documentActions);
+                documentActions = KNSServiceLocator.getPessimisticLockService().getDocumentActions(document, user, documentActions);
             }
             
             //DocumentActionFlags flags = new DocumentActionFlags();

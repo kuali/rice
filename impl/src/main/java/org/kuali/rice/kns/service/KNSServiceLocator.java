@@ -461,7 +461,4 @@ public class KNSServiceLocator<T extends Object> {
     
     public static final String DOCUMENT_PESSIMISTIC_LOCKER_SERVICE = "documentPessimisticLockerService";
     
-    public static DocumentPessimisticLockerService getDocumentPessimisticLockerService() {
-        return (DocumentPessimisticLockerService) getService(DOCUMENT_PESSIMISTIC_LOCKER_SERVICE);
-    }
 }

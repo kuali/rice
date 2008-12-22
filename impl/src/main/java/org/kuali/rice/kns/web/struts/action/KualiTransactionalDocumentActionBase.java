@@ -84,7 +84,7 @@ public class KualiTransactionalDocumentActionBase extends KualiDocumentActionBas
             editMode = this.convertSetToMap(editModes);
             editMode.putAll(documentAuthorizer.getEditMode(document, user));
             if (KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(document.getClass().getName()).getUsePessimisticLocking()) {
-                editMode = KNSServiceLocator.getDocumentPessimisticLockerService().establishLocks(document, editMode, user);
+                editMode = KNSServiceLocator.getPessimisticLockService().establishLocks(document, editMode, user);
             }
             
     	}

@@ -38,7 +38,6 @@ import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase;
 import org.kuali.rice.kns.document.authorization.PessimisticLock;
 import org.kuali.rice.kns.exception.PessimisticLockingException;
-import org.kuali.rice.kns.service.DocumentPessimisticLockerService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.PessimisticLockService;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -61,13 +60,13 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
     private static final String NONSUPER_2_UNIVERSAL = "598746310";
 
     private DocumentAuthorizer documentAuthorizer;
-    private DocumentPessimisticLockerService documentPessimisticLocker;
+    private PessimisticLockService pessimisticLock;
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
         documentAuthorizer = new DocumentAuthorizerBase();
-        documentPessimisticLocker = KNSServiceLocator.getDocumentPessimisticLockerService();
+        pessimisticLock = KNSServiceLocator.getPessimisticLockService();
     }
 
     @Override
@@ -161,7 +160,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
         Map oldEditMode = getEditMode_ReadOnly();
         String testString = "dummyString";
         oldEditMode.put(AuthorizationConstants.EditMode.UNVIEWABLE, testString);
-        Map newEditMode = this.documentPessimisticLocker.establishLocks(document, oldEditMode, getNonSuperUser());
+        Map newEditMode = this.pessimisticLock.establishLocks(document, oldEditMode, getNonSuperUser());
         assertEquals("Lock count is incorrect", originalExpectedLockCount + expectedLockCountIncrease, document.getPessimisticLocks().size());
         assertEquals("Establish locks method returned invalid number of edit modes", oldEditMode.size(), newEditMode.size());
         verifyEditModeDoesNotExist(newEditMode, AuthorizationConstants.EditMode.FULL_ENTRY);
@@ -177,7 +176,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
         oldEditMode = getEditMode_FullEntry();
         testString = "dummyString";
         oldEditMode.put(AuthorizationConstants.EditMode.UNVIEWABLE, testString);
-        newEditMode = this.documentPessimisticLocker.establishLocks(document, oldEditMode, getNonSuperUser());
+        newEditMode = this.pessimisticLock.establishLocks(document, oldEditMode, getNonSuperUser());
         assertEquals("Lock count is incorrect", originalExpectedLockCount + expectedLockCountIncrease, document.getPessimisticLocks().size());
         assertEquals("Establish locks method returned invalid number of edit modes", oldEditMode.size(), newEditMode.size());
         verifyEditModeExists(newEditMode, AuthorizationConstants.EditMode.FULL_ENTRY, DocumentAuthorizerBase.EDIT_MODE_DEFAULT_TRUE_VALUE);
@@ -189,7 +188,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
         document.addPessimisticLock(lockService.generateNewLock(document.getDocumentNumber(), getNonSuperUser()));
         document.addPessimisticLock(lockService.generateNewLock(document.getDocumentNumber(), getSuperUser()));
         try {
-            this.documentPessimisticLocker.establishLocks(document, getEditMode_FullEntry(), getNonSuperUser());
+            this.pessimisticLock.establishLocks(document, getEditMode_FullEntry(), getNonSuperUser());
             fail("Document authorizer should have thrown exception of type PessimisticLockingException");
         } catch (PessimisticLockingException e) {
             // expected result
@@ -203,7 +202,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
         document.addPessimisticLock(lockService.generateNewLock(document.getDocumentNumber(), getNonSuperUser()));
         document.addPessimisticLock(lockService.generateNewLock(document.getDocumentNumber(), getWorkflowPessimisticLockOwnerUser()));
         try {
-            this.documentPessimisticLocker.establishLocks(document, getEditMode_FullEntry(), getNonSuperUser());
+            this.pessimisticLock.establishLocks(document, getEditMode_FullEntry(), getNonSuperUser());
         } catch (Exception e) {
             fail("Document authorizer should not have thrown an exception but did with type '" + e.getClass().getName() + "' and message: " + e.getMessage());
         }
@@ -218,7 +217,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
         oldEditMode = getEditMode_FullEntry();
         testString = "dummyString";
         oldEditMode.put(AuthorizationConstants.EditMode.UNVIEWABLE, testString);
-        newEditMode = this.documentPessimisticLocker.establishLocks(document, oldEditMode, getNonSuperUser());
+        newEditMode = this.pessimisticLock.establishLocks(document, oldEditMode, getNonSuperUser());
         assertEquals("Lock count is incorrect", originalExpectedLockCount + expectedLockCountIncrease, document.getPessimisticLocks().size());
         assertEquals("Establish locks method returned invalid number of edit modes", oldEditMode.size(), newEditMode.size());
         verifyEditModeDoesNotExist(newEditMode, AuthorizationConstants.EditMode.FULL_ENTRY);
@@ -235,7 +234,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
         oldEditMode = getEditMode_FullEntry();
         testString = "dummyString";
         oldEditMode.put(AuthorizationConstants.EditMode.VIEW_ONLY, testString);
-        newEditMode = this.documentPessimisticLocker.establishLocks(document, oldEditMode, getNonSuperUser());
+        newEditMode = this.pessimisticLock.establishLocks(document, oldEditMode, getNonSuperUser());
         assertEquals("Lock count is incorrect", originalExpectedLockCount + expectedLockCountIncrease, document.getPessimisticLocks().size());
         assertEquals("Establish locks method returned invalid number of edit modes", oldEditMode.size(), newEditMode.size());
         verifyEditModeDoesNotExist(newEditMode, AuthorizationConstants.EditMode.UNVIEWABLE);
@@ -270,7 +269,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
         Map oldEditMode = getEditMode_ReadOnly();
         String testString = "dummyString";
         oldEditMode.put(AuthorizationConstants.EditMode.UNVIEWABLE, testString);
-        Map newEditMode = this.documentPessimisticLocker.establishLocks(document, oldEditMode, getNonSuperUser());
+        Map newEditMode = this.pessimisticLock.establishLocks(document, oldEditMode, getNonSuperUser());
         assertEquals("Lock count is incorrect", originalExpectedLockCount + expectedLockCountIncrease, document.getPessimisticLocks().size());
         assertEquals("Establish locks method returned invalid number of edit modes", oldEditMode.size(), newEditMode.size());
         verifyEditModeDoesNotExist(newEditMode, AuthorizationConstants.EditMode.FULL_ENTRY);
@@ -284,7 +283,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
         document.addPessimisticLock(lockService.generateNewLock(document.getDocumentNumber(), lockDescriptor1, getNonSuperUser()));
         document.addPessimisticLock(lockService.generateNewLock(document.getDocumentNumber(), lockDescriptor2, getSuperUser()));
         try {
-            this.documentPessimisticLocker.establishLocks(document, getEditMode_FullEntry(), getNonSuperUser());
+            this.pessimisticLock.establishLocks(document, getEditMode_FullEntry(), getNonSuperUser());
         } catch (Exception e) {
             fail("Document authorizer should not have thrown an exception but did with type '" + e.getClass().getName() + "' and message: " + e.getMessage());
         }
@@ -298,7 +297,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
         document.addPessimisticLock(lockService.generateNewLock(document.getDocumentNumber(), lockDescriptor2, getWorkflowPessimisticLockOwnerUser()));
         try {
             //documentAuthorizer.establishLocks(document, getEditMode_FullEntry(), getNonSuperUser());
-            this.documentPessimisticLocker.establishLocks(document,getEditMode_FullEntry(), getNonSuperUser());
+            this.pessimisticLock.establishLocks(document,getEditMode_FullEntry(), getNonSuperUser());
         } catch (Exception e) {
             fail("Document authorizer should not have thrown an exception but did with type '" + e.getClass().getName() + "' and message: " + e.getMessage());
         }
@@ -314,7 +313,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
         oldEditMode = getEditMode_FullEntry();
         testString = "dummyString";
         oldEditMode.put(AuthorizationConstants.EditMode.UNVIEWABLE, testString);
-        newEditMode = this.documentPessimisticLocker.establishLocks(document, oldEditMode, getNonSuperUser());
+        newEditMode = this.pessimisticLock.establishLocks(document, oldEditMode, getNonSuperUser());
         assertEquals("Lock count is incorrect", originalExpectedLockCount + expectedLockCountIncrease, document.getPessimisticLocks().size());
         assertEquals("Lock descriptor from new lock is incorrect", expectedLockDescriptor, document.getPessimisticLocks().get(0).getLockDescriptor());
         assertEquals("Establish locks method returned invalid number of edit modes", oldEditMode.size(), newEditMode.size());
@@ -334,7 +333,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
         oldEditMode = getEditMode_FullEntry();
         testString = "dummyString";
         oldEditMode.put(AuthorizationConstants.EditMode.UNVIEWABLE, testString);
-        newEditMode = this.documentPessimisticLocker.establishLocks(document, oldEditMode, getNonSuperUser());
+        newEditMode = this.pessimisticLock.establishLocks(document, oldEditMode, getNonSuperUser());
         assertEquals("Lock count is incorrect", originalExpectedLockCount + expectedLockCountIncrease, document.getPessimisticLocks().size());
         assertEquals("Establish locks method returned invalid number of edit modes", oldEditMode.size(), newEditMode.size());
         verifyEditModeDoesNotExist(newEditMode, AuthorizationConstants.EditMode.FULL_ENTRY);
@@ -356,7 +355,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
         oldEditMode = getEditMode_FullEntry();
         testString = "is this the string";
         oldEditMode.put(AuthorizationConstants.EditMode.UNVIEWABLE, testString);
-        newEditMode = this.documentPessimisticLocker.establishLocks(document, oldEditMode, getNonSuperUser());
+        newEditMode = this.pessimisticLock.establishLocks(document, oldEditMode, getNonSuperUser());
         assertEquals("Lock count is incorrect", originalExpectedLockCount + expectedLockCountIncrease, document.getPessimisticLocks().size());
         for (PessimisticLock lock : document.getPessimisticLocks()) {
             if (!lock.getId().equals(oldLock.getId())) {
@@ -380,7 +379,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
         oldEditMode = getEditMode_FullEntry();
         testString = "is this the string";
         oldEditMode.put(AuthorizationConstants.EditMode.UNVIEWABLE, testString);
-        newEditMode = this.documentPessimisticLocker.establishLocks(document, oldEditMode, getNonSuperUser());
+        newEditMode = this.pessimisticLock.establishLocks(document, oldEditMode, getNonSuperUser());
         assertEquals("Lock count is incorrect", originalExpectedLockCount + expectedLockCountIncrease, document.getPessimisticLocks().size());
         assertEquals("Establish locks method returned invalid number of edit modes", oldEditMode.size(), newEditMode.size());
         verifyEditModeExists(newEditMode, AuthorizationConstants.EditMode.FULL_ENTRY, DocumentAuthorizerBase.EDIT_MODE_DEFAULT_TRUE_VALUE);
@@ -401,7 +400,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
         oldEditMode = getEditMode_FullEntry();
         testString = "is this the string";
         oldEditMode.put(AuthorizationConstants.EditMode.VIEW_ONLY, testString);
-        newEditMode = this.documentPessimisticLocker.establishLocks(document, oldEditMode, getNonSuperUser());
+        newEditMode = this.pessimisticLock.establishLocks(document, oldEditMode, getNonSuperUser());
         assertEquals("Lock count is incorrect", originalExpectedLockCount + expectedLockCountIncrease, document.getPessimisticLocks().size());
         for (PessimisticLock lock : document.getPessimisticLocks()) {
             if (!lock.getId().equals(oldLock.getId())) {
@@ -421,7 +420,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
         document.addPessimisticLock(lockService.generateNewLock(document.getDocumentNumber(), lockDescriptor3, getSecondNonSuperUser()));
         document.addPessimisticLock(lockService.generateNewLock(document.getDocumentNumber(), lockDescriptor1, getSuperUser()));
         try {
-            this.documentPessimisticLocker.establishLocks(document, getEditMode_FullEntry(), getNonSuperUser());
+            this.pessimisticLock.establishLocks(document, getEditMode_FullEntry(), getNonSuperUser());
             fail("Document authorizer should have thrown exception of type PessimisticLockingException");
         } catch (PessimisticLockingException e) {
             // expected result
@@ -438,7 +437,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
         document.addPessimisticLock(lockService.generateNewLock(document.getDocumentNumber(), lockDescriptor3, user));
         document.addPessimisticLock(lockService.generateNewLock(document.getDocumentNumber(), lockDescriptor1, getSuperUser()));
         try {
-            this.documentPessimisticLocker.establishLocks(document, getEditMode_FullEntry(), getNonSuperUser());
+            this.pessimisticLock.establishLocks(document, getEditMode_FullEntry(), getNonSuperUser());
         } catch (Exception e) {
             fail("Document authorizer should not have thrown an exception but did with type '" + e.getClass().getName() + "' and message: " + e.getMessage());
         }
@@ -458,7 +457,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
         oldEditMode = getEditMode_FullEntry();
         testString = "is this the string";
         oldEditMode.put(AuthorizationConstants.EditMode.UNVIEWABLE, testString);
-        newEditMode = this.documentPessimisticLocker.establishLocks(document, oldEditMode, getNonSuperUser());
+        newEditMode = this.pessimisticLock.establishLocks(document, oldEditMode, getNonSuperUser());
         assertEquals("Lock count is incorrect", originalExpectedLockCount + expectedLockCountIncrease, document.getPessimisticLocks().size());
         assertEquals("Establish locks method returned invalid number of edit modes", oldEditMode.size(), newEditMode.size());
         verifyEditModeDoesNotExist(newEditMode, AuthorizationConstants.EditMode.FULL_ENTRY);
@@ -480,7 +479,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
         oldEditMode = getEditMode_FullEntry();
         testString = "is this the string";
         oldEditMode.put(AuthorizationConstants.EditMode.UNVIEWABLE, testString);
-        newEditMode = this.documentPessimisticLocker.establishLocks(document, oldEditMode, getNonSuperUser());
+        newEditMode = this.pessimisticLock.establishLocks(document, oldEditMode, getNonSuperUser());
         assertEquals("Lock count is incorrect", originalExpectedLockCount + expectedLockCountIncrease, document.getPessimisticLocks().size());
         assertEquals("Establish locks method returned invalid number of edit modes", oldEditMode.size(), newEditMode.size());
         verifyEditModeExists(newEditMode, AuthorizationConstants.EditMode.FULL_ENTRY, DocumentAuthorizerBase.EDIT_MODE_DEFAULT_TRUE_VALUE);
@@ -509,7 +508,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
         oldEditMode = getEditMode_FullEntry();
         testString = "is this the string";
         oldEditMode.put(AuthorizationConstants.EditMode.VIEW_ONLY, testString);
-        newEditMode = this.documentPessimisticLocker.establishLocks(document, oldEditMode, getNonSuperUser());
+        newEditMode = this.pessimisticLock.establishLocks(document, oldEditMode, getNonSuperUser());
         assertEquals("Lock count is incorrect", originalExpectedLockCount + expectedLockCountIncrease, document.getPessimisticLocks().size());
         for (PessimisticLock lock : document.getPessimisticLocks()) {
             if (!existingLockIds.contains(lock.getId())) {
@@ -536,7 +535,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
         oldEditMode = getEditMode_ReadOnly();
         testString = "is this the string";
         oldEditMode.put(AuthorizationConstants.EditMode.UNVIEWABLE, testString);
-        newEditMode = this.documentPessimisticLocker.establishLocks(document, oldEditMode, getNonSuperUser());
+        newEditMode = this.pessimisticLock.establishLocks(document, oldEditMode, getNonSuperUser());
         assertEquals("Lock count is incorrect", originalExpectedLockCount + expectedLockCountIncrease, document.getPessimisticLocks().size());
         assertEquals("Establish locks method returned invalid number of edit modes", oldEditMode.size(), newEditMode.size());
         verifyEditModeDoesNotExist(newEditMode, AuthorizationConstants.EditMode.FULL_ENTRY);
@@ -628,7 +627,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
         // DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(document);
         Map editMode = documentAuthorizer.getEditMode(document, kualiUser);
         if (documentAuthorizer.usesPessimisticLocking(document)) {
-            editMode = this.documentPessimisticLocker.establishLocks(document, editMode, kualiUser);
+            editMode = this.pessimisticLock.establishLocks(document, editMode, kualiUser);
         }
         DocumentFormPlaceholder formPlaceholder = new DocumentFormPlaceholder();
         formPlaceholder.editingMode = editMode;

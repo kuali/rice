@@ -23,13 +23,13 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.web.struts.action.KualiDocumentActionBase;
+import org.kuali.rice.kns.web.struts.action.KualiTransactionalDocumentActionBase;
 
 import edu.sampleu.travel.bo.TravelAccount;
 import edu.sampleu.travel.document.TravelDocument2;
 import edu.sampleu.travel.web.form.TravelDocumentForm2;
 
-public class TravelDocumentAction2 extends KualiDocumentActionBase {
+public class TravelDocumentAction2 extends KualiTransactionalDocumentActionBase {
 
     public ActionForward insertAccount(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         TravelDocumentForm2 travelForm = (TravelDocumentForm2) form;

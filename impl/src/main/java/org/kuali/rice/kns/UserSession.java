@@ -68,6 +68,9 @@ public class UserSession implements Serializable {
      */
     public UserSession(String principalName) {
         this.person = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().getPersonByPrincipalName(principalName);
+        if (this.person == null) {
+        	throw new IllegalArgumentException("Failed to locate a principal with principal name '" + principalName + "'");
+        }
         this.nextObjectKey = 0;
         this.objectMap = new HashMap<String,Object>();
     }

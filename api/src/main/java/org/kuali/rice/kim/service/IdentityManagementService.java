@@ -1,6 +1,7 @@
 package org.kuali.rice.kim.service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -39,6 +40,8 @@ public interface IdentityManagementService {
 	KimPrincipal getPrincipal(String principalId);
 	KimPrincipal getPrincipalByPrincipalName(String principalName);
 
+	List<KimEntity> lookupEntitys(Map<String,String> searchCriteria);
+	
 	// *******************************
 	// GroupService
 	// *******************************

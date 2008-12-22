@@ -137,6 +137,10 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		}
 		return null;
 	}
+
+	public List<KimEntity> lookupEntitys(Map<String,String> searchCriteria) {
+		return identityService.lookupEntitys( searchCriteria );
+	}
 	
 	protected GroupInfo getGroupByIdCache( String groupId ) {
 		MaxAgeSoftReference<GroupInfo> groupRef = groupByIdCache.get( groupId );

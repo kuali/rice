@@ -102,12 +102,13 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
         if ( LOG.isDebugEnabled() ) {
         LOG.debug("calling DocumentAuthorizerBase.getDocumentActionFlags for document '" + document.getDocumentNumber() + "'. user '" + user.getPrincipalName() + "'");
         }
+        boolean canEdit = canEdit(document, user);
         
         if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_COPY) && !canCopy(document, user)){
         	documentActions.remove(KNSConstants.KUALI_ACTION_CAN_COPY);
         }
         
-        if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_EDIT) && !canEdit(document, user)){
+        if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_EDIT) && !canEdit){
         	documentActions.remove(KNSConstants.KUALI_ACTION_CAN_EDIT);
         }
         
@@ -135,7 +136,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
     	   documentActions.add(KNSConstants.KUALI_ACTION_CAN_FYI);
        }
        
-       if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_AD_HOC_ROUTE) && !canEdit(document, user)){
+       if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_AD_HOC_ROUTE) && !canEdit){
     	   documentActions.remove(KNSConstants.KUALI_ACTION_CAN_AD_HOC_ROUTE);
        }
         

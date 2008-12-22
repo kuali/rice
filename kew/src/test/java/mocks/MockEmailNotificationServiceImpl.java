@@ -30,6 +30,7 @@ import org.kuali.rice.kew.mail.service.impl.CustomizableActionListEmailServiceIm
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kim.bo.Person;
 
 
 public class MockEmailNotificationServiceImpl extends CustomizableActionListEmailServiceImpl implements MockEmailNotificationService {
@@ -50,16 +51,16 @@ public class MockEmailNotificationServiceImpl extends CustomizableActionListEmai
     /**
      * This overridden method will perform the standard operations from org.kuali.rice.kew.mail.ActionListEmailServiceImpl but will also keep track of action
      * items processed
-     * 
+     *
      * @see org.kuali.rice.kew.mail.service.impl.ActionListEmailServiceImpl#sendImmediateReminder(org.kuali.rice.kew.user.WorkflowUser, org.kuali.rice.kew.actionitem.ActionItem)
      */
     @Override
-    public void sendImmediateReminder(WorkflowUser user, ActionItem actionItem) {
+    public void sendImmediateReminder(Person user, ActionItem actionItem) {
         super.sendImmediateReminder(user, actionItem);
-        List actionItemsSentUser = (List)immediateReminders.get(user.getWorkflowId());
+        List actionItemsSentUser = (List)immediateReminders.get(user.getPrincipalId());
         if (actionItemsSentUser == null) {
             actionItemsSentUser = new ArrayList();
-            immediateReminders.put(user.getWorkflowId(), actionItemsSentUser);
+            immediateReminders.put(user.getPrincipalId(), actionItemsSentUser);
         }
         actionItemsSentUser.add(actionItem);
     }
@@ -69,7 +70,7 @@ public class MockEmailNotificationServiceImpl extends CustomizableActionListEmai
      */
     @Override
     protected boolean sendActionListEmailNotification() {
-        
+
         return true;
     }
 
@@ -88,7 +89,7 @@ public class MockEmailNotificationServiceImpl extends CustomizableActionListEmai
     }
 
     @Override
-    protected void sendPeriodicReminder(WorkflowUser user, Collection actionItems, String emailSetting) {
+    protected void sendPeriodicReminder(Person user, Collection<ActionItem> actionItems, String emailSetting) {
         super.sendPeriodicReminder(user, actionItems, emailSetting);
         if (!aggregateReminderCount.containsKey(emailSetting)) {
             aggregateReminderCount.put(emailSetting, actionItems.size());
@@ -96,7 +97,7 @@ public class MockEmailNotificationServiceImpl extends CustomizableActionListEmai
             aggregateReminderCount.put(emailSetting, aggregateReminderCount.get(emailSetting) + actionItems.size());
         }
     }
-    
+
     public Integer getTotalPeriodicRemindersSent(String emailReminderConstant) {
         Integer returnVal = aggregateReminderCount.get(emailReminderConstant);
         if (returnVal == null) {
@@ -113,18 +114,18 @@ public class MockEmailNotificationServiceImpl extends CustomizableActionListEmai
         }
         return Integer.valueOf(total);
     }
-    
+
     public boolean wasStyleServiceAccessed() {
         return getEmailContentGenerator().wasServiceAccessed();
     }
-    
+
     private void resetStyleService() {
         getEmailContentGenerator().resetServiceAccessed();
     }
-    
+
     /**
-     * This method is used to get the 
-     * 
+     * This method is used to get the
+     *
      * @see mocks.MockEmailNotificationService#immediateReminderEmailsSent(java.lang.String, java.lang.Long, java.lang.String)
      */
     public int immediateReminderEmailsSent(String networkId, Long documentId, String actionRequestCd) throws KEWUserNotFoundException {
@@ -142,7 +143,7 @@ public class MockEmailNotificationServiceImpl extends CustomizableActionListEmai
         }
         return emailsSent;
     }
-    
+
     @Override
     protected MockStyleableEmailContentService getEmailContentGenerator() {
         return (MockStyleableEmailContentService) super.getEmailContentGenerator();

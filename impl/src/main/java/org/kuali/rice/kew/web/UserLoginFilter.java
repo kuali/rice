@@ -181,7 +181,7 @@ public class UserLoginFilter implements Filter {
                 preferences = KEWServiceLocator.getPreferencesService().getPreferences(principal.getPrincipalId());
             }
             userSession.setPreferences(preferences);
-            userSession.setGroups(KEWServiceLocator.getWorkgroupService().getUsersGroupNames(workflowUser));
+            userSession.setGroups(KEWServiceLocator.getWorkgroupService().getUsersGroupNames(workflowUser.getWorkflowId()));
             userSession.setPrincipal(principal);
         	// TODO: Implement UserSession Hook
             return userSession;

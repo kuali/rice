@@ -26,6 +26,7 @@ import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.xml.XmlLoader;
 import org.kuali.rice.kew.xml.export.XmlExporter;
+import org.kuali.rice.kim.bo.Person;
 
 
 /**
@@ -59,19 +60,22 @@ public interface WorkgroupService extends XmlLoader, XmlExporter {
 
     public Workgroup getWorkgroup(WorkgroupIdDTO groupIdVO);
 
-    public List<Workgroup> getUsersGroups(WorkflowUser member) throws KEWUserNotFoundException ;
+    public List<Workgroup> getUsersGroups(String pincipalId) throws KEWUserNotFoundException ;
 
-    public Set<String> getUsersGroupNames(WorkflowUser member);
+    public Set<String> getUsersGroupNames(Person member);
+    public Set<String> getUsersGroupNames(String principalId);
 
-    public Set<Long> getUsersGroupIds(WorkflowUser member);
+    public Set<Long> getUsersGroupIds(String principalId);
 
     public List<Workgroup> getWorkgroupsGroups(Workgroup workgroup);
 
     public List search(Workgroup workgroup, Map<String, String> extensionValues, boolean useWildCards);
 
-    public List search(Workgroup workgroup, Map<String, String> extensionValues, WorkflowUser user) throws KEWUserNotFoundException;
+    public List search(Workgroup workgroup, Map<String, String> extensionValues, Person user) throws KEWUserNotFoundException;
 
-    public boolean isUserMemberOfGroup(GroupId groupId, WorkflowUser user) throws KEWUserNotFoundException;
+    public List search(Workgroup workgroup, Map<String, String> extensionValues, String principalId) throws KEWUserNotFoundException;
+
+    public boolean isUserMemberOfGroup(GroupId groupId, String principalId) throws KEWUserNotFoundException;
 
     /**
      * Executes a shallow copy of the given workgroup.

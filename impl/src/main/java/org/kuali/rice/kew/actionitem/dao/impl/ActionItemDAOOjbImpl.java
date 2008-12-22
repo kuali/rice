@@ -143,7 +143,7 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
     }
 
     public Collection<Recipient> findPrimaryDelegationRecipients(WorkflowUser user) throws KEWUserNotFoundException {
-    	Set<Long> workgroupIds = KEWServiceLocator.getWorkgroupService().getUsersGroupIds(user);
+    	Set<Long> workgroupIds = KEWServiceLocator.getWorkgroupService().getUsersGroupIds(user.getWorkflowId());
         Criteria orCriteria = new Criteria();
         Criteria delegatorWorkflowIdCriteria = new Criteria();
         delegatorWorkflowIdCriteria.addEqualTo("delegatorWorkflowId", user.getWorkflowUserId().getWorkflowId());

@@ -43,6 +43,7 @@ import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.Person;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
@@ -56,8 +57,8 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ActionListDAOOjbImpl.class);
 
-    public Collection<ActionItem> getActionList(WorkflowUser workflowUser, ActionListFilter filter) {
-        return getActionItemsInActionList(ActionItemActionListExtension.class, workflowUser, filter);
+    public Collection<ActionItem> getActionList(String principalId, ActionListFilter filter) {
+        return getActionItemsInActionList(ActionItemActionListExtension.class, principalId, filter);
 //        LOG.debug("getting action list for user " + workflowUser.getWorkflowUserId().getWorkflowId());
 //        Criteria crit = null;
 //        if (filter == null) {
@@ -81,7 +82,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         return createActionListForRouteHeader(collection);
     }
 
-    private Criteria setUpActionListCriteria(WorkflowUser user, ActionListFilter filter) {
+    private Criteria setUpActionListCriteria(String principalId, ActionListFilter filter) {
         LOG.debug("setting up Action List criteria");
         Criteria crit = new Criteria();
         boolean filterOn = false;
@@ -199,7 +200,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
 
         boolean addedDelegationCriteria = false;
         if (StringUtils.isBlank(filter.getDelegationType()) && StringUtils.isBlank(filter.getPrimaryDelegateId()) && StringUtils.isBlank(filter.getDelegatorId())) {
-            crit.addEqualTo("principalId", user.getWorkflowUserId().getWorkflowId());
+            crit.addEqualTo("principalId", principalId);
             addedDelegationCriteria = true;
         } else if ((StringUtils.isNotBlank(filter.getDelegationType()) && KEWConstants.DELEGATION_PRIMARY.equals(filter.getDelegationType()))
                 || StringUtils.isNotBlank(filter.getPrimaryDelegateId())) {
@@ -209,8 +210,8 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                 Criteria userCrit = new Criteria();
                 Criteria groupCrit = new Criteria();
                 Criteria orCrit = new Criteria();
-                userCrit.addEqualTo("delegatorWorkflowId", user.getWorkflowUserId().getWorkflowId());
-                groupCrit.addIn("delegatorGroupId", KEWServiceLocator.getWorkgroupService().getUsersGroupIds(user));
+                userCrit.addEqualTo("delegatorWorkflowId", principalId);
+                groupCrit.addIn("delegatorGroupId", KEWServiceLocator.getWorkgroupService().getUsersGroupIds(principalId));
                 orCrit.addOrCriteria(userCrit);
                 orCrit.addOrCriteria(groupCrit);
                 crit.addAndCriteria(orCrit);
@@ -226,8 +227,8 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                 Criteria userCrit = new Criteria();
                 Criteria groupCrit = new Criteria();
                 Criteria orCrit = new Criteria();
-                userCrit.addEqualTo("delegatorWorkflowId", user.getWorkflowUserId().getWorkflowId());
-                groupCrit.addIn("delegatorGroupId", KEWServiceLocator.getWorkgroupService().getUsersGroupIds(user));
+                userCrit.addEqualTo("delegatorWorkflowId", principalId);
+                groupCrit.addIn("delegatorGroupId", KEWServiceLocator.getWorkgroupService().getUsersGroupIds(principalId));
                 orCrit.addOrCriteria(userCrit);
                 orCrit.addOrCriteria(groupCrit);
                 crit.addAndCriteria(orCrit);
@@ -241,7 +242,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         } else if ((StringUtils.isNotBlank(filter.getDelegationType()) && KEWConstants.DELEGATION_SECONDARY.equals(filter.getDelegationType()))
                 || StringUtils.isNotBlank(filter.getDelegatorId())) {
             // using a secondary delegation
-            crit.addEqualTo("principalId", user.getWorkflowUserId().getWorkflowId());
+            crit.addEqualTo("principalId", principalId);
             if (StringUtils.isBlank(filter.getDelegatorId())) {
                 filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
                 // if isExcludeDelegationType() we want to show the default aciton list which is set up later in this method
@@ -330,7 +331,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
 
         // if we haven't added delegation criteria then use the default criteria below
         if (!addedDelegationCriteria) {
-            crit.addEqualTo("principalId", user.getWorkflowUserId().getWorkflowId());
+            crit.addEqualTo("principalId", principalId);
             filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
             filter.setExcludeDelegationType(true);
             Criteria critNotEqual = new Criteria();
@@ -592,23 +593,23 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         return actionItemMap.values();
     }
 
-    private Collection<ActionItem> getActionItemsInActionList(Class objectsToRetrieve, WorkflowUser workflowUser, ActionListFilter filter) {
-        LOG.debug("getting action list for user " + workflowUser.getWorkflowUserId().getWorkflowId());
+    private Collection<ActionItem> getActionItemsInActionList(Class objectsToRetrieve, String principalId, ActionListFilter filter) {
+        LOG.debug("getting action list for user " + principalId);
         Criteria crit = null;
         if (filter == null) {
             crit = new Criteria();
-            crit.addEqualTo("principalId", workflowUser.getWorkflowUserId().getWorkflowId());
+            crit.addEqualTo("principalId", principalId);
         } else {
-            crit = setUpActionListCriteria(workflowUser, filter);
+            crit = setUpActionListCriteria(principalId, filter);
         }
         LOG.debug("running query to get action list for criteria " + crit);
         Collection<ActionItem> collection = this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(objectsToRetrieve, crit));
-        LOG.debug("found " + collection.size() + " action items for user " + workflowUser.getWorkflowUserId().getWorkflowId());
+        LOG.debug("found " + collection.size() + " action items for user " + principalId);
         return createActionListForUser(collection);
     }
 
-    public Collection<ActionItem> getOutbox(WorkflowUser workflowUser, ActionListFilter filter) {
-        return getActionItemsInActionList(OutboxItemActionListExtension.class, workflowUser, filter);
+    public Collection<ActionItem> getOutbox(String principalId, ActionListFilter filter) {
+        return getActionItemsInActionList(OutboxItemActionListExtension.class, principalId, filter);
 //        LOG.debug("getting action list for user " + workflowUser.getWorkflowUserId().getWorkflowId());
 //        Criteria crit = new Criteria();
 //        crit.addEqualTo("workflowId", workflowUser.getWorkflowUserId().getWorkflowId());

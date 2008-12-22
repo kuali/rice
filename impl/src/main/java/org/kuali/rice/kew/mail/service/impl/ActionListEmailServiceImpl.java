@@ -52,6 +52,8 @@ import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.quartz.CronTrigger;
@@ -136,12 +138,12 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 		return new EmailFrom(getDocumentTypeEmailAddress(documentType));
 	}
 
-	protected void sendEmail(WorkflowUser user, EmailSubject subject,
+	protected void sendEmail(Person user, EmailSubject subject,
 			EmailBody body) {
 		sendEmail(user, subject, body, null);
 	}
 
-	protected void sendEmail(WorkflowUser user, EmailSubject subject,
+	protected void sendEmail(Person user, EmailSubject subject,
 			EmailBody body, DocumentType documentType) {
 		try {
 			if (isProduction()) {
@@ -162,7 +164,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 		}
 	}
 
-	public void sendImmediateReminder(WorkflowUser user, ActionItem actionItem) {
+	public void sendImmediateReminder(Person user, ActionItem actionItem) {
         boolean shouldSendActionListEmailNotification = sendActionListEmailNotification();
 		if (shouldSendActionListEmailNotification) {
             LOG.debug("sending immediate reminder");
@@ -218,12 +220,11 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 
 	public void sendDailyReminder() {
 		if (sendActionListEmailNotification()) {
-			Collection users = getUsersWithEmailSetting(KEWConstants.EMAIL_RMNDR_DAY_VAL);
-			for (Iterator userIter = users.iterator(); userIter.hasNext();) {
-				WorkflowUser user = (WorkflowUser) userIter.next();
+			Collection<Person> users = getUsersWithEmailSetting(KEWConstants.EMAIL_RMNDR_DAY_VAL);
+			for (Iterator<Person> userIter = users.iterator(); userIter.hasNext();) {
+				Person user = userIter.next();
 				try {
-					Collection actionItems = getActionListService()
-							.getActionList(user, null);
+					Collection actionItems = getActionListService().getActionList(user.getPrincipalId(), null);
 					if (actionItems != null && actionItems.size() > 0) {
 					    sendPeriodicReminder(user, actionItems,
 								KEWConstants.EMAIL_RMNDR_DAY_VAL);
@@ -240,12 +241,12 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 
 	public void sendWeeklyReminder() {
 		if (sendActionListEmailNotification()) {
-			Collection users = getUsersWithEmailSetting(KEWConstants.EMAIL_RMNDR_WEEK_VAL);
-			for (Iterator userIter = users.iterator(); userIter.hasNext();) {
-				WorkflowUser user = (WorkflowUser) userIter.next();
+			List<Person> users = getUsersWithEmailSetting(KEWConstants.EMAIL_RMNDR_WEEK_VAL);
+			for (Iterator<Person> userIter = users.iterator(); userIter.hasNext();) {
+				Person user = userIter.next();
 				try {
 					Collection actionItems = getActionListService()
-							.getActionList(user, null);
+							.getActionList(user.getPrincipalId(), null);
 					if (actionItems != null && actionItems.size() > 0) {
 					    sendPeriodicReminder(user, actionItems,
 								KEWConstants.EMAIL_RMNDR_WEEK_VAL);
@@ -260,9 +261,9 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 		LOG.debug("Weekly action list emails sent successful");
 	}
 
-	protected void sendPeriodicReminder(WorkflowUser user, Collection actionItems, String emailSetting) {
+	protected void sendPeriodicReminder(Person user, Collection<ActionItem> actionItems, String emailSetting) {
 		String emailBody = null;
-		actionItems = filterActionItemsToNotify(user.getWorkflowUserId().getId(), actionItems);
+		actionItems = filterActionItemsToNotify(user.getPrincipalId(), actionItems);
 		// if there are no action items after being filtered, there's no
 		// reason to send the email
 		if (actionItems.isEmpty()) {
@@ -305,15 +306,17 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 		return filteredItems;
 	}
 
-	protected List getUsersWithEmailSetting(String setting) {
+	protected List<Person> getUsersWithEmailSetting(String setting) {
 		List users = new ArrayList();
 		Collection userOptions = getUserOptionsService().findByOptionValue(
 				KEWConstants.EMAIL_RMNDR_KEY, setting);
 		for (Iterator iter = userOptions.iterator(); iter.hasNext();) {
 			String workflowId = ((UserOptions) iter.next()).getWorkflowId();
 			try {
-				users.add(getUserService().getWorkflowUser(
-						new WorkflowUserId(workflowId)));
+
+				users.add(KIMServiceLocator.getPersonService().getPerson(workflowId));
+
+				//users.add(getUserService().getWorkflowUser(new WorkflowUserId(workflowId)));
 			} catch (Exception e) {
 				LOG.error("error retrieving workflow user with ID: "
 						+ workflowId);
@@ -350,7 +353,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
         "{7}\n\n\n"
     );
 
-	public String buildImmediateReminderBody(WorkflowUser user,
+	public String buildImmediateReminderBody(Person user,
 			ActionItem actionItem, DocumentType documentType) {
 		String docHandlerUrl = actionItem.getRouteHeader().getDocumentType()
 				.getDocHandlerUrl();
@@ -432,8 +435,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 		if (!isProduction()) {
 			try {
 				sf.append("Action Item sent to "
-						+ actionItem.getUser().getAuthenticationUserId()
-								.getAuthenticationId());
+						+ actionItem.getUser().getPrincipalName());
 				if (actionItem.getDelegationType() != null) {
 					sf.append(" for delegation type "
 							+ actionItem.getDelegationType());
@@ -446,7 +448,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 		return sf.toString();
 	}
 
-	public String buildDailyReminderBody(WorkflowUser user,
+	public String buildDailyReminderBody(Person user,
 			Collection actionItems) {
 		StringBuffer sf = new StringBuffer();
 		sf.append(getDailyWeeklyMessageBody(actionItems));
@@ -462,7 +464,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 		return sf.toString();
 	}
 
-	public String buildWeeklyReminderBody(WorkflowUser user,
+	public String buildWeeklyReminderBody(Person user,
 			Collection actionItems) {
 		StringBuffer sf = new StringBuffer();
 		sf.append(getDailyWeeklyMessageBody(actionItems));

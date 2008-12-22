@@ -31,8 +31,8 @@ import org.kuali.rice.kew.util.KEWConstants;
 
 
 /**
- * NotificationService implementation that delegates to KCB 
- * 
+ * NotificationService implementation that delegates to KCB
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KCBNotificationService extends DefaultNotificationService {
@@ -44,7 +44,7 @@ public class KCBNotificationService extends DefaultNotificationService {
         if (!KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD.equals(actionItem.getRecipientTypeCode()))
             return;
 
-        
+
         // send it off to KCB
         MessagingService ms = (MessagingService) GlobalResourceLoader.getService(new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), KCBServiceNames.KCB_MESSAGING));
         MessageDTO mvo = new MessageDTO();
@@ -58,7 +58,7 @@ public class KCBNotificationService extends DefaultNotificationService {
         mvo.setOriginId(String.valueOf(actionItem.getActionItemId()));
         try {
             // just assume it's a user at this point...
-            mvo.setRecipient(actionItem.getUser().getAuthenticationUserId().getId());
+            mvo.setRecipient(actionItem.getPrincipalId());
             LOG.debug("Sending message to KCB: " + mvo);
             ms.deliver(mvo);
         } catch (Exception e) {
@@ -68,7 +68,7 @@ public class KCBNotificationService extends DefaultNotificationService {
 
     @Override
     public void removeNotification(List<ActionItem> actionItems) {
-        
+
         MessagingService ms = (MessagingService) GlobalResourceLoader.getService(new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), KCBServiceNames.KCB_MESSAGING));
 
         for (ActionItem actionItem: actionItems) {

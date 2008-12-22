@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -60,7 +60,7 @@ public class TakeWorkgroupAuthorityTest extends KEWTestCase {
 
     public static final String DOC_TYPE = "TakeWorkgroupAuthorityDoc";
     public static List<String> WORKGROUP_MEMBERS = new ArrayList<String>();
-    
+
     static {
         WORKGROUP_MEMBERS.add("ewestfal");
         WORKGROUP_MEMBERS.add("rkirkend");
@@ -73,39 +73,39 @@ public class TakeWorkgroupAuthorityTest extends KEWTestCase {
         WORKGROUP_MEMBERS.add("jthomas");
         WORKGROUP_MEMBERS.add("jitrue");
     }
-    
+
     protected void loadTestData() throws Exception {
         loadXmlFile("ActionsConfig.xml");
     }
-    
+
     @Test public void testTakeWorkgroupAuthorityAction() throws Exception {
-        
+
         WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("user1"), DOC_TYPE);
         doc.routeDocument("");
-        
+
         GroupIdDTO groupId = IdentityFactory.newGroupIdByName(KimConstants.TEMP_GROUP_NAMESPACE, "TestWorkgroup");
-        
+
         //verify that all members have the action item
         ActionListService aiService = KEWServiceLocator.getActionListService();
         Collection actionItems = aiService.findByRouteHeaderId(doc.getRouteHeaderId());
         assertTrue("There should be more than one action item", actionItems.size() > 1);
         for (Iterator iter = actionItems.iterator(); iter.hasNext();) {
             ActionItem actionItem = (ActionItem) iter.next();
-            assertTrue("Action Item not to workgroup member", WORKGROUP_MEMBERS.contains(actionItem.getUser().getAuthenticationUserId().getAuthenticationId()));
+            assertTrue("Action Item not to workgroup member", WORKGROUP_MEMBERS.contains(actionItem.getUser().getPrincipalName()));
         }
-        
+
         //have member rkirkend take authority
         doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), doc.getRouteHeaderId());
         doc.takeGroupAuthority("", groupId);
-        
+
         //verify that only rkirkend has an action item now.
         actionItems = aiService.findByRouteHeaderId(doc.getRouteHeaderId());
         assertEquals("There should only be a single action item to rkirkend", 1, actionItems.size());
         for (Iterator iter = actionItems.iterator(); iter.hasNext();) {
             ActionItem actionItem = (ActionItem) iter.next();
-            assertEquals("Action item should be to rkirkend", "rkirkend", actionItem.getUser().getAuthenticationUserId().getAuthenticationId());
+            assertEquals("Action item should be to rkirkend", "rkirkend", actionItem.getUser().getPrincipalName());
         }
-        
+
         //verify the action was recorded and by rkirkend
         WorkflowInfo wUtil = new WorkflowInfo();
         ActionTakenDTO[] actionsTaken = wUtil.getActionsTaken(doc.getRouteHeaderId());
@@ -117,7 +117,7 @@ public class TakeWorkgroupAuthorityTest extends KEWTestCase {
                 rkirkendATFound = true;
             }
         }
-        
+
         assertTrue("should have found action taken for rkirkend", rkirkendATFound);
     }
 }

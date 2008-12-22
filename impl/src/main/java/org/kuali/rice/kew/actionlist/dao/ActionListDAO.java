@@ -23,6 +23,7 @@ import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionitem.OutboxItemActionListExtension;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kim.bo.Person;
 
 
 /**
@@ -33,7 +34,7 @@ import org.kuali.rice.kew.user.WorkflowUser;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface ActionListDAO {
-    public Collection<ActionItem> getActionList(WorkflowUser workflowUser, ActionListFilter filter);
+    public Collection<ActionItem> getActionList(String principalId, ActionListFilter filter);
     public Collection<ActionItem> getActionListForSingleDocument(Long routeHeaderId);
     public int getCount(String workflowId);
 
@@ -45,7 +46,7 @@ public interface ActionListDAO {
      * @param filter
      * @return
      */
-    public Collection<ActionItem> getOutbox(WorkflowUser workflowUser, ActionListFilter filter);
+    public Collection<ActionItem> getOutbox(String principalId, ActionListFilter filter);
     public void removeOutboxItems(WorkflowUser workflowUser, List<Long> outboxItems);
     public void saveOutboxItem(OutboxItemActionListExtension outboxItem);
     public OutboxItemActionListExtension getOutboxByDocumentId(Long documentId);

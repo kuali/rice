@@ -267,7 +267,7 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
             if (user == null) {
         	throw new WorkflowRuntimeException("Failed to locate user for the given workflow id: " + workflowId);
             }
-            workgroupIds = KEWServiceLocator.getWorkgroupService().getUsersGroupIds(user);
+            workgroupIds = KEWServiceLocator.getWorkgroupService().getUsersGroupIds(user.getWorkflowId());
         }
         crit.addIn("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(workgroupIds, workflowId, roleName, searchUser, searchUserInWorkgroups));
 

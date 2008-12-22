@@ -1,12 +1,12 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS
  * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
@@ -41,13 +41,13 @@ import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 /**
  * OJB implementation of {@link ActionItemDAO}.
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ActionItemDAOJpaImpl implements ActionItemDAO {
 	@PersistenceContext(unitName="kew-unit")
 	private EntityManager entityManager;
-	
+
     public ActionItem findByActionItemId(Long actionItemId) {
     	return entityManager.find(ActionItem.class, actionItemId);
     }
@@ -58,7 +58,7 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
         for(Object actionItem:new QueryByCriteria(entityManager,crit).toQuery().getResultList()){
         	entityManager.remove(actionItem);
         }
-        
+
     }
 
     public void deleteActionItem(ActionItem actionItem) {
@@ -87,6 +87,7 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
         crit.eq("principalId", workflowUser.getWorkflowUserId().getWorkflowId());
         crit.orderBy("routeHeader.routeHeaderId", true);
         return new QueryByCriteria(entityManager, crit).toQuery().getResultList();
+
     }
 
     public Collection<ActionItem> findByWorkflowUserRouteHeaderId(String workflowId, Long routeHeaderId) {
@@ -131,11 +132,11 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
         criteria.and(orCriteria);
 
         Map<Object, Recipient> delegators = new HashMap<Object, Recipient>();
-        
+
         for(Object actionItem:new QueryByCriteria(entityManager, criteria).toQuery().getResultList()){
         	String delegatorWorkflowId = ((ActionItem)actionItem).getDelegatorWorkflowId();
         	String delegatorGroupId = ((ActionItem)actionItem).getDelegatorGroupId();
-        	
+
         	if (delegatorWorkflowId != null && !delegators.containsKey(delegatorWorkflowId)) {
                 delegators.put(delegatorWorkflowId, getUserService().getWorkflowUser(new WorkflowUserId(delegatorWorkflowId)));
             }else if (delegatorGroupId != null) {
@@ -148,7 +149,7 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
     }
 
     public Collection<Recipient> findPrimaryDelegationRecipients(WorkflowUser user) throws KEWUserNotFoundException {
-    	Set<Long> workgroupIds = KEWServiceLocator.getWorkgroupService().getUsersGroupIds(user);
+    	Set<Long> workgroupIds = KEWServiceLocator.getWorkgroupService().getUsersGroupIds(user.getWorkflowId());
         Criteria orCriteria = new Criteria(ActionItem.class.getName());
         Criteria delegatorWorkflowIdCriteria = new Criteria(ActionItem.class.getName());
         delegatorWorkflowIdCriteria.eq("delegatorWorkflowId", user.getWorkflowUserId().getWorkflowId());
@@ -164,7 +165,7 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
         Criteria criteria = new Criteria(ActionItem.class.getName());
         criteria.eq("delegationType", KEWConstants.DELEGATION_PRIMARY);
         criteria.and(orCriteria);
-        
+
         Map<Object, Recipient> delegators = new HashMap<Object, Recipient>();
         for(Object actionItem:new QueryByCriteria(entityManager, criteria).toQuery().getResultList()){
         	String principalId = ((ActionItem)actionItem).getPrincipalId();
@@ -172,7 +173,7 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
                 delegators.put(principalId, getUserService().getWorkflowUser(new WorkflowUserId(principalId)));
             }
         }
-        
+
         return delegators.values();
     }
 
@@ -183,7 +184,7 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
     private WorkgroupService getWorkgroupService() {
         return (WorkgroupService) KEWServiceLocator.getService(KEWServiceLocator.WORKGROUP_SRV);
     }
-    
+
     private GroupService getGroupService(){
     	return (GroupService) KIMServiceLocator.getGroupService();
     }

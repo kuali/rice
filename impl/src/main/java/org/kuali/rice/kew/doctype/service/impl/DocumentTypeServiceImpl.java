@@ -295,7 +295,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
         }
     }
 
-    public void loadXml(InputStream inputStream, WorkflowUser user) {
+    public void loadXml(InputStream inputStream, String principalId) {
         DocumentTypeXmlParser parser = new DocumentTypeXmlParser();
         try {
             parser.parseDocumentTypes(inputStream);

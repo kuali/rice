@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,6 +33,7 @@ import org.kuali.rice.kew.mail.EmailContent;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.Person;
 
 
 /**
@@ -52,7 +53,7 @@ public class HardCodedEmailContentServiceImpl extends BaseEmailContentServiceImp
 
     // ---- EmailContentService interface implementation
 
-    public EmailContent generateImmediateReminder(WorkflowUser user, ActionItem actionItem, DocumentType documentType) {
+    public EmailContent generateImmediateReminder(Person user, ActionItem actionItem, DocumentType documentType) {
         String docHandlerUrl = actionItem.getRouteHeader().getDocumentType().getDocHandlerUrl();
         if (docHandlerUrl.indexOf("?") == -1) {
             docHandlerUrl += "?";
@@ -83,15 +84,14 @@ public class HardCodedEmailContentServiceImpl extends BaseEmailContentServiceImp
         emailBody.append("To change how these email notifications are sent(daily, weekly or none): \n");
         emailBody.append("\tGo to " + getPreferencesUrl() + "\n");
         emailBody.append("\n\n\n");
-        
+
         emailBody.append(getHelpLink(documentType) + "\n\n\n");
 
         // for debugging purposes on the immediate reminder only
         if (!isProduction()) {
             try {
                 emailBody.append("Action Item sent to "
-                        + actionItem.getUser().getAuthenticationUserId()
-                                .getAuthenticationId());
+                        + actionItem.getUser().getPrincipalName());
                 if (actionItem.getDelegationType() != null) {
                     emailBody.append(" for delegation type "
                             + actionItem.getDelegationType());
@@ -117,16 +117,16 @@ public class HardCodedEmailContentServiceImpl extends BaseEmailContentServiceImp
         } catch (Exception e) {
             LOG.error("Error when checking for custom email body and subject.", e);
         }
-        
+
         EmailContent content = new EmailContent();
         content.setBody(emailBody.toString(), false);
         content.setSubject(getEmailSubject(emailSubject.toString()));
-        
+
         return content;
 
     }
 
-    public EmailContent generateDailyReminder(WorkflowUser user, Collection<ActionItem> actionItems) {
+    public EmailContent generateDailyReminder(Person user, Collection<ActionItem> actionItems) {
         StringBuffer sf = new StringBuffer();
         sf.append(getDailyWeeklyMessageBody(actionItems));
         sf.append("To change how these email notifications are sent (immediately, weekly or none): \n");
@@ -137,15 +137,15 @@ public class HardCodedEmailContentServiceImpl extends BaseEmailContentServiceImp
         // sf.append("\tDo not send\n\t" + getPreferencesUrl() + "\n");
         sf.append("\n\n\n");
         sf.append(getHelpLink() + "\n\n\n");
-        
+
         EmailContent content = new EmailContent();
         content.setBody(sf.toString(), false);
         content.setSubject(getEmailSubject());
-        
+
         return content;
     }
 
-    public EmailContent generateWeeklyReminder(WorkflowUser user, Collection<ActionItem> actionItems) {
+    public EmailContent generateWeeklyReminder(Person user, Collection<ActionItem> actionItems) {
         StringBuffer sf = new StringBuffer();
         sf.append(getDailyWeeklyMessageBody(actionItems));
         sf
@@ -263,13 +263,13 @@ public class HardCodedEmailContentServiceImpl extends BaseEmailContentServiceImp
         buffer.append("Phone: " + form.getPhone()).append("\n");
         buffer.append("Time: " + form.getTimeDate()).append("\n");
         buffer.append("Environment: " + ConfigContext.getCurrentContextConfig().getEnvironment()).append("\n\n");
-        
+
         buffer.append("Document type: " + form.getDocumentType()).append("\n");
         buffer.append("Document id: " + (form.getRouteHeaderId() != null ? form.getRouteHeaderId() : "")).append("\n\n");
-        
+
         buffer.append("Category: " + form.getCategory()).append("\n");
         buffer.append("Comments: \n" + form.getComments()).append("\n\n");
-        
+
         buffer.append("Exception: \n" + form.getException());
         return buffer.toString();
     }

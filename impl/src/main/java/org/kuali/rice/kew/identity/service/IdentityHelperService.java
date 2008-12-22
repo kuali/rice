@@ -16,16 +16,19 @@
 package org.kuali.rice.kew.identity.service;
 
 import org.kuali.rice.kew.dto.GroupIdDTO;
+import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.group.KimGroup;
 
 /**
  * A simple helper service in KEW for interacting with the KIM identity
  * management services.
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface IdentityHelperService {
 
 	public KimGroup getGroup(GroupIdDTO groupId);
-	
+	public WorkflowUser convertPersonToWorkflowUser(Person person);
+
 }

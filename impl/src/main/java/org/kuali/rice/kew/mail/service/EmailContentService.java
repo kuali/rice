@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,6 +25,7 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.feedback.web.FeedbackForm;
 import org.kuali.rice.kew.mail.EmailContent;
 import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kim.bo.Person;
 
 
 /**
@@ -33,11 +34,11 @@ import org.kuali.rice.kew.user.WorkflowUser;
  * @see EmailContent
  */
 public interface EmailContentService {
-    public EmailContent generateImmediateReminder(WorkflowUser user, ActionItem actionItem, DocumentType documentType);
-    public EmailContent generateDailyReminder(WorkflowUser user, Collection<ActionItem> actionItems);
-    public EmailContent generateWeeklyReminder(WorkflowUser user, Collection<ActionItem> actionItems);
+    public EmailContent generateImmediateReminder(Person user, ActionItem actionItem, DocumentType documentType);
+    public EmailContent generateDailyReminder(Person user, Collection<ActionItem> actionItems);
+    public EmailContent generateWeeklyReminder(Person user, Collection<ActionItem> actionItems);
     public EmailContent generateFeedback(FeedbackForm form);
-    
+
     /* these are more or less helper utilities and probably should live in some core helper class */
     public String getDocumentTypeEmailAddress(DocumentType documentType);
     public String getApplicationEmailAddress();

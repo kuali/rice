@@ -113,9 +113,9 @@ public class RemoveReplaceAction extends WorkflowAction {
 		messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(REPLACEMENT_USER_ID_NOT_FOUND_MSG, form.getReplacementUserId()));
 	    }
 	}
-	
+
 	// TODO with KIM, no longer possible to get all group types
-	
+
 	//form.setWorkgroupTypes(KEWServiceLocator.getWorkgroupTypeService().findAllActive());
         form.getWorkgroupTypes().add(0, RemoveReplaceForm.createDefaultWorkgroupType());
 	return messages;
@@ -316,7 +316,7 @@ public class RemoveReplaceAction extends WorkflowAction {
 	if (!StringUtils.isBlank(form.getWorkgroupType())) {
 	    template.setWorkgroupType(form.getWorkgroupType());
 	}
-	List<Workgroup> workgroups = KEWServiceLocator.getWorkgroupService().search(template, null, form.getUser());
+	List<Workgroup> workgroups = KEWServiceLocator.getWorkgroupService().search(template, null, form.getUser().getWorkflowId());
 	form.getWorkgroups().clear();
 	form.getWorkgroups().addAll(loadRemoveReplaceWorkgroups(form, workgroups));
 	return mapping.findForward("basic");

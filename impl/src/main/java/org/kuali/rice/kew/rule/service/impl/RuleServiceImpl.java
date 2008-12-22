@@ -886,7 +886,7 @@ public class RuleServiceImpl implements RuleService {
         if (user != null) {
             if ( (workgroupMember == null) || (workgroupMember.booleanValue()) ) {
                 // user is found from DB and we need to parse workgroups
-                List userWorkgroups = getWorkgroupService().getUsersGroups(user);
+                List userWorkgroups = getWorkgroupService().getUsersGroups(user.getWorkflowId());
                 for (Iterator iter = userWorkgroups.iterator(); iter.hasNext();) {
                     Workgroup workgroup = (Workgroup) iter.next();
                     workgroupIds.add(workgroup.getWorkflowGroupId().getGroupId().toString());
@@ -1187,7 +1187,7 @@ public class RuleServiceImpl implements RuleService {
     }
 
 
-    public void loadXml(InputStream inputStream, WorkflowUser user) {
+    public void loadXml(InputStream inputStream, String principalId) {
         RuleXmlParser parser = new RuleXmlParser();
         try {
             parser.parseRules(inputStream);

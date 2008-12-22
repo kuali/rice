@@ -84,7 +84,7 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
                 UserSession userSession = new UserSession(workflowUser);
                 //load the users preferences.  The preferences action will update them if necessary
                 userSession.setPreferences(KEWServiceLocator.getPreferencesService().getPreferences(workflowUser.getWorkflowUserId().getId()));
-                userSession.setGroups(KEWServiceLocator.getWorkgroupService().getUsersGroupNames(workflowUser));
+                userSession.setGroups(KEWServiceLocator.getWorkgroupService().getUsersGroupNames(workflowUser.getWorkflowId()));
                 // set up the thread local reference to the current authenticated user
                 for (String dummyRoleName : dummyRoleNames) {
                     userSession.addAuthentication(new BasicAuthentication(dummyRoleName));

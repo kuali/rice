@@ -41,7 +41,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 /**
  * Tests users requesting to see all future requests, not seeing any future requests on documents and the clearing of those
  * statuses on documents.
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class FutureRequestsTest extends KEWTestCase {
@@ -49,7 +49,7 @@ public class FutureRequestsTest extends KEWTestCase {
     /**
      * Verify future requests status are being preserved on {@link DocumentRouteHeaderValue} objects when set from the
      * {@link WorkflowDocument}
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -119,7 +119,7 @@ public class FutureRequestsTest extends KEWTestCase {
 
     /**
      * Tests future requests work with routing and ignore previous rules
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -152,8 +152,8 @@ public class FutureRequestsTest extends KEWTestCase {
         assertTrue(document.isApprovalRequested());
 
         // user2 should have action items. user1 should not
-        assertEquals(1, KEWServiceLocator.getActionListService().getActionList(KEWServiceLocator.getUserService().getWorkflowUser(user2), new ActionListFilter()).size());
-        assertEquals(1, KEWServiceLocator.getActionListService().getActionList(KEWServiceLocator.getUserService().getWorkflowUser(user1), new ActionListFilter()).size());
+        assertEquals(1, KEWServiceLocator.getActionListService().getActionList(KEWServiceLocator.getUserService().getWorkflowUser(user2).getWorkflowId(), new ActionListFilter()).size());
+        assertEquals(1, KEWServiceLocator.getActionListService().getActionList(KEWServiceLocator.getUserService().getWorkflowUser(user1).getWorkflowId(), new ActionListFilter()).size());
 
         document.approve("");
 
@@ -164,7 +164,7 @@ public class FutureRequestsTest extends KEWTestCase {
 
     /**
      * Tests future requests operation in conjunction with the {@link WorkflowInfo#documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO, String[])} method
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -176,7 +176,7 @@ public class FutureRequestsTest extends KEWTestCase {
 
         WorkflowDocument document = new WorkflowDocument(user1, "FutureRequestsDoc");
         document.routeDocument("");
-        
+
         // Node1
         //user1 should have approval requested
         document = new WorkflowDocument(user1, document.getRouteHeaderId());
@@ -210,7 +210,7 @@ public class FutureRequestsTest extends KEWTestCase {
 
         document = new WorkflowDocument(user1, document.getRouteHeaderId());
         assertFalse(document.isApprovalRequested());
-        
+
         // user1 should not have approval requested
         info = new WorkflowInfo();
         reportCriteriaDTO = new ReportCriteriaDTO(document.getRouteHeaderId());

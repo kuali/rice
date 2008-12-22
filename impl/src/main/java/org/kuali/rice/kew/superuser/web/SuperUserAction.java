@@ -84,7 +84,8 @@ public class SuperUserAction extends WorkflowAction {
         Long documentId = superUserForm.getRouteHeader().getRouteHeaderId();
         WorkflowDocumentActions documentActions = getWorkflowDocumentActions(documentId);
         UserId userId = getUserSession(request).getWorkflowUser().getAuthenticationUserId();
-        documentActions.superUserApprove(DTOConverter.convertUserId(userId), DTOConverter.convertRouteHeader(superUserForm.getRouteHeader(), null), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
+        WorkflowUser nullUser = null; // handle ambiguous error.
+        documentActions.superUserApprove(DTOConverter.convertUserId(userId), DTOConverter.convertRouteHeader(superUserForm.getRouteHeader(), nullUser), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
         saveDocumentActionMessage("general.routing.superuser.approved", request, superUserForm.getRouteHeaderIdString(), null);
         LOG.info("exiting approve() ...");
         superUserForm.getActionRequests().clear();
@@ -98,7 +99,8 @@ public class SuperUserAction extends WorkflowAction {
         Long documentId = superUserForm.getRouteHeader().getRouteHeaderId();
         WorkflowDocumentActions documentActions = getWorkflowDocumentActions(documentId);
         UserId userId = getUserSession(request).getWorkflowUser().getAuthenticationUserId();
-        documentActions.superUserDisapprove(DTOConverter.convertUserId(userId), DTOConverter.convertRouteHeader(superUserForm.getRouteHeader(), null), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
+        WorkflowUser nullUser = null; // handle ambiguous error.
+        documentActions.superUserDisapprove(DTOConverter.convertUserId(userId), DTOConverter.convertRouteHeader(superUserForm.getRouteHeader(), nullUser), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
         saveDocumentActionMessage("general.routing.superuser.disapproved", request, superUserForm.getRouteHeaderIdString(), null);
         LOG.info("exiting disapprove() ...");
         superUserForm.getActionRequests().clear();
@@ -112,7 +114,8 @@ public class SuperUserAction extends WorkflowAction {
         Long documentId = superUserForm.getRouteHeader().getRouteHeaderId();
         WorkflowDocumentActions documentActions = getWorkflowDocumentActions(documentId);
         UserId userId = getUserSession(request).getWorkflowUser().getAuthenticationUserId();
-        documentActions.superUserCancel(DTOConverter.convertUserId(userId), DTOConverter.convertRouteHeader(superUserForm.getRouteHeader(), null), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
+        WorkflowUser nullUser = null; // handle ambiguous error.
+        documentActions.superUserCancel(DTOConverter.convertUserId(userId), DTOConverter.convertRouteHeader(superUserForm.getRouteHeader(), nullUser), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
         saveDocumentActionMessage("general.routing.superuser.canceled", request, superUserForm.getRouteHeaderIdString(), null);
         LOG.info("exiting cancel() ...");
         superUserForm.getActionRequests().clear();
@@ -154,7 +157,7 @@ public class SuperUserAction extends WorkflowAction {
     public ActionForward actionRequestApprove(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LOG.info("entering actionRequestApprove() ...");
         SuperUserForm superUserForm = (SuperUserForm) form;
-        LOG.debug("Routing super user action request approve action");        
+        LOG.debug("Routing super user action request approve action");
         boolean runPostProcessorLogic = ArrayUtils.contains(superUserForm.getActionRequestRunPostProcessorCheck(), superUserForm.getActionTakenActionRequestId());
         Long documentId = superUserForm.getRouteHeader().getRouteHeaderId();
         WorkflowDocumentActions documentActions = getWorkflowDocumentActions(documentId);
@@ -258,7 +261,7 @@ public class SuperUserAction extends WorkflowAction {
         establishRequiredState(request, form);
         return start(mapping, form, request, response);
     }
-    
+
     private WorkflowDocumentActions getWorkflowDocumentActions(Long documentId) {
 	DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByDocumentId(documentId);
 	String serviceNamespace = documentType.getServiceNamespace();

@@ -39,7 +39,7 @@ public class StyleXmlParser {
             } catch (ParserConfigurationException pce) {
                 // well folks, there is not much we can do if we get a ParserConfigurationException
                 // so might as well isolate the evilness here, and just balk if this occurs
-                String message = "Error obtaining document builder"; 
+                String message = "Error obtaining document builder";
                 LOG.error(message, pce);
                 return new RuntimeException(message, pce);
             }
@@ -54,7 +54,7 @@ public class StyleXmlParser {
         return (DocumentBuilder) DOCUMENT_BUILDER.get();
     }
 
-    public static void loadXml(StyleService styleService, InputStream inputStream, WorkflowUser user) {
+    public static void loadXml(StyleService styleService, InputStream inputStream, String principalId) {
         DocumentBuilder db = getDocumentBuilder();
         XPath xpath = XPathFactory.newInstance().newXPath();
         Document doc;
@@ -98,7 +98,7 @@ public class StyleXmlParser {
         //    throw generateException("Error parsing EDocLite XML file", e);
         //}
     }
-    
+
     private static WorkflowServiceErrorException generateException(String error, Throwable cause) {
         WorkflowServiceErrorException wsee = new WorkflowServiceErrorException(error, new WorkflowServiceErrorImpl(error, KEWConstants.XML_FILE_PARSE_ERROR));
         if (cause != null) {
@@ -109,7 +109,7 @@ public class StyleXmlParser {
 
     /**
      * Parses an EDocLiteStyle
-     * 
+     *
      * @param e
      *            element to parse
      * @return an EDocLiteStyle

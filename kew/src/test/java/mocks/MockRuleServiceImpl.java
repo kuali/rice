@@ -201,7 +201,7 @@ public class MockRuleServiceImpl implements RuleService {
         throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");
     }
 
-    public void loadXml(InputStream inputStream, WorkflowUser user) {
+    public void loadXml(InputStream inputStream, String principalId) {
         throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");
     }
     public Element export(ExportDataSet dataSet) {

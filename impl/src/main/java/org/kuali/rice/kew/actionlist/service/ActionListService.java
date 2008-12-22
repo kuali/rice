@@ -27,6 +27,7 @@ import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.workgroup.Workgroup;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.group.KimGroup;
 
 
@@ -39,7 +40,7 @@ import org.kuali.rice.kim.bo.group.KimGroup;
 public interface ActionListService {
     public ActionItem createActionItemForActionRequest(ActionRequestValue actionRequest);
 
-    public Collection getActionList(WorkflowUser workflowUser, ActionListFilter filter);
+    public Collection getActionList(String principalId, ActionListFilter filter);
 
     public Collection getActionListForSingleDocument(Long routeHeaderId);
 
@@ -107,7 +108,7 @@ public interface ActionListService {
      * @param filter
      * @return
      */
-    public Collection getOutbox(WorkflowUser workflowUser, ActionListFilter filter);
+    public Collection getOutbox(String principalId, ActionListFilter filter);
     public void removeOutboxItems(WorkflowUser workflowUser, List<Long> outboxItems);
     public void saveOutboxItem(ActionItem actionItem);
 }

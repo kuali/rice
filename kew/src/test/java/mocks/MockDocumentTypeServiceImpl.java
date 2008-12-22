@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -51,7 +51,7 @@ public class MockDocumentTypeServiceImpl implements DocumentTypeService {
     public void makeCurrent(List documentTypes) {
         throw new UnsupportedOperationException("not yet implmeneted");
     }
-    
+
     public void addDocumentType(DocumentType documentType, PostProcessor postProcessor) {
         documentsById.put(documentType.getDocumentTypeId(), documentType);
         documentsByName.put(documentType.getName(), documentType);
@@ -61,7 +61,7 @@ public class MockDocumentTypeServiceImpl implements DocumentTypeService {
     public DocumentType findByDocumentId(Long documentId) {
 		throw new UnsupportedOperationException("not yet implemented");
 	}
-    
+
 	public DocumentTypeDTO getDocumentTypeVOById(Long documentTypeId) {
         DocumentType docType = findById(documentTypeId);
         DocumentTypeDTO docTypeVO = new DocumentTypeDTO();
@@ -80,7 +80,7 @@ public class MockDocumentTypeServiceImpl implements DocumentTypeService {
         docTypeVO.setPostProcessorName(docType.getPostProcessorName());
         docTypeVO.setDocTypeJndiFactoryClass(null);
         docTypeVO.setDocTypeActiveInd(docType.getActive().booleanValue());
-        
+
         if (docType.getParentDocType() != null) {
             docTypeVO.setDocTypeActiveInherited(true);
         } else {
@@ -126,15 +126,15 @@ public class MockDocumentTypeServiceImpl implements DocumentTypeService {
 
     public DocumentType route(DocumentType documentType, WorkflowUser user, String annotation) {
         return new DocumentType();
-    }    
-    
+    }
+
     public List findByRouteHeaderId(Long routeHeaderId) {
         throw new UnsupportedOperationException("not implemented in MockDocumentTypeServiceImpl");
     }
     public void makeCurrent(Long routeHeaderId) {
         throw new UnsupportedOperationException("not implemented in MockDocumentTypeServiceImpl");
     }
-    
+
     public DocumentType blanketApprove(Long routeHeaderId, DocumentType documentType, WorkflowUser user, String annotation) throws Exception {
         return null;
     }
@@ -166,7 +166,7 @@ public class MockDocumentTypeServiceImpl implements DocumentTypeService {
     public DocumentType findRootDocumentType(DocumentType docType) {
         return null;
     }
-    public void loadXml(InputStream inputStream, WorkflowUser user) {
+    public void loadXml(InputStream inputStream, String principalId) {
         throw new UnsupportedOperationException("Mock document type service can't load xml");
     }
     public Element export(ExportDataSet dataSet) {
@@ -182,13 +182,13 @@ public class MockDocumentTypeServiceImpl implements DocumentTypeService {
 		return null;
 	}
 	public void save(DocumentType documentType) {
-		
+
 	}
 	public void clearCacheForAttributeUpdate(RuleAttribute ruleAttribute) {
-		
+
 	}
 	public Integer getDocumentTypeCount() {
 		return null;
 	}
-    
+
 }

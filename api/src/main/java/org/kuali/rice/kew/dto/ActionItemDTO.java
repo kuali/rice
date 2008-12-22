@@ -19,8 +19,8 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
- * A transport object representing an ActionItem 
- * 
+ * A transport object representing an ActionItem
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ActionItemDTO implements Serializable {
@@ -42,7 +42,7 @@ public class ActionItemDTO implements Serializable {
     private String actionToTake;
     private String delegationType;
     private Integer actionItemIndex;
-    
+
     /**
      * Kim group id of the target group (if any... group object will be null if groupId is empty)
      */
@@ -51,7 +51,7 @@ public class ActionItemDTO implements Serializable {
     /**
      * Workflow user id of the target user (if any... user object will be null if workflowId is empty)
      */
-    private String workflowId;
+    private String principalId;
     private UserDTO user;
 
     /**
@@ -162,10 +162,10 @@ public class ActionItemDTO implements Serializable {
         this.groupId = groupId;
     }
     public String getWorkflowId() {
-        return this.workflowId;
+        return this.principalId;
     }
     public void setWorkflowId(String workflowId) {
-        this.workflowId = workflowId;
+        this.principalId = workflowId;
     }
     public UserDTO getUser() {
         return this.user;

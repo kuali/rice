@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -55,8 +55,8 @@ import org.w3c.dom.NodeList;
 public class EDocLiteXmlParser {
 
 	private static final Logger LOG = Logger.getLogger(EDocLiteXmlParser.class);
-	
-    public static void loadXml(InputStream inputStream, WorkflowUser user) {
+
+    public static void loadXml(InputStream inputStream, String principalId) {
         DocumentBuilder db = EDLXmlUtils.getDocumentBuilder();
         XPath xpath = XPathFactory.newInstance().newXPath();
         Document doc;
@@ -114,7 +114,7 @@ public class EDocLiteXmlParser {
         //    throw generateException("Error parsing EDocLite XML file", e);
         //}
     }
-    
+
     private static WorkflowServiceErrorException generateException(String error, Throwable cause) {
         WorkflowServiceErrorException wsee = new WorkflowServiceErrorException(error, new WorkflowServiceErrorImpl(error, KEWConstants.XML_FILE_PARSE_ERROR));
         if (cause != null) {
@@ -122,10 +122,10 @@ public class EDocLiteXmlParser {
         }
         return wsee;
     }
-    
+
     /**
      * Parses an EDocLiteAssocation
-     * 
+     *
      * @param e
      *            element to parse
      * @return an EDocLiteAssocation
@@ -145,7 +145,7 @@ public class EDocLiteXmlParser {
 
     /**
      * Parses an EDocLiteStyle
-     * 
+     *
      * @param e
      *            element to parse
      * @return an EDocLiteStyle
@@ -182,7 +182,7 @@ public class EDocLiteXmlParser {
 
     /**
      * Parses an EDocLiteDefinition
-     * 
+     *
      * @param e
      *            element to parse
      * @return an EDocLiteDefinition
@@ -256,7 +256,7 @@ public class EDocLiteXmlParser {
     private static WorkflowServiceErrorException generateSerializationException(String element, TransformerException cause) {
         return generateException("Error serializing EDocLite '" + element + "' element", cause);
     }
-    
+
     private static EDocLiteService getEDLService() {
     	return KEWServiceLocator.getEDocLiteService();
     }

@@ -25,47 +25,47 @@ import org.kuali.rice.kew.feedback.web.FeedbackForm;
 import org.kuali.rice.kew.mail.EmailContent;
 import org.kuali.rice.kew.mail.service.impl.StyleableEmailContentServiceImpl;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.Person;
 
 
 /**
- * This is a class used to substitute for a StyleableEmailContentServiceImpl class 
- * 
+ * This is a class used to substitute for a StyleableEmailContentServiceImpl class
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class MockStyleableEmailContentServiceImpl extends StyleableEmailContentServiceImpl implements MockStyleableEmailContentService {
-    
+
     private boolean wasAccessed = false;
 
     @Override
-    public EmailContent generateImmediateReminder(WorkflowUser user, ActionItem actionItem, DocumentType documentType) {
+    public EmailContent generateImmediateReminder(Person user, ActionItem actionItem, DocumentType documentType) {
         wasAccessed = true;
         return super.generateImmediateReminder(user, actionItem, documentType);
     }
-    
+
     @Override
-    public EmailContent generateDailyReminder(WorkflowUser user, Collection<ActionItem> actionItems) {
+    public EmailContent generateDailyReminder(Person user, Collection<ActionItem> actionItems) {
         wasAccessed = true;
         return super.generateDailyReminder(user, actionItems);
     }
-    
+
     @Override
-    public EmailContent generateWeeklyReminder(WorkflowUser user, Collection<ActionItem> actionItems) {
+    public EmailContent generateWeeklyReminder(Person user, Collection<ActionItem> actionItems) {
         wasAccessed = true;
         return super.generateWeeklyReminder(user, actionItems);
     }
-    
+
     @Override
     public EmailContent generateFeedback(FeedbackForm form) {
         wasAccessed = true;
         return super.generateFeedback(form);
     }
-    
+
     /**
      * This overridden method is used in case the action item has an null route header attached
-     * 
+     *
      * @see org.kuali.rice.kew.mail.service.impl.StyleableEmailContentServiceImpl#getRouteHeader(org.kuali.rice.kew.actionitem.ActionItem)
      */
     @Override
@@ -80,14 +80,14 @@ public class MockStyleableEmailContentServiceImpl extends StyleableEmailContentS
     }
 
     /**
-     * This method returns whether this service is being used 
+     * This method returns whether this service is being used
      */
     public boolean wasServiceAccessed() {
         return this.wasAccessed;
     }
 
     /**
-     * This method returns whether this service is being used 
+     * This method returns whether this service is being used
      */
     public void resetServiceAccessed() {
         this.wasAccessed = false;

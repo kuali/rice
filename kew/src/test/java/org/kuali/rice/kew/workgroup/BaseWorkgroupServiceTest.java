@@ -36,6 +36,9 @@ import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.WorkflowGroupId;
 import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
+import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 /**
@@ -211,24 +214,25 @@ public class BaseWorkgroupServiceTest extends KEWTestCase {
 		WorkgroupService wgService = KEWServiceLocator.getWorkgroupService();
 
 		// ewestfal should be a member of NWG1, NWGNested1, NWGNested2, NestedWGDupe1, NestedWGDupe2, NestedWGDupe3, NestedWGDupe4
-		WorkflowUser ewestfal = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("ewestfal"));
-		List<Workgroup> groups = wgService.getUsersGroups(ewestfal);
-		assertTrue("Should be member of NWG1", wgService.isUserMemberOfGroup(new GroupNameId("NWG1"), ewestfal));
+		//WorkflowUser ewestfal = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("ewestfal"));
+		Person ewestfal = KIMServiceLocator.getPersonService().getPersonByPrincipalName("ewestfal");
+		List<Workgroup> groups = wgService.getUsersGroups(ewestfal.getPrincipalId());
+		assertTrue("Should be member of NWG1", wgService.isUserMemberOfGroup(new GroupNameId("NWG1"), ewestfal.getPrincipalId()));
 		assertTrue("Should be member of NWG1", isMember("NWG1", groups));
-		assertTrue("Should be member of NWGNested1", wgService.isUserMemberOfGroup(new GroupNameId("NWGNested1"), ewestfal));
+		assertTrue("Should be member of NWGNested1", wgService.isUserMemberOfGroup(new GroupNameId("NWGNested1"), ewestfal.getPrincipalId()));
 		assertTrue("Should be member of NWGNested1", isMember("NWGNested1", groups));
-		assertTrue("Should be member of NWGNested2", wgService.isUserMemberOfGroup(new GroupNameId("NWGNested2"), ewestfal));
+		assertTrue("Should be member of NWGNested2", wgService.isUserMemberOfGroup(new GroupNameId("NWGNested2"), ewestfal.getPrincipalId()));
 		assertTrue("Should be member of NWGNested2", isMember("NWGNested2", groups));
-		assertTrue("Should be member of NestedWGDupe1", wgService.isUserMemberOfGroup(new GroupNameId("NestedWGDupe1"), ewestfal));
+		assertTrue("Should be member of NestedWGDupe1", wgService.isUserMemberOfGroup(new GroupNameId("NestedWGDupe1"), ewestfal.getPrincipalId()));
 		assertTrue("Should be member of NestedWGDupe1", isMember("NestedWGDupe1", groups));
-		assertTrue("Should be member of NestedWGDupe2", wgService.isUserMemberOfGroup(new GroupNameId("NestedWGDupe2"), ewestfal));
+		assertTrue("Should be member of NestedWGDupe2", wgService.isUserMemberOfGroup(new GroupNameId("NestedWGDupe2"), ewestfal.getPrincipalId()));
 		assertTrue("Should be member of NestedWGDupe2", isMember("NestedWGDupe2", groups));
-		assertTrue("Should be member of NestedWGDupe3", wgService.isUserMemberOfGroup(new GroupNameId("NestedWGDupe3"), ewestfal));
+		assertTrue("Should be member of NestedWGDupe3", wgService.isUserMemberOfGroup(new GroupNameId("NestedWGDupe3"), ewestfal.getPrincipalId()));
 		assertTrue("Should be member of NestedWGDupe3", isMember("NestedWGDupe3", groups));
-		assertTrue("Should be member of NestedWGDupe4", wgService.isUserMemberOfGroup(new GroupNameId("NestedWGDupe4"), ewestfal));
+		assertTrue("Should be member of NestedWGDupe4", wgService.isUserMemberOfGroup(new GroupNameId("NestedWGDupe4"), ewestfal.getPrincipalId()));
 		assertTrue("Should be member of NestedWGDupe4", isMember("NestedWGDupe4", groups));
 		// ewestfal should not be a member of NWG2
-		assertFalse("Should NOT be member of NWG2", wgService.isUserMemberOfGroup(new GroupNameId("NWG2"), ewestfal));
+		assertFalse("Should NOT be member of NWG2", wgService.isUserMemberOfGroup(new GroupNameId("NWG2"), ewestfal.getPrincipalId()));
 		assertFalse("Should NOT be member of NWG2", isMember("NWG2", groups));
 	}
 
@@ -244,15 +248,14 @@ public class BaseWorkgroupServiceTest extends KEWTestCase {
 	@Test
 	public void testSearch() throws Exception {
 	    loadXmlFile("NestedWorkgroups.xml");
-	    
+
 	    // test that searching by workgroup member handles nested workgroups properly
 	    WorkgroupService wgService = KEWServiceLocator.getWorkgroupService();
 	    WorkflowUser exampleUser = KEWServiceLocator.getUserService().getBlankUser();
-	    exampleUser.setAuthenticationUserId(new AuthenticationUserId("ewestfal"));
 	    Workgroup exampleWorkgroup = wgService.getBlankWorkgroup();
 	    // find the ones that have "WG" in them
 	    exampleWorkgroup.setGroupNameId(new GroupNameId("WG"));
-	    List workgroupResults = wgService.search(exampleWorkgroup, null, exampleUser);
+	    List workgroupResults = wgService.search(exampleWorkgroup, null, exampleUser.getWorkflowId());
 	    assertEquals("ewestfal should be member of 7 workgroups", 7, workgroupResults.size());
 	    List<String> groupNames = new ArrayList<String>();
 	    for (Iterator iterator = workgroupResults.iterator(); iterator.hasNext();) {
@@ -267,7 +270,7 @@ public class BaseWorkgroupServiceTest extends KEWTestCase {
 	    assertTrue(groupNames.contains("NestedWGDupe3"));
 	    assertTrue(groupNames.contains("NestedWGDupe4"));
 	}
-	
+
 //	@Test public void testNestedWorkgroupsCycles() throws Exception {
 //		BaseWorkgroup workgroup1 = new BaseWorkgroup();
 //		workgroup1.setActiveInd(Boolean.TRUE);

@@ -36,6 +36,8 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 /**
@@ -62,7 +64,7 @@ public class EmailMessageTest extends KEWTestCase {
     }
 
 
-    private void testImmediateReminder(WorkflowUser user, Collection<ActionItem> actionItems) throws Exception, ResourceUnavailableException {
+    private void testImmediateReminder(Person user, Collection<ActionItem> actionItems) throws Exception, ResourceUnavailableException {
         for (ActionItem actionItem: actionItems) {
             DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName(actionItem.getDocName());
 
@@ -94,7 +96,7 @@ public class EmailMessageTest extends KEWTestCase {
 
     }
 
-    private void testDailyReminder(WorkflowUser user, Collection<ActionItem> actionItems) {
+    private void testDailyReminder(Person user, Collection<ActionItem> actionItems) {
         String oldBody = actionListEmailService.buildDailyReminderBody(user, actionItems);
         String oldSubject = actionListEmailService.getEmailSubject().getSubject();
         EmailContent hardCodedContent = hardCodedEmailContentService.generateDailyReminder(user, actionItems);
@@ -111,7 +113,7 @@ public class EmailMessageTest extends KEWTestCase {
 
     }
 
-    private void testWeeklyReminder(WorkflowUser user, Collection<ActionItem> actionItems) {
+    private void testWeeklyReminder(Person user, Collection<ActionItem> actionItems) {
         String oldBody = actionListEmailService.buildWeeklyReminderBody(user, actionItems);
         String oldSubject = actionListEmailService.getEmailSubject().getSubject();
 
@@ -128,8 +130,8 @@ public class EmailMessageTest extends KEWTestCase {
         log.info("Weekly reminder content: " + styledContent);
     }
 
-    private void testEmailContentGeneration(WorkflowUser user, int numItems) throws Exception {
-        Collection<ActionItem> actionItems = KEWServiceLocator.getActionListService().getActionList(user, null);
+    private void testEmailContentGeneration(Person user, int numItems) throws Exception {
+        Collection<ActionItem> actionItems = KEWServiceLocator.getActionListService().getActionList(user.getPrincipalId(), null);
         assertEquals("user should have " + numItems + " items in his action list.", numItems, actionItems.size());
 
         testImmediateReminder(user, actionItems);
@@ -139,8 +141,8 @@ public class EmailMessageTest extends KEWTestCase {
         testWeeklyReminder(user, actionItems);
     }
 
-    private int generateDocs(String[] docTypes, WorkflowUser user) throws Exception {
-        NetworkIdDTO nid = new NetworkIdDTO(user.getAuthenticationUserId().getId());
+    private int generateDocs(String[] docTypes, Person user) throws Exception {
+        NetworkIdDTO nid = new NetworkIdDTO(user.getPrincipalName());
 
         for (String docType: docTypes) {
             WorkflowDocument document = new WorkflowDocument(nid, docType);
@@ -170,9 +172,10 @@ public class EmailMessageTest extends KEWTestCase {
      */
     @Test
     public void testGenerateReminders() throws Exception {
-        WorkflowUser wfuser = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("arh14"));
-        int count = generateDocs(new String[] { "PingDocument", "PingDocumentWithEmailAttrib" }, wfuser);
-        testEmailContentGeneration(wfuser, count);
+        //WorkflowUser wfuser = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("arh14"));
+        Person p = KIMServiceLocator.getPersonService().getPersonByPrincipalName("arh14");
+        int count = generateDocs(new String[] { "PingDocument", "PingDocumentWithEmailAttrib" }, p);
+        testEmailContentGeneration(p, count);
     }
 
     /**
@@ -183,10 +186,11 @@ public class EmailMessageTest extends KEWTestCase {
     public void testGenerateRemindersCustomStyleSheet() throws Exception {
         loadXmlFile("customEmailStyleData.xml");
         assertNotNull(KEWServiceLocator.getStyleService().getStyle("kew.email.style"));
-        WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("arh14"));
+
+        Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName("arh14");
         int count = generateDocs(new String[] { "PingDocument", "PingDocumentWithEmailAttrib" }, user);
 
-        Collection<ActionItem> actionItems = KEWServiceLocator.getActionListService().getActionList(user, null);
+        Collection<ActionItem> actionItems = KEWServiceLocator.getActionListService().getActionList(user.getPrincipalId(), null);
         assertEquals("user should have " + count + " items in his action list.", count, actionItems.size());
 
         EmailContent content = styleableContentService.generateImmediateReminder(user, actionItems.iterator().next(), KEWServiceLocator.getDocumentTypeService().findByName(actionItems.iterator().next().getDocName()));
@@ -217,10 +221,10 @@ public class EmailMessageTest extends KEWTestCase {
         assertNotNull(KEWServiceLocator.getStyleService().getStyle("kew.email.style"));
         assertNotNull(KEWServiceLocator.getStyleService().getStyle("doc.custom.email.style"));
 
-        WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("arh14"));
+        Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName("arh14");
         int count = generateDocs(new String[] { "PingDocumentCustomStyle" }, user);
 
-        Collection<ActionItem> actionItems = KEWServiceLocator.getActionListService().getActionList(user, null);
+        Collection<ActionItem> actionItems = KEWServiceLocator.getActionListService().getActionList(user.getPrincipalId(), null);
         assertEquals("user should have " + count + " items in his action list.", count, actionItems.size());
 
         EmailContent content = styleableContentService.generateImmediateReminder(user, actionItems.iterator().next(), KEWServiceLocator.getDocumentTypeService().findByName(actionItems.iterator().next().getDocName()));

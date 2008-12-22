@@ -55,13 +55,13 @@ public class KimWorkgroupServiceImpl implements WorkgroupService {
 
 	protected PersonService<Person> personService;
 	protected IdentityManagementService identityManagementService;
-	
+
 	/**
 	 * @see org.kuali.rice.kew.workgroup.WorkgroupService#getUsersGroupIds(org.kuali.rice.kew.user.WorkflowUser)
 	 */
-	public Set<Long> getUsersGroupIds(WorkflowUser member) {
+	public Set<Long> getUsersGroupIds(String principalId) {
 		Set<Long> ids = new HashSet<Long>();
-		List<? extends KimGroup> groups = getIdentityManagementService().getGroupsForPrincipal(member.getWorkflowId());
+		List<? extends KimGroup> groups = getIdentityManagementService().getGroupsForPrincipal(principalId);
 		for (KimGroup kimGroup : groups) {
 			ids.add(new Long(kimGroup.getGroupId()));
 		}
@@ -71,9 +71,18 @@ public class KimWorkgroupServiceImpl implements WorkgroupService {
 	/**
 	 * @see org.kuali.rice.kew.workgroup.WorkgroupService#getUsersGroupNames(org.kuali.rice.kew.user.WorkflowUser)
 	 */
-	public Set<String> getUsersGroupNames(WorkflowUser member) {
+	public Set<String> getUsersGroupNames(Person member) {
+		return this.getUsersGroupNames(member.getPrincipalId());
+	}
+
+	/**
+	 *
+	 * @see org.kuali.rice.kew.workgroup.WorkgroupService#getUsersGroupNames(java.lang.String)
+	 */
+	@Override
+	public Set<String> getUsersGroupNames(String principalId) {
 		Set<String> names = new HashSet<String>();
-		List<? extends KimGroup> groups = getIdentityManagementService().getGroupsForPrincipal(member.getWorkflowId());
+		List<? extends KimGroup> groups = getIdentityManagementService().getGroupsForPrincipal(principalId);
 		for (KimGroup kimGroup : groups) {
 			names.add(kimGroup.getGroupName());
 		}
@@ -83,9 +92,9 @@ public class KimWorkgroupServiceImpl implements WorkgroupService {
 	/**
 	 * @see org.kuali.rice.kew.workgroup.WorkgroupService#getUsersGroups(org.kuali.rice.kew.user.WorkflowUser)
 	 */
-	public List<Workgroup> getUsersGroups(WorkflowUser member) throws KEWUserNotFoundException {
+	public List<Workgroup> getUsersGroups(String principalId) throws KEWUserNotFoundException {
 		List<Workgroup> workgroups = new ArrayList<Workgroup>();
-		List<? extends KimGroup> groups = getIdentityManagementService().getGroupsForPrincipal(member.getWorkflowId());
+		List<? extends KimGroup> groups = getIdentityManagementService().getGroupsForPrincipal(principalId);
 		for (KimGroup kimGroup : groups) {
 			workgroups.add(convertToWorkgroup(kimGroup));
 		}
@@ -125,7 +134,7 @@ public class KimWorkgroupServiceImpl implements WorkgroupService {
 	/**
 	 * @see org.kuali.rice.kew.workgroup.WorkgroupService#isUserMemberOfGroup(org.kuali.rice.kew.workgroup.GroupId, org.kuali.rice.kew.user.WorkflowUser)
 	 */
-	public boolean isUserMemberOfGroup(GroupId groupId, WorkflowUser user) throws KEWUserNotFoundException {
+	public boolean isUserMemberOfGroup(GroupId groupId, String principalId) throws KEWUserNotFoundException {
 		String id = null;
 		if (groupId instanceof WorkflowGroupId) {
 			KimGroup group = getIdentityManagementService().getGroup(""+((WorkflowGroupId)groupId).getGroupId());
@@ -134,7 +143,7 @@ public class KimWorkgroupServiceImpl implements WorkgroupService {
 			KimGroup group = getIdentityManagementService().getGroupByName(org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE, ((GroupNameId)groupId).getNameId());
 			id = group.getGroupId();
 		}
-		return getIdentityManagementService().isMemberOfGroup(user.getWorkflowId(), id);
+		return getIdentityManagementService().isMemberOfGroup(principalId, id);
 	}
 
 	private Workgroup convertToWorkgroup(KimGroup kimGroup) {
@@ -149,7 +158,7 @@ public class KimWorkgroupServiceImpl implements WorkgroupService {
 		workgroup.setExtensions(new ArrayList<Extension>());
 		workgroup.setGroupNameId(new GroupNameId(kimGroup.getGroupName()));
 		workgroup.setLockVerNbr(0);
-		List<Recipient> members = new ArrayList<Recipient>();				
+		List<Recipient> members = new ArrayList<Recipient>();
 		for (String id : getIdentityManagementService().getMemberGroupIds(kimGroup.getGroupId())) {
 			members.add(convertToWorkgroup(getIdentityManagementService().getGroup(id)));
 		}
@@ -164,17 +173,17 @@ public class KimWorkgroupServiceImpl implements WorkgroupService {
 		workgroup.setVersionNumber(0);
 		workgroup.setWorkgroupId(new Long(kimGroup.getGroupId()));
 		return workgroup;
-	}	
-	
+	}
+
 	// Below are all old methods that KIM will not support
-	
+
 	/**
 	 * @see org.kuali.rice.kew.workgroup.WorkgroupService#getWorkgroupsGroups(org.kuali.rice.kew.workgroup.Workgroup)
 	 */
 	public List<Workgroup> getWorkgroupsGroups(Workgroup workgroup) {
 		throw new UnsupportedOperationException("Kim does not suppoert this method");
 	}
-	
+
 	/**
 	 * @see org.kuali.rice.kew.workgroup.WorkgroupService#copy(org.kuali.rice.kew.workgroup.Workgroup)
 	 */
@@ -235,11 +244,11 @@ public class KimWorkgroupServiceImpl implements WorkgroupService {
 		group.setMembers(new ArrayList<GroupMemberImpl>());
 		for (Iterator iterator = workgroup.getMembers().iterator(); iterator.hasNext();) {
 			Recipient recipient = (Recipient) iterator.next();
-			if (recipient instanceof WorkflowUser) {
-				WorkflowUser user = (WorkflowUser)recipient;
+			if (recipient instanceof Person) {
+				Person user = (Person)recipient;
 				GroupMemberImpl member = new GroupMemberImpl();
 				member.setMemberTypeCode( KimGroupImpl.PRINCIPAL_MEMBER_TYPE );
-				member.setMemberId(user.getWorkflowId());
+				member.setMemberId(user.getPrincipalId());
 				group.getMembers().add(member);
 			} else if (recipient instanceof Workgroup) {
 				Workgroup groupMember = (Workgroup)recipient;
@@ -265,11 +274,11 @@ public class KimWorkgroupServiceImpl implements WorkgroupService {
 	 * @see org.kuali.rice.kew.workgroup.WorkgroupService#search(org.kuali.rice.kew.workgroup.Workgroup, java.util.Map, org.kuali.rice.kew.user.WorkflowUser)
 	 */
 	@SuppressWarnings("unchecked")
-	public List search(Workgroup workgroup, Map<String, String> extensionValues, WorkflowUser user) throws KEWUserNotFoundException {
+	public List search(Workgroup workgroup, Map<String, String> extensionValues, Person user) throws KEWUserNotFoundException {
 		throw new UnsupportedOperationException("Kim does not suppoert this method");
 	}
 
-	public void loadXml(InputStream stream, WorkflowUser user) {
+	public void loadXml(InputStream stream, String principalId) {
         try {
         	new WorkgroupXmlHandler().parseWorkgroupEntries(stream);
         } catch (Exception e) {
@@ -299,6 +308,18 @@ public class KimWorkgroupServiceImpl implements WorkgroupService {
 			personService = KIMServiceLocator.getPersonService();
 		}
 		return personService;
+	}
+
+	/**
+	 * This overridden method ...
+	 *
+	 * @see org.kuali.rice.kew.workgroup.WorkgroupService#search(org.kuali.rice.kew.workgroup.Workgroup, java.util.Map, java.lang.String)
+	 */
+	@Override
+	public List search(Workgroup workgroup,
+			Map<String, String> extensionValues, String principalId)
+			throws KEWUserNotFoundException {
+		throw new UnsupportedOperationException("Kim does not suppoert this method");
 	}
 
 }

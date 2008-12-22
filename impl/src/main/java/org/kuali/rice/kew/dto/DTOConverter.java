@@ -103,7 +103,9 @@ import org.kuali.rice.kew.web.KeyValueSort;
 import org.kuali.rice.kew.workgroup.GroupId;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.WorkflowGroupId;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.service.impl.KimUserServiceImpl;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -111,12 +113,23 @@ import org.w3c.dom.NodeList;
 
 /**
  * Translates Workflow server side beans into client side VO beans.
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DTOConverter {
     private static final Logger LOG = Logger.getLogger(DTOConverter.class);
 
+    /**
+     *
+     * This method converts a DocumentRouteHeaderValue to a RouteHeaderDTO
+     *
+     * @param routeHeader
+     * @param user
+     * @return
+     * @throws WorkflowException
+     * @throws KEWUserNotFoundException
+     * @deprecated WorkflowUser is being replaced with Person or KimPrincipal
+     */
     public static RouteHeaderDTO convertRouteHeader(DocumentRouteHeaderValue routeHeader, WorkflowUser user) throws WorkflowException, KEWUserNotFoundException {
         RouteHeaderDTO routeHeaderVO = new RouteHeaderDTO();
         if (routeHeader == null) {
@@ -161,6 +174,57 @@ public class DTOConverter {
 
         if (user != null) {
             routeHeaderVO.setValidActions(convertValidActions(KEWServiceLocator.getActionRegistry().getValidActions(user, routeHeader)));
+        }
+        return routeHeaderVO;
+    }
+
+    public static RouteHeaderDTO convertRouteHeader(DocumentRouteHeaderValue routeHeader, Person user) throws WorkflowException, KEWUserNotFoundException {
+        RouteHeaderDTO routeHeaderVO = new RouteHeaderDTO();
+        if (routeHeader == null) {
+            return null;
+        }
+        populateRouteHeaderVO(routeHeaderVO, routeHeader);
+
+        if (user != null) {
+            routeHeaderVO.setUserBlanketApprover(false); // default to false
+            if (routeHeader.getDocumentType() != null) {
+            	boolean isBlanketApprover = KEWServiceLocator.getDocumentTypePermissionService().canBlanketApprove(user.getPrincipalId(), routeHeader.getDocumentType(), routeHeader.getDocRouteStatus(), routeHeader.getInitiatorWorkflowId());
+                routeHeaderVO.setUserBlanketApprover(isBlanketApprover);
+            }
+            String topActionRequested = KEWConstants.ACTION_REQUEST_FYI_REQ;
+            for (Iterator iter = routeHeader.getActionRequests().iterator(); iter.hasNext();) {
+                ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
+                // below will control what buttons are drawn on the client we only want the
+                // heaviest action button to show on the client making this code a little combersome
+                if (actionRequest.isRecipientRoutedRequest(user) && actionRequest.isActive()) {
+                    int actionRequestComparison = ActionRequestValue.compareActionCode(actionRequest.getActionRequested(), topActionRequested);
+                    if (actionRequest.isFYIRequest() && actionRequestComparison >= 0) {
+                        routeHeaderVO.setFyiRequested(true);
+                    } else if (actionRequest.isAcknowledgeRequest() && actionRequestComparison >= 0) {
+                        routeHeaderVO.setAckRequested(true);
+                        routeHeaderVO.setFyiRequested(false);
+                        topActionRequested = actionRequest.getActionRequested();
+                    } else if (actionRequest.isApproveRequest() && actionRequestComparison >= 0) {
+                        routeHeaderVO.setApproveRequested(true);
+                        routeHeaderVO.setAckRequested(false);
+                        routeHeaderVO.setFyiRequested(false);
+                        topActionRequested = actionRequest.getActionRequested();
+                        if (actionRequest.isCompleteRequst()) {
+                            routeHeaderVO.setCompleteRequested(true);
+                        }
+                    }
+                }
+            }
+            // Update notes and notesToDelete arrays in routeHeaderVO
+            routeHeaderVO.setNotesToDelete(null);
+            routeHeaderVO.setNotes(convertNotesArrayListToNoteVOArray(routeHeader.getNotes()));
+        }
+
+
+        if (user != null) {
+        	// TODO: Remove this hack.
+        	WorkflowUser wfUser = KimUserServiceImpl.convertPersonToWorkflowUser(user);
+            routeHeaderVO.setValidActions(convertValidActions(KEWServiceLocator.getActionRegistry().getValidActions(wfUser, routeHeader)));
         }
         return routeHeaderVO;
     }
@@ -317,7 +381,7 @@ public class DTOConverter {
 
         return routeHeader;
     }
-    
+
     public static ActionItemDTO convertActionItem(ActionItem actionItem) throws KEWUserNotFoundException {
         ActionItemDTO actionItemVO = new ActionItemDTO();
         actionItemVO.setActionItemId(actionItem.getActionItemId());
@@ -465,7 +529,7 @@ public class DTOConverter {
                             XmlHelper.appendXml(contentSectionElement, attributeDocContent);
                         }
                     } else if (attribute instanceof SearchableAttribute) {
-                        String searcheAttributeContent = 
+                        String searcheAttributeContent =
                         	((SearchableAttribute) attribute).getSearchContent(DocSearchUtils.getDocumentSearchContext("", documentType.getName(), ""));
                         if (!StringUtils.isEmpty(searcheAttributeContent)) {
                             XmlHelper.appendXml(contentSectionElement, searcheAttributeContent);
@@ -513,7 +577,7 @@ public class DTOConverter {
         }
         return documentContentVO;
     }
-    
+
     public static UserDTO convertUser(WorkflowUser user) {
         if (user == null) {
             return null;
@@ -526,6 +590,30 @@ public class DTOConverter {
         userVO.setDisplayName(user.getDisplayName());
         userVO.setLastName(user.getLastName());
         userVO.setFirstName(user.getGivenName());
+        userVO.setEmailAddress(user.getEmailAddress());
+        // Preferences preferences = SpringServiceLocator.getPreferencesService().getPreferences(user);
+        // userVO.setUserPreferencePopDocHandler(KEWConstants.PREFERENCES_YES_VAL.equals(preferences.getOpenNewWindow()));
+
+        userVO.setUserPreferencePopDocHandler(true);
+        return userVO;
+    }
+
+    public static UserDTO convertUser(Person user) {
+        if (user == null) {
+            return null;
+        }
+        UserDTO userVO = new UserDTO();
+        userVO.setNetworkId(user.getPrincipalName() == null ? null : user.getPrincipalName());
+
+        // These should be removed
+
+        //userVO.setUuId(user.getUuId() == null ? null : user.getUuId().getUuId());
+        //userVO.setEmplId(user.getEmplId() == null ? null : user.getEmplId().getEmplId());
+
+        userVO.setWorkflowId(user.getPrincipalId() == null ? null : user.getPrincipalId());
+        userVO.setDisplayName(user.getName());
+        userVO.setLastName(user.getLastName());
+        userVO.setFirstName(user.getFirstName());
         userVO.setEmailAddress(user.getEmailAddress());
         // Preferences preferences = SpringServiceLocator.getPreferencesService().getPreferences(user);
         // userVO.setUserPreferencePopDocHandler(KEWConstants.PREFERENCES_YES_VAL.equals(preferences.getOpenNewWindow()));
@@ -761,7 +849,7 @@ public class DTOConverter {
 
     /**
      * refactor name to convertResponsiblePartyVO when ResponsibleParty object is gone
-     * 
+     *
      * @param responsiblePartyVO
      * @return
      * @throws KEWUserNotFoundException
@@ -1163,7 +1251,7 @@ public class DTOConverter {
             revoke.setUser(KEWServiceLocator.getUserService().getWorkflowUser(revokeVO.getUserId()));
         }
         if (revokeVO.getGroupId()!= null) {
-            revoke.setGroup(KEWServiceLocator.getIdentityHelperService().getGroup(revokeVO.getGroupId()));          	
+            revoke.setGroup(KEWServiceLocator.getIdentityHelperService().getGroup(revokeVO.getGroupId()));
         }
         return revoke;
     }
@@ -1387,7 +1475,7 @@ public class DTOConverter {
         }
         return rule;
     }
-    
+
     public static DocSearchCriteriaDTO convertDocumentSearchCriteriaDTO(DocumentSearchCriteriaDTO criteriaVO) throws WorkflowException {
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setAppDocId(criteriaVO.getAppDocId());
@@ -1412,7 +1500,7 @@ public class DTOConverter {
         criteria.setToDateLastModified(criteriaVO.getToDateLastModified());
         criteria.setThreshold(criteriaVO.getThreshold());
         criteria.setSaveSearchForUser(criteriaVO.isSaveSearchForUser());
-        
+
         // generate the route node criteria
         if ( (StringUtils.isNotBlank(criteriaVO.getDocRouteNodeName())) && (StringUtils.isBlank(criteriaVO.getDocTypeFullName())) ) {
             throw new WorkflowException("No document type name specified when attempting to search by route node name '" + criteriaVO.getDocRouteNodeName() + "'");
@@ -1432,7 +1520,7 @@ public class DTOConverter {
             }
             criteria.setDocRouteNodeId(criteriaVO.getDocRouteNodeName());
         }
-        
+
         // build a map of the search attributes passed in from the client creating lists where keys are duplicated
         HashMap<String, List<String>> searchAttributeValues = new HashMap<String,List<String>>();
         for (KeyValueDTO keyValueVO : criteriaVO.getSearchAttributeValues()) {
@@ -1459,18 +1547,18 @@ public class DTOConverter {
         DocSearchUtils.addSearchableAttributesToCriteria(criteria, propertyFields, true);
         return criteria;
     }
-    
+
     private static DocumentType getDocumentTypeByName(String documentTypeName) {
         return KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
     }
-    
+
     public static DocumentSearchResultDTO convertDocumentSearchResultComponents(DocumentSearchResultComponents searchResult) throws WorkflowException {
         DocumentSearchResultDTO resultsVO = new DocumentSearchResultDTO();
         resultsVO.setColumns(convertColumns(searchResult.getColumns()));
         resultsVO.setSearchResults(convertDocumentSearchResults(searchResult.getSearchResults()));
         return resultsVO;
     }
-    
+
     private static List<DocumentSearchResultRowDTO> convertDocumentSearchResults(List<DocumentSearchResult> searchResults) throws WorkflowException {
         List<DocumentSearchResultRowDTO> rowVOs = new ArrayList<DocumentSearchResultRowDTO>();
         for (DocumentSearchResult documentSearchResult : searchResults) {
@@ -1478,7 +1566,7 @@ public class DTOConverter {
         }
         return rowVOs;
     }
-    
+
     public static DocumentSearchResultRowDTO convertDocumentSearchResult(DocumentSearchResult resultRow) throws WorkflowException {
         DocumentSearchResultRowDTO rowVO = new DocumentSearchResultRowDTO();
         List<KeyValueDTO> fieldValues = new ArrayList<KeyValueDTO>();
@@ -1488,7 +1576,7 @@ public class DTOConverter {
         rowVO.setFieldValues(fieldValues);
         return rowVO;
     }
-    
+
     private static List<LookupableColumnDTO> convertColumns(List<Column> columns) throws WorkflowException {
         List<LookupableColumnDTO> columnVOs = new ArrayList<LookupableColumnDTO>();
         for (Column column : columns) {
@@ -1496,7 +1584,7 @@ public class DTOConverter {
         }
         return columnVOs;
     }
-    
+
     public static LookupableColumnDTO convertColumn(Column column) throws WorkflowException {
         LookupableColumnDTO columnVO = new LookupableColumnDTO();
         columnVO.setColumnTitle(column.getColumnTitle());

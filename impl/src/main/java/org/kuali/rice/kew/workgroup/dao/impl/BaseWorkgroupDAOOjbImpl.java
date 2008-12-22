@@ -19,6 +19,7 @@ package org.kuali.rice.kew.workgroup.dao.impl;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -37,6 +38,8 @@ import org.kuali.rice.kew.workgroup.BaseWorkgroup;
 import org.kuali.rice.kew.workgroup.WorkflowGroupId;
 import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.workgroup.dao.BaseWorkgroupDAO;
+import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
 
@@ -56,35 +59,43 @@ public class BaseWorkgroupDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
         return (List) getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(BaseWorkgroup.class, crit));
 	}
 
-	public List find(Workgroup workgroup, Map<String, String> extensionValues, WorkflowUser user) {
+	public List find(Workgroup workgroup, Map<String, String> extensionValues, String principalId) {
+       return this.find(workgroup, extensionValues, KIMServiceLocator.getPersonService().getPerson(principalId));
+	}
+
+	public List find(Workgroup workgroup, Map<String, String> extensionValues, Person user) {
         Criteria crit = buildStandardCriteria(workgroup, extensionValues);
 
+        Map<String,String> criteria = new HashMap<String,String>();
         if (user != null) {
-//            Criteria userCriteria = new Criteria();
-//            if (!user.getAuthenticationUserId().isEmpty()) {
-//                userCriteria.addLike("authenticationUserId", user.getAuthenticationUserId().getAuthenticationId().replace('*', '%'));
-//            }
-//            if (!user.getWorkflowUserId().isEmpty()) {
-//                userCriteria.addEqualTo("workflowUserId", user.getWorkflowUserId().getWorkflowId());
-//            }
-//            if (!user.getEmplId().isEmpty()) {
-//                userCriteria.addEqualTo("emplId", user.getEmplId().getEmplId());
-//            }
-//            if (!user.getUuId().isEmpty()) {
-//                userCriteria.addEqualTo("uuId", user.getUuId().getUuId());
-//            }
-//            Collection users = getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(SpringServiceLocator.getUserService().getBlankUser().getClass(), userCriteria));
-        	Collection users = KEWServiceLocator.getUserService().search(user, true);
+        	if ((user.getPrincipalName() != null) && StringUtils.isNotEmpty(user.getPrincipalName())) {
+				criteria.put("principalName", user.getPrincipalName().trim() + "*");
+			}
+			if ((user.getPrincipalId() != null) && StringUtils.isNotEmpty(user.getPrincipalId())) {
+				criteria.put("principalId", user.getPrincipalId().trim() + "*");
+			}
+			if (StringUtils.isNotEmpty(user.getFirstName())) {
+				criteria.put("firstName", user.getFirstName().trim() + "*");
+			}
+			if (StringUtils.isNotEmpty(user.getLastName())) {
+				criteria.put("lastName", user.getLastName().trim() + "*");
+			}
+			if (StringUtils.isNotEmpty(user.getEmailAddress())) {
+				criteria.put("emailAddress", user.getEmailAddress().trim() + "*");
+			}
+
+
+        	List<? extends Person> users = KIMServiceLocator.getPersonService().findPeople(criteria);
             if (users == null || users.size() == 0) {
                 // this means the username they entered couldn't be found
                 return new ArrayList();
             }
-            Collection workflowIds = new ArrayList();
-            for (Iterator iter = users.iterator(); iter.hasNext();) {
-                WorkflowUser wfUser = (WorkflowUser) iter.next();
-                workflowIds.add(wfUser.getWorkflowUserId().getWorkflowId());
+            Collection principalIds = new ArrayList();
+            for (Iterator<? extends Person> iter = users.iterator(); iter.hasNext();) {
+                Person p =  iter.next();
+                principalIds.add(p.getPrincipalId());
             }
-            crit.addIn("workgroupMembers.workflowId", workflowIds);
+            crit.addIn("workgroupMembers.workflowId", principalIds);
             crit.addEqualTo("workgroupMembers.memberType", KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
         }
         return (List) getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(BaseWorkgroup.class, crit));

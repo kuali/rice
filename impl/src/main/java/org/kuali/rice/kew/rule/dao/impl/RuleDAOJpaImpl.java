@@ -50,10 +50,10 @@ import org.kuali.rice.kew.util.Utilities;
 public class RuleDAOJpaImpl implements RuleDAO {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RuleDAOJpaImpl.class);
-	
+
 	@PersistenceContext(unitName="kew-unit")
 	private EntityManager entityManager;
-	
+
 	private static final String OLD_DELEGATIONS_SQL =
 		"select oldDel.dlgn_rule_id "+
 		"from krew_rule_rsp_t oldRsp, krew_dlgn_rsp_t oldDel "+
@@ -85,7 +85,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
 			entityManager.flush();
 		} catch (Exception e) {
 			throw new WorkflowRuntimeException("error saving deactivation date", e);
-		} 
+		}
 	}
 
 	public List fetchAllCurrentRulesForTemplateDocCombination(Long ruleTemplateId, List documentTypes) {
@@ -124,9 +124,9 @@ public class RuleDAOJpaImpl implements RuleDAO {
 		crit.eq("currentInd", new Boolean(currentRules));
 		crit.eq("templateRuleInd", new Boolean(false));
 		crit.orderBy("activationDate", false);
-		
+
 		QueryByCriteria query = new QueryByCriteria(entityManager, crit);
-	
+
 		return (List) query.toQuery().getResultList();
 	}
 
@@ -160,7 +160,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
         }catch (javax.persistence.NoResultException e){
         	return null;
         }
-        
+
     }
 
 	public RuleBaseValues findRuleBaseValuesById(Long ruleBaseValuesId) {
@@ -267,7 +267,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
             if (user == null) {
         	throw new WorkflowRuntimeException("Failed to locate user for the given workflow id: " + workflowId);
             }
-            workgroupIds = KEWServiceLocator.getWorkgroupService().getUsersGroupIds(user);
+            workgroupIds = KEWServiceLocator.getWorkgroupService().getUsersGroupIds(user.getWorkflowId());
         }
         crit.in("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(workgroupIds, workflowId, roleName, searchUser, searchUserInWorkgroups),"ruleBaseValuesId");
         crit.distinct(true);
@@ -461,7 +461,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
 	}
 
 	public List findOldDelegations(final RuleBaseValues oldRule, final RuleBaseValues newRule) {
-		
+
 		Query q = entityManager.createNativeQuery(OLD_DELEGATIONS_SQL);
 		q.setParameter(1, oldRule.getRuleBaseValuesId().longValue());
 		q.setParameter(2, newRule.getRuleBaseValuesId().longValue());
@@ -470,7 +470,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
 			oldDelegations.add(findRuleBaseValuesById((Long)l));
 		}
 		return oldDelegations;
-	
+
 	}
 
 }

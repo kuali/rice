@@ -33,6 +33,7 @@ import org.kuali.rice.kew.engine.node.SimpleNode;
 import org.kuali.rice.kew.engine.node.SimpleResult;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.XmlHelper;
 import org.w3c.dom.Document;
@@ -45,18 +46,18 @@ import com.thoughtworks.xstream.XStream;
 
 /**
  * A node which will send emails using the configured stylesheet to generate the email content.
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class EmailNode implements SimpleNode {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(EmailNode.class);
-    
+
     private EmailStyleHelper emailStyleHelper = new EmailStyleHelper();
     private String styleName;
     private String from;
     private String to;
-    
+
     public SimpleResult process(RouteContext context, RouteHelper helper) throws Exception {
 	loadConfiguration(context);
 	Document document = generateXmlInput(context);
@@ -70,13 +71,14 @@ public class EmailNode implements SimpleNode {
 	}
 	return new SimpleResult(true);
     }
-    
+
     protected Document generateXmlInput(RouteContext context) throws Exception {
 	DocumentBuilder db = getDocumentBuilder(true);
         Document doc = db.newDocument();
         Element emailNodeElem = doc.createElement("emailNode");
         doc.appendChild(emailNodeElem);
-        RouteHeaderDTO routeHeaderVO = DTOConverter.convertRouteHeader(context.getDocument(), null);
+        WorkflowUser nullUser = null;  // Added to the convertRouteHeader is not ambigious.
+        RouteHeaderDTO routeHeaderVO = DTOConverter.convertRouteHeader(context.getDocument(), nullUser);
         RouteNodeInstanceDTO routeNodeInstanceVO = DTOConverter.convertRouteNodeInstance(context.getNodeInstance());
         Document documentContent = context.getDocumentContent().getDocument();
         XStream xstream = new XStream();
@@ -87,13 +89,13 @@ public class EmailNode implements SimpleNode {
         emailNodeElem.appendChild(doc.importNode(documentContent.getDocumentElement(), true));
         return doc;
     }
-    
+
     protected DocumentBuilder getDocumentBuilder(boolean coalesce) throws Exception {
 	DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 	dbf.setCoalescing(coalesce);
 	return dbf.newDocumentBuilder();
     }
-    
+
     protected Templates loadStyleSheet(String styleName) {
 	try {
 	    Templates style = KEWServiceLocator.getStyleService().getStyleAsTranslet(styleName);
@@ -105,11 +107,11 @@ public class EmailNode implements SimpleNode {
 	    throw new WorkflowRuntimeException("Failed to load stylesheet with name '" + styleName + "'");
 	}
     }
-    
+
     protected boolean isProduction() {
 	return KEWConstants.PROD_DEPLOYMENT_CODE.equalsIgnoreCase(ConfigContext.getCurrentContextConfig().getEnvironment());
     }
-    
+
     protected void loadConfiguration(RouteContext context) throws Exception {
 	String contentFragment = context.getNodeInstance().getRouteNode().getContentFragment();
 	DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -132,20 +134,20 @@ public class EmailNode implements SimpleNode {
 		throw new WorkflowRuntimeException("Must have exactly one 'to' address");
 	    }
 	}
-	
+
 	NodeList fromAddresses = document.getElementsByTagName("from");
 	if (fromAddresses.getLength() != 1) {
 	    throw new WorkflowRuntimeException("Must have exactly one 'from' address");
 	}
 	this.from = fromAddresses.item(0).getTextContent();
-	
+
 	NodeList styleNames = document.getElementsByTagName("style");
 	if (styleNames.getLength() != 1) {
 	    throw new WorkflowRuntimeException("Must have exactly one 'style'");
 	}
 	this.styleName = styleNames.item(0).getTextContent();
     }
-    
+
 
 
 

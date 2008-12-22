@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -66,7 +66,7 @@ public class RuleTemplateServiceImpl implements RuleTemplateService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.kuali.rice.kew.rule.RuleTemplateAttributeService#delete(java.lang.Long)
      */
 //    public void deleteRuleTemplateAttribute(Long ruleTemplateAttributeId, List ruleTemplateAttributes) {
@@ -91,7 +91,7 @@ public class RuleTemplateServiceImpl implements RuleTemplateService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.kuali.rice.kew.rule.RuleTemplateAttributeService#findByRuleTemplateAttributeId(java.lang.Long)
      */
     public RuleTemplateAttribute findByRuleTemplateAttributeId(Long ruleTemplateAttributeId) {
@@ -155,7 +155,7 @@ public class RuleTemplateServiceImpl implements RuleTemplateService {
     }
 
     /**
-     * Ensures that dependent objects have a reference to the specified rule template 
+     * Ensures that dependent objects have a reference to the specified rule template
      * @param ruleTemplate the rule template whose associates to check
      */
     private void fixAssociations(RuleTemplate ruleTemplate) {
@@ -280,7 +280,7 @@ public class RuleTemplateServiceImpl implements RuleTemplateService {
         this.ruleTemplateOptionDAO = ruleTemplateOptionDAO;
     }
 
-    public void loadXml(InputStream inputStream, WorkflowUser user) {
+    public void loadXml(InputStream inputStream, String principalId) {
         RuleTemplateXmlParser parser = new RuleTemplateXmlParser();
         try {
             parser.parseRuleTemplates(inputStream);
@@ -291,7 +291,7 @@ public class RuleTemplateServiceImpl implements RuleTemplateService {
             throw wsee;
         }
     }
-    
+
     public Element export(ExportDataSet dataSet) {
         RuleTemplateXmlExporter exporter = new RuleTemplateXmlExporter();
         return exporter.export(dataSet);

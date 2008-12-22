@@ -180,19 +180,19 @@ public class ActionListAction extends WorkflowAction {
             }
 
             if (isOutboxMode(form, request, preferences)) {
-        	actionList = new ArrayList(actionListSrv.getOutbox(workflowUser, uSession.getActionListFilter()));
+        	actionList = new ArrayList(actionListSrv.getOutbox(workflowUser.getWorkflowId(), uSession.getActionListFilter()));
         	form.setOutBoxEmpty(actionList.isEmpty());
             } else {
                 if (actionList == null) {
                 	// fetch the action list
-                    actionList = new ArrayList(actionListSrv.getActionList(workflowUser, uSession.getActionListFilter()));
+                    actionList = new ArrayList(actionListSrv.getActionList(workflowUser.getWorkflowId(), uSession.getActionListFilter()));
                     request.getSession().setAttribute(ACTION_LIST_USER_KEY, workflowUser.getWorkflowId());
             } else if (forceListRefresh) {
                 // force a refresh... usually based on filter change or parameter specifying refresh needed
-                    actionList = new ArrayList(actionListSrv.getActionList(workflowUser, uSession.getActionListFilter()));
+                    actionList = new ArrayList(actionListSrv.getActionList(workflowUser.getWorkflowId(), uSession.getActionListFilter()));
                     request.getSession().setAttribute(ACTION_LIST_USER_KEY, workflowUser.getWorkflowId());
             } else if (actionListSrv.refreshActionList(getUserSession(request).getPerson().getPrincipalId())) {
-                    actionList = new ArrayList(actionListSrv.getActionList(workflowUser, uSession.getActionListFilter()));
+                    actionList = new ArrayList(actionListSrv.getActionList(workflowUser.getWorkflowId(), uSession.getActionListFilter()));
                     request.getSession().setAttribute(ACTION_LIST_USER_KEY, workflowUser.getWorkflowId());
                 } else {
                 	freshActionList = false;
@@ -631,7 +631,7 @@ public class ActionListAction extends WorkflowAction {
         request.setAttribute("preferences", getUserSession(request).getPreferences());
         WorkgroupService workgroupSrv = (WorkgroupService) KEWServiceLocator.getWorkgroupService();
         String kewHelpDeskWgName = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.HELP_DESK_ACTION_LIST);
-        if (kewHelpDeskWgName != null && workgroupSrv.isUserMemberOfGroup(new GroupNameId(kewHelpDeskWgName), getUserSession(request).getWorkflowUser())) {
+        if (kewHelpDeskWgName != null && workgroupSrv.isUserMemberOfGroup(new GroupNameId(kewHelpDeskWgName), getUserSession(request).getWorkflowUser().getWorkflowId())) {
             request.setAttribute("helpDeskActionList", "true");
         }
         String routeLogPopup = "false";

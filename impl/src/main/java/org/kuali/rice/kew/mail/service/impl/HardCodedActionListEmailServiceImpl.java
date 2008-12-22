@@ -19,6 +19,7 @@ import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 
@@ -65,7 +66,7 @@ public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceI
 		return new EmailSubject(ACTION_LIST_REMINDER + " " + customSubject);
 	}
 
-	public void sendImmediateReminder(WorkflowUser user, ActionItem actionItem) {
+	public void sendImmediateReminder(Person user, ActionItem actionItem) {
 		if (sendActionListEmailNotification()) {
 			DocumentRouteHeaderValue document = KEWServiceLocator
 					.getRouteHeaderService().getRouteHeader(
@@ -114,12 +115,12 @@ public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceI
 
 	public void sendDailyReminder() {
 		if (sendActionListEmailNotification()) {
-			Collection users = getUsersWithEmailSetting(KEWConstants.EMAIL_RMNDR_DAY_VAL);
-			for (Iterator userIter = users.iterator(); userIter.hasNext();) {
-				WorkflowUser user = (WorkflowUser) userIter.next();
+			Collection<Person> users = getUsersWithEmailSetting(KEWConstants.EMAIL_RMNDR_DAY_VAL);
+			for (Iterator<Person> userIter = users.iterator(); userIter.hasNext();) {
+				Person user =  userIter.next();
 				try {
 					Collection actionItems = getActionListService()
-							.getActionList(user, null);
+							.getActionList(user.getPrincipalId(), null);
 					if (actionItems != null && actionItems.size() > 0) {
 						sendReminder(user, actionItems,
 								KEWConstants.EMAIL_RMNDR_DAY_VAL);
@@ -136,12 +137,12 @@ public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceI
 
 	public void sendWeeklyReminder() {
 		if (sendActionListEmailNotification()) {
-			Collection users = getUsersWithEmailSetting(KEWConstants.EMAIL_RMNDR_WEEK_VAL);
-			for (Iterator userIter = users.iterator(); userIter.hasNext();) {
-				WorkflowUser user = (WorkflowUser) userIter.next();
+			Collection<Person> users = getUsersWithEmailSetting(KEWConstants.EMAIL_RMNDR_WEEK_VAL);
+			for (Iterator<Person> userIter = users.iterator(); userIter.hasNext();) {
+				Person user = userIter.next();
 				try {
 					Collection actionItems = getActionListService()
-							.getActionList(user, null);
+							.getActionList(user.getPrincipalId(), null);
 					if (actionItems != null && actionItems.size() > 0) {
 						sendReminder(user, actionItems,
 								KEWConstants.EMAIL_RMNDR_WEEK_VAL);
@@ -156,7 +157,7 @@ public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceI
 		LOG.debug("Weekly action list emails sent successful");
 	}
 
-	private void sendReminder(WorkflowUser user, Collection actionItems,
+	private void sendReminder(Person user, Collection actionItems,
 			String emailSetting) {
 		String emailBody = null;
 		if (KEWConstants.EMAIL_RMNDR_DAY_VAL.equals(emailSetting)) {
@@ -218,8 +219,7 @@ public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceI
 		if (!isProduction()) {
 			try {
 				sf.append("Action Item sent to "
-						+ actionItem.getUser().getAuthenticationUserId()
-								.getAuthenticationId());
+						+ actionItem.getUser().getPrincipalName());
 				if (actionItem.getDelegationType() != null) {
 					sf.append(" for delegation type "
 							+ actionItem.getDelegationType());

@@ -1,6 +1,6 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -799,7 +799,8 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
             if (this.getDocumentType() != null) {
                 customEmailAttribute = this.getDocumentType().getCustomEmailAttribute();
                 if (customEmailAttribute != null) {
-                    customEmailAttribute.setRouteHeaderVO(DTOConverter.convertRouteHeader(this, null));
+                	WorkflowUser user = null;
+                    customEmailAttribute.setRouteHeaderVO(DTOConverter.convertRouteHeader(this, user));
                     return customEmailAttribute;
                 }
             }
@@ -807,7 +808,8 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
             LOG.debug("Error in retrieving custom email attribute", e);
         }
         customEmailAttribute = new CustomEmailAttributeImpl();
-        customEmailAttribute.setRouteHeaderVO(DTOConverter.convertRouteHeader(this, null));
+        WorkflowUser user = null;
+        customEmailAttribute.setRouteHeaderVO(DTOConverter.convertRouteHeader(this, user));
         return customEmailAttribute;
     }
 
@@ -817,7 +819,8 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
             if (this.getDocumentType() != null) {
                 customNoteAttribute = this.getDocumentType().getCustomNoteAttribute();
                 if (customNoteAttribute != null) {
-                    customNoteAttribute.setRouteHeaderVO(DTOConverter.convertRouteHeader(this, null));
+                	WorkflowUser user = null;
+                    customNoteAttribute.setRouteHeaderVO(DTOConverter.convertRouteHeader(this, user));
                     return customNoteAttribute;
                 }
             }
@@ -825,7 +828,8 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
             LOG.debug("Error in retrieving custom note attribute", e);
         }
         customNoteAttribute = new CustomNoteAttributeImpl();
-        customNoteAttribute.setRouteHeaderVO(DTOConverter.convertRouteHeader(this, null));
+        WorkflowUser user = null;
+        customNoteAttribute.setRouteHeaderVO(DTOConverter.convertRouteHeader(this, user));
         return customNoteAttribute;
     }
 
@@ -907,7 +911,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
 	public void setDocumentContent(DocumentRouteHeaderValueContent documentContent) {
 		this.documentContent = documentContent;
 	}
-	
+
 	public String toString() {
 	    return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
 	        .append("routeHeaderId", routeHeaderId)
@@ -927,7 +931,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
             .append("appDocId", appDocId)
             .toString();
 	}
-	
+
 	@PrePersist
 	public void beforeInsert(){
 		OrmUtils.populateAutoIncValue(this, KNSServiceLocator.getEntityManagerFactory().createEntityManager());

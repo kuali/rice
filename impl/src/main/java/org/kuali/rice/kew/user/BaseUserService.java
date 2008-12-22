@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -45,16 +45,16 @@ public class BaseUserService implements UserService {
 
     public static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BaseUserService.class);
     public static final String ERR_KEY_INVALID_USER = "user.userservice.id.invalid";
-    
+
     protected BaseUserDAO userDao;
-    
+
     protected UserCache cache = new UserCache();
     protected UserCapabilities capabilities = UserCapabilities.getAll();
-        
+
     public void setUserDAO(BaseUserDAO userDao) {
         this.userDao = userDao;
     }
-    
+
     /**
      * Supports all user capabilities.
      */
@@ -77,7 +77,7 @@ public class BaseUserService implements UserService {
         }
         return getWorkflowUser(userIdInterface);
     }
-    
+
     public WorkflowUser getWorkflowUser(UserId userId) throws KEWUserNotFoundException {
         WorkflowUser user = getFromCache(userId);
         if (user == null) {
@@ -90,15 +90,15 @@ public class BaseUserService implements UserService {
         }
         return user;
     }
-        
+
 	public WorkflowUser getBlankUser() {
 		return new BaseWorkflowUser();
 	}
-    
+
     public List<WorkflowUser> search(WorkflowUser user, boolean usesWildCard) {
     	return userDao.getSearchResults(user.getLastName(), user.getGivenName(), user.getAuthenticationUserId().getAuthenticationId(), user.getWorkflowUserId().getWorkflowId(), user.getEmplId().getEmplId(), user.getUuId().getUuId());
     }
-    
+
     public void save(WorkflowUser user) {
     	BaseWorkflowUser simpleUser = (BaseWorkflowUser)user;
     	Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
@@ -108,9 +108,9 @@ public class BaseUserService implements UserService {
     		removeFromCache(user.getWorkflowUserId());
     	}
     	simpleUser.setLastUpdateDate(currentTimestamp);
-		userDao.save(simpleUser);	
+		userDao.save(simpleUser);
 	}
-    
+
     public WorkflowUser copy(WorkflowUser user, boolean preserveKeys) {
     	BaseWorkflowUser original = (BaseWorkflowUser)user;
     	BaseWorkflowUser userCopy = (BaseWorkflowUser) getBlankUser();
@@ -129,8 +129,8 @@ public class BaseUserService implements UserService {
     	userCopy.setLastUpdateDate(original.getLastUpdateDate());
     	return userCopy;
     }
-    
-	public void loadXml(InputStream stream, WorkflowUser user) {
+
+	public void loadXml(InputStream stream, String principalId) {
         try {
             List parsedUsers = new UserXmlHandler().parseUserEntries(this, stream);
             for(Iterator iter = parsedUsers.iterator(); iter.hasNext();) {
@@ -157,7 +157,7 @@ public class BaseUserService implements UserService {
 	protected void removeFromCache(UserId userId) {
 		getCache().removeFromCache(userId);
 	}
-	
+
 	/**
 	 * Retrieve the user with the given id from the cache. Returns null if there is no
 	 * user in the cache with the given id.
@@ -172,23 +172,23 @@ public class BaseUserService implements UserService {
 	protected UserCache getCache() {
 		return cache;
 	}
-	
+
 	protected BaseUserDAO getUserDAO() {
 		return userDao;
 	}
-	
+
 	/**
 	 * A helper class which manages caching of users by various id types and retrieval of users by those id types.
-	 * 
+	 *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
 	 */
 	protected class UserCache {
-		
+
 		private Map authenticationIdMap = new HashMap();
 	    private Map uuIdMap = new HashMap();
 	    private Map emplIdMap = new HashMap();
 	    private Map workflowIdMap = new HashMap();
-		
+
 	    public void addToCache(WorkflowUser user) {
 	    	workflowIdMap.put(user.getWorkflowUserId(), user);
 	    	authenticationIdMap.put(user.getAuthenticationUserId(), user);
@@ -199,7 +199,7 @@ public class BaseUserService implements UserService {
 	    		emplIdMap.put(user.getEmplId(), user);
 	    	}
 	    }
-	    
+
 	    public void removeFromCache(UserId userId) {
 	    	WorkflowUser user = getFromCache(userId);
 	    	if (user != null) {
@@ -213,7 +213,7 @@ public class BaseUserService implements UserService {
 	    		}
 	    	}
 	    }
-	    
+
 	    public WorkflowUser getFromCache(UserId userId) {
 	    	WorkflowUser user = null;
 	    	if (userId instanceof WorkflowUserId) {
@@ -230,6 +230,6 @@ public class BaseUserService implements UserService {
 	    	}
 	    	return user;
 	    }
-	    
-	}    
+
+	}
 }

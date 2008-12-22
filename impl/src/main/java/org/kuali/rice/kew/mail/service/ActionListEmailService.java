@@ -18,6 +18,7 @@ package org.kuali.rice.kew.mail.service;
 
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kim.bo.Person;
 
 
 /**
@@ -28,7 +29,7 @@ import org.kuali.rice.kew.user.WorkflowUser;
  */
 public interface ActionListEmailService {
 
-    public void sendImmediateReminder(WorkflowUser user, ActionItem actionItem);
+    public void sendImmediateReminder(Person user, ActionItem actionItem);
     public void sendDailyReminder();
     public void sendWeeklyReminder();
     public void scheduleBatchEmailReminders() throws Exception;

@@ -75,7 +75,7 @@ public class OutboxTest extends KEWTestCase {
 
         document.saveDocument("");
 
-        Collection outbox = KEWServiceLocator.getActionListService().getOutbox(rkirkend, new ActionListFilter());
+        Collection outbox = KEWServiceLocator.getActionListService().getOutbox(rkirkend.getWorkflowId(), new ActionListFilter());
         assertEquals("there should be an outbox item", 0, outbox.size());
     }
 
@@ -97,7 +97,7 @@ public class OutboxTest extends KEWTestCase {
 
         document.approve("");
 
-        Collection outbox = KEWServiceLocator.getActionListService().getOutbox(rkirkend, new ActionListFilter());
+        Collection outbox = KEWServiceLocator.getActionListService().getOutbox(rkirkend.getWorkflowId(), new ActionListFilter());
         assertEquals("there should be an outbox item", 1, outbox.size());
     }
 
@@ -121,7 +121,7 @@ public class OutboxTest extends KEWTestCase {
 
         document.approve("");
 
-        Collection outbox = KEWServiceLocator.getActionListService().getOutbox(rkirkend, new ActionListFilter());
+        Collection outbox = KEWServiceLocator.getActionListService().getOutbox(rkirkend.getWorkflowId(), new ActionListFilter());
         assertEquals("there should be an outbox item", 1, outbox.size());
 
         document = new WorkflowDocument(new NetworkIdDTO("user1"), document.getRouteHeaderId());
@@ -133,7 +133,7 @@ public class OutboxTest extends KEWTestCase {
         assertTrue("approve should be requested", document.isApprovalRequested());
         document.approve("");
 
-        outbox = KEWServiceLocator.getActionListService().getOutbox(rkirkend, new ActionListFilter());
+        outbox = KEWServiceLocator.getActionListService().getOutbox(rkirkend.getWorkflowId(), new ActionListFilter());
         assertEquals("there should be an outbox item", 1, outbox.size());
     }
 
@@ -153,14 +153,14 @@ public class OutboxTest extends KEWTestCase {
         document.routeDocument("");
 
         // verify test is sane and users have action items
-        assertFalse(KEWServiceLocator.getActionListService().getActionList(rkirkend, new ActionListFilter()).isEmpty());
-        assertFalse(KEWServiceLocator.getActionListService().getActionList(user1, new ActionListFilter()).isEmpty());
+        assertFalse(KEWServiceLocator.getActionListService().getActionList(rkirkend.getWorkflowId(), new ActionListFilter()).isEmpty());
+        assertFalse(KEWServiceLocator.getActionListService().getActionList(user1.getWorkflowId(), new ActionListFilter()).isEmpty());
 
         document = new WorkflowDocument(new NetworkIdDTO("user1"), document.getRouteHeaderId());
         document.approve("");
         // verify only user who took action has the outbox item
-        assertTrue(KEWServiceLocator.getActionListService().getOutbox(rkirkend, new ActionListFilter()).isEmpty());
-        assertEquals(1, KEWServiceLocator.getActionListService().getOutbox(user1, new ActionListFilter()).size());
+        assertTrue(KEWServiceLocator.getActionListService().getOutbox(rkirkend.getWorkflowId(), new ActionListFilter()).isEmpty());
+        assertEquals(1, KEWServiceLocator.getActionListService().getOutbox(user1.getWorkflowId(), new ActionListFilter()).size());
     }
 
     @Test
@@ -178,22 +178,22 @@ public class OutboxTest extends KEWTestCase {
         WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "TestDocumentType");
         document.blanketApprove("");
         // verify only user who took action has the outbox item
-        assertEquals("Wrong number of outbox items found for rkirkend", 0, KEWServiceLocator.getActionListService().getOutbox(rkirkend, new ActionListFilter()).size());
-        assertEquals("Wrong number of outbox items found for user1", 0, KEWServiceLocator.getActionListService().getOutbox(user1, new ActionListFilter()).size());
+        assertEquals("Wrong number of outbox items found for rkirkend", 0, KEWServiceLocator.getActionListService().getOutbox(rkirkend.getWorkflowId(), new ActionListFilter()).size());
+        assertEquals("Wrong number of outbox items found for user1", 0, KEWServiceLocator.getActionListService().getOutbox(user1.getWorkflowId(), new ActionListFilter()).size());
 
         document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "TestDocumentType");
         document.saveDocument("");
         // verify test is sane and users have action items
-        assertEquals("Wrong number of action items found for rkirkend", 1, KEWServiceLocator.getActionListService().getActionList(rkirkend, new ActionListFilter()).size());
+        assertEquals("Wrong number of action items found for rkirkend", 1, KEWServiceLocator.getActionListService().getActionList(rkirkend.getWorkflowId(), new ActionListFilter()).size());
         // verify that outboxes of two users are clear
-        assertEquals("Wrong number of outbox items found for rkirkend", 0, KEWServiceLocator.getActionListService().getOutbox(rkirkend, new ActionListFilter()).size());
-        assertEquals("Wrong number of outbox items found for user1", 0, KEWServiceLocator.getActionListService().getOutbox(user1, new ActionListFilter()).size());
+        assertEquals("Wrong number of outbox items found for rkirkend", 0, KEWServiceLocator.getActionListService().getOutbox(rkirkend.getWorkflowId(), new ActionListFilter()).size());
+        assertEquals("Wrong number of outbox items found for user1", 0, KEWServiceLocator.getActionListService().getOutbox(user1.getWorkflowId(), new ActionListFilter()).size());
 
         document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
         document.blanketApprove("");
         // verify only user who took action has the outbox item
-        assertEquals("Wrong number of outbox items found for rkirkend", 1, KEWServiceLocator.getActionListService().getOutbox(rkirkend, new ActionListFilter()).size());
-        assertEquals("Wrong number of outbox items found for user1", 0, KEWServiceLocator.getActionListService().getOutbox(user1, new ActionListFilter()).size());
+        assertEquals("Wrong number of outbox items found for rkirkend", 1, KEWServiceLocator.getActionListService().getOutbox(rkirkend.getWorkflowId(), new ActionListFilter()).size());
+        assertEquals("Wrong number of outbox items found for user1", 0, KEWServiceLocator.getActionListService().getOutbox(user1.getWorkflowId(), new ActionListFilter()).size());
     }
 
     @Test
@@ -208,20 +208,20 @@ public class OutboxTest extends KEWTestCase {
         WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user2"), "OutboxTestDocumentType");
         document.routeDocument("");
         // verify action items exist
-        assertEquals("Wrong number of action items found for rkirkend", 1, KEWServiceLocator.getActionListService().getActionList(rkirkend, new ActionListFilter()).size());
-        assertEquals("Wrong number of action items found for ewestfal", 1, KEWServiceLocator.getActionListService().getActionList(ewestfal, new ActionListFilter()).size());
-        assertEquals("Wrong number of action items found for user1", 1, KEWServiceLocator.getActionListService().getActionList(user1, new ActionListFilter()).size());
+        assertEquals("Wrong number of action items found for rkirkend", 1, KEWServiceLocator.getActionListService().getActionList(rkirkend.getWorkflowId(), new ActionListFilter()).size());
+        assertEquals("Wrong number of action items found for ewestfal", 1, KEWServiceLocator.getActionListService().getActionList(ewestfal.getWorkflowId(), new ActionListFilter()).size());
+        assertEquals("Wrong number of action items found for user1", 1, KEWServiceLocator.getActionListService().getActionList(user1.getWorkflowId(), new ActionListFilter()).size());
         // verify outboxes are clear
-        assertEquals("Wrong number of outbox items found for rkirkend", 0, KEWServiceLocator.getActionListService().getOutbox(rkirkend, new ActionListFilter()).size());
-        assertEquals("Wrong number of outbox items found for ewestfal", 0, KEWServiceLocator.getActionListService().getOutbox(ewestfal, new ActionListFilter()).size());
-        assertEquals("Wrong number of outbox items found for user1", 0, KEWServiceLocator.getActionListService().getOutbox(user1, new ActionListFilter()).size());
+        assertEquals("Wrong number of outbox items found for rkirkend", 0, KEWServiceLocator.getActionListService().getOutbox(rkirkend.getWorkflowId(), new ActionListFilter()).size());
+        assertEquals("Wrong number of outbox items found for ewestfal", 0, KEWServiceLocator.getActionListService().getOutbox(ewestfal.getWorkflowId(), new ActionListFilter()).size());
+        assertEquals("Wrong number of outbox items found for user1", 0, KEWServiceLocator.getActionListService().getOutbox(user1.getWorkflowId(), new ActionListFilter()).size());
 
         document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
         document.approve("");
         // verify only user who took action has the outbox item
-        assertEquals("Wrong number of outbox items found for rkirkend", 1, KEWServiceLocator.getActionListService().getOutbox(rkirkend, new ActionListFilter()).size());
-        assertEquals("Wrong number of outbox items found for ewestfal", 0, KEWServiceLocator.getActionListService().getOutbox(user1, new ActionListFilter()).size());
-        assertEquals("Wrong number of outbox items found for user1", 0, KEWServiceLocator.getActionListService().getOutbox(user1, new ActionListFilter()).size());
+        assertEquals("Wrong number of outbox items found for rkirkend", 1, KEWServiceLocator.getActionListService().getOutbox(rkirkend.getWorkflowId(), new ActionListFilter()).size());
+        assertEquals("Wrong number of outbox items found for ewestfal", 0, KEWServiceLocator.getActionListService().getOutbox(user1.getWorkflowId(), new ActionListFilter()).size());
+        assertEquals("Wrong number of outbox items found for user1", 0, KEWServiceLocator.getActionListService().getOutbox(user1.getWorkflowId(), new ActionListFilter()).size());
     }
 
     @Test

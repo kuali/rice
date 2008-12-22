@@ -211,7 +211,7 @@ public class XmlIngesterServiceImpl implements XmlIngesterService {
 
             try {
                 //SpringServiceLocator.getXmlDigesterService().digest(xmlLoader, xmlDocCollection, user);
-                digesterService.digest(xmlLoader, xmlDocCollection, user);
+                digesterService.digest(xmlLoader, xmlDocCollection, user.getWorkflowId());
             } catch (Exception e) {
                 LOG.error("Caught Exception loading xml data from " + xmlDocCollection.getFile() + ".  Will move associated file to problem dir.", e);
                 failed.add(xmlDocCollection);

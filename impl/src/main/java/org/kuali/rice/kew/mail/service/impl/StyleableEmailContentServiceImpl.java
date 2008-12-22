@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -52,6 +52,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kew.workgroup.WorkflowGroupId;
+import org.kuali.rice.kim.bo.Person;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -73,12 +74,12 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
     protected StyleService styleService;
     protected EmailStyleHelper styleHelper = new EmailStyleHelper();
     protected String globalEmailStyleSheet = KEWConstants.EMAIL_STYLESHEET_NAME;
-    
-    
+
+
     public void setStyleService(StyleService styleService) {
         this.styleService = styleService;
     }
-    
+
     public void setGlobalEmailStyleSheet(String globalEmailStyleSheet) {
         this.globalEmailStyleSheet = globalEmailStyleSheet;
     }
@@ -106,7 +107,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
 
         node.appendChild(element);
     }
-    
+
     protected static void addTextElement(Document doc, Element baseElement, String elementName, Object elementData) {
         Element element = doc.createElement(elementName);
         element.appendChild(doc.createTextNode(elementData.toString()));
@@ -126,7 +127,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
     protected static void addTimestampElement(Document doc, Element baseElement, String elementName, Timestamp elementData) {
         addTextElement(doc, baseElement, elementName, RiceConstants.getDefaultDateFormat().format(elementData));
     }
-    
+
     protected static void addDelegatorElement(Document doc, Element baseElement, ActionItem actionItem) {
         Element delegatorElement = doc.createElement("delegator");
         if ( (actionItem.getDelegatorWorkflowId() != null) && (actionItem.getDelegatorWorkflowId() != null) ) {
@@ -181,14 +182,14 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
     /**
      * This method is used to add the given {@link ActionItem} to the given {@link org.w3c.dom.Document} in a summarized
      * form for use in weekly or daily type reminder e-mails.
-     * 
+     *
      * @param doc - Document to have the ActionItem added to
      * @param actionItem - the action item being added
-     * @param user - the current user 
+     * @param user - the current user
      * @param node - the node object to add the actionItem XML to (defaults to the doc variable if null is passed in)
      * @throws Exception
      */
-    protected void addSummarizedActionItem(Document doc, ActionItem actionItem, WorkflowUser user, Node node) throws Exception {
+    protected void addSummarizedActionItem(Document doc, ActionItem actionItem, Person user, Node node) throws Exception {
         if (node == null) {
             node = doc;
         }
@@ -228,13 +229,13 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
             String message = "Error transforming DOM";
             LOG.error(message, te);
             throw new WorkflowRuntimeException(message, te);
-        }        
+        }
     }
-    
+
     /**
      * This method retrieves the style from the system using the given name. If none is found the default style xsl file
      * defined by {@link #DEFAULT_EMAIL_STYLESHEET_RESOURCE_LOC} is used.
-     * 
+     *
      * @param styleName
      * @return a valid {@link javax.xml.transform.Templates} using either the given styleName or the default xsl style file
      */
@@ -243,7 +244,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
         try {
             style = styleService.getStyleAsTranslet(styleName);
         } catch (TransformerConfigurationException tce) {
-            String message = "Error obtaining style '" + styleName + "', using default"; 
+            String message = "Error obtaining style '" + styleName + "', using default";
             LOG.error(message, tce);
             // throw new WorkflowRuntimeException("Error obtaining style '" + styleName + "'", tce);
         }
@@ -251,10 +252,10 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
         if (style == null) {
             LOG.warn("Could not find specified style, " + styleName + ", using default");
             try {
-            
+
                 style = TransformerFactory.newInstance().newTemplates(new StreamSource(new DefaultResourceLoader().getResource("classpath:org/kuali/rice/kew/mail/" + DEFAULT_EMAIL_STYLESHEET_RESOURCE_LOC).getInputStream()));
             } catch (Exception tce) {
-                String message = "Error obtaining default style from resource: " + DEFAULT_EMAIL_STYLESHEET_RESOURCE_LOC; 
+                String message = "Error obtaining default style from resource: " + DEFAULT_EMAIL_STYLESHEET_RESOURCE_LOC;
                 LOG.error(message, tce);
                 throw new WorkflowRuntimeException("Error obtaining style '" + styleName + "'", tce);
             }
@@ -267,7 +268,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
         return styleHelper.generateEmailContent(style, doc);
     }
 
-    protected EmailContent generateReminderForActionItems(WorkflowUser user, Collection<ActionItem> actionItems, String name, String style) {
+    protected EmailContent generateReminderForActionItems(Person user, Collection<ActionItem> actionItems, String name, String style) {
         DocumentBuilder db = getDocumentBuilder(false);
         Document doc = db.newDocument();
         Element element = doc.createElement(name);
@@ -291,7 +292,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
             LOG.error(message, e);
             throw new WorkflowRuntimeException(e);
         }
-        
+
         return generateEmailContent(style, doc);
     }
 
@@ -303,9 +304,9 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
     }
 
     /**
-     * This method generates an {@link EmailContent} object using the given parameters.  Part of this operation includes 
+     * This method generates an {@link EmailContent} object using the given parameters.  Part of this operation includes
      * serializing the given {@link ActionItem} to XML. The following objects and methods are included in the serialization:
-     * 
+     *
      * <ul>
      * <li>{@link WorkflowUser}</li>
      * <li>{@link WorkflowUser#getAuthenticationUserId()}</li>
@@ -314,14 +315,14 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
      * <li>{@link DocumentRouteHeaderValue#getDocumentType()}</li>
      * <li>{@link WorkflowUser}</li>
      * </ul>
-     * 
+     *
      * @param user - the current user
      * @param actionItem - the action item being added
      * @param documentType - the document type that the custom email style sheet will come from
      * @param node - the node object to add the actionItem XML to (defaults to the doc variable if null is passed in)
      * @throws Exception
      */
-    public EmailContent generateImmediateReminder(WorkflowUser user, ActionItem actionItem, DocumentType documentType) {
+    public EmailContent generateImmediateReminder(Person user, ActionItem actionItem, DocumentType documentType) {
         // change style name based on documentType when configurable email style on document is implemented...
         String styleSheet = documentType.getCustomEmailStylesheet();
         LOG.debug(documentType.getName() + " style: " + styleSheet);
@@ -370,7 +371,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
             // keep adding stuff until we have all the xml we need to formulate the message :/
             addObjectXML(doc, actionItem, root, "actionItem");
             addObjectXML(doc, actionItem.getUser(), root, "actionItemUser");
-            addObjectXML(doc, actionItem.getUser().getAuthenticationUserId(), root, "actionItemAuthenticationUserId");
+            addObjectXML(doc, actionItem.getUser().getPrincipalName(), root, "actionItemAuthenticationUserId");
             addObjectXML(doc, actionItem.getRouteHeader(), root, "doc");
             addObjectXML(doc, actionItem.getRouteHeader().getInitiatorUser(), root, "docInitiator");
             addObjectXML(doc, actionItem.getRouteHeader().getDocumentType(), root, "documentType");
@@ -384,11 +385,11 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
         return generateEmailContent(styleSheet, doc);
     }
 
-    public EmailContent generateWeeklyReminder(WorkflowUser user, Collection<ActionItem> actionItems) {
+    public EmailContent generateWeeklyReminder(Person user, Collection<ActionItem> actionItems) {
         return generateReminderForActionItems(user, actionItems, "weeklyReminder", globalEmailStyleSheet);
     }
 
-    public EmailContent generateDailyReminder(WorkflowUser user, Collection<ActionItem> actionItems) {
+    public EmailContent generateDailyReminder(Person user, Collection<ActionItem> actionItems) {
         return generateReminderForActionItems(user, actionItems, "dailyReminder", globalEmailStyleSheet);
     }
 

@@ -116,7 +116,8 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         }
         LOG.debug("Fetching RouteHeaderVO [id="+documentId+"]");
         DocumentRouteHeaderValue document = loadDocument(documentId);
-        RouteHeaderDTO routeHeaderVO = DTOConverter.convertRouteHeader(document, null);
+        WorkflowUser user = null; // to solve the ambigious issue
+        RouteHeaderDTO routeHeaderVO = DTOConverter.convertRouteHeader(document, user);
         if (routeHeaderVO == null) {
         	LOG.error("Returning null RouteHeaderVO [id=" + documentId + "]");
         }
@@ -216,7 +217,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
 
     public ActionItemDTO[] getActionItemsForUser(UserIdDTO userId) throws WorkflowException {
         //added by Derek
-        Collection actionItems = KEWServiceLocator.getActionListService().getActionList(getWorkflowUserInternal(userId), null);
+        Collection actionItems = KEWServiceLocator.getActionListService().getActionList(getWorkflowUserInternal(userId).getWorkflowId(), null);
         ActionItemDTO[] actionItemVOs = new ActionItemDTO[actionItems.size()];
         int i = 0;
         for (Iterator iterator = actionItems.iterator(); iterator.hasNext(); i++) {

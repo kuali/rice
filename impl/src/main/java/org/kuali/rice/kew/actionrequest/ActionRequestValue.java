@@ -63,6 +63,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.workgroup.WorkflowGroupId;
 import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -208,7 +209,7 @@ public class ActionRequestValue implements WorkflowPersistable {
         }
         return KIMServiceLocator.getIdentityManagementService().getGroup(getGroupId());
     }
-    
+
     public String getRouteLevelName() {
         // this is for backward compatibility of requests which have not been converted
         if (CompatUtils.isRouteLevelRequest(this)) {
@@ -554,13 +555,53 @@ public class ActionRequestValue implements WorkflowPersistable {
         return KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD.equals(getRecipientTypeCd());
     }
 
+    public boolean isRecipientRoutedRequest(String principalId) throws KEWUserNotFoundException {
+    	//before altering this method it is used in checkRouteLogAuthentication
+    	//don't break that method
+    	if (principalId == null || "".equals(principalId)) {
+    		return false;
+    	}
+
+    	boolean isRecipientInGraph = false;
+    	if (isReviewerUser()) {
+    			isRecipientInGraph = getWorkflowId().equals(principalId);
+    	} else if (isGroupRequest()) {
+    		KimGroup group = getGroup();
+			if (group == null){
+				LOG.error("Was unable to retrieve workgroup " + getGroupId());
+			}
+    		isRecipientInGraph = KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(principalId, group.getGroupId());
+    	}
+
+
+    	for (Iterator iter = getChildrenRequests().iterator(); iter.hasNext();) {
+    		ActionRequestValue childRequest = (ActionRequestValue) iter.next();
+    		isRecipientInGraph = isRecipientInGraph || childRequest.isRecipientRoutedRequest(principalId);
+    	}
+
+    	return isRecipientInGraph;
+    }
+
+    /**
+     *
+     * This method ...
+     *
+     * @param recipient
+     * @return
+     * @throws KEWUserNotFoundException
+     * @deprecated should use the one with the String principalId
+     */
+    public boolean isRecipientRoutedRequest(Person recipient) throws KEWUserNotFoundException {
+    	return this.isRecipientRoutedRequest(recipient.getPrincipalId());
+    }
+
     public boolean isRecipientRoutedRequest(Recipient recipient) throws KEWUserNotFoundException {
     	//before altering this method it is used in checkRouteLogAuthentication
     	//don't break that method
     	if (recipient == null) {
     		return false;
     	}
-    	
+
     	boolean isRecipientInGraph = false;
     	if (isReviewerUser()) {
     		if (recipient instanceof WorkflowUser) {

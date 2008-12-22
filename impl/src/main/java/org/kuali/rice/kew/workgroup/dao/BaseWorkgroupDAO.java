@@ -20,16 +20,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.workgroup.BaseWorkgroup;
 import org.kuali.rice.kew.workgroup.Workgroup;
+import org.kuali.rice.kim.bo.Person;
 
 
 public interface BaseWorkgroupDAO {
 
 	public void save(Workgroup workgroup);
 	public List search(Workgroup workgroup, Map<String, String> extensionValues);
-	public List find(Workgroup workgroup, Map<String, String> extensionValues, WorkflowUser user);
+	public List find(Workgroup workgroup, Map<String, String> extensionValues, Person user);
+	public List find(Workgroup workgroup, Map<String, String> extensionValues, String principalId);
 	public BaseWorkgroup findByName(String workgroupName);
 	public BaseWorkgroup findByWorkgroupId(Long workgroupId);
 	public BaseWorkgroup findByDocumentId(Long documentId);

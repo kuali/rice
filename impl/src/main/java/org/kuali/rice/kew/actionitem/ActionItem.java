@@ -73,7 +73,7 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
 	@Id
 	@Column(name="ACTN_ITM_ID")
     @GeneratedValue(strategy=GenerationType.AUTO, generator="KREW_ACTN_ITM_SEQ_GEN")
-    @SequenceGenerator(name="KREW_ACTN_ITM_SEQ_GEN", sequenceName="KREW_ACTN_ITM_S") 
+    @SequenceGenerator(name="KREW_ACTN_ITM_SEQ_GEN", sequenceName="KREW_ACTN_ITM_S")
 	private Long actionItemId;
     @Column(name="PRNCPL_ID")
 	private String principalId;
@@ -134,18 +134,19 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
     	return getGroup(groupId.toString());
     }
 
-    private WorkflowUser getUser(String workflowId) throws KEWUserNotFoundException {
+    private Person getUser(String workflowId) throws KEWUserNotFoundException {
     	if (StringUtils.isBlank(workflowId)) {
     		return null;
     	}
-        return KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(workflowId));
+    	return KIMServiceLocator.getPersonService().getPerson(workflowId);
+        //return KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(workflowId));
     }
 
-    public WorkflowUser getUser() throws KEWUserNotFoundException {
+    public Person getUser() throws KEWUserNotFoundException {
         return getUser(principalId);
     }
 
-    public WorkflowUser getDelegatorUser() throws KEWUserNotFoundException {
+    public Person getDelegatorUser() throws KEWUserNotFoundException {
         return getUser(delegatorWorkflowId);
     }
 

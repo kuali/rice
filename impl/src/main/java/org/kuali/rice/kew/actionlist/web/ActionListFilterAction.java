@@ -108,7 +108,7 @@ public class ActionListFilterAction extends WorkflowAction {
     }
 
     private List getUserWorkgroupsDropDownList(WorkflowUser user) throws KEWUserNotFoundException {
-    	List userWorkgroups = KEWServiceLocator.getWorkgroupService().getUsersGroups(user);
+    	List userWorkgroups = KEWServiceLocator.getWorkgroupService().getUsersGroups(user.getWorkflowId());
     	List sortedUserWorkgroups = new ArrayList();
     	KeyValue keyValue = null;
     	keyValue = new KeyValue(KEWConstants.NO_FILTERING, KEWConstants.NO_FILTERING);

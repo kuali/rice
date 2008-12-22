@@ -30,6 +30,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.Person;
 
 
 /**
@@ -52,7 +53,7 @@ public class CustomizableActionListEmailServiceImpl extends ActionListEmailServi
         return contentService;
     }
 
-    public void sendImmediateReminder(WorkflowUser user, ActionItem actionItem) {
+    public void sendImmediateReminder(Person user, ActionItem actionItem) {
         if (!sendActionListEmailNotification()) {
             LOG.debug("not sending immediate reminder");
             return;
@@ -66,8 +67,8 @@ public class CustomizableActionListEmailServiceImpl extends ActionListEmailServi
     }
 
     @Override
-    protected void sendPeriodicReminder(WorkflowUser user, Collection actionItems, String emailSetting) {
-        actionItems = filterActionItemsToNotify(user.getWorkflowUserId().getId(), actionItems);
+    protected void sendPeriodicReminder(Person user, Collection<ActionItem> actionItems, String emailSetting) {
+        actionItems = filterActionItemsToNotify(user.getPrincipalId(), actionItems);
         // if there are no action items after being filtered, there's no
         // reason to send the email
         if (actionItems.isEmpty()) {

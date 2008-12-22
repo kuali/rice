@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -66,10 +66,10 @@ import org.xml.sax.InputSource;
 
 /**
  * DAO-based EDocLiteService implementation
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class EDocLiteServiceImpl implements EDocLiteService {	
+public class EDocLiteServiceImpl implements EDocLiteService {
     private static final Logger LOG = Logger.getLogger(EDocLiteServiceImpl.class);
 
 	private EDLGlobalConfig edlGlobalConfig;
@@ -102,7 +102,7 @@ public class EDocLiteServiceImpl implements EDocLiteService {
 		}
 		return EDLControllerFactory.createEDLController(edlAssociation, edlGlobalConfig);
 	}
-	
+
 	public EDLController getEDLController(Long documentId) {
 		DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
 		String edlName = document.getAppDocId();//components working with workflow docs will need to know this, perhaps through a document utils.
@@ -118,15 +118,15 @@ public class EDocLiteServiceImpl implements EDocLiteService {
 		}
 		return EDLControllerFactory.createEDLController(edlAssociation, edlGlobalConfig, document);
 	}
-	
+
 	public void initEDLGlobalConfig() {
 		try {
-			this.edlGlobalConfig = EDLGlobalConfigFactory.createEDLGlobalConfig(ConfigContext.getCurrentContextConfig().getEDLConfigLocation());	
+			this.edlGlobalConfig = EDLGlobalConfigFactory.createEDLGlobalConfig(ConfigContext.getCurrentContextConfig().getEDLConfigLocation());
 		} catch (Exception e) {
 			throw new WorkflowRuntimeException(e);
 		}
 	}
-	
+
 	public Document getDefinitionXml(EDocLiteAssociation edlAssociation) {
 		try {
 			Document def = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(
@@ -136,7 +136,7 @@ public class EDocLiteServiceImpl implements EDocLiteService {
 			throw new WorkflowRuntimeException("Caught exception parsing EDL definition " + edlAssociation.getDefinition(), e);
 		}
 	}
-	
+
 	private static WorkflowServiceErrorException generateException(String error, Throwable cause) {
         WorkflowServiceErrorException wsee = new WorkflowServiceErrorException(error, new WorkflowServiceErrorImpl(error, KEWConstants.XML_FILE_PARSE_ERROR));
         if (cause != null) {
@@ -159,7 +159,7 @@ public class EDocLiteServiceImpl implements EDocLiteService {
 
     /**
      * Parses an arbitrary XML stream
-     * 
+     *
      * @param stream
      *            stream containing XML doc content
      * @return parsed Document object
@@ -176,7 +176,7 @@ public class EDocLiteServiceImpl implements EDocLiteService {
 
     /**
      * Parses an EDocLiteAssocation
-     * 
+     *
      * @param e
      *            element to parse
      * @return an EDocLiteAssocation
@@ -196,7 +196,7 @@ public class EDocLiteServiceImpl implements EDocLiteService {
 
     /**
      * Parses an EDocLiteDefinition
-     * 
+     *
      * @param e
      *            element to parse
      * @return an EDocLiteDefinition
@@ -301,7 +301,7 @@ public class EDocLiteServiceImpl implements EDocLiteService {
     public void saveEDocLiteDefinition(InputStream xml) {
         // convert xml to EDocLiteDefinition
         EDocLiteDefinition data = parseEDocLiteDefinition(parse(xml).getDocumentElement());
-        saveEDocLiteDefinition(data);        
+        saveEDocLiteDefinition(data);
     }
 
     public void saveEDocLiteAssociation(InputStream xml) {
@@ -345,7 +345,7 @@ public class EDocLiteServiceImpl implements EDocLiteService {
     public void removeStyleFromCache(String styleName) {
         styleService.removeStyleFromCache(styleName);
     }
-    
+
     public void removeDefinitionFromCache(String defName) {
         LOG.info("Removing definition " + defName + " from cache");
         EDLControllerFactory.flushDefinitionFromConfigCache(defName);
@@ -358,16 +358,16 @@ public class EDocLiteServiceImpl implements EDocLiteService {
     public EDocLiteAssociation getEDocLiteAssociation(Long associationId) {
         return dao.getEDocLiteAssociation(associationId);
     }
-    
+
     // ---- XmlLoader interface implementation
 
-    public void loadXml(InputStream inputStream, WorkflowUser user) {
-    	EDocLiteXmlParser.loadXml(inputStream, user);
+    public void loadXml(InputStream inputStream, String principalId) {
+    	EDocLiteXmlParser.loadXml(inputStream, principalId);
     }
 
     // ---- XmlExporter interface implementation
 	public org.jdom.Element export(ExportDataSet dataSet) {
 		return new EDocLiteXmlExporter().export(dataSet);
 	}
-  
+
 }

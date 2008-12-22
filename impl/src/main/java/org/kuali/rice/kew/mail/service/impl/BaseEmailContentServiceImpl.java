@@ -33,6 +33,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 
@@ -76,7 +77,7 @@ public abstract class BaseEmailContentServiceImpl implements EmailContentService
         this.deploymentEnvironment = deploymentEnvironment;
     }
 
-    protected static CustomEmailAttribute getCustomEmailAttribute(WorkflowUser user, ActionItem actionItem) throws KEWUserNotFoundException, WorkflowException {
+    protected static CustomEmailAttribute getCustomEmailAttribute(Person user, ActionItem actionItem) throws KEWUserNotFoundException, WorkflowException {
 	if (actionItem.getRouteHeader() == null) {
 	    actionItem.setRouteHeader(KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getRouteHeaderId()));
 	}

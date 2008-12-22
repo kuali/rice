@@ -166,8 +166,8 @@ public class StyleServiceImpl implements StyleService {
 
     // ---- XmlLoader interface implementation
 
-    public void loadXml(InputStream inputStream, WorkflowUser user) {
-        StyleXmlParser.loadXml(this, inputStream, user);
+    public void loadXml(InputStream inputStream, String principalId) {
+        StyleXmlParser.loadXml(this, inputStream, principalId);
     }
 
     // ---- XmlExporter interface implementation

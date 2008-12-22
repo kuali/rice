@@ -74,7 +74,7 @@ public class WorkgroupTypeServiceImpl implements WorkgroupTypeService {
 		this.workgroupTypeDAO = workgroupTypeDAO;
 	}
 
-	public void loadXml(InputStream inputStream, WorkflowUser user) {
+	public void loadXml(InputStream inputStream, String principalId) {
 		try {
 			WorkgroupTypeXmlParser parser = new WorkgroupTypeXmlParser();
 			parser.setWorkgroupTypeService(this);

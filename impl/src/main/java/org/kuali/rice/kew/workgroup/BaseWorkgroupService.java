@@ -33,11 +33,14 @@ import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.workgroup.dao.BaseWorkgroupDAO;
 import org.kuali.rice.kew.workgroup.dao.BaseWorkgroupMemberDAO;
 import org.kuali.rice.kew.xml.WorkgroupXmlHandler;
 import org.kuali.rice.kew.xml.export.WorkgroupXmlExporter;
+import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.service.IdentityManagementService;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 /**
@@ -58,6 +61,8 @@ public class BaseWorkgroupService implements WorkgroupService {
     public static final String WORKGROUP_ID_CACHE_GROUP = "WorkgroupId";
     public static final String WORKGROUP_NAME_CACHE_GROUP = "WorkgroupName";
 
+    protected IdentityManagementService identityManagementService;
+
 	// WorkgroupService methods
 
 	public WorkgroupCapabilities getCapabilities() {
@@ -72,13 +77,20 @@ public class BaseWorkgroupService implements WorkgroupService {
 		return new BaseWorkgroupExtension();
 	}
 
-	public boolean isUserMemberOfGroup(GroupId groupId, WorkflowUser user) throws KEWUserNotFoundException {
-		Workgroup workgroup = this.getWorkgroup(groupId);
-		return workgroup == null ? false : workgroup.hasMember(user);
+	public boolean isUserMemberOfGroup(GroupId groupId, String principalId) throws KEWUserNotFoundException {
+		String id = null;
+		if (groupId instanceof WorkflowGroupId) {
+			KimGroup group = getIdentityManagementService().getGroup(""+((WorkflowGroupId)groupId).getGroupId());
+			id = group.getGroupId();
+		} else {
+			KimGroup group = getIdentityManagementService().getGroupByName(org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE, ((GroupNameId)groupId).getNameId());
+			id = group.getGroupId();
+		}
+		return getIdentityManagementService().isMemberOfGroup(principalId, id);
 	}
 
-	public List search(Workgroup workgroup, Map<String, String> extensionValues, boolean useWildCards) {
-		List workgroups = getWorkgroupDAO().search(workgroup, extensionValues);
+	public List<Workgroup> search(Workgroup workgroup, Map<String, String> extensionValues, boolean useWildCards) {
+		List<Workgroup> workgroups = getWorkgroupDAO().search(workgroup, extensionValues);
 		try {
 			materializeMembers(workgroups);
 		} catch (KEWUserNotFoundException e) {
@@ -87,7 +99,7 @@ public class BaseWorkgroupService implements WorkgroupService {
 		return workgroups;
 	}
 
-	public List search(Workgroup workgroup, Map<String, String> extensionValues, WorkflowUser user) throws KEWUserNotFoundException {
+	public List<Workgroup> search(Workgroup workgroup, Map<String, String> extensionValues, Person user) throws KEWUserNotFoundException {
 	    List<Workgroup> workgroups = (List<Workgroup>)getWorkgroupDAO().find(workgroup, extensionValues, user);
 	    // climb up to find all groups that we're nested in
 	    workgroups = getWorkgroupsGroups(workgroups);
@@ -170,8 +182,8 @@ public class BaseWorkgroupService implements WorkgroupService {
 		return null;
 	}
 
-	public List<Workgroup> getUsersGroups(WorkflowUser user) throws KEWUserNotFoundException {
-		List workgroupMembers = getWorkgroupMemberDAO().findByWorkflowId(user.getWorkflowUserId().getWorkflowId());
+	public List<Workgroup> getUsersGroups(String principalId) throws KEWUserNotFoundException {
+		List workgroupMembers = getWorkgroupMemberDAO().findByWorkflowId(principalId);
 		List<Workgroup> workgroups = new ArrayList<Workgroup>();
 		for (Iterator iter = workgroupMembers.iterator(); iter.hasNext();) {
 			BaseWorkgroupMember member = (BaseWorkgroupMember) iter.next();
@@ -202,7 +214,7 @@ public class BaseWorkgroupService implements WorkgroupService {
 
     public List<Workgroup> getWorkgroupsGroups(List<Workgroup> workgroups) {
         Map<Long, Workgroup> groupMap = new HashMap<Long, Workgroup>();
-        for (Workgroup workgroup : workgroups) {   
+        for (Workgroup workgroup : workgroups) {
             List<Workgroup> workgroupsGroups = getWorkgroupsGroups(workgroup);
             if (workgroupsGroups != null) {
                 for (Workgroup workgroupGroup : workgroupsGroups) {
@@ -214,12 +226,16 @@ public class BaseWorkgroupService implements WorkgroupService {
         return new ArrayList<Workgroup>(groupMap.values());
     }
 
-	public Set<String> getUsersGroupNames(WorkflowUser user) {
-		return getWorkgroupDAO().findWorkgroupNamesForUser(user.getWorkflowId());
+	public Set<String> getUsersGroupNames(Person user) {
+		return getWorkgroupDAO().findWorkgroupNamesForUser(user.getPrincipalId());
 	}
 
-	public Set<Long> getUsersGroupIds(WorkflowUser user) {
-	    return getWorkgroupDAO().findWorkgroupIdsForUser(user.getWorkflowId());
+	public Set<String> getUsersGroupNames(String principalId) {
+		return getWorkgroupDAO().findWorkgroupNamesForUser(principalId);
+	}
+
+	public Set<Long> getUsersGroupIds(String principalId) {
+	    return getWorkgroupDAO().findWorkgroupIdsForUser(principalId);
 	}
 
 
@@ -288,7 +304,7 @@ public class BaseWorkgroupService implements WorkgroupService {
 	/**
 	 * Loads workgroups from the given XML.
 	 */
-    public void loadXml(InputStream stream, WorkflowUser user) {
+    public void loadXml(InputStream stream, String principalId) {
         try {
         	new WorkgroupXmlHandler().parseWorkgroupEntries(stream);
         } catch (Exception e) {
@@ -344,6 +360,28 @@ public class BaseWorkgroupService implements WorkgroupService {
 
 	public void setWorkgroupMemberDAO(BaseWorkgroupMemberDAO workgroupMemberDAO) {
 		this.workgroupMemberDAO = workgroupMemberDAO;
+	}
+
+	public IdentityManagementService getIdentityManagementService() {
+		if (identityManagementService == null) {
+			identityManagementService = KIMServiceLocator.getIdentityManagementService();
+		}
+		return identityManagementService;
+	}
+
+	/**
+	 * This overridden method is just a helper in case you don't have the user.
+	 *
+	 * @see org.kuali.rice.kew.workgroup.WorkgroupService#search(org.kuali.rice.kew.workgroup.Workgroup, java.util.Map, java.lang.String)
+	 */
+	@Override
+	public List<Workgroup> search(Workgroup workgroup,
+			Map<String, String> extensionValues, String principalId)
+			throws KEWUserNotFoundException {
+		List<Workgroup> workgroups = (List<Workgroup>)getWorkgroupDAO().find(workgroup, extensionValues, principalId);
+	    workgroups = getWorkgroupsGroups(workgroups);
+		materializeMembers(workgroups);
+		return workgroups;
 	}
 
 }

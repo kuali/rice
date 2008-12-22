@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -180,7 +180,7 @@ public class ActionItemServiceTest extends KEWTestCase {
 //        document.setTitle("");
 //        GroupInfo grpInfo =new GroupInfo();
 //        grpInfo.setGroupName("AIWGNested2");
-//        
+//
 //        document.appSpecificRouteDocumentToGroup(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "",grpInfo, "", true);
 //        document.routeDocument("");
 //
@@ -332,7 +332,7 @@ public class ActionItemServiceTest extends KEWTestCase {
 
         KimGroup testGroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, "TestWorkgroup");
         KimGroup adminGroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, "WorkflowAdmin");
-        
+
         ActionRequestDTO[] ars = document.getActionRequests();
         boolean routedWorkflowAdmin = false;
         boolean routedTestWorkgroup = false;
@@ -379,7 +379,7 @@ public class ActionItemServiceTest extends KEWTestCase {
         assertEquals("Ewestfal should have two action items.", 2, actionItems.size());
 
         // now check the action list, there should be only one entry
-        actionItems = KEWServiceLocator.getActionListService().getActionList(user, null);
+        actionItems = KEWServiceLocator.getActionListService().getActionList(user.getWorkflowId(), null);
         assertEquals("Ewestfal should have one action item in his action list.", 1, actionItems.size());
         document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
         assertTrue("Ewestfal should have an approval requested.", document.isApprovalRequested());
@@ -393,7 +393,7 @@ public class ActionItemServiceTest extends KEWTestCase {
         actionItems = KEWServiceLocator.getActionListService().findByWorkflowUserRouteHeaderId(user.getWorkflowId(), document.getRouteHeaderId());
         assertEquals("Ewestfal should have one action item.", 1, actionItems.size());
         Long actionItemId = ((ActionItem)actionItems.iterator().next()).getActionItemId();
-        actionItems = KEWServiceLocator.getActionListService().getActionList(user, null);
+        actionItems = KEWServiceLocator.getActionListService().getActionList(user.getWorkflowId(), null);
         assertEquals("Ewestfal should have one action item in his action list.", 1, actionItems.size());
         assertEquals("The two action items should be the same.", actionItemId, ((ActionItem)actionItems.iterator().next()).getActionItemId());
     }

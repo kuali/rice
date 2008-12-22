@@ -31,6 +31,7 @@ import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.ResponsibleParty;
 
 
@@ -61,7 +62,8 @@ public class RouteModuleRemoteAdapter implements RouteModule {
     public List findActionRequests(DocumentRouteHeaderValue routeHeader) throws WorkflowException {
         try {
             List actionRequests = new ArrayList();
-            RouteHeaderDTO routeHeaderVO = DTOConverter.convertRouteHeader(routeHeader, null);
+            WorkflowUser user = null; // to solve the ambigious issue
+            RouteHeaderDTO routeHeaderVO = DTOConverter.convertRouteHeader(routeHeader, user);
             DocumentContentDTO documentContentVO = DTOConverter.convertDocumentContent(routeHeader.getDocContent(), routeHeaderVO.getRouteHeaderId());
             ActionRequestDTO[] actionRequestVOs = routeModule.findActionRequests(routeHeaderVO, documentContentVO);
             if (actionRequestVOs != null && actionRequestVOs.length > 0) {

@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.xml.XmlLoader;
+import org.kuali.rice.kim.bo.Person;
 
 
 /**
@@ -45,7 +46,7 @@ public class XmlDigesterServiceImpl implements XmlDigesterService {
         xmlDoc.setProcessingMessage(msg);
     }
 
-    public void digest(XmlLoader xmlLoader, XmlDocCollection xmlDocCollection, WorkflowUser user) throws IOException {
+    public void digest(XmlLoader xmlLoader, XmlDocCollection xmlDocCollection, String principalId) throws IOException {
         Iterator it = xmlDocCollection.getXmlDocs().iterator();
         while (it.hasNext()) {
             XmlDoc xmlDoc = (XmlDoc) it.next();
@@ -60,7 +61,7 @@ public class XmlDigesterServiceImpl implements XmlDigesterService {
                 // because it could have multiple types of content
                 // but we need to know if it was not processed ANY times
                 // (so just don't setProcessed to false)
-                xmlLoader.loadXml(inputStream, user);
+                xmlLoader.loadXml(inputStream, principalId);
                 // it would be nice to know if the xmlLoader actually handled the doc
                 // so we could print out a log entry ONLY if the doc was handled, not
                 // if it was just (successfully) ignored
@@ -72,7 +73,7 @@ public class XmlDigesterServiceImpl implements XmlDigesterService {
                 LOG.error("Caught Exception loading xml data from " + xmlDoc + ".  Will move associated file to problem dir.", e);
                 if (e instanceof RuntimeException) {
                     throw (RuntimeException) e;
-                } else if (e instanceof IOException) { 
+                } else if (e instanceof IOException) {
                     throw (IOException) e;
                 }
             } finally {

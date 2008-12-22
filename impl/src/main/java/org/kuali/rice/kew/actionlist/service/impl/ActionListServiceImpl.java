@@ -53,6 +53,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.workgroup.WorkgroupMembershipChangeProcessor;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -81,8 +82,8 @@ public class ActionListServiceImpl implements ActionListService {
         return getActionItemDAO().findPrimaryDelegationRecipients(workflowUser);
     }
 
-    public Collection getActionList(WorkflowUser workflowUser, ActionListFilter filter) {
-         return getActionListDAO().getActionList(workflowUser, filter);
+    public Collection getActionList(String principalId, ActionListFilter filter) {
+         return getActionListDAO().getActionList(principalId, filter);
     }
 
     public Collection getActionListForSingleDocument(Long routeHeaderId) {
@@ -445,9 +446,9 @@ public class ActionListServiceImpl implements ActionListService {
      * @see org.kuali.rice.kew.actionlist.service.ActionListService#getOutbox(org.kuali.rice.kew.user.WorkflowUser,
      *      org.kuali.rice.kew.actionlist.ActionListFilter)
      */
-    public Collection getOutbox(WorkflowUser workflowUser, ActionListFilter filter) {
+    public Collection getOutbox(String principalId, ActionListFilter filter) {
     	// TODO: delyea here
-        return this.getActionListDAO().getOutbox(workflowUser, filter);
+        return this.getActionListDAO().getOutbox(principalId, filter);
     }
 
     /**

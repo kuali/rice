@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,6 +31,7 @@ import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.Person;
 import org.springframework.transaction.annotation.Transactional;
 
 
@@ -58,11 +59,11 @@ public class ApplicationConstantsServiceImpl implements ApplicationConstantsServ
 		KEWServiceLocator.getCacheAdministrator().flushEntry(applicationConstant.getApplicationConstantName());
 		putConstantInCache(applicationConstant);
 	}
-	
+
 	/**
-	 * Allows passing in of a new ApplicationConstant object with an existing constant value with first 
+	 * Allows passing in of a new ApplicationConstant object with an existing constant value with first
 	 * having to fetch that constant.
-	 * 
+	 *
 	 * @param applicationConstant that will be saved
 	 */
 	private void versionBlankConstant(ApplicationConstant applicationConstant) {
@@ -128,7 +129,7 @@ public class ApplicationConstantsServiceImpl implements ApplicationConstantsServ
 		}
 	}
 
-	public void loadXml(InputStream inputStream, WorkflowUser user) {
+	public void loadXml(InputStream inputStream, String principalId) {
 		ApplicationConstantsXmlParser parser = new ApplicationConstantsXmlParser();
 		try {
 			parser.parseAppConstEntries(inputStream);

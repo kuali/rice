@@ -102,63 +102,51 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
         if ( LOG.isDebugEnabled() ) {
         LOG.debug("calling DocumentAuthorizerBase.getDocumentActionFlags for document '" + document.getDocumentNumber() + "'. user '" + user.getPrincipalName() + "'");
         }
-        Set docActions = new HashSet();
         
-        
-    	if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_CLOSE)){
-    		docActions.add(KNSConstants.KUALI_ACTION_CAN_CLOSE);
-    	}
-    	if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_RELOAD)){
-    		docActions.add(KNSConstants.KUALI_ACTION_CAN_RELOAD);    	
-    	}
-    	if(documentActions.contains(KNSConstants.KUALI_ACTION_PERFORM_ROUTE_REPORT)){
-    		docActions.add(KNSConstants.KUALI_ACTION_PERFORM_ROUTE_REPORT);    	
-    	}
-
-        if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_COPY) && canCopy(document, user)){
-        	docActions.add(KNSConstants.KUALI_ACTION_CAN_COPY);
+        if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_COPY) && !canCopy(document, user)){
+        	documentActions.remove(KNSConstants.KUALI_ACTION_CAN_COPY);
         }
         
-        if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_EDIT) && canEdit(document, user)){
-        	docActions.add(KNSConstants.KUALI_ACTION_CAN_EDIT);
+        if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_EDIT) && !canEdit(document, user)){
+        	documentActions.remove(KNSConstants.KUALI_ACTION_CAN_EDIT);
         }
         
-       if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_BLANKET_APPROVE) && canBlanketApprove(document, user)){
-    	   docActions.add(KNSConstants.KUALI_ACTION_CAN_BLANKET_APPROVE);
+       if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_BLANKET_APPROVE) && !canBlanketApprove(document, user)){
+    	   documentActions.remove(KNSConstants.KUALI_ACTION_CAN_BLANKET_APPROVE);
        }
        
-       if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_CANCEL) && canCancel(document, user)){
-    	   docActions.add(KNSConstants.KUALI_ACTION_CAN_CANCEL);
+       if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_CANCEL) && !canCancel(document, user)){
+    	   documentActions.remove(KNSConstants.KUALI_ACTION_CAN_CANCEL);
        }
        
-       if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_SAVE) && canSave(document, user)){
-    	   docActions.add(KNSConstants.KUALI_ACTION_CAN_SAVE);
+       if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_SAVE) && !canSave(document, user)){
+    	   documentActions.remove(KNSConstants.KUALI_ACTION_CAN_SAVE);
        }
        
-       if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_ROUTE)&& canRoute(document, user)){
-    	   docActions.add(KNSConstants.KUALI_ACTION_CAN_ROUTE);
+       if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_ROUTE)&& !canRoute(document, user)){
+    	   documentActions.remove(KNSConstants.KUALI_ACTION_CAN_ROUTE);
        }
         
        if(canAcknowledge(document, user)){
-    	   docActions.add(KNSConstants.KUALI_ACTION_CAN_ACKNOWLEDGE);
+    	   documentActions.add(KNSConstants.KUALI_ACTION_CAN_ACKNOWLEDGE);
        }
 
        if(canClearFYI(document, user)){
-    	   docActions.add(KNSConstants.KUALI_ACTION_CAN_FYI);
+    	   documentActions.add(KNSConstants.KUALI_ACTION_CAN_FYI);
        }
        
-       if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_AD_HOC_ROUTE) && canEdit(document, user)){
-    	   docActions.add(KNSConstants.KUALI_ACTION_CAN_AD_HOC_ROUTE);
+       if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_AD_HOC_ROUTE) && !canEdit(document, user)){
+    	   documentActions.remove(KNSConstants.KUALI_ACTION_CAN_AD_HOC_ROUTE);
        }
         
        if(canApprove(document, user)){
-    	   docActions.add(KNSConstants.KUALI_ACTION_CAN_APPROVE);
-    	   docActions.add(KNSConstants.KUALI_ACTION_CAN_DISAPPROVE);
+    	   documentActions.add(KNSConstants.KUALI_ACTION_CAN_APPROVE);
+    	   documentActions.add(KNSConstants.KUALI_ACTION_CAN_DISAPPROVE);
        }
-       if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_ANNOTATE) && canAnnotate(document, user)){
-    	   docActions.add(KNSConstants.KUALI_ACTION_CAN_ANNOTATE);
+       if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_ANNOTATE) && !canAnnotate(document, user)){
+    	   documentActions.remove(KNSConstants.KUALI_ACTION_CAN_ANNOTATE);
        }
-        return docActions;
+        return documentActions;
     }
     
     @Deprecated

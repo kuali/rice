@@ -39,7 +39,15 @@
     </property>
   </bean>
 
-  <bean id="KimAttributes-campusCode" parent="Campus-campusCode" /> 
+  <bean id="KimAttributes-campusCode" parent="Campus-campusCode"> 
+    <property name="required" value="false" />
+    <property name="control" >
+      <bean parent="SelectControlDefinition"
+            p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.CampusValuesFinder"
+            p:includeKeyInLabel="false" />
+    </property>
+  </bean>
+  
   <bean id="KimAttributes-namespaceCode" parent="ParameterNamespace-code" p:name="namespaceCode" />
   <bean id="KimAttributes-componentName" parent="ParameterDetailType-parameterDetailTypeCode" p:name="componentName" />
   <bean id="KimAttributes-roleName" parent="KimRoleImpl-roleName" />

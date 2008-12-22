@@ -79,7 +79,6 @@ public class KimWorkgroupServiceImpl implements WorkgroupService {
 	 *
 	 * @see org.kuali.rice.kew.workgroup.WorkgroupService#getUsersGroupNames(java.lang.String)
 	 */
-	@Override
 	public Set<String> getUsersGroupNames(String principalId) {
 		Set<String> names = new HashSet<String>();
 		List<? extends KimGroup> groups = getIdentityManagementService().getGroupsForPrincipal(principalId);
@@ -315,7 +314,6 @@ public class KimWorkgroupServiceImpl implements WorkgroupService {
 	 *
 	 * @see org.kuali.rice.kew.workgroup.WorkgroupService#search(org.kuali.rice.kew.workgroup.Workgroup, java.util.Map, java.lang.String)
 	 */
-	@Override
 	public List search(Workgroup workgroup,
 			Map<String, String> extensionValues, String principalId)
 			throws KEWUserNotFoundException {

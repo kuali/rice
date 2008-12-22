@@ -374,7 +374,6 @@ public class BaseWorkgroupService implements WorkgroupService {
 	 *
 	 * @see org.kuali.rice.kew.workgroup.WorkgroupService#search(org.kuali.rice.kew.workgroup.Workgroup, java.util.Map, java.lang.String)
 	 */
-	@Override
 	public List<Workgroup> search(Workgroup workgroup,
 			Map<String, String> extensionValues, String principalId)
 			throws KEWUserNotFoundException {

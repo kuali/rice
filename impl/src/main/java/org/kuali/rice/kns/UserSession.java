@@ -89,6 +89,19 @@ public class UserSession implements Serializable {
     }
 
     /**
+     * @return the principalName of the current user in the system, backdoor principalName if backdoor is set
+     */
+    public String getPrincipalName() {
+        if (backdoorUser != null) {
+            return backdoorUser.getPrincipalName();
+        }
+        else {
+            return person.getPrincipalName();
+        }
+    }
+
+    
+    /**
      * This returns who is logged in. If the backdoor is in use, this will return the network id of the person that is standing in
      * as the backdoor user.
      * 

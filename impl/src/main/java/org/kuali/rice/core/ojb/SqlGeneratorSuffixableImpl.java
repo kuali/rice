@@ -47,7 +47,22 @@ public class SqlGeneratorSuffixableImpl extends SqlGeneratorDefaultImpl {
         SelectStatement sql = new SuffixedSqlSelectStatement(getPlatform(), cld, query, logger);
         if (logger.isDebugEnabled())
         {
-            logger.debug("SQL:" + sql.getStatement());
+            boolean ridiculousSqlLogging = false;
+            if ( ridiculousSqlLogging ) {
+            	Throwable t = new Throwable();
+            	t.fillInStackTrace();
+            	StringBuffer sb = new StringBuffer();
+            	for ( StackTraceElement ste : t.getStackTrace() ) {
+            		if ( ste.getClassName().startsWith( "org.kuali" ) ) {
+            			sb.append( "    " );
+            			sb.append( ste.getClassName() ).append( '.' ).append( ste.getMethodName() );
+            			sb.append( '\n' );
+            		}
+            	}
+            	logger.debug("SQL: " + sql.getStatement() + "\n" + sb.toString() );
+            } else {
+                logger.debug("SQL: " + sql.getStatement() );
+            }
         }
         return sql;
     }

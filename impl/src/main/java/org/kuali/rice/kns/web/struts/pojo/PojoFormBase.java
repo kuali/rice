@@ -495,9 +495,9 @@ public class PojoFormBase extends ActionForm implements PojoForm {
 	
 	return maxUploadFileSizes;
     }
-    // end Kuali Foundation modification
     
     public void registerEditableProperty(String editablePropertyName){
+    	System.out.println("Registering: " + editablePropertyName);
     	editableProperties.add(editablePropertyName);
     }
     
@@ -571,4 +571,5 @@ public class PojoFormBase extends ActionForm implements PojoForm {
 	public Set<String> getEditablePropertiesFromPreviousRequest() {
 		return editablePropertiesFromPreviousRequest;
 	}
+	// end Kuali Foundation modification
 }

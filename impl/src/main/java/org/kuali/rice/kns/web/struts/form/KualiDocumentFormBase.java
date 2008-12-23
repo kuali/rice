@@ -569,7 +569,8 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
      */
     public boolean isUserDocumentInitiator() {
         if (getWorkflowDocument() != null) {
-            return getWorkflowDocument().getInitiatorNetworkId().equalsIgnoreCase(GlobalVariables.getUserSession().getPrincipalName());
+            return getWorkflowDocument().getRouteHeader().getInitiator().getUuId().equalsIgnoreCase(
+            		GlobalVariables.getUserSession().getPrincipalId());
         }
         return false;
     }

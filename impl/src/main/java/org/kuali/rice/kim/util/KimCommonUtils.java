@@ -36,15 +36,21 @@ public class KimCommonUtils {
 		return false;
 	}
 
-
-	public static boolean checkPermissionDetailMatch(DocumentType currentDocType,
-			AttributeSet storedAttributeSet) {
+	/**
+	 * 
+	 * This method traverses the document type hierarchy
+	 * 
+	 * @param currentDocType
+	 * @param documentTypeName
+	 * @return
+	 */
+	public static boolean isParentDocument(DocumentType currentDocType, String documentTypeName) {
 		if (currentDocType != null) {
-			if (storedAttributeSet.get(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL).equalsIgnoreCase(currentDocType.getName())) {
+			if (documentTypeName.equalsIgnoreCase(currentDocType.getName())) {
 				return true;
 			} else if (currentDocType.getDocTypeParentId() != null 
 					&& !currentDocType.getDocumentTypeId().equals(currentDocType.getDocTypeParentId())) {
-				return checkPermissionDetailMatch(currentDocType.getParentDocType(), storedAttributeSet);
+				return isParentDocument(currentDocType.getParentDocType(), documentTypeName);
 			}
 		}
 		return false;

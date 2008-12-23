@@ -37,21 +37,24 @@ public class WorkflowAttributes extends DataDictionaryDefinitionBase {
     	routingTypeDefinitions = new HashMap<String, RoutingTypeDefinition>();
     }
     
-	public List<SearchingTypeDefinition> getSearchingAttributeDefinitions() {
+	/**
+	 * @return the searchingTypeDefinitions
+	 */
+	public List<SearchingTypeDefinition> getSearchingTypeDefinitions() {
 		return this.searchingTypeDefinitions;
 	}
 
-
-	public void setSearchingAttributeDefinitions(
+	/**
+	 * @param searchingTypeDefinitions the searchingTypeDefinitions to set
+	 */
+	public void setSearchingTypeDefinitions(
 			List<SearchingTypeDefinition> searchingTypeDefinitions) {
 		this.searchingTypeDefinitions = searchingTypeDefinitions;
 	}
 
-
 	public Map<String, RoutingTypeDefinition> getRoutingTypeDefinitions() {
 		return this.routingTypeDefinitions;
 	}
-
 
 	public void setRoutingTypeDefinitions(
 			Map<String, RoutingTypeDefinition> routingTypeDefinitions) {
@@ -72,4 +75,5 @@ public class WorkflowAttributes extends DataDictionaryDefinitionBase {
 			definitions.completeValidation(rootBusinessObjectClass, otherBusinessObjectClass);
 		}
 	}
+
 }

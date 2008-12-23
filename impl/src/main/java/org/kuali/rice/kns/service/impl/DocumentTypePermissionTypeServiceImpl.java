@@ -59,7 +59,7 @@ public class DocumentTypePermissionTypeServiceImpl extends KimPermissionTypeServ
 		}
 		DocumentType currentDocType = KEWServiceLocator.getDocumentTypeService().findByName(
 				requestedDetails.get(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL));
-		return KimCommonUtils.checkPermissionDetailMatch(currentDocType, permissionDetails);
+		return KimCommonUtils.isParentDocument(currentDocType, permissionDetails.get(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL));
 	}
 
 }

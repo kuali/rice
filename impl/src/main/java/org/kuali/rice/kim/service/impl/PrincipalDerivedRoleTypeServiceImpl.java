@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
@@ -36,7 +35,7 @@ import org.kuali.rice.kim.service.translators.PrincipalNameToPrincipalIdTranslat
  */
 public class PrincipalDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServiceBase {
 	
-	protected IdentityManagementService identityManagementService;
+	private static IdentityManagementService identityManagementService;
 	private List<String> roleGroupIds = Collections.unmodifiableList( new ArrayList<String>(0) );
 	
 	/**
@@ -128,7 +127,7 @@ public class PrincipalDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServi
 		return roleGroupIds;
 	}
     
-	public IdentityManagementService getIdentityManagementService() {
+	protected IdentityManagementService getIdentityManagementService() {
 		if ( identityManagementService == null ) {
 			identityManagementService = KIMServiceLocator.getIdentityManagementService();
 		}

@@ -151,7 +151,7 @@ public class PermissionDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServ
     /**
      * @return the documentService
      */
-     protected static PermissionService getPermissionService(){
+    protected PermissionService getPermissionService(){
         if (permissionService == null ) {
         	permissionService = KIMServiceLocator.getPermissionService();
         }

@@ -77,14 +77,14 @@ public class UserSession implements Serializable {
 
     
     /**
-     * @return the networkId of the current user in the system, backdoor network id if backdoor is set
+     * @return the principalId of the current user in the system, backdoor principalId if backdoor is set
      */
-    public String getPrincipalName() {
+    public String getPrincipalId() {
         if (backdoorUser != null) {
-            return backdoorUser.getPrincipalName();
+            return backdoorUser.getPrincipalId();
         }
         else {
-            return person.getPrincipalName();
+            return person.getPrincipalId();
         }
     }
 

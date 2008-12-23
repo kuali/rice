@@ -40,6 +40,7 @@ import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.dao.KimRoleDao;
 import org.kuali.rice.kim.service.GroupService;
+import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.support.KimDelegationTypeService;
@@ -63,7 +64,7 @@ public class RoleServiceImpl implements RoleService {
 	
 	private BusinessObjectService businessObjectService;
 	private SequenceAccessorService sequenceAccessorService;
-	private GroupService groupService;
+	private IdentityManagementService identityManagementService;
 	private KimRoleDao roleDao; 
 
     // --------------------
@@ -533,7 +534,7 @@ public class RoleServiceImpl implements RoleService {
 		}
 
     	// find the groups that the principal belongs to
-    	List<String> principalGroupIds = getGroupService().getGroupIdsForPrincipal(principalId);
+    	List<String> principalGroupIds = getIdentityManagementService().getGroupIdsForPrincipal(principalId);
     	// find the role/group associations
     	if ( !principalGroupIds.isEmpty() ) {
 	    	List<RoleMemberImpl> rgs = roleDao.getRoleGroupsForGroupIdsAndRoleIds( allRoleIds, principalGroupIds);
@@ -942,12 +943,12 @@ public class RoleServiceImpl implements RoleService {
 	}
 
     
-	protected GroupService getGroupService() {
-		if ( groupService == null ) {
-			groupService = KIMServiceLocator.getGroupService();		
+	protected IdentityManagementService getIdentityManagementService() {
+		if ( identityManagementService == null ) {
+			identityManagementService = KIMServiceLocator.getIdentityManagementService();		
 		}
 
-		return groupService;
+		return identityManagementService;
 	}
 
 	protected SequenceAccessorService getSequenceAccessorService() {

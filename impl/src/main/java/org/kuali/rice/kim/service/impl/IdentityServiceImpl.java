@@ -56,7 +56,7 @@ public class IdentityServiceImpl implements IdentityService {
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.service.IdentityServiceBase#lookupEntityIds(java.util.Map)
+	 * @see org.kuali.rice.kim.service.IdentityService#lookupEntityIds(java.util.Map)
 	 */
 	public List<String> lookupEntityIds(Map<String,String> searchCriteria) {
 		List<KimEntity> entities = lookupEntitys( searchCriteria );
@@ -92,7 +92,7 @@ public class IdentityServiceImpl implements IdentityService {
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.service.IdentityServiceBase#getEntityIdByPrincipalId(java.lang.String)
+	 * @see org.kuali.rice.kim.service.IdentityService#getEntityIdByPrincipalId(java.lang.String)
 	 */
 	public String getEntityIdByPrincipalId(String principalId) {
 		if ( StringUtils.isBlank( principalId ) ) {
@@ -103,7 +103,7 @@ public class IdentityServiceImpl implements IdentityService {
     }
 
 	/**
-	 * @see org.kuali.rice.kim.service.IdentityServiceBase#getEntityIdByPrincipalName(java.lang.String)
+	 * @see org.kuali.rice.kim.service.IdentityService#getEntityIdByPrincipalName(java.lang.String)
 	 */
 	public String getEntityIdByPrincipalName(String principalName) {
 		if ( StringUtils.isBlank( principalName ) ) {
@@ -114,7 +114,7 @@ public class IdentityServiceImpl implements IdentityService {
     }
 	
 	/**
-	 * @see org.kuali.rice.kim.service.IdentityServiceBase#getPrincipalIdByPrincipalName(java.lang.String)
+	 * @see org.kuali.rice.kim.service.IdentityService#getPrincipalIdByPrincipalName(java.lang.String)
 	 */
 	public String getPrincipalIdByPrincipalName(String principalName) {
 		if ( StringUtils.isBlank( principalName ) ) {

@@ -251,7 +251,7 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 	protected boolean useKimPermission(String namespace, String permissionTemplateName, AttributeSet permissionDetails) {
 		Parameter kimPriorityParam = KNSServiceLocator.getKualiConfigurationService().getParameterWithoutExceptions(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.KIM_PRIORITY_ON_DOC_TYP_PERMS_IND);
 		if (kimPriorityParam == null || "Y".equals(kimPriorityParam.getParameterValue())) {
-			return getPermissionService().isPermissionDefinedForTemplateName(namespace, permissionTemplateName, permissionDetails);
+			return getIdentityManagementService().isPermissionDefinedForTemplateName(namespace, permissionTemplateName, permissionDetails);
 		}
 		return false;
 	}

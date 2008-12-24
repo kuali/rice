@@ -67,6 +67,10 @@ public class RoleServiceImpl implements RoleService {
 	private IdentityManagementService identityManagementService;
 	private KimRoleDao roleDao; 
 
+	private ThreadLocal<Map<String,Boolean>> activeRoleCache = new ThreadLocal<Map<String,Boolean>>();
+	private ThreadLocal<Map<String,KimRoleImpl>> roleCache = new ThreadLocal<Map<String,KimRoleImpl>>();
+	private ThreadLocal<Map<String,List<String>>> impliedRoleCache = new ThreadLocal<Map<String,List<String>>>();
+	
     // --------------------
     // Role Data
     // --------------------
@@ -75,9 +79,24 @@ public class RoleServiceImpl implements RoleService {
 		if ( StringUtils.isBlank( roleId ) ) {
 			return null;
 		}
+		// check the cache
+		Map<String,KimRoleImpl> cache = roleCache.get();
+		// create the cache if necessary
+		if ( cache == null ) {
+			cache = new HashMap<String,KimRoleImpl>();
+			roleCache.set( cache );
+		}
+		// check for a non-null result in the cache, return it if found
+		KimRoleImpl cachedResult = cache.get( roleId );
+		if ( cachedResult != null ) {
+			return cachedResult;
+		}		
+		// otherwise, run the query
 		AttributeSet criteria = new AttributeSet();
 		criteria.put("roleId", roleId);
-		return (KimRoleImpl)getBusinessObjectService().findByPrimaryKey(KimRoleImpl.class, criteria);
+		KimRoleImpl result = (KimRoleImpl)getBusinessObjectService().findByPrimaryKey(KimRoleImpl.class, criteria);
+		cache.put( roleId, result );
+		return result;
 	}
 
 	/**
@@ -95,7 +114,7 @@ public class RoleServiceImpl implements RoleService {
 	 * @see org.kuali.rice.kim.service.RoleService#getRoleIdByName(java.lang.String, java.lang.String)
 	 */
 	public String getRoleIdByName(String namespaceCode, String roleName) {
-		KimRoleInfo role = getRoleByName( namespaceCode, roleName );
+		KimRoleImpl role = getRoleImplByName( namespaceCode, roleName );
 		if ( role == null ) {
 			return null;
 		}
@@ -133,10 +152,25 @@ public class RoleServiceImpl implements RoleService {
 	}
 	
 	public boolean isRoleActive( String roleId ) {
+		// check the cache
+		Map<String,Boolean> cache = activeRoleCache.get();
+		// create the cache if necessary
+		if ( cache == null ) {
+			cache = new HashMap<String,Boolean>();
+			activeRoleCache.set( cache );
+		}
+		// check for a non-null result in the cache, return it if found
+		Boolean cachedResult = cache.get( roleId );
+		if ( cachedResult != null ) {
+			return cachedResult;
+		}		
+		// otherwise, run the query
 		AttributeSet criteria = new AttributeSet();
 		criteria.put("roleId", roleId);
 		criteria.put("active", "Y");
-		return getBusinessObjectService().countMatching(KimRoleImpl.class, criteria) > 0;
+		boolean result = getBusinessObjectService().countMatching(KimRoleImpl.class, criteria) > 0;
+		cache.put( roleId, result );
+		return result;
 	}
 
 	public List<AttributeSet> getRoleQualifiersForPrincipal( String principalId, List<String> roleIds, AttributeSet qualification ) {
@@ -759,6 +793,19 @@ public class RoleServiceImpl implements RoleService {
 	}
     
 	public List<String> getImplyingRoleIds( String roleId ) {
+		// check the cache
+		Map<String,List<String>> cache = impliedRoleCache.get();
+		// create the cache if necessary
+		if ( cache == null ) {
+			cache = new HashMap<String,List<String>>();
+			impliedRoleCache.set( cache );
+		}
+		// check for a non-null result in the cache, return it if found
+		List<String> cachedResult = cache.get( roleId );
+		if ( cachedResult != null ) {
+			return cachedResult;
+		}		
+		// otherwise, run the query
 		Set<String> roleIds = new HashSet<String>();
 		
 		// add the given role
@@ -766,8 +813,9 @@ public class RoleServiceImpl implements RoleService {
 			roleIds.add(roleId);
 			getImplyingRolesInternal(roleId, roleIds);		
 		}
-		
-		return new ArrayList<String>( roleIds );
+		List<String> result = new ArrayList<String>( roleIds );
+		cache.put( roleId, result );
+		return result;
 	}
 	
 	@SuppressWarnings("unchecked")

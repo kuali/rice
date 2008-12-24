@@ -135,6 +135,12 @@ public interface IdentityManagementService {
     List<ResponsibilityActionInfo> getResponsibilityActions( String namespaceCode, String responsibilityName, AttributeSet qualification, AttributeSet responsibilityDetails);
     List<ResponsibilityActionInfo> getResponsibilityActionsByTemplateName( String namespaceCode, String responsibilityTemplateName,	AttributeSet qualification, AttributeSet responsibilityDetails);
 
+    /**
+     * Returns true if there are any assigned permissions with the given template.
+     */
+    boolean isPermissionDefinedForTemplateName( String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails );
+
+    
     // ----------------------
     // Cache Flush Methods
     // ----------------------

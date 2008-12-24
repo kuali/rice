@@ -41,6 +41,8 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
 		requiredAttributes.add(KimAttributes.DOCUMENT_NUMBER);
 	}
 	
+	protected WorkflowInfo workflowInfo = new WorkflowInfo();
+	
 	/**
 	 *	- qualifier is document number
 	 *	- the roles that will be of this type are KR-WKFLW Initiator and KR-WKFLW Initiator or Reviewer, KR-WKFLW Router
@@ -62,7 +64,6 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
 		if (StringUtils.isNotBlank(documentNumber)) {
 			Long documentNumberLong = Long.parseLong(documentNumber);
 			try{
-				WorkflowInfo workflowInfo = new WorkflowInfo();
 				RouteHeaderDTO routeHeaderDTO = workflowInfo.getRouteHeader(documentNumberLong);
 				if (KimConstants.KIM_ROLE_NAME_INITIATOR.equals(roleName))
 					principalIds.add(routeHeaderDTO.getInitiator().getWorkflowId());
@@ -72,7 +73,7 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
 					principalIds.add(routeHeaderDTO.getRoutedByUser().getWorkflowId());
 			} catch(WorkflowException wex){
 				throw new RuntimeException(
-				"Error in getting principal Ids in route log for document number: "+documentNumber+" :"+wex.getLocalizedMessage());
+				"Error in getting principal Ids in route log for document number: "+documentNumber+" :"+wex.getLocalizedMessage(),wex);
 			}
 		}
 		return principalIds;
@@ -88,25 +89,24 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
 
 		boolean isUserInRouteLog = false;
 		String documentNumber = qualification.get(KimAttributes.DOCUMENT_NUMBER);
-		WorkflowInfo info = new WorkflowInfo();
 		try {
 			Long documentNumberLong = Long.parseLong(documentNumber);
 			UserIdDTO userIdVO = new UuIdDTO(principalId);
-			WorkflowInfo workflowInfo = new WorkflowInfo();
 			if (KimConstants.KIM_ROLE_NAME_INITIATOR.equals(roleName)){
+				workflowInfo.getDocumentDetail( documentNumberLong );
 				RouteHeaderDTO routeHeaderDTO = workflowInfo.getRouteHeader(documentNumberLong);
 				isUserInRouteLog = principalId.equals(routeHeaderDTO.getInitiator().getWorkflowId());
 			} else if(KimConstants.KIM_ROLE_NAME_INITIATOR_OR_REVIEWER.equals(roleName)){
-				isUserInRouteLog = info.isUserAuthenticatedByRouteLog(documentNumberLong, userIdVO, true);
+				isUserInRouteLog = workflowInfo.isUserAuthenticatedByRouteLog(documentNumberLong, userIdVO, true);
 			} else if(KimConstants.KIM_ROLE_NAME_ROUTER.equals(roleName)){
 				RouteHeaderDTO routeHeaderDTO = workflowInfo.getRouteHeader(documentNumberLong);
 				isUserInRouteLog = principalId.equals(routeHeaderDTO.getRoutedByUser().getWorkflowId());
 			}
 		} catch (NumberFormatException e) {
-			throw new RuntimeException("Invalid (non-numeric) document number: "+documentNumber);
+			throw new RuntimeException("Invalid (non-numeric) document number: "+documentNumber,e);
 		} catch (WorkflowException wex) {
 			throw new RuntimeException("Error in determining whether the principal Id: "+principalId+" is in route log " +
-					"for document number: "+documentNumber+" :"+wex.getLocalizedMessage());
+					"for document number: "+documentNumber+" :"+wex.getLocalizedMessage(),wex);
 		}
 		return isUserInRouteLog;
 	}

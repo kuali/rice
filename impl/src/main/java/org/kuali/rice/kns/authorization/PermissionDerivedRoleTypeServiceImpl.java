@@ -34,34 +34,8 @@ import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
 public class PermissionDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServiceBase {
 
 	private static PermissionService permissionService;
-	private String roleNamesapce;
-	private String roleName;
 	private String permissionTemplateNamespace;
 	private String permissionTemplateName;
-	/**
-	 * @return the roleNamesapce
-	 */
-	public String getRoleNamesapce() {
-		return this.roleNamesapce;
-	}
-	/**
-	 * @param roleNamesapce the roleNamesapce to set
-	 */
-	public void setRoleNamesapce(String roleNamesapce) {
-		this.roleNamesapce = roleNamesapce;
-	}
-	/**
-	 * @return the roleName
-	 */
-	public String getRoleName() {
-		return this.roleName;
-	}
-	/**
-	 * @param roleName the roleName to set
-	 */
-	public void setRoleName(String roleName) {
-		this.roleName = roleName;
-	}
 	/**
 	 * @return the permissionTemplateNamespace
 	 */
@@ -94,7 +68,7 @@ public class PermissionDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServ
 	@Override
 	public List<String> getGroupIdsFromApplicationRole(String namespaceCode,
 			String roleName, AttributeSet qualification) {
-		List<PermissionAssigneeInfo> permissionAssignees = getPermissionAssignees(namespaceCode, roleName, qualification);
+		List<PermissionAssigneeInfo> permissionAssignees = getPermissionAssignees(qualification);
 		List<String> groupIds = new ArrayList<String>();
 		for (PermissionAssigneeInfo permissionAssigneeInfo : permissionAssignees) {
 			if (StringUtils.isNotBlank(permissionAssigneeInfo.getGroupId())) {
@@ -104,15 +78,10 @@ public class PermissionDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServ
 		return groupIds;
 	}
 	
-	protected List<PermissionAssigneeInfo> getPermissionAssignees(String roleNamespace,
-			String roleName, AttributeSet qualification) {
-		if (!StringUtils.equals(roleNamespace, this.roleNamesapce) || !StringUtils.equals(roleName, this.roleName)) {
-			throw new RuntimeException("The role type is not configured to support this role");
-		}
-		List<PermissionAssigneeInfo> permissionAssignees = getPermissionService().getPermissionAssigneesForTemplateName(permissionTemplateNamespace, permissionTemplateName, qualification, qualification);
-		return permissionAssignees;
+	protected List<PermissionAssigneeInfo> getPermissionAssignees(AttributeSet qualification) {
+		return getPermissionService().getPermissionAssigneesForTemplateName(permissionTemplateNamespace, permissionTemplateName, qualification, qualification);
 	}
-	
+
 	/**
 	 * This overridden method ...
 	 * 
@@ -121,7 +90,7 @@ public class PermissionDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServ
 	@Override
 	public List<String> getPrincipalIdsFromApplicationRole(String namespaceCode,
 			String roleName, AttributeSet qualification) {
-		List<PermissionAssigneeInfo> permissionAssignees = getPermissionAssignees(namespaceCode, roleName, qualification);
+		List<PermissionAssigneeInfo> permissionAssignees = getPermissionAssignees(qualification);
 		List<String> principalIds = new ArrayList<String>();
 		for (PermissionAssigneeInfo permissionAssigneeInfo : permissionAssignees) {
 			if (StringUtils.isNotBlank(permissionAssigneeInfo.getPrincipalId())) {
@@ -137,16 +106,8 @@ public class PermissionDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServ
     @Override
     public boolean hasApplicationRole(
             String principalId, List<String> groupIds, String namespaceCode, String roleName, AttributeSet qualification){
-    	boolean hasApplicationRole = false;
-    	List<PermissionAssigneeInfo> permissionAssignees = getPermissionAssignees(namespaceCode, roleName, qualification);
-		for (PermissionAssigneeInfo permissionAssigneeInfo : permissionAssignees) {
-			if (StringUtils.isNotBlank(permissionAssigneeInfo.getPrincipalId())) {
-				hasApplicationRole = principalId.equals(permissionAssigneeInfo.getPrincipalId());
-				break;
-			}
-		}
-		return hasApplicationRole;
-    }
+    	return getPermissionService().isAuthorized(principalId,permissionTemplateNamespace, permissionTemplateName, qualification, qualification);    
+	}
     
     /**
      * @return the documentService

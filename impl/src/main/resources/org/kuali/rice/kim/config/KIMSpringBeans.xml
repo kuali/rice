@@ -242,21 +242,21 @@
   </bean>
 
   <bean id="kimIdentityManagementService" class="org.kuali.rice.kim.service.impl.IdentityManagementServiceImpl"
-    p:entityPrincipalCacheMaxSize="200"
-    p:entityPrincipalCacheMaxAge="30"
-    p:groupCacheMaxSize="200"
-    p:groupCacheMaxAge="30"
-    p:permissionCacheMaxSize="200"
-    p:permissionCacheMaxAge="30"
-    p:responsibilityCacheMaxSize="200"
-    p:responsibilityCacheMaxAge="30" />
+    p:entityPrincipalCacheMaxSize="3000"
+    p:entityPrincipalCacheMaxAge="3600"
+    p:groupCacheMaxSize="3000"
+    p:groupCacheMaxAge="3600"
+    p:permissionCacheMaxSize="3000"
+    p:permissionCacheMaxAge="3600"
+    p:responsibilityCacheMaxSize="3000"
+    p:responsibilityCacheMaxAge="3600" />
 
   <bean id="kimRoleDao" class="org.kuali.rice.kim.dao.impl.KimRoleDaoOjb" parent="platformAwareDao" />
   <bean id="kimPermissionDao" class="org.kuali.rice.kim.dao.impl.KimPermissionDaoOjb" parent="platformAwareDao" />
 
   <bean id="kimRoleManagementService" class="org.kuali.rice.kim.service.impl.RoleManagementServiceImpl"
-    p:roleCacheMaxSize="200"
-    p:roleCacheMaxAge="30" />
+    p:roleCacheMaxSize="3000"
+    p:roleCacheMaxAge="3600" />
 
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
@@ -291,8 +291,8 @@
   <bean id="personService" class="org.kuali.rice.kim.service.impl.PersonServiceImpl"
   	p:identityManagementService-ref="kimIdentityManagementService"
     p:personDao-ref="kimPersonDao"
-    p:personCacheMaxSize="200"
-    p:personCacheMaxAge="30" />
+    p:personCacheMaxSize="3000"
+    p:personCacheMaxAge="3600" />
 
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
@@ -362,8 +362,6 @@
   <bean id="activePrincipalRoleTypeService" class="org.kuali.rice.kim.service.impl.PrincipalDerivedRoleTypeServiceImpl" />
 
   <bean id="documentEditorRoleTypeService" class="org.kuali.rice.kns.authorization.PermissionDerivedRoleTypeServiceImpl">
-    <property name="roleNamesapce" value="KR-NS" />
-	<property name="roleName" value="Document Editor" />
 	<property name="permissionTemplateNamespace" value="KR-NS" />
 	<property name="permissionTemplateName" value="Edit Document" />
   </bean>

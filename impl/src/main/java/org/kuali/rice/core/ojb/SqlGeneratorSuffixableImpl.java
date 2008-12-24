@@ -32,7 +32,7 @@ import org.apache.ojb.broker.util.logging.LoggerFactory;
  * can be retained for select-for-update queries.  Select for update appears to have been added in the OJB
  * source repository, so maybe a forthcoming release will include this functionality and these kludges can be
  * removed.
- * @see AffixedSqlSelectStatement
+ * @see SuffixedSqlSelectStatement
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SqlGeneratorSuffixableImpl extends SqlGeneratorDefaultImpl {
@@ -45,21 +45,29 @@ public class SqlGeneratorSuffixableImpl extends SqlGeneratorDefaultImpl {
     @Override
     public SelectStatement getPreparedSelectStatement(Query query, ClassDescriptor cld) {
         SelectStatement sql = new SuffixedSqlSelectStatement(getPlatform(), cld, query, logger);
-        if (logger.isDebugEnabled())
-        {
-            boolean ridiculousSqlLogging = false;
-            if ( ridiculousSqlLogging ) {
+        if (logger.isDebugEnabled()) {
+            boolean masochisticSqlLogging = true;
+            if ( masochisticSqlLogging ) {
+            	// temporary throwable to be able to obtain a stack trace
             	Throwable t = new Throwable();
             	t.fillInStackTrace();
             	StringBuffer sb = new StringBuffer();
+            	// loop over the stack trace, only including kuali classes
+            	// and excluding certain prefixes that are on almost all traces
+            	// within a web application
+            	// TODO: add exclusion paths for JUnit base classes
             	for ( StackTraceElement ste : t.getStackTrace() ) {
-            		if ( ste.getClassName().startsWith( "org.kuali" ) ) {
+            		if ( ste.getClassName().startsWith( "org.kuali" ) 
+            				&& !ste.getClassName().equals( this.getClass().getName() )
+            				&& !ste.getClassName().startsWith( "org.kuali.rice.kns.web.filter" ) 
+            				) {
             			sb.append( "    " );
             			sb.append( ste.getClassName() ).append( '.' ).append( ste.getMethodName() );
+            			sb.append( " - line " ).append( ste.getLineNumber() );
             			sb.append( '\n' );
             		}
             	}
-            	logger.debug("SQL: " + sql.getStatement() + "\n" + sb.toString() );
+            	logger.debug("SQL: " + sql.getStatement() + "\n" + query.getCriteria() + "\n" + sb.toString() );
             } else {
                 logger.debug("SQL: " + sql.getStatement() );
             }

@@ -106,7 +106,7 @@ public class PermissionDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServ
     @Override
     public boolean hasApplicationRole(
             String principalId, List<String> groupIds, String namespaceCode, String roleName, AttributeSet qualification){
-    	return getPermissionService().isAuthorized(principalId,permissionTemplateNamespace, permissionTemplateName, qualification, qualification);    
+    	return getPermissionService().isAuthorizedByTemplateName(principalId,permissionTemplateNamespace, permissionTemplateName, qualification, qualification);    
 	}
     
     /**

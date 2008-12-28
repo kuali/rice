@@ -1196,8 +1196,8 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         MaintenanceDocumentAuthorizer documentAuthorizer = (MaintenanceDocumentAuthorizer) documentAuthorizationService.getDocumentAuthorizer(document);
 
         // get a new instance of MaintenanceDocumentAuthorizations for this context
-        MaintenanceDocumentAuthorizations auths = documentAuthorizer.getFieldAuthorizations(document, user);
-
+        MaintenanceDocumentAuthorizations auths = KNSServiceLocator.getMaintenanceDocumentAuthorizationService().generateMaintenanceDocumentAuthorizations(document, user);
+        
         // load a temp copy of the document from the DB to compare to for changes
         MaintenanceDocument savedDoc = null;
         Maintainable savedNewMaintainable = null;

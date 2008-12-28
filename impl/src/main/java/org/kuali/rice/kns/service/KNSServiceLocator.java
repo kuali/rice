@@ -456,8 +456,14 @@ public class KNSServiceLocator<T extends Object> {
     public static final String DOCUMENT_PRESENTATION_CONTROLLER_SERVICE = "documentPresentationControllerService";
 
     public static DocumentPresentationControllerService getDocumentPresentationControllerService() {
-	return (DocumentPresentationControllerService) getService(DOCUMENT_PRESENTATION_CONTROLLER_SERVICE);
+    	return (DocumentPresentationControllerService) getService(DOCUMENT_PRESENTATION_CONTROLLER_SERVICE);
     }
     
     
+    
+    public static final String MAINTENANCE_DOCUMENT_AUTHORIZATION_SERVICE = "maintenanceDocumentAuthorizationService";
+    
+    public static MaintenanceDocumentAuthorizationService getMaintenanceDocumentAuthorizationService() {
+    	return (MaintenanceDocumentAuthorizationService) getService(MAINTENANCE_DOCUMENT_AUTHORIZATION_SERVICE);
+    }
 }

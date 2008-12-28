@@ -33,12 +33,14 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.authorization.AuthorizationConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.MaintenanceDocumentBase;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizations;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizer;
+import org.kuali.rice.kns.document.authorization.MaintenanceDocumentPresentationController;
 import org.kuali.rice.kns.exception.UnknownDocumentTypeException;
 import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.service.DocumentAuthorizationService;
@@ -288,6 +290,7 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
         //    applyAuthorizations();
         //}
 
+        
         // get business object being maintained and its keys
         List keyFieldNames = KNSServiceLocator.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(((MaintenanceDocumentBase) getDocument()).getNewMaintainableObject().getBusinessObject().getClass());
 
@@ -355,7 +358,8 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
         //}
         
         // set field permissions
-        setAuthorizations(maintenanceDocumentAuthorizer.getFieldAuthorizations(maintenanceDocument, kualiUser));
+        MaintenanceDocumentAuthorizations authorizations = KNSServiceLocator.getMaintenanceDocumentAuthorizationService().generateMaintenanceDocumentAuthorizations((MaintenanceDocument) getDocument(), GlobalVariables.getUserSession().getPerson());
+        setAuthorizations(authorizations);
 
         // set the overall document action flags
         //setDocumentActionFlags(maintenanceDocumentAuthorizer.getDocumentActionFlags(maintenanceDocument, kualiUser));

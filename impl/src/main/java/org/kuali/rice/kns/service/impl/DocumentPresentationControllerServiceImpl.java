@@ -59,7 +59,7 @@ public class DocumentPresentationControllerServiceImpl implements DocumentPresen
             throw new IllegalArgumentException("unknown documentType '" + documentType + "'");
         }
         try{
-        Class documentPresentationControllerClass = documentEntry.getDocumentPresentationControllerClass();
+        	Class documentPresentationControllerClass = documentEntry.getDocumentPresentationControllerClass();
         	if(documentPresentationControllerClass != null){
         		documentPresentationController = (DocumentPresentationController) documentPresentationControllerClass.newInstance();
         	}else{

@@ -16,7 +16,9 @@
 package org.kuali.rice.kns.document.authorization;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -26,7 +28,10 @@ import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.document.Document;
+import org.kuali.rice.kns.document.MaintenanceDocument;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * Base class for all MaintenanceDocumentPresentationControllers.
@@ -52,6 +57,7 @@ public class MaintenanceDocumentPresentationControllerBase extends DocumentPrese
 	 * @param document
 	 * @return
 	 */
+    @Deprecated
 	public List getReadOnlyFields(Document document){
 		List<MaintainableFieldDefinition> readOnlyFields = new ArrayList();
 		
@@ -69,6 +75,7 @@ public class MaintenanceDocumentPresentationControllerBase extends DocumentPrese
 		return readOnlyFields;
 	}
 	
+	@Deprecated
 	private static List<MaintainableFieldDefinition> getReadOnlyFieldList(
 			List<MaintainableFieldDefinition> returnList, List items) {
 		
@@ -92,12 +99,79 @@ public class MaintenanceDocumentPresentationControllerBase extends DocumentPrese
 		return returnList;
 	}
 
+	
 	/**
 	 * @return the maintenanceDocumentDictionaryService
 	 */
-	public static MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
+	public MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
+		if (maintenanceDocumentDictionaryService == null) {
+			maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
+		}
 		return maintenanceDocumentDictionaryService;
 	}
+
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.document.authorization.MaintenanceDocumentPresentationController#addMaintenanceDocumentRestrictions(org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizations, org.kuali.rice.kns.document.MaintenanceDocument)
+	 */
+	public void addMaintenanceDocumentRestrictions(
+			MaintenanceDocumentAuthorizations auths,
+			MaintenanceDocument document) {
+    	Set<String> readOnlyPropertyNames = getReadOnlyPropertyNames(document);
+		for (String readOnlyPropertyName : readOnlyPropertyNames) {
+			auths.addReadonlyAuthField(readOnlyPropertyName);
+		}
+		
+		Set<String> hiddenPropertyNames = getHiddenPropertyNames(document);
+		for (String hiddenPropertyName : hiddenPropertyNames) {
+			auths.addHiddenAuthField(hiddenPropertyName);
+		}
+		
+		Set<String> hiddenSectionIds = getHiddenSectionIds(document);
+		for (String hiddenSectionId : hiddenSectionIds) {
+		}
+	}
 	
+	protected Set<String> getReadonlyPropertyNames(List<? extends MaintainableItemDefinition> items, String fieldPrefix) {
+		Set<String> readonlyFields = new HashSet<String>();
+		for (MaintainableItemDefinition item : items) {
+			if (item instanceof MaintainableFieldDefinition) {
+				if (((MaintainableFieldDefinition) item).isUnconditionallyReadOnly()) {
+					readonlyFields.add(fieldPrefix + item.getName());
+				}
+				else if (item instanceof MaintainableCollectionDefinition) {
+					MaintainableCollectionDefinition maintainableCollectionDefinition = (MaintainableCollectionDefinition) item; 
+					Set<String> subcollectionReadonlyFields = getReadonlyPropertyNames(maintainableCollectionDefinition.getMaintainableCollections(), fieldPrefix + maintainableCollectionDefinition.getName() + ".");
+					readonlyFields.addAll(subcollectionReadonlyFields);
+					
+					Set<String> fieldReadonlyFields = getReadonlyPropertyNames(maintainableCollectionDefinition.getMaintainableFields(), fieldPrefix);
+					readonlyFields.addAll(fieldReadonlyFields);
+				}
+			}
+		}
+		return readonlyFields;
+	}
 	
+	protected Set<String> getHiddenPropertyNames(MaintenanceDocument document) {
+		return new HashSet<String>();
+	}
+	
+    protected Set<String> getReadOnlyPropertyNames(MaintenanceDocument document) {
+		String documentType = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
+    	MaintenanceDocumentEntry objectEntry = getMaintenanceDocumentDictionaryService().getMaintenanceDocumentEntry(documentType);
+    	List<MaintainableSectionDefinition> maintainableSectionDefinitions = objectEntry.getMaintainableSections();
+
+    	
+    	Set<String> documentReadOnlyFields = new HashSet<String>();
+    	for (MaintainableSectionDefinition maintainableSectionDefinition : maintainableSectionDefinitions) {
+    		documentReadOnlyFields.addAll(getReadonlyPropertyNames(maintainableSectionDefinition.getMaintainableItems(), ""));
+    	}
+    	return documentReadOnlyFields;
+    }
+    
+    protected Set<String> getHiddenSectionIds(MaintenanceDocument document) {
+    	return new HashSet<String>();
+    }
 }

@@ -30,14 +30,14 @@ public interface MaintenanceDocumentAuthorizer extends DocumentAuthorizer {
 
 	/**
      * 
-     * This method returns the set of authorization restrictions (if any) that apply to this object in this context.
+     * This method returns adds restrictions based on the document and the logged-in user
      * 
-     * @param document
-     * @param user
+     * @param document the document
+     * @param user the logged-in user
      * @return MaintenanceDocumentAuthorizations
      * 
      */
-    public MaintenanceDocumentAuthorizations getFieldAuthorizations(MaintenanceDocument document, Person user);
+    public void addMaintenanceDocumentRestrictions(MaintenanceDocumentAuthorizations auths, MaintenanceDocument document, Person user);
     
     /**
      * @param boClass

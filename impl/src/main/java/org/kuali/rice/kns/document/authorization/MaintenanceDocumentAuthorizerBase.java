@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.document.authorization;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -45,22 +46,28 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
  	private static MaintenanceDocumentDictionaryService  maintenanceDocumentDictionaryService;
  	private static PersistenceStructureService persistenceStructureService;
     /**
-     * @see org.kuali.rice.kns.authorization.MaintenanceDocumentAuthorizer#getFieldAuthorizations(org.kuali.rice.kns.document.MaintenanceDocument,
+     * @see org.kuali.rice.kns.authorization.MaintenanceDocumentAuthorizer#addMaintenanceDocumentRestrictions(org.kuali.rice.kns.document.MaintenanceDocument,
      *      org.kuali.rice.kns.bo.user.KualiUser)
      */
-    public MaintenanceDocumentAuthorizations getFieldAuthorizations(MaintenanceDocument document, Person user) {
+    public void addMaintenanceDocumentRestrictions(MaintenanceDocumentAuthorizations auths, MaintenanceDocument document, Person user) {
         
-    	MaintenanceDocumentAuthorizations auths = new MaintenanceDocumentAuthorizations();
     	String documentType = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
     	
     	MaintenanceDocumentEntry objectEntry = getMaintenanceDocumentDictionaryService().getMaintenanceDocumentEntry(documentType);
     	Map<String, FieldAttributeSecurity> restrictionFields = DocumentAttributeSecurityUtils.getRestrictionMaintainableFields(objectEntry);
     	
-    	Set keys = restrictionFields.keySet();    
-    	Iterator keyIter = keys.iterator();
+    	Set<String> keys = restrictionFields.keySet();    
+    	Iterator<String> keyIter = keys.iterator();
+    	
+    	AttributeSet basePermissionDetails = new AttributeSet();
+    	populatePermissionDetails(document, basePermissionDetails);
+    	
+    	AttributeSet baseRoleQualification = new AttributeSet();
+    	populateRoleQualification(document, baseRoleQualification);
+    	
         while (keyIter.hasNext()) { 
-           String fullFieldName = (String) keyIter.next(); 
-           FieldAttributeSecurity fieldAttributeSecurity = (FieldAttributeSecurity) restrictionFields.get(fullFieldName);
+           String fullFieldName = keyIter.next(); 
+           FieldAttributeSecurity fieldAttributeSecurity = restrictionFields.get(fullFieldName);
            String fieldName = fieldAttributeSecurity.getAttributeName();
            
            //TODO:Should use ParameterService.getDetailType to get the componentName
@@ -70,26 +77,26 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
            AttributeSecurity maintainableFieldAttributeSecurity = (AttributeSecurity) fieldAttributeSecurity.getMaintainableFieldAttributeSecurity();
            AttributeSecurity  businessObjectAttributeSecurity = (AttributeSecurity) fieldAttributeSecurity.getBusinessObjectAttributeSecurity();
            
-           AttributeSet permissionDetails = new AttributeSet();
+           AttributeSet permissionDetails = new AttributeSet(basePermissionDetails);
     	   permissionDetails.put(KimAttributes.PROPERTY_NAME, fieldName);
     	   
     	   if(businessObjectAttributeSecurity != null && businessObjectAttributeSecurity.isReadOnly()){
     		   permissionDetails.put(KimAttributes.COMPONENT_NAME, componentName);
-    		   if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_EDIT_PROPERTY, permissionDetails, null)){
+    		   if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_EDIT_PROPERTY, permissionDetails, baseRoleQualification)){
     			   auths.addReadonlyAuthField(fullFieldName);
     		   }
     	   }
     	   
     	   if(maintainableFieldAttributeSecurity != null && maintainableFieldAttributeSecurity.isReadOnly()){
     		   permissionDetails.put(KimAttributes.COMPONENT_NAME, documentType);
-    		   if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_EDIT_PROPERTY, permissionDetails, null)){
+    		   if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_EDIT_PROPERTY, permissionDetails, baseRoleQualification)){
     			   auths.addReadonlyAuthField(fullFieldName);
     		   }
     	   }
     	   
     	   if(businessObjectAttributeSecurity != null && businessObjectAttributeSecurity.isPartialMask()){
     		   permissionDetails.put(KimAttributes.COMPONENT_NAME, componentName);
-    		   if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_PARTIALLY_UNMASK_PROPERTY, permissionDetails, null)){
+    		   if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_PARTIALLY_UNMASK_PROPERTY, permissionDetails, baseRoleQualification)){
     			   MaskFormatter partialMaskFormatter = businessObjectAttributeSecurity.getPartialMaskFormatter();
     			   auths.addPartiallyMaskedAuthField(fullFieldName, partialMaskFormatter);
     		   }
@@ -97,7 +104,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
     	   
     	   if(maintainableFieldAttributeSecurity != null  && maintainableFieldAttributeSecurity.isPartialMask()){
     		   permissionDetails.put(KimAttributes.COMPONENT_NAME, documentType);
-			   if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_PARTIALLY_UNMASK_PROPERTY, permissionDetails, null)){
+			   if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_PARTIALLY_UNMASK_PROPERTY, permissionDetails, baseRoleQualification)){
 				   MaskFormatter partialMaskFormatter = maintainableFieldAttributeSecurity.getPartialMaskFormatter();
 				   auths.addPartiallyMaskedAuthField(fullFieldName, partialMaskFormatter);
 			   }
@@ -105,7 +112,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
     	   
     	   if(businessObjectAttributeSecurity != null && businessObjectAttributeSecurity.isMask()){
     		   permissionDetails.put(KimAttributes.COMPONENT_NAME, componentName);
-    		   if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_UNMASK_PROPERTY, permissionDetails, null)){
+    		   if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_UNMASK_PROPERTY, permissionDetails, baseRoleQualification)){
     		       MaskFormatter maskFormatter = businessObjectAttributeSecurity.getMaskFormatter();
     			   auths.addMaskedAuthField(fullFieldName, maskFormatter);
     		   }
@@ -113,7 +120,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
     	   
     	   if(maintainableFieldAttributeSecurity != null  && maintainableFieldAttributeSecurity.isMask()){  
     		   permissionDetails.put(KimAttributes.COMPONENT_NAME, documentType);
-			   if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_UNMASK_PROPERTY, permissionDetails, null)){
+			   if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_UNMASK_PROPERTY, permissionDetails, baseRoleQualification)){
 				   MaskFormatter maskFormatter = maintainableFieldAttributeSecurity.getMaskFormatter();
 				   auths.addMaskedAuthField(fullFieldName, maskFormatter);
 			   }
@@ -121,20 +128,35 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
     	
     	   if(businessObjectAttributeSecurity != null && businessObjectAttributeSecurity.isHide()){
     		   permissionDetails.put(KimAttributes.COMPONENT_NAME, componentName);
-    		   if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_VIEW_PROPERTY, permissionDetails, null)){
+    		   if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_VIEW_PROPERTY, permissionDetails, baseRoleQualification)){
     			   auths.addHiddenAuthField(fullFieldName);	  
     		   }
     	   }   
 
     	   if(maintainableFieldAttributeSecurity != null  && maintainableFieldAttributeSecurity.isHide()){
     		   permissionDetails.put(KimAttributes.COMPONENT_NAME, documentType);
-			   if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_VIEW_PROPERTY, permissionDetails, null)){
+			   if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_VIEW_PROPERTY, permissionDetails, baseRoleQualification)){
 				   auths.addHiddenAuthField(fullFieldName);	  
 			   }
 		   }
-  
-        }    	
-    	return auths; 
+        }
+        
+        Person person = GlobalVariables.getUserSession().getPerson();
+        
+        Set<String> readOnlyPropertyNames = getSecurePotentiallyReadOnlyPropertyNames(document, person);
+        for (String readOnlyPropertyName : readOnlyPropertyNames) {
+        	auths.addReadonlyAuthField(readOnlyPropertyName);
+        }
+        
+        Set<String> hiddenPropertyNames = getSecurePotentiallyHiddenPropertyNames(document, person);
+        for (String hiddenPropertyName : hiddenPropertyNames) {
+        	auths.addHiddenAuthField(hiddenPropertyName);
+        }
+        
+        Set<String> hiddenSectionIds = getSecurePotentiallyHiddenSectionIds(document, person);
+        for (String hiddenSectionId : hiddenSectionIds) {
+        	auths.addHiddenSectionId(hiddenSectionId);
+        }
     }
 
 
@@ -147,7 +169,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
 
         Set docActions = super.getDocumentActions(document, user, documentActions);
         MaintenanceDocument maintDoc = (MaintenanceDocument) document;
-        MaintenanceDocumentAuthorizations docAuths = getFieldAuthorizations(maintDoc, user);
+        MaintenanceDocumentAuthorizations docAuths = KNSServiceLocator.getMaintenanceDocumentAuthorizationService().generateMaintenanceDocumentAuthorizations(maintDoc, GlobalVariables.getUserSession().getPerson());
         if (docActions.contains(KNSConstants.KUALI_ACTION_CAN_BLANKET_APPROVE)&& docAuths.hasAnyFieldRestrictions()) {
             docActions.remove(KNSConstants.KUALI_ACTION_CAN_BLANKET_APPROVE);
         }
@@ -242,6 +264,16 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
         return persistenceStructureService;
     }
     
+    protected Set<String> getSecurePotentiallyHiddenPropertyNames(MaintenanceDocument document, Person person) {
+    	return new HashSet<String>();
+    }
     
+    protected Set<String> getSecurePotentiallyHiddenSectionIds(MaintenanceDocument document, Person person) {
+    	return new HashSet<String>();
+    }
+    
+    protected Set<String> getSecurePotentiallyReadOnlyPropertyNames(MaintenanceDocument document, Person person) {
+    	return new HashSet<String>();
+    }
 }
 

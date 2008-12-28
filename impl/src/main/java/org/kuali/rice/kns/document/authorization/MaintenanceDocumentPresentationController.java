@@ -18,6 +18,7 @@ package org.kuali.rice.kns.document.authorization;
 import java.util.List;
 
 import org.kuali.rice.kns.document.Document;
+import org.kuali.rice.kns.document.MaintenanceDocument;
 
 /**
  * The DocumentPresentationController class is used for non-user related lock down 
@@ -42,6 +43,6 @@ public interface MaintenanceDocumentPresentationController extends DocumentPrese
 	 */
 	public List getReadOnlyFields(Document document);
 	
-	
+	public void addMaintenanceDocumentRestrictions(MaintenanceDocumentAuthorizations auths, MaintenanceDocument document);
 }
 

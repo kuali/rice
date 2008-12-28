@@ -200,25 +200,26 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
      */
     private Map decryptEncryptedData(Map fieldValues, MaintenanceDocument maintenanceDocument) {
     	try {
+    		MaintenanceDocumentAuthorizations auths = KNSServiceLocator.getMaintenanceDocumentAuthorizationService().generateMaintenanceDocumentAuthorizations(maintenanceDocument, GlobalVariables.getUserSession().getPerson());
 	        for (Iterator iter = fieldValues.keySet().iterator(); iter.hasNext();) {
-	                String fieldName = (String) iter.next();
-	                String fieldValue = (String) fieldValues.get(fieldName);
+                String fieldName = (String) iter.next();
+                String fieldValue = (String) fieldValues.get(fieldName);
 
-	                if (fieldValue != null &&!"".equals(fieldValue) && fieldValue.endsWith(EncryptionService.ENCRYPTION_POST_PREFIX)){
-	                	if(shouldFieldBeEncrypted(maintenanceDocument, fieldName)){
-		                    String encryptedValue = fieldValue;
-		
-		                    // take off the postfix
-		                    encryptedValue = StringUtils.stripEnd(encryptedValue, EncryptionService.ENCRYPTION_POST_PREFIX);
-		                    String decryptedValue = getEncryptionService().decrypt(encryptedValue);
-		
-		                    fieldValues.put(fieldName, decryptedValue);
-	                	} else
-	                		throw new RuntimeException(
-	                			"The field value for field name "+fieldName+" should not be encrypted. Value received: "+fieldValue);
-                	} else if(fieldValue != null &&!"".equals(fieldValue)  && shouldFieldBeEncrypted(maintenanceDocument, fieldName))
+                if (fieldValue != null &&!"".equals(fieldValue) && fieldValue.endsWith(EncryptionService.ENCRYPTION_POST_PREFIX)){
+                	if(shouldFieldBeEncrypted(maintenanceDocument, fieldName, auths)){
+	                    String encryptedValue = fieldValue;
+	
+	                    // take off the postfix
+	                    encryptedValue = StringUtils.stripEnd(encryptedValue, EncryptionService.ENCRYPTION_POST_PREFIX);
+	                    String decryptedValue = getEncryptionService().decrypt(encryptedValue);
+	
+	                    fieldValues.put(fieldName, decryptedValue);
+                	} else
                 		throw new RuntimeException(
-                			"The field value for field name "+fieldName+" should be encrypted. Value received: "+fieldValue);
+                			"The field value for field name "+fieldName+" should not be encrypted. Value received: "+fieldValue);
+            	} else if(fieldValue != null &&!"".equals(fieldValue)  && shouldFieldBeEncrypted(maintenanceDocument, fieldName, auths))
+            		throw new RuntimeException(
+            			"The field value for field name "+fieldName+" should be encrypted. Value received: "+fieldValue);
 	        	} 
 	        }
         catch (GeneralSecurityException e) {
@@ -228,11 +229,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
         return fieldValues;
     }
 
-    private boolean shouldFieldBeEncrypted(MaintenanceDocument maintenanceDocument, String fieldName){
-    	MaintenanceDocumentAuthorizer authorizer = (MaintenanceDocumentAuthorizer)
-    		KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(maintenanceDocument);
-    	MaintenanceDocumentAuthorizations auths = 
-    		authorizer.getFieldAuthorizations(maintenanceDocument, GlobalVariables.getUserSession().getPerson());
+    private boolean shouldFieldBeEncrypted(MaintenanceDocument maintenanceDocument, String fieldName, MaintenanceDocumentAuthorizations auths){
     	// If the user does not have appropriate permissions, a non-blank displayEditMode implies that this field should be encrypted
     	// If the logged in user has the permission to view or edit this field, 
     	// editMap will have an entry corresponding to displayEditMode, in which case, the field value received will not be encrypted
@@ -821,8 +818,8 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
             if ( LOG.isDebugEnabled() ) {
                 LOG.debug( "values for collection: " + collectionValues );
             }
-            GlobalVariables.getErrorMap().addToErrorPath( KNSConstants.MAINTENANCE_ADD_PREFIX + collName );
             cachedValues.putAll( FieldUtils.populateBusinessObjectFromMap( getNewCollectionLine( collName ), collectionValues, KNSConstants.MAINTENANCE_ADD_PREFIX + collName + "." ) );
+            GlobalVariables.getErrorMap().addToErrorPath( KNSConstants.MAINTENANCE_ADD_PREFIX + collName );
             GlobalVariables.getErrorMap().removeFromErrorPath( KNSConstants.MAINTENANCE_ADD_PREFIX + collName );
             cachedValues.putAll( populateNewSubCollectionLines( coll, subCollectionValues ) );
         }

@@ -939,7 +939,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         MaintenanceDocumentAuthorizer documentAuthorizer = (MaintenanceDocumentAuthorizer) documentAuthorizationService.getDocumentAuthorizer(document);
 
         // get a new instance of MaintenanceDocumentAuthorizations for this context
-        MaintenanceDocumentAuthorizations auths = documentAuthorizer.getFieldAuthorizations(document, user);
+        MaintenanceDocumentAuthorizations auths = KNSServiceLocator.getMaintenanceDocumentAuthorizationService().generateMaintenanceDocumentAuthorizations(document, user);
 
         // get a reference to the newBo
         PersistableBusinessObject newBo = document.getNewMaintainableObject().getBusinessObject();
@@ -1008,9 +1008,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
     		
     	}
     	
-    	maintenanceForm.setAuthorizations(maintenanceDocumentAuthorizer.getFieldAuthorizations(maintenanceDocument, user));
-    	
-            
-        
+    	MaintenanceDocumentAuthorizations maintenanceDocumentAuthorizations = KNSServiceLocator.getMaintenanceDocumentAuthorizationService().generateMaintenanceDocumentAuthorizations(maintenanceDocument, user);
+    	maintenanceForm.setAuthorizations(maintenanceDocumentAuthorizations);
     }
 }

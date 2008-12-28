@@ -19,9 +19,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -39,17 +40,17 @@ import org.kuali.rice.kns.web.ui.Field;
  * 
  * 
  */
-public class MaintenanceDocumentAuthorizations  implements  Serializable {
+public class MaintenanceDocumentAuthorizations implements Serializable {
 
     private static final Logger LOG = Logger.getLogger(MaintenanceDocumentAuthorizations.class);
 
     private Map authFields;
     private Map fieldFormatters;
-    private List hiddenSections; // not implemented, does nothing yet
+    private Set<String> hiddenSectionIds; // not implemented, does nothing yet
 
     public MaintenanceDocumentAuthorizations() {
         authFields = new HashMap();
-        hiddenSections = new ArrayList();
+        hiddenSectionIds = new HashSet<String>();
         fieldFormatters = new HashMap();
     }
 
@@ -171,6 +172,10 @@ public class MaintenanceDocumentAuthorizations  implements  Serializable {
     }
     
  
+    public void addHiddenSectionId(String sectionId) {
+    	hiddenSectionIds.add(sectionId);
+    }
+    
     /**
      * 
      * Returns a collection of all the sections that have non-default authorization restrictions.
@@ -178,8 +183,8 @@ public class MaintenanceDocumentAuthorizations  implements  Serializable {
      * @return Collection of section names that are restricted
      * 
      */
-    public List getHiddenSectionNames() {
-        return hiddenSections;
+    public Set<String> getHiddenSectionIds() {
+        return hiddenSectionIds;
     }
 
     /**
@@ -205,6 +210,12 @@ public class MaintenanceDocumentAuthorizations  implements  Serializable {
         }
     }
     
+    public void clearAllRestrictions() {
+    	authFields.clear();
+    	fieldFormatters.clear();
+    	hiddenSectionIds.clear();
+    }
+
     private void addFieldFormatter(String fieldName, MaskFormatter maskFormatter) {
     	fieldFormatters.put(fieldName, maskFormatter);
     }

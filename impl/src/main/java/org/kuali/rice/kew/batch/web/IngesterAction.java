@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -108,7 +108,7 @@ public class IngesterAction extends Action {
                     try {
                         collections.add(new ZipXmlDocCollection(temp));
                     } catch (IOException ioe) {
-                        String message = "Unable to load file: " + file; 
+                        String message = "Unable to load file: " + file;
                         LOG.error(message);
                         messages.add(message);
                     }
@@ -120,7 +120,7 @@ public class IngesterAction extends Action {
             }
 
             if (collections.size() == 0) {
-                String message = "No valid files to ingest"; 
+                String message = "No valid files to ingest";
                 LOG.debug(message);
                 messages.add(message);
             } else {
@@ -130,7 +130,7 @@ public class IngesterAction extends Action {
                 List<XmlDocCollection> c = new ArrayList<XmlDocCollection>(1);
                 c.add(compositeCollection);
                 try {
-                    Collection failed = KEWServiceLocator.getXmlIngesterService().ingest(c, UserLoginFilter.getUserSession(request).getWorkflowUser());
+                    Collection failed = KEWServiceLocator.getXmlIngesterService().ingest(c, UserLoginFilter.getUserSession(request).getPrincipal().getPrincipalId());
                     boolean txFailed = failed.size() > 0;
                     if (txFailed) {
                         messages.add("Ingestion failed");
@@ -160,7 +160,7 @@ public class IngesterAction extends Action {
                     messages.add(message + ": " + e  + ":\n" + Utilities.collectStackTrace(e));
                 }
                 if (totalProcessed == 0) {
-                    String message = "No xml docs ingested"; 
+                    String message = "No xml docs ingested";
                     LOG.debug(message);
                     messages.add(message);
                 }

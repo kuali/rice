@@ -31,7 +31,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.xml.ClassLoaderEntityResolver;
 import org.kuali.rice.kew.xml.XmlLoader;
@@ -199,7 +198,7 @@ public class XmlIngesterServiceImpl implements XmlIngesterService {
         }
     }
 
-    private void ingest(XmlLoader xmlLoader, Collection xmlDocCollections, WorkflowUser user, Set successful, Set failed) {
+    private void ingest(XmlLoader xmlLoader, Collection xmlDocCollections, String principalId, Set successful, Set failed) {
         Iterator xmlDocCollectionsIt = xmlDocCollections.iterator();
         while (xmlDocCollectionsIt.hasNext()) {
             XmlDocCollection xmlDocCollection = (XmlDocCollection) xmlDocCollectionsIt.next();
@@ -211,7 +210,7 @@ public class XmlIngesterServiceImpl implements XmlIngesterService {
 
             try {
                 //SpringServiceLocator.getXmlDigesterService().digest(xmlLoader, xmlDocCollection, user);
-                digesterService.digest(xmlLoader, xmlDocCollection, user.getWorkflowId());
+                digesterService.digest(xmlLoader, xmlDocCollection, principalId);
             } catch (Exception e) {
                 LOG.error("Caught Exception loading xml data from " + xmlDocCollection.getFile() + ".  Will move associated file to problem dir.", e);
                 failed.add(xmlDocCollection);
@@ -223,13 +222,13 @@ public class XmlIngesterServiceImpl implements XmlIngesterService {
         return ingest(collections, null);
     }
 
-    private void ingestThroughOrderedLoaders(Collection xmlDocCollections, WorkflowUser user, Set successful, Set failed) {
+    private void ingestThroughOrderedLoaders(Collection xmlDocCollections, String principalId, Set successful, Set failed) {
         LOG.debug("Ingesting through ordered XmlLoaders");
         Iterator orderIt = serviceOrder.iterator();
         while (orderIt.hasNext()) {
             XmlLoader xmlLoader = (XmlLoader) KEWServiceLocator.getService((String) orderIt.next());
             LOG.debug("Ingesting through ordered XmlLoader: " + xmlLoader);
-            ingest(xmlLoader, xmlDocCollections, user, successful, failed);
+            ingest(xmlLoader, xmlDocCollections, principalId, successful, failed);
         }
     }
 
@@ -252,7 +251,7 @@ public class XmlIngesterServiceImpl implements XmlIngesterService {
         }
     }*/
 
-    public Collection ingest(List collections, WorkflowUser user) {
+    public Collection ingest(List collections, String principalId) {
         Set failed = new LinkedHashSet();
         // validate all the docs up-front because we will be iterating over them
         // multiple times: one for each XmlLoader.  If we delegated validation to
@@ -266,7 +265,7 @@ public class XmlIngesterServiceImpl implements XmlIngesterService {
 
         Set successful = new LinkedHashSet();
         // ingest docs first by ordered services
-        ingestThroughOrderedLoaders(collections, user, successful, failed);
+        ingestThroughOrderedLoaders(collections, principalId, successful, failed);
         // then by unordered services
         collections = new LinkedList(successful);
 

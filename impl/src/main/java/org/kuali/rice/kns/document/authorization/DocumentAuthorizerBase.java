@@ -206,6 +206,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
      * @param user - current user
      * @return boolean (true if they should have permissions)
      */
+    @Deprecated
     public boolean hasInitiateAuthorization(Document document, Person user) {
         KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
         return workflowDocument.getInitiatorNetworkId().equalsIgnoreCase(user.getPrincipalName());
@@ -229,6 +230,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
      * @param user
      * @return boolean (true if user has permission to open a document)
      */
+    @Deprecated
     protected boolean canOpen(Document document, Person user){
     	
 	     return isAuthorizedByTemplate(document, KNSConstants.KNS_NAMESPACE, KimConstants.PERMISSION_OPEN_DOCUMENT, user.getPrincipalId());
@@ -241,6 +243,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
 	 * @param user
 	 * @return boolean (true if user has permission to edit a document)
 	 */
+    @Deprecated
 	protected boolean canEdit(Document document, Person user){
 		   
 	    return isAuthorizedByTemplate(document, KNSConstants.KNS_NAMESPACE, KimConstants.PERMISSION_EDIT_DOCUMENT, user.getPrincipalId());
@@ -253,6 +256,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
 	 * @param user
 	 * @return boolean (true if user has permission to copy a document)
 	 */
+    @Deprecated
 	protected boolean canCopy(Document document, Person user){
 	     return isAuthorizedByTemplate(document, KNSConstants.KNS_NAMESPACE, KimConstants.PERMISSION_COPY_DOCUMENT, user.getPrincipalId());
 	     	
@@ -264,6 +268,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
 	 * @param user
 	 * @return boolean (true if user has permission to cancel a document)
 	 */
+    @Deprecated
 	protected boolean canCancel(Document document, Person user){
 	     return isAuthorizedByTemplate(document, KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE, KimConstants.PERMISSION_CANCEL_DOCUMENT, user.getPrincipalId());
 	     	  	
@@ -276,6 +281,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
 	 * @param user
 	 * @return boolean (true if user has permission to route a document)
 	 */
+    @Deprecated
 	protected boolean canRoute(Document document, Person user){
 	     return isAuthorizedByTemplate(document, KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE, KimConstants.PERMISSION_ROUTE_DOCUMENT, user.getPrincipalId());
   	  	   	
@@ -288,6 +294,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
 	 * @param user
 	 * @return boolean (true if user has permission to save a document)
 	 */
+    @Deprecated
 	protected boolean canSave(Document document, Person user){
 	     return isAuthorizedByTemplate(document, KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE, KimConstants.PERMISSION_SAVE_DOCUMENT, user.getPrincipalId());
 	  	   	   	
@@ -299,6 +306,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
 	 * @param user
 	 * @return boolean (true if user has permission to blanket approve a document)
 	 */
+    @Deprecated
 	protected boolean canBlanketApprove(Document document, Person user){
 	     return isAuthorizedByTemplate(document, KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE, KimConstants.PERMISSION_BLANKET_APPROVE_DOCUMENT, user.getPrincipalId());
 	   	     	
@@ -311,7 +319,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
 	 * @param actionRequestCode
 	 * @return boolean (true if user has permission to recieve ad hoc for a document)
 	 */
-	public boolean canReceiveAdHoc(Document document, Person user, String actionRequestCode){
+	public final boolean canReceiveAdHoc(Document document, Person user, String actionRequestCode){
 	     return isAuthorizedByTemplate(document, KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE, KimConstants.PERMISSION_AD_HOC_REVIEW_DOCUMENT, user.getPrincipalId());
 	   	    	
 	 }
@@ -322,6 +330,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
 	 * @param user
 	 * @return boolean (true if user has permission to approve a document)
 	 */
+    @Deprecated
 	protected boolean canApprove(Document document, Person user){
 		AttributeSet permissionDetails = getPermissionDetailValues(document);
 		if(permissionDetails.containsKey(KimAttributes.ACTION_REQUEST_CD) && KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(permissionDetails.get(KimAttributes.ACTION_REQUEST_CD))){
@@ -339,6 +348,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
 	 * @param user
 	 * @return boolean (true if user has permission to FYI a document)
 	 */
+    @Deprecated
 	protected boolean canClearFYI(Document document, Person user){
 		AttributeSet permissionDetails = getPermissionDetailValues(document);
 		if(permissionDetails.containsKey(KimAttributes.ACTION_REQUEST_CD) && KEWConstants.ACTION_REQUEST_FYI_REQ.equals(permissionDetails.get(KimAttributes.ACTION_REQUEST_CD))){
@@ -355,6 +365,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
 	 * @param user
 	 * @return boolean (true if user has permission to acknowledge a document)
 	 */
+    @Deprecated
 	protected boolean canAcknowledge(Document document, Person user){
 		AttributeSet permissionDetails = getPermissionDetailValues(document);
 		if(permissionDetails.containsKey(KimAttributes.ACTION_REQUEST_CD) && KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ.equals(permissionDetails.get(KimAttributes.ACTION_REQUEST_CD))){
@@ -366,25 +377,11 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
 	
 	
 	/**
-	 * 
-	 * @param document
-	 * @param user
-	 * @return boolean (true if user has permission to complete a document)
-	 */
-	protected boolean canComplete(Document document, Person user ){
-		AttributeSet permissionDetails = getPermissionDetailValues(document);
-		if(permissionDetails.containsKey(KimAttributes.ACTION_REQUEST_CD) && KEWConstants.ACTION_REQUEST_COMPLETE_REQ.equals(permissionDetails.get(KimAttributes.ACTION_REQUEST_CD))){
-			return canTakeRequestedAction(document, user);
-		}else{
-			return false;
-		}
-	 }
-	
-	/**
 	 * @param document
 	 * @param user
 	 * @return boolean (true if user has permission to disapprove a document)
 	 */
+    @Deprecated
 	protected boolean canDisapprove(Document document, Person user){
 		 return canApprove(document, user);
 	 }
@@ -396,6 +393,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
      * @param user
      * @return boolean (true if user has permission to add notes to a document)
      */
+    @Deprecated
     protected boolean canAnnotate(Document document, Person user){
 	     return isAuthorizedByTemplate(document, KNSConstants.KNS_NAMESPACE, KimConstants.PERMISSION_ADD_NOTE, user.getPrincipalId());
 	        	
@@ -493,6 +491,10 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
             permissionDetails.set( attributes );
         }
         return permissionDetails.get();
+    }
+    
+    protected boolean permissionExistsByTemplate(String namespaceCode, String permissionTemplateName, Document document) {
+        return getIdentityManagementService().isPermissionDefinedForTemplateName(namespaceCode, permissionTemplateName, getPermissionDetailValues(document));
     }
     
     public boolean isAuthorized( Document document, String namespaceCode, String permissionName, String principalId ) {

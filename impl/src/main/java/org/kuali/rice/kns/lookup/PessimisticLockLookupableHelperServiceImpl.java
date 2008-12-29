@@ -115,7 +115,9 @@ public class PessimisticLockLookupableHelperServiceImpl extends AbstractLookupab
         setBackLocation(fieldValues.get(KNSConstants.BACK_LOCATION));
         setDocFormKey(fieldValues.get(KNSConstants.DOC_FORM_KEY));
         setReferencesToRefresh(fieldValues.get(KNSConstants.REFERENCES_TO_REFRESH));
-        LOG.info("Search Criteria: " + fieldValues);
+        if (LOG.isInfoEnabled()) {
+        	LOG.info("Search Criteria: " + fieldValues);
+        }
         List searchResults;
         searchResults = (List) getLookupService().findCollectionBySearchHelper(getBusinessObjectClass(), fieldValues, true);
         // sort list if default sort column given

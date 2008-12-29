@@ -203,7 +203,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         boolean success = true;
 
         Map primaryKeys = persistenceService.getPrimaryKeyFieldValues(newBo);
-        success &= documentAuthorizer.canCreateOrMaintain(boClass, primaryKeys, GlobalVariables.getUserSession().getPerson());
+        success &= documentAuthorizer.canCreateOrMaintain((MaintenanceDocument)document, GlobalVariables.getUserSession().getPerson());
         
         // apply rules that are common across all maintenance documents, regardless of class
         success &= processGlobalRouteDocumentBusinessRules(maintenanceDocument);

@@ -43,14 +43,24 @@ public class MaintenanceDocumentPresentationControllerBase extends DocumentPrese
     
 
    /**
-    * 
     * @see org.kuali.rice.kns.document.authorization.DocumentPresentationControllerBase#canCreate(org.kuali.rice.kns.document.Document)
     */
-    public boolean canCreate(Class boClass){
-    	//TODO: 
+    public final boolean canCreate(Class boClass){
+    	//TODO: return the value of allowsNewOrCopy from the data dictionary
     	return true;
     }
-   
+
+	public Set<String> getConditionallyReadOnlyPropertyNames(Document document) {
+		return new HashSet<String>();
+	}
+	
+	public Set<String> getConditionallyHiddenPropertyNames(Document document) {
+		return new HashSet<String>();
+	}
+	
+	public Set<String> getConditionallyHiddenSectionIds(Document document) {
+		return new HashSet<String>();
+	}
 
 	/**
 	 * 

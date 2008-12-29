@@ -39,23 +39,15 @@ public class TransactionalDocumentAuthorizerBase extends DocumentAuthorizerBase 
 
     
    
-    public Set getEditModes(Document d, Person u, Set<String> editModes) {
+    public final Set getEditModes(Document d, Person u, Set<String> editModes) {
         Iterator i = editModes.iterator();
         while(i.hasNext()) {
           String editMode = (String)i.next();
-          if(!canUseEditMode(d, u, editMode)){
+          if(permissionExistsByTemplate(KNSConstants.KNS_NAMESPACE, KimConstants.PERMISSION_USE_TRANSACTIONAL_DOCUMENT, d) && !isAuthorizedByTemplate(d, KNSConstants.KNS_NAMESPACE, KimConstants.PERMISSION_USE_TRANSACTIONAL_DOCUMENT, u.getPrincipalId())){
         	  editModes.remove(editMode);
           }
         }
         
         return editModes;
     }
-    
-    
-    
-    protected boolean canUseEditMode(Document document, Person user,  String editMode){
-	    return isAuthorizedByTemplate(document, KNSConstants.KNS_NAMESPACE, KimConstants.PERMISSION_USE_TRANSACTIONAL_DOCUMENT, user.getPrincipalId());
-	  	    	
-    }
-
 }

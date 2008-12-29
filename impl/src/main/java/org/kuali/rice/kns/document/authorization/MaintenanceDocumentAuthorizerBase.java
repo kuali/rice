@@ -17,7 +17,6 @@ package org.kuali.rice.kns.document.authorization;
 
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -49,6 +48,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
      * @see org.kuali.rice.kns.authorization.MaintenanceDocumentAuthorizer#addMaintenanceDocumentRestrictions(org.kuali.rice.kns.document.MaintenanceDocument,
      *      org.kuali.rice.kns.bo.user.KualiUser)
      */
+	@Deprecated
     public void addMaintenanceDocumentRestrictions(MaintenanceDocumentAuthorizations auths, MaintenanceDocument document, Person user) {
         
     	String documentType = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
@@ -182,10 +182,10 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
      * 
      * @see org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizer#canCreate(java.lang.Class, org.kuali.rice.kim.bo.Person)
      */
-    public boolean canCreate(Class boClass, Person user){
-    	//TODO:
-    	return true;
-    	
+    public final boolean canCreate(Class boClass, Person user){
+    	//TODO: implement check of create or maintain permission template
+    	// we'll need to populate the permission details and role qualifications here ourselves and directly call kim, since the populate methods will blow if there's no document
+    	return true;    	
     }
     
     
@@ -193,8 +193,9 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
      * 
      * @see org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizer#canMaintain(java.lang.Class, java.util.Map, org.kuali.rice.kim.bo.Person)
      */
-    public boolean canMaintain(Class boClass, Map primaryKeys, Person user){
-    	//TODO:
+    public final boolean canMaintain(Class boClass, Map primaryKeys, Person user){
+    	//TODO: implement check of create or maintain permission template
+    	// we'll need to populate the permission details and role qualifications here ourselves and directly call kim, since the populate methods will blow if there's no document
     	return true;
     }
     
@@ -202,8 +203,9 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
      * 
      * @see org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizer#canCreateOrMaintain(java.lang.Class, java.util.Map, org.kuali.rice.kim.bo.Person)
      */
-    public boolean canCreateOrMaintain(Class boClass, Map primaryKeys, Person user){
-    	//TODO: 
+    public final boolean canCreateOrMaintain(MaintenanceDocument maintenanceDocument, Person user) {
+    	//TODO: implement check of create or maintain permission template
+    	// on this one use the isAuthed methods on the super so the details and template are populated normally
     	return true;
     }
 
@@ -255,7 +257,6 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
         MaintenanceDocument md = (MaintenanceDocument)document;
         return md.getNewMaintainableObject().getBoClass();        
 	}
-	
    
     public static PersistenceStructureService getPersistenceStructureService() {
         if ( persistenceStructureService == null ) {
@@ -268,6 +269,13 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
     	return new HashSet<String>();
     }
     
+	/**
+	 * This method should indicate which sections of the document may need to be hidden based on the user.
+	 * The framework will use this list to perform the permission checks.
+	 * 
+	 * @param document
+	 * @return Set of section ids that can be used to identify Sections that may need to be hidden based on user permissions
+	 */
     protected Set<String> getSecurePotentiallyHiddenSectionIds(MaintenanceDocument document, Person person) {
     	return new HashSet<String>();
     }

@@ -67,29 +67,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
     private static KualiConfigurationService kualiConfigurationService;
     private static IdentityManagementService identityManagementService;
     private static PersonService personService;
-    private static KualiModuleService kualiModuleService;
-   
-    
-    @Deprecated
-     public Map getEditMode(Document d, Person u) {
-        Map editModeMap = new HashMap();
-        String editMode = AuthorizationConstants.EditMode.VIEW_ONLY;
-
-        KualiWorkflowDocument workflowDocument = d.getDocumentHeader().getWorkflowDocument();
-        if (workflowDocument.stateIsInitiated() || workflowDocument.stateIsSaved()) {
-            if (hasInitiateAuthorization(d, u)) {
-                editMode = AuthorizationConstants.EditMode.FULL_ENTRY;
-            }
-        }
-        else if (workflowDocument.stateIsEnroute() && workflowDocument.isApprovalRequested()) {
-            editMode = AuthorizationConstants.EditMode.FULL_ENTRY;
-        }
-
-        editModeMap.put(editMode, EDIT_MODE_DEFAULT_TRUE_VALUE);
-
-        return editModeMap;
-    }
-    
+    private static KualiModuleService kualiModuleService;    
     
     /**
      * Individual document families will need to reimplement this according to their own needs; this version should be good enough
@@ -142,7 +120,11 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
         
        if(canApprove(document, user)){
     	   documentActions.add(KNSConstants.KUALI_ACTION_CAN_APPROVE);
-    	   documentActions.add(KNSConstants.KUALI_ACTION_CAN_DISAPPROVE);
+       }
+       else {
+    	   if (documentActions.contains(KNSConstants.KUALI_ACTION_CAN_DISAPPROVE)) {
+    		   documentActions.remove(KNSConstants.KUALI_ACTION_CAN_DISAPPROVE);
+    	   }
        }
        if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_ANNOTATE) && !canAnnotate(document, user)){
     	   documentActions.remove(KNSConstants.KUALI_ACTION_CAN_ANNOTATE);
@@ -150,206 +132,60 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
         return documentActions;
     }
     
-    @Deprecated
-    public DocumentActionFlags getDocumentActionFlags(Document document, Person user) {
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling DocumentAuthorizerBase.getDocumentActionFlags for document '" + document.getDocumentNumber() + "'. user '" + user.getPrincipalName() + "'");
-        }
-
-        DocumentActionFlags flags = new DocumentActionFlags(); // all flags default to false
-
-      
-        flags.setCanClose(true); // can always close a document
-
-        return flags;
-    }
-    
-   
-    
-     /**
-     * Helper method to set the annotate flag based on other workflow tags
-     * @param flags
-     */
-    @Deprecated
-    public void setAnnotateFlag(DocumentActionFlags flags) {
-        boolean canWorkflow = flags.getCanSave() || flags.getCanRoute() || flags.getCanCancel() || flags.getCanBlanketApprove() || flags.getCanApprove() || flags.getCanDisapprove() || flags.getCanAcknowledge() || flags.getCanAdHocRoute();
-        flags.setCanAnnotate(canWorkflow);
-    }
-    
     /**
      * DocumentTypeAuthorizationException can be extended to customize the initiate error message
      * @see org.kuali.rice.kns.authorization.DocumentAuthorizer#canInitiate(java.lang.String, org.kuali.rice.kns.bo.user.KualiUser)
      */
-    public void canInitiate(String documentTypeName, Person user) {
+    public boolean canInitiate(String documentTypeName, Person user) {
     	String nameSpaceCode = KNSConstants.KUALI_RICE_SYSTEM_NAMESPACE;
         AttributeSet permissionDetails = new AttributeSet();
         permissionDetails.put(KimAttributes.DOCUMENT_TYPE_CODE, documentTypeName);    
-        if(!getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_INITIATE_DOCUMENT, permissionDetails, null)){ 	
-        	throw new DocumentInitiationAuthorizationException(new String[] {user.getPrincipalName(),documentTypeName});
-        }
-    }    	
-
-
-    /**
-     * Default implementation here is if a user cannot initiate a document they cannot copy one.
-     * @see org.kuali.rice.kns.authorization.DocumentAuthorizer#canCopy(java.lang.String, org.kuali.rice.kns.bo.user.KualiUser)
-     */
-    @Deprecated
-    public boolean canCopy(String documentTypeName, Person user) {
-        return false;
+        return getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode, KimConstants.PERMISSION_INITIATE_DOCUMENT, permissionDetails, null);
     }
-
     
-    /**
-     * Determines whether the given user should have initiate permissions on the given document.
-     * @param document - current document
-     * @param user - current user
-     * @return boolean (true if they should have permissions)
-     */
-    @Deprecated
-    public boolean hasInitiateAuthorization(Document document, Person user) {
-        KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
-        return workflowDocument.getInitiatorNetworkId().equalsIgnoreCase(user.getPrincipalName());
-    }
+	public final boolean canReceiveAdHoc(Document document, Person user, String actionRequestCode){
+	     return isAuthorizedByTemplate(document, KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE, KimConstants.PERMISSION_AD_HOC_REVIEW_DOCUMENT, user.getPrincipalId());
+	 }
 
-    /**
-     * Determines whether the given user should be able to view the attachment on the given document
-     * and the attachment type
-     * @param attachmentTypeName - the attachment type
-     * @param document - current document
-     * @param user - current user
-     * @return boolean (true if they should have permissions)
-     */
-    public boolean canViewAttachment(String attachmentTypeName, Document document, Person user) {
-        return true;
-    }
-
-
-    /**
-     * @param document
-     * @param user
-     * @return boolean (true if user has permission to open a document)
-     */
-    @Deprecated
-    protected boolean canOpen(Document document, Person user){
-    	
+    private boolean canOpen(Document document, Person user){    	
 	     return isAuthorizedByTemplate(document, KNSConstants.KNS_NAMESPACE, KimConstants.PERMISSION_OPEN_DOCUMENT, user.getPrincipalId());
-	        	
 	 }
 	    
-	/**
-	 * 
-	 * @param document
-	 * @param user
-	 * @return boolean (true if user has permission to edit a document)
-	 */
-    @Deprecated
-	protected boolean canEdit(Document document, Person user){
-		   
+	private boolean canEdit(Document document, Person user){
 	    return isAuthorizedByTemplate(document, KNSConstants.KNS_NAMESPACE, KimConstants.PERMISSION_EDIT_DOCUMENT, user.getPrincipalId());
-    
 	 }
-	 
-	
-	/**
-	 * @param document
-	 * @param user
-	 * @return boolean (true if user has permission to copy a document)
-	 */
-    @Deprecated
-	protected boolean canCopy(Document document, Person user){
-	     return isAuthorizedByTemplate(document, KNSConstants.KNS_NAMESPACE, KimConstants.PERMISSION_COPY_DOCUMENT, user.getPrincipalId());
-	     	
-	 }
-	    
-	
-	/**
-	 * @param document
-	 * @param user
-	 * @return boolean (true if user has permission to cancel a document)
-	 */
-    @Deprecated
-	protected boolean canCancel(Document document, Person user){
-	     return isAuthorizedByTemplate(document, KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE, KimConstants.PERMISSION_CANCEL_DOCUMENT, user.getPrincipalId());
-	     	  	
-	 }
-	 
 
-	/**
-	 * 
-	 * @param document
-	 * @param user
-	 * @return boolean (true if user has permission to route a document)
-	 */
-    @Deprecated
-	protected boolean canRoute(Document document, Person user){
-	     return isAuthorizedByTemplate(document, KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE, KimConstants.PERMISSION_ROUTE_DOCUMENT, user.getPrincipalId());
-  	  	   	
+	private boolean canCopy(Document document, Person user){
+	     return isAuthorizedByTemplate(document, KNSConstants.KNS_NAMESPACE, KimConstants.PERMISSION_COPY_DOCUMENT, user.getPrincipalId());
 	 }
-	
-	
-	/**
-	 * 
-	 * @param document
-	 * @param user
-	 * @return boolean (true if user has permission to save a document)
-	 */
-    @Deprecated
-	protected boolean canSave(Document document, Person user){
+
+	private boolean canCancel(Document document, Person user){
+	     return isAuthorizedByTemplate(document, KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE, KimConstants.PERMISSION_CANCEL_DOCUMENT, user.getPrincipalId());
+	 }
+
+	private boolean canRoute(Document document, Person user){
+	     return isAuthorizedByTemplate(document, KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE, KimConstants.PERMISSION_ROUTE_DOCUMENT, user.getPrincipalId());
+	 }
+
+	private boolean canSave(Document document, Person user){
 	     return isAuthorizedByTemplate(document, KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE, KimConstants.PERMISSION_SAVE_DOCUMENT, user.getPrincipalId());
 	  	   	   	
 	 }
-	 
-	/**
-	 * 
-	 * @param document
-	 * @param user
-	 * @return boolean (true if user has permission to blanket approve a document)
-	 */
-    @Deprecated
-	protected boolean canBlanketApprove(Document document, Person user){
+
+	private boolean canBlanketApprove(Document document, Person user){
 	     return isAuthorizedByTemplate(document, KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE, KimConstants.PERMISSION_BLANKET_APPROVE_DOCUMENT, user.getPrincipalId());
-	   	     	
 	 }
-	 
-	/**
-	 * 
-	 * @param document
-	 * @param user
-	 * @param actionRequestCode
-	 * @return boolean (true if user has permission to recieve ad hoc for a document)
-	 */
-	public final boolean canReceiveAdHoc(Document document, Person user, String actionRequestCode){
-	     return isAuthorizedByTemplate(document, KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE, KimConstants.PERMISSION_AD_HOC_REVIEW_DOCUMENT, user.getPrincipalId());
-	   	    	
-	 }
-	 
-	/**
-	 
-	 * @param document
-	 * @param user
-	 * @return boolean (true if user has permission to approve a document)
-	 */
-    @Deprecated
-	protected boolean canApprove(Document document, Person user){
+	 	 
+	private boolean canApprove(Document document, Person user){
 		AttributeSet permissionDetails = getPermissionDetailValues(document);
 		if(permissionDetails.containsKey(KimAttributes.ACTION_REQUEST_CD) && KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(permissionDetails.get(KimAttributes.ACTION_REQUEST_CD))){
 			return canTakeRequestedAction(document, user);
 		}else{
 			return false;
 		}
-		
 	 }
-	 
-	 
-	/**
-	 * 
-	 * @param document
-	 * @param user
-	 * @return boolean (true if user has permission to FYI a document)
-	 */
-    @Deprecated
-	protected boolean canClearFYI(Document document, Person user){
+
+	private boolean canClearFYI(Document document, Person user){
 		AttributeSet permissionDetails = getPermissionDetailValues(document);
 		if(permissionDetails.containsKey(KimAttributes.ACTION_REQUEST_CD) && KEWConstants.ACTION_REQUEST_FYI_REQ.equals(permissionDetails.get(KimAttributes.ACTION_REQUEST_CD))){
 			return canTakeRequestedAction(document, user);
@@ -358,15 +194,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
 		}
 	}
 	
-	
-	/**
-	 * 
-	 * @param document
-	 * @param user
-	 * @return boolean (true if user has permission to acknowledge a document)
-	 */
-    @Deprecated
-	protected boolean canAcknowledge(Document document, Person user){
+	private boolean canAcknowledge(Document document, Person user){
 		AttributeSet permissionDetails = getPermissionDetailValues(document);
 		if(permissionDetails.containsKey(KimAttributes.ACTION_REQUEST_CD) && KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ.equals(permissionDetails.get(KimAttributes.ACTION_REQUEST_CD))){
 			return canTakeRequestedAction(document, user);
@@ -375,32 +203,13 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
 		}
 	 }
 	
-	
-	/**
-	 * @param document
-	 * @param user
-	 * @return boolean (true if user has permission to disapprove a document)
-	 */
-    @Deprecated
-	protected boolean canDisapprove(Document document, Person user){
-		 return canApprove(document, user);
-	 }
-	
-	
-    /**
-     * 
-     * @param document
-     * @param user
-     * @return boolean (true if user has permission to add notes to a document)
-     */
-    @Deprecated
-    protected boolean canAnnotate(Document document, Person user){
+	private boolean canAnnotate(Document document, Person user){
 	     return isAuthorizedByTemplate(document, KNSConstants.KNS_NAMESPACE, KimConstants.PERMISSION_ADD_NOTE, user.getPrincipalId());
 	        	
     }
     
    private ThreadLocal<AttributeSet> roleQualification = new ThreadLocal<AttributeSet>();
-    private ThreadLocal<AttributeSet> permissionDetails = new ThreadLocal<AttributeSet>();
+   private ThreadLocal<AttributeSet> permissionDetails = new ThreadLocal<AttributeSet>();
     
     /**
      * Returns the namespace for the given class by consulting the KualiModuleService.
@@ -471,7 +280,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
     /**
      * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#getRoleQualification(org.kuali.rice.kns.document.Document)
      */
-    private final AttributeSet getRoleQualification(Document document) {
+    private AttributeSet getRoleQualification(Document document) {
         if ( roleQualification.get() == null ) {
             AttributeSet attributes = new AttributeSet();
             populateRoleQualification( document, attributes );
@@ -484,7 +293,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
     /**
      * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#getPermissionDetailValues(org.kuali.rice.kns.document.Document)
      */
-    private final AttributeSet getPermissionDetailValues(Document document) {
+    private AttributeSet getPermissionDetailValues(Document document) {
         if ( permissionDetails.get() == null ) {
             AttributeSet attributes = new AttributeSet();
             populatePermissionDetails( document, attributes );
@@ -493,19 +302,19 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
         return permissionDetails.get();
     }
     
-    protected boolean permissionExistsByTemplate(String namespaceCode, String permissionTemplateName, Document document) {
+    protected final boolean permissionExistsByTemplate(String namespaceCode, String permissionTemplateName, Document document) {
         return getIdentityManagementService().isPermissionDefinedForTemplateName(namespaceCode, permissionTemplateName, getPermissionDetailValues(document));
     }
     
-    public boolean isAuthorized( Document document, String namespaceCode, String permissionName, String principalId ) {
+    public final boolean isAuthorized( Document document, String namespaceCode, String permissionName, String principalId ) {
         return getIdentityManagementService().isAuthorized(principalId, namespaceCode, permissionName, getPermissionDetailValues(document), getRoleQualification(document));
     }
     
-    public boolean isAuthorizedByTemplate( Document document, String namespaceCode, String permissionTemplateName, String principalId ) {
+    public final boolean isAuthorizedByTemplate( Document document, String namespaceCode, String permissionTemplateName, String principalId ) {
         return getIdentityManagementService().isAuthorizedByTemplateName(principalId, namespaceCode, permissionTemplateName, getPermissionDetailValues(document), getRoleQualification(document));
     }
     
-    public boolean isAuthorized( Document document, String namespaceCode, String permissionName, String principalId, Map<String,String> additionalPermissionDetails, Map<String,String> additionalRoleQualifiers ) {
+    public final boolean isAuthorized( Document document, String namespaceCode, String permissionName, String principalId, Map<String,String> additionalPermissionDetails, Map<String,String> additionalRoleQualifiers ) {
         AttributeSet roleQualifiers = null; 
         AttributeSet permissionDetails = null; 
         if ( additionalRoleQualifiers != null ) {
@@ -523,7 +332,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
         return getIdentityManagementService().isAuthorized(principalId, namespaceCode, permissionName, permissionDetails, roleQualifiers );
     }
     
-    public boolean isAuthorizedByTemplate( Document document, String namespaceCode, String permissionTemplateName, String principalId, Map<String,String> additionalPermissionDetails, Map<String,String> additionalRoleQualifiers ) {
+    public final boolean isAuthorizedByTemplate( Document document, String namespaceCode, String permissionTemplateName, String principalId, Map<String,String> additionalPermissionDetails, Map<String,String> additionalRoleQualifiers ) {
         AttributeSet roleQualifiers = null; 
         AttributeSet permissionDetails = null; 
         if ( additionalRoleQualifiers != null ) {
@@ -571,21 +380,21 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
 		return isAuthorizedByTemplate(document, KNSConstants.KNS_NAMESPACE, KimConstants.PERMISSION_TAKE_REQUESTED_ACTION, user.getPrincipalId());
 	}
     
-    protected KualiConfigurationService getKualiConfigurationService() {
+    protected final KualiConfigurationService getKualiConfigurationService() {
         if ( kualiConfigurationService == null ) {
             kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
         }
         return kualiConfigurationService;
     }
         
-    protected AuthorizationService getAuthorizationService() {
+    protected final AuthorizationService getAuthorizationService() {
         if ( authorizationService == null ) {
             authorizationService = KNSServiceLocator.getAuthorizationService();
         }
         return authorizationService;
     }
         
-    protected KualiWorkflowInfo getKualiWorkflowInfo() {
+    protected final KualiWorkflowInfo getKualiWorkflowInfo() {
         if ( kualiWorkflowInfo == null ) {
             kualiWorkflowInfo = KNSServiceLocator.getWorkflowInfoService();
         }

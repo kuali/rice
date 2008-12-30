@@ -25,13 +25,13 @@ import org.kuali.rice.kns.document.Document;
 /**
  * Extension to DocumentAuthorizer interface which adds transactional-document-specific methods.
  */
-public interface TransactionalDocumentAuthorizer extends DocumentAuthorizer {
-	
+public interface TransactionalDocumentAuthorizer extends DocumentAuthorizer {	
 	/**
      * @param document
      * @return Map of operations that allow to take on that document.
      */
-    public Set getEditModes(Document document, Person user, Set<String> editModes);
-    
-    
+    public Set<String> getEditModes(Document document, Person user, Set<String> editModes);
+
+	@Deprecated
+    public Map getEditMode(Document document, Person user);
 }

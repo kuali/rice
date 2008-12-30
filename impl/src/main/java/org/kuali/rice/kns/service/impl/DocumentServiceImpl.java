@@ -37,7 +37,9 @@ import org.kuali.rice.kns.dao.DocumentDao;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocumentBase;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
+import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
 import org.kuali.rice.kns.exception.DocumentAuthorizationException;
+import org.kuali.rice.kns.exception.DocumentInitiationAuthorizationException;
 import org.kuali.rice.kns.exception.InactiveDocumentTypeAuthorizationException;
 import org.kuali.rice.kns.exception.UnknownDocumentTypeException;
 import org.kuali.rice.kns.exception.ValidationException;
@@ -53,6 +55,7 @@ import org.kuali.rice.kns.service.DateTimeService;
 import org.kuali.rice.kns.service.DictionaryValidationService;
 import org.kuali.rice.kns.service.DocumentAuthorizationService;
 import org.kuali.rice.kns.service.DocumentHeaderService;
+import org.kuali.rice.kns.service.DocumentPresentationControllerService;
 import org.kuali.rice.kns.service.DocumentService;
 import org.kuali.rice.kns.service.DocumentTypeService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -90,6 +93,7 @@ public class DocumentServiceImpl implements DocumentService {
     protected BusinessObjectService businessObjectService;
     
     protected DocumentAuthorizationService documentAuthorizationService;
+    protected DocumentPresentationControllerService documentPresentationControllerService;
     
     protected DocumentDao documentDao;
     
@@ -439,10 +443,12 @@ public class DocumentServiceImpl implements DocumentService {
 
         // get the authorization
         DocumentAuthorizer documentAuthorizer = getDocumentAuthorizationService().getDocumentAuthorizer(documentTypeName);
-
+        DocumentPresentationController documentPresentationController = getDocumentPresentationControllerService().getDocumentPresentationController(documentTypeName);
         // make sure this person is authorized to initiate
         LOG.debug("calling canInitiate from getNewDocument()");
-        documentAuthorizer.canInitiate(documentTypeName, currentUser);
+        if (!documentPresentationController.canInitiate(documentTypeName) || !documentAuthorizer.canInitiate(documentTypeName, currentUser)) {
+        	throw new DocumentInitiationAuthorizationException(new String[] {currentUser.getPrincipalName(),documentTypeName});        	
+        }
 
         // initiate new workflow entry, get the workflow doc
         KualiWorkflowDocument workflowDocument = getWorkflowDocumentService().createWorkflowDocument(documentTypeName, GlobalVariables.getUserSession().getPerson());
@@ -971,4 +977,17 @@ public class DocumentServiceImpl implements DocumentService {
 		}
 		return personService;
 	}
+
+	public synchronized void setDocumentPresentationControllerService(
+			DocumentPresentationControllerService documentPresentationControllerService) {
+		this.documentPresentationControllerService = documentPresentationControllerService;
+	}
+	
+    public synchronized DocumentPresentationControllerService getDocumentPresentationControllerService() {
+        if (this.documentPresentationControllerService == null) {
+            this.documentPresentationControllerService = KNSServiceLocator.getDocumentPresentationControllerService();
+        }
+        return documentPresentationControllerService;
+    }
+
 }

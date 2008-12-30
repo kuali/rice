@@ -82,6 +82,7 @@ public class KualiTransactionalDocumentActionBase extends KualiDocumentActionBas
             TransactionalDocumentAuthorizer documentAuthorizer = (TransactionalDocumentAuthorizer) KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(document);
             Set<String> editModes = documentPresentationController.getEditModes(document);
             editMode = this.convertSetToMap(editModes);
+            // TODO remove this
             editMode.putAll(documentAuthorizer.getEditMode(document, user));
             if (KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(document.getClass().getName()).getUsePessimisticLocking()) {
                 editMode = KNSServiceLocator.getPessimisticLockService().establishLocks(document, editMode, user);

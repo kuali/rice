@@ -47,10 +47,12 @@ public class MaintenanceDocumentAuthorizations implements Serializable {
     private Map authFields;
     private Map fieldFormatters;
     private Set<String> hiddenSectionIds; // not implemented, does nothing yet
+    private Set<String> readOnlySectionIds; // not implemented, does nothing yet
 
     public MaintenanceDocumentAuthorizations() {
         authFields = new HashMap();
         hiddenSectionIds = new HashSet<String>();
+        readOnlySectionIds = new HashSet<String>();
         fieldFormatters = new HashMap();
     }
 
@@ -175,7 +177,11 @@ public class MaintenanceDocumentAuthorizations implements Serializable {
     public void addHiddenSectionId(String sectionId) {
     	hiddenSectionIds.add(sectionId);
     }
-    
+
+    public void addReadOnlySectionId(String sectionId) {
+    	readOnlySectionIds.add(sectionId);
+    }
+
     /**
      * 
      * Returns a collection of all the sections that have non-default authorization restrictions.
@@ -185,6 +191,10 @@ public class MaintenanceDocumentAuthorizations implements Serializable {
      */
     public Set<String> getHiddenSectionIds() {
         return hiddenSectionIds;
+    }
+
+    public Set<String> getReadOnlySectionIds() {
+        return readOnlySectionIds;
     }
 
     /**
@@ -214,6 +224,7 @@ public class MaintenanceDocumentAuthorizations implements Serializable {
     	authFields.clear();
     	fieldFormatters.clear();
     	hiddenSectionIds.clear();
+    	readOnlySectionIds.clear();
     }
 
     private void addFieldFormatter(String fieldName, MaskFormatter maskFormatter) {

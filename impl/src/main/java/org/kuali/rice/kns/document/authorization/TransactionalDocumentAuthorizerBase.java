@@ -20,26 +20,18 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.authorization.AuthorizationConstants;
 import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.exception.DocumentInitiationAuthorizationException;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 
 /**
  * Base class for all TransactionalDocumentAuthorizers.
  */
 public class TransactionalDocumentAuthorizerBase extends DocumentAuthorizerBase implements TransactionalDocumentAuthorizer {
-    private static Log LOG = LogFactory.getLog(TransactionalDocumentAuthorizerBase.class);
-
-    
-   
-    public final Set getEditModes(Document d, Person u, Set<String> editModes) {
+    public final Set<String> getEditModes(Document d, Person u, Set<String> editModes) {
         Iterator i = editModes.iterator();
         while(i.hasNext()) {
           String editMode = (String)i.next();
@@ -47,7 +39,24 @@ public class TransactionalDocumentAuthorizerBase extends DocumentAuthorizerBase 
         	  editModes.remove(editMode);
           }
         }
-        
         return editModes;
+    }
+    
+     @Deprecated
+     public Map getEditMode(Document d, Person u) {
+        Map editModeMap = new HashMap();
+        String editMode = AuthorizationConstants.EditMode.VIEW_ONLY;
+
+        KualiWorkflowDocument workflowDocument = d.getDocumentHeader().getWorkflowDocument();
+        if (workflowDocument.stateIsInitiated() || workflowDocument.stateIsSaved()) {
+                editMode = AuthorizationConstants.EditMode.FULL_ENTRY;
+        }
+        else if (workflowDocument.stateIsEnroute() && workflowDocument.isApprovalRequested()) {
+            editMode = AuthorizationConstants.EditMode.FULL_ENTRY;
+        }
+
+        editModeMap.put(editMode, EDIT_MODE_DEFAULT_TRUE_VALUE);
+
+        return editModeMap;
     }
 }

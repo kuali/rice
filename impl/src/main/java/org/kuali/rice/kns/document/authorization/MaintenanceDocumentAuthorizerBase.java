@@ -44,13 +44,8 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
 
  	private static MaintenanceDocumentDictionaryService  maintenanceDocumentDictionaryService;
  	private static PersistenceStructureService persistenceStructureService;
-    /**
-     * @see org.kuali.rice.kns.authorization.MaintenanceDocumentAuthorizer#addMaintenanceDocumentRestrictions(org.kuali.rice.kns.document.MaintenanceDocument,
-     *      org.kuali.rice.kns.bo.user.KualiUser)
-     */
-	@Deprecated
-    public void addMaintenanceDocumentRestrictions(MaintenanceDocumentAuthorizations auths, MaintenanceDocument document, Person user) {
-        
+
+    public final void addMaintenanceDocumentRestrictions(MaintenanceDocumentAuthorizations auths, MaintenanceDocument document, Person user) {
     	String documentType = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
     	
     	MaintenanceDocumentEntry objectEntry = getMaintenanceDocumentDictionaryService().getMaintenanceDocumentEntry(documentType);
@@ -143,19 +138,15 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
         
         Person person = GlobalVariables.getUserSession().getPerson();
         
-        Set<String> readOnlyPropertyNames = getSecurePotentiallyReadOnlyPropertyNames(document, person);
-        for (String readOnlyPropertyName : readOnlyPropertyNames) {
-        	auths.addReadonlyAuthField(readOnlyPropertyName);
-        }
-        
-        Set<String> hiddenPropertyNames = getSecurePotentiallyHiddenPropertyNames(document, person);
-        for (String hiddenPropertyName : hiddenPropertyNames) {
-        	auths.addHiddenAuthField(hiddenPropertyName);
-        }
-        
-        Set<String> hiddenSectionIds = getSecurePotentiallyHiddenSectionIds(document, person);
+        Set<String> hiddenSectionIds = getSecurePotentiallyHiddenSectionIds();
         for (String hiddenSectionId : hiddenSectionIds) {
+            // TODO check the permission template to see if they really are hidden here
         	auths.addHiddenSectionId(hiddenSectionId);
+        }
+        Set<String> readOnlySectionIds = getSecurePotentiallyHiddenSectionIds();
+        for (String readOnlySectionId : readOnlySectionIds) {
+            // TODO check the permission template to see if they really are read only here
+        	auths.addReadOnlySectionId(readOnlySectionId);
         }
     }
 
@@ -165,8 +156,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
      * @see org.kuali.rice.kns.authorization.DocumentAuthorizer#getDocumentActionFlags(org.kuali.rice.kns.document.Document,
      *      org.kuali.rice.kns.bo.user.KualiUser)
      */
-    public Set getDocumentActions(Document document, Person user, Set<String> documentActions) {
-
+    public Set<String> getDocumentActions(Document document, Person user, Set<String> documentActions) {
         Set docActions = super.getDocumentActions(document, user, documentActions);
         MaintenanceDocument maintDoc = (MaintenanceDocument) document;
         MaintenanceDocumentAuthorizations docAuths = KNSServiceLocator.getMaintenanceDocumentAuthorizationService().generateMaintenanceDocumentAuthorizations(maintDoc, GlobalVariables.getUserSession().getPerson());
@@ -209,29 +199,19 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
     	return true;
     }
 
-
+	/**
+	 * This method should indicate which sections of the document may need to be hidden based on the user.
+	 * The framework will use this list to perform the permission checks.
+	 * 
+	 * @param document
+	 * @return Set of section ids that can be used to identify Sections that may need to be hidden based on user permissions
+	 */
+    protected Set<String> getSecurePotentiallyHiddenSectionIds() {
+    	return new HashSet<String>();
+    }
     
-    /**
-     * This method returns whether this document is creating a new entry in the maintenible/underlying table
-     * 
-     * This method is useful to determine whether all the field-based edit modes should be enabled, which is 
-     * useful in determining which fields are encrypted
-     * 
-     * This method considers that Constants.MAINTENANCE_NEWWITHEXISTING_ACTION is not a new document because 
-     * there is uncertainity how documents with this action will actually be implemented
-     * 
-     * @param maintDoc
-     * @param user
-     * @return
-     */
-    @Deprecated
-    protected boolean isDocumentForCreatingNewEntry(MaintenanceDocument maintDoc) {
-        // the rule is as follows: if the maint doc represents a new record AND the user is the same user who initiated the maintenance doc
-        // if the user check is not added, then it would be pointless to do any encryption since I can just pull up a document to view the encrypted values
-        
-        // A maint doc is new when the new maintainable maintenance flag is set to either Constants.MAINTENANCE_NEW_ACTION or Constants.MAINTENANCE_COPY_ACTION
-        String maintAction = maintDoc.getNewMaintainableObject().getMaintenanceAction();
-        return (KNSConstants.MAINTENANCE_NEW_ACTION.equals(maintAction) || KNSConstants.MAINTENANCE_COPY_ACTION.equals(maintAction));
+    protected Set<String> getSecurePotentiallyReadOnlySectionIds() {
+    	return new HashSet<String>();
     }
     
     	
@@ -264,24 +244,4 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
         }
         return persistenceStructureService;
     }
-    
-    protected Set<String> getSecurePotentiallyHiddenPropertyNames(MaintenanceDocument document, Person person) {
-    	return new HashSet<String>();
-    }
-    
-	/**
-	 * This method should indicate which sections of the document may need to be hidden based on the user.
-	 * The framework will use this list to perform the permission checks.
-	 * 
-	 * @param document
-	 * @return Set of section ids that can be used to identify Sections that may need to be hidden based on user permissions
-	 */
-    protected Set<String> getSecurePotentiallyHiddenSectionIds(MaintenanceDocument document, Person person) {
-    	return new HashSet<String>();
-    }
-    
-    protected Set<String> getSecurePotentiallyReadOnlyPropertyNames(MaintenanceDocument document, Person person) {
-    	return new HashSet<String>();
-    }
 }
-

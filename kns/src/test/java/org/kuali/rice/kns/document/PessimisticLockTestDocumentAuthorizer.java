@@ -33,21 +33,8 @@ public class PessimisticLockTestDocumentAuthorizer extends DocumentAuthorizerBas
 
     public static boolean USES_PESSIMISTIC_LOCKING = true;
     
-    private Map editMode = new HashMap();
-
-   
     protected boolean usesPessimisticLocking(Document document) {
         return USES_PESSIMISTIC_LOCKING;
     }
-
-    @Override
-    public Map getEditMode(Document d, Person u) {
-        return editMode;
-    }
-    
-    public void setEditMode(Map editMode) {
-        this.editMode = editMode;
-    }
-
 }
 

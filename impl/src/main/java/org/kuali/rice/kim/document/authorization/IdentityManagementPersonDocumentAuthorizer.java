@@ -38,13 +38,9 @@ import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
  *
  */
 public class IdentityManagementPersonDocumentAuthorizer extends TransactionalDocumentAuthorizerBase {
-
 	@Override
-    public void canInitiate(String documentTypeName, Person user) {
-        super.canInitiate(documentTypeName, user);
-        if (!canCreatePersonDocument(user)) {
-        	throw new DocumentTypeAuthorizationException(user.getPrincipalName(),"Initiate", documentTypeName);
-        }
+    public boolean canInitiate(String documentTypeName, Person user) {
+        return super.canInitiate(documentTypeName, user) && canCreatePersonDocument(user);
     }
 	
     private boolean canCreatePersonDocument(Person user) {
@@ -103,32 +99,4 @@ public class IdentityManagementPersonDocumentAuthorizer extends TransactionalDoc
 
 		return editModeMap;
 	}
-
-	/**
-	 *
-	 * TODO : too much change right now.  temporarily set these up for testing for now.
-	 * 
-	 * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase#getDocumentActionFlags(org.kuali.rice.kns.document.Document, org.kuali.rice.kim.bo.Person)
-	 */
-    @Override
-    public Set getDocumentActions(Document document, Person user, Set<String> documentActions) {
-        Set docActions = super.getDocumentActions(document, user, documentActions);
-        KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
-        boolean hasInitiateAuthorization = hasInitiateAuthorization(document, user);
-        if(hasInitiateAuthorization(document, user)){
-        	docActions.add(KNSConstants.KUALI_ACTION_CAN_CANCEL);
-        	docActions.add(KNSConstants.KUALI_ACTION_CAN_SAVE);
-        	docActions.add(KNSConstants.KUALI_ACTION_CAN_ROUTE);
-        	docActions.add(KNSConstants.KUALI_ACTION_CAN_ACKNOWLEDGE);
-        	docActions.add(KNSConstants.KUALI_ACTION_CAN_FYI);
-        	docActions.add(KNSConstants.KUALI_ACTION_CAN_AD_HOC_ROUTE);
-        	docActions.add(KNSConstants.KUALI_ACTION_CAN_APPROVE);
-        	docActions.add(KNSConstants.KUALI_ACTION_CAN_DISAPPROVE);
-        	docActions.add(KNSConstants.KUALI_ACTION_CAN_ANNOTATE);
-        }
-        
-        return docActions;
-    }
-
-
 }

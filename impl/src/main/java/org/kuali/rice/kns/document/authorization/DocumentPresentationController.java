@@ -32,6 +32,7 @@ public interface DocumentPresentationController {
      */
     public Set<String> getDocumentActions(Document document);
     
+    public boolean canInitiate(String documentTypeName);
     
 }
 

@@ -276,6 +276,9 @@
 		<property name="documentHeaderService">
 			<ref bean="documentHeaderService" />
 		</property>
+		<property name="documentPresentationControllerService">
+			<ref bean="documentPresentationControllerService" />
+		</property>
 		<property name="documentAuthorizationService">
 			<ref bean="documentAuthorizationService" />
 		</property>

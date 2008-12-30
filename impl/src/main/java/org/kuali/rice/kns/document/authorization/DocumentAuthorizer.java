@@ -29,62 +29,11 @@ import org.kuali.rice.kns.document.Document;
  */
 public interface DocumentAuthorizer {
 	
-     /**
-     * @param document
-     * @param user
-     * @return Map with keys AuthorizationConstants.EditMode value (String) which indicates what operations the user is currently
-     *         allowed to take on that document.
-     */
-	@Deprecated
-    public Map getEditMode(Document document, Person user);
- 
-    /**
-     * @param document
-     * @param user
-     * @return Set of actions are permitted the given user on the given document
-     */
     public Set getDocumentActions(Document document, Person user, Set<String> documentActions);
-    
-    @Deprecated
-    public DocumentActionFlags getDocumentActionFlags(Document document, Person user);
-    
-
-    /**
-     * @param documentTypeName
-     * @param user
-     * @return true if the given user is allowed to initiate documents of the given document type
-     */
-    public void canInitiate(String documentTypeName, Person user);
-    
-    /**
-     * @param documentTypeName
-     * @param user
-     * @returns boolean indicating whether a user can copy a document
-     */
-    @Deprecated
-    public boolean canCopy(String documentTypeName, Person user);
-
-    /**
-     * 
-     * @param attachmentTypeName
-     * @param document
-     * @param user
-     * @return
-     */
-    @Deprecated
-    public boolean canViewAttachment(String attachmentTypeName, Document document, Person user);
-    
-    
-    /**
-     * @param document
-     * @param user
-     * @param actionRequestCode
-     * @return boolean (true if user can receive ad hoc for this document)
-     */
     public boolean canReceiveAdHoc(Document document, Person user, String actionRequestCode);
-    
-       
-      /**
+    public boolean canInitiate(String documentTypeName, Person user);
+
+    /**
      *  Perform an authorization check on the given document.  This is a helper method which includes the needed permission details
      *  and role qualifiers automatically before calling the IdentityManagementService.
      *  

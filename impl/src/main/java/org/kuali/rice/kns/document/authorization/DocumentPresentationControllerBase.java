@@ -31,6 +31,10 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
     private static Log LOG = LogFactory.getLog(DocumentPresentationControllerBase.class);
     
   
+    public boolean canInitiate(String documentTypeName) {
+    	return true;
+    }
+    
     /**
      * 
      * @param document
@@ -162,6 +166,10 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
     	return canEdit(document);
     }
     
+    protected boolean canDisapprove(Document document) {
+    	return true;
+    }
+    
     /**
      
      * @see org.kuali.rice.kns.document.authorization.DocumentPresentationController#getDocumentActions(org.kuali.rice.kns.document.Document)
@@ -207,6 +215,9 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
     	
     	if(canBlanketApprove(document)){
     		documentActions.add(KNSConstants.KUALI_ACTION_CAN_BLANKET_APPROVE);
+    	}
+    	if (canDisapprove(document)) {
+    		documentActions.add(KNSConstants.KUALI_ACTION_CAN_DISAPPROVE);
     	}
     	return documentActions;
     }

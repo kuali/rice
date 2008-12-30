@@ -51,6 +51,7 @@ public class KimAttributes extends TransientBusinessObjectBase {
 	public static final String ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL = "actionDetailsAtRoleMemberLevel";
 	public static final String DOCUMENT_NUMBER = "documentNumber";	
 	public static final String DOCUMENT_TYPE_NAME = "documentTypeName";
+	public static final String SECTION_ID = "sectionId";
 	
 	protected String methodToCall;
 	protected String beanName;
@@ -76,6 +77,7 @@ public class KimAttributes extends TransientBusinessObjectBase {
 	protected boolean required;
 	protected boolean actionDetailsAtRoleMemberLevel;
 	protected String documentNumber;
+	protected String sectionId;
 
 	/**
 	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
@@ -442,6 +444,14 @@ public class KimAttributes extends TransientBusinessObjectBase {
 	public void setActionDetailsAtRoleMemberLevel(
 			boolean actionDetailsAtRoleMemberLevel) {
 		this.actionDetailsAtRoleMemberLevel = actionDetailsAtRoleMemberLevel;
+	}
+
+	public String getSectionId() {
+		return this.sectionId;
+	}
+
+	public void setSectionId(String sectionId) {
+		this.sectionId = sectionId;
 	}
 	
 }

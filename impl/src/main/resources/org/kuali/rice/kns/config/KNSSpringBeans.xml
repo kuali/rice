@@ -1046,6 +1046,16 @@
 	      p:localServiceName="componentFieldPermissionTypeService" />
 	  </property>
 	</bean>
+
+    <bean id="componentSectionPermissionTypeService" class="org.kuali.rice.kns.service.impl.ComponentSectionPermissionTypeServiceImpl"/>
+	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+	  <property name="serviceDefinition">
+	    <bean parent="knsService"
+	      p:service-ref="componentSectionPermissionTypeService"
+	      p:localServiceName="componentSectionPermissionTypeService" />
+	  </property>
+	</bean>	
 	
     <bean id="documentTypeAndNodeAndFieldsPermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypeAndNodeAndFieldsPermissionTypeServiceImpl"/>
 	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
@@ -1054,6 +1064,16 @@
 	    <bean parent="knsService"
 	      p:service-ref="documentTypeAndNodeAndFieldsPermissionTypeService"
 	      p:localServiceName="documentTypeAndNodeAndFieldsPermissionTypeService" />
+	  </property>
+	</bean>
+
+    <bean id="documentTypeAndExistingRecordsOnlyPermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypeAndExistingRecordsOnlyPermissionTypeServiceImpl"/>
+	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+	  <property name="serviceDefinition">
+	    <bean parent="knsService"
+	      p:service-ref="documentTypeAndExistingRecordsOnlyPermissionTypeService"
+	      p:localServiceName="documentTypeAndExistingRecordsOnlyPermissionTypeService" />
 	  </property>
 	</bean>
 

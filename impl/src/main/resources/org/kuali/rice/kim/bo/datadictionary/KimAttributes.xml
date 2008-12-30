@@ -35,6 +35,7 @@
         <ref bean="KimAttributes-required" />
         <ref bean="KimAttributes-actionDetailsAtRoleMemberLevel" />
         <ref bean="KimAttributes-documentNumber" />
+        <ref bean="KimAttributes-sectionId" />
       </list>
     </property>
   </bean>
@@ -254,5 +255,17 @@
       <bean parent="TextControlDefinition" p:size="20" />
     </property>
   </bean>  
-    
+
+  <bean id="KimAttributes-sectionId" parent="KimAttributes-sectionId-parentBean" />
+  <bean id="KimAttributes-sectionId-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="sectionId"
+        p:forceUppercase="false"
+        p:label="Section Id"
+        p:shortLabel="Section Id"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="20" />
+    </property>
+  </bean>      
 </beans>

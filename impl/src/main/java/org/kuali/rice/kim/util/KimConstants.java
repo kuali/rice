@@ -34,8 +34,11 @@ public class KimConstants {
 	public static final String PERMISSION_UNMARK = "Unmark";
 	public static final String PERMISSION_UNMASK_PROPERTY = "Full Unmask Field";
 	public static final String PERMISSION_PARTIALLY_UNMASK_PROPERTY = "Partial Unmask Field";
-	public static final String PERMISSION_VIEW_PROPERTY = "View Inquiry or Maintenance Document Field(s)";
-	public static final String PERMISSION_EDIT_PROPERTY = "Modify Maintenance Document Field(s)";
+	public static final String PERMISSION_VIEW_PROPERTY = "View Inquiry or Maintenance Document Field";
+	public static final String PERMISSION_EDIT_PROPERTY = "Modify Maintenance Document Field";
+	public static final String PERMISSION_VIEW_SECTION = "View Inquiry or Maintenance Document Section";
+	public static final String PERMISSION_EDIT_SECTION = "Modify Maintenance Document Section";
+	public static final String PERMISSION_CREATE_MAINTAIN_RECORDS = "Create / Maintain Record(s)";
 	public static final String PERMISSION_EDIT_DOCUMENT = "Edit Document";
 	public static final String PERMISSION_COPY_DOCUMENT = "Copy Document";
 	public static final String PERMISSION_OPEN_DOCUMENT = "Open Document";

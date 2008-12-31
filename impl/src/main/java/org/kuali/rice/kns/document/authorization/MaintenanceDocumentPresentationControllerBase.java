@@ -41,12 +41,8 @@ public class MaintenanceDocumentPresentationControllerBase extends DocumentPrese
 
     private static MaintenanceDocumentDictionaryService  maintenanceDocumentDictionaryService;
 
-   /**
-    * @see org.kuali.rice.kns.document.authorization.DocumentPresentationControllerBase#canCreate(org.kuali.rice.kns.document.Document)
-    */
     public final boolean canCreate(Class boClass){
-    	//TODO: return the value of allowsNewOrCopy from the data dictionary
-    	return true;
+    	return getMaintenanceDocumentDictionaryService().getAllowsNewOrCopy(getMaintenanceDocumentDictionaryService().getDocumentTypeName(boClass));
     }
 
 	protected Set<String> getConditionallyReadOnlyPropertyNames(Document document) {
@@ -72,17 +68,14 @@ public class MaintenanceDocumentPresentationControllerBase extends DocumentPrese
 		for (String readOnlyPropertyName : readOnlyPropertyNames) {
 			auths.addReadonlyAuthField(readOnlyPropertyName);
 		}
-		
 		Set<String> hiddenPropertyNames = getConditionallyHiddenPropertyNames(document);
 		for (String hiddenPropertyName : hiddenPropertyNames) {
 			auths.addHiddenAuthField(hiddenPropertyName);
 		}
-		
 		Set<String> readOnlySectionIds = getConditionallyReadOnlySectionIds(document);
 		for (String readOnlySectionId : readOnlySectionIds) {
 			auths.addReadOnlySectionId(readOnlySectionId);
 		}
-
 		Set<String> hiddenSectionIds = getConditionallyHiddenSectionIds(document);
 		for (String hiddenSectionId : hiddenSectionIds) {
 			auths.addHiddenSectionId(hiddenSectionId);

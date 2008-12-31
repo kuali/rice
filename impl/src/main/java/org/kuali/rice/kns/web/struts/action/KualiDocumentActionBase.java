@@ -319,7 +319,9 @@ public class KualiDocumentActionBase extends KualiAction {
         if (doc == null) {
             throw new UnknownDocumentIdException("Document no longer exists.  It may have been cancelled before being saved.");
         }
-
+        if (!KNSServiceLocator.getDocumentTypeService().getDocumentAuthorizer(doc).canOpen(doc, GlobalVariables.getUserSession().getPerson())) {
+        	throw buildAuthorizationException("open", doc);
+        }
         kualiDocumentFormBase.setDocument(doc);
         KualiWorkflowDocument workflowDoc = doc.getDocumentHeader().getWorkflowDocument();
         kualiDocumentFormBase.setDocTypeName(workflowDoc.getDocumentType());

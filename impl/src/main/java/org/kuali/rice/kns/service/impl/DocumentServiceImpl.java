@@ -329,18 +329,6 @@ public class DocumentServiceImpl implements DocumentService {
         }
     }
 
-    /*private DocumentActionFlags getDocumentActionFlags(Document document) {
-        Person currentUser = GlobalVariables.getUserSession().getPerson();
-
-        return getDocumentAuthorizationService().getDocumentAuthorizer(document).getDocumentActionFlags(document, currentUser);
-    }
-	*/
-    private DocumentAuthorizationException buildAuthorizationException(String action, Document document) {
-        Person currentUser = GlobalVariables.getUserSession().getPerson();
-
-        return new DocumentAuthorizationException(currentUser.getPrincipalName(), action, document.getDocumentNumber());
-    }
-
     private void validateAndPersistDocumentAndSaveAdHocRoutingRecipients(Document document, KualiDocumentEvent event) throws WorkflowException {
         /*
          * Using this method to wrap validateAndPersistDocument to keep everything in one transaction. This avoids modifying the

@@ -95,12 +95,5 @@ public class KualiTransactionalDocumentActionBase extends KualiDocumentActionBas
     		editMode.put(AuthorizationConstants.EditMode.VIEW_ONLY, KNSConstants.KUALI_DEFAULT_TRUE_VALUE);
     		//having a problem empty/readonly
     	formBase.setEditingMode(editMode);
-    	
-      
-        if (formBase.getEditingMode().containsKey(AuthorizationConstants.EditMode.UNVIEWABLE)) {
-                throw new DocumentAuthorizationException(GlobalVariables.getUserSession().getPerson().getName(), "view", document.getDocumentHeader().getDocumentNumber());
-        }
-            
-        
     }
 }

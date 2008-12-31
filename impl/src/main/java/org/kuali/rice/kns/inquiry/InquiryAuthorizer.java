@@ -13,29 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.document.authorization;
-
-import java.util.Set;
+package org.kuali.rice.kns.inquiry;
 
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.authorization.BusinessObjectAuthorizer;
-import org.kuali.rice.kns.document.Document;
+import org.kuali.rice.kns.bo.BusinessObject;
 
-/**
- * The DocumentAuthorizer class associated with a given Document is used to
- * dynamically determine what editing mode and what actions are allowed for a
- * given user on a given document instance.
- * 
- * 
- */
-public interface DocumentAuthorizer extends BusinessObjectAuthorizer {
-	public Set getDocumentActions(Document document, Person user,
-			Set<String> documentActions);
-
-	public boolean canInitiate(String documentTypeName, Person user);
-
-	public boolean canOpen(Document document, Person user);
-
-	public boolean canReceiveAdHoc(Document document, Person user,
-			String actionRequestCode);
+public interface InquiryAuthorizer extends BusinessObjectAuthorizer {
+    public void addInquiryRestrictions(InquiryAuthorizations auths, BusinessObject businessObject, Person user);
 }
+

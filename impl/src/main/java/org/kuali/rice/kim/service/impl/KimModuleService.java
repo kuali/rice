@@ -20,7 +20,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.service.PersonService;
+import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 import org.kuali.rice.kns.service.impl.ModuleServiceBase;
 
@@ -33,6 +35,7 @@ import org.kuali.rice.kns.service.impl.ModuleServiceBase;
 public class KimModuleService extends ModuleServiceBase {
 
 	protected PersonService<Person> personService; 
+	protected RoleService kimRoleService; 
 	
 	/**
 	 * This overridden method ...
@@ -48,6 +51,8 @@ public class KimModuleService extends ModuleServiceBase {
 			} else if ( fieldValues.containsKey( "principalName" ) ) {
 				return (T) personService.getPersonByPrincipalName( (String)fieldValues.get( "principalName" ) );
 			}
+		} else if ( Role.class.isAssignableFrom( businessObjectClass ) ) {
+			
 		}
 		// otherwise, use the default implementation
 		return super.getExternalizableBusinessObject( businessObjectClass, fieldValues );
@@ -65,6 +70,8 @@ public class KimModuleService extends ModuleServiceBase {
 		// for Person objects (which are not real PersistableBOs) pull them through the person service
 		if ( Person.class.isAssignableFrom( externalizableBusinessObjectClass ) ) {
 			return (List)personService.findPeople( (Map)fieldValues );
+		} else if ( Role.class.isAssignableFrom( externalizableBusinessObjectClass ) ) {
+			return (List)kimRoleService.getRolesSearchResults((Map)fieldValues );
 		}
 		// otherwise, use the default implementation
 		return super.getExternalizableBusinessObjectsList( externalizableBusinessObjectClass, fieldValues );
@@ -92,7 +99,11 @@ public class KimModuleService extends ModuleServiceBase {
 			List<String> pkFields = new ArrayList<String>( 1 );
 			pkFields.add( "principalId" );
 			return pkFields;
-		}
+		} else if ( Role.class.isAssignableFrom( businessObjectInterfaceClass ) ) {
+			List<String> pkFields = new ArrayList<String>( 1 );
+			pkFields.add( "roleId" );
+			return pkFields;
+		} 
 		// otherwise, use the default implementation
 		return super.listPrimaryKeyFieldNames( businessObjectInterfaceClass );
 	}
@@ -117,6 +128,14 @@ public class KimModuleService extends ModuleServiceBase {
 
 	public void setPersonService(PersonService<Person> personService) {
 		this.personService = personService;
+	}
+
+	public RoleService getKimRoleService() {
+		return this.kimRoleService;
+	}
+
+	public void setKimRoleService(RoleService kimRoleService) {
+		this.kimRoleService = kimRoleService;
 	}
 }
 

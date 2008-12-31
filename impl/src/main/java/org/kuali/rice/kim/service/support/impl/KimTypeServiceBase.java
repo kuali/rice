@@ -309,6 +309,8 @@ public class KimTypeServiceBase implements KimTypeService {
 			} else {
 				definition = getDataDictionaryAttributeDefinition(typeAttribute);
 			}
+			// TODO : use id for defnid ?
+			definition.setId(typeAttribute.getKimAttributeId());
 			definitions.put(typeAttribute.getSortCode(), definition);
 		}		
 		return definitions;

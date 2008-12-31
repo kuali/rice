@@ -76,4 +76,7 @@ public class KimConstants {
 	@Deprecated
 	public static final String TEMP_GROUP_NAMESPACE = "KFS";
 	
+	public static final String PERSON_ENTITY_TYPE = "PERSON";
+
+	
 }

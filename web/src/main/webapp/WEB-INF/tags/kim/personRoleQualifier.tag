@@ -18,6 +18,9 @@
 		        		
               			<kul:htmlAttributeHeaderCell literalLabel="Actions"/>
                 		</tr>
+                		
+              <c:if test="${not inquiry}">	
+                		
 		        		<tr>
 						<th class="infoline">
 							<c:out value="Add:" />
@@ -43,10 +46,11 @@
 							</div>
                 		</td>
 		        		</tr> 
-		        				        		
+		</c:if>        				        		
 		        		<!-- use definitions map -->
 		           <c:if test="${fn:length(role.rolePrncpls) > 0}">	
-		        		<c:forEach var="rolePrncpl" items="${role.rolePrncpls}" varStatus="status1">
+		        	 <c:forEach var="rolePrncpl" items="${role.rolePrncpls}" varStatus="status1">
+		                <c:if test="${fn:length(rolePrncpl.qualifiers) > 0}">	
 		        		<tr>
 							<th class="infoline">
 								<c:out value="${status1.index+1}" />
@@ -85,6 +89,7 @@
 									</div>
                 		   		</td>
 					      </tr>
+					     </c:if> 
 						</c:forEach>
 							
 		        	</c:if>	

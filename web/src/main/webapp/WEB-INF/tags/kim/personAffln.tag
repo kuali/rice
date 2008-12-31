@@ -12,7 +12,7 @@
               	<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
           	
           	</tr>     
-          	
+          <c:if test="${not inquiry}">	
              <tr>
 				<th class="infoline">
 					<c:out value="Add:" />
@@ -44,7 +44,7 @@
 					</div>
                 </td>
        </tr>         
-            
+       </c:if>     
         	<c:forEach var="affln" items="${KualiForm.document.affiliations}" varStatus="status">
 	             <tr>
 					<th rowspan="2" class="infoline">

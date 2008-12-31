@@ -3,8 +3,8 @@
 <c:set var="personAttributes" value="${DataDictionary.IdentityManagementPersonDocument.attributes}" />
 <c:set var="readOnly" value="${empty KualiForm.editingMode['fullEntry']}" />
 
+	<kul:tab tabTitle="Overview" defaultOpen="true" transparentBackground="${inquiry}" tabErrorKey="document.pr*,document.tax*,document.univ*,document.active,document.affiliations*">
 
-	<kul:tab tabTitle="Overview" defaultOpen="true" tabErrorKey="document.pr*,document.tax*,document.univ*,document.active,document.affiliations*">
 	<div class="tab-container" align="center">
     	<h3>
     		<span class="subhead-left">Overview</span>

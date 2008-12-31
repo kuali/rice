@@ -61,7 +61,13 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		ActionForward forward =  super.execute(mapping, form, request, response);
+       // String methodToCall = findMethodToCall(form, request);
+		ActionForward forward;
+        if (findMethodToCall(form, request) == null) {
+        	forward = mapping.findForward("inquiry");
+        } else {
+        	forward =  super.execute(mapping, form, request, response);
+        }
 		// move the following to service
 		// get set up person document
         IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
@@ -120,6 +126,12 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
 			throws Exception {
 		ActionForward forward =  super.performLookup(mapping, form, request, response);
 		String path = forward.getPath();
+		// don't need context so can't call getbasepath()
+		String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() ;
+		// EBO does not have base path for lookup
+		if (path.indexOf(basePath) < 0 && path.indexOf("lookup.do") > 0) {
+			path = basePath+path;
+		}
 		path = path.replace("identityManagementPersonDocument.do", "kim/identityManagementPersonDocument.do");
 		forward.setPath(path);
 		return forward;
@@ -351,7 +363,8 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
 				for (PersonDocumentRoleQualifier qualifier : rolePrncpl.getQualifiers()) {
 					qualifier.setDocumentNumber(personDoc.getDocumentNumber());	
 					qualifier.setKimTypId(role.getKimTypeId());
-					// TO TO : need rework to set attributedefid
+					//qualifier.getQualifierKey().substring(qualifier.getQualifierKey().indexOf(".")+1, qualifier.getQualifierKey().length());
+					// TODO : need rework to set attributedefid
 					for (KimTypeAttributeImpl attr : role.getKimRoleType().getAttributeDefinitions()) {
 						if (attr.getSortCode().equals(qualifier.getQualifierKey())) {
 							qualifier.setKimAttrDefnId(attr.getKimAttributeId());

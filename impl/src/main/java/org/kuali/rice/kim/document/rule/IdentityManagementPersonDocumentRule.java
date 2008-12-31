@@ -15,13 +15,18 @@
  */
 package org.kuali.rice.kim.document.rule;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAffiliation;
 import org.kuali.rice.kim.bo.ui.PersonDocumentBoDefaultBase;
 import org.kuali.rice.kim.bo.ui.PersonDocumentEmploymentInfo;
+import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.rule.event.ui.AddGroupEvent;
 import org.kuali.rice.kim.rule.event.ui.AddRoleEvent;
@@ -30,10 +35,13 @@ import org.kuali.rice.kim.rule.ui.AddRoleRule;
 import org.kuali.rice.kim.rules.ui.PersonDocumentGroupRule;
 import org.kuali.rice.kim.rules.ui.PersonDocumentRoleRule;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.support.KimTypeService;
+import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.rules.TransactionalDocumentRuleBase;
 import org.kuali.rice.kns.util.ErrorMap;
 import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 
 /**
@@ -53,7 +61,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
         IdentityManagementPersonDocument personDoc = (IdentityManagementPersonDocument)document;
         boolean valid = true;
 
-        GlobalVariables.getErrorMap().addToErrorPath("document");
+        GlobalVariables.getErrorMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
 
         //KNSServiceLocator.getDictionaryValidationService().validateDocument(document);
         getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(document, getMaxDictionaryValidationDepth(), true, false);
@@ -63,10 +71,12 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
         valid &= checkMultipleDefault (personDoc.getPhones(), "phones");
         valid &= checkMultipleDefault (personDoc.getEmails(), "emails");
         valid &= checkPeimaryEmploymentInfo (personDoc.getAffiliations());
+        // kimtypeservice.validateAttributes is not working yet.
+//        valid &= validateRoleQualifier (personDoc.getRoles());
         if (StringUtils.isNotBlank(personDoc.getPrincipalName())) { 
         	valid &= isPrincipalNameExist (personDoc.getPrincipalName(), personDoc.getPrincipalId());
         }
-        GlobalVariables.getErrorMap().removeFromErrorPath("document");
+        GlobalVariables.getErrorMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
 
         return valid;
     }
@@ -125,6 +135,29 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 			valid = false;
     	}
     	return valid;
+    }
+
+    private boolean validateRoleQualifier (List<PersonDocumentRole> roles ) {
+        ErrorMap errorMap = GlobalVariables.getErrorMap();
+    	//boolean valid = true;
+		AttributeSet validationErrors = new AttributeSet();
+		// TODO : "kimTypeService.validateAttributes(attributes)" is not working yet 
+    	for(PersonDocumentRole role : roles ) {
+	        KimTypeService kimTypeService = (KimTypeServiceBase)KIMServiceLocator.getService(role.getKimRoleType().getKimTypeServiceName());
+	        AttributeSet attributes = new AttributeSet();
+	        for (KimTypeAttributeImpl typeAttrImpl : role.getKimRoleType().getAttributeDefinitions()) {
+	        	Map<String, String> attr = new HashMap<String, String>();
+	        	attr.put(typeAttrImpl.getKimAttribute().getAttributeName(), "");
+	        	attributes.putAll(attr);
+	        	
+	        }
+	        validationErrors.putAll(kimTypeService.validateAttributes(attributes));
+    	}
+    	if (validationErrors.isEmpty()) {
+    		return true;
+    	} else {
+    		return false;
+    	}
     }
 
     public boolean processAddGroup(AddGroupEvent addGroupEvent) {

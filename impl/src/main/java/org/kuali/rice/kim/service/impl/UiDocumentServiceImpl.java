@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.entity.EntityAddress;
 import org.kuali.rice.kim.bo.entity.EntityEmail;
 import org.kuali.rice.kim.bo.entity.EntityPhone;
@@ -58,9 +59,11 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
+import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.TextControlDefinition;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -92,28 +95,21 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 		kimEntity.setVersionNumber(origEntity.getVersionNumber());
 
-		// principal
 		setupPrincipal(identityManagementPersonDocument, kimEntity, origEntity.getPrincipals());
 		setupExtId(identityManagementPersonDocument, kimEntity, origEntity.getExternalIdentifiers());
-		
-		// privacy references
 		setupPrivacy(identityManagementPersonDocument, kimEntity, origEntity.getPrivacyPreferences());
-
-		// affiliations
 		setupAffiliation(identityManagementPersonDocument, kimEntity, origEntity.getAffiliations(), origEntity.getEmploymentInformation());
-
-		// names
 		setupName(identityManagementPersonDocument, kimEntity, origEntity.getNames());
 		// entitytype
 		List<EntityEntityTypeImpl> entityTypes = new ArrayList<EntityEntityTypeImpl>();
 		EntityEntityTypeImpl entityType = new EntityEntityTypeImpl();
 		entityType.setEntityId(identityManagementPersonDocument.getEntityId());
-		entityType.setEntityTypeCode("PERSON");
+		entityType.setEntityTypeCode(KimConstants.PERSON_ENTITY_TYPE);
 		entityType.setActive(identityManagementPersonDocument.isActive());
 		entityTypes.add(entityType);
 		EntityEntityTypeImpl origEntityType = new EntityEntityTypeImpl();
 		for (EntityEntityTypeImpl type : origEntity.getEntityTypes()) {
-			// should check eitytyentitytypeid, but it's not persist in persondoc yet
+			// should check entity.entitytypeid, but it's not persist in persondoc yet
 			if (type.getEntityTypeCode().equals(entityType.getEntityTypeCode())) {
 				origEntityType = type;
 				entityType.setVersionNumber(type.getVersionNumber());
@@ -121,22 +117,11 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			}
 		}
 		kimEntity.setEntityTypes(entityTypes);
-
-		// phones
 		setupPhone(identityManagementPersonDocument, entityType, origEntityType.getPhoneNumbers());
-
-		// emails
 		setupEmail(identityManagementPersonDocument, entityType, origEntityType.getEmailAddresses());
-
-		// address
 		setupAddress(identityManagementPersonDocument, entityType, origEntityType.getAddresses());
-
-		// group memeber
-		
-		List <GroupMemberImpl>  groupPrincipals = populateGroups(identityManagementPersonDocument);
-		
+		List <GroupMemberImpl>  groupPrincipals = populateGroups(identityManagementPersonDocument);		
 		List <RoleMemberImpl>  rolePrincipals = populateRoles(identityManagementPersonDocument);
-
 		List <BusinessObject> bos = new ArrayList<BusinessObject>();
 		bos.add(kimEntity);
 		bos.add(kimEntity.getPrivacyPreferences());
@@ -157,7 +142,27 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			if (attrDefinition instanceof KimDataDictionaryAttributeDefinition) {
 				AttributeDefinition definition = ((KimDataDictionaryAttributeDefinition) attrDefinition)
 						.getDataDictionaryAttributeDefinition();
-				attribute.put("control", definition.getControl());
+				ControlDefinition control = definition.getControl();
+				if (control.isSelect()) {
+					Map controlMap = new HashMap();
+		            controlMap.put("select", "true");
+		            controlMap.put("valuesFinder", control.getValuesFinderClass().getName());
+		            if (control.getBusinessObjectClass() != null) {
+		                controlMap.put("businessObject", control.getBusinessObjectClass().getName());
+		            }
+		            if (StringUtils.isNotEmpty(control.getKeyAttribute())) {
+		                controlMap.put("keyAttribute", control.getKeyAttribute());
+		            }
+		            if (StringUtils.isNotEmpty(control.getLabelAttribute())) {
+		                controlMap.put("labelAttribute", control.getLabelAttribute());
+		            }
+		            if (control.getIncludeKeyInLabel() != null) {
+		                controlMap.put("includeKeyInLabel", control.getIncludeKeyInLabel().toString());
+		            }
+					attribute.put("control", controlMap);
+		        } else {
+		        	attribute.put("control", definition.getControl());
+		        }
 				attribute.put("label", definition.getLabel());
 				attribute.put("shortLabel", definition.getShortLabel());
 				attribute.put("maxLength", definition.getMaxLength());
@@ -188,13 +193,13 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		identityManagementPersonDocument.setNames(loadNames(kimEntity.getNames()));
 		EntityEntityTypeImpl entityType = null;
 		for (EntityEntityTypeImpl type : kimEntity.getEntityTypes()) {
-			if (type.getEntityTypeCode().equals("PERSON")) {
+			if (type.getEntityTypeCode().equals(KimConstants.PERSON_ENTITY_TYPE)) {
 				entityType = type;
 			}
 		}
 		// TODO : hardcoded for now
 		for (EntityExternalIdentifierImpl extId : kimEntity.getExternalIdentifiers()){
-			if (extId.getExternalIdentifierTypeCode().equals("TAX")) {
+			if (extId.getExternalIdentifierTypeCode().equals(KimConstants.TAX_EXT_ID_TYPE)) {
 				identityManagementPersonDocument.setTaxId(extId.getExternalId());				
 			} else if (extId.getExternalIdentifierTypeCode().equals("LOGON")) {
 				identityManagementPersonDocument.setUnivId(extId.getExternalId());				

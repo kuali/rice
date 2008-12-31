@@ -14,6 +14,7 @@
               	<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
           	
           	</tr>     
+          <c:if test="${not inquiry}">	
           	
              <tr>
 				<th class="infoline">
@@ -58,7 +59,7 @@
 					</div>
                 </td>
        </tr>         
-            
+    </c:if>        
         	<c:forEach var="phone" items="${KualiForm.document.phones}" varStatus="status">
 	             <tr>
 					<th class="infoline">

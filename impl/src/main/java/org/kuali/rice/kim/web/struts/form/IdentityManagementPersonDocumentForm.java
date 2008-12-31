@@ -47,13 +47,10 @@ public class IdentityManagementPersonDocumentForm extends KualiTransactionalDocu
     private PersonDocumentEmail newEmail;
     private PersonDocumentGroup newGroup;
     private PersonDocumentRole newRole;
-
     
     public IdentityManagementPersonDocumentForm() {
         super();
         this.registerEditableProperty("methodToCall.approve.x");
-        // TODO : from action list, and load document, and approve, this field is empty
-        this.setDocTypeName("IdentityManagementPersonDocument");
         this.setDocument(new IdentityManagementPersonDocument());
     }
 
@@ -64,7 +61,8 @@ public class IdentityManagementPersonDocumentForm extends KualiTransactionalDocu
      * @param request
      */
     public void reset(ActionMapping mapping, HttpServletRequest request) {
-        this.setMethodToCall(null);
+    	super.reset(mapping, request);
+    	this.setMethodToCall(null);
         this.setRefreshCaller(null);
         this.setAnchor(null);
         this.setCurrentTabIndex(0);

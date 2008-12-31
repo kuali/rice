@@ -85,6 +85,9 @@ INSERT INTO KRIM_EXT_ID_TYP_T(EXT_ID_TYP_CD, OBJ_ID, NM, DISPLAY_SORT_CD, ENCR_R
 INSERT INTO KRIM_EXT_ID_TYP_T(EXT_ID_TYP_CD, OBJ_ID, NM, DISPLAY_SORT_CD, ENCR_REQ_IND, ACTV_IND, LAST_UPDT_DT) 
     VALUES('TAX', 'extid2', 'Tax ID', 02, 'N', 'Y', sysdate)
 /
+INSERT INTO KRIM_EXT_ID_TYP_T(EXT_ID_TYP_CD, OBJ_ID, NM, DISPLAY_SORT_CD, ENCR_REQ_IND, ACTV_IND, LAST_UPDT_DT) 
+    VALUES('LOGON', 'extid3', 'Logon ID', 03, 'N', 'Y', sysdate)
+/
 COMMIT
 /
 
@@ -170,10 +173,10 @@ INSERT INTO KRIM_ATTR_DEFN_T(KIM_ATTR_DEFN_ID, OBJ_ID, NM, LBL, NMSPC_CD,  ACTV_
     VALUES('kimAttrDefn1', 'kimAttrDefn1', 'attribute1', 'Attrib LBL 1', 'KR-SYS',  'Y','','')
 /
 INSERT INTO KRIM_ATTR_DEFN_T(KIM_ATTR_DEFN_ID, OBJ_ID, NM, LBL, NMSPC_CD,  ACTV_IND, CMPNT_NM, APPL_URL) 
-    VALUES('kimAttrDefn2', 'kimAttrDefn2', 'attribute2', 'Attrib LBL 2', 'KR-SYS',  'Y','','')
+    VALUES('kimAttrDefn2', 'kimAttrDefn2', 'campusCode', 'Attrib LBL 2', 'KR-SYS',  'Y','org.kuali.rice.kim.bo.impl.KimAttributes','')
 /
 INSERT INTO KRIM_ATTR_DEFN_T(KIM_ATTR_DEFN_ID, OBJ_ID, NM, LBL, NMSPC_CD,  ACTV_IND, CMPNT_NM, APPL_URL) 
-    VALUES('kimAttrDefn3', 'kimAttrDefn3', 'attribute3', 'Attrib LBL 3', 'KR-SYS',  'Y','','')
+    VALUES('kimAttrDefn3', 'kimAttrDefn3', 'namespaceCode', 'Attrib LBL 3', 'KR-SYS',  'Y','org.kuali.rice.kim.bo.impl.KimAttributes','')
 /
 INSERT INTO KRIM_ATTR_DEFN_T(KIM_ATTR_DEFN_ID, OBJ_ID, NM, LBL, NMSPC_CD,  ACTV_IND, CMPNT_NM, APPL_URL) 
     VALUES('kimAttrDefn4', 'kimAttrDefn4', 'attribute4', 'Attrib LBL 4', 'KR-SYS',  'Y','','')
@@ -386,4 +389,44 @@ INSERT INTO KRIM_RSP_ATTR_DATA_T(ATTR_DATA_ID, OBJ_ID, TARGET_PRIMARY_KEY, KIM_T
     VALUES('rad2', 'rad2', 'rsp2', 'rspType1', 'kimAttrDefn4', 'RESPATTR2')
 /
 COMMIT
+/
+
+
+INSERT INTO  KRIM_PHONE_TYP_T (PHONE_TYP_CD, OBJ_ID,VER_NBR,PHONE_TYP_NM,ACTV_IND,DISPLAY_SORT_CD)
+  values ('HM','ptp1', 1,'Home','Y','b')
+/
+INSERT INTO  KRIM_PHONE_TYP_T (PHONE_TYP_CD, OBJ_ID,VER_NBR,PHONE_TYP_NM,ACTV_IND,DISPLAY_SORT_CD)
+  values ('WRK','ptp2', 1,'Work','Y','a')
+/
+
+INSERT INTO  KRIM_EMAIL_TYP_T (EMAIL_TYP_CD, OBJ_ID,VER_NBR,NM,ACTV_IND,DISPLAY_SORT_CD)
+  values ('HM','etp1', 1,'Home','Y','b')
+/
+
+INSERT INTO  KRIM_EMAIL_TYP_T (EMAIL_TYP_CD, OBJ_ID,VER_NBR,NM,ACTV_IND,DISPLAY_SORT_CD)
+  values ('WRK','etp2', 1,'Work','Y','a')
+/
+
+INSERT INTO  KRIM_ADDR_TYP_T (ADDR_TYP_CD, OBJ_ID,VER_NBR,NM,ACTV_IND,DISPLAY_SORT_CD)
+  values ('HM','atp1', 1,'Home','Y','b')
+/
+
+INSERT INTO  KRIM_ADDR_TYP_T (ADDR_TYP_CD, OBJ_ID,VER_NBR,NM,ACTV_IND,DISPLAY_SORT_CD)
+  values ('WRK','atp2', 1,'Work','Y','a')
+/
+INSERT INTO  KRIM_AFLTN_TYP_T (AFLTN_TYP_CD, OBJ_ID,VER_NBR,NM,ACTV_IND,DISPLAY_SORT_CD,EMP_AFLTN_TYP_IND)
+  values ('AFLT','afltp1', 1,'Affiliate','Y','a','N')
+/
+INSERT INTO  KRIM_AFLTN_TYP_T (AFLTN_TYP_CD, OBJ_ID,VER_NBR,NM,ACTV_IND,DISPLAY_SORT_CD,EMP_AFLTN_TYP_IND)
+  values ('FCLTY','afltp2', 1,'Faculty','Y','b','Y')
+/
+INSERT INTO  KRIM_EMP_STAT_T (EMP_STAT_CD, OBJ_ID,VER_NBR,NM,ACTV_IND,DISPLAY_SORT_CD)
+  values ('A','esp1', 1,'Active','Y','a')
+/
+INSERT INTO  KRIM_EMP_STAT_T (EMP_STAT_CD, OBJ_ID,VER_NBR,NM,ACTV_IND,DISPLAY_SORT_CD)
+  values ('P','esp2', 1,'Processing','Y','b')
+/
+
+INSERT INTO  KRIM_EMP_TYP_T (EMP_TYP_CD, OBJ_ID,VER_NBR,NM,ACTV_IND,DISPLAY_SORT_CD)
+  values ('P','emtp1', 1,'Professional','Y','a')
 /

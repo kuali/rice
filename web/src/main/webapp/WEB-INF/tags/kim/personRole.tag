@@ -11,6 +11,7 @@
               	<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
           	
           	</tr>     
+          <c:if test="${not inquiry}">	
           	
              <tr>
 				<th class="infoline">
@@ -20,7 +21,7 @@
                 <td align="left" valign="middle" class="infoline" colspan=3>
                 <div align="center">
                 	<kul:htmlControlAttribute property="newRole.roleId" attributeEntry="${docRoleAttributes.roleId}" disabled="true"/>
-                	<kul:lookup boClassName="org.kuali.rice.kim.bo.role.impl.KimRoleImpl" fieldConversions="roleId:newRole.roleId,kimTypeId:newRole.kimTypeId,roleName:newRole.roleName,namespaceCode:newRole.namespaceCode,kimRoleType.name:newRole.kimRoleType.name,kimRoleType.kimTypeServiceName:newRole.kimRoleType.kimTypeServiceName" anchor="${tabKey}" />
+                	<kul:lookup boClassName="org.kuali.rice.kim.bo.Role" fieldConversions="roleId:newRole.roleId,kimTypeId:newRole.kimTypeId,roleName:newRole.roleName,namespaceCode:newRole.namespaceCode,kimRoleType.name:newRole.kimRoleType.name,kimRoleType.kimTypeServiceName:newRole.kimRoleType.kimTypeServiceName" anchor="${tabKey}" />
 					${KualiForm.newRole.roleName}
 					<html:hidden property="newRole.roleName" />
 					<html:hidden property="newRole.namespaceCode" />
@@ -38,13 +39,15 @@
 							src='${ConfigProperties.kr.externalizable.images.url}tinybutton-add1.gif' styleClass="tinybutton"/>
 	        	       </c:when>
 	        	       <c:otherwise>
+							<html:image property="methodToCall.addRole.anchor${tabKey}"
+							src='${ConfigProperties.kr.externalizable.images.url}tinybutton-add1.gif' styleClass="tinybutton"/>
 	        	          <!-- <img class='nobord' src='${ConfigProperties.kr.externalizable.images.url}tinybutton-add2.gif' styleClass='tinybutton'/> -->
 	        	       </c:otherwise>
 	        	     </c:choose>  
 					</div>
                 </td>
        </tr>         
-            
+     </c:if>       
         	<c:forEach var="role" items="${KualiForm.document.roles}" varStatus="status">
 	             <tr>
 					<th rowspan="2" class="infoline">

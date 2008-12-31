@@ -21,6 +21,8 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.inquiry.Inquirable;
+import org.kuali.rice.kns.inquiry.InquiryAuthorizer;
+import org.kuali.rice.kns.inquiry.InquiryPresentationController;
 
 /**
     The inquiry element is used to specify the fields that will be displayed on the
@@ -36,6 +38,8 @@ public class InquiryDefinition extends DataDictionaryDefinitionBase {
     protected String title;
     protected List<InquirySectionDefinition> inquirySections = new ArrayList<InquirySectionDefinition>();
     protected Class<? extends Inquirable> inquirableClass;
+    protected Class<? extends InquiryPresentationController> presentationControllerClass;
+    protected Class<? extends InquiryAuthorizer> authorizerClass;
 
     public InquiryDefinition() {
     }
@@ -137,4 +141,26 @@ public class InquiryDefinition extends DataDictionaryDefinitionBase {
     public void setInquirySections(List<InquirySectionDefinition> inquirySections) {
         this.inquirySections = inquirySections;
     }
+
+
+	public Class<? extends InquiryPresentationController> getPresentationControllerClass() {
+		return this.presentationControllerClass;
+	}
+
+
+	public void setPresentationControllerClass(
+			Class<? extends InquiryPresentationController> presentationControllerClass) {
+		this.presentationControllerClass = presentationControllerClass;
+	}
+
+
+	public Class<? extends InquiryAuthorizer> getAuthorizerClass() {
+		return this.authorizerClass;
+	}
+
+
+	public void setAuthorizerClass(
+			Class<? extends InquiryAuthorizer> authorizerClass) {
+		this.authorizerClass = authorizerClass;
+	}
 }

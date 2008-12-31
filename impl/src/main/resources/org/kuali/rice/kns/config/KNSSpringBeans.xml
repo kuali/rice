@@ -1060,4 +1060,6 @@
 	</bean>
 
 	<bean id="maintenanceDocumentAuthorizationService" class="org.kuali.rice.kns.service.impl.MaintenanceDocumentAuthorizationServiceImpl"/>
+
+	<bean id="inquiryService" class="org.kuali.rice.kns.service.impl.InquiryServiceImpl"/>
 </beans>

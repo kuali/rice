@@ -18,9 +18,9 @@ package org.kuali.rice.kim.service;
 import java.util.Collection;
 import java.util.List;
 
+import org.kuali.rice.kim.bo.role.KimRole;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
-import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 /**
@@ -107,6 +107,6 @@ public interface RoleService {
 	 * @param fieldValues
 	 * @return
 	 */
-	public List<KimRoleImpl> getRolesSearchResults(java.util.Map<String,String> fieldValues);
+	public List<? extends KimRole> getRolesSearchResults(java.util.Map<String,String> fieldValues);
 
 }

@@ -22,9 +22,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import org.kuali.rice.kim.bo.role.KimRole;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
-import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.RoleManagementService;
@@ -418,7 +418,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	 * 
 	 * @see org.kuali.rice.kim.service.RoleService#getRolesSearchResults(java.util.Map)
 	 */
-	public List<KimRoleImpl> getRolesSearchResults(
+	public List<? extends KimRole> getRolesSearchResults(
 			Map<String, String> fieldValues) {
 		// TODO shyu - THIS METHOD NEEDS JAVADOCS
 		return getRoleService().getRolesSearchResults(fieldValues);

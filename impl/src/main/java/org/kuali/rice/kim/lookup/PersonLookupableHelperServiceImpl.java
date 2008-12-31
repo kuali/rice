@@ -24,8 +24,6 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.KNSConstants;
 
 /**
@@ -67,5 +65,22 @@ public class PersonLookupableHelperServiceImpl  extends KualiLookupableHelperSer
         
         return htmlDataList;
 	}
+
+	@Override
+	public HtmlData getInquiryUrl(BusinessObject bo, String propertyName) {
+		// TODO shyu - THIS METHOD NEEDS JAVADOCS
+		HtmlData inqUrl = super.getInquiryUrl(bo, propertyName);
+	    String href = ((AnchorHtmlData)inqUrl).getHref();
+	    if (StringUtils.isNotBlank(href)) {
+		    int idx1 = href.indexOf("&principalId=");
+		    int idx2 = href.indexOf("&", idx1+1);
+		    if (idx2 < 0) {
+		    	idx2 = href.length();
+		    }
+		    ((AnchorHtmlData)inqUrl).setHref("../kim/identityManagementPersonDocument.do?command=initiate&docTypeName=IdentityManagementPersonDocument"+href.substring(idx1, idx2));
+	    }
+	    return inqUrl;
+	}
+	
 	
 }

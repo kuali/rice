@@ -32,6 +32,7 @@
 		<action path="/identityManagementPersonDocument" name="IdentityManagementPersonDocumentForm" input="/kim/WEB-INF/jsp/identityManagementPersonDocument.jsp" type="org.kuali.rice.kim.web.struts.action.IdentityManagementPersonDocumentAction"
 			scope="request" parameter="methodToCall" validate="true" attribute="KualiForm">
 			<forward name="basic" path="/WEB-INF/jsp/identityManagementPersonDocument.jsp" />
+			<forward name="inquiry" path="/WEB-INF/jsp/personInquiry.jsp" />
 		</action>
     </action-mappings>
 

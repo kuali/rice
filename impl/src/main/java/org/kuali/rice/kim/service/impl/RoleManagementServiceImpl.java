@@ -24,6 +24,7 @@ import java.util.regex.Pattern;
 
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
+import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.RoleManagementService;
@@ -410,6 +411,17 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 
 	public void setRoleCacheMaxAge(int roleCacheMaxAge) {
 		this.roleCacheMaxAge = roleCacheMaxAge;
+	}
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kim.service.RoleService#getRolesSearchResults(java.util.Map)
+	 */
+	public List<KimRoleImpl> getRolesSearchResults(
+			Map<String, String> fieldValues) {
+		// TODO shyu - THIS METHOD NEEDS JAVADOCS
+		return getRoleService().getRolesSearchResults(fieldValues);
 	}
 
 }

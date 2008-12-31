@@ -1020,4 +1020,17 @@ public class RoleServiceImpl implements RoleService {
 		this.roleDao = roleDao;
 	}
 	
+    public List<KimRoleImpl> getRolesSearchResults(java.util.Map<String,String> fieldValues) {
+    	String kimTypeId=null;
+        for (Map.Entry<String,String> entry : fieldValues.entrySet()) {
+        	if (entry.getKey().equals("kimTypeId")) {
+        		kimTypeId=entry.getValue();
+        		break;
+        	}
+        }
+    	return roleDao.getRoles(fieldValues, kimTypeId);
+
+    	
+    }
+
 }

@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
+import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 /**
@@ -99,5 +100,13 @@ public interface RoleService {
     public void assignGroupToRole(String groupId, String namespaceCode, String roleName, AttributeSet qualifications);
     public void removePrincipalFromRole(String principalId, String namespaceCode, String roleName, AttributeSet qualifications);
     public void removeGroupFromRole(String groupId, String namespaceCode, String roleName, AttributeSet qualifications);
-    
+	/**
+	 * 
+	 * This method get search results for role lookup
+	 * 
+	 * @param fieldValues
+	 * @return
+	 */
+	public List<KimRoleImpl> getRolesSearchResults(java.util.Map<String,String> fieldValues);
+
 }

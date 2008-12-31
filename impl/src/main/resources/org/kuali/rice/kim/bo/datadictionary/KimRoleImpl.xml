@@ -136,8 +136,10 @@
   <bean id="KimRoleImpl-lookupDefinition" parent="KimRoleImpl-lookupDefinition-parentBean" />
 
   <bean id="KimRoleImpl-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition"
-        p:title="Person Lookup" 
-        p:instructions="Lookup a Person" >
+        p:title="Role Lookup" 
+        p:instructions="Lookup a Role" >
+    <property name="lookupableID" value="roleLookupable" />
+        
     <property name="defaultSort" >
       <bean parent="SortDefinition">
         <property name="attributeNames" >

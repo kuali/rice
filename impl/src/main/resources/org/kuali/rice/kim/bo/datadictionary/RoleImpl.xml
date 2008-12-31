@@ -1,0 +1,343 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+  <bean id="RoleImpl" parent="RoleImpl-parentBean" />
+
+  <bean id="RoleImpl-parentBean" abstract="true" parent="BusinessObjectEntry"
+        p:businessObjectClass="org.kuali.rice.kim.bo.impl.RoleImpl"
+        p:titleAttribute="roleId"
+        p:objectLabel="Names"
+        p:inquiryDefinition-ref="RoleImpl-inquiryDefinition"
+        p:lookupDefinition-ref="RoleImpl-lookupDefinition" >
+    <property name="attributes" >
+      <list>
+        <ref bean="RoleImpl-roleId" />
+        <ref bean="RoleImpl-kimTypeId" />
+        <ref bean="RoleImpl-roleName" />
+        <ref bean="RoleImpl-namespaceCode" />
+        <ref bean="RoleImpl-principalName" />
+        <ref bean="RoleImpl-groupNamespaceCode" />
+        <ref bean="RoleImpl-groupName" />
+        <ref bean="RoleImpl-permTmplNamespaceCode" />
+        <ref bean="RoleImpl-permTmplName" />
+        <ref bean="RoleImpl-permNamespaceCode" />
+        <ref bean="RoleImpl-permName" />
+        <ref bean="RoleImpl-respNamespaceCode" />
+        <ref bean="RoleImpl-respName" />
+        <ref bean="RoleImpl-respTmplNamespaceCode" />
+        <ref bean="RoleImpl-respTmplName" />
+      </list>
+    </property>
+    
+        <property name="relationships" >
+      <list>
+        <bean parent="RelationshipDefinition">
+          <property name="objectAttributeName" value="kimRoleType" />
+          <property name="primitiveAttributes" >
+            <list>
+              <bean parent="PrimitiveAttributeDefinition"
+                    p:sourceName="kimTypeId"
+                    p:targetName="kimTypeId" />
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+        
+  </bean>
+ 
+ 
+ 
+   <bean id="RoleImpl-roleId" parent="RoleImpl-roleId-parentBean" />
+  <bean id="RoleImpl-roleId-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="roleId"
+        p:forceUppercase="true"
+        p:label="Role"
+        p:shortLabel="Role"
+        p:maxLength="10"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="10" />
+    </property>
+  </bean>
+  
+  <bean id="RoleImpl-kimTypeId" parent="RoleImpl-kimTypeId-parentBean" />
+  <bean id="RoleImpl-kimTypeId-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="kimTypeId"
+        p:forceUppercase="true"
+        p:label="Role Type"
+        p:shortLabel="Role Type"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="10" />
+    </property>
+  </bean>
+    
+  <bean id="RoleImpl-roleName" parent="RoleImpl-roleName-parentBean" />
+  <bean id="RoleImpl-roleName-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="roleName"
+        p:forceUppercase="true"
+        p:label="Role Name"
+        p:shortLabel="Role Name"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="10" />
+    </property>
+  </bean>
+  
+  
+  <bean id="RoleImpl-namespaceCode" parent="RoleImpl-namespaceCode-parentBean" />
+  <bean id="RoleImpl-namespaceCode-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="namespaceCode"
+        p:forceUppercase="true"
+        p:label="Name Space"
+        p:shortLabel="Name Space"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="SelectControlDefinition"
+            p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.ParameterNamespaceValuesFinder"
+            p:includeKeyInLabel="false" 
+            p:keyAttribute="code"
+            p:labelAttribute="codeAndDescription" />
+    </property>
+  </bean>
+  
+  <bean id="RoleImpl-principalName" parent="RoleImpl-principalName-parentBean" />
+  <bean id="RoleImpl-principalName-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="principalName"
+        p:forceUppercase="false"
+        p:label="Principal Name"
+        p:shortLabel="Principal Nam"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="10" />
+    </property>
+  </bean>
+  
+  <bean id="RoleImpl-groupNamespaceCode" parent="RoleImpl-groupNamespaceCode-parentBean" />
+  <bean id="RoleImpl-groupNamespaceCode-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="groupNamespaceCode"
+        p:forceUppercase="true"
+        p:label="Group Name Space"
+        p:shortLabel="Group Name Space"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="SelectControlDefinition"
+            p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.ParameterNamespaceValuesFinder"
+            p:includeKeyInLabel="false" 
+            p:keyAttribute="code"
+            p:labelAttribute="codeAndDescription" />
+    </property>
+  </bean>
+  
+  <bean id="RoleImpl-groupName" parent="RoleImpl-groupName-parentBean" />
+  <bean id="RoleImpl-groupName-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="groupName"
+        p:forceUppercase="true"
+        p:label="Group Name"
+        p:shortLabel="Group Name"
+        p:maxLength="100"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="10" />
+    </property>
+  </bean>
+  
+  <bean id="RoleImpl-permTmplNamespaceCode" parent="RoleImpl-permTmplNamespaceCode-parentBean" />
+  <bean id="RoleImpl-permTmplNamespaceCode-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="permTmplNamespaceCode"
+        p:forceUppercase="true"
+        p:label="Permission Tmpl Name Space"
+        p:shortLabel="Permission Tmpl Name Space"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="SelectControlDefinition"
+            p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.ParameterNamespaceValuesFinder"
+            p:includeKeyInLabel="false" 
+            p:keyAttribute="code"
+            p:labelAttribute="codeAndDescription" />
+    </property>
+  </bean>
+  
+  <bean id="RoleImpl-permTmplName" parent="RoleImpl-permTmplName-parentBean" />
+  <bean id="RoleImpl-permTmplName-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="permTmplName"
+        p:forceUppercase="false"
+        p:label="Permission Tmpl Name"
+        p:shortLabel="Permission Tmpl Name"
+        p:maxLength="100"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="10" />
+    </property>
+  </bean>
+  
+    <bean id="RoleImpl-permNamespaceCode" parent="RoleImpl-permNamespaceCode-parentBean" />
+  <bean id="RoleImpl-permNamespaceCode-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="permNamespaceCode"
+        p:forceUppercase="true"
+        p:label="Permission Name Space"
+        p:shortLabel="Permission Name Space"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="SelectControlDefinition"
+            p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.ParameterNamespaceValuesFinder"
+            p:includeKeyInLabel="false" 
+            p:keyAttribute="code"
+            p:labelAttribute="codeAndDescription" />
+    </property>
+  </bean>
+  
+  <bean id="RoleImpl-permName" parent="RoleImpl-permName-parentBean" />
+  <bean id="RoleImpl-permName-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="permName"
+        p:forceUppercase="false"
+        p:label="Permission Name"
+        p:shortLabel="Permission Name"
+        p:maxLength="100"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="10" />
+    </property>
+  </bean>
+  
+  <bean id="RoleImpl-respNamespaceCode" parent="RoleImpl-respNamespaceCode-parentBean" />
+  <bean id="RoleImpl-respNamespaceCode-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="respNamespaceCode"
+        p:forceUppercase="true"
+        p:label="Responsibility Name Space"
+        p:shortLabel="Responsibility Name Space"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="SelectControlDefinition"
+            p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.ParameterNamespaceValuesFinder"
+            p:includeKeyInLabel="false" 
+            p:keyAttribute="code"
+            p:labelAttribute="codeAndDescription" />
+    </property>
+  </bean>
+  
+  <bean id="RoleImpl-respName" parent="RoleImpl-respName-parentBean" />
+  <bean id="RoleImpl-respName-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="respName"
+        p:forceUppercase="false"
+        p:label="Responsibility Name"
+        p:shortLabel="Responsibility Name"
+        p:maxLength="100"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="10" />
+    </property>
+  </bean>
+  
+  <bean id="RoleImpl-respTmplNamespaceCode" parent="RoleImpl-respTmplNamespaceCode-parentBean" />
+  <bean id="RoleImpl-respTmplNamespaceCode-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="respTmplNamespaceCode"
+        p:forceUppercase="true"
+        p:label="Responsibility Tmpl Name Space"
+        p:shortLabel="Responsibility Tmpl Name Space"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="SelectControlDefinition"
+            p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.ParameterNamespaceValuesFinder"
+            p:includeKeyInLabel="false" 
+            p:keyAttribute="code"
+            p:labelAttribute="codeAndDescription" />
+    </property>
+  </bean>
+  
+  <bean id="RoleImpl-respTmplName" parent="RoleImpl-respTmplName-parentBean" />
+  <bean id="RoleImpl-respTmplName-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="respTmplName"
+        p:forceUppercase="false"
+        p:label="Responsibility Tmpl Name"
+        p:shortLabel="Responsibility Tmpl Name"
+        p:maxLength="100"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="10" />
+    </property>
+  </bean>
+  
+  
+  <bean id="RoleImpl-inquiryDefinition" parent="RoleImpl-inquiryDefinition-parentBean" />
+
+  <bean id="RoleImpl-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition"
+        p:title="Role Impl Inquiry" >
+    <property name="inquirySections" >
+      <list>
+        <bean parent="InquirySectionDefinition"
+              p:title="Person Attributes"
+              p:numberOfColumns="1" >
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="FieldDefinition" p:attributeName="roleId" />
+              <bean parent="FieldDefinition" p:attributeName="roleName" />
+              <bean parent="FieldDefinition" p:attributeName="kimTypeId" />
+        	  <bean parent="FieldDefinition" p:attributeName="namespaceCode" />
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="RoleImpl-lookupDefinition" parent="RoleImpl-lookupDefinition-parentBean" />
+
+  <bean id="RoleImpl-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition"
+        p:title="Role Lookup" 
+        p:instructions="Lookup a Role" >
+    <property name="lookupableID" value="roleLookupable" />
+        
+    <property name="defaultSort" >
+      <bean parent="SortDefinition">
+        <property name="attributeNames" >
+          <list>
+            <value>roleId</value>
+          </list>
+        </property>
+        <property name="sortAscending" value="true" />
+      </bean>
+    </property>
+    <property name="lookupFields" >
+      <list>
+        <bean parent="FieldDefinition" p:attributeName="roleId" />
+        <bean parent="FieldDefinition" p:attributeName="roleName" />
+        <bean parent="FieldDefinition" p:attributeName="kimTypeId" />
+        <bean parent="FieldDefinition" p:attributeName="namespaceCode" />
+        <bean parent="FieldDefinition" p:attributeName="principalName" />
+        <bean parent="FieldDefinition" p:attributeName="groupNamespaceCode" />
+        <bean parent="FieldDefinition" p:attributeName="groupName" />
+        <bean parent="FieldDefinition" p:attributeName="permNamespaceCode" />
+        <bean parent="FieldDefinition" p:attributeName="permName" />
+        <bean parent="FieldDefinition" p:attributeName="permTmplNamespaceCode" />
+        <bean parent="FieldDefinition" p:attributeName="permTmplName" />
+        <bean parent="FieldDefinition" p:attributeName="respNamespaceCode" />
+        <bean parent="FieldDefinition" p:attributeName="respName" />
+        <bean parent="FieldDefinition" p:attributeName="respTmplNamespaceCode" />
+        <bean parent="FieldDefinition" p:attributeName="respTmplName" />
+      </list>
+    </property>
+    <property name="resultFields" >
+      <list>
+        <bean parent="FieldDefinition" p:attributeName="roleId" />
+        <bean parent="FieldDefinition" p:attributeName="roleName" />
+        <bean parent="FieldDefinition" p:attributeName="kimTypeId" />
+        <bean parent="FieldDefinition" p:attributeName="namespaceCode" />
+      </list>
+    </property>
+  </bean>
+
+</beans>

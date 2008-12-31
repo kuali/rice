@@ -53,9 +53,7 @@ import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.DateTimeService;
 import org.kuali.rice.kns.service.DictionaryValidationService;
-import org.kuali.rice.kns.service.DocumentAuthorizationService;
 import org.kuali.rice.kns.service.DocumentHeaderService;
-import org.kuali.rice.kns.service.DocumentPresentationControllerService;
 import org.kuali.rice.kns.service.DocumentService;
 import org.kuali.rice.kns.service.DocumentTypeService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -91,9 +89,6 @@ public class DocumentServiceImpl implements DocumentService {
     protected WorkflowDocumentService workflowDocumentService;
     
     protected BusinessObjectService businessObjectService;
-    
-    protected DocumentAuthorizationService documentAuthorizationService;
-    protected DocumentPresentationControllerService documentPresentationControllerService;
     
     protected DocumentDao documentDao;
     
@@ -442,8 +437,8 @@ public class DocumentServiceImpl implements DocumentService {
         }
 
         // get the authorization
-        DocumentAuthorizer documentAuthorizer = getDocumentAuthorizationService().getDocumentAuthorizer(documentTypeName);
-        DocumentPresentationController documentPresentationController = getDocumentPresentationControllerService().getDocumentPresentationController(documentTypeName);
+        DocumentAuthorizer documentAuthorizer = getDocumentTypeService().getDocumentAuthorizer(documentTypeName);
+        DocumentPresentationController documentPresentationController = getDocumentTypeService().getDocumentPresentationController(documentTypeName);
         // make sure this person is authorized to initiate
         LOG.debug("calling canInitiate from getNewDocument()");
         if (!documentPresentationController.canInitiate(documentTypeName) || !documentAuthorizer.canInitiate(documentTypeName, currentUser)) {
@@ -762,7 +757,7 @@ public class DocumentServiceImpl implements DocumentService {
      * @return DocumentAuthorizer instance for the given documentType name
      */
     private DocumentAuthorizer getDocumentAuthorizer(String documentTypeName) {
-        return getDocumentAuthorizationService().getDocumentAuthorizer(documentTypeName);
+        return getDocumentTypeService().getDocumentAuthorizer(documentTypeName);
     }
 
     /**
@@ -891,26 +886,6 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     /**
-     * Sets the documentAuthorizationService attribute value.
-     *
-     * @param documentAuthorizationService The documentAuthorizationService to set.
-     */
-    public synchronized void setDocumentAuthorizationService(DocumentAuthorizationService documentAuthorizationService) {
-        this.documentAuthorizationService = documentAuthorizationService;
-    }
-
-    /**
-     * Gets the {@link DocumentAuthorizationService}, lazily initializing if necessary
-     * @return the {@link DocumentAuthorizationService}
-     */
-    public synchronized DocumentAuthorizationService getDocumentAuthorizationService() {
-        if (this.documentAuthorizationService == null) {
-            this.documentAuthorizationService = KNSServiceLocator.getDocumentAuthorizationService();
-        }
-        return documentAuthorizationService;
-    }
-
-    /**
      * Sets the documentDao attribute value.
      *
      * @param documentDao The documentDao to set.
@@ -977,17 +952,4 @@ public class DocumentServiceImpl implements DocumentService {
 		}
 		return personService;
 	}
-
-	public synchronized void setDocumentPresentationControllerService(
-			DocumentPresentationControllerService documentPresentationControllerService) {
-		this.documentPresentationControllerService = documentPresentationControllerService;
-	}
-	
-    public synchronized DocumentPresentationControllerService getDocumentPresentationControllerService() {
-        if (this.documentPresentationControllerService == null) {
-            this.documentPresentationControllerService = KNSServiceLocator.getDocumentPresentationControllerService();
-        }
-        return documentPresentationControllerService;
-    }
-
 }

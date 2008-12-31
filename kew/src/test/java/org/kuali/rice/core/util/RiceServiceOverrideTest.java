@@ -16,7 +16,6 @@
 package org.kuali.rice.core.util;
 
 import org.junit.Test;
-import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.test.KEWTestCase;
 
 /**
@@ -67,7 +66,6 @@ public class RiceServiceOverrideTest extends KEWTestCase {
         ClientDocumentServiceImpl d = ClientDocumentServiceImpl.me;
         assertNotNull(d);
         assertNotNull(d.getBusinessObjectService());
-        assertNotNull(d.getDocumentAuthorizationService());
         assertNotNull(d.getDocumentDao());
         assertNotNull(d.getWorkflowDocumentService());
     }

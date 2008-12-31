@@ -68,7 +68,6 @@ import org.kuali.rice.kns.rule.event.AddAdHocRoutePersonEvent;
 import org.kuali.rice.kns.rule.event.AddAdHocRouteWorkgroupEvent;
 import org.kuali.rice.kns.rule.event.AddNoteEvent;
 import org.kuali.rice.kns.rule.event.PreRulesCheckEvent;
-import org.kuali.rice.kns.service.DocumentAuthorizationService;
 import org.kuali.rice.kns.service.DocumentService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
@@ -1436,8 +1435,8 @@ public class KualiDocumentActionBase extends KualiAction {
     	Document document = formBase.getDocument();
     	Person user = GlobalVariables.getUserSession().getPerson();
     	if (formBase.isFormDocumentInitialized()) {
-    		DocumentPresentationController documentPresentationController = KNSServiceLocator.getDocumentPresentationControllerService().getDocumentPresentationController(document);
-            DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(document);
+    		DocumentPresentationController documentPresentationController = KNSServiceLocator.getDocumentTypeService().getDocumentPresentationController(document);
+            DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentTypeService().getDocumentAuthorizer(document);
             Set<String> documentActions =  documentPresentationController.getDocumentActions(document);
             documentActions = documentAuthorizer.getDocumentActions(document, user, documentActions);
             

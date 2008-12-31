@@ -26,13 +26,11 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.authorization.FieldAuthorization;
-import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.GlobalBusinessObject;
 import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
-import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kns.datadictionary.InactivationBlockingDefinition;
 import org.kuali.rice.kns.datadictionary.InactivationBlockingMetadata;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
@@ -49,15 +47,14 @@ import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.DateTimeService;
 import org.kuali.rice.kns.service.DictionaryValidationService;
-import org.kuali.rice.kns.service.DocumentAuthorizationService;
 import org.kuali.rice.kns.service.DocumentService;
+import org.kuali.rice.kns.service.DocumentTypeService;
 import org.kuali.rice.kns.service.InactivationBlockingDetectionService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.service.PersistenceService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
-import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kns.util.ErrorMap;
 import org.kuali.rice.kns.util.ErrorMessage;
 import org.kuali.rice.kns.util.ForeignKeyFieldsPopulationState;
@@ -96,7 +93,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
     protected BusinessObjectDictionaryService boDictionaryService;
     protected DictionaryValidationService dictionaryValidationService;
     protected KualiConfigurationService configService;
-    protected DocumentAuthorizationService documentAuthorizationService;
+    protected DocumentTypeService documentTypeService;
     protected MaintenanceDocumentDictionaryService maintDocDictionaryService;
     protected WorkflowDocumentService workflowDocumentService;
     protected org.kuali.rice.kim.service.PersonService personService;
@@ -130,7 +127,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
             this.setBoDictionaryService(KNSServiceLocator.getBusinessObjectDictionaryService());
             this.setDictionaryValidationService(KNSServiceLocator.getDictionaryValidationService());
             this.setConfigService(KNSServiceLocator.getKualiConfigurationService());
-            this.setDocumentAuthorizationService(KNSServiceLocator.getDocumentAuthorizationService());
+            this.setDocumentTypeService(KNSServiceLocator.getDocumentTypeService());
             this.setMaintDocDictionaryService(KNSServiceLocator.getMaintenanceDocumentDictionaryService());
             this.setWorkflowDocumentService(KNSServiceLocator.getWorkflowDocumentService());
             this.setPersonService( org.kuali.rice.kim.service.KIMServiceLocator.getPersonService() );
@@ -186,7 +183,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         MaintenanceDocument maintenanceDocument = (MaintenanceDocument) document;
         
         // get the documentAuthorizer for this document
-        MaintenanceDocumentAuthorizer documentAuthorizer = (MaintenanceDocumentAuthorizer) documentAuthorizationService.getDocumentAuthorizer(document);
+        MaintenanceDocumentAuthorizer documentAuthorizer = (MaintenanceDocumentAuthorizer) getDocumentTypeService().getDocumentAuthorizer(document);
         
         // remove all items from the errorPath temporarily (because it may not
         // be what we expect, or what we need)
@@ -1193,7 +1190,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         }
 
         // get the correct documentAuthorizer for this document
-        MaintenanceDocumentAuthorizer documentAuthorizer = (MaintenanceDocumentAuthorizer) documentAuthorizationService.getDocumentAuthorizer(document);
+        MaintenanceDocumentAuthorizer documentAuthorizer = (MaintenanceDocumentAuthorizer) getDocumentTypeService().getDocumentAuthorizer(document);
 
         // get a new instance of MaintenanceDocumentAuthorizations for this context
         MaintenanceDocumentAuthorizations auths = KNSServiceLocator.getMaintenanceDocumentAuthorizationService().generateMaintenanceDocumentAuthorizations(document, user);
@@ -1549,18 +1546,13 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      * 
      * @return Returns the documentAuthorizationService.
      */
-    protected final DocumentAuthorizationService getDocumentAuthorizationService() {
-        return documentAuthorizationService;
+    protected final DocumentTypeService getDocumentTypeService() {
+        return documentTypeService;
     }
-
-    /**
-     * Sets the documentAuthorizationService attribute value.
-     * 
-     * @param documentAuthorizationService The documentAuthorizationService to set.
-     */
-    public final void setDocumentAuthorizationService(DocumentAuthorizationService documentAuthorizationService) {
-        this.documentAuthorizationService = documentAuthorizationService;
-    }
+    
+    public final void setDocumentTypeService(DocumentTypeService documentTypeService) {
+        this.documentTypeService = documentTypeService;
+    }    
 
     /**
      * Gets the maintDocDictionaryService attribute.

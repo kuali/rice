@@ -16,6 +16,9 @@
 package org.kuali.rice.kns.service;
 
 import org.kuali.rice.kns.bo.DocumentType;
+import org.kuali.rice.kns.document.Document;
+import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
+import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
 import org.kuali.rice.kns.exception.UnknownDocumentTypeException;
 
 
@@ -95,5 +98,28 @@ public interface DocumentTypeService {
      * @return DocumentType
      */
     public DocumentType getPotentialDocumentTypeByName(String documentTypeName);
+    
+    /**
+     * @param documentTypeName
+     * @return DocumentPresentationController for the given documentType
+     */
+    public DocumentPresentationController getDocumentPresentationController(String documentTypeName);
 
+    /**
+     * @param document
+     * @return DocumentPresentationController for the given document's documentType
+     */
+    public DocumentPresentationController getDocumentPresentationController(Document document);
+
+    /**
+     * @param documentTypeName
+     * @return DocumentAuthorizer for the given documentType
+     */
+    public DocumentAuthorizer getDocumentAuthorizer(String documentTypeName);
+
+    /**
+     * @param document
+     * @return DocumentAuthorizer for the given document's documentType
+     */
+    public DocumentAuthorizer getDocumentAuthorizer(Document document);
 }

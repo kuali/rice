@@ -28,22 +28,13 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.upload.FormFile;
 import org.kuali.rice.core.config.ConfigurationException;
-import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.authorization.AuthorizationConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.MaintenanceDocumentBase;
-import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizations;
-import org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizer;
-import org.kuali.rice.kns.document.authorization.MaintenanceDocumentPresentationController;
 import org.kuali.rice.kns.exception.UnknownDocumentTypeException;
 import org.kuali.rice.kns.maintenance.Maintainable;
-import org.kuali.rice.kns.service.DocumentAuthorizationService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.FieldUtils;
@@ -51,7 +42,6 @@ import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
-import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.format.FormatException;
 import org.kuali.rice.kns.web.format.Formatter;
 
@@ -307,63 +297,7 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
         List meshedSections = FieldUtils.meshSections(oldMaintSections, newMaintSections, keyFieldNames, getMaintenanceAction(), isReadOnly(), authorizations);
 
         return meshedSections;
-    }
-    
-    @Deprecated
-    protected void applyAuthorizations() {
-        Document document = getDocument();
-        DocumentAuthorizationService docAuthService = KNSServiceLocator.getDocumentAuthorizationService();
-        DocumentAuthorizer documentAuthorizer = docAuthService.getDocumentAuthorizer(document);
-        useDocumentAuthorizer(documentAuthorizer);
-    }
-
-    @Override
-    @Deprecated
-    protected void useDocumentAuthorizer(DocumentAuthorizer documentAuthorizer) {
-
-        // init some things we'll need
-        Person kualiUser = GlobalVariables.getUserSession().getPerson();
-        MaintenanceDocument maintenanceDocument = (MaintenanceDocument) getDocument();
-        MaintenanceDocumentAuthorizer maintenanceDocumentAuthorizer = (MaintenanceDocumentAuthorizer) documentAuthorizer;
-
-        // set the overall document editing mode
-        //setEditingMode(documentAuthorizer.getEditMode(maintenanceDocument, kualiUser ));
-
-        // WHY IS THIS READONLY STUFF HERE YOU ASK, GIVEN THE EDITMODE
-        //
-        // Thats a good question. It's basically just there to make the proper generation
-        // of UI stuff in the JSP code easier, as you can just set a simple var on the jsp
-        // with the isReadOnly property.
-        //
-        // ITS IMPORTANT TO NOTE that the readOnly flag is ALWAYS dependent on the EditingMode
-        // data. So EditingMode is authoritative, readOnly is there for convenience.
-        //        
-        //String editMode;
-        //editMode = (String) editingMode.get(AuthorizationConstants.MaintenanceEditMode.APPROVER_EDIT_ENTRY);
-        //if ("TRUE".equalsIgnoreCase(editMode)) {
-        //    setReadOnly(false);
-        //}
-        //editMode = (String) editingMode.get(AuthorizationConstants.MaintenanceEditMode.FULL_ENTRY);
-        //if ("TRUE".equalsIgnoreCase(editMode)) {
-        //    setReadOnly(false);
-        //}
-
-        // set the readOnly flag for this document, default to readOnly = true
-        setReadOnly(true);
-        
-        // Check overall document edit permission
-        //if(maintenanceDocumentAuthorizer.canEdit(getDocument(), kualiUser)){
-        //	setReadOnly(false);
-        	
-        //}
-        
-        // set field permissions
-        MaintenanceDocumentAuthorizations authorizations = KNSServiceLocator.getMaintenanceDocumentAuthorizationService().generateMaintenanceDocumentAuthorizations((MaintenanceDocument) getDocument(), GlobalVariables.getUserSession().getPerson());
-        setAuthorizations(authorizations);
-
-        // set the overall document action flags
-        //setDocumentActionFlags(maintenanceDocumentAuthorizer.getDocumentActionFlags(maintenanceDocument, kualiUser));
-    }
+    }    
 
     /**
      * @return Returns the maintenanceAction.

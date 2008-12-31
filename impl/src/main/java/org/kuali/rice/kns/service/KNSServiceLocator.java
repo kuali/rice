@@ -40,7 +40,6 @@ import org.kuali.rice.kns.util.spring.NamedOrderedListBean;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
 import org.kuali.rice.kns.workflow.service.WorkflowDocumentService;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.context.ApplicationContext;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -328,13 +327,6 @@ public class KNSServiceLocator<T extends Object> {
 	return (AttachmentService) getService(ATTACHMENT_SERVICE);
     }
 
-    // DocumentAuthorizationService
-    public static final String DOCUMENT_AUTHORIZATION_SERVICE = "documentAuthorizationService";
-
-    public static DocumentAuthorizationService getDocumentAuthorizationService() {
-	return (DocumentAuthorizationService) getService(DOCUMENT_AUTHORIZATION_SERVICE);
-    }
-
     // SequenceAccessorService
     public static final String SEQUENCE_ACCESSOR_SERVICE = "sequenceAccessorService";
 
@@ -451,15 +443,6 @@ public class KNSServiceLocator<T extends Object> {
     public static KualiDBPlatform getKualiDbPlatform() {
         return (KualiDBPlatform) getService(DB_PLATFORM);
     }
-    
-    // DocumentPresentationControllerService
-    public static final String DOCUMENT_PRESENTATION_CONTROLLER_SERVICE = "documentPresentationControllerService";
-
-    public static DocumentPresentationControllerService getDocumentPresentationControllerService() {
-    	return (DocumentPresentationControllerService) getService(DOCUMENT_PRESENTATION_CONTROLLER_SERVICE);
-    }
-    
-    
     
     public static final String MAINTENANCE_DOCUMENT_AUTHORIZATION_SERVICE = "maintenanceDocumentAuthorizationService";
     

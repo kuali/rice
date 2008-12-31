@@ -78,8 +78,8 @@ public class KualiTransactionalDocumentActionBase extends KualiDocumentActionBas
     		
         	Person user = GlobalVariables.getUserSession().getPerson();
         	
-        	TransactionalDocumentPresentationController documentPresentationController = (TransactionalDocumentPresentationController) KNSServiceLocator.getDocumentPresentationControllerService().getDocumentPresentationController(document);
-            TransactionalDocumentAuthorizer documentAuthorizer = (TransactionalDocumentAuthorizer) KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(document);
+        	TransactionalDocumentPresentationController documentPresentationController = (TransactionalDocumentPresentationController) KNSServiceLocator.getDocumentTypeService().getDocumentPresentationController(document);
+            TransactionalDocumentAuthorizer documentAuthorizer = (TransactionalDocumentAuthorizer) KNSServiceLocator.getDocumentTypeService().getDocumentAuthorizer(document);
             Set<String> editModes = documentPresentationController.getEditModes(document);
             editMode = this.convertSetToMap(editModes);
             // TODO remove this

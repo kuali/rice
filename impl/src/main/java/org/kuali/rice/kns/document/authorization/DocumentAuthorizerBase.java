@@ -80,16 +80,16 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
         if ( LOG.isDebugEnabled() ) {
         LOG.debug("calling DocumentAuthorizerBase.getDocumentActionFlags for document '" + document.getDocumentNumber() + "'. user '" + user.getPrincipalName() + "'");
         }
-        boolean canEdit = canEdit(document, user);
-        
-        if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_COPY) && !canCopy(document, user)){
-        	documentActions.remove(KNSConstants.KUALI_ACTION_CAN_COPY);
-        }
+        boolean canEdit = documentActions.contains(KNSConstants.KUALI_ACTION_CAN_EDIT) && canEdit(document, user);
         
         if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_EDIT) && !canEdit){
         	documentActions.remove(KNSConstants.KUALI_ACTION_CAN_EDIT);
         }
         
+        if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_COPY) && !canCopy(document, user)){
+        	documentActions.remove(KNSConstants.KUALI_ACTION_CAN_COPY);
+        }
+                
        if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_BLANKET_APPROVE) && !canBlanketApprove(document, user)){
     	   documentActions.remove(KNSConstants.KUALI_ACTION_CAN_BLANKET_APPROVE);
        }
@@ -207,7 +207,11 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
 	     return isAuthorizedByTemplate(document, KNSConstants.KNS_NAMESPACE, KimConstants.PERMISSION_ADD_NOTE, user.getPrincipalId());
 	        	
     }
-    
+
+    private boolean canTakeRequestedAction(Document document, Person user){
+		return isAuthorizedByTemplate(document, KNSConstants.KNS_NAMESPACE, KimConstants.PERMISSION_TAKE_REQUESTED_ACTION, user.getPrincipalId());
+	}
+
    private ThreadLocal<AttributeSet> roleQualification = new ThreadLocal<AttributeSet>();
    private ThreadLocal<AttributeSet> permissionDetails = new ThreadLocal<AttributeSet>();
     
@@ -375,11 +379,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
         }
         return kualiModuleService;
     }
-    
-    private boolean canTakeRequestedAction(Document document, Person user){
-		return isAuthorizedByTemplate(document, KNSConstants.KNS_NAMESPACE, KimConstants.PERMISSION_TAKE_REQUESTED_ACTION, user.getPrincipalId());
-	}
-    
+        
     protected final KualiConfigurationService getKualiConfigurationService() {
         if ( kualiConfigurationService == null ) {
             kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();

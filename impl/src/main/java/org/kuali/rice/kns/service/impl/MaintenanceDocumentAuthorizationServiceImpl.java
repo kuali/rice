@@ -45,10 +45,10 @@ public class MaintenanceDocumentAuthorizationServiceImpl implements
 		
 		String docTypeName = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
 
-		MaintenanceDocumentPresentationController maintenanceDocumentPresentationController = (MaintenanceDocumentPresentationController) KNSServiceLocator.getDocumentPresentationControllerService().getDocumentPresentationController(docTypeName);
+		MaintenanceDocumentPresentationController maintenanceDocumentPresentationController = (MaintenanceDocumentPresentationController) KNSServiceLocator.getDocumentTypeService().getDocumentPresentationController(docTypeName);
         maintenanceDocumentPresentationController.addMaintenanceDocumentRestrictions(maintenanceDocumentAuthorizations, document);
         
-        MaintenanceDocumentAuthorizer maintenanceDocumentAuthorizer = (MaintenanceDocumentAuthorizer) KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(docTypeName);
+        MaintenanceDocumentAuthorizer maintenanceDocumentAuthorizer = (MaintenanceDocumentAuthorizer) KNSServiceLocator.getDocumentTypeService().getDocumentAuthorizer(docTypeName);
         maintenanceDocumentAuthorizer.addMaintenanceDocumentRestrictions(maintenanceDocumentAuthorizations, document, person);
         
 		return maintenanceDocumentAuthorizations;

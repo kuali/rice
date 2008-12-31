@@ -276,12 +276,6 @@
 		<property name="documentHeaderService">
 			<ref bean="documentHeaderService" />
 		</property>
-		<property name="documentPresentationControllerService">
-			<ref bean="documentPresentationControllerService" />
-		</property>
-		<property name="documentAuthorizationService">
-			<ref bean="documentAuthorizationService" />
-		</property>
 		<property name="businessObjectService">
 			<ref bean="businessObjectService" />
 		</property>
@@ -464,18 +458,6 @@
 		</property>
 		<property name="persistenceStructureService">
 			<ref bean="persistenceStructureService"/>
-		</property>
-	</bean>
-
-	<bean id="documentAuthorizationService" class="org.kuali.rice.kns.service.impl.DocumentAuthorizationServiceImpl">
-		<property name="dataDictionaryService">
-			<ref bean="dataDictionaryService" />
-		</property>
-	</bean>
-	
-	<bean id="documentPresentationControllerService" class="org.kuali.rice.kns.service.impl.DocumentPresentationControllerServiceImpl">
-		<property name="dataDictionaryService">
-			<ref bean="dataDictionaryService" />
 		</property>
 	</bean>
 
@@ -736,9 +718,6 @@
 		</property>
 		<property name="dictionaryValidationService">
 			<ref bean="dictionaryValidationService" />
-		</property>
-		<property name="documentAuthorizationService">
-			<ref bean="documentAuthorizationService" />
 		</property>
 		<property name="workflowDocumentService">
 			<ref bean="workflowDocumentService" />

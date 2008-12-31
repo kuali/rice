@@ -17,7 +17,7 @@ package org.kuali.rice.core.util;
 
 import org.kuali.rice.kns.dao.DocumentDao;
 import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.DocumentAuthorizationService;
+import org.kuali.rice.kns.service.DocumentTypeService;
 import org.kuali.rice.kns.service.impl.DocumentServiceImpl;
 import org.kuali.rice.kns.workflow.service.WorkflowDocumentService;
 import org.springframework.beans.factory.InitializingBean;
@@ -44,9 +44,6 @@ public class ClientDocumentServiceImpl extends DocumentServiceImpl implements In
     }
     public BusinessObjectService getBusinessObjectService() {
         return super.getBusinessObjectService();
-    }
-    public DocumentAuthorizationService getDocumentAuthorizationService() {
-        return super.getDocumentAuthorizationService();
     }
     public DocumentDao getDocumentDao() {
         return super.getDocumentDao();

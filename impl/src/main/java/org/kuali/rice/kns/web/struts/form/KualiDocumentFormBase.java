@@ -31,15 +31,12 @@ import org.apache.struts.upload.FormFile;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kns.authorization.AuthorizationConstants;
 import org.kuali.rice.kns.bo.AdHocRoutePerson;
 import org.kuali.rice.kns.bo.AdHocRouteRecipient;
 import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.authorization.DocumentActionFlags;
-import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
-import org.kuali.rice.kns.exception.DocumentAuthorizationException;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -290,24 +287,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         	headerFields.add(HeaderField.EMPTY_FIELD);
         }
     	return headerFields;
-    }
-    
-    /**
-     * Updates authorization-related form fields based on the current form contents
-     */
-    @Deprecated
-    public void populateAuthorizationFields(DocumentAuthorizer documentAuthorizer) {
-        if (isFormDocumentInitialized()) {
-            //useDocumentAuthorizer(documentAuthorizer);
-
-            // graceless hack which takes advantage of the fact that here and only here will we have guaranteed access to the
-            // correct DocumentAuthorizer
-            if (getEditingMode().containsKey(AuthorizationConstants.EditMode.UNVIEWABLE)) {
-                throw new DocumentAuthorizationException(GlobalVariables.getUserSession().getPerson().getName(), "view", document.getDocumentHeader().getDocumentNumber());
-            }
-        }
-    }
-    
+    }    
 
     /**
      * @see org.apache.struts.action.ActionForm#validate(org.apache.struts.action.ActionMapping,
@@ -323,24 +303,6 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         }
         return super.validate(mapping, request);
     }
-
-    /**
-     * Refactored out actually calling the documentAuthorizer methods, since TransactionalDocuments call a differently-parameterized
-     * version of getEditMode
-     *
-     * @param documentAuthorizer
-     */
-    @Deprecated
-     protected void useDocumentAuthorizer(DocumentAuthorizer documentAuthorizer) {
-        /*Person kualiUser = GlobalVariables.getUserSession().getPerson();
-        Map editMode = documentAuthorizer.getEditMode(document, kualiUser);
-        if (KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(document.getClass().getName()).getUsePessimisticLocking()) {
-            editMode = documentAuthorizer.establishLocks(document, editMode, kualiUser);
-        }
-        setEditingMode(editMode);
-        setDocumentActionFlags(documentAuthorizer.getDocumentActionFlags(document, kualiUser)); */
-    }
-    
 
     /**
      * @return true if this document was properly initialized with a DocumentHeader and related KualiWorkflowDocument

@@ -23,6 +23,7 @@ package org.kuali.rice.kim.util;
  */
 public class KimConstants {
 
+	public static final String NAMESPACE_CODE = "KR-IDM";
 	public static final String TAX_EXT_ID_TYPE = "TAX";
 
 	public static final String STAFF_AFFILIATION_TYPE = "STAFF";
@@ -56,6 +57,12 @@ public class KimConstants {
 
 	public static final String PERMISSION_USE_TRANSACTIONAL_DOCUMENT = "Use Transactional Document";
 	public static final String DOCUMENT_STATUS_PERMISSION_TYPE = "DocumentStatusComponentAttributePermissionType";
+	
+	public static final String PERMISSION_MODIFY_ENTITY = "Modify Entity";
+	public static final String PERMISSION_POPULATE_GROUP = "Populate Group";
+	public static final String PERMISSION_ASSIGN_ROLE = "Assign Role";
+	public static final String PERMISSION_GRANT_PERMISSION = "Grant Permission";
+	public static final String PERMISSION_GRANT_RESPONSIBILITY = "Grant Responsibility";
 	
 	// JHK: Deprecated constants which need to be moved to KimAttributes or KFS
 

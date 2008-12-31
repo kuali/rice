@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.util;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
@@ -55,5 +56,13 @@ public class KimCommonUtils {
 		}
 		return false;
 	}
-
+	
+	public static boolean doesPropertyNameMatch(String requestedDetailsPropertyName, String permissionDetailsPropertyName){
+		if(StringUtils.isEmpty(permissionDetailsPropertyName))
+			return true;
+		return requestedDetailsPropertyName.equals(permissionDetailsPropertyName) 
+			|| (requestedDetailsPropertyName.startsWith(permissionDetailsPropertyName) 
+					&& (requestedDetailsPropertyName.substring(
+							requestedDetailsPropertyName.indexOf(permissionDetailsPropertyName)+permissionDetailsPropertyName.length()).indexOf(".")!=-1));
+	}
 }

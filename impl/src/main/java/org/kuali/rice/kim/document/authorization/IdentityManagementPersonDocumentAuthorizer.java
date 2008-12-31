@@ -15,21 +15,25 @@
  */
 package org.kuali.rice.kim.document.authorization;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.bo.ui.PersonDocumentGroup;
+import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.authorization.TransactionalDocumentAuthorizerBase;
-import org.kuali.rice.kns.exception.DocumentTypeAuthorizationException;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -38,65 +42,55 @@ import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
  *
  */
 public class IdentityManagementPersonDocumentAuthorizer extends TransactionalDocumentAuthorizerBase {
+
 	@Override
-    public boolean canInitiate(String documentTypeName, Person user) {
-        return super.canInitiate(documentTypeName, user) && canCreatePersonDocument(user);
-    }
+	protected void addPermissionDetails(BusinessObject businessObject,
+			Map<String, String> attributes) {
+		super.addPermissionDetails(businessObject, attributes);
+		attributes.put(KimAttributes.ENTITY_TYPE_CODE, KimConstants.PERSON_ENTITY_TYPE);
+	}
 	
-    private boolean canCreatePersonDocument(Person user) {
-		IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
-		AttributeSet permDetail = new AttributeSet();
-		permDetail.put("entityTypeCode", "Person");
-		// TODO : get qualification what should be here?
-		AttributeSet qualification = new AttributeSet();
-		qualification.put("principalId", user.getPrincipalId());
-		List<? extends KimPermission> permissions = identityManagementService.getAuthorizedPermissionsByTemplateName(user.getPrincipalId(), "KR-IDM", "Modify Entity", permDetail, qualification);
-		// TODO : WIP finish it.
-		return (!permissions.isEmpty());
-    }
-
-	@Override
-	public Map getEditMode(Document doc, Person user) {
-        Map editModeMap = super.getEditMode(doc, user);
-		IdentityManagementPersonDocument personDoc = (IdentityManagementPersonDocument) doc;
-		IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
-
-        if (editModeMap.get("modifyEntity") == null) {
-			AttributeSet permDetail = new AttributeSet();
-			permDetail.put("entityTypeCode", "Person");
-			// TODO : get qualification what should be here?
-			AttributeSet qualification = new AttributeSet();
-			qualification.put("principalId", user.getPrincipalId());
-			List<? extends KimPermission> modifyEntityPerm = identityManagementService.getAuthorizedPermissionsByTemplateName(user.getPrincipalId(), "KR-IDM", "Modify Entity", permDetail, qualification);
-	        if (!modifyEntityPerm.isEmpty()) {
-	        	editModeMap.put("modifyEntity", true);
-	        } else {
-	            throw new RuntimeException("Can Not Edit Person Document");
-	        }
-        }
-		
-		AttributeSet permDetail = new AttributeSet();
-		permDetail.put("propertyName", "line3");
-		// TODO : get qualification ?
-		AttributeSet qualification = new AttributeSet();
-		qualification.put("principalId", user.getPrincipalId());
-
-		// modify entity fields are not finalized yet.  if permattribute is null, then it will return all 'modify entity fields' perms assigned to user
-		List<? extends KimPermission> permissions = identityManagementService.getAuthorizedPermissionsByTemplateName(user.getPrincipalId(), "KR-IDM", "Modify Entity Field(s)", permDetail, qualification);
-        if (!permissions.isEmpty()) {
-        	editModeMap.put("line3", true);
-        }
-        // TODO : get assign role
-		List<? extends KimPermission> assignRolePerms = identityManagementService.getAuthorizedPermissionsByTemplateName(user.getPrincipalId(), "KR-IDM", "Assign Role", null, qualification);
-        if (!assignRolePerms.isEmpty()) {
-        	editModeMap.put("assignRole", true);
-        }
-        // TODO : get populate group
-		List<? extends KimPermission> populateGroupPerms = identityManagementService.getAuthorizedPermissionsByTemplateName(user.getPrincipalId(), "KR-IDM", "Populate Group", null, qualification);
-        if (!populateGroupPerms.isEmpty()) {
-        	editModeMap.put("populateGroup", true);
-        }
-
-		return editModeMap;
+	public Set<String> getReadOnlyEntityPropertyNames(Document document, Person user, Set<String> securePotentiallyReadOnlyEntityPropertyNames) {
+		Set<String> readOnlyEntityPropertyNames = new HashSet<String>();
+		for (String securePotentiallyReadOnlyEntityPropertyName : securePotentiallyReadOnlyEntityPropertyNames) {
+			Map<String,String> collectionOrFieldLevelPermissionDetails = new HashMap<String,String>();
+			collectionOrFieldLevelPermissionDetails.put(KimAttributes.PROPERTY_NAME, securePotentiallyReadOnlyEntityPropertyName);
+			if (!isAuthorizedByTemplate(document, KimConstants.NAMESPACE_CODE, KimConstants.PERMISSION_MODIFY_ENTITY, user.getPrincipalId(), collectionOrFieldLevelPermissionDetails, null)) {
+				readOnlyEntityPropertyNames.add(securePotentiallyReadOnlyEntityPropertyName);
+			}
+		}
+		return readOnlyEntityPropertyNames;
+	}
+	
+	public Map<String,Set<String>> getUnpopulateableGroups(Document document, Person user) {
+		Map<String,Set<String>> unpopulateableGroups = new HashMap<String,Set<String>>();
+		for (PersonDocumentGroup personDocumentGroup : ((IdentityManagementPersonDocument)document).getGroups()) {
+			Map<String,String> collectionOrFieldLevelPermissionDetails = new HashMap<String,String>();
+			collectionOrFieldLevelPermissionDetails.put(KimAttributes.NAMESPACE_CODE, personDocumentGroup.getNamespaceCode());
+			collectionOrFieldLevelPermissionDetails.put(KimAttributes.GROUP_NAME, personDocumentGroup.getGroupName());
+			if (!isAuthorizedByTemplate(document, KimConstants.NAMESPACE_CODE, KimConstants.PERMISSION_POPULATE_GROUP, user.getPrincipalId(), collectionOrFieldLevelPermissionDetails, null)) {
+				if (!unpopulateableGroups.containsKey(personDocumentGroup.getNamespaceCode())) {
+					unpopulateableGroups.put(personDocumentGroup.getNamespaceCode(), new HashSet<String>());
+				}
+				unpopulateableGroups.get(personDocumentGroup.getNamespaceCode()).add(personDocumentGroup.getGroupName());
+			}
+		}
+		return unpopulateableGroups;
+	}
+	
+	public Map<String,Set<String>> getUnassignableRoles(Document document, Person user) {
+		Map<String,Set<String>> unassignableRoles = new HashMap<String,Set<String>>();
+		for (PersonDocumentRole personDocumentRole : ((IdentityManagementPersonDocument)document).getRoles()) {
+			Map<String,String> collectionOrFieldLevelPermissionDetails = new HashMap<String,String>();
+			collectionOrFieldLevelPermissionDetails.put(KimAttributes.NAMESPACE_CODE, personDocumentRole.getNamespaceCode());
+			collectionOrFieldLevelPermissionDetails.put(KimAttributes.ROLE_NAME, personDocumentRole.getRoleName());
+			if (!isAuthorizedByTemplate(document, KimConstants.NAMESPACE_CODE, KimConstants.PERMISSION_ASSIGN_ROLE, user.getPrincipalId(), collectionOrFieldLevelPermissionDetails, null)) {
+				if (!unassignableRoles.containsKey(personDocumentRole.getNamespaceCode())) {
+					unassignableRoles.put(personDocumentRole.getNamespaceCode(), new HashSet<String>());
+				}
+				unassignableRoles.get(personDocumentRole.getNamespaceCode()).add(personDocumentRole.getRoleName());
+			}
+		}
+		return unassignableRoles;
 	}
 }

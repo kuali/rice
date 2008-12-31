@@ -11,31 +11,13 @@
     <property name="shortLabel" value="Person Doc" />
     <property name="summary" value="&amp;nbsp;" />
     <property name="description" value="KIM entity person document" />
-    <property name="usePessimisticLocking" value="false" />
-    <property name="useWorkflowPessimisticLocking" value="true" />
     <property name="documentTypeName" value="IdentityManagementPersonDocument" />
     <property name="documentClass" value="org.kuali.rice.kim.document.IdentityManagementPersonDocument" />
     <property name="businessRulesClass" value="org.kuali.rice.kim.document.rule.IdentityManagementPersonDocumentRule" /> 
     <property name="documentPresentationControllerClass" value="org.kuali.rice.kim.document.authorization.IdentityManagementPersonDocumentPresentationController" /> 
     <property name="documentAuthorizerClass" value="org.kuali.rice.kim.document.authorization.IdentityManagementPersonDocumentAuthorizer" />
     <!-- <property name="documentTypeCode" value="IMPN" /> -->
-    <property name="displayTopicFieldInNotes" value="true" />
     <property name="allowsCopy" value="true" />
-  
-      <property name="authorizations" >
-      <list>
-        <bean parent="AuthorizationDefinition">
-          <property name="authorizedGroups" >
-            <set>
-              <value>WorkflowAdmin</value>
-            </set>
-          </property>
-          <property name="action" value="initiate" />
-        </bean>
-      </list>
-    </property>
-  
-  
     <property name="attributes" >
       <list>
         <!-- <ref bean="IdentityManagementPersonDocument-campusCode" />

@@ -22,6 +22,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
+import org.kuali.rice.kim.util.KimCommonUtils;
 
 /**
  * This is a description of what this class does - bhargavp don't forget to fill this in. 
@@ -34,7 +35,6 @@ public class EntityPermissionTypeServiceImpl extends KimPermissionTypeServiceBas
 	protected List<String> requiredAttributes = new ArrayList<String>();
 	{
 		requiredAttributes.add(KimAttributes.ENTITY_TYPE_CODE);
-		requiredAttributes.add(KimAttributes.PROPERTY_NAME);
 	}
 
 	/**
@@ -46,7 +46,7 @@ public class EntityPermissionTypeServiceImpl extends KimPermissionTypeServiceBas
 	 * Requirements:
 	 *	- Both Entity Type Code and Property Name should be passed in the requested details. If not, throw exception.
 	 *	- If only Entity Type Code is passed in the permission details, match that.
-	 *	- If both Entity Type Code and Property Name are passed in the permission details, match both. 
+	 *	- If both Entity Type Code and Property Name are passed in the permission details check if the value passed in starts with the value in the db. 
 	 * 
 	 * @see org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase#performPermissionMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.role.KimPermission)
 	 */
@@ -57,7 +57,7 @@ public class EntityPermissionTypeServiceImpl extends KimPermissionTypeServiceBas
 		return doesEntityTypeCodeMatch(requestedDetails.get(KimAttributes.ENTITY_TYPE_CODE), 
 						permissionDetails.get(KimAttributes.ENTITY_TYPE_CODE)) 
 				&&
-				doesPropertyNameMatch(requestedDetails.get(KimAttributes.PROPERTY_NAME), 
+				KimCommonUtils.doesPropertyNameMatch(requestedDetails.get(KimAttributes.PROPERTY_NAME), 
 						permissionDetails.get(KimAttributes.PROPERTY_NAME));
 	}
 
@@ -66,11 +66,4 @@ public class EntityPermissionTypeServiceImpl extends KimPermissionTypeServiceBas
 			return true;
 		return requestedDetailsEntityTypeCode.equals(permissionDetailsEntityTypeCode);
 	}
-
-	protected boolean doesPropertyNameMatch(String requestedDetailsPropertyName, String permissionDetailsPropertyName){
-		if(StringUtils.isEmpty(permissionDetailsPropertyName))
-			return true;
-		return requestedDetailsPropertyName.equals(permissionDetailsPropertyName);		
-	}
-	
 }

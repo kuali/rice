@@ -20,6 +20,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.util.KimCommonUtils;
 
 /**
  * 
@@ -37,7 +38,11 @@ public class DocumentTypeAndNodeAndFieldsPermissionTypeServiceImpl extends Docum
 	 * 
 	 *	consider the document type hierarchy - check for a permission that just specifies the document type first at each level 
 	 *	- then if you don't find that, check for the doc type and the node, then the doc type and the field.
-	 * 
+	 *
+	 *	- if the field value passed in starts with the value on the permission detail it is a match.  so...
+	 *	permision detail sourceAccountingLines will match passed in value of sourceAccountingLines.amount and sourceAccountingLines 
+	 *	permission detail sourceAccountingLines.objectCode will match sourceAccountingLines.objectCode but not sourceAccountingLines
+	 *
 	 * @see org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase#doesPermissionDetailMatch(AttributeSet, KimPermissionInfo)
 	 */
 	@Override
@@ -45,7 +50,7 @@ public class DocumentTypeAndNodeAndFieldsPermissionTypeServiceImpl extends Docum
 		boolean documentTypeMatch = super.performPermissionMatch(requestedDetails, permission);
 		if (documentTypeMatch && 
 				routeNodeMatches(requestedDetails, permission.getDetails()) && 
-				fieldMatches(requestedDetails, permission.getDetails())) {
+				KimCommonUtils.doesPropertyNameMatch(requestedDetails.get(KimAttributes.PROPERTY_NAME), permission.getDetails().get(KimAttributes.PROPERTY_NAME))) {
 			return true;
 		}
 		return false;
@@ -58,27 +63,4 @@ public class DocumentTypeAndNodeAndFieldsPermissionTypeServiceImpl extends Docum
 		return StringUtils.equals(requestedDetails.get(KEWConstants.ROUTE_NODE_NAME_DETAIL),
 				permissionDetails.get(KEWConstants.ROUTE_NODE_NAME_DETAIL));
 	}
-	
-	/**
-	 * 
-	 *	- if the field value passed in starts with the value on the permission detail it is a match.  so...
-	 *	permision detail sourceAccountingLines will match passed in value of sourceAccountingLines.amount and sourceAccountingLines 
-	 *	permission detail sourceAccountingLines.objectCode will match sourceAccountingLines.objectCode but not sourceAccountingLines
-	 * 
-	 * @param requestedDetails
-	 * @param permissionDetails
-	 * @return
-	 */
-	protected boolean fieldMatches(AttributeSet requestedDetails, AttributeSet permissionDetails) {
-		if (!permissionDetails.containsKey(KimAttributes.PROPERTY_NAME)) {
-			return true;
-		}
-		String requestedFieldName = requestedDetails.get(KimAttributes.PROPERTY_NAME);
-		String permissionFieldName = permissionDetails.get(KimAttributes.PROPERTY_NAME);
-		return requestedFieldName.equals(permissionFieldName) 
-			|| (requestedFieldName.startsWith(permissionFieldName) 
-					&& (requestedFieldName.substring(
-							requestedFieldName.indexOf(permissionFieldName)+permissionFieldName.length()).indexOf(".")!=-1));
-	}
-
 }

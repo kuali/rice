@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.document.authorization;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -38,74 +39,7 @@ import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
  *
  */
 public class IdentityManagementPersonDocumentPresentationController extends TransactionalDocumentPresentationControllerBase {
-
-	// this controller class is not quite clear yet.
-	@Override
-    public Set<String> getEditModes(Document document){
-    	Set<String> editModes = super.getEditModes(document);
-		IdentityManagementPersonDocument personDoc = (IdentityManagementPersonDocument) document;
-		IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
-		Person user = GlobalVariables.getUserSession().getPerson();
-		
-		// this should be done at the super class's 
-		// this is a copy fro documentauthorizerbase
-        String editMode = AuthorizationConstants.EditMode.VIEW_ONLY;
-        KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
-        if (workflowDocument.stateIsInitiated() || workflowDocument.stateIsSaved()) {
-            if (hasInitiateAuthorization(document, user)) {
-                editMode = AuthorizationConstants.EditMode.FULL_ENTRY;
-            }
-        }
-        else if (workflowDocument.stateIsEnroute() && workflowDocument.isApprovalRequested()) {
-            editMode = AuthorizationConstants.EditMode.FULL_ENTRY;
-        }
-        editModes.add(editMode);
-
-		
-        // idmpersondoc's edit mode check
-		if (!editModes.contains("modifyEntity")) {
-			AttributeSet permDetail = new AttributeSet();
-			permDetail.put("entityTypeCode", "Person");
-			// TODO : get qualification what should be here?
-			AttributeSet qualification = new AttributeSet();
-			qualification.put("principalId", user.getPrincipalId());
-			List<? extends KimPermission> modifyEntityPerm = identityManagementService.getAuthorizedPermissionsByTemplateName(user.getPrincipalId(), "KR-IDM", "Modify Entity", permDetail, qualification);
-	        if (!modifyEntityPerm.isEmpty()) {
-	        	editModes.add("modifyEntity");
-	        } else {
-	            throw new RuntimeException("Can Not Edit Person Document");
-	        }
-        }
-		
-		AttributeSet permDetail = new AttributeSet();
-		permDetail.put("propertyName", "line3");
-		// TODO : get qualification ?
-		AttributeSet qualification = new AttributeSet();
-		qualification.put("principalId", user.getPrincipalId());
-
-		// modify entity fields are not finalized yet.  if permattribute is null, then it will return all 'modify entity fields' perms assigned to user
-		List<? extends KimPermission> permissions = identityManagementService.getAuthorizedPermissionsByTemplateName(user.getPrincipalId(), "KR-IDM", "Modify Entity Field(s)", permDetail, qualification);
-        if (!permissions.isEmpty()) {
-        	editModes.add("line3");
-        }
-        // TODO : get assign role
-		List<? extends KimPermission> assignRolePerms = identityManagementService.getAuthorizedPermissionsByTemplateName(user.getPrincipalId(), "KR-IDM", "Assign Role", null, qualification);
-        if (!assignRolePerms.isEmpty()) {
-        	editModes.add("assignRole");
-        }
-        // TODO : get populate group
-		List<? extends KimPermission> populateGroupPerms = identityManagementService.getAuthorizedPermissionsByTemplateName(user.getPrincipalId(), "KR-IDM", "Populate Group", null, qualification);
-        if (!populateGroupPerms.isEmpty()) {
-        	editModes.add("populateGroup");
-        }
-
-		return editModes;
-
-    }
-
-    private boolean hasInitiateAuthorization(Document document, Person user) {
-        KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
-        return workflowDocument.getInitiatorNetworkId().equalsIgnoreCase(user.getPrincipalName());
-    }
-
+	protected Set<String> getSecurePotentiallyReadOnlyEntityPropertyNames() {
+		return new HashSet<String>();
+	}
 }

@@ -45,6 +45,7 @@
 		<property name="dataDictionaryPackages">
 			<list>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonImpl.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/RoleImpl.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimAttributes.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimBaseBeans.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentAffiliation.xml</value>
@@ -71,6 +72,7 @@
         <property name="externalizableBusinessObjectImplementations">
             <map>
 	           <entry key="org.kuali.rice.kim.bo.Person" value="org.kuali.rice.kim.bo.impl.PersonImpl" />
+	           <entry key="org.kuali.rice.kim.bo.Role" value="org.kuali.rice.kim.bo.impl.RoleImpl" />
             </map>
         </property>
 	</bean>
@@ -78,6 +80,7 @@
 	<bean id="kimModule" class="org.kuali.rice.kim.service.impl.KimModuleService"
         p:moduleConfiguration-ref="kimModuleConfiguration"
         p:personService-ref="personService"
+        p:kimRoleService-ref="kimRoleService"
         p:kualiModuleService-ref="kualiModuleService" />
 
 	<bean id="kimDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean" lazy-init="true"/>
@@ -252,6 +255,7 @@
     p:responsibilityCacheMaxAge="3600" />
 
   <bean id="kimRoleDao" class="org.kuali.rice.kim.dao.impl.KimRoleDaoOjb" parent="platformAwareDao" />
+  <bean id="kimGroupDao" class="org.kuali.rice.kim.dao.impl.KimGroupDaoOjb" parent="platformAwareDao" />
   <bean id="kimPermissionDao" class="org.kuali.rice.kim.dao.impl.KimPermissionDaoOjb" parent="platformAwareDao" />
 
   <bean id="kimRoleManagementService" class="org.kuali.rice.kim.service.impl.RoleManagementServiceImpl"
@@ -434,11 +438,29 @@
   <bean id="kimPermissionTypeService" class="org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase"/>
     <bean id="kimRoleTypeService" class="org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase"/>
   <bean id="kimUiDocumentService" class="org.kuali.rice.kim.service.impl.UiDocumentServiceImpl" />
+    <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+    <property name="serviceDefinition">
+      <bean parent="kimService"
+        p:service-ref="kimUiDocumentService"
+        p:localServiceName="kimUiDocumentService" />
+    </property>
+  </bean>
   
+
       <bean id="groupLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" parent="kualiLookupable">
         <property name="lookupableHelperService">
             <bean class="org.kuali.rice.kim.lookup.GroupLookupableHelperServiceImpl"
-                parent="lookupableHelperService">
+                parent="lookupableHelperService"
+                p:groupDao-ref="kimGroupDao">
+            </bean>
+        </property>
+    </bean>
+      <bean id="roleLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" parent="kualiLookupable">
+        <property name="lookupableHelperService">
+            <bean class="org.kuali.rice.kim.lookup.RoleLookupableHelperServiceImpl"
+                parent="lookupableHelperService"
+                p:roleDao-ref="kimRoleDao">
             </bean>
         </property>
     </bean>

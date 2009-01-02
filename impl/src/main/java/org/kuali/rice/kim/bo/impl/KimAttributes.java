@@ -38,7 +38,6 @@ public class KimAttributes extends TransientBusinessObjectBase {
 	public static final String EDIT_MODE = "editMode";
 	public static final String PARAMETER_NAME = "parameterName";
 	public static final String CAMPUS_CODE = "campusCode";
-	public static final String DOCUMENT_TYPE_CODE = "documentTypeName";
 	public static final String ACTION_REQUEST_CD = "actionRequestCd";
 	public static final String ROUTE_STATUS_CODE = "routeStatusCode";
 	public static final String ROUTE_NODE_NAME = "routeNodeName";

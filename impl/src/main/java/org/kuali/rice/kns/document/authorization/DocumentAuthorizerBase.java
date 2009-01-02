@@ -164,7 +164,7 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase impleme
 	public boolean canInitiate(String documentTypeName, Person user) {
 		String nameSpaceCode = KNSConstants.KUALI_RICE_SYSTEM_NAMESPACE;
 		AttributeSet permissionDetails = new AttributeSet();
-		permissionDetails.put(KimAttributes.DOCUMENT_TYPE_CODE,
+		permissionDetails.put(KimAttributes.DOCUMENT_TYPE_NAME,
 				documentTypeName);
 		return getIdentityManagementService().isAuthorizedByTemplateName(
 				user.getPrincipalId(), nameSpaceCode,
@@ -252,7 +252,7 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase impleme
 				.getDocumentHeader().getWorkflowDocument();
 		attributes.put(KimAttributes.DOCUMENT_NUMBER,
 				((Document) businessObject).getDocumentNumber());
-		attributes.put(KimAttributes.DOCUMENT_TYPE_CODE, wd.getDocumentType());
+		attributes.put(KimAttributes.DOCUMENT_TYPE_NAME, wd.getDocumentType());
 		if (wd.stateIsInitiated() || wd.stateIsSaved()) {
 			attributes.put(KimAttributes.ROUTE_NODE_NAME,
 					KimConstants.PRE_ROUTING_ROUT_NAME);

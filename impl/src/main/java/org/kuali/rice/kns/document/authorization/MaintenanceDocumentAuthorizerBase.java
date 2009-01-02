@@ -33,7 +33,6 @@ import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.datadictionary.mask.MaskFormatter;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
-import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -170,7 +169,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase
 
 	public final boolean canCreate(Class boClass, Person user) {
 		AttributeSet permissionDetails = new AttributeSet();
-		permissionDetails.put(KimAttributes.DOCUMENT_TYPE_CODE,
+		permissionDetails.put(KimAttributes.DOCUMENT_TYPE_NAME,
 				getMaintenanceDocumentDictionaryService().getDocumentTypeName(
 						boClass));
 		permissionDetails.put(KNSConstants.MAINTENANCE_ACTN,
@@ -183,7 +182,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase
 
 	public final boolean canMaintain(Class boClass, Map primaryKeys, Person user) {
 		Map<String, String> permissionDetails = new HashMap<String, String>();
-		permissionDetails.put(KimAttributes.DOCUMENT_TYPE_CODE,
+		permissionDetails.put(KimAttributes.DOCUMENT_TYPE_NAME,
 				getMaintenanceDocumentDictionaryService().getDocumentTypeName(
 						boClass));
 		permissionDetails.put(KNSConstants.MAINTENANCE_ACTN,

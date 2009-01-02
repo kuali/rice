@@ -27,6 +27,7 @@ import org.kuali.rice.kim.service.support.KimRoleTypeService;
 import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
 public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService {
+	public static final String UNMATCHABLE_QUALIFICATION = "!~!~!~!~!~";
 
     public abstract AttributeSet convertQualificationForMemberRoles(String namespaceCode, String roleName, AttributeSet qualification);
     

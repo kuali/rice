@@ -160,7 +160,7 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 	 * @see org.kuali.rice.kns.authorization.DocumentAuthorizer#canInitiate(java.lang.String,
 	 *      org.kuali.rice.kns.bo.user.KualiUser)
 	 */
-	public boolean canInitiate(String documentTypeName, Person user) {
+	public final boolean canInitiate(String documentTypeName, Person user) {
 		String nameSpaceCode = KNSConstants.KUALI_RICE_SYSTEM_NAMESPACE;
 		AttributeSet permissionDetails = new AttributeSet();
 		permissionDetails.put(KimAttributes.DOCUMENT_TYPE_NAME,

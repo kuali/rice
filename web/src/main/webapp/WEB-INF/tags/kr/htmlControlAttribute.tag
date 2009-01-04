@@ -236,6 +236,8 @@
             <html:checkbox property="${property}" style="${textStyle}" title="${accessibleTitle}" tabindex="${tabindex}" disabled="${disableField}" onblur="${onblur}"
             	onchange="${onchange}" onclick="${onclick}" styleId="${property}"
             	styleClass="${styleClass}"/>
+            <c:if test="${disableField == false}">
+            	<input type="hidden" name="checkboxToReset" value="${property}"/> </c:if>
     </c:when>
 
     <%-- hidden --%>

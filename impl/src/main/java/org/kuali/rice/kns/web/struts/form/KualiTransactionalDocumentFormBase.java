@@ -18,6 +18,10 @@ package org.kuali.rice.kns.web.struts.form;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.kns.document.TransactionalDocument;
 import org.kuali.rice.kns.document.authorization.TransactionalDocumentActionFlags;
 import org.kuali.rice.kns.service.DataDictionaryService;
@@ -96,4 +100,28 @@ public class KualiTransactionalDocumentFormBase extends KualiDocumentFormBase {
     public void setForcedReadOnlyFields(Map forcedReadOnlyFields) {
         this.forcedReadOnlyFields = forcedReadOnlyFields;
     }
+    
+    /**
+     * Override reset to reset checkboxes if they are present on the requesting page
+     * @see org.kuali.core.web.struts.form.KualiDocumentFormBase#reset(org.apache.struts.action.ActionMapping, javax.servlet.http.HttpServletRequest)
+     */
+    public void reset(ActionMapping mapping, HttpServletRequest request) {
+        super.reset(mapping, request);
+        // fix for KULRICE-2525
+        if (request.getParameter("checkboxToReset") != null) {
+            String[] checkboxesToReset = request.getParameterValues("checkboxToReset");
+            if(checkboxesToReset != null && checkboxesToReset.length > 0) {
+                for (int i = 0; i < checkboxesToReset.length; i++) {
+                    String propertyName = (String) checkboxesToReset[i];
+                    try {
+                        PropertyUtils.setNestedProperty(this, propertyName, false);
+                    } catch (Exception e1) {
+                        throw new RuntimeException(e1.getMessage(), e1);
+                    }
+                }
+            }
+        }
+    }
+
+
 }

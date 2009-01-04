@@ -28,13 +28,11 @@ import org.apache.ojb.broker.query.Query;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.apache.ojb.broker.query.ReportQueryByCriteria;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
+import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
 import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.kim.bo.role.KimRole;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl;
-import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
-import org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl;
-import org.kuali.rice.kim.bo.role.impl.KimResponsibilityTemplateImpl;
 import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
@@ -207,34 +205,37 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 		return result;
 	}
 	
-    public List<KimRoleImpl> getRoles(Map<String,String> fieldValues, String kimTypeId) {
+    public List<KimRoleImpl> getRoles(Map<String,String> fieldValues) {
         Criteria crit = new Criteria();
-        Map<String,Map> critMap = setupCritMaps(fieldValues);
+        Map<String,Map<String,String>> critMap = setupCritMaps(fieldValues);
         
-        BusinessObjectEntry boEntry = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry("org.kuali.rice.kim.bo.role.impl.KimRoleImpl");
-        List lookupNames = boEntry.getLookupDefinition().getLookupFieldNames();
-        for (Entry<String, String> entry : fieldValues.entrySet()) {
+//        BusinessObjectEntry boEntry = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry("org.kuali.rice.kim.bo.impl.RoleImpl");
+//      List lookupNames = boEntry.getLookupDefinition().getLookupFieldNames();
+        Map<String,String> lookupNames = critMap.get("lookupNames");
+        for (Entry<String, String> entry : lookupNames.entrySet()) {
         	if (StringUtils.isNotBlank(entry.getValue())) {
-        			if (lookupNames.contains(entry.getKey())) {
-        				crit.addEqualTo(entry.getKey(), entry.getValue());
+        			if (!entry.getKey().equals("principalName")) {
+        				crit.addLike(entry.getKey(), entry.getValue());
         			} else {
-        				if (entry.getKey().equals("principalName")) {
-        					// TODO : what if principal is assigned to a group ?
-                	        Criteria subCrit = new Criteria();
-                			String principalName = entry.getValue().replace('*', '%');
-                			subCrit.addLike("principalName","%" + principalName + "%");
-                	        subCrit.addEqualToField("principalId", Criteria.PARENT_QUERY_PREFIX + "memberId");
-                			ReportQueryByCriteria subQuery = QueryFactory.newReportQuery(KimPrincipalImpl.class, subCrit);
-                	        Criteria memberSubCrit = new Criteria();
-                	        memberSubCrit.addEqualToField("roleId", Criteria.PARENT_QUERY_PREFIX + "roleId");
-                	        memberSubCrit.addExists(subQuery);
-                			ReportQueryByCriteria memberSubQuery = QueryFactory.newReportQuery(RoleMemberImpl.class, memberSubCrit);
-                			crit.addExists(memberSubQuery);        					
-        				}
+        					List roleIds = getRoleIdsForPrincipalName(entry.getValue());
+                			if (!roleIds.isEmpty()) {
+                				crit.addIn("roleId", roleIds);
+                			} else {
+                			// TODO : if no role id found that means principalname not matched, need to do something to force to return empty list
+                				roleIds.add("NOTFOUND");
+                				crit.addIn("roleId", roleIds);
+                			}
         		}
         	}
         }
 		if (!critMap.get("attr").isEmpty()) {
+	    	String kimTypeId=null;
+	        for (Map.Entry<String,String> entry : fieldValues.entrySet()) {
+	        	if (entry.getKey().equals("kimTypeId")) {
+	        		kimTypeId=entry.getValue();
+	        		break;
+	        	}
+	        }
 			setupAttrCriteria(crit, critMap.get("attr"),kimTypeId);
 		}
 		if (!critMap.get("perm").isEmpty()) {
@@ -253,6 +254,41 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
     }
 
 
+    private List<String> getRoleIdsForPrincipalName(String value) {
+        Criteria subCrit = new Criteria();
+		String principalName = value.replace('*', '%');
+		subCrit.addLike("principalName","%" + principalName + "%");
+        subCrit.addEqualToField("principalId", Criteria.PARENT_QUERY_PREFIX + "memberId");
+		ReportQueryByCriteria subQuery = QueryFactory.newReportQuery(KimPrincipalImpl.class, subCrit);
+        Criteria memberSubCrit = new Criteria();
+        //memberSubCrit.addEqualToField("roleId", Criteria.PARENT_QUERY_PREFIX + "roleId");
+        memberSubCrit.addEqualTo("memberTypeCode", "P");
+        memberSubCrit.addExists(subQuery);
+        List<String> roleIds = new ArrayList<String>();
+		ReportQueryByCriteria memberSubQuery = QueryFactory.newReportQuery(RoleMemberImpl.class, memberSubCrit);
+		for (RoleMemberImpl roleMbr : (List<RoleMemberImpl>)getPersistenceBrokerTemplate().getCollectionByQuery(memberSubQuery)) {
+			if (!roleIds.contains(roleMbr.getRoleId())) {
+				roleIds.add(roleMbr.getRoleId());
+			}
+		}
+		Criteria groupMSubCrit = new Criteria();
+	        groupMSubCrit.addEqualToField("groupId", Criteria.PARENT_QUERY_PREFIX + "memberId");
+	       groupMSubCrit.addEqualTo("memberTypeCode", "P");
+	        groupMSubCrit.addExists(subQuery);
+		ReportQueryByCriteria groupMbrSubQuery = QueryFactory.newReportQuery(GroupMemberImpl.class, groupMSubCrit);
+        Criteria grpRoleCrit = new Criteria();
+        grpRoleCrit.addEqualTo("memberTypeCode", "G");
+        grpRoleCrit.addExists(groupMbrSubQuery);
+        memberSubQuery = QueryFactory.newReportQuery(RoleMemberImpl.class, grpRoleCrit);
+
+		for (RoleMemberImpl roleMbr : (List<RoleMemberImpl>)getPersistenceBrokerTemplate().getCollectionByQuery(memberSubQuery)) {
+			if (!roleIds.contains(roleMbr.getRoleId())) {
+				roleIds.add(roleMbr.getRoleId());
+			}
+		}
+    	return roleIds;
+    }
+    
     private Map setupCritMaps(Map<String,String> fieldValues) {
     	Map <String, Map> critMap = new HashMap();
         List permFieldName = new ArrayList();
@@ -269,18 +305,22 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
         Map<String,String> respFieldMap = new HashMap<String,String>();
         Map<String,String> attrFieldMap = new HashMap<String,String>();
         Map<String,String> groupFieldMap = new HashMap<String,String>();
+        Map<String,String> lookupNamesMap = new HashMap<String,String>();
         
         for (Entry<String, String> entry : fieldValues.entrySet()) {
         	if (StringUtils.isNotBlank(entry.getValue())) { 
+    			String nameValue = entry.getValue().replace('*', '%');
         		if (permFieldName.contains(entry.getKey())) {
-        			permFieldMap.put(entry.getKey(), entry.getValue());
+        			permFieldMap.put(entry.getKey(), nameValue);
         		} else if (respFieldName.contains(entry.getKey())) {
-        			respFieldMap.put(entry.getKey(), entry.getValue());
+        			respFieldMap.put(entry.getKey(), nameValue);
         		} else if (entry.getKey().startsWith("groupName")) {
-        			groupFieldMap.put(entry.getKey(), entry.getValue());
+        			groupFieldMap.put(entry.getKey(), nameValue);
         		} else if (entry.getKey().contains(".")) {
-        			attrFieldMap.put(entry.getKey(), entry.getValue());
-        		} 
+        			attrFieldMap.put(entry.getKey(), nameValue);
+        		} else {
+        			lookupNamesMap.put(entry.getKey(), nameValue);
+        		}
         	}
         }
 
@@ -288,6 +328,7 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
         critMap.put("resp", respFieldMap);
         critMap.put("group", groupFieldMap);
         critMap.put("attr", attrFieldMap);
+        critMap.put("lookupNames", lookupNamesMap);
         return critMap;
     }
     
@@ -304,17 +345,13 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
     }
     
     private ReportQueryByCriteria setupPermCriteria(Map<String,String> permCrit) {
-    	/* TODO : for permission & responsibility; check against name& namespacecode in perm_t or perm_tmpl_t ?
-    	 * 
-    	 * 
-    	 */
+
     	//Criteria tmplSubCrit = new Criteria();
         Criteria memberSubCrit = new Criteria();
         for (Entry<String, String> entry : permCrit.entrySet()) {
         	if (entry.getKey().equals("permTmplName") || entry.getKey().equals("permTmplNamespaceCode")) {
         		if (entry.getKey().equals("permTmplName")) {
-        			String nameValue = entry.getValue().replace('*', '%');
-        			memberSubCrit.addLike("kimPermission.template.name","%" + nameValue + "%");
+        			memberSubCrit.addLike("kimPermission.template.name","%" + entry.getValue() + "%");
         			
         		} else {
         			memberSubCrit.addEqualTo("kimPermission.template.namespaceCode",entry.getValue());        			
@@ -323,8 +360,7 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
         	
         	if (entry.getKey().equals("permName") || entry.getKey().equals("permNamespaceCode")) {
         		if (entry.getKey().equals("permName")) {
-        			String nameValue = entry.getValue().replace('*', '%');
-        			memberSubCrit.addLike("kimPermission.name","%" + nameValue + "%");
+        			memberSubCrit.addLike("kimPermission.name","%" + entry.getValue() + "%");
         		} else {
         			memberSubCrit.addEqualTo("kimPermission.namespaceCode",entry.getValue());
         			
@@ -338,16 +374,12 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
     }
     
     private ReportQueryByCriteria setupRespCriteria(Map<String,String> respCrit) {
-    	/* TODO : for permission & responsibility; check against name& namespacecode in perm_t or perm_tmpl_t ?
-    	 * 
-    	 * 
-    	 */
+
         Criteria memberSubCrit = new Criteria();
         for (Entry<String, String> entry : respCrit.entrySet()) {
         	if (entry.getKey().equals("respTmplName") || entry.getKey().equals("respTmplNamespaceCode")) {
         		if (entry.getKey().equals("respTmplName")) {
-        			String nameValue = entry.getValue().replace('*', '%');
-        			memberSubCrit.addLike("kimResponsibility.template.name","%" + nameValue + "%");
+        			memberSubCrit.addLike("kimResponsibility.template.name","%" + entry.getValue() + "%");
         			
         		} else {
         			memberSubCrit.addEqualTo("kimResponsibility.template.namespaceCode",entry.getValue());        			
@@ -356,8 +388,7 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
         	
         	if (entry.getKey().equals("respName") || entry.getKey().equals("respNamespaceCode")) {
         		if (entry.getKey().equals("respName")) {
-        			String nameValue = entry.getValue().replace('*', '%');
-        			memberSubCrit.addLike("kimResponsibility.name","%" + nameValue + "%");
+        			memberSubCrit.addLike("kimResponsibility.name","%" + entry.getValue() + "%");
         		} else {
         			memberSubCrit.addEqualTo("kimResponsibility.namespaceCode",entry.getValue());
         			
@@ -371,16 +402,12 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
     }
  
     private ReportQueryByCriteria setupGroupCriteria(Map<String,String> groupCrit) {
-    	/* TODO : for permission & responsibility; check against name& namespacecode in perm_t or perm_tmpl_t ?
-    	 * 
-    	 * 
-    	 */
+
     	//Criteria tmplSubCrit = new Criteria();
         Criteria memberSubCrit = new Criteria();
         for (Entry<String, String> entry : groupCrit.entrySet()) {
         		if (entry.getKey().equals("groupName")) {
-        			String nameValue = entry.getValue().replace('*', '%');
-        			memberSubCrit.addLike("groupName","%" + nameValue + "%");
+        			memberSubCrit.addLike("groupName","%" + entry.getValue() + "%");
         		} else {
         			memberSubCrit.addEqualTo("namespaceCode",entry.getValue());        			
         		}

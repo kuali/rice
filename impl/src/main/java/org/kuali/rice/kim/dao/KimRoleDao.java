@@ -51,7 +51,7 @@ public interface KimRoleDao {
 	
 	Map<String,List<KimDelegationMemberImpl>> getDelegationMembersForDelegationIds( List<String> delegationIds );
 	
-    List<KimRoleImpl> getRoles(Map<String,String> fieldValues, String kimTypeId);
+    List<KimRoleImpl> getRoles(Map<String,String> fieldValues);
 
 
 }

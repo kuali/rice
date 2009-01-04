@@ -664,6 +664,7 @@ public class RiceKeyConstants {
     public static final String ERROR_DUPLICATE_ENTRY = "error.duplicate.entry";
     public static final String ERROR_EMPTY_ENTRY = "error.empty.entry";
     public static final String ERROR_EXIST_PRINCIPAL_NAME = "error.exist.principalName";
-
+    public static final String ERROR_ASSIGN_ROLE = "error.assign.role";
+    public static final String ERROR_POPULATE_GROUP = "error.populate.group";
 }
 

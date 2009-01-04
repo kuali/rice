@@ -15,11 +15,14 @@
  */
 package org.kuali.rice.kim.rules.ui;
 
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.ui.PersonDocumentGroup;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.rule.event.ui.AddGroupEvent;
 import org.kuali.rice.kim.rule.ui.AddGroupRule;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.rules.DocumentRuleBase;
 import org.kuali.rice.kns.util.ErrorMap;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -40,12 +43,16 @@ public class PersonDocumentGroupRule extends DocumentRuleBase implements AddGrou
 	    boolean rulePassed = true;
 	    String errorPath = NEW_GROUP;
         ErrorMap errorMap = GlobalVariables.getErrorMap();
+    	List<String> groupIds = KIMServiceLocator.getUiDocumentService().getPopulatableGroupIds();
 
         if (newGroup == null || StringUtils.isBlank(newGroup.getGroupId())) {
             rulePassed = false;
             errorMap.putError(errorPath+".groupId", RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Group"});
         	
-        } else {
+        } else if (groupIds.isEmpty() || !groupIds.contains(newGroup.getGroupId())) {
+            errorMap.putError(errorPath+".groupId", RiceKeyConstants.ERROR_POPULATE_GROUP, new String[] {newGroup.getGroupId()});
+            rulePassed = false;
+        } else  {
 		    for (PersonDocumentGroup group : document.getGroups()) {
 		    	if (group.getGroupId().equals(newGroup.getGroupId())) {
 		            rulePassed = false;

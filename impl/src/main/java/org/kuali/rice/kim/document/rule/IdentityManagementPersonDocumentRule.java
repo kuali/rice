@@ -72,7 +72,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
         valid &= checkMultipleDefault (personDoc.getEmails(), "emails");
         valid &= checkPeimaryEmploymentInfo (personDoc.getAffiliations());
         // kimtypeservice.validateAttributes is not working yet.
-//        valid &= validateRoleQualifier (personDoc.getRoles());
+        //valid &= validateRoleQualifier (personDoc.getRoles());
         if (StringUtils.isNotBlank(personDoc.getPrincipalName())) { 
         	valid &= isPrincipalNameExist (personDoc.getPrincipalName(), personDoc.getPrincipalId());
         }

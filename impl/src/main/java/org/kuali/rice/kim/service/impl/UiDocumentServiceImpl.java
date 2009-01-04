@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.EntityAddress;
 import org.kuali.rice.kim.bo.entity.EntityEmail;
 import org.kuali.rice.kim.bo.entity.EntityPhone;
@@ -39,9 +40,11 @@ import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
 import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
 import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAddress;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAffiliation;
@@ -54,6 +57,7 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentPrivacy;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRolePrncpl;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRoleQualifier;
+import org.kuali.rice.kim.dao.KimGroupDao;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.UiDocumentService;
@@ -67,6 +71,7 @@ import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.TextControlDefinition;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.GlobalVariables;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -76,6 +81,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  */
 public class UiDocumentServiceImpl implements UiDocumentService {
 	protected BusinessObjectService businessObjectService;
+	protected KimGroupDao groupDao;
 
 	/**
 	 * @see org.kuali.rice.kim.service.UiDocumentService#getKimEntity(org.kuali.rice.kim.document.IdentityManagementPersonDocument)
@@ -217,6 +223,64 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		loadRoleToPersonDoc(identityManagementPersonDocument);
 		
 
+	}
+	
+	public List<String> getAssignableRoleIds() {
+		Person user = GlobalVariables.getUserSession().getPerson();
+		AttributeSet qualification = new AttributeSet();
+		qualification.put("principalId", user.getPrincipalId());
+		List<? extends KimPermission> assignRolePerms = KIMServiceLocator.getIdentityManagementService().getAuthorizedPermissionsByTemplateName(user.getPrincipalId(), "KR-IDM", "Assign Role", null, qualification);
+		List<String> roleIds = new ArrayList<String> ();
+		if (!assignRolePerms.isEmpty()) {
+        	for (KimPermission perm : assignRolePerms) {
+                Map crit = new HashMap();
+                // in some perms namespaceCode = 'KR*' and no rolename attr data
+                crit.put("namespaceCode", "*");
+                crit.put("roleName", "*");
+        		for (Map.Entry<String, String> entry : perm.getDetails().entrySet()) {
+        			if (entry.getKey().equals("namespaceCode")) {
+                        crit.put("namespaceCode", entry.getValue());
+        			} else if (entry.getKey().equals("roleName")) {
+                        crit.put("roleName", entry.getValue());
+        			}        			
+        		}
+        		for (KimRoleImpl role : (List<KimRoleImpl>)KIMServiceLocator.getRoleService().getRolesSearchResults(crit)) {
+        			if (!roleIds.contains(role.getRoleId())) {
+        				roleIds.add(role.getRoleId());
+        			}
+        		}
+        	}
+        }
+        return roleIds;
+	}
+	
+	public List<String> getPopulatableGroupIds() {
+		Person user = GlobalVariables.getUserSession().getPerson();
+		AttributeSet qualification = new AttributeSet();
+		qualification.put("principalId", user.getPrincipalId());
+		List<? extends KimPermission> populateGroups = KIMServiceLocator.getIdentityManagementService().getAuthorizedPermissionsByTemplateName(user.getPrincipalId(), "KR-IDM", "Populate Group", null, qualification);
+		List<String> groupIds = new ArrayList<String> ();
+		if (!populateGroups.isEmpty()) {
+        	for (KimPermission perm : populateGroups) {
+                Map crit = new HashMap();
+                // in some perms namespaceCode = 'KR*' and no rolename attr data
+                crit.put("namespaceCode", "*");
+                crit.put("groupName", "*");
+        		for (Map.Entry<String, String> entry : perm.getDetails().entrySet()) {
+        			if (entry.getKey().equals("namespaceCode")) {
+                        crit.put("namespaceCode", entry.getValue());
+        			} else if (entry.getKey().equals("groupName")) {
+                        crit.put("groupName", entry.getValue());
+        			}        			
+        		}
+        		for (KimGroupImpl group : (List<KimGroupImpl>)groupDao.getGroups(crit)) {
+        			if (!groupIds.contains(group.getGroupId())) {
+        				groupIds.add(group.getGroupId());
+        			}
+        		}
+        	}
+        }
+        return groupIds;
 	}
 	
 	/**
@@ -785,5 +849,13 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 	public void setBusinessObjectService(BusinessObjectService businessObjectService) {
 		this.businessObjectService = businessObjectService;
+	}
+
+	public KimGroupDao getGroupDao() {
+		return this.groupDao;
+	}
+
+	public void setGroupDao(KimGroupDao groupDao) {
+		this.groupDao = groupDao;
 	}
 }

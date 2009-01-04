@@ -39,6 +39,7 @@ public class NameTitleValuesFinder extends KeyValuesBase {
 
     	List<String> values = KNSServiceLocator.getKualiConfigurationService().getParameterValues("KR-IDM", "EntityNameImpl", "PREFIXES");
         List<KeyLabelPair> labels = new ArrayList<KeyLabelPair>();
+        labels.add(new KeyLabelPair("", ""));
         for (String title : values) {
             labels.add(new KeyLabelPair(title, title));
             

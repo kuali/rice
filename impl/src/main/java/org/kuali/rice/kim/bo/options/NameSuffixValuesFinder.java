@@ -39,6 +39,7 @@ public class NameSuffixValuesFinder extends KeyValuesBase {
 
     	List<String> values = KNSServiceLocator.getKualiConfigurationService().getParameterValues("KR-IDM", "EntityNameImpl", "SUFFIXES");
         List<KeyLabelPair> labels = new ArrayList<KeyLabelPair>();
+        labels.add(new KeyLabelPair("", ""));
         for (String suffix : values) {
             labels.add(new KeyLabelPair(suffix, suffix));            
         }

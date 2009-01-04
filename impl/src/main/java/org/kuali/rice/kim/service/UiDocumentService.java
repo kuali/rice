@@ -55,5 +55,7 @@ public interface UiDocumentService {
 	 */
 	public void loadEntityToPersonDoc(IdentityManagementPersonDocument identityManagementPersonDocument, KimEntityImpl kimEntity);
 	
-	
+	public List<String> getAssignableRoleIds();
+	public List<String> getPopulatableGroupIds();
+
 }

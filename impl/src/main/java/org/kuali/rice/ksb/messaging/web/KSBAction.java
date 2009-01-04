@@ -99,7 +99,9 @@ public abstract class KSBAction extends DispatchAction {
 	
     protected boolean checkAuthorization() //throws AuthorizationException
     {
-        if( log.isWarnEnabled())
+    	// TODO: fix the KIM permission check
+        return true;
+        /*if( log.isWarnEnabled())
         {
             LOG.warn("checkAuthorization was handled by KSBAction rather than KualiAction");
         }
@@ -107,7 +109,7 @@ public abstract class KSBAction extends DispatchAction {
         if(!isAuthorized) {
             LOG.error("User not authorized to use this action: " + this.getClass().getName() );
         }
-        return isAuthorized;
+        return isAuthorized;*/
     }
 
 	public abstract ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception;

@@ -25,7 +25,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeSecurity;
-import org.kuali.rice.kns.datadictionary.mask.Mask;
+import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -193,21 +193,30 @@ public abstract class HtmlData implements Serializable {
 		}
 		return getTitleText(prependText, bo.getClass(), m);
 	}
+	
+	private static BusinessObjectAuthorizationService businessObjectAuthorizationService;
+	private static BusinessObjectAuthorizationService getBusinessObjectAuthorizationService() {
+		if (businessObjectAuthorizationService == null) {
+			businessObjectAuthorizationService = KNSServiceLocator.getBusinessObjectAuthorizationService();
+		}
+		return businessObjectAuthorizationService;
+	}
 
 	public static String getTitleText(String prependText, Class element, Map<String, String> keyValueList) {
+		Class elementClass = element;
 		StringBuffer titleText = new StringBuffer(prependText);
 		for (String key : keyValueList.keySet()) {
 			String fieldVal = keyValueList.get(key).toString();
 			
 			AttributeSecurity attributeSecurity = KNSServiceLocator.getDataDictionaryService().getAttributeSecurity(element.getName(), key);
 			if(attributeSecurity != null && attributeSecurity.isPartialMask()){
-            	boolean viewAuthorized =  KNSServiceLocator.getAuthorizationService().isAuthorizedToPartiallyUnmaskAttribute(GlobalVariables.getUserSession().getPerson(), element.getSimpleName(), key);
+            	boolean viewAuthorized = getBusinessObjectAuthorizationService().canPartiallyUnmaskField(GlobalVariables.getUserSession().getPerson(), elementClass, key);
                 if(!viewAuthorized){
                 	fieldVal = attributeSecurity.getMaskFormatter().maskValue(fieldVal);
                 }
 			}
 			if(attributeSecurity != null && attributeSecurity.isMask()){
-            	boolean viewAuthorized =  KNSServiceLocator.getAuthorizationService().isAuthorizedToUnmaskAttribute(GlobalVariables.getUserSession().getPerson(), element.getSimpleName(), key);
+            	boolean viewAuthorized = getBusinessObjectAuthorizationService().canFullyUnmaskField(GlobalVariables.getUserSession().getPerson(), elementClass, key);
             	if(!viewAuthorized){
             		fieldVal = attributeSecurity.getMaskFormatter().maskValue(fieldVal);
             	}

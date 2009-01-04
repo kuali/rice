@@ -27,7 +27,6 @@ import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
-import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * 
@@ -35,7 +34,10 @@ import org.kuali.rice.kim.util.KimConstants;
  *
  */
 public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServiceBase {
-	
+    public static final String INITIATOR_ROLE_NAME = "Initiator";
+    public static final String INITIATOR_OR_REVIEWER_ROLE_NAME = "Initiator or Reviewer";
+    public static final String ROUTER_ROLE_NAME = "Router";
+
 	protected List<String> requiredAttributes = new ArrayList<String>();
 	{
 		requiredAttributes.add(KimAttributes.DOCUMENT_NUMBER);
@@ -65,11 +67,11 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
 			Long documentNumberLong = Long.parseLong(documentNumber);
 			try{
 				RouteHeaderDTO routeHeaderDTO = workflowInfo.getRouteHeader(documentNumberLong);
-				if (KimConstants.KIM_ROLE_NAME_INITIATOR.equals(roleName))
+				if (INITIATOR_ROLE_NAME.equals(roleName))
 					principalIds.add(routeHeaderDTO.getInitiator().getWorkflowId());
-				else if(KimConstants.KIM_ROLE_NAME_INITIATOR_OR_REVIEWER.equals(roleName)){
+				else if(INITIATOR_OR_REVIEWER_ROLE_NAME.equals(roleName)){
 						principalIds.addAll(workflowInfo.getPrincipalIdsInRouteLog(documentNumberLong, true));
-				} else if(KimConstants.KIM_ROLE_NAME_ROUTER.equals(roleName))
+				} else if(ROUTER_ROLE_NAME.equals(roleName))
 					principalIds.add(routeHeaderDTO.getRoutedByUser().getWorkflowId());
 			} catch(WorkflowException wex){
 				throw new RuntimeException(
@@ -92,13 +94,13 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
 		try {
 			Long documentNumberLong = Long.parseLong(documentNumber);
 			UserIdDTO userIdVO = new UuIdDTO(principalId);
-			if (KimConstants.KIM_ROLE_NAME_INITIATOR.equals(roleName)){
+			if (INITIATOR_ROLE_NAME.equals(roleName)){
 				workflowInfo.getDocumentDetail( documentNumberLong );
 				RouteHeaderDTO routeHeaderDTO = workflowInfo.getRouteHeader(documentNumberLong);
 				isUserInRouteLog = principalId.equals(routeHeaderDTO.getInitiator().getWorkflowId());
-			} else if(KimConstants.KIM_ROLE_NAME_INITIATOR_OR_REVIEWER.equals(roleName)){
+			} else if(INITIATOR_OR_REVIEWER_ROLE_NAME.equals(roleName)){
 				isUserInRouteLog = workflowInfo.isUserAuthenticatedByRouteLog(documentNumberLong, userIdVO, true);
-			} else if(KimConstants.KIM_ROLE_NAME_ROUTER.equals(roleName)){
+			} else if(ROUTER_ROLE_NAME.equals(roleName)){
 				RouteHeaderDTO routeHeaderDTO = workflowInfo.getRouteHeader(documentNumberLong);
 				isUserInRouteLog = principalId.equals(routeHeaderDTO.getRoutedByUser().getWorkflowId());
 			}

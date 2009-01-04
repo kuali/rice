@@ -43,7 +43,6 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kns.authorization.AuthorizationType;
 import org.kuali.rice.kns.bo.AdHocRoutePerson;
 import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.kns.bo.Attachment;
@@ -60,7 +59,6 @@ import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
 import org.kuali.rice.kns.document.authorization.PessimisticLock;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.exception.DocumentAuthorizationException;
-import org.kuali.rice.kns.exception.ModuleAuthorizationException;
 import org.kuali.rice.kns.exception.UnknownDocumentIdException;
 import org.kuali.rice.kns.question.ConfirmationQuestion;
 import org.kuali.rice.kns.rule.PreRulesCheck;
@@ -100,14 +98,6 @@ public class KualiDocumentActionBase extends KualiAction {
     protected void checkAuthorization( ActionForm form, String methodToCall ) throws AuthorizationException {
         if ( !(form instanceof KualiDocumentFormBase) ) {
             super.checkAuthorization(form, methodToCall);
-        } else {
-            AuthorizationType documentAuthorizationType = new AuthorizationType.Document(((KualiDocumentFormBase)form).getDocument().getClass(), ((KualiDocumentFormBase)form).getDocument());
-            if ( !KNSServiceLocator.getKualiModuleService().isAuthorized( GlobalVariables.getUserSession().getPerson(), documentAuthorizationType ) ) {
-                LOG.error("User not authorized to use this document: " + ((KualiDocumentFormBase)form).getDocument().getClass().getName() );
-                throw new ModuleAuthorizationException( GlobalVariables.getUserSession().getPerson().getPrincipalName(), 
-                		documentAuthorizationType, 
-                		getKualiModuleService().getResponsibleModuleService(((KualiDocumentFormBase)form).getDocument().getClass()) );
-            }
         }
     }
 

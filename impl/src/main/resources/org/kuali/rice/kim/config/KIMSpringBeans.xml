@@ -383,7 +383,10 @@
     </property>
   </bean>
 
-  <bean id="permissionPermissionTypeService" class="org.kuali.rice.kim.service.impl.PermissionPermissionTypeServiceImpl" />
+  <bean id="permissionPermissionTypeService" class="org.kuali.rice.kns.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
+    	<property name="exactMatchStringAttributeName" value="permissionName" />
+    	<property name="namespaceRequiredOnStoredAttributeSet" value="true" />
+    </bean>
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
     <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
     <property name="serviceDefinition">
@@ -393,7 +396,10 @@
     </property>
   </bean>
   
-  <bean id="responsibilityPermissionTypeService" class="org.kuali.rice.kim.service.impl.ResponsibilityPermissionTypeServiceImpl" />
+  <bean id="responsibilityPermissionTypeService" class="org.kuali.rice.kns.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
+    	<property name="exactMatchStringAttributeName" value="responsibilityName" />
+    	<property name="namespaceRequiredOnStoredAttributeSet" value="true" />
+    </bean>
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
     <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
     <property name="serviceDefinition">
@@ -403,7 +409,10 @@
     </property>
   </bean>
   
-  <bean id="rolePermissionTypeService" class="org.kuali.rice.kim.service.impl.RolePermissionTypeServiceImpl" />
+  <bean id="rolePermissionTypeService" class="org.kuali.rice.kns.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
+    	<property name="exactMatchStringAttributeName" value="roleName" />
+    	<property name="namespaceRequiredOnStoredAttributeSet" value="true" />
+    </bean>
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
     <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
     <property name="serviceDefinition">
@@ -423,7 +432,10 @@
     </property>
   </bean>
   
-  <bean id="groupPermissionTypeService" class="org.kuali.rice.kim.service.impl.GroupPermissionTypeServiceImpl" />
+  <bean id="groupPermissionTypeService" class="org.kuali.rice.kns.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
+    	<property name="exactMatchStringAttributeName" value="groupName" />
+    	<property name="namespaceRequiredOnStoredAttributeSet" value="true" />
+    </bean>
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
     <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
     <property name="serviceDefinition">

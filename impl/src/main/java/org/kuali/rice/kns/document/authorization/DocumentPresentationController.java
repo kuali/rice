@@ -19,20 +19,8 @@ import java.util.Set;
 
 import org.kuali.rice.kns.document.Document;
 
-/**
- * The DocumentPresentationController class is used for non-user related lock down 
- * 
- * 
- */
 public interface DocumentPresentationController {
-   
-    /**
-     * @param document
-     * @return Set of actions that allow to take on that document.
-     */
-    public Set<String> getDocumentActions(Document document);
-    
-    public boolean canInitiate(String documentTypeName);
-    
-}
+	public Set<String> getDocumentActions(Document document);
 
+	public boolean canInitiate(String documentTypeName);
+}

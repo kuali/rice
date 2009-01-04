@@ -17,6 +17,7 @@ package org.kuali.rice.kns.authorization;
 
 import java.util.Map;
 
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.bo.BusinessObject;
 
 public interface BusinessObjectAuthorizer {
@@ -31,7 +32,7 @@ public interface BusinessObjectAuthorizer {
 			String namespaceCode, String permissionName, String principalId,
 			Map<String, String> additionalPermissionDetails,
 			Map<String, String> additionalRoleQualifiers);
-	
+
 	public boolean isAuthorizedByTemplate(BusinessObject businessObject,
 			String namespaceCode, String permissionTemplateName,
 			String principalId,

@@ -138,6 +138,12 @@ public class KNSServiceLocator<T extends Object> {
 	return (MethodCacheInterceptor) getService(METHOD_CACHE_INTERCEPTOR);
     }
 
+    public static final String BUSINESS_OBJECT_AUTHORIZATION_SERVICE = "businessObjectAuthorizationService";
+
+    public static BusinessObjectAuthorizationService getBusinessObjectAuthorizationService() {
+	return (BusinessObjectAuthorizationService) getService(BUSINESS_OBJECT_AUTHORIZATION_SERVICE);
+    }
+
     public static final String XML_OBJECT_SERIALIZER_SERVICE = "xmlObjectSerializerService";
 
     public static XmlObjectSerializerService getXmlObjectSerializerService() {
@@ -313,13 +319,6 @@ public class KNSServiceLocator<T extends Object> {
 	return (DictionaryValidationService) getService(DICTIONARY_VALIDATION_SERVICE);
     }
 
-    // AuthorizationService
-    public static final String AUTHORIZATION_SERVICE = "authorizationService";
-
-    public static AuthorizationService getAuthorizationService() {
-	return (AuthorizationService) getService(AUTHORIZATION_SERVICE);
-    }
-
     // AttachmentService
     public static final String ATTACHMENT_SERVICE = "attachmentService";
 
@@ -446,7 +445,7 @@ public class KNSServiceLocator<T extends Object> {
     
     public static final String MAINTENANCE_DOCUMENT_AUTHORIZATION_SERVICE = "maintenanceDocumentAuthorizationService";
     
-    public static MaintenanceDocumentAuthorizationService getMaintenanceDocumentAuthorizationService() {
-    	return (MaintenanceDocumentAuthorizationService) getService(MAINTENANCE_DOCUMENT_AUTHORIZATION_SERVICE);
+    public static BusinessObjectAuthorizationService getMaintenanceDocumentAuthorizationService() {
+    	return (BusinessObjectAuthorizationService) getService(MAINTENANCE_DOCUMENT_AUTHORIZATION_SERVICE);
     }
 }

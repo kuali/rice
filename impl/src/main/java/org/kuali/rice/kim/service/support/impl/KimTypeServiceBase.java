@@ -88,23 +88,6 @@ public class KimTypeServiceBase implements KimTypeService {
 		return true;
 	}
 
-	/**
-	 * 
-	 * This method matches input attribute set entries and standard attribute set entries using wild card match.
-	 * "*" is the only wildcard supported currently.
-	 */
-	protected boolean performMatchUsingWildcard(AttributeSet inputAttributeSet, AttributeSet storedAttributeSet) {
-		for ( Map.Entry<String, String> entry : storedAttributeSet.entrySet() ) {
-			if ( !inputAttributeSet.containsKey(entry.getKey() ) ) {
-				return false;
-			}
-			if ( !KimCommonUtils.matchInputWithWildcard(inputAttributeSet.get(entry.getKey()), entry.getValue()) ) {
-				return false;
-			}
-		}
-		return true;
-	}
-	
 	public AttributeSet translateInputAttributeSet(AttributeSet qualification){
 		if ( qualification == null ) {
 			return null;

@@ -22,25 +22,12 @@ import org.kuali.rice.kns.bo.BusinessObject;
 
 public class InquiryPresentationControllerBase implements
 		InquiryPresentationController {
-
-	/**
-	 * @see org.kuali.rice.kns.inquiry.InquiryPresentationController#addInquiryRestrictions(org.kuali.rice.kns.inquiry.InquiryAuthorizations, org.kuali.rice.kns.bo.BusinessObject)
-	 */
-	public final void addInquiryRestrictions(InquiryAuthorizations auths, BusinessObject businessObject) {
-		for (String propertyName : getConditionallyHiddenPropertyNames(businessObject)) {
-			auths.addHiddenAuthField(propertyName);
-		}
-		for (String sectionId : getConditionallyHiddenSectionIds(businessObject)) {
-			auths.addHiddenSectionId(sectionId);
-		}
-	}
-
 	/**
 	 * Implement this method to hide fields based on specific data in the record being inquired into
 	 * 
 	 * @return Set of property names that should be hidden
 	 */
-	protected Set<String> getConditionallyHiddenPropertyNames(BusinessObject businessObject) {
+	public Set<String> getConditionallyHiddenPropertyNames(BusinessObject businessObject) {
 		return new HashSet<String>();
 	}
 
@@ -49,7 +36,7 @@ public class InquiryPresentationControllerBase implements
 	 * 
 	 * @return Set of section ids that should be hidden
 	 */
-	protected Set<String> getConditionallyHiddenSectionIds(BusinessObject businessObject) {
+	public Set<String> getConditionallyHiddenSectionIds(BusinessObject businessObject) {
 		return new HashSet<String>();
 	}
 }

@@ -18,12 +18,10 @@ package org.kuali.rice.kns.service;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 import org.kuali.rice.kns.bo.ModuleConfiguration;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
-import org.kuali.rice.kns.authorization.AuthorizationType;
-import org.kuali.rice.kns.bo.BusinessObject;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContextAware;
 
@@ -61,24 +59,6 @@ public interface ModuleService extends InitializingBean, ApplicationContextAware
 	 */
 	public boolean isResponsibleForJob(String jobName);
 	
-	/**
-	 * This method returns whether the person can access this module at all.
-	 * 
-	 * @param user
-	 * @return
-	 */
-	public boolean canAccessModule( Person user );
-	
-	/**
-	 * 
-	 * This method determines whether the passed in user is authorized to access this module or not.
-	 * 
-	 * @param user
-	 * @param authType
-	 * @return
-	 */
-	public boolean isAuthorized(Person user, AuthorizationType authType);
-
 	/**
 	 * 
 	 * This method returns the list of primary keys for the EBO.

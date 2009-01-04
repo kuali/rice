@@ -20,7 +20,6 @@ import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -237,8 +236,6 @@ public class DataDictionary {
             }
 
             entry.validateAuthorizer();
-            // TODO: remove this locator?
-            KNSServiceLocator.getAuthorizationService().setupAuthorizations(entry);
         }
     }
     

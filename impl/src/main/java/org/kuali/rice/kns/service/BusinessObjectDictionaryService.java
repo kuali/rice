@@ -17,13 +17,19 @@ package org.kuali.rice.kns.service;
 
 import java.util.List;
 
+import org.kuali.rice.kns.authorization.BusinessObjectAuthorizer;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.inquiry.InquiryAuthorizer;
+import org.kuali.rice.kns.inquiry.InquiryPresentationController;
 
 
 /**
  * This interface defines the API for the interacting with the data dictionary.
  */
 public interface BusinessObjectDictionaryService {
+	public <T extends BusinessObject> InquiryPresentationController getInquiryPresentationController(Class<T> businessObjectClass);
+	
+	public <T extends BusinessObject> InquiryAuthorizer getInquiryAuthorizer(Class<T> businessObjectClass);
 
     /**
      * the list of business object class names being maintained

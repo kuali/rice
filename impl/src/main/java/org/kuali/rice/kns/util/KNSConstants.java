@@ -36,6 +36,7 @@ public class KNSConstants extends JSTLConstants {
     public static final String KNS_NAMESPACE = "KR-NS";
     public static final String KUALI_RICE_SYSTEM_NAMESPACE = "KR-SYS";
     public static final String KUALI_RICE_WORKFLOW_NAMESPACE = "KR-WKFLW";
+    public static final String KUALI_RICE_SERVICE_BUS_NAMESPACE = "KR-BUS";
     
     public static final String KUALI_ACTION_CAN_EDIT = "canEdit";
     public static final String KUALI_ACTION_CAN_ANNOTATE = "canAnnotate";

@@ -13,30 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.service.impl;
+package org.kuali.rice.kns.authorization;
 
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
+import java.util.Set;
 
 /**
- * This is a description of what this class does - bhargavp don't forget to fill this in. 
+ * This is a description of what this class does - abyrne don't forget to fill this in. 
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class DocumentStatusComponentAttributePermissionTypeServiceImpl extends KimPermissionTypeServiceBase {
-
-	/**
-	 * 
-	 * This method ...
-	 * 
-	 * @param requestedDetails
-	 * @param permissionDetails
-	 * @return
-	 */
-	@Override
-	public boolean performMatch(final AttributeSet requestedDetails, final AttributeSet permissionDetails) {
-		return performMatchUsingWildcard(requestedDetails, permissionDetails);
-	}
-	
+public interface InquiryOrMaintenanceDocumentAuthorizer extends
+		BusinessObjectAuthorizer {
+	public Set<String> getSecurePotentiallyHiddenSectionIds();
 }

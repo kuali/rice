@@ -15,51 +15,21 @@
  */
 package org.kuali.rice.kns.document.authorization;
 
-import java.util.Map;
+import java.util.Set;
 
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kns.authorization.InquiryOrMaintenanceDocumentAuthorizer;
 import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 
-/**
- * Extension to DocumentAuthorizer for Maintenance Document specific methods
- * 
- * 
- */
-public interface MaintenanceDocumentAuthorizer extends DocumentAuthorizer {
+public interface MaintenanceDocumentAuthorizer extends DocumentAuthorizer,
+		InquiryOrMaintenanceDocumentAuthorizer {
+	public boolean canCreate(Class boClass, Person user);
 
-	/**
-     * 
-     * This method returns adds restrictions based on the document and the logged-in user
-     * 
-     * @param document the document
-     * @param user the logged-in user
-     * @return MaintenanceDocumentAuthorizations
-     * 
-     */
-    public void addMaintenanceDocumentRestrictions(MaintenanceDocumentAuthorizations auths, MaintenanceDocument document, Person user);
-    
-    /**
-     * @param boClass
-     * @param user
-     * @returns boolean indicating whether a user can create a new record
-     */
-    public boolean canCreate(Class boClass, Person user);
-    
-    /**
-     * @param boClass
-     * @param primaryKeys
-     * @param user
-     * @returns boolean indicating whether a user can maintain existing record
-     */
-    public boolean canMaintain(Class boClass, Map primaryKeys, Person user);
-    
-    /**
-     * @param document
-     * @param user
-     * @returns boolean indicating whether a user can create new record or maintain existing record
-     */
-    public boolean canCreateOrMaintain(MaintenanceDocument maintenanceDocument, Person user);
+	public boolean canMaintain(BusinessObject businessObject, Person user);
+
+	public boolean canCreateOrMaintain(MaintenanceDocument maintenanceDocument,
+			Person user);
+
+	public Set<String> getSecurePotentiallyReadOnlySectionIds();
 }
-

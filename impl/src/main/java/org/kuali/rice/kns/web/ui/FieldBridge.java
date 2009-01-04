@@ -34,13 +34,13 @@ import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
 import org.kuali.rice.kns.datadictionary.control.ApcSelectControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
-import org.kuali.rice.kns.datadictionary.mask.Mask;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.lookup.keyvalues.ApcValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.PersistableBusinessObjectValuesFinder;
 import org.kuali.rice.kns.lookup.valueFinder.ValueFinder;
 import org.kuali.rice.kns.maintenance.Maintainable;
+import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -53,6 +53,13 @@ import org.kuali.rice.kns.web.format.SummarizableFormatter;
 
 public class FieldBridge {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(FieldBridge.class);
+    private static BusinessObjectAuthorizationService businessObjectAuthorizationService;
+    private static BusinessObjectAuthorizationService getBusinessObjectAuthorizationService() {
+    	if (businessObjectAuthorizationService == null) {
+    		businessObjectAuthorizationService = KNSServiceLocator.getBusinessObjectAuthorizationService();
+    	}
+    	return businessObjectAuthorizationService;
+    }
 
     /**
      * This method creates a Field for an Inquiry Screen.
@@ -162,13 +169,12 @@ public class FieldBridge {
                 //field.setDisplayMaskValue(propertyMask.maskValue(propValue));
             AttributeSecurity attributeSecurity = KNSServiceLocator.getDataDictionaryService().getAttributeSecurity(bo.getClass().getName(), propertyName);
             if(attributeSecurity != null && attributeSecurity.isMask() 
-               && !KNSServiceLocator.getAuthorizationService().isAuthorizedToUnmaskAttribute(GlobalVariables.getUserSession().getPerson(), bo.getClass().getSimpleName(), propertyName) 
-               ){
+            && !getBusinessObjectAuthorizationService().canFullyUnmaskField(GlobalVariables.getUserSession().getPerson(), bo.getClass(), propertyName)){
             	field.setPropertyValue(attributeSecurity.getMaskFormatter().maskValue(propValue));
                 field.setDisplayMaskValue(attributeSecurity.getMaskFormatter().maskValue(propValue));
             		
             }else if(attributeSecurity != null && attributeSecurity.isPartialMask()
-            		&& !KNSServiceLocator.getAuthorizationService().isAuthorizedToPartiallyUnmaskAttribute(GlobalVariables.getUserSession().getPerson(), bo.getClass().getSimpleName(), propertyName) ){
+                    && !getBusinessObjectAuthorizationService().canPartiallyUnmaskField(GlobalVariables.getUserSession().getPerson(), bo.getClass(), propertyName)){
             		field.setPropertyValue(attributeSecurity.getPartialMaskFormatter().maskValue(propValue));
                     field.setDisplayMaskValue(attributeSecurity.getPartialMaskFormatter().maskValue(propValue));
                 

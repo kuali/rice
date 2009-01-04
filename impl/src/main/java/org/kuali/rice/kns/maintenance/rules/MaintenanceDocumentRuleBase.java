@@ -27,15 +27,15 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kns.authorization.FieldAuthorization;
+import org.kuali.rice.kns.authorization.FieldRestriction;
 import org.kuali.rice.kns.bo.GlobalBusinessObject;
 import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.InactivationBlockingMetadata;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
-import org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizations;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizer;
+import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions;
 import org.kuali.rice.kns.exception.UnknownDocumentIdException;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.maintenance.Maintainable;
@@ -779,11 +779,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      * @return true if the document can be approved, false if not
      */
     protected boolean processGlobalApproveDocumentBusinessRules(MaintenanceDocument document) {
-        boolean success = true;
-
-        // enforce authorization restrictions on fields
-        success &= checkAuthorizationRestrictions(document);
-        return success;
+    	return true;
     }
 
     /**
@@ -804,8 +800,6 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         // require a document description field
         success &= checkEmptyDocumentField(KNSPropertyConstants.DOCUMENT_HEADER + "." + KNSPropertyConstants.DOCUMENT_DESCRIPTION, document.getDocumentHeader().getDocumentDescription(), "Description");
 
-        // enforce authorization restrictions on fields
-        success &= checkAuthorizationRestrictions(document);
         return success;
     }
 
@@ -835,9 +829,6 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         // this is happening only on the processSave, since a Save happens in both the
         // Route and Save events.
         this.dataDictionaryValidate(document);
-
-        // enforce authorization restrictions on fields
-        checkAuthorizationRestrictions(document);
 
         return success;
     }
@@ -1140,150 +1131,6 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
 
     public void setupConvenienceObjects() {
         // should always be overriden by subclass
-    }
-
-    /**
-     * 
-     * This method ensures that any fields that are restricted by the Authorization system in the system are also enforced on the
-     * back-end, otherwise form manipulation could bypass authorization rules.
-     * 
-     * This method will add errors to the Global ErrorMap if any problems are encountered.
-     * 
-     * @param document - the maintenance document being evaluated
-     * @return true if no failures occurred, false otherwise
-     */
-    protected boolean checkAuthorizationRestrictions(MaintenanceDocument document) {
-
-        // Note that this method does what may at first appear to be a highly efficient loading
-        // of the document that is already loaded, and compares against that. This is done to handle
-        // situations where someone along the chain of approvers has rights to modify some fields, but
-        // later approvers do not have similar rights. This is how we've made sure that this person,
-        // only during this modification of the document, has not changed any fields on the newBo side,
-        // without wiring something into the Struts that somehow tells us that a field was modified.
-        // There may indeed be better ways to do this, but make sure you're solving all the problems
-        // here, including ones like this: KULCOA-924, KULCOA-884, etc
-
-        boolean success = true;
-        boolean changed = false;
-
-        boolean isInitiator = false;
-        boolean isApprover = false;
-
-        Object oldValue = null;
-        Object newValue = null;
-        Object savedValue = null;
-
-        KualiWorkflowDocument workflowDocument = null;
-        Person user = GlobalVariables.getUserSession().getPerson();
-        try {
-                workflowDocument = getWorkflowDocumentService().createWorkflowDocument(Long.valueOf(document.getDocumentNumber()), user);
-        }
-        catch (WorkflowException e) {
-                throw new UnknownDocumentIdException("no document found for documentHeaderId '" + document.getDocumentNumber() + "'", e);
-        }
-        if (user.getPrincipalName().equalsIgnoreCase(workflowDocument.getInitiatorNetworkId())) {
-            // if these are the same person then we know it is the initiator
-            isInitiator = true;
-        }
-        else if (workflowDocument.isApprovalRequested()) {
-            isApprover = true;
-        }
-
-        // get the correct documentAuthorizer for this document
-        MaintenanceDocumentAuthorizer documentAuthorizer = (MaintenanceDocumentAuthorizer) getDocumentTypeService().getDocumentAuthorizer(document);
-
-        // get a new instance of MaintenanceDocumentAuthorizations for this context
-        MaintenanceDocumentAuthorizations auths = KNSServiceLocator.getMaintenanceDocumentAuthorizationService().generateMaintenanceDocumentAuthorizations(document, user);
-        
-        // load a temp copy of the document from the DB to compare to for changes
-        MaintenanceDocument savedDoc = null;
-        Maintainable savedNewMaintainable = null;
-        PersistableBusinessObject savedNewBo = null;
-
-        if (isApprover) {
-            try {
-                DocumentService docService = KNSServiceLocator.getDocumentService();
-                    savedDoc = (MaintenanceDocument) docService.getByDocumentHeaderId(document.getDocumentNumber());
-            }
-            catch (WorkflowException e) {
-                    throw new RuntimeException("A WorkflowException was thrown which prevented the loading of " + "the comparison document (" + document.getDocumentNumber() + ")", e);
-            }
-
-            // attempt to retrieve the BO, but leave it blank if it or any of the objects on the path
-            // to it are blank
-            if (savedDoc != null) {
-                savedNewMaintainable = savedDoc.getNewMaintainableObject();
-                if (savedNewMaintainable != null) {
-                    savedNewBo = savedNewMaintainable.getBusinessObject();
-                }
-            }
-        }
-
-        // setup in-loop members
-        FieldAuthorization fieldAuthorization = null;
-
-        // walk through all the restrictions
-        Collection restrictedFields = auths.getAuthFieldNames();
-        for (Iterator iter = restrictedFields.iterator(); iter.hasNext();) {
-            String fieldName = (String) iter.next();
-
-            // get the specific field authorization structure
-            fieldAuthorization = auths.getAuthFieldAuthorization(fieldName);
-
-            // if there are any restrictions, then enforce them
-            if (fieldAuthorization.isRestricted()) {
-                // reset the changed flag
-                changed = false;
-
-                // new value should always be the same regardles of who is
-                // making the request
-                newValue = ObjectUtils.getNestedValue(newBo, fieldName);
-
-                // first we need to handle the case of edit doc && initiator
-                if (isInitiator && document.isEdit()) {
-                    // old value must equal new value
-                    oldValue = ObjectUtils.getNestedValue(oldBo, fieldName);
-                }
-                else if (isApprover && savedNewBo != null) {
-                    oldValue = ObjectUtils.getNestedValue(savedNewBo, fieldName);
-                }
-
-                // check to make sure nothing has changed
-                if (oldValue == null && newValue == null) {
-                    changed = false;
-                }
-                else if ((oldValue == null && newValue != null) || (oldValue != null && newValue == null)) {
-                    changed = true;
-                }
-                else if (oldValue != null && newValue != null) {
-                    if (!oldValue.equals(newValue)) {
-                        changed = true;
-                    }
-                }
-
-                // if changed and a NEW doc, but the new value is the default value, then let it go
-                // we dont allow changing to default values for EDIT docs though, only NEW
-                if (changed && document.isNew()) {
-                    String defaultValue = maintDocDictionaryService.getFieldDefaultValue(document.getNewMaintainableObject().getBoClass(), fieldName);
-
-                    // get the string value of newValue
-                    String newStringValue = newValue.toString();
-
-                    // if the newValue is the default value, then ignore
-                    if (newStringValue.equalsIgnoreCase(defaultValue)) {
-                        changed = false;
-                    }
-                }
-
-                // if anything has changed, complain
-                if (changed) {
-                    String humanReadableFieldName = ddService.getAttributeLabel(document.getNewMaintainableObject().getBoClass(), fieldName);
-                    putFieldError(fieldName, RiceKeyConstants.ERROR_DOCUMENT_AUTHORIZATION_RESTRICTED_FIELD_CHANGED, humanReadableFieldName);
-                    success &= false;
-                }
-            }
-        }
-        return success;
     }
 
     /**
@@ -1654,9 +1501,6 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         // setup convenience pointers to the old & new bo
         setupBaseConvenienceObjects(document);
         
-        // enforce authorization restrictions on fields
-        checkAuthorizationRestrictions(document);
-       
         // sanity check on the document object
         this.validateMaintenanceDocument( document );
         

@@ -13,20 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.service;
+package org.kuali.rice.kns.authorization;
 
-import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.inquiry.InquiryAuthorizer;
-import org.kuali.rice.kns.inquiry.InquiryPresentationController;
+import java.io.Serializable;
+import java.util.Map;
+import java.util.Set;
 
-/**
- * Provides methods to obtain the inquiry presentation controller and authorizer 
- * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- *
- */
-public interface InquiryService {
-	public <T extends BusinessObject> InquiryPresentationController getPresentationController(Class<T> businessObjectClass);
+import org.kuali.rice.kns.datadictionary.mask.MaskFormatter;
+
+public interface InquiryOrMaintenanceDocumentRestrictions extends
+		BusinessObjectRestrictions {
+	public void addHiddenField(String fieldName);
 	
-	public <T extends BusinessObject> InquiryAuthorizer getAuthorizer(Class<T> businessObjectClass);
+	public void addHiddenSectionId(String sectionId);
+
+	public Set<String> getHiddenSectionIds();
 }

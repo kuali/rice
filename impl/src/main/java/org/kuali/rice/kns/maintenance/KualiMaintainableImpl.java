@@ -30,7 +30,7 @@ import java.util.Set;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.service.EncryptionService;
-import org.kuali.rice.kns.authorization.FieldAuthorization;
+import org.kuali.rice.kns.authorization.FieldRestriction;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
 import org.kuali.rice.kns.bo.DocumentHeader;
@@ -41,8 +41,7 @@ import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.MaintenanceLock;
-import org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizations;
-import org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizer;
+import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
@@ -200,7 +199,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
      */
     private Map decryptEncryptedData(Map fieldValues, MaintenanceDocument maintenanceDocument) {
     	try {
-    		MaintenanceDocumentAuthorizations auths = KNSServiceLocator.getMaintenanceDocumentAuthorizationService().generateMaintenanceDocumentAuthorizations(maintenanceDocument, GlobalVariables.getUserSession().getPerson());
+    		MaintenanceDocumentRestrictions auths = KNSServiceLocator.getBusinessObjectAuthorizationService().getMaintenanceDocumentRestrictions(maintenanceDocument, GlobalVariables.getUserSession().getPerson());
 	        for (Iterator iter = fieldValues.keySet().iterator(); iter.hasNext();) {
                 String fieldName = (String) iter.next();
                 String fieldValue = (String) fieldValues.get(fieldName);
@@ -229,15 +228,15 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
         return fieldValues;
     }
 
-    private boolean shouldFieldBeEncrypted(MaintenanceDocument maintenanceDocument, String fieldName, MaintenanceDocumentAuthorizations auths){
+    private boolean shouldFieldBeEncrypted(MaintenanceDocument maintenanceDocument, String fieldName, MaintenanceDocumentRestrictions auths){
     	// If the user does not have appropriate permissions, a non-blank displayEditMode implies that this field should be encrypted
     	// If the logged in user has the permission to view or edit this field, 
     	// editMap will have an entry corresponding to displayEditMode, in which case, the field value received will not be encrypted
     	// The corresponding value in editMap actually does not matter;
     	// just the presence of the displayEditMode inside that map is enough.
     	// Note: this "if" stmt is same as "${field.secure && empty KualiForm.editingMode[field.displayEditMode]}" of rowDisplay.jsp
-    	if(auths!=null && auths.hasAuthFieldRestricted(fieldName)){
-    		FieldAuthorization fieldAuth = auths.getAuthFieldAuthorization(fieldName);
+    	if(auths!=null && auths.hasRestriction(fieldName)){
+    		FieldRestriction fieldAuth = auths.getFieldRestriction(fieldName);
     		return fieldAuth.shouldBeEncrypted();
     	}
     	return false;

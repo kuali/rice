@@ -16,10 +16,8 @@
 package org.kuali.rice.kns.web.struts.action;
 
 import java.util.Collections;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,14 +28,15 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.RedirectingActionForward;
 import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kns.authorization.AuthorizationType;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimCommonUtils;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Exporter;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.exception.AuthorizationException;
-import org.kuali.rice.kns.exception.ModuleAuthorizationException;
 import org.kuali.rice.kns.inquiry.Inquirable;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -51,26 +50,44 @@ import org.kuali.rice.kns.web.struts.form.InquiryForm;
 public class KualiInquiryAction extends KualiAction {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiInquiryAction.class);
 
+    @Override
     protected void checkAuthorization(ActionForm form, String methodToCall) throws AuthorizationException {
-        if (!(form instanceof InquiryForm)) {
+    	if (!(form instanceof InquiryForm)) {
             super.checkAuthorization(form, methodToCall);
         } else {
             try {
                 Class businessObjectClass = Class.forName(((InquiryForm) form).getBusinessObjectClassName());
-                AuthorizationType inquiryAuthType = new AuthorizationType.Inquiry(businessObjectClass);
-                // check if the inquiry is allowed
-                if (!getKualiModuleService().isAuthorized(GlobalVariables.getUserSession().getPerson(), inquiryAuthType)) {
-                    LOG.error("User not authorized for inquiry action for this object: " + businessObjectClass.getName());
-                    throw new ModuleAuthorizationException(GlobalVariables.getUserSession().getPerson().getPrincipalName(), inquiryAuthType, getKualiModuleService().getResponsibleModuleService(businessObjectClass));
+                if (!KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(GlobalVariables.getUserSession().getPrincipalId(), KNSConstants.KNS_NAMESPACE, KimConstants.PermissionTemplateNames.INQUIRE_INTO_RECORDS, KimCommonUtils.getNamespaceAndComponentSimpleName(businessObjectClass), null)) {
+                    throw new AuthorizationException(GlobalVariables.getUserSession().getPerson().getPrincipalName(), 
+                    		"inquire",
+                    		businessObjectClass.getSimpleName());
                 }
             }
-            catch (ClassNotFoundException ex) {
+            catch (ClassNotFoundException e) {
+            	LOG.warn("Unable to load BusinessObject class: " + ((InquiryForm) form).getBusinessObjectClassName(), e);
                 super.checkAuthorization(form, methodToCall);
             }
         }
     }
 
-    @Override
+	@Override
+	protected Map<String, String> getRoleQualification(ActionForm form,
+			String methodToCall) {
+		Map<String, String> roleQualification = super.getRoleQualification(
+				form, methodToCall);
+		if (form instanceof InquiryForm) {
+			Map<String, String> primaryKeys = ((InquiryForm) form)
+					.getInquiryPrimaryKeys();
+			if (primaryKeys != null) {
+				for (String keyName : primaryKeys.keySet()) {
+					roleQualification.put(keyName, primaryKeys.get(keyName));					
+				}
+			}
+		}
+		return roleQualification;
+	}
+
+	@Override
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         request.setAttribute(KNSConstants.PARAM_MAINTENANCE_VIEW_MODE, KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY);
         return super.execute(mapping, form, request, response);

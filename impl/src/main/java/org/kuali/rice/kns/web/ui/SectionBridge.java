@@ -40,22 +40,35 @@ import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableSubSectionHeaderDefinition;
 import org.kuali.rice.kns.datadictionary.SubSectionHeaderDefinitionI;
-import org.kuali.rice.kns.datadictionary.mask.Mask;
 import org.kuali.rice.kns.exception.ClassNotPersistableException;
 import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.lookup.LookupUtils;
-import org.kuali.rice.kns.lookup.SelectiveReferenceRefresher;
 import org.kuali.rice.kns.maintenance.Maintainable;
+import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
+import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.MaintenanceUtils;
 import org.kuali.rice.kns.util.ObjectUtils;
-import org.kuali.rice.kns.datadictionary.mask.MaskFormatter;
 
 public class SectionBridge {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SectionBridge.class);
+    private static BusinessObjectAuthorizationService businessObjectAuthorizationService;
+    private static BusinessObjectAuthorizationService getBusinessObjectAuthorizationService() {
+    	if (businessObjectAuthorizationService == null) {
+    		businessObjectAuthorizationService = KNSServiceLocator.getBusinessObjectAuthorizationService();
+    	}
+    	return businessObjectAuthorizationService;
+    }
+    private static DataDictionaryService dataDictionaryService;
+    private static DataDictionaryService getDataDictionaryService() {
+    	if (dataDictionaryService == null) {
+    		dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+    	}
+    	return dataDictionaryService;
+    }
 
     /**
      * This method creates a Section for display on an Inquiry Screen.
@@ -255,12 +268,12 @@ public class SectionBridge {
         // then we need to loop through the existing collection and add those fields
         Collection collectionFields = collectionDefinition.getFields();
         // get label for collection
-        String collectionLabel = KNSServiceLocator.getDataDictionaryService().getCollectionLabel(o.getClass(), collectionDefinition.getName());
+        String collectionLabel = getDataDictionaryService().getCollectionLabel(o.getClass(), collectionDefinition.getName());
         
         // retrieve the summary label either from the override or from the DD
         String collectionElementLabel = collectionDefinition.getSummaryTitle();
         if (StringUtils.isEmpty(collectionElementLabel)) {
-            collectionElementLabel = KNSServiceLocator.getDataDictionaryService().getCollectionElementLabel(o.getClass().getName(), collectionDefinition.getName(), collectionDefinition.getBusinessObjectClass());
+            collectionElementLabel = getDataDictionaryService().getCollectionElementLabel(o.getClass().getName(), collectionDefinition.getName(), collectionDefinition.getBusinessObjectClass());
         }
 
         if (o != null) {
@@ -354,37 +367,23 @@ public class SectionBridge {
                             Object propertyValue = ObjectUtils.getPropertyValue(lineBusinessObject, fieldDefinition.getName());
                             
                             collField.setPropertyValue(propertyValue);
-                            // set field value from business object
-                            // check if field contains sensitive data and user is authorized to see value
-                            //boolean viewAuthorized = KNSServiceLocator.getAuthorizationService().isAuthorizedToViewAttribute(GlobalVariables.getUserSession().getPerson(), lineBusinessObject.getClass().getName(), name);
-                            //if (!viewAuthorized) {
 
-                                // set mask as field value
-                                //Mask propertyMask = KNSServiceLocator.getDataDictionaryService().getAttributeDisplayMask(lineBusinessObject.getClass(), name);
-                                //if (propertyMask == null) {
-                                //    throw new RuntimeException("No mask specified for secure field.");
-                                //}
-                            AttributeSecurity attributeSecurity = KNSServiceLocator.getDataDictionaryService().getAttributeSecurity(lineBusinessObject.getClass().getName(), name);
+                            AttributeSecurity attributeSecurity = getDataDictionaryService().getAttributeSecurity(lineBusinessObject.getClass().getName(), name);
                             if(attributeSecurity != null && attributeSecurity.isPartialMask()){
-                            	boolean viewAuthorized = KNSServiceLocator.getAuthorizationService().isAuthorizedToPartiallyUnmaskAttribute(GlobalVariables.getUserSession().getPerson(), lineBusinessObject.getClass().getSimpleName(), name);
+                            	boolean viewAuthorized = getBusinessObjectAuthorizationService().canPartiallyUnmaskField(GlobalVariables.getUserSession().getPerson(), lineBusinessObject.getClass(), name);
                             	if(!viewAuthorized){
                             		collField.setPropertyValue(attributeSecurity.getPartialMaskFormatter().maskValue(propertyValue));
                             		collField.setDisplayMaskValue(attributeSecurity.getPartialMaskFormatter().maskValue(propertyValue));
                             	}
                             }
                             if(attributeSecurity != null && attributeSecurity.isMask()){
-                            	boolean viewAuthorized = KNSServiceLocator.getAuthorizationService().isAuthorizedToUnmaskAttribute(GlobalVariables.getUserSession().getPerson(), lineBusinessObject.getClass().getSimpleName(), name);
+                            	boolean viewAuthorized = getBusinessObjectAuthorizationService().canFullyUnmaskField(GlobalVariables.getUserSession().getPerson(), lineBusinessObject.getClass(), name);
                             	if(!viewAuthorized){
                             		collField.setPropertyValue(attributeSecurity.getMaskFormatter().maskValue(propertyValue));
                             		collField.setDisplayMaskValue(attributeSecurity.getMaskFormatter().maskValue(propertyValue));
                             	}	
                             }
                                 
-                            //}
-                            //else {
-                            //    collField.setPropertyValue(propertyValue);
-                            //}
-
                             // the the field as read only (if appropriate)
                             if (fieldDefinition.isReadOnlyAfterAdd()) {
                                 collField.setReadOnly(true);
@@ -451,12 +450,12 @@ public class SectionBridge {
                                 }
                             }
                             // get label for collection
-                            String subCollectionLabel = KNSServiceLocator.getDataDictionaryService().getCollectionLabel(o.getClass(), subCollectionDefinition.getName());
+                            String subCollectionLabel = getDataDictionaryService().getCollectionLabel(o.getClass(), subCollectionDefinition.getName());
 
                             // retrieve the summary label either from the override or from the DD
                             String subCollectionElementLabel = subCollectionDefinition.getSummaryTitle();
                             if (StringUtils.isEmpty(subCollectionElementLabel)) {
-                                subCollectionElementLabel = KNSServiceLocator.getDataDictionaryService().getCollectionElementLabel(o.getClass().getName(), subCollectionDefinition.getName(), subCollectionDefinition.getBusinessObjectClass());
+                                subCollectionElementLabel = getDataDictionaryService().getCollectionElementLabel(o.getClass().getName(), subCollectionDefinition.getName(), subCollectionDefinition.getBusinessObjectClass());
                             }
                             // make sure it's really a collection (i.e. list)
 
@@ -532,16 +531,16 @@ public class SectionBridge {
                                         
                                         subCollField.setPropertyValue(propertyValue);
                                         
-                                        AttributeSecurity attributeSecurity = KNSServiceLocator.getDataDictionaryService().getAttributeSecurity(lineBusinessObject.getClass().getName(), name);
+                                        AttributeSecurity attributeSecurity = getDataDictionaryService().getAttributeSecurity(lineBusinessObject.getClass().getName(), name);
                                         if(attributeSecurity != null && attributeSecurity.isPartialMask()){
-                                        	boolean viewAuthorized = KNSServiceLocator.getAuthorizationService().isAuthorizedToPartiallyUnmaskAttribute(GlobalVariables.getUserSession().getPerson(), lineBusinessObject.getClass().getSimpleName(), name);
+                                        	boolean viewAuthorized = getBusinessObjectAuthorizationService().canPartiallyUnmaskField(GlobalVariables.getUserSession().getPerson(), lineBusinessObject.getClass(), name);
                                         	if(!viewAuthorized){
                                         		subCollField.setPropertyValue(attributeSecurity.getPartialMaskFormatter().maskValue(propertyValue));
                                         		subCollField.setDisplayMaskValue(attributeSecurity.getPartialMaskFormatter().maskValue(propertyValue));
                                         	}
                                         }
                                         if(attributeSecurity != null && attributeSecurity.isMask()){
-                                        	boolean viewAuthorized = KNSServiceLocator.getAuthorizationService().isAuthorizedToUnmaskAttribute(GlobalVariables.getUserSession().getPerson(), lineBusinessObject.getClass().getSimpleName(), name);
+                                        	boolean viewAuthorized = getBusinessObjectAuthorizationService().canFullyUnmaskField(GlobalVariables.getUserSession().getPerson(), lineBusinessObject.getClass(), name);
                                         	if(!viewAuthorized){
                                         		subCollField.setPropertyValue(attributeSecurity.getMaskFormatter().maskValue(propertyValue));
                                         		subCollField.setDisplayMaskValue(attributeSecurity.getMaskFormatter().maskValue(propertyValue));

@@ -24,7 +24,7 @@ import org.kuali.rice.kns.datadictionary.mask.MaskFormatter;
  * 
  * 
  */
-public class FieldAuthorization {
+public class FieldRestriction {
 
     private String fieldName;
     private boolean editable;
@@ -35,7 +35,7 @@ public class FieldAuthorization {
     /**
      * Constructs a FieldAuthorization.java.
      */
-    public FieldAuthorization() {
+    public FieldRestriction() {
         editable = true;
         viewable = true;
     }
@@ -49,7 +49,7 @@ public class FieldAuthorization {
      * @param canView - true if thie field is viewable in this context, false otherwise
      * 
      */
-    public FieldAuthorization(String fieldName, boolean canEdit, boolean canView) {
+    public FieldRestriction(String fieldName, boolean canEdit, boolean canView) {
         this.fieldName = fieldName;
         setEditable(canEdit); // using setters here to run impossible combinations check
         setViewable(canView);
@@ -62,7 +62,7 @@ public class FieldAuthorization {
      * @param fieldName - name of the field to represent
      * @param fieldAuthorizationFlag - Field.HIDDEN, Field.READONLY, or Field.EDITABLE
      */
-    public FieldAuthorization(String fieldName, String fieldAuthorizationFlag) {
+    public FieldRestriction(String fieldName, String fieldAuthorizationFlag) {
         // if an invalid flag is passed in, the choke on it
         if (!fieldAuthorizationFlag.equals(Field.EDITABLE) && !fieldAuthorizationFlag.equals(Field.READONLY) 
         		&& !fieldAuthorizationFlag.equals(Field.HIDDEN) && !fieldAuthorizationFlag.equals(Field.MASKED)
@@ -261,7 +261,7 @@ public class FieldAuthorization {
 
         if (obj != null) {
             if (this.getClass().equals(obj.getClass())) {
-                FieldAuthorization other = (FieldAuthorization) obj;
+                FieldRestriction other = (FieldRestriction) obj;
 
                 if (StringUtils.equals(this.fieldName, other.getFieldName())) {
                     if (this.editable == other.isEditable() && this.viewable == other.isViewable()) {

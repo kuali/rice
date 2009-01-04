@@ -29,29 +29,13 @@ import org.kuali.rice.kns.util.KNSConstants;
 
 public class InquiryAuthorizerBase extends BusinessObjectAuthorizerBase implements
 		InquiryAuthorizer {
-
-	public final void addInquiryRestrictions(InquiryAuthorizations auths,
-			BusinessObject businessObject, Person user) {
-		for (String sectionId : getSecurePotentiallyHiddenSectionIds()) {
-			Map<String, String> additionalPermissionDetails = new HashMap<String, String>();
-			additionalPermissionDetails
-					.put(KimAttributes.SECTION_ID, sectionId);
-			if (!isAuthorizedByTemplate(businessObject,
-					KNSConstants.KNS_NAMESPACE,
-					KimConstants.PERMISSION_VIEW_SECTION,
-					user.getPrincipalId(), additionalPermissionDetails, null)) {
-				auths.addHiddenSectionId(sectionId);
-			}
-		}
-	}
-
 	/**
 	 * Implement this method to flag sections as restricted and get the
 	 * framework to check the permission for you
 	 * 
 	 * @return Set of section ids that need to be hidden for particular users
 	 */
-	protected Set<String> getSecurePotentiallyHiddenSectionIds() {
+	public Set<String> getSecurePotentiallyHiddenSectionIds() {
 		return new HashSet<String>();
 	}
 }

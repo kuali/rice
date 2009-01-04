@@ -27,19 +27,28 @@ import org.kuali.rice.kns.util.KNSConstants;
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class DocumentTypeAndExistingRecordsOnlyPermissionTypeServiceImpl extends DocumentTypePermissionTypeServiceImpl {
+public class DocumentTypeAndExistingRecordsOnlyPermissionTypeServiceImpl extends
+		DocumentTypePermissionTypeServiceImpl {
 	{
 		inputRequiredAttributes.add(KNSConstants.MAINTENANCE_ACTN);
 		storedRequiredAttributes.add(KimAttributes.EXISTING_RECORDS_ONLY);
 	}
-	
-	
 
 	/**
-	 * @see org.kuali.rice.kim.service.support.impl.KimTypeServiceBase#performMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 * @see org.kuali.rice.kim.service.support.impl.KimTypeServiceBase#performMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet,
+	 *      org.kuali.rice.kim.bo.types.dto.AttributeSet)
 	 */
 	@Override
-	protected boolean performMatch(AttributeSet inputAttributeSet, AttributeSet storedAttributeSet) {
-		return super.performMatch(inputAttributeSet, storedAttributeSet) && (!Boolean.parseBoolean(storedAttributeSet.get(KimAttributes.EXISTING_RECORDS_ONLY)) || (Boolean.parseBoolean(storedAttributeSet.get(KimAttributes.EXISTING_RECORDS_ONLY)) && KNSConstants.MAINTENANCE_EDIT_ACTION.equals(inputAttributeSet.get(KNSConstants.MAINTENANCE_ACTION))));
+	protected boolean performMatch(AttributeSet inputAttributeSet,
+			AttributeSet storedAttributeSet) {
+		validateRequiredAttributesAgainstReceived(inputRequiredAttributes,
+				inputAttributeSet, REQUESTED_DETAILS_RECEIVED_ATTIBUTES_NAME);
+		validateRequiredAttributesAgainstReceived(storedRequiredAttributes,
+				storedAttributeSet, STORED_DETAILS_RECEIVED_ATTIBUTES_NAME);
+		return inputAttributeSet.get(KimAttributes.DOCUMENT_TYPE_NAME).equals(storedAttributeSet.get(KimAttributes.DOCUMENT_TYPE_NAME))
+				&& (!Boolean.parseBoolean(storedAttributeSet
+						.get(KimAttributes.EXISTING_RECORDS_ONLY)) || KNSConstants.MAINTENANCE_EDIT_ACTION
+						.equals(inputAttributeSet
+								.get(KNSConstants.MAINTENANCE_ACTION)));
 	}
 }

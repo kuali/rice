@@ -25,9 +25,8 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
-import org.displaytag.util.LookupUtil;
 import org.kuali.rice.core.service.EncryptionService;
-import org.kuali.rice.kns.authorization.FieldAuthorization;
+import org.kuali.rice.kns.authorization.FieldRestriction;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
 import org.kuali.rice.kns.datadictionary.control.ApcSelectControlDefinition;
@@ -37,7 +36,7 @@ import org.kuali.rice.kns.datadictionary.control.CurrencyControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.KualiUserControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.LinkControlDefinition;
 import org.kuali.rice.kns.datadictionary.mask.MaskFormatter;
-import org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizations;
+import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions;
 import org.kuali.rice.kns.exception.UnknownBusinessClassAttributeException;
 import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.lookup.HtmlData;
@@ -652,7 +651,7 @@ public class FieldUtils {
      * @param readOnly - Indicates whether all fields should be read only.
      * @return Field
      */
-    public static Field fixFieldForForm(Field field, List keyFieldNames, String namePrefix, String maintenanceAction, boolean readOnly, MaintenanceDocumentAuthorizations auths) {
+    public static Field fixFieldForForm(Field field, List keyFieldNames, String namePrefix, String maintenanceAction, boolean readOnly, MaintenanceDocumentRestrictions auths) {
         String propertyName = field.getPropertyName();
         // We only need to do the following processing if the field is not a sub section header
         if (field.containsBOData()) {
@@ -787,10 +786,10 @@ public class FieldUtils {
         return field;
     }
 
-    public static void applyAuthorization(Field field, MaintenanceDocumentAuthorizations auths) {
+    public static void applyAuthorization(Field field, MaintenanceDocumentRestrictions auths) {
 
     	String fieldName = "";
-    	FieldAuthorization fieldAuth = null;
+    	FieldRestriction fieldAuth = null;
         // only apply this on the newMaintainable
         if (field.getPropertyName().startsWith(KNSConstants.MAINTENANCE_NEW_MAINTAINABLE)) {
 
@@ -798,8 +797,8 @@ public class FieldUtils {
             fieldName = field.getPropertyName().substring(KNSConstants.MAINTENANCE_NEW_MAINTAINABLE.length());
 
             // if the field is restricted somehow
-            if (auths.hasAuthFieldRestricted(fieldName)) {
-                fieldAuth = auths.getAuthFieldAuthorization(fieldName);
+            if (auths.hasRestriction(fieldName)) {
+                fieldAuth = auths.getFieldRestriction(fieldName);
                 
                 if(fieldAuth.isPartiallyMasked()){
                 	field.setSecure(true);
@@ -849,8 +848,8 @@ public class FieldUtils {
             // get just the actual fieldName, with the document.oldMaintainableObject, etc etc removed
             fieldName = field.getPropertyName().substring(KNSConstants.MAINTENANCE_OLD_MAINTAINABLE.length());
             // if the field is restricted somehow
-            if (auths.hasAuthFieldRestricted(fieldName)) {
-                fieldAuth = auths.getAuthFieldAuthorization(fieldName);
+            if (auths.hasRestriction(fieldName)) {
+                fieldAuth = auths.getFieldRestriction(fieldName);
                 if(fieldAuth.isPartiallyMasked()){
                     field.setSecure(true);
                     MaskFormatter maskFormatter = fieldAuth.getMaskFormatter();
@@ -888,7 +887,7 @@ public class FieldUtils {
      * @param readOnly
      * @return List of Section objects
      */
-    public static List meshSections(List oldSections, List newSections, List keyFieldNames, String maintenanceAction, boolean readOnly, MaintenanceDocumentAuthorizations auths) {
+    public static List meshSections(List oldSections, List newSections, List keyFieldNames, String maintenanceAction, boolean readOnly, MaintenanceDocumentRestrictions auths) {
         List meshedSections = new ArrayList();
 
         for (int i = 0; i < newSections.size(); i++) {
@@ -919,7 +918,7 @@ public class FieldUtils {
      * @param auths
      * @return a List of Field
      */
-    private static List<Field> arrangeNewFields(List newFields, List keyFieldNames, String maintenanceAction, boolean readOnly, MaintenanceDocumentAuthorizations auths) {
+    private static List<Field> arrangeNewFields(List newFields, List keyFieldNames, String maintenanceAction, boolean readOnly, MaintenanceDocumentRestrictions auths) {
         List<Field> results = new ArrayList();
         for (int k = 0; k < newFields.size(); k++) {
             Field newMaintField = (Field) newFields.get(k);
@@ -941,7 +940,7 @@ public class FieldUtils {
      * @param readOnly
      * @return List of Row objects
      */
-    public static List meshRows(List oldRows, List newRows, List keyFieldNames, String maintenanceAction, boolean readOnly, MaintenanceDocumentAuthorizations auths) {
+    public static List meshRows(List oldRows, List newRows, List keyFieldNames, String maintenanceAction, boolean readOnly, MaintenanceDocumentRestrictions auths) {
         List<Row> meshedRows = new ArrayList<Row>();
 
         for (int j = 0; j < newRows.size(); j++) {
@@ -980,7 +979,7 @@ public class FieldUtils {
      * @param readOnly
      * @return List of Field objects
      */
-    public static List meshFields(List oldFields, List newFields, List keyFieldNames, String maintenanceAction, boolean readOnly, MaintenanceDocumentAuthorizations auths) {
+    public static List meshFields(List oldFields, List newFields, List keyFieldNames, String maintenanceAction, boolean readOnly, MaintenanceDocumentRestrictions auths) {
         List meshedFields = new ArrayList();
 
         List newFieldsToMerge = new ArrayList();
@@ -1112,7 +1111,7 @@ public class FieldUtils {
         return fields;
     }
 
-    private static Field meshContainerFields(Field oldMaintField, Field newMaintField, List keyFieldNames, String maintenanceAction, boolean readOnly, MaintenanceDocumentAuthorizations auths) {
+    private static Field meshContainerFields(Field oldMaintField, Field newMaintField, List keyFieldNames, String maintenanceAction, boolean readOnly, MaintenanceDocumentRestrictions auths) {
         List resultingRows = new ArrayList();
         resultingRows.addAll(meshRows(oldMaintField.getContainerRows(), newMaintField.getContainerRows(), keyFieldNames, maintenanceAction, readOnly, auths));
         Field resultingField = newMaintField;

@@ -35,7 +35,7 @@ public class TransactionalDocumentAuthorizerBase extends DocumentAuthorizerBase 
         Iterator i = editModes.iterator();
         while(i.hasNext()) {
           String editMode = (String)i.next();
-          if(permissionExistsByTemplate(KNSConstants.KNS_NAMESPACE, KimConstants.PERMISSION_USE_TRANSACTIONAL_DOCUMENT, d) && !isAuthorizedByTemplate(d, KNSConstants.KNS_NAMESPACE, KimConstants.PERMISSION_USE_TRANSACTIONAL_DOCUMENT, u.getPrincipalId())){
+          if(permissionExistsByTemplate(KNSConstants.KNS_NAMESPACE, KimConstants.PermissionTemplateNames.USE_TRANSACTIONAL_DOCUMENT, d) && !isAuthorizedByTemplate(d, KNSConstants.KNS_NAMESPACE, KimConstants.PermissionTemplateNames.USE_TRANSACTIONAL_DOCUMENT, u.getPrincipalId())){
         	  editModes.remove(editMode);
           }
         }

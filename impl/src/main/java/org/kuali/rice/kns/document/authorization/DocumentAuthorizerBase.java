@@ -28,7 +28,6 @@ import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.authorization.BusinessObjectAuthorizerBase;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.service.AuthorizationService;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
@@ -44,15 +43,14 @@ import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  */
-public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase implements
-		DocumentAuthorizer {
+public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
+		implements DocumentAuthorizer {
 	private static Log LOG = LogFactory.getLog(DocumentAuthorizerBase.class);
-
+	private static final String PRE_ROUTING_ROUTE_NAME = "PreRoute";
 	public static final String EDIT_MODE_DEFAULT_TRUE_VALUE = "TRUE";
 	public static final String USER_SESSION_METHOD_TO_CALL_OBJECT_KEY = "METHOD_TO_CALL_KEYS_METHOD_OBJECT_KEY";
 	public static final String USER_SESSION_METHOD_TO_CALL_COMPLETE_OBJECT_KEY = "METHOD_TO_CALL_KEYS_COMPLETE_OBJECT_KEY";
 
-	private static AuthorizationService authorizationService;
 	private static KualiWorkflowInfo kualiWorkflowInfo;
 	private static KualiConfigurationService kualiConfigurationService;
 
@@ -76,25 +74,26 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase impleme
 		if (documentActions.contains(KNSConstants.KUALI_ACTION_CAN_EDIT)
 				&& !isAuthorizedByTemplate(document,
 						KNSConstants.KNS_NAMESPACE,
-						KimConstants.PERMISSION_EDIT_DOCUMENT, user
-								.getPrincipalId())) {
+						KimConstants.PermissionTemplateNames.EDIT_DOCUMENT,
+						user.getPrincipalId())) {
 			documentActions.remove(KNSConstants.KUALI_ACTION_CAN_EDIT);
 		}
 
 		if (documentActions.contains(KNSConstants.KUALI_ACTION_CAN_COPY)
 				&& !isAuthorizedByTemplate(document,
 						KNSConstants.KNS_NAMESPACE,
-						KimConstants.PERMISSION_COPY_DOCUMENT, user
-								.getPrincipalId())) {
+						KimConstants.PermissionTemplateNames.COPY_DOCUMENT,
+						user.getPrincipalId())) {
 			documentActions.remove(KNSConstants.KUALI_ACTION_CAN_COPY);
 		}
 
 		if (documentActions
 				.contains(KNSConstants.KUALI_ACTION_CAN_BLANKET_APPROVE)
-				&& !isAuthorizedByTemplate(document,
+				&& !isAuthorizedByTemplate(
+						document,
 						KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE,
-						KimConstants.PERMISSION_BLANKET_APPROVE_DOCUMENT, user
-								.getPrincipalId())) {
+						KimConstants.PermissionTemplateNames.BLANKET_APPROVE_DOCUMENT,
+						user.getPrincipalId())) {
 			documentActions
 					.remove(KNSConstants.KUALI_ACTION_CAN_BLANKET_APPROVE);
 		}
@@ -102,24 +101,24 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase impleme
 		if (documentActions.contains(KNSConstants.KUALI_ACTION_CAN_CANCEL)
 				&& !isAuthorizedByTemplate(document,
 						KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE,
-						KimConstants.PERMISSION_CANCEL_DOCUMENT, user
-								.getPrincipalId())) {
+						KimConstants.PermissionTemplateNames.CANCEL_DOCUMENT,
+						user.getPrincipalId())) {
 			documentActions.remove(KNSConstants.KUALI_ACTION_CAN_CANCEL);
 		}
 
 		if (documentActions.contains(KNSConstants.KUALI_ACTION_CAN_SAVE)
 				&& !isAuthorizedByTemplate(document,
 						KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE,
-						KimConstants.PERMISSION_SAVE_DOCUMENT, user
-								.getPrincipalId())) {
+						KimConstants.PermissionTemplateNames.SAVE_DOCUMENT,
+						user.getPrincipalId())) {
 			documentActions.remove(KNSConstants.KUALI_ACTION_CAN_SAVE);
 		}
 
 		if (documentActions.contains(KNSConstants.KUALI_ACTION_CAN_ROUTE)
 				&& !isAuthorizedByTemplate(document,
 						KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE,
-						KimConstants.PERMISSION_ROUTE_DOCUMENT, user
-								.getPrincipalId())) {
+						KimConstants.PermissionTemplateNames.ROUTE_DOCUMENT,
+						user.getPrincipalId())) {
 			documentActions.remove(KNSConstants.KUALI_ACTION_CAN_ROUTE);
 		}
 
@@ -168,21 +167,22 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase impleme
 				documentTypeName);
 		return getIdentityManagementService().isAuthorizedByTemplateName(
 				user.getPrincipalId(), nameSpaceCode,
-				KimConstants.PERMISSION_INITIATE_DOCUMENT, permissionDetails,
-				null);
+				KimConstants.PermissionTemplateNames.INITIATE_DOCUMENT,
+				permissionDetails, null);
 	}
 
 	public final boolean canReceiveAdHoc(Document document, Person user,
 			String actionRequestCode) {
 		return isAuthorizedByTemplate(document,
 				KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE,
-				KimConstants.PERMISSION_AD_HOC_REVIEW_DOCUMENT, user
-						.getPrincipalId());
+				KimConstants.PermissionTemplateNames.AD_HOC_REVIEW_DOCUMENT,
+				user.getPrincipalId());
 	}
 
 	public final boolean canOpen(Document document, Person user) {
 		return isAuthorizedByTemplate(document, KNSConstants.KNS_NAMESPACE,
-				KimConstants.PERMISSION_OPEN_DOCUMENT, user.getPrincipalId());
+				KimConstants.PermissionTemplateNames.OPEN_DOCUMENT, user
+						.getPrincipalId());
 	}
 
 	private boolean canApprove(Document document, Person user) {
@@ -220,42 +220,47 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase impleme
 		}
 	}
 
-	// TODO pretty sure this is wrong
+	// TODO pretty sure this is wrong - annotate is a workflow thing
 	private boolean canAnnotate(Document document, Person user) {
 		return isAuthorizedByTemplate(document, KNSConstants.KNS_NAMESPACE,
-				KimConstants.PERMISSION_ADD_NOTE, user.getPrincipalId());
+				KimConstants.PermissionTemplateNames.ADD_NOTE, user
+						.getPrincipalId());
 	}
 
 	private boolean canTakeRequestedAction(Document document, Person user) {
 		return isAuthorizedByTemplate(document, KNSConstants.KNS_NAMESPACE,
-				KimConstants.PERMISSION_TAKE_REQUESTED_ACTION, user
-						.getPrincipalId());
+				KimConstants.PermissionTemplateNames.TAKE_REQUESTED_ACTION,
+				user.getPrincipalId());
 	}
-	
+
 	@Override
 	protected void addPermissionDetails(BusinessObject businessObject,
 			Map<String, String> attributes) {
 		super.addPermissionDetails(businessObject, attributes);
-		addStandardAttributes(businessObject, attributes);
+		if (businessObject instanceof Document) {
+			addStandardAttributes((Document)businessObject, attributes);
+		}
 	}
 
 	@Override
 	protected void addRoleQualification(BusinessObject businessObject,
 			Map<String, String> attributes) {
 		super.addRoleQualification(businessObject, attributes);
-		addStandardAttributes(businessObject, attributes);
+		if (businessObject instanceof Document) {
+			addStandardAttributes((Document)businessObject, attributes);
+		}
 	}
 
-	private void addStandardAttributes(BusinessObject businessObject,
+	private void addStandardAttributes(Document document,
 			Map<String, String> attributes) {
-		KualiWorkflowDocument wd = ((Document) businessObject)
-				.getDocumentHeader().getWorkflowDocument();
-		attributes.put(KimAttributes.DOCUMENT_NUMBER,
-				((Document) businessObject).getDocumentNumber());
+		KualiWorkflowDocument wd = document.getDocumentHeader()
+				.getWorkflowDocument();
+		attributes.put(KimAttributes.DOCUMENT_NUMBER, document
+				.getDocumentNumber());
 		attributes.put(KimAttributes.DOCUMENT_TYPE_NAME, wd.getDocumentType());
 		if (wd.stateIsInitiated() || wd.stateIsSaved()) {
 			attributes.put(KimAttributes.ROUTE_NODE_NAME,
-					KimConstants.PRE_ROUTING_ROUT_NAME);
+					PRE_ROUTING_ROUTE_NAME);
 		} else {
 			attributes.put(KimAttributes.ROUTE_NODE_NAME, wd
 					.getCurrentRouteNodeNames());

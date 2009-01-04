@@ -15,11 +15,12 @@
  */
 package org.kuali.rice.kns.inquiry;
 
+import java.util.Set;
+
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kns.authorization.BusinessObjectAuthorizer;
+import org.kuali.rice.kns.authorization.InquiryOrMaintenanceDocumentAuthorizer;
 import org.kuali.rice.kns.bo.BusinessObject;
 
-public interface InquiryAuthorizer extends BusinessObjectAuthorizer {
-    public void addInquiryRestrictions(InquiryAuthorizations auths, BusinessObject businessObject, Person user);
+public interface InquiryAuthorizer extends InquiryOrMaintenanceDocumentAuthorizer {
 }
 

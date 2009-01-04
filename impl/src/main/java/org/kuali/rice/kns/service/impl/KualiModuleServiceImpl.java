@@ -19,10 +19,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.kuali.rice.kns.authorization.AuthorizationType;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 import org.kuali.rice.kns.bo.ParameterNamespace;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.exception.KualiException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
@@ -115,18 +113,6 @@ public class KualiModuleServiceImpl implements KualiModuleService, InitializingB
     
     public void setInstalledModuleServices(List<ModuleService> installedModuleServices) {
         this.installedModuleServices = installedModuleServices;
-    }
-
-    public boolean isAuthorized( Person user, AuthorizationType authType ) {
-        if ( user != null && authType != null ) {
-            ModuleService moduleService = getResponsibleModuleService( authType.getTargetObjectClass() );
-            if ( moduleService != null ) {
-                if ( !moduleService.isAuthorized( user, authType ) ) {
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 
     public List<String> getDataDictionaryPackages() {

@@ -16,7 +16,6 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kns.authorization.AuthorizationType;
 import org.kuali.rice.kns.bo.AdHocRoutePerson;
 import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.kns.bo.Note;
@@ -31,6 +30,7 @@ import org.kuali.rice.kns.rule.RouteDocumentRule;
 import org.kuali.rice.kns.rule.SaveDocumentRule;
 import org.kuali.rice.kns.rule.event.ApproveDocumentEvent;
 import org.kuali.rice.kns.service.DictionaryValidationService;
+import org.kuali.rice.kns.service.DocumentTypeService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.KualiModuleService;
@@ -50,11 +50,11 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentRuleBase.class);
 
     private static org.kuali.rice.kim.service.PersonService personService;
-    private static KualiModuleService kualiModuleService;
     private static DictionaryValidationService dictionaryValidationService;
     private static KualiWorkflowInfo workflowInfoService;
     private static KualiConfigurationService kualiConfigurationService;
-
+    private static DocumentTypeService documentTypeService;
+    
     /**
      * Just some arbitrarily high max depth that's unlikely to occur in real life to prevent recursion problems
      */
@@ -64,9 +64,9 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 	if (personService == null) {
 	    workflowInfoService = KNSServiceLocator.getWorkflowInfoService();
 	    kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
-	    kualiModuleService = KNSServiceLocator.getKualiModuleService();
 	    dictionaryValidationService = KNSServiceLocator.getDictionaryValidationService();
 	    personService = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService();
+	    documentTypeService = KNSServiceLocator.getDocumentTypeService();
 	}
     }
 
@@ -74,10 +74,10 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 	initStatics();
 	return personService;
     }
-
-    protected KualiModuleService getKualiModuleService() {
-	initStatics();
-	return kualiModuleService;
+    
+    protected DocumentTypeService getDocumentTypeService() {
+    	initStatics();
+    	return documentTypeService;
     }
 
     protected DictionaryValidationService getDictionaryValidationService() {
@@ -361,8 +361,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 		} else {
 		    docOrBoClass = document.getClass();
 		}
-		if (!getKualiModuleService().isAuthorized(user,
-			new AuthorizationType.AdHocRequest(docOrBoClass, person.getActionRequested()))) {
+		if (!getDocumentTypeService().getDocumentAuthorizer(document).canReceiveAdHoc(document, user, person.getActionRequested())) {
 		    GlobalVariables.getErrorMap().putError(KNSPropertyConstants.ID,
 			    RiceKeyConstants.ERROR_UNAUTHORIZED_ADHOC_PERSON_ID);
 		}

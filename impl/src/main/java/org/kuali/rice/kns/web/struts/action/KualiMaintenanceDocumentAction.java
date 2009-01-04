@@ -43,22 +43,18 @@ import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kns.authorization.AuthorizationType;
-import org.kuali.rice.kns.authorization.FieldAuthorization;
+import org.kuali.rice.kns.authorization.FieldRestriction;
 import org.kuali.rice.kns.bo.DocumentAttachment;
 import org.kuali.rice.kns.bo.PersistableAttachment;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
-import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.MaintenanceDocumentBase;
-import org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizations;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizer;
-import org.kuali.rice.kns.exception.AuthorizationException;
+import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions;
 import org.kuali.rice.kns.exception.MaintenanceNewCopyAuthorizationException;
-import org.kuali.rice.kns.exception.ModuleAuthorizationException;
 import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.rule.event.KualiAddLineEvent;
 import org.kuali.rice.kns.service.DocumentTypeService;
@@ -87,22 +83,6 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         super();
         maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
         encryptionService = KNSServiceLocator.getEncryptionService();
-    }
-
-    protected void checkAuthorization(ActionForm form, String methodToCall) throws AuthorizationException {
-        if (!(form instanceof KualiMaintenanceForm)) {
-            super.checkAuthorization(form, methodToCall);
-        }
-        else {
-            Document document = (MaintenanceDocument) ((KualiMaintenanceForm) form).getDocument();
-            if (document != null) {
-                AuthorizationType documentAuthorizationType = new AuthorizationType.Document(document.getDocumentBusinessObject().getClass(), ((KualiMaintenanceForm) form).getDocument());
-                if (!KNSServiceLocator.getKualiModuleService().isAuthorized(GlobalVariables.getUserSession().getPerson(), documentAuthorizationType)) {
-                    LOG.error("User not authorized to use this document: " + ((MaintenanceDocument) ((KualiMaintenanceForm) form).getDocument()).getDocumentBusinessObject().getClass().getName());
-                    throw new ModuleAuthorizationException(GlobalVariables.getUserSession().getPerson().getPrincipalName(), documentAuthorizationType, getKualiModuleService().getResponsibleModuleService(((MaintenanceDocument) ((KualiMaintenanceForm) form).getDocument()).getDocumentBusinessObject().getClass()));
-                }
-            }
-        }
     }
 
     @Override
@@ -932,18 +912,18 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         MaintenanceDocumentAuthorizer documentAuthorizer = (MaintenanceDocumentAuthorizer) documentTypeService.getDocumentAuthorizer(document);
 
         // get a new instance of MaintenanceDocumentAuthorizations for this context
-        MaintenanceDocumentAuthorizations auths = KNSServiceLocator.getMaintenanceDocumentAuthorizationService().generateMaintenanceDocumentAuthorizations(document, user);
+        MaintenanceDocumentRestrictions auths = KNSServiceLocator.getBusinessObjectAuthorizationService().getMaintenanceDocumentRestrictions(document, user);
 
         // get a reference to the newBo
         PersistableBusinessObject newBo = document.getNewMaintainableObject().getBusinessObject();
 
         // walk through all the restrictions
-        Collection restrictedFields = auths.getAuthFieldNames();
+        Collection restrictedFields = auths.getRestrictedFieldNames();
         for (Iterator iter = restrictedFields.iterator(); iter.hasNext();) {
             String fieldName = (String) iter.next();
 
             // get the specific field authorization structure
-            FieldAuthorization fieldAuthorization = auths.getAuthFieldAuthorization(fieldName);
+            FieldRestriction fieldAuthorization = auths.getFieldRestriction(fieldName);
 
             // if there are any restrictions, then clear the field value
             if (fieldAuthorization.isRestricted()) {
@@ -994,14 +974,11 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
     	MaintenanceDocument maintenanceDocument = (MaintenanceDocument) maintenanceForm.getDocument();
     	MaintenanceDocumentAuthorizer maintenanceDocumentAuthorizer = (MaintenanceDocumentAuthorizer) KNSServiceLocator.getDocumentTypeService().getDocumentAuthorizer(maintenanceDocument);
     	Person user = GlobalVariables.getUserSession().getPerson();
-    	//Default form-level editMode to readOnly
-    	maintenanceForm.setReadOnly(true);
-    	if(formBase.getDocumentActions().containsKey(KNSConstants.KUALI_ACTION_CAN_EDIT)){
-    		maintenanceForm.setReadOnly(false);
-    		
-    	}
-    	
-    	MaintenanceDocumentAuthorizations maintenanceDocumentAuthorizations = KNSServiceLocator.getMaintenanceDocumentAuthorizationService().generateMaintenanceDocumentAuthorizations(maintenanceDocument, user);
+    	maintenanceForm.setReadOnly(!formBase.getDocumentActions().containsKey(KNSConstants.KUALI_ACTION_CAN_EDIT));
+    	MaintenanceDocumentRestrictions maintenanceDocumentAuthorizations = KNSServiceLocator.getBusinessObjectAuthorizationService().getMaintenanceDocumentRestrictions(maintenanceDocument, user);
     	maintenanceForm.setAuthorizations(maintenanceDocumentAuthorizations);
+    	if (maintenanceDocumentAuthorizations.hasAnyFieldRestrictions()) {
+    		maintenanceForm.getDocumentActions().remove(KNSConstants.KUALI_ACTION_CAN_BLANKET_APPROVE);
+    	}
     }
 }

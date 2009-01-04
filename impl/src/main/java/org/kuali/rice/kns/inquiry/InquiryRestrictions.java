@@ -13,18 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.service;
+package org.kuali.rice.kns.inquiry;
 
-import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kns.document.MaintenanceDocument;
-import org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizations;
+import org.kuali.rice.kns.authorization.InquiryOrMaintenanceDocumentRestrictions;
 
 /**
- * This is a description of what this class does - wliang don't forget to fill this in. 
+ * This is a description of what this class does - abyrne don't forget to fill this in. 
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public interface MaintenanceDocumentAuthorizationService {
-	public MaintenanceDocumentAuthorizations generateMaintenanceDocumentAuthorizations(MaintenanceDocument document, Person person); 
+public interface InquiryRestrictions extends
+		InquiryOrMaintenanceDocumentRestrictions {
+
 }

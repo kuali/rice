@@ -25,7 +25,6 @@ import org.kuali.rice.kew.user.BaseWorkflowUser;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
-import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * 
@@ -33,7 +32,8 @@ import org.kuali.rice.kim.util.KimConstants;
  *
  */
 public class ActionRequestDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServiceBase {
-
+	private static final String ACTION_REQUEST_RECIPIENT_ROLE_NAME = "Action Request Recipient";
+	
 	protected List<String> requiredAttributes = new ArrayList<String>();
 	{
 		requiredAttributes.add(KimAttributes.DOCUMENT_NUMBER);
@@ -60,7 +60,7 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeS
     	String documentNumber = qualification.get(KimAttributes.DOCUMENT_NUMBER);
 		String actionRequestCode = qualification.get(KimAttributes.ACTION_REQUEST_CD);
 		List<String> principalIds = new ArrayList<String>();
-		if(KimConstants.KIM_ROLE_NAME_ACTION_REQUEST_RECIPIENT.equals(roleName)){
+		if(ACTION_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName)){
 			try{
 				WorkflowInfo workflowInfo = new WorkflowInfo();
 				principalIds.addAll(

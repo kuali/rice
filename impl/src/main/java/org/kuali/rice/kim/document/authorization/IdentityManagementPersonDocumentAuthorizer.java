@@ -17,19 +17,14 @@ package org.kuali.rice.kim.document.authorization;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
-import org.kuali.rice.kim.bo.role.KimPermission;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.ui.PersonDocumentGroup;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
-import org.kuali.rice.kim.service.IdentityManagementService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.document.Document;
@@ -47,7 +42,7 @@ public class IdentityManagementPersonDocumentAuthorizer extends TransactionalDoc
 	protected void addPermissionDetails(BusinessObject businessObject,
 			Map<String, String> attributes) {
 		super.addPermissionDetails(businessObject, attributes);
-		attributes.put(KimAttributes.ENTITY_TYPE_CODE, KimConstants.PERSON_ENTITY_TYPE);
+		attributes.put(KimAttributes.ENTITY_TYPE_CODE, KimConstants.EntityTypes.PERSON);
 	}
 	
 	public Set<String> getReadOnlyEntityPropertyNames(Document document, Person user, Set<String> securePotentiallyReadOnlyEntityPropertyNames) {
@@ -55,7 +50,7 @@ public class IdentityManagementPersonDocumentAuthorizer extends TransactionalDoc
 		for (String securePotentiallyReadOnlyEntityPropertyName : securePotentiallyReadOnlyEntityPropertyNames) {
 			Map<String,String> collectionOrFieldLevelPermissionDetails = new HashMap<String,String>();
 			collectionOrFieldLevelPermissionDetails.put(KimAttributes.PROPERTY_NAME, securePotentiallyReadOnlyEntityPropertyName);
-			if (!isAuthorizedByTemplate(document, KimConstants.NAMESPACE_CODE, KimConstants.PERMISSION_MODIFY_ENTITY, user.getPrincipalId(), collectionOrFieldLevelPermissionDetails, null)) {
+			if (!isAuthorizedByTemplate(document, KimConstants.NAMESPACE_CODE, KimConstants.PermissionTemplateNames.MODIFY_ENTITY, user.getPrincipalId(), collectionOrFieldLevelPermissionDetails, null)) {
 				readOnlyEntityPropertyNames.add(securePotentiallyReadOnlyEntityPropertyName);
 			}
 		}
@@ -68,7 +63,7 @@ public class IdentityManagementPersonDocumentAuthorizer extends TransactionalDoc
 			Map<String,String> collectionOrFieldLevelPermissionDetails = new HashMap<String,String>();
 			collectionOrFieldLevelPermissionDetails.put(KimAttributes.NAMESPACE_CODE, personDocumentGroup.getNamespaceCode());
 			collectionOrFieldLevelPermissionDetails.put(KimAttributes.GROUP_NAME, personDocumentGroup.getGroupName());
-			if (!isAuthorizedByTemplate(document, KimConstants.NAMESPACE_CODE, KimConstants.PERMISSION_POPULATE_GROUP, user.getPrincipalId(), collectionOrFieldLevelPermissionDetails, null)) {
+			if (!isAuthorizedByTemplate(document, KimConstants.NAMESPACE_CODE, KimConstants.PermissionTemplateNames.POPULATE_GROUP, user.getPrincipalId(), collectionOrFieldLevelPermissionDetails, null)) {
 				if (!unpopulateableGroups.containsKey(personDocumentGroup.getNamespaceCode())) {
 					unpopulateableGroups.put(personDocumentGroup.getNamespaceCode(), new HashSet<String>());
 				}
@@ -84,7 +79,7 @@ public class IdentityManagementPersonDocumentAuthorizer extends TransactionalDoc
 			Map<String,String> collectionOrFieldLevelPermissionDetails = new HashMap<String,String>();
 			collectionOrFieldLevelPermissionDetails.put(KimAttributes.NAMESPACE_CODE, personDocumentRole.getNamespaceCode());
 			collectionOrFieldLevelPermissionDetails.put(KimAttributes.ROLE_NAME, personDocumentRole.getRoleName());
-			if (!isAuthorizedByTemplate(document, KimConstants.NAMESPACE_CODE, KimConstants.PERMISSION_ASSIGN_ROLE, user.getPrincipalId(), collectionOrFieldLevelPermissionDetails, null)) {
+			if (!isAuthorizedByTemplate(document, KimConstants.NAMESPACE_CODE, KimConstants.PermissionTemplateNames.ASSIGN_ROLE, user.getPrincipalId(), collectionOrFieldLevelPermissionDetails, null)) {
 				if (!unassignableRoles.containsKey(personDocumentRole.getNamespaceCode())) {
 					unassignableRoles.put(personDocumentRole.getNamespaceCode(), new HashSet<String>());
 				}

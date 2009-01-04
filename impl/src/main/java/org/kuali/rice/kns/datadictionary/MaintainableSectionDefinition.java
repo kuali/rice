@@ -41,8 +41,6 @@ public class MaintainableSectionDefinition extends DataDictionaryDefinitionBase 
     
     protected boolean hidden = false;
     
-    private AttributeSecurity attributeSecurity;
-
     public MaintainableSectionDefinition() {}
 
     /**
@@ -94,9 +92,6 @@ public class MaintainableSectionDefinition extends DataDictionaryDefinitionBase 
      * @see org.kuali.rice.kns.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Object)
      */
     public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
-    	if(attributeSecurity != null){
-    		attributeSecurity.completeValidation(rootBusinessObjectClass, otherBusinessObjectClass);
-    	}
         for ( MaintainableItemDefinition maintainableItem : maintainableItems ) {
             maintainableItem.completeValidation(rootBusinessObjectClass, null);
         }
@@ -163,18 +158,4 @@ public class MaintainableSectionDefinition extends DataDictionaryDefinitionBase 
         
         this.maintainableItems = maintainableItems;
     }
-
-	/**
-	 * @return the attributeSecurity
-	 */
-	public AttributeSecurity getAttributeSecurity() {
-		return this.attributeSecurity;
-	}
-
-	/**
-	 * @param attributeSecurity the attributeSecurity to set
-	 */
-	public void setAttributeSecurity(AttributeSecurity attributeSecurity) {
-		this.attributeSecurity = attributeSecurity;
-	}
 }

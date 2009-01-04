@@ -31,12 +31,17 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kns.authorization.AuthorizationType;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimCommonUtils;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.exception.AuthorizationException;
-import org.kuali.rice.kns.exception.ModuleAuthorizationException;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.lookup.Lookupable;
+import org.kuali.rice.kns.service.DocumentTypeService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
@@ -53,25 +58,40 @@ import org.kuali.rice.kns.web.ui.Row;
 public class KualiLookupAction extends KualiAction {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiLookupAction.class);
 
-    protected void checkAuthorization( ActionForm form, String methodToCall ) throws AuthorizationException {
-        if ( !(form instanceof LookupForm) ) {
+    @Override
+    protected void checkAuthorization(ActionForm form, String methodToCall) throws AuthorizationException {
+        if (!(form instanceof LookupForm)) {
             super.checkAuthorization(form, methodToCall);
         } else {
             try {
-                Class businessObjectClass = Class.forName( ((LookupForm)form).getBusinessObjectClassName() );
-                AuthorizationType lookupAuthorizationType = new AuthorizationType.Lookup(businessObjectClass);
-                // check if the lookup is allowed
-                if ( !getKualiModuleService().isAuthorized( GlobalVariables.getUserSession().getPerson(), lookupAuthorizationType ) ) {                
-                    LOG.error("User not authorized for lookup action for this object: " + businessObjectClass.getName() );
-                    throw new ModuleAuthorizationException( GlobalVariables.getUserSession().getPerson().getPrincipalName(), 
-                    		lookupAuthorizationType, getKualiModuleService().getResponsibleModuleService( businessObjectClass ) );
+                Class businessObjectClass = Class.forName(((LookupForm) form).getBusinessObjectClassName());
+                if (!KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(GlobalVariables.getUserSession().getPrincipalId(), KNSConstants.KNS_NAMESPACE, KimConstants.PermissionTemplateNames.LOOK_UP_RECORDS, KimCommonUtils.getNamespaceAndComponentSimpleName(businessObjectClass), null)) {
+                    throw new AuthorizationException(GlobalVariables.getUserSession().getPerson().getPrincipalName(), 
+                    		"look up",
+                    		businessObjectClass.getSimpleName());
                 }
-            } catch ( ClassNotFoundException ex ) {
+            }
+            catch (ClassNotFoundException e) {
+            	LOG.warn("Unable to load BusinessObject class: " + ((LookupForm) form).getBusinessObjectClassName(), e);
                 super.checkAuthorization(form, methodToCall);
             }
         }
     }
 
+    private static MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
+    private static DocumentTypeService documentTypeService;
+    private static MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
+    	if (maintenanceDocumentDictionaryService == null) {
+    		maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
+    	}
+    	return maintenanceDocumentDictionaryService;
+    }
+    private static DocumentTypeService getDocumentTypeService() {
+    	if (documentTypeService == null) {
+    		documentTypeService = KNSServiceLocator.getDocumentTypeService();
+    	}
+    	return documentTypeService;
+    }
     /**
      * Checks if the user can create a document for this business object.  Used to suppress the actions on the results.
      * 
@@ -83,7 +103,8 @@ public class KualiLookupAction extends KualiAction {
         if ((form instanceof LookupForm) && ( ((LookupForm)form).getBusinessObjectClassName() != null )) {
             Class businessObjectClass = Class.forName( ((LookupForm)form).getBusinessObjectClassName() );
             // check if creating documents is allowed
-            if ( !KNSServiceLocator.getKualiModuleService().isAuthorized( GlobalVariables.getUserSession().getPerson(), new AuthorizationType.Document(businessObjectClass, null) ) ) {
+            String documentTypeName = getMaintenanceDocumentDictionaryService().getDocumentTypeName(businessObjectClass);
+            if ((documentTypeName != null) && !getDocumentTypeService().getDocumentAuthorizer(documentTypeName).canInitiate(documentTypeName, GlobalVariables.getUserSession().getPerson())) {
                 ((LookupForm)form).setSuppressActions( true );
             }
         }

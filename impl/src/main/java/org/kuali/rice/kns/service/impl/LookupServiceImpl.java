@@ -24,14 +24,12 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.dao.LookupDao;
-import org.kuali.rice.kns.service.AuthorizationService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.LookupService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * This class is the service implementation for the Lookup structure. It Provides a generic search mechanism against Business
@@ -43,7 +41,6 @@ public class LookupServiceImpl implements LookupService {
 
     private LookupDao lookupDao;
     private KualiConfigurationService kualiConfigurationService;
-    private AuthorizationService authorizationService;
     private DataDictionaryService dataDictionaryService;
     private PersistenceStructureService persistenceStructureService;
     
@@ -126,10 +123,6 @@ public class LookupServiceImpl implements LookupService {
 
     public void setKualiConfigurationService(KualiConfigurationService kualiConfigurationService) {
         this.kualiConfigurationService = kualiConfigurationService;
-    }
-
-    public void setAuthorizationService(AuthorizationService authorizationService) {
-        this.authorizationService = authorizationService;
     }
 
     public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {

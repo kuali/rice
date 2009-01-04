@@ -24,8 +24,6 @@ import java.util.Properties;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kns.authorization.AuthorizationType;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
@@ -108,19 +106,6 @@ public class ModuleServiceBase implements ModuleService {
 		return getModuleConfiguration().getJobNames().contains(jobName);
 	}
 	
-	/***
-	 * @see org.kuali.rice.kns.service.ModuleService#isAuthorized(org.kuali.rice.kim.bo.Person, org.kuali.rice.kns.authorization.AuthorizationType)
-	 */
-    public boolean isAuthorized(Person user, AuthorizationType authType) {
-        return true;
-    }
-    
-    /** Check whether the user can access the module at all.  Default implementation just checks the user's active status on KFSUser */
-    public boolean canAccessModule( Person user ) {
-        return true;
-    }
-    
-    
     /***
      * @see org.kuali.rice.kns.service.ModuleService#getExternalizableBusinessObject(java.lang.Class, java.util.Map)
      */

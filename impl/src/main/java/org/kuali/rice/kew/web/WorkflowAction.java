@@ -17,6 +17,7 @@
 package org.kuali.rice.kew.web;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -54,11 +55,14 @@ import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.group.dto.GroupInfo;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.authorization.AuthorizationType;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
+import org.kuali.rice.kns.util.KNSConstants;
 
 
 /**
@@ -296,12 +300,8 @@ public abstract class WorkflowAction extends DispatchAction {
         {
             LOG.warn("checkAuthorization was handled by WorkflowAction rather than KualiAction");
         }
-
-        AuthorizationType defaultAuthorizationType = new AuthorizationType.Default(this.getClass());
-        Person person = UserSession.getAuthenticatedUser().getPerson();
-        boolean isAuthorized = getKualiModuleService().isAuthorized( person, defaultAuthorizationType ); 
-        if( !isAuthorized )
-        {
+        boolean isAuthorized = KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(UserSession.getAuthenticatedUser().getPerson().getPrincipalId(), KNSConstants.KNS_NAMESPACE, KimConstants.PermissionTemplateNames.USE_SCREEN, KimCommonUtils.getNamespaceAndComponentFullName(this.getClass()), null);
+        if(!isAuthorized) {
             LOG.error("User not authorized to use this action: " + this.getClass().getName() );
         }
         return isAuthorized;

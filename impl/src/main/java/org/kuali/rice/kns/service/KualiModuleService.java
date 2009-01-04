@@ -17,9 +17,6 @@ package org.kuali.rice.kns.service;
 
 import java.util.List;
 
-import org.kuali.rice.kns.authorization.AuthorizationType;
-import org.kuali.rice.kim.bo.Person;
-
 public interface KualiModuleService {
 
     /**
@@ -65,15 +62,6 @@ public interface KualiModuleService {
      */
     ModuleService getResponsibleModuleServiceForJob(String jobName);
     
-    /**
-     * Checks whether the user can perform the requested operation.
-     * 
-     * @param user
-     * @param authType
-     * @return
-     */
-    public boolean isAuthorized(Person user, AuthorizationType authType);
-
     public void setInstalledModuleServices(List<ModuleService> moduleServices);
     
     public List<String> getDataDictionaryPackages();

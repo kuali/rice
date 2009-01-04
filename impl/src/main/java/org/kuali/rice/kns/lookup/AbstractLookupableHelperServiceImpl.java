@@ -27,15 +27,15 @@ import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.service.EncryptionService;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeSecurity;
-import org.kuali.rice.kns.datadictionary.mask.Mask;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.lookup.HtmlData.InputHtmlData;
-import org.kuali.rice.kns.service.AuthorizationService;
+import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.BusinessObjectService;
@@ -46,8 +46,6 @@ import org.kuali.rice.kns.service.LookupService;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.service.SequenceAccessorService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -246,6 +244,15 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	return maintenanceDocumentDictionaryService;
     }
 
+    private BusinessObjectAuthorizationService businessObjectAuthorizationService;
+
+    public BusinessObjectAuthorizationService getBusinessObjectAuthorizationService() {
+	if ( businessObjectAuthorizationService == null ) {
+		businessObjectAuthorizationService = KNSServiceLocator.getBusinessObjectAuthorizationService();
+	}
+	return businessObjectAuthorizationService;
+    }
+
     private Inquirable kualiInquirable;
 
     public Inquirable getKualiInquirable() {
@@ -274,19 +281,6 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 
     public void setKualiConfigurationService(KualiConfigurationService kualiConfigurationService) {
         this.kualiConfigurationService = kualiConfigurationService;
-    }
-
-    AuthorizationService authorizationService;
-
-    public AuthorizationService getAuthorizationService() {
-	if ( authorizationService == null ) {
-	    authorizationService = KNSServiceLocator.getAuthorizationService();
-	}
-        return this.authorizationService;
-    }
-
-    public void setAuthorizationService(AuthorizationService authorizationService) {
-        this.authorizationService = authorizationService;
     }
 
     /**
@@ -1041,20 +1035,8 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
                 // comparator
                 col.setComparator(CellComparatorHelper.getAppropriateComparatorForPropertyClass(propClass));
                 col.setValueComparator(CellComparatorHelper.getAppropriateValueComparatorForPropertyClass(propClass));
-
-                AttributeSecurity attributeSecurity = getDataDictionaryService().getAttributeSecurity(element.getClass().getName(), col.getPropertyName());
-                if(attributeSecurity != null && attributeSecurity.isPartialMask()){
-                	boolean viewAuthorized = getAuthorizationService().isAuthorizedToPartiallyUnmaskAttribute(GlobalVariables.getUserSession().getPerson(), element.getClass().getSimpleName(), col.getPropertyName());
-                	if(!viewAuthorized){
-                		propValue = attributeSecurity.getPartialMaskFormatter().maskValue(propValue);
-                	}
-                }
-                if(attributeSecurity != null && attributeSecurity.isMask()){
-                	boolean viewAuthorized = getAuthorizationService().isAuthorizedToUnmaskAttribute(GlobalVariables.getUserSession().getPerson(), element.getClass().getSimpleName(), col.getPropertyName());
-                	if(!viewAuthorized){
-                		propValue = attributeSecurity.getMaskFormatter().maskValue(propValue);
-                	}
-                }
+                
+                maskValueIfNecessary(element.getClass(), col.getPropertyName(), propValue);
                 
                 col.setPropertyValue(propValue);
 
@@ -1083,6 +1065,24 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         lookupForm.setHasReturnableRow(hasReturnableRow);
 
         return displayList;
+    }
+    
+    protected String maskValueIfNecessary(Class businessObjectClass, String propertyName, String propertyValue) {
+        String maskedPropertyValue = propertyValue;
+    	AttributeSecurity attributeSecurity = getDataDictionaryService().getAttributeSecurity(businessObjectClass.getName(), propertyName);
+        if(attributeSecurity != null && attributeSecurity.isPartialMask()){
+        	boolean viewAuthorized = getBusinessObjectAuthorizationService().canPartiallyUnmaskField(GlobalVariables.getUserSession().getPerson(), businessObjectClass, propertyName);
+        	if(!viewAuthorized){
+        		maskedPropertyValue = attributeSecurity.getPartialMaskFormatter().maskValue(propertyValue);
+        	}
+        }
+        if(attributeSecurity != null && attributeSecurity.isMask()){
+        	boolean viewAuthorized = getBusinessObjectAuthorizationService().canFullyUnmaskField(GlobalVariables.getUserSession().getPerson(), businessObjectClass, propertyName);
+        	if(!viewAuthorized){
+        		maskedPropertyValue = attributeSecurity.getPartialMaskFormatter().maskValue(propertyValue);
+        	}
+        }
+        return maskedPropertyValue;
     }
 
 

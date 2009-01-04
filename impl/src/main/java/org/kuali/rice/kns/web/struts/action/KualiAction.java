@@ -31,20 +31,19 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.actions.DispatchAction;
 import org.kuali.rice.core.service.Demonstration;
 import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kns.authorization.AuthorizationType;
-import org.kuali.rice.kns.document.Document;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimCommonUtils;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase;
 import org.kuali.rice.kns.exception.AuthorizationException;
-import org.kuali.rice.kns.exception.ModuleAuthorizationException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.ModuleService;
-import org.kuali.rice.kns.service.SessionDocumentService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.util.WebUtils;
-import org.kuali.rice.kns.web.format.Formatter;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
@@ -792,19 +791,18 @@ public abstract class KualiAction extends DispatchAction {
      * @throws AuthorizationException
      */
     protected void checkAuthorization( ActionForm form, String methodToCall) throws AuthorizationException {
-        try {
-            LOG.warn(new StringBuffer("KualiAction.checkAuthorization was deferred to.  Caller is ").append(Thread.currentThread().getStackTrace()[3].toString()).append(" and methodToCall is ").append(methodToCall));
-        } catch (Exception e) {
-            LOG.warn("KualiAction.checkAuthorization was deferred to.  Caller is unknown and methodToCall is " + methodToCall);
+        if (!KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(GlobalVariables.getUserSession().getPrincipalId(), KNSConstants.KNS_NAMESPACE, KimConstants.PermissionTemplateNames.USE_SCREEN, KimCommonUtils.getNamespaceAndComponentFullName(this.getClass()), new AttributeSet(getRoleQualification(form, methodToCall)))) {
+            throw new AuthorizationException(GlobalVariables.getUserSession().getPerson().getPrincipalName(), 
+            		methodToCall,
+            		this.getClass().getSimpleName());
         }
-        // TODO: add "Use Screen" check based on current module - use KR-SYS if no module found
-        AuthorizationType defaultAuthorizationType = new AuthorizationType.Default(this.getClass());
-        if ( !getKualiModuleService().isAuthorized( GlobalVariables.getUserSession().getPerson(), defaultAuthorizationType ) ) {
-            LOG.error("User not authorized to use this action: " + this.getClass().getName() );
-            throw new ModuleAuthorizationException( GlobalVariables.getUserSession().getPerson().getPrincipalName(), 
-            		defaultAuthorizationType, 
-            		getKualiModuleService().getResponsibleModuleService(((KualiDocumentFormBase)form).getDocument().getClass()) );
-        }
+    }
+    
+    /** 
+     * override this method to add data from the form for role qualification in the authorization check
+     */
+    protected Map<String,String> getRoleQualification(ActionForm form, String methodToCall) {
+    	return new HashMap<String,String>();
     }
 
     protected static KualiModuleService getKualiModuleService() {

@@ -104,7 +104,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		List<EntityEntityTypeImpl> entityTypes = new ArrayList<EntityEntityTypeImpl>();
 		EntityEntityTypeImpl entityType = new EntityEntityTypeImpl();
 		entityType.setEntityId(identityManagementPersonDocument.getEntityId());
-		entityType.setEntityTypeCode(KimConstants.PERSON_ENTITY_TYPE);
+		entityType.setEntityTypeCode(KimConstants.EntityTypes.PERSON);
 		entityType.setActive(identityManagementPersonDocument.isActive());
 		entityTypes.add(entityType);
 		EntityEntityTypeImpl origEntityType = new EntityEntityTypeImpl();
@@ -193,13 +193,13 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		identityManagementPersonDocument.setNames(loadNames(kimEntity.getNames()));
 		EntityEntityTypeImpl entityType = null;
 		for (EntityEntityTypeImpl type : kimEntity.getEntityTypes()) {
-			if (type.getEntityTypeCode().equals(KimConstants.PERSON_ENTITY_TYPE)) {
+			if (type.getEntityTypeCode().equals(KimConstants.EntityTypes.PERSON)) {
 				entityType = type;
 			}
 		}
 		// TODO : hardcoded for now
 		for (EntityExternalIdentifierImpl extId : kimEntity.getExternalIdentifiers()){
-			if (extId.getExternalIdentifierTypeCode().equals(KimConstants.TAX_EXT_ID_TYPE)) {
+			if (extId.getExternalIdentifierTypeCode().equals(KimConstants.PersonExternalIdentifierTypes.TAX)) {
 				identityManagementPersonDocument.setTaxId(extId.getExternalId());				
 			} else if (extId.getExternalIdentifierTypeCode().equals("LOGON")) {
 				identityManagementPersonDocument.setUnivId(extId.getExternalId());				

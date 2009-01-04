@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2007 The Kuali Foundation.
  * 
@@ -19,84 +18,65 @@ package org.kuali.rice.kns.authorization;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
+import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.document.Document;
+import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
-import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.util.GlobalVariables;
 
 public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 	private static IdentityManagementService identityManagementService;
 	private static PersonService personService;
 	private static KualiModuleService kualiModuleService;
+	private static DataDictionaryService dataDictionaryService;
 	private ThreadLocal<AttributeSet> roleQualification = new ThreadLocal<AttributeSet>();
 	private ThreadLocal<AttributeSet> permissionDetails = new ThreadLocal<AttributeSet>();
 
-    /**
-     * Override this method to populate the role qualifier attributes from the business object.
-     * This will only be called once per request.
-     */
-    protected void addRoleQualification(BusinessObject businessObject, Map<String,String> attributes) {
-    	addStandardAttributes(businessObject, attributes);
-    }
-
-    /**
-     * Override this method to populate the role qualifier attributes from the document
-     * for the given document.  This will only be called once per request.
-     */
-    protected void addPermissionDetails(BusinessObject businessObject, Map<String,String> attributes) {
-    	addStandardAttributes(businessObject, attributes);
-    }
-
 	/**
-	 * Returns the namespace for the given class by consulting the
-	 * KualiModuleService.
-	 * 
-	 * This method should not need to be overridden but may be if special
-	 * namespace handling is required.
+	 * Override this method to populate the role qualifier attributes from the
+	 * business object. This will only be called once per request.
 	 */
-	protected <T extends BusinessObject> String getNamespaceForClass(
-			Class<T> businessObjectClass) {
-		ModuleService moduleService = getKualiModuleService()
-				.getResponsibleModuleService(businessObjectClass);
-		if (moduleService == null) {
-			return "KUALI";
-		}
-		return moduleService.getModuleConfiguration().getNamespaceCode();
+	protected void addRoleQualification(BusinessObject businessObject,
+			Map<String, String> attributes) {
+		addStandardAttributes(businessObject, attributes);
 	}
 
 	/**
-	 * Return the component class to be used for the document. This base
-	 * implementation simply returns the class of the document object.
-	 * 
-	 * Subclasses may override this if necessary.
+	 * Override this method to populate the role qualifier attributes from the
+	 * document for the given document. This will only be called once per
+	 * request.
 	 */
-	protected String getComponentName(
-			BusinessObject businessObject) {
-		return businessObject.getClass().getSimpleName();
+	protected void addPermissionDetails(BusinessObject businessObject,
+			Map<String, String> attributes) {
+		addStandardAttributes(businessObject, attributes);
 	}
 
-	private void addStandardAttributes(
-			BusinessObject businessObject, Map<String,String> attributes) {
-		attributes.put(KimAttributes.NAMESPACE_CODE,
-				getNamespaceForClass(businessObject.getClass()));
-		attributes.put(KimAttributes.COMPONENT_NAME,
-				getComponentName(businessObject));
+	private void addStandardAttributes(BusinessObject businessObject,
+			Map<String, String> attributes) {
+		attributes.putAll(KimCommonUtils
+				.getNamespaceAndComponentSimpleName(businessObject.getClass()));
 	}
 
 	protected final boolean permissionExistsByTemplate(String namespaceCode,
-			String permissionTemplateName, Document document) {
+			String permissionTemplateName, BusinessObject businessObject) {
 		return getIdentityManagementService()
 				.isPermissionDefinedForTemplateName(namespaceCode,
 						permissionTemplateName,
-						getPermissionDetailValues(document));
+						getPermissionDetailValues(businessObject));
+	}
+
+	protected final boolean permissionExistsByTemplate(String namespaceCode,
+			String permissionTemplateName, Map<String, String> permissionDetails) {
+		return getIdentityManagementService()
+				.isPermissionDefinedForTemplateName(namespaceCode,
+						permissionTemplateName,
+						new AttributeSet(permissionDetails));
 	}
 
 	public final boolean isAuthorized(BusinessObject businessObject,
@@ -167,12 +147,11 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 				permissionDetails, roleQualifiers);
 	}
 
-	private AttributeSet getRoleQualification(
-			BusinessObject businessObject) {
+	private AttributeSet getRoleQualification(BusinessObject businessObject) {
 		if (roleQualification.get() == null) {
-			Map<String,String> attributes = new HashMap<String,String>();
+			Map<String, String> attributes = new HashMap<String, String>();
 			addRoleQualification(businessObject, attributes);
-			attributes.put(KimConstants.KIM_ATTRIB_PRINCIPAL_ID,
+			attributes.put(KimConstants.PropertyNames.PRINCIPAL_ID,
 					GlobalVariables.getUserSession().getPerson()
 							.getPrincipalId());
 			roleQualification.set(new AttributeSet(attributes));
@@ -183,7 +162,7 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 	protected final AttributeSet getPermissionDetailValues(
 			BusinessObject businessObject) {
 		if (permissionDetails.get() == null) {
-			Map<String,String> attributes = new HashMap<String,String>();
+			Map<String, String> attributes = new HashMap<String, String>();
 			addPermissionDetails(businessObject, attributes);
 			permissionDetails.set(new AttributeSet(attributes));
 		}
@@ -210,5 +189,13 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 			kualiModuleService = KNSServiceLocator.getKualiModuleService();
 		}
 		return kualiModuleService;
-	}    
+	}
+
+	protected static final DataDictionaryService getDataDictionaryService() {
+		if (dataDictionaryService == null) {
+			dataDictionaryService = KNSServiceLocator
+					.getDataDictionaryService();
+		}
+		return dataDictionaryService;
+	}
 }

@@ -43,13 +43,8 @@ public class NamespaceRoleTypeServiceImpl extends KimRoleTypeServiceBase {
 	public boolean performMatch(AttributeSet qualification, AttributeSet roleQualifier) {
 		validateRequiredAttributesAgainstReceived(requiredAttributes, qualification, QUALIFICATION_RECEIVED_ATTIBUTES_NAME);
 		validateRequiredAttributesAgainstReceived(requiredAttributes, roleQualifier, ROLE_QUALIFIERS_RECEIVED_ATTIBUTES_NAME);
-
-		//Create a role type that checks the namespace code. In the namespaceCode attribute, wildcards are allowed ("*")
-		//In this case we DO want partial value matching (as in KFS-* should match all namespaces which begin with KFS.)
-		//Assuming that a namespace can contain digits (0-9), alphabets (a-z and A-Z), -, _ and $.
-		return KimCommonUtils.matchInputWithWildcard(
-				qualification.get(KimAttributes.NAMESPACE_CODE), 
-				roleQualifier.get(KimAttributes.NAMESPACE_CODE));
+		return qualification.get(KimAttributes.NAMESPACE_CODE).matches(
+				roleQualifier.get(KimAttributes.NAMESPACE_CODE)
+						.replaceAll("\\*", ".*"));
 	}
-
 }

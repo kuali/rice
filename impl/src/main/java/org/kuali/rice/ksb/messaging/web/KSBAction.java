@@ -1,6 +1,7 @@
 package org.kuali.rice.ksb.messaging.web;
 
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -15,10 +16,15 @@ import org.apache.struts.action.ActionMessages;
 import org.apache.struts.actions.DispatchAction;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kns.authorization.AuthorizationType;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimCommonUtils;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * An abstract super class for all Struts Actions in KEW.  Adds some custom
@@ -91,14 +97,17 @@ public abstract class KSBAction extends DispatchAction {
 		}
 	}
 	
-	protected boolean checkAuthorization() throws AuthorizationException {
-		AuthorizationType defaultAuthorizationType = new AuthorizationType.Default(this.getClass());
-		Person person = UserSession.getAuthenticatedUser().getPerson();
-        boolean authorized = getKualiModuleService().isAuthorized( person, defaultAuthorizationType );
-        if (!authorized) {
-        	LOG.error("User not authorized to use this action: " + this.getClass().getName() );
+    protected boolean checkAuthorization() //throws AuthorizationException
+    {
+        if( log.isWarnEnabled())
+        {
+            LOG.warn("checkAuthorization was handled by KSBAction rather than KualiAction");
         }
-        return authorized;
+        boolean isAuthorized = KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(UserSession.getAuthenticatedUser().getPerson().getPrincipalId(), KNSConstants.KNS_NAMESPACE, KimConstants.PermissionTemplateNames.USE_SCREEN, KimCommonUtils.getNamespaceAndComponentFullName(this.getClass()), null);
+        if(!isAuthorized) {
+            LOG.error("User not authorized to use this action: " + this.getClass().getName() );
+        }
+        return isAuthorized;
     }
 
 	public abstract ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception;

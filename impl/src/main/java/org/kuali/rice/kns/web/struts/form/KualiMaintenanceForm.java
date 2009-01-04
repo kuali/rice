@@ -32,7 +32,7 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.MaintenanceDocumentBase;
-import org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizations;
+import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions;
 import org.kuali.rice.kns.exception.UnknownDocumentTypeException;
 import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -91,7 +91,7 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
      */
     private String lookedUpCollectionName;
     
-    private MaintenanceDocumentAuthorizations authorizations;
+    private MaintenanceDocumentRestrictions authorizations;
     
     /**
      * Override the default method to add the if statement which can't be called until after parameters from a multipart request
@@ -374,7 +374,7 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
      * 
      * @return Returns the authorizations.
      */
-    public MaintenanceDocumentAuthorizations getAuthorizations() {
+    public MaintenanceDocumentRestrictions getAuthorizations() {
         return authorizations;
     }
 
@@ -383,7 +383,7 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
      * 
      * @param authorizations The authorizations to set.
      */
-    public void setAuthorizations(MaintenanceDocumentAuthorizations authorizations) {
+    public void setAuthorizations(MaintenanceDocumentRestrictions authorizations) {
         this.authorizations = authorizations;
     }
 

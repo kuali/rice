@@ -36,7 +36,6 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.support.KimPermissionTypeService;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
@@ -47,7 +46,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  *
  */
 public class PermissionServiceImpl implements PermissionService {
-
+	private static final String DEFAULT_PERMISSION_TYPE_SERVICE = "defaultPermissionTypeService";
 	private static final Logger LOG = Logger.getLogger( PermissionServiceImpl.class );
 	
 	private BusinessObjectService businessObjectService;
@@ -137,7 +136,7 @@ public class PermissionServiceImpl implements PermissionService {
     
     public KimPermissionTypeService getDefaultPermissionTypeService() {
     	if ( defaultPermissionTypeService == null ) {
-    		defaultPermissionTypeService = (KimPermissionTypeService)KIMServiceLocator.getBean( KimConstants.DEFAULT_PERMISSION_TYPE_SERVICE );
+    		defaultPermissionTypeService = (KimPermissionTypeService)KIMServiceLocator.getBean(DEFAULT_PERMISSION_TYPE_SERVICE);
     	}
 		return defaultPermissionTypeService;
 	}

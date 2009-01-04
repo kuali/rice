@@ -22,6 +22,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.impl.KimAttributesTranslatorBase;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill
@@ -32,8 +33,6 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  */
 public class PrincipalNameToPrincipalIdTranslator extends KimAttributesTranslatorBase {
 
-	private static final String PRINCIPAL_NAME = "principalName";
-	private static final String PRINCIPAL_ID = "principalId";
 	protected IdentityManagementService identityManagementService;
 	
 	/**
@@ -41,10 +40,10 @@ public class PrincipalNameToPrincipalIdTranslator extends KimAttributesTranslato
 	 */
 	public PrincipalNameToPrincipalIdTranslator() {
 		ArrayList<String> attribs = new ArrayList<String>( 1 );
-		attribs.add( PRINCIPAL_NAME );
+		attribs.add(KimConstants.PropertyNames.PRINCIPAL_NAME);
 		setSupportedAttributeNames( attribs );
 		attribs = new ArrayList<String>( 1 );
-		attribs.add( PRINCIPAL_ID );
+		attribs.add(KimConstants.PropertyNames.PRINCIPAL_ID);
 		setResultAttributeNames( attribs );
 	}
 	
@@ -53,10 +52,10 @@ public class PrincipalNameToPrincipalIdTranslator extends KimAttributesTranslato
 	 */
 	public AttributeSet translateAttributes(AttributeSet attributes) {
 		AttributeSet results = new AttributeSet( attributes );
-		if ( !results.containsKey( PRINCIPAL_ID ) ) { 
-			KimPrincipal p = getIdentityManagementService().getPrincipalByPrincipalName( attributes.get( PRINCIPAL_NAME ) );
+		if ( !results.containsKey(KimConstants.PropertyNames.PRINCIPAL_ID) ) { 
+			KimPrincipal p = getIdentityManagementService().getPrincipalByPrincipalName( attributes.get(KimConstants.PropertyNames.PRINCIPAL_NAME) );
 			if ( p != null ) {
-				results.put( PRINCIPAL_ID, p.getPrincipalId() );
+				results.put(KimConstants.PropertyNames.PRINCIPAL_ID, p.getPrincipalId() );
 			}
 		}
 		return results;

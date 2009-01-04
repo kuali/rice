@@ -222,12 +222,6 @@
 
 	<bean id="kualiConfigurationService" class="org.kuali.rice.kns.service.impl.KualiConfigurationServiceImpl" />
 
-	<bean id="authorizationService" class="org.kuali.rice.kns.service.impl.AuthorizationServiceImpl">
-		<property name="dataDictionaryService">
-			<ref bean="dataDictionaryService" />
-		</property>
-	</bean>
-	
 	<bean id="kualiModuleService" class="org.kuali.rice.kns.service.impl.KualiModuleServiceImpl" />
 
 	<bean id="mailService" class="org.kuali.rice.kns.service.impl.MailServiceImpl">
@@ -365,9 +359,6 @@
 		</property>
 		<property name="dataDictionaryService">
 			<ref bean="dataDictionaryService" />
-		</property>
-		<property name="authorizationService">
-			<ref bean="authorizationService" />
 		</property>
 		<property name="persistenceStructureService">
 			<ref bean="persistenceStructureService" />
@@ -949,7 +940,10 @@
 	  </property>
 	</bean>
 	
-    <bean id="namespaceOrComponentPermissionTypeService" class="org.kuali.rice.kns.service.impl.NamespaceOrComponentPermissionTypeServiceImpl"/>
+    <bean id="namespaceOrComponentPermissionTypeService" class="org.kuali.rice.kns.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
+    	<property name="exactMatchStringAttributeName" value="componentName" />
+    	<property name="namespaceRequiredOnStoredAttributeSet" value="false" />
+    </bean>
 	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
 	  <property name="serviceDefinition">
@@ -959,7 +953,10 @@
 	  </property>
 	</bean>
 
-    <bean id="parameterPermissionTypeService" class="org.kuali.rice.kns.service.impl.ParameterPermissionTypeServiceImpl"/>
+    <bean id="parameterPermissionTypeService" class="org.kuali.rice.kns.service.impl.ParameterPermissionTypeServiceImpl">
+    	<property name="exactMatchStringAttributeName" value="componentName" />
+    	<property name="namespaceRequiredOnStoredAttributeSet" value="false" />
+    </bean>
 	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
 	  <property name="serviceDefinition">
@@ -969,7 +966,10 @@
 	  </property>
 	</bean>
 	
-    <bean id="batchFeedOrJobPermissionTypeService" class="org.kuali.rice.kns.service.impl.BatchFeedOrJobPermissionTypeServiceImpl"/>
+    <bean id="batchFeedOrJobPermissionTypeService" class="org.kuali.rice.kns.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
+    	<property name="exactMatchStringAttributeName" value="beanName" />
+    	<property name="namespaceRequiredOnStoredAttributeSet" value="false" />
+    </bean>
 	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
 	  <property name="serviceDefinition">
@@ -999,7 +999,10 @@
 	  </property>
 	</bean>
 	
-    <bean id="namespaceOrActionPermissionTypeService" class="org.kuali.rice.kns.service.impl.NamespaceOrActionPermissionTypeServiceImpl"/>
+    <bean id="namespaceOrActionPermissionTypeService" class="org.kuali.rice.kns.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
+    	<property name="exactMatchStringAttributeName" value="beanName" />
+    	<property name="namespaceRequiredOnStoredAttributeSet" value="false" />
+    </bean>
 	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
 	  <property name="serviceDefinition">
@@ -1059,7 +1062,5 @@
 	  </property>
 	</bean>
 
-	<bean id="maintenanceDocumentAuthorizationService" class="org.kuali.rice.kns.service.impl.MaintenanceDocumentAuthorizationServiceImpl"/>
-
-	<bean id="inquiryService" class="org.kuali.rice.kns.service.impl.InquiryServiceImpl"/>
+	<bean id="businessObjectAuthorizationService" class="org.kuali.rice.kns.service.impl.BusinessObjectAuthorizationServiceImpl"/>
 </beans>

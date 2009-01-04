@@ -15,20 +15,19 @@
  */
 package org.kuali.rice.kns.document.authorization;
 
-import java.util.List;
 import java.util.Set;
 
-import org.kuali.rice.kns.document.Document;
+import org.kuali.rice.kns.authorization.InquiryOrMaintenanceDocumentPresentationController;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 
-/**
- * The DocumentPresentationController class is used for non-user related lock down 
- */
-
-public interface MaintenanceDocumentPresentationController extends DocumentPresentationController {
+public interface MaintenanceDocumentPresentationController extends
+		DocumentPresentationController,
+		InquiryOrMaintenanceDocumentPresentationController {
 	public boolean canCreate(Class boClass);
-	
-	
-	public void addMaintenanceDocumentRestrictions(MaintenanceDocumentAuthorizations auths, MaintenanceDocument document);
-}
 
+	public Set<String> getConditionallyReadOnlyPropertyNames(
+			MaintenanceDocument document);
+
+	public Set<String> getConditionallyReadOnlySectionIds(
+			MaintenanceDocument document);
+}

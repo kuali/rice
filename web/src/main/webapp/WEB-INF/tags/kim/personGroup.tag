@@ -31,15 +31,8 @@
 				                                
                 <td class="infoline">
 					<div align=center>
-	        	     <c:choose>
-	        	       <c:when test="${KualiForm.editingMode['populateGroup']}">
-							<html:image property="methodToCall.addGroup.anchor${tabKey}"
+						<html:image property="methodToCall.addGroup.anchor${tabKey}"
 							src='${ConfigProperties.kr.externalizable.images.url}tinybutton-add1.gif' styleClass="tinybutton"/>
-	        	       </c:when>
-	        	       <c:otherwise>
-	        	          <!-- <img class='nobord' src='${ConfigProperties.kr.externalizable.images.url}tinybutton-add2.gif' styleClass='tinybutton'/> -->
-	        	       </c:otherwise>
-	        	     </c:choose>  
 					</div>
                 </td>
        </tr>         

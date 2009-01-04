@@ -41,22 +41,32 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  */
 public class KimGroupDaoOjb extends PlatformAwareDaoBaseOjb implements KimGroupDao {
 	
-    public List<KimGroupImpl> getGroups(Map<String,String> fieldValues, String kimTypeId) {
+    public List<KimGroupImpl> getGroups(Map<String,String> fieldValues) {
         Criteria crit = new Criteria();
         BusinessObjectEntry boEntry = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry("org.kuali.rice.kim.bo.group.impl.KimGroupImpl");
         List lookupNames = boEntry.getLookupDefinition().getLookupFieldNames();
+        String kimTypeId = null;
+        for (Map.Entry<String,String> entry : fieldValues.entrySet()) {
+        	if (entry.getKey().equals("kimTypeId")) {
+        		kimTypeId=entry.getValue();
+        		break;
+        	}
+        }
         for (Entry<String, String> entry : fieldValues.entrySet()) {
         	if (StringUtils.isNotBlank(entry.getValue())) {
         		if (entry.getKey().contains(".")) {
         	        Criteria subCrit = new Criteria();
-        			subCrit.addEqualTo("attributeValue",entry.getValue());
+        			String value = entry.getValue().replace('*', '%');
+        	        
+        			subCrit.addLike("attributeValue",value);
         			subCrit.addEqualTo("kimAttributeId",entry.getKey().substring(entry.getKey().indexOf(".")+1, entry.getKey().length()));
         			subCrit.addEqualTo("kimTypeId", kimTypeId);
         			ReportQueryByCriteria subQuery = QueryFactory.newReportQuery(GroupAttributeDataImpl.class, subCrit);
         			crit.addExists(subQuery);
         		} else {
         			if (lookupNames.contains(entry.getKey())) {
-        				crit.addEqualTo(entry.getKey(), entry.getValue());
+            			String value = entry.getValue().replace('*', '%');
+        				crit.addLike(entry.getKey(), value);
         			} else {
         				if (entry.getKey().equals("principalName")) {
                 	        Criteria subCrit = new Criteria();

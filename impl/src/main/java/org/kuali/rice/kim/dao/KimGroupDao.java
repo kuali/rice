@@ -36,6 +36,6 @@ public interface KimGroupDao {
 	 * @param kimTypeId
 	 * @return
 	 */
-    List<KimGroupImpl> getGroups(Map<String,String> fieldValues, String kimTypeId);
+    List<KimGroupImpl> getGroups(Map<String,String> fieldValues);
 
 }

@@ -64,23 +64,16 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
     public List<? extends BusinessObject> getSearchResults(java.util.Map<String,String> fieldValues) {
 //    	String principalName = fieldValues.get("principalName");
 //    	fieldValues.put("principalName","");
-        String kimTypeId = null;
-        for (Map.Entry<String,String> entry : fieldValues.entrySet()) {
-        	if (entry.getKey().equals("kimTypeId")) {
-        		kimTypeId=entry.getValue();
-        		break;
-        	}
-        }
-    	List<KimGroupImpl> groups = groupDao.getGroups(fieldValues, kimTypeId);
-        List<KimGroupImpl> baseLookup = (List<KimGroupImpl>)super.getSearchResults(fieldValues);
+    	List<KimGroupImpl> groups = groupDao.getGroups(fieldValues);
+        //List<KimGroupImpl> baseLookup = (List<KimGroupImpl>)super.getSearchResults(fieldValues);
 
-        for (KimGroupImpl group : baseLookup) {
+        for (KimGroupImpl group : groups) {
         	if (!group.getGroupAttributes().isEmpty()) {
                 sort(group.getGroupAttributes(), new KimAttributeDataComparator());
         	}
         }
 
-        return baseLookup;
+        return groups;
     }
 
 	@Override
@@ -219,7 +212,11 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
 					KimTypeImpl kimType = (KimTypeImpl)getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, pkMap);
 					// TODO what if servicename is null.  also check other places that have similar issue
 					// use default_service ?
-			        KimTypeService kimTypeService = (KimTypeService)KIMServiceLocator.getService(kimType.getKimTypeServiceName());
+					String serviceName = kimType.getKimTypeServiceName();
+					if (StringUtils.isBlank(serviceName)) {
+						serviceName = "kimTypeService";
+					}
+			        KimTypeService kimTypeService = (KimTypeService)KIMServiceLocator.getService(serviceName);
 			        AttributeDefinitionMap definitions = kimTypeService.getAttributeDefinitions(kimType);
 			        setAttrDefinitions(definitions);
 		            for (Map.Entry<String, AttributeDefinition> mapEntry : definitions.entrySet()) {

@@ -34,7 +34,7 @@
 
 <c:choose>
   <c:when test="${level == 0}">
-  	<c:set var="fontStyle" value="color:white"/>
+  	<c:set var="fontStyle" value="color:black"/>
     <c:set var="headerClass" value="headercell4"/>
     <c:set var="datacell" value="headercell4"/>
   </c:when>

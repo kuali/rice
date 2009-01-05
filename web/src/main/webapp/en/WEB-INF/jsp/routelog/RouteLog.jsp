@@ -138,7 +138,7 @@
 	                               <b><c:out value="${actionTaken.actionTakenLabel}" /></b>
 	                            </td>
 	                            <td align="left" class="datacell">
-	                               <a style="color:white" href="
+	                               <a style="color:black" href="
 										<c:url value="${UrlResolver.userReportUrl}">
 											<c:param name="workflowId" value="${actionTaken.workflowId}" />
 											<c:param name="methodToCall" value="report" />
@@ -152,7 +152,7 @@
 							      <c:if test="${kewUserSession.workflowUser.workflowId != actionTaken.workflowUser.workflowId}">
   							        <c:set var="actionDisplayName" value="${actionTaken.workflowUser.displayNameSafe}"/>
 							      </c:if>
-											<a style="color:white" href="
+											<a style="color:black" href="
 									  			<c:url value="${UrlResolver.userReportUrl}">
 													<c:param name="workflowId" value="${actionTaken.delegatorWorkflowId}" />
 													<c:param name="methodToCall" value="report" />

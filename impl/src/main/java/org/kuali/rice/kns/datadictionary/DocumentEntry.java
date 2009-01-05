@@ -250,7 +250,7 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
         // TODO: validate documentTypeCode against some external source
 
         if (workflowProperties != null && workflowAttributes != null) {
-        	throw new DataDictionaryException("workflowProperties and workflowAttributes cannot both be defined for a document");
+        	throw new DataDictionaryException(documentTypeName + ": workflowProperties and workflowAttributes cannot both be defined for a document");
         }
     }
 
@@ -259,7 +259,7 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
      */
     public void validateAuthorizer() {
         if (documentAuthorizerClass == null) {
-            throw new ClassValidationException("documentAuthorizerClass is required");
+            throw new ClassValidationException(documentTypeName + ": documentAuthorizerClass is required");
         }
     }
 

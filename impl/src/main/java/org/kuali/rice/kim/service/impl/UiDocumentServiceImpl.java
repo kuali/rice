@@ -142,6 +142,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	 * @see org.kuali.rice.kim.service.UiDocumentService#setAttributeEntry(org.kuali.rice.kim.bo.ui.PersonDocumentRole)
 	 */
 	public void setAttributeEntry(PersonDocumentRole personDocRole) {
+		Map attributeEntry = new HashMap();
         for (String key : personDocRole.getDefinitions().keySet()) {
 			AttributeDefinition attrDefinition = personDocRole.getDefinitions().get(key);
 			Map attribute = new HashMap();
@@ -173,7 +174,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				attribute.put("shortLabel", definition.getShortLabel());
 				attribute.put("maxLength", definition.getMaxLength());
 				attribute.put("required", definition.isRequired());
-				personDocRole.getAttributeEntry().put(definition.getName(),attribute);
+				attributeEntry.put(definition.getName(),attribute);
 			} else {
 				TextControlDefinition control = new TextControlDefinition();
 				control.setSize(10);
@@ -182,9 +183,10 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				attribute.put("maxLength", 20);
 				attribute.put("required", true);
 				attribute.put("shortLabel", attrDefinition.getLabel());
-				personDocRole.getAttributeEntry().put(attrDefinition.getName(),attribute);
+				attributeEntry.put(attrDefinition.getName(),attribute);
 			}
 		}
+        personDocRole.setAttributeEntry(attributeEntry);
 	}
 
 

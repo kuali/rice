@@ -25,9 +25,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.support.KimTypeService;
+import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -46,8 +50,8 @@ public class PersonDocumentRole extends PersonDocumentBoBase {
 	protected String namespaceCode;
 	protected KimTypeImpl kimRoleType;
 	protected List<KimAttributeImpl> attributes;
-	protected AttributeDefinitionMap definitions;
-	protected Map attributeEntry;
+	transient AttributeDefinitionMap definitions;
+	transient Map attributeEntry;
 	protected List<PersonDocumentRolePrncpl> rolePrncpls;
     protected PersonDocumentRolePrncpl newRolePrncpl;
 	
@@ -122,6 +126,15 @@ public class PersonDocumentRole extends PersonDocumentBoBase {
 	}
 
 	public AttributeDefinitionMap getDefinitions() {
+		if (definitions == null || definitions.isEmpty()) {
+			String serviceName = this.getKimRoleType().getKimTypeServiceName();
+			if (StringUtils.isBlank(serviceName)) {
+				serviceName = "kimTypeService";				
+			}
+	        KimTypeService kimTypeService = (KimTypeServiceBase)KIMServiceLocator.getService(serviceName);
+			setDefinitions(kimTypeService.getAttributeDefinitions(getKimRoleType()));
+
+		}
 		return this.definitions;
 	}
 
@@ -130,6 +143,10 @@ public class PersonDocumentRole extends PersonDocumentBoBase {
 	}
 
 	public Map getAttributeEntry() {
+		if (attributeEntry == null || attributeEntry.isEmpty()) {
+			KIMServiceLocator.getUiDocumentService().setAttributeEntry(this);
+		}
+		
 		return this.attributeEntry;
 	}
 

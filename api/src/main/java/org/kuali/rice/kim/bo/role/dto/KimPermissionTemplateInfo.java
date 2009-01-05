@@ -15,9 +15,7 @@
  */
 package org.kuali.rice.kim.bo.role.dto;
 
-import java.io.Serializable;
-
-import org.kuali.rice.kim.bo.role.KimPermission;
+import org.kuali.rice.kim.bo.role.KimPermissionTemplate;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -25,15 +23,27 @@ import org.kuali.rice.kim.bo.role.KimPermission;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class KimPermissionInfo extends PermissionDetailsInfo implements KimPermission, Serializable {
+public class KimPermissionTemplateInfo implements KimPermissionTemplate {
 
+	protected String permissionTemplateId;
 	protected String namespaceCode;
 	protected String name;
 	protected String description;
-	protected KimPermissionTemplateInfo template;
-	
+	protected String kimTypeId;
 	protected boolean active;
 	
+	public String getPermissionTemplateId() {
+		return this.permissionTemplateId;
+	}
+	public void setPermissionTemplateId(String permissionTemplateId) {
+		this.permissionTemplateId = permissionTemplateId;
+	}
+	public String getNamespaceCode() {
+		return this.namespaceCode;
+	}
+	public void setNamespaceCode(String namespaceCode) {
+		this.namespaceCode = namespaceCode;
+	}
 	public String getName() {
 		return this.name;
 	}
@@ -46,24 +56,19 @@ public class KimPermissionInfo extends PermissionDetailsInfo implements KimPermi
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	public String getKimTypeId() {
+		return this.kimTypeId;
+	}
+	public void setKimTypeId(String kimTypeId) {
+		this.kimTypeId = kimTypeId;
+	}
 	public boolean isActive() {
 		return this.active;
 	}
 	public void setActive(boolean active) {
 		this.active = active;
 	}
-	public String getNamespaceCode() {
-		return this.namespaceCode;
-	}
-	public void setNamespaceCode(String namespaceCode) {
-		this.namespaceCode = namespaceCode;
-	}
-	public KimPermissionTemplateInfo getTemplate() {
-		return this.template;
-	}
-	public void setTemplate(KimPermissionTemplateInfo template) {
-		this.template = template;
-	}
 	
 	
+
 }

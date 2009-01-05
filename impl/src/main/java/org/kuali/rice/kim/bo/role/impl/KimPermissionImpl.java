@@ -129,6 +129,7 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 		dto.setDescription( getDescription() );
 		dto.setActive( isActive() );
 		dto.setDetails( getDetails() );
+		dto.setTemplate( getTemplate().toSimpleInfo() );
 		
 		return dto;
 	}

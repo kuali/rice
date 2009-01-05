@@ -27,6 +27,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.role.KimPermissionTemplate;
+import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
@@ -136,4 +137,18 @@ public class KimPermissionTemplateImpl extends PersistableBusinessObjectBase imp
 	public void setPermissionTemplateId(String permissionTemplateId) {
 		this.permissionTemplateId = permissionTemplateId;
 	}
+	
+	public KimPermissionTemplateInfo toSimpleInfo() {
+		KimPermissionTemplateInfo dto = new KimPermissionTemplateInfo();
+		
+		dto.setPermissionTemplateId( getPermissionTemplateId() );
+		dto.setName( getName() );
+		dto.setNamespaceCode( getNamespaceCode() );
+		dto.setDescription( getDescription() );
+		dto.setKimTypeId( getKimTypeId() );
+		dto.setActive( isActive() );
+		
+		return dto;
+	}
+	
 }

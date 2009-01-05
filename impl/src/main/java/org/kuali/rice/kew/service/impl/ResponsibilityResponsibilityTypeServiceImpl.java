@@ -52,8 +52,8 @@ public class ResponsibilityResponsibilityTypeServiceImpl extends KimResponsibili
 			return false;
 		} 
 		
-		DocumentType currentDocType = KEWServiceLocator.getDocumentTypeService().findByName(inputAttributeSet.get(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL));
-		boolean match = KimCommonUtils.isParentDocument(currentDocType, storedAttributeSet.get(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL));
+		DocumentType currentDocType = KEWServiceLocator.getDocumentTypeService().findByName(inputAttributeSet.get(KimAttributes.DOCUMENT_TYPE_NAME));
+		boolean match = KimCommonUtils.isParentDocument(currentDocType, storedAttributeSet.get(KimAttributes.DOCUMENT_TYPE_NAME));
 		match &= inputAttributeSet.get(KimAttributes.DOCUMENT_TYPE_NAME).equals(storedAttributeSet.get(KimAttributes.DOCUMENT_TYPE_NAME));
 		match &= inputAttributeSet.get(KimAttributes.ROUTE_NODE_NAME).equals(storedAttributeSet.get(KimAttributes.ROUTE_NODE_NAME));
 		//match &= inputAttributeSet.get(KimAttributes.REQUIRED).equals(storedAttributeSet.get(KimAttributes.REQUIRED));

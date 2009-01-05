@@ -273,7 +273,15 @@ public class RoleServiceImpl implements RoleService {
 					// given the qualification
 					AttributeSet nestedRoleQualification = qualification; 
 					if ( roleTypeServices.get( rm.getRoleId() ) != null ) {
-						 nestedRoleQualification = roleTypeServices.get( rm.getRoleId() ).convertQualificationForMemberRoles( roles.get(rm.getRoleId()).getNamespaceCode(), roles.get(rm.getRoleId()).getRoleName(), qualification );
+	                    // get the member role object
+					    KimRoleImpl memberRole = getRoleImpl( mi.getMemberId() );
+						nestedRoleQualification = roleTypeServices.get( rm.getRoleId() )
+						         .convertQualificationForMemberRoles( 
+						                 roles.get(rm.getRoleId()).getNamespaceCode(), 
+						                 roles.get(rm.getRoleId()).getRoleName(),
+						                 memberRole.getNamespaceCode(),
+						                 memberRole.getRoleName(),
+						                 qualification );
 					}
 					Collection<RoleMembershipInfo> nestedRoleMembers = getNestedRoleMembers( nestedRoleQualification, mi );
 					if ( !nestedRoleMembers.isEmpty() ) {
@@ -308,7 +316,14 @@ public class RoleServiceImpl implements RoleService {
     					// if a role member type, do a non-recursive role member check
     					// to obtain the group and principal members of that role
     					// given the qualification
-    					AttributeSet nestedRoleQualification = roleTypeService.convertQualificationForMemberRoles( roles.get(mi.getRoleId()).getNamespaceCode(), roles.get(mi.getRoleId()).getRoleName(), qualification );
+                        // get the member role object
+                        KimRoleImpl memberRole = getRoleImpl( mi.getMemberId() );
+    					AttributeSet nestedRoleQualification = roleTypeService.convertQualificationForMemberRoles( 
+    					        roles.get(mi.getRoleId()).getNamespaceCode(), 
+    					        roles.get(mi.getRoleId()).getRoleName(), 
+                                memberRole.getNamespaceCode(),
+                                memberRole.getRoleName(),
+    					        qualification );
     					Collection<RoleMembershipInfo> nestedRoleMembers = getNestedRoleMembers( nestedRoleQualification, mi );
     					if ( !nestedRoleMembers.isEmpty() ) {
     						results.addAll( nestedRoleMembers );
@@ -594,9 +609,15 @@ public class RoleServiceImpl implements RoleService {
     		KimRoleTypeService roleTypeService = roleTypeServices.get( rr.getRoleId() );
     		if ( roleTypeService != null ) {
     			if ( roleTypeService.doesRoleQualifierMatchQualification( qualification, rr.getQualifier() ) ) {
-    				ArrayList<String> roleIdTempList = new ArrayList<String>( 1 );
-    				roleIdTempList.add( rr.getMemberId() );
-					AttributeSet nestedRoleQualification = roleTypeService.convertQualificationForMemberRoles( roles.get(rr.getRoleId()).getNamespaceCode(), roles.get(rr.getRoleId()).getRoleName(), qualification );
+                    KimRoleImpl memberRole = getRoleImpl( rr.getMemberId() );
+					AttributeSet nestedRoleQualification = roleTypeService.convertQualificationForMemberRoles( 
+					        roles.get(rr.getRoleId()).getNamespaceCode(), 
+					        roles.get(rr.getRoleId()).getRoleName(), 
+                            memberRole.getNamespaceCode(),
+                            memberRole.getRoleName(),
+                            qualification );
+                    ArrayList<String> roleIdTempList = new ArrayList<String>( 1 );
+                    roleIdTempList.add( rr.getMemberId() );
     				if ( principalHasRole( principalId, roleIdTempList, nestedRoleQualification, false ) ) {
     					return true;
     				}

@@ -160,7 +160,7 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 	 * 
 	 * @see org.kuali.rice.kim.service.support.KimRoleTypeService#convertQualificationForMemberRoles(org.kuali.rice.kim.bo.types.dto.AttributeSet)
 	 */
-	public AttributeSet convertQualificationForMemberRoles(String namespaceCode, String roleName, AttributeSet qualification) {
+	public AttributeSet convertQualificationForMemberRoles(String namespaceCode, String roleName, String memberRoleNamespaceCode, String memberRoleName, AttributeSet qualification) {
 		return qualification;
 	}
 }

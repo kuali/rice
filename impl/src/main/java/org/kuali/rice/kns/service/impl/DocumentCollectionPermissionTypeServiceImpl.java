@@ -38,6 +38,9 @@ public class DocumentCollectionPermissionTypeServiceImpl extends DocumentTypePer
 		//TODO: Uncomment this - Commented until all the clients pass in the required attributes
 		/*
 		boolean match = super.performPermissionMatch(requestedDetails, permission);
+		if ( !match ) {
+			return false;
+		}
 		boolean addTemplate = 
 			"Add Attachment".equals(permission.getTemplate().getName()) || "Add Note".equals(permission.getTemplate().getName());		
 		if (!addTemplate && StringUtils.isEmpty(requestedDetails.get(KimAttributes.CREATE_BY_SELF_ONLY))) {

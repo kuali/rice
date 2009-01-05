@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
 import org.kuali.rice.kim.util.KimCommonUtils;
@@ -38,8 +38,8 @@ public class DocumentTypePermissionTypeServiceImpl extends KimPermissionTypeServ
 	protected List<String> storedRequiredAttributes = new ArrayList<String>();
 	
 	public DocumentTypePermissionTypeServiceImpl() {
-		inputRequiredAttributes.add(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL);
-		storedRequiredAttributes.add(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL);
+		inputRequiredAttributes.add(KimAttributes.DOCUMENT_TYPE_NAME);
+		storedRequiredAttributes.add(KimAttributes.DOCUMENT_TYPE_NAME);
 	}
 	
 	/**
@@ -54,12 +54,12 @@ public class DocumentTypePermissionTypeServiceImpl extends KimPermissionTypeServ
 		validateRequiredAttributesAgainstReceived(
 				storedRequiredAttributes, permissionDetails, STORED_DETAILS_RECEIVED_ATTIBUTES_NAME);
 
-		if(requestedDetails.get(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL).equals("*")){
+		if(requestedDetails.get(KimAttributes.DOCUMENT_TYPE_NAME).equals("*")){
 			return true;
 		}
 		DocumentType currentDocType = KEWServiceLocator.getDocumentTypeService().findByName(
-				requestedDetails.get(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL));
-		return KimCommonUtils.isParentDocument(currentDocType, permissionDetails.get(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL));
+				requestedDetails.get(KimAttributes.DOCUMENT_TYPE_NAME));
+		return KimCommonUtils.isParentDocument(currentDocType, permissionDetails.get(KimAttributes.DOCUMENT_TYPE_NAME));
 	}
 
 }

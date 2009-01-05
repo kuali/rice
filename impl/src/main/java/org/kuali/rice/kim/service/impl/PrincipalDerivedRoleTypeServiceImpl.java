@@ -26,6 +26,7 @@ import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
 import org.kuali.rice.kim.service.translators.PrincipalNameToPrincipalIdTranslator;
+import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -42,8 +43,8 @@ public class PrincipalDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServi
 	 * 
 	 */
 	public PrincipalDerivedRoleTypeServiceImpl() {
-		addAcceptedAttributeName( "principalId" );
-		addAcceptedAttributeName( "principalName" );
+		addAcceptedAttributeName( KimConstants.PropertyNames.PRINCIPAL_ID );
+		addAcceptedAttributeName( KimConstants.PropertyNames.PRINCIPAL_NAME );
 		addAttributeTranslator( new PrincipalNameToPrincipalIdTranslator() );
 	}
 	
@@ -96,7 +97,7 @@ public class PrincipalDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServi
 		}
 		qualification = translateInputAttributeSet(qualification);
 		// check that the principal ID is not null
-		String principalId = qualification.get( "principalId" );
+		String principalId = qualification.get( KimConstants.PropertyNames.PRINCIPAL_ID );
 		if ( hasApplicationRole(principalId, null, namespaceCode, roleName, qualification)) {
 	        tempIdList.add( principalId );
 		}

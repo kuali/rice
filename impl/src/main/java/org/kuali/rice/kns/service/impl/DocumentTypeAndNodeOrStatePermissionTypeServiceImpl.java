@@ -16,7 +16,7 @@
 package org.kuali.rice.kns.service.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
@@ -28,8 +28,8 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 public class DocumentTypeAndNodeOrStatePermissionTypeServiceImpl extends DocumentTypePermissionTypeServiceImpl {
 
 	{
-		inputRequiredAttributes.add(KEWConstants.ROUTE_NODE_NAME_DETAIL);
-		inputRequiredAttributes.add(KEWConstants.DOCUMENT_STATUS_DETAIL);
+		inputRequiredAttributes.add(KimAttributes.ROUTE_NODE_NAME);
+		inputRequiredAttributes.add(KimAttributes.ROUTE_STATUS_CODE);
 	}
 
 	/**
@@ -55,19 +55,19 @@ public class DocumentTypeAndNodeOrStatePermissionTypeServiceImpl extends Documen
 	}
 	
 	protected boolean routeNodeMatches(AttributeSet requestedDetails, AttributeSet permissionDetails) {
-		if (!permissionDetails.containsKey(KEWConstants.ROUTE_NODE_NAME_DETAIL)) {
+		if (!permissionDetails.containsKey(KimAttributes.ROUTE_NODE_NAME)) {
 			return true;
 		}
-		return StringUtils.equals(requestedDetails.get(KEWConstants.ROUTE_NODE_NAME_DETAIL),
-				permissionDetails.get(KEWConstants.ROUTE_NODE_NAME_DETAIL));
+		return StringUtils.equals(requestedDetails.get(KimAttributes.ROUTE_NODE_NAME),
+				permissionDetails.get(KimAttributes.ROUTE_NODE_NAME));
 	}
 	
 	protected boolean routeStatusMatches(AttributeSet requestedDetails, AttributeSet permissionDetails) {
-		if (!permissionDetails.containsKey(KEWConstants.DOCUMENT_STATUS_DETAIL)) {
+		if (!permissionDetails.containsKey(KimAttributes.ROUTE_STATUS_CODE)) {
 			return true;
 		}
-		return StringUtils.equals(requestedDetails.get(KEWConstants.DOCUMENT_STATUS_DETAIL),
-				permissionDetails.get(KEWConstants.DOCUMENT_STATUS_DETAIL));
+		return StringUtils.equals(requestedDetails.get(KimAttributes.ROUTE_STATUS_CODE),
+				permissionDetails.get(KimAttributes.ROUTE_STATUS_CODE));
 	}
 
 }

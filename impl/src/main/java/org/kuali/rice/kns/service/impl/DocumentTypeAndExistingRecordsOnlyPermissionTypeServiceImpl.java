@@ -28,18 +28,25 @@ import org.kuali.rice.kns.util.KNSConstants;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DocumentTypeAndExistingRecordsOnlyPermissionTypeServiceImpl extends
-		DocumentTypePermissionTypeServiceImpl {
-	{
+                KimPermissionTypeServiceBase {
+
+    protected List<String> inputRequiredAttributes = new ArrayList<String>();
+    protected List<String> storedRequiredAttributes = new ArrayList<String>();
+
+    {
+        inputRequiredAttributes.add(KimAttributes.DOCUMENT_TYPE_NAME);
 		inputRequiredAttributes.add(KNSConstants.MAINTENANCE_ACTN);
+		
+        storedRequiredAttributes.add(KimAttributes.DOCUMENT_TYPE_NAME);
 		storedRequiredAttributes.add(KimAttributes.EXISTING_RECORDS_ONLY);
 	}
-
+    
 	/**
 	 * @see org.kuali.rice.kim.service.support.impl.KimTypeServiceBase#performMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet,
 	 *      org.kuali.rice.kim.bo.types.dto.AttributeSet)
 	 */
 	@Override
-	protected boolean performMatch(AttributeSet inputAttributeSet,
+	public boolean performMatch(AttributeSet inputAttributeSet,
 			AttributeSet storedAttributeSet) {
 		validateRequiredAttributesAgainstReceived(inputRequiredAttributes,
 				inputAttributeSet, REQUESTED_DETAILS_RECEIVED_ATTIBUTES_NAME);

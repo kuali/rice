@@ -45,6 +45,9 @@
 		<td><a href="ActionList.do" target="<c:out value="${BackdoorForm.targetName}" />">Action List</a></td>
 	</tr>
 	<tr>
+	   <td><a href="../kew/ActionListNew.do?methodToCall=start" target="<c:out value="${BackdoorForm.targetName}" />">Action List <b>NEW</b></a></td>
+	</tr>
+	<tr>
 		<td><a href="DocumentSearch.do" target="<c:out value="${BackdoorForm.targetName}" />">Document Search</a></td>
 	</tr>
 	<tr>

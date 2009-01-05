@@ -10,6 +10,7 @@
         <form-bean name="KualiExceptionIncidentForm" type="org.kuali.rice.kns.web.struts.form.KualiExceptionIncidentForm" />
     	<!-- End required KNS forms -->
 	    <form-bean name="RuleForm" type="org.kuali.rice.kew.rule.web.RuleForm" />
+	    <form-bean name="ActionListFormNew" type="org.kuali.rice.kew.actionlist.web.ActionListFormNew" />
     </form-beans>
 
     <global-exceptions>
@@ -65,9 +66,32 @@
 			<forward name="basic" path="/WEB-INF/jsp/rule/RuleInit.jsp" />
 			<forward name="init" path="/WEB-INF/jsp/rule/RuleInit.jsp" />
 		</action>
+		
+      <action path="/ActionListNew" scope="request" validate="false" parameter="methodToCall"
+        type="org.kuali.rice.kew.actionlist.web.ActionListActionNew" name="ActionListFormNew"
+        input="/WEB-INF/jsp/ActionList/ActionListNew.jsp" >
+        <forward name="basic" path="/WEB-INF/jsp/ActionList/ActionListNew.jsp"/>
+        <forward name="viewActionList" path="/WEB-INF/jsp/ActionList/ActionListNew.jsp"/>
+        <forward name="count" path="/WEB-INF/jsp/ActionList/ActionListCountNew.jsp"/>
+        <forward name="requiredStateError" path="/WEB-INF/jsp/ActionList/ActionListNew.jsp"/>
+        <forward name="finalStateError" path="/WEB-INF/jsp/ActionList/ActionListNew.jsp"/>
+      </action> 
+      
+      <action path="/ActionListFilter" scope="request" validate="false" name="ActionListFilterForm"
+        input="../kew/WEB-INF/jsp/ActionList/ActionListFilter.jsp"
+        type="org.kuali.rice.kew.actionlist.web.ActionListFilterAction" parameter="methodToCall">
+        <forward name="viewFilter" path="/WEB-INF/jsp/ActionList/ActionListFilter.jsp" />
+        <forward name="viewActionList" path="/ActionList.do?methodToCall=start" redirect="true" />
+        <forward name="requiredStateError" path="/WEB-INF/jsp/ActionList/ActionListFilter.jsp"/>
+        <forward name="finalStateError" path="/WEB-INF/jsp/ActionList/ActionListFilter.jsp"/>
+      </action>      
+      
     </action-mappings>
+    
+    
 
     <controller processorClass="org.kuali.rice.kns.web.struts.action.KualiRequestProcessor" />
+    <message-resources parameter="org.kuali.rice.kew.ApplicationResources" />
     <!-- <message-resources factory="org.kuali.rice.kns.web.struts.action.KualiPropertyMessageResourcesFactory" parameter="SampleApplicationResources" /> -->
 </struts-config>
 

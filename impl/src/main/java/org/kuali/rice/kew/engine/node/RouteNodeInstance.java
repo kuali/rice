@@ -98,9 +98,9 @@ public class RouteNodeInstance implements Serializable {
     @Fetch(value = FetchMode.SUBSELECT)
     private List<RouteNodeInstance> nextNodeInstances = new ArrayList<RouteNodeInstance>();
     
-    @ManyToMany(fetch=FetchType.EAGER)
+    @ManyToMany(fetch=FetchType.EAGER, mappedBy="nextNodeInstances")
     @Fetch(value = FetchMode.SUBSELECT)
-    @JoinTable(name = "KREW_RTE_NODE_INSTN_P_LNK_T", joinColumns = @JoinColumn(name = "TO_RTE_NODE_INSTN_ID"), inverseJoinColumns = @JoinColumn(name = "FROM_RTE_NODE_INSTN_ID"))    
+    @JoinTable(name = "KREW_RTE_NODE_INSTN_LNK_T", joinColumns = @JoinColumn(name = "TO_RTE_NODE_INSTN_ID"), inverseJoinColumns = @JoinColumn(name = "FROM_RTE_NODE_INSTN_ID"))    
     private List<RouteNodeInstance> previousNodeInstances = new ArrayList<RouteNodeInstance>();
 
     @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, mappedBy="nodeInstance")    

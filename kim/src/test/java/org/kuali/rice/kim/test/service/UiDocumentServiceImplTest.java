@@ -239,7 +239,7 @@ public class UiDocumentServiceImplTest extends RiceTestCase {
 		personDoc.setPrincipalId("pid123");
 		personDoc.setPrincipalName("test");
 		personDoc.setTaxId("12345-67");
-		personDoc.setUnivId("1234567890");
+//		personDoc.setUnivId("1234567890");
 		personDoc.setAffiliations(initAffiliations());
 		personDoc.setNames(initNames());
 		personDoc.setAddrs(initAddresses());
@@ -358,10 +358,11 @@ public class UiDocumentServiceImplTest extends RiceTestCase {
 			if (extId.getExternalIdentifierTypeCode().equals("TAX")) {
 				assertEquals(personDoc.getTaxId(), extId.getExternalId());
 				
-			} else if (extId.getExternalIdentifierTypeCode().equals("LOGON")) {
-				assertEquals(personDoc.getUnivId(), extId.getExternalId());
-				
 			}
+//			else if (extId.getExternalIdentifierTypeCode().equals("LOGON")) {
+//				assertEquals(personDoc.getUnivId(), extId.getExternalId());
+//				
+//			}
 			
 		}
 	}

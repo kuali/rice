@@ -46,6 +46,7 @@ import org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl;
+import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAddress;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAffiliation;
 import org.kuali.rice.kim.bo.ui.PersonDocumentEmail;
@@ -209,9 +210,10 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		for (EntityExternalIdentifierImpl extId : kimEntity.getExternalIdentifiers()){
 			if (extId.getExternalIdentifierTypeCode().equals(KimConstants.PersonExternalIdentifierTypes.TAX)) {
 				identityManagementPersonDocument.setTaxId(extId.getExternalId());				
-			} else if (extId.getExternalIdentifierTypeCode().equals("LOGON")) {
-				identityManagementPersonDocument.setUnivId(extId.getExternalId());				
 			}
+//			else if (extId.getExternalIdentifierTypeCode().equals("LOGON")) {
+//				identityManagementPersonDocument.setUnivId(extId.getExternalId());				
+//			}
 		}
 		identityManagementPersonDocument.setEmails(loadEmails(entityType.getEmailAddresses()));
 		identityManagementPersonDocument.setPhones(loadPhones(entityType.getPhoneNumbers()));
@@ -308,6 +310,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					for (GroupMembershipInfo groupMember : KIMServiceLocator.getGroupService().getGroupMembers(groupIds)) {
 						if (groupMember.getMemberId().equals(identityManagementPersonDocument.getPrincipalId()) && groupMember.getMemberTypeCode().equals(KimGroupImpl.PRINCIPAL_MEMBER_TYPE)) {
 							docGroup.setGroupMemberId(groupMember.getGroupMemberId());
+							docGroup.setActiveFromDate(groupMember.getActiveFromDate());
+							docGroup.setActiveToDate(groupMember.getActiveToDate());
 						}
 					}
 					docGroup.setEdit(true);
@@ -341,7 +345,12 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         
         // TODO : this is odd way to get attributedefid hooked.  need to rework
 		for (PersonDocumentRole role : docRoles) {
-	        KimTypeService kimTypeService = (KimTypeServiceBase)KIMServiceLocator.getService(role.getKimRoleType().getKimTypeServiceName());
+		    	String serviceName = role.getKimRoleType().getKimTypeServiceName();
+		    	if (StringUtils.isBlank(serviceName)) {
+		    		serviceName = "kimTypeService";
+		    	}
+
+	        KimTypeService kimTypeService = (KimTypeServiceBase)KIMServiceLocator.getService(serviceName);
 			role.setDefinitions(kimTypeService.getAttributeDefinitions(role.getKimRoleType()));
 			// TODO : refactor qualifier key to connect between defn & qualifier
         	for (PersonDocumentRolePrncpl principal : role.getRolePrncpls()) {
@@ -392,6 +401,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         		docRolePrncpl.setRoleMemberId(rolePrincipal.getRoleMemberId());
         		docRolePrncpl.setActive(rolePrincipal.isActive());
         		docRolePrncpl.setRoleId(rolePrincipal.getRoleId());
+        		docRolePrncpl.setActiveFromDate(rolePrincipal.getActiveFromDate());
+        		docRolePrncpl.setActiveToDate(rolePrincipal.getActiveToDate());
          		docRolePrncpl.setQualifiers(populateDocRoleQualifier(rolePrincipal.getAttributes()));
          		docRolePrncpl.setEdit(true);
         		docRoleMembers.add(docRolePrncpl);
@@ -447,7 +458,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			docAffiliation.setDflt(affiliation.isDefault());
 			docAffiliation.setEntityAffiliationId(affiliation
 					.getEntityAffiliationId());
-			
+			docAffiliation.refreshReferenceObject("affiliationType");
 			// EntityAffiliationImpl does not define empinfos as collection
 			docAffiliations.add(docAffiliation);
 			docAffiliation.setEdit(true);
@@ -512,16 +523,16 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			}
 		}
 		extIds.add(extId);
-		extId = new EntityExternalIdentifierImpl();
-		extId.setEntityId(identityManagementPersonDocument.getEntityId());
-		extId.setExternalId(identityManagementPersonDocument.getUnivId());
-		extId.setExternalIdentifierTypeCode("LOGON");
-		for (EntityExternalIdentifierImpl origExtId : origExtIds) {
-			if (origExtId.getExternalIdentifierTypeCode().equals(extId.getExternalIdentifierTypeCode())) {
-				extId.setVersionNumber(origExtId.getVersionNumber());
-			}
-		}
-		extIds.add(extId);
+//		extId = new EntityExternalIdentifierImpl();
+//		extId.setEntityId(identityManagementPersonDocument.getEntityId());
+//		extId.setExternalId(identityManagementPersonDocument.getUnivId());
+//		extId.setExternalIdentifierTypeCode("LOGON");
+//		for (EntityExternalIdentifierImpl origExtId : origExtIds) {
+//			if (origExtId.getExternalIdentifierTypeCode().equals(extId.getExternalIdentifierTypeCode())) {
+//				extId.setVersionNumber(origExtId.getVersionNumber());
+//			}
+//		}
+//		extIds.add(extId);
 		kimEntity.setExternalIdentifiers(extIds);
 
 	}
@@ -774,6 +785,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		for (PersonDocumentGroup group : identityManagementPersonDocument.getGroups()) {
 			GroupMemberImpl groupPrincipalImpl = new GroupMemberImpl();
 			groupPrincipalImpl.setGroupId(group.getGroupId());
+			groupPrincipalImpl.setActiveFromDate(group.getActiveFromDate());
+			groupPrincipalImpl.setActiveToDate(group.getActiveToDate());
 			groupPrincipalImpl.setGroupMemberId(group.getGroupMemberId());
 			// TODO : principalId is not ready here yet ?
 			groupPrincipalImpl.setMemberId(identityManagementPersonDocument.getPrincipalId());
@@ -811,6 +824,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				rolePrincipalImpl.setMemberId(identityManagementPersonDocument.getPrincipalId());
 				rolePrincipalImpl.setMemberTypeCode(KimRoleImpl.PRINCIPAL_MEMBER_TYPE);
 				rolePrincipalImpl.setRoleMemberId(principal.getRoleMemberId());
+				rolePrincipalImpl.setActiveFromDate(principal.getActiveFromDate());
+				rolePrincipalImpl.setActiveToDate(principal.getActiveToDate());
 				List<RoleMemberAttributeDataImpl> origAttributes = new ArrayList<RoleMemberAttributeDataImpl>();
 				for (RoleMemberImpl origMember : origRoleMembers) {
 					if (origMember.getRoleMemberId().equals(principal.getRoleMemberId())) {

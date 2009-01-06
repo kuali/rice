@@ -46,8 +46,13 @@
        </tr>         
        </c:if>     
         	<c:forEach var="affln" items="${KualiForm.document.affiliations}" varStatus="status">
+        	    <c:set var="rowSpan" value="1"/>
+        		<c:if test="${affln.affiliationType.employmentAffiliationType}" >
+        	    	<c:set var="rowSpan" value="2"/>
+        		</c:if>
+        	
 	             <tr>
-					<th rowspan="2" class="infoline">
+					<th rowspan="${rowSpan}" class="infoline">
 						<c:out value="${status.index+1}" />
 					</th>
 	                <td align="left" valign="middle">
@@ -82,11 +87,13 @@
 					</div>
 	                </td>
 	            </tr>
+	            <c:if test="${affln.affiliationType.employmentAffiliationType}" >
 	            <tr>
 	              <td colspan=5 style="padding:0px;">
 		        	<kim:personEmpInfo afflnIdx="${status.index}" />
 		          </td>
 		        </tr>
+		        </c:if>
         	</c:forEach>        
 
             

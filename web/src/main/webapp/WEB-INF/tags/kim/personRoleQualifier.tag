@@ -1,6 +1,8 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 <%@ attribute name="roleIdx" required="true" %>
 <c:set var="role" value="${KualiForm.document.roles[roleIdx]}"/>
+<c:set var="docRolePrncplAttributes" value="${DataDictionary.PersonDocumentRolePrncpl.attributes}" />
+
                 	<kul:subtab lookedUpCollectionName="roleQualifier" width="${tableWidth}" subTabTitle="Role Qualifier">      
         				<table cellpadding=0 cellspacing=0 summary="">
                         <tr>
@@ -15,6 +17,8 @@
 		        			<c:set var="attrEntry" value="${role.attributeEntry[fieldName]}" />
 		          		    <kul:htmlAttributeHeaderCell attributeEntry="${attrEntry }" useShortLabel="false" />
 		        		</c:forEach>
+          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRolePrncplAttributes.activeFromDate}" noColon="true" /></div></th>
+          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRolePrncplAttributes.activeToDate}" noColon="true" /></div></th>
 		        		
               			<kul:htmlAttributeHeaderCell literalLabel="Actions"/>
                 		</tr>
@@ -39,6 +43,18 @@
 								   </div>
 							</td>
 		        		</c:forEach>
+		        		
+		        		<td>
+		        		<div align="center">
+			            <kul:htmlControlAttribute property="document.roles[${roleIdx}].newRolePrncpl.activeFromDate"  attributeEntry="${docRolePrncplAttributes.activeFromDate}" datePicker="true"/>
+		        		</div>
+		        		</td>
+		        		<td>
+		        		<div align="center">
+			            <kul:htmlControlAttribute property="document.roles[${roleIdx}].newRolePrncpl.activeToDate"  attributeEntry="${docRolePrncplAttributes.activeToDate}" datePicker="true"/>
+		        		</div>
+		        		</td>
+		        		
 		        		<td class="infoline">
 							<div align=center>
 								<html:image property="methodToCall.addRoleQualifier.line${roleIdx}.anchor${tabKey}"
@@ -65,16 +81,32 @@
 				        			    <c:set var="fieldName" value="${attr.dataDictionaryAttributeDefinition.name}" />
 				        			</c:if>
 				        			<c:set var="attrEntry" value="${role.attributeEntry[fieldName]}" />
-				        			    
+				        			    <c:set var="lookupReturn" value="${attr.lookupReturnPropertyConversions}" />
 				        			</c:if>    
 				        		   </c:forEach>
 				                	<td align="left" valign="middle">
 				                	    <!-- this is just a test to put in attributeLabel which we should not do -->
 				                		<div align="center"> 
 				                		   <kul:htmlControlAttribute property="document.roles[${roleIdx}].rolePrncpls[${status1.index}].qualifiers[${status2.index}].attrVal"  attributeEntry="${attrEntry}" />
+										   <c:if test="${!empty lookupReturn}">
+										       <c:set var="fieldConversions" value="${fieldName}:document.roles[${roleIdx}].rolePrncpls[${status1.index}].qualifiers[${status2.index}].attrVal"  />
+                								<kul:lookup boClassName="org.kuali.rice.kns.bo.Parameter" fieldConversions="${fieldConversions}" anchor="${tabKey}" />
+										   </c:if>
 									   </div>
 									</td>
 								</c:forEach>
+								
+						<td>
+						<div align="center">
+			            <kul:htmlControlAttribute property="document.roles[${roleIdx}].rolePrncpls[${status1.index}].activeFromDate"  attributeEntry="${docRolePrncplAttributes.activeFromDate}" datePicker="true"/>
+		        		</div>
+		        		</td>
+		        		<td>
+		        		<div align="center">
+			            <kul:htmlControlAttribute property="document.roles[${roleIdx}].rolePrncpls[${status1.index}].activeToDate"  attributeEntry="${docRolePrncplAttributes.activeToDate}" datePicker="true"/>
+		        		</div>
+		        		</td>
+								
 								<td class="infoline">
 								<div align=center>
 				        	     <c:choose>

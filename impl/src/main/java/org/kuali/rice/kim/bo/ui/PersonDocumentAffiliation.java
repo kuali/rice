@@ -24,7 +24,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
+import org.kuali.rice.kim.bo.reference.impl.AffiliationTypeImpl;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -47,6 +47,7 @@ public class PersonDocumentAffiliation extends PersonDocumentBoDefaultBase {
 	@Column(name = "CAMPUS_CD")
 	protected String campusCode;
 
+	protected AffiliationTypeImpl affiliationType;
 	protected PersonDocumentEmploymentInfo newEmpInfo;
 	protected List<PersonDocumentEmploymentInfo> empInfos;
 
@@ -118,6 +119,14 @@ public class PersonDocumentAffiliation extends PersonDocumentBoDefaultBase {
 
 	public void setEmpInfos(List<PersonDocumentEmploymentInfo> empInfos) {
 		this.empInfos = empInfos;
+	}
+
+	public AffiliationTypeImpl getAffiliationType() {
+		return this.affiliationType;
+	}
+
+	public void setAffiliationType(AffiliationTypeImpl affiliationType) {
+		this.affiliationType = affiliationType;
 	}
 
 }

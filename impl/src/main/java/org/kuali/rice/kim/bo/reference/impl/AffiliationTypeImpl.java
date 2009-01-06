@@ -21,6 +21,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.bo.reference.AffiliationType;
 
 /**
@@ -35,6 +36,10 @@ import org.kuali.rice.kim.bo.reference.AffiliationType;
 public class AffiliationTypeImpl extends KimCodeBase implements AffiliationType {
 
 	private static final long serialVersionUID = 1L;
+    @Type(type="yes_no")
+    @Column(name="EMP_AFLTN_TYP_IND")
+    protected boolean employmentAffiliationType;
+
 
 	/**
 	 * @see org.kuali.rice.kim.bo.reference.AffiliationType#getAffiliationTypeCode()
@@ -62,6 +67,14 @@ public class AffiliationTypeImpl extends KimCodeBase implements AffiliationType 
 	 */
 	public void setAffiliationTypeName(String affiliationTypeName) {
 		setName(affiliationTypeName);
+	}
+
+	public boolean isEmploymentAffiliationType() {
+		return this.employmentAffiliationType;
+	}
+
+	public void setEmploymentAffiliationType(boolean employmentAffiliationType) {
+		this.employmentAffiliationType = employmentAffiliationType;
 	}
 	
 }

@@ -1,6 +1,7 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 <c:set var="docRoleAttributes" value="${DataDictionary.PersonDocumentRole.attributes}" />
+<c:set var="docRolePrncplAttributes" value="${DataDictionary.PersonDocumentRolePrncpl.attributes}" />
 <kul:subtab lookedUpCollectionName="role" width="${tableWidth}" subTabTitle="Roles" noShowHideButton="true">      
         <table cellpadding=0 cellspacing=0 summary="">
           	<tr>
@@ -71,14 +72,24 @@
 					</div>
 	                </td>
 	            </tr>
-	            <c:if test="${!empty role.definitions  and fn:length(role.definitions) > 0}" >
-		            <tr>
-		              <td colspan=5 style="padding:0px;">
+		              <c:choose>
+	            <c:when test="${!empty role.definitions  and fn:length(role.definitions) > 0}" >
+	            	<tr>
+		              <td colspan=5 style="padding:0px;">	            
 		              <kim:personRoleQualifier roleIdx="${status.index}"></kim:personRoleQualifier>
 			          </td>
 			        </tr>
-		        </c:if>
-        	</c:forEach>        
+ 		        </c:when>
+		        <c:otherwise>
+		        		            <tr>
+		              <td colspan=5 style="padding:0px;">
+		        
+		              <kim:personRoleActiveDates roleIdx="${status.index}"></kim:personRoleActiveDates>
+			          </td>
+			        </tr>
+ 		        </c:otherwise>
+		        </c:choose>
+       	</c:forEach>        
 
             
         </table>

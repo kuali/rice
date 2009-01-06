@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +42,12 @@ public class PersonDocumentRolePrncpl  extends PersonDocumentBoBase {
 	@Column(name="PRNCPL_ID")
 	protected String principalId;
 	protected List <PersonDocumentRoleQualifier> qualifiers;
+	
+	@Column(name="ACTV_FRM_DT")
+	protected Timestamp activeFromDate;
+	@Column(name="ACTV_TO_DT")
+	protected Timestamp activeToDate;
+
 	
 	public PersonDocumentRolePrncpl() {
 		qualifiers = new ArrayList <PersonDocumentRoleQualifier>();
@@ -76,6 +83,22 @@ public class PersonDocumentRolePrncpl  extends PersonDocumentBoBase {
 
 	public void setQualifiers(List<PersonDocumentRoleQualifier> qualifiers) {
 		this.qualifiers = qualifiers;
+	}
+
+	public Timestamp getActiveFromDate() {
+		return this.activeFromDate;
+	}
+
+	public void setActiveFromDate(Timestamp activeFromDate) {
+		this.activeFromDate = activeFromDate;
+	}
+
+	public Timestamp getActiveToDate() {
+		return this.activeToDate;
+	}
+
+	public void setActiveToDate(Timestamp activeToDate) {
+		this.activeToDate = activeToDate;
 	}
 
 }

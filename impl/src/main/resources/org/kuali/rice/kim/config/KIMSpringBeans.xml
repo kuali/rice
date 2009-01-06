@@ -57,6 +57,7 @@
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentEmail.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentGroup.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentRole.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentRolePrncpl.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentPrivacy.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimGroupImpl.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimRoleImpl.xml</value>

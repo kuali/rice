@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
+import java.sql.Timestamp;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -47,6 +49,10 @@ public class PersonDocumentGroup extends PersonDocumentBoBase {
 	protected String principalId;
 	protected KimTypeImpl kimGroupType;
 	protected String kimTypeId;
+	@Column(name="ACTV_FRM_DT")
+	protected Timestamp activeFromDate;
+	@Column(name="ACTV_TO_DT")
+	protected Timestamp activeToDate;
 
 	public String getGroupId() {
 		return this.groupId;
@@ -110,6 +116,22 @@ public class PersonDocumentGroup extends PersonDocumentBoBase {
 
 	public void setNamespaceCode(String namespaceCode) {
 		this.namespaceCode = namespaceCode;
+	}
+
+	public Timestamp getActiveFromDate() {
+		return this.activeFromDate;
+	}
+
+	public void setActiveFromDate(Timestamp activeFromDate) {
+		this.activeFromDate = activeFromDate;
+	}
+
+	public Timestamp getActiveToDate() {
+		return this.activeToDate;
+	}
+
+	public void setActiveToDate(Timestamp activeToDate) {
+		this.activeToDate = activeToDate;
 	}
 
 }

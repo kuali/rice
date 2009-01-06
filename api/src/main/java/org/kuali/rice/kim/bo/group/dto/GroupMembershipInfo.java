@@ -15,6 +15,10 @@
  */
 package org.kuali.rice.kim.bo.group.dto;
 
+import java.sql.Timestamp;
+
+import javax.persistence.Column;
+
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -28,13 +32,17 @@ public class GroupMembershipInfo {
 	protected String memberId;
 	protected String memberTypeCode;
 	protected Long versionNumber;
-	
-	public GroupMembershipInfo(String groupId, String groupMemberId, String memberId, String memberTypeCode) {
+	protected Timestamp activeFromDate;
+	protected Timestamp activeToDate;
+
+	public GroupMembershipInfo(String groupId, String groupMemberId, String memberId, String memberTypeCode, Timestamp activeFromDate, Timestamp activeToDate) {
 		super();
 		this.groupId = groupId;
 		this.memberId = memberId;
 		this.memberTypeCode = memberTypeCode;
 		this.groupMemberId = groupMemberId;
+		this.activeFromDate = activeFromDate;
+		this.activeToDate = activeToDate;
 	}
 	
 
@@ -85,6 +93,26 @@ public class GroupMembershipInfo {
 
 	public void setVersionNumber(Long versionNumber) {
 		this.versionNumber = versionNumber;
+	}
+
+
+	public Timestamp getActiveFromDate() {
+		return this.activeFromDate;
+	}
+
+
+	public void setActiveFromDate(Timestamp activeFromDate) {
+		this.activeFromDate = activeFromDate;
+	}
+
+
+	public Timestamp getActiveToDate() {
+		return this.activeToDate;
+	}
+
+
+	public void setActiveToDate(Timestamp activeToDate) {
+		this.activeToDate = activeToDate;
 	}
 
 

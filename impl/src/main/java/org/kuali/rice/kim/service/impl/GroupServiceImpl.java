@@ -662,7 +662,7 @@ public class GroupServiceImpl implements GroupService {
     	GroupMembershipInfo groupMemberinfo = null;
 
         if (kimGroupMember != null) {
-        	groupMemberinfo = new GroupMembershipInfo(kimGroupMember.getGroupId(), kimGroupMember.getGroupMemberId(),kimGroupMember.getMemberId(),kimGroupMember.getMemberTypeCode());
+        	groupMemberinfo = new GroupMembershipInfo(kimGroupMember.getGroupId(), kimGroupMember.getGroupMemberId(),kimGroupMember.getMemberId(),kimGroupMember.getMemberTypeCode(), kimGroupMember.getActiveFromDate(), kimGroupMember.getActiveToDate());
         	groupMemberinfo.setVersionNumber(kimGroupMember.getVersionNumber());
         }
 

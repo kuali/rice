@@ -1,0 +1,130 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+  <bean id="DocRolePrncpl" parent="DocRolePrncpl-parentBean" />
+
+  <bean id="DocRolePrncpl-parentBean" abstract="true" parent="BusinessObjectEntry"
+        p:businessObjectClass="org.kuali.rice.kim.bo.ui.PersonDocumentRolePrncpl"
+        p:titleAttribute="roleMemberId"
+        p:objectLabel="Names"
+        p:inquiryDefinition-ref="DocRolePrncpl-inquiryDefinition"
+        p:lookupDefinition-ref="DocRolePrncpl-lookupDefinition" >
+    <property name="attributes" >
+      <list>
+        <ref bean="DocRolePrncpl-roleMemberId" />
+        <ref bean="DocRolePrncpl-principalId" />
+        <ref bean="DocRolePrncpl-activeFromDate" />
+        <ref bean="DocRolePrncpl-activeToDate" />
+      </list>
+    </property>
+    
+  </bean>
+ 
+   <bean id="DocRolePrncpl-roleMemberId" parent="DocRolePrncpl-roleMemberId-parentBean" />
+  <bean id="DocRolePrncpl-roleMemberId-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="roleMemberId"
+        p:forceUppercase="true"
+        p:label="Member Id"
+        p:shortLabel="Member Id"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="10" />
+    </property>
+  </bean>
+  
+  <bean id="DocRolePrncpl-principalId" parent="DocRolePrncpl-principalId-parentBean" />
+  <bean id="DocRolePrncpl-principalId-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="principalId"
+        p:forceUppercase="true"
+        p:label="Principal Id"
+        p:shortLabel="Principal Id"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="10" />
+    </property>
+  </bean>
+    
+  <bean id="DocRolePrncpl-activeFromDate" parent="DocRolePrncpl-activeFromDate-parentBean" />
+  <bean id="DocRolePrncpl-activeFromDate-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
+    <property name="name" value="activeFromDate" />
+    <property name="label" value="Active From Date" />
+    <property name="shortLabel" value="Active From Dt" />
+    <property name="required" value="false" />
+    <property name="summary" value="Start Date" />
+    <property name="description" value="Start Date" />
+  </bean>
+
+  <bean id="DocRolePrncpl-activeToDate" parent="DocRolePrncpl-activeToDate-parentBean" />
+  <bean id="DocRolePrncpl-activeToDate-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
+    <property name="name" value="activeToDate" />
+    <property name="label" value="Active To Date" />
+    <property name="shortLabel" value="Active To Dt" />
+    <property name="required" value="false" />
+    <property name="summary" value="End Date" />
+    <property name="description" value="End Date" />
+  </bean>
+
+
+
+  
+  <bean id="DocRolePrncpl-inquiryDefinition" parent="DocRolePrncpl-inquiryDefinition-parentBean" />
+
+  <bean id="DocRolePrncpl-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition"
+        p:title="Person Group Inquiry" >
+    <property name="inquirySections" >
+      <list>
+        <bean parent="InquirySectionDefinition"
+              p:title="Person Attributes"
+              p:numberOfColumns="1" >
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="FieldDefinition" p:attributeName="roleMemberId" />
+              <bean parent="FieldDefinition" p:attributeName="principalId" />
+              <bean parent="FieldDefinition" p:attributeName="activeFromDate" />
+              <bean parent="FieldDefinition" p:attributeName="activeToDate" />
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="DocRolePrncpl-lookupDefinition" parent="DocRolePrncpl-lookupDefinition-parentBean" />
+
+  <bean id="DocRolePrncpl-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition"
+        p:title="Role Member Lookup" 
+        p:instructions="Lookup a Role Member" >
+    <property name="defaultSort" >
+      <bean parent="SortDefinition">
+        <property name="attributeNames" >
+          <list>
+            <value>roleMemberId</value>
+          </list>
+        </property>
+        <property name="sortAscending" value="true" />
+      </bean>
+    </property>
+    <property name="lookupFields" >
+      <list>
+              <bean parent="FieldDefinition" p:attributeName="roleMemberId" />
+              <bean parent="FieldDefinition" p:attributeName="principalId" />
+              <bean parent="FieldDefinition" p:attributeName="activeFromDate" />
+              <bean parent="FieldDefinition" p:attributeName="activeToDate" />
+      </list>
+    </property>
+    <property name="resultFields" >
+      <list>
+              <bean parent="FieldDefinition" p:attributeName="roleMemberId" />
+              <bean parent="FieldDefinition" p:attributeName="principalId" />
+              <bean parent="FieldDefinition" p:attributeName="activeFromDate" />
+              <bean parent="FieldDefinition" p:attributeName="activeToDate" />
+      </list>
+    </property>
+  </bean>
+
+</beans>

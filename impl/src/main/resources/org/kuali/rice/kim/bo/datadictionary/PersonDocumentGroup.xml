@@ -19,6 +19,8 @@
         <ref bean="DocGroup-groupName" />
         <ref bean="DocGroup-namespaceCode" />
         <ref bean="DocGroup-active" />
+        <ref bean="DocGroup-activeFromDate" />
+        <ref bean="DocGroup-activeToDate" />
         <ref bean="DocGroup-kimGroupType.name" />
       </list>
     </property>
@@ -114,6 +116,28 @@
     <property name="summary" value="Active" />
     <property name="description" value="Active" />
   </bean>
+
+  <bean id="DocGroup-activeFromDate" parent="DocGroup-activeFromDate-parentBean" />
+  <bean id="DocGroup-activeFromDate-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
+    <property name="name" value="activeFromDate" />
+    <property name="label" value="Active From Date" />
+    <property name="shortLabel" value="Active From Dt" />
+    <property name="required" value="false" />
+    <property name="summary" value="Start Date" />
+    <property name="description" value="Start Date" />
+  </bean>
+
+  <bean id="DocGroup-activeToDate" parent="DocGroup-activeToDate-parentBean" />
+  <bean id="DocGroup-activeToDate-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
+    <property name="name" value="activeToDate" />
+    <property name="label" value="Active To Date" />
+    <property name="shortLabel" value="Active To Dt" />
+    <property name="required" value="false" />
+    <property name="summary" value="End Date" />
+    <property name="description" value="End Date" />
+  </bean>
+
+
 
     <bean id="DocGroup-kimGroupType.name" parent="DocGroup-kimGroupType.name-parentBean" />
 

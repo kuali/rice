@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.rules.ui;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -49,10 +50,7 @@ public class PersonDocumentGroupRule extends DocumentRuleBase implements AddGrou
             rulePassed = false;
             errorMap.putError(errorPath+".groupId", RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Group"});
         	
-        } else if (groupIds.isEmpty() || !groupIds.contains(newGroup.getGroupId())) {
-            errorMap.putError(errorPath+".groupId", RiceKeyConstants.ERROR_POPULATE_GROUP, new String[] {newGroup.getGroupId()});
-            rulePassed = false;
-        } else  {
+        } else {
 		    for (PersonDocumentGroup group : document.getGroups()) {
 		    	if (group.getGroupId().equals(newGroup.getGroupId())) {
 		            rulePassed = false;
@@ -61,7 +59,27 @@ public class PersonDocumentGroupRule extends DocumentRuleBase implements AddGrou
 		    	}
 		    }
         }
+        
+        if (rulePassed) {
+        	if (groupIds.isEmpty() || !groupIds.contains(newGroup.getGroupId())) {
+                errorMap.putError(errorPath+".groupId", RiceKeyConstants.ERROR_POPULATE_GROUP, new String[] {newGroup.getGroupId()});
+                rulePassed = false;
+        	}   
+        }
+        // check it before save ??
+        //rulePassed &= validateActiveDate(newGroup.getActiveFromDate(), newGroup.getActiveToDate());
 		return rulePassed;
 	} 
 
+	private boolean validateActiveDate(Timestamp activeFromDate, Timestamp activeToDate) {
+		// TODO : do not have detail bus rule yet, so just check this for now.
+		boolean valid = true;
+		if (activeFromDate != null && activeToDate !=null && activeToDate.before(activeFromDate)) {
+	        ErrorMap errorMap = GlobalVariables.getErrorMap();
+            errorMap.putError(NEW_GROUP+".activeToDate", RiceKeyConstants.ERROR_ACTIVE_TO_DATE_BEFORE_FROM_DATE);
+            valid = false;
+			
+		}
+		return valid;
+	}
 }

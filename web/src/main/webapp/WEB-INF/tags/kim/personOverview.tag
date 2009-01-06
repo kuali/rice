@@ -28,10 +28,6 @@
 				 	<tr>
           				<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${personAttributes.password}"  /></div></th>
 				 		<td><html:password property="document.password" /></td>
-          				<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${personAttributes.univId}"  /></div></th>
-				 		<td><kul:htmlControlAttribute property="document.univId" attributeEntry="${personAttributes.univId}" /></td>          	
-				 	</tr>
-				 	<tr>
           				<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${personAttributes.active}"  /></div></th>
 				 		<td><kul:htmlControlAttribute property="document.active" attributeEntry="${personAttributes.active}" /></td>
 				 	</tr>

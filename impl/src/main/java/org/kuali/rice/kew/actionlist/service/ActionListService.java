@@ -58,6 +58,7 @@ public interface ActionListService {
 
     public Collection<ActionItem> findByPrincipalId(String principalId);
 
+    @Deprecated
     public Collection findByWorkflowUser(WorkflowUser workflowUser);
 
     public Collection findByWorkflowUserRouteHeaderId(String workflowUserId, Long routeHeaderId);

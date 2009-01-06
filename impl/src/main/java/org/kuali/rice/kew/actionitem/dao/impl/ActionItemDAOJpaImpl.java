@@ -130,7 +130,7 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
     	}
     }
 
-    public Collection<Recipient> findSecondaryDelegators(WorkflowUser user) throws KEWUserNotFoundException {
+    public Collection<Recipient> findSecondaryDelegators(String principalId) throws KEWUserNotFoundException {
         Criteria notNullWorkflowCriteria = new Criteria(ActionItem.class.getName());
         notNullWorkflowCriteria.notNull("delegatorWorkflowId");
         Criteria notNullWorkgroupCriteria = new Criteria(ActionItem.class.getName());
@@ -139,7 +139,7 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
         orCriteria.or(notNullWorkflowCriteria);
         orCriteria.or(notNullWorkgroupCriteria);
         Criteria criteria = new Criteria(ActionItem.class.getName());
-        criteria.eq("principalId", user.getWorkflowUserId().getWorkflowId());
+        criteria.eq("principalId", principalId);
         criteria.eq("delegationType", KEWConstants.DELEGATION_SECONDARY);
         criteria.and(orCriteria);
 
@@ -160,11 +160,11 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
          return delegators.values();
     }
 
-    public Collection<Recipient> findPrimaryDelegationRecipients(WorkflowUser user) throws KEWUserNotFoundException {
-    	Set<Long> workgroupIds = KEWServiceLocator.getWorkgroupService().getUsersGroupIds(user.getWorkflowId());
+    public Collection<Recipient> findPrimaryDelegationRecipients(String principalId) throws KEWUserNotFoundException {
+    	Set<Long> workgroupIds = KEWServiceLocator.getWorkgroupService().getUsersGroupIds(principalId);
         Criteria orCriteria = new Criteria(ActionItem.class.getName());
         Criteria delegatorWorkflowIdCriteria = new Criteria(ActionItem.class.getName());
-        delegatorWorkflowIdCriteria.eq("delegatorWorkflowId", user.getWorkflowUserId().getWorkflowId());
+        delegatorWorkflowIdCriteria.eq("delegatorWorkflowId", principalId);
         if (CollectionUtils.isNotEmpty(workgroupIds)) {
             Criteria delegatorWorkgroupCriteria = new Criteria(ActionItem.class.getName());
             delegatorWorkgroupCriteria.in("delegatorGroupId", new ArrayList(workgroupIds));
@@ -180,9 +180,9 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
 
         Map<Object, Recipient> delegators = new HashMap<Object, Recipient>();
         for(Object actionItem:new QueryByCriteria(entityManager, criteria).toQuery().getResultList()){
-        	String principalId = ((ActionItem)actionItem).getPrincipalId();
-            if (principalId != null && !delegators.containsKey(principalId)) {
-                delegators.put(principalId, getUserService().getWorkflowUser(new WorkflowUserId(principalId)));
+        	String princlId = ((ActionItem)actionItem).getPrincipalId();
+            if (princlId != null && !delegators.containsKey(princlId)) {
+                delegators.put(princlId, getUserService().getWorkflowUser(new WorkflowUserId(princlId)));
             }
         }
 
@@ -200,6 +200,8 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
     private GroupService getGroupService(){
     	return (GroupService) KIMServiceLocator.getGroupService();
     }
+
+
 
 
 }

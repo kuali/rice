@@ -111,7 +111,7 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         this.getPersistenceBrokerTemplate().store(actionItem);
     }
 
-    public Collection<Recipient> findSecondaryDelegators(WorkflowUser user) throws KEWUserNotFoundException {
+    public Collection<Recipient> findSecondaryDelegators(String principalId) throws KEWUserNotFoundException {
         Criteria notNullWorkflowCriteria = new Criteria();
         notNullWorkflowCriteria.addNotNull("delegatorWorkflowId");
         Criteria notNullWorkgroupCriteria = new Criteria();
@@ -120,7 +120,7 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         orCriteria.addOrCriteria(notNullWorkflowCriteria);
         orCriteria.addOrCriteria(notNullWorkgroupCriteria);
         Criteria criteria = new Criteria();
-        criteria.addEqualTo("principalId", user.getWorkflowUserId().getWorkflowId());
+        criteria.addEqualTo("principalId", principalId);
         criteria.addEqualTo("delegationType", KEWConstants.DELEGATION_SECONDARY);
         criteria.addAndCriteria(orCriteria);
         ReportQueryByCriteria query = QueryFactory.newReportQuery(ActionItem.class, criteria);
@@ -142,11 +142,11 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         return delegators.values();
     }
 
-    public Collection<Recipient> findPrimaryDelegationRecipients(WorkflowUser user) throws KEWUserNotFoundException {
-    	Set<Long> workgroupIds = KEWServiceLocator.getWorkgroupService().getUsersGroupIds(user.getWorkflowId());
+    public Collection<Recipient> findPrimaryDelegationRecipients(String principalId) throws KEWUserNotFoundException {
+    	Set<Long> workgroupIds = KEWServiceLocator.getWorkgroupService().getUsersGroupIds(principalId);
         Criteria orCriteria = new Criteria();
         Criteria delegatorWorkflowIdCriteria = new Criteria();
-        delegatorWorkflowIdCriteria.addEqualTo("delegatorWorkflowId", user.getWorkflowUserId().getWorkflowId());
+        delegatorWorkflowIdCriteria.addEqualTo("delegatorWorkflowId", principalId);
         if (CollectionUtils.isNotEmpty(workgroupIds)) {
             Criteria delegatorWorkgroupCriteria = new Criteria();
             delegatorWorkgroupCriteria.addIn("delegatorGroupId", workgroupIds);

@@ -45,6 +45,7 @@ public interface ActionItemDAO {
 
 	public Collection<ActionItem> findByPrincipalId(String principalId);
 
+	@Deprecated
 	public Collection<ActionItem> findByWorkflowUser(WorkflowUser workflowUser);
 
 	public Collection<ActionItem> findByRouteHeaderId(Long routeHeaderId);
@@ -54,8 +55,8 @@ public interface ActionItemDAO {
 	public Collection<ActionItem> findByWorkflowUserRouteHeaderId(
 			String workflowUserId, Long routeHeaderId);
 
-	public Collection<Recipient> findSecondaryDelegators(WorkflowUser user) throws KEWUserNotFoundException;
+	public Collection<Recipient> findSecondaryDelegators(String principalId) throws KEWUserNotFoundException;
 
-	public Collection<Recipient> findPrimaryDelegationRecipients(WorkflowUser user) throws KEWUserNotFoundException;
+	public Collection<Recipient> findPrimaryDelegationRecipients(String principalId) throws KEWUserNotFoundException;
 
 }

@@ -114,6 +114,12 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 		if (documentType.getDocumentTypeId() == null){
 			entityManager.persist(documentType);
 		} else {
+			for(org.kuali.rice.kew.engine.node.Process process:(List<org.kuali.rice.kew.engine.node.Process>)documentType.getProcesses()){
+				if(process.getInitialRouteNode().getRouteNodeId()==null){
+					process.getInitialRouteNode().setDocumentTypeId(documentType.getDocumentTypeId());
+					entityManager.persist(process.getInitialRouteNode());
+				}
+			}
 			OrmUtils.reattach(documentType, entityManager.merge(documentType));
 		}
 

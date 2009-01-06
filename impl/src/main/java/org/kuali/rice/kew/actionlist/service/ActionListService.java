@@ -56,6 +56,8 @@ public interface ActionListService {
 
     public void deleteByRouteHeaderId(Long routeHeaderId);
 
+    public Collection<ActionItem> findByPrincipalId(String principalId);
+
     public Collection findByWorkflowUser(WorkflowUser workflowUser);
 
     public Collection findByWorkflowUserRouteHeaderId(String workflowUserId, Long routeHeaderId);

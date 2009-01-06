@@ -137,7 +137,7 @@ public class ActionListServiceImpl implements ActionListService {
         return getActionItemDAO().findByActionRequestId(actionRequestId);
     }
 
-    public Collection findByWorkflowUser(WorkflowUser workflowUser) {
+    public Collection<ActionItem> findByWorkflowUser(WorkflowUser workflowUser) {
         return getActionItemDAO().findByWorkflowUser(workflowUser);
     }
 
@@ -486,4 +486,15 @@ public class ActionListServiceImpl implements ActionListService {
             throw new WorkflowRuntimeException(eunfe);
         }
     }
+
+	/**
+	 * This overridden method replaced findByWorkflowUser
+	 *
+	 * @see org.kuali.rice.kew.actionlist.service.ActionListService#findByPrincipalId(java.lang.String)
+	 */
+	public Collection<ActionItem> findByPrincipalId(String principalId) {
+		return getActionItemDAO().findByPrincipalId(principalId);
+	}
+
+
 }

@@ -189,4 +189,17 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
     private GroupService getGroupService(){
     	return (GroupService) KIMServiceLocator.getGroupService();
     }
+
+	/**
+	 * This overridden method replaced findByWorkfowUser
+	 *
+	 * @see org.kuali.rice.kew.actionitem.dao.ActionItemDAO#findByPrincipalId(java.lang.String)
+	 */
+	public Collection<ActionItem> findByPrincipalId(String principalId) {
+		 Criteria crit = new Criteria();
+	     crit.addEqualTo("principalId", principalId);
+	     QueryByCriteria query = new QueryByCriteria(ActionItem.class, crit);
+	     query.addOrderByAscending("routeHeader.routeHeaderId");
+	     return this.getPersistenceBrokerTemplate().getCollectionByQuery(query);
+	}
 }

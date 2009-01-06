@@ -82,6 +82,18 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
         }
     }
 
+    /**
+	 * This method replaces findByWorkflowUser
+	 *
+	 * @see org.kuali.rice.kew.actionitem.dao.ActionItemDAO#findByPrincipalId(java.lang.String)
+	 */
+	public Collection<ActionItem> findByPrincipalId(String principalId) {
+		Criteria crit = new Criteria(ActionItem.class.getName());
+        crit.eq("principalId", principalId);
+        crit.orderBy("routeHeader.routeHeaderId", true);
+        return new QueryByCriteria(entityManager, crit).toQuery().getResultList();
+	}
+
     public Collection<ActionItem> findByWorkflowUser(WorkflowUser workflowUser) {
         Criteria crit = new Criteria(ActionItem.class.getName());
         crit.eq("principalId", workflowUser.getWorkflowUserId().getWorkflowId());
@@ -188,4 +200,6 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
     private GroupService getGroupService(){
     	return (GroupService) KIMServiceLocator.getGroupService();
     }
+
+
 }

@@ -84,7 +84,7 @@ public class ActionTakenDAOJpaImpl implements ActionTakenDAO {
         crit.eq("routeHeaderId", routeHeaderId);
         crit.eq("workflowId", workflowId);
         crit.eq("currentIndicator", new Boolean(true));
-        return (List) new QueryByCriteria(entityManager, crit);
+        return (List) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
     }
 
     public List findByRouteHeaderIdIgnoreCurrentInd(Long routeHeaderId) {

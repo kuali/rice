@@ -153,12 +153,14 @@ public class DocumentType extends PersistableBusinessObjectBase
     private List routeLevels;
     @Transient
     private Collection childrenDocTypes;
-    @OneToMany(cascade={CascadeType.REMOVE, CascadeType.MERGE},
+    @Fetch(value=FetchMode.SUBSELECT)
+    @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.REMOVE, CascadeType.MERGE},
            targetEntity=org.kuali.rice.kew.doctype.DocumentTypeAttribute.class, mappedBy="documentType")
 	private List<DocumentTypeAttribute> documentTypeAttributes;
 
     /* New Workflow 2.1 Field */
-    @OneToMany(cascade={CascadeType.REMOVE, CascadeType.MERGE},
+    @Fetch(value=FetchMode.SUBSELECT)
+    @OneToMany(cascade={CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST},
             targetEntity=org.kuali.rice.kew.engine.node.Process.class, mappedBy="documentType")
     private List<Process> processes = new ArrayList();
     @Column(name="RTE_VER_NBR")

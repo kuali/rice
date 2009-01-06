@@ -99,8 +99,8 @@ public class ActionListFilterAction extends WorkflowAction {
         Preferences preferences = prefSrv.getPreferences(getUserSession(request).getWorkflowUser().getWorkflowUserId().getId());
         request.setAttribute("preferences", preferences);
         ActionListService actionListSrv = (ActionListService) KEWServiceLocator.getActionListService();
-        request.setAttribute("delegators", getWebFriendlyRecipients(actionListSrv.findUserSecondaryDelegators(getUserSession(request).getWorkflowUser())));
-        request.setAttribute("primaryDelegates", getWebFriendlyRecipients(actionListSrv.findUserPrimaryDelegations(getUserSession(request).getWorkflowUser())));
+        request.setAttribute("delegators", getWebFriendlyRecipients(actionListSrv.findUserSecondaryDelegators(getUserSession(request).getPrincipal().getPrincipalId())));
+        request.setAttribute("primaryDelegates", getWebFriendlyRecipients(actionListSrv.findUserPrimaryDelegations(getUserSession(request).getPrincipal().getPrincipalId())));
         if (! filterForm.getMethodToCall().equalsIgnoreCase("clear")) {
             filterForm.validateDates();
         }

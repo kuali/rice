@@ -74,12 +74,12 @@ public class ActionListServiceImpl implements ActionListService {
 
     private ActionItemDAO actionItemDAO;
 
-    public Collection<Recipient> findUserSecondaryDelegators(WorkflowUser workflowUser) throws KEWUserNotFoundException {
-        return getActionItemDAO().findSecondaryDelegators(workflowUser.getWorkflowId());
+    public Collection<Recipient> findUserSecondaryDelegators(String principalId) throws KEWUserNotFoundException {
+        return getActionItemDAO().findSecondaryDelegators(principalId);
     }
 
-    public Collection<Recipient> findUserPrimaryDelegations(WorkflowUser workflowUser) throws KEWUserNotFoundException {
-        return getActionItemDAO().findPrimaryDelegationRecipients(workflowUser.getWorkflowId());
+    public Collection<Recipient> findUserPrimaryDelegations(String principalId) throws KEWUserNotFoundException {
+        return getActionItemDAO().findPrimaryDelegationRecipients(principalId);
     }
 
     public Collection getActionList(String principalId, ActionListFilter filter) {

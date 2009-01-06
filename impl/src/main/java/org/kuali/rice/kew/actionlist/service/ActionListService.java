@@ -44,9 +44,9 @@ public interface ActionListService {
 
     public Collection getActionListForSingleDocument(Long routeHeaderId);
 
-    public Collection<Recipient> findUserSecondaryDelegators(WorkflowUser workflowUser) throws KEWUserNotFoundException;
+    public Collection<Recipient> findUserSecondaryDelegators(String principalId) throws KEWUserNotFoundException;
 
-    public Collection<Recipient> findUserPrimaryDelegations(WorkflowUser workflowUser) throws KEWUserNotFoundException;
+    public Collection<Recipient> findUserPrimaryDelegations(String principalId) throws KEWUserNotFoundException;
 
     public boolean refreshActionList(String principalId);
 

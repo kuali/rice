@@ -89,7 +89,7 @@ public class ActionListActionNew extends KualiAction {
     private static String ACTION_LIST_PAGE_KEY = "actionListPage";
     private static String ACTION_LIST_USER_KEY = "actionList.user";
     private static String REQUERY_ACTION_LIST_KEY = "requeryActionList";
-    
+
     public ActionForward execute(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	ActionListFormNew frm = (ActionListFormNew)actionForm;
     	request.setAttribute("Constants", new JSTLConstants(KEWConstants.class));
@@ -98,35 +98,35 @@ public class ActionListActionNew extends KualiAction {
     	frm.setHeaderButtons(getHeaderButtons());
     	return super.execute(mapping, actionForm, request, response);
     }
-    
+
     private List<ExtraButton> getHeaderButtons(){
     	List<ExtraButton> headerButtons = new ArrayList<ExtraButton>();
     	ExtraButton eb = new ExtraButton();
     	eb.setExtraButtonSource("../kr/images/tinybutton-preferences.gif");
     	eb.setExtraButtonOnclick("../en/Preferences.do?returnMapping=viewActionList");
-    	
+
     	headerButtons.add(eb);
     	eb = new ExtraButton();
     	eb.setExtraButtonSource("../kr/images/tinybutton-refresh.gif");
     	eb.setExtraButtonProperty("methodToCall.start");
-    	
+
     	headerButtons.add(eb);
     	eb = new ExtraButton();
     	eb.setExtraButtonSource("../kr/images/tinybutton-filter.gif");
     	eb.setExtraButtonOnclick("javascript: window.open('..en/ActionListFilter.do?methodToCall=start');");
     	headerButtons.add(eb);
-    	
-    	
+
+
     	return headerButtons;
     }
-    
+
     public ActionForward start(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
         PerformanceLogger plog = new PerformanceLogger();
         plog.log("Starting ActionList fetch");
         ActionListFormNew form = (ActionListFormNew) actionForm;
         ActionErrors errors = new ActionErrors();
         ActionListService actionListSrv = KEWServiceLocator.getActionListService();
-       
+
 
         // process display tag parameters
         Integer page = form.getPage();
@@ -146,13 +146,13 @@ public class ActionListActionNew extends KualiAction {
         }
         else if ( !StringUtils.isEmpty(getUserSession(request).getSortCriteria()))     {
         	sortCriterion = getUserSession(request).getSortCriteria();
-     //       System.out.println("Session sortCriterion variables used..."+getUserSession(request).getSortCriteria());        	
+     //       System.out.println("Session sortCriterion variables used..."+getUserSession(request).getSortCriteria());
         }
         // if the page is still null, that means the user just performed a sort action, pull the currentPage off of the form
         if (page == null) {
         	page = form.getCurrentPage();
         }
-      
+
         // update the values of the "current" display tag parameters
         form.setCurrentPage(page);
         if (!StringUtils.isEmpty(sortCriterion)) {
@@ -234,13 +234,13 @@ public class ActionListActionNew extends KualiAction {
             }
             // reset the requery action list key
             request.getSession().setAttribute(REQUERY_ACTION_LIST_KEY, null);
-            
+
             // build the drop-down of delegators
             if (KEWConstants.DELEGATORS_ON_ACTION_LIST_PAGE.equalsIgnoreCase(preferences.getDelegatorFilter())) {
-                Collection delegators = actionListSrv.findUserSecondaryDelegators(workflowUser);
+                Collection delegators = actionListSrv.findUserSecondaryDelegators(workflowUser.getWorkflowId());
                 form.setDelegators(getWebFriendlyRecipients(delegators));
                 form.setDelegationId(uSession.getActionListFilter().getDelegatorId());
-                Collection delegates = actionListSrv.findUserPrimaryDelegations(workflowUser);
+                Collection delegates = actionListSrv.findUserPrimaryDelegations(workflowUser.getWorkflowId());
                 form.setPrimaryDelegates(getWebFriendlyRecipients(delegates));
                 form.setPrimaryDelegateId(uSession.getActionListFilter().getDelegatorId());
             }
@@ -277,7 +277,7 @@ public class ActionListActionNew extends KualiAction {
         LOG.debug("end start ActionListAction");
         return mapping.findForward("viewActionList");
     }
-    
+
     private SortOrderEnum parseSortOrder(String dir) throws WorkflowException {
     	if ("asc".equals(dir)) {
     		return SortOrderEnum.ASCENDING;
@@ -295,22 +295,22 @@ public class ActionListActionNew extends KualiAction {
     	}
     	return null;
     }
-    
+
     private static final String OUT_BOX_MODE = "_OUT_BOX_MODE";
-    
+
     /**
      * this method is setting 2 props on the {@link ActionListForm} that controls outbox behavior.
      *  alForm.setViewOutbox("false"); -> this is set by user preferences and the actionlist.outbox.off config prop
      *  alForm.setShowOutbox(false); -> this is set by user action clicking the ActionList vs. Outbox links.
-     * 
+     *
      * @param alForm
      * @param request
      * @return boolean indication whether the outbox should be fetched
      */
     private boolean isOutboxMode(ActionListFormNew alForm, HttpServletRequest request, Preferences preferences) {
-	
+
 	boolean outBoxView = false;
-	
+
 	WorkflowUser user = UserSession.getAuthenticatedUser().getWorkflowUser();
 
 	if (! preferences.isUsingOutbox() || ! ConfigContext.getCurrentContextConfig().getOutBoxOn()) {
@@ -319,7 +319,7 @@ public class ActionListActionNew extends KualiAction {
 	    alForm.setShowOutbox(false);
 	    return false;
 	}
-	
+
 	alForm.setShowOutbox(true);
 	if (StringUtils.isNotEmpty(alForm.getViewOutbox())) {
 	    if (!new Boolean(alForm.getViewOutbox())) {
@@ -615,13 +615,13 @@ public class ActionListActionNew extends KualiAction {
     	LOG.info("Fetched Action List count of " + alForm.getCount() + " for user " + user.getAuthenticationUserId().getId());
     	return mapping.findForward("count");
     }
-    
+
     public ActionForward removeOutboxItems(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 	ActionListForm alForm = (ActionListForm)form;
 	if (alForm.getOutboxItems() != null) {
-	    KEWServiceLocator.getActionListService().removeOutboxItems(getUserSession(request).getWorkflowUser(), Arrays.asList(alForm.getOutboxItems()));	    
+	    KEWServiceLocator.getActionListService().removeOutboxItems(getUserSession(request).getWorkflowUser(), Arrays.asList(alForm.getOutboxItems()));
 	}
-	
+
 	alForm.setViewOutbox("true");
 	return start(mapping, form, request, response);
     }
@@ -711,7 +711,7 @@ public class ActionListActionNew extends KualiAction {
         });
         return recipientList;
     }
-    
+
 	private UserSession getUserSession(HttpServletRequest request){
 		return UserLoginFilter.getUserSession(request);
 	}

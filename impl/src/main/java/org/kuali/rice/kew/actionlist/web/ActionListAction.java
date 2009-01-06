@@ -204,10 +204,10 @@ public class ActionListAction extends WorkflowAction {
 
             // build the drop-down of delegators
             if (KEWConstants.DELEGATORS_ON_ACTION_LIST_PAGE.equalsIgnoreCase(preferences.getDelegatorFilter())) {
-                Collection delegators = actionListSrv.findUserSecondaryDelegators(workflowUser);
+                Collection delegators = actionListSrv.findUserSecondaryDelegators(workflowUser.getWorkflowId());
                 form.setDelegators(getWebFriendlyRecipients(delegators));
                 form.setDelegationId(uSession.getActionListFilter().getDelegatorId());
-                Collection delegates = actionListSrv.findUserPrimaryDelegations(workflowUser);
+                Collection delegates = actionListSrv.findUserPrimaryDelegations(workflowUser.getWorkflowId());
                 form.setPrimaryDelegates(getWebFriendlyRecipients(delegates));
                 form.setPrimaryDelegateId(uSession.getActionListFilter().getDelegatorId());
             }

@@ -623,11 +623,12 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
     }
 
     /**
+     *
      * Deletes all outbox items specified by the list of ids
      *
-     * @see org.kuali.rice.kew.actionlist.dao.ActionListDAO#removeOutboxItems(org.kuali.rice.kew.user.WorkflowUser, java.util.List)
+     * @see org.kuali.rice.kew.actionlist.dao.ActionListDAO#removeOutboxItems(java.lang.String, java.util.List)
      */
-    public void removeOutboxItems(WorkflowUser workflowUser, List<Long> outboxItems) {
+    public void removeOutboxItems(String principalId, List<Long> outboxItems) {
         Criteria crit = new Criteria();
         crit.addIn("actionItemId", outboxItems);
         getPersistenceBrokerTemplate().deleteByQuery(new QueryByCriteria(OutboxItemActionListExtension.class, crit));

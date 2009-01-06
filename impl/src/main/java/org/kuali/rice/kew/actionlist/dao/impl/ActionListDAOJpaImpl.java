@@ -394,11 +394,12 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
     }
 
     /**
+     *
      * Deletes all outbox items specified by the list of ids
      *
-     * @see org.kuali.rice.kew.actionlist.dao.ActionListDAO#removeOutboxItems(org.kuali.rice.kew.user.WorkflowUser, java.util.List)
+     * @see org.kuali.rice.kew.actionlist.dao.ActionListDAO#removeOutboxItems(java.lang.String, java.util.List)
      */
-    public void removeOutboxItems(WorkflowUser workflowUser, List<Long> outboxItems) {
+    public void removeOutboxItems(String principalId, List<Long> outboxItems) {
         Criteria crit = new Criteria(OutboxItemActionListExtension.class.getName());
         crit.in("actionItemId", outboxItems);
         for(Object entity:new QueryByCriteria(entityManager, crit).toQuery().getResultList()){

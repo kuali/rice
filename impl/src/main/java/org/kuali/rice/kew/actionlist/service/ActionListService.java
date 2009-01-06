@@ -112,6 +112,6 @@ public interface ActionListService {
      * @return
      */
     public Collection getOutbox(String principalId, ActionListFilter filter);
-    public void removeOutboxItems(WorkflowUser workflowUser, List<Long> outboxItems);
+    public void removeOutboxItems(String principalId, List<Long> outboxItems);
     public void saveOutboxItem(ActionItem actionItem);
 }

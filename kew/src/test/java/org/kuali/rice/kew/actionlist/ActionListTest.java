@@ -415,9 +415,9 @@ public class ActionListTest extends KEWTestCase {
         document = new WorkflowDocument(new NetworkIdDTO("jhopf"), "ActionListDocumentType_PrimaryDelegate2");
         document.routeDocument("");
 
-        Collection<Recipient> recipients = getActionListService().findUserPrimaryDelegations(jhopf);
+        Collection<Recipient> recipients = getActionListService().findUserPrimaryDelegations(jhopf.getWorkflowId());
         assertEquals("Wrong size of users who were delegated to via Primary Delegation", 0, recipients.size());
-    	recipients = getActionListService().findUserPrimaryDelegations(bmcgough);
+    	recipients = getActionListService().findUserPrimaryDelegations(bmcgough.getWorkflowId());
     	assertEquals("Wrong size of users who were delegated to via Primary Delegation", 3, recipients.size());
     	String user1 = "rkirkend";
         String user2 = "temay";
@@ -440,7 +440,7 @@ public class ActionListTest extends KEWTestCase {
         assertTrue("Should have found user " + user2, foundUser2);
         assertTrue("Should have found user " + user3, foundUser3);
 
-    	recipients = getActionListService().findUserSecondaryDelegators(bmcgough);
+    	recipients = getActionListService().findUserSecondaryDelegators(bmcgough.getWorkflowId());
     	assertEquals("Wrong size of users who were have delegated to given user via Secondary Delegation", 1, recipients.size());
     	assertEquals("Wrong employee id of primary delegate", "bmcgough", ((WorkflowUser)recipients.iterator().next()).getAuthenticationUserId().getAuthenticationId());
     }

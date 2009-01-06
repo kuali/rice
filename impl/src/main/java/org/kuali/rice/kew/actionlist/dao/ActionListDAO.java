@@ -47,7 +47,7 @@ public interface ActionListDAO {
      * @return
      */
     public Collection<ActionItem> getOutbox(String principalId, ActionListFilter filter);
-    public void removeOutboxItems(WorkflowUser workflowUser, List<Long> outboxItems);
+    public void removeOutboxItems(String principalId, List<Long> outboxItems);
     public void saveOutboxItem(OutboxItemActionListExtension outboxItem);
     public OutboxItemActionListExtension getOutboxByDocumentId(Long documentId);
     public OutboxItemActionListExtension getOutboxByDocumentIdUserId(Long documentId, String userId);

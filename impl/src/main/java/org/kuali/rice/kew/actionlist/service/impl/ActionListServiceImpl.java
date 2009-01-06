@@ -457,8 +457,8 @@ public class ActionListServiceImpl implements ActionListService {
      * @see org.kuali.rice.kew.actionlist.service.ActionListService#removeOutboxItems(org.kuali.rice.kew.user.WorkflowUser,
      *      java.util.List)
      */
-    public void removeOutboxItems(WorkflowUser workflowUser, List<Long> outboxItems) {
-        this.getActionListDAO().removeOutboxItems(workflowUser, outboxItems);
+    public void removeOutboxItems(String principalId, List<Long> outboxItems) {
+        this.getActionListDAO().removeOutboxItems(principalId, outboxItems);
     }
 
     /**
@@ -495,6 +495,7 @@ public class ActionListServiceImpl implements ActionListService {
 	public Collection<ActionItem> findByPrincipalId(String principalId) {
 		return getActionItemDAO().findByPrincipalId(principalId);
 	}
+
 
 
 

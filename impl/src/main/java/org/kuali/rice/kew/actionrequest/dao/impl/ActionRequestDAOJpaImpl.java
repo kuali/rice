@@ -16,15 +16,16 @@
  */
 package org.kuali.rice.kew.actionrequest.dao.impl;
 
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.dao.ActionRequestDAO;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -205,18 +206,37 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
     }
 
     public void saveActionRequest(ActionRequestValue actionRequest) {
-        try {
-            if(actionRequest.getActionRequestId() == null ||
-                    entityManager.find(ActionRequestValue.class, actionRequest.getActionRequestId()) == null) {
-                entityManager.persist(actionRequest);
-            }
-            else {
-                entityManager.merge(actionRequest);
-            }
+        if(actionRequest.getActionRequestId() == null) {
+        	loadDefaultValues(actionRequest);
+        	entityManager.persist(actionRequest);
+        }else{
+        	OrmUtils.reattach(actionRequest,entityManager.merge(actionRequest));
         }
-        catch(EntityNotFoundException ex) {
-            entityManager.persist(actionRequest);
+        entityManager.flush();
+    }
+    private void loadDefaultValues(ActionRequestValue actionRequest) {
+        checkNull(actionRequest.getActionRequested(), "action requested");
+        checkNull(actionRequest.getResponsibilityId(), "responsibility ID");
+        checkNull(actionRequest.getRouteLevel(), "route level");
+        checkNull(actionRequest.getDocVersion(), "doc version");
+        if (actionRequest.getIgnorePrevAction() == null) {
+            actionRequest.setIgnorePrevAction(Boolean.FALSE);
+        }
+        if (actionRequest.getStatus() == null) {
+            actionRequest.setStatus(KEWConstants.ACTION_REQUEST_INITIALIZED);
+        }
+        if (actionRequest.getPriority() == null) {
+            actionRequest.setPriority(new Integer(KEWConstants.ACTION_REQUEST_DEFAULT_PRIORITY));
+        }
+        if (actionRequest.getCurrentIndicator() == null) {
+            actionRequest.setCurrentIndicator(new Boolean(true));
+        }
+        actionRequest.setCreateDate(new Timestamp(System.currentTimeMillis()));
+    }
+    //TODO Runtime might not be the right thing to do here...
+    private void checkNull(Object value, String valueName) throws RuntimeException {
+        if (value == null) {
+            throw new RuntimeException("Null value for " + valueName);
         }
     }
-    
 }

@@ -138,7 +138,7 @@ public class ActionListTest extends KEWTestCase {
                                 } else {
                                     throw new Exception("WorkflowId " + workflowId + " didn't return a count.  Test SQL invalid.");
                                 }
-                                Collection actionList = getActionListService().findByWorkflowUser(userService.getWorkflowUser(new WorkflowUserId(workflowId)));
+                                Collection actionList = getActionListService().findByPrincipalId(workflowId);
                                 assertEquals("ActionItemService returned incorrect number of ActionItems for user " + workflowId + " ActionList", emplIdCnt, actionList.size());
                                 ps1.close();
                                 rsWorkflowIdCnt.close();

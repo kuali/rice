@@ -243,9 +243,9 @@ public class ActionListServiceImpl implements ActionListService {
     	{
     		    List<GroupInfo> allGroupsToCheck = KIMServiceLocator.getGroupService().getGroupsForPrincipal(user.getWorkflowId());
     		    allGroupsToCheck.add(0, (GroupInfo)group);
-    		    Collection actionItems = findByWorkflowUser(user);
-    		    for (Iterator itemIt = actionItems.iterator(); itemIt.hasNext();) {
-    		    	ActionItem item = (ActionItem) itemIt.next();
+    		    Collection<ActionItem> actionItems = this.findByPrincipalId(user.getWorkflowId());
+    		    for (Iterator<ActionItem> itemIt = actionItems.iterator(); itemIt.hasNext();) {
+    		    	ActionItem item = itemIt.next();
     		    	if (item.isWorkgroupItem()) {
     		    		for (KimGroup groupToCheck : allGroupsToCheck) {
     		    			if (item.getGroupId().equals(groupToCheck.getGroupId())) {

@@ -401,7 +401,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         roleResponsibilityActionId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_RSP_ACTN_ID_S");
         RoleResponsibilityActionImpl roleResponsibilityAction2 = new RoleResponsibilityActionImpl();
         roleResponsibilityAction2.setRoleResponsibilityActionId(roleResponsibilityActionId);
-        roleResponsibilityAction1.setRoleResponsibilityId(roleResponsibilityId);
+        roleResponsibilityAction2.setRoleResponsibilityId(roleResponsibilityId);
         roleResponsibilityAction2.setRoleMemberId(user2RolePrincipal.getRoleMemberId());
         roleResponsibilityAction2.setActionTypeCode(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
         roleResponsibilityAction2.setActionPolicyCode(KEWConstants.APPROVE_POLICY_FIRST_APPROVE);
@@ -411,7 +411,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         roleResponsibilityActionId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_RSP_ACTN_ID_S");
         RoleResponsibilityActionImpl roleResponsibilityAction3 = new RoleResponsibilityActionImpl();
         roleResponsibilityAction3.setRoleResponsibilityActionId(roleResponsibilityActionId);
-        roleResponsibilityAction1.setRoleResponsibilityId(roleResponsibilityId);
+        roleResponsibilityAction3.setRoleResponsibilityId(roleResponsibilityId);
         roleResponsibilityAction3.setRoleMemberId(adminRolePrincipal.getRoleMemberId());
         roleResponsibilityAction3.setActionTypeCode(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
         roleResponsibilityAction3.setActionPolicyCode(KEWConstants.APPROVE_POLICY_FIRST_APPROVE);
@@ -514,7 +514,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         roleResponsibilityActionId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_RSP_ACTN_ID_S");
         RoleResponsibilityActionImpl roleResponsibilityAction2 = new RoleResponsibilityActionImpl();
         roleResponsibilityAction2.setRoleResponsibilityActionId(roleResponsibilityActionId);
-        roleResponsibilityAction1.setRoleResponsibilityId(roleResponsibilityId);
+        roleResponsibilityAction2.setRoleResponsibilityId(roleResponsibilityId);
         roleResponsibilityAction2.setRoleMemberId(user2RolePrincipal.getRoleMemberId());
         roleResponsibilityAction2.setActionTypeCode(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
         roleResponsibilityAction2.setActionPolicyCode(KEWConstants.APPROVE_POLICY_ALL_APPROVE);
@@ -524,7 +524,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         roleResponsibilityActionId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_RSP_ACTN_ID_S");
         RoleResponsibilityActionImpl roleResponsibilityAction3 = new RoleResponsibilityActionImpl();
         roleResponsibilityAction3.setRoleResponsibilityActionId(roleResponsibilityActionId);
-        roleResponsibilityAction1.setRoleResponsibilityId(roleResponsibilityId);
+        roleResponsibilityAction3.setRoleResponsibilityId(roleResponsibilityId);
         roleResponsibilityAction3.setRoleMemberId(adminRolePrincipal.getRoleMemberId());
         roleResponsibilityAction3.setActionTypeCode(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
         roleResponsibilityAction3.setActionPolicyCode(KEWConstants.APPROVE_POLICY_ALL_APPROVE);

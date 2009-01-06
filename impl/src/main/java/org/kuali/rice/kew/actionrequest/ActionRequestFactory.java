@@ -45,7 +45,9 @@ import org.kuali.rice.kew.workgroup.GroupId;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
+import org.kuali.rice.kim.bo.role.dto.DelegateInfo;
 import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.util.KNSConstants;
 
 
@@ -188,6 +190,9 @@ public class ActionRequestFactory {
     	if (recipient instanceof WorkflowUser) {
     		actionRequest.setRecipientTypeCd(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
     		actionRequest.setWorkflowId(((WorkflowUser)recipient).getWorkflowId());
+    	} else if (recipient instanceof KimPrincipalRecipient) {
+    		actionRequest.setRecipientTypeCd(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
+    		actionRequest.setWorkflowId(((KimPrincipalRecipient)recipient).getPrincipal().getPrincipalId());
     	} else if (recipient instanceof Workgroup){
     		actionRequest.setRecipientTypeCd(KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD);
     		actionRequest.setGroupId(((Workgroup)recipient).getWorkflowGroupId().getGroupId().toString());
@@ -273,6 +278,9 @@ public class ActionRequestFactory {
     	return requestGraph;
     }
 
+    /**
+     * Generates an ActionRequest graph for the given KIM Responsibilities.  This graph includes any associated delegations.
+     */
     public ActionRequestValue addRoleResponsibilityRequest(List<ResponsibilityActionInfo> responsibilities, String approvePolicy) throws KEWUserNotFoundException {
     	if (responsibilities == null || responsibilities.isEmpty()) {
     		LOG.warn("Didn't create action requests for action request description because no responsibilities were defined.");
@@ -288,16 +296,47 @@ public class ActionRequestFactory {
     	for (ResponsibilityActionInfo responsibility : responsibilities) {
 			if (responsibility.getPrincipalId() != null) {
 				roleRecipient.setTarget(KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(responsibility.getPrincipalId())));
-				// TODO group case
+			} else if (responsibility.getGroupId() != null) {
+				roleRecipient.setTarget(new KimGroupRecipient(responsibility.getGroupId()));
 			} else {
 				throw new RiceRuntimeException("Failed to identify a group or principal on the given ResponsibilityResolutionInfo.");
 			}
 			ActionRequestValue request = createActionRequest(responsibility.getActionTypeCode(), responsibility.getPriorityNumber(), roleRecipient, "", new Long(responsibility.getResponsibilityId()), true, approvePolicy, null, null);
 			request.setParentActionRequest(requestGraph);
+			generateRoleResponsibilityDelegationRequests(responsibility, request);
 			requestGraph.getChildrenRequests().add(request);
 	     }
     	requestGraphs.add(requestGraph);
     	return requestGraph;
+    }
+    
+    private void generateRoleResponsibilityDelegationRequests(ResponsibilityActionInfo responsibility, ActionRequestValue parentRequest) throws KEWUserNotFoundException {
+    	List<DelegateInfo> delegates = responsibility.getDelegates();
+    	for (DelegateInfo delegate : delegates) {
+    		Recipient recipient = null;
+    		boolean isPrincipal = delegate.getMemberTypeCode().equals(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
+    		boolean isGroup = delegate.getMemberTypeCode().equals(KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD);
+    		if (isPrincipal) {
+    			recipient = new KimPrincipalRecipient(delegate.getMemberId());
+    		} else if (isGroup) {
+    			recipient = new KimGroupRecipient(delegate.getMemberId());
+    		} else {
+    			throw new RiceRuntimeException("Invalid DelegateInfo memberTypeCode encountered, was '" + delegate.getMemberTypeCode() + "'");
+    		}
+    		String responsibilityDescription = generateRoleResponsibilityDelegateDescription(delegate, isPrincipal, isGroup);
+    		addDelegationRequest(parentRequest, recipient, new Long(delegate.getDelegationId()), parentRequest.getIgnorePrevAction(), delegate.getDelegationTypeCode(), responsibilityDescription, null);
+    	}
+    }
+    
+    private String generateRoleResponsibilityDelegateDescription(DelegateInfo delegate, boolean isPrincipal, boolean isGroup) {
+    	String responsibilityDescription = "Delegation generated from delegation id " + delegate.getDelegationId() + " for ";
+    	if (isPrincipal) {
+    		responsibilityDescription += "principal ";
+    	} else if (isGroup) {
+    		responsibilityDescription += "group ";
+    	}
+    	responsibilityDescription += "'" + delegate.getMemberId() + "'";
+    	return responsibilityDescription;
     }
 
     public ActionRequestValue addDelegationRoleRequest(ActionRequestValue parentRequest, String approvePolicy, RoleRecipient role, Long responsibilityId, Boolean ignorePrevious, String delegationType, String description, Long ruleId) throws KEWUserNotFoundException {

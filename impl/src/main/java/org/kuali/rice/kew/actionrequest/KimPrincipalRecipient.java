@@ -15,10 +15,8 @@
  */
 package org.kuali.rice.kew.actionrequest;
 
-import org.kuali.rice.kew.dto.GroupIdDTO;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.Recipient;
-import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
 /**
@@ -27,32 +25,28 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class KimGroupRecipient implements Recipient {
+public class KimPrincipalRecipient implements Recipient {
 
 	private static final long serialVersionUID = 1L;
-	private KimGroup group;
+	private KimPrincipal principal;
 	
-	public KimGroupRecipient(String groupId) {
-		this(KIMServiceLocator.getIdentityManagementService().getGroup(groupId));
+	public KimPrincipalRecipient(String principalId) {
+		this(KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId));
 	}
 	
-	public KimGroupRecipient(GroupIdDTO groupId) {
-		this(KEWServiceLocator.getIdentityHelperService().getGroup(groupId));
-	}
-	
-	public KimGroupRecipient(KimGroup group) {
-		if (group == null) {
-			throw new IllegalArgumentException("Attempted to create a KimGroupRecipient with a null KimGroup!");
+	public KimPrincipalRecipient(KimPrincipal principal) {
+		if (principal == null) {
+			throw new IllegalArgumentException("Attempted to create a KimPrincipalRecipient with a null KimPrincipal!");
 		}
-		this.group = group;
+		this.principal = principal;
 	}
 	
 	public String getDisplayName() {
-		return getGroup().getGroupName();
+		return getPrincipal().getPrincipalName();
 	}
 	
-	public KimGroup getGroup() {
-		return this.group;
+	public KimPrincipal getPrincipal() {
+		return this.principal;
 	}
 	
 

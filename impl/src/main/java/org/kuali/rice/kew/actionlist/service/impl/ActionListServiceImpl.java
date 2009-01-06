@@ -441,13 +441,12 @@ public class ActionListServiceImpl implements ActionListService {
     }
 
     /**
+     *
      * This overridden method ...
      *
-     * @see org.kuali.rice.kew.actionlist.service.ActionListService#getOutbox(org.kuali.rice.kew.user.WorkflowUser,
-     *      org.kuali.rice.kew.actionlist.ActionListFilter)
+     * @see org.kuali.rice.kew.actionlist.service.ActionListService#getOutbox(java.lang.String, org.kuali.rice.kew.actionlist.ActionListFilter)
      */
-    public Collection getOutbox(String principalId, ActionListFilter filter) {
-    	// TODO: delyea here
+    public Collection<ActionItem> getOutbox(String principalId, ActionListFilter filter) {
         return this.getActionListDAO().getOutbox(principalId, filter);
     }
 

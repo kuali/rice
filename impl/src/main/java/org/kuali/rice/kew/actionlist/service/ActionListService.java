@@ -27,7 +27,6 @@ import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.workgroup.Workgroup;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.group.KimGroup;
 
 
@@ -107,11 +106,11 @@ public interface ActionListService {
      *
      * Retrieves {@link OutboxItemActionListExtension} items for the given user
      *
-     * @param workflowUser
+     * @param principalId
      * @param filter
      * @return
      */
-    public Collection getOutbox(String principalId, ActionListFilter filter);
+    public Collection<ActionItem> getOutbox(String principalId, ActionListFilter filter);
     public void removeOutboxItems(String principalId, List<Long> outboxItems);
     public void saveOutboxItem(ActionItem actionItem);
 }

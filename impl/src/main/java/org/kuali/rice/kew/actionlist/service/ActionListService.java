@@ -78,7 +78,7 @@ public interface ActionListService {
      * the user is, in fact, still a member of the workgroup at the time of the invocation of this method before
      * generating the action items.
      */
-    public void updateActionListForUserAddedToGroup(WorkflowUser user, KimGroup group) throws KEWUserNotFoundException;
+    public void updateActionListForUserAddedToGroup(String principalId, KimGroup group) throws KEWUserNotFoundException;
 
     /**
      * Updates the action list for a the given document for a user who was removed from a workgroup.  This will delete
@@ -86,7 +86,7 @@ public interface ActionListService {
      * member of the workgroup.  This method will also verify that the user is still no longer a member of the workgroup
      * at the time of the method invocation before removing the action items.
      */
-    public void updateActionListForUserRemovedFromGroup(WorkflowUser user,KimGroup group) throws KEWUserNotFoundException;
+    public void updateActionListForUserRemovedFromGroup(String principalId,KimGroup group) throws KEWUserNotFoundException;
 
     public void updateActionItemsForTitleChange(Long routeHeaderId, String newTitle) throws KEWUserNotFoundException;
 

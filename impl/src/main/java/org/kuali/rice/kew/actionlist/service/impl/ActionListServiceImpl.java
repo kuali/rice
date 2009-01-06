@@ -183,12 +183,12 @@ public class ActionListServiceImpl implements ActionListService {
     /**
      * Update the user's Action List to reflect their addition to the given Workgroup.
      */
-    public void updateActionListForUserAddedToGroup(WorkflowUser user, KimGroup group) throws KEWUserNotFoundException {
+    public void updateActionListForUserAddedToGroup(String principalId, KimGroup group) throws KEWUserNotFoundException {
         // first verify that the user is still a member of the workgroup
-    	if(!KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(user.getWorkflowId(), group.getGroupId()))
+    	if(!KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(principalId, group.getGroupId()))
     	{
     		List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
-            List<GroupInfo> allGroupsToCheck = KIMServiceLocator.getGroupService().getGroupsForPrincipal(user.getWorkflowId());
+            List<GroupInfo> allGroupsToCheck = KIMServiceLocator.getGroupService().getGroupsForPrincipal(principalId);
             allGroupsToCheck.add(0,(GroupInfo)group);
             for (KimGroup kimGroupToCheck : allGroupsToCheck) {
                 actionRequests.addAll(getActionRequestService().findActivatedByGroup(kimGroupToCheck));
@@ -196,7 +196,7 @@ public class ActionListServiceImpl implements ActionListService {
             for (Iterator requestIt = actionRequests.iterator(); requestIt.hasNext();) {
                 ActionRequestValue request = (ActionRequestValue) requestIt.next();
                 ActionItem item = createActionItemForActionRequest(request);
-                item.setPrincipalId(user.getWorkflowUserId().getWorkflowId());
+                item.setPrincipalId(principalId);
                 saveActionItem(item);
             }
         }
@@ -236,14 +236,14 @@ public class ActionListServiceImpl implements ActionListService {
     /**
      * Update the user's Action List to reflect their removal from the given Workgroup.
      */
-    public void updateActionListForUserRemovedFromGroup(WorkflowUser user, KimGroup group)
+    public void updateActionListForUserRemovedFromGroup(String principalId, KimGroup group)
     throws KEWUserNotFoundException {
         // first verify that the user is no longer a member of the workgroup
-    	if(!KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(user.getWorkflowId(), group.getGroupId()))
+    	if(!KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(principalId, group.getGroupId()))
     	{
-    		    List<GroupInfo> allGroupsToCheck = KIMServiceLocator.getGroupService().getGroupsForPrincipal(user.getWorkflowId());
+    		    List<GroupInfo> allGroupsToCheck = KIMServiceLocator.getGroupService().getGroupsForPrincipal(principalId);
     		    allGroupsToCheck.add(0, (GroupInfo)group);
-    		    Collection<ActionItem> actionItems = this.findByPrincipalId(user.getWorkflowId());
+    		    Collection<ActionItem> actionItems = this.findByPrincipalId(principalId);
     		    for (Iterator<ActionItem> itemIt = actionItems.iterator(); itemIt.hasNext();) {
     		    	ActionItem item = itemIt.next();
     		    	if (item.isWorkgroupItem()) {
@@ -495,6 +495,7 @@ public class ActionListServiceImpl implements ActionListService {
 	public Collection<ActionItem> findByPrincipalId(String principalId) {
 		return getActionItemDAO().findByPrincipalId(principalId);
 	}
+
 
 
 }

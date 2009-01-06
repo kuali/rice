@@ -62,9 +62,9 @@ public class WorkgroupMembershipChangeProcessor implements KSBXMLService {
 			throw new WorkflowException("Could not locate the group with the given name '" + groupName + "'");
 		}
 		if (ADDED_OPERATION.equals(operation)) {
-			KEWServiceLocator.getActionListService().updateActionListForUserAddedToGroup(user, group);
+			KEWServiceLocator.getActionListService().updateActionListForUserAddedToGroup(user.getWorkflowId(), group);
 		} else if (REMOVED_OPERATION.equals(operation)) {
-			KEWServiceLocator.getActionListService().updateActionListForUserRemovedFromGroup(user, group);
+			KEWServiceLocator.getActionListService().updateActionListForUserRemovedFromGroup(user.getWorkflowId(), group);
 		} else {
 			throw new WorkflowException("Did not understand requested group membership change operation '" + operation + "'");
 		}

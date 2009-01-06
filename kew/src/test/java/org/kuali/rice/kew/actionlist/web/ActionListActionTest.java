@@ -43,7 +43,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlSelect;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ActionListActionTest extends KEWHtmlUnitTestCase {
-    
+
     private static final String ACTION_LIST_URL_SUFFIX = "ActionList.do";
 
 	protected void loadTestData() throws Exception {
@@ -69,7 +69,7 @@ public class ActionListActionTest extends KEWHtmlUnitTestCase {
 		}
 
 		// check that the quickstart user has 10 action items
-		Collection actionList = KEWServiceLocator.getActionListService().findByWorkflowUser(getQuickstartUser());
+		Collection<ActionItem> actionList = KEWServiceLocator.getActionListService().findByPrincipalId(getQuickstartUser().getWorkflowId());
 		assertEquals("Should have 10 items.", 10, actionList.size());
 
 		// now refresh the Action List

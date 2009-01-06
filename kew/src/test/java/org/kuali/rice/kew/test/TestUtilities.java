@@ -233,7 +233,7 @@ public class TestUtilities {
     public static void assertInActionList(NetworkIdDTO networkId, Long documentId) throws KEWUserNotFoundException {
     	WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(networkId);
     	Assert.assertNotNull("Given network id was invalid: " + networkId, user);
-    	Collection actionList = KEWServiceLocator.getActionListService().findByWorkflowUser(user);
+    	Collection<ActionItem> actionList = KEWServiceLocator.getActionListService().findByPrincipalId(user.getWorkflowId());
     	for (Iterator iterator = actionList.iterator(); iterator.hasNext();) {
 			ActionItem actionItem = (ActionItem) iterator.next();
 			if (actionItem.getRouteHeaderId().equals(documentId)) {
@@ -249,7 +249,7 @@ public class TestUtilities {
     public static void assertNotInActionList(NetworkIdDTO networkId, Long documentId) throws KEWUserNotFoundException {
     	WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(networkId);
     	Assert.assertNotNull("Given network id was invalid: " + networkId, user);
-    	Collection actionList = KEWServiceLocator.getActionListService().findByWorkflowUser(user);
+    	Collection actionList = KEWServiceLocator.getActionListService().findByPrincipalId(user.getWorkflowId());
     	for (Iterator iterator = actionList.iterator(); iterator.hasNext();) {
 			ActionItem actionItem = (ActionItem) iterator.next();
 			if (actionItem.getRouteHeaderId().equals(documentId)) {

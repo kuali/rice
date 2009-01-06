@@ -28,6 +28,11 @@ public class MaintenanceDocumentRestrictionsBase extends
 	private Set<String> readOnlyFields;
 	private Set<String> readOnlySectionIds;
 
+	public MaintenanceDocumentRestrictionsBase() {
+		readOnlyFields = new HashSet<String>();
+		readOnlySectionIds = new HashSet<String>();
+	}
+	
 	@Override
 	public Set<String> getRestrictedFieldNames() {
 		if (allRestrictedFields == null) {
@@ -53,9 +58,13 @@ public class MaintenanceDocumentRestrictionsBase extends
 	public FieldRestriction getFieldRestriction(String fieldName) {
 		FieldRestriction fieldRestriction = super
 				.getFieldRestriction(fieldName);
+		if (fieldRestriction == null && isReadOnlyField(fieldName)) {
+			fieldRestriction = new FieldRestriction(fieldName, Field.READONLY);
+		}
+		// TODO: next block could probably be removed since the superclass would return null for a read-only field 
 		if (Field.EDITABLE
 				.equals(fieldRestriction.getKualiFieldDisplayFlag())
-				&& readOnlyFields.contains(fieldName)) {
+				&& isReadOnlyField(fieldName)) {
 			fieldRestriction = new FieldRestriction(fieldName,
 					Field.READONLY);
 		}
@@ -67,5 +76,9 @@ public class MaintenanceDocumentRestrictionsBase extends
 		super.clearAllRestrictions();
 		readOnlyFields = new HashSet<String>();
 		readOnlySectionIds = new HashSet<String>();
+	}
+
+	public boolean isReadOnlyField(String fieldName) {
+		return readOnlyFields.contains(fieldName);
 	}
 }

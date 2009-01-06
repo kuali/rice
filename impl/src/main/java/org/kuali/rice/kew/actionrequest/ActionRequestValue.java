@@ -27,9 +27,11 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
@@ -39,6 +41,8 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.core.util.RiceConstants;
@@ -111,7 +115,7 @@ public class ActionRequestValue implements WorkflowPersistable {
 	private Long actionRequestId;
     @Column(name="ACTN_RQST_CD")
 	private String actionRequested;
-    @Column(name="DOC_HDR_ID")
+    @Column(name="DOC_HDR_ID", insertable=false, updatable=false)
 	private Long routeHeaderId;
     @Column(name="STAT_CD")
 	private String status;
@@ -125,7 +129,7 @@ public class ActionRequestValue implements WorkflowPersistable {
 	private Integer priority;
     @Column(name="RTE_LVL_NBR")
 	private Integer routeLevel;
-    @Column(name="ACTN_TKN_ID")
+    @Column(name="ACTN_TKN_ID", insertable=false, updatable=false)
 	private Long actionTakenId;
     @Column(name="DOC_VER_NBR")
     private Integer docVersion = new Integer(1);
@@ -142,7 +146,7 @@ public class ActionRequestValue implements WorkflowPersistable {
 	private String workflowId;
     @Column(name="IGN_PREV_ACTN_IND")
 	private Boolean ignorePrevAction;
-    @Column(name="PARNT_ID")
+    @Column(name="PARNT_ID", insertable=false, updatable=false)
 	private Long parentActionRequestId;
     @Column(name="QUAL_ROLE_NM")
 	private String qualifiedRoleName;
@@ -160,18 +164,20 @@ public class ActionRequestValue implements WorkflowPersistable {
     @Column(name="APPR_PLCY")
 	private String approvePolicy;
 
-    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="PARNT_ID", insertable=false, updatable=false)
+    @ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="PARNT_ID")
 	private ActionRequestValue parentActionRequest;
-    @Transient
+    @Fetch(value = FetchMode.SUBSELECT)
+    @ManyToMany(mappedBy="parentActionRequest",cascade={CascadeType.PERSIST/*,CascadeType.MERGE*/},fetch=FetchType.EAGER)
     private List<ActionRequestValue> childrenRequests = new ArrayList<ActionRequestValue>();
-    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="ACTN_TKN_ID", insertable=false, updatable=false)
+    @ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="ACTN_TKN_ID")
 	private ActionTakenValue actionTaken;
-    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="DOC_HDR_ID", insertable=false, updatable=false)
+    @ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="DOC_HDR_ID")
 	private DocumentRouteHeaderValue routeHeader;
-    @Transient
+    @Fetch(value = FetchMode.SUBSELECT)
+    @OneToMany(fetch=FetchType.EAGER,mappedBy="actionRequestId")
     private List<ActionItem> actionItems = new ArrayList<ActionItem>();
     @Column(name="CUR_IND")
     private Boolean currentIndicator = new Boolean(true);
@@ -180,7 +186,7 @@ public class ActionRequestValue implements WorkflowPersistable {
 
     /* New Workflow 2.1 Field */
     // The node instance at which this request was generated
-    @OneToOne(fetch=FetchType.EAGER)
+    @OneToOne(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST})
 	@JoinColumn(name="RTE_NODE_INSTN_ID")
 	private RouteNodeInstance nodeInstance;
 

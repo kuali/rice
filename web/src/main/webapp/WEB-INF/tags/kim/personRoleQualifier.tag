@@ -6,6 +6,7 @@
                 	<kul:subtab lookedUpCollectionName="roleQualifier" width="${tableWidth}" subTabTitle="Role Qualifier">      
         				<table cellpadding=0 cellspacing=0 summary="">
                         <tr>
+                             <th width="5%" rowspan=20 style=border-style:none>&nbsp;</th>
           				<th><div align="left">&nbsp</div></th> 
 		        		<c:forEach var="attrDefn" items="${role.definitions}" varStatus="status">
 		        		    <c:set var="attr" value="${attrDefn.value}" />
@@ -121,8 +122,13 @@
 									</div>
                 		   		</td>
 					      </tr>
+					      
 					     </c:if> 
 						</c:forEach>
+					      <tr>
+   <!-- need to decide colspan -->
+                             <td colspan=7 style="padding:0px; border-style:none; height:22px; background-color:#F6F6F6">&nbsp;</td>
+                           </tr>
 							
 		        	</c:if>	
 		        		</table>       

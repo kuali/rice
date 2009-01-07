@@ -480,6 +480,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				docEmpInfo.setEmployeeTypeCode(empInfo
 						.getEmployeeTypeCode());
 				docEmpInfo.setActive(empInfo.isActive());
+				docEmpInfo.setPrimary(empInfo.isPrimary());
 				docEmpInfo.setEntityAffiliationId(empInfo
 						.getEntityAffiliationId());
 				docEmpInfo.setVersionNumber(empInfo.getVersionNumber());
@@ -625,6 +626,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				entityEmpInfo.setEmployeeTypeCode(empInfo
 						.getEmployeeTypeCode());
 				entityEmpInfo.setActive(empInfo.isActive());
+				entityEmpInfo.setPrimary(empInfo.isPrimary());
 				entityEmpInfo.setEntityId(identityManagementPersonDocument.getEntityId());
 				entityEmpInfo.setEntityAffiliationId(empInfo
 						.getEntityAffiliationId());

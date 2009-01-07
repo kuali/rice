@@ -5,7 +5,6 @@
 </style>
 
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
-<!--<c:set var="line3_readOnly" value="${KualiForm.editingMode['line3']}" scope="request" />-->
 <c:set var="docAddressAttributes" value="${DataDictionary.PersonDocumentAddress.attributes}" />
 <kul:subtab lookedUpCollectionName="address" width="${tableWidth}" subTabTitle="Addresses">      
         <table cellpadding=0 cellspacing=0 summary="">
@@ -48,7 +47,7 @@
 				</td>
                 
                 <td>
-                	<div align="center"><kul:htmlControlAttribute property="newAddress.line3" attributeEntry="${docAddressAttributes.line3}" readOnly="${not KualiForm.editingMode['line3']}"/>
+                	<div align="center"><kul:htmlControlAttribute property="newAddress.line3" attributeEntry="${docAddressAttributes.line3}"/>
                 </div>
                 </td>
                 <td>

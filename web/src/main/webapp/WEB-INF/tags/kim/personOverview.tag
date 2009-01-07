@@ -9,7 +9,7 @@
     	<h3>
     		<span class="subhead-left">Overview</span>
         </h3>
-		<kul:subtab lookedUpCollectionName="overview" width="100%" subTabTitle="Overview">      
+		<kul:subtab lookedUpCollectionName="overview" width="100%" subTabTitle="Overview" noShowHideButton="true">      
 		<table cellpadding=0 cellspacing=0 summary=""> 
 		    <tr>
         		<td colspan="4">

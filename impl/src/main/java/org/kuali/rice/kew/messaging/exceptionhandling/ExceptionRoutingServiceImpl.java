@@ -17,16 +17,19 @@
 package org.kuali.rice.kew.messaging.exceptionhandling;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.MDC;
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.ExceptionUtils;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
-import org.kuali.rice.kew.engine.node.Process;
+import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.RouteManagerException;
@@ -35,10 +38,12 @@ import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kew.postprocessor.PostProcessor;
 import org.kuali.rice.kew.postprocessor.ProcessDocReport;
+import org.kuali.rice.kew.role.RoleRouteModule;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.ksb.messaging.PersistedMessage;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
@@ -48,26 +53,11 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ExceptionRoutingServiceImpl.class);
 
     public void placeInExceptionRouting(Throwable throwable, PersistedMessage persistedMessage, Long routeHeaderId) throws Exception {
-        RouteNodeInstance nodeInstance = null;
         KEWServiceLocator.getRouteHeaderService().lockRouteHeader(routeHeaderId, true);
         DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(routeHeaderId);
         throwable = unwrapRouteManagerExceptionIfPossible(throwable);
-        if (throwable instanceof RouteManagerException) {
-            RouteManagerException rmException = (RouteManagerException) throwable;
-            nodeInstance = rmException.getRouteContext().getNodeInstance();
-        } else {
-            List activeNodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(routeHeaderId);
-            if (!activeNodeInstances.isEmpty()) {
-                // take the first active nodeInstance found.
-                nodeInstance = (RouteNodeInstance) activeNodeInstances.get(0);
-            }
-        }
-        
-        if (nodeInstance == null) {
-            // get the initial node instance
-            nodeInstance = (RouteNodeInstance) document.getInitialRouteNodeInstances().get(0);
-        }
-
+        RouteContext routeContext = establishRouteContext(document, throwable);
+        RouteNodeInstance nodeInstance = routeContext.getNodeInstance();
         MDC.put("docID", routeHeaderId);
         PerformanceLogger performanceLogger = new PerformanceLogger(routeHeaderId);
         try {
@@ -92,18 +82,16 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
             if (message.length() > KEWConstants.MAX_ANNOTATION_LENGTH) {
                 message = message.substring(0, KEWConstants.MAX_ANNOTATION_LENGTH);
             }
+            List<ActionRequestValue> exceptionRequests = new ArrayList<ActionRequestValue>();
             if (nodeInstance.getRouteNode().isExceptionGroupDefined()) {
-            	ActionRequestFactory arFactory = new ActionRequestFactory(document, nodeInstance);
-            	ActionRequestValue exceptionRequest = arFactory.createActionRequest(KEWConstants.ACTION_REQUEST_COMPLETE_REQ, new Integer(0), new KimGroupRecipient(nodeInstance.getRouteNode().getExceptionWorkgroup()), "Exception Workgroup for route node " + nodeInstance.getName(), KEWConstants.EXCEPTION_REQUEST_RESPONSIBILITY_ID, Boolean.TRUE, message);
-            	DocumentRouteHeaderValue rh = KEWServiceLocator.getRouteHeaderService().getRouteHeader(routeHeaderId);
-            	String oldStatus = rh.getDocRouteStatus();
-            	rh.setDocRouteStatus(KEWConstants.ROUTE_HEADER_EXCEPTION_CD);
-            	notifyStatusChange(rh, KEWConstants.ROUTE_HEADER_EXCEPTION_CD, oldStatus);
-            	KEWServiceLocator.getRouteHeaderService().saveRouteHeader(rh);
-            	KEWServiceLocator.getActionRequestService().activateRequest(exceptionRequest);
+            	exceptionRequests = generateExceptionGroupRequests(routeContext);
             } else {
-            	executeExceptionProcess(document, nodeInstance);
+            	exceptionRequests = generateKimExceptionRequests(routeContext);
             }
+            if (exceptionRequests.isEmpty()) {
+            	throw new RiceRuntimeException("Failed to generate exception requests for exception routing!");
+            }
+            activateExceptionRequests(routeContext, exceptionRequests, message);
             KSBServiceLocator.getRouteQueueService().delete(persistedMessage);
         } finally {
             performanceLogger.log("Time to generate exception request.");
@@ -127,10 +115,38 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
         }
     }
     
-    protected void executeExceptionProcess(DocumentRouteHeaderValue document, RouteNodeInstance nodeInstance) {
-    	//Process process = document.getDocumentType().getNamedProcess(KEWConstants.DEFAULT_EXCEPTION_PROCESS_NAME);
-    	throw new UnsupportedOperationException("Exception routing without and exception group is not yet implemented.");
-    	
+    protected List<ActionRequestValue> generateExceptionGroupRequests(RouteContext routeContext) {
+    	RouteNodeInstance nodeInstance = routeContext.getNodeInstance();
+    	ActionRequestFactory arFactory = new ActionRequestFactory(routeContext.getDocument(), nodeInstance);
+    	ActionRequestValue exceptionRequest = arFactory.createActionRequest(KEWConstants.ACTION_REQUEST_COMPLETE_REQ, new Integer(0), new KimGroupRecipient(nodeInstance.getRouteNode().getExceptionWorkgroup()), "Exception Workgroup for route node " + nodeInstance.getName(), KEWConstants.EXCEPTION_REQUEST_RESPONSIBILITY_ID, Boolean.TRUE, "");
+    	return Collections.singletonList(exceptionRequest);
+    }
+    
+    protected List<ActionRequestValue> generateKimExceptionRequests(RouteContext routeContext) throws Exception {
+    	RoleRouteModule roleRouteModule = new RoleRouteModule();
+    	roleRouteModule.setNamespace(KNSConstants.KUALI_RICE_SYSTEM_NAMESPACE);
+    	roleRouteModule.setResponsibilityTemplateName(KEWConstants.EXCEPTION_ROUTING_RESPONSIBILITY_TEMPLATE_NAME);
+    	return roleRouteModule.findActionRequests(routeContext);
+    }
+    
+    protected void activateExceptionRequests(RouteContext routeContext, List<ActionRequestValue> exceptionRequests, String exceptionMessage) throws Exception {
+    	setExceptionAnnotations(exceptionRequests, exceptionMessage);
+    	// TODO is there a reason we reload the document here?
+    	DocumentRouteHeaderValue rh = KEWServiceLocator.getRouteHeaderService().getRouteHeader(routeContext.getDocument().getRouteHeaderId());
+    	String oldStatus = rh.getDocRouteStatus();
+    	rh.setDocRouteStatus(KEWConstants.ROUTE_HEADER_EXCEPTION_CD);
+    	notifyStatusChange(rh, KEWConstants.ROUTE_HEADER_EXCEPTION_CD, oldStatus);
+    	KEWServiceLocator.getRouteHeaderService().saveRouteHeader(rh);
+    	KEWServiceLocator.getActionRequestService().activateRequests(exceptionRequests);
+    }
+    
+    /**
+     * Sets the exception message as the annotation on the top-level Action Requests
+     */
+    protected void setExceptionAnnotations(List<ActionRequestValue> actionRequests, String exceptionMessage) {
+    	for (ActionRequestValue actionRequest : actionRequests) {
+    		actionRequest.setAnnotation(exceptionMessage);
+    	}
     }
 
     private Throwable unwrapRouteManagerExceptionIfPossible(Throwable throwable) {
@@ -151,5 +167,26 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
     		}
     	}
     	return throwable;
+    }
+    
+    protected RouteContext establishRouteContext(DocumentRouteHeaderValue document, Throwable throwable) {
+    	RouteContext routeContext = new RouteContext();
+        if (throwable instanceof RouteManagerException) {
+            RouteManagerException rmException = (RouteManagerException) throwable;
+            routeContext = rmException.getRouteContext();
+        } else {
+        	routeContext.setDocument(document);
+            List activeNodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(document.getRouteHeaderId());
+            if (!activeNodeInstances.isEmpty()) {
+                // take the first active nodeInstance found.
+                RouteNodeInstance nodeInstance = (RouteNodeInstance) activeNodeInstances.get(0);
+                routeContext.setNodeInstance(nodeInstance);
+            }
+        }
+        if (routeContext.getNodeInstance() == null) {
+            // get the initial node instance
+            routeContext.setNodeInstance((RouteNodeInstance) document.getInitialRouteNodeInstances().get(0));
+        }
+        return routeContext;
     }
 }

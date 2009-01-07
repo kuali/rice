@@ -50,6 +50,11 @@ public class RoleRouteModule implements RouteModule {
 	protected static final String QUALIFIER_RESOLVER_CLASS_ELEMENT = "qualifierResolverClass";
 	protected static final String RESPONSIBILITY_TEMPLATE_NAME_ELEMENT = "responsibilityTemplateName";
 	protected static final String NAMESPACE_ELEMENT = "namespace";
+	
+	private String qualifierResolverName;
+	private String qualifierResolverClassName;
+	private String responsibilityTemplateName;
+	private String namespace;
 		
 	public List<ActionRequestValue> findActionRequests(RouteContext context)
 			throws Exception {
@@ -80,8 +85,12 @@ public class RoleRouteModule implements RouteModule {
 	}
 
 	protected QualifierResolver loadQualifierResolver(RouteContext context) {
-		String qualifierResolverName = RouteNodeUtils.getValueOfCustomProperty(context.getNodeInstance().getRouteNode(), QUALIFIER_RESOLVER_ELEMENT);
-		String qualifierResolverClassName = RouteNodeUtils.getValueOfCustomProperty(context.getNodeInstance().getRouteNode(), QUALIFIER_RESOLVER_CLASS_ELEMENT);
+		if (StringUtils.isBlank(qualifierResolverName)) {
+			this.qualifierResolverName = RouteNodeUtils.getValueOfCustomProperty(context.getNodeInstance().getRouteNode(), QUALIFIER_RESOLVER_ELEMENT);
+		}
+		if (StringUtils.isBlank(qualifierResolverClassName)) {			
+			this.qualifierResolverClassName = RouteNodeUtils.getValueOfCustomProperty(context.getNodeInstance().getRouteNode(), QUALIFIER_RESOLVER_CLASS_ELEMENT);
+		}
 		QualifierResolver resolver = null;
 		if (!StringUtils.isBlank(qualifierResolverName)) {
 			RuleAttribute ruleAttribute = KEWServiceLocator.getRuleAttributeService().findByName(qualifierResolverName);
@@ -114,17 +123,21 @@ public class RoleRouteModule implements RouteModule {
 	}
 	
 	protected String loadResponsibilityTemplateName(RouteContext context) {
-		String responsibilityTemplateName = RouteNodeUtils.getValueOfCustomProperty(context.getNodeInstance().getRouteNode(), RESPONSIBILITY_TEMPLATE_NAME_ELEMENT);
 		if (StringUtils.isBlank(responsibilityTemplateName)) {
-			return KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME;
+			this.responsibilityTemplateName = RouteNodeUtils.getValueOfCustomProperty(context.getNodeInstance().getRouteNode(), RESPONSIBILITY_TEMPLATE_NAME_ELEMENT);
+		}
+		if (StringUtils.isBlank(responsibilityTemplateName)) {
+			this.responsibilityTemplateName = KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME;
 		}
 		return responsibilityTemplateName;
 	}
 	
 	protected String loadNamespace(RouteContext context) {
-		String namespace = RouteNodeUtils.getValueOfCustomProperty(context.getNodeInstance().getRouteNode(), NAMESPACE_ELEMENT);
 		if (StringUtils.isBlank(namespace)) {
-			namespace = KEWConstants.DEFAULT_KIM_NAMESPACE;
+			this.namespace = RouteNodeUtils.getValueOfCustomProperty(context.getNodeInstance().getRouteNode(), NAMESPACE_ELEMENT);
+		}
+		if (StringUtils.isBlank(namespace)) {
+			this.namespace = KEWConstants.DEFAULT_KIM_NAMESPACE;
 		}
 		return namespace;
 	}
@@ -161,6 +174,8 @@ public class RoleRouteModule implements RouteModule {
 		return null;
 	}
 	
+	
+	
 	class ResponsibilitySet {
 		private String actionRequestCode;
 		private String approvePolicy;
@@ -188,6 +203,36 @@ public class RoleRouteModule implements RouteModule {
 			return this.responsibilities;
 		}		
 		
+	}
+
+
+
+	/**
+	 * @param qualifierResolverName the qualifierResolverName to set
+	 */
+	public void setQualifierResolverName(String qualifierResolverName) {
+		this.qualifierResolverName = qualifierResolverName;
+	}
+
+	/**
+	 * @param qualifierResolverClassName the qualifierResolverClassName to set
+	 */
+	public void setQualifierResolverClassName(String qualifierResolverClassName) {
+		this.qualifierResolverClassName = qualifierResolverClassName;
+	}
+
+	/**
+	 * @param responsibilityTemplateName the responsibilityTemplateName to set
+	 */
+	public void setResponsibilityTemplateName(String responsibilityTemplateName) {
+		this.responsibilityTemplateName = responsibilityTemplateName;
+	}
+
+	/**
+	 * @param namespace the namespace to set
+	 */
+	public void setNamespace(String namespace) {
+		this.namespace = namespace;
 	}
 
 }

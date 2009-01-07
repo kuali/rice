@@ -318,7 +318,7 @@ public class ActionRequestFactory {
     	String actionTypeCode = responsibilities.get(0).getActionTypeCode();
     	Integer priority = responsibilities.get(0).getPriorityNumber();
     	KimRoleRecipient roleRecipient = new KimRoleRecipient(responsibilities);
-    	// TODO finish allowing for configuration of some of these other values
+    	
     	ActionRequestValue requestGraph = createActionRequest(actionTypeCode, priority, roleRecipient, "", KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, true, approvePolicy, null, null);
 
     	for (ResponsibilityActionInfo responsibility : responsibilities) {

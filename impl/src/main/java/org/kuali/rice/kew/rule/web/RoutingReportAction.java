@@ -46,8 +46,8 @@ import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
-import org.kuali.rice.kew.lookupable.Field;
-import org.kuali.rice.kew.lookupable.Row;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kew.routeheader.AttributeDocumentContent;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -418,9 +418,6 @@ public class RoutingReportAction extends WorkflowAction {
 					fieldValues.put(field.getPropertyName(), field.getPropertyValue());
 				}
 				row.setFields(fields);
-				if (isDelegate) {
-					row.setRowsGroupLabel("Delegate " + row.getRowsGroupLabel());
-				}
 				rows.add(row);
 
 			}
@@ -489,9 +486,9 @@ public class RoutingReportAction extends WorkflowAction {
 						Row row = (Row) iterator.next();
 						for (Iterator iterator2 = row.getFields().iterator(); iterator2.hasNext();) {
 							Field field = (Field) iterator2.next();
-							if (!Utilities.isEmpty(field.getDefaultLookupableName())) {
-								conversionFields.append(field.getDefaultLookupableName()).append(":").append(field.getPropertyName()).append(",");
-							}
+							//if (!Utilities.isEmpty(field.getDefaultLookupableName())) {
+							//	conversionFields.append(field.getDefaultLookupableName()).append(":").append(field.getPropertyName()).append(",");
+							//}
 						}
 					}
 					if (!Utilities.isEmpty(conversionFields.toString())) {

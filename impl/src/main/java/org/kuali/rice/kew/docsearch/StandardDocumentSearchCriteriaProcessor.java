@@ -23,14 +23,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.kuali.rice.kew.lookupable.Field;
-import org.kuali.rice.kew.lookupable.Row;
+import org.kuali.rice.kns.web.ui.Field;
+//import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kew.user.WorkflowUser;
 
 
 /**
- * This is the standard document search criteria processor implementation. 
- * 
+ * This is the standard document search criteria processor implementation.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
@@ -39,9 +39,9 @@ public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCr
 
     private WorkflowUser searchingUser;
     private DocSearchCriteriaDTO docSearchCriteriaDTO = new DocSearchCriteriaDTO();
-    
+
     public StandardDocumentSearchCriteriaProcessor() {}
-    
+
     /**
      * @return the searchingUser
      */
@@ -69,7 +69,7 @@ public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCr
     public void setDocSearchCriteriaDTO(DocSearchCriteriaDTO docSearchCriteriaDTO) {
         this.docSearchCriteriaDTO = docSearchCriteriaDTO;
     }
-    
+
     private Set<String> generateHiddenFieldKeySet(List<String> hiddenFieldKeys) {
         hiddenFieldKeys.addAll(getGlobalHiddenFieldKeys());
         return new HashSet<String>(hiddenFieldKeys);
@@ -77,17 +77,17 @@ public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCr
 
     /*
      *   GLOBAL HELPER METHODS
-     *   
+     *
      */
 
     public List<String> getGlobalHiddenFieldKeys() {
         return new ArrayList<String>();
     }
-    
+
 	/**
 	 * Standard implementation of this method is that the header bar is always displayed
 	 * so this returns true.
-	 * 
+	 *
 	 * @see org.kuali.rice.kew.docsearch.DocumentSearchCriteriaProcessor#isHeaderBarDisplayed()
 	 */
 	public boolean isHeaderBarDisplayed() {
@@ -95,8 +95,8 @@ public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCr
 	}
 
     /**
-     * This method returns a map of the standard criteria field containers by key.  The values 
-     * for the keys are constants in the {@link DocumentSearchCriteriaProcessor} class using 
+     * This method returns a map of the standard criteria field containers by key.  The values
+     * for the keys are constants in the {@link DocumentSearchCriteriaProcessor} class using
      * the name format CRITERIA_KEY_XXXXXXX.
      */
     public Map<String,StandardDocSearchCriteriaFieldContainer> getStandardCriteriaFieldContainerMap() {
@@ -142,10 +142,10 @@ public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCr
     	dropDown.setCollectionLabelProperty("value");
     	container.addField(dropDown);
     	putContainerIntoMap(containersByKey, container);
-    	
+
     	return containersByKey;
     }
-    
+
     /**
      * Helper method used in constructing the date range fields for standard criteria
      */
@@ -155,36 +155,36 @@ public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCr
     	dateFields.add(new StandardSearchCriteriaField(criteriaKey + DocumentSearchCriteriaProcessor.CRITERIA_KEYS_SUFFIX_RANGE_UPPER_BOUND,upperBoundPropertyName,StandardSearchCriteriaField.TEXT,upperBoundDatePickerKey,"docSearch.DocumentSearch.criteria.label.to",null,false,null,null,false));
     	return new StandardDocSearchCriteriaFieldContainer(criteriaKey, labelKey, dateFields);
     }
-    
+
     /**
-     * Helper method used in constructing the standard field map 
+     * Helper method used in constructing the standard field map
      */
     public void putContainerIntoMap(Map<String,StandardDocSearchCriteriaFieldContainer> containersByKey, StandardDocSearchCriteriaFieldContainer container) {
     	containersByKey.put(container.getFieldKey(), container);
     }
-    
-    private List<Row> processSearchableAttributeRows(List<Row> searchableAttributeRows, List<String> hiddenFieldKeys) {
+
+    private List<DocumentSearchRow> processSearchableAttributeRows(List<DocumentSearchRow> searchableAttributeRows, List<String> hiddenFieldKeys) {
         Set<String> hiddenKeys = generateHiddenFieldKeySet(hiddenFieldKeys);
         if (hiddenKeys.isEmpty()) {
             return searchableAttributeRows;
         }
         for (Iterator iterator = searchableAttributeRows.iterator(); iterator.hasNext();) {
-            Row row = (Row) iterator.next();
+            DocumentSearchRow row = (DocumentSearchRow) iterator.next();
             for (Iterator iterator2 = row.getFields().iterator(); iterator2.hasNext();) {
-                Field field = (Field) iterator2.next();
+                DocumentSearchField field = (DocumentSearchField) iterator2.next();
                 // set hidden field to true if hiddenKeys is not empty and if hiddenKeys contains either the field's propertyName value or savablePropertyName value
                 field.setHidden( (!hiddenKeys.isEmpty()) && ((hiddenKeys.contains(field.getPropertyName())) || (hiddenKeys.contains(field.getSavablePropertyName()))) );
             }
         }
         return searchableAttributeRows;
     }
-    
+
     /*
      *   BASIC SEARCH METHODS
-     *   
+     *
      */
 
-    public List<Row> processSearchableAttributeRowsForBasicSearch(List<Row> searchableAttributeRows) {
+    public List<DocumentSearchRow> processSearchableAttributeRowsForBasicSearch(List<DocumentSearchRow> searchableAttributeRows) {
         return processSearchableAttributeRows(searchableAttributeRows, getBasicSearchHiddenFieldKeys());
     }
 
@@ -195,11 +195,11 @@ public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCr
     public List<String> getBasicSearchHiddenFieldKeys() {
         return new ArrayList<String>();
     }
-    
+
     /**
      * Standard implementation of this method is that the search criteria is always displayed
      * on a basic search so this returns true.
-     * 
+     *
      * @see org.kuali.rice.kew.docsearch.DocumentSearchCriteriaProcessor#isBasicSearchCriteriaDisplayed()
      */
     public Boolean isBasicSearchCriteriaDisplayed() {
@@ -213,7 +213,7 @@ public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCr
     public static int getBasicSearchPreSearchAttributesColumnSize() {
         return 1;
     }
-    
+
     /**
      * This method returns the number of columns that should exist on a basic search
      * after the searchable attributes display in the criteria section.
@@ -221,7 +221,7 @@ public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCr
     public static int getBasicSearchPostSearchAttributesColumnSize() {
         return 1;
     }
-    
+
     public StandardDocSearchCriteriaManager buildBasicSearchManager() {
         StandardDocSearchCriteriaManager manager = new StandardDocSearchCriteriaManager(getBasicSearchPreSearchAttributesColumnSize(),getBasicSearchPostSearchAttributesColumnSize(),isBasicSearchCriteriaDisplayed(),isHeaderBarDisplayed());
     	Map<String,StandardDocSearchCriteriaFieldContainer> containersByKey = getStandardCriteriaFieldContainerMap();
@@ -229,7 +229,7 @@ public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCr
     	manager.setColumnsPostSearchAttributes(getBasicSearchPostSearchAttributeColumns(containersByKey));
     	return manager;
     }
-    
+
     public List<List<StandardDocSearchCriteriaFieldContainer>> getBasicSearchPreSearchAttributeColumns(Map<String,StandardDocSearchCriteriaFieldContainer> containersByKey) {
         List<List<StandardDocSearchCriteriaFieldContainer>> columnHolder = new ArrayList<List<StandardDocSearchCriteriaFieldContainer>>();
         for (int i = 1; i <= getBasicSearchPreSearchAttributesColumnSize(); i++) {
@@ -237,7 +237,7 @@ public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCr
         }
         return columnHolder;
     }
-    
+
     public List<List<StandardDocSearchCriteriaFieldContainer>> getBasicSearchPostSearchAttributeColumns(Map<String,StandardDocSearchCriteriaFieldContainer> containersByKey) {
         List<List<StandardDocSearchCriteriaFieldContainer>> columnHolder = new ArrayList<List<StandardDocSearchCriteriaFieldContainer>>();
         for (int i = 1; i <= getBasicSearchPostSearchAttributesColumnSize(); i++) {
@@ -245,15 +245,15 @@ public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCr
         }
         return columnHolder;
     }
-    
+
     public List<StandardDocSearchCriteriaFieldContainer> getBasicSearchPreSearchAttributeContainerList(int columnNumber, Map<String,StandardDocSearchCriteriaFieldContainer> containersByKey) {
         return getBasicSearchContainerList(containersByKey, generateHiddenFieldKeySet(getBasicSearchHiddenFieldKeys()), getBasicSearchPreSearchAttributeFieldKeys(columnNumber));
     }
-    
+
     public List<StandardDocSearchCriteriaFieldContainer> getBasicSearchPostSearchAttributeContainerList(int columnNumber, Map<String,StandardDocSearchCriteriaFieldContainer> containersByKey) {
         return getBasicSearchContainerList(containersByKey, generateHiddenFieldKeySet(getBasicSearchHiddenFieldKeys()), getBasicSearchPostSearchAttributeFieldKeys(columnNumber));
     }
-    
+
     public List<StandardDocSearchCriteriaFieldContainer> getBasicSearchContainerList(Map<String,StandardDocSearchCriteriaFieldContainer> containersByKey, Set<String> hiddenKeys, List<String> fieldKeys) {
         List<StandardDocSearchCriteriaFieldContainer> containers = new ArrayList<StandardDocSearchCriteriaFieldContainer>();
         boolean setWidth = false;
@@ -270,7 +270,7 @@ public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCr
         }
         return containers;
     }
-    
+
     public List<String> getBasicSearchPreSearchAttributeFieldKeys(int columnNumber) {
         if (columnNumber == 1) {
             List<String> fieldKeys = new ArrayList<String>();
@@ -296,10 +296,10 @@ public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCr
 
     /*
      *   ADVANCED SEARCH METHODS
-     *   
+     *
      */
-    
-    public List<Row> processSearchableAttributeRowsForAdvancedSearch(List<Row> searchableAttributeRows) {
+
+    public List<DocumentSearchRow> processSearchableAttributeRowsForAdvancedSearch(List<DocumentSearchRow> searchableAttributeRows) {
         return processSearchableAttributeRows(searchableAttributeRows, getAdvancedSearchHiddenFieldKeys());
     }
 
@@ -310,11 +310,11 @@ public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCr
     public List<String> getAdvancedSearchHiddenFieldKeys() {
         return new ArrayList<String>();
     }
-    
+
     /**
      * Standard implementation of this method is that the search criteria is always displayed
      * on an advanced search so this returns true.
-     * 
+     *
      * @see org.kuali.rice.kew.docsearch.DocumentSearchCriteriaProcessor#isAdvancedSearchCriteriaDisplayed()
      */
     public Boolean isAdvancedSearchCriteriaDisplayed() {
@@ -328,7 +328,7 @@ public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCr
     public static int getAdvancedSearchPreSearchAttributesColumnSize() {
         return 2;
     }
-    
+
     /**
      * This method returns the number of columns that should exist on a advanced search
      * after the searchable attributes display in the criteria section.
@@ -336,7 +336,7 @@ public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCr
     public static int getAdvancedSearchPostSearchAttributesColumnSize() {
         return 1;
     }
-    
+
     public StandardDocSearchCriteriaManager buildAdvancedSearchManager() {
         StandardDocSearchCriteriaManager manager = new StandardDocSearchCriteriaManager(getBasicSearchPreSearchAttributesColumnSize(),getBasicSearchPostSearchAttributesColumnSize(),isAdvancedSearchCriteriaDisplayed(),isHeaderBarDisplayed());
         Map<String,StandardDocSearchCriteriaFieldContainer> containersByKey = getStandardCriteriaFieldContainerMap();
@@ -344,7 +344,7 @@ public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCr
         manager.setColumnsPostSearchAttributes(getAdvancedSearchPostSearchAttributeColumns(containersByKey));
         return manager;
     }
-    
+
     public List<List<StandardDocSearchCriteriaFieldContainer>> getAdvancedSearchPreSearchAttributeColumns(Map<String,StandardDocSearchCriteriaFieldContainer> containersByKey) {
         List<List<StandardDocSearchCriteriaFieldContainer>> columnHolder = new ArrayList<List<StandardDocSearchCriteriaFieldContainer>>();
         for (int i = 1; i <= getAdvancedSearchPreSearchAttributesColumnSize(); i++) {
@@ -352,7 +352,7 @@ public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCr
         }
         return columnHolder;
     }
-    
+
     public List<List<StandardDocSearchCriteriaFieldContainer>> getAdvancedSearchPostSearchAttributeColumns(Map<String,StandardDocSearchCriteriaFieldContainer> containersByKey) {
         List<List<StandardDocSearchCriteriaFieldContainer>> columnHolder = new ArrayList<List<StandardDocSearchCriteriaFieldContainer>>();
         for (int i = 1; i <= getAdvancedSearchPostSearchAttributesColumnSize(); i++) {
@@ -360,15 +360,15 @@ public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCr
         }
         return columnHolder;
     }
-    
+
     public List<StandardDocSearchCriteriaFieldContainer> getAdvancedSearchPreSearchAttributeContainerList(int columnNumber, Map<String,StandardDocSearchCriteriaFieldContainer> containersByKey) {
         return getAdvancedSearchContainerList(containersByKey, generateHiddenFieldKeySet(getAdvancedSearchHiddenFieldKeys()), getAdvancedSearchPreSearchAttributeFieldKeys(columnNumber));
     }
-    
+
     public List<StandardDocSearchCriteriaFieldContainer> getAdvancedSearchPostSearchAttributeContainerList(int columnNumber, Map<String,StandardDocSearchCriteriaFieldContainer> containersByKey) {
         return getAdvancedSearchContainerList(containersByKey, generateHiddenFieldKeySet(getAdvancedSearchHiddenFieldKeys()), getAdvancedSearchPostSearchAttributeFieldKeys(columnNumber));
     }
-    
+
     public List<StandardDocSearchCriteriaFieldContainer> getAdvancedSearchContainerList(Map<String,StandardDocSearchCriteriaFieldContainer> containersByKey, Set<String> hiddenKeys, List<String> fieldKeys) {
         List<StandardDocSearchCriteriaFieldContainer> containers = new ArrayList<StandardDocSearchCriteriaFieldContainer>();
         for (Iterator iterator = fieldKeys.iterator(); iterator.hasNext();) {
@@ -379,7 +379,7 @@ public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCr
         }
         return containers;
     }
-    
+
     public List<String> getAdvancedSearchPreSearchAttributeFieldKeys(int columnNumber) {
         if (columnNumber == 1) {
             List<String> fieldKeys = new ArrayList<String>();

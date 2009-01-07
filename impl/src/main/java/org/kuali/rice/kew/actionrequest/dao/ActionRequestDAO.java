@@ -53,7 +53,7 @@ public interface ActionRequestDAO {
 
     public List findByRouteHeaderIdIgnoreCurrentInd(Long routeHeaderId);
 
-    public List findActivatedByGroup(KimGroup group);
+    public List findActivatedByGroup(String groupId);
 
     public List findPendingByResponsibilityIds(Collection responsibilityIds);
 

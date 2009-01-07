@@ -51,8 +51,8 @@ import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.XmlHelper;
-import org.kuali.rice.kew.workgroup.WorkflowGroupId;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -150,7 +150,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
         } else if (actionItem.getDelegatorWorkflowId() != null) {
             delegatorType = "workgroup";
             delegatorId = actionItem.getDelegatorGroupId().toString();
-            delegatorDisplayValue = KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(new Long(actionItem.getDelegatorGroupId()))).getGroupNameId().getNameId();
+            delegatorDisplayValue = KIMServiceLocator.getIdentityManagementService().getGroup(actionItem.getDelegatorGroupId()).getGroupName();
         }
         delegatorElement.setAttribute("type", delegatorType);
         // add the id element

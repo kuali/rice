@@ -35,6 +35,6 @@ public interface WorkgroupXmlConstants {
     public static final String AUTHENTICATION_ID = "authenticationId";
     public static final String UU_ID = "uuId";
     public static final String EMPL_ID = "emplId";
-    public static final String MEMBERS = "members";
+    //public static final String MEMBERS = "members";
 
 }

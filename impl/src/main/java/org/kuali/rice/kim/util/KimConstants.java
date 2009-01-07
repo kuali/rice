@@ -24,6 +24,8 @@ package org.kuali.rice.kim.util;
 public class KimConstants {
 
 	public static final String NAMESPACE_CODE = "KR-IDM";
+	public static final String KIM_TYPE_DEFAULT_NAMESPACE = "KUALI";
+	public static final String KIM_TYPE_DEFAULT_NAME = "Default";
 	
 	public class PropertyNames {
 		public static final String PRINCIPAL_ID = "principalId";

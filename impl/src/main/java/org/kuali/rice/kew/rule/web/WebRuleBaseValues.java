@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -35,8 +35,8 @@ import org.apache.struts.action.ActionMessage;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
 import org.kuali.rice.kew.exception.WorkflowServiceError;
-import org.kuali.rice.kew.lookupable.Field;
-import org.kuali.rice.kew.lookupable.Row;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kew.rule.KeyValueId;
 import org.kuali.rice.kew.rule.RoleAttribute;
 import org.kuali.rice.kew.rule.RuleBaseValues;
@@ -61,7 +61,7 @@ import org.kuali.rice.kew.util.Utilities;
  * A decorator around a {@link RuleBaseValues} object which provides some
  * convienance functions for interacting with the bean from the web-tier.
  * This helps to alleviate some of the weaknesses of JSTL.
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WebRuleBaseValues extends RuleBaseValues {
@@ -113,15 +113,15 @@ public class WebRuleBaseValues extends RuleBaseValues {
 									fieldValue = field.getPropertyValue();
 								}
 								fields.add(new KeyValueId(field.getPropertyName(), fieldValue, ruleTemplateAttribute.getRuleTemplateAttributeId()+""));
-							} else if (!Utilities.isEmpty(field.getDefaultLookupableName())) {
-								String fieldValue = "";
-								RuleExtensionValue extensionValue = getRuleExtensionValue(ruleTemplateAttribute.getRuleTemplateAttributeId(), (String) field.getDefaultLookupableName());
-								if (extensionValue != null) {
-									fieldValue = extensionValue.getValue();
-								} else {
-									fieldValue = field.getPropertyValue();
-								}
-								fields.add(new KeyValueId(field.getDefaultLookupableName(), fieldValue, ruleTemplateAttribute.getRuleTemplateAttributeId()+""));
+							//} else if (!Utilities.isEmpty(field.getDefaultLookupableName())) {
+							//	String fieldValue = "";
+							//	RuleExtensionValue extensionValue = getRuleExtensionValue(ruleTemplateAttribute.getRuleTemplateAttributeId(), (String) field.getDefaultLookupableName());
+							//	if (extensionValue != null) {
+							//		fieldValue = extensionValue.getValue();
+							//	} else {
+							//		fieldValue = field.getPropertyValue();
+							//	}
+							//	fields.add(new KeyValueId(field.getDefaultLookupableName(), fieldValue, ruleTemplateAttribute.getRuleTemplateAttributeId()+""));
 							} else {
 								String fieldValue = "";
 								RuleExtensionValue extensionValue = getRuleExtensionValue(ruleTemplateAttribute.getRuleTemplateAttributeId(), (String) field.getPropertyName());
@@ -212,8 +212,8 @@ public class WebRuleBaseValues extends RuleBaseValues {
 							Field field = (Field) rowIter.next();
 							if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
 								fields.add(new KeyValueId(field.getPropertyName(), field.getPropertyValue(), ruleTemplateAttribute.getRuleTemplateAttributeId() + ""));
-							} else if (!Utilities.isEmpty(field.getDefaultLookupableName())) {
-								fields.add(new KeyValueId(field.getDefaultLookupableName(), field.getPropertyValue(), ruleTemplateAttribute.getRuleTemplateAttributeId() + ""));
+							//} else if (!Utilities.isEmpty(field.getDefaultLookupableName())) {
+							//	fields.add(new KeyValueId(field.getDefaultLookupableName(), field.getPropertyValue(), ruleTemplateAttribute.getRuleTemplateAttributeId() + ""));
 							} else {
 								fields.add(new KeyValueId(field.getPropertyName(), field.getPropertyValue(), ruleTemplateAttribute.getRuleTemplateAttributeId() + ""));
 							}
@@ -534,7 +534,7 @@ public class WebRuleBaseValues extends RuleBaseValues {
             }
         }
     }
-    
+
 	private void saveServiceErrors(String errorKey, Collection srvErrors, ActionErrors errors) {
 		for (Iterator iterator = srvErrors.iterator(); iterator.hasNext();) {
 			WorkflowServiceError error = (WorkflowServiceError) iterator.next();

@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.kew.attribute.web;
 
-import org.kuali.rice.kew.lookupable.Field;
+import org.kuali.rice.kns.web.ui.Field;
 
 /**
  * Represents a Field that's rendered on a web form and can be used to store the value

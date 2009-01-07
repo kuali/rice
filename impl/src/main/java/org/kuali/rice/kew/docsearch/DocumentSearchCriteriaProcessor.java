@@ -17,23 +17,24 @@ package org.kuali.rice.kew.docsearch;
 
 import java.util.List;
 
-import org.kuali.rice.kew.lookupable.Row;
+//import org.kuali.rice.kns.web.ui.Row;
+import org.kuali.rice.kew.docsearch.DocumentSearchRow;
 import org.kuali.rice.kew.user.WorkflowUser;
 
 
 /**
  * This interface is used to define pre document search screen display processes for
  * a particular document type.
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public interface DocumentSearchCriteriaProcessor {
-	
+
 	public static final String PERSON_LOOKUPABLE = "UserLookupableImplService";
 	public static final String WORKGROUP_LOOKUPABLE = "WorkGroupLookupableImplService";
 	public static final String DOC_TYP_LOOKUPABLE = "DocumentTypeLookupableImplService";
-	
+
     public static final String CRITERIA_KEYS_SUFFIX_RANGE_LOWER_BOUND = "From";
     public static final String CRITERIA_KEYS_SUFFIX_RANGE_UPPER_BOUND = "To";
 
@@ -54,21 +55,21 @@ public interface DocumentSearchCriteriaProcessor {
     public static final String CRITERIA_KEY_APPROVED_DATE = "approvedDate";
 
 	public void setSearchingUser(WorkflowUser searchingUser);
-	
+
 	public void setDocSearchCriteriaDTO(DocSearchCriteriaDTO docSearchCriteriaDTO);
 
 	public DocSearchCriteriaDTO getDocSearchCriteriaDTO();
-	
+
 	public boolean isHeaderBarDisplayed();
-	
+
     public Boolean isAdvancedSearchCriteriaDisplayed();
 
     public Boolean isBasicSearchCriteriaDisplayed();
-    
-    public List<Row> processSearchableAttributeRowsForBasicSearch(List<Row> searchableAttributeRows);
 
-    public List<Row> processSearchableAttributeRowsForAdvancedSearch(List<Row> searchableAttributeRows);
-    
+    public List<DocumentSearchRow> processSearchableAttributeRowsForBasicSearch(List<DocumentSearchRow> searchableAttributeRows);
+
+    public List<DocumentSearchRow> processSearchableAttributeRowsForAdvancedSearch(List<DocumentSearchRow> searchableAttributeRows);
+
 	public StandardDocSearchCriteriaManager getBasicSearchManager();
 
 	public StandardDocSearchCriteriaManager getAdvancedSearchManager();

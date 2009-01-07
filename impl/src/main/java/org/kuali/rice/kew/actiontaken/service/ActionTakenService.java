@@ -43,7 +43,7 @@ public interface ActionTakenService {
 
     public ActionTakenValue getPreviousAction(ActionRequestValue actionRequest) throws KEWUserNotFoundException;
 
-    public ActionTakenValue getPreviousAction(ActionRequestValue actionRequest, List simulatedActionsTaken) throws KEWUserNotFoundException;
+    public ActionTakenValue getPreviousAction(ActionRequestValue actionRequest, List<ActionTakenValue> simulatedActionsTaken) throws KEWUserNotFoundException;
 
     public Collection findByRouteHeaderId(Long routeHeaderId);
 

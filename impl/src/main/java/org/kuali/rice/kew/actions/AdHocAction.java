@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,13 +31,12 @@ import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kim.bo.group.KimGroup;
 
 
 /**
  * Responsible for creating adhoc requests that are requested from the client.
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class AdHocAction extends ActionTakenEvent {
@@ -52,7 +51,7 @@ public class AdHocAction extends ActionTakenEvent {
 	private Boolean ignorePrevious;
 	private Recipient recipient;
 	private String annotation;
-	
+
     public AdHocAction(DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
         super(NO_ACTION_TAKEN_CODE, routeHeader, user);
     }
@@ -66,7 +65,7 @@ public class AdHocAction extends ActionTakenEvent {
 		this.recipient = recipient;
 		this.annotation = annotation;
 	}
-	
+
 	public void recordAction() throws InvalidActionTakenException, KEWUserNotFoundException {
 		String errorMessage = validateActionRules();
         if (!Utilities.isEmpty(errorMessage)) {
@@ -87,7 +86,7 @@ public class AdHocAction extends ActionTakenEvent {
         List targetNodes = KEWServiceLocator.getRouteNodeService().getCurrentNodeInstances(getRouteHeaderId());
         return validateActionRules(targetNodes);
     }
-    
+
     private String validateActionRules(List targetNodes) throws KEWUserNotFoundException {
     	// recipient will be null when this is invoked from ActionRegistry.getValidActions
     	if (recipient != null) {
@@ -96,12 +95,7 @@ public class AdHocAction extends ActionTakenEvent {
     			if (!KEWServiceLocator.getDocumentTypePermissionService().canReceiveAdHocRequest(user.getWorkflowId(), getRouteHeader().getDocumentType(), actionRequested)) {
     				return "The user '" + user.getAuthenticationUserId().getId() + "' does not have permission to recieve ad hoc requests on DocumentType '" + getRouteHeader().getDocumentType().getName() + "'";
     			}
-    		} else if (recipient instanceof Workgroup) {
-    			Workgroup group = (Workgroup)recipient;
-    			if (!KEWServiceLocator.getDocumentTypePermissionService().canGroupReceiveAdHocRequest("" + group.getWorkflowGroupId().getGroupId(), getRouteHeader().getDocumentType(), actionRequested)) {
-    				return "The group '" + group.getGroupNameId().getNameId() + "' does not have permission to recieve ad hoc requests on DocumentType '" + getRouteHeader().getDocumentType().getName() + "'";
-    			}
-    		} else if (recipient instanceof KimGroupRecipient) { 
+    		} else if (recipient instanceof KimGroupRecipient) {
     			KimGroup group = ((KimGroupRecipient)recipient).getGroup();
     			if (!KEWServiceLocator.getDocumentTypePermissionService().canGroupReceiveAdHocRequest("" + group.getGroupId(), getRouteHeader().getDocumentType(), actionRequested)) {
     				return "The group '" + group.getGroupName() + "' does not have permission to recieve ad hoc requests on DocumentType '" + getRouteHeader().getDocumentType().getName() + "'";
@@ -112,7 +106,7 @@ public class AdHocAction extends ActionTakenEvent {
     	}
         return adhocRouteAction(targetNodes, true);
     }
-    
+
     private String adhocRouteAction(List targetNodes, boolean forValidationOnly) throws KEWUserNotFoundException {
         if (targetNodes.isEmpty()) {
             return "Could not locate an node instance on the document with the name '" + nodeName + "'";
@@ -130,7 +124,7 @@ public class AdHocAction extends ActionTakenEvent {
                 } else {
                     adhocRequest.setActionRequested(actionRequested);
                 }
-                if (adhocRequest.isApproveOrCompleteRequest() && ! (routeHeader.isEnroute() || routeHeader.isStateInitiated() || 
+                if (adhocRequest.isApproveOrCompleteRequest() && ! (routeHeader.isEnroute() || routeHeader.isStateInitiated() ||
                         routeHeader.isStateSaved())) {
                     return "Cannot AdHoc a Complete or Approve request when document is in state '" + routeHeader.getDocRouteStatusLabel() + "'.";
                 }

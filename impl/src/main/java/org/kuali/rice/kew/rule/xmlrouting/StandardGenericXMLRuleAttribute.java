@@ -33,15 +33,15 @@ import javax.xml.xpath.XPathExpressionException;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
-import org.kuali.rice.kew.lookupable.Field;
-import org.kuali.rice.kew.lookupable.Row;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.RuleExtension;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.rule.WorkflowAttributeXmlValidator;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
-import org.kuali.rice.kew.util.KeyLabelPair;
+import org.kuali.rice.kns.web.ui.KeyLabelPair;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.XmlHelper;
 import org.w3c.dom.Element;
@@ -92,7 +92,7 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
     private static final String FIELD_DEF_E = "fieldDef";
 
     private boolean evaluateForMissingExtensions = false;
-    
+
     private static NodeList getFields(XPath xpath, Element root, String[] types) throws XPathExpressionException {
         final String OR = " or ";
         StringBuffer findField = new StringBuffer("//routingConfig/" + FIELD_DEF_E);
@@ -120,8 +120,8 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
         }
     }
 
-    private static List getRows(Element root, String[] types) {
-        List rows = new ArrayList();
+    private static List<Row> getRows(Element root, String[] types) {
+        List<Row> rows = new ArrayList<Row>();
         XPath xpath = XPathHelper.newXPath();
         NodeList fieldNodeList;
         try {
@@ -135,16 +135,16 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
                 Node field = fieldNodeList.item(i);
                 NamedNodeMap fieldAttributes = field.getAttributes();
 
-                List fields = new ArrayList();
-                Field myField = new Field(fieldAttributes.getNamedItem("title").getNodeValue(), "", "", false, fieldAttributes.getNamedItem("name").getNodeValue(), "", null, "");
+                List<Field> fields = new ArrayList<Field>();
+                Field myField = new Field(fieldAttributes.getNamedItem("title").getNodeValue(), "", "", false, fieldAttributes.getNamedItem("name").getNodeValue(), "", false, false, null, "");
                 String quickfinderService = null;
                 for (int j = 0; j < field.getChildNodes().getLength(); j++) {
                     Node childNode = field.getChildNodes().item(j);
                     if ("value".equals(childNode.getNodeName())) {
                         myField.setPropertyValue(childNode.getFirstChild().getNodeValue());
                     } else if ("display".equals(childNode.getNodeName())) {
-                        List options = new ArrayList();
-                        List selectedOptions = new ArrayList();
+                        List<KeyLabelPair> options = new ArrayList<KeyLabelPair>();
+                        List<String> selectedOptions = new ArrayList<String>();
                         for (int k = 0; k < childNode.getChildNodes().getLength(); k++) {
                             Node displayChildNode = childNode.getChildNodes().item(k);
                             if ("type".equals(displayChildNode.getNodeName())) {
@@ -169,27 +169,28 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
                                 	title = titleAttribute.getNodeValue();
                             	}
                             	options.add(new KeyLabelPair(optionValue, title));
-                            } else if ("parameters".equals(displayChildNode.getNodeName())) {
-                                NamedNodeMap parametersAttributes = displayChildNode.getAttributes();
-                                String parameterValue = (displayChildNode.getFirstChild() == null) ? "" : displayChildNode.getFirstChild().getNodeValue();
-                                myField.addDisplayParameter(parametersAttributes.getNamedItem("name").getNodeValue(), parameterValue);
+                            //} else if ("parameters".equals(displayChildNode.getNodeName())) {
+                            //    NamedNodeMap parametersAttributes = displayChildNode.getAttributes();
+                            //    String parameterValue = (displayChildNode.getFirstChild() == null) ? "" : displayChildNode.getFirstChild().getNodeValue();
+                            //    myField.addDisplayParameter(parametersAttributes.getNamedItem("name").getNodeValue(), parameterValue);
                             }
                         }
                         if (!options.isEmpty()) {
                             myField.setFieldValidValues(options);
                             if (!selectedOptions.isEmpty()) {
-                                if (Field.MULTI_VALUE_FIELD_TYPES.contains(myField.getFieldType())) {
-                                    String[] newSelectedOptions = new String[selectedOptions.size()];
-                                    int k = 0;
-                                    for (Iterator iter = selectedOptions.iterator(); iter.hasNext();) {
-                                        String option = (String) iter.next();
-                                        newSelectedOptions[k] = option;
-                                        k++;
-                                    }
-                                    myField.setPropertyValues(newSelectedOptions);
-                                } else {
+                                //if (Field.MULTI_VALUE_FIELD_TYPES.contains(myField.getFieldType())) {
+                                //    String[] newSelectedOptions = new String[selectedOptions.size()];
+                                //    int k = 0;
+                                //    for (Iterator iter = selectedOptions.iterator(); iter.hasNext();) {
+                                //        String option = (String) iter.next();
+                                //        newSelectedOptions[k] = option;
+                                //        k++;
+                                //    }
+                                //    myField.setPropertyValues(newSelectedOptions);
+                                //} else {
+                                //
                                     myField.setPropertyValue((String)selectedOptions.get(0));
-                                }
+                                //}
                             }
                         }
                     } else if ("quickfinder".equals(childNode.getNodeName())) {
@@ -199,14 +200,13 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
                             quickfinderService = quickfinderAttributes.getNamedItem("service").getNodeValue();
                         }
                         myField.setQuickFinderClassNameImpl(quickfinderAttributes.getNamedItem("service").getNodeValue());
-                        myField.setHasLookupable(true);
-                        myField.setDefaultLookupableName(quickfinderAttributes.getNamedItem("appliesTo").getNodeValue());
+                        //myField.setDefaultLookupableName(quickfinderAttributes.getNamedItem("appliesTo").getNodeValue());
                     }
                 }
                 fields.add(myField);
-                if(!Utilities.isEmpty(quickfinderService)){
-                    fields.add(new Field("", "", Field.QUICKFINDER, false, "", "", null, quickfinderService));
-                }
+                //if(!Utilities.isEmpty(quickfinderService)){
+                //    fields.add(new Field("", "", Field.QUICKFINDER, false, "", "", null, quickfinderService));
+                //}
                 rows.add(new Row(fields));
             }
         }
@@ -300,7 +300,7 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
 //        }
 //        return true;
 //    }
-    
+
     public boolean isMatch(DocumentContent docContent, List ruleExtensions) {
         XPath xpath = XPathHelper.newXPath(docContent.getDocument());
         WorkflowFunctionResolver resolver = XPathHelper.extractFunctionResolver(xpath);
@@ -363,7 +363,7 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
                         continue;
                     }
                 }
-                
+
                 if (!StringUtils.isEmpty(expression)) {
                     if (LOG.isDebugEnabled()) {
                         LOG.debug("Adding routingConfig XPath expression: " + expression);
@@ -392,7 +392,7 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
         }
         return expressionsToEvaluate;
     }
-    
+
     public List getRuleRows() {
         if (ruleRows.isEmpty()) {
             ruleRows = getRows(getConfigXML(), new String[] { "ALL", "RULE" });
@@ -674,12 +674,12 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
      * The correspondence is made by comparing the name of the field declared on the fieldDef element and the name of the
      * rule extension key.  If this value is set to true then all xpath expressions defined on all fieldDefs will be evaluated
      * regardless of whether or not the rule has a corresponding extension value.
-     * 
+     *
      * <p>By default this is false to preserve backward compatible behavior.
      */
     public void setEvaluateForMissingExtensions(boolean evaluateForMissingExtensions) {
         this.evaluateForMissingExtensions = evaluateForMissingExtensions;
     }
-    
-    
+
+
 }

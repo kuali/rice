@@ -23,9 +23,7 @@ import java.util.Iterator;
 import org.junit.Test;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
-import org.kuali.rice.kew.dto.GroupIdDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.identity.IdentityFactory;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
@@ -44,7 +42,7 @@ public class ReleaseWorkgroupAuthorityTest extends KEWTestCase {
         WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("user1"), TakeWorkgroupAuthorityTest.DOC_TYPE);
         doc.routeDocument("");
 
-        GroupIdDTO groupId = IdentityFactory.newGroupIdByName(KimConstants.TEMP_GROUP_NAMESPACE, "TestWorkgroup");
+        String groupId = getGroupIdForName(KimConstants.TEMP_GROUP_NAMESPACE, "TestWorkgroup");
         //have member rkirkend take authority
         doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), doc.getRouteHeaderId());
         doc.takeGroupAuthority("", groupId);

@@ -17,9 +17,9 @@ public class DocumentResponse extends StandardResponse {
         this.createDate = standardResponse.getCreateDate();
         this.docStatus = standardResponse.getDocStatus();
         this.errorMessage = standardResponse.getErrorMessage();
-        this.initiatorId = standardResponse.getInitiatorId();
+        this.initiatorPrincipalId = standardResponse.getInitiatorPrincipalId();
         this.initiatorName = standardResponse.getInitiatorName();
-        this.routedByUserId = standardResponse.getRoutedByUserId();
+        this.routedByPrincipalId = standardResponse.getRoutedByPrincipalId();
         this.routedByUserName = standardResponse.getRoutedByUserName();
     }
     public String getDocContent() {

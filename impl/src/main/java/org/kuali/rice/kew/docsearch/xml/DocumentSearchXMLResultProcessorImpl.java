@@ -29,7 +29,8 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.kuali.rice.kew.docsearch.StandardDocumentSearchResultProcessor;
-import org.kuali.rice.kew.lookupable.Column;
+//import org.kuali.rice.kns.web.ui.Column;
+import org.kuali.rice.kew.docsearch.DocumentSearchColumn;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.w3c.dom.Element;
@@ -47,15 +48,15 @@ public class DocumentSearchXMLResultProcessorImpl extends StandardDocumentSearch
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentSearchXMLResultProcessorImpl.class);
 
 	private RuleAttribute ruleAttribute;
-	private List<Column> customDisplayColumns = new ArrayList<Column>();
+	private List<DocumentSearchColumn> customDisplayColumns = new ArrayList<DocumentSearchColumn>();
 
 	public void setRuleAttribute(RuleAttribute ruleAttribute) {
 		this.ruleAttribute = ruleAttribute;
 	}
 
 	@Override
-	public List<Column> getCustomDisplayColumns() {
-		List<Column> displayColumns = new ArrayList<Column>();
+	public List<DocumentSearchColumn> getCustomDisplayColumns() {
+		List<DocumentSearchColumn> displayColumns = new ArrayList<DocumentSearchColumn>();
 		if (customDisplayColumns.isEmpty()) {
 			XPath xpath = XPathHelper.newXPath();
 			String xPathExpression = "//searchResultConfig/column";
@@ -70,7 +71,7 @@ public class DocumentSearchXMLResultProcessorImpl extends StandardDocumentSearch
 	    				String key = (fieldAttributes.getNamedItem("name") != null) ? fieldAttributes.getNamedItem("name").getNodeValue().trim() : null;
 	    				String title = (fieldAttributes.getNamedItem("title") != null) ? fieldAttributes.getNamedItem("title").getNodeValue().trim() : null;
 	    				String sortable = (fieldAttributes.getNamedItem("sortable") != null) ? fieldAttributes.getNamedItem("sortable").getNodeValue().trim() : null;
-	    				Column currentColumn = new Column(title,sortable,"","",key,new HashMap<String,String>());
+	    				DocumentSearchColumn currentColumn = new DocumentSearchColumn(title,sortable,"","",key,new HashMap<String,String>());
 	    				displayColumns.add(currentColumn);
 	    			}
 	    			customDisplayColumns = displayColumns;

@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,8 +19,6 @@ package org.kuali.rice.kew.server;
 
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
@@ -29,19 +27,14 @@ import org.kuali.rice.kew.dto.ActionItemDTO;
 import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.dto.DocumentContentDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
-import org.kuali.rice.kew.dto.WorkflowGroupIdDTO;
 import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.rule.TestRuleAttribute;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.workgroup.BaseWorkgroup;
-import org.kuali.rice.kew.workgroup.GroupId;
-import org.kuali.rice.kew.workgroup.GroupNameId;
-import org.kuali.rice.kew.workgroup.Workgroup;
+import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimConstants;
 
 
 public class BeanConverterTester extends KEWTestCase {
@@ -182,16 +175,15 @@ public class BeanConverterTester extends KEWTestCase {
         assertEquals("Incorrect number of attribute definitions.", 0, contentVO.getAttributeDefinitions().length);
         assertEquals("Incorrect number of searchable attribute definitions.", 0, contentVO.getSearchableDefinitions().length);
     }
-    
+
     @Test public void testConvertActionItem() throws Exception {
         // get test data
         String testWorkgroupName = "TestWorkgroup";
-        Workgroup testWorkgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId(testWorkgroupName));
-        String testWorkgroupId = testWorkgroup.getWorkflowGroupId().getGroupId().toString();
-        assertTrue("Test workgroup '" + testWorkgroupName + "' should have at least one user", testWorkgroup.getMembers().size() > 0);
-        WorkflowUser testUser = (WorkflowUser)testWorkgroup.getMembers().get(0);
-        assertNotNull("User from workgroup should not be null", testUser);
-        String workflowId = testUser.getWorkflowId();
+        KimGroup testWorkgroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, testWorkgroupName);
+        String testWorkgroupId = testWorkgroup.getGroupId();
+        assertTrue("Test workgroup '" + testWorkgroupName + "' should have at least one user", KIMServiceLocator.getIdentityManagementService().getDirectGroupMemberPrincipalIds(testWorkgroup.getGroupId()).size() > 0);
+        String workflowId = KIMServiceLocator.getIdentityManagementService().getDirectGroupMemberPrincipalIds(testWorkgroup.getGroupId()).get(0);
+        assertNotNull("User from workgroup should not be null", workflowId);
         String actionRequestCd = KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ;
         Long actionRequestId = Long.valueOf(4);
         String docName = "dummy";
@@ -221,7 +213,7 @@ public class BeanConverterTester extends KEWTestCase {
         actionItem.setDelegationType(delegationType);
         actionItem.setDelegatorWorkflowId(workflowId);
         actionItem.setDelegatorGroupId(testWorkgroupId);
-        
+
         // convert to action item vo object and verify
         ActionItemDTO actionItemVO = DTOConverter.convertActionItem(actionItem);
         assertEquals("Action Item VO object has incorrect value", actionRequestCd, actionItemVO.getActionRequestCd());

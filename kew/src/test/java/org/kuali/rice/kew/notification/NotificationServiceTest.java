@@ -142,7 +142,7 @@ public class NotificationServiceTest extends KEWTestCase {
 
 		// Do an app specific route to a document which should send an email to fakey@mcchild.com
 		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "NotificationFromAddressChild");
-		document.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "Initial", "", new NetworkIdDTO("ewestfal"), "", true);
+		document.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "Initial", "", getPrincipalIdForName("ewestfal"), "", true);
 		document.routeDocument("");
 
 		// verify that ewestfal was sent an email

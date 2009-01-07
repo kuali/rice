@@ -34,7 +34,7 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
-import org.kuali.rice.kew.lookupable.WorkflowLookupable;
+//import org.kuali.rice.kew.lookupable.WorkflowLookupable;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
@@ -228,7 +228,7 @@ public class SuperUserAction extends WorkflowAction {
         messages.add(ActionMessages.GLOBAL_MESSAGE, actionMessage);
         saveMessages(request, messages);
     }
-
+/*
     public ActionForward performLookup(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         SuperUserForm superUserForm = (SuperUserForm) form;
 
@@ -252,7 +252,7 @@ public class SuperUserAction extends WorkflowAction {
         lookupUrl.append("&returnLocation=").append(basePath).append(mapping.getPath()).append(".do");
         return new ActionForward(lookupUrl.toString(), true);
     }
-
+*/
 
     public ActionForward routeToAppSpecificRecipient(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	SuperUserForm superUserForm = (SuperUserForm) form;

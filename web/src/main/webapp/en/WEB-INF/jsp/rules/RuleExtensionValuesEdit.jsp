@@ -27,26 +27,26 @@
   <c:set var="ruleRowsToParse" value="${rule.rows}" />
 
   <%
-  	int fieldIndex = 0;
-           java.util.Collection ruleRows = (java.util.Collection) pageContext.getAttribute("ruleRowsToParse");
-           java.util.Collection fullConversionFields = new java.util.ArrayList();
-           for (java.util.Iterator iter = ruleRows.iterator(); iter.hasNext();) {
-               org.kuali.rice.kew.lookupable.Row row = (org.kuali.rice.kew.lookupable.Row) iter.next();
+      int fieldIndex = 0;
+             java.util.Collection ruleRows = (java.util.Collection) pageContext.getAttribute("ruleRowsToParse");
+             java.util.Collection fullConversionFields = new java.util.ArrayList();
+             for (java.util.Iterator iter = ruleRows.iterator(); iter.hasNext();) {
+               org.kuali.rice.kns.web.ui.Row row = (org.kuali.rice.kns.web.ui.Row) iter.next();
                for (java.util.Iterator iter2 = row.getFields().iterator(); iter2.hasNext();) {
-                   org.kuali.rice.kew.lookupable.Field field = (org.kuali.rice.kew.lookupable.Field) iter2.next();
-                   String fieldValue = ((java.lang.String)pageContext.getAttribute("ruleProperty")) + ".field[" + fieldIndex + "].value";
-                   if (field.isHasLookupable() && (!org.kuali.rice.kew.util.Utilities.isEmpty(field.getDefaultLookupableName()))) {
-                       fullConversionFields.add(new org.kuali.rice.kew.engine.node.KeyValuePair(field.getDefaultLookupableName(), fieldValue));
-                   }
-                   fieldIndex++;
+                 org.kuali.rice.kns.web.ui.Field field = (org.kuali.rice.kns.web.ui.Field) iter2.next();
+                 String fieldValue = ((java.lang.String)pageContext.getAttribute("ruleProperty")) + ".field[" + fieldIndex + "].value";
+                 //if (field.getHasLookupable() && (!org.kuali.rice.kew.util.Utilities.isEmpty(field.getDefaultLookupableName()))) {
+                 //  fullConversionFields.add(new org.kuali.rice.kew.engine.node.KeyValuePair(field.getDefaultLookupableName(), fieldValue));
+                 //}
+                 fieldIndex++;
                }
-           }
-           pageContext.setAttribute("fullConversionFields", fullConversionFields);
+             }
+             pageContext.setAttribute("fullConversionFields", fullConversionFields);
   %>
 
       <c:set var="fieldIndex" value="${0}"/>
       <c:set var="conversionFields" value=""/>
-      <c:set var="isRowLabel" value="" />	
+      <c:set var="isRowLabel" value="" />
       <c:set var="previousRow" value="NoPrevious" />
 
       <c:forEach items="${rule.rows}" var="row">
@@ -57,10 +57,10 @@
        		<c:set var="previousRow" value="${row.rowsGroupLabel}" />
     		</c:when>
     		<c:otherwise>
-    	<c:set var="isRowLabel" value="false" />	
+    	<c:set var="isRowLabel" value="false" />
     		</c:otherwise>
     	</c:choose>
-    	  
+
         <c:set var="drawFirstCell" value="true" />
     	<c:forEach items="${row.fields}" var="field">
        	  <c:set var="fieldValue" value="${ruleProperty}.field[${fieldIndex}].value"/>
@@ -88,7 +88,7 @@
     	        <td height="40" class="thnormal" width="5%" align="right">&nbsp;&nbsp;<c:out value="${field.fieldLabel}" />:</td>
     	          </c:when>
     				<c:otherwise>
-    				  <td height="40" width="20%" class="thnormal" align="right" colspan="2">&nbsp;&nbsp;<c:out value="${field.fieldLabel}" />:</td>																			          
+    				  <td height="40" width="20%" class="thnormal" align="right" colspan="2">&nbsp;&nbsp;<c:out value="${field.fieldLabel}" />:</td>
     				</c:otherwise>
     	        </c:choose>
     		  </c:if>
@@ -122,7 +122,7 @@
       			  <c:set var="fieldValidValues" value="${field.fieldValidValues}" />
       			  <html-el:options collection="fieldValidValues" property="key" labelProperty="label" />
     	</html-el:select>
-    		  </c:when>										
+    		  </c:when>
     		  <c:when test="${field.fieldType==field.RADIO}" >
     	<c:forEach items="${field.fieldValidValues}" var="radio">
     	  <html-el:radio property="${ruleProperty}.field[${fieldIndex}].value" value="${radio.key}"/><c:out value="${radio.label}" />
@@ -163,4 +163,3 @@
     </td>
     </tr>
     </c:forEach>
-  

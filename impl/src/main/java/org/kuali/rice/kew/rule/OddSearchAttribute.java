@@ -19,7 +19,7 @@ package org.kuali.rice.kew.rule;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kew.lookupable.Row;
+import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kew.lookupable.RuleBaseValuesLookupableImpl;
 
 

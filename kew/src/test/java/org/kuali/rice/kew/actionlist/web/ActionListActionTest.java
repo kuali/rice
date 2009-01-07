@@ -23,11 +23,15 @@ import java.util.List;
 
 import org.junit.Test;
 import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.actionlist.web.ActionListAction.WebFriendlyRecipient;
+import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWHtmlUnitTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 import com.gargoylesoftware.htmlunit.ElementNotFoundException;
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
@@ -63,7 +67,7 @@ public class ActionListActionTest extends KEWHtmlUnitTestCase {
 		int numDocs = 10;
 		for (int i = 0; i < numDocs; i++) {
 			WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "MassActionListTest");
-			document.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_FYI_REQ, "", new NetworkIdDTO(QUICKSTART_USER_NETWORK_ID), "", true);
+			document.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_FYI_REQ, "", getPrincipalIdForName(QUICKSTART_USER_NETWORK_ID), "", true);
 			document.routeDocument("");
 			assertTrue("Document should be FINAL.", document.stateIsFinal());
 		}
@@ -114,7 +118,7 @@ public class ActionListActionTest extends KEWHtmlUnitTestCase {
 			boolean isMassActionable = (i % 2 == 0);
 			String actionRequested = (isMassActionable ? KEWConstants.ACTION_REQUEST_FYI_REQ : KEWConstants.ACTION_REQUEST_APPROVE_REQ);
 			WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "MassActionListTest");
-			document.appSpecificRouteDocumentToUser(actionRequested, "", new NetworkIdDTO(QUICKSTART_USER_NETWORK_ID), "", true);
+			document.adHocRouteDocumentToPrincipal(actionRequested, "", getPrincipalIdForName(QUICKSTART_USER_NETWORK_ID), "", true);
 			document.routeDocument("");
 			if (isMassActionable) {
 				massActionable.add(new Doc(i, document.getRouteHeaderId()));
@@ -186,7 +190,7 @@ public class ActionListActionTest extends KEWHtmlUnitTestCase {
 		}
 
 	}
-
+	
 	private static class Doc {
 		public int index;
 		public Long docId;

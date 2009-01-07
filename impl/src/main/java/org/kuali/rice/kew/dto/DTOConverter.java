@@ -31,6 +31,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.reflect.DataDefinition;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.reflect.PropertyDefinition;
@@ -64,7 +65,6 @@ import org.kuali.rice.kew.exception.DocumentTypeNotFoundException;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
-import org.kuali.rice.kew.lookupable.Column;
 import org.kuali.rice.kew.notes.Note;
 import org.kuali.rice.kew.notes.service.NoteService;
 import org.kuali.rice.kew.postprocessor.ActionTakenEvent;
@@ -105,6 +105,7 @@ import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.WorkflowGroupId;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.impl.KimUserServiceImpl;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -831,7 +832,7 @@ public class DTOConverter {
         }
         ResponsiblePartyDTO responsiblePartyVO = new ResponsiblePartyDTO();
         responsiblePartyVO.setGroupId(responsibleParty.getGroupId());
-        responsiblePartyVO.setUserId(DTOConverter.convertUserId(responsibleParty.getUserId()));
+        responsiblePartyVO.setPrincipalId(responsibleParty.getPrincipalId());
         responsiblePartyVO.setRoleName(responsibleParty.getRoleName());
         return responsiblePartyVO;
     }
@@ -842,7 +843,7 @@ public class DTOConverter {
         }
         ResponsibleParty responsibleParty = new ResponsibleParty();
         responsibleParty.setGroupId(responsiblePartyVO.getGroupId());
-        responsibleParty.setUserId(DTOConverter.convertUserIdVO(responsiblePartyVO.getUserId()));
+        responsibleParty.setPrincipalId(responsiblePartyVO.getPrincipalId());
         responsibleParty.setRoleName(responsiblePartyVO.getRoleName());
         return responsibleParty;
     }
@@ -861,13 +862,17 @@ public class DTOConverter {
         if (responsiblePartyVO.getRoleName() != null) {
             return new RoleRecipient(responsiblePartyVO.getRoleName());
         }
-        GroupIdDTO groupId = responsiblePartyVO.getGroupId();
+        String groupId = responsiblePartyVO.getGroupId();
         if (groupId != null) {
-            return new KimGroupRecipient(groupId);
+        	KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
+        	if (group == null) {
+        		throw new RiceRuntimeException("Failed to locate group with ID: " + groupId);
+        	}
+            return new KimGroupRecipient(group);
         }
-        UserId userId = convertUserIdVO(responsiblePartyVO.getUserId());
-        if (userId != null) {
-            return KEWServiceLocator.getUserService().getWorkflowUser(userId);
+        String principalId = responsiblePartyVO.getPrincipalId();
+        if (principalId != null) {
+            return KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(principalId));
         }
         throw new WorkflowRuntimeException("ResponsibleParty of unknown type");
     }
@@ -1247,12 +1252,8 @@ public class DTOConverter {
         AdHocRevoke revoke = new AdHocRevoke();
         revoke.setActionRequestId(revokeVO.getActionRequestId());
         revoke.setNodeName(revokeVO.getNodeName());
-        if (revokeVO.getUserId() != null) {
-            revoke.setUser(KEWServiceLocator.getUserService().getWorkflowUser(revokeVO.getUserId()));
-        }
-        if (revokeVO.getGroupId()!= null) {
-            revoke.setGroup(KEWServiceLocator.getIdentityHelperService().getGroup(revokeVO.getGroupId()));
-        }
+        revoke.setPrincipalId(revokeVO.getPrincipalId());
+        revoke.setGroupId(revokeVO.getGroupId());
         return revoke;
     }
 
@@ -1554,7 +1555,6 @@ public class DTOConverter {
 
     public static DocumentSearchResultDTO convertDocumentSearchResultComponents(DocumentSearchResultComponents searchResult) throws WorkflowException {
         DocumentSearchResultDTO resultsVO = new DocumentSearchResultDTO();
-        resultsVO.setColumns(convertColumns(searchResult.getColumns()));
         resultsVO.setSearchResults(convertDocumentSearchResults(searchResult.getSearchResults()));
         return resultsVO;
     }
@@ -1577,29 +1577,6 @@ public class DTOConverter {
         return rowVO;
     }
 
-    private static List<LookupableColumnDTO> convertColumns(List<Column> columns) throws WorkflowException {
-        List<LookupableColumnDTO> columnVOs = new ArrayList<LookupableColumnDTO>();
-        for (Column column : columns) {
-            columnVOs.add(convertColumn(column));
-        }
-        return columnVOs;
-    }
-
-    public static LookupableColumnDTO convertColumn(Column column) throws WorkflowException {
-        LookupableColumnDTO columnVO = new LookupableColumnDTO();
-        columnVO.setColumnTitle(column.getColumnTitle());
-        columnVO.setKey(column.getKey());
-        columnVO.setPropertyName(column.getPropertyName());
-        columnVO.setSortable(column.isSortable());
-        columnVO.setSortPropertyName(column.getSortPropertyName());
-        columnVO.setType(column.getType());
-        List<KeyValueDTO> displayParameters = new ArrayList<KeyValueDTO>();
-        for (String key : column.getDisplayParameters().keySet()) {
-            displayParameters.add(new KeyValueDTO(key,column.getDisplayParameters().get(key)));
-        }
-        columnVO.setDisplayParameters(displayParameters);
-        return null;
-    }
 
     //    public static RuleBaseValues convertRuleVO(RuleVO ruleVO) throws WorkflowException {}
 

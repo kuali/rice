@@ -16,10 +16,13 @@
  */
 package org.kuali.rice.kew.web.backdoor;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -29,11 +32,10 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.WorkflowAction;
 import org.kuali.rice.kew.web.session.UserSession;
-import org.kuali.rice.kew.workgroup.WorkgroupService;
-import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kim.bo.group.*;
+import org.kuali.rice.kns.util.KNSConstants;
 
 
 /**
@@ -115,7 +117,12 @@ public class BackdoorAction extends WorkflowAction {
         backdoorForm.setBackdoorId(uSession.getNetworkId());
         setFormGroupPermission(backdoorForm, request);
         //set up preferences as backdoor person
-        uSession.setGroups(KEWServiceLocator.getWorkgroupService().getUsersGroupNames(uSession.getWorkflowUser().getWorkflowId()));
+        List<? extends KimGroup> groups = KIMServiceLocator.getIdentityManagementService().getGroupsForPrincipal(uSession.getWorkflowUser().getWorkflowId());
+        Set<String> groupNames = new HashSet<String>();
+        for (KimGroup group: groups) {
+            groupNames.add(group.getGroupName());
+        }
+        uSession.setGroups(groupNames);
         uSession.setPreferences(KEWServiceLocator.getPreferencesService().getPreferences(uSession.getWorkflowUser().getWorkflowUserId().getId()));
     	// TODO: Implement UserSession Hook
         return mapping.findForward("viewBackdoor");
@@ -142,9 +149,4 @@ public class BackdoorAction extends WorkflowAction {
         }
         return null;
     }
-
-    private WorkgroupService getWorkgroupService() {
-        return (WorkgroupService) KEWServiceLocator.getService(KEWServiceLocator.WORKGROUP_SRV);
-    }
-
 }

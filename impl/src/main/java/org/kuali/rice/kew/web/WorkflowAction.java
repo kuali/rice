@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,7 +17,6 @@
 package org.kuali.rice.kew.web;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -33,8 +32,6 @@ import org.apache.struts.action.ActionMessages;
 import org.apache.struts.actions.DispatchAction;
 import org.kuali.rice.core.util.JSTLConstants;
 import org.kuali.rice.kew.dto.AdHocRevokeDTO;
-import org.kuali.rice.kew.dto.GroupIdDTO;
-import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -43,7 +40,6 @@ import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.export.web.ExportServlet;
-import org.kuali.rice.kew.identity.IdentityFactory;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
@@ -52,17 +48,11 @@ import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.session.UserSession;
-import org.kuali.rice.kew.workgroup.GroupNameId;
-import org.kuali.rice.kew.workgroup.WorkgroupService;
-import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
-import org.kuali.rice.kns.util.KNSConstants;
 
 
 /**
@@ -75,13 +65,13 @@ public abstract class WorkflowAction extends DispatchAction {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(WorkflowAction.class);
 
-	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception 
+	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
-        if (!checkAuthorization()) 
+        if (!checkAuthorization())
         {
             return mapping.findForward("NotAuthorized");
         }
-        
+
 	    try {
 			request.setAttribute("Constants", new JSTLConstants(KEWConstants.class));
 			request.setAttribute("UrlResolver", UrlResolver.getInstance());
@@ -190,10 +180,11 @@ public abstract class WorkflowAction extends DispatchAction {
 		try {
 			String routeNodeName = getAdHocRouteNodeName(routingForm.getWorkflowDocument().getRouteHeaderId());
 			if (KEWConstants.PERSON.equals(recipient.getType())) {
-				routingForm.getWorkflowDocument().appSpecificRouteDocumentToUser(recipient.getActionRequested(), routeNodeName, routingForm.getAnnotation(), new NetworkIdDTO(recipient.getId()), "", true);
+				String recipientPrincipalId = KEWServiceLocator.getIdentityHelperService().getIdForPrincipalName(recipient.getId());
+				routingForm.getWorkflowDocument().adHocRouteDocumentToPrincipal(recipient.getActionRequested(), routeNodeName, routingForm.getAnnotation(), recipientPrincipalId, "", true);
 			} else {
-				GroupIdDTO groupId = IdentityFactory.newGroupIdByName(KimConstants.TEMP_GROUP_NAMESPACE, recipient.getId());
-				routingForm.getWorkflowDocument().appSpecificRouteDocumentToGroup(recipient.getActionRequested(), routeNodeName, routingForm.getAnnotation(), groupId, "", true);
+				String groupId = KEWServiceLocator.getIdentityHelperService().getIdForGroupName(KimConstants.TEMP_GROUP_NAMESPACE, recipient.getId());
+				routingForm.getWorkflowDocument().adHocRouteDocumentToGroup(recipient.getActionRequested(), routeNodeName, routingForm.getAnnotation(), groupId, "", true);
 			}
 			routingForm.getAppSpecificRouteList().add(recipient);
 			routingForm.resetAppSpecificRoute();
@@ -236,7 +227,7 @@ public abstract class WorkflowAction extends DispatchAction {
 		}
 
 		if (KEWConstants.WORKGROUP.equals(recipient.getType()) && recipient.getId() != null && !recipient.getId().trim().equals("")) {
-			if (getWorkgroupService().getWorkgroup(new GroupNameId(recipient.getId())) == null) {
+			if (getIdentityManagementService().getGroup(recipient.getId()) == null) {
 				messages.add(new WorkflowServiceErrorImpl("AppSpecific Recipient workgroup invalid", "appspecificroute.workgroup.invalid"));
 			}
 		}
@@ -249,10 +240,6 @@ public abstract class WorkflowAction extends DispatchAction {
 
 	private UserService getUserService() {
 		return (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
-	}
-
-	private WorkgroupService getWorkgroupService() {
-		return (WorkgroupService) KEWServiceLocator.getService(KEWServiceLocator.WORKGROUP_SRV);
 	}
 
 	public ActionForward cancelDocument(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -274,9 +261,9 @@ public abstract class WorkflowAction extends DispatchAction {
 			String nodeName = nodeNames[index];
 			AdHocRevokeDTO revoke = new AdHocRevokeDTO(nodeName);
 			if (recipient.getType().equals("person")) {
-				revoke.setUserId(new NetworkIdDTO(recipient.getId()));
+				revoke.setPrincipalId(KEWServiceLocator.getIdentityHelperService().getIdForPrincipalName(recipient.getId()));
 			} else if (recipient.getType().equals("workgroup")) {
-				revoke.setGroupId(IdentityFactory.newGroupIdByName(KimConstants.TEMP_GROUP_NAMESPACE, recipient.getId()));
+				revoke.setGroupId(KEWServiceLocator.getIdentityHelperService().getIdForGroupName(KimConstants.TEMP_GROUP_NAMESPACE, recipient.getId()));
 			}
 			revocations.add(revoke);
 		}
@@ -289,7 +276,14 @@ public abstract class WorkflowAction extends DispatchAction {
 		routingForm.setRemovedAppSpecificRecipient(null);
 		return mapping.getInputForward();
 	}
-    
+    //private WorkgroupService getWorkgroupService() {
+    //    return (WorkgroupService) KEWServiceLocator.getService(KEWServiceLocator.WORKGROUP_SRV);
+    //}
+
+    private IdentityManagementService getIdentityManagementService() {
+        return (IdentityManagementService) KIMServiceLocator.getService(KIMServiceLocator.KIM_IDENTITY_MANAGEMENT_SERVICE);
+    }
+
 	/*
      * TODO: this will be eliminated evaentually in favor of using KualiAction
      *
@@ -308,7 +302,7 @@ public abstract class WorkflowAction extends DispatchAction {
         }
         return isAuthorized;*/
     }
-    
+
     protected static KualiModuleService getKualiModuleService() {
         return KNSServiceLocator.getKualiModuleService();
     }

@@ -51,21 +51,11 @@
 		<td><a href="DocumentSearch.do" target="<c:out value="${BackdoorForm.targetName}" />">Document Search</a></td>
 	</tr>
 	<tr>
-		<td><a href="Lookup.do?lookupableImplServiceName=WorkGroupLookupableImplService" target="<c:out value="${BackdoorForm.targetName}" />">Workgroup</a></td>
-	</tr>
-	<tr>
-		<td><a href="Lookup.do?lookupableImplServiceName=RuleBaseValuesLookupableImplService" target="<c:out value="${BackdoorForm.targetName}" />">Rules</a></td>
-	</tr>
-	<!-- <tr>
-			<td><a href="../kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.rule.bo.Role&docFormKey=88888888&returnLocation=../en/Portal.do&hideReturnLink=true" target="<c:out value="${BackdoorForm.targetName}" />">Role <b>NEW</b></a></td>		
-		</tr>
-	<tr-->
-		<td><a href="Lookup.do?lookupableImplServiceName=UserLookupableImplService" target="<c:out value="${BackdoorForm.targetName}" />">User Lookup</a></td>
+		<td><a href="../kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.rule.RuleBaseValues&docFormKey=88888888&returnLocation=../en/Portal.do&hideReturnLink=true" target="<c:out value="${BackdoorForm.targetName}" />">Rules</a></td>
 	</tr>
 	<tr>
 	    <td><a href="RemoveReplace.do" target="<c:out value="${BackdoorForm.targetName}" />">Remove/Replace User</a></td>
 	</tr>
-
 	<tr>
 		<td><a href="RoutingReport.do" target="<c:out value="${BackdoorForm.targetName}" />">Routing Report</a></td>
 	</tr>
@@ -75,12 +65,8 @@
 	<tr>
 		<td><a href="RuleQuickLinks.do" target="<c:out value="${BackdoorForm.targetName}" />">Rule QuickLinks</a></td>
 	</tr>
-
 	<tr>
-		<td><a href="Lookup.do?lookupableImplServiceName=EDocLiteLookupableService" target="<c:out value="${BackdoorForm.targetName}" />">EDocLites <b>OLD</b></a></td>
-	</tr>
-	<tr>
-		<td><a href="../kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.edl.bo.EDocLiteAssociation&docFormKey=88888888&returnLocation=../en/Portal.do&hideReturnLink=true" target="<c:out value="${BackdoorForm.targetName}" />">EDocLites <b>NEW</b></a></td>	
+		<td><a href="../kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.edl.bo.EDocLiteAssociation&docFormKey=88888888&returnLocation=../en/Portal.do&hideReturnLink=true" target="<c:out value="${BackdoorForm.targetName}" />">eDoc Lites</a></td>	
 	</tr>
 	<tr>
 	  <td><a href="../kew/Rule.do?methodToCall=docHandler&command=initiate&docTypeName=EDENSERVICE-DOCS.RuleDocument" target="<c:out value="${BackdoorForm.targetName}"/>">Create Rule <b>NEW</b></a></td>

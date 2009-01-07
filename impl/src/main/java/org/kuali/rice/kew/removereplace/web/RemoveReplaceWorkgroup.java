@@ -23,7 +23,7 @@ package org.kuali.rice.kew.removereplace.web;
  */
 public class RemoveReplaceWorkgroup {
 
-    private Long id;
+    private String id;
     private String name;
     private String type;
     private String warning;
@@ -54,10 +54,10 @@ public class RemoveReplaceWorkgroup {
     public void setSelected(boolean selected) {
         this.selected = selected;
     }
-    public Long getId() {
+    public String getId() {
         return this.id;
     }
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
     public boolean isDisabled() {

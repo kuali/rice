@@ -33,6 +33,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
+import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.preferences.service.PreferencesService;
@@ -43,7 +44,8 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KeyValue;
 import org.kuali.rice.kew.web.WorkflowAction;
 import org.kuali.rice.kew.web.session.UserSession;
-import org.kuali.rice.kew.workgroup.Workgroup;
+import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 /**
@@ -108,26 +110,24 @@ public class ActionListFilterAction extends WorkflowAction {
     }
 
     private List getUserWorkgroupsDropDownList(WorkflowUser user) throws KEWUserNotFoundException {
-    	List userWorkgroups = KEWServiceLocator.getWorkgroupService().getUsersGroups(user.getWorkflowId());
-    	List sortedUserWorkgroups = new ArrayList();
-    	KeyValue keyValue = null;
-    	keyValue = new KeyValue(KEWConstants.NO_FILTERING, KEWConstants.NO_FILTERING);
-    	sortedUserWorkgroups.add(keyValue);
-    	if (userWorkgroups != null && userWorkgroups.size() > 0) {
-    		Collections.sort(userWorkgroups, new Comparator() {
-    			Comparator comp = new ComparableComparator();
-    			public int compare(Object o1, Object o2) {
-    				return comp.compare(((Workgroup) o1).getGroupNameId().getNameId().trim().toLowerCase(), ((Workgroup) o2).getGroupNameId().getNameId().trim().toLowerCase());
-    			}
-    		});
+    	List<String> userWorkgroups =
+            KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(user.getWorkflowId());
+        List<KeyValue> sortedUserWorkgroups = new ArrayList();
+        KeyValue keyValue = null;
+        keyValue = new KeyValue(KEWConstants.NO_FILTERING, KEWConstants.NO_FILTERING);
+        sortedUserWorkgroups.add(keyValue);
+        if (userWorkgroups != null && userWorkgroups.size() > 0) {
+            Collections.sort(userWorkgroups);
 
-    		for (Iterator iter = userWorkgroups.iterator(); iter.hasNext();) {
-    			Workgroup workgroup = (Workgroup) iter.next();
-    			keyValue = new KeyValue(workgroup.getWorkflowGroupId().getGroupId().toString(), workgroup.getGroupNameId().getNameId());
-    			sortedUserWorkgroups.add(keyValue);
-    		}
-    	}
-    	return sortedUserWorkgroups;
+            KimGroup group;
+            for (String groupId : userWorkgroups)
+            {
+                group = KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
+                keyValue = new KeyValue(groupId, group.getGroupName());
+                sortedUserWorkgroups.add(keyValue);
+            }
+        }
+        return sortedUserWorkgroups;
     }
 
     private List getWebFriendlyRecipients(Collection recipients) {
@@ -145,24 +145,33 @@ public class ActionListFilterAction extends WorkflowAction {
         return recipientList;
     }
 
-    public class WebFriendlyRecipient {
-        private String displayName;
+    public class WebFriendlyRecipient
+    {
         private String recipientId;
-        public WebFriendlyRecipient(Recipient recipient) {
-            if (recipient instanceof Workgroup) {
-                recipientId = ((Workgroup)recipient).getWorkflowGroupId().getGroupId().toString();
-                displayName = recipient.getDisplayName();
-            } else if (recipient instanceof WorkflowUser) {
-                recipientId = ((WorkflowUser)recipient).getWorkflowUserId().getWorkflowId();
-                displayName = ((WorkflowUser)recipient).getTransposedName();
-            }
-        }
-        public String getRecipientId() {
-            return recipientId;
-        }
-        public String getDisplayName() {
+        private String displayName;
+
+        public WebFriendlyRecipient(Recipient recipient)
+        {
+	        if (recipient instanceof WorkflowUser)
+	        {
+	            recipientId = ((WorkflowUser)recipient).getWorkflowUserId().getWorkflowId();
+	            displayName = ((WorkflowUser)recipient).getTransposedName();
+	        }
+	        else if (recipient instanceof KimGroupRecipient)
+	        {
+	            recipientId = ((KimGroupRecipient) recipient).getGroup().getGroupId();
+	            displayName = ((KimGroupRecipient) recipient).getGroup().getGroupName();
+	        }
+	    }
+
+        public String getDisplayName()
+        {
             return displayName;
         }
-    }
+        public String getRecipientId()
+        {
+            return recipientId;
+        }
 
+    }
 }

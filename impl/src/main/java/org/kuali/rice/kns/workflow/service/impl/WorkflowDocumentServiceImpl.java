@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
@@ -28,10 +29,12 @@ import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.InvalidWorkgroupException;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.identity.IdentityFactory;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.AdHocRouteRecipient;
 import org.kuali.rice.kns.exception.UnknownDocumentIdException;
@@ -339,10 +342,18 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
                 if (StringUtils.isNotEmpty(recipient.getId())) {
                     if (AdHocRouteRecipient.PERSON_TYPE.equals(recipient.getType())) {
                         // TODO make the 1 a constant
-                        workflowDocument.appSpecificRouteDocumentToUser(recipient.getActionRequested(), currentNode, annotation, new NetworkIdDTO(recipient.getId()), "", true);
+                    	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(recipient.getId());
+                		if (principal == null) {
+                			throw new RiceRuntimeException("Could not locate principal with name '" + recipient.getId() + "'");
+                		}
+                        workflowDocument.adHocRouteDocumentToPrincipal(recipient.getActionRequested(), currentNode, annotation, principal.getPrincipalId(), "", true);
                     }
                     else {
-                    	workflowDocument.appSpecificRouteDocumentToGroup(recipient.getActionRequested(), currentNode, annotation, IdentityFactory.newGroupIdByName(KimConstants.TEMP_GROUP_NAMESPACE, recipient.getId()) , "", true);
+                    	KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, recipient.getId());
+                		if (group == null) {
+                			throw new RiceRuntimeException("Could not locate group with name '" + recipient.getId() + "'");
+                		}
+                    	workflowDocument.adHocRouteDocumentToGroup(recipient.getActionRequested(), currentNode, annotation, group.getGroupId() , "", true);
                     }
                 }
             }

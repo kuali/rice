@@ -67,7 +67,7 @@ public class FutureRequestsTest extends KEWTestCase {
 
         DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getRouteHeaderId());
         WorkflowUser rkirkend = KEWServiceLocator.getUserService().getWorkflowUser(networkId);
-        FutureRequestDocumentStateManager futRequestStateMan = new FutureRequestDocumentStateManager(routeHeader, rkirkend);
+        FutureRequestDocumentStateManager futRequestStateMan = new FutureRequestDocumentStateManager(routeHeader, rkirkend.getWorkflowId());
         assertTrue(futRequestStateMan.isReceiveFutureRequests());
         assertFalse(futRequestStateMan.isClearFutureRequestState());
         assertFalse(futRequestStateMan.isDoNotReceiveFutureRequests());
@@ -80,7 +80,7 @@ public class FutureRequestsTest extends KEWTestCase {
 
         routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getRouteHeaderId());
         rkirkend = KEWServiceLocator.getUserService().getWorkflowUser(networkId);
-        futRequestStateMan = new FutureRequestDocumentStateManager(routeHeader, rkirkend);
+        futRequestStateMan = new FutureRequestDocumentStateManager(routeHeader, rkirkend.getWorkflowId());
         assertFalse(futRequestStateMan.isReceiveFutureRequests());
         assertFalse(futRequestStateMan.isClearFutureRequestState());
         assertTrue(futRequestStateMan.isDoNotReceiveFutureRequests());
@@ -92,7 +92,7 @@ public class FutureRequestsTest extends KEWTestCase {
 
         routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getRouteHeaderId());
         rkirkend = KEWServiceLocator.getUserService().getWorkflowUser(networkId);
-        futRequestStateMan = new FutureRequestDocumentStateManager(routeHeader, rkirkend);
+        futRequestStateMan = new FutureRequestDocumentStateManager(routeHeader, rkirkend.getWorkflowId());
         assertFalse(futRequestStateMan.isReceiveFutureRequests());
         assertTrue(futRequestStateMan.isClearFutureRequestState());
         assertFalse(futRequestStateMan.isDoNotReceiveFutureRequests());
@@ -111,7 +111,7 @@ public class FutureRequestsTest extends KEWTestCase {
         document.routeDocument("");
         routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getRouteHeaderId());
         rkirkend = KEWServiceLocator.getUserService().getWorkflowUser(networkId);
-        futRequestStateMan = new FutureRequestDocumentStateManager(routeHeader, rkirkend);
+        futRequestStateMan = new FutureRequestDocumentStateManager(routeHeader, rkirkend.getWorkflowId());
         assertFalse(futRequestStateMan.isReceiveFutureRequests());
         assertFalse(futRequestStateMan.isClearFutureRequestState());
         assertFalse(futRequestStateMan.isDoNotReceiveFutureRequests());

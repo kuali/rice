@@ -44,6 +44,7 @@ import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.routemodule.RouteModule;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.Recipient;
+import org.kuali.rice.kew.user.UserId;
 import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
@@ -54,6 +55,7 @@ import org.kuali.rice.kew.util.ResponsibleParty;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.workgroup.WorkflowGroupId;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -203,8 +205,8 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         List<ActionItem> actionItems = new ArrayList<ActionItem>();
         if (!actionRequest.isPrimaryDelegator()) {
             if (actionRequest.isGroupRequest()) {
-                List<WorkflowUser> users =  getWorkgroupService().getWorkgroup(new WorkflowGroupId(new Long(actionRequest.getGroupId()))).getUsers();
-                actionItems.addAll(createActionItemsForUsers(actionRequest, users));
+                List<String> userIds =  KIMServiceLocator.getIdentityManagementService().getGroupMemberPrincipalIds(actionRequest.getGroupId());
+                actionItems.addAll(createActionItemsForUsers(actionRequest, userIds));
             } else if (actionRequest.isUserRequest()) {
                 ActionItem actionItem = getActionListService().createActionItemForActionRequest(actionRequest);
                 actionItems.add(actionItem);
@@ -220,9 +222,10 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         return actionItems;
     }
 
-    private List<ActionItem> createActionItemsForUsers(ActionRequestValue actionRequest, List<WorkflowUser> users) {
+    private List<ActionItem> createActionItemsForUsers(ActionRequestValue actionRequest, List<String> userIds) throws KEWUserNotFoundException {
         List<ActionItem> actionItems = new ArrayList<ActionItem>();
-        for (WorkflowUser user: users) {
+        for (String userId: userIds) {
+            WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(userId));
             ActionItem actionItem = getActionListService().createActionItemForActionRequest(actionRequest);
             actionItem.setPrincipalId(user.getWorkflowUserId().getWorkflowId());
             actionItem.setRoleName(actionRequest.getQualifiedRoleName());
@@ -242,11 +245,12 @@ public class ActionRequestServiceImpl implements ActionRequestService {
                 if (responsibleParty == null) {
                     return;
                 }
-                if (responsibleParty.getUserId() != null) {
-                    WorkflowUser user = getUserService().getWorkflowUser(responsibleParty.getUserId());
-                    actionRequest.setWorkflowId(user.getWorkflowUserId().getWorkflowId());
+                if (responsibleParty.getPrincipalId() != null) {
+                    KimPrincipal user = KIMServiceLocator.getIdentityManagementService()
+                            .getPrincipal(responsibleParty.getPrincipalId());
+                    actionRequest.setWorkflowId(user.getPrincipalId());
                 } else if (responsibleParty.getGroupId() != null) {
-                	actionRequest.setGroupId(responsibleParty.getGroupId().getGroupId());
+                	actionRequest.setGroupId(responsibleParty.getGroupId());
                 } else if (responsibleParty.getRoleName() != null) {
                     actionRequest.setRoleName(responsibleParty.getRoleName());
                 }
@@ -263,9 +267,9 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         FutureRequestDocumentStateManager futureRequestStateMngr = null;
 
         if (actionRequestToActivate.isGroupRequest()) {
-            futureRequestStateMngr = new FutureRequestDocumentStateManager(actionRequestToActivate.getRouteHeader(), actionRequestToActivate.getWorkgroup());
+            futureRequestStateMngr = new FutureRequestDocumentStateManager(actionRequestToActivate.getRouteHeader(), actionRequestToActivate.getGroup().getGroupId());
         } else if (actionRequestToActivate.isUserRequest()) {
-            futureRequestStateMngr = new FutureRequestDocumentStateManager(actionRequestToActivate.getRouteHeader(), actionRequestToActivate.getWorkflowUser());
+            futureRequestStateMngr = new FutureRequestDocumentStateManager(actionRequestToActivate.getRouteHeader(), actionRequestToActivate.getWorkflowUser().getWorkflowId());
         } else {
             return false;
         }
@@ -593,13 +597,8 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         return requests;
     }
 
-    public List findActivatedByGroup(KimGroup group) {
-        return getActionRequestDAO().findActivatedByGroup(group);
-    }
-
-
-    private WorkgroupService getWorkgroupService() {
-        return (WorkgroupService) KEWServiceLocator.getWorkgroupService();
+    public List findActivatedByGroup(String groupId) {
+        return getActionRequestDAO().findActivatedByGroup(groupId);
     }
 
     private ActionListService getActionListService() {
@@ -777,7 +776,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
                 if (workgroupId == null) {
                     errors.add(new WorkflowServiceErrorImpl("ActionRequest workgroup null.",
                             "actionrequest.workgroup.empty", actionRequest.getActionRequestId().toString()));
-                } else if (getWorkgroupService().getWorkgroup(new WorkflowGroupId(new Long(workgroupId))) == null) {
+                } else if (KIMServiceLocator.getIdentityManagementService().getGroup(workgroupId) == null) {
                     errors.add(new WorkflowServiceErrorImpl("ActionRequest workgroup invalid.",
                             "actionrequest.workgroup.invalid", actionRequest.getActionRequestId().toString()));
                 }
@@ -848,7 +847,6 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         List<String> groupNames = getActionRequestDAO().getRequestGroupIds(documentId);
         for (String groupId : groupNames) {
             KimGroup group =KIMServiceLocator.getIdentityManagementService().getGroup(groupId) ;
-            //	KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(workgroupId));
             if (KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(user.getWorkflowId(), groupId)) {
                 return true;
             }

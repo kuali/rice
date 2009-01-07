@@ -26,7 +26,6 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.applicationconstants.ApplicationConstant;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
 import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeDateTime;
 import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeFloat;
@@ -38,7 +37,6 @@ import org.kuali.rice.kew.dto.DocumentDetailDTO;
 import org.kuali.rice.kew.dto.DocumentSearchCriteriaDTO;
 import org.kuali.rice.kew.dto.DocumentSearchResultDTO;
 import org.kuali.rice.kew.dto.DocumentSearchResultRowDTO;
-import org.kuali.rice.kew.dto.GroupIdDTO;
 import org.kuali.rice.kew.dto.KeyValueDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.ReportActionToTakeDTO;
@@ -50,7 +48,6 @@ import org.kuali.rice.kew.dto.RuleResponsibilityDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.identity.IdentityFactory;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.service.WorkflowInfo;
@@ -60,15 +57,13 @@ import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.KEWPropertyConstants;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.group.KimGroup;
-import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kim.util.KimConstants;
 
 
 public class WorkflowUtilityTest extends KEWTestCase {
@@ -397,13 +392,13 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertFalse("Should not be last approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), new NetworkIdDTO("ewestfal"), SeqSetup.ADHOC_NODE));
 
         // app specific route a request to a workgroup at the initial node (TestWorkgroup)
-		GroupIdDTO groupId = IdentityFactory.newGroupIdByName(KimConstants.TEMP_GROUP_NAMESPACE, "TestWorkgroup");
-        document.appSpecificRouteDocumentToGroup(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "", groupId, "", false);
+		String groupId = getGroupIdForName(KimConstants.TEMP_GROUP_NAMESPACE, "TestWorkgroup");
+        document.adHocRouteDocumentToGroup(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "", groupId, "", false);
         assertTrue("Should be last approver.", utility.isLastApproverInRouteLevel(document.getRouteHeaderId(), new NetworkIdDTO("ewestfal"), new Integer(0)));
         assertTrue("Should be last approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), new NetworkIdDTO("ewestfal"), SeqSetup.ADHOC_NODE));
 
         // app specific route a request to a member of the workgroup (jitrue)
-        document.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "", new NetworkIdDTO("jitrue"), "", false);
+        document.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "", getPrincipalIdForName("jitrue"), "", false);
         // member of the workgroup with the user request should be last approver
         assertTrue("Should be last approver.", utility.isLastApproverInRouteLevel(document.getRouteHeaderId(), new NetworkIdDTO("jitrue"), new Integer(0)));
         assertTrue("Should be last approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), new NetworkIdDTO("jitrue"), SeqSetup.ADHOC_NODE));
@@ -620,8 +615,8 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertTrue("Should be final approver.", utility.isFinalApprover(document.getRouteHeaderId(), new NetworkIdDTO("pmckown")));
 
         // now adhoc an approve to temay, phil should no longer be the final approver
-        document.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_APPROVE_REQ, SeqSetup.WORKFLOW_DOCUMENT_2_NODE,
-                "", new NetworkIdDTO("temay"), "", true);
+        document.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_APPROVE_REQ, SeqSetup.WORKFLOW_DOCUMENT_2_NODE,
+                "", getPrincipalIdForName("temay"), "", true);
         assertFalse("Should not be final approver.", utility.isFinalApprover(document.getRouteHeaderId(), new NetworkIdDTO("pmckown")));
         assertFalse("Should not be final approver.", utility.isFinalApprover(document.getRouteHeaderId(), new NetworkIdDTO("temay")));
 
@@ -632,8 +627,8 @@ public class WorkflowUtilityTest extends KEWTestCase {
 
         // phil should be final approver again
         assertTrue("Should be final approver.", utility.isFinalApprover(document.getRouteHeaderId(), new NetworkIdDTO("pmckown")));
-        document.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, SeqSetup.WORKFLOW_DOCUMENT_2_NODE,
-                "", new NetworkIdDTO("jhopf"), "", true);
+        document.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, SeqSetup.WORKFLOW_DOCUMENT_2_NODE,
+                "", getPrincipalIdForName("jhopf"), "", true);
         document = new WorkflowDocument(new NetworkIdDTO("jhopf"), document.getRouteHeaderId());
         assertTrue("Should have acknowledge request.", document.isAcknowledgeRequested());
 

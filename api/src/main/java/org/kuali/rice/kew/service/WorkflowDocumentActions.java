@@ -18,9 +18,7 @@ package org.kuali.rice.kew.service;
 
 import org.kuali.rice.kew.dto.AdHocRevokeDTO;
 import org.kuali.rice.kew.dto.DocumentContentDTO;
-import org.kuali.rice.kew.dto.GroupIdDTO;
 import org.kuali.rice.kew.dto.MovePointDTO;
-import org.kuali.rice.kew.dto.ResponsiblePartyDTO;
 import org.kuali.rice.kew.dto.ReturnPointDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
@@ -35,7 +33,8 @@ public interface WorkflowDocumentActions {
 
     public RouteHeaderDTO acknowledgeDocument(UserIdDTO userId, RouteHeaderDTO routeHeader, String annotation) throws WorkflowException;
     public RouteHeaderDTO approveDocument(UserIdDTO userId, RouteHeaderDTO routeHeader, String annotation) throws WorkflowException;
-    public RouteHeaderDTO appSpecificRouteDocument(UserIdDTO userId, RouteHeaderDTO routeHeader, String actionRequested, String nodeName, String annotation, ResponsiblePartyDTO responsibleParty, String responsibilityDesc, boolean ignorePrevActions) throws WorkflowException;
+    public RouteHeaderDTO adHocRouteDocumentToPrincipal(UserIdDTO userId, RouteHeaderDTO routeHeader, String actionRequested, String nodeName, String annotation, String principalId, String responsibilityDesc, boolean ignorePrevActions) throws WorkflowException;
+    public RouteHeaderDTO adHocRouteDocumentToGroup(UserIdDTO userId, RouteHeaderDTO routeHeader, String actionRequested, String nodeName, String annotation, String groupId, String responsibilityDesc, boolean ignorePrevActions) throws WorkflowException;
     public RouteHeaderDTO cancelDocument(UserIdDTO userId, RouteHeaderDTO routeHeader, String annotation) throws WorkflowException;
     public RouteHeaderDTO clearFYIDocument(UserIdDTO userId, RouteHeaderDTO routeHeader) throws WorkflowException;
     public RouteHeaderDTO completeDocument(UserIdDTO userId, RouteHeaderDTO routeHeader, String annotation) throws WorkflowException;
@@ -70,8 +69,8 @@ public interface WorkflowDocumentActions {
 
     public RouteHeaderDTO blanketApprovalToNodes(UserIdDTO userId, RouteHeaderDTO routeHeader, String annotation, String[] nodeNames) throws WorkflowException;
     public RouteHeaderDTO returnDocumentToPreviousNode(UserIdDTO userId, RouteHeaderDTO routeHeader, ReturnPointDTO returnPoint, String annotation) throws WorkflowException;
-    public RouteHeaderDTO takeGroupAuthority(UserIdDTO userId, RouteHeaderDTO routeHeader, GroupIdDTO groupId, String annotation) throws WorkflowException;
-    public RouteHeaderDTO releaseGroupAuthority(UserIdDTO userId, RouteHeaderDTO routeHeader, GroupIdDTO groupId, String annotation) throws WorkflowException;
+    public RouteHeaderDTO takeGroupAuthority(UserIdDTO userId, RouteHeaderDTO routeHeader, String groupId, String annotation) throws WorkflowException;
+    public RouteHeaderDTO releaseGroupAuthority(UserIdDTO userId, RouteHeaderDTO routeHeader, String groupId, String annotation) throws WorkflowException;
     public RouteHeaderDTO moveDocument(UserIdDTO userId, RouteHeaderDTO routeHeader, MovePointDTO movePoint, String annotation) throws WorkflowException;
 
     // Introduced in 2.2.2 //

@@ -181,7 +181,7 @@ public class ActionItemServiceTest extends KEWTestCase {
 //        GroupInfo grpInfo =new GroupInfo();
 //        grpInfo.setGroupName("AIWGNested2");
 //
-//        document.appSpecificRouteDocumentToGroup(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "",grpInfo, "", true);
+//        document.adHocRouteDocumentToGroup(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "",grpInfo, "", true);
 //        document.routeDocument("");
 //
 //        // remove a user from the AGWG1 workgroup
@@ -449,7 +449,7 @@ public class ActionItemServiceTest extends KEWTestCase {
     /**
      * Executes a deep copy of the BaseWorkgroup
      */
-    private BaseWorkgroup copy(BaseWorkgroup workgroup) throws Exception {
+ /*   private BaseWorkgroup copy(BaseWorkgroup workgroup) throws Exception {
     	BaseWorkgroup workgroupCopy = (BaseWorkgroup)KEWServiceLocator.getWorkgroupService().copy(workgroup);
     	// copy above does a shallow copy so we need to deep copy members
     	List<BaseWorkgroupMember> members = workgroupCopy.getWorkgroupMembers();
@@ -466,5 +466,5 @@ public class ActionItemServiceTest extends KEWTestCase {
     private BaseWorkgroupMember copy(BaseWorkgroupMember member) throws Exception {
     	return (BaseWorkgroupMember)BeanUtils.cloneBean(member);
     }
-
+*/
 }

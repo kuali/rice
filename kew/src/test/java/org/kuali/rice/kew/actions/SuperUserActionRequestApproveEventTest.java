@@ -41,8 +41,8 @@ public class SuperUserActionRequestApproveEventTest extends KEWTestCase {
 
     @Test public void testSuperUserActionsOnEnroute() throws Exception {
         WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
-        document.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_FYI_REQ, "", new NetworkIdDTO("rkirkend"), "", true);
-        document.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "", new NetworkIdDTO("jhopf"), "", true);
+        document.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_FYI_REQ, "", getPrincipalIdForName("rkirkend"), "", true);
+        document.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "", getPrincipalIdForName("jhopf"), "", true);
         document.routeDocument("");
 
         document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
@@ -65,7 +65,7 @@ public class SuperUserActionRequestApproveEventTest extends KEWTestCase {
 
     @Test public void testSuperUserActionsOnFinal() throws Exception {
         WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "SuperUserApproveActionRequestFyiTest");
-        document.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_FYI_REQ, "", new NetworkIdDTO("rkirkend"), "", true);
+        document.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_FYI_REQ, "", getPrincipalIdForName("rkirkend"), "", true);
         document.routeDocument("");
 
         // doc should still be final
@@ -87,8 +87,8 @@ public class SuperUserActionRequestApproveEventTest extends KEWTestCase {
     
     @Test public void testSuperUserActionsOnProcessed() throws Exception {
         WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "SuperUserApproveActionRequestFyiTest");
-        document.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "", new NetworkIdDTO("jhopf"), "", true);
-        document.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_FYI_REQ, "", new NetworkIdDTO("rkirkend"), "", true);
+        document.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "", getPrincipalIdForName("jhopf"), "", true);
+        document.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_FYI_REQ, "", getPrincipalIdForName("rkirkend"), "", true);
         document.routeDocument("");
 
         // doc should still be processed
@@ -169,7 +169,7 @@ public class SuperUserActionRequestApproveEventTest extends KEWTestCase {
         WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO(initiatorNetworkId), "SuperUserApproveActionRequestFyiTest");
         String adhocActionRequestCode = KEWConstants.ACTION_REQUEST_APPROVE_REQ;
         String adhocActionUserNetworkId = "jhopf";
-        document.appSpecificRouteDocumentToUser(adhocActionRequestCode, "", new NetworkIdDTO(adhocActionUserNetworkId), "", true);
+        document.adHocRouteDocumentToPrincipal(adhocActionRequestCode, "", getPrincipalIdForName(adhocActionUserNetworkId), "", true);
         document.saveDocument("");
         // doc should be saved
         assertEquals("Document should be SAVED", KEWConstants.ROUTE_HEADER_SAVED_CD, document.getRouteHeader().getDocRouteStatus());

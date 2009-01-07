@@ -25,7 +25,10 @@ import org.kuali.rice.kew.batch.KEWXmlDataLoader;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
 import org.kuali.rice.test.RiceTestCase;
 import org.kuali.rice.test.SQLDataLoader;
@@ -274,5 +277,14 @@ public abstract class KEWTestCase extends RiceTestCase {
 	    } catch (Exception e) {
 	        throw new WorkflowRuntimeException(e);
 	    }
+	}
+	
+	protected String getPrincipalIdForName(String principalName) {
+		return KEWServiceLocator.getIdentityHelperService().getIdForPrincipalName(principalName);
+	}
+	
+	
+	protected String getGroupIdForName(String namespace, String groupName) {
+		return KEWServiceLocator.getIdentityHelperService().getIdForGroupName(namespace, groupName);
 	}
 }

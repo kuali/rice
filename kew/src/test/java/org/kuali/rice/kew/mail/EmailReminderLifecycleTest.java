@@ -65,7 +65,7 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 		KEWServiceLocator.getPreferencesService().savePreferences(ewestfal.getWorkflowUserId().getId(), prefs);
 
 		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "TestDocumentType");
-		document.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "", new NetworkIdDTO("ewestfal"), "", Boolean.TRUE);
+		document.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "", getPrincipalIdForName("ewestfal"), "", Boolean.TRUE);
 		document.routeDocument("");
 
 		document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
@@ -111,7 +111,7 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 		KEWServiceLocator.getPreferencesService().savePreferences(ewestfal.getWorkflowUserId().getId(), prefs);
 
 		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "TestDocumentType");
-		document.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "", new NetworkIdDTO("ewestfal"), "", Boolean.TRUE);
+		document.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "", getPrincipalIdForName("ewestfal"), "", Boolean.TRUE);
 		document.routeDocument("");
 
 		document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());

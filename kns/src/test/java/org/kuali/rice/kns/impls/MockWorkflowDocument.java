@@ -333,10 +333,10 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#appSpecificRouteDocumentToUser(java.lang.String,
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#adHocRouteDocumentToPrincipal(java.lang.String,
      *      java.lang.String, int, java.lang.String, org.kuali.rice.kew.dto.UserIdDTO, java.lang.String, boolean)
      */
-    public void appSpecificRouteDocumentToUser(String actionRequested, String routeTypeName, String annotation, UserIdDTO recipient, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
+    public void adHocRouteDocumentToPrincipal(String actionRequested, String routeTypeName, String annotation, String principalId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
         LOG.debug("Using MockWorkflowDocument");
 
     }
@@ -345,7 +345,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
      * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#appSpecificRouteDocumentToWorkgroup(java.lang.String,
      *      java.lang.String, int, java.lang.String, org.kuali.rice.kew.dto.WorkgroupIdDTO, java.lang.String, boolean)
      */
-    public void appSpecificRouteDocumentToWorkgroup(String actionRequested, String routeTypeName, int priority, String annotation, WorkgroupIdDTO workgroupId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
+    public void adHocRouteDocumentToWorkgroup(String actionRequested, String routeTypeName, int priority, String annotation, String groupId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
         LOG.debug("Using MockWorkflowDocument");
 
     }

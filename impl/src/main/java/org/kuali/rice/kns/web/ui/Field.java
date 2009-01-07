@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 The Kuali Foundation.
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-
 import org.kuali.rice.kns.datadictionary.mask.Mask;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -37,16 +36,16 @@ public class Field implements java.io.Serializable {
     public static final int DEFAULT_MAXLENGTH = 30;
     public static final int DEFAULT_SIZE = 30;
 
-    public static final String CHECKBOX = "checkbox";
+    public static final String HIDDEN = "hidden";
+    public static final String TEXT = "text";
     public static final String DROPDOWN = "dropdown";
+    public static final String RADIO = "radio";
+    public static final String QUICKFINDER = "quickFinder";
+    public static final String LOOKUP_RESULT_ONLY = "lookupresultonly";
     public static final String DROPDOWN_REFRESH = "dropdown_refresh";
     public static final String DROPDOWN_SCRIPT = "dropdown_script";
     public static final String DROPDOWN_APC = "dropdown_apc";
-    public static final String HIDDEN = "hidden";
-    public static final String LOOKUP_RESULT_ONLY = "lookupresultonly";
-    public static final String QUICKFINDER = "quickFinder";
-    public static final String RADIO = "radio";
-    public static final String TEXT = "text";
+    public static final String CHECKBOX = "checkbox";
     public static final String CURRENCY = "currency";
     public static final String TEXT_AREA = "textarea";
     public static final String FILE = "file";
@@ -55,41 +54,41 @@ public class Field implements java.io.Serializable {
     public static final String KUALIUSER = "kualiuser";
     public static final String READONLY = "readOnly";
     public static final String EDITABLE = "editable";
-    public static final String MASKED = "masked";
-    public static final String PARTIALLY_MASKED = "partiallyMasked";
     public static final String LOOKUP_HIDDEN = "lookuphidden";
     public static final String LOOKUP_READONLY = "lookupreadonly";
     public static final String WORKFLOW_WORKGROUP = "workflowworkgroup";
+    public static final String MASKED = "masked";
+    public static final String PARTIALLY_MASKED = "partiallyMasked";
 
     public static final String SUB_SECTION_SEPARATOR = "subSectionSeparator";
     public static final String BLANK_SPACE = "blankSpace";
-    
     public static final String BUTTON = "button";
-  
-	public static final String LINK = "link";
-    
-    private boolean clear;
-    private boolean dateField;
-    private boolean fieldRequired;
-    private boolean highlightField;
-    private boolean isReadOnly;
+    public static final String LINK = "link";
 
-    private String fieldConversions;
-    private String fieldHelpUrl;
-    private String fieldLabel;
     private String fieldType;
-    private String lookupParameters;
+
+    private String fieldLabel;
+    private String fieldHelpUrl;
     private String propertyName;
     private String propertyValue;
-   
-    private List fieldValidValues;
+
+    private List<KeyLabelPair> fieldValidValues;
+    private String quickFinderClassNameImpl;
+
+    private boolean clear;
+    private boolean dateField;
+    private String fieldConversions;
+    private boolean fieldRequired;
+
     private List fieldInactiveValidValues;
     private Formatter formatter;
+    private boolean highlightField;
+    private boolean isReadOnly;
+    private String lookupParameters;
     private int maxLength;
-    
+
     private HtmlData inquiryURL;
     private String propertyPrefix;
-    private String quickFinderClassNameImpl;
     private int size;
     private boolean upperCase;
     private int rows;
@@ -104,6 +103,7 @@ public class Field implements java.io.Serializable {
     private String personNameAttributeName;
     private String defaultValue = KNSConstants.EMPTY_STRING;
     private boolean keyField;
+    private String displayEditMode;
     private Mask displayMask;
     private String displayMaskValue;
     private String encryptedValue;
@@ -123,22 +123,126 @@ public class Field implements java.io.Serializable {
     private boolean fieldDirectInquiryEnabled;
 
     public boolean fieldLevelHelpEnabled;
-    
+
     public boolean fieldLevelHelpDisabled;
-    
-	private String imageSrc;
+
+    private String imageSrc;
     private String target;
     private String hrefText;
-    
+
+
+    /**
+     * No-args constructor
+     */
+    public Field() {
+        this.fieldLevelHelpEnabled = false;
+    }
+
+    /**
+     * Constructor that creates an instance of this class to support inquirable
+     *
+     * @param propertyName property attribute of the bean
+     * @param fieldLabel label of the display field
+     */
+    public Field(String propertyName, String fieldLabel) {
+        this.propertyName = propertyName;
+        this.fieldLabel = fieldLabel;
+        this.isReadOnly = false;
+        this.upperCase = false;
+        this.keyField = false;
+        this.secure = false;
+        this.fieldLevelHelpEnabled = false;
+    }
+
+    /**
+     * Constructor that creates an instance of this class.
+     *
+     * @param fieldLabel label of the search criteria field
+     * @param fieldHelpUrl url of a help link to help instructions
+     * @param fieldType type of input field for this search criteria
+     * @param clear clear action flag
+     * @param propertyName name of the bean attribute for this search criteria
+     * @param propertyValue value of the bean attribute
+     * @param fieldRequired flag to denote if field is required
+     * @param dateField falg to denot if field should be validated as a date object
+     * @param fieldValidValues used for drop down list
+     * @param quickFinderClassNameImpl class name to transfer control to quick finder
+     */
+    public Field(String fieldLabel, String fieldHelpUrl, String fieldType, boolean clear, String propertyName, String propertyValue, boolean fieldRequired, boolean dateField, List<KeyLabelPair> fieldValidValues, String quickFinderClassNameImpl) {
+        this.dateField = dateField;
+        this.fieldLabel = fieldLabel;
+        this.fieldHelpUrl = fieldHelpUrl;
+        this.fieldType = fieldType;
+        this.fieldRequired = fieldRequired;
+        this.clear = clear;
+        this.propertyName = propertyName;
+        this.propertyValue = propertyValue;
+        this.fieldValidValues = fieldValidValues;
+        this.quickFinderClassNameImpl = quickFinderClassNameImpl;
+        this.size = DEFAULT_SIZE;
+        this.maxLength = DEFAULT_MAXLENGTH;
+        this.isReadOnly = false;
+        this.upperCase = false;
+        this.keyField = false;
+        this.fieldLevelHelpEnabled = false;
+    }
+
+    /**
+     * Constructor that creates an instance of this class.
+     *
+     * @param fieldLabel label of the search criteria field
+     * @param fieldHelpUrl url of a help link to help instructions
+     * @param fieldType type of input field for this search criteria
+     * @param clear clear action flag
+     * @param propertyName name of the bean attribute for this search criteria
+     * @param propertyValue value of the bean attribute
+     * @param fieldRequired flag to denote if field is required
+     * @param dateField falg to denot if field should be validated as a date object
+     * @param fieldValidValues used for drop down list
+     * @param quickFinderClassNameImpl class name to transfer control to quick finder
+     * @param size size of the input field
+     * @param maxLength maxLength of the input field
+     */
+    public Field(String fieldLabel, String fieldHelpUrl, String fieldType, boolean clear, String propertyName, String propertyValue, boolean fieldRequired, boolean dateField, List<KeyLabelPair> fieldValidValues, String quickFinderClassNameImpl, int size, int maxLength) {
+        this.dateField = dateField;
+        this.fieldLabel = fieldLabel;
+        this.fieldHelpUrl = fieldHelpUrl;
+        this.fieldType = fieldType;
+        this.fieldRequired = fieldRequired;
+        this.clear = clear;
+        this.propertyName = propertyName;
+        this.propertyValue = propertyValue;
+        this.fieldValidValues = fieldValidValues;
+        this.upperCase = false;
+        this.quickFinderClassNameImpl = quickFinderClassNameImpl;
+        if (size <= 0) {
+            this.size = DEFAULT_SIZE;
+        }
+        else {
+            this.size = size;
+        }
+        if (size <= 0) {
+            this.size = DEFAULT_MAXLENGTH;
+        }
+        else {
+            this.maxLength = maxLength;
+        }
+        this.isReadOnly = false;
+        this.keyField = false;
+        this.fieldLevelHelpEnabled = false;
+    }
+
+
     /**
      * Helper method to determine if this is an INPUT type field
-     * 
+     *
      * @param fieldType
      */
     public static boolean isInputField(String fieldType) {
         if (StringUtils.isBlank(fieldType)) {
             return false;
         }
+        // JJH: Would it be good to create a InputField Set and test to see if the fieldType exists in the set?
         if (fieldType.equals(Field.DROPDOWN) || fieldType.equals(Field.DROPDOWN_REFRESH) || fieldType.equals(Field.TEXT) || fieldType.equals(Field.RADIO) || fieldType.equals(Field.CURRENCY) || fieldType.equals(Field.KUALIUSER) || fieldType.equals(Field.DROPDOWN_SCRIPT) || fieldType.equals(Field.DROPDOWN_APC) || fieldType.equals(LOOKUP_READONLY) || fieldType.equals(TEXT_AREA)) {
             return true;
         }
@@ -148,54 +252,49 @@ public class Field implements java.io.Serializable {
 
     }
 
-   
+    /**
+     * @return the imageSrc
+     */
+    public String getImageSrc() {
+        return this.imageSrc;
+    }
 
-	/**
-	 * @return the imageSrc
-	 */
-	public String getImageSrc() {
-		return this.imageSrc;
-	}
-
-	/**
-	 * @param imageSrc the imageSrc to set
-	 */
-	public void setImageSrc(String imageSrc) {
-		this.imageSrc = imageSrc;
-	}
+    /**
+     * @param imageSrc the imageSrc to set
+     */
+    public void setImageSrc(String imageSrc) {
+        this.imageSrc = imageSrc;
+    }
 
 
-	/**
-	 * @return the target
-	 */
-	public String getTarget() {
-		return this.target;
-	}
+    /**
+     * @return the target
+     */
+    public String getTarget() {
+        return this.target;
+    }
 
-	/**
-	 * @param target the target to set
-	 */
-	public void setTarget(String target) {
-		this.target = target;
-	}
+    /**
+     * @param target the target to set
+     */
+    public void setTarget(String target) {
+        this.target = target;
+    }
 
-	
-	/**
-	 * @return the hrefText
-	 */
-	public String getHrefText() {
-		return this.hrefText;
-	}
+    /**
+     * @return the hrefText
+     */
+    public String getHrefText() {
+        return this.hrefText;
+    }
 
-	/**
-	 * @param hrefText the hrefText to set
-	 */
-	public void setHrefText(String hrefText) {
-		this.hrefText = hrefText;
-	}
+    /**
+     * @param hrefText the hrefText to set
+     */
+    public void setHrefText(String hrefText) {
+        this.hrefText = hrefText;
+    }
 
-
-    
     /**
      * For container fields (i.e. fieldType.equals(CONTAINER)) with MV lookups enabled, the DD defined objectLabel of the class on which a multiple value lookup is performed.
      * The user friendly name
@@ -210,7 +309,7 @@ public class Field implements java.io.Serializable {
      * MV lookup is performed
      */
     private String multipleValueLookedUpCollectionName;
-    
+
     public HtmlData getInquiryURL() {
         return inquiryURL;
     }
@@ -247,107 +346,6 @@ public class Field implements java.io.Serializable {
      */
     public void setDefaultValue(String defaultValue) {
         this.defaultValue = defaultValue;
-    }
-
-    /**
-     * No-args constructor
-     */
-    public Field() {
-	this.fieldLevelHelpEnabled = false;
-    }
-
-    /**
-     * Constructor that creates an instance of this class to support inquirable
-     * 
-     * @param propertyName property attribute of the bean
-     * @param fieldLabel label of the display field
-     */
-    public Field(String propertyName, String fieldLabel) {
-        this.propertyName = propertyName;
-        this.fieldLabel = fieldLabel;
-        this.isReadOnly = false;
-        this.upperCase = false;
-        this.keyField = false;
-        this.secure = false;
-        this.fieldLevelHelpEnabled = false;
-    }
-
-    /**
-     * Constructor that creates an instance of this class.
-     * 
-     * @param fieldLabel label of the search criteria field
-     * @param fieldHelpUrl url of a help link to help instructions
-     * @param fieldType type of input field for this search criteria
-     * @param clear clear action flag
-     * @param propertyName name of the bean attribute for this search criteria
-     * @param propertyValue value of the bean attribute
-     * @param fieldRequired flag to denote if field is required
-     * @param dateField falg to denot if field should be validated as a date object
-     * @param fieldValidValues used for drop down list
-     * @param quickFinderClassNameImpl class name to transfer control to quick finder
-     */
-    public Field(String fieldLabel, String fieldHelpUrl, String fieldType, boolean clear, String propertyName, String propertyValue, boolean fieldRequired, boolean dateField, List fieldValidValues, String quickFinderClassNameImpl) {
-        this.dateField = dateField;
-        this.fieldLabel = fieldLabel;
-        this.fieldHelpUrl = fieldHelpUrl;
-        this.fieldType = fieldType;
-        this.fieldRequired = fieldRequired;
-        this.clear = clear;
-        this.propertyName = propertyName;
-        this.propertyValue = propertyValue;
-        this.fieldValidValues = fieldValidValues;
-        this.quickFinderClassNameImpl = quickFinderClassNameImpl;
-        this.size = DEFAULT_SIZE;
-        this.maxLength = DEFAULT_MAXLENGTH;
-        this.isReadOnly = false;
-        this.upperCase = false;
-        this.keyField = false;
-        this.fieldLevelHelpEnabled = false;
-    }
-
-    /**
-     * Constructor that creates an instance of this class.
-     * 
-     * @param fieldLabel label of the search criteria field
-     * @param fieldHelpUrl url of a help link to help instructions
-     * @param fieldType type of input field for this search criteria
-     * @param clear clear action flag
-     * @param propertyName name of the bean attribute for this search criteria
-     * @param propertyValue value of the bean attribute
-     * @param fieldRequired flag to denote if field is required
-     * @param dateField falg to denot if field should be validated as a date object
-     * @param fieldValidValues used for drop down list
-     * @param quickFinderClassNameImpl class name to transfer control to quick finder
-     * @param size size of the input field
-     * @param maxLength maxLength of the input field
-     */
-    public Field(String fieldLabel, String fieldHelpUrl, String fieldType, boolean clear, String propertyName, String propertyValue, boolean fieldRequired, boolean dateField, List fieldValidValues, String quickFinderClassNameImpl, int size, int maxLength) {
-        this.dateField = dateField;
-        this.fieldLabel = fieldLabel;
-        this.fieldHelpUrl = fieldHelpUrl;
-        this.fieldType = fieldType;
-        this.fieldRequired = fieldRequired;
-        this.clear = clear;
-        this.propertyName = propertyName;
-        this.propertyValue = propertyValue;
-        this.fieldValidValues = fieldValidValues;
-        this.upperCase = false;
-        this.quickFinderClassNameImpl = quickFinderClassNameImpl;
-        if (size <= 0) {
-            this.size = DEFAULT_SIZE;
-        }
-        else {
-            this.size = size;
-        }
-        if (size <= 0) {
-            this.size = DEFAULT_MAXLENGTH;
-        }
-        else {
-            this.maxLength = maxLength;
-        }
-        this.isReadOnly = false;
-        this.keyField = false;
-        this.fieldLevelHelpEnabled = false;
     }
 
     public boolean containsBOData() {
@@ -407,7 +405,7 @@ public class Field implements java.io.Serializable {
     }
 
     /**
-     * 
+     *
      * @return Returns KUALIUSER
      */
     public String getKUALIUSER() {
@@ -422,7 +420,7 @@ public class Field implements java.io.Serializable {
     }
 
     /**
-     * 
+     *
      * @return Returns SUB_SECTION_SEPARATOR
      */
     public String getSUB_SECTION_SEPARATOR() {
@@ -430,13 +428,13 @@ public class Field implements java.io.Serializable {
     }
 
     /**
-     * 
+     *
      * @return Returns BLANK_SPACE
      */
     public String getBLANK_SPACE() {
         return BLANK_SPACE;
     }
-    
+
     /**
 	 * @return the BUTTON
 	 */
@@ -450,8 +448,8 @@ public class Field implements java.io.Serializable {
 	public String getLINK() {
 		return LINK;
 	}
-	
-    
+
+
     /**
      * @return Returns the fieldConversions.
      */
@@ -483,7 +481,7 @@ public class Field implements java.io.Serializable {
     /**
      * @return Returns the fieldValidValues.
      */
-    public List getFieldValidValues() {
+    public List<KeyLabelPair> getFieldValidValues() {
         return fieldValidValues;
     }
 
@@ -534,28 +532,11 @@ public class Field implements java.io.Serializable {
 
         return propertyValue;
     }
-    
-    /**
-     * Gets the displayMaskValue attribute.
-     * 
-     * @return Returns the displayMaskValue.
-     */
-    public String getDisplayMaskValue() {
-        return displayMaskValue;
-    }
 
-    /**
-     * Sets the displayMaskValue attribute value.
-     * 
-     * @param displayMaskValue The displayMaskValue to set.
-     */
-    public void setDisplayMaskValue(String displayMaskValue) {
-        this.displayMaskValue = displayMaskValue;
-    }
 
     /**
      * Gets the propertyPrefix attribute.
-     * 
+     *
      * @return Returns the propertyPrefix.
      */
     public String getPropertyPrefix() {
@@ -564,7 +545,7 @@ public class Field implements java.io.Serializable {
 
     /**
      * Sets the propertyPrefix attribute value.
-     * 
+     *
      * @param propertyPrefix The propertyPrefix to set.
      */
     public void setPropertyPrefix(String propertyPrefix) {
@@ -616,21 +597,21 @@ public class Field implements java.io.Serializable {
     public String getIMAGE_SUBMIT() {
         return IMAGE_SUBMIT;
     }
-    
+
     /**
      * @return Returns the LOOKUP_HIDDEN.
      */
     public String getLOOKUP_HIDDEN(){
         return LOOKUP_HIDDEN;
     }
-    
+
     /**
      * @return Returns the LOOKUP_READONLY.
      */
     public String getLOOKUP_READONLY(){
         return LOOKUP_READONLY;
     }
-    
+
     /**
      * @return Returns the WORKFLOW_WORKGROUP.
      */
@@ -758,7 +739,7 @@ public class Field implements java.io.Serializable {
     /**
      * @param fieldValidValues The fieldValidValues to set.
      */
-    public void setFieldValidValues(List fieldValidValues) {
+    public void setFieldValidValues(List<KeyLabelPair> fieldValidValues) {
     	this.fieldValidValues = fieldValidValues;
     }
 
@@ -766,7 +747,7 @@ public class Field implements java.io.Serializable {
     	for ( KeyLabelPair keyLabel : (List<KeyLabelPair>)fieldValidValues ) {
             if ( keyLabel.getKey().equals( "" ) ) {
             	return true;
-            }        	
+            }
         }
     	return false;
     }
@@ -811,9 +792,9 @@ public class Field implements java.io.Serializable {
     }
 
     /**
-     * 
+     *
      * This method appends the passed-in lookupParameters to the existing
-     * 
+     *
      * @param lookupParameters
      */
     public void appendLookupParameters(String lookupParameters) {
@@ -856,7 +837,7 @@ public class Field implements java.io.Serializable {
             if (propertyValue instanceof Boolean) {
                 setFormatter(new BooleanFormatter());
             }
-            
+
             // for Dates, always use DateFormatter
             if (propertyValue instanceof Date) {
                 formatter = new DateFormatter();
@@ -1004,7 +985,7 @@ public class Field implements java.io.Serializable {
 
     /**
      * Gets the script attribute.
-     * 
+     *
      * @return Returns the script.
      */
     public String getScript() {
@@ -1013,7 +994,7 @@ public class Field implements java.io.Serializable {
 
     /**
      * Sets the script attribute value.
-     * 
+     *
      * @param script The script to set.
      */
     public void setScript(String script) {
@@ -1022,7 +1003,7 @@ public class Field implements java.io.Serializable {
 
     /**
      * Gets the personNameAttributeName attribute.
-     * 
+     *
      * @return Returns the personNameAttributeName.
      */
     public String getPersonNameAttributeName() {
@@ -1031,7 +1012,7 @@ public class Field implements java.io.Serializable {
 
     /**
      * Sets the personNameAttributeName attribute value.
-     * 
+     *
      * @param personNameAttributeName The personNameAttributeName to set.
      */
     public void setPersonNameAttributeName(String personNameAttributeName) {
@@ -1040,7 +1021,7 @@ public class Field implements java.io.Serializable {
 
     /**
      * Gets the universalIdAttributeName attribute.
-     * 
+     *
      * @return Returns the universalIdAttributeName.
      */
     public String getUniversalIdAttributeName() {
@@ -1049,7 +1030,7 @@ public class Field implements java.io.Serializable {
 
     /**
      * Sets the universalIdAttributeName attribute value.
-     * 
+     *
      * @param universalIdAttributeName The universalIdAttributeName to set.
      */
     public void setUniversalIdAttributeName(String universalIdAttributeName) {
@@ -1058,7 +1039,7 @@ public class Field implements java.io.Serializable {
 
     /**
      * Gets the userIdAttributeName attribute.
-     * 
+     *
      * @return Returns the userIdAttributeName.
      */
     public String getUserIdAttributeName() {
@@ -1067,7 +1048,7 @@ public class Field implements java.io.Serializable {
 
     /**
      * Sets the userIdAttributeName attribute value.
-     * 
+     *
      * @param userIdAttributeName The userIdAttributeName to set.
      */
     public void setUserIdAttributeName(String userIdAttributeName) {
@@ -1076,7 +1057,7 @@ public class Field implements java.io.Serializable {
 
     /**
      * Gets the keyField attribute.
-     * 
+     *
      * @return Returns the keyField.
      */
     public boolean isKeyField() {
@@ -1085,25 +1066,71 @@ public class Field implements java.io.Serializable {
 
     /**
      * Sets the keyField attribute value.
-     * 
+     *
      * @param keyField The keyField to set.
      */
     public void setKeyField(boolean keyField) {
         this.keyField = keyField;
     }
 
+
+    /**
+     * Gets the displayEditMode attribute.
+     *
+     * @return Returns the displayEditMode.
+     */
+    public String getDisplayEditMode() {
+        return displayEditMode;
+    }
+
+    /**
+     * Sets the displayEditMode attribute value.
+     *
+     * @param displayEditMode The displayEditMode to set.
+     */
+    public void setDisplayEditMode(String displayEditMode) {
+        this.displayEditMode = displayEditMode;
+    }
+
     /**
      * Gets the displayMask attribute.
-     * 
+     *
      * @return Returns the displayMask.
      */
     public Mask getDisplayMask() {
         return displayMask;
     }
-    
+
+    /**
+     * Sets the displayMask attribute value.
+     *
+     * @param displayMask The displayMask to set.
+     */
+    public void setDisplayMask(Mask displayMask) {
+        this.displayMask = displayMask;
+    }
+
+    /**
+     * Gets the displayMaskValue attribute.
+     *
+     * @return Returns the displayMaskValue.
+     */
+    public String getDisplayMaskValue() {
+        return displayMaskValue;
+    }
+
+    /**
+     * Sets the displayMaskValue attribute value.
+     *
+     * @param displayMaskValue The displayMaskValue to set.
+     */
+    public void setDisplayMaskValue(String displayMaskValue) {
+        this.displayMaskValue = displayMaskValue;
+    }
+
     /**
      * Gets the encryptedValue attribute.
-     * 
+     *
      * @return Returns the encryptedValue.
      */
     public String getEncryptedValue() {
@@ -1112,7 +1139,7 @@ public class Field implements java.io.Serializable {
 
     /**
      * Sets the encryptedValue attribute value.
-     * 
+     *
      * @param encryptedValue The encryptedValue to set.
      */
     public void setEncryptedValue(String encryptedValue) {
@@ -1121,7 +1148,7 @@ public class Field implements java.io.Serializable {
 
     /**
      * Gets the secure attribute.
-     * 
+     *
      * @return Returns the secure.
      */
     public boolean isSecure() {
@@ -1130,17 +1157,17 @@ public class Field implements java.io.Serializable {
 
     /**
      * Sets the secure attribute value.
-     * 
+     *
      * @param secure The secure to set.
      */
     public void setSecure(boolean secure) {
         this.secure = secure;
     }
-    
+
     /**
      * Returns the method name of a function present in the page which should be called
      * when the user tabs away from the field.
-     * 
+     *
      * @return
      */
     public String getWebOnBlurHandler() {
@@ -1154,7 +1181,7 @@ public class Field implements java.io.Serializable {
     /**
      * Returns the method name of a function present in the page which should be called
      * after an AJAX call from the onblur handler.
-     * 
+     *
      * @return
      */
     public String getWebOnBlurHandlerCallback() {
@@ -1164,10 +1191,10 @@ public class Field implements java.io.Serializable {
     public void setWebOnBlurHandlerCallback(String webOnBlurHandlerCallback) {
         this.webOnBlurHandlerCallback = webOnBlurHandlerCallback;
     }
-    
+
     /**
      * Sets the propertyValue attribute value.
-     * 
+     *
      * @param propertyValue The propertyValue to set.
      */
     public void setPropertyValue(String propertyValue) {
@@ -1203,7 +1230,7 @@ public class Field implements java.io.Serializable {
     }
 
     /**
-     * Gets the containerElementName attribute. 
+     * Gets the containerElementName attribute.
      * @return Returns the containerElementName.
      */
     public String getContainerElementName() {
@@ -1219,7 +1246,7 @@ public class Field implements java.io.Serializable {
     }
 
     /**
-     * Gets the containerDisplayFields attribute. 
+     * Gets the containerDisplayFields attribute.
      * @return Returns the containerDisplayFields.
      */
     public List<Field> getContainerDisplayFields() {
@@ -1260,8 +1287,8 @@ public class Field implements java.io.Serializable {
 
     /**
      * For container fields (i.e. fieldType.equals(CONTAINER)) with MV lookups enabled, this is the name of the collection on the doc on which the
-     * MV lookup is performed 
-     * @return 
+     * MV lookup is performed
+     * @return
      */
     public String getMultipleValueLookedUpCollectionName() {
         return multipleValueLookedUpCollectionName;
@@ -1277,7 +1304,7 @@ public class Field implements java.io.Serializable {
     }
 
     /**
-     * For container fields (i.e. fieldType.equals(CONTAINER)) with MV lookups enabled, this is the class to perform a lookup upon 
+     * For container fields (i.e. fieldType.equals(CONTAINER)) with MV lookups enabled, this is the class to perform a lookup upon
      * @return
      */
     public String getMultipleValueLookupClassName() {
@@ -1320,7 +1347,7 @@ public class Field implements java.io.Serializable {
      * Returns whether field level help is enabled for this field.  If this value is true, then the field level help will be enabled.
      * If false, then whether a field is enabled is determined by the value returned by {@link #isFieldLevelHelpDisabled()} and the system-wide
      * parameter setting.  Note that if a field is read-only, that may cause field-level help to not be rendered.
-     * 
+     *
      * @return true if field level help is enabled, false if the value of this method should NOT be used to determine whether this method's return value
      * affects the enablement of field level help
      */
@@ -1336,7 +1363,7 @@ public class Field implements java.io.Serializable {
      * Returns whether field level help is disabled for this field.  If this value is true and {@link #isFieldLevelHelpEnabled()} returns false,
      * then the field level help will not be rendered.  If both this and {@link #isFieldLevelHelpEnabled()} return false, then the system-wide
      * setting will determine whether field level help is enabled.  Note that if a field is read-only, that may cause field-level help to not be rendered.
-     * 
+     *
      * @return true if field level help is disabled, false if the value of this method should NOT be used to determine whether this method's return value
      * affects the enablement of field level help
      */
@@ -1370,4 +1397,11 @@ public class Field implements java.io.Serializable {
 		this.fieldInactiveValidValues = fieldInactiveValidValues;
 	}
 
+	public boolean getHasLookupable() {
+	    if (quickFinderClassNameImpl == null) {
+	        return false;
+	    } else {
+	        return true;
+	    }
+	}
 }

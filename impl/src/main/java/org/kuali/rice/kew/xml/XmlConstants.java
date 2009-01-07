@@ -31,6 +31,7 @@ public interface XmlConstants {
     public static final Namespace RULE_NAMESPACE = Namespace.getNamespace("", "ns:workflow/Rule");
     public static final Namespace DOCUMENT_TYPE_NAMESPACE = Namespace.getNamespace("", "ns:workflow/DocumentType");
     public static final Namespace WORKGROUP_NAMESPACE = Namespace.getNamespace("", "ns:workflow/Workgroup");
+    public static final Namespace GROUP_NAMESPACE = Namespace.getNamespace("", "ns:workflow/Group");
     public static final Namespace WORKGROUP_TYPE_NAMESPACE = Namespace.getNamespace("", "ns:workflow/WorkgroupType");
     public static final Namespace RULE_TEMPLATE_NAMESPACE = Namespace.getNamespace("", "ns:workflow/RuleTemplate");
     public static final Namespace RULE_ATTRIBUTE_NAMESPACE = Namespace.getNamespace("", "ns:workflow/RuleAttribute");
@@ -42,6 +43,7 @@ public interface XmlConstants {
     public static final String SCHEMA_LOCATION_ATTR = "schemaLocation";
     public static final String WORKFLOW_SCHEMA_LOCATION = "ns:workflow resource:WorkflowData";
     public static final String RULE_SCHEMA_LOCATION = "ns:workflow/Rule resource:Rule";
+    public static final String GROUP_SCHEMA_LOCATION = "ns:workflow/Group resource:Group";
     public static final String DOCUMENT_TYPE_SCHEMA_LOCATION = "ns:workflow/DocumentType resource:DocumentType";
     public static final String WORKGROUP_SCHEMA_LOCATION = "ns:workflow/Workgroup resource:Workgroup";
     public static final String WORKGROUP_TYPE_SCHEMA_LOCATION = "ns:workflow/WorkgroupType resource:WorkgroupType";
@@ -119,11 +121,19 @@ public interface XmlConstants {
     public static final String RULE_EXTENSION_VALUE = "ruleExtensionValue";
 
     // workgroups, most of the elements are not known to the core and are dictated by the institutional plugin
-    public static final String GROUPS = "workgroups";
-    public static final String GROUP = "workgroup";
+    public static final String GROUPS = "groups";
+    public static final String GROUP = "group";
+    public static final String NAMESPACE = "namespace";
     public static final String EXTENSIONS = "extensions";
     public static final String EXTENSION = "extension";
     public static final String DATA = "data";
+    public static final String WORKGROUPS = "workgroups";
+    public static final String WORKGROUP = "workgroup";
+    public static final String MEMBERS = "members";
+    public static final String PRINCIPAL_NAME = "principalName";
+    public static final String PRINCIPAL_ID = "principalId";
+    public static final String GROUP_ID = "groupId";
+    public static final String GROUP_NAME = "groupName";
 
     // workgroup types
     public static final String WORKGROUP_TYPES = "workgroupTypes";

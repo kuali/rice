@@ -16,21 +16,23 @@
 package org.kuali.rice.kew.docsearch;
 
 import org.junit.Ignore;
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
 import org.kuali.rice.kew.docsearch.SearchAttributeCriteriaComponent;
 import org.kuali.rice.kew.docsearch.SearchableAttribute;
 import org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.lookupable.Field;
-import org.kuali.rice.kew.lookupable.Row;
+//import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kew.docsearch.DocumentSearchField;
+//import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 
 
 /**
- * This is a description of what this class does - delyea don't forget to fill this in. 
- * 
+ * This is a description of what this class does - delyea don't forget to fill this in.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
@@ -39,7 +41,7 @@ public class DocumentSearchTestBase extends KEWTestCase {
 
     /**
      * This method is used by tests that use xml attributes
-     * 
+     *
      * @param name - name of the attribute to retrieve
      * @return
      */
@@ -57,12 +59,12 @@ public class DocumentSearchTestBase extends KEWTestCase {
     protected SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,String value,DocumentType docType) {
         return createSearchAttributeCriteriaComponent(key, value, null, docType);
     }
-    
+
     protected SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,String value,Boolean isLowerBoundValue,DocumentType docType) {
         String formKey = (isLowerBoundValue == null) ? key : ((isLowerBoundValue != null && isLowerBoundValue.booleanValue()) ? SearchableAttribute.RANGE_LOWER_BOUND_PROPERTY_PREFIX + key : SearchableAttribute.RANGE_UPPER_BOUND_PROPERTY_PREFIX + key);
         String savedKey = key;
         SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(formKey,value,savedKey);
-        Field field = getFieldByFormKey(docType, formKey);
+        DocumentSearchField field = getFieldByFormKey(docType, formKey);
         if (field != null) {
             sacc.setSearchableAttributeValue(DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getFieldDataType()));
             sacc.setRangeSearch(field.isMemberOfRange());
@@ -72,20 +74,24 @@ public class DocumentSearchTestBase extends KEWTestCase {
             sacc.setCaseSensitive(field.isCaseSensitive());
             sacc.setSearchInclusive(field.isInclusive());
             sacc.setSearchable(field.isSearchable());
-            sacc.setCanHoldMultipleValues(Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));
+            sacc.setCanHoldMultipleValues(DocumentSearchField.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));
         }
         return sacc;
     }
 
-    private Field getFieldByFormKey(DocumentType docType, String formKey) {
+    private DocumentSearchField getFieldByFormKey(DocumentType docType, String formKey) {
         if (docType == null) {
             return null;
         }
         for (SearchableAttribute searchableAttribute : docType.getSearchableAttributes()) {
-            for (Row row : searchableAttribute.getSearchingRows(DocSearchUtils.getDocumentSearchContext("", docType.getName(), ""))) {
-                for (Field field : row.getFields()) {
-                    if (field.getPropertyName().equals(formKey)) {
-                        return field;
+            for (DocumentSearchRow row : searchableAttribute.getSearchingRows(DocSearchUtils.getDocumentSearchContext("", docType.getName(), ""))) {
+                for (org.kuali.rice.kns.web.ui.Field field : row.getFields()) {
+                    if (field instanceof DocumentSearchField) {
+                        if (field.getPropertyName().equals(formKey)) {
+                            return (DocumentSearchField)field;
+                        }
+                    } else {
+                        throw new RiceRuntimeException("Fields must be of type org.kuali.rice.kew.docsearch.DocumentSearchField");
                     }
                 }
             }

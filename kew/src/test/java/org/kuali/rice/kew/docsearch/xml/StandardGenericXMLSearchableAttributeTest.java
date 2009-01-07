@@ -54,8 +54,10 @@ import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
-import org.kuali.rice.kew.lookupable.Field;
-import org.kuali.rice.kew.lookupable.Row;
+//import org.kuali.rice.kns.web.ui.Field;
+//import org.kuali.rice.kns.web.ui.Row;
+import org.kuali.rice.kew.docsearch.DocumentSearchField;
+import org.kuali.rice.kew.docsearch.DocumentSearchRow;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
@@ -1084,8 +1086,8 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         //we really just want this to load without exploding
         List searchRows = getAttribute("BlankDropDownSearchAttribute").getSearchingRows(context);
         assertEquals("Invalid number of search rows", 1, searchRows.size());
-        Row row = (Row) searchRows.get(0);
-        Field field = row.getField(0);
+        DocumentSearchRow row = (DocumentSearchRow) searchRows.get(0);
+        DocumentSearchField field = row.getField(0);
         assertEquals("Should be 5 valid values", 5, field.getFieldValidValues().size());
 
         assertEquals("Default value is not correct", "AMST", field.getPropertyValue());

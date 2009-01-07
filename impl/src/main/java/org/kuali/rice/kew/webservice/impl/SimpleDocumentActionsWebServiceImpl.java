@@ -25,14 +25,11 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.NoteDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.dto.UserDTO;
-import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.identity.IdentityFactory;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -44,7 +41,6 @@ import org.kuali.rice.kew.webservice.NoteResponse;
 import org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService;
 import org.kuali.rice.kew.webservice.StandardResponse;
 import org.kuali.rice.kew.webservice.UserInRouteLogResponse;
-import org.kuali.rice.kim.util.KimConstants;
 
 
 /**
@@ -54,45 +50,25 @@ import org.kuali.rice.kim.util.KimConstants;
  */
 public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentActionsWebService {
 
-	/*private static final String IS_USER_IN_ROUTE_LOG_LABEL = "isUserInRouteLog";
-	private static final String DOC_ID_LABEL = "docId";
-	private static final String DOC_CONTENT_LABEL = "docContent";
-	private static final String NOTES_LABEL = "notes";
-	private static final String ACTION_REQUESTED_LABEL = "actionRequested";
-	private static final String ERROR_MESSAGE_LABEL = "errorMessage";
-	private static final String INITIATOR_NAME_LABEL = "initiatorName";
-	private static final String ROUTED_BY_USER_NAME_LABEL = "routedByUserName";
-	private static final String APP_DOC_ID_LABEL = "appDocId";
-	private static final String INITIATOR_ID_LABEL = "initiatorId";
-	private static final String ROUTED_BY_USER_ID_LABEL = "routedByUserId";
-	private static final String CREATE_DATE_LABEL = "createDate";
-	private static final String DOC_STATUS_LABEL = "docStatus";
-	private static final String TITLE_LABEL = "title";
-	private static final String NOTE_AUTHOR_LABEL = "author";
-	private static final String NOTE_ID_LABEL = "noteId";
-	private static final String NOTE_TIMESTAMP_LABEL = "timestamp";
-	private static final String NOTE_TEXT_LABEL = "noteText";*/
-
 	/**
 	 * <ol>
-	 * <li>Create a WorkflowDocument based on the docId and userId passed in</li>
+	 * <li>Create a WorkflowDocument based on the docId and principalId passed in</li>
 	 * <li>Acknowledge the document with the passed in annotation</li>
 	 * <li>Return the standard set of return values.</li>
 	 * </ol>
 	 *
 	 * @param docId KEW document id of the document to acknowledge
-	 * @param userId netid of the user who is acknowledging the document
+	 * @param principalId principal id of the user who is acknowledging the document
 	 * @param annotation a comment associated with this request
 	 * @return Map including the standard set of return values
 	 *
 	 * @see edu.cornell.kew.service.CornellKewService#acknowledge(java.lang.String, java.lang.String, java.lang.String)
 	 */
-	public StandardResponse acknowledge(String docId, String userId, String annotation) {
-	  //Map<String, Object> results;
+	public StandardResponse acknowledge(String docId, String principalId, String annotation) {
         StandardResponse results;
 
        	try {
-			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, userId);
+			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, principalId);
 
 			workflowDocument.acknowledge(annotation);
 			results = createResults(workflowDocument);
@@ -105,14 +81,14 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 
 	/**
 	 * <ol>
-	 * <li>Create a WorkflowDocument based on the docId and userId passed in</li>
+	 * <li>Create a WorkflowDocument based on the docId and principalId passed in</li>
 	 * <li>Set the docTitle and docContent if they are passed in</li>
 	 * <li>Approve the document with the passed in annotation</li>
 	 * <li>Return the standard set of return values</li>
 	 * </ol>
 	 *
 	 * @param docId KEW document id of the document to approve
-	 * @param userId netid of the user who is approving the document
+	 * @param principalId principal id of the user who is approving the document
 	 * @param docTitle title for this document
 	 * @param docContent xml content for this document
 	 * @param annotation a comment associated with this request
@@ -120,13 +96,13 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 *
 	 * @see edu.cornell.kew.service.CornellKewService#approve(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
-	public StandardResponse approve(String docId, String userId, String docTitle,
+	public StandardResponse approve(String docId, String principalId, String docTitle,
 			String docContent, String annotation) {
 	  //Map<String, Object> results;
         StandardResponse results;
 
        	try {
-			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, userId, docTitle, docContent);
+			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, principalId, docTitle, docContent);
 
 			workflowDocument.approve(annotation);
 			results = createResults(workflowDocument);
@@ -139,7 +115,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 
 	/**
 	 * <ol>
-	 * <li>Create a WorkflowDocument based on the docId and userId passed in</li>
+	 * <li>Create a WorkflowDocument based on the docId and principalId passed in</li>
 	 * <li>Set the docTitle and docContent if they are passed in</li>
 	 * <li>Blanket Approve the document with the passed in annotation</li>
 	 * <li>Return the standard set of return values</li>
@@ -149,7 +125,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 * Can only be performed by a super user.
 	 *
 	 * @param docId KEW document id of the document to blanket approve
-	 * @param userId netid of the user who is blanket approving the document
+	 * @param principalId principal id of the user who is blanket approving the document
 	 * @param docTitle title for this document
 	 * @param docContent xml content for this document
 	 * @param annotation a comment associated with this request
@@ -157,13 +133,13 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 *
 	 * @see edu.cornell.kew.service.CornellKewService#blanketApprove(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
-	public StandardResponse blanketApprove(String docId, String userId, String docTitle,
+	public StandardResponse blanketApprove(String docId, String principalId, String docTitle,
 			String docContent, String annotation) {
 	  //Map<String, Object> results;
         StandardResponse results;
 
        	try {
-			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, userId, docTitle, docContent);
+			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, principalId, docTitle, docContent);
 
 			workflowDocument.blanketApprove(annotation);
 			results = createResults(workflowDocument);
@@ -176,23 +152,23 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 
 	/**
 	 * <ol>
-	 * <li>Create a WorkflowDocument based on the docId and userId passed in</li>
+	 * <li>Create a WorkflowDocument based on the docId and principalId passed in</li>
 	 * <li>Cancel the document with the passed in annotation</li>
 	 * <li>Return the standard set of return values</li>
 	 * </ol>
 	 *
 	 * @param docId KEW document id of the document to cancel
-	 * @param userId netid of the user who is canceling the document
+	 * @param principalId principal id of the user who is canceling the document
 	 * @param annotation a comment associated with this request
 	 * @return Map including the standard set of return values
 	 *
 	 * @see edu.cornell.kew.service.CornellKewService#cancel(java.lang.String, java.lang.String, java.lang.String)
 	 */
-	public StandardResponse cancel(String docId, String userId, String annotation) {
+	public StandardResponse cancel(String docId, String principalId, String annotation) {
 		//Map<String, Object> results;
 	    StandardResponse results;
        	try {
-			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, userId);
+			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, principalId);
 
 			workflowDocument.cancel(annotation);
 			results = createResults(workflowDocument);
@@ -205,13 +181,13 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 
 	/**
 	 * <ol>
-	 * <li>Create a WorkflowDocument with the docType and userId passed in</li>
+	 * <li>Create a WorkflowDocument with the docType and principalId passed in</li>
 	 * <li>Set the document title to be the docTitle that was passed in</li
 	 * <li>Save the Routing data (Route Header info)</li>
 	 * <li>Return the standard set of return values and the docId of the newly created document</li>
 	 * </ol>
 	 *
-	 * @param initiatorId netid of the document initiator
+	 * @param initiatorPrincipalId principal id of the document initiator
 	 * @param appDocId application specific document id
 	 * @param docType KEW document type for the document to be created
 	 * @param docTitle title for this document
@@ -219,7 +195,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 *
 	 * @see edu.cornell.kew.service.CornellKewService#create(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
-	public DocumentResponse create(String initiatorId, String appDocId, String docType,
+	public DocumentResponse create(String initiatorPrincipalId, String appDocId, String docType,
 			String docTitle) {
 
 	    // Map<String, Object> results;
@@ -228,8 +204,8 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 		String docId = "";
 
 		try {
-			UserIdDTO userIdVO = new NetworkIdDTO(initiatorId);
-			WorkflowDocument workflowDocument = new WorkflowDocument(userIdVO, docType);
+			WorkflowIdDTO principalIdVO = new WorkflowIdDTO(initiatorPrincipalId);
+			WorkflowDocument workflowDocument = new WorkflowDocument(principalIdVO, docType);
 			workflowDocument.setTitle(docTitle);
 			workflowDocument.setAppDocId(appDocId);
 			workflowDocument.saveRoutingData();
@@ -252,24 +228,24 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 
 	/**
  	 * <ol>
-	 * <li>Create a WorkflowDocument based on the docId and userId passed in</li>
+	 * <li>Create a WorkflowDocument based on the docId and principalId passed in</li>
 	 * <li>Disapprove the document with the passed in annotation</li>
 	 * <li>Return the standard set of return values</li>
 	 * </ol>
 	 *
 	 * @param docId KEW document id of the document to disapprove
-	 * @param userId netid of the user who is disapproving the document
+	 * @param principalId principal id of the user who is disapproving the document
 	 * @param annotation a comment associated with this request
 	 * @return Map including the standard set of return values
 	 *
 	 * @see edu.cornell.kew.service.CornellKewService#disapprove(java.lang.String, java.lang.String, java.lang.String)
 	 */
-	public StandardResponse disapprove(String docId, String userId, String annotation) {
+	public StandardResponse disapprove(String docId, String principalId, String annotation) {
 //      Map<String, Object> results;
         StandardResponse results;
 
        	try {
-			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, userId);
+			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, principalId);
 
 			workflowDocument.disapprove(annotation);
 			results = createResults(workflowDocument);
@@ -282,23 +258,23 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 
 	/**
  	 * <ol>
-	 * <li>Create a WorkflowDocument based on the docId and userId passed in</li>
+	 * <li>Create a WorkflowDocument based on the docId and principalId passed in</li>
 	 * <li>Clear the FYI request on the document</li>
 	 * <li>Return the standard set of return values</li>
 	 * </ol>
 	 *
 	 * @param docId KEW document id of the document to acknowledge
-	 * @param userId netid of the user who is acknowledging the document
+	 * @param principalId principal id of the user who is acknowledging the document
 	 * @return Map including the standard set of return values
 	 *
 	 * @see edu.cornell.kew.service.CornellKewService#fyi(java.lang.String, java.lang.String)
 	 */
-	public StandardResponse fyi(String docId, String userId) {
+	public StandardResponse fyi(String docId, String principalId) {
 //		Map<String, Object> results;
 	    StandardResponse results;
 	    
        	try {
-			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, userId);
+			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, principalId);
 
 			workflowDocument.fyi();
 			results = createResults(workflowDocument);
@@ -311,21 +287,21 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 
 	/**
  	 * <ol>
-	 * <li>Create a WorkflowDocument based on the docId and userId passed in</li>
+	 * <li>Create a WorkflowDocument based on the docId and principalId passed in</li>
 	 * <li>Get the document content and the action requested (Approve, Acknowledge, etc) of the user</li>
 	 * <li>Return the standard set of return values, the docContent, the title,
 	 * and the actionRequested</li>
 	 * </ol>
 	 *
 	 * @param docId KEW document id of the document to retrieve information about
-	 * @param userId netid of the user to retrieve the document for
+	 * @param principalId principal id of the user to retrieve the document for
 	 * @return Map including the standard set of return values, the xml document content,
 	 * the action requested ( Approve, Aknowledge, Fyi, Complete ) and an array of Maps
 	 * containing the following for each Note (author, noteId, timestamp, noteText).
 	 *
 	 * @see edu.cornell.kew.service.CornellKewService#getDocument(java.lang.String, java.lang.String)
 	 */
-	public DocumentResponse getDocument(String docId, String userId) {
+	public DocumentResponse getDocument(String docId, String principalId) {
 //		Map<String, Object> results;
 		StandardResponse results;
 	    List<NoteDetail> noteDetails = new ArrayList<NoteDetail>(0);
@@ -334,7 +310,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 		String title = "";
 
 		try {
-			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, userId);
+			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, principalId);
 			RouteHeaderDTO routeHeader = workflowDocument.getRouteHeader();
 
 			if (routeHeader == null) {
@@ -390,13 +366,13 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 * we will check future workflow requests as well as currently outstanding requests.
 	 *
 	 * @param docId KEW document id of the document to check
-	 * @param userId netid of the user to check
+	 * @param principalId principal id of the user to check
 	 * @return Map containing True/False for isUserInRouteLog and an error message if
 	 * a problem occured
 	 *
 	 * @see edu.cornell.kew.service.CornellKewService#isUserInRouteLog(java.lang.String, java.lang.String)
 	 */
-	public UserInRouteLogResponse isUserInRouteLog(String docId, String userId) {
+	public UserInRouteLogResponse isUserInRouteLog(String docId, String principalId) {
 		//Map<String, Object> results = new HashMap<String, Object>(6);
 		
 	    UserInRouteLogResponse results = new UserInRouteLogResponse();
@@ -405,17 +381,14 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 		WorkflowInfo info = new WorkflowInfo();
 		try {
 			Long id = Long.parseLong(docId);
-			UserIdDTO userIdVO = new NetworkIdDTO(userId);
+			WorkflowIdDTO principalIdVO = new WorkflowIdDTO(principalId);
 
-			isUserInRouteLog = info.isUserAuthenticatedByRouteLog(id, userIdVO, true);
+			isUserInRouteLog = info.isUserAuthenticatedByRouteLog(id, principalIdVO, true);
 		} catch (NumberFormatException e) {
 			errorMessage = "Invalid (non-numeric) docId";
 		} catch (WorkflowException e) {
 			errorMessage = "Workflow Error: " + e.getLocalizedMessage();
 		}
-
-//		results.put(IS_USER_IN_ROUTE_LOG_LABEL, String.valueOf(isUserInRouteLog));
-//		results.put(ERROR_MESSAGE_LABEL, errorMessage);
 		
 		results.setIsUserInRouteLog(String.valueOf(isUserInRouteLog));
 		results.setErrorMessage(errorMessage);
@@ -424,144 +397,137 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 
 	/**
  	 * <ol>
-	 * <li>Create a WorkflowDocument based on the docId and userId passed in</li>
+	 * <li>Create a WorkflowDocument based on the docId and principalId passed in</li>
 	 * <li>Add the adhoc acknowlege request (app specific route) to the passed in group with the passed in annotation</li>
 	 * <li>Return the standard set of return values</li>
 	 * </ol>
 	 *
 	 * @param docId KEW document id of the document to create the adhoc request for
-	 * @param userId netid of the user who is making this request
+	 * @param principalId principal id of the user who is making this request
 	 * @param recipientGroupId workgroupId of the group to create this request for
 	 * @param annotation a comment associated with this request
 	 * @return Map including the standard set of return values
 	 *
 	 * @see edu.cornell.kew.service.CornellKewService#requestAdHocAckToGroup(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
-	public StandardResponse requestAdHocAckToGroup(String docId, String userId,
+	public StandardResponse requestAdHocAckToGroup(String docId, String principalId,
 			String recipientGroupId, String annotation) {
-		return requestAdHocToGroup(docId, userId, recipientGroupId, annotation, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
+		return requestAdHocToGroup(docId, principalId, recipientGroupId, annotation, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
 	}
 
 	/**
  	 * <ol>
-	 * <li>Create a WorkflowDocument based on the docId and userId passed in</li>
+	 * <li>Create a WorkflowDocument based on the docId and principalId passed in</li>
 	 * <li>Add the adhoc acknowlege request (app specific route) to the passed in user with the passed in annotation</li>
 	 * <li>Return the standard set of return values</li>
 	 * </ol>
 	 *
 	 * @param docId KEW document id of the document to create the adhoc request for
-	 * @param userId netid of the user who is making this request
-	 * @param recipientUserId netid of the user for whom the request is being created
+	 * @param principalId principal id of the user who is making this request
+	 * @param recipientPrincipalId principal id of the user for whom the request is being created
 	 * @param annotation a comment associated with this request
 	 * @return Map including the standard set of return values
-	 *
-	 * @see edu.cornell.kew.service.CornellKewService#requestAdHocAckToUser(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
-	public StandardResponse requestAdHocAckToUser(String docId, String userId,
-			String recipientUserId, String annotation) {
-		return requestAdHocToUser(docId, userId, recipientUserId, annotation, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
+	public StandardResponse requestAdHocAckToPrincipal(String docId, String principalId,
+			String recipientPrincipalId, String annotation) {
+		return requestAdHocToPrincipal(docId, principalId, recipientPrincipalId, annotation, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
 	}
 
 	/**
  	 * <ol>
-	 * <li>Create a WorkflowDocument based on the docId and userId passed in</li>
+	 * <li>Create a WorkflowDocument based on the docId and principalId passed in</li>
 	 * <li>Add the adhoc approve request (app specific route) to the passed in group with the passed in annotation</li>
 	 * <li>Return the standard set of return values</li>
 	 * </ol>
 	 *
 	 * @param docId KEW document id of the document to create the adhoc request for
-	 * @param userId netid of the user who is making this request
+	 * @param principalId principal id of the user who is making this request
 	 * @param recipientGroupId workgroupId of the group to create this request for
 	 * @param annotation a comment associated with this request
 	 * @return Map including the standard set of return values
 	 *
 	 * @see edu.cornell.kew.service.CornellKewService#requestAdHocApproveToGroup(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
-	public StandardResponse requestAdHocApproveToGroup(String docId, String userId,
+	public StandardResponse requestAdHocApproveToGroup(String docId, String principalId,
 			String recipientGroupId, String annotation) {
-		return requestAdHocToGroup(docId, userId, recipientGroupId, annotation, KEWConstants.ACTION_REQUEST_APPROVE_REQ, KEWConstants.ACTION_REQUEST_APPROVE_REQ_LABEL);
+		return requestAdHocToGroup(docId, principalId, recipientGroupId, annotation, KEWConstants.ACTION_REQUEST_APPROVE_REQ, KEWConstants.ACTION_REQUEST_APPROVE_REQ_LABEL);
 	}
 
 	/**
  	 * <ol>
-	 * <li>Create a WorkflowDocument based on the docId and userId passed in</li>
+	 * <li>Create a WorkflowDocument based on the docId and principalId passed in</li>
 	 * <li>Add the adhoc approve request (app specific route) to the passed in user with the passed in annotation</li>
 	 * <li>Return the standard set of return values</li>
 	 * </ol>
 	 *
 	 * @param docId KEW document id of the document to create the adhoc request for
-	 * @param userId netid of the user who is making this request
-	 * @param recipientUserId netid of the user for whom the request is being created
+	 * @param principalId principal id of the user who is making this request
+	 * @param recipientPrincipalId principal id of the user for whom the request is being created
 	 * @param annotation a comment associated with this request
 	 * @return Map including the standard set of return values
-	 *
-	 * @see edu.cornell.kew.service.CornellKewService#requestAdHocApproveToUser(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
-	public StandardResponse requestAdHocApproveToUser(String docId, String userId,
-			String recipientUserId, String annotation) {
+	public StandardResponse requestAdHocApproveToPrincipal(String docId, String principalId,
+			String recipientPrincipalId, String annotation) {
 
-		return requestAdHocToUser(docId, userId, recipientUserId, annotation, KEWConstants.ACTION_REQUEST_APPROVE_REQ, KEWConstants.ACTION_REQUEST_APPROVE_REQ_LABEL);
+		return requestAdHocToPrincipal(docId, principalId, recipientPrincipalId, annotation, KEWConstants.ACTION_REQUEST_APPROVE_REQ, KEWConstants.ACTION_REQUEST_APPROVE_REQ_LABEL);
 	}
 
 	/**
  	 * <ol>
-	 * <li>Create a WorkflowDocument based on the docId and userId passed in</li>
+	 * <li>Create a WorkflowDocument based on the docId and principalId passed in</li>
 	 * <li>Add the adhoc fyi request (app specific route) to the passed in group with the passed in annotation</li>
 	 * <li>Return the standard set of return values</li>
 	 * </ol>
 	 *
 	 * @param docId KEW document id of the document to create the adhoc request for
-	 * @param userId netid of the user who is making this request
+	 * @param principalId principal id of the user who is making this request
 	 * @param recipientGroupId workgroupId of the group to create this request for
 	 * @param annotation a comment associated with this request
 	 * @return Map including the standard set of return values
 	 *
 	 * @see edu.cornell.kew.service.CornellKewService#requestAdHocFyiToGroup(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
-	public StandardResponse requestAdHocFyiToGroup(String docId, String userId,
-			String recipientGroupId, String annotation) {
-		return requestAdHocToGroup(docId, userId, recipientGroupId, annotation, KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ_LABEL);
+	public StandardResponse requestAdHocFyiToGroup(String docId, String principalId, String recipientGroupId, String annotation) {
+		return requestAdHocToGroup(docId, principalId, recipientGroupId, annotation, KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ_LABEL);
 	}
 
 	/**
  	 * <ol>
-	 * <li>Create a WorkflowDocument based on the docId and userId passed in</li>
+	 * <li>Create a WorkflowDocument based on the docId and principalId passed in</li>
 	 * <li>Add the adhoc fyi request (app specific route) to the passed in user with the passed in annotation</li>
 	 * <li>Return the standard set of return values</li>
 	 * </ol>
 	 *
 	 * @param docId KEW document id of the document to create the adhoc request for
-	 * @param userId netid of the user who is making this request
-	 * @param recipientUserId netid of the user for whom the request is being created
+	 * @param principalId principal id of the user who is making this request
+	 * @param recipientPrincipalId principal id of the user for whom the request is being created
 	 * @param annotation a comment associated with this request
 	 * @return Map including the standard set of return values
-	 *
-	 * @see edu.cornell.kew.service.CornellKewService#requestAdHocFyiToUser(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
-	public StandardResponse requestAdHocFyiToUser(String docId, String userId,
-			String recipientUserId, String annotation) {
-		return requestAdHocToUser(docId, userId, recipientUserId, annotation, KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ_LABEL);
+	public StandardResponse requestAdHocFyiToPrincipal(String docId, String principalId,
+			String recipientPrincipalId, String annotation) {
+		return requestAdHocToPrincipal(docId, principalId, recipientPrincipalId, annotation, KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ_LABEL);
 	}
 
 	/**
 	 * Create the adhoc request for the specified group.
 	 *
  	 * @param docId KEW document id of the document to create the adhoc request for
-	 * @param userId netid of the user who is making this request
+	 * @param principalId principal id of the user who is making this request
 	 * @param recipientGroupId workflowid of the group for whom the request is being created
 	 * @param annotation a comment associated with this request
 	 * @param actionRequested the action for this adhoc request ( A)pprove, aK)nowledge, F)yi )
 	 * @param responsibilityDesc description of the type of responsibility for this request
 	 * @return Map including the standard set of return values
 	 */
-	private StandardResponse requestAdHocToGroup(String docId, String userId,
-			String recipientGroupId, String annotation, String actionRequested, String responsibilityDesc) {
+	private StandardResponse requestAdHocToGroup(String docId, String principalId,
+			String groupId, String annotation, String actionRequested, String responsibilityDesc) {
 //      Map<String, Object> results;
         StandardResponse results;
 
        	try {
-			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, userId);
-			workflowDocument.appSpecificRouteDocumentToGroup(actionRequested, annotation, IdentityFactory.newGroupIdByName(KimConstants.TEMP_GROUP_NAMESPACE, recipientGroupId), responsibilityDesc, true);
+			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, principalId);
+			workflowDocument.adHocRouteDocumentToGroup(actionRequested, annotation, groupId, responsibilityDesc, true);
 			results = createResults(workflowDocument);
 		} catch (WorkflowException e) {
 			results = createErrorResults("Workflow Error: " + e.getLocalizedMessage());
@@ -574,42 +540,36 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 * Create the adhoc request for the specified user.
 	 *
  	 * @param docId KEW document id of the document to create the adhoc request for
-	 * @param userId netid of the user who is making this request
-	 * @param recipientUserId netid of the user for whom the request is being created
+	 * @param principalId principal id of the user who is making this request
+	 * @param recipientPrincipalId principal id of the user for whom the request is being created
 	 * @param annotation a comment associated with this request
 	 * @param actionRequested the action for this adhoc request ( A)pprove, aK)nowledge, F)yi )
 	 * @param responsibilityDesc description of the type of responsibility for this request
 	 * @return Map including the standard set of return values
 	 */
-	private StandardResponse requestAdHocToUser(String docId, String userId,
-			String recipientUserId, String annotation, String actionRequested, String responsibilityDesc) {
-//		Map<String, Object> results;
-	    StandardResponse results;
-	    
+	private StandardResponse requestAdHocToPrincipal(String docId, String principalId,
+			String recipientPrincipalId, String annotation, String actionRequested, String responsibilityDesc) {
+	    StandardResponse results;	    
        	try {
-			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, userId);
-
-			UserIdDTO recipientId = new NetworkIdDTO(recipientUserId);
-			// TODO: what should we put in the responsibility description?
-			workflowDocument.appSpecificRouteDocumentToUser(actionRequested, annotation, recipientId, responsibilityDesc, true);
+			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, principalId);
+			workflowDocument.adHocRouteDocumentToPrincipal(actionRequested, annotation, principalId, responsibilityDesc, true);
 			results = createResults(workflowDocument);
 		} catch (WorkflowException e) {
 			results = createErrorResults("Workflow Error: " + e.getLocalizedMessage());
 		}
-
 		return results;
 	}
 
 	/**
 	 * <ol>
-	 * <li>Create a WorkflowDocument based on the docId and userId passed in</li>
+	 * <li>Create a WorkflowDocument based on the docId and principalId passed in</li>
 	 * <li>Set the docTitle and docContent if they are passed in</li>
 	 * <li>Route the document with the passed in annotation</li>
 	 * <li>Return the standard set of return values.</li>
 	 * </ol>
 	 *
 	 * @param docId KEW document id of the document to route
-	 * @param userId netid of the user who is routing the document
+	 * @param principalId principal id of the user who is routing the document
 	 * @param docTitle title for this document
 	 * @param docContent xml content for this document
 	 * @param annotation a comment associated with this request
@@ -617,14 +577,14 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 *
 	 * @see edu.cornell.kew.service.CornellKewService#route(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
-	public StandardResponse route(String docId, String userId, String docTitle,
+	public StandardResponse route(String docId, String principalId, String docTitle,
 			String docContent, String annotation) {
 
 		//Map<String, Object> results;
 	    StandardResponse results;
 	    
        	try {
-			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, userId, docTitle, docContent);
+			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, principalId, docTitle, docContent);
 
 			workflowDocument.routeDocument(annotation);
 			results = createResults(workflowDocument);
@@ -637,27 +597,27 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 
 	/**
  	 * <ol>
-	 * <li>Create a WorkflowDocument based on the docId and userId passed in</li>
+	 * <li>Create a WorkflowDocument based on the docId and principalId passed in</li>
 	 * <li>Set the docTitle if it was passed in</li>
 	 * <li>Save the document with the passed in annotation (keep in user's action list)</li>
 	 * <li>Return the standard set of return values.</li>
 	 * </ol>
 	 *
 	 * @param docId KEW document id of the document to save
-	 * @param userId netid of the user who is saving the document
+	 * @param principalId principal id of the user who is saving the document
 	 * @param docTitle title for this document
 	 * @param annotation a comment associated with this request
 	 * @return Map including the standard set of return values
 	 *
 	 * @see edu.cornell.kew.service.CornellKewService#save(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
-	public StandardResponse save(String docId, String userId, String docTitle, String annotation) {
+	public StandardResponse save(String docId, String principalId, String docTitle, String annotation) {
 //		Map<String, Object> results;
 
 	    StandardResponse results;
 	    
 		try {
-			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, userId, docTitle);
+			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, principalId, docTitle);
 			workflowDocument.saveDocument(annotation);
 			results = createResults(workflowDocument);
 		} catch (WorkflowException e) {
@@ -671,14 +631,14 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
      * Add a note to this KEW document.
      *
 	 * @param docId KEW document id of the document to add the note to
-	 * @param userId netid of the user who is adding the note
+	 * @param principalId principal id of the user who is adding the note
      * @param noteText text of the note
      * @return Map containing relevant note information (author, noteId, timestamp, noteText)
      * along with an error message (if any)
 	 *
 	 * @see edu.cornell.kew.service.CornellKewService#addNote(java.lang.String, java.lang.String, java.lang.String)
      */
-    public NoteResponse addNote(String docId, String userId, String noteText) {
+    public NoteResponse addNote(String docId, String principalId, String noteText) {
 //		Map<String, Object> results = new HashMap<String, Object>(5);
 		NoteResponse results = new NoteResponse();
 		
@@ -693,11 +653,11 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 		results.setErrorMessage("");
 		
 		try {
-			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, userId);
+			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, principalId);
 
 			// setup note
 			NoteDTO noteVO = new NoteDTO();
-			noteVO.setNoteAuthorWorkflowId(userId);
+			noteVO.setNoteAuthorWorkflowId(principalId);
 			noteVO.setNoteCreateDate(new GregorianCalendar());
 			noteVO.setNoteText(noteText);
 			noteVO.setRouteHeaderId(workflowDocument.getRouteHeaderId());
@@ -713,9 +673,9 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 			noteVO = routeHeader.getNotes()[routeHeader.getNotes().length-1];
 
 			// return note info
-			UserIdDTO userIdVO = new NetworkIdDTO(noteVO.getNoteAuthorWorkflowId());
+			WorkflowIdDTO principalIdVO = new WorkflowIdDTO(noteVO.getNoteAuthorWorkflowId());
 			WorkflowInfo info = new WorkflowInfo();
-			UserDTO user = info.getWorkflowUser(userIdVO);
+			UserDTO user = info.getWorkflowUser(principalIdVO);
 			author = user.getDisplayName();
 			noteId = noteVO.getNoteId().toString();
 			timestamp = formatCalendar(noteVO.getNoteCreateDate());
@@ -723,13 +683,6 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 		} catch (WorkflowException e) {
 			errorMessage = "Workflow Error: " + e.getLocalizedMessage();
 		}
-
-//		results.put(NOTE_AUTHOR_LABEL, author);
-//		results.put(NOTE_ID_LABEL, noteId);
-//		results.put(NOTE_TIMESTAMP_LABEL, timestamp);
-//		results.put(NOTE_TEXT_LABEL, resultsNoteText);
-//		results.put(ERROR_MESSAGE_LABEL, errorMessage);
-
 		results.setAuthor(author);
 		results.setNoteId(noteId);
 		results.setTimestamp(timestamp);
@@ -744,14 +697,14 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
      *
 	 * @param docId KEW document id of the document to update the note for
 	 * @param noteId the id of the note to update
-	 * @param userId netid of the user who is updating the note
+	 * @param principalId principal id of the user who is updating the note
      * @param noteText text of the note if changed
      * @return Map containing relevant note information (author, noteId, timestamp, noteText)
      * along with an error message (if any)
 	 *
 	 * @see edu.cornell.kew.service.CornellKewService#updateNote(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
      */
-    public NoteResponse updateNote(String docId, String noteId, String userId, String noteText) {
+    public NoteResponse updateNote(String docId, String noteId, String principalId, String noteText) {
 //		Map<String, Object> results = new HashMap<String, Object>(5);
 		String author = "";
 		String resultsNoteId = "";
@@ -760,7 +713,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 		String errorMessage = "";
 
 		try {
-			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, userId);
+			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, principalId);
 			RouteHeaderDTO routeHeader = workflowDocument.getRouteHeader();
 
 			// setup note
@@ -781,9 +734,9 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 				errorMessage = "Error retrieving note for id [" + noteId + "].";
 			} else {
 				// return note info
-				UserIdDTO userIdVO = new NetworkIdDTO(noteVO.getNoteAuthorWorkflowId());
+				WorkflowIdDTO principalIdVO = new WorkflowIdDTO(noteVO.getNoteAuthorWorkflowId());
 				WorkflowInfo info = new WorkflowInfo();
-				UserDTO user = info.getWorkflowUser(userIdVO);
+				UserDTO user = info.getWorkflowUser(principalIdVO);
 				author = user.getDisplayName();
 				resultsNoteId = noteVO.getNoteId().toString();
 				timestamp = formatCalendar(noteVO.getNoteCreateDate());
@@ -794,12 +747,6 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 		}
 
 		NoteResponse results = new NoteResponse();
-		
-//		results.put(NOTE_AUTHOR_LABEL, author);
-//		results.put(NOTE_ID_LABEL, resultsNoteId);
-//		results.put(NOTE_TIMESTAMP_LABEL, timestamp);
-//		results.put(NOTE_TEXT_LABEL, resultsNoteText);
-//		results.put(ERROR_MESSAGE_LABEL, errorMessage);
 
 		results.setAuthor(author);
 		results.setNoteId(resultsNoteId);
@@ -815,12 +762,12 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
      *
 	 * @param docId KEW document id of the document to delete the note from
      * @param noteId the id of the note to delete
-	 * @param userId netid of the user who is deleting the note
+	 * @param principalId principal id of the user who is deleting the note
      * @return Map containing an error message if any
 	 *
 	 * @see edu.cornell.kew.service.CornellKewService#deleteNote(java.lang.String, java.lang.String, java.lang.String)
      */
-    public ErrorResponse deleteNote(String docId, String noteId, String userId) {
+    public ErrorResponse deleteNote(String docId, String noteId, String principalId) {
 		//Map<String, Object> results = new HashMap<String, Object>(1);
 		
         ErrorResponse results = new ErrorResponse();
@@ -828,7 +775,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
         String errorMessage = "";
 
 		try {
-			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, userId);
+			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, principalId);
 			RouteHeaderDTO routeHeader = workflowDocument.getRouteHeader();
 
 			// setup note
@@ -860,13 +807,13 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 *
 	 * @see edu.cornell.kew.service.CornellKewService#returnToPreviousNode(java.lang.String, java.lang.String)
 	 */
-    public StandardResponse returnToPreviousNode(String docId, String userId, String annotation, String nodeName) {
+    public StandardResponse returnToPreviousNode(String docId, String principalId, String annotation, String nodeName) {
 		//Map<String, Object> results;
 
         StandardResponse results;
         
        	try {
-			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, userId);
+			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, principalId);
 
 			workflowDocument.returnToPreviousNode(annotation, nodeName);
 			results = createResults(workflowDocument);
@@ -896,40 +843,40 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 * Convenience method to setup workflow document without title or content.
 	 *
 	 * @param docId KEW document id for the document to setup
-	 * @param userId KEW netid for the user associated with this document
+	 * @param principalId KEW principal id for the user associated with this document
 	 * @return populated WorkflowDocument object
 	 * @throws WorkflowException if something goes wrong
 	 */
-	private WorkflowDocument setupWorkflowDocument(String docId, String userId) throws WorkflowException {
-		return setupWorkflowDocument(docId, userId, null, null);
+	private WorkflowDocument setupWorkflowDocument(String docId, String principalId) throws WorkflowException {
+		return setupWorkflowDocument(docId, principalId, null, null);
 	}
 
 	/**
 	 * Convenience method to setup workflow document without content.
 	 *
 	 * @param docId KEW document id for the document to setup
-	 * @param userId KEW netid for the user associated with this document
+	 * @param principalId KEW principal id for the user associated with this document
 	 * @param docTitle title for this document
 	 * @return populated WorkflowDocument object
 	 * @throws WorkflowException if something goes wrong
 	 */
-	private WorkflowDocument setupWorkflowDocument(String docId, String userId, String docTitle) throws WorkflowException {
-		return setupWorkflowDocument(docId, userId, docTitle, null);
+	private WorkflowDocument setupWorkflowDocument(String docId, String principalId, String docTitle) throws WorkflowException {
+		return setupWorkflowDocument(docId, principalId, docTitle, null);
 	}
 
 	/**
 	 * Instantiate and setup the WorkflowDocument object.
 	 *
 	 * @param docId KEW document id for the document to setup
-	 * @param userId KEW netid for the user associated with this document
+	 * @param principalId KEW principal id for the user associated with this document
 	 * @param docTitle title for this document
 	 * @param docContent xml content for this document
 	 * @return populated WorkflowDocument object
 	 * @throws WorkflowException if something goes wrong
 	 */
-	private WorkflowDocument setupWorkflowDocument(String docId, String userId, String docTitle, String docContent) throws WorkflowException {
-		UserIdDTO userIdVO = new NetworkIdDTO(userId);
-		WorkflowDocument workflowDocument = new WorkflowDocument(userIdVO, Long.decode(docId));
+	private WorkflowDocument setupWorkflowDocument(String docId, String principalId, String docTitle, String docContent) throws WorkflowException {
+		WorkflowIdDTO principalIdVO = new WorkflowIdDTO(principalId);
+		WorkflowDocument workflowDocument = new WorkflowDocument(principalIdVO, Long.decode(docId));
 		if (StringUtils.isNotEmpty(docTitle)) {
 			workflowDocument.setTitle(docTitle);
 		}
@@ -959,9 +906,9 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 			    NoteDetail noteDetail = new NoteDetail();
 				NoteDTO note = (NoteDTO)notes.get(i);
 				//author, noteId, timestamp, noteText
-				UserIdDTO userIdVO = new WorkflowIdDTO(note.getNoteAuthorWorkflowId());
+				WorkflowIdDTO principalIdVO = new WorkflowIdDTO(note.getNoteAuthorWorkflowId());
 				WorkflowInfo info = new WorkflowInfo();
-				UserDTO user = info.getWorkflowUser(userIdVO);
+				UserDTO user = info.getWorkflowUser(principalIdVO);
 				//noteDetail.put(NOTE_AUTHOR_LABEL, user.getDisplayName());
 				//noteDetail.put(NOTE_ID_LABEL, note.getNoteId().toString());
 				//noteDetail.put(NOTE_TIMESTAMP_LABEL, formatCalendar(note.getNoteCreateDate()));
@@ -1010,21 +957,11 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 * @return Map containing the standard result set with only the error message populated
 	 */
 	private StandardResponse createErrorResults(String errorMessage) {
-//		Map<String, Object> results = new HashMap<String, Object>(6);
 	    StandardResponse response = new StandardResponse();
-//		results.put(DOC_STATUS_LABEL, "");
-//		results.put(CREATE_DATE_LABEL, "");
-//		results.put(INITIATOR_ID_LABEL, "");
-//        results.put(ROUTED_BY_USER_ID_LABEL, "");
-//		results.put(APP_DOC_ID_LABEL, "");
-//		results.put(INITIATOR_NAME_LABEL, "");
-//        results.put(ROUTED_BY_USER_NAME_LABEL, "");
-//		results.put(ERROR_MESSAGE_LABEL, errorMessage);
-	    
 	    response.setDocStatus("");
 	    response.setCreateDate("");
-	    response.setInitiatorId("");
-	    response.setRoutedByUserId("");
+	    response.setInitiatorPrincipalId("");
+	    response.setRoutedByPrincipalId("");
 	    response.setAppDocId("");
 	    response.setInitiatorName("");
 	    response.setRoutedByUserName("");
@@ -1044,8 +981,8 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	private StandardResponse createStandardResults(RouteHeaderDTO routeHeader) {
 		String docStatus = "";
 		String createDate = "";
-		String initiatorId = "";
-        String routedByUserId = "";
+		String initiatorPrincipalId = "";
+        String routedByprincipalId = "";
 		String appDocId = "";
 		String initiatorName = "";
         String routedByUserName = "";
@@ -1069,7 +1006,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 			if (routeHeader.getInitiator() == null) {
 				errorMessage += "Error: NULL Initiator; ";
 			} else {
-				initiatorId = routeHeader.getInitiator().getNetworkId();
+				initiatorPrincipalId = routeHeader.getInitiator().getNetworkId();
 				initiatorName = routeHeader.getInitiator().getDisplayName();
 			}
 
@@ -1079,7 +1016,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
                         errorMessage += "Error: NULL routedBy user; ";
                 }
             } else {
-                routedByUserId = routeHeader.getRoutedByUser().getNetworkId();
+                routedByprincipalId = routeHeader.getRoutedByUser().getNetworkId();
                 routedByUserName = routeHeader.getRoutedByUser().getDisplayName();
             }
 
@@ -1093,8 +1030,8 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 
 //		results.put(DOC_STATUS_LABEL, docStatus);
 //		results.put(CREATE_DATE_LABEL, createDate);
-//		results.put(INITIATOR_ID_LABEL, initiatorId);
-//        results.put(ROUTED_BY_USER_ID_LABEL, routedByUserId);
+//		results.put(INITIATOR_ID_LABEL, initiatorPrincipalId);
+//        results.put(ROUTED_BY_USER_ID_LABEL, routedByprincipalId);
 //		results.put(APP_DOC_ID_LABEL, appDocId);
 //		results.put(INITIATOR_NAME_LABEL, initiatorName);
 //        results.put(ROUTED_BY_USER_NAME_LABEL, routedByUserName);
@@ -1102,8 +1039,8 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 
 		response.setDocStatus(docStatus);
 		response.setCreateDate(createDate);
-		response.setInitiatorId(initiatorId);
-		response.setRoutedByUserId(routedByUserId);
+		response.setInitiatorPrincipalId(initiatorPrincipalId);
+		response.setRoutedByPrincipalId(routedByprincipalId);
 		response.setAppDocId(appDocId);
 		response.setInitiatorName(initiatorName);
 		response.setRoutedByUserName(routedByUserName);

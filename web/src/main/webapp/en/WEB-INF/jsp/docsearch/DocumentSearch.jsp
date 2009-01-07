@@ -1,5 +1,5 @@
 <%@ page import="org.apache.commons.beanutils.BeanUtils" %>
-<%@ page import="org.kuali.rice.kew.lookupable.Column" %>
+
 <%@ taglib uri="../../tld/struts-html-el.tld" prefix="html-el" %>
 <%@ taglib uri="../../tld/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="../../tld/struts-bean-el.tld" prefix="bean-el" %>
@@ -135,7 +135,7 @@
     <display-el:setProperty name="paging.banner.placement" value="both" />
     <display-el:setProperty name="export.banner" value="" />
 		<c:forEach items="${reqSearchResultColumns}" var="column">
-			<display-el:column class="datacell" 
+			<display-el:column class="datacell"
 				sortable="${column.sortable}"
 				sortName="${column.sortName}"
 				title="${column.columnTitle}"

@@ -64,9 +64,6 @@ import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.workgroup.WorkflowGroupId;
-import org.kuali.rice.kew.workgroup.Workgroup;
-import org.kuali.rice.kew.workgroup.WorkgroupService;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -98,7 +95,8 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
   @NamedQuery(name="ActionRequestValue.FindPendingRootRequestsByDocIdAtRouteNode", query="select arv from ActionRequestValue arv where arv.routeHeaderId = :routeHeaderId and arv.currentIndicator = :currentIndicator and arv.parentActionRequest is null and arv.nodeInstance.routeNodeInstanceId = :routeNodeInstanceId and (arv.status = '" + KEWConstants.ACTION_REQUEST_INITIALIZED + "' or arv.status = '" + KEWConstants.ACTION_REQUEST_ACTIVATED + "')"),
   @NamedQuery(name="ActionRequestValue.FindPendingRootRequestsByDocumentType", query="select arv from ActionRequestValue arv where arv.routeHeader.documentTypeId = :documentTypeId and arv.currentIndicator = :currentIndicator and arv.parentActionRequest is null and (arv.status = '" + KEWConstants.ACTION_REQUEST_INITIALIZED + "' or arv.status = '" + KEWConstants.ACTION_REQUEST_ACTIVATED + "')"),
   @NamedQuery(name="ActionRequestValue.FindPendingRequestsByDocIdAtRouteNode", query="select arv from ActionRequestValue arv where arv.routeHeaderId = :routeHeaderId and arv.currentIndicator = :currentIndicator and arv.parentActionRequest is null and arv.nodeInstance.routeNodeInstanceId = :routeNodeInstanceId"),
-  @NamedQuery(name="ActionRequestValue.GetRequestGroupIds", query="select arv.groupId from ActionRequestValue arv where arv.routeHeaderId = :routeHeaderId and arv.currentIndicator = :currentIndicator and arv.recipientTypeCd = :recipientTypeCd")
+  @NamedQuery(name="ActionRequestValue.GetRequestGroupIds", query="select arv.groupId from ActionRequestValue arv where arv.routeHeaderId = :routeHeaderId and arv.currentIndicator = :currentIndicator and arv.recipientTypeCd = :recipientTypeCd"),
+  @NamedQuery(name="ActionRequestValue.FindByStatusAndGroupId", query="select arv from ActionRequestValue arv where arv.groupId = :groupId and arv.currentIndicator = :currentIndicator and arv.status = :status")
 })
 public class ActionRequestValue implements WorkflowPersistable {
 
@@ -197,15 +195,6 @@ public class ActionRequestValue implements WorkflowPersistable {
     @PrePersist
     public void beforeInsert(){
         OrmUtils.populateAutoIncValue(this, KNSServiceLocator.getEntityManagerFactory().createEntityManager());
-    }
-
-    public Workgroup getWorkgroup() throws KEWUserNotFoundException {
-        if (getGroupId() == null) {
-            LOG.error("Attempting to get a workgroup with a blank workgroup id");
-            return null;
-        }
-        WorkgroupService workgroupSrv = (WorkgroupService) KEWServiceLocator.getService(KEWServiceLocator.WORKGROUP_SRV);
-        return workgroupSrv.getWorkgroup(new WorkflowGroupId(new Long(getGroupId())));
     }
 
     public KimGroup getGroup() throws KEWUserNotFoundException {
@@ -612,8 +601,6 @@ public class ActionRequestValue implements WorkflowPersistable {
     	if (isReviewerUser()) {
     		if (recipient instanceof WorkflowUser) {
     			isRecipientInGraph = getWorkflowId().equals(((WorkflowUser) recipient).getWorkflowUserId().getWorkflowId());
-    		} else if (recipient instanceof Workgroup) {
-    			isRecipientInGraph = ((Workgroup) recipient).hasMember(getWorkflowUser());
     		} else if (recipient instanceof KimGroupRecipient){
     			isRecipientInGraph = KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(getWorkflowId(), ((KimGroupRecipient)recipient).getGroup().getGroupId());
     		}
@@ -626,8 +613,6 @@ public class ActionRequestValue implements WorkflowPersistable {
     		if (recipient instanceof WorkflowUser) {
     			WorkflowUser user = (WorkflowUser)recipient;
     			isRecipientInGraph = KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(user.getWorkflowId(), group.getGroupId());
-    		} else if (recipient instanceof Workgroup) {
-    			isRecipientInGraph = ((Workgroup) recipient).getWorkflowGroupId().getGroupId().equals(group.getGroupId());
     		} else if (recipient instanceof KimGroupRecipient) {
     			isRecipientInGraph = ((KimGroupRecipient) recipient).getGroup().getGroupId().equals(group.getGroupId());
     		}

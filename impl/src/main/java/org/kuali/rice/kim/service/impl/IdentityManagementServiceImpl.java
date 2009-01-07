@@ -52,6 +52,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	protected Map<String,MaxAgeSoftReference<List<String>>> groupIdsForPrincipalCache;
 	protected Map<String,MaxAgeSoftReference<List<? extends KimGroup>>> groupsForPrincipalCache;
 	protected Map<String,MaxAgeSoftReference<Boolean>> isMemberOfGroupCache;
+	protected Map<String,MaxAgeSoftReference<Boolean>> isGroupMemberOfGroupCache;
 	protected Map<String,MaxAgeSoftReference<Boolean>> isMemberOfGroupByNameCache;
 	protected Map<String,MaxAgeSoftReference<List<String>>> groupMemberPrincipalIdsCache;
 	protected Map<String,MaxAgeSoftReference<Map<AttributeSet, Boolean>>> hasPermissionCache;
@@ -185,7 +186,15 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		return null;
 	}
 
-	protected Boolean getIsMemberOfGroupByNameCache( String principalId, String namespaceCode, String groupName ) {
+	protected Boolean getIsGroupMemberOfGroupCache( String potentialMemberId, String potentialParentId ) 
+	{
+		MaxAgeSoftReference<Boolean> isMemberRef = isGroupMemberOfGroupCache.get( potentialMemberId + "-" + potentialParentId );
+		if ( isMemberRef != null ) {
+			return isMemberRef.get();
+		}
+		return null;
+	}
+		protected Boolean getIsMemberOfGroupByNameCache( String principalId, String namespaceCode, String groupName ) {
 		MaxAgeSoftReference<Boolean> isMemberRef = isMemberOfGroupByNameCache.get( principalId + "-" + namespaceCode + "-" + groupName );
 		if ( isMemberRef != null ) {
 			return isMemberRef.get();
@@ -265,6 +274,11 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	protected void addIsMemberOfGroupToCache( String principalId, String groupId, boolean member ) {
 		isMemberOfGroupCache.put( principalId + "-" + groupId, new MaxAgeSoftReference<Boolean>( groupCacheMaxAge, member ) );
 	}
+	
+	protected void addIsGroupMemberOfGroupToCache( String potentialMemberId, String potentialParentId, boolean member ) 
+	{
+        isMemberOfGroupCache.put( potentialMemberId + "-" + potentialParentId, new MaxAgeSoftReference<Boolean>( groupCacheMaxAge, member ) );
+    }
 	
 	protected void addIsMemberOfGroupByNameToCache( String principalId, String namespaceCode, String groupName, boolean member ) {
 		isMemberOfGroupByNameCache.put( principalId + "-" + namespaceCode + "-" + groupName, new MaxAgeSoftReference<Boolean>( groupCacheMaxAge, member ) );
@@ -446,6 +460,21 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     	return isMember;    	
     }
 
+	public boolean isGroupMemberOfGroup(String potentialMemberId, String potentialParentId)
+	{
+	    Boolean isMember = getIsGroupMemberOfGroupCache(potentialMemberId, potentialParentId);
+	    if(isMember != null)
+	    {
+	        return isMember;
+	    }
+	    else
+        {
+	        isMember = getGroupService()
+	                .isGroupMemberOfGroup(potentialMemberId, potentialParentId);
+        }
+	    addIsGroupMemberOfGroupToCache(potentialMemberId, potentialParentId, isMember);
+	    return isMember;
+	}
 	public List<String> getGroupMemberPrincipalIds(String groupId) {
     	List<String> ids = getGroupMemberPrincipalIdsCache(groupId);
 		if (ids != null) {

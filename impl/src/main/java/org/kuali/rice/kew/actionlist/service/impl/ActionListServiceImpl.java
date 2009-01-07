@@ -17,16 +17,14 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.ListUtils;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionitem.OutboxItemActionListExtension;
@@ -50,16 +48,12 @@ import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.workgroup.WorkgroupMembershipChangeProcessor;
-import org.kuali.rice.kew.workgroup.WorkgroupService;
-import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.GroupService;
+import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
-import org.kuali.rice.kim.bo.group.dto.*;
 
 /**
  * Default implementation of the {@link ActionListService}.
@@ -149,29 +143,28 @@ public class ActionListServiceImpl implements ActionListService {
      * Determines the difference between the current workgroup membership and the new workgroup membership. It then
      * schedules the action item updates to happen asynchronously.
      */
-    public void updateActionItemsForWorkgroupChange(Workgroup oldWorkgroup, Workgroup newWorkgroup)
-    throws KEWUserNotFoundException {
-        List oldMembers = oldWorkgroup.getUsers();
-        List newMembers = newWorkgroup.getUsers();
-        MembersDiff membersDiff = getMembersDiff(oldMembers, newMembers);
-        for (Iterator iterator = membersDiff.getRemovedMembers().iterator(); iterator.hasNext();) {
-            WorkflowUser removedMember = (WorkflowUser) iterator.next();
+    public void updateActionItemsForWorkgroupChange(String oldKimGroupId, String newKimGroupId) throws KEWUserNotFoundException
+	{
+        IdentityManagementService ims = KIMServiceLocator.getIdentityManagementService();
+        List<String> oldPrincipalIds = ims.getGroupMemberPrincipalIds(oldKimGroupId);
+        List<String> newPrincipalIds = ims.getGroupMemberPrincipalIds(newKimGroupId);
+        MembersDiff membersDiff = getMembersDiff(oldPrincipalIds, newPrincipalIds);
+        for (String removedPrincipalId : membersDiff.getRemovedPrincipalIds()) {
             KSBXMLService workgroupMembershipChangeProcessor = (KSBXMLService) KSBServiceLocator.getMessageHelper()
             .getServiceAsynchronously(new QName(MessageServiceNames.WORKGROUP_MEMBERSHIP_CHANGE_SERVICE));
             try {
                 workgroupMembershipChangeProcessor.invoke(WorkgroupMembershipChangeProcessor
-                        .getMemberRemovedMessageContents(removedMember, newWorkgroup));
+                        .getMemberRemovedMessageContents(removedPrincipalId, newKimGroupId));
             } catch (Exception e) {
                 throw new WorkflowRuntimeException(e);
             }
         }
-        for (Iterator iterator = membersDiff.getAddedMembers().iterator(); iterator.hasNext();) {
-            WorkflowUser addedMember = (WorkflowUser) iterator.next();
+        for (String addedPrincipalId : membersDiff.getAddedPrincipalIds()) {
             KSBXMLService workgroupMembershipChangeProcessor = (KSBXMLService) KSBServiceLocator.getMessageHelper()
             .getServiceAsynchronously(new QName(MessageServiceNames.WORKGROUP_MEMBERSHIP_CHANGE_SERVICE));
             try {
                 workgroupMembershipChangeProcessor.invoke(WorkgroupMembershipChangeProcessor.getMemberAddedMessageContents(
-                        addedMember, oldWorkgroup));
+                        addedPrincipalId, oldKimGroupId));
             } catch (Exception e) {
                 throw new WorkflowRuntimeException(e);
             }
@@ -183,15 +176,15 @@ public class ActionListServiceImpl implements ActionListService {
     /**
      * Update the user's Action List to reflect their addition to the given Workgroup.
      */
-    public void updateActionListForUserAddedToGroup(String principalId, KimGroup group) throws KEWUserNotFoundException {
+    public void updateActionListForUserAddedToGroup(String principalId, String groupId) throws KEWUserNotFoundException {
         // first verify that the user is still a member of the workgroup
-    	if(!KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(principalId, group.getGroupId()))
+    	if(KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(principalId, groupId))
     	{
     		List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
-            List<GroupInfo> allGroupsToCheck = KIMServiceLocator.getGroupService().getGroupsForPrincipal(principalId);
-            allGroupsToCheck.add(0,(GroupInfo)group);
-            for (KimGroup kimGroupToCheck : allGroupsToCheck) {
-                actionRequests.addAll(getActionRequestService().findActivatedByGroup(kimGroupToCheck));
+    		List<String> allGroupsToCheck = KIMServiceLocator.getIdentityManagementService().getParentGroupIds(groupId);
+            allGroupsToCheck.add(0, groupId);
+            for (String groupToCheckId : allGroupsToCheck) {
+                actionRequests.addAll(getActionRequestService().findActivatedByGroup(groupToCheckId));
             }
             for (Iterator requestIt = actionRequests.iterator(); requestIt.hasNext();) {
                 ActionRequestValue request = (ActionRequestValue) requestIt.next();
@@ -236,24 +229,24 @@ public class ActionListServiceImpl implements ActionListService {
     /**
      * Update the user's Action List to reflect their removal from the given Workgroup.
      */
-    public void updateActionListForUserRemovedFromGroup(String principalId, KimGroup group)
+    public void updateActionListForUserRemovedFromGroup(String principalId, String groupId)
     throws KEWUserNotFoundException {
         // first verify that the user is no longer a member of the workgroup
-    	if(!KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(principalId, group.getGroupId()))
+    	if(!KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(principalId, groupId))
     	{
-    		    List<GroupInfo> allGroupsToCheck = KIMServiceLocator.getGroupService().getGroupsForPrincipal(principalId);
-    		    allGroupsToCheck.add(0, (GroupInfo)group);
-    		    Collection<ActionItem> actionItems = this.findByPrincipalId(principalId);
-    		    for (Iterator<ActionItem> itemIt = actionItems.iterator(); itemIt.hasNext();) {
-    		    	ActionItem item = itemIt.next();
-    		    	if (item.isWorkgroupItem()) {
-    		    		for (KimGroup groupToCheck : allGroupsToCheck) {
-    		    			if (item.getGroupId().equals(groupToCheck.getGroupId())) {
-    		    				deleteActionItem(item);
-    		    			}
-    		    		}
-    		    	}
-    		    }
+    		List<String> allGroupsToCheck = KIMServiceLocator.getIdentityManagementService().getParentGroupIds(groupId);
+            allGroupsToCheck.add(0, groupId);
+            Collection<ActionItem> actionItems = this.findByPrincipalId(principalId);
+    		for (Iterator<ActionItem> itemIt = actionItems.iterator(); itemIt.hasNext();) {
+            	ActionItem item = itemIt.next();
+            	if (item.isWorkgroupItem()) {
+            		for (String groupIdToCheck : allGroupsToCheck) {
+            			if (item.getGroupId().equals(groupIdToCheck)) {
+            				deleteActionItem(item);
+            			}
+            		}
+            	}
+            }
     	}
 
     }
@@ -267,41 +260,10 @@ public class ActionListServiceImpl implements ActionListService {
         }
     }
 
-    private MembersDiff getMembersDiff(Collection oldMembers, Collection newMembers) {
-        Map currentMembersMap = createUsersMap(oldMembers);
-        Map newMembersMap = createUsersMap(newMembers);
-        Map allMembers = mergeMaps(currentMembersMap, newMembersMap);
-        Collection addedKeys = CollectionUtils.subtract(newMembersMap.keySet(), currentMembersMap.keySet());
-        Collection removedKeys = CollectionUtils.subtract(currentMembersMap.keySet(), newMembersMap.keySet());
-        Set addedMembers = getUsersSet(addedKeys, allMembers);
-        Set removedMembers = getUsersSet(removedKeys, allMembers);
-        return new MembersDiff(addedMembers, removedMembers);
-    }
-
-    private Map mergeMaps(Map map1, Map map2) {
-        Map newMap = new HashMap();
-        newMap.putAll(map1);
-        newMap.putAll(map2);
-        return newMap;
-    }
-
-    private Set getUsersSet(Collection userKeys, Map memberMap) {
-        Set resultSet = new HashSet();
-        for (Iterator iterator = userKeys.iterator(); iterator.hasNext();) {
-            String workflowId = (String) iterator.next();
-            WorkflowUser user = (WorkflowUser) memberMap.get(workflowId);
-            resultSet.add(user);
-        }
-        return resultSet;
-    }
-
-    private Map createUsersMap(Collection members) {
-        Map map = new HashMap();
-        for (Iterator iterator = members.iterator(); iterator.hasNext();) {
-            WorkflowUser user = (WorkflowUser) iterator.next();
-            map.put(user.getWorkflowUserId().getWorkflowId(), user);
-        }
-        return map;
+    private MembersDiff getMembersDiff(List<String> oldMemberPrincipalIds, List<String> newMemberPrincipalIds) {
+        Set<String> addedPrincipalIds = new HashSet<String>(ListUtils.subtract(newMemberPrincipalIds, oldMemberPrincipalIds));
+        Set<String> removedPrincipalIds = new HashSet<String>(ListUtils.subtract(oldMemberPrincipalIds, newMemberPrincipalIds));
+        return new MembersDiff(addedPrincipalIds, removedPrincipalIds);
     }
 
     public void saveActionItem(ActionItem actionItem) throws KEWUserNotFoundException {
@@ -317,10 +279,6 @@ public class ActionListServiceImpl implements ActionListService {
         return (ActionRequestService) KEWServiceLocator.getActionRequestService();
     }
 
-    public WorkgroupService getWorkgroupService() {
-        return (WorkgroupService) KEWServiceLocator.getWorkgroupService();
-    }
-
     public GroupService getGroupService(){
     	return KIMServiceLocator.getGroupService();
     }
@@ -334,21 +292,21 @@ public class ActionListServiceImpl implements ActionListService {
     }
 
     private class MembersDiff {
-        private final Set addedMembers;
+        private final Set<String> addedPrincipalIds;
 
-        private final Set removedMembers;
+        private final Set<String> removedPrincipalIds;
 
-        public MembersDiff(Set addedMembers, Set removedMembers) {
-            this.addedMembers = addedMembers;
-            this.removedMembers = removedMembers;
+        public MembersDiff(Set<String> addedPrincipalIds, Set<String>removedPrincipalIds) {
+            this.addedPrincipalIds = addedPrincipalIds;
+            this.removedPrincipalIds = removedPrincipalIds;
         }
 
-        public Set getAddedMembers() {
-            return addedMembers;
+        public Set<String> getAddedPrincipalIds() {
+            return addedPrincipalIds;
         }
 
-        public Set getRemovedMembers() {
-            return removedMembers;
+        public Set<String> getRemovedPrincipalIds() {
+            return removedPrincipalIds;
         }
     }
 

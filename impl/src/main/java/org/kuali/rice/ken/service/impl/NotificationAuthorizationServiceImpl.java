@@ -22,13 +22,9 @@ import org.kuali.rice.ken.bo.NotificationChannel;
 import org.kuali.rice.ken.bo.NotificationProducer;
 import org.kuali.rice.ken.service.NotificationAuthorizationService;
 import org.kuali.rice.ken.util.NotificationConstants;
-import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimConstants;
 
 
 /**
@@ -67,15 +63,8 @@ public class NotificationAuthorizationServiceImpl implements NotificationAuthori
      * @see org.kuali.rice.ken.service.NotificationAuthorizationService#isUserAdministrator(java.lang.String)
      */
     public boolean isUserAdministrator(String userId) {
-	try {
-	    GroupNameId groupNameId = new GroupNameId(NotificationConstants.KEW_CONSTANTS.NOTIFICATION_ADMIN_GROUP_NAME);
+    	String groupNameId = NotificationConstants.KEW_CONSTANTS.NOTIFICATION_ADMIN_GROUP_NAME;
 	    Person user = KIMServiceLocator.getPersonService().getPerson(userId);
-
-
-	    return KEWServiceLocator.getWorkgroupService().isUserMemberOfGroup(groupNameId, user.getPrincipalId());
-	} catch(KEWUserNotFoundException eunfe) {
-	    LOG.error(eunfe);
-	    return false;
-	}
+	    return KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(user.getPrincipalId(), KimConstants.TEMP_GROUP_NAMESPACE, groupNameId);
     }
 }

@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,7 +31,8 @@ import org.kuali.rice.kew.docsearch.xml.DocumentSearchXMLResultProcessorImpl;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
-import org.kuali.rice.kew.lookupable.Column;
+//import org.kuali.rice.kns.web.ui.Column;
+import org.kuali.rice.kew.docsearch.DocumentSearchColumn;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.AuthenticationUserId;
@@ -61,15 +62,15 @@ public class CustomDocumentSearchResultProcessorTest extends DocumentSearchTestB
     	docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName("SearchDocType2");
     	assertEquals("The document search Processor class is incorrect.",CustomSearchResultProcessor.class,(ClassLoaderUtils.unwrapFromProxy(docType.getDocumentSearchResultProcessor())).getClass());
     }
-    
+
     @Test public void testSearchXMLResultProcessorFunction() throws Exception {
         RuleAttribute ruleAttribute = KEWServiceLocator.getRuleAttributeService().findByName("XMLResultProcessorDetails");
         DocumentSearchXMLResultProcessorImpl docSearchResult = new DocumentSearchXMLResultProcessorImpl();
         docSearchResult.setRuleAttribute(ruleAttribute);
 
-        List<Column> columns = docSearchResult.getCustomDisplayColumns();
+        List<DocumentSearchColumn> columns = docSearchResult.getCustomDisplayColumns();
     	for (Iterator iter = columns.iterator(); iter.hasNext();) {
-			Column column = (Column) iter.next();
+    	    DocumentSearchColumn column = (DocumentSearchColumn) iter.next();
 			if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_TYPE_LABEL.equals(column.getKey())) {
 				assertEquals("Attribute xml is not populating column 'sortable' value correctly", "true", column.getSortable());
 				assertEquals("Attribute xml is not populating column 'title' value correctly", "", column.getColumnTitle());
@@ -89,11 +90,11 @@ public class CustomDocumentSearchResultProcessorTest extends DocumentSearchTestB
 				fail("Key value of custom column should never be anything except already checked values but is '" + column.getKey() + "'");
 			}
 		}
-    	
+
     	assertEquals("Value of 'show all standard fields' should be default",DocumentSearchXMLResultProcessor.DEFAULT_SHOW_ALL_STANDARD_FIELDS_VALUE,docSearchResult.getShowAllStandardFields());
     	assertEquals("Value of 'override searchable attributes' should be default",DocumentSearchXMLResultProcessor.DEFAULT_OVERRIDE_SEARCHABLE_ATTRIBUTES_VALUE,docSearchResult.getOverrideSearchableAttributes());
     }
-    
+
     private DocumentSearchResultComponents performSearch(String documentTypeName,String userNetworkId) throws KEWUserNotFoundException {
     	DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
         DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
@@ -105,23 +106,23 @@ public class CustomDocumentSearchResultProcessorTest extends DocumentSearchTestB
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE, docType));
         return docSearchService.getList(user, criteria);
     }
-    
-    private void parseList(List<Column> columns, List<String> columnsRequired, List<String> columnsNotAllowed) {
+
+    private void parseList(List<DocumentSearchColumn> columns, List<String> columnsRequired, List<String> columnsNotAllowed) {
     	// check to see if column should be excluded but is not
 		for (Iterator iterator = columnsNotAllowed.iterator(); iterator.hasNext();) {
 			String disallowedColumnKey = (String) iterator.next();
 	        for (Iterator iter = columns.iterator(); iter.hasNext();) {
-				Column currentColumn = (Column) iter.next();
+	            DocumentSearchColumn currentColumn = (DocumentSearchColumn) iter.next();
 				if (disallowedColumnKey.equals(currentColumn.getKey())) {
 					fail("The column with key '" + currentColumn.getKey() + "' should not be in the list of columns to be displayed but was");
 				}
-	        }    	
+	        }
 		}
 
 		// check to see if column should be in list but is not
 		for (int i = 0; i < columnsRequired.size(); i++) {
 			String requiredColumnKey = columnsRequired.get(i);
-			Column testColumn = columns.get(i);
+			DocumentSearchColumn testColumn = columns.get(i);
 			if (!(requiredColumnKey.equals(testColumn.getKey()))) {
 				fail("The column with key '" + requiredColumnKey + "' should be in the list of columns to be displayed (at location " + i + ") but was not");
 			}
@@ -134,7 +135,7 @@ public class CustomDocumentSearchResultProcessorTest extends DocumentSearchTestB
     	/*    - test showAllStandard = *blank* && overrideSearchAtt = *blank* (default way of doing search) - XMLResultProcessorDefault
     	 *        - search attr xml hidden && search proc attr shown = shown
     	 *        - search attr xml shown && search proc attr hidden = hidden
-    	 *        - standard fields = hidden 
+    	 *        - standard fields = hidden
     	 */
         String documentTypeName = "SearchDocType_DefaultCustomProcessor";
         String userNetworkId = "rkirkend";
@@ -147,7 +148,7 @@ public class CustomDocumentSearchResultProcessorTest extends DocumentSearchTestB
          *    - init
          *    - docroutestat
          *    - routeLog
-         *    
+         *
          *  columns that should not be shown
          *    - givenname
          *    - create date
@@ -168,8 +169,8 @@ public class CustomDocumentSearchResultProcessorTest extends DocumentSearchTestB
         /*    - test showAllStandard = false && overrideSearchAtt = true - XMLResultProcessorAllCustom
     	 *        - search attr xml hidden && search proc attr shown = shown
     	 *        - search attr xml shown && search proc attr hidden = hidden
-    	 *        - standard fields = hidden 
-    	 */        
+    	 *        - standard fields = hidden
+    	 */
         documentTypeName = "SearchDocType_AllCustomProcessor";
         result = performSearch(documentTypeName, userNetworkId);
         /*  columns that should be shown
@@ -180,7 +181,7 @@ public class CustomDocumentSearchResultProcessorTest extends DocumentSearchTestB
          *    - givenname_hidden
          *    - docroutestat
          *    - routeLog
-         *    
+         *
          *  columns that should not be shown
          *    - givenname
          *    - create date
@@ -201,7 +202,7 @@ public class CustomDocumentSearchResultProcessorTest extends DocumentSearchTestB
         /*    - test showAllStandard = true && overrideSearchAtt = true - XMLResultProcessorSearchAttributeCustom
     	 *        - search attr xml hidden && search proc attr shown = shown
     	 *        - search attr xml shown && search proc attr hidden = hidden
-    	 *        - standard fields = shown 
+    	 *        - standard fields = shown
     	 *        - check order with standard fields before search fields
          */
         documentTypeName = "SearchDocType_SearchAttCustomProcessor";
@@ -215,7 +216,7 @@ public class CustomDocumentSearchResultProcessorTest extends DocumentSearchTestB
          *    - dateCreated
          *    - givenname_hidden
          *    - routeLog
-         *    
+         *
          *  columns that should not be shown
          *    - givenname
          */
@@ -235,7 +236,7 @@ public class CustomDocumentSearchResultProcessorTest extends DocumentSearchTestB
         /*    - test showAllStandard = false && overrideSearchAtt = false - XMLResultProcessorStandardCustom
     	 *        - search attr xml hidden && search proc attr show = hidden
     	 *        - search attr xml shown && search proc attr hidden = shown
-    	 *        - standard fields = hidden 
+    	 *        - standard fields = hidden
     	 *        - check order with search fields after custom standard fields
          */
         documentTypeName = "SearchDocType_StandardCustomProcessor";
@@ -248,7 +249,7 @@ public class CustomDocumentSearchResultProcessorTest extends DocumentSearchTestB
          *    - init
          *    - givenname
          *    - routeLog
-         *    
+         *
          *  columns that should not be shown
          *    - givenname_hidden
          *    - create date
@@ -269,7 +270,7 @@ public class CustomDocumentSearchResultProcessorTest extends DocumentSearchTestB
         /*    - test showAllStandard = true && overrideSearchAtt = false (default way of doing search) - XMLResultProcessorNormalCustom
     	 *        - search attr xml hidden && search proc attr show = hidden
     	 *        - search attr xml shown && search proc attr hidden = shown
-    	 *        - standard fields = shown 
+    	 *        - standard fields = shown
     	 *        - check order with standard fields before search fields
          */
         documentTypeName = "SearchDocType_NormalCustomProcessor";
@@ -283,7 +284,7 @@ public class CustomDocumentSearchResultProcessorTest extends DocumentSearchTestB
          *    - dateCreated
          *    - givenname
          *    - routeLog
-         *    
+         *
          *  columns that should not be shown
          *    - givenname_hidden
          */

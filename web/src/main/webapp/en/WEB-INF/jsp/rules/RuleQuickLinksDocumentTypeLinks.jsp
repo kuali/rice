@@ -1,10 +1,4 @@
-<%@ taglib uri="../../tld/struts-html-el.tld" prefix="html-el" %>
-<%@ taglib uri="../../tld/struts-bean-el.tld" prefix="bean-el" %>
-<%@ taglib uri="../../tld/struts-logic-el.tld" prefix="logic-el"%>
-<%@ taglib uri="../../tld/c.tld" prefix="c" %>
-<%@ taglib uri="../../tld/fmt.tld" prefix="fmt" %>
-<%@ taglib uri="../../tld/displaytag.tld" prefix="display-el" %>
-
+<%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 <%
 String context = (String)request.getAttribute("basePath") + "/";
 //	String context = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath()+ "/";
@@ -12,7 +6,10 @@ String context = (String)request.getAttribute("basePath") + "/";
 <c:if test="${ documentTypeStruct.shouldDisplay }" >
 <c:set var="documentType" value="${documentTypeStruct.documentType}" />
 	<c:if test="${documentType.currentInd == true && documentType.active == true}">
-		<table border="0" width="100%">
+		 <kul:tabTop tabTitle="DocumentType ID : ${documentType.documentTypeId}" defaultOpen="false" >  
+ 			 <div class="tab-container" align=center>
+          	 <table width="100%" border=0 cellpadding=0 cellspacing=0
+			class="datatable">
 			<c:if test="${excludeDocId != documentType.documentTypeId}">
 				<tr>
 					<td colspan="2"><a href="<c:url value="DocumentType.do">
@@ -33,14 +30,14 @@ String context = (String)request.getAttribute("basePath") + "/";
 						<td width="20">&nbsp;</td>
 						<td>
 							<c:out value="${routeLevel.routeNodeName}" />&nbsp;
-							<a href="<%=context %><c:url value="Rule.do">
+							<a href="<c:url value="${context}Rule.do">
 										<c:param name="methodToCall" value="createNew" />
 										<c:param name="ruleCreationValues.ruleTemplateId" value="${routeLevel.ruleTemplate.ruleTemplateId}"/>
 										<c:param name="ruleCreationValues.ruleTemplateName" value="${routeLevel.ruleTemplate.name}"/>
 										<c:param name="ruleCreationValues.docTypeName" value="${documentType.name}"/>
 									</c:url>" target=_blank>Add Rule</a>
 							&nbsp;
-							<a href="<%=context %><c:url value="Lookup.do">
+							<a href="<c:url value="${context}Lookup.do">
 										<c:param name="lookupableImplServiceName" value="RuleBaseValuesLookupableImplService"/>s
 										<c:param name="ruleTemplate.ruleTemplateId" value="${routeLevel.ruleTemplate.ruleTemplateId}"/>
 										<c:param name="ruleTemplateName" value="${routeLevel.ruleTemplate.name}"/>
@@ -48,7 +45,7 @@ String context = (String)request.getAttribute("basePath") + "/";
 									</c:url>" target=_blank>Search</a>
 							<c:if test="${routeLevel.ruleTemplate.delegationTemplate != null}">
 								&nbsp;
-								<a href="<%=context %><c:url value="RuleQuickLinks.do">
+								<a href="<c:url value="${context}RuleQuickLinks.do">
 								            <c:param name="methodToCall" value="addDelegationRule"/>
 											<c:param name="lookupableImplServiceName" value="RuleBaseValuesLookupableImplService"/>
 											<c:param name="ruleTemplate.ruleTemplateId" value="${routeLevel.ruleTemplate.ruleTemplateId}"/>
@@ -58,7 +55,7 @@ String context = (String)request.getAttribute("basePath") + "/";
 											<c:param name="docTypeFullName" value="${documentType.name}"/>
 										</c:url>" target=_blank>Add Delegation</a>
 								&nbsp;
-								<a href="<%=context %><c:url value="Lookup.do">
+								<a href="<c:url value="${context}Lookup.do">
 											<c:param name="lookupableImplServiceName" value="RuleBaseValuesLookupableImplService"/>
 											<c:param name="ruleTemplate.ruleTemplateId" value="${routeLevel.ruleTemplate.delegationTemplate.ruleTemplateId}"/>
 											<c:param name="ruleTemplateName" value="${routeLevel.ruleTemplate.delegationTemplate.name}"/>
@@ -83,6 +80,9 @@ String context = (String)request.getAttribute("basePath") + "/";
 				</td>
 			</tr>
 		</c:if>
-		</table>
+		</div>
+  </table>
+  
+</kul:tabTop>
 	</c:if>
 </c:if>

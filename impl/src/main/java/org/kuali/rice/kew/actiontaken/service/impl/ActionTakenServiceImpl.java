@@ -16,7 +16,6 @@
  */
 package org.kuali.rice.kew.actiontaken.service.impl;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,9 +35,8 @@ import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.web.KeyValue;
-import org.kuali.rice.kew.workgroup.Workgroup;
-import org.kuali.rice.kew.workgroup.WorkgroupService;
+import org.kuali.rice.kim.service.IdentityManagementService;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 /**
@@ -62,31 +60,37 @@ public class ActionTakenServiceImpl implements ActionTakenService {
     	return getPreviousAction(actionRequest, null);
     }
 
-    public ActionTakenValue getPreviousAction(ActionRequestValue actionRequest, List simulatedActionsTaken) throws KEWUserNotFoundException {
-
+    public ActionTakenValue getPreviousAction(ActionRequestValue actionRequest, List<ActionTakenValue> simulatedActionsTaken)
+            throws KEWUserNotFoundException
+    {
+        IdentityManagementService ims = KIMServiceLocator.getIdentityManagementService();
         ActionTakenValue foundActionTaken = null;
-        List users = new ArrayList();
+        List<String> principalIds = new ArrayList();
         if (actionRequest.isGroupRequest()) {
-            users.addAll(actionRequest.getWorkgroup().getUsers());
+            principalIds.addAll( ims.getGroupMemberPrincipalIds(actionRequest.getGroup().getGroupId()));
         } else if (actionRequest.isUserRequest()) {
-            users.add(actionRequest.getWorkflowUser());
+            principalIds.add(actionRequest.getWorkflowUser().getWorkflowId());
         }
 
-        for (Iterator iter = users.iterator(); iter.hasNext();) {
-            WorkflowUser user = (WorkflowUser) iter.next();
-            List actionsTakenByUser = getActionTakenDAO().findByRouteHeaderIdWorkflowId(actionRequest.getRouteHeaderId(), user.getWorkflowUserId().getWorkflowId());
+        for (String id : principalIds)
+        {
+            List<ActionTakenValue> actionsTakenByUser =
+                getActionTakenDAO().findByRouteHeaderIdWorkflowId(actionRequest.getRouteHeaderId(), id );
             if (simulatedActionsTaken != null) {
-                for (Iterator iterator = simulatedActionsTaken.iterator(); iterator.hasNext();) {
-                    ActionTakenValue simulatedAction = (ActionTakenValue) iterator.next();
-                    if (user.getWorkflowId().equals(simulatedAction.getWorkflowId())) {
+                for (ActionTakenValue simulatedAction : simulatedActionsTaken)
+                {
+                    if (id.equals(simulatedAction.getWorkflowId()))
+                    {
                         actionsTakenByUser.add(simulatedAction);
                     }
                 }
             }
 
-            for (Iterator iterator = actionsTakenByUser.iterator(); iterator.hasNext();) {
-                ActionTakenValue actionTaken = (ActionTakenValue) iterator.next();
-                if (ActionRequestValue.compareActionCode(actionTaken.getActionTaken(), actionRequest.getActionRequested()) >= 0) {
+            for (ActionTakenValue actionTaken : actionsTakenByUser)
+            {
+                if (ActionRequestValue.compareActionCode(actionTaken.getActionTaken(),
+                        actionRequest.getActionRequested()) >= 0)
+                {
                   foundActionTaken = actionTaken;
                 }
             }
@@ -129,10 +133,6 @@ public class ActionTakenServiceImpl implements ActionTakenService {
 
     public void setActionTakenDAO(ActionTakenDAO actionTakenDAO) {
         this.actionTakenDAO = actionTakenDAO;
-    }
-
-    public WorkgroupService getWorkgroupService() {
-        return (WorkgroupService) KEWServiceLocator.getService(KEWServiceLocator.WORKGROUP_SRV);
     }
 
     public void deleteByRouteHeaderId(Long routeHeaderId){
@@ -190,7 +190,7 @@ public class ActionTakenServiceImpl implements ActionTakenService {
     private UserService getUserService() {
         return (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
     }
-    
+
     public Timestamp getLastApprovedDate(Long routeHeaderId)
     {
     	Timestamp dateLastApproved = null;
@@ -202,8 +202,8 @@ public class ActionTakenServiceImpl implements ActionTakenService {
     			dateLastApproved = actionTaken.getActionDate();
     		}
 		}
-    	LOG.info("Exit getLastApprovedDate("+routeHeaderId+") "+dateLastApproved);	
+    	LOG.info("Exit getLastApprovedDate("+routeHeaderId+") "+dateLastApproved);
     	return dateLastApproved;
     }
-        
+
 }

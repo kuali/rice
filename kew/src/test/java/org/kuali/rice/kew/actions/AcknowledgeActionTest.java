@@ -17,10 +17,8 @@
 package org.kuali.rice.kew.actions;
 
 import org.junit.Test;
-import org.kuali.rice.kew.dto.GroupIdDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
-import org.kuali.rice.kew.identity.IdentityFactory;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -40,8 +38,8 @@ public class AcknowledgeActionTest extends KEWTestCase {
     @Test public void testSavedDocumentAdhocRequest() throws Exception {
         WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "TestDocumentType");
         doc.saveDocument("");
+        doc.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "annotation1", getPrincipalIdForName("dewey"), "respDesc1", false);
         UserIdDTO user = new NetworkIdDTO("dewey");
-        doc.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "annotation1", user, "respDesc1", false);
         doc = new WorkflowDocument(user, doc.getRouteHeaderId());
         assertTrue("Acknowledge should be requested of user " + user, doc.isAcknowledgeRequested());
         try {
@@ -55,9 +53,7 @@ public class AcknowledgeActionTest extends KEWTestCase {
         doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "TestDocumentType");
         doc.saveDocument("");
         
-        GroupIdDTO groupId = IdentityFactory.newGroupIdByName(KimConstants.TEMP_GROUP_NAMESPACE, "NonSIT");
-        
-        doc.appSpecificRouteDocumentToGroup(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "annotation1", groupId, "respDesc1", false);
+        doc.adHocRouteDocumentToGroup(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "annotation1", getGroupIdForName(KimConstants.TEMP_GROUP_NAMESPACE, "NonSIT"), "respDesc1", false);
         doc = new WorkflowDocument(workgroupUser, doc.getRouteHeaderId());
         assertTrue("Acknowledge should be requested of user " + workgroupUser, doc.isAcknowledgeRequested());
         try {

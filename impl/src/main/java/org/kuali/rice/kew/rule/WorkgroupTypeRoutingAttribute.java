@@ -30,8 +30,8 @@ import javax.xml.xpath.XPathExpressionException;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
-import org.kuali.rice.kew.lookupable.Field;
-import org.kuali.rice.kew.lookupable.Row;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -54,7 +54,7 @@ public class WorkgroupTypeRoutingAttribute implements WorkflowAttribute {
     private static final String WORKGROUP_TYPE_LABEL = "Workgroup Type";
 
     private String workgroupType;
-    private List rows;
+    private List<Row> rows;
     private boolean required;
 
     public WorkgroupTypeRoutingAttribute(String workgroupType) {
@@ -67,15 +67,15 @@ public class WorkgroupTypeRoutingAttribute implements WorkflowAttribute {
     }
 
     private void buildRows() {
-        rows = new ArrayList();
+        rows = new ArrayList<Row>();
 
-        List fields = new ArrayList();
-        
+        List<Field> fields = new ArrayList<Field>();
+
         // TODO there is no way to find all the workgroup types using KIM (there is no group type concept built in, instead using the generic KimType
         // so we can't present a drop-down here anymore
-        
+
         //fields.add(new Field(WORKGROUP_TYPE_LABEL, "", Field.DROPDOWN, false, WORKGROUP_TYPE_PROPERTY, "", getWorkgroupTypeOptions(), null));
-        fields.add(new Field(WORKGROUP_TYPE_LABEL, "", Field.TEXT, false, WORKGROUP_TYPE_PROPERTY, "", null, null));
+        fields.add(new Field(WORKGROUP_TYPE_LABEL, "", Field.TEXT, false, WORKGROUP_TYPE_PROPERTY, "", false, false, null, null));
         rows.add(new Row(fields));
     }
 

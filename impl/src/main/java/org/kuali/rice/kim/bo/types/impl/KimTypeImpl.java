@@ -25,6 +25,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -35,6 +37,10 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  */
 @Entity
 @Table(name="KRIM_TYP_T")
+@NamedQueries({
+  @NamedQuery(name="KimTypeImpl.FindByKimTypeId", query="select kt from KimTypeImpl kt where kt.kimTypeId = :kimTypeId"),
+  @NamedQuery(name="KimTypeImpl.FindByeKimTypeName", query="select kt from KimTypeImpl kt where kt.name = :name and kt.namespaceCode = :namespaceCode")
+})
 public class KimTypeImpl extends PersistableBusinessObjectBase {
 
 	@Id
@@ -47,16 +53,16 @@ public class KimTypeImpl extends PersistableBusinessObjectBase {
 	@Column(name="SRVC_NM")
 	protected String kimTypeServiceName;
 	@Column(name="ACTV_IND")
-	protected boolean active; 
-	
+	protected boolean active;
+
 	@OneToMany(targetEntity=KimTypeAttributeImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
 	@JoinColumn(name="KIM_TYP_ID", insertable=false, updatable=false)
 	protected List<KimTypeAttributeImpl> attributeDefinitions;
-	
+
 	public KimTypeImpl() {
 		attributeDefinitions = new ArrayList<KimTypeAttributeImpl> ();
 	}
-	
+
 	public List<KimTypeAttributeImpl> getAttributeDefinitions() {
 		return attributeDefinitions;
 	}
@@ -124,5 +130,5 @@ public class KimTypeImpl extends PersistableBusinessObjectBase {
 	public void setKimTypeId(String kimTypeId) {
 		this.kimTypeId = kimTypeId;
 	}
-	
+
 }

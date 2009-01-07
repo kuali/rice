@@ -35,10 +35,9 @@ import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionitem.OutboxItemActionListExtension;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.actionlist.dao.ActionListDAO;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 /**
@@ -208,7 +207,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
                 Criteria groupCrit = new Criteria(objectsToRetrieve.getName());
                 Criteria orCrit = new Criteria(objectsToRetrieve.getName());
                 userCrit.eq("delegatorWorkflowId", principalId);
-                groupCrit.in("delegatorGroupId", new ArrayList(KEWServiceLocator.getWorkgroupService().getUsersGroupIds(principalId)));
+                groupCrit.in("delegatorGroupId", new ArrayList(KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId)));
                 orCrit.or(userCrit);
                 orCrit.or(groupCrit);
                 crit.and(orCrit);
@@ -225,7 +224,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
                 Criteria groupCrit = new Criteria(objectsToRetrieve.getName());
                 Criteria orCrit = new Criteria(objectsToRetrieve.getName());
                 userCrit.eq("delegatorWorkflowId", principalId);
-                groupCrit.in("delegatorGroupId", new ArrayList(KEWServiceLocator.getWorkgroupService().getUsersGroupIds(principalId)));
+                groupCrit.in("delegatorGroupId", new ArrayList(KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId)));
                 orCrit.or(userCrit);
                 orCrit.or(groupCrit);
                 crit.and(orCrit);

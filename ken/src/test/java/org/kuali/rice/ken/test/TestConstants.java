@@ -149,10 +149,32 @@ public class TestConstants {
      * A valid group
      */
     public static final String VALID_GROUP_NAME_1 = "RiceTeam";
+    
+    /**
+     * A valid KIM group name
+     */
+    public static final String VALID_KIM_GROUP_NAME_1 = "WorkflowAdmin";
+    
+    /**
+     * A valid KIM group name
+     */
+    public static final String VALID_KIM_GROUP_ID_1 = "1000464";
+    
+    /**
+     * A valid KIM principal name
+     */
+    //nb: the corresponding id should be TEST_USER_5 (ie "TestUser5")
+    public static final String VALID_KIM_PRINCIPAL_NAME = "testuser5";
+    
     /**
      * Number of members in this group
      */
     public static final int GROUP_1_MEMBERS = 6;
+    
+    /**
+     *
+     */
+    public static final int KIM_GROUP_1_MEMBERS = 1;
     
     /**
      * An invalid content type

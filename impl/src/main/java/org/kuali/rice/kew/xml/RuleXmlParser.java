@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -46,14 +46,15 @@ import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.XmlHelper;
-import org.kuali.rice.kew.workgroup.GroupNameId;
-import org.kuali.rice.kew.workgroup.Workgroup;
+import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimConstants;
 import org.xml.sax.SAXException;
 
 
 /**
  * Parses rules from XML.
- * 
+ *
  * @see RuleBaseValues
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -357,7 +358,7 @@ public class RuleXmlParser implements XmlConstants {
             priority = ruleDelegation.getRuleResponsibility().getPriority().toString();
         }
         String user = element.getChildText(USER, RULE_NAMESPACE);
-        String workgroup = element.getChildText(GROUP, RULE_NAMESPACE);
+        String workgroup = element.getChildText(WORKGROUP, RULE_NAMESPACE);
         String role = element.getChildText(ROLE, RULE_NAMESPACE);
         String approvePolicy = element.getChildText(APPROVE_POLICY, RULE_NAMESPACE);
         Element delegations = element.getChild(DELEGATIONS, RULE_NAMESPACE);
@@ -399,11 +400,12 @@ public class RuleXmlParser implements XmlConstants {
         } else if (workgroup != null) {
             // allow core config parameter replacement in responsibilities
             workgroup = Utilities.substituteConfigParameters(workgroup);
-            Workgroup workgroupObject = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId(workgroup));
+            KimGroup workgroupObject = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, workgroup);
+            //Workgroup workgroupObject = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId(workgroup));
             if (workgroupObject == null) {
                 throw new InvalidXmlException("Could not locate workgroup: " + workgroup);
             }
-            responsibility.setRuleResponsibilityName(workgroupObject.getWorkflowGroupId().getGroupId().toString());
+            responsibility.setRuleResponsibilityName(workgroupObject.getGroupId());
             responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
         } else if (role != null) {
             responsibility.setRuleResponsibilityName(role);

@@ -19,8 +19,6 @@ package org.kuali.rice.kew.actions;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
-import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.rice.kim.bo.group.KimGroup;
 
 
 /**
@@ -44,8 +42,8 @@ public class AdHocRevoke implements java.io.Serializable {
 
 	private Long actionRequestId;
 	private String nodeName;
-	private WorkflowUser user;
-	private KimGroup group;
+	private String principalId;
+	private String groupId;
 	
 	public AdHocRevoke() {}
 	
@@ -61,11 +59,11 @@ public class AdHocRevoke implements java.io.Serializable {
 	public void setNodeName(String nodeName) {
 		this.nodeName = nodeName;
 	}
-	public WorkflowUser getUser() {
-		return user;
+	public String getPrincipalId() {
+		return principalId;
 	}
-	public void setUser(WorkflowUser user) {
-		this.user = user;
+	public void setPrincipalId(String principalId) {
+		this.principalId = principalId;
 	}
 		
 	/**
@@ -81,13 +79,10 @@ public class AdHocRevoke implements java.io.Serializable {
 		if (!StringUtils.isEmpty(getNodeName()) && !getNodeName().equals(actionRequest.getNodeInstance().getName())) {
 			return false;
 		}
-		WorkflowUser user = getUser();
-		if (user != null && (!actionRequest.isUserRequest() || !actionRequest.getWorkflowId().equals(user.getWorkflowId()))) {
+		if (getPrincipalId() != null && (!actionRequest.isUserRequest() || !actionRequest.getWorkflowId().equals(getPrincipalId()))) {
 			return false;
 		}
-		KimGroup group = getGroup();
-		
-		if (group != null && (!actionRequest.isGroupRequest() || !actionRequest.getGroupId().equals(group.getGroupId()))) {
+		if (getGroupId() != null && (!actionRequest.isGroupRequest() || !actionRequest.getGroupId().equals(getGroupId()))) {
 			return false;
 		}
 		return true;
@@ -96,15 +91,15 @@ public class AdHocRevoke implements java.io.Serializable {
 	/**
 	 * @return the group
 	 */
-	public KimGroup getGroup() {
-		return this.group;
+	public String getGroupId() {
+		return this.groupId;
 	}
 
 	/**
 	 * @param group the group to set
 	 */
-	public void setGroup(KimGroup group) {
-		this.group = group;
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
 	}
 	
 }

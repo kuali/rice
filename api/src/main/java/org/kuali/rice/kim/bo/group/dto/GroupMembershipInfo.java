@@ -17,8 +17,6 @@ package org.kuali.rice.kim.bo.group.dto;
 
 import java.sql.Timestamp;
 
-import javax.persistence.Column;
-
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 

@@ -21,8 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kew.lookupable.Field;
-import org.kuali.rice.kew.lookupable.Row;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kew.docsearch.DocumentSearchField;
+//import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 
 
@@ -46,13 +47,13 @@ public class TestXMLSearchableAttributeFloat implements SearchableAttribute {
 		return savs;
 	}
 
-	public List<Row> getSearchingRows(DocumentSearchContext documentSearchContext) {
-		List fields = new ArrayList();
-		Field myField = new Field("title", "", "", false, SEARCH_STORAGE_KEY, "", null, "");
+	public List<DocumentSearchRow> getSearchingRows(DocumentSearchContext documentSearchContext) {
+		List<Field> fields = new ArrayList<Field>();
+		DocumentSearchField myField = new DocumentSearchField("title", "", "", SEARCH_STORAGE_KEY, "", null, "");
 		myField.setFieldDataType((new SearchableAttributeFloatValue()).getAttributeDataType());
 		fields.add(myField);
-		Row row = new Row(fields);
-		List<Row> rows = new ArrayList<Row>();
+		DocumentSearchRow row = new DocumentSearchRow(fields);
+		List<DocumentSearchRow> rows = new ArrayList<DocumentSearchRow>();
 		rows.add(row);
 		return rows;
 	}

@@ -65,7 +65,7 @@ import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
-import org.kuali.rice.kew.lookupable.WorkflowLookupable;
+//import org.kuali.rice.kew.lookupable.WorkflowLookupable;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
@@ -586,11 +586,11 @@ public class DocumentOperationAction extends WorkflowAction {
 
 		if (lookupType != null && !lookupType.equals("")) {
 			lookupUrl.append("&conversionFields=");
-			WorkflowLookupable workflowLookupable = (WorkflowLookupable) GlobalResourceLoader.getService(request.getParameter("lookupableImplServiceName"));//SpringServiceLocator.getExtensionService().getLookupable(request.getParameter("lookupableImplServiceName"));
-			for (Iterator iterator = workflowLookupable.getDefaultReturnType().iterator(); iterator.hasNext();) {
-				String returnType = (String) iterator.next();
-				lookupUrl.append(returnType).append(":").append(lookupType);
-			}
+			//WorkflowLookupable workflowLookupable = (WorkflowLookupable) GlobalResourceLoader.getService(request.getParameter("lookupableImplServiceName"));//SpringServiceLocator.getExtensionService().getLookupable(request.getParameter("lookupableImplServiceName"));
+			//for (Iterator iterator = workflowLookupable.getDefaultReturnType().iterator(); iterator.hasNext();) {
+			//	String returnType = (String) iterator.next();
+			//	lookupUrl.append(returnType).append(":").append(lookupType);
+			//}
 		}
 
 		lookupUrl.append("&returnLocation=").append(basePath).append(mapping.getPath()).append(".do");
@@ -674,7 +674,7 @@ public class DocumentOperationAction extends WorkflowAction {
 				}
 				if ("delegatorWorkgroupId".equals(lookupField)) {
 					if (request.getParameter("workgroupId") != null && !"".equals(request.getParameter("workgroupId").trim())) {
-						actionTaken.setDelegatorGroupId(new Long(request.getParameter("workgroupId")));
+						actionTaken.setDelegatorGroupId(request.getParameter("workgroupId"));
 					} else {
 						actionTaken.setDelegatorGroupId(null);
 					}

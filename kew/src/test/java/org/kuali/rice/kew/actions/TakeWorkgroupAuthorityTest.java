@@ -26,18 +26,12 @@ import org.junit.Test;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.dto.ActionTakenDTO;
-import org.kuali.rice.kew.dto.GroupIdDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.dto.WorkflowGroupIdDTO;
-import org.kuali.rice.kew.identity.IdentityFactory;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.workgroup.GroupNameId;
-import org.kuali.rice.kew.workgroup.Workgroup;
-import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.util.KimConstants;
 
 
@@ -83,7 +77,7 @@ public class TakeWorkgroupAuthorityTest extends KEWTestCase {
         WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("user1"), DOC_TYPE);
         doc.routeDocument("");
 
-        GroupIdDTO groupId = IdentityFactory.newGroupIdByName(KimConstants.TEMP_GROUP_NAMESPACE, "TestWorkgroup");
+        String groupId = getGroupIdForName(KimConstants.TEMP_GROUP_NAMESPACE, "TestWorkgroup");
 
         //verify that all members have the action item
         ActionListService aiService = KEWServiceLocator.getActionListService();

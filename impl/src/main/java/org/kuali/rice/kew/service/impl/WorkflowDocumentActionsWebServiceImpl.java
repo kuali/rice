@@ -70,23 +70,21 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         }
     }
     
-    public RouteHeaderDTO releaseGroupAuthority(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, GroupIdDTO groupId, String annotation) throws WorkflowException {
+    public RouteHeaderDTO releaseGroupAuthority(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, String groupId, String annotation) throws WorkflowException {
         DocumentRouteHeaderValue routeHeader = init(routeHeaderVO);
         incomingParamCheck(userId, "userId");
         LOG.debug("Releasing group authority [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", groupId=" + groupId + ", annotation=" + annotation + "]");
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
-        KimGroup group = KEWServiceLocator.getIdentityHelperService().getGroup(groupId);
-        routeHeader = KEWServiceLocator.getWorkflowDocumentService().releaseGroupAuthority(user, routeHeader, group, annotation);
+        routeHeader = KEWServiceLocator.getWorkflowDocumentService().releaseGroupAuthority(user, routeHeader, groupId, annotation);
         return DTOConverter.convertRouteHeader(routeHeader, user);
     }
     
-    public RouteHeaderDTO takeGroupAuthority(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, GroupIdDTO groupId, String annotation) throws WorkflowException {
+    public RouteHeaderDTO takeGroupAuthority(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, String groupId, String annotation) throws WorkflowException {
         DocumentRouteHeaderValue routeHeader = init(routeHeaderVO);
         incomingParamCheck(userId, "userId");
         LOG.debug("Taking workgroup authority [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", groupInfo=" + groupId + ", annotation=" + annotation + "]");
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
-        KimGroup group = KEWServiceLocator.getIdentityHelperService().getGroup(groupId);
-        routeHeader = KEWServiceLocator.getWorkflowDocumentService().takeGroupAuthority(user, routeHeader, group, annotation);
+        routeHeader = KEWServiceLocator.getWorkflowDocumentService().takeGroupAuthority(user, routeHeader, groupId, annotation);
         return DTOConverter.convertRouteHeader(routeHeader, user);
     }
     
@@ -108,17 +106,28 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         return DTOConverter.convertRouteHeader(routeHeader, user);
     }
     
-    public RouteHeaderDTO appSpecificRouteDocument(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, String actionRequested, String nodeName, String annotation, ResponsiblePartyDTO responsiblePartyVO, String responsibilityDesc, boolean ignorePrevActions) throws WorkflowException {
+    public RouteHeaderDTO adHocRouteDocumentToPrincipal(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, String actionRequested, String nodeName, String annotation, String recipientPrincipalId, String responsibilityDesc, boolean ignorePrevActions) throws WorkflowException {
         DocumentRouteHeaderValue routeHeader = init(routeHeaderVO);
         incomingParamCheck(userId, "userId");
         incomingParamCheck(actionRequested, "actionRequested");
         //incomingParamCheck(routeMethodName, "routeMethodName");
-        incomingParamCheck(responsiblePartyVO, "responsiblePartyVO");
-        LOG.debug("AdHoc Route [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", actionRequest=" + actionRequested + ", nodeName=" + nodeName + ", responsibleParty=" + responsiblePartyVO + ", ignorePrevious=" + ignorePrevActions + ", annotation="+annotation+"]");
+        incomingParamCheck(recipientPrincipalId, "recipientPrincipalId");
+        LOG.debug("AdHoc Route [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", actionRequest=" + actionRequested + ", nodeName=" + nodeName + ", recipientPrincipalId=" + recipientPrincipalId + ", ignorePrevious=" + ignorePrevActions + ", annotation="+annotation+"]");
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
         
-        Recipient recipient = DTOConverter.convertResponsiblePartyVOtoRecipient(responsiblePartyVO);
-        routeHeader = KEWServiceLocator.getWorkflowDocumentService().appSpecificRouteDocument(user, routeHeader, actionRequested, nodeName, annotation, recipient, responsibilityDesc, new Boolean(ignorePrevActions));
+        routeHeader = KEWServiceLocator.getWorkflowDocumentService().adHocRouteDocumentToPrincipal(user, routeHeader, actionRequested, nodeName, annotation, recipientPrincipalId, responsibilityDesc, new Boolean(ignorePrevActions));
+        return DTOConverter.convertRouteHeader(routeHeader, user);
+    }
+    
+    public RouteHeaderDTO adHocRouteDocumentToGroup(UserIdDTO userId, RouteHeaderDTO routeHeaderVO, String actionRequested, String nodeName, String annotation, String recipientGroupId, String responsibilityDesc, boolean ignorePrevActions) throws WorkflowException {
+        DocumentRouteHeaderValue routeHeader = init(routeHeaderVO);
+        incomingParamCheck(userId, "userId");
+        incomingParamCheck(actionRequested, "actionRequested");
+        //incomingParamCheck(routeMethodName, "routeMethodName");
+        incomingParamCheck(recipientGroupId, "recipientGroupId");
+        LOG.debug("AdHoc Route [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", actionRequest=" + actionRequested + ", nodeName=" + nodeName + ", recipientGroupId=" + recipientGroupId + ", ignorePrevious=" + ignorePrevActions + ", annotation="+annotation+"]");
+        WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
+        routeHeader = KEWServiceLocator.getWorkflowDocumentService().adHocRouteDocumentToGroup(user, routeHeader, actionRequested, nodeName, annotation, recipientGroupId, responsibilityDesc, new Boolean(ignorePrevActions));
         return DTOConverter.convertRouteHeader(routeHeader, user);
     }
     

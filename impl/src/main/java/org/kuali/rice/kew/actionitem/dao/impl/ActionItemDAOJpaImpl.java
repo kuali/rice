@@ -16,8 +16,8 @@ package org.kuali.rice.kew.actionitem.dao.impl;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -161,7 +161,7 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
     }
 
     public Collection<Recipient> findPrimaryDelegationRecipients(String principalId) throws KEWUserNotFoundException {
-    	Set<Long> workgroupIds = KEWServiceLocator.getWorkgroupService().getUsersGroupIds(principalId);
+    	List<String> workgroupIds = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
         Criteria orCriteria = new Criteria(ActionItem.class.getName());
         Criteria delegatorWorkflowIdCriteria = new Criteria(ActionItem.class.getName());
         delegatorWorkflowIdCriteria.eq("delegatorWorkflowId", principalId);

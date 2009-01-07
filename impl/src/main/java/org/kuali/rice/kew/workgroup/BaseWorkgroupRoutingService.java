@@ -102,7 +102,7 @@ public class BaseWorkgroupRoutingService implements WorkgroupRoutingService {
         getWorkgroupService().save(newWorkgroup);
         if (oldWorkgroup != null) {
             // if there was an old workgroup then we need to update for member change
-            KEWServiceLocator.getActionListService().updateActionItemsForWorkgroupChange(oldWorkgroup, newWorkgroup);
+            KEWServiceLocator.getActionListService().updateActionItemsForWorkgroupChange(oldWorkgroup.getWorkflowGroupId().getGroupId()+"", newWorkgroup.getWorkflowGroupId().getGroupId()+"");
         }
     }
 
@@ -210,7 +210,7 @@ public class BaseWorkgroupRoutingService implements WorkgroupRoutingService {
 	    workgroup.setMembers(new ArrayList<Recipient>());
 	    workgroup.materializeMembers();
 	    versionAndSave(workgroup);
-	    KEWServiceLocator.getActionListService().updateActionItemsForWorkgroupChange(existingWorkgroup, workgroup);
+	    KEWServiceLocator.getActionListService().updateActionItemsForWorkgroupChange(existingWorkgroup.getWorkflowGroupId().getGroupId() + "", workgroup.getWorkflowGroupId().getGroupId() + "");
 	}
     }
 
@@ -272,7 +272,7 @@ public class BaseWorkgroupRoutingService implements WorkgroupRoutingService {
 	    workgroup.setMembers(new ArrayList<Recipient>());
 	    workgroup.materializeMembers();
 	    versionAndSave(workgroup);
-	    KEWServiceLocator.getActionListService().updateActionItemsForWorkgroupChange(existingWorkgroup, workgroup);
+	    KEWServiceLocator.getActionListService().updateActionItemsForWorkgroupChange(existingWorkgroup.getWorkgroupId() + "", workgroup.getWorkgroupId() + "");
 	}
 
     }

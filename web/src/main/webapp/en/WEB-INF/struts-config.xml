@@ -48,11 +48,11 @@
    	    <forward name="NotAuthorized" path="/WEB-INF/jsp/NotAuthorized.jsp" />
     </global-forwards>
 
-    <!-- ========== action mapping definitions ============================= -->
+    <!--  ========== action mapping definitions ============================= -->
     <action-mappings>
 
       <action path="/RuleQuickLinks" scope="request" type="org.kuali.rice.kew.rule.web.RuleQuickLinksAction"
-      	parameter="methodToCall" name="RuleQuickLinkForm">
+      	attribute="KualiForm" parameter="methodToCall" name="RuleQuickLinkForm">
       	<forward name="basic" path="/WEB-INF/jsp/rules/RuleQuickLinks.jsp" />
 	    <forward name="requiredStateError" path="/WEB-INF/jsp/rules/RuleQuickLinks.jsp"/>
         <forward name="finalStateError" path="/WEB-INF/jsp/rules/RuleQuickLinks.jsp"/>

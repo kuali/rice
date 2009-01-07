@@ -45,6 +45,7 @@ import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
@@ -236,15 +237,15 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 		return null;
 	}
 
-	public List search(String docTypeName, Long ruleId, Long ruleTemplateId, String ruleDescription, Long workgroupId, String workflowId, String roleName, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective) {
+	public List search(String docTypeName, Long ruleId, Long ruleTemplateId, String ruleDescription, String workgroupId, String workflowId, String roleName, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective) {
         Criteria crit = getSearchCriteria(docTypeName, ruleTemplateId, ruleDescription, delegateRule, activeInd, extensionValues);
         if (ruleId != null) {
             crit.addEqualTo("ruleBaseValuesId", ruleId);
         }
         if (workgroupId != null) {
-            crit.addIn("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(workgroupId.toString()));
+            crit.addIn("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(workgroupId));
         }
-        Set<Long> workgroupIds = new HashSet<Long>();
+        List<String> workgroupIds = new ArrayList<String>();
         Boolean searchUser = Boolean.FALSE;
         Boolean searchUserInWorkgroups = Boolean.FALSE;
         if (!Utilities.isEmpty(workflowIdDirective)) {
@@ -267,7 +268,7 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
             if (user == null) {
         	throw new WorkflowRuntimeException("Failed to locate user for the given workflow id: " + workflowId);
             }
-            workgroupIds = KEWServiceLocator.getWorkgroupService().getUsersGroupIds(user.getWorkflowId());
+            workgroupIds = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(user.getWorkflowId());
         }
         crit.addIn("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(workgroupIds, workflowId, roleName, searchUser, searchUserInWorkgroups));
 
@@ -280,10 +281,10 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
         return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleBaseValues.class, crit, true));
     }
 
-    private ReportQueryByCriteria getResponsibilitySubQuery(Set<Long> workgroupIds, String workflowId, String roleName, Boolean searchUser, Boolean searchUserInWorkgroups) {
+    private ReportQueryByCriteria getResponsibilitySubQuery(List<String> workgroupIds, String workflowId, String roleName, Boolean searchUser, Boolean searchUserInWorkgroups) {
         Collection<String> workgroupIdStrings = new ArrayList<String>();
-        for (Long workgroupId : workgroupIds) {
-            workgroupIdStrings.add(workgroupId.toString());
+        for (String workgroupId : workgroupIds) {
+            workgroupIdStrings.add(workgroupId);
         }
         return getResponsibilitySubQuery(workgroupIdStrings,workflowId,roleName,new ArrayList<String>(), searchUser, searchUserInWorkgroups);
     }

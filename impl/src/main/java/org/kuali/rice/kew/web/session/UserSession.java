@@ -37,11 +37,10 @@ import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.workgroup.GroupNameId;
-import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimConstants;
 
 
 /**
@@ -268,8 +267,8 @@ public class UserSession implements Serializable {
     }
 
     public boolean isAdmin(){
-    	 Workgroup workflowAdminGroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId(Utilities.getApplicationConstant(KEWConstants.WORKFLOW_ADMIN_WORKGROUP_NAME_KEY)));
-    	 return workflowAdminGroup.hasMember(getWorkflowUser());
+String groupName = Utilities.getApplicationConstant(KEWConstants.WORKFLOW_ADMIN_WORKGROUP_NAME_KEY);
+    	 return KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(getWorkflowUser().getWorkflowId(), KimConstants.TEMP_GROUP_NAMESPACE, groupName);
     }
 
     /**

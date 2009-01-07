@@ -45,13 +45,15 @@ import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.KeyLabelPair;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.workgroup.GroupNameId;
-import org.kuali.rice.kew.workgroup.WorkflowGroupId;
-import org.kuali.rice.kew.workgroup.Workgroup;
-import org.kuali.rice.kew.workgroup.WorkgroupService;
+import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.service.IdentityManagementService;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.KeyLabelPair;
+import org.kuali.rice.kns.web.ui.Row;
 
 
 /**
@@ -62,10 +64,10 @@ import org.kuali.rice.kns.util.KNSConstants;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class RuleBaseValuesLookupableImpl implements WorkflowLookupable, Exportable {
+public class RuleBaseValuesLookupableImpl implements /*WorkflowLookupable,*/ Exportable {
 
-	private List rows;
-	private List columns = establishColumns();
+	private List<Row> rows;
+	private List<Column> columns = establishColumns();
 	private static final String title = "Rule Lookup";
 	private static final String returnLocation = "Lookup.do";
 
@@ -105,7 +107,6 @@ public class RuleBaseValuesLookupableImpl implements WorkflowLookupable, Exporta
 	private static final String RULE_TEMPLATE_LOOKUPABLE = "RuleTemplateLookupableImplService";
 	private static final String WORKGROUP_LOOKUPABLE = "WorkGroupLookupableImplService";
 	private static final String PERSON_LOOKUPABLE = "UserLookupableImplService";
-//	private static final String ROLE_LOOKUPABLE = "RoleLookupableImplService";
 
 	private static final String RULE_ID_PROPERTY_NAME = "ruleBaseValuesId";
 	private static final String RULE_TEMPLATE_ID_PROPERTY_NAME = "ruleTemplate.ruleTemplateId";
@@ -116,77 +117,77 @@ public class RuleBaseValuesLookupableImpl implements WorkflowLookupable, Exporta
 	private static final String BACK_LOCATION = "backLocation";
 	private static final String DOC_FORM_KEY = "docFormKey";
 
+/* Will need to rewrite to use KNS
 	public RuleBaseValuesLookupableImpl() {
 		rows = new ArrayList();
 
-		List fields = new ArrayList();
+		List<Field> fields = new ArrayList<Field>();
 		fields.add(new Field(DOC_TYP_NAME_FIELD_LABEL, DOC_TYP_NAME_FIELD_HELP, Field.TEXT, true, DOC_TYP_NAME_PROPERTY_NAME, "", null, DOC_TYP_LOOKUPABLE));
 		fields.add(new Field("", "", Field.QUICKFINDER, false, "", "", null, DOC_TYP_LOOKUPABLE));
 		rows.add(new Row(fields));
 
-		fields = new ArrayList();
+		fields = new ArrayList<Field>();
 		fields.add(new Field("", "", Field.HIDDEN, true, RULE_TEMPLATE_PROPERTY_NAME, "", null, RULE_TEMPLATE_LOOKUPABLE));
 		fields.add(new Field(RULE_TEMPLATE_FIELD_LABEL, RULE_TEMPLATE_FIELD_HELP, Field.QUICKFINDER, false, RULE_TEMPLATE_PROPERTY_NAME, "", null, RULE_TEMPLATE_LOOKUPABLE));
 		fields.add(new Field("", "", Field.LOOKUP_RESULT_ONLY, true, RULE_TEMPLATE_ID_PROPERTY_NAME, "", null, RULE_TEMPLATE_LOOKUPABLE));
 		rows.add(new Row(fields));
 
-		fields = new ArrayList();
+		fields = new ArrayList<Field>();
 		fields.add(new Field(RULE_DESC_FIELD_LABEL, RULE_DESC_FIELD_HELP, Field.TEXT, false, RULE_DESC_PROPERTY_NAME, "", null, null));
 		rows.add(new Row(fields));
 
-		fields = new ArrayList();
+		fields = new ArrayList<Field>();
 		fields.add(new Field(WORKGROUP_FIELD_LABEL, WORKGROUP_FIELD_HELP, Field.TEXT, true, WORKGROUP_PROPERTY_NAME, "", null, WORKGROUP_LOOKUPABLE));
 		fields.add(new Field("", "", Field.QUICKFINDER, false, "", "", null, WORKGROUP_LOOKUPABLE));
 		fields.add(new Field("", "", Field.HIDDEN, false, RULE_DELEGATE_ONLY_PROPERTY_NAME, "", null, null));
 		fields.add(new Field("", "", Field.LOOKUP_RESULT_ONLY, true, WORKGROUP_ID_PROPERTY_NAME, "", null, ""));
 		rows.add(new Row(fields));
 
-		fields = new ArrayList();
+		fields = new ArrayList<Field>();
 		fields.add(new Field(PERSON_FIELD_LABEL, PERSON_FIELD_HELP, Field.TEXT, true, PERSON_PROPERTY_NAME, "", null, PERSON_LOOKUPABLE));
 		fields.add(new Field("", "", Field.QUICKFINDER, false, "", "", null, PERSON_LOOKUPABLE));
 		rows.add(new Row(fields));
 
-		List options = new ArrayList();
+		List<KeyLabelPair> options = new ArrayList<KeyLabelPair>();
 	        options.add(new KeyLabelPair("user", "User"));
 	        options.add(new KeyLabelPair("workgroup", "Workgroup Member"));
 	        options.add(new KeyLabelPair("both", "Either"));
 
-	        fields = new ArrayList();
+	        fields = new ArrayList<Field>();
 	        fields.add(new Field(PERSON_REVIEWER_TYPE_FIELD_LABEL, PERSON_REVIEWER_TYPE_FIELD_HELP, Field.RADIO, false, PERSON_REVIEWER_TYPE_NAME, "user", options, null));
 	        rows.add(new Row(fields));
 
-		fields = new ArrayList();
+		fields = new ArrayList<Field>();
 		fields.add(new Field(ROLE_FIELD_LABEL, ROLE_FIELD_HELP, Field.TEXT, false, ROLE_PROPERTY_NAME, "", null, null));//ROLE_LOOKUPABLE));
-	//	fields.add(new Field("", "", Field.QUICKFINDER, false, "", "", null, ROLE_LOOKUPABLE));
 		rows.add(new Row(fields));
 
-		fields = new ArrayList();
+		fields = new ArrayList<Field>();
 		fields.add(new Field(RULE_ID_FIELD_LABEL, RULE_ID_FIELD_HELP, Field.TEXT, false, RULE_ID_PROPERTY_NAME, "", null, null));
 		fields.add(new Field("", "", Field.HIDDEN, false, KEWConstants.DELEGATION_WIZARD, "", null, null));
 		rows.add(new Row(fields));
 
-		options = new ArrayList();
+		options = new ArrayList<KeyLablePair>();
 		options.add(new KeyLabelPair("true", "Active"));
 		options.add(new KeyLabelPair("false", "Inactive"));
 		options.add(new KeyLabelPair("ALL", "Show All"));
 
-		fields = new ArrayList();
+		fields = new ArrayList<Field>();
 		fields.add(new Field(ACTIVE_IND_FIELD_LABEL, ACTIVE_IND_FIELD_HELP, Field.RADIO, false, ACTIVE_IND_PROPERTY_NAME, "true", options, null));
 		rows.add(new Row(fields));
 
-		options = new ArrayList();
+		options = new ArrayList<KeyLabelPair>();
 		options.add(new KeyLabelPair("false", "Non-Delegates"));
 		options.add(new KeyLabelPair("true", "Delegates"));
 		options.add(new KeyLabelPair("ALL", "Show All"));
 
-		fields = new ArrayList();
+		fields = new ArrayList<Field>();
 		fields.add(new Field(DELEGATE_RULE_FIELD_LABEL, DELEGATE_RULE_FIELD_HELP, Field.RADIO, true, DELEGATE_RULE_PROPERTY_NAME, "false", options, null));
 		rows.add(new Row(fields));
 
 	}
-
+*/
 	private List establishColumns() {
-		List columnList = new ArrayList();
+		List<Column> columnList = new ArrayList<Column>();
 		columnList.add(new Column("Rule Id", Column.COLUMN_IS_SORTABLE_VALUE, "ruleBaseValuesId"));
 		columnList.add(new Column("Document Type Name", Column.COLUMN_IS_SORTABLE_VALUE, "docTypeName"));
 		columnList.add(new Column("Rule Name", Column.COLUMN_IS_SORTABLE_VALUE, "name"));
@@ -310,14 +311,14 @@ public class RuleBaseValuesLookupableImpl implements WorkflowLookupable, Exporta
 		String workgroupNameParam = (String) fieldValues.get(WORKGROUP_PROPERTY_NAME);
 
 		if (workgroupNameParam != null && !workgroupNameParam.trim().equals("") || workgroupIdParam != null && !"".equals(workgroupIdParam) && !"null".equals(workgroupIdParam)) {
-			Workgroup workgroup = null;
+			KimGroup workgroup = null;
 			if (workgroupIdParam != null && !"".equals(workgroupIdParam)) {
-				workgroup = getWorkgroupService().getWorkgroup(new WorkflowGroupId(new Long(workgroupIdParam.trim())));
+				workgroup = getIdentityManagementService().getGroup(workgroupIdParam.trim());
 			} else {
-				workgroup = getWorkgroupService().getWorkgroup(new GroupNameId(workgroupNameParam.trim()));
+				workgroup = getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, workgroupNameParam.trim());
 			}
 			if (workgroup != null) {
-				setFieldValue(WORKGROUP_PROPERTY_NAME, workgroup.getGroupNameId().getNameId());
+				setFieldValue(WORKGROUP_PROPERTY_NAME, workgroup.getGroupName());
 			}
 		} else {
 			setFieldValue(WORKGROUP_PROPERTY_NAME, "");
@@ -365,7 +366,7 @@ public class RuleBaseValuesLookupableImpl implements WorkflowLookupable, Exporta
 
 		String docTypeSearchName = null;
 		String workflowId = null;
-		Long workgroupId = null;
+		String workgroupId = null;
 		Long ruleTemplateId = null;
 		Boolean isDelegateRule = null;
 		Boolean isActive = null;
@@ -393,16 +394,15 @@ public class RuleBaseValuesLookupableImpl implements WorkflowLookupable, Exporta
 		}
 
 		if (workgroupNameParam != null && !workgroupNameParam.trim().equals("") || workgroupIdParam != null && !"".equals(workgroupIdParam) && !"null".equals(workgroupIdParam)) {
-			Workgroup workgroup = null;
+			KimGroup workgroup = null;
 			if (workgroupIdParam != null && !"".equals(workgroupIdParam)) {
-				workgroupId = new Long(workgroupIdParam.trim());
-				workgroup = getWorkgroupService().getWorkgroup(new WorkflowGroupId(workgroupId));
+				workgroup = getIdentityManagementService().getGroup(workgroupIdParam.trim());
 			} else {
-				workgroup = getWorkgroupService().getWorkgroup(new GroupNameId(workgroupNameParam.trim()));
+				workgroup = getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, workgroupNameParam.trim());
 				if (workgroup == null) {
 					errors.add(new WorkflowServiceErrorImpl("Document Type Invalid", "routetemplate.ruleservice.workgroup.invalid"));
 				} else {
-					workgroupId = new Long(workgroup.getWorkflowGroupId().getGroupId().longValue());
+					workgroupId = workgroup.getGroupId();
 				}
 			}
 		}
@@ -447,8 +447,8 @@ public class RuleBaseValuesLookupableImpl implements WorkflowLookupable, Exporta
 							if (!attributeParam.equals("")) {
 								if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
 									attributes.put(field.getPropertyName(), attributeParam.trim());
-								} else if (!Utilities.isEmpty(field.getDefaultLookupableName())) {
-									attributes.put(field.getDefaultLookupableName(), attributeParam.trim());
+								//} else if (!Utilities.isEmpty(field.getDefaultLookupableName())) {
+								//	attributes.put(field.getDefaultLookupableName(), attributeParam.trim());
 								} else {
 									attributes.put(field.getPropertyName(), attributeParam.trim());
 								}
@@ -457,8 +457,8 @@ public class RuleBaseValuesLookupableImpl implements WorkflowLookupable, Exporta
 						if (field.getFieldType().equals(Field.TEXT) || field.getFieldType().equals(Field.DROPDOWN) || field.getFieldType().equals(Field.DROPDOWN_REFRESH) || field.getFieldType().equals(Field.RADIO)) {
 							if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
 								myColumns.getColumns().add(new KeyLabelPair(field.getPropertyName(), ruleTemplateAttribute.getRuleTemplateAttributeId()+""));
-							} else if (!Utilities.isEmpty(field.getDefaultLookupableName())) {
-								myColumns.getColumns().add(new KeyLabelPair(field.getDefaultLookupableName(), ruleTemplateAttribute.getRuleTemplateAttributeId()+""));
+							//} else if (!Utilities.isEmpty(field.getDefaultLookupableName())) {
+							//	myColumns.getColumns().add(new KeyLabelPair(field.getDefaultLookupableName(), ruleTemplateAttribute.getRuleTemplateAttributeId()+""));
 							} else {
 								myColumns.getColumns().add(new KeyLabelPair(field.getPropertyName(), ruleTemplateAttribute.getRuleTemplateAttributeId()+""));
 							}
@@ -610,9 +610,9 @@ public class RuleBaseValuesLookupableImpl implements WorkflowLookupable, Exporta
 		return (RuleTemplateService) KEWServiceLocator.getService(KEWServiceLocator.RULE_TEMPLATE_SERVICE);
 	}
 
-	private WorkgroupService getWorkgroupService() {
-		return (WorkgroupService) KEWServiceLocator.getService(KEWServiceLocator.WORKGROUP_SRV);
-	}
+    private IdentityManagementService getIdentityManagementService() {
+        return (IdentityManagementService) KIMServiceLocator.getService(KIMServiceLocator.KIM_IDENTITY_MANAGEMENT_SERVICE);
+    }
 
 	private UserService getUserService() {
 		return (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);

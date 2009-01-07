@@ -28,6 +28,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.collections.ComparatorUtils;
 import org.apache.commons.collections.comparators.ComparableComparator;
 import org.apache.commons.lang.StringUtils;
@@ -49,6 +50,7 @@ import org.kuali.rice.kew.actionlist.ActionToTake;
 import org.kuali.rice.kew.actionlist.CustomActionListAttribute;
 import org.kuali.rice.kew.actionlist.PaginatedActionList;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
+import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actions.ActionSet;
 import org.kuali.rice.kew.actions.asyncservices.ActionInvocation;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -65,10 +67,10 @@ import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.WorkflowAction;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kew.workgroup.GroupNameId;
-import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KualiConfigurationService;
+import org.kuali.rice.kim.service.IdentityManagementService;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.util.KNSConstants;
 
 
@@ -629,9 +631,9 @@ public class ActionListAction extends WorkflowAction {
 
         //refactor actionlist.jsp not to be dependent on this
         request.setAttribute("preferences", getUserSession(request).getPreferences());
-        WorkgroupService workgroupSrv = (WorkgroupService) KEWServiceLocator.getWorkgroupService();
+        IdentityManagementService ims = (IdentityManagementService) KIMServiceLocator.getIdentityManagementService();
         String kewHelpDeskWgName = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.HELP_DESK_ACTION_LIST);
-        if (kewHelpDeskWgName != null && workgroupSrv.isUserMemberOfGroup(new GroupNameId(kewHelpDeskWgName), getUserSession(request).getWorkflowUser().getWorkflowId())) {
+        if (kewHelpDeskWgName != null && ims.isMemberOfGroup(getUserSession(request).getWorkflowUser().getWorkflowId(), KimConstants.TEMP_GROUP_NAMESPACE, kewHelpDeskWgName)) {
             request.setAttribute("helpDeskActionList", "true");
         }
         String routeLogPopup = "false";
@@ -677,18 +679,23 @@ public class ActionListAction extends WorkflowAction {
         return recipientList;
     }
 
-    public class WebFriendlyRecipient {
+    public class WebFriendlyRecipient
+    {
         private String displayName;
         private String recipientId;
 
         public WebFriendlyRecipient(Recipient recipient) {
-            if (recipient instanceof Workgroup) {
-                recipientId = ((Workgroup) recipient).getWorkflowGroupId().getGroupId().toString();
-                displayName = recipient.getDisplayName();
-            } else if (recipient instanceof WorkflowUser) {
+            if (recipient instanceof WorkflowUser)
+            {
                 recipientId = ((WorkflowUser) recipient).getWorkflowUserId().getWorkflowId();
                 displayName = ((WorkflowUser) recipient).getTransposedName();
             }
+            else if (recipient instanceof KimGroupRecipient)
+            {
+                recipientId = ((KimGroupRecipient) recipient).getGroup().getGroupId();
+                displayName = ((KimGroupRecipient) recipient).getDisplayName();
+            }
+
         }
 
         public String getRecipientId() {

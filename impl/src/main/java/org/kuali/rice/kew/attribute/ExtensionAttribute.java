@@ -18,7 +18,7 @@ package org.kuali.rice.kew.attribute;
 
 import java.util.List;
 
-import org.kuali.rice.kew.lookupable.Row;
+import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kew.validation.ValidationContext;
 import org.kuali.rice.kew.validation.ValidationResults;
 

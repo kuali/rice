@@ -34,7 +34,7 @@ import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
-import org.kuali.rice.kew.lookupable.WorkflowLookupable;
+//import org.kuali.rice.kew.lookupable.WorkflowLookupable;
 import org.kuali.rice.kew.rule.MyRules2;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
@@ -71,6 +71,7 @@ public class DelegateRule2Action extends WorkflowAction {
         return mapping.findForward("basic");
     }
 
+    /*
     public ActionForward performLookup(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         Rule2Form ruleForm = (Rule2Form) form;
         String lookupType = ruleForm.getLookupType();
@@ -102,7 +103,7 @@ public class DelegateRule2Action extends WorkflowAction {
         lookupUrl.append("&returnLocation=").append(basePath).append(mapping.getPath()).append(".do");
         return new ActionForward(lookupUrl.toString(), true);
     }
-
+     */
     public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
         Rule2Form ruleForm = (Rule2Form) form;
         ruleForm.setActionRequestCodes(CodeTranslator.arLabels);

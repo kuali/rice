@@ -45,20 +45,17 @@ import org.apache.struts.action.ActionMessages;
 import org.apache.struts.util.MessageResources;
 import org.displaytag.tags.TableTagParameters;
 import org.displaytag.util.ParamEncoder;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
+import org.kuali.rice.kew.docsearch.DocumentSearchColumn;
 import org.kuali.rice.kew.docsearch.DocumentSearchCriteriaProcessor;
 import org.kuali.rice.kew.docsearch.DocumentSearchResult;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
 import org.kuali.rice.kew.docsearch.SavedSearchResult;
-import org.kuali.rice.kew.docsearch.SearchAttributeCriteriaComponent;
 import org.kuali.rice.kew.docsearch.StandardDocumentSearchCriteriaProcessor;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
-import org.kuali.rice.kew.lookupable.Column;
-import org.kuali.rice.kew.lookupable.WorkflowLookupable;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.WorkflowUser;
@@ -68,20 +65,18 @@ import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.KeyValue;
 import org.kuali.rice.kew.web.WorkflowAction;
 import org.kuali.rice.kew.web.session.UserSession;
-import org.kuali.rice.kew.workgroup.WorkflowGroupId;
-import org.kuali.rice.kew.workgroup.Workgroup;
+import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.bo.group.*;
 
 /**
  * Document search struts action
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DocumentSearchAction extends WorkflowAction {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentSearchAction.class);
-    
+
     public static final Map<String,String> SEARCH_RESULT_LABEL_KEYS_BY_COLUMN_KEY = new HashMap<String,String>();
     static {
         SEARCH_RESULT_LABEL_KEYS_BY_COLUMN_KEY.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID,"docSearch.DocumentSearch.results.label.documentId");
@@ -92,7 +87,7 @@ public class DocumentSearchAction extends WorkflowAction {
         SEARCH_RESULT_LABEL_KEYS_BY_COLUMN_KEY.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DATE_CREATED,"docSearch.DocumentSearch.results.label.dateCreated");
         SEARCH_RESULT_LABEL_KEYS_BY_COLUMN_KEY.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG,"docSearch.DocumentSearch.results.label.routeLog");
     }
-    
+
     public static final List<KeyValue> DOCUMENT_SEARCH_SEARCHABLE_DOCUMENT_STATUSES = Arrays.asList(new KeyValue[] { new KeyValue("I", "Initiated"),
             new KeyValue("R", "Enroute"),
             new KeyValue("S", "Saved"),
@@ -122,21 +117,48 @@ public class DocumentSearchAction extends WorkflowAction {
         String lookupType = docSearchForm.getLookupType();
         docSearchForm.setLookupType(null);
 
-        lookupUrl.append("/Lookup.do?methodToCall=start&docFormKey=").append(getUserSession(request).addObject(form)).append("&lookupableImplServiceName=").append(request.getParameter("lookupableImplServiceName"));
+        String docFormKey = getUserSession(request).addObject(form);
+        lookupUrl.append("/Lookup.do?methodToCall=start&docFormKey=").append(docFormKey).append("&lookupableImplServiceName=").append(request.getParameter("lookupableImplServiceName"));
+
+        StringBuffer conversionFields = new StringBuffer();
 
         if (lookupType != null && !lookupType.equals("")) {
             lookupUrl.append("&conversionFields=");
-            WorkflowLookupable workflowLookupable = (WorkflowLookupable) GlobalResourceLoader.getService(request.getParameter("lookupableImplServiceName"));
-            for (Iterator iterator = workflowLookupable.getDefaultReturnType().iterator(); iterator.hasNext();) {
-                String returnType = (String) iterator.next();
-                lookupUrl.append(returnType).append(":").append(lookupType);
-            }
+
+            //WorkflowLookupable workflowLookupable = (WorkflowLookupable) GlobalResourceLoader.getService(request.getParameter("lookupableImplServiceName"));
+            //for (Iterator iterator = workflowLookupable.getDefaultReturnType().iterator(); iterator.hasNext();) {
+            //    String returnType = (String) iterator.next();
+            //    conversionFields.append(returnType).append(":").append(lookupType);
+            //}
+            lookupUrl.append(conversionFields);
         } else if (!Utilities.isEmpty(docSearchForm.getConversionFields())) {
             lookupUrl.append("&conversionFields=");
             lookupUrl.append(docSearchForm.getConversionFields());
+            conversionFields.append(docSearchForm.getConversionFields());
         }
 
         lookupUrl.append("&returnLocation=").append(basePath).append(mapping.getPath()).append(".do");
+
+        /*
+        * Code below added by Jeremy and Eric - 12-10-2008
+        *
+        * Temporarily,  until Document Search is converted to a proper lookup, let's have our outgoing lookup links
+        * for the Document Type lookup
+        * generated in here, instead of using the KNS tags to generate our lookup links
+        */
+       String lookupableImplServiceName = request.getParameter("lookupableImplServiceName");
+       if (lookupableImplServiceName.equals(DocumentSearchCriteriaProcessor.DOC_TYP_LOOKUPABLE)) {
+           lookupUrl = new StringBuffer();
+           lookupUrl.append("../kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.doctype.bo.DocumentType&docFormKey=" +
+               docFormKey +
+               "&returnLocation=" +
+               basePath +
+               mapping.getPath() +
+               ".do" +
+               "&conversionFields=" +
+               conversionFields.toString());
+       }
+
         return new ActionForward(lookupUrl.toString(), true);
     }
 
@@ -252,7 +274,7 @@ public class DocumentSearchAction extends WorkflowAction {
         mr.setReturnNull(true);
         Locale locale = (Locale) request.getAttribute(Globals.LOCALE_KEY);
         for (Iterator iter = columns.iterator(); iter.hasNext();) {
-            Column column = (Column) iter.next();
+            DocumentSearchColumn column = (DocumentSearchColumn) iter.next();
             if ((column.getColumnTitle() == null) || (column.getColumnTitle().trim().length() == 0)) {
                 String title = mr.getMessage(locale, SEARCH_RESULT_LABEL_KEYS_BY_COLUMN_KEY.get(column.getKey()));
                 if (StringUtils.isBlank(title)) {
@@ -303,7 +325,7 @@ public class DocumentSearchAction extends WorkflowAction {
         request.removeAttribute("currentSearchState");
         request.setAttribute("currentSearchState", state);
     }
-    
+
     private State adjustStateAndForm(State currentState, DocumentSearchForm docSearchForm, UserSession userSession) {
         State state = new State(docSearchForm);
         if (currentState != null) {
@@ -313,7 +335,7 @@ public class DocumentSearchAction extends WorkflowAction {
         state.updateForm(docSearchForm);
         return state;
     }
-    
+
     private State adjustStateAndForm(State currentState, DocumentSearchForm docSearchForm, DocSearchCriteriaDTO criteria, UserSession userSession) {
         State state = new State(docSearchForm);
         if (currentState != null) {
@@ -323,11 +345,11 @@ public class DocumentSearchAction extends WorkflowAction {
         state.updateForm(docSearchForm);
         return state;
     }
-    
+
     private DocumentSearchCriteriaProcessor buildCriteriaProcessor(DocumentSearchCriteriaProcessor processor, DocumentSearchForm docSearchForm, UserSession userSession) {
         return buildCriteriaProcessor(processor, docSearchForm, docSearchForm.getCriteria(), userSession);
     }
-    
+
     private DocumentSearchCriteriaProcessor buildCriteriaProcessor(DocumentSearchCriteriaProcessor processor, DocumentSearchForm docSearchForm, DocSearchCriteriaDTO criteria, UserSession userSession) {
         if (processor == null) {
             // no criteria processor... set one up
@@ -364,7 +386,7 @@ public class DocumentSearchAction extends WorkflowAction {
         DocumentSearchForm docSearchForm = (DocumentSearchForm) form;
         Preferences preferences = getUserSession(request).getPreferences();
 //        setupState(request, docSearchForm);
-        State currentState = getOriginalState(request); 
+        State currentState = getOriginalState(request);
         State newState = adjustStateAndForm(currentState, docSearchForm, getUserSession(request));
 //        if (currentState == null) {
             newState.updateForm(docSearchForm);
@@ -376,13 +398,13 @@ public class DocumentSearchAction extends WorkflowAction {
         docSearchForm.checkForAdditionalFields();
         return null;
     }
-    
+
     private State getOriginalState(HttpServletRequest request) {
         String searchStateKeyValue = request.getParameter("searchStateKey");
         if (Utilities.isEmpty(searchStateKeyValue)) {
             searchStateKeyValue = (String) request.getAttribute("searchStateKey");
         }
-        return (State) getUserSession(request).retrieveObject(searchStateKeyValue); 
+        return (State) getUserSession(request).retrieveObject(searchStateKeyValue);
     }
 
     @Override
@@ -401,7 +423,7 @@ public class DocumentSearchAction extends WorkflowAction {
         updateNamedSearches(request, docSearchForm);
         return null;
     }
-    
+
     private void updateNamedSearches(HttpServletRequest request, DocumentSearchForm docSearchForm) {
         request.setAttribute("namedSearches", getSavedSearches(getUserSession(request).getWorkflowUser()));
         docSearchForm.checkForAdditionalFields();
@@ -455,6 +477,14 @@ public class DocumentSearchAction extends WorkflowAction {
             KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
             documentSearchForm.getCriteria().setWorkgroupViewerName(group.getGroupName());
         }
+        String documentTypeId = request.getParameter("documentTypeId");
+        if (documentTypeId != null) {
+            documentSearchForm.setNamedSearch("");
+            documentSearchForm.getCriteria().setNamedSearch("");
+            documentSearchForm.clearSearchableAttributeProperties();
+            DocumentType docType = KEWServiceLocator.getDocumentTypeService().findById(new Long(documentTypeId));
+            documentSearchForm.setDocTypeFullName(docType.getName());
+        }
         return mapping.findForward("success");
     }
 
@@ -494,7 +524,7 @@ public class DocumentSearchAction extends WorkflowAction {
         State originalState = getOriginalState(request);
         docSearchForm.getCriteriaProcessor().setDocSearchCriteriaDTO(originalState.getCriteriaProcessor().getDocSearchCriteriaDTO());
         DocumentSearchResultComponents searchComponents = state.getResult().getSearchResult();
-        List<Column> columns = searchComponents.getColumns();
+        List<DocumentSearchColumn> columns = searchComponents.getColumns();
         List<DocumentSearchResult> displayResults = searchComponents.getSearchResults();
 
 //        docSearchForm.setCriteriaProcessor(state.getCriteriaProcessor());
@@ -513,7 +543,7 @@ public class DocumentSearchAction extends WorkflowAction {
         }
         String sortNameParameter = new ParamEncoder("result").encodeParameterName(TableTagParameters.PARAMETER_SORT);
         String sortName = request.getParameter(sortNameParameter);
-        Column sortColumn = getSortColumn(columns, sortName);
+        DocumentSearchColumn sortColumn = getSortColumn(columns, sortName);
         sortDisplayList(sortColumn, displayResults, ascending);
         state.getResult().setSearchResult(new DocumentSearchResultComponents(columns, displayResults));
         setAdjustedState(request, state);
@@ -523,12 +553,12 @@ public class DocumentSearchAction extends WorkflowAction {
         return mapping.findForward("success");
     }
 
-    private Column getSortColumn(List columns, String sortName) {
+    private DocumentSearchColumn getSortColumn(List<DocumentSearchColumn> columns, String sortName) {
         if (StringUtils.isEmpty(sortName)) {
-            return (Column) columns.get(0);
+            return (DocumentSearchColumn) columns.get(0);
         }
         for (Iterator iterator = columns.iterator(); iterator.hasNext();) {
-            Column column = (Column) iterator.next();
+            DocumentSearchColumn column = (DocumentSearchColumn) iterator.next();
             if (column.getSortName().equals(sortName)) {
                 return column;
             }
@@ -536,16 +566,16 @@ public class DocumentSearchAction extends WorkflowAction {
         throw new WorkflowRuntimeException("Could not sort based on the given sort name of " + sortName);
     }
 
-    private void sortDisplayList(Column sortColumn, List<DocumentSearchResult> displayList, boolean ascending) {
+    private void sortDisplayList(DocumentSearchColumn sortColumn, List<DocumentSearchResult> displayList, boolean ascending) {
         Collections.sort(displayList, new ColumnComparator(sortColumn, ascending));
     }
 
     private class ColumnComparator implements Comparator<Object> {
 
-        private Column column;
+        private DocumentSearchColumn column;
         private boolean ascending;
 
-        public ColumnComparator(Column column, boolean ascending) {
+        public ColumnComparator(DocumentSearchColumn column, boolean ascending) {
             this.column = column;
             this.ascending = ascending;
         }
@@ -634,7 +664,7 @@ public class DocumentSearchAction extends WorkflowAction {
             this.headerBarEnabled = form.isHeaderBarEnabled();
             this.searchCriteriaEnabled = form.isSearchCriteriaEnabled();
         }
-        
+
         public State(State state) {
             this.headerBarEnabled = state.isHeaderBarEnabled();
             this.searchCriteriaEnabled = state.isSearchCriteriaEnabled();

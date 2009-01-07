@@ -27,8 +27,8 @@ import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.identity.Id;
-import org.kuali.rice.kew.lookupable.Field;
-import org.kuali.rice.kew.lookupable.Row;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.GenericRoleAttribute;
 import org.kuali.rice.kew.rule.QualifiedRoleName;
@@ -93,8 +93,8 @@ public class EmployeeAttribute extends GenericRoleAttribute {
         }
         return false;
     }
-    
-    
+
+
 	@Override
     protected List<String> getRoleNameQualifiers(String roleName, DocumentContent documentContent) throws KEWUserNotFoundException {
         if (!isValidRole(roleName)) {
@@ -129,7 +129,7 @@ public class EmployeeAttribute extends GenericRoleAttribute {
         /* EMPLOYEE role routes to traveler */
         if (StringUtils.equals(EMPLOYEE_ROLE.getBaseName(), roleName)) {
             roleUserId = new WorkflowUserId(roleTraveler);
-        
+
         /* SUPERVISOR role routes to... supervisor */
         } else if (StringUtils.equals(SUPERVISOR_ROLE.getBaseName(), roleName)) {
             // HACK: need to create an organizational-hierarchy service which
@@ -164,7 +164,7 @@ public class EmployeeAttribute extends GenericRoleAttribute {
 
 	/**
 	 * Required to support flex routing report
-	 * 
+	 *
 	 * @see org.kuali.rice.kew.rule.WorkflowAttribute#getFieldConversions()
 	 */
 	public List getFieldConversions() {
@@ -177,7 +177,7 @@ public class EmployeeAttribute extends GenericRoleAttribute {
 		List<Row> rows = new ArrayList<Row>();
 
 		List<Field> fields = new ArrayList<Field>();
-		fields.add(new Field("Traveler username", "", Field.TEXT, false, USERID_FORM_FIELDNAME, "", null, null));
+		fields.add(new Field("Traveler username", "", Field.TEXT, false, USERID_FORM_FIELDNAME, "", false, false, null, null));
 		rows.add(new Row(fields));
 
 		return rows;

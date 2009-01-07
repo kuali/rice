@@ -36,11 +36,9 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
-import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kew.web.session.UserSession;
-import org.kuali.rice.kew.workgroup.WorkflowGroupId;
-import org.kuali.rice.kew.workgroup.Workgroup;
-import org.kuali.rice.kew.workgroup.WorkgroupRoutingService;
+import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 public class RemoveReplaceDocumentServiceImpl implements RemoveReplaceDocumentService {
@@ -132,27 +130,31 @@ public class RemoveReplaceDocumentServiceImpl implements RemoveReplaceDocumentSe
 	    }
 
 	    // add workgroups
-	    List<Workgroup> workgroups = loadWorkgroups(document);
+	    List<? extends KimGroup> workgroups = loadWorkgroups(document);
 	    if (!workgroups.isEmpty()) {
 		ExportDataSet workgroupDataSet = new ExportDataSet();
-		workgroupDataSet.getWorkgroups().addAll(workgroups);
-		Element workgroupsElement = KEWServiceLocator.getWorkgroupService().export(workgroupDataSet);
-		removeReplaceElement.addContent(workgroupsElement);
+		workgroupDataSet.getGroups().addAll(workgroups);
+		if (true) {
+			throw new UnsupportedOperationException("TODO: please implement this once we have xml export of groups working in KIM!");
+		}
 	    }
-	    workflowDoc.setApplicationContent(XmlHelper.jotNode(rootElement));
+//		Element workgroupsElement = KEWServiceLocator.getWorkgroupService().export(workgroupDataSet);
+//		removeReplaceElement.addContent(workgroupsElement);
+//	    }
+//	    workflowDoc.setApplicationContent(XmlHelper.jotNode(rootElement));
 	} catch (KEWUserNotFoundException e) {
 	    throw new WorkflowRuntimeException(e);
 	}
     }
 
-    protected List<Workgroup> loadWorkgroups(RemoveReplaceDocument document) {
-	List<Workgroup> workgroups = new ArrayList<Workgroup>();
+    protected List<? extends KimGroup> loadWorkgroups(RemoveReplaceDocument document) {
+	List<KimGroup> workgroups = new ArrayList<KimGroup>();
 	for (WorkgroupTarget workgroupTarget : document.getWorkgroupTargets()) {
-	    Workgroup workgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(workgroupTarget.getWorkgroupId()));
-	    if (workgroup == null) {
-		throw new WorkflowRuntimeException("Failed to locate workgroup to change with id " + workgroupTarget.getWorkgroupId());
+		KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(workgroupTarget.getWorkgroupId());
+	    if (group == null) {
+	    	throw new WorkflowRuntimeException("Failed to locate workgroup to change with id " + workgroupTarget.getWorkgroupId());
 	    }
-	    workgroups.add(workgroup);
+	    workgroups.add(group);
 	}
 	return workgroups;
     }
@@ -187,7 +189,7 @@ public class RemoveReplaceDocumentServiceImpl implements RemoveReplaceDocumentSe
 	    }
 	}
 
-	List<Long> workgroupIds = new ArrayList<Long>();
+	List<String> workgroupIds = new ArrayList<String>();
 	if (document.getWorkgroupTargets() != null) {
 	    for (WorkgroupTarget workgroupTarget : document.getWorkgroupTargets()) {
 		workgroupIds.add(workgroupTarget.getWorkgroupId());
@@ -195,17 +197,20 @@ public class RemoveReplaceDocumentServiceImpl implements RemoveReplaceDocumentSe
 	}
 
 	RuleService ruleService = KEWServiceLocator.getRuleService();
-	WorkgroupRoutingService workgroupRoutingService = KEWServiceLocator.getWorkgroupRoutingService();
+	/**
+	 * TODO re-implement replacing of group membership using KIM!
+	 */
+	//WorkgroupRoutingService workgroupRoutingService = KEWServiceLocator.getWorkgroupRoutingService();
 	try {
 	    if (RemoveReplaceDocument.REPLACE_OPERATION.equals(document.getOperation())) {
 		if (StringUtils.isEmpty(document.getReplacementUserWorkflowId())) {
 		    throw new WorkflowRuntimeException("Replacement operation was indicated but RemoveReplaceDocument does not have a replacement user id.");
 		}
 		ruleService.replaceRuleInvolvement(new WorkflowUserId(document.getUserWorkflowId()), new WorkflowUserId(document.getReplacementUserWorkflowId()), ruleIds, documentId);
-		workgroupRoutingService.replaceWorkgroupInvolvement(new WorkflowUserId(document.getUserWorkflowId()), new WorkflowUserId(document.getReplacementUserWorkflowId()), workgroupIds, documentId);
+		//workgroupRoutingService.replaceWorkgroupInvolvement(new WorkflowUserId(document.getUserWorkflowId()), new WorkflowUserId(document.getReplacementUserWorkflowId()), workgroupIds, documentId);
 	    } else if (RemoveReplaceDocument.REMOVE_OPERATION.equals(document.getOperation())) {
 		ruleService.removeRuleInvolvement(new WorkflowUserId(document.getUserWorkflowId()), ruleIds, documentId);
-		workgroupRoutingService.removeWorkgroupInvolvement(new WorkflowUserId(document.getUserWorkflowId()), workgroupIds, documentId);
+		//workgroupRoutingService.removeWorkgroupInvolvement(new WorkflowUserId(document.getUserWorkflowId()), workgroupIds, documentId);
 	    } else {
 		throw new WorkflowRuntimeException("Invalid operation was specified on the RemoveReplaceDocument: " + document.getOperation());
 	    }

@@ -255,12 +255,12 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
         workflowDocument.refreshContent();
     }
 
-    public void appSpecificRouteDocumentToUser(String actionRequested, String routeTypeName, String annotation, UserIdDTO recipient, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
-        workflowDocument.appSpecificRouteDocumentToUser(actionRequested, routeTypeName, annotation, recipient, responsibilityDesc, ignorePreviousActions);
+    public void adHocRouteDocumentToPrincipal(String actionRequested, String routeTypeName, String annotation, String principalId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
+        workflowDocument.adHocRouteDocumentToPrincipal(actionRequested, routeTypeName, annotation, principalId, responsibilityDesc, ignorePreviousActions);
     }
 
-    public void appSpecificRouteDocumentToGroup(String actionRequested, String routeTypeName, String annotation, GroupIdDTO groupId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
-        workflowDocument.appSpecificRouteDocumentToGroup(actionRequested, routeTypeName, annotation, groupId, responsibilityDesc, ignorePreviousActions);
+    public void adHocRouteDocumentToGroup(String actionRequested, String routeTypeName, String annotation, String groupId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
+        workflowDocument.adHocRouteDocumentToGroup(actionRequested, routeTypeName, annotation, groupId, responsibilityDesc, ignorePreviousActions);
     }
 
     public void setTitle(String title) throws WorkflowException {

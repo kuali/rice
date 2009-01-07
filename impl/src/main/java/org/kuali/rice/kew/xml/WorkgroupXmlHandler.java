@@ -79,9 +79,9 @@ public class WorkgroupXmlHandler implements XmlConstants, WorkgroupXmlConstants 
 
 
         try{
-            for (Iterator workgroupsIt = root.getChildren(GROUPS, WORKGROUP_NAMESPACE).iterator(); workgroupsIt.hasNext();) {
+            for (Iterator workgroupsIt = root.getChildren(WORKGROUPS, WORKGROUP_NAMESPACE).iterator(); workgroupsIt.hasNext();) {
                     Element workgroupsElement = (Element) workgroupsIt.next();
-	        for (Iterator workgroupIter = workgroupsElement.getChildren(GROUP, WORKGROUP_NAMESPACE).iterator(); workgroupIter.hasNext();) {
+	        for (Iterator workgroupIter = workgroupsElement.getChildren(WORKGROUP, WORKGROUP_NAMESPACE).iterator(); workgroupIter.hasNext();) {
 	            Element workgroupElement = (Element) workgroupIter.next();
 
 	            String workgroupName = workgroupElement.getChildTextTrim(WORKGROUP_NAME, WORKGROUP_NAMESPACE);

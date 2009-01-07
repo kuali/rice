@@ -22,23 +22,26 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.Recipient;
+import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.workgroup.GroupNameId;
-import org.kuali.rice.kew.workgroup.Workgroup;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.util.KNSConstants;
 
 
@@ -165,25 +168,47 @@ public class DisapproveAction extends ActionTakenEvent {
     }
 
     //generate notifications to all people that have approved the document including the initiator
-    private void generateNotifications(RouteNodeInstance notificationNodeInstance) throws KEWUserNotFoundException {
-        Workgroup systemUserWorkgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId(Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.WORKGROUP_DETAIL_TYPE, KEWConstants.NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME_IND)));
-        Set<WorkflowUser> systemUserWorkflowIds = new HashSet<WorkflowUser>();
-        if (systemUserWorkgroup != null) {
-            systemUserWorkflowIds = new HashSet<WorkflowUser>(systemUserWorkgroup.getUsers());
+    private void generateNotifications(RouteNodeInstance notificationNodeInstance) throws KEWUserNotFoundException
+    {
+        String groupName = Utilities.getKNSParameterValue(
+                                KEWConstants.DEFAULT_KIM_NAMESPACE,
+                                KNSConstants.DetailTypes.WORKGROUP_DETAIL_TYPE,
+                                KEWConstants.NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME_IND);
+
+        Set<WorkflowUser> systemUserWorkflowUsers = new HashSet<WorkflowUser>();
+
+        if( !StringUtils.isBlank(groupName))
+        {
+            KimGroup systemUserWorkgroup = KIMServiceLocator.getIdentityManagementService().
+            getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, groupName);
+
+            List<String> principalIds = KIMServiceLocator.
+            getIdentityManagementService().getGroupMemberPrincipalIds( systemUserWorkgroup.getGroupId());
+
+            if (systemUserWorkgroup != null)
+            {
+                UserService service = KEWServiceLocator.getUserService();
+                for( String id : principalIds)
+                {
+                    systemUserWorkflowUsers.add(service.getWorkflowUser(new WorkflowUserId(id)));
+                }
+            }
         }
-    	ActionRequestFactory arFactory = new ActionRequestFactory(getRouteHeader(), notificationNodeInstance);
-    	Collection actions = KEWServiceLocator.getActionTakenService().findByRouteHeaderId(getRouteHeaderId());
-    	//one notification per person
-    	Set usersNotified = new HashSet();
-    	for (Iterator iter = actions.iterator(); iter.hasNext();) {
-			ActionTakenValue     action = (ActionTakenValue) iter.next();
-			if ((action.isApproval() || action.isCompletion()) && ! usersNotified.contains(action.getWorkflowId())) {
-                if (!systemUserWorkflowIds.contains(action.getWorkflowUser())) {
+        ActionRequestFactory arFactory = new ActionRequestFactory(getRouteHeader(), notificationNodeInstance);
+        Collection actions = KEWServiceLocator.getActionTakenService().findByRouteHeaderId(getRouteHeaderId());
+        //one notification per person
+        Set usersNotified = new HashSet();
+        for (Iterator iter = actions.iterator(); iter.hasNext();)
+        {
+            ActionTakenValue     action = (ActionTakenValue) iter.next();
+            if ((action.isApproval() || action.isCompletion()) && ! usersNotified.contains(action.getWorkflowId())) {
+                if (!systemUserWorkflowUsers.contains(action.getWorkflowUser())) {
                     ActionRequestValue request = arFactory.createNotificationRequest(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, action.getWorkflowUser(), getActionTakenCode(), getUser(), getActionTakenCode());
                     KEWServiceLocator.getActionRequestService().activateRequest(request);
                     usersNotified.add(request.getWorkflowId());
                 }
-			}
-		}
+            }
+        }
+
     }
 }

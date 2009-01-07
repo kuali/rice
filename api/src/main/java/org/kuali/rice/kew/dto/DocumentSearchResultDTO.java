@@ -21,25 +21,16 @@ import java.util.List;
 
 /**
  * This is a virtual object representing the DocumentSearchResultComponents class
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DocumentSearchResultDTO implements Serializable {
 
     private static final long serialVersionUID = -2555393598328802683L;
 
-    private List<LookupableColumnDTO> columns;
     private List<DocumentSearchResultRowDTO> searchResults = new ArrayList<DocumentSearchResultRowDTO>();
     private boolean isOverThreshold = false;
     private Integer securityFilteredRows = Integer.valueOf(0);
-
-    public List<LookupableColumnDTO> getColumns() {
-        return this.columns;
-    }
-
-    public void setColumns(List<LookupableColumnDTO> columns) {
-        this.columns = columns;
-    }
 
     public List<DocumentSearchResultRowDTO> getSearchResults() {
         return this.searchResults;

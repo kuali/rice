@@ -38,7 +38,7 @@ import org.kuali.test.TestBase;
 
 /**
  * This class is used to test the {@link PessimisticLockServiceImpl} class
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class PessimisticLockServiceTest extends TestBase {
@@ -48,7 +48,7 @@ public class PessimisticLockServiceTest extends TestBase {
         super.setUp();
         GlobalVariables.setUserSession(new UserSession("quickstart"));
     }
-    
+
     private String getPessimisticLockAdminWorkgroupName() {
         return KNSServiceLocator.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.PESSIMISTIC_LOCK_ADMIN_GROUP_PARM_NM);
     }
@@ -56,16 +56,16 @@ public class PessimisticLockServiceTest extends TestBase {
     /**
      * This method tests deleting {@link PessimisticLock} objects. Tests that invalid deletes throw exceptions and valid
      * deletes by owner users as well as lock admin users do work as expected
-     * 
+     *
      * @throws Exception
      */
     @UnitTestData(
             sqlStatements = {
-                    @UnitTestSql("DELETE FROM KNS_PESSIMISTIC_LOCK_T"),
-                    @UnitTestSql("INSERT INTO KNS_PESSIMISTIC_LOCK_T (\"LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESCRIPTOR\",\"FDOC_NBR\",\"LOCK_GENERATED_TS\",\"PERSON_UNVL_ID\") VALUES (1111, SYS_GUID(), 0, NULL, '1234', to_date('07/01/2007','mm/dd/yyyy'), 'fran')"),
-                    @UnitTestSql("INSERT INTO KNS_PESSIMISTIC_LOCK_T (\"LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESCRIPTOR\",\"FDOC_NBR\",\"LOCK_GENERATED_TS\",\"PERSON_UNVL_ID\") VALUES (1112, SYS_GUID(), 0, NULL, '1235', to_date('10/01/2007','mm/dd/yyyy'), 'frank')"),
-                    @UnitTestSql("INSERT INTO KNS_PESSIMISTIC_LOCK_T (\"LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESCRIPTOR\",\"FDOC_NBR\",\"LOCK_GENERATED_TS\",\"PERSON_UNVL_ID\") VALUES (1113, SYS_GUID(), 0, NULL, '1236', to_date('08/01/2007','mm/dd/yyyy'), 'fred')"),
-                    @UnitTestSql("INSERT INTO KNS_PESSIMISTIC_LOCK_T (\"LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESCRIPTOR\",\"FDOC_NBR\",\"LOCK_GENERATED_TS\",\"PERSON_UNVL_ID\") VALUES (1114, SYS_GUID(), 0, NULL, '1237', to_date('08/01/2007','mm/dd/yyyy'), 'fred')")
+                    @UnitTestSql("DELETE FROM KRNS_PESSIMISTIC_LOCK_T"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (\"PESSIMISTIC_LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESC_TXT\",\"DOC_HDR_ID\",\"GNRT_DT\",\"PRNCPL_ID\") VALUES (1111, SYS_GUID(), 0, NULL, '1234', to_date('07/01/2007','mm/dd/yyyy'), 'fran')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (\"PESSIMISTIC_LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESC_TXT\",\"DOC_HDR_ID\",\"GNRT_DT\",\"PRNCPL_ID\") VALUES (1112, SYS_GUID(), 0, NULL, '1235', to_date('10/01/2007','mm/dd/yyyy'), 'frank')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (\"PESSIMISTIC_LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESC_TXT\",\"DOC_HDR_ID\",\"GNRT_DT\",\"PRNCPL_ID\") VALUES (1113, SYS_GUID(), 0, NULL, '1236', to_date('08/01/2007','mm/dd/yyyy'), 'fred')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (\"PESSIMISTIC_LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESC_TXT\",\"DOC_HDR_ID\",\"GNRT_DT\",\"PRNCPL_ID\") VALUES (1114, SYS_GUID(), 0, NULL, '1237', to_date('08/01/2007','mm/dd/yyyy'), 'fred')")
                     }
             )
     @Test
@@ -91,7 +91,7 @@ public class PessimisticLockServiceTest extends TestBase {
         verifyDelete("fred", Arrays.asList(new String[]{"1113"}), null, false);
         locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be 1 lock left in DB", 1, locks.size());
-        
+
         // test admin user can delete any lock
         userId = "supervisr";
         assertTrue("User " + userId + " should be member of pessimistic lock admin workgroup", KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(new UserSession(userId).getPerson().getPrincipalId(), org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE, getPessimisticLockAdminWorkgroupName()));
@@ -124,7 +124,7 @@ public class PessimisticLockServiceTest extends TestBase {
 
     /**
      * This method tests the generation of new {@link PessimisticLock} objects
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -174,15 +174,16 @@ public class PessimisticLockServiceTest extends TestBase {
 
     /**
      * This method tests retrieving {@link PessimisticLock} objects by document number
-     * 
+     *
      * @throws Exception
      */
     @UnitTestData(
             sqlStatements = {
-                    @UnitTestSql("DELETE FROM KNS_PESSIMISTIC_LOCK_T"), 
-                    @UnitTestSql("INSERT INTO KNS_PESSIMISTIC_LOCK_T (\"LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESCRIPTOR\",\"FDOC_NBR\",\"LOCK_GENERATED_TS\",\"PERSON_UNVL_ID\") VALUES (1111, SYS_GUID(), 0, NULL, '1234', to_date('07/01/2007','mm/dd/yyyy'), 'fran')"), @UnitTestSql("INSERT INTO KNS_PESSIMISTIC_LOCK_T (\"LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESCRIPTOR\",\"FDOC_NBR\",\"LOCK_GENERATED_TS\",\"PERSON_UNVL_ID\") VALUES (1112, SYS_GUID(), 0, NULL, '1237', to_date('10/01/2007','mm/dd/yyyy'), 'frank')"), 
-                    @UnitTestSql("INSERT INTO KNS_PESSIMISTIC_LOCK_T (\"LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESCRIPTOR\",\"FDOC_NBR\",\"LOCK_GENERATED_TS\",\"PERSON_UNVL_ID\") VALUES (1113, SYS_GUID(), 0, NULL, '1236', to_date('10/01/2007','mm/dd/yyyy'), 'frank')"),
-                    @UnitTestSql("INSERT INTO KNS_PESSIMISTIC_LOCK_T (\"LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESCRIPTOR\",\"FDOC_NBR\",\"LOCK_GENERATED_TS\",\"PERSON_UNVL_ID\") VALUES (1114, SYS_GUID(), 0, NULL, '1237', to_date('08/01/2007','mm/dd/yyyy'), 'fred')")
+                    @UnitTestSql("DELETE FROM KRNS_PESSIMISTIC_LOCK_T"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (\"PESSIMISTIC_LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESC_TXT\",\"DOC_HDR_ID\",\"GNRT_DT\",\"PRNCPL_ID\") VALUES (1111, SYS_GUID(), 0, NULL, '1234', to_date('07/01/2007','mm/dd/yyyy'), 'fran')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (\"PESSIMISTIC_LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESC_TXT\",\"DOC_HDR_ID\",\"GNRT_DT\",\"PRNCPL_ID\") VALUES (1112, SYS_GUID(), 0, NULL, '1237', to_date('10/01/2007','mm/dd/yyyy'), 'frank')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (\"PESSIMISTIC_LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESC_TXT\",\"DOC_HDR_ID\",\"GNRT_DT\",\"PRNCPL_ID\") VALUES (1113, SYS_GUID(), 0, NULL, '1236', to_date('10/01/2007','mm/dd/yyyy'), 'frank')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (\"PESSIMISTIC_LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESC_TXT\",\"DOC_HDR_ID\",\"GNRT_DT\",\"PRNCPL_ID\") VALUES (1114, SYS_GUID(), 0, NULL, '1237', to_date('08/01/2007','mm/dd/yyyy'), 'fred')")
                     }
             )
     @Test
@@ -199,21 +200,21 @@ public class PessimisticLockServiceTest extends TestBase {
     }
 
     /**
-     * This method tests releasing {@link PessimisticLock} objects for a specific user 
-     * 
+     * This method tests releasing {@link PessimisticLock} objects for a specific user
+     *
      * @throws Exception
      */
     @UnitTestData(
             sqlStatements = {
-                    @UnitTestSql("DELETE FROM KNS_PESSIMISTIC_LOCK_T"), 
-                    @UnitTestSql("INSERT INTO KNS_PESSIMISTIC_LOCK_T (\"LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESCRIPTOR\",\"FDOC_NBR\",\"LOCK_GENERATED_TS\",\"PERSON_UNVL_ID\") VALUES (1111, SYS_GUID(), 0, NULL, '1234', to_date('07/01/2007','mm/dd/yyyy'), 'fran')"), 
-                    @UnitTestSql("INSERT INTO KNS_PESSIMISTIC_LOCK_T (\"LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESCRIPTOR\",\"FDOC_NBR\",\"LOCK_GENERATED_TS\",\"PERSON_UNVL_ID\") VALUES (1112, SYS_GUID(), 0, NULL, '1235', to_date('10/01/2007','mm/dd/yyyy'), 'frank')"), 
-                    @UnitTestSql("INSERT INTO KNS_PESSIMISTIC_LOCK_T (\"LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESCRIPTOR\",\"FDOC_NBR\",\"LOCK_GENERATED_TS\",\"PERSON_UNVL_ID\") VALUES (1113, SYS_GUID(), 0, NULL, '1236', to_date('10/01/2007','mm/dd/yyyy'), 'frank')"),
-                    @UnitTestSql("INSERT INTO KNS_PESSIMISTIC_LOCK_T (\"LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESCRIPTOR\",\"FDOC_NBR\",\"LOCK_GENERATED_TS\",\"PERSON_UNVL_ID\") VALUES (1114, SYS_GUID(), 0, NULL, '1237', to_date('08/01/2007','mm/dd/yyyy'), 'fred')"),
-                    @UnitTestSql("INSERT INTO KNS_PESSIMISTIC_LOCK_T (\"LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESCRIPTOR\",\"FDOC_NBR\",\"LOCK_GENERATED_TS\",\"PERSON_UNVL_ID\") VALUES (1115, SYS_GUID(), 0, 'Temporary Lock', '1234', to_date('07/01/2007','mm/dd/yyyy'), 'fran')"), 
-                    @UnitTestSql("INSERT INTO KNS_PESSIMISTIC_LOCK_T (\"LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESCRIPTOR\",\"FDOC_NBR\",\"LOCK_GENERATED_TS\",\"PERSON_UNVL_ID\") VALUES (1116, SYS_GUID(), 0, 'Temporary Lock', '1235', to_date('10/01/2007','mm/dd/yyyy'), 'frank')"), 
-                    @UnitTestSql("INSERT INTO KNS_PESSIMISTIC_LOCK_T (\"LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESCRIPTOR\",\"FDOC_NBR\",\"LOCK_GENERATED_TS\",\"PERSON_UNVL_ID\") VALUES (1117, SYS_GUID(), 0, 'Temporary Lock', '1236', to_date('10/01/2007','mm/dd/yyyy'), 'frank')"),
-                    @UnitTestSql("INSERT INTO KNS_PESSIMISTIC_LOCK_T (\"LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESCRIPTOR\",\"FDOC_NBR\",\"LOCK_GENERATED_TS\",\"PERSON_UNVL_ID\") VALUES (1118, SYS_GUID(), 0, 'Temporary Lock', '1237', to_date('08/01/2007','mm/dd/yyyy'), 'fred')")
+                    @UnitTestSql("DELETE FROM KRNS_PESSIMISTIC_LOCK_T"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (\"PESSIMISTIC_LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESC_TXT\",\"DOC_HDR_ID\",\"GNRT_DT\",\"PRNCPL_ID\") VALUES (1111, SYS_GUID(), 0, NULL, '1234', to_date('07/01/2007','mm/dd/yyyy'), 'fran')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (\"PESSIMISTIC_LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESC_TXT\",\"DOC_HDR_ID\",\"GNRT_DT\",\"PRNCPL_ID\") VALUES (1112, SYS_GUID(), 0, NULL, '1235', to_date('10/01/2007','mm/dd/yyyy'), 'frank')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (\"PESSIMISTIC_LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESC_TXT\",\"DOC_HDR_ID\",\"GNRT_DT\",\"PRNCPL_ID\") VALUES (1113, SYS_GUID(), 0, NULL, '1236', to_date('10/01/2007','mm/dd/yyyy'), 'frank')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (\"PESSIMISTIC_LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESC_TXT\",\"DOC_HDR_ID\",\"GNRT_DT\",\"PRNCPL_ID\") VALUES (1114, SYS_GUID(), 0, NULL, '1237', to_date('08/01/2007','mm/dd/yyyy'), 'fred')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (\"PESSIMISTIC_LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESC_TXT\",\"DOC_HDR_ID\",\"GNRT_DT\",\"PRNCPL_ID\") VALUES (1115, SYS_GUID(), 0, 'Temporary Lock', '1234', to_date('07/01/2007','mm/dd/yyyy'), 'fran')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (\"PESSIMISTIC_LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESC_TXT\",\"DOC_HDR_ID\",\"GNRT_DT\",\"PRNCPL_ID\") VALUES (1116, SYS_GUID(), 0, 'Temporary Lock', '1235', to_date('10/01/2007','mm/dd/yyyy'), 'frank')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (\"PESSIMISTIC_LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESC_TXT\",\"DOC_HDR_ID\",\"GNRT_DT\",\"PRNCPL_ID\") VALUES (1117, SYS_GUID(), 0, 'Temporary Lock', '1236', to_date('10/01/2007','mm/dd/yyyy'), 'frank')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (\"PESSIMISTIC_LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESC_TXT\",\"DOC_HDR_ID\",\"GNRT_DT\",\"PRNCPL_ID\") VALUES (1118, SYS_GUID(), 0, 'Temporary Lock', '1237', to_date('08/01/2007','mm/dd/yyyy'), 'fred')")
                     }
             )
     @Test
@@ -233,7 +234,7 @@ public class PessimisticLockServiceTest extends TestBase {
         KNSServiceLocator.getPessimisticLockService().releaseAllLocksForUser(locks, org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().getPerson("fred"), lockDescriptor);
         locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be 4 locks left after releasing locks for fran, frank, and fred using lock descriptor " + lockDescriptor, 4, locks.size());
-        
+
         KNSServiceLocator.getPessimisticLockService().releaseAllLocksForUser(locks, org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().getPerson("fran"));
         locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be 3 locks left after releasing locks for fran with no lock descriptor", 3, locks.size());
@@ -249,7 +250,7 @@ public class PessimisticLockServiceTest extends TestBase {
 
     /**
      * This method tests for admin users of {@link PessimisticLock} objects
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -269,13 +270,13 @@ public class PessimisticLockServiceTest extends TestBase {
 
     /**
      * This method tests saving {@link PessimisticLock} objects
-     * 
+     *
      * @throws Exception
      */
     @UnitTestData(
             sqlStatements = {
-                    @UnitTestSql("DELETE FROM KNS_PESSIMISTIC_LOCK_T"), 
-                    @UnitTestSql("INSERT INTO KNS_PESSIMISTIC_LOCK_T (\"LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESCRIPTOR\",\"FDOC_NBR\",\"LOCK_GENERATED_TS\",\"PERSON_UNVL_ID\") VALUES (1111, SYS_GUID(), 0, NULL, '1234', to_date('07/01/2007','mm/dd/yyyy'), 'fran')")
+                    @UnitTestSql("DELETE FROM KRNS_PESSIMISTIC_LOCK_T"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (\"PESSIMISTIC_LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESC_TXT\",\"DOC_HDR_ID\",\"GNRT_DT\",\"PRNCPL_ID\") VALUES (1111, SYS_GUID(), 0, NULL, '1234', to_date('07/01/2007','mm/dd/yyyy'), 'fran')")
                     }
             )
     @Test

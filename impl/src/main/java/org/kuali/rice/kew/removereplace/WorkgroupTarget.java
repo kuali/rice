@@ -41,7 +41,7 @@ public class WorkgroupTarget {
 	private Long documentId;
     @Id
 	@Column(name="GRP_ID")
-	private Long workgroupId;
+	private String workgroupId;
     
     // Added for JPA uni-directional one-to-many (not yet supported by JPA)
     @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE})
@@ -56,11 +56,11 @@ public class WorkgroupTarget {
         this.documentId = documentId;
     }
 
-    public Long getWorkgroupId() {
+    public String getWorkgroupId() {
         return this.workgroupId;
     }
 
-    public void setWorkgroupId(Long id) {
+    public void setWorkgroupId(String id) {
         this.workgroupId = id;
     }
 

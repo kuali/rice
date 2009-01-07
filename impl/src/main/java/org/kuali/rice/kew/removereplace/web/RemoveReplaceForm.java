@@ -66,7 +66,6 @@ public class RemoveReplaceForm extends WorkflowRoutingForm {
     // properties that are loaded by establishRequiredState
     private WorkflowUser user;
     private WorkflowUser replacementUser;
-    private List<WorkgroupType> workgroupTypes = new ArrayList<WorkgroupType>();
 
     private RemoveReplaceDocument document;
 
@@ -181,21 +180,21 @@ public class RemoveReplaceForm extends WorkflowRoutingForm {
         this.actionRequestCodes = actionRequestCodes;
     }
 
-    public String getWorkgroupType() {
-        return this.workgroupType;
-    }
+//    public String getWorkgroupType() {
+//        return this.workgroupType;
+//    }
+//
+//    public void setWorkgroupType(String workgroupType) {
+//        this.workgroupType = workgroupType;
+//    }
 
-    public void setWorkgroupType(String workgroupType) {
-        this.workgroupType = workgroupType;
-    }
-
-    public List<WorkgroupType> getWorkgroupTypes() {
-        return this.workgroupTypes;
-    }
-
-    public void setWorkgroupTypes(List<WorkgroupType> workgroupTypes) {
-        this.workgroupTypes = workgroupTypes;
-    }
+//    public List<WorkgroupType> getWorkgroupTypes() {
+//        return this.workgroupTypes;
+//    }
+//
+//    public void setWorkgroupTypes(List<WorkgroupType> workgroupTypes) {
+//        this.workgroupTypes = workgroupTypes;
+//    }
 
     public RemoveReplaceDocument getDocument() {
         return this.document;

@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kew.attribute.ExtensionAttribute;
-import org.kuali.rice.kew.lookupable.Field;
-import org.kuali.rice.kew.lookupable.Row;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
 
 
 /**
@@ -57,7 +57,7 @@ public class WebExtensions {
 		rows.add(attributeRows);
 		for (Row row : attributeRows) {
 			for (Field field : row.getFields()) {
-				if (field.isInputField() && !data.containsKey(field.getPropertyName())) {
+				if (Field.isInputField(field.getFieldType()) && !data.containsKey(field.getPropertyName())) {
 					data.put(field.getPropertyName(), field.getPropertyValue());
 				}
 			}

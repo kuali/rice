@@ -236,13 +236,13 @@ public class RuleDAOJpaImpl implements RuleDAO {
 		return null;
 	}
 
-	public List search(String docTypeName, Long ruleId, Long ruleTemplateId, String ruleDescription, Long workgroupId, String workflowId, String roleName, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective) {
+	public List search(String docTypeName, Long ruleId, Long ruleTemplateId, String ruleDescription, String groupId, String workflowId, String roleName, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective) {
         Criteria crit = getSearchCriteria(docTypeName, ruleTemplateId, ruleDescription, delegateRule, activeInd, extensionValues);
         if (ruleId != null) {
             crit.eq("ruleBaseValuesId", ruleId);
         }
-        if (workgroupId != null) {
-            crit.in("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(workgroupId.toString()), "ruleBaseValuesId");
+        if (groupId != null) {
+            crit.in("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(groupId), "ruleBaseValuesId");
         }
         Set<Long> workgroupIds = new HashSet<Long>();
         Boolean searchUser = Boolean.FALSE;

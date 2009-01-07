@@ -292,7 +292,7 @@ public class RoleServiceTest extends KEWTestCase {
 		responsibility1.setActionRequested(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
 		responsibility1.setPriority(1);
 		TestRecipient recipient1 = new TestRecipient();
-		recipient1.setId("rkirkend");
+		recipient1.setId("2");
 		recipient1.setType(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
 		responsibility1.setRecipient(recipient1);
 		responsibilities.add(responsibility1);

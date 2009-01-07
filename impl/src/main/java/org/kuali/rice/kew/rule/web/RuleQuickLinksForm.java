@@ -20,10 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.struts.action.ActionForm;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-
+import org.kuali.rice.kns.web.struts.form.KualiForm;
 
 /**
  * A Struts ActionForm for the {@link RuleQuickLinksAction}.
@@ -32,7 +31,7 @@ import org.kuali.rice.kew.util.Utilities;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class RuleQuickLinksForm extends ActionForm {
+public class RuleQuickLinksForm extends KualiForm {
 
     private static final long serialVersionUID = 3632283509506923869L;
     private String rootDocTypeName;

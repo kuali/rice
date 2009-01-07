@@ -56,6 +56,7 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.StatementCallback;
@@ -275,7 +276,8 @@ public class TestUtilities {
 			if (actionRequest.isUserRequest() && actionRequest.getWorkflowUser().getAuthenticationUserId().getAuthenticationId().equals(networkId)) {
 				foundRequest = true;
 				break;
-			} else if (actionRequest.isGroupRequest() && actionRequest.getWorkgroup().hasMember(user)) {
+			} else if (actionRequest.isGroupRequest() && 
+			        KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(user.getWorkflowId(), actionRequest.getGroup().getGroupId())) {
 				foundRequest = true;
 				break;
 			}

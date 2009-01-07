@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,6 +20,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,14 +40,11 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kew.bo.WorkflowPersistable;
-import org.kuali.rice.kew.lookupable.Field;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.lookupable.MyColumns;
-import org.kuali.rice.kew.lookupable.Row;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
@@ -56,7 +54,9 @@ import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
 
 
 /**
@@ -66,7 +66,7 @@ import org.kuali.rice.kew.util.Utilities;
  */
 @Entity
 @Table(name="KREW_RULE_T")
-public class RuleBaseValues implements WorkflowPersistable {
+public class RuleBaseValues extends PersistableBusinessObjectBase {
 
     private static final long serialVersionUID = 6137765574728530156L;
     @Id
@@ -91,13 +91,10 @@ public class RuleBaseValues implements WorkflowPersistable {
 	private String docTypeName;
     @Column(name="DOC_HDR_ID")
 	private Long routeHeaderId;
-    //@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="FRM_DT")
 	private Timestamp fromDate;
-    //@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="TO_DT", nullable=false)
 	private Timestamp toDate;
-    //@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="DACTVN_DT")
 	private Timestamp deactivationDate;
     @Column(name="CUR_IND")
@@ -125,8 +122,7 @@ public class RuleBaseValues implements WorkflowPersistable {
 	private RuleExpressionDef ruleExpressionDef;
     @Transient
     private RuleBaseValues previousVersion;
-    //@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="ACTVN_DT")
+    @Column(name="ACTVN_DT")
 	private Timestamp activationDate;
     @Column(name="DLGN_IND")
     private Boolean delegateRule = Boolean.FALSE;
@@ -183,8 +179,8 @@ public class RuleBaseValues implements WorkflowPersistable {
                     Field field = (Field) iterator3.next();
                     if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
                         extensionLabels.put(field.getPropertyName(), field.getFieldLabel());
-                    } else if (!Utilities.isEmpty(field.getDefaultLookupableName())) {
-                        extensionLabels.put(field.getDefaultLookupableName(), field.getFieldLabel());
+                    //} else if (!Utilities.isEmpty(field.getDefaultLookupableName())) {
+                    //    extensionLabels.put(field.getDefaultLookupableName(), field.getFieldLabel());
                     } else {
                         extensionLabels.put(field.getPropertyName(), field.getFieldLabel());
                     }
@@ -308,6 +304,10 @@ public class RuleBaseValues implements WorkflowPersistable {
 
     public void setRuleTemplateId(Long ruleTemplateId) {
         this.ruleTemplateId = ruleTemplateId;
+    }
+    
+    public DocumentType getDocumentType() {
+    	return KEWServiceLocator.getDocumentTypeService().findByName(getDocTypeName());
     }
 
     public String getDocTypeName() {
@@ -644,22 +644,24 @@ public class RuleBaseValues implements WorkflowPersistable {
         this.name = name;
     }
 
-    public String toString() {
-        return new ToStringBuilder(this)
-        .append("ruleBaseValuesId", ruleBaseValuesId)
-        .append("description", description)
-        .append("docTypeName", docTypeName)
-        .append("routeHeaderId", routeHeaderId)
-        .append("delegateRule", delegateRule)
-        .append("ignorePrevious", ignorePrevious)
-        .append("activeInd", activeInd)
-        .append("currentInd", currentInd)
-        .append("versionNbr", versionNbr)
-        .append("previousVersionId", previousVersionId)
-        .append("ruleTemplateId", ruleTemplateId)
-        .append("returnUrl", returnUrl)
-        .append("responsibilities", responsibilities == null ? responsibilities : "size: " + responsibilities.size())
-        .append("lockVerNbr", lockVerNbr).toString();
-    }
+    @Override
+	protected LinkedHashMap<String, Object> toStringMapper() {
+		LinkedHashMap<String, Object> mapper = new LinkedHashMap<String, Object>();
+        mapper.put("ruleBaseValuesId", ruleBaseValuesId);
+        mapper.put("description", description);
+        mapper.put("docTypeName", docTypeName);
+        mapper.put("routeHeaderId", routeHeaderId);
+        mapper.put("delegateRule", delegateRule);
+        mapper.put("ignorePrevious", ignorePrevious);
+        mapper.put("activeInd", activeInd);
+        mapper.put("currentInd", currentInd);
+        mapper.put("versionNbr", versionNbr);
+        mapper.put("previousVersionId", previousVersionId);
+        mapper.put("ruleTemplateId", ruleTemplateId);
+        mapper.put("returnUrl", returnUrl);
+        mapper.put("responsibilities", responsibilities == null ? responsibilities : "size: " + responsibilities.size());
+        mapper.put("lockVerNbr", lockVerNbr).toString();
+		return mapper;
+	}
 
 }

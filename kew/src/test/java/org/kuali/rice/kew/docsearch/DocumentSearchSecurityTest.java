@@ -25,8 +25,6 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
-import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
@@ -36,12 +34,14 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.session.BasicAuthentication;
 import org.kuali.rice.kew.web.session.UserSession;
-import org.kuali.rice.kew.workgroup.GroupNameId;
-import org.kuali.rice.kew.workgroup.Workgroup;
+import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimConstants;
 
 import edu.emory.mathcs.backport.java.util.Arrays;
 
@@ -239,9 +239,10 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
 
         // verify that workgroup can see the document
         String workgroupName = "Test_Security_Group";
-        Workgroup group = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId(workgroupName));
+        KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, workgroupName);
         assertNotNull("Workgroup '" + workgroupName + "' should be valid", group);
-        for (WorkflowUser workgroupUser : group.getUsers()) {
+        for (String workgroupUserId : KIMServiceLocator.getIdentityManagementService().getGroupMemberPrincipalIds(group.getGroupId())) {
+            WorkflowUser workgroupUser = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(workgroupUserId));
             criteria = new DocSearchCriteriaDTO();
             criteria.setRouteHeaderId(document.getRouteHeaderId().toString());
             resultComponents = KEWServiceLocator.getDocumentSearchService().getList(loginUser(workgroupUser.getAuthenticationUserId().getAuthenticationId()), criteria);
@@ -468,7 +469,7 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
         String ackNetworkId = "xqi";
         String initiatorNetworkId = STANDARD_USER_NETWORK_ID;
         WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO(initiatorNetworkId), documentType);
-        document.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "", new NetworkIdDTO(ackNetworkId), "", true);
+        document.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "", getPrincipalIdForName(ackNetworkId), "", true);
         document.saveDocument("");
         assertEquals("Document should have saved", KEWConstants.ROUTE_HEADER_SAVED_CD, document.getRouteHeader().getDocRouteStatus());
         runSecurityAttributeChecks(document.getRouteHeaderId());

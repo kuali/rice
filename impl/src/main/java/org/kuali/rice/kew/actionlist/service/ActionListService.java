@@ -26,8 +26,6 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.rice.kew.workgroup.Workgroup;
-import org.kuali.rice.kim.bo.group.KimGroup;
 
 
 /**
@@ -70,7 +68,7 @@ public interface ActionListService {
      * this method should schedule the changes to occur asynchronously to mitigate transaction
      * and concurent document modification issues.
      */
-    public void updateActionItemsForWorkgroupChange(Workgroup oldWorkgroup, Workgroup newWorkgroup) throws KEWUserNotFoundException;
+    public void updateActionItemsForWorkgroupChange(String oldKimGroupId, String newKimGroupId) throws KEWUserNotFoundException;
 
     /**
      * Updates the action list for a the given document for a user who was added to a workgroup.  This method will generate
@@ -78,7 +76,7 @@ public interface ActionListService {
      * the user is, in fact, still a member of the workgroup at the time of the invocation of this method before
      * generating the action items.
      */
-    public void updateActionListForUserAddedToGroup(String principalId, KimGroup group) throws KEWUserNotFoundException;
+    public void updateActionListForUserAddedToGroup(String principalId, String groupId) throws KEWUserNotFoundException;
 
     /**
      * Updates the action list for a the given document for a user who was removed from a workgroup.  This will delete
@@ -86,7 +84,7 @@ public interface ActionListService {
      * member of the workgroup.  This method will also verify that the user is still no longer a member of the workgroup
      * at the time of the method invocation before removing the action items.
      */
-    public void updateActionListForUserRemovedFromGroup(String principalId,KimGroup group) throws KEWUserNotFoundException;
+    public void updateActionListForUserRemovedFromGroup(String principalId, String groupId) throws KEWUserNotFoundException;
 
     public void updateActionItemsForTitleChange(Long routeHeaderId, String newTitle) throws KEWUserNotFoundException;
 

@@ -25,8 +25,8 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.docsearch.service.SearchableAttributeProcessingService;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.messaging.RouteDocumentMessageService;
@@ -38,7 +38,6 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
@@ -65,7 +64,7 @@ public abstract class ActionTakenEvent {
 	protected DocumentRouteHeaderValue routeHeader;
 
 	private final WorkflowUser user;
-	
+
     private final boolean runPostProcessorLogic;
 
 	public ActionTakenEvent(String actionTakenCode, DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
@@ -245,7 +244,7 @@ public abstract class ActionTakenEvent {
 		if (delegator instanceof WorkflowUser) {
 			val.setDelegatorWorkflowId(((WorkflowUser) delegator).getWorkflowUserId().getWorkflowId());
 		} else if (delegator instanceof KimGroup) {
-			val.setDelegatorGroupId(new Long (((KimGroup) delegator).getGroupId()));
+			val.setDelegatorGroupId(((KimGroup) delegator).getGroupId());
 		}
 		val.setRouteHeader(routeHeader);
 		val.setCurrentIndicator(currentInd);

@@ -18,17 +18,18 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.SetUtils;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.apache.ojb.broker.query.ReportQueryByCriteria;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionitem.dao.ActionItemDAO;
+import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.Recipient;
@@ -36,11 +37,9 @@ import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.workgroup.WorkflowGroupId;
-import org.kuali.rice.kew.workgroup.WorkgroupService;
+import org.kuali.rice.kim.service.IdentityManagementService;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
-
-import org.kuali.rice.kim.service.*;
 /**
  * OJB implementation of {@link ActionItemDAO}.
  *
@@ -133,9 +132,9 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
             if (ids[0] != null && !delegators.containsKey((String) ids[0])) {
                 delegators.put((String) ids[0], getUserService().getWorkflowUser(new WorkflowUserId((String) ids[0])));
             } else if (ids[1] != null) {
-                Long workgroupId = new Long(ids[1].toString());
+                String workgroupId = ids[1].toString();
                 if (!delegators.containsKey(workgroupId)) {
-                    delegators.put(workgroupId, getWorkgroupService().getWorkgroup(new WorkflowGroupId(workgroupId)));
+                    delegators.put(workgroupId, new KimGroupRecipient(getIdentityManagementService().getGroup(workgroupId)));
                 }
             }
         }
@@ -143,7 +142,7 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
     }
 
     public Collection<Recipient> findPrimaryDelegationRecipients(String principalId) throws KEWUserNotFoundException {
-    	Set<Long> workgroupIds = KEWServiceLocator.getWorkgroupService().getUsersGroupIds(principalId);
+    	List<String> workgroupIds = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
         Criteria orCriteria = new Criteria();
         Criteria delegatorWorkflowIdCriteria = new Criteria();
         delegatorWorkflowIdCriteria.addEqualTo("delegatorWorkflowId", principalId);
@@ -168,11 +167,6 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
             Object[] ids = (Object[]) iterator.next();
             if (ids[0] != null && !delegators.containsKey((String) ids[0])) {
                 delegators.put((String) ids[0], getUserService().getWorkflowUser(new WorkflowUserId((String) ids[0])));
-//            } else if (ids[1] != null) {
-//                Long workgroupId = new Long(ids[1].toString());
-//                if (!delegators.containsKey(workgroupId)) {
-//                    delegators.put(workgroupId, getWorkgroupService().getWorkgroup(new WorkflowGroupId(workgroupId)));
-//                }
             }
         }
         return delegators.values();
@@ -182,12 +176,8 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         return (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
     }
 
-    private WorkgroupService getWorkgroupService() {
-        return (WorkgroupService) KEWServiceLocator.getService(KEWServiceLocator.WORKGROUP_SRV);
-    }
-
-    private GroupService getGroupService(){
-    	return (GroupService) KIMServiceLocator.getGroupService();
+    private IdentityManagementService getIdentityManagementService() {
+        return (IdentityManagementService) KIMServiceLocator.getService(KIMServiceLocator.KIM_IDENTITY_MANAGEMENT_SERVICE);
     }
 
 	/**

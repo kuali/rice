@@ -322,7 +322,7 @@ public class AddRuleDelegationTest extends KEWTestCase {
             String ruleDocTypeName = KEWServiceLocator.getRuleService().getRuleDocmentTypeName(ruleForm.getMyRules().getRules());
             WorkflowDocument workflowDocument = new WorkflowDocument(new NetworkIdDTO(A_WF_ADMIN_USERNAME), ruleDocTypeName);
             // adhoc it to rkirkend so it will stop before going final
-            workflowDocument.appSpecificRouteDocumentToUser(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "", new NetworkIdDTO("rkirkend"), "", true);
+            workflowDocument.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "", getPrincipalIdForName("rkirkend"), "", true);
             ruleForm.setWorkflowDocument(workflowDocument);
             ruleForm.setDocId(ruleForm.getWorkflowDocument().getRouteHeaderId());
             ruleForm.establishVisibleActionRequestCds();

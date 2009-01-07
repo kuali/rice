@@ -609,7 +609,7 @@
             </bean>
         </property>
     </bean>
-
+<!--
 	<bean id="workflowLookupable" class="org.kuali.rice.kns.workflow.attribute.WorkflowLookupableImpl" scope="prototype">
 		<property name="configurationService">
 			<ref bean="kualiConfigurationService" />
@@ -618,7 +618,7 @@
 			<ref bean="businessObjectDictionaryService" />
 		</property>
 	</bean>
-
+-->
 	<bean id="pessimisticLockLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
 		<property name="lookupableHelperService">
 			<ref bean="pessimisticLockLookupableHelperService" />
@@ -671,7 +671,7 @@
 		<constructor-arg>
 			<list>
 				<ref bean="kualiLookupable" />
-				<ref bean="workflowLookupable" />
+				<!-- <ref bean="workflowLookupable" />-->
 			</list>
 		</constructor-arg>
 	</bean>

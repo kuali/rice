@@ -47,7 +47,7 @@ public class XmlDigesterServiceImpl implements XmlDigesterService {
     }
 
     public void digest(XmlLoader xmlLoader, XmlDocCollection xmlDocCollection, String principalId) throws IOException {
-        Iterator it = xmlDocCollection.getXmlDocs().iterator();
+        Iterator<? extends XmlDoc> it = xmlDocCollection.getXmlDocs().iterator();
         while (it.hasNext()) {
             XmlDoc xmlDoc = (XmlDoc) it.next();
             InputStream inputStream = null;

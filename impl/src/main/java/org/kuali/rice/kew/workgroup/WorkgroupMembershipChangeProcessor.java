@@ -16,21 +16,23 @@
  */
 package org.kuali.rice.kew.workgroup;
 
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.messaging.ParameterTranslator;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.AuthenticationUserId;
-import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.rice.kim.bo.group.dto.GroupInfo;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
 
 /**
  * Executes the updating of {@link ActionItem}s for a {@link Workgroup} when
- * the membership of a Workgroup changes.
+ * the membership of a Workgroup changes.  This keeps users' Action Lists
+ * in-sync with their group membership.  Allowing their Action List to
+ * be updated for requests routed to groups that they are either added to
+ * or removed from.
  *
  * @see ActionItem
  * @see Workgroup
@@ -45,50 +47,42 @@ public class WorkgroupMembershipChangeProcessor implements KSBXMLService {
 	public void invoke(String contents) throws Exception {
 		ParameterTranslator translator = new ParameterTranslator(contents);
 		String[] parameters = translator.getParameters();
-		if (parameters.length != 4) {
+		if (parameters.length != 3) {
 			throw new IllegalArgumentException("The Workgroup Membership Change Processor requires four parameters.");
 		}
 		String operation = parameters[0];
-		WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(parameters[1]));
-		if (user == null) {
-			throw new KEWUserNotFoundException("Could not locate the user for the given authentication id '" + parameters[1] + "'");
+		String principalId = parameters[1];
+		String groupId = parameters[2];
+		KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+		if (principal == null) {
+			throw new RiceRuntimeException("Could not locate the user for the given principal id '" + principalId + "'");
 		}
-		Long versionNumber = new Long(parameters[3]);
-		String groupName = new String(parameters[2]);
-		GroupInfo group = KIMServiceLocator.getGroupService().getGroupInfoByName("KFS", groupName);
-		if (group!=null)
-			KIMServiceLocator.getGroupService().removePrincipalFromGroup(user.getWorkflowId(),group.getGroupId());
+		KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
 		if (group == null) {
-			throw new WorkflowException("Could not locate the group with the given name '" + groupName + "'");
+			throw new RiceRuntimeException("Could not locate the group with the given id '" + groupId + "'");
 		}
 		if (ADDED_OPERATION.equals(operation)) {
-			KEWServiceLocator.getActionListService().updateActionListForUserAddedToGroup(user.getWorkflowId(), group);
+			KEWServiceLocator.getActionListService().updateActionListForUserAddedToGroup(principalId, groupId);
 		} else if (REMOVED_OPERATION.equals(operation)) {
-			KEWServiceLocator.getActionListService().updateActionListForUserRemovedFromGroup(user.getWorkflowId(), group);
+			KEWServiceLocator.getActionListService().updateActionListForUserRemovedFromGroup(principalId, groupId);
 		} else {
 			throw new WorkflowException("Did not understand requested group membership change operation '" + operation + "'");
 		}
 	}
 
-	public static String getMemberAddedMessageContents(WorkflowUser user, Workgroup workgroup) {
-		return getMessageContents(user, workgroup, ADDED_OPERATION);
+	public static String getMemberAddedMessageContents(String principalId, String groupId) {
+		return getMessageContents(principalId, groupId, ADDED_OPERATION);
     }
 
-	public static String getMemberRemovedMessageContents(WorkflowUser user, Workgroup workgroup) {
-		return getMessageContents(user, workgroup, REMOVED_OPERATION);
+	public static String getMemberRemovedMessageContents(String principalId, String groupId) {
+		return getMessageContents(principalId, groupId, REMOVED_OPERATION);
 	}
 
-	public static String getMessageContents(WorkflowUser user, Workgroup workgroup, String operation) {
+	public static String getMessageContents(String principalId, String groupId, String operation) {
 		ParameterTranslator translator = new ParameterTranslator();
 		translator.addParameter(operation);
-		translator.addParameter(user.getAuthenticationUserId().getAuthenticationId());
-		translator.addParameter(workgroup.getGroupNameId().getNameId());
-		translator.addParameter(workgroup.getLockVerNbr().toString());
-		// delay for about 10 seconds to allow a reasonable amount of time for the workgroup cache to be updated
-		// (and hopefully prevent thrashing of the workgroup cache), regardless we will fall back on the version
-		// number of the workgroup and check it against the machine this processor is processed on to ensure that
-		// it's cache is up to date
-		//SpringServiceLocator.getRouteQueueService().requeueDocument(new Long(-1), KEWConstants.ROUTE_QUEUE_DEFAULT_PRIORITY, new Long(10*1000), WorkgroupMembershipChangeProcessor.class.getName(), translator.getUntranslatedString());
+		translator.addParameter(principalId);
+		translator.addParameter(groupId);
 		return translator.getUntranslatedString();
 	}
 

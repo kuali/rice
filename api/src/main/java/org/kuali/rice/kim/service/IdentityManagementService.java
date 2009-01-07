@@ -60,6 +60,7 @@ public interface IdentityManagementService {
 
 	boolean isMemberOfGroup(String principalId, String groupId);
 	boolean isMemberOfGroup(String principalId, String namespaceCode, String groupName);
+	boolean isGroupMemberOfGroup(String potentialMemberGroupId, String potentialParentId);
 	List<String> getGroupMemberPrincipalIds(String groupId);
 	List<String> getDirectGroupMemberPrincipalIds(String groupId);
     

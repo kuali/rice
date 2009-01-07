@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+  <groups xmlns="ns:workflow/Group" xsi:schemaLocation="ns:workflow/Group resource:Group">
+      <group>
+        <name>TestUserGroup</name>
+        <namespace>KR-WKFLW</namespace>
+        <description>Group for test user</description>
+        <active>true</active>
+        <type>
+          <namespace>KR-WKFLW</namespace>
+          <name>TestType</name>
+        </type>
+        <attributes>
+          <attribute key="documentTypeName" value="Doc"/>
+          <attribute key="routeNodeName" value="P"/>
+          <attribute key="required" value="false"/>
+          <attribute key="actionDetailsAtRoleMemberLevel" value="false"/>
+        </attributes>
+        <members>
+          <principalName>ewestfal</principalName>
+          <principalName>rkirkend</principalName>
+          <principalId>15</principalId>
+          <groupName>
+            <name>TestWorkgroup</name>
+            <namespace>KFS</namespace>
+          </groupName>
+          <!-- <principalId>imbad</principalId>-->
+        </members>
+      </group>
+      <group>
+        <name>TestUserGroup</name>
+        <namespace>KR-WKFLW</namespace>
+        <description>Group for test user</description>
+        <active>true</active>
+        <type>
+          <namespace>KR-WKFLW</namespace>
+          <name>TestType</name>
+        </type>
+        <attributes>
+          <attribute key="required" value="false"/>
+          <attribute key="actionDetailsAtRoleMemberLevel" value="false"/>
+        </attributes>
+        <members>
+          <principalName>ewestfal</principalName>
+          <principalName>rkirkend</principalName>
+          <principalId>15</principalId>
+          <groupName>
+            <name>TestWorkgroup</name>
+            <namespace>KFS</namespace>
+          </groupName>
+          <!-- <principalId>imbad</principalId>-->
+        </members>
+      </group>
+  </groups>
+</data>

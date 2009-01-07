@@ -30,6 +30,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.ObjectDefinitionResolver;
 import org.kuali.rice.core.util.ClassLoaderUtils;
@@ -38,8 +39,10 @@ import org.kuali.rice.kew.docsearch.web.SearchAttributeFormContainer;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
-import org.kuali.rice.kew.lookupable.Field;
-import org.kuali.rice.kew.lookupable.Row;
+//import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kew.docsearch.DocumentSearchField;
+//import org.kuali.rice.kns.web.ui.Row;
+import org.kuali.rice.kew.docsearch.DocumentSearchRow;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.UserUtils;
 import org.kuali.rice.kew.util.Utilities;
@@ -115,7 +118,7 @@ public class DocSearchUtils {
 
     /**
      * A method to format any variety of date strings into a common format
-     * 
+     *
      * @param date
      *            A string date in one of a few different formats
      * @return A string representing a date in the format yyyy/MM/dd or null if date is invalid
@@ -142,7 +145,7 @@ public class DocSearchUtils {
 
     /**
      * A method to format any variety of date strings into a common format
-     * 
+     *
      * @param date
      *            A string date in one of a few different formats
      * @return A string representing a date in the format MM/dd/yyyy or null if date is invalid
@@ -326,7 +329,7 @@ public class DocSearchUtils {
 
     /**
      * Build List of searchable attributes from saved searchable attributes string
-     * 
+     *
      * @param searchableAttributeString
      *            String representation of searchable attributes
      * @return searchable attributes list
@@ -344,20 +347,25 @@ public class DocSearchUtils {
             }
             for (SearchableAttribute searchableAttribute : docType.getSearchableAttributes()) {
             	//KFSMI-1466 - DocumentSearchContext
-                for (Row row : searchableAttribute.getSearchingRows(
+                for (DocumentSearchRow row : searchableAttribute.getSearchingRows(
                 		DocSearchUtils.getDocumentSearchContext("", docType.getName(), ""))) {
-                    for (Field field : row.getFields()) {
-                        SearchableAttributeValue searchableAttributeValue = DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getFieldDataType());
-                        SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(field.getPropertyName(), null, field.getSavablePropertyName(), searchableAttributeValue);
-                        sacc.setRangeSearch(field.isMemberOfRange());
-                        sacc.setAllowWildcards(field.isAllowingWildcards());
-                        sacc.setAutoWildcardBeginning(field.isAutoWildcardAtBeginning());
-                        sacc.setAutoWildcardEnd(field.isAutoWildcardAtEnding());
-                        sacc.setCaseSensitive(field.isCaseSensitive());
-                        sacc.setSearchInclusive(field.isInclusive());
-                        sacc.setSearchable(field.isSearchable());
-                        sacc.setCanHoldMultipleValues(Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));
-                        criteriaComponentsByKey.put(field.getPropertyName(), sacc);
+                    for (org.kuali.rice.kns.web.ui.Field field : row.getFields()) {
+                        if (field instanceof DocumentSearchField) {
+                            DocumentSearchField dsField = (DocumentSearchField)field;
+                            SearchableAttributeValue searchableAttributeValue = DocSearchUtils.getSearchableAttributeValueByDataTypeString(dsField.getFieldDataType());
+                            SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(dsField.getPropertyName(), null, dsField.getSavablePropertyName(), searchableAttributeValue);
+                            sacc.setRangeSearch(dsField.isMemberOfRange());
+                            sacc.setAllowWildcards(dsField.isAllowingWildcards());
+                            sacc.setAutoWildcardBeginning(dsField.isAutoWildcardAtBeginning());
+                            sacc.setAutoWildcardEnd(dsField.isAutoWildcardAtEnding());
+                            sacc.setCaseSensitive(dsField.isCaseSensitive());
+                            sacc.setSearchInclusive(dsField.isInclusive());
+                            sacc.setSearchable(dsField.isSearchable());
+                            sacc.setCanHoldMultipleValues(DocumentSearchField.MULTI_VALUE_FIELD_TYPES.contains(dsField.getFieldType()));
+                            criteriaComponentsByKey.put(dsField.getPropertyName(), sacc);
+                        } else {
+                            throw new RiceRuntimeException("Fields must be of type org.kuali.rice.kew.docsearch.DocumentSearchField");
+                        }
                     }
                 }
             }
@@ -444,7 +452,7 @@ public class DocSearchUtils {
      * <br>
      * This is identical to calling {@link #addSearchableAttributesToCriteria(DocSearchCriteriaDTO, List, String, boolean)}
      * with a boolean value of false for the <code>setAttributesStrictly</code> parameter.
-     * 
+     *
      * @param criteria -
      *            The object that needs a list of {@link SearchAttributeCriteriaComponent} objects set up based on the
      *            document type name and <code>propertyFields</code> parameter
@@ -464,7 +472,7 @@ public class DocSearchUtils {
      * <br>
      * This is identical to calling {@link #addSearchableAttributesToCriteria(DocSearchCriteriaDTO, List, String, boolean)}
      * with a null value for the <code>searchAttributesString</code> parameter.
-     * 
+     *
      * @param criteria -
      *            The object that needs a list of {@link SearchAttributeCriteriaComponent} objects set up based on the
      *            document type name and <code>propertyFields</code> parameter
@@ -483,7 +491,7 @@ public class DocSearchUtils {
     /**
      * This method takes the given <code>propertyFields</code> parameter and populates the {@link DocSearchCriteriaDTO}
      * object search attributes based on the document type name set on the <code>criteria</code> object.
-     * 
+     *
      * @param criteria -
      *            The object that needs a list of {@link SearchAttributeCriteriaComponent} objects set up based on the
      *            document type name and <code>propertyFields</code> parameter
@@ -517,21 +525,26 @@ public class DocSearchUtils {
                 Map criteriaComponentsByFormKey = new HashMap();
                 for (SearchableAttribute searchableAttribute : docType.getSearchableAttributes()) {
                 	//KFSMI-1466 - DocumentSearchContext
-                    for (Row row : searchableAttribute.getSearchingRows(
+                    for (DocumentSearchRow row : searchableAttribute.getSearchingRows(
                     		DocSearchUtils.getDocumentSearchContext("", docType.getName(), ""))) {
-                        for (Field field : row.getFields()) {
-                            SearchableAttributeValue searchableAttributeValue = DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getFieldDataType());
-                            SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(field.getPropertyName(), null, field.getSavablePropertyName(), searchableAttributeValue);
-                            sacc.setRangeSearch(field.isMemberOfRange());
-                            sacc.setAllowWildcards(field.isAllowingWildcards());
-                            sacc.setAutoWildcardBeginning(field.isAutoWildcardAtBeginning());
-                            sacc.setAutoWildcardEnd(field.isAutoWildcardAtEnding());
-                            sacc.setCaseSensitive(field.isCaseSensitive());
-                            sacc.setSearchInclusive(field.isInclusive());
-                            sacc.setLookupableFieldType(field.getFieldType());
-                            sacc.setSearchable(field.isSearchable());
-                            sacc.setCanHoldMultipleValues(Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));
-                            criteriaComponentsByFormKey.put(field.getPropertyName(), sacc);
+                        for (org.kuali.rice.kns.web.ui.Field field : row.getFields()) {
+                            if (field instanceof DocumentSearchField) {
+                                DocumentSearchField dsField = (DocumentSearchField)field;
+                                SearchableAttributeValue searchableAttributeValue = DocSearchUtils.getSearchableAttributeValueByDataTypeString(dsField.getFieldDataType());
+                                SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(dsField.getPropertyName(), null, dsField.getSavablePropertyName(), searchableAttributeValue);
+                                sacc.setRangeSearch(dsField.isMemberOfRange());
+                                sacc.setAllowWildcards(dsField.isAllowingWildcards());
+                                sacc.setAutoWildcardBeginning(dsField.isAutoWildcardAtBeginning());
+                                sacc.setAutoWildcardEnd(dsField.isAutoWildcardAtEnding());
+                                sacc.setCaseSensitive(dsField.isCaseSensitive());
+                                sacc.setSearchInclusive(dsField.isInclusive());
+                                sacc.setLookupableFieldType(dsField.getFieldType());
+                                sacc.setSearchable(dsField.isSearchable());
+                                sacc.setCanHoldMultipleValues(dsField.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));
+                                criteriaComponentsByFormKey.put(dsField.getPropertyName(), sacc);
+                            } else {
+                                throw new RiceRuntimeException("Fields must be of type org.kuali.rice.kew.docsearch.DocumentSearchField");
+                            }
                         }
                     }
                 }
@@ -548,11 +561,12 @@ public class DocSearchUtils {
                         if (urlParameterSearchAttributesByFormKey.containsKey(sacc.getFormKey())) {
                             setupPropertyField(urlParameterSearchAttributesByFormKey.get(sacc.getFormKey()), propertyFields);
                         } else {
-                            if ((Field.CHECKBOX_YES_NO.equals(sacc.getLookupableFieldType())) && (!propertyField.isValueSet())) {
+                            //if ((DocumentSearchField.CHECKBOX_YES_NO.equals(sacc.getLookupableFieldType())) && (!propertyField.isValueSet())) {
                                 // value was not set on the form so we must use the alternate value which for checkbox is the
                                 // 'unchecked' value
-                                sacc.setValue(propertyField.getAlternateValue());
-                            } else if (Field.MULTI_VALUE_FIELD_TYPES.contains(sacc.getLookupableFieldType())) {
+                            //    sacc.setValue(propertyField.getAlternateValue());
+                            //} else
+                            if (DocumentSearchField.MULTI_VALUE_FIELD_TYPES.contains(sacc.getLookupableFieldType())) {
                                 // set the multivalue lookup indicator
                                 sacc.setCanHoldMultipleValues(true);
                                 if (propertyField.getValues() == null) {

@@ -113,6 +113,10 @@ public interface GroupService {
 	 */
 	Map<String,String> getGroupAttributes( String groupId );
 	
+	GroupInfo createGroup(GroupInfo groupInfo);
+
+    GroupInfo updateGroup(String groupId, GroupInfo groupInfo);
+
     boolean addGroupToGroup(String childId, String parentId);
     
     boolean removeGroupFromGroup(String childId, String parentId);

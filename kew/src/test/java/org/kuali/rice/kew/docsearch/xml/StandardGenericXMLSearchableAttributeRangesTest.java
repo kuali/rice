@@ -45,8 +45,10 @@ import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
-import org.kuali.rice.kew.lookupable.Field;
-import org.kuali.rice.kew.lookupable.Row;
+//import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kew.docsearch.DocumentSearchField;
+//import org.kuali.rice.kns.web.ui.Row;
+import org.kuali.rice.kew.docsearch.DocumentSearchRow;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -133,9 +135,9 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
 //			}
         } else {
             assertEquals("Invalid number of search rows", 1, searchRows.size());
-            Row row = (Row) searchRows.get(0);
+            DocumentSearchRow row = (DocumentSearchRow) searchRows.get(0);
             assertEquals("Invalid number of fields for search row", 1, row.getFields().size());
-            assertFalse("Field is the member of a range when ranges are not allowed",row.getField(0).isMemberOfRange());
+            assertFalse("Field is the member of a range when ranges are not allowed",((DocumentSearchField)row.getField(0)).isMemberOfRange());
         }
 
         searchAttribute = getAttribute("XMLSearchableAttributeStdLongRange");
@@ -147,18 +149,18 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         if ((new SearchableAttributeLongValue()).allowsRangeSearches()) {
             assertEquals("Invalid number of search rows", 2, searchRows.size());
             for (int i = 1; i <= searchRows.size(); i++) {
-				Row row = (Row)searchRows.get(i - 1);
+                DocumentSearchRow row = (DocumentSearchRow)searchRows.get(i - 1);
 	            assertEquals("Invalid number of fields for search row " + i, 1, row.getFields().size());
-	            Field field = row.getField(0);
+	            DocumentSearchField field = (DocumentSearchField)(row.getField(0));
 	            assertTrue("Field should be the member of a range",field.isMemberOfRange());
 	            assertTrue("Field should not be inclusive",field.isInclusive());
 	            assertFalse("Field should not be using datepicker", field.isUsingDatePicker());
 			}
         } else {
             assertEquals("Invalid number of search rows", 1, searchRows.size());
-            Row row = (Row) searchRows.get(0);
+            DocumentSearchRow row = (DocumentSearchRow) searchRows.get(0);
             assertEquals("Invalid number of fields for search row", 1, row.getFields().size());
-            Field field = row.getField(0);
+            DocumentSearchField field = (DocumentSearchField)(row.getField(0));
             assertFalse("Field is the member of a range when ranges are not allowed",field.isMemberOfRange());
             assertFalse("Field is inclusive when ranges are not allowed",field.isInclusive());
             assertFalse("Field should not be using datepicker", field.isUsingDatePicker());
@@ -173,9 +175,9 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         if ((new SearchableAttributeFloatValue()).allowsRangeSearches()) {
             assertEquals("Invalid number of search rows", 2, searchRows.size());
             for (int i = 1; i <= searchRows.size(); i++) {
-				Row row = (Row)searchRows.get(i - 1);
+                DocumentSearchRow row = (DocumentSearchRow)searchRows.get(i - 1);
 	            assertEquals("Invalid number of fields for search row " + i, 1, row.getFields().size());
-	            Field field = row.getField(0);
+	            DocumentSearchField field = (DocumentSearchField)(row.getField(0));
 	            assertTrue("Upper and Lower Fields should be members of a range",field.isMemberOfRange());
 	            assertFalse("Upper and Lower Fields should not be inclusive",field.isInclusive());
 	            String labelValue = null;
@@ -191,9 +193,9 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
 			}
         } else {
             assertEquals("Invalid number of search rows", 1, searchRows.size());
-            Row row = (Row) searchRows.get(0);
+            DocumentSearchRow row = (DocumentSearchRow) searchRows.get(0);
             assertEquals("Invalid number of fields for search row", 1, row.getFields().size());
-            Field field = row.getField(0);
+            DocumentSearchField field = (DocumentSearchField)(row.getField(0));
             assertFalse("Field is the member of a range when ranges are not allowed",field.isMemberOfRange());
             assertFalse("Field should not be using datepicker", field.isUsingDatePicker());
         }
@@ -207,9 +209,9 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         if ((new SearchableAttributeDateTimeValue()).allowsRangeSearches()) {
             assertEquals("Invalid number of search rows", 2, searchRows.size());
             for (int i = 0; i < searchRows.size(); i++) {
-				Row row = (Row)searchRows.get(i);
+                DocumentSearchRow row = (DocumentSearchRow)searchRows.get(i);
 	            assertTrue("Invalid number of fields for search row", row.getFields().size() > 0);
-	            Field field = row.getField(0);
+	            DocumentSearchField field = (DocumentSearchField)(row.getField(0));
 	            assertTrue("Field should be the member of a range search", field.isMemberOfRange());
 	            if (field.getPropertyName().startsWith(SearchableAttribute.RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
 	            	// this is the lower bound row
@@ -220,17 +222,17 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
 	            	assertTrue("Upper Field should be using datepicker field", field.isUsingDatePicker());
 	            	assertTrue("Upper Field should not be inclusive", field.isInclusive());
 	            	assertEquals("Row should have two fields (including the datepicker field)", 2, row.getFields().size());
-	            	assertEquals("Second field in row  should be of type datepicker", Field.DATEPICKER, row.getField(1).getFieldType());
+	            	assertEquals("Second field in row  should be of type datepicker", DocumentSearchField.DATEPICKER, row.getField(1).getFieldType());
 	            } else {
 	            	fail("Field should have prefix consistent with upper or lower bound of a range");
 	            }
 			}
         } else {
             assertEquals("Invalid number of search rows", 1, searchRows.size());
-            Row row = (Row) searchRows.get(0);
+            DocumentSearchRow row = (DocumentSearchRow) searchRows.get(0);
             // check to make sure our datepicker field didn't make it to the search rows
             assertEquals("Invalid number of fields", 1, row.getFields().size());
-            assertFalse("Field is the member of a range when ranges are not allowed",row.getField(0).isMemberOfRange());
+            assertFalse("Field is the member of a range when ranges are not allowed",((DocumentSearchField)(row.getField(0))).isMemberOfRange());
         }
     }
 
@@ -244,7 +246,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         String documentTypeName = "SearchDocType";
         DocumentSearchContext context = DocSearchUtils.getDocumentSearchContext("", documentTypeName, "");
         paramMap.put(SearchableAttribute.RANGE_LOWER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, "jack");
-        
+
         List validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should not have returned an error.", 0, validationErrors.size());
         paramMap.clear();

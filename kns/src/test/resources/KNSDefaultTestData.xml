@@ -155,7 +155,57 @@
 			<lastName>employee</lastName>
 		</user>
 	</users>
-	<workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
+	<groups xmlns="ns:workflow/Group" xsi:schemaLocation="ns:workflow/Group resource:Group">
+		<group>
+			<name>WorkflowAdmin</name>
+			<namespace>KFS</namespace>
+			<description>WorkflowAdmin</description>
+			<members>
+				<principalId>quickstart</principalId>
+                <principalId>admin</principalId>
+                <principalId>fran</principalId>
+			</members>
+		</group>
+		<group>
+			<name>KUALI_PED</name>
+			<namespace>KFS</namespace>
+			<description>KUALI_PED</description>
+			<members>
+				<principalId>employee</principalId>
+				<principalId>fran</principalId>
+			</members>
+		</group>
+		<group>
+			<name>KUALI_OPERATIONS</name>
+			<namespace>KFS</namespace>
+			<description>KUALI_OPERATIONS</description>
+			<members>
+				<principalId>employee</principalId>
+                <principalId>user4</principalId>
+                <principalId>fran</principalId>
+			</members>
+		</group>
+		<group>
+			<name>KUALI_ROLE_MAINTENANCE</name>
+			<namespace>KFS</namespace>
+			<description>KUALI_ROLE_MAINTENANCE</description>
+			<members>
+				<principalId>employee</principalId>
+				<principalId>fran</principalId>
+			</members>
+		</group>
+		<group>
+			<name>KUALI_ROLE_SUPERVISOR</name>
+			<namespace>KFS</namespace>
+			<description>KUALI_ROLE_SUPERVISOR</description>
+			<members>
+				<principalId>admin</principalId>
+                <principalId>supervisor</principalId>
+                <principalId>fran</principalId>
+			</members>
+		</group>
+	</groups>
+<!-- <workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
 		<workgroup>
 			<id>1</id>
 			<workgroupName>WorkflowAdmin</workgroupName>
@@ -199,6 +249,7 @@
 			</members>
 		</workgroup>
 	</workgroups>
+-->
 	<ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
 		<ruleTemplate allowOverwrite="true">
 			<name>WorkflowDocumentTemplate</name>

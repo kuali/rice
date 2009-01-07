@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -35,7 +35,7 @@ import org.kuali.rice.kew.xml.XmlRenderer;
 
 /**
  * Exports rules to XML.
- * 
+ *
  * @see RuleBaseValues
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -43,9 +43,9 @@ import org.kuali.rice.kew.xml.XmlRenderer;
 public class RuleXmlExporter implements XmlExporter, XmlConstants {
 
     protected final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(getClass());
-    
+
     private XmlRenderer renderer = new XmlRenderer(RULE_NAMESPACE);
-    
+
     public Element export(ExportDataSet dataSet) {
         if (!dataSet.getRules().isEmpty()) {
             Element rootElement = renderer.renderElement(null, RULES);
@@ -62,7 +62,7 @@ public class RuleXmlExporter implements XmlExporter, XmlConstants {
         }
         return null;
     }
-    
+
     private void exportRule(Element parent, RuleBaseValues rule, RuleDelegation delegation) {
         Element ruleElement = renderer.renderElement(parent, RULE);
         if (rule.getName() != null) {
@@ -86,7 +86,7 @@ public class RuleXmlExporter implements XmlExporter, XmlConstants {
             renderer.renderTextElement(ruleElement, DELEGATION_TYPE, delegation.getDelegationType());
         }
     }
-    
+
     private void exportRuleExtensions(Element parent, List ruleExtensions) {
         if (!ruleExtensions.isEmpty()) {
             Element extsElement = renderer.renderElement(parent, RULE_EXTENSIONS);
@@ -100,7 +100,7 @@ public class RuleXmlExporter implements XmlExporter, XmlConstants {
             }
         }
     }
-    
+
     private void exportRuleExtensionValues(Element parent, List extensionValues) {
         if (!extensionValues.isEmpty()) {
             Element extValuesElement = renderer.renderElement(parent, RULE_EXTENSION_VALUES);
@@ -112,7 +112,7 @@ public class RuleXmlExporter implements XmlExporter, XmlConstants {
             }
         }
     }
-    
+
     private void exportResponsibilities(Element parent, List responsibilities, RuleDelegation delegation) {
         if (!responsibilities.isEmpty()) {
             Element responsibilitiesElement = renderer.renderElement(parent, RESPONSIBILITIES);
@@ -123,7 +123,7 @@ public class RuleXmlExporter implements XmlExporter, XmlConstants {
                     if (ruleResponsibility.isUsingWorkflowUser()) {
                         renderer.renderTextElement(respElement, USER, ruleResponsibility.getWorkflowUser().getAuthenticationUserId().getId());
                     } else if (ruleResponsibility.isUsingGroup()) {
-                        renderer.renderTextElement(respElement, GROUP, ruleResponsibility.getGroup().getGroupName());
+                        renderer.renderTextElement(respElement, WORKGROUP, ruleResponsibility.getGroup().getGroupName());
                     } else if (ruleResponsibility.isUsingRole()) {
                         renderer.renderTextElement(respElement, ROLE, ruleResponsibility.getRuleResponsibilityName());
                         renderer.renderTextElement(respElement, APPROVE_POLICY, ruleResponsibility.getApprovePolicy());
@@ -139,7 +139,7 @@ public class RuleXmlExporter implements XmlExporter, XmlConstants {
             }
         }
     }
-    
+
     private void exportDelegations(Element parent, List ruleDelegations) {
         if (!ruleDelegations.isEmpty()) {
             Element delegationsElement = renderer.renderElement(parent, DELEGATIONS);

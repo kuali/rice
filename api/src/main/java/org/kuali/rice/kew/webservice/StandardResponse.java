@@ -6,8 +6,8 @@ package org.kuali.rice.kew.webservice;
 public class StandardResponse extends ErrorResponse {
     protected String docStatus;
     protected String createDate;
-    protected String initiatorId;
-    protected String routedByUserId;
+    protected String initiatorPrincipalId;
+    protected String routedByPrincipalId;
     protected String routedByUserName;
     protected String appDocId;
     protected String initiatorName;
@@ -23,11 +23,11 @@ public class StandardResponse extends ErrorResponse {
     public void setCreateDate(String createDate) {
         this.createDate = createDate;
     }
-    public String getInitiatorId() {
-        return initiatorId;
+    public String getInitiatorPrincipalId() {
+        return initiatorPrincipalId;
     }
-    public void setInitiatorId(String initiatorId) {
-        this.initiatorId = initiatorId;
+    public void setInitiatorPrincipalId(String initiatorId) {
+        this.initiatorPrincipalId = initiatorId;
     }
     public String getAppDocId() {
         return appDocId;
@@ -41,11 +41,11 @@ public class StandardResponse extends ErrorResponse {
     public void setInitiatorName(String initiatorName) {
         this.initiatorName = initiatorName;
     }
-    public String getRoutedByUserId() {
-        return routedByUserId;
+    public String getRoutedByPrincipalId() {
+        return routedByPrincipalId;
     }
-    public void setRoutedByUserId(String routedByUserId) {
-        this.routedByUserId = routedByUserId;
+    public void setRoutedByPrincipalId(String routedByUserId) {
+        this.routedByPrincipalId = routedByUserId;
     }
     public String getRoutedByUserName() {
         return routedByUserName;

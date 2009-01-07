@@ -239,4 +239,14 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
             throw new RuntimeException("Null value for " + valueName);
         }
     }
+    
+	public List findActivatedByGroup(String groupId) {
+		Query query = entityManager.createNamedQuery("ActionRequestValue.FindByStatusAndGroupId");
+        query.setParameter("status", KEWConstants.ACTION_REQUEST_ACTIVATED);
+        query.setParameter("currentIndicator", Boolean.TRUE);
+        query.setParameter("groupId", groupId);
+        
+        return query.getResultList();
+	}
+    
 }

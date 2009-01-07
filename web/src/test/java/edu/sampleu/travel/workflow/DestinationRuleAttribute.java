@@ -20,8 +20,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kew.lookupable.Field;
-import org.kuali.rice.kew.lookupable.Row;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kew.rule.GenericWorkflowAttribute;
 import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 
@@ -30,11 +30,11 @@ public class DestinationRuleAttribute extends GenericWorkflowAttribute {
 
 	private static final String DEST_LABEL = "Destination";
 	private static final String DEST_FIELD_KEY = "destination";
-	
+
     private static final List<Row> rows = new ArrayList<Row>();
     static {
         List<Field> fields = new ArrayList<Field>();
-        fields.add(new Field(DEST_LABEL, "", Field.TEXT, true, DEST_FIELD_KEY, "", null, null, DEST_FIELD_KEY));
+        fields.add(new Field(DEST_LABEL, "", Field.TEXT, false, DEST_FIELD_KEY, "", false, false, null, null));
         rows.add(new Row(fields));
     }
 
@@ -43,7 +43,7 @@ public class DestinationRuleAttribute extends GenericWorkflowAttribute {
     public DestinationRuleAttribute() {
         super("destination");
     }
-    
+
     public DestinationRuleAttribute(String destination) {
         super("destination");
         this.destination = destination;
@@ -70,7 +70,7 @@ public class DestinationRuleAttribute extends GenericWorkflowAttribute {
 			if (! foundDestRule) {
 				return false;
 			}
-			
+
 			Element element = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
 					new InputSource(new BufferedReader(new StringReader(docContent.getDocContent())))).getDocumentElement();
 			XPath xpath = XPathFactory.newInstance().newXPath();
@@ -112,7 +112,7 @@ public class DestinationRuleAttribute extends GenericWorkflowAttribute {
 	public List validateRuleData(Map paramMap) {
 		return validateInputMap(paramMap);
 	}
-    
+
     private List validateInputMap(Map paramMap) {
     	List errors = new ArrayList();
     	this.destination = (String) paramMap.get(DEST_FIELD_KEY);
@@ -120,5 +120,5 @@ public class DestinationRuleAttribute extends GenericWorkflowAttribute {
     		errors.add(new WorkflowAttributeValidationError(DEST_FIELD_KEY, "Destination is required."));
     	}
     	return errors;
-    }	
+    }
 }

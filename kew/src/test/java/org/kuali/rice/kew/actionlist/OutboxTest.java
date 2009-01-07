@@ -117,7 +117,7 @@ public class OutboxTest extends KEWTestCase {
 
         turnOnOutboxForUser(rkirkend);
 
-        document.appSpecificRouteDocumentToUser("A", "", new NetworkIdDTO("user1"), "", true);
+        document.adHocRouteDocumentToPrincipal("A", "", getPrincipalIdForName("user1"), "", true);
 
         document.approve("");
 
@@ -127,7 +127,7 @@ public class OutboxTest extends KEWTestCase {
         document = new WorkflowDocument(new NetworkIdDTO("user1"), document.getRouteHeaderId());
         assertTrue("approve should be requested", document.isApprovalRequested());
 
-        document.appSpecificRouteDocumentToUser("A", "", new NetworkIdDTO("rkirkend"), "", true);
+        document.adHocRouteDocumentToPrincipal("A", "", getPrincipalIdForName("rkirkend"), "", true);
 
         document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
         assertTrue("approve should be requested", document.isApprovalRequested());

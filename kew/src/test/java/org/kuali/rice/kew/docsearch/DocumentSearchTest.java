@@ -38,7 +38,6 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.engine.node.RouteNode;
-import org.kuali.rice.kew.lookupable.DocumentTypeLookupableImpl;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
@@ -46,6 +45,7 @@ import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.KEWPropertyConstants;
 import org.kuali.rice.kew.web.KeyValueSort;
 import org.kuali.rice.test.TestHarnessServiceLocator;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -230,34 +230,6 @@ public class DocumentSearchTest extends KEWTestCase {
         WorkflowUser user = userService.getWorkflowUser(new AuthenticationUserId("bmcgough"));
         List namedSearches = docSearchService.getNamedSearches(user);
         assertNotNull(namedSearches);
-    }
-
-    /**
-     * Test for https://test.kuali.org/jira/browse/KULWF-703
-     */
-    @Test public void testSearchEDENSERVICE_DOCS() throws Exception {
-        loadXmlStream(new FileInputStream(getBaseDir()+"/../impl/src/main/config/xml/KEWBootstrap.xml"));
-
-        Collection c = KEWServiceLocator.getDocumentTypeService().find(new DocumentType(), "EDENSERVICE-DOCS", true);
-        assertNotNull(c);
-        assertTrue(c.size() > 0);
-
-        DocumentTypeLookupableImpl lookupable = new DocumentTypeLookupableImpl();
-        Map fieldValues = new HashMap();
-        fieldValues.put(DocumentTypeLookupableImpl.ACTIVE_IND_PROPERTY_NAME, "ALL");
-        fieldValues.put(DocumentTypeLookupableImpl.DOC_TYP_PROPERTY_NAME, "");
-        fieldValues.put(DocumentTypeLookupableImpl.DOC_TYP_FULL_NAME, "");
-        fieldValues.put(DocumentTypeLookupableImpl.DOCUMENT_TYPE_ID_PROPERTY_NAME, "");
-        fieldValues.put(DocumentTypeLookupableImpl.DOC_TYP_NAME_PROPERTY_NAME, "EDENSERVICE-DOCS");
-        fieldValues.put(DocumentTypeLookupableImpl.BACK_LOCATION_KEY_NAME, "http://localhost:8080/en-dev/DocumentSearch.do");
-
-        fieldValues.put(DocumentTypeLookupableImpl.DOC_FORM_KEY_NAME, "0");
-
-        //String docTypReturn = (String) fieldConversions.get(DOC_TYP_FULL_NAME);
-
-        List list = lookupable.getSearchResults(fieldValues, new HashMap());
-        assertNotNull(list);
-        assertTrue(list.size() > 0);
     }
 
     @Test public void testDefaultCreateDateSearchCriteria() throws Exception {

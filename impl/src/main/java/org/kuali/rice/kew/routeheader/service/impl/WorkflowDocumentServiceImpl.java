@@ -51,16 +51,14 @@ import org.kuali.rice.kew.actions.SuperUserReturnToPreviousNodeAction;
 import org.kuali.rice.kew.actions.TakeWorkgroupAuthority;
 import org.kuali.rice.kew.actions.asyncservices.ActionInvocation;
 import org.kuali.rice.kew.actions.asyncservices.ActionInvocationService;
-import org.kuali.rice.kew.actions.asyncservices.BlanketApproveProcessorService;
 import org.kuali.rice.kew.docsearch.service.SearchableAttributeProcessingService;
 import org.kuali.rice.kew.engine.CompatUtils;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.exception.DocumentTypeNotFoundException;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.WorkflowDocumentService;
@@ -69,8 +67,7 @@ import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.workgroup.Workgroup;
-import org.kuali.rice.kim.bo.group.*;
+import org.kuali.rice.kim.bo.group.KimGroup;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -109,16 +106,16 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		return finish(routeHeader);
 	}
 
-	public DocumentRouteHeaderValue releaseGroupAuthority(WorkflowUser user, DocumentRouteHeaderValue routeHeader, KimGroup group, String annotation) throws InvalidActionTakenException,
+	public DocumentRouteHeaderValue releaseGroupAuthority(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String groupId, String annotation) throws InvalidActionTakenException,
 			KEWUserNotFoundException {
-		ReleaseWorkgroupAuthority action = new ReleaseWorkgroupAuthority(routeHeader, user, annotation, group);
+		ReleaseWorkgroupAuthority action = new ReleaseWorkgroupAuthority(routeHeader, user, annotation, groupId);
 		action.performAction();
 		return finish(routeHeader);
 	}
 
-	public DocumentRouteHeaderValue takeGroupAuthority(WorkflowUser user, DocumentRouteHeaderValue routeHeader, KimGroup group, String annotation) throws InvalidActionTakenException,
+	public DocumentRouteHeaderValue takeGroupAuthority(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String groupId, String annotation) throws InvalidActionTakenException,
 			KEWUserNotFoundException {
-		TakeWorkgroupAuthority action = new TakeWorkgroupAuthority(routeHeader, user, annotation, group);
+		TakeWorkgroupAuthority action = new TakeWorkgroupAuthority(routeHeader, user, annotation, groupId);
 		action.performAction();
 		return finish(routeHeader);
 	}
@@ -130,13 +127,22 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		return finish(routeHeader);
 	}
 
-	public DocumentRouteHeaderValue appSpecificRouteDocument(WorkflowUser user, DocumentRouteHeaderValue document, String actionRequested, String nodeName, String annotation, Recipient recipient,
+	public DocumentRouteHeaderValue adHocRouteDocumentToPrincipal(WorkflowUser user, DocumentRouteHeaderValue document, String actionRequested, String nodeName, String annotation, String principalId,
 			String responsibilityDesc, Boolean ignorePrevious) throws WorkflowException {
+		Recipient recipient = KEWServiceLocator.getIdentityHelperService().getPrincipalRecipient(principalId);
 		AdHocAction action = new AdHocAction(document, user, annotation, actionRequested, nodeName, recipient, responsibilityDesc, ignorePrevious);
 		action.performAction();
 		return finish(document);
 	}
 
+	public DocumentRouteHeaderValue adHocRouteDocumentToGroup(WorkflowUser user, DocumentRouteHeaderValue document, String actionRequested, String nodeName, String annotation, String groupId,
+			String responsibilityDesc, Boolean ignorePrevious) throws WorkflowException {
+		Recipient recipient = KEWServiceLocator.getIdentityHelperService().getGroupRecipient(groupId);
+		AdHocAction action = new AdHocAction(document, user, annotation, actionRequested, nodeName, recipient, responsibilityDesc, ignorePrevious);
+		action.performAction();
+		return finish(document);
+	}
+	
 	public DocumentRouteHeaderValue blanketApproval(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String annotation, Integer routeLevel) throws InvalidActionTakenException, KEWUserNotFoundException {
 		RouteNode node = (routeLevel == null ? null : CompatUtils.getNodeForLevel(routeHeader.getDocumentType(), routeLevel));
 		if (node == null && routeLevel != null) {
@@ -190,9 +196,9 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 														// client is off
 			throw new InvalidActionTakenException("Document already has a Document id");
 		}
-		
+
 		boolean canInitiate = KEWServiceLocator.getDocumentTypePermissionService().canInitiate(user.getWorkflowId(), routeHeader.getDocumentType());
-		
+
 		if (!canInitiate) {
 			throw new InvalidActionTakenException("User '" + user.getAuthenticationUserId().getId() + "' is not authorized to initiate documents of type '" + routeHeader.getDocumentType().getName());
 		}

@@ -269,11 +269,11 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
 	/**
 	 * @see org.kuali.rice.kew.actionrequest.dao.ActionRequestDAO#findActivatedByGroup(org.kuali.rice.kim.bo.group.KimGroup)
 	 */
-	public List findActivatedByGroup(KimGroup group) {
+	public List findActivatedByGroup(String groupId) {
         Criteria statusCriteria = new Criteria();
         statusCriteria.addEqualTo("status", KEWConstants.ACTION_REQUEST_ACTIVATED);
         Criteria crit = new Criteria();
-        crit.addEqualTo("groupId", group.getGroupId());
+        crit.addEqualTo("groupId", groupId);
         crit.addEqualTo("currentIndicator", new Boolean(true));
         crit.addAndCriteria(statusCriteria);
 

@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -38,6 +38,7 @@ import javax.persistence.Version;
 import org.apache.commons.beanutils.BeanUtils;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
@@ -51,13 +52,12 @@ import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.session.UserSession;
-import org.kuali.rice.kew.workgroup.WorkflowGroupId;
-import org.kuali.rice.kew.workgroup.Workgroup;
-import org.kuali.rice.kew.workgroup.WorkgroupService;
+import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 /**
- * Model object mapped to ojb for representing actions taken on documents by 
+ * Model object mapped to ojb for representing actions taken on documents by
  * users.
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -94,7 +94,7 @@ public class ActionTakenValue implements WorkflowPersistable {
     @Column(name="DLGTR_PRNCPL_ID")
 	private String delegatorWorkflowId;
     @Column(name="DLGTR_GRP_ID")
-	private Long delegatorGroupId;
+	private String delegatorGroupId;
     @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
     @JoinColumn(name="DOC_HDR_ID", insertable=false, updatable=false)
     private DocumentRouteHeaderValue routeHeader;
@@ -113,15 +113,17 @@ public class ActionTakenValue implements WorkflowPersistable {
       return getWorkflowUserForWorkflowId( delegatorWorkflowId );
     }
 
-    public Workgroup getDelegatorWorkgroup() {
-        return getWorkgroupService().getWorkgroup(new WorkflowGroupId(delegatorGroupId));
+    public KimGroup getDelegatorWorkgroup()
+    {
+	    return KIMServiceLocator.getIdentityManagementService()
+	            .getGroup(String.valueOf(delegatorGroupId));
     }
 
     public void setDelegator(Recipient recipient) {
         if (recipient instanceof WorkflowUser) {
             setDelegatorWorkflowId(((WorkflowUser)recipient).getWorkflowUserId().getWorkflowId());
-        } else if (recipient instanceof Workgroup) {
-            setDelegatorGroupId(((Workgroup)recipient).getWorkflowGroupId().getGroupId());
+        } else if (recipient instanceof KimGroupRecipient) {
+            setDelegatorGroupId(((KimGroupRecipient)recipient).getGroup().getGroupId());
         } else {
             setDelegatorWorkflowId(null);
             setDelegatorGroupId(null);
@@ -144,7 +146,7 @@ public class ActionTakenValue implements WorkflowPersistable {
         	}
             return getDelegatorUser().getDisplayName();
         } else {
-            return getDelegatorWorkgroup().getGroupNameId().getNameId();
+            return getDelegatorWorkgroup().getGroupName();
         }
     }
 
@@ -225,10 +227,10 @@ public class ActionTakenValue implements WorkflowPersistable {
         this.delegatorWorkflowId = delegatorWorkflowId;
     }
 
-    public Long getDelegatorGroupId() {
+    public String getDelegatorGroupId() {
         return delegatorGroupId;
     }
-    public void setDelegatorGroupId(Long delegatorGroupId) {
+    public void setDelegatorGroupId(String delegatorGroupId) {
         this.delegatorGroupId = delegatorGroupId;
     }
     public Integer getDocVersion() {
@@ -291,10 +293,6 @@ public class ActionTakenValue implements WorkflowPersistable {
 
     private UserService getUserService() {
         return (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
-    }
-
-    private WorkgroupService getWorkgroupService() {
-        return (WorkgroupService) KEWServiceLocator.getService(KEWServiceLocator.WORKGROUP_SRV);
     }
 
     private ActionRequestService getActionRequestService() {

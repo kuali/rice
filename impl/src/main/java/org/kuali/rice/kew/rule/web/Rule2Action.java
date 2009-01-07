@@ -38,7 +38,7 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.export.ExportDataSet;
-import org.kuali.rice.kew.lookupable.WorkflowLookupable;
+//import org.kuali.rice.kew.lookupable.WorkflowLookupable;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.MyRules2;
 import org.kuali.rice.kew.rule.RuleBaseValues;
@@ -78,7 +78,7 @@ public class Rule2Action extends WorkflowAction {
         //createWorkflowDocument(request, rule2Form);
         return mapping.findForward("basic");
     }
-
+/*
     public ActionForward performLookup(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         Rule2Form ruleForm = (Rule2Form) form;
 
@@ -106,7 +106,7 @@ public class Rule2Action extends WorkflowAction {
         lookupUrl.append("&returnLocation=").append(basePath).append(mapping.getPath()).append(".do");
         return new ActionForward(lookupUrl.toString(), true);
     }
-
+*/
     public ActionForward report(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         Rule2Form ruleForm = (Rule2Form) form;
         List rules = new ArrayList();

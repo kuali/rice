@@ -42,11 +42,11 @@ import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.workgroup.GroupId;
-import org.kuali.rice.kew.workgroup.GroupNameId;
-import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
+import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.role.dto.DelegateInfo;
 import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.util.KNSConstants;
 
@@ -130,17 +130,29 @@ public class ActionRequestFactory {
     }
 
     //unify these 2 methods if possible
-    public List generateNotifications(List requests, WorkflowUser user, Recipient delegator, String notificationRequestCode, String actionTakenCode) throws KEWUserNotFoundException {
-        Workgroup notifyExclusionWorkgroup = getWorkgroupService().getWorkgroup(new GroupNameId(Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.WORKGROUP_DETAIL_TYPE, KEWConstants.NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME_IND)));
+    public List generateNotifications(List requests, WorkflowUser user, Recipient delegator,
+            String notificationRequestCode, String actionTakenCode) throws KEWUserNotFoundException
+    {
+        String groupName =  Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE,
+		        KNSConstants.DetailTypes.WORKGROUP_DETAIL_TYPE,
+		        KEWConstants.NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME_IND);
+
+        KimGroup notifyExclusionWorkgroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, groupName);
         return generateNotifications(null, getActionRequestService().getRootRequests(requests), user, delegator, notificationRequestCode, actionTakenCode, notifyExclusionWorkgroup);
     }
-    private List<ActionRequestValue> generateNotifications(ActionRequestValue parentRequest, List requests, WorkflowUser user, Recipient delegator, String notificationRequestCode, String actionTakenCode, Workgroup notifyExclusionWorkgroup) throws KEWUserNotFoundException {
+
+    private List<ActionRequestValue> generateNotifications(ActionRequestValue parentRequest,
+            List requests, WorkflowUser user, Recipient delegator, String notificationRequestCode,
+            String actionTakenCode, KimGroup notifyExclusionWorkgroup) throws KEWUserNotFoundException
+    {
         List<ActionRequestValue> notificationRequests = new ArrayList<ActionRequestValue>();
         for (Iterator iter = requests.iterator(); iter.hasNext();) {
             ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
             if (!(actionRequest.isRecipientRoutedRequest(user) || actionRequest.isRecipientRoutedRequest(delegator))) {
                 // skip user requests to system users
-                if ( (notifyExclusionWorkgroup != null) && (notifyExclusionWorkgroup.hasMember(actionRequest.getRecipient())) ) {
+                if( (notifyExclusionWorkgroup != null) &&
+                        (isRecipientInGroup(notifyExclusionWorkgroup, actionRequest.getRecipient())))
+                {
                     continue;
                 }
                 ActionRequestValue notificationRequest = createNotificationRequest(actionRequest, user, notificationRequestCode, actionTakenCode);
@@ -153,6 +165,25 @@ public class ActionRequestFactory {
             }
         }
         return notificationRequests;
+    }
+
+    private boolean isRecipientInGroup(KimGroup group, Recipient recipient)
+    {
+        boolean isMember = false;
+
+        if(recipient instanceof WorkflowUser)
+        {
+            String userId = ((WorkflowUser) recipient).getWorkflowId();
+            String groupId = group.getGroupId();
+            isMember =
+                KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(userId, groupId);
+        }
+        else if (recipient instanceof KimGroupRecipient)
+        {
+            String kimRecipientId = ((KimGroupRecipient) recipient).getGroup().getGroupId();
+            isMember = KIMServiceLocator.getIdentityManagementService().isGroupMemberOfGroup(kimRecipientId, group.getGroupId() );
+        }
+        return isMember;
     }
 
     private ActionRequestValue createNotificationRequest(ActionRequestValue actionRequest, WorkflowUser reasonUser, String notificationRequestCode, String actionTakenCode) throws KEWUserNotFoundException {
@@ -193,9 +224,6 @@ public class ActionRequestFactory {
     	} else if (recipient instanceof KimPrincipalRecipient) {
     		actionRequest.setRecipientTypeCd(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
     		actionRequest.setWorkflowId(((KimPrincipalRecipient)recipient).getPrincipal().getPrincipalId());
-    	} else if (recipient instanceof Workgroup){
-    		actionRequest.setRecipientTypeCd(KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD);
-    		actionRequest.setGroupId(((Workgroup)recipient).getWorkflowGroupId().getGroupId().toString());
     	} else if (recipient instanceof RoleRecipient){
     		RoleRecipient role = (RoleRecipient)recipient;
     		actionRequest.setRecipientTypeCd(KEWConstants.ACTION_REQUEST_ROLE_RECIPIENT_CD);
@@ -259,7 +287,7 @@ public class ActionRequestFactory {
 			if (recipientId instanceof UserId) {
 				role.setTarget(KEWServiceLocator.getUserService().getWorkflowUser((UserId) recipientId));
 			} else {
-				role.setTarget(KEWServiceLocator.getWorkgroupService().getWorkgroup((GroupId) recipientId));
+				role.setTarget(new KimGroupRecipient(KEWServiceLocator.getIdentityHelperService().getGroup((GroupId) recipientId)));
 			}
 			if (role.getTarget() != null) {
                 legitimateTargets++;
@@ -359,7 +387,7 @@ public class ActionRequestFactory {
 			if (recipientId instanceof UserId) {
 				role.setTarget(KEWServiceLocator.getUserService().getWorkflowUser((UserId) recipientId));
 			} else {
-				role.setTarget(KEWServiceLocator.getWorkgroupService().getWorkgroup((GroupId) recipientId));
+			    role.setTarget(new KimGroupRecipient(KEWServiceLocator.getIdentityHelperService().getGroup((GroupId) recipientId)));
 			}
 			ActionRequestValue request = createActionRequest(parentRequest.getActionRequested(), parentRequest.getPriority(), role, description, responsibilityId, ignorePrevious, null, ruleId, null);
 			request.setDelegationType(delegationType);

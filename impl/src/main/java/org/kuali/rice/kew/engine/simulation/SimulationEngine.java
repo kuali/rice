@@ -58,7 +58,6 @@ import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kim.bo.group.KimGroup;
 
 
@@ -519,13 +518,11 @@ public class SimulationEngine extends StandardWorkflowEngine {
 		val.setWorkflowId(userToPerformAction.getWorkflowUserId().getWorkflowId());
 		if (delegator instanceof WorkflowUser) {
 			val.setDelegatorWorkflowId(((WorkflowUser) delegator).getWorkflowUserId().getWorkflowId());
-		} else if (delegator instanceof Workgroup) {
-			val.setDelegatorGroupId(((Workgroup) delegator).getWorkflowGroupId().getGroupId());
 		}else if (delegator instanceof KimGroupRecipient) {
 			KimGroup group = ((KimGroupRecipient) delegator).getGroup();
-			val.setDelegatorGroupId(new Long(group.getGroupId()));
+			val.setDelegatorGroupId(group.getGroupId());
 		}
-		
+
 		val.setRouteHeader(routeHeader);
 		val.setCurrentIndicator(Boolean.TRUE);
 		return val;

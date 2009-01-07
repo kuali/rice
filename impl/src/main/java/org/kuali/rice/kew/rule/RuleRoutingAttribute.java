@@ -26,8 +26,8 @@ import org.jdom.Element;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
-import org.kuali.rice.kew.lookupable.Field;
-import org.kuali.rice.kew.lookupable.Row;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
@@ -51,7 +51,7 @@ public class RuleRoutingAttribute implements WorkflowAttribute {
     private static final String DOC_TYPE_NAME_LABEL = "Document type name";
 
     private String doctypeName;
-    private List rows;
+    private List<Row> rows;
     private boolean required;
 
     public RuleRoutingAttribute(String docTypeName) {
@@ -64,11 +64,10 @@ public class RuleRoutingAttribute implements WorkflowAttribute {
     }
 
     private void buildRows() {
-        rows = new ArrayList();
+        rows = new ArrayList<Row>();
 
-        List fields = new ArrayList();
-        fields.add(new Field(DOC_TYPE_NAME_LABEL, "", Field.TEXT, true, DOC_TYPE_NAME_PROPERTY, "", null, LOOKUPABLE_CLASS, DOC_TYPE_NAME_KEY));
-        fields.add(new Field("", "", Field.QUICKFINDER, false, "", "", null, LOOKUPABLE_CLASS));
+        List<Field> fields = new ArrayList<Field>();
+        fields.add(new Field(DOC_TYPE_NAME_LABEL, "", Field.TEXT, false, DOC_TYPE_NAME_PROPERTY, "", false, false, null, LOOKUPABLE_CLASS));
         rows.add(new Row(fields));
     }
 

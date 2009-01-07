@@ -24,6 +24,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
 import org.kuali.rice.kew.docsearch.DocumentSearchCriteriaProcessor;
@@ -33,9 +34,13 @@ import org.kuali.rice.kew.docsearch.StandardDocSearchCriteriaManager;
 import org.kuali.rice.kew.docsearch.StandardDocumentSearchCriteriaProcessor;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
-import org.kuali.rice.kew.lookupable.Column;
-import org.kuali.rice.kew.lookupable.Field;
-import org.kuali.rice.kew.lookupable.Row;
+//import org.kuali.rice.kns.web.ui.Column;
+//import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kew.docsearch.DocumentSearchField;
+import org.kuali.rice.kew.docsearch.DocumentSearchColumn;
+//import org.kuali.rice.kns.web.ui.Row;
+//import org.kuali.rice.kew.lookupable.LegacyRow;
+import org.kuali.rice.kew.docsearch.DocumentSearchRow;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
@@ -82,7 +87,7 @@ public class DocumentSearchForm extends ActionForm {
 
 	public DocumentSearchForm() {
 		super();
-		searchableAttributeRows = new ArrayList<Row>();
+		searchableAttributeRows = new ArrayList<DocumentSearchRow>();
 		searchableAttributeColumns = new ArrayList();
 		propertyFields = new ArrayList();
 	}
@@ -118,7 +123,7 @@ public class DocumentSearchForm extends ActionForm {
 	}
 
 	public void clearSearchableAttributeProperties() {
-		searchableAttributeRows = new ArrayList<Row>();
+		searchableAttributeRows = new ArrayList<DocumentSearchRow>();
 		searchableAttributeColumns = new ArrayList();
         propertyFields = new ArrayList();
 	}
@@ -139,32 +144,34 @@ public class DocumentSearchForm extends ActionForm {
 			if (searchableAttributeRows.isEmpty() && searchableAttributeColumns.isEmpty() && propertyFields.isEmpty()) {
 				Set alreadyProcessedFieldKeys = new HashSet();
 				for (SearchableAttribute searchableAttribute : searchableAttributes) {
-					List<Row> searchRows = searchableAttribute.getSearchingRows(
+					List<DocumentSearchRow> searchRows = searchableAttribute.getSearchingRows(
 							DocSearchUtils.getDocumentSearchContext("", documentType.getName(), ""));
 					if (searchRows == null) {
 						continue;
 					}
-					for (Row row : searchRows) {
-						for (Field field : row.getFields()) {
-							if (!Utilities.isEmpty(field.getPropertyName())) {
-                                if (Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType())) {
+					for (DocumentSearchRow row : searchRows) {
+						for (org.kuali.rice.kns.web.ui.Field field : row.getFields()) {
+					        DocumentSearchField dsField = (DocumentSearchField)field;
+							if (!Utilities.isEmpty(dsField.getPropertyName())) {
+                                if (dsField.MULTI_VALUE_FIELD_TYPES.contains(dsField.getFieldType())) {
                                     SearchAttributeFormContainer newFormContainer = new SearchAttributeFormContainer();
-                                    newFormContainer.setKey(field.getPropertyName());
-                                    newFormContainer.setValues(field.getPropertyValues());
+                                    newFormContainer.setKey(dsField.getPropertyName());
+                                    newFormContainer.setValues(dsField.getPropertyValues());
                                     propertyFields.add(newFormContainer);
                                 } else {
-                                    propertyFields.add(new SearchAttributeFormContainer(field.getPropertyName(), field.getPropertyValue()));
+                                    propertyFields.add(new SearchAttributeFormContainer(dsField.getPropertyName(), dsField.getPropertyValue()));
                                 }
+
 							}
                             // TODO delyea - check this... do we need it still?
-							if ( (field.getSavablePropertyName() == null) || (!alreadyProcessedFieldKeys.contains(field.getSavablePropertyName())) ) {
-								if (field.isColumnVisible()) {
-									for (Iterator iter = Field.SEARCH_RESULT_DISPLAYABLE_FIELD_TYPES.iterator(); iter.hasNext();) {
+							if ( (dsField.getSavablePropertyName() == null) || (!alreadyProcessedFieldKeys.contains(dsField.getSavablePropertyName())) ) {
+								if (dsField.isColumnVisible()) {
+									for (Iterator iter = dsField.SEARCH_RESULT_DISPLAYABLE_FIELD_TYPES.iterator(); iter.hasNext();) {
 										String displayableFieldType = (String) iter.next();
-										if (field.getFieldType().equals(displayableFieldType)) {
-											searchableAttributeColumns.add(new Column(field.getFieldLabel(), Column.COLUMN_IS_SORTABLE_VALUE, "searchableAttribute(" + field.getSavablePropertyName() + ").label"));
-											if (field.getSavablePropertyName() != null) {
-												alreadyProcessedFieldKeys.add(field.getSavablePropertyName());
+										if (dsField.getFieldType().equals(displayableFieldType)) {
+											searchableAttributeColumns.add(new DocumentSearchColumn(field.getFieldLabel(), DocumentSearchColumn.COLUMN_IS_SORTABLE_VALUE, "searchableAttribute(" + dsField.getSavablePropertyName() + ").label"));
+											if (dsField.getSavablePropertyName() != null) {
+												alreadyProcessedFieldKeys.add(dsField.getSavablePropertyName());
 											}
 											break;
 										}
@@ -191,13 +198,13 @@ public class DocumentSearchForm extends ActionForm {
 		// searchableAttributeRows is a List containing rows from all attributes, so we need to keep a global row count
 		int totalRowIndex = 0;
 		for (SearchableAttribute searchableAttribute : searchableAttributes) {
-			List<Row> rows = searchableAttribute.getSearchingRows(DocSearchUtils.getDocumentSearchContext("", documentType.getName(), ""));
-			for (Row row : rows) {
-				Row existingRow = (Row)getSearchableAttributeRows().get(totalRowIndex++);
+			List<DocumentSearchRow> rows = searchableAttribute.getSearchingRows(DocSearchUtils.getDocumentSearchContext("", documentType.getName(), ""));
+			for (DocumentSearchRow row : rows) {
+			    DocumentSearchRow existingRow = (DocumentSearchRow)getSearchableAttributeRows().get(totalRowIndex++);
 				int fieldIndex = 0;
-				for (Field field : row.getFields()) {
+				for (org.kuali.rice.kns.web.ui.Field field : row.getFields()) {
 					// get existing field
-					Field existingField = existingRow.getField(fieldIndex++);
+					org.kuali.rice.kns.web.ui.Field existingField = existingRow.getFields().get(fieldIndex++);
 					// now update the valid values
 					existingField.setFieldValidValues(field.getFieldValidValues());
 				}
@@ -549,7 +556,7 @@ public class DocumentSearchForm extends ActionForm {
 		this.lookupType = lookupType;
 	}
 
-	public List<Row> getProcessedSearchableAttributeRows() {
+	public List<DocumentSearchRow> getProcessedSearchableAttributeRows() {
 	    if (isAdvancedSearch()) {
 	        return this.criteriaProcessor.processSearchableAttributeRowsForAdvancedSearch(getSearchableAttributeRows());
 	    } else {
@@ -565,19 +572,19 @@ public class DocumentSearchForm extends ActionForm {
 	    return this.searchableAttributeRows;
 	}
 
-	public void addSearchableAttributeRow(Row row) {
+	public void addSearchableAttributeRow(DocumentSearchRow row) {
 	    getSearchableAttributeRows().add(row);
 	}
 
-	public Row getSearchableAttributeRow(int index) {
+	public DocumentSearchRow getSearchableAttributeRow(int index) {
         while (getSearchableAttributeRows().size() <= index) {
-            Row row = new Row(new ArrayList<Field>());
+            DocumentSearchRow row = new DocumentSearchRow(new ArrayList<org.kuali.rice.kns.web.ui.Field>());
             getSearchableAttributeRows().add(row);
         }
-        return (Row) getSearchableAttributeRows().get(index);
+        return (DocumentSearchRow) getSearchableAttributeRows().get(index);
 	}
 
-	public void setSearchableAttributeRow(int index, Row row) {
+	public void setSearchableAttributeRow(int index, DocumentSearchRow row) {
 	    getSearchableAttributeRows().set(index, row);
 	}
 
@@ -596,19 +603,19 @@ public class DocumentSearchForm extends ActionForm {
 		return searchableAttributeColumns;
 	}
 
-	public void addSearchableAttributeColumn(Column column) {
+	public void addSearchableAttributeColumn(DocumentSearchColumn column) {
 		searchableAttributeColumns.add(column);
 	}
 
-	public Column getSearchableAttributeColumn(int index) {
+	public DocumentSearchColumn getSearchableAttributeColumn(int index) {
 		while (getSearchableAttributeColumns().size() <= index) {
-			Column column = new Column("", "", "");
+		    DocumentSearchColumn column = new DocumentSearchColumn("", "", "");
 			getSearchableAttributeColumns().add(column);
 		}
-		return (Column) getSearchableAttributeColumns().get(index);
+		return (DocumentSearchColumn) getSearchableAttributeColumns().get(index);
 	}
 
-	public void setSearchableAttributeColumn(int index, Column column) {
+	public void setSearchableAttributeColumn(int index, DocumentSearchColumn column) {
 		searchableAttributeColumns.set(index, column);
 	}
 

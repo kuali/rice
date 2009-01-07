@@ -22,7 +22,7 @@ import org.kuali.rice.core.util.JSTLConstants;
 
 /**
  * This is a constants file used to describe KEW properties
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
@@ -48,7 +48,7 @@ public class KEWPropertyConstants extends JSTLConstants {
     public static final String BACK_LOCATION = "backLocation";
     public static final String SERVICE_NAMESPACE = "serviceNamespace";
     public static final String DOC_FORM_KEY = "docFormKey";
-    
+
     //Constants used by RouteNode
     public static final String ROUTE_NODE_ID = "routeNodeId";
     public static final String ROUTE_NODE_INSTANCE_ID = "routeNodeInstanceId";

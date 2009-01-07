@@ -448,12 +448,10 @@ public class LookupUtils {
      * the lookup first. 
      * 
      * For this method to work properly, it must be called after setFieldQuickfinder
-     * //TODO: chb: that should not be the case -- the relationship object the two rely upon should be established outside of the lookup/quickfinder code
-     *  
-     * 
      * @param field
      * @return the altered Field object
      */
+     //TODO: chb: that should not be the case -- the relationship object the two rely upon should be established outside of the lookup/quickfinder code
     public static Field setFieldDirectInquiry(BusinessObject businessObject, String attributeName, Field field, List<String> lookupFieldAttributeList) 
     {
 		if (businessObject == null) 

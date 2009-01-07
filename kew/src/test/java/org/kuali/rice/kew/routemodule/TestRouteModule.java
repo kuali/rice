@@ -1,14 +1,14 @@
 
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,22 +26,16 @@ import java.util.Map;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
-import org.kuali.rice.kew.dto.GroupIdDTO;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.identity.IdentityFactory;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.routemodule.RouteModule;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.Recipient;
+import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.ResponsibleParty;
-import org.kuali.rice.kew.workgroup.GroupNameId;
-import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.util.KimConstants;
 
 
 /**
@@ -50,11 +44,11 @@ import org.kuali.rice.kim.util.KimConstants;
 public class TestRouteModule implements RouteModule {
 
     private static Map responsibilityMap = new HashMap();
-    
+
     public List findActionRequests(RouteContext context) throws ResourceUnavailableException, WorkflowException {
     	return findActionRequests(context.getDocument());
     }
-    
+
     public List findActionRequests(DocumentRouteHeaderValue routeHeader) throws ResourceUnavailableException, WorkflowException {
         TestRouteLevel routeLevel = TestRouteModuleXMLHelper.parseCurrentRouteLevel(routeHeader);
         List actionRequests = new ArrayList();
@@ -85,16 +79,15 @@ public class TestRouteModule implements RouteModule {
     public Recipient getRealRecipient(TestRecipient recipient) throws WorkflowException {
         Recipient realRecipient = null;
         if (recipient.getType().equals(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD)) {
-        	realRecipient = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(recipient.getId()));
-        } else if (recipient.getType().equals(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD)) {
-//        	realRecipient = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId(recipient.getId()));
+        	realRecipient = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(recipient.getId()));
+        } else if (recipient.getType().equals(KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD)) {
         	realRecipient = (KimGroupRecipient)KIMServiceLocator.getIdentityManagementService().getGroup(recipient.getId());
         } else {
         	throw new WorkflowException("Could not resolve recipient with type " + recipient.getType());
         }
         return realRecipient;
     }
-    
+
     public ResponsibleParty resolveResponsibilityId(Long responsibilityId) throws ResourceUnavailableException, WorkflowException {
         TestRecipient recipient = (TestRecipient)responsibilityMap.get(responsibilityId);
         if (recipient == null) {
@@ -102,9 +95,9 @@ public class TestRouteModule implements RouteModule {
         }
         ResponsibleParty responsibleParty = new ResponsibleParty();
         if (recipient.getType().equals(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD)) {
-            responsibleParty.setUserId(new AuthenticationUserId(recipient.getId()));
+            responsibleParty.setPrincipalId(recipient.getId());
         } else if (recipient.getType().equals(KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD)) {
-        	GroupIdDTO groupId = IdentityFactory.newGroupId(recipient.getId());
+        	responsibleParty.setGroupId(recipient.getId());
         } else if (recipient.getType().equals(KEWConstants.ACTION_REQUEST_ROLE_RECIPIENT_CD)) {
             responsibleParty.setRoleName(recipient.getId());
         } else {
@@ -112,5 +105,5 @@ public class TestRouteModule implements RouteModule {
         }
         return responsibleParty;
     }
-    
+
 }

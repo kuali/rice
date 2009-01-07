@@ -30,7 +30,6 @@ import java.util.List;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.junit.Test;
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
@@ -46,8 +45,10 @@ import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.workgroup.GroupNameId;
-import org.kuali.rice.kew.workgroup.Workgroup;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimConstants;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -173,11 +174,16 @@ public class ActionListTest extends KEWTestCase {
     	// now lets verify that everyone's action lists look correct
 
     	WorkflowUser bmcgough = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("bmcgough"));
+    	//KimPrincipal bmcgough = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("bmcgough");
     	WorkflowUser rkirkend = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("rkirkend"));
+    	//KimPrincipal rkirkend = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("rkirkend");
     	WorkflowUser ewestfal = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("ewestfal"));
+    	//KimPrincipal ewestfal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("ewestfal");
     	WorkflowUser jitrue = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("jitrue"));
+    	//KimPrincipal jitrue = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("jitrue");
     	WorkflowUser user1 = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("user1"));
-    	Workgroup NonSIT = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId("NonSIT"));
+    	//KimPrincipal user1 = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("user1");
+    	KimGroup NonSIT = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, "NonSIT");
 
     	ActionListFilter noFilter = new ActionListFilter();
     	ActionListFilter excludeSecondaryFilter = new ActionListFilter();
@@ -215,7 +221,7 @@ public class ActionListTest extends KEWTestCase {
     	assertEquals("user1 should have 1 item in his primary action list.", 1, actionItems.size());
     	actionItem = (ActionItem)actionItems.iterator().next();
     	assertEquals("Should be an approve request.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
-    	assertEquals("Should be to a workgroup.", NonSIT.getWorkflowGroupId().getGroupId().toString(), actionItem.getGroupId());
+    	assertEquals("Should be to a workgroup.", NonSIT.getGroupId(), actionItem.getGroupId());
     	// check that user1 acknowledge shows up when filtering
     	ActionListFilter ackFilter = new ActionListFilter();
     	ackFilter.setActionRequestCd(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
@@ -226,13 +232,15 @@ public class ActionListTest extends KEWTestCase {
     	assertNull("Should not be to a workgroup.", actionItem.getGroupId());
 
     	// all members of NonSIT should have a single primary Approve Request
-    	for (Iterator iterator = NonSIT.getUsers().iterator(); iterator.hasNext(); ) {
-			WorkflowUser user = (WorkflowUser) iterator.next();
+    	for (Iterator iterator = KIMServiceLocator.getIdentityManagementService().getGroupMemberPrincipalIds(NonSIT.getGroupId()).iterator(); iterator.hasNext(); ) {
+			String userId = (String)iterator.next();
+			//will want to convert to Kim Principal
+    	    WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(userId));
 			actionItems = getActionListService().getActionList(user.getWorkflowId(), excludeSecondaryFilter);
 			assertEquals("Workgroup Member " + user.getDisplayName() + " should have 1 action item.", 1, actionItems.size());
 			actionItem = (ActionItem)actionItems.iterator().next();
 			assertEquals("Should be an approve request.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
-			assertEquals("Should be to a workgroup.", NonSIT.getWorkflowGroupId().getGroupId().toString(), actionItem.getGroupId());
+			assertEquals("Should be to a workgroup.", NonSIT.getGroupId(), actionItem.getGroupId());
 		}
 
         document = new WorkflowDocument(new NetworkIdDTO("jhopf"), "ActionListDocumentType_PrimaryDelegate");
@@ -311,7 +319,6 @@ public class ActionListTest extends KEWTestCase {
 //    	WorkflowUser user1 = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("user1"));
         WorkflowUser delyea = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("delyea"));
         WorkflowUser temay = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("temay"));
-//    	Workgroup NonSIT = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId("NonSIT"));
 
 //    	ActionListFilter excludeSecondaryFilter = new ActionListFilter();
 //    	excludeSecondaryFilter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);

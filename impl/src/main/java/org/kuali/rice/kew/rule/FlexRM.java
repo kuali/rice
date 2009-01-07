@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,10 +27,12 @@ import java.util.Map;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.apache.ojb.broker.IdentityFactory;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.dto.GroupIdDTO;
 import org.kuali.rice.kew.engine.RouteContext;
@@ -40,7 +42,6 @@ import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
-import org.kuali.rice.kew.identity.IdentityFactory;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
@@ -55,12 +56,14 @@ import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.ResponsibleParty;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.workgroup.WorkflowGroupId;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimConstants;
 
 
 /**
  * Generates Action Requests for a Document using the rule system and the specified
  * {@link RuleTemplate}.
- * 
+ *
  * @see ActionRequestValue
  * @see RuleTemplate
  * @see RuleBaseValues
@@ -70,7 +73,7 @@ import org.kuali.rice.kew.workgroup.WorkflowGroupId;
 public class FlexRM {
 
     private static final Logger LOG = Logger.getLogger(FlexRM.class);
-    
+
     /**
      * The default type of rule selector implementation to use if none is explicitly
      * specified for the node.
@@ -183,7 +186,7 @@ public class FlexRM {
         }
 
 	LOG.debug("Making action requests for document " + routeHeader.getRouteHeaderId());
-	
+
 	RuleSelector ruleSelector = loadRuleSelector(routeNodeDef, nodeInstance);
 
 	List<Rule> rules = ruleSelector.selectRules(context, routeHeader, nodeInstance, ruleTemplateName, effectiveDate);
@@ -203,7 +206,7 @@ public class FlexRM {
 	PerformanceLogger performanceLogger = new PerformanceLogger();
 
 	ActionRequestFactory arFactory = new ActionRequestFactory(routeHeader, context.getNodeInstance());
-	
+
 	List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
 	if (rules != null) {
 	    for (Rule rule: rules) {
@@ -225,15 +228,17 @@ public class FlexRM {
     		throw new IllegalArgumentException("A null responsibilityId was passed to resolve responsibility!");
     	}
     	RuleResponsibility resp = getRuleService().findRuleResponsibility(responsibilityId);
+    	ResponsibleParty responsibleParty = new ResponsibleParty();
     	if (resp.isUsingRole()) {
-    		return new ResponsibleParty(resp.getResolvedRoleName());
+    		responsibleParty.setRoleName(resp.getResolvedRoleName());
     	} else if (resp.isUsingWorkflowUser()) {
-    		return new ResponsibleParty(new WorkflowUserId(resp.getRuleResponsibilityName()));
+    		responsibleParty.setPrincipalId(resp.getRuleResponsibilityName());
     	} else if (resp.isUsingGroup()) {
-    		GroupIdDTO groupId = IdentityFactory.newGroupId(resp.getRuleResponsibilityName());
-    		return new ResponsibleParty(groupId);
+    		responsibleParty.setGroupId(resp.getRuleResponsibilityName());
+    	} else {
+    		throw new RiceRuntimeException("Failed to resolve responsibility from responsibility ID " + responsibilityId + ".  Responsibility was an invalid type: " + resp);
     	}
-    	throw new RiceRuntimeException("Failed to resolve responsibility from responsibility ID " + responsibilityId + ".  Responsibility was an invalid type: " + resp);
+    	return responsibleParty;
     }
 
     private void makeActionRequests(ActionRequestFactory arFactory, RouteContext context, RuleBaseValues rule, DocumentRouteHeaderValue routeHeader, ActionRequestValue parentRequest, RuleDelegation ruleDelegation)
@@ -318,7 +323,7 @@ public class FlexRM {
 	    }
 	}
     }
-    
+
     /**
 	 * Determines if the attribute has a setRuleAttribute method and then sets the value appropriately if it does.
 	 */
@@ -346,7 +351,7 @@ public class FlexRM {
 			    throw new WorkflowRuntimeException("Failed to set RuleAttribute on our RoleAttribute!", e);
 			}
 		    }
-		} 
+		}
 	    }
 	}
 
@@ -362,15 +367,17 @@ public class FlexRM {
 	if (resp.isUsingWorkflowUser()) {
 	    recipient = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(resp.getRuleResponsibilityName()));
 	} else {
-	    recipient = KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(new Long(resp.getRuleResponsibilityName())));
+	    //recipient = new KimGroupRecipient(KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, resp.getRuleResponsibilityName()));
+	    //recipient = new KimGroupRecipient(KIMServiceLocator.getIdentityManagementService().getGroup(resp.getRuleResponsibilityName()));
+	    recipient = new KimGroupRecipient(resp.getGroup());
 	}
 	ActionRequestValue actionRequest;
 	if (parentRequest == null) {
 	    actionRequest = arFactory.addRootActionRequest(resp.getActionRequestedCd(),
-		    resp.getPriority(), 
-		    recipient, 
-		    rule.getDescription(), 
-		    resp.getResponsibilityId(), 
+		    resp.getPriority(),
+		    recipient,
+		    rule.getDescription(),
+		    resp.getResponsibilityId(),
 		    rule.getIgnorePrevious(),
 		    resp.getApprovePolicy(),
 		    rule.getRuleBaseValuesId());

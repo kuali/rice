@@ -18,11 +18,8 @@ package org.kuali.rice.kew.dto;
 
 import java.io.Serializable;
 
-import org.kuali.rice.kim.bo.group.dto.GroupInfo;
-
-
 /**
- * Transport for representing a user, workgroup, or role associated with and request
+ * Transport for representing a principal, group, or role associated with and request
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
@@ -30,27 +27,12 @@ public class ResponsiblePartyDTO implements Serializable {
 
     static final long serialVersionUID = 5716093378476396724L;
 
-    private UserIdDTO userId;
+    private String principalId;
 	private String roleName;
-	private GroupIdDTO groupId;
-	
-    public ResponsiblePartyDTO() {}
-    
-    public ResponsiblePartyDTO(GroupIdDTO groupId)
-    {
-    	this.groupId = groupId;
-    }
-    
-    public ResponsiblePartyDTO(UserIdDTO userId) {
-        this.userId = userId;
-    }
-
-    public ResponsiblePartyDTO(String roleName) {
-        this.roleName = roleName;
-    }
-    
-    public boolean isUser() {
-        return userId != null;
+	private String groupId;
+	    
+    public boolean isPrincipal() {
+        return principalId != null;
     }
     
     public boolean isGroup() {
@@ -60,28 +42,13 @@ public class ResponsiblePartyDTO implements Serializable {
     public boolean isRole() {
         return roleName != null;
     }
-
-    public String toString() {
-        StringBuffer sb = new StringBuffer("[");
-        if (isUser()) {
-            sb.append("user=");
-            sb.append(userId == null ? "null" : userId.toString());
-        } else {
-            sb.append("groupInfo=");
-            sb.append(groupId == null ? "null" : groupId.toString());
-        }
-
-        sb.append("]");
-
-        return sb.toString();
-    }
     	
-	public UserIdDTO getUserId() {
-		return userId;
+	public String getPrincipalId() {
+		return principalId;
 	}
 	
-	public void setUserId(UserIdDTO userId) {
-	    this.userId = userId;
+	public void setPrincipalId(String principalId) {
+	    this.principalId = principalId;
 	}
 
     public String getRoleName() {
@@ -91,18 +58,39 @@ public class ResponsiblePartyDTO implements Serializable {
     public void setRoleName(String roleName) {
         this.roleName = roleName;
     }
-
-	/**
-	 * @return the groupInfo
-	 */
-	public GroupIdDTO getGroupId() {
+	public String getGroupId() {
 		return this.groupId;
 	}
 
-	/**
-	 * @param groupInfo the groupInfo to set
-	 */
-	public void setGroupId(GroupIdDTO groupId) {
+	public void setGroupId(String groupId) {
 		this.groupId = groupId;
 	}
+	
+	public static ResponsiblePartyDTO fromGroupId(String groupId) {
+		ResponsiblePartyDTO responsibleParty = new ResponsiblePartyDTO();
+		responsibleParty.setGroupId(groupId);
+		return responsibleParty;
+	}
+	
+	public static ResponsiblePartyDTO fromPrincipalId(String principalId) {
+		ResponsiblePartyDTO responsibleParty = new ResponsiblePartyDTO();
+		responsibleParty.setPrincipalId(principalId);
+		return responsibleParty;
+	}
+	
+	public static ResponsiblePartyDTO fromRoleName(String roleName) {
+		ResponsiblePartyDTO responsibleParty = new ResponsiblePartyDTO();
+		responsibleParty.setRoleName(roleName);
+		return responsibleParty;
+	}
+	
+    public String toString() {
+        StringBuffer sb = new StringBuffer("[");
+        sb.append("principalId=").append(getPrincipalId()).append(", ");
+        sb.append("groupId=").append(getGroupId()).append(", ");
+        sb.append("roleName=").append(getRoleName());
+        sb.append("]");
+        return sb.toString();
+    }
+
 }

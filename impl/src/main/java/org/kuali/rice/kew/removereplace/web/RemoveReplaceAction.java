@@ -41,7 +41,6 @@ import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.user.AuthenticationUserId;
-import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.CodeTranslator;
@@ -49,8 +48,8 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.WorkflowAction;
 import org.kuali.rice.kew.web.session.UserSession;
-import org.kuali.rice.kew.workgroup.WorkflowGroupId;
-import org.kuali.rice.kew.workgroup.Workgroup;
+import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 /**
@@ -117,7 +116,7 @@ public class RemoveReplaceAction extends WorkflowAction {
 	// TODO with KIM, no longer possible to get all group types
 
 	//form.setWorkgroupTypes(KEWServiceLocator.getWorkgroupTypeService().findAllActive());
-        form.getWorkgroupTypes().add(0, RemoveReplaceForm.createDefaultWorkgroupType());
+        //form.getWorkgroupTypes().add(0, RemoveReplaceForm.createDefaultWorkgroupType());
 	return messages;
     }
 
@@ -202,14 +201,14 @@ public class RemoveReplaceAction extends WorkflowAction {
         form.getShowHide().getChild(1).setShow(!form.getWorkgroups().isEmpty());
     }
 
-    protected List<Workgroup> loadWorkgroups(RemoveReplaceDocument document) {
-	List<Workgroup> workgroups = new ArrayList<Workgroup>();
+    protected List<? extends KimGroup> loadWorkgroups(RemoveReplaceDocument document) {
+	List<KimGroup> workgroups = new ArrayList<KimGroup>();
 	for (WorkgroupTarget workgroupTarget : document.getWorkgroupTargets()) {
-	    Workgroup workgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(workgroupTarget.getWorkgroupId()));
-	    if (workgroup == null) {
-		throw new WorkflowRuntimeException("Failed to locate workgroup with id " + workgroupTarget.getWorkgroupId());
+		KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(workgroupTarget.getWorkgroupId());
+	    if (group == null) {
+	    	throw new WorkflowRuntimeException("Failed to locate group with id " + workgroupTarget.getWorkgroupId());
 	    }
-	    workgroups.add(workgroup);
+	    workgroups.add(group);
 	}
 	return workgroups;
     }
@@ -311,51 +310,53 @@ public class RemoveReplaceAction extends WorkflowAction {
 	    // this condition should already be satisfied but throw an error if it's not
 	    throw new RuntimeException("Please enter a valid user id before choosing workgroups.");
 	}
-	Workgroup template = KEWServiceLocator.getWorkgroupService().getBlankWorkgroup();
-	template.setActiveInd(Boolean.TRUE);
-	if (!StringUtils.isBlank(form.getWorkgroupType())) {
-	    template.setWorkgroupType(form.getWorkgroupType());
-	}
-	List<Workgroup> workgroups = KEWServiceLocator.getWorkgroupService().search(template, null, form.getUser().getWorkflowId());
+//	Workgroup template = KEWServiceLocator.getWorkgroupService().getBlankWorkgroup();
+//	template.setActiveInd(Boolean.TRUE);
+//	if (!StringUtils.isBlank(form.getWorkgroupType())) {
+//	    template.setWorkgroupType(form.getWorkgroupType());
+//	}
+	List<? extends KimGroup> groups = KIMServiceLocator.getIdentityManagementService().getGroupsForPrincipal(form.getUser().getWorkflowId());
 	form.getWorkgroups().clear();
-	form.getWorkgroups().addAll(loadRemoveReplaceWorkgroups(form, workgroups));
+	form.getWorkgroups().addAll(loadRemoveReplaceWorkgroups(form, groups));
 	return mapping.findForward("basic");
     }
 
     /**
      * Constructs a list of RemoveReplaceWorkgroup objects from the given list of Workgroups.
      */
-    protected List<RemoveReplaceWorkgroup> loadRemoveReplaceWorkgroups(RemoveReplaceForm form, List<Workgroup> workgroups) {
+    protected List<RemoveReplaceWorkgroup> loadRemoveReplaceWorkgroups(RemoveReplaceForm form, List<? extends KimGroup> groups) {
 	List<RemoveReplaceWorkgroup> removeReplaceWorkgroups = new ArrayList<RemoveReplaceWorkgroup>();
-	Set<Long> selectedWorkgroupIds = getSelectedWorkgroupIds(form);
-	for (Workgroup workgroup : workgroups) {
+	Set<String> selectedWorkgroupIds = getSelectedWorkgroupIds(form);
+	for (KimGroup group : groups) {
 	    RemoveReplaceWorkgroup removeReplaceWorkgroup = new RemoveReplaceWorkgroup();
-	    removeReplaceWorkgroup.setId(workgroup.getWorkflowGroupId().getGroupId());
-	    removeReplaceWorkgroup.setName(workgroup.getGroupNameId().getNameId());
-	    removeReplaceWorkgroup.setType(workgroup.getWorkgroupType());
+	    removeReplaceWorkgroup.setId(group.getGroupId());
+	    removeReplaceWorkgroup.setName(group.getGroupName());
+	    removeReplaceWorkgroup.setType(group.getKimTypeId());
 	    removeReplaceWorkgroup.setWarning("");
 	    // if workgroup was selected previously, keep it selected
-	    removeReplaceWorkgroup.setSelected(selectedWorkgroupIds.contains(workgroup.getWorkflowGroupId().getGroupId()));
+	    removeReplaceWorkgroup.setSelected(selectedWorkgroupIds.contains(group.getGroupId()));
 	    boolean isOnlyMember = true;
 	    boolean foundMember = false;
-	    for (Recipient member : workgroup.getMembers()) {
-		if (member instanceof WorkflowUser && ((WorkflowUser)member).getWorkflowId().equals(form.getUser().getWorkflowId())) {
-		    foundMember = true;
-		} else {
-		    isOnlyMember = false;
-		}
+	    List<String> directMembers = KIMServiceLocator.getIdentityManagementService().getDirectGroupMemberPrincipalIds(group.getGroupId());
+	    for (String principalId : directMembers) {
+	    	if (principalId.equals(form.getUser().getWorkflowId())) {
+	    		foundMember = true;
+	    	} else {
+	    		isOnlyMember = false;
+	    	}
 	    }
 	    List<String> warnings = new ArrayList<String>();
-	    try {
-		Long documentId = KEWServiceLocator.getWorkgroupRoutingService().getLockingDocumentId(workgroup.getWorkflowGroupId());
-		if (documentId != null) {
-		    warnings.add("Workgroup is locked by document " + documentId + " and cannot be modified.");
-		    removeReplaceWorkgroup.setDisabled(true);
-		    removeReplaceWorkgroup.setSelected(false);
-		}
-	    } catch (WorkflowException e) {
-		throw new WorkflowRuntimeException(e);
-	    }
+	    // TODO: to be replaced during conversion to KNS
+	    //try {
+		//Long documentId = KEWServiceLocator.getWorkgroupRoutingService().getLockingDocumentId(group.getWorkflowGroupId());
+		//if (documentId != null) {
+		//    warnings.add("Workgroup is locked by document " + documentId + " and cannot be modified.");
+		//    removeReplaceWorkgroup.setDisabled(true);
+		//    removeReplaceWorkgroup.setSelected(false);
+		//}
+	    //} catch (WorkflowException e) {
+		//throw new WorkflowRuntimeException(e);
+	    //}
 	    if (RemoveReplaceDocument.REMOVE_OPERATION.equals(form.getOperation()) && isOnlyMember) {
 		warnings.add("Only one member on the workgroup, removing them will inactivate the workgroup.");
 	    }
@@ -366,7 +367,7 @@ public class RemoveReplaceAction extends WorkflowAction {
 		removeReplaceWorkgroup.setWarning(removeReplaceWorkgroup.getWarning().concat(warning));
 	    }
 	    if (!foundMember) {
-		LOG.warn("Failed to find a valid member on workgroup " + workgroup.getDisplayName() + " for user " + form.getUserId() + ".  This workgroup will not be added to the list for selection.");
+		LOG.warn("Failed to find a valid member on workgroup " + group.getGroupName() + " for user " + form.getUserId() + ".  This workgroup will not be added to the list for selection.");
 	    } else {
 		removeReplaceWorkgroups.add(removeReplaceWorkgroup);
 	    }
@@ -374,8 +375,8 @@ public class RemoveReplaceAction extends WorkflowAction {
 	return removeReplaceWorkgroups;
     }
 
-    private Set<Long> getSelectedWorkgroupIds(RemoveReplaceForm form) {
-	Set<Long> selectedWorkgroupIds = new HashSet<Long>();
+    private Set<String> getSelectedWorkgroupIds(RemoveReplaceForm form) {
+	Set<String> selectedWorkgroupIds = new HashSet<String>();
 	for (RemoveReplaceWorkgroup workgroup : form.getWorkgroups()) {
 	    if (workgroup.isSelected()) {
 		selectedWorkgroupIds.add(workgroup.getId());

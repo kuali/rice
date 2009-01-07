@@ -23,14 +23,12 @@ import org.kuali.rice.kew.actions.ActionTakenEvent;
 import org.kuali.rice.kew.actions.AdHocRevoke;
 import org.kuali.rice.kew.actions.MovePoint;
 import org.kuali.rice.kew.exception.DocumentTypeNotFoundException;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.WorkflowDocumentActions;
-import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.rice.kim.bo.group.KimGroup;
 
 
 /**
@@ -46,7 +44,8 @@ public interface WorkflowDocumentService {
 
     public DocumentRouteHeaderValue acknowledgeDocument(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException, KEWUserNotFoundException;
     public DocumentRouteHeaderValue approveDocument(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException, KEWUserNotFoundException;
-    public DocumentRouteHeaderValue appSpecificRouteDocument(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String actionRequested, String routeMethodName, String annotation, Recipient rp, String responsibilityDesc, Boolean ignorePrevActions) throws WorkflowException;
+    public DocumentRouteHeaderValue adHocRouteDocumentToPrincipal(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String actionRequested, String routeMethodName, String annotation, String principalId, String responsibilityDesc, Boolean ignorePrevActions) throws WorkflowException;
+    public DocumentRouteHeaderValue adHocRouteDocumentToGroup(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String actionRequested, String routeMethodName, String annotation, String groupId, String responsibilityDesc, Boolean ignorePrevActions) throws WorkflowException;
     public DocumentRouteHeaderValue cancelDocument(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException, KEWUserNotFoundException;
     public DocumentRouteHeaderValue clearFYIDocument(WorkflowUser user, DocumentRouteHeaderValue routeHeader) throws InvalidActionTakenException, KEWUserNotFoundException;
     public DocumentRouteHeaderValue completeDocument(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException, KEWUserNotFoundException;
@@ -85,12 +84,12 @@ public interface WorkflowDocumentService {
     /**
      * @since 2.1
      */
-    public DocumentRouteHeaderValue takeGroupAuthority(WorkflowUser user, DocumentRouteHeaderValue routeHeader, KimGroup group, String annotation) throws InvalidActionTakenException, KEWUserNotFoundException;
+    public DocumentRouteHeaderValue takeGroupAuthority(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String groupId, String annotation) throws InvalidActionTakenException, KEWUserNotFoundException;
 
     /**
      * @since 2.1
      */
-    public DocumentRouteHeaderValue releaseGroupAuthority(WorkflowUser user, DocumentRouteHeaderValue routeHeader, KimGroup group, String annotation) throws InvalidActionTakenException, KEWUserNotFoundException;
+    public DocumentRouteHeaderValue releaseGroupAuthority(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String groupId, String annotation) throws InvalidActionTakenException, KEWUserNotFoundException;
 
     /**
      * @since 2.1

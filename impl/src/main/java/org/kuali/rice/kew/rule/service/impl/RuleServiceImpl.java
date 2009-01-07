@@ -80,11 +80,11 @@ import org.kuali.rice.kew.validation.RuleValidationContext;
 import org.kuali.rice.kew.validation.ValidationResults;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kew.workgroup.GroupId;
-import org.kuali.rice.kew.workgroup.WorkflowGroupId;
-import org.kuali.rice.kew.workgroup.Workgroup;
-import org.kuali.rice.kew.workgroup.WorkgroupService;
 import org.kuali.rice.kew.xml.RuleXmlParser;
 import org.kuali.rice.kew.xml.export.RuleXmlExporter;
+import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.service.IdentityManagementService;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 
 
@@ -740,7 +740,7 @@ public class RuleServiceImpl implements RuleService {
             for (Iterator iter = ruleBaseValues.getResponsibilities().iterator(); iter.hasNext();) {
                 RuleResponsibility responsibility = (RuleResponsibility) iter.next();
                 if (responsibility.getRuleResponsibilityName() != null && KEWConstants.RULE_RESPONSIBILITY_GROUP_ID.equals(responsibility.getRuleResponsibilityType())) {
-                    if (getWorkgroupService().getWorkgroup(new WorkflowGroupId(new Long(responsibility.getRuleResponsibilityName()))) == null) {
+                    if (getIdentityManagementService().getGroup(responsibility.getRuleResponsibilityName()) == null) {
                         errors.add(new WorkflowServiceErrorImpl("Workgroup is invalid", "routetemplate.ruleservice.workgroup.invalid"));
                     }
                 } else if (responsibility.getWorkflowUser() == null && responsibility.getRole() == null) {
@@ -792,7 +792,7 @@ public class RuleServiceImpl implements RuleService {
         for (Iterator iter = ruleBaseValues.getResponsibilities().iterator(); iter.hasNext();) {
             RuleResponsibility responsibility = (RuleResponsibility) iter.next();
             if (responsibility.getRuleResponsibilityName() != null && KEWConstants.RULE_RESPONSIBILITY_GROUP_ID.equals(responsibility.getRuleResponsibilityType())) {
-                if (getWorkgroupService().getWorkgroup(new WorkflowGroupId(new Long(responsibility.getRuleResponsibilityName()))) == null) {
+                if (getIdentityManagementService().getGroup(responsibility.getRuleResponsibilityName()) == null) {
                     errors.add(new WorkflowServiceErrorImpl("Workgroup is invalid", "routetemplate.ruleservice.workgroup.invalid"));
                     LOG.error("Workgroup is invalid");
                 }
@@ -843,7 +843,7 @@ public class RuleServiceImpl implements RuleService {
         return getRuleDAO().findByRouteHeaderId(routeHeaderId);
     }
 
-    public List search(String docTypeName, Long ruleId, Long ruleTemplateId, String ruleDescription, Long workgroupId, String workflowId,
+    public List search(String docTypeName, Long ruleId, Long ruleTemplateId, String ruleDescription, String workgroupId, String workflowId,
             String roleName, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective) {
         return getRuleDAO().search(docTypeName, ruleId, ruleTemplateId, ruleDescription, workgroupId, workflowId, roleName, delegateRule,
                 activeInd, extensionValues, workflowIdDirective);
@@ -877,30 +877,27 @@ public class RuleServiceImpl implements RuleService {
         }
 
         WorkflowUser user = null;
+        String principalId = null;
         if (userId != null) {
-            // below will throw KEWUserNotFoundException
-            user = getUserService().getWorkflowUser(userId);
+            // below will (hopefully) throw NotFoundException
+            //user = getUserService().getWorkflowUser(userId);
+            principalId = KIMServiceLocator.getIdentityManagementService().getPrincipal(userId.getId()).getPrincipalId();
         }
 
-        Collection<String> workgroupIds = new ArrayList();
+        Collection<String> workgroupIds = new ArrayList<String>();
         if (user != null) {
             if ( (workgroupMember == null) || (workgroupMember.booleanValue()) ) {
-                // user is found from DB and we need to parse workgroups
-                List userWorkgroups = getWorkgroupService().getUsersGroups(user.getWorkflowId());
-                for (Iterator iter = userWorkgroups.iterator(); iter.hasNext();) {
-                    Workgroup workgroup = (Workgroup) iter.next();
-                    workgroupIds.add(workgroup.getWorkflowGroupId().getGroupId().toString());
-                }
+                workgroupIds = getIdentityManagementService().getGroupIdsForPrincipal(principalId);
             } else {
                 // user was passed but workgroups should not be parsed... do nothing
             }
         } else {
             if (workgroupId != null) {
-                Workgroup group = getWorkgroupService().getWorkgroup(workgroupId);
+                KimGroup group = KEWServiceLocator.getIdentityHelperService().getGroup(workgroupId);
                 if ( (group == null) && (!workgroupId.isEmpty()) ) {
-                    throw new IllegalArgumentException("Workgroup name given does not exist in Workflow");
+                    throw new IllegalArgumentException("Group name given does not exist in Workflow");
                 } else if (group != null) {
-                    workgroupIds.add(group.getWorkflowGroupId().getGroupId().toString());
+                    workgroupIds.add(group.getGroupId());
                 }
             }
         }
@@ -1143,8 +1140,8 @@ public class RuleServiceImpl implements RuleService {
         return (DocumentTypeService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE);
     }
 
-    public WorkgroupService getWorkgroupService() {
-        return (WorkgroupService) KEWServiceLocator.getService(KEWServiceLocator.WORKGROUP_SRV);
+    public IdentityManagementService getIdentityManagementService() {
+        return (IdentityManagementService) KIMServiceLocator.getService(KIMServiceLocator.KIM_IDENTITY_MANAGEMENT_SERVICE);
     }
 
     public ActionRequestService getActionRequestService() {
@@ -1206,11 +1203,11 @@ public class RuleServiceImpl implements RuleService {
 
     public void removeRuleInvolvement(Id entityToBeRemoved, List<Long> ruleIds, Long documentId) throws WorkflowException {
         WorkflowUser userToRemove = null;
-        Workgroup workgroupToRemove = null;
+        KimGroup workgroupToRemove = null;
         if (entityToBeRemoved instanceof UserId) {
             userToRemove = KEWServiceLocator.getUserService().getWorkflowUser((UserId)entityToBeRemoved);
         } else if (entityToBeRemoved instanceof GroupId) {
-            workgroupToRemove = KEWServiceLocator.getWorkgroupService().getWorkgroup((GroupId)entityToBeRemoved);
+            workgroupToRemove = KEWServiceLocator.getIdentityHelperService().getGroup((GroupId)entityToBeRemoved);
         } else {
             throw new WorkflowRuntimeException("Invalid entity ID for removal was passed, type was: " + entityToBeRemoved);
         }
@@ -1237,7 +1234,7 @@ public class RuleServiceImpl implements RuleService {
                         continue;
                     }
                 } else if (responsibility.isUsingGroup()) {
-                    if (workgroupToRemove != null && responsibility.getRuleResponsibilityName().equals(workgroupToRemove.getWorkflowGroupId().getGroupId().toString())) {
+                    if (workgroupToRemove != null && responsibility.getRuleResponsibilityName().equals(workgroupToRemove.getGroupId())) {
                         modified = true;
                         continue;
                     }
@@ -1284,11 +1281,11 @@ public class RuleServiceImpl implements RuleService {
 
     public void replaceRuleInvolvement(Id entityToBeReplaced, Id newEntity, List<Long> ruleIds, Long documentId) throws WorkflowException {
         WorkflowUser userToReplace = null;
-        Workgroup workgroupToReplace = null;
+        KimGroup workgroupToReplace = null;
         if (entityToBeReplaced instanceof UserId) {
             userToReplace = KEWServiceLocator.getUserService().getWorkflowUser((UserId)entityToBeReplaced);
         } else if (entityToBeReplaced instanceof GroupId) {
-            workgroupToReplace = KEWServiceLocator.getWorkgroupService().getWorkgroup((GroupId)entityToBeReplaced);
+            workgroupToReplace = KEWServiceLocator.getIdentityHelperService().getGroup((GroupId)entityToBeReplaced);
         } else {
             throw new WorkflowRuntimeException("Invalid ID for entity to be replaced was passed, type was: " + entityToBeReplaced);
         }
@@ -1296,11 +1293,11 @@ public class RuleServiceImpl implements RuleService {
             throw new WorkflowRuntimeException("Could not resolve entity to be replaced with id: " + entityToBeReplaced);
         }
         WorkflowUser newUser = null;
-        Workgroup newWorkgroup = null;
+        KimGroup newWorkgroup = null;
         if (newEntity instanceof UserId) {
             newUser = KEWServiceLocator.getUserService().getWorkflowUser((UserId)newEntity);
         } else if (newEntity instanceof GroupId) {
-            newWorkgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup((GroupId)newEntity);
+            newWorkgroup = KEWServiceLocator.getIdentityHelperService().getGroup((GroupId)newEntity);
         } else {
             throw new WorkflowRuntimeException("Invalid ID for new replacement entity was passed, type was: " + newEntity);
         }
@@ -1329,19 +1326,19 @@ public class RuleServiceImpl implements RuleService {
                             modified = true;
                         } else if (newWorkgroup != null) {
                             responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
-                            responsibility.setRuleResponsibilityName(newWorkgroup.getWorkflowGroupId().getGroupId().toString());
+                            responsibility.setRuleResponsibilityName(newWorkgroup.getGroupId());
                             modified = true;
                         }
                     }
                 } else if (responsibility.isUsingGroup()) {
-                    if (workgroupToReplace != null && responsibility.getRuleResponsibilityName().equals(workgroupToReplace.getWorkflowGroupId().getGroupId().toString())) {
+                    if (workgroupToReplace != null && responsibility.getRuleResponsibilityName().equals(workgroupToReplace.getGroupId())) {
                         if (newUser != null) {
                             responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
                             responsibility.setRuleResponsibilityName(newUser.getWorkflowId());
                             modified = true;
                         } else if (newWorkgroup != null) {
                             responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
-                            responsibility.setRuleResponsibilityName(newWorkgroup.getWorkflowGroupId().getGroupId().toString());
+                            responsibility.setRuleResponsibilityName(newWorkgroup.getGroupId().toString());
                             modified = true;
                         }
                     }

@@ -617,23 +617,19 @@ public class WorkflowDocument implements java.io.Serializable {
     /**
      * Sends an ad hoc request to the specified user at the current active node on the document.  If the document is
      * in a terminal state, the request will be attached to the terminal node.
-     * @see #appSpecificRouteDocumentToUser(String, String, String, UserIdDTO, String, boolean)
-     * @see WorkflowDocumentActions#appSpecificRouteDocument(UserIdDTO, RouteHeaderDTO, String, String, String, ResponsiblePartyDTO, String, boolean)
      */
-    public void appSpecificRouteDocumentToUser(String actionRequested, String annotation, UserIdDTO recipient, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
-    	appSpecificRouteDocumentToUser(actionRequested, null, annotation, recipient, responsibilityDesc, ignorePreviousActions);
+    public void adHocRouteDocumentToPrincipal(String actionRequested, String annotation, String principalId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
+    	adHocRouteDocumentToPrincipal(actionRequested, null, annotation, principalId, responsibilityDesc, ignorePreviousActions);
     }
 
     /**
      * Sends an ad hoc request to the specified user at the specified node on the document.  If the document is
      * in a terminal state, the request will be attached to the terminal node.
-     * @see #appSpecificRouteDocumentToUser(String, String, UserIdDTO, String, boolean)
-     * @see WorkflowDocumentActions#appSpecificRouteDocument(UserIdDTO, RouteHeaderDTO, String, String, String, ResponsiblePartyDTO, String, boolean)
      */
-    public void appSpecificRouteDocumentToUser(String actionRequested, String nodeName, String annotation, UserIdDTO recipient, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
+    public void adHocRouteDocumentToPrincipal(String actionRequested, String nodeName, String annotation, String principalId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
         try {
         	createDocumentIfNeccessary();
-            routeHeader = getWorkflowDocumentActions().appSpecificRouteDocument(userId, getRouteHeader(), actionRequested, nodeName, annotation, new ResponsiblePartyDTO(recipient), responsibilityDesc, ignorePreviousActions);
+            routeHeader = getWorkflowDocumentActions().adHocRouteDocumentToPrincipal(userId, getRouteHeader(), actionRequested, nodeName, annotation, principalId, responsibilityDesc, ignorePreviousActions);
             documentContentDirty = true;
         } catch (Exception e) {
             throw handleException(e);
@@ -643,23 +639,19 @@ public class WorkflowDocument implements java.io.Serializable {
     /**
      * Sends an ad hoc request to the specified workgroup at the current active node on the document.  If the document is
      * in a terminal state, the request will be attached to the terminal node.
-     * @see #appSpecificRouteDocumentToWorkgroup(String, String, String, WorkgroupIdDTO, String, boolean)
-     * @see WorkflowDocumentActions#appSpecificRouteDocument(UserIdDTO, RouteHeaderDTO, String, String, String, ResponsiblePartyDTO, String, boolean)
      */
-    public void appSpecificRouteDocumentToGroup(String actionRequested, String annotation, GroupIdDTO groupId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
-    	appSpecificRouteDocumentToGroup(actionRequested, null, annotation, groupId, responsibilityDesc, ignorePreviousActions);
+    public void adHocRouteDocumentToGroup(String actionRequested, String annotation, String groupId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
+    	adHocRouteDocumentToGroup(actionRequested, null, annotation, groupId, responsibilityDesc, ignorePreviousActions);
     }
 
     /**
      * Sends an ad hoc request to the specified workgroup at the specified node on the document.  If the document is
      * in a terminal state, the request will be attached to the terminal node.
-     * @see #appSpecificRouteDocumentToWorkgroup(String, String, String, WorkgroupIdDTO, String, boolean)
-     * @see WorkflowDocumentActions#appSpecificRouteDocument(UserIdDTO, RouteHeaderDTO, String, String, String, ResponsiblePartyDTO, String, boolean)
      */
-    public void appSpecificRouteDocumentToGroup(String actionRequested, String nodeName, String annotation, GroupIdDTO groupId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
+    public void adHocRouteDocumentToGroup(String actionRequested, String nodeName, String annotation, String groupId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
         try {
         	createDocumentIfNeccessary();
-            routeHeader = getWorkflowDocumentActions().appSpecificRouteDocument(userId, getRouteHeader(), actionRequested, nodeName, annotation, new ResponsiblePartyDTO(groupId), responsibilityDesc, ignorePreviousActions);
+            routeHeader = getWorkflowDocumentActions().adHocRouteDocumentToGroup(userId, getRouteHeader(), actionRequested, nodeName, annotation, groupId, responsibilityDesc, ignorePreviousActions);
             documentContentDirty = true;
         } catch (Exception e) {
             throw handleException(e);
@@ -1104,7 +1096,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * @throws WorkflowException user taking action is not in workgroup
      * @see WorkflowDocumentActions#takeWorkgroupAuthority(UserIdDTO, RouteHeaderDTO, WorkgroupIdDTO, String)
      */
-    public void takeGroupAuthority(String annotation, GroupIdDTO groupId) throws WorkflowException {
+    public void takeGroupAuthority(String annotation, String groupId) throws WorkflowException {
         try {
             createDocumentIfNeccessary();
             routeHeader = getWorkflowDocumentActions().takeGroupAuthority(userId, getRouteHeader(), groupId, annotation);
@@ -1122,7 +1114,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * @param workgroupId the workgroup on which to take authority
      * @throws WorkflowException user taking action is not in workgroup or did not take workgroup authority
      */
-    public void releaseGroupAuthority(String annotation, GroupIdDTO groupId) throws WorkflowException {
+    public void releaseGroupAuthority(String annotation, String groupId) throws WorkflowException {
         try {
             createDocumentIfNeccessary();
             routeHeader = getWorkflowDocumentActions().takeGroupAuthority(userId, getRouteHeader(), groupId, annotation);

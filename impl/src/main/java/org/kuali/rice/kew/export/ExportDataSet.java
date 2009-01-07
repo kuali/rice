@@ -30,6 +30,7 @@ import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.workgroup.WorkgroupType;
+import org.kuali.rice.kim.bo.group.KimGroup;
 
 
 /**
@@ -42,6 +43,7 @@ public class ExportDataSet {
     private List<ApplicationConstant> applicationConstants = new ArrayList<ApplicationConstant>();
     private List<DocumentType> documentTypes = new ArrayList<DocumentType>();
     private List<Workgroup> workgroups = new ArrayList<Workgroup>();
+    private List<KimGroup> groups = new ArrayList<KimGroup>();
     private List<WorkflowUser> users = new ArrayList<WorkflowUser>();
     private List<RuleAttribute> ruleAttributes = new ArrayList<RuleAttribute>();
     private List<RuleTemplate> ruleTemplates = new ArrayList<RuleTemplate>();
@@ -84,4 +86,11 @@ public class ExportDataSet {
 	public List<WorkgroupType> getWorkgroupTypes() {
 		return workgroupTypes;
 	}
+	public List<KimGroup> getGroups() {
+		return this.groups;
+	}
+	public void setGroups(List<KimGroup> groups) {
+		this.groups = groups;
+	}
+	
 }

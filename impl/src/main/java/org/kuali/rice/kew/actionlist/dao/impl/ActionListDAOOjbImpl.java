@@ -21,6 +21,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -44,6 +45,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
@@ -211,7 +213,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                 Criteria groupCrit = new Criteria();
                 Criteria orCrit = new Criteria();
                 userCrit.addEqualTo("delegatorWorkflowId", principalId);
-                groupCrit.addIn("delegatorGroupId", KEWServiceLocator.getWorkgroupService().getUsersGroupIds(principalId));
+                groupCrit.addIn("delegatorGroupId", KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId));
                 orCrit.addOrCriteria(userCrit);
                 orCrit.addOrCriteria(groupCrit);
                 crit.addAndCriteria(orCrit);
@@ -228,7 +230,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                 Criteria groupCrit = new Criteria();
                 Criteria orCrit = new Criteria();
                 userCrit.addEqualTo("delegatorWorkflowId", principalId);
-                groupCrit.addIn("delegatorGroupId", KEWServiceLocator.getWorkgroupService().getUsersGroupIds(principalId));
+                groupCrit.addIn("delegatorGroupId", KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId));
                 orCrit.addOrCriteria(userCrit);
                 orCrit.addOrCriteria(groupCrit);
                 crit.addAndCriteria(orCrit);

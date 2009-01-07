@@ -69,22 +69,7 @@ public class ActionItemActionListExtension extends ActionItem {
           }
         return delegator;
     }
-   /*
-<<<<<<< .mine
-    public Workgroup getDelegatorWorkgroup() {
-        Workgroup delegator = null;
-        if (getDelegatorGroupId() != null) {
-            delegator = KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(getDelegatorGroupId()));
-=======
-    public KimGroup getDelegatorGroup() {
-        KimGroup delegator = null;
-        if (getDelegatorGroupId() != null) {
-            delegator = KIMServiceLocator.getIdentityManagementService().getGroup("" + getDelegatorGroupId());
->>>>>>> .r5338
-        }
-        return delegator;
-    }
-   */
+    
     public String getDelegatorName() throws KEWUserNotFoundException {
         return delegatorName;
     }

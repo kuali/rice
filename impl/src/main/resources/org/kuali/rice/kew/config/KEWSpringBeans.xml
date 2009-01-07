@@ -20,7 +20,7 @@
 		</property>
 		<property name="metadataLocation" value="classpath:org/kuali/rice/kew/config/OJB-repository-kew.xml" />
 	</bean>
-	
+
 	<bean id="enWorkflowDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean">
         <property name="preferredDataSourceParams">
 			<list>
@@ -46,8 +46,8 @@
 			<value>PROPAGATION_REQUIRED,-Exception</value>
 		</property>
 	</bean>
-	
-	
+
+
 
 	<!-- Proxy for rollback on only runtime exceptions -->
 
@@ -269,16 +269,16 @@
   <!--  EDL Extract Service -->
   <bean id="enExtractService" class="org.kuali.rice.kew.edl.extract.ExtractServiceImpl">
     <property name="extractDAO">
-      <!-- ref bean="enExtractDAO"/ --> 
+      <!-- ref bean="enExtractDAO"/ -->
       <ref bean="enExtractOjbDAO"/>
     </property>
   </bean>
-  
+
     <bean id="enExtractOjbDAO" class="org.kuali.rice.kew.edl.extract.dao.impl.ExtractDAOOjbImpl">
           <property name="jcdAlias" value="enWorkflowDataSource" />
     </bean>
-    
-    <!-- 
+
+    <!--
     <bean id="enExtractDAO" class="org.kuali.rice.kew.edl.extract.dao.impl.ExtractDaoJpaImpl"/>
     -->
 
@@ -322,9 +322,9 @@
 	<bean id="enDocumentTypeDAO" class="org.kuali.rice.kew.doctype.dao.impl.DocumentTypeDAOOjbImpl" lazy-init="true">
 		<property name="jcdAlias" value="enWorkflowDataSource" />
 	</bean>
-	
+
 	<bean id="enDocumentTypePermissionService" class="org.kuali.rice.kew.doctype.service.impl.DocumentTypePermissionServiceImpl" lazy-init="true"/>
-	
+
     <!--  DocumentSecurityService -->
     <bean id="enDocumentSecurityService" class="org.kuali.rice.kew.doctype.service.impl.DocumentSecurityServiceImpl"/>
 
@@ -368,7 +368,7 @@
     </bean>
 
 	<!-- Application Constants Service -->
-  <bean id="enApplicationConstantsDAO" class="org.kuali.rice.kew.applicationconstants.dao.impl.ApplicationConstantsDaoJpaImpl"/>
+    <bean id="enApplicationConstantsDAO" class="org.kuali.rice.kew.applicationconstants.dao.impl.ApplicationConstantsDaoJpaImpl"/>
 
 
 	<bean id="enApplicationConstantsOJBDAO" class="org.kuali.rice.kew.applicationconstants.dao.impl.ApplicationConstantsDAOOjbImpl" lazy-init="true">
@@ -391,7 +391,7 @@
 	<bean id="RuleBaseValuesLookupableImplService" class="org.kuali.rice.kew.lookupable.RuleBaseValuesLookupableImpl" scope="prototype" />
 	<bean id="RuleTemplateLookupableImplService" class="org.kuali.rice.kew.lookupable.RuleTemplateLookupableImpl" scope="prototype" />
 	<bean id="EDocLiteLookupableService" class="org.kuali.rice.kew.lookupable.EDocLiteLookupable" scope="prototype" />
-	<bean id="UserLookupableImplService" class="org.kuali.rice.kew.user.UserLookupableImpl" scope="prototype" />
+	<!-- <bean id="UserLookupableImplService" class="org.kuali.rice.kew.user.UserLookupableImpl" scope="prototype" />-->
     <bean id="WorkgroupTypeLookup" class="org.kuali.rice.kew.workgroup.WorkgroupTypeLookupable" scope="prototype"/>
 
     <bean id="edlLookupHelperService" class="org.kuali.rice.kew.lookupable.EDocLiteLookupableHelperServiceImpl" scope="prototype"/>
@@ -409,7 +409,7 @@
         <ref local="docTypeLookupHelperService" />
       </property>
     </bean>
-    
+
 	<bean id="enEmailService" class="org.kuali.rice.kew.mail.service.impl.DefaultEmailService"  lazy-init="true"/>
 
 	<bean id="enEmailContentService" class="org.kuali.rice.kew.mail.service.impl.StyleableEmailContentServiceImpl" lazy-init="true">
@@ -453,6 +453,7 @@
                 <value>enRuleAttributeService</value>
                 <value>workgroupTypeService</value>
                 <value>enWorkgroupService</value>
+                <value>enGroupXmlService</value>
                 <value>enRuleTemplateService</value>
                 <value>enDocumentTypeService</value>
                 <value>enRuleService</value>
@@ -556,6 +557,7 @@
     <property name="serviceOrder">
       <list>
         <value>workgroupTypeService</value>
+		<value>enGroupXmlService</value>
         <value>enRuleAttributeService</value>
         <value>enDocumentTypeService</value>
         <value>enRuleTemplateService</value>
@@ -608,7 +610,10 @@
 
   <bean id="enUserService" class="org.kuali.rice.kim.service.impl.KimUserServiceImpl" />
   <bean id="enWorkgroupService" class="org.kuali.rice.kim.service.impl.KimWorkgroupServiceImpl" />
- 
+  
+  <!-- XML parsing/export has not been promoted out of KEW into the core yet, until then let's wire up the GroupXmlServiceImpl here -->
+  <bean id="enGroupXmlService" class="org.kuali.rice.kew.xml.GroupXmlServiceImpl" />
+
   <bean id="enUserDAO" class="org.kuali.rice.kew.user.dao.impl.BaseUserDAOOjbImpl">
       <property name="jcdAlias" value="enWorkflowDataSource" />
   </bean>
@@ -621,7 +626,7 @@
     <property name="jcdAlias" value="enWorkflowDataSource" />
   </bean>
 
-  <!-- 
+  <!--
   <bean id="enWorkgroupService" class="org.kuali.rice.kew.workgroup.BaseWorkgroupService">
     <property name="workgroupDAO">
       <ref local="enWorkgroupDAO" />
@@ -729,7 +734,7 @@
      There's really a larger issue here that needs to be addressed regarding the resource loading
      and the plugin framework in this case.  In the meantime, these exporters have been moved to the
    	 ExportOverridableServicesLifecycle
-   	 
+
 	<bean class="org.kuali.rice.ksb.messaging.PropertyConditionalKSBExporter">
 		<property name="serviceDefinition">
         <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
@@ -865,7 +870,7 @@
         </bean>
 		</property>
 	</bean>
-	
+
 	<bean class="org.kuali.rice.ksb.messaging.PropertyConditionalKSBExporter">
 		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
 		<property name="serviceDefinition">
@@ -912,12 +917,12 @@
         </bean>
     </property>
   </bean>
-  
+
   <bean id="kewModule" class="org.kuali.rice.kew.service.impl.KEWModuleService">
   	<property name="moduleConfiguration" ref="kewModuleConfiguration"/>
     <property name="kualiModuleService" ref="kualiModuleService" />
   </bean>
-  
+
   <bean id="kewModuleConfiguration" class="org.kuali.rice.kns.bo.ModuleConfiguration">
 		<property name="namespaceCode" value="KR-WKFLW" />
 		<property name="initializeDataDictionary" value="true"/>
@@ -925,8 +930,8 @@
 			<list>
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleAttribute.xml</value>
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleTemplate.xml</value>
-			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleTemplate.xml</value>
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleTemplateAttribute.xml</value>
+			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleBaseValues.xml</value>
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/EDocLiteAssociation.xml</value>
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/EDocLiteDefinition.xml</value>
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/EDocLiteStyle.xml</value>
@@ -940,7 +945,7 @@
             </list>
         </property>
 	</bean>
-  
+
   <bean id="enCacheAdministrator" class="org.kuali.rice.ksb.messaging.RiceCacheExporterFactoryBean" >
 	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
   </bean>
@@ -953,13 +958,13 @@
   <!-- START JPA CONFIGURATION -->
 
   <!-- Used for @PersistenceContext auto-injection -->
-  <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>  
-    
-  <bean id="entityManagerFactory" class="org.kuali.rice.core.jpa.spring.RiceEntityManagerProxyFactoryBean">    
+  <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
+
+  <bean id="entityManagerFactory" class="org.kuali.rice.core.jpa.spring.RiceEntityManagerProxyFactoryBean">
     <constructor-arg value="rice.kew"/>
     <constructor-arg ref="enWorkflowDataSource"/>
-  </bean>    
-   
+  </bean>
+
   <tx:annotation-driven transaction-manager="transactionManager"/>
 
   <bean id="NoResultExceptionInterceptor" class="org.kuali.rice.core.jpa.spring.NoResultExceptionInterceptor" />

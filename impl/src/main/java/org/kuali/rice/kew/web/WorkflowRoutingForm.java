@@ -29,10 +29,9 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.workgroup.WorkflowGroupId;
-import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
 import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 /**
@@ -190,18 +189,14 @@ public class WorkflowRoutingForm extends ActionForm {
         getAppSpecificRouteRecipient().setType("person");
     }
 
-    public void setAppSpecificWorkgroupId(Long workgroupId){
+    public void setAppSpecificWorkgroupId(String workgroupId){
         if(workgroupId != null){
-            Workgroup workgroup = getWorkgroupService().getWorkgroup(new WorkflowGroupId(workgroupId));
+            KimGroup workgroup = KIMServiceLocator.getIdentityManagementService().getGroup(workgroupId);
             if(workgroup != null){
-                getAppSpecificRouteRecipient().setId(workgroup.getGroupNameId().getNameId());
+                getAppSpecificRouteRecipient().setId(workgroup.getGroupName());
             }
         }
         getAppSpecificRouteRecipient().setType("workgroup");
-    }
-
-    private WorkgroupService getWorkgroupService() {
-        return (WorkgroupService) KEWServiceLocator.getService(KEWServiceLocator.WORKGROUP_SRV);
     }
 
     public AppSpecificRouteRecipient getAppSpecificRouteRecipient() {

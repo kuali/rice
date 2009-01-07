@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,8 +33,8 @@ import org.junit.Test;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.lookupable.Field;
-import org.kuali.rice.kew.lookupable.Row;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routeheader.StandardDocumentContent;
 import org.kuali.rice.kew.rule.RuleExtension;
@@ -267,7 +267,7 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
         maxDollar.setKey("maxDollar");
         maxDollar.setValue("600");
 
-		
+
 		values2.add(valueNew);
 		values2.add(minDollar);
 		values2.add(maxDollar);
@@ -334,10 +334,10 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 		assertFalse("Gender female != male.", attribute.isMatch(docContent, extensions));
 
 		///////
-		
+
 		extension = new RuleExtension();
 		values = new ArrayList();
-		
+
 		RuleExtensionValue value7 = new RuleExtensionValue();
 		value7.setKey("maxDollar");
 		value7.setValue("500");
@@ -346,7 +346,7 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 		RuleExtensionValue value8 = new RuleExtensionValue();
 		value8.setKey("minDollar");
 		value8.setValue("100");
-		
+
         values.add(value7);
 		values.add(value8);
 		extension.setExtensionValues(values);
@@ -357,12 +357,12 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 		extension.setRuleTemplateAttribute(ruleTemplateAttribute);
 
 		values2 = new ArrayList();
-		
+
 		valueNew = new RuleExtensionValue();
 		valueNew.setKey("givenname");
 		valueNew.setValue("Jack");
 		values2.add(valueNew);
-		
+
 		extension2.setExtensionValues(values2);
 		ruleTemplateAttribute2 = new RuleTemplateAttribute();
 

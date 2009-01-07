@@ -42,6 +42,8 @@
 	<bean id="kimModuleConfiguration-parentBean" class="org.kuali.rice.kns.bo.ModuleConfiguration" abstract="true">
 		<property name="namespaceCode" value="KR-IDM" />
 		<property name="initializeDataDictionary" value="true"/>
+		<property name="dataDictionaryService" ref="dataDictionaryService" />
+ 	    <property name="persistenceService" ref="persistenceServiceOjb" />
 		<property name="dataDictionaryPackages">
 			<list>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonImpl.xml</value>

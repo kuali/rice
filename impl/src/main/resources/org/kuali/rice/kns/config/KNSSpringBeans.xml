@@ -43,6 +43,8 @@
 	<bean id="knsModuleConfiguration-parentBean" class="org.kuali.rice.kns.bo.ModuleConfiguration" abstract="true">
 		<property name="namespaceCode" value="KR-NS" />
 		<property name="initializeDataDictionary" value="true"/>
+		<property name="dataDictionaryService" ref="dataDictionaryService" />
+ 	    <property name="persistenceService" ref="persistenceServiceOjb" />
         <property name="dataDictionaryPackages">
 			<list>
 				 <value>classpath:org/kuali/rice/kns/bo/datadictionary/AdHocRoutePerson.xml</value>

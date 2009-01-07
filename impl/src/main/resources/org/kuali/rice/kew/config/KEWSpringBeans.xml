@@ -926,6 +926,8 @@
   <bean id="kewModuleConfiguration" class="org.kuali.rice.kns.bo.ModuleConfiguration">
 		<property name="namespaceCode" value="KR-WKFLW" />
 		<property name="initializeDataDictionary" value="true"/>
+		<property name="dataDictionaryService" ref="dataDictionaryService" />
+ 	    <property name="persistenceService" ref="persistenceServiceOjb" />
 		<property name="dataDictionaryPackages">
 			<list>
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleAttribute.xml</value>

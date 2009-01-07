@@ -132,10 +132,6 @@ public class ActionListServiceImpl implements ActionListService {
         return getActionItemDAO().findByActionRequestId(actionRequestId);
     }
 
-    public Collection<ActionItem> findByWorkflowUser(WorkflowUser workflowUser) {
-        return getActionItemDAO().findByWorkflowUser(workflowUser);
-    }
-
     public Collection findByWorkflowUserRouteHeaderId(String workflowUserId, Long routeHeaderId) {
         return getActionItemDAO().findByWorkflowUserRouteHeaderId(workflowUserId, routeHeaderId);
     }

@@ -46,9 +46,6 @@ public interface ActionItemDAO {
 
 	public Collection<ActionItem> findByPrincipalId(String principalId);
 
-	@Deprecated
-	public Collection<ActionItem> findByWorkflowUser(WorkflowUser workflowUser);
-
 	public Collection<ActionItem> findByRouteHeaderId(Long routeHeaderId);
 
 	public Collection<ActionItem> findByActionRequestId(Long actionRequestId);

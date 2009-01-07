@@ -351,18 +351,18 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
         for (Entry<String, String> entry : permCrit.entrySet()) {
         	if (entry.getKey().equals("permTmplName") || entry.getKey().equals("permTmplNamespaceCode")) {
         		if (entry.getKey().equals("permTmplName")) {
-        			memberSubCrit.addLike("kimPermission.template.name","%" + entry.getValue() + "%");
+        			memberSubCrit.addLike("kimPermission.template.name",entry.getValue());
         			
         		} else {
-        			memberSubCrit.addEqualTo("kimPermission.template.namespaceCode",entry.getValue());        			
+        			memberSubCrit.addLike("kimPermission.template.namespaceCode",entry.getValue());        			
         		}
         	}
         	
         	if (entry.getKey().equals("permName") || entry.getKey().equals("permNamespaceCode")) {
         		if (entry.getKey().equals("permName")) {
-        			memberSubCrit.addLike("kimPermission.name","%" + entry.getValue() + "%");
+        			memberSubCrit.addLike("kimPermission.name", entry.getValue());
         		} else {
-        			memberSubCrit.addEqualTo("kimPermission.namespaceCode",entry.getValue());
+        			memberSubCrit.addLike("kimPermission.namespaceCode",entry.getValue());
         			
         		}
         	}
@@ -379,18 +379,18 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
         for (Entry<String, String> entry : respCrit.entrySet()) {
         	if (entry.getKey().equals("respTmplName") || entry.getKey().equals("respTmplNamespaceCode")) {
         		if (entry.getKey().equals("respTmplName")) {
-        			memberSubCrit.addLike("kimResponsibility.template.name","%" + entry.getValue() + "%");
+        			memberSubCrit.addLike("kimResponsibility.template.name", entry.getValue());
         			
         		} else {
-        			memberSubCrit.addEqualTo("kimResponsibility.template.namespaceCode",entry.getValue());        			
+        			memberSubCrit.addLike("kimResponsibility.template.namespaceCode",entry.getValue());        			
         		}
         	}
         	
         	if (entry.getKey().equals("respName") || entry.getKey().equals("respNamespaceCode")) {
         		if (entry.getKey().equals("respName")) {
-        			memberSubCrit.addLike("kimResponsibility.name","%" + entry.getValue() + "%");
+        			memberSubCrit.addLike("kimResponsibility.name", entry.getValue());
         		} else {
-        			memberSubCrit.addEqualTo("kimResponsibility.namespaceCode",entry.getValue());
+        			memberSubCrit.addLike("kimResponsibility.namespaceCode",entry.getValue());
         			
         		}
         	}
@@ -407,9 +407,9 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
         Criteria memberSubCrit = new Criteria();
         for (Entry<String, String> entry : groupCrit.entrySet()) {
         		if (entry.getKey().equals("groupName")) {
-        			memberSubCrit.addLike("groupName","%" + entry.getValue() + "%");
+        			memberSubCrit.addLike("groupName", entry.getValue());
         		} else {
-        			memberSubCrit.addEqualTo("namespaceCode",entry.getValue());        			
+        			memberSubCrit.addLike("namespaceCode",entry.getValue());        			
         		}
         }
         memberSubCrit.addEqualToField("groupId", Criteria.PARENT_QUERY_PREFIX + "memberId");

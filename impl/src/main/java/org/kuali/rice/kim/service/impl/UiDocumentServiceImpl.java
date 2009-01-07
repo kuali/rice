@@ -90,7 +90,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	public void saveEntityPerson(
 			IdentityManagementPersonDocument identityManagementPersonDocument) {
 		KimEntityImpl kimEntity = new KimEntityImpl();
-		KimEntityImpl origEntity = (KimEntityImpl)KIMServiceLocator.getIdentityManagementService().getEntity(identityManagementPersonDocument.getEntityId());
+		KimEntityImpl origEntity = (KimEntityImpl)KIMServiceLocator.getIdentityService().getEntity(identityManagementPersonDocument.getEntityId());
 		if (origEntity == null) {
 			origEntity = new KimEntityImpl();
 		}
@@ -222,7 +222,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			identityManagementPersonDocument.setPrivacy(loadPrivacyReferences(kimEntity.getPrivacyPreferences()));
 		}
 		
-		List<? extends KimGroup> groups = KIMServiceLocator.getIdentityManagementService().getGroupsForPrincipal(identityManagementPersonDocument.getPrincipalId());
+		List<? extends KimGroup> groups = KIMServiceLocator.getGroupService().getGroupsForPrincipal(identityManagementPersonDocument.getPrincipalId());
 		loadGroupToPersonDoc(identityManagementPersonDocument, groups);
 		loadRoleToPersonDoc(identityManagementPersonDocument);
 		
@@ -233,7 +233,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		Person user = GlobalVariables.getUserSession().getPerson();
 		AttributeSet qualification = new AttributeSet();
 		qualification.put("principalId", user.getPrincipalId());
-		List<? extends KimPermission> assignRolePerms = KIMServiceLocator.getIdentityManagementService().getAuthorizedPermissionsByTemplateName(user.getPrincipalId(), "KR-IDM", "Assign Role", null, qualification);
+		List<? extends KimPermission> assignRolePerms = KIMServiceLocator.getPermissionService().getAuthorizedPermissionsByTemplateName(user.getPrincipalId(), "KR-IDM", "Assign Role", null, qualification);
 		List<String> roleIds = new ArrayList<String> ();
 		if (!assignRolePerms.isEmpty()) {
         	for (KimPermission perm : assignRolePerms) {
@@ -262,7 +262,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		Person user = GlobalVariables.getUserSession().getPerson();
 		AttributeSet qualification = new AttributeSet();
 		qualification.put("principalId", user.getPrincipalId());
-		List<? extends KimPermission> populateGroups = KIMServiceLocator.getIdentityManagementService().getAuthorizedPermissionsByTemplateName(user.getPrincipalId(), "KR-IDM", "Populate Group", null, qualification);
+		List<? extends KimPermission> populateGroups = KIMServiceLocator.getPermissionService().getAuthorizedPermissionsByTemplateName(user.getPrincipalId(), "KR-IDM", "Populate Group", null, qualification);
 		List<String> groupIds = new ArrayList<String> ();
 		if (!populateGroups.isEmpty()) {
         	for (KimPermission perm : populateGroups) {
@@ -783,7 +783,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 	private List <GroupMemberImpl> populateGroups(IdentityManagementPersonDocument identityManagementPersonDocument) {
 		List <GroupMemberImpl>  groupPrincipals = new ArrayList<GroupMemberImpl>();
-		List<? extends KimGroup> origGroups = KIMServiceLocator.getIdentityManagementService().getGroupsForPrincipal(identityManagementPersonDocument.getPrincipalId());
+		List<? extends KimGroup> origGroups = KIMServiceLocator.getGroupService().getGroupsForPrincipal(identityManagementPersonDocument.getPrincipalId());
 		for (PersonDocumentGroup group : identityManagementPersonDocument.getGroups()) {
 			GroupMemberImpl groupPrincipalImpl = new GroupMemberImpl();
 			groupPrincipalImpl.setGroupId(group.getGroupId());

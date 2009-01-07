@@ -78,11 +78,11 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
         IdentityManagementPersonDocument personDoc = (IdentityManagementPersonDocument)personDocumentForm.getDocument();
         String commandParam = request.getParameter("command");
 		if (StringUtils.isNotBlank(commandParam) && commandParam.equals("initiate") && StringUtils.isNotBlank(request.getParameter("principalId"))) {
-	        KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(request.getParameter("principalId"));
+	        KimPrincipal principal = KIMServiceLocator.getIdentityService().getPrincipal(request.getParameter("principalId"));
 	        personDoc.setPrincipalId(principal.getPrincipalId());
 	        personDoc.setPrincipalName(principal.getPrincipalName());
 	        personDoc.setPassword(principal.getPassword());
-			KimEntityImpl entity = (KimEntityImpl)KIMServiceLocator.getIdentityManagementService().getEntity(principal.getEntityId());
+			KimEntityImpl entity = (KimEntityImpl)KIMServiceLocator.getIdentityService().getEntity(principal.getEntityId());
 			KIMServiceLocator.getUiDocumentService().loadEntityToPersonDoc(personDoc, entity);
 			//List<? extends KimGroup> groups = KIMServiceLocator.getIdentityManagementService().getGroupsForPrincipal(principal.getPrincipalId());
 			//KIMServiceLocator.getUiDocumentService().loadGroupToPersonDoc(personDoc, groups);
@@ -131,10 +131,17 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
 		ActionForward forward =  super.performLookup(mapping, form, request, response);
 		String path = forward.getPath();
 		// don't need context so can't call getbasepath()
-		String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() ;
-		// EBO does not have base path for lookup
-		if (path.indexOf(basePath) < 0 && path.indexOf("lookup.do") > 0) {
-			path = basePath+path;
+		String basePath = request.getScheme() + "://" + request.getServerName();
+		// EBO does not have base path for lookup in rice
+		// rice  has 'kr.url' as '/${env}/kr' while kfs is full base path
+		// the returnlocalurl may have 'http' so, it should start from the beginning
+		// this is kind of hack
+		if (path.indexOf(request.getScheme()) != 0 && path.indexOf("lookup.do") > 0) {
+			if (request.getServerPort() == 443) {
+				path = request.getScheme() + "://" + request.getServerName()+path;
+			} else {
+				path = request.getScheme() + "://" + request.getServerName()+ ":" + request.getServerPort()+path;
+			}
 		}
 		path = path.replace("identityManagementPersonDocument.do", "kim/identityManagementPersonDocument.do");
 		forward.setPath(path);

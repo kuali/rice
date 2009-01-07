@@ -24,6 +24,7 @@ import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.MaintenanceLock;
+import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions;
 import org.kuali.rice.kns.lookup.SelectiveReferenceRefresher;
 
 /**
@@ -71,10 +72,10 @@ public interface Maintainable extends java.io.Serializable, SelectiveReferenceRe
     /**
      * Returns a list of Section objects that specify how to render the view for the maintenance object.
      * 
-     * @param oldMaintainable - If this is the new maintainable, the old is passed in for reference
+     * @param oldMaintainable - If this is the new maintainable, the old is passed in for reference.  If it is the old maintainable, then null will be passed in
      * @return
      */
-    public List getSections(Maintainable oldMaintainable);
+    public List getSections(MaintenanceDocument maintenanceDocument, Maintainable oldMaintainable);
 
 
     /**
@@ -258,4 +259,12 @@ public interface Maintainable extends java.io.Serializable, SelectiveReferenceRe
     
     public boolean hasBusinessObjectExisted(BusinessObject bo, List<String> existingIdentifierList, List<String> duplicateIdentifierFields);
 
+    /**
+     * Blanks out or sets the default of any value specified as restricted within the {@link MaintenanceDocumentRestrictions} instance.
+     * 
+     * This method should only be called if this maintainable represents the new maintainable of the maintenance document.
+     * 
+     * @param maintenanceDocumentRestrictions
+     */
+    public void clearBusinessObjectOfRestrictedValues(MaintenanceDocumentRestrictions maintenanceDocumentRestrictions);
 }

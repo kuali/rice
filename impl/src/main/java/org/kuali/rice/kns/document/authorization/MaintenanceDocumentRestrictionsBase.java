@@ -29,19 +29,8 @@ public class MaintenanceDocumentRestrictionsBase extends
 	private Set<String> readOnlySectionIds;
 
 	public MaintenanceDocumentRestrictionsBase() {
-		readOnlyFields = new HashSet<String>();
-		readOnlySectionIds = new HashSet<String>();
 	}
 	
-	@Override
-	public Set<String> getRestrictedFieldNames() {
-		if (allRestrictedFields == null) {
-			Set<String> allRestrictedFields = super.getRestrictedFieldNames();
-			allRestrictedFields.addAll(readOnlyFields);
-		}
-		return allRestrictedFields;
-	}
-
 	public void addReadOnlyField(String fieldName) {
 		readOnlyFields.add(fieldName);
 	}
@@ -79,6 +68,23 @@ public class MaintenanceDocumentRestrictionsBase extends
 	}
 
 	public boolean isReadOnlyField(String fieldName) {
-		return readOnlyFields.contains(fieldName);
+		String normalizedFieldName = normalizeFieldName(fieldName);
+		return readOnlyFields.contains(normalizedFieldName);
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.authorization.InquiryOrMaintenanceDocumentRestrictionsBase#hasAnyFieldRestrictions()
+	 */
+	@Override
+	public boolean hasAnyFieldRestrictions() {
+		return super.hasAnyFieldRestrictions() || !readOnlyFields.isEmpty();
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.authorization.InquiryOrMaintenanceDocumentRestrictionsBase#hasRestriction(java.lang.String)
+	 */
+	@Override
+	public boolean hasRestriction(String fieldName) {
+		return super.hasRestriction(fieldName) || isReadOnlyField(fieldName);
 	}
 }

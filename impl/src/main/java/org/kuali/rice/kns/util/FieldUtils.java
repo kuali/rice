@@ -678,7 +678,7 @@ public class FieldUtils {
             }
 
             // apply any authorization restrictions to field availability on the UI
-            applyAuthorization(field, auths);
+            applyAuthorization(field, maintenanceAction, auths);
 
             // if fieldConversions specified, prefix with new constant
             if (StringUtils.isNotBlank(field.getFieldConversions())) {
@@ -786,13 +786,11 @@ public class FieldUtils {
         return field;
     }
 
-    public static void applyAuthorization(Field field, MaintenanceDocumentRestrictions auths) {
-
+    public static void applyAuthorization(Field field, String maintenanceAction, MaintenanceDocumentRestrictions auths) {
     	String fieldName = "";
     	FieldRestriction fieldAuth = null;
         // only apply this on the newMaintainable
         if (field.getPropertyName().startsWith(KNSConstants.MAINTENANCE_NEW_MAINTAINABLE)) {
-
             // get just the actual fieldName, with the document.newMaintainableObject, etc etc removed
             fieldName = field.getPropertyName().substring(KNSConstants.MAINTENANCE_NEW_MAINTAINABLE.length());
 
@@ -800,33 +798,32 @@ public class FieldUtils {
             if (auths.hasRestriction(fieldName)) {
                 fieldAuth = auths.getFieldRestriction(fieldName);
                 
-                if(fieldAuth.isPartiallyMasked()){
-                	field.setSecure(true);
-                	MaskFormatter maskFormatter = fieldAuth.getMaskFormatter();
-                	String displayMaskValue = maskFormatter.maskValue(field.getPropertyValue());
-                	field.setDisplayMaskValue(displayMaskValue);
-                	populateSecureField(field, field.getPropertyValue());
-                	
+                if (KNSConstants.MAINTENANCE_EDIT_ACTION.equals(maintenanceAction) || KNSConstants.MAINTENANCE_NEWWITHEXISTING_ACTION.equals(maintenanceAction)) {
+                	// if there's existing data on the page that we're not going to clear out, then we will mask it out
+                	if(fieldAuth.isPartiallyMasked()){
+	                	field.setSecure(true);
+	                	MaskFormatter maskFormatter = fieldAuth.getMaskFormatter();
+	                	String displayMaskValue = maskFormatter.maskValue(field.getPropertyValue());
+	                	field.setDisplayMaskValue(displayMaskValue);
+	                	populateSecureField(field, field.getPropertyValue());
+                	}
+	                else if(fieldAuth.isMasked()){
+	                	field.setSecure(true);
+	                	MaskFormatter maskFormatter = fieldAuth.getMaskFormatter();
+	                	String displayMaskValue = maskFormatter.maskValue(field.getPropertyValue());
+	                	field.setDisplayMaskValue(displayMaskValue);
+	                	populateSecureField(field, field.getPropertyValue());
+	                }
                 }
                 
-                if(fieldAuth.isMasked()){
-                	field.setSecure(true);
-                	MaskFormatter maskFormatter = fieldAuth.getMaskFormatter();
-                	String displayMaskValue = maskFormatter.maskValue(field.getPropertyValue());
-                	field.setDisplayMaskValue(displayMaskValue);
-                	populateSecureField(field, field.getPropertyValue());
-                }
-                
-                // if its an editable field, allow decreasing availability to readonly or hidden
                 if (Field.isInputField(field.getFieldType()) || field.getFieldType().equalsIgnoreCase(Field.CHECKBOX)) {
-
+                	// if its an editable field, allow decreasing availability to readonly or hidden
                     // only touch the field if the restricted type is hidden or readonly
                     if (fieldAuth.isReadOnly()) {
-                        if (!field.isReadOnly()) {
+                        if (!field.isReadOnly() && !fieldAuth.isMasked() && !fieldAuth.isPartiallyMasked()) {
                             field.setReadOnly(true);
                         }
                     }
-
                     else if (fieldAuth.isHidden()) {
                         if (field.getFieldType() != Field.HIDDEN) {
                             field.setFieldType(Field.HIDDEN);
@@ -874,7 +871,6 @@ public class FieldUtils {
                 }
             }
         }
-      
     }
 
     /**
@@ -908,6 +904,7 @@ public class FieldUtils {
     }
 
     /**
+
      * This method is a helper method for createRowsForNewFields. It puts together all the fields that should exist in a row after
      * calling the fixFieldForForm for the other necessary prefixing and setting up of the fields.
      *
@@ -1007,15 +1004,16 @@ public class FieldUtils {
                 // add old fields for edit
                 if (KNSConstants.MAINTENANCE_EDIT_ACTION.equals(maintenanceAction) || KNSConstants.MAINTENANCE_COPY_ACTION.equals(maintenanceAction)) {
                     Field oldMaintField = (Field) oldFields.get(k);
-                    oldMaintField = FieldUtils.fixFieldForForm(oldMaintField, keyFieldNames, KNSConstants.MAINTENANCE_OLD_MAINTAINABLE, maintenanceAction, true, auths);
-                    oldFieldsToMerge.add(oldMaintField);
-
+                    
                     // compare values for change, and set new maintainable fields for highlighting
                     // no point in highlighting the hidden fields, since they won't be rendered anyways
                     if (!StringUtils.equalsIgnoreCase(newMaintField.getPropertyValue(), oldMaintField.getPropertyValue())
                             && !Field.HIDDEN.equals(newMaintField.getFieldType())) {
                         newMaintField.setHighlightField(true);
                     }
+                    
+                    oldMaintField = FieldUtils.fixFieldForForm(oldMaintField, keyFieldNames, KNSConstants.MAINTENANCE_OLD_MAINTAINABLE, maintenanceAction, true, auths);
+                    oldFieldsToMerge.add(oldMaintField);
                 }
 
                 newFieldsToMerge.add(newMaintField);

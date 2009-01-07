@@ -22,8 +22,6 @@ import java.util.Set;
 import org.kuali.rice.kns.datadictionary.mask.MaskFormatter;
 
 public interface BusinessObjectRestrictions extends Serializable {
-    public Set<String> getRestrictedFieldNames();
-    
     public boolean hasAnyFieldRestrictions();
     
     public boolean hasRestriction(String fieldName);

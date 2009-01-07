@@ -52,7 +52,7 @@ public class KualiInquiryAction extends KualiAction {
 
     @Override
     protected void checkAuthorization(ActionForm form, String methodToCall) throws AuthorizationException {
-    	if (!(form instanceof InquiryForm)) {
+        if (!(form instanceof InquiryForm)) {
             super.checkAuthorization(form, methodToCall);
         } else {
             try {
@@ -70,7 +70,7 @@ public class KualiInquiryAction extends KualiAction {
         }
     }
 
-	@Override
+    @Override
 	protected Map<String, String> getRoleQualification(ActionForm form,
 			String methodToCall) {
 		Map<String, String> roleQualification = super.getRoleQualification(
@@ -238,7 +238,7 @@ public class KualiInquiryAction extends KualiAction {
     }
     
     protected BusinessObject retrieveBOFromInquirable(InquiryForm inquiryForm) {
-	Inquirable kualiInquirable = inquiryForm.getInquirable();
+    	Inquirable kualiInquirable = inquiryForm.getInquirable();
         // retrieve the business object
         BusinessObject bo = kualiInquirable.getBusinessObject(inquiryForm.retrieveInquiryDecryptedPrimaryKeys());
         if (bo == null) {
@@ -249,7 +249,7 @@ public class KualiInquiryAction extends KualiAction {
     }
     
     protected void populateSections(ActionMapping mapping, HttpServletRequest request, InquiryForm inquiryForm, BusinessObject bo) {
-	Inquirable kualiInquirable = inquiryForm.getInquirable();
+    	Inquirable kualiInquirable = inquiryForm.getInquirable();
 	
         // get list of populated sections for display
         List sections = kualiInquirable.getSections(bo);

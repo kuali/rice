@@ -15,17 +15,11 @@
  */
 package org.kuali.rice.kns.authorization;
 
-import java.io.Serializable;
-import java.util.Map;
-import java.util.Set;
-
-import org.kuali.rice.kns.datadictionary.mask.MaskFormatter;
-
 public interface InquiryOrMaintenanceDocumentRestrictions extends
 		BusinessObjectRestrictions {
 	public void addHiddenField(String fieldName);
 	
 	public void addHiddenSectionId(String sectionId);
 
-	public Set<String> getHiddenSectionIds();
+	public boolean isHiddenSectionId(String sectionId);
 }

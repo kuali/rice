@@ -24,6 +24,7 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kns.authorization.FieldRestriction;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
@@ -40,8 +41,10 @@ import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableSubSectionHeaderDefinition;
 import org.kuali.rice.kns.datadictionary.SubSectionHeaderDefinitionI;
+import org.kuali.rice.kns.datadictionary.mask.MaskFormatter;
 import org.kuali.rice.kns.exception.ClassNotPersistableException;
 import org.kuali.rice.kns.inquiry.Inquirable;
+import org.kuali.rice.kns.inquiry.InquiryRestrictions;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
@@ -77,7 +80,7 @@ public class SectionBridge {
      * @param o The BusinessObject from which to populate the Section values.
      * @return A populated Section.
      */
-    public static final Section toSection(Inquirable inquirable, InquirySectionDefinition sd, BusinessObject o) {
+    public static final Section toSection(Inquirable inquirable, InquirySectionDefinition sd, BusinessObject o, InquiryRestrictions auths) {
         Section section = new Section();
         section.setSectionId( sd.getId() );
         section.setSectionTitle(sd.getTitle());
@@ -118,9 +121,45 @@ public class SectionBridge {
             section.setRows(FieldUtils.wrapFields(sectionFields, section.getNumberOfColumns()));
         }
 
+        applyInquirySectionAuthorizations(section, auths);
+        
         return section;
     }
 
+    private static final void applyInquirySectionAuthorizations(Section section, InquiryRestrictions inquiryRestrictions) {
+    	applyInquiryRowsAuthorizations(section.getRows(), inquiryRestrictions);
+    }
+    
+    private static final void applyInquiryRowsAuthorizations(List<Row> rows, InquiryRestrictions inquiryRestrictions) {
+    	for (Row row : rows) {
+    		List<Field> rowFields = row.getFields();
+    		for (Field field : rowFields) {
+    			applyInquiryFieldAuthorizations(field, inquiryRestrictions);
+    		}
+    	}
+    }
+    
+    protected static final void applyInquiryFieldAuthorizations(Field field, InquiryRestrictions inquiryRestrictions) {
+    	if (Field.CONTAINER.equals(field.getFieldType())) {
+    		applyInquiryRowsAuthorizations(field.getContainerRows(), inquiryRestrictions);
+    	}
+    	else if (!Field.IMAGE_SUBMIT.equals(field.getFieldType())) {
+    		FieldRestriction fieldRestriction = inquiryRestrictions.getFieldRestriction(field.getPropertyName());
+    		if (fieldRestriction.isHidden()) {
+    			field.setFieldType(Field.HIDDEN);
+    			field.setPropertyValue(null);
+    		}
+    		else if (fieldRestriction.isMasked()) {
+            	field.setSecure(true);
+            	MaskFormatter maskFormatter = fieldRestriction.getMaskFormatter();
+            	String displayMaskValue = maskFormatter.maskValue(field.getPropertyValue());
+            	field.setDisplayMaskValue(displayMaskValue);
+            	// since it's an inquiry, let's wipe out the encrypted field value since we don't need to post it back
+            	field.setEncryptedValue("");
+    		}
+       	}
+    }
+    
     /**
      * This method creates a Section for a MaintenanceDocument.
      * 

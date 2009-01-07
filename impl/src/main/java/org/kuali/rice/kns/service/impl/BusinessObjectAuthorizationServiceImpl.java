@@ -81,9 +81,9 @@ public class BusinessObjectAuthorizationServiceImpl implements
 		BusinessObjectEntry businessObjectEntry = getDataDictionaryService()
 				.getDataDictionary().getBusinessObjectEntry(
 						businessObject.getClass().getName());
-		InquiryPresentationController inquiryPresentationController = businessObjectDictionaryService
+		InquiryPresentationController inquiryPresentationController = getBusinessObjectDictionaryService()
 				.getInquiryPresentationController(businessObject.getClass());
-		InquiryAuthorizer inquiryAuthorizer = businessObjectDictionaryService
+		InquiryAuthorizer inquiryAuthorizer = getBusinessObjectDictionaryService()
 				.getInquiryAuthorizer(businessObject.getClass());
 		considerBusinessObjectFieldUnmaskAuthorization(businessObject, user,
 				inquiryRestrictions, "");

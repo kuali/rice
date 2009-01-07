@@ -56,8 +56,8 @@ public class BusinessObjectDictionaryServiceImpl implements
 	private static Logger LOG = Logger
 			.getLogger(BusinessObjectDictionaryServiceImpl.class);
 
-	private DataDictionaryService dataDictionaryService;
-	private PersistenceStructureService persistenceStructureService;
+    private DataDictionaryService dataDictionaryService;
+    private PersistenceStructureService persistenceStructureService;
 
 	public <T extends BusinessObject> InquiryAuthorizer getInquiryAuthorizer(
 			Class<T> businessObjectClass) {
@@ -96,352 +96,357 @@ public class BusinessObjectDictionaryServiceImpl implements
 		}
 	}
 
-	/**
-	 * Uses the DataDictionaryService.
-	 * 
-	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getBusinessObjectEntries()
-	 */
-	public List getBusinessObjectClassnames() {
+    /**
+     * Uses the DataDictionaryService.
+     *
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getBusinessObjectEntries()
+     */
+    public List getBusinessObjectClassnames() {
 		return getDataDictionaryService().getDataDictionary()
 				.getBusinessObjectClassNames();
-	}
+    }
 
-	/**
-	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#isLookupable(java.lang.Class)
-	 */
-	public Boolean isLookupable(Class businessObjectClass) {
-		Boolean isLookupable = null;
+    /**
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#isLookupable(java.lang.Class)
+     */
+    public Boolean isLookupable(Class businessObjectClass) {
+        Boolean isLookupable = null;
 
-		BusinessObjectEntry entry = getBusinessObjectEntry(businessObjectClass);
-		if (entry != null) {
-			isLookupable = Boolean.valueOf(entry.hasLookupDefinition());
-		}
+        BusinessObjectEntry entry = getBusinessObjectEntry(businessObjectClass);
+        if (entry != null) {
+            isLookupable = Boolean.valueOf(entry.hasLookupDefinition());
+        }
 
-		return isLookupable;
-	}
+        return isLookupable;
+    }
 
-	/**
-	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#isInquirable(java.lang.Class)
-	 */
-	public Boolean isInquirable(Class businessObjectClass) {
-		Boolean isInquirable = null;
+    /**
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#isInquirable(java.lang.Class)
+     */
+    public Boolean isInquirable(Class businessObjectClass) {
+        Boolean isInquirable = null;
 
-		BusinessObjectEntry entry = getBusinessObjectEntry(businessObjectClass);
-		if (entry != null) {
-			isInquirable = Boolean.valueOf(entry.hasInquiryDefinition());
-		}
+        BusinessObjectEntry entry = getBusinessObjectEntry(businessObjectClass);
+        if (entry != null) {
+            isInquirable = Boolean.valueOf(entry.hasInquiryDefinition());
+        }
 
-		return isInquirable;
-	}
+        return isInquirable;
+    }
 
-	/**
-	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#isMaintainable(java.lang.Class)
-	 */
-	public Boolean isMaintainable(Class businessObjectClass) {
-		Boolean isMaintainable = null;
+    /**
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#isMaintainable(java.lang.Class)
+     */
+    public Boolean isMaintainable(Class businessObjectClass) {
+        Boolean isMaintainable = null;
 
-		BusinessObjectEntry entry = getBusinessObjectEntry(businessObjectClass);
-		if (entry != null) {
+        BusinessObjectEntry entry = getBusinessObjectEntry(businessObjectClass);
+        if (entry != null) {
 			isMaintainable = Boolean
 					.valueOf(getMaintenanceDocumentEntry(businessObjectClass) != null);
-		}
+        }
 
-		return isMaintainable;
-	}
+        return isMaintainable;
+    }
+    
 
-	/**
+    /**
 	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#isExportable(java.lang.Class)
 	 */
 	public Boolean isExportable(Class businessObjectClass) {
 		Boolean isExportable = null;
-
+		
 		BusinessObjectEntry entry = getBusinessObjectEntry(businessObjectClass);
-		if (entry != null) {
-			isExportable = entry.getExporterClass() != null;
-		}
+        if (entry != null) {
+            isExportable = entry.getExporterClass() != null;
+        }
 
-		return isExportable;
+        return isExportable;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupFieldNames(java.lang.Class)
-	 */
-	public List getLookupFieldNames(Class businessObjectClass) {
-		List results = null;
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupFieldNames(java.lang.Class)
+     */
+    public List getLookupFieldNames(Class businessObjectClass) {
+        List results = null;
 
-		LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
-		if (lookupDefinition != null) {
-			results = lookupDefinition.getLookupFieldNames();
-		}
+        LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
+        if (lookupDefinition != null) {
+            results = lookupDefinition.getLookupFieldNames();
+        }
 
-		return results;
-	}
+        return results;
+    }
 
-	/**
-	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupTitle(java.lang.Class)
-	 */
-	public String getLookupTitle(Class businessObjectClass) {
-		String lookupTitle = "";
 
-		LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
-		if (lookupDefinition != null) {
-			lookupTitle = lookupDefinition.getTitle();
-		}
+    /**
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupTitle(java.lang.Class)
+     */
+    public String getLookupTitle(Class businessObjectClass) {
+        String lookupTitle = "";
 
-		return lookupTitle;
-	}
+        LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
+        if (lookupDefinition != null) {
+            lookupTitle = lookupDefinition.getTitle();
+        }
 
-	/**
-	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupMenuBar(java.lang.Class)
-	 */
-	public String getLookupMenuBar(Class businessObjectClass) {
-		String menubar = "";
+        return lookupTitle;
+    }
 
-		LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
-		if (lookupDefinition != null) {
-			if (lookupDefinition.hasMenubar()) {
-				menubar = lookupDefinition.getMenubar();
-			}
-		}
+    /**
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupMenuBar(java.lang.Class)
+     */
+    public String getLookupMenuBar(Class businessObjectClass) {
+        String menubar = "";
 
-		return menubar;
-	}
+        LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
+        if (lookupDefinition != null) {
+            if (lookupDefinition.hasMenubar()) {
+                menubar = lookupDefinition.getMenubar();
+            }
+        }
 
-	/**
-	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupInstructions(java.lang.Class)
-	 */
-	public String getLookupInstructions(Class businessObjectClass) {
-		String instructions = "";
+        return menubar;
+    }
 
-		LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
-		if (lookupDefinition != null) {
-			if (lookupDefinition.hasInstructions()) {
-				instructions = lookupDefinition.getInstructions();
-			}
-		}
+    /**
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupInstructions(java.lang.Class)
+     */
+    public String getLookupInstructions(Class businessObjectClass) {
+        String instructions = "";
 
-		return instructions;
-	}
+        LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
+        if (lookupDefinition != null) {
+            if (lookupDefinition.hasInstructions()) {
+                instructions = lookupDefinition.getInstructions();
+            }
+        }
 
-	/**
-	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getExtraButtonSource(java.lang.Class)
-	 */
-	public String getExtraButtonSource(Class businessObjectClass) {
-		String buttonSource = "";
+        return instructions;
+    }
 
-		LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
-		if (lookupDefinition != null) {
-			if (lookupDefinition.hasExtraButtonSource()) {
-				buttonSource = lookupDefinition.getExtraButtonSource();
-			}
-		}
+    /**
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getExtraButtonSource(java.lang.Class)
+     */
+    public String getExtraButtonSource(Class businessObjectClass) {
+        String buttonSource = "";
 
-		return buttonSource;
-	}
+        LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
+        if (lookupDefinition != null) {
+            if (lookupDefinition.hasExtraButtonSource()) {
+                buttonSource = lookupDefinition.getExtraButtonSource();
+            }
+        }
 
-	/**
-	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getExtraButtonParams(java.lang.Class)
-	 */
-	public String getExtraButtonParams(Class businessObjectClass) {
-		String buttonParams = "";
+        return buttonSource;
+    }
 
-		LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
-		if (lookupDefinition != null) {
-			if (lookupDefinition.hasExtraButtonParams()) {
-				buttonParams = lookupDefinition.getExtraButtonParams();
-			}
-		}
+    /**
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getExtraButtonParams(java.lang.Class)
+     */
+    public String getExtraButtonParams(Class businessObjectClass) {
+        String buttonParams = "";
 
-		return buttonParams;
-	}
+        LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
+        if (lookupDefinition != null) {
+            if (lookupDefinition.hasExtraButtonParams()) {
+                buttonParams = lookupDefinition.getExtraButtonParams();
+            }
+        }
 
-	/**
-	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupDefaultSortFieldName(java.lang.Class)
-	 */
-	public List getLookupDefaultSortFieldNames(Class businessObjectClass) {
-		List defaultSort = null;
+        return buttonParams;
+    }
 
-		LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
-		if (lookupDefinition != null) {
-			if (lookupDefinition.hasDefaultSort()) {
+    /**
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupDefaultSortFieldName(java.lang.Class)
+     */
+    public List getLookupDefaultSortFieldNames(Class businessObjectClass) {
+        List defaultSort = null;
+
+        LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
+        if (lookupDefinition != null) {
+            if (lookupDefinition.hasDefaultSort()) {
 				defaultSort = lookupDefinition.getDefaultSort()
 						.getAttributeNames();
-			}
-		}
-		if (defaultSort == null) {
-			defaultSort = new ArrayList();
-		}
+            }
+        }
+        if (defaultSort == null) {
+            defaultSort = new ArrayList();
+        }
 
-		return defaultSort;
-	}
+        return defaultSort;
+    }
 
-	/**
-	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupResultFieldNames(java.lang.Class)
-	 */
-	public List<String> getLookupResultFieldNames(Class businessObjectClass) {
-		List<String> results = null;
+    /**
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupResultFieldNames(java.lang.Class)
+     */
+    public List<String> getLookupResultFieldNames(Class businessObjectClass) {
+        List<String> results = null;
 
-		LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
-		if (lookupDefinition != null) {
-			results = lookupDefinition.getResultFieldNames();
-		}
+        LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
+        if (lookupDefinition != null) {
+            results = lookupDefinition.getResultFieldNames();
+        }
 
-		return results;
-	}
+        return results;
+    }
 
-	/**
+
+    /**
 	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupResultFieldMaxLength(java.lang.Class,
 	 *      java.lang.String)
-	 */
+     */
 	public Integer getLookupResultFieldMaxLength(Class businessObjectClass,
 			String resultFieldName) {
-		LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
+        LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
 		FieldDefinition field = lookupDefinition
 				.getResultField(resultFieldName);
-		return field.getMaxLength();
-	}
+        return field.getMaxLength();
+    }
 
-	/**
-	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupResultSetLimit(java.lang.Class)
-	 */
-	public Integer getLookupResultSetLimit(Class businessObjectClass) {
-		LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
-		if (lookupDefinition != null) {
+    /**
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupResultSetLimit(java.lang.Class)
+     */
+    public Integer getLookupResultSetLimit(Class businessObjectClass) {
+        LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
+        if ( lookupDefinition != null ) {
 			return lookupDefinition.getResultSetLimit(); // TODO: stupid, change
 															// to return int
-		} else {
-			return null;
-		}
-	}
+        } else {
+            return null;
+        }
+    }
 
-	/**
+    /**
 	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupAttributeRequired(java.lang.Class,
 	 *      java.lang.String)
-	 */
+     */
 	public Boolean getLookupAttributeRequired(Class businessObjectClass,
 			String attributeName) {
-		Boolean isRequired = null;
+        Boolean isRequired = null;
 
 		FieldDefinition definition = getLookupFieldDefinition(
 				businessObjectClass, attributeName);
-		if (definition != null) {
-			isRequired = Boolean.valueOf(definition.isRequired());
-		}
+        if (definition != null) {
+            isRequired = Boolean.valueOf(definition.isRequired());
+        }
 
-		return isRequired;
-	}
+        return isRequired;
+    }
 
-	/**
+
+    /**
 	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getInquiryFieldNames(java.lang.Class,
 	 *      java.lang.String)
-	 */
+     */
 	public List getInquiryFieldNames(Class businessObjectClass,
 			String sectionTitle) {
-		List results = null;
+        List results = null;
 
 		InquirySectionDefinition inquirySection = getInquiryDefinition(
 				businessObjectClass).getInquirySection(sectionTitle);
-		if (inquirySection != null) {
-			results = inquirySection.getInquiryFieldNames();
-		}
+        if (inquirySection != null) {
+            results = inquirySection.getInquiryFieldNames();
+        }
 
-		return results;
-	}
+        return results;
+    }
 
-	/**
-	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getInquirySections(java.lang.Class)
-	 */
-	public List getInquirySections(Class businessObjectClass) {
-		List results = null;
+    /**
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getInquirySections(java.lang.Class)
+     */
+    public List<InquirySectionDefinition> getInquirySections(Class businessObjectClass) {
+        List<InquirySectionDefinition> results = null;
 
 		results = getInquiryDefinition(businessObjectClass)
 				.getInquirySections();
 
-		return results;
-	}
+        return results;
+    }
 
-	/**
-	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getInquiryTitle(java.lang.Class)
-	 */
-	public String getInquiryTitle(Class businessObjectClass) {
-		String title = "";
+    /**
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getInquiryTitle(java.lang.Class)
+     */
+    public String getInquiryTitle(Class businessObjectClass) {
+        String title = "";
 
-		InquiryDefinition inquiryDefinition = getInquiryDefinition(businessObjectClass);
-		if (inquiryDefinition != null) {
-			title = inquiryDefinition.getTitle();
-		}
+        InquiryDefinition inquiryDefinition = getInquiryDefinition(businessObjectClass);
+        if (inquiryDefinition != null) {
+            title = inquiryDefinition.getTitle();
+        }
 
-		return title;
-	}
+        return title;
+    }
 
-	/**
-	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getInquirableClass(java.lang.Class)
-	 */
-	public Class getInquirableClass(Class businessObjectClass) {
-		Class clazz = null;
+    /**
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getInquirableClass(java.lang.Class)
+     */
+    public Class getInquirableClass(Class businessObjectClass) {
+        Class clazz = null;
 
-		InquiryDefinition inquiryDefinition = getInquiryDefinition(businessObjectClass);
-		if (inquiryDefinition != null) {
-			clazz = inquiryDefinition.getInquirableClass();
-		}
+        InquiryDefinition inquiryDefinition = getInquiryDefinition(businessObjectClass);
+        if (inquiryDefinition != null) {
+            clazz = inquiryDefinition.getInquirableClass();
+        }
 
-		return clazz;
-	}
+        return clazz;
+    }
 
-	/**
-	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getMaintainableTitle(java.lang.Class)
-	 */
-	public String getMaintainableLabel(Class businessObjectClass) {
-		String label = "";
+    /**
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getMaintainableTitle(java.lang.Class)
+     */
+    public String getMaintainableLabel(Class businessObjectClass) {
+        String label = "";
 
-		MaintenanceDocumentEntry entry = getMaintenanceDocumentEntry(businessObjectClass);
-		if (entry != null) {
-			label = entry.getLabel();
-		}
+        MaintenanceDocumentEntry entry = getMaintenanceDocumentEntry(businessObjectClass);
+        if (entry != null) {
+            label = entry.getLabel();
+        }
 
-		return label;
-	}
+        return label;
+    }
 
-	/**
-	 * 
-	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupableID(java.lang.Class)
-	 */
-	public String getLookupableID(Class businessObjectClass) {
-		String lookupableID = null;
+    /**
+     *
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupableID(java.lang.Class)
+     */
+    public String getLookupableID(Class businessObjectClass) {
+        String lookupableID = null;
 
-		LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
-		if (lookupDefinition != null) {
-			lookupableID = lookupDefinition.getLookupableID();
-		}
+        LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
+        if (lookupDefinition != null) {
+            lookupableID = lookupDefinition.getLookupableID();
+        }
 
-		return lookupableID;
-	}
+        return lookupableID;
+    }
 
-	/**
+
+    /**
 	 * Recurses down the updatable references and collections of a BO,
 	 * uppercasing those attributes which are marked as needing to be uppercased
 	 * in the data dictionary. Updatability of a reference or collection is
 	 * defined by the PersistenceStructureService
-	 * 
+     *
 	 * @param bo
 	 *            the BO to uppercase
-	 * 
-	 * @see PersistenceStructureService#isCollectionUpdatable(Class, String)
-	 * @see PersistenceStructureService#isReferenceUpdatable(Class, String)
-	 * @see DataDictionaryService#getAttributeForceUppercase(Class, String)
-	 */
-	public void performForceUppercase(BusinessObject bo) {
+     *
+     * @see PersistenceStructureService#isCollectionUpdatable(Class, String)
+     * @see PersistenceStructureService#isReferenceUpdatable(Class, String)
+     * @see DataDictionaryService#getAttributeForceUppercase(Class, String)
+     */
+    public void performForceUppercase(BusinessObject bo) {
 		PropertyDescriptor descriptors[] = PropertyUtils
 				.getPropertyDescriptors(bo);
-		for (int i = 0; i < descriptors.length; ++i) {
-			try {
-				if (descriptors[i] instanceof IndexedPropertyDescriptor) {
+        for (int i = 0; i < descriptors.length; ++i) {
+            try {
+                if (descriptors[i] instanceof IndexedPropertyDescriptor) {
 					// Skip this case because PropertyUtils.getProperty(bo,
 					// descriptors[i].getName()) will throw a
-					// NoSuchMethodException on those. These
+                    // NoSuchMethodException on those. These
 					// fields are usually convenience methods in the BO and in
 					// the below code we anyway wouldn't know which index
-					// .toUpperCase().
+                    // .toUpperCase().
 				} else {
 					Object nestedObject = ObjectUtils.getPropertyValue(bo,
 							descriptors[i].getName());
@@ -449,7 +454,7 @@ public class BusinessObjectDictionaryServiceImpl implements
 							&& nestedObject instanceof BusinessObject) {
 						if (persistenceStructureService
 								.isPersistable(nestedObject.getClass())) {
-							try {
+                                try {
 								if (persistenceStructureService.hasReference(bo
 										.getClass(), descriptors[i].getName())) {
 									if (persistenceStructureService
@@ -464,16 +469,16 @@ public class BusinessObjectDictionaryServiceImpl implements
 												.isAllFieldsPopulated()) {
 											// check FKs to prevent probs caused
 											// by referential integrity problems
-											performForceUppercase((BusinessObject) nestedObject);
-										}
-									}
-								}
-							} catch (org.kuali.rice.kns.exception.ReferenceAttributeNotAnOjbReferenceException ranaore) {
+                                            performForceUppercase((BusinessObject) nestedObject);
+                                    }
+                                    }
+                                }
+                                } catch (org.kuali.rice.kns.exception.ReferenceAttributeNotAnOjbReferenceException ranaore) {
 								LOG.debug("Propery " + descriptors[i].getName()
 										+ " is not a foreign key reference.");
-							}
-						}
-					} else if (nestedObject instanceof String) {
+                                }
+                            }
+                    } else if (nestedObject instanceof String) {
 						if (dataDictionaryService.isAttributeDefined(
 								bo.getClass(), descriptors[i].getName())
 								.booleanValue()
@@ -482,10 +487,10 @@ public class BusinessObjectDictionaryServiceImpl implements
 												bo.getClass(),
 												descriptors[i].getName())
 										.booleanValue()) {
-							String curValue = (String) nestedObject;
+                            String curValue = (String) nestedObject;
 							PropertyUtils.setProperty(bo, descriptors[i]
 									.getName(), curValue.toUpperCase());
-						}
+                        }
 					} else {
 						if (ObjectUtils.isNotNull(nestedObject)
 								&& nestedObject instanceof Collection) {
@@ -496,21 +501,21 @@ public class BusinessObjectDictionaryServiceImpl implements
 												descriptors[i].getName())) {
 									Iterator iter = ((Collection) nestedObject)
 											.iterator();
-									while (iter.hasNext()) {
-										Object collElem = iter.next();
-										if (collElem instanceof BusinessObject) {
+                            while (iter.hasNext()) {
+                                Object collElem = iter.next();
+                                if (collElem instanceof BusinessObject) {
 											if (persistenceStructureService
 													.isPersistable(collElem
 															.getClass())) {
-												performForceUppercase((BusinessObject) collElem);
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
+                                                performForceUppercase((BusinessObject) collElem);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
 			} catch (IllegalAccessException e) {
 				throw new IntrospectionException(
 						"unable to performForceUppercase", e);
@@ -518,376 +523,377 @@ public class BusinessObjectDictionaryServiceImpl implements
 				throw new IntrospectionException(
 						"unable to performForceUppercase", e);
 			} catch (NoSuchMethodException e) {
-				// if the getter/setter does not exist, just skip over
+                // if the getter/setter does not exist, just skip over
 				// throw new
 				// IntrospectionException("unable to performForceUppercase", e);
-			}
-		}
-	}
+            }
+        }
+    }
 
-	/**
-	 * Sets the instance of the data dictionary service.
-	 * 
-	 * @param dataDictionaryService
-	 */
+    /**
+     * Sets the instance of the data dictionary service.
+     *
+     * @param dataDictionaryService
+     */
 	public void setDataDictionaryService(
 			DataDictionaryService dataDictionaryService) {
-		this.dataDictionaryService = dataDictionaryService;
-	}
+        this.dataDictionaryService = dataDictionaryService;
+    }
 
-	/**
-	 * This method retrieves the instance of the data dictionary service.
-	 * 
-	 * @return An instance of the DataDictionaryService.
-	 */
-	public DataDictionaryService getDataDictionaryService() {
-		return this.dataDictionaryService;
-	}
+    /**
+     * This method retrieves the instance of the data dictionary service.
+     *
+     * @return An instance of the DataDictionaryService.
+     */
+    public DataDictionaryService getDataDictionaryService() {
+        return this.dataDictionaryService;
+    }
 
-	/**
-	 * @param businessObjectClass
+    /**
+     * @param businessObjectClass
 	 * @return BusinessObjectEntry for the given businessObjectClass, or null if
 	 *         there is none
 	 * @throws IllegalArgumentException
 	 *             if the given Class is null or is not a BusinessObject class
-	 */
-	private BusinessObjectEntry getBusinessObjectEntry(Class businessObjectClass) {
-		validateBusinessObjectClass(businessObjectClass);
+     */
+    private BusinessObjectEntry getBusinessObjectEntry(Class businessObjectClass) {
+        validateBusinessObjectClass(businessObjectClass);
 
 		BusinessObjectEntry entry = getDataDictionaryService()
 				.getDataDictionary().getBusinessObjectEntry(
 						businessObjectClass.getName());
-		return entry;
-	}
+        return entry;
+    }
 
-	/**
-	 * @param businessObjectClass
+    /**
+     * @param businessObjectClass
 	 * @return MaintenanceDocumentEntry for the given businessObjectClass, or
 	 *         null if there is none
 	 * @throws IllegalArgumentException
 	 *             if the given Class is null or is not a BusinessObject class
-	 */
+     */
 	private MaintenanceDocumentEntry getMaintenanceDocumentEntry(
 			Class businessObjectClass) {
-		validateBusinessObjectClass(businessObjectClass);
+        validateBusinessObjectClass(businessObjectClass);
 
 		MaintenanceDocumentEntry entry = getDataDictionaryService()
 				.getDataDictionary()
 				.getMaintenanceDocumentEntryForBusinessObjectClass(
 						businessObjectClass);
-		return entry;
-	}
+        return entry;
+    }
 
-	/**
-	 * @param businessObjectClass
+    /**
+     * @param businessObjectClass
 	 * @return LookupDefinition for the given businessObjectClass, or null if
 	 *         there is none
 	 * @throws IllegalArgumentException
 	 *             if the given Class is null or is not a BusinessObject class
-	 */
-	private LookupDefinition getLookupDefinition(Class businessObjectClass) {
-		LookupDefinition lookupDefinition = null;
+     */
+    private LookupDefinition getLookupDefinition(Class businessObjectClass) {
+        LookupDefinition lookupDefinition = null;
 
-		BusinessObjectEntry entry = getBusinessObjectEntry(businessObjectClass);
-		if (entry != null) {
-			if (entry.hasLookupDefinition()) {
-				lookupDefinition = entry.getLookupDefinition();
-			}
-		}
+        BusinessObjectEntry entry = getBusinessObjectEntry(businessObjectClass);
+        if (entry != null) {
+            if (entry.hasLookupDefinition()) {
+                lookupDefinition = entry.getLookupDefinition();
+            }
+        }
 
-		return lookupDefinition;
-	}
+        return lookupDefinition;
+    }
 
-	/**
-	 * @param businessObjectClass
-	 * @param attributeName
+    /**
+     * @param businessObjectClass
+     * @param attributeName
 	 * @return FieldDefinition for the given businessObjectClass and lookup
 	 *         field name, or null if there is none
 	 * @throws IllegalArgumentException
 	 *             if the given Class is null or is not a BusinessObject class
-	 */
+     */
 	private FieldDefinition getLookupFieldDefinition(Class businessObjectClass,
 			String lookupFieldName) {
-		if (StringUtils.isBlank(lookupFieldName)) {
+        if (StringUtils.isBlank(lookupFieldName)) {
 			throw new IllegalArgumentException(
 					"invalid (blank) lookupFieldName");
-		}
+        }
 
-		FieldDefinition fieldDefinition = null;
+        FieldDefinition fieldDefinition = null;
 
-		LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
-		if (lookupDefinition != null) {
-			fieldDefinition = lookupDefinition.getLookupField(lookupFieldName);
-		}
+        LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
+        if (lookupDefinition != null) {
+            fieldDefinition = lookupDefinition.getLookupField(lookupFieldName);
+        }
 
-		return fieldDefinition;
-	}
+        return fieldDefinition;
+    }
 
-	/**
-	 * @param businessObjectClass
-	 * @param attributeName
+    /**
+     * @param businessObjectClass
+     * @param attributeName
 	 * @return FieldDefinition for the given businessObjectClass and lookup
 	 *         result field name, or null if there is none
 	 * @throws IllegalArgumentException
 	 *             if the given Class is null or is not a BusinessObject class
-	 */
+     */
 	private FieldDefinition getLookupResultFieldDefinition(
 			Class businessObjectClass, String lookupFieldName) {
-		if (StringUtils.isBlank(lookupFieldName)) {
+        if (StringUtils.isBlank(lookupFieldName)) {
 			throw new IllegalArgumentException(
 					"invalid (blank) lookupFieldName");
-		}
+        }
 
-		FieldDefinition fieldDefinition = null;
+        FieldDefinition fieldDefinition = null;
 
-		LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
-		if (lookupDefinition != null) {
-			fieldDefinition = lookupDefinition.getResultField(lookupFieldName);
-		}
+        LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
+        if (lookupDefinition != null) {
+            fieldDefinition = lookupDefinition.getResultField(lookupFieldName);
+        }
 
-		return fieldDefinition;
-	}
+        return fieldDefinition;
+    }
 
-	/**
-	 * @param businessObjectClass
+    /**
+     * @param businessObjectClass
 	 * @return InquiryDefinition for the given businessObjectClass, or null if
 	 *         there is none
 	 * @throws IllegalArgumentException
 	 *             if the given Class is null or is not a BusinessObject class
-	 */
-	private InquiryDefinition getInquiryDefinition(Class businessObjectClass) {
-		InquiryDefinition inquiryDefinition = null;
+     */
+    private InquiryDefinition getInquiryDefinition(Class businessObjectClass) {
+        InquiryDefinition inquiryDefinition = null;
 
-		BusinessObjectEntry entry = getBusinessObjectEntry(businessObjectClass);
-		if (entry != null) {
-			if (entry.hasInquiryDefinition()) {
-				inquiryDefinition = entry.getInquiryDefinition();
-			}
-		}
+        BusinessObjectEntry entry = getBusinessObjectEntry(businessObjectClass);
+        if (entry != null) {
+            if (entry.hasInquiryDefinition()) {
+                inquiryDefinition = entry.getInquiryDefinition();
+            }
+        }
 
-		return inquiryDefinition;
-	}
+        return inquiryDefinition;
+    }
 
-	/**
-	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getTitleAttribute(java.lang.Class)
-	 */
-	public String getTitleAttribute(Class businessObjectClass) {
-		String titleAttribute = null;
 
-		BusinessObjectEntry entry = getBusinessObjectEntry(businessObjectClass);
-		if (entry != null) {
-			titleAttribute = entry.getTitleAttribute();
-		}
+    /**
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getTitleAttribute(java.lang.Class)
+     */
+    public String getTitleAttribute(Class businessObjectClass) {
+        String titleAttribute = null;
 
-		return titleAttribute;
-	}
+        BusinessObjectEntry entry = getBusinessObjectEntry(businessObjectClass);
+        if (entry != null) {
+            titleAttribute = entry.getTitleAttribute();
+        }
 
-	/**
-	 * @param businessObjectClass
-	 * @param attributeName
+        return titleAttribute;
+    }
+
+    /**
+     * @param businessObjectClass
+     * @param attributeName
 	 * @return FieldDefinition for the given businessObjectClass and field name,
 	 *         or null if there is none
 	 * @throws IllegalArgumentException
 	 *             if the given Class is null or is not a BusinessObject class
-	 */
+     */
 	private FieldDefinition getInquiryFieldDefinition(
 			Class businessObjectClass, String fieldName) {
-		if (StringUtils.isBlank(fieldName)) {
-			throw new IllegalArgumentException("invalid (blank) fieldName");
-		}
+        if (StringUtils.isBlank(fieldName)) {
+            throw new IllegalArgumentException("invalid (blank) fieldName");
+        }
 
-		FieldDefinition fieldDefinition = null;
+        FieldDefinition fieldDefinition = null;
 
-		InquiryDefinition inquiryDefinition = getInquiryDefinition(businessObjectClass);
-		if (inquiryDefinition != null) {
-			fieldDefinition = inquiryDefinition.getFieldDefinition(fieldName);
-		}
+        InquiryDefinition inquiryDefinition = getInquiryDefinition(businessObjectClass);
+        if (inquiryDefinition != null) {
+            fieldDefinition = inquiryDefinition.getFieldDefinition(fieldName);
+        }
 
-		return fieldDefinition;
-	}
+        return fieldDefinition;
+    }
 
-	/**
-	 * @param businessObjectClass
+    /**
+     * @param businessObjectClass
 	 * @throws IllegalArgumentException
 	 *             if the given Class is null or is not a BusinessObject class
-	 */
-	private void validateBusinessObjectClass(Class businessObjectClass) {
-		if (businessObjectClass == null) {
+     */
+    private void validateBusinessObjectClass(Class businessObjectClass) {
+        if (businessObjectClass == null) {
 			throw new IllegalArgumentException(
 					"invalid (null) businessObjectClass");
-		}
-		if (!BusinessObject.class.isAssignableFrom(businessObjectClass)) {
+        }
+        if (!BusinessObject.class.isAssignableFrom(businessObjectClass)) {
 			throw new IllegalArgumentException("class '"
 					+ businessObjectClass.getName()
 					+ "' is not a descendent of BusinessObject");
-		}
-	}
+        }
+    }
 
-	/**
+    /**
 	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#forceLookupResultFieldInquiry(java.lang.Class,
 	 *      java.lang.String)
-	 */
+     */
 	public Boolean forceLookupResultFieldInquiry(Class businessObjectClass,
 			String attributeName) {
-		Boolean forceLookup = null;
-		if (getLookupResultFieldDefinition(businessObjectClass, attributeName) != null) {
+        Boolean forceLookup = null;
+        if (getLookupResultFieldDefinition(businessObjectClass, attributeName) != null) {
 			forceLookup = Boolean.valueOf(getLookupResultFieldDefinition(
 					businessObjectClass, attributeName).isForceInquiry());
-		}
+        }
 
-		return forceLookup;
-	}
+        return forceLookup;
+    }
 
-	/**
+    /**
 	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#noLookupResultFieldInquiry(java.lang.Class,
 	 *      java.lang.String)
-	 */
+     */
 	public Boolean noLookupResultFieldInquiry(Class businessObjectClass,
 			String attributeName) {
-		Boolean noLookup = null;
-		if (getLookupResultFieldDefinition(businessObjectClass, attributeName) != null) {
+        Boolean noLookup = null;
+        if (getLookupResultFieldDefinition(businessObjectClass, attributeName) != null) {
 			noLookup = Boolean.valueOf(getLookupResultFieldDefinition(
 					businessObjectClass, attributeName).isNoInquiry());
-		}
+        }
 
-		return noLookup;
-	}
+        return noLookup;
+    }
 
-	/**
+    /**
 	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#forceLookupFieldLookup(java.lang.Class,
 	 *      java.lang.String)
-	 */
+     */
 	public Boolean forceLookupFieldLookup(Class businessObjectClass,
 			String attributeName) {
-		Boolean forceLookup = null;
-		if (getLookupFieldDefinition(businessObjectClass, attributeName) != null) {
+        Boolean forceLookup = null;
+        if (getLookupFieldDefinition(businessObjectClass, attributeName) != null) {
 			forceLookup = Boolean.valueOf(getLookupFieldDefinition(
 					businessObjectClass, attributeName).isForceLookup());
-		}
+        }
 
-		return forceLookup;
-	}
+        return forceLookup;
+    }
 
 	public Boolean forceInquiryFieldLookup(Class businessObjectClass,
 			String attributeName) {
-		Boolean forceInquiry = null;
-		if (getLookupFieldDefinition(businessObjectClass, attributeName) != null) {
+        Boolean forceInquiry = null;
+        if (getLookupFieldDefinition(businessObjectClass, attributeName) != null) {
 			forceInquiry = Boolean.valueOf(getLookupFieldDefinition(
 					businessObjectClass, attributeName).isForceInquiry());
-		}
+        }
 
-		return forceInquiry;
-	}
-
-	/**
+        return forceInquiry;
+    }
+    /**
 	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#noLookupFieldLookup(java.lang.Class,
 	 *      java.lang.String)
-	 */
+     */
 	public Boolean noLookupFieldLookup(Class businessObjectClass,
 			String attributeName) {
-		Boolean noLookup = null;
-		if (getLookupFieldDefinition(businessObjectClass, attributeName) != null) {
+        Boolean noLookup = null;
+        if (getLookupFieldDefinition(businessObjectClass, attributeName) != null) {
 			noLookup = Boolean.valueOf(getLookupFieldDefinition(
 					businessObjectClass, attributeName).isNoLookup());
-		}
+        }
 
-		return noLookup;
-	}
+        return noLookup;
+    }
 
-	/**
+    /**
 	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#noLookupFieldLookup(java.lang.Class,
 	 *      java.lang.String)
-	 */
+     */
 	public Boolean noDirectInquiryFieldLookup(Class businessObjectClass,
 			String attributeName) {
-		Boolean noDirectInquiry = null;
-		if (getLookupFieldDefinition(businessObjectClass, attributeName) != null) {
+        Boolean noDirectInquiry = null;
+        if (getLookupFieldDefinition(businessObjectClass, attributeName) != null) {
 			noDirectInquiry = Boolean.valueOf(getLookupFieldDefinition(
 					businessObjectClass, attributeName).isNoDirectInquiry());
-		}
+        }
 
-		return noDirectInquiry;
-	}
+        return noDirectInquiry;
+    }
 
-	/**
+    /**
 	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupResultFieldUseShortLabel(java.lang.Class,
 	 *      java.lang.String)
 	 */
 	public Boolean getLookupResultFieldUseShortLabel(Class businessObjectClass,
 			String attributeName) {
-		Boolean useShortLabel = null;
-		if (getLookupResultFieldDefinition(businessObjectClass, attributeName) != null) {
+        Boolean useShortLabel = null;
+        if (getLookupResultFieldDefinition(businessObjectClass, attributeName) != null) {
 			useShortLabel = Boolean.valueOf(getLookupResultFieldDefinition(
 					businessObjectClass, attributeName).isUseShortLabel());
-		}
+        }
 
-		return useShortLabel;
+        return useShortLabel;
 	}
 
 	/**
 	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#forceInquiryFieldInquiry(java.lang.Class,
 	 *      java.lang.String)
-	 */
+     */
 	public Boolean forceInquiryFieldInquiry(Class businessObjectClass,
 			String attributeName) {
-		Boolean forceInquiry = null;
-		if (getInquiryFieldDefinition(businessObjectClass, attributeName) != null) {
+        Boolean forceInquiry = null;
+        if (getInquiryFieldDefinition(businessObjectClass, attributeName) != null) {
 			forceInquiry = Boolean.valueOf(getInquiryFieldDefinition(
 					businessObjectClass, attributeName).isForceInquiry());
-		}
+        }
 
-		return forceInquiry;
-	}
+        return forceInquiry;
+    }
 
-	/**
+    /**
 	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#noInquiryFieldInquiry(java.lang.Class,
 	 *      java.lang.String)
-	 */
+     */
 	public Boolean noInquiryFieldInquiry(Class businessObjectClass,
 			String attributeName) {
-		Boolean noInquiry = null;
-		if (getInquiryFieldDefinition(businessObjectClass, attributeName) != null) {
+        Boolean noInquiry = null;
+        if (getInquiryFieldDefinition(businessObjectClass, attributeName) != null) {
 			noInquiry = Boolean.valueOf(getInquiryFieldDefinition(
 					businessObjectClass, attributeName).isNoInquiry());
-		}
+        }
 
-		return noInquiry;
-	}
+        return noInquiry;
+    }
 
-	/**
+    /**
 	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupFieldDefaultValue(java.lang.Class,
 	 *      java.lang.String)
-	 */
+     */
 	public String getLookupFieldDefaultValue(Class businessObjectClass,
 			String attributeName) {
 		return getLookupFieldDefinition(businessObjectClass, attributeName)
 				.getDefaultValue();
-	}
+    }
 
-	/**
-	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupFieldDefaultValueFinderClass(java.lang.Class,
-	 *      java.lang.String)
-	 */
+    /**
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupFieldDefaultValueFinderClass(java.lang.Class,
+     *      java.lang.String)
+     */
 	public Class getLookupFieldDefaultValueFinderClass(
 			Class businessObjectClass, String attributeName) {
 		return getLookupFieldDefinition(businessObjectClass, attributeName)
 				.getDefaultValueFinderClass();
-	}
+    }
 
 	public void setPersistenceStructureService(
 			PersistenceStructureService persistenceStructureService) {
-		this.persistenceStructureService = persistenceStructureService;
-	}
+        this.persistenceStructureService = persistenceStructureService;
+    }
 
-	public Boolean areNotesSupported(Class businessObjectClass) {
-		Boolean hasNotesSupport = null;
+    public Boolean areNotesSupported(Class businessObjectClass) {
+        Boolean hasNotesSupport = null;
 
-		BusinessObjectEntry entry = getBusinessObjectEntry(businessObjectClass);
-		if (entry != null) {
-			hasNotesSupport = Boolean.valueOf(entry.isBoNotesEnabled());
-		}
+        BusinessObjectEntry entry = getBusinessObjectEntry(businessObjectClass);
+        if (entry != null) {
+            hasNotesSupport = Boolean.valueOf(entry.isBoNotesEnabled());
+        }
 
-		return hasNotesSupport;
-	}
+        return hasNotesSupport;
+    }
+
 
 }

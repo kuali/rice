@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kns.authorization;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,15 +26,6 @@ public class InquiryOrMaintenanceDocumentRestrictionsBase extends
 	private Set<String> hiddenFields;
 	private Set<String> hiddenSectionIds;
 
-	@Override
-	public Set<String> getRestrictedFieldNames() {
-		if (allRestrictedFields == null) {
-			Collection allRestrictedFields = super.getRestrictedFieldNames();
-			allRestrictedFields.addAll(hiddenFields);
-		}
-		return allRestrictedFields;
-	}
-
 	public void addHiddenField(String fieldName) {
 		hiddenFields.add(fieldName);
 	}
@@ -44,18 +34,30 @@ public class InquiryOrMaintenanceDocumentRestrictionsBase extends
 		hiddenSectionIds.add(sectionId);
 	}
 
-	public Set<String> getHiddenSectionIds() {
-		return hiddenSectionIds;
-	}
-
 	@Override
 	public FieldRestriction getFieldRestriction(String fieldName) {
 		FieldRestriction fieldRestriction = super
 				.getFieldRestriction(fieldName);
-		if ((fieldRestriction == null) && hiddenFields.contains(fieldName)) {
+		if ((fieldRestriction == null) && isHiddenField(fieldName)) {
 			fieldRestriction = new FieldRestriction(fieldName, Field.HIDDEN);
 		}
-		return fieldRestriction;
+		return fieldRestriction;			
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.authorization.BusinessObjectRestrictionsBase#hasRestriction(java.lang.String)
+	 */
+	@Override
+	public boolean hasRestriction(String fieldName) {
+		return super.hasRestriction(fieldName) || isHiddenField(fieldName);
+	}
+	
+	/**
+	 * @see org.kuali.rice.kns.authorization.BusinessObjectRestrictionsBase#hasAnyFieldRestrictions()
+	 */
+	@Override
+	public boolean hasAnyFieldRestrictions() {
+		return super.hasAnyFieldRestrictions() || !hiddenFields.isEmpty();
 	}
 
 	@Override
@@ -63,5 +65,17 @@ public class InquiryOrMaintenanceDocumentRestrictionsBase extends
 		super.clearAllRestrictions();
 		hiddenFields = new HashSet<String>();
 		hiddenSectionIds = new HashSet<String>();
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.authorization.InquiryOrMaintenanceDocumentRestrictions#isHiddenSectionId(java.lang.String)
+	 */
+	public boolean isHiddenSectionId(String sectionId) {
+		return hiddenSectionIds.contains(sectionId);
+	}
+
+	protected boolean isHiddenField(String fieldName) {
+		String normalizedFieldName = normalizeFieldName(fieldName);
+		return hiddenFields.contains(normalizedFieldName);
 	}
 }

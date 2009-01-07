@@ -134,14 +134,16 @@ public class KualiInquirableImpl implements Inquirable {
             LOG.error("Business object class not set in inquirable.");
             throw new RuntimeException("Business object class not set in inquirable.");
         }
+        
+        InquiryRestrictions inquiryRestrictions = KNSServiceLocator.getBusinessObjectAuthorizationService().getInquiryRestrictions(bo, GlobalVariables.getUserSession().getPerson());
 
-        Collection inquirySections = getBusinessObjectDictionaryService().getInquirySections(getBusinessObjectClass());
-        for (Iterator iter = inquirySections.iterator(); iter.hasNext();) {
-            
-            InquirySectionDefinition inquirySection = (InquirySectionDefinition) iter.next();
-            Section section = SectionBridge.toSection(this, inquirySection, bo);
-            sections.add(section);
-            
+        Collection<InquirySectionDefinition> inquirySections = getBusinessObjectDictionaryService().getInquirySections(getBusinessObjectClass());
+        for (Iterator<InquirySectionDefinition> iter = inquirySections.iterator(); iter.hasNext();) {
+            InquirySectionDefinition inquirySection = iter.next();
+            if (!inquiryRestrictions.isHiddenSectionId(inquirySection.getId())) {
+	            Section section = SectionBridge.toSection(this, inquirySection, bo, inquiryRestrictions);
+	            sections.add(section);
+            }
         }
 
         return sections;

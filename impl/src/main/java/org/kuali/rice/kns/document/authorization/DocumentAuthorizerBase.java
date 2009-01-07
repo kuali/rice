@@ -232,7 +232,7 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 				KimConstants.PermissionTemplateNames.TAKE_REQUESTED_ACTION,
 				user.getPrincipalId());
 	}
-
+	
 	@Override
 	protected void addPermissionDetails(BusinessObject businessObject,
 			Map<String, String> attributes) {

@@ -30,6 +30,7 @@ import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
+import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.lookup.SelectiveReferenceRefresher;
 import org.kuali.rice.kns.maintenance.Maintainable;
@@ -261,6 +262,24 @@ public class MaintenanceUtils {
                 }
                 addRowsToErrorKeySet(field.getContainerRows(), errorKeys);
             }
+        }
+    }
+    
+    public static boolean isMaintenanceDocumentCreatingNewRecord(String maintenanceAction) {
+        if (KNSConstants.MAINTENANCE_EDIT_ACTION.equalsIgnoreCase(maintenanceAction)) {
+            return false;
+        }
+        else if (KNSConstants.MAINTENANCE_NEWWITHEXISTING_ACTION.equalsIgnoreCase(maintenanceAction)) {
+            return false;
+        }
+        else if (KNSConstants.MAINTENANCE_NEW_ACTION.equalsIgnoreCase(maintenanceAction)) {
+            return true;
+        }
+        else if (KNSConstants.MAINTENANCE_COPY_ACTION.equalsIgnoreCase(maintenanceAction)) {
+            return true;
+        }
+        else {
+            return true;
         }
     }
 }

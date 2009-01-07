@@ -30,7 +30,8 @@ public class Section implements java.io.Serializable {
     boolean isCollapsible = true;
     String extraButtonSource;
     boolean hidden = false;
-    
+    boolean readOnly = false;
+
     Class sectionClass;
     List<Row> rows;
     List<String> containedCollectionNames = new ArrayList();
@@ -228,4 +229,18 @@ public class Section implements java.io.Serializable {
     public void setHidden(boolean hidden) {
         this.hidden = hidden;
     }
+
+	/**
+	 * @return the readOnly
+	 */
+	public boolean isReadOnly() {
+		return this.readOnly;
+	}
+
+	/**
+	 * @param readOnly the readOnly to set
+	 */
+	public void setReadOnly(boolean readOnly) {
+		this.readOnly = readOnly;
+	}
 }

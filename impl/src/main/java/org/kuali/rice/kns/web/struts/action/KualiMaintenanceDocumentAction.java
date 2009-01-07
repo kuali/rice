@@ -912,34 +912,12 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         MaintenanceDocumentAuthorizer documentAuthorizer = (MaintenanceDocumentAuthorizer) documentTypeService.getDocumentAuthorizer(document);
 
         // get a new instance of MaintenanceDocumentAuthorizations for this context
-        MaintenanceDocumentRestrictions auths = KNSServiceLocator.getBusinessObjectAuthorizationService().getMaintenanceDocumentRestrictions(document, user);
+        MaintenanceDocumentRestrictions maintenanceDocumentRestrictions = KNSServiceLocator.getBusinessObjectAuthorizationService().getMaintenanceDocumentRestrictions(document, user);
 
         // get a reference to the newBo
         PersistableBusinessObject newBo = document.getNewMaintainableObject().getBusinessObject();
 
-        // walk through all the restrictions
-        Collection restrictedFields = auths.getRestrictedFieldNames();
-        for (Iterator iter = restrictedFields.iterator(); iter.hasNext();) {
-            String fieldName = (String) iter.next();
-
-            // get the specific field authorization structure
-            FieldRestriction fieldAuthorization = auths.getFieldRestriction(fieldName);
-
-            // if there are any restrictions, then clear the field value
-            if (fieldAuthorization.isRestricted()) {
-
-                // get the default value for this field, if any
-                Object newValue = null;
-                newValue = maintenanceDocumentDictionaryService.getFieldDefaultValue(newBo.getClass(), fieldName);
-
-                try {
-                    ObjectUtils.setObjectProperty(newBo, fieldName, newValue);
-                }
-                catch (Exception e) {
-                    LOG.warn("Unable to reset unauthorized field", e);
-                }
-            }
-        }
+        document.getNewMaintainableObject().clearBusinessObjectOfRestrictedValues(maintenanceDocumentRestrictions);
     }
 
     /**

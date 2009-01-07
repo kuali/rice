@@ -17,6 +17,7 @@ package org.kuali.rice.kns.maintenance;
 
 import java.beans.PropertyDescriptor;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -43,6 +44,7 @@ import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.MaintenanceLock;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions;
 import org.kuali.rice.kns.lookup.LookupUtils;
+import org.kuali.rice.kns.lookup.valueFinder.ValueFinder;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.BusinessObjectService;
@@ -57,6 +59,7 @@ import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.MaintenanceUtils;
 import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.kns.web.format.FormatException;
 import org.kuali.rice.kns.web.ui.Section;
 import org.kuali.rice.kns.web.ui.SectionBridge;
 
@@ -255,9 +258,9 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
      * 
      * @return List of org.kuali.ui.Section objects
      */
-    public List getSections(Maintainable oldMaintainable) {
+    public List getSections(MaintenanceDocument document, Maintainable oldMaintainable) {
         List<Section> sections = new ArrayList<Section>();
-        sections.addAll(getCoreSections(oldMaintainable));
+        sections.addAll(getCoreSections(document, oldMaintainable));
 
         return sections;
     }
@@ -269,7 +272,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
      * 
      * @return List of org.kuali.ui.Section objects
      */
-    public List<Section> getCoreSections(Maintainable oldMaintainable) {
+    public List<Section> getCoreSections(MaintenanceDocument document, Maintainable oldMaintainable) {
         
         List<Section> sections = new ArrayList<Section>();
 
@@ -1092,5 +1095,67 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
         return businessObjectMetaDataService;
     }
 
+	/**
+	 * @see org.kuali.rice.kns.maintenance.Maintainable#clearBusinessObjectOfRestrictedValues(org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions)
+	 */
+	public void clearBusinessObjectOfRestrictedValues(MaintenanceDocumentRestrictions maintenanceDocumentRestrictions) {
+		List<MaintainableSectionDefinition> sections = getMaintenanceDocumentDictionaryService().getMaintainableSections(docTypeName);
+		for (MaintainableSectionDefinition sectionDefinition : sections) {
+			for (MaintainableItemDefinition itemDefinition : sectionDefinition.getMaintainableItems()) {
+				if (itemDefinition instanceof MaintainableFieldDefinition) {
+					clearFieldRestrictedValues("", businessObject, (MaintainableFieldDefinition) itemDefinition, maintenanceDocumentRestrictions);
+				}
+				else if (itemDefinition instanceof MaintainableCollectionDefinition) {
+					clearCollectionRestrictedValues("", businessObject, (MaintainableCollectionDefinition) itemDefinition, maintenanceDocumentRestrictions);
+				}
+			}
+		}
+	}
 	
+	private void clearCollectionRestrictedValues(String fieldNamePrefix, BusinessObject businessObject, MaintainableCollectionDefinition collectionDefinition, MaintenanceDocumentRestrictions maintenanceDocumentRestrictions) {
+		String collectionName = fieldNamePrefix + collectionDefinition.getName();
+		Collection<BusinessObject> collection = (Collection<BusinessObject>) ObjectUtils.getPropertyValue(businessObject, collectionDefinition.getName());
+		
+		if (collection != null) {
+			int i = 0;
+			// even though it's technically a Collection, we're going to index it like a list
+			for (BusinessObject collectionItem : collection) {
+				String collectionItemNamePrefix = collectionName + "[" + i + "].";
+				for (MaintainableCollectionDefinition subCollectionDefinition : collectionDefinition.getMaintainableCollections()) {
+					clearCollectionRestrictedValues(collectionItemNamePrefix, collectionItem, subCollectionDefinition, maintenanceDocumentRestrictions);
+				}
+				for (MaintainableFieldDefinition fieldDefinition : collectionDefinition.getMaintainableFields()) {
+					clearFieldRestrictedValues(collectionItemNamePrefix, collectionItem, fieldDefinition, maintenanceDocumentRestrictions);
+				}
+				i++;
+			}
+		}
+	}
+	
+	private void clearFieldRestrictedValues(String fieldNamePrefix, BusinessObject businessObject, MaintainableFieldDefinition fieldDefinition, MaintenanceDocumentRestrictions maintenanceDocumentRestrictions) {
+		String fieldName = fieldNamePrefix + fieldDefinition.getName();
+		
+		FieldRestriction fieldRestriction = maintenanceDocumentRestrictions.getFieldRestriction(fieldName);
+		if (fieldRestriction.isRestricted()) {
+			String defaultValue = null;
+			if (StringUtils.isNotBlank(fieldDefinition.getDefaultValue())) {
+				defaultValue = fieldDefinition.getDefaultValue();
+			}
+			else if (fieldDefinition.getDefaultValueFinderClass() != null) {
+				try {
+					defaultValue = ((ValueFinder) fieldDefinition.getDefaultValueFinderClass().newInstance()).getValue();
+				} catch (Exception e) {
+					defaultValue = null;
+					LOG.error("Error trying to instantiate ValueFinder or to determine ValueFinder for doc type: " + docTypeName + " field name " + fieldDefinition.getName() + " with field prefix: " + fieldNamePrefix, e);
+				}
+			}
+			try {
+				ObjectUtils.setObjectProperty(businessObject, fieldName, defaultValue);
+			} catch (Exception e) {
+				// throw an exception, because we don't want users to be able to see the restricted value
+				LOG.error("Unable to clear maintenance document values for field name: " + fieldName + " default value: " + defaultValue, e);
+				throw new RuntimeException("Unable to clear maintenance document values for field name: " + fieldName, e);
+			}
+		}
+	}
 }

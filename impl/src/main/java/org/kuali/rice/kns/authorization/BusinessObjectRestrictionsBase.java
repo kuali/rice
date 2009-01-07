@@ -20,7 +20,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.datadictionary.mask.MaskFormatter;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.web.ui.Field;
 
 public class BusinessObjectRestrictionsBase implements
@@ -34,21 +36,12 @@ public class BusinessObjectRestrictionsBase implements
 		clearAllRestrictions();
 	}
 
-	public Set<String> getRestrictedFieldNames() {
-		if (allRestrictedFields == null) {
-			allRestrictedFields = new HashSet<String>();
-			allRestrictedFields.addAll(partiallyMaskedFields.keySet());
-			allRestrictedFields.addAll(fullyMaskedFields.keySet());
-		}
-		return allRestrictedFields;
-	}
-
 	public boolean hasAnyFieldRestrictions() {
-		return !getRestrictedFieldNames().isEmpty();
+		return !partiallyMaskedFields.isEmpty() || !fullyMaskedFields.isEmpty();
 	}
 
 	public boolean hasRestriction(String fieldName) {
-		return getRestrictedFieldNames().contains(fieldName);
+		return isPartiallyMaskedField(fieldName) || isFullyMaskedField(fieldName);
 	}
 
 	public void addFullyMaskedField(String fieldName,
@@ -75,16 +68,16 @@ public class BusinessObjectRestrictionsBase implements
 	public FieldRestriction getFieldRestriction(String fieldName) {
 		if (hasRestriction(fieldName)) {
 			FieldRestriction fieldRestriction = null;
-			if (partiallyMaskedFields.containsKey(fieldName)) {
+			if (isPartiallyMaskedField(fieldName)) {
 				fieldRestriction = new FieldRestriction(fieldName,
 						Field.PARTIALLY_MASKED);
 				fieldRestriction.setMaskFormatter(partiallyMaskedFields
-						.get(fieldName));
+						.get(normalizeFieldName(fieldName)));
 			}
-			if (fullyMaskedFields.containsKey(fieldName)) {
+			if (isFullyMaskedField(fieldName)) {
 				fieldRestriction = new FieldRestriction(fieldName, Field.MASKED);
 				fieldRestriction.setMaskFormatter(fullyMaskedFields
-						.get(fieldName));
+						.get(normalizeFieldName(fieldName)));
 			}
 			return fieldRestriction;
 		} else {
@@ -96,5 +89,31 @@ public class BusinessObjectRestrictionsBase implements
 		partiallyMaskedFields = new HashMap<String, MaskFormatter>();
 		fullyMaskedFields = new HashMap<String, MaskFormatter>();
 		allRestrictedFields = null;
+	}
+	
+	
+	/**
+	 * Field names on a form may contain indices, while when fields are added as masked/partially masked/hidden (in subclass)/readonly (in subclass),
+	 * they may not include the field indices.  This method is used to convert field names on forms in a format that's compatible with field names
+	 * that are registered with a restriction.
+	 * 
+	 * @param fieldName The field name that would be rendered on a form
+	 * @return
+	 */
+	protected String normalizeFieldName(String fieldName) {
+		if (StringUtils.isBlank(fieldName)) {
+			return KNSConstants.EMPTY_STRING;
+		}
+		return fieldName.replaceAll("\\[[0-9]*+\\]", "");
+	}
+	
+	protected boolean isFullyMaskedField(String fieldName) {
+		String normalizedFieldName = normalizeFieldName(fieldName);
+		return fullyMaskedFields.containsKey(normalizedFieldName);
+	}
+	
+	protected boolean isPartiallyMaskedField(String fieldName) {
+		String normalizedFieldName = normalizeFieldName(fieldName);
+		return partiallyMaskedFields.containsKey(normalizedFieldName);
 	}
 }

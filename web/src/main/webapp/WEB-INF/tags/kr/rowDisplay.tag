@@ -25,6 +25,8 @@
               description="the recursion depth number" %>
 <%@ attribute name="rowsHidden" required="false"
               description="boolean that indicates whether the rows should be hidden or all fields are hidden" %>
+<%@ attribute name="rowsReadOnly" required="false"
+              description="boolean that indicates whether the rows should be rendered as read-only (note that rows will automatically be rendered as readonly if it is an inquiry or if it is a maintenance document in readOnly mode" %>
 <%@ attribute name="sessionDocument" required="false"
               description="boolean that indicates whether the sessionDocument declared in DD" %>
 
@@ -45,7 +47,7 @@
 <c:set var="isLookup" value="${maintenanceViewMode eq Constants.PARAM_MAINTENANCE_VIEW_MODE_LOOKUP}" />
 
 <%-- Is the form read-only? --%>
-<c:set var="isFormReadOnly" value="${isInquiry || (isMaintenance && KualiForm.readOnly)}" />
+<c:set var="isFormReadOnly" value="${rowsReadOnly || isInquiry || (isMaintenance && KualiForm.readOnly)}" />
 
 <%-- What's the user trying to do? --%>
 <c:set var="requestedAction" value="${isMaintenance ? KualiForm.maintenanceAction : KualiForm.methodToCall}" />

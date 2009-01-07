@@ -50,6 +50,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.MaintenanceUtils;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.UrlFactory;
@@ -226,22 +227,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
      * functionality.
      */
     public boolean isNew() {
-        if (KNSConstants.MAINTENANCE_EDIT_ACTION.equalsIgnoreCase(newMaintainableObject.getMaintenanceAction())) {
-            return false;
-        }
-        else if (KNSConstants.MAINTENANCE_NEWWITHEXISTING_ACTION.equalsIgnoreCase(newMaintainableObject.getMaintenanceAction())) {
-            return false;
-        }
-        else if (KNSConstants.MAINTENANCE_NEW_ACTION.equalsIgnoreCase(newMaintainableObject.getMaintenanceAction())) {
-            return true;
-        }
-        else if (KNSConstants.MAINTENANCE_COPY_ACTION.equalsIgnoreCase(newMaintainableObject.getMaintenanceAction())) {
-            return true;
-        }
-        else {
-            return true;
-        }
-        // return !isOldBusinessObjectInDocument();
+        return MaintenanceUtils.isMaintenanceDocumentCreatingNewRecord(newMaintainableObject.getMaintenanceAction());
     }
 
     /**

@@ -32,7 +32,6 @@ import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.UserService;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kew.workgroup.WorkflowGroupId;
@@ -93,14 +92,6 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
         crit.orderBy("routeHeader.routeHeaderId", true);
         return new QueryByCriteria(entityManager, crit).toQuery().getResultList();
 	}
-
-    public Collection<ActionItem> findByWorkflowUser(WorkflowUser workflowUser) {
-        Criteria crit = new Criteria(ActionItem.class.getName());
-        crit.eq("principalId", workflowUser.getWorkflowUserId().getWorkflowId());
-        crit.orderBy("routeHeader.routeHeaderId", true);
-        return new QueryByCriteria(entityManager, crit).toQuery().getResultList();
-
-    }
 
     public Collection<ActionItem> findByWorkflowUserRouteHeaderId(String workflowId, Long routeHeaderId) {
         Criteria crit = new Criteria(ActionItem.class.getName());

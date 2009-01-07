@@ -33,7 +33,6 @@ import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.UserService;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kim.service.IdentityManagementService;
@@ -73,14 +72,6 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         Criteria crit = new Criteria();
         crit.addEqualTo("routeHeaderId", routeHeaderId);
         this.getPersistenceBrokerTemplate().deleteByQuery(new QueryByCriteria(ActionItem.class, crit));
-    }
-
-    public Collection<ActionItem> findByWorkflowUser(WorkflowUser workflowUser) {
-        Criteria crit = new Criteria();
-        crit.addEqualTo("principalId", workflowUser.getWorkflowUserId().getWorkflowId());
-        QueryByCriteria query = new QueryByCriteria(ActionItem.class, crit);
-        query.addOrderByAscending("routeHeader.routeHeaderId");
-        return this.getPersistenceBrokerTemplate().getCollectionByQuery(query);
     }
 
     public Collection<ActionItem> findByWorkflowUserRouteHeaderId(String workflowId, Long routeHeaderId) {

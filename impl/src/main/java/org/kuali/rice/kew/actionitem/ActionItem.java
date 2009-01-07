@@ -42,9 +42,6 @@ import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.RowStyleable;
@@ -139,7 +136,6 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
     		return null;
     	}
     	return KIMServiceLocator.getPersonService().getPerson(workflowId);
-        //return KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(workflowId));
     }
 
     public Person getUser() throws KEWUserNotFoundException {

@@ -59,4 +59,27 @@
 	    <function-signature>void registerEditableProperty(org.kuali.rice.kns.web.struts.pojo.PojoFormBase, java.lang.String)</function-signature>
 	    <example>${kfunc:registerEditableProperty(KualiForm, editablePropertyName)}</example>
 	</function>
+	
+	<function>
+    	<description>Check Fully Unmask Permission.</description>
+    	<name>canFullyUnmaskField</name>
+	    <function-class>org.kuali.rice.kns.util.WebUtils</function-class>
+	    <function-signature>boolean canFullyUnmaskField(java.lang.String, java.lang.String)</function-signature>
+	    <example>${kfunc:canFullyUnmaskField(businessObjectClassName, fieldName)}</example>
+	</function>
+	<function>
+    	<description>Check Partially Unmask Permission.</description>
+    	<name>canPartiallyUnmaskField</name>
+	    <function-class>org.kuali.rice.kns.util.WebUtils</function-class>
+	    <function-signature>boolean canPartiallyUnmaskField(java.lang.String, java.lang.String)</function-signature>
+	    <example>${kfunc:canPartiallyUnmaskField(businessObjectClassName, fieldName)}</example>
+	</function>
+	<function>
+    	<description>Get Display Mask Value</description>
+    	<name>getDisplayMaskValue</name>
+	    <function-class>org.kuali.rice.kns.util.WebUtils</function-class>
+	    <function-signature>java.lang.String getDisplayMaskValue(java.lang.String, java.lang.Object, java.lang.String)</function-signature>
+	    <example>${kfunc:getDisplayMaskValue(literal, kualiForm, propertyName)}</example>
+	</function>
+
 </taglib>

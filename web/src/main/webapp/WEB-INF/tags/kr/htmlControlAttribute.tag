@@ -47,8 +47,23 @@
 <%@ attribute name="forceRequired" required="false" %>
 <%@ attribute name="kimTypeName" required="false" %>
 
-
 <c:set var="sessionDocument" value="${requestScope['sessionDoc']}" />
+<c:if test="${!empty attributeEntry.attributeSecurityMask && attributeEntry.attributeSecurityMask == true  }">
+	<c:set var="className" value ="${attributeEntry.fullClassName}" /> 
+	<c:set var="fieldName" value ="${attributeEntry.name}" />
+	<c:set var="readOnly" value="${kfunc:canFullyUnmaskField(className, fieldName)? 'false' : 'true'}" />
+	<c:set var="literal" value="${attributeEntry.attributeSecurityMaskLiteral}" /> 
+	<c:set var="displayMaskValue" value="${kfunc:getDisplayMaskValue(literal, KualiForm, property)}" />
+</c:if>
+ 
+<c:if test="${!empty attributeEntry.attributeSecurityPartialMask && attributeEntry.attributeSecurityPartialMask == true  }">
+	<c:set var="className" value ="${attributeEntry.fullClassName}" /> 
+	<c:set var="fieldName" value ="${attributeEntry.name}" />
+	<c:set var="readOnly" value="${kfunc:canPartiallyUnmaskField(attributeEntry.fullClassName, attributeEntry.name) ? 'false' : 'true'}"/>
+	<c:set var="literal" value="${attributeEntry.attributeSecurityMaskLiteral}" /> 
+	<c:set var="displayMaskValue" value="${kfunc:getDisplayMaskValue(literal, KualiForm, property)}" />
+</c:if>
+
 
 <%-- Define variable that will hold the Title of the html control --%>
 <c:set var="accessibleTitle" value="${attributeEntry.label}"/>

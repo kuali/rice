@@ -42,8 +42,11 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionServletWrapper;
 import org.apache.struts.upload.MultipartRequestHandler;
 import org.apache.struts.upload.MultipartRequestWrapper;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.datadictionary.DataDictionary;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
+import org.kuali.rice.kns.datadictionary.mask.MaskFormatter;
+import org.kuali.rice.kns.datadictionary.mask.MaskFormatterLiteral;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.exception.FileUploadLimitExceededException;
 import org.kuali.rice.kns.exception.ValidationException;
@@ -52,7 +55,6 @@ import org.kuali.rice.kns.web.struts.action.KualiMultipartRequestHandler;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
-import org.kuali.rice.kns.web.struts.pojo.PojoForm;
 import org.kuali.rice.kns.web.struts.pojo.PojoFormBase;
 
 /**
@@ -431,4 +433,38 @@ public class WebUtils {
     						propertyName.substring(0, propertyName.lastIndexOf(WebUtils.IMAGE_COORDINATE_CLICKED_X_EXTENSION))));
     	return returnVal;
     }
+    
+    public static String getDisplayMaskValue(String literal, Object formObject, String propertyName){
+    	Object propertyValue = ObjectUtils.getPropertyValue(formObject, propertyName);
+    	
+    	MaskFormatterLiteral maskFormatter = new MaskFormatterLiteral();
+    	maskFormatter.setLiteral(literal);
+        String displayMaskValue = maskFormatter.maskValue(propertyValue);
+    	return displayMaskValue;
+    }
+    
+    
+    public static boolean canFullyUnmaskField(String businessObjectClassName, String fieldName) {
+		    Class businessObjClass = null;
+		    try{
+		    	businessObjClass = Class.forName(businessObjectClassName);
+		    	
+		    }catch(Exception e){
+		    	throw new RuntimeException("Unable to create instance of the class: " + businessObjClass.getName());
+		    }
+		    return KNSServiceLocator.getBusinessObjectAuthorizationService().canFullyUnmaskField(GlobalVariables.getUserSession().getPerson(),
+		  			   businessObjClass, fieldName);
+    }
+    
+    public static boolean canPartiallyUnmaskField(String businessObjectClassName, String fieldName) {
+	    Class businessObjClass = null;
+	    try{
+	    	businessObjClass = Class.forName(businessObjectClassName);
+	    	
+	    }catch(Exception e){
+	    	throw new RuntimeException("Unable to create instance of the class: " + businessObjClass.getName());
+	    }
+	    return KNSServiceLocator.getBusinessObjectAuthorizationService().canPartiallyUnmaskField(GlobalVariables.getUserSession().getPerson(),
+	  			   businessObjClass, fieldName);
+}
 }

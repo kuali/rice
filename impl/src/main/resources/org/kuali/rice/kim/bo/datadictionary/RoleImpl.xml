@@ -83,7 +83,7 @@
         p:forceUppercase="true"
         p:label="Role Name"
         p:shortLabel="Role Name"
-        p:maxLength="40"
+        p:maxLength="100"
         p:required="false" >
     <property name="control" >
       <bean parent="TextControlDefinition" p:size="10" />
@@ -100,11 +100,12 @@
         p:maxLength="40"
         p:required="false" >
     <property name="control" >
-      <bean parent="SelectControlDefinition"
+      <bean parent="TextControlDefinition" p:size="10" />
+      <!-- <bean parent="SelectControlDefinition"
             p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.ParameterNamespaceValuesFinder"
             p:includeKeyInLabel="false" 
             p:keyAttribute="code"
-            p:labelAttribute="codeAndDescription" />
+            p:labelAttribute="codeAndDescription" /> -->
     </property>
   </bean>
   
@@ -130,11 +131,7 @@
         p:maxLength="40"
         p:required="false" >
     <property name="control" >
-      <bean parent="SelectControlDefinition"
-            p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.ParameterNamespaceValuesFinder"
-            p:includeKeyInLabel="false" 
-            p:keyAttribute="code"
-            p:labelAttribute="codeAndDescription" />
+      <bean parent="TextControlDefinition" p:size="10" />
     </property>
   </bean>
   
@@ -160,11 +157,7 @@
         p:maxLength="40"
         p:required="false" >
     <property name="control" >
-      <bean parent="SelectControlDefinition"
-            p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.ParameterNamespaceValuesFinder"
-            p:includeKeyInLabel="false" 
-            p:keyAttribute="code"
-            p:labelAttribute="codeAndDescription" />
+      <bean parent="TextControlDefinition" p:size="10" />
     </property>
   </bean>
   
@@ -190,11 +183,7 @@
         p:maxLength="40"
         p:required="false" >
     <property name="control" >
-      <bean parent="SelectControlDefinition"
-            p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.ParameterNamespaceValuesFinder"
-            p:includeKeyInLabel="false" 
-            p:keyAttribute="code"
-            p:labelAttribute="codeAndDescription" />
+      <bean parent="TextControlDefinition" p:size="10" />
     </property>
   </bean>
   
@@ -220,11 +209,7 @@
         p:maxLength="40"
         p:required="false" >
     <property name="control" >
-      <bean parent="SelectControlDefinition"
-            p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.ParameterNamespaceValuesFinder"
-            p:includeKeyInLabel="false" 
-            p:keyAttribute="code"
-            p:labelAttribute="codeAndDescription" />
+      <bean parent="TextControlDefinition" p:size="10" />
     </property>
   </bean>
   
@@ -250,11 +235,7 @@
         p:maxLength="40"
         p:required="false" >
     <property name="control" >
-      <bean parent="SelectControlDefinition"
-            p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.ParameterNamespaceValuesFinder"
-            p:includeKeyInLabel="false" 
-            p:keyAttribute="code"
-            p:labelAttribute="codeAndDescription" />
+      <bean parent="TextControlDefinition" p:size="10" />
     </property>
   </bean>
   

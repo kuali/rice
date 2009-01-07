@@ -23,15 +23,11 @@ import java.util.List;
 
 import org.junit.Test;
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.actionlist.web.ActionListAction.WebFriendlyRecipient;
-import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWHtmlUnitTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.group.KimGroup;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 
 import com.gargoylesoftware.htmlunit.ElementNotFoundException;
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
@@ -190,7 +186,7 @@ public class ActionListActionTest extends KEWHtmlUnitTestCase {
 		}
 
 	}
-	
+
 	private static class Doc {
 		public int index;
 		public Long docId;

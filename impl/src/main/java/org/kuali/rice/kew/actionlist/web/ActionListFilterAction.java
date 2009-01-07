@@ -41,6 +41,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kew.web.KeyValue;
 import org.kuali.rice.kew.web.WorkflowAction;
 import org.kuali.rice.kew.web.session.UserSession;
@@ -133,7 +134,7 @@ public class ActionListFilterAction extends WorkflowAction {
     private List getWebFriendlyRecipients(Collection recipients) {
         Collection newRecipients = new ArrayList(recipients.size());
         for (Iterator iterator = recipients.iterator(); iterator.hasNext();) {
-            newRecipients.add(new WebFriendlyRecipient((Recipient) iterator.next()));
+            newRecipients.add(new WebFriendlyRecipient( iterator.next()));
         }
         List recipientList = new ArrayList(newRecipients);
         Collections.sort(recipientList, new Comparator() {
@@ -145,33 +146,5 @@ public class ActionListFilterAction extends WorkflowAction {
         return recipientList;
     }
 
-    public class WebFriendlyRecipient
-    {
-        private String recipientId;
-        private String displayName;
 
-        public WebFriendlyRecipient(Recipient recipient)
-        {
-	        if (recipient instanceof WorkflowUser)
-	        {
-	            recipientId = ((WorkflowUser)recipient).getWorkflowUserId().getWorkflowId();
-	            displayName = ((WorkflowUser)recipient).getTransposedName();
-	        }
-	        else if (recipient instanceof KimGroupRecipient)
-	        {
-	            recipientId = ((KimGroupRecipient) recipient).getGroup().getGroupId();
-	            displayName = ((KimGroupRecipient) recipient).getGroup().getGroupName();
-	        }
-	    }
-
-        public String getDisplayName()
-        {
-            return displayName;
-        }
-        public String getRecipientId()
-        {
-            return recipientId;
-        }
-
-    }
 }

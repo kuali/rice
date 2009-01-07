@@ -63,6 +63,7 @@ import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kew.web.UrlResolver;
 import org.kuali.rice.kew.web.UserLoginFilter;
 import org.kuali.rice.kew.web.WorkflowAction;
@@ -699,7 +700,7 @@ public class ActionListActionNew extends KualiAction {
     private List getWebFriendlyRecipients(Collection recipients) {
         Collection newRecipients = new ArrayList(recipients.size());
         for (Iterator iterator = recipients.iterator(); iterator.hasNext();) {
-            newRecipients.add(new WebFriendlyRecipient((Recipient) iterator.next()));
+            newRecipients.add(new WebFriendlyRecipient(iterator.next()));
         }
         List recipientList = new ArrayList(newRecipients);
         Collections.sort(recipientList, new Comparator() {
@@ -715,29 +716,6 @@ public class ActionListActionNew extends KualiAction {
 	private UserSession getUserSession(HttpServletRequest request){
 		return UserLoginFilter.getUserSession(request);
 	}
-
-    public class WebFriendlyRecipient {
-        private String displayName;
-        private String recipientId;
-
-        public WebFriendlyRecipient(Recipient recipient) {
-            if (recipient instanceof Workgroup) {
-                recipientId = ((Workgroup) recipient).getWorkflowGroupId().getGroupId().toString();
-                displayName = recipient.getDisplayName();
-            } else if (recipient instanceof WorkflowUser) {
-                recipientId = ((WorkflowUser) recipient).getWorkflowUserId().getWorkflowId();
-                displayName = ((WorkflowUser) recipient).getTransposedName();
-            }
-        }
-
-        public String getRecipientId() {
-            return recipientId;
-        }
-
-        public String getDisplayName() {
-            return displayName;
-        }
-    }
 
     private class ActionItemComparator implements Comparator {
 

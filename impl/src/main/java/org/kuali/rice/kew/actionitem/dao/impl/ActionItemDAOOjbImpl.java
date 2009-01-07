@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.ojb.broker.query.Criteria;
@@ -35,8 +34,8 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
@@ -130,7 +129,8 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         while (iterator.hasNext()) {
             Object[] ids = (Object[]) iterator.next();
             if (ids[0] != null && !delegators.containsKey((String) ids[0])) {
-                delegators.put((String) ids[0], getUserService().getWorkflowUser(new WorkflowUserId((String) ids[0])));
+            	WebFriendlyRecipient rec = new WebFriendlyRecipient(KIMServiceLocator.getPersonService().getPerson((String) ids[0]));
+                delegators.put((String) ids[0], rec);
             } else if (ids[1] != null) {
                 String workgroupId = ids[1].toString();
                 if (!delegators.containsKey(workgroupId)) {
@@ -166,7 +166,8 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         while (iterator.hasNext()) {
             Object[] ids = (Object[]) iterator.next();
             if (ids[0] != null && !delegators.containsKey((String) ids[0])) {
-                delegators.put((String) ids[0], getUserService().getWorkflowUser(new WorkflowUserId((String) ids[0])));
+            	WebFriendlyRecipient rec = new WebFriendlyRecipient(KIMServiceLocator.getPersonService().getPerson((String) ids[0]));
+                delegators.put((String) ids[0],rec);
             }
         }
         return delegators.values();

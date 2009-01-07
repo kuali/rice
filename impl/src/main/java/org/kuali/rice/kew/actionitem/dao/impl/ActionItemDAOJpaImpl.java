@@ -33,8 +33,8 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kew.workgroup.WorkflowGroupId;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
 import org.kuali.rice.kim.service.GroupService;
@@ -146,11 +146,11 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
         Map<Object, Recipient> delegators = new HashMap<Object, Recipient>();
 
         for(Object actionItem:new QueryByCriteria(entityManager, criteria).toQuery().getResultList()){
-        	String delegatorWorkflowId = ((ActionItem)actionItem).getDelegatorWorkflowId();
+        	final String delegatorWorkflowId = ((ActionItem)actionItem).getDelegatorWorkflowId();
         	String delegatorGroupId = ((ActionItem)actionItem).getDelegatorGroupId();
 
         	if (delegatorWorkflowId != null && !delegators.containsKey(delegatorWorkflowId)) {
-                delegators.put(delegatorWorkflowId, getUserService().getWorkflowUser(new WorkflowUserId(delegatorWorkflowId)));
+                delegators.put(delegatorWorkflowId,new WebFriendlyRecipient(KIMServiceLocator.getPersonService().getPerson(delegatorWorkflowId)));
             }else if (delegatorGroupId != null) {
                 if (!delegators.containsKey(delegatorGroupId)) {
                     delegators.put(delegatorGroupId, getWorkgroupService().getWorkgroup(new WorkflowGroupId(new Long(delegatorGroupId))));
@@ -182,7 +182,7 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
         for(Object actionItem:new QueryByCriteria(entityManager, criteria).toQuery().getResultList()){
         	String princlId = ((ActionItem)actionItem).getPrincipalId();
             if (princlId != null && !delegators.containsKey(princlId)) {
-                delegators.put(princlId, getUserService().getWorkflowUser(new WorkflowUserId(princlId)));
+                delegators.put(princlId, new WebFriendlyRecipient(KIMServiceLocator.getPersonService().getPerson(princlId)));
             }
         }
 

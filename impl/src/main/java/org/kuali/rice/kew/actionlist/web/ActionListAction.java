@@ -64,10 +64,12 @@ import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kew.web.WorkflowAction;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
@@ -663,10 +665,10 @@ public class ActionListAction extends WorkflowAction {
         return null;
     }
 
-    private List getWebFriendlyRecipients(Collection recipients) {
+    private List<WebFriendlyRecipient> getWebFriendlyRecipients(Collection recipients) {
         Collection newRecipients = new ArrayList(recipients.size());
         for (Iterator iterator = recipients.iterator(); iterator.hasNext();) {
-            newRecipients.add(new WebFriendlyRecipient((Recipient) iterator.next()));
+            newRecipients.add(new WebFriendlyRecipient(iterator.next()));
         }
         List recipientList = new ArrayList(newRecipients);
         Collections.sort(recipientList, new Comparator() {
@@ -679,33 +681,6 @@ public class ActionListAction extends WorkflowAction {
         return recipientList;
     }
 
-    public class WebFriendlyRecipient
-    {
-        private String displayName;
-        private String recipientId;
-
-        public WebFriendlyRecipient(Recipient recipient) {
-            if (recipient instanceof WorkflowUser)
-            {
-                recipientId = ((WorkflowUser) recipient).getWorkflowUserId().getWorkflowId();
-                displayName = ((WorkflowUser) recipient).getTransposedName();
-            }
-            else if (recipient instanceof KimGroupRecipient)
-            {
-                recipientId = ((KimGroupRecipient) recipient).getGroup().getGroupId();
-                displayName = ((KimGroupRecipient) recipient).getDisplayName();
-            }
-
-        }
-
-        public String getRecipientId() {
-            return recipientId;
-        }
-
-        public String getDisplayName() {
-            return displayName;
-        }
-    }
 
     private class ActionItemComparator implements Comparator {
 

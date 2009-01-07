@@ -45,6 +45,8 @@ import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.WebFriendlyRecipient;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -413,8 +415,9 @@ public class ActionListTest extends KEWTestCase {
      * Tests that the retrieval of primary and secondary delegation users is working correctly
      */
     @Test public void testGettingDelegationUsers() throws Exception {
-        WorkflowUser jhopf = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("jhopf"));
-    	WorkflowUser bmcgough = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("bmcgough"));
+
+        Person jhopf = KIMServiceLocator.getPersonService().getPersonByPrincipalName("jhopf");
+        Person bmcgough = KIMServiceLocator.getPersonService().getPersonByPrincipalName("bmcgough");
     	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("jhopf"), "ActionListDocumentType");
     	document.routeDocument("");
         document = new WorkflowDocument(new NetworkIdDTO("jhopf"), "ActionListDocumentType_PrimaryDelegate");
@@ -422,22 +425,23 @@ public class ActionListTest extends KEWTestCase {
         document = new WorkflowDocument(new NetworkIdDTO("jhopf"), "ActionListDocumentType_PrimaryDelegate2");
         document.routeDocument("");
 
-        Collection<Recipient> recipients = getActionListService().findUserPrimaryDelegations(jhopf.getWorkflowId());
+        Collection<Recipient> recipients = getActionListService().findUserPrimaryDelegations(jhopf.getPrincipalId());
         assertEquals("Wrong size of users who were delegated to via Primary Delegation", 0, recipients.size());
-    	recipients = getActionListService().findUserPrimaryDelegations(bmcgough.getWorkflowId());
+    	recipients = getActionListService().findUserPrimaryDelegations(bmcgough.getPrincipalId());
     	assertEquals("Wrong size of users who were delegated to via Primary Delegation", 3, recipients.size());
-    	String user1 = "rkirkend";
-        String user2 = "temay";
-        String user3 = "delyea";
+    	String user1 = KIMServiceLocator.getPersonService().getPersonByPrincipalName("rkirkend").getPrincipalId();
+    	String user2 = KIMServiceLocator.getPersonService().getPersonByPrincipalName("temay").getPrincipalId();
+    	String user3 = KIMServiceLocator.getPersonService().getPersonByPrincipalName("delyea").getPrincipalId();
+
     	boolean foundUser1 = false;
         boolean foundUser2 = false;
         boolean foundUser3 = false;
     	for (Recipient recipient : recipients) {
-            if (user1.equals(((WorkflowUser)recipient).getAuthenticationUserId().getAuthenticationId())) {
+            if (user1.equals(((WebFriendlyRecipient)recipient).getRecipientId())) {
                 foundUser1 = true;
-            } else if (user2.equals(((WorkflowUser)recipient).getAuthenticationUserId().getAuthenticationId())) {
+            } else if (user2.equals(((WebFriendlyRecipient)recipient).getRecipientId())) {
                 foundUser2 = true;
-            } else if (user3.equals(((WorkflowUser)recipient).getAuthenticationUserId().getAuthenticationId())) {
+            } else if (user3.equals(((WebFriendlyRecipient)recipient).getRecipientId())) {
                 foundUser3 = true;
             } else {
                 fail("Found invalid recipient in list with display name '" + recipient.getDisplayName() + "'");
@@ -447,7 +451,7 @@ public class ActionListTest extends KEWTestCase {
         assertTrue("Should have found user " + user2, foundUser2);
         assertTrue("Should have found user " + user3, foundUser3);
 
-    	recipients = getActionListService().findUserSecondaryDelegators(bmcgough.getWorkflowId());
+    	recipients = getActionListService().findUserSecondaryDelegators(bmcgough.getPrincipalId());
     	assertEquals("Wrong size of users who were have delegated to given user via Secondary Delegation", 1, recipients.size());
     	assertEquals("Wrong employee id of primary delegate", "bmcgough", ((WorkflowUser)recipients.iterator().next()).getAuthenticationUserId().getAuthenticationId());
     }

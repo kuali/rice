@@ -50,25 +50,18 @@ import org.kuali.rice.kew.actionlist.ActionToTake;
 import org.kuali.rice.kew.actionlist.CustomActionListAttribute;
 import org.kuali.rice.kew.actionlist.PaginatedActionList;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
-import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actions.ActionSet;
 import org.kuali.rice.kew.actions.asyncservices.ActionInvocation;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtension;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.AuthenticationUserId;
-import org.kuali.rice.kew.user.Recipient;
-import org.kuali.rice.kew.user.UserService;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kew.web.WorkflowAction;
 import org.kuali.rice.kew.web.session.UserSession;
-import org.kuali.rice.kew.workgroup.GroupNameId;
-import org.kuali.rice.kew.workgroup.WorkgroupService;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -140,7 +133,7 @@ public class ActionListAction extends WorkflowAction {
         plog.log("Time to initialize");
         try {
             UserSession uSession = getUserSession(request);
-            WorkflowUser workflowUser = null;
+            String principalId = null;
             if (uSession.getActionListFilter() == null) {
                 ActionListFilter filter = new ActionListFilter();
                 filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
@@ -155,14 +148,14 @@ public class ActionListAction extends WorkflowAction {
              */
             boolean forceListRefresh = request.getSession().getAttribute(REQUERY_ACTION_LIST_KEY) != null;
             if (uSession.getHelpDeskActionListUser() != null) {
-                workflowUser = uSession.getHelpDeskActionListUser();
+            	principalId = uSession.getHelpDeskActionListUser().getPrincipalId();
             } else {
                 if (!StringUtils.isEmpty(form.getDocType())) {
                     uSession.getActionListFilter().setDocumentType(form.getDocType());
                     uSession.getActionListFilter().setExcludeDocumentType(false);
                     forceListRefresh = true;
                 }
-                workflowUser = uSession.getWorkflowUser();
+                principalId = uSession.getPerson().getPrincipalId();
             }
 
             Preferences preferences = getUserSession(request).getPreferences();
@@ -179,25 +172,25 @@ public class ActionListAction extends WorkflowAction {
             }
 
             // if the user has changed, we need to refresh the action list
-            if (!workflowUser.getWorkflowId().equals((String) request.getSession().getAttribute(ACTION_LIST_USER_KEY))) {
+            if (!principalId.equals((String) request.getSession().getAttribute(ACTION_LIST_USER_KEY))) {
                 actionList = null;
             }
 
             if (isOutboxMode(form, request, preferences)) {
-        	actionList = new ArrayList(actionListSrv.getOutbox(workflowUser.getWorkflowId(), uSession.getActionListFilter()));
+        	actionList = new ArrayList(actionListSrv.getOutbox(principalId, uSession.getActionListFilter()));
         	form.setOutBoxEmpty(actionList.isEmpty());
             } else {
                 if (actionList == null) {
                 	// fetch the action list
-                    actionList = new ArrayList(actionListSrv.getActionList(workflowUser.getWorkflowId(), uSession.getActionListFilter()));
-                    request.getSession().setAttribute(ACTION_LIST_USER_KEY, workflowUser.getWorkflowId());
+                    actionList = new ArrayList(actionListSrv.getActionList(principalId, uSession.getActionListFilter()));
+                    request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
             } else if (forceListRefresh) {
                 // force a refresh... usually based on filter change or parameter specifying refresh needed
-                    actionList = new ArrayList(actionListSrv.getActionList(workflowUser.getWorkflowId(), uSession.getActionListFilter()));
-                    request.getSession().setAttribute(ACTION_LIST_USER_KEY, workflowUser.getWorkflowId());
+                    actionList = new ArrayList(actionListSrv.getActionList(principalId, uSession.getActionListFilter()));
+                    request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
             } else if (actionListSrv.refreshActionList(getUserSession(request).getPerson().getPrincipalId())) {
-                    actionList = new ArrayList(actionListSrv.getActionList(workflowUser.getWorkflowId(), uSession.getActionListFilter()));
-                    request.getSession().setAttribute(ACTION_LIST_USER_KEY, workflowUser.getWorkflowId());
+                    actionList = new ArrayList(actionListSrv.getActionList(principalId, uSession.getActionListFilter()));
+                    request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
                 } else {
                 	freshActionList = false;
                 }
@@ -208,10 +201,10 @@ public class ActionListAction extends WorkflowAction {
 
             // build the drop-down of delegators
             if (KEWConstants.DELEGATORS_ON_ACTION_LIST_PAGE.equalsIgnoreCase(preferences.getDelegatorFilter())) {
-                Collection delegators = actionListSrv.findUserSecondaryDelegators(workflowUser.getWorkflowId());
+                Collection delegators = actionListSrv.findUserSecondaryDelegators(principalId);
                 form.setDelegators(getWebFriendlyRecipients(delegators));
                 form.setDelegationId(uSession.getActionListFilter().getDelegatorId());
-                Collection delegates = actionListSrv.findUserPrimaryDelegations(workflowUser.getWorkflowId());
+                Collection delegates = actionListSrv.findUserPrimaryDelegations(principalId);
                 form.setPrimaryDelegates(getWebFriendlyRecipients(delegates));
                 form.setPrimaryDelegateId(uSession.getActionListFilter().getDelegatorId());
             }
@@ -282,7 +275,7 @@ public class ActionListAction extends WorkflowAction {
 
 	boolean outBoxView = false;
 
-	WorkflowUser user = UserSession.getAuthenticatedUser().getWorkflowUser();
+	Person user = UserSession.getAuthenticatedUser().getPerson();
 
 	if (! preferences.isUsingOutbox() || ! ConfigContext.getCurrentContextConfig().getOutBoxOn()) {
 	    request.getSession().setAttribute(OUT_BOX_MODE, new Boolean(false));
@@ -551,8 +544,7 @@ public class ActionListAction extends WorkflowAction {
 
     public ActionForward helpDeskActionListLogin(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         ActionListForm actionListForm = (ActionListForm) form;
-        UserService userSrv = (UserService) KEWServiceLocator.getUserService();
-        WorkflowUser helpDeskActionListUser = userSrv.getWorkflowUser(new AuthenticationUserId(actionListForm.getHelpDeskActionListUserName()));
+        Person helpDeskActionListUser = KIMServiceLocator.getPersonService().getPersonByPrincipalName(actionListForm.getHelpDeskActionListUserName());
         getUserSession(request).setHelpDeskActionListUser(helpDeskActionListUser);
         actionListForm.setDelegator(null);
         request.getSession().setAttribute(REQUERY_ACTION_LIST_KEY, "true");
@@ -659,7 +651,7 @@ public class ActionListAction extends WorkflowAction {
         LOG.debug("establishFinalState ActionListAction");
         ActionListForm actionListForm = (ActionListForm) form;
         if (getUserSession(request).getHelpDeskActionListUser() != null) {
-            actionListForm.setHelpDeskActionListUserName(getUserSession(request).getHelpDeskActionListUser().getAuthenticationUserId().getAuthenticationId());
+            actionListForm.setHelpDeskActionListUserName(getUserSession(request).getHelpDeskActionListUser().getPrincipalName());
         }
         LOG.debug("end establishFinalState ActionListAction");
         return null;

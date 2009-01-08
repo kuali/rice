@@ -33,13 +33,10 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
-import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.preferences.service.PreferencesService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.Recipient;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kew.web.KeyValue;
@@ -97,9 +94,9 @@ public class ActionListFilterAction extends WorkflowAction {
 
     public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
         ActionListFilterForm filterForm = (ActionListFilterForm) form;
-        filterForm.setUserWorkgroups(getUserWorkgroupsDropDownList(getUserSession(request).getWorkflowUser()));
+        filterForm.setUserWorkgroups(getUserWorkgroupsDropDownList(getUserSession(request).getPerson().getPrincipalId()));
         PreferencesService prefSrv = (PreferencesService) KEWServiceLocator.getPreferencesService();
-        Preferences preferences = prefSrv.getPreferences(getUserSession(request).getWorkflowUser().getWorkflowUserId().getId());
+        Preferences preferences = prefSrv.getPreferences(getUserSession(request).getPerson().getPrincipalId());
         request.setAttribute("preferences", preferences);
         ActionListService actionListSrv = (ActionListService) KEWServiceLocator.getActionListService();
         request.setAttribute("delegators", getWebFriendlyRecipients(actionListSrv.findUserSecondaryDelegators(getUserSession(request).getPrincipal().getPrincipalId())));
@@ -110,9 +107,9 @@ public class ActionListFilterAction extends WorkflowAction {
         return null;
     }
 
-    private List getUserWorkgroupsDropDownList(WorkflowUser user) throws KEWUserNotFoundException {
+    private List getUserWorkgroupsDropDownList(String principalId) throws KEWUserNotFoundException {
     	List<String> userWorkgroups =
-            KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(user.getWorkflowId());
+            KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
         List<KeyValue> sortedUserWorkgroups = new ArrayList();
         KeyValue keyValue = null;
         keyValue = new KeyValue(KEWConstants.NO_FILTERING, KEWConstants.NO_FILTERING);

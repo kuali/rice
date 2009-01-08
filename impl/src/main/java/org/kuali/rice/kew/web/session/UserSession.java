@@ -60,7 +60,7 @@ public class UserSession implements Serializable {
     private UserId backdoorId;
     private WorkflowUser workflowUser;
     private WorkflowUser backdoorWorkflowUser;
-    private WorkflowUser helpDeskActionListUser;
+    private Person helpDeskActionListUser;
     private int nextObjectKey;
     private transient Map objectMap = new HashMap();
     private ActionListFilter actionListFilter;
@@ -131,16 +131,15 @@ public class UserSession implements Serializable {
     	return value;
     }
 
-    @Deprecated
-    public WorkflowUser getHelpDeskActionListUser() {
+    public Person getHelpDeskActionListUser() {
         return helpDeskActionListUser;
     }
 
     public Person getHelpDeskActionListPerson() {
-    	return convertToPerson(getHelpDeskActionListUser());
+    	return getHelpDeskActionListUser();
     }
 
-    public void setHelpDeskActionListUser(WorkflowUser helpDeskActionListUser) {
+    public void setHelpDeskActionListUser(Person helpDeskActionListUser) {
         this.helpDeskActionListUser = helpDeskActionListUser;
     }
 

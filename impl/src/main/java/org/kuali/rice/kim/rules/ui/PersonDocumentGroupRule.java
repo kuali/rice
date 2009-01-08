@@ -42,30 +42,30 @@ public class PersonDocumentGroupRule extends DocumentRuleBase implements AddGrou
 		IdentityManagementPersonDocument document = (IdentityManagementPersonDocument)addGroupEvent.getDocument();
 		PersonDocumentGroup newGroup = addGroupEvent.getGroup();
 	    boolean rulePassed = true;
-	    String errorPath = NEW_GROUP;
+	    String errorPath = NEW_GROUP+".groupId";
         ErrorMap errorMap = GlobalVariables.getErrorMap();
-    	List<String> groupIds = KIMServiceLocator.getUiDocumentService().getPopulatableGroupIds();
+//    	List<String> groupIds = KIMServiceLocator.getUiDocumentService().getPopulatableGroupIds();
 
         if (newGroup == null || StringUtils.isBlank(newGroup.getGroupId())) {
             rulePassed = false;
-            errorMap.putError(errorPath+".groupId", RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Group"});
+            errorMap.putError(errorPath, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Group"});
         	
         } else {
 		    for (PersonDocumentGroup group : document.getGroups()) {
 		    	if (group.getGroupId().equals(newGroup.getGroupId())) {
 		            rulePassed = false;
-		            errorMap.putError(errorPath+".groupId", RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Group"});
+		            errorMap.putError(errorPath, RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Group"});
 		    		
 		    	}
 		    }
         }
         
-        if (rulePassed) {
-        	if (groupIds.isEmpty() || !groupIds.contains(newGroup.getGroupId())) {
-                errorMap.putError(errorPath+".groupId", RiceKeyConstants.ERROR_POPULATE_GROUP, new String[] {newGroup.getGroupId()});
-                rulePassed = false;
-        	}   
-        }
+//        if (rulePassed) {
+//        	if (groupIds.isEmpty() || !groupIds.contains(newGroup.getGroupId())) {
+//                errorMap.putError(errorPath+".groupId", RiceKeyConstants.ERROR_POPULATE_GROUP, new String[] {newGroup.getGroupId()});
+//                rulePassed = false;
+//        	}   
+//        }
         // check it before save ??
         //rulePassed &= validateActiveDate(newGroup.getActiveFromDate(), newGroup.getActiveToDate());
 		return rulePassed;

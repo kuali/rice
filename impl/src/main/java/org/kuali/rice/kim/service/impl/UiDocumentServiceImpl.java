@@ -229,63 +229,6 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 	}
 	
-	public List<String> getAssignableRoleIds() {
-		Person user = GlobalVariables.getUserSession().getPerson();
-		AttributeSet qualification = new AttributeSet();
-		qualification.put("principalId", user.getPrincipalId());
-		List<? extends KimPermission> assignRolePerms = KIMServiceLocator.getPermissionService().getAuthorizedPermissionsByTemplateName(user.getPrincipalId(), "KR-IDM", "Assign Role", null, qualification);
-		List<String> roleIds = new ArrayList<String> ();
-		if (!assignRolePerms.isEmpty()) {
-        	for (KimPermission perm : assignRolePerms) {
-                Map crit = new HashMap();
-                // in some perms namespaceCode = 'KR*' and no rolename attr data
-                crit.put("namespaceCode", "*");
-                crit.put("roleName", "*");
-        		for (Map.Entry<String, String> entry : perm.getDetails().entrySet()) {
-        			if (entry.getKey().equals("namespaceCode")) {
-                        crit.put("namespaceCode", entry.getValue());
-        			} else if (entry.getKey().equals("roleName")) {
-                        crit.put("roleName", entry.getValue());
-        			}        			
-        		}
-        		for (KimRoleImpl role : (List<KimRoleImpl>)KIMServiceLocator.getRoleService().getRolesSearchResults(crit)) {
-        			if (!roleIds.contains(role.getRoleId())) {
-        				roleIds.add(role.getRoleId());
-        			}
-        		}
-        	}
-        }
-        return roleIds;
-	}
-	
-	public List<String> getPopulatableGroupIds() {
-		Person user = GlobalVariables.getUserSession().getPerson();
-		AttributeSet qualification = new AttributeSet();
-		qualification.put("principalId", user.getPrincipalId());
-		List<? extends KimPermission> populateGroups = KIMServiceLocator.getPermissionService().getAuthorizedPermissionsByTemplateName(user.getPrincipalId(), "KR-IDM", "Populate Group", null, qualification);
-		List<String> groupIds = new ArrayList<String> ();
-		if (!populateGroups.isEmpty()) {
-        	for (KimPermission perm : populateGroups) {
-                Map crit = new HashMap();
-                // in some perms namespaceCode = 'KR*' and no rolename attr data
-                crit.put("namespaceCode", "*");
-                crit.put("groupName", "*");
-        		for (Map.Entry<String, String> entry : perm.getDetails().entrySet()) {
-        			if (entry.getKey().equals("namespaceCode")) {
-                        crit.put("namespaceCode", entry.getValue());
-        			} else if (entry.getKey().equals("groupName")) {
-                        crit.put("groupName", entry.getValue());
-        			}        			
-        		}
-        		for (KimGroupImpl group : (List<KimGroupImpl>)groupDao.getGroups(crit)) {
-        			if (!groupIds.contains(group.getGroupId())) {
-        				groupIds.add(group.getGroupId());
-        			}
-        		}
-        	}
-        }
-        return groupIds;
-	}
 	
 	/**
 	 * 

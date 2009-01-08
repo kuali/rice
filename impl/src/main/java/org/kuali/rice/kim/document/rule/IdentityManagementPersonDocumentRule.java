@@ -19,6 +19,7 @@ import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
@@ -31,6 +32,7 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentGroup;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRolePrncpl;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
+import org.kuali.rice.kim.document.authorization.IdentityManagementPersonDocumentAuthorizer;
 import org.kuali.rice.kim.rule.event.ui.AddGroupEvent;
 import org.kuali.rice.kim.rule.event.ui.AddRoleEvent;
 import org.kuali.rice.kim.rule.ui.AddGroupRule;
@@ -75,7 +77,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
         valid &= checkMultipleDefault (personDoc.getEmails(), "emails");
         valid &= checkPeimaryEmploymentInfo (personDoc.getAffiliations());
         // kimtypeservice.validateAttributes is not working yet.
-        //valid &= validateRoleQualifier (personDoc.getRoles());
+        valid &= validateRoleQualifier (personDoc.getRoles());
         if (StringUtils.isNotBlank(personDoc.getPrincipalName())) { 
         	valid &= isPrincipalNameExist (personDoc.getPrincipalName(), personDoc.getPrincipalId());
         }
@@ -83,6 +85,11 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
         valid &= validActiveDatesForRole (personDoc.getRoles());
         valid &= validActiveDatesForGroup (personDoc.getGroups());
 
+
+        // all failed at this point.
+//        valid &= checkUnassignableRoles(personDoc);
+//        valid &= checkUnpopulatableGroups(personDoc);
+        
         GlobalVariables.getErrorMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
 
         return valid;
@@ -138,7 +145,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	boolean valid = true;
     	KimPrincipal principal = KIMServiceLocator.getIdentityService().getPrincipalByPrincipalName(principalName);
     	if (principal != null && (StringUtils.isBlank(principalId) || !principal.getPrincipalId().equals(principalId))) {
-            errorMap.putError("document.principalName",RiceKeyConstants.ERROR_EXIST_PRINCIPAL_NAME, principalName);
+            errorMap.putError("principalName",RiceKeyConstants.ERROR_EXIST_PRINCIPAL_NAME, principalName);
 			valid = false;
     	}
     	return valid;
@@ -202,7 +209,47 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 		}
 		return valid;
 	}
-
+	
+	private boolean checkUnassignableRoles(IdentityManagementPersonDocument document) {
+		boolean valid = true;
+    	IdentityManagementPersonDocumentAuthorizer authorizer = new IdentityManagementPersonDocumentAuthorizer();
+    	Map<String,Set<String>> unassignableRoles = authorizer.getUnassignableRoles(document, GlobalVariables.getUserSession().getPerson());
+        ErrorMap errorMap = GlobalVariables.getErrorMap();
+        for (String namespaceCode : unassignableRoles.keySet()) {
+        	for (String roleName : unassignableRoles.get(namespaceCode)) {
+        		int i = 0;
+        		for (PersonDocumentRole role : document.getRoles()) {
+        			if (namespaceCode.endsWith(role.getNamespaceCode()) && roleName.equals(role.getRoleName())) {
+        	            errorMap.putError("roles["+i+"].roleId", RiceKeyConstants.ERROR_ASSIGN_ROLE, new String[] {namespaceCode, roleName});
+        			}
+        			i++;
+        		}
+        	}
+        	valid = false;
+        }
+        return valid;
+	}
+	
+	private boolean checkUnpopulatableGroups(IdentityManagementPersonDocument document) {
+		boolean valid = true;
+    	IdentityManagementPersonDocumentAuthorizer authorizer = new IdentityManagementPersonDocumentAuthorizer();
+    	Map<String,Set<String>> unpopulatableGroups = authorizer.getUnpopulateableGroups(document, GlobalVariables.getUserSession().getPerson());
+        ErrorMap errorMap = GlobalVariables.getErrorMap();
+        for (String namespaceCode : unpopulatableGroups.keySet()) {
+        	for (String groupName : unpopulatableGroups.get(namespaceCode)) {
+        		int i = 0;
+        		for (PersonDocumentGroup group : document.getGroups()) {
+        			if (namespaceCode.endsWith(group.getNamespaceCode()) && groupName.equals(group.getGroupName())) {
+        	            errorMap.putError("groups["+i+"].groupId", RiceKeyConstants.ERROR_POPULATE_GROUP, new String[] {namespaceCode, groupName});
+        			}
+        			i++;
+        		}
+        	}
+        	valid = false;
+        }
+        return valid;
+	}
+	
     public boolean processAddGroup(AddGroupEvent addGroupEvent) {
         return new PersonDocumentGroupRule().processAddGroup(addGroupEvent);    
     }

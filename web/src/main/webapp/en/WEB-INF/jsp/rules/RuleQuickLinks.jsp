@@ -10,82 +10,119 @@
 <script language="JavaScript" src="scripts/rule-common.js"></script>
 <kul:page headerTitle="Rule QuickLinks" transactionalDocument="false"
 	showDocumentInfo="false" htmlFormAction="RuleQuickLinks" docTitle="Rule QuickLinks">
+	<table width="100%" border=0 cellpadding=0 cellspacing=0 class="headercell1">
+	<tr>
+    	<td><img src="images/wf-logo.gif" alt="Workflow" width=150 height=21 hspace=5 vspace=5>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+	    <td width="90%">&nbsp;</td>
+  </tr>
+</table>
+<br>
+<table width="95%" align="center">
+	<tr>
+		<td height="30"><strong>Rule QuickLinks</strong></td>
+	</tr>
+</table>
+
+<table width="95%" border=0 cellspacing=0 cellpadding=0 align="center">
 	<c:forEach var="documentTypeStruct" items="${KualiForm.documentTypeQuickLinksStructures}" varStatus="docStatus">
 	<c:if test="${documentTypeStruct.shouldDisplay}">
 		<c:set var="documentType" value="${documentTypeStruct.documentType}" />
-		  <kul:tabTop tabTitle="Document Type ID : ${documentType.documentTypeId}" defaultOpen="true" >              		
-           <div class="tab-container" align=center>
-           <table width="100%" border=0 cellpadding=0 cellspacing=0
-			class="datatable">
-			<tr>
-				<kul:htmlAttributeHeaderCell scope="col" align="left"  literalLabel="Document Type">
-					</kul:htmlAttributeHeaderCell>
-				<td width="25%" class="datacell"><a
-					href="<c:url value="DocumentType.do">
-					<c:param name="docTypeId" value="${documentType.documentTypeId}" />
-					<c:param name="methodToCall" value="report"/>
-					</c:url>"><c:out value="${documentType.label}" /></a>&nbsp; &nbsp;</td>				
-			</tr>
-			<tr>
-				<kul:htmlAttributeHeaderCell scope="col" align="left" literalLabel="Document Name">
-				</kul:htmlAttributeHeaderCell>
-				<td class="datacell" colspan="3"><c:out	value="${documentType.name}" />&nbsp;</td>
-			</tr>			
-			<tr>
-              	<td colspan=4>
-               		<c:choose>
-               			<c:when test="${renderOpened}">
-			                 	<a href="<c:url value="DocumentType.do">
-								<c:param name="docTypeId" value="${documentType.documentTypeId}" />
-								<c:param name="methodToCall" value="report"/>
-								</c:url>">
-								<kul:htmlAttributeHeaderCell scope="col" align="left">
-									<bean-el:message key="${documentType.label}" />
-								</kul:htmlAttributeHeaderCell>
-						</c:when>
-						<c:otherwise>
+		<tr>
+			<c:choose>
+				<c:when test="${docStatus.count == 1}">
+					<td width=12><img src="images/tab-topleft.gif" alt="" width=12 height=29></td>
+				</c:when>
+				<c:otherwise>
+					<td width=12><img src="images/tab-topleft1.gif" alt="" width=12 height=27></td>
+				</c:otherwise>
+			</c:choose>
+            <td width=200 nowrap background="images/tab-back.gif">
+              <table width="100%" border=0 cellspacing=0 cellpadding=0>
+                <tr>
+                	<td width=8 class="bordercell-left"><img src="images/pixel_clear.gif" alt="" width=8 height=8></td>						
+                	<td nowrap>
+                		<c:choose>
+                			<c:when test="${renderOpened}">
+			                  	<a id="A<c:out value="${docStatus.count}" />" onclick="rend(this, false)">
+			                         <img src="images/tinybutton-hide.gif" alt="show" width=45 height=15 border=0
+			                         align=absmiddle id="F<c:out value="${docStatus.count}" />"></a>
+			                      &nbsp;
 								<a href="<c:url value="DocumentType.do">
 								<c:param name="docTypeId" value="${documentType.documentTypeId}" />
 								<c:param name="methodToCall" value="report"/>
 								</c:url>"><c:out value="${documentType.label}" />
-						</c:otherwise>
-					</c:choose>
+							</c:when>
+							<c:otherwise>
+								<a id="A<c:out value="${docStatus.count}" />" onclick="rend(this, false)">
+			                         <img src="images/tinybutton-show.gif" alt="show" width=45 height=15 border=0
+			                         align=absmiddle id="F<c:out value="${docStatus.count}" />"></a>
+			                      &nbsp;
+								<a href="<c:url value="DocumentType.do">
+								<c:param name="docTypeId" value="${documentType.documentTypeId}" />
+								<c:param name="methodToCall" value="report"/>
+								</c:url>"><c:out value="${documentType.label}" />
+							</c:otherwise>
+						</c:choose>
 					</a>&nbsp;
-				</td>
-              </tr>             
-        <c:choose>
-			<c:when test="${renderOpened}">
-				<tr id="G<c:out value="${docStatus.count}" />"> 
-					<kul:htmlAttributeHeaderCell scope="col" align="left"  literalLabel="Document Type">
-					</kul:htmlAttributeHeaderCell>
-					<td width="25%" class="datacell"><a	href="<c:url value="DocumentType.do">
-					<c:param name="docTypeId" value="${documentType.documentTypeId}" />
-					<c:param name="methodToCall" value="report"/>
-					</c:url>"><c:out value="${documentType.label}" /></a>&nbsp; &nbsp;</td>				
-					<td colspan="4" style="border-style: solid; border-width: thin; ">
-								<c:set var="documentTypeStruct" value="${documentTypeStruct}" scope="request"/>
-								<c:set var="excludeDocId" value="${documentType.documentTypeId}" scope="request" />
-								<c:import url="RuleQuickLinksDocumentTypeLinks.jsp" />
 					</td>
-				</tr>
-			</c:when>
-			<c:otherwise>
-				<tr id="G<c:out value="${docStatus.count}" />" style="display:none">
-					<td  colspan=4>
-						<kul:tabTop	tabTitle="Document Type ID : ${documentType.documentTypeId}" defaultOpen="true">
+                </tr>
+              </table>
+            </td>
+			<c:choose>
+				<c:when test="${docStatus.count == 1}">
+        		    <td width=15><img src="images/tab-bevel.gif" alt="" width=15 height=29></td>
+					<td width="95%" align=right valign=top background="images/tab-rightback.gif"><img src="images/tab-topright.gif" alt="" width=12 height=29 align=top></td>
+				</c:when>
+				<c:otherwise>
+		            <td width=15><img src="images/tab-bevel1.gif" alt="" width=15 height=27></td>
+		            <td width="95%" align=right background="images/tab-rightback1.gif"><img src="images/tab-topright1.gif" alt="" width=12 height=27></td>
+				</c:otherwise>
+			</c:choose>
+		</tr>
+		<c:choose>
+			<c:when test="${renderOpened}">
+				<tr id="G<c:out value="${docStatus.count}" />">
+					<td colspan=4>
+						<table width=100% cellspacing=0 cellpadding=0>
+							<td width=8 class="bordercell-left"><img src="images/pixel_clear.gif" alt="" width=8 height=8></td>
 							<td colspan="4" style="border-style: solid; border-width: thin; ">
 								<c:set var="documentTypeStruct" value="${documentTypeStruct}" scope="request"/>
 								<c:set var="excludeDocId" value="${documentType.documentTypeId}" scope="request" />
 								<c:import url="RuleQuickLinksDocumentTypeLinks.jsp" />
 							</td>		                    
-						</kul:tabTop>
+						</table>
+					</td>
+				</tr>
+			</c:when>
+			<c:otherwise>
+				<tr id="G<c:out value="${docStatus.count}" />" style="display:none">
+					<td colspan=4>
+						<table width=100% cellspacing=0 cellpadding=0>
+							<td width=8 class="bordercell-left"><img src="images/pixel_clear.gif" alt="" width=8 height=8></td>
+							<td colspan="4" style="border-style: solid; border-width: thin; ">
+								<c:set var="documentTypeStruct" value="${documentTypeStruct}" scope="request"/>
+								<c:set var="excludeDocId" value="${documentType.documentTypeId}" scope="request" />
+								<c:import url="RuleQuickLinksDocumentTypeLinks.jsp" />
+							</td>		                    
+						</table>
 					</td>
 				</tr>
 			</c:otherwise>
-		</c:choose>
-  </div>
-  </table>
-     </kul:tabTop>		
+		</c:choose>		
 	</c:if>
 	</c:forEach>
+	<tr>
+		<td colspan=4>			
+				<%-- Page Footer --%>
+		        <table width="100%" border=0 cellpadding=0 cellspacing=0 background="images/tabfoot-back.gif">
+		          <tr>
+		            <td><img src="images/tabfoot-left.gif" alt="" width=12 height=14></td>
+		            <td>&nbsp;</td>
+		            <td align=right><img src="images/tabfoot-right.gif" alt="" width=12 height=14></td>
+		          </tr>
+		        </table>
+        </td>
+     </tr>
+</table>
+
 </kul:page>

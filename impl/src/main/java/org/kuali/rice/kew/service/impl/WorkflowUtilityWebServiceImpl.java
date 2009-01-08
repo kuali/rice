@@ -79,6 +79,7 @@ import org.kuali.rice.kew.service.WorkflowUtility;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -97,14 +98,18 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
             LOG.error("null principalId passed in.");
             throw new RuntimeException("null principalId passed in");
         }
-        LOG.debug("Fetching RouteHeaderVO [id="+documentId+", user="+principalId+"]");
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("Fetching RouteHeaderVO [id="+documentId+", user="+principalId+"]");
+        }
         DocumentRouteHeaderValue document = loadDocument(documentId);
         Person person = KIMServiceLocator.getPersonService().getPerson(principalId);
         RouteHeaderDTO routeHeaderVO = DTOConverter.convertRouteHeader(document, person.getPrincipalId());
         if (routeHeaderVO == null) {
         	LOG.error("Returning null RouteHeaderVO [id=" + documentId + ", user=" + principalId + "]");
         }
-        LOG.debug("Returning RouteHeaderVO [id=" + documentId + ", user=" + principalId + "]");
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("Returning RouteHeaderVO [id=" + documentId + ", user=" + principalId + "]");
+        }
         return routeHeaderVO;
     }
 
@@ -113,14 +118,18 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
             LOG.error("null routeHeaderId passed in.");
             throw new RuntimeException("null routeHeaderId passed in");
         }
-        LOG.debug("Fetching RouteHeaderVO [id="+documentId+"]");
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("Fetching RouteHeaderVO [id="+documentId+"]");
+        }
         DocumentRouteHeaderValue document = loadDocument(documentId);
-        Person person = null;
+        Person person = UserSession.getAuthenticatedUser().getLoggedInPerson();
         RouteHeaderDTO routeHeaderVO = DTOConverter.convertRouteHeader(document, person.getPrincipalId());
         if (routeHeaderVO == null) {
         	LOG.error("Returning null RouteHeaderVO [id=" + documentId + "]");
         }
-        LOG.debug("Returning RouteHeaderVO [id=" + documentId + "]");
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("Returning RouteHeaderVO [id=" + documentId + "]");
+        }
         return routeHeaderVO;
     }
 

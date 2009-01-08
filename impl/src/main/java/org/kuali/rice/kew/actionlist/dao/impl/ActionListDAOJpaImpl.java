@@ -296,7 +296,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
                 userCrit.eq("delegatorWorkflowId", principalId);
                 
                 List<String> userGroupIds = new ArrayList<String>();
-                for(Long l:KEWServiceLocator.getWorkgroupService().getUsersGroupIds(principalId)){
+                for(Long l:KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId)){
                 	userGroupIds.add(l.toString());
                 }
                 groupCrit.in("delegatorGroupId", userGroupIds);
@@ -317,7 +317,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
                 Criteria orCrit = new Criteria(objectsToRetrieve.getName());
                 userCrit.eq("delegatorWorkflowId", principalId);
                 List<String> userGroupIds = new ArrayList<String>();
-                for(Long l:KEWServiceLocator.getWorkgroupService().getUsersGroupIds(principalId)){
+                for(Long l:KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId)){
                 	userGroupIds.add(l.toString());
                 }
                 groupCrit.in("delegatorGroupId", userGroupIds);

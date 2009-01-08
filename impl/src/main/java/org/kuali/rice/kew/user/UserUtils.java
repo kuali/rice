@@ -30,6 +30,17 @@ public class UserUtils {
 	    return null;
 	  }
 
+	public static String getIdValue(String idType, Person user) {
+	    if ("workflowId".equalsIgnoreCase(idType) || "w".equalsIgnoreCase(idType)) {
+	      return user.getPrincipalId();
+	    } else if ("authenticationId".equalsIgnoreCase(idType) || "a".equalsIgnoreCase(idType)) {
+	      return user.getPrincipalName();
+	    } else {
+	      LOG.error("Could not determine ID Value for given id type!" + idType);
+	    }
+	    return null;
+	  }
+
 	public static String getDisplayableName(UserSession userSession, WorkflowUser user) {
 		if (!userSession.getWorkflowUser().getWorkflowId().equals(user.getWorkflowId())) {
 			return user.getDisplayNameSafe();

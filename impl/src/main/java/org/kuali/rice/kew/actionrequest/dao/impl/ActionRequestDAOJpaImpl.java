@@ -212,7 +212,7 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
         }else{
         	OrmUtils.reattach(actionRequest,entityManager.merge(actionRequest));
         }
-        entityManager.flush();
+        //entityManager.flush();
     }
     private void loadDefaultValues(ActionRequestValue actionRequest) {
         checkNull(actionRequest.getActionRequested(), "action requested");

@@ -31,12 +31,16 @@ import javax.persistence.PersistenceContext;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
+import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
 import org.kuali.rice.kew.actionitem.OutboxItemActionListExtension;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.actionlist.dao.ActionListDAO;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtension;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 /**
@@ -47,42 +51,126 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 public class ActionListDAOJpaImpl implements ActionListDAO {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ActionListDAOJpaImpl.class);
-
+	
     @PersistenceContext(unitName="kew-unit")
 	private EntityManager entityManager;
-
+	
     public Collection<ActionItem> getActionList(String principalId, ActionListFilter filter) {
-        return getActionItemsInActionList(ActionItem.class, principalId, filter);
-
-//        LOG.debug("getting action list for user " + workflowUser.getWorkflowUserId().getWorkflowId());
-//        Criteria crit = null;
-//        if (filter == null) {
-//            crit = new Criteria();
-//            crit.addEqualTo("workflowId", workflowUser.getWorkflowUserId().getWorkflowId());
-//        } else {
-//            crit = setUpActionListCriteria(workflowUser, filter);
-//        }
-//        LOG.debug("running query to get action list for criteria " + crit);
-//        Collection<ActionItem> collection = this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionItemActionListExtension.class, crit));
-//        LOG.debug("found " + collection.size() + " action items for user " + workflowUser.getWorkflowUserId().getWorkflowId());
-//        return createActionListForUser(collection);
+        return toActionItemActionListExtensions(getActionItemsInActionList(ActionItem.class, principalId, filter));
     }
+    
+    /**
+	 * This method ...
+	 * 
+	 * @param actionItemsInActionList
+	 * @return
+	 */
+	private Collection<ActionItem> toActionItemActionListExtensions(
+			Collection<ActionItem> actionItems) {
+		List<ActionItem> actionItemActionListExtensions = new ArrayList<ActionItem>();
+		for(ActionItem actionItem:actionItems){
+			actionItemActionListExtensions.add(toActionItemActionListExtension(actionItem));
+		}
+		return actionItemActionListExtensions;
+	}
 
-    public Collection<ActionItem> getActionListForSingleDocument(Long routeHeaderId) {
+	/**
+	 * This method ...
+	 * 
+	 * @param actionItem
+	 * @return
+	 */
+	private ActionItemActionListExtension toActionItemActionListExtension(
+			ActionItem actionItem) {
+
+		if(actionItem==null){
+			return null;
+		}
+		
+		ActionItemActionListExtension actionItemExt = new ActionItemActionListExtension();
+		
+		actionItemExt.setActionItemId(actionItem.getActionItemId());
+		actionItemExt.setPrincipalId(actionItem.getPrincipalId());
+		actionItemExt.setDateAssigned(actionItem.getDateAssigned());
+		actionItemExt.setActionRequestCd(actionItem.getActionRequestCd());
+		actionItemExt.setActionRequestId(actionItem.getActionRequestId());
+		actionItemExt.setRouteHeaderId(actionItem.getRouteHeaderId());
+		actionItemExt.setResponsibilityId(actionItem.getResponsibilityId());
+		actionItemExt.setGroupId(actionItem.getGroupId());
+		actionItemExt.setRoleName(actionItem.getRoleName());
+		actionItemExt.setDocTitle(actionItem.getDocTitle());
+		actionItemExt.setDocLabel(actionItem.getDocLabel());
+		actionItemExt.setDocHandlerURL(actionItem.getDocHandlerURL());
+		actionItemExt.setDocName(actionItem.getDocName());
+		actionItemExt.setDelegatorWorkflowId(actionItem.getDelegatorWorkflowId());
+		actionItemExt.setDelegatorGroupId(actionItem.getDelegatorGroupId());
+		actionItemExt.setDelegationType(actionItem.getDelegationType());
+		actionItemExt.setLockVerNbr(actionItem.getLockVerNbr());
+		actionItemExt.setRouteHeader(toDocumentRouteHeaderValueActionListExtension(actionItem.getRouteHeader()));
+		
+		// These properties are not mapped in OJB-repository-kew.xml
+		// actionItemExt.setActionItemIndex(actionItem.getActionItemIndex());
+		// actionItemExt.setActionToTake(actionItem.getActionToTake());
+		// actionItemExt.setCustomActions(actionItem.getCustomActions());
+		// actionItemExt.setDateAssignedString(actionItem.getDateAssignedString());
+		// actionItemExt.setDelegatorGroup();
+		// actionItemExt.setDisplayParameters();
+		// FIXME this causes null pointer - actionItemExt.setGroup(actionItem.getGroup());
+		// actionItemExt.setLastApprovedDate(actionItem.getLastApprovedDate());
+		// actionItemExt.setRowStyleClass();
+		
+		return actionItemExt;
+	}
+
+	/**
+	 * This method ...
+	 * 
+	 * @param routeHeader
+	 * @return
+	 */
+	private DocumentRouteHeaderValueActionListExtension toDocumentRouteHeaderValueActionListExtension(
+			DocumentRouteHeaderValue routeHeader) {
+
+		if(routeHeader==null){
+			return null;
+		}
+		
+		DocumentRouteHeaderValueActionListExtension extension = new DocumentRouteHeaderValueActionListExtension();
+		
+		extension.setRouteHeaderId(routeHeader.getRouteHeaderId());
+		extension.setDocumentTypeId(routeHeader.getDocumentTypeId());
+		extension.setDocRouteStatus(routeHeader.getDocRouteStatus());
+		extension.setDocRouteLevel(routeHeader.getDocRouteLevel());
+		extension.setStatusModDate(routeHeader.getStatusModDate());
+		extension.setCreateDate(routeHeader.getCreateDate());
+		extension.setApprovedDate(routeHeader.getApprovedDate());
+		extension.setFinalizedDate(routeHeader.getFinalizedDate());
+		extension.setRouteStatusDate(routeHeader.getRouteStatusDate());
+		extension.setRouteLevelDate(routeHeader.getRouteLevelDate());
+		extension.setDocTitle(routeHeader.getDocTitle());
+		extension.setAppDocId(routeHeader.getAppDocId());
+		extension.setDocVersion(routeHeader.getDocVersion());
+		extension.setInitiatorWorkflowId(routeHeader.getInitiatorWorkflowId());
+		extension.setJrfVerNbr(routeHeader.getJrfVerNbr());
+
+		return extension;
+	}
+
+	public Collection<ActionItem> getActionListForSingleDocument(Long routeHeaderId) {
         LOG.debug("getting action list for route header id " + routeHeaderId);
         Criteria crit = new Criteria(ActionItem.class.getName());
-        crit.eq("routeHeaderId", routeHeaderId);
+        crit.eq("routeHeader.routeHeaderId", routeHeaderId);
         Collection<ActionItem> collection = new QueryByCriteria(entityManager, crit).toQuery().getResultList();
         LOG.debug("found " + collection.size() + " action items for route header id " + routeHeaderId);
-        return createActionListForRouteHeader(collection);
+        return toActionItemActionListExtensions(createActionListForRouteHeader(collection));
     }
-
+    
     private Criteria setUpActionListCriteria(Class objectsToRetrieve, String principalId, ActionListFilter filter) {
         LOG.debug("setting up Action List criteria");
         Criteria crit = new Criteria(objectsToRetrieve.getName());
         boolean filterOn = false;
         String filteredByItems = "";
-
+        
         if (filter.getActionRequestCd() != null && !"".equals(filter.getActionRequestCd().trim()) && !filter.getActionRequestCd().equals(KEWConstants.ALL_CODE)) {
             if (filter.isExcludeActionRequestCd()) {
                 crit.ne("actionRequestCd", filter.getActionRequestCd());
@@ -192,7 +280,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
         if (filteredByItems.length() > 0) {
             filterOn = true;
         }
-
+        
         boolean addedDelegationCriteria = false;
         if (StringUtils.isBlank(filter.getDelegationType()) && StringUtils.isBlank(filter.getPrimaryDelegateId()) && StringUtils.isBlank(filter.getDelegatorId())) {
             crit.eq("principalId", principalId);
@@ -206,7 +294,12 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
                 Criteria groupCrit = new Criteria(objectsToRetrieve.getName());
                 Criteria orCrit = new Criteria(objectsToRetrieve.getName());
                 userCrit.eq("delegatorWorkflowId", principalId);
-                groupCrit.in("delegatorGroupId", new ArrayList(KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId)));
+                
+                List<String> userGroupIds = new ArrayList<String>();
+                for(Long l:KEWServiceLocator.getWorkgroupService().getUsersGroupIds(principalId)){
+                	userGroupIds.add(l.toString());
+                }
+                groupCrit.in("delegatorGroupId", userGroupIds);
                 orCrit.or(userCrit);
                 orCrit.or(groupCrit);
                 crit.and(orCrit);
@@ -223,7 +316,11 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
                 Criteria groupCrit = new Criteria(objectsToRetrieve.getName());
                 Criteria orCrit = new Criteria(objectsToRetrieve.getName());
                 userCrit.eq("delegatorWorkflowId", principalId);
-                groupCrit.in("delegatorGroupId", new ArrayList(KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId)));
+                List<String> userGroupIds = new ArrayList<String>();
+                for(Long l:KEWServiceLocator.getWorkgroupService().getUsersGroupIds(principalId)){
+                	userGroupIds.add(l.toString());
+                }
+                groupCrit.in("delegatorGroupId", userGroupIds);
                 orCrit.or(userCrit);
                 orCrit.or(groupCrit);
                 crit.and(orCrit);
@@ -268,14 +365,14 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
                     userNull.isNull("delegatorWorkflowId");
                     userCrit.or(userNull);
                     Criteria groupNull = new Criteria(objectsToRetrieve.getName());
-                    groupCrit.ne("delegatorGroupId", Long.valueOf(filter.getDelegatorId()));
+                    groupCrit.ne("delegatorGroupId", filter.getDelegatorId());
                     groupNull.isNull("delegatorGroupId");
                     groupCrit.or(groupNull);
                     crit.and(userCrit);
                     crit.and(groupCrit);
                 } else {
                     userCrit.eq("delegatorWorkflowId", filter.getDelegatorId());
-                    groupCrit.eq("delegatorGroupId", Long.valueOf(filter.getDelegatorId()));
+                    groupCrit.eq("delegatorGroupId", filter.getDelegatorId());
                     userCrit.or(groupCrit);
                     crit.and(userCrit);
                 }
@@ -284,7 +381,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
                 filterOn = true;
             }
         }
-
+        
         // if we haven't added delegation criteria then use the default criteria below
         if (!addedDelegationCriteria) {
             crit.eq("principalId", principalId);
@@ -298,7 +395,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
             crit.and(critNotEqual);
         }
 
-
+ 
         if (! "".equals(filteredByItems)) {
             filteredByItems = "Filtered by " + filteredByItems;
         }
@@ -308,7 +405,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
         LOG.debug("returning from Action List criteria");
         return crit;
     }
-
+    
     private void addToFilterDescription(String filterDescription, String labelToAdd) {
         filterDescription += filterDescription.length() > 0 ? ", " : "";
         filterDescription += labelToAdd;
@@ -317,7 +414,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
     private static final String ACTION_LIST_COUNT_QUERY = "select count(distinct(ai.doc_hdr_id)) from krew_actn_itm_t ai where ai.PRNCPL_ID = ? and (ai.dlgn_typ is null or ai.dlgn_typ = 'P')";
 
     public int getCount(final String workflowId) {
-
+    	
     	javax.persistence.Query q = entityManager.createNativeQuery(ACTION_LIST_COUNT_QUERY);
     	q.setParameter(1, workflowId);
     	Long result = (Long)q.getSingleResult();
@@ -331,11 +428,11 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
      *
      * @return the Action List as a Collection of ActionItems
      */
-    private Collection<ActionItem> createActionListForUser(Collection<ActionItem> actionItems) {
-        Map<Long, ActionItem> actionItemMap = new HashMap<Long, ActionItem>();
+    private <T extends ActionItem> Collection<T> createActionListForUser(Collection<T> actionItems) {
+        Map<Long, T> actionItemMap = new HashMap<Long, T>();
         ActionListPriorityComparator comparator = new ActionListPriorityComparator();
-        for (ActionItem potentialActionItem: actionItems) {
-            ActionItem existingActionItem = actionItemMap.get(potentialActionItem.getRouteHeaderId());
+        for (T potentialActionItem: actionItems) {
+            T existingActionItem = actionItemMap.get(potentialActionItem.getRouteHeaderId());
             if (existingActionItem == null || comparator.compare(potentialActionItem, existingActionItem) > 0) {
                 actionItemMap.put(potentialActionItem.getRouteHeaderId(), potentialActionItem);
             }
@@ -361,8 +458,8 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
         }
         return actionItemMap.values();
     }
-
-    private Collection<ActionItem> getActionItemsInActionList(Class objectsToRetrieve, String principalId, ActionListFilter filter) {
+    
+    private <T extends ActionItem> Collection<ActionItem> getActionItemsInActionList(Class<T> objectsToRetrieve, String principalId, ActionListFilter filter) {
         LOG.debug("getting action list for user " + principalId);
         Criteria crit = null;
         if (filter == null) {
@@ -379,23 +476,12 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
 
     public Collection<ActionItem> getOutbox(String principalId, ActionListFilter filter) {
         return getActionItemsInActionList(OutboxItemActionListExtension.class, principalId, filter);
-//        LOG.debug("getting action list for user " + workflowUser.getWorkflowUserId().getWorkflowId());
-//        Criteria crit = new Criteria();
-//        crit.addEqualTo("workflowId", workflowUser.getWorkflowUserId().getWorkflowId());
-//        if (filter != null) {
-//            setUpActionListCriteria(workflowUser, filter);
-//        }
-//        LOG.debug("running query to get action list for criteria " + crit);
-//        Collection<ActionItem> collection = this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(OutboxItemActionListExtension.class, crit));
-//        LOG.debug("found " + collection.size() + " action items for user " + workflowUser.getWorkflowUserId().getWorkflowId());
-//        return createActionListForUser(collection);
     }
 
     /**
-     *
      * Deletes all outbox items specified by the list of ids
-     *
-     * @see org.kuali.rice.kew.actionlist.dao.ActionListDAO#removeOutboxItems(java.lang.String, java.util.List)
+     * 
+     * @see org.kuali.rice.kew.actionlist.dao.ActionListDAO#removeOutboxItems(org.kuali.rice.kew.user.WorkflowUser, java.util.List)
      */
     public void removeOutboxItems(String principalId, List<Long> outboxItems) {
         Criteria crit = new Criteria(OutboxItemActionListExtension.class.getName());
@@ -407,36 +493,45 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
 
     /**
      * Saves an outbox item
-     *
+     * 
      * @see org.kuali.rice.kew.actionlist.dao.ActionListDAO#saveOutboxItem(org.kuali.rice.kew.actionitem.OutboxItemActionListExtension)
      */
     public void saveOutboxItem(OutboxItemActionListExtension outboxItem) {
-    	entityManager.merge(outboxItem); //TODO, merge will not update the outboxitem pointer to the merged entity
+    	if(outboxItem.getActionItemId()==null){
+    		entityManager.persist(outboxItem);
+    	}else{
+    		OrmUtils.reattach(outboxItem, entityManager.merge(outboxItem)); //TODO, merge will not update the outboxitem pointer to the merged entity
+    	}
+    	entityManager.flush();
     }
 
     /**
      * Gets the outbox item associated with the document id
-     *
+     * 
      * @see org.kuali.rice.kew.actionlist.dao.ActionListDAO#getOutboxByDocumentId(java.lang.Long)
      */
     public OutboxItemActionListExtension getOutboxByDocumentId(Long documentId) {
         Criteria crit = new Criteria(OutboxItemActionListExtension.class.getName());
-        crit.eq("routeHeaderId", documentId);
+        crit.eq("routeHeader.routeHeaderId", documentId);
         return (OutboxItemActionListExtension) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
     }
-
+    
     /**
      * This overridden method ...
-     *
+     * 
      * @see org.kuali.rice.kew.actionlist.dao.ActionListDAO#getOutboxByDocumentIdUserId(java.lang.Long)
      */
     public OutboxItemActionListExtension getOutboxByDocumentIdUserId(Long documentId, String userId) {
         Criteria crit = new Criteria(OutboxItemActionListExtension.class.getName());
-        crit.eq("routeHeaderId", documentId);
+        crit.eq("routeHeader.routeHeaderId", documentId);
         crit.eq("principalId", userId);
-        return (OutboxItemActionListExtension) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
+        try{
+        	return (OutboxItemActionListExtension) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
+        }catch(javax.persistence.NoResultException e){
+        	return null;
+        }
     }
-
+    
     private Date beginningOfDay(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
@@ -445,14 +540,16 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
         cal.set(Calendar.SECOND, 0);
         return cal.getTime();
     }
-
+    
     private Date endOfDay(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         cal.set(Calendar.HOUR_OF_DAY, 23);
         cal.set(Calendar.MINUTE, 59);
         cal.set(Calendar.SECOND, 59);
-        return cal.getTime();
+        return cal.getTime();        
     }
 
+
+    
 }

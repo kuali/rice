@@ -53,9 +53,9 @@
 			<label>SecurityDocument</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<attributesInherited>false</attributesInherited>
 			<active>true</active>
 			<policies>
@@ -113,7 +113,7 @@
 			<label>SecurityDoc_WorkgroupOnly</label>
 			<docHandler>_blank</docHandler>
 			<security>
-			    <workgroup>Test_Security_Group</workgroup>
+			    <workgroup>KR-WKFLW:Test_Security_Group</workgroup>
 			</security>
 		</documentType>
 		<documentType>
@@ -205,16 +205,17 @@
 			<lastName>User</lastName>
 		</user>
 	</users>
-	<workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
-		<workgroup>
+	<groups xmlns="ns:workflow/Group" xsi:schemaLocation="ns:workflow/Group resource:Group">
+		<group>
 			<id>9776</id>
-			<workgroupName>Test_Security_Group</workgroupName>
+			<name>Test_Security_Group</name>
+			<namespace>KR-WKFLW</namespace>
 			<description>Test_Security_Group</description>
 			<members>
-				<authenticationId>security_user</authenticationId>
+				<principalName>security_user</principalName>
 			</members>
-		</workgroup>
-	</workgroups>
+		</group>
+	</groups>
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>
 			<documentType>SecurityDocument</documentType>

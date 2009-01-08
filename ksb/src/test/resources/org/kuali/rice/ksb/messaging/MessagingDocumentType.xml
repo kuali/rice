@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- This is document type(s) that correlate to components deployed in the remote web apps to 
+<!-- This is document type(s) that correlate to components deployed in the remote web apps to
 test that the remoting of component functionality is working properly -->
 <data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
 	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
@@ -50,7 +50,7 @@ test that the remoting of component functionality is working properly -->
 	      <description>SearchAttribute2</description>
 	      <type>SearchableAttribute</type>
 	      <serviceNamespace>TestCl1</serviceNamespace>
-	    </ruleAttribute>	    
+	    </ruleAttribute>
 	</ruleAttributes>
 	<ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
 		<ruleTemplate>
@@ -75,10 +75,10 @@ test that the remoting of component functionality is working properly -->
 			<label>RemoteTestDocumentType</label>
 			<serviceNamespace>TestCl1</serviceNamespace>
 			<postProcessorName>org.kuali.rice.kew.test.services.remotedcomponents.TestClient1PostProcessor</postProcessorName>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
 			<docHandler>_blank</docHandler>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<policies>
 				<policy>
 					<name>PRE_APPROVE</name>
@@ -115,10 +115,10 @@ test that the remoting of component functionality is working properly -->
 			<label>ExceptionRemoteTestDocumentType</label>
 			<serviceNamespace>TestCl1</serviceNamespace>
 			<postProcessorName>org.kuali.rice.kew.test.services.remotedcomponents.TestClient1PostProcessor</postProcessorName>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
 			<docHandler>_blank</docHandler>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<policies>
 				<policy>
 					<name>PRE_APPROVE</name>
@@ -150,10 +150,10 @@ test that the remoting of component functionality is working properly -->
 			<label>AlwaysRouteAttributeTestDocument</label>
 			<serviceNamespace>TestCl1</serviceNamespace>
 			<postProcessorName>org.kuali.rice.kew.test.services.remotedcomponents.TestClient1PostProcessor</postProcessorName>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
 			<docHandler>_blank</docHandler>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<attributes>
 		        <attribute>
 		          <name>ActionListAttribute</name>
@@ -202,7 +202,7 @@ test that the remoting of component functionality is working properly -->
 			</routeNodes>
 		</documentType>
 	</documentTypes>
-	
+
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>
 			<documentType>RemoteTestDocumentType</documentType>
@@ -231,5 +231,5 @@ test that the remoting of component functionality is working properly -->
 			</responsibilities>
 		</rule>
 	</rules>
-	
+
 </data>

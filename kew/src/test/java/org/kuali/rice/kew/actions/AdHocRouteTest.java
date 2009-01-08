@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -49,8 +49,8 @@ public class AdHocRouteTest extends KEWTestCase {
 
     	doc = getDocument("dewey");
     	assertFalse("User andlee should not have an approve request yet.  Document not yet routed.", doc.isApprovalRequested());
-    	
-    	doc.adHocRouteDocumentToGroup(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "annotation2", getGroupIdForName(KimConstants.TEMP_GROUP_NAMESPACE, "WorkflowAdmin"), "respDesc2", true);
+
+    	doc.adHocRouteDocumentToGroup(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "annotation2", getGroupIdForName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "WorkflowAdmin"), "respDesc2", true);
 
     	doc = getDocument("quickstart");
     	assertFalse("User should not have approve request yet.  Document not yet routed.", doc.isApprovalRequested());
@@ -180,7 +180,7 @@ public class AdHocRouteTest extends KEWTestCase {
         assertFalse("user2 should NOT have an approval request on the document", doc.isApprovalRequested());
         doc = getDocument("user3");
         assertFalse("user3 should NOT have an approval request on the document", doc.isApprovalRequested());
-        
+
         assertTrue("The document should be final", doc.stateIsFinal());
     }
 
@@ -273,7 +273,7 @@ public class AdHocRouteTest extends KEWTestCase {
         // send the adhoc route request
         doc = getDocument("user1");
     	doc.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "One", "annotation1", getPrincipalIdForName("user2"), "respDesc", false);
- 
+
     	// adhoc request should be only new request on document
     	ActionRequestValue request = null;
     	for (Iterator iter = KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(doc.getRouteHeaderId()).iterator(); iter.hasNext();) {
@@ -369,9 +369,9 @@ public class AdHocRouteTest extends KEWTestCase {
 
 		// do an appspecific route to jitrue and NonSIT (w/ ignore previous =
 		// false), should end up at the current node
-    	
+
     	doc.adHocRouteDocumentToPrincipal("A", "", getPrincipalIdForName("jitrue"), "", false);
-    	doc.adHocRouteDocumentToGroup("A", "", getGroupIdForName(KimConstants.TEMP_GROUP_NAMESPACE, "NonSIT"), "", false);
+    	doc.adHocRouteDocumentToGroup("A", "", getGroupIdForName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "NonSIT"), "", false);
     	doc.routeDocument("");
 
 		// user1 should not have a request, his action should have counted for
@@ -395,8 +395,8 @@ public class AdHocRouteTest extends KEWTestCase {
 
     	doc.adHocRouteDocumentToPrincipal("F", "", getPrincipalIdForName("rkirkend"), "", true);
     	doc.adHocRouteDocumentToPrincipal("K", "", getPrincipalIdForName("user2"), "", true);
-    	
-    	doc.adHocRouteDocumentToGroup("K", "", getGroupIdForName(KimConstants.TEMP_GROUP_NAMESPACE, "NonSIT"), "", true);
+
+    	doc.adHocRouteDocumentToGroup("K", "", getGroupIdForName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "NonSIT"), "", true);
 
     	// rkirkend should have an FYI ad hoc request
     	doc = getDocument("rkirkend");

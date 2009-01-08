@@ -1,40 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
-	<workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
-      <workgroup>
-        <workgroupName>AIWG1</workgroupName>
+	<groups xmlns="ns:workflow/Group" xsi:schemaLocation="ns:workflow/Group resource:Group">
+      <group>
+        <name>AIWG1</name>
+        <namespace>KR-WKFLW</namespace>
         <description>AIWG1</description>
         <members>
-          <authenticationId>ewestfal</authenticationId>
-          <authenticationId>rkirkend</authenticationId>
+          <principalName>ewestfal</principalName>
+          <principalName>rkirkend</principalName>
         </members>
-      </workgroup>
-      <workgroup>
-        <workgroupName>AIWG2</workgroupName>
+      </group>
+      <group>
+        <name>AIWG2</name>
+        <namespace>KR-WKFLW</namespace>
         <description>AIWG2</description>
         <members>
-          <authenticationId>jhopf</authenticationId>
-          <authenticationId>bmcgough</authenticationId>
+          <principalName>jhopf</principalName>
+          <principalName>bmcgough</principalName>
         </members>
-      </workgroup>
-      <workgroup>
-        <workgroupName>AIWGNested1</workgroupName>
+      </group>
+      <group>
+        <name>AIWGNested1</name>
+        <namespace>KR-WKFLW</namespace>
         <description>AIWGNested1</description>
         <members>
-          <authenticationId>natjohns</authenticationId>
-          <workgroupName>AIWG1</workgroupName>
+          <principalName>natjohns</principalName>
+          <groupName>
+            <name>AIWG1</name>
+            <namespace>KR-WKFLW</namespace>
+          </groupName>
         </members>
-      </workgroup>
-      <workgroup>
-        <workgroupName>AIWGNested2</workgroupName>
+      </group>
+      <group>
+        <name>AIWGNested2</name>
+        <namespace>KR-WKFLW</namespace>
         <description>AIWGNested1</description>
         <members>
-          <authenticationId>pmckown</authenticationId>
-          <workgroupName>AIWG2</workgroupName>
-          <workgroupName>AIWGNested1</workgroupName>
+          <principalName>pmckown</principalName>
+          <groupName>
+            <name>AIWG2</name>
+            <namespace>KR-WKFLW</namespace>
+          </groupName>
+          <groupName>
+            <name>AIWGNested1</name>
+            <namespace>KR-WKFLW</namespace>
+          </groupName>
         </members>
-      </workgroup>
-    </workgroups>
+      </group>
+    </groups>
     <ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
 		<ruleTemplate>
 			<name>RuleTemplate1</name>
@@ -55,10 +68,10 @@
 			<description>TestDocumentType</description>
 			<label>TestDocumentType</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
 			<docHandler>_blank</docHandler>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<policies>
 				<policy>
 					<name>PRE_APPROVE</name>
@@ -108,10 +121,10 @@
 			<name>BAOrphanedRequestDocumentType</name>
 			<label>Document Type used to test that Blanket Approval is not orphaning Action Requests</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
 			<docHandler>none</docHandler>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<policies>
 				<policy>
 					<name>PRE_APPROVE</name>
@@ -157,7 +170,7 @@
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
 				<responsibility>
-					<workgroup>TestWorkgroup</workgroup>
+					<workgroup>KR-WKFLW:TestWorkgroup</workgroup>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>
@@ -170,7 +183,7 @@
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
 				<responsibility>
-					<workgroup>WorkflowAdmin</workgroup>
+					<workgroup>KR-WKFLW:WorkflowAdmin</workgroup>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>
@@ -211,7 +224,7 @@
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
 				<responsibility>
-					<workgroup>TestWorkgroup</workgroup>
+					<workgroup>KR-WKFLW:TestWorkgroup</workgroup>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>

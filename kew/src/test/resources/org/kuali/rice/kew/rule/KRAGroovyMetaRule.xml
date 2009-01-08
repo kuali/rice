@@ -43,7 +43,7 @@
             <name>KRAMetaRuleTest</name>
             <label>KRAMetaRuleTest doc label</label>
             <docHandler>has to be defined</docHandler>
-            <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+            <defaultExceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
             <routePaths>
                 <routePath>
                     <start name="initial" nextNode="approval" />
@@ -76,14 +76,14 @@
                 import org.kuali.rice.kew.engine.node.*
 
                 print 'KRABizRule1 is executing...'
-                
-                // do something fancy...store some state 
+
+                // do something fancy...store some state
                 BranchState state = new BranchState()
                 state.setKey("cookie")
                 state.setValue("I'm a cookie from KRABizRule1 and at the tone it's " + new java.util.Date())
                 state.setBranch(routeContext.getNodeInstance().getBranch())
                 routeContext.getNodeInstance().getBranch().addBranchState(state)
-           
+
                 return new RuleExpressionResult(rule, true)
             </expression>
         </rule>
@@ -137,7 +137,7 @@
                 import org.kuali.rice.kew.engine.node.*
 
                 print 'KRABizRule4 is executing...'
-                
+
                 BranchState state = routeContext.getNodeInstance().getBranch().getBranchState("cookie")
                 if (state == null)
                     throw new RuntimeException("Hey, where's my cookie!")
@@ -202,7 +202,7 @@
 
 
                         if ((r = workflow.invokeRule("KRABizRule3")).isSuccess()) {
-                            
+
                             addResponsibilities(r)
 
                             r = workflow.invokeRule("KRABizRule4")
@@ -216,7 +216,7 @@
                         }
                     }
                 }
-                
+
                 return new RuleExpressionResult(rule, success, responsibilities)
             </expression>
         </rule>

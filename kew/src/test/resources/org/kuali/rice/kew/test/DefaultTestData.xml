@@ -261,7 +261,7 @@
 
 		</user>
 	</users>
-	<workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
+    <!-- <workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
 		<workgroup allowOverwrite="true">
 			<id>1</id>
 			<workgroupName>TestWorkgroup</workgroupName>
@@ -320,7 +320,71 @@
 				<authenticationId>jitrue</authenticationId>
 			</members>
 		</workgroup>
-	</workgroups>
+	</workgroups> -->
+	<groups xmlns="ns:workflow/Group" xsi:schemaLocation="ns:workflow/Group resource:Group">
+		<group>
+		    <id>1</id>
+			<name>TestWorkgroup</name>
+			<namespace>KR-WKFLW</namespace>
+			<description>TestWorkgroup</description>
+			<members>
+				<principalName>ewestfal</principalName>
+				<principalName>rkirkend</principalName>
+				<principalName>jhopf</principalName>
+				<principalName>bmcgough</principalName>
+				<principalName>temay</principalName>
+				<principalName>xqi</principalName>
+				<principalName>natjohns</principalName>
+				<principalName>pmckown</principalName>
+				<principalName>jthomas</principalName>
+				<principalName>jitrue</principalName>
+			</members>
+		</group>
+		<group>
+			<id>2</id>
+			<name>WorkflowAdmin</name>
+			<namespace>KR-WKFLW</namespace>
+			<description>WorkflowAdmin</description>
+			<members>
+				<principalName>ewestfal</principalName>
+				<principalName>rkirkend</principalName>
+				<principalName>jhopf</principalName>
+				<principalName>bmcgough</principalName>
+				<principalName>shenl</principalName>
+				<principalName>quickstart</principalName>
+			</members>
+		</group>
+		<group>
+			<id>3</id>
+			<name>NonSIT</name>
+			<namespace>KR-WKFLW</namespace>
+			<description>NonSIT</description>
+			<members>
+				<principalName>user1</principalName>
+				<principalName>user2</principalName>
+				<principalName>user3</principalName>
+				<principalName>dewey</principalName>
+			</members>
+		</group>
+		<group>
+			<id>4</id>
+			<name>BlanketApproveWorkgroup</name>
+			<namespace>KR-WKFLW</namespace>
+			<description>BlanketApproveWorkgroup</description>
+			<members>
+				<principalName>ewestfal</principalName>
+				<principalName>rkirkend</principalName>
+				<principalName>jhopf</principalName>
+				<principalName>bmcgough</principalName>
+				<principalName>temay</principalName>
+				<principalName>xqi</principalName>
+				<principalName>natjohns</principalName>
+				<principalName>pmckown</principalName>
+				<principalName>jthomas</principalName>
+				<principalName>jitrue</principalName>
+			</members>
+		</group>
+	</groups>
 	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
 		<ruleAttribute>
 			<name>TestRuleAttribute</name>
@@ -363,10 +427,10 @@
 			<!-- <description>TestDocumentType</description> -->
 			<label>TestDocumentType</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
 			<docHandler>_blank</docHandler>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<serviceNamespace>KEW</serviceNamespace>
 			<policies>
 				<policy>
@@ -406,10 +470,10 @@
 			<!-- <description>TestDocumentType</description> -->
 			<label>TestDocumentType</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
 			<docHandler>_blank</docHandler>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<!-- This is set to KEWNEW for the RouteQueueTest.testGetNextDocumentsWithserviceNamespace() -->
 			<serviceNamespace>KEWNEW</serviceNamespace>
 		</documentType>

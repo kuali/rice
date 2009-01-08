@@ -5,7 +5,7 @@
             <name>KRAMetaRuleMapsTest</name>
             <label>KRAMetaRuleMapsTest doc label</label>
             <docHandler>has to be defined</docHandler>
-            <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+            <defaultExceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
             <routePaths>
                 <routePath>
                     <start name="initial" nextNode="approval" />
@@ -39,9 +39,9 @@
             </expression>
             <ignorePrevious>true</ignorePrevious>
             <responsibilities>
-                <responsibility><workgroup>TestWorkgroup</workgroup></responsibility>
+                <responsibility><workgroup>KR-WKFLW:TestWorkgroup</workgroup></responsibility>
                 <responsibility><role>org.kuali.rice.kew.rule.MockRole!shenl,jhopf</role></responsibility>
-                <responsibility><workgroup>NonSIT</workgroup></responsibility>
+                <responsibility><workgroup>KR-WKFLW:NonSIT</workgroup></responsibility>
             </responsibilities>
         </rule>
         <rule>
@@ -55,7 +55,7 @@
             </expression>
             <ignorePrevious>true</ignorePrevious>
             <responsibilities>
-                <responsibility><workgroup>NonSIT</workgroup></responsibility>
+                <responsibility><workgroup>KR-WKFLW:NonSIT</workgroup></responsibility>
             </responsibilities>
         </rule>
         <rule>
@@ -71,7 +71,7 @@
 
                 def addResponsibilities(ruleExprResult) {
                     println  ruleExprResult.getResponsibilities()
-                    
+
                     if (ruleExprResult.getResponsibilities() == null || ruleExprResult.getResponsibilities().size() == 0) return
 
                     for (responsibility in ruleExprResult.getResponsibilities()) {

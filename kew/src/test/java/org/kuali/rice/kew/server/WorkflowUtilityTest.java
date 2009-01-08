@@ -392,7 +392,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertFalse("Should not be last approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), new NetworkIdDTO("ewestfal"), SeqSetup.ADHOC_NODE));
 
         // app specific route a request to a workgroup at the initial node (TestWorkgroup)
-		String groupId = getGroupIdForName(KimConstants.TEMP_GROUP_NAMESPACE, "TestWorkgroup");
+		String groupId = getGroupIdForName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "TestWorkgroup");
         document.adHocRouteDocumentToGroup(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "", groupId, "", false);
         assertTrue("Should be last approver.", utility.isLastApproverInRouteLevel(document.getRouteHeaderId(), new NetworkIdDTO("ewestfal"), new Integer(0)));
         assertTrue("Should be last approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), new NetworkIdDTO("ewestfal"), SeqSetup.ADHOC_NODE));

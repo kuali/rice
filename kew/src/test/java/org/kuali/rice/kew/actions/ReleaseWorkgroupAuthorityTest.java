@@ -42,7 +42,7 @@ public class ReleaseWorkgroupAuthorityTest extends KEWTestCase {
         WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("user1"), TakeWorkgroupAuthorityTest.DOC_TYPE);
         doc.routeDocument("");
 
-        String groupId = getGroupIdForName(KimConstants.TEMP_GROUP_NAMESPACE, "TestWorkgroup");
+        String groupId = getGroupIdForName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "TestWorkgroup");
         //have member rkirkend take authority
         doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), doc.getRouteHeaderId());
         doc.takeGroupAuthority("", groupId);

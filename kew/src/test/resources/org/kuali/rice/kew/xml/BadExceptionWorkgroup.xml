@@ -7,8 +7,8 @@
       <label>DocumentTypeXmlParserTestDoc_BadExceptionWG</label>
       <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
-      <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-      <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+      <superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+      <blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
       <active>true</active>
       <routePaths>
         <routePath>

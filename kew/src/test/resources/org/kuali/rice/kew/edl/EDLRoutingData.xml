@@ -13,10 +13,10 @@
 			<description>TestEDL1</description>
 			<label>TestEDL1</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
 			<docHandler>_blank</docHandler>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<policies>
 				<policy>
 					<name>PRE_APPROVE</name>

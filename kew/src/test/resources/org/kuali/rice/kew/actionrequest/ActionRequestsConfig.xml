@@ -105,9 +105,9 @@
 			<label>DRDocType</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<active>true</active>
 			<policies>
 				<policy>
@@ -127,9 +127,9 @@
 			<label>SeqDocType</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<active>true</active>
 			<policies>
 				<policy>
@@ -170,9 +170,9 @@
 			<label>DocType for testIgnorePreviousWithDelegation</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>about:blank</docHandler>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<policies>
 				<policy>
 					<name>PRE_APPROVE</name>
@@ -206,9 +206,9 @@
 			<label>DocType for testRoleToRoleDelegation</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>about:blank</docHandler>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<policies>
 				<policy>
 					<name>PRE_APPROVE</name>
@@ -243,9 +243,9 @@
 			<label>DocType for testRoleToRoleDelegation</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>about:blank</docHandler>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<policies>
 				<policy>
 					<name>PRE_APPROVE</name>
@@ -278,9 +278,9 @@
             <label>InlineRequestsDocumentType</label>
             <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
             <docHandler>_blank</docHandler>
-            <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-            <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-            <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+            <superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
             <active>true</active>
             <policies>
                 <policy>
@@ -316,7 +316,7 @@
                     <match>//step = 'step2'</match>
                     <routeModule>org.kuali.rice.kew.routemodule.InlineRequestsRouteModule</routeModule>
                     <responsibility xmlns="ns:workflow/Rule">
-                        <workgroup>TestWorkgroup</workgroup>
+                        <workgroup>KR-WKFLW:TestWorkgroup</workgroup>
                         <actionRequested>A</actionRequested>
                     </responsibility>
                 </requests>
@@ -338,9 +338,9 @@
             <label>InlineRequestsDocumentType_UsingAttributes</label>
             <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
             <docHandler>_blank</docHandler>
-            <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-            <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-            <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+            <superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
             <active>true</active>
             <policies>
                 <policy>
@@ -380,7 +380,7 @@
                     </ruleAttributes>
                     <routeModule>org.kuali.rice.kew.routemodule.InlineRequestsRouteModule</routeModule>
                     <responsibility xmlns="ns:workflow/Rule">
-                        <workgroup>TestWorkgroup</workgroup>
+                        <workgroup>KR-WKFLW:TestWorkgroup</workgroup>
                         <actionRequested>A</actionRequested>
                     </responsibility>
                 </requests>
@@ -398,16 +398,16 @@
                 </requests>
             </routeNodes>
         </documentType>
-        
+
         <documentType>
             <name>UnresolvableRoleRecipsDocType</name>
             <description>UnresolvableRoleRecipsDocType</description>
             <label>DocType for testUnresolvableRoleAttributeRecipients</label>
             <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
             <docHandler>about:blank</docHandler>
-            <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-            <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-            <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+            <superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
             <policies>
                 <policy>
                     <name>PRE_APPROVE</name>
@@ -595,7 +595,7 @@
 				</responsibility>
 			</responsibilities>
 		</rule>
-        
+
         <rule>
             <documentType>UnresolvableRoleRecipsDocType</documentType>
             <ruleTemplate>Node1Template</ruleTemplate>

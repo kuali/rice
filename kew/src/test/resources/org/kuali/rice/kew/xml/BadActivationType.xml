@@ -7,8 +7,8 @@
       <label>DocumentTypeXmlParserTestDoc_BadActivationType</label>
       <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
-      <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-      <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+      <superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+      <blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
       <active>true</active>
       <routePaths>
         <routePath>
@@ -17,7 +17,7 @@
       </routePaths>
       <routeNodes>
         <start name="AdHoc">
-          <exceptionWorkgroupName>TestWorkgroup</exceptionWorkgroupName>
+          <exceptionWorkgroupName>KR-WKFLW:TestWorkgroup</exceptionWorkgroupName>
           <activationType>Z</activationType>
         </start>
       </routeNodes>

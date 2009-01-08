@@ -7,9 +7,9 @@
 			<label>SimulationTestDocumenType_IgnorePrevious</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<active>true</active>
 			<policies>
 				<policy>
@@ -61,9 +61,9 @@
 			<label>DocumentWithSpecialRouteNodes</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<active>true</active>
 			<policies>
 				<policy>
@@ -103,9 +103,9 @@
 			<label>SeqDocType</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<active>true</active>
 			<policies>
 				<policy>
@@ -170,9 +170,9 @@
 			<label>SeqChildDocType</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<active>true</active>
 		</documentType>
 		<!--  This document type used to add an extra request to one of the nodes -->
@@ -183,9 +183,9 @@
 			<label>SeqLastApproverDocType</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<active>true</active>
 			<routePaths>
 				<routePath>
@@ -225,9 +225,9 @@
 			<label>RuleTestDocument</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<active>true</active>
 			<policies>
 				<policy>
@@ -502,7 +502,7 @@
 				</responsibility>
 			</responsibilities>
 		</rule>
-		
+
 		<rule>
 			<documentType>SeqLastApproverDocType</documentType>
 			<ruleTemplate>WorkflowDocument2Template</ruleTemplate>
@@ -546,7 +546,7 @@
 					<priority>2</priority>
 				</responsibility>
 			</responsibilities>
-		</rule>		
+		</rule>
 	    <rule>
 	      <documentType>RuleTestDocType</documentType>
 	      <ruleTemplate>WorkflowDocument3Template</ruleTemplate>
@@ -554,7 +554,7 @@
 	      <ignorePrevious>true</ignorePrevious>
 	      <responsibilities>
 	        <responsibility>
-	          <workgroup>NonSIT</workgroup>
+	          <workgroup>KR-WKFLW:NonSIT</workgroup>
 	          <actionRequested>F</actionRequested>
 	          <priority>1</priority>
 	        </responsibility>

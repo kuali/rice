@@ -7,9 +7,9 @@
       <description>Create a New Travel Request</description>
       <label>Travel Request</label>
       <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
-      <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-      <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
-      <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+      <superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+      <blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
+      <defaultExceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
       <docHandler>${application.url}/travelDocument2.do?methodToCall=docHandler</docHandler>
       <active>true</active>
       <routingVersion>2</routingVersion>

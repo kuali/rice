@@ -5,8 +5,8 @@
       <name>WorkgroupType3DocType</name>
       <label>WorkgroupType3DocType</label>
       <postProcessorName>none</postProcessorName>
-      <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-      <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+      <superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+      <blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
       <docHandler>none</docHandler>
     </documentType>
   </documentTypes>

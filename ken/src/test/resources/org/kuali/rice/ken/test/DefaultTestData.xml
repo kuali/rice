@@ -3,7 +3,7 @@
 
     <users xmlns="ns:workflow/User" xsi:schemaLocation="ns:workflow/User resource:User">
         <user>
-            <workflowId>TestAdmin1</workflowId>
+            <principalName>TestAdmin1</principalName>
             <emplId>TestAdmin1</emplId>
             <authenticationId>TestAdmin1</authenticationId>
             <uuId>TestAdmin1</uuId>
@@ -13,7 +13,7 @@
             <lastName>Admin 1</lastName>
         </user>
         <user>
-            <workflowId>TestAdmin2</workflowId>
+            <principalName>TestAdmin2</principalName>
             <emplId>TestAdmin2</emplId>
             <authenticationId>TestAdmin2</authenticationId>
             <uuId>TestAdmin2</uuId>
@@ -23,7 +23,7 @@
             <lastName>Admin 2</lastName>
         </user>
         <user>
-            <workflowId>TestUser1</workflowId>
+            <principalName>TestUser1</principalName>
             <emplId>TestUser1</emplId>
             <authenticationId>TestUser1</authenticationId>
             <uuId>TestUser1</uuId>
@@ -33,7 +33,7 @@
             <lastName>User 1</lastName>
         </user>
         <user>
-            <workflowId>TestUser2</workflowId>
+            <principalName>TestUser2</principalName>
             <emplId>TestUser2</emplId>
             <authenticationId>TestUser2</authenticationId>
             <uuId>TestUser2</uuId>
@@ -43,7 +43,7 @@
             <lastName>User 2</lastName>
         </user>
         <user>
-            <workflowId>TestUser3</workflowId>
+            <principalName>TestUser3</principalName>
             <emplId>TestUser3</emplId>
             <authenticationId>TestUser3</authenticationId>
             <uuId>TestUser3</uuId>
@@ -53,7 +53,7 @@
             <lastName>User 3</lastName>
         </user>
         <user>
-            <workflowId>TestUser4</workflowId>
+            <principalName>TestUser4</principalName>
             <emplId>TestUser4</emplId>
             <authenticationId>TestUser4</authenticationId>
             <uuId>TestUser4</uuId>
@@ -63,7 +63,7 @@
             <lastName>User 4</lastName>
         </user>
         <user>
-            <workflowId>TestUser5</workflowId>
+            <principalName>TestUser5</principalName>
             <emplId>TestUser5</emplId>
             <authenticationId>TestUser5</authenticationId>
             <uuId>TestUser5</uuId>
@@ -73,7 +73,7 @@
             <lastName>User 5</lastName>
         </user>
         <user>
-            <workflowId>TestUser6</workflowId>
+            <principalName>TestUser6</principalName>
             <emplId>TestUser6</emplId>
             <authenticationId>TestUser6</authenticationId>
             <uuId>TestUser6</uuId>
@@ -85,7 +85,7 @@
 
         <!-- WORKFLOW USERS (STANDARD WORKFLOW QUICKSTART USERS) -->
         <user>
-            <workflowId>quickstart</workflowId>
+            <principalName>quickstart</principalName>
             <emplId>quickstart</emplId>
             <authenticationId>quickstart</authenticationId>
             <uuId>quickstart</uuId>
@@ -95,7 +95,7 @@
             <lastName>Start</lastName>
         </user>
         <user>
-            <workflowId>user1</workflowId>
+            <principalName>user1</principalName>
             <emplId>user1</emplId>
             <authenticationId>user1</authenticationId>
             <uuId>user1</uuId>
@@ -105,7 +105,7 @@
             <lastName>One</lastName>
         </user>
         <user>
-            <workflowId>user2</workflowId>
+            <principalName>user2</principalName>
             <emplId>user2</emplId>
             <authenticationId>user2</authenticationId>
             <uuId>user2</uuId>
@@ -115,7 +115,7 @@
             <lastName>Two</lastName>
         </user>
         <user>
-            <workflowId>user3</workflowId>
+            <principalName>user3</principalName>
             <emplId>user3</emplId>
             <authenticationId>user3</authenticationId>
             <uuId>user3</uuId>
@@ -125,7 +125,7 @@
             <lastName>Three</lastName>
         </user>
         <user>
-            <workflowId>user4</workflowId>
+            <principalName>user4</principalName>
             <emplId>user4</emplId>
             <authenticationId>user4</authenticationId>
             <uuId>user4</uuId>
@@ -135,7 +135,7 @@
             <lastName>user4</lastName>
         </user>
         <user>
-            <workflowId>edna</workflowId>
+            <principalName>edna</principalName>
             <emplId>employee1</emplId>
             <authenticationId>edna</authenticationId>
             <uuId>edna</uuId>
@@ -145,7 +145,7 @@
             <lastName>Employee</lastName>
         </user>
         <user>
-            <workflowId>eric</workflowId>
+            <principalName>eric</principalName>
             <emplId>employee2</emplId>
             <authenticationId>eric</authenticationId>
             <uuId>eric</uuId>
@@ -155,7 +155,7 @@
             <lastName>Employee</lastName>
         </user>
         <user>
-            <workflowId>earl</workflowId>
+            <principalName>earl</principalName>
             <emplId>employee3</emplId>
             <authenticationId>earl</authenticationId>
             <uuId>earl</uuId>
@@ -165,7 +165,7 @@
             <lastName>Employee</lastName>
         </user>
         <user>
-            <workflowId>erin</workflowId>
+            <principalName>erin</principalName>
             <emplId>employee4</emplId>
             <authenticationId>erin</authenticationId>
             <uuId>erin</uuId>
@@ -175,7 +175,7 @@
             <lastName>Employee</lastName>
         </user>
         <user>
-            <workflowId>fred</workflowId>
+            <principalName>fred</principalName>
             <emplId>fiscaloff1</emplId>
             <authenticationId>fred</authenticationId>
             <uuId>fred</uuId>
@@ -185,7 +185,7 @@
             <lastName>FiscalOfficer</lastName>
         </user>
         <user>
-            <workflowId>fran</workflowId>
+            <principalName>fran</principalName>
             <emplId>fiscaloff2</emplId>
             <authenticationId>fran</authenticationId>
             <uuId>fran</uuId>
@@ -195,7 +195,7 @@
             <lastName>FiscalOfficer</lastName>
         </user>
         <user>
-            <workflowId>frank</workflowId>
+            <principalName>frank</principalName>
             <emplId>fiscaloff3</emplId>
             <authenticationId>frank</authenticationId>
             <uuId>frank</uuId>
@@ -205,7 +205,7 @@
             <lastName>FiscalOfficer</lastName>
         </user>
         <user>
-            <workflowId>doug</workflowId>
+            <principalName>doug</principalName>
             <emplId>doug</emplId>
             <authenticationId>doug</authenticationId>
             <uuId>doug</uuId>
@@ -217,93 +217,101 @@
     </users>
 
     <!-- WORKGROUPS SETUP -->
-    <workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
+    <groups xmlns="ns:workflow/Group" xsi:schemaLocation="ns:workflow/Group resource:Group">
         <!-- NOTIFICATION SPECIFIC WORKGROUPS -->
-        <workgroup allowOverwrite="true">
-            <workgroupName>NotificationAdmin</workgroupName>
+        <group>
+            <name>NotificationAdmin</name>
+            <namespace>KUALI</namespace>
             <description>Notification system admin group for automation.</description>
-            <activeInd>true</activeInd>
-            <workgroupType>W</workgroupType>
+            <active>true</active>
+            <!--<workgroupType>W</workgroupType>-->
             <members>
-                <workflowId>TestAdmin1</workflowId>
+                <principalName>TestAdmin1</principalName>
             </members>
-        </workgroup>
-        <workgroup allowOverwrite="true">
-            <workgroupName>TestGroup1</workgroupName>
+        </group>
+        <group>
+            <name>TestGroup1</name>
+            <namespace>KUALI</namespace>
             <description>Test group 1 for KEN testing.</description>
-            <activeInd>true</activeInd>
-            <workgroupType>W</workgroupType>
+            <active>true</active>
+            <!--<workgroupType>W</workgroupType>-->
             <members>
-                <workflowId>TestUser1</workflowId>
-                <workflowId>TestUser2</workflowId>
+                <principalName>TestUser1</principalName>
+                <principalName>TestUser2</principalName>
             </members>
-        </workgroup>
-        <workgroup allowOverwrite="true">
-            <workgroupName>TestGroup2</workgroupName>
+        </group>
+        <group>
+            <name>TestGroup2</name>
+            <namespace>KUALI</namespace>
             <description>Test group 2 for KEN testing.</description>
-            <activeInd>true</activeInd>
-            <workgroupType>W</workgroupType>
+            <active>true</active>
+            <!--<workgroupType>W</workgroupType>-->
             <members>
-                <workflowId>TestUser2</workflowId>
-                <workflowId>TestUser3</workflowId>
+                <principalName>TestUser2</principalName>
+                <principalName>TestUser3</principalName>
             </members>
-        </workgroup>
-        <workgroup allowOverwrite="true">
-            <workgroupName>RiceTeam</workgroupName>
+        </group>
+        <group>
+            <name>RiceTeam</name>
+            <namespace>KUALI</namespace>
             <description>A test workgroup for KEN.</description>
-            <activeInd>true</activeInd>
-            <workgroupType>W</workgroupType>
+            <active>true</active>
+            <!--<workgroupType>W</workgroupType>-->
             <members>
-                <workflowId>TestUser1</workflowId>
-                <workflowId>TestUser2</workflowId>
-                <workflowId>TestUser6</workflowId>
-                <workflowId>TestUser4</workflowId>
-                <workflowId>TestUser5</workflowId>
-                <workflowId>quickstart</workflowId>
+                <principalName>TestUser1</principalName>
+                <principalName>TestUser2</principalName>
+                <principalName>TestUser6</principalName>
+                <principalName>TestUser4</principalName>
+                <principalName>TestUser5</principalName>
+                <principalName>quickstart</principalName>
             </members>
-        </workgroup>
+        </group>
 
         <!-- WORKFLOW SPECIFIC WORKGROUPS (NEEDED FOR QUICKSTART INTEGRATION) -->
-        <workgroup allowOverwrite="true">
-            <workgroupName>WorkflowAdmin</workgroupName>
+        <group>
+            <name>WorkflowAdmin</name>
+      		<namespace>KR-WKFLW</namespace>
             <description>WorkflowAdmin</description>
-            <activeInd>true</activeInd>
-            <workgroupType>W</workgroupType>
+            <active>true</active>
+            <!--<workgroupType>W</workgroupType>-->
             <members>
-                <workflowId>admin</workflowId>
-                <workflowId>quickstart</workflowId>
-                <workflowId>NotSys</workflowId>
-                <workflowId>TestAdmin2</workflowId>
+                <principalName>admin</principalName>
+                <principalName>quickstart</principalName>
+                <principalName>NotSys</principalName>
+                <principalName>TestAdmin2</principalName>
             </members>
-        </workgroup>
-        <workgroup allowOverwrite="true">
-            <workgroupName>Group0</workgroupName>
+        </group>
+        <group>
+            <name>Group0</name>
+            <namespace>KUALI</namespace>
             <description>Group0</description>
-            <activeInd>true</activeInd>
-            <workgroupType>W</workgroupType>
+            <active>true</active>
+            <!--<workgroupType>W</workgroupType>-->
             <members>
-                <workflowId>quickstart</workflowId>
-                <workflowId>user1</workflowId>
-                <workflowId>user2</workflowId>
+                <principalName>quickstart</principalName>
+                <principalName>user1</principalName>
+                <principalName>user2</principalName>
             </members>
-        </workgroup>
-        <workgroup allowOverwrite="true">
-            <workgroupName>Group1</workgroupName>
+        </group>
+        <group>
+            <name>Group1</name>
+            <namespace>KUALI</namespace>
             <description>Group1</description>
-            <activeInd>true</activeInd>
-            <workgroupType>W</workgroupType>
+            <active>true</active>
+            <!--<workgroupType>W</workgroupType>-->
             <members>
-                <workflowId>user3</workflowId>
+                <principalName>user3</principalName>
             </members>
-        </workgroup>
-        <workgroup allowOverwrite="true">
-            <workgroupName>Group2</workgroupName>
+        </group>
+        <group>
+            <name>Group2</name>
+            <namespace>KUALI</namespace>
             <description>Group2</description>
-            <activeInd>true</activeInd>
-            <workgroupType>W</workgroupType>
+            <active>true</active>
+            <!--<workgroupType>W</workgroupType>-->
             <members>
-                <workflowId>user2</workflowId>
+                <principalName>user2</principalName>
             </members>
-        </workgroup>
-    </workgroups>
+        </group>
+    </groups>
 </data>

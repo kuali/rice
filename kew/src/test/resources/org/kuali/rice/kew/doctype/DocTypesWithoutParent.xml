@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<!--
 used to test that if you upload document types without a parent and then assign them a parent through upload the
 hierarchy is correct
  -->
@@ -28,7 +28,7 @@ hierarchy is correct
 				</xmlDocumentContent>
 			</routingConfig>
 		</ruleAttribute>
-		
+
 		<ruleAttribute>
 			<name>DepartmentSearchAttribute</name>
 			<className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
@@ -47,7 +47,7 @@ hierarchy is correct
 				</fieldDef>
 			</searchingConfig>
 		</ruleAttribute>
-		
+
 		<ruleAttribute>
 			<name>SchoolAttribute</name>
 			<className>org.kuali.rice.kew.rule.xmlrouting.StandardGenericXMLRuleAttribute</className>
@@ -67,7 +67,7 @@ hierarchy is correct
 				</fieldDef>
 			</routingConfig>
 		</ruleAttribute>
-		
+
 		<ruleAttribute>
 			<name>SchoolSearchAttribute</name>
 			<className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
@@ -90,8 +90,8 @@ hierarchy is correct
 	</ruleAttributes>
 
 	<ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
-	
-		
+
+
 		<ruleTemplate allowOverwrite="true">
 			<name>UniversityGraduateSchoolOffice-DepartmentRouting</name>
 			<description>University Graduate School Office - Department Routing</description>
@@ -102,7 +102,7 @@ hierarchy is correct
 				</attribute>
 			</attributes>
 		</ruleTemplate>
-		
+
 		<ruleTemplate allowOverwrite="true">
 			<name>UniversityGraduateSchoolOffice-SchoolRouting</name>
 			<description>University Graduate School Office - School Routing</description>
@@ -113,12 +113,12 @@ hierarchy is correct
 				</attribute>
 			</attributes>
 		</ruleTemplate>
-		
+
 		<ruleTemplate allowOverwrite="true">
 			<name>UniversityGraduateSchoolOffice-Routing</name>
 			<description>University Graduate School Office Routing</description>
 		</ruleTemplate>
-		
+
 		<ruleTemplate allowOverwrite="true">
 			<name>UniversityGraduateSchoolOffice-Dean of Faculty</name>
 			<description>Dean of Faculty Graduation Office Routing</description>
@@ -128,21 +128,21 @@ hierarchy is correct
 			<name>UniversityGraduateSchoolOffice-SSSS</name>
 			<description>SSSS Faculty Office Routing</description>
 		</ruleTemplate>
-		
+
 	</ruleTemplates>
-	
+
 	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
-	
+
 	<!-- the parent of these document types will be the UGS document of the ParentWithChildrenDocTypeConfiguration.xml file -->
-	
+
 		<documentType>
 			<name>CourseRemonstranceProcess</name>
 			<description>Course Remonstrance Process</description>
 			<label>Course Change Request</label>
 			<postProcessorName>org.kuali.rice.kew.edoclite.EDocLitePostProcessor</postProcessorName>
-			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
 			<docHandler>https://es-nd.ucs.indiana.edu:9000/en-cnv/EDocLite</docHandler>
 			<active>true</active>
 			<attributes>
@@ -154,18 +154,18 @@ hierarchy is correct
 				</attribute>
 			</attributes>
 		</documentType>
-		
+
 		<documentType>
 			<name>NewCourseRequest</name>
 			<description>New Course Request</description>
 			<label>New Course Request</label>
 			<postProcessorName>org.kuali.rice.kew.edoclite.EDocLitePostProcessor</postProcessorName>
-			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>			
-			<defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
 			<docHandler>https://es-nd.ucs.indiana.edu:9000/en-cnv/EDocLite</docHandler>
 			<active>true</active>
-			 
+
 			<attributes>
 				<attribute>
 					<name>DepartmentSearchAttribute</name>
@@ -174,19 +174,19 @@ hierarchy is correct
 					<name>SchoolSearchAttribute</name>
 				</attribute>
 			</attributes>
-		</documentType>		
-		
+		</documentType>
+
 		<documentType>
 			<name>DeleteCourseRequest</name>
 			<description>Delete Course Request</description>
 			<label>Delete Course Request</label>
 			<postProcessorName>org.kuali.rice.kew.edoclite.EDocLitePostProcessor</postProcessorName>
-			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
 			<docHandler>https://es-nd.ucs.indiana.edu:9000/en-cnv/EDocLite</docHandler>
 			<active>true</active>
-			
+
 			<attributes>
 				<attribute>
 					<name>DepartmentSearchAttribute</name>
@@ -195,6 +195,6 @@ hierarchy is correct
 					<name>SchoolSearchAttribute</name>
 				</attribute>
 			</attributes>
-		</documentType>			
-	</documentTypes> 
+		</documentType>
+	</documentTypes>
 </data>

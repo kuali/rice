@@ -18,6 +18,7 @@ package org.kuali.rice.kew.xml;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -54,8 +55,10 @@ public class GroupXmlParser implements XmlConstants {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(GroupXmlParser.class);
     private static final boolean DEFAULT_ACTIVE_VALUE = true;
     private static final String DEFAULT_GROUP_DESCRIPTION = "";
-    private List<String> memberGroupIds = new ArrayList<String>();
-    private List<String> memberPrincipalIds = new ArrayList<String>();
+    private HashMap<String, List<String>> memberGroupIds = new HashMap<String, List<String>>();
+    private HashMap<String, List<String>> memberPrincipalIds = new HashMap<String, List<String>>();
+    //private List<String> memberGroupIds = new ArrayList<String>();
+    //private List<String> memberPrincipalIds = new ArrayList<String>();
     private AttributeSet groupAttributes = new AttributeSet();
 
     public List<GroupInfo> parseGroups(InputStream input) throws IOException, InvalidXmlException {
@@ -98,12 +101,19 @@ public class GroupXmlParser implements XmlConstants {
                 try {
                     GroupInfo newGroupInfo =  groupService.createGroup(groupInfo);
 
+                    String key = newGroupInfo.getNamespaceCode().trim() + ":" + newGroupInfo.getGroupName().trim();
                     //now we should have group Id, so add members to group
-                    for (String groupId : this.memberGroupIds) {
-                        groupService.addGroupToGroup(groupId, newGroupInfo.getGroupId());
+                    List<String> groupIds = memberGroupIds.get(key);
+                    if (groupIds != null) {
+                        for (String groupId : groupIds) {
+                            groupService.addGroupToGroup(groupId, newGroupInfo.getGroupId());
+                        }
                     }
-                    for (String principalId : this.memberPrincipalIds) {
-                        groupService.addPrincipalToGroup(principalId, newGroupInfo.getGroupId());
+                    List<String> principalIds = memberPrincipalIds.get(key);
+                    if (principalIds != null) {
+                        for (String principalId : principalIds) {
+                            groupService.addPrincipalToGroup(principalId, newGroupInfo.getGroupId());
+                        }
                     }
 
                     //set group attributes
@@ -140,6 +150,11 @@ public class GroupXmlParser implements XmlConstants {
             groupInfo.setNamespaceCode(groupNamespace.trim());
         } else {
             throw new InvalidXmlException("Namespace must have a value.");
+        }
+
+        String id = element.getChildText(ID, GROUP_NAMESPACE);
+        if (id != null) {
+            groupInfo.setGroupId(id.trim());
         }
 
         String description = element.getChildText(DESCRIPTION, GROUP_NAMESPACE);
@@ -202,6 +217,7 @@ public class GroupXmlParser implements XmlConstants {
         }
 
         //Group members
+
         List<Element> members = element.getChild(MEMBERS, GROUP_NAMESPACE).getChildren();
         for (Element member : members) {
             String elementName = member.getName().trim();
@@ -209,7 +225,7 @@ public class GroupXmlParser implements XmlConstants {
                 String principalName = member.getText().trim();
                 KimPrincipal principal = identityManagementService.getPrincipalByPrincipalName(principalName);
                 if (principal != null) {
-                    this.memberPrincipalIds.add(principal.getPrincipalId());
+                    addPrincipalToGroup(groupInfo.getNamespaceCode(), groupInfo.getGroupName(), principal.getPrincipalId());
                 } else {
                     throw new InvalidXmlException("Principal Name "+principalName+" cannot be found.");
                 }
@@ -217,7 +233,7 @@ public class GroupXmlParser implements XmlConstants {
                 String xmlPrincipalId = member.getText().trim();
                 KimPrincipal principal = identityManagementService.getPrincipal(xmlPrincipalId);
                 if (principal != null) {
-                    this.memberPrincipalIds.add(principal.getPrincipalId());
+                    addPrincipalToGroup(groupInfo.getNamespaceCode(), groupInfo.getGroupName(), principal.getPrincipalId());
                 } else {
                     throw new InvalidXmlException("Principal Id "+xmlPrincipalId+" cannot be found.");
                 }
@@ -225,7 +241,7 @@ public class GroupXmlParser implements XmlConstants {
                 String xmlGroupId = member.getText().trim();
                 KimGroup group = identityManagementService.getGroup(xmlGroupId);
                 if (group != null) {
-                    this.memberGroupIds.add(group.getGroupId());
+                    addGroupToGroup(groupInfo.getNamespaceCode(), groupInfo.getGroupName(), group.getGroupId());
                 } else {
                     throw new InvalidXmlException("Group Id "+xmlGroupId+" cannot be found.");
                 }
@@ -234,7 +250,7 @@ public class GroupXmlParser implements XmlConstants {
                 String xmlGroupNamespace = member.getChildText(NAMESPACE, GROUP_NAMESPACE).trim();
                 KimGroup group = identityManagementService.getGroupByName(xmlGroupNamespace, xmlGroupName);
                 if (group != null) {
-                    this.memberGroupIds.add(group.getGroupId());
+                    addGroupToGroup(groupInfo.getNamespaceCode(), groupInfo.getGroupName(), group.getGroupId());
                 } else {
                     throw new InvalidXmlException("Group Name "+xmlGroupName+" cannot be found.");
                 }
@@ -247,6 +263,26 @@ public class GroupXmlParser implements XmlConstants {
 
         return groupInfo;
 
+    }
+
+    private void addPrincipalToGroup(String groupNamespace, String groupName, String principalId) {
+        String key = groupNamespace.trim() + ":" + groupName.trim();
+        List<String> principalIds = memberPrincipalIds.get(key);
+        if (principalIds == null) {
+            principalIds = new ArrayList<String>();
+        }
+        principalIds.add(principalId);
+        memberPrincipalIds.put(key, principalIds);
+    }
+
+    private void addGroupToGroup(String groupNamespace, String groupName, String groupId) {
+        String key = groupNamespace.trim() + ":" + groupName.trim();
+        List<String> groupIds = memberGroupIds.get(key);
+        if (groupIds == null) {
+            groupIds = new ArrayList<String>();
+        }
+        groupIds.add(groupId);
+        memberGroupIds.put(key, groupIds);
     }
 
 }

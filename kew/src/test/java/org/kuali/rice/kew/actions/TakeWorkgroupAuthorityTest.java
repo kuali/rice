@@ -77,7 +77,7 @@ public class TakeWorkgroupAuthorityTest extends KEWTestCase {
         WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("user1"), DOC_TYPE);
         doc.routeDocument("");
 
-        String groupId = getGroupIdForName(KimConstants.TEMP_GROUP_NAMESPACE, "TestWorkgroup");
+        String groupId = getGroupIdForName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "TestWorkgroup");
 
         //verify that all members have the action item
         ActionListService aiService = KEWServiceLocator.getActionListService();

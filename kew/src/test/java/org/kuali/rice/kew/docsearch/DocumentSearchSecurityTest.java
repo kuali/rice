@@ -239,7 +239,7 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
 
         // verify that workgroup can see the document
         String workgroupName = "Test_Security_Group";
-        KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, workgroupName);
+        KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, workgroupName);
         assertNotNull("Workgroup '" + workgroupName + "' should be valid", group);
         for (String workgroupUserId : KIMServiceLocator.getIdentityManagementService().getGroupMemberPrincipalIds(group.getGroupId())) {
             Person workgroupUser = KIMServiceLocator.getPersonService().getPerson(workgroupUserId);

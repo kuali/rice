@@ -7,8 +7,8 @@
 			<description>EDENSERVICE-DOCS.child1child1</description>
 			<label>EDENSERVICE-DOCS.child1child1</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
 			<docHandler>http://localhost:8080/en-dev/Rule.do?methodToCall=docHandler</docHandler>
 			<active>true</active>
 		</documentType>
@@ -18,8 +18,8 @@
 			<description>EDENSERVICE-DOCS.child1child1child</description>
 			<label>EDENSERVICE-DOCS.child1child1child</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
 			<docHandler>http://localhost:8080/en-dev/Rule.do?methodToCall=docHandler</docHandler>
 			<active>true</active>
 		</documentType>
@@ -29,13 +29,13 @@
 			<description>EDENSERVICE-DOCS.child3</description>
 			<label>EDENSERVICE-DOCS.child3</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
 			<docHandler>http://localhost:8080/en-dev/Rule.do?methodToCall=docHandler</docHandler>
 			<active>true</active>
 		</documentType>
 	</documentTypes>
-	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">	
+	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>
 			<documentType>EDENSERVICE-DOCS.child1child1child</documentType>
 			<ruleTemplate>DocumentTypeRouting</ruleTemplate>

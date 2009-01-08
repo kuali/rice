@@ -29,38 +29,37 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 
 /**
- * NotificationRecipientService implementation 
+ * NotificationRecipientService implementation
  * This implementation relies on KIM user and group management
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NotificationRecipientServiceKimImpl implements NotificationRecipientService
 {
-    private static final Logger LOG = 
+    private static final Logger LOG =
         Logger.getLogger(NotificationRecipientServiceKimImpl.class);
-  
+
     protected IdentityManagementService getIdentityManagementService()
     {
         return KIMServiceLocator.getIdentityManagementService();
     }
-    
+
     /**
-     * Uses the IdentityManagementService of KIM to get the members of a group. 
-     * 
+     * Uses the IdentityManagementService of KIM to get the members of a group.
+     *
      * @param groupRecipientId the String name of the recipient group
      * @return a String array of all direct (child) principals and descendent principals
      * @see org.kuali.rice.ken.service.NotificationRecipientService#getGroupMembers(java.lang.String)
      */
-    public String[] getGroupMembers(String groupRecipientId) 
+    public String[] getGroupMembers(String groupRecipientId)
     {
-        KimGroup group = getIdentityManagementService()
-                .getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, groupRecipientId);
-       
+        KimGroup group = getIdentityManagementService().getGroup(groupRecipientId);
+
         List<String> ids = getIdentityManagementService().getGroupMemberPrincipalIds(group.getGroupId());
-        
+
         String[] array = new String[ids.size()];
         return ids.toArray(array);
     }
-    
+
     /**
      * This method retrieves the display name for a user.
      * @param userId
@@ -71,15 +70,15 @@ public class NotificationRecipientServiceKimImpl implements NotificationRecipien
         //Gary's handling user conversion
         return null;
     }
-    
+
     /**
      *
      * @see org.kuali.rice.ken.service.NotificationRecipientService#isRecipientValid(java.lang.String, java.lang.String)
      */
-     public boolean isRecipientValid(String recipientId, String recipientType) 
+     public boolean isRecipientValid(String recipientId, String recipientType)
      {
          boolean b = false;
-         
+
          if( recipientType.equals(KimGroupImpl.GROUP_MEMBER_TYPE))
          {
              b = isGroupRecipientValid( recipientId );
@@ -100,18 +99,18 @@ public class NotificationRecipientServiceKimImpl implements NotificationRecipien
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.rice.ken.service.NotificationRecipientService#isGroupRecipientValid(java.lang.String)
      */
-    public boolean isGroupRecipientValid(String kimGroupName)
+    public boolean isGroupRecipientValid(String groupRecipientId)
     {
         return (KIMServiceLocator.getIdentityManagementService()
-                .getGroupByName( KimConstants.TEMP_GROUP_NAMESPACE, kimGroupName ) != null);
+                .getGroup( groupRecipientId ) != null);
     }
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.rice.ken.service.NotificationRecipientService#isUserRecipientValid(java.lang.String)
      */
     public boolean isUserRecipientValid(String principalName)

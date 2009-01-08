@@ -51,13 +51,13 @@
 					</fieldEvaluation>
 				</fieldDef>
 			</searchingConfig>
-		</ruleAttribute>		
+		</ruleAttribute>
 	</ruleAttributes>
 	<ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
 		<ruleTemplate>
 			<name>searchTemplate</name>
 			<description>search template</description>
-			<!-- 
+			<!--
 				<attributes>
 				<attribute>
 				<name>XMLSearchableAttribute</name>
@@ -74,9 +74,9 @@
 			<label>SearchDocType</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<attributesInherited>false</attributesInherited>
 			<active>true</active>
 			<policies>

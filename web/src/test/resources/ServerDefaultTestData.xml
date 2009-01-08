@@ -159,49 +159,54 @@
 			<lastName>employee</lastName>
 		</user>
 	</users>
-	<workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
-		<workgroup>
+	<groups xmlns="ns:workflow/Group" xsi:schemaLocation="ns:workflow/Group resource:Group">
+		<group>
 			<id>1</id>
-			<workgroupName>WorkflowAdmin</workgroupName>
+			<name>WorkflowAdmin</name>
+			<namespace>KR-WKFLW</namespace>
 			<description>WorkflowAdmin</description>
 			<members>
-				<authenticationId>quickstart</authenticationId>
-                <authenticationId>admin</authenticationId>
+				<principalName>quickstart</principalName>
+                <principalName>admin</principalName>
 			</members>
-		</workgroup>
-		<workgroup>
+		</group>
+		<group>
 			<id>2</id>
-			<workgroupName>KUALI_PED</workgroupName>
+			<name>KUALI_PED</name>
+			<namespace>KUALI</namespace>
 			<description>KUALI_PED</description>
 			<members>
-				<authenticationId>employee</authenticationId>
+				<principalName>employee</principalName>
 			</members>
-		</workgroup>
-		<workgroup>
+		</group>
+		<group>
 			<id>3</id>
-			<workgroupName>KUALI_OPERATIONS</workgroupName>
+			<name>KUALI_OPERATIONS</name>
+			<namespace>KUALI</namespace>
 			<description>KUALI_OPERATIONS</description>
 			<members>
-				<authenticationId>employee</authenticationId>
+				<principalName>employee</principalName>
 			</members>
-		</workgroup>
-		<workgroup>
+		</group>
+		<group>
 			<id>4</id>
-			<workgroupName>KUALI_ROLE_MAINTENANCE</workgroupName>
+			<name>KUALI_ROLE_MAINTENANCE</name>
+			<namespace>KUALI</namespace>
 			<description>KUALI_ROLE_MAINTENANCE</description>
 			<members>
-				<authenticationId>employee</authenticationId>
+				<principalName>employee</principalName>
 			</members>
-		</workgroup>
-		<workgroup>
+		</group>
+		<group>
 			<id>5</id>
-			<workgroupName>KUALI_ROLE_SUPERVISOR</workgroupName>
+			<name>KUALI_ROLE_SUPERVISOR</name>
+			<namespace>KUALI</namespace>
 			<description>KUALI_ROLE_SUPERVISOR</description>
 			<members>
-				<authenticationId>supervisr</authenticationId>
+				<principalName>supervisr</principalName>
 			</members>
-		</workgroup>
-	</workgroups>
+		</group>
+	</groups>
 	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
 		<ruleAttribute>
 			<name>DestinationAttribute</name>
@@ -278,8 +283,8 @@
 			<label>Workflow Maintenance Document</label>
 			<postProcessorName>none</postProcessorName>
 			<docHandler>docHandler is now mandatory...</docHandler>
-			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
 			<active>true</active>
 			<policies>
 				<policy>
@@ -300,16 +305,16 @@
 			</routePaths>
 			<routeNodes>
 				<start name="adhoc">
-					<exceptionWorkgroup>WorkflowAdmin</exceptionWorkgroup>
+					<exceptionWorkgroup>KR-WKFLW:WorkflowAdmin</exceptionWorkgroup>
 					<activationType>S</activationType>
 				</start>
 				<requests name="exception">
-					<exceptionWorkgroup>WorkflowAdmin</exceptionWorkgroup>
+					<exceptionWorkgroup>KR-WKFLW:WorkflowAdmin</exceptionWorkgroup>
 					<activationType>S</activationType>
 					<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 				</requests>
 				<requests name="Workflow Document Routing">
-					<exceptionWorkgroup>WorkflowAdmin</exceptionWorkgroup>
+					<exceptionWorkgroup>KR-WKFLW:WorkflowAdmin</exceptionWorkgroup>
 					<activationType>S</activationType>
 					<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 					<mandatoryRoute>true</mandatoryRoute>
@@ -322,8 +327,8 @@
 			<description>Workflow Maintenance Document Type Document</description>
 			<label>Workflow Maintenance Document Type Document</label>
 			<postProcessorName>org.kuali.rice.kew.doctype.DocumentTypePostProcessor</postProcessorName>
-			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
 			<docHandler>http://localhost:8080/SampleRiceClient/en/DocumentType.do?methodToCall=docHandler</docHandler>
 			<active>true</active>
 			<policies />
@@ -334,7 +339,7 @@
 			</routePaths>
 			<routeNodes>
 				<start name="placeholder">
-					<exceptionWorkgroup>WorkflowAdmin</exceptionWorkgroup>
+					<exceptionWorkgroup>KR-WKFLW:WorkflowAdmin</exceptionWorkgroup>
 					<activationType>S</activationType>
 				</start>
 			</routeNodes>
@@ -345,8 +350,8 @@
 			<description>Rule Maintenance Document Type Document</description>
 			<label>Rule Maintenance Document Type Document</label>
 			<postProcessorName>org.kuali.rice.kew.rule.RulePostProcessor</postProcessorName>
-			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
 			<docHandler>http://localhost:8080/SampleRiceClient/en/Rule.do?methodToCall=docHandler</docHandler>
 			<active>true</active>
 			<policies />
@@ -357,7 +362,7 @@
 			</routePaths>
 			<routeNodes>
 				<start name="placeholder">
-					<exceptionWorkgroup>WorkflowAdmin</exceptionWorkgroup>
+					<exceptionWorkgroup>KR-WKFLW:WorkflowAdmin</exceptionWorkgroup>
 					<activationType>S</activationType>
 				</start>
 			</routeNodes>
@@ -368,9 +373,9 @@
 			<description>Document to generate a new workgroup</description>
 			<label>Add/modify EDEN workgroup</label>
 			<postProcessorName>org.kuali.rice.kew.workgroup.WorkgroupPostProcessor</postProcessorName>
-			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
 			<docHandler>http://localhost:8080/SampleRiceClient/en/Workgroup.do?methodToCall=docHandler</docHandler>
 			<active>true</active>
 			<routingVersion>1</routingVersion>
@@ -399,9 +404,9 @@
 			<description>Create a New Travel Request</description>
 			<label>Travel Request</label>
 			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
-			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
 			<docHandler>http://localhost:8080/SampleRiceClient/travelDocument2.do?methodToCall=docHandler</docHandler>
 			<routePaths>
 				<routePath>
@@ -435,9 +440,9 @@
 			<description>Create a New Travel Request</description>
 			<label>Travel Request</label>
 			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
-			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
 			<docHandler>http://localhost:8080/SampleRiceClient/docHandler.do</docHandler>
 			<routePaths>
 				<routePath>
@@ -455,9 +460,9 @@
 			<description>Create a New Travel Fiscal Officer</description>
 			<label>Travel Fiscal Officer</label>
 			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
-			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
 			<docHandler>http://localhost:8080/SampleRiceClient/docHandler.do</docHandler>
 			<routePaths>
 				<routePath>
@@ -492,7 +497,7 @@
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
 				<responsibility>
-					<workgroup>WorkflowAdmin</workgroup>
+					<workgroup>KR-WKFLW:WorkflowAdmin</workgroup>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>

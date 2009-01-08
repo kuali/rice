@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
-	<workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
-		<workgroup>
+	<groups xmlns="ns:workflow/Group" xsi:schemaLocation="ns:workflow/Group resource:Group">
+		<group>
 			<id>100</id>
-			<workgroupName>ExceptionRoutingGroup</workgroupName>
+			<name>ExceptionRoutingGroup</name>
+			<namespace>KR-WKFLW</namespace>
 			<description>ExceptionRoutingGroup</description>
 			<members>
-				<authenticationId>user3</authenticationId>
+				<principalName>user3</principalName>
 			</members>
-		</workgroup>
-	</workgroups>
+		</group>
+	</groups>
 	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
 		<ruleAttribute>
 			<name>ExplodingRuleAttribute</name>
@@ -27,9 +28,9 @@
 			<label>ExceptionRoutingSequentialDoc</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>ExceptionRoutingGroup</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:ExceptionRoutingGroup</defaultExceptionWorkgroupName>
 			<active>true</active>
 			<policies>
 				<policy>
@@ -64,8 +65,8 @@
 			<label>ExceptionRoutingSequentialDoc</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
 			<active>true</active>
 			<policies>
 				<policy>
@@ -95,32 +96,32 @@
 			</routePaths>
 			<routeNodes>
 				<start name="AdHoc">
-					<exceptionWorkgroupName>TestWorkgroup</exceptionWorkgroupName>
+					<exceptionWorkgroupName>KR-WKFLW:TestWorkgroup</exceptionWorkgroupName>
 					<activationType>P</activationType>
 				</start>
 				<split name="Split">
-					<exceptionWorkgroupName>TestWorkgroup</exceptionWorkgroupName>
+					<exceptionWorkgroupName>KR-WKFLW:TestWorkgroup</exceptionWorkgroupName>
 				</split>
 				<join name="Join">
-					<exceptionWorkgroupName>TestWorkgroup</exceptionWorkgroupName>
+					<exceptionWorkgroupName>KR-WKFLW:TestWorkgroup</exceptionWorkgroupName>
 				</join>
 				<requests name="RouteNode1">
-					<exceptionWorkgroupName>TestWorkgroup</exceptionWorkgroupName>
+					<exceptionWorkgroupName>KR-WKFLW:TestWorkgroup</exceptionWorkgroupName>
 					<activationType>P</activationType>
 					<ruleTemplate>RouteNode1</ruleTemplate>
 				</requests>
 				<requests name="Explode">
-					<exceptionWorkgroupName>ExceptionRoutingGroup</exceptionWorkgroupName>
+					<exceptionWorkgroupName>KR-WKFLW:ExceptionRoutingGroup</exceptionWorkgroupName>
 					<activationType>P</activationType>
 					<ruleTemplate>Explode</ruleTemplate>
 				</requests>
 				<requests name="RouteNode3">
-					<exceptionWorkgroupName>TestWorkgroup</exceptionWorkgroupName>
+					<exceptionWorkgroupName>KR-WKFLW:TestWorkgroup</exceptionWorkgroupName>
 					<activationType>P</activationType>
 					<ruleTemplate>RouteNode3</ruleTemplate>
 				</requests>
 				<requests name="RouteNode4">
-					<exceptionWorkgroupName>TestWorkgroup</exceptionWorkgroupName>
+					<exceptionWorkgroupName>KR-WKFLW:TestWorkgroup</exceptionWorkgroupName>
 					<activationType>P</activationType>
 					<ruleTemplate>RouteNode4</ruleTemplate>
 				</requests>
@@ -135,8 +136,8 @@
 			<label>AdhocTransitionTestDocument</label>
 			<postProcessorName>org.kuali.rice.kew.routemanager.ExceptionRoutingTestPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
 			<active>true</active>
 			<policies>
 				<policy>
@@ -156,11 +157,11 @@
 			</routePaths>
 			<routeNodes>
 				<start name="AdHoc">
-					<exceptionWorkgroupName>TestWorkgroup</exceptionWorkgroupName>
+					<exceptionWorkgroupName>KR-WKFLW:TestWorkgroup</exceptionWorkgroupName>
 					<activationType>P</activationType>
 				</start>
 				<requests name="requests">
-					<exceptionWorkgroupName>TestWorkgroup</exceptionWorkgroupName>
+					<exceptionWorkgroupName>KR-WKFLW:TestWorkgroup</exceptionWorkgroupName>
 					<activationType>P</activationType>
 					<ruleTemplate>RouteNode4</ruleTemplate>
 				</requests>

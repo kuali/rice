@@ -123,6 +123,7 @@ public interface XmlConstants {
     // workgroups, most of the elements are not known to the core and are dictated by the institutional plugin
     public static final String GROUPS = "groups";
     public static final String GROUP = "group";
+    public static final String ID = "id";
     public static final String NAMESPACE = "namespace";
     public static final String EXTENSIONS = "extensions";
     public static final String EXTENSION = "extension";

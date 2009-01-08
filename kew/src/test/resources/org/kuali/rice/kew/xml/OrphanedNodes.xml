@@ -7,9 +7,9 @@
       <label>DocumentTypeXmlParserTestDoc_OrphanedNodese</label>
       <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
-      <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-      <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-      <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+      <superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+      <blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+      <defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
       <active>true</active>
       <routePaths>
         <routePath>

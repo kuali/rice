@@ -123,7 +123,7 @@ public class RuleXmlExporter implements XmlExporter, XmlConstants {
                     if (ruleResponsibility.isUsingWorkflowUser()) {
                         renderer.renderTextElement(respElement, USER, ruleResponsibility.getWorkflowUser().getAuthenticationUserId().getId());
                     } else if (ruleResponsibility.isUsingGroup()) {
-                        renderer.renderTextElement(respElement, WORKGROUP, ruleResponsibility.getGroup().getGroupName());
+                        renderer.renderTextElement(respElement, WORKGROUP, ruleResponsibility.getGroup().getNamespaceCode().trim() + ":" + ruleResponsibility.getGroup().getGroupName().trim());
                     } else if (ruleResponsibility.isUsingRole()) {
                         renderer.renderTextElement(respElement, ROLE, ruleResponsibility.getRuleResponsibilityName());
                         renderer.renderTextElement(respElement, APPROVE_POLICY, ruleResponsibility.getApprovePolicy());

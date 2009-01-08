@@ -48,9 +48,9 @@
 		<documentType>
 			<name>DocumentSearchActionTest_NoProcessor</name>
 			<label>DocumentSearchActionTest</label>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<docHandler>_blank</docHandler>
 			<policies>
 				<policy>
@@ -76,14 +76,14 @@
 				<start name="start">
 					<activationType>P</activationType>
 				</start>
-            </routeNodes>    
+            </routeNodes>
 		</documentType>
 		<documentType>
 			<name>DocumentSearchActionTest_HideSpecific</name>
 			<label>DocumentSearchActionTest</label>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<docHandler>_blank</docHandler>
 			<policies>
 				<policy>
@@ -112,14 +112,14 @@
 				<start name="start">
 					<activationType>P</activationType>
 				</start>
-            </routeNodes>    
+            </routeNodes>
 		</documentType>
 		<documentType>
 			<name>DocumentSearchActionTest_HideAll</name>
 			<label>DocumentSearchActionTest_HideAll</label>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<docHandler>_blank</docHandler>
 			<policies>
 				<policy>
@@ -148,7 +148,7 @@
 				<start name="start">
 					<activationType>P</activationType>
 				</start>
-            </routeNodes>    
+            </routeNodes>
 		</documentType>
     </documentTypes>
-</data>		
+</data>

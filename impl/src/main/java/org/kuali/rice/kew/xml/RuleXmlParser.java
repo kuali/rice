@@ -398,9 +398,23 @@ public class RuleXmlParser implements XmlConstants {
                 throw new InvalidXmlException(e);
             }
         } else if (workgroup != null) {
+            String[] workgroupData = workgroup.split(":");
+            String workgroupNamespace;
+            String workgroupName;
+            if (workgroupData.length == 1) {
+                workgroupName = workgroupData[0].trim();
+                workgroupNamespace = KimConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE;
+            } else if (workgroupData.length == 2) {
+                workgroupNamespace = workgroupData[0].trim();
+                workgroupName = workgroupData[1].trim();
+            } else {
+                throw new InvalidXmlException("Workgroup must be defined as: 'groupNamespace:groupName'");
+            }
+
             // allow core config parameter replacement in responsibilities
-            workgroup = Utilities.substituteConfigParameters(workgroup);
-            KimGroup workgroupObject = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, workgroup);
+            workgroupName = Utilities.substituteConfigParameters(workgroupName);
+            workgroupNamespace = Utilities.substituteConfigParameters(workgroupNamespace);
+            KimGroup workgroupObject = KIMServiceLocator.getIdentityManagementService().getGroupByName(workgroupNamespace, workgroupName);
             //Workgroup workgroupObject = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId(workgroup));
             if (workgroupObject == null) {
                 throw new InvalidXmlException("Could not locate workgroup: " + workgroup);

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
-<!-- this document is used in the testChangingDocumentTypeOnEnrouteDocument test and will 
+<!-- this document is used in the testChangingDocumentTypeOnEnrouteDocument test and will
 serve as the next version of the document type.  If the document follows this path instead of the
 old path it will go final after the first approve is taken, which is bad  -->
 	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
@@ -9,10 +9,10 @@ old path it will go final after the first approve is taken, which is bad  -->
 			<description>TestDocumentType</description>
 			<label>TestDocumentType</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
 			<docHandler>_blank</docHandler>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<policies>
 				<policy>
 					<name>PRE_APPROVE</name>
@@ -28,7 +28,7 @@ old path it will go final after the first approve is taken, which is bad  -->
 					<start name="AdHoc" nextNode="RuleTemplate3" />
 					<requests name="RuleTemplate3" />
 				</routePath>
-			</routePaths>			
+			</routePaths>
 			<routeNodes>
 				<start name="AdHoc">
 					<activationType>P</activationType>
@@ -37,7 +37,7 @@ old path it will go final after the first approve is taken, which is bad  -->
 					<activationType>S</activationType>
 					<ruleTemplate>RuleTemplate3</ruleTemplate>
 				</requests>
-			</routeNodes>			
+			</routeNodes>
 		</documentType>
 	</documentTypes>
 </data>

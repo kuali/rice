@@ -39,10 +39,10 @@
 			<description>TestDocumentType</description>
 			<label>TestDocumentType</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
 			<docHandler>_blank</docHandler>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<policies>
 				<policy>
 					<name>PRE_APPROVE</name>
@@ -63,7 +63,7 @@
 					<start name="AdHoc" nextNode="RuleTemplate3" />
 					<requests name="RuleTemplate3" />
 				</routePath>
-			</routePaths>			
+			</routePaths>
 			<routeNodes>
 				<start name="AdHoc">
 					<activationType>P</activationType>
@@ -72,17 +72,17 @@
 					<activationType>S</activationType>
 					<ruleTemplate>RuleTemplate3</ruleTemplate>
 				</requests>
-			</routeNodes>			
+			</routeNodes>
 		</documentType>
 		<documentType>
 			<name>DocumentTypeDuex</name>
 			<description>DocumentTypeDuex</description>
 			<label>DocumentTypeDuex</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
 			<docHandler>_blank</docHandler>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>			
-		</documentType>		
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+		</documentType>
 	</documentTypes>
 </data>

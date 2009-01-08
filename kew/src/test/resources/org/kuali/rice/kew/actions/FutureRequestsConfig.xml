@@ -21,9 +21,9 @@
 			<description>FutureRequestsDoc</description>
 			<label>FutureRequestsDoc</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>NonSIT</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:NonSIT</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<docHandler>_blank</docHandler>
 			<active>true</active>
 			<routePaths>
@@ -78,7 +78,7 @@
 					<priority>1</priority>
 				</responsibility>
 			</responsibilities>
-		</rule>		
+		</rule>
 		<rule>
 			<documentType>FutureRequestsDoc</documentType>
 			<ruleTemplate>FutureRequestsTemplate2</ruleTemplate>
@@ -98,7 +98,7 @@
 			<description>FutureRequests Doc Rule 2 Node 2</description>
 			<responsibilities>
 				<responsibility>
-					<workgroup>NonSIT</workgroup>
+					<workgroup>KR-WKFLW:NonSIT</workgroup>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>

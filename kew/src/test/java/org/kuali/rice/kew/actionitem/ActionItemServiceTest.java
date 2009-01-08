@@ -330,8 +330,8 @@ public class ActionItemServiceTest extends KEWTestCase {
 
         document = new WorkflowDocument(new NetworkIdDTO("jitrue"), document.getRouteHeaderId());
 
-        KimGroup testGroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, "TestWorkgroup");
-        KimGroup adminGroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, "WorkflowAdmin");
+        KimGroup testGroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "TestWorkgroup");
+        KimGroup adminGroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "WorkflowAdmin");
 
         ActionRequestDTO[] ars = document.getActionRequests();
         boolean routedWorkflowAdmin = false;

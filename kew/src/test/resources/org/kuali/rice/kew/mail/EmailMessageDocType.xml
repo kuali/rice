@@ -23,9 +23,9 @@
     		<description>PingDocument</description>
     		<label>PingDocument</label>
             <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-            <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-            <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-            <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+            <superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
     		<docHandler>http://localhost:8080/en-dev/this/is/a/sample/doc/handler</docHandler>
             <notificationFromAddress>arh14@cornell.edu</notificationFromAddress>
     		<routePaths>
@@ -48,9 +48,9 @@
             <description>PingDocument2</description>
             <label>PingDocument2</label>
             <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-            <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-            <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-            <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+            <superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
             <docHandler>http://localhost:8080/en-dev/this/is/a/sample/doc/handler</docHandler>
             <notificationFromAddress>arh14@cornell.edu</notificationFromAddress>
             <routePaths>
@@ -72,9 +72,9 @@
             <name>PingDocumentCustomStyle</name>
             <description>PingDocumentCustomStyle</description>
             <label>PingDocumentCustomStyle</label>
-            <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-            <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-            <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+            <superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
             <docHandler>http://localhost:8080/en-dev/this/is/a/sample/doc/handler</docHandler>
             <notificationFromAddress>arh14@cornell.edu</notificationFromAddress>
             <emailStylesheet>doc.custom.email.style</emailStylesheet>
@@ -98,9 +98,9 @@
             <description>PingDocumentWithEmailAttrib</description>
             <label>PingDocumentWithEmailAttrib</label>
             <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-            <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-            <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-            <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+            <superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
             <docHandler>http://localhost:8080/en-dev/this/is/a/sample/doc/handler</docHandler>
             <notificationFromAddress>arh14@cornell.edu</notificationFromAddress>
             <attributes>

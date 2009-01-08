@@ -63,7 +63,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 		}
 		return principal.getPrincipalId();
 	}
-	
+
 	public String getIdForGroupName(String namespace, String groupName) {
 		KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroupByName(namespace, groupName);
 		if (group == null) {
@@ -72,7 +72,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 		return group.getGroupId();
 	}
 
-	
+
 	public KimGroup getGroup(GroupIdDTO groupId) {
 		if (groupId.getGroupId() != null) {
 			return KIMServiceLocator.getIdentityManagementService().getGroup(groupId.getGroupId());
@@ -91,7 +91,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 		}
 		throw new IllegalArgumentException("Invalid GroupId type was passed: " + groupId);
 	}
-	
+
 	public String getGroupId(GroupId groupId) {
 		if (groupId == null || groupId.isEmpty()) {
 			return null;
@@ -103,7 +103,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 		}
 		throw new IllegalArgumentException("Invalid GroupId type was passed: " + groupId);
 	}
-	
+
 	public KimPrincipal getPrincipal(UserIdDTO userId) {
 		if (userId == null) {
 			return null;
@@ -116,7 +116,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 		}
 		throw new IllegalArgumentException("Invalid UserIdDTO type was passed: " + userId);
 	}
-	
+
 	public String getPrincipalId(UserIdDTO userId) {
 		if (userId == null) {
 			return null;
@@ -129,12 +129,12 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 		}
 		throw new IllegalArgumentException("Invalid UserIdDTO type was passed: " + userId);
 	}
-	
+
 	public Recipient getPrincipalRecipient(String principalId) throws KEWUserNotFoundException {
 		// for now, until WorkflowUser is converted, let's continue using WorkflowUser
 		return KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(principalId));
 	}
-	
+
 	public Recipient getGroupRecipient(String groupId) {
 		KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
 		return new KimGroupRecipient(group);

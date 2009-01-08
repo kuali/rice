@@ -11,10 +11,10 @@
 			<name>ActionListDocumentType</name>
 			<label>Action List Document Type</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
 			<docHandler>none</docHandler>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<policies>
 				<policy>
 					<name>PRE_APPROVE</name>
@@ -30,7 +30,7 @@
 					<start name="Initial" nextNode="RuleTemplate1" />
 					<requests name="RuleTemplate1"/>
 				</routePath>
-			</routePaths>			
+			</routePaths>
 			<routeNodes>
 				<start name="Initial">
 					<activationType>P</activationType>
@@ -39,16 +39,16 @@
 					<activationType>P</activationType>
 					<ruleTemplate>RuleTemplate1</ruleTemplate>
 				</requests>
-			</routeNodes>			
+			</routeNodes>
 		</documentType>
         <documentType>
             <name>ActionListDocumentType_PrimaryDelegate</name>
             <label>Action List Document Type 2</label>
             <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-            <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+            <superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
             <docHandler>none</docHandler>
-            <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-            <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+            <blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
             <policies>
                 <policy>
                     <name>PRE_APPROVE</name>
@@ -64,7 +64,7 @@
                     <start name="Initial" nextNode="RuleTemplate1" />
                     <requests name="RuleTemplate1"/>
                 </routePath>
-            </routePaths>           
+            </routePaths>
             <routeNodes>
                 <start name="Initial">
                     <activationType>P</activationType>
@@ -73,17 +73,17 @@
                     <activationType>P</activationType>
                     <ruleTemplate>RuleTemplate1</ruleTemplate>
                 </requests>
-            </routeNodes>           
+            </routeNodes>
         </documentType>
         <documentType>
             <name>ActionListDocumentType_PrimaryDelegate2</name>
             <label>Action List Document Type 3</label>
             <parent>ActionListDocumentType_PrimaryDelegate</parent>
             <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-            <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+            <superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
             <docHandler>none</docHandler>
-            <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-            <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+            <blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
         </documentType>
 	</documentTypes>
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
@@ -119,7 +119,7 @@
             					<responsibility>
               						<user>ewestfal</user>
 				            	</responsibility>
-          					</responsibilities>          					
+          					</responsibilities>
           					<delegationType>S</delegationType>
 				        </rule>
 				        <rule>
@@ -131,7 +131,7 @@
             					<responsibility>
               						<user>bmcgough</user>
 				            	</responsibility>
-          					</responsibilities>          					
+          					</responsibilities>
           					<delegationType>S</delegationType>
 				        </rule>
 					</delegations>
@@ -152,20 +152,20 @@
 				            	</responsibility>
           					</responsibilities>
           					<delegationType>S</delegationType>
-				        </rule>	
+				        </rule>
 				    </delegations>
 				</responsibility>
 				<responsibility>
 					<user>user1</user>
 					<actionRequested>K</actionRequested>
 					<priority>1</priority>
-				</responsibility>				
+				</responsibility>
 				<responsibility>
-					<workgroup>NonSIT</workgroup>
+					<workgroup>KR-WKFLW:NonSIT</workgroup>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>
-			</responsibilities>				
+			</responsibilities>
 		</rule>
         <rule>
             <documentType>ActionListDocumentType_PrimaryDelegate</documentType>
@@ -199,7 +199,7 @@
                                 <responsibility>
                                     <user>ewestfal</user>
                                 </responsibility>
-                            </responsibilities>                             
+                            </responsibilities>
                             <delegationType>S</delegationType>
                         </rule>
                         <rule>
@@ -211,7 +211,7 @@
                                 <responsibility>
                                     <user>bmcgough</user>
                                 </responsibility>
-                            </responsibilities>                             
+                            </responsibilities>
                             <delegationType>S</delegationType>
                         </rule>
                     </delegations>
@@ -232,20 +232,20 @@
                                 </responsibility>
                             </responsibilities>
                             <delegationType>S</delegationType>
-                        </rule> 
+                        </rule>
                     </delegations>
                 </responsibility>
                 <responsibility>
                     <user>user1</user>
                     <actionRequested>K</actionRequested>
                     <priority>1</priority>
-                </responsibility>               
+                </responsibility>
                 <responsibility>
-                    <workgroup>NonSIT</workgroup>
+                    <workgroup>KR-WKFLW:NonSIT</workgroup>
                     <actionRequested>A</actionRequested>
                     <priority>1</priority>
                 </responsibility>
-            </responsibilities>             
+            </responsibilities>
         </rule>
         <rule>
             <documentType>ActionListDocumentType_PrimaryDelegate</documentType>
@@ -272,7 +272,7 @@
                         </rule>
                     </delegations>
                 </responsibility>
-            </responsibilities>             
+            </responsibilities>
         </rule>
         <rule>
             <documentType>ActionListDocumentType_PrimaryDelegate2</documentType>
@@ -299,7 +299,7 @@
                         </rule>
                     </delegations>
                 </responsibility>
-            </responsibilities>             
+            </responsibilities>
         </rule>
 	</rules>
 </data>

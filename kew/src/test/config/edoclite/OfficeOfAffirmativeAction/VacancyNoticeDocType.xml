@@ -7,8 +7,8 @@
       <description>Vacancy Notice</description>
       <label>Vacancy Notice</label>
       <postProcessorName>org.kuali.rice.kew.edl.EDocLitePostProcessor</postProcessorName>
-      <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-      <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+      <superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+      <blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
       <docHandler>${workflow.url}/EDocLite</docHandler>
       <active>true</active>
       <attributes>

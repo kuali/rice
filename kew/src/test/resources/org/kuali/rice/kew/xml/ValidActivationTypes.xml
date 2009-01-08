@@ -7,8 +7,8 @@
       <label>DocumentTypeXmlParserTestDoc_ValidActivationTypes</label>
       <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
-      <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-      <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+      <superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+      <blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
       <active>true</active>
       <attributes>
         <attribute><name>TestRuleAttribute2</name></attribute>
@@ -26,23 +26,23 @@
       </routePaths>
       <routeNodes>
         <start name="AdHoc">
-          <exceptionWorkgroupName>TestWorkgroup</exceptionWorkgroupName>
+          <exceptionWorkgroupName>KR-WKFLW:TestWorkgroup</exceptionWorkgroupName>
           <activationType>S</activationType>
         </start>
         <requests name="1">
-          <exceptionWorkgroupName>TestWorkgroup</exceptionWorkgroupName>
+          <exceptionWorkgroupName>KR-WKFLW:TestWorkgroup</exceptionWorkgroupName>
           <activationType>P</activationType>
         </requests>
         <requests name="2">
-          <exceptionWorkgroupName>TestWorkgroup</exceptionWorkgroupName>
+          <exceptionWorkgroupName>KR-WKFLW:TestWorkgroup</exceptionWorkgroupName>
           <activationType>sequential</activationType>
         </requests>
         <requests name="3">
-          <exceptionWorkgroupName>TestWorkgroup</exceptionWorkgroupName>
+          <exceptionWorkgroupName>KR-WKFLW:TestWorkgroup</exceptionWorkgroupName>
           <activationType>SEQUENCE</activationType>
         </requests>
         <requests name="4">
-          <exceptionWorkgroupName>TestWorkgroup</exceptionWorkgroupName>
+          <exceptionWorkgroupName>KR-WKFLW:TestWorkgroup</exceptionWorkgroupName>
           <activationType>parallel</activationType>
         </requests>
       </routeNodes>

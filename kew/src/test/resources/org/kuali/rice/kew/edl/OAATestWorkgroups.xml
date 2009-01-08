@@ -1,47 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
-  <workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
-    <workgroup>
-      <workgroupName>OAA_BL-BUS</workgroupName>
+  <groups xmlns="ns:workflow/Group" xsi:schemaLocation="ns:workflow/Group resource:Group">
+    <group>
+      <name>OAA_BL-BUS</name>
+      <namespace>KR-WKFLW</namespace>
       <members>
-        <authenticationId>ewestfal</authenticationId>
+        <principalName>ewestfal</principalName>
       </members>
-    </workgroup>
-    <workgroup>
-      <workgroupName>OAA_BL-EDUC</workgroupName>
+    </group>
+    <group>
+      <name>OAA_BL-EDUC</name>
+      <namespace>KR-WKFLW</namespace>
       <members>
-        <authenticationId>rkirkend</authenticationId>
+        <principalName>rkirkend</principalName>
       </members>
-    </workgroup>
-    <workgroup>
-      <workgroupName>OAA_BL-COAS</workgroupName>
+    </group>
+    <group>
+      <name>OAA_BL-COAS</name>
+      <namespace>KR-WKFLW</namespace>
       <members>
-        <authenticationId>jhopf</authenticationId>
+        <principalName>jhopf</principalName>
       </members>
-    </workgroup>
-    <workgroup>
-      <workgroupName>OAA_BL-PSY</workgroupName>
+    </group>
+    <group>
+      <name>OAA_BL-PSY</name>
+      <namespace>KR-WKFLW</namespace>
       <members>
-        <authenticationId>jitrue</authenticationId>
+        <principalName>jitrue</principalName>
       </members>
-    </workgroup>
-    <workgroup>
-      <workgroupName>ViceProvostForAcademicAffairs</workgroupName>
+    </group>
+    <group>
+      <name>ViceProvostForAcademicAffairs</name>
+      <namespace>KR-WKFLW</namespace>
       <members>
-        <authenticationId>natjohns</authenticationId>
+        <principalName>natjohns</principalName>
       </members>
-    </workgroup>
-    <workgroup>
-      <workgroupName>OfficeOfAffirmativeAction</workgroupName>
+    </group>
+    <group>
+      <name>OfficeOfAffirmativeAction</name>
+      <namespace>KR-WKFLW</namespace>
       <members>
-        <authenticationId>pmckown</authenticationId>
+        <principalName>pmckown</principalName>
       </members>
-    </workgroup>
-    <workgroup>
-      <workgroupName>OfficeOfAffirmativeActionSecond</workgroupName>
+    </group>
+    <group>
+      <name>OfficeOfAffirmativeActionSecond</name>
+      <namespace>KR-WKFLW</namespace>
       <members>
-        <authenticationId>temay</authenticationId>
+        <principalName>temay</principalName>
       </members>
-    </workgroup>
-  </workgroups>
+    </group>
+  </groups>
 </data>

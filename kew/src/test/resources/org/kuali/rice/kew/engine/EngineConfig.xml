@@ -46,7 +46,7 @@
 			<description>Organization Routing</description>
 			<type>RuleAttribute</type>
 		</ruleAttribute>
-		
+
 	</ruleAttributes>
 	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
 		<documentType>
@@ -55,8 +55,8 @@
 			<label>SeqDocType</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
 			<active>true</active>
 			<policies>
 				<policy>
@@ -78,21 +78,21 @@
 			</routePaths>
 			<routeNodes>
 				<start name="AdHoc">
-					<exceptionWorkgroupName>TestWorkgroup</exceptionWorkgroupName>
+					<exceptionWorkgroupName>KR-WKFLW:TestWorkgroup</exceptionWorkgroupName>
 					<activationType>P</activationType>
 				</start>
 				<requests name="WorkflowDocument">
-					<exceptionWorkgroupName>TestWorkgroup</exceptionWorkgroupName>
+					<exceptionWorkgroupName>KR-WKFLW:TestWorkgroup</exceptionWorkgroupName>
 					<activationType>P</activationType>
 					<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 				</requests>
 				<requests name="Acknowledge1">
-					<exceptionWorkgroupName>TestWorkgroup</exceptionWorkgroupName>
+					<exceptionWorkgroupName>KR-WKFLW:TestWorkgroup</exceptionWorkgroupName>
 					<activationType>P</activationType>
 					<ruleTemplate>Ack1Template</ruleTemplate>
 				</requests>
 				<requests name="Acknowledge2">
-					<exceptionWorkgroupName>TestWorkgroup</exceptionWorkgroupName>
+					<exceptionWorkgroupName>KR-WKFLW:TestWorkgroup</exceptionWorkgroupName>
 					<activationType>P</activationType>
 					<ruleTemplate>Ack2Template</ruleTemplate>
 				</requests>
@@ -104,9 +104,9 @@
 			<label>ParallelDocType</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<active>true</active>
 			<policies>
 				<policy>
@@ -169,9 +169,9 @@
 			<label>ParallelDocType</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<active>true</active>
 			<policies>
 				<policy>
@@ -230,9 +230,9 @@
 			<label>AdHocApproversDocType</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<active>true</active>
 			<policies>
 				<policy>
@@ -294,9 +294,9 @@
 			<label>DynDocType</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<active>true</active>
 			<policies>
 				<policy>
@@ -316,9 +316,9 @@
 			<label>DynSeqDocType</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<active>true</active>
 			<routePaths>
 				<routePath>
@@ -352,7 +352,7 @@
 				</requests>
 			</routeNodes>
 		</documentType>
-		<!-- 
+		<!--
 		<documentType>
 			<name>DynChartOrgDocType</name>
 			<parent>DynDocType</parent>
@@ -360,9 +360,9 @@
 			<label>DynSeqDocType</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<active>true</active>
 			<policies>
 				<policy>
@@ -397,9 +397,9 @@
 			<label>DynChartOrgNestedDocType</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<active>true</active>
 			<policies>
 				<policy>
@@ -422,7 +422,7 @@
 	    		<routePath processName="DispatchWorkarea" initialNode="Dispatch Organization Request">
 			    	<requests name="Dispatch Organization Request" nextNode="Dispatch"/>
 	    			<requests name="Dispatch"/>
-			    </routePath>        
+			    </routePath>
 			</routePaths>
 			<routeNodes>
 				<start name="Initial">
@@ -435,7 +435,7 @@
 				<process name="DispatchWorkarea"/>
 			    <requests name="Dispatch Organization Request">
         	        <activationType>P</activationType>
-              		<ruleTemplate>OrgRouting</ruleTemplate>	    
+              		<ruleTemplate>OrgRouting</ruleTemplate>
 			    </requests>
     			<requests name="Dispatch">
 		    		<activationType>P</activationType>
@@ -450,9 +450,9 @@
 			<label>SubProcessDocType</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<active>true</active>
 			<policies>
 				<policy>
@@ -499,9 +499,9 @@
 			<label>Simple Document Type</label>
 			<postProcessorName>org.kuali.rice.kew.engine.StandardWorkflowEngineTest$TestPostProcessor</postProcessorName>
 			<docHandler>about:blank</docHandler>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<policies>
 				<policy>
 					<name>PRE_APPROVE</name>
@@ -581,7 +581,7 @@
 		<ruleTemplate>
 		  	<name>DispatchTemplate</name>
 		  	<description>Chart/Org Dispatch Template</description>
-		  	<attributes>  	
+		  	<attributes>
 				<attribute>
 					<name>ChartOrgDispatchAttribute</name>
 					<required>false</required>
@@ -1004,7 +1004,7 @@
 				</responsibility>
 			</responsibilities>
 		</rule>
-		<!-- 
+		<!--
 		<rule>
 			<documentType>DynChartOrgNestedDocType</documentType>
 			<ruleTemplate>DispatchTemplate</ruleTemplate>
@@ -1019,7 +1019,7 @@
 				</responsibility>
 			</responsibilities>
 		</rule>
-		
+
 		end ChartOrgDynamicNodeTest -->
 		<!--  sub process rules -->
 		<rule>

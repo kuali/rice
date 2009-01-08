@@ -18,7 +18,7 @@
 					</display>
 					<!-- enforce attrib-level validation -->
 					<validation required="false" />
-					<!-- 
+					<!--
 						<regex>AAAD COAS|AFRI COAS|AMST COAS|ANCS COAS</regex>
 						<message>[Attrib] A valid department must be specified</message>
 					</validation>
@@ -39,7 +39,7 @@
 					<fieldEvaluation>
 						<xpathexpression>normalize-space(substring-before(//department, ' ')) = wf:ruledata('department')</xpathexpression>
 					</fieldEvaluation>
-				</fieldDef>				
+				</fieldDef>
 				<xmlDocumentContent>
 					<department>%department%</department>
 				</xmlDocumentContent>
@@ -118,7 +118,7 @@
 	</ruleAttributes>
 
 	<ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
-		<!-- 
+		<!--
 			<ruleTemplate allowOverwrite="true">
 			<name>UniversityGraduateSchool-SchoolRoutingDelegation</name>
 			<description>University Graduate School Office - School Routing Delegation</description>
@@ -133,7 +133,7 @@
 		<ruleTemplate allowOverwrite="true">
 			<name>UniversityGraduateSchoolOffice-SchoolRouting</name>
 			<description>University Graduate School Office - School Routing</description>
-			<!-- 
+			<!--
 				<delegationTemplate>UniversityGraduateSchool-SchoolRoutingDelegation</delegationTemplate>
 			-->
 			<attributes>
@@ -143,7 +143,7 @@
 				</attribute>
 			</attributes>
 		</ruleTemplate>
-		<!-- 
+		<!--
 			<ruleTemplate allowOverwrite="true">
 			<name>UniversityGraduateSchool-DepartmentRoutingDelegation</name>
 			<description>University Graduate School Office - Department Routing Delegation</description>
@@ -158,7 +158,7 @@
 		<ruleTemplate allowOverwrite="true">
 			<name>UniversityGraduateSchoolOffice-DepartmentRouting</name>
 			<description>University Graduate School Office - Department Routing</description>
-			<!-- 
+			<!--
 				<delegationTemplate>UniversityGraduateSchool-DepartmentRoutingDelegation</delegationTemplate>
 			-->
 			<attributes>
@@ -179,9 +179,9 @@
 			<description>Create a New Graduate Course</description>
 			<label>New Course Request</label>
 			<postProcessorName>org.kuali.rice.kew.edoclite.EDocLitePostProcessor</postProcessorName>
-			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
 			<docHandler>http://localhost:8080/en-dev/EDocLite</docHandler>
 			<active>true</active>
 			<attributes>
@@ -233,7 +233,7 @@
 			</routeNodes>
 		</documentType>
 	</documentTypes>
-<!-- 
+<!--
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>
 			<documentType>NewCourseRequest</documentType>
@@ -286,7 +286,7 @@
 				</responsibility>
 			</responsibilities>
 		</rule>
-		
+
 	</rules>
  -->
 </data>

@@ -3,33 +3,35 @@
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="ns:workflow resource:WorkflowData">
 
-  <workgroups xmlns="ns:workflow/Workgroup"
-              xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
-    <workgroup>
-      <workgroupName>Unit Test Workgroup 1</workgroupName>
+  <groups xmlns="ns:workflow/Group"
+              xsi:schemaLocation="ns:workflow/Group resource:Group">
+    <group>
+      <name>Unit Test Workgroup 1</name>
+      <namespace>KR-WKFLW</namespace>
       <description>fake group 1 for testing xml</description>
-      <activeInd>true</activeInd>
-      <workgroupType>W</workgroupType>
-      <workgroupCurInd>false</workgroupCurInd>
+      <active>true</active>
+      <!-- <workgroupType>W</workgroupType>
+      <workgroupCurInd>false</workgroupCurInd>-->
 
       <members>
-        <workflowId>5000</workflowId>
-        <authenticationId>Unit Test User 2</authenticationId>
+        <principalId>5000</principalId>
+        <principalName>Unit Test User 2</principalName>
       </members>
-    </workgroup>
+    </group>
 
-    <workgroup>
-      <workgroupName>Unit Test Workgroup 2</workgroupName>
+    <group>
+      <name>Unit Test Workgroup 2</name>
+      <namespace>KR-WKFLW</namespace>
       <description>fake group 2 for testing xml</description>
       <activeInd>false</activeInd>
-      <workgroupType>W</workgroupType>
-      <workgroupCurInd>false</workgroupCurInd>
+      <!-- <workgroupType>W</workgroupType>
+      <workgroupCurInd>false</workgroupCurInd>-->
 
       <members>
-        <authenticationId>Unit Test User 1</authenticationId>
-        <uuId>5001</uuId>
-        <emplId>5002</emplId>
+        <principalName>Unit Test User 1</principalName>
+        <principalId>5001</principalId>
+        <principalId>5002</principalId>
       </members>
-    </workgroup>
-  </workgroups>
+    </group>
+  </groups>
 </data>

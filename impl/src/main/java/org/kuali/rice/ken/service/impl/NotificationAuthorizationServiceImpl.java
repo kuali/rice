@@ -65,6 +65,6 @@ public class NotificationAuthorizationServiceImpl implements NotificationAuthori
     public boolean isUserAdministrator(String userId) {
     	String groupNameId = NotificationConstants.KEW_CONSTANTS.NOTIFICATION_ADMIN_GROUP_NAME;
 	    Person user = KIMServiceLocator.getPersonService().getPerson(userId);
-	    return KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(user.getPrincipalId(), KimConstants.TEMP_GROUP_NAMESPACE, groupNameId);
+	    return KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(user.getPrincipalId(), KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, groupNameId);
     }
 }

@@ -56,6 +56,7 @@
   <complexType name="GroupInfo">
     <all>
     <!-- samples show different ordering, so just using 'all' here -->
+      <element name="id" type="c:ShortStringType" minOccurs="0"/>
       <element name="name" type="c:ShortStringType" minOccurs="1"/>
       <element name="namespace" type="c:ShortStringType" minOccurs="1"/>
 	  <element name="description" type="c:LongStringType" minOccurs="0">

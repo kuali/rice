@@ -46,9 +46,9 @@
 			<description>Workflow Maintenance Document</description>
 			<label>Workflow Maintenance Document</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-      <docHandler>_blank</docHandler>
-			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+            <docHandler>_blank</docHandler>
+			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
 			<active>true</active>
 			<policies>
 				<policy>
@@ -68,11 +68,11 @@
 			</routePaths>
 			<routeNodes>
 				<start name="adhoc">
-					<exceptionWorkgroupName>WorkflowAdmin</exceptionWorkgroupName>
+					<exceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</exceptionWorkgroupName>
 					<activationType>S</activationType>
 				</start>
 				<requests name="Workflow Document Routing">
-					<exceptionWorkgroupName>WorkflowAdmin</exceptionWorkgroupName>
+					<exceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</exceptionWorkgroupName>
 					<activationType>S</activationType>
 					<ruleTemplate>DocumentTypeRouting</ruleTemplate>
 					<mandatoryRoute>true</mandatoryRoute>
@@ -85,8 +85,8 @@
 			<description>EDENSERVICE-DOCS.child1</description>
 			<label>EDENSERVICE-DOCS.child1</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
 			<docHandler>http://localhost:8080/en-dev/Rule.do?methodToCall=docHandler</docHandler>
 			<active>true</active>
 		</documentType>
@@ -96,8 +96,8 @@
 			<description>EDENSERVICE-DOCS.child1child1</description>
 			<label>EDENSERVICE-DOCS.child1child1</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
 			<docHandler>http://localhost:8080/en-dev/Rule.do?methodToCall=docHandler</docHandler>
 			<active>true</active>
 		</documentType>
@@ -107,8 +107,8 @@
 			<description>EDENSERVICE-DOCS.child2</description>
 			<label>EDENSERVICE-DOCS.child2</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
 			<docHandler>http://localhost:8080/en-dev/Rule.do?methodToCall=docHandler</docHandler>
 			<active>true</active>
 		</documentType>
@@ -118,8 +118,8 @@
 			<description>EDENSERVICE-DOCS.child3</description>
 			<label>EDENSERVICE-DOCS.child3</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
 			<docHandler>http://localhost:8080/en-dev/Rule.do?methodToCall=docHandler</docHandler>
 			<active>true</active>
 		</documentType>
@@ -129,8 +129,8 @@
 			<description>Rule Maintenance Document Type Document</description>
 			<label>Rule Maintenance Document Type Document</label>
 			<postProcessorName>org.kuali.rice.kew.rule.RulePostProcessor</postProcessorName>
-			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
 			<docHandler>http://localhost:8080/en-dev/Rule.do?methodToCall=docHandler</docHandler>
 			<active>true</active>
 			<policies>
@@ -151,11 +151,11 @@
 			</routePaths>
 			<routeNodes>
 				<start name="adhoc">
-					<exceptionWorkgroupName>WorkflowAdmin</exceptionWorkgroupName>
+					<exceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</exceptionWorkgroupName>
 					<activationType>S</activationType>
 				</start>
 				<requests name="RuleRouting">
-					<exceptionWorkgroupName>WorkflowAdmin</exceptionWorkgroupName>
+					<exceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</exceptionWorkgroupName>
 					<activationType>S</activationType>
 					<ruleTemplate>RuleRouting</ruleTemplate>
 					<mandatoryRoute>true</mandatoryRoute>
@@ -167,8 +167,8 @@
 			<description>NotRelated</description>
 			<label>NotRelated</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
 			<docHandler>http://localhost:8080/en-dev/Rule.do?methodToCall=docHandler</docHandler>
 			<active>true</active>
 			<routePaths>
@@ -179,11 +179,11 @@
 			</routePaths>
 			<routeNodes>
 				<start name="adhoc">
-					<exceptionWorkgroupName>WorkflowAdmin</exceptionWorkgroupName>
+					<exceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</exceptionWorkgroupName>
 					<activationType>S</activationType>
 				</start>
 				<requests name="Workflow Document Routing">
-					<exceptionWorkgroupName>WorkflowAdmin</exceptionWorkgroupName>
+					<exceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</exceptionWorkgroupName>
 					<activationType>S</activationType>
 					<ruleTemplate>DocumentTypeRouting</ruleTemplate>
 					<mandatoryRoute>true</mandatoryRoute>

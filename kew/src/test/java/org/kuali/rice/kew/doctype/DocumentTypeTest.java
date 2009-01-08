@@ -150,7 +150,7 @@ public class DocumentTypeTest extends KEWTestCase {
         DocumentTypeXmlExporter exporter = new DocumentTypeXmlExporter();
         ExportDataSet dataSet = new ExportDataSet();
         dataSet.getDocumentTypes().add(parsedDocument);
-        assertTrue(XmlHelper.jotNode(exporter.export(dataSet)).matches("(?s).*<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>.*"));
+        assertTrue(XmlHelper.jotNode(exporter.export(dataSet)).matches("(?s).*<defaultExceptionWorkgroupName>KR:WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>.*"));
         //assertNotNull(parsedDocument.getDefaultExceptionWorkgroup());
         //assertEquals("Wrong default exception workgroup", "TestWorkgroup", parsedDocument.getDefaultExceptionWorkgroup().getDisplayName());
         assertEquals("Wrong doc handler url", "http://someurl/path/_blank", parsedDocument.getDocHandlerUrl());
@@ -496,17 +496,17 @@ public class DocumentTypeTest extends KEWTestCase {
     	verifyDocumentTypeLinking();
 
     }
-    
+
     @Test
     public void testPostProcessor() throws Exception {
     	loadXmlFile("DoctypePostProcessorConfig.xml");
-    	
+
     	DocumentType ppTestParent1 = KEWServiceLocator.getDocumentTypeService().findByName("PPTestParent1");
     	DocumentType ppTestParent2 = KEWServiceLocator.getDocumentTypeService().findByName("PPTestParent2");
     	DocumentType ppTestChild1 = KEWServiceLocator.getDocumentTypeService().findByName("PPTestChild1");
     	DocumentType ppTestChild2 = KEWServiceLocator.getDocumentTypeService().findByName("PPTestChild2");
     	DocumentType ppTestChild3 = KEWServiceLocator.getDocumentTypeService().findByName("PPTestChild3");
-    	
+
     	assertEquals("Incorrect PostProcessor", MockPostProcessor.class, ppTestParent1.getPostProcessor().getClass());
     	assertEquals("Incorrect PostProcessor", DefaultPostProcessor.class, ppTestParent2.getPostProcessor().getClass());
     	assertEquals("Incorrect PostProcessor", MockPostProcessor.class, ppTestChild1.getPostProcessor().getClass());

@@ -15,9 +15,9 @@
 			<name>NotificationTest</name>
 			<label>Notification Test</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<docHandler>none</docHandler>
 			<policies>
 				<policy>
@@ -50,15 +50,15 @@
 				</requests>
 			</routeNodes>
 		</documentType>
-		
+
 		<!-- DocumentTypes for testing the notificationFromAddress -->
 		 <documentType>
 			<name>NotificationFromAddressParent</name>
 			<label>Doc Type From Address Notification Test</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<docHandler>none</docHandler>
 			<notificationFromAddress>fakey@mcfakey.com</notificationFromAddress>
 			<policies>
@@ -87,9 +87,9 @@
 			<parent>NotificationFromAddressParent</parent>
 			<label>Doc Type From Address Notification Test Child with own address</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<docHandler>none</docHandler>
 			<notificationFromAddress>fakey@mcchild.com</notificationFromAddress>
 		</documentType>
@@ -98,11 +98,11 @@
 			<parent>NotificationFromAddressParent</parent>
 			<label>Doc Type From Address Notification Test Child with own address</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<docHandler>none</docHandler>
-		</documentType>		
+		</documentType>
 	</documentTypes>
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>
@@ -137,7 +137,7 @@
             					<responsibility>
               						<user>ewestfal</user>
 				            	</responsibility>
-          					</responsibilities>          					
+          					</responsibilities>
           					<delegationType>S</delegationType>
 				        </rule>
 				        <rule>
@@ -149,7 +149,7 @@
             					<responsibility>
               						<user>jitrue</user>
 				            	</responsibility>
-          					</responsibilities>          					
+          					</responsibilities>
           					<delegationType>S</delegationType>
 				        </rule>
 					</delegations>
@@ -163,7 +163,7 @@
 					<user>ewestfal</user>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
-				</responsibility>				
+				</responsibility>
 				<responsibility>
 					<user>jhopf</user>
 					<actionRequested>A</actionRequested>

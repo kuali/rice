@@ -341,7 +341,7 @@
             <ignorePrevious>false</ignorePrevious>
             <responsibilities>
                 <responsibility>
-                    <workgroup>WorkflowAdmin</workgroup>
+                    <workgroup>KR-WKFLW:WorkflowAdmin</workgroup>
                     <actionRequested>A</actionRequested>
                     <priority>1</priority>
                 </responsibility>

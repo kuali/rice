@@ -179,7 +179,7 @@ public class BeanConverterTester extends KEWTestCase {
     @Test public void testConvertActionItem() throws Exception {
         // get test data
         String testWorkgroupName = "TestWorkgroup";
-        KimGroup testWorkgroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, testWorkgroupName);
+        KimGroup testWorkgroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, testWorkgroupName);
         String testWorkgroupId = testWorkgroup.getGroupId();
         assertTrue("Test workgroup '" + testWorkgroupName + "' should have at least one user", KIMServiceLocator.getIdentityManagementService().getDirectGroupMemberPrincipalIds(testWorkgroup.getGroupId()).size() > 0);
         String workflowId = KIMServiceLocator.getIdentityManagementService().getDirectGroupMemberPrincipalIds(testWorkgroup.getGroupId()).get(0);

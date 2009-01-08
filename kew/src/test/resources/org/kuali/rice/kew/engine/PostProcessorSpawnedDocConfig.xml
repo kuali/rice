@@ -6,10 +6,10 @@
 			<!-- <description>TestDocumentType</description> -->
 			<label>TestDocumentType</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
 			<docHandler>_blank</docHandler>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<routePaths>
 				<routePath>
 					<start name="AdHoc" />
@@ -27,8 +27,8 @@
 			<label>SpawnNewDocumentType</label>
 			<postProcessorName>org.kuali.rice.kew.engine.PostProcessorSpawnDocument</postProcessorName>
 			<docHandler>_blank</docHandler>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
 			<active>true</active>
 			<routePaths>
 				<routePath>
@@ -38,11 +38,11 @@
 			</routePaths>
 			<routeNodes>
 				<start name="AdHoc">
-					<exceptionWorkgroupName>TestWorkgroup</exceptionWorkgroupName>
+					<exceptionWorkgroupName>KR-WKFLW:TestWorkgroup</exceptionWorkgroupName>
 					<activationType>P</activationType>
 				</start>
 				<requests name="WorkflowDocument">
-					<exceptionWorkgroupName>TestWorkgroup</exceptionWorkgroupName>
+					<exceptionWorkgroupName>KR-WKFLW:TestWorkgroup</exceptionWorkgroupName>
 					<activationType>P</activationType>
 					<ruleTemplate>AlwaysMatchTemplate</ruleTemplate>
 				</requests>

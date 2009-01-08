@@ -9,8 +9,8 @@
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
 			<!--  below will make the parser blow chunks if white space is not handled correctly -->
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
 			<active>true</active>
 			<routePaths>
 				<routePath>
@@ -19,7 +19,7 @@
 			</routePaths>
 			<routeNodes>
 				<start name="AdHoc">
-					<exceptionWorkgroupName>TestWorkgroup</exceptionWorkgroupName>
+					<exceptionWorkgroupName>KR-WKFLW:TestWorkgroup</exceptionWorkgroupName>
 					<activationType>P</activationType>
 				</start>
 			</routeNodes>
@@ -27,7 +27,7 @@
 	</documentTypes>
 
      <ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
-				
+
 		<ruleAttribute>
 			<name>KualiOrgReviewAttribute</name>
 			<className>org.kuali.rice.kew.rule.xmlrouting.StandardGenericXMLRuleAttribute</className>
@@ -50,10 +50,10 @@
 				</xmlDocumentContent>
 			</routingConfig>
 		</ruleAttribute>
-		
+
 
 	</ruleAttributes>
-	
+
   <ruleTemplates xmlns="ns:workflow/RuleTemplate"
                  xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
 
@@ -82,7 +82,7 @@
 				<ruleExtension>
 					<attribute>
 					KualiOrgReviewAttribute </attribute>
-					<ruleTemplate> KualiOrgReviewTemplate 
+					<ruleTemplate> KualiOrgReviewTemplate
 					</ruleTemplate>
 					<ruleExtensionValues>
 						<ruleExtensionValue>

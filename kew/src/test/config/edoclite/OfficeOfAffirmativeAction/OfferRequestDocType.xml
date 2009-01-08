@@ -7,8 +7,8 @@
       <description>Offer Request</description>
       <label>Offer Request</label>
       <postProcessorName>org.kuali.rice.kew.edl.EDocLitePostProcessor</postProcessorName>
-      <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-      <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+      <superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+      <blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
       <docHandler>${workflow.url}/EDocLite</docHandler>
       <active>true</active>
       <attributes>

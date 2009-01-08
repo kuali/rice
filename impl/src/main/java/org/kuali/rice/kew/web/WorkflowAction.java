@@ -183,8 +183,8 @@ public abstract class WorkflowAction extends DispatchAction {
 				String recipientPrincipalId = KEWServiceLocator.getIdentityHelperService().getIdForPrincipalName(recipient.getId());
 				routingForm.getWorkflowDocument().adHocRouteDocumentToPrincipal(recipient.getActionRequested(), routeNodeName, routingForm.getAnnotation(), recipientPrincipalId, "", true);
 			} else {
-				String groupId = KEWServiceLocator.getIdentityHelperService().getIdForGroupName(KimConstants.TEMP_GROUP_NAMESPACE, recipient.getId());
-				routingForm.getWorkflowDocument().adHocRouteDocumentToGroup(recipient.getActionRequested(), routeNodeName, routingForm.getAnnotation(), groupId, "", true);
+				//String groupId = KEWServiceLocator.getIdentityHelperService().getIdForGroupName(KimConstants.TEMP_GROUP_NAMESPACE, recipient.getId());
+				routingForm.getWorkflowDocument().adHocRouteDocumentToGroup(recipient.getActionRequested(), routeNodeName, routingForm.getAnnotation(), recipient.getId(), "", true);
 			}
 			routingForm.getAppSpecificRouteList().add(recipient);
 			routingForm.resetAppSpecificRoute();
@@ -263,7 +263,7 @@ public abstract class WorkflowAction extends DispatchAction {
 			if (recipient.getType().equals("person")) {
 				revoke.setPrincipalId(KEWServiceLocator.getIdentityHelperService().getIdForPrincipalName(recipient.getId()));
 			} else if (recipient.getType().equals("workgroup")) {
-				revoke.setGroupId(KEWServiceLocator.getIdentityHelperService().getIdForGroupName(KimConstants.TEMP_GROUP_NAMESPACE, recipient.getId()));
+				revoke.setGroupId(recipient.getId());
 			}
 			revocations.add(revoke);
 		}

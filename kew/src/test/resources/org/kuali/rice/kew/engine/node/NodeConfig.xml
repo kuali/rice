@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
-	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">	
+	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
 		<documentType>
 			<name>SeqDocType</name>
 			<description>SeqDocType</description>
 			<label>SeqDocType</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
 			<active>true</active>
 			<policies>
 				<policy>
@@ -30,21 +30,21 @@
 			</routePaths>
 			<routeNodes>
 				<start name="AdHoc">
-					<exceptionWorkgroupName>TestWorkgroup</exceptionWorkgroupName>
+					<exceptionWorkgroupName>KR-WKFLW:TestWorkgroup</exceptionWorkgroupName>
 					<activationType>P</activationType>
 				</start>
 				<requests name="WorkflowDocument">
-					<exceptionWorkgroupName>TestWorkgroup</exceptionWorkgroupName>
+					<exceptionWorkgroupName>KR-WKFLW:TestWorkgroup</exceptionWorkgroupName>
 					<activationType>P</activationType>
 					<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 				</requests>
 				<requests name="Acknowledge1">
-					<exceptionWorkgroupName>TestWorkgroup</exceptionWorkgroupName>
+					<exceptionWorkgroupName>KR-WKFLW:TestWorkgroup</exceptionWorkgroupName>
 					<activationType>P</activationType>
 					<ruleTemplate>Ack1Template</ruleTemplate>
 				</requests>
 				<requests name="Acknowledge2">
-					<exceptionWorkgroupName>TestWorkgroup</exceptionWorkgroupName>
+					<exceptionWorkgroupName>KR-WKFLW:TestWorkgroup</exceptionWorkgroupName>
 					<activationType>P</activationType>
 					<ruleTemplate>Ack2Template</ruleTemplate>
 				</requests>
@@ -56,9 +56,9 @@
 			<label>ParallelDocType</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<active>true</active>
 			<policies>
 				<policy>
@@ -288,5 +288,4 @@
 			</responsibilities>
 		</rule>
 	</rules>
-</data>	
-		
+</data>

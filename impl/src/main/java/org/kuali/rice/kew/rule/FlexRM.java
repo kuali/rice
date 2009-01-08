@@ -367,8 +367,6 @@ public class FlexRM {
 	if (resp.isUsingWorkflowUser()) {
 	    recipient = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(resp.getRuleResponsibilityName()));
 	} else {
-	    //recipient = new KimGroupRecipient(KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, resp.getRuleResponsibilityName()));
-	    //recipient = new KimGroupRecipient(KIMServiceLocator.getIdentityManagementService().getGroup(resp.getRuleResponsibilityName()));
 	    recipient = new KimGroupRecipient(resp.getGroup());
 	}
 	ActionRequestValue actionRequest;

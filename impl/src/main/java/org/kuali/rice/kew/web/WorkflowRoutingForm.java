@@ -193,7 +193,7 @@ public class WorkflowRoutingForm extends ActionForm {
         if(workgroupId != null){
             KimGroup workgroup = KIMServiceLocator.getIdentityManagementService().getGroup(workgroupId);
             if(workgroup != null){
-                getAppSpecificRouteRecipient().setId(workgroup.getGroupName());
+                getAppSpecificRouteRecipient().setId(workgroup.getGroupId());
             }
         }
         getAppSpecificRouteRecipient().setType("workgroup");

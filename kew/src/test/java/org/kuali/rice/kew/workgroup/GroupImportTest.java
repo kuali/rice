@@ -23,6 +23,7 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in.
@@ -47,7 +48,7 @@ public class GroupImportTest extends KEWTestCase {
 
         IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
         //verify the workgroup did not get into the db
-        KimGroup group = identityManagementService.getGroupByName("KR-WKFLW", "TestUserGroup");
+        KimGroup group = identityManagementService.getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "TestUserGroup");
 
         List<String> members = identityManagementService.getGroupMemberPrincipalIds(group.getGroupId());
         assertNotNull(group);
@@ -55,6 +56,6 @@ public class GroupImportTest extends KEWTestCase {
         assertTrue(identityManagementService.isMemberOfGroup(identityManagementService.getPrincipalByPrincipalName("ewestfal").getPrincipalId(), group.getGroupId()));
         assertTrue(identityManagementService.isMemberOfGroup(identityManagementService.getPrincipalByPrincipalName("rkirkend").getPrincipalId(), group.getGroupId()));
         assertTrue(identityManagementService.isMemberOfGroup(identityManagementService.getPrincipal("15").getPrincipalId(), group.getGroupId()));
-        assertTrue(KIMServiceLocator.getGroupService().isGroupMemberOfGroup(identityManagementService.getGroupByName("KFS", "TestWorkgroup").getGroupId(), group.getGroupId()));
+        assertTrue(KIMServiceLocator.getGroupService().isGroupMemberOfGroup(identityManagementService.getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "TestWorkgroup").getGroupId(), group.getGroupId()));
     }
 }

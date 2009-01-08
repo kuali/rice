@@ -93,23 +93,23 @@ public class DocumentTypeXmlExporter implements XmlExporter, XmlConstants {
         renderer.renderTextElement(docTypeElement, POST_PROCESSOR_NAME, documentType.getPostProcessorName());
         KimGroup superUserWorkgroup = documentType.getSuperUserWorkgroupNoInheritence();
         if (superUserWorkgroup != null) {
-            renderer.renderTextElement(docTypeElement, SUPER_USER_WORKGROUP_NAME, superUserWorkgroup.getGroupName());
+            renderer.renderTextElement(docTypeElement, SUPER_USER_WORKGROUP_NAME, superUserWorkgroup.getNamespaceCode().trim() + ":" + superUserWorkgroup.getGroupName().trim());
         }
         KimGroup blanketWorkgroup = documentType.getBlanketApproveWorkgroup();
         if (blanketWorkgroup != null){
-        	renderer.renderTextElement(docTypeElement, BLANKET_APPROVE_WORKGROUP_NAME, blanketWorkgroup.getGroupName());
+        	renderer.renderTextElement(docTypeElement, BLANKET_APPROVE_WORKGROUP_NAME, blanketWorkgroup.getNamespaceCode().trim() + ":" + blanketWorkgroup.getGroupName().trim());
         }
         if (documentType.getBlanketApprovePolicy() != null){
         	renderer.renderTextElement(docTypeElement, BLANKET_APPROVE_POLICY, documentType.getBlanketApprovePolicy());
         }
         KimGroup reportingWorkgroup = documentType.getReportingWorkgroup();
         if (reportingWorkgroup != null) {
-            renderer.renderTextElement(docTypeElement, REPORTING_WORKGROUP_NAME, reportingWorkgroup.getGroupName());
+            renderer.renderTextElement(docTypeElement, REPORTING_WORKGROUP_NAME, reportingWorkgroup.getNamespaceCode().trim() + ":" + reportingWorkgroup.getGroupName().trim());
         }
         if (!flattenedNodes.isEmpty() && hasDefaultExceptionWorkgroup) {
-        	String exceptionWorkgroupName = ((RouteNode)flattenedNodes.get(0)).getExceptionWorkgroupName();
-        	if (!StringUtils.isBlank(exceptionWorkgroupName)) {
-        		renderer.renderTextElement(docTypeElement, DEFAULT_EXCEPTION_WORKGROUP_NAME, exceptionWorkgroupName);
+        	KimGroup exceptionWorkgroup = ((RouteNode)flattenedNodes.get(0)).getExceptionWorkgroup();
+        	if (exceptionWorkgroup != null) {
+        		renderer.renderTextElement(docTypeElement, DEFAULT_EXCEPTION_WORKGROUP_NAME, exceptionWorkgroup.getNamespaceCode().trim() + ":" + exceptionWorkgroup.getGroupName().trim());
         	}
         }
         if (!StringUtils.isBlank(documentType.getUnresolvedDocHandlerUrl())) {
@@ -340,7 +340,7 @@ public class DocumentTypeXmlExporter implements XmlExporter, XmlConstants {
 	}
     }
 
-    
+
     private NodeType getNodeTypeForNode(RouteNode node) {
         NodeType nodeType = null;
         String errorMessage = "Could not determine proper XML element for the given node type: " + node.getNodeType();

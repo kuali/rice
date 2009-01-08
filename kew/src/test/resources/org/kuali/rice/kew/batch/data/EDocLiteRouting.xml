@@ -16,8 +16,8 @@
       <description>EDocLite Document Type</description>
       <label>EDocLite Document Type</label>
       <postProcessorName>org.kuali.rice.kew.edoclite.EDocLitePostProcessor</postProcessorName>
-      <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-      <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+      <superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+      <blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
       <docHandler>http://localhost:8080/en-dev/EDocLite</docHandler>
       <active>true</active>
       <policies>
@@ -41,12 +41,12 @@
 
       <routeNodes>
         <start name="adhoc">
-          <exceptionWorkgroup>WorkflowAdmin</exceptionWorkgroup>
+          <exceptionWorkgroup>KR-WKFLW:WorkflowAdmin</exceptionWorkgroup>
           <activationType>P</activationType>
         </start>
 
         <requests name="EDocLiteRouting">
-          <exceptionWorkgroup>WorkflowAdmin</exceptionWorkgroup>
+          <exceptionWorkgroup>KR-WKFLW:WorkflowAdmin</exceptionWorkgroup>
           <activationType>S</activationType>
           <ruleTemplate>EDocLiteDocumentTemplate</ruleTemplate>
         </requests>

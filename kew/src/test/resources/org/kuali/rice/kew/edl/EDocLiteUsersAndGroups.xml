@@ -48,7 +48,7 @@
     </user>
     -->
   </users>
-  <workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
+  <groups xmlns="ns:workflow/Group" xsi:schemaLocation="ns:workflow/Group resource:Group">
     <!--  not used
     <workgroup>
       <id>0</id>
@@ -61,23 +61,23 @@
       </members>
     </workgroup>
     -->
-    <workgroup>
+    <group>
       <id>1</id>
       <name>Group1</name>
       <description>Group1</description>
       <members>
-        <authenticationId>dewey</authenticationId>
+        <principalName>dewey</<principalName>>
       </members>
-    </workgroup>
+    </group>
     <!--  not used
     <workgroup>
       <id>2</id>
-      <name>WorkflowAdmin</name>
-      <description>WorkflowAdmin</description>
+      <name>KR-WKFLW:WorkflowAdmin</name>
+      <description>KR-WKFLW:WorkflowAdmin</description>
       <members>
         <authenticationId>quickstart</authenticationId>
       </members>
     </workgroup>
     -->
-  </workgroups>
+  </groups>
 </data>

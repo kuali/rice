@@ -185,7 +185,7 @@ public class ActionListTest extends KEWTestCase {
     	//KimPrincipal jitrue = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("jitrue");
     	WorkflowUser user1 = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("user1"));
     	//KimPrincipal user1 = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("user1");
-    	KimGroup NonSIT = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, "NonSIT");
+    	KimGroup NonSIT = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "NonSIT");
 
     	ActionListFilter noFilter = new ActionListFilter();
     	ActionListFilter excludeSecondaryFilter = new ActionListFilter();

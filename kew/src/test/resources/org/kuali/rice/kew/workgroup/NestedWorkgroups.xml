@@ -1,78 +1,107 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
-  <workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
-      <workgroup>
-        <workgroupName>NWG1</workgroupName>
+  <groups xmlns="ns:workflow/Group" xsi:schemaLocation="ns:workflow/Group resource:Group">
+      <group>
+        <name>NWG1</name>
+        <namespace>KR-WKFLW</namespace>
         <description>NWG1</description>
         <members>
-          <authenticationId>ewestfal</authenticationId>
-          <authenticationId>rkirkend</authenticationId>
+          <principalName>ewestfal</principalName>
+          <principalName>rkirkend</principalName>
         </members>
-      </workgroup>
-      <workgroup>
-        <workgroupName>NWG2</workgroupName>
+      </group>
+      <group>
+        <name>NWG2</name>
+        <namespace>KR-WKFLW</namespace>
         <description>NWG2</description>
         <members>
-          <authenticationId>jhopf</authenticationId>
-          <authenticationId>bmcgough</authenticationId>
+          <principalName>jhopf</principalName>
+          <principalName>bmcgough</principalName>
         </members>
-      </workgroup>
-      <workgroup>
-        <workgroupName>NWGNested1</workgroupName>
+      </group>
+      <group>
+        <name>NWGNested1</name>
+        <namespace>KR-WKFLW</namespace>
         <description>NWGNested1</description>
         <members>
-          <authenticationId>natjohns</authenticationId>
-          <workgroupName>NWG1</workgroupName>
+          <principalName>natjohns</principalName>
+          <groupName>
+            <name>NWG1</name>
+            <namespace>KR-WKFLW</namespace>
+          </groupName>
         </members>
-      </workgroup>
-      <workgroup>
-        <workgroupName>NWGNested2</workgroupName>
+      </group>
+      <group>
+        <name>NWGNested2</name>
+        <namespace>KR-WKFLW</namespace>
         <description>NWGNested1</description>
         <members>
-          <authenticationId>pmckown</authenticationId>
-          <workgroupName>NWG2</workgroupName>
-          <workgroupName>NWGNested1</workgroupName>
+          <principalName>pmckown</principalName>
+          <groupName>
+            <name>NWG2</name>
+            <namespace>KR-WKFLW</namespace>
+          </groupName>
+          <groupName>
+            <name>NWGNested1</name>
+            <namespace>KR-WKFLW</namespace>
+          </groupName>
         </members>
-      </workgroup>
+      </group>
 
-      <workgroup>
-        <workgroupName>NestedWGDupe4</workgroupName>
+      <group>
+        <name>NestedWGDupe4</name>
+        <namespace>KR-WKFLW</namespace>
         <description>NestedWGDupe4</description>
         <members>
-          <authenticationId>xqi</authenticationId>
-          <authenticationId>jitrue</authenticationId>
-          <authenticationId>ewestfal</authenticationId>
+          <principalName>xqi</principalName>
+          <principalName>jitrue</principalName>
+          <principalName>ewestfal</principalName>
         </members>
-      </workgroup>
-      <workgroup>
-        <workgroupName>NestedWGDupe2</workgroupName>
+      </group>
+      <group>
+        <name>NestedWGDupe2</name>
+        <namespace>KR-WKFLW</namespace>
         <description>NestedWGDupe2</description>
         <members>
-          <authenticationId>ewestfal</authenticationId>
-          <authenticationId>bmcgough</authenticationId>
-          <authenticationId>rkirkend</authenticationId>
-          <workgroupName>NestedWGDupe4</workgroupName>
+          <principalName>ewestfal</principalName>
+          <principalName>bmcgough</principalName>
+          <principalName>rkirkend</principalName>
+          <groupName>
+            <name>NestedWGDupe4</name>
+            <namespace>KR-WKFLW</namespace>
+          </groupName>
         </members>
-      </workgroup>
-      <workgroup>
-        <workgroupName>NestedWGDupe3</workgroupName>
+      </group>
+      <group>
+        <name>NestedWGDupe3</name>
+        <namespace>KR-WKFLW</namespace>
         <description>NestedWGDupe3</description>
         <members>
-          <authenticationId>jhopf</authenticationId>
-          <authenticationId>rkirkend</authenticationId>
-          <workgroupName>NestedWGDupe4</workgroupName>
+          <principalName>jhopf</principalName>
+          <principalName>rkirkend</principalName>
+          <groupName>
+            <name>NestedWGDupe4</name>
+            <namespace>KR-WKFLW</namespace>
+          </groupName>
         </members>
-      </workgroup>
-      <workgroup>
-        <workgroupName>NestedWGDupe1</workgroupName>
+      </group>
+      <group>
+        <name>NestedWGDupe1</name>
+        <namespace>KR-WKFLW</namespace>
         <description>NestedWGDupe1</description>
         <members>
-          <authenticationId>ewestfal</authenticationId>
-          <authenticationId>rkirkend</authenticationId>
-          <workgroupName>NestedWGDupe2</workgroupName>
-          <workgroupName>NestedWGDupe3</workgroupName>
+          <principalName>ewestfal</principalName>
+          <principalName>rkirkend</principalName>
+          <groupName>
+            <name>NestedWGDupe2</name>
+            <namespace>KR-WKFLW</namespace>
+          </groupName>
+          <groupName>
+            <name>NestedWGDupe3</name>
+            <namespace>KR-WKFLW</namespace>
+          </groupName>
         </members>
-      </workgroup>
+      </group>
 
-  </workgroups>
+  </groups>
 </data>

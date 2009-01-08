@@ -7,9 +7,9 @@
 			<label>Workflow Maintenance Document</label>
 			<postProcessorName>none</postProcessorName>
       <docHandler>_blank</docHandler>
-			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
 			<active>true</active>
 			<policies>
 				<policy>
@@ -45,8 +45,8 @@
 			<description>Maintenance Document Type Document</description>
 			<label>Maintenance Document Type Document</label>
 			<postProcessorName>org.kuali.rice.kew.doctype.DocumentTypePostProcessor</postProcessorName>
-			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
 			<docHandler>http://localhost:8080/en-dev/DocumentType.do?methodToCall=docHandler</docHandler>
 			<active>true</active>
 		</documentType>
@@ -56,8 +56,8 @@
 			<description>Rule Maintenance Document</description>
 			<label>Rule Maintenance Document</label>
 			<postProcessorName>org.kuali.rice.kew.rule.RulePostProcessor</postProcessorName>
-			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
 			<docHandler>http://localhost:8080/en-dev/Rule.do?methodToCall=docHandler</docHandler>
 			<active>true</active>
 		</documentType>
@@ -68,8 +68,8 @@
 			<label>KualiBaseDocument</label>
 			<postProcessorName>none</postProcessorName>
       <docHandler>_blank</docHandler>
-			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
 			<active>true</active>
 			<policies>
 				<policy>
@@ -89,9 +89,9 @@
 			<label>KualiMaintenanceDocument</label>
 			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
-			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
 			<active>true</active>
 			<routePaths>
 				<routePath>
@@ -118,9 +118,9 @@
 			<label>KualiFinancialDocument</label>
 			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
-			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
 			<active>true</active>
 			<routePaths>
 				<routePath>
@@ -153,8 +153,8 @@
 			<description>KualiInternalBillingDocument</description>
 			<label>KualiInternalBillingDocument</label>
 			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
-			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
 			<docHandler>http://localhost:8080/kuali-dev/financialInternalBilling.do?methodToCall=docHandler</docHandler>
 			<active>true</active>
 		</documentType>
@@ -165,8 +165,8 @@
 			<label>KualiProjectCodeMaintenanceDocument</label>
 			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
-			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
 			<active>true</active>
 		</documentType>
 		<documentType>
@@ -176,8 +176,8 @@
 			<label>KualiDistIncExpDocument</label>
 			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
-			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
 			<active>true</active>
 		</documentType>
 		<documentType>
@@ -187,8 +187,8 @@
 			<label>KualiAccountMaintenanceDocument</label>
 			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
-			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
 			<active>true</active>
 		</documentType>
 		<documentType>
@@ -198,8 +198,8 @@
 			<label>KualiYearEndDistIncExpDocument</label>
 			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
-			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
 			<active>true</active>
 		</documentType>
 		<documentType>
@@ -209,8 +209,8 @@
 			<label>KualiServiceBillingDocument</label>
 			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
-			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
 			<active>true</active>
 		</documentType>
 		<documentType>
@@ -220,8 +220,8 @@
 			<label>KualiTransferOfFundsDocument</label>
 			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
-			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
 			<active>true</active>
 		</documentType>
 		<documentType>
@@ -231,8 +231,8 @@
 			<label>KualiYearEndTransferOfFundsDocument</label>
 			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
-			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
 			<active>true</active>
 		</documentType>
 		<documentType>
@@ -242,8 +242,8 @@
 			<label>KualiAuxiliaryVoucherDocument</label>
 			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
-			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
 			<active>true</active>
 		</documentType>
 		<documentType>
@@ -253,8 +253,8 @@
 			<label>KualiGeneralErrorCorrectionDocument</label>
 			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
-			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
 			<active>true</active>
 		</documentType>
 		<documentType>
@@ -264,8 +264,8 @@
 			<label>KualiYearEndGeneralErrorCorrectionDocument</label>
 			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
-			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
 			<active>true</active>
 		</documentType>
 	</documentTypes>

@@ -230,17 +230,31 @@ public class DocumentTypeXmlParser implements XmlConstants {
         documentType.setCurrentInd(Boolean.TRUE);
 
         String exceptionWgName;
+        String exceptionWgNamespace;
         try {
-            exceptionWgName = (String) xpath.evaluate("./defaultExceptionWorkgroupName", documentTypeNode, XPathConstants.STRING);
+            String exceptionWg = (String) xpath.evaluate("./defaultExceptionWorkgroupName", documentTypeNode, XPathConstants.STRING);
+            String[] exceptionWgData = exceptionWg.split(":");
+            if (exceptionWgData.length == 1) {
+                exceptionWgNamespace = KimConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE;
+                exceptionWgName = exceptionWgData[0];
+            } else if (exceptionWgData.length == 2) {
+                exceptionWgNamespace = exceptionWgData[0];
+                exceptionWgName = exceptionWgData[1];
+            } else {
+                exceptionWgName = null;
+                exceptionWgNamespace = null;
+            }
         } catch (XPathExpressionException xpee) {
             LOG.error("Error obtaining document type defaultExceptionWorkgroupName", xpee);
             throw xpee;
         }
 
+
         if (! Utilities.isEmpty(exceptionWgName)) {
             // allow core config parameter replacement in documenttype workgroups
             exceptionWgName = Utilities.substituteConfigParameters(exceptionWgName);
-        	KimGroup exceptionWg = getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, exceptionWgName);
+            exceptionWgNamespace = Utilities.substituteConfigParameters(exceptionWgNamespace);
+        	KimGroup exceptionWg = getIdentityManagementService().getGroupByName(exceptionWgNamespace, exceptionWgName);
         	if(exceptionWg == null) {
         		throw new WorkflowRuntimeException("Exception workgroup name " + exceptionWgName + " does not exist");
         	}
@@ -282,18 +296,32 @@ public class DocumentTypeXmlParser implements XmlConstants {
 
         try {
             if (((Boolean) xpath.evaluate("./superUserWorkgroupName", documentTypeNode, XPathConstants.BOOLEAN)).booleanValue()) {
-                String wg;
+                String wgName;
+                String wgNamespace;
                 try {
-                    wg = (String) xpath.evaluate("./superUserWorkgroupName", documentTypeNode, XPathConstants.STRING);
+                    String wg = (String) xpath.evaluate("./superUserWorkgroupName", documentTypeNode, XPathConstants.STRING);
+                    String[] wgData = wg.split(":");
+                    if (wgData.length == 1) {
+                        wgNamespace = KimConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE;
+                        wgName = wgData[0];
+                    } else if (wgData.length == 2) {
+                        wgNamespace = wgData[0];
+                        wgName = wgData[1];
+                    } else {
+                        wgName = null;
+                        wgNamespace = null;
+                    }
                 } catch (XPathExpressionException xpee) {
                     LOG.error("Error obtaining document type superUserWorkgroupName", xpee);
                     throw xpee;
                 }
+
                 // allow core config parameter replacement in documenttype workgroups
-                wg = Utilities.substituteConfigParameters(wg);
-                KimGroup suWorkgroup = getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, wg);
+                wgName = Utilities.substituteConfigParameters(wgName);
+                wgNamespace = Utilities.substituteConfigParameters(wgNamespace);
+                KimGroup suWorkgroup = getIdentityManagementService().getGroupByName(wgNamespace, wgName);
                 if (suWorkgroup == null) {
-                    throw new InvalidWorkgroupException("Workgroup could not be found: " + wg);
+                    throw new InvalidWorkgroupException("Workgroup could not be found: " + wgName);
                 }
                 documentType.setSuperUserWorkgroupNoInheritence(suWorkgroup);
             }
@@ -301,12 +329,14 @@ public class DocumentTypeXmlParser implements XmlConstants {
             LOG.error("Error obtaining document type superUserWorkgroupName", xpee);
             throw xpee;
         }
+        String blanketWorkGroup = null;
         String blanketWorkGroupName = null;
+        String blanketWorkGroupNamespace = null;
     	String blanketApprovePolicy = null;
         try {
         	if (((Boolean) xpath.evaluate("./blanketApproveWorkgroupName", documentTypeNode, XPathConstants.BOOLEAN)).booleanValue()) {
-                blanketWorkGroupName =(String) xpath.evaluate("./blanketApproveWorkgroupName", documentTypeNode, XPathConstants.STRING);
-        }
+                blanketWorkGroup =(String) xpath.evaluate("./blanketApproveWorkgroupName", documentTypeNode, XPathConstants.STRING);
+        	}
         	if (((Boolean) xpath.evaluate("./blanketApprovePolicy", documentTypeNode, XPathConstants.BOOLEAN)).booleanValue()) {
                     blanketApprovePolicy =(String) xpath.evaluate("./blanketApprovePolicy", documentTypeNode, XPathConstants.STRING);
             }
@@ -314,12 +344,24 @@ public class DocumentTypeXmlParser implements XmlConstants {
             LOG.error("Error obtaining document type blanketApproveWorkgroupName", xpee);
             throw xpee;
         }
-        if (!StringUtils.isBlank(blanketWorkGroupName) && !StringUtils.isBlank(blanketApprovePolicy)){
+        if (!StringUtils.isBlank(blanketWorkGroup) && !StringUtils.isBlank(blanketApprovePolicy)){
         	throw new InvalidXmlException("Only one of blanket approve name need to be set");
-        } else if (!StringUtils.isBlank(blanketWorkGroupName)){
+        } else if (!StringUtils.isBlank(blanketWorkGroup)){
+            String[] blanketWorkgroupData = blanketWorkGroup.split(":");
+            if (blanketWorkgroupData.length == 1) {
+                blanketWorkGroupNamespace = KimConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE;
+                blanketWorkGroupName = blanketWorkgroupData[0];
+            } else if (blanketWorkgroupData.length == 2) {
+                blanketWorkGroupNamespace = blanketWorkgroupData[0];
+                blanketWorkGroupName = blanketWorkgroupData[1];
+            } else {
+                blanketWorkGroupName = null;
+                blanketWorkGroupNamespace = null;
+            }
             // allow core config parameter replacement in documenttype workgroups
             blanketWorkGroupName = Utilities.substituteConfigParameters(blanketWorkGroupName);
-            KimGroup blanketAppWorkgroup = getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, blanketWorkGroupName);
+            blanketWorkGroupNamespace = Utilities.substituteConfigParameters(blanketWorkGroupNamespace);
+            KimGroup blanketAppWorkgroup = getIdentityManagementService().getGroupByName(blanketWorkGroupNamespace, blanketWorkGroupName);
         	if (blanketAppWorkgroup == null) {
         		throw new InvalidWorkgroupException("The blanket approve workgroup " + blanketWorkGroupName + " does not exist");
         	}
@@ -327,21 +369,35 @@ public class DocumentTypeXmlParser implements XmlConstants {
         } else if (!StringUtils.isBlank(blanketApprovePolicy)){
         	documentType.setBlanketApprovePolicy(blanketApprovePolicy);
         }
-        
+
         try {
             if (((Boolean) xpath.evaluate("./" + REPORTING_WORKGROUP_NAME, documentTypeNode, XPathConstants.BOOLEAN)).booleanValue()) {
                 String wg;
+                String wgNamespace;
+                String wgName;
                 try {
                     wg = (String) xpath.evaluate("./" + REPORTING_WORKGROUP_NAME, documentTypeNode, XPathConstants.STRING);
+                    String[] wgData = wg.split(":");
+                    if (wgData.length == 1) {
+                        wgNamespace = KimConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE;
+                        wgName = wgData[0];
+                    } else if (wgData.length == 2) {
+                        wgNamespace = wgData[0];
+                        wgName = wgData[1];
+                    } else {
+                        wgName = null;
+                        wgNamespace = null;
+                    }
                 } catch (XPathExpressionException xpee) {
                     LOG.error("Error obtaining document type " + REPORTING_WORKGROUP_NAME, xpee);
                     throw xpee;
                 }
                 // allow core config parameter replacement in documenttype workgroups
-                wg = Utilities.substituteConfigParameters(wg);
-                KimGroup reportingWorkgroup = getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, wg);
+                wgName = Utilities.substituteConfigParameters(wgName);
+                wgNamespace = Utilities.substituteConfigParameters(wgNamespace);
+                KimGroup reportingWorkgroup = getIdentityManagementService().getGroupByName(wgNamespace, wgName);
                 if (reportingWorkgroup == null) {
-                    throw new InvalidWorkgroupException("Reporting workgroup could not be found: " + wg);
+                    throw new InvalidWorkgroupException("Reporting workgroup could not be found: " + wgName);
                 }
                 documentType.setReportingWorkgroup(reportingWorkgroup);
             }
@@ -349,8 +405,8 @@ public class DocumentTypeXmlParser implements XmlConstants {
             LOG.error("Error obtaining document type " + REPORTING_WORKGROUP_NAME, xpee);
             throw xpee;
         }
-        
-        
+
+
         try {
             if (((Boolean) xpath.evaluate("./routingVersion", documentTypeNode, XPathConstants.BOOLEAN)).booleanValue()) {
                 String version;
@@ -667,11 +723,11 @@ public class DocumentTypeXmlParser implements XmlConstants {
         Node node = nodeList.item(0);
 
         RouteNode routeNode = new RouteNode();
-        // set fields that all route nodes of all types should have defined 
+        // set fields that all route nodes of all types should have defined
         routeNode.setDocumentType(documentType);
         routeNode.setRouteNodeName((String) xpath.evaluate("./@name", node, XPathConstants.STRING));
         routeNode.setContentFragment(XmlHelper.writeNode(node));
-        
+
         if (XmlHelper.pathExists(xpath, "./activationType", node)) {
             routeNode.setActivationType(ActivationTypeEnum.parse((String) xpath.evaluate("./activationType", node, XPathConstants.STRING)).getCode());
         } else {
@@ -679,18 +735,44 @@ public class DocumentTypeXmlParser implements XmlConstants {
         }
 
         KimGroup exceptionWorkgroup = defaultExceptionWorkgroup;
-        String exceptionWorkgroupName = (String) xpath.evaluate("./exceptionWorkgroupName", node, XPathConstants.STRING);
+
+        String exceptionWg = (String) xpath.evaluate("./exceptionWorkgroupName", node, XPathConstants.STRING);
+        String exceptionWorkgroupName;
+        String exceptionWorkgroupNamespace;
+        String[] wgData = exceptionWg.split(":");
+        if (wgData.length == 1) {
+            exceptionWorkgroupNamespace = KimConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE;
+            exceptionWorkgroupName = wgData[0];
+        } else if (wgData.length == 2) {
+            exceptionWorkgroupNamespace = wgData[0];
+            exceptionWorkgroupName = wgData[1];
+        } else {
+            exceptionWorkgroupName = null;
+            exceptionWorkgroupNamespace = null;
+        }
         if (Utilities.isEmpty(exceptionWorkgroupName)) {
         	// for backward compatibility we also need to be able to support exceptionWorkgroup
-        	exceptionWorkgroupName = (String) xpath.evaluate("./exceptionWorkgroup", node, XPathConstants.STRING);
+        	exceptionWg = (String) xpath.evaluate("./exceptionWorkgroup", node, XPathConstants.STRING);
+        	wgData = exceptionWg.split(":");
+            if (wgData.length == 1) {
+                exceptionWorkgroupNamespace = KimConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE;
+                exceptionWorkgroupName = wgData[0];
+            } else if (wgData.length == 2) {
+                exceptionWorkgroupNamespace = wgData[0];
+                exceptionWorkgroupName = wgData[1];
+            } else {
+                exceptionWorkgroupName = null;
+                exceptionWorkgroupNamespace = null;
+            }
         }
         if (Utilities.isEmpty(exceptionWorkgroupName)) {
         	if (routeNode.getDocumentType().getDefaultExceptionWorkgroup() != null) {
         		exceptionWorkgroupName = routeNode.getDocumentType().getDefaultExceptionWorkgroup().getGroupName();
+        		exceptionWorkgroupNamespace = routeNode.getDocumentType().getDefaultExceptionWorkgroup().getNamespaceCode();
         	}
         }
         if (!Utilities.isEmpty(exceptionWorkgroupName)) {
-        	exceptionWorkgroup = getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, exceptionWorkgroupName);
+        	exceptionWorkgroup = getIdentityManagementService().getGroupByName(exceptionWorkgroupNamespace, exceptionWorkgroupName);
             if (exceptionWorkgroup == null) {
                 throw new InvalidWorkgroupException("Could not locate exception workgroup by name " + exceptionWorkgroupName);
             }
@@ -699,7 +781,7 @@ public class DocumentTypeXmlParser implements XmlConstants {
         	routeNode.setExceptionWorkgroupName(exceptionWorkgroup.getGroupName());
             routeNode.setExceptionWorkgroupId(exceptionWorkgroup.getGroupId());
         }
-        
+
         if (((Boolean) xpath.evaluate("./mandatoryRoute", node, XPathConstants.BOOLEAN)).booleanValue()) {
             routeNode.setMandatoryRouteInd(Boolean.valueOf((String)xpath.evaluate("./mandatoryRoute", node, XPathConstants.STRING)));
         } else {
@@ -710,7 +792,7 @@ public class DocumentTypeXmlParser implements XmlConstants {
         } else {
             routeNode.setFinalApprovalInd(Boolean.FALSE);
         }
-        
+
         // for every simple child element of the node, store a config parameter of the element name and text content
         NodeList children = node.getChildNodes();
         for (int i = 0; i < children.getLength(); i++) {
@@ -728,7 +810,7 @@ public class DocumentTypeXmlParser implements XmlConstants {
         if (!cfgMap.containsKey(RouteNode.RULE_SELECTOR_CFG_KEY)) {
             routeNode.getConfigParams().add(new RouteNodeConfigParam(routeNode, RouteNode.RULE_SELECTOR_CFG_KEY, FlexRM.DEFAULT_RULE_SELECTOR));
         }
-        
+
         if (((Boolean) xpath.evaluate("./ruleTemplate", node, XPathConstants.BOOLEAN)).booleanValue()) {
             String ruleTemplateName = (String) xpath.evaluate("./ruleTemplate", node, XPathConstants.STRING);
             RuleTemplate ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(ruleTemplateName);
@@ -852,7 +934,7 @@ public class DocumentTypeXmlParser implements XmlConstants {
         public BranchPrototype branch;
         public LinkedList splitNodeStack = new LinkedList();
     }
-    
+
     protected IdentityManagementService getIdentityManagementService() {
     	return KIMServiceLocator.getIdentityManagementService();
     }

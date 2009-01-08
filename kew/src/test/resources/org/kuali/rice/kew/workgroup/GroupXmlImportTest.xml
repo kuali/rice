@@ -22,7 +22,7 @@
           <principalId>15</principalId>
           <groupName>
             <name>TestWorkgroup</name>
-            <namespace>KFS</namespace>
+            <namespace>KR-WKFLW</namespace>
           </groupName>
           <!-- <principalId>imbad</principalId>-->
         </members>
@@ -46,7 +46,7 @@
           <principalId>15</principalId>
           <groupName>
             <name>TestWorkgroup</name>
-            <namespace>KFS</namespace>
+            <namespace>KR-WKFLW</namespace>
           </groupName>
           <!-- <principalId>imbad</principalId>-->
         </members>

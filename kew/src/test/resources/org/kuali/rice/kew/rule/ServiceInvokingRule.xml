@@ -5,7 +5,7 @@
             <name>ServiceInvocationRuleTest</name>
             <label>ServiceInvocationRuleTest doc label</label>
             <docHandler>has to be defined</docHandler>
-            <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+            <defaultExceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
             <routePaths>
                 <routePath>
                     <start name="initial" nextNode="node1" />
@@ -34,17 +34,17 @@
                 import javax.xml.namespace.QName
 
                 println 'ServiceInvocationRule invoking FakeService...'
-                
+
                 FakeService fakeService = (FakeService) GlobalResourceLoader.getResourceLoader().getService(new QName("fake", "fakeService-remote"))
-                
+
                 println 'Found FakeService implementation on bus: ' + fakeService
-                
+
                 print 'Invoking fake service...'
-                
+
                 result = fakeService.method2("abcdef")
-                
+
                 println 'result: ' + result
-           
+
                 return new RuleExpressionResult(rule, true)
             </expression>
         </rule>

@@ -20,7 +20,7 @@
 			</ruleExtensions>
 			<responsibilities>
 			    <responsibility>
-        			<workgroup>Group1</workgroup>
+        			<workgroup>KR-WKFLW:Group1</workgroup>
         			<actionRequested>A</actionRequested>
         			<priority>1</priority>
 		    	</responsibility>
@@ -46,12 +46,12 @@
 			</ruleExtensions>
 			<responsibilities>
 				<responsibility>
-					<workgroup>Group2</workgroup>
+					<workgroup>KR-WKFLW:Group2</workgroup>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>
 			</responsibilities>
 		</rule>
-		
+
 	</rules>
 </data>

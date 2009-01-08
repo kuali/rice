@@ -18,19 +18,24 @@
       </attributes>
     </workgroupType>
   </workgroupTypes>
-  <workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
-    <workgroup>
-      <workgroupName>WGWithExtData</workgroupName>
-      <workgroupType>ChartOrgWorkgroup</workgroupType>
-      <extensions>
-        <extension attribute="ChartOrgDataAttribute">
+  <groups xmlns="ns:workflow/Group" xsi:schemaLocation="ns:workflow/Group resource:Group">
+    <group>
+      <name>WGWithExtData</name>
+      <type>
+        <name>ChartOrgWorkgroup</name>
+        <namespace></namespace>
+      </type>
+      <attributes>
+        <attribute key="chart" value="BL"/>
+        <attribute key="org" value="BUS"/>
+        <!-- <extension attribute="ChartOrgDataAttribute">
           <data key="chart">BL</data>
           <data key="org">BUS</data>
-        </extension>
-      </extensions>
+        </extension>-->
+      </attributes>
       <members>
-        <authenticationId>user3</authenticationId>
+        <principalName>user3</principalName>
       </members>
-    </workgroup>
-  </workgroups>
+    </group>
+  </groups>
 </data>

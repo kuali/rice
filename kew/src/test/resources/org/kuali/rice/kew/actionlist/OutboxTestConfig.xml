@@ -6,10 +6,10 @@
 			<description>OutboxTestDocumentType</description>
 			<label>OutboxTestDocumentType</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
 			<docHandler>_blank</docHandler>
-			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<policies>
 				<policy>
 					<name>PRE_APPROVE</name>
@@ -37,17 +37,18 @@
 			</routeNodes>
 		</documentType>
 	</documentTypes>
-	<workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
-      <workgroup>
-        <workgroupName>OutboxApprovers</workgroupName>
+	<groups xmlns="ns:workflow/Group" xsi:schemaLocation="ns:workflow/Group resource:Group">
+      <group>
+        <name>OutboxApprovers</name>
+        <namespace>KR-WKFLW</namespace>
         <description>OutboxApprovers</description>
         <members>
-          <authenticationId>ewestfal</authenticationId>
-          <authenticationId>rkirkend</authenticationId>
-          <authenticationId>user1</authenticationId>
+          <principalName>ewestfal</principalName>
+          <principalName>rkirkend</principalName>
+          <principalName>user1</principalName>
         </members>
-      </workgroup>
-	</workgroups>
+      </group>
+	</groups>
     <ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
 		<ruleTemplate>
 			<name>OutboxTemplate1</name>
@@ -62,7 +63,7 @@
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
 				<responsibility>
-					<workgroup>OutboxApprovers</workgroup>
+					<workgroup>KR-WKFLW:OutboxApprovers</workgroup>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>

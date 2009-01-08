@@ -115,7 +115,7 @@
       		</documentation>
       	</annotation>
       </element>
-      
+
       <element name="reportingWorkgroupName" type="c:ShortStringType" minOccurs="0">
       	<annotation>
       		<documentation>

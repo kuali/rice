@@ -5,23 +5,25 @@
   (Quickstart also has a superset of these defined)
 -->
 <data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
-  <workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
-    <workgroup>
+  <groups xmlns="ns:workflow/Group" xsi:schemaLocation="ns:workflow/Group resource:Group">
+    <group>
       <id>1</id>
-      <workgroupName>Group1</workgroupName>
+      <name>Group1</name>
+      <namespace>KR-WKFLW</namespace>
       <description>Group1</description>
       <members>
-        <authenticationId>user1</authenticationId>
-        <authenticationId>user3</authenticationId>
+        <principalName>user1</principalName>
+        <principalName>user3</principalName>
       </members>
-    </workgroup>
-    <workgroup>
+    </group>
+    <group>
       <id>2</id>
       <workgroupName>Group2</workgroupName>
+      <namespace>KR-WKFLW</namespace>
       <description>Group2</description>
       <members>
-        <authenticationId>user2</authenticationId>
+        <principalName>user2</principalName>
       </members>
-    </workgroup>
-  </workgroups>
+    </group>
+  </groups>
 </data>

@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 The Kuali Foundation
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -64,7 +64,7 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
 /**
- * NotificationMessageContentService implementation - uses both Xalan and XStream in various places to manage the marshalling/unmarshalling of 
+ * NotificationMessageContentService implementation - uses both Xalan and XStream in various places to manage the marshalling/unmarshalling of
  * Notification data for processing by various components in the system.
  * @see NotificationMessageContentService
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -98,7 +98,7 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
         this.boDao = boDao;
         this.notificationContentTypeService = notificationContentTypeService;
     }
-    
+
     /**
      * This method implements by taking in a String and then converting that to a byte[];
      * @see org.kuali.rice.ken.service.NotificationMessageContentService#parseNotificationRequestMessage(java.lang.String)
@@ -108,7 +108,7 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
         // so we have to read all the bytes and then hand them to DOM
         // after our first-pass validation, for a second parse
 	byte[] bytes = notificationMessageAsXml.getBytes();
-	
+
 	return parseNotificationRequestMessage(bytes);
     }
 
@@ -121,13 +121,13 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
         // so we have to read all the bytes and then hand them to DOM
         // after our first-pass validation, for a second parse
         byte[] bytes = Util.readFully(stream);
-        
-        return parseNotificationRequestMessage(bytes); 
+
+        return parseNotificationRequestMessage(bytes);
     }
 
     /**
-     * This method is the meat of the notification message parsing.  It uses DOM to parse out the notification 
-     * message XML and into a Notification BO.  It handles lookup of reference objects' primary keys so that it 
+     * This method is the meat of the notification message parsing.  It uses DOM to parse out the notification
+     * message XML and into a Notification BO.  It handles lookup of reference objects' primary keys so that it
      * can properly populate the notification object.
      * @param bytes
      * @return Notification
@@ -149,19 +149,19 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
         /* XPath is namespace-aware, so if the DOM that XPath will be evaluating has fully qualified elements
            (because, e.g., it has been parsed with a validating DOM parser as above, then we need to set a
            "NamespaceContext" which essentially declares the defined namespace mappings to XPath.
-           
+
            Unfortunately there is no EASY way (that I have found at least) to automatically expose the namespaces
            that have been discovered in the XML document parsed into DOM to XPath (an oversight in my opinion as
            this requires duplicate footwork to re-expose known definitions).
-           
+
            So what we do is create a set of helper classes that will expose both the "known" core Notification system
            namespaces, as well as those that can be derived from the DOM Document (Document exposes these but through a
            different API than XPath NamespaceContext).  We create CompoundNamespaceContext that consists of both of these
            constituent namespace contexts (so that our core NamespaceContext takes precedent...nobody should be redefining
            these!).
-           
+
            We can *then* use fully qualified XPath expressions like: /nreq:notification/nreq:channel ...
-           
+
            (Another alternative would be to REPARSE the incoming XML with validation turned off so we can have simpler XPath
            expresssions.  This is less correct, but also not ideal as we will want to use qualified XPath expressions with
            notification content type also)
@@ -175,13 +175,13 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
             String channelName = (String) xpath.evaluate("/nreq:notification/nreq:channel", root);
             LOG.debug("CHANNELNAME: "+ channelName);
             String producerName = xpath.evaluate("/nreq:notification/nreq:producer", root);
-    
+
             List<String> senders = new ArrayList<String>();
             NodeList nodes = (NodeList) xpath.evaluate("/nreq:notification/nreq:senders/nreq:sender", root, XPathConstants.NODESET);
             for (int i = 0; i < nodes.getLength(); i++) {
                 LOG.debug("sender node: " + nodes.item(i));
                 LOG.debug("sender node VALUE: " + nodes.item(i).getTextContent());
-                senders.add(nodes.item(i).getTextContent());   
+                senders.add(nodes.item(i).getTextContent());
             }
             nodes = (NodeList) xpath.evaluate("/nreq:notification/nreq:recipients/nreq:group|/nreq:notification/nreq:recipients/nreq:user", root, XPathConstants.NODESET);
             List<NotificationRecipient> recipients = new ArrayList<NotificationRecipient>();
@@ -194,11 +194,11 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
                 } else if (NotificationConstants.RECIPIENT_TYPES.USER.equalsIgnoreCase(node.getLocalName())){
                     recipient.setRecipientType(NotificationConstants.RECIPIENT_TYPES.USER);
                 } else {
-                    throw new InvalidXMLException("Invalid 'recipientType' value: '" + node.getLocalName() + 
+                    throw new InvalidXMLException("Invalid 'recipientType' value: '" + node.getLocalName() +
                 	    "'.  Needs to either be 'user' or 'group'");
                 }
                 recipient.setRecipientId(node.getTextContent());
-                recipients.add(recipient);   
+                recipients.add(recipient);
             }
 
             String deliveryType = xpath.evaluate("/nreq:notification/nreq:deliveryType", root);
@@ -212,14 +212,14 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
             /* Construct the Notification business object */
 
             Notification notification = new Notification();
-            
+
             if (!StringUtils.isBlank(title)) {
                 notification.setTitle(title);
             }
 
             /* channel and producer require lookups in the system (i.e. we can't just create new instances out of whole cloth), so
                we call a helper method to retrieve references to the respective objects
-             */ 
+             */
             NotificationChannel channel = Util.retrieveFieldReference("channel", "name", channelName, NotificationChannel.class, boDao);
             notification.setChannel(channel);
 
@@ -232,20 +232,20 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
                 ns.setSenderName(sender);
                 notification.addSender(ns);
             }
-    
+
             for (NotificationRecipient recipient: recipients) {
                 LOG.debug("Setting recipient id: "+ recipient.getRecipientId());
                 notification.addRecipient(recipient);
             }
-    
+
             /* validate the delivery type */
-            if(!NotificationConstants.DELIVERY_TYPES.ACK.equalsIgnoreCase(deliveryType) && 
+            if(!NotificationConstants.DELIVERY_TYPES.ACK.equalsIgnoreCase(deliveryType) &&
                !NotificationConstants.DELIVERY_TYPES.FYI.equalsIgnoreCase(deliveryType)) {
-                throw new InvalidXMLException("Invalid 'deliveryType' value: '" + deliveryType + 
+                throw new InvalidXMLException("Invalid 'deliveryType' value: '" + deliveryType +
                     "'.  Must be either 'ACK' or 'FYI'.");
             }
             notification.setDeliveryType(deliveryType);
-    
+
             /* If we have gotten this far, then these dates have obviously already passed XML schema validation,
                but as that may be volatile we make sure to validate programmatically.
              */
@@ -266,34 +266,34 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
                 }
                 notification.setAutoRemoveDateTime(new Timestamp(d.getTime()));
             }
-            
-    
+
+
             /* we have to look up priority and content type in the system also */
             NotificationPriority priority = Util.retrieveFieldReference("priority", "name", priorityName, NotificationPriority.class, boDao);
             notification.setPriority(priority);
-     
+
             NotificationContentType contentType = Util.retrieveFieldReference("contentType", "name", contentTypeName, NotificationContentType.class, boDao);
             notification.setContentType(contentType);
-    
+
             /* Now handle and validate actual notification content.  This is a tricky part.
                Our job is to validate the incoming content xml blob.  However that content could be under ANY namespace
                (since we have pluggable content types).  So how can we construct an XPath expression, that refers to
                node names that are fully qualified with the correct namespace/uri, when we don't KNOW at this point what that
                correct namespace URI is?
-               
+
                The solution is to use a namespace naming convention coupled with the defined content type name in order to generate
                the canonical namespace uri for any custom content type.
-               
+
                ns:notification/Content<Content Type name>
-               
+
                e.g. ns:notification/ContentSimple, or ns:notification/ContentEvent
-               
+
                We then construct an "ephemeral" namespace prefix to use in the NamespaceContext/XPath expressions to refer to this namespace URI.
-               
+
                e.g. contentNS_<unique number>
-               
+
                It doesn't (shouldn't!) matter what this ephemeral namespace is.
-               
+
                We then define a temporary NamespaceContext that consists only of this ephemeral namespace mapping, and wrap the existing
                XPath NamespaceContext (the nice one we set up above to do our original qualifizzizing) with it.  Then we are off and on our
                way and can use XPath to parse the content type of arbitrary namespace.
@@ -309,7 +309,7 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
              * (since there is no way to specify a mandatory element of specified name, but unspecified type), we need to
              * make sure to *programmatically* enforce its existence, since schema won't (the above statement says any
              * element occuring once, but we don't want "any" element, we want an element named 'content').
-             */ 
+             */
             if (contentNode == null) {
                 throw new InvalidXMLException("The 'content' element is mandatory.");
             }
@@ -329,7 +329,7 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
             }
 
             notification.setContent(content);
-    
+
             LOG.debug("Content type: " + contentType.getName());
             LOG.debug("Content: " + content);
 
@@ -344,10 +344,10 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
         }
     }
 
-    
+
 
     /**
-     * This method validates the content of a notification message by matching up the namespace of the expected content type 
+     * This method validates the content of a notification message by matching up the namespace of the expected content type
      * to the actual namespace that is passed in as part of the XML message.
      *
      * This is possibly redundant because we are using qualified XPath expressions to obtain content under the correct namespace.
@@ -387,12 +387,12 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
 	xstream.alias("status", String.class);
 	xstream.alias("message", String.class);
         xstream.alias("notificationId", Long.class);
-	String xml = xstream.toXML(response);			
+	String xml = xstream.toXML(response);
 	return xml;
     }
 
     /**
-     * This method will marshall out the Notification object as a String of XML, using XStream and replaces the 
+     * This method will marshall out the Notification object as a String of XML, using XStream and replaces the
      * full recipient list with just a single recipient.
      * @see org.kuali.rice.ken.service.NotificationMessageContentService#generateNotificationMessage(org.kuali.rice.ken.bo.Notification, java.lang.String)
      */
@@ -405,23 +405,23 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
              2. if the specified user was resolved from a group, make sure to include
                 that group in the list so it can be searched against for this
                 particular per-user notification
-        
+
            Group1 --> TestUser1 --> "Group1 TestUser1"
                   --> TestUser2 --> "Group1 TestUser2"
 
         */
-	
+
 	// inject only the single specified recipient
 	if(StringUtils.isNotBlank(userRecipientId)) {
 	    clone.getRecipients().clear();
-	    
+
 	    NotificationRecipient recipient = new NotificationRecipient();
 	    recipient.setRecipientId(userRecipientId);
 	    recipient.setRecipientType(NotificationConstants.RECIPIENT_TYPES.USER);
-	    
+
 	    clone.getRecipients().add(recipient);
 	}
-        
+
 	// now marshall out to XML
 	XStream xstream = new XStream(new DomDriver());
 	xstream.alias("notification", Notification.class);
@@ -435,7 +435,7 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
 	String xml = xstream.toXML(clone);
 	return xml;
     }
-    
+
     /**
      * This method will marshall out the Notification object as a String of XML, using XStream.
      * @see org.kuali.rice.ken.service.NotificationMessageContentService#generateNotificationMessage(org.kuali.rice.ken.bo.Notification)
@@ -443,7 +443,7 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
     public String generateNotificationMessage(Notification notification) {
 	return generateNotificationMessage(notification, null);
     }
-    
+
     /**
      * Uses XPath to parse out the serialized Notification xml into a Notification instance.
      * Warning: this method does NOT validate the payload content XML
@@ -452,7 +452,7 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
     public Notification parseSerializedNotificationXml(byte[] xmlAsBytes) throws Exception {
         Document doc;
         Notification notification = new Notification();
-        
+
         try {
             doc = Util.parse(new InputSource(new ByteArrayInputStream(xmlAsBytes)), false, false, null);
         } catch (Exception pce) {
@@ -466,86 +466,86 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
         try {
             // pull data out of the application content
             String title = ((String) xpath.evaluate("//notification/title", root)).trim();
-            
+
             String channelName = ((String) xpath.evaluate("//notification/channel/name", root)).trim();
-            
+
             String contentTypeName = ((String) xpath.evaluate("//notification/contentType/name", root)).trim();
 
             String priorityName = ((String) xpath.evaluate("//notification/priority/name", root)).trim();
-            
+
             List<String> senders = new ArrayList<String>();
             NodeList senderNodes = (NodeList) xpath.evaluate("//notification/senders/sender/senderName", root, XPathConstants.NODESET);
             for (int i = 0; i < senderNodes.getLength(); i++) {
-                senders.add(senderNodes.item(i).getTextContent().trim());   
+                senders.add(senderNodes.item(i).getTextContent().trim());
             }
-            
+
             String deliveryType = ((String) xpath.evaluate("//notification/deliveryType", root)).trim();
             if(deliveryType.equalsIgnoreCase(NotificationConstants.DELIVERY_TYPES.FYI)) {
         	deliveryType = NotificationConstants.DELIVERY_TYPES.FYI;
             } else {
         	deliveryType = NotificationConstants.DELIVERY_TYPES.ACK;
             }
-            
+
             String sendDateTime = ((String) xpath.evaluate("//notification/sendDateTime", root)).trim();
-            
+
             String autoRemoveDateTime = ((String) xpath.evaluate("//notification/autoRemoveDateTime", root)).trim();
-            
+
             List<String> userRecipients = new ArrayList<String>();
             List<String> workgroupRecipients = new ArrayList<String>();
-            
+
             NodeList recipientIds = (NodeList) xpath.evaluate("//notification/recipients/recipient/recipientId", root, XPathConstants.NODESET);
             NodeList recipientTypes = (NodeList) xpath.evaluate("//notification/recipients/recipient/recipientType", root, XPathConstants.NODESET);
-            
+
             for (int i = 0; i < recipientIds.getLength(); i++) {
-        	if(NotificationConstants.RECIPIENT_TYPES.USER.equalsIgnoreCase(recipientTypes.item(i).getTextContent().trim())) {
-        	    userRecipients.add(recipientIds.item(i).getTextContent().trim());
-        	} else {
-        	    workgroupRecipients.add(recipientIds.item(i).getTextContent().trim());
-        	}
+            	if(NotificationConstants.RECIPIENT_TYPES.USER.equalsIgnoreCase(recipientTypes.item(i).getTextContent().trim())) {
+            	    userRecipients.add(recipientIds.item(i).getTextContent().trim());
+            	} else {
+            	    workgroupRecipients.add(recipientIds.item(i).getTextContent().trim());
+            	}
             }
-            
+
             String content = ((String) xpath.evaluate("//notification/content", root)).trim();
-            
+
             // now populate the notification BO instance
             NotificationChannel channel = Util.retrieveFieldReference("channel", "name", channelName, NotificationChannel.class, boDao);
             notification.setChannel(channel);
 
             NotificationPriority priority = Util.retrieveFieldReference("priority", "name", priorityName, NotificationPriority.class, boDao);
             notification.setPriority(priority);
-     
+
             NotificationContentType contentType = Util.retrieveFieldReference("contentType", "name", contentTypeName, NotificationContentType.class, boDao);
             notification.setContentType(contentType);
 
-            NotificationProducer producer = Util.retrieveFieldReference("producer", "name", NotificationConstants.KEW_CONSTANTS.NOTIFICATION_SYSTEM_USER_NAME, 
+            NotificationProducer producer = Util.retrieveFieldReference("producer", "name", NotificationConstants.KEW_CONSTANTS.NOTIFICATION_SYSTEM_USER_NAME,
         	    NotificationProducer.class, boDao);
             notification.setProducer(producer);
-            
+
             for (String senderName: senders) {
                 NotificationSender ns = new NotificationSender();
                 ns.setSenderName(senderName);
                 notification.addSender(ns);
             }
-            
+
             for (String userRecipientId: userRecipients) {
                 NotificationRecipient recipient = new NotificationRecipient();
                 recipient.setRecipientType(NotificationConstants.RECIPIENT_TYPES.USER);
                 recipient.setRecipientId(userRecipientId);
-                notification.addRecipient(recipient);   
+                notification.addRecipient(recipient);
             }
 
             for (String workgroupRecipientId: workgroupRecipients) {
                 NotificationRecipient recipient = new NotificationRecipient();
                 recipient.setRecipientType(NotificationConstants.RECIPIENT_TYPES.GROUP);
                 recipient.setRecipientId(workgroupRecipientId);
-                notification.addRecipient(recipient);   
+                notification.addRecipient(recipient);
             }
-            
+
             if (!StringUtils.isBlank(title)) {
                 notification.setTitle(title);
             }
 
             notification.setDeliveryType(deliveryType);
-    
+
             // simpledateformat is not threadsafe, have to sync and validate
             synchronized (DATEFORMAT_CURR_TZ) {
                 Date d = null;
@@ -557,7 +557,7 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
                     }
                     notification.setSendDateTime(new Timestamp(d.getTime()));
                 }
-                
+
                 Date d2 = null;
                 if(StringUtils.isNotBlank(autoRemoveDateTime)) {
                     try {
@@ -568,9 +568,9 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
                     notification.setAutoRemoveDateTime(new Timestamp(d2.getTime()));
                 }
             }
-            
+
             notification.setContent(content);
-            
+
             return notification;
         } catch (XPathExpressionException xpee) {
             throw new InvalidXMLException("Error parsing request", xpee);

@@ -25,6 +25,7 @@ import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultProcessor;
 import org.kuali.rice.kew.docsearch.SavedSearchResult;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
+import org.kuali.rice.kew.web.KeyValue;
 
 
 /**
@@ -58,8 +59,8 @@ public interface DocumentSearchService {
     public DocumentSearchResultComponents getListRestrictedByCriteria(String principalId, DocSearchCriteriaDTO criteria) throws KEWUserNotFoundException;
     public SavedSearchResult getSavedSearchResults(String principalId, String savedSearchName) throws KEWUserNotFoundException;
     public void clearNamedSearches(String principalId);
-    public List getNamedSearches(String principalId);
-    public List getMostRecentSearches(String principalId);
+    public List<KeyValue> getNamedSearches(String principalId);
+    public List<KeyValue> getMostRecentSearches(String principalId);
 
     public DocumentSearchGenerator getStandardDocumentSearchGenerator();
     public DocumentSearchResultProcessor getStandardDocumentSearchResultProcessor();

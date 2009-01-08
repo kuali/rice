@@ -379,7 +379,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         return group != null;
     }
 
-	public List getNamedSearches(String principalId) {
+	public List<KeyValue> getNamedSearches(String principalId) {
 		List namedSearches = userOptionsService.findByUserQualified(principalId, NAMED_SEARCH_ORDER_BASE + "%");
 		List sortedNamedSearches = new ArrayList();
 		if (namedSearches != null && namedSearches.size() > 0) {
@@ -393,7 +393,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 		return sortedNamedSearches;
 	}
 
-	public List getMostRecentSearches(String principalId) {
+	public List<KeyValue> getMostRecentSearches(String principalId) {
 		UserOptions order = userOptionsService.findByOptionId(LAST_SEARCH_ORDER_OPTION, principalId);
 		List sortedMostRecentSearches = new ArrayList();
 		if (order != null && order.getOptionVal() != null && !"".equals(order.getOptionVal())) {

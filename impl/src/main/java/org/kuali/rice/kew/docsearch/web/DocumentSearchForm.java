@@ -24,27 +24,21 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
-import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
+import org.kuali.rice.kew.docsearch.DocumentSearchColumn;
 import org.kuali.rice.kew.docsearch.DocumentSearchCriteriaProcessor;
+import org.kuali.rice.kew.docsearch.DocumentSearchField;
+import org.kuali.rice.kew.docsearch.DocumentSearchRow;
 import org.kuali.rice.kew.docsearch.SearchAttributeCriteriaComponent;
 import org.kuali.rice.kew.docsearch.SearchableAttribute;
 import org.kuali.rice.kew.docsearch.StandardDocSearchCriteriaManager;
 import org.kuali.rice.kew.docsearch.StandardDocumentSearchCriteriaProcessor;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
-//import org.kuali.rice.kns.web.ui.Column;
-//import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kew.docsearch.DocumentSearchField;
-import org.kuali.rice.kew.docsearch.DocumentSearchColumn;
-//import org.kuali.rice.kns.web.ui.Row;
-//import org.kuali.rice.kew.lookupable.LegacyRow;
-import org.kuali.rice.kew.docsearch.DocumentSearchRow;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 
 

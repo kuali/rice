@@ -25,8 +25,7 @@ import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.Recipient;
-import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.rice.kim.bo.Person;
+
 
 
 /**
@@ -93,7 +92,7 @@ public interface ActionListService {
     /**
      * Retrieves the number of Action List items in the given user's primary Action List (does not include secondary delegations)
      */
-    public int getCount(WorkflowUser user);
+    public int getCount(String principalId);
 
     public void saveRefreshUserOption(String principalId);
 

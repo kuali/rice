@@ -581,9 +581,9 @@ public class ActionListAction extends WorkflowAction {
      */
     public ActionForward count(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	ActionListForm alForm = (ActionListForm)form;
-    	WorkflowUser user = getUserSession(request).getWorkflowUser();
-    	alForm.setCount(KEWServiceLocator.getActionListService().getCount(user));
-    	LOG.info("Fetched Action List count of " + alForm.getCount() + " for user " + user.getAuthenticationUserId().getId());
+    	Person user = getUserSession(request).getPerson();
+    	alForm.setCount(KEWServiceLocator.getActionListService().getCount(user.getPrincipalId()));
+    	LOG.info("Fetched Action List count of " + alForm.getCount() + " for user " + user.getPrincipalName());
     	return mapping.findForward("count");
     }
 

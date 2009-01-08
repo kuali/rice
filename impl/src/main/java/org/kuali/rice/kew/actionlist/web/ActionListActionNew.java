@@ -71,6 +71,7 @@ import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.web.struts.action.KualiAction;
 import org.kuali.rice.kns.web.ui.ExtraButton;
@@ -611,9 +612,9 @@ public class ActionListActionNew extends KualiAction {
      */
     public ActionForward count(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	ActionListForm alForm = (ActionListForm)form;
-    	WorkflowUser user = getUserSession(request).getWorkflowUser();
-    	alForm.setCount(KEWServiceLocator.getActionListService().getCount(user));
-    	LOG.info("Fetched Action List count of " + alForm.getCount() + " for user " + user.getAuthenticationUserId().getId());
+    	Person user = getUserSession(request).getPerson();
+    	alForm.setCount(KEWServiceLocator.getActionListService().getCount(user.getPrincipalId()));
+    	LOG.info("Fetched Action List count of " + alForm.getCount() + " for user " + user.getPrincipalName());
     	return mapping.findForward("count");
     }
 

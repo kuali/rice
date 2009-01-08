@@ -9,12 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.AuthenticationUserId;
-import org.kuali.rice.kew.user.EmplId;
-import org.kuali.rice.kew.user.UserId;
-import org.kuali.rice.kew.user.UuId;
-import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.rice.kew.user.WorkflowUserId;
+import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 public class ActionListCountServlet extends HttpServlet {
@@ -42,21 +38,20 @@ public class ActionListCountServlet extends HttpServlet {
 			if (idType == null || idType.equals("")) {
 				idType = "a";
 			}
-			UserId userId = null;
+			Person user = null;
 			if ("emplId".equalsIgnoreCase(idType) || "e".equalsIgnoreCase(idType)) {
-				userId = new EmplId(id);
+				throw new IllegalArgumentException("emplId should no longer be used");
 			} else if ("workflowId".equalsIgnoreCase(idType) || "w".equalsIgnoreCase(idType)) {
-				userId = new WorkflowUserId(id);
+				user = KIMServiceLocator.getPersonService().getPerson(id);
 			} else if ("uuId".equalsIgnoreCase(idType) || "u".equalsIgnoreCase(idType)) {
-				userId = new UuId(id);
+				throw new IllegalArgumentException("uuId should no longer be used");
 		    } else if ("authenticationId".equalsIgnoreCase(idType) || "a".equalsIgnoreCase(idType)) {
-		    	userId = new AuthenticationUserId(id);
+		    	user = KIMServiceLocator.getPersonService().getPersonByPrincipalName(idType);
 		    }
-			if (userId == null) {
+			if (user == null) {
 				return 0;
 			}
-			WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
-			return KEWServiceLocator.getActionListService().getCount(user);
+			return KEWServiceLocator.getActionListService().getCount(user.getPrincipalId());
 		} catch (Throwable t) {
 			LOG.error("Fatal error when querying for Action List Count", t);
 			return 0;

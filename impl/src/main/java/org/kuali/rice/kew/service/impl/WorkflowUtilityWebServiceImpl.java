@@ -213,7 +213,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
     }
 
     public Integer getUserActionItemCount(UserIdDTO userId) throws WorkflowException {
-        return Integer.valueOf(KEWServiceLocator.getActionListService().getCount(getWorkflowUserInternal(userId)));
+        return Integer.valueOf(KEWServiceLocator.getActionListService().getCount(userId.toString()));
     }
 
     public ActionItemDTO[] getActionItemsForUser(UserIdDTO userId) throws WorkflowException {
@@ -448,14 +448,14 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         try {
         	LOG.debug("Evaluating isUserInRouteLog [docId=" + routeHeaderId + ", lookFuture=" + lookFuture + "]");
             DocumentRouteHeaderValue routeHeader = loadDocument(routeHeaderId);
-            List<ActionTakenValue> actionsTakens = 
+            List<ActionTakenValue> actionsTakens =
             	(List<ActionTakenValue>)KEWServiceLocator.getActionTakenService().findByRouteHeaderId(routeHeaderId);
             //TODO: confirm that the initiator is not already there in the actionstaken
             principalIds.add(routeHeader.getInitiatorWorkflowId());
             for(ActionTakenValue actionTaken: actionsTakens){
             	principalIds.add(actionTaken.getWorkflowId());
             }
-            List<ActionRequestValue> actionRequests = 
+            List<ActionRequestValue> actionRequests =
             	KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(routeHeaderId);
             for(ActionRequestValue actionRequest: actionRequests){
             	principalIds.add(actionRequest.getWorkflowId());
@@ -484,7 +484,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
     	return KEWServiceLocator.getActionRequestService().
     				getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(actionRequestedCd, routeHeaderId);
     }
-    
+
     private boolean actionRequestListHasUser(WorkflowUser user, List actionRequests) throws WorkflowException {
         for (Iterator iter = actionRequests.iterator(); iter.hasNext();) {
             ActionRequestValue actionRequest = (ActionRequestValue) iter.next();

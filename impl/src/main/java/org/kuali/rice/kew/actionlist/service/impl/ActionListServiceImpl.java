@@ -387,8 +387,8 @@ public class ActionListServiceImpl implements ActionListService {
         return getActionItemDAO().findByActionItemId(actionItemId);
     }
 
-    public int getCount(WorkflowUser user) {
-        return getActionListDAO().getCount(user.getWorkflowId());
+    public int getCount(String principalId) {
+        return getActionListDAO().getCount(principalId);
     }
 
     public void saveRefreshUserOption(String principalId) {

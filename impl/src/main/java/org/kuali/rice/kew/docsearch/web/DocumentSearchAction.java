@@ -377,7 +377,7 @@ public class DocumentSearchAction extends WorkflowAction {
         }
 //        processor.getDocSearchCriteriaDTO().setSuperUserSearch(formCriteria.getSuperUserSearch());
 //        processor.getDocSearchCriteriaDTO().setIsAdvancedSearch(docSearchForm.getIsAdvancedSearch());
-        processor.setSearchingUser(userSession.getWorkflowUser());
+        processor.setSearchingUser(userSession.getPrincipalId());
         return processor;
     }
 

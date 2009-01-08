@@ -23,7 +23,6 @@ import java.util.List;
 
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowServiceError;
-import org.kuali.rice.kew.user.WorkflowUser;
 
 
 /**

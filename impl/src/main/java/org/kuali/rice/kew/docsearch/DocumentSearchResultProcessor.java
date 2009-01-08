@@ -20,7 +20,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
-import org.kuali.rice.kew.user.WorkflowUser;
 
 
 /**

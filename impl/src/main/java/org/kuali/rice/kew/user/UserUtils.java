@@ -1,6 +1,10 @@
 package org.kuali.rice.kew.user;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.entity.KimEntity;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 /**
  * Provides some utility methods for translating user ID types.
@@ -39,6 +43,29 @@ public class UserUtils {
 		}
 		return user.getTransposedName();
 	}
+
+	public static String getTransposedName(UserSession userSession, Person user) {
+		if (userSession != null && !userSession.getPrincipalId().equals(user.getPrincipalId())) {
+			if(isPersonNameRestricted(user)){
+				return "xxxxxx";
+			}
+		}
+		return getTransposedName(user);
+	}
+
+	public static boolean isPersonNameRestricted(Person user){
+		boolean bRet = false;
+
+		KimEntity entity = KIMServiceLocator.getIdentityService().getEntity(user.getEntityId());
+
+		bRet = entity.getPrivacyPreferences().isSuppressName();
+
+		return bRet;
+	}
+
+	public static String getTransposedName(Person user) {
+        return user.getLastName() + ", " + user.getFirstName();
+    }
 
 	public static String getDisplayableEmailAddress(UserSession userSession, WorkflowUser user) {
 		if (!userSession.getWorkflowUser().getWorkflowId().equals(user.getWorkflowId())) {

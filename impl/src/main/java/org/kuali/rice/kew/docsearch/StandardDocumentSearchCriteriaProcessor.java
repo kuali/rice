@@ -23,10 +23,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.kuali.rice.kns.web.ui.Field;
-//import org.kuali.rice.kns.web.ui.Row;
-import org.kuali.rice.kew.user.WorkflowUser;
-
 
 /**
  * This is the standard document search criteria processor implementation.
@@ -37,7 +33,7 @@ import org.kuali.rice.kew.user.WorkflowUser;
 public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCriteriaProcessor {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(StandardDocumentSearchCriteriaProcessor.class);
 
-    private WorkflowUser searchingUser;
+    private String searchingUser;
     private DocSearchCriteriaDTO docSearchCriteriaDTO = new DocSearchCriteriaDTO();
 
     public StandardDocumentSearchCriteriaProcessor() {}
@@ -45,14 +41,14 @@ public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCr
     /**
      * @return the searchingUser
      */
-    public WorkflowUser getSearchingUser() {
+    public String getSearchingUser() {
         return this.searchingUser;
     }
 
     /**
      * @param searchingUser the searchingUser to set
      */
-    public void setSearchingUser(WorkflowUser searchingUser) {
+    public void setSearchingUser(String principalId) {
         this.searchingUser = searchingUser;
     }
 

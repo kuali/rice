@@ -17,10 +17,6 @@ package org.kuali.rice.kew.docsearch;
 
 import java.util.List;
 
-//import org.kuali.rice.kns.web.ui.Row;
-import org.kuali.rice.kew.docsearch.DocumentSearchRow;
-import org.kuali.rice.kew.user.WorkflowUser;
-
 
 /**
  * This interface is used to define pre document search screen display processes for
@@ -54,7 +50,7 @@ public interface DocumentSearchCriteriaProcessor {
     public static final String CRITERIA_KEY_FINALIZED_DATE = "finalizedDate";
     public static final String CRITERIA_KEY_APPROVED_DATE = "approvedDate";
 
-	public void setSearchingUser(WorkflowUser searchingUser);
+	public void setSearchingUser(String principalId);
 
 	public void setDocSearchCriteriaDTO(DocSearchCriteriaDTO docSearchCriteriaDTO);
 

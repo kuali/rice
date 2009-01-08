@@ -28,20 +28,14 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
-//import org.kuali.rice.kns.web.ui.Column;
-import org.kuali.rice.kew.docsearch.DocumentSearchColumn;
-import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kew.docsearch.DocumentSearchField;
-//import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.KEWPropertyConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.KeyValueSort;
 import org.kuali.rice.kew.web.UrlResolver;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.web.ui.Field;
 
 
 /**

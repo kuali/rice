@@ -42,13 +42,12 @@ import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.UserUtils;
-import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.KeyValueSort;
 import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
@@ -480,16 +479,6 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         return processResultSet(searchAttributeStatement, resultSet, searchCriteria, principalId);
     }
 
-    /**
-     *
-     * This overridden method ...
-     *
-     * @deprecated should no longer use workflowUser
-     * @see org.kuali.rice.kew.docsearch.DocumentSearchGenerator#processResultSet(java.sql.Statement, java.sql.ResultSet, org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO, org.kuali.rice.kew.user.WorkflowUser)
-     */
-    public List<DocSearchDTO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet,DocSearchCriteriaDTO searchCriteria, WorkflowUser user) throws KEWUserNotFoundException, SQLException {
-    	return processResultSet(searchAttributeStatement, resultSet, searchCriteria, user.getWorkflowId());
-    }
 
     /**
      * @param resultSet
@@ -625,11 +614,13 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
         docCriteriaDTO.setInitiatorWorkflowId(rs.getString("INITR_PRNCPL_ID"));
 
-        WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(docCriteriaDTO.getInitiatorWorkflowId()));
+        //WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId());
 
-        docCriteriaDTO.setInitiatorNetworkId(user.getAuthenticationUserId().getAuthenticationId());
-        docCriteriaDTO.setInitiatorName(user.getDisplayName());
-        docCriteriaDTO.setInitiatorFirstName(user.getGivenName());
+        Person user = KIMServiceLocator.getPersonService().getPerson(docCriteriaDTO.getInitiatorWorkflowId());
+
+        docCriteriaDTO.setInitiatorNetworkId(user.getPrincipalName());
+        docCriteriaDTO.setInitiatorName(user.getName());
+        docCriteriaDTO.setInitiatorFirstName(user.getFirstName());
         docCriteriaDTO.setInitiatorLastName(user.getLastName());
         docCriteriaDTO.setInitiatorTransposedName(UserUtils.getTransposedName(UserSession.getAuthenticatedUser(), user));
         docCriteriaDTO.setInitiatorEmailAddress(user.getEmailAddress());
@@ -911,8 +902,8 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     protected String getViewerSql(String viewer, String whereClausePredicatePrefix) throws KEWUserNotFoundException {
     	String returnSql = "";
         if ((viewer != null) && (!"".equals(viewer.trim()))) {
-            WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(viewer.trim()));
-            String userWorkflowId = user.getWorkflowId();
+            Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName(viewer.trim());
+            String userWorkflowId = user.getPrincipalId();
             returnSql = whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_ID = KREW_ACTN_RQST_T.DOC_HDR_ID and KREW_ACTN_RQST_T.PRNCPL_ID = '" + userWorkflowId + "'";
         }
         return returnSql;
@@ -930,7 +921,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     protected String getApproverSql(String approver, String whereClausePredicatePrefix) throws KEWUserNotFoundException {
     	String returnSql = "";
         if ((approver != null) && (!"".equals(approver.trim()))) {
-            String userWorkflowId = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(approver.trim())).getWorkflowUserId().getWorkflowId();
+            String userWorkflowId = KIMServiceLocator.getPersonService().getPersonByPrincipalName(approver.trim()).getPrincipalId();
             returnSql = whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_ID = KREW_ACTN_TKN_T.DOC_HDR_ID and upper(KREW_ACTN_TKN_T.ACTN_CD) = '" + KEWConstants.ACTION_TAKEN_APPROVED_CD + "' and KREW_ACTN_TKN_T.PRNCPL_ID = '" + userWorkflowId + "'";
         }
         return returnSql;

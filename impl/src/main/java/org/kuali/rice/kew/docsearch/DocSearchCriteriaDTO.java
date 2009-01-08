@@ -25,11 +25,9 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.engine.node.RouteNode;
-import org.kuali.rice.kew.docsearch.DocumentSearchRow;
-import org.kuali.rice.kns.web.ui.Field;
-//import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kns.web.ui.Field;
 
 
 /**

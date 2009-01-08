@@ -18,8 +18,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-//import org.kuali.rice.kns.web.ui.Row;
-import org.kuali.rice.kew.docsearch.DocumentSearchRow;
 import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 
 

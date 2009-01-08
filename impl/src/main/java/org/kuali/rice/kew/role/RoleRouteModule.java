@@ -56,6 +56,7 @@ public class RoleRouteModule implements RouteModule {
 	private String responsibilityTemplateName;
 	private String namespace;
 		
+	@SuppressWarnings("unchecked")
 	public List<ActionRequestValue> findActionRequests(RouteContext context)
 			throws Exception {
 		
@@ -66,20 +67,22 @@ public class RoleRouteModule implements RouteModule {
 		String responsibilityTemplateName = loadResponsibilityTemplateName(context);
 		String namespaceCode = loadNamespace(context);
 		AttributeSet responsibilityDetails = loadResponsibilityDetails(context);
-		for (AttributeSet qualifier : qualifiers) {
-			List<ResponsibilityActionInfo> responsibilities = KIMServiceLocator.getResponsibilityService().getResponsibilityActionsByTemplateName(namespaceCode, responsibilityTemplateName, qualifier, responsibilityDetails);
-			List<ResponsibilitySet> responsibilitySets = partitionResponsibilities(responsibilities);
-			for (ResponsibilitySet responsibilitySet : responsibilitySets) {
-				String approvePolicy = responsibilitySet.getApprovePolicy();
-				if (KEWConstants.APPROVE_POLICY_ALL_APPROVE.equals(approvePolicy)) {
-					for (ResponsibilityActionInfo responsibility : responsibilities) {
-						arFactory.addRoleResponsibilityRequest(Collections.singletonList(responsibility), approvePolicy);
+		if ( qualifiers != null ) {
+			for (AttributeSet qualifier : qualifiers) {
+				List<ResponsibilityActionInfo> responsibilities = KIMServiceLocator.getResponsibilityService().getResponsibilityActionsByTemplateName(namespaceCode, responsibilityTemplateName, qualifier, responsibilityDetails);
+				List<ResponsibilitySet> responsibilitySets = partitionResponsibilities(responsibilities);
+				for (ResponsibilitySet responsibilitySet : responsibilitySets) {
+					String approvePolicy = responsibilitySet.getApprovePolicy();
+					if (KEWConstants.APPROVE_POLICY_ALL_APPROVE.equals(approvePolicy)) {
+						for (ResponsibilityActionInfo responsibility : responsibilities) {
+							arFactory.addRoleResponsibilityRequest(Collections.singletonList(responsibility), approvePolicy);
+						}
+					} else {
+						arFactory.addRoleResponsibilityRequest(responsibilities, approvePolicy);
 					}
-				} else {
-					arFactory.addRoleResponsibilityRequest(responsibilities, approvePolicy);
 				}
-			}
-		}		
+			}		
+		}
 		actionRequests = new ArrayList<ActionRequestValue>(arFactory.getRequestGraphs());
 		return actionRequests;
 	}

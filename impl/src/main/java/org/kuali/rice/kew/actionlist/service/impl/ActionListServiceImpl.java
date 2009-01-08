@@ -45,11 +45,9 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.UserService;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.workgroup.WorkgroupMembershipChangeProcessor;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -77,11 +75,11 @@ public class ActionListServiceImpl implements ActionListService {
         return getActionItemDAO().findPrimaryDelegationRecipients(principalId);
     }
 
-    public Collection getActionList(String principalId, ActionListFilter filter) {
+    public Collection<ActionItem> getActionList(String principalId, ActionListFilter filter) {
          return getActionListDAO().getActionList(principalId, filter);
     }
 
-    public Collection getActionListForSingleDocument(Long routeHeaderId) {
+    public Collection<ActionItem> getActionListForSingleDocument(Long routeHeaderId) {
          return getActionListDAO().getActionListForSingleDocument(routeHeaderId);
     }
 
@@ -112,9 +110,9 @@ public class ActionListServiceImpl implements ActionListService {
     }
 
     public void deleteByRouteHeaderId(Long routeHeaderId) {
-        Collection actionItems = findByRouteHeaderId(routeHeaderId);
-        for (Iterator iter = actionItems.iterator(); iter.hasNext();) {
-            ActionItem actionItem = (ActionItem) iter.next();
+        Collection<ActionItem> actionItems = findByRouteHeaderId(routeHeaderId);
+        for (Iterator<ActionItem> iter = actionItems.iterator(); iter.hasNext();) {
+            ActionItem actionItem = iter.next();
             try {
                 KEWServiceLocator.getUserOptionsService().saveRefreshUserOption(actionItem.getPrincipalId());
             } catch (Exception e) {
@@ -124,15 +122,15 @@ public class ActionListServiceImpl implements ActionListService {
         getActionItemDAO().deleteByRouteHeaderId(routeHeaderId);
     }
 
-    public Collection findByRouteHeaderId(Long routeHeaderId) {
+    public Collection<ActionItem> findByRouteHeaderId(Long routeHeaderId) {
         return getActionItemDAO().findByRouteHeaderId(routeHeaderId);
     }
 
-    public Collection findByActionRequestId(Long actionRequestId) {
+    public Collection<ActionItem> findByActionRequestId(Long actionRequestId) {
         return getActionItemDAO().findByActionRequestId(actionRequestId);
     }
 
-    public Collection findByWorkflowUserRouteHeaderId(String workflowUserId, Long routeHeaderId) {
+    public Collection<ActionItem> findByWorkflowUserRouteHeaderId(String workflowUserId, Long routeHeaderId) {
         return getActionItemDAO().findByWorkflowUserRouteHeaderId(workflowUserId, routeHeaderId);
     }
 
@@ -249,9 +247,9 @@ public class ActionListServiceImpl implements ActionListService {
     }
 
     public void updateActionItemsForTitleChange(Long routeHeaderId, String newTitle) throws KEWUserNotFoundException {
-        Collection items = getActionItemDAO().findByRouteHeaderId(routeHeaderId);
-        for (Iterator iterator = items.iterator(); iterator.hasNext();) {
-            ActionItem item = (ActionItem) iterator.next();
+        Collection<ActionItem> items = getActionItemDAO().findByRouteHeaderId(routeHeaderId);
+        for (Iterator<ActionItem> iterator = items.iterator(); iterator.hasNext();) {
+            ActionItem item = iterator.next();
             item.setDocTitle(newTitle);
             saveActionItem(item);
         }

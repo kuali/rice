@@ -35,7 +35,6 @@ import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionitem.OutboxItemActionListExtension;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.actionlist.dao.ActionListDAO;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 

@@ -37,9 +37,9 @@ import org.kuali.rice.kew.user.Recipient;
 public interface ActionListService {
     public ActionItem createActionItemForActionRequest(ActionRequestValue actionRequest);
 
-    public Collection getActionList(String principalId, ActionListFilter filter);
+    public Collection<ActionItem> getActionList(String principalId, ActionListFilter filter);
 
-    public Collection getActionListForSingleDocument(Long routeHeaderId);
+    public Collection<ActionItem> getActionListForSingleDocument(Long routeHeaderId);
 
     public Collection<Recipient> findUserSecondaryDelegators(String principalId) throws KEWUserNotFoundException;
 
@@ -55,9 +55,9 @@ public interface ActionListService {
 
     public Collection<ActionItem> findByPrincipalId(String principalId);
 
-    public Collection findByWorkflowUserRouteHeaderId(String workflowUserId, Long routeHeaderId);
+    public Collection<ActionItem> findByWorkflowUserRouteHeaderId(String workflowUserId, Long routeHeaderId);
 
-    public Collection findByRouteHeaderId(Long routeHeaderId);
+    public Collection<ActionItem> findByRouteHeaderId(Long routeHeaderId);
 
     /**
      * Updates ActionItems for workgroup members according to membership differences between the

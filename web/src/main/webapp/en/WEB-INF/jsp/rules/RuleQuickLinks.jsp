@@ -9,20 +9,7 @@
 <script language="JavaScript" src="scripts/cal_conf2.js"></script>
 <script language="JavaScript" src="scripts/rule-common.js"></script>
 <kul:page headerTitle="Rule QuickLinks" transactionalDocument="false"
-	showDocumentInfo="false" htmlFormAction="RuleQuickLinks" docTitle="Rule QuickLinks">
-	<table width="100%" border=0 cellpadding=0 cellspacing=0 class="headercell1">
-	<tr>
-    	<td><img src="images/wf-logo.gif" alt="Workflow" width=150 height=21 hspace=5 vspace=5>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-	    <td width="90%">&nbsp;</td>
-  </tr>
-</table>
-<br>
-<table width="95%" align="center">
-	<tr>
-		<td height="30"><strong>Rule QuickLinks</strong></td>
-	</tr>
-</table>
-
+	showDocumentInfo="false" htmlFormAction="RuleQuickLinks" docTitle="Rule QuickLinks">	
 <table width="95%" border=0 cellspacing=0 cellpadding=0 align="center">
 	<c:forEach var="documentTypeStruct" items="${KualiForm.documentTypeQuickLinksStructures}" varStatus="docStatus">
 	<c:if test="${documentTypeStruct.shouldDisplay}">
@@ -39,43 +26,45 @@
             <td width=200 nowrap background="images/tab-back.gif">
               <table width="100%" border=0 cellspacing=0 cellpadding=0>
                 <tr>
-                	<td width=8 class="bordercell-left"><img src="images/pixel_clear.gif" alt="" width=8 height=8></td>						
-                	<td nowrap>
                 		<c:choose>
                 			<c:when test="${renderOpened}">
-			                  	<a id="A<c:out value="${docStatus.count}" />" onclick="rend(this, false)">
-			                         <img src="images/tinybutton-hide.gif" alt="show" width=45 height=15 border=0
+								<kul:htmlAttributeHeaderCell   scope="col" align="left"><a href="<c:url value="DocumentType.do">
+								<c:param name="docTypeId" value="${documentType.documentTypeId}" />
+								<c:param name="methodToCall" value="report"/>
+								</c:url>"><c:out value="${documentType.label}" />&nbsp;
+								</kul:htmlAttributeHeaderCell>	
+								<kul:htmlAttributeHeaderCell  scope="col" align="right">
+								<a id="A<c:out value="${docStatus.count}" />" onclick="rend(this, false)">
+			                    <img src="images/tinybutton-hide.gif" alt="show" width=45 height=15 border=0
 			                         align=absmiddle id="F<c:out value="${docStatus.count}" />"></a>
-			                      &nbsp;
-								<a href="<c:url value="DocumentType.do">
+			                    </kul:htmlAttributeHeaderCell>	
+							</c:when>
+							<c:otherwise>
+								<kul:htmlAttributeHeaderCell  scope="col" align="left"><a href="<c:url value="DocumentType.do">
 								<c:param name="docTypeId" value="${documentType.documentTypeId}" />
 								<c:param name="methodToCall" value="report"/>
 								</c:url>"><c:out value="${documentType.label}" />
-							</c:when>
-							<c:otherwise>
+								&nbsp;
+								</kul:htmlAttributeHeaderCell>	
+								<kul:htmlAttributeHeaderCell  scope="col" align="right">
 								<a id="A<c:out value="${docStatus.count}" />" onclick="rend(this, false)">
 			                         <img src="images/tinybutton-show.gif" alt="show" width=45 height=15 border=0
 			                         align=absmiddle id="F<c:out value="${docStatus.count}" />"></a>
-			                      &nbsp;
-								<a href="<c:url value="DocumentType.do">
-								<c:param name="docTypeId" value="${documentType.documentTypeId}" />
-								<c:param name="methodToCall" value="report"/>
-								</c:url>"><c:out value="${documentType.label}" />
+			                    </kul:htmlAttributeHeaderCell>			                      
 							</c:otherwise>
 						</c:choose>
-					</a>&nbsp;
-					</td>
+					</a>
                 </tr>
               </table>
             </td>
 			<c:choose>
 				<c:when test="${docStatus.count == 1}">
         		    <td width=15><img src="images/tab-bevel.gif" alt="" width=15 height=29></td>
-					<td width="95%" align=right valign=top background="images/tab-rightback.gif"><img src="images/tab-topright.gif" alt="" width=12 height=29 align=top></td>
+					<td width="95%" align=right valign=top background="images/tab-rightback.gif"><img src="images/tab-topright.gif" alt="" width=20 height=29 align=top></td>
 				</c:when>
 				<c:otherwise>
 		            <td width=15><img src="images/tab-bevel1.gif" alt="" width=15 height=27></td>
-		            <td width="95%" align=right background="images/tab-rightback1.gif"><img src="images/tab-topright1.gif" alt="" width=12 height=27></td>
+		            <td width="95%" align=right background="images/tab-rightback1.gif"><img src="images/tab-topright1.gif" alt="" width=20 height=27></td>
 				</c:otherwise>
 			</c:choose>
 		</tr>
@@ -89,7 +78,8 @@
 								<c:set var="documentTypeStruct" value="${documentTypeStruct}" scope="request"/>
 								<c:set var="excludeDocId" value="${documentType.documentTypeId}" scope="request" />
 								<c:import url="RuleQuickLinksDocumentTypeLinks.jsp" />
-							</td>		                    
+							</td>
+							<td width=8 class="bordercell-left"><img src="images/pixel_clear.gif" alt="" width=8 height=8></td>		                    
 						</table>
 					</td>
 				</tr>

@@ -39,8 +39,8 @@ import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.actionlist.dao.ActionListDAO;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtension;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 /**
@@ -296,8 +296,8 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
                 userCrit.eq("delegatorWorkflowId", principalId);
                 
                 List<String> userGroupIds = new ArrayList<String>();
-                for(Long l:KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId)){
-                	userGroupIds.add(l.toString());
+                for(String id:KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId)){
+                	userGroupIds.add(id);
                 }
                 groupCrit.in("delegatorGroupId", userGroupIds);
                 orCrit.or(userCrit);
@@ -317,8 +317,8 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
                 Criteria orCrit = new Criteria(objectsToRetrieve.getName());
                 userCrit.eq("delegatorWorkflowId", principalId);
                 List<String> userGroupIds = new ArrayList<String>();
-                for(Long l:KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId)){
-                	userGroupIds.add(l.toString());
+                for(String id:KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId)){
+                	userGroupIds.add(id);
                 }
                 groupCrit.in("delegatorGroupId", userGroupIds);
                 orCrit.or(userCrit);

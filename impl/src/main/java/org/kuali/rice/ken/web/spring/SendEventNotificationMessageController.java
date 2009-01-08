@@ -50,14 +50,13 @@ import org.kuali.rice.ken.util.Util;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.rule.GenericAttributeContent;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
 
 /**
  * This class is the controller for sending Event notification messages via an end user interface.
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class SendEventNotificationMessageController extends MultiActionController {
+public class SendEventNotificationMessageController extends BaseSendNotificationController {
     /** Logger for this class and subclasses */
     private static final Logger LOG = Logger
 	    .getLogger(SendEventNotificationMessageController.class);
@@ -183,8 +182,7 @@ public class SendEventNotificationMessageController extends MultiActionControlle
     private Map<String, Object> setupModelForSendEventNotification(
 	    HttpServletRequest request) {
 	Map<String, Object> model = new HashMap<String, Object>();
-	model.put("defaultSender", notificationRecipientService
-		.getUserDisplayName(request.getRemoteUser()));
+	model.put("defaultSender", request.getRemoteUser());
 	model.put("channels", notificationChannelService
 		.getAllNotificationChannels());
 	model.put("priorities", businessObjectDao
@@ -204,36 +202,15 @@ public class SendEventNotificationMessageController extends MultiActionControlle
 	} else {
 	   model.put("originalDateTime", request.getParameter("originalDateTime"));
 	}
-	
-        // set user and workgroup recipients in case of error
-	// unfortunately we have to copy the lists into maps so that jstl
-	// can test if the map contains a named key
-	String[] userRecipients = request.getParameterValues("userRecipients");
-	if (userRecipients != null && userRecipients.length > 0) {
-	    HashMap<String, String> userRecipientsSelected = new HashMap<String, String>();
-	    for (int i=0; i< userRecipients.length ; i++) {
-		userRecipientsSelected.put(userRecipients[i], userRecipients[i]);
-	    }
-	    model.put("userRecipientsSelected", userRecipientsSelected);
-	}
-	 
-	String[] workgroupRecipients = request.getParameterValues("workgroupRecipients");
-	if (workgroupRecipients != null && workgroupRecipients.length > 0) {
-	    HashMap<String, String> workgroupRecipientsSelected = new HashMap<String, String>();
-	    for (int i=0; i< workgroupRecipients.length ; i++) {
-		workgroupRecipientsSelected.put(workgroupRecipients[i], workgroupRecipients[i]);
-	    }
-	    model.put("workgroupRecipientsSelected", workgroupRecipientsSelected);
-	}
-	
         model.put("summary", request.getParameter("summary"));
         model.put("description", request.getParameter("description"));
         model.put("location", request.getParameter("location"));
         model.put("startDateTime", request.getParameter("startDateTime"));
         model.put("stopDateTime", request.getParameter("stopDateTime"));
         
-//	model.put("allUsers", notificationRecipientService.getAllUsers());
-//	model.put("allGroups", notificationRecipientService.getAllGroups());
+        model.put("userRecipients", request.getParameter("userRecipients"));
+        model.put("workgroupRecipients", request.getParameter("workgroupRecipients"));
+        
 	return model;
     }
 
@@ -419,10 +396,10 @@ public class SendEventNotificationMessageController extends MultiActionControlle
 	model.put("autoRemoveDateTime", autoRemoveDateTime);
 	
 	// user recipient names
-	String[] userRecipients = request.getParameterValues("userRecipients");
+	String[] userRecipients = parseUserRecipients(request);
 
 	// workgroup recipient names
-	String[] workgroupRecipients = request.getParameterValues("workgroupRecipients");
+	String[] workgroupRecipients = parseWorkgroupRecipients(request);
 
 	// title
         String title = request.getParameter("title");
@@ -527,22 +504,24 @@ public class SendEventNotificationMessageController extends MultiActionControlle
 	if (userRecipients != null && userRecipients.length > 0) {
 	    recipientsExist = true;
 	    for (String userRecipientId : userRecipients) {
-		NotificationRecipient recipient = new NotificationRecipient();
-		recipient
-			.setRecipientType(NotificationConstants.RECIPIENT_TYPES.USER);
-		recipient.setRecipientId(userRecipientId);
-		notification.addRecipient(recipient);
+	        if (isUserRecipientValid(userRecipientId, errors)) {
+        		NotificationRecipient recipient = new NotificationRecipient();
+        		recipient.setRecipientType(NotificationConstants.RECIPIENT_TYPES.USER);
+        		recipient.setRecipientId(userRecipientId);
+        		notification.addRecipient(recipient);
+	        }
 	    }
 	}
 
 	if (workgroupRecipients != null && workgroupRecipients.length > 0) {
 	    recipientsExist = true;
 	    for (String workgroupRecipientId : workgroupRecipients) {
-		NotificationRecipient recipient = new NotificationRecipient();
-		recipient
-			.setRecipientType(NotificationConstants.RECIPIENT_TYPES.GROUP);
-		recipient.setRecipientId(workgroupRecipientId);
-		notification.addRecipient(recipient);
+	        if (isWorkgroupRecipientValid(workgroupRecipientId, errors)) {
+        		NotificationRecipient recipient = new NotificationRecipient();
+        		recipient.setRecipientType(NotificationConstants.RECIPIENT_TYPES.GROUP);
+        		recipient.setRecipientId(workgroupRecipientId);
+        		notification.addRecipient(recipient);
+	        }
 	    }
 	}
 

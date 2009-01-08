@@ -51,18 +51,6 @@ public interface NotificationRecipientService {
      * @return A String array of user recipient ids that belong to the specified recipient group id.
      */
     public String[] getGroupMembers(String groupRecipientId);
-    
-//    /**
-//     * This method retrieves all users in the system.
-//     * @return Collection
-//     */
-//    public Collection getAllUsers();
-//    
-//    /**
-//     * This method retrieves all of the groups in the system.
-//     * @return Collection
-//     */
-//    public Collection getAllGroups();
 
     /**
      * This method retrieves the display name for a user.

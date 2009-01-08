@@ -22,10 +22,8 @@ import java.io.InputStream;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.xml.XmlLoader;
-import org.kuali.rice.kim.bo.Person;
 
 
 /**

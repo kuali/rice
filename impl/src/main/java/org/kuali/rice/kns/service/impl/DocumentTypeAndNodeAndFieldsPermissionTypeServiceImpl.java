@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.kns.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
@@ -29,8 +32,8 @@ import org.kuali.rice.kim.util.KimCommonUtils;
 public class DocumentTypeAndNodeAndFieldsPermissionTypeServiceImpl extends DocumentTypePermissionTypeServiceImpl {
 
 	{
-		inputRequiredAttributes.add(KimAttributes.ROUTE_NODE_NAME);
-		inputRequiredAttributes.add(KimAttributes.PROPERTY_NAME);
+		requiredAttributes.add(KimAttributes.ROUTE_NODE_NAME);
+		requiredAttributes.add(KimAttributes.PROPERTY_NAME);
 	}
 
 	/**
@@ -42,24 +45,29 @@ public class DocumentTypeAndNodeAndFieldsPermissionTypeServiceImpl extends Docum
 	 *	permision detail sourceAccountingLines will match passed in value of sourceAccountingLines.amount and sourceAccountingLines 
 	 *	permission detail sourceAccountingLines.objectCode will match sourceAccountingLines.objectCode but not sourceAccountingLines
 	 *
-	 * @see org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase#doesPermissionDetailMatch(AttributeSet, KimPermissionInfo)
+	 * @see org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl#performPermissionMatches(org.kuali.rice.kim.bo.types.dto.AttributeSet, java.util.List)
 	 */
 	@Override
-	public boolean performPermissionMatch(AttributeSet requestedDetails, KimPermissionInfo permission) {
-		boolean documentTypeMatch = super.performPermissionMatch(requestedDetails, permission);
-		if (documentTypeMatch && 
-				routeNodeMatches(requestedDetails, permission.getDetails()) && 
-				KimCommonUtils.doesPropertyNameMatch(requestedDetails.get(KimAttributes.PROPERTY_NAME), permission.getDetails().get(KimAttributes.PROPERTY_NAME))) {
-			return true;
+	public List<KimPermissionInfo> performPermissionMatches(AttributeSet requestedDetails,
+			List<KimPermissionInfo> permissionsList) {
+		List<KimPermissionInfo> matchingPermissions = new ArrayList<KimPermissionInfo>();
+		// loop over the permissions, checking the non-document-related ones
+		for ( KimPermissionInfo kpi : permissionsList ) {
+			if ( routeNodeMatches(requestedDetails, kpi.getDetails()) && 
+					KimCommonUtils.doesPropertyNameMatch(requestedDetails.get(KimAttributes.PROPERTY_NAME), kpi.getDetails().get(KimAttributes.PROPERTY_NAME)) ) {
+				matchingPermissions.add( kpi );
+			}			
 		}
-		return false;
+		// now, filter the list to just those for the current document
+		matchingPermissions = super.performPermissionMatches( requestedDetails, matchingPermissions );
+		return matchingPermissions;
 	}
-	
+		
 	protected boolean routeNodeMatches(AttributeSet requestedDetails, AttributeSet permissionDetails) {
-		if (!permissionDetails.containsKey(KimAttributes.ROUTE_NODE_NAME)) {
+		if ( StringUtils.isBlank( permissionDetails.get(KimAttributes.ROUTE_NODE_NAME) ) ) {
 			return true;
 		}
-		return StringUtils.equals(requestedDetails.get(KimAttributes.ROUTE_NODE_NAME),
-				permissionDetails.get(KimAttributes.ROUTE_NODE_NAME));
+		return KimCommonUtils.isAttributeSetEntryEquals( requestedDetails, permissionDetails, 
+				KimAttributes.ROUTE_NODE_NAME );
 	}
 }

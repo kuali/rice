@@ -44,9 +44,6 @@ public class KimCommonUtils {
 	 * 
 	 * This method traverses the document type hierarchy
 	 * 
-	 * @param currentDocType
-	 * @param documentTypeName
-	 * @return
 	 */
 	public static boolean isParentDocument(DocumentType currentDocType,
 			String documentTypeName) {
@@ -66,49 +63,47 @@ public class KimCommonUtils {
 	public static boolean doesPropertyNameMatch(
 			String requestedDetailsPropertyName,
 			String permissionDetailsPropertyName) {
-		if (StringUtils.isEmpty(permissionDetailsPropertyName))
+		if (StringUtils.isBlank(permissionDetailsPropertyName)) {
 			return true;
-		return requestedDetailsPropertyName
-				.equals(permissionDetailsPropertyName)
-				|| (requestedDetailsPropertyName
-						.startsWith(permissionDetailsPropertyName) && (requestedDetailsPropertyName
-						.substring(
-								requestedDetailsPropertyName
-										.indexOf(permissionDetailsPropertyName)
-										+ permissionDetailsPropertyName
-												.length()).indexOf(".") != -1));
+		}
+		if ( requestedDetailsPropertyName == null ) {
+		    requestedDetailsPropertyName = ""; // prevent NPE
+		}
+		return StringUtils.equals(requestedDetailsPropertyName, permissionDetailsPropertyName)
+				|| (requestedDetailsPropertyName.startsWith(permissionDetailsPropertyName+".")); 
 	}
 
-	public static AttributeSet getNamespaceAndComponentSimpleName(
-			Class clazz) {
+	public static AttributeSet getNamespaceAndComponentSimpleName( Class<? extends Object> clazz) {
 		AttributeSet attributeSet = new AttributeSet();
 		attributeSet.put(KimAttributes.NAMESPACE_CODE, getNamespaceCode(clazz));
 		attributeSet.put(KimAttributes.COMPONENT_NAME, getComponentSimpleName(clazz));
 		return attributeSet;
 	}
 
-	public static AttributeSet getNamespaceAndComponentFullName(
-			Class clazz) {
+	public static AttributeSet getNamespaceAndComponentFullName( Class<? extends Object> clazz) {
 		AttributeSet attributeSet = new AttributeSet();
 		attributeSet.put(KimAttributes.NAMESPACE_CODE, getNamespaceCode(clazz));
 		attributeSet.put(KimAttributes.COMPONENT_NAME, getComponentFullName(clazz));
 		return attributeSet;
 	}
 
-	public static String getNamespaceCode(Class clazz) {
-		ModuleService moduleService = getKualiModuleService()
-				.getResponsibleModuleService(clazz);
+	public static String getNamespaceCode(Class<? extends Object> clazz) {
+		ModuleService moduleService = getKualiModuleService().getResponsibleModuleService(clazz);
 		if (moduleService == null) {
 			return "KUALI";
 		}
 		return moduleService.getModuleConfiguration().getNamespaceCode();
 	}
 
-	public static String getComponentSimpleName(Class clazz) {
+	public static String getComponentSimpleName(Class<? extends Object> clazz) {
 		return clazz.getSimpleName();
 	}
 
-	public static String getComponentFullName(Class clazz) {
+	public static String getComponentFullName(Class<? extends Object> clazz) {
 		return clazz.getName();
+	}
+	
+	public static boolean isAttributeSetEntryEquals( AttributeSet map1, AttributeSet map2, String key ) {
+		return StringUtils.equals( map1.get( key ), map2.get( key ) );
 	}
 }

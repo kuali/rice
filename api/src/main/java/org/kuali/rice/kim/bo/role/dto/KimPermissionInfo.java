@@ -18,6 +18,7 @@ package org.kuali.rice.kim.bo.role.dto;
 import java.io.Serializable;
 
 import org.kuali.rice.kim.bo.role.KimPermission;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -64,6 +65,12 @@ public class KimPermissionInfo extends PermissionDetailsInfo implements KimPermi
 	public void setTemplate(KimPermissionTemplateInfo template) {
 		this.template = template;
 	}
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+        return new ToStringBuilder(this).append("details", this.details).append("template", this.template).append("namespaceCode", this.namespaceCode).append("name", this.name).toString();
+    }
 	
 	
 }

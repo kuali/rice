@@ -30,34 +30,30 @@ import org.kuali.rice.kim.service.support.KimPermissionTypeService;
  */
 public class KimPermissionTypeServiceBase extends KimTypeServiceBase implements KimPermissionTypeService {
 
+	protected List<String> requiredAttributes = new ArrayList<String>();
+	
 	/**
-	 * @see org.kuali.rice.kim.service.support.KimPermissionTypeService#doPermissionDetailsMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, java.util.List)
+	 * @see org.kuali.rice.kim.service.support.KimPermissionTypeService#getMatchingPermissions(AttributeSet, List)
 	 */
-	public List<KimPermissionInfo> doPermissionDetailsMatch( AttributeSet requestedDetails, List<KimPermissionInfo> permissionsList ) {
-		return performPermissionMatches(translateInputAttributeSet(requestedDetails), permissionsList);
+	public final List<KimPermissionInfo> getMatchingPermissions( AttributeSet requestedDetails, List<KimPermissionInfo> permissionsList ) {
+		requestedDetails = translateInputAttributeSet(requestedDetails);
+		validateRequiredAttributesAgainstReceived(requiredAttributes, requestedDetails, REQUESTED_DETAILS_RECEIVED_ATTIBUTES_NAME);
+		return performPermissionMatches(requestedDetails, permissionsList);
 	}
 
 	/**
-	 * This overridden method ...
+	 * Internal method for matching permissions.  Override this method to customize the matching behavior.
 	 * 
-	 * @see org.kuali.rice.kim.service.support.KimPermissionTypeService#doesPermissionDetailMatch(AttributeSet, KimPermissionInfo)
+	 * This base implementation uses the {@link #performMatch(AttributeSet, AttributeSet)} method
+	 * to perform an exact match on the permission details and return all that are equal.
 	 */
-	public boolean doesPermissionDetailMatch(AttributeSet requestedDetails, KimPermissionInfo permission) {
-		return performPermissionMatch(translateInputAttributeSet(requestedDetails), permission);
-	}
-
 	protected List<KimPermissionInfo> performPermissionMatches(AttributeSet requestedDetails, List<KimPermissionInfo> permissionsList) {
 		List<KimPermissionInfo> matchingPermissions = new ArrayList<KimPermissionInfo>();
 		for (KimPermissionInfo permission : permissionsList) {
-			if ( performPermissionMatch( requestedDetails, permission ) ) {
+			if ( performMatch(requestedDetails, permission.getDetails()) ) {
 				matchingPermissions.add( permission );
 			}
 		}
 		return matchingPermissions;
 	}
-
-	protected boolean performPermissionMatch(AttributeSet requestedDetails, KimPermissionInfo permission) {
-		return performMatch(requestedDetails, permission.getDetails());
-	}
-
 }

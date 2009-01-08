@@ -41,10 +41,6 @@ public interface KimPermissionTypeService extends KimTypeService {
      *   
      * TODO: clarify this description
      */
-    boolean doesPermissionDetailMatch( AttributeSet requestedDetails, KimPermissionInfo permission );
-
-    /** Same as {@link #doesPermissionDetailMatch(AttributeSet, KimPermissionInfo)} except that it takes a list of details to check.
-     */
-    List<KimPermissionInfo> doPermissionDetailsMatch( AttributeSet requestedDetails, List<KimPermissionInfo> permissionsList );
+    List<KimPermissionInfo> getMatchingPermissions( AttributeSet requestedDetails, List<KimPermissionInfo> permissionsList );
 
 }

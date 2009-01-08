@@ -18,31 +18,52 @@ package org.kuali.rice.kns.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
+import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
-import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ComponentFieldPermissionTypeServiceImpl extends KimPermissionTypeServiceBase {
 
-	protected List<String> requiredAttributes = new ArrayList<String>();
 	{
 		requiredAttributes.add(KimAttributes.COMPONENT_NAME);
 		requiredAttributes.add(KimAttributes.PROPERTY_NAME);
 	}
+	
 	/**
-	 * @see org.kuali.rice.kim.service.support.impl.KimTypeServiceBase#performMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 * Compare the component and property names between the request and matching permissions.
+	 * Make entries with a matching property name take precedence over those with blank property 
+	 * names on the stored permissions.  Only match entries with blank property names if
+	 * no entries match on the exact property name. 
+	 * 
+	 * @see org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase#performPermissionMatches(org.kuali.rice.kim.bo.types.dto.AttributeSet, java.util.List)
 	 */
 	@Override
-	protected boolean performMatch(AttributeSet inputAttributeSet, AttributeSet storedAttributeSet) {		
-		validateRequiredAttributesAgainstReceived(requiredAttributes, inputAttributeSet, REQUESTED_DETAILS_RECEIVED_ATTIBUTES_NAME);
-		validateRequiredAttributesAgainstReceived(requiredAttributes, storedAttributeSet, STORED_DETAILS_RECEIVED_ATTIBUTES_NAME);
-		
-		return inputAttributeSet.get(KimAttributes.COMPONENT_NAME).equals(storedAttributeSet.get(KimAttributes.COMPONENT_NAME))
-			&& inputAttributeSet.get(KimAttributes.PROPERTY_NAME).startsWith(storedAttributeSet.get(KimAttributes.PROPERTY_NAME));
+	protected List<KimPermissionInfo> performPermissionMatches(AttributeSet requestedDetails,
+			List<KimPermissionInfo> permissionsList) {
+		List<KimPermissionInfo> propertyMatches = new ArrayList<KimPermissionInfo>();
+		List<KimPermissionInfo> blankPropertyMatches = new ArrayList<KimPermissionInfo>();
+		String propertyName = requestedDetails.get(KimAttributes.PROPERTY_NAME);
+		String componentName = requestedDetails.get(KimAttributes.COMPONENT_NAME);
+		for ( KimPermissionInfo kpi : permissionsList ) {
+			if ( StringUtils.equals( componentName, kpi.getDetails().get( KimAttributes.COMPONENT_NAME ) ) ) {
+				String permPropertyName = kpi.getDetails().get(KimAttributes.PROPERTY_NAME);
+				if ( StringUtils.isBlank( permPropertyName ) ) {
+					blankPropertyMatches.add( kpi );
+				} else if ( StringUtils.equals( propertyName, permPropertyName ) ) {
+					propertyMatches.add( kpi );
+				}
+			}
+		}
+		if ( !propertyMatches.isEmpty() ) {
+			return propertyMatches;
+		} else {
+			return blankPropertyMatches;
+		}
 	}
 
 }

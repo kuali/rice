@@ -196,7 +196,7 @@ public class PermissionServiceImpl implements PermissionService {
     			if ( permissionTypeService == null ) {
     				permissionTypeService = getDefaultPermissionTypeService();
     			}
-				applicablePermissions.addAll( permissionTypeService.doPermissionDetailsMatch( permissionDetails, permissionList ) );    				
+				applicablePermissions.addAll( permissionTypeService.getMatchingPermissions( permissionDetails, permissionList ) );    				
     		}
     	}
     	return applicablePermissions;

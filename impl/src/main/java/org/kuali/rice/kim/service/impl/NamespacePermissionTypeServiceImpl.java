@@ -18,7 +18,9 @@ package org.kuali.rice.kim.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
+import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
 
@@ -28,27 +30,43 @@ import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
 public class NamespacePermissionTypeServiceImpl extends
 		KimPermissionTypeServiceBase {
 
-	protected List<String> inputRequiredAttributes = new ArrayList<String>();
 	{
-		inputRequiredAttributes.add(KimAttributes.NAMESPACE_CODE);
+		requiredAttributes.add(KimAttributes.NAMESPACE_CODE);
 	}
-
+	
 	/**
-	 * @see org.kuali.rice.kim.service.support.impl.KimTypeServiceBase#performMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet,
-	 *      org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 * Check for entries that match the namespace.  Only return the one which is the most specific. 
+	 * 
+	 * I.e., matches best. KR-NS will have priority over KR-*
+	 * 
+	 * @see org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase#performPermissionMatches(org.kuali.rice.kim.bo.types.dto.AttributeSet, java.util.List)
 	 */
 	@Override
-	protected boolean performMatch(AttributeSet inputAttributeSet,
-			AttributeSet storedAttributeSet) {
-		validateRequiredAttributesAgainstReceived(inputRequiredAttributes,
-				inputAttributeSet, REQUESTED_DETAILS_RECEIVED_ATTIBUTES_NAME);
-		return namespaceMatches(inputAttributeSet, storedAttributeSet);
-	}
-
-	protected boolean namespaceMatches(AttributeSet inputAttributeSet,
-			AttributeSet storedAttributeSet) {
-		return inputAttributeSet.get(KimAttributes.NAMESPACE_CODE).matches(
-				storedAttributeSet.get(KimAttributes.NAMESPACE_CODE)
-						.replaceAll("\\*", ".*"));
+	protected List<KimPermissionInfo> performPermissionMatches(AttributeSet requestedDetails, List<KimPermissionInfo> permissionsList) {
+        KimPermissionInfo exactMatchPerm = null;
+        KimPermissionInfo partialMatchPerm = null;
+        String requestedNamespaceCode = requestedDetails.get(KimAttributes.NAMESPACE_CODE);
+        for ( KimPermissionInfo kpi : permissionsList ) {
+            String permissionNamespaceCode = kpi.getDetails().get(KimAttributes.NAMESPACE_CODE);
+            if ( StringUtils.equals(requestedNamespaceCode, permissionNamespaceCode ) ) {
+                exactMatchPerm = kpi;
+                // if an exact match, there's no need to search any further
+                break;
+            } else if ( requestedNamespaceCode != null
+                    && permissionNamespaceCode != null
+                    && requestedNamespaceCode.matches(permissionNamespaceCode.replaceAll("\\*", ".*") ) ) {
+                partialMatchPerm = kpi;
+                // don't break, since there still could be an exact match
+            }
+        }
+        // return the exact match if set
+        List<KimPermissionInfo> matchingPermissions = new ArrayList<KimPermissionInfo>();
+        if ( exactMatchPerm != null ) {
+            matchingPermissions.add( exactMatchPerm );
+        } else if ( partialMatchPerm != null ) {
+            matchingPermissions.add( partialMatchPerm );
+        }
+        
+        return matchingPermissions;
 	}
 }

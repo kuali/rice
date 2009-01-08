@@ -37,17 +37,18 @@ import org.kuali.rice.kim.util.KimCommonUtils;
  */
 public class DocumentTypePermissionTypeServiceImpl extends KimPermissionTypeServiceBase {
 
-	protected List<String> inputRequiredAttributes = new ArrayList<String>();
-	protected List<String> storedRequiredAttributes = new ArrayList<String>();
-
 	DocumentTypeService documentTypeService;
 	
-	public DocumentTypePermissionTypeServiceImpl() {
-		inputRequiredAttributes.add(KimAttributes.DOCUMENT_TYPE_NAME);
-		storedRequiredAttributes.add(KimAttributes.DOCUMENT_TYPE_NAME);
+	{
+		requiredAttributes.add(KimAttributes.DOCUMENT_TYPE_NAME);
 	}
-	
+
 	/**
+	 * Loops over the given permissions and returns the most specific permission that matches.
+	 * 
+	 * That is, if a permission exists for the document type, then the permission for any 
+	 * parent document will not be considered/returned.
+	 * 
 	 * @see org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase#performPermissionMatches(org.kuali.rice.kim.bo.types.dto.AttributeSet, java.util.List)
 	 */
 	@Override
@@ -69,7 +70,8 @@ public class DocumentTypePermissionTypeServiceImpl extends KimPermissionTypeServ
 		List<KimPermissionInfo> matchingPermissions = new ArrayList<KimPermissionInfo>( matchingDocTypeNames.size() );
 		for ( KimPermissionInfo kpi : permissionsList ) {
 			String docTypeName = kpi.getDetails().get( KimAttributes.DOCUMENT_TYPE_NAME );
-			if( StringUtils.equals(docTypeName,"*") 
+			// only allow a match on the "*" type if no matching document types were found
+			if( (matchingDocTypeNames.isEmpty() && StringUtils.equals(docTypeName,"*")) 
 					|| matchingDocTypeNames.contains( docTypeName ) ) {
 				matchingPermissions.add( kpi );
 			}
@@ -93,12 +95,15 @@ public class DocumentTypePermissionTypeServiceImpl extends KimPermissionTypeServ
 		}
 		if (currentDocType != null) {
 			if ( parentDocTypeNames.contains( currentDocType.getName() ) ) {
-			//if (parentDocTypeName.equalsIgnoreCase(currentDocType.getName())) {
 				matchingParentDocTypeNames.add( currentDocType.getName() );
+				// a match has been found - abort - we only want to use the most specific permission
+				return matchingParentDocTypeNames;
 			} 
 			if (currentDocType.getDocTypeParentId() != null
 					&& !currentDocType.getDocumentTypeId().equals(
 							currentDocType.getDocTypeParentId())) {
+			    // there is a parent document type, recurse into that one
+			    // above if statement prevents problems if there is a circular relationship
 	            return isParentDocument(currentDocType.getParentDocType(),
 	                    parentDocTypeNames, matchingParentDocTypeNames);
 			}
@@ -106,26 +111,6 @@ public class DocumentTypePermissionTypeServiceImpl extends KimPermissionTypeServ
 		return matchingParentDocTypeNames;
 	}
 	
-	/**
-	 * 
-	 * This overridden method checks the document type hierarchy to match the permission details.
-	 * 
-	 * @see org.kuali.rice.kim.service.support.impl.KimTypeServiceBase#performMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)
-	 */
-	@Override
-	public boolean performMatch(AttributeSet requestedDetails, AttributeSet permissionDetails) {
-		validateRequiredAttributesAgainstReceived(inputRequiredAttributes, requestedDetails, REQUESTED_DETAILS_RECEIVED_ATTIBUTES_NAME);
-		validateRequiredAttributesAgainstReceived(storedRequiredAttributes, permissionDetails, STORED_DETAILS_RECEIVED_ATTIBUTES_NAME);
-
-		String docTypeName = requestedDetails.get(KimAttributes.DOCUMENT_TYPE_NAME);
-		String permissionDocTypeName = permissionDetails.get(KimAttributes.DOCUMENT_TYPE_NAME);
-		if(StringUtils.equals(permissionDocTypeName,"*")){
-			return true;
-		}
-		DocumentType currentDocType = getDocumentTypeService().findByName(docTypeName);
-		return KimCommonUtils.isParentDocument(currentDocType, permissionDocTypeName );
-	}
-
 	public DocumentTypeService getDocumentTypeService() {
 		if ( documentTypeService == null ) {
 			documentTypeService = KEWServiceLocator.getDocumentTypeService();

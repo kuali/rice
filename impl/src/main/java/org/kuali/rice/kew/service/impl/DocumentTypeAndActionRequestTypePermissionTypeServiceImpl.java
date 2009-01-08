@@ -15,7 +15,9 @@
  */
 package org.kuali.rice.kew.service.impl;
 
-import org.apache.commons.lang.StringUtils;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
@@ -26,30 +28,25 @@ import org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl;
  */
 public class DocumentTypeAndActionRequestTypePermissionTypeServiceImpl extends DocumentTypePermissionTypeServiceImpl {
 
+	{
+		requiredAttributes.add( KimAttributes.ACTION_REQUEST_CD );
+	}
 	/**
-	 * @see org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl#performPermissionMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.role.KimPermission)
+	 * @see org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl#performPermissionMatches(org.kuali.rice.kim.bo.types.dto.AttributeSet, java.util.List)
 	 */
 	@Override
-	protected boolean performPermissionMatch(AttributeSet requestedDetails, KimPermissionInfo permission) {
-        if (StringUtils.isEmpty(requestedDetails.get(KimAttributes.DOCUMENT_TYPE_NAME)) || StringUtils.isEmpty(requestedDetails.get(KimAttributes.ACTION_REQUEST_CD))) {
-            throw new RuntimeException("Both " + KimAttributes.DOCUMENT_TYPE_NAME + " and " + KimAttributes.ACTION_REQUEST_CD + " should not be blank or null.");
-        }   
-        
-        if (!permission.getDetails().get(KimAttributes.DOCUMENT_TYPE_NAME).equals(requestedDetails.get(KimAttributes.DOCUMENT_TYPE_NAME))) {
-            return false;
-        }
-        
-        if (StringUtils.isNotEmpty(permission.getDetails().get(KimAttributes.ACTION_REQUEST_CD)) && 
-                !permission.getDetails().get(KimAttributes.ACTION_REQUEST_CD).equals(requestedDetails.get(KimAttributes.ACTION_REQUEST_CD))) {
-            return false;
-        }
-        
-        // after performing the simple checks (and they all pass) check the document hierarchy
-		if (!super.performPermissionMatch(requestedDetails, permission)) {
-			return false;
+	public List<KimPermissionInfo> performPermissionMatches(AttributeSet requestedDetails,
+			List<KimPermissionInfo> permissionsList) {
+		List<KimPermissionInfo> matchingPermissions = new ArrayList<KimPermissionInfo>();
+		// loop over the permissions, checking the non-document-related ones
+		for ( KimPermissionInfo kpi : permissionsList ) {
+			if ( kpi.getDetails().get(KimAttributes.ACTION_REQUEST_CD).equals(requestedDetails.get(KimAttributes.ACTION_REQUEST_CD) ) ) {
+				matchingPermissions.add( kpi );
+			}			
 		}
-		
-		return true;
+		// now, filter the list to just those for the current document
+		matchingPermissions = super.performPermissionMatches( requestedDetails, matchingPermissions );
+		return matchingPermissions;
 	}
 	
 }

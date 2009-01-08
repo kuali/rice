@@ -18,7 +18,9 @@ package org.kuali.rice.kns.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
+import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.impl.NamespacePermissionTypeServiceImpl;
 
@@ -27,36 +29,52 @@ import org.kuali.rice.kim.service.impl.NamespacePermissionTypeServiceImpl;
  */
 public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl
 		extends NamespacePermissionTypeServiceImpl {
-	protected List<String> inputRequiredAttributes;
 	protected String exactMatchStringAttributeName;
 	protected boolean namespaceRequiredOnStoredAttributeSet;
 
-	protected boolean performMatch(AttributeSet inputAttributeSet,
-			AttributeSet storedAttributeSet) {
-		validateRequiredAttributesAgainstReceived(inputRequiredAttributes,
-				inputAttributeSet, REQUESTED_DETAILS_RECEIVED_ATTIBUTES_NAME);
-		if (namespaceRequiredOnStoredAttributeSet) {
-			return namespaceMatches(inputAttributeSet, storedAttributeSet)
-					&& (!storedAttributeSet
-							.containsKey(exactMatchStringAttributeName) || inputAttributeSet
-							.get(exactMatchStringAttributeName).equals(
-									exactMatchStringAttributeName));
-		}
-		return (storedAttributeSet.containsKey(exactMatchStringAttributeName) && inputAttributeSet
-				.get(exactMatchStringAttributeName).equals(
-						inputAttributeSet.get(exactMatchStringAttributeName)))
-				|| (storedAttributeSet
-						.containsKey(KimAttributes.NAMESPACE_CODE) && namespaceMatches(
-						inputAttributeSet, storedAttributeSet));
-
+	@Override
+	protected List<KimPermissionInfo> performPermissionMatches(AttributeSet requestedDetails, List<KimPermissionInfo> permissionsList) {
+	    List<KimPermissionInfo> matchingPermissions = new ArrayList<KimPermissionInfo>();
+        List<KimPermissionInfo> matchingBlankPermissions = new ArrayList<KimPermissionInfo>();
+	    String requestedAttributeValue = requestedDetails.get(exactMatchStringAttributeName);
+	    for ( KimPermissionInfo kpi : permissionsList ) {
+	        String permissionAttributeValue = kpi.getDetails().get(exactMatchStringAttributeName);
+	        if ( StringUtils.equals(requestedAttributeValue, permissionAttributeValue) ) {
+	            matchingPermissions.add(kpi);
+	        } else if ( StringUtils.isBlank(permissionAttributeValue) ) {
+	            matchingBlankPermissions.add(kpi);
+	        }
+	    }
+	    // if the exact match worked, use those when checking the namespace
+	    // otherwise, use those with a blank additional property value
+	    if ( !matchingPermissions.isEmpty() ) {
+            List<KimPermissionInfo> matchingWithNamespace = super.performPermissionMatches(requestedDetails, matchingPermissions);
+	        if ( !namespaceRequiredOnStoredAttributeSet ) {
+	            // if the namespace is not required and the namespace match would have excluded
+	            // the results, return the original set of matches
+	            if ( matchingWithNamespace.isEmpty() ) {
+	                return matchingPermissions;
+	            }
+	        }
+            return matchingWithNamespace;
+	    } else if ( !matchingBlankPermissions.isEmpty() ) {
+            List<KimPermissionInfo> matchingWithNamespace = super.performPermissionMatches(requestedDetails, matchingBlankPermissions);
+            if ( !namespaceRequiredOnStoredAttributeSet ) {
+                // if the namespace is not required and the namespace match would have excluded
+                // the results, return the original set of matches
+                if ( matchingWithNamespace.isEmpty() ) {
+                    return matchingBlankPermissions;
+                }
+            }
+            return matchingWithNamespace;
+	    }
+	    return matchingPermissions; // will be empty if drops to here
 	}
-
+	
 	public void setExactMatchStringAttributeName(
 			String exactMatchStringAttributeName) {
 		this.exactMatchStringAttributeName = exactMatchStringAttributeName;
-		inputRequiredAttributes = new ArrayList<String>();
-		inputRequiredAttributes.add(KimAttributes.NAMESPACE_CODE);
-		inputRequiredAttributes.add(exactMatchStringAttributeName);
+		requiredAttributes.add(exactMatchStringAttributeName);
 	}
 
 	public void setNamespaceRequiredOnStoredAttributeSet(

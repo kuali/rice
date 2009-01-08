@@ -15,7 +15,12 @@
  */
 package org.kuali.rice.kns.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
+import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 /**
@@ -23,24 +28,22 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
  */
 public class ParameterPermissionTypeServiceImpl extends
 		NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl {
-	/**
-	 * @see org.kuali.rice.kns.service.impl.NamespaceOrComponentPermissionTypeServiceImpl#performMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet,
-	 *      org.kuali.rice.kim.bo.types.dto.AttributeSet)
-	 */
-	@Override
-	protected boolean performMatch(AttributeSet inputAttributeSet,
-			AttributeSet storedAttributeSet) {
-		return super.performMatch(inputAttributeSet, storedAttributeSet)
-				&& (!storedAttributeSet
-						.containsKey(KimAttributes.PARAMETER_NAME) || inputAttributeSet
-						.get(KimAttributes.PARAMETER_NAME).equals(
-								KimAttributes.PARAMETER_NAME));
-	}
-
-	@Override
-	public void setExactMatchStringAttributeName(
-			String exactMatchStringAttributeName) {
-		super.setExactMatchStringAttributeName(exactMatchStringAttributeName);
-		inputRequiredAttributes.add(KimAttributes.PARAMETER_NAME);
-	}
+    
+    {
+        requiredAttributes.add(KimAttributes.PARAMETER_NAME);        
+    }
+    
+    @Override
+    protected List<KimPermissionInfo> performPermissionMatches(AttributeSet requestedDetails, List<KimPermissionInfo> permissionsList) {
+        String requestedParameterName = requestedDetails.get(KimAttributes.PARAMETER_NAME);
+        List<KimPermissionInfo> matchingPermissions = new ArrayList<KimPermissionInfo>();
+        for ( KimPermissionInfo kpi : permissionsList ) {
+            String parameterName = kpi.getDetails().get(KimAttributes.PARAMETER_NAME);
+            if ( StringUtils.isBlank(parameterName)
+                    || StringUtils.equals(requestedParameterName, parameterName)) {
+                matchingPermissions.add(kpi);
+            }
+        }
+        return super.performPermissionMatches(requestedDetails, matchingPermissions);
+    }    
 }

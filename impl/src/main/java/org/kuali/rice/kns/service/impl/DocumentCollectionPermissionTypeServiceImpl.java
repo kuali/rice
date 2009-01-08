@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kns.service.impl;
 
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
@@ -26,41 +28,51 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 public class DocumentCollectionPermissionTypeServiceImpl extends DocumentTypePermissionTypeServiceImpl {
 
 	{
-		inputRequiredAttributes.add(KimAttributes.COLLECTION_ITEM_TYPE_CODE);
+		requiredAttributes.add(KimAttributes.COLLECTION_ITEM_TYPE_CODE);
 	}
 	
 	/**
-	 * @see org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl#performPermissionMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.role.KimPermission)
+	 * @see org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl#performPermissionMatches(AttributeSet, List)
 	 */
 	@Override
-	protected boolean performPermissionMatch(AttributeSet requestedDetails, KimPermissionInfo permission) {
-		return true;
+	public List<KimPermissionInfo> performPermissionMatches(AttributeSet requestedDetails,
+			List<KimPermissionInfo> permissionsList) {
+		return permissionsList;
 		//TODO: Uncomment this - Commented until all the clients pass in the required attributes
 		/*
-		boolean match = super.performPermissionMatch(requestedDetails, permission);
-		if ( !match ) {
-			return false;
+		List<KimPermissionInfo> matchingPermissions = new ArrayList<KimPermissionInfo>();
+		// loop over the permissions, checking the non-document-related ones
+		for ( KimPermissionInfo kpi : permissionsList ) {
+			boolean addTemplate = 
+					KimConstants.PermissionTemplateNames.ADD_ATTACHMENT.equals(kpi.getTemplate().getName()) 
+					|| KimConstants.PermissionTemplateNames.ADD_NOTE.equals(kpi.getTemplate().getName());		
+			if (!addTemplate && StringUtils.isBlank(requestedDetails.get(KimAttributes.CREATE_BY_SELF_ONLY))) {
+				throw new RuntimeException(KimAttributes.CREATE_BY_SELF_ONLY + " should not be blank or null.");
+			}
+			if ( doesCollectionItemTypecodeMatch(requestedDetails, kpi.getDetails() ) &&
+						isCreatedBySelfOnly(requestedDetails, kpi.getDetails() ) ) {
+				matchingPermissions.add( kpi );
+			}			
 		}
-		boolean addTemplate = 
-			"Add Attachment".equals(permission.getTemplate().getName()) || "Add Note".equals(permission.getTemplate().getName());		
-		if (!addTemplate && StringUtils.isEmpty(requestedDetails.get(KimAttributes.CREATE_BY_SELF_ONLY))) {
-			throw new RuntimeException(KimAttributes.CREATE_BY_SELF_ONLY + " should not be blank or null.");
-		}
-		return match && doesCollectionItemTypecodeMatch(requestedDetails, permission.getDetails()) &&
-					isCreatedBySelfOnly(requestedDetails, permission.getDetails());
+		// now, filter the list to just those for the current document
+		matchingPermissions = super.performPermissionMatches( requestedDetails, matchingPermissions );
+		// TODO: does this need to filter on a priority scheme on the Collection Item Type Code?
+		return matchingPermissions;
 		*/
 	}
 	
 	protected boolean doesCollectionItemTypecodeMatch(AttributeSet requestedDetails, AttributeSet permissionDetails){
-		if(StringUtils.isEmpty(permissionDetails.get(KimAttributes.COLLECTION_ITEM_TYPE_CODE)))
+		if(StringUtils.isBlank(permissionDetails.get(KimAttributes.COLLECTION_ITEM_TYPE_CODE))) {
 			return true;
+		}
 		return StringUtils.equals(requestedDetails.get(KimAttributes.COLLECTION_ITEM_TYPE_CODE), 
 				permissionDetails.get(KimAttributes.COLLECTION_ITEM_TYPE_CODE));
 	}
 	
 	protected boolean isCreatedBySelfOnly(AttributeSet requestedDetails, AttributeSet permissionDetails){
-		if(StringUtils.isEmpty(permissionDetails.get(KimAttributes.CREATE_BY_SELF_ONLY)))
+		if(StringUtils.isBlank(permissionDetails.get(KimAttributes.CREATE_BY_SELF_ONLY))) {
 			return true;
+		}
 		return requestedDetails.get(KimAttributes.CREATE_BY_SELF_ONLY).equals(
 				permissionDetails.get(KimAttributes.CREATE_BY_SELF_ONLY));
 	}

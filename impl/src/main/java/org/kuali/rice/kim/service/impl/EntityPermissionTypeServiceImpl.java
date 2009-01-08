@@ -32,7 +32,6 @@ import org.kuali.rice.kim.util.KimCommonUtils;
  */
 public class EntityPermissionTypeServiceImpl extends KimPermissionTypeServiceBase {
 
-	protected List<String> requiredAttributes = new ArrayList<String>();
 	{
 		requiredAttributes.add(KimAttributes.ENTITY_TYPE_CODE);
 	}
@@ -48,12 +47,10 @@ public class EntityPermissionTypeServiceImpl extends KimPermissionTypeServiceBas
 	 *	- If only Entity Type Code is passed in the permission details, match that.
 	 *	- If both Entity Type Code and Property Name are passed in the permission details check if the value passed in starts with the value in the db. 
 	 * 
-	 * @see org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase#performPermissionMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.role.KimPermission)
+	 * @see org.kuali.rice.kim.service.support.impl.KimTypeServiceBase#performMatch(AttributeSet, AttributeSet)
 	 */
 	@Override
 	protected boolean performMatch(AttributeSet requestedDetails, AttributeSet permissionDetails) {
-		validateRequiredAttributesAgainstReceived(requiredAttributes, requestedDetails, REQUESTED_DETAILS_RECEIVED_ATTIBUTES_NAME);
-
 		return doesEntityTypeCodeMatch(requestedDetails.get(KimAttributes.ENTITY_TYPE_CODE), 
 						permissionDetails.get(KimAttributes.ENTITY_TYPE_CODE)) 
 				&&
@@ -62,8 +59,9 @@ public class EntityPermissionTypeServiceImpl extends KimPermissionTypeServiceBas
 	}
 
 	protected boolean doesEntityTypeCodeMatch(String requestedDetailsEntityTypeCode, String permissionDetailsEntityTypeCode){
-		if(StringUtils.isEmpty(permissionDetailsEntityTypeCode))
+		if(StringUtils.isBlank(permissionDetailsEntityTypeCode)) {
 			return true;
-		return requestedDetailsEntityTypeCode.equals(permissionDetailsEntityTypeCode);
+		}
+		return StringUtils.equals(requestedDetailsEntityTypeCode, permissionDetailsEntityTypeCode);
 	}
 }

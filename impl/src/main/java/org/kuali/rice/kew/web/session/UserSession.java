@@ -27,6 +27,7 @@ import java.util.Set;
 
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
+import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -58,7 +59,7 @@ public class UserSession implements Serializable {
     private static ThreadLocal currentUserSession = new ThreadLocal();
 
     private UserId backdoorId;
-    private WorkflowUser workflowUser;
+	private WorkflowUser workflowUser;
     private WorkflowUser backdoorWorkflowUser;
     private Person helpDeskActionListUser;
     private int nextObjectKey;
@@ -71,6 +72,30 @@ public class UserSession implements Serializable {
     private String sortCriteria;
     private int currentPage;
     private KimPrincipal	principal;
+
+    /*
+     * We are getting rid of WorkflowUser. We will replace workflowUser with
+     * this userId.  The getter methods will still return what they need to
+     * until everything has been rewritten.
+     */
+    private String principalId; // principalId for the primary user
+
+    /**
+     *
+     * This constructs a user session via a WorkflowUser
+     *
+     * @deprecated should no longer be used.
+     * @param user
+     */
+    public UserSession (WorkflowUser user) {
+        this(user.getWorkflowId());
+        this.workflowUser = user;
+    }
+
+	public UserSession (String principalId) {
+        this.principalId = principalId;
+        this.nextObjectKey = 0;
+    }
 
 	/**
 	 * @return the sortOrder
@@ -113,11 +138,6 @@ public class UserSession implements Serializable {
 	public void setCurrentPage(int currentPage) {
 		this.currentPage = currentPage;
 	}
-
-	public UserSession (WorkflowUser user) {
-        this.workflowUser = user;
-        this.nextObjectKey = 0;
-    }
 
     public static UserSession getAuthenticatedUser() {
     	return (UserSession)currentUserSession.get();
@@ -169,11 +189,22 @@ public class UserSession implements Serializable {
 
     @Deprecated
     public WorkflowUser getWorkflowUser() {
+
+    	WorkflowUser wRet = null;
+
         if (backdoorId != null) {
-            return backdoorWorkflowUser;
-        } else {
-            return workflowUser;
+        	wRet = backdoorWorkflowUser;
+        } else if(workflowUser != null){
+        	wRet = workflowUser;
+        } else if(this.principalId != null && !"".equals(principalId)){
+        	try {
+        		wRet = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowIdDTO(this.principalId));
+        		workflowUser = wRet;
+			} catch (KEWUserNotFoundException e) {
+				e.printStackTrace();
+			}
         }
+        return wRet;
     }
 
     public Person getPerson() {
@@ -320,6 +351,20 @@ String groupName = Utilities.getApplicationConstant(KEWConstants.WORKFLOW_ADMIN_
 	 */
 	public void setPrincipal(KimPrincipal principal) {
 		this.principal = principal;
+	}
+
+	/**
+	 * @return the userId
+	 */
+	public String getPrincipalId() {
+		return this.principalId;
+	}
+
+	/**
+	 * @param userId the userId to set
+	 */
+	public void setPrincipalId(String userId) {
+		this.principalId = userId;
 	}
 
 }

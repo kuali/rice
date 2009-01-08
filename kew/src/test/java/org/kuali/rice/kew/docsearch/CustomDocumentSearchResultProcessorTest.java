@@ -39,6 +39,8 @@ import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWPropertyConstants;
+import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 /**
@@ -98,13 +100,12 @@ public class CustomDocumentSearchResultProcessorTest extends DocumentSearchTestB
     private DocumentSearchResultComponents performSearch(String documentTypeName,String userNetworkId) throws KEWUserNotFoundException {
     	DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
         DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
-        UserService userService = (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
-        WorkflowUser user = userService.getWorkflowUser(new AuthenticationUserId(userNetworkId));
+        Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName(userNetworkId);
 
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE, docType));
-        return docSearchService.getList(user, criteria);
+        return docSearchService.getList(user.getPrincipalId(), criteria);
     }
 
     private void parseList(List<DocumentSearchColumn> columns, List<String> columnsRequired, List<String> columnsNotAllowed) {

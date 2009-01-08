@@ -54,7 +54,7 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
     private Map<String,Boolean> sortableByKey = new HashMap<String,Boolean>();
     private Map<String,String> labelsByKey = new HashMap<String,String>();
     private DocSearchCriteriaDTO searchCriteria;
-    private WorkflowUser searchingUser;
+    private String searchingUser;
 
     /**
      * @return the searchCriteria
@@ -73,14 +73,14 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
     /**
      * @return the searchingUser
      */
-    public WorkflowUser getSearchingUser() {
+    public String getSearchingUser() {
         return searchingUser;
     }
 
     /**
      * @param searchingUser the searchingUser to set
      */
-    public void setSearchingUser(WorkflowUser searchingUser) {
+    public void setSearchingUser(String searchingUser) {
         this.searchingUser = searchingUser;
     }
 
@@ -140,9 +140,9 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 	/* (non-Javadoc)
 	 * @see org.kuali.rice.kew.docsearch.DocumentSearchResultProcessor#processIntoFinalResults(java.util.List, org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO, org.kuali.rice.kew.user.WorkflowUser)
 	 */
-	public DocumentSearchResultComponents processIntoFinalResults(List<DocSearchDTO> docSearchResultRows, DocSearchCriteriaDTO criteria, WorkflowUser user) {
+	public DocumentSearchResultComponents processIntoFinalResults(List<DocSearchDTO> docSearchResultRows, DocSearchCriteriaDTO criteria, String principalId) {
         this.setSearchCriteria(criteria);
-        this.setSearchingUser(user);
+        this.setSearchingUser(principalId);
 		List columns = constructColumnList(criteria);
 
 		List<DocumentSearchResult> documentSearchResults = new ArrayList<DocumentSearchResult>();

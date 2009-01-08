@@ -46,7 +46,7 @@ import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
 public class QuickLinksDAOOjbImpl extends PersistenceBrokerDaoSupport implements QuickLinksDAO {
 
-    public List getActionListStats(final WorkflowUser workflowUser) {
+    public List getActionListStats(final String principalId) {
         return (List) this.getPersistenceBrokerTemplate().execute(new PersistenceBrokerCallback() {
             public Object doInPersistenceBroker(PersistenceBroker broker) {
                 PreparedStatement selectActionItems = null;
@@ -59,7 +59,7 @@ public class QuickLinksDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                     selectActionItems = connection.prepareStatement("select DOC_TYP_NM, COUNT(*) from KREW_ACTN_ITM_T where PRNCPL_ID = ? " +
                             "and (dlgn_typ is null or dlgn_typ != '" + KEWConstants.DELEGATION_SECONDARY + "') group by DOC_TYP_NM");
                     selectDocTypeLabel = connection.prepareStatement("select LBL from KREW_DOC_TYP_T WHERE DOC_TYP_NM = ? and CUR_IND = 1");
-                    selectActionItems.setString(1, workflowUser.getWorkflowUserId().getWorkflowId());
+                    selectActionItems.setString(1, principalId);
                     selectedActionItems = selectActionItems.executeQuery();
                     while (selectedActionItems.next()) {
                         String docTypeName = selectedActionItems.getString(1);
@@ -73,7 +73,7 @@ public class QuickLinksDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                     Collections.sort(docTypes);
                     return docTypes;
                 } catch (Exception e) {
-                    throw new WorkflowRuntimeException("Error getting action list stats for user: " + workflowUser.getAuthenticationUserId().getAuthenticationId(), e);
+                    throw new WorkflowRuntimeException("Error getting action list stats for user: " + principalId, e);
                 } finally {
                     if (selectActionItems != null) {
                         try {
@@ -108,7 +108,7 @@ public class QuickLinksDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         });
     }
 
-    public List getInitiatedDocumentTypesList(final WorkflowUser workflowUser) {
+    public List getInitiatedDocumentTypesList(final String principalId) {
         return (List)  this.getPersistenceBrokerTemplate().execute(new PersistenceBrokerCallback() {
 
             public Object doInPersistenceBroker(PersistenceBroker broker) {
@@ -123,7 +123,7 @@ public class QuickLinksDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                     	"B.ACTV_IND = 1 and B.CUR_IND = 1 " +
                     	"order by upper(B.LBL)";
                     selectDistinctDocumentTypes = connection.prepareStatement(sql);
-                    selectDistinctDocumentTypes.setString(1, workflowUser.getWorkflowUserId().getWorkflowId());
+                    selectDistinctDocumentTypes.setString(1, principalId);
                     selectedDistinctDocumentTypes = selectDistinctDocumentTypes.executeQuery();
                     String documentNames = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.QUICK_LINK_DETAIL_TYPE, KEWConstants.QUICK_LINKS_RESTRICT_DOCUMENT_TYPES).trim();
                     if (documentNames == null || "none".equals(documentNames)) {
@@ -154,7 +154,7 @@ public class QuickLinksDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                     }
                     return documentTypesByName;
                 } catch (Exception e) {
-                    throw new WorkflowRuntimeException("Error getting initiated document types for user: " + workflowUser.getAuthenticationUserId().getAuthenticationId(), e);
+                    throw new WorkflowRuntimeException("Error getting initiated document types for user: " + principalId, e);
                 } finally {
                     if (selectDistinctDocumentTypes != null) {
                         try {
@@ -175,15 +175,15 @@ public class QuickLinksDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         });
     }
 
-    public List getNamedSearches(WorkflowUser workflowUser) {
-        return getDocumentSearchService().getNamedSearches(workflowUser);
+    public List getNamedSearches(String principalId) {
+        return getDocumentSearchService().getNamedSearches(principalId);
     }
 
-    public List getRecentSearches(WorkflowUser workflowUser) {
-        return getDocumentSearchService().getMostRecentSearches(workflowUser);
+    public List getRecentSearches(String principalId) {
+        return getDocumentSearchService().getMostRecentSearches(principalId);
     }
 
-    public List getWatchedDocuments(final WorkflowUser workflowUser) {
+    public List getWatchedDocuments(final String principalId) {
         return (List) this.getPersistenceBrokerTemplate().execute(new PersistenceBrokerCallback() {
             public Object doInPersistenceBroker(PersistenceBroker broker) {
                 List watchedDocuments = new ArrayList();
@@ -192,14 +192,14 @@ public class QuickLinksDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                 try {
                     Connection connection = broker.serviceConnectionManager().getConnection();
                     selectWatchedDocuments = connection.prepareStatement("select DOC_HDR_ID, DOC_HDR_STAT_CD, TTL, CRTE_DT from KREW_DOC_HDR_T where INITR_PRNCPL_ID = ? and DOC_HDR_STAT_CD in ('"+ KEWConstants.ROUTE_HEADER_ENROUTE_CD +"','"+ KEWConstants.ROUTE_HEADER_EXCEPTION_CD +"') order by CRTE_DT desc");
-                    selectWatchedDocuments.setString(1, workflowUser.getWorkflowUserId().getWorkflowId());
+                    selectWatchedDocuments.setString(1, principalId);
                     selectedWatchedDocuments = selectWatchedDocuments.executeQuery();
                     while (selectedWatchedDocuments.next()) {
                         watchedDocuments.add(new WatchedDocument(selectedWatchedDocuments.getString(1), (String)KEWConstants.DOCUMENT_STATUSES.get(selectedWatchedDocuments.getString(2)), selectedWatchedDocuments.getString(3)));
                     }
                     return watchedDocuments;
                 } catch (Exception e) {
-                    throw new WorkflowRuntimeException("Error getting initiated document types for user: " + workflowUser.getAuthenticationUserId().getAuthenticationId(), e);
+                    throw new WorkflowRuntimeException("Error getting initiated document types for user: " + principalId, e);
                 } finally {
                     if (selectWatchedDocuments != null) {
                         try {

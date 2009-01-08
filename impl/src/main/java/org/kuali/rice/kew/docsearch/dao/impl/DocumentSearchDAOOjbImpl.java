@@ -27,6 +27,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.accesslayer.LookupException;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
+import org.kuali.rice.kew.docsearch.DocSearchDTO;
 import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
 import org.kuali.rice.kew.docsearch.dao.DocumentSearchDAO;
 import org.kuali.rice.kew.doctype.service.DocumentSecurityService;
@@ -48,15 +49,15 @@ public class DocumentSearchDAOOjbImpl extends PersistenceBrokerDaoSupport implem
 
     private static final int DEFAULT_FETCH_MORE_ITERATION_LIMIT = 10;
 
-    public List getListBoundedByCritera(DocumentSearchGenerator documentSearchGenerator, DocSearchCriteriaDTO criteria, WorkflowUser user) throws KEWUserNotFoundException {
-        return getList(documentSearchGenerator, criteria, criteria.getThreshold(), user);
+    public List<DocSearchDTO> getListBoundedByCritera(DocumentSearchGenerator documentSearchGenerator, DocSearchCriteriaDTO criteria, String principalId) throws KEWUserNotFoundException {
+        return getList(documentSearchGenerator, criteria, criteria.getThreshold(), principalId);
     }
 
-    public List getList(DocumentSearchGenerator documentSearchGenerator, DocSearchCriteriaDTO criteria, WorkflowUser user) throws KEWUserNotFoundException {
-        return getList(documentSearchGenerator, criteria, Integer.valueOf(getSearchResultCap(documentSearchGenerator)), user);
+    public List<DocSearchDTO> getList(DocumentSearchGenerator documentSearchGenerator, DocSearchCriteriaDTO criteria, String principalId) throws KEWUserNotFoundException {
+        return getList(documentSearchGenerator, criteria, Integer.valueOf(getSearchResultCap(documentSearchGenerator)), principalId);
     }
 
-    private List getList(DocumentSearchGenerator documentSearchGenerator, DocSearchCriteriaDTO criteria, Integer searchResultCap, WorkflowUser user) throws KEWUserNotFoundException {
+    private List<DocSearchDTO> getList(DocumentSearchGenerator documentSearchGenerator, DocSearchCriteriaDTO criteria, Integer searchResultCap, String principalId) throws KEWUserNotFoundException {
         LOG.debug("start getList");
         DocumentSecurityService documentSecurityService = KEWServiceLocator.getDocumentSecurityService();
         List docList = new ArrayList();
@@ -88,7 +89,7 @@ public class DocumentSearchDAOOjbImpl extends PersistenceBrokerDaoSupport implem
             perfLog.log("Time to execute doc search database query.", true);
             // TODO delyea - look at refactoring
             searchAttributeStatement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            docList = documentSearchGenerator.processResultSet(searchAttributeStatement, rs, criteria, user);
+            docList = documentSearchGenerator.processResultSet(searchAttributeStatement, rs, criteria, principalId);
         } catch (SQLException sqle) {
             String errorMsg = "SQLException: " + sqle.getMessage();
             LOG.error("getList() " + errorMsg, sqle);

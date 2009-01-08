@@ -35,6 +35,8 @@ import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
@@ -74,7 +76,8 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
     @Test public void testCustomDocSearchGeneratorResultSetLimit() throws Exception {
         String documentTypeName = "SearchDocType_DefaultCustomProcessor";
         String userNetworkId = "rkirkend";
-        WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(userNetworkId));
+        Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName(userNetworkId);
+
 
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
@@ -82,19 +85,19 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
 
         // adjust the app constant to be greater than custom generator value
         adjustResultSetCapApplicationConstantValue(CustomDocumentSearchGenerator.RESULT_SET_LIMIT + 1);
-        KEWServiceLocator.getDocumentSearchService().getList(user, criteria);
+        KEWServiceLocator.getDocumentSearchService().getList(user.getPrincipalId(), criteria);
         assertEquals("Criteria threshold should equal custom generator class threshold", CustomDocumentSearchGenerator.RESULT_SET_LIMIT, criteria.getThreshold().intValue());
 
         // adjust the app constant to be less than custom generator value
         int newLimit = CustomDocumentSearchGenerator.RESULT_SET_LIMIT - 1;
         adjustResultSetCapApplicationConstantValue(newLimit);
-        KEWServiceLocator.getDocumentSearchService().getList(user, criteria);
+        KEWServiceLocator.getDocumentSearchService().getList(user.getPrincipalId(), criteria);
         assertEquals("Criteria threshold should equal system result set threshold", newLimit, criteria.getThreshold().intValue());
 
         // delete the parameter
         KNSServiceLocator.getBusinessObjectService().delete(KNSServiceLocator.getKualiConfigurationService().getParameterWithoutExceptions(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_RESULT_CAP));
 
-        KEWServiceLocator.getDocumentSearchService().getList(user, criteria);
+        KEWServiceLocator.getDocumentSearchService().getList(user.getPrincipalId(), criteria);
         assertEquals("Criteria threshold should equal custom generator class threshold", CustomDocumentSearchGenerator.RESULT_SET_LIMIT, criteria.getThreshold().intValue());
     }
 
@@ -121,8 +124,7 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
     @Test public void testSearchOnExtraDocType() throws Exception {
         String userNetworkId = "rkirkend";
         DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
-        UserService userService = (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
-        WorkflowUser user = userService.getWorkflowUser(new AuthenticationUserId(userNetworkId));
+        Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName(userNetworkId);
 
         String documentTypeName1 = "SearchDocType_DefaultCustomProcessor";
         WorkflowDocument workDoc_Matching1 = new WorkflowDocument(new NetworkIdDTO(userNetworkId), documentTypeName1);
@@ -144,26 +146,26 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName1);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE, docType1));
-        DocumentSearchResultComponents result = docSearchService.getList(user, criteria);
+        DocumentSearchResultComponents result = docSearchService.getList(user.getPrincipalId(), criteria);
         assertEquals("Search results should have one document.", 2, result.getSearchResults().size());
 
         // do search with attribute using doc type 2... make sure both docs are returned
         criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName2);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE, docType2));
-        result = docSearchService.getList(user, criteria);
+        result = docSearchService.getList(user.getPrincipalId(), criteria);
         assertEquals("Search results should have one document.", 2, result.getSearchResults().size());
 
         // do search without attribute using doc type 1... make sure both docs are returned
         criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName1);
-        result = docSearchService.getList(user, criteria);
+        result = docSearchService.getList(user.getPrincipalId(), criteria);
         assertEquals("Search results should have one document.", 2, result.getSearchResults().size());
 
         // do search without attribute using doc type 2... make sure both docs are returned
         criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName2);
-        result = docSearchService.getList(user, criteria);
+        result = docSearchService.getList(user.getPrincipalId(), criteria);
         assertEquals("Search results should have one document.", 2, result.getSearchResults().size());
 
         String documentTypeName3 = "SearchDocType_DefaultCustomProcessor_3";
@@ -178,13 +180,13 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
         criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName3);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE, docType3));
-        result = docSearchService.getList(user, criteria);
+        result = docSearchService.getList(user.getPrincipalId(), criteria);
         assertEquals("Search results should have one document.", 1, result.getSearchResults().size());
 
         // do search without attribute using doc type 3... make sure 1 doc is returned
         criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName3);
-        result = docSearchService.getList(user, criteria);
+        result = docSearchService.getList(user.getPrincipalId(), criteria);
         assertEquals("Search results should have one document.", 1, result.getSearchResults().size());
 
         WorkflowDocument workDoc_NonMatching2 = new WorkflowDocument(new NetworkIdDTO(userNetworkId), documentTypeName2);
@@ -199,13 +201,13 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
         criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName1);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, searchAttributeValue, docType1));
-        result = docSearchService.getList(user, criteria);
+        result = docSearchService.getList(user.getPrincipalId(), criteria);
         assertEquals("Search results should have one document.", 1, result.getSearchResults().size());
 
         // do search without attribute using doc type 1... make sure all 3 docs are returned
         criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName1);
-        result = docSearchService.getList(user, criteria);
+        result = docSearchService.getList(user.getPrincipalId(), criteria);
         assertEquals("Search results should have one document.", 3, result.getSearchResults().size());
     }
 }

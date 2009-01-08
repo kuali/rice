@@ -73,7 +73,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
     private static List searchableAttributes;
     private static DocSearchCriteriaDTO criteria;
-    private static WorkflowUser searchingUser;
+    private static String searchingUser;
 
     private boolean usingAtLeastOneSearchAttribute = false;
 
@@ -106,11 +106,11 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 		this.searchableAttributes = searchableAttributes;
 	}
 
-	public WorkflowUser getSearchingUser() {
+	public String getSearchingUser() {
 		return searchingUser;
 	}
 
-	public void setSearchingUser(WorkflowUser searchingUser) {
+	public void setSearchingUser(String searchingUser) {
 		StandardDocumentSearchGenerator.searchingUser = searchingUser;
 	}
 
@@ -124,7 +124,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     /* (non-Javadoc)
      * @see org.kuali.rice.kew.docsearch.DocumentSearchGenerator#performPreSearchConditions(org.kuali.rice.kew.user.WorkflowUser, org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO)
      */
-    public List<WorkflowServiceError> performPreSearchConditions(WorkflowUser user, DocSearchCriteriaDTO searchCriteria) {
+    public List<WorkflowServiceError> performPreSearchConditions(String principalId, DocSearchCriteriaDTO searchCriteria) {
     	setCriteria(searchCriteria);
     	return new ArrayList<WorkflowServiceError>();
     }
@@ -476,7 +476,19 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
      * @deprecated Removed as of version 0.9.3.  Use {@link #processResultSet(Statement, ResultSet, DocSearchCriteriaDTO, WorkflowUser)} instead.
      */
     public List<DocSearchDTO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet,DocSearchCriteriaDTO searchCriteria) throws KEWUserNotFoundException, SQLException {
-        return processResultSet(searchAttributeStatement, resultSet, searchCriteria, null);
+    	String principalId = null;
+        return processResultSet(searchAttributeStatement, resultSet, searchCriteria, principalId);
+    }
+
+    /**
+     *
+     * This overridden method ...
+     *
+     * @deprecated should no longer use workflowUser
+     * @see org.kuali.rice.kew.docsearch.DocumentSearchGenerator#processResultSet(java.sql.Statement, java.sql.ResultSet, org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO, org.kuali.rice.kew.user.WorkflowUser)
+     */
+    public List<DocSearchDTO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet,DocSearchCriteriaDTO searchCriteria, WorkflowUser user) throws KEWUserNotFoundException, SQLException {
+    	return processResultSet(searchAttributeStatement, resultSet, searchCriteria, user.getWorkflowId());
     }
 
     /**
@@ -486,7 +498,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
      * @throws KEWUserNotFoundException
      * @throws SQLException
      */
-    public List<DocSearchDTO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet,DocSearchCriteriaDTO searchCriteria, WorkflowUser user) throws KEWUserNotFoundException, SQLException {
+    public List<DocSearchDTO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet,DocSearchCriteriaDTO searchCriteria, String principalId) throws KEWUserNotFoundException, SQLException {
     	setCriteria(searchCriteria);
         int size = 0;
         List docList = new ArrayList();
@@ -516,16 +528,16 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         criteria.setOverThreshold(resultSetHasNext);
 
         UserSession userSession = UserSession.getAuthenticatedUser();
-        if ( (userSession == null) && (user != null) ) {
-            LOG.info("Authenticated User Session is null... using parameter user: " + user);
-            userSession = new UserSession(user);
+        if ( (userSession == null) && (principalId != null && !"".equals(principalId)) ) {
+            LOG.info("Authenticated User Session is null... using parameter user: " + principalId);
+            userSession = new UserSession(principalId);
         } else if (searchCriteria.isOverridingUserSession()) {
-            if (user == null) {
+            if (principalId == null) {
                 LOG.error("Search Criteria specified UserSession override but given user paramter is null");
                 throw new WorkflowRuntimeException("Search criteria specified UserSession override but given user is null.");
             }
-            LOG.info("Search Criteria specified UserSession override.  Using user: " + user);
-            userSession = new UserSession(user);
+            LOG.info("Search Criteria specified UserSession override.  Using user: " + principalId);
+            userSession = new UserSession(principalId);
         }
         if (userSession != null) {
         	// TODO do we really want to allow the document search if there is no User Session?

@@ -47,6 +47,8 @@ import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.KEWPropertyConstants;
 import org.kuali.rice.kew.web.KeyValueSort;
+import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.test.TestHarnessServiceLocator;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -68,29 +70,29 @@ public class DocumentSearchTest extends KEWTestCase {
     }
 
     @Test public void testDocSearch() throws Exception {
-        WorkflowUser user = userService.getWorkflowUser(new AuthenticationUserId("bmcgough"));
+        Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName("bmcgough");
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         List searchResults = null;
         DocumentSearchResultComponents result = null;
         criteria.setDocTitle("*IN");
         criteria.setNamedSearch("bytitle");
-        result = docSearchService.getList(user, criteria);
+        result = docSearchService.getList(user.getPrincipalId(), criteria);
         criteria = new DocSearchCriteriaDTO();
         criteria.setDocTitle("*IN-CFSG");
         criteria.setNamedSearch("for in accounts");
-        result = docSearchService.getList(user, criteria);
+        result = docSearchService.getList(user.getPrincipalId(), criteria);
         criteria = new DocSearchCriteriaDTO();
         criteria.setFromDateApproved("09/16/2004");
-        result = docSearchService.getList(user, criteria);
+        result = docSearchService.getList(user.getPrincipalId(), criteria);
         criteria = new DocSearchCriteriaDTO();
         criteria.setDocRouteNodeId("3");
         criteria.setDocRouteNodeLogic("equal");
-        result = docSearchService.getList(user, criteria);
-        user = userService.getWorkflowUser(new AuthenticationUserId("bmcgough"));
-        SavedSearchResult savedSearchResults = docSearchService.getSavedSearchResults(user, "DocSearch.NamedSearch.bytitle");
+        result = docSearchService.getList(user.getPrincipalId(), criteria);
+        user = KIMServiceLocator.getPersonService().getPersonByPrincipalName("bmcgough");
+        SavedSearchResult savedSearchResults = docSearchService.getSavedSearchResults(user.getPrincipalId(), "DocSearch.NamedSearch.bytitle");
         assertNotNull(savedSearchResults);
         assertNotNull(savedSearchResults.getSearchResult());
-        savedSearchResults = docSearchService.getSavedSearchResults(user, "DocSearch.NamedSearch.for in accounts");
+        savedSearchResults = docSearchService.getSavedSearchResults(user.getPrincipalId(), "DocSearch.NamedSearch.for in accounts");
         assertNotNull(savedSearchResults);
         assertNotNull(savedSearchResults.getSearchResult());
     }
@@ -118,10 +120,11 @@ public class DocumentSearchTest extends KEWTestCase {
         // now nuke the initiator...
         new JdbcTemplate(TestHarnessServiceLocator.getDataSource()).execute("update " + KREW_DOC_HDR_T + " set " + INITIATOR_COL + " = 'bogus user' where DOC_HDR_ID = " + workflowDocument.getRouteHeaderId());
 
-        WorkflowUser user = userService.getWorkflowUser(new AuthenticationUserId("jhopf"));
+
+        Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName("jhopf");
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
-        DocumentSearchResultComponents result = docSearchService.getList(user, criteria);
+        DocumentSearchResultComponents result = docSearchService.getList(user.getPrincipalId(), criteria);
         assertNotNull(result);
         assertNotNull(result.getSearchResults());
         assertEquals("Search returned invalid number of documents", 1, result.getSearchResults().size());
@@ -150,10 +153,11 @@ public class DocumentSearchTest extends KEWTestCase {
         // now nuke the initiator...
         new JdbcTemplate(TestHarnessServiceLocator.getDataSource()).execute("update " + KREW_DOC_HDR_T + " set " + INITIATOR_COL + " = 'bogus user' where DOC_HDR_ID = " + workflowDocument.getRouteHeaderId());
 
-        WorkflowUser user = userService.getWorkflowUser(new AuthenticationUserId("jhopf"));
+
+        Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName("jhopf");
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setInitiator("bogus user");
-        DocumentSearchResultComponents result = docSearchService.getList(user, criteria);
+        DocumentSearchResultComponents result = docSearchService.getList(user.getPrincipalId(), criteria);
         assertNotNull(result);
         assertNotNull(result.getSearchResults());
         assertEquals("Search returned invalid number of documents", 1, result.getSearchResults().size());
@@ -184,17 +188,18 @@ public class DocumentSearchTest extends KEWTestCase {
         assertTrue(workflowDocument.stateIsEnroute());
         assertTrue(workflowDocument.isApprovalRequested());
 
-        WorkflowUser user = userService.getWorkflowUser(new AuthenticationUserId(userNetworkId));
+
+        Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName(userNetworkId);
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
-        DocumentSearchResultComponents result = docSearchService.getList(user, criteria);
+        DocumentSearchResultComponents result = docSearchService.getList(user.getPrincipalId(), criteria);
         assertNotNull(result);
         assertNotNull(result.getSearchResults());
         assertEquals("Search returned invalid number of documents", 2, result.getSearchResults().size());
 
         criteria.setDocRouteNodeId(getRouteNodeForSearch(documentTypeName,workflowDocument.getNodeNames()));
         criteria.setDocRouteNodeLogic("equal");
-        result = docSearchService.getList(user, criteria);
+        result = docSearchService.getList(user.getPrincipalId(), criteria);
         assertNotNull(result);
         assertNotNull(result.getSearchResults());
         assertEquals("Search returned invalid number of documents", 1, result.getSearchResults().size());
@@ -206,7 +211,7 @@ public class DocumentSearchTest extends KEWTestCase {
         assertTrue(workflowDocument.stateIsEnroute());
         assertTrue(workflowDocument.isApprovalRequested());
         criteria.setDocRouteNodeId(getRouteNodeForSearch(documentTypeName,workflowDocument.getNodeNames()));
-        result = docSearchService.getList(user, criteria);
+        result = docSearchService.getList(user.getPrincipalId(), criteria);
         assertNotNull(result);
         assertNotNull(result.getSearchResults());
         assertEquals("Search returned invalid number of documents", 1, result.getSearchResults().size());
@@ -227,15 +232,15 @@ public class DocumentSearchTest extends KEWTestCase {
     }
 
     @Test public void testGetNamedDocSearches() throws Exception {
-        WorkflowUser user = userService.getWorkflowUser(new AuthenticationUserId("bmcgough"));
-        List namedSearches = docSearchService.getNamedSearches(user);
+    	Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName("bmcgough");
+        List namedSearches = docSearchService.getNamedSearches(user.getPrincipalId());
         assertNotNull(namedSearches);
     }
 
     @Test public void testDefaultCreateDateSearchCriteria() throws Exception {
-        WorkflowUser user = userService.getWorkflowUser(new AuthenticationUserId("bmcgough"));
+        Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName("bmcgough");
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
-        DocumentSearchResultComponents result = docSearchService.getList(user, criteria);
+        DocumentSearchResultComponents result = docSearchService.getList(user.getPrincipalId(), criteria);
         assertNotNull("Should have a date created value",criteria.getFromDateCreated());
         Calendar criteriaDate = Calendar.getInstance();
         criteriaDate.setTime(DocSearchUtils.convertStringDateToTimestamp(criteria.getFromDateCreated()));
@@ -243,7 +248,7 @@ public class DocumentSearchTest extends KEWTestCase {
 
         criteria = new DocSearchCriteriaDTO();
         criteria.setDocTitle("testing");
-        result = docSearchService.getList(user, criteria);
+        result = docSearchService.getList(user.getPrincipalId(), criteria);
         assertNotNull("Should have a date created value",criteria.getFromDateCreated());
         criteriaDate = Calendar.getInstance();
         criteriaDate.setTime(DocSearchUtils.convertStringDateToTimestamp(criteria.getFromDateCreated()));
@@ -300,11 +305,11 @@ public class DocumentSearchTest extends KEWTestCase {
         assertTrue(workflowDocument.stateIsEnroute());
         assertTrue(workflowDocument.isApprovalRequested());
 
-        WorkflowUser user = userService.getWorkflowUser(new AuthenticationUserId(userNetworkId));
+        Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName(userNetworkId);
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setSuperUserSearch("YES");
         criteria.setDocTypeFullName(customDocHandlerDocumentType);
-        DocumentSearchResultComponents result = docSearchService.getList(user, criteria);
+        DocumentSearchResultComponents result = docSearchService.getList(user.getPrincipalId(), criteria);
         assertNotNull(result);
         assertNotNull(result.getSearchResults());
         assertEquals("Search returned invalid number of documents", 2, result.getSearchResults().size());
@@ -315,10 +320,10 @@ public class DocumentSearchTest extends KEWTestCase {
 	    assertTrue("The document handler redirect for the client should include the command value for super user search", kvs.getValue().indexOf(KEWConstants.SUPERUSER_COMMAND) != -1);
 	}
 
-        user = userService.getWorkflowUser(new AuthenticationUserId(userNetworkId));
+        user = KIMServiceLocator.getPersonService().getPersonByPrincipalName(userNetworkId);
         criteria = new DocSearchCriteriaDTO();
         criteria.setSuperUserSearch("YES");
-        result = docSearchService.getList(user, criteria);
+        result = docSearchService.getList(user.getPrincipalId(), criteria);
         assertNotNull(result);
         assertNotNull(result.getSearchResults());
         assertEquals("Search returned invalid number of documents", 3, result.getSearchResults().size());

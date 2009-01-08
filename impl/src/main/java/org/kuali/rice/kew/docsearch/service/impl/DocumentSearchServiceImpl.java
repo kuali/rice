@@ -75,34 +75,34 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 		this.userOptionsService = userOptionsService;
 	}
 
-	public void clearNamedSearches(WorkflowUser user) {
+	public void clearNamedSearches(String principalId) {
 		String[] clearListNames = { NAMED_SEARCH_ORDER_BASE + "%", LAST_SEARCH_BASE_NAME + "%", LAST_SEARCH_ORDER_OPTION + "%" };
 		for (int i = 0; i < clearListNames.length; i++) {
-			List records = userOptionsService.findByUserQualified(user.getWorkflowId(), clearListNames[i]);
+			List records = userOptionsService.findByUserQualified(principalId, clearListNames[i]);
 			for (Iterator iter = records.iterator(); iter.hasNext();) {
 				userOptionsService.deleteUserOptions((UserOptions) iter.next());
 			}
 		}
 	}
 
-	public SavedSearchResult getSavedSearchResults(WorkflowUser user, String savedSearchName) throws KEWUserNotFoundException {
-		UserOptions savedSearch = userOptionsService.findByOptionId(savedSearchName, user.getWorkflowId());
+	public SavedSearchResult getSavedSearchResults(String principalId, String savedSearchName) throws KEWUserNotFoundException {
+		UserOptions savedSearch = userOptionsService.findByOptionId(savedSearchName, principalId);
 		if (savedSearch == null || savedSearch.getOptionId() == null) {
 			return null;
 		}
 		DocSearchCriteriaDTO criteria = getCriteriaFromSavedSearch(savedSearch);
-		return new SavedSearchResult(criteria, getList(user, criteria));
+		return new SavedSearchResult(criteria, getList(principalId, criteria));
 	}
 
-    public DocumentSearchResultComponents getList(WorkflowUser user, DocSearchCriteriaDTO criteria) throws KEWUserNotFoundException {
-        return getList(user, criteria, false);
+    public DocumentSearchResultComponents getList(String principalId, DocSearchCriteriaDTO criteria) throws KEWUserNotFoundException {
+        return getList(principalId, criteria, false);
     }
 
-    public DocumentSearchResultComponents getListRestrictedByCriteria(WorkflowUser user, DocSearchCriteriaDTO criteria) throws KEWUserNotFoundException {
-        return getList(user, criteria, true);
+    public DocumentSearchResultComponents getListRestrictedByCriteria(String principalId, DocSearchCriteriaDTO criteria) throws KEWUserNotFoundException {
+        return getList(principalId, criteria, true);
     }
 
-	private DocumentSearchResultComponents getList(WorkflowUser user, DocSearchCriteriaDTO criteria, boolean useCriteriaRestrictions) throws KEWUserNotFoundException {
+	private DocumentSearchResultComponents getList(String principalId, DocSearchCriteriaDTO criteria, boolean useCriteriaRestrictions) throws KEWUserNotFoundException {
 		DocumentSearchGenerator docSearchGenerator = null;
 		DocumentSearchResultProcessor docSearchResultProcessor = null;
 		if (!Utilities.isEmpty(criteria.getDocTypeFullName())) {
@@ -118,18 +118,18 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 			docSearchGenerator = getStandardDocumentSearchGenerator();
 	        docSearchResultProcessor = getStandardDocumentSearchResultProcessor();
 		}
-		docSearchGenerator.setSearchingUser(user);
-		performPreSearchConditions(docSearchGenerator,user,criteria);
+		docSearchGenerator.setSearchingUser(principalId);
+		performPreSearchConditions(docSearchGenerator,principalId,criteria);
         validateDocumentSearchCriteria(docSearchGenerator,criteria);
         DocumentSearchResultComponents searchResult = null;
         try {
             List docListResults = null;
             if (useCriteriaRestrictions) {
-                docListResults = docSearchDao.getListBoundedByCritera(docSearchGenerator,criteria, user);
+                docListResults = docSearchDao.getListBoundedByCritera(docSearchGenerator,criteria, principalId);
             } else {
-                docListResults = docSearchDao.getList(docSearchGenerator,criteria, user);
+                docListResults = docSearchDao.getList(docSearchGenerator,criteria, principalId);
             }
-            searchResult = docSearchResultProcessor.processIntoFinalResults(docListResults, criteria, user);
+            searchResult = docSearchResultProcessor.processIntoFinalResults(docListResults, criteria, principalId);
 		} catch (Exception e) {
 			String errorMsg = "Error received trying to execute search: " + e.getLocalizedMessage();
 			LOG.error("getList() " + errorMsg,e);
@@ -137,7 +137,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 		}
 		if (!useCriteriaRestrictions || !criteria.isSaveSearchForUser()) {
             try {
-                saveSearch(user, criteria);
+                saveSearch(principalId, criteria);
             } catch (RuntimeException e) {
             	LOG.warn("Unable to save search due to RuntimeException with message: " + e.getMessage());
             	LOG.warn("RuntimeException will be ignored and may cause transaction problems");
@@ -163,8 +163,8 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
     	return (DocumentSearchResultProcessor)GlobalResourceLoader.getObject(new ObjectDefinition(searchGeneratorClass));
     }
 
-    public void performPreSearchConditions(DocumentSearchGenerator docSearchGenerator,WorkflowUser user,DocSearchCriteriaDTO criteria) {
-        List<WorkflowServiceError> errors = docSearchGenerator.performPreSearchConditions(user,criteria);
+    public void performPreSearchConditions(DocumentSearchGenerator docSearchGenerator,String principalId,DocSearchCriteriaDTO criteria) {
+        List<WorkflowServiceError> errors = docSearchGenerator.performPreSearchConditions(principalId,criteria);
         if (!errors.isEmpty()) {
             throw new WorkflowServiceErrorException("Document Search Precondition Errors", errors);
         }
@@ -379,8 +379,8 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         return group != null;
     }
 
-	public List getNamedSearches(WorkflowUser user) {
-		List namedSearches = userOptionsService.findByUserQualified(user.getWorkflowId(), NAMED_SEARCH_ORDER_BASE + "%");
+	public List getNamedSearches(String principalId) {
+		List namedSearches = userOptionsService.findByUserQualified(principalId, NAMED_SEARCH_ORDER_BASE + "%");
 		List sortedNamedSearches = new ArrayList();
 		if (namedSearches != null && namedSearches.size() > 0) {
 			Collections.sort(namedSearches);
@@ -393,11 +393,11 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 		return sortedNamedSearches;
 	}
 
-	public List getMostRecentSearches(WorkflowUser user) {
-		UserOptions order = userOptionsService.findByOptionId(LAST_SEARCH_ORDER_OPTION, user.getWorkflowId());
+	public List getMostRecentSearches(String principalId) {
+		UserOptions order = userOptionsService.findByOptionId(LAST_SEARCH_ORDER_OPTION, principalId);
 		List sortedMostRecentSearches = new ArrayList();
 		if (order != null && order.getOptionVal() != null && !"".equals(order.getOptionVal())) {
-			List mostRecentSearches = userOptionsService.findByUserQualified(user.getWorkflowId(), LAST_SEARCH_BASE_NAME + "%");
+			List mostRecentSearches = userOptionsService.findByUserQualified(principalId, LAST_SEARCH_BASE_NAME + "%");
 			String[] ordered = order.getOptionVal().split(",");
 			for (int i = 0; i < ordered.length; i++) {
 				UserOptions matchingOption = null;
@@ -413,7 +413,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
                         sortedMostRecentSearches.add(new KeyValue(ordered[i], getCriteriaFromSavedSearch(matchingOption).getDocumentSearchAbbreviatedString()));
                     }
                     catch (Exception e) {
-                        String errorMessage = "Error found atttempting to get 'recent search' using user (authentication id " + user.getAuthenticationUserId() + ") with option having id " + matchingOption.getOptionId() + " and value '" + matchingOption.getOptionVal() + "'";
+                        String errorMessage = "Error found atttempting to get 'recent search' using user (principal id " + principalId + ") with option having id " + matchingOption.getOptionId() + " and value '" + matchingOption.getOptionVal() + "'";
                         LOG.error("getMostRecentSearches() " + errorMessage,e);
                     }
 				}
@@ -422,8 +422,8 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 		return sortedMostRecentSearches;
 	}
 
-	private void saveSearch(WorkflowUser user, DocSearchCriteriaDTO criteria) {
-		if (user == null) {
+	private void saveSearch(String principalId, DocSearchCriteriaDTO criteria) {
+		if (principalId == null || "".equals(principalId)) {
 			String message = "User given to save search was null.";
 			LOG.warn(message);
 			throw new IllegalArgumentException(message);
@@ -466,13 +466,13 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
             savedSearchString.append(criteria.getSuperUserSearch() == null || "".equals(criteria.getSuperUserSearch()) ? "" : ",,superUserSearch=" + criteria.getSuperUserSearch());
 
 			if (criteria.getNamedSearch() != null && !"".equals(criteria.getNamedSearch().trim())) {
-				userOptionsService.save(user.getWorkflowId(), NAMED_SEARCH_ORDER_BASE + criteria.getNamedSearch(), savedSearchString.toString());
+				userOptionsService.save(principalId, NAMED_SEARCH_ORDER_BASE + criteria.getNamedSearch(), savedSearchString.toString());
 			} else {
 				// first determine the current ordering
-				UserOptions searchOrder = userOptionsService.findByOptionId(LAST_SEARCH_ORDER_OPTION, user.getWorkflowId());
+				UserOptions searchOrder = userOptionsService.findByOptionId(LAST_SEARCH_ORDER_OPTION, principalId);
 				if (searchOrder == null) {
-					userOptionsService.save(user.getWorkflowId(), LAST_SEARCH_BASE_NAME + "0", savedSearchString.toString());
-					userOptionsService.save(user.getWorkflowId(), LAST_SEARCH_ORDER_OPTION, LAST_SEARCH_BASE_NAME + "0");
+					userOptionsService.save(principalId, LAST_SEARCH_BASE_NAME + "0", savedSearchString.toString());
+					userOptionsService.save(principalId, LAST_SEARCH_ORDER_OPTION, LAST_SEARCH_BASE_NAME + "0");
 				} else {
 					String[] currentOrder = searchOrder.getOptionVal().split(",");
 					if (currentOrder.length == MAX_SEARCH_ITEMS) {
@@ -489,8 +489,8 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 							}
 							newSearchOrder += newOrder[i];
 						}
-						userOptionsService.save(user.getWorkflowId(), searchName, savedSearchString.toString());
-						userOptionsService.save(user.getWorkflowId(), LAST_SEARCH_ORDER_OPTION, newSearchOrder);
+						userOptionsService.save(principalId, searchName, savedSearchString.toString());
+						userOptionsService.save(principalId, LAST_SEARCH_ORDER_OPTION, newSearchOrder);
 					} else {
 						// here we need to do a push so identify the highest used number which is from the
 						// first one in the array, and then add one to it, and push the rest back one
@@ -515,8 +515,8 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 							}
 							newSearchOrder += newOrder[i];
 						}
-						userOptionsService.save(user.getWorkflowId(), searchName, savedSearchString.toString());
-						userOptionsService.save(user.getWorkflowId(), LAST_SEARCH_ORDER_OPTION, newSearchOrder);
+						userOptionsService.save(principalId, searchName, savedSearchString.toString());
+						userOptionsService.save(principalId, LAST_SEARCH_ORDER_OPTION, newSearchOrder);
 					}
 				}
 			}

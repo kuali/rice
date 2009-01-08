@@ -169,7 +169,7 @@ public class DocumentSearchAction extends WorkflowAction {
     }
 
     public ActionForward resetNamedSearches(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, RuntimeException {
-        getDocumentSearchService().clearNamedSearches(getUserSession(request).getWorkflowUser());
+        getDocumentSearchService().clearNamedSearches(getUserSession(request).getPrincipalId());
         return mapping.findForward("success");
     }
 
@@ -240,7 +240,7 @@ public class DocumentSearchAction extends WorkflowAction {
         SavedSearchResult result = null;
         State currentState = getCurrentState(request);
         if (docSearchForm.getNamedSearch() != null && !"".equals(docSearchForm.getNamedSearch()) && !"ignore".equals(docSearchForm.getNamedSearch())) {
-            result = getDocumentSearchService().getSavedSearchResults(getUserSession(request).getWorkflowUser(), docSearchForm.getNamedSearch());
+            result = getDocumentSearchService().getSavedSearchResults(getUserSession(request).getPerson().getPrincipalId(), docSearchForm.getNamedSearch());
             if (result != null) {
                 // if using a saved search assume new state needs created by discarding old state
                 currentState = null;
@@ -265,7 +265,7 @@ public class DocumentSearchAction extends WorkflowAction {
             if (docSearchForm.isInitiatorUser()) {
                 criteria.setInitiator(getUserSession(request).getNetworkId());
             }
-            results = getDocumentSearchService().getList(getUserSession(request).getWorkflowUser(), criteria);
+            results = getDocumentSearchService().getList(getUserSession(request).getPerson().getPrincipalId(), criteria);
             result = new SavedSearchResult(criteria, results);
         }
 
@@ -425,7 +425,7 @@ public class DocumentSearchAction extends WorkflowAction {
     }
 
     private void updateNamedSearches(HttpServletRequest request, DocumentSearchForm docSearchForm) {
-        request.setAttribute("namedSearches", getSavedSearches(getUserSession(request).getWorkflowUser()));
+        request.setAttribute("namedSearches", getSavedSearches(getUserSession(request).getPrincipalId()));
         docSearchForm.checkForAdditionalFields();
         docSearchForm.setupPropertyFieldsUsingCriteria();
     }
@@ -439,19 +439,19 @@ public class DocumentSearchAction extends WorkflowAction {
         }
     }
 
-    private List getSavedSearches(WorkflowUser workflowUser) {
+    private List getSavedSearches(String principalId) {
         List savedSearches = new ArrayList();
         savedSearches.add(new KeyValue("", "Searches"));
         savedSearches.add(new KeyValue("ignore", "-----"));
         savedSearches.add(new KeyValue("ignore", "&nbsp;&nbsp;Named Searches"));
-        List namedSearches = getDocumentSearchService().getNamedSearches(workflowUser);
+        List namedSearches = getDocumentSearchService().getNamedSearches(principalId);
         for (Iterator iter = namedSearches.iterator(); iter.hasNext();) {
             KeyValue namedSearch = (KeyValue) iter.next();
             savedSearches.add(new KeyValue(namedSearch.getKey(), "&nbsp;&nbsp;&nbsp;&nbsp;" + namedSearch.getValue()));
         }
         savedSearches.add(new KeyValue("ignore", "-----"));
         savedSearches.add(new KeyValue("ignore", "&nbsp;&nbsp;Recent Searches"));
-        List mostRecentSearches = getDocumentSearchService().getMostRecentSearches(workflowUser);
+        List mostRecentSearches = getDocumentSearchService().getMostRecentSearches(principalId);
         for (Iterator iter = mostRecentSearches.iterator(); iter.hasNext();) {
             KeyValue recentSearch = (KeyValue) iter.next();
             savedSearches.add(new KeyValue(recentSearch.getKey(), "&nbsp;&nbsp;&nbsp;&nbsp;" + (recentSearch.getValue().length() > 100 ? recentSearch.getValue().substring(0, 100) + "..." : recentSearch.getValue())));

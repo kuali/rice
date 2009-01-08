@@ -20,15 +20,11 @@ import java.util.List;
 
 import org.junit.Test;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.actions.asyncservices.ActionInvocation;
-import org.kuali.rice.kew.actions.asyncservices.ActionInvocationProcessor;
-import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.rule.TestRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.user.AuthenticationUserId;
-import org.kuali.rice.kew.user.WorkflowUser;
 
 
 
@@ -46,9 +42,8 @@ public class ActionInvocationProcessorTest extends KEWTestCase {
 	
 	TestRuleAttribute.setRecipients("TestRole", "QualRole", getRecipients());
 	
-	NetworkIdDTO netId = new NetworkIdDTO("rkirkend");
-	WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(netId);
-	WorkflowDocument doc = new WorkflowDocument(netId, "TestDocumentType");
+	String rkirkendPrincipalId = getPrincipalIdForName("rkirkend");
+	WorkflowDocument doc = new WorkflowDocument(rkirkendPrincipalId, "TestDocumentType");
 	doc.routeDocument("");
 	
 	List<ActionRequestValue> requests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(doc.getRouteHeaderId());
@@ -56,7 +51,7 @@ public class ActionInvocationProcessorTest extends KEWTestCase {
 	
 	ActionRequestValue request = null;
 	for (ActionRequestValue tempRequest : requests) {
-	    if (tempRequest.getWorkflowUser() != null && tempRequest.getWorkflowUser().getAuthenticationUserId().getAuthenticationId().equals("user1")) {
+	    if (tempRequest.getPrincipal() != null && tempRequest.getPrincipal().getPrincipalId().equals("user1")) {
 		request = tempRequest;
 		break;
 	    }
@@ -64,10 +59,10 @@ public class ActionInvocationProcessorTest extends KEWTestCase {
 	
 	assertNotNull(request);
 	
-	user = KEWServiceLocator.getUserService().getWorkflowUser(new NetworkIdDTO("user1"));
-	new ActionInvocationProcessor().invokeAction(user, request.getRouteHeaderId(), new ActionInvocation(request.getRouteHeaderId(), request.getActionRequested()));
+	String user1PrincipalId = getPrincipalIdForName("user1");
+	new ActionInvocationProcessor().invokeAction(user1PrincipalId, request.getRouteHeaderId(), new ActionInvocation(request.getRouteHeaderId(), request.getActionRequested()));
 	//do it again and make sure we don't have a blow up
-	new ActionInvocationProcessor().invokeAction(user, request.getRouteHeaderId(), new ActionInvocation(request.getRouteHeaderId(), request.getActionRequested()));
+	new ActionInvocationProcessor().invokeAction(user1PrincipalId, request.getRouteHeaderId(), new ActionInvocation(request.getRouteHeaderId(), request.getActionRequested()));
 	
 	//verify that user1 doesn't have any AR's
 	requests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(doc.getRouteHeaderId());

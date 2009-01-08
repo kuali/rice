@@ -32,8 +32,8 @@ import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
 
 /**
@@ -127,13 +127,13 @@ public class ActionRegistryImpl implements ActionRegistry {
     /* (non-Javadoc)
      * @see org.kuali.rice.kew.actions.ActionValidationService#getValidActions(org.kuali.rice.kew.user.WorkflowUser, org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue)
      */
-    public ValidActions getValidActions(WorkflowUser user, DocumentRouteHeaderValue document) throws ResourceUnavailableException, KEWUserNotFoundException {
+    public ValidActions getValidActions(KimPrincipal principal, DocumentRouteHeaderValue document) throws ResourceUnavailableException, KEWUserNotFoundException {
         ValidActions validActions = new ValidActions();
         for (Iterator iter = actionMap.keySet().iterator(); iter.hasNext();) {
             String actionTakenCode = (String) iter.next();
             List<DataDefinition> parameters = new ArrayList<DataDefinition>();
             parameters.add(new DataDefinition(document));
-            parameters.add(new DataDefinition(user));
+            parameters.add(new DataDefinition(principal));
             ActionTakenEvent actionEvent = createAction(actionTakenCode, parameters);
             if (actionEvent.isActionValid()) {
                 validActions.addActionTakenCode(actionTakenCode);

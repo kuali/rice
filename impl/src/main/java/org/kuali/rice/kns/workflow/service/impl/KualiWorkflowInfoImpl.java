@@ -26,7 +26,6 @@ import org.kuali.rice.kew.dto.ActionTakenDTO;
 import org.kuali.rice.kew.dto.DocumentSearchCriteriaDTO;
 import org.kuali.rice.kew.dto.DocumentSearchResultDTO;
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
-import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.ReportCriteriaDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.dto.UserDTO;
@@ -35,6 +34,8 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.spring.Cached;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
@@ -57,13 +58,17 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
         return workflowInfo;
     }
 
-    public RouteHeaderDTO getRouteHeader(UserIdDTO userId, Long routeHeaderId) throws WorkflowException {
-        return getWorkflowUtility().getRouteHeader(userId, routeHeaderId);
+    public RouteHeaderDTO getRouteHeader(String principalId, Long routeHeaderId) throws WorkflowException {
+        return getWorkflowUtility().getRouteHeader(principalId, routeHeaderId);
     }
 
     public RouteHeaderDTO getRouteHeader(Long routeHeaderId) throws WorkflowException {
         try {
-            return getWorkflowUtility().getRouteHeader(new NetworkIdDTO(KNSConstants.SYSTEM_USER), routeHeaderId);
+        	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(KNSConstants.SYSTEM_USER);
+        	if (principal == null) {
+        		throw new WorkflowException("Failed to locate System User with principal name 'kr'");
+        	}
+            return getWorkflowUtility().getRouteHeader(principal.getPrincipalId(), routeHeaderId);
         }
         catch (Exception e) {
             throw new WorkflowException(e);

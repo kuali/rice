@@ -30,6 +30,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
 
 /**
@@ -41,12 +42,12 @@ public class CancelAction extends ActionTakenEvent {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(CancelAction.class);
 
-    public CancelAction(DocumentRouteHeaderValue rh, WorkflowUser user) {
-        super(KEWConstants.ACTION_TAKEN_CANCELED_CD, rh, user);
+    public CancelAction(DocumentRouteHeaderValue rh, KimPrincipal principal) {
+        super(KEWConstants.ACTION_TAKEN_CANCELED_CD, rh, principal);
     }
 
-    public CancelAction(DocumentRouteHeaderValue rh, WorkflowUser user, String annotation) {
-        super(KEWConstants.ACTION_TAKEN_CANCELED_CD, rh, user, annotation);
+    public CancelAction(DocumentRouteHeaderValue rh, KimPrincipal principal, String annotation) {
+        super(KEWConstants.ACTION_TAKEN_CANCELED_CD, rh, principal, annotation);
     }
 
     /* (non-Javadoc)
@@ -54,11 +55,11 @@ public class CancelAction extends ActionTakenEvent {
      */
     @Override
     public String validateActionRules() throws KEWUserNotFoundException {
-        return validateActionRules(getActionRequestService().findAllValidRequests(getUser(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ));
+        return validateActionRules(getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ));
     }
 
     private String validateActionRules(List<ActionRequestValue> actionRequests) throws KEWUserNotFoundException {
-        if (! KEWServiceLocator.getDocumentTypePermissionService().canCancel(getUser().getWorkflowId(), getRouteHeader().getDocumentType(), getRouteHeader().getCurrentNodeNames(), getRouteHeader().getDocRouteStatus(), getRouteHeader().getInitiatorWorkflowId())) {
+        if (! KEWServiceLocator.getDocumentTypePermissionService().canCancel(getPrincipal().getPrincipalId(), getRouteHeader().getDocumentType(), getRouteHeader().getCurrentNodeNames(), getRouteHeader().getDocRouteStatus(), getRouteHeader().getInitiatorWorkflowId())) {
             return "User is not authorized to Cancel document";
         }
         // FYI delyea:  This is new validation check... was not being checked previously
@@ -107,7 +108,7 @@ public class CancelAction extends ActionTakenEvent {
 
         LOG.debug("Canceling document : " + annotation);
 
-        List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
+        List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
         LOG.debug("Checking to see if the action is legal");
         String errorMessage = validateActionRules(actionRequests);
         if (!Utilities.isEmpty(errorMessage)) {

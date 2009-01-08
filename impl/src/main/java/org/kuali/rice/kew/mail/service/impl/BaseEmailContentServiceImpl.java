@@ -83,7 +83,7 @@ public abstract class BaseEmailContentServiceImpl implements EmailContentService
 	}
         CustomEmailAttribute customEmailAttribute = actionItem.getRouteHeader().getCustomEmailAttribute();
         if (customEmailAttribute != null) {
-            RouteHeaderDTO routeHeaderVO = DTOConverter.convertRouteHeader(actionItem.getRouteHeader(), user);
+            RouteHeaderDTO routeHeaderVO = DTOConverter.convertRouteHeader(actionItem.getRouteHeader(), user.getPrincipalId());
             ActionRequestValue actionRequest = KEWServiceLocator.getActionRequestService().findByActionRequestId(actionItem.getActionRequestId());
             ActionRequestDTO actionRequestVO = DTOConverter.convertActionRequest(actionRequest);
             customEmailAttribute.setRouteHeaderVO(routeHeaderVO);

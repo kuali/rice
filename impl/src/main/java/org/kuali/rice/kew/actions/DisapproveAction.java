@@ -39,6 +39,7 @@ import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
@@ -58,8 +59,8 @@ public class DisapproveAction extends ActionTakenEvent {
      * @param rh RouteHeader for the document upon which the action is taken.
      * @param user User taking the action.
      */
-    public DisapproveAction(DocumentRouteHeaderValue rh, WorkflowUser user) {
-        super(KEWConstants.ACTION_TAKEN_DENIED_CD, rh, user);
+    public DisapproveAction(DocumentRouteHeaderValue rh, KimPrincipal principal) {
+        super(KEWConstants.ACTION_TAKEN_DENIED_CD, rh, principal);
     }
 
     /**
@@ -67,8 +68,8 @@ public class DisapproveAction extends ActionTakenEvent {
      * @param user User taking the action.
      * @param annotation User comment on the action taken
      */
-    public DisapproveAction(DocumentRouteHeaderValue rh, WorkflowUser user, String annotation) {
-        super(KEWConstants.ACTION_TAKEN_DENIED_CD, rh, user, annotation);
+    public DisapproveAction(DocumentRouteHeaderValue rh, KimPrincipal principal, String annotation) {
+        super(KEWConstants.ACTION_TAKEN_DENIED_CD, rh, principal, annotation);
     }
 
     /* (non-Javadoc)
@@ -76,7 +77,7 @@ public class DisapproveAction extends ActionTakenEvent {
      */
     @Override
     public String validateActionRules() throws KEWUserNotFoundException {
-        return validateActionRules(getActionRequestService().findAllValidRequests(getUser(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ));
+        return validateActionRules(getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ));
     }
 
     private String validateActionRules(List<ActionRequestValue> actionRequests) throws KEWUserNotFoundException {
@@ -130,7 +131,7 @@ public class DisapproveAction extends ActionTakenEvent {
 
         LOG.debug("Disapproving document : " + annotation);
 
-        List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
+        List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
         LOG.debug("Checking to see if the action is legal");
         String errorMessage = validateActionRules(actionRequests);
         if (!Utilities.isEmpty(errorMessage)) {
@@ -203,7 +204,7 @@ public class DisapproveAction extends ActionTakenEvent {
             ActionTakenValue     action = (ActionTakenValue) iter.next();
             if ((action.isApproval() || action.isCompletion()) && ! usersNotified.contains(action.getWorkflowId())) {
                 if (!systemUserWorkflowUsers.contains(action.getWorkflowUser())) {
-                    ActionRequestValue request = arFactory.createNotificationRequest(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, action.getWorkflowUser(), getActionTakenCode(), getUser(), getActionTakenCode());
+                    ActionRequestValue request = arFactory.createNotificationRequest(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, action.getPrincipal(), getActionTakenCode(), getPrincipal(), getActionTakenCode());
                     KEWServiceLocator.getActionRequestService().activateRequest(request);
                     usersNotified.add(request.getWorkflowId());
                 }

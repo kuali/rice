@@ -22,8 +22,8 @@ import java.util.List;
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -31,6 +31,7 @@ import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
 
 /**
@@ -52,8 +53,8 @@ public class ApproveAction extends ActionTakenEvent {
      * @param user
      *            User taking the action.
      */
-    public ApproveAction(DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
-        super(KEWConstants.ACTION_TAKEN_APPROVED_CD, routeHeader, user);
+    public ApproveAction(DocumentRouteHeaderValue routeHeader, KimPrincipal principal) {
+        super(KEWConstants.ACTION_TAKEN_APPROVED_CD, routeHeader, principal);
     }
 
     /**
@@ -64,8 +65,8 @@ public class ApproveAction extends ActionTakenEvent {
      * @param annotation
      *            User comment on the action taken
      */
-    public ApproveAction(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation) {
-        super(KEWConstants.ACTION_TAKEN_APPROVED_CD, routeHeader, user, annotation);
+    public ApproveAction(DocumentRouteHeaderValue routeHeader, KimPrincipal principal, String annotation) {
+        super(KEWConstants.ACTION_TAKEN_APPROVED_CD, routeHeader, principal, annotation);
     }
 
     /* (non-Javadoc)
@@ -73,7 +74,7 @@ public class ApproveAction extends ActionTakenEvent {
      */
     @Override
     public String validateActionRules() throws KEWUserNotFoundException {
-        return validateActionRules(getActionRequestService().findAllValidRequests(getUser(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
+        return validateActionRules(getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
     }
 
     private String validateActionRules(List<ActionRequestValue> actionRequests) throws KEWUserNotFoundException {
@@ -136,7 +137,7 @@ public class ApproveAction extends ActionTakenEvent {
         updateSearchableAttributesIfPossible();
         LOG.debug("Approving document : " + annotation);
 
-        List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ);
+        List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ);
         String errorMessage = validateActionRules(actionRequests);
         if (!Utilities.isEmpty(errorMessage)) {
             throw new InvalidActionTakenException(errorMessage);

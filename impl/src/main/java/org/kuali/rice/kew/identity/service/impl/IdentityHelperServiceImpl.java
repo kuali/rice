@@ -22,13 +22,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
+import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.dto.GroupIdDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.identity.service.IdentityHelperService;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.BaseWorkflowUser;
 import org.kuali.rice.kew.user.EmplId;
 import org.kuali.rice.kew.user.Recipient;
@@ -73,6 +72,19 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 	}
 
 
+	public Recipient getPrincipalRecipient(String principalId) {
+		KimPrincipal principal = getPrincipal(principalId);
+		return new KimPrincipalRecipient(principal);
+	}
+	
+	public KimPrincipal getPrincipal(String principalId) {
+		KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+		if (principal == null) {
+			throw new RiceRuntimeException("Could not locate a principal with the given principalId of " + principalId);
+		}
+		return principal;
+	}
+	
 	public KimGroup getGroup(GroupIdDTO groupId) {
 		if (groupId.getGroupId() != null) {
 			return KIMServiceLocator.getIdentityManagementService().getGroup(groupId.getGroupId());
@@ -128,11 +140,6 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 			return principal.getPrincipalId();
 		}
 		throw new IllegalArgumentException("Invalid UserIdDTO type was passed: " + userId);
-	}
-
-	public Recipient getPrincipalRecipient(String principalId) throws KEWUserNotFoundException {
-		// for now, until WorkflowUser is converted, let's continue using WorkflowUser
-		return KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(principalId));
 	}
 
 	public Recipient getGroupRecipient(String groupId) {

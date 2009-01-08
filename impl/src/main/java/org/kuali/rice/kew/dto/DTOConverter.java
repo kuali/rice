@@ -104,9 +104,9 @@ import org.kuali.rice.kew.workgroup.GroupId;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.WorkflowGroupId;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.impl.KimUserServiceImpl;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -174,22 +174,23 @@ public class DTOConverter {
         }
 
         if (user != null) {
-            routeHeaderVO.setValidActions(convertValidActions(KEWServiceLocator.getActionRegistry().getValidActions(user, routeHeader)));
+        	KimPrincipal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(user.getWorkflowId());
+            routeHeaderVO.setValidActions(convertValidActions(KEWServiceLocator.getActionRegistry().getValidActions(principal, routeHeader)));
         }
         return routeHeaderVO;
     }
 
-    public static RouteHeaderDTO convertRouteHeader(DocumentRouteHeaderValue routeHeader, Person user) throws WorkflowException, KEWUserNotFoundException {
+    public static RouteHeaderDTO convertRouteHeader(DocumentRouteHeaderValue routeHeader, String principalId) throws WorkflowException, KEWUserNotFoundException {
         RouteHeaderDTO routeHeaderVO = new RouteHeaderDTO();
         if (routeHeader == null) {
             return null;
         }
         populateRouteHeaderVO(routeHeaderVO, routeHeader);
 
-        if (user != null) {
+        if (principalId != null) {
             routeHeaderVO.setUserBlanketApprover(false); // default to false
             if (routeHeader.getDocumentType() != null) {
-            	boolean isBlanketApprover = KEWServiceLocator.getDocumentTypePermissionService().canBlanketApprove(user.getPrincipalId(), routeHeader.getDocumentType(), routeHeader.getDocRouteStatus(), routeHeader.getInitiatorWorkflowId());
+            	boolean isBlanketApprover = KEWServiceLocator.getDocumentTypePermissionService().canBlanketApprove(principalId, routeHeader.getDocumentType(), routeHeader.getDocRouteStatus(), routeHeader.getInitiatorWorkflowId());
                 routeHeaderVO.setUserBlanketApprover(isBlanketApprover);
             }
             String topActionRequested = KEWConstants.ACTION_REQUEST_FYI_REQ;
@@ -197,7 +198,7 @@ public class DTOConverter {
                 ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
                 // below will control what buttons are drawn on the client we only want the
                 // heaviest action button to show on the client making this code a little combersome
-                if (actionRequest.isRecipientRoutedRequest(user) && actionRequest.isActive()) {
+                if (actionRequest.isRecipientRoutedRequest(principalId) && actionRequest.isActive()) {
                     int actionRequestComparison = ActionRequestValue.compareActionCode(actionRequest.getActionRequested(), topActionRequested);
                     if (actionRequest.isFYIRequest() && actionRequestComparison >= 0) {
                         routeHeaderVO.setFyiRequested(true);
@@ -222,10 +223,9 @@ public class DTOConverter {
         }
 
 
-        if (user != null) {
-        	// TODO: Remove this hack.
-        	WorkflowUser wfUser = KimUserServiceImpl.convertPersonToWorkflowUser(user);
-            routeHeaderVO.setValidActions(convertValidActions(KEWServiceLocator.getActionRegistry().getValidActions(wfUser, routeHeader)));
+        if (principalId != null) {
+        	KimPrincipal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);
+            routeHeaderVO.setValidActions(convertValidActions(KEWServiceLocator.getActionRegistry().getValidActions(principal, routeHeader)));
         }
         return routeHeaderVO;
     }
@@ -269,7 +269,8 @@ public class DTOConverter {
             }
         }
 
-        routeHeaderVO.setValidActions(convertValidActions(KEWServiceLocator.getActionRegistry().getValidActions(user, routeHeader)));
+        KimPrincipal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(user.getWorkflowId());
+        routeHeaderVO.setValidActions(convertValidActions(KEWServiceLocator.getActionRegistry().getValidActions(principal, routeHeader)));
         return routeHeaderVO;
     }
 

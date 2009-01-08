@@ -49,7 +49,7 @@ public class SuperUserActionRequestApproveEventTest extends KEWTestCase {
         assertTrue("rkirkend should have an FYI request.", document.isFYIRequested());
 
         WorkflowUser rkirkend = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("rkirkend"));
-        List<ActionRequestValue> actionRequests = KEWServiceLocator.getActionRequestService().findAllValidRequests(rkirkend, document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_FYI_REQ);
+        List<ActionRequestValue> actionRequests = KEWServiceLocator.getActionRequestService().findAllValidRequests(rkirkend.getWorkflowId(), document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_FYI_REQ);
         assertEquals("There should only be 1 fyi request to rkirkend.", 1, actionRequests.size());
         document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
         document.superUserActionRequestApprove(actionRequests.get(0).getActionRequestId(), "");
@@ -75,7 +75,7 @@ public class SuperUserActionRequestApproveEventTest extends KEWTestCase {
         assertTrue("rkirkend should have an FYI request.", document.isFYIRequested());
 
         WorkflowUser rkirkend = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("rkirkend"));
-        List<ActionRequestValue> actionRequests = KEWServiceLocator.getActionRequestService().findAllValidRequests(rkirkend, document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_FYI_REQ);
+        List<ActionRequestValue> actionRequests = KEWServiceLocator.getActionRequestService().findAllValidRequests(rkirkend.getWorkflowId(), document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_FYI_REQ);
         assertEquals("There should only be 1 fyi request to rkirkend.", 1, actionRequests.size());
         document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
         document.superUserActionRequestApprove(actionRequests.get(0).getActionRequestId(), "");
@@ -98,7 +98,7 @@ public class SuperUserActionRequestApproveEventTest extends KEWTestCase {
         assertTrue("rkirkend should have an FYI request.", document.isFYIRequested());
 
         WorkflowUser rkirkend = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("rkirkend"));
-        List<ActionRequestValue> fyiActionRequests = KEWServiceLocator.getActionRequestService().findAllValidRequests(rkirkend, document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_FYI_REQ);
+        List<ActionRequestValue> fyiActionRequests = KEWServiceLocator.getActionRequestService().findAllValidRequests(rkirkend.getWorkflowId(), document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_FYI_REQ);
         assertEquals("There should only be 1 fyi request to rkirkend.", 1, fyiActionRequests.size());
         document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
         document.superUserActionRequestApprove(fyiActionRequests.get(0).getActionRequestId(), "");
@@ -111,7 +111,7 @@ public class SuperUserActionRequestApproveEventTest extends KEWTestCase {
         assertEquals("Document should be PROCESSED", KEWConstants.ROUTE_HEADER_PROCESSED_CD, document.getRouteHeader().getDocRouteStatus());
 
         WorkflowUser jhopf = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("jhopf"));
-        List<ActionRequestValue> ackActionRequests = KEWServiceLocator.getActionRequestService().findAllValidRequests(jhopf, document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
+        List<ActionRequestValue> ackActionRequests = KEWServiceLocator.getActionRequestService().findAllValidRequests(jhopf.getWorkflowId(), document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
         assertEquals("There should only be 1 ACK request to jhopf.", 1, ackActionRequests.size());
         document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
         document.superUserActionRequestApprove(ackActionRequests.get(0).getActionRequestId(), "");
@@ -153,7 +153,7 @@ public class SuperUserActionRequestApproveEventTest extends KEWTestCase {
         assertFalse("rkirkend should not have Approve request", document.isApprovalRequested());
         assertTrue("rkirkend should be a super user of the document", document.isSuperUser());
         WorkflowUser ewestfal = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("ewestfal"));
-        List<ActionRequestValue> actionRequests = KEWServiceLocator.getActionRequestService().findAllValidRequests(ewestfal, document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
+        List<ActionRequestValue> actionRequests = KEWServiceLocator.getActionRequestService().findAllValidRequests(ewestfal.getWorkflowId(), document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
         assertEquals("There should only be 1 complete request to ewestfal as result of the save.", 1, actionRequests.size());
         document.superUserActionRequestApprove(actionRequests.get(0).getActionRequestId(), "");
 
@@ -182,7 +182,7 @@ public class SuperUserActionRequestApproveEventTest extends KEWTestCase {
         assertFalse("rkirkend should not have Approve request", document.isApprovalRequested());
         assertTrue("rkirkend should be a super user of the document", document.isSuperUser());
         WorkflowUser adhocActionRequestUser = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(adhocActionUserNetworkId));
-        List<ActionRequestValue> actionRequests = KEWServiceLocator.getActionRequestService().findAllValidRequests(adhocActionRequestUser, document.getRouteHeaderId(), adhocActionRequestCode);
+        List<ActionRequestValue> actionRequests = KEWServiceLocator.getActionRequestService().findAllValidRequests(adhocActionRequestUser.getWorkflowId(), document.getRouteHeaderId(), adhocActionRequestCode);
         assertEquals("There should only be 1 approve request to " + adhocActionUserNetworkId + ".", 1, actionRequests.size());
         document.superUserActionRequestApprove(actionRequests.get(0).getActionRequestId(), "");
 

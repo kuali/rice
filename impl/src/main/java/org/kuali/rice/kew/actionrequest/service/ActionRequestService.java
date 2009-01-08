@@ -55,9 +55,9 @@ public interface ActionRequestService {
 
     public void deleteActionRequestGraph(ActionRequestValue actionRequest);
     
-    public List findAllValidRequests(WorkflowUser user, Long routeHeaderId, String requestCode) throws KEWUserNotFoundException;
+    public List findAllValidRequests(String principalId, Long routeHeaderId, String requestCode) throws KEWUserNotFoundException;
     
-    public List findAllValidRequests(WorkflowUser user, Collection actionRequests, String requestCode) throws KEWUserNotFoundException;
+    public List findAllValidRequests(String principalId, Collection actionRequests, String requestCode) throws KEWUserNotFoundException;
 
     public List findPendingByDoc(Long routeHeaderId);
 

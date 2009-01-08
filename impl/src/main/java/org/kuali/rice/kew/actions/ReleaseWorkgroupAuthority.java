@@ -27,6 +27,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
@@ -44,8 +45,8 @@ public class ReleaseWorkgroupAuthority extends ActionTakenEvent {
      * @param routeHeader
      * @param user
      */
-    public ReleaseWorkgroupAuthority(DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
-        super(KEWConstants.ACTION_TAKEN_RELEASE_WORKGROUP_AUTHORITY_CD, routeHeader, user);
+    public ReleaseWorkgroupAuthority(DocumentRouteHeaderValue routeHeader, KimPrincipal principal) {
+        super(KEWConstants.ACTION_TAKEN_RELEASE_WORKGROUP_AUTHORITY_CD, routeHeader, principal);
     }
 
     /**
@@ -54,8 +55,8 @@ public class ReleaseWorkgroupAuthority extends ActionTakenEvent {
      * @param annotation
      * @param workgroup
      */
-    public ReleaseWorkgroupAuthority(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, String groupid) {
-        super(KEWConstants.ACTION_TAKEN_RELEASE_WORKGROUP_AUTHORITY_CD, routeHeader, user, annotation);
+    public ReleaseWorkgroupAuthority(DocumentRouteHeaderValue routeHeader, KimPrincipal principal, String annotation, String groupid) {
+        super(KEWConstants.ACTION_TAKEN_RELEASE_WORKGROUP_AUTHORITY_CD, routeHeader, principal, annotation);
         this.groupId = groupId;
     }
 
@@ -81,8 +82,8 @@ public class ReleaseWorkgroupAuthority extends ActionTakenEvent {
     }
 
     private String performReleaseWorkgroupAuthority(boolean forValidationOnly) throws KEWUserNotFoundException {
-        if (!KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(getUser().getWorkflowId(), groupId)){
-            return (getUser().getAuthenticationUserId() + " not a member of workgroup " + groupId);
+        if (!KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(getPrincipal().getPrincipalId(), groupId)){
+            return (getPrincipal().getPrincipalName() + " not a member of workgroup " + groupId);
         }
 
         List actionRequests = getActionRequestService().findPendingByDoc(getRouteHeaderId());
@@ -93,7 +94,7 @@ public class ReleaseWorkgroupAuthority extends ActionTakenEvent {
             if (actionRequest.isGroupRequest() && actionRequest.isActive() && actionRequest.getGroupId().equals(groupId)) {
                 if (actionRequest.getActionItems().size() == 1) {
                     ActionItem actionItem = (ActionItem) actionRequest.getActionItems().get(0);
-                    if (! actionItem.getPrincipalId().equals(getUser().getWorkflowId())) {
+                    if (! actionItem.getPrincipalId().equals(getPrincipal().getPrincipalId())) {
                         return "User attempting to release workgroup authority did not take it.";
                     } else if (!forValidationOnly) {
                         actionRequest.setStatus(KEWConstants.ACTION_REQUEST_INITIALIZED);//to circumvent check in service during activation

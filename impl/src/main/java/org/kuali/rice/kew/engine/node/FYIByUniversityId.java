@@ -63,7 +63,7 @@ public class FYIByUniversityId extends RequestActivationNode {
                			WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new EmplId(field.getChildText("value")));
                			//WorkflowDocument wfDoc = new WorkflowDocument(new EmplIdVO(field.getChildText("value")), routeHeaderId);
                			if (!context.isSimulation()) {
-                   			KEWServiceLocator.getWorkflowDocumentService().adHocRouteDocumentToPrincipal(user, context.getDocument(), KEWConstants.ACTION_REQUEST_FYI_REQ, null, "Notification Request", user.getWorkflowId(), "Notification Request", true);
+                   			KEWServiceLocator.getWorkflowDocumentService().adHocRouteDocumentToPrincipal(user.getWorkflowId(), context.getDocument(), KEWConstants.ACTION_REQUEST_FYI_REQ, null, "Notification Request", user.getWorkflowId(), "Notification Request", true);
                		}
                			//wfDoc.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_FYI_REQ, "Notification Request", new EmplIdVO(field.getChildText("value")), "Notification Request", true);
                 		LOG.debug("Sent FYI using the adHocRouteDocumentToPrincipal function to UniversityID:  " + user.getEmplId());

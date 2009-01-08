@@ -281,15 +281,15 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
         try {
             routeHeaderId = getRouteHeaderId();
             workflowInfo = KNSServiceLocator.getWorkflowInfoService();
-            UserDTO currentUser = workflowInfo.getWorkflowUser(workflowDocument.getUserId());
+            String principalId = workflowDocument.getPrincipalId();
             ActionRequestDTO[] actionRequests = workflowInfo.getActionRequests(routeHeaderId);
             for (int actionRequestIndex = 0; actionRequestIndex < actionRequests.length; actionRequestIndex++) {
                 if (actionRequests[actionRequestIndex].isActivated() && actionRequests[actionRequestIndex].isAdHocRequest()) {
-                    if (actionRequests[actionRequestIndex].isUserRequest() && currentUser.getWorkflowId().equals(actionRequests[actionRequestIndex].getUserDTO().getWorkflowId())) {
+                    if (actionRequests[actionRequestIndex].isUserRequest() && principalId.equals(actionRequests[actionRequestIndex].getUserDTO().getWorkflowId())) {
                         isAdHocRequested = true;
                     }
                     else if (actionRequests[actionRequestIndex].isGroupRequest()) {
-                    	if (KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(currentUser.getWorkflowId(), actionRequests[actionRequestIndex].getGroupId())) {
+                    	if (KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(principalId, actionRequests[actionRequestIndex].getGroupId())) {
                     		isAdHocRequested = true;
                     	}
                     }

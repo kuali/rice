@@ -23,7 +23,7 @@ import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
 
 /**
@@ -35,11 +35,12 @@ public class BlanketApproveProcessor implements BlanketApproveProcessorService {
 	
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BlanketApproveProcessor.class);
 
-	public void doBlanketApproveWork(Long documentId, WorkflowUser user, Long actionTakenId, Set<String> nodeNames) {
+	public void doBlanketApproveWork(Long documentId, String principalId, Long actionTakenId, Set<String> nodeNames) {
 		KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
 		DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
 		ActionTakenValue actionTaken = KEWServiceLocator.getActionTakenService().findByActionTakenId(actionTakenId);
-		BlanketApproveAction blanketApprove = new BlanketApproveAction(document, user, "", nodeNames);
+		KimPrincipal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);
+		BlanketApproveAction blanketApprove = new BlanketApproveAction(document, principal, "", nodeNames);
 		LOG.debug("Doing blanket approve work document " + document.getRouteHeaderId());
 		try {
 			blanketApprove.performDeferredBlanketApproveWork(actionTaken);

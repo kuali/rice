@@ -26,10 +26,8 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.workgroup.WorkgroupService;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
@@ -255,8 +253,7 @@ public class WorkflowRoutingForm extends ActionForm {
 		    	Long docId = workflowDocument.getRouteHeaderId();
 		    	DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(docId);
 		    	DocumentType documentType = document.getDocumentType();
-		    	WorkflowUser docUser = KEWServiceLocator.getUserService().getWorkflowUser(workflowDocument.getUserId());
-		    	boolean isSuperUser = KEWServiceLocator.getDocumentTypePermissionService().canAdministerRouting(docUser.getWorkflowId(), documentType);
+		    	boolean isSuperUser = KEWServiceLocator.getDocumentTypePermissionService().canAdministerRouting(workflowDocument.getPrincipalId(), documentType);
 		    	if (isSuperUser){
 		    		appSpecificRouteActionRequestCds = CodeTranslator.arLabels;
 		    	}else if(workflowDocument.isFYIRequested()){

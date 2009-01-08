@@ -245,7 +245,7 @@ public abstract class WorkflowAction extends DispatchAction {
 	public ActionForward cancelDocument(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		WorkflowRoutingForm routingForm = (WorkflowRoutingForm) form;
 		DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(routingForm.getDocId());
-		KEWServiceLocator.getWorkflowDocumentService().cancelDocument(getUserSession(request).getWorkflowUser(), routeHeader, routingForm.getAnnotation());
+		KEWServiceLocator.getWorkflowDocumentService().cancelDocument(getUserSession(request).getPrincipalId(), routeHeader, routingForm.getAnnotation());
 		request.setAttribute("routeHeaderId", routingForm.getDocId());
 		return mapping.findForward("DeleteRouteHeaderConfirmation");
 	}

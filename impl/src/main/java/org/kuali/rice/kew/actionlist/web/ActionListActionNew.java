@@ -557,7 +557,7 @@ public class ActionListActionNew extends KualiAction {
             }
         	index++;
 		}
-        KEWServiceLocator.getWorkflowDocumentService().takeMassActions(getUserSession(request).getWorkflowUser(), invocations);
+        KEWServiceLocator.getWorkflowDocumentService().takeMassActions(getUserSession(request).getPrincipalId(), invocations);
         messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("general.routing.processed"));
         saveMessages(request, messages);
         ActionListFormNew cleanForm = new ActionListFormNew();

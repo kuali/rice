@@ -49,5 +49,9 @@ public class KimPrincipalRecipient implements Recipient {
 		return this.principal;
 	}
 	
+	public String getPrincipalId() {
+		return getPrincipal().getPrincipalId();
+	}
+	
 
 }

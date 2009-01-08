@@ -16,7 +16,6 @@
  */
 package org.kuali.rice.kew.actions.asyncservices;
 
-import org.kuali.rice.kew.user.WorkflowUser;
 
 /**
  * Interface for defining the contract for the remoting of ActionInvocationProcessor.  
@@ -26,7 +25,7 @@ import org.kuali.rice.kew.user.WorkflowUser;
  */
 public interface ActionInvocationService {
 
-	public void invokeAction(WorkflowUser user, Long documentId, ActionInvocation invocation);
+	public void invokeAction(String principalId, Long documentId, ActionInvocation invocation);
 	
 	
 }

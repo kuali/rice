@@ -181,7 +181,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 				if (customEmailAttribute != null) {
 					RouteHeaderDTO routeHeaderVO = DTOConverter
 							.convertRouteHeader(actionItem.getRouteHeader(),
-									user);
+									user.getPrincipalId());
 					ActionRequestValue actionRequest = KEWServiceLocator
 							.getActionRequestService().findByActionRequestId(
 									actionItem.getActionRequestId());

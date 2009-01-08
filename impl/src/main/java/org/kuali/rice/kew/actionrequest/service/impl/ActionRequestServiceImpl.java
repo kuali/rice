@@ -407,14 +407,14 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         return actionRequest;
     }
 
-    public List findAllValidRequests(WorkflowUser user, Long routeHeaderId, String requestCode)
+    public List findAllValidRequests(String principalId, Long routeHeaderId, String requestCode)
     throws KEWUserNotFoundException {
         ActionRequestDAO arDAO = getActionRequestDAO();
         Collection pendingArs = arDAO.findAllPendingByDocId(routeHeaderId);
-        return findAllValidRequests(user, pendingArs, requestCode);
+        return findAllValidRequests(principalId, pendingArs, requestCode);
     }
 
-    public List findAllValidRequests(WorkflowUser user, Collection actionRequests, String requestCode)
+    public List findAllValidRequests(String principalId, Collection actionRequests, String requestCode)
     throws KEWUserNotFoundException {
         List matchedArs = new ArrayList();
         List<String> arGroups = null;
@@ -423,11 +423,11 @@ public class ActionRequestServiceImpl implements ActionRequestService {
             if (ActionRequestValue.compareActionCode(ar.getActionRequested(), requestCode) > 0) {
                 continue;
             }
-            if (ar.isUserRequest() && user.getWorkflowUserId().getWorkflowId().equals(ar.getWorkflowId())) {
+            if (ar.isUserRequest() && principalId.equals(ar.getWorkflowId())) {
                 matchedArs.add(ar);
             } else if (ar.isGroupRequest()) {
             	if (arGroups == null) {
-            		arGroups = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(user.getWorkflowId());
+            		arGroups = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
             	}
             	for (String groupId : arGroups) {
             		if (groupId.equals(ar.getGroupId())) {

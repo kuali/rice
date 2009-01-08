@@ -79,6 +79,7 @@ import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
 
@@ -228,6 +229,22 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
     public DocumentRouteHeaderValue() {
     }
 
+    public KimPrincipal getInitiatorPrincipal() {
+    	if (getInitiatorWorkflowId() == null) {
+    		return null;
+    	}
+    	return KEWServiceLocator.getIdentityHelperService().getPrincipal(getInitiatorWorkflowId());
+    }
+    
+    public KimPrincipal getRoutedByPrincipal() {
+    	if (getRoutedByUserWorkflowId() == null) {
+    		return null;
+    	}
+    	return KEWServiceLocator.getIdentityHelperService().getPrincipal(getRoutedByUserWorkflowId());
+    }
+    
+    
+    
     public WorkflowUser getInitiatorUser() throws KEWUserNotFoundException {
     	// if we are running a simulation, there will be no initiator
     	if (getInitiatorWorkflowId() == null) {

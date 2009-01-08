@@ -16,12 +16,11 @@
 package org.kuali.rice.kew.identity.service;
 
 import org.kuali.rice.kew.dto.GroupIdDTO;
-import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kew.dto.UserIdDTO;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.Recipient;
+import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.workgroup.GroupId;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
 
@@ -40,6 +39,14 @@ public interface IdentityHelperService {
 	public String getIdForPrincipalName(String principalName);
 	
 	public String getIdForGroupName(String namespace, String groupName);
+	
+	/**
+	 * Returns the KimPrincipal for the given principalId.  Throws an exception
+	 * if the principalId cannot be resolved to a principal.
+	 */
+	public KimPrincipal getPrincipal(String principalId);
+	
+	public Recipient getPrincipalRecipient(String principalId);
 	
 	/**
 	 * @deprecated Please refrain from using the GroupId object, instead just call the
@@ -61,12 +68,7 @@ public interface IdentityHelperService {
 	 * @deprecated
 	 */
 	public String getPrincipalId(UserIdDTO userId);
-	
-	/**
-	 * @deprecated
-	 */
-	public Recipient getPrincipalRecipient(String principalId) throws KEWUserNotFoundException;
-	
+		
 	/**
 	 * @deprecated
 	 */

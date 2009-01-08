@@ -30,15 +30,15 @@ import org.kuali.rice.kew.engine.BlanketApproveEngine;
 import org.kuali.rice.kew.engine.OrchestrationConfig;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.Recipient;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
 
 /**
@@ -55,12 +55,12 @@ public class MoveDocumentAction extends ActionTakenEvent {
 
     private MovePoint movePoint;
 
-    public MoveDocumentAction(DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
-        super(KEWConstants.ACTION_TAKEN_MOVE_CD, routeHeader, user);
+    public MoveDocumentAction(DocumentRouteHeaderValue routeHeader, KimPrincipal principal) {
+        super(KEWConstants.ACTION_TAKEN_MOVE_CD, routeHeader, principal);
     }
 
-    public MoveDocumentAction(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, MovePoint movePoint) {
-        super(KEWConstants.ACTION_TAKEN_MOVE_CD, routeHeader, user, annotation);
+    public MoveDocumentAction(DocumentRouteHeaderValue routeHeader, KimPrincipal principal, String annotation, MovePoint movePoint) {
+        super(KEWConstants.ACTION_TAKEN_MOVE_CD, routeHeader, principal, annotation);
         this.movePoint = movePoint;
     }
 
@@ -69,7 +69,7 @@ public class MoveDocumentAction extends ActionTakenEvent {
      */
     @Override
     public String validateActionRules() throws KEWUserNotFoundException {
-        return validateActionRules(getActionRequestService().findAllValidRequests(getUser(), routeHeader.getRouteHeaderId(),
+        return validateActionRules(getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), routeHeader.getRouteHeaderId(),
                 KEWConstants.ACTION_REQUEST_COMPLETE_REQ), KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(getRouteHeader().getRouteHeaderId()));
     }
 
@@ -100,7 +100,7 @@ public class MoveDocumentAction extends ActionTakenEvent {
         updateSearchableAttributesIfPossible();
         LOG.debug("Moving document " + getRouteHeader().getRouteHeaderId() + " to point: " + displayMovePoint(movePoint) + ", annotation: " + annotation);
 
-        List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
+        List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
         Collection activeNodes = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(getRouteHeader().getRouteHeaderId());
         String errorMessage = validateActionRules(actionRequests,activeNodes);
         if (!Utilities.isEmpty(errorMessage)) {
@@ -121,11 +121,11 @@ public class MoveDocumentAction extends ActionTakenEvent {
                 targetNodeNames.add(determineFutureNodeName(startNodeInstance, movePoint));
 
                 MoveDocumentService moveDocumentProcessor = MessageServiceNames.getMoveDocumentProcessorService(getRouteHeader());
-                moveDocumentProcessor.moveDocument(getUser(), getRouteHeader(), actionTaken, targetNodeNames);
+                moveDocumentProcessor.moveDocument(getPrincipal().getPrincipalId(), getRouteHeader(), actionTaken, targetNodeNames);
 
             } else {
                 String targetNodeName = determineReturnNodeName(startNodeInstance, movePoint);
-                ReturnToPreviousNodeAction returnAction = new ReturnToPreviousNodeAction(KEWConstants.ACTION_TAKEN_MOVE_CD, getRouteHeader(), getUser(), annotation, targetNodeName, false);
+                ReturnToPreviousNodeAction returnAction = new ReturnToPreviousNodeAction(KEWConstants.ACTION_TAKEN_MOVE_CD, getRouteHeader(), getPrincipal(), annotation, targetNodeName, false);
                 
                 returnAction.recordAction();
             }

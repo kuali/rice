@@ -29,6 +29,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
 
 /**
@@ -51,8 +52,8 @@ public class ClearFYIAction extends ActionTakenEvent {
      * @param user
      *            User taking the action.
      */
-    public ClearFYIAction(DocumentRouteHeaderValue rh, WorkflowUser user) {
-        super(KEWConstants.ACTION_TAKEN_FYI_CD, rh, user);
+    public ClearFYIAction(DocumentRouteHeaderValue rh, KimPrincipal principal) {
+        super(KEWConstants.ACTION_TAKEN_FYI_CD, rh, principal);
     }
 
     /**
@@ -63,8 +64,8 @@ public class ClearFYIAction extends ActionTakenEvent {
      * @param annotation
      *            User comment on the action taken
      */
-    public ClearFYIAction(DocumentRouteHeaderValue rh, WorkflowUser user, String annotation) {
-        super(KEWConstants.ACTION_TAKEN_FYI_CD, rh, user, annotation);
+    public ClearFYIAction(DocumentRouteHeaderValue rh, KimPrincipal principal, String annotation) {
+        super(KEWConstants.ACTION_TAKEN_FYI_CD, rh, principal, annotation);
     }
     
     /**
@@ -72,7 +73,7 @@ public class ClearFYIAction extends ActionTakenEvent {
      * @return  returns an error message to give system better identifier for problem
      */
     public String validateActionRules() throws KEWUserNotFoundException {
-        return validateActionRules(getActionRequestService().findAllValidRequests(getUser(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_FYI_REQ));
+        return validateActionRules(getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_FYI_REQ));
     }
 
     private String validateActionRules(List<ActionRequestValue> actionRequests) throws KEWUserNotFoundException {
@@ -122,7 +123,7 @@ public class ClearFYIAction extends ActionTakenEvent {
         LOG.debug("Clear FYI for document : " + annotation);
         LOG.debug("Checking to see if the action is legal");
 
-        List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_FYI_REQ);
+        List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_FYI_REQ);
         String errorMessage = validateActionRules(actionRequests);
         if (!Utilities.isEmpty(errorMessage)) {
             throw new InvalidActionTakenException(errorMessage);

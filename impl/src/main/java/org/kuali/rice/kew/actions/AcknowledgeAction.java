@@ -22,14 +22,15 @@ import java.util.List;
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
 
 /**
@@ -53,8 +54,8 @@ public class AcknowledgeAction extends ActionTakenEvent {
      * @param user
      *            User taking the action.
      */
-    public AcknowledgeAction(DocumentRouteHeaderValue rh, WorkflowUser user) {
-        super(KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD, rh, user);
+    public AcknowledgeAction(DocumentRouteHeaderValue rh, KimPrincipal principal) {
+        super(KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD, rh, principal);
     }
 
     /**
@@ -67,8 +68,8 @@ public class AcknowledgeAction extends ActionTakenEvent {
      * @param annotation
      *            User comment on the action taken
      */
-    public AcknowledgeAction(DocumentRouteHeaderValue rh, WorkflowUser user, String annotation) {
-        super(KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD, rh, user, annotation);
+    public AcknowledgeAction(DocumentRouteHeaderValue rh, KimPrincipal principal, String annotation) {
+        super(KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD, rh, principal, annotation);
     }
     
     /**
@@ -76,7 +77,7 @@ public class AcknowledgeAction extends ActionTakenEvent {
      * @return  returns an error message to give system better identifier for problem
      */
     public String validateActionRules() throws KEWUserNotFoundException {
-        return validateActionRules(getActionRequestService().findAllValidRequests(getUser(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
+        return validateActionRules(getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
     }
 
     private String validateActionRules(List<ActionRequestValue> actionRequests) throws KEWUserNotFoundException {
@@ -136,7 +137,7 @@ public class AcknowledgeAction extends ActionTakenEvent {
         LOG.debug("Acknowledging document : " + annotation);
 
         LOG.debug("Checking to see if the action is legal");
-        List actionRequests = getActionRequestService().findAllValidRequests(getUser(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
+        List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
         String errorMessage = validateActionRules(actionRequests);
         if (!Utilities.isEmpty(errorMessage)) {
             throw new InvalidActionTakenException(errorMessage);

@@ -30,6 +30,7 @@ import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
 
 /**
@@ -43,12 +44,12 @@ public class RevokeAdHocAction extends ActionTakenEvent {
 
     private AdHocRevoke revoke;
 
-    public RevokeAdHocAction(DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
-        super(KEWConstants.ACTION_TAKEN_ADHOC_REVOKED_CD, routeHeader, user);
+    public RevokeAdHocAction(DocumentRouteHeaderValue routeHeader, KimPrincipal principal) {
+        super(KEWConstants.ACTION_TAKEN_ADHOC_REVOKED_CD, routeHeader, principal);
     }
 
-    public RevokeAdHocAction(DocumentRouteHeaderValue routeHeader, WorkflowUser user, AdHocRevoke revoke, String annotation) {
-        super(KEWConstants.ACTION_TAKEN_ADHOC_REVOKED_CD, routeHeader, user, annotation);
+    public RevokeAdHocAction(DocumentRouteHeaderValue routeHeader, KimPrincipal principal, AdHocRevoke revoke, String annotation) {
+        super(KEWConstants.ACTION_TAKEN_ADHOC_REVOKED_CD, routeHeader, principal, annotation);
         this.revoke = revoke;
     }
 

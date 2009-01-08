@@ -22,15 +22,16 @@ import java.util.List;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
+import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.Recipient;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
 
 
@@ -52,12 +53,12 @@ public class AdHocAction extends ActionTakenEvent {
 	private Recipient recipient;
 	private String annotation;
 
-    public AdHocAction(DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
-        super(NO_ACTION_TAKEN_CODE, routeHeader, user);
+    public AdHocAction(DocumentRouteHeaderValue routeHeader, KimPrincipal principal) {
+        super(NO_ACTION_TAKEN_CODE, routeHeader, principal);
     }
 
-	public AdHocAction(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, String actionRequested, String nodeName, Recipient recipient, String responsibilityDesc, Boolean ignorePrevActions) {
-		super(NO_ACTION_TAKEN_CODE, routeHeader, user, annotation);
+	public AdHocAction(DocumentRouteHeaderValue routeHeader, KimPrincipal principal, String annotation, String actionRequested, String nodeName, Recipient recipient, String responsibilityDesc, Boolean ignorePrevActions) {
+		super(NO_ACTION_TAKEN_CODE, routeHeader, principal, annotation);
 		this.actionRequested = actionRequested;
 		this.nodeName = nodeName;
 		this.responsibilityDesc = responsibilityDesc;
@@ -90,10 +91,10 @@ public class AdHocAction extends ActionTakenEvent {
     private String validateActionRules(List targetNodes) throws KEWUserNotFoundException {
     	// recipient will be null when this is invoked from ActionRegistry.getValidActions
     	if (recipient != null) {
-    		if (recipient instanceof WorkflowUser) {
-    			WorkflowUser user = (WorkflowUser)recipient;
-    			if (!KEWServiceLocator.getDocumentTypePermissionService().canReceiveAdHocRequest(user.getWorkflowId(), getRouteHeader().getDocumentType(), actionRequested)) {
-    				return "The user '" + user.getAuthenticationUserId().getId() + "' does not have permission to recieve ad hoc requests on DocumentType '" + getRouteHeader().getDocumentType().getName() + "'";
+    		if (recipient instanceof KimPrincipalRecipient) {
+    			KimPrincipalRecipient principalRecipient = (KimPrincipalRecipient)recipient;
+    			if (!KEWServiceLocator.getDocumentTypePermissionService().canReceiveAdHocRequest(principalRecipient.getPrincipalId(), getRouteHeader().getDocumentType(), actionRequested)) {
+    				return "The principal '" + principalRecipient.getPrincipal().getPrincipalName() + "' does not have permission to recieve ad hoc requests on DocumentType '" + getRouteHeader().getDocumentType().getName() + "'";
     			}
     		} else if (recipient instanceof KimGroupRecipient) {
     			KimGroup group = ((KimGroupRecipient)recipient).getGroup();

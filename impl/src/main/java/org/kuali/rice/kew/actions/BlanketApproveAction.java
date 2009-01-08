@@ -40,6 +40,7 @@ import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
 
 /**
@@ -52,20 +53,20 @@ public class BlanketApproveAction extends ActionTakenEvent {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BlanketApproveAction.class);
     private Set nodeNames;
 
-    public BlanketApproveAction(DocumentRouteHeaderValue rh, WorkflowUser user) {
-        super(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD, rh, user);
+    public BlanketApproveAction(DocumentRouteHeaderValue rh, KimPrincipal principal) {
+        super(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD, rh, principal);
     }
 
-    public BlanketApproveAction(DocumentRouteHeaderValue rh, WorkflowUser user, String annotation, Integer routeLevel) {
-        this(rh, user, annotation, convertRouteLevel(rh.getDocumentType(), routeLevel));
+    public BlanketApproveAction(DocumentRouteHeaderValue rh, KimPrincipal principal, String annotation, Integer routeLevel) {
+        this(rh, principal, annotation, convertRouteLevel(rh.getDocumentType(), routeLevel));
     }
 
-    public BlanketApproveAction(DocumentRouteHeaderValue rh, WorkflowUser user, String annotation, String nodeName) {
-        this(rh, user, annotation, Utilities.asSet(nodeName));
+    public BlanketApproveAction(DocumentRouteHeaderValue rh, KimPrincipal principal, String annotation, String nodeName) {
+        this(rh, principal, annotation, Utilities.asSet(nodeName));
     }
 
-    public BlanketApproveAction(DocumentRouteHeaderValue rh, WorkflowUser user, String annotation, Set nodeNames) {
-        super(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD, rh, user, annotation);
+    public BlanketApproveAction(DocumentRouteHeaderValue rh, KimPrincipal principal, String annotation, Set nodeNames) {
+        super(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD, rh, principal, annotation);
         this.nodeNames = (nodeNames == null ? new HashSet() : nodeNames);
     }
 
@@ -87,11 +88,11 @@ public class BlanketApproveAction extends ActionTakenEvent {
      */
     @Override
     public String validateActionRules() throws KEWUserNotFoundException {
-        return validateActionRules(getActionRequestService().findAllValidRequests(getUser(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ));
+        return validateActionRules(getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ));
     }
 
     private String validateActionRules(List<ActionRequestValue> actionRequests) throws KEWUserNotFoundException {
-        if (! KEWServiceLocator.getDocumentTypePermissionService().canBlanketApprove(getUser().getWorkflowId(), getRouteHeader().getDocumentType(), getRouteHeader().getDocRouteStatus(), getRouteHeader().getInitiatorWorkflowId())) {
+        if (! KEWServiceLocator.getDocumentTypePermissionService().canBlanketApprove(getPrincipal().getPrincipalId(), getRouteHeader().getDocumentType(), getRouteHeader().getDocRouteStatus(), getRouteHeader().getInitiatorWorkflowId())) {
             return "User is not authorized to BlanketApprove document";
         }
         if ( (nodeNames != null) && (!nodeNames.isEmpty()) ) {
@@ -127,7 +128,7 @@ public class BlanketApproveAction extends ActionTakenEvent {
         MDC.put("docId", getRouteHeader().getRouteHeaderId());
         updateSearchableAttributesIfPossible();
 
-        List<ActionRequestValue> actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
+        List<ActionRequestValue> actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
         String errorMessage = validateActionRules(actionRequests);
         if (!Utilities.isEmpty(errorMessage)) {
             throw new InvalidActionTakenException(errorMessage);
@@ -163,7 +164,7 @@ public class BlanketApproveAction extends ActionTakenEvent {
         try {
 
             BlanketApproveProcessorService blanketApprove = MessageServiceNames.getBlanketApproveProcessorService(routeHeader);
-            blanketApprove.doBlanketApproveWork(routeHeader.getRouteHeaderId(), getUser(), actionTaken.getActionTakenId(), nodeNames);
+            blanketApprove.doBlanketApproveWork(routeHeader.getRouteHeaderId(), getPrincipal().getPrincipalId(), actionTaken.getActionTakenId(), nodeNames);
 //
 
 //          KEWAsyncronousJavaService blanketApproveProcessor = (KEWAsyncronousJavaService)SpringServiceLocator.getMessageHelper().getServiceAsynchronously(

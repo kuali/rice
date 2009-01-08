@@ -79,6 +79,7 @@ import org.kuali.rice.kew.service.WorkflowUtility;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 
@@ -87,26 +88,23 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
 
     private static final Logger LOG = Logger.getLogger(WorkflowUtilityWebServiceImpl.class);
 
-    public RouteHeaderDTO getRouteHeaderWithUser(UserIdDTO userId, Long documentId) throws WorkflowException {
+    public RouteHeaderDTO getRouteHeaderWithPrincipal(String principalId, Long documentId) throws WorkflowException {
         if (documentId == null) {
             LOG.error("null routeHeaderId passed in.  Throwing RuntimeExcpetion");
             throw new RuntimeException("Null documentId passed in.");
         }
-        if (userId == null) {
-            LOG.error("null userId passed in.");
-            throw new RuntimeException("null userId passed in");
+        if (principalId == null) {
+            LOG.error("null principalId passed in.");
+            throw new RuntimeException("null principalId passed in");
         }
-        LOG.debug("Fetching RouteHeaderVO [id="+documentId+", user="+userId+"]");
+        LOG.debug("Fetching RouteHeaderVO [id="+documentId+", user="+principalId+"]");
         DocumentRouteHeaderValue document = loadDocument(documentId);
-        WorkflowUser user = null;
-        if (userId != null) {
-            user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
-        }
-        RouteHeaderDTO routeHeaderVO = DTOConverter.convertRouteHeader(document, user);
+        Person person = KIMServiceLocator.getPersonService().getPerson(principalId);
+        RouteHeaderDTO routeHeaderVO = DTOConverter.convertRouteHeader(document, person.getPrincipalId());
         if (routeHeaderVO == null) {
-        	LOG.error("Returning null RouteHeaderVO [id=" + documentId + ", user=" + userId + "]");
+        	LOG.error("Returning null RouteHeaderVO [id=" + documentId + ", user=" + principalId + "]");
         }
-        LOG.debug("Returning RouteHeaderVO [id=" + documentId + ", user=" + userId + "]");
+        LOG.debug("Returning RouteHeaderVO [id=" + documentId + ", user=" + principalId + "]");
         return routeHeaderVO;
     }
 
@@ -117,8 +115,8 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         }
         LOG.debug("Fetching RouteHeaderVO [id="+documentId+"]");
         DocumentRouteHeaderValue document = loadDocument(documentId);
-        WorkflowUser user = null; // to solve the ambigious issue
-        RouteHeaderDTO routeHeaderVO = DTOConverter.convertRouteHeader(document, user);
+        Person person = null;
+        RouteHeaderDTO routeHeaderVO = DTOConverter.convertRouteHeader(document, person.getPrincipalId());
         if (routeHeaderVO == null) {
         	LOG.error("Returning null RouteHeaderVO [id=" + documentId + "]");
         }
@@ -790,11 +788,10 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return true;
     }
 
-    public boolean isSuperUserForDocumentType(UserIdDTO userId, Long documentTypeId) throws WorkflowException {
-    	LOG.debug("Determining super user status [userId=" + userId + ", documentTypeId=" + documentTypeId + "]");
+    public boolean isSuperUserForDocumentType(String principalId, Long documentTypeId) throws WorkflowException {
+    	LOG.debug("Determining super user status [principalId=" + principalId + ", documentTypeId=" + documentTypeId + "]");
     	DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findById(documentTypeId);
-    	WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
-    	boolean isSuperUser = KEWServiceLocator.getDocumentTypePermissionService().canAdministerRouting(user.getWorkflowId(), documentType);
+    	boolean isSuperUser = KEWServiceLocator.getDocumentTypePermissionService().canAdministerRouting(principalId, documentType);
     	LOG.debug("Super user status is " + isSuperUser + ".");
     	return isSuperUser;
     }

@@ -16,12 +16,12 @@
  */
 package org.kuali.rice.kew.actions;
 
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
 
 /**
@@ -33,13 +33,13 @@ public class SuperUserReturnToPreviousNodeAction extends SuperUserActionTakenEve
     
     private String nodeName;
     
-    public SuperUserReturnToPreviousNodeAction(DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
-        super(KEWConstants.ACTION_TAKEN_SU_RETURNED_TO_PREVIOUS_CD, routeHeader, user);
+    public SuperUserReturnToPreviousNodeAction(DocumentRouteHeaderValue routeHeader, KimPrincipal principal) {
+        super(KEWConstants.ACTION_TAKEN_SU_RETURNED_TO_PREVIOUS_CD, routeHeader, principal);
         this.superUserAction = KEWConstants.SUPER_USER_RETURN_TO_PREVIOUS_ROUTE_LEVEL;
     }
     
-    public SuperUserReturnToPreviousNodeAction(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, boolean runPostProcessor, String nodeName) {
-        super(KEWConstants.ACTION_TAKEN_SU_RETURNED_TO_PREVIOUS_CD, routeHeader, user, annotation, runPostProcessor);
+    public SuperUserReturnToPreviousNodeAction(DocumentRouteHeaderValue routeHeader, KimPrincipal principal, String annotation, boolean runPostProcessor, String nodeName) {
+        super(KEWConstants.ACTION_TAKEN_SU_RETURNED_TO_PREVIOUS_CD, routeHeader, principal, annotation, runPostProcessor);
         this.superUserAction = KEWConstants.SUPER_USER_RETURN_TO_PREVIOUS_ROUTE_LEVEL;
         this.nodeName = nodeName;
     }
@@ -49,7 +49,7 @@ public class SuperUserReturnToPreviousNodeAction extends SuperUserActionTakenEve
             //this.event = new DocumentRouteStatusChange(this.routeHeaderId, this.getRouteHeader().getAppDocId(), this.getRouteHeader().getDocRouteStatus(), KEWConstants.ROUTE_HEADER_ENROUTE_CD);
             getRouteHeader().markDocumentEnroute();
         }
-        ReturnToPreviousNodeAction returnAction = new ReturnToPreviousNodeAction(this.getActionTakenCode(), getRouteHeader(), getUser(), annotation, nodeName, true, isRunPostProcessorLogic());
+        ReturnToPreviousNodeAction returnAction = new ReturnToPreviousNodeAction(this.getActionTakenCode(), getRouteHeader(), getPrincipal(), annotation, nodeName, true, isRunPostProcessorLogic());
         returnAction.setSuperUserUsage(true);
         returnAction.recordAction();
     }

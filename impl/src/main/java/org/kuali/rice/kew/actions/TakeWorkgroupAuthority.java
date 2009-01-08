@@ -29,10 +29,9 @@ import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
@@ -51,8 +50,8 @@ public class TakeWorkgroupAuthority extends ActionTakenEvent {
      * @param routeHeader
      * @param user
      */
-    public TakeWorkgroupAuthority(DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
-        super(KEWConstants.ACTION_TAKEN_TAKE_WORKGROUP_AUTHORITY_CD, routeHeader, user);
+    public TakeWorkgroupAuthority(DocumentRouteHeaderValue routeHeader, KimPrincipal principal) {
+        super(KEWConstants.ACTION_TAKEN_TAKE_WORKGROUP_AUTHORITY_CD, routeHeader, principal);
     }
 
     /**
@@ -61,8 +60,8 @@ public class TakeWorkgroupAuthority extends ActionTakenEvent {
      * @param annotation
      * @param workgroup
      */
-    public TakeWorkgroupAuthority(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, String groupid) {
-        super(KEWConstants.ACTION_TAKEN_TAKE_WORKGROUP_AUTHORITY_CD, routeHeader, user, annotation);
+    public TakeWorkgroupAuthority(DocumentRouteHeaderValue routeHeader, KimPrincipal principal, String annotation, String groupid) {
+        super(KEWConstants.ACTION_TAKEN_TAKE_WORKGROUP_AUTHORITY_CD, routeHeader, principal, annotation);
         this.groupId = groupId;
     }
 
@@ -71,8 +70,8 @@ public class TakeWorkgroupAuthority extends ActionTakenEvent {
      */
     @Override
     public String validateActionRules() throws KEWUserNotFoundException {
-        if  ( (groupId != null) && (!KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(getUser().getWorkflowId(), groupId))) {
-            return (getUser().getAuthenticationUserId() + " not a member of workgroup " + groupId);
+        if  ( (groupId != null) && (!KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(getPrincipal().getPrincipalId(), groupId))) {
+            return (getPrincipal().getPrincipalName() + " not a member of workgroup " + groupId);
         }
         return "";
     }
@@ -105,7 +104,7 @@ public class TakeWorkgroupAuthority extends ActionTakenEvent {
             ActionItem actionItem = (ActionItem) iter.next();
             //delete all requests for this workgroup on this document not to this user
             if (actionItem.isWorkgroupItem() && actionItem.getGroupId().equals(groupId) &&
-                    ! actionItem.getPrincipalId().equals(getUser().getWorkflowId())) {
+                    ! actionItem.getPrincipalId().equals(getPrincipal().getPrincipalId())) {
                 actionListService.deleteActionItem(actionItem);
             }
         }

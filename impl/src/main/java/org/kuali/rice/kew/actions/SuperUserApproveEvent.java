@@ -39,6 +39,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
 
 /**
@@ -51,13 +52,13 @@ public class SuperUserApproveEvent extends SuperUserActionTakenEvent {
 
 	private static final Logger LOG = Logger.getLogger(SuperUserApproveEvent.class);
 
-    public SuperUserApproveEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
-        super(KEWConstants.ACTION_TAKEN_SU_APPROVED_CD, routeHeader, user);
+    public SuperUserApproveEvent(DocumentRouteHeaderValue routeHeader, KimPrincipal principal) {
+        super(KEWConstants.ACTION_TAKEN_SU_APPROVED_CD, routeHeader, principal);
         this.superUserAction = KEWConstants.SUPER_USER_APPROVE;
     }
 
-    public SuperUserApproveEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, boolean runPostProcessor) {
-        super(KEWConstants.ACTION_TAKEN_SU_APPROVED_CD, routeHeader, user, annotation, runPostProcessor);
+    public SuperUserApproveEvent(DocumentRouteHeaderValue routeHeader, KimPrincipal principal, String annotation, boolean runPostProcessor) {
+        super(KEWConstants.ACTION_TAKEN_SU_APPROVED_CD, routeHeader, principal, annotation, runPostProcessor);
         this.superUserAction = KEWConstants.SUPER_USER_APPROVE;
     }
 
@@ -112,7 +113,7 @@ public class SuperUserApproveEvent extends SuperUserActionTakenEvent {
 			KEWServiceLocator.getActionRequestService().deactivateRequest(actionTaken, actionRequest);
 		}
 		if (sendNotifications) {
-			new ActionRequestFactory(this.getRouteHeader()).generateNotifications(actionRequests, this.getUser(), this.findDelegatorForActionRequests(actionRequests), KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_TAKEN_SU_APPROVED_CD);
+			new ActionRequestFactory(this.getRouteHeader()).generateNotifications(actionRequests, getPrincipal(), this.findDelegatorForActionRequests(actionRequests), KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_TAKEN_SU_APPROVED_CD);
 		}
 	}
 

@@ -38,6 +38,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
@@ -63,22 +64,22 @@ public abstract class ActionTakenEvent {
 
 	protected DocumentRouteHeaderValue routeHeader;
 
-	private final WorkflowUser user;
+	private final KimPrincipal principal;
 
     private final boolean runPostProcessorLogic;
 
-	public ActionTakenEvent(String actionTakenCode, DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
-		this(actionTakenCode, routeHeader, user, null, true);
+	public ActionTakenEvent(String actionTakenCode, DocumentRouteHeaderValue routeHeader, KimPrincipal principal) {
+		this(actionTakenCode, routeHeader, principal, null, true);
 	}
 
-    public ActionTakenEvent(String actionTakenCode, DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation) {
-        this(actionTakenCode, routeHeader, user, annotation, true);
+    public ActionTakenEvent(String actionTakenCode, DocumentRouteHeaderValue routeHeader, KimPrincipal principal, String annotation) {
+        this(actionTakenCode, routeHeader, principal, annotation, true);
     }
 
-	public ActionTakenEvent(String actionTakenCode, DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, boolean runPostProcessorLogic) {
+	public ActionTakenEvent(String actionTakenCode, DocumentRouteHeaderValue routeHeader, KimPrincipal principal, String annotation, boolean runPostProcessorLogic) {
 	    this.actionTakenCode = actionTakenCode;
 	    this.routeHeader = routeHeader;
-        this.user = user;
+        this.principal = principal;
         this.annotation = annotation == null ? "" : annotation;
 		this.runPostProcessorLogic = runPostProcessorLogic;
 	}
@@ -95,8 +96,8 @@ public abstract class ActionTakenEvent {
 		this.routeHeader = routeHeader;
 	}
 
-	public WorkflowUser getUser() {
-		return user;
+	public KimPrincipal getPrincipal() {
+		return principal;
 	}
 
 	/**
@@ -240,7 +241,7 @@ public abstract class ActionTakenEvent {
 		val.setAnnotation(annotation);
 		val.setDocVersion(routeHeader.getDocVersion());
 		val.setRouteHeaderId(routeHeader.getRouteHeaderId());
-		val.setWorkflowId(user.getWorkflowUserId().getWorkflowId());
+		val.setWorkflowId(principal.getPrincipalId());
 		if (delegator instanceof WorkflowUser) {
 			val.setDelegatorWorkflowId(((WorkflowUser) delegator).getWorkflowUserId().getWorkflowId());
 		} else if (delegator instanceof KimGroup) {

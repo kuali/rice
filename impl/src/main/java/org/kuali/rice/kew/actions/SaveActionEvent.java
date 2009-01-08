@@ -19,16 +19,17 @@ package org.kuali.rice.kew.actions;
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
 
 /**
@@ -44,12 +45,12 @@ public class SaveActionEvent extends ActionTakenEvent {
 
     private static final String RESPONSIBILITY_DESCRIPTION = "Initiator needs to complete document.";
 
-    public SaveActionEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
-	super(KEWConstants.ACTION_TAKEN_SAVED_CD, routeHeader, user);
+    public SaveActionEvent(DocumentRouteHeaderValue routeHeader, KimPrincipal principal) {
+	super(KEWConstants.ACTION_TAKEN_SAVED_CD, routeHeader, principal);
     }
 
-    public SaveActionEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation) {
-	super(KEWConstants.ACTION_TAKEN_SAVED_CD, routeHeader, user, annotation);
+    public SaveActionEvent(DocumentRouteHeaderValue routeHeader, KimPrincipal principal, String annotation) {
+	super(KEWConstants.ACTION_TAKEN_SAVED_CD, routeHeader, principal, annotation);
     }
 
     /* (non-Javadoc)
@@ -61,7 +62,7 @@ public class SaveActionEvent extends ActionTakenEvent {
     }
 
     private String validateActionRulesCustom(boolean checkIfActionIsValid) {
-    	if (! KEWServiceLocator.getDocumentTypePermissionService().canSave(getUser().getWorkflowId(), getRouteHeader().getRouteHeaderId().toString(), getRouteHeader().getDocumentType(), getRouteHeader().getCurrentNodeNames(), getRouteHeader().getDocRouteStatus(), getRouteHeader().getInitiatorWorkflowId())) {
+    	if (! KEWServiceLocator.getDocumentTypePermissionService().canSave(getPrincipal().getPrincipalId(), getRouteHeader().getRouteHeaderId().toString(), getRouteHeader().getDocumentType(), getRouteHeader().getCurrentNodeNames(), getRouteHeader().getDocRouteStatus(), getRouteHeader().getInitiatorWorkflowId())) {
     		return "User is not authorized to Cancel document";
     	}
     	if (checkIfActionIsValid && (!getRouteHeader().isValidActionToTake(getActionPerformedCode()))) {
@@ -117,7 +118,7 @@ public class SaveActionEvent extends ActionTakenEvent {
 		getRouteHeaderId()).get(0);
 	ActionRequestFactory arFactory = new ActionRequestFactory(getRouteHeader(), intialNode);
 	ActionRequestValue saveRequest = arFactory.createActionRequest(KEWConstants.ACTION_REQUEST_COMPLETE_REQ,
-		new Integer(0), getUser(), RESPONSIBILITY_DESCRIPTION, KEWConstants.SAVED_REQUEST_RESPONSIBILITY_ID,
+		new Integer(0), new KimPrincipalRecipient(getPrincipal()), RESPONSIBILITY_DESCRIPTION, KEWConstants.SAVED_REQUEST_RESPONSIBILITY_ID,
 		Boolean.TRUE, annotation);
 	//      this.getActionRequestService().saveActionRequest(saveRequest);
 	this.getActionRequestService().activateRequest(saveRequest);

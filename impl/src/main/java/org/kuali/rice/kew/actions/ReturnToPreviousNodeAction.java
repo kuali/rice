@@ -44,6 +44,7 @@ import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
 
 /**
@@ -63,18 +64,18 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
     private boolean superUserUsage;
     private boolean sendNotifications = true;
 
-    public ReturnToPreviousNodeAction(DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
-        super(KEWConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, routeHeader, user);
+    public ReturnToPreviousNodeAction(DocumentRouteHeaderValue routeHeader, KimPrincipal principal) {
+        super(KEWConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, routeHeader, principal);
     }
 
-    public ReturnToPreviousNodeAction(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, String nodeName, boolean sendNotifications) {
-        super(KEWConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, routeHeader, user, annotation);
+    public ReturnToPreviousNodeAction(DocumentRouteHeaderValue routeHeader, KimPrincipal principal, String annotation, String nodeName, boolean sendNotifications) {
+        super(KEWConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, routeHeader, principal, annotation);
         this.nodeName = nodeName;
         this.sendNotifications = sendNotifications;
     }
     
-    public ReturnToPreviousNodeAction(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, String nodeName, boolean sendNotifications, boolean runPostProcessorLogic) {
-        super(KEWConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, routeHeader, user, annotation, runPostProcessorLogic);
+    public ReturnToPreviousNodeAction(DocumentRouteHeaderValue routeHeader, KimPrincipal principal, String annotation, String nodeName, boolean sendNotifications, boolean runPostProcessorLogic) {
+        super(KEWConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, routeHeader, principal, annotation, runPostProcessorLogic);
         this.nodeName = nodeName;
         this.sendNotifications = sendNotifications;
     }
@@ -82,8 +83,8 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
     /**
      * Constructor used to override the action taken code...e.g. when being performed as part of a Move action
      */
-    protected ReturnToPreviousNodeAction(String overrideActionTakenCode, DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, String nodeName, boolean sendNotifications) {
-        super(overrideActionTakenCode, routeHeader, user, annotation);
+    protected ReturnToPreviousNodeAction(String overrideActionTakenCode, DocumentRouteHeaderValue routeHeader, KimPrincipal principal, String annotation, String nodeName, boolean sendNotifications) {
+        super(overrideActionTakenCode, routeHeader, principal, annotation);
         this.nodeName = nodeName;
         this.sendNotifications = sendNotifications;
     }
@@ -91,8 +92,8 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
     /**
      * Constructor used to override the action taken code...e.g. when being performed as part of a Move action
      */
-    public ReturnToPreviousNodeAction(String overrideActionTakenCode, DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, String nodeName, boolean sendNotifications, boolean runPostProcessorLogic) {
-        super(overrideActionTakenCode, routeHeader, user, annotation, runPostProcessorLogic);
+    public ReturnToPreviousNodeAction(String overrideActionTakenCode, DocumentRouteHeaderValue routeHeader, KimPrincipal principal, String annotation, String nodeName, boolean sendNotifications, boolean runPostProcessorLogic) {
+        super(overrideActionTakenCode, routeHeader, principal, annotation, runPostProcessorLogic);
         this.nodeName = nodeName;
         this.sendNotifications = sendNotifications;
     }
@@ -105,7 +106,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
         getActionRequestService().deactivateRequests(actionTaken, pendingRequests);
         if (sendNotifications) {
         	ActionRequestFactory arFactory = new ActionRequestFactory(getRouteHeader());
-        	List notificationRequests = arFactory.generateNotifications(pendingRequests, getUser(), delegator, KEWConstants.ACTION_REQUEST_FYI_REQ, getActionTakenCode());
+        	List notificationRequests = arFactory.generateNotifications(pendingRequests, getPrincipal(), delegator, KEWConstants.ACTION_REQUEST_FYI_REQ, getActionTakenCode());
         	getActionRequestService().activateRequests(notificationRequests);
         }
     }
@@ -132,7 +133,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
         if (newNodeInstance.getRouteNode().getRouteNodeId().equals(initialNode.getRouteNodeId())) {
             LOG.debug("Document was returned to initiator");
             ActionRequestFactory arFactory = new ActionRequestFactory(getRouteHeader(), newNodeInstance);
-            ActionRequestValue notificationRequest = arFactory.createNotificationRequest(KEWConstants.ACTION_REQUEST_APPROVE_REQ, getRouteHeader().getInitiatorUser(), getActionTakenCode(), getUser(), "Document initiator");
+            ActionRequestValue notificationRequest = arFactory.createNotificationRequest(KEWConstants.ACTION_REQUEST_APPROVE_REQ, getRouteHeader().getInitiatorPrincipal(), getActionTakenCode(), getPrincipal(), "Document initiator");
             getActionRequestService().activateRequest(notificationRequest);
         }
     }
@@ -142,7 +143,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
      */
     @Override
     public String validateActionRules() throws KEWUserNotFoundException {
-        return validateActionRules(getActionRequestService().findAllValidRequests(getUser(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ));
+        return validateActionRules(getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ));
     }
 
     private String validateActionRules(List<ActionRequestValue> actionRequests) throws KEWUserNotFoundException {
@@ -211,7 +212,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
         updateSearchableAttributesIfPossible();
         LOG.debug("Returning document " + getRouteHeader().getRouteHeaderId() + " to previous node: " + nodeName + ", annotation: " + annotation);
 
-        List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
+        List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
         String errorMessage = validateActionRules(actionRequests);
         if (!Utilities.isEmpty(errorMessage)) {
             throw new InvalidActionTakenException(errorMessage);

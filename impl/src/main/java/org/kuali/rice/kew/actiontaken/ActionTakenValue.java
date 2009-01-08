@@ -36,6 +36,7 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
@@ -52,6 +53,7 @@ import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
@@ -105,6 +107,14 @@ public class ActionTakenValue implements WorkflowPersistable {
     @Transient
     private String actionDateString;
 
+    public KimPrincipal getPrincipal() {
+    	return getPrincipalForId( workflowId );
+    }
+    
+    public KimPrincipal getDelegatorPrincipal() {
+    	return getPrincipalForId(delegatorWorkflowId);
+    }
+    
     public WorkflowUser getWorkflowUser() throws KEWUserNotFoundException {
       return getWorkflowUserForWorkflowId( workflowId );
     }
@@ -158,6 +168,16 @@ public class ActionTakenValue implements WorkflowPersistable {
       }
 
       return w;
+    }
+    
+    private KimPrincipal getPrincipalForId(String principalId) {
+    	KimPrincipal principal = null;
+    	
+    	if (!StringUtils.isBlank(principalId)) {
+    		principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);
+    	}
+    	
+    	return principal;
     }
 
     public String getActionTakenLabel() {

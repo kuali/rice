@@ -18,8 +18,6 @@ package org.kuali.rice.kew.actions.asyncservices;
 
 import java.util.Set;
 
-import org.kuali.rice.kew.user.WorkflowUser;
-
 
 /**
  * Created to front the BlanketApproveProcessor when it went to a service for async remoting.
@@ -28,6 +26,6 @@ import org.kuali.rice.kew.user.WorkflowUser;
  */
 public interface BlanketApproveProcessorService {
 	
-	public void doBlanketApproveWork(Long documentId, WorkflowUser user, Long actionTakenId, Set<String> nodeNames);
+	public void doBlanketApproveWork(Long documentId, String principalId, Long actionTakenId, Set<String> nodeNames);
 
 }

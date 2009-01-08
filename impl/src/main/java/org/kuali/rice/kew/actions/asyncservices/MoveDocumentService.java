@@ -20,7 +20,6 @@ import java.util.Set;
 
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.user.WorkflowUser;
 
 
 /**
@@ -31,6 +30,6 @@ import org.kuali.rice.kew.user.WorkflowUser;
  */
 public interface MoveDocumentService {
 
-	public void moveDocument(WorkflowUser user, DocumentRouteHeaderValue document, ActionTakenValue actionTaken, Set nodeNames);
+	public void moveDocument(String principalId, DocumentRouteHeaderValue document, ActionTakenValue actionTaken, Set nodeNames);
 	
 }

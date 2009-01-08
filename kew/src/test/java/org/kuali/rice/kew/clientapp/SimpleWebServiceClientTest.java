@@ -69,7 +69,7 @@ public class SimpleWebServiceClientTest extends KEWTestCase {
 		RouteHeaderDTO routeHeader = new RouteHeaderDTO();
         routeHeader.setDocTypeName("TestDocumentType");
 
-		thinRL.getWorkflowDocument().createDocument(new NetworkIdDTO("rkirkend"), routeHeader);
+		thinRL.getWorkflowDocument().createDocument(getPrincipalIdForName("rkirkend"), routeHeader);
 
 	}
 

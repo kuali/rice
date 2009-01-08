@@ -43,6 +43,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.workgroup.GroupId;
 import org.kuali.rice.kew.workgroup.WorkgroupService;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.role.dto.DelegateInfo;
 import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
@@ -122,15 +123,15 @@ public class ActionRequestFactory {
 	}
 
 
-    public ActionRequestValue createNotificationRequest(String actionRequestCode, WorkflowUser recipient, String reasonActionCode, WorkflowUser reasonActionUser, String responsibilityDesc) {
-    	ActionRequestValue request = createActionRequest(actionRequestCode, recipient, responsibilityDesc, Boolean.TRUE, null);
+    public ActionRequestValue createNotificationRequest(String actionRequestCode, KimPrincipal principal, String reasonActionCode, KimPrincipal reasonActionUser, String responsibilityDesc) {
+    	ActionRequestValue request = createActionRequest(actionRequestCode, new KimPrincipalRecipient(principal), responsibilityDesc, Boolean.TRUE, null);
     	String annotation = generateNotificationAnnotation(reasonActionUser, actionRequestCode, reasonActionCode, request);
     	request.setAnnotation(annotation);
     	return request;
     }
 
     //unify these 2 methods if possible
-    public List generateNotifications(List requests, WorkflowUser user, Recipient delegator,
+    public List generateNotifications(List requests, KimPrincipal principal, Recipient delegator,
             String notificationRequestCode, String actionTakenCode) throws KEWUserNotFoundException
     {
         String groupName =  Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE,
@@ -138,30 +139,30 @@ public class ActionRequestFactory {
 		        KEWConstants.NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME_IND);
 
         KimGroup notifyExclusionWorkgroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, groupName);
-        return generateNotifications(null, getActionRequestService().getRootRequests(requests), user, delegator, notificationRequestCode, actionTakenCode, notifyExclusionWorkgroup);
+        return generateNotifications(null, getActionRequestService().getRootRequests(requests), principal, delegator, notificationRequestCode, actionTakenCode, notifyExclusionWorkgroup);
     }
 
     private List<ActionRequestValue> generateNotifications(ActionRequestValue parentRequest,
-            List requests, WorkflowUser user, Recipient delegator, String notificationRequestCode,
+            List requests, KimPrincipal principal, Recipient delegator, String notificationRequestCode,
             String actionTakenCode, KimGroup notifyExclusionWorkgroup) throws KEWUserNotFoundException
     {
         List<ActionRequestValue> notificationRequests = new ArrayList<ActionRequestValue>();
         for (Iterator iter = requests.iterator(); iter.hasNext();) {
             ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
-            if (!(actionRequest.isRecipientRoutedRequest(user) || actionRequest.isRecipientRoutedRequest(delegator))) {
+            if (!(actionRequest.isRecipientRoutedRequest(principal.getPrincipalId()) || actionRequest.isRecipientRoutedRequest(delegator))) {
                 // skip user requests to system users
                 if( (notifyExclusionWorkgroup != null) &&
                         (isRecipientInGroup(notifyExclusionWorkgroup, actionRequest.getRecipient())))
                 {
                     continue;
                 }
-                ActionRequestValue notificationRequest = createNotificationRequest(actionRequest, user, notificationRequestCode, actionTakenCode);
+                ActionRequestValue notificationRequest = createNotificationRequest(actionRequest, principal, notificationRequestCode, actionTakenCode);
                 notificationRequests.add(notificationRequest);
                 if (parentRequest != null) {
                     notificationRequest.setParentActionRequest(parentRequest);
                     parentRequest.getChildrenRequests().add(notificationRequest);
                 }
-                notificationRequests.addAll(generateNotifications(notificationRequest, actionRequest.getChildrenRequests(), user, delegator, notificationRequestCode, actionTakenCode, notifyExclusionWorkgroup));
+                notificationRequests.addAll(generateNotifications(notificationRequest, actionRequest.getChildrenRequests(), principal, delegator, notificationRequestCode, actionTakenCode, notifyExclusionWorkgroup));
             }
         }
         return notificationRequests;
@@ -186,9 +187,9 @@ public class ActionRequestFactory {
         return isMember;
     }
 
-    private ActionRequestValue createNotificationRequest(ActionRequestValue actionRequest, WorkflowUser reasonUser, String notificationRequestCode, String actionTakenCode) throws KEWUserNotFoundException {
+    private ActionRequestValue createNotificationRequest(ActionRequestValue actionRequest, KimPrincipal reasonPrincipal, String notificationRequestCode, String actionTakenCode) throws KEWUserNotFoundException {
 
-    	String annotation = generateNotificationAnnotation(reasonUser, notificationRequestCode, actionTakenCode, actionRequest);
+    	String annotation = generateNotificationAnnotation(reasonPrincipal, notificationRequestCode, actionTakenCode, actionRequest);
         ActionRequestValue request = createActionRequest(notificationRequestCode, actionRequest.getPriority(), actionRequest.getRecipient(), actionRequest.getResponsibilityDesc(), KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, Boolean.TRUE, annotation);
 
         request.setDocVersion(actionRequest.getDocVersion());
@@ -464,8 +465,8 @@ public class ActionRequestFactory {
 		return requestsToRemove;
 	}
 
-    private String generateNotificationAnnotation(WorkflowUser user, String notificationRequestCode, String actionTakenCode, ActionRequestValue request) {
-    	String notification = "Action " + CodeTranslator.getActionRequestLabel(notificationRequestCode) + " generated by Workflow because " + user.getDisplayName() + " took action "
+    private String generateNotificationAnnotation(KimPrincipal principal, String notificationRequestCode, String actionTakenCode, ActionRequestValue request) {
+    	String notification = "Action " + CodeTranslator.getActionRequestLabel(notificationRequestCode) + " generated by Workflow because " + principal.getPrincipalName() + " took action "
 				+ CodeTranslator.getActionTakenLabel(actionTakenCode);
     	if (request.getResponsibilityId() != null && request.getResponsibilityId().longValue() != 0) {
     		notification += " Responsibility " + request.getResponsibilityId();

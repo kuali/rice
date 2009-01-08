@@ -34,6 +34,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
 
 /**
@@ -57,13 +58,13 @@ public class SuperUserActionRequestApproveEvent extends SuperUserActionTakenEven
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SuperUserActionRequestApproveEvent.class);
     private Long actionRequestId;
 
-    public SuperUserActionRequestApproveEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
-        super(UNDEFINED_ACTION_TAKEN_CODE, routeHeader, user);
+    public SuperUserActionRequestApproveEvent(DocumentRouteHeaderValue routeHeader, KimPrincipal principal) {
+        super(UNDEFINED_ACTION_TAKEN_CODE, routeHeader, principal);
         this.superUserAction = KEWConstants.SUPER_USER_ACTION_REQUEST_APPROVE;
     }
 
-    public SuperUserActionRequestApproveEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user, Long actionRequestId, String annotation, boolean runPostProcessor) {
-        super(UNDEFINED_ACTION_TAKEN_CODE, routeHeader, user, annotation, runPostProcessor);
+    public SuperUserActionRequestApproveEvent(DocumentRouteHeaderValue routeHeader, KimPrincipal principal, Long actionRequestId, String annotation, boolean runPostProcessor) {
+        super(UNDEFINED_ACTION_TAKEN_CODE, routeHeader, principal, annotation, runPostProcessor);
         this.superUserAction = KEWConstants.SUPER_USER_ACTION_REQUEST_APPROVE;
         this.actionRequestId = actionRequestId;
     }
@@ -124,7 +125,7 @@ public class SuperUserActionRequestApproveEvent extends SuperUserActionTakenEven
         getActionRequestService().deactivateRequest(actionTaken, request);
         if (docType.getSuperUserApproveNotificationPolicy().getPolicyValue().booleanValue() && request.isApproveOrCompleteRequest()) {
         	KEWServiceLocator.getActionRequestService().activateRequest(
-        	new ActionRequestFactory(this.getRouteHeader()).createNotificationRequest(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, request.getWorkflowUser(), this.getActionTakenCode(), this.getUser(), null));
+        	new ActionRequestFactory(this.getRouteHeader()).createNotificationRequest(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, request.getPrincipal(), this.getActionTakenCode(), getPrincipal(), null));
         }
         notifyActionTaken(actionTaken);
 

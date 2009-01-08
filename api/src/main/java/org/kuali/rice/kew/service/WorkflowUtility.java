@@ -45,7 +45,7 @@ import org.kuali.rice.kew.exception.WorkflowException;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface WorkflowUtility {
-    public RouteHeaderDTO getRouteHeaderWithUser(UserIdDTO userId, Long documentId) throws WorkflowException;
+    public RouteHeaderDTO getRouteHeaderWithPrincipal(String principalId, Long documentId) throws WorkflowException;
     public RouteHeaderDTO getRouteHeader(Long documentId) throws WorkflowException;
     public DocumentDetailDTO getDocumentDetail(Long documentId) throws WorkflowException;
     public RouteNodeInstanceDTO getNodeInstance(Long nodeInstanceId) throws WorkflowException;
@@ -66,7 +66,7 @@ public interface WorkflowUtility {
     public DocumentDetailDTO routingReport(ReportCriteriaDTO reportCriteria) throws WorkflowException;
     //public RouteHeaderDetailVO routingSimulation(RouteHeaderDetailVO detail, ActionTakenVO[] actionsToTake) throws WorkflowException;
     public boolean isFinalApprover(Long documentId, UserIdDTO userId) throws WorkflowException;
-    public boolean isSuperUserForDocumentType(UserIdDTO userId, Long documentTypeId) throws WorkflowException;
+    public boolean isSuperUserForDocumentType(String principalId, Long documentTypeId) throws WorkflowException;
     public DocumentSearchResultDTO performDocumentSearch(DocumentSearchCriteriaDTO criteriaVO) throws WorkflowException;
     public DocumentSearchResultDTO performDocumentSearch(UserIdDTO userId, DocumentSearchCriteriaDTO criteriaVO) throws WorkflowException;
 

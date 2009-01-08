@@ -38,7 +38,7 @@ import org.kuali.rice.kew.exception.WorkflowException;
  * 
  */
 public interface KualiWorkflowInfo {
-    public abstract RouteHeaderDTO getRouteHeader(UserIdDTO userId, Long routeHeaderId) throws WorkflowException;
+    public abstract RouteHeaderDTO getRouteHeader(String principalId, Long routeHeaderId) throws WorkflowException;
 
     public abstract RouteHeaderDTO getRouteHeader(Long routeHeaderId) throws WorkflowException;
 

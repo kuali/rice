@@ -37,7 +37,7 @@ import org.kuali.rice.kew.util.KEWConstants;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class CompatUtils {
-
+	
     private static RouteHelper helper = new RouteHelper();
     
     public static Integer getLevelForNode(DocumentType documentType, String nodeName) {

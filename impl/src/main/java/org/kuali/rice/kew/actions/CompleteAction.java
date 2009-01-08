@@ -30,6 +30,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
 
 /**
@@ -51,8 +52,8 @@ public class CompleteAction extends ActionTakenEvent {
      * @param user
      *            User taking the action.
      */
-    public CompleteAction(DocumentRouteHeaderValue rh, WorkflowUser user) {
-        super(KEWConstants.ACTION_TAKEN_COMPLETED_CD, rh, user);
+    public CompleteAction(DocumentRouteHeaderValue rh, KimPrincipal principal) {
+        super(KEWConstants.ACTION_TAKEN_COMPLETED_CD, rh, principal);
     }
 
     /**
@@ -63,8 +64,8 @@ public class CompleteAction extends ActionTakenEvent {
      * @param annotation
      *            User comment on the action taken
      */
-    public CompleteAction(DocumentRouteHeaderValue rh, WorkflowUser user, String annotation) {
-        super(KEWConstants.ACTION_TAKEN_COMPLETED_CD, rh, user, annotation);
+    public CompleteAction(DocumentRouteHeaderValue rh, KimPrincipal principal, String annotation) {
+        super(KEWConstants.ACTION_TAKEN_COMPLETED_CD, rh, principal, annotation);
     }
 
     /* (non-Javadoc)
@@ -72,7 +73,7 @@ public class CompleteAction extends ActionTakenEvent {
      */
     @Override
     public String validateActionRules() throws KEWUserNotFoundException {
-        return validateActionRules(getActionRequestService().findAllValidRequests(getUser(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ));
+        return validateActionRules(getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ));
     }
 
     private String validateActionRules(List<ActionRequestValue> actionRequests) throws KEWUserNotFoundException {
@@ -131,7 +132,7 @@ public class CompleteAction extends ActionTakenEvent {
         updateSearchableAttributesIfPossible();
         LOG.debug("Completing document : " + annotation);
 
-        List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
+        List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
         LOG.debug("Checking to see if the action is legal");
         String errorMessage = validateActionRules(actionRequests);
         if (!Utilities.isEmpty(errorMessage)) {

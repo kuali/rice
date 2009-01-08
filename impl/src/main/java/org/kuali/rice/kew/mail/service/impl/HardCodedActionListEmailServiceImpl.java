@@ -81,7 +81,7 @@ public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceI
 				if (customEmailAttribute != null) {
 					RouteHeaderDTO routeHeaderVO = DTOConverter
 							.convertRouteHeader(actionItem.getRouteHeader(),
-									user);
+									user.getPrincipalId());
 					ActionRequestValue actionRequest = KEWServiceLocator
 							.getActionRequestService().findByActionRequestId(
 									actionItem.getActionRequestId());

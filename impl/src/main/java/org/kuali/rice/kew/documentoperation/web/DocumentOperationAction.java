@@ -775,7 +775,7 @@ public class DocumentOperationAction extends WorkflowAction {
 				}
 			}
 			BlanketApproveProcessorService blanketApprove = MessageServiceNames.getBlanketApproveProcessorService(docForm.getRouteHeader());
-			blanketApprove.doBlanketApproveWork(docForm.getRouteHeader().getRouteHeaderId(), user, new Long(docForm.getBlanketApproveActionTakenId()), nodeNames);
+			blanketApprove.doBlanketApproveWork(docForm.getRouteHeader().getRouteHeaderId(), user.getWorkflowId(), new Long(docForm.getBlanketApproveActionTakenId()), nodeNames);
 			ActionMessages messages = new ActionMessages();
 			messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("general.message", "Blanket Approve Processor was successfully scheduled"));
 			saveMessages(request, messages);
@@ -788,7 +788,7 @@ public class DocumentOperationAction extends WorkflowAction {
 	public ActionForward moveDocument(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		try {
 			DocumentOperationForm docForm = (DocumentOperationForm) form;
-			WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(docForm.getBlanketApproveUser()));
+			String principalId = KEWServiceLocator.getIdentityHelperService().getIdForPrincipalName(docForm.getBlanketApproveUser());
 			Set<String> nodeNames = new HashSet<String>();
 			if (!StringUtils.isBlank(docForm.getBlanketApproveNodes())) {
 				String[] nodeNameArray = docForm.getBlanketApproveNodes().split(",");
@@ -798,7 +798,7 @@ public class DocumentOperationAction extends WorkflowAction {
 			}
 			ActionTakenValue actionTaken = KEWServiceLocator.getActionTakenService().findByActionTakenId(new Long(docForm.getBlanketApproveActionTakenId()));
 			MoveDocumentService moveService = MessageServiceNames.getMoveDocumentProcessorService(docForm.getRouteHeader());
-			moveService.moveDocument(user, docForm.getRouteHeader(), actionTaken, nodeNames);
+			moveService.moveDocument(principalId, docForm.getRouteHeader(), actionTaken, nodeNames);
 			ActionMessages messages = new ActionMessages();
 			messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("general.message", "Move Document Processor was successfully scheduled"));
 			saveMessages(request, messages);
@@ -811,10 +811,10 @@ public class DocumentOperationAction extends WorkflowAction {
 	public ActionForward queueActionInvocation(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		try {
 			DocumentOperationForm docForm = (DocumentOperationForm) form;
-			WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(docForm.getActionInvocationUser()));
+			String principalId = KEWServiceLocator.getIdentityHelperService().getIdForPrincipalName(docForm.getActionInvocationUser());
 			ActionInvocation invocation = new ActionInvocation(new Long(docForm.getActionInvocationActionItemId()), docForm.getActionInvocationActionCode());
 			ActionInvocationService actionInvocationService = MessageServiceNames.getActionInvocationProcessorService(docForm.getRouteHeader());
-			actionInvocationService.invokeAction(user, docForm.getRouteHeader().getRouteHeaderId(), invocation);
+			actionInvocationService.invokeAction(principalId, docForm.getRouteHeader().getRouteHeaderId(), invocation);
 			ActionMessages messages = new ActionMessages();
 			messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("general.message", "Action Invocation Processor was successfully scheduled"));
 			saveMessages(request, messages);

@@ -19,15 +19,9 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.reflect.DataDefinition;
-import org.kuali.rice.core.reflect.ObjectDefinition;
-import org.kuali.rice.core.resourceloader.ObjectDefinitionResolver;
-import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.engine.node.BranchState;
-import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -95,7 +89,7 @@ public class FutureRequestDocumentStateManager {
 	for (BranchState state : document.getRootBranchState()) {
 	    if (state.getKey().contains(FUTURE_REQUESTS_VAR_KEY)) {
 		String values[] = state.getKey().split(",");
-		state.setKey(DEACTIVATED_REQUESTS_VARY_KEY + "," + values[1] + "," + values[2] + "," + new Date().toString());
+		state.setKey(DEACTIVATED_REQUESTS_VARY_KEY + "," + values[0] + "," + new Date().toString());
 	    }
 	}
 	KEWServiceLocator.getRouteHeaderService().saveRouteHeader(document);
@@ -103,26 +97,12 @@ public class FutureRequestDocumentStateManager {
 
     protected boolean isStateForUser(BranchState state, String principalId)
     {
-
         String[] values = state.getKey().split(",");
-        if (values.length < 3 || ! values[0].contains(FUTURE_REQUESTS_VAR_KEY)) {
+        if (values.length != 4 || ! values[0].contains(FUTURE_REQUESTS_VAR_KEY)) {
             return false;
         }
-
-        try {
-            ObjectDefinition ojbDef = new ObjectDefinition(values[1]);
-            ojbDef.addConstructorParameter(new DataDefinition(values[2], String.class));
-            UserIdDTO userId = (UserIdDTO) ObjectDefinitionResolver.createObject(ojbDef, this.getClass().getClassLoader(), false);
-            WorkflowUser stateUser = KEWServiceLocator.getUserService().getWorkflowUser(userId);
-            if (stateUser.getWorkflowId().equals(principalId)) {
-                return true;
-            }
-        } catch (Exception e) {
-            LOG.error("Unable to construct user object from recieveFutureRequests branch state", e);
-            throw new WorkflowRuntimeException(e);
-        }
-
-        return false;
+        String statePrincipalId = values[1];
+        return principalId.equals(statePrincipalId);
     }
 
     protected boolean isReceiveFutureRequests(BranchState state) {
@@ -150,8 +130,8 @@ public class FutureRequestDocumentStateManager {
         return this.receiveFutureRequests;
     }
 
-    public static String getFutureRequestsKey(UserIdDTO userId) {
-	return KEWConstants.RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_KEY + "," + userId.getClass().getName() + "," + userId.toString() + "," + new Date().toString() + ", " + Math.random();
+    public static String getFutureRequestsKey(String principalId) {
+	return KEWConstants.RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_KEY + "," + principalId + "," + new Date().toString() + ", " + Math.random();
     }
 
     public static String getReceiveFutureRequestsValue() {

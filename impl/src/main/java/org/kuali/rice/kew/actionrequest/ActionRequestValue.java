@@ -64,7 +64,7 @@ import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -227,6 +227,13 @@ public class ActionRequestValue implements WorkflowPersistable {
         return workflowId != null;
     }
 
+    public KimPrincipal getPrincipal() {
+    	if (getWorkflowId() == null) {
+    		return null;
+    	}
+    	return KEWServiceLocator.getIdentityHelperService().getPrincipal(getWorkflowId());
+    }
+    
     public WorkflowUser getWorkflowUser() throws KEWUserNotFoundException {
         if (getWorkflowId() == null) {
             return null;
@@ -237,7 +244,7 @@ public class ActionRequestValue implements WorkflowPersistable {
 
     public Recipient getRecipient() throws KEWUserNotFoundException {
         if (getWorkflowId() != null) {
-            return getWorkflowUser();
+            return new KimPrincipalRecipient(getPrincipal());
         } else if (getGroupId() != null){
             return new KimGroupRecipient(getGroup());
         } else {
@@ -575,19 +582,6 @@ public class ActionRequestValue implements WorkflowPersistable {
     	}
 
     	return isRecipientInGraph;
-    }
-
-    /**
-     *
-     * This method ...
-     *
-     * @param recipient
-     * @return
-     * @throws KEWUserNotFoundException
-     * @deprecated should use the one with the String principalId
-     */
-    public boolean isRecipientRoutedRequest(Person recipient) throws KEWUserNotFoundException {
-    	return this.isRecipientRoutedRequest(recipient.getPrincipalId());
     }
 
     public boolean isRecipientRoutedRequest(Recipient recipient) throws KEWUserNotFoundException {

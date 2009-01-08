@@ -23,16 +23,15 @@ import java.util.List;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
 
 /**
@@ -49,12 +48,12 @@ public abstract class SuperUserActionTakenEvent extends ActionTakenEvent {
     private ActionRequestValue actionRequest;
     public static String AUTHORIZATION = "general.routing.superuser.notAuthorized";
 
-    public SuperUserActionTakenEvent(String actionTakenCode, DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
-        super(actionTakenCode, routeHeader, user);
+    public SuperUserActionTakenEvent(String actionTakenCode, DocumentRouteHeaderValue routeHeader, KimPrincipal principal) {
+        super(actionTakenCode, routeHeader, principal);
     }
 
-    public SuperUserActionTakenEvent(String actionTakenCode, DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, boolean runPostProcessor) {
-        super(actionTakenCode, routeHeader, user, annotation, runPostProcessor);
+    public SuperUserActionTakenEvent(String actionTakenCode, DocumentRouteHeaderValue routeHeader, KimPrincipal principal, String annotation, boolean runPostProcessor) {
+        super(actionTakenCode, routeHeader, principal, annotation, runPostProcessor);
     }
 
     /* (non-Javadoc)
@@ -63,7 +62,7 @@ public abstract class SuperUserActionTakenEvent extends ActionTakenEvent {
     @Override
     public String validateActionRules() throws KEWUserNotFoundException {
         DocumentType docType = getRouteHeader().getDocumentType();
-        if (!KEWServiceLocator.getDocumentTypePermissionService().canAdministerRouting(getUser().getWorkflowId(), docType)) {
+        if (!KEWServiceLocator.getDocumentTypePermissionService().canAdministerRouting(getPrincipal().getPrincipalId(), docType)) {
             return "User not authorized for super user action";
         }
         return "";

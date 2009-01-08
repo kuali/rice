@@ -24,6 +24,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
 
 /**
@@ -39,8 +40,8 @@ public class LogDocumentActionAction extends ActionTakenEvent {
      * @param rh RouteHeader for the document upon which the action is taken.
      * @param user User taking the action.
      */
-    public LogDocumentActionAction(DocumentRouteHeaderValue rh, WorkflowUser user) {
-        super(KEWConstants.ACTION_TAKEN_LOG_DOCUMENT_ACTION_CD, rh, user);
+    public LogDocumentActionAction(DocumentRouteHeaderValue rh, KimPrincipal principal) {
+        super(KEWConstants.ACTION_TAKEN_LOG_DOCUMENT_ACTION_CD, rh, principal);
     }
 
     /**
@@ -48,8 +49,8 @@ public class LogDocumentActionAction extends ActionTakenEvent {
      * @param user User taking the action.
      * @param annotation User comment on the action taken
      */
-    public LogDocumentActionAction(DocumentRouteHeaderValue rh, WorkflowUser user, String annotation) {
-        super(KEWConstants.ACTION_TAKEN_LOG_DOCUMENT_ACTION_CD, rh, user, annotation);
+    public LogDocumentActionAction(DocumentRouteHeaderValue rh, KimPrincipal principal, String annotation) {
+        super(KEWConstants.ACTION_TAKEN_LOG_DOCUMENT_ACTION_CD, rh, principal, annotation);
     }
 
     /* (non-Javadoc)

@@ -104,15 +104,15 @@ public class WorkflowInfo implements java.io.Serializable {
 
     /**
      * Returns the RouteHeaderVO of the specified document for the specified user
-     * @param userId userId as whom to obtain the route header VO
+     * @param principalId principalId as whom to obtain the route header VO
      * @param routeHeaderId the id of the document whose route header VO to obtain
      * @return the RouteHeaderVO of the specified document for the specified user
      * @throws WorkflowException if an error occurs obtaining the route header VO
-     * @see WorkflowUtility#getRouteHeaderWithUser(UserIdDTO, Long)
+     * @see WorkflowUtility#getRouteHeaderWithUser(String, Long)
      */
-    public RouteHeaderDTO getRouteHeader(UserIdDTO userId, Long routeHeaderId) throws WorkflowException {
+    public RouteHeaderDTO getRouteHeader(String principalId, Long routeHeaderId) throws WorkflowException {
         try {
-            return getWorkflowUtility().getRouteHeaderWithUser(userId, routeHeaderId);
+            return getWorkflowUtility().getRouteHeaderWithPrincipal(principalId, routeHeaderId);
         } catch (Exception e) {
             throw handleException(e);
         }

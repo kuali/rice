@@ -22,7 +22,7 @@ import org.kuali.rice.kew.actions.ActionTakenEvent;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
 
 /**
@@ -34,23 +34,24 @@ public class ActionInvocationProcessor implements ActionInvocationService { // i
 
     private static final Logger LOG = Logger.getLogger(ActionInvocationProcessor.class);
 
-    public void invokeAction(WorkflowUser user, Long documentId, ActionInvocation invocation) {
+    public void invokeAction(String principalId, Long documentId, ActionInvocation invocation) {
 
 	KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
 	DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
 
+	KimPrincipal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);
 	List<DataDefinition> parameters = new ArrayList<DataDefinition>();
 	parameters.add(new DataDefinition(document));
-	parameters.add(new DataDefinition(user));
+	parameters.add(new DataDefinition(principal));
 	parameters.add(new DataDefinition(""));
 	ActionTakenEvent action;
 	try {
 	    action = KEWServiceLocator.getActionRegistry().createAction(invocation.getActionCode(), parameters);
 	    if (!document.isValidActionToTake(invocation.getActionCode())) {
-		LOG.warn("Action " + invocation.getActionCode() + " is not a valid action to take against document " + document.getRouteHeaderId() + " by user " + user);
+		LOG.warn("Action " + invocation.getActionCode() + " is not a valid action to take against document " + document.getRouteHeaderId() + " by principal with name '" + principal.getPrincipalName() + "'");
 		return;
-	    } else if (!KEWServiceLocator.getActionRegistry().getValidActions(user, document).getActionTakenCodes().contains(action.getActionTakenCode())) {
-		LOG.warn("Action " + action.getActionTakenCode() + " is not valid for document " + document.getRouteHeaderId() + " by user " + user);
+	    } else if (!KEWServiceLocator.getActionRegistry().getValidActions(principal, document).getActionTakenCodes().contains(action.getActionTakenCode())) {
+		LOG.warn("Action " + action.getActionTakenCode() + " is not valid for document " + document.getRouteHeaderId() + " by principal with name '" + principal.getPrincipalName() + "'");
 		return;
 	    }
 	    action.performAction();

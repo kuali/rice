@@ -26,14 +26,15 @@ import java.util.Set;
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.actions.NotificationContext;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.engine.node.Process;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
+import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -123,7 +124,7 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
             context.setEngineState(new EngineState());
             NotificationContext notifyContext = null;
             if (config.isSendNotifications()) {
-                notifyContext = new NotificationContext(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, config.getCause().getWorkflowUser(), config.getCause().getActionTaken());
+                notifyContext = new NotificationContext(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, config.getCause().getPrincipal(), config.getCause().getActionTaken());
             }
             try {
                 List processingQueue = new LinkedList();
@@ -268,7 +269,11 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
         }
         if (notifyContext != null) {
         	ActionRequestFactory arFactory = new ActionRequestFactory(RouteContext.getCurrentRouteContext().getDocument(), nodeInstance);
-        	List notificationRequests = arFactory.generateNotifications(requestsToNotify, notifyContext.getUserTakingAction(), actionTaken.getDelegatorUser(), notifyContext.getNotificationRequestCode(), notifyContext.getActionTakenCode());
+        	KimPrincipalRecipient delegatorRecipient = null;
+        	if (actionTaken.getDelegatorPrincipal() != null) {
+        		delegatorRecipient = new KimPrincipalRecipient(actionTaken.getDelegatorPrincipal());
+        	}
+        	List notificationRequests = arFactory.generateNotifications(requestsToNotify, notifyContext.getPrincipalTakingAction(), delegatorRecipient, notifyContext.getNotificationRequestCode(), notifyContext.getActionTakenCode());
         	getActionRequestService().activateRequests(notificationRequests);
         }
     }

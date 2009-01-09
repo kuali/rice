@@ -82,7 +82,7 @@ public class NotificationPostProcessor implements PostProcessorRemote {
         Properties p = new Properties();
         WorkflowDocument doc;
         try {
-            doc = new WorkflowDocument(new NetworkIdDTO(event.getActionTaken().getUserDTO().getNetworkId()), event.getRouteHeaderId());
+            doc = new WorkflowDocument(event.getActionTaken().getPrincipalId(), event.getRouteHeaderId());
         } catch (WorkflowException we) {
             throw new RuntimeException("Could not create document", we);
         }

@@ -30,8 +30,9 @@ public class ActionTakenDTO implements Serializable {
     private Long actionTakenId;
     private Long routeHeaderId;
     private Integer docVersion;
-    private UserDTO userVO;
-    private UserDTO delegatorVO;
+    private String principalId;
+    private String delegatorPrincpalId;
+    private String delegatorGroupId;
     private String actionTaken;
     private Calendar actionDate;
     private String annotation = null;
@@ -87,20 +88,29 @@ public class ActionTakenDTO implements Serializable {
         this.actionDate = actionDate;
     }
 
-    public UserDTO getUserDTO() {
-        return userVO;
-    }
+	public String getPrincipalId() {
+		return this.principalId;
+	}
 
-    public void setUserDTO(UserDTO userVO) {
-        this.userVO = userVO;
-    }
+	public void setPrincipalId(String principalId) {
+		this.principalId = principalId;
+	}
 
-    public UserDTO getDelegatorDTO() {
-        return delegatorVO;
-    }
+	public String getDelegatorPrincpalId() {
+		return this.delegatorPrincpalId;
+	}
 
-    public void setDelegatorDTO(UserDTO delegatorVO) {
-        this.delegatorVO = delegatorVO;
-    }
+	public void setDelegatorPrincpalId(String delegatorPrincpalId) {
+		this.delegatorPrincpalId = delegatorPrincpalId;
+	}
 
+	public String getDelegatorGroupId() {
+		return this.delegatorGroupId;
+	}
+
+	public void setDelegatorGroupId(String delegatorGroupId) {
+		this.delegatorGroupId = delegatorGroupId;
+	}
+
+    
 }

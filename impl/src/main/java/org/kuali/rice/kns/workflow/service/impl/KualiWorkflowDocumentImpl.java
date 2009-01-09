@@ -601,15 +601,15 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
     public Set<Person> getAllPriorApprovers() throws WorkflowException {
         org.kuali.rice.kim.service.PersonService personService = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService();
         ActionTakenDTO[] actionsTaken = workflowDocument.getActionsTaken();
-        Set<String> personIds = new HashSet<String>();
+        Set<String> principalIds = new HashSet<String>();
         Set<Person> persons = new HashSet<Person>();
         
         for (ActionTakenDTO actionTaken : actionsTaken) {
             if (KEWConstants.ACTION_TAKEN_APPROVED_CD.equals(actionTaken.getActionTaken())) {
-                String personId = actionTaken.getUserDTO().getUuId();
-                if (!personIds.contains(personId)) {
-                    personIds.add(personId);
-                    persons.add(personService.getPerson(personId));
+                String principalId = actionTaken.getPrincipalId();
+                if (!principalIds.contains(principalId)) {
+                    principalIds.add(principalId);
+                    persons.add(personService.getPerson(principalId));
                 }
             }
         }

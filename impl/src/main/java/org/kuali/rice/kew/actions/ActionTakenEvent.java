@@ -225,7 +225,7 @@ public abstract class ActionTakenEvent {
 		val.setRouteHeaderId(routeHeader.getRouteHeaderId());
 		val.setPrincipalId(principal.getPrincipalId());
 		if (delegator instanceof KimPrincipalRecipient) {
-			val.setDelegatorWorkflowId(((KimPrincipalRecipient)delegator).getPrincipalId());
+			val.setDelegatorPrincipalId(((KimPrincipalRecipient)delegator).getPrincipalId());
 		} else if (delegator instanceof KimGroupRecipient) {
 			val.setDelegatorGroupId(((KimGroupRecipient) delegator).getGroupId());
 		}

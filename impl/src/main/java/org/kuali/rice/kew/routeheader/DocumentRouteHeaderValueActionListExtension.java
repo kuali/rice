@@ -16,13 +16,11 @@
  */
 package org.kuali.rice.kew.routeheader;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.kuali.rice.kew.user.UserUtils;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
 
 /**
@@ -38,21 +36,21 @@ public class DocumentRouteHeaderValueActionListExtension extends DocumentRouteHe
 	private static final long serialVersionUID = 8458532812557846684L;
 
     @Transient
-	private WorkflowUser actionListInitiatorUser = null;
+	private KimPrincipal actionListInitiatorPrincipal = null;
 
-    public WorkflowUser getActionListInitiatorUser() {
-        return actionListInitiatorUser;
+    public KimPrincipal getActionListInitiatorPrincipal() {
+        return actionListInitiatorPrincipal;
     }
 
-    public void setActionListInitiatorUser(WorkflowUser actionListInitiatorUser) {
-        this.actionListInitiatorUser = actionListInitiatorUser;
+    public void setActionListInitiatorPrincipal(KimPrincipal actionListInitiatorPrincipal) {
+        this.actionListInitiatorPrincipal = actionListInitiatorPrincipal;
     }
 
     /**
      * Gets the initiator name, masked appropriately if restricted.
      */
     public String getInitiatorName() {
-    	return UserUtils.getTransposedName(UserSession.getAuthenticatedUser(), getActionListInitiatorUser());
+    	return UserUtils.getTransposedName(UserSession.getAuthenticatedUser(), getActionListInitiatorPrincipal());
     }
 
 }

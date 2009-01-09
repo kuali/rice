@@ -515,9 +515,9 @@ public class SimulationEngine extends StandardWorkflowEngine {
 		val.setAnnotation("");
 		val.setDocVersion(routeHeader.getDocVersion());
 		val.setRouteHeaderId(routeHeader.getRouteHeaderId());
-		val.setWorkflowId(userToPerformAction.getWorkflowUserId().getWorkflowId());
+		val.setPrincipalId(userToPerformAction.getWorkflowUserId().getWorkflowId());
 		if (delegator instanceof WorkflowUser) {
-			val.setDelegatorWorkflowId(((WorkflowUser) delegator).getWorkflowUserId().getWorkflowId());
+			val.setDelegatorPrincipalId(((WorkflowUser) delegator).getWorkflowUserId().getWorkflowId());
 		}else if (delegator instanceof KimGroupRecipient) {
 			KimGroup group = ((KimGroupRecipient) delegator).getGroup();
 			val.setDelegatorGroupId(group.getGroupId());

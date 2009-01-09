@@ -42,12 +42,14 @@ import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.UserUtils;
+import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.KeyValueSort;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
@@ -113,16 +115,10 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 		StandardDocumentSearchGenerator.searchingUser = searchingUser;
 	}
 
-	/* (non-Javadoc)
-     * @see org.kuali.rice.kew.docsearch.DocumentSearchGenerator#clearSearch(org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO)
-     */
     public DocSearchCriteriaDTO clearSearch(DocSearchCriteriaDTO searchCriteria) {
         return new DocSearchCriteriaDTO();
     }
 
-    /* (non-Javadoc)
-     * @see org.kuali.rice.kew.docsearch.DocumentSearchGenerator#performPreSearchConditions(org.kuali.rice.kew.user.WorkflowUser, org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO)
-     */
     public List<WorkflowServiceError> performPreSearchConditions(String principalId, DocSearchCriteriaDTO searchCriteria) {
     	setCriteria(searchCriteria);
     	return new ArrayList<WorkflowServiceError>();
@@ -614,15 +610,14 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
         docCriteriaDTO.setInitiatorWorkflowId(rs.getString("INITR_PRNCPL_ID"));
 
-        //WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId());
-
         Person user = KIMServiceLocator.getPersonService().getPerson(docCriteriaDTO.getInitiatorWorkflowId());
+        KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(docCriteriaDTO.getInitiatorWorkflowId());
 
         docCriteriaDTO.setInitiatorNetworkId(user.getPrincipalName());
         docCriteriaDTO.setInitiatorName(user.getName());
         docCriteriaDTO.setInitiatorFirstName(user.getFirstName());
         docCriteriaDTO.setInitiatorLastName(user.getLastName());
-        docCriteriaDTO.setInitiatorTransposedName(UserUtils.getTransposedName(UserSession.getAuthenticatedUser(), user));
+        docCriteriaDTO.setInitiatorTransposedName(UserUtils.getTransposedName(UserSession.getAuthenticatedUser(), principal));
         docCriteriaDTO.setInitiatorEmailAddress(user.getEmailAddress());
 
         if (usingAtLeastOneSearchAttribute) {

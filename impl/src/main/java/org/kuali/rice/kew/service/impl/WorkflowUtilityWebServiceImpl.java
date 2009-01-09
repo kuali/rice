@@ -447,7 +447,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
             //TODO: confirm that the initiator is not already there in the actionstaken
             principalIds.add(routeHeader.getInitiatorWorkflowId());
             for(ActionTakenValue actionTaken: actionsTakens){
-            	principalIds.add(actionTaken.getWorkflowId());
+            	principalIds.add(actionTaken.getPrincipalId());
             }
             List<ActionRequestValue> actionRequests =
             	KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(routeHeaderId);

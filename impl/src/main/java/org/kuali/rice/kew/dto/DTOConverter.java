@@ -745,14 +745,9 @@ public class DTOConverter {
         actionTakenVO.setAnnotation(actionTaken.getAnnotation());
         actionTakenVO.setDocVersion(actionTaken.getDocVersion());
         actionTakenVO.setRouteHeaderId(actionTaken.getRouteHeaderId());
-        WorkflowUser user = actionTaken.getWorkflowUser();
-        if (user != null) {
-            actionTakenVO.setUserDTO(convertUser(user));
-        }
-        WorkflowUser delegator = actionTaken.getDelegatorUser();
-        if (delegator != null) {
-            actionTakenVO.setDelegatorDTO(convertUser(delegator));
-        }
+        actionTakenVO.setPrincipalId(actionTaken.getPrincipalId());
+        actionTakenVO.setDelegatorPrincpalId(actionTaken.getDelegatorPrincipalId());
+        actionTakenVO.setDelegatorGroupId(actionTaken.getDelegatorGroupId());
         return actionTakenVO;
     }
 
@@ -962,17 +957,13 @@ public class DTOConverter {
         actionTaken.setActionTakenId(actionTakenVO.getActionTakenId());
         actionTaken.setAnnotation(actionTakenVO.getAnnotation());
         actionTaken.setCurrentIndicator(Boolean.TRUE);
-        WorkflowUser delegator = convertUserVO(actionTakenVO.getDelegatorDTO());
-        actionTaken.setDelegator(delegator);
-        if (delegator != null) {
-            actionTaken.setDelegatorWorkflowId(delegator.getWorkflowUserId().getWorkflowId());
-        }
+        actionTaken.setPrincipalId(actionTakenVO.getPrincipalId());
+        actionTaken.setDelegatorPrincipalId(actionTakenVO.getDelegatorPrincpalId());
+        actionTaken.setDelegatorGroupId(actionTakenVO.getDelegatorGroupId());
         actionTaken.setDocVersion(actionTakenVO.getDocVersion());
         DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionTakenVO.getRouteHeaderId());
         actionTaken.setRouteHeader(routeHeader);
         actionTaken.setRouteHeaderId(actionTaken.getRouteHeaderId());
-        WorkflowUser user = convertUserVO(actionTakenVO.getUserDTO());
-        actionTaken.setWorkflowId(user.getWorkflowUserId().getWorkflowId());
         return actionTaken;
     }
 

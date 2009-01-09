@@ -22,19 +22,17 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.actiontaken.dao.ActionTakenDAO;
 import org.kuali.rice.kew.actiontaken.service.ActionTakenService;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.UserService;
-import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
@@ -149,13 +147,12 @@ public class ActionTakenServiceImpl implements ActionTakenService {
             errors.add(new WorkflowServiceErrorImpl("ActionTaken routeheaderid invalid.", "actiontaken.routeheaderid.invalid", actionTaken.getActionTakenId().toString()));
         }
 
-        String userId = actionTaken.getWorkflowId();
-        if(userId == null || userId.trim().equals("")){
+        String principalId = actionTaken.getPrincipalId();
+        if(StringUtils.isBlank(principalId)){
             errors.add(new WorkflowServiceErrorImpl("ActionTaken personid null.", "actiontaken.personid.empty", actionTaken.getActionTakenId().toString()));
         } else {
-            try{
-                getUserService().getWorkflowUser(new WorkflowUserId(userId));
-            } catch (KEWUserNotFoundException e){
+        	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+        	if (principal == null) {
                 errors.add(new WorkflowServiceErrorImpl("ActionTaken personid invalid.", "actiontaken.personid.invalid", actionTaken.getActionTakenId().toString()));
             }
         }
@@ -184,10 +181,6 @@ public class ActionTakenServiceImpl implements ActionTakenService {
 
     private RouteHeaderService getRouteHeaderService() {
         return (RouteHeaderService) KEWServiceLocator.getService(KEWServiceLocator.DOC_ROUTE_HEADER_SRV);
-    }
-
-    private UserService getUserService() {
-        return (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
     }
 
     public Timestamp getLastApprovedDate(Long routeHeaderId)

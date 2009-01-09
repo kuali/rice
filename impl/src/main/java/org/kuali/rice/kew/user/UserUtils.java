@@ -1,9 +1,11 @@
 package org.kuali.rice.kew.user;
 
-import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.entity.EntityPrivacyPreferences;
 import org.kuali.rice.kim.bo.entity.KimEntity;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
 /**
@@ -15,6 +17,8 @@ public class UserUtils {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(UserUtils.class);
 
+	private static final String RESTRICTED_DATA_MASK = "xxxxxx";
+	
 	public static String getIdValue(String idType, WorkflowUser user) {
 	    if ("emplId".equalsIgnoreCase(idType) || "e".equalsIgnoreCase(idType)) {
 	      return user.getEmplId().getId();
@@ -41,48 +45,54 @@ public class UserUtils {
 	    return null;
 	  }
 
-	public static String getDisplayableName(UserSession userSession, WorkflowUser user) {
-		if (!userSession.getWorkflowUser().getWorkflowId().equals(user.getWorkflowId())) {
-			return user.getDisplayNameSafe();
+	public static String getDisplayableName(UserSession userSession, String principalId) {
+		return getDisplayableName(userSession, KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId));
+	}
+	
+	public static String getDisplayableName(UserSession userSession, KimPrincipal principal) {
+		if (userSession != null && userSession.getPrincipalId().equals(principal.getPrincipalId()) && isEntityNameRestricted(principal.getEntityId())) {
+			return RESTRICTED_DATA_MASK;
 		}
-		return user.getDisplayName();
+		Person person = KIMServiceLocator.getPersonService().getPerson(principal.getPrincipalId());
+		return person.getName();
+	}
+	
+	public static String getTransposedName(UserSession userSession, KimPrincipal principal) {
+		if (userSession != null && userSession.getPrincipalId().equals(principal.getPrincipalId()) && isEntityNameRestricted(principal.getEntityId())) {
+			return RESTRICTED_DATA_MASK;
+		}
+		Person person = KIMServiceLocator.getPersonService().getPerson(principal.getPrincipalId());
+		return contructTransposedName(person);
+	}
+	
+	private static String contructTransposedName(Person person) {
+		return person.getLastName() + ", " + person.getFirstName();
 	}
 
-	public static String getTransposedName(UserSession userSession, WorkflowUser user) {
-		if (userSession != null && !userSession.getWorkflowUser().getWorkflowId().equals(user.getWorkflowId())) {
-			return user.getTransposedNameSafe();
+	public static String getDisplayableEmailAddress(UserSession userSession, KimPrincipal principal) {
+		if (userSession != null && userSession.getPrincipalId().equals(principal.getPrincipalId()) && isEntityEmailRestricted(principal.getEntityId())) {
+			return RESTRICTED_DATA_MASK;
 		}
-		return user.getTransposedName();
+		Person person = KIMServiceLocator.getPersonService().getPerson(principal.getPrincipalId());
+		return person.getEmailAddress();
+	}
+	
+	public static boolean isEntityNameRestricted(String entityId) {
+		KimEntity entity = KIMServiceLocator.getIdentityManagementService().getEntity(entityId);
+		EntityPrivacyPreferences privacy = entity.getPrivacyPreferences();
+		if (privacy != null) {
+			return entity.getPrivacyPreferences().isSuppressName();
+		}
+		return false;
 	}
 
-	public static String getTransposedName(UserSession userSession, Person user) {
-		if (userSession != null && !userSession.getPrincipalId().equals(user.getPrincipalId())) {
-			if(isPersonNameRestricted(user)){
-				return "xxxxxx";
-			}
+	public static boolean isEntityEmailRestricted(String entityId) {
+		KimEntity entity = KIMServiceLocator.getIdentityManagementService().getEntity(entityId);
+		EntityPrivacyPreferences privacy = entity.getPrivacyPreferences();
+		if (privacy != null) {
+			return entity.getPrivacyPreferences().isSuppressEmail();
 		}
-		return getTransposedName(user);
-	}
-
-	public static boolean isPersonNameRestricted(Person user){
-		boolean bRet = false;
-
-		KimEntity entity = KIMServiceLocator.getIdentityService().getEntity(user.getEntityId());
-
-		bRet = entity.getPrivacyPreferences().isSuppressName();
-
-		return bRet;
-	}
-
-	public static String getTransposedName(Person user) {
-        return user.getLastName() + ", " + user.getFirstName();
-    }
-
-	public static String getDisplayableEmailAddress(UserSession userSession, WorkflowUser user) {
-		if (!userSession.getWorkflowUser().getWorkflowId().equals(user.getWorkflowId())) {
-			return user.getEmailAddressSafe();
-		}
-		return user.getEmailAddress();
+		return false;
 	}
 
 }

@@ -201,8 +201,8 @@
     <field-descriptor name="annotation" column="ANNOTN" jdbc-type="VARCHAR"/>
     <field-descriptor name="docVersion" column="DOC_VER_NBR" jdbc-type="INTEGER"/>
     <field-descriptor name="lockVerNbr" column="VER_NBR" jdbc-type="INTEGER" locking="true"/>
-    <field-descriptor name="workflowId" column="PRNCPL_ID" jdbc-type="VARCHAR"/>
-    <field-descriptor name="delegatorWorkflowId" column="DLGTR_PRNCPL_ID"  jdbc-type="VARCHAR"/>
+    <field-descriptor name="principalId" column="PRNCPL_ID" jdbc-type="VARCHAR"/>
+    <field-descriptor name="delegatorPrincipalId" column="DLGTR_PRNCPL_ID"  jdbc-type="VARCHAR"/>
     <field-descriptor name="delegatorGroupId" column="DLGTR_GRP_ID" jdbc-type="BIGINT" />
     <field-descriptor name="currentIndicator" column="CUR_IND" jdbc-type="BIT" />
     <collection-descriptor element-class-ref="org.kuali.rice.kew.actionrequest.ActionRequestValue" auto-retrieve="true" auto-update="false"

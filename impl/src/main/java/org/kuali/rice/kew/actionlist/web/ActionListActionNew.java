@@ -372,7 +372,7 @@ public class ActionListActionNew extends KualiAction {
     		try {
     			actionItem.initialize(preferences);
     			DocumentRouteHeaderValueActionListExtension routeHeaderExtension = (DocumentRouteHeaderValueActionListExtension)actionItem.getRouteHeader();
-    			routeHeaderExtension.setActionListInitiatorUser(routeHeaderExtension.getInitiatorUser());
+    			routeHeaderExtension.setActionListInitiatorPrincipal(routeHeaderExtension.getInitiatorPrincipal());
     			actionItem.setActionItemIndex(new Integer(index));
     			//set background colors for document statuses
     			if (KEWConstants.ROUTE_HEADER_APPROVED_CD.equalsIgnoreCase(actionItem.getRouteHeader().getDocRouteStatus())) {

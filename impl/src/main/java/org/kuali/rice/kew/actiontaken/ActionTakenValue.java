@@ -40,16 +40,13 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
+import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.Recipient;
-import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.UserUtils;
-import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.session.UserSession;
@@ -81,7 +78,6 @@ public class ActionTakenValue implements WorkflowPersistable {
 	private Long routeHeaderId;
     @Column(name="ACTN_CD")
 	private String actionTaken;
-    //@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="ACTN_DT")
 	private Timestamp actionDate;
     @Column(name="ANNOTN")
@@ -92,9 +88,9 @@ public class ActionTakenValue implements WorkflowPersistable {
 	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
     @Column(name="PRNCPL_ID")
-	private String workflowId;
+	private String principalId;
     @Column(name="DLGTR_PRNCPL_ID")
-	private String delegatorWorkflowId;
+	private String delegatorPrincipalId;
     @Column(name="DLGTR_GRP_ID")
 	private String delegatorGroupId;
     @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
@@ -108,21 +104,17 @@ public class ActionTakenValue implements WorkflowPersistable {
     private String actionDateString;
 
     public KimPrincipal getPrincipal() {
-    	return getPrincipalForId( workflowId );
+    	return getPrincipalForId( principalId );
+    }
+    
+    public String getPrincipalDisplayName() {
+    	// TODO this stinks to have to have a dependency on UserSession here
+    	UserSession userSession = UserSession.getAuthenticatedUser();
+    	return UserUtils.getDisplayableName(userSession, getPrincipal());
     }
     
     public KimPrincipal getDelegatorPrincipal() {
-    	return getPrincipalForId(delegatorWorkflowId);
-    }
-    
-    @Deprecated
-    public WorkflowUser getWorkflowUser() throws KEWUserNotFoundException {
-      return getWorkflowUserForWorkflowId( workflowId );
-    }
-
-    @Deprecated
-    public WorkflowUser getDelegatorUser() throws KEWUserNotFoundException {
-      return getWorkflowUserForWorkflowId( delegatorWorkflowId );
+    	return getPrincipalForId(delegatorPrincipalId);
     }
 
     public KimGroup getDelegatorWorkgroup()
@@ -132,44 +124,31 @@ public class ActionTakenValue implements WorkflowPersistable {
     }
 
     public void setDelegator(Recipient recipient) {
-        if (recipient instanceof WorkflowUser) {
-            setDelegatorWorkflowId(((WorkflowUser)recipient).getWorkflowUserId().getWorkflowId());
+        if (recipient instanceof KimPrincipalRecipient) {
+            setDelegatorPrincipalId(((KimPrincipalRecipient)recipient).getPrincipalId());
         } else if (recipient instanceof KimGroupRecipient) {
             setDelegatorGroupId(((KimGroupRecipient)recipient).getGroup().getGroupId());
         } else {
-            setDelegatorWorkflowId(null);
+            setDelegatorPrincipalId(null);
             setDelegatorGroupId(null);
         }
     }
 
     public boolean isForDelegator() {
-        return getDelegatorWorkflowId() != null || getDelegatorGroupId() != null;
+        return getDelegatorPrincipalId() != null || getDelegatorGroupId() != null;
     }
 
-    public String getDelegatorDisplayName() throws KEWUserNotFoundException {
+    public String getDelegatorDisplayName() {
         if (! isForDelegator()) {
             return "";
         }
-        if (getDelegatorWorkflowId() != null) {
+        if (getDelegatorPrincipalId() != null) {
         	// TODO this stinks to have to have a dependency on UserSession here
         	UserSession userSession = UserSession.getAuthenticatedUser();
-        	if (userSession != null) {
-        		return UserUtils.getDisplayableName(userSession, getDelegatorUser());
-        	}
-            return getDelegatorUser().getDisplayName();
+        	return UserUtils.getDisplayableName(userSession, getDelegatorPrincipal());
         } else {
             return getDelegatorWorkgroup().getGroupName();
         }
-    }
-
-    private WorkflowUser getWorkflowUserForWorkflowId( String id ) throws KEWUserNotFoundException {
-      WorkflowUser w = null;
-
-      if ( (id != null) && (id.trim().length() > 0) ) {
-        w = getUserService().getWorkflowUser(new WorkflowUserId( id ));
-      }
-
-      return w;
     }
     
     private KimPrincipal getPrincipalForId(String principalId) {
@@ -241,12 +220,12 @@ public class ActionTakenValue implements WorkflowPersistable {
         this.annotation = annotation;
     }
 
-    public String getDelegatorWorkflowId() {
-        return delegatorWorkflowId;
+    public String getDelegatorPrincipalId() {
+        return delegatorPrincipalId;
     }
 
-    public void setDelegatorWorkflowId(String delegatorWorkflowId) {
-        this.delegatorWorkflowId = delegatorWorkflowId;
+    public void setDelegatorPrincipalId(String delegatorPrincipalId) {
+        this.delegatorPrincipalId = delegatorPrincipalId;
     }
 
     public String getDelegatorGroupId() {
@@ -280,21 +259,11 @@ public class ActionTakenValue implements WorkflowPersistable {
     }
 
     public String getPrincipalId() {
-    	return workflowId;
+    	return principalId;
     }
     
     public void setPrincipalId(String principalId) {
-    	this.workflowId = principalId;
-    }
-    
-    @Deprecated
-    public String getWorkflowId() {
-        return workflowId;
-    }
-
-    @Deprecated
-    public void setWorkflowId(String workflowId) {
-        this.workflowId = workflowId;
+    	this.principalId = principalId;
     }
 
     public Boolean getCurrentIndicator() {
@@ -321,10 +290,6 @@ public class ActionTakenValue implements WorkflowPersistable {
             clone.setActionTakenId(null);
         }
         return clone;
-    }
-
-    private UserService getUserService() {
-        return (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
     }
 
     private ActionRequestService getActionRequestService() {

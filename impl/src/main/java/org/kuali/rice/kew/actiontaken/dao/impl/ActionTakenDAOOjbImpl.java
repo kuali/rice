@@ -74,11 +74,11 @@ public class ActionTakenDAOOjbImpl extends PersistenceBrokerDaoSupport implement
         return this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionTakenValue.class, crit));
     }
 
-    public List findByRouteHeaderIdWorkflowId(Long routeHeaderId, String workflowId) {
-        LOG.debug("finding Action Takens by routeHeaderId " + routeHeaderId + " and workflowId" + workflowId);
+    public List findByRouteHeaderIdWorkflowId(Long routeHeaderId, String principalId) {
+        LOG.debug("finding Action Takens by routeHeaderId " + routeHeaderId + " and principalId" + principalId);
         Criteria crit = new Criteria();
         crit.addEqualTo("routeHeaderId", routeHeaderId);
-        crit.addEqualTo("workflowId", workflowId);
+        crit.addEqualTo("principalId", principalId);
         crit.addEqualTo("currentIndicator", new Boolean(true));
         return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionTakenValue.class, crit));
     }
@@ -95,7 +95,7 @@ public class ActionTakenDAOOjbImpl extends PersistenceBrokerDaoSupport implement
         checkNull(actionTaken.getRouteHeaderId(), "Document ID");
         checkNull(actionTaken.getActionTaken(), "action taken code");
         checkNull(actionTaken.getDocVersion(), "doc version");
-        checkNull(actionTaken.getWorkflowId(), "user workflowId");
+        checkNull(actionTaken.getPrincipal(), "user principalId");
 
         if (actionTaken.getActionDate() == null) {
             actionTaken.setActionDate(new Timestamp(System.currentTimeMillis()));
@@ -104,7 +104,7 @@ public class ActionTakenDAOOjbImpl extends PersistenceBrokerDaoSupport implement
             actionTaken.setCurrentIndicator(new Boolean(true));
         }
         LOG.debug("saving ActionTaken: routeHeader " + actionTaken.getRouteHeaderId() +
-                ", actionTaken " + actionTaken.getActionTaken() + ", workflowId " + actionTaken.getWorkflowId());
+                ", actionTaken " + actionTaken.getActionTaken() + ", principalId " + actionTaken.getPrincipalId());
         this.getPersistenceBrokerTemplate().store(actionTaken);
     }
 
@@ -121,10 +121,10 @@ public class ActionTakenDAOOjbImpl extends PersistenceBrokerDaoSupport implement
 	    this.getPersistenceBrokerTemplate().deleteByQuery(new QueryByCriteria(ActionRequestValue.class, crit));
     }
 
-    public boolean hasUserTakenAction(String workflowId, Long routeHeaderId) {
+    public boolean hasUserTakenAction(String principalId, Long routeHeaderId) {
     	Criteria crit = new Criteria();
 	    crit.addEqualTo("routeHeaderId", routeHeaderId);
-	    crit.addEqualTo("workflowId", workflowId);
+	    crit.addEqualTo("principalId", principalId);
 	    crit.addEqualTo("currentIndicator", Boolean.TRUE);
         int count = getPersistenceBrokerTemplate().getCount(new QueryByCriteria(ActionTakenValue.class, crit));
         return count > 0;

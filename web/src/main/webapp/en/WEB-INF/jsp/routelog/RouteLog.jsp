@@ -140,21 +140,18 @@
 	                            <td align="left" class="datacell">
 	                               <a style="color:black" href="
 										<c:url value="${UrlResolver.userReportUrl}">
-											<c:param name="workflowId" value="${actionTaken.workflowId}" />
+											<c:param name="workflowId" value="${actionTaken.principalId}" />
 											<c:param name="methodToCall" value="report" />
 											<c:param name="showEdit" value="no" />
-										</c:url>"><c:out value="${actionTaken.workflowUser.displayName}" />
+										</c:url>"><c:out value="${actionTaken.principalDisplayName}" />
 									</a>
 	                       		</td>
 	                       		<td align="left" class="headercell4">
 							        <c:if test="${actionTaken.forDelegator}">
-							        <c:set var="actionDisplayName" value="${actionTaken.workflowUser.displayName}"/>
-							      <c:if test="${kewUserSession.workflowUser.workflowId != actionTaken.workflowUser.workflowId}">
-  							        <c:set var="actionDisplayName" value="${actionTaken.workflowUser.displayNameSafe}"/>
-							      </c:if>
+							        <c:set var="actionDisplayName" value="${actionTaken.principalDisplayName}"/>
 											<a style="color:black" href="
 									  			<c:url value="${UrlResolver.userReportUrl}">
-													<c:param name="workflowId" value="${actionTaken.delegatorWorkflowId}" />
+													<c:param name="workflowId" value="${actionTaken.delegatorPrincipalId}" />
 													<c:param name="methodToCall" value="report" />
 													<c:param name="showEdit" value="no" />
 												</c:url>"><c:out value="${actionDisplayName}" />

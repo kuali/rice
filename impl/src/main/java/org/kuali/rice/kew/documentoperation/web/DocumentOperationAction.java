@@ -647,18 +647,18 @@ public class DocumentOperationAction extends WorkflowAction {
 				ActionTakenValue actionTaken = docForm.getRouteHeader().getDocActionTaken(lookupIndex);
 				if ("workflowId".equals(lookupField)) {
 					try {
-						actionTaken.setWorkflowId(getUserService().getWorkflowUser(new AuthenticationUserId(networkId)).getWorkflowUserId().getWorkflowId());
+						actionTaken.setPrincipalId(getUserService().getWorkflowUser(new AuthenticationUserId(networkId)).getWorkflowUserId().getWorkflowId());
 					} catch (KEWUserNotFoundException e) {
 						LOG.info("action taken user not found");
-						actionTaken.setWorkflowId(null);
+						actionTaken.setPrincipalId(null);
 					}
 				}
 				if ("delegatorWorkflowId".equals(lookupField)) {
 					try {
-						actionTaken.setDelegatorWorkflowId(getUserService().getWorkflowUser(new AuthenticationUserId(networkId)).getWorkflowUserId().getWorkflowId());
+						actionTaken.setDelegatorPrincipalId(getUserService().getWorkflowUser(new AuthenticationUserId(networkId)).getWorkflowUserId().getWorkflowId());
 					} catch (KEWUserNotFoundException e) {
 						LOG.info("action taken delegator user not found");
-						actionTaken.setDelegatorWorkflowId(null);
+						actionTaken.setDelegatorPrincipalId(null);
 					}
 				}
 				if ("delegatorWorkgroupId".equals(lookupField)) {

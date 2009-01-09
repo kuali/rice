@@ -99,7 +99,7 @@ public class ActionTakenDAOJpaImpl implements ActionTakenDAO {
         checkNull(actionTaken.getRouteHeaderId(), "Document ID");
         checkNull(actionTaken.getActionTaken(), "action taken code");
         checkNull(actionTaken.getDocVersion(), "doc version");
-        checkNull(actionTaken.getWorkflowId(), "user workflowId");
+        checkNull(actionTaken.getPrincipalId(), "principal ID");
 
         if (actionTaken.getActionDate() == null) {
             actionTaken.setActionDate(new Timestamp(System.currentTimeMillis()));
@@ -108,7 +108,7 @@ public class ActionTakenDAOJpaImpl implements ActionTakenDAO {
             actionTaken.setCurrentIndicator(new Boolean(true));
         }
         LOG.debug("saving ActionTaken: routeHeader " + actionTaken.getRouteHeaderId() +
-                ", actionTaken " + actionTaken.getActionTaken() + ", workflowId " + actionTaken.getWorkflowId());
+                ", actionTaken " + actionTaken.getActionTaken() + ", principalId " + actionTaken.getPrincipalId());
         
         if(actionTaken.getActionTakenId()==null){
         	entityManager.persist(actionTaken);

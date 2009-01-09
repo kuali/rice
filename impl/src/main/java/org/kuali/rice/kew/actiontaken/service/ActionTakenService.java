@@ -22,7 +22,6 @@ import java.util.List;
 
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
-import org.kuali.rice.kew.user.WorkflowUser;
 
 
 /**

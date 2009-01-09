@@ -50,7 +50,7 @@ public class VariablesTest extends KEWTestCase {
         }
         LOG.info("\tActionTakens:");
         for (ActionTakenDTO at: doc.getActionsTaken()) {
-            LOG.info("\t\tId: " + at.getActionTakenId() + " User: " + (at.getUserDTO() != null ? at.getUserDTO().getDisplayName() : null) + " ActionTaken: " + at.getActionTaken());
+            LOG.info("\t\tId: " + at.getActionTakenId() + " PrincipalId: " + at.getPrincipalId() + " ActionTaken: " + at.getActionTaken());
         }
         LOG.info("\tNodeNames:");
         for (String name: doc.getNodeNames()) {

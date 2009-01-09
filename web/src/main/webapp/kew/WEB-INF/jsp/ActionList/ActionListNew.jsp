@@ -229,11 +229,11 @@
 						<display-el:column sortable="true" title="${initiatorLabel}"
 							sortProperty="routeHeader.initiatorName" class="display-column">
 							<a href="../en/<c:url value="${UrlResolver.userReportUrl}">
-                        <c:param name="workflowId" value="${result.routeHeader.actionListInitiatorUser.workflowUserId.workflowId}"/>
+                        <c:param name="workflowId" value="${result.routeHeader.actionListInitiatorPrincipal.principalId}"/>
                         <c:param name="showEdit" value="no"/>
                         <c:param name="methodToCall" value="report"/></c:url>"
 								target="_blank"> <c:out
-								value="${result.routeHeader.actionListInitiatorUser.transposedName}" /></a>
+								value="${result.routeHeader.initiatorName}" /></a>
 						</display-el:column>
 					</c:if>
 

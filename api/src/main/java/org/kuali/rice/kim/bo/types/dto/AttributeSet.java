@@ -40,6 +40,9 @@ public class AttributeSet extends HashMap<String,String> {
 	}
 	
 	public AttributeSet( Map<String,String> map ) {
-		super( map );
+		super();
+		if ( map != null ) {
+			putAll( map );
+		}
 	}
 }

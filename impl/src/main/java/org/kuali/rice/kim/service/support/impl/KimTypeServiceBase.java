@@ -92,6 +92,9 @@ public class KimTypeServiceBase implements KimTypeService {
 		if ( qualification == null ) {
 			return null;
 		}
+		if ( getKimAttributesTranslators() == null || getKimAttributesTranslators().isEmpty() ) {
+		    return qualification;
+		}
 		AttributeSet translatedQualification = new AttributeSet();
 		translatedQualification.putAll(qualification);
 		List<String> attributeNames;

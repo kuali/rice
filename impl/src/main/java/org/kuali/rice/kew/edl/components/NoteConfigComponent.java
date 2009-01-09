@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -41,24 +41,24 @@ import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.user.UserService;
-import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 
 /**
  * Adds notes support to EDL
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- * 
+ *
  */
 public class NoteConfigComponent implements EDLModelComponent {
 
 	private static final Logger LOG = Logger.getLogger(NoteConfigComponent.class);
-	
+
 	public void updateDOM(Document dom, Element configElement, EDLContext edlContext) {
 		NoteForm noteForm = new NoteForm(edlContext.getRequestParser());
 		WorkflowDocument document = (WorkflowDocument)edlContext.getRequestParser().getAttribute(RequestParser.WORKFLOW_DOCUMENT_SESSION_KEY);
@@ -72,12 +72,12 @@ public class NoteConfigComponent implements EDLModelComponent {
 		} catch (Exception e) {
 			throw new WorkflowRuntimeException("Caught exception processing notes", e);
 		}
-		
+
 	}
-	
+
 	public void establishNotes(NoteForm form, EDLContext edlContext, Document dom) throws Exception {
 
-		form.setCurrentUserName(edlContext.getUserSession().getWorkflowUser().getDisplayName());
+		form.setCurrentUserName(edlContext.getUserSession().getPerson().getName());
 		form.setCurrentDate(getCurrentDate());
 		String methodToCall = form.getMethodToCall();
 		if (!Utilities.isEmpty(methodToCall)) {
@@ -100,14 +100,14 @@ public class NoteConfigComponent implements EDLModelComponent {
 		retrieveNoteList(form, edlContext);
 
 	}
-	
+
     /**
      * Method added for notes editing function. Retrieve Note Listing from Route Header and put that in EdocLiteForm.
      * @param request
      * @param noteForm
      * @throws Exception
      */
-    
+
     private void retrieveNoteList(NoteForm form, EDLContext edlContext) throws Exception {
         if (form.getDocId() != null) {
             List allNotes = getNoteService().getNotesByRouteHeaderId(form.getDocId());
@@ -118,7 +118,7 @@ public class NoteConfigComponent implements EDLModelComponent {
                 customNoteAttribute = routeHeader.getCustomNoteAttribute();
                 if (customNoteAttribute != null) {
                 	customNoteAttribute.setUserSession(edlContext.getUserSession());
-                    canAddNotes = customNoteAttribute.isAuthorizedToAddNotes();       
+                    canAddNotes = customNoteAttribute.isAuthorizedToAddNotes();
                 }
             }
             Iterator notesIter = allNotes.iterator();
@@ -135,7 +135,7 @@ public class NoteConfigComponent implements EDLModelComponent {
                     singleNote.setEditingNote(Boolean.TRUE);
                 }
             }
-            if (form.getSortNotes() != null && form.getSortNotes().booleanValue()) { 
+            if (form.getSortNotes() != null && form.getSortNotes().booleanValue()) {
                 if (KEWConstants.Sorting.SORT_SEQUENCE_DSC.equalsIgnoreCase(form.getSortOrder())) {
                     form.setSortOrder(KEWConstants.Sorting.SORT_SEQUENCE_ASC);
                     form.setSortNotes(new Boolean(false));
@@ -146,7 +146,7 @@ public class NoteConfigComponent implements EDLModelComponent {
             } else {
                 form.setSortOrder(form.getSortOrder());
             }
-            form.setNoteList(sortNotes(allNotes, form.getSortOrder())); 
+            form.setNoteList(sortNotes(allNotes, form.getSortOrder()));
             form.setNumberOfNotes(new Integer(allNotes.size()));
             form.setAuthorizedToAdd(new Boolean(canAddNotes));
             form.setShowAdd(Boolean.TRUE);
@@ -157,7 +157,7 @@ public class NoteConfigComponent implements EDLModelComponent {
             }
         }
     }
-	
+
     public void editNote(NoteForm form) throws Exception {
         form.setShowEdit("yes");
         // Note noteToEdit =
@@ -167,22 +167,22 @@ public class NoteConfigComponent implements EDLModelComponent {
         form.getNote().setNoteText(form.getNoteText());
         //retrieveNoteList(request, form);
     }
-    
+
     public void addNote(NoteForm form) throws Exception {
     	form.setShowEdit("no");
     	form.setNoteIdNumber(null);
     	form.setShowAdd(Boolean.TRUE);
     	//retrieveNoteList(request,form);
-    	
+
     }
-    
+
     public void cancelEdit(NoteForm form) throws Exception{
     	form.setShowEdit("no");
         form.setNote(new Note());
         form.setNoteIdNumber(null);
         //retrieveNoteList(request, form);
     }
-    
+
     public void deleteNote(NoteForm form) throws Exception{
     	Note noteToDelete = getNoteService().getNoteByNoteId(form.getNoteIdNumber());
         getNoteService().deleteNote(noteToDelete);
@@ -191,16 +191,16 @@ public class NoteConfigComponent implements EDLModelComponent {
         form.setNote(new Note());
         form.setNoteIdNumber(null);
     }
-    
+
     public void sortNotes(NoteForm form) throws Exception{
     	form.setShowEdit("no");
     }
-    
+
     public void deleteAttachment(NoteForm form) throws Exception{
     	Note note = getNoteService().getNoteByNoteId(form.getNoteIdNumber());
-    	getNoteService().deleteAttachment((Attachment)note.getAttachments().remove(0)); 	
-	}	
-	
+    	getNoteService().deleteAttachment((Attachment)note.getAttachments().remove(0));
+	}
+
 	public void saveNote(NoteForm form, EDLContext edlContext, Document dom) throws Exception {
         Note noteToSave = null;
         if (form.getShowEdit()!= null && form.getShowEdit().equals("yes")) {
@@ -217,8 +217,8 @@ public class NoteConfigComponent implements EDLModelComponent {
             noteToSave = new Note();
             noteToSave.setNoteId(null);
             noteToSave.setRouteHeaderId(form.getDocId());
-            noteToSave.setNoteCreateDate(new Timestamp((new Date()).getTime()));            
-            noteToSave.setNoteAuthorWorkflowId(edlContext.getUserSession().getWorkflowUser().getWorkflowUserId().getWorkflowId());
+            noteToSave.setNoteCreateDate(new Timestamp((new Date()).getTime()));
+            noteToSave.setNoteAuthorWorkflowId(edlContext.getUserSession().getPrincipalId());
             noteToSave.setNoteText(form.getAddText());
         }
         CustomNoteAttribute customNoteAttribute = null;
@@ -230,12 +230,12 @@ public class NoteConfigComponent implements EDLModelComponent {
             if (customNoteAttribute != null) {
                 customNoteAttribute.setUserSession(edlContext.getUserSession());
                 canAddNotes = customNoteAttribute.isAuthorizedToAddNotes();
-                canEditNote = customNoteAttribute.isAuthorizedToEditNote(noteToSave);       
+                canEditNote = customNoteAttribute.isAuthorizedToEditNote(noteToSave);
             }
         }
         if ((form.getShowEdit()!=null && form.getShowEdit().equals("yes") && canEditNote) ||
                 ((form.getShowEdit() == null || ! form.getShowEdit().equals("yes")) && canAddNotes)) {
-        			FileItem uploadedFile = (FileItem)form.getFile();        			
+        			FileItem uploadedFile = (FileItem)form.getFile();
         			if (uploadedFile != null && org.apache.commons.lang.StringUtils.isNotBlank(uploadedFile.getName())) {
         				Attachment attachment = new Attachment();
         				attachment.setAttachedObject(uploadedFile.getInputStream());
@@ -259,7 +259,7 @@ public class NoteConfigComponent implements EDLModelComponent {
         		if (form.getShowEdit()!=null && form.getShowEdit().equals("yes")) {
                     form.setNote(new Note());
                 } else {
-                    form.setAddText(null); 
+                    form.setAddText(null);
                 }
                 form.setShowEdit("no");
                 form.setNoteIdNumber(null);
@@ -268,11 +268,11 @@ public class NoteConfigComponent implements EDLModelComponent {
                 return;
         	}
             getNoteService().saveNote(noteToSave);
-        } 
+        }
         if (form.getShowEdit()!=null && form.getShowEdit().equals("yes")) {
             form.setNote(new Note());
         } else {
-            form.setAddText(null); 
+            form.setAddText(null);
         }
         form.setShowEdit("no");
         form.setNoteIdNumber(null);
@@ -395,7 +395,7 @@ public class NoteConfigComponent implements EDLModelComponent {
 		private FileItem file;
 
 		public NoteForm(RequestParser requestParser) {
-			
+
 			showEdit = requestParser.getParameterValue("showEdit");
 			if (!Utilities.isEmpty(requestParser.getParameterValue("showAdd"))) {
 				showAdd = Boolean.valueOf(requestParser.getParameterValue("showAdd"));
@@ -557,16 +557,16 @@ public class NoteConfigComponent implements EDLModelComponent {
 			this.file = file;
 		}
 	}
-	
+
     /**
      * Method added for notes editing function. Called by retrieveNoteList method
      * @param allNotes
      * @param sortOrder
      * @return
      */
-	
+
     private List sortNotes(List allNotes, String sortOrder) {
-        final int returnCode = KEWConstants.Sorting.SORT_SEQUENCE_DSC.equalsIgnoreCase(sortOrder) ? -1 : 1;  
+        final int returnCode = KEWConstants.Sorting.SORT_SEQUENCE_DSC.equalsIgnoreCase(sortOrder) ? -1 : 1;
 
         try {
           Collections.sort(allNotes,
@@ -589,37 +589,37 @@ public class NoteConfigComponent implements EDLModelComponent {
       }
       return allNotes;
     }
-	
+
     /**
      * Method added for notes editing function. Called by retrieveNoteList method
      * @param note
      * @throws Exception
      */
-	
+
     private void getAuthorData(Note note) throws Exception {
-	    WorkflowUser workflowUser = null;
-	    String id = ""; 
+	    Person workflowUser = null;
+	    String id = "";
 	    if (note != null && note.getNoteAuthorWorkflowId() != null && ! "".equalsIgnoreCase(note.getNoteAuthorWorkflowId())) {
-	        workflowUser = getUserService().getWorkflowUser(new WorkflowUserId(note.getNoteAuthorWorkflowId()));
+	        workflowUser = KIMServiceLocator.getPersonService().getPersonByPrincipalName(note.getNoteAuthorWorkflowId());
 	        id = note.getNoteAuthorWorkflowId();
-	    } 
+	    }
 	    if (workflowUser != null) {
-	        note.setNoteAuthorFullName(workflowUser.getDisplayName());
+	        note.setNoteAuthorFullName(workflowUser.getName());
 	        note.setNoteAuthorEmailAddress(workflowUser.getEmailAddress());
-	        note.setNoteAuthorNetworkId(workflowUser.getAuthenticationUserId().getAuthenticationId());
+	        note.setNoteAuthorNetworkId(workflowUser.getPrincipalName());
 	    } else {
 	        note.setNoteAuthorFullName(id + " (Name not Available)");
 	        note.setNoteAuthorEmailAddress("Not Available");
 	        note.setNoteAuthorNetworkId("Not Available");
 	    }
-	}	
-	
+	}
+
 	public String getCurrentDate() {
         Date currentDate = new Date();
         DateFormat dateFormat = RiceConstants.getDefaultDateFormat();
         return dateFormat.format(currentDate);
     }
-	
+
 	/**
 	 * Method added for notes editing function.
 	 * @return
@@ -636,7 +636,7 @@ public class NoteConfigComponent implements EDLModelComponent {
 		return (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
 	}
 
-	
+
     /**
      * Method added for notes editing function.
      * @return

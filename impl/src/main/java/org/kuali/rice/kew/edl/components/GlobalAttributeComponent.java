@@ -5,13 +5,11 @@ import java.util.Map;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.dto.PropertyDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
 import org.kuali.rice.kew.edl.EDLContext;
 import org.kuali.rice.kew.edl.EDLModelComponent;
-import org.kuali.rice.kew.edl.EDLXmlUtils;
 import org.kuali.rice.kew.edl.RequestParser;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;

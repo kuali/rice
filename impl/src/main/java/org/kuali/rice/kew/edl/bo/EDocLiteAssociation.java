@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,7 +24,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.persistence.Version;
 
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
@@ -116,7 +115,7 @@ public class EDocLiteAssociation  extends PersistableBusinessObjectBase implemen
 	}
 	/**
 	 * This overridden method ...
-	 * 
+	 *
 	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
 	 */
 	@Override
@@ -127,8 +126,8 @@ public class EDocLiteAssociation  extends PersistableBusinessObjectBase implemen
 	    propMap.put("definition", getDefinition());
 	    propMap.put("style", getStyle());
 	    propMap.put("activeInd", getActiveInd());
-	    propMap.put("versionNumber", getVersionNumber());	    
+	    propMap.put("versionNumber", getVersionNumber());
 	    return propMap;
-		
+
 	}
 }

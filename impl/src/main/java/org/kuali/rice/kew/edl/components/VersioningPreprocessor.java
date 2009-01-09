@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,7 +23,6 @@ import org.kuali.rice.kew.edl.EDLContext;
 import org.kuali.rice.kew.edl.EDLModelComponent;
 import org.kuali.rice.kew.edl.EDLXmlUtils;
 import org.kuali.rice.kew.edl.RequestParser;
-import org.kuali.rice.kew.util.XmlHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -31,28 +30,28 @@ import org.w3c.dom.NodeList;
 
 
 /**
- * Versions the data element if necessary by checking 'currentVersion' param on request.  If this request is 
+ * Versions the data element if necessary by checking 'currentVersion' param on request.  If this request is
  * a doc handler request this will configure the dom so the next request will cause the data to be incremented.
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class VersioningPreprocessor implements EDLModelComponent {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(VersioningPreprocessor.class);
-    
+
 	public void updateDOM(Document dom, Element configElement, EDLContext edlContext) {
-	    	    
+
 		RequestParser requestParser = edlContext.getRequestParser();
-		
+
 		boolean incrementVersion = edlContext.getUserAction().isIncrementVersionAction();
 		boolean replaceVersion = edlContext.getUserAction().isReplaceVersionAction();
-		
+
 		Element edlContentElement = EDLXmlUtils.getEDLContent(dom, false);
 		Element dataElement = EDLXmlUtils.getDataFromEDLDocument(edlContentElement, false);
 		Element currentVersion = findCurrentVersion(dom);
-		
-		
+
+
 		if (currentVersion == null) {
 			Integer currentVersionCount = new Integer(0);
 			currentVersion = EDLXmlUtils.getVersionFromData(dataElement, currentVersionCount);
@@ -87,5 +86,5 @@ public class VersioningPreprocessor implements EDLModelComponent {
 		}
 		return null;
 	}
-    
+
 }

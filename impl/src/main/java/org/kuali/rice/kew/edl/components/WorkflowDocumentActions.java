@@ -16,7 +16,6 @@
  */
 package org.kuali.rice.kew.edl.components;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.edl.EDLContext;
@@ -45,7 +44,7 @@ public class WorkflowDocumentActions implements EDLModelComponent {
 	private static final Logger LOG = Logger.getLogger(WorkflowDocumentActions.class);
 
 	public static final String ACTION_TAKEN = "actionTaken";
-	
+
 	boolean isPreProcessor;
 
 	public void updateDOM(Document dom, Element configElement, EDLContext edlContext) {
@@ -119,7 +118,7 @@ public class WorkflowDocumentActions implements EDLModelComponent {
 			document.clearAttributeDefinitions();
 		}
 
-	boolean actionTaken = true;	
+	boolean actionTaken = true;
 
 	if (UserAction.ACTION_ROUTE.equals(action)) {
         	document.routeDocument(annotation);
@@ -150,11 +149,11 @@ public class WorkflowDocumentActions implements EDLModelComponent {
         } else {
             actionTaken = false;
         }
-        
+
         if (actionTaken) {
             Element actionTakenElement = EDLXmlUtils.getOrCreateChildElement(dom.getDocumentElement(), ACTION_TAKEN, true);
             actionTakenElement.appendChild(dom.createTextNode(action));
         }
     }
-	
+
 }

@@ -52,7 +52,6 @@ import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kew.xml.EDocLiteXmlParser;

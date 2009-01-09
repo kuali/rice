@@ -27,6 +27,7 @@ import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.service.EncryptionService;
+import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
@@ -76,7 +77,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     protected static final String ACTION_URLS_CHILDREN_STARTER = "&nbsp;[";
     protected static final String ACTION_URLS_CHILDREN_END = "]";
     protected static final String ACTION_URLS_SEPARATOR = "&nbsp;&nbsp;";
-    
+
     protected static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(AbstractLookupableHelperServiceImpl.class);
 
     private Class businessObjectClass;
@@ -220,7 +221,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     }
 
     /**
-     * Gets the encryptionService attribute. 
+     * Gets the encryptionService attribute.
      * @return Returns the encryptionService.
      */
     protected EncryptionService getEncryptionService() {
@@ -293,24 +294,24 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 
         String maintDocTypeName = getMaintenanceDocumentTypeName();
         Class boClass = this.getBusinessObjectClass();
-        
+
         if (StringUtils.isNotBlank(maintDocTypeName)) {
             allowsNewOrCopy = getBusinessObjectAuthorizationService().canCreate(boClass, GlobalVariables.getUserSession().getPerson(), maintDocTypeName);
         }
         return allowsNewOrCopy;
     }
-    
+
     private boolean allowsMaintenanceEditAction(BusinessObject businessObject) {
         boolean allowsEdit = false;
 
         String maintDocTypeName = getMaintenanceDocumentTypeName();
-        
+
         if (StringUtils.isNotBlank(maintDocTypeName)) {
             allowsEdit = getBusinessObjectAuthorizationService().canMaintain(businessObject, GlobalVariables.getUserSession().getPerson(), maintDocTypeName);
         }
         return allowsEdit;
     }
-    
+
 
     /**
      * Build a maintenance url.
@@ -325,10 +326,10 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     }
 
     /**
-     * This method is called by performLookup method to generate action urls. 
-     * It calls the method getCustomActionUrls to get html data, calls getMaintenanceUrl to get the actual html tag, 
+     * This method is called by performLookup method to generate action urls.
+     * It calls the method getCustomActionUrls to get html data, calls getMaintenanceUrl to get the actual html tag,
      * and returns a formatted/concatenated string of action urls.
-     * 
+     *
      * @see org.kuali.core.lookup.LookupableHelperService#getActionUrls(org.kuali.core.bo.BusinessObject)
      */
     final public String getActionUrls(BusinessObject businessObject, List pkNames) {
@@ -357,11 +358,11 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 
     /**
      * Child classes should override this method if they want to return some other action urls.
-     * 
-     * @returns This default implementation returns links to edit and copy maintenance action for 
-     * the current maintenance record if the business object class has an associated maintenance document. 
+     *
+     * @returns This default implementation returns links to edit and copy maintenance action for
+     * the current maintenance record if the business object class has an associated maintenance document.
      * Also checks value of allowsNewOrCopy in maintenance document xml before rendering the copy link.
-     * 
+     *
      * @see org.kuali.rice.kns.lookup.LookupableHelperService#getCustomActionUrls(org.kuali.rice.kns.bo.BusinessObject, java.util.List, java.util.List pkNames)
      */
     public List<HtmlData> getCustomActionUrls(BusinessObject businessObject, List pkNames){
@@ -376,11 +377,11 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     }
 
     /**
-     * 
-     * This method constructs an AnchorHtmlData. 
+     *
+     * This method constructs an AnchorHtmlData.
      * This method can be overriden by child classes if they want to construct the html data in a different way.
      * Foe example, if they want different type of html tag, like input/image.
-     * 
+     *
      * @param businessObject
      * @param methodToCall
      * @param displayText
@@ -396,9 +397,9 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     }
 
     /**
-     * 
+     *
      * This method calls its overloaded method with displayText as methodToCall
-     * 
+     *
      * @param businessObject
      * @param methodToCall
      * @param pkNames
@@ -409,9 +410,9 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     }
 
     /**
-     * 
+     *
      * A utility method that returns an empty list of action urls.
-     * 
+     *
      * @return
      */
     protected List<HtmlData> getEmptyActionUrls(){
@@ -421,13 +422,13 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     protected HtmlData getEmptyAnchorHtmlData(){
     	return new AnchorHtmlData();
     }
-    
+
     /**
-     * 
-     * This method generates and returns href for the given parameters. 
-     * This method can be overridden by child classes if they have to generate href differently. 
+     *
+     * This method generates and returns href for the given parameters.
+     * This method can be overridden by child classes if they have to generate href differently.
      * For example, refer to IntendedIncumbentLookupableHelperServiceImpl
-     * 
+     *
      * @param businessObject
      * @param methodToCall
      * @param pkNames
@@ -474,11 +475,11 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     }
 
     /**
-     * 
+     *
      * This method generates and returns title text for action urls.
      * Child classes can override this if they want to generate the title text differently.
      * For example, refer to BatchJobStatusLookupableHelperServiceImpl
-     * 
+     *
      * @param businessObject
      * @param displayText
      * @param pkNames
@@ -624,7 +625,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     }
 
     private static Integer RESULTS_DEFAULT_MAX_COLUMN_LENGTH = null;
-    
+
     protected int getColumnMaxLength(String attributeName) {
     	Integer fieldDefinedMaxLength = getBusinessObjectDictionaryService().getLookupResultFieldMaxLength(getBusinessObjectClass(), attributeName);
     	if (fieldDefinedMaxLength == null) {
@@ -663,12 +664,12 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 
     /**
      * This method is for lookupable implementations
-     * 
+     *
      * @see org.kuali.rice.kns.lookup.LookupableHelperService#getReturnUrl(org.kuali.rice.kns.bo.BusinessObject, java.util.Map, java.lang.String, java.util.List)
      */
     final public HtmlData getReturnUrl(BusinessObject businessObject, Map fieldConversions, String lookupImpl, List returnKeys){
     	String href = getReturnHref(businessObject, fieldConversions, lookupImpl, returnKeys);
-    	String returnUrlAnchorLabel = 
+    	String returnUrlAnchorLabel =
         	KNSServiceLocator.getKualiConfigurationService().getPropertyString(TITLE_RETURN_URL_PREPENDTEXT_PROPERTY);
         AnchorHtmlData anchor = new AnchorHtmlData(href, HtmlData.getTitleText(returnUrlAnchorLabel, businessObject, returnKeys));
         anchor.setDisplayText(returnUrlAnchorLabel);
@@ -676,9 +677,9 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     }
 
     /**
-     * 
+     *
      * This method is for lookupable implementations
-     * 
+     *
      * @param businessObject
      * @param fieldConversions
      * @param lookupImpl
@@ -698,17 +699,17 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         		businessObject, lookupForm.getFieldConversions(), lookupForm.getLookupableImplServiceName(), returnKeys);
     	if(StringUtils.isEmpty(lookupForm.getHtmlDataType()) || HtmlData.ANCHOR_HTML_DATA_TYPE.equals(lookupForm.getHtmlDataType()))
     		return getReturnAnchorHtmlData(businessObject, parameters, lookupForm, returnKeys);
-    	else 
+    	else
     		return getReturnInputHtmlData(businessObject, parameters, lookupForm, returnKeys);
     }
 
     protected HtmlData getReturnInputHtmlData(BusinessObject businessObject, Properties parameters, LookupForm lookupForm, List returnKeys){
-    	String returnUrlAnchorLabel = 
+    	String returnUrlAnchorLabel =
         	KNSServiceLocator.getKualiConfigurationService().getPropertyString(TITLE_RETURN_URL_PREPENDTEXT_PROPERTY);
     	String name = KNSConstants.MULTIPLE_VALUE_LOOKUP_SELECTED_OBJ_ID_PARAM_PREFIX+lookupForm.getLookupObjectId();
         InputHtmlData input = new InputHtmlData(name, InputHtmlData.CHECKBOX_INPUT_TYPE);
         input.setTitle(HtmlData.getTitleText(returnUrlAnchorLabel, businessObject, returnKeys));
-    	if(((MultipleValueLookupForm)lookupForm).getCompositeObjectIdMap()==null || 
+    	if(((MultipleValueLookupForm)lookupForm).getCompositeObjectIdMap()==null ||
     			((MultipleValueLookupForm)lookupForm).getCompositeObjectIdMap().get(
     			((PersistableBusinessObject)businessObject).getObjectId())==null){
     		input.setChecked("");
@@ -718,12 +719,12 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     	input.setValue(InputHtmlData.CHECKBOX_CHECKED_VALUE);
         return input;
     }
-    
+
     protected HtmlData getReturnAnchorHtmlData(BusinessObject businessObject, Properties parameters, LookupForm lookupForm, List returnKeys){
-    	String returnUrlAnchorLabel = 
+    	String returnUrlAnchorLabel =
         	KNSServiceLocator.getKualiConfigurationService().getPropertyString(TITLE_RETURN_URL_PREPENDTEXT_PROPERTY);
         AnchorHtmlData anchor = new AnchorHtmlData(
-        		getReturnHref(parameters, lookupForm, returnKeys), 
+        		getReturnHref(parameters, lookupForm, returnKeys),
         		HtmlData.getTitleText(returnUrlAnchorLabel, businessObject, returnKeys));
         anchor.setDisplayText(returnUrlAnchorLabel);
         return anchor;
@@ -742,7 +743,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     	href += "&anchor="+lookupAnchor+"&docNum="+(StringUtils.isEmpty(getDocNum())?"":getDocNum());
     	return href;
     }
-    
+
     protected Properties getParameters(BusinessObject bo, Map fieldConversions, String lookupImpl, List returnKeys) {
         Properties parameters = new Properties();
         parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.RETURN_METHOD_TO_CALL);
@@ -772,7 +773,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
                 fieldNm = (String) fieldConversions.get(fieldNm);
             }
 
-            if (StringUtils.isNotBlank(displayWorkgroup) && !KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(GlobalVariables.getUserSession().getPerson().getPrincipalId(), org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE, displayWorkgroup )) {
+            if (StringUtils.isNotBlank(displayWorkgroup) && !KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(GlobalVariables.getUserSession().getPerson().getPrincipalId(), Utilities.parseGroupNamespaceCode(displayWorkgroup), Utilities.parseGroupName(displayWorkgroup))) {
                 try {
                     fieldVal = getEncryptionService().encrypt(fieldVal);
                 }
@@ -1048,14 +1049,14 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
                 // comparator
                 col.setComparator(CellComparatorHelper.getAppropriateComparatorForPropertyClass(propClass));
                 col.setValueComparator(CellComparatorHelper.getAppropriateValueComparatorForPropertyClass(propClass));
-                
+
                 maskValueIfNecessary(element.getClass(), col.getPropertyName(), propValue);
-                
+
                 col.setPropertyValue(propValue);
 
                 if (StringUtils.isNotBlank(propValue)) {
                     col.setColumnAnchor(getInquiryUrl(element, col.getPropertyName()));
-                    
+
                 }
             }
 
@@ -1066,7 +1067,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
             if (getBusinessObjectDictionaryService().isExportable(getBusinessObjectClass())) {
             	row.setBusinessObject(element);
             }
-            
+
             boolean rowReturnable = isResultReturnable(element);
             row.setRowReturnable(rowReturnable);
             if (rowReturnable) {
@@ -1079,7 +1080,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 
         return displayList;
     }
-    
+
     protected String maskValueIfNecessary(Class businessObjectClass, String propertyName, String propertyValue) {
         String maskedPropertyValue = propertyValue;
     	AttributeSecurity attributeSecurity = getDataDictionaryService().getAttributeSecurity(businessObjectClass.getName(), propertyName);
@@ -1114,7 +1115,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     public void setSequenceAccessorService(SequenceAccessorService sequenceAccessorService) {
         this.sequenceAccessorService = sequenceAccessorService;
     }
-    
+
     public BusinessObjectService getBusinessObjectService() {
         return businessObjectService != null ? businessObjectService : KNSServiceLocator.getBusinessObjectService();
     }

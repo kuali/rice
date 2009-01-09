@@ -41,6 +41,7 @@ import org.kuali.rice.kew.applicationconstants.ApplicationConstant;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -103,6 +104,35 @@ public class Utilities {
             return false;
         }
     }
+
+    public static String parseGroupNamespaceCode(String namespaceAndNameCombo) {
+        if (namespaceAndNameCombo == null) {
+            return null;
+        }
+        String[] groupData = namespaceAndNameCombo.split(":");
+        if (groupData.length == 1) {
+            return KimConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE;
+        } else if (groupData.length == 2) {
+            return groupData[0].trim();
+        } else {
+            return null;
+        }
+    }
+
+    public static String parseGroupName(String namespaceAndNameCombo) {
+        if (namespaceAndNameCombo == null) {
+            return null;
+        }
+        String[] groupData = namespaceAndNameCombo.split(":");
+        if (groupData.length == 1) {
+            return groupData[0].trim();
+        } else if (groupData.length == 2) {
+            return groupData[1].trim();
+        } else {
+            return null;
+        }
+    }
+
     public static boolean isEmpty(String value) {
         return value == null || value.trim().equals("");
     }

@@ -176,7 +176,7 @@ public class DisapproveAction extends ActionTakenEvent {
         if( !StringUtils.isBlank(groupName))
         {
             KimGroup systemUserWorkgroup = KIMServiceLocator.getIdentityManagementService().
-            getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, groupName);
+                getGroupByName(Utilities.parseGroupNamespaceCode(groupName), Utilities.parseGroupName(groupName));
 
             List<String> principalIds = KIMServiceLocator.
             getIdentityManagementService().getGroupMemberPrincipalIds( systemUserWorkgroup.getGroupId());

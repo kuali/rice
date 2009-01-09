@@ -183,7 +183,6 @@ public abstract class WorkflowAction extends DispatchAction {
 				String recipientPrincipalId = KEWServiceLocator.getIdentityHelperService().getIdForPrincipalName(recipient.getId());
 				routingForm.getWorkflowDocument().adHocRouteDocumentToPrincipal(recipient.getActionRequested(), routeNodeName, routingForm.getAnnotation(), recipientPrincipalId, "", true);
 			} else {
-				//String groupId = KEWServiceLocator.getIdentityHelperService().getIdForGroupName(KimConstants.TEMP_GROUP_NAMESPACE, recipient.getId());
 				routingForm.getWorkflowDocument().adHocRouteDocumentToGroup(recipient.getActionRequested(), routeNodeName, routingForm.getAnnotation(), recipient.getId(), "", true);
 			}
 			routingForm.getAppSpecificRouteList().add(recipient);

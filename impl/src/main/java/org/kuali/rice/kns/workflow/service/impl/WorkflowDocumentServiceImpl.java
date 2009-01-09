@@ -1,12 +1,12 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -81,14 +81,14 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      */
     public KualiWorkflowDocument createWorkflowDocument(String documentTypeId, Person person) throws WorkflowException {
         Timer t0 = new Timer("createWorkflowDocument");
-        
+
         if (StringUtils.isBlank(documentTypeId)) {
             throw new IllegalArgumentException("invalid (blank) documentTypeId");
         }
         if (person == null) {
             throw new IllegalArgumentException("invalid (null) person");
         }
-        
+
         if ((null == person) || StringUtils.isBlank(person.getPrincipalName())) {
             throw new IllegalArgumentException("invalid (empty) authenticationUserId");
         }
@@ -233,7 +233,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
         handleAdHocRouteRequests(workflowDocument, "", filterAdHocRecipients(adHocRecipients, new String[] { KEWConstants.ACTION_REQUEST_FYI_REQ }));
         workflowDocument.fyi();
     }
-    
+
     /**
      * @see org.kuali.rice.kns.workflow.service.WorkflowDocumentService#sendWorkflowNotification(org.kuali.rice.kns.workflow.service.KualiWorkflowDocument, java.lang.String, java.util.List)
      */
@@ -276,14 +276,14 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
         if (LOG.isDebugEnabled()) {
             LOG.debug("saving flexDoc(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
         }
-        
+
         workflowDocument.saveDocument(annotation);
     }
         else {
             this.saveRoutingData(workflowDocument);
         }
     }
-    
+
     /**
      * @see org.kuali.rice.kns.workflow.service.WorkflowDocumentService#saveRoutingData(org.kuali.rice.kns.workflow.service.KualiWorkflowDocument)
      */
@@ -291,10 +291,10 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
         if (LOG.isDebugEnabled()) {
             LOG.debug("saving flexDoc(" + workflowDocument.getRouteHeaderId() + ")");
         }
-        
+
         workflowDocument.saveRoutingData();
     }
-    
+
     /**
      * @see org.kuali.rice.kns.workflow.service.WorkflowDocumentService#getCurrentRouteLevelName(org.kuali.rice.kns.workflow.service.KualiWorkflowDocument)
      */
@@ -309,7 +309,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 
     /**
      * Convenience method for generating ad hoc requests for a given document
-     * 
+     *
      * @param flexDoc
      * @param annotation
      * @param adHocRecipients
@@ -336,7 +336,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
             for (int i = 0; i < currentNodes.length; i++) {
                 currentNode = currentNodes[i];
             }
-                
+
             for (Iterator iter = adHocRecipients.iterator(); iter.hasNext();) {
                 AdHocRouteRecipient recipient = (AdHocRouteRecipient) iter.next();
                 if (StringUtils.isNotEmpty(recipient.getId())) {
@@ -349,9 +349,9 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
                         workflowDocument.adHocRouteDocumentToPrincipal(recipient.getActionRequested(), currentNode, annotation, principal.getPrincipalId(), "", true);
                     }
                     else {
-                    	KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, recipient.getId());
+                    	KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(recipient.getId());
                 		if (group == null) {
-                			throw new RiceRuntimeException("Could not locate group with name '" + recipient.getId() + "'");
+                			throw new RiceRuntimeException("Could not locate group with id '" + recipient.getId() + "'");
                 		}
                     	workflowDocument.adHocRouteDocumentToGroup(recipient.getActionRequested(), currentNode, annotation, group.getGroupId() , "", true);
                     }
@@ -363,7 +363,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
     /**
      * Convenience method to filter out any ad hoc recipients that should not be allowed given the action requested of the user that
      * is taking action on the document
-     * 
+     *
      * @param adHocRecipients
      */
     private List filterAdHocRecipients(List adHocRecipients, String[] validTypes) {

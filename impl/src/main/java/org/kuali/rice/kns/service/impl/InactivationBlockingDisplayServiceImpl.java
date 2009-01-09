@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.InactivationBlockingMetadata;
@@ -37,8 +38,8 @@ import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.web.format.Formatter;
 
 /**
- * This is a description of what this class does - wliang don't forget to fill this in. 
- * 
+ * This is a description of what this class does - wliang don't forget to fill this in.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
@@ -49,7 +50,7 @@ public class InactivationBlockingDisplayServiceImpl implements InactivationBlock
 
 	/**
 	 * This overridden method ...
-	 * 
+	 *
 	 * @see org.kuali.rice.kns.service.InactivationBlockingDisplayService#listAllBlockerRecords(org.kuali.rice.kns.bo.BusinessObject, org.kuali.rice.kns.datadictionary.InactivationBlockingMetadata)
 	 */
 	public List<String> listAllBlockerRecords(BusinessObject blockedBo, InactivationBlockingMetadata inactivationBlockingMetadata) {
@@ -58,9 +59,9 @@ public class InactivationBlockingDisplayServiceImpl implements InactivationBlock
             inactivationBlockingDetectionServiceBeanName = KNSServiceLocator.DEFAULT_INACTIVATION_BLOCKING_DETECTION_SERVICE;
         }
         InactivationBlockingDetectionService inactivationBlockingDetectionService = KNSServiceLocator.getInactivationBlockingDetectionService(inactivationBlockingDetectionServiceBeanName);
-        
+
         Collection<BusinessObject> collection = inactivationBlockingDetectionService.listAllBlockerRecords(blockedBo, inactivationBlockingMetadata);
-        
+
         Map<String, Formatter> formatters = getFormattersForPrimaryKeyFields(inactivationBlockingMetadata.getBlockingReferenceBusinessObjectClass());
         Map<String, Boolean> authorizedToViewField = getFieldAuthorizations(inactivationBlockingMetadata.getBlockingReferenceBusinessObjectClass());
 
@@ -69,11 +70,11 @@ public class InactivationBlockingDisplayServiceImpl implements InactivationBlock
 
         for (BusinessObject element : collection) {
         	StringBuilder buf = new StringBuilder();
-        	
+
         	for (int i = 0; i < pkFieldNames.size(); i++) {
         		String pkFieldName = pkFieldNames.get(i);
         		Object value = ObjectUtils.getPropertyValue(element, pkFieldName);
-    			
+
         		String displayValue = null;
         		if (authorizedToViewField.get(pkFieldName)) {
         			Formatter formatter = formatters.get(pkFieldName);
@@ -88,7 +89,7 @@ public class InactivationBlockingDisplayServiceImpl implements InactivationBlock
         			Mask m = dataDictionaryService.getAttributeDisplayMask(inactivationBlockingMetadata.getBlockingReferenceBusinessObjectClass(), pkFieldName);
         			displayValue = m.getMaskFormatter().maskValue(value);
         		}
-        		
+
         		buf.append(displayValue);
         		if (i < pkFieldNames.size() - 1) {
         			buf.append(" - ");
@@ -99,14 +100,14 @@ public class InactivationBlockingDisplayServiceImpl implements InactivationBlock
         }
 		return displayValues;
 	}
-	
+
 	protected Map<String, Formatter> getFormattersForPrimaryKeyFields(Class boClass) {
 		List<String> keyNames = persistenceStructureService.listPrimaryKeyFieldNames(boClass);
 		Map<String, Formatter> formattersForPrimaryKeyFields = new HashMap<String, Formatter>();
-		
+
 		for (String pkFieldName : keyNames) {
 			Formatter formatter = null;
-			
+
 			Class<? extends Formatter> formatterClass = dataDictionaryService.getAttributeFormatter(boClass, pkFieldName);
 			if (formatterClass != null) {
 				try {
@@ -118,22 +119,22 @@ public class InactivationBlockingDisplayServiceImpl implements InactivationBlock
         }
 		return formattersForPrimaryKeyFields;
 	}
-	
+
 	protected Map<String, Boolean> getFieldAuthorizations(Class boClass) {
 		Map<String, Boolean> fieldAuthorizations = new HashMap<String, Boolean>();
 		List<String> keyNames = persistenceStructureService.listPrimaryKeyFieldNames(boClass);
 
 		for (String pkFieldName : keyNames) {
 			String authorizedWorkgroup = dataDictionaryService.getAttributeDisplayWorkgroup(boClass, pkFieldName);
-			
+
 			if (StringUtils.isBlank(authorizedWorkgroup)) {
 				fieldAuthorizations.put(pkFieldName, Boolean.TRUE);
 			}
 			else {
-				fieldAuthorizations.put(pkFieldName, Boolean.valueOf(KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(GlobalVariables.getUserSession().getPerson().getPrincipalId(), org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE, authorizedWorkgroup)));
+				fieldAuthorizations.put(pkFieldName, Boolean.valueOf(KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(GlobalVariables.getUserSession().getPerson().getPrincipalId(), Utilities.parseGroupNamespaceCode(authorizedWorkgroup), Utilities.parseGroupName(authorizedWorkgroup))));
 			}
 		}
-		
+
 		return fieldAuthorizations;
 	}
 	public void setPersistenceService(PersistenceService persistenceService) {

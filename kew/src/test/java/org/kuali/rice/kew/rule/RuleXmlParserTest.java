@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -53,14 +53,14 @@ public class RuleXmlParserTest extends KEWTestCase {
         //cache.start();
         RuleService ruleService = KEWServiceLocator.getRuleService();
         int ruleSize = ruleService.fetchAllCurrentRulesForTemplateDocCombination("TestRuleTemplate", "TestDocumentType").size();
-        
+
         List collections = new ArrayList();
-        //ultimately it is the content of RulesToImport that determines whether or not we're 
+        //ultimately it is the content of RulesToImport that determines whether or not we're
         //going to hit the rules xml parser
         InputStream xmlFile = TestUtilities.loadResource(this.getClass(), "RulesToImport.xml");
         collections.add(KEWXmlDataLoader.getFileXmlDocCollection(xmlFile, "WorkflowUnitTestTemp"));
         KEWServiceLocator.getXmlIngesterService().ingest(collections, null);
-        
+
         Thread.sleep(5000);//give cache time to reload;
         int newRuleSize = ruleService.fetchAllCurrentRulesForTemplateDocCombination("TestRuleTemplate", "TestDocumentType").size();
         assertEquals("Three more rules should have been returned from the cached service", ruleSize + 3, newRuleSize);
@@ -77,7 +77,7 @@ public class RuleXmlParserTest extends KEWTestCase {
             assertNotNull(TestUtilities.findExceptionInStack(wsee, InvalidXmlException.class));
         }
     }
-    
+
     @Test public void testDuplicateRuleWithExpression() throws IOException, InvalidXmlException {
         InputStream stream = getClass().getResourceAsStream("DuplicateRuleToImportWithExpression.xml");
         assertNotNull(stream);
@@ -88,7 +88,7 @@ public class RuleXmlParserTest extends KEWTestCase {
             assertNotNull(TestUtilities.findExceptionInStack(wsee, InvalidXmlException.class));
         }
     }
-    
+
     @Test public void testNotDuplicateRule() throws IOException, InvalidXmlException {
         InputStream stream = getClass().getResourceAsStream("NotADuplicateRuleToImport.xml");
         assertNotNull(stream);
@@ -99,7 +99,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         // then the rule
         KEWServiceLocator.getRuleService().loadXml(stream, null);
     }
-    
+
     @Test public void testNotDuplicateRuleWithExpression() throws IOException, InvalidXmlException {
         InputStream stream = getClass().getResourceAsStream("NotADuplicateRuleToImportWithExpression.xml");
         assertNotNull(stream);
@@ -145,7 +145,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         assertEquals("user1", responsibility.getWorkflowUser().getAuthenticationUserId().getId());
         assertEquals("A", responsibility.getActionRequestedCd());
     }
-    
+
     @Test public void testNamedRuleWithExpression() throws KEWUserNotFoundException {
         loadXmlFile("NamedRuleWithExpression.xml");
         RuleService ruleService = KEWServiceLocator.getRuleService();
@@ -205,7 +205,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         assertEquals("user2", responsibility.getWorkflowUser().getAuthenticationUserId().getId());
         assertEquals("F", responsibility.getActionRequestedCd());
     }
-    
+
     @Test public void testUpdatedRuleWithExpression() throws KEWUserNotFoundException {
         testNamedRule();
         loadXmlFile("UpdatedNamedRuleWithExpression.xml");
@@ -234,7 +234,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         assertEquals("user2", responsibility.getWorkflowUser().getAuthenticationUserId().getId());
         assertEquals("F", responsibility.getActionRequestedCd());
     }
-    
+
     /**
      * This test tests that an anonymous rule will still be checked against named rules for duplication.
      * @throws KEWUserNotFoundException
@@ -248,13 +248,13 @@ public class RuleXmlParserTest extends KEWTestCase {
         AssertThrows at = new AssertThrows(WorkflowServiceErrorException.class, "Expected exception was not thrown") {
             @Override
             public void test() throws Exception {
-                KEWServiceLocator.getRuleService().loadXml(stream, null);           
+                KEWServiceLocator.getRuleService().loadXml(stream, null);
             }
         };
         at.runTest();
         assertNotNull("Expected exception was not thrown", TestUtilities.findExceptionInStack(at.getActualException(), InvalidXmlException.class));
     }
-    
+
     /**
      * This test tests that an anonymous rule will still be checked against named rules for duplication.
      * @throws KEWUserNotFoundException
@@ -268,7 +268,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         AssertThrows at = new AssertThrows(WorkflowServiceErrorException.class, "Expected exception was not thrown") {
             @Override
             public void test() throws Exception {
-                KEWServiceLocator.getRuleService().loadXml(stream, null);           
+                KEWServiceLocator.getRuleService().loadXml(stream, null);
             }
         };
         at.runTest();
@@ -277,7 +277,7 @@ public class RuleXmlParserTest extends KEWTestCase {
 
     @Test public void testParameterReplacement() throws IOException, InvalidXmlException, KEWUserNotFoundException {
         ConfigContext.getCurrentContextConfig().overrideProperty("test.replacement.user", "user3");
-        ConfigContext.getCurrentContextConfig().overrideProperty("test.replacement.workgroup", "WorkflowAdmin");
+        ConfigContext.getCurrentContextConfig().overrideProperty("test.replacement.workgroup", "KR-WKFLW:WorkflowAdmin");
         List<RuleBaseValues> rules = new RuleXmlParser().parseRules(getClass().getResourceAsStream("ParameterizedRule.xml"));
         assertEquals(1, rules.size());
         RuleBaseValues rule = rules.get(0);
@@ -289,9 +289,9 @@ public class RuleXmlParserTest extends KEWTestCase {
         } else {
             assertEquals("WorkflowAdmin", resp.getGroup().getGroupName());
         }
-        
+
         ConfigContext.getCurrentContextConfig().overrideProperty("test.replacement.user", "user1");
-        ConfigContext.getCurrentContextConfig().overrideProperty("test.replacement.workgroup", "TestWorkgroup");
+        ConfigContext.getCurrentContextConfig().overrideProperty("test.replacement.workgroup", "KR-WKFLW:TestWorkgroup");
         rules = new RuleXmlParser().parseRules(getClass().getResourceAsStream("ParameterizedRule.xml"));
         assertEquals(1, rules.size());
         rule = rules.get(0);
@@ -299,18 +299,18 @@ public class RuleXmlParserTest extends KEWTestCase {
         resp = (RuleResponsibility) rule.getResponsibilities().get(0);
 
         if (resp.isUsingWorkflowUser()) {
-            assertEquals("user1", resp.getWorkflowUser().getAuthenticationUserId().getId());    
+            assertEquals("user1", resp.getWorkflowUser().getAuthenticationUserId().getId());
         } else {
             assertEquals("TestWorkgroup", resp.getGroup().getGroupName());
         }
     }
-    
+
     @Test public void removeTemplateFromNamedRule() throws IOException, InvalidXmlException, KEWUserNotFoundException {
         RuleService ruleService = KEWServiceLocator.getRuleService();
         int originalRuleCount = ruleService.fetchAllCurrentRulesForTemplateDocCombination("TestRuleTemplate", "TestDocumentType").size();
 
         testNamedRule();
-        
+
         LOG.debug("Rules for doctype/template combo:");
         int ruleCount = 0;
         List<RuleBaseValues> list = ruleService.fetchAllCurrentRulesForTemplateDocCombination("TestRuleTemplate", "TestDocumentType");
@@ -319,10 +319,10 @@ public class RuleXmlParserTest extends KEWTestCase {
             for (RuleBaseValues rbv: list) {
                 LOG.info(rbv);
             }
-        }        
-        
+        }
+
         loadXmlFile("NamedRuleWithoutTemplate.xml");
-        
+
         LOG.debug("Rules for doctype/template combo after import of named rule:");
         int ruleCountAfter = 0;
         list = ruleService.fetchAllCurrentRulesForTemplateDocCombination("TestRuleTemplate", "TestDocumentType");
@@ -342,20 +342,20 @@ public class RuleXmlParserTest extends KEWTestCase {
 
         assertEquals("The rules for template/doctype combo should have been decreased by one after reimport of named rule without template", ruleCount - 1, ruleCountAfter);
         assertEquals("Rule count should be original template/doctype combo rule count after removing template from named rule", originalRuleCount, ruleCountAfter);
-        
+
         assertNull(rule.getRuleTemplate());
-        
+
         // templateless rules cannot have extensions, so these should be removed
         List extensions = rule.getRuleExtensions();
         assertEquals(0, extensions.size());
- 
+
         List responsibilities = rule.getResponsibilities();
         assertEquals(1, responsibilities.size());
         RuleResponsibility responsibility = (RuleResponsibility) responsibilities.get(0);
         assertEquals("user2", responsibility.getWorkflowUser().getAuthenticationUserId().getId());
         assertEquals("F", responsibility.getActionRequestedCd());
     }
-    
+
     @Test public void testInvalidTemplatelessNamedRule() throws KEWUserNotFoundException {
         testNamedRule();
         loadXmlFile("InvalidTemplatelessNamedRule.xml");

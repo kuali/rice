@@ -44,8 +44,8 @@ import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
 import org.kuali.rice.test.web.HtmlUnitUtil;
 
 /**
- * This is a description of what this class does - kellerj don't forget to fill this in. 
- * 
+ * This is a description of what this class does - kellerj don't forget to fill this in.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
@@ -122,8 +122,8 @@ public class PersonServiceImplTest extends RiceTestCase {
 //	public void testHasRole_Inherited() {
 //		Person p = personService.getPersonByPrincipalName( "wwren" );
 //		assertNotNull( "person object must not be null", p );
-//		assertTrue( "person must be a member of PA_MAINTENANCE_USERS", personService.hasRole( p, org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE, "PA_AP_MAINTENANCE_USERS" ) );
-//		assertTrue( "person must be NOT a member of PA_MAINTENANCE_USERS", !personService.hasRole( p, org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE, "PA_MAINTENANCE_USERS" ) );
+//		assertTrue( "person must be a member of PA_MAINTENANCE_USERS", personService.hasRole( p, org.kuali.rice.kim.util.KimConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE, "PA_AP_MAINTENANCE_USERS" ) );
+//		assertTrue( "person must be NOT a member of PA_MAINTENANCE_USERS", !personService.hasRole( p, org.kuali.rice.kim.util.KimConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE, "PA_MAINTENANCE_USERS" ) );
 //	}
 //
 //	@Test
@@ -131,19 +131,19 @@ public class PersonServiceImplTest extends RiceTestCase {
 //		Person p = personService.getPerson( "KULUSER" );
 //		assertNotNull( "person object must not be null", p );
 //		List<KimRole> roles = personService.getPersonRoles( p, null );
-//		assertNotNull( "role list must not be null", roles );		
+//		assertNotNull( "role list must not be null", roles );
 //		System.out.println( roles );
 //		assertTrue( "role list must have non-zero length", roles.size() > 0 );
-//		KimRole r = KIMServiceLocator.getAuthorizationService().getRoleByName( org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE, "SY_FUNCTIONAL_SUPER_USERS" );
+//		KimRole r = KIMServiceLocator.getAuthorizationService().getRoleByName( org.kuali.rice.kim.util.KimConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE, "SY_FUNCTIONAL_SUPER_USERS" );
 //		assertTrue( "one of the roles must be SY_FUNCTIONAL_SUPER_USERS", roles.contains( r ) );
 //	}
-//	
+//
 //	@Test
 //	public void testHasRole() {
 //		Person p = personService.getPerson( "KULUSER" );
-//		assertTrue( "person must have role SY_FUNCTIONAL_SUPER_USERS", personService.hasRole( p, org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE, "SY_FUNCTIONAL_SUPER_USERS" ) );
+//		assertTrue( "person must have role SY_FUNCTIONAL_SUPER_USERS", personService.hasRole( p, org.kuali.rice.kim.util.KimConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE, "SY_FUNCTIONAL_SUPER_USERS" ) );
 //	}
-	
+
 	@Test
 	public void testGetPerson() {
 		Person p = personService.getPerson( "KULUSER" );
@@ -199,12 +199,12 @@ public class PersonServiceImplTest extends RiceTestCase {
 		assertEquals( "name must match criteria", "System User", p.getFirstName() );
 		assertEquals( "principal name must be kuluser", "kuluser", p.getPrincipalName() );
 	}
-	
-	@Test 
+
+	@Test
 	public void testResolvePrincipalNamesToPrincipalIds() throws Exception {
 		KNSServiceLocator.getDataDictionaryService().getDataDictionary().addConfigFileLocation( "classpath:org/kuali/rice/kim/bo/datadictionary/test/SampleBO.xml" );
 		KNSServiceLocator.getDataDictionaryService().getDataDictionary().parseDataDictionaryConfigurationFiles( false );
-		
+
 		Map<String,String> criteria = new HashMap<String,String>();
 		criteria.put( "anAttribute", "aValue" );
 		criteria.put( "anotherAttribute", "anotherValue" );
@@ -216,7 +216,7 @@ public class PersonServiceImplTest extends RiceTestCase {
 		assertTrue( "new criteria must have a personPrincipalId entry", newCritiera.containsKey( "personPrincipalId" ) );
 		assertEquals( "resulting principal ID is not that expected", "KULUSER", newCritiera.get( "personPrincipalId" ) );
 		assertFalse( "new criteria must not contain the original PrincipalName entry", newCritiera.containsKey( "personAttribute.principalName" ) );
-		
+
 		// check when already has value in result field
 		criteria.put( "personPrincipalId", "NOT KULUSER" );
 		System.out.println( "Before: " + criteria );
@@ -227,7 +227,7 @@ public class PersonServiceImplTest extends RiceTestCase {
 		assertEquals( "resulting principal ID should have been changed", "KULUSER", newCritiera.get( "personPrincipalId" ) );
 	}
 
-	@Test 
+	@Test
 	public void testResolvePrincipalNamesToPrincipalIds_Nested() throws Exception {
 		Map<String,String> criteria = new HashMap<String,String>();
 		criteria.put( "add.childBos.childsPersonAttribute.principalName", "kuluser" );
@@ -249,12 +249,12 @@ public class PersonServiceImplTest extends RiceTestCase {
 		assertEquals( "principal IDs do not match", bo.getPersonPrincipalId(), p.getPrincipalId() );
 		assertSame( "second retrieval must return same object since ID not changed", p, bo.getPersonAttribute() );
 	}
-	
-	@Test 
+
+	@Test
 	public void testLookupWithPersonJoin() throws Exception {
 		KNSServiceLocator.getDataDictionaryService().getDataDictionary().addConfigFileLocation( "classpath:org/kuali/rice/kim/bo/datadictionary/test/BOContainingPerson.xml" );
 		KNSServiceLocator.getDataDictionaryService().getDataDictionary().parseDataDictionaryConfigurationFiles( false );
-		BusinessObjectService bos = KNSServiceLocator.getBusinessObjectService(); 
+		BusinessObjectService bos = KNSServiceLocator.getBusinessObjectService();
 		bos.delete( new ArrayList(bos.findAll( BOContainingPerson.class )) );
 		BOContainingPerson bo = new BOContainingPerson();
 		bo.setBoPrimaryKey( "ONE" );
@@ -264,7 +264,7 @@ public class PersonServiceImplTest extends RiceTestCase {
 		bo.setBoPrimaryKey( "TWO" );
 		bo.setPrincipalId( "p2" );
 		bos.save( bo );
-		
+
 		Lookupable l = KNSServiceLocator.getKualiLookupable();
 		l.setBusinessObjectClass( BOContainingPerson.class );
 		Map<String,String> criteria = new HashMap<String,String>();
@@ -276,7 +276,7 @@ public class PersonServiceImplTest extends RiceTestCase {
 		bo =  results.iterator().next();
 		assertEquals( "principalId does not match", "p1", bo.getPrincipalId() );
 	}
-	
+
 //	@Test
 //	public void testConfirmOnlyPKUsed() {
 //		HashMap<String,String> criteria = new HashMap<String,String>();
@@ -294,9 +294,9 @@ public class PersonServiceImplTest extends RiceTestCase {
 //		assertNotNull( "result must not be null", people );
 //		assertEquals( "wrong number of people returned", 1, people.size() );
 //		p = people.iterator().next();
-//		assertEquals( "principal name must be kuluser", "kuluser", p.getPrincipalName() );		
+//		assertEquals( "principal name must be kuluser", "kuluser", p.getPrincipalName() );
 //	}
-	
+
 	public static class SampleBO implements BusinessObject {
 		private String anAttribute;
 		private String anotherAttribute;
@@ -322,7 +322,7 @@ public class PersonServiceImplTest extends RiceTestCase {
 			this.personPrincipalId = personPrincipalId;
 		}
 		public Person getPersonAttribute() {
-			personAttribute = KIMServiceLocator.getPersonService().updatePersonIfNecessary( personPrincipalId, personAttribute ); 
+			personAttribute = KIMServiceLocator.getPersonService().updatePersonIfNecessary( personPrincipalId, personAttribute );
 			return personAttribute;
 		}
 		public void setPersonAttribute(Person personAttribute) {
@@ -337,15 +337,15 @@ public class PersonServiceImplTest extends RiceTestCase {
 			this.childBos = childBos;
 		}
 	}
-	
+
 	public static class SampleChildBOWithPerson implements BusinessObject {
-		
+
 		private String childsAttribute;
 		private String childsPersonPrincipalId;
 		private Person childsPersonAttribute;
-		
-		
-		
+
+
+
 		public String getChildsAttribute() {
 			return this.childsAttribute;
 		}

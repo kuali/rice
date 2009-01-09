@@ -130,7 +130,8 @@ public class BackdoorAction extends WorkflowAction {
     }
 
     private void setFormGroupPermission(BackdoorForm backdoorForm, HttpServletRequest request) {
-        KimGroup workflowAdminGroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, Utilities.getApplicationConstant(KEWConstants.WORKFLOW_ADMIN_WORKGROUP_NAME_KEY));
+        String group = Utilities.getApplicationConstant(KEWConstants.WORKFLOW_ADMIN_WORKGROUP_NAME_KEY);
+        KimGroup workflowAdminGroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(Utilities.parseGroupNamespaceCode(group), Utilities.parseGroupName(group));
         if(workflowAdminGroup!=null) {
         	backdoorForm.setIsWorkflowAdmin(KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(getUserSession(request).getWorkflowUser().getWorkflowId(), workflowAdminGroup.getGroupId()));
         }

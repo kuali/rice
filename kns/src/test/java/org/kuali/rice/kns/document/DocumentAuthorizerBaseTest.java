@@ -1,12 +1,12 @@
 /*
  * Copyright 2006-2007 The Kuali Foundation.
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -55,7 +55,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
 //    // ## Supervisor? UserIsInitiator? ApprovalRequested? canSupervise Result
 //    // -----------------------------------------------------------------------------------
 //    // A true true true true
-//    //  
+//    //
 //    // B true true false false
 //    //
 //    // C true false true true
@@ -115,7 +115,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
 //    /**
 //     * This method tests the Pessimistic locking mechanism when no custom lock descriptors are being used by the document in
 //     * the default manner (locks are unique to user and document)
-//     * 
+//     *
 //     * @throws Exception
 //     */
 //    @Test
@@ -217,7 +217,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
 //    /**
 //     * This method tests the Pessimistic locking mechanism when custom lock descriptors are being used by the document in the
 //     * default manner (locks are unique to user, document, and lock descriptor)
-//     * 
+//     *
 //     * @throws Exception
 //     */
 //    @Test
@@ -585,7 +585,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
 //     * This method is a stand-in method to duplicate the behavior of
 //     * {@link KualiDocumentFormBase#populateAuthorizationFields(DocumentAuthorizer)} and
 //     * {@link KualiDocumentFormBase#useDocumentAuthorizer(DocumentAuthorizer)}
-//     * 
+//     *
 //     * @param document -
 //     *            document to use for edit modes and action flags
 //     * @param kualiUser -
@@ -685,7 +685,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
 //
 //		/**
 //		 * This overridden method ...
-//		 * 
+//		 *
 //		 * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#appSpecificRouteDocumentToGroup(java.lang.String, java.lang.String, int, java.lang.String, org.kuali.rice.kim.bo.group.dto.GroupInfo, java.lang.String, boolean)
 //		 */
 //		public void appSpecificRouteDocumentToGroup(String actionRequested,
@@ -693,7 +693,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
 //				GroupIdDTO groupId, String responsibilityDesc,
 //				boolean ignorePreviousActions) throws WorkflowException {
 //			// TODO sp20369 - THIS METHOD NEEDS JAVADOCS
-//			
+//
 //		}
 //
 //    }
@@ -702,11 +702,11 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
 //        private boolean supervisor;
 //        private String principalId;
 //        private String principalName;
-//        
+//
 //        private MockPerson() {};
 //
 //        public MockPerson(Person user) {
-//            this(user.getPrincipalId(), user.getPrincipalName(), KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(user.getPrincipalId(), org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE, KNSServiceLocator.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.CoreApcParms.SUPERVISOR_WORKGROUP)));
+//            this(user.getPrincipalId(), user.getPrincipalName(), KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(user.getPrincipalId(), org.kuali.rice.kim.util.KimConstants.KIM_GROUP_KFS_NAMESPACE_CODE, KNSServiceLocator.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.CoreApcParms.SUPERVISOR_WORKGROUP)));
 //        }
 //
 //        public MockPerson(String universalId, String userId, boolean supervisor) {

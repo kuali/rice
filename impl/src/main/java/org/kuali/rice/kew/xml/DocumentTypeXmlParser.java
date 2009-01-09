@@ -229,37 +229,28 @@ public class DocumentTypeXmlParser implements XmlConstants {
 
         documentType.setCurrentInd(Boolean.TRUE);
 
+        String exceptionWg;
         String exceptionWgName;
         String exceptionWgNamespace;
         try {
-            String exceptionWg = (String) xpath.evaluate("./defaultExceptionWorkgroupName", documentTypeNode, XPathConstants.STRING);
-            String[] exceptionWgData = exceptionWg.split(":");
-            if (exceptionWgData.length == 1) {
-                exceptionWgNamespace = KimConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE;
-                exceptionWgName = exceptionWgData[0];
-            } else if (exceptionWgData.length == 2) {
-                exceptionWgNamespace = exceptionWgData[0];
-                exceptionWgName = exceptionWgData[1];
-            } else {
-                exceptionWgName = null;
-                exceptionWgNamespace = null;
-            }
+            exceptionWg = (String) xpath.evaluate("./defaultExceptionWorkgroupName", documentTypeNode, XPathConstants.STRING);
         } catch (XPathExpressionException xpee) {
             LOG.error("Error obtaining document type defaultExceptionWorkgroupName", xpee);
             throw xpee;
         }
 
 
-        if (! Utilities.isEmpty(exceptionWgName)) {
+        if (! Utilities.isEmpty(exceptionWg)) {
             // allow core config parameter replacement in documenttype workgroups
-            exceptionWgName = Utilities.substituteConfigParameters(exceptionWgName);
-            exceptionWgNamespace = Utilities.substituteConfigParameters(exceptionWgNamespace);
-        	KimGroup exceptionWg = getIdentityManagementService().getGroupByName(exceptionWgNamespace, exceptionWgName);
-        	if(exceptionWg == null) {
+            exceptionWg = Utilities.substituteConfigParameters(exceptionWg);
+            exceptionWgName = Utilities.parseGroupName(exceptionWg);
+            exceptionWgNamespace = Utilities.parseGroupNamespaceCode(exceptionWg);
+        	KimGroup exceptionGroup = getIdentityManagementService().getGroupByName(exceptionWgNamespace, exceptionWgName);
+        	if(exceptionGroup == null) {
         		throw new WorkflowRuntimeException("Exception workgroup name " + exceptionWgName + " does not exist");
         	}
-            documentType.setDefaultExceptionWorkgroup(exceptionWg);
-            defaultExceptionWorkgroup = exceptionWg;
+            documentType.setDefaultExceptionWorkgroup(exceptionGroup);
+            defaultExceptionWorkgroup = exceptionGroup;
         }
 
         try {
@@ -296,29 +287,20 @@ public class DocumentTypeXmlParser implements XmlConstants {
 
         try {
             if (((Boolean) xpath.evaluate("./superUserWorkgroupName", documentTypeNode, XPathConstants.BOOLEAN)).booleanValue()) {
+                String wg;
                 String wgName;
                 String wgNamespace;
                 try {
-                    String wg = (String) xpath.evaluate("./superUserWorkgroupName", documentTypeNode, XPathConstants.STRING);
-                    String[] wgData = wg.split(":");
-                    if (wgData.length == 1) {
-                        wgNamespace = KimConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE;
-                        wgName = wgData[0];
-                    } else if (wgData.length == 2) {
-                        wgNamespace = wgData[0];
-                        wgName = wgData[1];
-                    } else {
-                        wgName = null;
-                        wgNamespace = null;
-                    }
+                    wg = (String) xpath.evaluate("./superUserWorkgroupName", documentTypeNode, XPathConstants.STRING);
                 } catch (XPathExpressionException xpee) {
                     LOG.error("Error obtaining document type superUserWorkgroupName", xpee);
                     throw xpee;
                 }
 
                 // allow core config parameter replacement in documenttype workgroups
-                wgName = Utilities.substituteConfigParameters(wgName);
-                wgNamespace = Utilities.substituteConfigParameters(wgNamespace);
+                wg = Utilities.substituteConfigParameters(wg);
+                wgName = Utilities.parseGroupName(wg);
+                wgNamespace = Utilities.parseGroupNamespaceCode(wg);
                 KimGroup suWorkgroup = getIdentityManagementService().getGroupByName(wgNamespace, wgName);
                 if (suWorkgroup == null) {
                     throw new InvalidWorkgroupException("Workgroup could not be found: " + wgName);
@@ -347,20 +329,10 @@ public class DocumentTypeXmlParser implements XmlConstants {
         if (!StringUtils.isBlank(blanketWorkGroup) && !StringUtils.isBlank(blanketApprovePolicy)){
         	throw new InvalidXmlException("Only one of blanket approve name need to be set");
         } else if (!StringUtils.isBlank(blanketWorkGroup)){
-            String[] blanketWorkgroupData = blanketWorkGroup.split(":");
-            if (blanketWorkgroupData.length == 1) {
-                blanketWorkGroupNamespace = KimConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE;
-                blanketWorkGroupName = blanketWorkgroupData[0];
-            } else if (blanketWorkgroupData.length == 2) {
-                blanketWorkGroupNamespace = blanketWorkgroupData[0];
-                blanketWorkGroupName = blanketWorkgroupData[1];
-            } else {
-                blanketWorkGroupName = null;
-                blanketWorkGroupNamespace = null;
-            }
             // allow core config parameter replacement in documenttype workgroups
-            blanketWorkGroupName = Utilities.substituteConfigParameters(blanketWorkGroupName);
-            blanketWorkGroupNamespace = Utilities.substituteConfigParameters(blanketWorkGroupNamespace);
+            blanketWorkGroup = Utilities.substituteConfigParameters(blanketWorkGroup);
+            blanketWorkGroupName = Utilities.parseGroupName(blanketWorkGroup);
+            blanketWorkGroupNamespace = Utilities.parseGroupNamespaceCode(blanketWorkGroup);
             KimGroup blanketAppWorkgroup = getIdentityManagementService().getGroupByName(blanketWorkGroupNamespace, blanketWorkGroupName);
         	if (blanketAppWorkgroup == null) {
         		throw new InvalidWorkgroupException("The blanket approve workgroup " + blanketWorkGroupName + " does not exist");
@@ -377,24 +349,14 @@ public class DocumentTypeXmlParser implements XmlConstants {
                 String wgName;
                 try {
                     wg = (String) xpath.evaluate("./" + REPORTING_WORKGROUP_NAME, documentTypeNode, XPathConstants.STRING);
-                    String[] wgData = wg.split(":");
-                    if (wgData.length == 1) {
-                        wgNamespace = KimConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE;
-                        wgName = wgData[0];
-                    } else if (wgData.length == 2) {
-                        wgNamespace = wgData[0];
-                        wgName = wgData[1];
-                    } else {
-                        wgName = null;
-                        wgNamespace = null;
-                    }
                 } catch (XPathExpressionException xpee) {
                     LOG.error("Error obtaining document type " + REPORTING_WORKGROUP_NAME, xpee);
                     throw xpee;
                 }
                 // allow core config parameter replacement in documenttype workgroups
-                wgName = Utilities.substituteConfigParameters(wgName);
-                wgNamespace = Utilities.substituteConfigParameters(wgNamespace);
+                wg = Utilities.substituteConfigParameters(wg);
+                wgName = Utilities.parseGroupName(wg);
+                wgNamespace = Utilities.parseGroupNamespaceCode(wg);
                 KimGroup reportingWorkgroup = getIdentityManagementService().getGroupByName(wgNamespace, wgName);
                 if (reportingWorkgroup == null) {
                     throw new InvalidWorkgroupException("Reporting workgroup could not be found: " + wgName);
@@ -737,33 +699,14 @@ public class DocumentTypeXmlParser implements XmlConstants {
         KimGroup exceptionWorkgroup = defaultExceptionWorkgroup;
 
         String exceptionWg = (String) xpath.evaluate("./exceptionWorkgroupName", node, XPathConstants.STRING);
-        String exceptionWorkgroupName;
-        String exceptionWorkgroupNamespace;
-        String[] wgData = exceptionWg.split(":");
-        if (wgData.length == 1) {
-            exceptionWorkgroupNamespace = KimConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE;
-            exceptionWorkgroupName = wgData[0];
-        } else if (wgData.length == 2) {
-            exceptionWorkgroupNamespace = wgData[0];
-            exceptionWorkgroupName = wgData[1];
-        } else {
-            exceptionWorkgroupName = null;
-            exceptionWorkgroupNamespace = null;
-        }
+        String exceptionWorkgroupName = Utilities.parseGroupName(exceptionWg);
+        String exceptionWorkgroupNamespace = Utilities.parseGroupNamespaceCode(exceptionWg);
+
         if (Utilities.isEmpty(exceptionWorkgroupName)) {
         	// for backward compatibility we also need to be able to support exceptionWorkgroup
         	exceptionWg = (String) xpath.evaluate("./exceptionWorkgroup", node, XPathConstants.STRING);
-        	wgData = exceptionWg.split(":");
-            if (wgData.length == 1) {
-                exceptionWorkgroupNamespace = KimConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE;
-                exceptionWorkgroupName = wgData[0];
-            } else if (wgData.length == 2) {
-                exceptionWorkgroupNamespace = wgData[0];
-                exceptionWorkgroupName = wgData[1];
-            } else {
-                exceptionWorkgroupName = null;
-                exceptionWorkgroupNamespace = null;
-            }
+            exceptionWorkgroupName = Utilities.parseGroupName(exceptionWg);
+            exceptionWorkgroupNamespace = Utilities.parseGroupNamespaceCode(exceptionWg);
         }
         if (Utilities.isEmpty(exceptionWorkgroupName)) {
         	if (routeNode.getDocumentType().getDefaultExceptionWorkgroup() != null) {

@@ -21,7 +21,7 @@
 		</ApplicationConstant>
 		<ApplicationConstant>
 			<ConstantName>Workflow.AdminWorkgroup</ConstantName>
-			<ConstantValue>WorkflowAdmin</ConstantValue>
+			<ConstantValue>KR-WKFLW:WorkflowAdmin</ConstantValue>
 		</ApplicationConstant>
 		<ApplicationConstant>
 			<ConstantName>Workgroup.IsRouteLogPopup</ConstantName>
@@ -158,7 +158,7 @@
 	<groups xmlns="ns:workflow/Group" xsi:schemaLocation="ns:workflow/Group resource:Group">
 		<group>
 			<name>WorkflowAdmin</name>
-			<namespace>KFS</namespace>
+			<namespace>KR-WKFLW</namespace>
 			<description>WorkflowAdmin</description>
 			<members>
 				<principalId>quickstart</principalId>

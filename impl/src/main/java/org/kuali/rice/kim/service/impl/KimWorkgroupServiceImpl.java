@@ -235,7 +235,7 @@ public class KimWorkgroupServiceImpl implements WorkgroupService {
 			group.setGroupId("" + workgroup.getWorkflowGroupId().getGroupId());
 		}
 		group.setGroupName(workgroup.getGroupNameId().getNameId());
-		group.setNamespaceCode(org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE);
+		group.setNamespaceCode(org.kuali.rice.kim.util.KimConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE);
 		group.setGroupDescription(workgroup.getDescription());
 		group.setKimTypeId(workgroup.getWorkgroupType());
 		group.setActive(true);

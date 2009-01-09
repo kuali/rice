@@ -297,8 +297,8 @@ public class UserSession implements Serializable {
     }
 
     public boolean isAdmin(){
-        String groupName = Utilities.getApplicationConstant(KEWConstants.WORKFLOW_ADMIN_WORKGROUP_NAME_KEY);
-    	return KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(getWorkflowUser().getWorkflowId(), KimConstants.TEMP_GROUP_NAMESPACE, groupName);
+        String group = Utilities.getApplicationConstant(KEWConstants.WORKFLOW_ADMIN_WORKGROUP_NAME_KEY);
+    	return KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(getWorkflowUser().getWorkflowId(), Utilities.parseGroupNamespaceCode(group), Utilities.parseGroupName(group));
     }
 
     /**

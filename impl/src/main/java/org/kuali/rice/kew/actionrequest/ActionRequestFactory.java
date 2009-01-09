@@ -134,7 +134,7 @@ public class ActionRequestFactory {
 		        KNSConstants.DetailTypes.WORKGROUP_DETAIL_TYPE,
 		        KEWConstants.NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME_IND);
 
-        KimGroup notifyExclusionWorkgroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, groupName);
+        KimGroup notifyExclusionWorkgroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(Utilities.parseGroupNamespaceCode(groupName), Utilities.parseGroupName(groupName));
         return generateNotifications(null, getActionRequestService().getRootRequests(requests), principal, delegator, notificationRequestCode, actionTakenCode, notifyExclusionWorkgroup);
     }
 
@@ -312,7 +312,7 @@ public class ActionRequestFactory {
     	String actionTypeCode = responsibilities.get(0).getActionTypeCode();
     	Integer priority = responsibilities.get(0).getPriorityNumber();
     	KimRoleRecipient roleRecipient = new KimRoleRecipient(responsibilities);
-    	
+
     	ActionRequestValue requestGraph = createActionRequest(actionTypeCode, priority, roleRecipient, "", KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, true, approvePolicy, null, null);
 
     	for (ResponsibilityActionInfo responsibility : responsibilities) {
@@ -331,7 +331,7 @@ public class ActionRequestFactory {
     	requestGraphs.add(requestGraph);
     	return requestGraph;
     }
-    
+
     private void generateRoleResponsibilityDelegationRequests(ResponsibilityActionInfo responsibility, ActionRequestValue parentRequest) {
     	List<DelegateInfo> delegates = responsibility.getDelegates();
     	for (DelegateInfo delegate : delegates) {
@@ -349,7 +349,7 @@ public class ActionRequestFactory {
     		addDelegationRequest(parentRequest, recipient, new Long(delegate.getDelegationId()), parentRequest.getIgnorePrevAction(), delegate.getDelegationTypeCode(), responsibilityDescription, null);
     	}
     }
-    
+
     private String generateRoleResponsibilityDelegateDescription(DelegateInfo delegate, boolean isPrincipal, boolean isGroup) {
     	String responsibilityDescription = "Delegation generated from delegation id " + delegate.getDelegationId() + " for ";
     	if (isPrincipal) {

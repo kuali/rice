@@ -604,7 +604,7 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
     							if (session == null) {
     								throw new WorkflowRuntimeException("UserSession is null!  Attempted to render the searchable attribute outside of an established session.");
     							}
-    							visible = KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(session.getPerson().getPrincipalId(), KimConstants.TEMP_GROUP_NAMESPACE, workgroupName);
+    							visible = KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(session.getPerson().getPrincipalId(), Utilities.parseGroupNamespaceCode(workgroupName), Utilities.parseGroupName(workgroupName));
     						}
                         }
 					}

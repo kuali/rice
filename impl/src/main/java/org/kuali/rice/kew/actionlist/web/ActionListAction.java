@@ -627,7 +627,7 @@ public class ActionListAction extends WorkflowAction {
         request.setAttribute("preferences", getUserSession(request).getPreferences());
         IdentityManagementService ims = (IdentityManagementService) KIMServiceLocator.getIdentityManagementService();
         String kewHelpDeskWgName = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.HELP_DESK_ACTION_LIST);
-        if (kewHelpDeskWgName != null && KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(getUserSession(request).getPrincipalId(), KimConstants.TEMP_GROUP_NAMESPACE, kewHelpDeskWgName)) {
+        if (kewHelpDeskWgName != null && KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(getUserSession(request).getPrincipalId(), Utilities.parseGroupNamespaceCode(kewHelpDeskWgName), Utilities.parseGroupName(kewHelpDeskWgName))) {
             request.setAttribute("helpDeskActionList", "true");
         }
         String routeLogPopup = "false";

@@ -29,14 +29,12 @@ import org.kuali.rice.kew.engine.BlanketApproveEngine;
 import org.kuali.rice.kew.engine.OrchestrationConfig;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RequestsNode;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
@@ -62,7 +60,7 @@ public class SuperUserApproveEvent extends SuperUserActionTakenEvent {
         this.superUserAction = KEWConstants.SUPER_USER_APPROVE;
     }
 
-	public void recordAction() throws InvalidActionTakenException, KEWUserNotFoundException {
+	public void recordAction() throws InvalidActionTakenException {
 		// TODO: this is used because calling this code from SuperUserAction without
         // it causes an optimistic lock
 		setRouteHeader(KEWServiceLocator.getRouteHeaderService().getRouteHeader(getRouteHeaderId(), true));

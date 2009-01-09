@@ -241,14 +241,14 @@
 						<display-el:column sortable="true" title="${delegatorLabel}"
 							sortProperty="delegatorName" class="infocell">
 							<c:choose>
-								<c:when test="${result.delegatorUser != null}">
+								<c:when test="${result.delegatorPerson != null}">
 									<a
 										href="<c:url value="${UrlResolver.userReportUrl}">
-                            <c:param name="workflowId" value="${result.delegatorUser.workflowUserId.workflowId}"/>
+                            <c:param name="workflowId" value="${result.delegatorPerson.principalId}"/>
                             <c:param name="showEdit" value="no"/>
                             <c:param name="methodToCall" value="report"/></c:url>"
 										target="_blank"> <c:out
-										value="${result.delegatorUser.transposedName}" /></a>
+										value="${result.delegatorPerson.name}" /></a>
 								</c:when>
 								<c:when test="${result.delegatorGroup != null}">
 									<a href="<c:url value="${UrlResolver.workgroupReportUrl}">

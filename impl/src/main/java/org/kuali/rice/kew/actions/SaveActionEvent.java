@@ -23,7 +23,6 @@ import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -57,7 +56,7 @@ public class SaveActionEvent extends ActionTakenEvent {
      * @see org.kuali.rice.kew.actions.ActionTakenEvent#isActionCompatibleRequest(java.util.List)
      */
     @Override
-    public String validateActionRules() throws KEWUserNotFoundException {
+    public String validateActionRules() {
     	return validateActionRulesCustom(true);
     }
 
@@ -71,7 +70,7 @@ public class SaveActionEvent extends ActionTakenEvent {
     	return "";
     }
 
-    public void recordAction() throws InvalidActionTakenException, KEWUserNotFoundException {
+    public void recordAction() throws InvalidActionTakenException {
 	MDC.put("docId", getRouteHeader().getRouteHeaderId());
 	LOG.debug("Checking to see if the action is legal");
 	/* Code below for variable 'checkIfActionIsValid' is used to identify when the 
@@ -113,7 +112,7 @@ public class SaveActionEvent extends ActionTakenEvent {
 	}
     }
 
-    protected ActionRequestValue generateSaveRequest() throws KEWUserNotFoundException {
+    protected ActionRequestValue generateSaveRequest() {
 	RouteNodeInstance intialNode = (RouteNodeInstance) KEWServiceLocator.getRouteNodeService().getInitialNodeInstances(
 		getRouteHeaderId()).get(0);
 	ActionRequestFactory arFactory = new ActionRequestFactory(getRouteHeader(), intialNode);

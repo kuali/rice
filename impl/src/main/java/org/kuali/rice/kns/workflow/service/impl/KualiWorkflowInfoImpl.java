@@ -210,10 +210,10 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
     public List<String> getApprovalRequestedUsers(Long routeHeaderId) throws WorkflowException {
         try {
             ActionItemDTO[] actionItemVOs = getWorkflowUtility().getActionItems(routeHeaderId, new String[]{KEWConstants.ACTION_REQUEST_COMPLETE_REQ, KEWConstants.ACTION_REQUEST_APPROVE_REQ});
-            List users = new ArrayList();
+            List<String> users = new ArrayList<String>();
             for (int i = 0; i < actionItemVOs.length; i++) {
                 ActionItemDTO actionItemVO = actionItemVOs[i];
-                users.add(actionItemVO.getUser().getUuId());
+                users.add(actionItemVO.getWorkflowId());
             }
             return users;
         } catch (Exception e) {

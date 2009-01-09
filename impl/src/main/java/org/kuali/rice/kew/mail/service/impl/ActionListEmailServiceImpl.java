@@ -46,8 +46,6 @@ import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.UserService;
-import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -434,8 +432,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 		// for debugging purposes on the immediate reminder only
 		if (!isProduction()) {
 			try {
-				sf.append("Action Item sent to "
-						+ actionItem.getUser().getPrincipalName());
+				sf.append("Action Item sent to " + actionItem.getPerson().getPrincipalName());
 				if (actionItem.getDelegationType() != null) {
 					sf.append(" for delegation type "
 							+ actionItem.getDelegationType());

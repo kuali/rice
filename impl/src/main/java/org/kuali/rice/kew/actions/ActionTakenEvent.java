@@ -22,11 +22,12 @@ import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
+import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.docsearch.service.SearchableAttributeProcessingService;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.messaging.RouteDocumentMessageService;
@@ -36,17 +37,15 @@ import org.kuali.rice.kew.postprocessor.ProcessDocReport;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.Recipient;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
 
 /**
  * Super class containing mostly often used methods by all actions. Holds common
  * state as well, {@link DocumentRouteHeaderValue} document,
- * {@link ActionTakenValue} action taken (once saved), {@link WorkflowUser} user
+ * {@link ActionTakenValue} action taken (once saved), {@link KimPrincipal} principal
  * that has taken the action
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -111,10 +110,10 @@ public abstract class ActionTakenEvent {
 	}
 
 	/**
-	 * Validates whether or not this action is valid for the given WorkflowUser
+	 * Validates whether or not this action is valid for the given principal
 	 * and DocumentRouteHeaderValue.
 	 */
-	protected boolean isActionValid() throws KEWUserNotFoundException {
+	protected boolean isActionValid() {
 		return Utilities.isEmpty(validateActionRules());
 	}
 
@@ -124,36 +123,19 @@ public abstract class ActionTakenEvent {
 	 * @return error message string of specific error message
 	 * @throws KEWUserNotFoundException
 	 */
-	protected abstract String validateActionRules() throws KEWUserNotFoundException;
+	protected abstract String validateActionRules();
 
-//	/**
-//	 * Method to indicate that this action may require initiator execution only
-//	 *
-//	 * @return false if action can be performed by users outside the initiator
-//	 */
-//	protected boolean requireInitiatorCheck() {
-//		LOG.debug("requireInitiatorCheck() Default method = returning true");
-//		return true;
-//	}
-
-	protected boolean isActionCompatibleRequest(List<ActionRequestValue> requests) throws KEWUserNotFoundException {
+	protected boolean isActionCompatibleRequest(List<ActionRequestValue> requests) {
 		LOG.debug("isActionCompatibleRequest() Default method = returning true");
 		return true;
 	}
 
-//	protected String validateActionTakenRules() {
-//		if (requireInitiatorCheck() && (!user.getWorkflowUserId().getWorkflowId().equals(routeHeader.getInitiatorWorkflowId()) && (routeHeader.isStateSaved() || routeHeader.isStateInitiated()))) {
-//			return "Only the initiator can take action on an initiated or saved document of this type";
-//		}
-//		return "";
-//	}
-
-	public void performAction() throws InvalidActionTakenException, KEWUserNotFoundException {
+	public void performAction() throws InvalidActionTakenException {
 	    recordAction();
 	    queueDocumentProcessing();
 	}
 
-	protected abstract void recordAction() throws InvalidActionTakenException, KEWUserNotFoundException;
+	protected abstract void recordAction() throws InvalidActionTakenException;
 
 	public void performDeferredAction() {
 
@@ -241,23 +223,22 @@ public abstract class ActionTakenEvent {
 		val.setAnnotation(annotation);
 		val.setDocVersion(routeHeader.getDocVersion());
 		val.setRouteHeaderId(routeHeader.getRouteHeaderId());
-		val.setWorkflowId(principal.getPrincipalId());
-		if (delegator instanceof WorkflowUser) {
-			val.setDelegatorWorkflowId(((WorkflowUser) delegator).getWorkflowUserId().getWorkflowId());
-		} else if (delegator instanceof KimGroup) {
-			val.setDelegatorGroupId(((KimGroup) delegator).getGroupId());
+		val.setPrincipalId(principal.getPrincipalId());
+		if (delegator instanceof KimPrincipalRecipient) {
+			val.setDelegatorWorkflowId(((KimPrincipalRecipient)delegator).getPrincipalId());
+		} else if (delegator instanceof KimGroupRecipient) {
+			val.setDelegatorGroupId(((KimGroupRecipient) delegator).getGroupId());
 		}
 		val.setRouteHeader(routeHeader);
 		val.setCurrentIndicator(currentInd);
 		KEWServiceLocator.getActionTakenService().saveActionTaken(val);
-		// notifyActionTaken(this.actionTaken);
 		return val;
 	}
 
 	/**
 	 * Returns the highest priority delegator in the list of action requests.
 	 */
-	protected Recipient findDelegatorForActionRequests(List actionRequests) throws KEWUserNotFoundException {
+	protected Recipient findDelegatorForActionRequests(List actionRequests) {
 		return getActionRequestService().findDelegator(actionRequests);
 	}
 

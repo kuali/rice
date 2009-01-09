@@ -24,7 +24,6 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.BlanketApproveEngine;
 import org.kuali.rice.kew.engine.OrchestrationConfig;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
@@ -59,7 +58,7 @@ public class SuperUserNodeApproveEvent extends SuperUserActionTakenEvent {
         this.nodeName = nodeName;
     }
 
-    public void recordAction() throws InvalidActionTakenException, KEWUserNotFoundException {
+    public void recordAction() throws InvalidActionTakenException {
 
         if (Utilities.isEmpty(nodeName)) {
             throw new InvalidActionTakenException("No approval node name set");

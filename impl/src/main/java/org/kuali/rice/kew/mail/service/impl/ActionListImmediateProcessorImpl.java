@@ -44,14 +44,10 @@ public class ActionListImmediateProcessorImpl implements ActionListImmediateEmai
 		    }
             if (! actionItem.getActionRequestCd().equals(KEWConstants.ACTION_REQUEST_APPROVE_REQ) ||
             			! doNotSendApproveNotificationEmails) {
-                try {
-                	if (LOG.isDebugEnabled()) {
-                		LOG.debug("sending immediate reminder to " + actionItem.getUser().getPrincipalName());
-                	}
-					getActionListEmailService().sendImmediateReminder(actionItem.getUser(), actionItem);
-				} catch (KEWUserNotFoundException e) {
-					throw new WorkflowRuntimeException(e);
-				}
+            	if (LOG.isDebugEnabled()) {
+            		LOG.debug("sending immediate reminder to " + actionItem.getPrincipalId());
+            	}
+            	getActionListEmailService().sendImmediateReminder(actionItem.getPerson(), actionItem);
             }
         }
 	}

@@ -197,7 +197,7 @@ public class ActionRequestValue implements WorkflowPersistable {
         OrmUtils.populateAutoIncValue(this, KNSServiceLocator.getEntityManagerFactory().createEntityManager());
     }
 
-    public KimGroup getGroup() throws KEWUserNotFoundException {
+    public KimGroup getGroup() {
         if (getGroupId() == null) {
             LOG.error("Attempting to get a group with a blank group id");
             return null;
@@ -234,6 +234,7 @@ public class ActionRequestValue implements WorkflowPersistable {
     	return KEWServiceLocator.getIdentityHelperService().getPrincipal(getWorkflowId());
     }
     
+    @Deprecated
     public WorkflowUser getWorkflowUser() throws KEWUserNotFoundException {
         if (getWorkflowId() == null) {
             return null;
@@ -242,8 +243,8 @@ public class ActionRequestValue implements WorkflowPersistable {
         return userSrv.getWorkflowUser(new WorkflowUserId(getWorkflowId()));
     }
 
-    public Recipient getRecipient() throws KEWUserNotFoundException {
-        if (getWorkflowId() != null) {
+    public Recipient getRecipient() {
+        if (getPrincipalId() != null) {
             return new KimPrincipalRecipient(getPrincipal());
         } else if (getGroupId() != null){
             return new KimGroupRecipient(getGroup());
@@ -381,10 +382,20 @@ public class ActionRequestValue implements WorkflowPersistable {
         this.docVersion = docVersion;
     }
 
+    public String getPrincipalId() {
+        return workflowId;
+    }
+
+    public void setPrincipalId(String principalId) {
+        this.workflowId = principalId;
+    }
+    
+    @Deprecated
     public String getWorkflowId() {
         return workflowId;
     }
 
+    @Deprecated
     public void setWorkflowId(String workflowId) {
         this.workflowId = workflowId;
     }
@@ -557,7 +568,7 @@ public class ActionRequestValue implements WorkflowPersistable {
         return KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD.equals(getRecipientTypeCd());
     }
 
-    public boolean isRecipientRoutedRequest(String principalId) throws KEWUserNotFoundException {
+    public boolean isRecipientRoutedRequest(String principalId) {
     	//before altering this method it is used in checkRouteLogAuthentication
     	//don't break that method
     	if (principalId == null || "".equals(principalId)) {
@@ -584,7 +595,7 @@ public class ActionRequestValue implements WorkflowPersistable {
     	return isRecipientInGraph;
     }
 
-    public boolean isRecipientRoutedRequest(Recipient recipient) throws KEWUserNotFoundException {
+    public boolean isRecipientRoutedRequest(Recipient recipient) {
     	//before altering this method it is used in checkRouteLogAuthentication
     	//don't break that method
     	if (recipient == null) {

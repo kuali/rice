@@ -23,7 +23,6 @@ import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionitem.OutboxItemActionListExtension;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.Recipient;
 
 
@@ -41,13 +40,13 @@ public interface ActionListService {
 
     public Collection<ActionItem> getActionListForSingleDocument(Long routeHeaderId);
 
-    public Collection<Recipient> findUserSecondaryDelegators(String principalId) throws KEWUserNotFoundException;
+    public Collection<Recipient> findUserSecondaryDelegators(String principalId);
 
-    public Collection<Recipient> findUserPrimaryDelegations(String principalId) throws KEWUserNotFoundException;
+    public Collection<Recipient> findUserPrimaryDelegations(String principalId);
 
     public boolean refreshActionList(String principalId);
 
-    public void saveActionItem(ActionItem actionItem) throws KEWUserNotFoundException;
+    public void saveActionItem(ActionItem actionItem);
 
     public void deleteActionItem(ActionItem actionItem);
 
@@ -65,7 +64,7 @@ public interface ActionListService {
      * this method should schedule the changes to occur asynchronously to mitigate transaction
      * and concurent document modification issues.
      */
-    public void updateActionItemsForWorkgroupChange(String oldKimGroupId, String newKimGroupId) throws KEWUserNotFoundException;
+    public void updateActionItemsForWorkgroupChange(String oldKimGroupId, String newKimGroupId);
 
     /**
      * Updates the action list for a the given document for a user who was added to a workgroup.  This method will generate
@@ -73,7 +72,7 @@ public interface ActionListService {
      * the user is, in fact, still a member of the workgroup at the time of the invocation of this method before
      * generating the action items.
      */
-    public void updateActionListForUserAddedToGroup(String principalId, String groupId) throws KEWUserNotFoundException;
+    public void updateActionListForUserAddedToGroup(String principalId, String groupId);
 
     /**
      * Updates the action list for a the given document for a user who was removed from a workgroup.  This will delete
@@ -81,9 +80,9 @@ public interface ActionListService {
      * member of the workgroup.  This method will also verify that the user is still no longer a member of the workgroup
      * at the time of the method invocation before removing the action items.
      */
-    public void updateActionListForUserRemovedFromGroup(String principalId, String groupId) throws KEWUserNotFoundException;
+    public void updateActionListForUserRemovedFromGroup(String principalId, String groupId);
 
-    public void updateActionItemsForTitleChange(Long routeHeaderId, String newTitle) throws KEWUserNotFoundException;
+    public void updateActionItemsForTitleChange(Long routeHeaderId, String newTitle);
 
     public void validateActionItem(ActionItem actionItem);
 

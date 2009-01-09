@@ -26,7 +26,6 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.role.KimRoleRecipient;
@@ -37,7 +36,6 @@ import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.RoleRecipient;
 import org.kuali.rice.kew.user.UserId;
 import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
@@ -132,7 +130,7 @@ public class ActionRequestFactory {
 
     //unify these 2 methods if possible
     public List generateNotifications(List requests, KimPrincipal principal, Recipient delegator,
-            String notificationRequestCode, String actionTakenCode) throws KEWUserNotFoundException
+            String notificationRequestCode, String actionTakenCode)
     {
         String groupName =  Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE,
 		        KNSConstants.DetailTypes.WORKGROUP_DETAIL_TYPE,
@@ -144,7 +142,7 @@ public class ActionRequestFactory {
 
     private List<ActionRequestValue> generateNotifications(ActionRequestValue parentRequest,
             List requests, KimPrincipal principal, Recipient delegator, String notificationRequestCode,
-            String actionTakenCode, KimGroup notifyExclusionWorkgroup) throws KEWUserNotFoundException
+            String actionTakenCode, KimGroup notifyExclusionWorkgroup)
     {
         List<ActionRequestValue> notificationRequests = new ArrayList<ActionRequestValue>();
         for (Iterator iter = requests.iterator(); iter.hasNext();) {
@@ -187,7 +185,7 @@ public class ActionRequestFactory {
         return isMember;
     }
 
-    private ActionRequestValue createNotificationRequest(ActionRequestValue actionRequest, KimPrincipal reasonPrincipal, String notificationRequestCode, String actionTakenCode) throws KEWUserNotFoundException {
+    private ActionRequestValue createNotificationRequest(ActionRequestValue actionRequest, KimPrincipal reasonPrincipal, String notificationRequestCode, String actionTakenCode) {
 
     	String annotation = generateNotificationAnnotation(reasonPrincipal, notificationRequestCode, actionTakenCode, actionRequest);
         ActionRequestValue request = createActionRequest(notificationRequestCode, actionRequest.getPriority(), actionRequest.getRecipient(), actionRequest.getResponsibilityDesc(), KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, Boolean.TRUE, annotation);
@@ -273,9 +271,8 @@ public class ActionRequestFactory {
      * @param ignorePrevious
      * @param description
      * @return the created root role request
-     * @throws KEWUserNotFoundException
      */
-    public ActionRequestValue addRoleRequest(RoleRecipient role, String actionRequested, String approvePolicy, Integer priority, Long responsibilityId, Boolean ignorePrevious, String description, Long ruleId) throws KEWUserNotFoundException {
+    public ActionRequestValue addRoleRequest(RoleRecipient role, String actionRequested, String approvePolicy, Integer priority, Long responsibilityId, Boolean ignorePrevious, String description, Long ruleId) {
 
     	ActionRequestValue requestGraph = createActionRequest(actionRequested, priority, role, description, responsibilityId, ignorePrevious, approvePolicy, ruleId, null);
     	if (role != null && role.getResolvedQualifiedRole() != null && role.getResolvedQualifiedRole().getRecipients() != null) {
@@ -286,7 +283,8 @@ public class ActionRequestFactory {
 				throw new WorkflowRuntimeException("Failed to resolve id of type " + recipientId.getClass().getName() + " returned from role '" + role.getRoleName() + "'.  Id returned contained a null or empty value.");
 			}
 			if (recipientId instanceof UserId) {
-				role.setTarget(KEWServiceLocator.getUserService().getWorkflowUser((UserId) recipientId));
+				KimPrincipal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal((UserId)recipientId);
+				role.setTarget(new KimPrincipalRecipient(principal));
 			} else {
 				role.setTarget(new KimGroupRecipient(KEWServiceLocator.getIdentityHelperService().getGroup((GroupId) recipientId)));
 			}
@@ -310,7 +308,7 @@ public class ActionRequestFactory {
     /**
      * Generates an ActionRequest graph for the given KIM Responsibilities.  This graph includes any associated delegations.
      */
-    public ActionRequestValue addRoleResponsibilityRequest(List<ResponsibilityActionInfo> responsibilities, String approvePolicy) throws KEWUserNotFoundException {
+    public ActionRequestValue addRoleResponsibilityRequest(List<ResponsibilityActionInfo> responsibilities, String approvePolicy) {
     	if (responsibilities == null || responsibilities.isEmpty()) {
     		LOG.warn("Didn't create action requests for action request description because no responsibilities were defined.");
     		return null;
@@ -324,7 +322,7 @@ public class ActionRequestFactory {
 
     	for (ResponsibilityActionInfo responsibility : responsibilities) {
 			if (responsibility.getPrincipalId() != null) {
-				roleRecipient.setTarget(KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(responsibility.getPrincipalId())));
+				roleRecipient.setTarget(new KimPrincipalRecipient(responsibility.getPrincipalId()));
 			} else if (responsibility.getGroupId() != null) {
 				roleRecipient.setTarget(new KimGroupRecipient(responsibility.getGroupId()));
 			} else {
@@ -339,7 +337,7 @@ public class ActionRequestFactory {
     	return requestGraph;
     }
     
-    private void generateRoleResponsibilityDelegationRequests(ResponsibilityActionInfo responsibility, ActionRequestValue parentRequest) throws KEWUserNotFoundException {
+    private void generateRoleResponsibilityDelegationRequests(ResponsibilityActionInfo responsibility, ActionRequestValue parentRequest) {
     	List<DelegateInfo> delegates = responsibility.getDelegates();
     	for (DelegateInfo delegate : delegates) {
     		Recipient recipient = null;
@@ -368,7 +366,7 @@ public class ActionRequestFactory {
     	return responsibilityDescription;
     }
 
-    public ActionRequestValue addDelegationRoleRequest(ActionRequestValue parentRequest, String approvePolicy, RoleRecipient role, Long responsibilityId, Boolean ignorePrevious, String delegationType, String description, Long ruleId) throws KEWUserNotFoundException {
+    public ActionRequestValue addDelegationRoleRequest(ActionRequestValue parentRequest, String approvePolicy, RoleRecipient role, Long responsibilityId, Boolean ignorePrevious, String delegationType, String description, Long ruleId) {
     	Recipient parentRecipient = parentRequest.getRecipient();
     	if (parentRecipient instanceof RoleRecipient) {
     		throw new WorkflowRuntimeException("Cannot delegate on Role Request.  It must be a request to a person or workgroup, although that request may be in a role");
@@ -386,7 +384,7 @@ public class ActionRequestFactory {
 				throw new WorkflowRuntimeException("Failed to resolve id of type " + recipientId.getClass().getName() + " returned from role '" + role.getRoleName() + "'.  Id returned contained a null or empty value.");
 			}
 			if (recipientId instanceof UserId) {
-				role.setTarget(KEWServiceLocator.getUserService().getWorkflowUser((UserId) recipientId));
+				role.setTarget(new KimPrincipalRecipient(KEWServiceLocator.getIdentityHelperService().getPrincipal((UserId) recipientId)));
 			} else {
 			    role.setTarget(new KimGroupRecipient(KEWServiceLocator.getIdentityHelperService().getGroup((GroupId) recipientId)));
 			}
@@ -406,7 +404,7 @@ public class ActionRequestFactory {
     	return delegationRoleRequest;
     }
 
-    public ActionRequestValue addDelegationRequest(ActionRequestValue parentRequest, Recipient recipient, Long responsibilityId, Boolean ignorePrevious, String delegationType, String description, Long ruleId) throws KEWUserNotFoundException {
+    public ActionRequestValue addDelegationRequest(ActionRequestValue parentRequest, Recipient recipient, Long responsibilityId, Boolean ignorePrevious, String delegationType, String description, Long ruleId) {
     	if (! relatedToRoot(parentRequest)) {
     		throw new WorkflowRuntimeException("The parent request is not related to any request managed by this factory");
     	}

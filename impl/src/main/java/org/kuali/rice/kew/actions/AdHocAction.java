@@ -25,7 +25,6 @@ import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.Recipient;
@@ -67,7 +66,7 @@ public class AdHocAction extends ActionTakenEvent {
 		this.annotation = annotation;
 	}
 
-	public void recordAction() throws InvalidActionTakenException, KEWUserNotFoundException {
+	public void recordAction() throws InvalidActionTakenException {
 		String errorMessage = validateActionRules();
         if (!Utilities.isEmpty(errorMessage)) {
             throw new InvalidActionTakenException(errorMessage);
@@ -83,12 +82,12 @@ public class AdHocAction extends ActionTakenEvent {
      * @see org.kuali.rice.kew.actions.ActionTakenEvent#validateActionRules()
      */
     @Override
-    public String validateActionRules() throws KEWUserNotFoundException {
+    public String validateActionRules() {
         List targetNodes = KEWServiceLocator.getRouteNodeService().getCurrentNodeInstances(getRouteHeaderId());
         return validateActionRules(targetNodes);
     }
 
-    private String validateActionRules(List targetNodes) throws KEWUserNotFoundException {
+    private String validateActionRules(List targetNodes) {
     	// recipient will be null when this is invoked from ActionRegistry.getValidActions
     	if (recipient != null) {
     		if (recipient instanceof KimPrincipalRecipient) {
@@ -108,7 +107,7 @@ public class AdHocAction extends ActionTakenEvent {
         return adhocRouteAction(targetNodes, true);
     }
 
-    private String adhocRouteAction(List targetNodes, boolean forValidationOnly) throws KEWUserNotFoundException {
+    private String adhocRouteAction(List targetNodes, boolean forValidationOnly) {
         if (targetNodes.isEmpty()) {
             return "Could not locate an node instance on the document with the name '" + nodeName + "'";
         }

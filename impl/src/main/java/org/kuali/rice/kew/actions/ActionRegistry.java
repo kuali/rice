@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.core.reflect.DataDefinition;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
@@ -70,5 +69,5 @@ public interface ActionRegistry {
      * @throws ResourceUnavailableException if an action class cannot be constructed
      * @throws KEWUserNotFoundException if the given user is invalid
      */
-    public ValidActions getValidActions(KimPrincipal principal, DocumentRouteHeaderValue document) throws ResourceUnavailableException, KEWUserNotFoundException;
+    public ValidActions getValidActions(KimPrincipal principal, DocumentRouteHeaderValue document) throws ResourceUnavailableException;
 }

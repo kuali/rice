@@ -22,16 +22,15 @@ import java.util.List;
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
@@ -93,7 +92,7 @@ public class SuperUserActionRequestApproveEvent extends SuperUserActionTakenEven
         }
     }
 
-    protected void processActionRequests() throws InvalidActionTakenException, KEWUserNotFoundException {
+    protected void processActionRequests() throws InvalidActionTakenException {
         //this method has been written to process all of the actions though only approvals are currently processed
 
         DocumentType docType = getRouteHeader().getDocumentType();
@@ -117,7 +116,12 @@ public class SuperUserActionRequestApproveEvent extends SuperUserActionTakenEven
         MDC.put("docId", getRouteHeader().getRouteHeaderId());
 
         LOG.debug("Super User Delegation Action on action request: " + annotation);
-        ActionTakenValue actionTaken = this.saveActionTaken(getActionRequest().getWorkflowUser());
+        KimPrincipalRecipient superUserRecipient = null;
+        if (getActionRequest().getPrincipal() != null) {
+        	superUserRecipient = new KimPrincipalRecipient(getActionRequest().getPrincipal());
+        }
+        
+        ActionTakenValue actionTaken = this.saveActionTaken(superUserRecipient);
 
         LOG.debug("Deactivate this action request");
 
@@ -154,7 +158,7 @@ public class SuperUserActionRequestApproveEvent extends SuperUserActionTakenEven
         }
     }
 
-    public void recordAction() throws InvalidActionTakenException, KEWUserNotFoundException {
+    public void recordAction() throws InvalidActionTakenException {
         this.processActionRequests();
         this.queueDocumentProcessing();
     }

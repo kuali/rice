@@ -22,12 +22,10 @@ import java.util.List;
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
@@ -54,11 +52,11 @@ public class CancelAction extends ActionTakenEvent {
      * @see org.kuali.rice.kew.actions.ActionTakenEvent#isActionCompatibleRequest(java.util.List)
      */
     @Override
-    public String validateActionRules() throws KEWUserNotFoundException {
+    public String validateActionRules() {
         return validateActionRules(getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ));
     }
 
-    private String validateActionRules(List<ActionRequestValue> actionRequests) throws KEWUserNotFoundException {
+    private String validateActionRules(List<ActionRequestValue> actionRequests) {
         if (! KEWServiceLocator.getDocumentTypePermissionService().canCancel(getPrincipal().getPrincipalId(), getRouteHeader().getDocumentType(), getRouteHeader().getCurrentNodeNames(), getRouteHeader().getDocRouteStatus(), getRouteHeader().getInitiatorWorkflowId())) {
             return "User is not authorized to Cancel document";
         }
@@ -76,7 +74,7 @@ public class CancelAction extends ActionTakenEvent {
      * @see org.kuali.rice.kew.actions.ActionTakenEvent#isActionCompatibleRequest(java.util.List)
      */
     @Override
-    public boolean isActionCompatibleRequest(List<ActionRequestValue> requests) throws KEWUserNotFoundException {
+    public boolean isActionCompatibleRequest(List<ActionRequestValue> requests) {
 
         // can always cancel saved or initiated document
         if (routeHeader.isStateInitiated() || routeHeader.isStateSaved()) {
@@ -102,7 +100,7 @@ public class CancelAction extends ActionTakenEvent {
         return actionCompatible;
     }
 
-    public void recordAction() throws InvalidActionTakenException, KEWUserNotFoundException {
+    public void recordAction() throws InvalidActionTakenException {
         MDC.put("docId", getRouteHeader().getRouteHeaderId());
         updateSearchableAttributesIfPossible();
 

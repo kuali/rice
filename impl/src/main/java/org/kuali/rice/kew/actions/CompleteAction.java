@@ -22,12 +22,10 @@ import java.util.List;
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
@@ -72,11 +70,11 @@ public class CompleteAction extends ActionTakenEvent {
      * @see org.kuali.rice.kew.actions.ActionTakenEvent#isActionCompatibleRequest(java.util.List)
      */
     @Override
-    public String validateActionRules() throws KEWUserNotFoundException {
+    public String validateActionRules() {
         return validateActionRules(getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ));
     }
 
-    private String validateActionRules(List<ActionRequestValue> actionRequests) throws KEWUserNotFoundException {
+    private String validateActionRules(List<ActionRequestValue> actionRequests) {
         if (!getRouteHeader().isValidActionToTake(getActionPerformedCode())) {
             return "Document is not in a state to be completed";
         }
@@ -90,7 +88,7 @@ public class CompleteAction extends ActionTakenEvent {
      * @see org.kuali.rice.kew.actions.ActionTakenEvent#isActionCompatibleRequest(java.util.List)
      */
     @Override
-    public boolean isActionCompatibleRequest(List requests) throws KEWUserNotFoundException {
+    public boolean isActionCompatibleRequest(List requests) {
         // we allow pre-approval
         if (requests.isEmpty()) {
             return true;
@@ -127,7 +125,7 @@ public class CompleteAction extends ActionTakenEvent {
      * @throws InvalidActionTakenException
      * @throws ResourceUnavailableException
      */
-    public void recordAction() throws org.kuali.rice.kew.exception.InvalidActionTakenException, KEWUserNotFoundException {
+    public void recordAction() throws org.kuali.rice.kew.exception.InvalidActionTakenException {
         MDC.put("docId", getRouteHeader().getRouteHeaderId());
         updateSearchableAttributesIfPossible();
         LOG.debug("Completing document : " + annotation);

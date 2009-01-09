@@ -22,13 +22,10 @@ import java.util.List;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
@@ -64,7 +61,7 @@ public class ReleaseWorkgroupAuthority extends ActionTakenEvent {
      * @see org.kuali.rice.kew.actions.ActionTakenEvent#validateActionRules()
      */
     @Override
-    public String validateActionRules() throws KEWUserNotFoundException {
+    public String validateActionRules() {
         if (groupId == null) {
             return "User cannot Release Workgroup Authority without a given workgroup";
         } else {
@@ -72,7 +69,7 @@ public class ReleaseWorkgroupAuthority extends ActionTakenEvent {
         }
     }
 
-    public void recordAction() throws InvalidActionTakenException, KEWUserNotFoundException {
+    public void recordAction() throws InvalidActionTakenException {
         String error = performReleaseWorkgroupAuthority(false);
         if (!Utilities.isEmpty(error)) {
             throw new InvalidActionTakenException(error);
@@ -81,7 +78,7 @@ public class ReleaseWorkgroupAuthority extends ActionTakenEvent {
         queueDocumentProcessing();
     }
 
-    private String performReleaseWorkgroupAuthority(boolean forValidationOnly) throws KEWUserNotFoundException {
+    private String performReleaseWorkgroupAuthority(boolean forValidationOnly) {
         if (!KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(getPrincipal().getPrincipalId(), groupId)){
             return (getPrincipal().getPrincipalName() + " not a member of workgroup " + groupId);
         }

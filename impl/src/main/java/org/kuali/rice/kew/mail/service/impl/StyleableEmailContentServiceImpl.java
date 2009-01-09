@@ -370,8 +370,9 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
 
             // keep adding stuff until we have all the xml we need to formulate the message :/
             addObjectXML(doc, actionItem, root, "actionItem");
-            addObjectXML(doc, actionItem.getUser(), root, "actionItemUser");
-            addObjectXML(doc, actionItem.getUser().getPrincipalName(), root, "actionItemAuthenticationUserId");
+            addObjectXML(doc, actionItem.getPerson(), root, "actionItemPerson");
+            addObjectXML(doc, actionItem.getPerson().getPrincipalId(), root, "actionItemPrincipalId");
+            addObjectXML(doc, actionItem.getPerson().getPrincipalName(), root, "actionItemPrincipalName");
             addObjectXML(doc, actionItem.getRouteHeader(), root, "doc");
             addObjectXML(doc, actionItem.getRouteHeader().getInitiatorUser(), root, "docInitiator");
             addObjectXML(doc, actionItem.getRouteHeader().getDocumentType(), root, "documentType");

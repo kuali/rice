@@ -49,21 +49,19 @@ public class ActionItemDTO implements Serializable {
     private String groupId;
 
     /**
-     * Workflow user id of the target user (if any... user object will be null if workflowId is empty)
+     * Principal id of the target user (if any... user object will be null if workflowId is empty)
      */
     private String principalId;
-    private UserDTO user;
-
+    
     /**
-     * Workflow group id of the target delegator group (if any... delegatorgroup object will be null if delegatorgroupId is empty)
+     * Group id of the target delegator group (if any... delegatorgroup object will be null if delegatorgroupId is empty)
      */
     private String delegatorGroupId;
 
     /**
-     * Workflow user id of the target delegator user (if any... delegatorUser object will be null if delegatorWorkflowId is empty)
+     * Principal id of the target delegator user (if any... delegatorUser object will be null if delegatorWorkflowId is empty)
      */
-    private String delegatorWorkflowId;
-    private UserDTO delegatorUser;
+    private String delegatorPrincipalId;
 
     public Long getActionItemId() {
         return this.actionItemId;
@@ -167,29 +165,17 @@ public class ActionItemDTO implements Serializable {
     public void setWorkflowId(String workflowId) {
         this.principalId = workflowId;
     }
-    public UserDTO getUser() {
-        return this.user;
-    }
-    public void setUser(UserDTO user) {
-        this.user = user;
-    }
     public String getDelegatorGroupId() {
         return this.delegatorGroupId;
     }
     public void setDelegatorGroupId(String delegatorGroupId) {
         this.delegatorGroupId = delegatorGroupId;
     }
-    public String getDelegatorWorkflowId() {
-        return this.delegatorWorkflowId;
+    public String getDelegatorPrincipalId() {
+        return this.delegatorPrincipalId;
     }
-    public void setDelegatorWorkflowId(String delegatorWorkflowId) {
-        this.delegatorWorkflowId = delegatorWorkflowId;
-    }
-    public UserDTO getDelegatorUser() {
-        return this.delegatorUser;
-    }
-    public void setDelegatorUser(UserDTO delegatorUser) {
-        this.delegatorUser = delegatorUser;
+    public void setDelegatorPrincipalId(String delegatorPrincipalId) {
+        this.delegatorPrincipalId = delegatorPrincipalId;
     }
 
 }

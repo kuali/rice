@@ -26,7 +26,6 @@ import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -69,14 +68,14 @@ public class TakeWorkgroupAuthority extends ActionTakenEvent {
      * @see org.kuali.rice.kew.actions.ActionTakenEvent#validateActionRules()
      */
     @Override
-    public String validateActionRules() throws KEWUserNotFoundException {
+    public String validateActionRules() {
         if  ( (groupId != null) && (!KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(getPrincipal().getPrincipalId(), groupId))) {
             return (getPrincipal().getPrincipalName() + " not a member of workgroup " + groupId);
         }
         return "";
     }
 
-    public void recordAction() throws InvalidActionTakenException, KEWUserNotFoundException {
+    public void recordAction() throws InvalidActionTakenException {
 
         String errorMessage = validateActionRules();
         if (!Utilities.isEmpty(errorMessage)) {

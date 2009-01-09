@@ -19,10 +19,7 @@ package org.kuali.rice.kew.actionitem.dao;
 import java.util.Collection;
 
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.Recipient;
-import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.rice.kim.bo.Person;
 
 /**
  * Data Access Object for {@link ActionItem}s.
@@ -53,8 +50,8 @@ public interface ActionItemDAO {
 	public Collection<ActionItem> findByWorkflowUserRouteHeaderId(
 			String workflowUserId, Long routeHeaderId);
 
-	public Collection<Recipient> findSecondaryDelegators(String principalId) throws KEWUserNotFoundException;
+	public Collection<Recipient> findSecondaryDelegators(String principalId);
 
-	public Collection<Recipient> findPrimaryDelegationRecipients(String principalId) throws KEWUserNotFoundException;
+	public Collection<Recipient> findPrimaryDelegationRecipients(String principalId);
 
 }

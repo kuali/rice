@@ -18,7 +18,6 @@ package org.kuali.rice.kew.actions;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 
 
 /**
@@ -69,7 +68,7 @@ public class AdHocRevoke implements java.io.Serializable {
 	/**
 	 * Determines if the given action request is an ad hoc request which matches this set of criteria.
 	 */
-	public boolean matchesActionRequest(ActionRequestValue actionRequest) throws KEWUserNotFoundException {
+	public boolean matchesActionRequest(ActionRequestValue actionRequest) {
 		if (!actionRequest.isAdHocRequest()) {
 			return false;
 		}

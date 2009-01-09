@@ -35,8 +35,6 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.UserService;
-import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
@@ -76,11 +74,11 @@ public class DisapproveAction extends ActionTakenEvent {
      * @see org.kuali.rice.kew.actions.ActionTakenEvent#isActionCompatibleRequest(java.util.List)
      */
     @Override
-    public String validateActionRules() throws KEWUserNotFoundException {
+    public String validateActionRules() {
         return validateActionRules(getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ));
     }
 
-    private String validateActionRules(List<ActionRequestValue> actionRequests) throws KEWUserNotFoundException {
+    private String validateActionRules(List<ActionRequestValue> actionRequests) {
         if (!getRouteHeader().isValidActionToTake(getActionPerformedCode())) {
             return "Document is not in a state to be disapproved";
         }
@@ -94,7 +92,7 @@ public class DisapproveAction extends ActionTakenEvent {
      * @see org.kuali.rice.kew.actions.ActionTakenEvent#isActionCompatibleRequest(java.util.List)
      */
     @Override
-    public boolean isActionCompatibleRequest(List requests) throws KEWUserNotFoundException {
+    public boolean isActionCompatibleRequest(List requests) {
         // can always cancel saved or initiated document
         if (routeHeader.isStateInitiated() || routeHeader.isStateSaved()) {
             return true;
@@ -125,7 +123,7 @@ public class DisapproveAction extends ActionTakenEvent {
      * @throws InvalidActionTakenException
      * @throws KEWUserNotFoundException
      */
-    public void recordAction() throws InvalidActionTakenException, KEWUserNotFoundException {
+    public void recordAction() throws InvalidActionTakenException {
         MDC.put("docId", getRouteHeader().getRouteHeaderId());
         updateSearchableAttributesIfPossible();
 
@@ -169,14 +167,14 @@ public class DisapproveAction extends ActionTakenEvent {
     }
 
     //generate notifications to all people that have approved the document including the initiator
-    private void generateNotifications(RouteNodeInstance notificationNodeInstance) throws KEWUserNotFoundException
+    private void generateNotifications(RouteNodeInstance notificationNodeInstance)
     {
         String groupName = Utilities.getKNSParameterValue(
                                 KEWConstants.DEFAULT_KIM_NAMESPACE,
                                 KNSConstants.DetailTypes.WORKGROUP_DETAIL_TYPE,
                                 KEWConstants.NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME_IND);
 
-        Set<WorkflowUser> systemUserWorkflowUsers = new HashSet<WorkflowUser>();
+        Set<String> systemPrincipalIds = new HashSet<String>();
 
         if( !StringUtils.isBlank(groupName))
         {
@@ -191,22 +189,22 @@ public class DisapproveAction extends ActionTakenEvent {
                 UserService service = KEWServiceLocator.getUserService();
                 for( String id : principalIds)
                 {
-                    systemUserWorkflowUsers.add(service.getWorkflowUser(new WorkflowUserId(id)));
+                    systemPrincipalIds.add(id);
                 }
             }
         }
         ActionRequestFactory arFactory = new ActionRequestFactory(getRouteHeader(), notificationNodeInstance);
         Collection actions = KEWServiceLocator.getActionTakenService().findByRouteHeaderId(getRouteHeaderId());
         //one notification per person
-        Set usersNotified = new HashSet();
+        Set<String> usersNotified = new HashSet<String>();
         for (Iterator iter = actions.iterator(); iter.hasNext();)
         {
             ActionTakenValue     action = (ActionTakenValue) iter.next();
-            if ((action.isApproval() || action.isCompletion()) && ! usersNotified.contains(action.getWorkflowId())) {
-                if (!systemUserWorkflowUsers.contains(action.getWorkflowUser())) {
+            if ((action.isApproval() || action.isCompletion()) && ! usersNotified.contains(action.getPrincipalId())) {
+                if (!systemPrincipalIds.contains(action.getPrincipalId())) {
                     ActionRequestValue request = arFactory.createNotificationRequest(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, action.getPrincipal(), getActionTakenCode(), getPrincipal(), getActionTakenCode());
                     KEWServiceLocator.getActionRequestService().activateRequest(request);
-                    usersNotified.add(request.getWorkflowId());
+                    usersNotified.add(request.getPrincipalId());
                 }
             }
         }

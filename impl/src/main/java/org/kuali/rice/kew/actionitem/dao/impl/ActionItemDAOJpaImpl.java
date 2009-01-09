@@ -28,15 +28,11 @@ import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionitem.dao.ActionItemDAO;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
-import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.user.Recipient;
-import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.WebFriendlyRecipient;
-import org.kuali.rice.kew.workgroup.WorkflowGroupId;
-import org.kuali.rice.kew.workgroup.WorkgroupService;
-import org.kuali.rice.kim.service.GroupService;
+import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 /**
  * OJB implementation of {@link ActionItemDAO}.
@@ -121,7 +117,7 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
     	}
     }
 
-    public Collection<Recipient> findSecondaryDelegators(String principalId) throws KEWUserNotFoundException {
+    public Collection<Recipient> findSecondaryDelegators(String principalId) {
         Criteria notNullWorkflowCriteria = new Criteria(ActionItem.class.getName());
         notNullWorkflowCriteria.notNull("delegatorWorkflowId");
         Criteria notNullWorkgroupCriteria = new Criteria(ActionItem.class.getName());
@@ -144,14 +140,14 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
                 delegators.put(delegatorWorkflowId,new WebFriendlyRecipient(KIMServiceLocator.getPersonService().getPerson(delegatorWorkflowId)));
             }else if (delegatorGroupId != null) {
                 if (!delegators.containsKey(delegatorGroupId)) {
-                    delegators.put(delegatorGroupId, getWorkgroupService().getWorkgroup(new WorkflowGroupId(new Long(delegatorGroupId))));
+                    delegators.put(delegatorGroupId, new KimGroupRecipient(getIdentityManagementService().getGroup(delegatorGroupId)));
                 }
             }
         }
          return delegators.values();
     }
 
-    public Collection<Recipient> findPrimaryDelegationRecipients(String principalId) throws KEWUserNotFoundException {
+    public Collection<Recipient> findPrimaryDelegationRecipients(String principalId) {
     	List<String> workgroupIds = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
         Criteria orCriteria = new Criteria(ActionItem.class.getName());
         Criteria delegatorWorkflowIdCriteria = new Criteria(ActionItem.class.getName());
@@ -180,19 +176,9 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
         return delegators.values();
     }
 
-    private UserService getUserService() {
-        return (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
+    private IdentityManagementService getIdentityManagementService() {
+        return (IdentityManagementService) KIMServiceLocator.getService(KIMServiceLocator.KIM_IDENTITY_MANAGEMENT_SERVICE);
     }
-
-    private WorkgroupService getWorkgroupService() {
-        return (WorkgroupService) KEWServiceLocator.getService(KEWServiceLocator.WORKGROUP_SRV);
-    }
-
-    private GroupService getGroupService(){
-    	return (GroupService) KIMServiceLocator.getGroupService();
-    }
-
-
 
 
 }

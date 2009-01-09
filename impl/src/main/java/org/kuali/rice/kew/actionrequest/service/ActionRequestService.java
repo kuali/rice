@@ -24,7 +24,6 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.engine.ActivationContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.WorkflowUser;
@@ -55,29 +54,29 @@ public interface ActionRequestService {
 
     public void deleteActionRequestGraph(ActionRequestValue actionRequest);
     
-    public List findAllValidRequests(String principalId, Long routeHeaderId, String requestCode) throws KEWUserNotFoundException;
+    public List findAllValidRequests(String principalId, Long routeHeaderId, String requestCode);
     
-    public List findAllValidRequests(String principalId, Collection actionRequests, String requestCode) throws KEWUserNotFoundException;
+    public List findAllValidRequests(String principalId, Collection actionRequests, String requestCode);
 
     public List findPendingByDoc(Long routeHeaderId);
 
-    public void saveActionRequest(ActionRequestValue actionRequest) throws KEWUserNotFoundException;
+    public void saveActionRequest(ActionRequestValue actionRequest);
 
-    public void activateRequest(ActionRequestValue actionRequest) throws KEWUserNotFoundException;
+    public void activateRequest(ActionRequestValue actionRequest);
     
-    public void activateRequest(ActionRequestValue actionRequest, boolean simulate) throws KEWUserNotFoundException;
+    public void activateRequest(ActionRequestValue actionRequest, boolean simulate);
 
-    public void activateRequest(ActionRequestValue actionRequest, ActivationContext activationContext) throws KEWUserNotFoundException;
+    public void activateRequest(ActionRequestValue actionRequest, ActivationContext activationContext);
 
-    public void activateRequests(Collection actionRequests) throws KEWUserNotFoundException;
+    public void activateRequests(Collection actionRequests);
     
-    public void activateRequests(Collection actionRequests, boolean simulate) throws KEWUserNotFoundException;
+    public void activateRequests(Collection actionRequests, boolean simulate);
 
-	public void activateRequests(Collection actionRequests, ActivationContext activationContext) throws KEWUserNotFoundException;
+	public void activateRequests(Collection actionRequests, ActivationContext activationContext);
 
-    public List activateRequestNoNotification(ActionRequestValue actionRequest, boolean simulate) throws KEWUserNotFoundException;
+    public List activateRequestNoNotification(ActionRequestValue actionRequest, boolean simulate);
 
-    public List activateRequestNoNotification(ActionRequestValue actionRequest, ActivationContext activationContext) throws KEWUserNotFoundException;
+    public List activateRequestNoNotification(ActionRequestValue actionRequest, ActivationContext activationContext);
 
     public ActionRequestValue findByActionRequestId(Long actionRequestId);
 
@@ -107,7 +106,7 @@ public interface ActionRequestService {
     
     public List findByStatusAndDocId(String statusCd, Long routeHeaderId);
 
-    public void alterActionRequested(List actionRequests, String actionRequestCd)throws KEWUserNotFoundException;
+    public void alterActionRequested(List actionRequests, String actionRequestCd);
 
     public List findByRouteHeaderIdIgnoreCurrentInd(Long routeHeaderId);
     
@@ -128,12 +127,12 @@ public interface ActionRequestService {
     /**
      * Returns the highest priority delegator in the list of action requests.
      */
-    public Recipient findDelegator(List actionRequests)  throws KEWUserNotFoundException;
+    public Recipient findDelegator(List actionRequests);
     
     /**
      * Returns the closest delegator for the given ActionRequest
      */
-    public Recipient findDelegator(ActionRequestValue actionRequest) throws KEWUserNotFoundException;
+    public Recipient findDelegator(ActionRequestValue actionRequest);
     
     public ActionRequestValue findDelegatorRequest(ActionRequestValue actionRequest);
     

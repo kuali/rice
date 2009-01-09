@@ -32,7 +32,6 @@ import org.kuali.rice.kew.engine.node.NodeGraphSearchResult;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.postprocessor.DocumentRouteLevelChange;
@@ -41,7 +40,6 @@ import org.kuali.rice.kew.postprocessor.ProcessDocReport;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.Recipient;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
@@ -101,7 +99,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
     /**
      * TODO will this work properly in the case of an ALL APPROVE role requests with some of the requests already completed?
      */
-    private void revokePendingRequests(List pendingRequests, ActionTakenValue actionTaken, Recipient delegator) throws KEWUserNotFoundException {
+    private void revokePendingRequests(List pendingRequests, ActionTakenValue actionTaken, Recipient delegator) {
         revokeRequests(pendingRequests);
         getActionRequestService().deactivateRequests(actionTaken, pendingRequests);
         if (sendNotifications) {
@@ -114,7 +112,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
     /**
      * Takes a list of root action requests and marks them and all of their children as "non-current".
      */
-    private void revokeRequests(List actionRequests) throws KEWUserNotFoundException {
+    private void revokeRequests(List actionRequests) {
         for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
             ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();
             actionRequest.setCurrentIndicator(Boolean.FALSE);
@@ -127,7 +125,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
         }
     }
 
-    private void processReturnToInitiator(RouteNodeInstance newNodeInstance) throws KEWUserNotFoundException {
+    private void processReturnToInitiator(RouteNodeInstance newNodeInstance) {
 	// important to pull this from the RouteNode's DocumentType so we get the proper version
         RouteNode initialNode = newNodeInstance.getRouteNode().getDocumentType().getPrimaryProcess().getInitialRouteNode();
         if (newNodeInstance.getRouteNode().getRouteNodeId().equals(initialNode.getRouteNodeId())) {
@@ -142,11 +140,11 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
      * @see org.kuali.rice.kew.actions.ActionTakenEvent#isActionCompatibleRequest(java.util.List)
      */
     @Override
-    public String validateActionRules() throws KEWUserNotFoundException {
+    public String validateActionRules() {
         return validateActionRules(getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ));
     }
 
-    private String validateActionRules(List<ActionRequestValue> actionRequests) throws KEWUserNotFoundException {
+    private String validateActionRules(List<ActionRequestValue> actionRequests) {
         if (!getRouteHeader().isValidActionToTake(getActionPerformedCode())) {
             String docStatus = getRouteHeader().getDocRouteStatus();
             return "Document of status '" + docStatus + "' cannot taken action '" + KEWConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS + "' to node name "+nodeName;
@@ -161,7 +159,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
      * @see org.kuali.rice.kew.actions.ActionTakenEvent#isActionCompatibleRequest(java.util.List)
      */
     @Override
-    public boolean isActionCompatibleRequest(List<ActionRequestValue> requests) throws KEWUserNotFoundException {
+    public boolean isActionCompatibleRequest(List<ActionRequestValue> requests) {
         String actionTakenCode = getActionPerformedCode();
 
         // Move is always correct because the client application has authorized it
@@ -207,7 +205,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
         return actionCompatible;
     }
 
-    public void recordAction() throws InvalidActionTakenException, KEWUserNotFoundException {
+    public void recordAction() throws InvalidActionTakenException {
         MDC.put("docId", getRouteHeader().getRouteHeaderId());
         updateSearchableAttributesIfPossible();
         LOG.debug("Returning document " + getRouteHeader().getRouteHeaderId() + " to previous node: " + nodeName + ", annotation: " + annotation);
@@ -325,7 +323,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
 		}
     }
 
-    private void executeNodeChange(Collection activeNodes, NodeGraphSearchResult result) throws InvalidActionTakenException, KEWUserNotFoundException {
+    private void executeNodeChange(Collection activeNodes, NodeGraphSearchResult result) throws InvalidActionTakenException {
         Integer oldRouteLevel = null;
         Integer newRouteLevel = null;
         if (CompatUtils.isRouteLevelCompatible(getRouteHeader())) {

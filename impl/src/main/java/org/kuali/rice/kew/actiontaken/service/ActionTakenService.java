@@ -22,7 +22,6 @@ import java.util.List;
 
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.WorkflowUser;
 
 
@@ -41,9 +40,9 @@ public interface ActionTakenService {
 
     public void saveActionTaken(ActionTakenValue actionTaken);
 
-    public ActionTakenValue getPreviousAction(ActionRequestValue actionRequest) throws KEWUserNotFoundException;
+    public ActionTakenValue getPreviousAction(ActionRequestValue actionRequest);
 
-    public ActionTakenValue getPreviousAction(ActionRequestValue actionRequest, List<ActionTakenValue> simulatedActionsTaken) throws KEWUserNotFoundException;
+    public ActionTakenValue getPreviousAction(ActionRequestValue actionRequest, List<ActionTakenValue> simulatedActionsTaken);
 
     public Collection findByRouteHeaderId(Long routeHeaderId);
 

@@ -22,12 +22,10 @@ import java.util.List;
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
@@ -62,7 +60,7 @@ public class RouteDocumentAction extends ActionTakenEvent {
      * @see org.kuali.rice.kew.actions.ActionTakenEvent#isActionCompatibleRequest(java.util.List)
      */
     @Override
-    public String validateActionRules() throws KEWUserNotFoundException {
+    public String validateActionRules() {
     	if (! KEWServiceLocator.getDocumentTypePermissionService().canRoute(getPrincipal().getPrincipalId(), getRouteHeader())) {
     		return "User is not authorized to Route document";
     	}
@@ -77,7 +75,7 @@ public class RouteDocumentAction extends ActionTakenEvent {
      * @throws org.kuali.rice.kew.exception.InvalidActionTakenException
      * @throws org.kuali.rice.kew.exception.KEWUserNotFoundException
      */
-    public void recordAction() throws org.kuali.rice.kew.exception.InvalidActionTakenException, KEWUserNotFoundException {
+    public void recordAction() throws org.kuali.rice.kew.exception.InvalidActionTakenException {
         MDC.put("docId", getRouteHeader().getRouteHeaderId());
         updateSearchableAttributesIfPossible();
 

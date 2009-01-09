@@ -35,7 +35,6 @@ import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.actiontaken.service.ActionTakenService;
 import org.kuali.rice.kew.engine.ActivationContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
@@ -44,7 +43,6 @@ import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.routemodule.RouteModule;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.Recipient;
-import org.kuali.rice.kew.user.UserId;
 import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
@@ -53,8 +51,6 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.ResponsibleParty;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.workgroup.WorkflowGroupId;
-import org.kuali.rice.kew.workgroup.WorkgroupService;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -104,15 +100,15 @@ public class ActionRequestServiceImpl implements ActionRequestService {
 
 
 
-    public void activateRequests(Collection actionRequests) throws KEWUserNotFoundException {
+    public void activateRequests(Collection actionRequests) {
         activateRequests(actionRequests, new ActivationContext(!ActivationContext.CONTEXT_IS_SIMULATION));
     }
 
-    public void activateRequests(Collection actionRequests, boolean simulate) throws KEWUserNotFoundException {
+    public void activateRequests(Collection actionRequests, boolean simulate) {
         activateRequests(actionRequests, new ActivationContext(simulate));
     }
 
-    public void activateRequests(Collection actionRequests, ActivationContext activationContext) throws KEWUserNotFoundException {
+    public void activateRequests(Collection actionRequests, ActivationContext activationContext) {
         if (actionRequests == null) {
             return;
         }
@@ -127,26 +123,23 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         LOG.debug("Generated " + activationContext.getGeneratedActionItems().size() + " action items.");
     }
 
-    public void activateRequest(ActionRequestValue actionRequest) throws KEWUserNotFoundException {
+    public void activateRequest(ActionRequestValue actionRequest) {
         activateRequests(Utilities.asList(actionRequest), new ActivationContext(!ActivationContext.CONTEXT_IS_SIMULATION));
     }
 
-    public void activateRequest(ActionRequestValue actionRequest, boolean simulate) throws KEWUserNotFoundException {
+    public void activateRequest(ActionRequestValue actionRequest, boolean simulate) {
         activateRequests(Utilities.asList(actionRequest), new ActivationContext(simulate));
     }
 
-    public void activateRequest(ActionRequestValue actionRequest, ActivationContext activationContext)
-    throws KEWUserNotFoundException {
+    public void activateRequest(ActionRequestValue actionRequest, ActivationContext activationContext) {
         activateRequests(Utilities.asList(actionRequest), activationContext);
     }
 
-    public List activateRequestNoNotification(ActionRequestValue actionRequest, boolean simulate)
-    throws KEWUserNotFoundException {
+    public List activateRequestNoNotification(ActionRequestValue actionRequest, boolean simulate) {
         return activateRequestNoNotification(actionRequest, new ActivationContext(simulate));
     }
 
-    public List activateRequestNoNotification(ActionRequestValue actionRequest, ActivationContext activationContext)
-    throws KEWUserNotFoundException {
+    public List activateRequestNoNotification(ActionRequestValue actionRequest, ActivationContext activationContext) {
         activationContext.setGeneratedActionItems(new ArrayList());
         activateRequestInternal(actionRequest, activationContext);
         return activationContext.getGeneratedActionItems();
@@ -156,8 +149,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
      * Internal helper method for activating a Collection of action requests and their children. Maintains an accumulator
      * for generated action items.
      */
-    private void activateRequestsInternal(Collection actionRequests, ActivationContext activationContext)
-    throws KEWUserNotFoundException {
+    private void activateRequestsInternal(Collection actionRequests, ActivationContext activationContext) {
         if (actionRequests == null) {
             return;
         }
@@ -171,7 +163,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
      * Internal helper method for activating a single action requests and it's children. Maintains an accumulator for
      * generated action items.
      */
-    private void activateRequestInternal(ActionRequestValue actionRequest, ActivationContext activationContext) throws KEWUserNotFoundException {
+    private void activateRequestInternal(ActionRequestValue actionRequest, ActivationContext activationContext) {
         PerformanceLogger performanceLogger = new PerformanceLogger();
         if (actionRequest == null || actionRequest.isActive() || actionRequest.isDeactivated()) {
             return;
@@ -199,14 +191,13 @@ public class ActionRequestServiceImpl implements ActionRequestService {
      *
      * @return the List of generated ActionItems
      */
-    private List<ActionItem> generateActionItems(ActionRequestValue actionRequest, ActivationContext activationContext)
-    throws KEWUserNotFoundException {
+    private List<ActionItem> generateActionItems(ActionRequestValue actionRequest, ActivationContext activationContext) {
         LOG.debug("generating the action items for request " + actionRequest.getActionRequestId());
         List<ActionItem> actionItems = new ArrayList<ActionItem>();
         if (!actionRequest.isPrimaryDelegator()) {
             if (actionRequest.isGroupRequest()) {
-                List<String> userIds =  KIMServiceLocator.getIdentityManagementService().getGroupMemberPrincipalIds(actionRequest.getGroupId());
-                actionItems.addAll(createActionItemsForUsers(actionRequest, userIds));
+                List<String> principalIds =  KIMServiceLocator.getIdentityManagementService().getGroupMemberPrincipalIds(actionRequest.getGroupId());
+                actionItems.addAll(createActionItemsForPrincipals(actionRequest, principalIds));
             } else if (actionRequest.isUserRequest()) {
                 ActionItem actionItem = getActionListService().createActionItemForActionRequest(actionRequest);
                 actionItems.add(actionItem);
@@ -222,12 +213,11 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         return actionItems;
     }
 
-    private List<ActionItem> createActionItemsForUsers(ActionRequestValue actionRequest, List<String> userIds) throws KEWUserNotFoundException {
+    private List<ActionItem> createActionItemsForPrincipals(ActionRequestValue actionRequest, List<String> principalIds) {
         List<ActionItem> actionItems = new ArrayList<ActionItem>();
-        for (String userId: userIds) {
-            WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(userId));
+        for (String principalId: principalIds) {
             ActionItem actionItem = getActionListService().createActionItemForActionRequest(actionRequest);
-            actionItem.setPrincipalId(user.getWorkflowUserId().getWorkflowId());
+            actionItem.setPrincipalId(principalId);
             actionItem.setRoleName(actionRequest.getQualifiedRoleName());
             actionItems.add(actionItem);
         }
@@ -262,14 +252,14 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     }
 
     private boolean deactivateOnActionAlreadyTaken(ActionRequestValue actionRequestToActivate,
-            ActivationContext activationContext) throws KEWUserNotFoundException {
+            ActivationContext activationContext) {
 
         FutureRequestDocumentStateManager futureRequestStateMngr = null;
 
         if (actionRequestToActivate.isGroupRequest()) {
             futureRequestStateMngr = new FutureRequestDocumentStateManager(actionRequestToActivate.getRouteHeader(), actionRequestToActivate.getGroup().getGroupId());
         } else if (actionRequestToActivate.isUserRequest()) {
-            futureRequestStateMngr = new FutureRequestDocumentStateManager(actionRequestToActivate.getRouteHeader(), actionRequestToActivate.getWorkflowUser().getWorkflowId());
+            futureRequestStateMngr = new FutureRequestDocumentStateManager(actionRequestToActivate.getRouteHeader(), actionRequestToActivate.getPrincipalId());
         } else {
             return false;
         }
@@ -407,15 +397,13 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         return actionRequest;
     }
 
-    public List findAllValidRequests(String principalId, Long routeHeaderId, String requestCode)
-    throws KEWUserNotFoundException {
+    public List findAllValidRequests(String principalId, Long routeHeaderId, String requestCode) {
         ActionRequestDAO arDAO = getActionRequestDAO();
         Collection pendingArs = arDAO.findAllPendingByDocId(routeHeaderId);
         return findAllValidRequests(principalId, pendingArs, requestCode);
     }
 
-    public List findAllValidRequests(String principalId, Collection actionRequests, String requestCode)
-    throws KEWUserNotFoundException {
+    public List findAllValidRequests(String principalId, Collection actionRequests, String requestCode) {
         List matchedArs = new ArrayList();
         List<String> arGroups = null;
         for (Iterator iter = actionRequests.iterator(); iter.hasNext();) {
@@ -557,7 +545,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         return getActionRequestDAO().findPendingRootRequestsByDocumentType(documentTypeId);
     }
 
-    public void saveActionRequest(ActionRequestValue actionRequest) throws KEWUserNotFoundException {
+    public void saveActionRequest(ActionRequestValue actionRequest) {
 
         if (actionRequest.isGroupRequest() && !actionRequest.getGroup().isActive()) {
             throw new RuntimeException("Routing to inactive workgroup.  Putting document in exception routing.");
@@ -629,7 +617,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         return getActionRequestDAO().findByStatusAndDocId(statusCd, routeHeaderId);
     }
 
-    public void alterActionRequested(List actionRequests, String actionRequestCd) throws KEWUserNotFoundException {
+    public void alterActionRequested(List actionRequests, String actionRequestCd) {
         for (Iterator iter = actionRequests.iterator(); iter.hasNext();) {
             ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
 
@@ -661,7 +649,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         return false;
     }
 
-    public Recipient findDelegator(List actionRequests) throws KEWUserNotFoundException {
+    public Recipient findDelegator(List actionRequests) {
         Recipient delegator = null;
         String requestCode = KEWConstants.ACTION_REQUEST_FYI_REQ;
         for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
@@ -677,7 +665,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         return delegator;
     }
 
-    public Recipient findDelegator(ActionRequestValue actionRequest) throws KEWUserNotFoundException {
+    public Recipient findDelegator(ActionRequestValue actionRequest) {
         ActionRequestValue delegatorRequest = findDelegatorRequest(actionRequest);
         Recipient delegator = null;
         if (delegatorRequest != null) {
@@ -783,17 +771,16 @@ public class ActionRequestServiceImpl implements ActionRequestService {
 
             }
             if (recipientType.equals(KEWConstants.PERSON)) {
-                String workflowId = actionRequest.getWorkflowId();
-                if (workflowId == null || workflowId.trim().equals("")) {
+                String principalId = actionRequest.getPrincipalId();
+                if (principalId == null || principalId.trim().equals("")) {
                     errors.add(new WorkflowServiceErrorImpl("ActionRequest person id null.", "actionrequest.persosn.empty",
                             actionRequest.getActionRequestId().toString()));
                 } else {
-                    try {
-                        getUserService().getWorkflowUser(new WorkflowUserId(workflowId));
-                    } catch (KEWUserNotFoundException e) {
-                        errors.add(new WorkflowServiceErrorImpl("ActionRequest person id invalid.",
-                                "actionrequest.personid.invalid", actionRequest.getActionRequestId().toString()));
-                    }
+                	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+                	if (principal == null) {
+                		errors.add(new WorkflowServiceErrorImpl("ActionRequest person id invalid.",
+                				"actionrequest.personid.invalid", actionRequest.getActionRequestId().toString()));
+                	}
                 }
 
                 if (recipientType.equals(KEWConstants.ROLE)

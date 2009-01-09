@@ -46,7 +46,7 @@ To change how these email notifications are sent(daily, weekly or none):
 For additional help, email <![CDATA[<mailto:]]><xsl:choose><xsl:when test="string(actionItem/documentType/notificationFromAddress)"><xsl:value-of select="actionItem/documentType/notificationFromAddress"/></xsl:when><xsl:otherwise><xsl:value-of select="@applicationEmailAddress"/></xsl:otherwise></xsl:choose><![CDATA[>]]>
 
 <xsl:if test="@env != 'prd'">
-Action Item sent to <xsl:value-of select="actionItem/actionItemAuthenticationUserId/id"/>
+Action Item sent to <xsl:value-of select="actionItem/actionItemPrincipalName"/>
 <xsl:if test="string(actionItem/actionItem/delegationType)">
  for delegation type <xsl:value-of select="actionItem/actionItem/delegationType"/>
 </xsl:if>

@@ -394,10 +394,7 @@ public class DTOConverter {
         actionItemVO.setDateAssigned(actionItem.getDateAssigned());
         actionItemVO.setDateAssignedString(actionItem.getDateAssignedString());
         actionItemVO.setDelegationType(actionItem.getDelegationType());
-        actionItemVO.setDelegatorWorkflowId(actionItem.getDelegatorWorkflowId());
-        if (StringUtils.isNotEmpty(actionItem.getDelegatorWorkflowId())) {
-            actionItemVO.setDelegatorUser(convertUser(actionItem.getDelegatorUser()));
-        }
+        actionItemVO.setDelegatorPrincipalId(actionItem.getDelegatorWorkflowId());
         actionItemVO.setDelegatorGroupId(actionItem.getDelegatorGroupId());
         actionItemVO.setDocHandlerURL(actionItem.getDocHandlerURL());
         actionItemVO.setDocLabel(actionItem.getDocLabel());
@@ -407,9 +404,6 @@ public class DTOConverter {
         actionItemVO.setRoleName(actionItem.getRoleName());
         actionItemVO.setRouteHeaderId(actionItem.getRouteHeaderId());
         actionItemVO.setWorkflowId(actionItem.getPrincipalId());
-        if (StringUtils.isNotEmpty(actionItem.getPrincipalId())) {
-            actionItemVO.setUser(convertUser(actionItem.getUser()));
-        }
         actionItemVO.setGroupId(actionItem.getGroupId());
         return actionItemVO;
     }

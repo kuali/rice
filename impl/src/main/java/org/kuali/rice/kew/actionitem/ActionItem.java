@@ -40,7 +40,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -131,19 +130,19 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
     	return getGroup(groupId.toString());
     }
 
-    private Person getUser(String workflowId) throws KEWUserNotFoundException {
+    private Person getPerson(String workflowId) {
     	if (StringUtils.isBlank(workflowId)) {
     		return null;
     	}
     	return KIMServiceLocator.getPersonService().getPerson(workflowId);
     }
 
-    public Person getUser() throws KEWUserNotFoundException {
-        return getUser(principalId);
+    public Person getPerson() {
+        return getPerson(principalId);
     }
 
-    public Person getDelegatorUser() throws KEWUserNotFoundException {
-        return getUser(delegatorWorkflowId);
+    public Person getDelegatorPerson() {
+        return getPerson(delegatorWorkflowId);
     }
 
     public String getRecipientTypeCode() {

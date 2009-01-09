@@ -229,13 +229,8 @@ public class BeanConverterTester extends KEWTestCase {
         assertEquals("Action Item VO object has incorrect value", "" + testWorkgroupId, actionItemVO.getGroupId());
         assertEquals("Action Item VO object has incorrect value", responsibilityId, actionItemVO.getResponsibilityId());
         assertEquals("Action Item VO object has incorrect value", delegationType, actionItemVO.getDelegationType());
-        assertEquals("Action Item VO object has incorrect value", workflowId, actionItemVO.getDelegatorWorkflowId());
+        assertEquals("Action Item VO object has incorrect value", workflowId, actionItemVO.getDelegatorPrincipalId());
         assertEquals("Action Item VO object has incorrect value", testWorkgroupId, actionItemVO.getDelegatorGroupId());
-        try {
-            actionItemVO.getUser();
-        } catch (Throwable e) {
-            fail("Action Item VO object should be able to get valid user object");
-        }
     }
 
 }

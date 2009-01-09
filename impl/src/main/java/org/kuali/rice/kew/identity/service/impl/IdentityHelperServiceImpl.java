@@ -28,9 +28,11 @@ import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.identity.service.IdentityHelperService;
+import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.BaseWorkflowUser;
 import org.kuali.rice.kew.user.EmplId;
 import org.kuali.rice.kew.user.Recipient;
+import org.kuali.rice.kew.user.UserId;
 import org.kuali.rice.kew.user.UuId;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
@@ -115,6 +117,20 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 		}
 		throw new IllegalArgumentException("Invalid GroupId type was passed: " + groupId);
 	}
+	
+	public KimPrincipal getPrincipal(UserId userId) {
+		if (userId == null) {
+			return null;
+		} else if (userId instanceof WorkflowUserId) {
+			String principalId = ((WorkflowUserId)userId).getWorkflowId();
+			return KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+		} else if (userId instanceof AuthenticationUserId) {
+			String principalName = ((AuthenticationUserId)userId).getAuthenticationId();
+			return KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
+		}
+		throw new IllegalArgumentException("Invalid UserIdDTO type was passed: " + userId);
+	}
+	
 
 	public KimPrincipal getPrincipal(UserIdDTO userId) {
 		if (userId == null) {

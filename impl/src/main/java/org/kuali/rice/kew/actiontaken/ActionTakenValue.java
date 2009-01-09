@@ -115,10 +115,12 @@ public class ActionTakenValue implements WorkflowPersistable {
     	return getPrincipalForId(delegatorWorkflowId);
     }
     
+    @Deprecated
     public WorkflowUser getWorkflowUser() throws KEWUserNotFoundException {
       return getWorkflowUserForWorkflowId( workflowId );
     }
 
+    @Deprecated
     public WorkflowUser getDelegatorUser() throws KEWUserNotFoundException {
       return getWorkflowUserForWorkflowId( delegatorWorkflowId );
     }
@@ -277,10 +279,20 @@ public class ActionTakenValue implements WorkflowPersistable {
         this.routeHeaderId = routeHeaderId;
     }
 
+    public String getPrincipalId() {
+    	return workflowId;
+    }
+    
+    public void setPrincipalId(String principalId) {
+    	this.workflowId = principalId;
+    }
+    
+    @Deprecated
     public String getWorkflowId() {
         return workflowId;
     }
 
+    @Deprecated
     public void setWorkflowId(String workflowId) {
         this.workflowId = workflowId;
     }

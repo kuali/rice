@@ -72,11 +72,7 @@ public class KCBNotificationService extends DefaultNotificationService {
         MessagingService ms = (MessagingService) GlobalResourceLoader.getService(new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), KCBServiceNames.KCB_MESSAGING));
 
         for (ActionItem actionItem: actionItems) {
-            try {
-                LOG.debug("Removing KCB messages for action item: " + actionItem.getActionItemId() + " " + actionItem.getActionRequestCd() + " " + actionItem.getUser());
-            } catch (KEWUserNotFoundException eunfe) {
-                throw new RuntimeException(eunfe);
-            }
+        	LOG.debug("Removing KCB messages for action item: " + actionItem.getActionItemId() + " " + actionItem.getActionRequestCd() + " " + actionItem.getPerson());
             try {
                 // we don't have the action takens at this point...? :(
                 ms.removeByOriginId(String.valueOf(actionItem.getActionItemId()), null, null);

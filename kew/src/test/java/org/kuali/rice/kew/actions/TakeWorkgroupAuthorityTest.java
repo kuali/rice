@@ -85,7 +85,7 @@ public class TakeWorkgroupAuthorityTest extends KEWTestCase {
         assertTrue("There should be more than one action item", actionItems.size() > 1);
         for (Iterator iter = actionItems.iterator(); iter.hasNext();) {
             ActionItem actionItem = (ActionItem) iter.next();
-            assertTrue("Action Item not to workgroup member", WORKGROUP_MEMBERS.contains(actionItem.getUser().getPrincipalName()));
+            assertTrue("Action Item not to workgroup member", WORKGROUP_MEMBERS.contains(actionItem.getPerson().getPrincipalName()));
         }
 
         //have member rkirkend take authority
@@ -97,7 +97,7 @@ public class TakeWorkgroupAuthorityTest extends KEWTestCase {
         assertEquals("There should only be a single action item to rkirkend", 1, actionItems.size());
         for (Iterator iter = actionItems.iterator(); iter.hasNext();) {
             ActionItem actionItem = (ActionItem) iter.next();
-            assertEquals("Action item should be to rkirkend", "rkirkend", actionItem.getUser().getPrincipalName());
+            assertEquals("Action item should be to rkirkend", "rkirkend", actionItem.getPerson().getPrincipalName());
         }
 
         //verify the action was recorded and by rkirkend

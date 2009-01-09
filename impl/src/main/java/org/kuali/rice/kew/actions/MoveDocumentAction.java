@@ -31,7 +31,6 @@ import org.kuali.rice.kew.engine.OrchestrationConfig;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -68,12 +67,12 @@ public class MoveDocumentAction extends ActionTakenEvent {
      * @see org.kuali.rice.kew.actions.ActionTakenEvent#isActionCompatibleRequest(java.util.List)
      */
     @Override
-    public String validateActionRules() throws KEWUserNotFoundException {
+    public String validateActionRules() {
         return validateActionRules(getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), routeHeader.getRouteHeaderId(),
                 KEWConstants.ACTION_REQUEST_COMPLETE_REQ), KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(getRouteHeader().getRouteHeaderId()));
     }
 
-    private String validateActionRules(List<ActionRequestValue> actionRequests, Collection activeNodes) throws KEWUserNotFoundException {
+    private String validateActionRules(List<ActionRequestValue> actionRequests, Collection activeNodes) {
         if (!getRouteHeader().isValidActionToTake(getActionPerformedCode())) {
             return "Document is not in a state to be moved";
         }
@@ -90,12 +89,12 @@ public class MoveDocumentAction extends ActionTakenEvent {
     /* (non-Javadoc)
      * @see org.kuali.rice.kew.actions.ActionTakenEvent#isActionCompatibleRequest(java.util.List)
      */
-    public boolean isActionCompatibleRequest(List<ActionRequestValue> requests) throws KEWUserNotFoundException {
+    public boolean isActionCompatibleRequest(List<ActionRequestValue> requests) {
         //Move is always correct because the client application has authorized it
         return true;
     }
 
-    public void recordAction() throws InvalidActionTakenException, KEWUserNotFoundException {
+    public void recordAction() throws InvalidActionTakenException {
         MDC.put("docId", getRouteHeader().getRouteHeaderId());
         updateSearchableAttributesIfPossible();
         LOG.debug("Moving document " + getRouteHeader().getRouteHeaderId() + " to point: " + displayMovePoint(movePoint) + ", annotation: " + annotation);

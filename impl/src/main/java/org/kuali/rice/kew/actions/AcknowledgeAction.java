@@ -23,11 +23,9 @@ import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.user.Recipient;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
@@ -76,11 +74,11 @@ public class AcknowledgeAction extends ActionTakenEvent {
      * Method to check if the Action is currently valid on the given document
      * @return  returns an error message to give system better identifier for problem
      */
-    public String validateActionRules() throws KEWUserNotFoundException {
+    public String validateActionRules() {
         return validateActionRules(getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
     }
 
-    private String validateActionRules(List<ActionRequestValue> actionRequests) throws KEWUserNotFoundException {
+    private String validateActionRules(List<ActionRequestValue> actionRequests) {
         if (!getRouteHeader().isValidActionToTake(getActionPerformedCode())) {
             return "Document is not in a state to be acknowledged";
         }
@@ -94,7 +92,7 @@ public class AcknowledgeAction extends ActionTakenEvent {
      * @see org.kuali.rice.kew.actions.ActionTakenEvent#isActionCompatibleRequest(java.util.List, java.lang.String)
      */
     @Override
-    public boolean isActionCompatibleRequest(List requests) throws KEWUserNotFoundException {
+    public boolean isActionCompatibleRequest(List requests) {
 
         // we allow pre-approval
         if (requests.isEmpty()) {
@@ -130,7 +128,7 @@ public class AcknowledgeAction extends ActionTakenEvent {
      * @throws InvalidActionTakenException
      * @throws ResourceUnavailableException
      */
-    public void recordAction() throws InvalidActionTakenException, KEWUserNotFoundException {
+    public void recordAction() throws InvalidActionTakenException {
         MDC.put("docId", getRouteHeader().getRouteHeaderId());
         updateSearchableAttributesIfPossible();
 

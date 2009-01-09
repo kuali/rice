@@ -28,7 +28,6 @@ import org.kuali.rice.core.reflect.DataDefinition;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.ObjectDefinitionResolver;
 import org.kuali.rice.core.util.ClassLoaderUtils;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -127,7 +126,7 @@ public class ActionRegistryImpl implements ActionRegistry {
     /* (non-Javadoc)
      * @see org.kuali.rice.kew.actions.ActionValidationService#getValidActions(org.kuali.rice.kew.user.WorkflowUser, org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue)
      */
-    public ValidActions getValidActions(KimPrincipal principal, DocumentRouteHeaderValue document) throws ResourceUnavailableException, KEWUserNotFoundException {
+    public ValidActions getValidActions(KimPrincipal principal, DocumentRouteHeaderValue document) throws ResourceUnavailableException {
         ValidActions validActions = new ValidActions();
         for (Iterator iter = actionMap.keySet().iterator(); iter.hasNext();) {
             String actionTakenCode = (String) iter.next();

@@ -55,5 +55,9 @@ public class KimGroupRecipient implements Recipient {
 		return this.group;
 	}
 	
+	public String getGroupId() {
+		return getGroup().getGroupId();
+	}
+	
 
 }

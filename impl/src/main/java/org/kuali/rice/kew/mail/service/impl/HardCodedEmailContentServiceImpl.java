@@ -90,8 +90,7 @@ public class HardCodedEmailContentServiceImpl extends BaseEmailContentServiceImp
         // for debugging purposes on the immediate reminder only
         if (!isProduction()) {
             try {
-                emailBody.append("Action Item sent to "
-                        + actionItem.getUser().getPrincipalName());
+                emailBody.append("Action Item sent to " + actionItem.getPerson().getPrincipalName());
                 if (actionItem.getDelegationType() != null) {
                     emailBody.append(" for delegation type "
                             + actionItem.getDelegationType());

@@ -23,11 +23,9 @@ import java.util.List;
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.user.Recipient;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
@@ -57,7 +55,7 @@ public class RevokeAdHocAction extends ActionTakenEvent {
      * @see org.kuali.rice.kew.actions.ActionTakenEvent#isActionCompatibleRequest(java.util.List)
      */
     @Override
-    protected String validateActionRules() throws KEWUserNotFoundException {
+    protected String validateActionRules() {
         if (!getRouteHeader().isValidActionToTake(getActionPerformedCode())) {
             return "Revoke adhoc request is not valid on this document";
         }
@@ -72,9 +70,8 @@ public class RevokeAdHocAction extends ActionTakenEvent {
      * - Records the action
      *
      * @throws InvalidActionTakenException
-     * @throws KEWUserNotFoundException
      */
-    public void recordAction() throws InvalidActionTakenException, KEWUserNotFoundException {
+    public void recordAction() throws InvalidActionTakenException {
     	MDC.put("docId", getRouteHeader().getRouteHeaderId());
         updateSearchableAttributesIfPossible();
 

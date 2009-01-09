@@ -29,10 +29,7 @@ import org.apache.ojb.broker.query.ReportQueryByCriteria;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionitem.dao.ActionItemDAO;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.Recipient;
-import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kim.service.IdentityManagementService;
@@ -100,7 +97,7 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         this.getPersistenceBrokerTemplate().store(actionItem);
     }
 
-    public Collection<Recipient> findSecondaryDelegators(String principalId) throws KEWUserNotFoundException {
+    public Collection<Recipient> findSecondaryDelegators(String principalId) {
         Criteria notNullWorkflowCriteria = new Criteria();
         notNullWorkflowCriteria.addNotNull("delegatorWorkflowId");
         Criteria notNullWorkgroupCriteria = new Criteria();
@@ -132,7 +129,7 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         return delegators.values();
     }
 
-    public Collection<Recipient> findPrimaryDelegationRecipients(String principalId) throws KEWUserNotFoundException {
+    public Collection<Recipient> findPrimaryDelegationRecipients(String principalId) {
     	List<String> workgroupIds = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
         Criteria orCriteria = new Criteria();
         Criteria delegatorWorkflowIdCriteria = new Criteria();
@@ -162,10 +159,6 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
             }
         }
         return delegators.values();
-    }
-
-    private UserService getUserService() {
-        return (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
     }
 
     private IdentityManagementService getIdentityManagementService() {

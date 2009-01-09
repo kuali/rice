@@ -45,9 +45,9 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.UserService;
-import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.workgroup.WorkgroupMembershipChangeProcessor;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -67,11 +67,11 @@ public class ActionListServiceImpl implements ActionListService {
 
     private ActionItemDAO actionItemDAO;
 
-    public Collection<Recipient> findUserSecondaryDelegators(String principalId) throws KEWUserNotFoundException {
+    public Collection<Recipient> findUserSecondaryDelegators(String principalId) {
         return getActionItemDAO().findSecondaryDelegators(principalId);
     }
 
-    public Collection<Recipient> findUserPrimaryDelegations(String principalId) throws KEWUserNotFoundException {
+    public Collection<Recipient> findUserPrimaryDelegations(String principalId) {
         return getActionItemDAO().findPrimaryDelegationRecipients(principalId);
     }
 
@@ -138,8 +138,7 @@ public class ActionListServiceImpl implements ActionListService {
      * Determines the difference between the current workgroup membership and the new workgroup membership. It then
      * schedules the action item updates to happen asynchronously.
      */
-    public void updateActionItemsForWorkgroupChange(String oldKimGroupId, String newKimGroupId) throws KEWUserNotFoundException
-	{
+    public void updateActionItemsForWorkgroupChange(String oldKimGroupId, String newKimGroupId)	{
         IdentityManagementService ims = KIMServiceLocator.getIdentityManagementService();
         List<String> oldPrincipalIds = ims.getGroupMemberPrincipalIds(oldKimGroupId);
         List<String> newPrincipalIds = ims.getGroupMemberPrincipalIds(newKimGroupId);
@@ -171,7 +170,7 @@ public class ActionListServiceImpl implements ActionListService {
     /**
      * Update the user's Action List to reflect their addition to the given Workgroup.
      */
-    public void updateActionListForUserAddedToGroup(String principalId, String groupId) throws KEWUserNotFoundException {
+    public void updateActionListForUserAddedToGroup(String principalId, String groupId) {
         // first verify that the user is still a member of the workgroup
     	if(KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(principalId, groupId))
     	{
@@ -224,8 +223,7 @@ public class ActionListServiceImpl implements ActionListService {
     /**
      * Update the user's Action List to reflect their removal from the given Workgroup.
      */
-    public void updateActionListForUserRemovedFromGroup(String principalId, String groupId)
-    throws KEWUserNotFoundException {
+    public void updateActionListForUserRemovedFromGroup(String principalId, String groupId) {
         // first verify that the user is no longer a member of the workgroup
     	if(!KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(principalId, groupId))
     	{
@@ -246,7 +244,7 @@ public class ActionListServiceImpl implements ActionListService {
 
     }
 
-    public void updateActionItemsForTitleChange(Long routeHeaderId, String newTitle) throws KEWUserNotFoundException {
+    public void updateActionItemsForTitleChange(Long routeHeaderId, String newTitle) {
         Collection<ActionItem> items = getActionItemDAO().findByRouteHeaderId(routeHeaderId);
         for (Iterator<ActionItem> iterator = items.iterator(); iterator.hasNext();) {
             ActionItem item = iterator.next();
@@ -261,7 +259,7 @@ public class ActionListServiceImpl implements ActionListService {
         return new MembersDiff(addedPrincipalIds, removedPrincipalIds);
     }
 
-    public void saveActionItem(ActionItem actionItem) throws KEWUserNotFoundException {
+    public void saveActionItem(ActionItem actionItem) {
         KEWServiceLocator.getUserOptionsService().saveRefreshUserOption(actionItem.getPrincipalId());
         getActionItemDAO().saveActionItem(actionItem);
     }
@@ -307,14 +305,13 @@ public class ActionListServiceImpl implements ActionListService {
 
     public void validateActionItem(ActionItem actionItem) {
         List errors = new ArrayList();
-        String workflowId = actionItem.getPrincipalId();
-        if (workflowId == null || workflowId.trim().equals("")) {
+        String principalId = actionItem.getPrincipalId();
+        if (principalId == null || principalId.trim().equals("")) {
             errors.add(new WorkflowServiceErrorImpl("ActionItem person null.", "actionitem.personid.empty", actionItem
                     .getActionItemId().toString()));
         } else {
-            try {
-                getUserService().getWorkflowUser(new WorkflowUserId(workflowId));
-            } catch (KEWUserNotFoundException e) {
+        	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+        	if (principal == null) {
                 errors.add(new WorkflowServiceErrorImpl("ActionItem person invalid.", "actionitem.personid.invalid",
                         actionItem.getActionItemId().toString()));
             }

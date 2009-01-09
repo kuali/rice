@@ -56,12 +56,11 @@ public class ActionTakenServiceImpl implements ActionTakenService {
         return getActionTakenDAO().findByActionTakenId(actionTakenId);
     }
 
-    public ActionTakenValue getPreviousAction(ActionRequestValue actionRequest) throws KEWUserNotFoundException {
+    public ActionTakenValue getPreviousAction(ActionRequestValue actionRequest) {
     	return getPreviousAction(actionRequest, null);
     }
 
     public ActionTakenValue getPreviousAction(ActionRequestValue actionRequest, List<ActionTakenValue> simulatedActionsTaken)
-            throws KEWUserNotFoundException
     {
         IdentityManagementService ims = KIMServiceLocator.getIdentityManagementService();
         ActionTakenValue foundActionTaken = null;
@@ -69,7 +68,7 @@ public class ActionTakenServiceImpl implements ActionTakenService {
         if (actionRequest.isGroupRequest()) {
             principalIds.addAll( ims.getGroupMemberPrincipalIds(actionRequest.getGroup().getGroupId()));
         } else if (actionRequest.isUserRequest()) {
-            principalIds.add(actionRequest.getWorkflowUser().getWorkflowId());
+            principalIds.add(actionRequest.getPrincipalId());
         }
 
         for (String id : principalIds)
@@ -79,7 +78,7 @@ public class ActionTakenServiceImpl implements ActionTakenService {
             if (simulatedActionsTaken != null) {
                 for (ActionTakenValue simulatedAction : simulatedActionsTaken)
                 {
-                    if (id.equals(simulatedAction.getWorkflowId()))
+                    if (id.equals(simulatedAction.getPrincipalId()))
                     {
                         actionsTakenByUser.add(simulatedAction);
                     }

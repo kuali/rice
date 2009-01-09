@@ -20,12 +20,9 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
 import org.kuali.rice.kew.actionlist.DisplayParameters;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.group.KimGroup;
@@ -46,12 +43,9 @@ public class ActionItemActionListExtension extends ActionItem {
     private static final long serialVersionUID = -8801104028828059623L;
 
     @Transient
-    private WorkflowUser delegatorUser = null;
-   // @Transient    private Workgroup delegatorWorkgroup = null;
+    private Person delegatorPerson = null;
     @Transient
     private String delegatorName = "";
-    @Transient
-    private KimGroup group = null;
     @Transient
     private DisplayParameters displayParameters;
     @Transient
@@ -59,18 +53,13 @@ public class ActionItemActionListExtension extends ActionItem {
     @Transient
     private KimGroup delegatorGroup = null;
     @Transient
-    private KimGroup kimgroup = null;
+    private KimGroup group = null;
 
-    public Person getDelegatorUser() throws KEWUserNotFoundException {
-        Person delegator = null;
-        if (getDelegatorWorkflowId() != null) {
-       //     delegator = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(getDelegatorWorkflowId()));
-            delegator = KIMServiceLocator.getPersonService().getPerson(getDelegatorWorkflowId());
-          }
-        return delegator;
+    public Person getDelegatorPerson() {
+        return delegatorPerson;
     }
     
-    public String getDelegatorName() throws KEWUserNotFoundException {
+    public String getDelegatorName() {
         return delegatorName;
     }
 
@@ -79,12 +68,12 @@ public class ActionItemActionListExtension extends ActionItem {
     		return;
     	}
         if (getGroupId() != null) {
-            kimgroup = super.getGroup();
+            group = super.getGroup();
         }
         if (getDelegatorWorkflowId() != null) {
-            delegatorUser = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(getDelegatorWorkflowId()));
-            if (delegatorUser != null) {
-                delegatorName = delegatorUser.getTransposedName();
+        	delegatorPerson = KIMServiceLocator.getPersonService().getPerson(getDelegatorWorkflowId());
+            if (delegatorPerson != null) {
+                delegatorName = delegatorPerson.getName();
             }
         }
 
@@ -115,14 +104,14 @@ public class ActionItemActionListExtension extends ActionItem {
 	 * @return the group
 	 */
 	public KimGroup getGroup() {
-		return this.kimgroup;
+		return this.group;
 	}
 
 	/**
 	 * @param group the group to set
 	 */
 	public void setGroup(KimGroup group) {
-		this.kimgroup = group;
+		this.group = group;
 	}
 
 	/**

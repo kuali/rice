@@ -72,9 +72,9 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.UserService;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.WorkflowAction;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
 
@@ -755,7 +755,7 @@ public class DocumentOperationAction extends WorkflowAction {
 	public ActionForward blanketApproveDocument(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		try {
 			DocumentOperationForm docForm = (DocumentOperationForm) form;
-			WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(docForm.getBlanketApproveUser()));
+			String principalId = KIMServiceLocator.getPersonService().getPersonByPrincipalName(docForm.getBlanketApproveUser()).getPrincipalId();
 			Set<String> nodeNames = new HashSet<String>();
 			if (!StringUtils.isBlank(docForm.getBlanketApproveNodes())) {
 				String[] nodeNameArray = docForm.getBlanketApproveNodes().split(",");
@@ -764,7 +764,7 @@ public class DocumentOperationAction extends WorkflowAction {
 				}
 			}
 			BlanketApproveProcessorService blanketApprove = MessageServiceNames.getBlanketApproveProcessorService(docForm.getRouteHeader());
-			blanketApprove.doBlanketApproveWork(docForm.getRouteHeader().getRouteHeaderId(), user.getWorkflowId(), new Long(docForm.getBlanketApproveActionTakenId()), nodeNames);
+			blanketApprove.doBlanketApproveWork(docForm.getRouteHeader().getRouteHeaderId(), principalId, new Long(docForm.getBlanketApproveActionTakenId()), nodeNames);
 			ActionMessages messages = new ActionMessages();
 			messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("general.message", "Blanket Approve Processor was successfully scheduled"));
 			saveMessages(request, messages);

@@ -137,15 +137,13 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 			documentActions.remove(KNSConstants.KUALI_ACTION_CAN_AD_HOC_ROUTE);
 		}
 
-		if (canApprove(document, user)) {
-			documentActions.add(KNSConstants.KUALI_ACTION_CAN_APPROVE);
-		} else {
-			if (documentActions
-					.contains(KNSConstants.KUALI_ACTION_CAN_DISAPPROVE)) {
-				documentActions
-						.remove(KNSConstants.KUALI_ACTION_CAN_DISAPPROVE);
+		if (documentActions.contains(KNSConstants.KUALI_ACTION_CAN_APPROVE) || documentActions.contains(KNSConstants.KUALI_ACTION_CAN_DISAPPROVE)) {
+			if (!canApprove(document, user)) {
+				documentActions.remove(KNSConstants.KUALI_ACTION_CAN_APPROVE);
+				documentActions.remove(KNSConstants.KUALI_ACTION_CAN_DISAPPROVE);
 			}
-		}
+		} 
+		
 		if (documentActions.contains(KNSConstants.KUALI_ACTION_CAN_ANNOTATE)
 				&& !canAnnotate(document, user)) {
 			documentActions.remove(KNSConstants.KUALI_ACTION_CAN_ANNOTATE);

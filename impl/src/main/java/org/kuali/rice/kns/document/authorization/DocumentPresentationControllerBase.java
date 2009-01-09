@@ -166,8 +166,13 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
     	return canEdit(document);
     }
     
-    protected boolean canDisapprove(Document document) {
+    protected boolean canApprove(Document document) {
     	return true;
+    }
+
+    protected boolean canDisapprove(Document document) {
+    	// most of the time, a person who can approve can disapprove
+    	return canApprove(document);
     }
     
     /**
@@ -180,28 +185,28 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
     		documentActions.add(KNSConstants.KUALI_ACTION_CAN_EDIT);
     	}
     	
-    	 if(canAnnotate(document)){
-    		 documentActions.add(KNSConstants.KUALI_ACTION_CAN_ANNOTATE);
-    	 }
+    	if(canAnnotate(document)){
+    		documentActions.add(KNSConstants.KUALI_ACTION_CAN_ANNOTATE);
+    	}
     	 
-    	 if(canClose(document)){
-    		 documentActions.add(KNSConstants.KUALI_ACTION_CAN_CLOSE);
-    	 }
+    	if(canClose(document)){
+    		documentActions.add(KNSConstants.KUALI_ACTION_CAN_CLOSE);
+    	}
     	 
-    	 if(canSave(document)){
-    		 documentActions.add(KNSConstants.KUALI_ACTION_CAN_SAVE);
-    	 }
-    	 if(canRoute(document)){
-    		 documentActions.add(KNSConstants.KUALI_ACTION_CAN_ROUTE);
-    	 }
+    	if(canSave(document)){
+    		documentActions.add(KNSConstants.KUALI_ACTION_CAN_SAVE);
+    	}
+    	if(canRoute(document)){
+    		documentActions.add(KNSConstants.KUALI_ACTION_CAN_ROUTE);
+    	}
     	 
-    	 if(canCancel(document)){
-    		 documentActions.add(KNSConstants.KUALI_ACTION_CAN_CANCEL);
-    	 }
+    	if(canCancel(document)){
+    		documentActions.add(KNSConstants.KUALI_ACTION_CAN_CANCEL);
+    	}
     	 
-    	 if(canReload(document)){
+    	if(canReload(document)){
     		documentActions.add(KNSConstants.KUALI_ACTION_CAN_RELOAD);
-    	 }
+    	}
     	if(canCopy(document)){
     		documentActions.add(KNSConstants.KUALI_ACTION_CAN_COPY);
     	}
@@ -215,6 +220,9 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
     	
     	if(canBlanketApprove(document)){
     		documentActions.add(KNSConstants.KUALI_ACTION_CAN_BLANKET_APPROVE);
+    	}
+    	if (canApprove(document)) {
+    		documentActions.add(KNSConstants.KUALI_ACTION_CAN_APPROVE);
     	}
     	if (canDisapprove(document)) {
     		documentActions.add(KNSConstants.KUALI_ACTION_CAN_DISAPPROVE);

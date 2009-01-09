@@ -42,11 +42,11 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.UserService;
-import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.WorkflowAction;
+import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 
 
@@ -116,7 +116,7 @@ public class NoteAction extends WorkflowAction {
             noteToSave.setNoteId(null);
             noteToSave.setRouteHeaderId(noteForm.getDocId());
             noteToSave.setNoteCreateDate(new Timestamp((new Date()).getTime()));
-            noteToSave.setNoteAuthorWorkflowId(getUserSession(request).getWorkflowUser().getWorkflowUserId().getWorkflowId());
+            noteToSave.setNoteAuthorWorkflowId(getUserSession(request).getPrincipalId());
             noteToSave.setNoteText(noteForm.getAddText());
         }
         CustomNoteAttribute customNoteAttribute = null;
@@ -183,7 +183,7 @@ public class NoteAction extends WorkflowAction {
 
     public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
         NoteForm noteForm = (NoteForm) form;
-        noteForm.setCurrentUserName(getUserSession(request).getWorkflowUser().getDisplayName());
+        noteForm.setCurrentUserName(getUserSession(request).getPerson().getName());
         noteForm.setCurrentDate(getCurrentDate());
         if (! "workflowReport".equalsIgnoreCase(noteForm.getMethodToCall()) && ! "add".equalsIgnoreCase(noteForm.getMethodToCall()) && ! "cancel".equalsIgnoreCase(noteForm.getMethodToCall()) && ! "edit".equalsIgnoreCase(noteForm.getMethodToCall()) && ! "delete".equalsIgnoreCase(noteForm.getMethodToCall()) && ! "save".equalsIgnoreCase(noteForm.getMethodToCall())) {
             retrieveNoteList(request, noteForm);
@@ -247,16 +247,16 @@ public class NoteAction extends WorkflowAction {
     }
 
     private void getAuthorData(Note note) throws Exception {
-        WorkflowUser workflowUser = null;
+        Person user = null;
         String id = "";
         if (note != null && note.getNoteAuthorWorkflowId() != null && ! "".equalsIgnoreCase(note.getNoteAuthorWorkflowId())) {
-            workflowUser = getUserService().getWorkflowUser(new WorkflowUserId(note.getNoteAuthorWorkflowId()));
+        	user = KIMServiceLocator.getPersonService().getPerson(note.getNoteAuthorWorkflowId());
             id = note.getNoteAuthorWorkflowId();
         }
-        if (workflowUser != null) {
-            note.setNoteAuthorFullName(workflowUser.getDisplayName());
-            note.setNoteAuthorEmailAddress(workflowUser.getEmailAddress());
-            note.setNoteAuthorNetworkId(workflowUser.getAuthenticationUserId().getAuthenticationId());
+        if (user != null) {
+            note.setNoteAuthorFullName(user.getName());
+            note.setNoteAuthorEmailAddress(user.getEmailAddress());
+            note.setNoteAuthorNetworkId(user.getPrincipalId());
         } else {
             note.setNoteAuthorFullName(id + " (Name not Available)");
             note.setNoteAuthorEmailAddress("Not Available");

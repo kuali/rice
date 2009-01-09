@@ -102,8 +102,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
             LOG.debug("Fetching RouteHeaderVO [id="+documentId+", user="+principalId+"]");
         }
         DocumentRouteHeaderValue document = loadDocument(documentId);
-        Person person = KIMServiceLocator.getPersonService().getPerson(principalId);
-        RouteHeaderDTO routeHeaderVO = DTOConverter.convertRouteHeader(document, person.getPrincipalId());
+        RouteHeaderDTO routeHeaderVO = DTOConverter.convertRouteHeader(document, principalId);
         if (routeHeaderVO == null) {
         	LOG.error("Returning null RouteHeaderVO [id=" + documentId + ", user=" + principalId + "]");
         }

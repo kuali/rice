@@ -63,6 +63,7 @@ import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kew.web.WorkflowAction;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
@@ -556,7 +557,7 @@ public class ActionListAction extends WorkflowAction {
         UserSession session = getUserSession(request);
         session.setActionListFilter(null);
         request.getSession().setAttribute(REQUERY_ACTION_LIST_KEY, "true");
-        KEWServiceLocator.getActionListService().saveRefreshUserOption(getUserSession(request).getPerson().getPrincipalId());
+        KEWServiceLocator.getActionListService().saveRefreshUserOption(getUserSession(request).getPrincipalId());
         LOG.debug("end clearFilter ActionListAction");
         return start(mapping, form, request, response);
     }
@@ -573,7 +574,7 @@ public class ActionListAction extends WorkflowAction {
      */
     public ActionForward count(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	ActionListForm alForm = (ActionListForm)form;
-    	Person user = getUserSession(request).getPerson();
+    	KimPrincipal user = getUserSession(request).getPrincipal();
     	alForm.setCount(KEWServiceLocator.getActionListService().getCount(user.getPrincipalId()));
     	LOG.info("Fetched Action List count of " + alForm.getCount() + " for user " + user.getPrincipalName());
     	return mapping.findForward("count");

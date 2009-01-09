@@ -42,7 +42,7 @@ import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kim.service.PersonService;
 
 
 /**
@@ -75,6 +75,7 @@ public class UserSession implements Serializable {
     private KimPrincipal	principal;
 
     private IdentityService  identityService = null;
+    private PersonService<Person>  personService = null;
 
     /**
      *
@@ -103,13 +104,6 @@ public class UserSession implements Serializable {
 	 */
 	public String getSortOrder() {
 		return this.sortOrder;
-	}
-
-	protected IdentityService getIdentityService(){
-		if(identityService == null){
-			identityService = KIMServiceLocator.getIdentityService();
-		}
-		return identityService;
 	}
 
 	/**
@@ -216,14 +210,7 @@ public class UserSession implements Serializable {
     }
 
     public Person getPerson() {
-    	return convertToPerson(getWorkflowUser());
-    }
-
-    private Person convertToPerson(WorkflowUser user) {
-    	if (user == null) {
-    		return null;
-    	}
-    	return KIMServiceLocator.getPersonService().getPersonByPrincipalName(user.getAuthenticationUserId().getId());
+    	return getLoggedInPerson();
     }
 
     @Deprecated
@@ -244,7 +231,7 @@ public class UserSession implements Serializable {
     }
 
     public Person getLoggedInPerson() {
-    	return convertToPerson(getLoggedInWorkflowUser());
+    	return getPersonService().getPerson(getPrincipalId());
     }
 
     public boolean setBackdoorId(String id) throws KEWUserNotFoundException {
@@ -380,5 +367,17 @@ public class UserSession implements Serializable {
 		return this.principal.getPrincipalId();
 	}
 
+	protected IdentityService getIdentityService(){
+		if(identityService == null){
+			identityService = KIMServiceLocator.getIdentityService();
+		}
+		return identityService;
+	}
 
+	protected PersonService<Person> getPersonService(){
+		if(personService == null){
+			personService = KIMServiceLocator.getPersonService();
+		}
+		return personService;
+	}
 }

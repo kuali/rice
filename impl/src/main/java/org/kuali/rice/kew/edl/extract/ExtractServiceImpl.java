@@ -1,14 +1,8 @@
 package org.kuali.rice.kew.edl.extract;
 
 import java.util.Iterator;
-import java.util.List;
 
 import org.kuali.rice.kew.edl.extract.dao.ExtractDAO;
-import org.kuali.rice.kew.notes.Attachment;
-import org.kuali.rice.kew.notes.Note;
-import org.kuali.rice.kew.notes.dao.NoteDAO;
-import org.kuali.rice.kew.rule.dao.RuleDAO;
-import org.kuali.rice.kew.rule.service.impl.RuleServiceImpl;
 
 
 public class ExtractServiceImpl implements ExtractService {
@@ -47,7 +41,7 @@ public class ExtractServiceImpl implements ExtractService {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	public ExtractDAO getExtractDAO() {
 		return extractDAO;
 	}

@@ -36,9 +36,9 @@ import org.kuali.rice.kew.mail.EmailTo;
 import org.kuali.rice.kew.mail.service.EmailContentService;
 import org.kuali.rice.kew.mail.service.EmailService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.web.WorkflowAction;
 import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kim.bo.Person;
 
 
 /**
@@ -88,11 +88,12 @@ public class FeedbackAction extends WorkflowAction {
         }
 
         UserSession uSession = getUserSession(request);
-        WorkflowUser workflowUser = uSession.getWorkflowUser();
+
+        Person	workflowUser = uSession.getPerson();
         if (workflowUser != null) {
-            feedbackForm.setNetworkId(workflowUser.getAuthenticationUserId().getAuthenticationId());
+            feedbackForm.setNetworkId(workflowUser.getPrincipalName());
             feedbackForm.setUserEmail(workflowUser.getEmailAddress());
-            String name = workflowUser.getDisplayName().trim();
+            String name = workflowUser.getName().trim();
             feedbackForm.setUserName(name);
             String firstName = name.substring(0, name.indexOf(" "));
             String lastName = name.substring(name.lastIndexOf(" ") + 1, name.length());

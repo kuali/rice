@@ -32,6 +32,7 @@ import org.kuali.rice.kim.dao.KimGroupDao;
 import org.kuali.rice.kim.dao.KimRoleDao;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
@@ -104,7 +105,7 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
 			List<Field> fields = new ArrayList<Field>();
 			Field typeField = new Field();
 			typeField.setFieldLabel("Principal Name");
-			typeField.setPropertyName("principalName");
+			typeField.setPropertyName(KimConstants.PropertyNames.PRINCIPAL_NAME);
 			typeField.setFieldType(Field.TEXT);
 			typeField.setMaxLength(40);
 			typeField.setSize(20);

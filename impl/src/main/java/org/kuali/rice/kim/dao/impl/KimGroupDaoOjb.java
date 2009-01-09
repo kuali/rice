@@ -29,6 +29,7 @@ import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
 import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
 import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.kim.dao.KimGroupDao;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -68,10 +69,10 @@ public class KimGroupDaoOjb extends PlatformAwareDaoBaseOjb implements KimGroupD
             			String value = entry.getValue().replace('*', '%');
         				crit.addLike(entry.getKey(), value);
         			} else {
-        				if (entry.getKey().equals("principalName")) {
+        				if (entry.getKey().equals(KimConstants.PropertyNames.PRINCIPAL_NAME)) {
                 	        Criteria subCrit = new Criteria();
                 			String principalName = entry.getValue().replace('*', '%');
-                			subCrit.addLike("principalName","%" + principalName + "%");
+                			subCrit.addLike(KimConstants.PropertyNames.PRINCIPAL_NAME, principalName );
                 	        subCrit.addEqualToField("principalId", Criteria.PARENT_QUERY_PREFIX + "memberId");
                 			ReportQueryByCriteria subQuery = QueryFactory.newReportQuery(KimPrincipalImpl.class, subCrit);
                 	        Criteria memberSubCrit = new Criteria();

@@ -18,8 +18,7 @@ package org.kuali.rice.kim.bo.options;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.bo.State;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.web.ui.KeyLabelPair;
@@ -37,7 +36,7 @@ public class NameSuffixValuesFinder extends KeyValuesBase {
      */
     public List getKeyValues() {
 
-    	List<String> values = KNSServiceLocator.getKualiConfigurationService().getParameterValues("KR-IDM", "EntityNameImpl", "SUFFIXES");
+    	List<String> values = KNSServiceLocator.getKualiConfigurationService().getParameterValues(KimConstants.NAMESPACE_CODE, "EntityNameImpl", "SUFFIXES");
         List<KeyLabelPair> labels = new ArrayList<KeyLabelPair>();
         labels.add(new KeyLabelPair("", ""));
         for (String suffix : values) {

@@ -42,6 +42,7 @@ import org.kuali.rice.kim.rules.ui.PersonDocumentRoleRule;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.rules.TransactionalDocumentRuleBase;
 import org.kuali.rice.kns.util.ErrorMap;
@@ -77,7 +78,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
         valid &= checkMultipleDefault (personDoc.getEmails(), "emails");
         valid &= checkPeimaryEmploymentInfo (personDoc.getAffiliations());
         // kimtypeservice.validateAttributes is not working yet.
-        valid &= validateRoleQualifier (personDoc.getRoles());
+        //valid &= validateRoleQualifier (personDoc.getRoles());
         if (StringUtils.isNotBlank(personDoc.getPrincipalName())) { 
         	valid &= isPrincipalNameExist (personDoc.getPrincipalName(), personDoc.getPrincipalId());
         }
@@ -145,7 +146,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	boolean valid = true;
     	KimPrincipal principal = KIMServiceLocator.getIdentityService().getPrincipalByPrincipalName(principalName);
     	if (principal != null && (StringUtils.isBlank(principalId) || !principal.getPrincipalId().equals(principalId))) {
-            errorMap.putError("principalName",RiceKeyConstants.ERROR_EXIST_PRINCIPAL_NAME, principalName);
+            errorMap.putError(KimConstants.PropertyNames.PRINCIPAL_NAME,RiceKeyConstants.ERROR_EXIST_PRINCIPAL_NAME, principalName);
 			valid = false;
     	}
     	return valid;

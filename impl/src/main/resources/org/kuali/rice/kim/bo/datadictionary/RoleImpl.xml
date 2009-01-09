@@ -86,7 +86,7 @@
         p:maxLength="100"
         p:required="false" >
     <property name="control" >
-      <bean parent="TextControlDefinition" p:size="10" />
+      <bean parent="TextControlDefinition" p:size="30" />
     </property>
   </bean>
   
@@ -144,7 +144,7 @@
         p:maxLength="100"
         p:required="false" >
     <property name="control" >
-      <bean parent="TextControlDefinition" p:size="10" />
+      <bean parent="TextControlDefinition" p:size="30" />
     </property>
   </bean>
   
@@ -170,7 +170,7 @@
         p:maxLength="100"
         p:required="false" >
     <property name="control" >
-      <bean parent="TextControlDefinition" p:size="10" />
+      <bean parent="TextControlDefinition" p:size="30" />
     </property>
   </bean>
   
@@ -196,7 +196,7 @@
         p:maxLength="100"
         p:required="false" >
     <property name="control" >
-      <bean parent="TextControlDefinition" p:size="10" />
+      <bean parent="TextControlDefinition" p:size="30" />
     </property>
   </bean>
   
@@ -222,7 +222,7 @@
         p:maxLength="100"
         p:required="false" >
     <property name="control" >
-      <bean parent="TextControlDefinition" p:size="10" />
+      <bean parent="TextControlDefinition" p:size="30" />
     </property>
   </bean>
   
@@ -248,7 +248,7 @@
         p:maxLength="100"
         p:required="false" >
     <property name="control" >
-      <bean parent="TextControlDefinition" p:size="10" />
+      <bean parent="TextControlDefinition" p:size="30" />
     </property>
   </bean>
   

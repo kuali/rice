@@ -30,6 +30,7 @@ import org.apache.ojb.broker.query.ReportQueryByCriteria;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
 import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.KimRole;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl;
@@ -38,9 +39,8 @@ import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.dao.KimRoleDao;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb;
-import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill
@@ -214,7 +214,7 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
         Map<String,String> lookupNames = critMap.get("lookupNames");
         for (Entry<String, String> entry : lookupNames.entrySet()) {
         	if (StringUtils.isNotBlank(entry.getValue())) {
-        			if (!entry.getKey().equals("principalName")) {
+        			if (!entry.getKey().equals(KimConstants.PropertyNames.PRINCIPAL_NAME)) {
         				crit.addLike(entry.getKey(), entry.getValue());
         			} else {
         					List roleIds = getRoleIdsForPrincipalName(entry.getValue());
@@ -257,7 +257,7 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
     private List<String> getRoleIdsForPrincipalName(String value) {
         Criteria subCrit = new Criteria();
 		String principalName = value.replace('*', '%');
-		subCrit.addLike("principalName","%" + principalName + "%");
+		subCrit.addLike(KimConstants.PropertyNames.PRINCIPAL_NAME,principalName );
         subCrit.addEqualToField("principalId", Criteria.PARENT_QUERY_PREFIX + "memberId");
 		ReportQueryByCriteria subQuery = QueryFactory.newReportQuery(KimPrincipalImpl.class, subCrit);
         Criteria memberSubCrit = new Criteria();
@@ -314,7 +314,7 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
         			permFieldMap.put(entry.getKey(), nameValue);
         		} else if (respFieldName.contains(entry.getKey())) {
         			respFieldMap.put(entry.getKey(), nameValue);
-        		} else if (entry.getKey().startsWith("groupName")) {
+        		} else if (entry.getKey().startsWith(KimAttributes.GROUP_NAME)) {
         			groupFieldMap.put(entry.getKey(), nameValue);
         		} else if (entry.getKey().contains(".")) {
         			attrFieldMap.put(entry.getKey(), nameValue);
@@ -406,10 +406,10 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
     	//Criteria tmplSubCrit = new Criteria();
         Criteria memberSubCrit = new Criteria();
         for (Entry<String, String> entry : groupCrit.entrySet()) {
-        		if (entry.getKey().equals("groupName")) {
-        			memberSubCrit.addLike("groupName", entry.getValue());
+        		if (entry.getKey().equals(KimAttributes.GROUP_NAME)) {
+        			memberSubCrit.addLike(KimAttributes.GROUP_NAME, entry.getValue());
         		} else {
-        			memberSubCrit.addLike("namespaceCode",entry.getValue());        			
+        			memberSubCrit.addLike(KimAttributes.NAMESPACE_CODE,entry.getValue());        			
         		}
         }
         memberSubCrit.addEqualToField("groupId", Criteria.PARENT_QUERY_PREFIX + "memberId");

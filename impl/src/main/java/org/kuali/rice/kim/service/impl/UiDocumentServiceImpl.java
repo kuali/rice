@@ -460,7 +460,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		EntityExternalIdentifierImpl extId = new EntityExternalIdentifierImpl();
 		extId.setEntityId(identityManagementPersonDocument.getEntityId());
 		extId.setExternalId(identityManagementPersonDocument.getTaxId());
-		extId.setExternalIdentifierTypeCode("TAX");
+		extId.setExternalIdentifierTypeCode(KimConstants.PersonExternalIdentifierTypes.TAX);
 		for (EntityExternalIdentifierImpl origExtId : origExtIds) {
 			if (origExtId.getExternalIdentifierTypeCode().equals(extId.getExternalIdentifierTypeCode())) {
 				extId.setVersionNumber(origExtId.getVersionNumber());

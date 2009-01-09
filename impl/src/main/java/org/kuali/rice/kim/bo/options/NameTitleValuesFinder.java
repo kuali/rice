@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.State;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -37,7 +38,7 @@ public class NameTitleValuesFinder extends KeyValuesBase {
      */
     public List getKeyValues() {
 
-    	List<String> values = KNSServiceLocator.getKualiConfigurationService().getParameterValues("KR-IDM", "EntityNameImpl", "PREFIXES");
+    	List<String> values = KNSServiceLocator.getKualiConfigurationService().getParameterValues(KimConstants.NAMESPACE_CODE, "EntityNameImpl", "PREFIXES");
         List<KeyLabelPair> labels = new ArrayList<KeyLabelPair>();
         labels.add(new KeyLabelPair("", ""));
         for (String title : values) {

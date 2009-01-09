@@ -19,6 +19,9 @@ package org.kuali.rice.kew.dto;
 /**
  * Super class for all user id transport objects.
  * 
+ * @deprecated UserIdDTO should no longer be used.  Instead, there should be alternate API methods
+ * which reference Strings containing principal ID
+ * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public abstract class UserIdDTO extends RecipientIdDTO {

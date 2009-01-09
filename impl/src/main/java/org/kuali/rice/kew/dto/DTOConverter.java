@@ -93,7 +93,6 @@ import org.kuali.rice.kew.user.EmplId;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.RoleRecipient;
 import org.kuali.rice.kew.user.UserId;
-import org.kuali.rice.kew.user.UserUtils;
 import org.kuali.rice.kew.user.UuId;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
@@ -122,67 +121,7 @@ import org.w3c.dom.NodeList;
 public class DTOConverter {
     private static final Logger LOG = Logger.getLogger(DTOConverter.class);
 
-    /**
-     *
-     * This method converts a DocumentRouteHeaderValue to a RouteHeaderDTO
-     *
-     * @param routeHeader
-     * @param user
-     * @return
-     * @throws WorkflowException
-     * @throws KEWUserNotFoundException
-     * @deprecated WorkflowUser is being replaced with Person or KimPrincipal
-     */
-    public static RouteHeaderDTO convertRouteHeader(DocumentRouteHeaderValue routeHeader, WorkflowUser user) throws WorkflowException, KEWUserNotFoundException {
-        RouteHeaderDTO routeHeaderVO = new RouteHeaderDTO();
-        if (routeHeader == null) {
-            return null;
-        }
-        populateRouteHeaderVO(routeHeaderVO, routeHeader);
-
-        if (user != null) {
-            routeHeaderVO.setUserBlanketApprover(false); // default to false
-            if (routeHeader.getDocumentType() != null) {
-            	boolean isBlanketApprover = KEWServiceLocator.getDocumentTypePermissionService().canBlanketApprove(user.getWorkflowId(), routeHeader.getDocumentType(), routeHeader.getDocRouteStatus(), routeHeader.getInitiatorWorkflowId());
-                routeHeaderVO.setUserBlanketApprover(isBlanketApprover);
-            }
-            String topActionRequested = KEWConstants.ACTION_REQUEST_FYI_REQ;
-            for (Iterator iter = routeHeader.getActionRequests().iterator(); iter.hasNext();) {
-                ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
-                // below will control what buttons are drawn on the client we only want the
-                // heaviest action button to show on the client making this code a little combersome
-                if (actionRequest.isRecipientRoutedRequest(user) && actionRequest.isActive()) {
-                    int actionRequestComparison = ActionRequestValue.compareActionCode(actionRequest.getActionRequested(), topActionRequested);
-                    if (actionRequest.isFYIRequest() && actionRequestComparison >= 0) {
-                        routeHeaderVO.setFyiRequested(true);
-                    } else if (actionRequest.isAcknowledgeRequest() && actionRequestComparison >= 0) {
-                        routeHeaderVO.setAckRequested(true);
-                        routeHeaderVO.setFyiRequested(false);
-                        topActionRequested = actionRequest.getActionRequested();
-                    } else if (actionRequest.isApproveRequest() && actionRequestComparison >= 0) {
-                        routeHeaderVO.setApproveRequested(true);
-                        routeHeaderVO.setAckRequested(false);
-                        routeHeaderVO.setFyiRequested(false);
-                        topActionRequested = actionRequest.getActionRequested();
-                        if (actionRequest.isCompleteRequst()) {
-                            routeHeaderVO.setCompleteRequested(true);
-                        }
-                    }
-                }
-            }
-            // Update notes and notesToDelete arrays in routeHeaderVO
-            routeHeaderVO.setNotesToDelete(null);
-            routeHeaderVO.setNotes(convertNotesArrayListToNoteVOArray(routeHeader.getNotes()));
-        }
-
-        if (user != null) {
-        	KimPrincipal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(user.getWorkflowId());
-            routeHeaderVO.setValidActions(convertValidActions(KEWServiceLocator.getActionRegistry().getValidActions(principal, routeHeader)));
-        }
-        return routeHeaderVO;
-    }
-
-    public static RouteHeaderDTO convertRouteHeader(DocumentRouteHeaderValue routeHeader, String principalId) throws WorkflowException, KEWUserNotFoundException {
+    public static RouteHeaderDTO convertRouteHeader(DocumentRouteHeaderValue routeHeader, String principalId) throws WorkflowException {
         RouteHeaderDTO routeHeaderVO = new RouteHeaderDTO();
         if (routeHeader == null) {
             return null;
@@ -229,50 +168,6 @@ public class DTOConverter {
         	KimPrincipal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);
             routeHeaderVO.setValidActions(convertValidActions(KEWServiceLocator.getActionRegistry().getValidActions(principal, routeHeader)));
         }
-        return routeHeaderVO;
-    }
-
-    public static RouteHeaderDTO convertActionListRouteHeader(DocumentRouteHeaderValue routeHeader, WorkflowUser user) throws WorkflowException, KEWUserNotFoundException {
-        RouteHeaderDTO routeHeaderVO = new RouteHeaderDTO();
-        if (routeHeader == null) {
-            return null;
-        }
-        populateRouteHeaderVO(routeHeaderVO, routeHeader);
-
-        if (user != null) {
-            routeHeaderVO.setUserBlanketApprover(false); // default to false
-            if (routeHeader.getDocumentType() != null) {
-            	boolean isBlanketApprover = KEWServiceLocator.getDocumentTypePermissionService().canBlanketApprove(user.getWorkflowId(), routeHeader.getDocumentType(), routeHeader.getDocRouteStatus(), routeHeader.getInitiatorWorkflowId());
-                routeHeaderVO.setUserBlanketApprover(isBlanketApprover);
-            }
-            String topActionRequested = KEWConstants.ACTION_REQUEST_FYI_REQ;
-            for (Iterator iter = routeHeader.getActionRequests().iterator(); iter.hasNext();) {
-                ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
-                // below will control what buttons are drawn on the client we only want the
-                // heaviest action button to show on the client making this code a little cumbersome
-                if (actionRequest.isRecipientRoutedRequest(user) && actionRequest.isActive()) {
-                    int actionRequestComparison = ActionRequestValue.compareActionCode(actionRequest.getActionRequested(), topActionRequested);
-                    if (actionRequest.isFYIRequest() && actionRequestComparison >= 0) {
-                        routeHeaderVO.setFyiRequested(true);
-                    } else if (actionRequest.isAcknowledgeRequest() && actionRequestComparison >= 0) {
-                        routeHeaderVO.setAckRequested(true);
-                        routeHeaderVO.setFyiRequested(false);
-                        topActionRequested = actionRequest.getActionRequested();
-                    } else if (actionRequest.isApproveRequest() && actionRequestComparison >= 0) {
-                        routeHeaderVO.setApproveRequested(true);
-                        routeHeaderVO.setAckRequested(false);
-                        routeHeaderVO.setFyiRequested(false);
-                        topActionRequested = actionRequest.getActionRequested();
-                        if (actionRequest.isCompleteRequst()) {
-                            routeHeaderVO.setCompleteRequested(true);
-                        }
-                    }
-                }
-            }
-        }
-
-        KimPrincipal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(user.getWorkflowId());
-        routeHeaderVO.setValidActions(convertValidActions(KEWServiceLocator.getActionRegistry().getValidActions(principal, routeHeader)));
         return routeHeaderVO;
     }
 
@@ -594,49 +489,6 @@ public class DTOConverter {
 
         userVO.setUserPreferencePopDocHandler(true);
         return userVO;
-    }
-
-    public static UserDTO convertUser(Person user) {
-        if (user == null) {
-            return null;
-        }
-        UserDTO userVO = new UserDTO();
-        userVO.setNetworkId(user.getPrincipalName() == null ? null : user.getPrincipalName());
-
-        // These should be removed
-
-        //userVO.setUuId(user.getUuId() == null ? null : user.getUuId().getUuId());
-        //userVO.setEmplId(user.getEmplId() == null ? null : user.getEmplId().getEmplId());
-
-        userVO.setWorkflowId(user.getPrincipalId() == null ? null : user.getPrincipalId());
-        userVO.setDisplayName(user.getName());
-        userVO.setLastName(user.getLastName());
-        userVO.setFirstName(user.getFirstName());
-        userVO.setEmailAddress(user.getEmailAddress());
-        // Preferences preferences = SpringServiceLocator.getPreferencesService().getPreferences(user);
-        // userVO.setUserPreferencePopDocHandler(KEWConstants.PREFERENCES_YES_VAL.equals(preferences.getOpenNewWindow()));
-
-        userVO.setUserPreferencePopDocHandler(true);
-        return userVO;
-    }
-
-    public static WorkflowUser convertUserVO(UserDTO userVO) throws KEWUserNotFoundException {
-        if (userVO == null) {
-            return null;
-        }
-        UserId userId = null;
-        if (userVO.getWorkflowId() != null) {
-            userId = new WorkflowUserId(userVO.getWorkflowId());
-        } else if (userVO.getNetworkId() != null) {
-            userId = new AuthenticationUserId(userVO.getNetworkId());
-        } else if (userVO.getEmplId() != null) {
-            userId = new EmplId(userVO.getEmplId());
-        } else if (userVO.getUuId() != null) {
-            userId = new UuId(userVO.getUuId());
-        } else {
-            throw new KEWUserNotFoundException("Cannot convert the given UserVO, it does not contain any valid user ids.");
-        }
-        return KEWServiceLocator.getUserService().getWorkflowUser(userId);
     }
 
     public static DocumentTypeDTO convertDocumentType(DocumentType docType) {

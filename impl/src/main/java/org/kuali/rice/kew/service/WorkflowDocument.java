@@ -36,7 +36,6 @@ import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
-import org.kuali.rice.kew.dto.WorkgroupIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.FutureRequestDocumentStateManager;
@@ -84,11 +83,17 @@ public class WorkflowDocument implements java.io.Serializable {
      */
     private ModifiableDocumentContentDTO documentContent;
 
+    /**
+     * @deprecated Use the constructor which takes a principal ID instead.
+     */
     public WorkflowDocument(UserIdDTO userId, String documentType) throws WorkflowException {
     	String principalId = convertUserIdToPrincipalId(userId);
     	init(principalId, documentType, null);
     }
 
+    /**
+     * @deprecated Use the constructor which takes a principal ID instead.
+     */
     public WorkflowDocument(UserIdDTO userId, Long routeHeaderId) throws WorkflowException {
     	String principalId = convertUserIdToPrincipalId(userId);
     	init(principalId, null, routeHeaderId);    	
@@ -1105,7 +1110,6 @@ public class WorkflowDocument implements java.io.Serializable {
      * @param annotation the message to log for the action
      * @param workgroupId the workgroup on which to take authority
      * @throws WorkflowException user taking action is not in workgroup
-     * @see WorkflowDocumentActions#takeWorkgroupAuthority(UserIdDTO, RouteHeaderDTO, WorkgroupIdDTO, String)
      */
     public void takeGroupAuthority(String annotation, String groupId) throws WorkflowException {
         try {

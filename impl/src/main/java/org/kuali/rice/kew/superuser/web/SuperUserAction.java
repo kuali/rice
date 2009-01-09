@@ -83,8 +83,7 @@ public class SuperUserAction extends WorkflowAction {
         Long documentId = superUserForm.getRouteHeader().getRouteHeaderId();
         WorkflowDocumentActions documentActions = getWorkflowDocumentActions(documentId);
         UserId userId = getUserSession(request).getWorkflowUser().getAuthenticationUserId();
-        WorkflowUser nullUser = null; // handle ambiguous error.
-        documentActions.superUserApprove(getUserSession(request).getPrincipalId(), DTOConverter.convertRouteHeader(superUserForm.getRouteHeader(), nullUser), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
+        documentActions.superUserApprove(getUserSession(request).getPrincipalId(), DTOConverter.convertRouteHeader(superUserForm.getRouteHeader(), null), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
         saveDocumentActionMessage("general.routing.superuser.approved", request, superUserForm.getRouteHeaderIdString(), null);
         LOG.info("exiting approve() ...");
         superUserForm.getActionRequests().clear();
@@ -98,8 +97,7 @@ public class SuperUserAction extends WorkflowAction {
         Long documentId = superUserForm.getRouteHeader().getRouteHeaderId();
         WorkflowDocumentActions documentActions = getWorkflowDocumentActions(documentId);
         UserId userId = getUserSession(request).getWorkflowUser().getAuthenticationUserId();
-        WorkflowUser nullUser = null; // handle ambiguous error.
-        documentActions.superUserDisapprove(getUserSession(request).getPrincipalId(), DTOConverter.convertRouteHeader(superUserForm.getRouteHeader(), nullUser), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
+        documentActions.superUserDisapprove(getUserSession(request).getPrincipalId(), DTOConverter.convertRouteHeader(superUserForm.getRouteHeader(), null), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
         saveDocumentActionMessage("general.routing.superuser.disapproved", request, superUserForm.getRouteHeaderIdString(), null);
         LOG.info("exiting disapprove() ...");
         superUserForm.getActionRequests().clear();
@@ -113,8 +111,7 @@ public class SuperUserAction extends WorkflowAction {
         Long documentId = superUserForm.getRouteHeader().getRouteHeaderId();
         WorkflowDocumentActions documentActions = getWorkflowDocumentActions(documentId);
         UserId userId = getUserSession(request).getWorkflowUser().getAuthenticationUserId();
-        WorkflowUser nullUser = null; // handle ambiguous error.
-        documentActions.superUserCancel(getUserSession(request).getPrincipalId(), DTOConverter.convertRouteHeader(superUserForm.getRouteHeader(), nullUser), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
+        documentActions.superUserCancel(getUserSession(request).getPrincipalId(), DTOConverter.convertRouteHeader(superUserForm.getRouteHeader(), null), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
         saveDocumentActionMessage("general.routing.superuser.canceled", request, superUserForm.getRouteHeaderIdString(), null);
         LOG.info("exiting cancel() ...");
         superUserForm.getActionRequests().clear();

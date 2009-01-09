@@ -816,8 +816,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
             if (this.getDocumentType() != null) {
                 customEmailAttribute = this.getDocumentType().getCustomEmailAttribute();
                 if (customEmailAttribute != null) {
-                	WorkflowUser user = null;
-                    customEmailAttribute.setRouteHeaderVO(DTOConverter.convertRouteHeader(this, user));
+                    customEmailAttribute.setRouteHeaderVO(DTOConverter.convertRouteHeader(this, null));
                     return customEmailAttribute;
                 }
             }
@@ -825,8 +824,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
             LOG.debug("Error in retrieving custom email attribute", e);
         }
         customEmailAttribute = new CustomEmailAttributeImpl();
-        WorkflowUser user = null;
-        customEmailAttribute.setRouteHeaderVO(DTOConverter.convertRouteHeader(this, user));
+        customEmailAttribute.setRouteHeaderVO(DTOConverter.convertRouteHeader(this, null));
         return customEmailAttribute;
     }
 
@@ -836,8 +834,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
             if (this.getDocumentType() != null) {
                 customNoteAttribute = this.getDocumentType().getCustomNoteAttribute();
                 if (customNoteAttribute != null) {
-                	WorkflowUser user = null;
-                    customNoteAttribute.setRouteHeaderVO(DTOConverter.convertRouteHeader(this, user));
+                    customNoteAttribute.setRouteHeaderVO(DTOConverter.convertRouteHeader(this, null));
                     return customNoteAttribute;
                 }
             }
@@ -845,8 +842,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
             LOG.debug("Error in retrieving custom note attribute", e);
         }
         customNoteAttribute = new CustomNoteAttributeImpl();
-        WorkflowUser user = null;
-        customNoteAttribute.setRouteHeaderVO(DTOConverter.convertRouteHeader(this, user));
+        customNoteAttribute.setRouteHeaderVO(DTOConverter.convertRouteHeader(this, null));
         return customNoteAttribute;
     }
 

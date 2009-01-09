@@ -37,7 +37,6 @@ import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
 import org.kuali.rice.kew.dto.RuleDTO;
 import org.kuali.rice.kew.dto.RuleReportCriteriaDTO;
-import org.kuali.rice.kew.dto.UserDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;

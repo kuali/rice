@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,26 +22,26 @@ import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.WorkflowInfo;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kim.bo.Person;
 
 
 /**
  * A collection of handy workflow queries to be used from style sheets.
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class WorkflowFunctions {
-	
-	
+
+
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(WorkflowFunctions.class);
-        
+
         public static boolean isUserInitiator(String id) throws WorkflowException {
             boolean initiator = false;
             UserSession userSession = UserSession.getAuthenticatedUser();
-            if (userSession != null) {            
+            if (userSession != null) {
         	try {
         	    long documentId = Long.parseLong(id.trim());
         	    WorkflowInfo workflowInfo = new WorkflowInfo();
@@ -54,7 +54,7 @@ public class WorkflowFunctions {
             }
             return initiator;
         }
-	
+
 	public static boolean isUserRouteLogAuthenticated(String id) {
 		boolean authenticated=false;
 		WorkflowInfo workflowInfo = new WorkflowInfo();
@@ -70,10 +70,10 @@ public class WorkflowFunctions {
 				LOG.debug("Error checking if user is route log authenticated: userId: "+userId + ";routeHeaderId: " + id);
 		    }
 		}
-		
+
 	    return authenticated;
 	}
-	
+
 	public static boolean isUidAuthentictedUserUid(String uuid) {
 		UserSession userSession = UserSession.getAuthenticatedUser();
 		if (uuid.equals(userSession.getWorkflowUser().getEmplId().getEmplId())) {
@@ -94,32 +94,27 @@ public class WorkflowFunctions {
 		return isUserInGroup;
 	}
 
-	public static WorkflowUser getWorkflowUser() {
+
+	public static Person getAuthenticatedPerson(){
 		UserSession userSession=UserSession.getAuthenticatedUser();
-		//testing
-		LOG.debug("Given name safe: " + userSession.getWorkflowUser().getGivenNameSafe());
-		LOG.debug("Display name safe: " + userSession.getWorkflowUser().getDisplayNameSafe());
-		LOG.debug("Last name safe: " + userSession.getWorkflowUser().getLastNameSafe());
-		LOG.debug("Auth User ID: " + userSession.getWorkflowUser().getAuthenticationUserId().getId());
-		LOG.debug("EPLID: " + userSession.getWorkflowUser().getEmplId().getEmplId());
-		return userSession.getWorkflowUser();
+		Person user = userSession.getPerson();
+		return user;
 	}
 
 	public static String getUserId() {
-	        return getWorkflowUser().getEmplId().getId();
+	        return getAuthenticatedPerson().getPrincipalId();
 	}
 
 	public static String getLastName() {
-	        return getWorkflowUser().getLastName();
+	        return getAuthenticatedPerson().getLastName();
 	}
 
 	public static String getGivenName() {
-	    return getWorkflowUser().getGivenName();
+	    return getAuthenticatedPerson().getFirstName();
 	}
 
 	public static String getEmailAddress() {
-	    UserSession userSession=UserSession.getAuthenticatedUser();
-	    return userSession.getEmailAddress();
+	    return getAuthenticatedPerson().getEmailAddress();
 	}
 
 	public static boolean isNodeInPreviousNodeList(String nodeName, String id) {
@@ -145,7 +140,7 @@ public class WorkflowFunctions {
 	public static String escapeJavascript(String value) {
 		return value.replace("\\", "\\\\").replace("\"", "\\\"");
 	}
-	
+
 	public static boolean isNodeBetween(String firstNodeName, String lastNodeName, String id) {
 		if (isNodeInPreviousNodeList(firstNodeName, id)) {
 			if (isNodeInPreviousNodeList(lastNodeName, id)) {
@@ -156,8 +151,8 @@ public class WorkflowFunctions {
 		} else {
 			return false;
 		}
-	}	
-	
+	}
+
 	public static boolean isAtNode(String documentId, String nodeName) throws Exception {
 	    WorkflowInfo workflowInfo = new WorkflowInfo();
 	    RouteNodeInstanceDTO[] activeNodeInstances = workflowInfo.getActiveNodeInstances(new Long(documentId));
@@ -168,7 +163,7 @@ public class WorkflowFunctions {
 	    }
 	    return false;
 	}
-	
+
 	public static boolean hasActiveNode(String documentId) throws Exception {
 	    WorkflowInfo workflowInfo = new WorkflowInfo();
 	    RouteNodeInstanceDTO[] activeNodeInstances = workflowInfo.getActiveNodeInstances(new Long(documentId));

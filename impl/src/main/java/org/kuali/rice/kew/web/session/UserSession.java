@@ -40,6 +40,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 
@@ -73,12 +74,7 @@ public class UserSession implements Serializable {
     private int currentPage;
     private KimPrincipal	principal;
 
-    /*
-     * We are getting rid of WorkflowUser. We will replace workflowUser with
-     * this userId.  The getter methods will still return what they need to
-     * until everything has been rewritten.
-     */
-    private String principalId; // principalId for the primary user
+    private IdentityService  identityService = null;
 
     /**
      *
@@ -92,8 +88,13 @@ public class UserSession implements Serializable {
         this.workflowUser = user;
     }
 
+    public UserSession (KimPrincipal principal) {
+		this.principal = principal;
+        this.nextObjectKey = 0;
+    }
+
 	public UserSession (String principalId) {
-        this.principalId = principalId;
+		this.principal = this.getIdentityService().getPrincipal(principalId);
         this.nextObjectKey = 0;
     }
 
@@ -102,6 +103,13 @@ public class UserSession implements Serializable {
 	 */
 	public String getSortOrder() {
 		return this.sortOrder;
+	}
+
+	protected IdentityService getIdentityService(){
+		if(identityService == null){
+			identityService = KIMServiceLocator.getIdentityService();
+		}
+		return identityService;
 	}
 
 	/**
@@ -196,9 +204,9 @@ public class UserSession implements Serializable {
         	wRet = backdoorWorkflowUser;
         } else if(workflowUser != null){
         	wRet = workflowUser;
-        } else if(this.principalId != null && !"".equals(principalId)){
+        } else if(this.getPrincipalId() != null && !"".equals(this.getPrincipalId())){
         	try {
-        		wRet = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowIdDTO(this.principalId));
+        		wRet = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowIdDTO(this.getPrincipalId()));
         		workflowUser = wRet;
 			} catch (KEWUserNotFoundException e) {
 				e.printStackTrace();
@@ -220,7 +228,19 @@ public class UserSession implements Serializable {
 
     @Deprecated
     public WorkflowUser getLoggedInWorkflowUser() {
-        return workflowUser;
+    	WorkflowUser wRet = null;
+
+        if(workflowUser != null){
+        	wRet = workflowUser;
+        } else if(this.getPrincipalId() != null && !"".equals(this.getPrincipalId())){
+        	try {
+        		wRet = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowIdDTO(this.getPrincipalId()));
+        		workflowUser = wRet;
+			} catch (KEWUserNotFoundException e) {
+				e.printStackTrace();
+			}
+        }
+        return wRet;
     }
 
     public Person getLoggedInPerson() {
@@ -298,7 +318,7 @@ public class UserSession implements Serializable {
 
     public boolean isAdmin(){
         String group = Utilities.getApplicationConstant(KEWConstants.WORKFLOW_ADMIN_WORKGROUP_NAME_KEY);
-    	return KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(getWorkflowUser().getWorkflowId(), Utilities.parseGroupNamespaceCode(group), Utilities.parseGroupName(group));
+    	return KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(getPrincipalId(), Utilities.parseGroupNamespaceCode(group), Utilities.parseGroupName(group));
     }
 
     /**
@@ -357,14 +377,8 @@ public class UserSession implements Serializable {
 	 * @return the userId
 	 */
 	public String getPrincipalId() {
-		return this.principalId;
+		return this.principal.getPrincipalId();
 	}
 
-	/**
-	 * @param userId the userId to set
-	 */
-	public void setPrincipalId(String userId) {
-		this.principalId = userId;
-	}
 
 }

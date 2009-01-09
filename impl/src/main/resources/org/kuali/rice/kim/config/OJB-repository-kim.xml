@@ -326,9 +326,8 @@
   <!-- ******************************************************************* --> 
 
   <class-descriptor class="org.kuali.rice.kim.bo.entity.impl.EntityEntityTypeImpl" table="KRIM_ENTITY_ENT_TYP_T">
-    <field-descriptor name="entityEntityTypeId" column="ENTITY_ENT_TYPE_ID" jdbc-type="VARCHAR" primarykey="true"   autoincrement="true" sequence-name="KRIM_ENTITY_ENT_TYP_ID_S" />
-    <field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="VARCHAR"  />
-    <field-descriptor name="entityTypeCode" column="ENT_TYP_CD" jdbc-type="VARCHAR"  />
+    <field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="VARCHAR" primarykey="true" />
+    <field-descriptor name="entityTypeCode" column="ENT_TYP_CD" jdbc-type="VARCHAR" primarykey="true" />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true"  />
@@ -336,22 +335,16 @@
       <foreignkey field-ref="entityTypeCode" />
     </reference-descriptor>
     <collection-descriptor name="emailAddresses" element-class-ref="org.kuali.rice.kim.bo.entity.impl.EntityEmailImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
-      <query-customizer class="org.kuali.rice.core.ojb.CustomCollectionJoinQueryCustomizer">
-        <attribute attribute-name="entityId" attribute-value="parent.entityId" />
-        <attribute attribute-name="entityTypeCode" attribute-value="parent.entityTypeCode" />
-      </query-customizer>
+      <inverse-foreignkey field-ref="entityId" />
+      <inverse-foreignkey field-ref="entityTypeCode" />
     </collection-descriptor>
     <collection-descriptor name="phoneNumbers" element-class-ref="org.kuali.rice.kim.bo.entity.impl.EntityPhoneImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
-      <query-customizer class="org.kuali.rice.core.ojb.CustomCollectionJoinQueryCustomizer">
-        <attribute attribute-name="entityId" attribute-value="parent.entityId" />
-        <attribute attribute-name="entityTypeCode" attribute-value="parent.entityTypeCode" />
-      </query-customizer>
+      <inverse-foreignkey field-ref="entityId" />
+      <inverse-foreignkey field-ref="entityTypeCode" />
     </collection-descriptor>
     <collection-descriptor name="addresses" element-class-ref="org.kuali.rice.kim.bo.entity.impl.EntityAddressImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
-      <query-customizer class="org.kuali.rice.core.ojb.CustomCollectionJoinQueryCustomizer">
-        <attribute attribute-name="entityId" attribute-value="parent.entityId" />
-        <attribute attribute-name="entityTypeCode" attribute-value="parent.entityTypeCode" />
-      </query-customizer>
+      <inverse-foreignkey field-ref="entityId" />
+      <inverse-foreignkey field-ref="entityTypeCode" />
     </collection-descriptor>
   </class-descriptor>
 

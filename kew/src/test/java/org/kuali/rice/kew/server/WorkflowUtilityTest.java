@@ -58,6 +58,7 @@ import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.KEWPropertyConstants;
 import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
@@ -1201,7 +1202,8 @@ public class WorkflowUtilityTest extends KEWTestCase {
     }
 
     @Test public void testPerformDocumentSearch_WithUser_CustomThreshold() throws Exception {
-        UserSession.setAuthenticatedUser(new UserSession(KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("user1"))));
+    	KimPrincipal user = KIMServiceLocator.getIdentityService().getPrincipalByPrincipalName("user1");
+        UserSession.setAuthenticatedUser(new UserSession(user));
         runTestPerformDocumentSearch_CustomThreshold(new NetworkIdDTO("user2"));
     }
 
@@ -1231,7 +1233,8 @@ public class WorkflowUtilityTest extends KEWTestCase {
     }
 
     @Test public void testPerformDocumentSearch_WithUser_BasicCriteria() throws Exception {
-        UserSession.setAuthenticatedUser(new UserSession(KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("user1"))));
+    	KimPrincipal user = KIMServiceLocator.getIdentityService().getPrincipalByPrincipalName("user1");
+        UserSession.setAuthenticatedUser(new UserSession(user));
         runTestPerformDocumentSearch_BasicCriteria(new NetworkIdDTO("user2"));
     }
 
@@ -1240,7 +1243,8 @@ public class WorkflowUtilityTest extends KEWTestCase {
     }
 
     private void runTestPerformDocumentSearch_BasicCriteria(UserIdDTO userIdVO) throws Exception {
-        UserSession.setAuthenticatedUser(new UserSession(KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("user1"))));
+    	KimPrincipal user = KIMServiceLocator.getIdentityService().getPrincipalByPrincipalName("user1");
+        UserSession.setAuthenticatedUser(new UserSession(user));
         String documentTypeName = SeqSetup.DOCUMENT_TYPE_NAME;
         String docTitle = "Routing Style";
         setupPerformDocumentSearchTests(documentTypeName, null, docTitle);
@@ -1289,7 +1293,8 @@ public class WorkflowUtilityTest extends KEWTestCase {
     }
 
     @Test public void testPerformDocumentSearch_WithUser_RouteNodeSearch() throws Exception {
-        UserSession.setAuthenticatedUser(new UserSession(KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("user1"))));
+    	KimPrincipal user = KIMServiceLocator.getIdentityService().getPrincipalByPrincipalName("user1");
+        UserSession.setAuthenticatedUser(new UserSession(user));
         runTestPerformDocumentSearch_RouteNodeSearch(new NetworkIdDTO("user2"));
     }
 
@@ -1366,7 +1371,8 @@ public class WorkflowUtilityTest extends KEWTestCase {
     }
 
     @Test public void testPerformDocumentSearch_WithUser_SearchAttributes() throws Exception {
-        UserSession.setAuthenticatedUser(new UserSession(KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("user1"))));
+    	KimPrincipal user = KIMServiceLocator.getIdentityService().getPrincipalByPrincipalName("user1");
+        UserSession.setAuthenticatedUser(new UserSession(user));
     	runTestPerformDocumentSearch_SearchAttributes(new NetworkIdDTO("user2"));
     }
 

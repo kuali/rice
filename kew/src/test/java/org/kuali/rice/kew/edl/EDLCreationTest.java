@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -44,13 +44,13 @@ public class EDLCreationTest extends KEWTestCase {
 		super.loadXmlFile("TestEDL1.xml");
 		super.loadXmlFile("EDLRoutingData.xml");
 	}
-	
+
 	@Ignore("This test needs to be implemented!")
 	@Test public void testEDLDOMCreationAndTransformation() throws Exception {
 //		ConfigContext.getCurrentContextConfig().overrideProperty(Config.EDL_CONFIG_LOCATION, "classpath:org/kuali/rice/kew/edl/EDLConfig1.xml");
 //		WorkflowUser user = SpringServiceLocator.getUserService().getWorkflowUser(new NetworkIdVO("user1"));
 //		EDLController edlController = getEDLService().getEDLController("TestEDL1");
-//		
+//
 //		MockHttpServletRequest request = new MockHttpServletRequest();
 //		request.setContentType("text/html");
 //		request.setMethod("POST");
@@ -60,13 +60,13 @@ public class EDLCreationTest extends KEWTestCase {
 //		System.out.print(XmlHelper.jotNode(dom));
 //		transform(dom, edlController.getStyle().newTransformer());
 	}
-	
+
 	@Ignore("This test needs to be implemented!")
 	@Test public void testEDLCreationWithWorkflowDocument() throws Exception {
 //		ConfigContext.getCurrentContextConfig().overrideProperty(Config.EDL_CONFIG_LOCATION, "classpath:org/kuali/rice/kew/edl/EDLConfig1.xml");
 //		WorkflowUser user = SpringServiceLocator.getUserService().getWorkflowUser(new NetworkIdVO("user1"));
 //		EDLController edlController = getEDLService().getEDLController("TestEDL1");
-//		
+//
 //		MockHttpServletRequest request = new MockHttpServletRequest();
 //		request.setContentType("text/html");
 //		//make our params create the document
@@ -78,7 +78,7 @@ public class EDLCreationTest extends KEWTestCase {
 //		Document dom = edlController.notifyComponents();
 //		System.out.print(XmlHelper.jotNode(dom));
 //		transform(dom, transformer);
-//		
+//
 //		//now let's route our document
 //		HttpSession session = request.getSession();
 //		request = new MockHttpServletRequest();
@@ -93,32 +93,32 @@ public class EDLCreationTest extends KEWTestCase {
 //		request.addParameter("currentVersion", "0");
 //		request.setSession(session);
 //		edlContext.getRequestParser().setRequest(request);
-//		 
+//
 //		transformer = edlController.getStyle().newTransformer();
 //		edlController.setEdlContext(getEDLContext(edlController, request, transformer, user));
 //		dom = edlController.notifyComponents();
 //		System.out.print(XmlHelper.jotNode(dom));
 //		transform(dom, transformer);
 	}
-	
+
 	private void transform(Document dom, Transformer transformer) throws Exception {
         transformer.setOutputProperty("indent", "yes");
         transformer.setOutputProperty(OutputKeys.INDENT, "yes");
         transformer.transform(new DOMSource(dom), new StreamResult(System.out));
 	}
-	
-	private EDLContext getEDLContext(EDLController edlController, HttpServletRequest request, Transformer transformer, WorkflowUser user) throws TransformerConfigurationException {
+
+	private EDLContext getEDLContext(EDLController edlController, HttpServletRequest request, Transformer transformer, String principalId) throws TransformerConfigurationException {
 		EDLContext edlContext = new EDLContext();
 		edlContext.setEdocLiteAssociation(edlController.getEdocLiteAssociation());
-		edlContext.setUserSession(new UserSession(user));
+		edlContext.setUserSession(new UserSession(principalId));
 		edlContext.setTransformer(transformer);
 //		edlContext.setSessionAccessor(new SessionAccessor(request));
 		edlContext.setRequestParser(new RequestParser(request));
 		return edlContext;
 	}
-	
+
 	private EDocLiteService getEDLService() {
 		return (EDocLiteService)KEWServiceLocator.getEDocLiteService();
 	}
-	
+
 }

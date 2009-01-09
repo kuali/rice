@@ -44,7 +44,7 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
           return true;
       }
       for (SecurityAttribute securityAttribute : security.getSecurityAttributes()) {
-          Boolean authorized = securityAttribute.docSearchAuthorized(security, userSession.getWorkflowUser(), userSession.getAuthentications(), documentTypeName, routeHeaderId, initiatorWorkflowId, session);
+          Boolean authorized = securityAttribute.docSearchAuthorized(security, userSession.getPerson(), userSession.getAuthentications(), documentTypeName, routeHeaderId, initiatorWorkflowId, session);
           if (authorized != null) {
               return authorized.booleanValue();
           }

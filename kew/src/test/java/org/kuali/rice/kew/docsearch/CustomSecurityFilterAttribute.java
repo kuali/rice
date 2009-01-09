@@ -25,21 +25,21 @@ import org.kuali.rice.kew.doctype.SecurityAttribute;
 import org.kuali.rice.kew.doctype.SecuritySession;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.service.WorkflowDocument;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.session.Authentication;
+import org.kuali.rice.kim.bo.Person;
 
 
 /**
- * This is a description of what this class does - delyea don't forget to fill this in. 
- * 
+ * This is a description of what this class does - delyea don't forget to fill this in.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class CustomSecurityFilterAttribute implements SecurityAttribute {
-    
+
     private static final long serialVersionUID = -8487944372203594080L;
-    
+
     public static final Map<String,String> VIEWERS_BY_STATUS = new HashMap<String,String>();
     static {
         VIEWERS_BY_STATUS.put(KEWConstants.ROUTE_HEADER_SAVED_CD, "user3");
@@ -51,22 +51,22 @@ public class CustomSecurityFilterAttribute implements SecurityAttribute {
     /**
      * @see org.kuali.rice.kew.doctype.SecurityAttribute#docSearchAuthorized(org.kuali.rice.kew.doctype.DocumentTypeSecurity, org.kuali.rice.kew.user.WorkflowUser, java.util.List, java.lang.String, java.lang.Long, java.lang.String, org.kuali.rice.kew.doctype.SecuritySession)
      */
-    public Boolean docSearchAuthorized(DocumentTypeSecurity security, WorkflowUser currentUser, List<Authentication> authentications, String docTypeName, Long documentId, String initiatorWorkflowId, SecuritySession session) {
+    public Boolean docSearchAuthorized(DocumentTypeSecurity security, Person currentUser, List<Authentication> authentications, String docTypeName, Long documentId, String initiatorWorkflowId, SecuritySession session) {
         return checkAuthorizations(security, currentUser, authentications, docTypeName, documentId, initiatorWorkflowId, session);
     }
 
     /**
      * @see org.kuali.rice.kew.doctype.SecurityAttribute#routeLogAuthorized(org.kuali.rice.kew.doctype.DocumentTypeSecurity, org.kuali.rice.kew.user.WorkflowUser, java.util.List, java.lang.String, java.lang.Long, java.lang.String, org.kuali.rice.kew.doctype.SecuritySession)
      */
-    public Boolean routeLogAuthorized(DocumentTypeSecurity security, WorkflowUser currentUser, List<Authentication> authentications, String docTypeName, Long documentId, String initiatorWorkflowId, SecuritySession session) {
+    public Boolean routeLogAuthorized(DocumentTypeSecurity security, Person currentUser, List<Authentication> authentications, String docTypeName, Long documentId, String initiatorWorkflowId, SecuritySession session) {
         return checkAuthorizations(security, currentUser, authentications, docTypeName, documentId, initiatorWorkflowId, session);
     }
-    
-    private Boolean checkAuthorizations(DocumentTypeSecurity security, WorkflowUser currentUser, List<Authentication> authentications, String docTypeName, Long documentId, String initiatorWorkflowId, SecuritySession session) {
+
+    private Boolean checkAuthorizations(DocumentTypeSecurity security, Person currentUser, List<Authentication> authentications, String docTypeName, Long documentId, String initiatorWorkflowId, SecuritySession session) {
         try {
-            WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO(currentUser.getAuthenticationUserId().getAuthenticationId()),documentId);
+            WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO(currentUser.getPrincipalName()),documentId);
             String networkId = VIEWERS_BY_STATUS.get(doc.getRouteHeader().getDocRouteStatus());
-            return ( (StringUtils.isNotBlank(networkId)) && (networkId.equals(currentUser.getAuthenticationUserId().getAuthenticationId())) );
+            return ( (StringUtils.isNotBlank(networkId)) && (networkId.equals(currentUser.getPrincipalName())) );
         } catch (Exception e) {
             throw new RuntimeException("Unable to process custom security filter attribute", e);
         }

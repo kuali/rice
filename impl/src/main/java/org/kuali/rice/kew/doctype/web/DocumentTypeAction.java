@@ -105,13 +105,13 @@ public class DocumentTypeAction extends WorkflowAction {
 
 		// this code sucks and needs reworked RK
 		if (documentTypeForm.getDocId() != null) { // I'm for the dochandler
-			documentTypeForm.setWorkflowDocument(new WorkflowDocument(new WorkflowIdDTO(getUserSession(request).getWorkflowUser().getWorkflowId()), documentTypeForm.getDocId()));
+			documentTypeForm.setWorkflowDocument(new WorkflowDocument(new WorkflowIdDTO(getUserSession(request).getPrincipalId()), documentTypeForm.getDocId()));
 			documentTypeForm.establishVisibleActionRequestCds();
 		} else if (documentTypeForm.getDocTypeId() != null) { // I'm for the
 																// report
 			// do nothing I'm doing work in report method
 		} else { // I'm for editing and creating new
-			documentTypeForm.setWorkflowDocument(new WorkflowDocument(new WorkflowIdDTO(getUserSession(request).getWorkflowUser().getWorkflowId()), DOCUMENT_TYPE));
+			documentTypeForm.setWorkflowDocument(new WorkflowDocument(new WorkflowIdDTO(getUserSession(request).getPrincipalId()), DOCUMENT_TYPE));
 			documentTypeForm.setDocId(documentTypeForm.getWorkflowDocument().getRouteHeaderId());
 			documentTypeForm.establishVisibleActionRequestCds();
 		}
@@ -130,7 +130,7 @@ public class DocumentTypeAction extends WorkflowAction {
 		DocumentType docType = getDocumentTypeService().findById(new Long(request.getParameter("docTypeId")));
 
 		if (docType.getRouteHeaderId() != null && docType.getRouteHeaderId().longValue() != 0) {
-			documentTypeForm.setWorkflowDocument(new WorkflowDocument(new WorkflowIdDTO(getUserSession(request).getWorkflowUser().getWorkflowId()), docType.getRouteHeaderId()));
+			documentTypeForm.setWorkflowDocument(new WorkflowDocument(new WorkflowIdDTO(getUserSession(request).getPrincipalId()), docType.getRouteHeaderId()));
 		}
 		documentTypeForm.establishVisibleActionRequestCds();
 

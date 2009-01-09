@@ -18,13 +18,13 @@ package org.kuali.rice.kew.doctype;
 import java.io.Serializable;
 import java.util.List;
 
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.web.session.Authentication;
+import org.kuali.rice.kim.bo.Person;
 
 
 /**
- * This is an attribute used for document security and based off document type. 
- * 
+ * This is an attribute used for document security and based off document type.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
@@ -32,7 +32,7 @@ public interface SecurityAttribute extends Serializable {
 
     /**
      * This method ...
-     * 
+     *
      * @param security
      * @param currentUser
      * @param authentications
@@ -42,11 +42,11 @@ public interface SecurityAttribute extends Serializable {
      * @param session
      * @return
      */
-    public Boolean docSearchAuthorized(DocumentTypeSecurity security, WorkflowUser currentUser, List<Authentication> authentications, String docTypeName, Long documentId, String initiatorWorkflowId, SecuritySession session);
+    public Boolean docSearchAuthorized(DocumentTypeSecurity security, Person currentUser, List<Authentication> authentications, String docTypeName, Long documentId, String initiatorWorkflowId, SecuritySession session);
 
     /**
      * This method ...
-     * 
+     *
      * @param security
      * @param currentUser
      * @param authentications
@@ -56,6 +56,6 @@ public interface SecurityAttribute extends Serializable {
      * @param session
      * @return
      */
-    public Boolean routeLogAuthorized(DocumentTypeSecurity security, WorkflowUser currentUser, List<Authentication> authentications, String docTypeName, Long documentId, String initiatorWorkflowId, SecuritySession session);
+    public Boolean routeLogAuthorized(DocumentTypeSecurity security, Person currentUser, List<Authentication> authentications, String docTypeName, Long documentId, String initiatorWorkflowId, SecuritySession session);
 
 }

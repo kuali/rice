@@ -40,7 +40,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.IdentityService;
+import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
 
@@ -73,8 +73,9 @@ public class UserSession implements Serializable {
     private String sortCriteria;
     private int currentPage;
     private KimPrincipal	principal;
+    private Person			principalPerson; // set on start up so we're not calling the service a lot
 
-    private IdentityService  identityService = null;
+    private IdentityManagementService  identityService = null;
     private PersonService<Person>  personService = null;
 
     /**
@@ -92,12 +93,18 @@ public class UserSession implements Serializable {
     public UserSession (KimPrincipal principal) {
 		this.principal = principal;
         this.nextObjectKey = 0;
+        init();
     }
 
 	public UserSession (String principalId) {
 		this.principal = this.getIdentityService().getPrincipal(principalId);
         this.nextObjectKey = 0;
+        init();
     }
+
+	private void init(){
+		principalPerson = getPersonService().getPerson(getPrincipalId());
+	}
 
 	/**
 	 * @return the sortOrder
@@ -210,7 +217,7 @@ public class UserSession implements Serializable {
     }
 
     public Person getPerson() {
-    	return getLoggedInPerson();
+    	return principalPerson;
     }
 
     @Deprecated
@@ -231,7 +238,7 @@ public class UserSession implements Serializable {
     }
 
     public Person getLoggedInPerson() {
-    	return getPersonService().getPerson(getPrincipalId());
+    	return principalPerson;
     }
 
     public boolean setBackdoorId(String id) throws KEWUserNotFoundException {
@@ -358,6 +365,7 @@ public class UserSession implements Serializable {
 	 */
 	public void setPrincipal(KimPrincipal principal) {
 		this.principal = principal;
+		this.principalPerson = getPersonService().getPerson(principal.getPrincipalId());
 	}
 
 	/**
@@ -367,9 +375,10 @@ public class UserSession implements Serializable {
 		return this.principal.getPrincipalId();
 	}
 
-	protected IdentityService getIdentityService(){
+	protected IdentityManagementService getIdentityService(){
 		if(identityService == null){
-			identityService = KIMServiceLocator.getIdentityService();
+			identityService = KIMServiceLocator.getIdentityManagementService();
+
 		}
 		return identityService;
 	}

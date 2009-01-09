@@ -44,7 +44,6 @@ public class ExportDataSet {
     private List<DocumentType> documentTypes = new ArrayList<DocumentType>();
     private List<Workgroup> workgroups = new ArrayList<Workgroup>();
     private List<KimGroup> groups = new ArrayList<KimGroup>();
-    private List<WorkflowUser> users = new ArrayList<WorkflowUser>();
     private List<RuleAttribute> ruleAttributes = new ArrayList<RuleAttribute>();
     private List<RuleTemplate> ruleTemplates = new ArrayList<RuleTemplate>();
     private List<RuleBaseValues> rules = new ArrayList<RuleBaseValues>();
@@ -74,9 +73,6 @@ public class ExportDataSet {
     public List<RuleTemplate> getRuleTemplates() {
         return ruleTemplates;
     }
-    public List<WorkflowUser> getUsers() {
-        return users;
-    }
     public List<Workgroup> getWorkgroups() {
         return workgroups;
     }
@@ -92,5 +88,5 @@ public class ExportDataSet {
 	public void setGroups(List<KimGroup> groups) {
 		this.groups = groups;
 	}
-	
+
 }

@@ -29,7 +29,6 @@ import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kew.workgroup.WorkgroupType;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -40,20 +39,20 @@ import org.kuali.rice.kns.util.KNSConstants;
 /**
  * The DataExporter allows for exporting of KEW BusinessObjects to various supported
  * formats.  The current implementation supports only XML export.  This process is initiated
- * from the KNS screens (lookups and inquiries) and this implementation leverages the 
- * existing XmlExporterService which is part of KEW and which was used to do exports before 
+ * from the KNS screens (lookups and inquiries) and this implementation leverages the
+ * existing XmlExporterService which is part of KEW and which was used to do exports before
  * KEW was converted to use the KNS.
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DataExporter implements Exporter {
 
 	private List<String> supportedFormats = new ArrayList<String>();
-	
+
 	public DataExporter() {
 		supportedFormats.add(KNSConstants.XML_FORMAT);
 	}
-	
+
 	/**
 	 * Export the given List of BusinessObjects of the specified type to XML.
 	 */
@@ -68,7 +67,7 @@ public class DataExporter implements Exporter {
 	public List<String> getSupportedFormats(Class<? extends BusinessObject> businessObjectClass) {
 		return supportedFormats;
 	}
-	
+
 	/**
 	 * Builds the ExportDataSet based on the BusinessObjects passed in.
 	 */
@@ -91,8 +90,6 @@ public class DataExporter implements Exporter {
 				dataSet.getRules().add((RuleBaseValues)businessObject);
 			} else if (businessObjectClass.equals(EDocLiteStyle.class)) {
 				dataSet.getStyles().add((EDocLiteStyle)businessObject);
-			} else if (businessObjectClass.equals(WorkflowUser.class)) {
-				dataSet.getUsers().add((WorkflowUser)businessObject);
 			} else if (businessObjectClass.equals(Workgroup.class)) {
 				dataSet.getWorkgroups().add((Workgroup)businessObject);
 			} else if (businessObjectClass.equals(WorkgroupType.class)) {

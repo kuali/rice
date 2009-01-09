@@ -20,7 +20,6 @@ import java.util.List;
 
 import org.kuali.rice.kew.quicklinks.dao.QuickLinksDAO;
 import org.kuali.rice.kew.quicklinks.service.QuickLinksService;
-import org.kuali.rice.kew.user.WorkflowUser;
 
 
 public class QuickLinksServiceImpl implements QuickLinksService {

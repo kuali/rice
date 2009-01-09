@@ -18,8 +18,6 @@ package org.kuali.rice.kew.quicklinks.service;
 
 import java.util.List;
 
-import org.kuali.rice.kew.user.WorkflowUser;
-
 
 /**
  * A service providing data access to Quick Links information.  The Quick

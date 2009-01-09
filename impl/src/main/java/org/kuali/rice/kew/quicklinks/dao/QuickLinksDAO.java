@@ -18,8 +18,6 @@ package org.kuali.rice.kew.quicklinks.dao;
 
 import java.util.List;
 
-import org.kuali.rice.kew.user.WorkflowUser;
-
 
 public interface QuickLinksDAO {
     public List getWatchedDocuments(String principalId);

@@ -132,7 +132,7 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
       if (hasTakenAction) {
         return true;
       }
-      boolean hasRequest = KEWServiceLocator.getActionRequestService().doesUserHaveRequest(user, documentId);
+      boolean hasRequest = KEWServiceLocator.getActionRequestService().doesPrincipalHaveRequest(user.getWorkflowId(), documentId);
       if (hasRequest) {
         return true;
       }

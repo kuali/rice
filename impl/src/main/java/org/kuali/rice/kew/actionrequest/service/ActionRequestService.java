@@ -26,8 +26,6 @@ import org.kuali.rice.kew.engine.ActivationContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.user.Recipient;
-import org.kuali.rice.kew.user.WorkflowUser;
-
 
 /**
  * Service to handle the building, sorting, saving, activating and deactivating of action request graphs.  These lists are 
@@ -159,6 +157,6 @@ public interface ActionRequestService {
     /**
      * Checks if the given user has any Action Requests on the given document.
      */
-    public boolean doesUserHaveRequest(WorkflowUser user, Long documentId);
+    public boolean doesPrincipalHaveRequest(String principalId, Long documentId);
 
 }

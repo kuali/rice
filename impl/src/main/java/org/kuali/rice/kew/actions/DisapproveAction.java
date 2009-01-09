@@ -29,12 +29,10 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.Recipient;
-import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
@@ -121,7 +119,6 @@ public class DisapproveAction extends ActionTakenEvent {
      * Records the disapprove action. - Checks to make sure the document status allows the action. - Checks that the user has not taken a previous action. - Deactivates the pending requests for this user - Records the action
      *
      * @throws InvalidActionTakenException
-     * @throws KEWUserNotFoundException
      */
     public void recordAction() throws InvalidActionTakenException {
         MDC.put("docId", getRouteHeader().getRouteHeaderId());
@@ -186,7 +183,6 @@ public class DisapproveAction extends ActionTakenEvent {
 
             if (systemUserWorkgroup != null)
             {
-                UserService service = KEWServiceLocator.getUserService();
                 for( String id : principalIds)
                 {
                     systemPrincipalIds.add(id);

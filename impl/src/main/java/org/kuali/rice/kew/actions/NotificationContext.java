@@ -17,7 +17,6 @@
 package org.kuali.rice.kew.actions;
 
 import org.kuali.rice.kew.engine.BlanketApproveEngine;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
 

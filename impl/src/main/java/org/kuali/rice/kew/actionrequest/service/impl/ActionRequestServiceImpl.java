@@ -44,14 +44,12 @@ import org.kuali.rice.kew.routemodule.RouteModule;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.UserService;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.FutureRequestDocumentStateManager;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.ResponsibleParty;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 
@@ -819,21 +817,15 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         return actionRequestCode != null && KEWConstants.ACTION_REQUEST_CODES.containsKey(actionRequestCode);
     }
 
-    public boolean doesUserHaveRequest(WorkflowUser user, Long documentId) {
-        if (getActionRequestDAO().doesDocumentHaveUserRequest(user.getWorkflowId(), documentId)) {
+    public boolean doesPrincipalHaveRequest(String principalId, Long documentId) {
+        if (getActionRequestDAO().doesDocumentHaveUserRequest(principalId, documentId)) {
             return true;
         }
         // TODO since we only store the workgroup id for workgroup requests, if the user is in a workgroup that has a request
         // than we need get all the requests with workgroup ids and see if our user is in that group
-        //
-        // During the 2.4 dev cycle we should be able to remove this because we are planning on creating individual
-        // child action requests of a workgroup request for each user, which will just require the
-        // doesDocumentHaveUserRequest
-        // to work
-        List<String> groupNames = getActionRequestDAO().getRequestGroupIds(documentId);
-        for (String groupId : groupNames) {
-            KimGroup group =KIMServiceLocator.getIdentityManagementService().getGroup(groupId) ;
-            if (KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(user.getWorkflowId(), groupId)) {
+        List<String> groupIds = getActionRequestDAO().getRequestGroupIds(documentId);
+        for (String groupId : groupIds) {
+            if (KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(principalId, groupId)) {
                 return true;
             }
         }

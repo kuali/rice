@@ -83,10 +83,8 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeS
 	public boolean hasApplicationRole(
 			String principalId, List<String> groupIds, String namespaceCode, String roleName, AttributeSet qualification){
 		validateRequiredAttributesAgainstReceived(requiredAttributes, qualification, QUALIFICATION_RECEIVED_ATTIBUTES_NAME);
-		BaseWorkflowUser user = new BaseWorkflowUser();
-		user.setWorkflowId(principalId);
 		String documentNumber = qualification.get(KimAttributes.DOCUMENT_NUMBER);
-		return KEWServiceLocator.getActionRequestService().doesUserHaveRequest(user, Long.parseLong(documentNumber));
+		return KEWServiceLocator.getActionRequestService().doesPrincipalHaveRequest(principalId, Long.parseLong(documentNumber));
 	}
 	
 }

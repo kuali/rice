@@ -19,7 +19,6 @@ package org.kuali.rice.kew.actions;
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
@@ -65,7 +64,6 @@ public class LogDocumentActionAction extends ActionTakenEvent {
      * Records the non-routed document action. - Checks to make sure the document status allows the action. Records the action.
      * 
      * @throws InvalidActionTakenException
-     * @throws KEWUserNotFoundException
      */
     public void recordAction() throws InvalidActionTakenException {
         MDC.put("docId", getRouteHeader().getRouteHeaderId());

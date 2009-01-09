@@ -54,9 +54,11 @@ import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.MaintenanceDocumentBase;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizer;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions;
+import org.kuali.rice.kns.exception.DocumentTypeAuthorizationException;
 import org.kuali.rice.kns.exception.MaintenanceNewCopyAuthorizationException;
 import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.rule.event.KualiAddLineEvent;
+import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.DocumentTypeService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
@@ -77,6 +79,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 
     private MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService = null;
     private EncryptionService encryptionService;
+    private BusinessObjectAuthorizationService businessObjectAuthorizationService;
 
 
     public KualiMaintenanceDocumentAction() {
@@ -155,12 +158,14 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 
             // check doc type allows new or copy if that action was requested
             if (KNSConstants.MAINTENANCE_NEW_ACTION.equals(maintenanceAction) || KNSConstants.MAINTENANCE_COPY_ACTION.equals(maintenanceAction)) {
-                boolean allowsNewOrCopy = maintenanceDocumentDictionaryService.getAllowsNewOrCopy(documentTypeName);
+                Class boClass = maintenanceDocumentDictionaryService.getBusinessObjectClass(documentTypeName);
+            	boolean allowsNewOrCopy = getBusinessObjectAuthorizationService().canCreate(boClass, GlobalVariables.getUserSession().getPerson(), documentTypeName);
                 if (!allowsNewOrCopy) {
                     LOG.error("Document type " + documentTypeName + " does not allow new or copy actions.");
-                    throw new MaintenanceNewCopyAuthorizationException(documentTypeName);
+                    throw new DocumentTypeAuthorizationException(GlobalVariables.getUserSession().getPerson().getPrincipalId(), "newOrCopy", documentTypeName);
                 }
             }
+                        
 
             // get new document from service
             document = (MaintenanceDocument) KNSServiceLocator.getDocumentService().getNewDocument(maintenanceForm.getDocTypeName());
@@ -186,6 +191,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
             if (oldBusinessObject == null) {
                 throw new RuntimeException("Cannot retrieve old record for maintenance document, incorrect parameters passed on maint url.");
             }
+            
             
             // Temp solution for loading extension objects - need to find a better way
             if (OrmUtils.isJpaEnabled() && OrmUtils.isJpaAnnotated(oldBusinessObject.getClass()) && oldBusinessObject.getExtension() != null && OrmUtils.isJpaAnnotated(oldBusinessObject.getExtension().getClass())) {
@@ -236,6 +242,12 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
                 }
             }
             else if (KNSConstants.MAINTENANCE_EDIT_ACTION.equals(maintenanceAction)) {
+            	boolean allowsEdit = getBusinessObjectAuthorizationService().canMaintain(oldBusinessObject, GlobalVariables.getUserSession().getPerson(), document.getDocumentHeader().getWorkflowDocument().getDocumentType());  
+                if (!allowsEdit) {
+                    LOG.error("Document type " + document.getDocumentHeader().getWorkflowDocument().getDocumentType() + " does not allow edit actions.");
+                    throw  new DocumentTypeAuthorizationException(GlobalVariables.getUserSession().getPerson().getPrincipalId(), "edit", document.getDocumentHeader().getWorkflowDocument().getDocumentType());
+                }
+                
                 document.getNewMaintainableObject().processAfterEdit( document, request.getParameterMap() );
             }
             // Check for an auto-incrementing PK and set it if needed
@@ -944,6 +956,13 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 
         maintainable.processAfterPost(document, parameters );
     }
+    
+    private BusinessObjectAuthorizationService getBusinessObjectAuthorizationService() {
+    	if ( businessObjectAuthorizationService == null ) {
+    		businessObjectAuthorizationService = KNSServiceLocator.getBusinessObjectAuthorizationService();
+    	}
+    	return businessObjectAuthorizationService;
+        }
     
     protected void populateAuthorizationFields(KualiDocumentFormBase formBase){
     	super.populateAuthorizationFields(formBase);

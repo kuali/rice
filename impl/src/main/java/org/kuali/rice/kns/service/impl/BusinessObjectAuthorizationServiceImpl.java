@@ -44,6 +44,8 @@ import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
 import org.kuali.rice.kns.document.MaintenanceDocument;
+import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
+import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizer;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentPresentationController;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions;
@@ -57,6 +59,7 @@ import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.DocumentTypeService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 
 public class BusinessObjectAuthorizationServiceImpl implements
@@ -414,6 +417,26 @@ public class BusinessObjectAuthorizationServiceImpl implements
 				new AttributeSet(getFieldPermissionDetails(businessObjectClass,
 						fieldName)), null);
 	}
+	
+	public <T extends BusinessObject> boolean canCreate(Class<T> boClass, Person user, String docTypeName){
+		DocumentPresentationController documentPresentationController = getDocumentTypeService().getDocumentPresentationController(docTypeName);
+		DocumentAuthorizer documentAuthorizer = getDocumentTypeService().getDocumentAuthorizer(docTypeName);
+	    boolean canCreate = ((MaintenanceDocumentPresentationController) documentPresentationController).canCreate(boClass);
+	    if(canCreate){
+	    	canCreate = ((MaintenanceDocumentAuthorizer) documentAuthorizer).canCreate(boClass, user);
+	    }
+		return canCreate;
+	}
+	
+	public boolean canMaintain(BusinessObject businessObject, Person user, String docTypeName){
+		DocumentPresentationController documentPresentationController = getDocumentTypeService().getDocumentPresentationController(docTypeName);
+		DocumentAuthorizer documentAuthorizer = getDocumentTypeService().getDocumentAuthorizer(docTypeName);
+	    boolean canMaintain = ((MaintenanceDocumentPresentationController) documentPresentationController).canCreate(businessObject.getClass());
+	    if(canMaintain){
+	    	canMaintain = ((MaintenanceDocumentAuthorizer) documentAuthorizer).canMaintain(businessObject, user);
+	    }
+		return canMaintain;
+	}
 
 	protected <T extends BusinessObject> Map<String, String> getFieldPermissionDetails(
 			Class<T> businessObjectClass, String attributeName) {
@@ -495,4 +518,5 @@ public class BusinessObjectAuthorizationServiceImpl implements
 		}
 		return maintenanceDocumentDictionaryService;
 	}
+	
 }

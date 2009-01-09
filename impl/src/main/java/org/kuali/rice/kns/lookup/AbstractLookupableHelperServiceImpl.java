@@ -292,12 +292,25 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         boolean allowsNewOrCopy = false;
 
         String maintDocTypeName = getMaintenanceDocumentTypeName();
+        Class boClass = this.getBusinessObjectClass();
+        
         if (StringUtils.isNotBlank(maintDocTypeName)) {
-            allowsNewOrCopy = getMaintenanceDocumentDictionaryService().getAllowsNewOrCopy(maintDocTypeName);
+            allowsNewOrCopy = getBusinessObjectAuthorizationService().canCreate(boClass, GlobalVariables.getUserSession().getPerson(), maintDocTypeName);
         }
-
         return allowsNewOrCopy;
     }
+    
+    private boolean allowsMaintenanceEditAction(BusinessObject businessObject) {
+        boolean allowsEdit = false;
+
+        String maintDocTypeName = getMaintenanceDocumentTypeName();
+        
+        if (StringUtils.isNotBlank(maintDocTypeName)) {
+            allowsEdit = getBusinessObjectAuthorizationService().canMaintain(businessObject, GlobalVariables.getUserSession().getPerson(), maintDocTypeName);
+        }
+        return allowsEdit;
+    }
+    
 
     /**
      * Build a maintenance url.
@@ -353,7 +366,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
      */
     public List<HtmlData> getCustomActionUrls(BusinessObject businessObject, List pkNames){
     	List<HtmlData> htmlDataList = new ArrayList<HtmlData>();
-        if (StringUtils.isNotBlank(getMaintenanceDocumentTypeName())) {
+        if (StringUtils.isNotBlank(getMaintenanceDocumentTypeName()) && allowsMaintenanceEditAction(businessObject)) {
         	htmlDataList.add(getUrlData(businessObject, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL, pkNames));
         }
         if (allowsMaintenanceNewOrCopyAction()) {

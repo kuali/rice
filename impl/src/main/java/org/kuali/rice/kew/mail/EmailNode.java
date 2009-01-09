@@ -33,7 +33,6 @@ import org.kuali.rice.kew.engine.node.SimpleNode;
 import org.kuali.rice.kew.engine.node.SimpleResult;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.XmlHelper;
 import org.w3c.dom.Document;
@@ -77,8 +76,8 @@ public class EmailNode implements SimpleNode {
         Document doc = db.newDocument();
         Element emailNodeElem = doc.createElement("emailNode");
         doc.appendChild(emailNodeElem);
-        WorkflowUser nullUser = null;  // Added to the convertRouteHeader is not ambigious.
-        RouteHeaderDTO routeHeaderVO = DTOConverter.convertRouteHeader(context.getDocument(), nullUser);
+        String principalId = null;  // Added to the convertRouteHeader is not ambigious.
+        RouteHeaderDTO routeHeaderVO = DTOConverter.convertRouteHeader(context.getDocument(), principalId);
         RouteNodeInstanceDTO routeNodeInstanceVO = DTOConverter.convertRouteNodeInstance(context.getNodeInstance());
         Document documentContent = context.getDocumentContent().getDocument();
         XStream xstream = new XStream();

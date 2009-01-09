@@ -313,8 +313,6 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 			try {
 
 				users.add(KIMServiceLocator.getPersonService().getPerson(workflowId));
-
-				//users.add(getUserService().getWorkflowUser(new WorkflowUserId(workflowId)));
 			} catch (Exception e) {
 				LOG.error("error retrieving workflow user with ID: "
 						+ workflowId);

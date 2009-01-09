@@ -16,7 +16,6 @@ import org.kuali.rice.kew.mail.EmailSubject;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.UserService;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.Person;
@@ -168,7 +167,7 @@ public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceI
 		sendEmail(user, getEmailSubject(), new EmailBody(emailBody));
 	}
 
-	public String buildImmediateReminderBody(WorkflowUser user,
+	public String buildImmediateReminderBody(Person person,
 			ActionItem actionItem, DocumentType documentType) {
 		String docHandlerUrl = actionItem.getRouteHeader().getDocumentType()
 				.getDocHandlerUrl();
@@ -231,7 +230,7 @@ public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceI
 		return sf.toString();
 	}
 
-	public String buildDailyReminderBody(WorkflowUser user,
+	public String buildDailyReminderBody(Person person,
 			Collection actionItems) {
 		StringBuffer sf = new StringBuffer();
 		sf.append(getDailyWeeklyMessageBody(actionItems));
@@ -247,7 +246,7 @@ public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceI
 		return sf.toString();
 	}
 
-	public String buildWeeklyReminderBody(WorkflowUser user,
+	public String buildWeeklyReminderBody(Person person,
 			Collection actionItems) {
 		StringBuffer sf = new StringBuffer();
 		sf.append(getDailyWeeklyMessageBody(actionItems));

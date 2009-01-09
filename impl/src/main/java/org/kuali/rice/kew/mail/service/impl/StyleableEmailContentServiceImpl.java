@@ -45,13 +45,13 @@ import org.kuali.rice.kew.mail.CustomEmailAttribute;
 import org.kuali.rice.kew.mail.EmailContent;
 import org.kuali.rice.kew.mail.EmailStyleHelper;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.rice.kew.user.WorkflowUserId;
+import org.kuali.rice.kew.user.UserUtils;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.XmlHelper;
+import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.w3c.dom.Document;
@@ -142,7 +142,12 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
             delegatorType = "user";
             delegatorId = actionItem.getDelegatorWorkflowId();
             try {
-                delegatorDisplayValue = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(actionItem.getDelegatorWorkflowId())).getTransposedName();
+            	try {
+					KimPrincipal delagator = KIMServiceLocator.getIdentityService().getPrincipal(delegatorId);
+					delegatorDisplayValue = UserUtils.getTransposedName(UserSession.getAuthenticatedUser(), delagator);
+				} catch (Exception e) {
+					throw new KEWUserNotFoundException(e);
+				}
             } catch (KEWUserNotFoundException e) {
                 LOG.error("Cannot find user for id " + actionItem.getPrincipalId(),e);
                 delegatorDisplayValue = "USER NOT FOUND";
@@ -308,12 +313,12 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
      * serializing the given {@link ActionItem} to XML. The following objects and methods are included in the serialization:
      *
      * <ul>
-     * <li>{@link WorkflowUser}</li>
-     * <li>{@link WorkflowUser#getAuthenticationUserId()}</li>
+     * <li>{@link Person}</li>
+     * <li>{@link Person#getAuthenticationUserId()}</li>
      * <li>{@link DocumentRouteHeaderValue}</li>
      * <li>{@link DocumentRouteHeaderValue#getInitiatorUser()}</li>
      * <li>{@link DocumentRouteHeaderValue#getDocumentType()}</li>
-     * <li>{@link WorkflowUser}</li>
+     * <li>{@link Person}</li>
      * </ul>
      *
      * @param user - the current user

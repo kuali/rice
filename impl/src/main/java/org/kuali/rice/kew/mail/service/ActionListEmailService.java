@@ -17,7 +17,6 @@
 package org.kuali.rice.kew.mail.service;
 
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kim.bo.Person;
 
 

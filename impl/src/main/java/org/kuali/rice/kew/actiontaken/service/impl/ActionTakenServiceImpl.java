@@ -178,8 +178,8 @@ public class ActionTakenServiceImpl implements ActionTakenService {
         }
     }
 
-    public boolean hasUserTakenAction(WorkflowUser user, Long documentId) {
-    	return getActionTakenDAO().hasUserTakenAction(user.getWorkflowId(), documentId);
+    public boolean hasUserTakenAction(String principalId, Long documentId) {
+    	return getActionTakenDAO().hasUserTakenAction(principalId, documentId);
     }
 
     private RouteHeaderService getRouteHeaderService() {

@@ -15,12 +15,12 @@ import org.kuali.rice.kew.doctype.service.DocumentSecurityService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.UserUtils;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.KeyValue;
 import org.kuali.rice.kew.web.session.Authentication;
 import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kim.bo.Person;
 
 
 public class DocumentSecurityServiceImpl implements DocumentSecurityService {
@@ -33,7 +33,7 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
   public boolean routeLogAuthorized(UserSession userSession, DocumentRouteHeaderValue routeHeader, SecuritySession session) {
       return checkAuthorization(userSession, session, routeHeader.getDocumentType().getName(), routeHeader.getRouteHeaderId(), routeHeader.getInitiatorWorkflowId());
   }
-  
+
   protected boolean checkAuthorization(UserSession userSession, SecuritySession session, String documentTypeName, Long routeHeaderId, String initiatorWorkflowId) {
       DocumentTypeSecurity security = getDocumentTypeSecurity(userSession, documentTypeName, session);
       if (security == null || !security.isActive()) {
@@ -49,9 +49,9 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
               return authorized.booleanValue();
           }
       }
-      return checkStandardAuthorization(security, userSession, documentTypeName, routeHeaderId, initiatorWorkflowId, session); 
+      return checkStandardAuthorization(security, userSession, documentTypeName, routeHeaderId, initiatorWorkflowId, session);
   }
-  
+
   protected boolean isWorkflowAdmin(SecuritySession session) {
       List<String> workgroups = getAdminWorkgroups();
       if (workgroups != null && !workgroups.isEmpty()) {
@@ -65,12 +65,13 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
   }
 
   protected boolean checkStandardAuthorization(DocumentTypeSecurity security, UserSession userSession, String docTypeName, Long documentId, String initiatorWorkflowId, SecuritySession session) {
-	WorkflowUser user = userSession.getWorkflowUser();
-    LOG.debug("auth check user=" + user.getEmplId() +" docId=" + documentId);
+	Person user = userSession.getPerson();
+
+    LOG.debug("auth check user=" + user.getPrincipalId() +" docId=" + documentId);
 
     // Doc Initiator Authorization
     if (security.getInitiatorOk() != null && security.getInitiatorOk()) {
-      boolean isInitiator = StringUtils.equals(initiatorWorkflowId, user.getWorkflowId());
+      boolean isInitiator = StringUtils.equals(initiatorWorkflowId, user.getPrincipalId());
       if (isInitiator) {
         return true;
       }
@@ -124,15 +125,15 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
 
     // Route Log Authorization
     if (security.getRouteLogAuthenticatedOk() != null && security.getRouteLogAuthenticatedOk()) {
-      boolean isInitiator = StringUtils.equals(initiatorWorkflowId, user.getWorkflowId());
+      boolean isInitiator = StringUtils.equals(initiatorWorkflowId, user.getPrincipalId());
       if (isInitiator) {
         return true;
       }
-      boolean hasTakenAction = KEWServiceLocator.getActionTakenService().hasUserTakenAction(user, documentId);
+      boolean hasTakenAction = KEWServiceLocator.getActionTakenService().hasUserTakenAction(user.getPrincipalId(), documentId);
       if (hasTakenAction) {
         return true;
       }
-      boolean hasRequest = KEWServiceLocator.getActionRequestService().doesPrincipalHaveRequest(user.getWorkflowId(), documentId);
+      boolean hasRequest = KEWServiceLocator.getActionRequestService().doesPrincipalHaveRequest(user.getPrincipalId(), documentId);
       if (hasRequest) {
         return true;
       }

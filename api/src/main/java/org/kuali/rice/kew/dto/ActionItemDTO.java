@@ -159,11 +159,11 @@ public class ActionItemDTO implements Serializable {
     public void setGroupId(String groupId) {
         this.groupId = groupId;
     }
-    public String getWorkflowId() {
+    public String getPrincipalId() {
         return this.principalId;
     }
-    public void setWorkflowId(String workflowId) {
-        this.principalId = workflowId;
+    public void setPrincipalId(String principalId) {
+        this.principalId = principalId;
     }
     public String getDelegatorGroupId() {
         return this.delegatorGroupId;

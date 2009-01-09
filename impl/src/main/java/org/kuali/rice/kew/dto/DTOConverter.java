@@ -403,7 +403,7 @@ public class DTOConverter {
         actionItemVO.setResponsibilityId(actionItem.getResponsibilityId());
         actionItemVO.setRoleName(actionItem.getRoleName());
         actionItemVO.setRouteHeaderId(actionItem.getRouteHeaderId());
-        actionItemVO.setWorkflowId(actionItem.getPrincipalId());
+        actionItemVO.setPrincipalId(actionItem.getPrincipalId());
         actionItemVO.setGroupId(actionItem.getGroupId());
         return actionItemVO;
     }

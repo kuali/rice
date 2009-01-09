@@ -220,7 +220,7 @@ public class BeanConverterTester extends KEWTestCase {
         assertEquals("Action Item VO object has incorrect value", actionRequestId, actionItemVO.getActionRequestId());
         assertEquals("Action Item VO object has incorrect value", docName, actionItemVO.getDocName());
         assertEquals("Action Item VO object has incorrect value", roleName, actionItemVO.getRoleName());
-        assertEquals("Action Item VO object has incorrect value", workflowId, actionItemVO.getWorkflowId());
+        assertEquals("Action Item VO object has incorrect value", workflowId, actionItemVO.getPrincipalId());
         assertEquals("Action Item VO object has incorrect value", routeHeaderId, actionItemVO.getRouteHeaderId());
         assertEquals("Action Item VO object has incorrect value", dateAssigned, actionItemVO.getDateAssigned());
         assertEquals("Action Item VO object has incorrect value", docHandlerUrl, actionItemVO.getDocHandlerURL());

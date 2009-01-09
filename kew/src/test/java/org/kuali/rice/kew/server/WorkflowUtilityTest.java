@@ -1070,7 +1070,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         for (ActionItemDTO actionItem : actionItems) {
             assertEquals("Action Item should be Approve request", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
             assertEquals("Action Item has incorrect doc title", docTitle, actionItem.getDocTitle());
-            assertTrue("User should be one of '" + user1NetworkId + "' or '" + user2NetworkId + "'", user1PrincipalId.equals(actionItem.getWorkflowId()) || user2PrincipalId.equals(actionItem.getWorkflowId()));
+            assertTrue("User should be one of '" + user1NetworkId + "' or '" + user2NetworkId + "'", user1PrincipalId.equals(actionItem.getPrincipalId()) || user2PrincipalId.equals(actionItem.getPrincipalId()));
         }
 
         userIdVO = new NetworkIdDTO(user2NetworkId);
@@ -1086,9 +1086,9 @@ public class WorkflowUtilityTest extends KEWTestCase {
             assertEquals("Action Item has incorrect doc title", docTitle, actionItem.getDocTitle());
             assertTrue("Action Items should be Approve or FYI requests only", KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(actionItem.getActionRequestCd()) || KEWConstants.ACTION_REQUEST_FYI_REQ.equals(actionItem.getActionRequestCd()));
             if (KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(actionItem.getActionRequestCd())) {
-                assertTrue("User should be '" + initiatorNetworkId + "'", initiatorPrincipalId.equals(actionItem.getWorkflowId()));
+                assertTrue("User should be '" + initiatorNetworkId + "'", initiatorPrincipalId.equals(actionItem.getPrincipalId()));
             } else if (KEWConstants.ACTION_REQUEST_FYI_REQ.equals(actionItem.getActionRequestCd())) {
-                assertTrue("User should be  '" + user1NetworkId + "'", user1PrincipalId.equals(actionItem.getWorkflowId()));
+                assertTrue("User should be  '" + user1NetworkId + "'", user1PrincipalId.equals(actionItem.getPrincipalId()));
             }
         }
 
@@ -1104,7 +1104,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         for (ActionItemDTO actionItem : actionItems) {
             assertEquals("Action Item should be Approve request", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
             assertEquals("Action Item has incorrect doc title", docTitle, actionItem.getDocTitle());
-            assertTrue("User should be one of '" + user1NetworkId + "' or '" + user2NetworkId + "'", user1PrincipalId.equals(actionItem.getWorkflowId()) || user2PrincipalId.equals(actionItem.getWorkflowId()));
+            assertTrue("User should be one of '" + user1NetworkId + "' or '" + user2NetworkId + "'", user1PrincipalId.equals(actionItem.getPrincipalId()) || user2PrincipalId.equals(actionItem.getPrincipalId()));
         }
     }
 
@@ -1130,7 +1130,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         for (ActionItemDTO actionItem : actionItems) {
             assertEquals("Action Item should be Approve request", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
             assertEquals("Action Item has incorrect doc title", docTitle, actionItem.getDocTitle());
-            assertTrue("User should be one of '" + user1NetworkId + "' or '" + user2NetworkId + "'", user1PrincipalId.equals(actionItem.getWorkflowId()) || user2PrincipalId.equals(actionItem.getWorkflowId()));
+            assertTrue("User should be one of '" + user1NetworkId + "' or '" + user2NetworkId + "'", user1PrincipalId.equals(actionItem.getPrincipalId()) || user2PrincipalId.equals(actionItem.getPrincipalId()));
         }
 
         userIdVO = new NetworkIdDTO(user2NetworkId);
@@ -1152,9 +1152,9 @@ public class WorkflowUtilityTest extends KEWTestCase {
             assertEquals("Action Item has incorrect doc title", docTitle, actionItem.getDocTitle());
             assertTrue("Action Items should be Approve or FYI requests only", KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(actionItem.getActionRequestCd()) || KEWConstants.ACTION_REQUEST_FYI_REQ.equals(actionItem.getActionRequestCd()));
             if (KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(actionItem.getActionRequestCd())) {
-                assertTrue("User should be '" + initiatorNetworkId + "'", initiatorPrincipalId.equals(actionItem.getWorkflowId()));
+                assertTrue("User should be '" + initiatorNetworkId + "'", initiatorPrincipalId.equals(actionItem.getPrincipalId()));
             } else if (KEWConstants.ACTION_REQUEST_FYI_REQ.equals(actionItem.getActionRequestCd())) {
-                assertTrue("User should be  '" + user1NetworkId + "'", user1PrincipalId.equals(actionItem.getWorkflowId()));
+                assertTrue("User should be  '" + user1NetworkId + "'", user1PrincipalId.equals(actionItem.getPrincipalId()));
             } else {
                 fail("Should not have found action request with requested action '" + KEWConstants.ACTION_REQUEST_CD.get(actionItem.getActionRequestCd()) + "'");
             }
@@ -1174,7 +1174,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         for (ActionItemDTO actionItem : actionItems) {
             assertEquals("Action Item should be Approve request", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
             assertEquals("Action Item has incorrect doc title", docTitle, actionItem.getDocTitle());
-            assertTrue("User should be one of '" + user1NetworkId + "' or '" + user2NetworkId + "'", user1PrincipalId.equals(actionItem.getWorkflowId()) || user2PrincipalId.equals(actionItem.getWorkflowId()));
+            assertTrue("User should be one of '" + user1NetworkId + "' or '" + user2NetworkId + "'", user1PrincipalId.equals(actionItem.getPrincipalId()) || user2PrincipalId.equals(actionItem.getPrincipalId()));
         }
     }
 

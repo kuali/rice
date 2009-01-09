@@ -213,7 +213,7 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
             List<String> users = new ArrayList<String>();
             for (int i = 0; i < actionItemVOs.length; i++) {
                 ActionItemDTO actionItemVO = actionItemVOs[i];
-                users.add(actionItemVO.getWorkflowId());
+                users.add(actionItemVO.getPrincipalId());
             }
             return users;
         } catch (Exception e) {

@@ -43,7 +43,6 @@ import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.UserService;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.group.KimGroup;
@@ -470,8 +469,11 @@ public class RuleBaseValuesLookupableImpl implements /*WorkflowLookupable,*/ Exp
 
 		if (networkIdParam != null && !"".equals(networkIdParam.trim())) {
 			try {
-				WorkflowUser user = getUserService().getWorkflowUser(new AuthenticationUserId(networkIdParam.trim()));
-				workflowId = user.getWorkflowUserId().getWorkflowId();
+				try{
+					workflowId = KIMServiceLocator.getPersonService().getPersonByPrincipalName(networkIdParam.trim()).getPrincipalId();
+				}catch(Exception ex){
+					throw new KEWUserNotFoundException(ex);
+				}
 			} catch (KEWUserNotFoundException e) {
 				errors.add(new WorkflowServiceErrorImpl("User Invalid", "routetemplate.ruleservice.user.invalid"));
 			}

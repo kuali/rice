@@ -93,6 +93,7 @@ import org.kuali.rice.kew.user.EmplId;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.RoleRecipient;
 import org.kuali.rice.kew.user.UserId;
+import org.kuali.rice.kew.user.UserUtils;
 import org.kuali.rice.kew.user.UuId;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
@@ -1303,7 +1304,8 @@ public class DTOConverter {
         criteria.setXmlContent(criteriaVO.getXmlContent());
         criteria.setActivateRequests(criteriaVO.getActivateRequests());
         if (criteriaVO.getRoutingUser() != null) {
-            WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(criteriaVO.getRoutingUser());
+        	KimPrincipal kPrinc = KEWServiceLocator.getIdentityHelperService().getPrincipal(criteriaVO.getRoutingUser());
+            Person user = KIMServiceLocator.getPersonService().getPerson(kPrinc.getPrincipalId());
             if (user == null) {
                 throw new KEWUserNotFoundException("Could not locate user for the given id: " + criteriaVO.getRoutingUser());
             }
@@ -1351,7 +1353,8 @@ public class DTOConverter {
         if (actionToTakeVO.getUserIdVO() == null) {
             throw new IllegalArgumentException("ReportActionToTakeVO must contain a userId and does not");
         }
-        WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(actionToTakeVO.getUserIdVO());
+        KimPrincipal kPrinc = KEWServiceLocator.getIdentityHelperService().getPrincipal(actionToTakeVO.getUserIdVO());
+        Person user = KIMServiceLocator.getPersonService().getPerson(kPrinc.getPrincipalId());
         if (user == null) {
             throw new KEWUserNotFoundException("Could not locate user for the given id: " + actionToTakeVO.getUserIdVO());
         }

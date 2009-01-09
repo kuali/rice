@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,19 +18,19 @@ package org.kuali.rice.kew.engine.simulation;
 
 import java.io.Serializable;
 
-import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kim.bo.Person;
 
 
 /**
  * An object represnting an action to take in the simulation engine
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SimulationActionToTake implements Serializable {
 	private static final long serialVersionUID = 5212455086079117671L;
 
 	private String actionToPerform;
-    private WorkflowUser user;
+    private Person user;
     private String nodeName;
 
     public SimulationActionToTake() {
@@ -52,11 +52,11 @@ public class SimulationActionToTake implements Serializable {
 		this.nodeName = nodeName;
 	}
 
-	public WorkflowUser getUser() {
+	public Person getUser() {
 		return user;
 	}
 
-	public void setUser(WorkflowUser user) {
+	public void setUser(Person user) {
 		this.user = user;
 	}
 

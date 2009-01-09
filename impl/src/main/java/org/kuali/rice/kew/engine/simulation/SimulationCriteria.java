@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,15 +20,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.kew.user.Recipient;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.Person;
 
 
 /**
  * Criteria which acts as input to the {@link SimulationEngine}.
  *
  * @see SimulationEngine
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SimulationCriteria {
@@ -37,28 +37,28 @@ public class SimulationCriteria {
 	private Long documentId;
     private String destinationNodeName;
     private List<Recipient> destinationRecipients = new ArrayList<Recipient>();
-    
+
     // fields related to document type simulation
     private String documentTypeName;
     private String xmlContent;
     private List nodeNames = new ArrayList();
     private List ruleTemplateNames = new ArrayList();
-    
+
     // fields related to both simulation types
     private Boolean activateRequests = null;
-    private WorkflowUser routingUser;
+    private Person routingUser;
     private List actionsToTake = new ArrayList();
-    
+
     public SimulationCriteria() {}
-    
+
     public SimulationCriteria(Long documentId) {
     	this.documentId = documentId;
     }
-    
+
     public SimulationCriteria(String documentTypeName) {
     	this.documentTypeName = documentTypeName;
     }
-    
+
     public Boolean getActivateRequests() {
         return this.activateRequests;
     }
@@ -114,7 +114,7 @@ public class SimulationCriteria {
 	public void setXmlContent(String xmlContent) {
 		this.xmlContent = xmlContent;
 	}
-	
+
 	public List getNodeNames() {
 		return nodeNames;
 	}
@@ -126,7 +126,7 @@ public class SimulationCriteria {
 	public boolean isDocumentSimulation() {
 		return documentId != null;
 	}
-	
+
 	public boolean isDocumentTypeSimulation() {
 		return !Utilities.isEmpty(documentTypeName);
 	}
@@ -139,12 +139,12 @@ public class SimulationCriteria {
 		this.actionsToTake = actionsToTake;
 	}
 
-	public WorkflowUser getRoutingUser() {
+	public Person getRoutingUser() {
 		return routingUser;
 	}
 
-	public void setRoutingUser(WorkflowUser routingUser) {
+	public void setRoutingUser(Person routingUser) {
 		this.routingUser = routingUser;
 	}
-    
+
 }

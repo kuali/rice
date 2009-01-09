@@ -22,7 +22,6 @@ import java.util.ListIterator;
 
 import org.apache.log4j.Logger;
 import org.jdom.Element;
-import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.RouteHelper;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
@@ -30,16 +29,17 @@ import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routeheader.StandardDocumentContent;
 import org.kuali.rice.kew.rule.NetworkIdRoleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.XmlHelper;
+import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 /**
  * A node which will generate an FYI request to a network ID specified in the document content.
- * 
+ *
  * @deprecated Use {@link NetworkIdRoleAttribute} instead
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class FYIByNetworkId extends RequestActivationNode {
@@ -61,13 +61,14 @@ public class FYIByNetworkId extends RequestActivationNode {
                	if (field.getAttribute("name")!= null && field.getAttributeValue("name").equals("networkId")) {
             		LOG.debug("Should send an FYI to netID:  " + field.getChildText("value"));
                		if (field.getChildText("value") != null) {
-               			WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new NetworkIdDTO(field.getChildText("value")));
+               			Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName(field.getChildText("value"));
+
                			//WorkflowDocument wfDoc = new WorkflowDocument(new NetworkIdVO(field.getChildText("value")), routeHeaderId);
                			if (!context.isSimulation()) {
-                   			KEWServiceLocator.getWorkflowDocumentService().adHocRouteDocumentToPrincipal(user.getWorkflowId(), context.getDocument(), KEWConstants.ACTION_REQUEST_FYI_REQ, null, "Notification Request", user.getWorkflowId(), "Notification Request", true);
+                   			KEWServiceLocator.getWorkflowDocumentService().adHocRouteDocumentToPrincipal(user.getPrincipalId(), context.getDocument(), KEWConstants.ACTION_REQUEST_FYI_REQ, null, "Notification Request", user.getPrincipalId(), "Notification Request", true);
                		}
                			//wfDoc.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_FYI_REQ, "Notification Request", new NetworkIdVO(field.getChildText("value")), "Notification Request", true);
-                		LOG.debug("Sent FYI using the adHocRouteDocumentToPrincipal function to NetworkID:  " + user.getAuthenticationUserId());
+                		LOG.debug("Sent FYI using the adHocRouteDocumentToPrincipal function to NetworkID:  " + user.getPrincipalName());
                                	break;
                	}
         	}

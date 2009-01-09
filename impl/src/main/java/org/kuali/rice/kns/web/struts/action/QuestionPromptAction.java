@@ -26,6 +26,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.UrlFactory;
@@ -37,7 +38,19 @@ import org.kuali.rice.kns.web.struts.form.QuestionPromptForm;
  *
  */
 public class QuestionPromptAction extends KualiAction {
+	
     /**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.web.struts.action.KualiAction#checkAuthorization(org.apache.struts.action.ActionForm, java.lang.String)
+	 */
+	@Override
+	protected void checkAuthorization(ActionForm form, String methodToCall)
+			throws AuthorizationException {
+		// TODO: remove this method after we put in the KIM permissions for this action
+	}
+
+	/**
      * This method is the entry point action for the question prompt component.
      *
      * @param mapping

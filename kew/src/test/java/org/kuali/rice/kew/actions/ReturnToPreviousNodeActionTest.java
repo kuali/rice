@@ -68,7 +68,7 @@ public class ReturnToPreviousNodeActionTest extends KEWTestCase {
         boolean isApproveToEwestfal = false;
         for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
             ActionRequestValue request = (ActionRequestValue) iterator.next();
-            if (request.getWorkflowUser().getAuthenticationUserId().getId().equals("ewestfal")) {
+            if (request.getPrincipalId().equals(getPrincipalIdForName("ewestfal"))) {
                 assertEquals("Should be approve request.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, request.getActionRequested());
                 isApproveToEwestfal = true;
             }
@@ -108,7 +108,7 @@ public class ReturnToPreviousNodeActionTest extends KEWTestCase {
         boolean isFyiToBmcgough = false;
         for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
             ActionRequestValue request = (ActionRequestValue) iterator.next();
-            String netId = request.getWorkflowUser().getAuthenticationUserId().getId(); 
+            String netId = getPrincipalNameForId(request.getPrincipalId()); 
             if (netId.equals("rkirkend")) {
                 assertEquals("Should be approve request.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, request.getActionRequested());
                 isApproveToRkirkend = true;

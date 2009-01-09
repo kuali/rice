@@ -87,7 +87,7 @@ public class DocumentRequeuerTest extends KEWTestCase {
        boolean pendingToRkirkend = false;
        for (int index = 0; index < requests.length; index++) {
            ActionRequestDTO requestVO = requests[index];
-           if (requestVO.getUserDTO().getNetworkId().equals("rkirkend") && requestVO.isActivated()) {
+           if (requestVO.getPrincipalId().equals(getPrincipalIdForName("rkirkend")) && requestVO.isActivated()) {
                assertFalse("rkirkend has too many requests!", pendingToRkirkend);
                pendingToRkirkend = true;
            } else {

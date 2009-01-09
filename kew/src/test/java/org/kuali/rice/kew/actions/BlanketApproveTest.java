@@ -23,7 +23,6 @@ import java.util.List;
 
 import mocks.MockEmailNotificationService;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
@@ -103,23 +102,23 @@ public class BlanketApproveTest extends KEWTestCase {
             RouteNodeInstance nodeInstance = actionRequest.getNodeInstance();
             assertNotNull(nodeInstance);
             String nodeName = nodeInstance.getRouteNode().getRouteNodeName();
-            if (actionRequest.getWorkflowUser().getAuthenticationUserId().getId().equals("bmcgough")) {
+            if (actionRequest.getPrincipalId().equals(getPrincipalIdForName("bmcgough"))) {
                 isNotification1 = true;
                 assertEquals(SequentialSetup.WORKFLOW_DOCUMENT_NODE, nodeName);
                 assertEquals(KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, actionRequest.getResponsibilityId());
-            } else if (actionRequest.getWorkflowUser().getAuthenticationUserId().getId().equals("rkirkend")) {
+            } else if (actionRequest.getPrincipalId().equals(getPrincipalIdForName("rkirkend"))) {
                 isNotification2 = true;
                 assertEquals(SequentialSetup.WORKFLOW_DOCUMENT_NODE, nodeName);
                 assertEquals(KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, actionRequest.getResponsibilityId());
-            } else if (actionRequest.getWorkflowUser().getAuthenticationUserId().getId().equals("pmckown")) {
+            } else if (actionRequest.getPrincipalId().equals(getPrincipalIdForName("pmckown"))) {
                 isNotification3 = true;
                 assertEquals(SequentialSetup.WORKFLOW_DOCUMENT_2_NODE, nodeName);
                 assertEquals(KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, actionRequest.getResponsibilityId());
-            } else if (actionRequest.getWorkflowUser().getAuthenticationUserId().getId().equals("temay")) {
+            } else if (actionRequest.getPrincipalId().equals(getPrincipalIdForName("temay"))) {
                 isAck1 = true;
                 assertEquals(SequentialSetup.ACKNOWLEDGE_1_NODE, nodeName);
                 assertFalse(KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID.equals(actionRequest.getResponsibilityId()));
-            } else if (actionRequest.getWorkflowUser().getAuthenticationUserId().getId().equals("jhopf")) {
+            } else if (actionRequest.getPrincipalId().equals(getPrincipalIdForName("jhopf"))) {
                 isAck2 = true;
                 assertEquals(SequentialSetup.ACKNOWLEDGE_2_NODE, nodeName);
                 assertFalse(KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID.equals(actionRequest.getResponsibilityId()));
@@ -373,7 +372,7 @@ public class BlanketApproveTest extends KEWTestCase {
         for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
             ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();
             RouteNodeInstance nodeInstance = actionRequest.getNodeInstance();
-            String netId = (actionRequest.getWorkflowUser() == null ? null : actionRequest.getWorkflowUser().getAuthenticationUserId().getId());
+            String netId = (actionRequest.getPrincipalId() == null ? null : getPrincipalNameForId(actionRequest.getPrincipalId()));
             if ("jhopf".equals(netId)) {
                 foundJhopfNotification = true;
                 assertTrue("Action request should be an acknowledge.", actionRequest.isAcknowledgeRequest());
@@ -390,7 +389,7 @@ public class BlanketApproveTest extends KEWTestCase {
                 for (Iterator iterator2 = actionRequest.getChildrenRequests().iterator(); iterator2.hasNext();) {
                     ActionRequestValue childRequest = (ActionRequestValue) iterator2.next();
                     assertTrue("Child request should be an acknowledge.", actionRequest.isAcknowledgeRequest());
-                    String childId = (childRequest.isGroupRequest() ? childRequest.getGroup().getGroupName(): childRequest.getWorkflowUser().getAuthenticationUserId().getId());
+                    String childId = (childRequest.isGroupRequest() ? childRequest.getGroup().getGroupName(): getPrincipalNameForId(childRequest.getPrincipalId()));
                     if ("temay".equals(childId)) {
                         foundTemayDelegate = true;
                         assertEquals("Should be primary delegation.", KEWConstants.DELEGATION_PRIMARY, childRequest.getDelegationType());
@@ -424,7 +423,7 @@ public class BlanketApproveTest extends KEWTestCase {
                assertEquals(1, topLevelRequests.size());
                actionRequest = (ActionRequestValue)topLevelRequests.get(0);
                // this tests the notofication of the role to jitrue with delegates
-               assertEquals("Should be to jitrue.", "jitrue", actionRequest.getWorkflowUser().getAuthenticationUserId().getId());
+               assertEquals("Should be to jitrue.", "jitrue", getPrincipalNameForId(actionRequest.getPrincipalId()));
                foundJitrueNotification = true;
                List delegateRoleRequests = arService.getDelegateRequests(actionRequest);
                assertEquals("Should be 1 delegate role requests", 1, delegateRoleRequests.size());
@@ -437,7 +436,7 @@ public class BlanketApproveTest extends KEWTestCase {
                boolean foundShenlDelegate = false;
                for (Iterator iterator2 = delegateRequests.iterator(); iterator2.hasNext();) {
                    ActionRequestValue delegateRequest = (ActionRequestValue) iterator2.next();
-                   String delNetId = delegateRequest.getWorkflowUser().getAuthenticationUserId().getId();
+                   String delNetId = getPrincipalNameForId(delegateRequest.getPrincipalId());
                    if ("natjohns".equals(delNetId)) {
                        foundNatjohnsDelegate = true;
                    } else if ("shenl".equals(delNetId)) {

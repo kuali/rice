@@ -53,9 +53,9 @@ public class FutureRequestsTest extends KEWTestCase {
      */
     @Test
     public void testSavingFutureRequestsStatuses() throws Exception {
-        List<Id> ids = new ArrayList<Id>();
-        ids.add(new AuthenticationUserId("user1"));
-        TestRuleAttribute.setRecipients("TestRole", "TestRole-user1", ids);
+        List<String> ids = new ArrayList<String>();
+        ids.add(getPrincipalIdForName("user1"));
+        TestRuleAttribute.setRecipientPrincipalIds("TestRole", "TestRole-user1", ids);
 
         // Test receiving future requests
 

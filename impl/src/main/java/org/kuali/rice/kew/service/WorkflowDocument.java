@@ -27,11 +27,9 @@ import org.kuali.rice.kew.dto.ActionTakenDTO;
 import org.kuali.rice.kew.dto.AdHocRevokeDTO;
 import org.kuali.rice.kew.dto.DocumentContentDTO;
 import org.kuali.rice.kew.dto.DocumentDetailDTO;
-import org.kuali.rice.kew.dto.GroupIdDTO;
 import org.kuali.rice.kew.dto.ModifiableDocumentContentDTO;
 import org.kuali.rice.kew.dto.MovePointDTO;
 import org.kuali.rice.kew.dto.NoteDTO;
-import org.kuali.rice.kew.dto.ResponsiblePartyDTO;
 import org.kuali.rice.kew.dto.ReturnPointDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
@@ -43,7 +41,6 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.FutureRequestDocumentStateManager;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 
 /**
  * Represents a document in Workflow from the perspective of the client.  This class is one of two

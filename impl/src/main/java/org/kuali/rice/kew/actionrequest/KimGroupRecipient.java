@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kew.actionrequest;
 
-import org.kuali.rice.kew.dto.GroupIdDTO;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -35,11 +33,7 @@ public class KimGroupRecipient implements Recipient {
 	public KimGroupRecipient(String groupId) {
 		this(KIMServiceLocator.getIdentityManagementService().getGroup(groupId));
 	}
-	
-	public KimGroupRecipient(GroupIdDTO groupId) {
-		this(KEWServiceLocator.getIdentityHelperService().getGroup(groupId));
-	}
-	
+		
 	public KimGroupRecipient(KimGroup group) {
 		if (group == null) {
 			throw new IllegalArgumentException("Attempted to create a KimGroupRecipient with a null KimGroup!");

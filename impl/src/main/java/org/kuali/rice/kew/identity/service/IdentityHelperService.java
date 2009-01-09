@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kew.identity.service;
 
-import org.kuali.rice.kew.dto.GroupIdDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.UserId;
@@ -34,8 +33,6 @@ import org.kuali.rice.kim.bo.group.KimGroup;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface IdentityHelperService {
-
-	public KimGroup getGroup(GroupIdDTO groupId);
 	
 	public String getIdForPrincipalName(String principalName);
 	
@@ -46,25 +43,30 @@ public interface IdentityHelperService {
 	 * if the principalId cannot be resolved to a principal.
 	 */
 	public KimPrincipal getPrincipal(String principalId);
+
+	/**
+	 * Returns the KimPrincipal for the given principalName.  Throws an exception
+	 * if the principalName cannot be resolved to a principal.
+	 */
+	public KimPrincipal getPrincipalByName(String principalName);
 	
-	public Recipient getPrincipalRecipient(String principalId);
+	public KimPrincipal getPrincipal(UserId userId);
 	
 	/**
-	 * @deprecated Please refrain from using the GroupId object, instead just call the
-	 * appropriate KIM services passing either the groupId or the namespace+groupName
+	 * Returns the KimGroup for the given groupId.  Throws an exception
+	 * if the groupId cannot be resolved to a group.
 	 */
+	public KimGroup getGroup(String groupId);
+	
 	public KimGroup getGroup(GroupId groupId);
 	
+	public Recipient getPrincipalRecipient(String principalId);
+		
 	/**
 	 * @deprecated
 	 */
 	public String getGroupId(GroupId groupId);
-	
-	/**
-	 * @deprecated
-	 */
-	public KimPrincipal getPrincipal(UserId userId);
-	
+		
 	/**
 	 * @deprecated
 	 */

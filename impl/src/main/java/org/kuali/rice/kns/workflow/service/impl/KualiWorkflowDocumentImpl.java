@@ -25,10 +25,8 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.ActionTakenDTO;
-import org.kuali.rice.kew.dto.GroupIdDTO;
 import org.kuali.rice.kew.dto.ReturnPointDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
-import org.kuali.rice.kew.dto.UserDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
@@ -285,7 +283,7 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
             ActionRequestDTO[] actionRequests = workflowInfo.getActionRequests(routeHeaderId);
             for (int actionRequestIndex = 0; actionRequestIndex < actionRequests.length; actionRequestIndex++) {
                 if (actionRequests[actionRequestIndex].isActivated() && actionRequests[actionRequestIndex].isAdHocRequest()) {
-                    if (actionRequests[actionRequestIndex].isUserRequest() && principalId.equals(actionRequests[actionRequestIndex].getUserDTO().getWorkflowId())) {
+                    if (actionRequests[actionRequestIndex].isUserRequest() && principalId.equals(actionRequests[actionRequestIndex].getPrincipalId())) {
                         isAdHocRequested = true;
                     }
                     else if (actionRequests[actionRequestIndex].isGroupRequest()) {

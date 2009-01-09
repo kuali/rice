@@ -19,6 +19,7 @@ package org.kuali.rice.kew.engine.simulation;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.Utilities;
 
@@ -35,7 +36,7 @@ public class SimulationCriteria {
 	// fields related to document simulation
 	private Long documentId;
     private String destinationNodeName;
-    private List destinationRecipients = new ArrayList();
+    private List<Recipient> destinationRecipients = new ArrayList<Recipient>();
     
     // fields related to document type simulation
     private String documentTypeName;
@@ -82,11 +83,11 @@ public class SimulationCriteria {
         this.destinationNodeName = destinationNodeName;
     }
 
-    public List getDestinationRecipients() {
+    public List<Recipient> getDestinationRecipients() {
         return destinationRecipients;
     }
 
-    public void setDestinationRecipients(List destinationRecipients) {
+    public void setDestinationRecipients(List<Recipient> destinationRecipients) {
         this.destinationRecipients = destinationRecipients;
     }
 

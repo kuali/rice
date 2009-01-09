@@ -40,7 +40,7 @@ public class ActionInvocationProcessorTest extends KEWTestCase {
 	
 	
 	
-	TestRuleAttribute.setRecipients("TestRole", "QualRole", getRecipients());
+	TestRuleAttribute.setRecipientPrincipalIds("TestRole", "QualRole", getRecipients());
 	
 	String rkirkendPrincipalId = getPrincipalIdForName("rkirkend");
 	WorkflowDocument doc = new WorkflowDocument(rkirkendPrincipalId, "TestDocumentType");
@@ -70,7 +70,7 @@ public class ActionInvocationProcessorTest extends KEWTestCase {
 	
 	request = null;
 	for (ActionRequestValue tempRequest : requests) {
-	    if (tempRequest.getWorkflowUser() != null && tempRequest.getWorkflowUser().getAuthenticationUserId().getAuthenticationId().equals("user1") && tempRequest.isActive()) {
+	    if (tempRequest.getPrincipalId() != null && tempRequest.getPrincipalId().equals(getPrincipalIdForName("user1")) && tempRequest.isActive()) {
 		request = tempRequest;
 		break;
 	    }
@@ -81,11 +81,11 @@ public class ActionInvocationProcessorTest extends KEWTestCase {
     }
     
     
-    public static List getRecipients()	{
-	List recipients = new ArrayList();
-	recipients.add(new AuthenticationUserId("user1"));
-	recipients.add(new AuthenticationUserId("user2"));
-	return recipients;
+    public List<String> getRecipients()	{
+    	List<String> recipients = new ArrayList<String>();
+    	recipients.add(getPrincipalIdForName("user1"));
+    	recipients.add(getPrincipalIdForName("user2"));
+    	return recipients;
     }
     
     

@@ -23,7 +23,6 @@ import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
-import org.kuali.rice.kew.dto.GroupIdDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
@@ -87,14 +86,22 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 		return principal;
 	}
 	
-	public KimGroup getGroup(GroupIdDTO groupId) {
-		if (groupId.getGroupId() != null) {
-			return KIMServiceLocator.getIdentityManagementService().getGroup(groupId.getGroupId());
-		} else {
-			return KIMServiceLocator.getIdentityManagementService().getGroupByName(groupId.getNamespace(), groupId.getGroupName());
+	public KimPrincipal getPrincipalByName(String principalName) {
+		KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
+		if (principal == null) {
+			throw new RiceRuntimeException("Could not locate a principal with the given principalName of " + principalName);
 		}
+		return principal;
 	}
-
+	
+	public KimGroup getGroup(String groupId) {
+		KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
+		if (group == null) {
+			throw new RiceRuntimeException("Could not locate a group with the given groupId of " + groupId);
+		}
+		return group;
+	}
+	
 	public KimGroup getGroup(GroupId groupId) {
 		if (groupId == null || groupId.isEmpty()) {
 			return null;
@@ -142,7 +149,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 			String principalName = ((NetworkIdDTO)userId).getNetworkId();
 			return KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
 		}
-		throw new IllegalArgumentException("Invalid UserIdDTO type was passed: " + userId);
+		throw new IllegalArgumentException("Invalid UserIdDTO type was passed: " + userId.getClass());
 	}
 
 	public String getPrincipalId(UserIdDTO userId) {

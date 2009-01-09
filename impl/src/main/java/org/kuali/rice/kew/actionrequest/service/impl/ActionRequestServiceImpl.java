@@ -45,7 +45,6 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.FutureRequestDocumentStateManager;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
@@ -238,7 +237,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
                 if (responsibleParty.getPrincipalId() != null) {
                     KimPrincipal user = KIMServiceLocator.getIdentityManagementService()
                             .getPrincipal(responsibleParty.getPrincipalId());
-                    actionRequest.setWorkflowId(user.getPrincipalId());
+                    actionRequest.setPrincipalId(user.getPrincipalId());
                 } else if (responsibleParty.getGroupId() != null) {
                 	actionRequest.setGroupId(responsibleParty.getGroupId());
                 } else if (responsibleParty.getRoleName() != null) {
@@ -411,7 +410,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
             if (ActionRequestValue.compareActionCode(ar.getActionRequested(), requestCode) > 0) {
                 continue;
             }
-            if (ar.isUserRequest() && principalId.equals(ar.getWorkflowId())) {
+            if (ar.isUserRequest() && principalId.equals(ar.getPrincipalId())) {
                 matchedArs.add(ar);
             } else if (ar.isGroupRequest()) {
             	if (arGroups == null) {
@@ -508,7 +507,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     	List<ActionRequestValue> actionRequests = findPendingByActionRequestedAndDocId(actionRequestedCd, routeHeaderId);
 		for(ActionRequestValue actionRequest: actionRequests){
 			if(actionRequest.isUserRequest()){
-				principalIds.add(actionRequest.getWorkflowId());
+				principalIds.add(actionRequest.getPrincipalId());
 			} else if(actionRequest.isGroupRequest()){
 				principalIds.addAll(
 						KIMServiceLocator.getIdentityManagementService().getGroupMemberPrincipalIds(actionRequest.getGroupId()));
@@ -638,7 +637,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
             ActionRequestValue existingRequest = (ActionRequestValue) iterator.next();
             if (existingRequest.getStatus().equals(KEWConstants.ACTION_REQUEST_DONE_STATE)
                     && existingRequest.getRouteLevel().equals(actionRequest.getRouteHeader().getDocRouteLevel())
-                    && ObjectUtils.equals(existingRequest.getWorkflowId(), actionRequest.getWorkflowId())
+                    && ObjectUtils.equals(existingRequest.getPrincipalId(), actionRequest.getPrincipalId())
                     && ObjectUtils.equals(existingRequest.getGroupId(), actionRequest.getGroupId())
                     && ObjectUtils.equals(existingRequest.getRoleName(), actionRequest.getRoleName())
                     && ObjectUtils.equals(existingRequest.getQualifiedRoleName(), actionRequest.getQualifiedRoleName())

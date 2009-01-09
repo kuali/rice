@@ -75,16 +75,6 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
         }
     }
 
-    @Cached
-    public UserDTO getWorkflowUser(UserIdDTO userId) throws WorkflowException {
-        try {
-            return getWorkflowUtility().getWorkflowUser(userId);
-        }
-        catch (Exception e) {
-            throw new WorkflowException(e);
-        }
-    }
-
     public DocumentTypeDTO getDocType(Long documentTypeId) throws WorkflowException {
         try {
             return getWorkflowUtility().getDocType(documentTypeId);

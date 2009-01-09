@@ -38,7 +38,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
@@ -65,7 +64,6 @@ import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
-//import org.kuali.rice.kew.lookupable.WorkflowLookupable;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
@@ -606,16 +604,12 @@ public class DocumentOperationAction extends WorkflowAction {
 			String lookupField = docForm.getLookupInvocationField();
 			int lookupIndex = new Integer(docForm.getLookupInvocationIndex()).intValue();
 			String networkId = request.getParameter("networkId");
+			String principalId = KEWServiceLocator.getIdentityHelperService().getIdForPrincipalName(networkId);
 
 			if (lookupInvocationModule.equals("RouteHeader")) {
 				DocumentRouteHeaderValue routeHeader = docForm.getRouteHeader();
 				if ("initiatorWorkflowId".equals(lookupField)) {
-					try {
-						routeHeader.setInitiatorWorkflowId(getUserService().getWorkflowUser(new AuthenticationUserId(networkId)).getWorkflowUserId().getWorkflowId());
-					} catch (KEWUserNotFoundException e) {
-						LOG.info("route header initiator not found");
-						routeHeader.setInitiatorWorkflowId(null);
-					}
+					routeHeader.setInitiatorWorkflowId(principalId);
 				}
 				if ("documentTypeId".equals(lookupField)) {
 					DocumentType docType = getDocumentTypeService().findByName(request.getParameter("docTypeFullName"));
@@ -636,12 +630,7 @@ public class DocumentOperationAction extends WorkflowAction {
 					}
 				}
 				if ("workflowId".equals(lookupField)) {
-					try {
-						actionRequest.setWorkflowId(getUserService().getWorkflowUser(new AuthenticationUserId(networkId)).getWorkflowUserId().getWorkflowId());
-					} catch (KEWUserNotFoundException e) {
-						LOG.info("action request user not found");
-						actionRequest.setWorkflowId(null);
-					}
+					actionRequest.setPrincipalId(principalId);
 				}
 				if ("workgroupId".equals(lookupField)) {
 					if (request.getParameter("workgroupId") != null && !"".equals(request.getParameter("workgroupId").trim())) {

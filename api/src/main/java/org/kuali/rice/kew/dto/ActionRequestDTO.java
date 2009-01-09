@@ -48,16 +48,14 @@ public class ActionRequestDTO implements Serializable {
     private String annotation;
     private Long actionTakenId;
     private String groupId;    
-    private UserDTO userVO;
     private String recipientTypeCd;
     private String approvePolicy;
     private String responsibilityDesc;
     private Integer routeLevel;
     private Integer docVersion;
-    private String emplyId;
     private String roleName;
     private Boolean ignorePrevAction;
-    private UserIdDTO userIdVO;
+    private String principalId;
     private String delegationType;
     private ActionRequestDTO parentActionRequest;
     private Long parentActionRequestId;
@@ -202,33 +200,12 @@ public class ActionRequestDTO implements Serializable {
         return ignorePrevAction;
     }
 
-    public UserDTO getUserDTO() {
-        return userVO;
-    }
-
-    public void setUserDTO(UserDTO userVO) {
-        this.userVO = userVO;
-    }
-
     public boolean isNotificationRequest() {
         return isAcknowledgeRequest() || isFyiRequest();
     }
 
     public boolean isApprovalRequest() {
         return APPROVE_REQ.equals(actionRequested) || COMPLETE_REQ.equals(actionRequested);
-    }
-
-    public void setEmplyId(String emplyId) {
-        this.emplyId = emplyId;
-    }
-
-    /**
-     *
-     * @return
-     * @deprecated
-     */
-    public String getEmplyId() {
-        return emplyId;
     }
 
     public Boolean isIgnorePrevAction() {
@@ -279,14 +256,15 @@ public class ActionRequestDTO implements Serializable {
         return KEWConstants.ACTION_REQUEST_ROLE_RECIPIENT_CD.equals(getRecipientTypeCd());
     }
 
-    public UserIdDTO getUserIdVO() {
-        return userIdVO;
-    }
-    public void setUserIdVO(UserIdDTO userIdVO) {
-        this.userIdVO = userIdVO;
-    }
+    public String getPrincipalId() {
+		return this.principalId;
+	}
 
-    public Boolean getCurrentIndicator() {
+	public void setPrincipalId(String principalId) {
+		this.principalId = principalId;
+	}
+
+	public Boolean getCurrentIndicator() {
         return currentIndicator;
     }
 

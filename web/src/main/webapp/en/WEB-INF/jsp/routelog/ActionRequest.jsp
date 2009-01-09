@@ -5,9 +5,11 @@
 <%@ taglib uri="../../tld/fmt.tld" prefix="fmt" %>
 <%@ taglib uri="../../tld/displaytag.tld" prefix="display-el" %>
 
-<c:set var="displayName" value="${actionRequest.workflowUser.displayName}"/>
-<c:if test="${kewUserSession.workflowUser.workflowId != actionRequest.workflowUser.workflowId}">
+<c:set var="displayName" value="${actionRequest.person.name}"/>
+<c:if test="${kewUserSession.principalId != actionRequest.principalId}">
+  <%-- TODO update this code for KIM entity privs
   <c:set var="displayName" value="${actionRequest.workflowUser.displayNameSafe}"/>
+  --%>
 </c:if>
 
 <c:choose>
@@ -68,7 +70,7 @@
 		                              		<c:when test="${actionRequest.userRequest}">
 	                          					<a style="${fontStyle}" href="
 													<c:url value="${UrlResolver.userReportUrl}">
-														<c:param name="workflowId" value="${actionRequest.workflowId}" />
+														<c:param name="workflowId" value="${actionRequest.principalId}" />
 														<c:param name="methodToCall" value="report" />
 														<c:param name="showEdit" value="no" />
 													</c:url>"><c:out value="${displayName}" />
@@ -93,14 +95,16 @@
 										              <c:choose>
 										              	 <c:when test="${roleRequest.primaryDelegator}">
 										              	 	<c:forEach var="primDelegateRequest" items="${roleRequest.primaryDelegateRequests}" varStatus="pDelegateArStatus">
-										              	 	<c:set var="primDelegateDisplayName" value="${primDelegateRequest.workflowUser.displayName}"/>
-															<c:if test="${kewUserSession.workflowUser.workflowId != primDelegateRequest.workflowUser.workflowId}">
+										              	 	<c:set var="primDelegateDisplayName" value="${primDelegateRequest.person.name}"/>
+															<c:if test="${kewUserSession.principalId != primDelegateRequest.principalId}">
+  																<%-- TODO update this for KIM enitty priv prefs
   																<c:set var="primDelegateDisplayName" value="${primDelegateRequest.workflowUser.displayNameSafe}"/>
+  																--%>
 															</c:if>
 										              	 	<c:if test="${primDelegateRequest.userRequest}">
 												              	 <a style="${fontStyle}" href="
 																		<c:url value="${UrlResolver.userReportUrl}">
-																			<c:param name="workflowId" value="${primDelegateRequest.workflowId}" />
+																			<c:param name="workflowId" value="${primDelegateRequest.principalId}" />
 																			<c:param name="methodToCall" value="report" />
 																			<c:param name="showEdit" value="no" />
 																		</c:url>">
@@ -136,13 +140,15 @@
 																<c:if test="${!arStatus.last}"><br></c:if>
 										              	 </c:when>
     										             <c:otherwise>
-    										                <c:set var="roleDisplayName" value="${roleRequest.workflowUser.displayName}"/>
-															<c:if test="${kewUserSession.workflowUser.workflowId != roleRequest.workflowUser.workflowId}">
+    										                <c:set var="roleDisplayName" value="${roleRequest.person.name}"/>
+															<c:if test="${kewUserSession.principalId != roleRequest.principalId}">
+															    <%-- TODO update this for KIM enitty priv prefs
   																<c:set var="roleDisplayName" value="${roleRequest.workflowUser.displayNameSafe}"/>
+  																--%>
 															</c:if>
 											              	 <a style="${fontStyle}" href="
 																	<c:url value="${UrlResolver.userReportUrl}">
-																		<c:param name="workflowId" value="${roleRequest.workflowId}" />
+																		<c:param name="workflowId" value="${roleRequest.principalId}" />
 																		<c:param name="methodToCall" value="report" />
 																		<c:param name="showEdit" value="no" />
 																	</c:url>"><c:out value="${roleDisplayName}" />

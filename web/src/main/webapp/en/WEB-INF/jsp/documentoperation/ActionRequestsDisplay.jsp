@@ -72,11 +72,11 @@
 	  	  </tr>
 	   	  <tr>
 	  	    <td width="33%" align=right class="thnormal">Person ID:</td>
-	  	    <td width="66%" class="datacell"><c:out value="${actionRequest.workflowId}" />&nbsp;</td>
+	  	    <td width="66%" class="datacell"><c:out value="${actionRequest.principalId}" />&nbsp;</td>
 	  	  </tr>
 	  	  <tr>
 	  	    <td width="33%" align=right class="thnormal">Workgroup ID:</td>
-	  	    <td width="66%" class="datacell"><c:out value="${actionRequest.workgroupId}" />&nbsp;</td>
+	  	    <td width="66%" class="datacell"><c:out value="${actionRequest.groupId}" />&nbsp;</td>
 		  </tr>
 	  	  <tr>
 	  	    <td width="33%" align=right class="thnormal">Role Name:</td>

@@ -150,21 +150,6 @@ public class WorkflowInfo implements java.io.Serializable {
     }
 
     /**
-     * Returns the UserVO given a user id
-     * @param userId id of the user to obtain
-     * @return the UserVO given a user id
-     * @throws WorkflowException if an error occurs obtaining the user
-     * @see WorkflowUtility#getWorkflowUser(UserIdDTO)
-     */
-    public UserDTO getWorkflowUser(UserIdDTO userId) throws WorkflowException {
-        try {
-            return getWorkflowUtility().getWorkflowUser(userId);
-        } catch (Exception e) {
-            throw handleException(e);
-        }
-    }
-
-    /**
      * Returns the DocumentType of the document with the specified id
      * @param documentTypeId the id of the document whose document type we should return
      * @return the DocumentTypeVO of the document with the specified id

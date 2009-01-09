@@ -18,10 +18,6 @@ package org.kuali.rice.kns.workflow.service;
 
 
 import org.junit.Test;
-import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.dto.UserDTO;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.test.KNSTestCase;
 
@@ -31,57 +27,6 @@ import org.kuali.test.KNSTestCase;
  */
 public class WorkflowInfoServiceTest extends KNSTestCase {
     private static final String KNOWN_USERNAME = "KULUSER";
-
-    @Test public void testGetWorkflowUser_nullUserId() throws Exception {
-        boolean failedAsExpected = false;
-
-        try {
-            KNSServiceLocator.getWorkflowInfoService().getWorkflowUser(null);
-        }
-        catch (Exception e) {
-            failedAsExpected = true;
-        }
-
-        assertTrue("nullUserId failed to fail properly", failedAsExpected);
-    }
-
-    @Test public void testGetWorkflowUser_blankAuthenticationUserId() throws Exception {
-        boolean failedAsExpected = false;
-
-        try {
-            KNSServiceLocator.getWorkflowInfoService().getWorkflowUser(new NetworkIdDTO());
-        }
-        catch (WorkflowException e) {
-            failedAsExpected = true;
-        }
-
-        assertTrue("blank authenticationUserId failed to fail properly", failedAsExpected);
-    }
-
-    @Test public void testGetWorkflowUser_unknownAuthenticationUserId() throws Exception {
-        boolean failedAsExpected = false;
-
-        try {
-            KNSServiceLocator.getWorkflowInfoService().getWorkflowUser(new NetworkIdDTO("unknownUserId"));
-        }
-        catch (WorkflowException we) {
-            // in the case of embedded mode, we get the actual KEWUserNotFoundException as the cause of the WorkflowException
-            if (we.getMessage().startsWith("org.kuali.rice.kew.exception.WorkflowException: org.kuali.rice.kew.exception.KEWUserNotFoundException") || we.getCause() instanceof KEWUserNotFoundException) {
-                failedAsExpected = true;
-            }
-        }
-
-        assertTrue("unknown authenticationUserId failed to fail properly", failedAsExpected);
-    }
-
-    @Test public void testGetWorkflowUser_knownAuthenticationUserId() throws Exception {
-        NetworkIdDTO knownUserId = new NetworkIdDTO(KNOWN_USERNAME);
-        UserDTO workflowUser = KNSServiceLocator.getWorkflowInfoService().getWorkflowUser(knownUserId);
-
-        // TODO The network ID comes back as lower case. It's listed in the constant as lower case.
-        // Is this a bug?
-        assertEquals("workflowUser.authenticationUserId inequal to input authenticationUserId", workflowUser.getNetworkId().toUpperCase(), KNOWN_USERNAME);
-    }
 
     @Test public void testRouteHeaderExists_NullId() throws IllegalArgumentException {
         boolean errorThrown = false;

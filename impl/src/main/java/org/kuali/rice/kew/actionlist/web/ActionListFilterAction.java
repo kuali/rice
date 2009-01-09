@@ -33,7 +33,6 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.preferences.service.PreferencesService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -107,7 +106,7 @@ public class ActionListFilterAction extends WorkflowAction {
         return null;
     }
 
-    private List getUserWorkgroupsDropDownList(String principalId) throws KEWUserNotFoundException {
+    private List getUserWorkgroupsDropDownList(String principalId) {
     	List<String> userWorkgroups =
             KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
         List<KeyValue> sortedUserWorkgroups = new ArrayList();

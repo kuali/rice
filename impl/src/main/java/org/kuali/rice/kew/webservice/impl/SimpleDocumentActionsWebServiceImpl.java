@@ -27,7 +27,6 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.dto.NoteDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
-import org.kuali.rice.kew.dto.UserDTO;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowDocument;
@@ -41,6 +40,8 @@ import org.kuali.rice.kew.webservice.NoteResponse;
 import org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService;
 import org.kuali.rice.kew.webservice.StandardResponse;
 import org.kuali.rice.kew.webservice.UserInRouteLogResponse;
+import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 /**
@@ -673,10 +674,8 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 			noteVO = routeHeader.getNotes()[routeHeader.getNotes().length-1];
 
 			// return note info
-			WorkflowIdDTO principalIdVO = new WorkflowIdDTO(noteVO.getNoteAuthorWorkflowId());
-			WorkflowInfo info = new WorkflowInfo();
-			UserDTO user = info.getWorkflowUser(principalIdVO);
-			author = user.getDisplayName();
+			Person person = KIMServiceLocator.getPersonService().getPerson(noteVO.getNoteAuthorWorkflowId());
+			author = person.getName();
 			noteId = noteVO.getNoteId().toString();
 			timestamp = formatCalendar(noteVO.getNoteCreateDate());
 			resultsNoteText = noteVO.getNoteText();
@@ -734,10 +733,8 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 				errorMessage = "Error retrieving note for id [" + noteId + "].";
 			} else {
 				// return note info
-				WorkflowIdDTO principalIdVO = new WorkflowIdDTO(noteVO.getNoteAuthorWorkflowId());
-				WorkflowInfo info = new WorkflowInfo();
-				UserDTO user = info.getWorkflowUser(principalIdVO);
-				author = user.getDisplayName();
+				Person person = KIMServiceLocator.getPersonService().getPerson(noteVO.getNoteAuthorWorkflowId());
+				author = person.getName();
 				resultsNoteId = noteVO.getNoteId().toString();
 				timestamp = formatCalendar(noteVO.getNoteCreateDate());
 				resultsNoteText = noteVO.getNoteText();
@@ -906,15 +903,8 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 			    NoteDetail noteDetail = new NoteDetail();
 				NoteDTO note = (NoteDTO)notes.get(i);
 				//author, noteId, timestamp, noteText
-				WorkflowIdDTO principalIdVO = new WorkflowIdDTO(note.getNoteAuthorWorkflowId());
-				WorkflowInfo info = new WorkflowInfo();
-				UserDTO user = info.getWorkflowUser(principalIdVO);
-				//noteDetail.put(NOTE_AUTHOR_LABEL, user.getDisplayName());
-				//noteDetail.put(NOTE_ID_LABEL, note.getNoteId().toString());
-				//noteDetail.put(NOTE_TIMESTAMP_LABEL, formatCalendar(note.getNoteCreateDate()));
-				//noteDetail.put(NOTE_TEXT_LABEL, note.getNoteText());
-
-				noteDetail.setAuthor(user.getDisplayName());
+				Person person = KIMServiceLocator.getPersonService().getPerson(note.getNoteAuthorWorkflowId());
+				noteDetail.setAuthor(person.getName());
 				noteDetail.setId(note.getNoteId().toString());
 				noteDetail.setTimestamp(formatCalendar(note.getNoteCreateDate()));
 				noteDetail.setNoteText(note.getNoteText());

@@ -44,7 +44,6 @@ import org.apache.ojb.broker.PBKey;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.RiceResourceLoaderFactory;
-import org.kuali.rice.core.resourceloader.SpringLoader;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
@@ -268,12 +267,13 @@ public class TestUtilities {
      * Asserts that the user with the given network id has a pending request on the given document
      */
     public static void assertUserHasPendingRequest(Long documentId, String networkId) throws WorkflowException {
+    	String principalId = KEWServiceLocator.getIdentityHelperService().getIdForPrincipalName(networkId);
     	WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(networkId));
     	List actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(documentId);
     	boolean foundRequest = false;
     	for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
 			ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();
-			if (actionRequest.isUserRequest() && actionRequest.getWorkflowUser().getAuthenticationUserId().getAuthenticationId().equals(networkId)) {
+			if (actionRequest.isUserRequest() && actionRequest.getPrincipalId().equals(principalId)) {
 				foundRequest = true;
 				break;
 			} else if (actionRequest.isGroupRequest() && 
@@ -282,7 +282,7 @@ public class TestUtilities {
 				break;
 			}
 		}
-    	Assert.assertTrue("Could not locate pending request for the given user: " + networkId, foundRequest);
+    	Assert.assertTrue("Could not locate pending request for the given user: " + principalId, foundRequest);
     }
 
     /**

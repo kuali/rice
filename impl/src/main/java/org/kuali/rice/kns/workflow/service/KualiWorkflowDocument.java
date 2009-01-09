@@ -18,7 +18,6 @@ package org.kuali.rice.kns.workflow.service;
 import java.sql.Timestamp;
 import java.util.Set;
 
-import org.kuali.rice.kew.dto.GroupIdDTO;
 import org.kuali.rice.kew.dto.ReturnPointDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;

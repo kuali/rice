@@ -286,7 +286,7 @@ public class AdHocRouteTest extends KEWTestCase {
     	assertNotNull("Could not find adhoc routed action request", request);
 
     	// verify request data
-        assertEquals("wrong person", request.getWorkflowUser().getAuthenticationUserId().getAuthenticationId(), "user2");
+        assertEquals("wrong person", request.getPrincipalId(), getPrincipalIdForName("user2"));
     	assertEquals("annotation incorrect", "annotation1", request.getAnnotation());
     	assertEquals("action requested code incorrect", request.getActionRequested(), KEWConstants.ACTION_REQUEST_APPROVE_REQ);
     	assertEquals("responsibility desc incorrect", request.getResponsibilityDesc(), "respDesc");

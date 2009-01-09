@@ -120,13 +120,13 @@
 	  	  </tr>
 	  	  <tr>
 	  	    <td width="33%" align=right class="thnormal">Person ID:</td>
-	  	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionRequest[${ctr}].workflowId" />
+	  	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionRequest[${ctr}].principalId" />
 	  	      <html-el:image property="methodToCall.performLookup" src="images/searchicon.gif" alt="search" align="absmiddle" onclick="javascript:configureLookup('UserLookupableImplService', 'ActionRequest', 'workflowId', '${ctr}');"/>
 	  	    </td>
 	  	  </tr>
 	  	  <tr>
 	  	    <td width="33%" align=right class="thnormal">Workgroup ID:</td>
-	  	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionRequest[${ctr}].workgroupId" />
+	  	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionRequest[${ctr}].groupId" />
 	  	      <html-el:image property="methodToCall.performLookup" src="images/searchicon.gif" alt="search" align="absmiddle" onclick="javascript:configureLookup('WorkGroupLookupableImplService', 'ActionRequest', 'workgroupId', '${ctr}');"/>
 	  	    </td>
 		  </tr>

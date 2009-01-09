@@ -56,9 +56,9 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
         }
     }
 
-    public boolean doesDocumentHaveUserRequest(String workflowId, Long documentId) {
+    public boolean doesDocumentHaveUserRequest(String principalId, Long documentId) {
         Query query = entityManager.createNamedQuery("ActionRequestValue.GetUserRequestCount");
-        query.setParameter("workflowId", workflowId);
+        query.setParameter("principalId", principalId);
         query.setParameter("routeHeaderId", documentId);
         query.setParameter("recipientTypeCd", KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
         query.setParameter("currentIndicator", Boolean.TRUE);

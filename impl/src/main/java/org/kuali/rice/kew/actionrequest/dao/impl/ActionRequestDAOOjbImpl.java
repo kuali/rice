@@ -30,7 +30,6 @@ import org.apache.ojb.broker.query.ReportQueryByCriteria;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.dao.ActionRequestDAO;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
 
@@ -237,11 +236,11 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
         return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionRequestValue.class, crit));
     }
 
-    public boolean doesDocumentHaveUserRequest(String workflowId, Long documentId) {
+    public boolean doesDocumentHaveUserRequest(String principalId, Long documentId) {
     	Criteria crit = new Criteria();
     	crit.addEqualTo("routeHeaderId", documentId);
     	crit.addEqualTo("recipientTypeCd", KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
-    	crit.addEqualTo("workflowId", workflowId);
+    	crit.addEqualTo("principalId", principalId);
     	crit.addEqualTo("currentIndicator", Boolean.TRUE);
     	int count = getPersistenceBrokerTemplate().getCount(new QueryByCriteria(ActionRequestValue.class, crit));
     	return count > 0;

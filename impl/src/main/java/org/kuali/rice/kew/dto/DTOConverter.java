@@ -40,6 +40,7 @@ import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
+import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actions.AdHocRevoke;
 import org.kuali.rice.kew.actions.MovePoint;
 import org.kuali.rice.kew.actions.ValidActions;
@@ -702,11 +703,7 @@ public class DTOConverter {
         actionRequestVO.setAnnotation(actionRequest.getAnnotation());
         actionRequestVO.setDateCreated(Utilities.convertTimestamp(actionRequest.getCreateDate()));
         actionRequestVO.setDocVersion(actionRequest.getDocVersion());
-        actionRequestVO.setUserDTO(convertUser(actionRequest.getWorkflowUser()));
-        if (actionRequest.getWorkflowId() != null) {
-            // TODO switch this to a user vo
-            actionRequestVO.setEmplyId(actionRequest.getWorkflowUser().getEmplId().getEmplId());
-        }
+        actionRequestVO.setPrincipalId(actionRequest.getPrincipalId());
         actionRequestVO.setIgnorePrevAction(actionRequest.getIgnorePrevAction());
         actionRequestVO.setPriority(actionRequest.getPriority());
         actionRequestVO.setRecipientTypeCd(actionRequest.getRecipientTypeCd());
@@ -716,7 +713,6 @@ public class DTOConverter {
         actionRequestVO.setRouteLevel(actionRequest.getRouteLevel());
         actionRequestVO.setNodeName(actionRequest.getPotentialNodeName());
         actionRequestVO.setNodeInstanceId((actionRequest.getNodeInstance() == null ? null : actionRequest.getNodeInstance().getRouteNodeInstanceId()));
-        // actionRequestVO.setRouteMethodName(actionRequest.getRouteMethodName());
         // TODO delyea - should below be using actionRequest.getRoleName()?
         actionRequestVO.setRoleName(actionRequest.getQualifiedRoleName());
         actionRequestVO.setQualifiedRoleName(actionRequest.getQualifiedRoleName());
@@ -942,33 +938,17 @@ public class DTOConverter {
             actionRequest.setRouteHeaderId(routeHeaderId);
             actionRequest.setRouteHeader(KEWServiceLocator.getRouteHeaderService().getRouteHeader(routeHeaderId));
         }
-        // properties set in routemanagerservice
         actionRequest.setRouteLevel(actionRequestVO.getRouteLevel());
         // TODO add the node instance to the VO
         // actionRequest.setRouteMethodName(actionRequestVO.getRouteMethodName());
         actionRequest.setStatus(actionRequestVO.getStatus());
         // TODO this should be moved to a validate somewhere's...
-        boolean userSet = false;
-        if (actionRequestVO.getUserIdVO() != null) {
-            UserId userId = convertUserIdVO(actionRequestVO.getUserIdVO());
-            WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
-            actionRequest.setWorkflowId(user.getWorkflowId());
-            userSet = true;
-        } else if (actionRequestVO.getEmplyId() != null) {
-            WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new EmplId(actionRequestVO.getEmplyId()));
-            actionRequest.setWorkflowId(user.getWorkflowId());
-            userSet = true;
-        } else if (actionRequestVO.getUserDTO() != null) {
-            WorkflowUser user = convertUserVO(actionRequestVO.getUserDTO());
-            actionRequest.setWorkflowId(user.getWorkflowId());
-            userSet = true;
-        }
-        if (actionRequestVO.getGroupId() != null) {
-            actionRequest.setGroupId(actionRequestVO.getGroupId());
-            userSet = true;
-        }// TODO role requests will not have a user or workgroup, so this code needs to handle that case
-        if (!userSet) {
-            throw new RuntimeException("Post processor didn't set a user or workgroup on the request");
+        if (actionRequestVO.getPrincipalId() != null) {
+        	actionRequest.setPrincipalId(actionRequestVO.getPrincipalId());
+        } else if (actionRequestVO.getGroupId() != null) {
+        	actionRequest.setGroupId(actionRequestVO.getGroupId());
+        } else {
+        	throw new RiceRuntimeException("Post processor didn't set a user or workgroup on the request");
         }
     }
 
@@ -1353,11 +1333,9 @@ public class DTOConverter {
         if (criteriaVO.getTargetUsers() != null) {
             for (int index = 0; index < criteriaVO.getTargetUsers().length; index++) {
                 UserIdDTO userIdVO = criteriaVO.getTargetUsers()[index];
-                WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userIdVO);
-                if (user == null) {
-                    throw new KEWUserNotFoundException("Could not locate user for the given id: " + userIdVO);
-                }
-                criteria.getDestinationRecipients().add(user);
+                String principalId = KEWServiceLocator.getIdentityHelperService().getPrincipalId(userIdVO);
+                KimPrincipal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);
+                criteria.getDestinationRecipients().add(new KimPrincipalRecipient(principal));
             }
         }
         if (criteriaVO.getActionsToTake() != null) {

@@ -36,7 +36,6 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.user.AuthenticationUserId;
-import org.kuali.rice.kew.user.UserId;
 import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 
@@ -51,8 +50,8 @@ public class RoleServiceTest extends KEWTestCase {
 	private static final String TEST_GROUP_2 = "TestGroup2";
 	private RoleService roleService;
 	private Long documentId;
-	private List group1 = new ArrayList();
-	private List group2 = new ArrayList();
+	private List<String> group1 = new ArrayList<String>();
+	private List<String> group2 = new ArrayList<String>();
 
 
 	protected void setUpTransaction() throws Exception {
@@ -63,15 +62,15 @@ public class RoleServiceTest extends KEWTestCase {
 	}
 
 	private void initializeAttribute() throws Exception {
-		group1.add(new AuthenticationUserId("jhopf"));
-		group1.add(new AuthenticationUserId("pmckown"));
-		group2.add(new AuthenticationUserId("xqi"));
-		group2.add(new AuthenticationUserId("tbazler"));
+		group1.add(getPrincipalIdForName("jhopf"));
+		group1.add(getPrincipalIdForName("pmckown"));
+		group2.add(getPrincipalIdForName("xqi"));
+		group2.add(getPrincipalIdForName("tbazler"));
 		TestRuleAttribute.addRole(TEST_ROLE);
 		TestRuleAttribute.addQualifiedRole(TEST_ROLE, TEST_GROUP_1);
 		TestRuleAttribute.addQualifiedRole(TEST_ROLE, TEST_GROUP_2);
-		TestRuleAttribute.setRecipients(TEST_ROLE, TEST_GROUP_1, group1);
-		TestRuleAttribute.setRecipients(TEST_ROLE, TEST_GROUP_2, group2);
+		TestRuleAttribute.setRecipientPrincipalIds(TEST_ROLE, TEST_GROUP_1, group1);
+		TestRuleAttribute.setRecipientPrincipalIds(TEST_ROLE, TEST_GROUP_2, group2);
 	}
 
 	private Long routeDocument() throws Exception {
@@ -89,11 +88,11 @@ public class RoleServiceTest extends KEWTestCase {
 		assertRequestGraphs(requests);
 
 		// change the membership in TEST_GROUP_1
-		List newGroup1Recipients = new ArrayList();
-		newGroup1Recipients.add(new AuthenticationUserId("bmcgough"));
-		newGroup1Recipients.add(new AuthenticationUserId("xqi"));
-		newGroup1Recipients.add(new AuthenticationUserId("rkirkend"));
-		TestRuleAttribute.setRecipients(TEST_ROLE, TEST_GROUP_1, newGroup1Recipients);
+		List<String> newGroup1Recipients = new ArrayList<String>();
+		newGroup1Recipients.add(getPrincipalIdForName("bmcgough"));
+		newGroup1Recipients.add(getPrincipalIdForName("xqi"));
+		newGroup1Recipients.add(getPrincipalIdForName("rkirkend"));
+		TestRuleAttribute.setRecipientPrincipalIds(TEST_ROLE, TEST_GROUP_1, newGroup1Recipients);
 		roleService.reResolveQualifiedRole(loadedDocument, TEST_ROLE, TEST_GROUP_1);
 		loadedDocument = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
 		assertEquals(KEWConstants.ROUTE_HEADER_ENROUTE_CD, loadedDocument.getDocRouteStatus());
@@ -149,13 +148,13 @@ public class RoleServiceTest extends KEWTestCase {
 		assertRequestGraphs(requests);
 
 		// change membership in TEST_GROUP_1 and TEST_GROUP_2
-		List newGroup1 = new ArrayList();
-		List newGroup2 = new ArrayList();
-		newGroup2.add(new AuthenticationUserId("ewestfal"));
-		newGroup2.add(new AuthenticationUserId("jthomas"));
+		List<String> newGroup1 = new ArrayList<String>();
+		List<String> newGroup2 = new ArrayList<String>();
+		newGroup2.add(getPrincipalIdForName("ewestfal"));
+		newGroup2.add(getPrincipalIdForName("jthomas"));
 		// TEST_GROUP_1 should now be an empty role, therefore there should not be a request generated for it after re-resolution
-		TestRuleAttribute.setRecipients(TEST_ROLE, TEST_GROUP_1, newGroup1);
-		TestRuleAttribute.setRecipients(TEST_ROLE, TEST_GROUP_2, newGroup2);
+		TestRuleAttribute.setRecipientPrincipalIds(TEST_ROLE, TEST_GROUP_1, newGroup1);
+		TestRuleAttribute.setRecipientPrincipalIds(TEST_ROLE, TEST_GROUP_2, newGroup2);
 		// re-resolve entire role
 		roleService.reResolveRole(loadedDocument, TEST_ROLE);
 		loadedDocument = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
@@ -224,12 +223,12 @@ public class RoleServiceTest extends KEWTestCase {
 
 	private void assertQualifiedRoleRequest(ActionRequestValue request, String roleName, String qualifiedRoleName) throws Exception {
 		assertActionRequest(request, roleName, qualifiedRoleName);
-		List recipients = TestRuleAttribute.getRecipients(roleName, qualifiedRoleName);
+		List<String> recipients = TestRuleAttribute.getRecipientPrincipalIds(roleName, qualifiedRoleName);
 		assertEquals("Incorrect number of children requests.", recipients.size(), request.getChildrenRequests().size());
 		for (Iterator childIt = request.getChildrenRequests().iterator(); childIt.hasNext();) {
 			ActionRequestValue childRequest = (ActionRequestValue) childIt.next();
 			assertActionRequest(childRequest, roleName, qualifiedRoleName);
-			assertTrue("Child request to invalid user: "+childRequest.getWorkflowUser().getAuthenticationUserId().getAuthenticationId(), containsUser(recipients, childRequest.getWorkflowUser()));
+			assertTrue("Child request to invalid user: "+childRequest.getPrincipalId(), containsUser(recipients, childRequest.getPrincipalId()));
 			assertEquals("Child request should have no children.", 0, childRequest.getChildrenRequests().size());
 		}
 	}
@@ -242,15 +241,8 @@ public class RoleServiceTest extends KEWTestCase {
 				KEWConstants.ACTION_REQUEST_DONE_STATE.equals(request.getStatus()));
 	}
 
-	private boolean containsUser(List users, WorkflowUser user) throws Exception {
-		for (Iterator iterator = users.iterator(); iterator.hasNext();) {
-			UserId userId = (UserId) iterator.next();
-			WorkflowUser itUser = KEWServiceLocator.getUserService().getWorkflowUser(userId);
-			if (itUser.getWorkflowId().equals(user.getWorkflowId())) {
-				return true;
-			}
-		}
-		return false;
+	private boolean containsUser(List<String> principalIds, String principalId) throws Exception {
+		return principalIds.contains(principalId);
 	}
 
 	/**
@@ -262,7 +254,7 @@ public class RoleServiceTest extends KEWTestCase {
 		List requests = KEWServiceLocator.getActionRequestService().findByStatusAndDocId(KEWConstants.ACTION_REQUEST_DONE_STATE, documentId);
 		for (Iterator iterator = requests.iterator(); iterator.hasNext();) {
 			ActionRequestValue request = (ActionRequestValue) iterator.next();
-			if (!initiator.getWorkflowId().equals(request.getWorkflowId())) {
+			if (!initiator.getWorkflowId().equals(request.getPrincipalId())) {
 				iterator.remove();
 			}
 		}

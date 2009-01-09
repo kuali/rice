@@ -64,10 +64,9 @@ import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kew.web.UrlResolver;
 import org.kuali.rice.kew.web.UserLoginFilter;
 import org.kuali.rice.kew.web.session.UserSession;
-import org.kuali.rice.kew.workgroup.GroupNameId;
-import org.kuali.rice.kew.workgroup.WorkgroupService;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.web.struts.action.KualiAction;
 import org.kuali.rice.kns.web.ui.ExtraButton;
@@ -661,9 +660,8 @@ public class ActionListActionNew extends KualiAction {
         //refactor actionlist.jsp not to be dependent on this
         request.setAttribute("preferences", getUserSession(request).getPreferences());
 
-        WorkgroupService workgroupSrv = (WorkgroupService) KEWServiceLocator.getWorkgroupService();
         String kewHelpDeskWgName = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.HELP_DESK_ACTION_LIST);
-        if (kewHelpDeskWgName != null && workgroupSrv.isUserMemberOfGroup(new GroupNameId(kewHelpDeskWgName), getUserSession(request).getWorkflowUser().getWorkflowId())) {
+        if (kewHelpDeskWgName != null && KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(getUserSession(request).getPrincipalId(), KimConstants.TEMP_GROUP_NAMESPACE, kewHelpDeskWgName)) {
             request.setAttribute("helpDeskActionList", "true");
         }
         String routeLogPopup = "false";

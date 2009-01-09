@@ -80,21 +80,21 @@ public class ParallelRoutingTest extends KEWTestCase {
         boolean isToRkirkend = false;
         for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
             ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();
-            if (actionRequest.getWorkflowUser().getAuthenticationUserId().getAuthenticationId().equals("temay")) {
+            if (actionRequest.getPrincipalId().equals(getPrincipalIdForName("temay"))) {
                 isToTemay = true;
                 assertEquals("Request should be activated.", KEWConstants.ACTION_REQUEST_ACTIVATED, actionRequest.getStatus());
                 assertEquals("Wrong action requested.", KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, actionRequest.getActionRequested());
                 assertNotNull("Should have been routed through node instance.", actionRequest.getNodeInstance());
                 assertEquals("Invalid node.", ACKNOWLEDGE_1_NODE, actionRequest.getNodeInstance().getRouteNode().getRouteNodeName());
             }
-            if (actionRequest.getWorkflowUser().getAuthenticationUserId().getAuthenticationId().equals("rkirkend")) {
+            if (actionRequest.getPrincipalId().equals(getPrincipalIdForName("rkirkend"))) {
                 isToRkirkend = true;
                 assertEquals("Request should be activated.", KEWConstants.ACTION_REQUEST_ACTIVATED, actionRequest.getStatus());
                 assertEquals("Wrong action requested.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionRequest.getActionRequested());
                 assertNotNull("Should have been routed through node instance.", actionRequest.getNodeInstance());
                 assertEquals("Invalid node.", WORKFLOW_DOCUMENT_2_NODE, actionRequest.getNodeInstance().getRouteNode().getRouteNodeName());
             }
-            if (actionRequest.getWorkflowUser().getAuthenticationUserId().getAuthenticationId().equals("pmckown")) {
+            if (actionRequest.getPrincipalId().equals(getPrincipalIdForName("pmckown"))) {
                 isToPmckown = true;
                 assertEquals("Request should be activated.", KEWConstants.ACTION_REQUEST_ACTIVATED, actionRequest.getStatus());
                 assertEquals("Wrong action requested.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionRequest.getActionRequested());

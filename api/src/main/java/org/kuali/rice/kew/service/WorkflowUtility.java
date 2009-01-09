@@ -31,7 +31,6 @@ import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
 import org.kuali.rice.kew.dto.RuleDTO;
 import org.kuali.rice.kew.dto.RuleReportCriteriaDTO;
-import org.kuali.rice.kew.dto.UserDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
@@ -49,7 +48,6 @@ public interface WorkflowUtility {
     public RouteHeaderDTO getRouteHeader(Long documentId) throws WorkflowException;
     public DocumentDetailDTO getDocumentDetail(Long documentId) throws WorkflowException;
     public RouteNodeInstanceDTO getNodeInstance(Long nodeInstanceId) throws WorkflowException;
-    public UserDTO getWorkflowUser(UserIdDTO userId) throws WorkflowException;
     public DocumentTypeDTO getDocumentType(Long documentTypeId) throws WorkflowException;
     public DocumentTypeDTO getDocumentTypeByName(String documentTypeName) throws WorkflowException;
     public Long getNewResponsibilityId() throws WorkflowException;

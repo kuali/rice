@@ -61,9 +61,9 @@ public class OutboxTest extends KEWTestCase {
     @Test
     public void testOutboxItemNotSavedOnSavedDocumentStatus() throws Exception {
         final WorkflowUser rkirkend = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("rkirkend"));
-        List<Id> recipients = new ArrayList<Id>();
-        recipients.add(new AuthenticationUserId("rkirkend"));
-        TestRuleAttribute.setRecipients("TestRole", "qualRole", recipients);
+        List<String> recipients = new ArrayList<String>();
+        recipients.add(getPrincipalIdForName("rkirkend"));
+        TestRuleAttribute.setRecipientPrincipalIds("TestRole", "qualRole", recipients);
 
         WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("quickstart"), "TestDocumentType");
         document.routeDocument("");
@@ -83,9 +83,9 @@ public class OutboxTest extends KEWTestCase {
     public void testTakeActionCreatesOutboxItem() throws Exception {
 
         final WorkflowUser rkirkend = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("rkirkend"));
-        List<Id> recipients = new ArrayList<Id>();
-        recipients.add(new AuthenticationUserId("rkirkend"));
-        TestRuleAttribute.setRecipients("TestRole", "qualRole", recipients);
+        List<String> recipients = new ArrayList<String>();
+        recipients.add(getPrincipalIdForName("rkirkend"));
+        TestRuleAttribute.setRecipientPrincipalIds("TestRole", "qualRole", recipients);
 
         WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("quickstart"), "TestDocumentType");
         document.routeDocument("");
@@ -104,10 +104,10 @@ public class OutboxTest extends KEWTestCase {
     @Test
     public void testSingleOutboxItemPerDocument() throws Exception {
         final WorkflowUser rkirkend = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("rkirkend"));
-        List<Id> recipients = new ArrayList<Id>();
-        recipients.add(new AuthenticationUserId("rkirkend"));
-        recipients.add(new AuthenticationUserId("user1"));
-        TestRuleAttribute.setRecipients("TestRole", "qualRole", recipients);
+        List<String> recipients = new ArrayList<String>();
+        recipients.add(getPrincipalIdForName("rkirkend"));
+        recipients.add(getPrincipalIdForName("user1"));
+        TestRuleAttribute.setRecipientPrincipalIds("TestRole", "qualRole", recipients);
 
         WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("quickstart"), "TestDocumentType");
         document.routeDocument("");
@@ -141,10 +141,10 @@ public class OutboxTest extends KEWTestCase {
     public void testOnlyPersonWhoTookActionReceivesOutboxItem_Route() throws Exception {
         final WorkflowUser rkirkend = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("rkirkend"));
         final WorkflowUser user1 = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("user1"));
-        List<Id> recipients = new ArrayList<Id>();
-        recipients.add(new AuthenticationUserId("rkirkend"));
-        recipients.add(new AuthenticationUserId("user1"));
-        TestRuleAttribute.setRecipients("TestRole", "qualRole", recipients);
+        List<String> recipients = new ArrayList<String>();
+        recipients.add(getPrincipalIdForName("rkirkend"));
+        recipients.add(getPrincipalIdForName("user1"));
+        TestRuleAttribute.setRecipientPrincipalIds("TestRole", "qualRole", recipients);
 
         turnOnOutboxForUser(rkirkend);
         turnOnOutboxForUser(user1);
@@ -167,10 +167,10 @@ public class OutboxTest extends KEWTestCase {
     public void testOnlyPersonWhoTookActionReceivesOutboxItem_BlanketApprove() throws Exception {
         final WorkflowUser rkirkend = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("rkirkend"));
         final WorkflowUser user1 = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("user1"));
-        List<Id> recipients = new ArrayList<Id>();
-        recipients.add(new AuthenticationUserId("rkirkend"));
-        recipients.add(new AuthenticationUserId("user1"));
-        TestRuleAttribute.setRecipients("TestRole", "qualRole", recipients);
+        List<String> recipients = new ArrayList<String>();
+        recipients.add(getPrincipalIdForName("rkirkend"));
+        recipients.add(getPrincipalIdForName("user1"));
+        TestRuleAttribute.setRecipientPrincipalIds("TestRole", "qualRole", recipients);
 
         turnOnOutboxForUser(rkirkend);
         turnOnOutboxForUser(user1);

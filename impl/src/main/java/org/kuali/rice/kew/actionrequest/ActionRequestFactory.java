@@ -35,12 +35,10 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.RoleRecipient;
 import org.kuali.rice.kew.user.UserId;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.workgroup.GroupId;
-import org.kuali.rice.kew.workgroup.WorkgroupService;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.role.dto.DelegateInfo;
@@ -170,12 +168,12 @@ public class ActionRequestFactory {
     {
         boolean isMember = false;
 
-        if(recipient instanceof WorkflowUser)
+        if(recipient instanceof KimPrincipalRecipient)
         {
-            String userId = ((WorkflowUser) recipient).getWorkflowId();
+            String principalId = ((KimPrincipalRecipient) recipient).getPrincipalId();
             String groupId = group.getGroupId();
             isMember =
-                KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(userId, groupId);
+                KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(principalId, groupId);
         }
         else if (recipient instanceof KimGroupRecipient)
         {
@@ -217,12 +215,13 @@ public class ActionRequestFactory {
     }
 
     private static void resolveRecipient(ActionRequestValue actionRequest, Recipient recipient) {
-    	if (recipient instanceof WorkflowUser) {
+    	if (recipient instanceof KimPrincipalRecipient) {
     		actionRequest.setRecipientTypeCd(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
-    		actionRequest.setWorkflowId(((WorkflowUser)recipient).getWorkflowId());
-    	} else if (recipient instanceof KimPrincipalRecipient) {
-    		actionRequest.setRecipientTypeCd(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
-    		actionRequest.setWorkflowId(((KimPrincipalRecipient)recipient).getPrincipal().getPrincipalId());
+    		actionRequest.setPrincipalId(((KimPrincipalRecipient)recipient).getPrincipal().getPrincipalId());
+    	}  else if (recipient instanceof KimGroupRecipient) {
+    		KimGroupRecipient kimGroupRecipient = (KimGroupRecipient)recipient;
+    		actionRequest.setRecipientTypeCd(KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD);
+    		actionRequest.setGroupId(kimGroupRecipient.getGroup().getGroupId());
     	} else if (recipient instanceof RoleRecipient){
     		RoleRecipient role = (RoleRecipient)recipient;
     		actionRequest.setRecipientTypeCd(KEWConstants.ACTION_REQUEST_ROLE_RECIPIENT_CD);
@@ -254,10 +253,6 @@ public class ActionRequestFactory {
     			}
     			resolveRecipient(actionRequest, roleRecipient.getTarget());
     		}
-    	} else if (recipient instanceof KimGroupRecipient) {
-    		KimGroupRecipient kimGroupRecipient = (KimGroupRecipient)recipient;
-    		actionRequest.setRecipientTypeCd(KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD);
-    		actionRequest.setGroupId(kimGroupRecipient.getGroup().getGroupId());
     	}
     }
 
@@ -479,7 +474,4 @@ public class ActionRequestFactory {
         return (ActionRequestService) KEWServiceLocator.getService(KEWServiceLocator.ACTION_REQUEST_SRV);
     }
 
-    public WorkgroupService getWorkgroupService() {
-        return (WorkgroupService) KEWServiceLocator.getService(KEWServiceLocator.WORKGROUP_SRV);
-    }
 }

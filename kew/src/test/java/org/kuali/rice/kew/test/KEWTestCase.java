@@ -283,6 +283,10 @@ public abstract class KEWTestCase extends RiceTestCase {
 		return KEWServiceLocator.getIdentityHelperService().getIdForPrincipalName(principalName);
 	}
 	
+	protected String getPrincipalNameForId(String principalId) {
+		return KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId).getPrincipalName();
+	}
+	
 	
 	protected String getGroupIdForName(String namespace, String groupName) {
 		return KEWServiceLocator.getIdentityHelperService().getIdForGroupName(namespace, groupName);

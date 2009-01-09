@@ -96,7 +96,7 @@ public class NotificationServiceImplTest extends NotificationTestCaseBase {
         int count_before = list.size();
         LOG.info("ActionRequests: " + count_before);
         for (ActionRequestValue v: list) {
-            LOG.info("Root request: " + v.getActionRequested() + " " + v.getWorkflowId() + " " + v.getStatus() + " " + v.getRoleName());
+            LOG.info("Root request: " + v.getActionRequested() + " " + v.getPrincipalId() + " " + v.getStatus() + " " + v.getRoleName());
         }
 
         // now send ours
@@ -126,7 +126,7 @@ public class NotificationServiceImplTest extends NotificationTestCaseBase {
         LOG.info("ActionRequests before: " + count_before);
         LOG.info("ActionRequests after: " + count_after);
         for (ActionRequestValue v: list) {
-            LOG.info("Root request: " + v.getActionRequested() + " " + v.getWorkflowId() + " " + v.getStatus() + " " + v.getRoleName());
+            LOG.info("Root request: " + v.getActionRequested() + " " + v.getPrincipalId() + " " + v.getStatus() + " " + v.getRoleName());
         }
 
         // should have 6 requests, 1 to each user in in Rice Team group

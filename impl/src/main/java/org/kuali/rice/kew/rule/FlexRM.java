@@ -27,14 +27,12 @@ import java.util.Map;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.apache.ojb.broker.IdentityFactory;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
-import org.kuali.rice.kew.dto.GroupIdDTO;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.NodeState;
 import org.kuali.rice.kew.engine.node.RouteNode;
@@ -55,9 +53,6 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.ResponsibleParty;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.workgroup.WorkflowGroupId;
-import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.util.KimConstants;
 
 
 /**

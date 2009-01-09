@@ -59,7 +59,7 @@ public class SubProcessRoutingTest extends KEWTestCase {
             ActionRequestValue request = (ActionRequestValue) iterator.next();
             RouteNodeInstance nodeInstance = request.getNodeInstance();
             assertNotNull("Node instance should be non null.", nodeInstance);
-            if (request.getWorkflowUser().getAuthenticationUserId().getId().equals("bmcgough")) {
+            if (request.getPrincipalId().equals(getPrincipalIdForName("bmcgough"))) {
                 isAck = true;
                 assertEquals("Wrong request type.", KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, request.getActionRequested());
                 assertEquals("Wrong node.", ACKNOWLEDGE_NODE, nodeInstance.getRouteNode().getRouteNodeName());
@@ -68,7 +68,7 @@ public class SubProcessRoutingTest extends KEWTestCase {
                 assertFalse("Sub process should be non-initial.", nodeInstance.getProcess().isInitial());
                 assertFalse("Sub process should be non-active.", nodeInstance.getProcess().isActive());
                 assertFalse("Sub process should be non-complete.", nodeInstance.getProcess().isComplete());
-            } else if (request.getWorkflowUser().getAuthenticationUserId().getId().equals("temay")) {
+            } else if (request.getPrincipalId().equals(getPrincipalIdForName("temay"))) {
                 isApprove = true;
                 assertEquals("Wrong request type.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, request.getActionRequested());
                 assertEquals("Wrong node.", APPROVE_NODE, request.getNodeInstance().getRouteNode().getRouteNodeName());

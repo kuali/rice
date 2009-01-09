@@ -461,7 +461,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         boolean foundEwestfalRequest = false;
         for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
             ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();
-            String netId = actionRequest.getWorkflowUser().getAuthenticationUserId().getId();
+            String netId = getPrincipalNameForId(actionRequest.getPrincipalId());
             if ("bmcgough".equals(netId)) {
                 assertTrue("Request to bmcgough should be activated.", actionRequest.isActive());
                 foundBmcgoughRequest = true;
@@ -660,7 +660,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
     	boolean foundPmckown = false;
     	for (int index = 0; index < documentDetail.getActionRequests().length; index++) {
 			ActionRequestDTO actionRequest = documentDetail.getActionRequests()[index];
-			String netId = actionRequest.getUserDTO().getNetworkId();
+			String netId = getPrincipalNameForId(actionRequest.getPrincipalId());
 			if (netId.equals("rkirkend")) {
 				foundRkirkend = true;
 				assertEquals(SeqSetup.WORKFLOW_DOCUMENT_NODE, actionRequest.getNodeName());
@@ -699,7 +699,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         boolean foundPmckown = false;
         for (int index = 0; index < documentDetail.getActionRequests().length; index++) {
             ActionRequestDTO actionRequest = documentDetail.getActionRequests()[index];
-            String netId = actionRequest.getUserDTO().getNetworkId();
+            String netId = getPrincipalNameForId(actionRequest.getPrincipalId());
             if (netId.equals("rkirkend")) {
                 foundRkirkend = true;
                 assertEquals(SeqSetup.WORKFLOW_DOCUMENT_NODE, actionRequest.getNodeName());

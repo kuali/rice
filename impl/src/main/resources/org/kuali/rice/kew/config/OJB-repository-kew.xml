@@ -236,7 +236,7 @@
     <field-descriptor column="RSP_DESC_TXT" name="responsibilityDesc" jdbc-type="VARCHAR"/>
     <field-descriptor column="ACTN_RQST_ANNOTN_TXT" name="annotation" jdbc-type="VARCHAR"/>
     <field-descriptor column="VER_NBR" name="jrfVerNbr" jdbc-type="INTEGER"/>
-    <field-descriptor column="PRNCPL_ID" name="workflowId" jdbc-type="VARCHAR" />
+    <field-descriptor column="PRNCPL_ID" name="principalId" jdbc-type="VARCHAR" />
     <field-descriptor column="IGN_PREV_ACTN_IND" name="ignorePrevAction" jdbc-type="BIT" />
     <field-descriptor column="CUR_IND" name="currentIndicator" jdbc-type="BIT" />
     <field-descriptor column="APPR_PLCY" name="approvePolicy" jdbc-type="CHAR" />

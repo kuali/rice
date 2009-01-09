@@ -24,13 +24,9 @@ import java.util.Map;
 
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
+import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.routeheader.DocumentContent;
-import org.kuali.rice.kew.rule.ResolvedQualifiedRole;
-import org.kuali.rice.kew.rule.Role;
-import org.kuali.rice.kew.rule.RoleAttribute;
-import org.kuali.rice.kew.rule.WorkflowAttribute;
-import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
-import org.kuali.rice.kew.rule.WorkflowAttributeXmlValidator;
+import org.kuali.rice.kew.user.WorkflowUserId;
 
 
 /**
@@ -40,7 +36,7 @@ public class TestRuleAttribute implements WorkflowAttribute, RoleAttribute, Work
 
 	public static boolean VALID_CLIENT_ROUTING_DATA_CALLED = false;
 	
-	private static Map roles = new HashMap();
+	private static Map<String, Map<String, List<String>>> roles = new HashMap<String, Map<String, List<String>>>();
 	private boolean required;
 		
     public boolean isMatch(DocumentContent documentContent, List ruleExtensions) {
@@ -92,9 +88,9 @@ public class TestRuleAttribute implements WorkflowAttribute, RoleAttribute, Work
         return required;
     }
 
-	public List getQualifiedRoleNames(String roleName, DocumentContent documentContent) throws KEWUserNotFoundException {
-		ArrayList qualifiedRoleNames = new ArrayList();
-		Map qualifiedRoles = (Map)roles.get(roleName);
+	public List<String> getQualifiedRoleNames(String roleName, DocumentContent documentContent) {
+		List<String> qualifiedRoleNames = new ArrayList<String>();
+		Map<String, List<String>> qualifiedRoles = (Map<String, List<String>>)roles.get(roleName);
 		if (qualifiedRoles != null) {
 			qualifiedRoleNames.addAll(qualifiedRoles.keySet());
 		} else {
@@ -105,12 +101,12 @@ public class TestRuleAttribute implements WorkflowAttribute, RoleAttribute, Work
 
 	public ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, String roleName, String qualifiedRole) throws KEWUserNotFoundException {
 		ResolvedQualifiedRole resolved = new ResolvedQualifiedRole();
-		Map qualifiedRoles = (Map)roles.get(roleName);
+		Map<String, List<String>> qualifiedRoles = (Map<String, List<String>>)roles.get(roleName);
 		if (qualifiedRoles != null) {
-			List recipients = (List)qualifiedRoles.get(qualifiedRole);
+			List<String> recipients = (List<String>)qualifiedRoles.get(qualifiedRole);
 			if (recipients != null) {
 				resolved.setQualifiedRoleLabel(qualifiedRole);
-				resolved.setRecipients(recipients);
+				resolved.setRecipients(convertPrincipalIdList(recipients));
 			} else {
 				throw new IllegalArgumentException("TestRuleAttribute does not support the qualified role " + qualifiedRole);
 			}
@@ -120,20 +116,28 @@ public class TestRuleAttribute implements WorkflowAttribute, RoleAttribute, Work
 		return resolved;
 	}
 	
+	private static List<Id> convertPrincipalIdList(List<String> principalIds) {
+		List<Id> idList = new ArrayList<Id>();
+		for (String principalId : principalIds) {
+			idList.add(new WorkflowUserId(principalId));
+		}
+		return idList;
+	}
+	
 	public static void addRole(String roleName) {
-		roles.put(roleName, new HashMap());
+		roles.put(roleName, new HashMap<String, List<String>>());
 	}
 	
 	public static void removeRole(String roleName) {
 		roles.remove(roleName);
 	}
 	
-	public static Map getRole(String roleName) {
-		return (Map)roles.get(roleName);
+	public static Map<String, List<String>> getRole(String roleName) {
+		return (Map<String, List<String>>)roles.get(roleName);
 	}
 	
 	public static void addQualifiedRole(String roleName, String qualifiedRoleName) {
-		getRole(roleName).put(qualifiedRoleName, new ArrayList());
+		getRole(roleName).put(qualifiedRoleName, new ArrayList<String>());
 	}
 	
 	public static void removeQualifiedRole(String roleName, String qualifiedRoleName) {
@@ -147,8 +151,8 @@ public class TestRuleAttribute implements WorkflowAttribute, RoleAttribute, Work
 	 * @param qualifiedRoleName
 	 * @param recipients
 	 */
-	public static void setRecipients(String roleName, String qualifiedRoleName, List recipients) {
-		Map qualifiedRoles = getRole(roleName);
+	public static void setRecipientPrincipalIds(String roleName, String qualifiedRoleName, List<String> principalIds) {
+		Map<String, List<String>> qualifiedRoles = getRole(roleName);
 		if (qualifiedRoles == null) {
 		    addRole(roleName);
 		}
@@ -157,12 +161,12 @@ public class TestRuleAttribute implements WorkflowAttribute, RoleAttribute, Work
 		    addQualifiedRole(roleName, qualifiedRoleName);
 		    qualifiedRoles = getRole(roleName);
 		}
-		qualifiedRoles.put(qualifiedRoleName, recipients);
+		qualifiedRoles.put(qualifiedRoleName, principalIds);
 	}
 	
-	public static List getRecipients(String roleName, String qualifiedRoleName) {
-		Map qualifiedRoles = getRole(roleName);
-		return (List)qualifiedRoles.get(qualifiedRoleName);
+	public static List<String> getRecipientPrincipalIds(String roleName, String qualifiedRoleName) {
+		Map<String, List<String>> qualifiedRoles = getRole(roleName);
+		return (List<String>)qualifiedRoles.get(qualifiedRoleName);
 	}
 
 	public List<WorkflowAttributeValidationError> validateClientRoutingData() {

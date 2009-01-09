@@ -52,18 +52,15 @@ import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.engine.CompatUtils;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.RoleRecipient;
-import org.kuali.rice.kew.user.UserService;
-import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -81,7 +78,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 @Sequence(name="KREW_ACTN_RQST_S", property="actionRequestId")
 @NamedQueries({
   @NamedQuery(name="ActionRequestValue.FindByRouteHeaderId", query="select arv from ActionRequestValue arv where arv.routeHeaderId = :routeHeaderId"),
-  @NamedQuery(name="ActionRequestValue.GetUserRequestCount", query="select count(arv) from ActionRequestValue arv where arv.routeHeaderId = :routeHeaderId and arv.recipientTypeCd = :recipientTypeCd and arv.workflowId = :workflowId and arv.currentIndicator = :currentIndicator"),
+  @NamedQuery(name="ActionRequestValue.GetUserRequestCount", query="select count(arv) from ActionRequestValue arv where arv.routeHeaderId = :routeHeaderId and arv.recipientTypeCd = :recipientTypeCd and arv.principalId = :principalId and arv.currentIndicator = :currentIndicator"),
   @NamedQuery(name="ActionRequestValue.FindActivatedByGroup", query="select count(arv) from ActionRequestValue arv where arv.groupId = :groupId and arv.currentIndicator = :currentIndicator and arv.status = :status"),
   @NamedQuery(name="ActionRequestValue.FindAllByDocId", query="select arv from ActionRequestValue arv where arv.routeHeaderId = :routeHeaderId and arv.currentIndicator = :currentIndicator"),
   @NamedQuery(name="ActionRequestValue.FindAllPendingByDocId", query="select arv from ActionRequestValue arv where arv.routeHeaderId = :routeHeaderId and arv.currentIndicator = :currentIndicator and (arv.status = '" + KEWConstants.ACTION_REQUEST_INITIALIZED + "' or arv.status = '" + KEWConstants.ACTION_REQUEST_ACTIVATED + "')"),
@@ -141,7 +138,7 @@ public class ActionRequestValue implements WorkflowPersistable {
     @Column(name="VER_NBR")
 	private Integer jrfVerNbr;
     @Column(name="PRNCPL_ID")
-	private String workflowId;
+	private String principalId;
     @Column(name="IGN_PREV_ACTN_IND")
 	private Boolean ignorePrevAction;
     @Column(name="PARNT_ID", insertable=false, updatable=false)
@@ -224,23 +221,21 @@ public class ActionRequestValue implements WorkflowPersistable {
     }
 
     public boolean isUserRequest() {
-        return workflowId != null;
+        return principalId != null;
     }
 
     public KimPrincipal getPrincipal() {
-    	if (getWorkflowId() == null) {
+    	if (getPrincipalId() == null) {
     		return null;
     	}
-    	return KEWServiceLocator.getIdentityHelperService().getPrincipal(getWorkflowId());
+    	return KEWServiceLocator.getIdentityHelperService().getPrincipal(getPrincipalId());
     }
     
-    @Deprecated
-    public WorkflowUser getWorkflowUser() throws KEWUserNotFoundException {
-        if (getWorkflowId() == null) {
-            return null;
-        }
-        UserService userSrv = (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
-        return userSrv.getWorkflowUser(new WorkflowUserId(getWorkflowId()));
+    public Person getPerson() {
+    	if (getPrincipalId() == null) {
+    		return null;
+    	}
+    	return KIMServiceLocator.getPersonService().getPerson(getPrincipalId());
     }
 
     public Recipient getRecipient() {
@@ -383,23 +378,13 @@ public class ActionRequestValue implements WorkflowPersistable {
     }
 
     public String getPrincipalId() {
-        return workflowId;
+        return principalId;
     }
 
     public void setPrincipalId(String principalId) {
-        this.workflowId = principalId;
+        this.principalId = principalId;
     }
     
-    @Deprecated
-    public String getWorkflowId() {
-        return workflowId;
-    }
-
-    @Deprecated
-    public void setWorkflowId(String workflowId) {
-        this.workflowId = workflowId;
-    }
-
     /**
      * @return Returns the ignorePrevAction.
      */
@@ -509,14 +494,6 @@ public class ActionRequestValue implements WorkflowPersistable {
         this.routeLevel = routeLevel;
     }
 
-//    public String getRouteMethodName() {
-//        return routeMethodName;
-//    }
-//
-//    public void setRouteMethodName(String routeMethodName) {
-//        this.routeMethodName = routeMethodName;
-//    }
-
     public String getStatus() {
         return status;
     }
@@ -577,7 +554,7 @@ public class ActionRequestValue implements WorkflowPersistable {
 
     	boolean isRecipientInGraph = false;
     	if (isReviewerUser()) {
-    			isRecipientInGraph = getWorkflowId().equals(principalId);
+    			isRecipientInGraph = getPrincipalId().equals(principalId);
     	} else if (isGroupRequest()) {
     		KimGroup group = getGroup();
 			if (group == null){
@@ -604,10 +581,10 @@ public class ActionRequestValue implements WorkflowPersistable {
 
     	boolean isRecipientInGraph = false;
     	if (isReviewerUser()) {
-    		if (recipient instanceof WorkflowUser) {
-    			isRecipientInGraph = getWorkflowId().equals(((WorkflowUser) recipient).getWorkflowUserId().getWorkflowId());
+    		if (recipient instanceof KimPrincipalRecipient) {
+    			isRecipientInGraph = getPrincipalId().equals(((KimPrincipalRecipient) recipient).getPrincipalId());
     		} else if (recipient instanceof KimGroupRecipient){
-    			isRecipientInGraph = KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(getWorkflowId(), ((KimGroupRecipient)recipient).getGroup().getGroupId());
+    			isRecipientInGraph = KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(getPrincipalId(), ((KimGroupRecipient)recipient).getGroup().getGroupId());
     		}
 
     	} else if (isGroupRequest()) {
@@ -615,9 +592,9 @@ public class ActionRequestValue implements WorkflowPersistable {
 			if (group == null){
 				LOG.error("Was unable to retrieve workgroup " + getGroupId());
 			}
-    		if (recipient instanceof WorkflowUser) {
-    			WorkflowUser user = (WorkflowUser)recipient;
-    			isRecipientInGraph = KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(user.getWorkflowId(), group.getGroupId());
+    		if (recipient instanceof KimPrincipalRecipient) {
+    			KimPrincipalRecipient principalRecipient = (KimPrincipalRecipient)recipient;
+    			isRecipientInGraph = KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(principalRecipient.getPrincipalId(), group.getGroupId());
     		} else if (recipient instanceof KimGroupRecipient) {
     			isRecipientInGraph = ((KimGroupRecipient) recipient).getGroup().getGroupId().equals(group.getGroupId());
     		}
@@ -850,16 +827,7 @@ public class ActionRequestValue implements WorkflowPersistable {
     public void setRuleBaseValuesId(Long ruleBaseValuesId) {
         this.ruleBaseValuesId = ruleBaseValuesId;
     }
-
-
-//    public String getRouteMethodName() {
-//		return routeMethodName;
-//	}
-//
-//	public void setRouteMethodName(String routeMethodName) {
-//		this.routeMethodName = routeMethodName;
-//	}
-
+    
 	private RuleService getRuleService() {
         return (RuleService) KEWServiceLocator.getService(KEWServiceLocator.RULE_SERVICE);
     }
@@ -930,7 +898,7 @@ public class ActionRequestValue implements WorkflowPersistable {
             .append("responsibilityDesc", responsibilityDesc)
             .append("annotation", annotation)
             .append("jrfVerNbr", jrfVerNbr)
-            .append("workflowId", workflowId)
+            .append("principalId", principalId)
             .append("ignorePrevAction", ignorePrevAction)
             .append("parentActionRequestId", parentActionRequestId)
             .append("qualifiedRoleName", qualifiedRoleName)

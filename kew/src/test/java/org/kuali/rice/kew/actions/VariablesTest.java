@@ -46,7 +46,7 @@ public class VariablesTest extends KEWTestCase {
         LOG.info("\tDoc: class=" + doc.getDocumentType() + " title=" + doc.getTitle() + " status=" + doc.getStatusDisplayValue());
         LOG.info("\tActionRequests:");
         for (ActionRequestDTO ar: doc.getActionRequests()) {
-            LOG.info("\t\tId: " + ar.getActionRequestId() + " UserId: " + ar.getUserIdVO() + " User: " + (ar.getUserDTO() != null ? ar.getUserDTO().getDisplayName() : null) + " ActionRequested: " + ar.getActionRequested() + " ActionTaken: " + (ar.getActionTaken() != null ? ar.getActionTaken().getActionTaken() : null) + " NodeName: " + ar.getNodeName() + " Status:" + ar.getStatus());
+            LOG.info("\t\tId: " + ar.getActionRequestId() + " PrincipalId: " + ar.getPrincipalId() + " ActionRequested: " + ar.getActionRequested() + " ActionTaken: " + (ar.getActionTaken() != null ? ar.getActionTaken().getActionTaken() : null) + " NodeName: " + ar.getNodeName() + " Status:" + ar.getStatus());
         }
         LOG.info("\tActionTakens:");
         for (ActionTakenDTO at: doc.getActionsTaken()) {

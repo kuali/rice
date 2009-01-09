@@ -64,7 +64,7 @@ public class SequentialRoutingTest extends KEWTestCase {
         ActionRequestDTO[] requests = document.getActionRequests();
         assertEquals(1, requests.length);
         ActionRequestDTO request = requests[0];
-        assertEquals("bmcgough", request.getUserDTO().getNetworkId());
+        assertEquals(getPrincipalIdForName("bmcgough"), request.getPrincipalId());
         assertEquals(KEWConstants.ACTION_REQUEST_APPROVE_REQ, request.getActionRequested());
         assertEquals(new Integer(1), request.getRouteLevel());
         assertTrue(document.isApprovalRequested());
@@ -78,12 +78,12 @@ public class SequentialRoutingTest extends KEWTestCase {
         boolean toJhopf = false;
         for (int i = 0; i < requests.length; i++) {
             ActionRequestDTO requestVO = requests[i];
-            if (requestVO.getUserDTO().getNetworkId().equals("temay")) {
+            if (requestVO.getPrincipalId().equals(getPrincipalIdForName("temay"))) {
                 toTemay = true;
                 assertEquals(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, requestVO.getActionRequested());
                 assertEquals(new Integer(2), requestVO.getRouteLevel());
                 assertEquals(KEWConstants.ACTION_REQUEST_ACTIVATED, requestVO.getStatus());
-            } else if (requestVO.getUserDTO().getNetworkId().equals("jhopf")) {
+            } else if (requestVO.getPrincipalId().equals(getPrincipalIdForName("jhopf"))) {
                 toJhopf = true;
                 assertEquals(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, requestVO.getActionRequested());
                 assertEquals(new Integer(3), requestVO.getRouteLevel());
@@ -103,11 +103,11 @@ public class SequentialRoutingTest extends KEWTestCase {
         toJhopf = false;
         for (int i = 0; i < requests.length; i++) {
             ActionRequestDTO requestVO = requests[i];
-            if (requestVO.getUserDTO().getNetworkId().equals("temay")) {
+            if (requestVO.getPrincipalId().equals(getPrincipalIdForName("temay"))) {
                 toTemay = true;
                 assertEquals(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, requestVO.getActionRequested());
                 assertEquals(KEWConstants.ACTION_REQUEST_DONE_STATE, requestVO.getStatus());
-            } else if (requestVO.getUserDTO().getNetworkId().equals("jhopf")) {
+            } else if (requestVO.getPrincipalId().equals(getPrincipalIdForName("jhopf"))) {
                 toJhopf = true;
                 assertEquals(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, requestVO.getActionRequested());
                 assertEquals(new Integer(3), requestVO.getRouteLevel());

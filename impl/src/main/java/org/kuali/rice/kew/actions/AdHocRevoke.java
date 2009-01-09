@@ -78,7 +78,7 @@ public class AdHocRevoke implements java.io.Serializable {
 		if (!StringUtils.isEmpty(getNodeName()) && !getNodeName().equals(actionRequest.getNodeInstance().getName())) {
 			return false;
 		}
-		if (getPrincipalId() != null && (!actionRequest.isUserRequest() || !actionRequest.getWorkflowId().equals(getPrincipalId()))) {
+		if (getPrincipalId() != null && (!actionRequest.isUserRequest() || !actionRequest.getPrincipalId().equals(getPrincipalId()))) {
 			return false;
 		}
 		if (getGroupId() != null && (!actionRequest.isGroupRequest() || !actionRequest.getGroupId().equals(getGroupId()))) {

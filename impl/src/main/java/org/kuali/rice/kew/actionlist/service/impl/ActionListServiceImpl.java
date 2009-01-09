@@ -36,7 +36,6 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
@@ -44,7 +43,6 @@ import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.Recipient;
-import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.workgroup.WorkgroupMembershipChangeProcessor;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
@@ -200,7 +198,7 @@ public class ActionListServiceImpl implements ActionListService {
         actionItem.setActionRequestId(actionRequest.getActionRequestId());
         actionItem.setDocName(docType.getName());
         actionItem.setRoleName(actionRequest.getQualifiedRoleName());
-        actionItem.setPrincipalId(actionRequest.getWorkflowId());
+        actionItem.setPrincipalId(actionRequest.getPrincipalId());
         actionItem.setRouteHeaderId(actionRequest.getRouteHeaderId());
         actionItem.setRouteHeader(routeHeader);
         actionItem.setDateAssigned(new Timestamp(new Date().getTime()));
@@ -213,7 +211,7 @@ public class ActionListServiceImpl implements ActionListService {
 
         ActionRequestValue delegatorActionRequest = getActionRequestService().findDelegatorRequest(actionRequest);
         if (delegatorActionRequest != null) {
-            actionItem.setDelegatorWorkflowId(delegatorActionRequest.getWorkflowId());
+            actionItem.setDelegatorWorkflowId(delegatorActionRequest.getPrincipalId());
             actionItem.setDelegatorGroupId(delegatorActionRequest.getGroupId());
         }
 
@@ -278,10 +276,6 @@ public class ActionListServiceImpl implements ActionListService {
 
     public void setActionItemDAO(ActionItemDAO actionItemDAO) {
         this.actionItemDAO = actionItemDAO;
-    }
-
-    public UserService getUserService() {
-        return (UserService) KEWServiceLocator.getUserService();
     }
 
     private class MembersDiff {
@@ -417,7 +411,6 @@ public class ActionListServiceImpl implements ActionListService {
      * @see org.kuali.rice.kew.actionlist.service.ActionListService#saveOutboxItem(org.kuali.rice.kew.actionitem.OutboxItemActionListExtension)
      */
     public void saveOutboxItem(ActionItem actionItem) {
-        try {
             if (KEWServiceLocator.getPreferencesService().getPreferences(actionItem.getPrincipalId()).isUsingOutbox()
                     && ConfigContext.getCurrentContextConfig().getOutBoxOn()
                     && getActionListDAO().getOutboxByDocumentIdUserId(actionItem.getRouteHeaderId(), actionItem.getPrincipalId()) == null
@@ -427,25 +420,14 @@ public class ActionListServiceImpl implements ActionListService {
                         actionItem.getActionRequestId());
                 ActionTakenValue actionTaken = actionRequest.getActionTaken();
                 // if an action was taken...
-                if (actionTaken != null && actionTaken.getWorkflowUser().getWorkflowId().equals(actionItem.getPrincipalId())) {
+                if (actionTaken != null && actionTaken.getPrincipalId().equals(actionItem.getPrincipalId())) {
                     this.getActionListDAO().saveOutboxItem(new OutboxItemActionListExtension(actionItem));
                 }
             }
-        } catch (KEWUserNotFoundException eunfe) {
-            throw new WorkflowRuntimeException(eunfe);
-        }
     }
 
-	/**
-	 * This overridden method replaced findByWorkflowUser
-	 *
-	 * @see org.kuali.rice.kew.actionlist.service.ActionListService#findByPrincipalId(java.lang.String)
-	 */
 	public Collection<ActionItem> findByPrincipalId(String principalId) {
 		return getActionItemDAO().findByPrincipalId(principalId);
 	}
-
-
-
 
 }

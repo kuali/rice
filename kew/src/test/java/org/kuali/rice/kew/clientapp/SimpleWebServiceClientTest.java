@@ -64,8 +64,6 @@ public class SimpleWebServiceClientTest extends KEWTestCase {
 		assertTrue("First resource loader should be thin", tempThinRL instanceof ThinClientResourceLoader);
 		ThinClientResourceLoader thinRL = (ThinClientResourceLoader)tempThinRL;
 
-		thinRL.getWorkflowUtility().getWorkflowUser(new NetworkIdDTO("rkirkend"));
-
 		RouteHeaderDTO routeHeader = new RouteHeaderDTO();
         routeHeader.setDocTypeName("TestDocumentType");
 

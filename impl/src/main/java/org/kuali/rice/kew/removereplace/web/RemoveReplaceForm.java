@@ -22,10 +22,10 @@ import java.util.Map;
 import org.apache.commons.collections.Factory;
 import org.apache.commons.collections.ListUtils;
 import org.kuali.rice.kew.removereplace.RemoveReplaceDocument;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.web.ShowHideTree;
 import org.kuali.rice.kew.web.WorkflowRoutingForm;
 import org.kuali.rice.kew.workgroup.WorkgroupType;
+import org.kuali.rice.kim.bo.Person;
 
 
 /**
@@ -64,8 +64,8 @@ public class RemoveReplaceForm extends WorkflowRoutingForm {
 	     });
 
     // properties that are loaded by establishRequiredState
-    private WorkflowUser user;
-    private WorkflowUser replacementUser;
+    private Person user;
+    private Person replacementUser;
 
     private RemoveReplaceDocument document;
 
@@ -148,19 +148,19 @@ public class RemoveReplaceForm extends WorkflowRoutingForm {
         this.replacementUserId = userIdToReplace;
     }
 
-    public WorkflowUser getUser() {
+    public Person getUser() {
         return this.user;
     }
 
-    public void setUser(WorkflowUser user) {
+    public void setUser(Person user) {
         this.user = user;
     }
 
-    public WorkflowUser getReplacementUser() {
+    public Person getReplacementUser() {
         return this.replacementUser;
     }
 
-    public void setReplacementUser(WorkflowUser replacementUser) {
+    public void setReplacementUser(Person replacementUser) {
         this.replacementUser = replacementUser;
     }
 

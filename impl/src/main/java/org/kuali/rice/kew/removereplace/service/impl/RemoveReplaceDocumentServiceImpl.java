@@ -21,7 +21,6 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.export.ExportDataSet;
@@ -34,9 +33,9 @@ import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
@@ -81,13 +80,13 @@ public class RemoveReplaceDocumentServiceImpl implements RemoveReplaceDocumentSe
     }
 
     protected void constructTitle(RemoveReplaceDocument document, WorkflowDocument workflowDoc) throws WorkflowException {
-	WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(document.getUserWorkflowId()));
+	Person user = KIMServiceLocator.getPersonService().getPerson(document.getUserWorkflowId());
 	StringBuffer title = new StringBuffer();
 	if (document.getOperation().equals(RemoveReplaceDocument.REMOVE_OPERATION)) {
-	    title.append("Removing " + user.getAuthenticationUserId().getAuthenticationId() + " from ");
+	    title.append("Removing " + user.getPrincipalName() + " from ");
 	} else if (document.getOperation().equals(RemoveReplaceDocument.REPLACE_OPERATION)) {
-	    WorkflowUser replaceWithUser = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(document.getReplacementUserWorkflowId()));
-	    title.append("Replacing " + user.getAuthenticationUserId().getAuthenticationId() + " with " + replaceWithUser.getAuthenticationUserId().getAuthenticationId() + " in ");
+	    Person replaceWithUser = KIMServiceLocator.getPersonService().getPerson(document.getReplacementUserWorkflowId());
+	    title.append("Replacing " + user.getPrincipalName() + " with " + replaceWithUser.getPrincipalName() + " in ");
 	}
 	title.append(document.getRuleTargets().size() + " rules and " + document.getWorkgroupTargets().size() + " workgroups");
 	workflowDoc.setTitle(title.toString());
@@ -98,22 +97,22 @@ public class RemoveReplaceDocumentServiceImpl implements RemoveReplaceDocumentSe
      */
     protected void attachDocumentContent(RemoveReplaceDocument document, WorkflowDocument workflowDoc) {
 	try {
-	    WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(document.getUserWorkflowId()));
+	    Person user = KIMServiceLocator.getPersonService().getPerson(document.getUserWorkflowId());
 	    Element rootElement = new Element("removeReplaceUserDocument");
 	    Element removeReplaceElement = null;
 	    if (document.getOperation().equals(RemoveReplaceDocument.REMOVE_OPERATION)) {
 		removeReplaceElement = new Element("remove");
 		Element userElement = new Element("user");
-		userElement.setText(user.getAuthenticationUserId().getAuthenticationId());
+		userElement.setText(user.getPrincipalName());
 		removeReplaceElement.addContent(userElement);
 	    } else if (document.getOperation().equals(RemoveReplaceDocument.REPLACE_OPERATION)) {
 		removeReplaceElement = new Element("replace");
 		Element userElement = new Element("user");
-		userElement.setText(user.getAuthenticationUserId().getAuthenticationId());
+		userElement.setText(user.getPrincipalName());
 		removeReplaceElement.addContent(userElement);
 		Element replaceWithElement = new Element("replaceWith");
-		WorkflowUser replaceWithUser = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(document.getReplacementUserWorkflowId()));
-		replaceWithElement.setText(replaceWithUser.getAuthenticationUserId().getAuthenticationId());
+		Person replaceWithUser = KIMServiceLocator.getPersonService().getPerson(document.getReplacementUserWorkflowId());
+		replaceWithElement.setText(replaceWithUser.getPrincipalName());
 		removeReplaceElement.addContent(replaceWithElement);
 	    } else {
 		throw new WorkflowRuntimeException("Invalid remove/replace operation specified: " + document.getOperation());
@@ -142,7 +141,7 @@ public class RemoveReplaceDocumentServiceImpl implements RemoveReplaceDocumentSe
 //		removeReplaceElement.addContent(workgroupsElement);
 //	    }
 //	    workflowDoc.setApplicationContent(XmlHelper.jotNode(rootElement));
-	} catch (KEWUserNotFoundException e) {
+	} catch (Exception e) {
 	    throw new WorkflowRuntimeException(e);
 	}
     }

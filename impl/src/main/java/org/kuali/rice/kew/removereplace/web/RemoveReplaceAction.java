@@ -40,14 +40,12 @@ import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
-import org.kuali.rice.kew.user.AuthenticationUserId;
-import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.WorkflowAction;
 import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
@@ -89,10 +87,10 @@ public class RemoveReplaceAction extends WorkflowAction {
         }
 	form.establishVisibleActionRequestCds();
 	if (!StringUtils.isEmpty(form.getUserId())) {
-	    WorkflowUser user = null;
+	    Person user = null;
 	    try {
-		user = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(form.getUserId()));
-	    } catch (KEWUserNotFoundException e) {
+	    user = KIMServiceLocator.getPersonService().getPersonByPrincipalName(form.getUserId());
+	    } catch (Exception e) {
 		LOG.warn("User not found.", e);
 	    }
 	    form.setUser(user);
@@ -101,10 +99,10 @@ public class RemoveReplaceAction extends WorkflowAction {
 	    }
 	}
 	if (!StringUtils.isEmpty(form.getReplacementUserId())) {
-	    WorkflowUser replacementUser = null;
+	    Person replacementUser = null;
 	    try {
-		replacementUser = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(form.getReplacementUserId()));
-	    } catch (KEWUserNotFoundException e) {
+		replacementUser = KIMServiceLocator.getPersonService().getPersonByPrincipalName(form.getReplacementUserId());
+	    } catch (Exception e) {
 		LOG.warn("Replacement user not found.", e);
 	    }
 	    form.setReplacementUser(replacementUser);
@@ -121,7 +119,7 @@ public class RemoveReplaceAction extends WorkflowAction {
     }
 
     private WorkflowDocument createDocument() throws WorkflowException {
-	return new WorkflowDocument(new WorkflowIdDTO(UserSession.getAuthenticatedUser().getWorkflowUser().getWorkflowId()), KEWConstants.REMOVE_REPLACE_DOCUMENT_TYPE);
+	return new WorkflowDocument(new WorkflowIdDTO(UserSession.getAuthenticatedUser().getPrincipalId()), KEWConstants.REMOVE_REPLACE_DOCUMENT_TYPE);
     }
 
     @Override
@@ -186,12 +184,12 @@ public class RemoveReplaceAction extends WorkflowAction {
     protected void loadFormForReport(RemoveReplaceForm form, RemoveReplaceDocument document) throws KEWUserNotFoundException {
         form.setDocument(document);
         form.setOperation(document.getOperation());
-        WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(document.getUserWorkflowId()));
-        form.setUserId(user.getAuthenticationUserId().getAuthenticationId());
+        Person user = KIMServiceLocator.getPersonService().getPerson(document.getUserWorkflowId());
+        form.setUserId(user.getPrincipalName());
         form.setUser(user);
         if (!StringUtils.isBlank(document.getReplacementUserWorkflowId())) {
-            WorkflowUser replacementUser = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(document.getReplacementUserWorkflowId()));
-            form.setReplacementUserId(replacementUser.getAuthenticationUserId().getAuthenticationId());
+            Person replacementUser = KIMServiceLocator.getPersonService().getPerson(document.getReplacementUserWorkflowId());
+            form.setReplacementUserId(replacementUser.getPrincipalId());
             form.setReplacementUser(replacementUser);
         }
         form.setRules(loadRemoveReplaceRules(form, loadRules(document)));
@@ -233,7 +231,7 @@ public class RemoveReplaceAction extends WorkflowAction {
 	if (form.getUser() == null) {
 	    throw new RuntimeException("Please enter a valid user id before choosing rules.");
 	}
-	List<RuleBaseValues> rules = KEWServiceLocator.getRuleService().findRuleBaseValuesByResponsibilityReviewerTemplateDoc(form.getRuleRuleTemplate(), form.getRuleDocumentTypeName(), form.getUser().getWorkflowId(), KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
+	List<RuleBaseValues> rules = KEWServiceLocator.getRuleService().findRuleBaseValuesByResponsibilityReviewerTemplateDoc(form.getRuleRuleTemplate(), form.getRuleDocumentTypeName(), form.getUser().getPrincipalId(), KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
 	form.getRules().clear();
 	form.getRules().addAll(loadRemoveReplaceRules(form, rules));
 	return mapping.findForward("basic");
@@ -287,7 +285,7 @@ public class RemoveReplaceAction extends WorkflowAction {
 	List<RuleResponsibility> responsibilities = rule.getResponsibilities();
 	for (RuleResponsibility responsibility : responsibilities) {
 	    if (KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID.equals(responsibility.getRuleResponsibilityType()) &&
-		    responsibility.getRuleResponsibilityName().equals(form.getUser().getWorkflowId())) {
+		    responsibility.getRuleResponsibilityName().equals(form.getUser().getPrincipalId())) {
 		eval.foundResponsibility = true;
 		eval.hasDelegations = responsibility.getDelegationRules().size() > 0;
 	    } else {
@@ -315,7 +313,7 @@ public class RemoveReplaceAction extends WorkflowAction {
 //	if (!StringUtils.isBlank(form.getWorkgroupType())) {
 //	    template.setWorkgroupType(form.getWorkgroupType());
 //	}
-	List<? extends KimGroup> groups = KIMServiceLocator.getIdentityManagementService().getGroupsForPrincipal(form.getUser().getWorkflowId());
+	List<? extends KimGroup> groups = KIMServiceLocator.getIdentityManagementService().getGroupsForPrincipal(form.getUser().getPrincipalId());
 	form.getWorkgroups().clear();
 	form.getWorkgroups().addAll(loadRemoveReplaceWorkgroups(form, groups));
 	return mapping.findForward("basic");
@@ -339,7 +337,7 @@ public class RemoveReplaceAction extends WorkflowAction {
 	    boolean foundMember = false;
 	    List<String> directMembers = KIMServiceLocator.getIdentityManagementService().getDirectGroupMemberPrincipalIds(group.getGroupId());
 	    for (String principalId : directMembers) {
-	    	if (principalId.equals(form.getUser().getWorkflowId())) {
+	    	if (principalId.equals(form.getUser().getPrincipalId())) {
 	    		foundMember = true;
 	    	} else {
 	    		isOnlyMember = false;
@@ -431,9 +429,9 @@ public class RemoveReplaceAction extends WorkflowAction {
 	RemoveReplaceDocument document = new RemoveReplaceDocument();
 	document.setDocumentId(form.getDocId());
 	document.setOperation(form.getOperation());
-	document.setUserWorkflowId(form.getUser().getWorkflowId());
+	document.setUserWorkflowId(form.getUser().getPrincipalId());
 	if (form.getReplacementUser() != null) {
-	    document.setReplacementUserWorkflowId(form.getReplacementUser().getWorkflowId());
+	    document.setReplacementUserWorkflowId(form.getReplacementUser().getPrincipalId());
 	}
 	List<RuleTarget> ruleTargets = new ArrayList<RuleTarget>();
 	for (RemoveReplaceRule rule : form.getRules()) {

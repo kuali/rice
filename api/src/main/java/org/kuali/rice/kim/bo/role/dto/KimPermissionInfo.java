@@ -18,6 +18,7 @@ package org.kuali.rice.kim.bo.role.dto;
 import java.io.Serializable;
 
 import org.kuali.rice.kim.bo.role.KimPermission;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
@@ -72,5 +73,25 @@ public class KimPermissionInfo extends PermissionDetailsInfo implements KimPermi
         return new ToStringBuilder(this).append("details", this.details).append("template", this.template).append("namespaceCode", this.namespaceCode).append("name", this.name).toString();
     }
 	
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		if ( getPermissionId() == null ) {
+			return 0;
+		}
+		return getPermissionId().hashCode();
+	}
 	
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if ( obj == null || !(obj instanceof KimPermissionInfo) ) {
+			return false;
+		}
+		return StringUtils.equals( getPermissionId(), ((KimPermissionInfo)obj).getPermissionId() );
+	}
 }

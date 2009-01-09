@@ -56,6 +56,7 @@ public class PermissionServiceImpl implements PermissionService {
     private KimPermissionTypeService defaultPermissionTypeService;
 
 	private ThreadLocal<Map<String,List<KimPermissionImpl>>> permissionCache = new ThreadLocal<Map<String,List<KimPermissionImpl>>>();
+	private ThreadLocal<Map<List<KimPermissionInfo>,List<String>>> permissionToRoleCache = new ThreadLocal<Map<List<KimPermissionInfo>,List<String>>>();
     // --------------------
     // Authorization Checks
     // --------------------
@@ -257,7 +258,15 @@ public class PermissionServiceImpl implements PermissionService {
     	List<KimPermissionImpl> permissions = getPermissionImplsByName( namespaceCode, permissionName );
     	// now, filter the full list by the detail passed
     	List<KimPermissionInfo> applicablePermissions = getMatchingPermissions( permissions, permissionDetails );    	
-    	return permissionDao.getRoleIdsForPermissions( applicablePermissions );    	
+    	if ( permissionToRoleCache.get() == null ) {
+    		permissionToRoleCache.set( new HashMap<List<KimPermissionInfo>,List<String>>() );
+    	}
+    	List<String> roleIds = permissionToRoleCache.get().get( applicablePermissions );
+    	if ( roleIds == null ) {
+    		roleIds = permissionDao.getRoleIdsForPermissions( applicablePermissions );
+    		permissionToRoleCache.get().put( applicablePermissions, roleIds );
+    	}
+    	return roleIds;    	
     }
 
     protected List<String> getRoleIdsForPermissionTemplate( String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails ) {
@@ -265,7 +274,15 @@ public class PermissionServiceImpl implements PermissionService {
     	List<KimPermissionImpl> permissions = getPermissionImplsByTemplateName( namespaceCode, permissionTemplateName );
     	// now, filter the full list by the detail passed
     	List<KimPermissionInfo> applicablePermissions = getMatchingPermissions( permissions, permissionDetails );
-    	return permissionDao.getRoleIdsForPermissions( applicablePermissions );
+    	if ( permissionToRoleCache.get() == null ) {
+    		permissionToRoleCache.set( new HashMap<List<KimPermissionInfo>,List<String>>() );
+    	}
+    	List<String> roleIds = permissionToRoleCache.get().get( applicablePermissions );
+    	if ( roleIds == null ) {
+    		roleIds = permissionDao.getRoleIdsForPermissions( applicablePermissions );
+    		permissionToRoleCache.get().put( applicablePermissions, roleIds );
+    	}
+    	return roleIds;
     }
     
     // --------------------

@@ -21,36 +21,35 @@ import java.util.List;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowInfo;
-import org.kuali.rice.kew.user.BaseWorkflowUser;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
 
 /**
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class ActionRequestDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServiceBase {
 	private static final String ACTION_REQUEST_RECIPIENT_ROLE_NAME = "Action Request Recipient";
-	
+
 	protected List<String> requiredAttributes = new ArrayList<String>();
 	{
 		requiredAttributes.add(KimAttributes.DOCUMENT_NUMBER);
 		requiredAttributes.add(KimAttributes.ACTION_REQUEST_CD);
 	}
-	
+
     /**
 	 *	Attributes:
 	 *	Document Id
 	 *	Action Request Code
-	 *	
+	 *
 	 *	Requirements:
 	 *	- the only role that will be of this type is KR-WKFLW Action Request Recipient
 	 *	- users who have a pending action request of the given type for the document in question should be considered to be in this role
-     *   
+     *
      *  Action Requests - Approve, Complete, Clear FYI, Acknowledge
-     *  
+     *
      * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#getPrincipalIdsFromApplicationRole(java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
      */
     @Override
@@ -75,7 +74,7 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeS
 		}
 		return principalIds;
     }
-    
+
     /***
      * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#hasApplicationRole(java.lang.String, java.util.List, java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
      */
@@ -86,5 +85,5 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeS
 		String documentNumber = qualification.get(KimAttributes.DOCUMENT_NUMBER);
 		return KEWServiceLocator.getActionRequestService().doesPrincipalHaveRequest(principalId, Long.parseLong(documentNumber));
 	}
-	
+
 }

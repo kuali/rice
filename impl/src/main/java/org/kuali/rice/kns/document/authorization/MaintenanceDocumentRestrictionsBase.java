@@ -27,7 +27,7 @@ public class MaintenanceDocumentRestrictionsBase extends
 		MaintenanceDocumentRestrictions {
 	private Set<String> readOnlyFields;
 	private Set<String> readOnlySectionIds;
-
+	
 	public MaintenanceDocumentRestrictionsBase() {
 	}
 	
@@ -67,7 +67,7 @@ public class MaintenanceDocumentRestrictionsBase extends
 		readOnlySectionIds = new HashSet<String>();
 	}
 
-	public boolean isReadOnlyField(String fieldName) {
+	protected boolean isReadOnlyField(String fieldName) {
 		String normalizedFieldName = normalizeFieldName(fieldName);
 		return readOnlyFields.contains(normalizedFieldName);
 	}

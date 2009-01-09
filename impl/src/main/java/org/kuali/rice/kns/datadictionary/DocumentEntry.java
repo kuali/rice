@@ -32,6 +32,7 @@ import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.rule.BusinessRule;
 import org.kuali.rice.kns.rule.PreRulesCheck;
+import org.kuali.rice.kns.service.DocumentTypeService;
 
 /**
  * A single Document entry in the DataDictionary, which contains information relating to the display, validation, and general
@@ -126,6 +127,13 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
         this.documentAuthorizerClass = documentAuthorizerClass;
     }
 
+    /**
+     * Returns the document authorizer class for the document.  Only framework code should be calling this method.
+	 * Client devs should use {@link DocumentTypeService#getDocumentAuthorizer(Document)} or
+	 * {@link DocumentTypeService#getDocumentAuthorizer(String)}
+     * 
+     * @return a document authorizer class
+     */
     public Class<? extends DocumentAuthorizer> getDocumentAuthorizerClass() {
         return documentAuthorizerClass;
     }
@@ -251,15 +259,6 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
 
         if (workflowProperties != null && workflowAttributes != null) {
         	throw new DataDictionaryException(documentTypeName + ": workflowProperties and workflowAttributes cannot both be defined for a document");
-        }
-    }
-
-    /**
-     * Validate the required documentAuthorizerClass
-     */
-    public void validateAuthorizer() {
-        if (documentAuthorizerClass == null) {
-            throw new ClassValidationException(documentTypeName + ": documentAuthorizerClass is required");
         }
     }
 
@@ -569,6 +568,10 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
 	}
 
 	/**
+	 * Returns the document presentation controller class for the document.  Only framework code should be calling this method.
+	 * Client devs should use {@link DocumentTypeService#getDocumentPresentationController(Document)} or
+	 * {@link DocumentTypeService#getDocumentPresentationController(String)}
+	 * 
 	 * @return the documentPresentationControllerClass
 	 */
 	public Class<? extends DocumentPresentationController> getDocumentPresentationControllerClass() {

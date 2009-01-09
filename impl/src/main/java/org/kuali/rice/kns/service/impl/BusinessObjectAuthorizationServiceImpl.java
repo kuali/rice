@@ -338,66 +338,6 @@ public class BusinessObjectAuthorizationServiceImpl implements
 
 	}
 
-	protected void addMaintainableItemRestrictions(List itemDefinitions,
-			MaintenanceDocumentAuthorizer authorizer,
-			MaintenanceDocumentRestrictions restrictions,
-			MaintenanceDocument maintenanceDocument,
-			BusinessObject businessObject, String propertyPrefix, Person user) {
-		BusinessObjectEntry businessObjectEntry = getDataDictionaryService()
-				.getDataDictionary().getBusinessObjectEntry(
-						businessObject.getClass().getName());
-		for (MaintainableItemDefinition maintainableItemDefinition : (List<MaintainableItemDefinition>) itemDefinitions) {
-			if ((maintainableItemDefinition instanceof MaintainableFieldDefinition)
-					&& ((MaintainableFieldDefinition) maintainableItemDefinition)
-							.isUnconditionallyReadOnly()) {
-				restrictions.addReadOnlyField(maintainableItemDefinition
-						.getName());
-			} else if (maintainableItemDefinition instanceof MaintainableCollectionDefinition) {
-				try {
-					Collection collection = (Collection) PropertyUtils
-							.getProperty(businessObject,
-									maintainableItemDefinition.getName());
-					for (Iterator iterator = collection.iterator(); iterator
-							.hasNext();) {
-						BusinessObject collectionBusinessObject = (BusinessObject) iterator
-								.next();
-						considerBusinessObjectFieldUnmaskAuthorization(
-								collectionBusinessObject, user, restrictions,
-								propertyPrefix + "."
-										+ maintainableItemDefinition.getName());
-						considerBusinessObjectFieldViewAuthorization(
-								businessObjectEntry, maintenanceDocument, user,
-								authorizer, restrictions, propertyPrefix + "."
-										+ maintainableItemDefinition.getName());
-						considerBusinessObjectFieldModifyAuthorization(
-								businessObjectEntry, maintenanceDocument, user,
-								authorizer, restrictions, propertyPrefix + "."
-										+ maintainableItemDefinition.getName());
-						addMaintainableItemRestrictions(
-								((MaintainableCollectionDefinition) maintainableItemDefinition)
-										.getMaintainableCollections(),
-								authorizer, restrictions, maintenanceDocument,
-								collectionBusinessObject, propertyPrefix + "."
-										+ maintainableItemDefinition.getName(),
-								user);
-						addMaintainableItemRestrictions(
-								((MaintainableCollectionDefinition) maintainableItemDefinition)
-										.getMaintainableFields(), authorizer,
-								restrictions, maintenanceDocument,
-								collectionBusinessObject, propertyPrefix + "."
-										+ maintainableItemDefinition.getName(),
-								user);
-					}
-				} catch (Exception e) {
-					throw new RuntimeException(
-							"Unable to resolve collection property: "
-									+ businessObject.getClass() + ":"
-									+ maintainableItemDefinition.getName(), e);
-				}
-			}
-		}
-	}
-
 	public <T extends BusinessObject> boolean canFullyUnmaskField(Person user,
 			Class<T> businessObjectClass, String fieldName) {
 		return getIdentityManagementService().isAuthorizedByTemplateName(

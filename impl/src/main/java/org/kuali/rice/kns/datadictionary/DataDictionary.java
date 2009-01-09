@@ -234,8 +234,6 @@ public class DataDictionary {
                 documentEntriesByMaintainableClass.put(mde.getMaintainableClass(), entry);
                 documentEntries.put(mde.getBusinessObjectClass().getSimpleName() + "MaintenanceDocument", entry);
             }
-
-            entry.validateAuthorizer();
         }
     }
     

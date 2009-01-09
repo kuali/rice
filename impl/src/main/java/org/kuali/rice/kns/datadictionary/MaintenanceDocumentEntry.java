@@ -27,6 +27,7 @@ import org.kuali.rice.kns.datadictionary.exception.DuplicateEntryException;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocumentBase;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase;
+import org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizer;
 import org.kuali.rice.kns.maintenance.Maintainable;
 
 /**
@@ -180,10 +181,8 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
             apcRule.completeValidation(businessObjectClass, null);
         }
 
-        // its never okay for a MaintenanceDocument.xml file to have the
-        // DocumentAuthorizerBase class as its documentAuthorizerClass.
-        if (documentAuthorizerClass.equals(DocumentAuthorizerBase.class)) {
-            throw new ClassValidationException("This maintenance document for '" + businessObjectClass.getName() + "' has an invalid " + "documentAuthorizerClass ('" + documentAuthorizerClass.getName() + "').  " + "Maintenance Documents cannot use the " + "DocumentAuthorizerBase class for their documentAuthorizerClass property.  " + "They must use MaintenanceDocumentAuthorizerBase, or one of its subclasses.");
+        if (documentAuthorizerClass != null && !MaintenanceDocumentAuthorizer.class.isAssignableFrom(documentAuthorizerClass)) {
+            throw new ClassValidationException("This maintenance document for '" + businessObjectClass.getName() + "' has an invalid " + "documentAuthorizerClass ('" + documentAuthorizerClass.getName() + "').  " + "Maintenance Documents must use an implementation of MaintenanceDocumentAuthorizer.");
         }
     }
 

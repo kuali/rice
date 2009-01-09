@@ -23,9 +23,12 @@ import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.datadictionary.TransactionalDocumentEntry;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
+import org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase;
 import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
 import org.kuali.rice.kns.document.authorization.DocumentPresentationControllerBase;
+import org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentPresentationControllerBase;
+import org.kuali.rice.kns.document.authorization.TransactionalDocumentAuthorizerBase;
 import org.kuali.rice.kns.document.authorization.TransactionalDocumentPresentationControllerBase;
 import org.kuali.rice.kns.exception.UnknownDocumentTypeException;
 import org.kuali.rice.kns.service.BusinessObjectService;
@@ -161,27 +164,25 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
         if (documentEntry == null) {
             throw new IllegalArgumentException("unknown documentType '" + documentType + "'");
         }
+        Class<? extends DocumentPresentationController> documentPresentationControllerClass = null;
         try{
-        	Class documentPresentationControllerClass = documentEntry.getDocumentPresentationControllerClass();
+        	documentPresentationControllerClass = documentEntry.getDocumentPresentationControllerClass();
         	if(documentPresentationControllerClass != null){
-        		documentPresentationController = (DocumentPresentationController) documentPresentationControllerClass.newInstance();
-        	}else{
+        		documentPresentationController = documentPresentationControllerClass.newInstance();
+        	} else {
         		DocumentEntry doc = dataDictionary.getDocumentEntry(documentType);
                 if ( doc instanceof TransactionalDocumentEntry ) {
-                	documentPresentationController = (DocumentPresentationController) (new TransactionalDocumentPresentationControllerBase());
-                }else if(doc instanceof MaintenanceDocumentEntry){
-                	documentPresentationController = (DocumentPresentationController)  (new MaintenanceDocumentPresentationControllerBase());
-                }else{
+                	documentPresentationController = new TransactionalDocumentPresentationControllerBase();
+                } else if(doc instanceof MaintenanceDocumentEntry) {
+                	documentPresentationController = new MaintenanceDocumentPresentationControllerBase();
+                } else {
                 	documentPresentationController = new DocumentPresentationControllerBase();
                 }
         	}
         }
         catch (Exception e) {
-            //throw new RuntimeException("unable to instantiate documentAuthorizer '" + documentPresentationControllerClass.getName() + "' for doctype '" + documentType + "'", e);
-        	//use default controller
-        	documentPresentationController = new DocumentPresentationControllerBase();
+            throw new RuntimeException("unable to instantiate documentPresentationController '" + documentPresentationControllerClass.getName() + "' for doctype '" + documentType + "'", e);
         }
-        
 
         return documentPresentationController;
     }
@@ -222,19 +223,27 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
             throw new IllegalArgumentException("unknown documentType '" + documentType + "'");
         }
 
-        Class documentAuthorizerClass = documentEntry.getDocumentAuthorizerClass();
+        Class<? extends DocumentAuthorizer> documentAuthorizerClass = documentEntry.getDocumentAuthorizerClass();
 
         DocumentAuthorizer documentAuthorizer = null;
         try {
-            documentAuthorizer = (DocumentAuthorizer) documentAuthorizerClass.newInstance();
+        	if (documentAuthorizerClass != null) {
+        		documentAuthorizer = documentAuthorizerClass.newInstance();
+        	}
+        	else if (documentEntry instanceof MaintenanceDocumentEntry) {
+        		documentAuthorizer = new MaintenanceDocumentAuthorizerBase();
+        	}
+        	else if (documentEntry instanceof TransactionalDocumentEntry) {
+        		documentAuthorizer = new TransactionalDocumentAuthorizerBase();
+        	}
+        	else {
+        		documentAuthorizer = new DocumentAuthorizerBase();
+        	}
         }
-        catch (InstantiationException e) {
+        catch (Exception e) {
             throw new RuntimeException("unable to instantiate documentAuthorizer '" + documentAuthorizerClass.getName() + "' for doctype '" + documentType + "'", e);
         }
-        catch (IllegalAccessException e) {
-            throw new RuntimeException("unable to instantiate documentAuthorizer '" + documentAuthorizerClass.getName() + "' for doctype '" + documentType + "'", e);
-        }
-
+        
         return documentAuthorizer;
     }
 

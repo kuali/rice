@@ -19,6 +19,8 @@ import java.util.List;
 
 import org.kuali.rice.kns.datadictionary.AuthorizationDefinition;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
+import org.kuali.rice.kns.service.DocumentTypeService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
@@ -59,10 +61,10 @@ public abstract class DocumentEntryMapper {
             entryMap.set("description", entry.getDescription());
         }
 
-        entryMap.set("documentAuthorizerClass", entry.getDocumentAuthorizerClass().getName());
-        if(entry.getDocumentPresentationControllerClass() != null){
-        	entryMap.set("documentPresentationControllerClass", entry.getDocumentPresentationControllerClass().getName());
-        }
+        DocumentTypeService documentTypeService = KNSServiceLocator.getDocumentTypeService();
+        entryMap.set("documentAuthorizerClass", documentTypeService.getDocumentAuthorizer(entry.getDocumentTypeName()).getClass().getName());
+        entryMap.set("documentPresentationControllerClass", documentTypeService.getDocumentPresentationController(entry.getDocumentTypeName()).getClass().getName());
+
         entryMap.set("allowsNoteDelete", Boolean.toString(entry.getAllowsNoteDelete()));
 
         entryMap.set("allowsNoteAttachments", Boolean.toString(entry.getAllowsNoteAttachments()));

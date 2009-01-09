@@ -48,14 +48,14 @@ public class PreferencesAction extends WorkflowAction {
     public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         PreferencesService preferencesService = (PreferencesService) KEWServiceLocator.getService(KEWServiceLocator.PREFERENCES_SERVICE);
         PreferencesForm preferencesForm = (PreferencesForm) form;
-        preferencesForm.setPreferences(preferencesService.getPreferences(getUserSession(request).getWorkflowUser().getWorkflowUserId().getId()));
+        preferencesForm.setPreferences(preferencesService.getPreferences(getUserSession(request).getPrincipalId()));
         return mapping.findForward("viewPreferences");
     }
 
     public ActionForward save(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         PreferencesService prefSrv = (PreferencesService) KEWServiceLocator.getService(KEWServiceLocator.PREFERENCES_SERVICE);
         PreferencesForm prefForm = (PreferencesForm) form;
-        prefSrv.savePreferences(getUserSession(request).getWorkflowUser().getWorkflowUserId().getId(), prefForm.getPreferences());
+        prefSrv.savePreferences(getUserSession(request).getPrincipalId(), prefForm.getPreferences());
         getUserSession(request).setPreferences(prefForm.getPreferences());
         if (! isEmpty(prefForm.getReturnMapping())) {
             return mapping.findForward(prefForm.getReturnMapping());

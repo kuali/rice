@@ -25,11 +25,9 @@ import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.preferences.service.PreferencesService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
 
 /**

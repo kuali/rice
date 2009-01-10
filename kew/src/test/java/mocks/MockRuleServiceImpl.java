@@ -36,9 +36,9 @@ import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.user.UserId;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.workgroup.GroupId;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
 
 
@@ -60,10 +60,10 @@ public class MockRuleServiceImpl implements RuleService {
     public Long isLockedForRouting(Long currentRuleBaseValuesId) {
         return null;
     }
-    public Long route2(Long routeHeaderId, MyRules2 myRules, WorkflowUser user, String annotation, boolean blanketApprove) throws Exception {
+    public Long route2(Long routeHeaderId, MyRules2 myRules, KimPrincipal principal, String annotation, boolean blanketApprove) throws Exception {
         return null;
     }
-    public Long routeRuleWithDelegate(Long routeHeaderId, RuleBaseValues parentRule, RuleBaseValues delegateRule, WorkflowUser user, String annotation, boolean blanketApprove) throws Exception {
+    public Long routeRuleWithDelegate(Long routeHeaderId, RuleBaseValues parentRule, RuleBaseValues delegateRule, KimPrincipal principal, String annotation, boolean blanketApprove) throws Exception {
         return null;
     }
     public List search(String docTypeName, Long ruleId, Long ruleTemplateId, String ruleDescription, String workgroupId, String workflowId, String roleName, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective) {
@@ -115,7 +115,7 @@ public class MockRuleServiceImpl implements RuleService {
         }
     }
 
-    public Long route2(MyRules2 myRules, WorkflowUser user, String annotation) throws Exception {
+    public Long route2(MyRules2 myRules, KimPrincipal principal, String annotation) throws Exception {
         throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");
     }
 

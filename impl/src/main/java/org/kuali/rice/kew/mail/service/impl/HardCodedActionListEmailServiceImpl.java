@@ -19,6 +19,7 @@ import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 
@@ -182,14 +183,12 @@ public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceI
 				+ KEWConstants.ACTIONLIST_COMMAND;
 		StringBuffer sf = new StringBuffer();
 
-		sf
-				.append("Your Action List has an eDoc(electronic document) that needs your attention: \n\n");
+		sf.append("Your Action List has an eDoc(electronic document) that needs your attention: \n\n");
 		sf.append("Document ID:\t" + actionItem.getRouteHeaderId() + "\n");
 		sf.append("Initiator:\t\t");
 		try {
-			sf.append(actionItem.getRouteHeader().getInitiatorUser()
-					.getDisplayName()
-					+ "\n");
+			String name = (person == null ? "" : person.getName());
+			sf.append(name + "\n");
 		} catch (Exception e) {
 			LOG.error("Error retrieving initiator for action item "
 					+ actionItem.getRouteHeaderId());

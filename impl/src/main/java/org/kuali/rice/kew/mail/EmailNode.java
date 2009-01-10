@@ -35,6 +35,8 @@ import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.XmlHelper;
+import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -125,11 +127,13 @@ public class EmailNode implements SimpleNode {
 	    if (toAddresses.getLength() != 1) {
 		throw new WorkflowRuntimeException("Must have exactly one 'to' address");
 	    }
-	    this.to = toAddresses.item(0).getTextContent();
-	    if ("initiator".equalsIgnoreCase(this.to)) {
-		this.to = context.getDocument().getInitiatorUser().getEmailAddress();
+	    to = toAddresses.item(0).getTextContent();
+	    if ("initiator".equalsIgnoreCase(to))
+	    {	
+	    	Person person = KIMServiceLocator.getPersonService().getPerson(context.getDocument().getInitiatorUser().getPrincipalId());
+			to = (person == null ? "" : person.getEmailAddress());
 	    }
-	    if (StringUtils.isBlank(this.to)) {
+	    if (StringUtils.isBlank(to)) {
 		throw new WorkflowRuntimeException("Must have exactly one 'to' address");
 	    }
 	}

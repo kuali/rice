@@ -598,7 +598,7 @@ public class Rule2Action extends WorkflowAction {
             }
         }
 
-        Long routeId = getRuleService().route2(ruleForm.getDocId(), rules, getUserSession(request).getWorkflowUser(), ruleForm.getAnnotation(), blanketApprove);
+        Long routeId = getRuleService().route2(ruleForm.getDocId(), rules, getUserSession(request).getPrincipal(), ruleForm.getAnnotation(), blanketApprove);
 
         ruleForm.reset();
         ruleForm.setChoosingTemplate(true);

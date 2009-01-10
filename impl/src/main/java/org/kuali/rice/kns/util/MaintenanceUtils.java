@@ -197,12 +197,12 @@ public class MaintenanceUtils {
     }
     
     public static final void setFieldDirectInquiry(BusinessObject businessObject, String attributeName, MaintainableFieldDefinition maintainableFieldDefinition, Field field, List displayedFieldNames) {
-        LookupUtils.setFieldDirectInquiry(field);
+        LookupUtils.setFieldDirectInquiry(businessObject, attributeName, field);
     }
     
     public static final void setFieldDirectInquiry(BusinessObject businessObject, String collectionName, boolean addLine, int index,
             String attributeName, Field field, List displayedFieldNames, Maintainable maintainable, MaintainableFieldDefinition maintainableFieldDefinition) {
-        LookupUtils.setFieldDirectInquiry(field);
+        LookupUtils.setFieldDirectInquiry(businessObject, attributeName, field);
     }
     /**
      * Given a section, returns a comma delimited string of all fields, representing the error keys that exist for a section

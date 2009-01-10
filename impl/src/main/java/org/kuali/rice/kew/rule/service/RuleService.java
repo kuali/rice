@@ -35,6 +35,7 @@ import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.workgroup.GroupId;
 import org.kuali.rice.kew.xml.XmlLoader;
 import org.kuali.rice.kew.xml.export.XmlExporter;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
 
 /**
@@ -55,8 +56,8 @@ public interface RuleService extends XmlLoader, XmlExporter {
     public RuleBaseValues getRuleByName(String name);
 
     //public Long route(MyRules myRules, WorkflowUser user, String annotation) throws Exception;
-    public Long route2(Long routeHeaderId, MyRules2 myRules, WorkflowUser user, String annotation, boolean blanketApprove) throws Exception;
-    public Long routeRuleWithDelegate(Long routeHeaderId, RuleBaseValues parentRule, RuleBaseValues delegateRule, WorkflowUser user, String annotation, boolean blanketApprove) throws Exception;
+    public Long route2(Long routeHeaderId, MyRules2 myRules, KimPrincipal principal, String annotation, boolean blanketApprove) throws Exception;
+    public Long routeRuleWithDelegate(Long routeHeaderId, RuleBaseValues parentRule, RuleBaseValues delegateRule, KimPrincipal principal, String annotation, boolean blanketApprove) throws Exception;
     //public void save(RuleBaseValues ruleBaseValues) throws Exception;
     public void save2(RuleBaseValues ruleBaseValues) throws Exception;
     public void validate2(RuleBaseValues ruleBaseValues, RuleDelegation ruleDelegation, List errors) throws Exception;

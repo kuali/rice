@@ -34,6 +34,7 @@ import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.apache.ojb.broker.query.ReportQueryByCriteria;
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.rule.RuleBaseValues;
@@ -45,6 +46,7 @@ import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
@@ -237,7 +239,7 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 		return null;
 	}
 
-	public List search(String docTypeName, Long ruleId, Long ruleTemplateId, String ruleDescription, String workgroupId, String workflowId, String roleName, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective) {
+	public List search(String docTypeName, Long ruleId, Long ruleTemplateId, String ruleDescription, String workgroupId, String principalId, String roleName, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective) {
         Criteria crit = getSearchCriteria(docTypeName, ruleTemplateId, ruleDescription, delegateRule, activeInd, extensionValues);
         if (ruleId != null) {
             crit.addEqualTo("ruleBaseValuesId", ruleId);
@@ -258,19 +260,17 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
                 searchUser = Boolean.TRUE;
             }
         }
-        if (!Utilities.isEmpty(workflowId) && searchUserInWorkgroups) {
-            WorkflowUser user = null;
-            try {
-        	user = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(workflowId));
-            } catch (KEWUserNotFoundException e) {
-        	throw new WorkflowRuntimeException(e);
+        if (!Utilities.isEmpty(principalId) && searchUserInWorkgroups) 
+        {
+            KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+            
+            if (principal == null) 
+            {
+            	throw new RiceRuntimeException("Failed to locate user for the given workflow id: " + principalId);
             }
-            if (user == null) {
-        	throw new WorkflowRuntimeException("Failed to locate user for the given workflow id: " + workflowId);
-            }
-            workgroupIds = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(user.getWorkflowId());
+            workgroupIds = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
         }
-        crit.addIn("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(workgroupIds, workflowId, roleName, searchUser, searchUserInWorkgroups));
+        crit.addIn("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(workgroupIds, principalId, roleName, searchUser, searchUserInWorkgroups));
 
 		return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleBaseValues.class, crit, true));
 	}

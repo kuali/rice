@@ -349,7 +349,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
         "{7}\n\n\n"
     );
 
-	public String buildImmediateReminderBody(Person user,
+	public String buildImmediateReminderBody(Person person,
 			ActionItem actionItem, DocumentType documentType) {
 		String docHandlerUrl = actionItem.getRouteHeader().getDocumentType()
 				.getDocHandlerUrl();
@@ -404,13 +404,8 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
         } else {
             messageFormat = new MessageFormat(stringMessageFormat);
         }
-        String initiatorUser = "";
-        try {
-            initiatorUser = actionItem.getRouteHeader().getInitiatorUser().getDisplayName();
-        } catch (Exception e) {
-            LOG.error("Error retrieving initiator for action item "
-                    + actionItem.getRouteHeaderId());
-        }
+        String initiatorUser = (person == null ? "" : person.getName());
+
         Object[] args = {
             actionItem.getRouteHeaderId(),
             initiatorUser,

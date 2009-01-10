@@ -49,7 +49,7 @@ public class RoutedByUserRoleAttribute extends UnqualifiedRoleAttribute {
         // sounds like the role label should be specified as the first parameter here,
         // but I'll follow AccountAttribute's lead and specify the role key
         List members = new ArrayList(1);
-        members.add(routeContext.getDocument().getRoutedByUser().getWorkflowUserId());
+        members.add(routeContext.getDocument().getRoutedByPrincipal().getPrincipalId());
         return new ResolvedQualifiedRole(ROUTED_BY_USER_ROLE_LABEL, members);
     }
 }

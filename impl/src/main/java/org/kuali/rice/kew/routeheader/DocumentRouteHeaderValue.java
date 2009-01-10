@@ -44,6 +44,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.log4j.Logger;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.actionitem.ActionItem;
@@ -73,13 +74,11 @@ import org.kuali.rice.kew.notes.CustomNoteAttribute;
 import org.kuali.rice.kew.notes.CustomNoteAttributeImpl;
 import org.kuali.rice.kew.notes.Note;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.UserService;
-import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
 
@@ -236,16 +235,8 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
     	return KEWServiceLocator.getIdentityHelperService().getPrincipal(getInitiatorWorkflowId());
     }
     
-    public KimPrincipal getRoutedByPrincipal() {
-    	if (getRoutedByUserWorkflowId() == null) {
-    		return null;
-    	}
-    	return KEWServiceLocator.getIdentityHelperService().getPrincipal(getRoutedByUserWorkflowId());
-    }
-    
-    
-    
-    public WorkflowUser getInitiatorUser() throws KEWUserNotFoundException {
+    public KimPrincipal getInitiatorUser()
+    {
     	// if we are running a simulation, there will be no initiator
     	if (getInitiatorWorkflowId() == null) {
     		return null;
@@ -253,7 +244,8 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
         return getUser(getInitiatorWorkflowId());
     }
 
-    public WorkflowUser getRoutedByUser() throws KEWUserNotFoundException {
+    public KimPrincipal getRoutedByPrincipal()
+    {
         // if we are running a simulation, there will be no initiator
         if (getRoutedByUserWorkflowId() == null) {
             return null;
@@ -261,16 +253,12 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
         return getUser(getRoutedByUserWorkflowId());
     }
 
-    private WorkflowUser getUser(java.lang.String workflowId) throws KEWUserNotFoundException {
-        UserService userSrv = (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
-        WorkflowUser user = null;
-        user = userSrv.getWorkflowUser(new WorkflowUserId(workflowId));
-        if (user == null ) {
-            LOG.fatal("we are toasted...user" + workflowId + " rhid " + this.routeHeaderId);
-            return null;
-        } else {
-            return user;
-        }
+    private KimPrincipal getUser(String principalId)
+    {
+    	KimPrincipal kp = KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+    	if(kp == null)
+    		throw new RiceRuntimeException();
+    	return kp;
     }
 
     public String getDocRouteStatusLabel() {
@@ -828,7 +816,8 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
         return customEmailAttribute;
     }
 
-    public CustomNoteAttribute getCustomNoteAttribute() throws WorkflowException, KEWUserNotFoundException {
+    public CustomNoteAttribute getCustomNoteAttribute() throws WorkflowException
+    {
         CustomNoteAttribute customNoteAttribute = null;
         try {
             if (this.getDocumentType() != null) {

@@ -71,7 +71,7 @@ public class BaseSendNotificationController extends MultiActionController {
     
     protected boolean isUserRecipientValid(String user, ErrorList errors) {
         boolean valid = true;
-        /*KimEntity e = KIMServiceLocator.getIdentityService().getEntityByPrincipalName(user);
+        /*KimEntity e = KIMServiceLocator.getIdentityManagementService().getEntityByPrincipalName(user);
         if (e == null) {
             valid = false;
             errors.addError("'" + user + "' is not a valid principal name");

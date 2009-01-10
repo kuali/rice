@@ -31,6 +31,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.core.util.OrmUtils;
@@ -45,6 +46,8 @@ import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 public class RuleDAOJpaImpl implements RuleDAO {
@@ -236,7 +239,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
 		return null;
 	}
 
-	public List search(String docTypeName, Long ruleId, Long ruleTemplateId, String ruleDescription, String groupId, String workflowId, String roleName, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective) {
+	public List search(String docTypeName, Long ruleId, Long ruleTemplateId, String ruleDescription, String groupId, String principalId, String roleName, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective) {
         Criteria crit = getSearchCriteria(docTypeName, ruleTemplateId, ruleDescription, delegateRule, activeInd, extensionValues);
         if (ruleId != null) {
             crit.eq("ruleBaseValuesId", ruleId);
@@ -244,7 +247,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
         if (groupId != null) {
             crit.in("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(groupId), "ruleBaseValuesId");
         }
-        Set<Long> workgroupIds = new HashSet<Long>();
+        Collection<String> kimGroupIds = new HashSet<String>();
         Boolean searchUser = Boolean.FALSE;
         Boolean searchUserInWorkgroups = Boolean.FALSE;
         if (!Utilities.isEmpty(workflowIdDirective)) {
@@ -257,19 +260,18 @@ public class RuleDAOJpaImpl implements RuleDAO {
                 searchUser = Boolean.TRUE;
             }
         }
-        if (!Utilities.isEmpty(workflowId) && searchUserInWorkgroups) {
-            WorkflowUser user = null;
-            try {
-        	user = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(workflowId));
-            } catch (KEWUserNotFoundException e) {
-        	throw new WorkflowRuntimeException(e);
+        if (!Utilities.isEmpty(principalId) && searchUserInWorkgroups) {
+            KimPrincipal principal = null;
+            
+            principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+            
+            if (principal == null) 
+            {
+            	throw new RiceRuntimeException("Failed to locate user for the given principal id: " + principalId);
             }
-            if (user == null) {
-        	throw new WorkflowRuntimeException("Failed to locate user for the given workflow id: " + workflowId);
-            }
-            workgroupIds = KEWServiceLocator.getWorkgroupService().getUsersGroupIds(user.getWorkflowId());
+            kimGroupIds = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
         }
-        crit.in("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(workgroupIds, workflowId, roleName, searchUser, searchUserInWorkgroups),"ruleBaseValuesId");
+        crit.in("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(kimGroupIds, principalId, roleName, searchUser, searchUserInWorkgroups),"ruleBaseValuesId");
         crit.distinct(true);
 		return (List) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
 	}
@@ -280,12 +282,12 @@ public class RuleDAOJpaImpl implements RuleDAO {
         return (List) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
     }
 
-    private Criteria getResponsibilitySubQuery(Set<Long> workgroupIds, String workflowId, String roleName, Boolean searchUser, Boolean searchUserInWorkgroups) {
+    private Criteria getResponsibilitySubQuery(Collection<String> kimGroupIds, String principalId, String roleName, Boolean searchUser, Boolean searchUserInWorkgroups) {
         Collection<String> workgroupIdStrings = new ArrayList<String>();
-        for (Long workgroupId : workgroupIds) {
+        for (String workgroupId : kimGroupIds) {
             workgroupIdStrings.add(workgroupId.toString());
         }
-        return getResponsibilitySubQuery(workgroupIdStrings,workflowId,roleName,new ArrayList<String>(), searchUser, searchUserInWorkgroups);
+        return getResponsibilitySubQuery(workgroupIdStrings,principalId,roleName,new ArrayList<String>(), searchUser, searchUserInWorkgroups);
     }
     private Criteria getResponsibilitySubQuery(Collection<String> workgroupIds, String workflowId, String roleName, Collection actionRequestCodes, Boolean searchUser, Boolean searchUserInWorkgroups) {
         Criteria responsibilityCrit = new Criteria(RuleResponsibility.class.getName());

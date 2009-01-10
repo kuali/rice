@@ -82,6 +82,7 @@ import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kew.workgroup.GroupId;
 import org.kuali.rice.kew.xml.RuleXmlParser;
 import org.kuali.rice.kew.xml.export.RuleXmlExporter;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -576,7 +577,7 @@ public class RuleServiceImpl implements RuleService {
         return oldDelegations;
     }
 
-    public Long route2(Long routeHeaderId, MyRules2 myRules, WorkflowUser user, String annotation, boolean blanketApprove) throws Exception {
+    public Long route2(Long routeHeaderId, MyRules2 myRules, KimPrincipal principal, String annotation, boolean blanketApprove) throws Exception {
         List errors = new ArrayList();
         if (myRules.getRules().isEmpty()) {
             errors.add(new WorkflowServiceErrorImpl("Rule required", "rule.required"));
@@ -586,9 +587,9 @@ public class RuleServiceImpl implements RuleService {
         }
         WorkflowDocument workflowDocument = null;
         if (routeHeaderId == null) {
-            workflowDocument = new WorkflowDocument(new WorkflowIdDTO(user.getWorkflowId()), getRuleDocmentTypeName(myRules.getRules()));
+            workflowDocument = new WorkflowDocument(new WorkflowIdDTO(principal.getPrincipalId()), getRuleDocmentTypeName(myRules.getRules()));
         } else {
-            workflowDocument = new WorkflowDocument(new WorkflowIdDTO(user.getWorkflowId()), routeHeaderId);
+            workflowDocument = new WorkflowDocument(new WorkflowIdDTO(principal.getPrincipalId()), routeHeaderId);
         }
 
         for (Iterator iter = myRules.getRules().iterator(); iter.hasNext();) {
@@ -609,7 +610,7 @@ public class RuleServiceImpl implements RuleService {
         return workflowDocument.getRouteHeaderId();
     }
 
-    public Long routeRuleWithDelegate(Long routeHeaderId, RuleBaseValues parentRule, RuleBaseValues delegateRule, WorkflowUser user, String annotation, boolean blanketApprove) throws Exception {
+    public Long routeRuleWithDelegate(Long routeHeaderId, RuleBaseValues parentRule, RuleBaseValues delegateRule, KimPrincipal principal, String annotation, boolean blanketApprove) throws Exception {
         if (parentRule == null) {
             throw new IllegalArgumentException("Cannot route a delegate without a parent rule.");
         }
@@ -650,12 +651,12 @@ public class RuleServiceImpl implements RuleService {
 
         WorkflowDocument workflowDocument = null;
         if (routeHeaderId != null) {
-            workflowDocument = new WorkflowDocument(new WorkflowIdDTO(user.getWorkflowId()), routeHeaderId);
+            workflowDocument = new WorkflowDocument(new WorkflowIdDTO(principal.getPrincipalId()), routeHeaderId);
         } else {
             List rules = new ArrayList();
             rules.add(delegateRule);
             rules.add(parentRule);
-            workflowDocument = new WorkflowDocument(new WorkflowIdDTO(user.getWorkflowId()), getRuleDocmentTypeName(rules));
+            workflowDocument = new WorkflowDocument(new WorkflowIdDTO(principal.getPrincipalId()), getRuleDocmentTypeName(rules));
         }
         workflowDocument.setTitle(generateTitle(parentRule, delegateRule));
         delegateRule.setRouteHeaderId(workflowDocument.getRouteHeaderId());
@@ -743,7 +744,7 @@ public class RuleServiceImpl implements RuleService {
                     if (getIdentityManagementService().getGroup(responsibility.getRuleResponsibilityName()) == null) {
                         errors.add(new WorkflowServiceErrorImpl("Workgroup is invalid", "routetemplate.ruleservice.workgroup.invalid"));
                     }
-                } else if (responsibility.getWorkflowUser() == null && responsibility.getRole() == null) {
+                } else if (responsibility.getKimPrincipal() == null && responsibility.getRole() == null) {
                     errors.add(new WorkflowServiceErrorImpl("User is invalid", "routetemplate.ruleservice.user.invalid"));
                 }
             }
@@ -796,7 +797,7 @@ public class RuleServiceImpl implements RuleService {
                     errors.add(new WorkflowServiceErrorImpl("Workgroup is invalid", "routetemplate.ruleservice.workgroup.invalid"));
                     LOG.error("Workgroup is invalid");
                 }
-            } else if (responsibility.getWorkflowUser() == null && responsibility.getRole() == null) {
+            } else if (responsibility.getKimPrincipal() == null && responsibility.getRole() == null) {
                 errors.add(new WorkflowServiceErrorImpl("User is invalid", "routetemplate.ruleservice.user.invalid"));
                 LOG.error("User is invalid");
             } else if (responsibility.isUsingRole()) {
@@ -1202,16 +1203,16 @@ public class RuleServiceImpl implements RuleService {
     }
 
     public void removeRuleInvolvement(Id entityToBeRemoved, List<Long> ruleIds, Long documentId) throws WorkflowException {
-        WorkflowUser userToRemove = null;
+        KimPrincipal principal = null;
         KimGroup workgroupToRemove = null;
         if (entityToBeRemoved instanceof UserId) {
-            userToRemove = KEWServiceLocator.getUserService().getWorkflowUser((UserId)entityToBeRemoved);
+            principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(((UserId) entityToBeRemoved).getId());
         } else if (entityToBeRemoved instanceof GroupId) {
-            workgroupToRemove = KEWServiceLocator.getIdentityHelperService().getGroup((GroupId)entityToBeRemoved);
+            workgroupToRemove = KIMServiceLocator.getIdentityManagementService().getGroup(entityToBeRemoved.toString());
         } else {
             throw new WorkflowRuntimeException("Invalid entity ID for removal was passed, type was: " + entityToBeRemoved);
         }
-        if (userToRemove == null && workgroupToRemove == null) {
+        if (principal == null && workgroupToRemove == null) {
             throw new WorkflowRuntimeException("Could not resolve entity to be removed with id: " + entityToBeRemoved);
         }
         List<RuleBaseValues> existingRules = loadRules(ruleIds);
@@ -1229,7 +1230,7 @@ public class RuleServiceImpl implements RuleService {
             boolean modified = false;
             for (RuleResponsibility responsibility : (List<RuleResponsibility>)ruleVersion.rule.getResponsibilities()) {
                 if (responsibility.isUsingWorkflowUser()) {
-                    if (userToRemove != null && responsibility.getRuleResponsibilityName().equals(userToRemove.getWorkflowId())) {
+                    if (principal != null && responsibility.getRuleResponsibilityName().equals(principal.getPrincipalName())) {
                         modified = true;
                         continue;
                     }

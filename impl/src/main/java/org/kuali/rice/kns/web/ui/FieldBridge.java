@@ -412,7 +412,7 @@ public class FieldBridge {
                 }
                 else {
                     LookupUtils.setFieldQuickfinder(collectionBoInstance, parents+collectionDefinition.getName(), true, 0, fieldDefinition.getName(), collField, displayedFieldNames, m);
-                    LookupUtils.setFieldDirectInquiry(collField);
+                    LookupUtils.setFieldDirectInquiry(collectionBoInstance, fieldDefinition.getName(), collField);
                 }
 
                 collFields.add(collField);

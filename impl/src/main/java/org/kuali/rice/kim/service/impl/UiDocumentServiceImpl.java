@@ -90,7 +90,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	public void saveEntityPerson(
 			IdentityManagementPersonDocument identityManagementPersonDocument) {
 		KimEntityImpl kimEntity = new KimEntityImpl();
-		KimEntityImpl origEntity = (KimEntityImpl)KIMServiceLocator.getIdentityService().getEntity(identityManagementPersonDocument.getEntityId());
+		KimEntityImpl origEntity = (KimEntityImpl)KIMServiceLocator.getIdentityManagementService().getEntity(identityManagementPersonDocument.getEntityId());
 		if (origEntity == null) {
 			origEntity = new KimEntityImpl();
 		}

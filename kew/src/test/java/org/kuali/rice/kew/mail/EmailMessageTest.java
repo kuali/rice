@@ -96,11 +96,11 @@ public class EmailMessageTest extends KEWTestCase {
 
     }
 
-    private void testDailyReminder(Person user, Collection<ActionItem> actionItems) {
-        String oldBody = actionListEmailService.buildDailyReminderBody(user, actionItems);
+    private void testDailyReminder(Person person, Collection<ActionItem> actionItems) {
+        String oldBody = actionListEmailService.buildDailyReminderBody(person, actionItems);
         String oldSubject = actionListEmailService.getEmailSubject().getSubject();
-        EmailContent hardCodedContent = hardCodedEmailContentService.generateDailyReminder(user, actionItems);
-        EmailContent styledContent = styleableContentService.generateDailyReminder(user, actionItems);
+        EmailContent hardCodedContent = hardCodedEmailContentService.generateDailyReminder(person, actionItems);
+        EmailContent styledContent = styleableContentService.generateDailyReminder(person, actionItems);
 
         assertEquals("Daily reminder body is not identical", oldBody, hardCodedContent.getBody());
         // daily reminder does not use custom email subject
@@ -113,12 +113,12 @@ public class EmailMessageTest extends KEWTestCase {
 
     }
 
-    private void testWeeklyReminder(Person user, Collection<ActionItem> actionItems) {
-        String oldBody = actionListEmailService.buildWeeklyReminderBody(user, actionItems);
+    private void testWeeklyReminder(Person person, Collection<ActionItem> actionItems) {
+        String oldBody = actionListEmailService.buildWeeklyReminderBody(person, actionItems);
         String oldSubject = actionListEmailService.getEmailSubject().getSubject();
 
-        EmailContent hardCodedContent = hardCodedEmailContentService.generateWeeklyReminder(user, actionItems);
-        EmailContent styledContent = styleableContentService.generateWeeklyReminder(user, actionItems);
+        EmailContent hardCodedContent = hardCodedEmailContentService.generateWeeklyReminder(person, actionItems);
+        EmailContent styledContent = styleableContentService.generateWeeklyReminder(person, actionItems);
 
         assertEquals("Weekly reminder body is not identical", oldBody, hardCodedContent.getBody());
         // daily reminder does not use custom email subject

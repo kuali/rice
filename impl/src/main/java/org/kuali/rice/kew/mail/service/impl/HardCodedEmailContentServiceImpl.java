@@ -33,6 +33,7 @@ import org.kuali.rice.kew.mail.EmailContent;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 /**
@@ -52,7 +53,7 @@ public class HardCodedEmailContentServiceImpl extends BaseEmailContentServiceImp
 
     // ---- EmailContentService interface implementation
 
-    public EmailContent generateImmediateReminder(Person user, ActionItem actionItem, DocumentType documentType) {
+    public EmailContent generateImmediateReminder(Person person, ActionItem actionItem, DocumentType documentType) {
         String docHandlerUrl = actionItem.getRouteHeader().getDocumentType().getDocHandlerUrl();
         if (docHandlerUrl.indexOf("?") == -1) {
             docHandlerUrl += "?";
@@ -66,8 +67,10 @@ public class HardCodedEmailContentServiceImpl extends BaseEmailContentServiceImp
         emailBody.append("Your Action List has an eDoc(electronic document) that needs your attention: \n\n");
         emailBody.append("Document ID:\t" + actionItem.getRouteHeaderId() + "\n");
         emailBody.append("Initiator:\t\t");
-        try {
-            emailBody.append(actionItem.getRouteHeader().getInitiatorUser().getDisplayName() + "\n");
+        try 
+        {
+            String displayName = (person == null ? null : person.getName());
+            emailBody.append(displayName + "\n");
         } catch (Exception e) {
             LOG.error("Error retrieving initiator for action item " + actionItem.getRouteHeaderId());
             emailBody.append("\n");
@@ -98,10 +101,10 @@ public class HardCodedEmailContentServiceImpl extends BaseEmailContentServiceImp
                 throw new RuntimeException(e);
             }
         }
-
+        
         StringBuffer emailSubject = new StringBuffer();
         try {
-            CustomEmailAttribute customEmailAttribute = getCustomEmailAttribute(user, actionItem);
+            CustomEmailAttribute customEmailAttribute = getCustomEmailAttribute(person, actionItem);
             if (customEmailAttribute != null) {
                 String customBody = customEmailAttribute.getCustomEmailBody();
                 if (!Utilities.isEmpty(customBody)) {
@@ -124,7 +127,10 @@ public class HardCodedEmailContentServiceImpl extends BaseEmailContentServiceImp
 
     }
 
-    public EmailContent generateDailyReminder(Person user, Collection<ActionItem> actionItems) {
+    /*
+     * chb: 09Jan2009 Why are we passing in a Person object if it's not being used?
+     */
+    public EmailContent generateDailyReminder(Person person, Collection<ActionItem> actionItems) {
         StringBuffer sf = new StringBuffer();
         sf.append(getDailyWeeklyMessageBody(actionItems));
         sf.append("To change how these email notifications are sent (immediately, weekly or none): \n");

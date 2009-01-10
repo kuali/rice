@@ -220,7 +220,7 @@ public class DTOConverter {
         }
         routeHeaderVO.setDocVersion(routeHeader.getDocVersion());
         routeHeaderVO.setInitiator(convertUser(routeHeader.getInitiatorUser()));
-        routeHeaderVO.setRoutedByUser(convertUser(routeHeader.getRoutedByUser()));
+        routeHeaderVO.setRoutedByUser(convertUser(routeHeader.getRoutedByPrincipal()));
 
         /* populate the routeHeaderVO with the document variables */
         // FIXME: we assume there is only one for now
@@ -471,23 +471,24 @@ public class DTOConverter {
         return documentContentVO;
     }
 
-    public static UserDTO convertUser(WorkflowUser user) {
-        if (user == null) {
+    public static UserDTO convertUser(KimPrincipal principal) {
+        if (principal == null) {
             return null;
         }
+        Person person = KIMServiceLocator.getPersonService().getPerson(principal.getPrincipalId());
         UserDTO userVO = new UserDTO();
-        userVO.setNetworkId(user.getAuthenticationUserId() == null ? null : user.getAuthenticationUserId().getAuthenticationId());
-        userVO.setUuId(user.getUuId() == null ? null : user.getUuId().getUuId());
-        userVO.setEmplId(user.getEmplId() == null ? null : user.getEmplId().getEmplId());
-        userVO.setWorkflowId(user.getWorkflowUserId() == null ? null : user.getWorkflowUserId().getWorkflowId());
-        userVO.setDisplayName(user.getDisplayName());
-        userVO.setLastName(user.getLastName());
-        userVO.setFirstName(user.getGivenName());
-        userVO.setEmailAddress(user.getEmailAddress());
-        // Preferences preferences = SpringServiceLocator.getPreferencesService().getPreferences(user);
-        // userVO.setUserPreferencePopDocHandler(KEWConstants.PREFERENCES_YES_VAL.equals(preferences.getOpenNewWindow()));
-
+        if( person != null)
+        {
+        	userVO.setEmplId(person.getEmployeeId());
+        	userVO.setDisplayName(person.getName());
+        	userVO.setLastName(person.getLastName());
+        	userVO.setFirstName(person.getFirstName());
+        	userVO.setEmailAddress(person.getEmailAddress());
+        }
+        userVO.setNetworkId(principal.getPrincipalName());
+        userVO.setWorkflowId(principal.getPrincipalId());
         userVO.setUserPreferencePopDocHandler(true);
+        
         return userVO;
     }
 
@@ -1255,7 +1256,7 @@ public class DTOConverter {
         ruleResponsibilityVO.setPriority(ruleResponsibility.getPriority());
         ruleResponsibilityVO.setResponsibilityId(ruleResponsibility.getResponsibilityId());
         ruleResponsibilityVO.setRoleName(ruleResponsibility.getRole());
-        ruleResponsibilityVO.setUser(convertUser(ruleResponsibility.getWorkflowUser()));
+        ruleResponsibilityVO.setUser(convertUser(ruleResponsibility.getKimPrincipal()));
         if (ruleResponsibility.getGroup() != null) {
         	ruleResponsibilityVO.setGroupId("" + ruleResponsibility.getGroup().getGroupName());
         }

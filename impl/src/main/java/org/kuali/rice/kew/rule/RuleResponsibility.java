@@ -35,6 +35,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -47,6 +48,7 @@ import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
@@ -95,11 +97,14 @@ public class RuleResponsibility implements WorkflowPersistable {
             targetEntity=org.kuali.rice.kew.rule.RuleDelegation.class, mappedBy="ruleResponsibility")
     private List delegationRules = new ArrayList();
 
-    public WorkflowUser getWorkflowUser() throws KEWUserNotFoundException {
-        if (isUsingWorkflowUser()) {
-            return ((UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE)).getWorkflowUser(new WorkflowUserId(ruleResponsibilityName));
-        }
-        return null;
+    public KimPrincipal getKimPrincipal() 
+    {
+    	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal( ruleResponsibilityName );
+    	
+    	if(principal == null)
+    		throw new RiceRuntimeException();
+    	
+        return principal;
     }
 
     public KimGroup getGroup() throws KEWUserNotFoundException {

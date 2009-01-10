@@ -25,6 +25,7 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.displaytag.util.LookupUtil;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.authorization.FieldRestriction;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -1080,8 +1081,7 @@ public class FieldUtils {
             }
             //quickFinder is synonymous with a field-based Lookup
             field = LookupUtils.setFieldQuickfinder(newBusinessObjectInstance, attributeName, field, lookupFieldAttributeList);
-            
-            field = LookupUtils.setFieldDirectInquiry(newBusinessObjectInstance, attributeName, field, lookupFieldAttributeList);
+            field = LookupUtils.setFieldDirectInquiry(newBusinessObjectInstance, attributeName, field);
 
             // overwrite maxLength to allow for wildcards and ranges in the select
             field.setMaxLength(100);

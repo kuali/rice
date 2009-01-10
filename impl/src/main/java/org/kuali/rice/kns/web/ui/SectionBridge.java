@@ -55,6 +55,7 @@ import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.MaintenanceUtils;
 import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.kns.datadictionary.mask.MaskFormatter;
 
 public class SectionBridge {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SectionBridge.class);
@@ -400,7 +401,7 @@ public class SectionBridge {
                             }
                             else {
                                 LookupUtils.setFieldQuickfinder(lineBusinessObject, collectionDefinition.getName(), false, i, name, collField, displayedFieldNames, m);
-                                LookupUtils.setFieldDirectInquiry(collField);
+                                LookupUtils.setFieldDirectInquiry(lineBusinessObject, name, collField);
                             }
 
                             Object propertyValue = ObjectUtils.getPropertyValue(lineBusinessObject, fieldDefinition.getName());
@@ -563,7 +564,7 @@ public class SectionBridge {
                                         }
                                         else {
                                             LookupUtils.setFieldQuickfinder(lineSubBusinessObject, subCollectionFullName, false, i, name, subCollField, displayedFieldNames);
-                                            LookupUtils.setFieldDirectInquiry(subCollField);
+                                            LookupUtils.setFieldDirectInquiry(lineBusinessObject, name, subCollField);
                                         }
 
                                         Object propertyValue = ObjectUtils.getPropertyValue(lineSubBusinessObject, fieldDefinition.getName());

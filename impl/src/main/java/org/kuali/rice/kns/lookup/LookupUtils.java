@@ -408,10 +408,12 @@ public class LookupUtils {
      * the lookup first. 
      * 
      * For this method to work properly, it must be called after setFieldQuickfinder
+     * //TODO: chb: that should not be the case -- the relationship object the two rely upon should be established outside of the lookup/quickfinder code
+     *  
      * 
      * @param field
      */
-    public static void setFieldDirectInquiry(Field field) {
+    private static void setFieldDirectInquiry(Field field) {
         if (StringUtils.isNotBlank(field.getFieldConversions())) {
             boolean directInquiriesEnabled = kualiConfigurationService.getIndicatorParameter(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.ENABLE_DIRECT_INQUIRIES_IND);
             if (directInquiriesEnabled) {
@@ -443,16 +445,11 @@ public class LookupUtils {
     }
     
     /**
-     * Sets whether a field should have direct inquiries enabled.  The direct inquiry is the functionality on a page such that if the primary key for
-     * a quickfinder is filled in and the direct inquiry button is pressed, then a new window will popup showing an inquiry page without going through
-     * the lookup first. 
-     * 
-     * For this method to work properly, it must be called after setFieldQuickfinder
+     *  
      * @param field
      * @return the altered Field object
      */
-     //TODO: chb: that should not be the case -- the relationship object the two rely upon should be established outside of the lookup/quickfinder code
-    public static Field setFieldDirectInquiry(BusinessObject businessObject, String attributeName, Field field, List<String> lookupFieldAttributeList) 
+    public static Field setFieldDirectInquiry(BusinessObject businessObject, String attributeName, Field field) 
     {
 		if (businessObject == null) 
 		{

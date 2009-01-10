@@ -33,9 +33,9 @@ import org.kuali.rice.kim.bo.Person;
  * @see EmailContent
  */
 public interface EmailContentService {
-    public EmailContent generateImmediateReminder(Person user, ActionItem actionItem, DocumentType documentType);
-    public EmailContent generateDailyReminder(Person user, Collection<ActionItem> actionItems);
-    public EmailContent generateWeeklyReminder(Person user, Collection<ActionItem> actionItems);
+    public EmailContent generateImmediateReminder(Person person, ActionItem actionItem, DocumentType documentType);
+    public EmailContent generateDailyReminder(Person person, Collection<ActionItem> actionItems);
+    public EmailContent generateWeeklyReminder(Person person, Collection<ActionItem> actionItems);
     public EmailContent generateFeedback(FeedbackForm form);
 
     /* these are more or less helper utilities and probably should live in some core helper class */

@@ -129,7 +129,7 @@ public class UiDocumentServiceImplTest extends RiceTestCase {
 	public void testSaveToEntity() {
 		IdentityManagementPersonDocument personDoc = initPersonDoc();
 		uiDocumentService.saveEntityPerson(personDoc);
-		KimEntityImpl entity = (KimEntityImpl)KIMServiceLocator.getIdentityService().getEntity(personDoc.getEntityId());
+		KimEntityImpl entity = (KimEntityImpl)KIMServiceLocator.getIdentityManagementService().getEntity(personDoc.getEntityId());
         EntityEntityTypeImpl entityType = entity.getEntityTypes().get(0);
         personDoc.getExternalIdentifiers();
 		assertAddressTrue((PersonDocumentAddress)personDoc.getAddrs().get(0), (EntityAddressImpl)entityType.getAddresses().get(0));
@@ -155,7 +155,7 @@ public class UiDocumentServiceImplTest extends RiceTestCase {
 	
 	@Test
 	public void testLoadToPersonDocument() {
-		KimEntityImpl entity = (KimEntityImpl)KIMServiceLocator.getIdentityService().getEntity("ent123");
+		KimEntityImpl entity = (KimEntityImpl)KIMServiceLocator.getIdentityManagementService().getEntity("ent123");
 		IdentityManagementPersonDocument personDoc = new IdentityManagementPersonDocument();
 		uiDocumentService.loadEntityToPersonDoc(personDoc, entity);
         EntityEntityTypeImpl entityType = entity.getEntityTypes().get(0);

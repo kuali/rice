@@ -66,8 +66,8 @@ public class CustomizableActionListEmailServiceImpl extends ActionListEmailServi
     }
 
     @Override
-    protected void sendPeriodicReminder(Person user, Collection<ActionItem> actionItems, String emailSetting) {
-        actionItems = filterActionItemsToNotify(user.getPrincipalId(), actionItems);
+    protected void sendPeriodicReminder(Person person, Collection<ActionItem> actionItems, String emailSetting) {
+        actionItems = filterActionItemsToNotify(person.getPrincipalId(), actionItems);
         // if there are no action items after being filtered, there's no
         // reason to send the email
         if (actionItems.isEmpty()) {
@@ -75,14 +75,14 @@ public class CustomizableActionListEmailServiceImpl extends ActionListEmailServi
         }
         EmailContent content;
         if (KEWConstants.EMAIL_RMNDR_DAY_VAL.equals(emailSetting)) {
-            content = getEmailContentGenerator().generateDailyReminder(user, actionItems);
+            content = getEmailContentGenerator().generateDailyReminder(person, actionItems);
         } else if (KEWConstants.EMAIL_RMNDR_WEEK_VAL.equals(emailSetting)) {
-            content = getEmailContentGenerator().generateWeeklyReminder(user, actionItems);
+            content = getEmailContentGenerator().generateWeeklyReminder(person, actionItems);
         } else {
             // else...refactor this...
             throw new RuntimeException("invalid email setting. this code needs refactoring");
         }
-        sendEmail(user, new EmailSubject(content.getSubject()), new EmailBody(content.getBody()));
+        sendEmail(person, new EmailSubject(content.getSubject()), new EmailBody(content.getBody()));
     }
 
 }

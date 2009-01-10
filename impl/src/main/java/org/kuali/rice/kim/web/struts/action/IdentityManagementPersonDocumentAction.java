@@ -78,11 +78,11 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
         IdentityManagementPersonDocument personDoc = (IdentityManagementPersonDocument)personDocumentForm.getDocument();
         String commandParam = request.getParameter("command");
 		if (StringUtils.isNotBlank(commandParam) && commandParam.equals("initiate") && StringUtils.isNotBlank(request.getParameter("principalId"))) {
-	        KimPrincipal principal = KIMServiceLocator.getIdentityService().getPrincipal(request.getParameter("principalId"));
+	        KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(request.getParameter("principalId"));
 	        personDoc.setPrincipalId(principal.getPrincipalId());
 	        personDoc.setPrincipalName(principal.getPrincipalName());
 	        personDoc.setPassword(principal.getPassword());
-			KimEntityImpl entity = (KimEntityImpl)KIMServiceLocator.getIdentityService().getEntity(principal.getEntityId());
+			KimEntityImpl entity = (KimEntityImpl)KIMServiceLocator.getIdentityManagementService().getEntity(principal.getEntityId());
 			KIMServiceLocator.getUiDocumentService().loadEntityToPersonDoc(personDoc, entity);
 			//List<? extends KimGroup> groups = KIMServiceLocator.getIdentityManagementService().getGroupsForPrincipal(principal.getPrincipalId());
 			//KIMServiceLocator.getUiDocumentService().loadGroupToPersonDoc(personDoc, groups);

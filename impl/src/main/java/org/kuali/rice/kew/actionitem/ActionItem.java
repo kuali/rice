@@ -406,7 +406,7 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
 	}
 
 	public KimPrincipal getPrincipal(){
-		return KIMServiceLocator.getIdentityService().getPrincipal(principalId);
+		return KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
 	}
 
 }

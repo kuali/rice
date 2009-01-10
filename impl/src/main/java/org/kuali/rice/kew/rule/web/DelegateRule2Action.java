@@ -482,7 +482,7 @@ public class DelegateRule2Action extends WorkflowAction {
             responsibility.setRuleResponsibilityKey(null);
         }
 
-        getRuleService().routeRuleWithDelegate(ruleForm.getDocId(), parentRule, delegateRule, getUserSession(request).getWorkflowUser(), ruleForm.getAnnotation(), blanketApprove);
+        getRuleService().routeRuleWithDelegate(ruleForm.getDocId(), parentRule, delegateRule, getUserSession(request).getPrincipal(), ruleForm.getAnnotation(), blanketApprove);
         ruleForm.setCurrentRuleId(delegateRule.getRuleBaseValuesId());
         return new Rule2Action().report(mapping, form, request, response);
     }

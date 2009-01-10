@@ -30,8 +30,10 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent;
 import org.kuali.rice.kew.routeheader.dao.DocumentRouteHeaderDAO;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+
 
 
 public class RouteHeaderServiceImpl implements RouteHeaderService {
@@ -100,11 +102,13 @@ public class RouteHeaderServiceImpl implements RouteHeaderService {
 
         if (routeHeader.getInitiatorWorkflowId () == null || routeHeader.getInitiatorWorkflowId().trim().equals("")) {
             errors.add(new WorkflowServiceErrorImpl("RouteHeader initiator null.", "routeheader.initiator.empty"));
-        } else {
-            try {
-                KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(routeHeader.getInitiatorWorkflowId()));
-            } catch(KEWUserNotFoundException e){
-                errors.add(new WorkflowServiceErrorImpl("RouteHeader initiator id invalid.", "routeheader.initiator.invalid"));
+        } 
+        else 
+        {
+           	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(routeHeader.getInitiatorWorkflowId());
+            if(principal == null)
+            {
+               	errors.add(new WorkflowServiceErrorImpl("RouteHeader initiator id invalid.", "routeheader.initiator.invalid"));	
             }
         }
 

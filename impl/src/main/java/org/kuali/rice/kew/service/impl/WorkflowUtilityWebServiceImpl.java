@@ -123,8 +123,8 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
             LOG.debug("Fetching RouteHeaderVO [id="+documentId+"]");
         }
         DocumentRouteHeaderValue document = loadDocument(documentId);
-        Person person = UserSession.getAuthenticatedUser().getLoggedInPerson();
-        RouteHeaderDTO routeHeaderVO = DTOConverter.convertRouteHeader(document, person.getPrincipalId());
+        String principalId = UserSession.getAuthenticatedUser().getPrincipalId();
+        RouteHeaderDTO routeHeaderVO = DTOConverter.convertRouteHeader(document, principalId);
         if (routeHeaderVO == null) {
         	LOG.error("Returning null RouteHeaderVO [id=" + documentId + "]");
         }

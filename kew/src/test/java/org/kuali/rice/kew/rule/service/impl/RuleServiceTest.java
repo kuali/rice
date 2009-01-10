@@ -35,8 +35,8 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.user.AuthenticationUserId;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.AssertThrows;
 
@@ -338,11 +338,11 @@ public class RuleServiceTest extends KEWTestCase {
         assertEquals("Previous id of replaced rule should be original rule's id.", rule.getRuleBaseValuesId(), replacedRule.getPreviousVersionId());
 
         assertEquals("Should have 1 responsibility", 1, replacedRule.getResponsibilities().size());
-        WorkflowUser rkirkend = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("rkirkend"));
+        KimPrincipal rkirkend = KEWServiceLocator.getIdentityHelperService().getPrincipalByName("rkirkend");
         RuleResponsibility responsibility = replacedRule.getResponsibility(0);
         assertEquals(replacedRule.getRuleBaseValuesId(), responsibility.getRuleBaseValuesId());
         assertEquals(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID, responsibility.getRuleResponsibilityType());
-        assertEquals("Rkirkend should now be on the rule.", rkirkend.getWorkflowId(), responsibility.getRuleResponsibilityName());
+        assertEquals("Rkirkend should now be on the rule.", rkirkend.getPrincipalId(), responsibility.getRuleResponsibilityName());
 
         // reload the old rule, verify it's no longer current
         rule = KEWServiceLocator.getRuleService().findRuleBaseValuesById(rule.getRuleBaseValuesId());
@@ -400,14 +400,14 @@ public class RuleServiceTest extends KEWTestCase {
         assertEquals(2, parentRule.getResponsibility(0).getDelegationRules().size());
         assertTrue("Delegation Rule Ids should be the same as before.", delegateIds.contains(parentRule.getResponsibility(0).getDelegationRule(0).getDelegationRuleBaseValues().getRuleBaseValuesId()));
         assertTrue("Delegation Rule Ids should be the same as before.", delegateIds.contains(parentRule.getResponsibility(0).getDelegationRule(1).getDelegationRuleBaseValues().getRuleBaseValuesId()));
-        WorkflowUser ewestfal = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("ewestfal"));
-        WorkflowUser jhopf = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("jhopf"));
+        KimPrincipal ewestfal = KEWServiceLocator.getIdentityHelperService().getPrincipalByName("ewestfal");
+        KimPrincipal jhopf = KEWServiceLocator.getIdentityHelperService().getPrincipalByName("jhopf");
         RuleBaseValues ewestfalDelegation = null;
         RuleBaseValues jhopfDelegation = null;
         for (RuleDelegation delegation : (List<RuleDelegation>)parentRule.getResponsibility(0).getDelegationRules()) {
-            if (delegation.getDelegationRuleBaseValues().getResponsibility(0).getRuleResponsibilityName().equals(ewestfal.getWorkflowId())) {
+            if (delegation.getDelegationRuleBaseValues().getResponsibility(0).getRuleResponsibilityName().equals(ewestfal.getPrincipalId())) {
                 ewestfalDelegation = delegation.getDelegationRuleBaseValues();
-            } else if (delegation.getDelegationRuleBaseValues().getResponsibility(0).getRuleResponsibilityName().equals(jhopf.getWorkflowId())) {
+            } else if (delegation.getDelegationRuleBaseValues().getResponsibility(0).getRuleResponsibilityName().equals(jhopf.getPrincipalId())) {
                 jhopfDelegation = delegation.getDelegationRuleBaseValues();
             }
         }
@@ -425,13 +425,13 @@ public class RuleServiceTest extends KEWTestCase {
 	assertEquals("Parent rule's previous version is incorrect", parentRuleId, parentRule.getPreviousVersionId());
         assertEquals("Should still be 2 delegations", 2, parentRule.getResponsibility(0).getDelegationRules().size());
 
-        WorkflowUser xqi = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("xqi"));
+        KimPrincipal xqi = KEWServiceLocator.getIdentityHelperService().getPrincipalByName("xqi");
         RuleBaseValues newXqiDelegation = null;
         RuleBaseValues newJhopfDelegation = null;
         for (RuleDelegation delegation : (List<RuleDelegation>)parentRule.getResponsibility(0).getDelegationRules()) {
-            if (delegation.getDelegationRuleBaseValues().getResponsibility(0).getRuleResponsibilityName().equals(xqi.getWorkflowId())) {
+            if (delegation.getDelegationRuleBaseValues().getResponsibility(0).getRuleResponsibilityName().equals(xqi.getPrincipalId())) {
                 newXqiDelegation = delegation.getDelegationRuleBaseValues();
-            } else if (delegation.getDelegationRuleBaseValues().getResponsibility(0).getRuleResponsibilityName().equals(jhopf.getWorkflowId())) {
+            } else if (delegation.getDelegationRuleBaseValues().getResponsibility(0).getRuleResponsibilityName().equals(jhopf.getPrincipalId())) {
                 newJhopfDelegation = delegation.getDelegationRuleBaseValues();
             }
         }
@@ -466,15 +466,15 @@ public class RuleServiceTest extends KEWTestCase {
 	assertEquals(1, numParents);
 	assertEquals(1, numDelegates);
 
-        WorkflowUser ewestfal = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("ewestfal"));
+		KimPrincipal ewestfal = KEWServiceLocator.getIdentityHelperService().getPrincipalByName("ewestfal");
 
         // load the parent rule
         RuleBaseValues parentRule = KEWServiceLocator.getRuleService().getRuleByName("RuleWithDelegateToSelf");
         assertNotNull(parentRule);
         assertEquals(1, parentRule.getResponsibilities().size());
         assertEquals(1, parentRule.getResponsibility(0).getDelegationRules().size());
-        assertTrue(parentRule.getResponsibility(0).getRuleResponsibilityName().equals(ewestfal.getWorkflowId()));
-        assertTrue(parentRule.getResponsibility(0).getDelegationRule(0).getDelegationRuleBaseValues().getResponsibility(0).getRuleResponsibilityName().equals(ewestfal.getWorkflowId()));
+        assertTrue(parentRule.getResponsibility(0).getRuleResponsibilityName().equals(ewestfal.getPrincipalId()));
+        assertTrue(parentRule.getResponsibility(0).getDelegationRule(0).getDelegationRuleBaseValues().getResponsibility(0).getRuleResponsibilityName().equals(ewestfal.getPrincipalId()));
         Long parentRuleId = parentRule.getRuleBaseValuesId();
         Long ruleDelegationId = parentRule.getResponsibility(0).getDelegationRule(0).getRuleDelegationId();
         Long delegateRuleId = parentRule.getResponsibility(0).getDelegationRule(0).getDelegationRuleBaseValues().getRuleBaseValuesId();
@@ -501,7 +501,7 @@ public class RuleServiceTest extends KEWTestCase {
 	assertEquals(2, numParents);
 	assertEquals(2, numDelegates);
 
-        WorkflowUser rkirkend = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("rkirkend"));
+        KimPrincipal rkirkend = KEWServiceLocator.getIdentityHelperService().getPrincipalByName("rkirkend");
 
         // check that the delegations are still there and are still the same id
         parentRule = KEWServiceLocator.getRuleService().getRuleByName("RuleWithDelegateToSelf");
@@ -520,8 +520,8 @@ public class RuleServiceTest extends KEWTestCase {
         assertFalse(previousDelegateRule.getCurrentInd());
 
         // verify that rkirkend is the new responsibility on both rules
-        assertTrue(parentRule.getResponsibility(0).getRuleResponsibilityName().equals(rkirkend.getWorkflowId()));
-        assertTrue(ruleDelegation.getDelegationRuleBaseValues().getResponsibility(0).getRuleResponsibilityName().equals(rkirkend.getWorkflowId()));
+        assertTrue(parentRule.getResponsibility(0).getRuleResponsibilityName().equals(rkirkend.getPrincipalId()));
+        assertTrue(ruleDelegation.getDelegationRuleBaseValues().getResponsibility(0).getRuleResponsibilityName().equals(rkirkend.getPrincipalId()));
 
         // verify that the original RuleDelegation was not deleted from the database, we want to check this because we are removing it from
         // the collection inside of the RuleServiceImpl.createNewRemoveReplaceVersion method.

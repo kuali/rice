@@ -35,9 +35,8 @@ import org.kuali.rice.kew.rule.TestRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.user.AuthenticationUserId;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
 
 /**
@@ -250,11 +249,11 @@ public class RoleServiceTest extends KEWTestCase {
 	 * complete request and a re-resolved request.
 	 */
 	private void assertInitiatorRequestDone(String roleName, String qualifiedRoleNameLabel) throws Exception {
-        WorkflowUser initiator = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("rkirkend"));
+        KimPrincipal initiator = KEWServiceLocator.getIdentityHelperService().getPrincipalByName("rkirkend");
 		List requests = KEWServiceLocator.getActionRequestService().findByStatusAndDocId(KEWConstants.ACTION_REQUEST_DONE_STATE, documentId);
 		for (Iterator iterator = requests.iterator(); iterator.hasNext();) {
 			ActionRequestValue request = (ActionRequestValue) iterator.next();
-			if (!initiator.getWorkflowId().equals(request.getPrincipalId())) {
+			if (!initiator.getPrincipalId().equals(request.getPrincipalId())) {
 				iterator.remove();
 			}
 		}

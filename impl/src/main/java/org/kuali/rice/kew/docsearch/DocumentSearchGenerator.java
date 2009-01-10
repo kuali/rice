@@ -21,7 +21,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowServiceError;
 
 
@@ -36,11 +35,11 @@ public interface DocumentSearchGenerator {
 	public void setSearchingUser(String principalId);
     public List<WorkflowServiceError> performPreSearchConditions(String principalId, DocSearchCriteriaDTO searchCriteria);
     public List<WorkflowServiceError> validateSearchableAttributes(DocSearchCriteriaDTO searchCriteria);
-    public String generateSearchSql(DocSearchCriteriaDTO searchCriteria) throws KEWUserNotFoundException;
+    public String generateSearchSql(DocSearchCriteriaDTO searchCriteria);
     /**
      * @deprecated Removed as of version 0.9.3.  Use {@link #processResultSet(Statement, ResultSet, DocSearchCriteriaDTO, WorkflowUser)} instead.
      */
-    public List<DocSearchDTO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet,DocSearchCriteriaDTO searchCriteria) throws KEWUserNotFoundException, SQLException;
+    public List<DocSearchDTO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet,DocSearchCriteriaDTO searchCriteria) throws SQLException;
 
 
     /**
@@ -51,10 +50,9 @@ public interface DocumentSearchGenerator {
      * @param searchCriteria - criteria used to perform the search
      * @param principalId - user who performed the search
      * @return a list of DocSearchDTO objects (one for each route header id)
-     * @throws KEWUserNotFoundException
      * @throws SQLException
      */
-    public List<DocSearchDTO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet,DocSearchCriteriaDTO searchCriteria, String principalId) throws KEWUserNotFoundException, SQLException;
+    public List<DocSearchDTO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet,DocSearchCriteriaDTO searchCriteria, String principalId) throws SQLException;
     public DocSearchCriteriaDTO clearSearch(DocSearchCriteriaDTO searchCriteria);
 
     public int getDocumentSearchResultSetLimit();

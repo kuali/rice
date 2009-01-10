@@ -73,9 +73,8 @@ public class RouteDocumentAction extends ActionTakenEvent {
     /**
      * Record the routing action. To route a document, it must be in the proper state. Previous requests and actions have no bearing on the outcome of this action, unless the
      * @throws org.kuali.rice.kew.exception.InvalidActionTakenException
-     * @throws org.kuali.rice.kew.exception.KEWUserNotFoundException
      */
-    public void recordAction() throws org.kuali.rice.kew.exception.InvalidActionTakenException {
+    public void recordAction() throws InvalidActionTakenException {
         MDC.put("docId", getRouteHeader().getRouteHeaderId());
         updateSearchableAttributesIfPossible();
 

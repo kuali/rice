@@ -20,10 +20,9 @@ import java.util.List;
 
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 
 
 public interface DocumentSearchDAO {
-    public List getListBoundedByCritera(DocumentSearchGenerator documentSearchGenerator, DocSearchCriteriaDTO criteria, String principalId) throws KEWUserNotFoundException;
-    public List getList(DocumentSearchGenerator docSearchGenerator,DocSearchCriteriaDTO criteria, String principalId) throws KEWUserNotFoundException;
+    public List getListBoundedByCritera(DocumentSearchGenerator documentSearchGenerator, DocSearchCriteriaDTO criteria, String principalId);
+    public List getList(DocumentSearchGenerator docSearchGenerator,DocSearchCriteriaDTO criteria, String principalId);
 }

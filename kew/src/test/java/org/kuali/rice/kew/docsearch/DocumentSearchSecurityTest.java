@@ -27,7 +27,6 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
@@ -65,11 +64,11 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
         loadXmlFile("SearchSecurityConfig.xml");
     }
 
-    private Person loginUser(String networkId) throws KEWUserNotFoundException {
+    private Person loginUser(String networkId) {
         return loginUser(networkId, new ArrayList<String>());
     }
 
-    private Person loginUser(String networkId, List<String> dummyRoleNames) throws KEWUserNotFoundException {
+    private Person loginUser(String networkId, List<String> dummyRoleNames) {
         AuthenticationUserId id = new AuthenticationUserId(networkId);
         LOG.debug("performing user login: " + networkId);
 

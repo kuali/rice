@@ -21,7 +21,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.AbstractRoleAttribute;
@@ -44,7 +43,7 @@ public class BANotificationRoleAttribute extends AbstractRoleAttribute {
         return Arrays.asList(new Role[] { new Role(getClass(), "Notify", "Notify"), new Role(getClass(), "Notify2", "Notify2"), new Role(getClass(), "NotifyDelegate", "NotifyDelegate") });
     }
 
-    public List getQualifiedRoleNames(String roleName, DocumentContent documentContent) throws KEWUserNotFoundException {
+    public List getQualifiedRoleNames(String roleName, DocumentContent documentContent) {
         List qualifiedRoleNames = new ArrayList();
         if (roleName.equals("Notify") || roleName.equals("Notify2")) {
             qualifiedRoleNames.add("jitrue");    
@@ -52,7 +51,7 @@ public class BANotificationRoleAttribute extends AbstractRoleAttribute {
         return qualifiedRoleNames;
     }
 
-    public ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, String roleName, String qualifiedRole) throws KEWUserNotFoundException {
+    public ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, String roleName, String qualifiedRole) {
         if (roleName.equals("Notify") || roleName.equals("Notify2")) {
             return new ResolvedQualifiedRole(roleName, Arrays.asList(new Id[] { new AuthenticationUserId(qualifiedRole) }));
         } else if (roleName.equals("NotifyDelegate")) {

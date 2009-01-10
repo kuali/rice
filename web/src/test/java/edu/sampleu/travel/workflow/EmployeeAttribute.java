@@ -23,7 +23,6 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.identity.Id;
@@ -96,7 +95,7 @@ public class EmployeeAttribute extends GenericRoleAttribute {
 
 
 	@Override
-    protected List<String> getRoleNameQualifiers(String roleName, DocumentContent documentContent) throws KEWUserNotFoundException {
+    protected List<String> getRoleNameQualifiers(String roleName, DocumentContent documentContent) {
         if (!isValidRole(roleName)) {
             throw new WorkflowRuntimeException("Invalid role: " + roleName);
         }
@@ -120,7 +119,7 @@ public class EmployeeAttribute extends GenericRoleAttribute {
     }
 
 	@Override
-    protected List<Id> resolveRecipients(RouteContext routeContext, QualifiedRoleName qualifiedRoleName) throws KEWUserNotFoundException {
+    protected List<Id> resolveRecipients(RouteContext routeContext, QualifiedRoleName qualifiedRoleName) {
         List<Id> members = new ArrayList<Id>();
         UserId roleUserId = null;
         String roleName = qualifiedRoleName.getBaseRoleName();

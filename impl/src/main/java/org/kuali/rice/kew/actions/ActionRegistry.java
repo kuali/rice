@@ -67,7 +67,6 @@ public interface ActionRegistry {
      * Returns a List of valid action codes for the given user on the document.
      *
      * @throws ResourceUnavailableException if an action class cannot be constructed
-     * @throws KEWUserNotFoundException if the given user is invalid
      */
     public ValidActions getValidActions(KimPrincipal principal, DocumentRouteHeaderValue document) throws ResourceUnavailableException;
 }

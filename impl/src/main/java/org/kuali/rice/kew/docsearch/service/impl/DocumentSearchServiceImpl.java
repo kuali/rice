@@ -37,14 +37,12 @@ import org.kuali.rice.kew.docsearch.dao.DocumentSearchDAO;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.node.RouteNode;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowServiceError;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.UserService;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -85,7 +83,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 		}
 	}
 
-	public SavedSearchResult getSavedSearchResults(String principalId, String savedSearchName) throws KEWUserNotFoundException {
+	public SavedSearchResult getSavedSearchResults(String principalId, String savedSearchName) {
 		UserOptions savedSearch = userOptionsService.findByOptionId(savedSearchName, principalId);
 		if (savedSearch == null || savedSearch.getOptionId() == null) {
 			return null;
@@ -94,15 +92,15 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 		return new SavedSearchResult(criteria, getList(principalId, criteria));
 	}
 
-    public DocumentSearchResultComponents getList(String principalId, DocSearchCriteriaDTO criteria) throws KEWUserNotFoundException {
+    public DocumentSearchResultComponents getList(String principalId, DocSearchCriteriaDTO criteria) {
         return getList(principalId, criteria, false);
     }
 
-    public DocumentSearchResultComponents getListRestrictedByCriteria(String principalId, DocSearchCriteriaDTO criteria) throws KEWUserNotFoundException {
+    public DocumentSearchResultComponents getListRestrictedByCriteria(String principalId, DocSearchCriteriaDTO criteria) {
         return getList(principalId, criteria, true);
     }
 
-	private DocumentSearchResultComponents getList(String principalId, DocSearchCriteriaDTO criteria, boolean useCriteriaRestrictions) throws KEWUserNotFoundException {
+	private DocumentSearchResultComponents getList(String principalId, DocSearchCriteriaDTO criteria, boolean useCriteriaRestrictions) {
 		DocumentSearchGenerator docSearchGenerator = null;
 		DocumentSearchResultProcessor docSearchResultProcessor = null;
 		if (!Utilities.isEmpty(criteria.getDocTypeFullName())) {

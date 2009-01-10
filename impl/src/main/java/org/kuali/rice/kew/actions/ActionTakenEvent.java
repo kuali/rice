@@ -121,7 +121,6 @@ public abstract class ActionTakenEvent {
 	 * Placeholder for validation rules for each action
 	 *
 	 * @return error message string of specific error message
-	 * @throws KEWUserNotFoundException
 	 */
 	protected abstract String validateActionRules();
 

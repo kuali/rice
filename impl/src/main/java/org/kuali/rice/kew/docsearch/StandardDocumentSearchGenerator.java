@@ -34,13 +34,11 @@ import org.kuali.rice.kew.doctype.SecuritySession;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.engine.node.RouteNode;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.exception.WorkflowServiceError;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.UserUtils;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
@@ -143,7 +141,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     /* (non-Javadoc)
      * @see org.kuali.rice.kew.docsearch.DocumentSearchGenerator#executeSearch(org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO, org.kuali.rice.core.database.platform.Platform)
      */
-    public String generateSearchSql(DocSearchCriteriaDTO searchCriteria) throws KEWUserNotFoundException {
+    public String generateSearchSql(DocSearchCriteriaDTO searchCriteria) {
     	setCriteria(searchCriteria);
         return getDocSearchSQL();
     }
@@ -469,7 +467,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     /**
      * @deprecated Removed as of version 0.9.3.  Use {@link #processResultSet(Statement, ResultSet, DocSearchCriteriaDTO, String)} instead.
      */
-    public List<DocSearchDTO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet,DocSearchCriteriaDTO searchCriteria) throws KEWUserNotFoundException, SQLException {
+    public List<DocSearchDTO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet,DocSearchCriteriaDTO searchCriteria) throws SQLException {
     	String principalId = null;
         return processResultSet(searchAttributeStatement, resultSet, searchCriteria, principalId);
     }
@@ -479,10 +477,9 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
      * @param resultSet
      * @param criteria
      * @return
-     * @throws KEWUserNotFoundException
      * @throws SQLException
      */
-    public List<DocSearchDTO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet,DocSearchCriteriaDTO searchCriteria, String principalId) throws KEWUserNotFoundException, SQLException {
+    public List<DocSearchDTO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet,DocSearchCriteriaDTO searchCriteria, String principalId) throws SQLException {
     	setCriteria(searchCriteria);
         int size = 0;
         List docList = new ArrayList();
@@ -581,7 +578,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     	}
     }
 
-    public DocSearchDTO processRow(Statement searchAttributeStatement, ResultSet rs) throws SQLException, KEWUserNotFoundException {
+    public DocSearchDTO processRow(Statement searchAttributeStatement, ResultSet rs) throws SQLException {
         DocSearchDTO docCriteriaDTO = new DocSearchDTO();
 
         docCriteriaDTO.setRouteHeaderId(new Long(rs.getLong("DOC_HDR_ID")));
@@ -682,7 +679,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         }
     }
 
-    protected String getDocSearchSQL() throws KEWUserNotFoundException {
+    protected String getDocSearchSQL() {
     	String sqlPrefix = "Select * from (";
     	String sqlSuffix = ") FINAL_SEARCH order by FINAL_SEARCH.DOC_HDR_ID desc";
     	boolean possibleSearchableAttributesExist = false;
@@ -838,13 +835,12 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         }
     }
 
-    protected String getInitiatorSql(String initiator, String whereClausePredicatePrefix) throws KEWUserNotFoundException {
+    protected String getInitiatorSql(String initiator, String whereClausePredicatePrefix) {
         if ((initiator == null) || "".equals(initiator.trim())) {
             return "";
-        } else {
-            String userWorkflowId = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(initiator.trim())).getWorkflowUserId().getWorkflowId();
-            return new StringBuffer(whereClausePredicatePrefix + " DOC_HDR.INITR_PRNCPL_ID = '").append(userWorkflowId).append("'").toString();
         }
+		String userWorkflowId = KEWServiceLocator.getIdentityHelperService().getPrincipalByPrincipalName(initiator.trim()).getPrincipalId();
+		return new StringBuffer(whereClausePredicatePrefix + " DOC_HDR.INITR_PRNCPL_ID = '").append(userWorkflowId).append("'").toString();
     }
 
     protected String getDocTitleSql(String docTitle, String whereClausePredicatePrefix) {
@@ -893,12 +889,12 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         return establishDateString(fromDateLastModified, toDateLastModified, LAST_STATUS_UPDATE_DATE, whereClausePredicatePrefix);
     }
 
-    protected String getViewerSql(String viewer, String whereClausePredicatePrefix) throws KEWUserNotFoundException {
+    protected String getViewerSql(String viewer, String whereClausePredicatePrefix) {
     	String returnSql = "";
         if ((viewer != null) && (!"".equals(viewer.trim()))) {
-            Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName(viewer.trim());
-            String userWorkflowId = user.getPrincipalId();
-            returnSql = whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_ID = KREW_ACTN_RQST_T.DOC_HDR_ID and KREW_ACTN_RQST_T.PRNCPL_ID = '" + userWorkflowId + "'";
+            Person person = KIMServiceLocator.getPersonService().getPersonByPrincipalName(viewer.trim());
+            String principalId = person.getPrincipalId();
+            returnSql = whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_ID = KREW_ACTN_RQST_T.DOC_HDR_ID and KREW_ACTN_RQST_T.PRNCPL_ID = '" + principalId + "'";
         }
         return returnSql;
     }
@@ -912,7 +908,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         return sql;
     }
 
-    protected String getApproverSql(String approver, String whereClausePredicatePrefix) throws KEWUserNotFoundException {
+    protected String getApproverSql(String approver, String whereClausePredicatePrefix) {
     	String returnSql = "";
         if ((approver != null) && (!"".equals(approver.trim()))) {
             String userWorkflowId = KIMServiceLocator.getPersonService().getPersonByPrincipalName(approver.trim()).getPrincipalId();

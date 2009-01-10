@@ -22,22 +22,13 @@ import java.util.List;
 
 import org.junit.Test;
 import org.kuali.rice.core.util.ClassLoaderUtils;
-import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
-import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
-import org.kuali.rice.kew.docsearch.StandardDocumentSearchResultProcessor;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.docsearch.xml.DocumentSearchXMLResultProcessor;
 import org.kuali.rice.kew.docsearch.xml.DocumentSearchXMLResultProcessorImpl;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
-//import org.kuali.rice.kns.web.ui.Column;
-import org.kuali.rice.kew.docsearch.DocumentSearchColumn;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.AuthenticationUserId;
-import org.kuali.rice.kew.user.UserService;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWPropertyConstants;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -97,15 +88,15 @@ public class CustomDocumentSearchResultProcessorTest extends DocumentSearchTestB
     	assertEquals("Value of 'override searchable attributes' should be default",DocumentSearchXMLResultProcessor.DEFAULT_OVERRIDE_SEARCHABLE_ATTRIBUTES_VALUE,docSearchResult.getOverrideSearchableAttributes());
     }
 
-    private DocumentSearchResultComponents performSearch(String documentTypeName,String userNetworkId) throws KEWUserNotFoundException {
+    private DocumentSearchResultComponents performSearch(String documentTypeName,String userNetworkId) {
     	DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
         DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
-        Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName(userNetworkId);
+        Person person = KIMServiceLocator.getPersonService().getPersonByPrincipalName(userNetworkId);
 
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE, docType));
-        return docSearchService.getList(user.getPrincipalId(), criteria);
+        return docSearchService.getList(person.getPrincipalId(), criteria);
     }
 
     private void parseList(List<DocumentSearchColumn> columns, List<String> columnsRequired, List<String> columnsNotAllowed) {

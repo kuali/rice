@@ -24,7 +24,6 @@ import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.routeheader.DocumentContent;
@@ -92,7 +91,7 @@ public class ChannelReviewerRoleAttribute extends GenericRoleAttribute {
      * @see org.kuali.rice.kew.rule.GenericRoleAttribute#getQualifiedRoleNames(java.lang.String, org.kuali.rice.kew.routeheader.DocumentContent)
      */
     @Override
-    public List<String> getQualifiedRoleNames(String roleName, DocumentContent documentContent) throws KEWUserNotFoundException {
+    public List<String> getQualifiedRoleNames(String roleName, DocumentContent documentContent) {
         List<String> qrn = new ArrayList<String>(1);
         qrn.add(roleName);
         return qrn;
@@ -104,7 +103,7 @@ public class ChannelReviewerRoleAttribute extends GenericRoleAttribute {
      * @see org.kuali.rice.kew.rule.GenericRoleAttribute#resolveRecipients(org.kuali.rice.kew.engine.RouteContext, org.kuali.rice.kew.rule.QualifiedRoleName)
      */
     @Override
-    protected List<Id> resolveRecipients(RouteContext routeContext, QualifiedRoleName qualifiedRoleName) throws KEWUserNotFoundException {
+    protected List<Id> resolveRecipients(RouteContext routeContext, QualifiedRoleName qualifiedRoleName) {
         LOG.info("CHANNEL REVIEWER ROLE ATTRIBUTE CALLED");
         List<Id> ids = new ArrayList<Id>();
 

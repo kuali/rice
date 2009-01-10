@@ -27,7 +27,6 @@ import java.util.Map;
 
 import org.jdom.Element;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.rule.MyRules2;
@@ -36,7 +35,6 @@ import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.workgroup.GroupId;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
 
@@ -68,7 +66,7 @@ public class MockRuleServiceImpl implements RuleService {
     public List search(String docTypeName, Long ruleId, Long ruleTemplateId, String ruleDescription, String workgroupId, String principalId, String roleName, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective) {
         return null;
     }
-    public List search(String docTypeName, String ruleTemplateName, String ruleDescription, String groupId, String principalId, String roleName, Boolean workgroupMember, Boolean delegateRule, Boolean activeInd, Map extensionValues, Collection<String> actionRequestCodes) throws KEWUserNotFoundException {
+    public List search(String docTypeName, String ruleTemplateName, String ruleDescription, String groupId, String principalId, String roleName, Boolean workgroupMember, Boolean delegateRule, Boolean activeInd, Map extensionValues, Collection<String> actionRequestCodes) {
         return null;
     }
     public void notifyCacheOfRuleChange(RuleBaseValues rule, DocumentType documentType) {
@@ -162,7 +160,7 @@ public class MockRuleServiceImpl implements RuleService {
         return (List) rulesByRouteHeaderId.get(routeHeaderId);
     }
 
-    public void makeCurrent(Long routeHeaderId) throws KEWUserNotFoundException {
+    public void makeCurrent(Long routeHeaderId) {
         throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");
     }
 

@@ -32,7 +32,6 @@ import org.junit.Test;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -437,11 +436,11 @@ public class ActionListTest extends KEWTestCase {
         return routeHeader;
     }
 
-    private ActionItem generateActionItem(DocumentRouteHeaderValue routeHeader, String actionRequested, String authenticationId, String groupId) throws KEWUserNotFoundException {
+    private ActionItem generateActionItem(DocumentRouteHeaderValue routeHeader, String actionRequested, String authenticationId, String groupId) {
         ActionItem actionItem = new ActionItem();
         actionItem.setActionRequestCd(actionRequested);
         actionItem.setActionRequestId(new Long(1));
-        actionItem.setPrincipalId(KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(authenticationId)).getWorkflowUserId().getWorkflowId());
+        actionItem.setPrincipalId(KEWServiceLocator.getIdentityHelperService().getPrincipalByPrincipalName(authenticationId).getPrincipalId());
         actionItem.setRouteHeaderId(routeHeader.getRouteHeaderId());
         actionItem.setRouteHeader(routeHeader);
         actionItem.setDateAssigned(new Timestamp(new Date().getTime()));

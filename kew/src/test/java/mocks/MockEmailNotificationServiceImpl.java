@@ -25,7 +25,6 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.mail.service.impl.CustomizableActionListEmailServiceImpl;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
@@ -120,9 +119,9 @@ public class MockEmailNotificationServiceImpl extends CustomizableActionListEmai
         getEmailContentGenerator().resetServiceAccessed();
     }
 
-    public int immediateReminderEmailsSent(String networkId, Long documentId, String actionRequestCd) throws KEWUserNotFoundException {
+    public int immediateReminderEmailsSent(String networkId, Long documentId, String actionRequestCd) {
     	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(networkId);
-        List actionItemsSentUser = (List)immediateReminders.get(principal.getPrincipalId());
+        List actionItemsSentUser = immediateReminders.get(principal.getPrincipalId());
         if (actionItemsSentUser == null) {
             return 0;
         }

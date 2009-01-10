@@ -16,7 +16,6 @@
  */
 package mocks;
 
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.mail.service.ActionListEmailService;
 
 
@@ -30,7 +29,7 @@ public interface MockEmailNotificationService extends ActionListEmailService {
     public void sendDailyReminder();
     public void sendWeeklyReminder();
 
-    public int immediateReminderEmailsSent(String networkId, Long documentId, String actionRequestCd) throws KEWUserNotFoundException;
+    public int immediateReminderEmailsSent(String networkId, Long documentId, String actionRequestCd);
     public Integer getTotalPeriodicRemindersSent(String emailReminderConstant);
     public Integer getTotalPeriodicRemindersSent();
     /**

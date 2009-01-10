@@ -19,15 +19,12 @@ package org.kuali.rice.kew.docsearch;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
-
-
 /**
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface DocumentSearchResultProcessor {
 
-    public DocumentSearchResultComponents processIntoFinalResults(List<DocSearchDTO> docSearchResultRows,DocSearchCriteriaDTO criteria, String principalId) throws KEWUserNotFoundException, SQLException;
+    public DocumentSearchResultComponents processIntoFinalResults(List<DocSearchDTO> docSearchResultRows,DocSearchCriteriaDTO criteria, String principalId) throws SQLException;
 
 }

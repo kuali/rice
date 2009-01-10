@@ -24,7 +24,6 @@ import org.kuali.rice.kew.docsearch.DocumentSearchResult;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultProcessor;
 import org.kuali.rice.kew.docsearch.SavedSearchResult;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.web.KeyValue;
 
 
@@ -42,9 +41,8 @@ public interface DocumentSearchService {
      * @param criteria - criteria to use to search documents
      * @return a {@link DocumentSearchResultComponents} object holding the search result columns and search result rows
      *         represented by a list of {@link DocumentSearchResult} objects
-     * @throws KEWUserNotFoundException
      */
-    public DocumentSearchResultComponents getList(String principalId, DocSearchCriteriaDTO criteria) throws KEWUserNotFoundException;
+    public DocumentSearchResultComponents getList(String principalId, DocSearchCriteriaDTO criteria);
 
     /**
      * This method performs a standard document search but uses the value returned by
@@ -54,10 +52,9 @@ public interface DocumentSearchService {
      * @param criteria - criteria to use to search documents
      * @return a {@link DocumentSearchResultComponents} object holding the search result columns and search result rows
      *         represented by a list of {@link DocumentSearchResult} objects
-     * @throws KEWUserNotFoundException
      */
-    public DocumentSearchResultComponents getListRestrictedByCriteria(String principalId, DocSearchCriteriaDTO criteria) throws KEWUserNotFoundException;
-    public SavedSearchResult getSavedSearchResults(String principalId, String savedSearchName) throws KEWUserNotFoundException;
+    public DocumentSearchResultComponents getListRestrictedByCriteria(String principalId, DocSearchCriteriaDTO criteria);
+    public SavedSearchResult getSavedSearchResults(String principalId, String savedSearchName);
     public void clearNamedSearches(String principalId);
     public List<KeyValue> getNamedSearches(String principalId);
     public List<KeyValue> getMostRecentSearches(String principalId);

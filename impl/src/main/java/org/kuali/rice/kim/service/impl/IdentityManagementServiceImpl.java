@@ -1,5 +1,6 @@
 package org.kuali.rice.kim.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -268,6 +269,11 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	protected void addGroupsForPrincipalToCache( String principalId, List<? extends KimGroup> groups ) {
 		if ( groups != null ) {
 			groupsForPrincipalCache.put( principalId, new MaxAgeSoftReference<List<? extends KimGroup>>( groupCacheMaxAge, groups ) );
+			List<String> groupIds = new ArrayList<String>( groups.size() );
+			for ( KimGroup group : groups ) {
+				groupIds.add( group.getGroupId() );
+			}
+			addGroupIdsForPrincipalToCache( principalId, groupIds );
 		}
 	}
 	

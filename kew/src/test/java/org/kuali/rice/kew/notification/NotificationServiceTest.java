@@ -26,8 +26,6 @@ import org.kuali.rice.kew.preferences.service.PreferencesService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.user.AuthenticationUserId;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 
 
@@ -64,46 +62,47 @@ public class NotificationServiceTest extends KEWTestCase {
 	 * 3) Send secondary delegation notifications - defaults to false
 	 */
 	@Test public void testEmailPreferences() throws Exception {
-		WorkflowUser ewestfal = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("ewestfal"));
-		WorkflowUser jitrue = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("jitrue"));
-		WorkflowUser rkirkend = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("rkirkend"));
-		WorkflowUser jhopf = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("jhopf"));
-		WorkflowUser bmcgough = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("bmcgough"));
+		String ewestfalPrincipalId = getPrincipalIdForName("ewestfal");
+		String jitruePrincipalId = getPrincipalIdForName("jitrue");
+		String rkirkendPrincipalId = getPrincipalIdForName("rkirkend");
+		String jhopfPrincipalId = getPrincipalIdForName("jhopf");
+		String bmcgoughPrincipalId = getPrincipalIdForName("bmcgough");
+		String user1PrincipalId = getPrincipalIdForName("user1");
 
 		// test that the users with secondary delegations have default preferences
-		assertDefaultNotificationPreferences(ewestfal);
-		assertDefaultNotificationPreferences(jitrue);
-		assertDefaultNotificationPreferences(rkirkend);
-		assertDefaultNotificationPreferences(jhopf);
-		assertDefaultNotificationPreferences(bmcgough);
+		assertDefaultNotificationPreferences(ewestfalPrincipalId);
+		assertDefaultNotificationPreferences(jitruePrincipalId);
+		assertDefaultNotificationPreferences(rkirkendPrincipalId);
+		assertDefaultNotificationPreferences(jhopfPrincipalId);
+		assertDefaultNotificationPreferences(bmcgoughPrincipalId);
 		// the rest of the default setup is actually tested by testNoDuplicateEmails
 
 		// now turn on secondary notification for ewestfal and jitrue, turn off email notification for ewestfal
-		Preferences prefs = getPreferencesService().getPreferences(ewestfal.getWorkflowUserId().getId());
+		Preferences prefs = getPreferencesService().getPreferences(ewestfalPrincipalId);
 		prefs.setNotifySecondaryDelegation(KEWConstants.PREFERENCES_YES_VAL);
 		prefs.setEmailNotification(KEWConstants.EMAIL_RMNDR_NO_VAL);
-		getPreferencesService().savePreferences(ewestfal.getWorkflowUserId().getId(), prefs);
-		prefs = getPreferencesService().getPreferences(jitrue.getWorkflowUserId().getId());
+		getPreferencesService().savePreferences(ewestfalPrincipalId, prefs);
+		prefs = getPreferencesService().getPreferences(jitruePrincipalId);
 		prefs.setNotifySecondaryDelegation(KEWConstants.PREFERENCES_YES_VAL);
-		getPreferencesService().savePreferences(jitrue.getWorkflowUserId().getId(), prefs);
+		getPreferencesService().savePreferences(jitruePrincipalId, prefs);
 
 		// also turn off primary delegation notification for rkirkend
-		prefs = getPreferencesService().getPreferences(rkirkend.getWorkflowUserId().getId());
+		prefs = getPreferencesService().getPreferences(rkirkendPrincipalId);
 		prefs.setNotifyPrimaryDelegation(KEWConstants.PREFERENCES_NO_VAL);
-		getPreferencesService().savePreferences(rkirkend.getWorkflowUserId().getId(), prefs);
+		getPreferencesService().savePreferences(rkirkendPrincipalId, prefs);
 
 		// also turn notification to daily for bmcgough
-		prefs = getPreferencesService().getPreferences(bmcgough.getWorkflowUserId().getId());
+		prefs = getPreferencesService().getPreferences(bmcgoughPrincipalId);
 		prefs.setEmailNotification(KEWConstants.EMAIL_RMNDR_DAY_VAL);
-		getPreferencesService().savePreferences(bmcgough.getWorkflowUserId().getId(), prefs);
+		getPreferencesService().savePreferences(bmcgoughPrincipalId, prefs);
 
 		// also turn off notification for jhopf
-		prefs = getPreferencesService().getPreferences(jhopf.getWorkflowUserId().getId());
+		prefs = getPreferencesService().getPreferences(jhopfPrincipalId);
 		prefs.setEmailNotification(KEWConstants.EMAIL_RMNDR_NO_VAL);
-		getPreferencesService().savePreferences(jhopf.getWorkflowUserId().getId(), prefs);
+		getPreferencesService().savePreferences(jhopfPrincipalId, prefs);
 
 		// route the document
-		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "NotificationTest");
+		WorkflowDocument document = new WorkflowDocument(user1PrincipalId, "NotificationTest");
 		document.routeDocument("");
 
 		// both ewestfal and jitrue should have one email
@@ -124,6 +123,8 @@ public class NotificationServiceTest extends KEWTestCase {
 	 * Tests that the fromNotificationAddress on the document type works properly.  Used to test implementation of KULWF-628.
 	 */
 	@Test public void testDocumentTypeNotificationFromAddress() throws Exception {
+		String user1PrincipalId = getPrincipalIdForName("user1");
+		
 		// first test that the notification from addresses are configured correctly
 		DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName("NotificationTest");
 		assertNull("Wrong notification from address, should be null.", documentType.getNotificationFromAddress());
@@ -141,7 +142,7 @@ public class NotificationServiceTest extends KEWTestCase {
 		assertEquals("Wrong notification from address.", "fakey@mcfakey.com", documentType.getNotificationFromAddress());
 
 		// Do an app specific route to a document which should send an email to fakey@mcchild.com
-		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "NotificationFromAddressChild");
+		WorkflowDocument document = new WorkflowDocument(user1PrincipalId, "NotificationFromAddressChild");
 		document.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "Initial", "", getPrincipalIdForName("ewestfal"), "", true);
 		document.routeDocument("");
 
@@ -151,8 +152,8 @@ public class NotificationServiceTest extends KEWTestCase {
 		// we currently have no way from this test to determine the email address used for notification
 	}
 
-	private void assertDefaultNotificationPreferences(WorkflowUser user) throws Exception {
-		Preferences prefs = getPreferencesService().getPreferences(user.getWorkflowUserId().getId());
+	private void assertDefaultNotificationPreferences(String principalId) throws Exception {
+		Preferences prefs = getPreferencesService().getPreferences(principalId);
 		assertEquals(KEWConstants.EMAIL_RMNDR_IMMEDIATE, prefs.getEmailNotification());
 		assertEquals(KEWConstants.PREFERENCES_YES_VAL, prefs.getNotifyPrimaryDelegation());
 		assertEquals(KEWConstants.PREFERENCES_NO_VAL, prefs.getNotifySecondaryDelegation());

@@ -27,15 +27,9 @@ import java.util.Set;
 
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
-import org.kuali.rice.kew.dto.WorkflowIdDTO;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.AuthenticationUserId;
-import org.kuali.rice.kew.user.EmplId;
-import org.kuali.rice.kew.user.UserId;
-import org.kuali.rice.kew.user.UserService;
-import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kew.user.UserUtils;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.Person;
@@ -55,14 +49,13 @@ import org.kuali.rice.kim.service.PersonService;
  */
 public class UserSession implements Serializable {
 
+	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
+			.getLogger(UserSession.class);
+	
     private static final long serialVersionUID = 1L;
 
     private static ThreadLocal currentUserSession = new ThreadLocal();
 
-    private UserId backdoorId;
-	private WorkflowUser workflowUser;
-    private WorkflowUser backdoorWorkflowUser;
-    private Person helpDeskActionListUser;
     private int nextObjectKey;
     private transient Map objectMap = new HashMap();
     private ActionListFilter actionListFilter;
@@ -72,38 +65,32 @@ public class UserSession implements Serializable {
     private String sortOrder;
     private String sortCriteria;
     private int currentPage;
-    private KimPrincipal	principal;
-    private Person			principalPerson; // set on start up so we're not calling the service a lot
+    private KimPrincipal actualPrincipal;
+    private Person actualPerson;
+    private KimPrincipal backdoorPrincipal;
+    private Person backdoorPerson;
+    private KimPrincipal helpDeskActionListPrincipal;
+    private Person helpDeskActionListPerson;
 
-    private IdentityManagementService  identityService = null;
-    private PersonService<Person>  personService = null;
+    private IdentityManagementService identityService = null;
+    private PersonService<Person> personService = null;
 
-    /**
-     *
-     * This constructs a user session via a WorkflowUser
-     *
-     * @deprecated should no longer be used.
-     * @param user
-     */
-    public UserSession (WorkflowUser user) {
-        this(user.getWorkflowId());
-        this.workflowUser = user;
+    public UserSession (KimPrincipal actualPrincipal) {
+        init(actualPrincipal);
     }
 
-    public UserSession (KimPrincipal principal) {
-		this.principal = principal;
+	public UserSession (String actualPrincipalId) {
+		init(this.getIdentityService().getPrincipal(actualPrincipalId));
+    }
+
+	private void init(KimPrincipal actualPrincipal) {
+		if (actualPrincipal == null) {
+			throw new IllegalArgumentException("UserSession was constructed with a null Principal");
+		}
+		this.actualPrincipal = actualPrincipal;
+		actualPerson = getPersonService().getPerson(actualPrincipal.getPrincipalId());
+		establishPreferencesForPrincipal(actualPrincipal);
         this.nextObjectKey = 0;
-        init();
-    }
-
-	public UserSession (String principalId) {
-		this.principal = this.getIdentityService().getPrincipal(principalId);
-        this.nextObjectKey = 0;
-        init();
-    }
-
-	private void init(){
-		principalPerson = getPersonService().getPerson(getPrincipalId());
 	}
 
 	/**
@@ -160,24 +147,8 @@ public class UserSession implements Serializable {
     	return value;
     }
 
-    public Person getHelpDeskActionListUser() {
-        return helpDeskActionListUser;
-    }
-
-    public Person getHelpDeskActionListPerson() {
-    	return getHelpDeskActionListUser();
-    }
-
-    public void setHelpDeskActionListUser(Person helpDeskActionListUser) {
-        this.helpDeskActionListUser = helpDeskActionListUser;
-    }
-
     public Preferences getPreferences() {
         return preferences;
-    }
-
-    public void setPreferences(Preferences preferences) {
-        this.preferences = preferences;
     }
 
     public ActionListFilter getActionListFilter() {
@@ -187,75 +158,101 @@ public class UserSession implements Serializable {
     public void setActionListFilter(ActionListFilter actionListFilter) {
         this.actionListFilter = actionListFilter;
     }
-
-    public String getNetworkId() {
-        if (backdoorId != null) {
-            return backdoorWorkflowUser.getAuthenticationUserId().getAuthenticationId();
-        } else {
-            return workflowUser.getAuthenticationUserId().getAuthenticationId();
-        }
+    
+    public KimPrincipal getActualPrincipal() {
+    	return actualPrincipal;
     }
-
-    @Deprecated
-    public WorkflowUser getWorkflowUser() {
-
-    	WorkflowUser wRet = null;
-
-        if (backdoorId != null) {
-        	wRet = backdoorWorkflowUser;
-        } else if(workflowUser != null){
-        	wRet = workflowUser;
-        } else if(this.getPrincipalId() != null && !"".equals(this.getPrincipalId())){
-        	try {
-        		wRet = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowIdDTO(this.getPrincipalId()));
-        		workflowUser = wRet;
-			} catch (KEWUserNotFoundException e) {
-				e.printStackTrace();
-			}
-        }
-        return wRet;
+    
+    public Person getActualPerson() {
+    	return actualPerson;
     }
+    
+	public KimPrincipal getBackdoorPrincipal() {
+		return this.backdoorPrincipal;
+	}
 
+	public Person getBackdoorPerson() {
+		return this.backdoorPerson;
+	}
+
+	public KimPrincipal getHelpDeskActionListPrincipal() {
+		return this.helpDeskActionListPrincipal;
+	}
+
+	public Person getHelpDeskActionListPerson() {
+		return this.helpDeskActionListPerson;
+	}
+
+	public String getPrincipalId() {
+    	return getPrincipal().getPrincipalId();
+    }
+    
+    public String getPrincipalName() {
+    	return getPrincipal().getPrincipalName();
+    }
+    
+    public KimPrincipal getPrincipal() {
+    	if (getBackdoorPrincipal() != null) {
+    		return getBackdoorPrincipal();
+    	} else if (getActualPrincipal() != null) {
+    		return getActualPrincipal();
+    	}
+    	throw new IllegalStateException("UserSession does not contain an established principal.");
+    }
+    
     public Person getPerson() {
-    	return principalPerson;
+    	if (getBackdoorPerson() != null) {
+    		return getBackdoorPerson();
+    	} else if (getActualPerson() != null) {
+    		return getActualPerson();
+    	}
+    	throw new IllegalStateException("UserSession does not contain an established person.");
     }
 
-    @Deprecated
-    public WorkflowUser getLoggedInWorkflowUser() {
-    	WorkflowUser wRet = null;
-
-        if(workflowUser != null){
-        	wRet = workflowUser;
-        } else if(this.getPrincipalId() != null && !"".equals(this.getPrincipalId())){
-        	try {
-        		wRet = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowIdDTO(this.getPrincipalId()));
-        		workflowUser = wRet;
-			} catch (KEWUserNotFoundException e) {
-				e.printStackTrace();
-			}
+    public boolean establishBackdoorWithPrincipalName(String principalName) {
+        if (!isProductionEnvironment()) {
+        	this.backdoorPrincipal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
+        	if (backdoorPrincipal == null) {
+        		return false;
+        	}
+        	this.backdoorPerson = KEWServiceLocator.getIdentityHelperService().getPersonByPrincipalName(principalName);
+        	establishPreferencesForPrincipal(backdoorPrincipal);
+        	return true;
         }
-        return wRet;
-    }
-
-    public Person getLoggedInPerson() {
-    	return principalPerson;
-    }
-
-    public boolean setBackdoorId(String id) throws KEWUserNotFoundException {
-        if (! KEWConstants.PROD_DEPLOYMENT_CODE.equalsIgnoreCase(ConfigContext.getCurrentContextConfig().getEnvironment())) {
-            if (id.matches("^\\d*$")) {
-                this.backdoorId = new EmplId(id);
-            } else {
-                this.backdoorId = new AuthenticationUserId(id);
-            }
-            this.backdoorWorkflowUser = ((UserService)KEWServiceLocator.getUserService()).getWorkflowUser(this.backdoorId);
-        }
-        return this.backdoorWorkflowUser != null;
+        return false;
     }
 
     public void clearBackdoor() {
-        this.backdoorId = null;
-        setPreferences(KEWServiceLocator.getPreferencesService().getPreferences(principal.getPrincipalId()));
+        this.backdoorPrincipal = null;
+        this.backdoorPerson = null;
+        establishPreferencesForPrincipal(actualPrincipal);
+    }
+    
+    public void establishHelpDeskWithPrincipalName(String principalName) {
+    	this.helpDeskActionListPrincipal = KEWServiceLocator.getIdentityHelperService().getPrincipalByPrincipalName(principalName);
+    	this.helpDeskActionListPerson = KEWServiceLocator.getIdentityHelperService().getPersonByPrincipalName(principalName);
+    }
+    
+    public void clearHelpDesk() {
+    	this.helpDeskActionListPrincipal = null;
+    	this.helpDeskActionListPerson = null;
+    }
+    
+    public void refreshPreferences() {
+    	establishPreferencesForPrincipal(getPrincipal());
+    }
+    
+    protected void establishPreferencesForPrincipal(KimPrincipal principal) {
+    	this.preferences = KEWServiceLocator.getPreferencesService().getPreferences(principal.getPrincipalId());
+        if (this.preferences.isRequiresSave()) {
+            LOG.info("Detected that user preferences require saving.");
+            KEWServiceLocator.getPreferencesService().savePreferences(principal.getPrincipalId(), this.preferences);
+            this.preferences = KEWServiceLocator.getPreferencesService().getPreferences(principal.getPrincipalId());
+        }
+    }
+    
+    protected boolean isProductionEnvironment() {
+    	return KEWConstants.PROD_DEPLOYMENT_CODE.equalsIgnoreCase(ConfigContext.getCurrentContextConfig().getEnvironment());
     }
 
     public String addObject(Object object) {
@@ -273,15 +270,11 @@ public class UserSession implements Serializable {
     }
 
     public boolean isBackdoorInUse() {
-        return backdoorId != null;
+        return backdoorPrincipal != null;
     }
 
     public String getEmailAddress() {
-        if (backdoorId != null) {
-            return backdoorWorkflowUser.getEmailAddress();
-        } else {
-            return workflowUser.getEmailAddress();
-        }
+    	return getPerson().getEmailAddress();
     }
 
     public int getNextObjectKey() {
@@ -300,14 +293,7 @@ public class UserSession implements Serializable {
         this.objectMap = objectMap;
     }
     public String getDisplayName() {
-        if (backdoorId != null) {
-            return backdoorWorkflowUser.getDisplayName();
-        } else {
-            return workflowUser.getDisplayName();
-        }
-    }
-    public UserId getBackdoorId() {
-        return backdoorId;
+    	return UserUtils.getDisplayableName(this, getPrincipal());
     }
 
     public boolean isAdmin(){
@@ -351,28 +337,6 @@ public class UserSession implements Serializable {
 
 	public boolean isMemberOfGroup(String groupName) {
 		return getGroups().contains(groupName);
-	}
-
-	/**
-	 * @return the principal
-	 */
-	public KimPrincipal getPrincipal() {
-		return this.principal;
-	}
-
-	/**
-	 * @param principal the principal to set
-	 */
-	public void setPrincipal(KimPrincipal principal) {
-		this.principal = principal;
-		this.principalPerson = getPersonService().getPerson(principal.getPrincipalId());
-	}
-
-	/**
-	 * @return the userId
-	 */
-	public String getPrincipalId() {
-		return this.principal.getPrincipalId();
 	}
 
 	protected IdentityManagementService getIdentityService(){

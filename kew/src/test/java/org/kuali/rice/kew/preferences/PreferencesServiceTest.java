@@ -46,7 +46,7 @@ public class PreferencesServiceTest extends KEWTestCase {
        //verify that user doesn't have any preferences in the db.
 
        final UserOptionsService userOptionsService = KEWServiceLocator.getUserOptionsService();
-       KimPrincipal principal = KEWServiceLocator.getIdentityHelperService().getPrincipalByName("rkirkend");
+       KimPrincipal principal = KEWServiceLocator.getIdentityHelperService().getPrincipalByPrincipalName("rkirkend");
        Collection userOptions = userOptionsService.findByWorkflowUser(principal.getPrincipalId());
        assertTrue("UserOptions should be empty", userOptions.isEmpty());
 
@@ -98,7 +98,7 @@ public class PreferencesServiceTest extends KEWTestCase {
     @Test public void testPreferencesConcurrentDefaultSave() throws Throwable {
        //verify that user doesn't have any preferences in the db.
        final UserOptionsService userOptionsService = KEWServiceLocator.getUserOptionsService();
-       final KimPrincipal principal = KEWServiceLocator.getIdentityHelperService().getPrincipalByName("rkirkend");
+       final KimPrincipal principal = KEWServiceLocator.getIdentityHelperService().getPrincipalByPrincipalName("rkirkend");
        Collection userOptions = userOptionsService.findByWorkflowUser(principal.getPrincipalId());
        assertTrue("UserOptions should be empty", userOptions.isEmpty());
 

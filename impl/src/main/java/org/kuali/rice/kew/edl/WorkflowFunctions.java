@@ -72,13 +72,12 @@ public class WorkflowFunctions {
 	    return authenticated;
 	}
 
-	public static boolean isUidAuthentictedUserUid(String uuid) {
-		UserSession userSession = UserSession.getAuthenticatedUser();
-		if (uuid.equals(userSession.getWorkflowUser().getEmplId().getEmplId())) {
-			return true;
-		} else {
-			return false;
-		}
+	public static boolean isPrincipalIdAuthenticated(String principalId) {
+		return UserSession.getAuthenticatedUser().getPrincipalId().equals(principalId);
+	}
+	
+	public static boolean isPrincipalNameAuthenticated(String principalName) {
+		return UserSession.getAuthenticatedUser().getPrincipalName().equals(principalName);
 	}
 
 	public static boolean isUserInGroup(String groupName){

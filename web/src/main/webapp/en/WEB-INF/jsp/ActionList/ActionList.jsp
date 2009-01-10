@@ -50,11 +50,11 @@
 		<c:if test="${helpDeskActionList != null}">
 			<html-el:text property="helpDeskActionListUserName" size="12"/>&nbsp;
             <html-el:image src="images/tinybutton-hlpdesk.gif" align="absmiddle" property="methodToCall.helpDeskActionListLogin" />
-			<c:if test="${kewUserSession.helpDeskActionListUser != null}">
+			<c:if test="${kewUserSession.helpDeskActionListPerson != null}">
 				<a href="
 					<c:url value="ActionList.do">
 						<c:param name="methodToCall" value="clearHelpDeskActionListUser" />
-					</c:url>">Clear <c:out value="${kewUserSession.helpDeskActionListUser.displayName}"/>'s List</a>
+					</c:url>">Clear <c:out value="${kewUserSession.helpDeskActionListPerson.name}"/>'s List</a>
 			</c:if>&nbsp;&nbsp;
 		</c:if>
 		<c:if test="${! empty ActionListForm.delegators}">
@@ -110,7 +110,7 @@
 	                <c:if test="${ActionListForm.showOutbox }">
 		            	| <a href="<c:url value="ActionList.do?viewOutbox=true" />"><bean-el:message key="actionList.Outbox.title"/></a>
 	            	</c:if>
-	            	<c:if test="${kewUserSession.helpDeskActionListUser == null && ! empty actionList && ! empty ActionListForm.defaultActions}">
+	            	<c:if test="${kewUserSession.helpDeskActionListPerson == null && ! empty actionList && ! empty ActionListForm.defaultActions}">
 			            <td align="right">
 			               <c:set var="defaultActions" value="${ActionListForm.defaultActions}" scope="request" />
 			               <html-el:select styleId='defaultAction' property="defaultActionToTake">
@@ -213,7 +213,7 @@
 
   <display-el:column sortable="true" title="${documentIdLabel}" sortProperty="routeHeaderId" class="display-column">
   	<c:choose>
-      <c:when test="${kewUserSession.helpDeskActionListUser == null}">
+      <c:when test="${kewUserSession.helpDeskActionListPerson == null}">
 		  	  <a href="<c:url value="${Constants.DOC_HANDLER_REDIRECT_PAGE}" >
 		  				<c:param name="docId" value="${result.routeHeaderId}"/>
 		  				<c:param name="command" value="displayActionListView" />
@@ -317,7 +317,7 @@
     </display-el:column>
   </c:if>
 
-  <c:if test="${! ActionListForm.viewOutbox && kewUserSession.helpDeskActionListUser == null && ActionListForm.hasCustomActions && (ActionListForm.customActionList || (preferences.showClearFyi == Constants.PREFERENCES_YES_VAL))}">
+  <c:if test="${! ActionListForm.viewOutbox && kewUserSession.helpDeskActionListPerson == null && ActionListForm.hasCustomActions && (ActionListForm.customActionList || (preferences.showClearFyi == Constants.PREFERENCES_YES_VAL))}">
     <display-el:column title="${actionsLabel}" class="display-column">
         <c:if test="${! empty result.customActions}">
           <c:set var="customActions" value="${result.customActions}" scope="request" />
@@ -347,7 +347,7 @@
 <td></td>
 </tr>
 
-  <c:if test="${kewUserSession.helpDeskActionListUser == null && (! empty customActionsPresent) && (preferences.showClearFyi == Constants.PREFERENCES_YES_VAL || ActionListForm.customActionList)}">
+  <c:if test="${kewUserSession.helpDeskActionListPerson == null && (! empty customActionsPresent) && (preferences.showClearFyi == Constants.PREFERENCES_YES_VAL || ActionListForm.customActionList)}">
     <tr><td colspan=3>&nbsp;</td></tr>
   	<tr>
   		<td></td>
@@ -367,8 +367,8 @@
 </html-el:form>
 
 <center>
-<c:if test="${kewUserSession.helpDeskActionListUser != null}">
-	<c:out value="${kewUserSession.workflowUser.displayName}"/> Viewing <c:out value="${kewUserSession.helpDeskActionListUser.displayName}"/>'s Action List
+<c:if test="${kewUserSession.helpDeskActionListPerson != null}">
+	<c:out value="${kewUserSession.person.name}"/> Viewing <c:out value="${kewUserSession.helpDeskActionListPerson.name}"/>'s Action List
 </c:if>
 </center>
 <jsp:include page="../BackdoorMessage.jsp" flush="true"/>

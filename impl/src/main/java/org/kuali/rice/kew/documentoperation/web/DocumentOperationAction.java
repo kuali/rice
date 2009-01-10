@@ -459,7 +459,7 @@ public class DocumentOperationAction extends WorkflowAction {
 		}
 
 
-		WorkflowDocument workflowDocument = new WorkflowDocument(new NetworkIdDTO(getUserSession(request).getWorkflowUser().getAuthenticationUserId().getAuthenticationId()), new Long(docForm.getRouteHeaderId()));
+		WorkflowDocument workflowDocument = new WorkflowDocument(getUserSession(request).getPrincipalId(), new Long(docForm.getRouteHeaderId()));
 		String annotation = docForm.getAnnotation();
 		if (StringUtils.isEmpty(annotation)) {
 			annotation = DEFAULT_LOG_MSG;

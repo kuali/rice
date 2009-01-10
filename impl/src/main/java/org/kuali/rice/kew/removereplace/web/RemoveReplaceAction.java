@@ -75,7 +75,7 @@ public class RemoveReplaceAction extends WorkflowAction {
 	form.setActionRequestCodes(CodeTranslator.arLabels);
 	boolean isCreating = false;
 	if (form.getDocId() != null) {
-            form.setWorkflowDocument(new WorkflowDocument(new WorkflowIdDTO(getUserSession(request).getWorkflowUser().getWorkflowId()), form.getDocId()));
+            form.setWorkflowDocument(new WorkflowDocument(getUserSession(request).getPrincipalId(), form.getDocId()));
         } else {
             // we're creating a new one if this action is being invoked without a method to call or with "start"
             isCreating = StringUtils.isEmpty(form.getMethodToCall()) || form.getMethodToCall().equals("start");

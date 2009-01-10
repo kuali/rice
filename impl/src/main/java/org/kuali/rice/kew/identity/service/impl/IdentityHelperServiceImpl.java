@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.kew.identity.service.impl;
 
-import java.sql.Timestamp;
-import java.util.Date;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.exception.RiceRuntimeException;
@@ -28,12 +25,8 @@ import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.identity.service.IdentityHelperService;
 import org.kuali.rice.kew.user.AuthenticationUserId;
-import org.kuali.rice.kew.user.BaseWorkflowUser;
-import org.kuali.rice.kew.user.EmplId;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.UserId;
-import org.kuali.rice.kew.user.UuId;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.workgroup.GroupId;
 import org.kuali.rice.kew.workgroup.GroupNameId;
@@ -91,13 +84,30 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 		return principal;
 	}
 	
-	public KimPrincipal getPrincipalByName(String principalName) {
+	public KimPrincipal getPrincipalByPrincipalName(String principalName) {
 		KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
 		if (principal == null) {
 			throw new RiceRuntimeException("Could not locate a principal with the given principalName of " + principalName);
 		}
 		return principal;
 	}
+	
+	public Person getPerson(String principalId) {
+		Person person = KIMServiceLocator.getPersonService().getPerson(principalId);
+		if (person == null) {
+			throw new RiceRuntimeException("Could not locate a person with the given principal id of " + principalId);
+		}
+		return person;
+	}
+
+	public Person getPersonByPrincipalName(String principalName) {
+		Person person = KIMServiceLocator.getPersonService().getPersonByPrincipalName(principalName);
+		if (person == null) {
+			throw new RiceRuntimeException("Could not locate a person with the given principal name of " + principalName);
+		}
+		return person;
+	}
+
 	
 	public KimGroup getGroup(String groupId) {
 		KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
@@ -173,26 +183,6 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 	public Recipient getGroupRecipient(String groupId) {
 		KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
 		return new KimGroupRecipient(group);
-	}
-
-	public WorkflowUser convertPersonToWorkflowUser(Person person) {
-		if (person == null) {
-			logger.error("KimUserService.convertPersonToWorkflowUser() was passed a null Person object");
-			return null;
-		}
-		BaseWorkflowUser user = new org.kuali.rice.kns.workflow.bo.WorkflowUser();
-		user.setWorkflowUserId(new WorkflowUserId(person.getPrincipalId()));
-		user.setLockVerNbr(1);
-		user.setAuthenticationUserId(new org.kuali.rice.kew.user.AuthenticationUserId(person.getPrincipalName()));
-		user.setDisplayName(person.getName());
-		user.setEmailAddress(person.getEmailAddress());
-		user.setEmplId(new EmplId(person.getExternalId("EMPLOYEE")));
-		user.setGivenName(person.getFirstName());
-		user.setLastName(person.getLastName());
-		user.setUuId(new UuId(person.getPrincipalId()));
-		user.setCreateDate(new Timestamp(new Date().getTime()));
-		user.setLastUpdateDate(new Timestamp(new Date().getTime()));
-		return user;
 	}
 
 }

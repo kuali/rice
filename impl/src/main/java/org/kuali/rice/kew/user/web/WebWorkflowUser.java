@@ -209,7 +209,7 @@ public class WebWorkflowUser extends WebLookupableDecorator implements WorkflowU
 	}
 
 	public String getTransposedNameSafe() {
-		if (!UserSession.getAuthenticatedUser().getWorkflowUser().getWorkflowId().equals(getWorkflowId())) {
+		if (!UserSession.getAuthenticatedUser().getPrincipalId().equals(getWorkflowId())) {
         	return workflowUser.getTransposedNameSafe();
         }
 		return workflowUser.getTransposedName();

@@ -88,7 +88,7 @@
 	<br/>
 	<br/>
          <c:if
-            test="${kewUserSession.helpDeskActionListUser == null && ! empty actionList && ! empty ActionListFormNew.defaultActions}">
+            test="${kewUserSession.helpDeskActionListPerson == null && ! empty actionList && ! empty ActionListFormNew.defaultActions}">
               <c:set var="defaultActions" value="${ActionListFormNew.defaultActions}" scope="request" />
               <html-el:select styleId='defaultAction' property="defaultActionToTake">
                     <html-el:options collection="defaultActions" labelProperty="value" property="key" filter="false" />
@@ -177,7 +177,7 @@
 					<display-el:column sortable="true" title="${documentIdLabel}"
 						sortProperty="routeHeaderId">
 						<c:choose>
-							<c:when test="${kewUserSession.helpDeskActionListUser == null}">
+							<c:when test="${kewUserSession.helpDeskActionListPerson == null}">
 								<a
 									href="<c:url value="../en/${Constants.DOC_HANDLER_REDIRECT_PAGE}" >
                                      <c:param name="docId" value="${result.routeHeaderId}"/>
@@ -314,7 +314,7 @@
 					</c:if>
 
 					<c:if
-						test="${! ActionListFormNew.viewOutbox && kewUserSession.helpDeskActionListUser == null && ActionListFormNew.hasCustomActions && (ActionListFormNew.customActionList || (preferences.showClearFyi == Constants.PREFERENCES_YES_VAL))}">
+						test="${! ActionListFormNew.viewOutbox && kewUserSession.helpDeskActionListPerson == null && ActionListFormNew.hasCustomActions && (ActionListFormNew.customActionList || (preferences.showClearFyi == Constants.PREFERENCES_YES_VAL))}">
 						<display-el:column title="${actionsLabel}" class="infocell">
 							<c:if test="${! empty result.customActions}">
 								<c:set var="customActions" value="${result.customActions}"
@@ -372,7 +372,7 @@
 				</td>
 			</tr>
 			<c:if
-				test="${kewUserSession.helpDeskActionListUser == null && (! empty customActionsPresent) && (preferences.showClearFyi == Constants.PREFERENCES_YES_VAL || ActionListFormNew.customActionList)}">
+				test="${kewUserSession.helpDeskActionListPerson == null && (! empty customActionsPresent) && (preferences.showClearFyi == Constants.PREFERENCES_YES_VAL || ActionListFormNew.customActionList)}">
 				<tr>
 					<td height="0" class="tinybutton">
 					<div align="center"><a id="takeMassActions"

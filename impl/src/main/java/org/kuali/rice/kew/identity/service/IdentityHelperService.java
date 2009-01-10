@@ -18,7 +18,6 @@ package org.kuali.rice.kew.identity.service;
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.UserId;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.workgroup.GroupId;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
@@ -39,21 +38,33 @@ public interface IdentityHelperService {
 	public String getIdForGroupName(String namespace, String groupName);
 	
 	/**
-	 * Returns the KimPrincipal for the given principalId.  Throws an exception
-	 * if the principalId cannot be resolved to a principal.
+	 * Returns the KimPrincipal for the given principal id.  Throws an exception
+	 * if the principal id cannot be resolved to a principal.
 	 */
 	public KimPrincipal getPrincipal(String principalId);
 
 	/**
+	 * Returns the KimPrincipal for the given principal name.  Throws an exception
+	 * if the principal name cannot be resolved to a principal.
+	 */
+	public KimPrincipal getPrincipalByPrincipalName(String principalName);
+
+	/**
+	 * Returns the Person for the given principal id.  Throws an exception
+	 * if the principal id cannot be resolved to a person.
+	 */
+	public Person getPerson(String principalId);
+
+	/**
+	 * Returns the Person for the given principal name.  Throws an exception
+	 * if the principal name cannot be resolved to a person.
+	 */
+	public Person getPersonByPrincipalName(String principalName);
+	
+	/**
 	 * Checks that the given principalId is valid.  Throws a RiceRuntimeException if it is not.
 	 */
 	public void validatePrincipalId(String principalId);
-	
-	/**
-	 * Returns the KimPrincipal for the given principalName.  Throws an exception
-	 * if the principalName cannot be resolved to a principal.
-	 */
-	public KimPrincipal getPrincipalByName(String principalName);
 	
 	public KimPrincipal getPrincipal(UserId userId);
 	
@@ -87,6 +98,4 @@ public interface IdentityHelperService {
 	 */
 	public Recipient getGroupRecipient(String groupId);
 	
-	public WorkflowUser convertPersonToWorkflowUser(Person person);
-
 }

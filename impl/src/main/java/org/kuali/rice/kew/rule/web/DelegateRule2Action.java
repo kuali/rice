@@ -29,12 +29,9 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
-//import org.kuali.rice.kew.lookupable.WorkflowLookupable;
 import org.kuali.rice.kew.rule.MyRules2;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
@@ -50,7 +47,6 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.ShowHideTree;
 import org.kuali.rice.kew.web.WorkflowAction;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 
 
@@ -137,7 +133,7 @@ public class DelegateRule2Action extends WorkflowAction {
             rule.establishRequiredState();
         }
         if(ruleForm.getDocId() != null && ruleForm.getWorkflowDocument() == null){
-            ruleForm.setWorkflowDocument(new WorkflowDocument(new WorkflowIdDTO(getUserSession(request).getWorkflowUser().getWorkflowId()), ruleForm.getDocId()));
+            ruleForm.setWorkflowDocument(new WorkflowDocument(getUserSession(request).getPrincipalId(), ruleForm.getDocId()));
         }
         ruleForm.establishVisibleActionRequestCds();
         return null;
@@ -238,7 +234,7 @@ public class DelegateRule2Action extends WorkflowAction {
             ruleForm.setEditingDelegate(true);
             ruleForm.setShowHide(initializeShowHide(ruleForm.getMyRules()));
             String ruleDocTypeName = getRuleService().getRuleDocmentTypeName(ruleForm.getMyRules().getRules());
-            ruleForm.setWorkflowDocument(new WorkflowDocument(new WorkflowIdDTO(getUserSession(request).getWorkflowUser().getWorkflowId()), ruleDocTypeName));
+            ruleForm.setWorkflowDocument(new WorkflowDocument(getUserSession(request).getPrincipalId(), ruleDocTypeName));
             ruleForm.setDocId(ruleForm.getWorkflowDocument().getRouteHeaderId());
             ruleForm.establishVisibleActionRequestCds();
         }
@@ -534,7 +530,7 @@ public class DelegateRule2Action extends WorkflowAction {
     private void createWorkflowDocument(HttpServletRequest request, Rule2Form rule2Form, List rules) throws WorkflowException {
         if (rule2Form.getWorkflowDocument() == null) {
         	String ruleDocTypeName = getRuleService().getRuleDocmentTypeName(rules);
-            rule2Form.setWorkflowDocument(new WorkflowDocument(new WorkflowIdDTO(getUserSession(request).getWorkflowUser().getWorkflowId()), ruleDocTypeName));
+            rule2Form.setWorkflowDocument(new WorkflowDocument(getUserSession(request).getPrincipalId(), ruleDocTypeName));
             rule2Form.setDocId(rule2Form.getWorkflowDocument().getRouteHeaderId());
             rule2Form.establishVisibleActionRequestCds();
         }

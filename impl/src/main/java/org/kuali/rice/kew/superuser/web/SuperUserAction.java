@@ -38,8 +38,6 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.service.WorkflowDocumentActions;
-import org.kuali.rice.kew.user.UserId;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.WorkflowAction;
 
@@ -68,7 +66,6 @@ public class SuperUserAction extends WorkflowAction {
         SuperUserForm superUserForm = (SuperUserForm) form;
         Long documentId = superUserForm.getRouteHeader().getRouteHeaderId();
         WorkflowDocumentActions documentActions = getWorkflowDocumentActions(documentId);
-        UserId userId = getUserSession(request).getWorkflowUser().getAuthenticationUserId();
         documentActions.superUserNodeApproveAction(getUserSession(request).getPrincipalId(), documentId, superUserForm.getDestNodeName(), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
         saveDocumentActionMessage("general.routing.superuser.routeLevelApproved", request, superUserForm.getRouteHeaderIdString(), null);
         LOG.info("exiting routeLevelApprove()...");
@@ -82,7 +79,6 @@ public class SuperUserAction extends WorkflowAction {
         SuperUserForm superUserForm = (SuperUserForm) form;
         Long documentId = superUserForm.getRouteHeader().getRouteHeaderId();
         WorkflowDocumentActions documentActions = getWorkflowDocumentActions(documentId);
-        UserId userId = getUserSession(request).getWorkflowUser().getAuthenticationUserId();
         documentActions.superUserApprove(getUserSession(request).getPrincipalId(), DTOConverter.convertRouteHeader(superUserForm.getRouteHeader(), null), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
         saveDocumentActionMessage("general.routing.superuser.approved", request, superUserForm.getRouteHeaderIdString(), null);
         LOG.info("exiting approve() ...");
@@ -96,7 +92,6 @@ public class SuperUserAction extends WorkflowAction {
         SuperUserForm superUserForm = (SuperUserForm) form;
         Long documentId = superUserForm.getRouteHeader().getRouteHeaderId();
         WorkflowDocumentActions documentActions = getWorkflowDocumentActions(documentId);
-        UserId userId = getUserSession(request).getWorkflowUser().getAuthenticationUserId();
         documentActions.superUserDisapprove(getUserSession(request).getPrincipalId(), DTOConverter.convertRouteHeader(superUserForm.getRouteHeader(), null), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
         saveDocumentActionMessage("general.routing.superuser.disapproved", request, superUserForm.getRouteHeaderIdString(), null);
         LOG.info("exiting disapprove() ...");
@@ -110,7 +105,6 @@ public class SuperUserAction extends WorkflowAction {
         SuperUserForm superUserForm = (SuperUserForm) form;
         Long documentId = superUserForm.getRouteHeader().getRouteHeaderId();
         WorkflowDocumentActions documentActions = getWorkflowDocumentActions(documentId);
-        UserId userId = getUserSession(request).getWorkflowUser().getAuthenticationUserId();
         documentActions.superUserCancel(getUserSession(request).getPrincipalId(), DTOConverter.convertRouteHeader(superUserForm.getRouteHeader(), null), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
         saveDocumentActionMessage("general.routing.superuser.canceled", request, superUserForm.getRouteHeaderIdString(), null);
         LOG.info("exiting cancel() ...");
@@ -124,7 +118,6 @@ public class SuperUserAction extends WorkflowAction {
         SuperUserForm superUserForm = (SuperUserForm) form;
         Long documentId = superUserForm.getRouteHeader().getRouteHeaderId();
         WorkflowDocumentActions documentActions = getWorkflowDocumentActions(documentId);
-        UserId userId = getUserSession(request).getWorkflowUser().getAuthenticationUserId();
         documentActions.superUserReturnToPreviousNode(getUserSession(request).getPrincipalId(), documentId, superUserForm.getReturnDestNodeName(), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
         saveDocumentActionMessage("general.routing.returnedToPreviousNode", request, "document", superUserForm.getReturnDestNodeName().toString());
         LOG.info("exiting returnToPreviousRouteLevel() ...");
@@ -157,7 +150,6 @@ public class SuperUserAction extends WorkflowAction {
         boolean runPostProcessorLogic = ArrayUtils.contains(superUserForm.getActionRequestRunPostProcessorCheck(), superUserForm.getActionTakenActionRequestId());
         Long documentId = superUserForm.getRouteHeader().getRouteHeaderId();
         WorkflowDocumentActions documentActions = getWorkflowDocumentActions(documentId);
-        UserId userId = getUserSession(request).getWorkflowUser().getAuthenticationUserId();
         documentActions.superUserActionRequestApproveAction(getUserSession(request).getPrincipalId(), documentId, new Long(superUserForm.getActionTakenActionRequestId()), superUserForm.getAnnotation(), runPostProcessorLogic);
         String messageString;
         String actionReqest = (String) request.getParameter("buttonClick");
@@ -183,8 +175,8 @@ public class SuperUserAction extends WorkflowAction {
         SuperUserForm superUserForm = (SuperUserForm) form;
         DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(superUserForm.getRouteHeaderId());
         superUserForm.setRouteHeader(routeHeader);
-        WorkflowUser user = getUserSession(request).getWorkflowUser();
-        boolean isAuthorized = KEWServiceLocator.getDocumentTypePermissionService().canAdministerRouting(user.getWorkflowId(), routeHeader.getDocumentType());
+        String principalId = getUserSession(request).getPrincipalId();
+        boolean isAuthorized = KEWServiceLocator.getDocumentTypePermissionService().canAdministerRouting(principalId, routeHeader.getDocumentType());
         superUserForm.setAuthorized(isAuthorized);
         if (!isAuthorized) {
             saveDocumentActionMessage("general.routing.superuser.notAuthorized", request, superUserForm.getRouteHeaderIdString(), null);
@@ -206,7 +198,7 @@ public class SuperUserAction extends WorkflowAction {
 
         superUserForm.setDocId(superUserForm.getRouteHeaderId());
         if (superUserForm.getDocId() != null) {
-            superUserForm.setWorkflowDocument(new WorkflowDocument(new WorkflowIdDTO(getUserSession(request).getWorkflowUser().getWorkflowId()), superUserForm.getDocId()));
+            superUserForm.setWorkflowDocument(new WorkflowDocument(getUserSession(request).getPrincipalId(), superUserForm.getDocId()));
             superUserForm.establishVisibleActionRequestCds();
         }
 

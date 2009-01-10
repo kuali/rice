@@ -27,14 +27,12 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.WorkflowAction;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.util.KNSConstants;
 
 
@@ -109,21 +107,19 @@ public class BackdoorAction extends WorkflowAction {
         */
         UserSession uSession = getUserSession(request);
         BackdoorForm backdoorForm = (BackdoorForm) form;
-        if (!uSession.setBackdoorId(backdoorForm.getBackdoorId())) {
+        if (!uSession.establishBackdoorWithPrincipalName(backdoorForm.getBackdoorId())) {
 			request.setAttribute("badbackdoor", "Invalid backdoor Id given '" + backdoorForm.getBackdoorId() + "'");
         	return mapping.findForward("viewBackdoor");
         }
         uSession.getAuthentications().clear();
-        backdoorForm.setBackdoorId(uSession.getNetworkId());
         setFormGroupPermission(backdoorForm, request);
         //set up preferences as backdoor person
-        List<? extends KimGroup> groups = KIMServiceLocator.getIdentityManagementService().getGroupsForPrincipal(uSession.getWorkflowUser().getWorkflowId());
+        List<? extends KimGroup> groups = KIMServiceLocator.getIdentityManagementService().getGroupsForPrincipal(uSession.getPrincipalId());
         Set<String> groupNames = new HashSet<String>();
         for (KimGroup group: groups) {
             groupNames.add(group.getGroupName());
         }
         uSession.setGroups(groupNames);
-        uSession.setPreferences(KEWServiceLocator.getPreferencesService().getPreferences(uSession.getWorkflowUser().getWorkflowUserId().getId()));
     	// TODO: Implement UserSession Hook
         return mapping.findForward("viewBackdoor");
 
@@ -133,7 +129,7 @@ public class BackdoorAction extends WorkflowAction {
         String group = Utilities.getApplicationConstant(KEWConstants.WORKFLOW_ADMIN_WORKGROUP_NAME_KEY);
         KimGroup workflowAdminGroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(Utilities.parseGroupNamespaceCode(group), Utilities.parseGroupName(group));
         if(workflowAdminGroup!=null) {
-        	backdoorForm.setIsWorkflowAdmin(KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(getUserSession(request).getWorkflowUser().getWorkflowId(), workflowAdminGroup.getGroupId()));
+        	backdoorForm.setIsWorkflowAdmin(KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(getUserSession(request).getPrincipalId(), workflowAdminGroup.getGroupId()));
         }
     }
 

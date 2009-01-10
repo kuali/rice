@@ -16,7 +16,6 @@
 package org.kuali.rice.kew.mail;
 
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import mocks.MockEmailNotificationService;
@@ -25,8 +24,6 @@ import org.junit.Test;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.user.AuthenticationUserId;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.test.data.UnitTestData;
 import org.kuali.rice.test.data.UnitTestFile;
@@ -51,13 +48,16 @@ public class CustomizableActionListEmailServiceTest extends KEWTestCase {
         assertEquals("total number of daily reminders sent should be 0", Integer.valueOf(0), getMockEmailService().getTotalPeriodicRemindersSent(KEWConstants.EMAIL_RMNDR_DAY_VAL));
         assertEquals("total number of weekly reminders sent should be 0", Integer.valueOf(0), getMockEmailService().getTotalPeriodicRemindersSent(KEWConstants.EMAIL_RMNDR_WEEK_VAL));
 
+        String rkirkendPrincipalId = getPrincipalIdForName("rkirkend");
+        String jhopfPrincpalId = getPrincipalIdForName("jhopf");
+        
         long totalStartTimeInMills = System.currentTimeMillis();
-        setupPreferences(Arrays.asList(new AuthenticationUserId[]{new AuthenticationUserId("rkirkend"),new AuthenticationUserId("jhopf")}), KEWConstants.WEEKLY);
+        setupPreferences(Arrays.asList(new String[]{rkirkendPrincipalId, jhopfPrincpalId}), KEWConstants.WEEKLY);
         long weeklyStartTimeInMills = System.currentTimeMillis();
         getMockEmailService().sendWeeklyReminder();
         assertTrue("Style content service should have been called but was not", getMockEmailService().wasStyleServiceAccessed());
         long weeklyEndTimeInMills = System.currentTimeMillis();
-        setupPreferences(Arrays.asList(new AuthenticationUserId[]{new AuthenticationUserId("rkirkend"),new AuthenticationUserId("jhopf")}), KEWConstants.DAILY);
+        setupPreferences(Arrays.asList(new String[]{rkirkendPrincipalId, jhopfPrincpalId}), KEWConstants.DAILY);
         long dailyStartTimeInMills = System.currentTimeMillis();
         getMockEmailService().sendDailyReminder();
         assertTrue("Style content service should have been called but was not", getMockEmailService().wasStyleServiceAccessed());
@@ -83,13 +83,11 @@ public class CustomizableActionListEmailServiceTest extends KEWTestCase {
         assertTrue("Daily Reminder time for " + totalSent + " reminders sent must be under " + expectedValue + " ms", expectedValue > (dailyEndTimeInMills - dailyStartTimeInMills));
     }
 
-    private void setupPreferences(List<AuthenticationUserId> users, String emailNotificationPreference) throws Exception {
-        for (Iterator iterator = users.iterator(); iterator.hasNext();) {
-            AuthenticationUserId authenticationUserId = (AuthenticationUserId) iterator.next();
-            WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(authenticationUserId);
-            Preferences prefs = KEWServiceLocator.getPreferencesService().getPreferences(user.getWorkflowUserId().getId());
+    private void setupPreferences(List<String> users, String emailNotificationPreference) throws Exception {
+    	for (String principalId : users) {
+            Preferences prefs = KEWServiceLocator.getPreferencesService().getPreferences(principalId);
             prefs.setEmailNotification(emailNotificationPreference);
-            KEWServiceLocator.getPreferencesService().savePreferences(user.getWorkflowUserId().getId(), prefs);
+            KEWServiceLocator.getPreferencesService().savePreferences(principalId, prefs);
         }
     }
 

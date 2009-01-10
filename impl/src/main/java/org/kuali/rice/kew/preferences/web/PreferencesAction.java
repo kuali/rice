@@ -56,7 +56,7 @@ public class PreferencesAction extends WorkflowAction {
         PreferencesService prefSrv = (PreferencesService) KEWServiceLocator.getService(KEWServiceLocator.PREFERENCES_SERVICE);
         PreferencesForm prefForm = (PreferencesForm) form;
         prefSrv.savePreferences(getUserSession(request).getPrincipalId(), prefForm.getPreferences());
-        getUserSession(request).setPreferences(prefForm.getPreferences());
+        getUserSession(request).refreshPreferences();
         if (! isEmpty(prefForm.getReturnMapping())) {
             return mapping.findForward(prefForm.getReturnMapping());
         }

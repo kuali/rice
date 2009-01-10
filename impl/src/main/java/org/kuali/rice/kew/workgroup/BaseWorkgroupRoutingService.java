@@ -77,7 +77,7 @@ public class BaseWorkgroupRoutingService implements WorkgroupRoutingService {
         		documentType = workgroupType.getDocumentTypeName();
         	}
         }
-        return new WorkflowDocument(new WorkflowIdDTO(initiator.getWorkflowUser().getWorkflowId()), documentType);
+        return new WorkflowDocument(initiator.getPrincipalId(), documentType);
     }
 
     public Workgroup findByDocumentId(Long documentId) throws KEWUserNotFoundException {
@@ -135,7 +135,7 @@ public class BaseWorkgroupRoutingService implements WorkgroupRoutingService {
         if (simpleWorkgroup.getDocumentId() == null) {
             throw new WorkflowException("Workgroup document does not contain a valid document id.");
         }
-        WorkflowDocument document = getWorkflowDocumentForRouting(simpleWorkgroup.getDocumentId(), workgroup, user.getWorkflowUser());
+        WorkflowDocument document = getWorkflowDocumentForRouting(simpleWorkgroup.getDocumentId(), workgroup, user.getPrincipalId());
         saveWorkgroupForRouting(document, simpleWorkgroup);
         generateXmlContent(document, simpleWorkgroup);
         document.routeDocument(annotation);
@@ -149,7 +149,7 @@ public class BaseWorkgroupRoutingService implements WorkgroupRoutingService {
         if (simpleWorkgroup.getDocumentId() == null) {
             throw new WorkflowException("Workgroup document does not contain a valid document id.");
         }
-        WorkflowDocument document = getWorkflowDocumentForRouting(simpleWorkgroup.getDocumentId(), workgroup, user.getWorkflowUser());
+        WorkflowDocument document = getWorkflowDocumentForRouting(simpleWorkgroup.getDocumentId(), workgroup, user.getPrincipalId());
         saveWorkgroupForRouting(document, simpleWorkgroup);
         generateXmlContent(document, simpleWorkgroup);
         document.blanketApprove(annotation);
@@ -409,8 +409,8 @@ public class BaseWorkgroupRoutingService implements WorkgroupRoutingService {
     	document.setApplicationContent(xmlContent);
     }
 
-    protected WorkflowDocument getWorkflowDocumentForRouting(Long routeHeaderId, Workgroup workgroup, WorkflowUser user) throws WorkflowException {
-        WorkflowDocument workflowDocument = new WorkflowDocument(new WorkflowIdDTO(user.getWorkflowId()), routeHeaderId);
+    protected WorkflowDocument getWorkflowDocumentForRouting(Long routeHeaderId, Workgroup workgroup, String principalId) throws WorkflowException {
+        WorkflowDocument workflowDocument = new WorkflowDocument(principalId, routeHeaderId);
         workflowDocument.setTitle(getDocTitle(workgroup));
         addSearchableAttributeDefinitions(workflowDocument, workgroup);
         return workflowDocument;

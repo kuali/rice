@@ -2,7 +2,7 @@
 
 <%-- This would be a good spot to use a tag library since this code is essentially verbatim from WorkgroupEntry.jsp --%>
 <c:set var="userDisplayName" value="${RemoveReplaceForm.user.displayName}"/>
-<c:if test="${kewUserSession.workflowUser.workflowId != RemoveReplaceForm.user.workflowId}">
+<c:if test="${kewUserSession.principalId != RemoveReplaceForm.user.workflowId}">
   <c:set var="userDisplayName" value="${RemoveReplaceForm.user.displayNameSafe}"/>
 </c:if>
 <c:url var="userReportUrl" value="${UrlResolver.userReportUrl}">
@@ -12,7 +12,7 @@
 </c:url>
 
 <c:set var="replacementUserDisplayName" value="${RemoveReplaceForm.replacementUser.displayName}"/>
-<c:if test="${kewUserSession.workflowUser.workflowId != RemoveReplaceForm.replacementUser.workflowId}">
+<c:if test="${kewUserSession.principalId != RemoveReplaceForm.replacementUser.workflowId}">
   <c:set var="replacementUserDisplayName" value="${RemoveReplaceForm.replacementUser.displayNameSafe}"/>
 </c:if>
 <c:url var="replacementUserReportUrl" value="${UrlResolver.userReportUrl}">

@@ -31,19 +31,11 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.MDC;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
-import org.kuali.rice.kew.preferences.Preferences;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.AuthenticationUserId;
-import org.kuali.rice.kew.user.UserId;
-import org.kuali.rice.kew.user.UserService;
-import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.session.UserSession;
@@ -86,35 +78,20 @@ public class UserLoginFilter implements Filter {
         }
 
         if (userSession != null) {
-            // callback to the authentication service to update the user session if necessary
-        	// TODO: Implement UserSession Hook
-            if (userSession.isBackdoorInUse()) {
-                // a bad backdoorId is passed in all bets off
-                if (userSession.getWorkflowUser() == null) {
-                    try {
-                        userSession.setBackdoorId(userSession.getLoggedInWorkflowUser().getAuthenticationUserId().getAuthenticationId());
-                    } catch (KEWUserNotFoundException e) {
-                        // realistically if we can't find the logged in user we're done.
-                        LOG.error("Error setting backdoor id", e);
-                    }
-                }
-            }
-
             // Override the HttpServletRequest with one that provides
             // our logged-in user. This allows any engine-agnostic webapp code
             // that may be living in the context to obtain remote user traditionally
-            LOG.debug("Wrapping servlet request: " + userSession.getNetworkId());
+            LOG.debug("Wrapping servlet request: " + userSession.getPrincipalName());
             request = new HttpServletRequestWrapper(request) {
                 public String getRemoteUser() {
-                    return userSession.getNetworkId();
+                    return userSession.getPrincipalName();
                 }
             };
-
-            MDC.put("user", userSession.getNetworkId());
         }
 
         // set up the thread local reference to the current authenticated user
         // and then forward to next filter in the chain
+        MDC.put("user", userSession.getPrincipalName());
         try {
             UserSession.setAuthenticatedUser(userSession);
             if (isAuthorizedToViewResource(userSession, request)) {
@@ -124,6 +101,7 @@ public class UserLoginFilter implements Filter {
                 request.getRequestDispatcher("/WEB-INF/jsp/NotAuthorized.jsp").forward(request, response);
             }
         } finally {
+        	MDC.remove("user");
             UserSession.setAuthenticatedUser(null);
         }
 
@@ -150,55 +128,36 @@ public class UserLoginFilter implements Filter {
     private UserSession login(HttpServletRequest request) {
         LOG.info("performing user login: ");
 
-        WorkflowUser workflowUser = null;
-        try {
-        	String principalName 	= null;
-        	KimPrincipal principal	= null;
+        String principalName = null;
+        KimPrincipal principal = null;
 
-        	IdentityManagementService idmService = (IdentityManagementService) GlobalResourceLoader.getService(new QName("KIM", "kimIdentityManagementService"));
-        	principalName	= idmService.getAuthenticatedPrincipalName(request);
-        	principal		= idmService.getPrincipalByPrincipalName(principalName);
-
-            UserId id = new AuthenticationUserId(principalName);
-
-            if (id == null || StringUtils.isBlank(id.getId())) {
-                LOG.error("WebAuthenticationService did not derive a network id from incoming request");
-                return null;
-            }
-            if ( LOG.isDebugEnabled() ) {
-            	LOG.debug("Looking up user: " + id);
-            }
-            workflowUser = ((UserService) KEWServiceLocator.getUserService()).getWorkflowUser(id);
-            if ( LOG.isDebugEnabled() ) {
-            	LOG.debug("ending user lookup: " + workflowUser);
-            }
-
-
-
-            UserSession userSession = new UserSession(workflowUser);
-            // load the users preferences. The preferences action will update them if necessary
-            Preferences preferences = KEWServiceLocator.getPreferencesService().getPreferences(principal.getPrincipalId());
-            if (preferences.isRequiresSave()) {
-                LOG.info("Detected that user preferences require saving.");
-                KEWServiceLocator.getPreferencesService().savePreferences(principal.getPrincipalId(), preferences);
-                preferences = KEWServiceLocator.getPreferencesService().getPreferences(principal.getPrincipalId());
-            }
-            userSession.setPreferences(preferences);
-            List<? extends KimGroup> groups = KIMServiceLocator.getIdentityManagementService().getGroupsForPrincipal(userSession.getWorkflowUser().getWorkflowId());
-            Set<String> groupNames = new HashSet<String>();
-            for (KimGroup group: groups) {
-                groupNames.add(group.getGroupName());
-            }
-            userSession.setGroups(groupNames);
-            userSession.setPrincipal(principal);
-        	// TODO: Implement UserSession Hook
-            return userSession;
-        } catch (Exception e) {
-            LOG.error("Error in user login", e);
-        } finally {
-            LOG.info("...finished performing user login.");
+        IdentityManagementService idmService = KIMServiceLocator.getIdentityManagementService();
+        principalName = idmService.getAuthenticatedPrincipalName(request);
+        	
+        if ( LOG.isDebugEnabled() ) {
+        	LOG.debug("Looking up principal by name: " + principalName);
         }
-        return null;
+        
+        principal = idmService.getPrincipalByPrincipalName(principalName);
+
+        if (StringUtils.isBlank(principalName) || principal == null) {
+        	throw new RiceRuntimeException("WebAuthenticationService could not establish a principal from incoming request.  The principal name was " + principalName);
+        }
+        
+        if ( LOG.isDebugEnabled() ) {
+        	LOG.debug("ending user lookup: " + principal);
+        }
+
+        UserSession userSession = new UserSession(principal);
+        List<? extends KimGroup> groups = KIMServiceLocator.getIdentityManagementService().getGroupsForPrincipal(userSession.getPrincipalId());
+        Set<String> groupNames = new HashSet<String>();
+        for (KimGroup group: groups) {
+        	groupNames.add(group.getGroupName());
+        }
+        userSession.setGroups(groupNames);
+
+        LOG.info("...finished performing user login.");
+        return userSession;
     }
 
     public static UserSession getUserSession(HttpServletRequest request) {

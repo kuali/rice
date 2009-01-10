@@ -249,7 +249,7 @@ public class RoleServiceTest extends KEWTestCase {
 	 * complete request and a re-resolved request.
 	 */
 	private void assertInitiatorRequestDone(String roleName, String qualifiedRoleNameLabel) throws Exception {
-        KimPrincipal initiator = KEWServiceLocator.getIdentityHelperService().getPrincipalByName("rkirkend");
+        KimPrincipal initiator = KEWServiceLocator.getIdentityHelperService().getPrincipalByPrincipalName("rkirkend");
 		List requests = KEWServiceLocator.getActionRequestService().findByStatusAndDocId(KEWConstants.ACTION_REQUEST_DONE_STATE, documentId);
 		for (Iterator iterator = requests.iterator(); iterator.hasNext();) {
 			ActionRequestValue request = (ActionRequestValue) iterator.next();

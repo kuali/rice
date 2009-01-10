@@ -71,7 +71,7 @@ public class EDLControllerChain {
         if (edlContext.getUserSession() != null) {
             Person wu = edlContext.getUserSession().getPerson();
             if (wu != null) user = wu.getPrincipalId();
-            wu = edlContext.getUserSession().getLoggedInPerson();
+            wu = edlContext.getUserSession().getActualPerson();
             if (wu != null) loggedInUser = wu.getPrincipalId();
         }
         transformer.setParameter("user", user);

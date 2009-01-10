@@ -205,7 +205,7 @@ public class RoutingReportAction extends WorkflowAction {
         }
 
 		routeHeader.setDocContent(xmlDocumentContent);
-		routeHeader.setInitiatorWorkflowId(getUserSession(request).getWorkflowUser().getWorkflowUserId().getWorkflowId());
+		routeHeader.setInitiatorWorkflowId(getUserSession(request).getPrincipalId());
 		routeHeader.setDocRouteStatus(KEWConstants.ROUTE_HEADER_INITIATED_CD);
 		routeHeader.setDocTitle("Routing Report");
 		routeHeader.setRoutingReport(true);

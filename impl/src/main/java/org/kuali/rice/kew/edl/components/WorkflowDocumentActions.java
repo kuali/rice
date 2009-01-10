@@ -68,7 +68,7 @@ public class WorkflowDocumentActions implements EDLModelComponent {
 		UserAction userAction = edlContext.getUserAction();
 		WorkflowDocument document = null;
 		if (UserAction.ACTION_CREATE.equals(userAction.getAction())) {
-			document = new WorkflowDocument(new NetworkIdDTO(edlContext.getUserSession().getNetworkId()), edlContext.getEdocLiteAssociation().getEdlName());
+			document = new WorkflowDocument(edlContext.getUserSession().getPrincipalId(), edlContext.getEdocLiteAssociation().getEdlName());
 			document.setTitle("Routing Document Type '" + document.getDocumentType() + "'");
 			document.getRouteHeaderId();
 			LOG.info("Created document " + document.getRouteHeaderId());
@@ -80,7 +80,7 @@ public class WorkflowDocumentActions implements EDLModelComponent {
 					LOG.info("no document found for edl " + edlContext.getEdocLiteAssociation().getEdlName());
 					return;
 				} else {
-					document = new WorkflowDocument(new NetworkIdDTO(edlContext.getUserSession().getNetworkId()), new Long(docId));
+					document = new WorkflowDocument(edlContext.getUserSession().getPrincipalId(), new Long(docId));
 				}
 			}
 		}

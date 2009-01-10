@@ -66,7 +66,6 @@ import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.util.KNSConstants;
 
 
@@ -148,8 +147,8 @@ public class ActionListAction extends WorkflowAction {
              * occurred yet
              */
             boolean forceListRefresh = request.getSession().getAttribute(REQUERY_ACTION_LIST_KEY) != null;
-            if (uSession.getHelpDeskActionListUser() != null) {
-            	principalId = uSession.getHelpDeskActionListUser().getPrincipalId();
+            if (uSession.getHelpDeskActionListPrincipal() != null) {
+            	principalId = uSession.getHelpDeskActionListPrincipal().getPrincipalId();
             } else {
                 if (!StringUtils.isEmpty(form.getDocType())) {
                     uSession.getActionListFilter().setDocumentType(form.getDocType());
@@ -545,8 +544,7 @@ public class ActionListAction extends WorkflowAction {
 
     public ActionForward helpDeskActionListLogin(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         ActionListForm actionListForm = (ActionListForm) form;
-        Person helpDeskActionListUser = KIMServiceLocator.getPersonService().getPersonByPrincipalName(actionListForm.getHelpDeskActionListUserName());
-        getUserSession(request).setHelpDeskActionListUser(helpDeskActionListUser);
+        getUserSession(request).establishHelpDeskWithPrincipalName(actionListForm.getHelpDeskActionListUserName());
         actionListForm.setDelegator(null);
         request.getSession().setAttribute(REQUERY_ACTION_LIST_KEY, "true");
         return start(mapping, form, request, response);
@@ -564,7 +562,7 @@ public class ActionListAction extends WorkflowAction {
 
     public ActionForward clearHelpDeskActionListUser(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LOG.debug("clearHelpDeskActionListUser ActionListAction");
-        getUserSession(request).setHelpDeskActionListUser(null);
+        getUserSession(request).clearHelpDesk();
         LOG.debug("end clearHelpDeskActionListUser ActionListAction");
         return start(mapping, form, request, response);
     }
@@ -651,8 +649,8 @@ public class ActionListAction extends WorkflowAction {
     public ActionMessages establishFinalState(HttpServletRequest request, ActionForm form) throws Exception {
         LOG.debug("establishFinalState ActionListAction");
         ActionListForm actionListForm = (ActionListForm) form;
-        if (getUserSession(request).getHelpDeskActionListUser() != null) {
-            actionListForm.setHelpDeskActionListUserName(getUserSession(request).getHelpDeskActionListUser().getPrincipalName());
+        if (getUserSession(request).getHelpDeskActionListPrincipal() != null) {
+            actionListForm.setHelpDeskActionListUserName(getUserSession(request).getHelpDeskActionListPrincipal().getPrincipalName());
         }
         LOG.debug("end establishFinalState ActionListAction");
         return null;

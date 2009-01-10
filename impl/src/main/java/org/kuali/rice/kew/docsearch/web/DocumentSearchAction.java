@@ -252,7 +252,7 @@ public class DocumentSearchAction extends WorkflowAction {
                 setDropdowns(docSearchForm, request);
                 results = result.getSearchResult();
             } else {
-                LOG.warn("Could not find saved search with name '" + docSearchForm.getNamedSearch() + "' for user " + getUserSession(request).getWorkflowUser());
+                LOG.warn("Could not find saved search with name '" + docSearchForm.getNamedSearch() + "' for user " + getUserSession(request).getPrincipalName());
                 ActionErrors errors = new ActionErrors();
                 errors.add(ActionErrors.GLOBAL_MESSAGE, new ActionMessage("docsearch.DocumentSearchService.savedSearches.notFound", docSearchForm.getNamedSearch()));
                 saveErrors(request, errors);
@@ -262,7 +262,7 @@ public class DocumentSearchAction extends WorkflowAction {
             docSearchForm.addSearchableAttributesToCriteria();
             DocSearchCriteriaDTO criteria = docSearchForm.getCriteria();
             if (docSearchForm.isInitiatorUser()) {
-                criteria.setInitiator(getUserSession(request).getNetworkId());
+                criteria.setInitiator(getUserSession(request).getPrincipalName());
             }
             results = getDocumentSearchService().getList(getUserSession(request).getPerson().getPrincipalId(), criteria);
             result = new SavedSearchResult(criteria, results);
@@ -370,7 +370,7 @@ public class DocumentSearchAction extends WorkflowAction {
         docSearchForm.addSearchableAttributesToCriteria();
         DocSearchCriteriaDTO newCriteria = criteria;
         if (docSearchForm.isInitiatorUser()) {
-            newCriteria.setInitiator(userSession.getNetworkId());
+            newCriteria.setInitiator(userSession.getPrincipalName());
         }
         if (newCriteria != null) {
             processor.setDocSearchCriteriaDTO(newCriteria);

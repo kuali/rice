@@ -82,8 +82,6 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
 
                 LOG.debug("ending user lookup: " + user);
                 UserSession userSession = new UserSession(user.getPrincipalId());
-                //load the users preferences.  The preferences action will update them if necessary
-                userSession.setPreferences(KEWServiceLocator.getPreferencesService().getPreferences(user.getPrincipalId()));
                 userSession.setGroups(KEWServiceLocator.getWorkgroupService().getUsersGroupNames(user.getPrincipalId()));
                 // set up the thread local reference to the current authenticated user
                 for (String dummyRoleName : dummyRoleNames) {

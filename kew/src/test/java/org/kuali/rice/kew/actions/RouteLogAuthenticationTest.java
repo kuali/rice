@@ -17,12 +17,9 @@
 package org.kuali.rice.kew.actions;
 
 import org.junit.Test;
-import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.edl.WorkflowFunctions;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.web.session.UserSession;
 
 
@@ -38,7 +35,9 @@ public class RouteLogAuthenticationTest extends KEWTestCase {
      * Tests WorkflowFunctions.isUserRouteLogAuthenticated
      */
     @Test public void testUserRouteLogAuthenticated() throws Exception {
-    	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), DOCUMENT_TYPE_NAME);
+    	String user1PrincipalId = getPrincipalIdForName("user1");
+    	
+    	WorkflowDocument document = new WorkflowDocument(user1PrincipalId, DOCUMENT_TYPE_NAME);
     	document.routeDocument("");
 
     	// ensure the UserSession is cleared out (could have been set up by other tests)
@@ -48,13 +47,13 @@ public class RouteLogAuthenticationTest extends KEWTestCase {
         assertFalse(WorkflowFunctions.isUserRouteLogAuthenticated(document.getRouteHeaderId() + ""));
         
         // these two should be in the route log
-        UserSession.setAuthenticatedUser(new UserSession(KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("user1"))));
+        UserSession.setAuthenticatedUser(new UserSession(user1PrincipalId));
         assertTrue(WorkflowFunctions.isUserRouteLogAuthenticated(document.getRouteHeaderId() + ""));
-        UserSession.setAuthenticatedUser(new UserSession(KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("bmcgough"))));
+        UserSession.setAuthenticatedUser(new UserSession(getPrincipalIdForName("bmgough")));
         assertTrue(WorkflowFunctions.isUserRouteLogAuthenticated(document.getRouteHeaderId() + ""));
         
         // user2 should NOT be in the route log
-        UserSession.setAuthenticatedUser(new UserSession(KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("user2"))));
+        UserSession.setAuthenticatedUser(new UserSession(getPrincipalIdForName("user2")));
         assertFalse(WorkflowFunctions.isUserRouteLogAuthenticated(document.getRouteHeaderId() + ""));
     }
 	

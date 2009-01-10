@@ -7,7 +7,7 @@
 
 <c:if test="${kewUserSession.backdoorInUse}">
 <center>
-	Backdoor is in use.  User <c:out value="${kewUserSession.loggedInWorkflowUser.authenticationUserId.authenticationId}" /> standing in for
-	<c:out value="${kewUserSession.networkId}" />.
+	Backdoor is in use.  User <c:out value="${kewUserSession.actualPrincipal.principalName}" /> standing in for
+	<c:out value="${kewUserSession.principal.principalName}" />.
 </center>
 </c:if>

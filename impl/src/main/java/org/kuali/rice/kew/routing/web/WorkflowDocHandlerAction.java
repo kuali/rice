@@ -135,7 +135,7 @@ public class WorkflowDocHandlerAction extends WorkflowAction {
     public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
         DocHandlerForm docHandlerForm = (DocHandlerForm) form;
         try {
-            WorkflowDocument workflowDocument = new WorkflowDocument(new WorkflowIdDTO(getUserSession(request).getWorkflowUser().getWorkflowId()), docHandlerForm.getDocId());
+            WorkflowDocument workflowDocument = new WorkflowDocument(getUserSession(request).getPrincipalId(), docHandlerForm.getDocId());
             docHandlerForm.setWorkflowDocument(workflowDocument);
         } catch (Exception e) {
             throw new RuntimeException(e);

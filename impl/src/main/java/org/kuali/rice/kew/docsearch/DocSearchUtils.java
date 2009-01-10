@@ -385,7 +385,7 @@ public class DocSearchUtils {
                     if (value.startsWith(CURRENT_USER_PREFIX)) {
                         String idType = value.substring(CURRENT_USER_PREFIX.length());
                         UserSession session = UserSession.getAuthenticatedUser();
-                        String idValue = UserUtils.getIdValue(idType, session.getWorkflowUser());
+                        String idValue = UserUtils.getIdValue(idType, session.getPerson());
                         if (!StringUtils.isBlank(idValue)) {
                             value = idValue;
                         }

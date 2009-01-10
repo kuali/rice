@@ -21,14 +21,10 @@ import mocks.MockEmailNotificationServiceImpl;
 
 import org.junit.Test;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.mail.EmailReminderLifecycle;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.user.AuthenticationUserId;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 
 
@@ -58,17 +54,19 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 		ConfigContext.getCurrentContextConfig().overrideProperty(KEWConstants.DAILY_EMAIL_ACTIVE, "true");
 		ConfigContext.getCurrentContextConfig().overrideProperty(KEWConstants.WEEKLY_EMAIL_ACTIVE, "false");
 
+		String ewestfalPrincipalId = getPrincipalIdForName("ewestfal");
+		String rkirkendPrincipalId = getPrincipalIdForName("rkirkend");
+		
 		// setup ewestfal to recieve daily emails
-		WorkflowUser ewestfal = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("ewestfal"));
-		Preferences prefs = KEWServiceLocator.getPreferencesService().getPreferences(ewestfal.getWorkflowUserId().getId());
+		Preferences prefs = KEWServiceLocator.getPreferencesService().getPreferences(ewestfalPrincipalId);
 		prefs.setEmailNotification(KEWConstants.DAILY);
-		KEWServiceLocator.getPreferencesService().savePreferences(ewestfal.getWorkflowUserId().getId(), prefs);
+		KEWServiceLocator.getPreferencesService().savePreferences(ewestfalPrincipalId, prefs);
 
-		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "TestDocumentType");
-		document.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "", getPrincipalIdForName("ewestfal"), "", Boolean.TRUE);
+		WorkflowDocument document = new WorkflowDocument(rkirkendPrincipalId, "TestDocumentType");
+		document.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "", ewestfalPrincipalId, "", Boolean.TRUE);
 		document.routeDocument("");
 
-		document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
+		document = new WorkflowDocument(ewestfalPrincipalId, document.getRouteHeaderId());
 		assertTrue(document.isApprovalRequested());
 
 		int emailsSent = getMockEmailService().immediateReminderEmailsSent("ewestfal", document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ);
@@ -104,17 +102,19 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 		ConfigContext.getCurrentContextConfig().overrideProperty(KEWConstants.WEEKLY_EMAIL_ACTIVE, "true");
 		ConfigContext.getCurrentContextConfig().overrideProperty(KEWConstants.DAILY_EMAIL_ACTIVE, "false");
 
+		String ewestfalPrincipalId = getPrincipalIdForName("ewestfal");
+		String rkirkendPrincipalId = getPrincipalIdForName("rkirkend");
+		
 		// setup ewestfal to recieve weekly emails
-		WorkflowUser ewestfal = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("ewestfal"));
-		Preferences prefs = KEWServiceLocator.getPreferencesService().getPreferences(ewestfal.getWorkflowUserId().getId());
+		Preferences prefs = KEWServiceLocator.getPreferencesService().getPreferences(ewestfalPrincipalId);
 		prefs.setEmailNotification(KEWConstants.WEEKLY);
-		KEWServiceLocator.getPreferencesService().savePreferences(ewestfal.getWorkflowUserId().getId(), prefs);
+		KEWServiceLocator.getPreferencesService().savePreferences(ewestfalPrincipalId, prefs);
 
-		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "TestDocumentType");
-		document.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "", getPrincipalIdForName("ewestfal"), "", Boolean.TRUE);
+		WorkflowDocument document = new WorkflowDocument(rkirkendPrincipalId, "TestDocumentType");
+		document.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "", ewestfalPrincipalId, "", Boolean.TRUE);
 		document.routeDocument("");
 
-		document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
+		document = new WorkflowDocument(ewestfalPrincipalId, document.getRouteHeaderId());
 		assertTrue(document.isApprovalRequested());
 
 		int emailsSent = getMockEmailService().immediateReminderEmailsSent("ewestfal", document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ);

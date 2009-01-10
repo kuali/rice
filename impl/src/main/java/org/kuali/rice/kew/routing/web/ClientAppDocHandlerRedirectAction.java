@@ -78,7 +78,7 @@ public class ClientAppDocHandlerRedirectAction extends WorkflowAction {
 
         docHandler += "&" + KEWConstants.COMMAND_PARAMETER + "=" + docHandlerForm.getCommand();
         if (getUserSession(request).isBackdoorInUse()) {
-            docHandler += "&" + KEWConstants.BACKDOOR_ID_PARAMETER + "=" + getUserSession(request).getNetworkId();
+            docHandler += "&" + KEWConstants.BACKDOOR_ID_PARAMETER + "=" + getUserSession(request).getPrincipalName();
         }
         return new ActionForward(docHandler, true);
     }

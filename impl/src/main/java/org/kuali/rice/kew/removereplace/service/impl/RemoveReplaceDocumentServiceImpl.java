@@ -58,7 +58,7 @@ public class RemoveReplaceDocumentServiceImpl implements RemoveReplaceDocumentSe
     public void blanketApprove(RemoveReplaceDocument document, UserSession user, String annotation) {
 	save(document);
 	try {
-	    WorkflowDocument workflowDoc = new WorkflowDocument(new NetworkIdDTO(user.getNetworkId()), document.getDocumentId());
+	    WorkflowDocument workflowDoc = new WorkflowDocument(user.getPrincipalId(), document.getDocumentId());
 	    constructTitle(document, workflowDoc);
 	    attachDocumentContent(document, workflowDoc);
 	    workflowDoc.blanketApprove(annotation);
@@ -70,7 +70,7 @@ public class RemoveReplaceDocumentServiceImpl implements RemoveReplaceDocumentSe
     public void route(RemoveReplaceDocument document, UserSession user, String annotation) {
 	save(document);
 	try {
-	    WorkflowDocument workflowDoc = new WorkflowDocument(new NetworkIdDTO(user.getNetworkId()), document.getDocumentId());
+	    WorkflowDocument workflowDoc = new WorkflowDocument(user.getPrincipalId(), document.getDocumentId());
 	    constructTitle(document, workflowDoc);
 	    attachDocumentContent(document, workflowDoc);
 	    workflowDoc.routeDocument(annotation);

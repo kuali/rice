@@ -80,7 +80,7 @@ public class KEWConstants {
 
     // Routing Report constants
     public static final String DOCUMENT_TYPE_NAME_ATTRIBUTE_NAME = "documentTypeParam";
-    public static final String INITIATOR_ID_ATTRIBUTE_NAME = "initiatorNetworkId";
+    public static final String INITIATOR_ID_ATTRIBUTE_NAME = "initiatorPrincipalId";
     public static final String DOCUMENT_CONTENT_ATTRIBUTE_NAME = "documentContent";
     public static final String RETURN_URL_ATTRIBUTE_NAME = "backUrl";
     public static final String DISPLAY_CLOSE_BUTTON_ATTRIBUTE_NAME = "showCloseButton";

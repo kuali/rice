@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.ken.services.impl;
 
-import static org.junit.Assert.*;
-
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.ken.service.impl.NotificationRecipientServiceKimImpl;

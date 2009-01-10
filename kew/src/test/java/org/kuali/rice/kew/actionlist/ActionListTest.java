@@ -42,12 +42,9 @@ import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.UserService;
-import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
@@ -175,16 +172,12 @@ public class ActionListTest extends KEWTestCase {
 
     	// now lets verify that everyone's action lists look correct
 
-    	WorkflowUser bmcgough = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("bmcgough"));
-    	//KimPrincipal bmcgough = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("bmcgough");
-    	WorkflowUser rkirkend = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("rkirkend"));
-    	//KimPrincipal rkirkend = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("rkirkend");
-    	WorkflowUser ewestfal = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("ewestfal"));
-    	//KimPrincipal ewestfal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("ewestfal");
-    	WorkflowUser jitrue = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("jitrue"));
-    	//KimPrincipal jitrue = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("jitrue");
-    	WorkflowUser user1 = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("user1"));
-    	//KimPrincipal user1 = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("user1");
+    	String bmcgoughPrincipalId = getPrincipalIdForName("bmcgough");
+    	String rkirkendPrincipalId = getPrincipalIdForName("rkirkend");
+    	String ewestfalPrincipalId = getPrincipalIdForName("ewestfal");
+    	String jitruePrincipalId = getPrincipalIdForName("jitrue");
+    	String user1PrincipalId = getPrincipalIdForName("user1");
+    	
     	KimGroup NonSIT = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "NonSIT");
 
     	ActionListFilter noFilter = new ActionListFilter();
@@ -196,9 +189,9 @@ public class ActionListTest extends KEWTestCase {
     	Collection actionItems = null;
     	ActionItem actionItem = null;
 
-    	actionItems = getActionListService().getActionList(bmcgough.getWorkflowId(), excludeSecondaryFilter);
+    	actionItems = getActionListService().getActionList(bmcgoughPrincipalId, excludeSecondaryFilter);
     	assertEquals("bmcgough should have 0 items in his primary action list.", 0, actionItems.size());
-    	actionItems = getActionListService().getActionList(bmcgough.getWorkflowId(), secondaryFilter);
+    	actionItems = getActionListService().getActionList(bmcgoughPrincipalId, secondaryFilter);
     	assertEquals("bmcgough should have 1 item in his secondary action list.", 1, actionItems.size());
         actionItem = (ActionItem)actionItems.iterator().next();
         assertEquals("Should be an approve request.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
@@ -206,20 +199,20 @@ public class ActionListTest extends KEWTestCase {
     	actionItem = (ActionItem)actionItems.iterator().next();
     	assertEquals("Should be an approve request.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
     	assertEquals("Should be a secondary delegation request.", KEWConstants.DELEGATION_SECONDARY, actionItem.getDelegationType());
-    	actionItems = getActionListService().getActionList(bmcgough.getWorkflowId(), noFilter);
+    	actionItems = getActionListService().getActionList(bmcgoughPrincipalId, noFilter);
     	assertEquals("bmcgough should have 1 item in his entire action list.", 1, actionItems.size());
 
-    	actionItems = getActionListService().getActionList(rkirkend.getWorkflowId(), excludeSecondaryFilter);
+    	actionItems = getActionListService().getActionList(rkirkendPrincipalId, excludeSecondaryFilter);
     	assertEquals("bmcgough should have 1 item in his primary action list.", 1, actionItems.size());
 
-    	actionItems = getActionListService().getActionList(jitrue.getWorkflowId(), excludeSecondaryFilter);
+    	actionItems = getActionListService().getActionList(jitruePrincipalId, excludeSecondaryFilter);
     	assertEquals("jitrue should have 1 item in his primary action list.", 1, actionItems.size());
 
-    	actionItems = getActionListService().getActionList(ewestfal.getWorkflowId(), secondaryFilter);
+    	actionItems = getActionListService().getActionList(ewestfalPrincipalId, secondaryFilter);
     	assertEquals("ewestfal should have 1 item in his secondary action list.", 1, actionItems.size());
 
     	// check that user1's approve comes out as their action item from the action list
-    	actionItems = getActionListService().getActionList(user1.getWorkflowId(), noFilter);
+    	actionItems = getActionListService().getActionList(user1PrincipalId, noFilter);
     	assertEquals("user1 should have 1 item in his primary action list.", 1, actionItems.size());
     	actionItem = (ActionItem)actionItems.iterator().next();
     	assertEquals("Should be an approve request.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
@@ -227,7 +220,7 @@ public class ActionListTest extends KEWTestCase {
     	// check that user1 acknowledge shows up when filtering
     	ActionListFilter ackFilter = new ActionListFilter();
     	ackFilter.setActionRequestCd(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
-    	actionItems = getActionListService().getActionList(user1.getWorkflowId(), ackFilter);
+    	actionItems = getActionListService().getActionList(user1PrincipalId, ackFilter);
     	assertEquals("user1 should have 1 item in his primary action list.", 1, actionItems.size());
     	actionItem = (ActionItem)actionItems.iterator().next();
     	assertEquals("Should be an acknowledge request.", KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, actionItem.getActionRequestCd());
@@ -237,9 +230,8 @@ public class ActionListTest extends KEWTestCase {
     	for (Iterator iterator = KIMServiceLocator.getIdentityManagementService().getGroupMemberPrincipalIds(NonSIT.getGroupId()).iterator(); iterator.hasNext(); ) {
 			String userId = (String)iterator.next();
 			//will want to convert to Kim Principal
-    	    WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(userId));
-			actionItems = getActionListService().getActionList(user.getWorkflowId(), excludeSecondaryFilter);
-			assertEquals("Workgroup Member " + user.getDisplayName() + " should have 1 action item.", 1, actionItems.size());
+			actionItems = getActionListService().getActionList(userId, excludeSecondaryFilter);
+			assertEquals("Workgroup Member " + userId + " should have 1 action item.", 1, actionItems.size());
 			actionItem = (ActionItem)actionItems.iterator().next();
 			assertEquals("Should be an approve request.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
 			assertEquals("Should be to a workgroup.", NonSIT.getGroupId(), actionItem.getGroupId());
@@ -250,11 +242,11 @@ public class ActionListTest extends KEWTestCase {
         document = new WorkflowDocument(new NetworkIdDTO("jhopf"), "ActionListDocumentType_PrimaryDelegate2");
         document.routeDocument("");
 
-        actionItems = getActionListService().getActionList(bmcgough.getWorkflowId(), excludeSecondaryFilter);
+        actionItems = getActionListService().getActionList(bmcgoughPrincipalId, excludeSecondaryFilter);
         assertEquals("bmcgough should have 0 items in his primary action list.", 0, actionItems.size());
-        actionItems = getActionListService().getActionList(bmcgough.getWorkflowId(), secondaryFilter);
+        actionItems = getActionListService().getActionList(bmcgoughPrincipalId, secondaryFilter);
         assertEquals("bmcgough should have 1 item in his secondary action list.", 3, actionItems.size());
-        actionItems = getActionListService().getActionList(bmcgough.getWorkflowId(), new ActionListFilter());
+        actionItems = getActionListService().getActionList(bmcgoughPrincipalId, new ActionListFilter());
         assertEquals("bmcgough should have 1 item in his entire action list.", 3, actionItems.size());
 
         ActionListFilter filter = null;
@@ -262,38 +254,38 @@ public class ActionListTest extends KEWTestCase {
         filter = new ActionListFilter();
         filter.setDelegatorId(KEWConstants.DELEGATION_DEFAULT);
         filter.setPrimaryDelegateId(KEWConstants.PRIMARY_DELEGATION_DEFAULT);
-        actionItems = getActionListService().getActionList(bmcgough.getWorkflowId(), filter);
+        actionItems = getActionListService().getActionList(bmcgoughPrincipalId, filter);
         assertEquals("bmcgough should have 0 items in his entire action list.", 0, actionItems.size());
 
         // test secondary delegation with all selected returns all
         filter = new ActionListFilter();
         filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
         filter.setDelegatorId(KEWConstants.ALL_CODE);
-        actionItems = getActionListService().getActionList(bmcgough.getWorkflowId(), filter);
+        actionItems = getActionListService().getActionList(bmcgoughPrincipalId, filter);
         assertEquals("bmcgough has incorrect action list item count.", 3, actionItems.size());
 
         // test that primary delegation with none selected returns none
         filter = new ActionListFilter();
         filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
         filter.setDelegatorId(KEWConstants.DELEGATION_DEFAULT);
-        actionItems = getActionListService().getActionList(bmcgough.getWorkflowId(), filter);
+        actionItems = getActionListService().getActionList(bmcgoughPrincipalId, filter);
         assertEquals("bmcgough has incorrect action list item count.", 0, actionItems.size());
 
         // test that primary delegation with single user ids works corectly
         filter = new ActionListFilter();
         filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
-        filter.setDelegatorId(bmcgough.getWorkflowId());
-        actionItems = getActionListService().getActionList(bmcgough.getWorkflowId(), filter);
+        filter.setDelegatorId(bmcgoughPrincipalId);
+        actionItems = getActionListService().getActionList(bmcgoughPrincipalId, filter);
         assertEquals("bmcgough has incorrect action list item count.", 3, actionItems.size());
         filter = new ActionListFilter();
         filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
-        filter.setDelegatorId(bmcgough.getWorkflowId());
-        actionItems = getActionListService().getActionList(ewestfal.getWorkflowId(), filter);
+        filter.setDelegatorId(bmcgoughPrincipalId);
+        actionItems = getActionListService().getActionList(ewestfalPrincipalId, filter);
         assertEquals("ewestfal has incorrect action list item count.", 3, actionItems.size());
         filter = new ActionListFilter();
         filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
-        filter.setDelegatorId(jitrue.getWorkflowId());
-        actionItems = getActionListService().getActionList(jitrue.getWorkflowId(), filter);
+        filter.setDelegatorId(jitruePrincipalId);
+        actionItems = getActionListService().getActionList(jitruePrincipalId, filter);
         assertEquals("jitrue has incorrect action list item count.", 3, actionItems.size());
     }
 
@@ -314,60 +306,31 @@ public class ActionListTest extends KEWTestCase {
 
     	// now lets verify that everyone's action lists look correct
 
-    	WorkflowUser bmcgough = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("bmcgough"));
-    	WorkflowUser rkirkend = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("rkirkend"));
-//    	WorkflowUser ewestfal = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("ewestfal"));
-//    	WorkflowUser jitrue = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("jitrue"));
-//    	WorkflowUser user1 = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("user1"));
-        WorkflowUser delyea = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("delyea"));
-        WorkflowUser temay = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("temay"));
+    	String bmcgoughPrincipalId = getPrincipalIdForName("bmcgough");
+    	String rkirkendPrincipalId = getPrincipalIdForName("rkirkend");
+    	String delyeaPrincipalId = getPrincipalIdForName("delyea");
+    	String temayPrincipalId = getPrincipalIdForName("temay");
+    	String jhopfPrincipalId = getPrincipalIdForName("jhopf");
 
-//    	ActionListFilter excludeSecondaryFilter = new ActionListFilter();
-//    	excludeSecondaryFilter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
-//    	excludeSecondaryFilter.setExcludeDelegationType(true);
-//    	ActionListFilter showSecondaryFilter = new ActionListFilter();
-//    	showSecondaryFilter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
     	ActionListFilter showPrimaryFilter = new ActionListFilter();
     	showPrimaryFilter.setDelegationType(KEWConstants.DELEGATION_PRIMARY);
     	Collection actionItems = null;
     	ActionItem actionItem = null;
 
     	// make sure showing primary delegations show primary delegated action items
-    	actionItems = getActionListService().getActionList(bmcgough.getWorkflowId(), showPrimaryFilter);
+    	actionItems = getActionListService().getActionList(bmcgoughPrincipalId, showPrimaryFilter);
     	assertEquals("bmcgough should have 1 item in his primary delegation action list.", 1, actionItems.size());
-//    	actionItems = getActionListService().getActionList(bmcgough, excludeSecondaryFilter);
-//    	assertEquals("bmcgough should have 0 items in his primary action list.", 0, actionItems.size());
-//    	actionItems = getActionListService().getActionList(bmcgough, showSecondaryFilter);
-//    	assertEquals("bmcgough should have 1 item in his secondary action list.", 1, actionItems.size());
-//    	actionItem = (ActionItem)actionItems.iterator().next();
-//    	assertEquals("Should be an approve request.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
-//    	assertEquals("Should be a secondary delegation request.", KEWConstants.DELEGATION_SECONDARY, actionItem.getDelegationType());
-    	actionItems = getActionListService().getActionList(bmcgough.getWorkflowId(), new ActionListFilter());
+    	actionItems = getActionListService().getActionList(bmcgoughPrincipalId, new ActionListFilter());
     	assertEquals("bmcgough should have 1 item in his entire action list.", 1, actionItems.size());
 
-//    	actionItems = getActionListService().getActionList(rkirkend, excludeSecondaryFilter);
-//    	assertEquals("rkirkend should have 1 item in his primary action list.", 1, actionItems.size());
-
-    	document = new WorkflowDocument(new NetworkIdDTO("jhopf"), "ActionListDocumentType_PrimaryDelegate");
+    	document = new WorkflowDocument(jhopfPrincipalId, "ActionListDocumentType_PrimaryDelegate");
     	document.routeDocument("");
-    	document = new WorkflowDocument(new NetworkIdDTO("jhopf"), "ActionListDocumentType_PrimaryDelegate2");
+    	document = new WorkflowDocument(jhopfPrincipalId, "ActionListDocumentType_PrimaryDelegate2");
         document.routeDocument("");
 
-        actionItems = getActionListService().getActionList(bmcgough.getWorkflowId(), showPrimaryFilter);
+        actionItems = getActionListService().getActionList(bmcgoughPrincipalId, showPrimaryFilter);
         // should be 6 total action items but 3 distinct doc ids
         assertEquals("bmcgough should have 1 item in his primary delegation action list.", 3, actionItems.size());
-//        actionItems = getActionListService().getActionList(bmcgough, excludeSecondaryFilter);
-//        assertEquals("bmcgough should have 0 items in his primary action list.", 0, actionItems.size());
-//        actionItems = getActionListService().getActionList(bmcgough, showSecondaryFilter);
-//        assertEquals("bmcgough should have 1 item in his secondary action list.", 3, actionItems.size());
-//        actionItem = (ActionItem)actionItems.iterator().next();
-//        assertEquals("Should be an approve request.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
-//        assertEquals("Should be a secondary delegation request.", KEWConstants.DELEGATION_SECONDARY, actionItem.getDelegationType());
-//        actionItems = getActionListService().getActionList(bmcgough, new ActionListFilter());
-//        assertEquals("bmcgough should have 1 item in his entire action list.", 3, actionItems.size());
-
-//        actionItems = getActionListService().getActionList(rkirkend, excludeSecondaryFilter);
-//        assertEquals("rkirkend should have 1 item in his primary action list.", 3, actionItems.size());
 
         ActionListFilter filter = null;
 
@@ -375,38 +338,38 @@ public class ActionListTest extends KEWTestCase {
         filter = new ActionListFilter();
         filter.setDelegatorId(KEWConstants.DELEGATION_DEFAULT);
         filter.setPrimaryDelegateId(KEWConstants.PRIMARY_DELEGATION_DEFAULT);
-        actionItems = getActionListService().getActionList(bmcgough.getWorkflowId(), filter);
+        actionItems = getActionListService().getActionList(bmcgoughPrincipalId, filter);
         assertEquals("bmcgough should have 0 items in his entire action list.", 0, actionItems.size());
 
         // test primary delegation with all selected returns all
         filter = new ActionListFilter();
         filter.setDelegationType(KEWConstants.DELEGATION_PRIMARY);
         filter.setPrimaryDelegateId(KEWConstants.ALL_CODE);
-        actionItems = getActionListService().getActionList(bmcgough.getWorkflowId(), filter);
+        actionItems = getActionListService().getActionList(bmcgoughPrincipalId, filter);
         assertEquals("bmcgough should have 1 item in his entire action list.", 3, actionItems.size());
 
         // test that primary delegation with none selected returns none
         filter = new ActionListFilter();
         filter.setDelegationType(KEWConstants.DELEGATION_PRIMARY);
         filter.setPrimaryDelegateId(KEWConstants.PRIMARY_DELEGATION_DEFAULT);
-        actionItems = getActionListService().getActionList(bmcgough.getWorkflowId(), filter);
+        actionItems = getActionListService().getActionList(bmcgoughPrincipalId, filter);
         assertEquals("bmcgough should have 1 item in his entire action list.", 0, actionItems.size());
 
         // test that primary delegation with single user ids works corectly
         filter = new ActionListFilter();
         filter.setDelegationType(KEWConstants.DELEGATION_PRIMARY);
-        filter.setPrimaryDelegateId(rkirkend.getWorkflowId());
-        actionItems = getActionListService().getActionList(bmcgough.getWorkflowId(), filter);
+        filter.setPrimaryDelegateId(rkirkendPrincipalId);
+        actionItems = getActionListService().getActionList(bmcgoughPrincipalId, filter);
         assertEquals("bmcgough should have 3 items in his entire action list.", 3, actionItems.size());
         filter = new ActionListFilter();
         filter.setDelegationType(KEWConstants.DELEGATION_PRIMARY);
-        filter.setPrimaryDelegateId(delyea.getWorkflowId());
-        actionItems = getActionListService().getActionList(bmcgough.getWorkflowId(), filter);
+        filter.setPrimaryDelegateId(delyeaPrincipalId);
+        actionItems = getActionListService().getActionList(bmcgoughPrincipalId, filter);
         assertEquals("bmcgough should have 2 items in his entire action list.", 2, actionItems.size());
         filter = new ActionListFilter();
         filter.setDelegationType(KEWConstants.DELEGATION_PRIMARY);
-        filter.setPrimaryDelegateId(temay.getWorkflowId());
-        actionItems = getActionListService().getActionList(bmcgough.getWorkflowId(), filter);
+        filter.setPrimaryDelegateId(temayPrincipalId);
+        actionItems = getActionListService().getActionList(bmcgoughPrincipalId, filter);
         assertEquals("bmcgough should have 1 item in his entire action list.", 1, actionItems.size());
 
     }
@@ -453,7 +416,8 @@ public class ActionListTest extends KEWTestCase {
 
     	recipients = getActionListService().findUserSecondaryDelegators(bmcgough.getPrincipalId());
     	assertEquals("Wrong size of users who were have delegated to given user via Secondary Delegation", 1, recipients.size());
-    	assertEquals("Wrong employee id of primary delegate", "bmcgough", ((WorkflowUser)recipients.iterator().next()).getAuthenticationUserId().getAuthenticationId());
+    	WebFriendlyRecipient recipient = (WebFriendlyRecipient)recipients.iterator().next();
+    	assertEquals("Wrong employee id of primary delegate", "bmcgough", getPrincipalNameForId(recipient.getRecipientId()));
     }
 
     private DocumentRouteHeaderValue generateDocRouteHeader() {

@@ -54,7 +54,7 @@ public class RoutingReportForm extends ActionForm {
 
     // fields below used for document type report URL
     private String documentTypeParam;
-    private String initiatorNetworkId;
+    private String initiatorPrincipalId;
     private String documentContent;
     private String backUrl;
     private String showCloseButton;
@@ -260,12 +260,12 @@ public class RoutingReportForm extends ActionForm {
         this.documentContent = documentContent;
     }
 
-    public String getInitiatorNetworkId() {
-        return initiatorNetworkId;
+    public String getInitiatorPrincipalId() {
+        return initiatorPrincipalId;
     }
 
-    public void setInitiatorNetworkId(String initiatorNetworkId) {
-        this.initiatorNetworkId = initiatorNetworkId;
+    public void setInitiatorPrincipalId(String initiatorNetworkId) {
+        this.initiatorPrincipalId = initiatorNetworkId;
     }
 
     public String getBackUrl() {

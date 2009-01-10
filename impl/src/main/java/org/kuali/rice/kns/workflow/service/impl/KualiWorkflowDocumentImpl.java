@@ -155,32 +155,25 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
     public String getAppDocId() {
         return workflowDocument.getAppDocId();
     }
-
-    /**
-     * @return
-     */
-    public String getInitiatorNetworkId() {
-        // TODO this was done so conditions in documentControls.tag will work
-        return workflowDocument.getRouteHeader().getInitiator().getNetworkId();
-    }
-
-    private String getInitiatorUuId() {
-        return workflowDocument.getRouteHeader().getInitiator().getUuId();
-    }
-    
-    /**
-     * @return
-     */
-    public String getRoutedByUserNetworkId() {
-        return workflowDocument.getRouteHeader().getRoutedByUser().getNetworkId();
-    }
-
-    private String getRoutedByUserUuId() {
-        return workflowDocument.getRouteHeader().getRoutedByUser().getUuId();
-    }
     
     public String getTitle() {
         return workflowDocument.getTitle();
+    }
+    
+    public String getInitiatorNetworkId() {
+    	return KIMServiceLocator.getIdentityManagementService().getPrincipal(getInitiatorPrincipalId()).getPrincipalName();
+    }
+    
+    public String getInitiatorPrincipalId() {
+    	return workflowDocument.getRouteHeader().getInitiatorPrincipalId();
+    }
+    
+    public String getRoutedByUserNetworkId() {
+    	return KIMServiceLocator.getIdentityManagementService().getPrincipal(getRoutedByPrincipalId()).getPrincipalName();
+    }
+    
+    public String getRoutedByPrincipalId() {
+    	return workflowDocument.getRouteHeader().getRoutedByPrincipalId();
     }
 
     public void saveDocument(String annotation) throws WorkflowException {
@@ -495,7 +488,7 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
             throw new IllegalArgumentException("invalid (null) user");
         }
 
-        return StringUtils.equalsIgnoreCase(getInitiatorNetworkId(), user.getPrincipalName());
+        return StringUtils.equalsIgnoreCase(getInitiatorPrincipalId(), user.getPrincipalName());
     }
 
     /**
@@ -507,7 +500,7 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
             throw new IllegalArgumentException("invalid (null) user");
         }
 
-        return StringUtils.equalsIgnoreCase(getRoutedByUserNetworkId(), user.getPrincipalName());
+        return StringUtils.equalsIgnoreCase(getRoutedByPrincipalId(), user.getPrincipalId());
     }
 
     public String[] getNodeNames() throws WorkflowException {

@@ -155,7 +155,7 @@
       <constructor-arg><ref local="genericDao"/></constructor-arg>
     </bean>
 
-    <bean id="notificationRecipientService" class="org.kuali.rice.ken.service.impl.NotificationRecipientServiceKewImpl" />
+    <bean id="notificationRecipientService" class="org.kuali.rice.ken.service.impl.NotificationRecipientServiceKimImpl" />
     
     <bean id="notificationWorkflowDocumentService" class="org.kuali.rice.ken.service.impl.NotificationWorkflowDocumentServiceImpl">
       <constructor-arg><ref local="messageContentService"/></constructor-arg>

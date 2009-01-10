@@ -433,8 +433,8 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     public KualiDocumentXmlMaterializer wrapDocumentWithMetadataForXmlSerialization() {
         KualiTransactionalDocumentInformation transInfo = new KualiTransactionalDocumentInformation();
         DocumentInitiator initiator = new DocumentInitiator();
-        String initiatorNetworkId = getDocumentHeader().getWorkflowDocument().getInitiatorNetworkId();
-        Person initiatorUser = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().getPersonByPrincipalName(initiatorNetworkId);
+        String initiatorPrincipalId = getDocumentHeader().getWorkflowDocument().getRouteHeader().getInitiatorPrincipalId();
+        Person initiatorUser = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().getPersonByPrincipalName(initiatorPrincipalId);
         initiator.setPerson(initiatorUser);
         transInfo.setDocumentInitiator(initiator);
         KualiDocumentXmlMaterializer xmlWrapper = new KualiDocumentXmlMaterializer();

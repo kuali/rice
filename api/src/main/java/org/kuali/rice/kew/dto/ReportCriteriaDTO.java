@@ -30,8 +30,8 @@ public class ReportCriteriaDTO implements Serializable {
 	private Long routeHeaderId;
 	private String targetNodeName;
     
-    private UserIdDTO[] targetUsers;
-    private UserIdDTO routingUser;
+    private String[] targetPrincipalIds;
+    private String routingPrincipalId;
     private String documentTypeName;
     private String xmlContent;
     private String[] ruleTemplateNames;
@@ -99,12 +99,12 @@ public class ReportCriteriaDTO implements Serializable {
         this.ruleTemplateNames = ruleTemplateNames;
     }
 
-    public UserIdDTO[] getTargetUsers() {
-        return targetUsers;
+    public String[] getTargetPrincipalIds() {
+        return targetPrincipalIds;
     }
 
-    public void setTargetUsers(UserIdDTO[] targetUsers) {
-        this.targetUsers = targetUsers;
+    public void setTargetPrincipalIds(String[] targetPrincipalIds) {
+        this.targetPrincipalIds = targetPrincipalIds;
     }
 
     public String getXmlContent() {
@@ -131,12 +131,12 @@ public class ReportCriteriaDTO implements Serializable {
 		this.actionsToTake = actionsToTake;
 	}
 
-	public UserIdDTO getRoutingUser() {
-		return routingUser;
+	public String getRoutingPrincipalId() {
+		return routingPrincipalId;
 	}
 
-	public void setRoutingUser(UserIdDTO routingUser) {
-		this.routingUser = routingUser;
+	public void setRoutingPrincipalId(String routingPrincipalId) {
+		this.routingPrincipalId = routingPrincipalId;
 	}
 	
 }

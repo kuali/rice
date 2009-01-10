@@ -181,7 +181,7 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#getInitiatorNetworkId()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#getInitiatorPrincipalId()
      */
     public String getInitiatorNetworkId() {
         LOG.debug("Using MockWorkflowDocument");
@@ -341,10 +341,6 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
 
     }
 
-    /**
-     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#appSpecificRouteDocumentToWorkgroup(java.lang.String,
-     *      java.lang.String, int, java.lang.String, org.kuali.rice.kew.dto.WorkgroupIdDTO, java.lang.String, boolean)
-     */
     public void adHocRouteDocumentToWorkgroup(String actionRequested, String routeTypeName, int priority, String annotation, String groupId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
         LOG.debug("Using MockWorkflowDocument");
 

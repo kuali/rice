@@ -24,6 +24,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
@@ -41,10 +42,10 @@ import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -468,14 +469,11 @@ public class RuleBaseValuesLookupableImpl implements /*WorkflowLookupable,*/ Exp
 		}
 
 		if (networkIdParam != null && !"".equals(networkIdParam.trim())) {
-			try {
-				try{
-					workflowId = KIMServiceLocator.getPersonService().getPersonByPrincipalName(networkIdParam.trim()).getPrincipalId();
-				}catch(Exception ex){
-					throw new KEWUserNotFoundException(ex);
-				}
-			} catch (KEWUserNotFoundException e) {
+			Person person = KIMServiceLocator.getPersonService().getPersonByPrincipalName(networkIdParam.trim());
+			if (person == null) {
 				errors.add(new WorkflowServiceErrorImpl("User Invalid", "routetemplate.ruleservice.user.invalid"));
+			} else {
+				workflowId = person.getPrincipalId();
 			}
 		}
 		if (roleNameParam != null && !"".equals(roleNameParam)) {

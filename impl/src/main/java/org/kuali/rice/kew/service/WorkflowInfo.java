@@ -192,9 +192,9 @@ public class WorkflowInfo implements java.io.Serializable {
         }
     }
 
-    public Integer getUserActionItemCount(UserIdDTO userId) throws WorkflowException {
+    public Integer getUserActionItemCount(String principalId) throws WorkflowException {
         try {
-            return getWorkflowUtility().getUserActionItemCount(userId);
+            return getWorkflowUtility().getUserActionItemCount(principalId);
         } catch (Exception e) {
             throw handleException(e);
         }
@@ -242,9 +242,9 @@ public class WorkflowInfo implements java.io.Serializable {
     * @throws WorkflowException if an error occurs obtaining the documents action requests
     * @see WorkflowUtility#getActionRequests(Long)
     */
-   public ActionRequestDTO[] getActionRequests(Long routeHeaderId, String nodeName, UserIdDTO userId) throws WorkflowException {
+   public ActionRequestDTO[] getActionRequests(Long routeHeaderId, String nodeName, String principalId) throws WorkflowException {
        try {
-           return getWorkflowUtility().getActionRequests(routeHeaderId, nodeName, userId);
+           return getWorkflowUtility().getActionRequests(routeHeaderId, nodeName, principalId);
        } catch (Exception e) {
            throw handleException(e);
        }
@@ -278,9 +278,9 @@ public class WorkflowInfo implements java.io.Serializable {
      * @throws WorkflowException if an error occurs determining whether the user is in the document's route log
      * @see WorkflowUtility#isUserInRouteLog(Long, UserIdDTO, boolean)
      */
-    public boolean isUserAuthenticatedByRouteLog(Long routeHeaderId, UserIdDTO userId, boolean lookFuture) throws WorkflowException {
+    public boolean isUserAuthenticatedByRouteLog(Long routeHeaderId, String principalId, boolean lookFuture) throws WorkflowException {
         try {
-            return getWorkflowUtility().isUserInRouteLog(routeHeaderId, userId, lookFuture);
+            return getWorkflowUtility().isUserInRouteLog(routeHeaderId, principalId, lookFuture);
         } catch (Exception e) {
             throw handleException(e);
         }
@@ -294,9 +294,9 @@ public class WorkflowInfo implements java.io.Serializable {
      * @throws WorkflowException if an error occurs determining whether the user is the final approver on the document
      * @see WorkflowUtility#isFinalApprover(Long, UserIdDTO)
      */
-    public boolean isFinalApprover(Long routeHeaderId, UserIdDTO userId) throws WorkflowException {
+    public boolean isFinalApprover(Long routeHeaderId, String principalId) throws WorkflowException {
         try {
-            return getWorkflowUtility().isFinalApprover(routeHeaderId, userId);
+            return getWorkflowUtility().isFinalApprover(routeHeaderId, principalId);
         } catch (Exception e) {
             throw handleException(e);
         }
@@ -518,9 +518,9 @@ public class WorkflowInfo implements java.io.Serializable {
      * @throws WorkflowException if an error occurs determining whether the user is the last approver at the specified node
      * @see WorkflowUtility#isLastApproverAtNode(Long, UserIdDTO, String)
      */
-    public boolean isLastApproverAtNode(Long routeHeaderId, UserIdDTO userId, String nodeName) throws WorkflowException {
+    public boolean isLastApproverAtNode(Long routeHeaderId, String principalId, String nodeName) throws WorkflowException {
         try {
-            return getWorkflowUtility().isLastApproverAtNode(routeHeaderId, userId, nodeName);
+            return getWorkflowUtility().isLastApproverAtNode(routeHeaderId, principalId, nodeName);
         } catch (Exception e) {
             throw handleException(e);
         }
@@ -553,9 +553,9 @@ public class WorkflowInfo implements java.io.Serializable {
      * @throws RemoteException
      * @throws WorkflowException
      */
-    public DocumentSearchResultDTO performDocumentSearch(UserIdDTO userId, DocumentSearchCriteriaDTO criteriaVO) throws RemoteException, WorkflowException {
+    public DocumentSearchResultDTO performDocumentSearch(String principalId, DocumentSearchCriteriaDTO criteriaVO) throws RemoteException, WorkflowException {
         try {
-            return getWorkflowUtility().performDocumentSearch(userId, criteriaVO);
+            return getWorkflowUtility().performDocumentSearch(principalId, criteriaVO);
         } catch (Exception e) {
             throw handleException(e);
         }
@@ -645,9 +645,9 @@ public class WorkflowInfo implements java.io.Serializable {
     /**
      * @deprecated use {@link #isLastApproverAtNode(Long, UserIdDTO, String)} instead
      */
-    protected boolean isLastApproverInRouteLevel(Long routeHeaderId, UserIdDTO userId, Integer routeLevel) throws WorkflowException {
+    protected boolean isLastApproverInRouteLevel(Long routeHeaderId, String principalId, Integer routeLevel) throws WorkflowException {
         try {
-            return getWorkflowUtility().isLastApproverInRouteLevel(routeHeaderId, userId, routeLevel);
+            return getWorkflowUtility().isLastApproverInRouteLevel(routeHeaderId, principalId, routeLevel);
         } catch (Exception e) {
             throw handleException(e);
         }

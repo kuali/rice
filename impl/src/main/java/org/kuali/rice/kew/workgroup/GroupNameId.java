@@ -16,6 +16,8 @@
  */
 package org.kuali.rice.kew.workgroup;
 
+import org.kuali.rice.kim.util.KimConstants;
+
 /**
  * A {@link GroupId} which identifies the name of a {@link Workgroup}.
  * 
@@ -27,14 +29,24 @@ public final class GroupNameId implements GroupId {
     
 	private static final long serialVersionUID = -4625193242111678434L;
 
+	private String namespace = KimConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE;
 	private String nameId;
     
     public GroupNameId(String nameId) {
         this.nameId = nameId;
     }
     
+    public GroupNameId(String namespace, String nameId) {
+    	this.namespace = namespace;
+    	this.nameId = nameId;
+    }
+    
     public String getNameId() {
         return nameId;
+    }
+    
+    public String getNamesapce() {
+    	return namespace;
     }
     
     public boolean isEmpty() {
@@ -51,7 +63,7 @@ public final class GroupNameId implements GroupId {
             GroupNameId w = (GroupNameId) obj;
 
             if (w.getNameId() != null && getNameId() != null) {
-                return w.getNameId().equals(getNameId());
+                return w.getNameId().equals(getNameId()) && w.getNamesapce().equals(getNamesapce());
             } else {
                 return false;
             }

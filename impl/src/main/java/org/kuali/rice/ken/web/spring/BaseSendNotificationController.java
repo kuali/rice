@@ -23,10 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.ken.exception.ErrorList;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
-import org.kuali.rice.kew.user.AuthenticationUserId;
-import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.rice.kim.bo.entity.KimEntity;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
@@ -76,16 +73,10 @@ public class BaseSendNotificationController extends MultiActionController {
             valid = false;
             errors.addError("'" + user + "' is not a valid principal name");
         }*/
-        WorkflowUser wfuser = null;
-        try {
-            wfuser = KIMServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(user));
-            if (wfuser == null) {
-                valid = false;
-                errors.addError("'" + user + "' is not a valid principal name");
-            }
-        } catch (KEWUserNotFoundException kunfe) {
-            valid = false;
-            errors.addError("'" + user + "' is not a valid principal name");
+        KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(user);
+        if (principal == null) {
+        	valid = false;
+        	errors.addError("'" + user + "' is not a valid principal name");
         }
         
         return valid;

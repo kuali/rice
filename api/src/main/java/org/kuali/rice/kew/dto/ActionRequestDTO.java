@@ -20,7 +20,6 @@ import java.io.Serializable;
 import java.util.Calendar;
 
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 
 
 /**

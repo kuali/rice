@@ -46,8 +46,6 @@ import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
-import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kew.routeheader.AttributeDocumentContent;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -61,12 +59,14 @@ import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
 import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.WorkflowAction;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
 
 
 /**
@@ -93,8 +93,8 @@ public class RoutingReportAction extends WorkflowAction {
             if (Utilities.isEmpty(routingForm.getDocumentTypeParam())) {
                 throw new RuntimeException("No document type was given");
             }
-            if (Utilities.isEmpty(routingForm.getInitiatorNetworkId())) {
-                throw new RuntimeException("No initiator network id was given");
+            if (Utilities.isEmpty(routingForm.getInitiatorPrincipalId())) {
+                throw new RuntimeException("No initiator principal id was given");
             }
             if (Utilities.isEmpty(routingForm.getDocumentContent())) {
                 throw new RuntimeException("No document content was given");
@@ -300,7 +300,7 @@ public class RoutingReportAction extends WorkflowAction {
 		if (routingReportForm.getReportType() == null) {
             // no report type means we must check for potential setup
             if ( (!Utilities.isEmpty(routingReportForm.getDocumentTypeParam())) ||
-                 (!Utilities.isEmpty(routingReportForm.getInitiatorNetworkId())) ||
+                 (!Utilities.isEmpty(routingReportForm.getInitiatorPrincipalId())) ||
                  (!Utilities.isEmpty(routingReportForm.getDocumentContent())) ) {
                 // at least one parameter was passed... attempt to use Doc Type Report
                 routingReportForm.setReportType(DOC_TYPE_REPORTING);
@@ -319,10 +319,10 @@ public class RoutingReportAction extends WorkflowAction {
                     throw new RuntimeException("Document Type is invalid");
                 }
             }
-            if (Utilities.isEmpty(routingReportForm.getInitiatorNetworkId())) {
-                throw new RuntimeException("Initiator Network ID was not given");
+            if (Utilities.isEmpty(routingReportForm.getInitiatorPrincipalId())) {
+                throw new RuntimeException("Initiator Principal ID was not given");
             } else {
-                WorkflowUser initiatorUser = getUserService().getWorkflowUser(new AuthenticationUserId(routingReportForm.getInitiatorNetworkId()));
+                WorkflowUser initiatorUser = getUserService().getWorkflowUser(new WorkflowUserId(routingReportForm.getInitiatorPrincipalId()));
                 if (initiatorUser == null) {
                     throw new RuntimeException("Initiator Network ID is invalid");
                 }

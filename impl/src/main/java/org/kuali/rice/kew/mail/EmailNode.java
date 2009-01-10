@@ -130,7 +130,7 @@ public class EmailNode implements SimpleNode {
 	    to = toAddresses.item(0).getTextContent();
 	    if ("initiator".equalsIgnoreCase(to))
 	    {	
-	    	Person person = KIMServiceLocator.getPersonService().getPerson(context.getDocument().getInitiatorUser().getPrincipalId());
+	    	Person person = KIMServiceLocator.getPersonService().getPerson(context.getDocument().getInitiatorWorkflowId());
 			to = (person == null ? "" : person.getEmailAddress());
 	    }
 	    if (StringUtils.isBlank(to)) {

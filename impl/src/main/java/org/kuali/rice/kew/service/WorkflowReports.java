@@ -18,7 +18,6 @@ package org.kuali.rice.kew.service;
 
 import java.io.Serializable;
 
-import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 
 
@@ -33,19 +32,19 @@ public class WorkflowReports implements Serializable {
 		workflowInfo = new WorkflowInfo();
 	}
 	
-    public boolean isUserAuthenticatedByRouteLog(Long routeHeaderId, UserIdDTO userId, boolean lookFuture) throws WorkflowException {
-        return workflowInfo.isUserAuthenticatedByRouteLog(routeHeaderId, userId, lookFuture);
+    public boolean isUserAuthenticatedByRouteLog(Long routeHeaderId, String principalId, boolean lookFuture) throws WorkflowException {
+        return workflowInfo.isUserAuthenticatedByRouteLog(routeHeaderId, principalId, lookFuture);
     }
     
     /**
      * @deprecated use isLastApproverAtNode instead
      */
-    public boolean isLastApproverInRouteLevel(Long routeHeaderId, UserIdDTO userId, Integer routeLevel) throws WorkflowException {
-        return workflowInfo.isLastApproverInRouteLevel(routeHeaderId, userId, routeLevel);
+    public boolean isLastApproverInRouteLevel(Long routeHeaderId, String principalId, Integer routeLevel) throws WorkflowException {
+        return workflowInfo.isLastApproverInRouteLevel(routeHeaderId, principalId, routeLevel);
     }
     
-    public boolean isLastApproverAtNode(Long routeHeaderId, UserIdDTO userId, String nodeName) throws WorkflowException {
-        return workflowInfo.isLastApproverAtNode(routeHeaderId, userId, nodeName);
+    public boolean isLastApproverAtNode(Long routeHeaderId, String principalId, String nodeName) throws WorkflowException {
+        return workflowInfo.isLastApproverAtNode(routeHeaderId, principalId, nodeName);
     }
     
     /**
@@ -64,8 +63,8 @@ public class WorkflowReports implements Serializable {
      * 
      * @return True if user context applies to the final approver request for this document.
      */
-    public boolean isFinalApprover(Long routeHeaderId, UserIdDTO userId) throws WorkflowException {
-        return workflowInfo.isFinalApprover(routeHeaderId, userId);
+    public boolean isFinalApprover(Long routeHeaderId, String principalId) throws WorkflowException {
+        return workflowInfo.isFinalApprover(routeHeaderId, principalId);
     }
     
     /*public boolean isUserAuthenticatedByRouteLog(Long routeHeaderId, UserIdVO userId, boolean lookFuture) throws WorkflowException {

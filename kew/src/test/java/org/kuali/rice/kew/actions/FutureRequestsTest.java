@@ -25,14 +25,12 @@ import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.ReportActionToTakeDTO;
 import org.kuali.rice.kew.dto.ReportCriteriaDTO;
 import org.kuali.rice.kew.engine.node.BranchState;
-import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.TestRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.util.FutureRequestDocumentStateManager;
 import org.kuali.rice.kew.util.KEWConstants;
 
@@ -170,8 +168,6 @@ public class FutureRequestsTest extends KEWTestCase {
 
         String user1PrincipalId = getPrincipalIdForName("user1");
         String user2PrincipalId = getPrincipalIdForName("user2");
-        NetworkIdDTO user1IdDTO = new NetworkIdDTO("user1");
-        NetworkIdDTO user2IdDTO = new NetworkIdDTO("user2");
 
         WorkflowDocument document = new WorkflowDocument(user1PrincipalId, "FutureRequestsDoc");
         document.routeDocument("");
@@ -181,16 +177,16 @@ public class FutureRequestsTest extends KEWTestCase {
         document = new WorkflowDocument(user1PrincipalId, document.getRouteHeaderId());
         WorkflowInfo info = new WorkflowInfo();
         ReportCriteriaDTO reportCriteriaDTO = new ReportCriteriaDTO(document.getRouteHeaderId());
-        reportCriteriaDTO.setTargetUsers(new NetworkIdDTO[]{user1IdDTO});
+        reportCriteriaDTO.setTargetPrincipalIds(new String[]{user1PrincipalId});
         String actionToTakeNode = "Node1";
-        reportCriteriaDTO.setActionsToTake(new ReportActionToTakeDTO[]{new ReportActionToTakeDTO(KEWConstants.ACTION_TAKEN_APPROVED_CD, user1IdDTO, actionToTakeNode)});
+        reportCriteriaDTO.setActionsToTake(new ReportActionToTakeDTO[]{new ReportActionToTakeDTO(KEWConstants.ACTION_TAKEN_APPROVED_CD, user1PrincipalId, actionToTakeNode)});
         assertTrue("User " + user1PrincipalId + " should have approval requests on the document", info.documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ}, false));
 
         info = new WorkflowInfo();
         reportCriteriaDTO = new ReportCriteriaDTO(document.getRouteHeaderId());
-        reportCriteriaDTO.setTargetUsers(new NetworkIdDTO[]{user1IdDTO});
+        reportCriteriaDTO.setTargetPrincipalIds(new String[]{user1PrincipalId});
         actionToTakeNode = "Node1";
-        reportCriteriaDTO.setActionsToTake(new ReportActionToTakeDTO[]{new ReportActionToTakeDTO(KEWConstants.ACTION_TAKEN_APPROVED_CD, user1IdDTO, actionToTakeNode)});
+        reportCriteriaDTO.setActionsToTake(new ReportActionToTakeDTO[]{new ReportActionToTakeDTO(KEWConstants.ACTION_TAKEN_APPROVED_CD, user1PrincipalId, actionToTakeNode)});
         DocumentDetailDTO documentVO = info.routingReport(reportCriteriaDTO);
         assertTrue("User " + user1PrincipalId + " should have one or more approval requests on the document", documentVO.getActionRequests().length > 0);
 
@@ -198,9 +194,9 @@ public class FutureRequestsTest extends KEWTestCase {
         reportCriteriaDTO = new ReportCriteriaDTO(document.getRouteHeaderId());
         String delyeaPrincipalId = getPrincipalIdForName("delyea");
         NetworkIdDTO delyeaIdDTO = new NetworkIdDTO("delyea");
-        reportCriteriaDTO.setTargetUsers(new NetworkIdDTO[]{delyeaIdDTO});
+        reportCriteriaDTO.setTargetPrincipalIds(new String[]{user1PrincipalId});
         actionToTakeNode = "Node1";
-        reportCriteriaDTO.setActionsToTake(new ReportActionToTakeDTO[]{new ReportActionToTakeDTO(KEWConstants.ACTION_TAKEN_APPROVED_CD, user1IdDTO, actionToTakeNode)});
+        reportCriteriaDTO.setActionsToTake(new ReportActionToTakeDTO[]{new ReportActionToTakeDTO(KEWConstants.ACTION_TAKEN_APPROVED_CD, user1PrincipalId, actionToTakeNode)});
         documentVO = info.routingReport(reportCriteriaDTO);
         assertTrue("User " + delyeaPrincipalId + " should not have any requests on the document but routingReport() method should return all action requests anyway", documentVO.getActionRequests().length > 0);
 
@@ -214,13 +210,13 @@ public class FutureRequestsTest extends KEWTestCase {
         // user1 should not have approval requested
         info = new WorkflowInfo();
         reportCriteriaDTO = new ReportCriteriaDTO(document.getRouteHeaderId());
-        reportCriteriaDTO.setTargetUsers(new NetworkIdDTO[]{user1IdDTO});
+        reportCriteriaDTO.setTargetPrincipalIds(new String[]{user1PrincipalId});
         assertFalse("User " + user1PrincipalId + " should not have any approval request on the document", info.documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ}, false));
 
         // user2 should have approval requested
         info = new WorkflowInfo();
         reportCriteriaDTO = new ReportCriteriaDTO(document.getRouteHeaderId());
-        reportCriteriaDTO.setTargetUsers(new NetworkIdDTO[]{user2IdDTO});
+        reportCriteriaDTO.setTargetPrincipalIds(new String[]{user2PrincipalId});
         assertTrue("User " + user2PrincipalId + " should have any approval request on the document", info.documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ}, false));
 
     }

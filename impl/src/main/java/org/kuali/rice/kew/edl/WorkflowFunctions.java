@@ -17,8 +17,6 @@
 package org.kuali.rice.kew.edl;
 
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
-import org.kuali.rice.kew.dto.UserIdDTO;
-import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.WorkflowInfo;
@@ -38,36 +36,36 @@ public class WorkflowFunctions {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(WorkflowFunctions.class);
 
-        public static boolean isUserInitiator(String id) throws WorkflowException {
-            boolean initiator = false;
-            UserSession userSession = UserSession.getAuthenticatedUser();
-            if (userSession != null) {
-        	try {
-        	    long documentId = Long.parseLong(id.trim());
-        	    WorkflowInfo workflowInfo = new WorkflowInfo();
-        	    if (userSession.getNetworkId().equals(workflowInfo.getRouteHeader(documentId).getInitiator().getNetworkId())) {
-        		initiator = true;
-        	    }
-        	} catch (Exception e) {
-        	    LOG.debug("Exception encountered trying to determine if user is the document initiator:" + e );
-        	}
-            }
-            return initiator;
-        }
+    public static boolean isUserInitiator(String id) throws WorkflowException {
+    	boolean initiator = false;
+    	UserSession userSession = UserSession.getAuthenticatedUser();
+    	if (userSession != null) {
+    		try {
+    			long documentId = Long.parseLong(id.trim());
+    			WorkflowInfo workflowInfo = new WorkflowInfo();
+    			if (userSession.getPrincipalId().equals(workflowInfo.getRouteHeader(documentId).getInitiatorPrincipalId())) {
+    				initiator = true;
+    			}
+    		} catch (Exception e) {
+    			LOG.debug("Exception encountered trying to determine if user is the document initiator:" + e );
+    		}
+    	}
+    	return initiator;
+    }
 
 	public static boolean isUserRouteLogAuthenticated(String id) {
 		boolean authenticated=false;
 		WorkflowInfo workflowInfo = new WorkflowInfo();
 		UserSession userSession=UserSession.getAuthenticatedUser();
 		if(userSession!=null){
-			UserIdDTO userId = new WorkflowIdDTO(userSession.getWorkflowUser().getWorkflowId());
+			String principalId = userSession.getPrincipalId();
 			try {
 				Long routeHeaderId = new Long(id);
-				authenticated = workflowInfo.isUserAuthenticatedByRouteLog(routeHeaderId, userId, true);
+				authenticated = workflowInfo.isUserAuthenticatedByRouteLog(routeHeaderId, principalId, true);
 			} catch (NumberFormatException e) {
 				LOG.debug("Invalid format routeHeaderId (should be LONG): " + id);
 			} catch (WorkflowException e) {
-				LOG.debug("Error checking if user is route log authenticated: userId: "+userId + ";routeHeaderId: " + id);
+				LOG.debug("Error checking if user is route log authenticated: userId: " + principalId + ";routeHeaderId: " + id);
 		    }
 		}
 

@@ -844,20 +844,20 @@ public class RuleServiceImpl implements RuleService {
         return getRuleDAO().findByRouteHeaderId(routeHeaderId);
     }
 
-    public List search(String docTypeName, Long ruleId, Long ruleTemplateId, String ruleDescription, String workgroupId, String workflowId,
+    public List search(String docTypeName, Long ruleId, Long ruleTemplateId, String ruleDescription, String groupId, String principalId,
             String roleName, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective) {
-        return getRuleDAO().search(docTypeName, ruleId, ruleTemplateId, ruleDescription, workgroupId, workflowId, roleName, delegateRule,
+        return getRuleDAO().search(docTypeName, ruleId, ruleTemplateId, ruleDescription, groupId, principalId, roleName, delegateRule,
                 activeInd, extensionValues, workflowIdDirective);
     }
 
-    public List search(String docTypeName, String ruleTemplateName, String ruleDescription, GroupId workgroupId, UserId userId, String roleName,
+    public List search(String docTypeName, String ruleTemplateName, String ruleDescription, String groupId, String principalId, String roleName,
             Boolean workgroupMember, Boolean delegateRule, Boolean activeInd, Map extensionValues, Collection<String> actionRequestCodes) throws KEWUserNotFoundException {
 
         if ( (StringUtils.isEmpty(docTypeName)) &&
                 (StringUtils.isEmpty(ruleTemplateName)) &&
                 (StringUtils.isEmpty(ruleDescription)) &&
-                (workgroupId.isEmpty()) &&
-                (userId.isEmpty()) &&
+                (StringUtils.isEmpty(groupId)) &&
+                (StringUtils.isEmpty(principalId)) &&
                 (StringUtils.isEmpty(roleName)) &&
                 (extensionValues.isEmpty()) &&
                 (actionRequestCodes.isEmpty()) ) {
@@ -877,33 +877,23 @@ public class RuleServiceImpl implements RuleService {
             throw new IllegalArgumentException("A Rule Template Name must be given if using Rule Extension values");
         }
 
-        WorkflowUser user = null;
-        String principalId = null;
-        if (userId != null) {
-            // below will (hopefully) throw NotFoundException
-            //user = getUserService().getWorkflowUser(userId);
-            principalId = KIMServiceLocator.getIdentityManagementService().getPrincipal(userId.getId()).getPrincipalId();
-        }
-
         Collection<String> workgroupIds = new ArrayList<String>();
-        if (user != null) {
-            if ( (workgroupMember == null) || (workgroupMember.booleanValue()) ) {
-                workgroupIds = getIdentityManagementService().getGroupIdsForPrincipal(principalId);
-            } else {
-                // user was passed but workgroups should not be parsed... do nothing
-            }
-        } else {
-            if (workgroupId != null) {
-                KimGroup group = KEWServiceLocator.getIdentityHelperService().getGroup(workgroupId);
-                if ( (group == null) && (!workgroupId.isEmpty()) ) {
-                    throw new IllegalArgumentException("Group name given does not exist in Workflow");
-                } else if (group != null) {
-                    workgroupIds.add(group.getGroupId());
-                }
-            }
+        if (principalId != null) {
+        	if ( (workgroupMember == null) || (workgroupMember.booleanValue()) ) {
+        		workgroupIds = getIdentityManagementService().getGroupIdsForPrincipal(principalId);
+        	} else {
+        		// user was passed but workgroups should not be parsed... do nothing
+        	}
+        } else if (groupId != null) {
+        	KimGroup group = KEWServiceLocator.getIdentityHelperService().getGroup(groupId);
+        	if (group == null) {
+        		throw new IllegalArgumentException("Group does not exist in for given group id: " + groupId);
+        	} else  {
+        		workgroupIds.add(group.getGroupId());
+        	}
         }
 
-        return getRuleDAO().search(docTypeName, ruleTemplateId, ruleDescription, workgroupIds, (user != null) ? user.getWorkflowUserId().getWorkflowId() : null,
+        return getRuleDAO().search(docTypeName, ruleTemplateId, ruleDescription, workgroupIds, principalId,
                 roleName, delegateRule,activeInd, extensionValues, actionRequestCodes);
     }
 

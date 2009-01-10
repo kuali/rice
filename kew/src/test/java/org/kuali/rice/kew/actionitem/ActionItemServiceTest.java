@@ -17,12 +17,9 @@
 package org.kuali.rice.kew.actionitem;
 
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
@@ -31,11 +28,6 @@ import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.user.AuthenticationUserId;
-import org.kuali.rice.kew.user.Recipient;
-import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.rice.kew.workgroup.BaseWorkgroup;
-import org.kuali.rice.kew.workgroup.BaseWorkgroupMember;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
@@ -374,26 +366,28 @@ public class ActionItemServiceTest extends KEWTestCase {
 
         // now the document should be at both the WorkflowAdmin workgroup and the TestWorkgroup
         // ewestfal is a member of both Workgroups so verify that he has two action items
-        WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("ewestfal"));
-        Collection actionItems = KEWServiceLocator.getActionListService().findByWorkflowUserRouteHeaderId(user.getWorkflowId(), document.getRouteHeaderId());
+        String ewestfalPrincipalId = getPrincipalIdForName("ewestfal");
+        String jitruePrincipalId = getPrincipalIdForName("jitrue");
+        
+        Collection actionItems = KEWServiceLocator.getActionListService().findByWorkflowUserRouteHeaderId(ewestfalPrincipalId, document.getRouteHeaderId());
         assertEquals("Ewestfal should have two action items.", 2, actionItems.size());
 
         // now check the action list, there should be only one entry
-        actionItems = KEWServiceLocator.getActionListService().getActionList(user.getWorkflowId(), null);
+        actionItems = KEWServiceLocator.getActionListService().getActionList(ewestfalPrincipalId, null);
         assertEquals("Ewestfal should have one action item in his action list.", 1, actionItems.size());
-        document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
+        document = new WorkflowDocument(ewestfalPrincipalId, document.getRouteHeaderId());
         assertTrue("Ewestfal should have an approval requested.", document.isApprovalRequested());
 
         // approve as a member from the first workgroup
-        document = new WorkflowDocument(new NetworkIdDTO("jitrue"), document.getRouteHeaderId());
+        document = new WorkflowDocument(jitruePrincipalId, document.getRouteHeaderId());
         assertTrue("Jitrue should have an approval requested.", document.isApprovalRequested());
         document.approve("");
 
         // now ewestfal should have only one action item in both his action items and his action list
-        actionItems = KEWServiceLocator.getActionListService().findByWorkflowUserRouteHeaderId(user.getWorkflowId(), document.getRouteHeaderId());
+        actionItems = KEWServiceLocator.getActionListService().findByWorkflowUserRouteHeaderId(ewestfalPrincipalId, document.getRouteHeaderId());
         assertEquals("Ewestfal should have one action item.", 1, actionItems.size());
         Long actionItemId = ((ActionItem)actionItems.iterator().next()).getActionItemId();
-        actionItems = KEWServiceLocator.getActionListService().getActionList(user.getWorkflowId(), null);
+        actionItems = KEWServiceLocator.getActionListService().getActionList(ewestfalPrincipalId, null);
         assertEquals("Ewestfal should have one action item in his action list.", 1, actionItems.size());
         assertEquals("The two action items should be the same.", actionItemId, ((ActionItem)actionItems.iterator().next()).getActionItemId());
     }
@@ -422,25 +416,25 @@ public class ActionItemServiceTest extends KEWTestCase {
     	int numActionItems = actionListService.findByRouteHeaderId(document.getRouteHeaderId()).size();
     	assertEquals("Incorrect number of action items.", 2, numActionItems);
 
-    	WorkflowUser user1 = KEWServiceLocator.getUserService().getWorkflowUser(new NetworkIdDTO("user1"));
-    	WorkflowUser rkirkend = KEWServiceLocator.getUserService().getWorkflowUser(new NetworkIdDTO("rkirkend"));
+    	String user1PrincipalId = getPrincipalIdForName("user1");
+    	String rkirkendPrincipalId = getPrincipalIdForName("rkirkend");
 
     	// check that user1 has 1 action item
-    	Collection actionItems = actionListService.findByWorkflowUserRouteHeaderId(user1.getWorkflowId(), document.getRouteHeaderId());
+    	Collection actionItems = actionListService.findByWorkflowUserRouteHeaderId(user1PrincipalId, document.getRouteHeaderId());
     	assertEquals("user1 should have one action item.", 1, actionItems.size());
 
     	// check that rkirkend still has 1, the is where the bug would have manifested itself before, rkirkend would have had
     	// no action item (hence the orphaned request)
-    	actionItems = actionListService.findByWorkflowUserRouteHeaderId(rkirkend.getWorkflowId(), document.getRouteHeaderId());
+    	actionItems = actionListService.findByWorkflowUserRouteHeaderId(rkirkendPrincipalId, document.getRouteHeaderId());
     	assertEquals("rkirkend should have one action item.", 1, actionItems.size());
 
     	// lets go ahead and take it to final for funsies
-    	document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
+    	document = new WorkflowDocument(rkirkendPrincipalId, document.getRouteHeaderId());
     	assertTrue("Should have ack request.", document.isAcknowledgeRequested());
     	document.acknowledge("");
     	assertTrue("Should still be PROCESSED.", document.stateIsProcessed());
 
-    	document = new WorkflowDocument(new NetworkIdDTO("user1"), document.getRouteHeaderId());
+    	document = new WorkflowDocument(user1PrincipalId, document.getRouteHeaderId());
     	assertTrue("Should have ack request.", document.isAcknowledgeRequested());
     	document.acknowledge("");
     	assertTrue("Should now be FINAL.", document.stateIsFinal());

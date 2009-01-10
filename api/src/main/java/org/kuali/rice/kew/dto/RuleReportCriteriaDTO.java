@@ -24,8 +24,8 @@ public class RuleReportCriteriaDTO implements java.io.Serializable {
     private String documentTypeName;
     private String ruleTemplateName;
     private String[] actionRequestCodes;
-    private UserIdDTO responsibleUser;
-    private WorkgroupIdDTO responsibleWorkgroup;
+    private String responsiblePrincipalId;
+    private String responsibleGroupId;
     private String responsibleRoleName;
     private RuleExtensionDTO[] ruleExtensionVOs;
     private Boolean activeIndicator;
@@ -82,23 +82,23 @@ public class RuleReportCriteriaDTO implements java.io.Serializable {
         this.responsibleRoleName = responsibleRoleName;
     }
 
-    public UserIdDTO getResponsibleUser() {
-        return responsibleUser;
+    public String getResponsiblePrincipalId() {
+        return responsiblePrincipalId;
     }
 
-    public void setResponsibleUser(UserIdDTO responsibleUser) {
-        this.responsibleUser = responsibleUser;
+    public void setResponsiblePrincipalId(String responsiblePrincipalId) {
+        this.responsiblePrincipalId = responsiblePrincipalId;
     }
 
-    public WorkgroupIdDTO getResponsibleWorkgroup() {
-        return responsibleWorkgroup;
-    }
+	public String getResponsibleGroupId() {
+		return this.responsibleGroupId;
+	}
 
-    public void setResponsibleWorkgroup(WorkgroupIdDTO responsibleWorkgroup) {
-        this.responsibleWorkgroup = responsibleWorkgroup;
-    }
+	public void setResponsibleGroupId(String responsibleGroupId) {
+		this.responsibleGroupId = responsibleGroupId;
+	}
 
-    public String getRuleDescription() {
+	public String getRuleDescription() {
         return ruleDescription;
     }
 

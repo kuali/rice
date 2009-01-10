@@ -27,10 +27,9 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.mail.service.impl.CustomizableActionListEmailServiceImpl;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.AuthenticationUserId;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 public class MockEmailNotificationServiceImpl extends CustomizableActionListEmailServiceImpl implements MockEmailNotificationService {
@@ -51,8 +50,6 @@ public class MockEmailNotificationServiceImpl extends CustomizableActionListEmai
     /**
      * This overridden method will perform the standard operations from org.kuali.rice.kew.mail.ActionListEmailServiceImpl but will also keep track of action
      * items processed
-     *
-     * @see org.kuali.rice.kew.mail.service.impl.ActionListEmailServiceImpl#sendImmediateReminder(org.kuali.rice.kew.user.WorkflowUser, org.kuali.rice.kew.actionitem.ActionItem)
      */
     @Override
     public void sendImmediateReminder(Person user, ActionItem actionItem) {
@@ -123,14 +120,9 @@ public class MockEmailNotificationServiceImpl extends CustomizableActionListEmai
         getEmailContentGenerator().resetServiceAccessed();
     }
 
-    /**
-     * This method is used to get the
-     *
-     * @see mocks.MockEmailNotificationService#immediateReminderEmailsSent(java.lang.String, java.lang.Long, java.lang.String)
-     */
     public int immediateReminderEmailsSent(String networkId, Long documentId, String actionRequestCd) throws KEWUserNotFoundException {
-        WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(networkId));
-        List actionItemsSentUser = (List)immediateReminders.get(user.getWorkflowId());
+    	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(networkId);
+        List actionItemsSentUser = (List)immediateReminders.get(principal.getPrincipalId());
         if (actionItemsSentUser == null) {
             return 0;
         }

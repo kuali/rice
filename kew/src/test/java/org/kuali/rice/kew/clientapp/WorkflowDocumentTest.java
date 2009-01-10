@@ -18,11 +18,9 @@ package org.kuali.rice.kew.clientapp;
 
 
 import org.junit.Test;
-import org.kuali.rice.kew.dto.EmplIdDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
-import org.kuali.rice.kew.dto.UuIdDTO;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
@@ -123,25 +121,17 @@ public class WorkflowDocumentTest extends KEWTestCase {
 
     	verifyIsRouteCapable(false, new NetworkIdDTO("ewestfal"), doc.getRouteHeaderId());
     	verifyIsRouteCapable(false, new WorkflowIdDTO("1"), doc.getRouteHeaderId());
-    	verifyIsRouteCapable(false, new UuIdDTO("1"), doc.getRouteHeaderId());
-    	verifyIsRouteCapable(false, new EmplIdDTO("1"), doc.getRouteHeaderId());
 
     	verifyIsRouteCapable(true, new NetworkIdDTO("rkirkend"), doc.getRouteHeaderId());
     	verifyIsRouteCapable(true, new WorkflowIdDTO("2"), doc.getRouteHeaderId());
-    	verifyIsRouteCapable(true, new UuIdDTO("2"), doc.getRouteHeaderId());
-    	verifyIsRouteCapable(true, new EmplIdDTO("2"), doc.getRouteHeaderId());
 
         doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "NonInitiatorCanRouteDocument");
 
         verifyIsRouteCapable(true, new NetworkIdDTO("ewestfal"), doc.getRouteHeaderId());
         verifyIsRouteCapable(true, new WorkflowIdDTO("1"), doc.getRouteHeaderId());
-        verifyIsRouteCapable(true, new UuIdDTO("1"), doc.getRouteHeaderId());
-        verifyIsRouteCapable(true, new EmplIdDTO("1"), doc.getRouteHeaderId());
 
         verifyIsRouteCapable(true, new NetworkIdDTO("rkirkend"), doc.getRouteHeaderId());
         verifyIsRouteCapable(true, new WorkflowIdDTO("2"), doc.getRouteHeaderId());
-        verifyIsRouteCapable(true, new UuIdDTO("2"), doc.getRouteHeaderId());
-        verifyIsRouteCapable(true, new EmplIdDTO("2"), doc.getRouteHeaderId());
     }
 
     private void verifyIsRouteCapable(boolean routeCapable, UserIdDTO userId, Long docId) throws Exception {

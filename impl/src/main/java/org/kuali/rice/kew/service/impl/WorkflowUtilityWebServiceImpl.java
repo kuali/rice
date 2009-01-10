@@ -28,6 +28,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -53,7 +54,6 @@ import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
 import org.kuali.rice.kew.dto.RuleDTO;
 import org.kuali.rice.kew.dto.RuleExtensionDTO;
 import org.kuali.rice.kew.dto.RuleReportCriteriaDTO;
-import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
 import org.kuali.rice.kew.engine.ActivationContext;
@@ -65,7 +65,6 @@ import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.simulation.SimulationCriteria;
 import org.kuali.rice.kew.engine.simulation.SimulationEngine;
 import org.kuali.rice.kew.engine.simulation.SimulationResults;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.FlexRM;
@@ -77,11 +76,9 @@ import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowUtility;
 import org.kuali.rice.kew.user.Recipient;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.session.UserSession;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -197,22 +194,13 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return rid;
     }
 
-    private WorkflowUser getWorkflowUserInternal(UserIdDTO userId) throws KEWUserNotFoundException {
-        if (userId == null ){
-            LOG.error("null userId passed in.");
-            throw new RuntimeException("null userId passed in.");
-        }
-        LOG.debug("Fetching user for userId '"+userId+"'");
-        return KEWServiceLocator.getUserService().getWorkflowUser(userId);
+    public Integer getUserActionItemCount(String principalId) throws WorkflowException {
+        return Integer.valueOf(KEWServiceLocator.getActionListService().getCount(principalId));
     }
-
-    public Integer getUserActionItemCount(UserIdDTO userId) throws WorkflowException {
-        return Integer.valueOf(KEWServiceLocator.getActionListService().getCount(userId.toString()));
-    }
-
-    public ActionItemDTO[] getActionItemsForUser(UserIdDTO userId) throws WorkflowException {
+    
+    public ActionItemDTO[] getActionItemsForPrincipal(String principalId) throws WorkflowException {
         //added by Derek
-        Collection actionItems = KEWServiceLocator.getActionListService().getActionList(getWorkflowUserInternal(userId).getWorkflowId(), null);
+        Collection actionItems = KEWServiceLocator.getActionListService().getActionList(principalId, null);
         ActionItemDTO[] actionItemVOs = new ActionItemDTO[actionItems.size()];
         int i = 0;
         for (Iterator iterator = actionItems.iterator(); iterator.hasNext(); i++) {
@@ -256,7 +244,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return getActionRequests(routeHeaderId, null, null);
     }
 
-    public ActionRequestDTO[] getActionRequests(Long routeHeaderId, String nodeName, UserIdDTO userId) throws WorkflowException {
+    public ActionRequestDTO[] getActionRequests(Long routeHeaderId, String nodeName, String principalId) throws WorkflowException {
         if (routeHeaderId == null) {
             LOG.error("null routeHeaderId passed in.");
             throw new RuntimeException("null routeHeaderId passed in.");
@@ -266,7 +254,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         List matchingActionRequests = new ArrayList();
         for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
             ActionRequestValue actionRequestValue = (ActionRequestValue) iterator.next();
-            if (actionRequestMatches(actionRequestValue, nodeName, userId)) {
+            if (actionRequestMatches(actionRequestValue, nodeName, principalId)) {
                 matchingActionRequests.add(actionRequestValue);
             }
         }
@@ -279,14 +267,14 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return actionRequestVOs;
     }
 
-    private boolean actionRequestMatches(ActionRequestValue actionRequest, String nodeName, UserIdDTO userId) throws WorkflowException {
+    private boolean actionRequestMatches(ActionRequestValue actionRequest, String nodeName, String principalId) throws WorkflowException {
         boolean matchesUserId = true;  // assume a match in case user is empty
         boolean matchesNodeName = true;  // assume a match in case node name is empty
         if (StringUtils.isNotBlank(nodeName)) {
             matchesNodeName = nodeName.equals(actionRequest.getPotentialNodeName());
         }
-        if (userId != null) {
-            matchesUserId = actionRequest.isRecipientRoutedRequest(KEWServiceLocator.getUserService().getWorkflowUser(userId));
+        if (principalId != null) {
+            matchesUserId = actionRequest.isRecipientRoutedRequest(principalId);
         }
         return matchesNodeName && matchesUserId;
     }
@@ -381,52 +369,54 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return nodeInstanceVOs;
     }
 
-    public boolean isUserInRouteLog(Long routeHeaderId, UserIdDTO userId, boolean lookFuture) throws WorkflowException {
+    public boolean isUserInRouteLog(Long routeHeaderId, String principalId, boolean lookFuture) throws WorkflowException {
         if (routeHeaderId == null) {
             LOG.error("null routeHeaderId passed in.");
             throw new RuntimeException("null routeHeaderId passed in.");
         }
-        if (userId == null ){
-            LOG.error("null userId passed in.");
-            throw new RuntimeException("null userId passed in.");
+        if (principalId == null ){
+            LOG.error("null principalId passed in.");
+            throw new RiceRuntimeException("null principalId passed in.");
         }
         boolean authorized = false;
-        try {
-        	LOG.debug("Evaluating isUserInRouteLog [docId=" + routeHeaderId + ", userId=" + userId + ", lookFuture=" + lookFuture + "]");
-            DocumentRouteHeaderValue routeHeader = loadDocument(routeHeaderId);
-            KimPrincipal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(userId);
-            List actionsTaken = KEWServiceLocator.getActionTakenService().findByRouteHeaderIdWorkflowId(routeHeaderId, principal.getPrincipalId());
-
-            if(routeHeader.getInitiatorWorkflowId().equals(principal.getPrincipalId())){
-                return true;
-            }
-
-            if (actionsTaken.size() > 0) {
-                LOG.debug("found action taken by user");
-                authorized = true;
-            }
-
-            List actionRequests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(routeHeaderId);
-            if (actionRequestListHasPrincipal(principal, actionRequests)) {
-                authorized = true;
-            }
-
-            if (!lookFuture) {
-                return authorized;
-            }
-
-
-            SimulationEngine simulationEngine = new SimulationEngine();
-            SimulationCriteria criteria = new SimulationCriteria(routeHeaderId);
-            criteria.setDestinationNodeName(null); // process entire document to conclusion
-            criteria.getDestinationRecipients().add(new KimPrincipalRecipient(principal));
-            SimulationResults results = simulationEngine.runSimulation(criteria);
-            if (actionRequestListHasPrincipal(principal, results.getSimulatedActionRequests())) {
-                authorized = true;
-            }
-        } catch (Exception ex) {
-            LOG.warn("Problems evaluating isUserInRouteLog: " + ex.getMessage(),ex);
+        LOG.debug("Evaluating isUserInRouteLog [docId=" + routeHeaderId + ", principalId=" + principalId + ", lookFuture=" + lookFuture + "]");
+        DocumentRouteHeaderValue routeHeader = loadDocument(routeHeaderId);
+        KimPrincipal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);
+        List actionsTaken = KEWServiceLocator.getActionTakenService().findByRouteHeaderIdWorkflowId(routeHeaderId, principal.getPrincipalId());
+        
+        if(routeHeader.getInitiatorWorkflowId().equals(principal.getPrincipalId())){
+        	return true;
         }
+
+        if (actionsTaken.size() > 0) {
+        	LOG.debug("found action taken by user");
+        	authorized = true;
+        }
+
+        List actionRequests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(routeHeaderId);
+        if (actionRequestListHasPrincipal(principal, actionRequests)) {
+        	authorized = true;
+        }
+
+        if (!lookFuture) {
+        	return authorized;
+        }
+
+
+        SimulationEngine simulationEngine = new SimulationEngine();
+        SimulationCriteria criteria = new SimulationCriteria(routeHeaderId);
+        criteria.setDestinationNodeName(null); // process entire document to conclusion
+        criteria.getDestinationRecipients().add(new KimPrincipalRecipient(principal));
+        
+        try {
+        	SimulationResults results = simulationEngine.runSimulation(criteria);
+        	if (actionRequestListHasPrincipal(principal, results.getSimulatedActionRequests())) {
+        		authorized = true;
+        	}
+        } catch (Exception e) {
+        	throw new RiceRuntimeException(e);
+        }
+
         return authorized;
     }
 
@@ -559,37 +549,36 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         }
     }
 
-    public boolean isLastApproverInRouteLevel(Long routeHeaderId, UserIdDTO userId, Integer routeLevel) throws WorkflowException {
+    public boolean isLastApproverInRouteLevel(Long routeHeaderId, String principalId, Integer routeLevel) throws WorkflowException {
         if (routeLevel == null) {
             LOG.error("null routeLevel passed in.");
             throw new RuntimeException("null routeLevel passed in.");
         }
-        LOG.debug("Evaluating isLastApproverInRouteLevel [docId=" + routeHeaderId + ", userId=" + userId + ", routeLevel=" + routeLevel + "]");
+        LOG.debug("Evaluating isLastApproverInRouteLevel [docId=" + routeHeaderId + ", principalId=" + principalId + ", routeLevel=" + routeLevel + "]");
         DocumentRouteHeaderValue document = loadDocument(routeHeaderId);
         RouteNode node = CompatUtils.getNodeForLevel(document.getDocumentType(), routeLevel);
         if (node == null) {
             throw new RuntimeException("Cannot resolve given route level to an approriate node name: " + routeLevel);
         }
-        return isLastApproverAtNode(routeHeaderId, userId, node.getRouteNodeName());
+        return isLastApproverAtNode(routeHeaderId, principalId, node.getRouteNodeName());
     }
 
-    public boolean isLastApproverAtNode(Long routeHeaderId, UserIdDTO userId, String nodeName) throws WorkflowException {
+    public boolean isLastApproverAtNode(Long routeHeaderId, String principalId, String nodeName) throws WorkflowException {
         if (routeHeaderId == null) {
             LOG.error("null routeHeaderId passed in.");
             throw new RuntimeException("null routeHeaderId passed in.");
         }
-        if (userId == null ){
-            LOG.error("null userId passed in.");
-            throw new RuntimeException("null userId passed in.");
+        if (principalId == null ){
+            LOG.error("null principalId passed in.");
+            throw new RuntimeException("null principalId passed in.");
         }
-        LOG.debug("Evaluating isLastApproverAtNode [docId=" + routeHeaderId + ", userId=" + userId + ", nodeName=" + nodeName + "]");
+        LOG.debug("Evaluating isLastApproverAtNode [docId=" + routeHeaderId + ", principalId=" + principalId + ", nodeName=" + nodeName + "]");
         loadDocument(routeHeaderId);
         // If this app constant is set to true, then we will attempt to simulate activation of non-active requests before
         // attempting to deactivate them, this is in order to address the ignore previous issue reported by EPIC in issue
         // http://fms.dfa.cornell.edu:8080/browse/KULWF-366
         boolean activateFirst = Utilities.getKNSParameterBooleanValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
 
-        WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
         List requests = KEWServiceLocator.getActionRequestService().findPendingByDocRequestCdNodeName(routeHeaderId, KEWConstants.ACTION_REQUEST_APPROVE_REQ, nodeName);
         if (requests == null || requests.isEmpty()) {
             return false;
@@ -600,9 +589,9 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
             if (activateFirst && !request.isActive()) {
                 KEWServiceLocator.getActionRequestService().activateRequest(request, activationContext);
             }
-            if (request.isUserRequest() && request.getPrincipalId().equals(user.getWorkflowUserId().getWorkflowId())) {
+            if (request.isUserRequest() && request.getPrincipalId().equals(principalId)) {
                 KEWServiceLocator.getActionRequestService().deactivateRequest(null, request, activationContext);
-            } else if (request.isGroupRequest() && KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(user.getWorkflowId(), request.getGroup().getGroupId())) {
+            } else if (request.isGroupRequest() && KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(principalId, request.getGroup().getGroupId())) {
                 KEWServiceLocator.getActionRequestService().deactivateRequest(null, request, activationContext);
             }
         }
@@ -738,10 +727,10 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return DTOConverter.convertDocumentDetail(KEWServiceLocator.getRoutingReportService().report(criteria));
     }
 
-    public boolean isFinalApprover(Long routeHeaderId, UserIdDTO userId) throws WorkflowException {
+    public boolean isFinalApprover(Long routeHeaderId, String principalId) throws WorkflowException {
         incomingParamCheck(routeHeaderId, "routeHeaderId");
-        incomingParamCheck(userId, "userId");
-        LOG.debug("Evaluating isFinalApprover [docId=" + routeHeaderId + ", userId=" + userId + "]");
+        incomingParamCheck(principalId, "principalId");
+        LOG.debug("Evaluating isFinalApprover [docId=" + routeHeaderId + ", principalId=" + principalId + "]");
         DocumentRouteHeaderValue routeHeader = loadDocument(routeHeaderId);
         List requests = KEWServiceLocator.getActionRequestService().findPendingByDoc(routeHeaderId);
         List finalApproverNodes = KEWServiceLocator.getRouteNodeService().findFinalApprovalRouteNodes(routeHeader.getDocumentType().getDocumentTypeId());
@@ -755,7 +744,6 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
             finalApproverNodeNames.add(node.getRouteNodeName());
         }
 
-        WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
         int approveRequest = 0;
         for (Iterator iter = requests.iterator(); iter.hasNext();) {
             ActionRequestValue request = (ActionRequestValue) iter.next();
@@ -768,8 +756,8 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
                 if (request.isApproveOrCompleteRequest()) {
                     approveRequest++;
                     LOG.debug("Found request is approver " + request.getActionRequestId());
-                    if (! request.isRecipientRoutedRequest(user)) {
-                        LOG.debug("Action Request not for user " + user.getAuthenticationUserId().getAuthenticationId());
+                    if (! request.isRecipientRoutedRequest(principalId)) {
+                        LOG.debug("Action Request not for user " + principalId);
                         return false;
                     }
                 }
@@ -779,7 +767,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         if (approveRequest == 0) {
             return false;
         }
-        LOG.debug("User "+userId+" is final approver for document " + routeHeaderId);
+        LOG.debug("Principal "+principalId+" is final approver for document " + routeHeaderId);
         return true;
     }
 
@@ -840,8 +828,8 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         if (ruleReportCriteria == null) {
             throw new IllegalArgumentException("At least one criterion must be sent in a RuleReportCriteriaDTO object");
         }
-        LOG.debug("Executing rule report [responsibleUser=" + ruleReportCriteria.getResponsibleUser() + ", responsibleWorkgroup=" +
-                ruleReportCriteria.getResponsibleWorkgroup() + "]");
+        LOG.debug("Executing rule report [responsibleUser=" + ruleReportCriteria.getResponsiblePrincipalId() + ", responsibleWorkgroup=" +
+                ruleReportCriteria.getResponsibleGroupId() + "]");
         Map extensionValues = new HashMap();
         if (ruleReportCriteria.getRuleExtensionVOs() != null) {
             for (int i = 0; i < ruleReportCriteria.getRuleExtensionVOs().length; i++) {
@@ -855,8 +843,8 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
             actionRequestCodes = Arrays.asList(ruleReportCriteria.getActionRequestCodes());
         }
         Collection rulesFound = KEWServiceLocator.getRuleService().search(ruleReportCriteria.getDocumentTypeName(),ruleReportCriteria.getRuleTemplateName(),
-                ruleReportCriteria.getRuleDescription(),DTOConverter.convertWorkgroupIdVO(ruleReportCriteria.getResponsibleWorkgroup()),
-                DTOConverter.convertUserIdVO(ruleReportCriteria.getResponsibleUser()),ruleReportCriteria.getResponsibleRoleName(),
+                ruleReportCriteria.getRuleDescription(), ruleReportCriteria.getResponsibleGroupId(),
+                ruleReportCriteria.getResponsiblePrincipalId(),ruleReportCriteria.getResponsibleRoleName(),
                 ruleReportCriteria.isConsiderWorkgroupMembership(),ruleReportCriteria.isIncludeDelegations(),
                 ruleReportCriteria.isActiveIndicator(),extensionValues,actionRequestCodes);
         RuleDTO[] returnableRules = new RuleDTO[rulesFound.size()];
@@ -873,14 +861,11 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return performDocumentSearch(null, criteriaVO);
     }
 
-    public DocumentSearchResultDTO performDocumentSearch(UserIdDTO userId, DocumentSearchCriteriaDTO criteriaVO) throws WorkflowException {
+    public DocumentSearchResultDTO performDocumentSearch(String principalId, DocumentSearchCriteriaDTO criteriaVO) throws WorkflowException {
         DocSearchCriteriaDTO criteria = DTOConverter.convertDocumentSearchCriteriaDTO(criteriaVO);
-        WorkflowUser user = null;
-        if (userId != null) {
-            criteria.setOverridingUserSession(true);
-            user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
-        }
-        DocumentSearchResultComponents components = KEWServiceLocator.getDocumentSearchService().getListRestrictedByCriteria(user.getWorkflowId(), criteria);
+        criteria.setOverridingUserSession(true);
+        KEWServiceLocator.getIdentityHelperService().validatePrincipalId(principalId);
+        DocumentSearchResultComponents components = KEWServiceLocator.getDocumentSearchService().getListRestrictedByCriteria(principalId, criteria);
         DocumentSearchResultDTO resultVO = DTOConverter.convertDocumentSearchResultComponents(components);
         resultVO.setOverThreshold(criteria.isOverThreshold());
         resultVO.setSecurityFilteredRows(Integer.valueOf(criteria.getSecurityFilteredRows()));

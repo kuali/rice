@@ -1278,20 +1278,6 @@ public class WorkflowDocument implements java.io.Serializable {
     	}
     }
 
-
-    // DEPRECATED: as of Workflow 2.0
-
-    /**
-     * @deprecated use getRouteHeader.getInitiator
-     */
-    public String getInitiatorNetworkId() {
-        if (routeHeader.getInitiator() != null) {
-            return routeHeader.getInitiator().getNetworkId();
-        } else {
-            return "";
-        }
-    }
-
     // DEPRECATED: as of Workflow 2.1
 
     /**

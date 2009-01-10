@@ -32,7 +32,7 @@ public class RuleResponsibilityDTO implements java.io.Serializable {
  *  ruleResponsibilityName
  *  ruleResponsibilityType
  */
-    private UserDTO user;
+    private String principalId;
     private String groupId;
     private String roleName;
     
@@ -98,12 +98,12 @@ public class RuleResponsibilityDTO implements java.io.Serializable {
         this.roleName = roleName;
     }
 
-    public UserDTO getUser() {
-        return user;
+    public String getPrincipalId() {
+        return principalId;
     }
 
-    public void setUser(UserDTO user) {
-        this.user = user;
+    public void setPrincipalId(String principalId) {
+        this.principalId = principalId;
     }
 
     public String getGroupId() {

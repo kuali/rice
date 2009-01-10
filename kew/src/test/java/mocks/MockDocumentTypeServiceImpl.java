@@ -29,7 +29,6 @@ import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.postprocessor.PostProcessor;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 
 
@@ -124,10 +123,6 @@ public class MockDocumentTypeServiceImpl implements DocumentTypeService {
         documentsByName.remove(documentType.getName());
     }
 
-    public DocumentType route(DocumentType documentType, WorkflowUser user, String annotation) {
-        return new DocumentType();
-    }
-
     public List findByRouteHeaderId(Long routeHeaderId) {
         throw new UnsupportedOperationException("not implemented in MockDocumentTypeServiceImpl");
     }
@@ -135,17 +130,10 @@ public class MockDocumentTypeServiceImpl implements DocumentTypeService {
         throw new UnsupportedOperationException("not implemented in MockDocumentTypeServiceImpl");
     }
 
-    public DocumentType blanketApprove(Long routeHeaderId, DocumentType documentType, WorkflowUser user, String annotation) throws Exception {
-        return null;
-    }
     public List findAllCurrentRootDocuments() {
         return null;
     }
     public DocumentType getMostRecentDocType(Long documentTypeId) {
-        return null;
-    }
-    public DocumentType route(Long routeHeaderId, DocumentType documentType, WorkflowUser user, String annotation) throws Exception {
-
         return null;
     }
     /* (non-Javadoc)

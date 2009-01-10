@@ -31,6 +31,7 @@ import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.service.WorkflowInfo;
+import org.kuali.rice.kew.user.UserUtils;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.webservice.DocumentResponse;
@@ -382,9 +383,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 		WorkflowInfo info = new WorkflowInfo();
 		try {
 			Long id = Long.parseLong(docId);
-			WorkflowIdDTO principalIdVO = new WorkflowIdDTO(principalId);
-
-			isUserInRouteLog = info.isUserAuthenticatedByRouteLog(id, principalIdVO, true);
+			isUserInRouteLog = info.isUserAuthenticatedByRouteLog(id, principalId, true);
 		} catch (NumberFormatException e) {
 			errorMessage = "Invalid (non-numeric) docId";
 		} catch (WorkflowException e) {
@@ -972,7 +971,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 		String docStatus = "";
 		String createDate = "";
 		String initiatorPrincipalId = "";
-        String routedByprincipalId = "";
+        String routedByPrincipalId = "";
 		String appDocId = "";
 		String initiatorName = "";
         String routedByUserName = "";
@@ -993,21 +992,21 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 				createDate = formatCalendar(routeHeader.getDateCreated());
 			}
 
-			if (routeHeader.getInitiator() == null) {
+			if (routeHeader.getInitiatorPrincipalId() == null) {
 				errorMessage += "Error: NULL Initiator; ";
 			} else {
-				initiatorPrincipalId = routeHeader.getInitiator().getNetworkId();
-				initiatorName = routeHeader.getInitiator().getDisplayName();
+				initiatorPrincipalId = routeHeader.getInitiatorPrincipalId();
+				initiatorName = UserUtils.getDisplayableName(null, initiatorPrincipalId);
 			}
 
-            if (routeHeader.getRoutedByUser() == null) {
+            if (routeHeader.getRoutedByPrincipalId() == null) {
                 // of the document has been routed, but there is no routed-by user, that is an error
                 if (KEWConstants.ROUTE_HEADER_ENROUTE_CD.equals(routeHeader.getDocRouteStatus())) {
                         errorMessage += "Error: NULL routedBy user; ";
                 }
             } else {
-                routedByprincipalId = routeHeader.getRoutedByUser().getNetworkId();
-                routedByUserName = routeHeader.getRoutedByUser().getDisplayName();
+                routedByPrincipalId = routeHeader.getRoutedByPrincipalId();
+                routedByUserName = UserUtils.getDisplayableName(null, routedByPrincipalId);
             }
 
 			if (routeHeader.getAppDocId() != null) {
@@ -1030,7 +1029,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 		response.setDocStatus(docStatus);
 		response.setCreateDate(createDate);
 		response.setInitiatorPrincipalId(initiatorPrincipalId);
-		response.setRoutedByPrincipalId(routedByprincipalId);
+		response.setRoutedByPrincipalId(routedByPrincipalId);
 		response.setAppDocId(appDocId);
 		response.setInitiatorName(initiatorName);
 		response.setRoutedByUserName(routedByUserName);

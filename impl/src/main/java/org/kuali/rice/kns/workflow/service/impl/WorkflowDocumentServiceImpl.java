@@ -315,7 +315,6 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      * @param adHocRecipients
      * @throws InvalidActionTakenException
      * @throws InvalidRouteTypeException
-     * @throws KEWUserNotFoundException
      * @throws InvalidActionRequestException
      * @throws InvalidWorkgroupException
      */

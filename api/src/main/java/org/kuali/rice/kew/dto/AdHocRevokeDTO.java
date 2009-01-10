@@ -16,7 +16,6 @@
  */
 package org.kuali.rice.kew.dto;
 
-import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 
 /**
  * Represents a revocation of an AdHoc request.<br><br>

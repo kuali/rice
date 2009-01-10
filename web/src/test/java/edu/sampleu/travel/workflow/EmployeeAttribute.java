@@ -27,18 +27,18 @@ import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.identity.Id;
-import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.GenericRoleAttribute;
 import org.kuali.rice.kew.rule.QualifiedRoleName;
 import org.kuali.rice.kew.rule.Role;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.UserId;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KeyLabelPair;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
 
 
 /**
@@ -191,16 +191,16 @@ public class EmployeeAttribute extends GenericRoleAttribute {
 			errors.add(new WorkflowServiceErrorImpl("userid is required", "uh.accountattribute.userid.required"));
 		}
 
-		WorkflowUser user = null;
+		KimPrincipal principal = null;
 		if (!StringUtils.isBlank(userid)) {
-			try {
-				user = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(userid));
-			} catch (KEWUserNotFoundException e) {
-				errors.add(new WorkflowServiceErrorImpl("unable to retrieve user for userid '" + userid + "'", "uh.accountattribute.userid.invalid"));
-			}
+			principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(userid);
 		}
+		if (principal == null) {
+			errors.add(new WorkflowServiceErrorImpl("unable to retrieve user for userid '" + userid + "'", "uh.accountattribute.userid.invalid"));
+		}
+	
 		if (errors.size() == 0) {
-			traveler = user.getUuId().getUuId();
+			traveler = principal.getPrincipalId();
 		}
 
 		return errors;

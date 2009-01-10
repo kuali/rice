@@ -44,7 +44,6 @@ import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.role.dto.DelegateInfo;
 import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.util.KNSConstants;
 
 
@@ -280,8 +279,10 @@ public class ActionRequestFactory {
 			if (recipientId instanceof UserId) {
 				KimPrincipal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal((UserId)recipientId);
 				role.setTarget(new KimPrincipalRecipient(principal));
-			} else {
+			} else if (recipientId instanceof GroupId){
 				role.setTarget(new KimGroupRecipient(KEWServiceLocator.getIdentityHelperService().getGroup((GroupId) recipientId)));
+			} else {
+				throw new WorkflowRuntimeException("Could not process the given type of id: " + recipientId.getClass());
 			}
 			if (role.getTarget() != null) {
                 legitimateTargets++;
@@ -380,8 +381,10 @@ public class ActionRequestFactory {
 			}
 			if (recipientId instanceof UserId) {
 				role.setTarget(new KimPrincipalRecipient(KEWServiceLocator.getIdentityHelperService().getPrincipal((UserId) recipientId)));
-			} else {
+			} else if (recipientId instanceof GroupId) {
 			    role.setTarget(new KimGroupRecipient(KEWServiceLocator.getIdentityHelperService().getGroup((GroupId) recipientId)));
+			} else {
+				throw new WorkflowRuntimeException("Could not process the given type of id: " + recipientId.getClass());
 			}
 			ActionRequestValue request = createActionRequest(parentRequest.getActionRequested(), parentRequest.getPriority(), role, description, responsibilityId, ignorePrevious, null, ruleId, null);
 			request.setDelegationType(delegationType);

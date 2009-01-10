@@ -27,15 +27,15 @@ public class ReportActionToTakeDTO implements Serializable {
 	private static final long serialVersionUID = 5212455086079117671L;
 
 	private String actionToPerform;
-    private UserIdDTO userIdVO;
+    private String principalId;
     private String nodeName;
 
     public ReportActionToTakeDTO() {
     }
 
-    public ReportActionToTakeDTO(String actionToPerform, UserIdDTO userIdVO, String nodeName) {
+    public ReportActionToTakeDTO(String actionToPerform, String principalId, String nodeName) {
         this.actionToPerform = actionToPerform;
-        this.userIdVO = userIdVO;
+        this.principalId = principalId;
         this.nodeName = nodeName;
     }
 
@@ -55,12 +55,12 @@ public class ReportActionToTakeDTO implements Serializable {
 		this.nodeName = nodeName;
 	}
 
-	public UserIdDTO getUserIdVO() {
-		return userIdVO;
+	public String getPrincipalId() {
+		return this.principalId;
 	}
 
-	public void setUserIdVO(UserIdDTO userIdVO) {
-		this.userIdVO = userIdVO;
-	}
+	public void setPrincipalId(String principalId) {
+		this.principalId = principalId;
+	}	
 
 }

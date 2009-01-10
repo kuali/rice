@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.dto;
 
 /**
- * Transport object representing WorkflowUserId
+ * Transport object representing a principal ID
  */
 public class WorkflowIdDTO extends UserIdDTO {
 

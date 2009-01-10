@@ -584,7 +584,7 @@ public class KualiDocumentActionBase extends KualiAction {
         // setup route report form variables
         request.setAttribute("workflowRouteReportUrl", KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.WORKFLOW_URL_KEY) + "/" + KEWConstants.DOCUMENT_ROUTING_REPORT_PAGE);
         List<KeyLabelPair> generalRouteReportFormParameters = new ArrayList<KeyLabelPair>();
-        generalRouteReportFormParameters.add(new KeyLabelPair(KEWConstants.INITIATOR_ID_ATTRIBUTE_NAME,document.getDocumentHeader().getWorkflowDocument().getInitiatorNetworkId()));
+        generalRouteReportFormParameters.add(new KeyLabelPair(KEWConstants.INITIATOR_ID_ATTRIBUTE_NAME, document.getDocumentHeader().getWorkflowDocument().getRouteHeader().getInitiatorPrincipalId()));
         generalRouteReportFormParameters.add(new KeyLabelPair(KEWConstants.DOCUMENT_TYPE_NAME_ATTRIBUTE_NAME,document.getDocumentHeader().getWorkflowDocument().getDocumentType()));
         // prepareForRouteReport() method should populate document header workflow document application content xml
         String xml = document.getXmlForRouteReport();

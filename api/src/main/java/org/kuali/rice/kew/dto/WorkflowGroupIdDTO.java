@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.dto;
 
 /**
- * Transport object representing a WorkflowGroupId.
+ * Transport object representing a group ID
  */
 public class WorkflowGroupIdDTO extends WorkgroupIdDTO {
     

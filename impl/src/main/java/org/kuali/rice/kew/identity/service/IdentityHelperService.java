@@ -45,6 +45,11 @@ public interface IdentityHelperService {
 	public KimPrincipal getPrincipal(String principalId);
 
 	/**
+	 * Checks that the given principalId is valid.  Throws a RiceRuntimeException if it is not.
+	 */
+	public void validatePrincipalId(String principalId);
+	
+	/**
 	 * Returns the KimPrincipal for the given principalName.  Throws an exception
 	 * if the principalName cannot be resolved to a principal.
 	 */

@@ -771,7 +771,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         }
 
         // if the current user is not the initiator of the blocking document
-        if (!userId.equalsIgnoreCase(documentHeader.getWorkflowDocument().getInitiatorNetworkId().trim())) {
+        if (!userId.equalsIgnoreCase(documentHeader.getWorkflowDocument().getRouteHeader().getInitiatorPrincipalId().trim())) {
             return false;
         }
 

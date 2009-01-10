@@ -259,10 +259,10 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
     			principalId = getInitiator().getPrincipalId();
     		}
     	}
-        String inquiryUrl = getPersonInquiryUrlLink(principalId, workflowDocument != null? workflowDocument.getInitiatorNetworkId() : null);
+        String inquiryUrl = getPersonInquiryUrlLink(principalId, workflowDocument != null? workflowDocument.getInitiatorPrincipalId() : null);
 
         HeaderField docInitiator = new HeaderField(KNSConstants.DocumentFormHeaderFieldIds.DOCUMENT_INITIATOR, "DataDictionary.AttributeReferenceDummy.attributes.initiatorNetworkId", 
-        workflowDocument != null? workflowDocument.getInitiatorNetworkId() : null, workflowDocument != null? inquiryUrl : null);
+        workflowDocument != null? workflowDocument.getInitiatorPrincipalId() : null, workflowDocument != null? inquiryUrl : null);
         
         String createDateStr = null;
         if(workflowDocument != null && workflowDocument.getCreateDate() != null) {
@@ -531,23 +531,15 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
      */
     public boolean isUserDocumentInitiator() {
         if (getWorkflowDocument() != null) {
-            return getWorkflowDocument().getRouteHeader().getInitiator().getUuId().equalsIgnoreCase(
+            return getWorkflowDocument().getRouteHeader().getInitiatorPrincipalId().equalsIgnoreCase(
             		GlobalVariables.getUserSession().getPrincipalId());
         }
         return false;
     }
 
     public Person getInitiator() {
-	String networkId = getWorkflowDocument().getInitiatorNetworkId();
-	if (!StringUtils.isBlank(networkId)) {
-		Person user = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().getPersonByPrincipalName(getWorkflowDocument().getInitiatorNetworkId());
-		if (user != null) {
-		    return user;
-		}
-	}
-	// the following is for backward compatibility with the way that page.tag used to work where it was checking against the workflow uuId
-	String uuId = getWorkflowDocument().getRouteHeader().getInitiator().getUuId();
-	return org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().getPerson(uuId);
+    	String initiatorPrincipalId = getWorkflowDocument().getRouteHeader().getInitiatorPrincipalId();
+    	return org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().getPerson(initiatorPrincipalId);
     }
 
     /**
@@ -627,7 +619,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
      * @return
      */
     public String getInitiatorNetworkId() {
-        return this.getWorkflowDocument().getInitiatorNetworkId();
+        return this.getWorkflowDocument().getRouteHeader().getInitiatorPrincipalId();
     }
 
     /**

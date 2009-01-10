@@ -44,12 +44,6 @@ public class WebFriendlyRecipient implements Recipient{
     	 if (recipient instanceof WebFriendlyRecipient) {
              recipientId = ((WebFriendlyRecipient) recipient).getRecipientId();
              displayName = ((WebFriendlyRecipient) recipient).getDisplayName();
-         }else if (recipient instanceof Workgroup) {
-             recipientId = ((Workgroup) recipient).getWorkflowGroupId().getGroupId().toString();
-             displayName = ((Workgroup) recipient).getDisplayName();
-         } else if (recipient instanceof WorkflowUser) {
-             recipientId = ((WorkflowUser) recipient).getWorkflowUserId().getWorkflowId();
-             displayName = ((WorkflowUser) recipient).getTransposedName();
          } else if(recipient instanceof Person){
          	recipientId = ((Person)recipient).getPrincipalId();
         	displayName = ((Person)recipient).getLastName() + ", " + ((Person)recipient).getFirstName();

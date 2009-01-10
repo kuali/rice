@@ -16,7 +16,6 @@
 package org.kuali.rice.kim.bo.group.impl;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -32,7 +31,6 @@ import javax.persistence.Table;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.Type;
-import org.kuali.rice.kew.dto.UserDTO;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
@@ -200,21 +198,6 @@ public class KimGroupImpl extends PersistableBusinessObjectBase implements KimGr
 
 	public void setGroupAttributes(List<GroupAttributeDataImpl> groupAttributes) {
 		this.groupAttributes = groupAttributes;
-	}
-
-	/**
-	 * Just a shim until KEW is converted to use KimGroups
-	 * 
-	 */
-	@SuppressWarnings("unchecked")
-	@Deprecated
-	public void setGroupUsers(List groupMembers) {
-		for (Iterator member = groupMembers.iterator(); member.hasNext();) {
-			UserDTO dto = (UserDTO) member.next();
-			GroupMemberImpl p = new GroupMemberImpl();
-			p.setMemberId(dto.getWorkflowId());
-			members.add(p);
-		}	
 	}
 
 	public void setMembers(List<GroupMemberImpl> members) {

@@ -33,12 +33,12 @@ public class ParameterRule extends MaintenanceDocumentRuleBase {
 		boolean result = super.processCustomRouteDocumentBusinessRules( document );
 
 		result &= checkWorkgroup( document.getDocumentHeader().getWorkflowDocument()
-				.getInitiatorNetworkId(), (Parameter)getOldBo(), (Parameter)getNewBo() );
+				.getRouteHeader().getInitiatorPrincipalId(), (Parameter)getOldBo(), (Parameter)getNewBo() );
 
 		return result;
 	}
 
-	protected boolean checkWorkgroup(String initiatorUserId, Parameter oldBO, Parameter newBO) {
+	protected boolean checkWorkgroup(String initiatorPrincipalId, Parameter oldBO, Parameter newBO) {
 		boolean result = true;
 		// don't check if workgroup is blank
 		if ( StringUtils.isNotBlank( newBO.getParameterWorkgroupName() ) ) {
@@ -46,10 +46,10 @@ public class ParameterRule extends MaintenanceDocumentRuleBase {
 			result = org.kuali.rice.kim.service.KIMServiceLocator.getIdentityManagementService().getGroupByName(Utilities.parseGroupNamespaceCode(newBO.getParameterWorkgroupName()), Utilities.parseGroupName(newBO.getParameterWorkgroupName()) ) != null;
 			if ( result ) {
 				// get the initiator user record
-			    	Person user = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().getPersonByPrincipalName(initiatorUserId);
+			    	Person user = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().getPerson(initiatorPrincipalId);
 			    	if (user == null) {
-			    	    LOG.error( "Unable to find initiator user: " + initiatorUserId + " via user service" );
-			    	    throw new RuntimeException( "Unable to find initiator user: " + initiatorUserId + " via user service");
+			    	    LOG.error( "Unable to find initiator user: " + initiatorPrincipalId + " via user service" );
+			    	    throw new RuntimeException( "Unable to find initiator user: " + initiatorPrincipalId + " via user service");
 			    	}
 				if ( oldBO == null || StringUtils.isBlank( oldBO.getParameterWorkgroupName() ) ) { // creating
 																									// a

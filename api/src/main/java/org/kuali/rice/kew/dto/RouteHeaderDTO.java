@@ -19,7 +19,6 @@ package org.kuali.rice.kew.dto;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -38,19 +37,13 @@ public class RouteHeaderDTO implements Serializable {
     private Calendar dateLastModified;
     private Calendar dateApproved;
     private Calendar dateFinalized;
-    //private String docContent;
     private String docTitle;
     private String appDocId;
-//    private String overrideInd;
-    private UserDTO initiator;
-    private UserDTO routedByUser;
+    private String initiatorPrincipalId;
+    private String routedByPrincipalId;
     private Integer docRouteLevel;
-    //private String[] nodeNames;
     private String currentRouteNodeNames;
     private Integer docVersion;
-    /**
-     * @deprecated this is unreliable user docTypeId to retrieve document type
-     */
     private String docTypeName;
     private String documentUrl;
     private boolean fyiRequested;
@@ -59,15 +52,10 @@ public class RouteHeaderDTO implements Serializable {
     private boolean completeRequested;
     private boolean userBlanketApprover;
     private Long docTypeId;
-    //private DocumentContentVO documentContent = new DocumentContentVO();
     private ValidActionsDTO validActions;
 
-    //** Modify for adding notes to web service. Modify Date: April 7, 2006
     private NoteDTO[] notes = null;
     private NoteDTO[] notesToDelete = null;
-    //** Modify ends
-    
-//    private StateVO[] rootBranchStates = null; 
 
     /**
      * Probably needs to be an array for web services
@@ -178,23 +166,23 @@ public class RouteHeaderDTO implements Serializable {
         this.docVersion = docVersion;
     }
 
-    public UserDTO getInitiator() {
-        return initiator;
-    }
+    public String getInitiatorPrincipalId() {
+		return this.initiatorPrincipalId;
+	}
 
-    public void setInitiator(UserDTO initiator) {
-        this.initiator = initiator;
-    }
+	public void setInitiatorPrincipalId(String initiatorPrincipalId) {
+		this.initiatorPrincipalId = initiatorPrincipalId;
+	}
 
-    public UserDTO getRoutedByUser() {
-        return routedByUser;
-    }
+	public String getRoutedByPrincipalId() {
+		return this.routedByPrincipalId;
+	}
 
-    public void setRoutedByUser(UserDTO routedByUser) {
-        this.routedByUser = routedByUser;
-    }
+	public void setRoutedByPrincipalId(String routedByPrincipalId) {
+		this.routedByPrincipalId = routedByPrincipalId;
+	}
 
-    public Long getRouteHeaderId() {
+	public Long getRouteHeaderId() {
         return routeHeaderId;
     }
 

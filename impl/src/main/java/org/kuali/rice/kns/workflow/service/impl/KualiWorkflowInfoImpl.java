@@ -28,8 +28,6 @@ import org.kuali.rice.kew.dto.DocumentSearchResultDTO;
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.dto.ReportCriteriaDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
-import org.kuali.rice.kew.dto.UserDTO;
-import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.WorkflowInfo;
@@ -37,7 +35,6 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.spring.Cached;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -112,9 +109,9 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
         }
     }
 
-    public ActionRequestDTO[] getActionRequests(Long routeHeaderId, String nodeName, UserIdDTO userId) throws WorkflowException {
+    public ActionRequestDTO[] getActionRequests(Long routeHeaderId, String nodeName, String principalId) throws WorkflowException {
         try {
-            return getWorkflowUtility().getActionRequests(routeHeaderId, nodeName, userId);
+            return getWorkflowUtility().getActionRequests(routeHeaderId, nodeName, principalId);
         }
         catch (Exception e) {
             throw new WorkflowException(e);
@@ -219,9 +216,9 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
         }
     }
 
-    public DocumentSearchResultDTO performDocumentSearch(UserIdDTO userId, DocumentSearchCriteriaDTO criteriaVO) throws RemoteException, WorkflowException {
+    public DocumentSearchResultDTO performDocumentSearch(String principalId, DocumentSearchCriteriaDTO criteriaVO) throws RemoteException, WorkflowException {
         try {
-            return getWorkflowUtility().performDocumentSearch(userId, criteriaVO);
+            return getWorkflowUtility().performDocumentSearch(principalId, criteriaVO);
         } catch (Exception e) {
             throw new WorkflowException(e);
         }

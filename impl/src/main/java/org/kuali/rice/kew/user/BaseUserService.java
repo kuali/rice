@@ -24,10 +24,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.dto.EmplIdDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
-import org.kuali.rice.kew.dto.UuIdDTO;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.user.dao.BaseUserDAO;
@@ -64,12 +62,13 @@ public class BaseUserService implements UserService {
 
 	public WorkflowUser getWorkflowUser(UserIdDTO userId) throws KEWUserNotFoundException {
         UserId userIdInterface = null;
-        if (userId instanceof EmplIdDTO) {
-            userIdInterface = new EmplId(((EmplIdDTO)userId).getEmplId());
-        } else if (userId instanceof NetworkIdDTO) {
+        //if (userId instanceof EmplIdDTO) {
+        //    userIdInterface = new EmplId(((EmplIdDTO)userId).getEmplId());
+        //} else if (userId instanceof NetworkIdDTO) {
+        if (userId instanceof NetworkIdDTO) {
             userIdInterface = new AuthenticationUserId(((NetworkIdDTO)userId).getNetworkId());
-        } else if (userId instanceof UuIdDTO) {
-            userIdInterface = new UuId(((UuIdDTO)userId).getUuId());
+        //} else if (userId instanceof UuIdDTO) {
+        //    userIdInterface = new UuId(((UuIdDTO)userId).getUuId());
         } else if (userId instanceof WorkflowIdDTO) {
             userIdInterface = new WorkflowUserId(((WorkflowIdDTO)userId).getWorkflowId());
         } else {

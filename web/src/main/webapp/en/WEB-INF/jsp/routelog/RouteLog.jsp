@@ -47,11 +47,8 @@
 					key="routeLog.RouteLog.header.label.initiator" /></kul:htmlAttributeHeaderCell>
 				<td  class="datacell" width="25%"><c:set
 					var="initiatorDisplayName"
-					value="${routeHeader.initiatorUser.displayName}" /> <c:if
-					test="${kewUserSession.workflowUser.workflowId != routeHeader.initiatorUser.workflowId}">
-					<c:set var="initiatorDisplayName"
-						value="${routeHeader.initiatorUser.displayNameSafe}" />
-				</c:if> <a
+					value="${routeHeader.initiatorDisplayName}" />
+				<a
 					href="
                						<c:url value="${UrlResolver.userReportUrl}">
 										<c:param name="workflowId" value="${routeHeader.initiatorWorkflowId}" />

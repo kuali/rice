@@ -38,7 +38,6 @@ import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.edl.service.StyleService;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.feedback.web.FeedbackForm;
 import org.kuali.rice.kew.mail.CustomEmailAttribute;
@@ -141,17 +140,13 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
         if (actionItem.getDelegatorWorkflowId() != null) {
             delegatorType = "user";
             delegatorId = actionItem.getDelegatorWorkflowId();
-            try {
-            	try {
-					KimPrincipal delagator = KIMServiceLocator.getIdentityService().getPrincipal(delegatorId);
-					delegatorDisplayValue = UserUtils.getTransposedName(UserSession.getAuthenticatedUser(), delagator);
-				} catch (Exception e) {
-					throw new KEWUserNotFoundException(e);
-				}
-            } catch (KEWUserNotFoundException e) {
-                LOG.error("Cannot find user for id " + actionItem.getPrincipalId(),e);
-                delegatorDisplayValue = "USER NOT FOUND";
-            };
+            KimPrincipal delegator = KIMServiceLocator.getIdentityService().getPrincipal(delegatorId);
+            if (delegator == null) {
+            	LOG.error("Cannot find user for id " + delegatorId);
+            	delegatorDisplayValue = "USER NOT FOUND";
+            } else {
+            	delegatorDisplayValue = UserUtils.getTransposedName(UserSession.getAuthenticatedUser(), delegator);
+            }
         } else if (actionItem.getDelegatorWorkflowId() != null) {
             delegatorType = "workgroup";
             delegatorId = actionItem.getDelegatorGroupId().toString();
@@ -379,7 +374,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
             addObjectXML(doc, actionItem.getPerson().getPrincipalId(), root, "actionItemPrincipalId");
             addObjectXML(doc, actionItem.getPerson().getPrincipalName(), root, "actionItemPrincipalName");
             addObjectXML(doc, actionItem.getRouteHeader(), root, "doc");
-            addObjectXML(doc, actionItem.getRouteHeader().getInitiatorUser(), root, "docInitiator");
+            addObjectXML(doc, actionItem.getRouteHeader().getInitiatorPrincipal(), root, "docInitiator");
             addObjectXML(doc, actionItem.getRouteHeader().getDocumentType(), root, "documentType");
 
             node.appendChild(root);

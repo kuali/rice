@@ -74,9 +74,11 @@ import org.kuali.rice.kew.notes.CustomNoteAttribute;
 import org.kuali.rice.kew.notes.CustomNoteAttributeImpl;
 import org.kuali.rice.kew.notes.Note;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.user.UserUtils;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -229,36 +231,29 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
     }
 
     public KimPrincipal getInitiatorPrincipal() {
+    	// if we are running a simulation, there will be no initiator
     	if (getInitiatorWorkflowId() == null) {
     		return null;
     	}
     	return KEWServiceLocator.getIdentityHelperService().getPrincipal(getInitiatorWorkflowId());
     }
     
-    public KimPrincipal getInitiatorUser()
-    {
-    	// if we are running a simulation, there will be no initiator
-    	if (getInitiatorWorkflowId() == null) {
-    		return null;
-    	}
-        return getUser(getInitiatorWorkflowId());
-    }
-
     public KimPrincipal getRoutedByPrincipal()
     {
-        // if we are running a simulation, there will be no initiator
         if (getRoutedByUserWorkflowId() == null) {
             return null;
         }
-        return getUser(getRoutedByUserWorkflowId());
+        return KEWServiceLocator.getIdentityHelperService().getPrincipal(getRoutedByUserWorkflowId());
     }
-
-    private KimPrincipal getUser(String principalId)
-    {
-    	KimPrincipal kp = KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
-    	if(kp == null)
-    		throw new RiceRuntimeException();
-    	return kp;
+    
+    public String getInitiatorDisplayName() {
+    	UserSession userSession = UserSession.getAuthenticatedUser();
+    	return UserUtils.getDisplayableName(userSession, getInitiatorPrincipal());
+    }
+    
+    public String getRoutedByDisplayName() {
+    	UserSession userSession = UserSession.getAuthenticatedUser();
+    	return UserUtils.getDisplayableName(userSession, getRoutedByPrincipal());    	
     }
 
     public String getDocRouteStatusLabel() {

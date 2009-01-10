@@ -88,22 +88,13 @@ import org.kuali.rice.kew.rule.WorkflowAttributeXmlValidator;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.AuthenticationUserId;
-import org.kuali.rice.kew.user.EmplId;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.RoleRecipient;
-import org.kuali.rice.kew.user.UserId;
-import org.kuali.rice.kew.user.UuId;
-import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.ResponsibleParty;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kew.web.KeyValueSort;
-import org.kuali.rice.kew.workgroup.GroupId;
-import org.kuali.rice.kew.workgroup.GroupNameId;
-import org.kuali.rice.kew.workgroup.WorkflowGroupId;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
@@ -219,8 +210,8 @@ public class DTOConverter {
             routeHeaderVO.setDocTypeId(routeHeader.getDocumentTypeId());
         }
         routeHeaderVO.setDocVersion(routeHeader.getDocVersion());
-        routeHeaderVO.setInitiator(convertUser(routeHeader.getInitiatorUser()));
-        routeHeaderVO.setRoutedByUser(convertUser(routeHeader.getRoutedByPrincipal()));
+        routeHeaderVO.setInitiatorPrincipalId(routeHeader.getInitiatorWorkflowId());
+        routeHeaderVO.setRoutedByPrincipalId(routeHeader.getRoutedByUserWorkflowId());
 
         /* populate the routeHeaderVO with the document variables */
         // FIXME: we assume there is only one for now
@@ -240,20 +231,11 @@ public class DTOConverter {
         }
     }
 
-    public static DocumentRouteHeaderValue convertRouteHeaderVO(RouteHeaderDTO routeHeaderVO) throws WorkflowException, KEWUserNotFoundException {
+    public static DocumentRouteHeaderValue convertRouteHeaderVO(RouteHeaderDTO routeHeaderVO) throws WorkflowException {
         DocumentRouteHeaderValue routeHeader = new DocumentRouteHeaderValue();
         routeHeader.setAppDocId(routeHeaderVO.getAppDocId());
         routeHeader.setApprovedDate(Utilities.convertCalendar(routeHeaderVO.getDateApproved()));
         routeHeader.setCreateDate(Utilities.convertCalendar(routeHeaderVO.getDateCreated()));
-        // String updatedDocumentContent = buildUpdatedDocumentContent(routeHeaderVO);
-        // if null is returned from this method it indicates that the document content on the route header
-        // contained no changes, since we are creating a new document here, we will default the
-        // document content approriately if no changes are detected on the incoming DocumentContentVO
-        // if (updatedDocumentContent != null) {
-        // routeHeader.setDocContent(updatedDocumentContent);
-        // } else {
-        // routeHeader.setDocContent(KEWConstants.DEFAULT_DOCUMENT_CONTENT);
-        // }
         if (StringUtils.isEmpty(routeHeader.getDocContent())) {
             routeHeader.setDocContent(KEWConstants.DEFAULT_DOCUMENT_CONTENT);
         }
@@ -269,19 +251,15 @@ public class DTOConverter {
         }
         routeHeader.setDocVersion(routeHeaderVO.getDocVersion());
         routeHeader.setFinalizedDate(Utilities.convertCalendar(routeHeaderVO.getDateFinalized()));
-        if (routeHeaderVO.getInitiator() != null) {
-            routeHeader.setInitiatorWorkflowId(routeHeaderVO.getInitiator().getWorkflowId());
-        }
-        if (routeHeaderVO.getRoutedByUser() != null) {
-            routeHeader.setRoutedByUserWorkflowId(routeHeaderVO.getRoutedByUser().getWorkflowId());
-        }
+        routeHeader.setInitiatorWorkflowId(routeHeaderVO.getInitiatorPrincipalId());
+        routeHeader.setRoutedByUserWorkflowId(routeHeaderVO.getRoutedByPrincipalId());
         routeHeader.setRouteHeaderId(routeHeaderVO.getRouteHeaderId());
         routeHeader.setStatusModDate(Utilities.convertCalendar(routeHeaderVO.getDateLastModified()));
 
         return routeHeader;
     }
 
-    public static ActionItemDTO convertActionItem(ActionItem actionItem) throws KEWUserNotFoundException {
+    public static ActionItemDTO convertActionItem(ActionItem actionItem) {
         ActionItemDTO actionItemVO = new ActionItemDTO();
         actionItemVO.setActionItemId(actionItem.getActionItemId());
         actionItemVO.setActionItemIndex(actionItem.getActionItemIndex());
@@ -471,27 +449,6 @@ public class DTOConverter {
         return documentContentVO;
     }
 
-    public static UserDTO convertUser(KimPrincipal principal) {
-        if (principal == null) {
-            return null;
-        }
-        Person person = KIMServiceLocator.getPersonService().getPerson(principal.getPrincipalId());
-        UserDTO userVO = new UserDTO();
-        if( person != null)
-        {
-        	userVO.setEmplId(person.getEmployeeId());
-        	userVO.setDisplayName(person.getName());
-        	userVO.setLastName(person.getLastName());
-        	userVO.setFirstName(person.getFirstName());
-        	userVO.setEmailAddress(person.getEmailAddress());
-        }
-        userVO.setNetworkId(principal.getPrincipalName());
-        userVO.setWorkflowId(principal.getPrincipalId());
-        userVO.setUserPreferencePopDocHandler(true);
-        
-        return userVO;
-    }
-
     public static DocumentTypeDTO convertDocumentType(DocumentType docType) {
         DocumentTypeDTO docTypeVO = new DocumentTypeDTO();
         docTypeVO.setDocTypeParentId(docType.getDocTypeParentId());
@@ -543,7 +500,7 @@ public class DTOConverter {
         return routePath;
     }
 
-    public static ActionRequestDTO convertActionRequest(ActionRequestValue actionRequest) throws KEWUserNotFoundException {
+    public static ActionRequestDTO convertActionRequest(ActionRequestValue actionRequest) {
         // TODO some newly added actionrequest properties are not here (delegation stuff)
         ActionRequestDTO actionRequestVO = new ActionRequestDTO();
         actionRequestVO.setActionRequested(actionRequest.getActionRequested());
@@ -588,7 +545,7 @@ public class DTOConverter {
         return actionRequestVO;
     }
 
-    public static ActionTakenDTO convertActionTaken(ActionTakenValue actionTaken) throws KEWUserNotFoundException {
+    public static ActionTakenDTO convertActionTaken(ActionTakenValue actionTaken) {
         if (actionTaken == null) {
             return null;
         }
@@ -603,67 +560,6 @@ public class DTOConverter {
         actionTakenVO.setDelegatorPrincpalId(actionTaken.getDelegatorPrincipalId());
         actionTakenVO.setDelegatorGroupId(actionTaken.getDelegatorGroupId());
         return actionTakenVO;
-    }
-
-    public static GroupId convertWorkgroupIdVO(WorkgroupIdDTO workgroupId) {
-        GroupId groupId = null;
-        if (workgroupId instanceof WorkgroupNameIdDTO) {
-            WorkgroupNameIdDTO workgroupName = (WorkgroupNameIdDTO) workgroupId;
-            groupId = new GroupNameId(workgroupName.getWorkgroupName());
-        } else if (workgroupId instanceof WorkflowGroupIdDTO) {
-            WorkflowGroupIdDTO workflowGroupId = (WorkflowGroupIdDTO) workgroupId;
-            groupId = new WorkflowGroupId(workflowGroupId.getWorkgroupId());
-        }
-
-        return groupId;
-    }
-
-    public static UserIdDTO convertUserId(UserId userId) {
-        UserIdDTO userIdVO = null;
-        if (userId instanceof AuthenticationUserId) {
-            AuthenticationUserId id = (AuthenticationUserId) userId;
-            userIdVO = new NetworkIdDTO(id.getAuthenticationId());
-        } else if (userId instanceof EmplId) {
-            EmplId id = (EmplId) userId;
-            userIdVO = new EmplIdDTO(id.getEmplId());
-        } else if (userId instanceof UuId) {
-            UuId id = (UuId) userId;
-            userIdVO = new UuIdDTO(id.getUuId());
-        } else if (userId instanceof WorkflowUserId) {
-            WorkflowUserId id = (WorkflowUserId) userId;
-            userIdVO = new WorkflowIdDTO(id.getWorkflowId());
-        }
-        return userIdVO;
-    }
-
-    public static UserId convertUserIdVO(UserIdDTO userIdVO) {
-        UserId userId = null;
-        if (userIdVO instanceof NetworkIdDTO) {
-            NetworkIdDTO id = (NetworkIdDTO) userIdVO;
-            userId = new AuthenticationUserId(id.getNetworkId());
-            if (userId.isEmpty()) {
-                throw new RuntimeException("Attempting to use empty NetworkId");
-            }
-        } else if (userIdVO instanceof EmplIdDTO) {
-            EmplIdDTO id = (EmplIdDTO) userIdVO;
-            userId = new EmplId(id.getEmplId());
-            if (userId.isEmpty()) {
-                throw new RuntimeException("Attempting to use empty EmplId");
-            }
-        } else if (userIdVO instanceof UuIdDTO) {
-            UuIdDTO id = (UuIdDTO) userIdVO;
-            userId = new UuId(id.getUuId());
-            if (userId.isEmpty()) {
-                throw new RuntimeException("Attempting to use empty UuId");
-            }
-        } else if (userIdVO instanceof WorkflowIdDTO) {
-            WorkflowIdDTO id = (WorkflowIdDTO) userIdVO;
-            userId = new WorkflowUserId(id.getWorkflowId());
-            if (userId.isEmpty()) {
-                throw new RuntimeException("Attempting to use empty WorkflowId");
-            }
-        }
-        return userId;
     }
 
     public static ResponsiblePartyDTO convertResponsibleParty(ResponsibleParty responsibleParty) {
@@ -695,7 +591,7 @@ public class DTOConverter {
      * @return
      * @throws KEWUserNotFoundException
      */
-    public static Recipient convertResponsiblePartyVOtoRecipient(ResponsiblePartyDTO responsiblePartyVO) throws KEWUserNotFoundException {
+    public static Recipient convertResponsiblePartyVOtoRecipient(ResponsiblePartyDTO responsiblePartyVO) {
         if (responsiblePartyVO == null) {
             return null;
         }
@@ -712,7 +608,7 @@ public class DTOConverter {
         }
         String principalId = responsiblePartyVO.getPrincipalId();
         if (principalId != null) {
-            return KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(principalId));
+            return new KimPrincipalRecipient(principalId);
         }
         throw new WorkflowRuntimeException("ResponsibleParty of unknown type");
     }
@@ -725,7 +621,7 @@ public class DTOConverter {
      * instance) so no attempts are made to convert this data since further initialization is handled by a higher level
      * component (namely ActionRequestService.initializeActionRequestGraph).
      */
-    public static ActionRequestValue convertActionRequestVO(ActionRequestDTO actionRequestVO) throws KEWUserNotFoundException {
+    public static ActionRequestValue convertActionRequestVO(ActionRequestDTO actionRequestVO) {
         if (actionRequestVO == null) {
             return null;
         }
@@ -743,7 +639,7 @@ public class DTOConverter {
         return actionRequest;
     }
 
-    public static ActionRequestValue convertActionRequestVO(ActionRequestDTO actionRequestVO, ActionRequestValue parentActionRequest) throws KEWUserNotFoundException {
+    public static ActionRequestValue convertActionRequestVO(ActionRequestDTO actionRequestVO, ActionRequestValue parentActionRequest) {
         if (actionRequestVO == null) {
             return null;
         }
@@ -763,7 +659,7 @@ public class DTOConverter {
     /**
      * This method converts everything except for the parent and child requests
      */
-    private static void populateActionRequest(ActionRequestValue actionRequest, ActionRequestDTO actionRequestVO) throws KEWUserNotFoundException {
+    private static void populateActionRequest(ActionRequestValue actionRequest, ActionRequestDTO actionRequestVO) {
 
         actionRequest.setActionRequested(actionRequestVO.getActionRequested());
         actionRequest.setActionRequestId(actionRequestVO.getActionRequestId());
@@ -801,7 +697,7 @@ public class DTOConverter {
         }
     }
 
-    public static ActionTakenValue convertActionTakenVO(ActionTakenDTO actionTakenVO) throws KEWUserNotFoundException {
+    public static ActionTakenValue convertActionTakenVO(ActionTakenDTO actionTakenVO) {
         if (actionTakenVO == null) {
             return null;
         }
@@ -859,7 +755,7 @@ public class DTOConverter {
         return deleteEventVO;
     }
 
-    public static ActionTakenEventDTO convertActionTakenEvent(ActionTakenEvent actionTakenEvent) throws KEWUserNotFoundException {
+    public static ActionTakenEventDTO convertActionTakenEvent(ActionTakenEvent actionTakenEvent) {
         if (actionTakenEvent == null) {
             return null;
         }
@@ -870,7 +766,7 @@ public class DTOConverter {
         return actionTakenEventVO;
     }
 
-    public static BeforeProcessEventDTO convertBeforeProcessEvent(BeforeProcessEvent event) throws KEWUserNotFoundException {
+    public static BeforeProcessEventDTO convertBeforeProcessEvent(BeforeProcessEvent event) {
         if (event == null) {
             return null;
         }
@@ -881,7 +777,7 @@ public class DTOConverter {
         return beforeProcessEvent;
     }
 
-    public static AfterProcessEventDTO convertAfterProcessEvent(AfterProcessEvent event) throws KEWUserNotFoundException {
+    public static AfterProcessEventDTO convertAfterProcessEvent(AfterProcessEvent event) {
         if (event == null) {
             return null;
         }
@@ -1146,7 +1042,7 @@ public class DTOConverter {
         }
     }
 
-    public static SimulationCriteria convertReportCriteriaDTO(ReportCriteriaDTO criteriaVO) throws KEWUserNotFoundException {
+    public static SimulationCriteria convertReportCriteriaDTO(ReportCriteriaDTO criteriaVO) {
         if (criteriaVO == null) {
             return null;
         }
@@ -1156,11 +1052,11 @@ public class DTOConverter {
         criteria.setDocumentTypeName(criteriaVO.getDocumentTypeName());
         criteria.setXmlContent(criteriaVO.getXmlContent());
         criteria.setActivateRequests(criteriaVO.getActivateRequests());
-        if (criteriaVO.getRoutingUser() != null) {
-        	KimPrincipal kPrinc = KEWServiceLocator.getIdentityHelperService().getPrincipal(criteriaVO.getRoutingUser());
+        if (criteriaVO.getRoutingPrincipalId() != null) {
+        	KimPrincipal kPrinc = KEWServiceLocator.getIdentityHelperService().getPrincipal(criteriaVO.getRoutingPrincipalId());
             Person user = KIMServiceLocator.getPersonService().getPerson(kPrinc.getPrincipalId());
             if (user == null) {
-                throw new KEWUserNotFoundException("Could not locate user for the given id: " + criteriaVO.getRoutingUser());
+                throw new RiceRuntimeException("Could not locate user for the given id: " + criteriaVO.getRoutingPrincipalId());
             }
             criteria.setRoutingUser(user);
         }
@@ -1176,11 +1072,9 @@ public class DTOConverter {
                 criteria.getNodeNames().add(nodeName);
             }
         }
-        if (criteriaVO.getTargetUsers() != null) {
-            for (int index = 0; index < criteriaVO.getTargetUsers().length; index++) {
-                UserIdDTO userIdVO = criteriaVO.getTargetUsers()[index];
-                String principalId = KEWServiceLocator.getIdentityHelperService().getPrincipalId(userIdVO);
-                KimPrincipal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);
+        if (criteriaVO.getTargetPrincipalIds() != null) {
+            for (String targetPrincipalId : criteriaVO.getTargetPrincipalIds()) {
+                KimPrincipal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(targetPrincipalId);
                 criteria.getDestinationRecipients().add(new KimPrincipalRecipient(principal));
             }
         }
@@ -1193,7 +1087,7 @@ public class DTOConverter {
         return criteria;
     }
 
-    public static SimulationActionToTake convertReportActionToTakeVO(ReportActionToTakeDTO actionToTakeVO) throws KEWUserNotFoundException {
+    public static SimulationActionToTake convertReportActionToTakeVO(ReportActionToTakeDTO actionToTakeVO) {
         if (actionToTakeVO == null) {
             return null;
         }
@@ -1203,13 +1097,13 @@ public class DTOConverter {
             throw new IllegalArgumentException("ReportActionToTakeVO must contain an action taken code and does not");
         }
         actionToTake.setActionToPerform(actionToTakeVO.getActionToPerform());
-        if (actionToTakeVO.getUserIdVO() == null) {
-            throw new IllegalArgumentException("ReportActionToTakeVO must contain a userId and does not");
+        if (actionToTakeVO.getPrincipalId() == null) {
+            throw new IllegalArgumentException("ReportActionToTakeVO must contain a principalId and does not");
         }
-        KimPrincipal kPrinc = KEWServiceLocator.getIdentityHelperService().getPrincipal(actionToTakeVO.getUserIdVO());
+        KimPrincipal kPrinc = KEWServiceLocator.getIdentityHelperService().getPrincipal(actionToTakeVO.getPrincipalId());
         Person user = KIMServiceLocator.getPersonService().getPerson(kPrinc.getPrincipalId());
         if (user == null) {
-            throw new KEWUserNotFoundException("Could not locate user for the given id: " + actionToTakeVO.getUserIdVO());
+            throw new RiceRuntimeException("Could not locate Person for the given id: " + actionToTakeVO.getPrincipalId());
         }
         actionToTake.setUser(user);
         return actionToTake;
@@ -1256,9 +1150,12 @@ public class DTOConverter {
         ruleResponsibilityVO.setPriority(ruleResponsibility.getPriority());
         ruleResponsibilityVO.setResponsibilityId(ruleResponsibility.getResponsibilityId());
         ruleResponsibilityVO.setRoleName(ruleResponsibility.getRole());
-        ruleResponsibilityVO.setUser(convertUser(ruleResponsibility.getKimPrincipal()));
-        if (ruleResponsibility.getGroup() != null) {
-        	ruleResponsibilityVO.setGroupId("" + ruleResponsibility.getGroup().getGroupName());
+        if (ruleResponsibility.getKimPrincipal() != null) {
+        	ruleResponsibilityVO.setPrincipalId(ruleResponsibility.getKimPrincipal().getPrincipalId());
+        } else if (ruleResponsibility.getGroup() != null) {
+        	ruleResponsibilityVO.setGroupId(ruleResponsibility.getGroup().getGroupId());
+        } else if (ruleResponsibility.getRole() != null) {
+        	ruleResponsibilityVO.setRoleName(ruleResponsibility.getRole());
         }
         for (Iterator iter = ruleResponsibility.getDelegationRules().iterator(); iter.hasNext();) {
             RuleDelegation ruleDelegation = (RuleDelegation) iter.next();

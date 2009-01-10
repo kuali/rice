@@ -37,6 +37,8 @@ import org.kuali.rice.ken.util.Util;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.service.WorkflowDocument;
+import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.springframework.validation.BindException;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.ServletRequestBindingException;
@@ -315,7 +317,9 @@ public class AdministerNotificationRequestController extends MultiActionControll
             
             Notification notification = retrieveNotificationForWorkflowDocument(document);
 
-            String notificationBlurb =  notification.getContentType().getName() + " notification submitted by " + document.getRouteHeader().getInitiator().getDisplayName() + " for channel " + notification.getChannel().getName();
+            String initiatorPrincipalId = document.getRouteHeader().getInitiatorPrincipalId();
+            Person initiator = KIMServiceLocator.getPersonService().getPerson(initiatorPrincipalId);
+            String notificationBlurb =  notification.getContentType().getName() + " notification submitted by " + initiator.getName() + " for channel " + notification.getChannel().getName();
             if ("disapprove".equals(action)) {
                 document.disapprove("User " + user.getWorkflowId() + " disapproving " + notificationBlurb);
             } else if ("approve".equals(action)) {

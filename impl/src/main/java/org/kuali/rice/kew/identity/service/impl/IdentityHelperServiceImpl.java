@@ -64,6 +64,11 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 		return principal.getPrincipalId();
 	}
 
+		public void validatePrincipalId(String principalId) {
+			// the getPrincipal method attempts to load the principal with the id and throws an exception if it fails
+			getPrincipal(principalId);
+		}
+		
 	public String getIdForGroupName(String namespace, String groupName) {
 		KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroupByName(namespace, groupName);
 		if (group == null) {

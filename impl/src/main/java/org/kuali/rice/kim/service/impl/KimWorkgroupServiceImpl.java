@@ -26,7 +26,9 @@ import java.util.Set;
 import org.jdom.Element;
 import org.kuali.rice.kew.attribute.Extension;
 import org.kuali.rice.kew.dto.DTOConverter;
+import org.kuali.rice.kew.dto.WorkflowGroupIdDTO;
 import org.kuali.rice.kew.dto.WorkgroupIdDTO;
+import org.kuali.rice.kew.dto.WorkgroupNameIdDTO;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.user.Recipient;
@@ -127,8 +129,21 @@ public class KimWorkgroupServiceImpl implements WorkgroupService {
 	 * @see org.kuali.rice.kew.workgroup.WorkgroupService#getWorkgroup(org.kuali.rice.kew.dto.WorkgroupIdDTO)
 	 */
 	public Workgroup getWorkgroup(WorkgroupIdDTO groupIdVO) {
-		return getWorkgroup(DTOConverter.convertWorkgroupIdVO(groupIdVO));
+		return getWorkgroup(convertWorkgroupIdVO(groupIdVO));
 	}
+	
+	private GroupId convertWorkgroupIdVO(WorkgroupIdDTO workgroupId) {
+        GroupId groupId = null;
+        if (workgroupId instanceof WorkgroupNameIdDTO) {
+            WorkgroupNameIdDTO workgroupName = (WorkgroupNameIdDTO) workgroupId;
+            groupId = new GroupNameId(workgroupName.getWorkgroupName());
+        } else if (workgroupId instanceof WorkflowGroupIdDTO) {
+            WorkflowGroupIdDTO workflowGroupId = (WorkflowGroupIdDTO) workgroupId;
+            groupId = new WorkflowGroupId(workflowGroupId.getWorkgroupId());
+        }
+
+        return groupId;
+    }
 
 	/**
 	 * @see org.kuali.rice.kew.workgroup.WorkgroupService#isUserMemberOfGroup(org.kuali.rice.kew.workgroup.GroupId, org.kuali.rice.kew.user.WorkflowUser)

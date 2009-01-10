@@ -73,11 +73,11 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
 			try{
 				RouteHeaderDTO routeHeaderDTO = workflowInfo.getRouteHeader(documentNumberLong);
 				if (INITIATOR_ROLE_NAME.equals(roleName))
-					principalIds.add(routeHeaderDTO.getInitiator().getWorkflowId());
+					principalIds.add(routeHeaderDTO.getInitiatorPrincipalId());
 				else if(INITIATOR_OR_REVIEWER_ROLE_NAME.equals(roleName)){
 						principalIds.addAll(workflowInfo.getPrincipalIdsInRouteLog(documentNumberLong, true));
 				} else if(ROUTER_ROLE_NAME.equals(roleName))
-					principalIds.add(routeHeaderDTO.getRoutedByUser().getWorkflowId());
+					principalIds.add(routeHeaderDTO.getInitiatorPrincipalId());
 			} catch(WorkflowException wex){
 				throw new RuntimeException(
 				"Error in getting principal Ids in route log for document number: "+documentNumber+" :"+wex.getLocalizedMessage(),wex);
@@ -107,13 +107,12 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
     			if (INITIATOR_ROLE_NAME.equals(roleName)){
     				workflowInfo.getDocumentDetail( documentNumberLong );
     				RouteHeaderDTO routeHeaderDTO = workflowInfo.getRouteHeader(documentNumberLong);
-    				isUserInRouteLog = principalId.equals(routeHeaderDTO.getInitiator().getWorkflowId());
+    				isUserInRouteLog = principalId.equals(routeHeaderDTO.getInitiatorPrincipalId());
     			} else if(INITIATOR_OR_REVIEWER_ROLE_NAME.equals(roleName)){
-                    UserIdDTO userIdVO = new WorkflowIdDTO(principalId);
-    				isUserInRouteLog = workflowInfo.isUserAuthenticatedByRouteLog(documentNumberLong, userIdVO, true);
+    				isUserInRouteLog = workflowInfo.isUserAuthenticatedByRouteLog(documentNumberLong, principalId, true);
     			} else if(ROUTER_ROLE_NAME.equals(roleName)){
     				RouteHeaderDTO routeHeaderDTO = workflowInfo.getRouteHeader(documentNumberLong);
-    				isUserInRouteLog = principalId.equals(routeHeaderDTO.getRoutedByUser().getWorkflowId());
+    				isUserInRouteLog = principalId.equals(routeHeaderDTO.getRoutedByPrincipalId());
     			}
     		} catch (NumberFormatException e) {
     			throw new RuntimeException("Invalid (non-numeric) document number: "+documentNumber,e);

@@ -89,9 +89,19 @@ public interface KualiWorkflowDocument {
 
     public abstract String getAppDocId();
 
+    /**
+     * @deprecated use getInitiatorPrincipalId instead, invocation of this method forces a lookup of the principal name which may be inefficient
+     */
     public abstract String getInitiatorNetworkId();
 
+    /**
+     * @deprecated use getRoutedByPrincipalId instead, invocation of this method forces a lookup of the principal name which may be inefficient
+     */
     public abstract String getRoutedByUserNetworkId();
+    
+    public abstract String getInitiatorPrincipalId();
+    
+    public abstract String getRoutedByPrincipalId();
 
     public abstract String getTitle();
 

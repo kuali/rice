@@ -31,7 +31,6 @@ import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
 import org.kuali.rice.kew.dto.RuleDTO;
 import org.kuali.rice.kew.dto.RuleReportCriteriaDTO;
-import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -51,22 +50,22 @@ public interface WorkflowUtility {
     public DocumentTypeDTO getDocumentType(Long documentTypeId) throws WorkflowException;
     public DocumentTypeDTO getDocumentTypeByName(String documentTypeName) throws WorkflowException;
     public Long getNewResponsibilityId() throws WorkflowException;
-    public Integer getUserActionItemCount(UserIdDTO userId) throws WorkflowException;
+    public Integer getUserActionItemCount(String principalId) throws WorkflowException;
     public ActionItemDTO[] getActionItems(Long routeHeaderId) throws WorkflowException;
     public ActionItemDTO[] getActionItems(Long routeHeaderId, String[] actionRequestedCodes) throws WorkflowException;
     public ActionRequestDTO[] getActionRequests(Long documentId) throws WorkflowException;
-    public ActionRequestDTO[] getActionRequests(Long routeHeaderId, String nodeName, UserIdDTO userId) throws WorkflowException;
+    public ActionRequestDTO[] getActionRequests(Long routeHeaderId, String nodeName, String principalId) throws WorkflowException;
     public ActionTakenDTO[] getActionsTaken(Long documentId) throws WorkflowException;
     public WorkflowAttributeValidationErrorDTO[] validateWorkflowAttributeDefinitionVO(WorkflowAttributeDefinitionDTO definition) throws WorkflowException;
-    public boolean isUserInRouteLog(Long documentId, UserIdDTO userId, boolean lookFuture) throws WorkflowException;
+    public boolean isUserInRouteLog(Long documentId, String principalId, boolean lookFuture) throws WorkflowException;
     public void reResolveRole(String documentTypeName, String roleName, String qualifiedRoleNameLabel) throws WorkflowException;
     public void reResolveRoleByDocumentId(Long documentId, String roleName, String qualifiedRoleNameLabel) throws WorkflowException;
     public DocumentDetailDTO routingReport(ReportCriteriaDTO reportCriteria) throws WorkflowException;
     //public RouteHeaderDetailVO routingSimulation(RouteHeaderDetailVO detail, ActionTakenVO[] actionsToTake) throws WorkflowException;
-    public boolean isFinalApprover(Long documentId, UserIdDTO userId) throws WorkflowException;
+    public boolean isFinalApprover(Long documentId, String principalId) throws WorkflowException;
     public boolean isSuperUserForDocumentType(String principalId, Long documentTypeId) throws WorkflowException;
     public DocumentSearchResultDTO performDocumentSearch(DocumentSearchCriteriaDTO criteriaVO) throws WorkflowException;
-    public DocumentSearchResultDTO performDocumentSearch(UserIdDTO userId, DocumentSearchCriteriaDTO criteriaVO) throws WorkflowException;
+    public DocumentSearchResultDTO performDocumentSearch(String principalId, DocumentSearchCriteriaDTO criteriaVO) throws WorkflowException;
 
     // new in 2.3
 
@@ -77,7 +76,7 @@ public interface WorkflowUtility {
     /**
      * @deprecated use isLastApproverAtNode instead
      */
-    public boolean isLastApproverInRouteLevel(Long routeHeaderId, UserIdDTO userId, Integer routeLevel) throws WorkflowException;
+    public boolean isLastApproverInRouteLevel(Long routeHeaderId, String principalId, Integer routeLevel) throws WorkflowException;
 
     /**
      * @deprecated use routeNodeHasApproverActionRequest instead
@@ -86,7 +85,7 @@ public interface WorkflowUtility {
 
     // new in 2.1
 
-    public boolean isLastApproverAtNode(Long documentId, UserIdDTO userId, String nodeName) throws WorkflowException;
+    public boolean isLastApproverAtNode(Long documentId, String principalId, String nodeName) throws WorkflowException;
     public boolean routeNodeHasApproverActionRequest(String docType, String docContent, String nodeName) throws WorkflowException;
     public RouteNodeInstanceDTO[] getDocumentRouteNodeInstances(Long documentId) throws WorkflowException;
     public RouteNodeInstanceDTO[] getActiveNodeInstances(Long documentId) throws WorkflowException;
@@ -114,7 +113,7 @@ public interface WorkflowUtility {
     
     
     // added for KS per Scott
-    ActionItemDTO[] getActionItemsForUser(UserIdDTO userId) throws WorkflowException;
+    ActionItemDTO[] getActionItemsForPrincipal(String principalId) throws WorkflowException;
     
     /**
      * 

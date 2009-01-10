@@ -48,7 +48,7 @@ public class InitiatorRoleAttribute extends UnqualifiedRoleAttribute {
 
     public ResolvedQualifiedRole resolveRole(RouteContext routeContext, String roleName) throws KEWUserNotFoundException {
         List members = new ArrayList(1);
-        members.add(routeContext.getDocument().getInitiatorUser().getPrincipalId());
+        members.add(routeContext.getDocument().getInitiatorWorkflowId());
         return new ResolvedQualifiedRole(INITIATOR_ROLE_LABEL, members);
     }
 }

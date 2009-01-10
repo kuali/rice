@@ -40,6 +40,7 @@ import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
@@ -122,9 +123,9 @@ public class WebRuleResponsibility extends RuleResponsibility {
 			if (KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID.equals(getRuleResponsibilityType())) {
 				// setReviewer(getUserService().getWorkflowUser(new
 				// WorkflowUserId(getRuleResponsibilityName())).getAuthenticationUserId().getAuthenticationId());
-				WorkflowUser user = getUserService().getWorkflowUser(new WorkflowUserId(getRuleResponsibilityName()));
-				setReviewer(user.getAuthenticationUserId().getAuthenticationId());
-				setReviewerId(user.getWorkflowId());
+				KimPrincipal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(getRuleResponsibilityName());
+				setReviewer(principal.getPrincipalName());
+				setReviewerId(principal.getPrincipalId());
 			} else if (KEWConstants.RULE_RESPONSIBILITY_GROUP_ID.equals(getRuleResponsibilityType())) {
 				// setReviewer(getWorkgroupService().getWorkgroup(new
 				// WorkflowGroupId(new
@@ -308,11 +309,16 @@ public class WebRuleResponsibility extends RuleResponsibility {
 	public void validateResponsibility(String keyPrefix, ActionErrors errors) {
 		if (KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID.equals(getRuleResponsibilityType())) {
 			boolean invalidUser = Utilities.isEmpty(getReviewer());
-			if (!invalidUser) {
-				try {
-					WorkflowUser user = getUserService().getWorkflowUser(new AuthenticationUserId(getReviewer()));
-					setRuleResponsibilityName(user.getWorkflowUserId().getWorkflowId());
-				} catch (KEWUserNotFoundException e) {
+			if (!invalidUser) 
+			{
+				//chb: 10Jan2009: not using KEW IdentityHelperService b/c we want to deal w/ exception here
+				KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(getReviewer());
+				if( principal != null)
+				{
+					setRuleResponsibilityName(principal.getPrincipalId());
+				} 
+				else 
+				{
 					invalidUser = true;
 				}
 			}

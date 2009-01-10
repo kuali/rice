@@ -35,6 +35,7 @@ import org.apache.commons.collections.ComparatorUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.applicationconstants.service.ApplicationConstantsService;
@@ -1196,14 +1197,11 @@ public class RuleServiceImpl implements RuleService {
         KimPrincipal principal = null;
         KimGroup workgroupToRemove = null;
         if (entityToBeRemoved instanceof UserId) {
-            principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(((UserId) entityToBeRemoved).getId());
+            principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(((UserId) entityToBeRemoved).getId());
         } else if (entityToBeRemoved instanceof GroupId) {
-            workgroupToRemove = KIMServiceLocator.getIdentityManagementService().getGroup(entityToBeRemoved.toString());
+        	workgroupToRemove = KEWServiceLocator.getIdentityHelperService().getGroup((GroupId)entityToBeRemoved);
         } else {
-            throw new WorkflowRuntimeException("Invalid entity ID for removal was passed, type was: " + entityToBeRemoved);
-        }
-        if (principal == null && workgroupToRemove == null) {
-            throw new WorkflowRuntimeException("Could not resolve entity to be removed with id: " + entityToBeRemoved);
+            throw new WorkflowRuntimeException("Invalid ID for entity to be replaced was passed, type was: " + entityToBeRemoved);
         }
         List<RuleBaseValues> existingRules = loadRules(ruleIds);
         // sort the rules so that delegations are last, very important in order to deal with parent-child versioning properly
@@ -1271,29 +1269,21 @@ public class RuleServiceImpl implements RuleService {
     }
 
     public void replaceRuleInvolvement(Id entityToBeReplaced, Id newEntity, List<Long> ruleIds, Long documentId) throws WorkflowException {
-        WorkflowUser userToReplace = null;
+        KimPrincipal principalToBeReplaced = null;
         KimGroup workgroupToReplace = null;
         if (entityToBeReplaced instanceof UserId) {
-            userToReplace = KEWServiceLocator.getUserService().getWorkflowUser((UserId)entityToBeReplaced);
+        	principalToBeReplaced = KEWServiceLocator.getIdentityHelperService().getPrincipal(((UserId) entityToBeReplaced).getId());
         } else if (entityToBeReplaced instanceof GroupId) {
             workgroupToReplace = KEWServiceLocator.getIdentityHelperService().getGroup((GroupId)entityToBeReplaced);
         } else {
             throw new WorkflowRuntimeException("Invalid ID for entity to be replaced was passed, type was: " + entityToBeReplaced);
         }
-        if (userToReplace == null && workgroupToReplace == null) {
-            throw new WorkflowRuntimeException("Could not resolve entity to be replaced with id: " + entityToBeReplaced);
-        }
-        WorkflowUser newUser = null;
+        KimPrincipal newPrincipal = null;
         KimGroup newWorkgroup = null;
         if (newEntity instanceof UserId) {
-            newUser = KEWServiceLocator.getUserService().getWorkflowUser((UserId)newEntity);
+            newPrincipal = KEWServiceLocator.getIdentityHelperService().getPrincipal((UserId) newEntity);
         } else if (newEntity instanceof GroupId) {
             newWorkgroup = KEWServiceLocator.getIdentityHelperService().getGroup((GroupId)newEntity);
-        } else {
-            throw new WorkflowRuntimeException("Invalid ID for new replacement entity was passed, type was: " + newEntity);
-        }
-        if (newUser == null && newWorkgroup == null) {
-            throw new WorkflowRuntimeException("Could not resolve new replacement entity with id: " + newEntity);
         }
         List<RuleBaseValues> existingRules = loadRules(ruleIds);
         // sort the rules so that delegations are last, very important in order to deal with parent-child versioning properly
@@ -1310,10 +1300,10 @@ public class RuleServiceImpl implements RuleService {
             boolean modified = false;
             for (RuleResponsibility responsibility : (List<RuleResponsibility>)rule.getResponsibilities()) {
                 if (responsibility.isUsingWorkflowUser()) {
-                    if (userToReplace != null && responsibility.getRuleResponsibilityName().equals(userToReplace.getWorkflowId())) {
-                        if (newUser != null) {
+                    if (principalToBeReplaced != null && responsibility.getRuleResponsibilityName().equals(principalToBeReplaced.getPrincipalId())) {
+                        if (newPrincipal != null) {
                             responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
-                            responsibility.setRuleResponsibilityName(newUser.getWorkflowId());
+                            responsibility.setRuleResponsibilityName(newPrincipal.getPrincipalId());
                             modified = true;
                         } else if (newWorkgroup != null) {
                             responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
@@ -1323,9 +1313,9 @@ public class RuleServiceImpl implements RuleService {
                     }
                 } else if (responsibility.isUsingGroup()) {
                     if (workgroupToReplace != null && responsibility.getRuleResponsibilityName().equals(workgroupToReplace.getGroupId())) {
-                        if (newUser != null) {
+                        if (newPrincipal != null) {
                             responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
-                            responsibility.setRuleResponsibilityName(newUser.getWorkflowId());
+                            responsibility.setRuleResponsibilityName(newPrincipal.getPrincipalId());
                             modified = true;
                         } else if (newWorkgroup != null) {
                             responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);

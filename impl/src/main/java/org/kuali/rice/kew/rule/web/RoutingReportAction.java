@@ -65,6 +65,7 @@ import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.WorkflowAction;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 
@@ -322,10 +323,7 @@ public class RoutingReportAction extends WorkflowAction {
             if (Utilities.isEmpty(routingReportForm.getInitiatorPrincipalId())) {
                 throw new RuntimeException("Initiator Principal ID was not given");
             } else {
-                WorkflowUser initiatorUser = getUserService().getWorkflowUser(new WorkflowUserId(routingReportForm.getInitiatorPrincipalId()));
-                if (initiatorUser == null) {
-                    throw new RuntimeException("Initiator Network ID is invalid");
-                }
+                KimPrincipal initiatorPrincipal = KEWServiceLocator.getIdentityHelperService().getPrincipal(routingReportForm.getInitiatorPrincipalId());
             }
             if (Utilities.isEmpty(routingReportForm.getDocumentContent())) {
                 throw new RuntimeException("Document Content was not given");

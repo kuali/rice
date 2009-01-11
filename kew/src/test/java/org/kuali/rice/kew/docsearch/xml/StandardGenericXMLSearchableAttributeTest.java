@@ -34,8 +34,10 @@ import org.junit.Test;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
 import org.kuali.rice.kew.docsearch.DocumentSearchContext;
+import org.kuali.rice.kew.docsearch.DocumentSearchField;
 import org.kuali.rice.kew.docsearch.DocumentSearchResult;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
+import org.kuali.rice.kew.docsearch.DocumentSearchRow;
 import org.kuali.rice.kew.docsearch.DocumentSearchTestBase;
 import org.kuali.rice.kew.docsearch.SearchableAttributeDateTimeValue;
 import org.kuali.rice.kew.docsearch.SearchableAttributeFloatValue;
@@ -47,25 +49,18 @@ import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeFloat;
 import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeLong;
 import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeString;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
-import org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
-//import org.kuali.rice.kns.web.ui.Field;
-//import org.kuali.rice.kns.web.ui.Row;
-import org.kuali.rice.kew.docsearch.DocumentSearchField;
-import org.kuali.rice.kew.docsearch.DocumentSearchRow;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.TestUtilities;
-import org.kuali.rice.kew.user.AuthenticationUserId;
-import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.web.KeyValueSort;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -235,7 +230,6 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         }
 
         DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
-        UserService userService = (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
         Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName(userNetworkId);
 
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
@@ -364,7 +358,6 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         workflowDocument.routeDocument("routing this document.");
 
         DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
-        UserService userService = (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
 
         Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName("rkirkend");
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
@@ -398,7 +391,6 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
     @Test public void testDocumentSearchAttributeWildcarding() throws Exception {
         DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
-        UserService userService = (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
 
     	String documentTypeName = "SearchDocType";
     	String key = "givenname";
@@ -450,7 +442,6 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
     @Test public void testDocumentSearchAttributeWildcardingDisallow() throws Exception {
         DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
-        UserService userService = (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
 
         String documentTypeName = "SearchDocTypeStandardSearchDataType";
     	DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
@@ -510,7 +501,6 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
     @Test public void testDocumentSearchAttributeCaseSensitivity() throws Exception {
         DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
-        UserService userService = (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
     	String documentTypeName = "SearchDocTypeCaseSensitivity";
     	String networkId = "rkirkend";
     	DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
@@ -638,7 +628,6 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         workflowDocument.routeDocument("routing this document.");
 
         DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
-        UserService userService = (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
 
         Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName("rkirkend");
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
@@ -685,7 +674,6 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         workflowDocument.routeDocument("routing this document.");
 
         DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
-        UserService userService = (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
 
         Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName("rkirkend");
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
@@ -1216,7 +1204,6 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         workflowDocument.routeDocument("routing this document.");
 
         DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
-        UserService userService = (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
 
         Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName("rkirkend");
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
@@ -1266,7 +1253,6 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
          // prepare to search
          DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
-         UserService userService = (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
          Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName("rkirkend");
 
          // execute the search by our chart, we should see one result
@@ -1321,7 +1307,6 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
         // prepare to search
         DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
-        UserService userService = (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
         Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName("rkirkend");
 
         // execute the search by our chart, we should see one result
@@ -1361,7 +1346,6 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         workflowDocument.routeDocument("routing this document.");
 
         DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
-        UserService userService = (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
 
         Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName("rkirkend");
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();

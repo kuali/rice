@@ -470,15 +470,15 @@ public class BlanketApproveTest extends KEWTestCase {
      * the individual(s) in the role.  Verifies that the Action List contains the proper entries in this case.
      */
     @Test public void testBlanketApproveThroughRoleAndWorkgroup() throws Exception {
-    	NetworkIdDTO jitrue = new NetworkIdDTO("jitrue");
+    	String jitruePrincipalId = getPrincipalIdForName("jitrue");
     	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "BlanketApproveThroughRoleAndWorkgroupTest");
     	document.saveDocument("");
     	assertTrue(document.stateIsSaved());
-    	TestUtilities.assertNotInActionList(jitrue, document.getRouteHeaderId());
+    	TestUtilities.assertNotInActionList(jitruePrincipalId, document.getRouteHeaderId());
     	document.blanketApprove("");
     	
     	// document should now be processed
-    	document = new WorkflowDocument(jitrue, document.getRouteHeaderId());
+    	document = new WorkflowDocument(jitruePrincipalId, document.getRouteHeaderId());
     	assertTrue(document.stateIsProcessed());
     	assertTrue(document.isAcknowledgeRequested());
     	
@@ -487,7 +487,7 @@ public class BlanketApproveTest extends KEWTestCase {
     	assertEquals("There should be 3 root requests.", 3, actionRequests.size());
     	
     	// now check that the document is in jitrue's action list
-    	TestUtilities.assertInActionList(jitrue, document.getRouteHeaderId());
+    	TestUtilities.assertInActionList(jitruePrincipalId, document.getRouteHeaderId());
     	
     	// acknowledge as a member of the workgroup who is not jitrue
     	document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
@@ -495,7 +495,7 @@ public class BlanketApproveTest extends KEWTestCase {
     	document.acknowledge("");
     	
     	// document should still be processed
-    	document = new WorkflowDocument(jitrue, document.getRouteHeaderId());
+    	document = new WorkflowDocument(jitruePrincipalId, document.getRouteHeaderId());
     	assertTrue(document.stateIsProcessed());
     	assertTrue(document.isAcknowledgeRequested());
     	
@@ -504,7 +504,7 @@ public class BlanketApproveTest extends KEWTestCase {
     	assertEquals("There should be 2 root requests.", 2, actionRequests.size());
     	
     	// jitrue should still have this in his action list
-    	TestUtilities.assertInActionList(jitrue, document.getRouteHeaderId());
+    	TestUtilities.assertInActionList(jitruePrincipalId, document.getRouteHeaderId());
     	document.acknowledge("");
     	
     	// document should now be final

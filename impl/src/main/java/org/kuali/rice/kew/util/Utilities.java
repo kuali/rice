@@ -40,11 +40,9 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.applicationconstants.ApplicationConstant;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.KNSConstants;
 
 
 /**

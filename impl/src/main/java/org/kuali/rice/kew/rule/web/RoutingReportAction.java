@@ -59,9 +59,6 @@ import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
 import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.UserService;
-import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.WorkflowAction;
@@ -512,10 +509,6 @@ public class RoutingReportAction extends WorkflowAction {
 		}
 		return mapping.findForward("basic");
 	}
-
-    private UserService getUserService() {
-        return (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
-    }
 
 	private RuleTemplateService getRuleTemplateService() {
 		return (RuleTemplateService) KEWServiceLocator.getService(KEWServiceLocator.RULE_TEMPLATE_SERVICE);

@@ -48,12 +48,8 @@ import org.kuali.rice.kew.rule.service.RuleAttributeService;
 import org.kuali.rice.kew.rule.service.RuleDelegationService;
 import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.rule.service.RuleTemplateService;
-import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.workgroup.WorkgroupRoutingService;
-import org.kuali.rice.kew.workgroup.WorkgroupService;
-import org.kuali.rice.kew.workgroup.WorkgroupTypeService;
 import org.kuali.rice.kew.xml.export.XmlExporterService;
 import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -76,8 +72,6 @@ public final class KEWServiceLocator {
 
 	public static final String QUICK_LINKS_SERVICE = "enQuickLinksService";
 
-	public static final String USER_SERVICE = "enUserService";
-
 	public static final String DOCUMENT_SEARCH_SERVICE = "enDocumentSearchService";
 
 	public static final String ACTION_TAKEN_SRV = "enActionTakenService";
@@ -95,12 +89,6 @@ public final class KEWServiceLocator {
 	public static final String DOCUMENT_TYPE_PERMISSION_SERVICE = "enDocumentTypePermissionService";
 
 	public static final String DOCUMENT_SECURITY_SERVICE = "enDocumentSecurityService";
-
-	public static final String WORKGROUP_SRV = "enWorkgroupService";
-
-	public static final String WORKGROUP_ROUTING_SERVICE = "enWorkgroupRoutingService";
-
-	public static final String WORKGROUP_TYPE_SERVICE = "workgroupTypeService";
 
 	public static final String USER_OPTIONS_SRV = "enUserOptionsService";
 
@@ -234,9 +222,6 @@ public final class KEWServiceLocator {
 	 * @return the service
 	 */
 	public static Object getService(String serviceName) {
-//		if (USER_SERVICE.equals(serviceName)) {
-//			return getUserService();
-//		}
 		return getBean(serviceName);
 	}
 
@@ -270,25 +255,8 @@ public final class KEWServiceLocator {
 		return (ActionRequestService) getBean(ACTION_REQUEST_SRV);
 	}
 
-	public static UserService getUserService() {
-		//return KIMServiceLocator.getUserService();
-		return (UserService) getBean(USER_SERVICE);
-	}
-
 	public static ActionTakenService getActionTakenService() {
 		return (ActionTakenService) getBean(ACTION_TAKEN_SRV);
-	}
-
-	public static WorkgroupService getWorkgroupService() {
-		return (WorkgroupService) getBean(WORKGROUP_SRV);
-	}
-
-	public static WorkgroupRoutingService getWorkgroupRoutingService() {
-		return (WorkgroupRoutingService) getBean(WORKGROUP_ROUTING_SERVICE);
-	}
-
-	public static WorkgroupTypeService getWorkgroupTypeService() {
-		return (WorkgroupTypeService) getBean(WORKGROUP_TYPE_SERVICE);
 	}
 
 	public static ResponsibilityIdService getResponsibilityIdService() {

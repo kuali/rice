@@ -51,7 +51,6 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
-import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -383,7 +382,6 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         }
 
         DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
-        UserService userService = (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
         Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName(userNetworkId);
 
         // begin string attribute value testing

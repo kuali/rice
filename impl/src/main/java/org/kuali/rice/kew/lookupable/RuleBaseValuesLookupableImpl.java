@@ -24,10 +24,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.export.ExportDataSet;
@@ -42,7 +40,6 @@ import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.Person;
@@ -613,11 +610,7 @@ public class RuleBaseValuesLookupableImpl implements /*WorkflowLookupable,*/ Exp
     private IdentityManagementService getIdentityManagementService() {
         return (IdentityManagementService) KIMServiceLocator.getService(KIMServiceLocator.KIM_IDENTITY_MANAGEMENT_SERVICE);
     }
-
-	private UserService getUserService() {
-		return (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
-	}
-
+    
 	private RuleService getRuleService() {
 		return (RuleService) KEWServiceLocator.getService(KEWServiceLocator.RULE_SERVICE);
 	}

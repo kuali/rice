@@ -19,8 +19,7 @@ import java.net.URL;
 
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.AuthenticationUserId;
-import org.kuali.rice.kew.user.WorkflowUser;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
@@ -41,7 +40,7 @@ public class KEWHtmlUnitTestCase extends KEWTestCase {
     public static final String QUICKSTART_USER_EMPLOYEE_ID = "1005";
 
     private WebClient webClient;
-    private WorkflowUser quickstartUser;
+    private KimPrincipal quickstartPrincipal;
 
     @Override
     protected void setUpTransaction() throws Exception {
@@ -50,10 +49,10 @@ public class KEWHtmlUnitTestCase extends KEWTestCase {
 
         // Set the user preference refresh rate to 0 to prevent a <META HTTP-EQUIV="Refresh" .../> tag from being rendered.
         // If it is rendered than HtmlUnit will immediately redirect, causing an error to be thrown.
-        this.quickstartUser = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("quickstart"));
-        Preferences preferences = KEWServiceLocator.getPreferencesService().getPreferences(quickstartUser.getWorkflowUserId().getId());
+        this.quickstartPrincipal = KEWServiceLocator.getIdentityHelperService().getPrincipalByPrincipalName("quickstart");
+        Preferences preferences = KEWServiceLocator.getPreferencesService().getPreferences(quickstartPrincipal.getPrincipalId());
         preferences.setRefreshRate("0");
-        KEWServiceLocator.getPreferencesService().savePreferences(quickstartUser.getWorkflowUserId().getId(), preferences);
+        KEWServiceLocator.getPreferencesService().savePreferences(quickstartPrincipal.getPrincipalId(), preferences);
     }
 
     protected HtmlPage performLogin(String loginUserNetworkId, String urlActionSuffix) throws Exception {
@@ -80,12 +79,12 @@ public class KEWHtmlUnitTestCase extends KEWTestCase {
         this.webClient = webClient;
     }
 
-    public WorkflowUser getQuickstartUser() {
-        return this.quickstartUser;
+    public KimPrincipal getQuickstartPrincipal() {
+        return this.quickstartPrincipal;
     }
 
-    public void setQuickstartUser(WorkflowUser quickstartUser) {
-        this.quickstartUser = quickstartUser;
+    public void setQuickstartPrincipal(KimPrincipal quickstartPrincipal) {
+        this.quickstartPrincipal = quickstartPrincipal;
     }
 
 }

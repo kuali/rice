@@ -13,7 +13,5 @@
 			<ref bean="enWorkflowDataSource" />
 		</property>
   </bean>
-  <!-- <bean id="enUserService" class="mocks.MockUserService"/>
-  <bean id="enWorkgroupService" class="mocks.MockWorkgroupService"/>-->  
 
 </beans>

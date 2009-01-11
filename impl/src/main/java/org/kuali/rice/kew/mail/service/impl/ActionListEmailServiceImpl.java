@@ -45,7 +45,6 @@ import org.kuali.rice.kew.mail.service.ActionListEmailService;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -566,10 +565,6 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 
 	private Scheduler getScheduler() {
 		return KSBServiceLocator.getScheduler();
-	}
-
-	public UserService getUserService() {
-		return (UserService) KEWServiceLocator.getUserService();
 	}
 
 	private UserOptionsService getUserOptionsService() {

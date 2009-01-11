@@ -43,7 +43,6 @@ import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.routemodule.RouteModule;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.Recipient;
-import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.util.FutureRequestDocumentStateManager;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
@@ -592,10 +591,6 @@ public class ActionRequestServiceImpl implements ActionRequestService {
 
     private ActionTakenService getActionTakenService() {
         return (ActionTakenService) KEWServiceLocator.getActionTakenService();
-    }
-
-    private UserService getUserService() {
-        return (UserService) KEWServiceLocator.getUserService();
     }
 
     public ActionRequestDAO getActionRequestDAO() {

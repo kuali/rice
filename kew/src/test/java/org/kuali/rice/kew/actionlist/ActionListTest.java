@@ -38,9 +38,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
-import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.Recipient;
-import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kim.bo.Person;
@@ -125,7 +123,6 @@ public class ActionListTest extends KEWTestCase {
                             ResultSet rs = ps.executeQuery();
                             int emplIdCnt = 0;
                             int loopCnt = 0;
-                            UserService userService = (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
                             //do first 5 for time sake
                             while (rs.next() && ++loopCnt < 6) {
                                 String workflowId = rs.getString(1);
@@ -440,7 +437,7 @@ public class ActionListTest extends KEWTestCase {
         ActionItem actionItem = new ActionItem();
         actionItem.setActionRequestCd(actionRequested);
         actionItem.setActionRequestId(new Long(1));
-        actionItem.setPrincipalId(KEWServiceLocator.getIdentityHelperService().getPrincipalByPrincipalName(authenticationId).getPrincipalId());
+        actionItem.setPrincipalId(getPrincipalIdForName(authenticationId));
         actionItem.setRouteHeaderId(routeHeader.getRouteHeaderId());
         actionItem.setRouteHeader(routeHeader);
         actionItem.setDateAssigned(new Timestamp(new Date().getTime()));

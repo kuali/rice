@@ -16,23 +16,12 @@
  */
 package org.kuali.rice.kew.docsearch;
 
-import java.io.FileInputStream;
 import java.math.BigDecimal;
 import java.util.Calendar;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-
-import javax.resource.spi.work.WorkListener;
 
 import org.junit.Test;
-import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
-import org.kuali.rice.kew.docsearch.DocSearchUtils;
-import org.kuali.rice.kew.docsearch.DocumentSearchResult;
-import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
-import org.kuali.rice.kew.docsearch.SavedSearchResult;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
@@ -41,11 +30,7 @@ import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.user.AuthenticationUserId;
-import org.kuali.rice.kew.user.UserService;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.KEWPropertyConstants;
 import org.kuali.rice.kew.web.KeyValueSort;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -58,7 +43,6 @@ public class DocumentSearchTest extends KEWTestCase {
     private static final String INITIATOR_COL = "INITR_PRNCPL_ID";
 
     DocumentSearchService docSearchService;
-    UserService userService;
 
     protected void loadTestData() throws Exception {
         loadXmlFile("SearchAttributeConfig.xml");
@@ -66,7 +50,6 @@ public class DocumentSearchTest extends KEWTestCase {
 
     protected void setUpTransaction() throws Exception {
         docSearchService = (DocumentSearchService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
-        userService = (UserService)KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
     }
 
     @Test public void testDocSearch() throws Exception {

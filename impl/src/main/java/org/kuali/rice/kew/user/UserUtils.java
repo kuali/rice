@@ -19,25 +19,10 @@ public class UserUtils {
 
 	private static final String RESTRICTED_DATA_MASK = "xxxxxx";
 	
-	public static String getIdValue(String idType, WorkflowUser user) {
-	    if ("emplId".equalsIgnoreCase(idType) || "e".equalsIgnoreCase(idType)) {
-	      return user.getEmplId().getId();
-	    } else if ("workflowId".equalsIgnoreCase(idType) || "w".equalsIgnoreCase(idType)) {
-	      return user.getWorkflowUserId().getId();
-	    } else if ("uuId".equalsIgnoreCase(idType) || "u".equalsIgnoreCase(idType)) {
-	      return user.getUuId().getId();
-	    } else if ("authenticationId".equalsIgnoreCase(idType) || "a".equalsIgnoreCase(idType)) {
-	      return user.getAuthenticationUserId().getId();
-	    } else {
-	      LOG.error("Could not determine ID Value for given id type!" + idType);
-	    }
-	    return null;
-	  }
-
 	public static String getIdValue(String idType, Person user) {
-	    if ("workflowId".equalsIgnoreCase(idType) || "w".equalsIgnoreCase(idType)) {
+	    if ("workflowId".equalsIgnoreCase(idType) || "w".equalsIgnoreCase(idType) || "principalId".equalsIgnoreCase(idType)) {
 	      return user.getPrincipalId();
-	    } else if ("authenticationId".equalsIgnoreCase(idType) || "a".equalsIgnoreCase(idType)) {
+	    } else if ("authenticationId".equalsIgnoreCase(idType) || "a".equalsIgnoreCase(idType) || "principalName".equalsIgnoreCase(idType)) {
 	      return user.getPrincipalName();
 	    } else {
 	      LOG.error("Could not determine ID Value for given id type!" + idType);

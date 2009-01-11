@@ -4,11 +4,5 @@
 
   <bean id="enDocumentTypeService" class="mocks.MockDocumentTypeServiceImpl">
   </bean>
-  
-  <!-- <bean id="enWorkgroupService" class="mocks.MockWorkgroupService">
-   </bean> 
-   
-   <bean id="enUserService" class="mocks.MockUserService" />
--->
 
 </beans>

@@ -21,6 +21,7 @@ import org.kuali.rice.kew.web.KeyValue;
 import org.kuali.rice.kew.web.session.Authentication;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.util.KimConstants;
 
 
 public class DocumentSecurityServiceImpl implements DocumentSecurityService {
@@ -161,7 +162,7 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
 	  if (existingAuth != null) {
 		  return existingAuth;
 	  }
-	  boolean memberOfGroup = session.getUserSession().isMemberOfGroup(workgroupName);
+	  boolean memberOfGroup = session.getUserSession().isMemberOfGroupWithName(KimConstants.TEMP_GROUP_NAMESPACE, workgroupName);
 	  session.getAuthenticatedWorkgroups().put(workgroupName, memberOfGroup);
 	  return memberOfGroup;
   }

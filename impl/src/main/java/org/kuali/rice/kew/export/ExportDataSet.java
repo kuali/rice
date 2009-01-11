@@ -27,8 +27,6 @@ import org.kuali.rice.kew.help.HelpEntry;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
-import org.kuali.rice.kew.workgroup.Workgroup;
-import org.kuali.rice.kew.workgroup.WorkgroupType;
 import org.kuali.rice.kim.bo.group.KimGroup;
 
 
@@ -41,7 +39,6 @@ public class ExportDataSet {
 
     private List<ApplicationConstant> applicationConstants = new ArrayList<ApplicationConstant>();
     private List<DocumentType> documentTypes = new ArrayList<DocumentType>();
-    private List<Workgroup> workgroups = new ArrayList<Workgroup>();
     private List<KimGroup> groups = new ArrayList<KimGroup>();
     private List<RuleAttribute> ruleAttributes = new ArrayList<RuleAttribute>();
     private List<RuleTemplate> ruleTemplates = new ArrayList<RuleTemplate>();
@@ -49,7 +46,6 @@ public class ExportDataSet {
     private List<HelpEntry> help = new ArrayList<HelpEntry>();
     private List<EDocLiteAssociation> edocLites = new ArrayList<EDocLiteAssociation>();
     private List<EDocLiteStyle> styles = new ArrayList<EDocLiteStyle>();
-    private List<WorkgroupType> workgroupTypes = new ArrayList<WorkgroupType>();
 
     public List<ApplicationConstant> getApplicationConstants() {
         return applicationConstants;
@@ -72,14 +68,8 @@ public class ExportDataSet {
     public List<RuleTemplate> getRuleTemplates() {
         return ruleTemplates;
     }
-    public List<Workgroup> getWorkgroups() {
-        return workgroups;
-    }
 	public List<EDocLiteAssociation> getEdocLites() {
 		return edocLites;
-	}
-	public List<WorkgroupType> getWorkgroupTypes() {
-		return workgroupTypes;
 	}
 	public List<KimGroup> getGroups() {
 		return this.groups;

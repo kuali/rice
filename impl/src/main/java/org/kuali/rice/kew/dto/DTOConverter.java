@@ -1150,8 +1150,8 @@ public class DTOConverter {
         ruleResponsibilityVO.setPriority(ruleResponsibility.getPriority());
         ruleResponsibilityVO.setResponsibilityId(ruleResponsibility.getResponsibilityId());
         ruleResponsibilityVO.setRoleName(ruleResponsibility.getRole());
-        if (ruleResponsibility.getKimPrincipal() != null) {
-        	ruleResponsibilityVO.setPrincipalId(ruleResponsibility.getKimPrincipal().getPrincipalId());
+        if (ruleResponsibility.getPrincipal() != null) {
+        	ruleResponsibilityVO.setPrincipalId(ruleResponsibility.getPrincipal().getPrincipalId());
         } else if (ruleResponsibility.getGroup() != null) {
         	ruleResponsibilityVO.setGroupId(ruleResponsibility.getGroup().getGroupId());
         } else if (ruleResponsibility.getRole() != null) {

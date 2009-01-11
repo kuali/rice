@@ -41,8 +41,6 @@ import org.kuali.rice.kew.exception.WorkflowServiceError;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.AuthenticationUserId;
-import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -340,9 +338,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 			return true;
 		}
 		try {
-			UserService userService = (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
-			userService.getWorkflowUser(new AuthenticationUserId(networkId.trim()));
-			return true;
+			return KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(networkId.trim()) != null;
 		} catch (Exception ex) {
 			LOG.debug(ex, ex);
 			return false;

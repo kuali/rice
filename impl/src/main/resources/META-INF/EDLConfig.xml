@@ -24,10 +24,6 @@
 			<className>org.kuali.rice.kew.edl.components.NetworkIdWorkflowEDLConfigComponent</className>
 		</configProcessor>
 		<configProcessor>
-			<xpathExp>display/type = 'universityId'</xpathExp>
-			<className>org.kuali.rice.kew.edl.components.UniversityIdWorkflowEDLConfigComponent</className>
-		</configProcessor>
-		<configProcessor>
 			<xpathExp>display/type = 'select' or display/type = 'select_refresh' or display/type = 'text' or display/type = 'password' or display/type = 'radio' or display/type = 'checkbox' or display/type = 'textarea' or display/type = 'hidden'</xpathExp>
 			<className>org.kuali.rice.kew.edl.components.SimpleWorkflowEDLConfigComponent</className>
 		</configProcessor>

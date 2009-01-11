@@ -26,7 +26,6 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMessage;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.RuleExtension;
@@ -34,10 +33,6 @@ import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.AuthenticationUserId;
-import org.kuali.rice.kew.user.UserService;
-import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
@@ -446,10 +441,6 @@ public class WebRuleResponsibility extends RuleResponsibility {
 
 	public void setHasDelegateRuleTemplate(boolean hasDelegateRuleTemplate) {
 		this.hasDelegateRuleTemplate = hasDelegateRuleTemplate;
-	}
-
-	private UserService getUserService() {
-		return (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
 	}
 
 	private RuleService getRuleService() {

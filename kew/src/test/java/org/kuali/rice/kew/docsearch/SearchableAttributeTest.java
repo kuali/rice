@@ -22,14 +22,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
-import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
-import org.kuali.rice.kew.docsearch.DocSearchUtils;
-import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
-import org.kuali.rice.kew.docsearch.SearchableAttributeDateTimeValue;
-import org.kuali.rice.kew.docsearch.SearchableAttributeFloatValue;
-import org.kuali.rice.kew.docsearch.SearchableAttributeLongValue;
-import org.kuali.rice.kew.docsearch.SearchableAttributeStringValue;
-import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
@@ -39,9 +31,6 @@ import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
-import org.kuali.rice.kew.user.AuthenticationUserId;
-import org.kuali.rice.kew.user.UserService;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
@@ -246,7 +235,6 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
         doc.routeDocument("routing");
 
         DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
-        UserService userService = (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
 
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);

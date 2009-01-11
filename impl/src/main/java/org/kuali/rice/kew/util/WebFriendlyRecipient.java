@@ -16,8 +16,6 @@
 package org.kuali.rice.kew.util;
 
 import org.kuali.rice.kew.user.Recipient;
-import org.kuali.rice.kew.user.WorkflowUser;
-import org.kuali.rice.kew.workgroup.Workgroup;
 import org.kuali.rice.kim.bo.Person;
 
 /**

@@ -35,7 +35,6 @@ import org.apache.commons.collections.ComparatorUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
-import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.applicationconstants.service.ApplicationConstantsService;
@@ -72,8 +71,6 @@ import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.user.UserId;
-import org.kuali.rice.kew.user.UserService;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.Utilities;
@@ -745,7 +742,7 @@ public class RuleServiceImpl implements RuleService {
                     if (getIdentityManagementService().getGroup(responsibility.getRuleResponsibilityName()) == null) {
                         errors.add(new WorkflowServiceErrorImpl("Workgroup is invalid", "routetemplate.ruleservice.workgroup.invalid"));
                     }
-                } else if (responsibility.getKimPrincipal() == null && responsibility.getRole() == null) {
+                } else if (responsibility.getPrincipal() == null && responsibility.getRole() == null) {
                     errors.add(new WorkflowServiceErrorImpl("User is invalid", "routetemplate.ruleservice.user.invalid"));
                 }
             }
@@ -798,7 +795,7 @@ public class RuleServiceImpl implements RuleService {
                     errors.add(new WorkflowServiceErrorImpl("Workgroup is invalid", "routetemplate.ruleservice.workgroup.invalid"));
                     LOG.error("Workgroup is invalid");
                 }
-            } else if (responsibility.getKimPrincipal() == null && responsibility.getRole() == null) {
+            } else if (responsibility.getPrincipal() == null && responsibility.getRole() == null) {
                 errors.add(new WorkflowServiceErrorImpl("User is invalid", "routetemplate.ruleservice.user.invalid"));
                 LOG.error("User is invalid");
             } else if (responsibility.isUsingRole()) {
@@ -1154,10 +1151,6 @@ public class RuleServiceImpl implements RuleService {
 
     private RouteHeaderService getRouteHeaderService() {
         return (RouteHeaderService) KEWServiceLocator.getService(KEWServiceLocator.DOC_ROUTE_HEADER_SRV);
-    }
-
-    private UserService getUserService() {
-        return (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
     }
 
     /**

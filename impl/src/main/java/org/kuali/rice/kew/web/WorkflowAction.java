@@ -33,7 +33,6 @@ import org.apache.struts.actions.DispatchAction;
 import org.kuali.rice.core.util.JSTLConstants;
 import org.kuali.rice.kew.dto.AdHocRevokeDTO;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
@@ -44,13 +43,11 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.service.WorkflowInfo;
-import org.kuali.rice.kew.user.AuthenticationUserId;
-import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
 
@@ -217,10 +214,9 @@ public abstract class WorkflowAction extends DispatchAction {
 		}
 
 		if (KEWConstants.PERSON.equals(recipient.getType()) && recipient.getId() != null && !recipient.getId().trim().equals("")) {
-			try {
-				getUserService().getWorkflowUser(new AuthenticationUserId(recipient.getId()));
-			} catch (KEWUserNotFoundException e) {
-				LOG.error("App Specific user recipient not found", e);
+			KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(recipient.getId());
+			if (principal == null) {
+				LOG.error("App Specific user recipient not found");
 				messages.add(new WorkflowServiceErrorImpl("AppSpecific Recipient invalid", "appspecificroute.user.invalid"));
 			}
 		}
@@ -235,10 +231,6 @@ public abstract class WorkflowAction extends DispatchAction {
 			throw new WorkflowServiceErrorException("AppSpecific Route validation Error", messages);
 		}
 
-	}
-
-	private UserService getUserService() {
-		return (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
 	}
 
 	public ActionForward cancelDocument(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {

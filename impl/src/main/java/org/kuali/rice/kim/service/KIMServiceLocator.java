@@ -4,7 +4,6 @@ import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.support.KimTypeInternalService;
 
@@ -77,10 +76,6 @@ public final class KIMServiceLocator {
 
     public static AuthenticationService getAuthenticationService() {
     	return (AuthenticationService)getService(KIM_AUTHENTICATION_SERVICE);
-    }
-
-    public static UserService getUserService() {
-    	return (UserService)getService(KIM_USER_SERVICE);
     }
 
     public static UiDocumentService getUiDocumentService() {

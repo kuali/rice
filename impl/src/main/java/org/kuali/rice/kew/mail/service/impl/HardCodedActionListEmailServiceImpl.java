@@ -15,12 +15,9 @@ import org.kuali.rice.kew.mail.EmailBody;
 import org.kuali.rice.kew.mail.EmailSubject;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 
 
@@ -301,11 +298,7 @@ public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceI
 		}
 		return docTypes;
 	}
-
-	public UserService getUserService() {
-		return (UserService) KEWServiceLocator.getUserService();
-	}
-
+	
 	public String getDeploymentEnvironment() {
 		return deploymentEnvironment;
 	}

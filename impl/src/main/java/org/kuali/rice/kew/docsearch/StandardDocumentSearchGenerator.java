@@ -839,7 +839,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         if ((initiator == null) || "".equals(initiator.trim())) {
             return "";
         }
-		String userWorkflowId = KEWServiceLocator.getIdentityHelperService().getPrincipalByPrincipalName(initiator.trim()).getPrincipalId();
+		String userWorkflowId = KEWServiceLocator.getIdentityHelperService().getIdForPrincipalName(initiator.trim());
 		return new StringBuffer(whereClausePredicatePrefix + " DOC_HDR.INITR_PRNCPL_ID = '").append(userWorkflowId).append("'").toString();
     }
 

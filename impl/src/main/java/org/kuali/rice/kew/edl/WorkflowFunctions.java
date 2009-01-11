@@ -80,12 +80,12 @@ public class WorkflowFunctions {
 		return UserSession.getAuthenticatedUser().getPrincipalName().equals(principalName);
 	}
 
-	public static boolean isUserInGroup(String groupName){
+	public static boolean isUserInGroup(String namespace, String groupName){
 		boolean isUserInGroup=false;
 		UserSession userSession=UserSession.getAuthenticatedUser();
 		if(userSession!=null){
 			if(!Utilities.isEmpty(groupName)){
-				isUserInGroup = userSession.isMemberOfGroup(groupName);
+				isUserInGroup = userSession.isMemberOfGroupWithName(namespace, groupName);
 			}
 		}
 		return isUserInGroup;

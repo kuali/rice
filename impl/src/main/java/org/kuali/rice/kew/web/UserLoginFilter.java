@@ -18,7 +18,6 @@ package org.kuali.rice.kew.web;
 
 import java.io.IOException;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 
@@ -40,7 +39,6 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
@@ -149,13 +147,6 @@ public class UserLoginFilter implements Filter {
         }
 
         UserSession userSession = new UserSession(principal);
-        List<? extends KimGroup> groups = KIMServiceLocator.getIdentityManagementService().getGroupsForPrincipal(userSession.getPrincipalId());
-        Set<String> groupNames = new HashSet<String>();
-        for (KimGroup group: groups) {
-        	groupNames.add(group.getGroupName());
-        }
-        userSession.setGroups(groupNames);
-
         LOG.info("...finished performing user login.");
         return userSession;
     }

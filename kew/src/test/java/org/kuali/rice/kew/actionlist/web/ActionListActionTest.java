@@ -69,7 +69,7 @@ public class ActionListActionTest extends KEWHtmlUnitTestCase {
 		}
 
 		// check that the quickstart user has 10 action items
-		Collection<ActionItem> actionList = KEWServiceLocator.getActionListService().findByPrincipalId(getQuickstartUser().getWorkflowId());
+		Collection<ActionItem> actionList = KEWServiceLocator.getActionListService().findByPrincipalId(getQuickstartPrincipal().getPrincipalId());
 		assertEquals("Should have 10 items.", 10, actionList.size());
 
 		// now refresh the Action List
@@ -102,7 +102,7 @@ public class ActionListActionTest extends KEWHtmlUnitTestCase {
 		anchor.click();
 
 		// after taking mass actions, user should have no requests left in their action list
-		actionList = KEWServiceLocator.getActionListService().findByPrincipalId(getQuickstartUser().getWorkflowId());
+		actionList = KEWServiceLocator.getActionListService().findByPrincipalId(getQuickstartPrincipal().getPrincipalId());
 		assertEquals("Should have 0 items.", 0, actionList.size());
 
 		// now let's route some and intersperse them with documents that won't have the Mass Action option,
@@ -124,7 +124,7 @@ public class ActionListActionTest extends KEWHtmlUnitTestCase {
 		}
 
 		// check that the quickstart user has 10 action items
-		actionList = KEWServiceLocator.getActionListService().findByPrincipalId(getQuickstartUser().getWorkflowId());
+		actionList = KEWServiceLocator.getActionListService().findByPrincipalId(getQuickstartPrincipal().getPrincipalId());
 		assertEquals("Should have 10 items.", 10, actionList.size());
 
 		// refresh the Action List
@@ -167,7 +167,7 @@ public class ActionListActionTest extends KEWHtmlUnitTestCase {
 		anchor.click();
 
 		// since only half the actions were "mass actionable", we should have 5 now
-		actionList = KEWServiceLocator.getActionListService().findByPrincipalId(getQuickstartUser().getWorkflowId());
+		actionList = KEWServiceLocator.getActionListService().findByPrincipalId(getQuickstartPrincipal().getPrincipalId());
 		assertEquals("Should have 5 items.", 5, actionList.size());
 		// check that the documents remaining are the ones which are approve requests and not the mass actionable fyi requests
 		for (Iterator iterator = actionList.iterator(); iterator.hasNext();) {

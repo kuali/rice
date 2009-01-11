@@ -29,8 +29,6 @@ import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.workgroup.Workgroup;
-import org.kuali.rice.kew.workgroup.WorkgroupType;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Exporter;
 import org.kuali.rice.kns.exception.ExportNotSupportedException;
@@ -90,10 +88,6 @@ public class DataExporter implements Exporter {
 				dataSet.getRules().add((RuleBaseValues)businessObject);
 			} else if (businessObjectClass.equals(EDocLiteStyle.class)) {
 				dataSet.getStyles().add((EDocLiteStyle)businessObject);
-			} else if (businessObjectClass.equals(Workgroup.class)) {
-				dataSet.getWorkgroups().add((Workgroup)businessObject);
-			} else if (businessObjectClass.equals(WorkgroupType.class)) {
-				dataSet.getWorkgroupTypes().add((WorkgroupType)businessObject);
 			}
 		}
 		return dataSet;

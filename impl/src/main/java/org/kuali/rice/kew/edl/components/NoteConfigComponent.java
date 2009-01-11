@@ -40,7 +40,6 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
-import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.Person;
@@ -627,15 +626,6 @@ public class NoteConfigComponent implements EDLModelComponent {
     private NoteService getNoteService() {
 		return (NoteService) KEWServiceLocator.getService(KEWServiceLocator.NOTE_SERVICE);
 	}
-
-	/**
-	 * Method added for notes editing function.
-	 * @return
-	 */
-    private UserService getUserService() {
-		return (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
-	}
-
 
     /**
      * Method added for notes editing function.

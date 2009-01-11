@@ -53,14 +53,12 @@ import org.kuali.rice.kew.actiontaken.service.ActionTakenService;
 import org.kuali.rice.kew.docsearch.service.SearchableAttributeProcessingService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
-import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.BranchState;
 import org.kuali.rice.kew.engine.node.NodeState;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.node.service.BranchService;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
@@ -70,10 +68,9 @@ import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
-import org.kuali.rice.kew.user.AuthenticationUserId;
-import org.kuali.rice.kew.user.UserService;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.WorkflowAction;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
@@ -646,10 +643,22 @@ public class DocumentOperationAction extends WorkflowAction {
 			if (lookupInvocationModule.equals("ActionTaken")) {
 				ActionTakenValue actionTaken = docForm.getRouteHeader().getDocActionTaken(lookupIndex);
 				if ("workflowId".equals(lookupField)) {
-					actionTaken.setPrincipalId(KEWServiceLocator.getIdentityHelperService().getPrincipalByPrincipalName(networkId).getPrincipalId());
+					KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(networkId);
+					if (principal != null) {
+						actionTaken.setPrincipalId(principal.getPrincipalId());
+					} else {
+						LOG.info("action taken user not found");
+						actionTaken.setPrincipalId(null);
+					}
 				}
 				if ("delegatorWorkflowId".equals(lookupField)) {
-					actionTaken.setDelegatorPrincipalId(KEWServiceLocator.getIdentityHelperService().getPrincipalByPrincipalName(networkId).getPrincipalId());
+					KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(networkId);
+					if (principal != null) {
+						actionTaken.setDelegatorPrincipalId(principal.getPrincipalId());
+					} else {
+						LOG.info("action taken delegator user not found");
+						actionTaken.setDelegatorPrincipalId(null);
+					}
 				}
 				if ("delegatorWorkgroupId".equals(lookupField)) {
 					if (request.getParameter("workgroupId") != null && !"".equals(request.getParameter("workgroupId").trim())) {
@@ -663,7 +672,13 @@ public class DocumentOperationAction extends WorkflowAction {
 			if (lookupInvocationModule.equals("ActionItem")) {
 				ActionItem actionItem = docForm.getRouteHeader().getDocActionItem(lookupIndex);
 				if ("workflowId".equals(lookupField)) {
-						actionItem.setPrincipalId(KEWServiceLocator.getIdentityHelperService().getPrincipalByPrincipalName(networkId).getPrincipalId());
+					KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(networkId);
+					if (principal != null) {
+						actionItem.setPrincipalId(principal.getPrincipalId());
+					} else {
+						LOG.info("action item user not found");
+						actionItem.setPrincipalId(null);
+					}
 				}
 
 				if ("workgroupId".equals(lookupField)) {
@@ -677,7 +692,13 @@ public class DocumentOperationAction extends WorkflowAction {
 					actionItem.setRoleName(request.getParameter("roleName"));
 				}
 				if ("delegatorWorkflowId".equals(lookupField)) {
-					actionItem.setDelegatorWorkflowId(KEWServiceLocator.getIdentityHelperService().getPrincipalByPrincipalName(networkId).getPrincipalId());
+					KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(networkId);
+					if (principal != null) {
+						actionItem.setDelegatorWorkflowId(principal.getPrincipalId());
+					} else {
+						LOG.info("action item delegator user not found");
+						actionItem.setDelegatorWorkflowId(null);
+					}
 				}
 				if ("delegatorWorkgroupId".equals(lookupField)) {
 					if (request.getParameter("workgroupId") != null && !"".equals(request.getParameter("workgroupId").trim())) {
@@ -791,11 +812,6 @@ public class DocumentOperationAction extends WorkflowAction {
 		} catch (Exception e) {
 			throw new WorkflowRuntimeException(e);
 		}
-	}
-
-
-	private UserService getUserService() {
-		return (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
 	}
 
 	private DocumentTypeService getDocumentTypeService() {

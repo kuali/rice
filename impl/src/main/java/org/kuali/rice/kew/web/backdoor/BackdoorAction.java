@@ -113,14 +113,6 @@ public class BackdoorAction extends WorkflowAction {
         }
         uSession.getAuthentications().clear();
         setFormGroupPermission(backdoorForm, request);
-        //set up preferences as backdoor person
-        List<? extends KimGroup> groups = KIMServiceLocator.getIdentityManagementService().getGroupsForPrincipal(uSession.getPrincipalId());
-        Set<String> groupNames = new HashSet<String>();
-        for (KimGroup group: groups) {
-            groupNames.add(group.getGroupName());
-        }
-        uSession.setGroups(groupNames);
-    	// TODO: Implement UserSession Hook
         return mapping.findForward("viewBackdoor");
 
     }

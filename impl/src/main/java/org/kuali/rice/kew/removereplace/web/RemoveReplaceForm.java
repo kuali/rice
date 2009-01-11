@@ -24,7 +24,6 @@ import org.apache.commons.collections.ListUtils;
 import org.kuali.rice.kew.removereplace.RemoveReplaceDocument;
 import org.kuali.rice.kew.web.ShowHideTree;
 import org.kuali.rice.kew.web.WorkflowRoutingForm;
-import org.kuali.rice.kew.workgroup.WorkgroupType;
 import org.kuali.rice.kim.bo.Person;
 
 
@@ -76,13 +75,13 @@ public class RemoveReplaceForm extends WorkflowRoutingForm {
     public RemoveReplaceForm() {
     }
 
-    public static WorkgroupType createDefaultWorkgroupType() {
-    	WorkgroupType workgroupType = new WorkgroupType();
-    	workgroupType.setActive(true);
-    	workgroupType.setLabel("Default");
-    	workgroupType.setName("Default");
-    	return workgroupType;
-    }
+//    public static WorkgroupType createDefaultWorkgroupType() {
+//    	WorkgroupType workgroupType = new WorkgroupType();
+//    	workgroupType.setActive(true);
+//    	workgroupType.setLabel("Default");
+//    	workgroupType.setName("Default");
+//    	return workgroupType;
+//    }
 
     public String getMethodToCall() {
         return this.methodToCall;

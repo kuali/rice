@@ -19,12 +19,11 @@ package org.kuali.rice.kew.web.session;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.preferences.Preferences;
@@ -34,6 +33,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
@@ -61,14 +61,19 @@ public class UserSession implements Serializable {
     private ActionListFilter actionListFilter;
     private Preferences preferences;
     private List authentications = new ArrayList();
-    private Set<String> groups = new HashSet<String>();
+    
     private String sortOrder;
     private String sortCriteria;
     private int currentPage;
+    
     private KimPrincipal actualPrincipal;
     private Person actualPerson;
+    private Map<String, KimGroup> actualPrincipalGroups = new HashMap<String, KimGroup>();
+    
     private KimPrincipal backdoorPrincipal;
     private Person backdoorPerson;
+    private Map<String, KimGroup> backdoorPrincipalGroups = new HashMap<String, KimGroup>();
+    
     private KimPrincipal helpDeskActionListPrincipal;
     private Person helpDeskActionListPerson;
 
@@ -90,6 +95,10 @@ public class UserSession implements Serializable {
 		this.actualPrincipal = actualPrincipal;
 		actualPerson = getPersonService().getPerson(actualPrincipal.getPrincipalId());
 		establishPreferencesForPrincipal(actualPrincipal);
+		List<? extends KimGroup> groups = KIMServiceLocator.getIdentityManagementService().getGroupsForPrincipal(actualPrincipal.getPrincipalId());
+		for (KimGroup group : groups) {
+			actualPrincipalGroups.put(group.getGroupId(), group);
+		}
         this.nextObjectKey = 0;
 	}
 
@@ -216,6 +225,10 @@ public class UserSession implements Serializable {
         		return false;
         	}
         	this.backdoorPerson = KEWServiceLocator.getIdentityHelperService().getPersonByPrincipalName(principalName);
+        	List<? extends KimGroup> groups = KIMServiceLocator.getIdentityManagementService().getGroupsForPrincipal(backdoorPrincipal.getPrincipalId());
+    		for (KimGroup group : groups) {
+    			backdoorPrincipalGroups.put(group.getGroupId(), group);
+    		}
         	establishPreferencesForPrincipal(backdoorPrincipal);
         	return true;
         }
@@ -327,16 +340,24 @@ public class UserSession implements Serializable {
     	return false;
     }
 
-    public Set<String> getGroups() {
-		return groups;
+    public Map<String, KimGroup> getGroups() {
+    	if (getBackdoorPrincipal() != null) {
+    		return backdoorPrincipalGroups;
+    	}
+		return actualPrincipalGroups;
 	}
-
-	public void setGroups(Set<String> groups) {
-		this.groups = groups;
+    
+	public boolean isMemberOfGroupWithName(String namespace, String groupName) {
+		for (KimGroup group : getGroups().values()) {
+			if (StringUtils.equals(namespace, group.getNamespaceCode()) && StringUtils.equals(groupName, group.getGroupName())) {
+				return true;
+			}
+		}
+		return false;
 	}
-
-	public boolean isMemberOfGroup(String groupName) {
-		return getGroups().contains(groupName);
+	
+	public boolean isMemberOfGroupWithId(String groupId) {
+		return getGroups().containsKey(groupId);
 	}
 
 	protected IdentityManagementService getIdentityService(){
@@ -353,4 +374,5 @@ public class UserSession implements Serializable {
 		}
 		return personService;
 	}
+	
 }

@@ -55,14 +55,12 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.util.KimConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -142,15 +140,14 @@ public class DocumentTypeXmlParser implements XmlConstants {
             parseStructure(documentTypeNodes.item(i), routeDocument, documentType, new RoutePathContext());
 
             LOG.debug("Saving document type " + documentType.getName());
-            WorkflowUser user = null;
-            routeDocumentType(documentType, user);
+            routeDocumentType(documentType);
             documentTypeBeans.add(documentType);
         }
 
         return documentTypeBeans;
     }
 
-    private void routeDocumentType(DocumentType documentType, WorkflowUser user) {
+    private void routeDocumentType(DocumentType documentType) {
         KEWServiceLocator.getDocumentTypeService().versionAndSave(documentType);
     }
 

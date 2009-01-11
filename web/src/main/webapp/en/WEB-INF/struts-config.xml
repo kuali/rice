@@ -29,7 +29,6 @@
       <form-bean name="NoteForm" type="org.kuali.rice.kew.notes.web.NoteForm" />
       <form-bean name="HelpForm" type="org.kuali.rice.kew.help.web.HelpForm" />
       <form-bean name="IngesterForm" type="org.kuali.rice.kew.batch.web.IngesterForm" />
-      <form-bean name="WorkflowUserForm" type="org.kuali.rice.kew.user.web.WorkflowUserForm" />
       <form-bean name="RemoveReplaceForm" type="org.kuali.rice.kew.removereplace.web.RemoveReplaceForm"/>
 
 
@@ -299,22 +298,6 @@
       	type="org.kuali.rice.kew.batch.web.IngesterAction">
       	<forward name="view" path="/WEB-INF/jsp/batch/ingester.jsp"/>
 	  </action>
-
-	   <action path="/WorkflowUser" name="WorkflowUserForm" scope="request" validate="false"
-         input="/WEB-INF/jsp/user/WorkflowUserEntry.jsp"
-         type="org.kuali.rice.kew.user.web.WorkflowUserAction" parameter="methodToCall">
-         <forward name="basic" path="/WEB-INF/jsp/user/WorkflowUserEntry.jsp"/>
-         <forward name="summary" path="/WEB-INF/jsp/user/WorkflowUserSummary.jsp"/>
-         <forward name="requiredStateError" path="/WEB-INF/jsp/user/WorkflowUserReport.jsp"/>
-         <forward name="finalStateError" path="/WEB-INF/jsp/user/WorkflowUserReport.jsp"/>
-       </action>
-
-	   <action path="/WorkflowUserReport" name="WorkflowUserForm" scope="request" validate="false"
-         type="org.kuali.rice.kew.user.web.WorkflowUserAction" parameter="methodToCall">
-         <forward name="report" path="/WEB-INF/jsp/user/WorkflowUserReport.jsp"/>
-         <forward name="requiredStateError" path="/WEB-INF/jsp/user/WorkflowUserReport.jsp"/>
-         <forward name="finalStateError" path="/WEB-INF/jsp/user/WorkflowUserReport.jsp"/>
-       </action>
 
        <action path="/RemoveReplace" name="RemoveReplaceForm" scope="request" validate="true"
          input="/WEB-INF/jsp/removereplace/RemoveReplaceEntry.jsp"

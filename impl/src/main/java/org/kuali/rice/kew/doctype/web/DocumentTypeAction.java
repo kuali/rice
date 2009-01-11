@@ -32,7 +32,6 @@ import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.web.WorkflowAction;
-import org.kuali.rice.kew.workgroup.WorkgroupService;
 
 
 /**

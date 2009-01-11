@@ -32,6 +32,7 @@ import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
+import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.NodeState;
@@ -48,7 +49,6 @@ import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.RoleRecipient;
-import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.ResponsibleParty;
@@ -360,7 +360,7 @@ public class FlexRM {
 	}
 	Recipient recipient;
 	if (resp.isUsingWorkflowUser()) {
-	    recipient = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(resp.getRuleResponsibilityName()));
+	    recipient = new KimPrincipalRecipient(resp.getPrincipal());
 	} else {
 	    recipient = new KimGroupRecipient(resp.getGroup());
 	}

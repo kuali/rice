@@ -106,13 +106,6 @@
                 <idref local="enXmlDigesterService" />
                 <idref local="enStatsService" />
                 <idref local="enNoteService" />
-                <idref local="enUserService"/>
-                <idref local="enWorkgroupService"/>
-                <idref local="enWorkgroupDAO"/>
-                <idref local="enWorkgroupMemberDAO"/>
-                <idref local="enUserDAO"/>
-                <idref local="enWorkgroupRoutingService"/>
-                <idref local="workgroupTypeService"/>
                 <idref local="enDocumentRoutingService" />
                 <idref local="enBlanketApproveProcessor" />
                 <idref local="enSearchableAttributeProcessor" />
@@ -449,10 +442,8 @@
         <property name="serviceOrder">
             <list>
                 <value>enApplicationConstantsService</value>
-                <value>enUserService</value>
+                <value>enUserXmlService</value>
                 <value>enRuleAttributeService</value>
-                <value>workgroupTypeService</value>
-                <value>enWorkgroupService</value>
                 <value>enGroupXmlService</value>
                 <value>enRuleTemplateService</value>
                 <value>enDocumentTypeService</value>
@@ -556,7 +547,6 @@
   <bean id="enXmlExporterService" class="org.kuali.rice.kew.xml.export.XmlExporterServiceImpl" lazy-init="true">
     <property name="serviceOrder">
       <list>
-        <value>workgroupTypeService</value>
 		<value>enGroupXmlService</value>
         <value>enRuleAttributeService</value>
         <value>enDocumentTypeService</value>
@@ -565,7 +555,6 @@
         <value>enHelpService</value>
         <value>enEDocLiteService</value>
         <value>enStyleService</value>
-        <!-- <value>enWorkgroupService</value> -->
       </list>
     </property>
   </bean>
@@ -607,48 +596,10 @@
   </bean>
 
   <bean id="kewIdentityHelperService" class="org.kuali.rice.kew.identity.service.impl.IdentityHelperServiceImpl"/>
-
-  <bean id="enUserService" class="org.kuali.rice.kim.service.impl.KimUserServiceImpl" />
-  <bean id="enWorkgroupService" class="org.kuali.rice.kim.service.impl.KimWorkgroupServiceImpl" />
   
   <!-- XML parsing/export has not been promoted out of KEW into the core yet, until then let's wire up the GroupXmlServiceImpl here -->
   <bean id="enGroupXmlService" class="org.kuali.rice.kew.xml.GroupXmlServiceImpl" />
-
-  <bean id="enUserDAO" class="org.kuali.rice.kew.user.dao.impl.BaseUserDAOOjbImpl">
-      <property name="jcdAlias" value="enWorkflowDataSource" />
-  </bean>
-
-  <bean id="enWorkgroupDAO" class="org.kuali.rice.kew.workgroup.dao.impl.BaseWorkgroupDAOOjbImpl">
-    <property name="jcdAlias" value="enWorkflowDataSource" />
-  </bean>
-
-  <bean id="enWorkgroupMemberDAO" class="org.kuali.rice.kew.workgroup.dao.impl.BaseWorkgroupMemberDAOOjbImpl">
-    <property name="jcdAlias" value="enWorkflowDataSource" />
-  </bean>
-
-  <!--
-  <bean id="enWorkgroupService" class="org.kuali.rice.kew.workgroup.BaseWorkgroupService">
-    <property name="workgroupDAO">
-      <ref local="enWorkgroupDAO" />
-    </property>
-    <property name="workgroupMemberDAO">
-      <ref local="enWorkgroupMemberDAO" />
-    </property>
-    </bean>
-   -->
-    <bean id="enWorkgroupRoutingService" class="org.kuali.rice.kew.workgroup.BaseWorkgroupRoutingService">
-    <property name="workgroupDAO">
-      <ref local="enWorkgroupDAO" />
-    </property>
-    </bean>
-
-    <bean id="workgroupTypeDAO" class="org.kuali.rice.kew.workgroup.dao.impl.WorkgroupTypeDAOOjbImpl">
-      <property name="jcdAlias" value="enWorkflowDataSource"/>
-    </bean>
-
-    <bean id="workgroupTypeService" class="org.kuali.rice.kew.workgroup.WorkgroupTypeServiceImpl">
-      <property name="workgroupTypeDAO" ref="workgroupTypeDAO"/>
-    </bean>
+  <bean id="enUserXmlService" class="org.kuali.rice.kew.xml.UserXmlServiceImpl"/>
 
     <bean id="enRemoveReplaceDocumentService" class="org.kuali.rice.kew.removereplace.service.impl.RemoveReplaceDocumentServiceImpl">
       <property name="removeReplaceDocumentDAO">
@@ -728,41 +679,6 @@
         </bean>
 		</property>
 	</bean>
-
-<!-- Because these services are commonly overridden by the Institutional Plugin if we just inject
-     enUserService or enWorkgroupService here we won't get the overridden version of the service.
-     There's really a larger issue here that needs to be addressed regarding the resource loading
-     and the plugin framework in this case.  In the meantime, these exporters have been moved to the
-   	 ExportOverridableServicesLifecycle
-
-	<bean class="org.kuali.rice.ksb.messaging.PropertyConditionalKSBExporter">
-		<property name="serviceDefinition">
-        <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
-          <property name="service">
-            <ref bean="enUserService" />
-          </property>
-          <property name="serviceInterface" value="org.kuali.rice.kew.user.UserService" />
-          <property name="serviceNameSpaceURI" value=""/>
-          <property name="localServiceName" value="enUserService" />
-        </bean>
-		</property>
-		<property name="propertyName" value="Identity.useRemoteServices"/>
-	</bean>
-
-	<bean class="org.kuali.rice.ksb.messaging.PropertyConditionalKSBExporter">
-		<property name="serviceDefinition">
-        <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
-          <property name="service">
-            <ref bean="enWorkgroupService" />
-          </property>
-          <property name="serviceInterface" value="org.kuali.rice.kew.workgroup.WorkgroupService" />
-          <property name="serviceNameSpaceURI" value=""/>
-          <property name="localServiceName" value="enWorkgroupService" />
-        </bean>
-          </property>
-          <property name="propertyName" value="Identity.useRemoteServices"/>
-        </bean>
--->
 
 	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>

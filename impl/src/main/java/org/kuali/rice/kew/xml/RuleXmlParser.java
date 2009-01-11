@@ -32,7 +32,6 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
@@ -41,14 +40,12 @@ import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.AuthenticationUserId;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.XmlHelper;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.util.KimConstants;
 import org.xml.sax.SAXException;
 
 
@@ -387,16 +384,12 @@ public class RuleXmlParser implements XmlConstants {
         if (user != null) {
             // allow core config parameter replacement in responsibilities
             user = Utilities.substituteConfigParameters(user);
-            try {
-                WorkflowUser workflowUser = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(user));
-                if (workflowUser == null) {
-                    throw new InvalidXmlException("Could not locate workflow user for given network id: " + user);
-                }
-                responsibility.setRuleResponsibilityName(workflowUser.getWorkflowId());
-                responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
-            } catch (KEWUserNotFoundException e) {
-                throw new InvalidXmlException(e);
+            KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(user);
+            if (principal == null) {
+            	throw new InvalidXmlException("Could not locate workflow user for given network id: " + user);
             }
+            responsibility.setRuleResponsibilityName(principal.getPrincipalId());
+            responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
         } else if (workgroup != null) {
             // allow core config parameter replacement in responsibilities
             workgroup = Utilities.substituteConfigParameters(workgroup);

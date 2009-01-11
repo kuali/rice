@@ -19,7 +19,6 @@ package org.kuali.rice.kew.rule.service.impl;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import org.jdom.Element;
@@ -39,7 +38,6 @@ import org.kuali.rice.kew.rule.dao.RuleTemplateOptionDAO;
 import org.kuali.rice.kew.rule.service.RuleAttributeService;
 import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.xml.RuleTemplateXmlParser;
 import org.kuali.rice.kew.xml.export.RuleTemplateXmlExporter;
 

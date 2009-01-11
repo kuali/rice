@@ -205,51 +205,6 @@
 			</members>
 		</group>
 	</groups>
-<!-- <workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
-		<workgroup>
-			<id>1</id>
-			<workgroupName>WorkflowAdmin</workgroupName>
-			<description>WorkflowAdmin</description>
-			<members>
-				<authenticationId>quickstart</authenticationId>
-                <authenticationId>admin</authenticationId>
-			</members>
-		</workgroup>
-		<workgroup>
-			<id>2</id>
-			<workgroupName>KUALI_PED</workgroupName>
-			<description>KUALI_PED</description>
-			<members>
-				<authenticationId>employee</authenticationId>
-			</members>
-		</workgroup>
-		<workgroup>
-			<id>3</id>
-			<workgroupName>KUALI_OPERATIONS</workgroupName>
-			<description>KUALI_OPERATIONS</description>
-			<members>
-				<authenticationId>employee</authenticationId>
-			</members>
-		</workgroup>
-		<workgroup>
-			<id>4</id>
-			<workgroupName>KUALI_ROLE_MAINTENANCE</workgroupName>
-			<description>KUALI_ROLE_MAINTENANCE</description>
-			<members>
-				<authenticationId>employee</authenticationId>
-			</members>
-		</workgroup>
-		<workgroup>
-			<id>5555</id>
-			<workgroupName>KUALI_ROLE_SUPERVISOR</workgroupName>
-			<description>KUALI_ROLE_SUPERVISOR</description>
-			<members>
-				<authenticationId>admin</authenticationId>
-				<authenticationId>supervisr</authenticationId>
-			</members>
-		</workgroup>
-	</workgroups>
--->
 	<ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
 		<ruleTemplate allowOverwrite="true">
 			<name>WorkflowDocumentTemplate</name>

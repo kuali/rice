@@ -16,7 +16,6 @@ import org.kuali.rice.kew.edl.bo.EDocLiteStyle;
 import org.kuali.rice.kew.edl.service.StyleService;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.XmlHelper;
 import org.w3c.dom.Document;

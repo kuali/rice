@@ -488,7 +488,7 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
             throw new IllegalArgumentException("invalid (null) user");
         }
 
-        return StringUtils.equalsIgnoreCase(getInitiatorPrincipalId(), user.getPrincipalName());
+        return StringUtils.equalsIgnoreCase(getInitiatorPrincipalId(), user.getPrincipalId());
     }
 
     /**

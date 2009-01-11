@@ -21,6 +21,8 @@ import org.kuali.rice.kew.edl.RequestParser;
 import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.AuthenticationUserId;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -60,10 +62,9 @@ public class NetworkIdWorkflowEDLConfigComponent extends SimpleWorkflowEDLConfig
 			return null;			
 		} else {
 			//not blank validate as normal whether required or not
-			try {
-				KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(param.getParamValue()));
-			} catch (KEWUserNotFoundException e) {
-				return ("The value " + param.getParamValue() + " is an invalid Network ID");
+			KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(param.getParamValue());
+			if (principal == null) {
+				return ("The value " + param.getParamValue() + " is an invalid principal name");
 			}
 		}
 		return null;

@@ -261,66 +261,6 @@
 
 		</user>
 	</users>
-    <!-- <workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
-		<workgroup allowOverwrite="true">
-			<id>1</id>
-			<workgroupName>TestWorkgroup</workgroupName>
-			<description>TestWorkgroup</description>
-			<members>
-				<authenticationId>ewestfal</authenticationId>
-				<authenticationId>rkirkend</authenticationId>
-				<authenticationId>jhopf</authenticationId>
-				<authenticationId>bmcgough</authenticationId>
-				<authenticationId>temay</authenticationId>
-				<authenticationId>xqi</authenticationId>
-				<authenticationId>natjohns</authenticationId>
-				<authenticationId>pmckown</authenticationId>
-				<authenticationId>jthomas</authenticationId>
-				<authenticationId>jitrue</authenticationId>
-			</members>
-		</workgroup>
-		<workgroup allowOverwrite="true">
-			<id>2</id>
-			<workgroupName>WorkflowAdmin</workgroupName>
-			<description>WorkflowAdmin</description>
-			<members>
-				<authenticationId>ewestfal</authenticationId>
-				<authenticationId>rkirkend</authenticationId>
-				<authenticationId>jhopf</authenticationId>
-				<authenticationId>bmcgough</authenticationId>
-				<authenticationId>shenl</authenticationId>
-				<authenticationId>quickstart</authenticationId>
-			</members>
-		</workgroup>
-		<workgroup allowOverwrite="true">
-			<id>3</id>
-			<workgroupName>NonSIT</workgroupName>
-			<description>NonSIT</description>
-			<members>
-				<authenticationId>user1</authenticationId>
-				<authenticationId>user2</authenticationId>
-				<authenticationId>user3</authenticationId>
-				<authenticationId>dewey</authenticationId>
-			</members>
-		</workgroup>
-		<workgroup allowOverwrite="true">
-			<id>4</id>
-			<workgroupName>BlanketApproveWorkgroup</workgroupName>
-			<description>BlanketApproveWorkgroup</description>
-			<members>
-				<authenticationId>ewestfal</authenticationId>
-				<authenticationId>rkirkend</authenticationId>
-				<authenticationId>jhopf</authenticationId>
-				<authenticationId>bmcgough</authenticationId>
-				<authenticationId>temay</authenticationId>
-				<authenticationId>xqi</authenticationId>
-				<authenticationId>natjohns</authenticationId>
-				<authenticationId>pmckown</authenticationId>
-				<authenticationId>jthomas</authenticationId>
-				<authenticationId>jitrue</authenticationId>
-			</members>
-		</workgroup>
-	</workgroups> -->
 	<groups xmlns="ns:workflow/Group" xsi:schemaLocation="ns:workflow/Group resource:Group">
 		<group>
 		    <id>1</id>

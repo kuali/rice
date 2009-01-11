@@ -30,7 +30,6 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.dao.RuleAttributeDAO;
 import org.kuali.rice.kew.rule.service.RuleAttributeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.xml.RuleAttributeXmlParser;
 import org.kuali.rice.kew.xml.export.RuleAttributeXmlExporter;
 

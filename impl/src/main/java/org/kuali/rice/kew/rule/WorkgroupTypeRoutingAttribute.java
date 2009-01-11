@@ -30,13 +30,11 @@ import javax.xml.xpath.XPathExpressionException;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
-import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.workgroup.WorkgroupType;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 

@@ -20,9 +20,6 @@ import javax.xml.namespace.QName;
 import org.junit.Test;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ken.test.NotificationTestCaseBase;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.UserService;
-import org.kuali.rice.kew.workgroup.WorkgroupService;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
@@ -36,19 +33,10 @@ import org.kuali.rice.test.BaselineTestCase.Mode;
  */
 @BaselineMode(Mode.ROLLBACK)
 public class KEWIntegrationTest extends NotificationTestCaseBase {
-    /**
-     * Tests that we can obtain KEW user and workgroup services
-     */
-    @Test
+
+	@Test
     public void testKEWServicesAreAccessible() throws Exception {
-        UserService userService = KEWServiceLocator.getUserService();
-        assertNotNull(userService);
-        LOG.info("Default KEW UserService: " + userService);
-
-        WorkgroupService workgroupService = KEWServiceLocator.getWorkgroupService();
-        assertNotNull(workgroupService);
-        LOG.info("Default KEW WorkgroupService: " + workgroupService);
-
+        
         IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
         assertNotNull(identityManagementService);
         LOG.info("Default KIM IdentityManagementService: " + identityManagementService);

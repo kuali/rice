@@ -27,15 +27,12 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.feedback.web.FeedbackForm;
-import org.kuali.rice.kew.mail.EmailContent;
 import org.kuali.rice.kew.mail.service.impl.ActionListEmailServiceImpl;
 import org.kuali.rice.kew.mail.service.impl.HardCodedEmailContentServiceImpl;
 import org.kuali.rice.kew.mail.service.impl.StyleableEmailContentServiceImpl;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.user.AuthenticationUserId;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 

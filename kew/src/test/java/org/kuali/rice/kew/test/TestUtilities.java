@@ -52,9 +52,8 @@ import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
-import org.kuali.rice.kew.user.AuthenticationUserId;
-import org.kuali.rice.kew.user.WorkflowUser;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -230,10 +229,10 @@ public class TestUtilities {
     /**
      * Asserts that the given document id is in the given user's action list.
      */
-    public static void assertInActionList(NetworkIdDTO networkId, Long documentId) throws KEWUserNotFoundException {
-    	WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(networkId);
-    	Assert.assertNotNull("Given network id was invalid: " + networkId, user);
-    	Collection<ActionItem> actionList = KEWServiceLocator.getActionListService().findByPrincipalId(user.getWorkflowId());
+    public static void assertInActionList(String principalId, Long documentId) throws KEWUserNotFoundException {
+    	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+    	Assert.assertNotNull("Given principal id was invalid: " + principalId, principal);
+    	Collection<ActionItem> actionList = KEWServiceLocator.getActionListService().findByPrincipalId(principalId);
     	for (Iterator iterator = actionList.iterator(); iterator.hasNext();) {
 			ActionItem actionItem = (ActionItem) iterator.next();
 			if (actionItem.getRouteHeaderId().equals(documentId)) {
@@ -246,10 +245,10 @@ public class TestUtilities {
     /**
      * Asserts that the given document id is NOT in the given user's action list.
      */
-    public static void assertNotInActionList(NetworkIdDTO networkId, Long documentId) throws KEWUserNotFoundException {
-    	WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(networkId);
-    	Assert.assertNotNull("Given network id was invalid: " + networkId, user);
-    	Collection actionList = KEWServiceLocator.getActionListService().findByPrincipalId(user.getWorkflowId());
+    public static void assertNotInActionList(String principalId, Long documentId) throws KEWUserNotFoundException {
+    	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+    	Assert.assertNotNull("Given principal id was invalid: " + principalId, principal);
+    	Collection actionList = KEWServiceLocator.getActionListService().findByPrincipalId(principalId);
     	for (Iterator iterator = actionList.iterator(); iterator.hasNext();) {
 			ActionItem actionItem = (ActionItem) iterator.next();
 			if (actionItem.getRouteHeaderId().equals(documentId)) {
@@ -266,9 +265,8 @@ public class TestUtilities {
     /**
      * Asserts that the user with the given network id has a pending request on the given document
      */
-    public static void assertUserHasPendingRequest(Long documentId, String networkId) throws WorkflowException {
-    	String principalId = KEWServiceLocator.getIdentityHelperService().getIdForPrincipalName(networkId);
-    	WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(networkId));
+    public static void assertUserHasPendingRequest(Long documentId, String principalName) throws WorkflowException {
+    	String principalId = KEWServiceLocator.getIdentityHelperService().getIdForPrincipalName(principalName);
     	List actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(documentId);
     	boolean foundRequest = false;
     	for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
@@ -277,7 +275,7 @@ public class TestUtilities {
 				foundRequest = true;
 				break;
 			} else if (actionRequest.isGroupRequest() && 
-			        KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(user.getWorkflowId(), actionRequest.getGroup().getGroupId())) {
+			        KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(principalId, actionRequest.getGroup().getGroupId())) {
 				foundRequest = true;
 				break;
 			}

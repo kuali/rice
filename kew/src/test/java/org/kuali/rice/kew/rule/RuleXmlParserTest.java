@@ -142,7 +142,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         List responsibilities = rule.getResponsibilities();
         assertEquals(1, responsibilities.size());
         RuleResponsibility responsibility = (RuleResponsibility) responsibilities.get(0);
-        assertEquals("user1", responsibility.getKimPrincipal().getPrincipalName());
+        assertEquals("user1", responsibility.getPrincipal().getPrincipalName());
         assertEquals("A", responsibility.getActionRequestedCd());
     }
 
@@ -170,7 +170,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         List responsibilities = rule.getResponsibilities();
         assertEquals(1, responsibilities.size());
         RuleResponsibility responsibility = (RuleResponsibility) responsibilities.get(0);
-        assertEquals("user1", responsibility.getKimPrincipal().getPrincipalName());
+        assertEquals("user1", responsibility.getPrincipal().getPrincipalName());
         assertEquals("A", responsibility.getActionRequestedCd());
         assertNotNull(rule.getRuleExpressionDef());
         assertEquals("someType", rule.getRuleExpressionDef().getType());
@@ -202,7 +202,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         List responsibilities = rule.getResponsibilities();
         assertEquals(1, responsibilities.size());
         RuleResponsibility responsibility = (RuleResponsibility) responsibilities.get(0);
-        assertEquals("user2", responsibility.getKimPrincipal().getPrincipalName());
+        assertEquals("user2", responsibility.getPrincipal().getPrincipalName());
         assertEquals("F", responsibility.getActionRequestedCd());
     }
 
@@ -231,7 +231,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         List responsibilities = rule.getResponsibilities();
         assertEquals(1, responsibilities.size());
         RuleResponsibility responsibility = (RuleResponsibility) responsibilities.get(0);
-        assertEquals("user2", responsibility.getKimPrincipal().getPrincipalName());
+        assertEquals("user2", responsibility.getPrincipal().getPrincipalName());
         assertEquals("F", responsibility.getActionRequestedCd());
     }
 
@@ -285,7 +285,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         RuleResponsibility resp = (RuleResponsibility) rule.getResponsibilities().get(0);
 
         if (resp.isUsingWorkflowUser()) {
-            assertEquals("user3", resp.getKimPrincipal().getPrincipalName());
+            assertEquals("user3", resp.getPrincipal().getPrincipalName());
         } else {
             assertEquals("WorkflowAdmin", resp.getGroup().getGroupName());
         }
@@ -300,7 +300,7 @@ public class RuleXmlParserTest extends KEWTestCase {
 
         if (resp.isUsingWorkflowUser()) 
         {
-            assertEquals("user1", resp.getKimPrincipal().getPrincipalName());   
+            assertEquals("user1", resp.getPrincipal().getPrincipalName());   
         } 
         else 
         {
@@ -355,7 +355,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         List responsibilities = rule.getResponsibilities();
         assertEquals(1, responsibilities.size());
         RuleResponsibility responsibility = (RuleResponsibility) responsibilities.get(0);
-        assertEquals("user2", responsibility.getKimPrincipal().getPrincipalName());
+        assertEquals("user2", responsibility.getPrincipal().getPrincipalName());
         assertEquals("F", responsibility.getActionRequestedCd());
     }
 

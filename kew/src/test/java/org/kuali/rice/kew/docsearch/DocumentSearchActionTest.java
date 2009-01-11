@@ -119,9 +119,9 @@ public class DocumentSearchActionTest extends KEWHtmlUnitTestCase {
         Map<String,String> expectedValues = new HashMap<String,String>();
         expectedValues.put("criteria.docTypeFullName", documentTypeName);
         expectedValues.put("criteria.initiator", "delyea");
-        String idType = "EMPLID";
+        String idType = "principalName";
         String searchAttributeUrlValue = "CURRENT_USER." + idType;
-        expectedValues.put(SEARCH_ATTRIBUTE_FORM_FIELD_PROPERTY_NAME, UserUtils.getIdValue(idType, KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(QUICKSTART_USER_NETWORK_ID))));
+        expectedValues.put(SEARCH_ATTRIBUTE_FORM_FIELD_PROPERTY_NAME, QUICKSTART_USER_NETWORK_ID);
 
         // check basic search
         HtmlPage basicSearchPage = performLogin(QUICKSTART_USER_NETWORK_ID, "DocumentSearch.do?criteria.initiator=delyea&criteria.docTypeFullName=" + documentTypeName + "&searchableAttributes=givenname:" + searchAttributeUrlValue + ((Utilities.isEmpty(urlParameters)) ? "" : "&" + urlParameters));

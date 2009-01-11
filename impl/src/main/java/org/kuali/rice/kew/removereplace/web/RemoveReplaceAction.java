@@ -30,7 +30,6 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.removereplace.RemoveReplaceDocument;
@@ -181,7 +180,7 @@ public class RemoveReplaceAction extends WorkflowAction {
         return mapping.findForward("docHandler");
     }
 
-    protected void loadFormForReport(RemoveReplaceForm form, RemoveReplaceDocument document) throws KEWUserNotFoundException {
+    protected void loadFormForReport(RemoveReplaceForm form, RemoveReplaceDocument document) {
         form.setDocument(document);
         form.setOperation(document.getOperation());
         Person user = KIMServiceLocator.getPersonService().getPerson(document.getUserWorkflowId());

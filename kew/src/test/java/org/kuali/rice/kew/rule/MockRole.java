@@ -21,7 +21,6 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.rule.ResolvedQualifiedRole;
 import org.kuali.rice.kew.rule.Role;
@@ -66,7 +65,7 @@ public class MockRole extends UnqualifiedRoleAttribute {
     }
 
     @Override
-    protected ResolvedQualifiedRole resolveRole(RouteContext routeContext, String roleName) throws KEWUserNotFoundException {
+    protected ResolvedQualifiedRole resolveRole(RouteContext routeContext, String roleName) {
         String[] ids = roleName.split("[,\\s+]");
         ResolvedQualifiedRole rqr = new ResolvedQualifiedRole();
         for (String id: ids) {

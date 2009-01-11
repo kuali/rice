@@ -22,7 +22,6 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 
 
@@ -45,7 +44,7 @@ public class MetaRuleExpression extends AccumulatingBSFRuleExpression {
     private static final Logger LOG = Logger.getLogger(MetaRuleExpression.class);
 
     @Override
-    public RuleExpressionResult evaluate(Rule rule, RouteContext context) throws KEWUserNotFoundException, WorkflowException {
+    public RuleExpressionResult evaluate(Rule rule, RouteContext context) throws WorkflowException {
         RuleBaseValues ruleDefinition = rule.getDefinition();
         RuleExpressionDef exprDef = ruleDefinition.getRuleExpressionDef();
         if (exprDef == null) {

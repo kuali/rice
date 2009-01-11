@@ -20,8 +20,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.jdom.Element;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
-import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
@@ -119,18 +117,14 @@ public class RuleXmlExporter implements XmlExporter, XmlConstants {
             for (Iterator iterator = responsibilities.iterator(); iterator.hasNext();) {
                 RuleResponsibility ruleResponsibility = (RuleResponsibility) iterator.next();
                 Element respElement = renderer.renderElement(responsibilitiesElement, RESPONSIBILITY);
-                try {
-                    if (ruleResponsibility.isUsingWorkflowUser()) {
-                        renderer.renderTextElement(respElement, USER, ruleResponsibility.getPrincipal().getPrincipalId());
-                    } else if (ruleResponsibility.isUsingGroup()) {
-                        renderer.renderTextElement(respElement, WORKGROUP, ruleResponsibility.getGroup().getNamespaceCode().trim() + ":" + ruleResponsibility.getGroup().getGroupName().trim());
-                    } else if (ruleResponsibility.isUsingRole()) {
-                        renderer.renderTextElement(respElement, ROLE, ruleResponsibility.getRuleResponsibilityName());
-                        renderer.renderTextElement(respElement, APPROVE_POLICY, ruleResponsibility.getApprovePolicy());
-                    }
-                } catch (KEWUserNotFoundException e) {
-                    throw new WorkflowRuntimeException("Could not locate user when attempting to export responsibility.");
-                }
+                if (ruleResponsibility.isUsingWorkflowUser()) {
+				    renderer.renderTextElement(respElement, USER, ruleResponsibility.getPrincipal().getPrincipalId());
+				} else if (ruleResponsibility.isUsingGroup()) {
+				    renderer.renderTextElement(respElement, WORKGROUP, ruleResponsibility.getGroup().getNamespaceCode().trim() + ":" + ruleResponsibility.getGroup().getGroupName().trim());
+				} else if (ruleResponsibility.isUsingRole()) {
+				    renderer.renderTextElement(respElement, ROLE, ruleResponsibility.getRuleResponsibilityName());
+				    renderer.renderTextElement(respElement, APPROVE_POLICY, ruleResponsibility.getApprovePolicy());
+				}
                 if (delegation == null) {
                     renderer.renderTextElement(respElement, ACTION_REQUESTED, ruleResponsibility.getActionRequestedCd());
                     renderer.renderTextElement(respElement, PRIORITY, ruleResponsibility.getPriority().toString());

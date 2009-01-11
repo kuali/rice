@@ -20,7 +20,6 @@ package org.kuali.rice.kew.test.web;
 
 import javax.servlet.ServletContext;
 
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
@@ -46,11 +45,11 @@ public class WorkflowServletRequest extends MockHttpServletRequest {
         super(method, requestURI);
     }
 
-    public WorkflowServletRequest(String user) throws KEWUserNotFoundException {
+    public WorkflowServletRequest(String user) {
         setUser(user);
     }
 
-    public void setUser(String user) throws KEWUserNotFoundException {
+    public void setUser(String user) {
         KimPrincipal wfuser;
         if (user == null) {
             wfuser = null;
@@ -66,7 +65,7 @@ public class WorkflowServletRequest extends MockHttpServletRequest {
         return user.getPrincipalName();
     }
 
-    public void setBackdoorId(String backdoorId) throws KEWUserNotFoundException {
+    public void setBackdoorId(String backdoorId) {
         UserSession session = getUserSession();
         if (session == null) {
             throw new IllegalStateException("Session must be set before backdoor id is set");

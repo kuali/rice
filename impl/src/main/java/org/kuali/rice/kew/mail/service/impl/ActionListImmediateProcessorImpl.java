@@ -17,8 +17,6 @@
 package org.kuali.rice.kew.mail.service.impl;
 
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
-import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.mail.service.ActionListEmailService;
 import org.kuali.rice.kew.mail.service.ActionListImmediateEmailReminderService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;

@@ -44,7 +44,6 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.log4j.Logger;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.actionitem.ActionItem;
@@ -65,7 +64,6 @@ import org.kuali.rice.kew.engine.node.BranchState;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.mail.CustomEmailAttribute;
@@ -80,7 +78,6 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
 
@@ -781,7 +778,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
 	return this.getRootBranch().getBranchState();
     }
 
-    public CustomActionListAttribute getCustomActionListAttribute() throws WorkflowException, KEWUserNotFoundException {
+    public CustomActionListAttribute getCustomActionListAttribute() throws WorkflowException {
         CustomActionListAttribute customActionListAttribute = null;
         if (this.getDocumentType() != null) {
         	customActionListAttribute = this.getDocumentType().getCustomActionListAttribute();
@@ -793,7 +790,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
         return customActionListAttribute;
     }
 
-    public CustomEmailAttribute getCustomEmailAttribute() throws WorkflowException, KEWUserNotFoundException {
+    public CustomEmailAttribute getCustomEmailAttribute() throws WorkflowException {
         CustomEmailAttribute customEmailAttribute = null;
         try {
             if (this.getDocumentType() != null) {

@@ -24,7 +24,6 @@ import org.kuali.rice.kew.actions.AdHocRevoke;
 import org.kuali.rice.kew.actions.MovePoint;
 import org.kuali.rice.kew.exception.DocumentTypeNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.WorkflowDocumentActions;
@@ -41,64 +40,64 @@ import org.kuali.rice.kew.service.WorkflowDocumentActions;
  */
 public interface WorkflowDocumentService {
 
-    public DocumentRouteHeaderValue acknowledgeDocument(String principalId, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException, KEWUserNotFoundException;
-    public DocumentRouteHeaderValue approveDocument(String principalId, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException, KEWUserNotFoundException;
+    public DocumentRouteHeaderValue acknowledgeDocument(String principalId, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException;
+    public DocumentRouteHeaderValue approveDocument(String principalId, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException;
     public DocumentRouteHeaderValue adHocRouteDocumentToPrincipal(String principalId, DocumentRouteHeaderValue routeHeader, String actionRequested, String routeMethodName, String annotation, String targetPrincipalId, String responsibilityDesc, Boolean ignorePrevActions) throws WorkflowException;
     public DocumentRouteHeaderValue adHocRouteDocumentToGroup(String principalId, DocumentRouteHeaderValue routeHeader, String actionRequested, String routeMethodName, String annotation, String groupId, String responsibilityDesc, Boolean ignorePrevActions) throws WorkflowException;
-    public DocumentRouteHeaderValue cancelDocument(String principalId, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException, KEWUserNotFoundException;
-    public DocumentRouteHeaderValue clearFYIDocument(String principalId, DocumentRouteHeaderValue routeHeader) throws InvalidActionTakenException, KEWUserNotFoundException;
-    public DocumentRouteHeaderValue completeDocument(String principalId, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException, KEWUserNotFoundException;
+    public DocumentRouteHeaderValue cancelDocument(String principalId, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException;
+    public DocumentRouteHeaderValue clearFYIDocument(String principalId, DocumentRouteHeaderValue routeHeader) throws InvalidActionTakenException;
+    public DocumentRouteHeaderValue completeDocument(String principalId, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException;
     public DocumentRouteHeaderValue createDocument(String principalId, DocumentRouteHeaderValue routeHeader) throws DocumentTypeNotFoundException, WorkflowException;
-    public DocumentRouteHeaderValue disapproveDocument(String principalId, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException, KEWUserNotFoundException;
+    public DocumentRouteHeaderValue disapproveDocument(String principalId, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException;
 
-    public DocumentRouteHeaderValue routeDocument(String principalId, DocumentRouteHeaderValue routeHeader, String annotation) throws WorkflowException, InvalidActionTakenException, KEWUserNotFoundException;
+    public DocumentRouteHeaderValue routeDocument(String principalId, DocumentRouteHeaderValue routeHeader, String annotation) throws WorkflowException, InvalidActionTakenException;
     public DocumentRouteHeaderValue saveRoutingData(String principalId, DocumentRouteHeaderValue routeHeader);
-    public DocumentRouteHeaderValue saveDocument(String principalId, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException, KEWUserNotFoundException;
+    public DocumentRouteHeaderValue saveDocument(String principalId, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException;
     public void deleteDocument(String principalId, DocumentRouteHeaderValue routeHeader) throws WorkflowException;
-    public void logDocumentAction(String principalId, DocumentRouteHeaderValue routeHeader, String annotation) throws KEWUserNotFoundException, InvalidActionTakenException;
+    public void logDocumentAction(String principalId, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException;
 
-    public DocumentRouteHeaderValue superUserActionRequestApproveAction(String principalId, DocumentRouteHeaderValue routeHeader, Long actionRequestId, String annotation, boolean runPostProcessor) throws InvalidActionTakenException, KEWUserNotFoundException;
-    public DocumentRouteHeaderValue superUserActionRequestApproveAction(String principalId, Long documentId, Long actionRequestId, String annotation, boolean runPostProcessor) throws InvalidActionTakenException, KEWUserNotFoundException;
-    public DocumentRouteHeaderValue superUserApprove(String principalId, DocumentRouteHeaderValue routeHeader, String annotation, boolean runPostProcessor) throws InvalidActionTakenException, KEWUserNotFoundException;
-    public DocumentRouteHeaderValue superUserCancelAction(String principalId, DocumentRouteHeaderValue routeHeader, String annotation, boolean runPostProcessor) throws InvalidActionTakenException, KEWUserNotFoundException;
-    public DocumentRouteHeaderValue superUserDisapproveAction(String principalId, DocumentRouteHeaderValue routeHeader, String annotation, boolean runPostProcessor) throws InvalidActionTakenException, KEWUserNotFoundException;
+    public DocumentRouteHeaderValue superUserActionRequestApproveAction(String principalId, DocumentRouteHeaderValue routeHeader, Long actionRequestId, String annotation, boolean runPostProcessor) throws InvalidActionTakenException;
+    public DocumentRouteHeaderValue superUserActionRequestApproveAction(String principalId, Long documentId, Long actionRequestId, String annotation, boolean runPostProcessor) throws InvalidActionTakenException;
+    public DocumentRouteHeaderValue superUserApprove(String principalId, DocumentRouteHeaderValue routeHeader, String annotation, boolean runPostProcessor) throws InvalidActionTakenException;
+    public DocumentRouteHeaderValue superUserCancelAction(String principalId, DocumentRouteHeaderValue routeHeader, String annotation, boolean runPostProcessor) throws InvalidActionTakenException;
+    public DocumentRouteHeaderValue superUserDisapproveAction(String principalId, DocumentRouteHeaderValue routeHeader, String annotation, boolean runPostProcessor) throws InvalidActionTakenException;
 
     // Introduced in 2.1 //
 
     /**
      * @since 2.1
      */
-    public DocumentRouteHeaderValue blanketApproval(String principalId, DocumentRouteHeaderValue routeHeader, String annotation, Set nodeNames) throws InvalidActionTakenException, KEWUserNotFoundException;
+    public DocumentRouteHeaderValue blanketApproval(String principalId, DocumentRouteHeaderValue routeHeader, String annotation, Set nodeNames) throws InvalidActionTakenException;
 
     /**
      * @since 2.1
      */
-    public DocumentRouteHeaderValue returnDocumentToPreviousNode(String principalId, DocumentRouteHeaderValue routeHeader, String destinationNodeName, String annotation) throws InvalidActionTakenException, KEWUserNotFoundException;
+    public DocumentRouteHeaderValue returnDocumentToPreviousNode(String principalId, DocumentRouteHeaderValue routeHeader, String destinationNodeName, String annotation) throws InvalidActionTakenException;
 
     /**
      * @since 2.1
      */
-    public DocumentRouteHeaderValue superUserReturnDocumentToPreviousNode(String principalId, DocumentRouteHeaderValue routeHeader, String nodeName, String annotation, boolean runPostProcessor) throws InvalidActionTakenException, KEWUserNotFoundException;
+    public DocumentRouteHeaderValue superUserReturnDocumentToPreviousNode(String principalId, DocumentRouteHeaderValue routeHeader, String nodeName, String annotation, boolean runPostProcessor) throws InvalidActionTakenException;
 
     /**
      * @since 2.1
      */
-    public DocumentRouteHeaderValue takeGroupAuthority(String principalId, DocumentRouteHeaderValue routeHeader, String groupId, String annotation) throws InvalidActionTakenException, KEWUserNotFoundException;
+    public DocumentRouteHeaderValue takeGroupAuthority(String principalId, DocumentRouteHeaderValue routeHeader, String groupId, String annotation) throws InvalidActionTakenException;
 
     /**
      * @since 2.1
      */
-    public DocumentRouteHeaderValue releaseGroupAuthority(String principalId, DocumentRouteHeaderValue routeHeader, String groupId, String annotation) throws InvalidActionTakenException, KEWUserNotFoundException;
+    public DocumentRouteHeaderValue releaseGroupAuthority(String principalId, DocumentRouteHeaderValue routeHeader, String groupId, String annotation) throws InvalidActionTakenException;
 
     /**
      * @since 2.1
      */
-    public DocumentRouteHeaderValue superUserNodeApproveAction(String principalId, DocumentRouteHeaderValue routeHeader, String nodeName, String annotation, boolean runPostProcessor) throws InvalidActionTakenException, KEWUserNotFoundException;
+    public DocumentRouteHeaderValue superUserNodeApproveAction(String principalId, DocumentRouteHeaderValue routeHeader, String nodeName, String annotation, boolean runPostProcessor) throws InvalidActionTakenException;
 
     /**
      * @since 2.1
      */
-    public DocumentRouteHeaderValue moveDocument(String principalId, DocumentRouteHeaderValue routeHeader, MovePoint movePoint, String annotation) throws InvalidActionTakenException, KEWUserNotFoundException;
+    public DocumentRouteHeaderValue moveDocument(String principalId, DocumentRouteHeaderValue routeHeader, MovePoint movePoint, String annotation) throws InvalidActionTakenException;
 
     // Introduced in 2.2
 
@@ -113,30 +112,30 @@ public interface WorkflowDocumentService {
     /**
      * @since 2.2
      */
-    public DocumentRouteHeaderValue superUserReturnDocumentToPreviousNode(String principalId, Long documentId, String nodeName, String annotation, boolean runPostProcessor) throws InvalidActionTakenException, KEWUserNotFoundException;
+    public DocumentRouteHeaderValue superUserReturnDocumentToPreviousNode(String principalId, Long documentId, String nodeName, String annotation, boolean runPostProcessor) throws InvalidActionTakenException;
 
     /**
      * @since 2.2.7
      */
-    public DocumentRouteHeaderValue superUserNodeApproveAction(String principalId, Long documentId, String nodeName, String annotation, boolean runPostProcessor) throws InvalidActionTakenException, KEWUserNotFoundException;
+    public DocumentRouteHeaderValue superUserNodeApproveAction(String principalId, Long documentId, String nodeName, String annotation, boolean runPostProcessor) throws InvalidActionTakenException;
 
     // Introduced in 2.2.2
 
     /**
      * @since 2.2.2
      */
-    public DocumentRouteHeaderValue revokeAdHocRequests(String principalId, DocumentRouteHeaderValue document, AdHocRevoke revoke, String annotation) throws InvalidActionTakenException, KEWUserNotFoundException;
+    public DocumentRouteHeaderValue revokeAdHocRequests(String principalId, DocumentRouteHeaderValue document, AdHocRevoke revoke, String annotation) throws InvalidActionTakenException;
 
     // Deprecated as of 2.1 //
 
     /**
      * @deprecated use blanketApproval which takes a Set of nodeNames instead.
      */
-    public DocumentRouteHeaderValue blanketApproval(String principalId, DocumentRouteHeaderValue routeHeader, String annotation, Integer routeLevel) throws InvalidActionTakenException, KEWUserNotFoundException;
+    public DocumentRouteHeaderValue blanketApproval(String principalId, DocumentRouteHeaderValue routeHeader, String annotation, Integer routeLevel) throws InvalidActionTakenException;
 
     /**
      * @deprecated use returnDocumentToPreviousNode instead
      */
-    public DocumentRouteHeaderValue returnDocumentToPreviousRouteLevel(String principalId, DocumentRouteHeaderValue routeHeader, Integer destRouteLevel, String annotation) throws InvalidActionTakenException, KEWUserNotFoundException;
+    public DocumentRouteHeaderValue returnDocumentToPreviousRouteLevel(String principalId, DocumentRouteHeaderValue routeHeader, Integer destRouteLevel, String annotation) throws InvalidActionTakenException;
 
 }

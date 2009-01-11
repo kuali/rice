@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.rule.MyRules2;
@@ -60,7 +59,7 @@ public interface RuleService extends XmlLoader, XmlExporter {
     public void delete(Long ruleBaseValuesId);
     public RuleBaseValues findRuleBaseValuesById(Long ruleBaseValuesId);
     public List search(String docTypeName, Long ruleId, Long ruleTemplateId, String ruleDescription, String groupId, String principalId, String roleName, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective);
-    public List search(String docTypeName, String ruleTemplateName, String ruleDescription, String groupId, String principalId, String roleName, Boolean workgroupMember, Boolean delegateRule, Boolean activeInd, Map extensionValues, Collection<String> actionRequestCodes) throws KEWUserNotFoundException;
+    public List search(String docTypeName, String ruleTemplateName, String ruleDescription, String groupId, String principalId, String roleName, Boolean workgroupMember, Boolean delegateRule, Boolean activeInd, Map extensionValues, Collection<String> actionRequestCodes);
     public RuleResponsibility findRuleResponsibility(Long responsibilityId);
     public void deleteRuleResponsibilityById(Long ruleResponsibilityId);
     public RuleResponsibility findByRuleResponsibilityId(Long ruleResponsibilityId);
@@ -68,7 +67,7 @@ public interface RuleService extends XmlLoader, XmlExporter {
     public List fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateName, String documentType, boolean ignoreCache);
     public List fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateName, String documentType, Timestamp effectiveDate);
     public List findByRouteHeaderId(Long routeHeaderId);
-    public void makeCurrent(Long routeHeaderId) throws KEWUserNotFoundException;
+    public void makeCurrent(Long routeHeaderId);
     public List findRuleBaseValuesByResponsibilityReviewer(String reviewerName, String type);
     public List findRuleBaseValuesByResponsibilityReviewerTemplateDoc(String ruleTemplateName, String documentType, String reviewerName, String type);
     public Long isLockedForRouting(Long currentRuleBaseValuesId);

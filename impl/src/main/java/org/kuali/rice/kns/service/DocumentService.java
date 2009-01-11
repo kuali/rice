@@ -17,9 +17,7 @@ package org.kuali.rice.kns.service;
 
 import java.util.List;
 
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.document.Document;
@@ -48,7 +46,6 @@ public interface DocumentService {
      *
      * @param documentTypeName
      * @return
-     * @throws KEWUserNotFoundException
      */
     public Document getNewDocument(String documentTypeName) throws WorkflowException;
 
@@ -57,7 +54,6 @@ public interface DocumentService {
      *
      * @param documentClass
      * @return
-     * @throws KEWUserNotFoundException
      */
     public Document getNewDocument(Class documentClass) throws WorkflowException;
 
@@ -66,7 +62,6 @@ public interface DocumentService {
      *
      * @param documentHeaderId
      * @return
-     * @throws KEWUserNotFoundException
      */
     public Document getByDocumentHeaderId(String documentHeaderId) throws WorkflowException;
     /**
@@ -76,7 +71,6 @@ public interface DocumentService {
      *
      * @param documentHeaderId
      * @return
-     * @throws KEWUserNotFoundException
      */
     public Document getByDocumentHeaderIdSessionless(String documentHeaderId) throws WorkflowException;
 

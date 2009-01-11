@@ -18,8 +18,8 @@ package org.kuali.rice.kew.edl.components;
 
 import org.kuali.rice.kew.edl.EDLXmlUtils;
 import org.kuali.rice.kew.edl.RequestParser;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;

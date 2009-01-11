@@ -27,7 +27,6 @@ import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.routeheader.DocumentContent;
@@ -64,8 +63,7 @@ public abstract class AbstractIdRoleAttribute extends AbstractRoleAttribute impl
      * 
      * @see org.kuali.rice.kew.rule.RoleAttribute#getQualifiedRoleNames(java.lang.String, org.kuali.rice.kew.routeheader.DocumentContent)
      */
-    public List<String> getQualifiedRoleNames(String roleName, DocumentContent documentContent)
-	    throws KEWUserNotFoundException {
+    public List<String> getQualifiedRoleNames(String roleName, DocumentContent documentContent) {
 	try {
 	    readConfiguration();
 	    String elementName = (String)getParamMap().get(XML_ELEMENT_LABEL);
@@ -90,8 +88,7 @@ public abstract class AbstractIdRoleAttribute extends AbstractRoleAttribute impl
      * 
      * @see org.kuali.rice.kew.rule.RoleAttribute#resolveQualifiedRole(org.kuali.rice.kew.engine.RouteContext, java.lang.String, java.lang.String)
      */
-    public ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, String roleName, String qualifiedRole)
-	    throws KEWUserNotFoundException {
+    public ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, String roleName, String qualifiedRole) {
 	String roleNameLabel = (String)getParamMap().get(ROLE_NAME_LABEL);
 	if (roleNameLabel == null) {
 	    readConfiguration();

@@ -39,7 +39,6 @@ import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -101,7 +100,7 @@ public class RuleResponsibility implements WorkflowPersistable {
     	return null;
     }
 
-    public KimGroup getGroup() throws KEWUserNotFoundException {
+    public KimGroup getGroup() {
         if (isUsingGroup()) {
         	return KIMServiceLocator.getIdentityManagementService().getGroup(ruleResponsibilityName);
         }

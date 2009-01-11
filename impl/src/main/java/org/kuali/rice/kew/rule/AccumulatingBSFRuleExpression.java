@@ -15,16 +15,13 @@
  */
 package org.kuali.rice.kew.rule;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.bsf.BSFException;
 import org.apache.bsf.BSFManager;
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 
 
@@ -100,7 +97,7 @@ public class AccumulatingBSFRuleExpression extends BSFRuleExpression {
          * @param ruleName the name of the rule to evaluate
          * @return whether the rule was successful
          */
-        public boolean evalRule(String ruleName) throws KEWUserNotFoundException, WorkflowException {
+        public boolean evalRule(String ruleName) throws WorkflowException {
             RuleExpressionResult result = workflow.invokeRule(ruleName);
             accumulate(result);
             return result.isSuccess();
@@ -112,7 +109,7 @@ public class AccumulatingBSFRuleExpression extends BSFRuleExpression {
          * @param accumOnSuccess whether to accumulate the rules responsibilities on success (true), or on failure (false)
          * @return whether the rule was successful
          */
-        public boolean evalRule(String ruleName, boolean accumOnSuccess) throws KEWUserNotFoundException, WorkflowException {
+        public boolean evalRule(String ruleName, boolean accumOnSuccess) throws WorkflowException {
             RuleExpressionResult result = workflow.invokeRule(ruleName);
             if (accumOnSuccess == result.isSuccess()) {
                 accumulate(result);

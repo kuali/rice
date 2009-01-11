@@ -64,7 +64,6 @@ import org.kuali.rice.kew.engine.node.State;
 import org.kuali.rice.kew.engine.simulation.SimulationActionToTake;
 import org.kuali.rice.kew.engine.simulation.SimulationCriteria;
 import org.kuali.rice.kew.exception.DocumentTypeNotFoundException;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.notes.Note;
@@ -589,7 +588,6 @@ public class DTOConverter {
      *
      * @param responsiblePartyVO
      * @return
-     * @throws KEWUserNotFoundException
      */
     public static Recipient convertResponsiblePartyVOtoRecipient(ResponsiblePartyDTO responsiblePartyVO) {
         if (responsiblePartyVO == null) {

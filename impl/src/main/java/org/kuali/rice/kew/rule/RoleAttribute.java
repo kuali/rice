@@ -19,7 +19,6 @@ package org.kuali.rice.kew.rule;
 import java.util.List;
 
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -81,9 +80,8 @@ public interface RoleAttribute {
      * roleName and docContent.
      * @param roleName the role name (without class prefix)
      * @param documentContent the document content
-     * @throws KEWUserNotFoundException
      */
-    public List<String> getQualifiedRoleNames(String roleName, DocumentContent documentContent) throws KEWUserNotFoundException;
+    public List<String> getQualifiedRoleNames(String roleName, DocumentContent documentContent);
     
     /**
      * Returns a List of Workflow Users which are members of the given qualified role.
@@ -92,6 +90,6 @@ public interface RoleAttribute {
      * @param qualifiedRole one of the the qualified role names returned from the {@link #getQualifiedRoleNames(String, DocumentContent)} method
      * @return ResolvedQualifiedRole containing recipients, role label (most likely the roleName), and an annotation 
      */
-    public ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, String roleName, String qualifiedRole) throws KEWUserNotFoundException;
+    public ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, String roleName, String qualifiedRole);
     
 }

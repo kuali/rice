@@ -18,11 +18,9 @@ package org.kuali.rice.kew.rule;
 import org.apache.bsf.BSFException;
 import org.apache.bsf.BSFManager;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.ClassDumper;
 
 
 /**
@@ -40,7 +38,7 @@ public class BSFRuleExpression implements RuleExpression {
                 new String[] { "groovy", "gy" }
         );
     }
-    public RuleExpressionResult evaluate(Rule rule, RouteContext context) throws KEWUserNotFoundException, WorkflowException {
+    public RuleExpressionResult evaluate(Rule rule, RouteContext context) throws WorkflowException {
         RuleBaseValues ruleDefinition = rule.getDefinition();
         String type = ruleDefinition.getRuleExpressionDef().getType();
         String lang = parseLang(type, "groovy");
@@ -103,10 +101,9 @@ public class BSFRuleExpression implements RuleExpression {
          * Evaluates a named rule
          * @param name the rule name
          * @return the RuleExpressionResult
-         * @throws KEWUserNotFoundException if an error occurred during rule evaluation
-         * @throws WorkflowException if the rule by the specified name could not be found, or if an error occurred during rule evaluation
+         * @throws WorkflowException 
          */
-        public RuleExpressionResult invokeRule(String name) throws KEWUserNotFoundException, WorkflowException {
+        public RuleExpressionResult invokeRule(String name) throws WorkflowException {
             RuleBaseValues rbv = KEWServiceLocator.getRuleService().getRuleByName(name);
             if (rbv == null) throw new WorkflowRuntimeException("Could not find rule named \"" + name + "\"");
             Rule r = new RuleImpl(rbv);

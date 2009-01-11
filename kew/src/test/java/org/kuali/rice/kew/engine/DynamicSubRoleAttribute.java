@@ -21,7 +21,6 @@ import java.util.List;
 
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.NodeState;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.AbstractRoleAttribute;
 import org.kuali.rice.kew.rule.ResolvedQualifiedRole;
@@ -30,7 +29,8 @@ import org.kuali.rice.kew.user.AuthenticationUserId;
 
 public class DynamicSubRoleAttribute extends AbstractRoleAttribute {
 
-    private List roleNames = new ArrayList();
+    private static final long serialVersionUID = 5147874690575620616L;
+	private List roleNames = new ArrayList();
     
     public DynamicSubRoleAttribute() {
         roleNames.add("DynamicSub");
@@ -40,13 +40,13 @@ public class DynamicSubRoleAttribute extends AbstractRoleAttribute {
         return roleNames;
     }
 
-    public List getQualifiedRoleNames(String roleName, DocumentContent documentContent) throws KEWUserNotFoundException {
+    public List getQualifiedRoleNames(String roleName, DocumentContent documentContent) {
         List qualifiedRoleNames = new ArrayList();
         qualifiedRoleNames.add(roleName);
         return qualifiedRoleNames;
     }
 
-    public ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, String roleName, String qualifiedRole) throws KEWUserNotFoundException {
+    public ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, String roleName, String qualifiedRole) {
         NodeState nodeState = routeContext.getNodeInstance().getNodeState("role");
         if (nodeState == null) {
             return new ResolvedQualifiedRole();

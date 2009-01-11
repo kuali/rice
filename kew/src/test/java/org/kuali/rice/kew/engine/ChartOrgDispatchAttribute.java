@@ -25,7 +25,6 @@ import java.util.Vector;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.AbstractRoleAttribute;
 import org.kuali.rice.kew.rule.ResolvedQualifiedRole;
@@ -36,7 +35,8 @@ import org.kuali.rice.kew.workgroup.GroupNameId;
 
 public class ChartOrgDispatchAttribute extends AbstractRoleAttribute {
 
-    public static final String DISPATCH_ROLE = "DISPATCH";
+    private static final long serialVersionUID = -9114899910238607996L;
+	public static final String DISPATCH_ROLE = "DISPATCH";
     private String workgroupName;
     
     public ChartOrgDispatchAttribute() {}
@@ -49,11 +49,11 @@ public class ChartOrgDispatchAttribute extends AbstractRoleAttribute {
         return Arrays.asList(new Role[] { new Role(getClass(), DISPATCH_ROLE, DISPATCH_ROLE) });
     }
 
-    public List getQualifiedRoleNames(String roleName, DocumentContent documentContent) throws KEWUserNotFoundException {
+    public List getQualifiedRoleNames(String roleName, DocumentContent documentContent) {
         return parseWorkgroups(documentContent);
     }
 
-    public ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, String roleName, String qualifiedRole) throws KEWUserNotFoundException {
+    public ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, String roleName, String qualifiedRole) {
         List recipients = new ArrayList();
         recipients.add(new GroupNameId(qualifiedRole));
         return new ResolvedQualifiedRole(roleName, recipients);

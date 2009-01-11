@@ -17,7 +17,6 @@ package org.kuali.rice.kns.workflow.service;
 
 import java.util.List;
 
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.bo.Person;
@@ -45,7 +44,6 @@ public interface WorkflowDocumentService {
      * @throws IllegalArgumentException if the given documentTypeId is blank
      * @throws IllegalArgumentException if the given workflowUser is null or contains no id
      * @throws ResourceUnavailableException
-     * @throws KEWUserNotFoundException
      */
     public KualiWorkflowDocument createWorkflowDocument(String documentTypeId, Person workflowUser) throws WorkflowException;
 

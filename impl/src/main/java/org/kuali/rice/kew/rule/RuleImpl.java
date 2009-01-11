@@ -18,7 +18,6 @@ package org.kuali.rice.kew.rule;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 
 
@@ -87,7 +86,7 @@ class RuleImpl implements Rule {
         return ruleExpression;
     }
 
-    public RuleExpressionResult evaluate(Rule rule, RouteContext context) throws KEWUserNotFoundException, WorkflowException {
+    public RuleExpressionResult evaluate(Rule rule, RouteContext context) throws WorkflowException {
         RuleBaseValues ruleDefinition = rule.getDefinition();
         RuleExpressionDef ruleExprDef = ruleDefinition.getRuleExpressionDef();
         String type = DEFAULT_RULE_EXPRESSION;

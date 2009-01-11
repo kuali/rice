@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 
@@ -73,7 +72,7 @@ public abstract class GenericRoleAttribute extends GenericWorkflowAttribute impl
         return true;
     }
 
-    public List<String> getQualifiedRoleNames(String roleName, DocumentContent documentContent) throws KEWUserNotFoundException {
+    public List<String> getQualifiedRoleNames(String roleName, DocumentContent documentContent) {
         List<QualifiedRoleName> qualifiedRoleNames = generateQualifiedRoleNames(roleName, documentContent);
         if (qualifiedRoleNames == null) {
             return null;
@@ -89,7 +88,7 @@ public abstract class GenericRoleAttribute extends GenericWorkflowAttribute impl
      * Template method responsible for producing a list of QualifiedRoleName objects.  Default implementation
      * calls {@link #getRoleNameQualifiers(String, DocumentContent)}
      */
-    protected List<QualifiedRoleName> generateQualifiedRoleNames(String roleName, DocumentContent documentContent) throws KEWUserNotFoundException {
+    protected List<QualifiedRoleName> generateQualifiedRoleNames(String roleName, DocumentContent documentContent) {
         List<String> qualifiers = getRoleNameQualifiers(roleName, documentContent);
         if (qualifiers == null) {
             qualifiers = new ArrayList<String>(0);
@@ -104,11 +103,11 @@ public abstract class GenericRoleAttribute extends GenericWorkflowAttribute impl
     /**
      * Template method responsible for producing qualifiers for a role name
      */
-    protected List<String> getRoleNameQualifiers(String roleName, DocumentContent documentContent) throws KEWUserNotFoundException {
+    protected List<String> getRoleNameQualifiers(String roleName, DocumentContent documentContent) {
         return null;
     }
 
-    public ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, String roleName, String qualifiedRoleName) throws KEWUserNotFoundException {
+    public ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, String roleName, String qualifiedRoleName) {
         QualifiedRoleName qrn = QualifiedRoleName.parse(qualifiedRoleName);
         return resolveQualifiedRole(routeContext, qrn);
     }
@@ -117,7 +116,7 @@ public abstract class GenericRoleAttribute extends GenericWorkflowAttribute impl
      * Template method that delegates to {@link #resolveRecipients(RouteContext, QualifiedRoleName)} and
      * {@link #getLabelForQualifiedRoleName(QualifiedRoleName)
      */
-    protected ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, QualifiedRoleName qualifiedRoleName) throws KEWUserNotFoundException {
+    protected ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, QualifiedRoleName qualifiedRoleName) {
         List<Id> recipients = resolveRecipients(routeContext, qualifiedRoleName);
         ResolvedQualifiedRole rqr = new ResolvedQualifiedRole(getLabelForQualifiedRoleName(qualifiedRoleName),
                                                               recipients
@@ -133,7 +132,7 @@ public abstract class GenericRoleAttribute extends GenericWorkflowAttribute impl
     /**
      * Template method for subclasses to implement
      */
-    protected List<Id> resolveRecipients(RouteContext routeContext, QualifiedRoleName qualifiedRoleName) throws KEWUserNotFoundException {
+    protected List<Id> resolveRecipients(RouteContext routeContext, QualifiedRoleName qualifiedRoleName) {
         return null;
     }
 }

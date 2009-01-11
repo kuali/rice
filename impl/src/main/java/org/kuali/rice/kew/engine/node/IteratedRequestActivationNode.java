@@ -25,7 +25,6 @@ import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.RouteHelper;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -248,7 +247,7 @@ public class IteratedRequestActivationNode implements SimpleNode {
         return activatedApproveRequest;
     }
 
-    private boolean activateRequest(RouteContext context, ActionRequestValue actionRequest, RouteNodeInstance nodeInstance, List generatedActionItems) throws KEWUserNotFoundException {
+    private boolean activateRequest(RouteContext context, ActionRequestValue actionRequest, RouteNodeInstance nodeInstance, List generatedActionItems) {
         if (actionRequest.isRoleRequest()) {
             List actionRequests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocIdAtRouteNode(actionRequest.getRouteHeaderId(), nodeInstance.getRouteNodeInstanceId());
             for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
@@ -262,7 +261,7 @@ public class IteratedRequestActivationNode implements SimpleNode {
         return actionRequest.isApproveOrCompleteRequest() && ! actionRequest.isDone();
     }
     
-    protected void saveActionRequest(RouteContext context, ActionRequestValue actionRequest) throws KEWUserNotFoundException {
+    protected void saveActionRequest(RouteContext context, ActionRequestValue actionRequest) {
         if (!context.isSimulation()) {
             KEWServiceLocator.getActionRequestService().saveActionRequest(actionRequest);
         } else {
@@ -272,12 +271,6 @@ public class IteratedRequestActivationNode implements SimpleNode {
         
     }
     
-    private void saveDocument(RouteContext context, DocumentRouteHeaderValue document) {
-        if (!context.isSimulation()) {
-            KEWServiceLocator.getRouteHeaderService().saveRouteHeader(document);
-        }
-    }
-
     private void logProcessingMessage(ActionRequestValue request) {
         //if (LOG.isDebugEnabled()) {
                 RouteNodeInstance nodeInstance = request.getNodeInstance();

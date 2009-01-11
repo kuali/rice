@@ -25,13 +25,8 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.batch.KEWXmlDataLoader;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
-import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleExtension;
-import org.kuali.rice.kew.rule.RuleExtensionValue;
-import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
@@ -118,7 +113,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         return null;
     }
 
-    @Test public void testNamedRule() throws KEWUserNotFoundException {
+    @Test public void testNamedRule() {
         loadXmlFile("NamedRule.xml");
         RuleService ruleService = KEWServiceLocator.getRuleService();
         RuleBaseValues rule = ruleService.getRuleByName("ANamedRule");
@@ -146,7 +141,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         assertEquals("A", responsibility.getActionRequestedCd());
     }
 
-    @Test public void testNamedRuleWithExpression() throws KEWUserNotFoundException {
+    @Test public void testNamedRuleWithExpression() {
         loadXmlFile("NamedRuleWithExpression.xml");
         RuleService ruleService = KEWServiceLocator.getRuleService();
         RuleBaseValues rule = ruleService.getRuleByName("ANamedRule");
@@ -177,7 +172,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         assertEquals("some expression", rule.getRuleExpressionDef().getExpression());
     }
 
-    @Test public void testUpdatedRule() throws KEWUserNotFoundException {
+    @Test public void testUpdatedRule() {
         testNamedRule();
         loadXmlFile("UpdatedNamedRule.xml");
         RuleService ruleService = KEWServiceLocator.getRuleService();
@@ -206,7 +201,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         assertEquals("F", responsibility.getActionRequestedCd());
     }
 
-    @Test public void testUpdatedRuleWithExpression() throws KEWUserNotFoundException {
+    @Test public void testUpdatedRuleWithExpression() {
         testNamedRule();
         loadXmlFile("UpdatedNamedRuleWithExpression.xml");
         RuleService ruleService = KEWServiceLocator.getRuleService();
@@ -237,9 +232,8 @@ public class RuleXmlParserTest extends KEWTestCase {
 
     /**
      * This test tests that an anonymous rule will still be checked against named rules for duplication.
-     * @throws KEWUserNotFoundException
      */
-    @Test public void testAnonymousDuplicatesNamed() throws KEWUserNotFoundException {
+    @Test public void testAnonymousDuplicatesNamed() {
         testNamedRule();
 
         final InputStream stream = getClass().getResourceAsStream("DuplicateAnonymousRule.xml");
@@ -247,7 +241,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         log.info("Importing anonymous duplicate rule");
         AssertThrows at = new AssertThrows(WorkflowServiceErrorException.class, "Expected exception was not thrown") {
             @Override
-            public void test() throws Exception {
+            public void test() {
                 KEWServiceLocator.getRuleService().loadXml(stream, null);
             }
         };
@@ -257,9 +251,8 @@ public class RuleXmlParserTest extends KEWTestCase {
 
     /**
      * This test tests that an anonymous rule will still be checked against named rules for duplication.
-     * @throws KEWUserNotFoundException
      */
-    @Test public void testAnonymousWithExpressionDuplicatesNamed() throws KEWUserNotFoundException {
+    @Test public void testAnonymousWithExpressionDuplicatesNamed() {
         testNamedRuleWithExpression();
 
         final InputStream stream = getClass().getResourceAsStream("DuplicateAnonymousRuleWithExpression.xml");
@@ -267,7 +260,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         log.info("Importing anonymous duplicate rule");
         AssertThrows at = new AssertThrows(WorkflowServiceErrorException.class, "Expected exception was not thrown") {
             @Override
-            public void test() throws Exception {
+            public void test() {
                 KEWServiceLocator.getRuleService().loadXml(stream, null);
             }
         };
@@ -275,7 +268,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         assertNotNull("Expected exception was not thrown", TestUtilities.findExceptionInStack(at.getActualException(), InvalidXmlException.class));
     }
 
-    @Test public void testParameterReplacement() throws IOException, InvalidXmlException, KEWUserNotFoundException {
+    @Test public void testParameterReplacement() throws IOException, InvalidXmlException {
         ConfigContext.getCurrentContextConfig().overrideProperty("test.replacement.user", "user3");
         ConfigContext.getCurrentContextConfig().overrideProperty("test.replacement.workgroup", "KR-WKFLW:WorkflowAdmin");
         List<RuleBaseValues> rules = new RuleXmlParser().parseRules(getClass().getResourceAsStream("ParameterizedRule.xml"));
@@ -308,7 +301,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         }
     }
 
-    @Test public void removeTemplateFromNamedRule() throws IOException, InvalidXmlException, KEWUserNotFoundException {
+    @Test public void removeTemplateFromNamedRule() {
         RuleService ruleService = KEWServiceLocator.getRuleService();
         int originalRuleCount = ruleService.fetchAllCurrentRulesForTemplateDocCombination("TestRuleTemplate", "TestDocumentType").size();
 
@@ -359,7 +352,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         assertEquals("F", responsibility.getActionRequestedCd());
     }
 
-    @Test public void testInvalidTemplatelessNamedRule() throws KEWUserNotFoundException {
+    @Test public void testInvalidTemplatelessNamedRule() {
         testNamedRule();
         loadXmlFile("InvalidTemplatelessNamedRule.xml");
     }

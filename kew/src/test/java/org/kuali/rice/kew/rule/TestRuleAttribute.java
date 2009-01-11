@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.user.WorkflowUserId;
@@ -33,6 +32,8 @@ import org.kuali.rice.kew.user.WorkflowUserId;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class TestRuleAttribute implements WorkflowAttribute, RoleAttribute, WorkflowAttributeXmlValidator {
+
+	private static final long serialVersionUID = -220808609566348066L;
 
 	public static boolean VALID_CLIENT_ROUTING_DATA_CALLED = false;
 	
@@ -99,7 +100,7 @@ public class TestRuleAttribute implements WorkflowAttribute, RoleAttribute, Work
 		return qualifiedRoleNames;
 	}
 
-	public ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, String roleName, String qualifiedRole) throws KEWUserNotFoundException {
+	public ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, String roleName, String qualifiedRole) {
 		ResolvedQualifiedRole resolved = new ResolvedQualifiedRole();
 		Map<String, List<String>> qualifiedRoles = (Map<String, List<String>>)roles.get(roleName);
 		if (qualifiedRoles != null) {

@@ -20,12 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.routeheader.DocumentContent;
-import org.kuali.rice.kew.rule.AbstractRoleAttribute;
-import org.kuali.rice.kew.rule.ResolvedQualifiedRole;
-import org.kuali.rice.kew.rule.Role;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 
 
@@ -35,20 +31,23 @@ import org.kuali.rice.kew.workgroup.GroupNameId;
  */
 public class TestWorkgroupRoleAttribute extends AbstractRoleAttribute {
 
+	private static final long serialVersionUID = 7650315462958972080L;
+
+
 	public List<Role> getRoleNames() {
 		List<Role> roles = new ArrayList<Role>();
 		roles.add(new Role(getClass(), "workgroup", "workgroup label"));
 		return roles;
 	}
 
-	public List<String> getQualifiedRoleNames(String roleName, DocumentContent documentContent) throws KEWUserNotFoundException {
+	public List<String> getQualifiedRoleNames(String roleName, DocumentContent documentContent) {
 		List<String> qualRoleNames = new ArrayList<String>();
 		qualRoleNames.add("TestWorkgroup");
 		return qualRoleNames;
 	}
 
 
-	public ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, String roleName, String qualifiedRole) throws KEWUserNotFoundException {
+	public ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, String roleName, String qualifiedRole) {
 		List<Id> recipients = new ArrayList<Id>();
 		recipients.add(new GroupNameId(qualifiedRole));
 		return new ResolvedQualifiedRole("workgroup role lable", recipients);

@@ -21,7 +21,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 
 
 /**
@@ -30,7 +29,8 @@ import org.kuali.rice.kew.exception.KEWUserNotFoundException;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RoutedByUserRoleAttribute extends UnqualifiedRoleAttribute {
-    private static final String ROUTED_BY_USER_ROLE_KEY = "ROUTED_BY_USER";
+    private static final long serialVersionUID = -7099014184598851664L;
+	private static final String ROUTED_BY_USER_ROLE_KEY = "ROUTED_BY_USER";
     private static final String ROUTED_BY_USER_ROLE_LABEL = "Routed By User";
 
     private static final Role ROLE = new Role(RoutedByUserRoleAttribute.class, ROUTED_BY_USER_ROLE_KEY, ROUTED_BY_USER_ROLE_LABEL);
@@ -45,7 +45,7 @@ public class RoutedByUserRoleAttribute extends UnqualifiedRoleAttribute {
         super(ROLES);
     }
 
-    public ResolvedQualifiedRole resolveRole(RouteContext routeContext, String roleName) throws KEWUserNotFoundException {
+    public ResolvedQualifiedRole resolveRole(RouteContext routeContext, String roleName) {
         // sounds like the role label should be specified as the first parameter here,
         // but I'll follow AccountAttribute's lead and specify the role key
         List members = new ArrayList(1);

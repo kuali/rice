@@ -48,7 +48,6 @@ import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
@@ -229,7 +228,7 @@ public class TestUtilities {
     /**
      * Asserts that the given document id is in the given user's action list.
      */
-    public static void assertInActionList(String principalId, Long documentId) throws KEWUserNotFoundException {
+    public static void assertInActionList(String principalId, Long documentId) {
     	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
     	Assert.assertNotNull("Given principal id was invalid: " + principalId, principal);
     	Collection<ActionItem> actionList = KEWServiceLocator.getActionListService().findByPrincipalId(principalId);
@@ -245,7 +244,7 @@ public class TestUtilities {
     /**
      * Asserts that the given document id is NOT in the given user's action list.
      */
-    public static void assertNotInActionList(String principalId, Long documentId) throws KEWUserNotFoundException {
+    public static void assertNotInActionList(String principalId, Long documentId) {
     	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
     	Assert.assertNotNull("Given principal id was invalid: " + principalId, principal);
     	Collection actionList = KEWServiceLocator.getActionListService().findByPrincipalId(principalId);

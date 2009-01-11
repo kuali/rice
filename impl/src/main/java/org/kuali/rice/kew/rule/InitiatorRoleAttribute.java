@@ -21,7 +21,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 
 
 /**
@@ -46,7 +45,7 @@ public class InitiatorRoleAttribute extends UnqualifiedRoleAttribute {
         super(ROLES);
     }
 
-    public ResolvedQualifiedRole resolveRole(RouteContext routeContext, String roleName) throws KEWUserNotFoundException {
+    public ResolvedQualifiedRole resolveRole(RouteContext routeContext, String roleName) {
         List members = new ArrayList(1);
         members.add(routeContext.getDocument().getInitiatorWorkflowId());
         return new ResolvedQualifiedRole(INITIATOR_ROLE_LABEL, members);

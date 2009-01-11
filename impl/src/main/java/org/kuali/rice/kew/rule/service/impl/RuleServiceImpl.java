@@ -41,7 +41,6 @@ import org.kuali.rice.kew.applicationconstants.service.ApplicationConstantsServi
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
@@ -148,11 +147,11 @@ public class RuleServiceImpl implements RuleService {
         getRuleDAO().save(ruleBaseValues);
     }
 
-    public void makeCurrent(Long routeHeaderId) throws KEWUserNotFoundException {
+    public void makeCurrent(Long routeHeaderId) {
         makeCurrent(findByRouteHeaderId(routeHeaderId));
     }
 
-    public void makeCurrent(List rules) throws KEWUserNotFoundException {
+    public void makeCurrent(List rules) {
         PerformanceLogger performanceLogger = new PerformanceLogger();
 
         boolean isGenerateRuleArs = true;
@@ -252,7 +251,7 @@ public class RuleServiceImpl implements RuleService {
      * aren't being added or removed.  This is why it doesn't perform some of the functions like checking
      * for delegation rules that were removed from a parent rule.
      */
-    public void makeCurrent2(List rules) throws KEWUserNotFoundException {
+    public void makeCurrent2(List rules) {
         PerformanceLogger performanceLogger = new PerformanceLogger();
 
         boolean isGenerateRuleArs = true;
@@ -714,7 +713,7 @@ public class RuleServiceImpl implements RuleService {
         return title.toString();
     }
 
-    public void validate(RuleBaseValues ruleBaseValues, List errors) throws KEWUserNotFoundException {
+    public void validate(RuleBaseValues ruleBaseValues, List errors) {
         if (errors == null) {
             errors = new ArrayList();
         }
@@ -752,7 +751,7 @@ public class RuleServiceImpl implements RuleService {
         }
     }
 
-    public void validate2(RuleBaseValues ruleBaseValues, RuleDelegation ruleDelegation, List errors) throws KEWUserNotFoundException {
+    public void validate2(RuleBaseValues ruleBaseValues, RuleDelegation ruleDelegation, List errors) {
         if (errors == null) {
             errors = new ArrayList();
         }
@@ -849,7 +848,7 @@ public class RuleServiceImpl implements RuleService {
     }
 
     public List search(String docTypeName, String ruleTemplateName, String ruleDescription, String groupId, String principalId, String roleName,
-            Boolean workgroupMember, Boolean delegateRule, Boolean activeInd, Map extensionValues, Collection<String> actionRequestCodes) throws KEWUserNotFoundException {
+            Boolean workgroupMember, Boolean delegateRule, Boolean activeInd, Map extensionValues, Collection<String> actionRequestCodes) {
 
         if ( (StringUtils.isEmpty(docTypeName)) &&
                 (StringUtils.isEmpty(ruleTemplateName)) &&

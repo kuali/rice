@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.exception.KEWUserNotFoundException;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.ResolvedQualifiedRole;
 import org.kuali.rice.kew.rule.Role;
@@ -37,6 +36,8 @@ import org.kuali.rice.kew.rule.WorkflowAttributeXmlValidator;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class TestRuleAttributeThree implements WorkflowAttribute, RoleAttribute, WorkflowAttributeXmlValidator {
+
+	private static final long serialVersionUID = -3502848534548531114L;
 
 	public static boolean VALID_CLIENT_ROUTING_DATA_CALLED = false;
 	
@@ -92,7 +93,7 @@ public class TestRuleAttributeThree implements WorkflowAttribute, RoleAttribute,
         return required;
     }
 
-	public List getQualifiedRoleNames(String roleName, DocumentContent documentContent) throws KEWUserNotFoundException {
+	public List getQualifiedRoleNames(String roleName, DocumentContent documentContent) {
 		ArrayList qualifiedRoleNames = new ArrayList();
 		Map qualifiedRoles = (Map)roles.get(roleName);
 		if (qualifiedRoles != null) {
@@ -103,7 +104,7 @@ public class TestRuleAttributeThree implements WorkflowAttribute, RoleAttribute,
 		return qualifiedRoleNames;
 	}
 
-	public ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, String roleName, String qualifiedRole) throws KEWUserNotFoundException {
+	public ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, String roleName, String qualifiedRole) {
 		ResolvedQualifiedRole resolved = new ResolvedQualifiedRole();
 		Map qualifiedRoles = (Map)roles.get(roleName);
 		if (qualifiedRoles != null) {

@@ -10,8 +10,9 @@
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docGroupAttributes.groupName}" noColon="true" /></div></th>
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docGroupAttributes.activeFromDate}" noColon="true" /></div></th>
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docGroupAttributes.activeToDate}" noColon="true" /></div></th>
+           <c:if test="${not inquiry}">	
               	<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
-          	
+          	</c:if>
           	</tr>     
            <c:if test="${not inquiry}">	
           	
@@ -70,6 +71,7 @@
 	                	<div align="center"> <kul:htmlControlAttribute property="document.groups[${status.index}].activeToDate"  attributeEntry="${docGroupAttributes.activeToDate}" datePicker="true"/>
 					</div>
 					</td>
+           <c:if test="${not inquiry}">	
 					
 					<td>
 					<div align=center>&nbsp;
@@ -84,6 +86,7 @@
 	        	     </c:choose>  
 					</div>
 	                </td>
+	            </c:if>    
 	            </tr>
         	</c:forEach>        
 

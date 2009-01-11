@@ -40,6 +40,7 @@ import org.kuali.rice.kim.bo.entity.impl.EntityPhoneImpl;
 import org.kuali.rice.kim.bo.entity.impl.EntityPrivacyPreferencesImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
@@ -129,7 +130,7 @@ public class UiDocumentServiceImplTest extends RiceTestCase {
 	public void testSaveToEntity() {
 		IdentityManagementPersonDocument personDoc = initPersonDoc();
 		uiDocumentService.saveEntityPerson(personDoc);
-		KimEntityImpl entity = (KimEntityImpl)KIMServiceLocator.getIdentityManagementService().getEntity(personDoc.getEntityId());
+		KimEntityImpl entity = (KimEntityImpl)KIMServiceLocator.getIdentityService().getEntity(personDoc.getEntityId());
         EntityEntityTypeImpl entityType = entity.getEntityTypes().get(0);
         personDoc.getExternalIdentifiers();
 		assertAddressTrue((PersonDocumentAddress)personDoc.getAddrs().get(0), (EntityAddressImpl)entityType.getAddresses().get(0));
@@ -155,7 +156,7 @@ public class UiDocumentServiceImplTest extends RiceTestCase {
 	
 	@Test
 	public void testLoadToPersonDocument() {
-		KimEntityImpl entity = (KimEntityImpl)KIMServiceLocator.getIdentityManagementService().getEntity("ent123");
+		KimEntityImpl entity = (KimEntityImpl)KIMServiceLocator.getIdentityService().getEntity("ent123");
 		IdentityManagementPersonDocument personDoc = new IdentityManagementPersonDocument();
 		uiDocumentService.loadEntityToPersonDoc(personDoc, entity);
         EntityEntityTypeImpl entityType = entity.getEntityTypes().get(0);
@@ -180,7 +181,7 @@ public class UiDocumentServiceImplTest extends RiceTestCase {
 
 		uiDocumentService.setAttributeEntry(personDocRole);
 		for (Object key : personDocRole.getAttributeEntry().keySet()) {
-			if (key.equals("namespaceCode")) {
+			if (key.equals(KimAttributes.NAMESPACE_CODE)) {
 				Map value = (Map)personDocRole.getAttributeEntry().get(key);
 				assertEquals("Parameter Namespace Code", value.get("label"));
 				assertEquals("Nmspc Cd", value.get("shortLabel"));

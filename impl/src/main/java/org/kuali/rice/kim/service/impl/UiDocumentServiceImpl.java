@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.EntityAddress;
 import org.kuali.rice.kim.bo.entity.EntityEmail;
 import org.kuali.rice.kim.bo.entity.EntityPhone;
@@ -40,13 +39,10 @@ import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
 import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
 import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
-import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAddress;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAffiliation;
 import org.kuali.rice.kim.bo.ui.PersonDocumentEmail;
@@ -58,7 +54,6 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentPrivacy;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRolePrncpl;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRoleQualifier;
-import org.kuali.rice.kim.dao.KimGroupDao;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.UiDocumentService;
@@ -72,7 +67,6 @@ import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.TextControlDefinition;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.GlobalVariables;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -82,7 +76,6 @@ import org.kuali.rice.kns.util.GlobalVariables;
  */
 public class UiDocumentServiceImpl implements UiDocumentService {
 	protected BusinessObjectService businessObjectService;
-	protected KimGroupDao groupDao;
 
 	/**
 	 * @see org.kuali.rice.kim.service.UiDocumentService#getKimEntity(org.kuali.rice.kim.document.IdentityManagementPersonDocument)
@@ -90,7 +83,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	public void saveEntityPerson(
 			IdentityManagementPersonDocument identityManagementPersonDocument) {
 		KimEntityImpl kimEntity = new KimEntityImpl();
-		KimEntityImpl origEntity = (KimEntityImpl)KIMServiceLocator.getIdentityManagementService().getEntity(identityManagementPersonDocument.getEntityId());
+		KimEntityImpl origEntity = (KimEntityImpl)KIMServiceLocator.getIdentityService().getEntity(identityManagementPersonDocument.getEntityId());
 		if (origEntity == null) {
 			origEntity = new KimEntityImpl();
 		}
@@ -813,11 +806,4 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		this.businessObjectService = businessObjectService;
 	}
 
-	public KimGroupDao getGroupDao() {
-		return this.groupDao;
-	}
-
-	public void setGroupDao(KimGroupDao groupDao) {
-		this.groupDao = groupDao;
-	}
 }

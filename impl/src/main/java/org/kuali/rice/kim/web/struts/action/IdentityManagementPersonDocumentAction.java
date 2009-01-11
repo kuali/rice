@@ -26,6 +26,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl;
@@ -47,6 +48,7 @@ import org.kuali.rice.kim.rule.event.ui.AddRoleEvent;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementPersonDocumentForm;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -67,27 +69,32 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
 			throws Exception {
        // String methodToCall = findMethodToCall(form, request);
 		ActionForward forward;
+        IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
+        IdentityManagementPersonDocument personDoc = (IdentityManagementPersonDocument)personDocumentForm.getDocument();
         if (findMethodToCall(form, request) == null) {
-        	forward = mapping.findForward("inquiry");
+        	forward = mapping.findForward(KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY);
         } else {
+    		if (StringUtils.isBlank(personDoc.getPrivacy().getDocumentNumber())) {
+    			// need this if submit without saving
+    			personDoc.getPrivacy().setDocumentNumber(personDoc.getDocumentNumber());
+    		}
+
         	forward =  super.execute(mapping, form, request, response);
         }
 		// move the following to service
 		// get set up person document
-        IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
-        IdentityManagementPersonDocument personDoc = (IdentityManagementPersonDocument)personDocumentForm.getDocument();
-        String commandParam = request.getParameter("command");
-		if (StringUtils.isNotBlank(commandParam) && commandParam.equals("initiate") && StringUtils.isNotBlank(request.getParameter("principalId"))) {
-	        KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(request.getParameter("principalId"));
+        String commandParam = request.getParameter(KNSConstants.PARAMETER_COMMAND);
+		if (StringUtils.isNotBlank(commandParam) && commandParam.equals(KEWConstants.INITIATE_COMMAND) && StringUtils.isNotBlank(request.getParameter(KimConstants.PropertyNames.PRINCIPAL_ID))) {
+	        KimPrincipal principal = KIMServiceLocator.getIdentityService().getPrincipal(request.getParameter(KimConstants.PropertyNames.PRINCIPAL_ID));
 	        personDoc.setPrincipalId(principal.getPrincipalId());
 	        personDoc.setPrincipalName(principal.getPrincipalName());
 	        personDoc.setPassword(principal.getPassword());
-			KimEntityImpl entity = (KimEntityImpl)KIMServiceLocator.getIdentityManagementService().getEntity(principal.getEntityId());
+			KimEntityImpl entity = (KimEntityImpl)KIMServiceLocator.getIdentityService().getEntity(principal.getEntityId());
 			KIMServiceLocator.getUiDocumentService().loadEntityToPersonDoc(personDoc, entity);
 			//List<? extends KimGroup> groups = KIMServiceLocator.getIdentityManagementService().getGroupsForPrincipal(principal.getPrincipalId());
 			//KIMServiceLocator.getUiDocumentService().loadGroupToPersonDoc(personDoc, groups);
 		}
-		if (StringUtils.isNotBlank(commandParam) && (commandParam.equals("displayDocSearchView") || commandParam.equals("displayActionListView"))) {
+		if (StringUtils.isNotBlank(commandParam) && (commandParam.equals(KEWConstants.DOCSEARCH_COMMAND) || commandParam.equals(KEWConstants.ACTIONLIST_COMMAND))) {
 			for (PersonDocumentRole role : personDoc.getRoles()) {
 		        KimTypeService kimTypeService = (KimTypeServiceBase)KIMServiceLocator.getService(getKimTypeServiceName(role.getKimRoleType()));
 				role.setDefinitions(kimTypeService.getAttributeDefinitions(role.getKimRoleType()));
@@ -365,9 +372,9 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
 
         IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
         IdentityManagementPersonDocument personDoc = personDocumentForm.getPersonDocument();
-		if (StringUtils.isBlank(personDoc.getPrivacy().getDocumentNumber())) {
-			personDoc.getPrivacy().setDocumentNumber(personDoc.getDocumentNumber());
-		}
+//		if (StringUtils.isBlank(personDoc.getPrivacy().getDocumentNumber())) {
+//			personDoc.getPrivacy().setDocumentNumber(personDoc.getDocumentNumber());
+//		}
 		// TODO : refactor this, also probably move to service ?
 		for (PersonDocumentRole role : personDoc.getRoles()) {
 			for(PersonDocumentRolePrncpl rolePrncpl : role.getRolePrncpls()) {

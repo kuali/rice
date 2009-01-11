@@ -20,8 +20,10 @@
 		        		</c:forEach>
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRolePrncplAttributes.activeFromDate}" noColon="true" /></div></th>
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRolePrncplAttributes.activeToDate}" noColon="true" /></div></th>
+           <c:if test="${not inquiry}">	
 		        		
               			<kul:htmlAttributeHeaderCell literalLabel="Actions"/>
+           </c:if>   			
                 		</tr>
                 		
               <c:if test="${not inquiry}">	
@@ -107,6 +109,7 @@
 			            <kul:htmlControlAttribute property="document.roles[${roleIdx}].rolePrncpls[${status1.index}].activeToDate"  attributeEntry="${docRolePrncplAttributes.activeToDate}" datePicker="true"/>
 		        		</div>
 		        		</td>
+           <c:if test="${not inquiry}">	
 								
 								<td class="infoline">
 								<div align=center>
@@ -121,6 +124,7 @@
 				        	     </c:choose>  
 									</div>
                 		   		</td>
+               </c:if> 		   		
 					      </tr>
 					      
 					     </c:if> 

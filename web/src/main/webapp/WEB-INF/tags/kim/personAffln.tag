@@ -9,8 +9,9 @@
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docAffiliationAttributes.campusCode}" noColon="true" /></div></th>
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docAffiliationAttributes.dflt}" noColon="true" /></div></th>
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docAffiliationAttributes.active}" noColon="true" /></div></th>
+           <c:if test="${not inquiry}">	
               	<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
-          	
+          </c:if>	
           	</tr>     
           <c:if test="${not inquiry}">	
              <tr>
@@ -72,6 +73,7 @@
 	                	<div align="center"> <kul:htmlControlAttribute property="document.affiliations[${status.index}].active"  attributeEntry="${docAffiliationAttributes.active}"  />
 					</div>
 					</td>
+           <c:if test="${not inquiry}">	
 
 					<td>
 					<div align=center>&nbsp;
@@ -86,6 +88,7 @@
 	        	     </c:choose>  
 					</div>
 	                </td>
+	            </c:if>    
 	            </tr>
 	            <c:if test="${affln.affiliationType.employmentAffiliationType}" >
 	            <tr>

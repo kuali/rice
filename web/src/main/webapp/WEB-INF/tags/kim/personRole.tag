@@ -9,8 +9,9 @@
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRoleAttributes.roleId}" noColon="true" /></div></th>
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRoleAttributes.kimTypeId}" noColon="true" /></div></th>
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRoleAttributes.roleName}" noColon="true" /></div></th>
+           <c:if test="${not inquiry}">	
               	<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
-          	
+          </c:if>	
           	</tr>     
           <c:if test="${not inquiry}">	
           	
@@ -57,6 +58,7 @@
 	                	<div align="center"> <kul:htmlControlAttribute property="document.roles[${status.index}].roleName"  attributeEntry="${docRoleAttributes.roleName}" readOnly="true"  />
 					</div>
 					</td>
+           <c:if test="${not inquiry}">	
 					
 					<td>
 					<div align=center>&nbsp;
@@ -71,6 +73,7 @@
 	        	     </c:choose>  
 					</div>
 	                </td>
+	           </c:if>     
 	            </tr>
 		              <c:choose>
 	            <c:when test="${!empty role.definitions  and fn:length(role.definitions) > 0}" >

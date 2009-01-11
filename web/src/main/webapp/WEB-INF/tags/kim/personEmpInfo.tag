@@ -14,8 +14,9 @@
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docEmploymentInfoAttributes.baseSalaryAmount}" noColon="true" /></div></th>
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docEmploymentInfoAttributes.primaryDepartmentCode}" noColon="true" /></div></th>
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docEmploymentInfoAttributes.active}" noColon="true" /></div></th>
+           <c:if test="${not inquiry}">	
               	<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
-          	
+          </c:if>
           	</tr>     
           <c:if test="${not inquiry}">	
           	
@@ -102,6 +103,7 @@
 	                  <kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].empInfos[${status.index}].active" attributeEntry="${docEmploymentInfoAttributes.active}" />
 					</div>
 					</td>
+           <c:if test="${not inquiry}">	
 					
 					<td>
 					<div align=center>&nbsp;
@@ -116,6 +118,7 @@
 	        	     </c:choose>  
 					</div>
 	                </td>
+	           </c:if>     
 	            </tr>
 	            
         	</c:forEach>        

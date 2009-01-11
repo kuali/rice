@@ -9,8 +9,9 @@
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docEmailAttributes.emailTypeCode}" noColon="true" /></div></th>
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docEmailAttributes.dflt}" noColon="true" /></div></th>
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docEmailAttributes.active}" noColon="true" /></div></th>
+           <c:if test="${not inquiry}">	
               	<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
-          	
+          	</c:if>
           	</tr>     
           <c:if test="${not inquiry}">	
           	
@@ -72,6 +73,7 @@
 	                  <kul:htmlControlAttribute property="document.emails[${status.index}].active" attributeEntry="${docEmailAttributes.active}" />
 					</div>
 					</td>
+           <c:if test="${not inquiry}">	
 					
 					<td>
 					<div align=center>&nbsp;
@@ -86,6 +88,7 @@
 	        	     </c:choose>  
 					</div>
 	                </td>
+	            </c:if>    
 	            </tr>
         	</c:forEach>        
 

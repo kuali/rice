@@ -439,8 +439,7 @@
   <bean id="kimTypeService" class="org.kuali.rice.kim.service.support.impl.KimTypeServiceBase" />
   <bean id="kimPermissionTypeService" class="org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase"/>
   <bean id="kimRoleTypeService" class="org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase"/>
-  <bean id="kimUiDocumentService" class="org.kuali.rice.kim.service.impl.UiDocumentServiceImpl" 
-      p:groupDao-ref="kimGroupDao"/>
+  <bean id="kimUiDocumentService" class="org.kuali.rice.kim.service.impl.UiDocumentServiceImpl" />
     <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
     <property name="serviceDefinition">

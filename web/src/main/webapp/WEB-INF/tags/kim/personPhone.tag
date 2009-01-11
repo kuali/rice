@@ -11,8 +11,9 @@
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docPhoneAttributes.countryCode}" noColon="true" /></div></th>
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docPhoneAttributes.dflt}" noColon="true" /></div></th>
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docPhoneAttributes.active}" noColon="true" /></div></th>
+           <c:if test="${not inquiry}">	
               	<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
-          	
+          	</c:if>
           	</tr>     
           <c:if test="${not inquiry}">	
           	
@@ -91,6 +92,7 @@
                 	<div align="center"><kul:htmlControlAttribute property="document.phones[${status.index}].active" attributeEntry="${docPhoneAttributes.active}"/>
                 </div>
                 </td>
+           <c:if test="${not inquiry}">	
 					
 					<td>
 					<div align=center>&nbsp;
@@ -105,6 +107,7 @@
 	        	     </c:choose>  
 					</div>
 	                </td>
+	            </c:if>    
 	            </tr>
         	</c:forEach>        
 

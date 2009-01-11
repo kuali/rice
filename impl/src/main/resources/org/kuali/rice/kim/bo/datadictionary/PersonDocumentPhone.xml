@@ -87,6 +87,9 @@
         p:shortLabel="Phone Number"
         p:maxLength="20"
         p:required="false" >
+    <property name="validationPattern" >
+      <bean parent="PhoneNumberValidationPattern" />
+    </property>
     <property name="control" >
       <bean parent="TextControlDefinition" p:size="10" />
     </property>

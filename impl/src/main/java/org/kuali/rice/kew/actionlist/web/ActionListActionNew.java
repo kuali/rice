@@ -612,7 +612,7 @@ public class ActionListActionNew extends KualiAction {
     }
 
     public ActionForward removeOutboxItems(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-	ActionListForm alForm = (ActionListForm)form;
+	ActionListFormNew alForm = (ActionListFormNew)form;
 	if (alForm.getOutboxItems() != null) {
 	    KEWServiceLocator.getActionListService().removeOutboxItems(getUserSession(request).getPrincipal().getPrincipalId(), Arrays.asList(alForm.getOutboxItems()));
 	}

@@ -11,6 +11,7 @@
     	<!-- End required KNS forms -->
 	    <form-bean name="RuleForm" type="org.kuali.rice.kew.rule.web.RuleForm" />
 	    <form-bean name="ActionListFormNew" type="org.kuali.rice.kew.actionlist.web.ActionListFormNew" />
+	    <form-bean name="ActionListFilterFormNew" type="org.kuali.rice.kew.actionlist.web.ActionListFilterFormNew" />
     </form-beans>
 
     <global-exceptions>
@@ -77,11 +78,11 @@
         <forward name="finalStateError" path="/WEB-INF/jsp/ActionList/ActionListNew.jsp"/>
       </action> 
       
-      <action path="/ActionListFilter" scope="request" validate="false" name="ActionListFilterForm"
-        input="../kew/WEB-INF/jsp/ActionList/ActionListFilter.jsp"
-        type="org.kuali.rice.kew.actionlist.web.ActionListFilterAction" parameter="methodToCall">
+      <action path="/ActionListFilter" scope="request" validate="false" name="ActionListFilterFormNew"
+        input="/WEB-INF/jsp/ActionList/ActionListFilter.jsp"
+        type="org.kuali.rice.kew.actionlist.web.ActionListFilterActionNew" parameter="methodToCall">
         <forward name="viewFilter" path="/WEB-INF/jsp/ActionList/ActionListFilter.jsp" />
-        <forward name="viewActionList" path="/ActionList.do?methodToCall=start" redirect="true" />
+        <forward name="viewActionList" path="/ActionListNew.do?methodToCall=start" redirect="true" />
         <forward name="requiredStateError" path="/WEB-INF/jsp/ActionList/ActionListFilter.jsp"/>
         <forward name="finalStateError" path="/WEB-INF/jsp/ActionList/ActionListFilter.jsp"/>
       </action>      

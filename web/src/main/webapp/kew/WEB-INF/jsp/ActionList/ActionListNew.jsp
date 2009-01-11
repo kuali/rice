@@ -68,6 +68,7 @@
 	<h1><c:out value="Action List New" />
 	</h1>
 	<div align="right">   
+	  <br/>
 	  <a
          href='<c:out value="../en/Preferences.do?returnMapping=viewActionList" />'  title="preferences"><img
          src="../kr/images/tinybutton-preferences.gif" class="tinybutton" alt="preferences" title="preferences"
@@ -77,15 +78,13 @@
          src="../kr/images/tinybutton-refresh.gif" class="tinybutton" alt="refresh" title="refresh"
          border="0" /></a>
 	   <a
-         href='<c:out value="../en/ActionListFilter.do" />'  title="filter"><img
+         href='<c:out value="ActionListFilter.do?methodToCall=start" />'  title="filter"><img
          src="../kr/images/tinybutton-filter.gif" class="tinybutton" alt="filter" title="filter"
-         border="0" /></a>
-         
+         border="0" /></a>  
     </div>
 	</div>
-	
+
 	<div align="right">
-	<br/>
 	<br/>
          <c:if
             test="${kewUserSession.helpDeskActionListPerson == null && ! empty actionList && ! empty ActionListFormNew.defaultActions}">
@@ -104,7 +103,7 @@
 	</c:if>
 	<html-el:form action="ActionListNew">
 		<html-el:hidden property="methodToCall" value="" />
-		<table>
+		<table width="100%">
 			<tr>
 				<td width="20" height="30">&nbsp;</td>
 				<td><jsp:include page="../WorkflowMessages.jsp" flush="true" /></td>
@@ -116,64 +115,65 @@
 				<table width="100%" border=0 cellspacing=0 cellpadding=0>
 					<tr>
 						<td>
-						<div align="left">
+						
 						<c:choose>
 							<c:when
 								test="${ActionListFormNew.viewOutbox && ActionListFormNew.showOutbox}">
-								<a href="<c:url value="ActionList.do?viewOutbox=false" />">
+								<a href="<c:url value="ActionListNew.do?methodToCall=start&viewOutbox=false" />">
 								    <bean-el:message key="actionList.ActionList.title" /></a>
                                 | <strong><bean-el:message key="actionList.Outbox.title" /></strong>
-								<c:if test="${! ActionListFormNew.outBoxEmpty }">
-									<td align="right"><html-el:image
-										src="images/buttonsmall_delselitems.gif" align="absmiddle"
-										property="methodToCall.removeOutboxItems" />
-									</td>
-								</c:if>
 							</c:when>
 							<c:otherwise>
 								<strong>
 								<bean-el:message key="actionList.ActionList.title" /></strong>
 								<c:if test="${ActionListFormNew.showOutbox }">
-                                    | <a href="<c:url value="../en/ActionList.do?viewOutbox=true" />">
+                                    | <a href="<c:url value="ActionListNew.do?methodToCall=start&viewOutbox=true" />">
                                         <bean-el:message key="actionList.Outbox.title" />
                                        </a>
 								</c:if>
 							</c:otherwise>
 						</c:choose>
-						</div>
+					
 						</td>
 					</tr>
 				</table>
 				</td>
-				<td>
-				</td>
+				<div align="right">
+                    <c:if test="${ActionListFormNew.viewOutbox && ActionListFormNew.showOutbox && !ActionListFormNew.outBoxEmpty}">
+                         <td align="right"><html-el:image
+                            src="../kr/images/buttonsmall_delselitems.gif" align="absmiddle"
+                            property="methodToCall.removeOutboxItems" />
+                         </td>
+                    </c:if>
+                </div>
 			</tr>
             <tr>
 			 <table width="100%">
             <tr>
-            <td>
-                <div align="center">
-            <table class="t3" width="100%" cellspacing="0" cellpadding="0" border="0" summary="">
-            <tbody>
-            <tr>
-                <td align="left">
-                <img class="tl3" height="12" width="12" alt="" src="../en/images/pixel_clear.gif"/>
-                </td>
-                <td align="right">
-                    <img class="tr3" height="12" width="12" alt="" src="../en/images/pixel_clear.gif"/>
-                </td>
-            </tr>
-            </tbody>
-            </table>
-            </div>          
-				<div id="workarea" class="t3">
-				<div class="tab-container" align="center"><br />
+            <td>          
+				<div id="row" >
+				<div class="tab-container"><br />
 				<display:table class="datatable-100" cellspacing="0" cellpadding="0"
 					name="actionListPage" pagesize="${preferences.pageSize}"
 					export="true" id="result"
 					decorator="org.kuali.rice.kew.actionlist.web.ActionListDecorator"
 					excludedParams="*" requestURI="${actionListURI}">
 					<display-el:setProperty name="export.banner" value="" />
+					<display-el:column title="&nbsp;">
+                        <c:if test="${kewUserSession.helpDeskActionListPerson == null && result.displayParameters != null}">
+                           <br>
+                           <a id='A<c:out value="${result.actionItemIndex}"/>'
+                            href="<c:url value="../en/${Constants.DOC_HANDLER_REDIRECT_PAGE}" >
+                           <c:param name="docId" value="${result.routeHeaderId}"/>
+                           <c:param name="command" value="displayActionListInlineView" />
+                           </c:url>"
+                           target='iframeAL_<c:out value="${result.actionItemIndex}"/>'
+                           onclick="rend(this, false)"><img
+                           src="../en/images/tinybutton-show.gif" alt="show" width=45 height=15
+                           border=0 id='F<c:out value="${result.actionItemIndex}"/>'></a>
+                           <br>                        
+                        </c:if>        
+                    </display-el:column>
 					<display-el:column sortable="true" title="${documentIdLabel}"
 						sortProperty="routeHeaderId">
 						<c:choose>
@@ -186,19 +186,6 @@
 									<c:if test="${ActionListForm.documentPopup == Constants.ACTION_LIST_DOCUMENT_POPUP_VALUE}"> target="_blank" </c:if>
 									class="showvisit"> <c:out value="${result.routeHeaderId}" />
 								</a>
-								<c:if test="${result.displayParameters != null}">
-									<br>
-									<a id='A<c:out value="${result.actionItemIndex}"/>'
-										href="<c:url value="../en/${Constants.DOC_HANDLER_REDIRECT_PAGE}" >
-                                        <c:param name="docId" value="${result.routeHeaderId}"/>
-                                            <c:param name="command" value="displayActionListInlineView" />
-                                          </c:url>"
-										target='iframeAL_<c:out value="${result.actionItemIndex}"/>'
-										onclick="rend(this, false)"><img
-										src="images/tinybutton-show.gif" alt="show" width=45 height=15
-										border=0 id='F<c:out value="${result.actionItemIndex}"/>'></a>
-									<br>
-								</c:if>
 							</c:when>
 							<c:otherwise>
 								<c:out value="${result.routeHeaderId}" />
@@ -340,6 +327,9 @@
 						</display-el:column>
 					</c:if>
 
+                    <display-e1:column title="Testing" class="infocell">
+                        Testing
+                    </display-e1:column>
 					<display-el:column title="${routeLogLabel}" class="infocell">
 						<div align="center"><a
 							href="<c:url value="../en/RouteLog.do"><c:param name="routeHeaderId" value="${result.routeHeaderId}"/></c:url>"
@@ -348,18 +338,6 @@
 							src="../en/images/my_route_log.gif" /> </a></div>
 					</display-el:column>
 				</display:table></div>
-			    <table class="b3" width="100%" cellspacing="0" cellpadding="0" border="0" summary="">
-                    <tbody>
-                        <tr>
-                            <td class="footer" align="left">
-                            <img class="bl3" height="14" width="12" alt="" src="../en/images/pixel_clear.gif"/>
-                            </td>
-                            <td class="footer-right" align="right">
-                            <img class="br3" height="14" width="12" alt="" src="../en/images/pixel_clear.gif"/>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
                 </div>
 				</td>
 				</tr>

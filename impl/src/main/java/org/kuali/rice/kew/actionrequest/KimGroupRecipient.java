@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kew.actionrequest;
 
-import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 

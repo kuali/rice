@@ -22,7 +22,7 @@
             <body>Your Action List has an eDoc(electronic document) that needs your attention: 
 
 Document ID:&tab;<xsl:value-of select="actionItem/actionItem/routeHeaderId"/>
-Initiator:&tab;&tab;<xsl:value-of select="actionItem/docInitiator/displayName"/>
+Initiator:&tab;&tab;<xsl:value-of select="actionItem/docInitiatorDisplayName"/>
 Type:&tab;&tab;Add/Modify <xsl:value-of select="actionItem/documentType/name"/>
 Title:&tab;&tab;<xsl:value-of select="actionItem/actionItem/docTitle"/>
 

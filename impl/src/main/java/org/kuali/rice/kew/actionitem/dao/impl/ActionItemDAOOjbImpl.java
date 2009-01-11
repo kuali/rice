@@ -29,7 +29,7 @@ import org.apache.ojb.broker.query.ReportQueryByCriteria;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionitem.dao.ActionItemDAO;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
-import org.kuali.rice.kew.user.Recipient;
+import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kim.service.IdentityManagementService;

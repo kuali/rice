@@ -32,7 +32,6 @@ import org.kuali.rice.kew.role.KimRoleRecipient;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.ResolvedQualifiedRole;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.RoleRecipient;
 import org.kuali.rice.kew.user.UserId;
 import org.kuali.rice.kew.util.CodeTranslator;

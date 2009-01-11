@@ -19,7 +19,7 @@ package org.kuali.rice.kew.engine.simulation;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.kew.user.Recipient;
+import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.Person;
 

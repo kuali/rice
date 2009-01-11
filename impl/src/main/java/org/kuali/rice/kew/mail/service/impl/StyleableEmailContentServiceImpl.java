@@ -375,6 +375,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
             addObjectXML(doc, actionItem.getPerson().getPrincipalName(), root, "actionItemPrincipalName");
             addObjectXML(doc, actionItem.getRouteHeader(), root, "doc");
             addObjectXML(doc, actionItem.getRouteHeader().getInitiatorPrincipal(), root, "docInitiator");
+            addObjectXML(doc, actionItem.getRouteHeader().getInitiatorDisplayName(), root, "docInitiatorDisplayName");
             addObjectXML(doc, actionItem.getRouteHeader().getDocumentType(), root, "documentType");
 
             node.appendChild(root);

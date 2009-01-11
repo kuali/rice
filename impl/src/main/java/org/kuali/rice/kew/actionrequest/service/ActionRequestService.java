@@ -21,11 +21,11 @@ import java.util.List;
 import java.util.Set;
 
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.engine.ActivationContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.user.Recipient;
 
 /**
  * Service to handle the building, sorting, saving, activating and deactivating of action request graphs.  These lists are 

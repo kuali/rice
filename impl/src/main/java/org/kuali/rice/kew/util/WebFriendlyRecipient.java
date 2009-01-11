@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kew.util;
 
-import org.kuali.rice.kew.user.Recipient;
+import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kim.bo.Person;
 
 /**
@@ -57,7 +57,7 @@ public class WebFriendlyRecipient implements Recipient{
 	/**
 	 * This overridden method ...
 	 *
-	 * @see org.kuali.rice.kew.user.Recipient#getDisplayName()
+	 * @see org.kuali.rice.kew.actionrequest.Recipient#getDisplayName()
 	 */
 	public String getDisplayName() {
 

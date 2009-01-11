@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.user;
+package org.kuali.rice.kew.actionrequest;
 
 import java.io.Serializable;
 

@@ -56,10 +56,11 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.Recipient;
 import org.kuali.rice.kew.user.RoleRecipient;
+import org.kuali.rice.kew.user.UserUtils;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
@@ -236,6 +237,18 @@ public class ActionRequestValue implements WorkflowPersistable {
     		return null;
     	}
     	return KIMServiceLocator.getPersonService().getPerson(getPrincipalId());
+    }
+    
+    public String getDisplayName() {
+    	if (isUserRequest()) {
+    		UserSession userSession = UserSession.getAuthenticatedUser();
+        	return UserUtils.getDisplayableName(userSession, getPrincipal());
+    	} else if (isGroupRequest()) {
+    		return getGroup().getGroupName();
+    	} else if (isRoleRequest()) {
+    		return getRoleName();
+    	}
+    	return "";
     }
 
     public Recipient getRecipient() {

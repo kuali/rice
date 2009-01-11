@@ -5,12 +5,7 @@
 <%@ taglib uri="../../tld/fmt.tld" prefix="fmt" %>
 <%@ taglib uri="../../tld/displaytag.tld" prefix="display-el" %>
 
-<c:set var="displayName" value="${actionRequest.person.name}"/>
-<c:if test="${kewUserSession.principalId != actionRequest.principalId}">
-  <%-- TODO update this code for KIM entity privs
-  <c:set var="displayName" value="${actionRequest.workflowUser.displayNameSafe}"/>
-  --%>
-</c:if>
+<c:set var="displayName" value="${actionRequest.displayName}"/>
 
 <c:choose>
   <c:when test="${actionRequest.approvePolicy == \"A\"}">
@@ -95,12 +90,7 @@
 										              <c:choose>
 										              	 <c:when test="${roleRequest.primaryDelegator}">
 										              	 	<c:forEach var="primDelegateRequest" items="${roleRequest.primaryDelegateRequests}" varStatus="pDelegateArStatus">
-										              	 	<c:set var="primDelegateDisplayName" value="${primDelegateRequest.person.name}"/>
-															<c:if test="${kewUserSession.principalId != primDelegateRequest.principalId}">
-  																<%-- TODO update this for KIM enitty priv prefs
-  																<c:set var="primDelegateDisplayName" value="${primDelegateRequest.workflowUser.displayNameSafe}"/>
-  																--%>
-															</c:if>
+										              	 	<c:set var="primDelegateDisplayName" value="${primDelegateRequest.displayName}"/>
 										              	 	<c:if test="${primDelegateRequest.userRequest}">
 												              	 <a style="${fontStyle}" href="
 																		<c:url value="${UrlResolver.userReportUrl}">
@@ -140,12 +130,7 @@
 																<c:if test="${!arStatus.last}"><br></c:if>
 										              	 </c:when>
     										             <c:otherwise>
-    										                <c:set var="roleDisplayName" value="${roleRequest.person.name}"/>
-															<c:if test="${kewUserSession.principalId != roleRequest.principalId}">
-															    <%-- TODO update this for KIM enitty priv prefs
-  																<c:set var="roleDisplayName" value="${roleRequest.workflowUser.displayNameSafe}"/>
-  																--%>
-															</c:if>
+    										                <c:set var="roleDisplayName" value="${roleRequest.displayName}"/>
 											              	 <a style="${fontStyle}" href="
 																	<c:url value="${UrlResolver.userReportUrl}">
 																		<c:param name="workflowId" value="${roleRequest.principalId}" />

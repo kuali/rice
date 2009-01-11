@@ -16,6 +16,7 @@
  */
 package org.kuali.rice.kew.user;
 
+import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.rule.ResolvedQualifiedRole;
 
 /**

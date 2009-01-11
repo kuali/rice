@@ -19,7 +19,7 @@ package org.kuali.rice.kew.actionitem.dao;
 import java.util.Collection;
 
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.user.Recipient;
+import org.kuali.rice.kew.actionrequest.Recipient;
 
 /**
  * Data Access Object for {@link ActionItem}s.

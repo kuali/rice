@@ -17,7 +17,7 @@ package org.kuali.rice.kew.role;
 
 import java.util.List;
 
-import org.kuali.rice.kew.user.Recipient;
+import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
 
 /**

@@ -30,9 +30,7 @@ public interface XmlConstants {
     public static final Namespace SCHEMA_NAMESPACE = Namespace.getNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
     public static final Namespace RULE_NAMESPACE = Namespace.getNamespace("", "ns:workflow/Rule");
     public static final Namespace DOCUMENT_TYPE_NAMESPACE = Namespace.getNamespace("", "ns:workflow/DocumentType");
-    public static final Namespace WORKGROUP_NAMESPACE = Namespace.getNamespace("", "ns:workflow/Workgroup");
     public static final Namespace GROUP_NAMESPACE = Namespace.getNamespace("", "ns:workflow/Group");
-    public static final Namespace WORKGROUP_TYPE_NAMESPACE = Namespace.getNamespace("", "ns:workflow/WorkgroupType");
     public static final Namespace RULE_TEMPLATE_NAMESPACE = Namespace.getNamespace("", "ns:workflow/RuleTemplate");
     public static final Namespace RULE_ATTRIBUTE_NAMESPACE = Namespace.getNamespace("", "ns:workflow/RuleAttribute");
     public static final Namespace HELP_NAMESPACE = Namespace.getNamespace("", "ns:workflow/Help");
@@ -45,8 +43,6 @@ public interface XmlConstants {
     public static final String RULE_SCHEMA_LOCATION = "ns:workflow/Rule resource:Rule";
     public static final String GROUP_SCHEMA_LOCATION = "ns:workflow/Group resource:Group";
     public static final String DOCUMENT_TYPE_SCHEMA_LOCATION = "ns:workflow/DocumentType resource:DocumentType";
-    public static final String WORKGROUP_SCHEMA_LOCATION = "ns:workflow/Workgroup resource:Workgroup";
-    public static final String WORKGROUP_TYPE_SCHEMA_LOCATION = "ns:workflow/WorkgroupType resource:WorkgroupType";
     public static final String RULE_TEMPLATE_SCHEMA_LOCATION = "ns:workflow/RuleTemplate resource:RuleTemplate";
     public static final String RULE_ATTRIBUTE_SCHEMA_LOCATION = "ns:workflow/RuleAttribute resource:RuleAttribute";
     public static final String HELP_SCHEMA_LOCATION = "ns:workflow/Help resource:Help";

@@ -13,7 +13,7 @@ ApplicationConstants.xsd - ApplicationConstants schema
 
 User.xsd - User schema.  This just specifies an <any> child element and will need more testing against actual institutional plugin service implementations
 
-Workgroup.xsd - Workgroup schema.  This just specifies an <any> child element and will need more testing against actual institutional plugin service implementations
+Group.xsd - Group schema.  This just specifies an <any> child element and will need more testing against actual institutional plugin service implementations
 
 DocumentType.xsd - DocumentType schema.  routePath and routeNode elements specify an <any> child element.  We need to revisit this.  Since the current format would probably generate a duplicative schema, and since we have to plan for customization and integration with custom nodes down the road in the future, I have punted on this.
 

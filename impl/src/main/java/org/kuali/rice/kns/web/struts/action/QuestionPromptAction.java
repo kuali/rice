@@ -47,7 +47,7 @@ public class QuestionPromptAction extends KualiAction {
 	@Override
 	protected void checkAuthorization(ActionForm form, String methodToCall)
 			throws AuthorizationException {
-		// TODO: remove this method after we put in the KIM permissions for this action
+		// no authorization required
 	}
 
 	/**

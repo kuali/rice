@@ -179,7 +179,7 @@ public class UiDocumentServiceImplTest extends RiceTestCase {
         KimTypeService kimTypeService = (KimTypeServiceBase)KIMServiceLocator.getService(personDocRole.getKimRoleType().getKimTypeServiceName());
 		personDocRole.setDefinitions(kimTypeService.getAttributeDefinitions(personDocRole.getKimRoleType()));
 
-		uiDocumentService.setAttributeEntry(personDocRole);
+		personDocRole.setAttributeEntry( uiDocumentService.getAttributeEntries( personDocRole.getDefinitions() ) );
 		for (Object key : personDocRole.getAttributeEntry().keySet()) {
 			if (key.equals(KimAttributes.NAMESPACE_CODE)) {
 				Map value = (Map)personDocRole.getAttributeEntry().get(key);

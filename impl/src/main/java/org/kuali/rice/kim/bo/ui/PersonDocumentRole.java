@@ -26,8 +26,8 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
-import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
@@ -49,14 +49,14 @@ public class PersonDocumentRole extends PersonDocumentBoBase {
 	@Column(name="NMSPC_CD")
 	protected String namespaceCode;
 	protected KimTypeImpl kimRoleType;
-	protected List<KimAttributeImpl> attributes;
+	protected List<? extends KimAttributes> attributes;
 	transient AttributeDefinitionMap definitions;
-	transient Map attributeEntry;
+	transient Map<String,Object> attributeEntry;
 	protected List<PersonDocumentRolePrncpl> rolePrncpls;
     protected PersonDocumentRolePrncpl newRolePrncpl;
 	
 	public PersonDocumentRole() {
-		attributes = new ArrayList<KimAttributeImpl>();	
+		attributes = new ArrayList<KimAttributes>();	
 		rolePrncpls = new ArrayList<PersonDocumentRolePrncpl>();	
 		// set following for testing
 //		KimAttributeImpl attrDefn = new KimAttributeImpl();
@@ -64,7 +64,7 @@ public class PersonDocumentRole extends PersonDocumentBoBase {
 //		attrDefn.setAttributeName("campusCode");
 //		attrDefn.setComponentName("org.kuali.rice.kns.bo.Campus");
 //		attributes.add(attrDefn);
-		attributeEntry = new HashMap();
+		attributeEntry = new HashMap<String,Object>();
 //		attrDefn.setAttributeName("chartOfAccountsCode");
 //		attrDefn.setComponentName("org.kuali.kfs.coa.businessobject.Chart");
 //		attributes.add(attrDefn);
@@ -109,11 +109,11 @@ public class PersonDocumentRole extends PersonDocumentBoBase {
 		this.roleName = roleName;
 	}
 
-	public List<KimAttributeImpl> getAttributes() {
+	public List<? extends KimAttributes> getAttributes() {
 		return this.attributes;
 	}
 
-	public void setAttributes(List<KimAttributeImpl> attributes) {
+	public void setAttributes(List<? extends KimAttributes> attributes) {
 		this.attributes = attributes;
 	}
 
@@ -133,7 +133,6 @@ public class PersonDocumentRole extends PersonDocumentBoBase {
 			}
 	        KimTypeService kimTypeService = (KimTypeServiceBase)KIMServiceLocator.getService(serviceName);
 			setDefinitions(kimTypeService.getAttributeDefinitions(getKimRoleType()));
-
 		}
 		return this.definitions;
 	}
@@ -142,15 +141,15 @@ public class PersonDocumentRole extends PersonDocumentBoBase {
 		this.definitions = definitions;
 	}
 
-	public Map getAttributeEntry() {
+	public Map<String,Object> getAttributeEntry() {
 		if (attributeEntry == null || attributeEntry.isEmpty()) {
-			KIMServiceLocator.getUiDocumentService().setAttributeEntry(this);
+			attributeEntry = KIMServiceLocator.getUiDocumentService().getAttributeEntries(getDefinitions());
 		}
 		
 		return this.attributeEntry;
 	}
 
-	public void setAttributeEntry(Map attributeEntry) {
+	public void setAttributeEntry(Map<String,Object> attributeEntry) {
 		this.attributeEntry = attributeEntry;
 	}
 

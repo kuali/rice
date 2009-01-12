@@ -39,12 +39,14 @@ import org.kuali.rice.kim.rule.ui.AddGroupRule;
 import org.kuali.rice.kim.rule.ui.AddRoleRule;
 import org.kuali.rice.kim.rules.ui.PersonDocumentGroupRule;
 import org.kuali.rice.kim.rules.ui.PersonDocumentRoleRule;
+import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.rules.TransactionalDocumentRuleBase;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.ErrorMap;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -58,6 +60,13 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
  */
 public class IdentityManagementPersonDocumentRule extends TransactionalDocumentRuleBase implements AddGroupRule,AddRoleRule {
 
+	AddGroupRule addGroupRule = new PersonDocumentGroupRule();
+	AddRoleRule  addRoleRule  = new PersonDocumentRoleRule();
+	IdentityManagementPersonDocumentAuthorizer authorizer;
+	IdentityService identityService;
+	
+	
+	
     @Override
     protected boolean processCustomSaveDocumentBusinessRules(Document document) {
         if (!(document instanceof IdentityManagementPersonDocument)) {
@@ -78,9 +87,9 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
         valid &= checkMultipleDefault (personDoc.getEmails(), "emails");
         valid &= checkPeimaryEmploymentInfo (personDoc.getAffiliations());
         // kimtypeservice.validateAttributes is not working yet.
-        //valid &= validateRoleQualifier (personDoc.getRoles());
+        valid &= validateRoleQualifier (personDoc.getRoles());
         if (StringUtils.isNotBlank(personDoc.getPrincipalName())) { 
-        	valid &= isPrincipalNameExist (personDoc.getPrincipalName(), personDoc.getPrincipalId());
+        	valid &= doesPrincipalNameExist (personDoc.getPrincipalName(), personDoc.getPrincipalId());
         }
         
         valid &= validActiveDatesForRole (personDoc.getRoles());
@@ -141,15 +150,13 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	return valid;
     }
     
-    private boolean isPrincipalNameExist (String principalName, String principalId) {
-        ErrorMap errorMap = GlobalVariables.getErrorMap();
-    	boolean valid = true;
-    	KimPrincipal principal = KIMServiceLocator.getIdentityService().getPrincipalByPrincipalName(principalName);
+    private boolean doesPrincipalNameExist (String principalName, String principalId) {
+    	KimPrincipal principal = getIdentityService().getPrincipalByPrincipalName(principalName);
     	if (principal != null && (StringUtils.isBlank(principalId) || !principal.getPrincipalId().equals(principalId))) {
-            errorMap.putError(KimConstants.PropertyNames.PRINCIPAL_NAME,RiceKeyConstants.ERROR_EXIST_PRINCIPAL_NAME, principalName);
-			valid = false;
+        	GlobalVariables.getErrorMap().putError(KimConstants.PropertyNames.PRINCIPAL_NAME,RiceKeyConstants.ERROR_EXIST_PRINCIPAL_NAME, principalName);
+			return false;
     	}
-    	return valid;
+    	return true;
     }
 
     private boolean validateRoleQualifier (List<PersonDocumentRole> roles ) {
@@ -213,8 +220,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 	
 	private boolean checkUnassignableRoles(IdentityManagementPersonDocument document) {
 		boolean valid = true;
-    	IdentityManagementPersonDocumentAuthorizer authorizer = new IdentityManagementPersonDocumentAuthorizer();
-    	Map<String,Set<String>> unassignableRoles = authorizer.getUnassignableRoles(document, GlobalVariables.getUserSession().getPerson());
+    	Map<String,Set<String>> unassignableRoles = getAuthorizer( document ).getUnassignableRoles(document, GlobalVariables.getUserSession().getPerson());
         ErrorMap errorMap = GlobalVariables.getErrorMap();
         for (String namespaceCode : unassignableRoles.keySet()) {
         	for (String roleName : unassignableRoles.get(namespaceCode)) {
@@ -233,8 +239,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 	
 	private boolean checkUnpopulatableGroups(IdentityManagementPersonDocument document) {
 		boolean valid = true;
-    	IdentityManagementPersonDocumentAuthorizer authorizer = new IdentityManagementPersonDocumentAuthorizer();
-    	Map<String,Set<String>> unpopulatableGroups = authorizer.getUnpopulateableGroups(document, GlobalVariables.getUserSession().getPerson());
+    	Map<String,Set<String>> unpopulatableGroups = getAuthorizer( document ).getUnpopulateableGroups(document, GlobalVariables.getUserSession().getPerson());
         ErrorMap errorMap = GlobalVariables.getErrorMap();
         for (String namespaceCode : unpopulatableGroups.keySet()) {
         	for (String groupName : unpopulatableGroups.get(namespaceCode)) {
@@ -252,11 +257,29 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 	}
 	
     public boolean processAddGroup(AddGroupEvent addGroupEvent) {
-        return new PersonDocumentGroupRule().processAddGroup(addGroupEvent);    
+        return addGroupRule.processAddGroup(addGroupEvent);    
     }
 
     public boolean processAddRole(AddRoleEvent addRoleEvent) {
-        return new PersonDocumentRoleRule().processAddRole(addRoleEvent);    
+        return addRoleRule.processAddRole(addRoleEvent);    
     }
+
+
+
+	public IdentityService getIdentityService() {
+		if ( identityService == null ) {
+			identityService = KIMServiceLocator.getIdentityService();
+		}
+		return identityService;
+	}
+
+
+
+	public IdentityManagementPersonDocumentAuthorizer getAuthorizer(IdentityManagementPersonDocument document) {
+		if ( authorizer == null ) {
+			authorizer = (IdentityManagementPersonDocumentAuthorizer)KNSServiceLocator.getDocumentTypeService().getDocumentAuthorizer(document);
+		}
+		return authorizer;
+	}
 
 }

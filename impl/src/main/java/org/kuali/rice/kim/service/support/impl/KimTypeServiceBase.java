@@ -32,7 +32,6 @@ import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.service.support.KimTypeService;
-import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
@@ -41,6 +40,9 @@ import org.kuali.rice.kns.datadictionary.mask.Mask;
 import org.kuali.rice.kns.datadictionary.mask.MaskFormatterSubString;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.KimAttributeValuesFinder;
+import org.kuali.rice.kns.service.BusinessObjectService;
+import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.service.DictionaryValidationService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -58,9 +60,34 @@ public class KimTypeServiceBase implements KimTypeService {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KimTypeServiceBase.class);
 
-	protected List<String> acceptedAttributeNames = new ArrayList<String>();;
+	protected List<String> acceptedAttributeNames = new ArrayList<String>();
 	
 	protected List<KimAttributesTranslator> kimAttributesTranslators = new ArrayList<KimAttributesTranslator>();
+	protected BusinessObjectService businessObjectService;
+	protected DictionaryValidationService dictionaryValidationService;
+	protected DataDictionaryService dataDictionaryService;
+	
+
+	public BusinessObjectService getBusinessObjectService() {
+		if ( businessObjectService == null ) {
+			businessObjectService = KNSServiceLocator.getBusinessObjectService();
+		}
+		return businessObjectService;
+	}
+
+	public DictionaryValidationService getDictionaryValidationService() {
+		if ( dictionaryValidationService == null ) {
+			dictionaryValidationService = KNSServiceLocator.getDictionaryValidationService();
+		}
+		return dictionaryValidationService;
+	}
+
+	public DataDictionaryService getDataDictionaryService() {
+		if ( dataDictionaryService == null ) {
+			dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+		}
+		return this.dataDictionaryService;
+	}
 
 	/**
 	 * Returns null, to indicate that there is no custom workflow document needed for this type.
@@ -134,22 +161,24 @@ public class KimTypeServiceBase implements KimTypeService {
 		for ( Map.Entry<String,String> attribute : attributes.entrySet() ) {
 			Map<String,String> criteria = new HashMap<String,String>();
             criteria.put("attributeName", attribute.getKey());
-            KimAttributeImpl attributeImpl = (KimAttributeImpl) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimAttributeImpl.class, criteria);
+            KimAttributeImpl attributeImpl = (KimAttributeImpl) getBusinessObjectService().findByPrimaryKey(KimAttributeImpl.class, criteria);
             
 			List<String> attributeErrors = null;
 			try {
 				PropertyDescriptor propertyDescriptor = PropertyUtils.getPropertyDescriptor(attributeImpl, attributeImpl.getAttributeName());
-				if (attributeImpl.getComponentName() == null) {
-					attributeErrors = validateNonDataDictionaryAttribute(null, attributeImpl, propertyDescriptor, true);
-				} else {
-					attributeErrors = validateDataDictionaryAttribute(attributeImpl.getComponentName(), attributeImpl, propertyDescriptor, true);
+				if ( propertyDescriptor != null ) { 
+					if ( attributeImpl.getComponentName() == null) {
+						attributeErrors = validateNonDataDictionaryAttribute(null, attributeImpl, propertyDescriptor, true);
+					} else {
+						attributeErrors = validateDataDictionaryAttribute(attributeImpl.getComponentName(), attributeImpl, propertyDescriptor, true);
+					}
 				}
 			} catch (IllegalAccessException e) {
-				LOG.error(e.getMessage(), e);
+				LOG.error("Unable to validate attribute: " + attribute, e);
 			} catch (InvocationTargetException e) {
-				LOG.error(e.getMessage(), e);
+				LOG.error("Unable to validate attribute: " + attribute, e);
 			} catch (NoSuchMethodException e) {
-				LOG.error(e.getMessage(), e);
+				LOG.error("Unable to validate attribute: " + attribute, e);
 			}
 			
 			if ( attributeErrors != null ) {
@@ -162,10 +191,10 @@ public class KimTypeServiceBase implements KimTypeService {
 	}
 	
 	protected List<String> validateDataDictionaryAttribute(String entryName, Object object, PropertyDescriptor propertyDescriptor, boolean validateRequired) {
-		KNSServiceLocator.getDictionaryValidationService().validatePrimitiveFromDescriptor(entryName, object, propertyDescriptor, "", validateRequired);
-	
-		List<String> errors = new ArrayList<String>();
+		getDictionaryValidationService().validatePrimitiveFromDescriptor(entryName, object, propertyDescriptor, "", validateRequired);
+
 		Object results = GlobalVariables.getErrorMap().get(propertyDescriptor.getName());
+		List<String> errors = new ArrayList<String>();
         if (results instanceof String) {
         	errors.add((String)results);
         } else {
@@ -175,8 +204,7 @@ public class KimTypeServiceBase implements KimTypeService {
 			}
         }
 		
-        GlobalVariables.getErrorMap().clear();
-        
+        GlobalVariables.getErrorMap().remove(propertyDescriptor.getName());
 		return errors;
 	}
 
@@ -185,18 +213,19 @@ public class KimTypeServiceBase implements KimTypeService {
 	}
 	
 	@SuppressWarnings("unchecked")
+	// FIXME: the attributeName is not guaranteed to be unique!
 	protected List<KeyLabelPair> getDataDictionaryAttributeValues(String attributeName) {
 		Map<String,String> criteria = new HashMap<String,String>();
         criteria.put("attributeName", attributeName);
-        KimAttributeImpl attributeImpl = (KimAttributeImpl) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimAttributeImpl.class, criteria);
-		AttributeDefinition definition = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(attributeImpl.getComponentName()).getAttributeDefinition(attributeName);
+        KimAttributeImpl attributeImpl = (KimAttributeImpl) getBusinessObjectService().findByPrimaryKey(KimAttributeImpl.class, criteria);
+		AttributeDefinition definition = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(attributeImpl.getComponentName()).getAttributeDefinition(attributeName);
 		List<KeyLabelPair> pairs = new ArrayList<KeyLabelPair>();
 		Class<? extends KeyValuesFinder> keyValuesFinderName = (Class<? extends KeyValuesFinder>)definition.getControl().getValuesFinderClass();		
 		try {
 			KeyValuesFinder finder = keyValuesFinderName.newInstance();
 			pairs = finder.getKeyValues();
 		} catch (Exception e) {
-			LOG.error(e.getMessage(), e);
+			LOG.error("Unable to build a KeyValuesFinder for " + attributeName, e);
 		}
 		return pairs;
 	}
@@ -205,17 +234,18 @@ public class KimTypeServiceBase implements KimTypeService {
 		return new ArrayList<KeyLabelPair>();
 	}
 	
+	// FIXME: the attributeName is not guaranteed to be unique!
 	public List<KeyLabelPair> getAttributeValidValues(String attributeName) {
 		Map<String,String> criteria = new HashMap<String,String>();
         criteria.put("attributeName", attributeName);
-        KimAttributeImpl attributeImpl = (KimAttributeImpl) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimAttributeImpl.class, criteria);
+        KimAttributeImpl attributeImpl = (KimAttributeImpl) getBusinessObjectService().findByPrimaryKey(KimAttributeImpl.class, criteria);
         return attributeImpl.getComponentName() == null ? getNonDataDictionaryAttributeValues(attributeName) : getDataDictionaryAttributeValues(attributeName);
 	}
 	
 	@SuppressWarnings("unchecked")
 	protected AttributeDefinition getDataDictionaryAttributeDefinition(KimTypeAttributeImpl typeAttribute) {
 		KimDataDictionaryAttributeDefinition definition = new KimDataDictionaryAttributeDefinition(); 
-		definition.setDataDictionaryAttributeDefinition(KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(typeAttribute.getKimAttribute().getComponentName()).getAttributeDefinition(typeAttribute.getKimAttribute().getAttributeName()));
+		definition.setDataDictionaryAttributeDefinition(getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(typeAttribute.getKimAttribute().getComponentName()).getAttributeDefinition(typeAttribute.getKimAttribute().getAttributeName()));
 		if (definition.getDataDictionaryAttributeDefinition().getFormatterClass() != null) {
 			definition.setFormatterClass(Formatter.findFormatter(definition.getDataDictionaryAttributeDefinition().getFormatterClass()));
 		}
@@ -251,7 +281,7 @@ public class KimTypeServiceBase implements KimTypeService {
 			}
 			definition.setLookupReturnPropertyConversions(lookupReturnPropertyConversionsMap);
 		} catch (Exception e) {
-			LOG.error(e.getMessage(), e);
+			LOG.error("Unable to get DD data for: " + typeAttribute.getKimAttribute(), e);
 		}
 		return definition;
 	}
@@ -273,7 +303,7 @@ public class KimTypeServiceBase implements KimTypeService {
 	    		copyClass = copyClass.getSuperclass();
 	    	} while (copyClass != null && !(copyClass.equals(Object.class)));		
 		} catch (Exception e) {
-			LOG.error(e.getMessage(), e);
+			LOG.error("Unable to copy " + original, e);
 		}
 		return copy;
 	}

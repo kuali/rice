@@ -275,18 +275,17 @@ public class IdentityManagementPersonDocument extends TransactionalDocumentBase 
 		return managedLists;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.document.DocumentBase#handleRouteStatusChange()
+	 */
 	@Override
-	public void doRouteStatusChange(
-			DocumentRouteStatusChangeDTO statusChangeEvent) throws Exception {
-		// TODO shyu - THIS METHOD NEEDS JAVADOCS
-		super.doRouteStatusChange(statusChangeEvent);
-	    if (statusChangeEvent.getNewRouteStatus().equals(KEWConstants.ROUTE_HEADER_APPROVED_CD)) {
-		//if (statusChangeEvent.getNewRouteStatus().equals("R")) {
+	public void handleRouteStatusChange() {
+		super.handleRouteStatusChange();
+		if (getDocumentHeader().getWorkflowDocument().stateIsProcessed()) {
 			KIMServiceLocator.getUiDocumentService().saveEntityPerson(this);
-			
 		}
 	}
-
+	
 	public String getEntityEntityTypeId() {
 		return this.entityEntityTypeId;
 	}

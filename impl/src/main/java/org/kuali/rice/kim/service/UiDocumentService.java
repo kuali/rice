@@ -15,12 +15,10 @@
  */
 package org.kuali.rice.kim.service;
 
-import java.util.List;
+import java.util.Map;
 
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
-import org.kuali.rice.kim.bo.group.KimGroup;
-import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
-import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
+import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 
 /**
@@ -36,7 +34,7 @@ public interface UiDocumentService {
 	 * 	  
 	 * @param identityManagementPersonDocument
 	 */
-    public void saveEntityPerson(IdentityManagementPersonDocument identityManagementPersonDocument);
+    void saveEntityPerson(IdentityManagementPersonDocument identityManagementPersonDocument);
     
     /**
      * 
@@ -44,8 +42,7 @@ public interface UiDocumentService {
      * 
      * @param personDocRole
      */
-	public void setAttributeEntry(PersonDocumentRole personDocRole);
-	
+    Map<String,Object> getAttributeEntries( AttributeDefinitionMap definitions );
 	/**
 	 * 
 	 * This method is to load entity to person document pending Bos when user 'initiate' a document for 'editing' entity.
@@ -53,6 +50,6 @@ public interface UiDocumentService {
 	 * @param identityManagementPersonDocument
 	 * @param kimEntity
 	 */
-	public void loadEntityToPersonDoc(IdentityManagementPersonDocument identityManagementPersonDocument, KimEntityImpl kimEntity);
+	void loadEntityToPersonDoc(IdentityManagementPersonDocument identityManagementPersonDocument, KimEntityImpl kimEntity);
 	
 }

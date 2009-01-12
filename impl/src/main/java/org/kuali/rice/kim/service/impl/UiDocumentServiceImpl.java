@@ -42,6 +42,7 @@ import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
+import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAddress;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAffiliation;
@@ -55,6 +56,8 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRolePrncpl;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRoleQualifier;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
+import org.kuali.rice.kim.service.GroupService;
+import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.service.support.KimTypeService;
@@ -76,14 +79,16 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  */
 public class UiDocumentServiceImpl implements UiDocumentService {
 	protected BusinessObjectService businessObjectService;
+	protected IdentityService identityService;
+	protected GroupService groupService;
 
 	/**
-	 * @see org.kuali.rice.kim.service.UiDocumentService#getKimEntity(org.kuali.rice.kim.document.IdentityManagementPersonDocument)
+	 * @see org.kuali.rice.kim.service.UiDocumentService#saveEntityPerson(IdentityManagementPersonDocument)
 	 */
 	public void saveEntityPerson(
 			IdentityManagementPersonDocument identityManagementPersonDocument) {
 		KimEntityImpl kimEntity = new KimEntityImpl();
-		KimEntityImpl origEntity = (KimEntityImpl)KIMServiceLocator.getIdentityService().getEntity(identityManagementPersonDocument.getEntityId());
+		KimEntityImpl origEntity = (KimEntityImpl)getIdentityService().getEntity(identityManagementPersonDocument.getEntityId());
 		if (origEntity == null) {
 			origEntity = new KimEntityImpl();
 		}
@@ -133,19 +138,19 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 	/**
 	 * 
-	 * @see org.kuali.rice.kim.service.UiDocumentService#setAttributeEntry(org.kuali.rice.kim.bo.ui.PersonDocumentRole)
+	 * @see org.kuali.rice.kim.service.UiDocumentService#getAttributeEntries(AttributeDefinitionMap)
 	 */
-	public void setAttributeEntry(PersonDocumentRole personDocRole) {
-		Map attributeEntry = new HashMap();
-        for (String key : personDocRole.getDefinitions().keySet()) {
-			AttributeDefinition attrDefinition = personDocRole.getDefinitions().get(key);
-			Map attribute = new HashMap();
+	public Map<String,Object> getAttributeEntries( AttributeDefinitionMap definitions ) {
+		Map<String,Object> attributeEntries = new HashMap<String,Object>();
+        for (String key : definitions.keySet()) {
+			AttributeDefinition attrDefinition = definitions.get(key);
+			Map<String,Object> attribute = new HashMap<String,Object>();
 			if (attrDefinition instanceof KimDataDictionaryAttributeDefinition) {
 				AttributeDefinition definition = ((KimDataDictionaryAttributeDefinition) attrDefinition)
 						.getDataDictionaryAttributeDefinition();
 				ControlDefinition control = definition.getControl();
 				if (control.isSelect()) {
-					Map controlMap = new HashMap();
+					Map<String,Object> controlMap = new HashMap<String,Object>();
 		            controlMap.put("select", "true");
 		            controlMap.put("valuesFinder", control.getValuesFinderClass().getName());
 		            if (control.getBusinessObjectClass() != null) {
@@ -168,7 +173,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				attribute.put("shortLabel", definition.getShortLabel());
 				attribute.put("maxLength", definition.getMaxLength());
 				attribute.put("required", definition.isRequired());
-				attributeEntry.put(definition.getName(),attribute);
+				attributeEntries.put(definition.getName(),attribute);
 			} else {
 				TextControlDefinition control = new TextControlDefinition();
 				control.setSize(10);
@@ -177,10 +182,10 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				attribute.put("maxLength", 20);
 				attribute.put("required", true);
 				attribute.put("shortLabel", attrDefinition.getLabel());
-				attributeEntry.put(attrDefinition.getName(),attribute);
+				attributeEntries.put(attrDefinition.getName(),attribute);
 			}
 		}
-        personDocRole.setAttributeEntry(attributeEntry);
+        return attributeEntries;
 	}
 
 
@@ -215,7 +220,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			identityManagementPersonDocument.setPrivacy(loadPrivacyReferences(kimEntity.getPrivacyPreferences()));
 		}
 		
-		List<? extends KimGroup> groups = KIMServiceLocator.getGroupService().getGroupsForPrincipal(identityManagementPersonDocument.getPrincipalId());
+		List<? extends KimGroup> groups = getGroupService().getGroupsForPrincipal(identityManagementPersonDocument.getPrincipalId());
 		loadGroupToPersonDoc(identityManagementPersonDocument, groups);
 		loadRoleToPersonDoc(identityManagementPersonDocument);
 		
@@ -233,7 +238,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	private void loadGroupToPersonDoc(IdentityManagementPersonDocument identityManagementPersonDocument, List<? extends KimGroup> groups) {
 		List <PersonDocumentGroup> docGroups = new ArrayList <PersonDocumentGroup>();
 		for (KimGroup group : groups) {
-			for (String memberId : KIMServiceLocator.getGroupService().getDirectMemberPrincipalIds(group.getGroupId())) {
+			for (String memberId : getGroupService().getDirectMemberPrincipalIds(group.getGroupId())) {
 				// other more direct methods for this ?
 				// can't cast group to 'KimGroupImpl' because list is GroupInfo type
 				if (memberId.equals(identityManagementPersonDocument.getPrincipalId())) {
@@ -243,7 +248,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					docGroup.setPrincipalId(memberId);
 					List<String> groupIds = new ArrayList<String>();
 					groupIds.add(group.getGroupId());
-					for (GroupMembershipInfo groupMember : KIMServiceLocator.getGroupService().getGroupMembers(groupIds)) {
+					for (GroupMembershipInfo groupMember : getGroupService().getGroupMembers(groupIds)) {
 						if (groupMember.getMemberId().equals(identityManagementPersonDocument.getPrincipalId()) && groupMember.getMemberTypeCode().equals(KimGroupImpl.PRINCIPAL_MEMBER_TYPE)) {
 							docGroup.setGroupMemberId(groupMember.getGroupMemberId());
 							docGroup.setActiveFromDate(groupMember.getActiveFromDate());
@@ -306,9 +311,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
             	qualifier.setQualifierKey(key);
             	role.getNewRolePrncpl().getQualifiers().add(qualifier);
             }
-
-	        KIMServiceLocator.getUiDocumentService().setAttributeEntry(role);
-
+            role.setAttributeEntry( getAttributeEntries( role.getDefinitions() ) );
 		}
         //
         
@@ -318,7 +321,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	// TODO : reorganize these private methods, such they can close together 
 	// according where they are called.
 	// too much work to get everything from roleservice, so get it here
-    private List<KimRoleImpl> getRolesForPrincipal(String principalId) {
+    @SuppressWarnings("unchecked")
+	private List<KimRoleImpl> getRolesForPrincipal(String principalId) {
 		if ( principalId == null ) {
 			return new ArrayList<KimRoleImpl>();
 		}
@@ -719,7 +723,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 	private List <GroupMemberImpl> populateGroups(IdentityManagementPersonDocument identityManagementPersonDocument) {
 		List <GroupMemberImpl>  groupPrincipals = new ArrayList<GroupMemberImpl>();
-		List<? extends KimGroup> origGroups = KIMServiceLocator.getGroupService().getGroupsForPrincipal(identityManagementPersonDocument.getPrincipalId());
+		List<? extends KimGroup> origGroups = getGroupService().getGroupsForPrincipal(identityManagementPersonDocument.getPrincipalId());
 		for (PersonDocumentGroup group : identityManagementPersonDocument.getGroups()) {
 			GroupMemberImpl groupPrincipalImpl = new GroupMemberImpl();
 			groupPrincipalImpl.setGroupId(group.getGroupId());
@@ -731,7 +735,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			groupPrincipalImpl.setMemberTypeCode(KimGroupImpl.PRINCIPAL_MEMBER_TYPE);
 			List<String> groupIds = new ArrayList<String>();
 			groupIds.add(group.getGroupId());
-			for (GroupMembershipInfo groupMember : KIMServiceLocator.getGroupService().getGroupMembers(groupIds)) {
+			for (GroupMembershipInfo groupMember : getGroupService().getGroupMembers(groupIds)) {
 				if (groupMember.getMemberId().equals(identityManagementPersonDocument.getPrincipalId()) && groupMember.getMemberTypeCode().equals(KimGroupImpl.PRINCIPAL_MEMBER_TYPE)) {
 					groupPrincipalImpl.setVersionNumber(groupMember.getVersionNumber());
 				}
@@ -799,11 +803,21 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		if ( businessObjectService == null ) {
 			businessObjectService = KNSServiceLocator.getBusinessObjectService();
 		}
-		return this.businessObjectService;
+		return businessObjectService;
 	}
 
-	public void setBusinessObjectService(BusinessObjectService businessObjectService) {
-		this.businessObjectService = businessObjectService;
+	public IdentityService getIdentityService() {
+		if ( identityService == null ) {
+			identityService = KIMServiceLocator.getIdentityService();
+		}
+		return identityService;
+	}
+
+	public GroupService getGroupService() {
+		if ( groupService == null ) {
+			groupService = KIMServiceLocator.getGroupService();
+		}
+		return groupService;
 	}
 
 }

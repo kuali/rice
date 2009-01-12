@@ -45,7 +45,9 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentRoleQualifier;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.rule.event.ui.AddGroupEvent;
 import org.kuali.rice.kim.rule.event.ui.AddRoleEvent;
+import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
@@ -62,8 +64,24 @@ import org.kuali.rice.kns.web.struts.action.KualiTransactionalDocumentActionBase
  */
 public class IdentityManagementPersonDocumentAction extends KualiTransactionalDocumentActionBase {
 
+	protected IdentityService identityService;
+	protected UiDocumentService uiDocumentService;
 	
-    @Override
+    public IdentityService getIdentityService() {
+    	if ( identityService == null ) {
+    		identityService = KIMServiceLocator.getIdentityService();
+    	}
+		return identityService;
+	}
+
+	public UiDocumentService getUiDocumentService() {
+		if ( uiDocumentService == null ) {
+			uiDocumentService = KIMServiceLocator.getUiDocumentService();
+		}
+		return uiDocumentService;
+	}
+
+	@Override
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -85,12 +103,12 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
 		// get set up person document
         String commandParam = request.getParameter(KNSConstants.PARAMETER_COMMAND);
 		if (StringUtils.isNotBlank(commandParam) && commandParam.equals(KEWConstants.INITIATE_COMMAND) && StringUtils.isNotBlank(request.getParameter(KimConstants.PropertyNames.PRINCIPAL_ID))) {
-	        KimPrincipal principal = KIMServiceLocator.getIdentityService().getPrincipal(request.getParameter(KimConstants.PropertyNames.PRINCIPAL_ID));
+	        KimPrincipal principal = getIdentityService().getPrincipal(request.getParameter(KimConstants.PropertyNames.PRINCIPAL_ID));
 	        personDoc.setPrincipalId(principal.getPrincipalId());
 	        personDoc.setPrincipalName(principal.getPrincipalName());
 	        personDoc.setPassword(principal.getPassword());
-			KimEntityImpl entity = (KimEntityImpl)KIMServiceLocator.getIdentityService().getEntity(principal.getEntityId());
-			KIMServiceLocator.getUiDocumentService().loadEntityToPersonDoc(personDoc, entity);
+			KimEntityImpl entity = (KimEntityImpl)getIdentityService().getEntity(principal.getEntityId());
+			getUiDocumentService().loadEntityToPersonDoc(personDoc, entity);
 			//List<? extends KimGroup> groups = KIMServiceLocator.getIdentityManagementService().getGroupsForPrincipal(principal.getPrincipalId());
 			//KIMServiceLocator.getUiDocumentService().loadGroupToPersonDoc(personDoc, groups);
 		}
@@ -116,9 +134,7 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
 	            	qualifier.setQualifierKey(key);
 	            	role.getNewRolePrncpl().getQualifiers().add(qualifier);
 	            }
-
-		        KIMServiceLocator.getUiDocumentService().setAttributeEntry(role);
-
+		        role.setAttributeEntry( getUiDocumentService().getAttributeEntries( role.getDefinitions() ) );
 			}
 		}
 
@@ -324,7 +340,7 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
 	        	newRole.setRolePrncpls(rolePrncpls);
 	        }
 	        newRole.setNewRolePrncpl(newRolePrncpl);
-	        KIMServiceLocator.getUiDocumentService().setAttributeEntry(newRole);
+	        newRole.setAttributeEntry( getUiDocumentService().getAttributeEntries( newRole.getDefinitions() ) );
 	        personDocumentForm.getPersonDocument().getRoles().add(newRole);
 	        personDocumentForm.setNewRole(new PersonDocumentRole());
         }

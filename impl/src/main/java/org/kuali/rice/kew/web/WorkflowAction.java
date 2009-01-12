@@ -277,6 +277,8 @@ public abstract class WorkflowAction extends DispatchAction {
 
 	/*
      * TODO: this will be eliminated evaentually in favor of using KualiAction
+     * chb: 12Jan2009: that's been done...but permissions still need to be
+     * 		built
      *
      */
     protected boolean checkAuthorization() //throws AuthorizationException

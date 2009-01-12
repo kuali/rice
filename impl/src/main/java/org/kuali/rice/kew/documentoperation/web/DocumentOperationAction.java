@@ -72,6 +72,10 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.WorkflowAction;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.exception.AuthorizationException;
+import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.web.struts.action.KualiAction;
+import org.kuali.rice.kns.web.struts.action.KualiLookupAction;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
 
@@ -80,7 +84,7 @@ import org.kuali.rice.ksb.messaging.service.KSBXMLService;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class DocumentOperationAction extends WorkflowAction {
+public class DocumentOperationAction extends KualiAction {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentOperationAction.class);
 	private static final String DEFAULT_LOG_MSG = "Admin change via document operation";
 
@@ -456,7 +460,7 @@ public class DocumentOperationAction extends WorkflowAction {
 		}
 
 
-		WorkflowDocument workflowDocument = new WorkflowDocument(getUserSession(request).getPrincipalId(), new Long(docForm.getRouteHeaderId()));
+		WorkflowDocument workflowDocument = new WorkflowDocument(GlobalVariables.getUserSession().getPrincipalId(), new Long(docForm.getRouteHeaderId()));
 		String annotation = docForm.getAnnotation();
 		if (StringUtils.isEmpty(annotation)) {
 			annotation = DEFAULT_LOG_MSG;
@@ -569,7 +573,7 @@ public class DocumentOperationAction extends WorkflowAction {
 	}
 
 	public ActionForward performLookup(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		DocumentOperationForm docForm = (DocumentOperationForm) form;
+		/*DocumentOperationForm docForm = (DocumentOperationForm) form;
 		String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + mapping.getModuleConfig().getPrefix();;
 		StringBuffer lookupUrl = new StringBuffer(basePath);
 
@@ -589,7 +593,9 @@ public class DocumentOperationAction extends WorkflowAction {
 		}
 
 		lookupUrl.append("&returnLocation=").append(basePath).append(mapping.getPath()).append(".do");
-		return new ActionForward(lookupUrl.toString(), true);
+		return new ActionForward(lookupUrl.toString(), true); */
+		KualiLookupAction kla = new KualiLookupAction();
+		return kla.performLookup(mapping, form, request, response);
 	}
 
 	public ActionForward refresh(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -660,7 +666,7 @@ public class DocumentOperationAction extends WorkflowAction {
 						actionTaken.setDelegatorPrincipalId(null);
 					}
 				}
-				if ("delegatorWorkgroupId".equals(lookupField)) {
+				if ("delegatorGroupId".equals(lookupField)) {
 					if (request.getParameter("workgroupId") != null && !"".equals(request.getParameter("workgroupId").trim())) {
 						actionTaken.setDelegatorGroupId(request.getParameter("workgroupId"));
 					} else {
@@ -700,7 +706,7 @@ public class DocumentOperationAction extends WorkflowAction {
 						actionItem.setDelegatorWorkflowId(null);
 					}
 				}
-				if ("delegatorWorkgroupId".equals(lookupField)) {
+				if ("delegatorGroupId".equals(lookupField)) {
 					if (request.getParameter("workgroupId") != null && !"".equals(request.getParameter("workgroupId").trim())) {
 						actionItem.setDelegatorGroupId(request.getParameter("workgroupId"));
 					} else {
@@ -773,6 +779,18 @@ public class DocumentOperationAction extends WorkflowAction {
 		} catch (Exception e) {
 			throw new WorkflowRuntimeException(e);
 		}
+	}
+	
+	/**
+	 * chb: 12Jan2009
+	 * This needs to be fleshed out after permissions are built
+	 * 
+	 *  
+	 */
+	//TODO
+	@Override
+	public void checkAuthorization(ActionForm form, String methodToCall) throws AuthorizationException
+	{
 	}
 
 	public ActionForward moveDocument(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {

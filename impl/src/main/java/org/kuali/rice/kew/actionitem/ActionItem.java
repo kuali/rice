@@ -381,7 +381,7 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
                                         .append("rowStyleClass", rowStyleClass)
                                         .append("roleName", roleName)
                                         .append("delegatorWorkflowId", delegatorWorkflowId)
-                                        .append("delegatorWorkgroupId", delegatorGroupId)
+                                        .append("delegatorGroupId", delegatorGroupId)
                                         .append("dateAssignedString", dateAssignedString)
                                         .append("actionToTake", actionToTake)
                                         .append("delegationType", delegationType)

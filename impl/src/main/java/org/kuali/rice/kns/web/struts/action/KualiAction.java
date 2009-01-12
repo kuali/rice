@@ -597,7 +597,6 @@ public abstract class KualiAction extends DispatchAction {
         parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, "start");
         parameters.put(KNSConstants.DOC_FORM_KEY, GlobalVariables.getUserSession().addObject(form));
 
-        String inquiryAction = "directInquiry.do";
         String inquiryUrl = UrlFactory.parameterizeUrl(basePath + "/kr/" + KNSConstants.DIRECT_INQUIRY_ACTION, parameters);
         return new ActionForward(inquiryUrl, true);
 
@@ -790,8 +789,15 @@ public abstract class KualiAction extends DispatchAction {
      * @param form
      * @throws AuthorizationException
      */
-    protected void checkAuthorization( ActionForm form, String methodToCall) throws AuthorizationException {
-        if (!KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(GlobalVariables.getUserSession().getPrincipalId(), KNSConstants.KNS_NAMESPACE, KimConstants.PermissionTemplateNames.USE_SCREEN, KimCommonUtils.getNamespaceAndComponentFullName(this.getClass()), new AttributeSet(getRoleQualification(form, methodToCall)))) {
+    protected void checkAuthorization( ActionForm form, String methodToCall) throws AuthorizationException 
+    {
+    	String principalId = GlobalVariables.getUserSession().getPrincipalId();
+    	AttributeSet attributeSet2 = new AttributeSet(getRoleQualification(form, methodToCall));
+    	AttributeSet attributeSet1 = KimCommonUtils.getNamespaceAndComponentFullName(this.getClass());
+    	
+        if (!KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(principalId, KNSConstants.KNS_NAMESPACE, 
+        		KimConstants.PermissionTemplateNames.USE_SCREEN, attributeSet1, attributeSet2 )) 
+        {
             throw new AuthorizationException(GlobalVariables.getUserSession().getPerson().getPrincipalName(), 
             		methodToCall,
             		this.getClass().getSimpleName());

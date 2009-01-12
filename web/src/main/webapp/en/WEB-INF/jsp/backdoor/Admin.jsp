@@ -47,7 +47,7 @@
 			<td><a href="Stats.do" target="<c:out value="${BackdoorForm.targetName}" />">Workflow Statistics Report</a></td>
 		</tr>
 		<tr>
-			<td><a href="DocumentOperation.do" target="<c:out value="${BackdoorForm.targetName}" />">Document Operation</a></td>
+			<td><a href="../kew/DocumentOperation.do" target="<c:out value="${BackdoorForm.targetName}" />">Document Operation</a></td>
 		</tr>
 		<tr>
 			<td><a href="Help.do" target="<c:out value="${BackdoorForm.targetName}" />">Workflow Help Entry</a></td>

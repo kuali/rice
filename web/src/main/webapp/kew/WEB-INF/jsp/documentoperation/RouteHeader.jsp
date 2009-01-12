@@ -1,9 +1,5 @@
-<%@ taglib uri="../../tld/struts-html-el.tld" prefix="html-el" %>
-<%@ taglib uri="../../tld/struts-bean-el.tld" prefix="bean-el" %>
-<%@ taglib uri="../../tld/struts-logic-el.tld" prefix="logic-el"%>
-<%@ taglib uri="../../tld/c.tld" prefix="c" %>
-<%@ taglib uri="../../tld/fmt.tld" prefix="fmt" %>
-<%@ taglib uri="../../tld/displaytag.tld" prefix="display-el" %>
+<%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp" %>
+
 <html-el:hidden property="routeHeader.routeHeaderId" />
 <html-el:hidden property="routeHeader.jrfVerNbr" />
 <html-el:hidden property="lookupableImplServiceName" />
@@ -75,8 +71,10 @@
 	  	  <tr>
 	  	    <td width="33%" align=right class="thnormal">Doc Type ID:</td>
 	  	    <td width="66%" class="datacell"><html-el:text property="routeHeader.documentTypeId" />
-	  	      <html-el:image property="methodToCall.performLookup" src="images/searchicon.gif" onclick="javascript:configureLookup('DocumentTypeLookupableImplService', 'RouteHeader', 'documentTypeId', '0')"/>
+	  	      <%-- html-el:image property="methodToCall.performLookup" src="images/searchicon.gif" onclick="javascript:configureLookup('DocumentType', 'RouteHeader', 'documentTypeId', '0')"/ --%>
 	  	      <%-- document.forms[0].elements['lookupableImplServiceName'].value = 'DocumentTypeLookupableImplService';" />             --%>
+	 	      <%-- kul:lookup boClassName="org.kuali.rice.kns.bo.DocumentType" fieldConversions="documentTypeId:routeHeader.documentTypeId" lookupParameters="routeHeader.documentTypeId:documentTypeId" / --%><%-- 'RouteHeader', 'documentTypeId', '0')"/ --%>
+	  	    	<kul:lookup boClassName="org.kuali.rice.kew.doctype.bo.DocumentType" fieldConversions="documentTypeId:routeHeader.documentTypeId" lookupParameters="routeHeader.documentTypeId:documentTypeId" />
 	  	    </td>
 		  </tr>
 	  	  <tr>

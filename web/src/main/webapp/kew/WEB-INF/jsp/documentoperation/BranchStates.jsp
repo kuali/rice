@@ -1,9 +1,4 @@
-<%@ taglib uri="../../tld/struts-html-el.tld" prefix="html-el" %>
-<%@ taglib uri="../../tld/struts-bean-el.tld" prefix="bean-el" %>
-<%@ taglib uri="../../tld/struts-logic-el.tld" prefix="logic-el"%>
-<%@ taglib uri="../../tld/c.tld" prefix="c" %>
-<%@ taglib uri="../../tld/fmt.tld" prefix="fmt" %>
-<%@ taglib uri="../../tld/displaytag.tld" prefix="display-el" %>
+<%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp" %>
 
 <script language="JavaScript" src="scripts/documentoperation-common.js"></script>
 

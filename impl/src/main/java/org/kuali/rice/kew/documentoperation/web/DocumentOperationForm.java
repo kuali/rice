@@ -27,6 +27,7 @@ import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kns.web.struts.form.KualiForm;
 
 
 /**
@@ -34,7 +35,7 @@ import org.kuali.rice.kew.util.KEWConstants;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class DocumentOperationForm extends ActionForm{
+public class DocumentOperationForm extends KualiForm {
 
 	private static final long serialVersionUID = 2994179393392218743L;
 	private DocumentRouteHeaderValue routeHeader;

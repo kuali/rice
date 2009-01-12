@@ -12,6 +12,7 @@
 	    <form-bean name="RuleForm" type="org.kuali.rice.kew.rule.web.RuleForm" />
 	    <form-bean name="ActionListFormNew" type="org.kuali.rice.kew.actionlist.web.ActionListFormNew" />
 	    <form-bean name="ActionListFilterFormNew" type="org.kuali.rice.kew.actionlist.web.ActionListFilterFormNew" />
+	    <form-bean name="DocumentOperationForm" type="org.kuali.rice.kew.documentoperation.web.DocumentOperationForm" />
     </form-beans>
 
     <global-exceptions>
@@ -87,6 +88,14 @@
         <forward name="finalStateError" path="/WEB-INF/jsp/ActionList/ActionListFilter.jsp"/>
       </action>      
       
+      <action path="/DocumentOperation" name="DocumentOperationForm" scope="request" input="/WEB-INF/jsp/documentoperation/DocumentOperation.jsp"
+      			validate="false" type="org.kuali.rice.kew.documentoperation.web.DocumentOperationAction" parameter="methodToCall">
+	      <forward name="basic" path="/WEB-INF/jsp/documentoperation/DocumentOperation.jsp"/>
+	      <forward name="summary" path="/WEB-INF/jsp/documentoperation/DocumentOperationSummary.jsp"/>
+      	  <forward name="confirm" path="/WEB-INF/jsp/documentoperation/DocumentOperationConfirm.jsp"/>
+	      <forward name="requiredStateError" path="/WEB-INF/jsp/documentoperation/DocumentOperationSummary.jsp"/>
+          <forward name="finalStateError" path="/WEB-INF/jsp/documentoperation/DocumentOperationSummary.jsp"/>
+      </action>
     </action-mappings>
     
     

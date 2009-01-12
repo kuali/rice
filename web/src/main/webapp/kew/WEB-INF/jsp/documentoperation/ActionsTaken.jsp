@@ -1,9 +1,4 @@
-<%@ taglib uri="../../tld/struts-html-el.tld" prefix="html-el" %>
-<%@ taglib uri="../../tld/struts-bean-el.tld" prefix="bean-el" %>
-<%@ taglib uri="../../tld/struts-logic-el.tld" prefix="logic-el"%>
-<%@ taglib uri="../../tld/c.tld" prefix="c" %>
-<%@ taglib uri="../../tld/fmt.tld" prefix="fmt" %>
-<%@ taglib uri="../../tld/displaytag.tld" prefix="display-el" %>
+<%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp" %>
 
 <tr>
   <td><img src="images/pixel_clear.gif" alt="" width="20" height="20"></td>
@@ -56,20 +51,20 @@
   	  </tr>
    	  <tr>
   	    <td width="33%" align=right class="thnormal">* Action Taken Person ID:</td>
-  	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionTaken[${ctr}].workflowId" />
-  	      <html-el:image property="methodToCall.performLookup" src="images/searchicon.gif" alt="search" align="absmiddle" onclick="javascript:configureLookup('UserLookupableImplService', 'ActionTaken', 'workflowId', '${ctr}');"/>
+  	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionTaken[${ctr}].principalId" />
+  	      <html-el:image property="methodToCall.performLookup" src="images/searchicon.gif" alt="search" align="absmiddle" onclick="javascript:configureLookup('UserLookupableImplService', 'ActionTaken', 'principalId', '${ctr}');"/>
   	    </td>
   	  </tr>
   	  <tr>
   	    <td width="33%" align=right class="thnormal">Delegator Person ID:</td>
-  	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionTaken[${ctr}].delegatorWorkflowId" />
-  	      <html-el:image property="methodToCall.performLookup" src="images/searchicon.gif" alt="search" align="absmiddle" onclick="javascript:configureLookup('UserLookupableImplService', 'ActionTaken', 'delegatorWorkflowId', '${ctr}');"/>
+  	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionTaken[${ctr}].delegatorPrincipalId" />
+  	      <html-el:image property="methodToCall.performLookup" src="images/searchicon.gif" alt="search" align="absmiddle" onclick="javascript:configureLookup('UserLookupableImplService', 'ActionTaken', 'delegatorPrincipalId', '${ctr}');"/>
   	    </td>
   	  </tr>
 	  <tr>
   	    <td width="33%" align=right class="thnormal">Delegator Workgroup ID:</td>
-  	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionTaken[${ctr}].delegatorWorkgroupId" />
-  	      <html-el:image property="methodToCall.performLookup" src="images/searchicon.gif" alt="search" align="absmiddle" onclick="javascript:configureLookup('WorkGroupLookupableImplService', 'ActionTaken', 'delegatorWorkgroupId', '${ctr}');"/>
+  	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionTaken[${ctr}].delegatorGroupId" />
+  	      <html-el:image property="methodToCall.performLookup" src="images/searchicon.gif" alt="search" align="absmiddle" onclick="javascript:configureLookup('WorkGroupLookupableImplService', 'ActionTaken', 'delegatorGroupId', '${ctr}');"/>
   	    </td>
   	  </tr>
   	  <tr>

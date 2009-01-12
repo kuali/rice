@@ -117,7 +117,7 @@ public class ActionTakenValue implements WorkflowPersistable {
     	return getPrincipalForId(delegatorPrincipalId);
     }
 
-    public KimGroup getDelegatorWorkgroup()
+    public KimGroup getDelegatorGroup()
     {
 	    return KIMServiceLocator.getIdentityManagementService()
 	            .getGroup(String.valueOf(delegatorGroupId));
@@ -147,7 +147,7 @@ public class ActionTakenValue implements WorkflowPersistable {
         	UserSession userSession = UserSession.getAuthenticatedUser();
         	return UserUtils.getDisplayableName(userSession, getDelegatorPrincipal());
         } else {
-            return getDelegatorWorkgroup().getGroupName();
+            return getDelegatorGroup().getGroupName();
         }
     }
     

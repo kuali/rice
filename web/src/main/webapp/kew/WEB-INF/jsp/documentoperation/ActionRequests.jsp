@@ -1,9 +1,4 @@
-<%@ taglib uri="../../tld/struts-html-el.tld" prefix="html-el" %>
-<%@ taglib uri="../../tld/struts-bean-el.tld" prefix="bean-el" %>
-<%@ taglib uri="../../tld/struts-logic-el.tld" prefix="logic-el"%>
-<%@ taglib uri="../../tld/c.tld" prefix="c" %>
-<%@ taglib uri="../../tld/fmt.tld" prefix="fmt" %>
-<%@ taglib uri="../../tld/displaytag.tld" prefix="display-el" %>
+<%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp" %>
 
 <tr>
   <td><img src="images/pixel_clear.gif" alt="" width="20" height="20"></td>
@@ -121,7 +116,7 @@
 	  	  <tr>
 	  	    <td width="33%" align=right class="thnormal">Person ID:</td>
 	  	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionRequest[${ctr}].principalId" />
-	  	      <html-el:image property="methodToCall.performLookup" src="images/searchicon.gif" alt="search" align="absmiddle" onclick="javascript:configureLookup('UserLookupableImplService', 'ActionRequest', 'workflowId', '${ctr}');"/>
+	  	      <html-el:image property="methodToCall.performLookup" src="images/searchicon.gif" alt="search" align="absmiddle" onclick="javascript:configureLookup('UserLookupableImplService', 'ActionRequest', 'principalId', '${ctr}');"/>
 	  	    </td>
 	  	  </tr>
 	  	  <tr>

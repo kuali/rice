@@ -18,7 +18,7 @@ package org.kuali.rice.kew.identity;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 
 /**
- * This is a description of what this class does - ewestfal don't forget to fill this in. 
+ * The name of a Principal in KIM
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *

@@ -24,6 +24,8 @@ public class UserUtils {
 	      return user.getPrincipalId();
 	    } else if ("authenticationId".equalsIgnoreCase(idType) || "a".equalsIgnoreCase(idType) || "principalName".equalsIgnoreCase(idType)) {
 	      return user.getPrincipalName();
+	    } else if ("emplId".equalsIgnoreCase(idType) || "e".equalsIgnoreCase(idType)) {
+	      return user.getEmployeeId();
 	    } else {
 	      LOG.error("Could not determine ID Value for given id type!" + idType);
 	    }

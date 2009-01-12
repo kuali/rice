@@ -79,6 +79,10 @@ public class WorkflowFunctions {
 	public static boolean isPrincipalNameAuthenticated(String principalName) {
 		return UserSession.getAuthenticatedUser().getPrincipalName().equals(principalName);
 	}
+	
+	public static boolean isEmployeeIdAuthenticated(String employeeId) {
+		return UserSession.getAuthenticatedUser().getPerson().getEmployeeId().equals(employeeId);
+	}
 
 	public static boolean isUserInGroup(String namespace, String groupName){
 		boolean isUserInGroup=false;

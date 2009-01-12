@@ -15,30 +15,30 @@
  */
 package org.kuali.rice.kew.identity;
 
-import org.kuali.rice.kew.user.WorkflowUserId;
+import org.kuali.rice.kew.user.EmplId;
 
 /**
- * The primary ID of a Principal in KIM
+ * The Employee ID of a Person in KIM
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class PrincipalId extends WorkflowUserId {
+public class EmployeeId extends EmplId {
 
-	public PrincipalId() {
+	public EmployeeId() {
 		super();
 	}
 
-	public PrincipalId(String principalId) {
-		super(principalId);
+	public EmployeeId(String employeeId) {
+		super(employeeId);
 	}
 	
-	public String getPrincipalId() {
-		return getWorkflowId();
+	public String getEmployeeId() {
+		return getEmplId();
 	}
 	
-	public void setPrincipalId(String principalId) {
-		setWorkflowId(principalId);
+	public void setEmployeeId(String employeeId) {
+		setEmplId(employeeId);
 	}
 
 }

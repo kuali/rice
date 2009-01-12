@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
@@ -38,20 +39,24 @@ public class ActionListCountServlet extends HttpServlet {
 			if (idType == null || idType.equals("")) {
 				idType = "a";
 			}
-			Person user = null;
+			String principalId = null;
 			if ("emplId".equalsIgnoreCase(idType) || "e".equalsIgnoreCase(idType)) {
-				throw new IllegalArgumentException("emplId should no longer be used");
+				Person person = KIMServiceLocator.getPersonService().getPersonByEmployeeId(id);
+				if (person != null) {
+					principalId = person.getPrincipalId();
+				}
 			} else if ("workflowId".equalsIgnoreCase(idType) || "w".equalsIgnoreCase(idType)) {
-				user = KIMServiceLocator.getPersonService().getPerson(id);
-			} else if ("uuId".equalsIgnoreCase(idType) || "u".equalsIgnoreCase(idType)) {
-				throw new IllegalArgumentException("uuId should no longer be used");
+				principalId = id;
 		    } else if ("authenticationId".equalsIgnoreCase(idType) || "a".equalsIgnoreCase(idType)) {
-		    	user = KIMServiceLocator.getPersonService().getPersonByPrincipalName(idType);
+		    	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(id);
+		    	if (principal != null) {
+		    		principalId = principal.getPrincipalId();
+		    	}
 		    }
-			if (user == null) {
+			if (principalId == null) {
 				return 0;
 			}
-			return KEWServiceLocator.getActionListService().getCount(user.getPrincipalId());
+			return KEWServiceLocator.getActionListService().getCount(principalId);
 		} catch (Throwable t) {
 			LOG.error("Fatal error when querying for Action List Count", t);
 			return 0;

@@ -62,6 +62,12 @@ public interface IdentityHelperService {
 	public Person getPersonByPrincipalName(String principalName);
 	
 	/**
+	 * Returns the Person for the given employee id.  Throws an exception
+	 * if the principal name cannot be resolved to a person.
+	 */
+	public Person getPersonByEmployeeId(String employeeId);
+	
+	/**
 	 * Checks that the given principalId is valid.  Throws a RiceRuntimeException if it is not.
 	 */
 	public void validatePrincipalId(String principalId);

@@ -21,11 +21,13 @@ import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
+import org.kuali.rice.kew.dto.EmplIdDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.identity.service.IdentityHelperService;
 import org.kuali.rice.kew.user.AuthenticationUserId;
+import org.kuali.rice.kew.user.EmplId;
 import org.kuali.rice.kew.user.UserId;
 import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.workgroup.GroupId;
@@ -35,7 +37,6 @@ import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.util.KimConstants;
 
 /**
  *
@@ -107,6 +108,14 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 		}
 		return person;
 	}
+	
+	public Person getPersonByEmployeeId(String employeeId) {
+		Person person = KIMServiceLocator.getPersonService().getPersonByEmployeeId(employeeId);
+		if (person == null) {
+			throw new RiceRuntimeException("Could not locate a person with the given employee id of " + employeeId);
+		}
+		return person;
+	}
 
 
 	public KimGroup getGroup(String groupId) {
@@ -149,6 +158,10 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 		} else if (userId instanceof AuthenticationUserId) {
 			String principalName = ((AuthenticationUserId)userId).getAuthenticationId();
 			return KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
+		} else if (userId instanceof EmplId) {
+			String employeeId = ((EmplId)userId).getEmplId();
+			Person person = getPersonByEmployeeId(employeeId);
+			return getPrincipal(person.getPrincipalId());
 		}
 		throw new IllegalArgumentException("Invalid UserIdDTO type was passed: " + userId);
 	}
@@ -163,6 +176,10 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 		} else if (userId instanceof NetworkIdDTO) {
 			String principalName = ((NetworkIdDTO)userId).getNetworkId();
 			return KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
+		} else if (userId instanceof EmplIdDTO) {
+			String employeeId = ((EmplIdDTO)userId).getEmplId();
+			Person person = getPersonByEmployeeId(employeeId);
+			return getPrincipal(person.getPrincipalId());
 		}
 		throw new IllegalArgumentException("Invalid UserIdDTO type was passed: " + userId.getClass());
 	}
@@ -176,6 +193,10 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 			String principalName = ((NetworkIdDTO)userId).getNetworkId();
 			KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
 			return principal.getPrincipalId();
+		} else if (userId instanceof EmplIdDTO) {
+			String employeeId = ((EmplIdDTO)userId).getEmplId();
+			Person person = getPersonByEmployeeId(employeeId);
+			return person.getPrincipalId();
 		}
 		throw new IllegalArgumentException("Invalid UserIdDTO type was passed: " + userId);
 	}

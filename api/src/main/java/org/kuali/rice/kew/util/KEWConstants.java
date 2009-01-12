@@ -851,7 +851,6 @@ public class KEWConstants {
 	public static final String KIM_PRIORITY_ON_DOC_TYP_PERMS_IND = "KIM_PRIORITY_ON_DOC_TYP_PERMS_IND";
     public static final String ACTION_LIST_DOCUMENT_POPUP_IND = "ACTION_LIST_DOCUMENT_POPUP_IND";
     public static final String ACTION_LIST_ROUTE_LOG_POPUP_IND  = "ACTION_LIST_ROUTE_LOG_POPUP_IND";
-    public static final String ACTION_LIST_PAGE_SIZE_THROTTLE = "PAGE_SIZE_THROTTLE";
     public static final String ACTION_LIST_SEND_EMAIL_NOTIFICATION_IND = "SEND_EMAIL_NOTIFICATION_IND";
     public static final String APPLICATION_CONTEXT = "APPLICATION_CONTEXT";
     public static final String SHOW_BACK_DOOR_LOGIN_IND = "SHOW_BACK_DOOR_LOGIN_IND";

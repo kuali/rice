@@ -37,7 +37,6 @@ import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
-import org.kuali.rice.kew.applicationconstants.service.ApplicationConstantsService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
@@ -1138,10 +1137,6 @@ public class RuleServiceImpl implements RuleService {
 
     private ResponsibilityIdService getResponsibilityIdService() {
         return (ResponsibilityIdService) KEWServiceLocator.getService(KEWServiceLocator.RESPONSIBILITY_ID_SERVICE);
-    }
-
-    private ApplicationConstantsService getApplicationConstantsService() {
-        return (ApplicationConstantsService) KEWServiceLocator.getService(KEWServiceLocator.APPLICATION_CONSTANTS_SRV);
     }
 
     private RuleDelegationService getRuleDelegationService() {

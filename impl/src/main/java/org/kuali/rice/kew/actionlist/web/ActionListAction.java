@@ -378,19 +378,7 @@ public class ActionListAction extends WorkflowAction {
      * has been throttled by an application constant, in which case it uses the smaller of the two values.
      */
     protected int getPageSize(Preferences preferences) {
-    	int pageSize = Integer.parseInt(preferences.getPageSize());
-    	String pageSizeThrottle = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_PAGE_SIZE_THROTTLE);
-    	if (!StringUtils.isEmpty(pageSizeThrottle)) {
-    		try {
-    			int throttle = Integer.parseInt(pageSizeThrottle);
-    			if (throttle > 0 && throttle < pageSize) {
-    				pageSize = throttle;
-    			}
-    		} catch (Exception e) {
-    			LOG.warn("Encountered an error when parsing " + KEWConstants.ACTION_LIST_PAGE_SIZE_THROTTLE + ", " + e.getClass().getName() + ": " + e.getMessage());
-    		}
-    	}
-    	return pageSize;
+    	return Integer.parseInt(preferences.getPageSize());
     }
 
     protected PaginatedList buildCurrentPage(List actionList, Integer page, String sortCriterion, String sortDirection, int pageSize, Preferences preferences, ActionErrors errors, ActionListForm form) throws WorkflowException {

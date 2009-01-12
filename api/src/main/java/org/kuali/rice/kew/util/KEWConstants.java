@@ -828,7 +828,7 @@ public class KEWConstants {
 
 	public static final String DEFAULT_RESPONSIBILITY_TEMPLATE_NAME = "Review";
 	
-	public static final String EXCEPTION_ROUTING_RESPONSIBILITY_TEMPLATE_NAME = "Resolve Routing Exception";
+	public static final String EXCEPTION_ROUTING_RESPONSIBILITY_TEMPLATE_NAME = "Resolve Exception";
 
 	// Permission Details
 

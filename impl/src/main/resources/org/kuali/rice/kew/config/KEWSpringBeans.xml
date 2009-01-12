@@ -448,23 +448,18 @@
     <bean id="enXmlDigesterService" class="org.kuali.rice.kew.batch.XmlDigesterServiceImpl"  lazy-init="true"/>
 
 
+    <!-- <bean id="enEDocLiteDAO" class="org.kuali.rice.kew.edl.dao.impl.EDocLiteDAOJpaImpl" lazy-init="true"/> -->
     <bean id="enEDocLiteDAO" class="org.kuali.rice.kew.edl.dao.impl.EDocLiteDAOOjbImpl" lazy-init="true">
 		<property name="jcdAlias" value="enWorkflowDataSource" />
     </bean>
 
     <bean id="enEDocLiteService" class="org.kuali.rice.kew.edl.service.impl.EDocLiteServiceImpl" lazy-init="true">
-        <property name="EDocLiteDAO">
-            <ref local="enEDocLiteDAO"/>
-        </property>
-        <property name="styleService">
-            <ref local="enStyleService"/>
-        </property>
+        <property name="EDocLiteDAO" ref="enEDocLiteDAO"/>
+        <property name="styleService" ref="enStyleService"/>
     </bean>
 
     <bean id="enStyleService" class="org.kuali.rice.kew.edl.service.impl.StyleServiceImpl" lazy-init="true">
-        <property name="styleDAO">
-            <ref local="enEDocLiteDAO"/>
-        </property>
+        <property name="styleDAO" ref="enEDocLiteDAO"/>
     </bean>
 
     <bean id="enHelpService" class="org.kuali.rice.kew.help.service.impl.HelpServiceImpl" lazy-init="true">
@@ -543,7 +538,6 @@
         <value>enRuleTemplateService</value>
         <value>enRuleService</value>
         <value>enHelpService</value>
-        <value>enEDocLiteService</value>
         <value>enStyleService</value>
       </list>
     </property>
@@ -586,7 +580,7 @@
   </bean>
 
   <bean id="kewIdentityHelperService" class="org.kuali.rice.kew.identity.service.impl.IdentityHelperServiceImpl"/>
-  
+
   <!-- XML parsing/export has not been promoted out of KEW into the core yet, until then let's wire up the GroupXmlServiceImpl here -->
   <bean id="enGroupXmlService" class="org.kuali.rice.kew.xml.GroupXmlServiceImpl" />
   <bean id="enUserXmlService" class="org.kuali.rice.kew.xml.UserXmlServiceImpl"/>
@@ -890,7 +884,7 @@
         <idref local="enHelpDAO"/>
         <idref local="enBranchDAOJpa"/>
         <idref local="enRuleAttributeDAOJpa"/>
-        <!-- <idref local="enExtractDAO"/> -->
+         <!-- <idref local="enExtractDAO"/> -->
       </list>
     </property>
   </bean>
@@ -927,7 +921,7 @@
 	       </bean>
 		</property>
   </bean>
-  
+
   <bean id="documentTypeAndActionRequestTypePermissionTypeService" class="org.kuali.rice.kew.service.impl.DocumentTypeAndActionRequestTypePermissionTypeServiceImpl" />
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
@@ -943,7 +937,7 @@
 	       </bean>
 		</property>
   </bean>
-  
+
   <bean id="responsibilityResponsibilityTypeService" class="org.kuali.rice.kew.service.impl.ResponsibilityResponsibilityTypeServiceImpl" />
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
@@ -959,5 +953,5 @@
 	       </bean>
 		</property>
   </bean>
-  
+
 </beans>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2009 The Kuali Foundation.
  *
  *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
@@ -22,10 +22,14 @@ import java.util.LinkedHashMap;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * Association between WorkflowDocument type -&gt; EDocLite definition, EDocLite style
@@ -34,6 +38,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  */
 @Entity
 @Table(name="KREW_EDL_ASSCTN_T")
+@Sequence(name="KREW_EDL_S", property="edocLiteAssocId")
 public class EDocLiteAssociation  extends PersistableBusinessObjectBase implements Serializable{
 
 	private static final long serialVersionUID = 7300251507982374010L;
@@ -66,6 +71,11 @@ public class EDocLiteAssociation  extends PersistableBusinessObjectBase implemen
 
     @Transient
     private String actionsUrl;//for quickfinder
+
+    @PrePersist
+    public void beforeInsert(){
+        OrmUtils.populateAutoIncValue(this, KNSServiceLocator.getEntityManagerFactory().createEntityManager());
+    }
 
     public Long getEdocLiteAssocId() {
         return edocLiteAssocId;
@@ -119,7 +129,7 @@ public class EDocLiteAssociation  extends PersistableBusinessObjectBase implemen
 	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
 	 */
 	@Override
-	protected LinkedHashMap toStringMapper() {
+	protected LinkedHashMap<String, Object> toStringMapper() {
 		LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
 	    propMap.put("edocLiteAssocId", getEdocLiteAssocId());
 	    propMap.put("edlName", getEdlName());

@@ -16,15 +16,11 @@
 package org.kuali.rice.kns.bo.options;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import org.kuali.rice.kns.bo.State;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.StateService;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
-import org.kuali.rice.kns.service.KeyValuesService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
 /**
@@ -32,12 +28,14 @@ import org.kuali.rice.kns.web.ui.KeyLabelPair;
  */
 public class StateValuesFinder extends KeyValuesBase {
 
+	List<State> codes;
     /*
      * @see org.kuali.keyvalues.KeyValuesFinder#getKeyValues()
      */
-    public List getKeyValues() {
-
-        List<State> codes = KNSServiceLocator.getStateService().findAllStates();
+    public List<KeyLabelPair> getKeyValues() {
+    	if ( codes == null ) {
+    		codes = KNSServiceLocator.getStateService().findAllStates();
+    	}
         List<KeyLabelPair> labels = new ArrayList<KeyLabelPair>();
         labels.add(new KeyLabelPair("", ""));
         for (State state : codes) {

@@ -20,9 +20,8 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.bo.Country;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.CountryService;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
 /**
@@ -30,22 +29,23 @@ import org.kuali.rice.kns.web.ui.KeyLabelPair;
  */
 public class CountryValuesFinder extends KeyValuesBase {
 
+	static List<Country> boList;
+	Country defaultCountry;
+	
     /*
      * @see org.kuali.keyvalues.KeyValuesFinder#getKeyValues()
      */
-    public List getKeyValues() {
-        List<Country> boList = KNSServiceLocator.getCountryService().findAllCountries();
+    public List<KeyLabelPair> getKeyValues() {
+    	if ( boList == null ) {
+    		boList = KNSServiceLocator.getCountryService().findAllCountries();
+    		defaultCountry = KNSServiceLocator.getCountryService().getDefaultCountry();
+    	}
         List<KeyLabelPair> keyValues = new ArrayList<KeyLabelPair>();
 
-        Country defaultCountry = null;
         for (Country element : boList) {
-            String defaultCountryCode = KNSServiceLocator.getCountryService().getDefaultCountry().getPostalCountryCode();
             
             // Find default country code and pull it out so we can set it first in the results list later.
-            if (StringUtils.equals(defaultCountryCode, element.getPostalCountryCode())) {
-                defaultCountry = element;
-            }
-            else {
+            if (!StringUtils.equals(defaultCountry.getPostalCountryCode(), element.getPostalCountryCode())) {
                 if(element.isActive()) {
                     keyValues.add(new KeyLabelPair(element.getPostalCountryCode(), element.getPostalCountryName()));
                 }
@@ -59,5 +59,4 @@ public class CountryValuesFinder extends KeyValuesBase {
 
         return keyValueUSFirst;
     }
-
 }

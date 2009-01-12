@@ -27,6 +27,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.kuali.rice.kew.exception.InvalidXmlException;
+import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
@@ -38,6 +39,7 @@ import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.xml.sax.SAXException;
 
 
@@ -56,6 +58,7 @@ public class GroupXmlParser implements XmlConstants {
     private static final boolean DEFAULT_ACTIVE_VALUE = true;
     private static final String DEFAULT_GROUP_DESCRIPTION = "";
     private HashMap<String, List<String>> memberGroupIds = new HashMap<String, List<String>>();
+    private HashMap<String, List<String>> memberGroupNames = new HashMap<String, List<String>>();
     private HashMap<String, List<String>> memberPrincipalIds = new HashMap<String, List<String>>();
     private AttributeSet groupAttributes = new AttributeSet();
 
@@ -104,7 +107,23 @@ public class GroupXmlParser implements XmlConstants {
                     List<String> groupIds = memberGroupIds.get(key);
                     if (groupIds != null) {
                         for (String groupId : groupIds) {
-                            groupService.addGroupToGroup(groupId, newGroupInfo.getGroupId());
+                            KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
+                            if (group != null) {
+                                groupService.addGroupToGroup(group.getGroupId(), newGroupInfo.getGroupId());
+                            } else {
+                                throw new InvalidXmlException("Group Id "+groupId+" cannot be found.");
+                            }
+                        }
+                    }
+                    List<String> groupNames = memberGroupNames.get(key);
+                    if (groupNames != null) {
+                        for (String groupName : groupNames) {
+                            KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroupByName(Utilities.parseGroupNamespaceCode(groupName), Utilities.parseGroupName(groupName));
+                            if (group != null) {
+                                groupService.addGroupToGroup(group.getGroupId(), newGroupInfo.getGroupId());
+                            } else {
+                                throw new InvalidXmlException("Group "+groupName+" cannot be found.");
+                            }
                         }
                     }
                     List<String> principalIds = memberPrincipalIds.get(key);
@@ -113,6 +132,7 @@ public class GroupXmlParser implements XmlConstants {
                             groupService.addPrincipalToGroup(principalId, newGroupInfo.getGroupId());
                         }
                     }
+                    KIMServiceLocator.getIdentityManagementService().flushGroupCaches();
                 } catch (Exception e) {
                     throw new RuntimeException("Error creating group.", e);
                 }
@@ -231,23 +251,14 @@ public class GroupXmlParser implements XmlConstants {
                 } else {
                     throw new InvalidXmlException("Principal Id "+xmlPrincipalId+" cannot be found.");
                 }
+            // Groups are handled differently since the member group may not be saved yet.  Therefore they need to be validated after the groups are saved.
             } else if (elementName.equals(GROUP_ID)) {
                 String xmlGroupId = member.getText().trim();
-                KimGroup group = identityManagementService.getGroup(xmlGroupId);
-                if (group != null) {
-                    addGroupToGroup(groupInfo.getNamespaceCode(), groupInfo.getGroupName(), group.getGroupId());
-                } else {
-                    throw new InvalidXmlException("Group Id "+xmlGroupId+" cannot be found.");
-                }
+                addGroupToGroup(groupInfo.getNamespaceCode(), groupInfo.getGroupName(), xmlGroupId);
             } else if (elementName.equals(GROUP_NAME)) {
                 String xmlGroupName = member.getChildText(NAME, GROUP_NAMESPACE).trim();
                 String xmlGroupNamespace = member.getChildText(NAMESPACE, GROUP_NAMESPACE).trim();
-                KimGroup group = identityManagementService.getGroupByName(xmlGroupNamespace, xmlGroupName);
-                if (group != null) {
-                    addGroupToGroup(groupInfo.getNamespaceCode(), groupInfo.getGroupName(), group.getGroupId());
-                } else {
-                    throw new InvalidXmlException("Group Name "+xmlGroupName+" cannot be found.");
-                }
+                addGroupNameToGroup(groupInfo.getNamespaceCode(), groupInfo.getGroupName(), xmlGroupNamespace, xmlGroupName);
             } else {
                 LOG.error("Unknown member element: " + elementName);
             }
@@ -277,6 +288,16 @@ public class GroupXmlParser implements XmlConstants {
         }
         groupIds.add(groupId);
         memberGroupIds.put(key, groupIds);
+    }
+
+    private void addGroupNameToGroup(String groupNamespace, String groupName, String memberGroupNamespace, String memberGroupName) {
+        String key = groupNamespace.trim() + ":" + groupName.trim();
+        List<String> groupNames = memberGroupNames.get(key);
+        if (groupNames == null) {
+            groupNames = new ArrayList<String>();
+        }
+        groupNames.add(memberGroupNamespace.trim() + ":" + memberGroupName.trim());
+        memberGroupNames.put(key, groupNames);
     }
 
 }

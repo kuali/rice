@@ -129,8 +129,7 @@
         <property name="jcdAlias" value="kimDataSource" />
         <property name="dbPlatform" ref="dbPlatform" />
     </bean>
-
-<!-- 
+<!--
 	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator" lazy-init="true">
 		<property name="interceptorNames">
 			<list>
@@ -139,7 +138,7 @@
 		</property>
 		<property name="beanNames">
 			<list>
-        <!- these too?
+        <!-   these too?>
 				<idref local="personService" />
 				<idref local="kimWorkgroupService" />
 				<idref local="kimUserService" />
@@ -150,11 +149,11 @@
 				<idref local="kimGroupService" />
 				<idref local="kimPermissionService" />
 				<idref local="kimResponsibilityService" />
-				->
+
 			</list>
 		</property>
 	</bean>
- -->
+-->
     <bean id="kimSoapService" class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition" abstract="true">
        <property name="serviceNameSpaceURI" value="KIM"/>
        <property name="priority" value="3" />
@@ -385,7 +384,7 @@
         p:localServiceName="permissionPermissionTypeService" />
     </property>
   </bean>
-  
+
   <bean id="responsibilityPermissionTypeService" class="org.kuali.rice.kns.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
     	<property name="exactMatchStringAttributeName" value="responsibilityName" />
     	<property name="namespaceRequiredOnStoredAttributeSet" value="true" />
@@ -398,7 +397,7 @@
         p:localServiceName="responsibilityPermissionTypeService" />
     </property>
   </bean>
-  
+
   <bean id="rolePermissionTypeService" class="org.kuali.rice.kns.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
     	<property name="exactMatchStringAttributeName" value="roleName" />
     	<property name="namespaceRequiredOnStoredAttributeSet" value="true" />
@@ -411,7 +410,7 @@
         p:localServiceName="rolePermissionTypeService" />
     </property>
   </bean>
-  
+
   <bean id="entityPermissionTypeService" class="org.kuali.rice.kim.service.impl.EntityPermissionTypeServiceImpl" />
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
     <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
@@ -421,7 +420,7 @@
         p:localServiceName="entityPermissionTypeService" />
     </property>
   </bean>
-  
+
   <bean id="groupPermissionTypeService" class="org.kuali.rice.kns.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
     	<property name="exactMatchStringAttributeName" value="groupName" />
     	<property name="namespaceRequiredOnStoredAttributeSet" value="true" />
@@ -434,7 +433,7 @@
         p:localServiceName="groupPermissionTypeService" />
     </property>
   </bean>
-  
+
   <!-- for person Doc UI  -->
   <bean id="kimTypeService" class="org.kuali.rice.kim.service.support.impl.KimTypeServiceBase" />
   <bean id="kimPermissionTypeService" class="org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase"/>
@@ -466,7 +465,7 @@
             </bean>
         </property>
     </bean>
-  
+
         <bean id="kimPersonLookupable" class="org.kuali.rice.kim.lookup.PersonLookupableImpl" parent="kualiLookupable">
         <property name="lookupableHelperService">
             <bean class="org.kuali.rice.kim.lookup.PersonLookupableHelperServiceImpl"

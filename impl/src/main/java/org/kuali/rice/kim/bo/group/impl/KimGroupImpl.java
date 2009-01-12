@@ -37,8 +37,8 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
- * This is a description of what this class does - kellerj don't forget to fill this in. 
- * 
+ * This is a description of what this class does - kellerj don't forget to fill this in.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
@@ -50,7 +50,7 @@ public class KimGroupImpl extends PersistableBusinessObjectBase implements KimGr
 	public static final String PRINCIPAL_MEMBER_TYPE = "P";
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@Column(name="GRP_ID")
 	protected String groupId;
@@ -58,11 +58,11 @@ public class KimGroupImpl extends PersistableBusinessObjectBase implements KimGr
 	protected String groupName;
 	@Column(name="GRP_DESC",length=4000)
 	protected String groupDescription;
-	
+
 	@Column(name="ACTV_IND")
 	@Type(type="yes_no")
 	protected boolean active;
-	
+
 	@Column(name="KIM_TYP_ID")
 	protected String kimTypeId;
 	@Column(name="NMSPC_CD")
@@ -75,10 +75,10 @@ public class KimGroupImpl extends PersistableBusinessObjectBase implements KimGr
 	@OneToMany(targetEntity=GroupAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
 	@JoinColumn(name="TARGET_PRIMARY_KEY", insertable=false, updatable=false)
 	protected List<GroupAttributeDataImpl> groupAttributes = new TypedArrayList(GroupAttributeDataImpl.class);
-	
+
 	/**
 	 * This overridden method ...
-	 * 
+	 *
 	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
 	 */
 	@SuppressWarnings("unchecked")
@@ -96,7 +96,7 @@ public class KimGroupImpl extends PersistableBusinessObjectBase implements KimGr
         for ( GroupAttributeDataImpl attr : groupAttributes ) {
             attributes.put(attr.getKimAttribute().getAttributeName(), attr.getAttributeValue());
         }
-        
+
         return attributes;
 	}
 
@@ -138,22 +138,26 @@ public class KimGroupImpl extends PersistableBusinessObjectBase implements KimGr
 
 	public List<String> getMemberGroupIds() {
 		List<String> groupMembers = new ArrayList<String>();
-		for ( GroupMemberImpl groupMemberImpl : getMembers() ) {
-			if ( groupMemberImpl.getMemberTypeCode().equals ( GROUP_MEMBER_TYPE )
-					&& groupMemberImpl.isActive() ) {
-				groupMembers.add( groupMemberImpl.getMemberId() );
-			}
+		if (getMembers() != null) {
+    		for ( GroupMemberImpl groupMemberImpl : getMembers() ) {
+    			if ( groupMemberImpl.getMemberTypeCode().equals ( GROUP_MEMBER_TYPE )
+    					&& groupMemberImpl.isActive() ) {
+    				groupMembers.add( groupMemberImpl.getMemberId() );
+    			}
+    		}
 		}
 		return groupMembers;
 	}
 
 	public List<String> getMemberPrincipalIds() {
 		List<String> groupMembers = new ArrayList<String>();
-		for ( GroupMemberImpl groupMemberImpl : getMembers() ) {
-			if ( groupMemberImpl.getMemberTypeCode().equals ( PRINCIPAL_MEMBER_TYPE )
-					&& groupMemberImpl.isActive() ) {
-				groupMembers.add( groupMemberImpl.getMemberId() );
-			}
+		if (getMembers() != null) {
+    		for ( GroupMemberImpl groupMemberImpl : getMembers() ) {
+    			if ( groupMemberImpl.getMemberTypeCode().equals ( PRINCIPAL_MEMBER_TYPE )
+    					&& groupMemberImpl.isActive() ) {
+    				groupMembers.add( groupMemberImpl.getMemberId() );
+    			}
+    		}
 		}
 		return groupMembers;
 	}
@@ -202,5 +206,5 @@ public class KimGroupImpl extends PersistableBusinessObjectBase implements KimGr
 
 	public void setMembers(List<GroupMemberImpl> members) {
 		this.members = members;
-	}	
+	}
 }

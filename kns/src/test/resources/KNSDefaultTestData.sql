@@ -71,7 +71,7 @@ INSERT INTO KRNS_PARM_T ("NMSPC_CD","PARM_DTL_TYP_CD","PARM_NM","TXT","CONS_CD",
 ;
 INSERT INTO KRNS_PARM_T ("NMSPC_CD","PARM_DTL_TYP_CD","PARM_NM","PARM_TYP_CD","TXT","PARM_DESC_TXT","CONS_CD","GRP_NM") VALUES ('KR-NS', 'All', 'ENABLE_DIRECT_INQUIRIES_IND', 'CONFG', 'Y', 'Flag for enabling/disabling direct inquiries on screens that are drawn by the nervous system (i.e. lookups and maintenance documents)', 'A', 'KUALI_FMSOPS')
 ;
-INSERT INTO KRNS_PARM_T ("NMSPC_CD","PARM_DTL_TYP_CD","PARM_NM","PARM_TYP_CD","TXT","PARM_DESC_TXT","CONS_CD","GRP_NM") VALUES ('KR-NS', 'Document', 'SESSION_TIMEOUT_WARNING_MESSAGE_TIME', 'CONFG', '5', 'The number of minutes before a session expires that user should be warned when a document uses pessimistic locking.', 'A', 'KUALI_FMSOPS') 
+INSERT INTO KRNS_PARM_T ("NMSPC_CD","PARM_DTL_TYP_CD","PARM_NM","PARM_TYP_CD","TXT","PARM_DESC_TXT","CONS_CD","GRP_NM") VALUES ('KR-NS', 'Document', 'SESSION_TIMEOUT_WARNING_MESSAGE_TIME', 'CONFG', '5', 'The number of minutes before a session expires that user should be warned when a document uses pessimistic locking.', 'A', 'KUALI_FMSOPS')
 ;
-INSERT INTO KRNS_PARM_T ("NMSPC_CD","PARM_DTL_TYP_CD","PARM_NM","PARM_TYP_CD","TXT","PARM_DESC_TXT","CONS_CD","GRP_NM") VALUES ('KR-NS', 'Document', 'PESSIMISTIC_LOCK_ADMIN_GROUP', 'AUTH', 'KUALI_ROLE_SUPERVISOR', 'Workgroup which can perform admin deletion and lookup functions for Pessimistic Locks.', 'A', 'KUALI_FMSOPS') 
+INSERT INTO KRNS_PARM_T ("NMSPC_CD","PARM_DTL_TYP_CD","PARM_NM","PARM_TYP_CD","TXT","PARM_DESC_TXT","CONS_CD","GRP_NM") VALUES ('KR-NS', 'Document', 'PESSIMISTIC_LOCK_ADMIN_GROUP', 'AUTH', 'KFS:KUALI_ROLE_SUPERVISOR', 'Workgroup which can perform admin deletion and lookup functions for Pessimistic Locks.', 'A', 'KUALI_FMSOPS')
 ;

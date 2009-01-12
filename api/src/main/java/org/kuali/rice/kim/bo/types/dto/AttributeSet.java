@@ -18,6 +18,8 @@ package org.kuali.rice.kim.bo.types.dto;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * Specialization of HashMap to facilitate web services and simplify API definitions.
  * 
@@ -44,5 +46,24 @@ public class AttributeSet extends HashMap<String,String> {
 		if ( map != null ) {
 			putAll( map );
 		}
+	}
+	
+	public String formattedDump( int indent ) {
+		int maxKeyLen = 1;
+		for ( String key : this.keySet() ) {
+			if ( key.length() > maxKeyLen ) {
+				maxKeyLen = key.length();
+			}
+		}
+		StringBuffer sb = new StringBuffer();
+		String indentStr = StringUtils.repeat( " ", indent );
+		for ( String key : this.keySet() ) {
+			sb.append( indentStr );
+			sb.append( StringUtils.rightPad( key, maxKeyLen, ' ' ));
+			sb.append( " --> " );
+			sb.append( get( key ) );
+			sb.append( '\n' );
+		}
+		return sb.toString();
 	}
 }

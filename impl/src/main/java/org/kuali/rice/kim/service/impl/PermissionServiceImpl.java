@@ -72,6 +72,22 @@ public class PermissionServiceImpl implements PermissionService {
      * @see org.kuali.rice.kim.service.PermissionService#isAuthorized( java.lang.String, String, java.lang.String, AttributeSet, AttributeSet)
      */
     public boolean isAuthorized(String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
+    	if ( LOG.isDebugEnabled() ) {
+    		LOG.debug( "Checking for Permission: " + namespaceCode + "/" + permissionName );
+    		LOG.debug( "             Principal:  " + principalId );
+    		LOG.debug( "             Details:    " );
+    		if ( permissionDetails != null ) {
+    			LOG.debug( permissionDetails.formattedDump( 25 ) );
+    		} else {
+    			LOG.debug( "                         [null]" );
+    		}
+    		LOG.debug( "             Qualifiers: " );
+    		if ( qualification != null ) {
+    			LOG.debug( qualification.formattedDump( 25 ) );
+    		} else {
+    			LOG.debug( "                         [null]" );
+    		}
+    	}
     	List<String> roleIds = getRoleIdsForPermission( namespaceCode, permissionName, permissionDetails );
     	return getRoleService().principalHasRole( principalId, roleIds, qualification );
     }
@@ -87,6 +103,22 @@ public class PermissionServiceImpl implements PermissionService {
      * @see org.kuali.rice.kim.service.PermissionService#isAuthorized( java.lang.String, String, java.lang.String, AttributeSet, AttributeSet)
      */
     public boolean isAuthorizedByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification ) {
+    	if ( LOG.isDebugEnabled() ) {
+    		LOG.debug( "Checking for Perm Templ: " + namespaceCode + "/" + permissionTemplateName );
+    		LOG.debug( "             Principal:  " + principalId );
+    		LOG.debug( "             Details:    " );
+    		if ( permissionDetails != null ) {
+    			LOG.debug( permissionDetails.formattedDump( 25 ) );
+    		} else {
+    			LOG.debug( "                         [null]" );
+    		}
+    		LOG.debug( "             Qualifiers: " );
+    		if ( qualification != null ) {
+    			LOG.debug( qualification.formattedDump( 25 ) );
+    		} else {
+    			LOG.debug( "                         [null]" );
+    		}
+    	}
     	List<String> roleIds = getRoleIdsForPermissionTemplate( namespaceCode, permissionTemplateName, permissionDetails );
     	return getRoleService().principalHasRole( principalId, roleIds, qualification );
     }

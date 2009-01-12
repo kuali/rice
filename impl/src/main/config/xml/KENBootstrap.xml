@@ -25,27 +25,27 @@
         </user>
     </users>
 
-    <workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
-       <workgroup allowOverwrite="true">
-            <workgroupName>NotificationAdmin</workgroupName>
+    <groups xmlns="ns:workflow/Group" xsi:schemaLocation="ns:workflow/Group resource:Group">
+       <group>
+            <name>NotificationAdmin</name>
+            <namespace>KR-WKFLW</namespace>
             <description>Notification system admin group for automation.</description>
-            <activeInd>true</activeInd>
-            <workgroupType>W</workgroupType>
+            <active>true</active>
             <members>
-                <workflowId>NotSysAdm</workflowId>
+                <principalName>NotSysAdm</principalName>
             </members>
-        </workgroup>
-        <workgroup allowOverwrite="true">
-            <workgroupName>WorkflowAdmin</workgroupName>
+        </group>
+        <group>
+            <name>WorkflowAdmin</name>
+            <namespace>KR-WKFLW</namespace>
             <description>WorkflowAdmin</description>
-            <activeInd>true</activeInd>
-            <workgroupType>W</workgroupType>
+            <active>true</active>
             <members>
-                <workflowId>admin</workflowId>
-                <workflowId>NotSys</workflowId>
+                <principalName>admin</principalName>
+                <principalName>NotSys</principalName>
             </members>
-        </workgroup>
-    </workgroups>
+        </group>
+    </groups>
 
     <!-- CUSTOM ACTION LIST SETUP -->
     <!-- applies the custom action list and various searchable attributes to Notification document types -->
@@ -169,7 +169,7 @@
            </searchingConfig>
        </ruleAttribute>
 
-       <!-- attributes for notification request -->       
+       <!-- attributes for notification request -->
        <ruleAttribute>
             <name>NotificationCustomActionListAttribute</name>
             <className>org.kuali.rice.ken.kew.NotificationCustomActionListAttribute</className>
@@ -220,9 +220,9 @@
           <serviceNamespace>KEN</serviceNamespace>
           -->
           <postProcessorName>org.kuali.rice.ken.postprocessor.kew.NotificationPostProcessor</postProcessorName>
-          <superUserWorkgroupName>NotificationAdmin</superUserWorkgroupName>
-          <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
-          <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+          <superUserWorkgroupName>KR-WKFLW:NotificationAdmin</superUserWorkgroupName>
+          <blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
+          <defaultExceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
           <docHandler>${notification.basewebappurl}/DetailView.form</docHandler>
           <active>true</active>
           <attributes>
@@ -247,7 +247,7 @@
               <attribute>
                 <name>NotificationSendersSearchableAttribute</name>
               </attribute>
-          </attributes> 
+          </attributes>
           <routingVersion>1</routingVersion>
           <routePaths>
             <routePath>
@@ -262,7 +262,7 @@
             </start>
           </routeNodes>
         </documentType>
-        
+
         <!-- Send notification request doc type -->
         <documentType>
             <name>SendNotificationRequest</name>
@@ -272,9 +272,9 @@
             <serviceNamespace>KEN</serviceNamespace>
             -->
             <postProcessorName>org.kuali.rice.ken.postprocessor.kew.NotificationSenderFormPostProcessor</postProcessorName>
-            <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-            <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
-            <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+            <superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
             <docHandler>${notification.basewebappurl}/AdministerNotificationRequest.form</docHandler>
             <active>true</active>
 
@@ -319,7 +319,7 @@
             </routeNodes>
         </documentType>
     </documentTypes>
-    
+
     <rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
         <rule>
           <documentType>SendNotificationRequest</documentType>

@@ -200,7 +200,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
             }
         }
 
-        if (! validateWorkgroup(criteria.getWorkgroupViewerName())) {
+        if (! validateWorkgroup(criteria.getWorkgroupViewerNamespace(), criteria.getWorkgroupViewerName())) {
             errors.add(new WorkflowServiceErrorImpl("Workgroup Viewer Name is not a workgroup", "docsearch.DocumentSearchService.workgroup.viewer"));
         } else {
             if (!Utilities.isEmpty(criteria.getWorkgroupViewerName())){
@@ -365,11 +365,11 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 		}
 	}
 
-    private boolean validateWorkgroup(String workgroupName) {
+    private boolean validateWorkgroup(String namespace, String workgroupName) {
         if (Utilities.isEmpty(workgroupName)) {
             return true;
         }
-        KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, workgroupName);
+        KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroupByName(namespace, workgroupName);
         return group != null;
     }
 
@@ -707,6 +707,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 			criteria.setToDateFinalized(getOptionCriteriaField(savedSearch, "toDateFinalized"));
 			criteria.setToDateLastModified(getOptionCriteriaField(savedSearch, "toDateLastModified"));
 			criteria.setViewer(getOptionCriteriaField(savedSearch, "viewer"));
+			criteria.setWorkgroupViewerNamespace(getOptionCriteriaField(savedSearch, "workgroupViewerNamespace"));
             criteria.setWorkgroupViewerName(getOptionCriteriaField(savedSearch, "workgroupViewerName"));
 			criteria.setNamedSearch(getOptionCriteriaField(savedSearch, "namedSearch"));
 			criteria.setSearchableAttributes(DocSearchUtils.buildSearchableAttributesFromString(getOptionCriteriaField(savedSearch, "searchableAttributes"),criteria.getDocTypeFullName()));

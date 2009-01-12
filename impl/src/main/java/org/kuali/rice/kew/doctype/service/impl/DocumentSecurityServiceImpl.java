@@ -57,7 +57,7 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
       List<String> workgroups = getAdminWorkgroups();
       if (workgroups != null && !workgroups.isEmpty()) {
         for (String workgroupName : workgroups) {
-          if (isWorkgroupAuthenticated(workgroupName, session)) {
+          if (isWorkgroupAuthenticated(Utilities.parseGroupNamespaceCode(workgroupName), Utilities.parseGroupName(workgroupName), session)) {
               return true;
           }
         }
@@ -102,7 +102,8 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
     List<String> securityWorkgroups = security.getWorkgroups();
     if (securityWorkgroups != null) {
       for (String workgroupName : securityWorkgroups) {
-        if (isWorkgroupAuthenticated(workgroupName, session)) {
+        //TODO Might want security to hold group Id instead of name
+        if (isWorkgroupAuthenticated(Utilities.parseGroupNamespaceCode(workgroupName), Utilities.parseGroupName(workgroupName), session)) {
         	return true;
         }
       }
@@ -157,13 +158,14 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
 	  return security;
   }
 
-  protected boolean isWorkgroupAuthenticated(String workgroupName, SecuritySession session) {
-	  Boolean existingAuth = session.getAuthenticatedWorkgroups().get(workgroupName);
+  protected boolean isWorkgroupAuthenticated(String namespace, String workgroupName, SecuritySession session) {
+	  String key = namespace.trim() + ":" + workgroupName.trim();
+      Boolean existingAuth = session.getAuthenticatedWorkgroups().get(key);
 	  if (existingAuth != null) {
 		  return existingAuth;
 	  }
-	  boolean memberOfGroup = session.getUserSession().isMemberOfGroupWithName(KimConstants.TEMP_GROUP_NAMESPACE, workgroupName);
-	  session.getAuthenticatedWorkgroups().put(workgroupName, memberOfGroup);
+	  boolean memberOfGroup = session.getUserSession().isMemberOfGroupWithName(namespace, workgroupName);
+	  session.getAuthenticatedWorkgroups().put(key, memberOfGroup);
 	  return memberOfGroup;
   }
 

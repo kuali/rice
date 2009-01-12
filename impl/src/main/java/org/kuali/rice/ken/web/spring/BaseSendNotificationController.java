@@ -31,13 +31,13 @@ import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
 /**
  * Base class for KEN controllers for sending notifications
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class BaseSendNotificationController extends MultiActionController {
     private static final Logger LOG = Logger.getLogger(BaseSendNotificationController.class);
-    
+
     private static final String USER_RECIPS_PARAM = "userRecipients";
     private static final String WORKGROUP_RECIPS_PARAM = "workgroupRecipients";
     private static final String SPLIT_REGEX = "(%2C|,)";
@@ -45,11 +45,11 @@ public class BaseSendNotificationController extends MultiActionController {
     protected String[] parseUserRecipients(HttpServletRequest request) {
         return parseCommaSeparatedValues(request, USER_RECIPS_PARAM);
     }
-    
+
     protected String[] parseWorkgroupRecipients(HttpServletRequest request) {
         return parseCommaSeparatedValues(request, WORKGROUP_RECIPS_PARAM);
     }
-    
+
     protected String[] parseCommaSeparatedValues(HttpServletRequest request, String param) {
         String vals = request.getParameter(param);
         if (vals != null) {
@@ -65,7 +65,7 @@ public class BaseSendNotificationController extends MultiActionController {
             return new String[0];
         }
     }
-    
+
     protected boolean isUserRecipientValid(String user, ErrorList errors) {
         boolean valid = true;
         /*KimEntity e = KIMServiceLocator.getIdentityManagementService().getEntityByPrincipalName(user);
@@ -78,10 +78,10 @@ public class BaseSendNotificationController extends MultiActionController {
         	valid = false;
         	errors.addError("'" + user + "' is not a valid principal name");
         }
-        
+
         return valid;
     }
-    
+
     protected boolean isWorkgroupRecipientValid(String group, ErrorList errors) {
         GroupInfo i = KIMServiceLocator.getGroupService().getGroupInfoByName(KimConstants.TEMP_GROUP_NAMESPACE, group);
         if (i == null) {

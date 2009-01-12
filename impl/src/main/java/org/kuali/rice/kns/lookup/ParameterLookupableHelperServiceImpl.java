@@ -17,7 +17,6 @@ package org.kuali.rice.kns.lookup;
 
 import java.util.List;
 
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Parameter;
@@ -39,7 +38,7 @@ public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperS
     @Override
     public List<HtmlData> getCustomActionUrls(BusinessObject businessObject, List pkNames) {
         Parameter parm = (Parameter)businessObject;
-        if ( KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(GlobalVariables.getUserSession().getPerson().getPrincipalId(), Utilities.parseGroupNamespaceCode(parm.getParameterWorkgroupName()), Utilities.parseGroupName(parm.getParameterWorkgroupName()) ) ) {
+        if ( KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(GlobalVariables.getUserSession().getPerson().getPrincipalId(), org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE, parm.getParameterWorkgroupName() ) ) {
             return super.getCustomActionUrls(businessObject, pkNames);
         } else {
             return super.getEmptyActionUrls();

@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 The Kuali Foundation
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -49,25 +49,25 @@ import edu.emory.mathcs.backport.java.util.concurrent.Executors;
 // deadlocks are detected during clear database lifecycle (even when select for update is commented out...)
 // Make sure KCB has some deliverers configured for the test users, so message deliveries get created and the messages aren't removed
 @PerTestUnitTestData({
-    @UnitTestData("insert into KCB_RECIP_DELIVS (ID, RECIPIENT_ID, CHANNEL, DELIVERER_NAME, DB_LOCK_VER_NBR) values (1, 'TestUser6', 'KEW', 'mock', 0)"),
-    @UnitTestData("insert into KCB_RECIP_DELIVS (ID, RECIPIENT_ID, CHANNEL, DELIVERER_NAME, DB_LOCK_VER_NBR) values (2, 'TestUser1', 'KEW', 'mock', 0)"),
-    @UnitTestData("insert into KCB_RECIP_DELIVS (ID, RECIPIENT_ID, CHANNEL, DELIVERER_NAME, DB_LOCK_VER_NBR) values (3, 'TestUser2', 'KEW', 'mock', 0)"),
-    @UnitTestData("insert into KCB_RECIP_DELIVS (ID, RECIPIENT_ID, CHANNEL, DELIVERER_NAME, DB_LOCK_VER_NBR) values (4, 'quickstart', 'KEW', 'mock', 0)"),
-    @UnitTestData("insert into KCB_RECIP_DELIVS (ID, RECIPIENT_ID, CHANNEL, DELIVERER_NAME, DB_LOCK_VER_NBR) values (5, 'TestUser5', 'KEW', 'mock', 0)"),
-    @UnitTestData("insert into KCB_RECIP_DELIVS (ID, RECIPIENT_ID, CHANNEL, DELIVERER_NAME, DB_LOCK_VER_NBR) values (6, 'TestUser4', 'KEW', 'mock', 0)")
+    @UnitTestData("insert into KREN_RECIP_DELIV_T (RECIP_DELIV_ID, RECIP_ID, CHNL, NM, VER_NBR) values (1, 'TestUser6', 'KEW', 'mock', 0)"),
+    @UnitTestData("insert into KREN_RECIP_DELIV_T (RECIP_DELIV_ID, RECIP_ID, CHNL, NM, VER_NBR) values (2, 'TestUser1', 'KEW', 'mock', 0)"),
+    @UnitTestData("insert into KREN_RECIP_DELIV_T (RECIP_DELIV_ID, RECIP_ID, CHNL, NM, VER_NBR) values (3, 'TestUser2', 'KEW', 'mock', 0)"),
+    @UnitTestData("insert into KREN_RECIP_DELIV_T (RECIP_DELIV_ID, RECIP_ID, CHNL, NM, VER_NBR) values (4, 'quickstart', 'KEW', 'mock', 0)"),
+    @UnitTestData("insert into KREN_RECIP_DELIV_T (RECIP_DELIV_ID, RECIP_ID, CHNL, NM, VER_NBR) values (5, 'TestUser5', 'KEW', 'mock', 0)"),
+    @UnitTestData("insert into KREN_RECIP_DELIV_T (RECIP_DELIV_ID, RECIP_ID, CHNL, NM, VER_NBR) values (6, 'TestUser4', 'KEW', 'mock', 0)")
 })
 public class NotificationMessageDeliveryResolverServiceImplTest extends NotificationTestCaseBase {
     // NOTE: this value is HIGHLY dependent on the test data, make sure that it reflects the results
     // expected from the test data
     private static final int EXPECTED_SUCCESSES = 6;
-    
+
     /**
      * Id of notification for which we will intentionally generate an exception during processing
      */
     private static final long BAD_NOTIFICATION_ID = 3L;
-    
+
     private static class TestNotificationMessageDeliveryResolverService extends NotificationMessageDeliveryResolverServiceImpl {
-        public TestNotificationMessageDeliveryResolverService(NotificationService notificationService, NotificationRecipientService notificationRecipientService, 
+        public TestNotificationMessageDeliveryResolverService(NotificationService notificationService, NotificationRecipientService notificationRecipientService,
                 GenericDao businessObjectDao, PlatformTransactionManager txManager, ExecutorService executor, UserPreferenceService userPreferenceService) {
             super(notificationService, notificationRecipientService, businessObjectDao, txManager, executor, userPreferenceService);
         }
@@ -84,7 +84,7 @@ public class NotificationMessageDeliveryResolverServiceImplTest extends Notifica
     }
 
     protected TestNotificationMessageDeliveryResolverService getResolverService() {
-        return new TestNotificationMessageDeliveryResolverService(services.getNotificationService(), services.getNotificationRecipientService(), services.getGenericDao(), transactionManager, 
+        return new TestNotificationMessageDeliveryResolverService(services.getNotificationService(), services.getNotificationRecipientService(), services.getGenericDao(), transactionManager,
         	Executors.newFixedThreadPool(5), services.getUserPreferenceService());
     }
 
@@ -118,7 +118,7 @@ public class NotificationMessageDeliveryResolverServiceImplTest extends Notifica
 
         long start = System.currentTimeMillis();
         ProcessingResult result = nSvc.resolveNotificationMessageDeliveries();
-        
+
         Thread.sleep(20000);
 
         for (Object message: result.getSuccesses()) {
@@ -134,11 +134,11 @@ public class NotificationMessageDeliveryResolverServiceImplTest extends Notifica
             LOG.info("Message after: " + m);
         }
         assertEquals(result.getSuccesses().size(), ms.getAllMessages().size());
-        
+
         assertProcessResults();
     }
 
-    
+
     /**
      * Test concurrent resolution of notifications
      */
@@ -167,13 +167,13 @@ public class NotificationMessageDeliveryResolverServiceImplTest extends Notifica
                 }
             }
         });
-        
+
         t1.start();
         t2.start();
-        
+
         t1.join();
         t2.join();
-        
+
         // assert that ONE of the resolvers got all the items, and the other got NONE of the items
         LOG.info("Results of thread #1: " + results[0]);
         LOG.info("Results of thread #2: " + results[1]);
@@ -181,7 +181,7 @@ public class NotificationMessageDeliveryResolverServiceImplTest extends Notifica
         assertNotNull(results[1]);
         assertTrue((results[0].getSuccesses().size() == EXPECTED_SUCCESSES && results[0].getFailures().size() == 1 && results[1].getSuccesses().size() == 0 && results[1].getFailures().size() == 0) ||
                    (results[1].getSuccesses().size() == EXPECTED_SUCCESSES && results[1].getFailures().size() == 1 && results[0].getSuccesses().size() == 0 && results[0].getFailures().size() == 0));
-        
+
         assertProcessResults();
     }
 }

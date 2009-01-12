@@ -698,9 +698,9 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         whereSQL.append(getDateFinalizedSql(criteria.getFromDateFinalized(), criteria.getToDateFinalized(), getGeneratedPredicatePrefix(whereSQL.length())));
         // flags for the table being added to the FROM class of the sql
         boolean actionTakenTable = false;
-        if ((!"".equals(getViewerSql(criteria.getViewer(), getGeneratedPredicatePrefix(whereSQL.length())))) || (!"".equals(getWorkgroupViewerSql(criteria.getWorkgroupViewerName(), getGeneratedPredicatePrefix(whereSQL.length()))))) {
+        if ((!"".equals(getViewerSql(criteria.getViewer(), getGeneratedPredicatePrefix(whereSQL.length())))) || (!"".equals(getWorkgroupViewerSql(criteria.getWorkgroupViewerNamespace(), criteria.getWorkgroupViewerName(), getGeneratedPredicatePrefix(whereSQL.length()))))) {
             whereSQL.append(getViewerSql(criteria.getViewer(), getGeneratedPredicatePrefix(whereSQL.length())));
-            whereSQL.append(getWorkgroupViewerSql(criteria.getWorkgroupViewerName(), getGeneratedPredicatePrefix(whereSQL.length())));
+            whereSQL.append(getWorkgroupViewerSql(criteria.getWorkgroupViewerNamespace(), criteria.getWorkgroupViewerName(), getGeneratedPredicatePrefix(whereSQL.length())));
             fromSQL.append(", KREW_ACTN_RQST_T ");
             actionTakenTable = true;
         }
@@ -899,10 +899,10 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         return returnSql;
     }
 
-    protected String getWorkgroupViewerSql(String workgroupName, String whereClausePredicatePrefix) {
+    protected String getWorkgroupViewerSql(String namespace, String workgroupName, String whereClausePredicatePrefix) {
         String sql = "";
         if (!Utilities.isEmpty(workgroupName)) {
-            KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, workgroupName);
+            KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroupByName(namespace, workgroupName);
         	sql = whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_ID = KREW_ACTN_RQST_T.DOC_HDR_ID and KREW_ACTN_RQST_T.GRP_ID = " + group.getGroupId();
         }
         return sql;

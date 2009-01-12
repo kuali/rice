@@ -52,6 +52,7 @@ public class DocSearchCriteriaDTO implements Serializable {
     private String overrideInd; // flag to indicate overridden business values - set by app
     private String initiator; // network Id of the person who initiated the document
     private String viewer; // network Id of the person who is currently viewing the document
+    private String workgroupViewerNamespace; //group namespace of the group that has had an action request to the document
     private String workgroupViewerName; // workgroup Id that has had an action request to the document
     private String approver; // network Id of the person who is approving the document
     private String docRouteNodeId; // current level of routing, i.e. which route method is the document currently in
@@ -543,5 +544,13 @@ public class DocSearchCriteriaDTO implements Serializable {
 	public void setSaveSearchForUser(boolean saveSearchForUser) {
 		this.saveSearchForUser = saveSearchForUser;
 	}
+
+    public String getWorkgroupViewerNamespace() {
+        return this.workgroupViewerNamespace;
+    }
+
+    public void setWorkgroupViewerNamespace(String workgroupViewerNamespace) {
+        this.workgroupViewerNamespace = workgroupViewerNamespace;
+    }
 
 }

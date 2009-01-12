@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 The Kuali Foundation
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -74,7 +74,7 @@ public class TestConstants {
     public static final String CONTACT_INFO_1_PRODUCER = "producer_3@127.0.0.1";
 
     /**
-     * Some valid channels 
+     * Some valid channels
      */
     public static final String VALID_CHANNEL_ONE = "Test Channel #1";
     public static final Long VALID_CHANNEL_ONE_ID = new Long(101);
@@ -87,7 +87,7 @@ public class TestConstants {
      * PRODUCER_4 MUST NOT be a valid producer for this channel
      */
     public static final Long CHANNEL_ID_1 = new Long(101);
-    
+
     /**
      * A valid message delivery id in the test data
      */
@@ -99,7 +99,7 @@ public class TestConstants {
     public static final int NUM_OF_MSG_DELIVS_IN_TEST_DATA = 5;
 
     /**
-     * A valid 'Email' message delivery id in the test data 
+     * A valid 'Email' message delivery id in the test data
      */
     public static final Long VALID_EMAIL_MESSAGE_DELIVERY_ID = new Long(8);
 
@@ -108,17 +108,17 @@ public class TestConstants {
      * test data to fail delivery (e.g. invalid delivery type)
      */
     public static final Long BAD_MESSAGE_DELIVERY_ID = new Long(5);
-    
+
     /**
      * A valid deliverer name
      */
     public static final String VALID_DELIVERER_NAME = NotificationConstants.MESSAGE_DELIVERY_TYPES.KEW_ACTION_LIST_MESSAGE_DELIVERY_TYPE;
 
     /**
-     * An invalid deliverer name 
+     * An invalid deliverer name
      */
     public static final String NON_EXISTENT_DELIVERER_NAME = "BOGUS_DELIVERER";
-    
+
     /**
      * Some user names
      */
@@ -134,7 +134,7 @@ public class TestConstants {
     public static final String ADMIN_USER_1 = "TestAdmin1";
     public static final String NON_ADMIN_USER_1 = TEST_USER_ONE;
     public static final String INVALID_USER_1 = "InvalidUser";
-    
+
     /**
      * A user who is the target of a notification
      */
@@ -144,43 +144,43 @@ public class TestConstants {
      * (can by any content type as long as the user is the target of at least one notification with that content type)
      */
     public static final String NOTIFICATION_RECIPIENT_CONTENT_TYPE = NotificationConstants.CONTENT_TYPES.SIMPLE_CONTENT_TYPE;
-    
+
     /**
      * A valid group
      */
     public static final String VALID_GROUP_NAME_1 = "RiceTeam";
-    
+
     /**
      * A valid KIM group name
      */
-    public static final String VALID_KIM_GROUP_NAME_1 = "WorkflowAdmin";
-    
+    public static final String VALID_KIM_GROUP_NAME_1 = "KR-WKFLW:WorkflowAdmin";
+
     /**
      * A valid KIM group name
      */
     public static final String VALID_KIM_GROUP_ID_1 = "1000464";
-    
+
     /**
      * A valid KIM principal name
      */
     //nb: the corresponding id should be TEST_USER_5 (ie "TestUser5")
     public static final String VALID_KIM_PRINCIPAL_NAME = "testuser5";
-    
+
     /**
      * Number of members in this group
      */
     public static final int GROUP_1_MEMBERS = 6;
-    
+
     /**
      *
      */
     public static final int KIM_GROUP_1_MEMBERS = 1;
-    
+
     /**
      * An invalid content type
      */
     public static final String INVALID_CONTENT_TYPE = "Bad Type";
-    
+
     /**
      * A valid notification id
      */
@@ -194,7 +194,7 @@ public class TestConstants {
      * Number of message deliveries in the test data that are associated with notification #2
      */
     public static final int NUM_OF_MSG_DELIVS_FOR_NOTIF_1_TEST_USER_5 = 1;
-    
+
     /**
      * Id of the message delivery in the test data for notification 1, test user 5, kew action list deliverer
      */

@@ -475,6 +475,7 @@ public class DocumentSearchAction extends WorkflowAction {
             String groupId = request.getParameter("workgroupId");
             KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
             documentSearchForm.getCriteria().setWorkgroupViewerName(group.getGroupName());
+            documentSearchForm.getCriteria().setWorkgroupViewerNamespace(group.getNamespaceCode());
         }
         String documentTypeId = request.getParameter("documentTypeId");
         if (documentTypeId != null) {

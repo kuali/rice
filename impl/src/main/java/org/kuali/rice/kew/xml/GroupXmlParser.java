@@ -57,8 +57,6 @@ public class GroupXmlParser implements XmlConstants {
     private static final String DEFAULT_GROUP_DESCRIPTION = "";
     private HashMap<String, List<String>> memberGroupIds = new HashMap<String, List<String>>();
     private HashMap<String, List<String>> memberPrincipalIds = new HashMap<String, List<String>>();
-    //private List<String> memberGroupIds = new ArrayList<String>();
-    //private List<String> memberPrincipalIds = new ArrayList<String>();
     private AttributeSet groupAttributes = new AttributeSet();
 
     public List<GroupInfo> parseGroups(InputStream input) throws IOException, InvalidXmlException {
@@ -115,10 +113,6 @@ public class GroupXmlParser implements XmlConstants {
                             groupService.addPrincipalToGroup(principalId, newGroupInfo.getGroupId());
                         }
                     }
-
-                    //set group attributes
-                    //this.saveGroupAttributes(groupAttributes, newGroupInfo.getGroupId(), newGroupInfo.getKimTypeId());
-
                 } catch (Exception e) {
                     throw new RuntimeException("Error creating group.", e);
                 }

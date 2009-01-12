@@ -17,7 +17,7 @@
         </ApplicationConstant>
         <ApplicationConstant>
             <ConstantName>Workflow.AdminWorkgroup</ConstantName>
-            <ConstantValue>WorkflowAdmin</ConstantValue>
+            <ConstantValue>KR-WKFLW:WorkflowAdmin</ConstantValue>
         </ApplicationConstant>
         <ApplicationConstant>
             <ConstantName>Workgroup.IsRouteLogPopup</ConstantName>
@@ -63,18 +63,18 @@
         </user>
     </users>
 
-    <workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
+    <groups xmlns="ns:workflow/Group" xsi:schemaLocation="ns:workflow/Group resource:Group">
         <!-- Core admin workgroup -->
-        <workgroup allowOverwrite="true">
-            <workgroupName>WorkflowAdmin</workgroupName>
+        <group>
+            <name>WorkflowAdmin</name>
+            <namespace>KR-WKFLW</namespace>
             <description>WorkflowAdmin</description>
-            <activeInd>true</activeInd>
-            <workgroupType>W</workgroupType>
+            <active>true</active>
             <members>
-                <workflowId>admin</workflowId>
+                <principalName>admin</principalName>
             </members>
-        </workgroup>
-    </workgroups>
+        </group>
+    </groups>
 
     <!-- Rule attributes for core doctypes -->
     <!-- TODO: determine why this attribute is in bootstrap and if it doesn't need to be remove it! -->
@@ -154,9 +154,9 @@
             <label>Workflow Maintenance Document</label>
             <postProcessorName>none</postProcessorName>
             <docHandler>docHandler is now mandatory...</docHandler>
-            <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-            <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
-            <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+            <superUserWorkgroupName>KR-WLFLW:WorkflowAdmin</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>KR-WLFLW:WorkflowAdmin</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>KR-WLFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
             <active>true</active>
             <policies>
                 <policy>
@@ -198,9 +198,9 @@
             <description>Workflow Maintenance Document Type Document</description>
             <label>Workflow Maintenance Document Type Document</label>
             <postProcessorName>org.kuali.rice.kew.doctype.DocumentTypePostProcessor</postProcessorName>
-            <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-            <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
-            <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+            <superUserWorkgroupName>KR-WLFLW:WorkflowAdmin</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>KR-WLFLW:WorkflowAdmin</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>KR-WLFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
             <docHandler>${workflow.url}/DocumentType.do?methodToCall=docHandler</docHandler>
             <active>true</active>
             <policies />
@@ -221,9 +221,9 @@
             <description>Rule Maintenance Document Type Document</description>
             <label>Rule Maintenance Document Type Document</label>
             <postProcessorName>org.kuali.rice.kew.rule.RulePostProcessor</postProcessorName>
-            <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-            <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
-            <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+            <superUserWorkgroupName>KR-WLFLW:WorkflowAdmin</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>KR-WLFLW:WorkflowAdmin</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>KR-WLFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
             <docHandler>${workflow.url}/Rule.do?methodToCall=docHandler</docHandler>
             <active>true</active>
             <policies />
@@ -244,9 +244,9 @@
             <description>Document to generate a new workgroup</description>
             <label>Add/modify EDEN workgroup</label>
             <postProcessorName>org.kuali.rice.kew.workgroup.WorkgroupPostProcessor</postProcessorName>
-            <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-            <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
-            <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+            <superUserWorkgroupName>KR-WLFLW:WorkflowAdmin</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>KR-WLFLW:WorkflowAdmin</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>KR-WLFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
             <docHandler>${workflow.url}/Workgroup.do?methodToCall=docHandler</docHandler>
             <active>true</active>
             <routingVersion>1</routingVersion>
@@ -276,9 +276,9 @@
             <description>A document to remove or replace users within rules and workgroups.</description>
             <label>Remove/Replace User</label>
             <postProcessorName>org.kuali.rice.kew.removereplace.RemoveReplacePostProcessor</postProcessorName>
-            <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-            <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
-            <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+            <superUserWorkgroupName>KR-WLFLW:WorkflowAdmin</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>KR-WLFLW:WorkflowAdmin</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>KR-WLFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
             <docHandler>${workflow.url}/RemoveReplace.do?methodToCall=docHandler</docHandler>
             <active>true</active>
             <routingVersion>1</routingVersion>

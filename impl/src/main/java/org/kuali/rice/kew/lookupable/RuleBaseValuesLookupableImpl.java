@@ -92,6 +92,7 @@ public class RuleBaseValuesLookupableImpl implements /*WorkflowLookupable,*/ Exp
 
 	private static final String DOC_TYP_NAME_PROPERTY_NAME = "docTypeFullName";
 	private static final String RULE_TEMPLATE_PROPERTY_NAME = "ruleTemplateName";
+	private static final String WORKGROUP_PROPERTY_NAMESPACE = "workgroupNamespace";
 	private static final String WORKGROUP_PROPERTY_NAME = "workgroupName";
 	private static final String PERSON_PROPERTY_NAME = "networkId";
 	private static final String PERSON_REVIEWER_TYPE_NAME = "userDirective";
@@ -306,13 +307,16 @@ public class RuleBaseValuesLookupableImpl implements /*WorkflowLookupable,*/ Exp
 		String ruleTemplateNameParam = (String) fieldValues.get(RULE_TEMPLATE_PROPERTY_NAME);
 		String workgroupIdParam = (String) fieldValues.get(WORKGROUP_ID_PROPERTY_NAME);
 		String workgroupNameParam = (String) fieldValues.get(WORKGROUP_PROPERTY_NAME);
+		String workgroupNamespaceParam = (String) fieldValues.get(WORKGROUP_PROPERTY_NAMESPACE);
 
 		if (workgroupNameParam != null && !workgroupNameParam.trim().equals("") || workgroupIdParam != null && !"".equals(workgroupIdParam) && !"null".equals(workgroupIdParam)) {
 			KimGroup workgroup = null;
 			if (workgroupIdParam != null && !"".equals(workgroupIdParam)) {
 				workgroup = getIdentityManagementService().getGroup(workgroupIdParam.trim());
+			} else if (workgroupNamespaceParam != null){
+				workgroup = getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE, workgroupNameParam.trim());
 			} else {
-				workgroup = getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, workgroupNameParam.trim());
+			    workgroup = getIdentityManagementService().getGroupByName(workgroupNamespaceParam, workgroupNameParam);
 			}
 			if (workgroup != null) {
 				setFieldValue(WORKGROUP_PROPERTY_NAME, workgroup.getGroupName());
@@ -349,6 +353,7 @@ public class RuleBaseValuesLookupableImpl implements /*WorkflowLookupable,*/ Exp
 		String ruleTemplateNameParam = (String) fieldValues.get(RULE_TEMPLATE_PROPERTY_NAME);
 		String workgroupIdParam = (String) fieldValues.get(WORKGROUP_ID_PROPERTY_NAME);
 		String workgroupNameParam = (String) fieldValues.get(WORKGROUP_PROPERTY_NAME);
+		String workgroupNamespaceParam = (String) fieldValues.get(WORKGROUP_PROPERTY_NAMESPACE);
 		String networkIdParam = (String) fieldValues.get(PERSON_PROPERTY_NAME);
 		String userDirectiveParam = (String) fieldValues.get(PERSON_REVIEWER_TYPE_NAME);
 		String roleNameParam = (String) fieldValues.get(ROLE_PROPERTY_NAME);
@@ -395,7 +400,10 @@ public class RuleBaseValuesLookupableImpl implements /*WorkflowLookupable,*/ Exp
 			if (workgroupIdParam != null && !"".equals(workgroupIdParam)) {
 				workgroup = getIdentityManagementService().getGroup(workgroupIdParam.trim());
 			} else {
-				workgroup = getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, workgroupNameParam.trim());
+			    if (workgroupNamespaceParam == null) {
+			        workgroupNamespaceParam = KimConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE;
+			    }
+				workgroup = getIdentityManagementService().getGroupByName(workgroupNamespaceParam, workgroupNameParam.trim());
 				if (workgroup == null) {
 					errors.add(new WorkflowServiceErrorImpl("Document Type Invalid", "routetemplate.ruleservice.workgroup.invalid"));
 				} else {
@@ -610,7 +618,7 @@ public class RuleBaseValuesLookupableImpl implements /*WorkflowLookupable,*/ Exp
     private IdentityManagementService getIdentityManagementService() {
         return (IdentityManagementService) KIMServiceLocator.getService(KIMServiceLocator.KIM_IDENTITY_MANAGEMENT_SERVICE);
     }
-    
+
 	private RuleService getRuleService() {
 		return (RuleService) KEWServiceLocator.getService(KEWServiceLocator.RULE_SERVICE);
 	}

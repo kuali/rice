@@ -926,3 +926,72 @@ INSERT INTO KRIM_ENTITY_ENT_TYP_T(ENTITY_ENT_TYPE_ID, OBJ_ID, VER_NBR, ENT_TYP_C
 INSERT INTO KRIM_PRNCPL_T(PRNCPL_ID, OBJ_ID, VER_NBR, PRNCPL_NM, ENTITY_ID, PRNCPL_PSWD, ACTV_IND, LAST_UPDT_DT)
   VALUES('1', '5B1B6B919CCA6496E0404F8189D822F2', 1, 'kr', '1', NULL, 'Y', TO_DATE('2008-11-07 09:49:02','YYYY-MM-DD HH24:MI:SS'))
 /
+
+-- following lines added after 01/04/2009 /
+
+update krim_typ_t set nm = 'Derived Role: Permission (Edit Document)' where kim_typ_id = '45'
+/
+INSERT INTO KRIM_TYP_T(KIM_TYP_ID, OBJ_ID, VER_NBR, NM, SRVC_NM, ACTV_IND, NMSPC_CD)
+    VALUES('56', sys_guid(), 1, 'Document Type & Existing Records Only', 'documentTypeAndExistingRecordsOnlyPermissionTypeService', 'Y', 'KR-NS')
+/
+INSERT INTO KRIM_ATTR_DEFN_T(KIM_ATTR_DEFN_ID, OBJ_ID, VER_NBR, NM, ACTV_IND, LBL, NMSPC_CD, CMPNT_NM, APPL_URL)
+    VALUES('7', sys_guid(), 1, 'existingRecordsOnly', 'Y', null, 'KR-NS', 'org.kuali.rice.kim.bo.impl.KimAttributes', null)
+/
+INSERT INTO KRIM_TYP_ATTR_T(KIM_TYP_ATTR_ID, OBJ_ID, VER_NBR, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ACTV_IND, SORT_CD)
+    VALUES('101', sys_guid(), 1, '56', '13', 'Y', 'a')
+/
+INSERT INTO KRIM_TYP_ATTR_T(KIM_TYP_ATTR_ID, OBJ_ID, VER_NBR, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ACTV_IND, SORT_CD)
+    VALUES('102', sys_guid(), 1, '56', '7', 'Y', 'b')
+/
+INSERT INTO KRIM_PERM_TMPL_T(PERM_TMPL_ID, OBJ_ID, VER_NBR, NM, DESC_TXT, KIM_TYP_ID, ACTV_IND, NMSPC_CD)
+    VALUES('42', sys_guid(), 1, 'Create / Maintain Record(s)', null, '56', 'Y', 'KR-NS')
+/
+update krim_perm_tmpl_t set nm = 'View Inquiry or Maintenance Document Field' where perm_tmpl_id = '25'
+/
+update krim_perm_tmpl_t set nm = 'Modify Maintenance Document Field' where perm_tmpl_id = '26'
+/
+INSERT INTO KRIM_ATTR_DEFN_T(KIM_ATTR_DEFN_ID, OBJ_ID, VER_NBR, NM, ACTV_IND, LBL, NMSPC_CD, CMPNT_NM, APPL_URL)
+    VALUES('44', sys_guid(), 1, 'sectionId', 'Y', null, 'KR-NS', 'org.kuali.rice.kim.bo.impl.KimAttributes', null)
+/
+INSERT INTO KRIM_TYP_T(KIM_TYP_ID, OBJ_ID, VER_NBR, NM, SRVC_NM, ACTV_IND, NMSPC_CD)
+    VALUES('57', sys_guid(), 1, 'Component Section', 'componentSectionPermissionTypeService', 'Y', 'KR-NS')
+/
+INSERT INTO KRIM_TYP_ATTR_T(KIM_TYP_ATTR_ID, OBJ_ID, VER_NBR, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ACTV_IND, SORT_CD)
+    VALUES('103', sys_guid(), 1, '57', '5', 'Y', 'a')
+/
+INSERT INTO KRIM_TYP_ATTR_T(KIM_TYP_ATTR_ID, OBJ_ID, VER_NBR, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ACTV_IND, SORT_CD)
+    VALUES('104', sys_guid(), 1, '57', '44', 'Y', 'b')
+/
+INSERT INTO KRIM_PERM_TMPL_T(PERM_TMPL_ID, OBJ_ID, VER_NBR, NM, DESC_TXT, KIM_TYP_ID, ACTV_IND, NMSPC_CD)
+    VALUES('43', sys_guid(), 1, 'View Inquiry or Maintenance Document Section', null, '57', 'Y', 'KR-NS')
+/
+INSERT INTO KRIM_PERM_TMPL_T(PERM_TMPL_ID, OBJ_ID, VER_NBR, NM, DESC_TXT, KIM_TYP_ID, ACTV_IND, NMSPC_CD)
+    VALUES('44', sys_guid(), 1, 'Modify Maintenance Document Section', null, '57', 'Y', 'KR-NS')
+/
+commit
+/
+
+-- following lines added after 01/11/2009 /
+
+update krim_typ_t set nm = 'Document Type (Permission)' where kim_typ_id = '3'
+/
+update krim_typ_t set nm = 'Document Type, Routing Node & Action Information', srvc_nm = 'reviewResponsibilityTypeService' where kim_typ_id = '7'
+/
+INSERT INTO KRIM_TYP_T(KIM_TYP_ID, OBJ_ID, VER_NBR, NM, SRVC_NM, ACTV_IND, NMSPC_CD)
+    VALUES('54', sys_guid(), 1, 'Document Type (Responsibility)', 'documentTypeResponsibilityTypeService', 'Y', 'KR-KEW')
+/
+INSERT INTO KRIM_TYP_ATTR_T(KIM_TYP_ATTR_ID, OBJ_ID, VER_NBR, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ACTV_IND, SORT_CD)
+    VALUES('107', sys_guid(), 1, '54', '13', 'Y', 'a')
+/
+INSERT INTO KRIM_RSP_TMPL_T(RSP_TMPL_ID, OBJ_ID, VER_NBR, NM, KIM_TYP_ID, DESC_TXT, ACTV_IND, NMSPC_CD)
+    VALUES('2', sys_guid(), 1, 'Resolve Exception', '54', null, 'Y', 'KR-WKFLW')
+/
+update krim_rsp_t set rsp_tmpl_id = '2' where rsp_id in ('87', '93')
+/
+update krim_rsp_attr_data_t set kim_typ_id = '54' where target_primary_key in ('87', '93')
+/
+delete from krim_rsp_attr_data_t where target_primary_key in ('87', '93') and kim_attr_defn_id <> '13'
+/
+commit
+/ 
+

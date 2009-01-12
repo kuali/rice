@@ -16,13 +16,17 @@
  */
 package org.kuali.rice.kew.user;
 
+import org.kuali.rice.kew.identity.PrincipalName;
+
 /**
  * A {@link UserId} which represents the id a user would use to authenticate
  * with the system.  Also known as a "Network ID".
  *
+ * @deprecated use {@link PrincipalName} instead
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public final class AuthenticationUserId implements UserId {
+public class AuthenticationUserId implements UserId {
 
 	private static final long serialVersionUID = -7572471214298368811L;
 

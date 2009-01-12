@@ -1002,7 +1002,7 @@
 	</bean>
 	
     <bean id="namespaceOrActionPermissionTypeService" class="org.kuali.rice.kns.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
-    	<property name="exactMatchStringAttributeName" value="beanName" />
+    	<property name="exactMatchStringAttributeName" value="actionClass" />
     	<property name="namespaceRequiredOnStoredAttributeSet" value="false" />
     </bean>
 	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">

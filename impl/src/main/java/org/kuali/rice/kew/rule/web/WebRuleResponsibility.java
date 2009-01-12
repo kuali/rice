@@ -126,7 +126,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 				// WorkflowGroupId(new
 				// Long(getRuleResponsibilityName()))).getGroupNameId().getNameId());
 				KimGroup group = KIMServiceLocator.getIdentityManagementService().
-	                  getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, getRuleResponsibilityName());
+	                  getGroup(getRuleResponsibilityName());
 				setReviewer(group.getGroupName());
 				setReviewerId(group.getGroupId());
 			} else if (KEWConstants.RULE_RESPONSIBILITY_ROLE_ID.equals(getRuleResponsibilityType())) {
@@ -304,15 +304,15 @@ public class WebRuleResponsibility extends RuleResponsibility {
 	public void validateResponsibility(String keyPrefix, ActionErrors errors) {
 		if (KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID.equals(getRuleResponsibilityType())) {
 			boolean invalidUser = Utilities.isEmpty(getReviewer());
-			if (!invalidUser) 
+			if (!invalidUser)
 			{
 				//chb: 10Jan2009: not using KEW IdentityHelperService b/c we want to deal w/ exception here
 				KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(getReviewer());
 				if( principal != null)
 				{
 					setRuleResponsibilityName(principal.getPrincipalId());
-				} 
-				else 
+				}
+				else
 				{
 					invalidUser = true;
 				}
@@ -324,7 +324,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 			boolean invalidWorkgroup = Utilities.isEmpty(getReviewer());
 			;
 			if (!invalidWorkgroup) {
-			    KimGroup workgroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, getReviewer());
+			    KimGroup workgroup = KIMServiceLocator.getIdentityManagementService().getGroup(getReviewerId());
 				if (workgroup == null) {
 					invalidWorkgroup = true;
 				} else {

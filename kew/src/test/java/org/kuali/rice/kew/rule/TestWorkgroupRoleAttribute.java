@@ -42,7 +42,7 @@ public class TestWorkgroupRoleAttribute extends AbstractRoleAttribute {
 
 	public List<String> getQualifiedRoleNames(String roleName, DocumentContent documentContent) {
 		List<String> qualRoleNames = new ArrayList<String>();
-		qualRoleNames.add("TestWorkgroup");
+		qualRoleNames.add("KR-WKFLW:TestWorkgroup");
 		return qualRoleNames;
 	}
 

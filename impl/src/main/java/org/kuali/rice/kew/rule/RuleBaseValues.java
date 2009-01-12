@@ -72,7 +72,7 @@ public class RuleBaseValues extends PersistableBusinessObjectBase {
     @Id
 	@Column(name="RULE_ID")
     @GeneratedValue(strategy=GenerationType.AUTO, generator="KREW_RTE_TMPL_SEQ_GEN")
-    @SequenceGenerator(name="KREW_RTE_TMPL_SEQ_GEN", sequenceName="KREW_RTE_TMPL_S") 
+    @SequenceGenerator(name="KREW_RTE_TMPL_SEQ_GEN", sequenceName="KREW_RTE_TMPL_S")
 	private Long ruleBaseValuesId;
     /**
      * Unique Rule name
@@ -106,11 +106,11 @@ public class RuleBaseValues extends PersistableBusinessObjectBase {
 	private Integer lockVerNbr;
     @Column(name="IGNR_PRVS")
 	private Boolean ignorePrevious;
-    @Fetch(value = FetchMode.SUBSELECT) 
+    @Fetch(value = FetchMode.SUBSELECT)
     @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
            targetEntity=org.kuali.rice.kew.rule.RuleResponsibility.class, mappedBy="ruleBaseValues")
 	private List<RuleResponsibility> responsibilities;
-    @Fetch(value = FetchMode.SUBSELECT) 
+    @Fetch(value = FetchMode.SUBSELECT)
     @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
            targetEntity=org.kuali.rice.kew.rule.RuleExtension.class, mappedBy="ruleBaseValues")
 	private List<RuleExtension> ruleExtensions;
@@ -305,7 +305,7 @@ public class RuleBaseValues extends PersistableBusinessObjectBase {
     public void setRuleTemplateId(Long ruleTemplateId) {
         this.ruleTemplateId = ruleTemplateId;
     }
-    
+
     public DocumentType getDocumentType() {
     	return KEWServiceLocator.getDocumentTypeService().findByName(getDocTypeName());
     }
@@ -660,7 +660,7 @@ public class RuleBaseValues extends PersistableBusinessObjectBase {
         mapper.put("ruleTemplateId", ruleTemplateId);
         mapper.put("returnUrl", returnUrl);
         mapper.put("responsibilities", responsibilities == null ? responsibilities : "size: " + responsibilities.size());
-        mapper.put("lockVerNbr", lockVerNbr).toString();
+        mapper.put("lockVerNbr", lockVerNbr);
 		return mapper;
 	}
 

@@ -61,7 +61,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 			// the getPrincipal method attempts to load the principal with the id and throws an exception if it fails
 			getPrincipal(principalId);
 		}
-		
+
 	public String getIdForGroupName(String namespace, String groupName) {
 		KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroupByName(namespace, groupName);
 		if (group == null) {
@@ -75,7 +75,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 		KimPrincipal principal = getPrincipal(principalId);
 		return new KimPrincipalRecipient(principal);
 	}
-	
+
 	public KimPrincipal getPrincipal(String principalId) {
 		KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
 		if (principal == null) {
@@ -83,7 +83,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 		}
 		return principal;
 	}
-	
+
 	public KimPrincipal getPrincipalByPrincipalName(String principalName) {
 		KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
 		if (principal == null) {
@@ -91,7 +91,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 		}
 		return principal;
 	}
-	
+
 	public Person getPerson(String principalId) {
 		Person person = KIMServiceLocator.getPersonService().getPerson(principalId);
 		if (person == null) {
@@ -108,7 +108,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 		return person;
 	}
 
-	
+
 	public KimGroup getGroup(String groupId) {
 		KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
 		if (group == null) {
@@ -116,14 +116,14 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 		}
 		return group;
 	}
-	
+
 	public KimGroup getGroup(GroupId groupId) {
 		if (groupId == null || groupId.isEmpty()) {
 			return null;
 		} else if (groupId instanceof WorkflowGroupId) {
 			return KIMServiceLocator.getIdentityManagementService().getGroup(""+((WorkflowGroupId)groupId).getGroupId());
 		} else if (groupId instanceof GroupNameId) {
-			return KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.TEMP_GROUP_NAMESPACE, ((GroupNameId)groupId).getNameId());
+			return KIMServiceLocator.getIdentityManagementService().getGroupByName(((GroupNameId)groupId).getNamespace(), ((GroupNameId)groupId).getNameId());
 		}
 		throw new IllegalArgumentException("Invalid GroupId type was passed: " + groupId);
 	}
@@ -139,7 +139,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 		}
 		throw new IllegalArgumentException("Invalid GroupId type was passed: " + groupId);
 	}
-	
+
 	public KimPrincipal getPrincipal(UserId userId) {
 		if (userId == null) {
 			return null;
@@ -152,7 +152,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 		}
 		throw new IllegalArgumentException("Invalid UserIdDTO type was passed: " + userId);
 	}
-	
+
 
 	public KimPrincipal getPrincipal(UserIdDTO userId) {
 		if (userId == null) {

@@ -73,20 +73,23 @@ public class PermissionServiceImpl implements PermissionService {
      */
     public boolean isAuthorized(String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
     	if ( LOG.isDebugEnabled() ) {
-    		LOG.debug( "Checking for Permission: " + namespaceCode + "/" + permissionName );
-    		LOG.debug( "             Principal:  " + principalId );
-    		LOG.debug( "             Details:    " );
+    		StringBuffer sb = new StringBuffer();
+    		sb.append(  '\n' );
+    		sb.append( "Checking for Permission: " ).append( namespaceCode ).append( "/" ).append( permissionName ).append( '\n' );
+    		sb.append( "             Principal:  " ).append( principalId ).append( '\n' );
+    		sb.append( "             Details:\n" );
     		if ( permissionDetails != null ) {
-    			LOG.debug( permissionDetails.formattedDump( 25 ) );
+    			sb.append( permissionDetails.formattedDump( 25 ) );
     		} else {
-    			LOG.debug( "                         [null]" );
+    			sb.append( "                         [null]\n" );
     		}
-    		LOG.debug( "             Qualifiers: " );
+    		sb.append( "             Qualifiers:\n" );
     		if ( qualification != null ) {
-    			LOG.debug( qualification.formattedDump( 25 ) );
+    			sb.append( qualification.formattedDump( 25 ) );
     		} else {
-    			LOG.debug( "                         [null]" );
+    			sb.append( "                         [null]\n" );
     		}
+    		LOG.debug( sb.toString() );
     	}
     	List<String> roleIds = getRoleIdsForPermission( namespaceCode, permissionName, permissionDetails );
     	return getRoleService().principalHasRole( principalId, roleIds, qualification );
@@ -104,20 +107,23 @@ public class PermissionServiceImpl implements PermissionService {
      */
     public boolean isAuthorizedByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification ) {
     	if ( LOG.isDebugEnabled() ) {
-    		LOG.debug( "Checking for Perm Templ: " + namespaceCode + "/" + permissionTemplateName );
-    		LOG.debug( "             Principal:  " + principalId );
-    		LOG.debug( "             Details:    " );
+    		StringBuffer sb = new StringBuffer();
+    		sb.append(  '\n' );
+    		sb.append( "Checking for Perm Templ: " ).append( namespaceCode ).append( "/" ).append( permissionTemplateName ).append( '\n' );
+    		sb.append( "             Principal:  " ).append( principalId ).append( '\n' );
+    		sb.append( "             Details:\n" );
     		if ( permissionDetails != null ) {
-    			LOG.debug( permissionDetails.formattedDump( 25 ) );
+    			sb.append( permissionDetails.formattedDump( 25 ) );
     		} else {
-    			LOG.debug( "                         [null]" );
+    			sb.append( "                         [null]\n" );
     		}
-    		LOG.debug( "             Qualifiers: " );
+    		sb.append( "             Qualifiers:\n" );
     		if ( qualification != null ) {
-    			LOG.debug( qualification.formattedDump( 25 ) );
+    			sb.append( qualification.formattedDump( 25 ) );
     		} else {
-    			LOG.debug( "                         [null]" );
+    			sb.append( "                         [null]\n" );
     		}
+    		LOG.debug( sb.toString() );
     	}
     	List<String> roleIds = getRoleIdsForPermissionTemplate( namespaceCode, permissionTemplateName, permissionDetails );
     	return getRoleService().principalHasRole( principalId, roleIds, qualification );

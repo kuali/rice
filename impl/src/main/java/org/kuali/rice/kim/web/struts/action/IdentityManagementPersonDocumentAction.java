@@ -113,6 +113,8 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
 			//KIMServiceLocator.getUiDocumentService().loadGroupToPersonDoc(personDoc, groups);
 		}
 		if (StringUtils.isNotBlank(commandParam) && (commandParam.equals(KEWConstants.DOCSEARCH_COMMAND) || commandParam.equals(KEWConstants.ACTIONLIST_COMMAND))) {
+			// persondoc changed
+			personDoc = (IdentityManagementPersonDocument)personDocumentForm.getDocument();
 			for (PersonDocumentRole role : personDoc.getRoles()) {
 		        KimTypeService kimTypeService = (KimTypeServiceBase)KIMServiceLocator.getService(getKimTypeServiceName(role.getKimRoleType()));
 				role.setDefinitions(kimTypeService.getAttributeDefinitions(role.getKimRoleType()));

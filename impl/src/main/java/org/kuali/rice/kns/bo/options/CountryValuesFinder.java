@@ -30,7 +30,7 @@ import org.kuali.rice.kns.web.ui.KeyLabelPair;
 public class CountryValuesFinder extends KeyValuesBase {
 
 	static List<Country> boList;
-	Country defaultCountry;
+	static Country defaultCountry;
 	
     /*
      * @see org.kuali.keyvalues.KeyValuesFinder#getKeyValues()

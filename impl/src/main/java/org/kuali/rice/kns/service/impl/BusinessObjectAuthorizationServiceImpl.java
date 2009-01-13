@@ -452,9 +452,9 @@ public class BusinessObjectAuthorizationServiceImpl implements
 			BusinessObject businessObject, String attributeName) {
 		Map<String, String> permissionDetails = new AttributeSet();
 		if (attributeName.contains(".")) {
-			permissionDetails.put(KimAttributes.BUTTON_ATTRIBUTE_NAME, attributeName);
+			permissionDetails.put(KimAttributes.BUTTON_NAME, attributeName);
 		} else {
-			permissionDetails.put(KimAttributes.BUTTON_ATTRIBUTE_NAME, attributeName);
+			permissionDetails.put(KimAttributes.BUTTON_NAME, attributeName);
 		}
 		return permissionDetails;
 	}

@@ -16,8 +16,8 @@
 package org.kuali.rice.kim.util;
 
 /**
- * This is a description of what this class does - jonathan don't forget to fill this in. 
- * 
+ * This is a description of what this class does - jonathan don't forget to fill this in.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
@@ -29,15 +29,15 @@ public class KimConstants {
 	public static final String KIM_GROUP_DEFAULT_NAMESPACE_CODE = "KFS";
 	public static final String KIM_GROUP_KFS_NAMESPACE_CODE = "KFS";
 	public static final String KIM_GROUP_WORKFLOW_NAMESPACE_CODE = "KR-WKFLW";
-	
+
 	public class PropertyNames {
 		public static final String PRINCIPAL_ID = "principalId";
-		public static final String PRINCIPAL_NAME = "principalName";		
+		public static final String PRINCIPAL_NAME = "principalName";
 	}
 
 	public class EntityTypes {
-		public static final String PERSON = "PERSON";	
-		public static final String SYSTEM = "SYSTEM";	
+		public static final String PERSON = "PERSON";
+		public static final String SYSTEM = "SYSTEM";
 	}
 
 	public class PersonExternalIdentifierTypes {
@@ -49,7 +49,7 @@ public class KimConstants {
 		public static final String AFFILIATE_AFFILIATION_TYPE = "AFFILIATE";
 		public static final String FACULTY_AFFILIATION_TYPE = "FACULTY";
 	}
-	
+
 	public class PermissionTemplateNames {
         public static final String FULL_UNMASK_FIELD = "Full Unmask Field";
     	public static final String PARTIAL_UNMASK_FIELD = "Partial Unmask Field";
@@ -58,7 +58,7 @@ public class KimConstants {
     	public static final String VIEW_SECTION = "View Inquiry or Maintenance Document Section";
     	public static final String MODIFY_SECTION = "Modify Maintenance Document Section";
     	public static final String CREATE_MAINTAIN_RECORDS = "Create / Maintain Record(s)";
-    	
+
     	public static final String EDIT_DOCUMENT = "Edit Document";
     	public static final String COPY_DOCUMENT = "Copy Document";
     	public static final String OPEN_DOCUMENT = "Open Document";
@@ -70,31 +70,28 @@ public class KimConstants {
     	public static final String ROUTE_DOCUMENT ="Route Document";
     	public static final String APPROVE_DOCUMENT = "Approve Document";
     	public static final String AD_HOC_REVIEW_DOCUMENT = "Ad Hoc Review Document";
-    	
-    	public static final String ADD_ATTACHMENT = "Add Attachment";
-    	public static final String ADD_NOTE = "Add Note";
-    	public static final String EDIT_ATTACHMENT = "Edit Attachment";
-    	public static final String EDIT_NOTE = "Edit Note";
-    	public static final String DELETE_ATTACHMENT = "Delete Attachment";
-    	public static final String DELETE_NOTE = "Delete Note";
+
+    	public static final String ADD_NOTE_ATTACHMENT = "Add Note / Attachment";
+    	public static final String VIEW_NOTE_ATTACHMENT = "View Note / Attachment";
+    	public static final String DELETE_NOTE_ATTACHMENT = "Delete Note / Attachment";
 
     	public static final String USE_TRANSACTIONAL_DOCUMENT = "Use Transactional Document";
-    	
+
     	public static final String MODIFY_ENTITY = "Modify Entity";
     	public static final String POPULATE_GROUP = "Populate Group";
     	public static final String ASSIGN_ROLE = "Assign Role";
     	public static final String GRANT_PERMISSION = "Grant Permission";
     	public static final String GRANT_RESPONSIBILITY = "Grant Responsibility";
-    	
+
     	public static final String LOOK_UP_RECORDS = "Look Up Records";
     	public static final String INQUIRE_INTO_RECORDS = "Inquire Into Records";
     	public static final String USE_SCREEN = "Use Screen";
-    	
+
     	public static final String UPLOAD_BATCH_INPUT_FILES = "Upload Batch Input File(s)";
     	public static final String MODIFY_BATCH_JOB = "Modify Batch Job";
     	public static final String PERFORM_CUSTOM_MAINTENANCE_DOCUMENT_FUNCTION ="Perform Custom Maintenance Document Function";
     }
-		
+
 	@Deprecated
 	public static final String TEMP_GROUP_NAMESPACE = "KFS";
 }

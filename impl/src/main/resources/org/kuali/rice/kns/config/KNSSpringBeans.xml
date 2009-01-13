@@ -922,13 +922,23 @@
 	  </property>
 	</bean>
 
-    <bean id="documentCollectionPermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentCollectionPermissionTypeServiceImpl"/>
+    <bean id="documentTypeAndAttachmentTypePermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypeAndAttachmentTypePermissionTypeService"/>
 	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
 	  <property name="serviceDefinition">
 	    <bean parent="knsService"
-	      p:service-ref="documentCollectionPermissionTypeService"
-	      p:localServiceName="documentCollectionPermissionTypeService" />
+	      p:service-ref="documentTypeAndAttachmentTypePermissionTypeService"
+	      p:localServiceName="documentTypeAndAttachmentTypePermissionTypeService" />
+	  </property>
+	</bean>
+
+    <bean id="documentTypeAndRelationshipToNoteAuthorPermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypeAndRelationshipToNoteAuthorPermissionTypeService"/>
+	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+	  <property name="serviceDefinition">
+	    <bean parent="knsService"
+	      p:service-ref="documentTypeAndRelationshipToNoteAuthorPermissionTypeService"
+	      p:localServiceName="documentTypeAndRelationshipToNoteAuthorPermissionTypeService" />
 	  </property>
 	</bean>
 

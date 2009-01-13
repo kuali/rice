@@ -580,7 +580,7 @@
   </bean>
 
   <bean id="kewIdentityHelperService" class="org.kuali.rice.kew.identity.service.impl.IdentityHelperServiceImpl"/>
-
+  
   <!-- XML parsing/export has not been promoted out of KEW into the core yet, until then let's wire up the GroupXmlServiceImpl here -->
   <bean id="enGroupXmlService" class="org.kuali.rice.kew.xml.GroupXmlServiceImpl" />
   <bean id="enUserXmlService" class="org.kuali.rice.kew.xml.UserXmlServiceImpl"/>
@@ -884,7 +884,7 @@
         <idref local="enHelpDAO"/>
         <idref local="enBranchDAOJpa"/>
         <idref local="enRuleAttributeDAOJpa"/>
-         <!-- <idref local="enExtractDAO"/> -->
+        <!-- <idref local="enExtractDAO"/> -->
       </list>
     </property>
   </bean>
@@ -921,7 +921,7 @@
 	       </bean>
 		</property>
   </bean>
-
+  
   <bean id="documentTypeAndActionRequestTypePermissionTypeService" class="org.kuali.rice.kew.service.impl.DocumentTypeAndActionRequestTypePermissionTypeServiceImpl" />
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
@@ -937,21 +937,36 @@
 	       </bean>
 		</property>
   </bean>
-
-  <bean id="responsibilityResponsibilityTypeService" class="org.kuali.rice.kew.service.impl.ResponsibilityResponsibilityTypeServiceImpl" />
+  
+  <bean id="reviewResponsibilityTypeService" class="org.kuali.rice.kew.service.impl.ReviewResponsibilityTypeServiceImpl" />
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
 		<property name="serviceDefinition">
 	       <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
 	         <property name="service">
-	           <ref bean="responsibilityResponsibilityTypeService" />
+	           <ref bean="reviewResponsibilityTypeService" />
 	         </property>
-	         <property name="localServiceName" value="responsibilityResponsibilityTypeService" />
+	         <property name="localServiceName" value="reviewResponsibilityTypeService" />
 	         <property name="priority" value="3" />
 	         <property name="retryAttempts" value="0" />
 	         <property name="busSecurity" value="${secure.workflowdocument.javaservice.endpoint}"/>
 	       </bean>
 		</property>
   </bean>
-
+  
+  <bean id="documentTypeResponsibilityTypeService" class="org.kuali.rice.kew.service.impl.DocumentTypeResponsibilityTypeServiceImpl" />
+  <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+		<property name="serviceDefinition">
+	       <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+	         <property name="service">
+	           <ref bean="documentTypeResponsibilityTypeService" />
+	         </property>
+	         <property name="localServiceName" value="documentTypeResponsibilityTypeService" />
+	         <property name="priority" value="3" />
+	         <property name="retryAttempts" value="0" />
+	         <property name="busSecurity" value="${secure.workflowdocument.javaservice.endpoint}"/>
+	       </bean>
+		</property>
+  </bean>
 </beans>

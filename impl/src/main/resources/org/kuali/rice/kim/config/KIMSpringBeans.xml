@@ -358,6 +358,27 @@
 	<property name="permissionTemplateNamespace" value="KR-NS" />
 	<property name="permissionTemplateName" value="Edit Document" />
   </bean>
+  <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+    <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+    <property name="serviceDefinition">
+      <bean parent="kimService"
+        p:service-ref="documentEditorRoleTypeService"
+        p:localServiceName="documentEditorRoleTypeService" />
+    </property>
+  </bean>
+
+  <bean id="documentOpenerRoleTypeService" class="org.kuali.rice.kns.authorization.PermissionDerivedRoleTypeServiceImpl">
+	<property name="permissionTemplateNamespace" value="KR-NS" />
+	<property name="permissionTemplateName" value="Open Document" />
+  </bean>
+  <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+    <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+    <property name="serviceDefinition">
+      <bean parent="kimService"
+        p:service-ref="documentOpenerRoleTypeService"
+        p:localServiceName="documentOpenerRoleTypeService" />
+    </property>
+  </bean>
 
   <bean id="documentTypeAndNodeOrStatePermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypeAndNodeOrStatePermissionTypeServiceImpl" />
 

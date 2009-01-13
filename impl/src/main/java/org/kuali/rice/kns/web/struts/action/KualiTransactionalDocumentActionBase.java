@@ -75,25 +75,15 @@ public class KualiTransactionalDocumentActionBase extends KualiDocumentActionBas
     	Map editMode = new HashMap();
     	
     	if (formBase.isFormDocumentInitialized()) {
-    		
         	Person user = GlobalVariables.getUserSession().getPerson();
-        	
         	TransactionalDocumentPresentationController documentPresentationController = (TransactionalDocumentPresentationController) KNSServiceLocator.getDocumentTypeService().getDocumentPresentationController(document);
             TransactionalDocumentAuthorizer documentAuthorizer = (TransactionalDocumentAuthorizer) KNSServiceLocator.getDocumentTypeService().getDocumentAuthorizer(document);
-            Set<String> editModes = documentPresentationController.getEditModes(document);
+            Set<String> editModes = documentAuthorizer.getEditModes(document, user, documentPresentationController.getEditModes(document));
             editMode = this.convertSetToMap(editModes);
-            // TODO remove this
-            editMode.putAll(documentAuthorizer.getEditMode(document, user));
             if (KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(document.getClass().getName()).getUsePessimisticLocking()) {
                 editMode = KNSServiceLocator.getPessimisticLockService().establishLocks(document, editMode, user);
-            }
-            
+            }            
     	}
-    	if(formBase.getDocumentActions().containsKey(KNSConstants.KUALI_ACTION_CAN_EDIT)){
-    		editMode.put(AuthorizationConstants.EditMode.FULL_ENTRY, KNSConstants.KUALI_DEFAULT_TRUE_VALUE);
-    	} else if(editMode.isEmpty())
-    		editMode.put(AuthorizationConstants.EditMode.VIEW_ONLY, KNSConstants.KUALI_DEFAULT_TRUE_VALUE);
-    		//having a problem empty/readonly
     	formBase.setEditingMode(editMode);
     }
 }

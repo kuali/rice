@@ -36,12 +36,8 @@ import org.kuali.rice.kim.util.KimCommonUtils;
  * 
  */
 public class DocumentTypePermissionTypeServiceImpl extends KimPermissionTypeServiceBase {
-
+	public static final String CREATED_BY_SELF_ATTRIBUTE_NAME = "createdBySelf";
 	DocumentTypeService documentTypeService;
-	
-	{
-		requiredAttributes.add(KimAttributes.DOCUMENT_TYPE_NAME);
-	}
 
 	/**
 	 * Loops over the given permissions and returns the most specific permission that matches.

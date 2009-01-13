@@ -106,7 +106,7 @@
                       </td>
           </c:if>
                     <c:if test="${(not empty attachmentTypesValuesFinderClass) and (allowsNoteAttachments eq true)}">
-                        <c:set var="finderClass" value="${fn:replace(DataDictionary.KualiBudgetDocument.attachmentTypesValuesFinderClass,'.','|')}"/>
+                        <c:set var="finderClass" value="${fn:replace(attachmentTypesValuesFinderClass,'.','|')}"/>
                         <td class="infoline">
                             <html:select property="newNote.attachment.attachmentTypeCode">
                                 <html:optionsCollection property="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}" label="label" value="key"/>

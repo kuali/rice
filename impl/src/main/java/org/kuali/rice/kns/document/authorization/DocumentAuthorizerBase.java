@@ -144,8 +144,10 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 			}
 		} 
 		
-		if (documentActions.contains(KNSConstants.KUALI_ACTION_CAN_ANNOTATE)
-				&& !canAnnotate(document, user)) {
+		if (documentActions
+				.contains(KNSConstants.KUALI_ACTION_CAN_ANNOTATE)
+				&& !documentActions
+						.contains(KNSConstants.KUALI_ACTION_CAN_EDIT)) {
 			documentActions.remove(KNSConstants.KUALI_ACTION_CAN_ANNOTATE);
 		}
 		return documentActions;
@@ -216,13 +218,6 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 		} else {
 			return false;
 		}
-	}
-
-	// TODO pretty sure this is wrong - annotate is a workflow thing
-	private boolean canAnnotate(Document document, Person user) {
-		return isAuthorizedByTemplate(document, KNSConstants.KNS_NAMESPACE,
-				KimConstants.PermissionTemplateNames.ADD_NOTE, user
-						.getPrincipalId());
 	}
 
 	private boolean canTakeRequestedAction(Document document, Person user) {

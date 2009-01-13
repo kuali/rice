@@ -17,14 +17,18 @@ package org.kuali.rice.kns.web.struts.action;
 
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Level;
+import org.apache.log4j.Priority;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -69,6 +73,17 @@ public abstract class KualiAction extends DispatchAction {
 
     private static Boolean OUTPUT_ENCRYPTION_WARNING = null;
     
+    private Set<String> methodToCallsToNotCheckAuthorization = new HashSet<String>();
+    
+    {
+    	methodToCallsToNotCheckAuthorization.add( "performLookup" );
+    	methodToCallsToNotCheckAuthorization.add( "performQuestion" );
+    	methodToCallsToNotCheckAuthorization.add( "performQuestionWithInput" );
+    	methodToCallsToNotCheckAuthorization.add( "performQuestionWithInputAgainBecauseOfErrors" );
+    	methodToCallsToNotCheckAuthorization.add( "performQuestionWithoutInput" );
+    	methodToCallsToNotCheckAuthorization.add( "performWorkgroupLookup" );
+    }
+    
     /**
      * Entry point to all actions.
      *
@@ -97,7 +112,7 @@ public abstract class KualiAction extends DispatchAction {
         // if found methodToCall, pass control to that method, else return the basic forward
         if (StringUtils.isNotBlank(methodToCall)) {
         	if ( LOG.isDebugEnabled() ) {
-        		LOG.debug("methodToCall: " + methodToCall);
+        		LOG.debug("methodToCall: '" + methodToCall+"'");
         	}
             returnForward = dispatchMethod(mapping, form, request, response, methodToCall);
         }
@@ -106,21 +121,32 @@ public abstract class KualiAction extends DispatchAction {
         }
 
         // make sure the user can do what they're trying to according to the module that owns the functionality
-        checkAuthorization(form, methodToCall);
+        if ( !methodToCallsToNotCheckAuthorization.contains(methodToCall) ) {
+        	if ( LOG.isDebugEnabled() ) {
+        		LOG.debug( "'" + methodToCall + "' not in set of excempt methods: " + methodToCallsToNotCheckAuthorization);
+        	}
+        	checkAuthorization(form, methodToCall);
+        } else {
+        	if ( LOG.isDebugEnabled() ) {
+        		LOG.debug("'" + methodToCall + "' is exempt from auth checks." );
+        	}
+        }
 
         // check if demonstration encryption is enabled
-        if ( OUTPUT_ENCRYPTION_WARNING == null ) {
-        	OUTPUT_ENCRYPTION_WARNING = KNSServiceLocator.getKualiConfigurationService().getIndicatorParameter(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.CHECK_ENCRYPTION_SERVICE_OVERRIDE_IND) && KNSServiceLocator.getEncryptionService() instanceof Demonstration; 
-        }
-        if ( OUTPUT_ENCRYPTION_WARNING.booleanValue() ) {
-            LOG.warn("WARNING: This implementation of Kuali uses the demonstration encryption framework.");
+        if ( LOG.isEnabledFor(Level.WARN) ) {
+	        if ( OUTPUT_ENCRYPTION_WARNING == null ) {
+	        	OUTPUT_ENCRYPTION_WARNING = KNSServiceLocator.getKualiConfigurationService().getIndicatorParameter(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.CHECK_ENCRYPTION_SERVICE_OVERRIDE_IND) && KNSServiceLocator.getEncryptionService() instanceof Demonstration; 
+	        }
+	        if ( OUTPUT_ENCRYPTION_WARNING.booleanValue() ) {
+	            LOG.warn("WARNING: This implementation of Kuali uses the demonstration encryption framework.");
+	        }
         }
 
         // Add the ActionForm to GlobalVariables
         // This will allow developers to retrieve both the Document and any request parameters that are not
         // part of the Form and make them available in ValueFinder classes and other places where they are needed.
         if(GlobalVariables.getKualiForm() == null) {
-        GlobalVariables.setKualiForm((KualiForm)form);
+        	GlobalVariables.setKualiForm((KualiForm)form);
         }
 
         return returnForward;
@@ -981,5 +1007,13 @@ public abstract class KualiAction extends DispatchAction {
                         
         return forward;
     }
-
+    
+    /**
+     * Use to add a methodToCall to the a list which will not have authorization checks.
+     * This assumes that the call will be redirected (as in the case of a lookup) that will perform
+     * the authorization.
+     */
+    protected final void addMethodToCallToUncheckedList( String methodToCall ) {
+    	methodToCallsToNotCheckAuthorization.add(methodToCall);
+    }
 }

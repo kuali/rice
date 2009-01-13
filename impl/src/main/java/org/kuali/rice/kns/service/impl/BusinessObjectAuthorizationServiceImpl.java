@@ -368,7 +368,7 @@ public class BusinessObjectAuthorizationServiceImpl implements
 								collectionBusinessObject, user, restrictions,
 								newPropertyPrefix);
 						considerBusinessObjectFieldViewAuthorization(
-								collectionBusinessObjectEntry, primaryBusinessObject,
+								collectionBusinessObjectEntry, collectionBusinessObject,
 								user, authorizer, restrictions, newPropertyPrefix);
 						addInquirableItemRestrictions(
 								inquiryCollectionDefinition
@@ -421,10 +421,10 @@ public class BusinessObjectAuthorizationServiceImpl implements
 								collectionBusinessObject, user, restrictions,
 								newPropertyPrefix);
 						considerBusinessObjectFieldViewAuthorization(
-								collectionBusinessObjectEntry, maintenanceDocument, user,
+								collectionBusinessObjectEntry, collectionBusinessObject, user,
 								authorizer, restrictions, newPropertyPrefix);
 						considerBusinessObjectFieldModifyAuthorization(
-								collectionBusinessObjectEntry, maintenanceDocument, user,
+								collectionBusinessObjectEntry, collectionBusinessObject, user,
 								authorizer, restrictions, newPropertyPrefix);
 						addMaintainableItemRestrictions(
 								((MaintainableCollectionDefinition) maintainableItemDefinition)

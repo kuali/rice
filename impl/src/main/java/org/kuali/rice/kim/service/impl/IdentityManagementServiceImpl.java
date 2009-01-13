@@ -395,12 +395,13 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     }
 
 	private String finishKey(AttributeSet permissionDetails, String key) {
+		StringBuffer sb = new StringBuffer( key );
 		if ( permissionDetails != null ) {
 			for ( Map.Entry<String, String> entry : permissionDetails.entrySet() ) {
-	    		key += entry.getKey() + "-" + entry.getValue();
+				sb.append( entry.getKey() ).append( '-' ).append( entry.getValue() ).append('/');
 	    	}
 		}
-		return key;
+		return sb.toString();
 	}
     
     /**

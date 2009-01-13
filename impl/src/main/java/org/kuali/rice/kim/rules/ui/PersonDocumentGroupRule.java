@@ -23,7 +23,6 @@ import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.rule.event.ui.AddGroupEvent;
 import org.kuali.rice.kim.rule.ui.AddGroupRule;
 import org.kuali.rice.kns.rules.DocumentRuleBase;
-import org.kuali.rice.kns.util.ErrorMap;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 
@@ -34,25 +33,24 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
  *
  */
 public class PersonDocumentGroupRule extends DocumentRuleBase implements AddGroupRule {
-    private static final String NEW_GROUP = "newGroup";
+    protected static final String NEW_GROUP = "newGroup";
+    protected static final String GROUP_ID_ERROR_PATH = NEW_GROUP+".groupId";
 
 	public boolean processAddGroup(AddGroupEvent addGroupEvent) {
 		IdentityManagementPersonDocument document = (IdentityManagementPersonDocument)addGroupEvent.getDocument();
 		PersonDocumentGroup newGroup = addGroupEvent.getGroup();
 	    boolean rulePassed = true;
-	    String errorPath = NEW_GROUP+".groupId";
-        ErrorMap errorMap = GlobalVariables.getErrorMap();
 //    	List<String> groupIds = KIMServiceLocator.getUiDocumentService().getPopulatableGroupIds();
 
         if (newGroup == null || StringUtils.isBlank(newGroup.getGroupId())) {
             rulePassed = false;
-            errorMap.putError(errorPath, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Group"});
+            GlobalVariables.getErrorMap().putError(GROUP_ID_ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Group"});
         	
         } else {
 		    for (PersonDocumentGroup group : document.getGroups()) {
 		    	if (group.getGroupId().equals(newGroup.getGroupId())) {
 		            rulePassed = false;
-		            errorMap.putError(errorPath, RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Group"});
+		            GlobalVariables.getErrorMap().putError(GROUP_ID_ERROR_PATH, RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Group"});
 		    		
 		    	}
 		    }
@@ -73,10 +71,8 @@ public class PersonDocumentGroupRule extends DocumentRuleBase implements AddGrou
 		// TODO : do not have detail bus rule yet, so just check this for now.
 		boolean valid = true;
 		if (activeFromDate != null && activeToDate !=null && activeToDate.before(activeFromDate)) {
-	        ErrorMap errorMap = GlobalVariables.getErrorMap();
-            errorMap.putError(NEW_GROUP+".activeToDate", RiceKeyConstants.ERROR_ACTIVE_TO_DATE_BEFORE_FROM_DATE);
-            valid = false;
-			
+	        GlobalVariables.getErrorMap().putError(NEW_GROUP+".activeToDate", RiceKeyConstants.ERROR_ACTIVE_TO_DATE_BEFORE_FROM_DATE);
+            valid = false;			
 		}
 		return valid;
 	}

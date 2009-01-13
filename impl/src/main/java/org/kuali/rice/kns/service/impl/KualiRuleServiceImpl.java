@@ -39,7 +39,6 @@ import org.kuali.rice.kns.service.TransactionalDocumentDictionaryService;
 import org.kuali.rice.kns.util.ErrorMap;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * This class represents a rule evaluator for Kuali. This class is to be used for evaluating business rule checks. The class defines
@@ -63,13 +62,17 @@ public class KualiRuleServiceImpl implements KualiRuleService {
         }
 
         event.validate();
-        LOG.debug("calling applyRules for event " + event);
+        if ( LOG.isDebugEnabled() ) {
+        	LOG.debug("calling applyRules for event " + event);
+        }
 
         BusinessRule rule = (BusinessRule) getBusinessRulesInstance(event.getDocument(), event.getRuleInterfaceClass());
 
         boolean success = true;
         if (rule != null) {
-            LOG.debug("processing " + event.getName() + " with rule " + rule.getClass().getName());
+        	if ( LOG.isDebugEnabled() ) {	
+        		LOG.debug("processing " + event.getName() + " with rule " + rule.getClass().getName());
+        	}
             increaseErrorPath(event.getErrorPathPrefix());
 
             // get any child events and apply rules
@@ -86,10 +89,14 @@ public class KualiRuleServiceImpl implements KualiRuleService {
 
             // report failures
             if (!success) {
-                LOG.error(event.getName() + " businessRule " + rule.getClass().getName() + " failed");
+            	if ( LOG.isDebugEnabled() ) { // NO, this is not a type - only log if in debug mode - this is not an error in production
+            		LOG.error(event.getName() + " businessRule " + rule.getClass().getName() + " failed");
+            	}
             }
             else {
-                LOG.debug("processed " + event.getName() + " for rule " + rule.getClass().getName());
+            	if ( LOG.isDebugEnabled() ) {
+            		LOG.debug("processed " + event.getName() + " for rule " + rule.getClass().getName());
+            	}
             }
 
         }

@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
@@ -47,8 +48,8 @@ import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.rules.TransactionalDocumentRuleBase;
+import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.ErrorMap;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.RiceKeyConstants;
@@ -61,11 +62,15 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
  */
 public class IdentityManagementPersonDocumentRule extends TransactionalDocumentRuleBase implements AddGroupRule,AddRoleRule {
 
-	AddGroupRule addGroupRule = new PersonDocumentGroupRule();
-	AddRoleRule  addRoleRule  = new PersonDocumentRoleRule();
-	IdentityManagementPersonDocumentAuthorizer authorizer;
-	IdentityService identityService;
+	private static final Logger LOG = Logger.getLogger( IdentityManagementPersonDocumentRule.class );
 	
+	private AddGroupRule addGroupRule;
+	private AddRoleRule  addRoleRule;
+	private IdentityManagementPersonDocumentAuthorizer authorizer;
+	private BusinessObjectService businessObjectService;
+	private IdentityService identityService;
+	private Class<? extends AddGroupRule> addGroupRuleClass = PersonDocumentGroupRule.class;
+	private Class<? extends AddRoleRule> addRoleRuleClass = PersonDocumentRoleRule.class;
 	
 	
     @Override
@@ -109,14 +114,13 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     
     
     private boolean checkMultipleDefault (List <? extends PersonDocumentBoDefaultBase> boList, String listName) {
-        ErrorMap errorMap = GlobalVariables.getErrorMap();
     	boolean valid = true;
     	boolean isDefaultSet = false;
     	int i = 0;
     	for (PersonDocumentBoDefaultBase item : boList) {
      		if (item.isDflt()) {
      			if (isDefaultSet) {
-                    errorMap.putError(listName+"[" + i + "].dflt",RiceKeyConstants.ERROR_MULTIPLE_DEFAULT_SELETION);
+     				GlobalVariables.getErrorMap().putError(listName+"[" + i + "].dflt",RiceKeyConstants.ERROR_MULTIPLE_DEFAULT_SELETION);
      				valid = false;
      			} else {
      				isDefaultSet = true;
@@ -128,7 +132,6 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     }
     
     private boolean checkPrimaryEmploymentInfo (List <PersonDocumentAffiliation> affiliations) {
-        ErrorMap errorMap = GlobalVariables.getErrorMap();
     	boolean valid = true;
     	int i = 0;
     	for (PersonDocumentAffiliation affiliation : affiliations) {
@@ -138,7 +141,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 	     		if (empInfo.isPrimary()) {
 	     			if (isPrimarySet) {
 	     				// primary per principal or primary per affiliation ?
-	                    errorMap.putError("affiliations[" + i + "].empInfos["+ j +"].primary",RiceKeyConstants.ERROR_MULTIPLE_PRIMARY_EMPLOYMENT);
+	     				GlobalVariables.getErrorMap().putError("affiliations[" + i + "].empInfos["+ j +"].primary",RiceKeyConstants.ERROR_MULTIPLE_PRIMARY_EMPLOYMENT);
 	     				valid = false;
 	     			} else {
 	     				isPrimarySet = true;
@@ -168,7 +171,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	if ( attributeImpl == null ) {
 			Map<String,String> criteria = new HashMap<String,String>();
 			criteria.put( "kimAttributeId", id );
-			attributeImpl = (KimAttributeImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey( KimAttributeImpl.class, criteria );
+			attributeImpl = (KimAttributeImpl)getBusinessObjectService().findByPrimaryKey( KimAttributeImpl.class, criteria );
 			attributeDefinitionMap.put( id, attributeImpl );
     	}
     	return attributeImpl;
@@ -177,7 +180,12 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 	public AttributeSet convertQualifiersToMap( List<PersonDocumentRoleQualifier> qualifiers ) {
 		AttributeSet m = new AttributeSet();
 		for ( PersonDocumentRoleQualifier data : qualifiers ) {
-			m.put( getAttributeDefinition( data.getKimAttrDefnId() ).getAttributeName(), data.getAttrVal() );
+			KimAttributeImpl attrib = getAttributeDefinition( data.getKimAttrDefnId() );
+			if ( attrib != null ) {
+				m.put( attrib.getAttributeName(), data.getAttrVal() );
+			} else {
+				LOG.error("Unable to get attribute name for ID:" + data.getKimAttrDefnId() );
+			}
 		}
 		return m;
 	}
@@ -237,8 +245,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 		// TODO : do not have detail bus rule yet, so just check this for now.
 		boolean valid = true;
 		if (activeFromDate != null && activeToDate !=null && activeToDate.before(activeFromDate)) {
-	        ErrorMap errorMap = GlobalVariables.getErrorMap();
-            errorMap.putError(errorPath, RiceKeyConstants.ERROR_ACTIVE_TO_DATE_BEFORE_FROM_DATE);
+	        GlobalVariables.getErrorMap().putError(errorPath, RiceKeyConstants.ERROR_ACTIVE_TO_DATE_BEFORE_FROM_DATE);
             valid = false;
 			
 		}
@@ -248,13 +255,12 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 	private boolean checkUnassignableRoles(IdentityManagementPersonDocument document) {
 		boolean valid = true;
     	Map<String,Set<String>> unassignableRoles = getAuthorizer( document ).getUnassignableRoles(document, GlobalVariables.getUserSession().getPerson());
-        ErrorMap errorMap = GlobalVariables.getErrorMap();
         for (String namespaceCode : unassignableRoles.keySet()) {
         	for (String roleName : unassignableRoles.get(namespaceCode)) {
         		int i = 0;
         		for (PersonDocumentRole role : document.getRoles()) {
         			if (namespaceCode.endsWith(role.getNamespaceCode()) && roleName.equals(role.getRoleName())) {
-        	            errorMap.putError("roles["+i+"].roleId", RiceKeyConstants.ERROR_ASSIGN_ROLE, new String[] {namespaceCode, roleName});
+        				GlobalVariables.getErrorMap().putError("roles["+i+"].roleId", RiceKeyConstants.ERROR_ASSIGN_ROLE, new String[] {namespaceCode, roleName});
         			}
         			i++;
         		}
@@ -267,13 +273,12 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 	private boolean checkUnpopulatableGroups(IdentityManagementPersonDocument document) {
 		boolean valid = true;
     	Map<String,Set<String>> unpopulatableGroups = getAuthorizer( document ).getUnpopulateableGroups(document, GlobalVariables.getUserSession().getPerson());
-        ErrorMap errorMap = GlobalVariables.getErrorMap();
         for (String namespaceCode : unpopulatableGroups.keySet()) {
         	for (String groupName : unpopulatableGroups.get(namespaceCode)) {
         		int i = 0;
         		for (PersonDocumentGroup group : document.getGroups()) {
         			if (namespaceCode.endsWith(group.getNamespaceCode()) && groupName.equals(group.getGroupName())) {
-        	            errorMap.putError("groups["+i+"].groupId", RiceKeyConstants.ERROR_POPULATE_GROUP, new String[] {namespaceCode, groupName});
+        				GlobalVariables.getErrorMap().putError("groups["+i+"].groupId", RiceKeyConstants.ERROR_POPULATE_GROUP, new String[] {namespaceCode, groupName});
         			}
         			i++;
         		}
@@ -284,11 +289,11 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 	}
 	
     public boolean processAddGroup(AddGroupEvent addGroupEvent) {
-        return addGroupRule.processAddGroup(addGroupEvent);    
+        return getAddGroupRule().processAddGroup(addGroupEvent);    
     }
 
     public boolean processAddRole(AddRoleEvent addRoleEvent) {
-        return addRoleRule.processAddRole(addRoleEvent);    
+        return getAddRoleRule().processAddRole(addRoleEvent);    
     }
 
 
@@ -307,6 +312,90 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 			authorizer = (IdentityManagementPersonDocumentAuthorizer)KNSServiceLocator.getDocumentTypeService().getDocumentAuthorizer(document);
 		}
 		return authorizer;
+	}
+
+
+
+	/**
+	 * @return the addGroupRuleClass
+	 */
+	public Class<? extends AddGroupRule> getAddGroupRuleClass() {
+		return this.addGroupRuleClass;
+	}
+
+
+
+	/**
+	 * Can be overridden by subclasses to indicate the rule class to use when adding groups.
+	 * 
+	 * @param addGroupRuleClass the addGroupRuleClass to set
+	 */
+	public void setAddGroupRuleClass(Class<? extends AddGroupRule> addGroupRuleClass) {
+		this.addGroupRuleClass = addGroupRuleClass;
+	}
+
+
+
+	/**
+	 * @return the addRoleRuleClass
+	 */
+	public Class<? extends AddRoleRule> getAddRoleRuleClass() {
+		return this.addRoleRuleClass;
+	}
+
+
+
+	/**
+	 * Can be overridden by subclasses to indicate the rule class to use when adding roles.
+	 * 
+	 * @param addRoleRuleClass the addRoleRuleClass to set
+	 */
+	public void setAddRoleRuleClass(Class<? extends AddRoleRule> addRoleRuleClass) {
+		this.addRoleRuleClass = addRoleRuleClass;
+	}
+
+
+
+	/**
+	 * @return the addGroupRule
+	 */
+	public AddGroupRule getAddGroupRule() {
+		if ( addGroupRule == null ) {
+			try {
+				addGroupRule = addGroupRuleClass.newInstance();
+			} catch ( Exception ex ) {
+				throw new RuntimeException( "Unable to create AddGroupRule instance using class: " + addGroupRuleClass, ex );
+			}
+		}
+		return addGroupRule;
+	}
+
+
+
+	/**
+	 * @return the addRoleRule
+	 */
+	public AddRoleRule getAddRoleRule() {
+		if ( addRoleRule == null ) {
+			try {
+				addRoleRule = addRoleRuleClass.newInstance();
+			} catch ( Exception ex ) {
+				throw new RuntimeException( "Unable to create AddRoleRule instance using class: " + addRoleRuleClass, ex );
+			}
+		}
+		return addRoleRule;
+	}
+
+
+
+	/**
+	 * @return the businessObjectService
+	 */
+	public BusinessObjectService getBusinessObjectService() {
+		if ( businessObjectService == null ) {
+			businessObjectService = KNSServiceLocator.getBusinessObjectService();
+		}
+		return businessObjectService;
 	}
 
 }

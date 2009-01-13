@@ -25,6 +25,5 @@ import org.kuali.rice.kns.rule.BusinessRule;
  *
  */
 public interface AddGroupRule extends BusinessRule {
-    public boolean processAddGroup(AddGroupEvent addGroupEvent);
-
+    boolean processAddGroup(AddGroupEvent addGroupEvent);
 }

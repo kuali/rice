@@ -25,6 +25,5 @@ import org.kuali.rice.kns.rule.BusinessRule;
  *
  */
 public interface AddRoleRule extends BusinessRule {
-    public boolean processAddRole(AddRoleEvent addRoleEvent);
-
+    boolean processAddRole(AddRoleEvent addRoleEvent);
 }

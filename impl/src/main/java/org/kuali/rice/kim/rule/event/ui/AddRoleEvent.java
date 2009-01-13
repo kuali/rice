@@ -21,7 +21,6 @@ import org.kuali.rice.kim.rule.ui.AddRoleRule;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.rule.BusinessRule;
 import org.kuali.rice.kns.rule.event.KualiDocumentEventBase;
-import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -38,10 +37,10 @@ public class AddRoleEvent  extends KualiDocumentEventBase {
 
     public AddRoleEvent(String errorPathPrefix, Document document, PersonDocumentRole role) {
         this(errorPathPrefix, (IdentityManagementPersonDocument) document);
-        this.role = (PersonDocumentRole) ObjectUtils.deepCopy(role);
+        this.role = role;
     }
 
-    public Class getRuleInterfaceClass() {
+    public Class<? extends BusinessRule> getRuleInterfaceClass() {
         return AddRoleRule.class;
     }
 

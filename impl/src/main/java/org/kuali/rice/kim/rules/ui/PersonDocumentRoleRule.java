@@ -15,19 +15,12 @@
  */
 package org.kuali.rice.kim.rules.ui;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
-import org.kuali.rice.kim.document.authorization.IdentityManagementPersonDocumentAuthorizer;
 import org.kuali.rice.kim.rule.event.ui.AddRoleEvent;
 import org.kuali.rice.kim.rule.ui.AddRoleRule;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.rules.DocumentRuleBase;
-import org.kuali.rice.kns.util.ErrorMap;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 
@@ -41,24 +34,23 @@ public class PersonDocumentRoleRule extends DocumentRuleBase implements AddRoleR
     private static final String ERROR_PATH = "newRole.roleId";
 
 	public boolean processAddRole(AddRoleEvent addRoleEvent) {
-		IdentityManagementPersonDocument document = (IdentityManagementPersonDocument)addRoleEvent.getDocument();
 		PersonDocumentRole newRole = addRoleEvent.getRole();
 	    boolean rulePassed = true;
-        ErrorMap errorMap = GlobalVariables.getErrorMap();
 //    	List<String> roleIds = KIMServiceLocator.getUiDocumentService().getAssignableRoleIds();
 
         if (newRole == null || StringUtils.isBlank(newRole.getRoleId())) {
             rulePassed = false;
-            errorMap.putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Role"});
+            GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Role"});
         	
 //        } else if (roleIds.isEmpty() || !roleIds.contains(newRole.getRoleId())) {
 //            errorMap.putError(ERROR_PATH, RiceKeyConstants.ERROR_ASSIGN_ROLE, new String[] {newRole.getRoleId()});
 //            rulePassed = false;
         } else {
+    		IdentityManagementPersonDocument document = (IdentityManagementPersonDocument)addRoleEvent.getDocument();
 		    for (PersonDocumentRole role : document.getRoles()) {
 		    	if (role.getRoleId().equals(newRole.getRoleId())) {
 		            rulePassed = false;
-		            errorMap.putError(ERROR_PATH, RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Role"});
+		            GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Role"});
 		    		
 		    	}
 		    }

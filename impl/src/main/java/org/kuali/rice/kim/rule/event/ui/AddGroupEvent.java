@@ -21,7 +21,6 @@ import org.kuali.rice.kim.rule.ui.AddGroupRule;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.rule.BusinessRule;
 import org.kuali.rice.kns.rule.event.KualiDocumentEventBase;
-import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -38,10 +37,10 @@ public class AddGroupEvent extends KualiDocumentEventBase {
 
     public AddGroupEvent(String errorPathPrefix, Document document, PersonDocumentGroup group) {
         this(errorPathPrefix, (IdentityManagementPersonDocument) document);
-        this.group = (PersonDocumentGroup) ObjectUtils.deepCopy(group);
+        this.group = group;
     }
 
-    public Class getRuleInterfaceClass() {
+    public Class<? extends BusinessRule> getRuleInterfaceClass() {
         return AddGroupRule.class;
     }
 

@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.KimRole;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
@@ -227,6 +228,38 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 
     protected List<String> getRoleIdsForResponsibility( KimResponsibilityImpl responsibility, AttributeSet qualification ) {
     	return responsibilityDao.getRoleIdsForResponsibility( responsibility );    	
+    }
+    
+    protected boolean areActionsAtAssignmentLevel( KimResponsibilityImpl responsibility ) {
+    	AttributeSet details = responsibility.getDetails();
+    	if ( details == null ) {
+    		return false;
+    	}
+    	String actionDetailsAtRoleMemberLevel = details.get( KimAttributes.ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL );
+    	return StringUtils.equalsIgnoreCase(actionDetailsAtRoleMemberLevel, "true");
+    }
+
+    /**
+     * @see org.kuali.rice.kim.service.ResponsibilityService#areActionsAtAssignmentLevel(org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo)
+     */
+    public boolean areActionsAtAssignmentLevel( KimResponsibilityInfo responsibility ) {
+    	AttributeSet details = responsibility.getDetails();
+    	if ( details == null ) {
+    		return false;
+    	}
+    	String actionDetailsAtRoleMemberLevel = details.get( KimAttributes.ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL );
+    	return StringUtils.equalsIgnoreCase(actionDetailsAtRoleMemberLevel, "true");
+    }
+
+    /**
+     * @see org.kuali.rice.kim.service.ResponsibilityService#areActionsAtAssignmentLevelById(String)
+     */
+    public boolean areActionsAtAssignmentLevelById( String responsibilityId ) {
+    	KimResponsibilityImpl responsibility = getResponsibilityImpl(responsibilityId);
+    	if ( responsibility == null ) {
+    		return false;
+    	}
+    	return areActionsAtAssignmentLevel(responsibility);
     }
     
     // --------------------

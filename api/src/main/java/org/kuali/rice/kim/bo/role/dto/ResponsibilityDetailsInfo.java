@@ -15,9 +15,8 @@
  */
 package org.kuali.rice.kim.bo.role.dto;
 
-import java.util.Map;
-
 import org.kuali.rice.kim.bo.role.ResponsibilityDetails;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -29,7 +28,7 @@ public class ResponsibilityDetailsInfo implements ResponsibilityDetails {
 
 	protected String responsibilityId;
 
-	protected Map<String,String> details;
+	protected AttributeSet details;
 
 	public String getResponsibilityId() {
 		return this.responsibilityId;
@@ -39,11 +38,11 @@ public class ResponsibilityDetailsInfo implements ResponsibilityDetails {
 		this.responsibilityId = responsibilityId;
 	}
 
-	public Map<String,String> getDetails() {
+	public AttributeSet getDetails() {
 		return this.details;
 	}
 
-	public void setDetails(Map<String,String> responsibilityDetails) {
+	public void setDetails(AttributeSet responsibilityDetails) {
 		this.details = responsibilityDetails;
 	}
 	

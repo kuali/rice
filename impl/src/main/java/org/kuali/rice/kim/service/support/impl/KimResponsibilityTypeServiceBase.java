@@ -16,9 +16,9 @@
 package org.kuali.rice.kim.service.support.impl;
 
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.KimResponsibilityTypeService;
 
 /**
@@ -30,25 +30,20 @@ import org.kuali.rice.kim.service.support.KimResponsibilityTypeService;
 public class KimResponsibilityTypeServiceBase extends KimTypeServiceBase
 		implements KimResponsibilityTypeService {
 
-	public boolean areActionsAtAssignmentLevel() {
-		// TODO really not sure what this is...
+	public boolean doResponsibilityDetailsMatch(
+			AttributeSet requestedDetails,
+			List<AttributeSet> responsibilityDetailsList) {
+		for (AttributeSet responsibilityDetails : responsibilityDetailsList) {
+			if (doesResponsibilityDetailMatch(requestedDetails, responsibilityDetails)) {
+				return true;
+			}
+		}
 		return false;
 	}
 
-	public boolean doResponsibilityDetailsMatch(
-			Map<String, String> requestedDetails,
-			List<Map<String, String>> responsibilityDetailsList) {
-		for (Map<String, String> responsibilityDetails : responsibilityDetailsList) {
-			if (!doesResponsibilityDetailMatch(requestedDetails, responsibilityDetails)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
 	public boolean doesResponsibilityDetailMatch(
-			Map<String, String> requestedDetails,
-			Map<String, String> responsibilityDetails) {
+			AttributeSet requestedDetails,
+			AttributeSet responsibilityDetails) {
 		for (String requestedDetailKey : requestedDetails.keySet()) {
 			String requestedDetailValue = requestedDetails.get(requestedDetailKey);
 			if (!responsibilityDetails.containsKey(requestedDetailKey)) {
@@ -62,21 +57,5 @@ public class KimResponsibilityTypeServiceBase extends KimTypeServiceBase
 		return true;
 	}
 
-	public List<Map<String, String>> getAllImpliedDetails(
-			Map<String, String> requestedDetails) {
-		// TODO not sure what this is...
-		return null;
-	}
-
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kim.service.support.KimResponsibilityTypeService#getAllImplyingDetails(java.util.Map)
-	 */
-	public List<Map<String, String>> getAllImplyingDetails(
-			Map<String, String> requestedDetails) {
-		// TODO - not sure what this is...
-		return null;
-	}
 
 }

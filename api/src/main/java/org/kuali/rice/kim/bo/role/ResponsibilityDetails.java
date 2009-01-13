@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.bo.role;
 
-import java.util.Map;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -27,7 +27,7 @@ public interface ResponsibilityDetails {
 	String getResponsibilityId();
 	
 	/** List of details for this role/permission relationship.  See the class comment for more information. */
-	Map<String,String> getDetails();
+	AttributeSet getDetails();
 	
 	public boolean hasDetails();
 }

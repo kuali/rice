@@ -18,6 +18,8 @@ package org.kuali.rice.kim.service.support;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -39,33 +41,10 @@ public interface KimResponsibilityTypeService extends KimTypeService {
      *   
      * TODO: clarify this description
      */
-    boolean doesResponsibilityDetailMatch( Map<String,String> requestedDetails, Map<String,String> responsibilityDetails );
+    boolean doesResponsibilityDetailMatch( AttributeSet requestedDetails, AttributeSet responsibilityDetails );
 
     /** Same as {@link #doesResponsibilityDetailMatch(Map, Map)} except that it takes a list of details to check.
      */
-    boolean doResponsibilityDetailsMatch( Map<String,String> requestedDetails, List<Map<String,String>> responsibilityDetailsList );
+    boolean doResponsibilityDetailsMatch( AttributeSet requestedDetails, List<AttributeSet> responsibilityDetailsList );
 
-    /**
-     * This method would return all permission details that the given details imply. (down)
-     */
-    List<Map<String,String>> getAllImpliedDetails( Map<String,String> requestedDetails );
-
-    /**
-     * This method would return all detail entries that imply this set of detail attributes. (up)
-     * 
-     * TODO: 
-     * Allowing?
-     * Allowed?
-     * Granting?
-     */
-    List<Map<String,String>> getAllImplyingDetails( Map<String,String> requestedDetails );
-    // TODO: need list versions of the implyed/ing methods?
-
-    /**
-     * Lets the system know (mainly for UI purposes) whether this responsibility expects RoleResponsibilityAction
-     * records to be given at the assignment level or are global to the responsibility.  (I.e., they apply
-     * to any member assigned to the responsibility.) 
-     */
-    boolean areActionsAtAssignmentLevel();
-	
 }

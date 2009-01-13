@@ -15,10 +15,8 @@
  */
 package org.kuali.rice.kim.bo.role.impl;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -31,6 +29,7 @@ import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.role.KimResponsibility;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
@@ -150,8 +149,8 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 	/**
 	 * @see org.kuali.rice.kim.bo.role.ResponsibilityDetails#getDetails()
 	 */
-	public Map<String,String> getDetails() {
-		Map<String, String> map = new HashMap<String, String>();
+	public AttributeSet getDetails() {
+		AttributeSet map = new AttributeSet();
 		for (ResponsibilityAttributeDataImpl data : detailObjects) {
 			map.put(data.getKimAttribute().getAttributeName(), data.getAttributeValue());
 		}

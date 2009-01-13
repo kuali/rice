@@ -56,4 +56,18 @@ public interface ResponsibilityService {
     
    	List<ResponsibilityActionInfo> getResponsibilityActions( String namespaceCode, String responsibilityName, AttributeSet qualification, AttributeSet responsibilityDetails);
    	List<ResponsibilityActionInfo> getResponsibilityActionsByTemplateName( String namespaceCode, String responsibilityTemplateName,	AttributeSet qualification, AttributeSet responsibilityDetails);
+   	
+    /**
+     * Lets the system know (mainly for UI purposes) whether this responsibility expects RoleResponsibilityAction
+     * records to be given at the assignment level or are global to the responsibility.  (I.e., they apply
+     * to any member assigned to the responsibility.) 
+     */
+   	boolean areActionsAtAssignmentLevelById( String responsibilityId );
+
+    /**
+     * Lets the system know (mainly for UI purposes) whether this responsibility expects RoleResponsibilityAction
+     * records to be given at the assignment level or are global to the responsibility.  (I.e., they apply
+     * to any member assigned to the responsibility.) 
+     */
+   	boolean areActionsAtAssignmentLevel( KimResponsibilityInfo responsibility );
 }

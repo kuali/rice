@@ -77,8 +77,8 @@ public class UserSession implements Serializable {
     private KimPrincipal helpDeskActionListPrincipal;
     private Person helpDeskActionListPerson;
 
-    private IdentityManagementService identityService = null;
-    private PersonService<Person> personService = null;
+    private static IdentityManagementService identityService = null;
+    private static PersonService<Person> personService = null;
 
     public UserSession (KimPrincipal actualPrincipal) {
         init(actualPrincipal);

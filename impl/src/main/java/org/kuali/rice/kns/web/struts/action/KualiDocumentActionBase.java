@@ -66,6 +66,7 @@ import org.kuali.rice.kns.rule.event.AddAdHocRoutePersonEvent;
 import org.kuali.rice.kns.rule.event.AddAdHocRouteWorkgroupEvent;
 import org.kuali.rice.kns.rule.event.AddNoteEvent;
 import org.kuali.rice.kns.rule.event.PreRulesCheckEvent;
+import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.DocumentService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
@@ -74,7 +75,6 @@ import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
-import org.kuali.rice.kns.util.Timer;
 import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.struts.form.BlankFormFile;
@@ -95,6 +95,8 @@ public class KualiDocumentActionBase extends KualiAction {
     // COMMAND constants which cause docHandler to load an existing document instead of creating a new one
     private static final String[] DOCUMENT_LOAD_COMMANDS = { KEWConstants.ACTIONLIST_COMMAND, KEWConstants.DOCSEARCH_COMMAND, KEWConstants.SUPERUSER_COMMAND, KEWConstants.HELPDESK_ACTIONLIST_COMMAND };
 
+    private static DataDictionaryService dataDictionaryService;
+    
     protected void checkAuthorization( ActionForm form, String methodToCall ) throws AuthorizationException {
         if ( !(form instanceof KualiDocumentFormBase) ) {
             super.checkAuthorization(form, methodToCall);
@@ -113,7 +115,6 @@ public class KualiDocumentActionBase extends KualiAction {
      */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Timer t0 = new Timer("KualiDocumentActionBase.execute");
         ActionForward returnForward = mapping.findForward(RiceConstants.MAPPING_BASIC);
 
         // if found methodToCall, pass control to that method
@@ -149,7 +150,9 @@ public class KualiDocumentActionBase extends KualiAction {
             // check to see if document is a pessimistic lock document
             if (isFormRepresentingLockObject(formBase)) {
                 // form represents a document using the BO class PessimisticLock so we need to skip the authorizations in the next logic check
-                LOG.debug("Form " + formBase + " represents a PessimisticLock BO object");
+            	if ( LOG.isDebugEnabled() ) {
+            		LOG.debug("Form " + formBase + " represents a PessimisticLock BO object");
+            	}
             } else {
         // populates authorization-related fields in KualiDocumentFormBase instances, which are derived from
         // information which is contained in the form but which may be unavailable until this point
@@ -166,8 +169,8 @@ public class KualiDocumentActionBase extends KualiAction {
             // This is a hack for KULRICE-1602 since the document entry is modified by a
             // global configuration that overrides the document templates without some sort
             // of rules or control
-            //DataDictionary dataDictionary = KNSServiceLocator.getDataDictionaryService().getDataDictionary();
-            DataDictionary dataDictionary = KNSServiceLocator.getDataDictionaryService().getDataDictionary();
+            //DataDictionary dataDictionary = getDataDictionaryService().getDataDictionary();
+            DataDictionary dataDictionary = getDataDictionaryService().getDataDictionary();
             
             DocumentEntry entry = dataDictionary.getDocumentEntry(document.getClass().getName());
 
@@ -198,8 +201,6 @@ public class KualiDocumentActionBase extends KualiAction {
                 }
             }
         }
-
-        t0.log();
 
         return returnForward;
     }
@@ -286,7 +287,7 @@ public class KualiDocumentActionBase extends KualiAction {
             LOG.debug("kualiDocumentFormBase.getAdditionalScriptFiles(): " + kualiDocumentFormBase.getAdditionalScriptFiles());
         }
         if ( kualiDocumentFormBase.getAdditionalScriptFiles().isEmpty() ) {
-            DocumentEntry docEntry = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry( kualiDocumentFormBase.getDocument().getDocumentHeader().getWorkflowDocument().getDocumentType() );
+            DocumentEntry docEntry = getDataDictionaryService().getDataDictionary().getDocumentEntry( kualiDocumentFormBase.getDocument().getDocumentHeader().getWorkflowDocument().getDocumentType() );
             kualiDocumentFormBase.getAdditionalScriptFiles().addAll(docEntry.getWebScriptFiles());
         }
         if (KEWConstants.SUPERUSER_COMMAND.equalsIgnoreCase(command)) {
@@ -727,7 +728,7 @@ public class KualiDocumentActionBase extends KualiAction {
                 int disapprovalNoteTextLength = disapprovalNoteText.length();
 
                 // get note text max length from DD
-                int noteTextMaxLength = KNSServiceLocator.getDataDictionaryService().getAttributeMaxLength(Note.class, KNSConstants.NOTE_TEXT_PROPERTY_NAME).intValue();
+                int noteTextMaxLength = getDataDictionaryService().getAttributeMaxLength(Note.class, KNSConstants.NOTE_TEXT_PROPERTY_NAME).intValue();
 
                 if (StringUtils.isBlank(reason) || (disapprovalNoteTextLength > noteTextMaxLength)) {
                     // figure out exact number of characters that the user can enter
@@ -1102,7 +1103,7 @@ public class KualiDocumentActionBase extends KualiAction {
             }
         }
 
-        DataDictionary dataDictionary = KNSServiceLocator.getDataDictionaryService().getDataDictionary();
+        DataDictionary dataDictionary = getDataDictionaryService().getDataDictionary();
         DocumentEntry entry = dataDictionary.getDocumentEntry(document.getClass().getName());
 
         if(entry.getDisplayTopicFieldInNotes()) {
@@ -1188,7 +1189,7 @@ public class KualiDocumentActionBase extends KualiAction {
         Document document = kualiDocumentFormBase.getDocument();
 
 
-        DataDictionary dataDictionary = KNSServiceLocator.getDataDictionaryService().getDataDictionary();
+        DataDictionary dataDictionary = getDataDictionaryService().getDataDictionary();
         DocumentEntry entry = dataDictionary.getDocumentEntry(document.getClass().getName());
 
         // check authorization for adding notes
@@ -1334,7 +1335,7 @@ public class KualiDocumentActionBase extends KualiAction {
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
 
         /* callback to any pre rules check class */
-        Class<? extends PreRulesCheck> preRulesClass = KNSServiceLocator.getDataDictionaryService().getPreRulesCheckClass(kualiDocumentFormBase.getDocTypeName());
+        Class<? extends PreRulesCheck> preRulesClass = getDataDictionaryService().getPreRulesCheckClass(kualiDocumentFormBase.getDocTypeName());
         if (LOG.isDebugEnabled()) {
             LOG.debug("PreRulesCheckClass: " + preRulesClass);
         }
@@ -1424,15 +1425,15 @@ public class KualiDocumentActionBase extends KualiAction {
     }
     
     protected void populateAuthorizationFields(KualiDocumentFormBase formBase){
-    	Document document = formBase.getDocument();
-    	Person user = GlobalVariables.getUserSession().getPerson();
     	if (formBase.isFormDocumentInitialized()) {
+        	Document document = formBase.getDocument();
+        	Person user = GlobalVariables.getUserSession().getPerson();
     		DocumentPresentationController documentPresentationController = KNSServiceLocator.getDocumentTypeService().getDocumentPresentationController(document);
             DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentTypeService().getDocumentAuthorizer(document);
             Set<String> documentActions =  documentPresentationController.getDocumentActions(document);
             documentActions = documentAuthorizer.getDocumentActions(document, user, documentActions);
             
-            if (KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(document.getClass().getName()).getUsePessimisticLocking()) {
+            if (getDataDictionaryService().getDataDictionary().getDocumentEntry(document.getClass().getName()).getUsePessimisticLocking()) {
                 documentActions = KNSServiceLocator.getPessimisticLockService().getDocumentActions(document, user, documentActions);
             }
             
@@ -1451,5 +1452,15 @@ public class KualiDocumentActionBase extends KualiAction {
         }
         return map;
     }
+
+	/**
+	 * @return the dataDictionaryService
+	 */
+	protected DataDictionaryService getDataDictionaryService() {
+		if ( dataDictionaryService == null ) {
+			dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+		}
+		return dataDictionaryService;
+	}
 }
 

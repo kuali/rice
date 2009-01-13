@@ -55,7 +55,6 @@ import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.MaintenanceUtils;
 import org.kuali.rice.kns.util.ObjectUtils;
-import org.kuali.rice.kns.datadictionary.mask.MaskFormatter;
 
 public class SectionBridge {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SectionBridge.class);
@@ -407,22 +406,6 @@ public class SectionBridge {
                             Object propertyValue = ObjectUtils.getPropertyValue(lineBusinessObject, fieldDefinition.getName());
                             
                             collField.setPropertyValue(propertyValue);
-
-                            AttributeSecurity attributeSecurity = getDataDictionaryService().getAttributeSecurity(lineBusinessObject.getClass().getName(), name);
-                            if(attributeSecurity != null && attributeSecurity.isPartialMask()){
-                            	boolean viewAuthorized = getBusinessObjectAuthorizationService().canPartiallyUnmaskField(GlobalVariables.getUserSession().getPerson(), lineBusinessObject.getClass(), name);
-                            	if(!viewAuthorized){
-                            		collField.setPropertyValue(attributeSecurity.getPartialMaskFormatter().maskValue(propertyValue));
-                            		collField.setDisplayMaskValue(attributeSecurity.getPartialMaskFormatter().maskValue(propertyValue));
-                            	}
-                            }
-                            if(attributeSecurity != null && attributeSecurity.isMask()){
-                            	boolean viewAuthorized = getBusinessObjectAuthorizationService().canFullyUnmaskField(GlobalVariables.getUserSession().getPerson(), lineBusinessObject.getClass(), name);
-                            	if(!viewAuthorized){
-                            		collField.setPropertyValue(attributeSecurity.getMaskFormatter().maskValue(propertyValue));
-                            		collField.setDisplayMaskValue(attributeSecurity.getMaskFormatter().maskValue(propertyValue));
-                            	}	
-                            }
                                 
                             // the the field as read only (if appropriate)
                             if (fieldDefinition.isReadOnlyAfterAdd()) {

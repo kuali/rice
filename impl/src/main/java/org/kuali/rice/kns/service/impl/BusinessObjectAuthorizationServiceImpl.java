@@ -39,10 +39,14 @@ import org.kuali.rice.kns.authorization.InquiryOrMaintenanceDocumentRestrictions
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
+import org.kuali.rice.kns.datadictionary.FieldDefinition;
 import org.kuali.rice.kns.datadictionary.InquiryCollectionDefinition;
+import org.kuali.rice.kns.datadictionary.InquirySectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
+import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
+import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
@@ -61,6 +65,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.MaintenanceUtils;
 
 public class BusinessObjectAuthorizationServiceImpl implements
 		BusinessObjectAuthorizationService {
@@ -98,6 +103,21 @@ public class BusinessObjectAuthorizationServiceImpl implements
 				inquiryRestrictions);
 		considerInquiryOrMaintenanceDocumentAuthorizer(inquiryAuthorizer,
 				businessObject, user, inquiryRestrictions);
+		for (InquirySectionDefinition inquirySectionDefinition : businessObjectEntry.getInquiryDefinition().getInquirySections()) {
+			if (inquirySectionDefinition.getInquiryCollections() != null) {
+				addInquirableItemRestrictions(inquirySectionDefinition.getInquiryCollections().values(), inquiryAuthorizer, 
+						inquiryRestrictions, businessObject, businessObject, "", user);
+			}
+			// Collections may also be stored in the inquiry fields, so we need to parse through that
+			List<FieldDefinition> inquiryFields = inquirySectionDefinition.getInquiryFields();
+			if (inquiryFields != null) {
+				for (FieldDefinition fieldDefinition : inquiryFields) {
+					addInquirableItemRestrictions(inquiryFields, inquiryAuthorizer, 
+							inquiryRestrictions, businessObject, businessObject, "", user);
+				}
+			}
+		}
+		
 		return inquiryRestrictions;
 	}
 
@@ -136,6 +156,13 @@ public class BusinessObjectAuthorizationServiceImpl implements
 				maintenanceDocumentRestrictions);
 		considerMaintenanceDocumentAuthorizer(maintenanceDocumentAuthorizer,
 				maintenanceDocument, user, maintenanceDocumentRestrictions);
+		
+		MaintenanceDocumentEntry maintenanceDocumentEntry = getMaintenanceDocumentDictionaryService().getMaintenanceDocumentEntry(maintenanceDocument
+				.getDocumentHeader().getWorkflowDocument().getDocumentType());
+		for (MaintainableSectionDefinition maintainableSectionDefinition : maintenanceDocumentEntry.getMaintainableSections()) {
+			addMaintainableItemRestrictions(maintainableSectionDefinition.getMaintainableItems(), maintenanceDocumentAuthorizer, maintenanceDocumentRestrictions,
+					maintenanceDocument, maintenanceDocument.getNewMaintainableObject().getBusinessObject(), "", user);
+		}
 		return maintenanceDocumentRestrictions;
 	}
 
@@ -317,33 +344,32 @@ public class BusinessObjectAuthorizationServiceImpl implements
 		}
 	}
 
-	protected void addInquirableItemRestrictions(List itemDefinitions,
+	protected void addInquirableItemRestrictions(Collection sectionDefinitions,
 			InquiryAuthorizer authorizer, InquiryRestrictions restrictions,
 			BusinessObject primaryBusinessObject,
 			BusinessObject businessObject, String propertyPrefix, Person user) {
-		BusinessObjectEntry businessObjectEntry = getDataDictionaryService()
-				.getDataDictionary().getBusinessObjectEntry(
-						businessObject.getClass().getName());
-		for (Object inquirableItemDefinition : itemDefinitions) {
+		for (Object inquirableItemDefinition : sectionDefinitions) {
 			if (inquirableItemDefinition instanceof InquiryCollectionDefinition) {
 				InquiryCollectionDefinition inquiryCollectionDefinition = (InquiryCollectionDefinition) inquirableItemDefinition;
+				BusinessObjectEntry collectionBusinessObjectEntry = getDataDictionaryService()
+						.getDataDictionary().getBusinessObjectEntry(
+								inquiryCollectionDefinition.getBusinessObjectClass().getName());
+
 				try {
-					Collection collection = (Collection) PropertyUtils
+					Collection<BusinessObject> collection = (Collection<BusinessObject>) PropertyUtils
 							.getProperty(businessObject,
 									inquiryCollectionDefinition.getName());
-					for (Iterator iterator = collection.iterator(); iterator
+					int i = 0;
+					for (Iterator<BusinessObject> iterator = collection.iterator(); iterator
 							.hasNext();) {
-						BusinessObject collectionBusinessObject = (BusinessObject) iterator
-								.next();
+						String newPropertyPrefix = propertyPrefix + inquiryCollectionDefinition.getName() + "[" + i + "].";
+						BusinessObject collectionBusinessObject = iterator.next();
 						considerBusinessObjectFieldUnmaskAuthorization(
 								collectionBusinessObject, user, restrictions,
-								propertyPrefix + "."
-										+ inquiryCollectionDefinition.getName());
+								newPropertyPrefix);
 						considerBusinessObjectFieldViewAuthorization(
-								businessObjectEntry, primaryBusinessObject,
-								user, authorizer, restrictions, propertyPrefix
-										+ "."
-										+ inquiryCollectionDefinition.getName());
+								collectionBusinessObjectEntry, primaryBusinessObject,
+								user, authorizer, restrictions, newPropertyPrefix);
 						addInquirableItemRestrictions(
 								inquiryCollectionDefinition
 										.getInquiryCollections(),
@@ -351,9 +377,9 @@ public class BusinessObjectAuthorizationServiceImpl implements
 								restrictions,
 								primaryBusinessObject,
 								collectionBusinessObject,
-								propertyPrefix + "."
-										+ inquiryCollectionDefinition.getName(),
+								newPropertyPrefix,
 								user);
+						i++;
 					}
 				} catch (Exception e) {
 					throw new RuntimeException(
@@ -363,9 +389,67 @@ public class BusinessObjectAuthorizationServiceImpl implements
 				}
 			}
 		}
-
 	}
 
+	protected void addMaintainableItemRestrictions(List<? extends MaintainableItemDefinition> itemDefinitions,
+			MaintenanceDocumentAuthorizer authorizer,
+			MaintenanceDocumentRestrictions restrictions,
+			MaintenanceDocument maintenanceDocument,
+			BusinessObject businessObject, String propertyPrefix, Person user) {
+		for (MaintainableItemDefinition maintainableItemDefinition : itemDefinitions) {
+			if ((maintainableItemDefinition instanceof MaintainableFieldDefinition)
+					&& ((MaintainableFieldDefinition) maintainableItemDefinition)
+							.isUnconditionallyReadOnly()) {
+				restrictions.addReadOnlyField(propertyPrefix + maintainableItemDefinition
+						.getName());
+			} else if (maintainableItemDefinition instanceof MaintainableCollectionDefinition) {
+				try {
+					MaintainableCollectionDefinition maintainableCollectionDefinition = (MaintainableCollectionDefinition) maintainableItemDefinition;
+					
+					Collection<BusinessObject> collection = (Collection<BusinessObject>) PropertyUtils
+							.getProperty(businessObject,
+									maintainableItemDefinition.getName());
+					BusinessObjectEntry collectionBusinessObjectEntry = getDataDictionaryService()
+							.getDataDictionary().getBusinessObjectEntry(
+									maintainableCollectionDefinition.getBusinessObjectClass().getName());
+					int i = 0;
+					for (Iterator<BusinessObject> iterator = collection.iterator(); iterator
+							.hasNext();) {
+						String newPropertyPrefix = propertyPrefix + maintainableItemDefinition.getName() + "[" + i + "].";
+						BusinessObject collectionBusinessObject = iterator.next();
+						considerBusinessObjectFieldUnmaskAuthorization(
+								collectionBusinessObject, user, restrictions,
+								newPropertyPrefix);
+						considerBusinessObjectFieldViewAuthorization(
+								collectionBusinessObjectEntry, maintenanceDocument, user,
+								authorizer, restrictions, newPropertyPrefix);
+						considerBusinessObjectFieldModifyAuthorization(
+								collectionBusinessObjectEntry, maintenanceDocument, user,
+								authorizer, restrictions, newPropertyPrefix);
+						addMaintainableItemRestrictions(
+								((MaintainableCollectionDefinition) maintainableItemDefinition)
+										.getMaintainableCollections(),
+								authorizer, restrictions, maintenanceDocument,
+								collectionBusinessObject, newPropertyPrefix,
+								user);
+						addMaintainableItemRestrictions(
+								((MaintainableCollectionDefinition) maintainableItemDefinition)
+										.getMaintainableFields(), authorizer,
+								restrictions, maintenanceDocument,
+								collectionBusinessObject, newPropertyPrefix,
+								user);
+						i++;
+					}
+				} catch (Exception e) {
+					throw new RuntimeException(
+							"Unable to resolve collection property: "
+									+ businessObject.getClass() + ":"
+									+ maintainableItemDefinition.getName(), e);
+				}
+			}
+		}
+	}
+	
 	public <T extends BusinessObject> boolean canFullyUnmaskField(Person user,
 			Class<T> businessObjectClass, String fieldName) {
 		return getIdentityManagementService().isAuthorizedByTemplateName(

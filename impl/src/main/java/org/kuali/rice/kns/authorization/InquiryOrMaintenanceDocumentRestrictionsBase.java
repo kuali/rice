@@ -38,7 +38,7 @@ public class InquiryOrMaintenanceDocumentRestrictionsBase extends
 	public FieldRestriction getFieldRestriction(String fieldName) {
 		FieldRestriction fieldRestriction = super
 				.getFieldRestriction(fieldName);
-		if ((fieldRestriction == null) && isHiddenField(fieldName)) {
+		if (isHiddenField(fieldName)) {
 			fieldRestriction = new FieldRestriction(fieldName, Field.HIDDEN);
 		}
 		return fieldRestriction;			

@@ -155,33 +155,8 @@ public class FieldBridge {
                 }
 
             }
-
-            // check if field contains sensitive data and user is authorized to see value
-            //boolean viewAuthorized = KNSServiceLocator.getAuthorizationService().isAuthorizedToViewAttribute(GlobalVariables.getUserSession().getPerson(), bo.getClass().getName(), propertyName);
-            //if (!viewAuthorized) {
-                // set mask as field value
-                //Mask propertyMask = KNSServiceLocator.getDataDictionaryService().getAttributeDisplayMask(bo.getClass(), propertyName);
-                //if (propertyMask == null) {
-                //    throw new RuntimeException("No mask specified for secure field.");
-                //}
-
-                //field.setPropertyValue(propertyMask.maskValue(propValue));
-                //field.setDisplayMaskValue(propertyMask.maskValue(propValue));
-            AttributeSecurity attributeSecurity = KNSServiceLocator.getDataDictionaryService().getAttributeSecurity(bo.getClass().getName(), propertyName);
-            if(attributeSecurity != null && attributeSecurity.isMask() 
-            && !getBusinessObjectAuthorizationService().canFullyUnmaskField(GlobalVariables.getUserSession().getPerson(), bo.getClass(), propertyName)){
-            	field.setPropertyValue(attributeSecurity.getMaskFormatter().maskValue(propValue));
-                field.setDisplayMaskValue(attributeSecurity.getMaskFormatter().maskValue(propValue));
-            		
-            }else if(attributeSecurity != null && attributeSecurity.isPartialMask()
-                    && !getBusinessObjectAuthorizationService().canPartiallyUnmaskField(GlobalVariables.getUserSession().getPerson(), bo.getClass(), propertyName)){
-            		field.setPropertyValue(attributeSecurity.getPartialMaskFormatter().maskValue(propValue));
-                    field.setDisplayMaskValue(attributeSecurity.getPartialMaskFormatter().maskValue(propValue));
-                
-            } else {
-                field.setPropertyValue(propValue);
-                FieldUtils.setInquiryURL(field, bo, propertyName);
-            }
+            field.setPropertyValue(propValue);
+            FieldUtils.setInquiryURL(field, bo, propertyName);
 
             // populatedColumns.add(col);
         }

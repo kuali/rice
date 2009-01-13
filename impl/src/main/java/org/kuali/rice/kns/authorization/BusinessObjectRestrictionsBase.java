@@ -93,18 +93,14 @@ public class BusinessObjectRestrictionsBase implements
 	
 	
 	/**
-	 * Field names on a form may contain indices, while when fields are added as masked/partially masked/hidden (in subclass)/readonly (in subclass),
-	 * they may not include the field indices.  This method is used to convert field names on forms in a format that's compatible with field names
-	 * that are registered with a restriction.
+	 * This method is used to convert field names on forms into a format that's compatible with field names
+	 * that are registered with a restriction.  The base implementation of this method just returns the string.
 	 * 
 	 * @param fieldName The field name that would be rendered on a form
 	 * @return
 	 */
 	protected String normalizeFieldName(String fieldName) {
-		if (StringUtils.isBlank(fieldName)) {
-			return KNSConstants.EMPTY_STRING;
-		}
-		return fieldName.replaceAll("\\[[0-9]*+\\]", "");
+		return fieldName;
 	}
 	
 	protected boolean isFullyMaskedField(String fieldName) {

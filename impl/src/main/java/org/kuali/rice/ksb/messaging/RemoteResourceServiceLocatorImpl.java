@@ -177,6 +177,12 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 			run();
 			clientProxies = this.getClients().get(qName);
 			if (clientProxies == null || clientProxies.size() == 0) {
+				Map<QName, List<RemotedServiceHolder>> x = this.getClients();
+				if (x != null) {
+					for (QName b : x.keySet()) {
+						System.out.println(b.getNamespaceURI() + " " + b.getLocalPart());
+					}
+				}
 				throw new RiceRuntimeException("No remote services available for client access when attempting to lookup '" + qName + "'");
 			}
 		}

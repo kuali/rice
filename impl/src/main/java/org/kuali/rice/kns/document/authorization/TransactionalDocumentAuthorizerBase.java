@@ -32,9 +32,9 @@ import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
  */
 public class TransactionalDocumentAuthorizerBase extends DocumentAuthorizerBase implements TransactionalDocumentAuthorizer {
     public final Set<String> getEditModes(Document d, Person u, Set<String> editModes) {
-        Iterator i = editModes.iterator();
+        Iterator<String> i = editModes.iterator();
         while(i.hasNext()) {
-          String editMode = (String)i.next();
+          String editMode = i.next();
           if(permissionExistsByTemplate(KNSConstants.KNS_NAMESPACE, KimConstants.PermissionTemplateNames.USE_TRANSACTIONAL_DOCUMENT, d) && !isAuthorizedByTemplate(d, KNSConstants.KNS_NAMESPACE, KimConstants.PermissionTemplateNames.USE_TRANSACTIONAL_DOCUMENT, u.getPrincipalId())){
         	  editModes.remove(editMode);
           }

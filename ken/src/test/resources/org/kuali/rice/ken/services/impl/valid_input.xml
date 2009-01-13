@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><!-- A Simple Notification Message -->
 <notification xmlns="ns:notification/NotificationRequest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:notification/NotificationRequest resource:notification/NotificationRequest">
-    <!-- this is the 
+    <!-- this is the
         name of the notification channel --><!-- that has been registered in the system -->
     <channel>Test Channel #1</channel>
     <!-- this is the name of the producing system --><!-- the value must match a registered producer -->
@@ -13,7 +13,7 @@
     </senders>
     <!-- who is the notification going to? -->
     <recipients>
-        <group>RiceTeam</group>
+        <group>KUALI:RiceTeam</group>
         <user>TestUser2</user>
     </recipients><!--  fyi or acknowledge -->
     <deliveryType>fyi</deliveryType><!-- optional date and time that a notification should be sent -->

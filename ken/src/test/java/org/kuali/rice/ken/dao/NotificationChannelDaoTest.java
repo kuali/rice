@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 The Kuali Foundation
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,12 +22,13 @@ import org.kuali.rice.ken.bo.NotificationChannelReviewer;
 import org.kuali.rice.ken.bo.NotificationProducer;
 import org.kuali.rice.ken.test.util.MockObjectsUtil;
 import org.kuali.rice.ken.util.NotificationConstants;
+import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
 
 /**
  * This class test basic persistence for the NotificationChannel business object.
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @BaselineMode(Mode.CLEAR_DB) // this test can't run in a transaction because of how it is using ojb
@@ -169,7 +170,7 @@ public class NotificationChannelDaoTest extends BusinessObjectPersistenceTestCas
             channel2.setDescription(updatedDescriptions[1]);
             channel2.setSubscribable(updatedSubscribables[1]);
             NotificationChannelReviewer reviewer = MockObjectsUtil.buildTestNotificationChannelReviewer(
-                    NotificationConstants.RECIPIENT_TYPES.USER, "aReviewer");
+                    KimGroupImpl.PRINCIPAL_MEMBER_TYPE, "aReviewer");
             reviewer.setChannel(channel2);
             channel2.getReviewers().add(reviewer);
 

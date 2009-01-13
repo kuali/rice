@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 The Kuali Foundation
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,16 +21,17 @@ import org.kuali.rice.ken.bo.NotificationChannel;
 import org.kuali.rice.ken.bo.NotificationChannelReviewer;
 import org.kuali.rice.ken.test.util.MockObjectsUtil;
 import org.kuali.rice.ken.util.NotificationConstants;
+import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 
 /**
  * This class tests basic persistence for the {@link NotificationChannelReviewer} business object.
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NotificationChannelReviewerDaoTest extends BusinessObjectPersistenceTestCaseBase {
     private NotificationChannel mockChannel1 = MockObjectsUtil.getTestChannel1();
-    private NotificationChannelReviewer mockReviewer = MockObjectsUtil.buildTestNotificationChannelReviewer(NotificationConstants.RECIPIENT_TYPES.USER, "aReviewer");
-    
+    private NotificationChannelReviewer mockReviewer = MockObjectsUtil.buildTestNotificationChannelReviewer(KimGroupImpl.PRINCIPAL_MEMBER_TYPE, "aReviewer");
+
     /**
      * @see org.kuali.rice.ken.dao.BusinessObjectPersistenceTestCaseBase#setup()
      */
@@ -46,7 +47,7 @@ public class NotificationChannelReviewerDaoTest extends BusinessObjectPersistenc
     @Override
     protected boolean delete() {
         HashMap criteria = new HashMap();
-        
+
         criteria.put(NotificationConstants.BO_PROPERTY_NAMES.REVIEWER_ID, mockReviewer.getReviewerId());
         NotificationChannelReviewer reviewer = (NotificationChannelReviewer) businessObjectDao.findByUniqueKey(NotificationChannelReviewer.class, criteria);
 
@@ -65,7 +66,7 @@ public class NotificationChannelReviewerDaoTest extends BusinessObjectPersistenc
     @Override
     protected boolean insert() {
         mockReviewer.setChannel(mockChannel1);
-        
+
         try {
             businessObjectDao.save(mockReviewer);
         } catch(Exception e) {
@@ -80,12 +81,12 @@ public class NotificationChannelReviewerDaoTest extends BusinessObjectPersistenc
     @Override
     protected boolean retrieve() {
         HashMap criteria = new HashMap();
-        
+
         criteria.put(NotificationConstants.BO_PROPERTY_NAMES.REVIEWER_ID, mockReviewer.getReviewerId());
         NotificationChannelReviewer reviewer = (NotificationChannelReviewer) businessObjectDao.findByUniqueKey(NotificationChannelReviewer.class, criteria);
 
         boolean success = true;
-        
+
         success &= reviewer != null;
         success &= reviewer.getReviewerId().equals(mockReviewer.getReviewerId());
         success &= reviewer.getReviewerType().equals(mockReviewer.getReviewerType());
@@ -101,12 +102,12 @@ public class NotificationChannelReviewerDaoTest extends BusinessObjectPersistenc
     @Override
     protected boolean update() {
         HashMap criteria = new HashMap();
-        
+
         criteria.put(NotificationConstants.BO_PROPERTY_NAMES.REVIEWER_ID, mockReviewer.getReviewerId());
         NotificationChannelReviewer reviewer = (NotificationChannelReviewer) businessObjectDao.findByUniqueKey(NotificationChannelReviewer.class, criteria);
 
         reviewer.setReviewerId("updatedReviewerId");
-        reviewer.setReviewerType(NotificationConstants.RECIPIENT_TYPES.GROUP);
+        reviewer.setReviewerType(KimGroupImpl.GROUP_MEMBER_TYPE);
 
         try {
             businessObjectDao.save(reviewer);
@@ -125,8 +126,8 @@ public class NotificationChannelReviewerDaoTest extends BusinessObjectPersistenc
 
         boolean success = reviewer != null;
         success &= reviewer.getReviewerId().equals("updatedReviewerId");
-        success &= reviewer.getReviewerType().equals(NotificationConstants.RECIPIENT_TYPES.GROUP);
-        
+        success &= reviewer.getReviewerType().equals(KimGroupImpl.GROUP_MEMBER_TYPE);
+
         return success;
     }
 }

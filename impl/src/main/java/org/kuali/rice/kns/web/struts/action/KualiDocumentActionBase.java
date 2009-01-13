@@ -1,12 +1,12 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -132,7 +132,7 @@ public class KualiDocumentActionBase extends KualiAction {
                 logOjbOptimisticLockException(ole);
             }
             else {
-        	// if exceptions are from 'save' 
+        	// if exceptions are from 'save'
                 throw e;
             }
         }
@@ -140,8 +140,8 @@ public class KualiDocumentActionBase extends KualiAction {
         if (form instanceof KualiDocumentFormBase) {
             KualiDocumentFormBase formBase = (KualiDocumentFormBase) form;
             Document document = formBase.getDocument();
-            
-            //KULRICE-2210 fix location of document header population 
+
+            //KULRICE-2210 fix location of document header population
             KualiWorkflowDocument workflowDocument = formBase.getDocument().getDocumentHeader().getWorkflowDocument();
             formBase.populateHeaderFields(workflowDocument);
             formBase.setDocId(document.getDocumentNumber());
@@ -158,7 +158,7 @@ public class KualiDocumentActionBase extends KualiAction {
         // information which is contained in the form but which may be unavailable until this point
             //DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(document);
             //formBase.populateAuthorizationFields(documentAuthorizer);
-             populateAuthorizationFields(formBase);	
+             populateAuthorizationFields(formBase);
 
             // below used by KualiHttpSessionListener to handle lock expiration
                 request.getSession().setAttribute(KNSConstants.DOCUMENT_HTTP_SESSION_KEY, document.getDocumentNumber());
@@ -171,7 +171,7 @@ public class KualiDocumentActionBase extends KualiAction {
             // of rules or control
             //DataDictionary dataDictionary = getDataDictionaryService().getDataDictionary();
             DataDictionary dataDictionary = getDataDictionaryService().getDataDictionary();
-            
+
             DocumentEntry entry = dataDictionary.getDocumentEntry(document.getClass().getName());
 
             String attachementEnabled=
@@ -185,7 +185,7 @@ public class KualiDocumentActionBase extends KualiAction {
             if(exitingDocument()){
             	request.setAttribute(KNSConstants.EXITING_DOCUMENT, new Boolean(true));
             }
-            
+
             // pessimistic locking
                 String methodCalledViaDispatch = (String) GlobalVariables.getUserSession().retrieveObject(DocumentAuthorizerBase.USER_SESSION_METHOD_TO_CALL_OBJECT_KEY);
                 if ( (StringUtils.isNotBlank(methodCalledViaDispatch)) && (exitingDocument()) ) {
@@ -222,7 +222,7 @@ public class KualiDocumentActionBase extends KualiAction {
             document.refreshPessimisticLocks();
         }
     }
-    
+
     protected void releaseLocks(Document document, String methodToCall) {
         // first check if the method to call is listed as required lock clearing
         if (document.getLockClearningMethodNames().contains(methodToCall)) {
@@ -230,7 +230,7 @@ public class KualiDocumentActionBase extends KualiAction {
             KNSServiceLocator.getPessimisticLockService().releaseAllLocksForUser(document.getPessimisticLocks(), GlobalVariables.getUserSession().getPerson());
         }
     }
-    
+
     protected void setupPessimisticLockMessages(Document document, HttpServletRequest request) {
         List<String> lockMessages = new ArrayList<String>();
         for (PessimisticLock lock : document.getPessimisticLocks()) {
@@ -241,12 +241,12 @@ public class KualiDocumentActionBase extends KualiAction {
         }
         request.setAttribute(KNSConstants.PESSIMISTIC_LOCK_MESSAGES, lockMessages);
     }
-    
+
     protected String generatePessimisticLockMessage(PessimisticLock lock) {
         String descriptor = (lock.getLockDescriptor() != null) ? lock.getLockDescriptor() : "";
         return "This document currently has a " + descriptor + " lock owned by " + lock.getOwnedByUser().getName() + " as of " + RiceConstants.getDefaultTimeFormat().format(lock.getGeneratedTimestamp()) + " on " + RiceConstants.getDefaultDateFormat().format(lock.getGeneratedTimestamp());
     }
-    
+
     private void saveMessages(HttpServletRequest request) {
         if (!GlobalVariables.getMessageList().isEmpty()) {
             request.setAttribute(KNSConstants.GLOBAL_MESSAGES, GlobalVariables.getMessageList());
@@ -530,7 +530,7 @@ public class KualiDocumentActionBase extends KualiAction {
 
     /**
      * This method will verify that the form is representing a {@link PessimisticLock} object and delete it if possible
-     * 
+     *
      * @param mapping
      * @param form
      * @param request
@@ -548,7 +548,7 @@ public class KualiDocumentActionBase extends KualiAction {
         }
         throw buildAuthorizationException(KNSConstants.DELETE_METHOD, kualiDocumentFormBase.getDocument());
     }
-    
+
     /**
      * route the document using the document service
      *
@@ -591,7 +591,7 @@ public class KualiDocumentActionBase extends KualiAction {
         String xml = document.getXmlForRouteReport();
         LOG.debug("XML being used for Routing Report is: " + xml);
         generalRouteReportFormParameters.add(new KeyLabelPair(KEWConstants.DOCUMENT_CONTENT_ATTRIBUTE_NAME,xml));
-        
+
         // set up the variables for the form if java script is working (includes a close button variable and no back url)
         List<KeyLabelPair> javaScriptFormParameters = new ArrayList<KeyLabelPair>();
         javaScriptFormParameters.addAll(generalRouteReportFormParameters);
@@ -922,7 +922,7 @@ public class KualiDocumentActionBase extends KualiAction {
             if (parameterName.equals("newAdHocRouteWorkgroup.id") && !"".equals(request.getParameter(parameterName))) {
                 if (Long.parseLong(request.getParameter(parameterName)) > 0) {
                 	KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(request.getParameter(parameterName));
-                    kualiForm.getNewAdHocRouteWorkgroup().setId(group.getGroupName());
+                    kualiForm.getNewAdHocRouteWorkgroup().setId(group.getGroupId());
                 }
                 else {
                     throw new RuntimeException("Invalid workgroup id passed as parameter.");
@@ -967,7 +967,7 @@ public class KualiDocumentActionBase extends KualiAction {
     }
 
     /**
-     * 
+     *
      * Handy method to stream the byte array to response object
      * @param attachmentDataSource
      * @param response
@@ -1004,17 +1004,17 @@ public class KualiDocumentActionBase extends KualiAction {
      */
     public ActionForward downloadBOAttachment(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         int attachmentIndex = selectedAttachmentIndex(request);
-        
+
         Note newNote = ((KualiDocumentFormBase) form).getNewNote();
         PersistableBusinessObject noteParent = getNoteParent(((KualiDocumentFormBase) form).getDocument(), newNote);
 
-        
+
         if (attachmentIndex >= 0) {
             Note note = noteParent.getBoNote(attachmentIndex);
             Attachment attachment = note.getAttachment();
             //make sure attachment is setup with backwards reference to note (rather then doing this we could also just call the attachment service (with a new method that took in the note)
             attachment.setNote(note);
-            
+
             WebUtils.saveMimeInputStreamAsFile(response, attachment.getAttachmentMimeTypeCode(), attachment.getAttachmentContents(), attachment.getAttachmentFileName(), attachment.getAttachmentFileSize().intValue());
             return null;
         }
@@ -1022,7 +1022,7 @@ public class KualiDocumentActionBase extends KualiAction {
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
-    
+
     /**
      * @param request
      * @return index of the attachment whose download button was just pressed
@@ -1145,13 +1145,13 @@ public class KualiDocumentActionBase extends KualiAction {
             if (attachment != null) {
                 tmpNote.addAttachment(attachment);
                 // save again for attachment, note this is because sometimes the attachment is added first to the above then ojb tries to save
-                //without the PK on the attachment I think it is safer then trying to get the sequence manually 
+                //without the PK on the attachment I think it is safer then trying to get the sequence manually
                 if (!documentHeader.getWorkflowDocument().stateIsInitiated()&&StringUtils.isNotEmpty(noteParent.getObjectId())) {
                     KNSServiceLocator.getNoteService().save(tmpNote);
                 }
             }
 
-            
+
             // reset the new note back to an empty one
             kualiDocumentFormBase.setNewNote(new Note());
         }
@@ -1207,11 +1207,11 @@ public class KualiDocumentActionBase extends KualiAction {
         Note note = noteParent.getBoNote(getLineToDelete(request));
 
         Attachment attachment = note.getAttachment();
-        
+
         if (attachment != null) {
-            //KFSMI-798 - refresh() changed to refreshNonUpdateableReferences() 
-        	//All references for the business object Attachment are auto-update="none", 
-        	//so refreshNonUpdateableReferences() should work the same as refresh() 
+            //KFSMI-798 - refresh() changed to refreshNonUpdateableReferences()
+        	//All references for the business object Attachment are auto-update="none",
+        	//so refreshNonUpdateableReferences() should work the same as refresh()
         	attachment.refreshNonUpdateableReferences();
             KNSServiceLocator.getAttachmentService().deleteAttachmentContents(attachment);
         }
@@ -1223,11 +1223,11 @@ public class KualiDocumentActionBase extends KualiAction {
 
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
-    
+
     /**
      * Override this to customize which routing action to take when sending a note.  This method reads the system parameter
      * KR-NS/Document/SEND_NOTE_WORKFLOW_NOTIFICATION_ACTIONS to determine which action to take
-     * 
+     *
      * @param request
      * @param note
      * @return a value from {@link KEWConstants}
@@ -1237,7 +1237,7 @@ public class KualiDocumentActionBase extends KualiAction {
         String notificationAction = kcs.getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.SEND_NOTE_WORKFLOW_NOTIFICATION_ACTIONS_PARM_NM);
         return notificationAction;
     }
-    
+
     public ActionForward sendNoteWorkflowNotification(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
         Document document = kualiDocumentFormBase.getDocument();
@@ -1254,7 +1254,7 @@ public class KualiDocumentActionBase extends KualiAction {
         // check recipient is valid
         else {
             note.getAdHocRouteRecipient().setActionRequested(determineNoteWorkflowNotificationAction(request, kualiDocumentFormBase, note));
-            
+
             boolean rulePassed = KNSServiceLocator.getKualiRuleService().applyRules(new AddAdHocRoutePersonEvent(KNSPropertyConstants.NEW_DOCUMENT_NOTE, document, (AdHocRoutePerson) note.getAdHocRouteRecipient()));
             if (!rulePassed) {
                 return mapping.findForward(RiceConstants.MAPPING_BASIC);
@@ -1273,12 +1273,12 @@ public class KualiDocumentActionBase extends KualiAction {
         }
 
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
-    }     
+    }
 
 
     /**
      * Generates detailed log messages for OptimisticLockExceptions
-     * 
+     *
      * @param e
      */
     private final void logOjbOptimisticLockException(OptimisticLockException e) {
@@ -1423,7 +1423,7 @@ public class KualiDocumentActionBase extends KualiAction {
         setupDocumentExit();
         return dest;
     }
-    
+
     protected void populateAuthorizationFields(KualiDocumentFormBase formBase){
     	if (formBase.isFormDocumentInitialized()) {
         	Document document = formBase.getDocument();
@@ -1432,17 +1432,17 @@ public class KualiDocumentActionBase extends KualiAction {
             DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentTypeService().getDocumentAuthorizer(document);
             Set<String> documentActions =  documentPresentationController.getDocumentActions(document);
             documentActions = documentAuthorizer.getDocumentActions(document, user, documentActions);
-            
+
             if (getDataDictionaryService().getDataDictionary().getDocumentEntry(document.getClass().getName()).getUsePessimisticLocking()) {
                 documentActions = KNSServiceLocator.getPessimisticLockService().getDocumentActions(document, user, documentActions);
             }
-            
+
             //DocumentActionFlags flags = new DocumentActionFlags();
 			formBase.setDocumentActions(convertSetToMap(documentActions));
-           
+
         }
     }
-    
+
     protected Map convertSetToMap(Set s){
     	Map map = new HashMap();
     	Iterator i = s.iterator();

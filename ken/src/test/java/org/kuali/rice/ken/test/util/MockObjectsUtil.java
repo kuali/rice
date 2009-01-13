@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 The Kuali Foundation
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,6 +27,7 @@ import org.kuali.rice.ken.bo.NotificationProducer;
 import org.kuali.rice.ken.bo.NotificationRecipient;
 import org.kuali.rice.ken.bo.NotificationSender;
 import org.kuali.rice.ken.util.NotificationConstants;
+import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 
 /**
  * This class helps to provide common mock objects for testing and also helper methods to build instances of objects.
@@ -46,8 +47,8 @@ public class MockObjectsUtil {
         channel.setDescription(description);
         channel.setSubscribable(subscribable);
         return channel;
-    }		
-    
+    }
+
     /**
      * This method returns back a specific test mock object.
      * @return NotificationChannel
@@ -55,7 +56,7 @@ public class MockObjectsUtil {
     public static final NotificationChannel getTestChannel1() {
         return buildTestNotificationChannel("Test Channel 1", "Test Channel 1 - description", true);
     }
-    
+
     /**
      * This method returns back a specific test mock object.
      * @return NotificationChannel
@@ -63,7 +64,7 @@ public class MockObjectsUtil {
     public static final NotificationChannel getTestChannel2() {
         return buildTestNotificationChannel("Test Channel 2", "Test Channel 2 - description", false);
     }
-    
+
     /**
      * This method is a helper to build a NotificationProducer instance.
      * @param name
@@ -91,7 +92,7 @@ public class MockObjectsUtil {
         reviewer.setReviewerId(reviewerId);
         return reviewer;
     }
-    
+
     /**
      * This method returns back a specific test mock object.
      * @return NotificationProducer
@@ -116,8 +117,8 @@ public class MockObjectsUtil {
         contentType.setXsd(xsd);
         contentType.setXsl(xsl);
         return contentType;
-    }		
-    
+    }
+
     /**
      * This method returns back a specific test mock object.
      * @return NotificationContentType
@@ -125,7 +126,7 @@ public class MockObjectsUtil {
     public static final NotificationContentType getTestContentType1() {
         return buildTestNotificationContentType("Content Type 1", "Content Type 1 - description", "Content Type 1 - namespace", "Simple.xsd", "Simple.xsl");
     }
-    
+
     /**
      * This method is a helper to build a NotificationPriority instance.
      * @param name
@@ -139,8 +140,8 @@ public class MockObjectsUtil {
         priority.setDescription(description);
         priority.setOrder(order);
         return priority;
-    }		
-    
+    }
+
     /**
      * This method returns back a specific test mock object.
      * @return NotificationPriority
@@ -148,7 +149,7 @@ public class MockObjectsUtil {
     public static final NotificationPriority getTestPriority1() {
         return buildTestNotificationPriority("Priority 1", "Priority 1 - description", new Integer(1));
     }
-    
+
     /**
      * This method is a helper to build a NotificationRecipient instance.
      * @param recipientId
@@ -160,32 +161,32 @@ public class MockObjectsUtil {
         recipient.setRecipientId(recipientId);
         recipient.setRecipientType(recipientType);
         return recipient;
-    }		
-    
+    }
+
     /**
      * This method returns back a specific test mock object.
      * @return NotificationRecipient
      */
     public static final NotificationRecipient getTestRecipient1() {
-        return buildTestNotificationRecipient("ag266", NotificationConstants.RECIPIENT_TYPES.USER);
+        return buildTestNotificationRecipient("ag266", KimGroupImpl.PRINCIPAL_MEMBER_TYPE);
     }
-    
+
     /**
      * This method returns back a specific test mock object.
      * @return NotificationRecipient
      */
     public static final NotificationRecipient getTestRecipient2() {
-	 return buildTestNotificationRecipient("Notification Team", NotificationConstants.RECIPIENT_TYPES.GROUP);
+	 return buildTestNotificationRecipient("Notification Team", KimGroupImpl.GROUP_MEMBER_TYPE);
     }
-    
+
     /**
      * This method is a helper to build a Notification instance.
      * @param recipientId
      * @param recipientType
      * @return Notification
      */
-    public static final Notification buildTestNotification(String deliveryType, Timestamp sendDateTime, Timestamp autoRemoveDateTime, NotificationContentType contentType, 
-	    String content, NotificationPriority priority, NotificationProducer producer, NotificationChannel channel, List<NotificationRecipient> recipients, 
+    public static final Notification buildTestNotification(String deliveryType, Timestamp sendDateTime, Timestamp autoRemoveDateTime, NotificationContentType contentType,
+	    String content, NotificationPriority priority, NotificationProducer producer, NotificationChannel channel, List<NotificationRecipient> recipients,
 	    List<NotificationSender> senders) {
         Notification notification = new Notification();
         notification.setCreationDateTime(new Timestamp(System.currentTimeMillis()));
@@ -199,10 +200,10 @@ public class MockObjectsUtil {
         notification.setChannel(channel);
         notification.setRecipients(recipients);
         notification.setSenders(senders);
-        
+
         return notification;
-    }	
-    
+    }
+
     /**
      * This method is a helper to build a NotificationSender instance.
      * @param recipientId
@@ -213,8 +214,8 @@ public class MockObjectsUtil {
         NotificationSender sender = new NotificationSender();
         sender.setSenderName(userId);
         return sender;
-    }		
-    
+    }
+
     /**
      * This method returns back a specific test mock object.
      * @return NotificationSender
@@ -222,7 +223,7 @@ public class MockObjectsUtil {
     public static final NotificationSender getTestSender1() {
         return buildTestNotificationSender("Joe Schmoe");
     }
-    
+
     /**
      * This method returns back a specific test mock object.
      * @return NotificationSender

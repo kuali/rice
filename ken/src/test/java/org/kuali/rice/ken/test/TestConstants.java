@@ -164,7 +164,7 @@ public class TestConstants {
      * A valid KIM principal name
      */
     //nb: the corresponding id should be TEST_USER_5 (ie "TestUser5")
-    public static final String VALID_KIM_PRINCIPAL_NAME = "testuser5";
+    public static final String VALID_KIM_PRINCIPAL_NAME = "TestUser5";
 
     /**
      * Number of members in this group
@@ -174,7 +174,7 @@ public class TestConstants {
     /**
      *
      */
-    public static final int KIM_GROUP_1_MEMBERS = 1;
+    public static final int KIM_GROUP_1_MEMBERS = 4;
 
     /**
      * An invalid content type

@@ -101,8 +101,7 @@ public class NotificationRecipientServiceKimImpl implements NotificationRecipien
      */
     public boolean isGroupRecipientValid(String groupRecipientId)
     {
-        return (KIMServiceLocator.getIdentityManagementService()
-                .getGroup( groupRecipientId ) != null);
+        return (KIMServiceLocator.getIdentityManagementService().getGroup( groupRecipientId ) != null);
     }
 
     /**

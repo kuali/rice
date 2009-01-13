@@ -28,6 +28,7 @@ import org.kuali.rice.ken.core.SpringNotificationServiceLocator;
 import org.kuali.rice.kew.batch.KEWXmlDataLoaderLifecycle;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
+import org.kuali.rice.test.ClearDatabaseLifecycle;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
 import org.kuali.rice.test.lifecycles.SQLDataLoaderLifecycle;
@@ -140,6 +141,7 @@ public abstract class NotificationTestCaseBase extends BaselineTestCase {
     @Override
     protected List<Lifecycle> getPerTestLifecycles() {
         List<Lifecycle> lifecycles = super.getPerTestLifecycles();
+        lifecycles.add(new ClearDatabaseLifecycle(getTablesToClear(), getTablesNotToClear()));
         lifecycles.addAll(getNotificationPerTestLifecycles());
         return lifecycles;
     }
@@ -155,6 +157,22 @@ public abstract class NotificationTestCaseBase extends BaselineTestCase {
         scheduler.standby();
         //scheduler.shutdown();
     }
+
+    /**
+     * Returns the List of tables that should be cleared on every test run.
+     */
+    /*
+    @Override
+    protected List<String> getTablesToClear() {
+        List<String> tablesToClear = new ArrayList<String>();
+        tablesToClear.add("KREW_.*");
+        tablesToClear.add("KREN_.*");
+        tablesToClear.add("KRSB_.*");
+        tablesToClear.add("KRIM_.*");
+        tablesToClear.add("KRNS_.*");
+        return tablesToClear;
+    }
+    */
 
     /**
      * This method enables the Quartz scheduler

@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 The Kuali Foundation
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -49,6 +49,7 @@ import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.ken.util.Util;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.rule.GenericAttributeContent;
+import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.springframework.web.servlet.ModelAndView;
 
 
@@ -74,12 +75,12 @@ public class SendNotificationMessageController extends BaseSendNotificationContr
         LOG.info("Time: " + new Date(time) + " is in the future? " + future);
         return future;
     }
-    
+
     /**
      * Returns whether the specified Notification can be reasonably expected to have recipients.
      * This is determined on whether the channel has default recipients, is subscribably, and whether
      * the send date time is far enough in the future to expect that if there are no subscribers, there
-     * may actually be some by the time the notification is sent. 
+     * may actually be some by the time the notification is sent.
      * @param notification the notification to test
      * @return whether the specified Notification can be reasonably expected to have recipients
      */
@@ -89,7 +90,7 @@ public class SendNotificationMessageController extends BaseSendNotificationContr
                notification.getChannel().getSubscriptions().size() > 0 ||
                (notification.getChannel().isSubscribable() && timeIsInTheFuture(notification.getSendDateTime().getTime()));
     }
-    
+
     protected NotificationService notificationService;
 
     protected NotificationWorkflowDocumentService notificationWorkflowDocService;
@@ -190,11 +191,11 @@ public class SendNotificationMessageController extends BaseSendNotificationContr
         // set sendDateTime to current datetime if not provided
 	String sendDateTime = request.getParameter("sendDateTime");
 	String currentDateTime = Util.getCurrentDateTime();
-	if (StringUtils.isEmpty(sendDateTime)) {	    
+	if (StringUtils.isEmpty(sendDateTime)) {
 	    sendDateTime = currentDateTime;
 	}
 	model.put("sendDateTime", sendDateTime);
-	
+
 	// retain the original date time or set to current if
 	// it was not in the request
 	if (request.getParameter("originalDateTime") == null) {
@@ -202,7 +203,7 @@ public class SendNotificationMessageController extends BaseSendNotificationContr
 	} else {
 	   model.put("originalDateTime", request.getParameter("originalDateTime"));
 	}
-	
+
 	model.put("userRecipients", request.getParameter("userRecipients"));
 	model.put("workgroupRecipients", request.getParameter("workgroupRecipients"));
 
@@ -249,11 +250,11 @@ public class SendNotificationMessageController extends BaseSendNotificationContr
             for (NotificationChannelReviewer reviewer: reviewers) {
                 String prefix;
                 int index;
-                if (NotificationConstants.RECIPIENT_TYPES.USER.equals(reviewer.getReviewerType())) {
+                if (KimGroupImpl.PRINCIPAL_MEMBER_TYPE.equals(reviewer.getReviewerType())) {
                     prefix = "user";
                     index = ui;
                     ui++;
-                } else if (NotificationConstants.RECIPIENT_TYPES.GROUP.equals(reviewer.getReviewerType())) {
+                } else if (KimGroupImpl.GROUP_MEMBER_TYPE.equals(reviewer.getReviewerType())) {
                     prefix = "group";
                     index = gi;
                     gi++;
@@ -266,7 +267,7 @@ public class SendNotificationMessageController extends BaseSendNotificationContr
             GenericAttributeContent gac = new GenericAttributeContent("channelReviewers");
             document.getDocumentContent().setApplicationContent(notificationAsXml);
             document.getDocumentContent().setAttributeContent("<attributeContent>" + gac.generateContent(attrFields) + "</attributeContent>");
-	    
+
             document.setTitle(notification.getTitle());
 
 	    document.routeDocument("This message was submitted via the simple notification message submission form by user "
@@ -355,22 +356,22 @@ public class SendNotificationMessageController extends BaseSendNotificationContr
         }
 	// send date time
 	String sendDateTime = request.getParameter("sendDateTime");
-	if (StringUtils.isBlank(sendDateTime)) {	    
-	    sendDateTime = Util.getCurrentDateTime();	    
+	if (StringUtils.isBlank(sendDateTime)) {
+	    sendDateTime = Util.getCurrentDateTime();
 	}
-	
+
 	try {
             senddate = Util.parseUIDateTime(sendDateTime);
         } catch (ParseException pe) {
             errors.addError("You specified an invalid Send Date/Time.  Please use the calendar picker.");
         }
-        
+
         if(senddate != null && senddate.before(origdate)) {
             errors.addError("Send Date/Time cannot be in the past.");
         }
-        
-        model.put("sendDateTime", sendDateTime);    
-	
+
+        model.put("sendDateTime", sendDateTime);
+
 	// auto remove date time
 	String autoRemoveDateTime = request.getParameter("autoRemoveDateTime");
 	if (StringUtils.isNotBlank(autoRemoveDateTime)) {
@@ -379,7 +380,7 @@ public class SendNotificationMessageController extends BaseSendNotificationContr
             } catch (ParseException pe) {
                 errors.addError("You specified an invalid Auto-Remove Date/Time.  Please use the calendar picker.");
             }
-            
+
             if(removedate != null) {
         	if(removedate.before(origdate)) {
         	    errors.addError("Auto-Remove Date/Time cannot be in the past.");
@@ -388,7 +389,7 @@ public class SendNotificationMessageController extends BaseSendNotificationContr
         	}
             }
 	}
-	
+
 	model.put("autoRemoveDateTime", autoRemoveDateTime);
 
 	// user recipient names
@@ -460,7 +461,7 @@ public class SendNotificationMessageController extends BaseSendNotificationContr
 	    for (String userRecipientId : userRecipients) {
 	        if (isUserRecipientValid(userRecipientId, errors)) {
     	        NotificationRecipient recipient = new NotificationRecipient();
-    	        recipient.setRecipientType(NotificationConstants.RECIPIENT_TYPES.USER);
+    	        recipient.setRecipientType(KimGroupImpl.PRINCIPAL_MEMBER_TYPE);
     	        recipient.setRecipientId(userRecipientId);
     	        notification.addRecipient(recipient);
 	        }
@@ -497,7 +498,7 @@ public class SendNotificationMessageController extends BaseSendNotificationContr
                 errors.addError("You specified an invalid send date and time.  Please use the calendar picker.");
             }
             notification.setSendDateTime(new Timestamp(d.getTime()));
-        }   
+        }
 
         Date d2 = null;
         if (StringUtils.isNotBlank(autoRemoveDateTime)) {
@@ -512,7 +513,7 @@ public class SendNotificationMessageController extends BaseSendNotificationContr
             notification.setAutoRemoveDateTime(new Timestamp(d2.getTime()));
         }
 
-        
+
 	if (!recipientsExist && !hasPotentialRecipients(notification)) {
             errors.addError("You must specify at least one user or group recipient.");
 	}

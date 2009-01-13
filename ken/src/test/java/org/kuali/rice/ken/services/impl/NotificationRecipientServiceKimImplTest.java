@@ -20,24 +20,28 @@ import org.junit.Test;
 import org.kuali.rice.ken.service.impl.NotificationRecipientServiceKimImpl;
 import org.kuali.rice.ken.test.NotificationTestCaseBase;
 import org.kuali.rice.ken.test.TestConstants;
+import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 /**
- * This is a description of what this class does - chb don't forget to fill this in. 
- * 
+ * This is a description of what this class does - chb don't forget to fill this in.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class NotificationRecipientServiceKimImplTest extends NotificationTestCaseBase 
+public class NotificationRecipientServiceKimImplTest extends NotificationTestCaseBase
 {
     NotificationRecipientServiceKimImpl nrski = new NotificationRecipientServiceKimImpl();
     /**
      * Test method for {@link org.kuali.rice.ken.service.impl.NotificationRecipientServiceKimImpl#getGroupMembers(java.lang.String)}.
      */
     @Test
-    public void testGetGroupMembersValid() 
+    public void testGetGroupMembersValid()
     {
-        assertTrue(nrski.getGroupMembers(TestConstants.VALID_KIM_GROUP_NAME_1).length == TestConstants.KIM_GROUP_1_MEMBERS);
+        KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroupByName(Utilities.parseGroupNamespaceCode(TestConstants.VALID_KIM_GROUP_NAME_1), Utilities.parseGroupName(TestConstants.VALID_KIM_GROUP_NAME_1));
+        assertTrue(nrski.getGroupMembers(group.getGroupId()).length == TestConstants.KIM_GROUP_1_MEMBERS);
     }
 
     /**
@@ -57,7 +61,8 @@ public class NotificationRecipientServiceKimImplTest extends NotificationTestCas
     @Test
     public final void testIsGroupRecipientValid()
     {
-        assertTrue(nrski.isGroupRecipientValid(TestConstants.VALID_KIM_GROUP_NAME_1));
+        KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroupByName(Utilities.parseGroupNamespaceCode(TestConstants.VALID_KIM_GROUP_NAME_1), Utilities.parseGroupName(TestConstants.VALID_KIM_GROUP_NAME_1));
+        assertTrue(nrski.isGroupRecipientValid(group.getGroupId()));
     }
 
     /**
@@ -68,7 +73,9 @@ public class NotificationRecipientServiceKimImplTest extends NotificationTestCas
     {
         assertTrue( nrski.isRecipientValid( TestConstants.VALID_KIM_PRINCIPAL_NAME, KimGroupImpl.PRINCIPAL_MEMBER_TYPE));
         assertFalse( nrski.isRecipientValid( "BoogalooShrimp44", KimGroupImpl.PRINCIPAL_MEMBER_TYPE));
-        assertTrue( nrski.isRecipientValid( TestConstants.VALID_KIM_GROUP_NAME_1, KimGroupImpl.GROUP_MEMBER_TYPE));
+
+        KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroupByName(Utilities.parseGroupNamespaceCode(TestConstants.VALID_KIM_GROUP_NAME_1), Utilities.parseGroupName(TestConstants.VALID_KIM_GROUP_NAME_1));
+        assertTrue( nrski.isRecipientValid( group.getGroupId(), KimGroupImpl.GROUP_MEMBER_TYPE));
         assertFalse( nrski.isRecipientValid( "FooSchnickens99", KimGroupImpl.GROUP_MEMBER_TYPE));
     }
 

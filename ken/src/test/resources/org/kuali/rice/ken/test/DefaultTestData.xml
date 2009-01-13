@@ -5,6 +5,7 @@
         <user>
             <principalName>TestAdmin1</principalName>
             <emplId>TestAdmin1</emplId>
+            <workflowId>TestAdmin1</workflowId>
             <authenticationId>TestAdmin1</authenticationId>
             <uuId>TestAdmin1</uuId>
             <emailAddress>kuali-ken-testing@googlegroups.com</emailAddress>
@@ -15,6 +16,7 @@
         <user>
             <principalName>TestAdmin2</principalName>
             <emplId>TestAdmin2</emplId>
+            <workflowId>TestAdmin2</workflowId>
             <authenticationId>TestAdmin2</authenticationId>
             <uuId>TestAdmin2</uuId>
             <emailAddress>kuali-ken-testing@googlegroups.com</emailAddress>
@@ -25,6 +27,7 @@
         <user>
             <principalName>TestUser1</principalName>
             <emplId>TestUser1</emplId>
+            <workflowId>TestUser1</workflowId>
             <authenticationId>TestUser1</authenticationId>
             <uuId>TestUser1</uuId>
             <emailAddress>kuali-ken-testing@googlegroups.com</emailAddress>
@@ -35,6 +38,7 @@
         <user>
             <principalName>TestUser2</principalName>
             <emplId>TestUser2</emplId>
+            <workflowId>TestUser2</workflowId>
             <authenticationId>TestUser2</authenticationId>
             <uuId>TestUser2</uuId>
             <emailAddress>kuali-ken-testing@googlegroups.com</emailAddress>
@@ -45,6 +49,7 @@
         <user>
             <principalName>TestUser3</principalName>
             <emplId>TestUser3</emplId>
+            <workflowId>TestUser3</workflowId>
             <authenticationId>TestUser3</authenticationId>
             <uuId>TestUser3</uuId>
             <emailAddress>kuali-ken-testing@googlegroups.com</emailAddress>
@@ -55,6 +60,7 @@
         <user>
             <principalName>TestUser4</principalName>
             <emplId>TestUser4</emplId>
+            <workflowId>TestUser4</workflowId>
             <authenticationId>TestUser4</authenticationId>
             <uuId>TestUser4</uuId>
             <emailAddress>kuali-ken-testing@googlegroups.com</emailAddress>
@@ -65,6 +71,7 @@
         <user>
             <principalName>TestUser5</principalName>
             <emplId>TestUser5</emplId>
+            <workflowId>TestUser5</workflowId>
             <authenticationId>TestUser5</authenticationId>
             <uuId>TestUser5</uuId>
             <emailAddress>kuali-ken-testing@googlegroups.com</emailAddress>
@@ -75,6 +82,7 @@
         <user>
             <principalName>TestUser6</principalName>
             <emplId>TestUser6</emplId>
+            <workflowId>TestUser6</workflowId>
             <authenticationId>TestUser6</authenticationId>
             <uuId>TestUser6</uuId>
             <emailAddress>kuali-ken-testing@googlegroups.com</emailAddress>
@@ -87,6 +95,7 @@
         <user>
             <principalName>quickstart</principalName>
             <emplId>quickstart</emplId>
+            <workflowId>quickstart</workflowId>
             <authenticationId>quickstart</authenticationId>
             <uuId>quickstart</uuId>
             <emailAddress>kuali-ken-testing@googlegroups.com</emailAddress>
@@ -97,6 +106,7 @@
         <user>
             <principalName>user1</principalName>
             <emplId>user1</emplId>
+            <workflowId>user1</workflowId>
             <authenticationId>user1</authenticationId>
             <uuId>user1</uuId>
             <emailAddress>user1@indiana.edu</emailAddress>
@@ -107,6 +117,7 @@
         <user>
             <principalName>user2</principalName>
             <emplId>user2</emplId>
+            <workflowId>user2</workflowId>
             <authenticationId>user2</authenticationId>
             <uuId>user2</uuId>
             <emailAddress>user2@indiana.edu</emailAddress>
@@ -117,6 +128,7 @@
         <user>
             <principalName>user3</principalName>
             <emplId>user3</emplId>
+            <workflowId>user3</workflowId>
             <authenticationId>user3</authenticationId>
             <uuId>user3</uuId>
             <emailAddress>user3@indiana.edu</emailAddress>
@@ -127,6 +139,7 @@
         <user>
             <principalName>user4</principalName>
             <emplId>user4</emplId>
+            <workflowId>user4</workflowId>
             <authenticationId>user4</authenticationId>
             <uuId>user4</uuId>
             <emailAddress>user4@indiana.edu</emailAddress>
@@ -137,6 +150,7 @@
         <user>
             <principalName>edna</principalName>
             <emplId>employee1</emplId>
+            <workflowId>edna</workflowId>
             <authenticationId>edna</authenticationId>
             <uuId>edna</uuId>
             <emailAddress>edna@localhost.edu</emailAddress>
@@ -147,6 +161,7 @@
         <user>
             <principalName>eric</principalName>
             <emplId>employee2</emplId>
+            <workflowId>eric</workflowId>
             <authenticationId>eric</authenticationId>
             <uuId>eric</uuId>
             <emailAddress>eric@localhost.edu</emailAddress>
@@ -157,6 +172,7 @@
         <user>
             <principalName>earl</principalName>
             <emplId>employee3</emplId>
+            <workflowId>earl</workflowId>
             <authenticationId>earl</authenticationId>
             <uuId>earl</uuId>
             <emailAddress>earl@localhost.edu</emailAddress>
@@ -167,6 +183,7 @@
         <user>
             <principalName>erin</principalName>
             <emplId>employee4</emplId>
+            <workflowId>erin</workflowId>
             <authenticationId>erin</authenticationId>
             <uuId>erin</uuId>
             <emailAddress>erin@localhost.edu</emailAddress>
@@ -177,6 +194,7 @@
         <user>
             <principalName>fred</principalName>
             <emplId>fiscaloff1</emplId>
+            <workflowId>fred</workflowId>
             <authenticationId>fred</authenticationId>
             <uuId>fred</uuId>
             <emailAddress>fred@localhost.edu</emailAddress>
@@ -187,6 +205,7 @@
         <user>
             <principalName>fran</principalName>
             <emplId>fiscaloff2</emplId>
+            <workflowId>fran</workflowId>
             <authenticationId>fran</authenticationId>
             <uuId>fran</uuId>
             <emailAddress>fran@localhost.edu</emailAddress>
@@ -197,6 +216,7 @@
         <user>
             <principalName>frank</principalName>
             <emplId>fiscaloff3</emplId>
+            <workflowId>frank</workflowId>
             <authenticationId>frank</authenticationId>
             <uuId>frank</uuId>
             <emailAddress>Frank@localhost.edu</emailAddress>
@@ -207,6 +227,7 @@
         <user>
             <principalName>doug</principalName>
             <emplId>doug</emplId>
+            <workflowId>doug</workflowId>
             <authenticationId>doug</authenticationId>
             <uuId>doug</uuId>
             <emailAddress>doug@localhost.edu</emailAddress>
@@ -221,12 +242,12 @@
         <!-- NOTIFICATION SPECIFIC WORKGROUPS -->
         <group>
             <name>NotificationAdmin</name>
-            <namespace>KUALI</namespace>
+            <namespace>KR-WKFLW</namespace>
             <description>Notification system admin group for automation.</description>
             <active>true</active>
             <!--<workgroupType>W</workgroupType>-->
             <members>
-                <principalName>TestAdmin1</principalName>
+                <principalId>TestAdmin1</principalId>
             </members>
         </group>
         <group>
@@ -252,6 +273,7 @@
             </members>
         </group>
         <group>
+            <id>55</id>
             <name>RiceTeam</name>
             <namespace>KUALI</namespace>
             <description>A test workgroup for KEN.</description>

@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 The Kuali Foundation
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -49,6 +49,7 @@ import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.ken.util.Util;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.rule.GenericAttributeContent;
+import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.springframework.web.servlet.ModelAndView;
 
 
@@ -79,7 +80,7 @@ public class SendEventNotificationMessageController extends BaseSendNotification
      * Returns whether the specified Notification can be reasonably expected to have recipients.
      * This is determined on whether the channel has default recipients, is subscribably, and whether
      * the send date time is far enough in the future to expect that if there are no subscribers, there
-     * may actually be some by the time the notification is sent. 
+     * may actually be some by the time the notification is sent.
      * @param notification the notification to test
      * @return whether the specified Notification can be reasonably expected to have recipients
      */
@@ -190,11 +191,11 @@ public class SendEventNotificationMessageController extends BaseSendNotification
         // set sendDateTime to current datetime if not provided
 	String sendDateTime = request.getParameter("sendDateTime");
 	String currentDateTime = Util.getCurrentDateTime();
-	if (StringUtils.isEmpty(sendDateTime)) {	    
+	if (StringUtils.isEmpty(sendDateTime)) {
 	    sendDateTime = currentDateTime;
 	}
-	model.put("sendDateTime", sendDateTime); 
-	
+	model.put("sendDateTime", sendDateTime);
+
 	// retain the original date time or set to current if
 	// it was not in the request
 	if (request.getParameter("originalDateTime") == null) {
@@ -207,10 +208,10 @@ public class SendEventNotificationMessageController extends BaseSendNotification
         model.put("location", request.getParameter("location"));
         model.put("startDateTime", request.getParameter("startDateTime"));
         model.put("stopDateTime", request.getParameter("stopDateTime"));
-        
+
         model.put("userRecipients", request.getParameter("userRecipients"));
         model.put("workgroupRecipients", request.getParameter("workgroupRecipients"));
-        
+
 	return model;
     }
 
@@ -253,11 +254,11 @@ public class SendEventNotificationMessageController extends BaseSendNotification
             for (NotificationChannelReviewer reviewer: reviewers) {
                 String prefix;
                 int index;
-                if (NotificationConstants.RECIPIENT_TYPES.USER.equals(reviewer.getReviewerType())) {
+                if (KimGroupImpl.PRINCIPAL_MEMBER_TYPE.equals(reviewer.getReviewerType())) {
                     prefix = "user";
                     index = ui;
                     ui++;
-                } else if (NotificationConstants.RECIPIENT_TYPES.GROUP.equals(reviewer.getReviewerType())) {
+                } else if (KimGroupImpl.GROUP_MEMBER_TYPE.equals(reviewer.getReviewerType())) {
                     prefix = "group";
                     index = gi;
                     gi++;
@@ -270,7 +271,7 @@ public class SendEventNotificationMessageController extends BaseSendNotification
             GenericAttributeContent gac = new GenericAttributeContent("channelReviewers");
             document.getDocumentContent().setApplicationContent(notificationAsXml);
             document.getDocumentContent().setAttributeContent("<attributeContent>" + gac.generateContent(attrFields) + "</attributeContent>");
-	    
+
             document.setTitle(notification.getTitle());
 
 	    document.routeDocument("This message was submitted via the event notification message submission form by user "
@@ -359,22 +360,22 @@ public class SendEventNotificationMessageController extends BaseSendNotification
         }
 	// send date time
 	String sendDateTime = request.getParameter("sendDateTime");
-	if (StringUtils.isBlank(sendDateTime)) {	    
-	    sendDateTime = Util.getCurrentDateTime();	    
+	if (StringUtils.isBlank(sendDateTime)) {
+	    sendDateTime = Util.getCurrentDateTime();
 	}
-	
+
 	try {
             senddate = Util.parseUIDateTime(sendDateTime);
         } catch (ParseException pe) {
             errors.addError("You specified an invalid Send Date/Time.  Please use the calendar picker.");
         }
-        
+
         if(senddate != null && senddate.before(origdate)) {
             errors.addError("Send Date/Time cannot be in the past.");
         }
-        
-        model.put("sendDateTime", sendDateTime);    
-	
+
+        model.put("sendDateTime", sendDateTime);
+
 	// auto remove date time
 	String autoRemoveDateTime = request.getParameter("autoRemoveDateTime");
 	if (StringUtils.isNotBlank(autoRemoveDateTime)) {
@@ -383,7 +384,7 @@ public class SendEventNotificationMessageController extends BaseSendNotification
             } catch (ParseException pe) {
                 errors.addError("You specified an invalid Auto-Remove Date/Time.  Please use the calendar picker.");
             }
-            
+
             if(removedate != null) {
         	if(removedate.before(origdate)) {
         	    errors.addError("Auto-Remove Date/Time cannot be in the past.");
@@ -392,9 +393,9 @@ public class SendEventNotificationMessageController extends BaseSendNotification
         	}
             }
 	}
-	
+
 	model.put("autoRemoveDateTime", autoRemoveDateTime);
-	
+
 	// user recipient names
 	String[] userRecipients = parseUserRecipients(request);
 
@@ -418,7 +419,7 @@ public class SendEventNotificationMessageController extends BaseSendNotification
 	}
 
         // all event fields are mandatory for event type
-        
+
 	// start date time
         String startDateTime = request.getParameter("startDateTime");
         if (StringUtils.isEmpty(startDateTime)) {
@@ -442,7 +443,7 @@ public class SendEventNotificationMessageController extends BaseSendNotification
         } else {
             model.put("summary", summary);
         }
-        
+
         // description
         String description = request.getParameter("description");
         if (StringUtils.isEmpty(description)) {
@@ -506,7 +507,7 @@ public class SendEventNotificationMessageController extends BaseSendNotification
 	    for (String userRecipientId : userRecipients) {
 	        if (isUserRecipientValid(userRecipientId, errors)) {
         		NotificationRecipient recipient = new NotificationRecipient();
-        		recipient.setRecipientType(NotificationConstants.RECIPIENT_TYPES.USER);
+        		recipient.setRecipientType(KimGroupImpl.PRINCIPAL_MEMBER_TYPE);
         		recipient.setRecipientId(userRecipientId);
         		notification.addRecipient(recipient);
 	        }
@@ -518,7 +519,7 @@ public class SendEventNotificationMessageController extends BaseSendNotification
 	    for (String workgroupRecipientId : workgroupRecipients) {
 	        if (isWorkgroupRecipientValid(workgroupRecipientId, errors)) {
         		NotificationRecipient recipient = new NotificationRecipient();
-        		recipient.setRecipientType(NotificationConstants.RECIPIENT_TYPES.GROUP);
+        		recipient.setRecipientType(KimGroupImpl.GROUP_MEMBER_TYPE);
         		recipient.setRecipientId(workgroupRecipientId);
         		notification.addRecipient(recipient);
 	        }
@@ -545,7 +546,7 @@ public class SendEventNotificationMessageController extends BaseSendNotification
                 errors.addError("You specified an invalid send date and time.  Please use the calendar picker.");
             }
             notification.setSendDateTime(new Timestamp(d.getTime()));
-        }   
+        }
 
         Date d2 = null;
         if (StringUtils.isNotBlank(autoRemoveDateTime)) {

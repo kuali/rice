@@ -119,10 +119,10 @@ public class NotificationServiceImpl implements NotificationService {
 	    NotificationRecipient recipient = notification.getRecipient(i);
 	    boolean validRecipient = notificationRecipientService.isRecipientValid(recipient.getRecipientId(), recipient.getRecipientType());
 	    if(!validRecipient) {
-		response.setStatus(NotificationConstants.RESPONSE_STATUSES.FAILURE);
-		response.setMessage(NotificationConstants.RESPONSE_MESSAGES.INVALID_RECIPIENT + " - recipientId=" + 
-			recipient.getRecipientId() + ", recipientType=" + recipient.getRecipientType());
-		return response;
+    		response.setStatus(NotificationConstants.RESPONSE_STATUSES.FAILURE);
+    		response.setMessage(NotificationConstants.RESPONSE_MESSAGES.INVALID_RECIPIENT + " - recipientId=" + 
+    			recipient.getRecipientId() + ", recipientType=" + recipient.getRecipientType());
+    		return response;
 	    }
 	}
 	
@@ -139,8 +139,8 @@ public class NotificationServiceImpl implements NotificationService {
 	// if the autoremove time is before the send date time, reject the notification
 	if (notification.getAutoRemoveDateTime() != null) {
 	    if (notification.getAutoRemoveDateTime().before(notification.getSendDateTime()))  {
-		response.setStatus(NotificationConstants.RESPONSE_STATUSES.FAILURE);
-		response.setMessage(NotificationConstants.RESPONSE_MESSAGES.INVALID_REMOVE_DATE);
+    		response.setStatus(NotificationConstants.RESPONSE_STATUSES.FAILURE);
+    		response.setMessage(NotificationConstants.RESPONSE_MESSAGES.INVALID_REMOVE_DATE);
 	        return response;
 	    }
 	}

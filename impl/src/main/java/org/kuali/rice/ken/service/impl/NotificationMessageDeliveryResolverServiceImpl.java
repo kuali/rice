@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 The Kuali Foundation
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -36,25 +36,26 @@ import org.kuali.rice.ken.service.NotificationService;
 import org.kuali.rice.ken.service.ProcessingResult;
 import org.kuali.rice.ken.service.UserPreferenceService;
 import org.kuali.rice.ken.util.NotificationConstants;
+import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import edu.emory.mathcs.backport.java.util.concurrent.ExecutorService;
 
 /**
- * This is the default out-of-the-box implementation that leverages the status flag on a notification (RESOLVED versus UNRESOLVED) to determine whether 
- * the notification's message deliveries need to be resolved or not.  This also looks at the start and auto remove 
+ * This is the default out-of-the-box implementation that leverages the status flag on a notification (RESOLVED versus UNRESOLVED) to determine whether
+ * the notification's message deliveries need to be resolved or not.  This also looks at the start and auto remove
  * dates and times.
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NotificationMessageDeliveryResolverServiceImpl extends ConcurrentJob<Notification> implements NotificationMessageDeliveryResolverService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger
 	.getLogger(NotificationMessageDeliveryResolverServiceImpl.class);
-    
+
     private NotificationRecipientService notificationRecipientService;
     private GenericDao businessObjectDao;
     private UserPreferenceService userPreferenceService;
     private NotificationService notificationService;
-    
+
     /**
      * Constructs a NotificationMessageDeliveryDispatchServiceImpl instance.
      * @param notificationRecipientService
@@ -63,8 +64,8 @@ public class NotificationMessageDeliveryResolverServiceImpl extends ConcurrentJo
      * @param executor
      * @param userPreferenceService
      */
-    public NotificationMessageDeliveryResolverServiceImpl(NotificationService notificationService, NotificationRecipientService notificationRecipientService, 
-            GenericDao businessObjectDao, PlatformTransactionManager txManager, ExecutorService executor, 
+    public NotificationMessageDeliveryResolverServiceImpl(NotificationService notificationService, NotificationRecipientService notificationRecipientService,
+            GenericDao businessObjectDao, PlatformTransactionManager txManager, ExecutorService executor,
 	    UserPreferenceService userPreferenceService) {
         super(txManager, executor);
         this.notificationService = notificationService;
@@ -89,18 +90,18 @@ public class NotificationMessageDeliveryResolverServiceImpl extends ConcurrentJo
 
 
     /**
-     * This method is responsible for building out the complete recipient list, which will resolve all members for groups, and add 
+     * This method is responsible for building out the complete recipient list, which will resolve all members for groups, and add
      * them to the official list only if they are not already in the list.
      * @param notification
-     * @return HashSet<String> 
+     * @return HashSet<String>
      */
     private HashSet<String> buildCompleteRecipientList(Notification notification) {
         HashSet<String> completeRecipientList = new HashSet<String>(notification.getRecipients().size());
-        
+
         // process the list that came in with the notification request
            for (int i = 0; i < notification.getRecipients().size(); i++) {
                NotificationRecipient recipient = notification.getRecipient(i);
-               if (NotificationConstants.RECIPIENT_TYPES.GROUP.equals(recipient.getRecipientType())) {
+               if (KimGroupImpl.GROUP_MEMBER_TYPE.equals(recipient.getRecipientType())) {
                    // resolve group's users
                    String[] groupMembers = notificationRecipientService.getGroupMembers(recipient.getRecipientId());
                    for(int j = 0; j < groupMembers.length; j++) {
@@ -112,10 +113,10 @@ public class NotificationMessageDeliveryResolverServiceImpl extends ConcurrentJo
            }
 
            // now process the default recipient lists that are associated with the channel
-           Iterator<NotificationRecipientList> i = notification.getChannel().getRecipientLists().iterator(); 
+           Iterator<NotificationRecipientList> i = notification.getChannel().getRecipientLists().iterator();
            while (i.hasNext()) {
                NotificationRecipientList listRecipient  = i.next();
-               if (NotificationConstants.RECIPIENT_TYPES.GROUP.equals(listRecipient.getRecipientType())) {
+               if (KimGroupImpl.GROUP_MEMBER_TYPE.equals(listRecipient.getRecipientType())) {
                    // resolve group's users
                    String[] groupMembers = notificationRecipientService.getGroupMembers(listRecipient.getRecipientId());
                    for (int j = 0; j < groupMembers.length; j++) {
@@ -125,9 +126,9 @@ public class NotificationMessageDeliveryResolverServiceImpl extends ConcurrentJo
                    completeRecipientList.add(listRecipient.getRecipientId());
                }
            }
-           
+
            // now process the subscribers that are associated with the channel
-           List<UserChannelSubscription> subscriptions = notification.getChannel().getSubscriptions(); 
+           List<UserChannelSubscription> subscriptions = notification.getChannel().getSubscriptions();
            for (UserChannelSubscription subscription: subscriptions) {
                // NOTE: at this time channel subscriptions are USER-only - GROUP is not supported
                // this could be implemented by adding a recipientType/userType column as we do in
@@ -155,20 +156,20 @@ public class NotificationMessageDeliveryResolverServiceImpl extends ConcurrentJo
         for (Notification notification: notifications) {
             // now figure out each unique recipient for this notification
             HashSet<String> uniqueRecipients = buildCompleteRecipientList(notification);
-   
+
             // now for each unique recipient, figure out each delivery end point and create a NotificationMessageDelivery record
             Iterator<String> j = uniqueRecipients.iterator();
             while(j.hasNext()) {
                 String userRecipientId = j.next();
-            
+
                 NotificationMessageDelivery defaultMessageDelivery = new NotificationMessageDelivery();
                 defaultMessageDelivery.setMessageDeliveryStatus(NotificationConstants.MESSAGE_DELIVERY_STATUS.UNDELIVERED);
                 defaultMessageDelivery.setNotification(notification);
                 defaultMessageDelivery.setUserRecipientId(userRecipientId);
-    
+
                 //now save that delivery end point; this record will be later processed by the dispatch service which will actually deliver it
                 businessObjectDao.save(defaultMessageDelivery);
-                    
+
                 try {
                     new KEWActionListMessageDeliverer().deliverMessage(defaultMessageDelivery);
                 } catch (NotificationMessageDeliveryException e) {
@@ -187,7 +188,7 @@ public class NotificationMessageDeliveryResolverServiceImpl extends ConcurrentJo
                 // unlock the record now
                 notification.setLockedDate(null);
                 businessObjectDao.save(notification);
-            }    
+            }
 
         }
 
@@ -204,7 +205,7 @@ public class NotificationMessageDeliveryResolverServiceImpl extends ConcurrentJo
     }
 
     /**
-     * This method is responsible for resolving the list of NotificationMessageDelivery records for a given notification.  This service will look 
+     * This method is responsible for resolving the list of NotificationMessageDelivery records for a given notification.  This service will look
      * at all notifications that are ready to be delivered and will "explode" out specific message delivery records for given delivery end points.
      * @see org.kuali.rice.ken.service.NotificationMessageDeliveryResolverService#resolveNotificationMessageDeliveries()
      */
@@ -212,8 +213,8 @@ public class NotificationMessageDeliveryResolverServiceImpl extends ConcurrentJo
         LOG.debug("[" + new Timestamp(System.currentTimeMillis()).toString() + "] STARTING RESOLUTION OF NOTIFICATION MESSAGE DELIVERIES");
 
         ProcessingResult result = run();
-        
-        LOG.debug("[" + new Timestamp(System.currentTimeMillis()).toString() + "] FINISHED RESOLUTION OF NOTIFICATION MESSAGE DELIVERIES - " + 
+
+        LOG.debug("[" + new Timestamp(System.currentTimeMillis()).toString() + "] FINISHED RESOLUTION OF NOTIFICATION MESSAGE DELIVERIES - " +
                   "Message Delivery End Points Resolved = " + result.getSuccesses().size());
 
         return result;

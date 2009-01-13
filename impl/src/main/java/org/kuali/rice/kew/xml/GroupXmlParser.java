@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -32,6 +33,8 @@ import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
+import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
+import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
@@ -103,44 +106,26 @@ public class GroupXmlParser implements XmlConstants {
                     GroupInfo newGroupInfo =  groupService.createGroup(groupInfo);
 
                     String key = newGroupInfo.getNamespaceCode().trim() + ":" + newGroupInfo.getGroupName().trim();
-                    //now we should have group Id, so add members to group
-                    List<String> groupIds = memberGroupIds.get(key);
-                    if (groupIds != null) {
-                        for (String groupId : groupIds) {
-                            KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
-                            if (group != null) {
-                                groupService.addGroupToGroup(group.getGroupId(), newGroupInfo.getGroupId());
-                            } else {
-                                throw new InvalidXmlException("Group Id "+groupId+" cannot be found.");
-                            }
-                        }
-                    }
-                    List<String> groupNames = memberGroupNames.get(key);
-                    if (groupNames != null) {
-                        for (String groupName : groupNames) {
-                            KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroupByName(Utilities.parseGroupNamespaceCode(groupName), Utilities.parseGroupName(groupName));
-                            if (group != null) {
-                                groupService.addGroupToGroup(group.getGroupId(), newGroupInfo.getGroupId());
-                            } else {
-                                throw new InvalidXmlException("Group "+groupName+" cannot be found.");
-                            }
-                        }
-                    }
-                    List<String> principalIds = memberPrincipalIds.get(key);
-                    if (principalIds != null) {
-                        for (String principalId : principalIds) {
-                            groupService.addPrincipalToGroup(principalId, newGroupInfo.getGroupId());
-                        }
-                    }
-                    KIMServiceLocator.getIdentityManagementService().flushGroupCaches();
+                    addGroupMembers(newGroupInfo, key);
                 } catch (Exception e) {
                     throw new RuntimeException("Error creating group.", e);
                 }
             } else {
-                LOG.error("Rule named '" + groupInfo.getGroupName() + "' found, creating a new version");
+                LOG.error("Group named '" + groupInfo.getGroupName() + "' found, creating a new version");
                 try {
                     groupInfo.setGroupId(foundGroup.getGroupId());
                     groupService.updateGroup(foundGroup.getGroupId(), groupInfo);
+
+                    //delete existing group members and replace with new
+                    Map<String,String> criteria = new HashMap<String,String>();
+                    criteria.put("groupId", groupInfo.getGroupId());
+                    KNSServiceLocator.getBusinessObjectService().deleteMatching(GroupMemberImpl.class, criteria);
+
+                    String key = groupInfo.getNamespaceCode().trim() + ":" + groupInfo.getGroupName().trim();
+                    //groupService.getDirectMemberPrincipalIds(groupInfo.getGroupId());
+                    addGroupMembers(groupInfo, key);
+                    //groupService.getDirectMemberPrincipalIds(groupService.getGroupInfoByName("KR-WKFLW", "NotificationAdmin").getGroupId())
+
                 } catch (Exception e) {
                     throw new RuntimeException("Error updating group.", e);
                 }
@@ -300,4 +285,36 @@ public class GroupXmlParser implements XmlConstants {
         memberGroupNames.put(key, groupNames);
     }
 
+    private void addGroupMembers(GroupInfo groupInfo, String key) throws InvalidXmlException {
+        GroupService groupService = KIMServiceLocator.getGroupService();
+        List<String> groupIds = memberGroupIds.get(key);
+        if (groupIds != null) {
+            for (String groupId : groupIds) {
+                KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
+                if (group != null) {
+                    groupService.addGroupToGroup(group.getGroupId(), groupInfo.getGroupId());
+                } else {
+                    throw new InvalidXmlException("Group Id "+groupId+" cannot be found.");
+                }
+            }
+        }
+        List<String> groupNames = memberGroupNames.get(key);
+        if (groupNames != null) {
+            for (String groupName : groupNames) {
+                KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroupByName(Utilities.parseGroupNamespaceCode(groupName), Utilities.parseGroupName(groupName));
+                if (group != null) {
+                    groupService.addGroupToGroup(group.getGroupId(), groupInfo.getGroupId());
+                } else {
+                    throw new InvalidXmlException("Group "+groupName+" cannot be found.");
+                }
+            }
+        }
+        List<String> principalIds = memberPrincipalIds.get(key);
+        if (principalIds != null) {
+            for (String principalId : principalIds) {
+                groupService.addPrincipalToGroup(principalId, groupInfo.getGroupId());
+            }
+        }
+
+    }
 }

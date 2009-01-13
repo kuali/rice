@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 The Kuali Foundation
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -38,6 +38,7 @@ import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.springframework.validation.BindException;
 import org.springframework.validation.ValidationUtils;
@@ -109,7 +110,7 @@ public class AdministerNotificationRequestController extends MultiActionControll
     protected NotificationMessageContentService messageContentService;
     protected NotificationWorkflowDocumentService workflowDocumentService;
     protected NotificationRecipientService recipientService;
-    
+
     /**
      * Sets the messageContentService attribute value.
      * @param messageContentService the NotificationMessageContentService impl
@@ -127,7 +128,7 @@ public class AdministerNotificationRequestController extends MultiActionControll
             NotificationWorkflowDocumentService notificationWorkflowDocumentService) {
         this.workflowDocumentService = notificationWorkflowDocumentService;
     }
-    
+
     /**
      * Sets the recipientService attribute value.
      * @param recipientService the NotificationRecipientService impl
@@ -149,7 +150,7 @@ public class AdministerNotificationRequestController extends MultiActionControll
 
         //parse out the application content into a Notification BO
         Notification notification = messageContentService.parseSerializedNotificationXml(notificationAsXml.getBytes());
-        
+
         return notification;
     }
 
@@ -168,14 +169,14 @@ public class AdministerNotificationRequestController extends MultiActionControll
         if (command.getDocId() == null) {
             throw new RuntimeException("An invalid document ID was recieved from KEW's action list.");
         }
-        
+
         //check to see which view is being passed to us from the notification list - pop up or inline
         String view = request.getParameter(NotificationConstants.NOTIFICATION_CONTROLLER_CONSTANTS.COMMAND);
         String standaloneWindow = "true";
         if(view != null && view.equals(NotificationConstants.NOTIFICATION_DETAIL_VIEWS.INLINE)) {
             standaloneWindow = "false";
         }
-        
+
         NotificationWorkflowDocument document;
         Map<String, Object> model = new HashMap<String, Object>();
         // set into model whether we are dealing with a pop up or an inline window
@@ -207,11 +208,11 @@ public class AdministerNotificationRequestController extends MultiActionControll
                     List<NotificationChannelReviewer> reviewers = notification.getChannel().getReviewers();
                     String user = null;
                     for (NotificationChannelReviewer reviewer: reviewers) {
-                        if (NotificationConstants.RECIPIENT_TYPES.USER.equals(reviewer.getReviewerType())) {
+                        if (KimGroupImpl.PRINCIPAL_MEMBER_TYPE.equals(reviewer.getReviewerType())) {
                             if (reviewer.getReviewerId().equals(request.getRemoteUser())) {
                                 user = request.getRemoteUser();
                             }
-                        } else if (NotificationConstants.RECIPIENT_TYPES.GROUP.equals(reviewer.getReviewerType())) {
+                        } else if (KimGroupImpl.GROUP_MEMBER_TYPE.equals(reviewer.getReviewerType())) {
                             // if it's a group
                             String[] members = recipientService.getGroupMembers(reviewer.getReviewerId());
                             for (String member: members) {
@@ -259,7 +260,7 @@ public class AdministerNotificationRequestController extends MultiActionControll
         model.put(NotificationConstants.NOTIFICATION_CONTROLLER_CONSTANTS.STANDALONE_WINDOW, request.getParameter(NotificationConstants.NOTIFICATION_CONTROLLER_CONSTANTS.STANDALONE_WINDOW));
         return new ModelAndView("SendNotificationRequestActionTakenWindow", model);
     }
-    
+
     /**
      * Disapprove action that disapproves a notification request
      * @param request the HttpServletRequest
@@ -275,7 +276,7 @@ public class AdministerNotificationRequestController extends MultiActionControll
         model.put(NotificationConstants.NOTIFICATION_CONTROLLER_CONSTANTS.STANDALONE_WINDOW, request.getParameter(NotificationConstants.NOTIFICATION_CONTROLLER_CONSTANTS.STANDALONE_WINDOW));
         return new ModelAndView("SendNotificationRequestActionTakenWindow", model);
     }
-    
+
     /**
      * Acknowledge action that acknowledges a notification request disapproval
      * @param request the HttpServletRequest
@@ -307,14 +308,14 @@ public class AdministerNotificationRequestController extends MultiActionControll
         if (bindException.hasErrors()) {
             throw new ServletRequestBindingException("Document id must be specified", bindException);
         }
-        
+
         // obtain a workflow user object first
         WorkflowIdDTO user = new WorkflowIdDTO(request.getRemoteUser());
 
         try {
             // now construct the workflow document, which will interact with workflow
             NotificationWorkflowDocument document = new NotificationWorkflowDocument(user, command.getDocId());
-            
+
             Notification notification = retrieveNotificationForWorkflowDocument(document);
 
             String initiatorPrincipalId = document.getRouteHeader().getInitiatorPrincipalId();

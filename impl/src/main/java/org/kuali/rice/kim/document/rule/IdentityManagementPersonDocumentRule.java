@@ -24,13 +24,14 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl;
+import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAffiliation;
 import org.kuali.rice.kim.bo.ui.PersonDocumentBoDefaultBase;
 import org.kuali.rice.kim.bo.ui.PersonDocumentEmploymentInfo;
 import org.kuali.rice.kim.bo.ui.PersonDocumentGroup;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRolePrncpl;
+import org.kuali.rice.kim.bo.ui.PersonDocumentRoleQualifier;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.document.authorization.IdentityManagementPersonDocumentAuthorizer;
 import org.kuali.rice.kim.rule.event.ui.AddGroupEvent;
@@ -85,7 +86,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
         valid &= checkMultipleDefault (personDoc.getAddrs(), "addrs");
         valid &= checkMultipleDefault (personDoc.getPhones(), "phones");
         valid &= checkMultipleDefault (personDoc.getEmails(), "emails");
-        valid &= checkPeimaryEmploymentInfo (personDoc.getAffiliations());
+        valid &= checkPrimaryEmploymentInfo (personDoc.getAffiliations());
         // kimtypeservice.validateAttributes is not working yet.
         valid &= validateRoleQualifier (personDoc.getRoles());
         if (StringUtils.isNotBlank(personDoc.getPrincipalName())) { 
@@ -126,7 +127,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	return valid;
     }
     
-    private boolean checkPeimaryEmploymentInfo (List <PersonDocumentAffiliation> affiliations) {
+    private boolean checkPrimaryEmploymentInfo (List <PersonDocumentAffiliation> affiliations) {
         ErrorMap errorMap = GlobalVariables.getErrorMap();
     	boolean valid = true;
     	int i = 0;
@@ -159,25 +160,51 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	return true;
     }
 
-    private boolean validateRoleQualifier (List<PersonDocumentRole> roles ) {
-        ErrorMap errorMap = GlobalVariables.getErrorMap();
+    private static Map<String,KimAttributeImpl> attributeDefinitionMap = new HashMap<String,KimAttributeImpl>();
+    
+    private KimAttributeImpl getAttributeDefinition( String id ) {
+    	KimAttributeImpl attributeImpl = attributeDefinitionMap.get( id );
+    	
+    	if ( attributeImpl == null ) {
+			Map<String,String> criteria = new HashMap<String,String>();
+			criteria.put( "kimAttributeId", id );
+			attributeImpl = (KimAttributeImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey( KimAttributeImpl.class, criteria );
+			attributeDefinitionMap.put( id, attributeImpl );
+    	}
+    	return attributeImpl;
+    }
+    
+	public AttributeSet convertQualifiersToMap( List<PersonDocumentRoleQualifier> qualifiers ) {
+		AttributeSet m = new AttributeSet();
+		for ( PersonDocumentRoleQualifier data : qualifiers ) {
+			m.put( getAttributeDefinition( data.getKimAttrDefnId() ).getAttributeName(), data.getAttrVal() );
+		}
+		return m;
+	}
+    
+    private boolean validateRoleQualifier( List<PersonDocumentRole> roles ) {
+
     	//boolean valid = true;
 		AttributeSet validationErrors = new AttributeSet();
 		// TODO : "kimTypeService.validateAttributes(attributes)" is not working yet 
     	for(PersonDocumentRole role : roles ) {
 	        KimTypeService kimTypeService = (KimTypeServiceBase)KIMServiceLocator.getService(role.getKimRoleType().getKimTypeServiceName());
-	        AttributeSet attributes = new AttributeSet();
-	        for (KimTypeAttributeImpl typeAttrImpl : role.getKimRoleType().getAttributeDefinitions()) {
-	        	Map<String, String> attr = new HashMap<String, String>();
-	        	attr.put(typeAttrImpl.getKimAttribute().getAttributeName(), "");
-	        	attributes.putAll(attr);
-	        	
+        	for ( PersonDocumentRolePrncpl rolePrincipal : role.getRolePrncpls() ) {
+        		// TODO: cache the attribute definitions for a given role type
+        		// PROBLEM: this role qualifiers map does not have any keys with which to link to the attributes
+        		AttributeSet localErrors = kimTypeService.validateAttributes( convertQualifiersToMap( rolePrincipal.getQualifiers() ) );
+        		// TODO: prefix all these errors with the proper prefix for their path on the document
+		        validationErrors.putAll( localErrors );
 	        }
-	        validationErrors.putAll(kimTypeService.validateAttributes(attributes));
     	}
     	if (validationErrors.isEmpty()) {
     		return true;
     	} else {
+    		// FIXME: This does not use the correct error path yet - may need to be moved up so that the error path is known
+    		// Also, the above code would overwrite messages on the same attributes (namespaceCode) but on different rows
+    		for ( String key : validationErrors.keySet() ) {
+    			GlobalVariables.getErrorMap().putError( key, RiceKeyConstants.ERROR_CUSTOM, validationErrors.get( key ) );
+    		}
     		return false;
     	}
     }

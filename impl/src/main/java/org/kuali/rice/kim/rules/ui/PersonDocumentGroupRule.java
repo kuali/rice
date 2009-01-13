@@ -16,14 +16,12 @@
 package org.kuali.rice.kim.rules.ui;
 
 import java.sql.Timestamp;
-import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.ui.PersonDocumentGroup;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.rule.event.ui.AddGroupEvent;
 import org.kuali.rice.kim.rule.ui.AddGroupRule;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.rules.DocumentRuleBase;
 import org.kuali.rice.kns.util.ErrorMap;
 import org.kuali.rice.kns.util.GlobalVariables;

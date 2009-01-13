@@ -16,7 +16,6 @@
 package org.kuali.rice.kim.service.support.impl;
 
 import java.beans.PropertyDescriptor;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,8 +35,6 @@ import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
-import org.kuali.rice.kns.datadictionary.mask.Mask;
-import org.kuali.rice.kns.datadictionary.mask.MaskFormatterSubString;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.KimAttributeValuesFinder;
 import org.kuali.rice.kns.service.BusinessObjectService;
@@ -66,7 +63,7 @@ public class KimTypeServiceBase implements KimTypeService {
 	protected BusinessObjectService businessObjectService;
 	protected DictionaryValidationService dictionaryValidationService;
 	protected DataDictionaryService dataDictionaryService;
-	
+//	protected Class<? extends KimAttributes> kimAttributesClass;
 
 	public BusinessObjectService getBusinessObjectService() {
 		if ( businessObjectService == null ) {
@@ -158,32 +155,35 @@ public class KimTypeServiceBase implements KimTypeService {
 	 */
 	public AttributeSet validateAttributes(AttributeSet attributes) {
 		AttributeSet validationErrors = new AttributeSet();
-		for ( Map.Entry<String,String> attribute : attributes.entrySet() ) {
+		for ( String attributeName : attributes.keySet() ) {
 			Map<String,String> criteria = new HashMap<String,String>();
-            criteria.put("attributeName", attribute.getKey());
+            criteria.put("attributeName", attributeName);
+            // TODO: load entire attribute table and store in memory
             KimAttributeImpl attributeImpl = (KimAttributeImpl) getBusinessObjectService().findByPrimaryKey(KimAttributeImpl.class, criteria);
-            
 			List<String> attributeErrors = null;
 			try {
-				PropertyDescriptor propertyDescriptor = PropertyUtils.getPropertyDescriptor(attributeImpl, attributeImpl.getAttributeName());
-				if ( propertyDescriptor != null ) { 
-					if ( attributeImpl.getComponentName() == null) {
-						attributeErrors = validateNonDataDictionaryAttribute(null, attributeImpl, propertyDescriptor, true);
+				if ( attributeImpl.getComponentName() == null) {
+					attributeErrors = validateNonDataDictionaryAttribute(attributeName, attributes.get( attributeName ), true);
+				} else {
+					// create an object of the proper type per the component 
+		            Object componentObject = Class.forName( attributeImpl.getComponentName() ).newInstance();
+		            // get the bean utils descriptor for accessing the attribute on that object 
+					PropertyDescriptor propertyDescriptor = PropertyUtils.getPropertyDescriptor(componentObject, attributeImpl.getAttributeName());
+					if ( propertyDescriptor != null ) {
+						// set the value on the object so that it can be checked
+						propertyDescriptor.getWriteMethod().invoke( componentObject, attributes.get( attributeName ) );
+						attributeErrors = validateDataDictionaryAttribute(attributeImpl.getComponentName(), componentObject, propertyDescriptor, true);
 					} else {
-						attributeErrors = validateDataDictionaryAttribute(attributeImpl.getComponentName(), attributeImpl, propertyDescriptor, true);
+						LOG.warn( "Unable to obtain property descriptor for: " + attributeImpl.getClass().getName() + "/" + attributeImpl.getAttributeName() );
 					}
 				}
-			} catch (IllegalAccessException e) {
-				LOG.error("Unable to validate attribute: " + attribute, e);
-			} catch (InvocationTargetException e) {
-				LOG.error("Unable to validate attribute: " + attribute, e);
-			} catch (NoSuchMethodException e) {
-				LOG.error("Unable to validate attribute: " + attribute, e);
+			} catch (Exception e) {
+				LOG.error("Unable to validate attribute: " + attributeName, e);
 			}
 			
 			if ( attributeErrors != null ) {
 				for ( String err : attributeErrors ) {
-					validationErrors.put(attribute.getKey(), err);
+					validationErrors.put(attributeName, err);
 				}
 			}
 		}
@@ -197,7 +197,7 @@ public class KimTypeServiceBase implements KimTypeService {
 		List<String> errors = new ArrayList<String>();
         if (results instanceof String) {
         	errors.add((String)results);
-        } else {
+        } else if ( results != null ) {
         	String [] temp = (String []) results;
         	for (String string : temp) {
 				errors.add(string);
@@ -208,24 +208,20 @@ public class KimTypeServiceBase implements KimTypeService {
 		return errors;
 	}
 
-	protected List<String> validateNonDataDictionaryAttribute(String entryName, Object object, PropertyDescriptor propertyDescriptor, boolean validateRequired) {
+	protected List<String> validateNonDataDictionaryAttribute(String attributeName, String attributeValue, boolean validateRequired) {
 		return new ArrayList<String>();
 	}
 	
 	@SuppressWarnings("unchecked")
-	// FIXME: the attributeName is not guaranteed to be unique!
-	protected List<KeyLabelPair> getDataDictionaryAttributeValues(String attributeName) {
-		Map<String,String> criteria = new HashMap<String,String>();
-        criteria.put("attributeName", attributeName);
-        KimAttributeImpl attributeImpl = (KimAttributeImpl) getBusinessObjectService().findByPrimaryKey(KimAttributeImpl.class, criteria);
-		AttributeDefinition definition = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(attributeImpl.getComponentName()).getAttributeDefinition(attributeName);
+	protected List<KeyLabelPair> getDataDictionaryAttributeValues(KimAttributeImpl attributeImpl) {
+		AttributeDefinition definition = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(attributeImpl.getComponentName()).getAttributeDefinition(attributeImpl.getAttributeName());
 		List<KeyLabelPair> pairs = new ArrayList<KeyLabelPair>();
 		Class<? extends KeyValuesFinder> keyValuesFinderName = (Class<? extends KeyValuesFinder>)definition.getControl().getValuesFinderClass();		
 		try {
 			KeyValuesFinder finder = keyValuesFinderName.newInstance();
 			pairs = finder.getKeyValues();
 		} catch (Exception e) {
-			LOG.error("Unable to build a KeyValuesFinder for " + attributeName, e);
+			LOG.error("Unable to build a KeyValuesFinder for " + attributeImpl.getAttributeName(), e);
 		}
 		return pairs;
 	}
@@ -239,7 +235,7 @@ public class KimTypeServiceBase implements KimTypeService {
 		Map<String,String> criteria = new HashMap<String,String>();
         criteria.put("attributeName", attributeName);
         KimAttributeImpl attributeImpl = (KimAttributeImpl) getBusinessObjectService().findByPrimaryKey(KimAttributeImpl.class, criteria);
-        return attributeImpl.getComponentName() == null ? getNonDataDictionaryAttributeValues(attributeName) : getDataDictionaryAttributeValues(attributeName);
+        return attributeImpl.getComponentName() == null ? getNonDataDictionaryAttributeValues(attributeName) : getDataDictionaryAttributeValues(attributeImpl);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -254,13 +250,6 @@ public class KimTypeServiceBase implements KimTypeService {
 			control.setValuesFinderClass(KimAttributeValuesFinder.class);
 		}
 		definition.setControl(control);
-		Mask mask = copy(definition.getDataDictionaryAttributeDefinition().getDisplayMask());
-		if (mask != null) {
-			MaskFormatterSubString formatter = new MaskFormatterSubString();
-			formatter.setMaskLength(definition.getDataDictionaryAttributeDefinition().getMaxLength());
-			mask.setMaskFormatter(formatter);
-		}
-		definition.setDisplayMask(mask);
 		definition.setSortCode(typeAttribute.getSortCode());
 		definition.setApplicationUrl(typeAttribute.getKimAttribute().getApplicationUrl());
 		
@@ -268,18 +257,24 @@ public class KimTypeServiceBase implements KimTypeService {
 		Map<String, String> lookupReturnPropertyConversionsMap = new HashMap<String, String>();
 		try {
 			Field field = FieldUtils.getPropertyField(Class.forName(typeAttribute.getKimAttribute().getComponentName()), typeAttribute.getKimAttribute().getAttributeName(), false);
-			String [] lookupInputPropertyConversions = field.getLookupParameters().split(",");
-			for (String string : lookupInputPropertyConversions) {
-				String [] keyVal = string.split(":");
-				lookupInputPropertyConversionsMap.put(keyVal[0], keyVal[1]);
+			if ( field != null ) {
+				if ( field.getLookupParameters() != null ) {
+					String [] lookupInputPropertyConversions = field.getLookupParameters().split(",");
+					for (String string : lookupInputPropertyConversions) {
+						String [] keyVal = string.split(":");
+						lookupInputPropertyConversionsMap.put(keyVal[0], keyVal[1]);
+					}
+					definition.setLookupInputPropertyConversions(lookupInputPropertyConversionsMap);
+				}
+				if ( field.getFieldConversions() != null ) {
+					String [] lookupReturnPropertyConversions = field.getFieldConversions().split(",");
+					for (String string : lookupReturnPropertyConversions) {
+						String [] keyVal = string.split(":");
+						lookupReturnPropertyConversionsMap.put(keyVal[0], keyVal[1]);
+					}
+					definition.setLookupReturnPropertyConversions(lookupReturnPropertyConversionsMap);
+				}
 			}
-			definition.setLookupInputPropertyConversions(lookupInputPropertyConversionsMap);
-			String [] lookupReturnPropertyConversions = field.getFieldConversions().split(",");
-			for (String string : lookupReturnPropertyConversions) {
-				String [] keyVal = string.split(":");
-				lookupReturnPropertyConversionsMap.put(keyVal[0], keyVal[1]);
-			}
-			definition.setLookupReturnPropertyConversions(lookupReturnPropertyConversionsMap);
 		} catch (Exception e) {
 			LOG.error("Unable to get DD data for: " + typeAttribute.getKimAttribute(), e);
 		}
@@ -288,6 +283,9 @@ public class KimTypeServiceBase implements KimTypeService {
 	
 	@SuppressWarnings("unchecked")
 	private <T> T copy(final T original) {
+		if ( original == null ) {
+			return null;
+		}
 		T copy = null;
 		try {
 			copy = (T) original.getClass().newInstance();

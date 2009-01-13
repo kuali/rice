@@ -20,7 +20,7 @@
 	showDocumentInfo="false"
 	htmlFormAction="identityManagementPersonDocument"
 	documentTypeName="IdentityManagementPersonDocument"
-	renderMultipart="false"
+	renderMultipart="true"
 	showTabButtons="true"
 	auditCount="0">
 
@@ -31,6 +31,9 @@
 	<kim:personPrivacy />
 	<kim:personMembership />
 		
+	<kul:notes />
+	<kul:routeLog />
+	<kul:adHocRecipients />
 	<kul:panelFooter />
 	<kul:documentControls transactionalDocument="false" />
 

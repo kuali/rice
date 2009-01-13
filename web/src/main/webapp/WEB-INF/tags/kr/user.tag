@@ -46,7 +46,7 @@
 <c:choose>
   <c:when test="${readOnly}">
     <input type="hidden" id='<c:out value="${userIdFieldName}"/>' name='<c:out value="${userIdFieldName}"/>' value='<c:out value="${userId}"/>' />
-    <c:out value="${userId}" />&nbsp;
+	<kul:inquiry boClassName="org.kuali.rice.kim.bo.impl.PersonImpl" keyValues="principalId=${universalId}" render="true"><c:out value="${userId}" /></kul:inquiry>&nbsp;
   </c:when>
   <c:otherwise>
     ${kfunc:registerEditableProperty(KualiForm, userIdFieldName)}

@@ -25,6 +25,7 @@ import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.kns.datadictionary.mask.Mask;
 import org.kuali.rice.kns.datadictionary.validation.ValidationPattern;
 import org.kuali.rice.kns.web.format.Formatter;
+import org.springframework.beans.factory.InitializingBean;
 
 
 /**
@@ -33,7 +34,7 @@ import org.kuali.rice.kns.web.format.Formatter;
  * 
  * 
  */
-public class AttributeDefinition extends DataDictionaryDefinitionBase {
+public class AttributeDefinition extends DataDictionaryDefinitionBase implements InitializingBean {
 
     protected Boolean forceUppercase = Boolean.FALSE;
 
@@ -519,5 +520,18 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase {
 	
 	 public boolean hasAttributeSecurity() {
 	        return (attributeSecurity != null);
-	    }
+    }
+	 
+	 
+    /**
+     * This overridden method ...
+     * 
+     * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
+     */
+    public void afterPropertiesSet() throws Exception {
+    	if ( StringUtils.isEmpty(name) ) {
+    		throw new RuntimeException( "blank name for bean: " + id );
+    	}
+    	
+    }
 }

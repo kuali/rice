@@ -188,13 +188,13 @@ public class ActionFormUtilMap extends HashMap {
             optionsList = finder.getKeyValues();
         }
         catch (ClassNotFoundException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e.getMessage(),e);
         }
         catch (InstantiationException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e.getMessage(),e);
         }
         catch (IllegalAccessException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e.getMessage(),e);
         }
 
         return optionsList;

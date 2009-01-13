@@ -164,13 +164,14 @@
 
 	<!--  ResponsibilityIdService -->
 	<bean id="enResponsibilityIdService" class="org.kuali.rice.kew.responsibility.service.impl.ResponsibilityIdServiceImpl" lazy-init="true">
-		<property name="responsibilityIdDAO">
-			<ref bean="enResponsibilityIdDAO" />
-		</property>
+		<property name="responsibilityIdDAO" ref="enResponsibilityIdDAO" />
 	</bean>
+
+    <!--  <bean id="enResponsibilityIdDAO" class="org.kuali.rice.kew.responsibility.dao.impl.ResponsibilityIdDAOJpaImpl" lazy-init="true" />  -->
 	<bean id="enResponsibilityIdDAO" class="org.kuali.rice.kew.responsibility.dao.impl.ResponsibilityIdDAOOjbImpl" lazy-init="true">
 		<property name="jcdAlias" value="enWorkflowDataSource" />
 	</bean>
+
 	<!--  ActionRequestService -->
 	<bean id="enActionRequestService" class="org.kuali.rice.kew.actionrequest.service.impl.ActionRequestServiceImpl" lazy-init="true">
 		<property name="actionRequestDAO">

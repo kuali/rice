@@ -86,6 +86,13 @@ public class KimCommonUtils {
 		attributeSet.put(KimAttributes.COMPONENT_NAME, getComponentFullName(clazz));
 		return attributeSet;
 	}
+	
+	public static AttributeSet getNamespaceAndActionClass( Class<? extends Object> clazz) {
+		AttributeSet attributeSet = new AttributeSet();
+		attributeSet.put(KimAttributes.NAMESPACE_CODE, getNamespaceCode(clazz));
+		attributeSet.put(KimAttributes.ACTION_CLASS, clazz.getName());
+		return attributeSet;
+	}
 
 	public static String getNamespaceCode(Class<? extends Object> clazz) {
 		ModuleService moduleService = getKualiModuleService().getResponsibleModuleService(clazz);

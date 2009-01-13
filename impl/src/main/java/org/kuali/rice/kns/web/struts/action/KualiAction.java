@@ -96,7 +96,9 @@ public abstract class KualiAction extends DispatchAction {
         }
         // if found methodToCall, pass control to that method, else return the basic forward
         if (StringUtils.isNotBlank(methodToCall)) {
-            LOG.debug("methodToCall: " + methodToCall);
+        	if ( LOG.isDebugEnabled() ) {
+        		LOG.debug("methodToCall: " + methodToCall);
+        	}
             returnForward = dispatchMethod(mapping, form, request, response, methodToCall);
         }
         else {
@@ -792,11 +794,11 @@ public abstract class KualiAction extends DispatchAction {
     protected void checkAuthorization( ActionForm form, String methodToCall) throws AuthorizationException 
     {
     	String principalId = GlobalVariables.getUserSession().getPrincipalId();
-    	AttributeSet attributeSet2 = new AttributeSet(getRoleQualification(form, methodToCall));
-    	AttributeSet attributeSet1 = KimCommonUtils.getNamespaceAndComponentFullName(this.getClass());
+    	AttributeSet roleQualifier = new AttributeSet(getRoleQualification(form, methodToCall));
+    	AttributeSet permissionDetails = KimCommonUtils.getNamespaceAndActionClass(this.getClass());
     	
         if (!KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(principalId, KNSConstants.KNS_NAMESPACE, 
-        		KimConstants.PermissionTemplateNames.USE_SCREEN, attributeSet1, attributeSet2 )) 
+        		KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails, roleQualifier )) 
         {
             throw new AuthorizationException(GlobalVariables.getUserSession().getPerson().getPrincipalName(), 
             		methodToCall,

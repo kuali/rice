@@ -122,6 +122,9 @@ public class BusinessObjectAuthorizationServiceImpl implements
 		considerBusinessObjectFieldModifyAuthorization(businessObjectEntry,
 				maintenanceDocument, user, maintenanceDocumentAuthorizer,
 				maintenanceDocumentRestrictions, "");
+		considerCustomButtonFieldAuthorization(businessObjectEntry,
+				maintenanceDocument, user, maintenanceDocumentAuthorizer,
+				maintenanceDocumentRestrictions, "");
 		considerInquiryOrMaintenanceDocumentPresentationController(
 				maintenanceDocumentPresentationController, maintenanceDocument,
 				maintenanceDocumentRestrictions);
@@ -217,6 +220,31 @@ public class BusinessObjectAuthorizationServiceImpl implements
 					maintenanceDocumentRestrictions
 							.addReadOnlyField(propertyPrefix + attributeName);
 				}
+			}
+		}
+	}
+	
+	protected void considerCustomButtonFieldAuthorization(
+			BusinessObjectEntry businessObjectEntry,
+			BusinessObject businessObject, Person user,
+			BusinessObjectAuthorizer businessObjectAuthorizer,
+			MaintenanceDocumentRestrictions maintenanceDocumentRestrictions,
+			String propertyPrefix) {
+		for (String attributeName : businessObjectEntry.getAttributeNames()) {
+			AttributeDefinition attributeDefinition = businessObjectEntry
+					.getAttributeDefinition(attributeName);
+			if (attributeDefinition.getControl().isButton()
+				&& !businessObjectAuthorizer
+						.isAuthorizedByTemplate(
+								businessObject,
+								KNSConstants.KNS_NAMESPACE,
+								KimConstants.PermissionTemplateNames.PERFORM_CUSTOM_MAINTENANCE_DOCUMENT_FUNCTION,
+								user.getPrincipalId(),
+								getButtonFieldPermissionDetails(
+								businessObject, attributeName),
+								null)) {
+				maintenanceDocumentRestrictions
+					.addHiddenField(propertyPrefix + attributeName);
 			}
 		}
 	}
@@ -416,6 +444,17 @@ public class BusinessObjectAuthorizationServiceImpl implements
 					.getNamespaceAndComponentSimpleName(businessObject
 							.getClass());
 			permissionDetails.put(KimAttributes.PROPERTY_NAME, attributeName);
+		}
+		return permissionDetails;
+	}
+	
+	protected Map<String, String> getButtonFieldPermissionDetails(
+			BusinessObject businessObject, String attributeName) {
+		Map<String, String> permissionDetails = new AttributeSet();
+		if (attributeName.contains(".")) {
+			permissionDetails.put(KimAttributes.BUTTON_ATTRIBUTE_NAME, attributeName);
+		} else {
+			permissionDetails.put(KimAttributes.BUTTON_ATTRIBUTE_NAME, attributeName);
 		}
 		return permissionDetails;
 	}

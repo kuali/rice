@@ -27,6 +27,7 @@ public class KimAttributes extends TransientBusinessObjectBase {
 	private static final long serialVersionUID = 8976113842166331719L;
 	
 	public static final String METHOD_TO_CALL = "methodToCall";
+	public static final String BUTTON_ATTRIBUTE_NAME ="buttonAttributeName";
 	public static final String BEAN_NAME = "beanName";
 	public static final String ACTION_CLASS = "actionClass";
 	public static final String NAMESPACE_CODE = "namespaceCode";

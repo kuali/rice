@@ -831,6 +831,10 @@ public class FieldUtils {
                         }
                     }
                 }
+                
+                if(Field.BUTTON.equalsIgnoreCase(field.getFieldType()) && fieldAuth.isHidden()){
+                	field.setFieldType(Field.HIDDEN);
+                }
 
                 // if the field is readOnly, and the authorization says it should be hidden,
                 // then restrict it
@@ -1082,7 +1086,7 @@ public class FieldUtils {
             //quickFinder is synonymous with a field-based Lookup
             field = LookupUtils.setFieldQuickfinder(newBusinessObjectInstance, attributeName, field, lookupFieldAttributeList);
             field = LookupUtils.setFieldDirectInquiry(newBusinessObjectInstance, attributeName, field);
-
+            
             // overwrite maxLength to allow for wildcards and ranges in the select
             field.setMaxLength(100);
             fields.add(field);

@@ -41,7 +41,7 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
         // Security is not enabled for this doctype.  Everyone can see this doc.
         return true;
       }
-      if (isWorkflowAdmin(session)) {
+      if (isAdmin(session)) {
           return true;
       }
       for (SecurityAttribute securityAttribute : security.getSecurityAttributes()) {
@@ -53,15 +53,8 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
       return checkStandardAuthorization(security, userSession, documentTypeName, routeHeaderId, initiatorWorkflowId, session);
   }
 
-  protected boolean isWorkflowAdmin(SecuritySession session) {
-      List<String> workgroups = getAdminWorkgroups();
-      if (workgroups != null && !workgroups.isEmpty()) {
-        for (String workgroupName : workgroups) {
-          if (isWorkgroupAuthenticated(Utilities.parseGroupNamespaceCode(workgroupName), Utilities.parseGroupName(workgroupName), session)) {
-              return true;
-          }
-        }
-      }
+  protected boolean isAdmin(SecuritySession session) {
+	  // TODO implement KIM permission check here
       return false;
   }
 
@@ -194,19 +187,6 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
 		  return true;
 	  }
 	  return false;
-  }
-
-  protected List<String> getAdminWorkgroups() {
-	  List<String> workgroups = new ArrayList<String>();
-	  String adminGroupName = Utilities.getApplicationConstant(KEWConstants.WORKFLOW_ADMIN_WORKGROUP_NAME_KEY);
-	  String docSearchAdminGroupName = Utilities.getApplicationConstant(KEWConstants.WORKFLOW_DOCUMENT_SEARCH_ADMIN_WORKGROUP_NAME_KEY);
-	  if (!StringUtils.isEmpty(adminGroupName)) {
-		  workgroups.add(adminGroupName);
-	  }
-	  if (!StringUtils.isEmpty(docSearchAdminGroupName)) {
-		  workgroups.add(docSearchAdminGroupName);
-	  }
-	  return workgroups;
   }
 
 }

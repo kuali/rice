@@ -16,10 +16,6 @@
  */
 package org.kuali.rice.kew.web.backdoor;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -31,8 +27,6 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.WorkflowAction;
 import org.kuali.rice.kew.web.session.UserSession;
-import org.kuali.rice.kim.bo.group.KimGroup;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 
 
@@ -85,26 +79,6 @@ public class BackdoorAction extends WorkflowAction {
 
     public ActionForward login(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LOG.debug("login");
-        /*
-        UserSession uSession = getUserSession(request);
-        BackdoorForm backdoorForm = (BackdoorForm) form;
-        try{
-            uSession.setBackdoorId(backdoorForm.getBackdoorId());
-            backdoorForm.setBackdoorId(uSession.getNetworkId());
-            //setFormGroupPermission(backdoorForm, request);
-            //set up preferences as backdoor person
-            //uSession.setPreferences(SpringServiceLocator.getPreferencesService().getPreferences(uSession.getWorkflowUser()));
-            //request.setAttribute("reloadPage","true");
-
-        }catch(KEWUserNotFoundException ex){
-        	uSession.setBackdoorId(null);
-        	backdoorForm.setBackdoorId(null);
-        	request.setAttribute("BackdoorException","No such user found. Login failure!");
-        }
-        setFormGroupPermission(backdoorForm, request);
-        uSession.setPreferences(SpringServiceLocator.getPreferencesService().getPreferences(uSession.getWorkflowUser()));
-        return mapping.findForward("viewPortal");
-        */
         UserSession uSession = getUserSession(request);
         BackdoorForm backdoorForm = (BackdoorForm) form;
         if (!uSession.establishBackdoorWithPrincipalName(backdoorForm.getBackdoorId())) {
@@ -118,11 +92,8 @@ public class BackdoorAction extends WorkflowAction {
     }
 
     private void setFormGroupPermission(BackdoorForm backdoorForm, HttpServletRequest request) {
-        String group = Utilities.getApplicationConstant(KEWConstants.WORKFLOW_ADMIN_WORKGROUP_NAME_KEY);
-        KimGroup workflowAdminGroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(Utilities.parseGroupNamespaceCode(group), Utilities.parseGroupName(group));
-        if(workflowAdminGroup!=null) {
-        	backdoorForm.setIsWorkflowAdmin(KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(getUserSession(request).getPrincipalId(), workflowAdminGroup.getGroupId()));
-        }
+    	// TODO implement a KIM permission check here
+        backdoorForm.setIsAdmin(true);
     }
 
     public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {

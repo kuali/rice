@@ -404,12 +404,6 @@
     <field-descriptor name="lockVerNbr" column="VER_NBR" jdbc-type="INTEGER" locking="true" />
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.kew.applicationconstants.ApplicationConstant" table="KREW_APP_CNST_T">
-    <field-descriptor name="applicationConstantName" column="APPL_CNST_NM" jdbc-type="VARCHAR" primarykey="true" />
-    <field-descriptor name="applicationConstantValue" column="VAL" jdbc-type="VARCHAR" />
-    <field-descriptor name="lockVerNbr" column="VER_NBR" jdbc-type="INTEGER" locking="true"/>
-  </class-descriptor>
-
   <class-descriptor class="org.kuali.rice.kew.rule.bo.RuleTemplate" table="KREW_RULE_TMPL_T">
     <field-descriptor column="RULE_TMPL_ID" name="ruleTemplateId" primarykey="true" jdbc-type="BIGINT"
         autoincrement="true" sequence-name="KREW_RTE_TMPL_S" />

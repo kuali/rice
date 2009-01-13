@@ -16,11 +16,13 @@
  */
 package org.kuali.rice.kew.util;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.text.StrLookup;
 import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
- * Looks up Strings from the Config and Application Constants.
+ * Looks up Strings from the Config and System Parameters.
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
@@ -28,11 +30,11 @@ public class ConfigStringLookup extends StrLookup {
 
 	@Override
 	public String lookup(String propertyName) {
-		if (propertyName == null) {
+		if (StringUtils.isBlank(propertyName)) {
 			return null;
 		}
-		// check app constants first
-		String paramValue = Utilities.getApplicationConstant(propertyName);
+		// check system parameters first
+		String paramValue = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, propertyName);
 		if (paramValue == null) {
 			paramValue = ConfigContext.getCurrentContextConfig().getProperty(propertyName);
 		}

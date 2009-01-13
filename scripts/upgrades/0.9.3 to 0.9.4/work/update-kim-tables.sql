@@ -971,7 +971,7 @@ INSERT INTO KRIM_PERM_TMPL_T(PERM_TMPL_ID, OBJ_ID, VER_NBR, NM, DESC_TXT, KIM_TY
 commit
 /
 
--- following lines added after 01/11/2009 /
+-- following lines added 01/11/2009 /
 
 update krim_typ_t set nm = 'Document Type (Permission)' where kim_typ_id = '3'
 /
@@ -994,4 +994,95 @@ delete from krim_rsp_attr_data_t where target_primary_key in ('87', '93') and ki
 /
 commit
 / 
+
+-- following lines added 01/13/2009 /
+
+-- rename of method to call for maint doc button perms
+update krim_attr_defn_t set nm = 'buttonName' where kim_attr_defn_id = '3'
+/
+-- document collection typ / template changes
+delete from krim_perm_attr_data_t where target_primary_key in (select perm_id from krim_perm_t where PERM_TMPL_ID in ('17', '18', '19', '20', '21', '22'))
+/
+delete from krim_role_perm_t where perm_id in (select perm_id from krim_perm_t where PERM_TMPL_ID in ('17', '18', '19', '20', '21', '22'))
+/
+delete from krim_perm_t where PERM_TMPL_ID in ('17', '18', '19', '20', '21', '22')
+/
+delete from krim_perm_tmpl_t where PERM_TMPL_ID in ('17', '18', '19', '20', '21', '22')
+/
+update krim_attr_defn_t set nm = 'attachmentTypeCode' where kim_attr_defn_id = '9'
+/
+update krim_typ_t set nm = 'Document Type & Attachment Type', srvc_nm = 'documentTypeAndAttachmentTypePermissionTypeService' where kim_typ_id = '9'
+/
+INSERT INTO KRIM_TYP_T(KIM_TYP_ID, OBJ_ID, VER_NBR, NM, SRVC_NM, ACTV_IND, NMSPC_CD)
+    VALUES('59', sys_guid(), 1, 'Document Type & Relationship to Note Author', 'documentTypeAndRelationshipToNoteAuthorPermissionTypeService', 'Y', 'KR-NS')
+/
+INSERT INTO KRIM_TYP_T(KIM_TYP_ID, OBJ_ID, VER_NBR, NM, SRVC_NM, ACTV_IND, NMSPC_CD)
+    VALUES('60', sys_guid(), 1, 'Derived Role: Permission (Open Document)', 'documentOpenerRoleTypeService', 'Y', 'KR-NS')
+/
+INSERT INTO KRIM_TYP_ATTR_T(KIM_TYP_ATTR_ID, OBJ_ID, VER_NBR, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ACTV_IND, SORT_CD)
+    VALUES('108', sys_guid(), 1, '59', '13', 'Y', 'a')
+/
+INSERT INTO KRIM_TYP_ATTR_T(KIM_TYP_ATTR_ID, OBJ_ID, VER_NBR, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ACTV_IND, SORT_CD)
+    VALUES('109', sys_guid(), 1, '59', '8', 'Y', 'b')
+/
+delete from krim_typ_attr_t where kim_typ_id = '9' and kim_attr_defn_id = '8'
+/
+update krim_typ_attr_t set sort_cd = 'b' where kim_typ_id = '9' and kim_attr_defn_id = '9'
+/
+INSERT INTO KRIM_ROLE_T(ROLE_ID, OBJ_ID, VER_NBR, ROLE_NM, NMSPC_CD, DESC_TXT, KIM_TYP_ID, ACTV_IND, LAST_UPDT_DT)
+    VALUES('83', sys_guid(), 1, 'Document Opener', 'KR-NS', NULL, '60', 'Y', SYSDATE)
+/
+INSERT INTO KRIM_PERM_TMPL_T(PERM_TMPL_ID, OBJ_ID, VER_NBR, NM, DESC_TXT, KIM_TYP_ID, ACTV_IND, NMSPC_CD)
+    VALUES('45', sys_guid(), 1, 'Add Note / Attachment', null, '9', 'Y', 'KR-NS')
+/
+INSERT INTO KRIM_PERM_TMPL_T(PERM_TMPL_ID, OBJ_ID, VER_NBR, NM, DESC_TXT, KIM_TYP_ID, ACTV_IND, NMSPC_CD)
+    VALUES('46', sys_guid(), 1, 'View Note / Attachment', null, '9', 'Y', 'KR-NS')
+/
+INSERT INTO KRIM_PERM_TMPL_T(PERM_TMPL_ID, OBJ_ID, VER_NBR, NM, DESC_TXT, KIM_TYP_ID, ACTV_IND, NMSPC_CD)
+    VALUES('47', sys_guid(), 1, 'Delete Note / Attachment', null, '59', 'Y', 'KR-NS')
+/
+INSERT INTO KRIM_PERM_T(PERM_ID, OBJ_ID, VER_NBR, PERM_TMPL_ID, NM, DESC_TXT, ACTV_IND, NMSPC_CD)
+    VALUES('259', sys_guid(), 1, '45', null, null, 'Y', 'KUALI')
+/
+INSERT INTO KRIM_PERM_ATTR_DATA_T(ATTR_DATA_ID, OBJ_ID, VER_NBR, TARGET_PRIMARY_KEY, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ATTR_VAL)
+    VALUES('376', sys_guid(), 1, '259', '9', '13', 'KualiDocument')
+/
+INSERT INTO KRIM_ROLE_PERM_T(ROLE_PERM_ID, OBJ_ID, VER_NBR, ROLE_ID, PERM_ID, ACTV_IND)
+    VALUES('512', sys_guid(), 1, '61', '259', 'Y')
+/
+INSERT INTO KRIM_PERM_T(PERM_ID, OBJ_ID, VER_NBR, PERM_TMPL_ID, NM, DESC_TXT, ACTV_IND, NMSPC_CD)
+    VALUES('261', sys_guid(), 1, '46', null, null, 'Y', 'KUALI')
+/
+INSERT INTO KRIM_PERM_ATTR_DATA_T(ATTR_DATA_ID, OBJ_ID, VER_NBR, TARGET_PRIMARY_KEY, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ATTR_VAL)
+    VALUES('379', sys_guid(), 1, '261', '9', '13', 'KualiDocument')
+/
+INSERT INTO KRIM_ROLE_PERM_T(ROLE_PERM_ID, OBJ_ID, VER_NBR, ROLE_ID, PERM_ID, ACTV_IND)
+    VALUES('516', sys_guid(), 1, '83', '261', 'Y')
+/
+INSERT INTO KRIM_PERM_T(PERM_ID, OBJ_ID, VER_NBR, PERM_TMPL_ID, NM, DESC_TXT, ACTV_IND, NMSPC_CD)
+    VALUES('262', sys_guid(), 1, '47', null, null, 'Y', 'KUALI')
+/
+INSERT INTO KRIM_PERM_ATTR_DATA_T(ATTR_DATA_ID, OBJ_ID, VER_NBR, TARGET_PRIMARY_KEY, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ATTR_VAL)
+    VALUES('380', sys_guid(), 1, '262', '59', '13', 'KualiDocument')
+/
+INSERT INTO KRIM_PERM_ATTR_DATA_T(ATTR_DATA_ID, OBJ_ID, VER_NBR, TARGET_PRIMARY_KEY, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ATTR_VAL)
+    VALUES('381', sys_guid(), 1, '262', '59', '8', 'true')
+/
+INSERT INTO KRIM_ROLE_PERM_T(ROLE_PERM_ID, OBJ_ID, VER_NBR, ROLE_ID, PERM_ID, ACTV_IND)
+    VALUES('517', sys_guid(), 1, '61', '262', 'Y')
+/
+INSERT INTO KRIM_PERM_T(PERM_ID, OBJ_ID, VER_NBR, PERM_TMPL_ID, NM, DESC_TXT, ACTV_IND, NMSPC_CD)
+    VALUES('264', sys_guid(), 1, '47', null, null, 'Y', 'KR-SYS')
+/
+INSERT INTO KRIM_PERM_ATTR_DATA_T(ATTR_DATA_ID, OBJ_ID, VER_NBR, TARGET_PRIMARY_KEY, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ATTR_VAL)
+    VALUES('384', sys_guid(), 1, '264', '59', '13', 'RiceDocument')
+/
+INSERT INTO KRIM_PERM_ATTR_DATA_T(ATTR_DATA_ID, OBJ_ID, VER_NBR, TARGET_PRIMARY_KEY, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ATTR_VAL)
+    VALUES('385', sys_guid(), 1, '264', '59', '8', 'false')
+/
+INSERT INTO KRIM_ROLE_PERM_T(ROLE_PERM_ID, OBJ_ID, VER_NBR, ROLE_ID, PERM_ID, ACTV_IND)
+    VALUES('519', sys_guid(), 1, '63', '264', 'Y')
+/
+commit
+/
 

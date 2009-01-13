@@ -42,10 +42,6 @@ public class KEWConstants {
     public static final String PERFORM_REALTIME_DOCUMENT_UPGRADE = "Document.PerformRealtimeUpgrade";
     //checkRouteLogAuthentication
 
-    public static final String WORKFLOW_ADMIN_WORKGROUP_NAME_KEY = "Workflow.AdminWorkgroup";
-    public static final String WORKFLOW_ADMIN_URL_KEY = "Workflow.AdminUrls";
-    public static final String WORKFLOW_DOCUMENT_SEARCH_ADMIN_WORKGROUP_NAME_KEY = "Workflow.DocSearchAdminWorkgroup";
-
     public static final long DEFAULT_CACHE_REQUEUE_WAIT_TIME = 5000;
 
     public static final int DEFAULT_THREAD_POOL_SIZE = 5;

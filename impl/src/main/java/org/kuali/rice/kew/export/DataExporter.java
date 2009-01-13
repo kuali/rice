@@ -20,7 +20,6 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.kew.applicationconstants.ApplicationConstant;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.edl.bo.EDocLiteAssociation;
 import org.kuali.rice.kew.edl.bo.EDocLiteStyle;
@@ -76,8 +75,6 @@ public class DataExporter implements Exporter {
 				dataSet.getRuleAttributes().add((RuleAttribute)businessObject);
 			} else if (businessObjectClass.equals(RuleTemplate.class)) {
 				dataSet.getRuleTemplates().add((RuleTemplate)businessObject);
-			} else if (businessObjectClass.equals(ApplicationConstant.class)) {
-				dataSet.getApplicationConstants().add((ApplicationConstant)businessObject);
 			} else if (businessObjectClass.equals(DocumentType.class)) {
 				dataSet.getDocumentTypes().add((DocumentType)businessObject);
 			} else if (businessObjectClass.equals(EDocLiteAssociation.class)) {

@@ -37,9 +37,7 @@ import org.apache.commons.collections.KeyValue;
 import org.apache.commons.lang.text.StrSubstitutor;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.applicationconstants.ApplicationConstant;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -66,23 +64,7 @@ public class Utilities {
     public static String substituteConfigParameters(String string) {
         return substitutor.replace(string);
     }
-
-    public static String getApplicationConstant(String name) {
-    	ApplicationConstant constant = KEWServiceLocator.getApplicationConstantsService().findByName(name);
-    	if (constant == null) {
-    		return null;
-    	}
-    	return constant.getApplicationConstantValue();
-    }
-
-    public static boolean getBooleanConstant(String name, boolean defaultValue) {
-    	String value = getApplicationConstant(name);
-    	if (value == null) {
-    		return defaultValue;
-    	}
-    	return Boolean.valueOf(value);
-    }
-
+    
     public static String getKNSParameterValue(String nameSpace, String detailType, String name) {
         Parameter parameter = KNSServiceLocator.getKualiConfigurationService().getParameterWithoutExceptions(nameSpace, detailType, name);
         if (parameter == null) {

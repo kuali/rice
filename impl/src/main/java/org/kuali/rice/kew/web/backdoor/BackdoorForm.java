@@ -32,7 +32,7 @@ public class BackdoorForm extends ActionForm {
 	private String methodToCall = "";
     private String backdoorId;
     private Boolean showBackdoorLogin;
-    private Boolean isWorkflowAdmin;
+    private Boolean isAdmin;
     private String linkTarget;
     private String targetName;
     //determines whether to show the backdoor login textbox in the backdoor links page
@@ -52,11 +52,11 @@ public class BackdoorForm extends ActionForm {
     public void setMethodToCall(String methodToCall) {
         this.methodToCall = methodToCall;
     }
-    public Boolean getIsWorkflowAdmin() {
-        return isWorkflowAdmin;
+    public Boolean getIsAdmin() {
+        return isAdmin;
     }
-    public void setIsWorkflowAdmin(Boolean isWorkflowAdmin) {
-        this.isWorkflowAdmin = isWorkflowAdmin;
+    public void setIsAdmin(Boolean isAdmin) {
+        this.isAdmin = isAdmin;
     }
     public Boolean getShowBackdoorLogin() {
         return showBackdoorLogin;

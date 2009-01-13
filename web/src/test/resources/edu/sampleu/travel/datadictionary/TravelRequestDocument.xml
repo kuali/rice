@@ -13,6 +13,7 @@
     <property name="documentClass" value="edu.sampleu.travel.document.TravelDocument2" />
     <property name="businessRulesClass" value="edu.sampleu.travel.document.rule.TravelDocumentRule" />
     <property name="documentAuthorizerClass" value="edu.sampleu.travel.document.authorizer.TravelDocumentAuthorizer" />
+    <property name="documentPresentationControllerClass" value="edu.sampleu.travel.document.authorizer.TravelDocumentPresentationController" />
     <property name="authorizations" >
       <list>
         <bean parent="AuthorizationDefinition">

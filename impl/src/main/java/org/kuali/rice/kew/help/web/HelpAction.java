@@ -33,7 +33,6 @@ import org.kuali.rice.kew.help.service.HelpService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.WorkflowAction;
-import org.kuali.rice.kew.web.session.UserSession;
 
 
 /**
@@ -79,9 +78,9 @@ public class HelpAction extends WorkflowAction {
     
     public ActionForward getSearch (ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	LOG.debug("getSearch");
-    	UserSession uSession = getUserSession(request);
         HelpForm helpForm = (HelpForm) form;
-        helpForm.setIsAdmin(uSession.isAdmin());
+        // TOOD hook up KIM permissions to this
+        helpForm.setIsAdmin(false);
        	return mapping.findForward("getSearch");
     }
     
@@ -93,8 +92,8 @@ public class HelpAction extends WorkflowAction {
         if(searchResults != null && searchResults.size() > 0){
             request.setAttribute("reqSearchResults", searchResults);
         }
-        UserSession uSession = getUserSession(request);
-        helpForm.setIsAdmin(uSession.isAdmin());
+        // TOOD hook up KIM permissions to this
+        helpForm.setIsAdmin(false);
         return mapping.findForward("getSearch");
     }
     
@@ -104,8 +103,8 @@ public class HelpAction extends WorkflowAction {
         helpForm.getHelpEntry().setHelpName(null);
         helpForm.getHelpEntry().setHelpText(null);
         request.setAttribute("reqSearchResults", null);
-        UserSession uSession = getUserSession(request);
-        helpForm.setIsAdmin(uSession.isAdmin());      
+        // TOOD hook up KIM permissions to this
+        helpForm.setIsAdmin(false);      
         return mapping.findForward("getSearch");
     }
     
@@ -130,8 +129,8 @@ public class HelpAction extends WorkflowAction {
     		Long helpId=new Long(request.getParameter("helpId"));
     		helpForm.setHelpEntry(getHelpService().findById(helpId));
     	}
-    	UserSession uSession = getUserSession(request);
-        helpForm.setIsAdmin(uSession.isAdmin());   
+        // TOOD hook up KIM permissions to this
+        helpForm.setIsAdmin(false);   
     	return mapping.findForward("delete");
     }
     

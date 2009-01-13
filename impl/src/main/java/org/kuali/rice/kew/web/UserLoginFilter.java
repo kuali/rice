@@ -17,9 +17,6 @@
 package org.kuali.rice.kew.web;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.StringTokenizer;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -36,7 +33,6 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.MDC;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.IdentityManagementService;
@@ -92,12 +88,8 @@ public class UserLoginFilter implements Filter {
         MDC.put("user", userSession.getPrincipalName());
         try {
             UserSession.setAuthenticatedUser(userSession);
-            if (isAuthorizedToViewResource(userSession, request)) {
-                LOG.debug("...end UserLoginFilter.");
-                chain.doFilter(request, response);
-            } else {
-                request.getRequestDispatcher("/WEB-INF/jsp/NotAuthorized.jsp").forward(request, response);
-            }
+            LOG.debug("...end UserLoginFilter.");
+            chain.doFilter(request, response);
         } finally {
         	MDC.remove("user");
             UserSession.setAuthenticatedUser(null);
@@ -153,37 +145,6 @@ public class UserLoginFilter implements Filter {
 
     public static UserSession getUserSession(HttpServletRequest request) {
         return (UserSession) request.getSession().getAttribute(KEWConstants.USER_SESSION_KEY);
-    }
-
-    private static String currentRestrictionSet = "";
-    private static Set restrictedResources = new HashSet();
-
-    private static boolean isAuthorizedToViewResource(UserSession userSession, HttpServletRequest request) {
-        LOG.debug("Checking authorization to view resources...");
-        try {
-            String restrictedResourceTokens = Utilities.getApplicationConstant(KEWConstants.WORKFLOW_ADMIN_URL_KEY);
-            if (restrictedResourceTokens == null) {
-                restrictedResourceTokens = "";
-            }
-            synchronized (restrictedResources) {
-                if (!currentRestrictionSet.equals(restrictedResourceTokens)) {
-                    currentRestrictionSet = restrictedResourceTokens;
-                    restrictedResources = new HashSet();
-                    StringTokenizer tokenizer = new StringTokenizer(currentRestrictionSet, " ");
-                    while (tokenizer.hasMoreTokens()) {
-                        restrictedResources.add(tokenizer.nextElement());
-                    }
-                }
-            }
-            String requestedResource = request.getServletPath();
-            if (restrictedResources.contains(StringUtils.substring(requestedResource, requestedResource.lastIndexOf("/")))) {
-                return userSession.isAdmin();
-            } else {
-                return true;
-            }
-        } finally {
-            LOG.debug("...finished checking authorization to view resources.");
-        }
     }
 
     public void destroy() {}

@@ -14,7 +14,6 @@ import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.actions.ActionRegistry;
 import org.kuali.rice.kew.actiontaken.service.ActionTakenService;
-import org.kuali.rice.kew.applicationconstants.service.ApplicationConstantsService;
 import org.kuali.rice.kew.batch.XmlDigesterService;
 import org.kuali.rice.kew.batch.XmlIngesterService;
 import org.kuali.rice.kew.batch.XmlPollerService;
@@ -93,8 +92,6 @@ public final class KEWServiceLocator {
 	public static final String USER_OPTIONS_SRV = "enUserOptionsService";
 
 	public static final String DOCUMENT_CHANGE_HISTORY_SRV = "enDocumentChangeHistoryService";
-
-	public static final String APPLICATION_CONSTANTS_SRV = "enApplicationConstantsService";
 
 	public static final String DOCUMENT_VALUE_INDEX_SRV = "enDocumentValueIndexService";
 
@@ -281,10 +278,6 @@ public final class KEWServiceLocator {
 
 	public static RouteModuleService getRouteModuleService() {
 		return (RouteModuleService) getBean(ROUTE_MODULE_SERVICE);
-	}
-
-	public static ApplicationConstantsService getApplicationConstantsService() {
-		return (ApplicationConstantsService) getBean(APPLICATION_CONSTANTS_SRV);
 	}
 
 	public static RoleService getRoleService() {

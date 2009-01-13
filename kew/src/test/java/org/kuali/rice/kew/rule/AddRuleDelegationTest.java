@@ -21,7 +21,6 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
-import org.kuali.rice.kew.applicationconstants.ApplicationConstant;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.rule.web.Rule2Form;
@@ -54,9 +53,7 @@ public class AddRuleDelegationTest extends KEWTestCase {
 	 */
 	@Test
 	public void testAddRuleDelegation() throws Exception {
-		// set some application constants that aren't defined in test data, and will cause NPEs if not defined
-		KEWServiceLocator.getApplicationConstantsService().save(new ApplicationConstant(KEWConstants.DELEGATE_CHANGE_AR_GENERATION_KEY, KEWConstants.YES_DELEGATE_CHANGE_AR_GENERATION_VALUE));
-
+		
 		//set system parameters that aren't defined in test data
 		Parameter parameter = new Parameter(KEWConstants.RULE_DELEGATE_LIMIT, "1000", "A");
 		parameter.setParameterNamespaceCode(KEWConstants.DEFAULT_KIM_NAMESPACE);

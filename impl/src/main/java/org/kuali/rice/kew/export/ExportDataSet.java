@@ -19,7 +19,6 @@ package org.kuali.rice.kew.export;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.kew.applicationconstants.ApplicationConstant;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.edl.bo.EDocLiteAssociation;
 import org.kuali.rice.kew.edl.bo.EDocLiteStyle;
@@ -37,7 +36,6 @@ import org.kuali.rice.kim.bo.group.KimGroup;
  */
 public class ExportDataSet {
 
-    private List<ApplicationConstant> applicationConstants = new ArrayList<ApplicationConstant>();
     private List<DocumentType> documentTypes = new ArrayList<DocumentType>();
     private List<KimGroup> groups = new ArrayList<KimGroup>();
     private List<RuleAttribute> ruleAttributes = new ArrayList<RuleAttribute>();
@@ -47,9 +45,6 @@ public class ExportDataSet {
     private List<EDocLiteAssociation> edocLites = new ArrayList<EDocLiteAssociation>();
     private List<EDocLiteStyle> styles = new ArrayList<EDocLiteStyle>();
 
-    public List<ApplicationConstant> getApplicationConstants() {
-        return applicationConstants;
-    }
     public List<DocumentType> getDocumentTypes() {
         return documentTypes;
     }

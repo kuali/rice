@@ -515,13 +515,15 @@ public class SimulationEngine extends StandardWorkflowEngine {
 		val.setRouteHeaderId(routeHeader.getRouteHeaderId());
 		val.setPrincipalId(userToPerformAction.getPrincipalId());
 
-		if (delegator instanceof KimPrincipalRecipient) {
-			val.setDelegatorPrincipalId(((KimPrincipalRecipient) delegator).getPrincipalId());
-		}else if (delegator instanceof KimGroupRecipient) {
-			KimGroup group = ((KimGroupRecipient) delegator).getGroup();
-			val.setDelegatorGroupId(group.getGroupId());
-		}else{
-			throw new IllegalArgumentException();
+		if (delegator != null) {
+			if (delegator instanceof KimPrincipalRecipient) {
+				val.setDelegatorPrincipalId(((KimPrincipalRecipient) delegator).getPrincipalId());
+			} else if (delegator instanceof KimGroupRecipient) {
+				KimGroup group = ((KimGroupRecipient) delegator).getGroup();
+				val.setDelegatorGroupId(group.getGroupId());
+			} else{
+				throw new IllegalArgumentException("Invalid Recipient type received: " + delegator.getClass().getName());
+			}
 		}
 
 		val.setRouteHeader(routeHeader);

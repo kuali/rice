@@ -28,7 +28,7 @@
             p:parameterName="DOCUMENT_TYPE"
             p:parameterDetailType="DocumentType" />
     </property>
-    <property name="documentTypeName" value="KualiDocumentTypeMaintenanceDocument" />
+    <property name="documentTypeName" value="DocumentTypeMaintenanceDocument" />
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase" />
     <property name="documentTypeCode" value="DTYP" />
     <property name="authorizations" >

@@ -27,7 +27,7 @@
             p:parameterName="CAMPUS"
             p:parameterDetailType="Campus" />
     </property>
-    <property name="documentTypeName" value="KualiCampusMaintenanceDocument" />
+    <property name="documentTypeName" value="CampusMaintenanceDocument" />
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase" />
     <property name="documentTypeCode" value="CMPS" />
     <property name="authorizations" >

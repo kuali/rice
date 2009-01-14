@@ -56,8 +56,10 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	protected Map<String,MaxAgeSoftReference<Boolean>> isGroupMemberOfGroupCache;
 	protected Map<String,MaxAgeSoftReference<Boolean>> isMemberOfGroupByNameCache;
 	protected Map<String,MaxAgeSoftReference<List<String>>> groupMemberPrincipalIdsCache;
-	protected Map<String,MaxAgeSoftReference<Map<AttributeSet, Boolean>>> hasPermissionCache;
-	protected Map<String,MaxAgeSoftReference<Map<AttributeSet, Boolean>>> hasPermissionByTemplateCache;
+	protected Map<String,MaxAgeSoftReference<Boolean>> hasPermissionCache;
+	protected Map<String,MaxAgeSoftReference<Boolean>> hasPermissionByTemplateCache;
+	protected Map<String,MaxAgeSoftReference<Boolean>> isAuthorizedCache;
+	protected Map<String,MaxAgeSoftReference<Boolean>> isAuthorizedByTemplateNameCache;
     protected Map<String,MaxAgeSoftReference<Boolean>> isPermissionDefinedForTemplateNameCache;
 	
 	public void afterPropertiesSet() throws Exception {
@@ -72,9 +74,11 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		isMemberOfGroupCache = new HashMap<String,MaxAgeSoftReference<Boolean>>( groupCacheMaxSize );
 		isMemberOfGroupByNameCache = new HashMap<String,MaxAgeSoftReference<Boolean>>( groupCacheMaxSize );
 		groupMemberPrincipalIdsCache = new HashMap<String,MaxAgeSoftReference<List<String>>>( groupCacheMaxSize );
-		hasPermissionCache = new HashMap<String,MaxAgeSoftReference<Map<AttributeSet, Boolean>>>( permissionCacheMaxSize );
-		hasPermissionByTemplateCache = new HashMap<String,MaxAgeSoftReference<Map<AttributeSet, Boolean>>>( permissionCacheMaxSize );
+		hasPermissionCache = new HashMap<String,MaxAgeSoftReference<Boolean>>( permissionCacheMaxSize );
+		hasPermissionByTemplateCache = new HashMap<String,MaxAgeSoftReference<Boolean>>( permissionCacheMaxSize );
 		isPermissionDefinedForTemplateNameCache = new HashMap<String,MaxAgeSoftReference<Boolean>>( permissionCacheMaxSize );
+		isAuthorizedByTemplateNameCache = new HashMap<String,MaxAgeSoftReference<Boolean>>( permissionCacheMaxSize );
+		isAuthorizedCache = new HashMap<String,MaxAgeSoftReference<Boolean>>( permissionCacheMaxSize );
 	}
 
 	public void flushAllCaches() {
@@ -105,6 +109,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		hasPermissionCache.clear();
 		hasPermissionByTemplateCache.clear();
 		isPermissionDefinedForTemplateNameCache.clear();
+		isAuthorizedByTemplateNameCache.clear();
 	}
 
 	public void flushResponsibilityCaches() {
@@ -211,30 +216,34 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		return null;
 	}
 	
-	protected Boolean getHasPermissionCache( String key, AttributeSet attrs ) {
-		MaxAgeSoftReference<Map<AttributeSet, Boolean>> hasPermissionRef = hasPermissionCache.get( key );
+	protected Boolean getHasPermissionCache( String key ) {
+		MaxAgeSoftReference<Boolean> hasPermissionRef = hasPermissionCache.get( key );
 		if ( hasPermissionRef != null ) {
-			Map<AttributeSet, Boolean> hasPermissionMap = hasPermissionRef.get();
-			if ( hasPermissionMap != null ) {
-				Boolean permission = hasPermissionMap.get(attrs);
-				if (permission != null) {
-					return permission;
-				}
-			}
+			return hasPermissionRef.get(); 
 		}
 		return null;
 	}
 	
 	protected Boolean getHasPermissionByTemplateCache( String key, AttributeSet attrs ) {
-		MaxAgeSoftReference<Map<AttributeSet, Boolean>> hasPermissionRef = hasPermissionByTemplateCache.get( key );
+		MaxAgeSoftReference<Boolean> hasPermissionRef = hasPermissionByTemplateCache.get( key );
 		if ( hasPermissionRef != null ) {
-			Map<AttributeSet, Boolean> hasPermissionMap = hasPermissionRef.get();
-			if ( hasPermissionMap != null ) {
-				Boolean permission = hasPermissionMap.get(attrs);
-				if (permission != null) {
-					return permission;
-				}
-			}
+			return hasPermissionRef.get();
+		}
+		return null;
+	}
+
+	protected Boolean getIsAuthorizedByTemplateNameFromCache( String key ) {
+		MaxAgeSoftReference<Boolean> cacheEntryRef = isAuthorizedByTemplateNameCache.get( key );
+		if ( cacheEntryRef != null ) {
+			return cacheEntryRef.get();
+		}
+		return null;
+	}
+
+	protected Boolean getIsAuthorizedFromCache( String key ) {
+		MaxAgeSoftReference<Boolean> cacheEntryRef = isAuthorizedCache.get( key );
+		if ( cacheEntryRef != null ) {
+			return cacheEntryRef.get();
 		}
 		return null;
 	}
@@ -296,30 +305,20 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		}
 	}
 
-	protected void addHasPermissionToCache( String key, AttributeSet attrs, boolean hasPerm ) {
-		MaxAgeSoftReference<Map<AttributeSet, Boolean>> hasPermissionRef = hasPermissionCache.get( key );
-		Map<AttributeSet, Boolean> hasPermissionMap = null;
-		if ( hasPermissionRef != null ) {
-			hasPermissionMap = hasPermissionRef.get();
-		}
-		if (hasPermissionMap == null) {
-			hasPermissionMap = new HashMap<AttributeSet, Boolean>();
-		}
-		hasPermissionMap.put(attrs, hasPerm);
-		hasPermissionCache.put( key, new MaxAgeSoftReference<Map<AttributeSet, Boolean>>( permissionCacheMaxAge, hasPermissionMap ) );
+	protected void addHasPermissionToCache( String key, boolean hasPerm ) {
+		hasPermissionCache.put( key, new MaxAgeSoftReference<Boolean>( permissionCacheMaxAge, hasPerm ) );
 	}
 
-	protected void addHasPermissionByTemplateToCache( String key, AttributeSet attrs, boolean hasPerm ) {
-		MaxAgeSoftReference<Map<AttributeSet, Boolean>> hasPermissionRef = hasPermissionByTemplateCache.get( key );
-		Map<AttributeSet, Boolean> hasPermissionMap = null;
-		if ( hasPermissionRef != null ) {
-			hasPermissionMap = hasPermissionRef.get();
-		}
-		if (hasPermissionMap == null) {
-			hasPermissionMap = new HashMap<AttributeSet, Boolean>();
-		}
-		hasPermissionMap.put(attrs, hasPerm);
-		hasPermissionByTemplateCache.put( key, new MaxAgeSoftReference<Map<AttributeSet, Boolean>>( permissionCacheMaxAge, hasPermissionMap ) );
+	protected void addHasPermissionByTemplateToCache( String key, boolean hasPerm ) {
+		hasPermissionByTemplateCache.put( key, new MaxAgeSoftReference<Boolean>( permissionCacheMaxAge, hasPerm ) );
+	}
+
+	protected void addIsAuthorizedByTemplateNameToCache( String key, boolean authorized ) {
+		isAuthorizedByTemplateNameCache.put( key, new MaxAgeSoftReference<Boolean>( permissionCacheMaxAge, authorized ) );
+	}
+
+	protected void addIsAuthorizedToCache( String key, boolean authorized ) {
+		isAuthorizedCache.put( key, new MaxAgeSoftReference<Boolean>( permissionCacheMaxAge, authorized ) );
 	}
 	
 	// AUTHENTICATION SERVICE
@@ -335,75 +334,77 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     // AUTHORIZATION SERVICE
     
     public boolean hasPermission(String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails) {
-		String key = principalId + "-" + namespaceCode + "-" + permissionName + "-";
-    	key = finishKey(permissionDetails, key);
-    	Boolean hasPerm = getHasPermissionCache(key, permissionDetails);
-		if (hasPerm != null) {
-			return hasPerm;
+    	StringBuffer cacheKey = new StringBuffer();
+    	cacheKey.append( principalId ).append(  '/' );
+    	cacheKey.append( namespaceCode ).append( '-' ).append( permissionName ).append( '/' );
+    	addAttributeSetToKey( permissionDetails, cacheKey );
+    	Boolean hasPerm = getHasPermissionCache(cacheKey.toString());
+		if (hasPerm == null) {
+			hasPerm = getPermissionService().hasPermission( principalId, namespaceCode, permissionName, permissionDetails );
+	    	addHasPermissionToCache(cacheKey.toString(), hasPerm);
 		}
-		hasPerm = getPermissionService().hasPermission( principalId, namespaceCode, permissionName, permissionDetails );
-    	addHasPermissionToCache(key, permissionDetails, hasPerm);
     	return hasPerm;        	
     }
     
-    public boolean isAuthorized(String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {    	
-        if ( qualification == null ) {
-            return hasPermission(principalId, namespaceCode, permissionName, permissionDetails);
-        }
-		String key = principalId + "-" + namespaceCode + "-" + permissionName + "-";
-    	key = finishKey(permissionDetails, key);
-        // use a negative in the the hasPermission cache to prevent further checking 
-    	Boolean hasPerm = getHasPermissionCache(key, permissionDetails);
-		if (hasPerm != null) {
-			if (!hasPerm) {
-				return false;
-			} else {
-				addHasPermissionToCache(key, permissionDetails, hasPerm);
-			}
-		}    	
-    	return getPermissionService().isAuthorized( principalId, namespaceCode, permissionName, permissionDetails, qualification );
+    public boolean isAuthorized(String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
+    	if ( qualification == null ) {
+    		return hasPermission( principalId, namespaceCode, permissionName, permissionDetails );
+    	}
+    	StringBuffer cacheKey = new StringBuffer();
+    	cacheKey.append( principalId ).append(  '/' );
+    	cacheKey.append( namespaceCode ).append( '-' ).append( permissionName ).append( '/' );
+    	addAttributeSetToKey( permissionDetails, cacheKey );
+    	cacheKey.append( '/' );
+    	addAttributeSetToKey( qualification, cacheKey );
+    	Boolean isAuthorized = getIsAuthorizedFromCache( cacheKey.toString() );
+    	if ( isAuthorized == null ) {
+    		isAuthorized = getPermissionService().isAuthorized( principalId, namespaceCode, permissionName, permissionDetails, qualification );
+    		addIsAuthorizedToCache( cacheKey.toString(), isAuthorized );
+    	}
+    	return isAuthorized;
     }
 
     public boolean hasPermissionByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails) {
-		String key = principalId + "-" + namespaceCode + "-" + permissionTemplateName + "-";
-    	key = finishKey(permissionDetails, key);
-    	Boolean hasPerm = getHasPermissionByTemplateCache(key, permissionDetails);
-		if (hasPerm != null) {
-			return hasPerm;
+    	StringBuffer cacheKey = new StringBuffer();
+    	cacheKey.append( principalId ).append(  '/' );
+    	cacheKey.append( namespaceCode ).append( '-' ).append( permissionTemplateName ).append( '/' );
+    	addAttributeSetToKey( permissionDetails, cacheKey );
+    	Boolean hasPerm = getHasPermissionCache(cacheKey.toString());
+		if (hasPerm == null) {
+			hasPerm = getPermissionService().hasPermissionByTemplateName( principalId, namespaceCode, permissionTemplateName, permissionDetails );
+	    	addHasPermissionByTemplateToCache(cacheKey.toString(), hasPerm);
 		}
-		hasPerm = getPermissionService().hasPermissionByTemplateName( principalId, namespaceCode, permissionTemplateName, permissionDetails );
-    	addHasPermissionByTemplateToCache(key, permissionDetails, hasPerm);
-    	return hasPerm;   
+    	return hasPerm;        	
     }
     
     public boolean isAuthorizedByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification ) {
-        if ( qualification == null ) {
-            return hasPermissionByTemplateName(principalId, namespaceCode, permissionTemplateName, permissionDetails);
-        }
-		String key = principalId + "-" + namespaceCode + "-" + permissionTemplateName + "-";
-    	key = finishKey(permissionDetails, key);
-    	// use a negative in the the hasPermission cache to prevent further checking 
-    	Boolean hasPerm = getHasPermissionByTemplateCache(key, permissionDetails);
-		if (hasPerm != null) {
-			if (!hasPerm) {
-				return false;
-			} else {
-				addHasPermissionByTemplateToCache(key, permissionDetails, hasPerm);
-			}
-		}
-		return getPermissionService().isAuthorizedByTemplateName( principalId, namespaceCode, permissionTemplateName, permissionDetails, qualification );
+    	if ( qualification == null ) {
+    		return hasPermissionByTemplateName( principalId, namespaceCode, permissionTemplateName, permissionDetails );
+    	}
+    	StringBuffer cacheKey = new StringBuffer();
+    	cacheKey.append( principalId ).append(  '/' );
+    	cacheKey.append( namespaceCode ).append( '-' ).append( permissionTemplateName ).append( '/' );
+    	addAttributeSetToKey( permissionDetails, cacheKey );
+    	cacheKey.append( '/' );
+    	addAttributeSetToKey( qualification, cacheKey );
+    	Boolean isAuthorized = getIsAuthorizedByTemplateNameFromCache( cacheKey.toString() );
+    	if ( isAuthorized == null ) {
+    		isAuthorized = getPermissionService().isAuthorizedByTemplateName( principalId, namespaceCode, permissionTemplateName, permissionDetails, qualification );
+    		addIsAuthorizedByTemplateNameToCache( cacheKey.toString(), isAuthorized );
+    	}
+    	return isAuthorized;
     }
 
-	private String finishKey(AttributeSet permissionDetails, String key) {
-		StringBuffer sb = new StringBuffer( key );
-		if ( permissionDetails != null ) {
-			for ( Map.Entry<String, String> entry : permissionDetails.entrySet() ) {
-				sb.append( entry.getKey() ).append( '-' ).append( entry.getValue() ).append('/');
+	private void addAttributeSetToKey(AttributeSet attributes, StringBuffer key) {
+		if ( attributes != null ) {
+			for ( Map.Entry<String, String> entry : attributes.entrySet() ) {
+				key.append( entry.getKey() ).append( '=' ).append( entry.getValue() ).append('|');
 	    	}
+		} else {
+			key.append( "[null]" );
 		}
-		return sb.toString();
 	}
-    
+	
     /**
      * @see org.kuali.rice.kim.service.IdentityManagementService#getAuthorizedPermissions(java.lang.String, String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)
      */
@@ -426,9 +427,10 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     }
     
     public boolean isPermissionDefinedForTemplateName(String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails) {
-        String key = namespaceCode + "-" + permissionTemplateName + "-";
-        key = finishKey(permissionDetails, key);
-        MaxAgeSoftReference<Boolean> resultEntry = isPermissionDefinedForTemplateNameCache.get(key);
+    	StringBuffer key = new StringBuffer();
+    	key.append( namespaceCode ).append( '-' ).append( permissionTemplateName ).append( '/' );
+        addAttributeSetToKey(permissionDetails, key);
+        MaxAgeSoftReference<Boolean> resultEntry = isPermissionDefinedForTemplateNameCache.get(key.toString());
         if ( resultEntry != null ) {
             Boolean result = resultEntry.get();
             if ( result != null ) {
@@ -436,7 +438,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
             }
         }
         boolean result = getPermissionService().isPermissionDefinedForTemplateName(namespaceCode, permissionTemplateName, permissionDetails);
-        isPermissionDefinedForTemplateNameCache.put(key,new MaxAgeSoftReference<Boolean>( permissionCacheMaxAge, result ));
+        isPermissionDefinedForTemplateNameCache.put(key.toString(),new MaxAgeSoftReference<Boolean>( permissionCacheMaxAge, result ));
         return result; 
     }
     

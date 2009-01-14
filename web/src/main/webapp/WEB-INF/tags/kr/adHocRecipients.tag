@@ -16,7 +16,7 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 
-    <c:if test="${KualiForm.documentActionFlags.canAdHocRoute and not KualiForm.suppressAllButtons}">
+    <c:if test="${KualiForm.documentActions[Constants.KUALI_ACTION_CAN_AD_HOC_ROUTE] and not KualiForm.suppressAllButtons}">
         <kul:tab tabTitle="Ad Hoc Recipients" defaultOpen="false" tabErrorKey="${Constants.AD_HOC_ROUTE_ERRORS}">
         
         <div class="tab-container" align=center>     

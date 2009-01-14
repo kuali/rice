@@ -1,6 +1,5 @@
 package org.kuali.rice.kew.doctype.service.impl;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -21,7 +20,8 @@ import org.kuali.rice.kew.web.KeyValue;
 import org.kuali.rice.kew.web.session.Authentication;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 public class DocumentSecurityServiceImpl implements DocumentSecurityService {
@@ -54,8 +54,10 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
   }
 
   protected boolean isAdmin(SecuritySession session) {
-	  // TODO implement KIM permission check here
-      return false;
+	  if (session.getUserSession() == null) {
+		  return false;
+	  }
+	  return KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(session.getUserSession().getPrincipalId(), KEWConstants.KEW_NAMESPACE,	KEWConstants.PermissionTemplateNames.UNFILTERED_DOCUMENT_SEARCH, new AttributeSet(), new AttributeSet());
   }
 
   protected boolean checkStandardAuthorization(DocumentTypeSecurity security, UserSession userSession, String docTypeName, Long documentId, String initiatorWorkflowId, SecuritySession session) {

@@ -887,6 +887,7 @@ public class KEWConstants {
     public static final String DOCUMENT_SEARCH_DOCUMENT_POPUP_VALUE = "Y";
     
     public class PermissionTemplateNames {
-        public static final String VIEW_OTHER_ACTION_LST = "View Other Action List";
+        public static final String VIEW_OTHER_ACTION_LIST = "View Other Action List";
+        public static final String UNFILTERED_DOCUMENT_SEARCH = "Unfiltered Document Search";
     }
 }

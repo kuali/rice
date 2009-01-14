@@ -368,6 +368,9 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		LinkedHashMap m = new LinkedHashMap();
 		m.put("principalId", getPrincipalId());
 		m.put("principalName", getPrincipalName());
+		m.put("name", getName());
+		m.put("emailAddress", getEmailAddress());
+		m.put("campusCode", getCampusCode());
 		return m;
 	}
 

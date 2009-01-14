@@ -18,6 +18,7 @@ package org.kuali.rice.kew.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
@@ -38,9 +39,12 @@ public class DocumentTypeAndActionRequestTypePermissionTypeServiceImpl extends D
 	public List<KimPermissionInfo> performPermissionMatches(AttributeSet requestedDetails,
 			List<KimPermissionInfo> permissionsList) {
 		List<KimPermissionInfo> matchingPermissions = new ArrayList<KimPermissionInfo>();
+		if ( requestedDetails == null ) {
+			return matchingPermissions;  // empty list
+		}
 		// loop over the permissions, checking the non-document-related ones
 		for ( KimPermissionInfo kpi : permissionsList ) {
-			if ( kpi.getDetails().get(KimAttributes.ACTION_REQUEST_CD).equals(requestedDetails.get(KimAttributes.ACTION_REQUEST_CD) ) ) {
+			if ( StringUtils.equals( kpi.getDetails().get(KimAttributes.ACTION_REQUEST_CD), requestedDetails.get(KimAttributes.ACTION_REQUEST_CD) ) ) {
 				matchingPermissions.add( kpi );
 			}			
 		}

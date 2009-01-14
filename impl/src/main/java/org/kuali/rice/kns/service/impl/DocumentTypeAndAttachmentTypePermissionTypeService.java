@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -34,6 +35,7 @@ public class DocumentTypeAndAttachmentTypePermissionTypeService extends
 			List<KimPermissionInfo> permissionsList) {
 		List<KimPermissionInfo> matchingPermissions = super
 				.performPermissionMatches(requestedDetails, permissionsList);
+		List<KimPermissionInfo> returnPermissions = new ArrayList<KimPermissionInfo>();
 		for (KimPermissionInfo kimPermissionInfo : matchingPermissions) {
 			if (!kimPermissionInfo.getDetails().containsKey(
 					KimAttributes.ATTACHMENT_TYPE_CODE)
@@ -42,9 +44,9 @@ public class DocumentTypeAndAttachmentTypePermissionTypeService extends
 							.equals(
 									kimPermissionInfo.getDetails().get(
 											KimAttributes.ATTACHMENT_TYPE_CODE))) {
-				matchingPermissions.add(kimPermissionInfo);
+				returnPermissions.add(kimPermissionInfo);
 			}
 		}
-		return matchingPermissions;
+		return returnPermissions;
 	}
 }

@@ -56,11 +56,14 @@ import org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizer;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions;
 import org.kuali.rice.kns.exception.DocumentTypeAuthorizationException;
 import org.kuali.rice.kns.exception.MaintenanceNewCopyAuthorizationException;
+import org.kuali.rice.kns.lookup.LookupResultsService;
 import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.rule.event.KualiAddLineEvent;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
+import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.DocumentTypeService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.LookupService;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -79,9 +82,9 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 
     private MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService = null;
     private EncryptionService encryptionService;
-    private BusinessObjectAuthorizationService businessObjectAuthorizationService;
-
-
+    private LookupService lookupService;
+    private LookupResultsService lookupResultsService;
+    
     public KualiMaintenanceDocumentAction() {
         super();
         maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
@@ -168,7 +171,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
                         
 
             // get new document from service
-            document = (MaintenanceDocument) KNSServiceLocator.getDocumentService().getNewDocument(maintenanceForm.getDocTypeName());
+            document = (MaintenanceDocument) getDocumentService().getNewDocument(maintenanceForm.getDocTypeName());
             // Check for an auto-incrementing PK and set it if needed
 //            if (document.getNewMaintainableObject().getBoClass().isAnnotationPresent(Sequence.class)) {
 //    			Sequence sequence = (Sequence) document.getNewMaintainableObject().getBoClass().getAnnotation(Sequence.class);
@@ -187,7 +190,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         // retrieve business object from request parameters
         if (!(KNSConstants.MAINTENANCE_NEW_ACTION.equals(maintenanceAction)) && !(KNSConstants.MAINTENANCE_NEWWITHEXISTING_ACTION.equals(maintenanceAction))) {
             Map requestParameters = buildKeyMapFromRequest(document.getNewMaintainableObject(), request);
-            PersistableBusinessObject oldBusinessObject = (PersistableBusinessObject) KNSServiceLocator.getLookupService().findObjectBySearch(Class.forName(maintenanceForm.getBusinessObjectClassName()), requestParameters);
+            PersistableBusinessObject oldBusinessObject = (PersistableBusinessObject) getLookupService().findObjectBySearch(Class.forName(maintenanceForm.getBusinessObjectClassName()), requestParameters);
             if (oldBusinessObject == null) {
                 throw new RuntimeException("Cannot retrieve old record for maintenance document, incorrect parameters passed on maint url.");
             }
@@ -209,7 +212,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 	            		}
 	            	}				
 	            	try {
-	            		boe = (PersistableBusinessObjectExtension) new org.kuali.rice.core.jpa.criteria.QueryByCriteria(KNSServiceLocator.getEntityManagerFactory().createEntityManager(), extensionCriteria).toQuery().getSingleResult();
+	            		boe = (PersistableBusinessObjectExtension) new org.kuali.rice.core.jpa.criteria.QueryByCriteria(getEntityManagerFactory().createEntityManager(), extensionCriteria).toQuery().getSingleResult();
 	            	} catch (PersistenceException e) {}
 	            	oldBusinessObject.setExtension(boe);
 	            }
@@ -303,7 +306,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
             LOG.debug("maintenanceForm.getAdditionalScriptFiles(): " + maintenanceForm.getAdditionalScriptFiles());
         }
         if (maintenanceForm.getAdditionalScriptFiles().isEmpty()) {
-            DocumentEntry docEntry = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(document.getDocumentHeader().getWorkflowDocument().getDocumentType());
+            DocumentEntry docEntry = getDataDictionaryService().getDataDictionary().getDocumentEntry(document.getDocumentHeader().getWorkflowDocument().getDocumentType());
             maintenanceForm.getAdditionalScriptFiles().addAll(docEntry.getWebScriptFiles());
         }
 
@@ -368,7 +371,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         KualiDocumentFormBase documentForm = (KualiDocumentFormBase) form;
         MaintenanceDocumentBase document = (MaintenanceDocumentBase) documentForm.getDocument();
         document.refreshReferenceObject("attachment");
-        KNSServiceLocator.getBusinessObjectService().delete(document.getAttachment());
+        getBusinessObjectService().delete(document.getAttachment());
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
@@ -391,7 +394,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         
         ActionForward forward = super.route(mapping, form, request, response);
         if(document.getNewMaintainableObject().getBusinessObject() instanceof PersistableAttachment) {
-            PersistableAttachment bo = (PersistableAttachment) KNSServiceLocator.getBusinessObjectService().retrieve(document.getNewMaintainableObject().getBusinessObject());
+            PersistableAttachment bo = (PersistableAttachment) getBusinessObjectService().retrieve(document.getNewMaintainableObject().getBusinessObject());
             request.setAttribute("fileName", bo.getFileName());
         }
         
@@ -446,7 +449,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
                 //Retrieving the FileName from BO table
                 Maintainable tmpMaintainable = ((MaintenanceDocument) kualiMaintenanceForm.getDocument()).getNewMaintainableObject();
                 if(tmpMaintainable.getBusinessObject() instanceof PersistableAttachment) {
-                    PersistableAttachment bo = (PersistableAttachment) KNSServiceLocator.getBusinessObjectService().retrieve(tmpMaintainable.getBusinessObject());
+                    PersistableAttachment bo = (PersistableAttachment) getBusinessObjectService().retrieve(tmpMaintainable.getBusinessObject());
                     if(bo != null)
                         request.setAttribute("fileName", bo.getFileName());
                 }
@@ -493,7 +496,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
                 String lookupResultsBOClassName = maintenanceForm.getLookupResultsBOClassName();
                 Class lookupResultsBOClass = Class.forName(lookupResultsBOClassName);
 
-                rawValues = KNSServiceLocator.getLookupResultsService().retrieveSelectedResultBOs(lookupResultsSequenceNumber, lookupResultsBOClass, GlobalVariables.getUserSession().getPerson().getPrincipalId());
+                rawValues = getLookupResultsService().retrieveSelectedResultBOs(lookupResultsSequenceNumber, lookupResultsBOClass, GlobalVariables.getUserSession().getPerson().getPrincipalId());
             }
         }
 
@@ -501,7 +504,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
             // we need to run the business rules on all the newly added items to the collection
             // KULCOA-1000, KULCOA-1004 removed business rule validation on multiple value return
             // (this was running before the objects were added anyway)
-            // KNSServiceLocator.getKualiRuleService().applyRules(new SaveDocumentEvent(document));
+            // getKualiRuleService().applyRules(new SaveDocumentEvent(document));
             String collectionName = maintenanceForm.getLookedUpCollectionName();
 //TODO: Cathy remember to delete this block of comments after I've tested.            
 //            PersistableBusinessObject bo = document.getNewMaintainableObject().getBusinessObject();
@@ -559,7 +562,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
             }
         }
         else {
-            keyFieldNames = KNSServiceLocator.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(maintainable.getBusinessObject().getClass());
+            keyFieldNames = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(maintainable.getBusinessObject().getClass());
         }
 
         Map requestParameters = new HashMap();
@@ -568,7 +571,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         // List of encrypted fields - Change for KFSMI-1374 -
         // Getting rid of encryptionValues and fetching the list of fields, that should be encrypted, from DataDictionary
         List encryptedList = 
-        	KNSServiceLocator.getDataDictionaryService().getEncryptedFieldsList(maintainable.getBusinessObject().getClass().getName());
+        	getDataDictionaryService().getEncryptedFieldsList(maintainable.getBusinessObject().getClass().getName());
 
 
         for (Iterator iter = keyFieldNames.iterator(); iter.hasNext();) {
@@ -653,14 +656,14 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         }
 
         // link up the user fields, if any
-        KNSServiceLocator.getBusinessObjectService().linkUserFields(addBO);
+        getBusinessObjectService().linkUserFields(addBO);
 
         // apply rules to the addBO
         boolean rulePassed = false;
         if (LOG.isDebugEnabled()) {
             LOG.debug("about to call AddLineEvent applyRules: document=" + document + "\ncollectionName=" + collectionName + "\nBO=" + addBO);
         }
-        rulePassed = KNSServiceLocator.getKualiRuleService().applyRules(new KualiAddLineEvent(document, collectionName, addBO));
+        rulePassed = getKualiRuleService().applyRules(new KualiAddLineEvent(document, collectionName, addBO));
 
         // if the rule evaluation passed, let's add it
         if (rulePassed) {
@@ -896,7 +899,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
     private void clearPrimaryKeyFields(MaintenanceDocument document) {
         // get business object being maintained and its keys
         PersistableBusinessObject bo = document.getNewMaintainableObject().getBusinessObject();
-        List<String> keyFieldNames = KNSServiceLocator.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(bo.getClass());
+        List<String> keyFieldNames = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(bo.getClass());
 
         for (String keyFieldName : keyFieldNames) {
             try {
@@ -920,11 +923,10 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         Person user = GlobalVariables.getUserSession().getPerson();
 
         // get the correct documentAuthorizer for this document
-        DocumentTypeService documentTypeService = KNSServiceLocator.getDocumentTypeService();
-        MaintenanceDocumentAuthorizer documentAuthorizer = (MaintenanceDocumentAuthorizer) documentTypeService.getDocumentAuthorizer(document);
+        MaintenanceDocumentAuthorizer documentAuthorizer = (MaintenanceDocumentAuthorizer) getDocumentTypeService().getDocumentAuthorizer(document);
 
         // get a new instance of MaintenanceDocumentAuthorizations for this context
-        MaintenanceDocumentRestrictions maintenanceDocumentRestrictions = KNSServiceLocator.getBusinessObjectAuthorizationService().getMaintenanceDocumentRestrictions(document, user);
+        MaintenanceDocumentRestrictions maintenanceDocumentRestrictions = getBusinessObjectAuthorizationService().getMaintenanceDocumentRestrictions(document, user);
 
         // get a reference to the newBo
         PersistableBusinessObject newBo = document.getNewMaintainableObject().getBusinessObject();
@@ -942,7 +944,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         Maintainable maintainable = document.getNewMaintainableObject();
         PersistableBusinessObject bo = maintainable.getBusinessObject();
         
-        KNSServiceLocator.getBusinessObjectService().linkUserFields(bo);
+        getBusinessObjectService().linkUserFields(bo);
 
         maintainable.processAfterPost(document, request.getParameterMap() );
     }
@@ -952,30 +954,38 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         Maintainable maintainable = document.getNewMaintainableObject();
         PersistableBusinessObject bo = maintainable.getBusinessObject();
         
-        KNSServiceLocator.getBusinessObjectService().linkUserFields(bo);
+        getBusinessObjectService().linkUserFields(bo);
 
         maintainable.processAfterPost(document, parameters );
     }
-    
-    private BusinessObjectAuthorizationService getBusinessObjectAuthorizationService() {
-    	if ( businessObjectAuthorizationService == null ) {
-    		businessObjectAuthorizationService = KNSServiceLocator.getBusinessObjectAuthorizationService();
-    	}
-    	return businessObjectAuthorizationService;
-        }
     
     protected void populateAuthorizationFields(KualiDocumentFormBase formBase){
     	super.populateAuthorizationFields(formBase);
     	
     	KualiMaintenanceForm maintenanceForm = (KualiMaintenanceForm) formBase;
     	MaintenanceDocument maintenanceDocument = (MaintenanceDocument) maintenanceForm.getDocument();
-    	MaintenanceDocumentAuthorizer maintenanceDocumentAuthorizer = (MaintenanceDocumentAuthorizer) KNSServiceLocator.getDocumentTypeService().getDocumentAuthorizer(maintenanceDocument);
+    	MaintenanceDocumentAuthorizer maintenanceDocumentAuthorizer = (MaintenanceDocumentAuthorizer) getDocumentTypeService().getDocumentAuthorizer(maintenanceDocument);
     	Person user = GlobalVariables.getUserSession().getPerson();
     	maintenanceForm.setReadOnly(!formBase.getDocumentActions().containsKey(KNSConstants.KUALI_ACTION_CAN_EDIT));
-    	MaintenanceDocumentRestrictions maintenanceDocumentAuthorizations = KNSServiceLocator.getBusinessObjectAuthorizationService().getMaintenanceDocumentRestrictions(maintenanceDocument, user);
+    	MaintenanceDocumentRestrictions maintenanceDocumentAuthorizations = getBusinessObjectAuthorizationService().getMaintenanceDocumentRestrictions(maintenanceDocument, user);
     	maintenanceForm.setAuthorizations(maintenanceDocumentAuthorizations);
     	if (maintenanceDocumentAuthorizations.hasAnyFieldRestrictions()) {
     		maintenanceForm.getDocumentActions().remove(KNSConstants.KUALI_ACTION_CAN_BLANKET_APPROVE);
     	}
     }
+
+	public LookupService getLookupService() {
+    	if ( lookupService == null ) {
+    		lookupService = KNSServiceLocator.getLookupService();
+    	}
+		return this.lookupService;
+	}
+
+	public LookupResultsService getLookupResultsService() {
+    	if ( lookupResultsService == null ) {
+    		lookupResultsService = KNSServiceLocator.getLookupResultsService();
+    	}
+		return this.lookupResultsService;
+	}
+
 }

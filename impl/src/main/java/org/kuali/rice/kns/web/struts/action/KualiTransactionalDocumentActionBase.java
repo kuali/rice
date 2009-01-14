@@ -27,13 +27,10 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kns.authorization.AuthorizationConstants;
 import org.kuali.rice.kns.document.Copyable;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.authorization.TransactionalDocumentAuthorizer;
 import org.kuali.rice.kns.document.authorization.TransactionalDocumentPresentationController;
-import org.kuali.rice.kns.exception.DocumentAuthorizationException;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
@@ -43,17 +40,10 @@ import org.kuali.rice.kns.web.struts.form.KualiTransactionalDocumentFormBase;
  * This class handles UI actions for all shared methods of transactional documents.
  */
 public class KualiTransactionalDocumentActionBase extends KualiDocumentActionBase {
-    private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiTransactionalDocumentActionBase.class);
+//    private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiTransactionalDocumentActionBase.class);
 
     /**
      * Method that will take the current document and call its copy method if Copyable.
-     * 
-     * @param mapping
-     * @param form
-     * @param request
-     * @param response
-     * @return
-     * @throws Exception
      */
     public ActionForward copy(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         KualiTransactionalDocumentFormBase tmpForm = (KualiTransactionalDocumentFormBase) form;
@@ -69,19 +59,20 @@ public class KualiTransactionalDocumentActionBase extends KualiDocumentActionBas
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
-    protected void populateAuthorizationFields(KualiDocumentFormBase formBase){
+    @SuppressWarnings("unchecked")
+	protected void populateAuthorizationFields(KualiDocumentFormBase formBase){
     	super.populateAuthorizationFields(formBase);
     	Document document = formBase.getDocument();
     	Map editMode = new HashMap();
     	
     	if (formBase.isFormDocumentInitialized()) {
         	Person user = GlobalVariables.getUserSession().getPerson();
-        	TransactionalDocumentPresentationController documentPresentationController = (TransactionalDocumentPresentationController) KNSServiceLocator.getDocumentTypeService().getDocumentPresentationController(document);
-            TransactionalDocumentAuthorizer documentAuthorizer = (TransactionalDocumentAuthorizer) KNSServiceLocator.getDocumentTypeService().getDocumentAuthorizer(document);
+        	TransactionalDocumentPresentationController documentPresentationController = (TransactionalDocumentPresentationController) getDocumentTypeService().getDocumentPresentationController(document);
+            TransactionalDocumentAuthorizer documentAuthorizer = (TransactionalDocumentAuthorizer) getDocumentTypeService().getDocumentAuthorizer(document);
             Set<String> editModes = documentAuthorizer.getEditModes(document, user, documentPresentationController.getEditModes(document));
             editMode = this.convertSetToMap(editModes);
-            if (KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(document.getClass().getName()).getUsePessimisticLocking()) {
-                editMode = KNSServiceLocator.getPessimisticLockService().establishLocks(document, editMode, user);
+            if (getDataDictionaryService().getDataDictionary().getDocumentEntry(document.getClass().getName()).getUsePessimisticLocking()) {
+                editMode = getPessimisticLockService().establishLocks(document, editMode, user);
             }            
     	}
     	formBase.setEditingMode(editMode);

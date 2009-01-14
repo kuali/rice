@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -112,6 +113,17 @@ public class RoleMembershipInfo implements Serializable {
 	public void setEmbeddedRoleId(String embeddedRoleId) {
 		this.embeddedRoleId = embeddedRoleId;
 	}
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+    	return new ToStringBuilder( this )
+    	        .append( "memberTypeCode", this.memberTypeCode )
+    			.append( "memberId", this.memberId )
+    			.append( "roleId", this.roleId )
+    			.append( "qualifier", this.qualifier ).toString();
+    }
 	
 	
 }

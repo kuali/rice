@@ -27,6 +27,10 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.WorkflowAction;
 import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.util.KNSConstants;
 
 
@@ -92,8 +96,13 @@ public class BackdoorAction extends WorkflowAction {
     }
 
     private void setFormGroupPermission(BackdoorForm backdoorForm, HttpServletRequest request) {
-    	// TODO implement a KIM permission check here
-        backdoorForm.setIsAdmin(true);
+    	// based on whether or not they have permission to use the fictional "AdministrationAction", kind of a hack for now since I don't have time to
+    	// split this single action up and I can't pass the methodToCall to the permission check
+    	AttributeSet permissionDetails = new AttributeSet();
+    	permissionDetails.put(KimAttributes.NAMESPACE_CODE, KEWConstants.KEW_NAMESPACE);
+    	permissionDetails.put(KimAttributes.ACTION_CLASS, "org.kuali.rice.kew.web.backdoor.AdministrationAction");
+    	boolean isAdmin = KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(getUserSession(request).getPrincipalId(), KNSConstants.KNS_NAMESPACE,	KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails, new AttributeSet());
+        backdoorForm.setIsAdmin(isAdmin);
     }
 
     public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {

@@ -93,6 +93,8 @@ public class KNSConstants extends JSTLConstants {
 
     public static final String UPLOADED_FILE_REQUEST_ATTRIBUTE_KEY = "org.kuali.rice.kns.util.WebUtils.uploadedFiles";
 
+    public static final String NOTE_WORKFLOW_NOTIFICATION_REQUEST_LABEL = "READ NOTES";
+    
     public static final String SEND_NOTE_WORKFLOW_NOTIFICATION_ACTIONS_PARM_NM = "SEND_NOTE_WORKFLOW_NOTIFICATION_ACTIONS";
     public static final String ATTACHMENT_MAX_FILE_SIZE_PARM_NM = "MAX_FILE_SIZE_ATTACHMENT";
     public static final String DOCUMENT_HTTP_SESSION_KEY = "documentHttpSessionKey";

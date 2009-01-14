@@ -194,6 +194,18 @@ public interface WorkflowDocumentService {
     
     /**
      * Sends workflow notification to the list of ad hoc recipients.  This method is usually used to notify users of a note that has been added to a
+     * document.  The notificationLabel parameter is used to give the request a custom label in the user's Action List
+     * 
+     * @param workflowDocument
+     * @param annotation
+     * @param adHocRecipients
+     * @param notificationLabel
+     * @throws WorkflowException
+     */
+    public void sendWorkflowNotification(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients, String notificationLabel) throws WorkflowException;
+    
+    /**
+     * Sends workflow notification to the list of ad hoc recipients.  This method is usually used to notify users of a note that has been added to a
      * document
      * 
      * @param workflowDocument

@@ -140,6 +140,10 @@ public interface KualiWorkflowDocument {
     public abstract void adHocRouteDocumentToPrincipal(String actionRequested, String routeTypeName, String annotation, String principalId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException;
 
     public abstract void adHocRouteDocumentToGroup(String actionRequested, String routeTypeName, String annotation, String groupId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException;
+    
+    public abstract void adHocRouteDocumentToPrincipal(String actionRequested, String routeTypeName, String annotation, String principalId, String responsibilityDesc, boolean ignorePreviousActions, String actionRequestLabel) throws WorkflowException;
+
+    public abstract void adHocRouteDocumentToGroup(String actionRequested, String routeTypeName, String annotation, String groupId, String responsibilityDesc, boolean ignorePreviousActions, String actionRequestLabel) throws WorkflowException;
 
     public abstract void setTitle(String title) throws WorkflowException;
 

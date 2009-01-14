@@ -232,15 +232,19 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
         workflowDocument.fyi();
     }
 
+    public void sendWorkflowNotification(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException {
+    	sendWorkflowNotification(workflowDocument, annotation, adHocRecipients, null);
+    }
+    
     /**
      * @see org.kuali.rice.kns.workflow.service.WorkflowDocumentService#sendWorkflowNotification(org.kuali.rice.kns.workflow.service.KualiWorkflowDocument, java.lang.String, java.util.List)
      */
-    public void sendWorkflowNotification(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException {
+    public void sendWorkflowNotification(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients, String notificationLabel) throws WorkflowException {
         if (LOG.isDebugEnabled()) {
             LOG.debug("sending FYI for flexDoc(" + workflowDocument.getRouteHeaderId() + ")");
         }
 
-        handleAdHocRouteRequests(workflowDocument, annotation, adHocRecipients);
+        handleAdHocRouteRequests(workflowDocument, annotation, adHocRecipients, notificationLabel);
     }
 
     /**
@@ -305,6 +309,10 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
         return freshCopyWorkflowDoc.getCurrentRouteNodeNames();
     }
 
+    private void handleAdHocRouteRequests(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException {
+    	handleAdHocRouteRequests(workflowDocument, annotation, adHocRecipients, null);
+    }
+    
     /**
      * Convenience method for generating ad hoc requests for a given document
      *
@@ -316,7 +324,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      * @throws InvalidActionRequestException
      * @throws InvalidWorkgroupException
      */
-    private void handleAdHocRouteRequests(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException {
+    private void handleAdHocRouteRequests(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients, String notificationLabel) throws WorkflowException {
 
         if (adHocRecipients != null && adHocRecipients.size() > 0) {
             String currentNode = null;
@@ -343,14 +351,14 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
                 		if (principal == null) {
                 			throw new RiceRuntimeException("Could not locate principal with name '" + recipient.getId() + "'");
                 		}
-                        workflowDocument.adHocRouteDocumentToPrincipal(recipient.getActionRequested(), currentNode, annotation, principal.getPrincipalId(), "", true);
+                        workflowDocument.adHocRouteDocumentToPrincipal(recipient.getActionRequested(), currentNode, annotation, principal.getPrincipalId(), "", true, notificationLabel);
                     }
                     else {
                     	KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(recipient.getId());
                 		if (group == null) {
                 			throw new RiceRuntimeException("Could not locate group with id '" + recipient.getId() + "'");
                 		}
-                    	workflowDocument.adHocRouteDocumentToGroup(recipient.getActionRequested(), currentNode, annotation, group.getGroupId() , "", true);
+                    	workflowDocument.adHocRouteDocumentToGroup(recipient.getActionRequested(), currentNode, annotation, group.getGroupId() , "", true, notificationLabel);
                     }
                 }
             }

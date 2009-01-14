@@ -32,6 +32,7 @@ import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.NoteService;
 import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.KNSConstants.NoteTypeEnum;
@@ -165,7 +166,7 @@ public class NoteServiceImpl implements NoteService {
         List<AdHocRouteRecipient> routeRecipients = new ArrayList<AdHocRouteRecipient>();
         routeRecipients.add(routeRecipient);
 
-        workflowDocumentService.sendWorkflowNotification(document.getDocumentHeader().getWorkflowDocument(), notificationText, routeRecipients);
+        workflowDocumentService.sendWorkflowNotification(document.getDocumentHeader().getWorkflowDocument(), notificationText, routeRecipients, KNSConstants.NOTE_WORKFLOW_NOTIFICATION_REQUEST_LABEL);
 
         // clear recipient allowing an notification to be sent to another person
         note.setAdHocRouteRecipient(new AdHocRoutePerson());

@@ -90,6 +90,13 @@ public interface RoleService {
      */
     Collection<RoleMembershipInfo> getRoleMembers( List<String> roleIds, AttributeSet qualification );
 
+    /**
+	 * This method gets all the members, then traverses down into members of type role and group to obtain the nested principal ids
+	 * 
+	 * @return list of member principal ids
+	 */
+    public Collection<String> getRoleMemberPrincipalIds(String namespaceCode, String roleName, AttributeSet qualification);
+
     boolean principalHasRole( String principalId, List<String> roleIds, AttributeSet qualification );
     
     // --------------------
@@ -108,5 +115,4 @@ public interface RoleService {
 	 * @return
 	 */
 	public List<? extends KimRole> getRolesSearchResults(java.util.Map<String,String> fieldValues);
-
 }

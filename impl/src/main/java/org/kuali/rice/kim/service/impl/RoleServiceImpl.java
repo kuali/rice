@@ -227,6 +227,21 @@ public class RoleServiceImpl implements RoleService {
     	return getRoleMembers(roleIds, qualification, true);
     }	
     
+	public Collection<String> getRoleMemberPrincipalIds(String namespaceCode, String roleName, AttributeSet qualification) {
+		Set<String> principalIds = new HashSet<String>();
+		List<String> roleIds = new ArrayList<String>();
+		roleIds.add(getRoleIdByName(namespaceCode, roleName));
+    	for (RoleMembershipInfo roleMembershipInfo : getRoleMembers(roleIds, qualification, false)) {
+    		if (KimRole.GROUP_MEMBER_TYPE.equals(roleMembershipInfo.getMemberTypeCode())) {
+    			principalIds.addAll(getIdentityManagementService().getGroupMemberPrincipalIds(roleMembershipInfo.getMemberId()));
+    		}
+    		else {
+    			principalIds.add(roleMembershipInfo.getMemberId());
+    		}			
+		}
+    	return principalIds;
+	}
+
     protected Collection<RoleMembershipInfo> getNestedRoleMembers( AttributeSet qualification, RoleMembershipInfo rm ) {
 		ArrayList<String> roleIdList = new ArrayList<String>( 1 );
 		roleIdList.add( rm.getMemberId() );

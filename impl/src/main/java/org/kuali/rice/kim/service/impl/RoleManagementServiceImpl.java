@@ -51,6 +51,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	protected Map<String,MaxAgeSoftReference<List<AttributeSet>>> roleQualifiersForPrincipalCache;
 	protected Map<String,MaxAgeSoftReference<Boolean>> isRoleActiveCache;
 	protected Map<String,MaxAgeSoftReference<Boolean>> principalHasRoleCache;
+	protected Map<String,MaxAgeSoftReference<Collection<String>>> memberPrincipalIdsCache;
 	
 	public void afterPropertiesSet() throws Exception {
 		impliedRoleIdsCache = new HashMap<String,MaxAgeSoftReference<List<String>>>( roleCacheMaxSize );
@@ -62,6 +63,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		roleQualifiersForPrincipalCache = new HashMap<String,MaxAgeSoftReference<List<AttributeSet>>>( roleCacheMaxSize );
 		isRoleActiveCache = new HashMap<String,MaxAgeSoftReference<Boolean>>( roleCacheMaxSize );
 		principalHasRoleCache = new HashMap<String,MaxAgeSoftReference<Boolean>>( roleCacheMaxSize );
+		memberPrincipalIdsCache = new HashMap<String,MaxAgeSoftReference<Collection<String>>>(roleCacheMaxSize );
 	}
 	
 	// Caching helper methods
@@ -208,6 +210,27 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
     	ids = getRoleService().getImplyingRoleIds(roleId);
     	addImplyingRoleIdsToCache(roleId, ids);
     	return ids;
+	}
+
+	protected Collection<String> getRoleMemberPrincipalIdsCache(String key) {
+		MaxAgeSoftReference<Collection<String>> memberPrincipalIdsRef = memberPrincipalIdsCache.get(key);
+		if ( memberPrincipalIdsRef != null ) {
+			return memberPrincipalIdsRef.get();
+		}
+		return null;
+	}
+	protected void addRoleMemberPrincipalIdsToCache(String key, Collection<String> principalIds) {
+		memberPrincipalIdsCache.put(key, new MaxAgeSoftReference<Collection<String>>(principalIds));
+	}
+	public Collection<String> getRoleMemberPrincipalIds(String namespaceCode, String roleName, AttributeSet qualification) {
+		String key = namespaceCode + roleName;
+		Collection<String> principalIds = getRoleMemberPrincipalIdsCache(key);
+		if (principalIds != null) {
+			return principalIds;
+		}
+		principalIds = getRoleService().getRoleMemberPrincipalIds(namespaceCode, roleName, qualification);
+		addRoleMemberPrincipalIdsToCache(key, principalIds);
+		return principalIds;
 	}
 
 	public KimRoleInfo getRole(String roleId) {

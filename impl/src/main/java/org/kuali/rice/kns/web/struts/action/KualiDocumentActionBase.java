@@ -118,7 +118,7 @@ public class KualiDocumentActionBase extends KualiAction {
     private BusinessObjectService businessObjectService;
     private BusinessObjectMetaDataService businessObjectMetaDataService;
     private EntityManagerFactory entityManagerFactory;
-    
+
 	protected void checkAuthorization( ActionForm form, String methodToCall ) throws AuthorizationException {
         if ( !(form instanceof KualiDocumentFormBase) ) {
             super.checkAuthorization(form, methodToCall);
@@ -443,7 +443,12 @@ public class KualiDocumentActionBase extends KualiAction {
 
         // if the rule evaluation passed, let's add the ad hoc route workgroup
         if (rulePassed) {
-            kualiDocumentFormBase.getAdHocRouteWorkgroups().add(kualiDocumentFormBase.getNewAdHocRouteWorkgroup());
+            //fill id if not already filled
+            AdHocRouteWorkgroup newWorkgroup = (AdHocRouteWorkgroup)kualiDocumentFormBase.getNewAdHocRouteWorkgroup();
+            if (newWorkgroup.getId() == null) {
+                newWorkgroup.setId(KIMServiceLocator.getIdentityManagementService().getGroupByName(newWorkgroup.getRecipientNamespaceCode(), newWorkgroup.getRecipientName()).getGroupId());
+            }
+            kualiDocumentFormBase.getAdHocRouteWorkgroups().add(newWorkgroup);
             AdHocRouteWorkgroup workgroup = new AdHocRouteWorkgroup();
             kualiDocumentFormBase.setNewAdHocRouteWorkgroup(workgroup);
         }
@@ -1302,7 +1307,7 @@ public class KualiDocumentActionBase extends KualiAction {
 	            infix = sourceObject.getClass().getName();
 	        }
 	        message.append(infix);
-	
+
 	        if (sourceObject instanceof PersistableBusinessObject) {
 	            PersistableBusinessObject persistableObject = (PersistableBusinessObject) sourceObject;
 	            message.append(" [versionNumber = " ).append( persistableObject.getVersionNumber() ).append( "]" );
@@ -1512,7 +1517,7 @@ public class KualiDocumentActionBase extends KualiAction {
 		}
 		return this.identityManagementService;
 	}
-	
+
 	protected AttachmentService getAttachmentService() {
 		if ( attachmentService == null ) {
 			attachmentService = KNSServiceLocator.getAttachmentService();
@@ -1526,14 +1531,14 @@ public class KualiDocumentActionBase extends KualiAction {
 		}
 		return this.noteService;
 	}
-	
+
 	protected BusinessObjectService getBusinessObjectService() {
     	if ( businessObjectService == null ) {
     		businessObjectService = KNSServiceLocator.getBusinessObjectService();
     	}
 		return this.businessObjectService;
 	}
-	
+
     protected BusinessObjectAuthorizationService getBusinessObjectAuthorizationService() {
     	if ( businessObjectAuthorizationService == null ) {
     		businessObjectAuthorizationService = KNSServiceLocator.getBusinessObjectAuthorizationService();
@@ -1554,7 +1559,7 @@ public class KualiDocumentActionBase extends KualiAction {
     	}
 		return this.entityManagerFactory;
 	}
-    
+
 
 }
 

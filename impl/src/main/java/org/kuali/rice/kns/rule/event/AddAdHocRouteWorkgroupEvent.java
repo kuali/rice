@@ -1,12 +1,12 @@
 /*
  * Copyright 2006 The Kuali Foundation.
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,15 +24,15 @@ import org.kuali.rice.kns.util.ObjectUtils;
 /**
  * This class represents the add AdHocRouteWorkgroup event that is part of an eDoc in Kuali. This is triggered when a user presses
  * the add button for a given adHocRouteWorkgroup.
- * 
- * 
+ *
+ *
  */
 public final class AddAdHocRouteWorkgroupEvent extends KualiDocumentEventBase {
     private AdHocRouteWorkgroup adHocRouteWorkgroup;
 
     /**
      * Constructs an AddAdHocRouteWorkgroupEvent with the specified errorPathPrefix, document, and adHocRouteWorkgroup
-     * 
+     *
      * @param document
      * @param adHocRouteWorkgroup
      * @param errorPathPrefix
@@ -44,7 +44,7 @@ public final class AddAdHocRouteWorkgroupEvent extends KualiDocumentEventBase {
 
     /**
      * Constructs an AddAdHocRouteWorkgroupEvent with the given document
-     * 
+     *
      * @param document
      * @param adHocRouteWorkgroup
      */
@@ -54,7 +54,7 @@ public final class AddAdHocRouteWorkgroupEvent extends KualiDocumentEventBase {
 
     /**
      * This method retrieves the document adHocRouteWorkgroup associated with this event.
-     * 
+     *
      * @return AdHocRouteWorkgroup
      */
     public AdHocRouteWorkgroup getAdHocRouteWorkgroup() {

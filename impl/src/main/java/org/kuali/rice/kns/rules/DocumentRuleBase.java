@@ -1,11 +1,11 @@
 /*
  * Copyright 2007 The Kuali Foundation.
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS
  * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
@@ -54,12 +54,12 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     private static KualiWorkflowInfo workflowInfoService;
     private static KualiConfigurationService kualiConfigurationService;
     private static DocumentTypeService documentTypeService;
-    
+
     /**
      * Just some arbitrarily high max depth that's unlikely to occur in real life to prevent recursion problems
      */
     private int maxDictionaryValidationDepth = 100;
-    
+
     private void initStatics() {
 	if (personService == null) {
 	    workflowInfoService = KNSServiceLocator.getWorkflowInfoService();
@@ -74,7 +74,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 	initStatics();
 	return personService;
     }
-    
+
     protected DocumentTypeService getDocumentTypeService() {
     	initStatics();
     	return documentTypeService;
@@ -97,7 +97,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 
     /**
          * Verifies that the document's overview fields are valid - it does required and format checks.
-         * 
+         *
          * @param document
          * @return boolean True if the document description is valid, false otherwise.
          */
@@ -122,7 +122,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 
     /**
          * Validates the document attributes against the data dictionary.
-         * 
+         *
          * @param document
          * @param validateRequired if true, then an error will be retruned if a DD required field is empty.  if false, no required checking is done
          * @return True if the document attributes are valid, false otherwise.
@@ -147,13 +147,13 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     /**
          * Runs all business rules needed prior to saving. This includes both common rules for all documents, plus
          * class-specific business rules.
-         * 
+         *
          * This method will only return false if it fails the isValidForSave() test. Otherwise, it will always return
          * positive regardless of the outcome of the business rules. However, any error messages resulting from the business
          * rules will still be populated, for display to the consumer of this service.
-         * 
+         *
          * @see org.kuali.rice.kns.rule.SaveDocumentRule#processSaveDocument(org.kuali.rice.kns.document.Document)
-         * 
+         *
          */
     public boolean processSaveDocument(Document document) {
 	LOG.debug("processSaveDocument(Document) - start");
@@ -166,7 +166,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 	GlobalVariables.getErrorMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
 	isValid &= GlobalVariables.getErrorMap().isEmpty();
 	isValid &= processCustomSaveDocumentBusinessRules(document);
-	
+
         LOG.debug("processSaveDocument(Document) - end");
         return isValid;
     }
@@ -174,7 +174,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     /**
          * This method should be overridden by children rule classes as a hook to implement document specific business rule
          * checks for the "save document" event.
-         * 
+         *
          * @param document
          * @return boolean True if the rules checks passed, false otherwise.
          */
@@ -188,10 +188,10 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     /**
          * Runs all business rules needed prior to routing. This includes both common rules for all maintenance documents,
          * plus class-specific business rules.
-         * 
+         *
          * This method will return false if any business rule fails, or if the document is in an invalid state, and not
          * routable (see isDocumentValidForRouting()).
-         * 
+         *
          * @see org.kuali.rice.kns.rule.RouteDocumentRule#processRouteDocument(org.kuali.rice.kns.document.Document)
          */
     public boolean processRouteDocument(Document document) {
@@ -212,7 +212,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     /**
          * This method should be overridden by children rule classes as a hook to implement document specific business rule
          * checks for the "route document" event.
-         * 
+         *
          * @param document
          * @return boolean True if the rules checks passed, false otherwise.
          */
@@ -226,10 +226,10 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     /**
          * Runs all business rules needed prior to approving. This includes both common rules for all documents, plus
          * class-specific business rules.
-         * 
+         *
          * This method will return false if any business rule fails, or if the document is in an invalid state, and not
          * approveble.
-         * 
+         *
          * @see org.kuali.rice.kns.rule.ApproveDocumentRule#processApproveDocument(org.kuali.rice.kns.rule.event.ApproveDocumentEvent)
          */
     public boolean processApproveDocument(ApproveDocumentEvent approveEvent) {
@@ -246,7 +246,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     /**
          * This method should be overridden by children rule classes as a hook to implement document specific business rule
          * checks for the "approve document" event.
-         * 
+         *
          * @param document
          * @return boolean True if the rules checks passed, false otherwise.
          */
@@ -259,9 +259,9 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 
     /**
          * Runs all business rules needed prior to adding a document note.
-         * 
+         *
          * This method will return false if any business rule fails.
-         * 
+         *
          * @see org.kuali.rice.kns.rule.AddDocumentNoteRule#processAddDocumentNote(org.kuali.rice.kns.document.Document,
          *      org.kuali.rice.kns.document.DocumentNote)
          */
@@ -280,7 +280,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 
     /**
          * Verifies that the note's fields are valid - it does required and format checks.
-         * 
+         *
          * @param note
          * @return boolean True if the document description is valid, false otherwise.
          */
@@ -302,7 +302,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     /**
          * This method should be overridden by children rule classes as a hook to implement document specific business rule
          * checks for the "add document note" event.
-         * 
+         *
          * @param document
          * @param note
          * @return boolean True if the rules checks passed, false otherwise.
@@ -330,7 +330,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 
     /**
          * Verifies that the adHocRoutePerson's fields are valid - it does required and format checks.
-         * 
+         *
          * @param person
          * @return boolean True if valid, false otherwise.
          */
@@ -381,16 +381,16 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     /**
          * This method should be overridden by children rule classes as a hook to implement document specific business rule
          * checks for the "add ad hoc route person" event.
-         * 
+         *
          * @param document
          * @param person
          * @return boolean True if the rules checks passed, false otherwise.
          */
     protected boolean processCustomAddAdHocRoutePersonBusinessRules(Document document, AdHocRoutePerson person) {
-	LOG.debug("processCustomAddAdHocRoutePersonBusinessRules(Document, AdHocRoutePerson) - start");
+    	LOG.debug("processCustomAddAdHocRoutePersonBusinessRules(Document, AdHocRoutePerson) - start");
 
-	LOG.debug("processCustomAddAdHocRoutePersonBusinessRules(Document, AdHocRoutePerson) - end");
-	return true;
+    	LOG.debug("processCustomAddAdHocRoutePersonBusinessRules(Document, AdHocRoutePerson) - end");
+    	return true;
     }
 
     /**
@@ -398,80 +398,80 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
          *      org.kuali.rice.kns.bo.AdHocRouteWorkgroup)
          */
     public boolean processAddAdHocRouteWorkgroup(Document document, AdHocRouteWorkgroup adHocRouteWorkgroup) {
-	LOG.debug("processAddAdHocRouteWorkgroup(Document, AdHocRouteWorkgroup) - start");
+    	LOG.debug("processAddAdHocRouteWorkgroup(Document, AdHocRouteWorkgroup) - start");
 
-	boolean isValid = true;
+    	boolean isValid = true;
 
-	isValid &= isAddHocRouteWorkgroupValid(adHocRouteWorkgroup);
+    	isValid &= isAddHocRouteWorkgroupValid(adHocRouteWorkgroup);
 
-	isValid &= processCustomAddAdHocRouteWorkgroupBusinessRules(document, adHocRouteWorkgroup);
+    	isValid &= processCustomAddAdHocRouteWorkgroupBusinessRules(document, adHocRouteWorkgroup);
 
-	LOG.debug("processAddAdHocRouteWorkgroup(Document, AdHocRouteWorkgroup) - end");
-	return isValid;
+    	LOG.debug("processAddAdHocRouteWorkgroup(Document, AdHocRouteWorkgroup) - end");
+    	return isValid;
     }
 
     /**
          * Verifies that the adHocRouteWorkgroup's fields are valid - it does required and format checks.
-         * 
+         *
          * @param workgroup
          * @return boolean True if valid, false otherwise.
          */
     public boolean isAddHocRouteWorkgroupValid(AdHocRouteWorkgroup workgroup) {
-	LOG.debug("isAddHocRouteWorkgroupValid(AdHocRouteWorkgroup) - start");
+    	LOG.debug("isAddHocRouteWorkgroupValid(AdHocRouteWorkgroup) - start");
 
-	ErrorMap errorMap = GlobalVariables.getErrorMap();
+    	ErrorMap errorMap = GlobalVariables.getErrorMap();
 
-	// new recipients are not embedded in the error path; existing lines should be
-	if (errorMap.getErrorPath().size() == 0) {
-	    // add the error path keys on the stack
-	    GlobalVariables.getErrorMap().addToErrorPath(KNSConstants.NEW_AD_HOC_ROUTE_WORKGROUP_PROPERTY_NAME);
-	}
+    	// new recipients are not embedded in the error path; existing lines should be
+    	if (errorMap.getErrorPath().size() == 0) {
+    	    // add the error path keys on the stack
+    	    GlobalVariables.getErrorMap().addToErrorPath(KNSConstants.NEW_AD_HOC_ROUTE_WORKGROUP_PROPERTY_NAME);
+    	}
 
-	if (StringUtils.isNotBlank(workgroup.getId())) {
-	    // validate that they are a workgroup from the workgroup service by looking them up
-	    try {
-	    	KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(workgroup.getId());
-		if (group == null || !group.isActive()) {
-		    GlobalVariables.getErrorMap().putError(KNSPropertyConstants.ID,
-			    RiceKeyConstants.ERROR_INVALID_ADHOC_WORKGROUP_ID);
-		}
-	    } catch (Exception e) {
-		LOG.error("isAddHocRouteWorkgroupValid(AdHocRouteWorkgroup)", e);
+    	if (workgroup.getRecipientName() != null && workgroup.getRecipientNamespaceCode() != null) {
+    	    // validate that they are a workgroup from the workgroup service by looking them up
+    	    try {
+    	        KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroupByName(workgroup.getRecipientNamespaceCode(), workgroup.getRecipientName());
+    		if (group == null || !group.isActive()) {
+    		    GlobalVariables.getErrorMap().putError(KNSPropertyConstants.ID,
+    			    RiceKeyConstants.ERROR_INVALID_ADHOC_WORKGROUP_ID);
+    		}
+    	    } catch (Exception e) {
+        		LOG.error("isAddHocRouteWorkgroupValid(AdHocRouteWorkgroup)", e);
 
-		GlobalVariables.getErrorMap().putError(KNSPropertyConstants.ID,
-			RiceKeyConstants.ERROR_INVALID_ADHOC_WORKGROUP_ID);
-	    }
-	} else {
-	    GlobalVariables.getErrorMap().putError(KNSPropertyConstants.ID,
-		    RiceKeyConstants.ERROR_MISSING_ADHOC_WORKGROUP_ID);
-	}
+        		GlobalVariables.getErrorMap().putError(KNSPropertyConstants.ID,
+        			RiceKeyConstants.ERROR_INVALID_ADHOC_WORKGROUP_ID);
+    	    }
+    	} else {
+	        GlobalVariables.getErrorMap().putError(KNSPropertyConstants.ID,
+	                RiceKeyConstants.ERROR_MISSING_ADHOC_WORKGROUP_ID);
+    	}
 
-	// drop the error path keys off now
-	GlobalVariables.getErrorMap().removeFromErrorPath(KNSConstants.NEW_AD_HOC_ROUTE_WORKGROUP_PROPERTY_NAME);
+    	// drop the error path keys off now
+    	GlobalVariables.getErrorMap().removeFromErrorPath(KNSConstants.NEW_AD_HOC_ROUTE_WORKGROUP_PROPERTY_NAME);
 
-	boolean returnboolean = GlobalVariables.getErrorMap().isEmpty();
-	LOG.debug("isAddHocRouteWorkgroupValid(AdHocRouteWorkgroup) - end");
-	return returnboolean;
+    	boolean returnboolean = GlobalVariables.getErrorMap().isEmpty();
+    	LOG.debug("isAddHocRouteWorkgroupValid(AdHocRouteWorkgroup) - end");
+    	return returnboolean;
     }
 
     /**
          * This method should be overridden by children rule classes as a hook to implement document specific business rule
          * checks for the "add ad hoc route workgroup" event.
-         * 
+         *
          * @param document
          * @param workgroup
          * @return boolean True if the rules checks passed, false otherwise.
          */
     protected boolean processCustomAddAdHocRouteWorkgroupBusinessRules(Document document, AdHocRouteWorkgroup workgroup) {
-	LOG.debug("processCustomAddAdHocRouteWorkgroupBusinessRules(Document, AdHocRouteWorkgroup) - start");
+    	LOG.debug("processCustomAddAdHocRouteWorkgroupBusinessRules(Document, AdHocRouteWorkgroup) - start");
 
-	LOG.debug("processCustomAddAdHocRouteWorkgroupBusinessRules(Document, AdHocRouteWorkgroup) - end");
-	return true;
+    	LOG.debug("processCustomAddAdHocRouteWorkgroupBusinessRules(Document, AdHocRouteWorkgroup) - end");
+    	return true;
     }
 
     /**
      * Gets the maximum number of levels the data-dictionary based validation will recurse for the document
-     * 
+     *
      * @return
      */
     public int getMaxDictionaryValidationDepth() {
@@ -480,7 +480,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 
     /**
      * Gets the maximum number of levels the data-dictionary based validation will recurse for the document
-     * 
+     *
      * @param maxDictionaryValidationDepth
      */
     public void setMaxDictionaryValidationDepth(int maxDictionaryValidationDepth) {

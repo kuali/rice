@@ -1,12 +1,12 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,6 +26,8 @@ import javax.persistence.PersistenceException;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.OrmUtils;
+import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.bo.AdHocRoutePerson;
 import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
@@ -41,17 +43,17 @@ import org.springframework.dao.DataAccessException;
 public class DocumentDaoJpa implements DocumentDao {
     private static Logger LOG = Logger.getLogger(DocumentDaoJpa.class);
     private BusinessObjectDao businessObjectDao;
-    
+
 	@PersistenceContext
 	private EntityManager entityManager;
-	
+
     public DocumentDaoJpa() {
         super();
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.kuali.dao.DocumentDao#save(null)
      */
     public void save(Document document) throws DataAccessException {
@@ -61,12 +63,12 @@ public class DocumentDaoJpa implements DocumentDao {
 		} else {
 			OrmUtils.reattach(attachedDoc, document);
 			entityManager.merge(attachedDoc);
-		}    
+		}
     }
 
 	/**
      * Retrieve a Document of a specific type with a given document header ID.
-     * 
+     *
      * @param clazz
      * @param id
      * @return Document with given id
@@ -87,7 +89,7 @@ public class DocumentDaoJpa implements DocumentDao {
 
     /**
      * Retrieve a List of Document instances with the given ids
-     * 
+     *
      * @param clazz
      * @param idList
      * @return List
@@ -109,9 +111,9 @@ public class DocumentDaoJpa implements DocumentDao {
     }
 
     /**
-     * 
+     *
      * Deprecated method. Should use BusinessObjectService.linkAndSave() instead.
-     * 
+     *
      */
     @Deprecated
     public void saveMaintainableBusinessObject(PersistableBusinessObject businessObject) {
@@ -124,20 +126,27 @@ public class DocumentDaoJpa implements DocumentDao {
          * its probably easier and faster to just do this all the time and
          * store a null when appropriate.
          */
-        List adHocRoutePersons;
-        List adHocRouteWorkgroups;
+        List<AdHocRoutePerson> adHocRoutePersons;
+        List<AdHocRouteWorkgroup> adHocRouteWorkgroups;
         HashMap criteriaPerson = new HashMap();
         HashMap criteriaWorkgroup = new HashMap();
-        
+
         criteriaPerson.put("documentNumber", document.getDocumentNumber());
         criteriaPerson.put("type", AdHocRoutePerson.PERSON_TYPE);
         adHocRoutePersons = (List) businessObjectDao.findMatching(AdHocRoutePerson.class, criteriaPerson);
         criteriaWorkgroup.put("documentNumber", document.getDocumentNumber());
         criteriaWorkgroup.put("type", AdHocRouteWorkgroup.WORKGROUP_TYPE);
-        adHocRouteWorkgroups = (List) businessObjectDao.findMatching(AdHocRouteWorkgroup.class, criteriaWorkgroup);
+        adHocRouteWorkgroups = (List<AdHocRouteWorkgroup>) businessObjectDao.findMatching(AdHocRouteWorkgroup.class, criteriaWorkgroup);
+
+        //populate group namespace and names on adHocRoutWorkgroups
+        for (AdHocRouteWorkgroup adHocRouteWorkgroup : adHocRouteWorkgroups) {
+            KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(adHocRouteWorkgroup.getId());
+            adHocRouteWorkgroup.setRecipientName(group.getGroupName());
+            adHocRouteWorkgroup.setRecipientNamespaceCode(group.getNamespaceCode());
+        }
         document.setAdHocRoutePersons(adHocRoutePersons);
         document.setAdHocRouteWorkgroups(adHocRouteWorkgroups);
-        
+
         return document;
     }
 

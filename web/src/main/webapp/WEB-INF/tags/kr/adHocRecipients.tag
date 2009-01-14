@@ -1,12 +1,12 @@
 <%--
  Copyright 2005-2007 The Kuali Foundation.
- 
+
  Licensed under the Educational Community License, Version 1.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
- 
+
  http://www.opensource.org/licenses/ecl1.php
- 
+
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,20 +18,20 @@
 
     <c:if test="${KualiForm.documentActions[Constants.KUALI_ACTION_CAN_AD_HOC_ROUTE] and not KualiForm.suppressAllButtons}">
         <kul:tab tabTitle="Ad Hoc Recipients" defaultOpen="false" tabErrorKey="${Constants.AD_HOC_ROUTE_ERRORS}">
-        
-        <div class="tab-container" align=center>     
+
+        <div class="tab-container" align=center>
     <h3>Ad Hoc Recipients</h3>
             <table cellpadding="0" cellspacing="0" class="datatable" summary="view/edit ad hoc recipients">
         <%-- first do the persons --%>
               <kul:displayIfErrors keyMatch="${Constants.AD_HOC_ROUTE_PERSON_ERRORS}">
           <tr>
-              <th colspan=3>
+              <th colspan=4>
                 <kul:errors keyMatch="${Constants.AD_HOC_ROUTE_PERSON_ERRORS}" />
               </th>
-            </tr>    
+            </tr>
         </kul:displayIfErrors>
               <tr>
-                <td colspan=3 class="tab-subhead">Person Requests:</td>
+                <td colspan=4 class="tab-subhead">Person Requests:</td>
               </tr>
             <tr>
                   <kul:htmlAttributeHeaderCell
@@ -41,13 +41,14 @@
                   <kul:htmlAttributeHeaderCell
                       attributeEntry="${DataDictionary.AdHocRoutePerson.attributes.id}"
                       scope="col"
+                      colspan="2"
                       />
                 <kul:htmlAttributeHeaderCell
                     literalLabel="Actions"
                     scope="col"
                     />
               </tr>
-                
+
                 <tr>
                     <td class="infoline" ><div align=center>
                         <html:hidden property="newAdHocRoutePerson.type"/>
@@ -55,26 +56,26 @@
                         <c:set var="accessibleTitle" value="${DataDictionary.AdHocRoutePerson.attributes.actionRequested.label}"/>
                                                 <c:set var="accessibleTitle2" value="${DataDictionary.AdHocRouteWorkgroup.attributes.actionRequested.label}"/>
                         <c:if test="${(DataDictionary.AdHocRoutePerson.attributes.actionRequested.required == true) && readOnly != true}">
-<c:set var="accessibleTitle" value="${Constants.REQUIRED_FIELD_SYMBOL} ${accessibleTitle}"/>
-  </c:if>
-                          <c:if test="${(DataDictionary.AdHocRouteWorkgroup.attributes.actionRequested.required == true) && readOnly != true}">
-<c:set var="accessibleTitle2" value="${Constants.REQUIRED_FIELD_SYMBOL} ${accessibleTitle2}"/>
-  </c:if>
-                                                <html:select title="${accessibleTitle}" property="newAdHocRoutePerson.actionRequested">
-                                                  <c:set var="actionRequestCodes" value="${KualiForm.adHocActionRequestCodes}"/>
-                      <html:options collection="actionRequestCodes" property="key" labelProperty="value"/>
-                  </html:select></div>
+                          <c:set var="accessibleTitle" value="${Constants.REQUIRED_FIELD_SYMBOL} ${accessibleTitle}"/>
+                        </c:if>
+                        <c:if test="${(DataDictionary.AdHocRouteWorkgroup.attributes.actionRequested.required == true) && readOnly != true}">
+                          <c:set var="accessibleTitle2" value="${Constants.REQUIRED_FIELD_SYMBOL} ${accessibleTitle2}"/>
+                        </c:if>
+                        <html:select title="${accessibleTitle}" property="newAdHocRoutePerson.actionRequested">
+                          <c:set var="actionRequestCodes" value="${KualiForm.adHocActionRequestCodes}"/>
+                          <html:options collection="actionRequestCodes" property="key" labelProperty="value"/>
+                        </html:select></div>
                     </td>
-                    <td class="infoline" ><div align=center>
-                        <kul:user userIdFieldName="newAdHocRoutePerson.id" 
-                              userId="${KualiForm.newAdHocRoutePerson.id}" 
+                    <td class="infoline" colspan="2" ><div align=center>
+                        <kul:user userIdFieldName="newAdHocRoutePerson.id"
+                              userId="${KualiForm.newAdHocRoutePerson.id}"
                               universalIdFieldName=""
                               universalId=""
                               userNameFieldName="newAdHocRoutePerson.name"
                               userName="${KualiForm.newAdHocRoutePerson.name}"
-                              readOnly="${displayReadOnly}" 
+                              readOnly="${displayReadOnly}"
                               renderOtherFields="true"
-                              fieldConversions="principalName:newAdHocRoutePerson.id,name:newAdHocRoutePerson.name" 
+                              fieldConversions="principalName:newAdHocRoutePerson.id,name:newAdHocRoutePerson.name"
                               lookupParameters="newAdHocRoutePerson.id:principalName" />
                     </td>
                     <td class="infoline" ><div align=center>
@@ -85,22 +86,22 @@
                   <tr>
                       <td class="datacell center" ><div align=center>
                           <html:hidden property="adHocRoutePerson[${ctr}].type"/>
-                          <html:hidden property="adHocRoutePerson[${ctr}].versionNumber"/> 
+                          <html:hidden property="adHocRoutePerson[${ctr}].versionNumber"/>
                           <html:select title="${accessibleTitle}" property="adHocRoutePerson[${ctr}].actionRequested">
                             <c:set var="actionRequestCodes" value="${KualiForm.adHocActionRequestCodes}"/>
                         <html:options collection="actionRequestCodes" property="key" labelProperty="value"/>
                     </html:select></div>
                       </td>
-                      <td class="datacell center" ><div align=center>
-                        <kul:user userIdFieldName="adHocRoutePerson[${ctr}].id" 
-                              userId="${KualiForm.document.adHocRoutePersons[ctr].id}" 
+                      <td class="datacell center" colspan="2"><div align=center>
+                        <kul:user userIdFieldName="adHocRoutePerson[${ctr}].id"
+                              userId="${KualiForm.document.adHocRoutePersons[ctr].id}"
                               universalIdFieldName=""
                               universalId=""
                               userNameFieldName="adHocRoutePerson[${ctr}].name"
                               userName="${KualiForm.document.adHocRoutePersons[ctr].name}"
-                              readOnly="${displayReadOnly}" 
+                              readOnly="${displayReadOnly}"
                               renderOtherFields="true"
-                              fieldConversions="principalName:adHocRoutePerson[${ctr}].id,name:adHocRoutePerson[${ctr}].name" 
+                              fieldConversions="principalName:adHocRoutePerson[${ctr}].id,name:adHocRoutePerson[${ctr}].name"
                               lookupParameters="adHocRoutePerson[${ctr}].id:principalName" />
                       </td>
                           <td class="datacell center" ><div align=center>
@@ -111,13 +112,13 @@
         <%-- next do the workgroups --%>
         <kul:displayIfErrors keyMatch="${Constants.AD_HOC_ROUTE_WORKGROUP_ERRORS}">
           <tr>
-              <th colspan=3>
+              <th colspan=4>
                 <kul:errors keyMatch="${Constants.AD_HOC_ROUTE_WORKGROUP_ERRORS}" />
               </th>
-            </tr>    
+            </tr>
         </kul:displayIfErrors>
           <tr>
-                <td colspan=3 class="tab-subhead">Ad Hoc Workgroup Requests:</td>
+                <td colspan=4 class="tab-subhead">Ad Hoc Workgroup Requests:</td>
               </tr>
             <tr>
                   <kul:htmlAttributeHeaderCell
@@ -125,7 +126,11 @@
                       scope="col"
                       />
                   <kul:htmlAttributeHeaderCell
-                      attributeEntry="${DataDictionary.AdHocRouteWorkgroup.attributes.id}"
+                      attributeEntry="${DataDictionary.PersonDocumentGroup.attributes.namespaceCode}"
+                      scope="col"
+                      />
+                  <kul:htmlAttributeHeaderCell
+                      attributeEntry="${DataDictionary.PersonDocumentGroup.attributes.groupName}"
                       scope="col"
                       />
                   <kul:htmlAttributeHeaderCell
@@ -142,8 +147,11 @@
                     </html:select></div>
                     </td>
                     <td class="infoline" ><div align=center>
-                        <kul:htmlControlAttribute property="newAdHocRouteWorkgroup.id" attributeEntry="${DataDictionary.AdHocRouteWorkgroup.attributes.id}" readOnly="${displayReadOnly}" />
-                        <kul:workflowWorkgroupLookup fieldConversions="workgroupId:newAdHocRouteWorkgroup.id" /></div>
+                        <kul:htmlControlAttribute property="newAdHocRouteWorkgroup.recipientNamespaceCode" attributeEntry="${DataDictionary.PersonDocumentGroup.attributes.namespaceCode}" readOnly="${displayReadOnly}" />
+                    </td>
+                    <td class="infoline" ><div align=center>
+                        <kul:htmlControlAttribute property="newAdHocRouteWorkgroup.recipientName" attributeEntry="${DataDictionary.PersonDocumentGroup.attributes.groupName}" readOnly="${displayReadOnly}" />
+                        <kul:workflowWorkgroupLookup fieldConversions="namespaceCode:newAdHocRouteWorkgroup.recipientNamespaceCode,groupName:newAdHocRouteWorkgroup.recipientName" /></div>
                     </td>
                     <td class="infoline" ><div align=center>
                         <html:image property="methodToCall.insertAdHocRouteWorkgroup" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-add1.gif" title="Insert Additional Ad Hoc Workgroup" alt="Insert Additional Ad Hoc Workgroup" styleClass="tinybutton"/></div>
@@ -159,9 +167,14 @@
                             <html:options collection="actionRequestCodes" property="key" labelProperty="value"/>
                         </html:select></div>
                         </td>
-                        <td class="datacell center" ><div align=center>
-                            <kul:htmlControlAttribute property="adHocRouteWorkgroup[${ctr}].id" attributeEntry="${DataDictionary.AdHocRouteWorkgroup.attributes.id}" readOnly="${displayReadOnly}" />
-                            <kul:workflowWorkgroupLookup fieldConversions="workgroupId:adHocRouteWorkgroup[${ctr}].id" /></div>
+                        <td class="datacell center"><div align=center>
+                            <kul:htmlControlAttribute property="adHocRouteWorkgroup[${ctr}].recipientNamespaceCode" attributeEntry="${DataDictionary.PersonDocumentGroup.attributes.namespaceCode}" readOnly="displayReadOnly" />
+                            <%--<kul:workflowWorkgroupLookup fieldConversions="workgroupId:adHocRouteWorkgroup[${ctr}].id" /></div>--%>
+                        </td>
+                        <td class="datacell center"><div align=center>
+                            <kul:htmlControlAttribute property="adHocRouteWorkgroup[${ctr}].recipientName" attributeEntry="${DataDictionary.PersonDocumentGroup.attributes.groupName}" readOnly="displayReadOnly" />
+                            <kul:workflowWorkgroupLookup fieldConversions="namespaceCode:newAdHocRouteWorkgroup[${ctr}].recipientNamespaceCode,groupName:newAdHocRouteWorkgroup[${ctr}].recipientName" /></div>
+                            <%--<kul:workflowWorkgroupLookup fieldConversions="workgroupId:adHocRouteWorkgroup[${ctr}].id" /></div>--%>
                         </td>
                         <td class="datacell center" ><div align=center>
                             <html:image property="methodToCall.deleteAdHocRouteWorkgroup.line${ctr}" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-delete1.gif" title="Delete Additional Ad Hoc Workgroup" alt="Delete Additional Ad Hoc Workgroup" styleClass="tinybutton"/></div>

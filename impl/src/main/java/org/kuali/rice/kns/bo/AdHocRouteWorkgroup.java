@@ -1,12 +1,12 @@
 /*
  * Copyright 2006-2007 The Kuali Foundation.
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,6 +21,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Table;
 import javax.persistence.Entity;
 import javax.persistence.IdClass;
+import javax.persistence.Transient;
 
 
 /**
@@ -32,6 +33,10 @@ import javax.persistence.IdClass;
 public class AdHocRouteWorkgroup extends AdHocRouteRecipient {
 
     private static final long serialVersionUID = 1L;
+    @Transient
+    private String recipientNamespaceCode;
+    @Transient
+    private String recipientName;
 
     public AdHocRouteWorkgroup() {
         setType(WORKGROUP_TYPE);
@@ -48,5 +53,21 @@ public class AdHocRouteWorkgroup extends AdHocRouteRecipient {
     @Override
     public String getName() {
         return "";
+    }
+
+    public String getRecipientNamespaceCode() {
+        return this.recipientNamespaceCode;
+    }
+
+    public String getRecipientName() {
+        return this.recipientName;
+    }
+
+    public void setRecipientNamespaceCode(String recipientNamespaceCode) {
+        this.recipientNamespaceCode = recipientNamespaceCode;
+    }
+
+    public void setRecipientName(String recipientName) {
+        this.recipientName = recipientName;
     }
 }

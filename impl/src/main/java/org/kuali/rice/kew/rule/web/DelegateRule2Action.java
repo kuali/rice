@@ -243,7 +243,7 @@ public class DelegateRule2Action extends WorkflowAction {
     }
 
     private ActionForward checkLocked(ActionMapping mapping, Rule2Form ruleForm, HttpServletRequest request, HttpServletResponse response) {
-        if (Utilities.getKNSParameterBooleanValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_LOCKING_ON_IND)) {
+        if (Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_LOCKING_ON_IND)) {
             Long routeHeaderId = getRuleService().isLockedForRouting(ruleForm.getRuleCreationValues().getRuleId());
             if (routeHeaderId != null) {
                 ActionErrors lockErrors = new ActionErrors();
@@ -537,7 +537,7 @@ public class DelegateRule2Action extends WorkflowAction {
     }
 
     private boolean checkLockedForRouting(ActionErrors errors, RuleBaseValues rule) {
-        if (Utilities.getKNSParameterBooleanValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_LOCKING_ON_IND)) {
+        if (Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_LOCKING_ON_IND)) {
             Long id = rule.getRuleBaseValuesId();
             if (id != null) {
                 Long routeHeaderId = getRuleService().isLockedForRouting(id);

@@ -132,7 +132,7 @@ public class DocumentSearchDAOOjbImpl extends PersistenceBrokerDaoSupport implem
 
     private int getSearchResultCap(DocumentSearchGenerator docSearchGenerator) {
         int resultCap = docSearchGenerator.getDocumentSearchResultSetLimit();
-        String resultCapValue = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_RESULT_CAP);
+        String resultCapValue = Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_RESULT_CAP);
         if (!StringUtils.isBlank(resultCapValue)) {
             try {
                 Integer maxResultCap = Integer.parseInt(resultCapValue);
@@ -152,7 +152,7 @@ public class DocumentSearchDAOOjbImpl extends PersistenceBrokerDaoSupport implem
     // TODO delyea: use searchable attribute count here?
     private int getFetchMoreIterationLimit() {
         int fetchMoreLimit = DEFAULT_FETCH_MORE_ITERATION_LIMIT;
-        String fetchMoreLimitValue = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_FETCH_MORE_ITERATION_LIMIT);
+        String fetchMoreLimitValue = Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_FETCH_MORE_ITERATION_LIMIT);
         if (!StringUtils.isBlank(fetchMoreLimitValue)) {
             try {
                 fetchMoreLimit = Integer.parseInt(fetchMoreLimitValue);

@@ -98,7 +98,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 
 	public String getApplicationEmailAddress() {
 		// first check the configured value
-		String fromAddress = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.MAILER_DETAIL_TYPE, KEWConstants.EMAIL_REMINDER_FROM_ADDRESS);
+		String fromAddress = Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.MAILER_DETAIL_TYPE, KEWConstants.EMAIL_REMINDER_FROM_ADDRESS);
 		// if there's no value configured, use the default
 		if (Utilities.isEmpty(fromAddress)) {
 			fromAddress = DEFAULT_EMAIL_FROM_ADDRESS;
@@ -153,7 +153,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 						.getEmailService()
 						.sendEmail(
 								getEmailFrom(documentType),
-								new EmailTo(Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTIONLIST_EMAIL_TEST_ADDRESS)),
+								new EmailTo(Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTIONLIST_EMAIL_TEST_ADDRESS)),
 								subject, body, false);
 			}
 		} catch (Exception e) {
@@ -511,10 +511,10 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 	}
 
 	protected boolean sendActionListEmailNotification() {
-        LOG.debug("actionlistsendconstant: " + Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_IND));
+        LOG.debug("actionlistsendconstant: " + Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_IND));
 
         return KEWConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_VALUE
-		        .equals(Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_IND));
+		        .equals(Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_IND));
 	}
 
 	public void scheduleBatchEmailReminders() throws Exception {
@@ -586,13 +586,13 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 
 	protected String getActionListUrl() {
 		return ConfigContext.getCurrentContextConfig().getBaseUrl()
-				+ Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.APPLICATION_CONTEXT)
+				+ Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.APPLICATION_CONTEXT)
 				+ "/" + "ActionList.do";
 	}
 
 	protected String getPreferencesUrl() {
 		return ConfigContext.getCurrentContextConfig().getBaseUrl()
-				+ Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.APPLICATION_CONTEXT)
+				+ Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.APPLICATION_CONTEXT)
 				+ "/" + "Preferences.do";
 	}
 }

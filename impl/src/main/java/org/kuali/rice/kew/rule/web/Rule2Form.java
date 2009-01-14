@@ -84,9 +84,9 @@ public class Rule2Form extends WorkflowRoutingForm {
     private Long docTypeId;
 
     public Rule2Form() {
-        delegationLimit = Integer.parseInt(Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_DELEGATE_LIMIT));
-        instructionForCreateNew = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_CREATE_NEW_INSTRUCTION);
-        instructionForGlobalReviewerReplace = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.GLOBAL_REVIEWER_DETAIL_TYPE, KEWConstants.GLOBAL_REVIEWER_REPLACE_INSTRUCTION);
+        delegationLimit = Integer.parseInt(Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_DELEGATE_LIMIT));
+        instructionForCreateNew = Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_CREATE_NEW_INSTRUCTION);
+        instructionForGlobalReviewerReplace = Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.GLOBAL_REVIEWER_DETAIL_TYPE, KEWConstants.GLOBAL_REVIEWER_REPLACE_INSTRUCTION);
         reset();
     }
 
@@ -356,7 +356,7 @@ public class Rule2Form extends WorkflowRoutingForm {
         this.parentShowHide = parentShowHide;
     }
     public String getRouteLogPopup() {
-        return Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_ROUTE_LOG_POPUP_IND).trim();
+        return Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_ROUTE_LOG_POPUP_IND).trim();
     }
 
     public String getForward() {

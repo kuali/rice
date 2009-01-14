@@ -59,16 +59,12 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtensio
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kew.web.UrlResolver;
 import org.kuali.rice.kew.web.UserLoginFilter;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.exception.AuthorizationException;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.web.struts.action.KualiAction;
 import org.kuali.rice.kns.web.ui.ExtraButton;
 
@@ -575,6 +571,9 @@ public class ActionListAction extends KualiAction {
 
     public ActionForward helpDeskActionListLogin(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         ActionListFormOld actionListForm = (ActionListFormOld) form;
+        if (!"true".equals(request.getAttribute("helpDeskActionList"))) {
+        	throw new AuthorizationException(UserSession.getAuthenticatedUser().getPrincipalId(), "helpDeskActionListLogin", getClass().getSimpleName());
+        }
         getUserSession(request).establishHelpDeskWithPrincipalName(actionListForm.getHelpDeskActionListUserName());
         actionListForm.setDelegator(null);
         request.getSession().setAttribute(REQUERY_ACTION_LIST_KEY, "true");
@@ -644,48 +643,6 @@ public class ActionListAction extends KualiAction {
         }
 
         return actionCompatible;
-    }
-
-    public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
-        LOG.debug("establishRequiredState ActionListAction");
-        ActionListForm actionListForm = (ActionListForm) form;
-        actionListForm.setHeaderButtons(getHeaderButtons());
-
-        // take the UserSession from the HttpSession and add it to the request
-        request.setAttribute("UserSession", getUserSession(request));
-
-        //refactor actionlist.jsp not to be dependent on this
-        request.setAttribute("preferences", getUserSession(request).getPreferences());
-
-        String kewHelpDeskWgName = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.HELP_DESK_ACTION_LIST);
-        if (kewHelpDeskWgName != null && KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(getUserSession(request).getPrincipalId(), Utilities.parseGroupNamespaceCode(kewHelpDeskWgName), Utilities.parseGroupName(kewHelpDeskWgName))) {
-            request.setAttribute("helpDeskActionList", "true");
-        }
-        String routeLogPopup = "false";
-        boolean routeLogPopupInd = Utilities.getKNSParameterBooleanValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_ROUTE_LOG_POPUP_IND);
-        if (routeLogPopupInd) {
-        	routeLogPopup = "true";
-        }
-        String documentPopup = "false";
-        boolean documentPopupInd = Utilities.getKNSParameterBooleanValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_ROUTE_LOG_POPUP_IND);
-        if (documentPopupInd) {
-            documentPopup = "true";
-        }
-        actionListForm.setRouteLogPopup(routeLogPopup.trim());
-        actionListForm.setDocumentPopup(documentPopup.trim());
-        request.setAttribute("noRefresh", new Boolean(ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.ACTION_LIST_NO_REFRESH)));
-        LOG.debug("end establishRequiredState ActionListAction");
-        return null;
-    }
-
-    public ActionMessages establishFinalState(HttpServletRequest request, ActionForm form) throws Exception {
-        LOG.debug("establishFinalState ActionListAction");
-        ActionListForm actionListForm = (ActionListForm) form;
-        if (getUserSession(request).getHelpDeskActionListPrincipal() != null) {
-            actionListForm.setHelpDeskActionListUserName(getUserSession(request).getHelpDeskActionListPrincipal().getPrincipalName());
-        }
-        LOG.debug("end establishFinalState ActionListAction");
-        return null;
     }
 
     private List getWebFriendlyRecipients(Collection recipients) {

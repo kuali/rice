@@ -49,7 +49,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  */
 public class RoleRouteModuleTest extends KEWTestCase {
 	
-	private String namespace = KEWConstants.DEFAULT_KIM_NAMESPACE;
+	private String namespace = KEWConstants.KEW_NAMESPACE;
 	private KimAttributeImpl documentTypeAttribute;
 	private KimAttributeImpl nodeNameAttribute;
 	private KimTypeImpl kimRespType;

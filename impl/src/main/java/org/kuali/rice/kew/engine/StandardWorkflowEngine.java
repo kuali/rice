@@ -657,7 +657,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 	}
 
 	private boolean isRunawayProcessDetected(EngineState engineState) throws NumberFormatException {
-	    String maxNodesConstant = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.MAX_NODES_BEFORE_RUNAWAY_PROCESS);
+	    String maxNodesConstant = Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.MAX_NODES_BEFORE_RUNAWAY_PROCESS);
 	    int maxNodes = (Utilities.isEmpty(maxNodesConstant)) ? 50 : Integer.valueOf(maxNodesConstant);
 	    return engineState.getCompleteNodeInstances().size() > maxNodes;
 	}

@@ -19,7 +19,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.struts.action.ActionErrors;
+import org.apache.struts.action.ActionMapping;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.actionlist.ActionToTake;
+import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.web.UserLoginFilter;
+import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
@@ -336,6 +348,43 @@ public class ActionListForm extends KualiForm {
           url = "<a href=\"" + url + "\"><img src=\"../kr/images/tinybutton-preferences.gif\" alt=\"create new\" width=\"70\" height=\"15\"/></a>";
 		return url;
 	}
+
+	@Override
+	public void populate(HttpServletRequest request) {
+		UserSession userSession = UserLoginFilter.getUserSession(request);
+        setHeaderButtons(getHeaderButtons());
+
+        // take the UserSession from the HttpSession and add it to the request
+        request.setAttribute("UserSession", userSession);
+
+        //refactor actionlist.jsp not to be dependent on this
+        request.setAttribute("preferences", userSession);
+
+        String principalId = GlobalVariables.getUserSession().getPrincipalId();
+        if (userSession.getHelpDeskActionListPrincipal() != null) {
+        	setHelpDeskActionListUserName(userSession.getHelpDeskActionListPrincipal().getPrincipalName());
+        }
+        boolean isHelpDeskAuthorized = KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.KEW_NAMESPACE,	KEWConstants.PermissionTemplateNames.VIEW_OTHER_ACTION_LST, new AttributeSet(), new AttributeSet()); 
+        if (isHelpDeskAuthorized) {
+            request.setAttribute("helpDeskActionList", "true");
+        }
+        String routeLogPopup = "false";
+        boolean routeLogPopupInd = Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_ROUTE_LOG_POPUP_IND);
+        if (routeLogPopupInd) {
+        	routeLogPopup = "true";
+        }
+        String documentPopup = "false";
+        boolean documentPopupInd = Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_ROUTE_LOG_POPUP_IND);
+        if (documentPopupInd) {
+            documentPopup = "true";
+        }
+        setRouteLogPopup(routeLogPopup.trim());
+        setDocumentPopup(documentPopup.trim());
+        request.setAttribute("noRefresh", new Boolean(ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.ACTION_LIST_NO_REFRESH)));
+		super.populate(request);
+	}
+	
+	
 
 
 }

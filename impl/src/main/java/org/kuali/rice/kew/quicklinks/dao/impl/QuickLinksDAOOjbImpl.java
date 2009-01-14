@@ -124,7 +124,7 @@ public class QuickLinksDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                     selectDistinctDocumentTypes = connection.prepareStatement(sql);
                     selectDistinctDocumentTypes.setString(1, principalId);
                     selectedDistinctDocumentTypes = selectDistinctDocumentTypes.executeQuery();
-                    String documentNames = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.QUICK_LINK_DETAIL_TYPE, KEWConstants.QUICK_LINKS_RESTRICT_DOCUMENT_TYPES).trim();
+                    String documentNames = Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.QUICK_LINK_DETAIL_TYPE, KEWConstants.QUICK_LINKS_RESTRICT_DOCUMENT_TYPES).trim();
                     if (documentNames == null || "none".equals(documentNames)) {
                     	documentNames = "";
                     }

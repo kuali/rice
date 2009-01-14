@@ -613,17 +613,17 @@ public class ActionListActionOld extends WorkflowAction {
         //refactor actionlist.jsp not to be dependent on this
         request.setAttribute("preferences", getUserSession(request).getPreferences());
         IdentityManagementService ims = (IdentityManagementService) KIMServiceLocator.getIdentityManagementService();
-        String kewHelpDeskWgName = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.HELP_DESK_ACTION_LIST);
+        String kewHelpDeskWgName = Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.HELP_DESK_ACTION_LIST);
         if (kewHelpDeskWgName != null && KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(getUserSession(request).getPrincipalId(), Utilities.parseGroupNamespaceCode(kewHelpDeskWgName), Utilities.parseGroupName(kewHelpDeskWgName))) {
             request.setAttribute("helpDeskActionList", "true");
         }
         String routeLogPopup = "false";
-        boolean routeLogPopupInd = Utilities.getKNSParameterBooleanValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_ROUTE_LOG_POPUP_IND);
+        boolean routeLogPopupInd = Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_ROUTE_LOG_POPUP_IND);
         if (routeLogPopupInd) {
         	routeLogPopup = "true";
         }
         String documentPopup = "false";
-        boolean documentPopupInd = Utilities.getKNSParameterBooleanValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_ROUTE_LOG_POPUP_IND);
+        boolean documentPopupInd = Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_ROUTE_LOG_POPUP_IND);
         if (documentPopupInd) {
             documentPopup = "true";
         }

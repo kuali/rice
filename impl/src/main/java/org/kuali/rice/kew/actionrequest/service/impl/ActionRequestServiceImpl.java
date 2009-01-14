@@ -426,7 +426,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     public void updateActionRequestsForResponsibilityChange(Set responsibilityIds) {
         PerformanceLogger performanceLogger = new PerformanceLogger();
         Collection documentsAffected = getRouteHeaderService().findPendingByResponsibilityIds(responsibilityIds);
-        String cacheWaitValue = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_CACHE_REQUEUE_DELAY);
+        String cacheWaitValue = Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_CACHE_REQUEUE_DELAY);
         Long cacheWait = new Long(KEWConstants.DEFAULT_CACHE_REQUEUE_WAIT_TIME);
         if (!Utilities.isEmpty(cacheWaitValue)) {
             try {

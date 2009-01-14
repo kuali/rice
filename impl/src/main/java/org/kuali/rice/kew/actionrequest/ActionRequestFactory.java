@@ -128,7 +128,7 @@ public class ActionRequestFactory {
     public List generateNotifications(List requests, KimPrincipal principal, Recipient delegator,
             String notificationRequestCode, String actionTakenCode)
     {
-        String groupName =  Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE,
+        String groupName =  Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE,
 		        KNSConstants.DetailTypes.WORKGROUP_DETAIL_TYPE,
 		        KEWConstants.NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME_IND);
 

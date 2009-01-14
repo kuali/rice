@@ -56,14 +56,14 @@ public class AddRuleDelegationTest extends KEWTestCase {
 		
 		//set system parameters that aren't defined in test data
 		Parameter parameter = new Parameter(KEWConstants.RULE_DELEGATE_LIMIT, "1000", "A");
-		parameter.setParameterNamespaceCode(KEWConstants.DEFAULT_KIM_NAMESPACE);
+		parameter.setParameterNamespaceCode(KEWConstants.KEW_NAMESPACE);
 		parameter.setParameterTypeCode("CONFG");
 		parameter.setParameterDetailTypeCode(KNSConstants.DetailTypes.RULE_DETAIL_TYPE);
 		parameter.setParameterWorkgroupName(KEWConstants.WORKFLOW_SUPER_USER_WORKGROUP_NAME);
 		KNSServiceLocator.getBusinessObjectService().save(parameter);
 
 		parameter = new Parameter(KEWConstants.RULE_GENERATE_ACTION_REQESTS_IND, KEWConstants.YES_RULE_CHANGE_AR_GENERATION_VALUE, "A");
-		parameter.setParameterNamespaceCode(KEWConstants.DEFAULT_KIM_NAMESPACE);
+		parameter.setParameterNamespaceCode(KEWConstants.KEW_NAMESPACE);
 		parameter.setParameterTypeCode("CONFG");
 		parameter.setParameterDetailTypeCode(KNSConstants.DetailTypes.RULE_DETAIL_TYPE);
 		parameter.setParameterWorkgroupName(KEWConstants.WORKFLOW_SUPER_USER_WORKGROUP_NAME);

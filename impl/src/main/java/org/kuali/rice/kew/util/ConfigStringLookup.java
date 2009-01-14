@@ -34,7 +34,7 @@ public class ConfigStringLookup extends StrLookup {
 			return null;
 		}
 		// check system parameters first
-		String paramValue = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, propertyName);
+		String paramValue = Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, propertyName);
 		if (paramValue == null) {
 			paramValue = ConfigContext.getCurrentContextConfig().getProperty(propertyName);
 		}

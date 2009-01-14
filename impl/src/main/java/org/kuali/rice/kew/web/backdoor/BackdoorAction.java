@@ -43,7 +43,7 @@ public class BackdoorAction extends WorkflowAction {
     public ActionForward menu(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LOG.debug("start");
         BackdoorForm backdoorForm = (BackdoorForm) form;
-        backdoorForm.setTargetName(Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KEWConstants.BACKDOOR_TARGET_FRAME_NAME));
+        backdoorForm.setTargetName(Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KEWConstants.BACKDOOR_TARGET_FRAME_NAME));
         return mapping.findForward("viewBackdoor");
     }
 
@@ -55,7 +55,7 @@ public class BackdoorAction extends WorkflowAction {
     public ActionForward portal(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception{
     	LOG.debug("portal started");
     	BackdoorForm backdoorForm=(BackdoorForm)form;
-    	backdoorForm.setTargetName(Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KEWConstants.BACKDOOR_TARGET_FRAME_NAME));
+    	backdoorForm.setTargetName(Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KEWConstants.BACKDOOR_TARGET_FRAME_NAME));
     	//LOG.debug(backdoorForm.getGraphic());
     	return mapping.findForward("viewPortal");
     }
@@ -63,7 +63,7 @@ public class BackdoorAction extends WorkflowAction {
     public ActionForward administration(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LOG.debug("administration");
         BackdoorForm backdoorForm = (BackdoorForm) form;
-        backdoorForm.setTargetName(Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KEWConstants.BACKDOOR_TARGET_FRAME_NAME));
+        backdoorForm.setTargetName(Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KEWConstants.BACKDOOR_TARGET_FRAME_NAME));
         return mapping.findForward("administration");
     }
 
@@ -100,7 +100,7 @@ public class BackdoorAction extends WorkflowAction {
     	BackdoorForm backdoorForm = (BackdoorForm) form;
 
     	// default to true if not defined
-    	Boolean showBackdoorLogin = new Boolean(Utilities.getKNSParameterBooleanValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KEWConstants.SHOW_BACK_DOOR_LOGIN_IND));
+    	Boolean showBackdoorLogin = new Boolean(Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KEWConstants.SHOW_BACK_DOOR_LOGIN_IND));
 
         backdoorForm.setShowBackdoorLogin(showBackdoorLogin);
         setFormGroupPermission(backdoorForm, request);

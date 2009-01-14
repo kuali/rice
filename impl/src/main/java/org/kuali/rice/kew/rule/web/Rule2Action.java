@@ -150,7 +150,7 @@ public class Rule2Action extends WorkflowAction {
                 String key = "currrule" + ruleIndex + "resp" + respIndex;
                 if (ruleForm.getShowDelegationsMap().get(key) == null) {
                     int numDelegations = responsibility.getDelegationRules().size();
-                    ruleForm.getShowDelegationsMap().put(key, new Boolean(numDelegations <= Integer.parseInt(Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_DELEGATE_LIMIT))).toString());
+                    ruleForm.getShowDelegationsMap().put(key, new Boolean(numDelegations <= Integer.parseInt(Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_DELEGATE_LIMIT))).toString());
                 }
                 respIndex++;
             }
@@ -679,7 +679,7 @@ public class Rule2Action extends WorkflowAction {
                 String key = "currrule" + ruleIndex + "resp" + respIndex;
                 if (ruleForm.getShowDelegationsMap().get(key) == null) {
                     int numDelegations = responsibility.getDelegationRules().size();
-                    ruleForm.getShowDelegationsMap().put(key, new Boolean(numDelegations <= Integer.parseInt(Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_DELEGATE_LIMIT))).toString());
+                    ruleForm.getShowDelegationsMap().put(key, new Boolean(numDelegations <= Integer.parseInt(Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_DELEGATE_LIMIT))).toString());
                 }
                 respIndex++;
             }
@@ -691,7 +691,7 @@ public class Rule2Action extends WorkflowAction {
                     String key = "prevrule" + ruleIndex + "resp" + prevRespIndex;
                     if (ruleForm.getShowDelegationsMap().get(key) == null) {
                         int numDelegations = responsibility.getDelegationRules().size();
-                        ruleForm.getShowDelegationsMap().put(key, new Boolean(numDelegations <= Integer.parseInt(Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_DELEGATE_LIMIT))).toString());
+                        ruleForm.getShowDelegationsMap().put(key, new Boolean(numDelegations <= Integer.parseInt(Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_DELEGATE_LIMIT))).toString());
                     }
                     prevRespIndex++;
                 }
@@ -757,7 +757,7 @@ public class Rule2Action extends WorkflowAction {
     }
 
     private boolean checkLockedForRouting(ActionErrors errors, RuleBaseValues rule, boolean usePreviousId) {
-        if (Utilities.getKNSParameterBooleanValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_LOCKING_ON_IND)) {
+        if (Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_LOCKING_ON_IND)) {
             Long id = (usePreviousId ? rule.getPreviousVersionId() : rule.getRuleBaseValuesId());
             if (id != null) {
                 Long routeHeaderId = getRuleService().isLockedForRouting(id);

@@ -62,7 +62,7 @@ public class DocumentTypePermissionServiceTest extends KEWTestCase {
 	}
 	
 	private void turnOnKimPermissionPriority() throws Exception {
-		Parameter kimPriorityParam = KNSServiceLocator.getKualiConfigurationService().getParameterWithoutExceptions(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.KIM_PRIORITY_ON_DOC_TYP_PERMS_IND);
+		Parameter kimPriorityParam = KNSServiceLocator.getKualiConfigurationService().getParameterWithoutExceptions(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.KIM_PRIORITY_ON_DOC_TYP_PERMS_IND);
 		if (kimPriorityParam == null) {
 			kimPriorityParam = new Parameter();
 			//kimPriorityParam.set

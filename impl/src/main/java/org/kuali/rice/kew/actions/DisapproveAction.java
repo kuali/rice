@@ -167,7 +167,7 @@ public class DisapproveAction extends ActionTakenEvent {
     private void generateNotifications(RouteNodeInstance notificationNodeInstance)
     {
         String groupName = Utilities.getKNSParameterValue(
-                                KEWConstants.DEFAULT_KIM_NAMESPACE,
+                                KEWConstants.KEW_NAMESPACE,
                                 KNSConstants.DetailTypes.WORKGROUP_DETAIL_TYPE,
                                 KEWConstants.NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME_IND);
 

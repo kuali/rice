@@ -140,7 +140,7 @@ public class RoleRouteModule implements RouteModule {
 			this.namespace = RouteNodeUtils.getValueOfCustomProperty(context.getNodeInstance().getRouteNode(), NAMESPACE_ELEMENT);
 		}
 		if (StringUtils.isBlank(namespace)) {
-			this.namespace = KEWConstants.DEFAULT_KIM_NAMESPACE;
+			this.namespace = KEWConstants.KEW_NAMESPACE;
 		}
 		return namespace;
 	}

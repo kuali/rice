@@ -62,7 +62,7 @@ public class RuleTemplateForm extends ActionForm {
         this.ruleTemplate = new RuleTemplate();
         this.ruleTemplateAttribute = new RuleTemplateAttribute();
         methodToCall = "";
-        instructionForCreateNew = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_TEMPLATE_DETAIL_TYPE, KEWConstants.RULE_TEMPLATE_CREATE_NEW_INSTRUCTION);
+        instructionForCreateNew = Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_TEMPLATE_DETAIL_TYPE, KEWConstants.RULE_TEMPLATE_CREATE_NEW_INSTRUCTION);
     }
 
     public Integer getEditAttribute() {

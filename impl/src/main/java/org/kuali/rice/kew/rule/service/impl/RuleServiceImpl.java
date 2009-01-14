@@ -154,7 +154,7 @@ public class RuleServiceImpl implements RuleService {
         PerformanceLogger performanceLogger = new PerformanceLogger();
 
         boolean isGenerateRuleArs = true;
-        String generateRuleArs = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_GENERATE_ACTION_REQESTS_IND);
+        String generateRuleArs = Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_GENERATE_ACTION_REQESTS_IND);
         if (!StringUtils.isBlank(generateRuleArs)) {
             isGenerateRuleArs = KEWConstants.YES_RULE_CHANGE_AR_GENERATION_VALUE.equalsIgnoreCase(generateRuleArs);
         }
@@ -254,7 +254,7 @@ public class RuleServiceImpl implements RuleService {
         PerformanceLogger performanceLogger = new PerformanceLogger();
 
         boolean isGenerateRuleArs = true;
-        String generateRuleArs = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_GENERATE_ACTION_REQESTS_IND);
+        String generateRuleArs = Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_GENERATE_ACTION_REQESTS_IND);
         if (!StringUtils.isBlank(generateRuleArs)) {
             isGenerateRuleArs = KEWConstants.YES_RULE_CHANGE_AR_GENERATION_VALUE.equalsIgnoreCase(generateRuleArs);
         }
@@ -396,7 +396,7 @@ public class RuleServiceImpl implements RuleService {
     }
 
     public void notifyCacheOfRuleChange(RuleBaseValues rule, DocumentType documentType) {
-        Boolean cachingRules = new Boolean(Utilities.getKNSParameterBooleanValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, USING_RULE_CACHE_IND));
+        Boolean cachingRules = new Boolean(Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, USING_RULE_CACHE_IND));
         if (!cachingRules.booleanValue()) {
             return;
         }
@@ -911,7 +911,7 @@ public class RuleServiceImpl implements RuleService {
 
     public List fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateName, String documentType, boolean ignoreCache) {
         PerformanceLogger performanceLogger = new PerformanceLogger();
-        Boolean cachingRules = new Boolean(Utilities.getKNSParameterBooleanValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, USING_RULE_CACHE_IND));
+        Boolean cachingRules = new Boolean(Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, USING_RULE_CACHE_IND));
         if (cachingRules.booleanValue()) {
             //Cache cache = SpringServiceLocator.getCache();
             List<RuleBaseValues> rules = getListFromCache(ruleTemplateName, documentType);
@@ -1507,7 +1507,7 @@ public class RuleServiceImpl implements RuleService {
         private List configs = new ArrayList();
         public static RuleRoutingConfig parse() {
             RuleRoutingConfig config = new RuleRoutingConfig();
-            String constant = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_CUSTOM_DOC_TYPES);
+            String constant = Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_CUSTOM_DOC_TYPES);
             if (!StringUtils.isEmpty(constant)) {
                 String[] ruleConfigs = constant.split(",");
                 for (int index = 0; index < ruleConfigs.length; index++) {

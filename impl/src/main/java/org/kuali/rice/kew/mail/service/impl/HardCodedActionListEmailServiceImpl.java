@@ -47,7 +47,7 @@ public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceI
 
 	public String getApplicationEmailAddress() {
 		// first check the configured value
-		String fromAddress = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.MAILER_DETAIL_TYPE, KEWConstants.EMAIL_REMINDER_FROM_ADDRESS);
+		String fromAddress = Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.MAILER_DETAIL_TYPE, KEWConstants.EMAIL_REMINDER_FROM_ADDRESS);
 		// if there's no value configured, use the default
 		if (Utilities.isEmpty(fromAddress)) {
 			fromAddress = DEFAULT_EMAIL_FROM_ADDRESS;

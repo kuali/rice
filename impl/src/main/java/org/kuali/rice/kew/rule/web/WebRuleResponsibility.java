@@ -99,7 +99,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 	}
 
 	public void initialize() throws Exception {
-		if (getDelegationRules().size() <= Integer.parseInt(Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_DELEGATE_LIMIT))) {
+		if (getDelegationRules().size() <= Integer.parseInt(Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_DELEGATE_LIMIT))) {
 			showDelegations = true;
 		}
 		setNumberOfDelegations(getDelegationRules().size());
@@ -154,7 +154,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
         //System.err.println("DELEGATIONRULES PROXY OBJECT instanceof List?: " + (o instanceof List));
 		setDelegationRules((List) o);
 
-		if (Integer.parseInt(Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_DELEGATE_LIMIT)) > getDelegationRules().size() || showDelegations) {
+		if (Integer.parseInt(Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_DELEGATE_LIMIT)) > getDelegationRules().size() || showDelegations) {
 			for (Iterator iterator = getDelegationRules().iterator(); iterator.hasNext();) {
 				RuleDelegation ruleDelegation = (RuleDelegation) iterator.next();
 				WebRuleBaseValues webRule = new WebRuleBaseValues();

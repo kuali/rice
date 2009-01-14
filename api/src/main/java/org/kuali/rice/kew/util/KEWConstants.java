@@ -820,7 +820,7 @@ public class KEWConstants {
 
 	public static final String DOCHANDLER_METHOD = "dochandlerMethod";
 
-	public static final String DEFAULT_KIM_NAMESPACE = "KR-WKFLW";
+	public static final String KEW_NAMESPACE = "KR-WKFLW";
 
 	public static final String DEFAULT_RESPONSIBILITY_TEMPLATE_NAME = "Review";
 	
@@ -885,4 +885,8 @@ public class KEWConstants {
     public static final String YES_DELEGATE_CHANGE_AR_GENERATION_VALUE = "Y";
     public static final String DOCUMENT_SEARCH_ROUTE_LOG_POPUP_VALUE = "Y";
     public static final String DOCUMENT_SEARCH_DOCUMENT_POPUP_VALUE = "Y";
+    
+    public class PermissionTemplateNames {
+        public static final String VIEW_OTHER_ACTION_LST = "View Other Action List";
+    }
 }

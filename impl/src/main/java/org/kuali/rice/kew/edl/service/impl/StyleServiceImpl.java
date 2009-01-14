@@ -88,7 +88,7 @@ public class StyleServiceImpl implements StyleService {
                 return null;
             }
 
-            boolean useXSLTC = Utilities.getKNSParameterBooleanValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.EDOC_LITE_DETAIL_TYPE, KEWConstants.EDL_USE_XSLTC_IND);
+            boolean useXSLTC = Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.EDOC_LITE_DETAIL_TYPE, KEWConstants.EDL_USE_XSLTC_IND);
             if (useXSLTC) {
                 LOG.info("using xsltc to compile stylesheet");
                 String key = "javax.xml.transform.TransformerFactory";
@@ -105,7 +105,7 @@ public class StyleServiceImpl implements StyleService {
             if (useXSLTC) {
                 factory.setAttribute("translet-name",name);
                 factory.setAttribute("generate-translet",Boolean.TRUE);
-                String debugTransform = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.EDOC_LITE_DETAIL_TYPE, KEWConstants.EDL_DEBUG_TRANSFORM_IND);
+                String debugTransform = Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.EDOC_LITE_DETAIL_TYPE, KEWConstants.EDL_DEBUG_TRANSFORM_IND);
                 if (debugTransform.trim().equals("Y")) {
                     factory.setAttribute("debug", Boolean.TRUE);
                 }

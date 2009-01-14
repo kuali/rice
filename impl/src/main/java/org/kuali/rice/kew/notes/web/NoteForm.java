@@ -92,7 +92,7 @@ public class NoteForm extends ActionForm {
     }
 
     public String getInstructionForCreateNew() {
-        return Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.NOTE_DETAIL_TYPE, KEWConstants.NOTE_CREATE_NEW_INSTRUCTION);
+        return Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.NOTE_DETAIL_TYPE, KEWConstants.NOTE_CREATE_NEW_INSTRUCTION);
     }
 
     public Long getDocId() {

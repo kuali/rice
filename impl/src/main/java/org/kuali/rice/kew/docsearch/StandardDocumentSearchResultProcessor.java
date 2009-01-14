@@ -531,12 +531,12 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 	}
 
 	private boolean isDocumentHandlerPopup() {
-		String parameterValue = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOCUMENT_SEARCH_DOCUMENT_POPUP_IND).trim();
+		String parameterValue = Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOCUMENT_SEARCH_DOCUMENT_POPUP_IND).trim();
 		return (KEWConstants.DOCUMENT_SEARCH_DOCUMENT_POPUP_VALUE.equals(parameterValue));
 	}
 
 	private boolean isRouteLogPopup() {
-		String parameterValue = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOCUMENT_SEARCH_ROUTE_LOG_POPUP_IND).trim();
+		String parameterValue = Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOCUMENT_SEARCH_ROUTE_LOG_POPUP_IND).trim();
 		return (KEWConstants.DOCUMENT_SEARCH_ROUTE_LOG_POPUP_VALUE.equals(parameterValue));
 	}
 

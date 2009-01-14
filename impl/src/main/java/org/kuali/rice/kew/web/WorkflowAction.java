@@ -17,6 +17,7 @@
 package org.kuali.rice.kew.web;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -46,10 +47,15 @@ import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimCommonUtils;
+import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
+import org.kuali.rice.kns.util.KNSConstants;
 
 
 /**
@@ -64,10 +70,7 @@ public abstract class WorkflowAction extends DispatchAction {
 
 	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
-        if (!checkAuthorization())
-        {
-            return mapping.findForward("NotAuthorized");
-        }
+        checkAuthorization(form, "");
 
 	    try {
 			request.setAttribute("Constants", new JSTLConstants(KEWConstants.class));
@@ -112,7 +115,6 @@ public abstract class WorkflowAction extends DispatchAction {
 					returnForward = start(mapping, form, request, response);
 				}
 			}
-
 			messages = establishFinalState(request, form);
 			if (messages != null && !messages.isEmpty()) {
 				saveMessages(request, messages);
@@ -129,6 +131,28 @@ public abstract class WorkflowAction extends DispatchAction {
 		    throw new WorkflowRuntimeException(e);
 		}
 	}
+	
+	protected void checkAuthorization( ActionForm form, String methodToCall) throws AuthorizationException 
+    {
+    	String principalId = UserSession.getAuthenticatedUser().getPrincipalId();
+    	AttributeSet roleQualifier = new AttributeSet(getRoleQualification(form, methodToCall));
+    	AttributeSet permissionDetails = KimCommonUtils.getNamespaceAndActionClass(this.getClass());
+    	
+        if (!KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(principalId, KNSConstants.KNS_NAMESPACE, 
+        		KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails, roleQualifier )) 
+        {
+        	throw new AuthorizationException(UserSession.getAuthenticatedUser().getPrincipalName(), 
+            		methodToCall,
+            		this.getClass().getSimpleName());
+        }
+    }
+    
+    /** 
+     * override this method to add data from the form for role qualification in the authorization check
+     */
+    protected Map<String,String> getRoleQualification(ActionForm form, String methodToCall) {
+    	return new HashMap<String,String>();
+    }
 
 	public abstract ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception;
 
@@ -273,27 +297,6 @@ public abstract class WorkflowAction extends DispatchAction {
 
     private IdentityManagementService getIdentityManagementService() {
         return (IdentityManagementService) KIMServiceLocator.getService(KIMServiceLocator.KIM_IDENTITY_MANAGEMENT_SERVICE);
-    }
-
-	/*
-     * TODO: this will be eliminated evaentually in favor of using KualiAction
-     * chb: 12Jan2009: that's been done...but permissions still need to be
-     * 		built
-     *
-     */
-    protected boolean checkAuthorization() //throws AuthorizationException
-    {
-    	// TODO: fix the KIM permission check
-        return true;
-    	/*if( log.isWarnEnabled())
-        {
-            LOG.warn("checkAuthorization was handled by WorkflowAction rather than KualiAction");
-        }
-        boolean isAuthorized = KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(UserSession.getAuthenticatedUser().getPerson().getPrincipalId(), KNSConstants.KNS_NAMESPACE, KimConstants.PermissionTemplateNames.USE_SCREEN, KimCommonUtils.getNamespaceAndComponentFullName(this.getClass()), null);
-        if(!isAuthorized) {
-            LOG.error("User not authorized to use this action: " + this.getClass().getName() );
-        }
-        return isAuthorized;*/
     }
 
     protected static KualiModuleService getKualiModuleService() {

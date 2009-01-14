@@ -37,10 +37,11 @@ public abstract class KSBAction extends DispatchAction {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KSBAction.class);
 
 	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		checkAuthorization(form, "");
+		
 		try {
-			if (!checkAuthorization()) {
-				return mapping.findForward("NotAuthorized");
-			}
+
 			
 			ActionMessages messages = null;
 			messages = establishRequiredState(request, form);
@@ -97,19 +98,26 @@ public abstract class KSBAction extends DispatchAction {
 		}
 	}
 	
-    protected boolean checkAuthorization() //throws AuthorizationException
+	protected void checkAuthorization( ActionForm form, String methodToCall) throws AuthorizationException 
     {
-    	// TODO: fix the KIM permission check
-        return true;
-        /*if( log.isWarnEnabled())
+    	String principalId = UserSession.getAuthenticatedUser().getPrincipalId();
+    	AttributeSet roleQualifier = new AttributeSet(getRoleQualification(form, methodToCall));
+    	AttributeSet permissionDetails = KimCommonUtils.getNamespaceAndActionClass(this.getClass());
+    	
+        if (!KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(principalId, KNSConstants.KNS_NAMESPACE, 
+        		KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails, roleQualifier )) 
         {
-            LOG.warn("checkAuthorization was handled by KSBAction rather than KualiAction");
+        	throw new AuthorizationException(UserSession.getAuthenticatedUser().getPrincipalName(), 
+            		methodToCall,
+            		this.getClass().getSimpleName());
         }
-        boolean isAuthorized = KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(UserSession.getAuthenticatedUser().getPerson().getPrincipalId(), KNSConstants.KNS_NAMESPACE, KimConstants.PermissionTemplateNames.USE_SCREEN, KimCommonUtils.getNamespaceAndComponentFullName(this.getClass()), null);
-        if(!isAuthorized) {
-            LOG.error("User not authorized to use this action: " + this.getClass().getName() );
-        }
-        return isAuthorized;*/
+    }
+    
+    /** 
+     * override this method to add data from the form for role qualification in the authorization check
+     */
+    protected Map<String,String> getRoleQualification(ActionForm form, String methodToCall) {
+    	return new HashMap<String,String>();
     }
 
 	public abstract ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception;

@@ -51,7 +51,7 @@
 <bean:define id="outboxActionItemDelete">
     Delete Item
   </bean:define>
-    <c:url var="actionListURI" value="ActionListNew.do">
+    <c:url var="actionListURI" value="ActionList.do">
     <c:param name="methodToCall" value="start"/>
     <c:param name="currentPage" value="${ActionListFormNew.currentPage}"/>
     <c:param name="currentSort" value="${ActionListFormNew.currentSort}"/>
@@ -61,11 +61,11 @@
 <kul:page headerTitle="Action List" lookup="true"
 	headerMenuBar="${ActionListFormNew.menuBar}"
 	transactionalDocument="false" showDocumentInfo="false"
-	htmlFormAction="ActionListNew" docTitle="Action List(new)">
+	htmlFormAction="ActionList" docTitle="Action List">
 	<%-- Since we are using the external paging and sorting features of the display tag now, if a new sortable column is added, remember to add it to the
        ActionItemComparator in the ActionListAction as well --%>
 	<div class="headerarea-small" id="headerarea-small">
-	<h1><c:out value="Action List New" />
+	<h1><c:out value="Action List" />
 	</h1>
 	<div align="right">   
 	  <br/>
@@ -74,7 +74,7 @@
          src="../kr/images/tinybutton-preferences.gif" class="tinybutton" alt="preferences" title="preferences"
          border="0" /></a>     
 	  <a
-         href='<c:out value="ActionListNew.do?methodToCall=start" />'  title="refresh"><img
+         href='<c:out value="ActionList.do?methodToCall=start" />'  title="refresh"><img
          src="../kr/images/tinybutton-refresh.gif" class="tinybutton" alt="refresh" title="refresh"
          border="0" /></a>
 	   <a
@@ -101,7 +101,7 @@
 				CONTENT="<c:out value="${preferences.refreshRate * 60}"/>; URL=ActionList.do">
 		</c:if>
 	</c:if>
-	<html-el:form action="ActionListNew">
+	<html-el:form action="ActionList">
 		<html-el:hidden property="methodToCall" value="" />
 		<table width="100%">
 			<tr>
@@ -119,7 +119,7 @@
 						<c:choose>
 							<c:when
 								test="${ActionListFormNew.viewOutbox && ActionListFormNew.showOutbox}">
-								<a href="<c:url value="ActionListNew.do?methodToCall=start&viewOutbox=false" />">
+								<a href="<c:url value="ActionList.do?methodToCall=start&viewOutbox=false" />">
 								    <bean-el:message key="actionList.ActionList.title" /></a>
                                 | <strong><bean-el:message key="actionList.Outbox.title" /></strong>
 							</c:when>
@@ -127,7 +127,7 @@
 								<strong>
 								<bean-el:message key="actionList.ActionList.title" /></strong>
 								<c:if test="${ActionListFormNew.showOutbox }">
-                                    | <a href="<c:url value="ActionListNew.do?methodToCall=start&viewOutbox=true" />">
+                                    | <a href="<c:url value="ActionList.do?methodToCall=start&viewOutbox=true" />">
                                         <bean-el:message key="actionList.Outbox.title" />
                                        </a>
 								</c:if>

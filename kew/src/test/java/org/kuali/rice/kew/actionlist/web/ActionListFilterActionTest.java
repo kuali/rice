@@ -37,7 +37,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
  */
 public class ActionListFilterActionTest extends KEWTestCase
 {
-    ActionListFilterAction alfa = new ActionListFilterAction();
+    ActionListFilterActionOld alfa = new ActionListFilterActionOld();
 
     protected void loadTestData() throws Exception 
     {
@@ -45,14 +45,14 @@ public class ActionListFilterActionTest extends KEWTestCase
     }
     
     /**
-     * Test method for {@link org.kuali.rice.kew.actionlist.web.ActionListFilterAction#establishRequiredState(javax.servlet.http.HttpServletRequest, org.apache.struts.action.ActionForm)}.
+     * Test method for {@link org.kuali.rice.kew.actionlist.web.ActionListFilterActionOld#establishRequiredState(javax.servlet.http.HttpServletRequest, org.apache.struts.action.ActionForm)}.
      */
     @Test
     public final void testEstablishRequiredState()
     {
         MockHttpServletRequest request = new MockHttpServletRequest();
        
-        ActionListFilterForm form = new ActionListFilterForm();
+        ActionListFilterFormOld form = new ActionListFilterFormOld();
         
         try
         {

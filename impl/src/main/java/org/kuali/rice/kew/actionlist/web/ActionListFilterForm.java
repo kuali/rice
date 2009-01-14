@@ -1,4 +1,19 @@
 /*
+ * Copyright 2007 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl1.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/*
  * Copyright 2005-2006 The Kuali Foundation.
  * 
  * 
@@ -20,11 +35,11 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.struts.action.ActionForm;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
+import org.kuali.rice.kns.web.struts.form.KualiForm;
 
 
 /**
@@ -33,7 +48,7 @@ import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  */
-public class ActionListFilterForm extends ActionForm {
+public class ActionListFilterForm extends KualiForm {
 
 	private static final long serialVersionUID = -1149636352016711445L;
 
@@ -42,11 +57,20 @@ public class ActionListFilterForm extends ActionForm {
     private String createDateTo;
     private String lastAssignedDateTo;
     private String lastAssignedDateFrom;
-    private String methodToCall = "";
+    //private String methodToCall = "";
     private String lookupableImplServiceName;
     private String lookupType;
     private String docTypeFullName;
     private List userWorkgroups;
+    private String cssFile = "kuali.css";
+    private String test = "";
+    
+    public String getTest(){
+    	return test;
+    }
+    public void setTest(String test){
+    	this.test = test;
+    }
     
     public ActionListFilterForm() {
         filter = new ActionListFilter();
@@ -56,32 +80,47 @@ public class ActionListFilterForm extends ActionForm {
         return createDateTo;
     }
     public void setCreateDateTo(String createDateTo) {
-        this.createDateTo = createDateTo.trim();
+    	if(createDateTo == null){
+    		createDateTo = "";
+    	}
+    	else{
+    		this.createDateTo = createDateTo.trim();
+    	}
     }
     public String getLastAssignedDateFrom() {
         return lastAssignedDateFrom;
     }
     public void setLastAssignedDateFrom(String lastAssignedDateFrom) {
-        this.lastAssignedDateFrom = lastAssignedDateFrom.trim();
+    	if(lastAssignedDateFrom == null){
+    		lastAssignedDateFrom = "";
+    	}
+    	else{
+    		this.lastAssignedDateFrom = lastAssignedDateFrom.trim();
+    	}
     }
     public String getCreateDateFrom() {
         return createDateFrom;
     }
     public void setCreateDateFrom(String createDate) {
-        this.createDateFrom = createDate.trim();
+        if(createDate == null){
+        	createDate = "";
+        }
+        else{
+        	this.createDateFrom = createDate.trim();
+        }
     }
 
     public ActionListFilter getFilter() {
         return filter;
     }
 
-    public String getMethodToCall() {
-        return methodToCall;
-    }
-
-    public void setMethodToCall(String methodToCall) {
-        this.methodToCall = methodToCall;
-    }
+//    public String getMethodToCall() {
+//        return methodToCall;
+//    }
+//
+//    public void setMethodToCall(String methodToCall) {
+//        this.methodToCall = methodToCall;
+//    }
 
     public void setFilter(ActionListFilter filter) {
         this.filter = filter;
@@ -104,7 +143,12 @@ public class ActionListFilterForm extends ActionForm {
     }
 
     public void setLastAssignedDateTo(String lastAssignedDate) {
-        this.lastAssignedDateTo = lastAssignedDate.trim();
+    	if(lastAssignedDate == null){
+    		lastAssignedDate = "";
+    	}
+    	else{
+    		this.lastAssignedDateTo = lastAssignedDate.trim();
+    	}
     }
 
     public void validateDates() {
@@ -193,5 +237,13 @@ public class ActionListFilterForm extends ActionForm {
     public void setUserWorkgroups(List userWorkgroups) {
         this.userWorkgroups = userWorkgroups;
     }
+
+	public String getCssFile() {
+		return this.cssFile;
+	}
+
+	public void setCssFile(String cssFile) {
+		this.cssFile = cssFile;
+	}
 
 }

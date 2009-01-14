@@ -41,6 +41,14 @@ import org.kuali.rice.kew.batch.ZipXmlDocCollection;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.UserLoginFilter;
+import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimCommonUtils;
+import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.exception.AuthorizationException;
+import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.KNSConstants;
 
 
 /**
@@ -59,6 +67,8 @@ public class IngesterAction extends Action {
             HttpServletResponse response)
             throws Exception {
 
+    	checkAuthorization(form, "");
+    	
         LOG.debug(request.getMethod());
         if (!"post".equals(request.getMethod().toLowerCase())) {
             LOG.debug("returning to view");
@@ -180,4 +190,21 @@ public class IngesterAction extends Action {
         request.setAttribute("messages", messages);
         return mapping.findForward("view");
     }
+    
+    protected void checkAuthorization( ActionForm form, String methodToCall) throws AuthorizationException 
+    {
+    	String principalId = UserSession.getAuthenticatedUser().getPrincipalId();
+    	AttributeSet roleQualifier = new AttributeSet();
+    	AttributeSet permissionDetails = KimCommonUtils.getNamespaceAndActionClass(this.getClass());
+    	
+        if (!KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(principalId, KNSConstants.KNS_NAMESPACE, 
+        		KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails, roleQualifier )) 
+        {
+            throw new AuthorizationException(UserSession.getAuthenticatedUser().getPrincipalName(), 
+            		methodToCall,
+            		this.getClass().getSimpleName());
+        }
+    }
+    
+    
 }

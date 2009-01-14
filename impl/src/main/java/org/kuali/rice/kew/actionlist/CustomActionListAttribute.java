@@ -19,7 +19,7 @@ package org.kuali.rice.kew.actionlist;
 import java.io.Serializable;
 
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.actionlist.web.ActionListAction;
+import org.kuali.rice.kew.actionlist.web.ActionListActionOld;
 import org.kuali.rice.kew.actions.ActionSet;
 import org.kuali.rice.kew.web.session.UserSession;
 
@@ -29,7 +29,7 @@ import org.kuali.rice.kew.web.session.UserSession;
  * Mass Actions and an internal frame for displaying a summary view of the
  * document on each row in the Action List.
  * 
- * @see ActionListAction
+ * @see ActionListActionOld
  * @see DefaultCustomActionListAttribute
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)

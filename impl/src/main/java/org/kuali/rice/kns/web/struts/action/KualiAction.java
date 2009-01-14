@@ -117,7 +117,7 @@ public abstract class KualiAction extends DispatchAction {
             returnForward = dispatchMethod(mapping, form, request, response, methodToCall);
         }
         else {
-            returnForward = mapping.findForward(RiceConstants.MAPPING_BASIC);
+            returnForward = defaultDispatch(mapping, form, request, response);
         }
 
         // make sure the user can do what they're trying to according to the module that owns the functionality
@@ -150,6 +150,14 @@ public abstract class KualiAction extends DispatchAction {
         }
 
         return returnForward;
+    }
+    
+    /**
+     * When no methodToCall is specified, the defaultDispatch method is invoked.  Default implementation
+     * returns the "basic" ActionForward.
+     */
+    protected ActionForward defaultDispatch(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
     @Override

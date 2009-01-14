@@ -17,9 +17,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
-import org.apache.struts.action.ActionForm;
 import org.kuali.rice.kew.actionlist.ActionToTake;
+import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.UrlFactory;
+import org.kuali.rice.kns.web.struts.form.KualiForm;
+import org.kuali.rice.kns.web.ui.ExtraButton;
 
 
 /**
@@ -27,7 +31,7 @@ import org.kuali.rice.kew.actionlist.ActionToTake;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class ActionListForm extends ActionForm {
+public class ActionListForm extends KualiForm {
 
     private static final long serialVersionUID = -6246391732337228007L;
 
@@ -60,12 +64,13 @@ public class ActionListForm extends ActionForm {
     private String dir;
 
     private int count;
-    private String cssFile = "screen.css";
+    private String cssFile = "kuali.css";
     private String logoAlign = "left";
     private String viewOutbox;
     private Long[] outboxItems;
     private boolean outBoxEmpty;
     private Boolean showOutbox;
+    private List<ExtraButton> headerButtons = new ArrayList<ExtraButton>();
 
     public String getRouteLogPopup() {
 	return routeLogPopup;
@@ -316,5 +321,21 @@ public class ActionListForm extends ActionForm {
     public void setShowOutbox(Boolean showOutbox) {
         this.showOutbox = showOutbox;
     }
+
+	public List<ExtraButton> getHeaderButtons() {
+		return this.headerButtons;
+	}
+
+	public void setHeaderButtons(List<ExtraButton> headerButtons) {
+		this.headerButtons = headerButtons;
+	}
+	public String getMenuBar(){
+		  String url = "";
+		  Properties parameters = new Properties();
+		  url = UrlFactory.parameterizeUrl(KNSConstants.MAINTENANCE_ACTION, parameters);
+          url = "<a href=\"" + url + "\"><img src=\"../kr/images/tinybutton-preferences.gif\" alt=\"create new\" width=\"70\" height=\"15\"/></a>";
+		return url;
+	}
+
 
 }

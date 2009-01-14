@@ -27,10 +27,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections.comparators.ComparableComparator;
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
+import org.kuali.rice.core.util.JSTLConstants;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.preferences.Preferences;
@@ -39,10 +41,12 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kew.web.KeyValue;
-import org.kuali.rice.kew.web.WorkflowAction;
+import org.kuali.rice.kew.web.UrlResolver;
+import org.kuali.rice.kew.web.UserLoginFilter;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.web.struts.action.KualiAction;
 
 
 /**
@@ -50,9 +54,36 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class ActionListFilterAction extends WorkflowAction {
+public class ActionListFilterAction extends KualiAction {
 
-    public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @Override
+	public ActionForward execute(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+    	request.setAttribute("Constants", new JSTLConstants(KEWConstants.class));
+    	request.setAttribute("preferences", this.getUserSession(request).getPreferences());
+    	request.setAttribute("UrlResolver", UrlResolver.getInstance());
+		ActionMessages messages = null;
+		messages = establishRequiredState(request, form);
+		if (messages != null && !messages.isEmpty()) {
+			// XXX: HACK: FIXME:
+			// obviously this implies that we can't return both ActionErrors
+			// and ActionMessages... :(
+			// probably establishRequiredState should be refactored to have
+			// a generic 'should-we-continue'
+			// boolean return, so that control flow can be more explicitly
+			// specified by the subclass
+			if (messages instanceof ActionErrors) {
+				saveErrors(request, (ActionErrors) messages);
+			} else {
+				saveMessages(request, messages);
+			}
+			return mapping.findForward("requiredStateError");
+		}
+		return super.execute(mapping, form, request, response);
+	}
+
+	public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         ActionListFilterForm filterForm = (ActionListFilterForm) form;
         if (getUserSession(request).getActionListFilter() != null) {
             ActionListFilter actionListFilter = getUserSession(request).getActionListFilter();
@@ -110,21 +141,21 @@ public class ActionListFilterAction extends WorkflowAction {
     	List<String> userWorkgroups =
             KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
         List<KeyValue> sortedUserWorkgroups = new ArrayList();
-        KeyValue keyValue = null;
-        keyValue = new KeyValue(KEWConstants.NO_FILTERING, KEWConstants.NO_FILTERING);
-        sortedUserWorkgroups.add(keyValue);
-        if (userWorkgroups != null && userWorkgroups.size() > 0) {
-            Collections.sort(userWorkgroups);
+    	KeyValue keyValue = null;
+    	keyValue = new KeyValue(KEWConstants.NO_FILTERING, KEWConstants.NO_FILTERING);
+    	sortedUserWorkgroups.add(keyValue);
+    	if (userWorkgroups != null && userWorkgroups.size() > 0) {
+    		Collections.sort(userWorkgroups);
 
-            KimGroup group;
+    		KimGroup group;
             for (String groupId : userWorkgroups)
             {
                 group = KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
                 keyValue = new KeyValue(groupId, group.getGroupName());
                 sortedUserWorkgroups.add(keyValue);
             }
-        }
-        return sortedUserWorkgroups;
+    	}
+    	return sortedUserWorkgroups;
     }
 
     private List getWebFriendlyRecipients(Collection recipients) {
@@ -141,6 +172,10 @@ public class ActionListFilterAction extends WorkflowAction {
         });
         return recipientList;
     }
-
+    
+	private UserSession getUserSession(HttpServletRequest request){
+		return UserLoginFilter.getUserSession(request);
+	}
 
 }
+

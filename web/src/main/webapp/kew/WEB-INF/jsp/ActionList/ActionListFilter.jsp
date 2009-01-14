@@ -29,7 +29,7 @@ function setMethodToCallAndSubmit(methodToCallValue) {
 <table width="100%" >
   <tr>
     <td><h1>Action List Filter</h1></td>
-    <td width="60%"><html-el:link action="../kew/ActionListNew.do?methodToCall=start">Return to Action List</html-el:link></td>
+    <td width="60%"><html-el:link action="../kew/ActionList.do?methodToCall=start">Return to Action List</html-el:link></td>
     </tr>
 </table>
 <br>

@@ -10,6 +10,11 @@
 		<form-bean name="JavaSecurityManagementForm" type="org.kuali.rice.ksb.security.admin.web.JavaSecurityManagementForm" />
 	</form-beans>
 
+    <global-exceptions>
+		  <exception handler="org.kuali.rice.kew.web.StrutsExceptionHandler" key="error.global.message"
+                 path="/WEB-INF/jsp/Error.jsp" scope="request" type="java.lang.Exception"/>
+    </global-exceptions>
+
 	<global-forwards type="org.apache.struts.action.ActionForward">
 		<forward name="NotAuthorized" path="/WEB-INF/jsp/NotAuthorized.jsp" />
 	</global-forwards>

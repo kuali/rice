@@ -43,6 +43,7 @@ import org.displaytag.pagination.PaginatedList;
 import org.displaytag.properties.SortOrderEnum;
 import org.displaytag.util.LookupUtil;
 import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.util.JSTLConstants;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
@@ -60,13 +61,16 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.WebFriendlyRecipient;
-import org.kuali.rice.kew.web.WorkflowAction;
+import org.kuali.rice.kew.web.UrlResolver;
+import org.kuali.rice.kew.web.UserLoginFilter;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.exception.AuthorizationException;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.web.struts.action.KualiAction;
+import org.kuali.rice.kns.web.ui.ExtraButton;
 
 
 /**
@@ -75,16 +79,55 @@ import org.kuali.rice.kns.util.KNSConstants;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class ActionListAction extends WorkflowAction {
+public class ActionListAction extends KualiAction {
 
-    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ActionListAction.class);
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ActionListActionOld.class);
 
     private static String ACTION_LIST_KEY = "actionList";
     private static String ACTION_LIST_PAGE_KEY = "actionListPage";
     private static String ACTION_LIST_USER_KEY = "actionList.user";
     private static String REQUERY_ACTION_LIST_KEY = "requeryActionList";
 
-    public ActionForward start(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public ActionForward execute(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	ActionListForm frm = (ActionListForm)actionForm;
+    	request.setAttribute("Constants", new JSTLConstants(KEWConstants.class));
+    	request.setAttribute("preferences", this.getUserSession(request).getPreferences());
+    	request.setAttribute("UrlResolver", UrlResolver.getInstance());
+    	frm.setHeaderButtons(getHeaderButtons());
+    	return super.execute(mapping, actionForm, request, response);
+    }
+
+    private List<ExtraButton> getHeaderButtons(){
+    	List<ExtraButton> headerButtons = new ArrayList<ExtraButton>();
+    	ExtraButton eb = new ExtraButton();
+    	eb.setExtraButtonSource("../kr/images/tinybutton-preferences.gif");
+    	eb.setExtraButtonOnclick("../en/Preferences.do?returnMapping=viewActionList");
+
+    	headerButtons.add(eb);
+    	eb = new ExtraButton();
+    	eb.setExtraButtonSource("../kr/images/tinybutton-refresh.gif");
+    	eb.setExtraButtonProperty("methodToCall.start");
+
+    	headerButtons.add(eb);
+    	eb = new ExtraButton();
+    	eb.setExtraButtonSource("../kr/images/tinybutton-filter.gif");
+    	eb.setExtraButtonOnclick("javascript: window.open('..en/ActionListFilter.do?methodToCall=start');");
+    	headerButtons.add(eb);
+
+
+    	return headerButtons;
+    }
+    
+    
+
+	@Override
+	protected ActionForward defaultDispatch(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		return start(mapping, form, request, response);
+	}
+
+	public ActionForward start(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
         PerformanceLogger plog = new PerformanceLogger();
         plog.log("Starting ActionList fetch");
         ActionListForm form = (ActionListForm) actionForm;
@@ -263,7 +306,7 @@ public class ActionListAction extends WorkflowAction {
     private static final String OUT_BOX_MODE = "_OUT_BOX_MODE";
 
     /**
-     * this method is setting 2 props on the {@link ActionListForm} that controls outbox behavior.
+     * this method is setting 2 props on the {@link ActionListFormOld} that controls outbox behavior.
      *  alForm.setViewOutbox("false"); -> this is set by user preferences and the actionlist.outbox.off config prop
      *  alForm.setShowOutbox(false); -> this is set by user action clicking the ActionList vs. Outbox links.
      *
@@ -491,7 +534,7 @@ public class ActionListAction extends WorkflowAction {
         ActionListForm actionListForm = (ActionListForm) form;
         List actionList = (List) request.getSession().getAttribute(ACTION_LIST_KEY);
         if (actionList == null) {
-            return start(mapping, new ActionListForm(), request, response);
+            return start(mapping, new ActionListFormOld(), request, response);
         }
         ActionMessages messages = new ActionMessages();
         List invocations = new ArrayList();
@@ -531,7 +574,7 @@ public class ActionListAction extends WorkflowAction {
     }
 
     public ActionForward helpDeskActionListLogin(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        ActionListForm actionListForm = (ActionListForm) form;
+        ActionListFormOld actionListForm = (ActionListFormOld) form;
         getUserSession(request).establishHelpDeskWithPrincipalName(actionListForm.getHelpDeskActionListUserName());
         actionListForm.setDelegator(null);
         request.getSession().setAttribute(REQUERY_ACTION_LIST_KEY, "true");
@@ -543,7 +586,7 @@ public class ActionListAction extends WorkflowAction {
         UserSession session = getUserSession(request);
         session.setActionListFilter(null);
         request.getSession().setAttribute(REQUERY_ACTION_LIST_KEY, "true");
-        KEWServiceLocator.getActionListService().saveRefreshUserOption(getUserSession(request).getPrincipalId());
+        KEWServiceLocator.getActionListService().saveRefreshUserOption(session.getPrincipalId());
         LOG.debug("end clearFilter ActionListAction");
         return start(mapping, form, request, response);
     }
@@ -559,8 +602,8 @@ public class ActionListAction extends WorkflowAction {
      * Generates an Action List count.
      */
     public ActionForward count(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-    	ActionListForm alForm = (ActionListForm)form;
-    	KimPrincipal user = getUserSession(request).getPrincipal();
+    	ActionListFormOld alForm = (ActionListFormOld)form;
+    	Person user = getUserSession(request).getPerson();
     	alForm.setCount(KEWServiceLocator.getActionListService().getCount(user.getPrincipalId()));
     	LOG.info("Fetched Action List count of " + alForm.getCount() + " for user " + user.getPrincipalName());
     	return mapping.findForward("count");
@@ -606,13 +649,14 @@ public class ActionListAction extends WorkflowAction {
     public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
         LOG.debug("establishRequiredState ActionListAction");
         ActionListForm actionListForm = (ActionListForm) form;
+        actionListForm.setHeaderButtons(getHeaderButtons());
 
         // take the UserSession from the HttpSession and add it to the request
         request.setAttribute("UserSession", getUserSession(request));
 
         //refactor actionlist.jsp not to be dependent on this
         request.setAttribute("preferences", getUserSession(request).getPreferences());
-        IdentityManagementService ims = (IdentityManagementService) KIMServiceLocator.getIdentityManagementService();
+
         String kewHelpDeskWgName = Utilities.getKNSParameterValue(KEWConstants.DEFAULT_KIM_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.HELP_DESK_ACTION_LIST);
         if (kewHelpDeskWgName != null && KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(getUserSession(request).getPrincipalId(), Utilities.parseGroupNamespaceCode(kewHelpDeskWgName), Utilities.parseGroupName(kewHelpDeskWgName))) {
             request.setAttribute("helpDeskActionList", "true");
@@ -644,7 +688,7 @@ public class ActionListAction extends WorkflowAction {
         return null;
     }
 
-    private List<WebFriendlyRecipient> getWebFriendlyRecipients(Collection recipients) {
+    private List getWebFriendlyRecipients(Collection recipients) {
         Collection newRecipients = new ArrayList(recipients.size());
         for (Iterator iterator = recipients.iterator(); iterator.hasNext();) {
             newRecipients.add(new WebFriendlyRecipient(iterator.next()));
@@ -660,6 +704,9 @@ public class ActionListAction extends WorkflowAction {
         return recipientList;
     }
 
+	private UserSession getUserSession(HttpServletRequest request){
+		return UserLoginFilter.getUserSession(request);
+	}
 
     private class ActionItemComparator implements Comparator {
 

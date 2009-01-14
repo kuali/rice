@@ -36,6 +36,7 @@ import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.validation.ValidationResult;
 import org.kuali.rice.kew.validation.ValidationResults;
+import org.kuali.rice.kns.exception.AuthorizationException;
 
 
 /**
@@ -64,6 +65,8 @@ public class StrutsExceptionHandler extends ExceptionHandler {
         	
             Collection serviceErrors = serviceException.getServiceErrors();
             saveServiceErrors(serviceErrors, request);
+        } else if (e instanceof AuthorizationException) {
+        	return mapping.findForward("NotAuthorized");	
         } else {
             LOG.error("Mapping " + mapping.getPath() + " threw error: ", e);
             saveServiceErrors("general.workflow.error", e, request);

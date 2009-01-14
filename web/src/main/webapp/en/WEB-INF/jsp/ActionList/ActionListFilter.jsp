@@ -22,7 +22,7 @@
 <table width="100%" border=0 cellpadding=0 cellspacing=0 class="headercell1">
   <tr>
     <td><img src="images/wf-logo.gif" alt="Workflow" width=150 height=21 hspace=5 vspace=5></td>
-    <td width="90%"><html-el:link action="ActionList">Return to Action List</html-el:link></td>
+    <td width="90%"><html-el:link action="ActionListOld.do">Return to Action List</html-el:link></td>
   </tr>
 </table>
 
@@ -48,7 +48,7 @@
   <tr>
   	<td></td>
   	<td>
-<html-el:form action="ActionListFilter">
+<html-el:form action="ActionListFilterOld">
 <html-el:hidden property="lookupableImplServiceName" />
 <html-el:hidden property="lookupType" />
 <html-el:hidden property="docTypeFullName" />

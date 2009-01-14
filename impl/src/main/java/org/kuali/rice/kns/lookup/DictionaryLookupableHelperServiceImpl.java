@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectAttributeEntry;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
@@ -128,7 +129,7 @@ public class DictionaryLookupableHelperServiceImpl extends AbstractLookupableHel
      * @see org.kuali.rice.kns.lookup.Lookupable#getReturnUrl(java.lang.Object, java.util.Map, java.lang.String)
      */
     @Override
-    public HtmlData getReturnUrl(BusinessObject bo, LookupForm lookupForm, List returnKeys) {
+    public HtmlData getReturnUrl(BusinessObject bo, LookupForm lookupForm, List returnKeys, BusinessObjectRestrictions businessObjectRestrictions) {
         return getEmptyAnchorHtmlData();
     }
 

@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.DataDictionaryService;
@@ -121,8 +122,8 @@ public class KualiLookupableImpl implements Lookupable {
     /**
      * @return the return url for each result row.
      */
-    public HtmlData getReturnUrl(BusinessObject bo, Map fieldConversions, String lookupImpl) {
-        return getLookupableHelperService().getReturnUrl(bo, fieldConversions, lookupImpl, getReturnKeys());
+    public HtmlData getReturnUrl(BusinessObject bo, Map fieldConversions, String lookupImpl, BusinessObjectRestrictions businessObjectRestrictions) {
+        return getLookupableHelperService().getReturnUrl(bo, fieldConversions, lookupImpl, getReturnKeys(), businessObjectRestrictions);
     }
 
     /**

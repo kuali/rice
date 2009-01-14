@@ -38,6 +38,7 @@ import org.kuali.rice.kns.authorization.InquiryOrMaintenanceDocumentRestrictions
 import org.kuali.rice.kns.authorization.InquiryOrMaintenanceDocumentRestrictionsBase;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
+import org.kuali.rice.kns.datadictionary.AttributeSecurity;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.FieldDefinition;
 import org.kuali.rice.kns.datadictionary.InquiryCollectionDefinition;
@@ -580,6 +581,16 @@ public class BusinessObjectAuthorizationServiceImpl implements
 					.getMaintenanceDocumentDictionaryService();
 		}
 		return maintenanceDocumentDictionaryService;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.service.BusinessObjectAuthorizationService#attributeValueNeedsToBeEncryptedOnFormsAndLinks(java.lang.Class, java.lang.String)
+	 */
+	public boolean attributeValueNeedsToBeEncryptedOnFormsAndLinks(
+			Class<? extends BusinessObject> businessObjectClass,
+			String attributeName) {
+		AttributeSecurity attributeSecurity = getDataDictionaryService().getAttributeSecurity(businessObjectClass.getName(), attributeName);
+		return attributeSecurity != null && (attributeSecurity.isHide() || attributeSecurity.isMask() || attributeSecurity.isPartialMask() || attributeSecurity.isReadOnly());
 	}
 	
 }

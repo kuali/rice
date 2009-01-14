@@ -312,39 +312,6 @@ public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition 
 	}
 
 	/**
-	 * @see org.kuali.core.datadictionary.AttributeDefinition#getDisplayMask()
-	 */
-	@Override
-	public Mask getDisplayMask() {
-		Mask displayMask = super.getDisplayMask();
-		if (displayMask == null) {
-			displayMask = getDelegate().getDisplayMask();
-		}
-		return displayMask;
-	}
-
-	/**
-	 * @see org.kuali.core.datadictionary.AttributeDefinition#getDisplayWorkgroup()
-	 */
-	@Override
-	public String getDisplayWorkgroup() {
-		String displayWorkgroup = super.getDisplayWorkgroup();
-		if (StringUtils.isBlank(displayWorkgroup)) {
-			displayWorkgroup = getDelegate().getDisplayWorkgroup();
-		}
-		return displayWorkgroup;
-	}
-
-	/**
-	 * @see org.kuali.core.datadictionary.AttributeDefinition#hasDisplayMask()
-	 */
-	@Override
-	public boolean hasDisplayMask() {
-		return (super.getDisplayMask() != null || getDelegate()
-				.getDisplayMask() != null);
-	}
-
-	/**
 	 * @see org.kuali.core.datadictionary.AttributeDefinition#getDisplayLabelAttribute()
 	 */
 	@Override

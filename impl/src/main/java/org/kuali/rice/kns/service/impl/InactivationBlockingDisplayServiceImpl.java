@@ -23,10 +23,15 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
+import org.kuali.rice.kns.authorization.FieldRestriction;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.InactivationBlockingMetadata;
 import org.kuali.rice.kns.datadictionary.mask.Mask;
+import org.kuali.rice.kns.datadictionary.mask.MaskFormatter;
+import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.InactivationBlockingDetectionService;
 import org.kuali.rice.kns.service.InactivationBlockingDisplayService;
@@ -44,10 +49,13 @@ import org.kuali.rice.kns.web.format.Formatter;
  *
  */
 public class InactivationBlockingDisplayServiceImpl implements InactivationBlockingDisplayService {
+	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(InactivationBlockingDetectionServiceImpl.class);
+	
 	private PersistenceService persistenceService;
 	private DataDictionaryService dataDictionaryService;
 	private PersistenceStructureService persistenceStructureService;
-
+	private BusinessObjectAuthorizationService businessObjectAuthorizationService;
+	
 	/**
 	 * This overridden method ...
 	 *
@@ -63,20 +71,22 @@ public class InactivationBlockingDisplayServiceImpl implements InactivationBlock
         Collection<BusinessObject> collection = inactivationBlockingDetectionService.listAllBlockerRecords(blockedBo, inactivationBlockingMetadata);
 
         Map<String, Formatter> formatters = getFormattersForPrimaryKeyFields(inactivationBlockingMetadata.getBlockingReferenceBusinessObjectClass());
-        Map<String, Boolean> authorizedToViewField = getFieldAuthorizations(inactivationBlockingMetadata.getBlockingReferenceBusinessObjectClass());
 
         List<String> displayValues = new ArrayList<String>();
         List<String> pkFieldNames = persistenceStructureService.listPrimaryKeyFieldNames(inactivationBlockingMetadata.getBlockingReferenceBusinessObjectClass());
-
+        Person user = GlobalVariables.getUserSession().getPerson();
+        
         for (BusinessObject element : collection) {
         	StringBuilder buf = new StringBuilder();
 
+        	// the following method will return a restriction for all DD-defined attributes
+        	BusinessObjectRestrictions businessObjectRestrictions = getBusinessObjectAuthorizationService().getLookupResultRestrictions(element, user);
         	for (int i = 0; i < pkFieldNames.size(); i++) {
         		String pkFieldName = pkFieldNames.get(i);
         		Object value = ObjectUtils.getPropertyValue(element, pkFieldName);
 
         		String displayValue = null;
-        		if (authorizedToViewField.get(pkFieldName)) {
+        		if (!businessObjectRestrictions.hasRestriction(pkFieldName)) {
         			Formatter formatter = formatters.get(pkFieldName);
         			if (formatter != null) {
         				displayValue = (String) formatter.format(value);
@@ -86,8 +96,15 @@ public class InactivationBlockingDisplayServiceImpl implements InactivationBlock
         			}
         		}
         		else {
-        			Mask m = dataDictionaryService.getAttributeDisplayMask(inactivationBlockingMetadata.getBlockingReferenceBusinessObjectClass(), pkFieldName);
-        			displayValue = m.getMaskFormatter().maskValue(value);
+        			FieldRestriction fieldRestriction = businessObjectRestrictions.getFieldRestriction(pkFieldName);
+        			if (fieldRestriction.isMasked() || fieldRestriction.isPartiallyMasked()) {
+		    			MaskFormatter maskFormatter = fieldRestriction.getMaskFormatter();
+						displayValue = maskFormatter.maskValue(value);
+        			}
+        			else {
+        				// there was a restriction, but we did not know how to obey it.
+        				LOG.warn("Restriction was defined for class: " + element.getClass() + " field name: " + pkFieldName + ", but it was not honored by the inactivation blocking display framework");
+        			}
         		}
 
         		buf.append(displayValue);
@@ -120,23 +137,6 @@ public class InactivationBlockingDisplayServiceImpl implements InactivationBlock
 		return formattersForPrimaryKeyFields;
 	}
 
-	protected Map<String, Boolean> getFieldAuthorizations(Class boClass) {
-		Map<String, Boolean> fieldAuthorizations = new HashMap<String, Boolean>();
-		List<String> keyNames = persistenceStructureService.listPrimaryKeyFieldNames(boClass);
-
-		for (String pkFieldName : keyNames) {
-			String authorizedWorkgroup = dataDictionaryService.getAttributeDisplayWorkgroup(boClass, pkFieldName);
-
-			if (StringUtils.isBlank(authorizedWorkgroup)) {
-				fieldAuthorizations.put(pkFieldName, Boolean.TRUE);
-			}
-			else {
-				fieldAuthorizations.put(pkFieldName, Boolean.valueOf(KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(GlobalVariables.getUserSession().getPerson().getPrincipalId(), Utilities.parseGroupNamespaceCode(authorizedWorkgroup), Utilities.parseGroupName(authorizedWorkgroup))));
-			}
-		}
-
-		return fieldAuthorizations;
-	}
 	public void setPersistenceService(PersistenceService persistenceService) {
 		this.persistenceService = persistenceService;
 	}
@@ -148,6 +148,13 @@ public class InactivationBlockingDisplayServiceImpl implements InactivationBlock
 
 	public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
 		this.dataDictionaryService = dataDictionaryService;
+	}
+	
+	protected BusinessObjectAuthorizationService getBusinessObjectAuthorizationService() {
+		if (businessObjectAuthorizationService == null) {
+			businessObjectAuthorizationService = KNSServiceLocator.getBusinessObjectAuthorizationService();
+		}
+		return businessObjectAuthorizationService;
 	}
 }
 

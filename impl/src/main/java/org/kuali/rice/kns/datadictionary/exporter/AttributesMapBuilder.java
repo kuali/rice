@@ -89,11 +89,6 @@ public class AttributesMapBuilder {
             attributeMap.set(attribute.getValidationPattern().buildExportMap("validationPattern"));
         }
 
-        if (attribute.hasDisplayMask()) {
-            attributeMap.set("displayWorkgroup", attribute.getDisplayWorkgroup());
-            attributeMap.set("displayMaskClass",attribute.getDisplayMask().getClass().toString());
-        }
-        
         if(attribute.hasAttributeSecurity()){
         	attributeMap.set("attributeSecurityMask", String.valueOf(attribute.getAttributeSecurity().isMask()));
         	attributeMap.set("attributeSecurityPartialMask", String.valueOf(attribute.getAttributeSecurity().isPartialMask()));

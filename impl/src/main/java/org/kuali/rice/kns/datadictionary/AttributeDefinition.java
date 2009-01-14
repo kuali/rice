@@ -52,10 +52,6 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
     protected Boolean required = Boolean.FALSE;
 
     protected ControlDefinition control;
-    @Deprecated
-    protected String displayWorkgroup = "";
-    @Deprecated
-    protected Mask displayMask;
 
     protected String summary;
     protected String description;
@@ -342,50 +338,6 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
         this.control = control;
     }
 
-    /**
-     * Gets the displayMask attribute.
-     * 
-     * @return Returns the displayMask.
-     */
-    @Deprecated
-    public Mask getDisplayMask() {
-        return displayMask;
-    }
-
-
-    /**
-                    The displayMask element specifies the type of masking to
-                    be used to hide the value from un-authorized users.
-                    There are three types of masking.
-     */
-    @Deprecated
-    public void setDisplayMask(Mask displayMask) {
-        this.displayMask = displayMask;
-    }
-
-
-    /**
-                    The displayWorkgroup element specifies the name of a
-                    workgroup.  Only users in this workgroup will be able
-                    to view the un-masked value.
-     */
-    @Deprecated
-    public String getDisplayWorkgroup() {
-        return displayWorkgroup;
-    }
-
-
-    /**
-                    The displayWorkgroup element specifies the name of a
-                    workgroup.  Only users in this workgroup will be able
-                    to view the un-masked value.
-     */
-    @Deprecated
-    public void setDisplayWorkgroup(String displayWorkgroup) {
-        this.displayWorkgroup = displayWorkgroup;
-    }
-
-
     public String getSummary() {
         return summary;
     }
@@ -412,10 +364,6 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 
     public boolean hasFormatterClass() {
         return (formatterClass != null);
-    }
-
-    public boolean hasDisplayMask() {
-        return (displayMask != null);
     }
 
     public Class<? extends Formatter> getFormatterClass() {
@@ -452,18 +400,7 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
                 throw new AttributeValidationException( "property '" + getName() + "' in class '" + rootObjectClass.getName() + " does not have a control defined" );
             }
             
-            getControl().completeValidation(rootObjectClass, otherObjectClass);
-    
-            if (StringUtils.isNotBlank(getDisplayWorkgroup()) && !hasDisplayMask()) {
-                throw new AttributeValidationException("property '" + getName() + "' has a display workgroup defined but not a valid display mask '" + rootObjectClass.getName() + "' (" + "" + ")");
-            }
-    
-            if (hasDisplayMask()) {
-                if (getDisplayMask().getMaskFormatter() == null && getDisplayMask().getMaskFormatterClass() == null) {
-                    throw new AttributeValidationException("No mask formatter or formatter class specified for secure attribute " + getName() + "' (" + "" + ")");
-                }
-            }
-    
+            getControl().completeValidation(rootObjectClass, otherObjectClass);    
     
             if(attributeSecurity != null){
             	attributeSecurity.completeValidation(rootObjectClass, otherObjectClass);

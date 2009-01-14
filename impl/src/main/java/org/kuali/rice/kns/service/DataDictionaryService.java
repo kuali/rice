@@ -117,19 +117,6 @@ public interface DataDictionaryService {
      */
     public Boolean getAttributeForceUppercase(Class businessObjectClass, String attributeName);
 
-
-    /**
-     * the workgroup name (if specified) who has permission to view values for the field
-     */
-    public String getAttributeDisplayWorkgroup(Class businessObjectClass, String attributeName);
-
-
-    /**
-     * the Mask object defined for masking the attribute's data value
-     */
-    public Mask getAttributeDisplayMask(Class businessObjectClass, String attributeName);
-
-
     /**
      * short help text for attribute
      */
@@ -245,17 +232,6 @@ public interface DataDictionaryService {
      */
     public Boolean getAttributeForceUppercase(String entryName, String attributeName);
 
-    /**
-     * the workgroup name (if specified) who has permission to view values for the field
-     */
-    public String getAttributeDisplayWorkgroup(String entryName, String attributeName);
-
-
-    /**
-     * the Mask object defined for masking the attribute's data value
-     */
-    public Mask getAttributeDisplayMask(String entryName, String attributeName);
-    
     /**
      * the AttributeSecurity object defined for the attribute's data value
      */

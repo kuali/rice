@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.DataDictionaryService;
@@ -107,7 +108,7 @@ public interface LookupableHelperService extends Serializable{
      * @param returnKeys - Keys to return
      * @return String url called when selecting a row from the result set
      */
-    public HtmlData getReturnUrl(BusinessObject businessObject, Map fieldConversions, String lookupImpl, List returnKeys);
+    public HtmlData getReturnUrl(BusinessObject businessObject, Map fieldConversions, String lookupImpl, List returnKeys, BusinessObjectRestrictions businessObjectRestrictions);
 
     /**
      * This method builds the return url
@@ -117,7 +118,7 @@ public interface LookupableHelperService extends Serializable{
      * @param returnKeys
      * @return
      */
-    public HtmlData getReturnUrl(BusinessObject businessObject, LookupForm lookupForm, List returnKeys);
+    public HtmlData getReturnUrl(BusinessObject businessObject, LookupForm lookupForm, List returnKeys, BusinessObjectRestrictions businessObjectRestrictions);
     
     /**
      * Builds string of action urls that can take place for a result row
@@ -126,7 +127,7 @@ public interface LookupableHelperService extends Serializable{
      * @param pkNames - List of primary key names
      * @return String rendered in actions column of result set
      */
-    public String getActionUrls(BusinessObject businessObject, List pkNames);
+    public String getActionUrls(BusinessObject businessObject, List pkNames, BusinessObjectRestrictions businessObjectRestrictions);
 
     /**
      * 
@@ -191,7 +192,7 @@ public interface LookupableHelperService extends Serializable{
      * @param pkNames
      * @return
      */
-    public String getMaintenanceUrl(BusinessObject businessObject, HtmlData htmlData, List pkNames);
+    public String getMaintenanceUrl(BusinessObject businessObject, HtmlData htmlData, List pkNames, BusinessObjectRestrictions businessObjectRestrictions);
 
     /**
      * Determines if underlying lookup bo has associated maintenance document that allows new or copy maintenance actions.

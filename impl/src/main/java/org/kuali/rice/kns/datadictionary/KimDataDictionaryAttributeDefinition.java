@@ -44,14 +44,6 @@ public class KimDataDictionaryAttributeDefinition extends AttributeDefinition {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.AttributeDefinition#getDisplayMask()
-	 */
-	@Override
-	public Mask getDisplayMask() {
-		return mask;
-	}
-
-	/**
 	 * @see org.kuali.rice.kns.datadictionary.AttributeDefinition#getFormatterClass()
 	 */
 	@Override

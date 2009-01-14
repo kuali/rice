@@ -244,20 +244,6 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 
         return forceUppercase;
     }
-
-    /**
-     * @see org.kuali.rice.kns.service.DataDictionaryService#getAttributeDisplayMask(java.lang.String, java.lang.String)
-     */
-    public Mask getAttributeDisplayMask(String entryName, String attributeName) {
-        Mask displayMask = null;
-
-        AttributeDefinition attributeDefinition = getAttributeDefinition(entryName, attributeName);
-        if (attributeDefinition != null) {
-            displayMask = attributeDefinition.getDisplayMask();
-        }
-
-        return displayMask;
-    }
     
     /**
      * @see org.kuali.rice.kns.service.DataDictionaryService#getAttributeDisplayMask(java.lang.String, java.lang.String)
@@ -273,20 +259,6 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
         return attributeSecurity;
     }
 
-
-    /**
-     * @see org.kuali.rice.kns.service.DataDictionaryService#getAttributeDisplayWorkgroup(java.lang.String, java.lang.String)
-     */
-    public String getAttributeDisplayWorkgroup(String entryName, String attributeName) {
-        String displayWorkgroup = "";
-
-        AttributeDefinition attributeDefinition = getAttributeDefinition(entryName, attributeName);
-        if (attributeDefinition != null) {
-            displayWorkgroup = attributeDefinition.getDisplayWorkgroup();
-        }
-
-        return displayWorkgroup;
-    }
 
     /**
      * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getAttributeSummary(java.lang.String)
@@ -714,20 +686,6 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     }
 
     /**
-     * @see org.kuali.rice.kns.service.DataDictionaryService#getAttributeDisplayMask(java.lang.Class, java.lang.String)
-     */
-    public Mask getAttributeDisplayMask(Class businessObjectClass, String attributeName) {
-        return getAttributeDisplayMask(businessObjectClass.getName(), attributeName);
-    }
-
-    /**
-     * @see org.kuali.rice.kns.service.DataDictionaryService#getAttributeDisplayWorkgroup(java.lang.Class, java.lang.String)
-     */
-    public String getAttributeDisplayWorkgroup(Class businessObjectClass, String attributeName) {
-        return getAttributeDisplayWorkgroup(businessObjectClass.getName(), attributeName);
-    }
-
-    /**
      * @see org.kuali.rice.kns.service.DataDictionaryService#getCollectionSummary(java.lang.String, java.lang.String)
      */
     public String getCollectionSummary(Class businessObjectClass, String collectionName) {
@@ -882,14 +840,10 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     public List<String> getEncryptedFieldsList(String entryClassName){
     	BusinessObjectEntry boEntry = getDataDictionary().getBusinessObjectEntry(entryClassName);
     	List<String> encryptedFieldsList = new ArrayList<String>();
-    	Mask displayMask;
     	AttributeSecurity attributeSecurity;
     	for(AttributeDefinition attributeDefinition: boEntry.getAttributes()){
-    		displayMask = attributeDefinition.getDisplayMask();
     		attributeSecurity = attributeDefinition.getAttributeSecurity();
-        	if(displayMask != null)
-        		encryptedFieldsList.add(attributeDefinition.getName());
-        	if(attributeSecurity != null && (attributeSecurity.isMask() || attributeSecurity.isPartialMask())){
+        	if(attributeSecurity != null){
         		encryptedFieldsList.add(attributeDefinition.getName());
         	}
     	}

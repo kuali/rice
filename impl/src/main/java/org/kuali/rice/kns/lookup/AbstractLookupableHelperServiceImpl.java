@@ -28,7 +28,10 @@ import java.util.Properties;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
+import org.kuali.rice.kns.authorization.FieldRestriction;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeSecurity;
@@ -320,8 +323,8 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
      * @param methodToCall - maintenance action
      * @return
      */
-    final public String getMaintenanceUrl(BusinessObject businessObject, HtmlData htmlData, List pkNames) {
-    	htmlData.setTitle(getActionUrlTitleText(businessObject, htmlData.getDisplayText(), pkNames));
+    final public String getMaintenanceUrl(BusinessObject businessObject, HtmlData htmlData, List pkNames, BusinessObjectRestrictions businessObjectRestrictions) {
+    	htmlData.setTitle(getActionUrlTitleText(businessObject, htmlData.getDisplayText(), pkNames, businessObjectRestrictions));
 		return htmlData.constructCompleteHtmlTag();
     }
 
@@ -332,16 +335,16 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
      *
      * @see org.kuali.core.lookup.LookupableHelperService#getActionUrls(org.kuali.core.bo.BusinessObject)
      */
-    final public String getActionUrls(BusinessObject businessObject, List pkNames) {
+    final public String getActionUrls(BusinessObject businessObject, List pkNames, BusinessObjectRestrictions businessObjectRestrictions) {
         StringBuffer actions = new StringBuffer();
         List<HtmlData> htmlDataList = getCustomActionUrls(businessObject, pkNames);
         for(HtmlData htmlData: htmlDataList){
-        	actions.append(getMaintenanceUrl(businessObject, htmlData, pkNames));
+        	actions.append(getMaintenanceUrl(businessObject, htmlData, pkNames, businessObjectRestrictions));
             if(htmlData.getChildUrlDataList()!=null){
             	if(htmlData.getChildUrlDataList().size()>0){
                     actions.append(ACTION_URLS_CHILDREN_STARTER);
             		for(HtmlData childURLData: htmlData.getChildUrlDataList()){
-	                	actions.append(getMaintenanceUrl(businessObject, childURLData, pkNames));
+	                	actions.append(getMaintenanceUrl(businessObject, childURLData, pkNames, businessObjectRestrictions));
 	                    actions.append(ACTION_URLS_CHILDREN_SEPARATOR);
 	            	}
             		if(actions.toString().endsWith(ACTION_URLS_CHILDREN_SEPARATOR))
@@ -456,8 +459,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
             }
 
             // Encrypt value if it is a secure field
-            String displayWorkgroup = getDataDictionaryService().getAttributeDisplayWorkgroup(businessObject.getClass(), fieldNm);
-            if (StringUtils.isNotBlank(displayWorkgroup)) {
+            if (getBusinessObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(businessObjectClass, fieldNm)) {
                 try {
                     fieldVal = getEncryptionService().encrypt(fieldVal);
                 }
@@ -485,12 +487,12 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
      * @param pkNames
      * @return
      */
-    protected String getActionUrlTitleText(BusinessObject businessObject, String displayText, List pkNames){
+    protected String getActionUrlTitleText(BusinessObject businessObject, String displayText, List pkNames, BusinessObjectRestrictions businessObjectRestrictions){
         String prependTitleText = displayText+" "
     		+getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(getBusinessObjectClass().getName()).getObjectLabel()
     		+" "
     		+KNSServiceLocator.getKualiConfigurationService().getPropertyString(TITLE_ACTION_URL_PREPENDTEXT_PROPERTY);
-        return HtmlData.getTitleText(prependTitleText, businessObject, pkNames);
+        return HtmlData.getTitleText(prependTitleText, businessObject, pkNames, businessObjectRestrictions);
     }
 
     /**
@@ -667,11 +669,11 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
      *
      * @see org.kuali.rice.kns.lookup.LookupableHelperService#getReturnUrl(org.kuali.rice.kns.bo.BusinessObject, java.util.Map, java.lang.String, java.util.List)
      */
-    final public HtmlData getReturnUrl(BusinessObject businessObject, Map fieldConversions, String lookupImpl, List returnKeys){
+    final public HtmlData getReturnUrl(BusinessObject businessObject, Map fieldConversions, String lookupImpl, List returnKeys, BusinessObjectRestrictions businessObjectRestrictions){
     	String href = getReturnHref(businessObject, fieldConversions, lookupImpl, returnKeys);
     	String returnUrlAnchorLabel =
         	KNSServiceLocator.getKualiConfigurationService().getPropertyString(TITLE_RETURN_URL_PREPENDTEXT_PROPERTY);
-        AnchorHtmlData anchor = new AnchorHtmlData(href, HtmlData.getTitleText(returnUrlAnchorLabel, businessObject, returnKeys));
+        AnchorHtmlData anchor = new AnchorHtmlData(href, HtmlData.getTitleText(returnUrlAnchorLabel, businessObject, returnKeys, businessObjectRestrictions));
         anchor.setDisplayText(returnUrlAnchorLabel);
         return anchor;
     }
@@ -694,21 +696,21 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     /**
      * @see org.kuali.core.lookup.LookupableHelperService#getReturnUrl(org.kuali.core.bo.BusinessObject, java.util.Map, java.lang.String)
      */
-    public HtmlData getReturnUrl(BusinessObject businessObject, LookupForm lookupForm, List returnKeys) {
+    public HtmlData getReturnUrl(BusinessObject businessObject, LookupForm lookupForm, List returnKeys, BusinessObjectRestrictions businessObjectRestrictions) {
     	Properties parameters = getParameters(
         		businessObject, lookupForm.getFieldConversions(), lookupForm.getLookupableImplServiceName(), returnKeys);
     	if(StringUtils.isEmpty(lookupForm.getHtmlDataType()) || HtmlData.ANCHOR_HTML_DATA_TYPE.equals(lookupForm.getHtmlDataType()))
-    		return getReturnAnchorHtmlData(businessObject, parameters, lookupForm, returnKeys);
+    		return getReturnAnchorHtmlData(businessObject, parameters, lookupForm, returnKeys, businessObjectRestrictions);
     	else
-    		return getReturnInputHtmlData(businessObject, parameters, lookupForm, returnKeys);
+    		return getReturnInputHtmlData(businessObject, parameters, lookupForm, returnKeys, businessObjectRestrictions);
     }
 
-    protected HtmlData getReturnInputHtmlData(BusinessObject businessObject, Properties parameters, LookupForm lookupForm, List returnKeys){
+    protected HtmlData getReturnInputHtmlData(BusinessObject businessObject, Properties parameters, LookupForm lookupForm, List returnKeys, BusinessObjectRestrictions businessObjectRestrictions){
     	String returnUrlAnchorLabel =
         	KNSServiceLocator.getKualiConfigurationService().getPropertyString(TITLE_RETURN_URL_PREPENDTEXT_PROPERTY);
     	String name = KNSConstants.MULTIPLE_VALUE_LOOKUP_SELECTED_OBJ_ID_PARAM_PREFIX+lookupForm.getLookupObjectId();
         InputHtmlData input = new InputHtmlData(name, InputHtmlData.CHECKBOX_INPUT_TYPE);
-        input.setTitle(HtmlData.getTitleText(returnUrlAnchorLabel, businessObject, returnKeys));
+        input.setTitle(HtmlData.getTitleText(returnUrlAnchorLabel, businessObject, returnKeys, businessObjectRestrictions));
     	if(((MultipleValueLookupForm)lookupForm).getCompositeObjectIdMap()==null ||
     			((MultipleValueLookupForm)lookupForm).getCompositeObjectIdMap().get(
     			((PersistableBusinessObject)businessObject).getObjectId())==null){
@@ -720,12 +722,12 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         return input;
     }
 
-    protected HtmlData getReturnAnchorHtmlData(BusinessObject businessObject, Properties parameters, LookupForm lookupForm, List returnKeys){
+    protected HtmlData getReturnAnchorHtmlData(BusinessObject businessObject, Properties parameters, LookupForm lookupForm, List returnKeys, BusinessObjectRestrictions businessObjectRestrictions){
     	String returnUrlAnchorLabel =
         	KNSServiceLocator.getKualiConfigurationService().getPropertyString(TITLE_RETURN_URL_PREPENDTEXT_PROPERTY);
         AnchorHtmlData anchor = new AnchorHtmlData(
         		getReturnHref(parameters, lookupForm, returnKeys),
-        		HtmlData.getTitleText(returnUrlAnchorLabel, businessObject, returnKeys));
+        		HtmlData.getTitleText(returnUrlAnchorLabel, businessObject, returnKeys, businessObjectRestrictions));
         anchor.setDisplayText(returnUrlAnchorLabel);
         return anchor;
     }
@@ -765,15 +767,11 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
             if (fieldVal == null) {
                 fieldVal = KNSConstants.EMPTY_STRING;
             }
-
-            // Encrypt value if it is a secure field
-            String displayWorkgroup = getDataDictionaryService().getAttributeDisplayWorkgroup(bo.getClass(), fieldNm);
-
             if (fieldConversions.containsKey(fieldNm)) {
                 fieldNm = (String) fieldConversions.get(fieldNm);
             }
 
-            if (StringUtils.isNotBlank(displayWorkgroup) && !KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(GlobalVariables.getUserSession().getPerson().getPrincipalId(), Utilities.parseGroupNamespaceCode(displayWorkgroup), Utilities.parseGroupName(displayWorkgroup))) {
+            if (getBusinessObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(businessObjectClass, fieldNm)) {
                 try {
                     fieldVal = getEncryptionService().encrypt(fieldVal);
                 }
@@ -880,15 +878,13 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 
                 String attributeValue = (String) fieldValues.get(attributeName);
 
-                boolean isSecureField = !StringUtils.isBlank(getDataDictionaryService().getAttributeDisplayWorkgroup(getBusinessObjectClass(), attributeName));
-
                 // check for required if field does not have value
                 if (StringUtils.isBlank(attributeValue)) {
                     if ((getBusinessObjectDictionaryService().getLookupAttributeRequired(getBusinessObjectClass(), attributeName)).booleanValue()) {
                         GlobalVariables.getErrorMap().putError(attributeName, RiceKeyConstants.ERROR_REQUIRED, attributeLabel);
                     }
                 }
-                else if (isSecureField) {
+                else if (getBusinessObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(businessObjectClass, attributeName)) {
                     // following loop would be trivial if Constants.QUERY_CHARACTERS would implement CharSequence but not so
                     // sure if that makes sense...
                     for (int i = 0; i < KNSConstants.QUERY_CHARACTERS.length; i++) {
@@ -990,15 +986,20 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 
         List returnKeys = getReturnKeys();
         List pkNames = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(getBusinessObjectClass());
+        Person user = GlobalVariables.getUserSession().getPerson();
+        
         // iterate through result list and wrap rows with return url and action urls
         for (Iterator iter = displayList.iterator(); iter.hasNext();) {
             BusinessObject element = (BusinessObject) iter.next();
         	if(element instanceof PersistableBusinessObject){
                 lookupForm.setLookupObjectId(((PersistableBusinessObject)element).getObjectId());
             }
-            HtmlData returnUrl = getReturnUrl(element, lookupForm, returnKeys);
+        	
+        	BusinessObjectRestrictions businessObjectRestrictions = getBusinessObjectAuthorizationService().getLookupResultRestrictions(element, user);
+        	
+            HtmlData returnUrl = getReturnUrl(element, lookupForm, returnKeys, businessObjectRestrictions);
 
-            String actionUrls = getActionUrls(element, pkNames);
+            String actionUrls = getActionUrls(element, pkNames, businessObjectRestrictions);
 
             List<Column> columns = getColumns();
             for (Iterator iterator = columns.iterator(); iterator.hasNext();) {
@@ -1050,7 +1051,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
                 col.setComparator(CellComparatorHelper.getAppropriateComparatorForPropertyClass(propClass));
                 col.setValueComparator(CellComparatorHelper.getAppropriateValueComparatorForPropertyClass(propClass));
 
-                maskValueIfNecessary(element.getClass(), col.getPropertyName(), propValue);
+                propValue = maskValueIfNecessary(element.getClass(), col.getPropertyName(), propValue, businessObjectRestrictions);
 
                 col.setPropertyValue(propValue);
 
@@ -1081,21 +1082,14 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         return displayList;
     }
 
-    protected String maskValueIfNecessary(Class businessObjectClass, String propertyName, String propertyValue) {
+    protected String maskValueIfNecessary(Class businessObjectClass, String propertyName, String propertyValue, BusinessObjectRestrictions businessObjectRestrictions) {
         String maskedPropertyValue = propertyValue;
-    	AttributeSecurity attributeSecurity = getDataDictionaryService().getAttributeSecurity(businessObjectClass.getName(), propertyName);
-        if(attributeSecurity != null && attributeSecurity.isPartialMask()){
-        	boolean viewAuthorized = getBusinessObjectAuthorizationService().canPartiallyUnmaskField(GlobalVariables.getUserSession().getPerson(), businessObjectClass, propertyName);
-        	if(!viewAuthorized){
-        		maskedPropertyValue = attributeSecurity.getPartialMaskFormatter().maskValue(propertyValue);
-        	}
-        }
-        if(attributeSecurity != null && attributeSecurity.isMask()){
-        	boolean viewAuthorized = getBusinessObjectAuthorizationService().canFullyUnmaskField(GlobalVariables.getUserSession().getPerson(), businessObjectClass, propertyName);
-        	if(!viewAuthorized){
-        		maskedPropertyValue = attributeSecurity.getMaskFormatter().maskValue(propertyValue);
-        	}
-        }
+    	if (businessObjectRestrictions != null) {
+    		FieldRestriction fieldRestriction = businessObjectRestrictions.getFieldRestriction(propertyName);
+    		if (fieldRestriction != null && (fieldRestriction.isMasked() || fieldRestriction.isPartiallyMasked())) {
+    			maskedPropertyValue = fieldRestriction.getMaskFormatter().maskValue(propertyValue);
+    		}
+    	}
         return maskedPropertyValue;
     }
 

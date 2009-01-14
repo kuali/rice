@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
@@ -64,8 +65,8 @@ public class DisplayInactivationBlockersForm extends KualiForm {
 			throw new IllegalArgumentException("BO Class is not a BusinessObject: " + businessObjectClassName);
 		}
 		
-		DataDictionaryService dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
 		EncryptionService encryptionService = KNSServiceLocator.getEncryptionService();
+		BusinessObjectAuthorizationService businessObjectAuthorizationService = KNSServiceLocator.getBusinessObjectAuthorizationService();
 		
 		List primaryKeyFieldNames = KNSServiceLocator.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(businessObjectClass);
 		for (Iterator i = primaryKeyFieldNames.iterator(); i.hasNext();) {
@@ -78,8 +79,7 @@ public class DisplayInactivationBlockersForm extends KualiForm {
 			}
 			
             // check if field is a secure
-            String displayWorkgroup = dataDictionaryService.getAttributeDisplayWorkgroup(businessObjectClass, primaryKeyFieldValue);
-            if (StringUtils.isNotBlank(displayWorkgroup)) {
+            if (businessObjectAuthorizationService.attributeValueNeedsToBeEncryptedOnFormsAndLinks(businessObjectClass, primaryKeyFieldName)) {
                 try {
                 	primaryKeyFieldValue = encryptionService.decrypt(primaryKeyFieldValue);
                 }

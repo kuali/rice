@@ -45,6 +45,7 @@ import org.kuali.rice.kns.document.MaintenanceLock;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.lookup.valueFinder.ValueFinder;
+import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.BusinessObjectService;
@@ -92,6 +93,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     private static EncryptionService encryptionService;
     private static org.kuali.rice.kim.service.PersonService personService;
     private static BusinessObjectMetaDataService businessObjectMetaDataService;
+    private static BusinessObjectAuthorizationService businessObjectAuthorizationService;
     
     /**
      * Default empty constructor
@@ -152,8 +154,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
             }
             
             // check if field is a secure
-            String displayWorkgroup = getDataDictionaryService().getAttributeDisplayWorkgroup(getBoClass(), fieldName);
-            if (StringUtils.isNotBlank(displayWorkgroup)) {
+            if (businessObjectAuthorizationService.attributeValueNeedsToBeEncryptedOnFormsAndLinks(boClass, fieldName)) {
                 try {
                     fieldValue = getEncryptionService().encrypt(fieldValue);
                 }
@@ -1095,6 +1096,13 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
         return businessObjectMetaDataService;
     }
 
+    public static BusinessObjectAuthorizationService getBusinessObjectAuthorizationService() {
+    	if (businessObjectAuthorizationService == null) {
+    		businessObjectAuthorizationService = KNSServiceLocator.getBusinessObjectAuthorizationService();
+    	}
+    	return businessObjectAuthorizationService;
+    }
+    
 	/**
 	 * @see org.kuali.rice.kns.maintenance.Maintainable#clearBusinessObjectOfRestrictedValues(org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions)
 	 */
@@ -1158,4 +1166,6 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 			}
 		}
 	}
+	
+	
 }

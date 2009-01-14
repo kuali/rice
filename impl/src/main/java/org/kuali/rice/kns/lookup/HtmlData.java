@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
+import org.kuali.rice.kns.authorization.FieldRestriction;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeSecurity;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
@@ -173,25 +175,32 @@ public abstract class HtmlData implements Serializable {
 	 * @param returnKeys
 	 * @return title text
 	 */
-	public static String getTitleText(String prependText, BusinessObject bo, List keys) {
+	public static String getTitleText(String prependText, BusinessObject bo, List keys, BusinessObjectRestrictions businessObjectRestrictions) {
 		if (bo == null)
 			return KNSConstants.EMPTY_STRING;
 
-		Map<String, String> m = new HashMap<String, String>();
+		Map<String, String> keyValueMap = new HashMap<String, String>();
 		Iterator keysIt = keys.iterator();
 		while (keysIt.hasNext()) {
 			String fieldNm = (String) keysIt.next();
 			Object fieldVal = ObjectUtils.getPropertyValue(bo, fieldNm);
-			// need to format date in url
-			if (fieldVal == null) {
+			
+			FieldRestriction fieldRestriction = null;
+			if (businessObjectRestrictions != null) {
+				fieldRestriction = businessObjectRestrictions.getFieldRestriction(fieldNm);
+			}
+			if (fieldRestriction != null && (fieldRestriction.isMasked() || fieldRestriction.isPartiallyMasked())) {
+				fieldVal = fieldRestriction.getMaskFormatter().maskValue(fieldVal);
+			} else if (fieldVal == null) {
 				fieldVal = KNSConstants.EMPTY_STRING;
 			} else if (fieldVal instanceof Date) {
+				// need to format date in url
 				DateFormatter dateFormatter = new DateFormatter();
 				fieldVal = dateFormatter.format(fieldVal);
 			}
-			m.put(fieldNm, fieldVal.toString());
+			keyValueMap.put(fieldNm, fieldVal.toString());
 		}
-		return getTitleText(prependText, bo.getClass(), m);
+		return getTitleText(prependText, bo.getClass(), keyValueMap);
 	}
 	
 	private static BusinessObjectAuthorizationService businessObjectAuthorizationService;
@@ -202,25 +211,12 @@ public abstract class HtmlData implements Serializable {
 		return businessObjectAuthorizationService;
 	}
 
-	public static String getTitleText(String prependText, Class element, Map<String, String> keyValueList) {
+	public static String getTitleText(String prependText, Class element, Map<String, String> keyValueMap) {
 		Class elementClass = element;
 		StringBuffer titleText = new StringBuffer(prependText);
-		for (String key : keyValueList.keySet()) {
-			String fieldVal = keyValueList.get(key).toString();
+		for (String key : keyValueMap.keySet()) {
+			String fieldVal = keyValueMap.get(key).toString();
 			
-			AttributeSecurity attributeSecurity = KNSServiceLocator.getDataDictionaryService().getAttributeSecurity(element.getName(), key);
-			if(attributeSecurity != null && attributeSecurity.isPartialMask()){
-            	boolean viewAuthorized = getBusinessObjectAuthorizationService().canPartiallyUnmaskField(GlobalVariables.getUserSession().getPerson(), elementClass, key);
-                if(!viewAuthorized){
-                	fieldVal = attributeSecurity.getMaskFormatter().maskValue(fieldVal);
-                }
-			}
-			if(attributeSecurity != null && attributeSecurity.isMask()){
-            	boolean viewAuthorized = getBusinessObjectAuthorizationService().canFullyUnmaskField(GlobalVariables.getUserSession().getPerson(), elementClass, key);
-            	if(!viewAuthorized){
-            		fieldVal = attributeSecurity.getMaskFormatter().maskValue(fieldVal);
-            	}
-            }
 			titleText.append(KNSServiceLocator.getDataDictionaryService()
 					.getAttributeLabel(element, key)
 					+ "=" + fieldVal.toString() + " ");

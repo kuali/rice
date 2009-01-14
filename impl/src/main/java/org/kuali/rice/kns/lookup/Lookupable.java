@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
 import org.kuali.rice.kns.web.ui.ResultRow;
@@ -153,7 +154,7 @@ public interface Lookupable extends Serializable {
      * @param lookupImpl - Current lookup impl name
      * @return String url called when selecting a row from the result set
      */
-    public HtmlData getReturnUrl(BusinessObject businessObject, Map fieldConversions, String lookupImpl);
+    public HtmlData getReturnUrl(BusinessObject businessObject, Map fieldConversions, String lookupImpl, BusinessObjectRestrictions businessObjectRestrictions);
 
     /**
      * Builds the Url for a maintenance new document for the lookup business object class

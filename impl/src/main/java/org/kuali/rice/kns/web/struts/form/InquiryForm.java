@@ -34,6 +34,7 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Exporter;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.inquiry.Inquirable;
+import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -147,9 +148,11 @@ public class InquiryForm extends KualiForm {
     }
 
     protected void populatePKFieldValues(HttpServletRequest request, String boClassName, boolean passedFromPreviousInquiry) {
-    try {
+        try {
             EncryptionService encryptionService = KNSServiceLocator.getEncryptionService();
             DataDictionaryService dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+            BusinessObjectAuthorizationService businessObjectAuthorizationService = KNSServiceLocator.getBusinessObjectAuthorizationService();
+            
             // List of encrypted fields - Change for KFSMI-1374 -
             // Getting rid of encryptionValues and fetching the list of fields, that should be encrypted, from DataDictionary
             List encryptedFieldsList = dataDictionaryService.getEncryptedFieldsList(boClassName);
@@ -169,7 +172,7 @@ public class InquiryForm extends KualiForm {
                     String parameter = (String) request.getParameter(pkParamName);
 
                     inquiryPrimaryKeys.put(realPkFieldName, parameter);
-                    if (StringUtils.isNotBlank(dataDictionaryService.getAttributeDisplayWorkgroup(boClassName, realPkFieldName))) {
+                    if (businessObjectAuthorizationService.attributeValueNeedsToBeEncryptedOnFormsAndLinks(businessObjectClass, realPkFieldName)) {
                         // This PK field needs to be encrypted coming in from the request, if it was decrypt it, if not, throw exception
 
                         // this check prevents a brute-force attacker from passing in an unencrypted PK value that's supposed to be encrypted and determining whether

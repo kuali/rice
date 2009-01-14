@@ -42,6 +42,7 @@ import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.rule.AddCollectionLineRule;
 import org.kuali.rice.kns.rule.event.ApproveDocumentEvent;
 import org.kuali.rice.kns.rules.DocumentRuleBase;
+import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.DataDictionaryService;
@@ -97,7 +98,8 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
     protected MaintenanceDocumentDictionaryService maintDocDictionaryService;
     protected WorkflowDocumentService workflowDocumentService;
     protected org.kuali.rice.kim.service.PersonService personService;
-
+    protected BusinessObjectAuthorizationService businessObjectAuthorizationService;
+    
     private PersistableBusinessObject oldBo;
     private PersistableBusinessObject newBo;
     private Class boClass;
@@ -131,6 +133,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
             this.setMaintDocDictionaryService(KNSServiceLocator.getMaintenanceDocumentDictionaryService());
             this.setWorkflowDocumentService(KNSServiceLocator.getWorkflowDocumentService());
             this.setPersonService( org.kuali.rice.kim.service.KIMServiceLocator.getPersonService() );
+            this.setBusinessObjectAuthorizationService(KNSServiceLocator.getBusinessObjectAuthorizationService());
         } catch ( Exception ex ) {
             // do nothing, avoid blowing up if called prior to spring initialization
         }
@@ -331,8 +334,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
             }
 
             // Encrypt value if it is a secure field
-            String displayWorkgroup = ddService.getAttributeDisplayWorkgroup(newBo.getClass(), keyName);
-            if (StringUtils.isNotBlank(displayWorkgroup)) {
+            if (businessObjectAuthorizationService.attributeValueNeedsToBeEncryptedOnFormsAndLinks(inactivationBlockingMetadata.getBlockedBusinessObjectClass(), keyName)) {
                 try {
                     keyValue = KNSServiceLocator.getEncryptionService().encrypt(keyValue);
                 }
@@ -1572,6 +1574,21 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
     public DateTimeService getDateTimeService() {
         return KNSServiceLocator.getDateTimeService();
     }
+
+	/**
+	 * @return the businessObjectAuthorizationService
+	 */
+	public BusinessObjectAuthorizationService getBusinessObjectAuthorizationService() {
+		return this.businessObjectAuthorizationService;
+	}
+
+	/**
+	 * @param businessObjectAuthorizationService the businessObjectAuthorizationService to set
+	 */
+	public void setBusinessObjectAuthorizationService(
+			BusinessObjectAuthorizationService businessObjectAuthorizationService) {
+		this.businessObjectAuthorizationService = businessObjectAuthorizationService;
+	}
     
 }
 

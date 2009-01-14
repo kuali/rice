@@ -57,7 +57,7 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
 	  if (session.getUserSession() == null) {
 		  return false;
 	  }
-	  return KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(session.getUserSession().getPrincipalId(), KEWConstants.KEW_NAMESPACE,	KEWConstants.PermissionTemplateNames.UNFILTERED_DOCUMENT_SEARCH, new AttributeSet(), new AttributeSet());
+	  return KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(session.getUserSession().getPrincipalId(), KEWConstants.KEW_NAMESPACE,	KEWConstants.PermissionTemplateNames.UNRESTRICTED_DOCUMENT_SEARCH, new AttributeSet(), new AttributeSet());
   }
 
   protected boolean checkStandardAuthorization(DocumentTypeSecurity security, UserSession userSession, String docTypeName, Long documentId, String initiatorWorkflowId, SecuritySession session) {

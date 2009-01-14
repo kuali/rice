@@ -888,6 +888,6 @@ public class KEWConstants {
     
     public class PermissionTemplateNames {
         public static final String VIEW_OTHER_ACTION_LIST = "View Other Action List";
-        public static final String UNFILTERED_DOCUMENT_SEARCH = "Unfiltered Document Search";
+        public static final String UNRESTRICTED_DOCUMENT_SEARCH = "Unrestricted Document Search";
     }
 }

@@ -109,7 +109,17 @@ public abstract class KualiAction extends DispatchAction {
                 ((KualiForm) form).setAnchor(KNSConstants.ANCHOR_TOP_OF_FORM);
             }
         }
-        
+        // if found methodToCall, pass control to that method, else return the basic forward
+        if (StringUtils.isNotBlank(methodToCall)) {
+        	if ( LOG.isDebugEnabled() ) {
+        		LOG.debug("methodToCall: '" + methodToCall+"'");
+        	}
+            returnForward = dispatchMethod(mapping, form, request, response, methodToCall);
+        }
+        else {
+            returnForward = mapping.findForward(RiceConstants.MAPPING_BASIC);
+        }
+
         // make sure the user can do what they're trying to according to the module that owns the functionality
         if ( !methodToCallsToNotCheckAuthorization.contains(methodToCall) ) {
         	if ( LOG.isDebugEnabled() ) {
@@ -120,17 +130,6 @@ public abstract class KualiAction extends DispatchAction {
         	if ( LOG.isDebugEnabled() ) {
         		LOG.debug("'" + methodToCall + "' is exempt from auth checks." );
         	}
-        }
-
-        // if found methodToCall, pass control to that method, else return the basic forward
-        if (StringUtils.isNotBlank(methodToCall)) {
-        	if ( LOG.isDebugEnabled() ) {
-        		LOG.debug("methodToCall: '" + methodToCall+"'");
-        	}
-            returnForward = dispatchMethod(mapping, form, request, response, methodToCall);
-        }
-        else {
-            returnForward = mapping.findForward(RiceConstants.MAPPING_BASIC);
         }
 
         // check if demonstration encryption is enabled

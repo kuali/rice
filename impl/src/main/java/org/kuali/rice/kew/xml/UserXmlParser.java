@@ -94,12 +94,10 @@ public class UserXmlParser implements XmlConstants {
 		entity.setActive(true);
 		entity.setEntityId("" + entityId);
 		
-		Long entityTypeId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ENTITY_ENT_TYP_ID_S");
 		EntityEntityTypeImpl entityType = new EntityEntityTypeImpl();
 		entity.getEntityTypes().add(entityType);
 		entityType.setEntityTypeCode("PERSON");
 		entityType.setEntityId(entity.getEntityId());
-		entityType.setEntityEntityTypeId(""+entityTypeId);
 		entityType.setActive(true);
 		
 		Long entityNameId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ENTITY_NM_ID_S");

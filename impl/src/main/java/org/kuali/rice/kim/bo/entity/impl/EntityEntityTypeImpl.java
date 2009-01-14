@@ -31,7 +31,6 @@ import javax.persistence.Table;
 import org.kuali.rice.kim.bo.entity.EntityAddress;
 import org.kuali.rice.kim.bo.entity.EntityEmail;
 import org.kuali.rice.kim.bo.entity.EntityEntityType;
-import org.kuali.rice.kim.bo.entity.EntityName;
 import org.kuali.rice.kim.bo.entity.EntityPhone;
 import org.kuali.rice.kim.bo.reference.EntityType;
 import org.kuali.rice.kim.bo.reference.impl.EntityTypeImpl;
@@ -47,16 +46,14 @@ public class EntityEntityTypeImpl extends InactivatableEntityDataBase implements
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "ENTITY_ENT_TYPE_ID")
-	protected String entityEntityTypeId;
-
 	@Column(name = "ENTITY_ID")
 	protected String entityId;
 
+	@Id
 	@Column(name = "ENT_TYP_CD")
 	protected String entityTypeCode;
 	 
-	@ManyToOne(targetEntity = EntityTypeImpl.class, fetch = FetchType.EAGER, cascade = {})
+	@ManyToOne(targetEntity = EntityTypeImpl.class, fetch = FetchType.LAZY, cascade = {})
 	@JoinColumn(name = "ENT_TYP_CD", insertable = false, updatable = false)
 	protected EntityType entityType;
 	
@@ -87,13 +84,6 @@ public class EntityEntityTypeImpl extends InactivatableEntityDataBase implements
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityEntityType#getEntityEntityTypeId()
-	 */
-	public String getEntityEntityTypeId() {
-		return entityEntityTypeId;
-	}
-
-	/**
 	 * @see org.kuali.rice.kim.bo.entity.EntityEntityType#getPhoneNumbers()
 	 */
 	public List<EntityPhone> getPhoneNumbers() {
@@ -117,10 +107,10 @@ public class EntityEntityTypeImpl extends InactivatableEntityDataBase implements
 	/**
 	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	protected LinkedHashMap toStringMapper() {
 		LinkedHashMap m = new LinkedHashMap();
-		m.put( "entityEntityTypeId", entityEntityTypeId );
 		m.put( "entityId", entityId );
 		m.put( "entityTypeCode", entityTypeCode );
 		m.put( "active", active );
@@ -137,10 +127,6 @@ public class EntityEntityTypeImpl extends InactivatableEntityDataBase implements
 
 	public void setEntityType(EntityType entityType) {
 		this.entityType = entityType;
-	}
-
-	public void setEntityEntityTypeId(String entityEntityTypeId) {
-		this.entityEntityTypeId = entityEntityTypeId;
 	}
 
 	public void setEntityTypeCode(String entityTypeCode) {

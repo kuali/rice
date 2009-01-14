@@ -118,7 +118,6 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			if (type.getEntityTypeCode().equals(entityType.getEntityTypeCode())) {
 				origEntityType = type;
 				entityType.setVersionNumber(type.getVersionNumber());
-				entityType.setEntityEntityTypeId(type.getEntityEntityTypeId());
 			}
 		}
 		kimEntity.setEntityTypes(entityTypes);

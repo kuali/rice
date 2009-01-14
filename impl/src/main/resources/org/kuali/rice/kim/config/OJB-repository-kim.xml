@@ -326,9 +326,8 @@
   <!-- ******************************************************************* -->
 
   <class-descriptor class="org.kuali.rice.kim.bo.entity.impl.EntityEntityTypeImpl" table="KRIM_ENTITY_ENT_TYP_T">
-    <field-descriptor name="entityEntityTypeId" column="ENTITY_ENT_TYPE_ID" jdbc-type="VARCHAR" primarykey="true" />
     <field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="VARCHAR" primarykey="true" />
-    <field-descriptor name="entityTypeCode" column="ENT_TYP_CD" jdbc-type="VARCHAR" />
+    <field-descriptor name="entityTypeCode" column="ENT_TYP_CD" jdbc-type="VARCHAR" primarykey="true" />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true"  />

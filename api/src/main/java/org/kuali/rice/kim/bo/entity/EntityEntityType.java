@@ -28,8 +28,6 @@ import org.kuali.rice.kns.bo.Inactivateable;
  */
 public interface EntityEntityType extends Inactivateable {
 
-	String getEntityEntityTypeId();
-	
 	String getEntityTypeCode();
 	
 	EntityType getEntityType();

@@ -19,8 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
-import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.EntityAffiliation;
 import org.kuali.rice.kim.bo.entity.EntityBioDemographics;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAddress;
@@ -51,7 +49,6 @@ public class IdentityManagementPersonDocument extends TransactionalDocumentBase 
 	protected String entityId;
 	protected String password;
 	
-	protected String entityEntityTypeId;
 	// ext id - now hard coded for "tax id" & "univ id"
 	protected String taxId = "";
 	protected String univId = "";
@@ -284,14 +281,6 @@ public class IdentityManagementPersonDocument extends TransactionalDocumentBase 
 		if (getDocumentHeader().getWorkflowDocument().stateIsProcessed()) {
 			KIMServiceLocator.getUiDocumentService().saveEntityPerson(this);
 		}
-	}
-	
-	public String getEntityEntityTypeId() {
-		return this.entityEntityTypeId;
-	}
-
-	public void setEntityEntityTypeId(String entityEntityTypeId) {
-		this.entityEntityTypeId = entityEntityTypeId;
 	}
 
 }

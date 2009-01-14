@@ -121,6 +121,9 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
     @Transient
     private Timestamp lastApprovedDate;
 
+    @Column(name="RQST_LBL")
+    private String requestLabel;
+
     private KimGroup getGroup(String groupId) {
     	if( groupId ==null )	return null;
     	return KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
@@ -196,7 +199,11 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
     }
 
     public String getActionRequestLabel() {
-        return CodeTranslator.getActionRequestLabel(getActionRequestCd());
+    	String sRet = CodeTranslator.getActionRequestLabel(getActionRequestCd());
+    	if(KEWConstants.ACTION_REQUEST_FYI_REQ.equals(getActionRequestCd())){
+    		sRet = getRequestLabel();
+    	}
+        return sRet;
     }
 
     public DocumentRouteHeaderValue getRouteHeader() {
@@ -407,6 +414,14 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
 
 	public KimPrincipal getPrincipal(){
 		return KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+	}
+
+	public String getRequestLabel() {
+		return this.requestLabel;
+	}
+
+	public void setRequestLabel(String requestLabel) {
+		this.requestLabel = requestLabel;
 	}
 
 }

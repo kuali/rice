@@ -90,6 +90,10 @@ public class ActionRequestFactory {
     }
 
 	public ActionRequestValue createActionRequest(String actionRequested, Integer priority, Recipient recipient, String description, Long responsibilityId, Boolean ignorePrevious, String approvePolicy, Long ruleId, String annotation) {
+		return createActionRequest(actionRequested, priority, recipient, description, responsibilityId, ignorePrevious, null, null, annotation, null);
+	}
+
+	public ActionRequestValue createActionRequest(String actionRequested, Integer priority, Recipient recipient, String description, Long responsibilityId, Boolean ignorePrevious, String approvePolicy, Long ruleId, String annotation, String requestLabel) {
 		ActionRequestValue actionRequest = new ActionRequestValue();
         actionRequest.setActionRequested(actionRequested);
         actionRequest.setDocVersion(document.getDocVersion());
@@ -104,8 +108,10 @@ public class ActionRequestFactory {
     	actionRequest.setIgnorePrevAction(ignorePrevious);
     	actionRequest.setRuleBaseValuesId(ruleId);
     	actionRequest.setAnnotation(annotation);
+    	actionRequest.setRequestLabel(requestLabel);
     	setDefaultProperties(actionRequest);
     	resolveRecipient(actionRequest, recipient);
+
         return actionRequest;
 	}
 

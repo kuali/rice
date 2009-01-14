@@ -208,6 +208,7 @@ public class ActionListServiceImpl implements ActionListService {
         actionItem.setGroupId(actionRequest.getGroupId());
         actionItem.setResponsibilityId(actionRequest.getResponsibilityId());
         actionItem.setDelegationType(actionRequest.getDelegationType());
+        actionItem.setRequestLabel(actionRequest.getRequestLabel());
 
         ActionRequestValue delegatorActionRequest = getActionRequestService().findDelegatorRequest(actionRequest);
         if (delegatorActionRequest != null) {

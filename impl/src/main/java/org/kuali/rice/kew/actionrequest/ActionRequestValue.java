@@ -186,10 +186,13 @@ public class ActionRequestValue implements WorkflowPersistable {
 	@JoinColumn(name="RTE_NODE_INSTN_ID")
 	private RouteNodeInstance nodeInstance;
 
+    @Column(name="RQST_LBL")
+    private String requestLabel;
+
     public ActionRequestValue() {
         createDate = new Timestamp(System.currentTimeMillis());
     }
-    
+
     @PrePersist
     public void beforeInsert(){
         OrmUtils.populateAutoIncValue(this, KNSServiceLocator.getEntityManagerFactory().createEntityManager());
@@ -231,14 +234,14 @@ public class ActionRequestValue implements WorkflowPersistable {
     	}
     	return KEWServiceLocator.getIdentityHelperService().getPrincipal(getPrincipalId());
     }
-    
+
     public Person getPerson() {
     	if (getPrincipalId() == null) {
     		return null;
     	}
     	return KIMServiceLocator.getPersonService().getPerson(getPrincipalId());
     }
-    
+
     public String getDisplayName() {
     	if (isUserRequest()) {
     		UserSession userSession = UserSession.getAuthenticatedUser();
@@ -274,7 +277,11 @@ public class ActionRequestValue implements WorkflowPersistable {
     }
 
     public String getActionRequestedLabel() {
-        return CodeTranslator.getActionRequestLabel(getActionRequested());
+    	String sRet = CodeTranslator.getActionRequestLabel(getActionRequested());
+    	if(KEWConstants.ACTION_REQUEST_FYI_REQ.equals(getActionRequested())){
+    		sRet = getRequestLabel();
+    	}
+        return sRet;
     }
 
     /**
@@ -397,7 +404,7 @@ public class ActionRequestValue implements WorkflowPersistable {
     public void setPrincipalId(String principalId) {
         this.principalId = principalId;
     }
-    
+
     /**
      * @return Returns the ignorePrevAction.
      */
@@ -840,7 +847,7 @@ public class ActionRequestValue implements WorkflowPersistable {
     public void setRuleBaseValuesId(Long ruleBaseValuesId) {
         this.ruleBaseValuesId = ruleBaseValuesId;
     }
-    
+
 	private RuleService getRuleService() {
         return (RuleService) KEWServiceLocator.getService(KEWServiceLocator.RULE_SERVICE);
     }
@@ -929,4 +936,12 @@ public class ActionRequestValue implements WorkflowPersistable {
             .append("createDateString", createDateString)
             .append("nodeInstance", nodeInstance).toString();
     }
+
+	public String getRequestLabel() {
+		return this.requestLabel;
+	}
+
+	public void setRequestLabel(String requestLabel) {
+		this.requestLabel = requestLabel;
+	}
 }

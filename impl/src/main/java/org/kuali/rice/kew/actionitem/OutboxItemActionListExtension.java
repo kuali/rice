@@ -23,30 +23,31 @@ import javax.persistence.Table;
 
 /**
  * Outbox item.  An extension of {@link ActionItemActionListExtension} for OJB.
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 @Entity
 @Table(name="KREW_OUT_BOX_ITM_T")
 @AttributeOverrides({
-    @AttributeOverride(name="actionItemId", column=@Column(name="ACTN_ITM_ID")), 
-    @AttributeOverride(name="workflowId", column=@Column(name="PRNCPL_ID")), 
-    @AttributeOverride(name="dateAssigned", column=@Column(name="ASND_DT")), 
-    @AttributeOverride(name="actionRequestCd", column=@Column(name="RQST_CD")), 
-    @AttributeOverride(name="actionRequestId", column=@Column(name="ACTN_RQST_ID")), 
-    @AttributeOverride(name="routeHeaderId", column=@Column(name="DOC_HDR_ID")), 
-    @AttributeOverride(name="responsibilityId", column=@Column(name="RSP_ID")), 
-    @AttributeOverride(name="groupId", column=@Column(name="GRP_ID")), 
-    @AttributeOverride(name="roleName", column=@Column(name="ROLE_NM")), 
-    @AttributeOverride(name="docTitle", column=@Column(name="DOC_HDR_TTL")), 
-    @AttributeOverride(name="docLabel", column=@Column(name="DOC_TYP_LBL")), 
-    @AttributeOverride(name="docHandlerURL", column=@Column(name="DOC_HDLR_URL")), 
-    @AttributeOverride(name="docName", column=@Column(name="DOC_TYP_NM")), 
-    @AttributeOverride(name="delegatorWorkflowId", column=@Column(name="DLGN_PRNCPL_ID")), 
-    @AttributeOverride(name="delegatorGroupId", column=@Column(name="DLGN_GRP_ID")), 
-    @AttributeOverride(name="delegationType", column=@Column(name="DLGN_TYP")), 
-    @AttributeOverride(name="lockVerNbr", column=@Column(name="VER_NBR"))
+    @AttributeOverride(name="actionItemId", column=@Column(name="ACTN_ITM_ID")),
+    @AttributeOverride(name="workflowId", column=@Column(name="PRNCPL_ID")),
+    @AttributeOverride(name="dateAssigned", column=@Column(name="ASND_DT")),
+    @AttributeOverride(name="actionRequestCd", column=@Column(name="RQST_CD")),
+    @AttributeOverride(name="actionRequestId", column=@Column(name="ACTN_RQST_ID")),
+    @AttributeOverride(name="routeHeaderId", column=@Column(name="DOC_HDR_ID")),
+    @AttributeOverride(name="responsibilityId", column=@Column(name="RSP_ID")),
+    @AttributeOverride(name="groupId", column=@Column(name="GRP_ID")),
+    @AttributeOverride(name="roleName", column=@Column(name="ROLE_NM")),
+    @AttributeOverride(name="docTitle", column=@Column(name="DOC_HDR_TTL")),
+    @AttributeOverride(name="docLabel", column=@Column(name="DOC_TYP_LBL")),
+    @AttributeOverride(name="docHandlerURL", column=@Column(name="DOC_HDLR_URL")),
+    @AttributeOverride(name="docName", column=@Column(name="DOC_TYP_NM")),
+    @AttributeOverride(name="delegatorWorkflowId", column=@Column(name="DLGN_PRNCPL_ID")),
+    @AttributeOverride(name="delegatorGroupId", column=@Column(name="DLGN_GRP_ID")),
+    @AttributeOverride(name="delegationType", column=@Column(name="DLGN_TYP")),
+    @AttributeOverride(name="lockVerNbr", column=@Column(name="VER_NBR")),
+    @AttributeOverride(name="requestLabel", column=@Column(name="RQST_LBL"))
 })
 
 public class OutboxItemActionListExtension extends ActionItemActionListExtension {
@@ -54,7 +55,7 @@ public class OutboxItemActionListExtension extends ActionItemActionListExtension
     private static final long serialVersionUID = 5776214610837858304L;
 
     public OutboxItemActionListExtension() {}
-    
+
     public OutboxItemActionListExtension(ActionItem actionItem) {
 	this.setActionRequestCd(actionItem.getActionRequestCd());
 	this.setActionRequestId(actionItem.getActionRequestId());
@@ -73,6 +74,7 @@ public class OutboxItemActionListExtension extends ActionItemActionListExtension
 	this.setRouteHeaderId(actionItem.getRouteHeaderId());
 	this.setPrincipalId(actionItem.getPrincipalId());
 	this.setGroupId(actionItem.getGroupId());
+	this.setRequestLabel(actionItem.getRequestLabel());
     }
-    
+
 }

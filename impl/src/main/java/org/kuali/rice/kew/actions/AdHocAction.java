@@ -51,12 +51,13 @@ public class AdHocAction extends ActionTakenEvent {
 	private Boolean ignorePrevious;
 	private Recipient recipient;
 	private String annotation;
+	private String requestLabel;
 
     public AdHocAction(DocumentRouteHeaderValue routeHeader, KimPrincipal principal) {
         super(NO_ACTION_TAKEN_CODE, routeHeader, principal);
     }
 
-	public AdHocAction(DocumentRouteHeaderValue routeHeader, KimPrincipal principal, String annotation, String actionRequested, String nodeName, Recipient recipient, String responsibilityDesc, Boolean ignorePrevActions) {
+	public AdHocAction(DocumentRouteHeaderValue routeHeader, KimPrincipal principal, String annotation, String actionRequested, String nodeName, Recipient recipient, String responsibilityDesc, Boolean ignorePrevActions, String requestLabel) {
 		super(NO_ACTION_TAKEN_CODE, routeHeader, principal, annotation);
 		this.actionRequested = actionRequested;
 		this.nodeName = nodeName;
@@ -64,6 +65,7 @@ public class AdHocAction extends ActionTakenEvent {
 		this.ignorePrevious = ignorePrevActions;
 		this.recipient = recipient;
 		this.annotation = annotation;
+		this.requestLabel = requestLabel;
 	}
 
 	public void recordAction() throws InvalidActionTakenException {
@@ -121,6 +123,7 @@ public class AdHocAction extends ActionTakenEvent {
                     ActionRequestFactory arFactory = new ActionRequestFactory(routeHeader, routeNode);
                     adhocRequest = arFactory.createActionRequest(actionRequested, recipient, responsibilityDesc, ignorePrevious, annotation);
                     adhocRequest.setResponsibilityId(KEWConstants.ADHOC_REQUEST_RESPONSIBILITY_ID);
+                    adhocRequest.setRequestLabel(requestLabel);
                 } else {
                     adhocRequest.setActionRequested(actionRequested);
                 }

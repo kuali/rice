@@ -67,7 +67,7 @@ public class FYIByUniversityId extends RequestActivationNode {
                				throw new WorkflowRuntimeException("Failed to locate a Person with the given employee ID: " + employeeId);
                			}
                			if (!context.isSimulation()) {
-               				KEWServiceLocator.getWorkflowDocumentService().adHocRouteDocumentToPrincipal(person.getPrincipalId(), context.getDocument(), KEWConstants.ACTION_REQUEST_FYI_REQ, null, "Notification Request", person.getPrincipalId(), "Notification Request", true);
+               				KEWServiceLocator.getWorkflowDocumentService().adHocRouteDocumentToPrincipal(person.getPrincipalId(), context.getDocument(), KEWConstants.ACTION_REQUEST_FYI_REQ, null, "Notification Request", person.getPrincipalId(), "Notification Request", true, null);
                			}
                			//wfDoc.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_FYI_REQ, "Notification Request", new EmplIdVO(field.getChildText("value")), "Notification Request", true);
                 		LOG.debug("Sent FYI using the adHocRouteDocumentToPrincipal function to UniversityID:  " + person.getEmployeeId());

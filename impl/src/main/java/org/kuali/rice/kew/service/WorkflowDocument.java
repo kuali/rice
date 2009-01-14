@@ -96,13 +96,13 @@ public class WorkflowDocument implements java.io.Serializable {
      */
     public WorkflowDocument(UserIdDTO userId, Long routeHeaderId) throws WorkflowException {
     	String principalId = convertUserIdToPrincipalId(userId);
-    	init(principalId, null, routeHeaderId);    	
+    	init(principalId, null, routeHeaderId);
     }
-    
+
     private String convertUserIdToPrincipalId(UserIdDTO userId) {
     	return KEWServiceLocator.getIdentityHelperService().getPrincipalId(userId);
     }
-    
+
     /**
      * Constructs a WorkflowDocument representing a new document in the workflow system.
      * Creation/committing of the new document is deferred until the first action is
@@ -643,9 +643,17 @@ public class WorkflowDocument implements java.io.Serializable {
      * in a terminal state, the request will be attached to the terminal node.
      */
     public void adHocRouteDocumentToPrincipal(String actionRequested, String nodeName, String annotation, String principalId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
+    	adHocRouteDocumentToPrincipal(actionRequested, null, annotation, principalId, responsibilityDesc, ignorePreviousActions, null);
+    }
+
+    /**
+     * Sends an ad hoc request to the specified user at the specified node on the document.  If the document is
+     * in a terminal state, the request will be attached to the terminal node.
+     */
+    public void adHocRouteDocumentToPrincipal(String actionRequested, String nodeName, String annotation, String principalId, String responsibilityDesc, boolean ignorePreviousActions, String requestLabel) throws WorkflowException {
         try {
         	createDocumentIfNeccessary();
-            routeHeader = getWorkflowDocumentActions().adHocRouteDocumentToPrincipal(principalId, getRouteHeader(), actionRequested, nodeName, annotation, principalId, responsibilityDesc, ignorePreviousActions);
+            routeHeader = getWorkflowDocumentActions().adHocRouteDocumentToPrincipal(principalId, getRouteHeader(), actionRequested, nodeName, annotation, principalId, responsibilityDesc, ignorePreviousActions, requestLabel);
             documentContentDirty = true;
         } catch (Exception e) {
             throw handleException(e);
@@ -665,9 +673,17 @@ public class WorkflowDocument implements java.io.Serializable {
      * in a terminal state, the request will be attached to the terminal node.
      */
     public void adHocRouteDocumentToGroup(String actionRequested, String nodeName, String annotation, String groupId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
+    	adHocRouteDocumentToGroup(actionRequested, null, annotation, groupId, responsibilityDesc, ignorePreviousActions, null);
+    }
+
+    /**
+     * Sends an ad hoc request to the specified workgroup at the specified node on the document.  If the document is
+     * in a terminal state, the request will be attached to the terminal node.
+     */
+    public void adHocRouteDocumentToGroup(String actionRequested, String nodeName, String annotation, String groupId, String responsibilityDesc, boolean ignorePreviousActions, String requestLabel) throws WorkflowException {
         try {
         	createDocumentIfNeccessary();
-            routeHeader = getWorkflowDocumentActions().adHocRouteDocumentToGroup(principalId, getRouteHeader(), actionRequested, nodeName, annotation, groupId, responsibilityDesc, ignorePreviousActions);
+            routeHeader = getWorkflowDocumentActions().adHocRouteDocumentToGroup(principalId, getRouteHeader(), actionRequested, nodeName, annotation, groupId, responsibilityDesc, ignorePreviousActions, requestLabel);
             documentContentDirty = true;
         } catch (Exception e) {
             throw handleException(e);
@@ -1433,34 +1449,34 @@ public class WorkflowDocument implements java.io.Serializable {
         }
         return getRouteHeader().getVariable(name);
     }
-    
+
     /**
-     * 
-     * Tells workflow that the current the document is constructed as will receive all future requests routed to them 
-     * disregarding any ignore previous flags set on the action request.  Uses the setVariable method behind the seens so 
+     *
+     * Tells workflow that the current the document is constructed as will receive all future requests routed to them
+     * disregarding any ignore previous flags set on the action request.  Uses the setVariable method behind the seens so
      * an action needs taken on the document to set this state on the document.
-     * 
+     *
      * @throws WorkflowException
      */
     public void setReceiveFutureRequests() throws WorkflowException {
 	this.setVariable(FutureRequestDocumentStateManager.getFutureRequestsKey(principalId), FutureRequestDocumentStateManager.getReceiveFutureRequestsValue());
     }
-    
+
     /**
-     * Tell workflow that the current document is constructed as will not receive any future requests routed to them 
-     * disregarding any ignore previous flags set on action requests.  Uses the setVariable method behind the seens so 
+     * Tell workflow that the current document is constructed as will not receive any future requests routed to them
+     * disregarding any ignore previous flags set on action requests.  Uses the setVariable method behind the seens so
      * an action needs taken on the document to set this state on the document.
-     * 
+     *
      * @throws WorkflowException
      */
     public void setDoNotReceiveFutureRequests() throws WorkflowException {
 	this.setVariable(FutureRequestDocumentStateManager.getFutureRequestsKey(principalId), FutureRequestDocumentStateManager.getDoNotReceiveFutureRequestsValue());
     }
-    
+
     /**
-     * Clears any state set on the document regarding a user receiving or not receiving action requests.  Uses the setVariable method 
+     * Clears any state set on the document regarding a user receiving or not receiving action requests.  Uses the setVariable method
      * behind the seens so an action needs taken on the document to set this state on the document.
-     * 
+     *
      * @throws WorkflowException
      */
     public void setClearFutureRequests() throws WorkflowException {

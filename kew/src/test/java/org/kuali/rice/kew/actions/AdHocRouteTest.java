@@ -30,6 +30,8 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 
 public class AdHocRouteTest extends KEWTestCase {
@@ -39,6 +41,23 @@ public class AdHocRouteTest extends KEWTestCase {
 
     protected void loadTestData() throws Exception {
         loadXmlFile("ActionsConfig.xml");
+    }
+
+    @Test
+    public void testRequestLabel() throws Exception{
+    	String note = "test note";
+    	Person per = KIMServiceLocator.getPersonService().getPersonByPrincipalName("rkirkend");
+    	WorkflowDocument doc = new WorkflowDocument(per.getPrincipalId(), ADHOC_DOC);
+
+    	docId = doc.getRouteHeaderId();
+
+    	doc.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_FYI_REQ, "AdHoc", "annotation1", getPrincipalIdForName("dewey"), "respDesc1", false, note);
+
+    	doc = getDocument(per.getPrincipalId(), docId);
+    	List<ActionRequestValue> actionRequests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(docId);
+    	for(ActionRequestValue arv : actionRequests){
+    		assertTrue("The note we passed in should equal the one we get out. note=["+ note +"]", note.equals(arv.getRequestLabel()));
+    	}
     }
 
 	@Test
@@ -446,6 +465,9 @@ public class AdHocRouteTest extends KEWTestCase {
 
     private WorkflowDocument getDocument(String netid) throws WorkflowException {
     	return new WorkflowDocument(new NetworkIdDTO(netid), docId);
+    }
+    private WorkflowDocument getDocument(String principalId, Long docId) throws WorkflowException {
+    	return new WorkflowDocument(principalId, docId);
     }
 
 }

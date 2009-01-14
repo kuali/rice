@@ -126,23 +126,23 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	}
 
 	public DocumentRouteHeaderValue adHocRouteDocumentToPrincipal(String principalId, DocumentRouteHeaderValue document, String actionRequested, String nodeName, String annotation, String targetPrincipalId,
-			String responsibilityDesc, Boolean ignorePrevious) throws WorkflowException {
+			String responsibilityDesc, Boolean ignorePrevious, String requestLabel) throws WorkflowException {
 		KimPrincipal principal = loadPrincipal(principalId);
 		Recipient recipient = KEWServiceLocator.getIdentityHelperService().getPrincipalRecipient(targetPrincipalId);
-		AdHocAction action = new AdHocAction(document, principal, annotation, actionRequested, nodeName, recipient, responsibilityDesc, ignorePrevious);
+		AdHocAction action = new AdHocAction(document, principal, annotation, actionRequested, nodeName, recipient, responsibilityDesc, ignorePrevious, requestLabel);
 		action.performAction();
 		return finish(document);
 	}
 
 	public DocumentRouteHeaderValue adHocRouteDocumentToGroup(String principalId, DocumentRouteHeaderValue document, String actionRequested, String nodeName, String annotation, String groupId,
-			String responsibilityDesc, Boolean ignorePrevious) throws WorkflowException {
+			String responsibilityDesc, Boolean ignorePrevious, String requestLabel) throws WorkflowException {
 		KimPrincipal principal = loadPrincipal(principalId);
 		Recipient recipient = KEWServiceLocator.getIdentityHelperService().getGroupRecipient(groupId);
-		AdHocAction action = new AdHocAction(document, principal, annotation, actionRequested, nodeName, recipient, responsibilityDesc, ignorePrevious);
+		AdHocAction action = new AdHocAction(document, principal, annotation, actionRequested, nodeName, recipient, responsibilityDesc, ignorePrevious, requestLabel);
 		action.performAction();
 		return finish(document);
 	}
-	
+
 	public DocumentRouteHeaderValue blanketApproval(String principalId, DocumentRouteHeaderValue routeHeader, String annotation, Integer routeLevel) throws InvalidActionTakenException {
 		RouteNode node = (routeLevel == null ? null : CompatUtils.getNodeForLevel(routeHeader.getDocumentType(), routeLevel));
 		if (node == null && routeLevel != null) {
@@ -408,7 +408,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		action.performAction();
 		return finish(document);
 	}
-	
+
 	protected KimPrincipal loadPrincipal(String principalId) {
 		return KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);
 	}

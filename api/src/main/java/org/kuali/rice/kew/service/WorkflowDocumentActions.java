@@ -32,8 +32,8 @@ public interface WorkflowDocumentActions {
 
     public RouteHeaderDTO acknowledgeDocument(String principalId, RouteHeaderDTO routeHeader, String annotation) throws WorkflowException;
     public RouteHeaderDTO approveDocument(String principalId, RouteHeaderDTO routeHeader, String annotation) throws WorkflowException;
-    public RouteHeaderDTO adHocRouteDocumentToPrincipal(String principalId, RouteHeaderDTO routeHeader, String actionRequested, String nodeName, String annotation, String targetPrincipalId, String responsibilityDesc, boolean ignorePrevActions) throws WorkflowException;
-    public RouteHeaderDTO adHocRouteDocumentToGroup(String principalId, RouteHeaderDTO routeHeader, String actionRequested, String nodeName, String annotation, String groupId, String responsibilityDesc, boolean ignorePrevActions) throws WorkflowException;
+    public RouteHeaderDTO adHocRouteDocumentToPrincipal(String principalId, RouteHeaderDTO routeHeader, String actionRequested, String nodeName, String annotation, String targetPrincipalId, String responsibilityDesc, boolean ignorePrevActions, String requestLabel) throws WorkflowException;
+    public RouteHeaderDTO adHocRouteDocumentToGroup(String principalId, RouteHeaderDTO routeHeader, String actionRequested, String nodeName, String annotation, String groupId, String responsibilityDesc, boolean ignorePrevActions, String requestLabel) throws WorkflowException;
     public RouteHeaderDTO cancelDocument(String principalId, RouteHeaderDTO routeHeader, String annotation) throws WorkflowException;
     public RouteHeaderDTO clearFYIDocument(String principalId, RouteHeaderDTO routeHeader) throws WorkflowException;
     public RouteHeaderDTO completeDocument(String principalId, RouteHeaderDTO routeHeader, String annotation) throws WorkflowException;
@@ -78,7 +78,7 @@ public interface WorkflowDocumentActions {
      * Revokes AdHoc request(s) according to the given AppSpecificRevokeVO which is passed in.
      */
     public RouteHeaderDTO revokeAdHocRequests(String principalId, RouteHeaderDTO routeHeader, AdHocRevokeDTO revoke, String annotation) throws WorkflowException;
-    
+
     /**
      * @since 0.9.1.3
      */
@@ -93,17 +93,17 @@ public interface WorkflowDocumentActions {
      * @since 0.9.1.3
      */
     public void superUserActionRequestApproveAction(String principalId, Long documentId, Long actionRequestId, String annotation) throws WorkflowException;
-    
+
     /**
      * @since 0.9.3
      */
     public void superUserNodeApproveAction(String principalId, Long documentId, String nodeName, String annotation, boolean runPostProcessor) throws WorkflowException;
-    
+
     /**
      * @since 0.9.3
      */
     public RouteHeaderDTO superUserApprove(String principalId, RouteHeaderDTO routeHeader, String annotation, boolean runPostProcessor) throws WorkflowException;
-    
+
     /**
      * @since 0.9.3
      */
@@ -113,15 +113,15 @@ public interface WorkflowDocumentActions {
      * @since 0.9.3
      */
     public RouteHeaderDTO superUserCancel(String principalId, RouteHeaderDTO routeHeader, String annotation, boolean runPostProcessor) throws WorkflowException;
-    
+
     /**
      * @since 0.9.3
      */
     public void superUserReturnToPreviousNode(String principalId, Long documentId, String destinationNodeName, String annotation, boolean runPostProcessor) throws WorkflowException;
-    
+
     /**
      * @since 0.9.3
      */
     public void superUserActionRequestApproveAction(String principalId, Long documentId, Long actionRequestId, String annotation, boolean runPostProcessor) throws WorkflowException;
-    
+
 }

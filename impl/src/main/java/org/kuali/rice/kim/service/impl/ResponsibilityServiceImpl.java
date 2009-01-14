@@ -21,6 +21,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.util.RiceDebugUtils;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.KimRole;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
@@ -45,6 +47,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  *
  */
 public class ResponsibilityServiceImpl implements ResponsibilityService {
+	private static final Logger LOG = Logger.getLogger( ResponsibilityServiceImpl.class );
 	private static final Integer DEFAULT_PRIORITY_NUMBER = new Integer(1);
 	private BusinessObjectService businessObjectService;
 	private GroupService groupService;
@@ -153,11 +156,33 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     	return results;
     }
 
+    protected void logResponsibilityCheck(String namespaceCode, String responsibilityName, AttributeSet responsibilityDetails, AttributeSet qualification ) {
+		StringBuffer sb = new StringBuffer();
+		sb.append(  '\n' );
+		sb.append( "Get Resp Actions: " ).append( namespaceCode ).append( "/" ).append( responsibilityName ).append( '\n' );
+		sb.append( "             Details:\n" );
+		if ( responsibilityDetails != null ) {
+			sb.append( responsibilityDetails.formattedDump( 25 ) );
+		} else {
+			sb.append( "                         [null]\n" );
+		}
+		sb.append( "             Qualifiers:\n" );
+		if ( qualification != null ) {
+			sb.append( qualification.formattedDump( 25 ) );
+		} else {
+			sb.append( "                         [null]\n" );
+		}
+		LOG.debug( sb.append( RiceDebugUtils.getTruncatedStackTrace(true) ).toString() );
+    }
+    
     /**
      * @see org.kuali.rice.kim.service.ResponsibilityService#getResponsibilityActions(String, java.lang.String, AttributeSet, AttributeSet)
      */
     public List<ResponsibilityActionInfo> getResponsibilityActionsByTemplateName( String namespaceCode, String responsibilityTemplateName,
     		AttributeSet qualification, AttributeSet responsibilityDetails) {
+    	if ( LOG.isDebugEnabled() ) {
+    		logResponsibilityCheck( namespaceCode, responsibilityTemplateName, responsibilityDetails, qualification );
+    	}
     	// get all the responsibility objects whose name match that requested
     	List<KimResponsibilityImpl> responsibilities = getResponsibilityImplsByTemplateName( namespaceCode, responsibilityTemplateName );
     	// now, filter the full list by the detail passed

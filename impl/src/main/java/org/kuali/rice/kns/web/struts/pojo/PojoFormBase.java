@@ -497,7 +497,9 @@ public class PojoFormBase extends ActionForm implements PojoForm {
     }
     
     public void registerEditableProperty(String editablePropertyName){
-    	System.out.println("Registering: " + editablePropertyName);
+    	if ( LOG.isDebugEnabled() ) {
+    		LOG.debug("Registering: " + editablePropertyName);
+    	}
     	editableProperties.add(editablePropertyName);
     }
     

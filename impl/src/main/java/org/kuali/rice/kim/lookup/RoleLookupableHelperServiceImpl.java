@@ -32,7 +32,6 @@ import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
-import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -76,26 +75,31 @@ public class RoleLookupableHelperServiceImpl   extends KualiLookupableHelperServ
         return baseLookup;
     }
 
+	private static List<KeyLabelPair>  roleTypeCache = null;
 
 
-	private List getRoleTypeOptions() {
-		List options = new ArrayList();
-		options.add(new KeyLabelPair("", ""));
-		//TODO : this is not efficient
-		List<KimTypeImpl> kimTypes = (List<KimTypeImpl>)getBusinessObjectService().findAll(KimTypeImpl.class);
-		List<KimRoleImpl> kimRoles = (List<KimRoleImpl>)getBusinessObjectService().findAll(KimRoleImpl.class);
-        List<String> typeIds = new ArrayList();
-        for (KimRoleImpl role : kimRoles) {
-        	if (!typeIds.contains(role.getKimTypeId())) {
-        		typeIds.add(role.getKimTypeId());
-        	}
-        }
-		for (KimTypeImpl kimType : kimTypes) {
-			if (typeIds.contains(kimType.getKimTypeId())) {
-				options.add(new KeyLabelPair(kimType.getKimTypeId(), kimType.getName()));
+	@SuppressWarnings("unchecked")
+	private List<KeyLabelPair> getRoleTypeOptions() {
+		if ( roleTypeCache == null ) {
+			List<KeyLabelPair> options = new ArrayList<KeyLabelPair>();
+			options.add(new KeyLabelPair("", ""));
+			//TODO : this is not efficient
+			List<KimTypeImpl> kimTypes = (List<KimTypeImpl>)getBusinessObjectService().findAll(KimTypeImpl.class);
+			List<KimRoleImpl> kimRoles = (List<KimRoleImpl>)getBusinessObjectService().findAll(KimRoleImpl.class);
+	        List<String> typeIds = new ArrayList<String>();
+	        for (KimRoleImpl role : kimRoles) {
+	        	if (!typeIds.contains(role.getKimTypeId())) {
+	        		typeIds.add(role.getKimTypeId());
+	        	}
+	        }
+			for (KimTypeImpl kimType : kimTypes) {
+				if (typeIds.contains(kimType.getKimTypeId())) {
+					options.add(new KeyLabelPair(kimType.getKimTypeId(), kimType.getName()));
+				}
 			}
+			roleTypeCache = options;
 		}
-		return options;
+		return roleTypeCache;
 	}
 
 	private List<Row> setupAttributeRows() {
@@ -107,7 +111,7 @@ public class RoleLookupableHelperServiceImpl   extends KualiLookupableHelperServ
 					setTypeId(field.getPropertyValue());
 					setAttrRows(new ArrayList<Row>());
 										
-					Map pkMap = new HashMap();
+					Map<String,Object> pkMap = new HashMap<String,Object>();
 					pkMap.put("kimTypeId", field.getPropertyValue());
 					KimTypeImpl kimType = (KimTypeImpl)getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, pkMap);
 					// TODO what if servicename is null.  also check other places that have similar issue
@@ -119,40 +123,30 @@ public class RoleLookupableHelperServiceImpl   extends KualiLookupableHelperServ
 			        KimTypeService kimTypeService = (KimTypeService)KIMServiceLocator.getService(serviceName);
 			        AttributeDefinitionMap definitions = kimTypeService.getAttributeDefinitions(kimType);
 			        setAttrDefinitions(definitions);
-		            for (Map.Entry<String, AttributeDefinition> mapEntry : definitions.entrySet()) {
-		            	AttributeDefinition attrDefn = mapEntry.getValue();
+		            for ( AttributeDefinition definition : definitions.values()) {
 				        List<Field> fields = new ArrayList<Field>();
 						Field typeField = new Field();
 						//String attrDefnId = mapEntry.getKey().substring(mapEntry.getKey().indexOf("."), mapEntry.getKey().length());
-						String attrDefnId = attrDefn.getId();
-						if (attrDefn instanceof KimDataDictionaryAttributeDefinition) {
-							AttributeDefinition definition = ((KimDataDictionaryAttributeDefinition) attrDefn).getDataDictionaryAttributeDefinition();
-							// if it is DD, then attrDefn.getLabel() is null; has to get from DDAttrdefn
-							typeField.setFieldLabel(definition.getLabel());
-							// with suffix  in case name is the same as bo property 
-							typeField.setPropertyName(definition.getName()+"."+attrDefnId);
-							if (definition.getControl().isSelect()) {
-						        try {
-						            KeyValuesFinder finder = (KeyValuesFinder) definition.getControl().getValuesFinderClass().newInstance();
-							        typeField.setFieldValidValues(finder.getKeyValues());
-							        typeField.setFieldType(Field.DROPDOWN);
-						        }
-						        catch (InstantiationException e) {
-						            throw new RuntimeException(e.getMessage());
-						        }
-						        catch (IllegalAccessException e) {
-						            throw new RuntimeException(e.getMessage());
-						        }
-							} else {
-								typeField.setMaxLength(definition.getMaxLength());
-								typeField.setSize(definition.getControl().getSize());
-								typeField.setFieldType(Field.TEXT);
-							}
+						String attrDefnId = definition.getId();
+						// if it is DD, then attrDefn.getLabel() is null; has to get from DDAttrdefn
+						typeField.setFieldLabel(definition.getLabel());
+						// with suffix  in case name is the same as bo property 
+						typeField.setPropertyName(definition.getName()+"."+attrDefnId);
+						if (definition.getControl().isSelect()) {
+					        try {
+					            KeyValuesFinder finder = (KeyValuesFinder) definition.getControl().getValuesFinderClass().newInstance();
+						        typeField.setFieldValidValues(finder.getKeyValues());
+						        typeField.setFieldType(Field.DROPDOWN);
+					        }
+					        catch (InstantiationException e) {
+					            throw new RuntimeException(e.getMessage());
+					        }
+					        catch (IllegalAccessException e) {
+					            throw new RuntimeException(e.getMessage());
+					        }
 						} else {
-							typeField.setFieldLabel(attrDefn.getLabel());
-							typeField.setPropertyName(attrDefn.getName()+attrDefnId);
-							typeField.setMaxLength(attrDefn.getMaxLength());
-							typeField.setSize(10);
+							typeField.setMaxLength(definition.getMaxLength());
+							typeField.setSize(definition.getControl().getSize());
 							typeField.setFieldType(Field.TEXT);
 						}
 						fields.add(typeField);
@@ -192,23 +186,6 @@ public class RoleLookupableHelperServiceImpl   extends KualiLookupableHelperServ
 	public void setAttrDefinitions(AttributeDefinitionMap attrDefinitions) {
 		this.attrDefinitions = attrDefinitions;
 	}
-
-    private List getNamespaceOptionValues() {
-        try {
-            KeyValuesFinder finder = (KeyValuesFinder) Class.forName("org.kuali.rice.kns.lookup.keyvalues.ParameterNamespaceValuesFinder").newInstance();
-	        return finder.getKeyValues();
-        }
-        catch (InstantiationException e) {
-            throw new RuntimeException(e.getMessage());
-        }
-        catch (IllegalAccessException e) {
-            throw new RuntimeException(e.getMessage());
-        }
-        catch (ClassNotFoundException e) {
-            throw new RuntimeException(e.getMessage());
-        }
-
-    }
 
 	public List<Row> getAttrRows() {
 		return this.attrRows;
@@ -308,8 +285,5 @@ public class RoleLookupableHelperServiceImpl   extends KualiLookupableHelperServ
         return searchResults;
 
 	}
-
-	
-
 	
 }

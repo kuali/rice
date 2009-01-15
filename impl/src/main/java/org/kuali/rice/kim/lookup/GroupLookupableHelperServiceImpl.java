@@ -29,13 +29,11 @@ import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.bo.ui.KimAttributeDataComparator;
 import org.kuali.rice.kim.dao.KimGroupDao;
-import org.kuali.rice.kim.dao.KimRoleDao;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
-import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.web.format.Formatter;
@@ -140,27 +138,13 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
 		List<Column> columns =  super.getColumns();
 		int i = 0;
 		// TODO : only add attributes columns if attributes is specified ?
-		for (Map.Entry<String, AttributeDefinition> mapEntry : attrDefinitions.entrySet()) {
+		for ( AttributeDefinition attrDefn : attrDefinitions.values()) {
 	        Column column = new Column();
-        	AttributeDefinition attrDefn = mapEntry.getValue();
-        	Class formatterClass;
-        	String attrDefnId = attrDefn.getId();
-			if (attrDefn instanceof KimDataDictionaryAttributeDefinition) {
-				AttributeDefinition definition = ((KimDataDictionaryAttributeDefinition) attrDefn).getDataDictionaryAttributeDefinition();
-		        column.setPropertyName("groupAttributes["+i+"].attributeValue");
-		        //column.setPropertyName("groupAttributes");
-		        String columnTitle = definition.getLabel();
-		        column.setColumnTitle(columnTitle);
-		        column.setMaxLength(definition.getMaxLength());		
-		        formatterClass = definition.getFormatterClass();
-			} else {
-		        column.setPropertyName("groupAttributes["+i+"].attributeValue");
-		        String columnTitle = attrDefn.getLabel();
-		        column.setColumnTitle(columnTitle);
-		        column.setMaxLength(attrDefn.getMaxLength());		
-		        formatterClass = attrDefn.getFormatterClass();
-				
-			}
+	        column.setPropertyName("groupAttributes["+i+"].attributeValue");
+	        String columnTitle = attrDefn.getLabel();
+	        column.setColumnTitle(columnTitle);
+	        column.setMaxLength(attrDefn.getMaxLength());		
+	        Class<? extends Formatter> formatterClass = attrDefn.getFormatterClass();
 	        if (formatterClass != null) {
 	            try {
 	                column.setFormatter((Formatter) formatterClass.newInstance());
@@ -179,25 +163,33 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
 		}
 		return columns;
 	}
+	
+	private static List<KeyLabelPair>  groupTypeCache = null;
 
-	private List getGroupTypeOptions() {
-		List options = new ArrayList();
-		options.add(new KeyLabelPair("", ""));
-		//TODO : this is not efficient
-		List<KimTypeImpl> kimTypes = (List<KimTypeImpl>)getBusinessObjectService().findAll(KimTypeImpl.class);
-		List<KimGroupImpl> kimGroups = (List<KimGroupImpl>)getBusinessObjectService().findAll(KimGroupImpl.class);
-        List<String> typeIds = new ArrayList();
-        for (KimGroupImpl group : kimGroups) {
-        	if (!typeIds.contains(group.getKimTypeId())) {
-        		typeIds.add(group.getKimTypeId());
-        	}
-        }
-		for (KimTypeImpl kimType : kimTypes) {
-			if (typeIds.contains(kimType.getKimTypeId())) {
-				options.add(new KeyLabelPair(kimType.getKimTypeId(), kimType.getName()));
+	@SuppressWarnings("unchecked")
+	private List<KeyLabelPair> getGroupTypeOptions() {
+		if ( groupTypeCache == null ) {
+			List<KeyLabelPair> options = new ArrayList<KeyLabelPair>();
+			options.add(new KeyLabelPair("", ""));
+			//TODO : this is not efficient
+			List<KimTypeImpl> kimTypes = (List<KimTypeImpl>)getBusinessObjectService().findAll(KimTypeImpl.class);
+			List<KimGroupImpl> kimGroups = (List<KimGroupImpl>)getBusinessObjectService().findAll(KimGroupImpl.class);
+	        List<String> typeIds = new ArrayList<String>();
+	        // get the distinct list of type IDs from all groups in the system
+	        for (KimGroupImpl group : kimGroups) {
+	        	if (!typeIds.contains(group.getKimTypeId())) {
+	        		typeIds.add(group.getKimTypeId());
+	        	}
+	        }
+	        // from that, get the types and names for the drop-down list
+			for (KimTypeImpl kimType : kimTypes) {
+				if (typeIds.contains(kimType.getKimTypeId())) {
+					options.add(new KeyLabelPair(kimType.getKimTypeId(), kimType.getName()));
+				}
 			}
+			groupTypeCache = options;
 		}
-		return options;
+		return groupTypeCache;
 	}
 
 	private List<Row> setupAttributeRows() {
@@ -208,7 +200,7 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
 				if (StringUtils.isBlank(getTypeId()) || !getTypeId().equals(field.getPropertyValue())) {
 					setTypeId(field.getPropertyValue());
 					setAttrRows(new ArrayList<Row>());
-					Map pkMap = new HashMap();
+					Map<String,Object> pkMap = new HashMap<String,Object>();
 					pkMap.put("kimTypeId", field.getPropertyValue());
 					KimTypeImpl kimType = (KimTypeImpl)getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, pkMap);
 					// TODO what if servicename is null.  also check other places that have similar issue
@@ -220,40 +212,28 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
 			        KimTypeService kimTypeService = (KimTypeService)KIMServiceLocator.getService(serviceName);
 			        AttributeDefinitionMap definitions = kimTypeService.getAttributeDefinitions(kimType);
 			        setAttrDefinitions(definitions);
-		            for (Map.Entry<String, AttributeDefinition> mapEntry : definitions.entrySet()) {
-		            	AttributeDefinition attrDefn = mapEntry.getValue();
+		            for (AttributeDefinition definition  : definitions.values()) {
 				        List<Field> fields = new ArrayList<Field>();
 						Field typeField = new Field();
 						//String attrDefnId = mapEntry.getKey().substring(mapEntry.getKey().indexOf("."), mapEntry.getKey().length());
-						String attrDefnId = attrDefn.getId();
-						if (attrDefn instanceof KimDataDictionaryAttributeDefinition) {
-							AttributeDefinition definition = ((KimDataDictionaryAttributeDefinition) attrDefn).getDataDictionaryAttributeDefinition();
-							// if it is DD, then attrDefn.getLabel() is null; has to get from DDAttrdefn
-							typeField.setFieldLabel(definition.getLabel());
-							// with suffix  in case name is the same as bo property 
-							typeField.setPropertyName(definition.getName()+"."+attrDefnId);
-							if (definition.getControl().isSelect()) {
-						        try {
-						            KeyValuesFinder finder = (KeyValuesFinder) definition.getControl().getValuesFinderClass().newInstance();
-							        typeField.setFieldValidValues(finder.getKeyValues());
-							        typeField.setFieldType(Field.DROPDOWN);
-						        }
-						        catch (InstantiationException e) {
-						            throw new RuntimeException(e.getMessage());
-						        }
-						        catch (IllegalAccessException e) {
-						            throw new RuntimeException(e.getMessage());
-						        }
-							} else {
-								typeField.setMaxLength(definition.getMaxLength());
-								typeField.setSize(definition.getControl().getSize());
-								typeField.setFieldType(Field.TEXT);
-							}
+						String attrDefnId = definition.getId();
+						typeField.setFieldLabel(definition.getLabel());
+						typeField.setPropertyName(definition.getName()+"."+attrDefnId);
+						if (definition.getControl().isSelect()) {
+					        try {
+					            KeyValuesFinder finder = (KeyValuesFinder) definition.getControl().getValuesFinderClass().newInstance();
+						        typeField.setFieldValidValues(finder.getKeyValues());
+						        typeField.setFieldType(Field.DROPDOWN);
+					        }
+					        catch (InstantiationException e) {
+					            throw new RuntimeException(e.getMessage());
+					        }
+					        catch (IllegalAccessException e) {
+					            throw new RuntimeException(e.getMessage());
+					        }
 						} else {
-							typeField.setFieldLabel(attrDefn.getLabel());
-							typeField.setPropertyName(attrDefn.getName()+attrDefnId);
-							typeField.setMaxLength(attrDefn.getMaxLength());
-							typeField.setSize(10);
+							typeField.setMaxLength(definition.getMaxLength());
+							typeField.setSize(definition.getControl().getSize());
 							typeField.setFieldType(Field.TEXT);
 						}
 						fields.add(typeField);

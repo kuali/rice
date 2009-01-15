@@ -154,7 +154,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
             }
             
             // check if field is a secure
-            if (businessObjectAuthorizationService.attributeValueNeedsToBeEncryptedOnFormsAndLinks(boClass, fieldName)) {
+            if (getBusinessObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(boClass, fieldName)) {
                 try {
                     fieldValue = getEncryptionService().encrypt(fieldValue);
                 }

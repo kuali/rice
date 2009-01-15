@@ -67,12 +67,12 @@
 	<div class="headerarea-small" id="headerarea-small">
 	<h1><c:out value="Action List" />
 	</h1>
-	<div align="right">   
+	<div align="right">
 	  <br/>
 	  <a
          href='<c:out value="../en/Preferences.do?returnMapping=viewActionList" />'  title="preferences"><img
          src="../kr/images/tinybutton-preferences.gif" class="tinybutton" alt="preferences" title="preferences"
-         border="0" /></a>     
+         border="0" /></a>
 	  <a
          href='<c:out value="ActionList.do?methodToCall=start" />'  title="refresh"><img
          src="../kr/images/tinybutton-refresh.gif" class="tinybutton" alt="refresh" title="refresh"
@@ -80,7 +80,7 @@
 	   <a
          href='<c:out value="ActionListFilter.do?methodToCall=start" />'  title="filter"><img
          src="../kr/images/tinybutton-filter.gif" class="tinybutton" alt="filter" title="filter"
-         border="0" /></a>  
+         border="0" /></a>
     </div>
 	</div>
 
@@ -115,7 +115,7 @@
 				<table width="100%" border=0 cellspacing=0 cellpadding=0>
 					<tr>
 						<td>
-						
+
 						<c:choose>
 							<c:when
 								test="${ActionListFormNew.viewOutbox && ActionListFormNew.showOutbox}">
@@ -133,7 +133,7 @@
 								</c:if>
 							</c:otherwise>
 						</c:choose>
-					
+
 						</td>
 					</tr>
 				</table>
@@ -150,7 +150,7 @@
             <tr>
 			 <table width="100%">
             <tr>
-            <td>          
+            <td>
 				<div id="row" >
 				<div class="tab-container"><br />
 				<display:table class="datatable-100" cellspacing="0" cellpadding="0"
@@ -159,21 +159,23 @@
 					decorator="org.kuali.rice.kew.actionlist.web.ActionListDecorator"
 					excludedParams="*" requestURI="${actionListURI}">
 					<display-el:setProperty name="export.banner" value="" />
-					<display-el:column title="&nbsp;">
-                        <c:if test="${kewUserSession.helpDeskActionListPerson == null && result.displayParameters != null}">
-                           <br>
-                           <a id='A<c:out value="${result.actionItemIndex}"/>'
-                            href="<c:url value="../en/${Constants.DOC_HANDLER_REDIRECT_PAGE}" >
-                           <c:param name="docId" value="${result.routeHeaderId}"/>
-                           <c:param name="command" value="displayActionListInlineView" />
-                           </c:url>"
-                           target='iframeAL_<c:out value="${result.actionItemIndex}"/>'
-                           onclick="rend(this, false)"><img
-                           src="../en/images/tinybutton-show.gif" alt="show" width=45 height=15
-                           border=0 id='F<c:out value="${result.actionItemIndex}"/>'></a>
-                           <br>                        
-                        </c:if>        
-                    </display-el:column>
+                    <c:if test="${kewUserSession.helpDeskActionListPerson == null && result.displayParameters != null}">
+  					  <display-el:column title="&nbsp;">
+
+                             <br>
+                             <a id='A<c:out value="${result.actionItemIndex}"/>'
+                              href="<c:url value="../en/${Constants.DOC_HANDLER_REDIRECT_PAGE}" >
+                             <c:param name="docId" value="${result.routeHeaderId}"/>
+                             <c:param name="command" value="displayActionListInlineView" />
+                             </c:url>"
+                             target='iframeAL_<c:out value="${result.actionItemIndex}"/>'
+                             onclick="rend(this, false)"><img
+                             src="../en/images/tinybutton-show.gif" alt="show" width=45 height=15
+                             border=0 id='F<c:out value="${result.actionItemIndex}"/>'></a>
+                             <br>
+
+                      </display-el:column>
+                    </c:if>
 					<display-el:column sortable="true" title="${documentIdLabel}"
 						sortProperty="routeHeaderId">
 						<c:choose>

@@ -209,10 +209,10 @@
     <collection-descriptor name="citizenships" element-class-ref="org.kuali.rice.kim.bo.entity.impl.EntityCitizenshipImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
       <inverse-foreignkey field-ref="entityId" />
     </collection-descriptor>
-    <reference-descriptor name="privacyPreferences" class-ref="org.kuali.rice.kim.bo.entity.impl.EntityPrivacyPreferencesImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
+    <reference-descriptor name="privacyPreferences" class-ref="org.kuali.rice.kim.bo.entity.impl.EntityPrivacyPreferencesImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
       <foreignkey field-ref="entityId" />
     </reference-descriptor>
-    <reference-descriptor name="bioDemographics" class-ref="org.kuali.rice.kim.bo.entity.impl.EntityBioDemographicsImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
+    <reference-descriptor name="bioDemographics" class-ref="org.kuali.rice.kim.bo.entity.impl.EntityBioDemographicsImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
       <foreignkey field-ref="entityId" />
     </reference-descriptor>
   </class-descriptor>

@@ -21,6 +21,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.dto.DocumentTypeDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.DataDictionary;
 import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
@@ -33,6 +35,7 @@ import org.kuali.rice.kns.lookup.valueFinder.ValueFinder;
 import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
 import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -48,14 +51,28 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
     private DataDictionaryService dataDictionaryService;
 
     /**
+     * This method gets the workflow document type for the given documentTypeName
+     * 
+     * @param documentTypeName
+     * @return
+     */
+    protected DocumentTypeDTO getDocumentType(String documentTypeName) {
+        try {
+            return KNSServiceLocator.getWorkflowInfoService().getDocType(documentTypeName);
+        } catch (WorkflowException e) {
+            throw new RuntimeException("Caught exception attempting to get document type for doc type name '" + documentTypeName + "'", e);
+        }
+    }
+
+    /**
      * @see org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService#getMaintenanceLabel(java.lang.String)
      */
     public String getMaintenanceLabel(String docTypeName) {
         String label = null;
 
-        MaintenanceDocumentEntry entry = getMaintenanceDocumentEntry(docTypeName);
-        if (entry != null) {
-            label = entry.getLabel();
+        DocumentTypeDTO docType = getDocumentType(docTypeName);
+        if (docType != null) {
+            label = docType.getDocTypeLabel();
         }
 
         return label;
@@ -67,9 +84,9 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
     public String getMaintenanceDescription(String docTypeName) {
         String description = null;
 
-        MaintenanceDocumentEntry entry = getMaintenanceDocumentEntry(docTypeName);
-        if (entry != null) {
-            description = entry.getDescription();
+        DocumentTypeDTO docType = getDocumentType(docTypeName);
+        if (docType != null) {
+            description = docType.getDocTypeDescription();
         }
 
         return description;

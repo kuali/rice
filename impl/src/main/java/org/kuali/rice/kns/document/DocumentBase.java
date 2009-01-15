@@ -47,7 +47,6 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.datadictionary.WorkflowAttributes;
 import org.kuali.rice.kns.datadictionary.WorkflowProperties;
-import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.document.authorization.PessimisticLock;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.rule.event.KualiDocumentEvent;
@@ -129,17 +128,22 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      * @see org.kuali.rice.kns.document.Document#getDocumentTitle()
      */
     public String getDocumentTitle() {
-        String documentTypeLabel = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(this.getDocumentHeader().getWorkflowDocument().getDocumentType()).getLabel();
-        if (null == documentTypeLabel) {
-            documentTypeLabel = "";
+        try {
+            String documentTypeLabel = KNSServiceLocator.getWorkflowInfoService().getDocType(this.getDocumentHeader().getWorkflowDocument().getDocumentType()).getDocTypeLabel();
+            if (null == documentTypeLabel) {
+                documentTypeLabel = "";
+            }
+    
+            String description = this.getDocumentHeader().getDocumentDescription();
+            if (null == description) {
+                description = "";
+            }
+    
+            return documentTypeLabel + " - " + description;
         }
-
-        String description = this.getDocumentHeader().getDocumentDescription();
-        if (null == description) {
-            description = "";
+        catch (WorkflowException e) {
+            throw new RuntimeException("Caught Exception getting the document type label", e);
         }
-
-        return documentTypeLabel + " - " + description;
     }
 
     /**

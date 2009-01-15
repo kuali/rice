@@ -86,7 +86,9 @@ public class DocumentTypeXmlExporter implements XmlExporter, XmlConstants {
             renderer.renderTextElement(docTypeElement, PARENT, documentType.getParentDocType().getName());
         }
         renderer.renderTextElement(docTypeElement, DESCRIPTION, documentType.getDescription());
+        renderer.renderTextElement(docTypeElement, SUMMARY, documentType.getSummary());
         renderer.renderTextElement(docTypeElement, LABEL, documentType.getLabel());
+        renderer.renderTextElement(docTypeElement, SHORT_LABEL, documentType.getShortLabel());
         if (!StringUtils.isBlank(documentType.getActualServiceNamespace())) {
             renderer.renderTextElement(docTypeElement, SERVICE_NAMESPACE, documentType.getActualServiceNamespace());
         }

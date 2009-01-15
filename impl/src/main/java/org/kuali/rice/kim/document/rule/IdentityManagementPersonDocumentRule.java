@@ -309,7 +309,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 
 	public IdentityManagementPersonDocumentAuthorizer getAuthorizer(IdentityManagementPersonDocument document) {
 		if ( authorizer == null ) {
-			authorizer = (IdentityManagementPersonDocumentAuthorizer)KNSServiceLocator.getDocumentTypeService().getDocumentAuthorizer(document);
+			authorizer = (IdentityManagementPersonDocumentAuthorizer)KNSServiceLocator.getDocumentHelperService().getDocumentAuthorizer(document);
 		}
 		return authorizer;
 	}

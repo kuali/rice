@@ -143,17 +143,45 @@ public class DocumentTypeXmlValidationTest extends BaseRiceTestCase {
     */
 
     @Test public void testNoDocHandler() throws Exception {
-        try {
-            XmlHelper.validate(new InputSource(getClass().getResourceAsStream("NoDocHandler.xml")));
-            fail("Missing docHandler passed validation");
-        } catch (SAXParseException spe) {
-            // expected
-            log.error("Missing docHandler exception: " + spe);
-        }
+        XmlHelper.validate(new InputSource(getClass().getResourceAsStream("NoDocHandler.xml")));
     }
 
     @Test public void testInvalidParentDocType() throws Exception {
         // although semantically invalid, this should actually pass XML validation as it is syntactically valid
         XmlHelper.validate(new InputSource(getClass().getResourceAsStream("InvalidParent.xml")));
     }
+    
+    /**
+     * This method tests the potential ingestion of both document type elements in a single 'document types' element
+     * 
+     * @throws Exception
+     */
+    @Test public void testDualDocumentTypeIngestion() throws Exception {
+        XmlHelper.validate(new InputSource(getClass().getResourceAsStream("DualDocumentTypes.xml")));
+    }
+
+    /**
+     * This method tests the potential ingestion of only the route definition section of a document
+     * 
+     * @throws Exception
+     */
+    @Test public void testRoutePathOnly() throws Exception {
+        XmlHelper.validate(new InputSource(getClass().getResourceAsStream("RoutePathOnlyDocument.xml")));
+    }
+
+    /**
+     * This method tests that a document type routing only ingestion breaks with no routing data
+     * 
+     * @throws Exception
+     */
+    @Test public void testNoRoutePathOnly() throws Exception {
+        try {
+            XmlHelper.validate(new InputSource(getClass().getResourceAsStream("NoRoutePathOnlyDocument.xml")));
+            fail("Missing routing information passed validation");
+        } catch (SAXParseException spe) {
+            // expected
+            log.error("Missing routing information exception: " + spe);
+        }
+    }
+
 }

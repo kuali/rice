@@ -27,12 +27,5 @@
         <param name="beanName" value="personService" />
         <include method="getPersonByPrincipalName" />
       </create>
-      <convert converter="bean" match="org.kuali.rice.kns.bo.DocumentType">
-        <param name="include" value="documentTypeCode,documentName,documentTypeActiveIndicator" />
-      </convert>
-      <create creator="spring" javascript="DocumentTypeService">
-        <param name="beanName" value="documentTypeService" />
-        <include method="getDocumentTypeByCode" />
-      </create>
   </allow>
 </dwr>

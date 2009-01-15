@@ -61,19 +61,17 @@ import org.kuali.rice.kns.inquiry.InquiryRestrictions;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.DocumentTypeService;
+import org.kuali.rice.kns.service.DocumentHelperService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
-import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.MaintenanceUtils;
 
 public class BusinessObjectAuthorizationServiceImpl implements
 		BusinessObjectAuthorizationService {
 	private DataDictionaryService dataDictionaryService;
 	private IdentityManagementService identityManagementService;
 	private BusinessObjectDictionaryService businessObjectDictionaryService;
-	private DocumentTypeService documentTypeService;
+	private DocumentHelperService documentHelperService;
 	private MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
 
 	public BusinessObjectRestrictions getLookupResultRestrictions(
@@ -130,9 +128,9 @@ public class BusinessObjectAuthorizationServiceImpl implements
 				.getDataDictionary().getBusinessObjectEntry(
 						maintenanceDocument.getNewMaintainableObject()
 								.getBusinessObject().getClass().getName());
-		MaintenanceDocumentPresentationController maintenanceDocumentPresentationController = (MaintenanceDocumentPresentationController) getDocumentTypeService()
+		MaintenanceDocumentPresentationController maintenanceDocumentPresentationController = (MaintenanceDocumentPresentationController) getDocumentHelperService()
 				.getDocumentPresentationController(maintenanceDocument);
-		MaintenanceDocumentAuthorizer maintenanceDocumentAuthorizer = (MaintenanceDocumentAuthorizer) getDocumentTypeService()
+		MaintenanceDocumentAuthorizer maintenanceDocumentAuthorizer = (MaintenanceDocumentAuthorizer) getDocumentHelperService()
 				.getDocumentAuthorizer(maintenanceDocument);
 		considerBusinessObjectFieldUnmaskAuthorization(maintenanceDocument
 				.getNewMaintainableObject().getBusinessObject(), user,
@@ -472,8 +470,8 @@ public class BusinessObjectAuthorizationServiceImpl implements
 	}
 	
 	public <T extends BusinessObject> boolean canCreate(Class<T> boClass, Person user, String docTypeName){
-		DocumentPresentationController documentPresentationController = getDocumentTypeService().getDocumentPresentationController(docTypeName);
-		DocumentAuthorizer documentAuthorizer = getDocumentTypeService().getDocumentAuthorizer(docTypeName);
+		DocumentPresentationController documentPresentationController = getDocumentHelperService().getDocumentPresentationController(docTypeName);
+		DocumentAuthorizer documentAuthorizer = getDocumentHelperService().getDocumentAuthorizer(docTypeName);
 	    boolean canCreate = ((MaintenanceDocumentPresentationController) documentPresentationController).canCreate(boClass);
 	    if(canCreate){
 	    	canCreate = ((MaintenanceDocumentAuthorizer) documentAuthorizer).canCreate(boClass, user);
@@ -482,8 +480,8 @@ public class BusinessObjectAuthorizationServiceImpl implements
 	}
 	
 	public boolean canMaintain(BusinessObject businessObject, Person user, String docTypeName){
-		DocumentPresentationController documentPresentationController = getDocumentTypeService().getDocumentPresentationController(docTypeName);
-		DocumentAuthorizer documentAuthorizer = getDocumentTypeService().getDocumentAuthorizer(docTypeName);
+		DocumentPresentationController documentPresentationController = getDocumentHelperService().getDocumentPresentationController(docTypeName);
+		DocumentAuthorizer documentAuthorizer = getDocumentHelperService().getDocumentAuthorizer(docTypeName);
 	    boolean canMaintain = ((MaintenanceDocumentPresentationController) documentPresentationController).canCreate(businessObject.getClass());
 	    if(canMaintain){
 	    	canMaintain = ((MaintenanceDocumentAuthorizer) documentAuthorizer).canMaintain(businessObject, user);
@@ -568,11 +566,11 @@ public class BusinessObjectAuthorizationServiceImpl implements
 		return businessObjectDictionaryService;
 	}
 
-	private DocumentTypeService getDocumentTypeService() {
-		if (documentTypeService == null) {
-			documentTypeService = KNSServiceLocator.getDocumentTypeService();
+	private DocumentHelperService getDocumentHelperService() {
+		if (documentHelperService == null) {
+			documentHelperService = KNSServiceLocator.getDocumentHelperService();
 		}
-		return documentTypeService;
+		return documentHelperService;
 	}
 
 	private MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {

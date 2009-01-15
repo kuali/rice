@@ -23,14 +23,13 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.datadictionary.AttributeSecurity;
 import org.kuali.rice.kns.datadictionary.DataDictionary;
-import org.kuali.rice.kns.datadictionary.InactivationBlockingDefinition;
 import org.kuali.rice.kns.datadictionary.InactivationBlockingMetadata;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.datadictionary.mask.Mask;
 import org.kuali.rice.kns.document.Document;
+import org.kuali.rice.kns.exception.UnknownDocumentTypeException;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.rule.PreRulesCheck;
 import org.kuali.rice.kns.web.format.Formatter;
@@ -382,7 +381,8 @@ public interface DataDictionaryService {
     public String getDocumentLabelByClass(Class documentOrBusinessObjectClass);
 
     /**
-     * Returns the document type name declared in the dd for the given document class.
+     * Returns the document type name declared in the dd for the given document
+     * class. If no valid document type is found 'null' is returned.
      * 
      * @param documentClass
      * @return documentTypeName
@@ -390,7 +390,19 @@ public interface DataDictionaryService {
     public String getDocumentTypeNameByClass(Class documentClass);
 
     /**
-     * Returns the document class declared in the dd for the given document type name.
+     * Returns the document type name declared in the dd for the given document
+     * class. If no valid document type is found an
+     * {@link UnknownDocumentTypeException} is thrown.
+     * 
+     * @param documentClass
+     * @return documentTypeName
+     */
+    public String getValidDocumentTypeNameByClass(Class documentClass);
+
+    /**
+     * Returns the document class declared in the dd for the given document type
+     * name. If no document entry is found with given document type name, 'null'
+     * will be returned.
      * 
      * @param documentTypeName
      * @return document Class
@@ -398,12 +410,14 @@ public interface DataDictionaryService {
     public Class<? extends Document> getDocumentClassByTypeName(String documentTypeName);
 
     /**
-     * Returns the document type code declared in the dd for the given document type name.
+     * Returns the document class declared in the dd for the given document type
+     * name. If no document entry is found with given document type name, and
+     * {@link UnknownDocumentTypeException} will be thrown.
      * 
      * @param documentTypeName
-     * @return documentTypeCode
+     * @return document Class
      */
-    public String getDocumentTypeCodeByTypeName(String documentTypeName);
+    public Class<? extends Document> getValidDocumentClassByTypeName(String documentTypeName);
 
     /**
      * @param document

@@ -21,8 +21,6 @@
 		<config>kns/src/main/resources/org/kuali/core/document/datadictionary/CampusTypeMaintenanceDocument.xml</config>
 		<config>kns/src/main/resources/org/kuali/core/bo/datadictionary/DataDictionaryBaseTypes.xml</config>
 		<config>kns/src/main/resources/org/kuali/core/bo/datadictionary/DocumentHeader.xml</config>
-		<config>kns/src/main/resources/org/kuali/core/bo/datadictionary/DocumentType.xml</config>
-		<config>kns/src/main/resources/org/kuali/core/document/datadictionary/DocumentTypeMaintenanceDocument.xml</config>
 		<config>kns/src/main/resources/org/kuali/core/bo/datadictionary/EmployeeStatus.xml</config>
 		<config>kns/src/main/resources/org/kuali/core/document/datadictionary/EmployeeStatusMaintenanceDocument.xml</config>
 		<config>kns/src/main/resources/org/kuali/core/bo/datadictionary/EmployeeType.xml</config>

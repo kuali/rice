@@ -91,7 +91,7 @@ public class Utilities {
         }
         String[] groupData = namespaceAndNameCombo.split(":");
         if (groupData.length == 1) {
-            return KimConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE;
+            return KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE;
         } else if (groupData.length == 2) {
             return groupData[0].trim();
         } else {

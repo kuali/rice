@@ -37,7 +37,7 @@ import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.lookup.Lookupable;
-import org.kuali.rice.kns.service.DocumentTypeService;
+import org.kuali.rice.kns.service.DocumentHelperService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -77,18 +77,18 @@ public class KualiLookupAction extends KualiAction {
     }
 
     private static MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
-    private static DocumentTypeService documentTypeService;
+    private static DocumentHelperService documentHelperService;
     private static MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
     	if (maintenanceDocumentDictionaryService == null) {
     		maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
     	}
     	return maintenanceDocumentDictionaryService;
     }
-    private static DocumentTypeService getDocumentTypeService() {
-    	if (documentTypeService == null) {
-    		documentTypeService = KNSServiceLocator.getDocumentTypeService();
+    private static DocumentHelperService getDocumentHelperService() {
+    	if (documentHelperService == null) {
+    	    documentHelperService = KNSServiceLocator.getDocumentHelperService();
     	}
-    	return documentTypeService;
+    	return documentHelperService;
     }
     /**
      * Checks if the user can create a document for this business object.  Used to suppress the actions on the results.
@@ -102,7 +102,7 @@ public class KualiLookupAction extends KualiAction {
             Class businessObjectClass = Class.forName( ((LookupForm)form).getBusinessObjectClassName() );
             // check if creating documents is allowed
             String documentTypeName = getMaintenanceDocumentDictionaryService().getDocumentTypeName(businessObjectClass);
-            if ((documentTypeName != null) && !getDocumentTypeService().getDocumentAuthorizer(documentTypeName).canInitiate(documentTypeName, GlobalVariables.getUserSession().getPerson())) {
+            if ((documentTypeName != null) && !getDocumentHelperService().getDocumentAuthorizer(documentTypeName).canInitiate(documentTypeName, GlobalVariables.getUserSession().getPerson())) {
                 ((LookupForm)form).setSuppressActions( true );
             }
         }

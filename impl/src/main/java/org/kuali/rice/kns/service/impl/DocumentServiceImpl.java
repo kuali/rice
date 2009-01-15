@@ -24,13 +24,13 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigurationException;
+import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kns.bo.AdHocRouteRecipient;
 import org.kuali.rice.kns.bo.DocumentHeader;
-import org.kuali.rice.kns.bo.DocumentType;
 import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.dao.DocumentDao;
@@ -38,7 +38,6 @@ import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocumentBase;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
-import org.kuali.rice.kns.exception.DocumentAuthorizationException;
 import org.kuali.rice.kns.exception.DocumentInitiationAuthorizationException;
 import org.kuali.rice.kns.exception.InactiveDocumentTypeAuthorizationException;
 import org.kuali.rice.kns.exception.UnknownDocumentTypeException;
@@ -54,8 +53,8 @@ import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.DateTimeService;
 import org.kuali.rice.kns.service.DictionaryValidationService;
 import org.kuali.rice.kns.service.DocumentHeaderService;
+import org.kuali.rice.kns.service.DocumentHelperService;
 import org.kuali.rice.kns.service.DocumentService;
-import org.kuali.rice.kns.service.DocumentTypeService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiRuleService;
 import org.kuali.rice.kns.service.MaintenanceDocumentService;
@@ -65,6 +64,7 @@ import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.Timer;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
+import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
 import org.kuali.rice.kns.workflow.service.WorkflowDocumentService;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.transaction.annotation.Transactional;
@@ -79,8 +79,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class DocumentServiceImpl implements DocumentService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentServiceImpl.class);
-    
-    private DocumentTypeService documentTypeService;
     
     private DateTimeService dateTimeService;
     
@@ -97,6 +95,8 @@ public class DocumentServiceImpl implements DocumentService {
     private DocumentHeaderService documentHeaderService;
 
     private PersonService personService;
+    
+    private DocumentHelperService documentHelperService;
 
     /**
      * @see org.kuali.rice.kns.service.DocumentService#saveDocument(org.kuali.rice.kns.document.Document)
@@ -419,14 +419,20 @@ public class DocumentServiceImpl implements DocumentService {
         Person currentUser = GlobalVariables.getUserSession().getPerson();
 
         // document must be maint doc or finanancial doc
-        DocumentType documentType = getDocumentTypeService().getPotentialDocumentTypeByName(documentTypeName);
-        if ( (ObjectUtils.isNotNull(documentType)) && (!documentType.isDocumentTypeActiveIndicator()) ) {
+        KualiWorkflowInfo workflowInfo = KNSServiceLocator.getWorkflowInfoService();
+        DocumentTypeDTO documentType = workflowInfo.getDocType(documentTypeName);
+        if ( (ObjectUtils.isNotNull(documentType)) && (!documentType.isDocTypeActiveInd()) ) {
+            // TODO delyea: should this be what's checked or should we check KIM?
             throw new InactiveDocumentTypeAuthorizationException("initiate", documentTypeName);
         }
+//        DocumentType documentType = KNSServiceLocator.getDocumentTypeService().getPotentialDocumentTypeByName(documentTypeName);
+//        if ( (ObjectUtils.isNotNull(documentType)) && (!documentType.isDocumentTypeActiveIndicator()) ) {
+//            throw new InactiveDocumentTypeAuthorizationException("initiate", documentTypeName);
+//        }
 
         // get the authorization
-        DocumentAuthorizer documentAuthorizer = getDocumentTypeService().getDocumentAuthorizer(documentTypeName);
-        DocumentPresentationController documentPresentationController = getDocumentTypeService().getDocumentPresentationController(documentTypeName);
+        DocumentAuthorizer documentAuthorizer = getDocumentHelperService().getDocumentAuthorizer(documentTypeName);
+        DocumentPresentationController documentPresentationController = getDocumentHelperService().getDocumentPresentationController(documentTypeName);
         // make sure this person is authorized to initiate
         LOG.debug("calling canInitiate from getNewDocument()");
         if (!documentPresentationController.canInitiate(documentTypeName) || !documentAuthorizer.canInitiate(documentTypeName, currentUser)) {
@@ -745,27 +751,7 @@ public class DocumentServiceImpl implements DocumentService {
      * @return DocumentAuthorizer instance for the given documentType name
      */
     private DocumentAuthorizer getDocumentAuthorizer(String documentTypeName) {
-        return getDocumentTypeService().getDocumentAuthorizer(documentTypeName);
-    }
-
-    /**
-     * spring injected document type service
-     * 
-     * @param documentTypeService
-     */
-    public synchronized void setDocumentTypeService(DocumentTypeService documentTypeService) {
-        this.documentTypeService = documentTypeService;
-    }
-    
-    /**
-     * Gets the DocumentTypeService, lazily initializing if necessary
-     * @return the DocumentTypeService
-     */
-    private synchronized DocumentTypeService getDocumentTypeService() {
-        if (this.documentTypeService == null) {
-            this.documentTypeService = KNSServiceLocator.getDocumentTypeService(); 
-        }
-        return this.documentTypeService;
+        return getDocumentHelperService().getDocumentAuthorizer(documentTypeName);
     }
 
     /**
@@ -778,8 +764,8 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     /**
-     * Gets the DocumentTypeService, lazily initializing if necessary
-     * @return the DocumentTypeService
+     * Gets the DateTimeService, lazily initializing if necessary
+     * @return the DateTimeService
      */
     private synchronized DateTimeService getDateTimeService() {
         if (this.dateTimeService == null) {
@@ -823,8 +809,8 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     /**
-     * Gets the DocumentTypeService, lazily initializing if necessary
-     * @return the DocumentTypeService
+     * Gets the NoteService, lazily initializing if necessary
+     * @return the NoteService
      */
     protected synchronized NoteService getNoteService() {
         if (this.noteService == null) {
@@ -940,4 +926,21 @@ public class DocumentServiceImpl implements DocumentService {
 		}
 		return personService;
 	}
+
+    /**
+     * @return the documentHelperService
+     */
+    public DocumentHelperService getDocumentHelperService() {
+        if (documentHelperService == null) {
+            this.documentHelperService = KNSServiceLocator.getDocumentHelperService();
+        }
+        return this.documentHelperService;
+    }
+
+    /**
+     * @param documentHelperService the documentHelperService to set
+     */
+    public void setDocumentHelperService(DocumentHelperService documentHelperService) {
+        this.documentHelperService = documentHelperService;
+    }
 }

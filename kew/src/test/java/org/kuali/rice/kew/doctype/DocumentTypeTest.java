@@ -46,6 +46,7 @@ import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kew.xml.export.DocumentTypeXmlExporter;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimConstants;
 
 
 public class DocumentTypeTest extends KEWTestCase {
@@ -143,7 +144,9 @@ public class DocumentTypeTest extends KEWTestCase {
         DocumentType parsedDocument = KEWServiceLocator.getDocumentTypeService().findByName("DocumentType");
         assertEquals("Wrong name", "DocumentType", parsedDocument.getName());
         assertEquals("Wrong description", "TestDocumentType", parsedDocument.getDescription());
+        assertEquals("Wrong summary", "TestDocumentType Summary", parsedDocument.getSummary());
         assertEquals("Wrong label", "TestDocumentType", parsedDocument.getLabel());
+        assertEquals("Wrong short label", "Test Doc Typ", parsedDocument.getShortLabel());
         assertEquals("Wrong postprocessor", "org.kuali.rice.kew.postprocessor.DefaultPostProcessor", parsedDocument.getPostProcessorName());
         assertEquals("Wrong su workgroup", "TestWorkgroup", parsedDocument.getSuperUserWorkgroup().getGroupName());
         // roundabout way of testing to see if the exception workgroup has been processed properly
@@ -247,12 +250,14 @@ public class DocumentTypeTest extends KEWTestCase {
     	DocumentType childEdit = new DocumentType();
     	childEdit.setName(child.getName());
     	childEdit.setActive(Boolean.TRUE);
-    	KimGroup workflowAdmin = KIMServiceLocator.getIdentityManagementService().getGroupByName(null, "WorkflowAdmin");
+    	KimGroup workflowAdmin = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "WorkflowAdmin");
     	childEdit.setBlanketApproveWorkgroup(workflowAdmin);
     	childEdit.setDefaultExceptionWorkgroup(workflowAdmin);
     	childEdit.setDescription("desc");
+    	childEdit.setSummary("summary");
     	childEdit.setDocHandlerUrl("url");
     	childEdit.setLabel("lable");
+    	childEdit.setShortLabel("short lable");
     	childEdit.setPolicies(new ArrayList());
     	childEdit.setRoutingVersion("1");
     	childEdit.setDocTypeParentId(child.getDocTypeParentId());

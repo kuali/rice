@@ -16,8 +16,6 @@
     <class>org.kuali.rice.kns.bo.Note</class>
     <class>org.kuali.rice.kns.bo.NoteType</class>
     <class>org.kuali.rice.kns.bo.Attachment</class>
-    <class>org.kuali.rice.kns.bo.DocumentType</class>
-    <class>org.kuali.rice.kns.bo.DocumentTypeAttribute</class>
     <class>org.kuali.rice.kns.bo.ParameterNamespace</class>
     <class>org.kuali.rice.kns.bo.ParameterType</class>
     <class>org.kuali.rice.kns.bo.ParameterDetailType</class>
@@ -32,8 +30,6 @@
     <class>org.kuali.rice.kns.bo.Campus</class>
     <class>org.kuali.rice.kns.bo.CampusType</class>
     <class>org.kuali.core.bo.DocumentHeader</class>
-    <class>org.kuali.core.bo.DocumentType</class>
-    <class>org.kuali.core.bo.DocumentTypeAttribute</class>
     <!-- 
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     -->

@@ -22,12 +22,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.dto.DocumentTypeDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.ParameterDetailType;
 import org.kuali.rice.kns.datadictionary.DataDictionary;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.datadictionary.TransactionalDocumentEntry;
-import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.BeanPropertyComparator;
 
 public class ParameterDetailTypeLookupableHelperServiceImpl extends KualiLookupableHelperServiceImpl {
@@ -57,7 +59,13 @@ public class ParameterDetailTypeLookupableHelperServiceImpl extends KualiLookupa
             	if ( StringUtils.isBlank( transDocName ) ) continue;
                 DocumentEntry doc = ddDocuments.get(transDocName);
                 if ( doc instanceof TransactionalDocumentEntry ) {
-                    components.add( new ParameterDetailType( "N/A", doc.getDocumentTypeName(), doc.getLabel() ) );
+                    try {
+                        DocumentTypeDTO docType = KNSServiceLocator.getWorkflowInfoService().getDocType(doc.getDocumentTypeName());
+                        components.add( new ParameterDetailType( "N/A", doc.getDocumentTypeName(), docType.getDocTypeLabel() ) );
+                    }
+                    catch (WorkflowException e) {
+                        throw new RuntimeException("Caught Exception getting Workflow Document Type", e);
+                    }
                 }
             }
         }

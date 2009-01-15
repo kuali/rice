@@ -31,9 +31,11 @@ public class DocumentTypeDTO implements Serializable {
     private boolean docTypeActiveInd;
     private boolean docTypeActiveInherited;
     private String docTypeDescription;
+    private String docTypeSummary;
     private String docTypeHandlerUrl;
     private Long docTypeId;
     private String docTypeLabel;
+    private String docTypeShortLabel;
     private String name;
     private Integer docTypeVersion = new Integer(0);
     private String postProcessorName;
@@ -76,6 +78,10 @@ public class DocumentTypeDTO implements Serializable {
 
     public String getDocTypeDescription() {
         return docTypeDescription;
+    }
+
+    public String getDocTypeSummary() {
+        return docTypeSummary;
     }
 
     public String getDocTypeHandlerUrl() {
@@ -142,6 +148,10 @@ public class DocumentTypeDTO implements Serializable {
         this.docTypeDescription = docTypeDescription;
     }
 
+    public void setDocTypeSummary(String docTypeSummary) {
+        this.docTypeSummary = docTypeSummary;
+    }
+
     public void setDocTypeActiveInherited(boolean docTypeActiveInherited) {
         this.docTypeActiveInherited = docTypeActiveInherited;
     }
@@ -154,14 +164,6 @@ public class DocumentTypeDTO implements Serializable {
         this.docTypeParentId = docGrpId;
     }
 
-//    public void setFullName(String fullName) {
-//        this.fullName = fullName;
-//    }
-//
-//    public String getFullName() {
-//        return fullName;
-//    }
-
     public void setPostProcessorName(String postProcessorName) {
         this.postProcessorName = postProcessorName;
     }
@@ -172,6 +174,14 @@ public class DocumentTypeDTO implements Serializable {
 
     public void setDocTypeLabel(String docTypeLabel) {
         this.docTypeLabel = docTypeLabel;
+    }
+
+    public String getDocTypeShortLabel() {
+        return this.docTypeShortLabel;
+    }
+
+    public void setDocTypeShortLabel(String docTypeShortLabel) {
+        this.docTypeShortLabel = docTypeShortLabel;
     }
 
     public boolean getDocTypeDefaultApprovePolicy() {

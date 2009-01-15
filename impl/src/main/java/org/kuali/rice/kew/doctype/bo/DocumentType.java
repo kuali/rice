@@ -16,6 +16,7 @@
  */
 package org.kuali.rice.kew.doctype.bo;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -30,8 +31,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -74,6 +73,10 @@ import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.kns.web.format.FormatException;
 
 
 /**
@@ -107,8 +110,16 @@ public class DocumentType extends PersistableBusinessObjectBase
 	private Boolean currentInd;
     @Column(name="DOC_TYP_DESC")
 	private String description;
+
+    @Column(name="DOC_TYP_SUM")
+    private String summary;
+
     @Column(name="LBL")
 	private String label;
+
+    @Column(name="SHRT_LBL")
+    private String shortLabel;
+
     @Column(name="PREV_DOC_TYP_VER_NBR")
 	private Long previousVersionId;
     @Column(name="DOC_HDR_ID")
@@ -185,6 +196,28 @@ public class DocumentType extends PersistableBusinessObjectBase
         documentTypeAttributes = new ArrayList<DocumentTypeAttribute>();
         policies = new ArrayList();
         version = new Integer(0);
+    }
+    
+    public void populateDataDictionaryEditableFields(DocumentType dataDictionaryEditedType) {
+        String currentPropertyName = "";
+        try {
+            BusinessObjectEntry boEntry = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(this.getClass().getCanonicalName());
+            for (String propertyName : boEntry.getAttributeNames()) {
+                if (!"documentTypeId".equals(propertyName)) {
+                    currentPropertyName = propertyName;
+                    LOG.info("*** COPYING PROPERTY NAME FROM OLD BO TO NEW BO: " + propertyName);
+                    ObjectUtils.setObjectProperty(this, propertyName, ObjectUtils.getPropertyValue(dataDictionaryEditedType, propertyName));
+                }
+            }
+        } catch (FormatException e) {
+            throw new WorkflowRuntimeException("Error setting property '" + currentPropertyName + "' in Document Type", e);
+        } catch (IllegalAccessException e) {
+            throw new WorkflowRuntimeException("Error setting property '" + currentPropertyName + "' in Document Type", e);
+        } catch (InvocationTargetException e) {
+            throw new WorkflowRuntimeException("Error setting property '" + currentPropertyName + "' in Document Type", e);
+        } catch (NoSuchMethodException e) {
+            throw new WorkflowRuntimeException("Error setting property '" + currentPropertyName + "' in Document Type", e);
+        }
     }
 
 
@@ -355,6 +388,24 @@ public class DocumentType extends PersistableBusinessObjectBase
     public DocumentType getParentDocType() {
         return KEWServiceLocator.getDocumentTypeService().findById(this.docTypeParentId);
     }
+
+//    private DocumentType parentDocType;
+//    /**
+//     * @return the parentDocType
+//     */
+//    public DocumentType getParentDocType() {
+//        if ( (ObjectUtils.isNotNull(this.docTypeParentId)) && (ObjectUtils.isNull(this.parentDocType)) ) {
+//            this.parentDocType = KEWServiceLocator.getDocumentTypeService().findById(this.docTypeParentId);
+//        }
+//        return this.parentDocType;
+//    }
+//    /**
+//     * @param parentDocType the parentDocType to set
+//     */
+//    public void setParentDocType(DocumentType parentDocType) {
+//        this.parentDocType = parentDocType;
+//    }
+
 
     public Collection getPolicies() {
         return policies;
@@ -1107,20 +1158,48 @@ public class DocumentType extends PersistableBusinessObjectBase
 		this.descendHierarchy = descendHierarchy;
 	}
 
+    /**
+     * @return the summary
+     */
+    public String getSummary() {
+        return this.summary;
+    }
 
     /**
-     * This overridden method ...
-     * 
+     * @param summary the summary to set
+     */
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+
+    /**
+     * @return the shortLabel
+     */
+    public String getShortLabel() {
+        if (StringUtils.isBlank(this.shortLabel)) {
+            return getLabel();
+        }
+        return this.shortLabel;
+    }
+
+    /**
+     * @param shortLabel the shortLabel to set
+     */
+    public void setShortLabel(String shortLabel) {
+        this.shortLabel = shortLabel;
+    }
+
+    /**
      * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
      */
     @Override
-    protected LinkedHashMap toStringMapper()
-    {
-        // TODO chb - Implement Me!
-        return null;
+    protected LinkedHashMap toStringMapper() {
+        LinkedHashMap m = new LinkedHashMap();
+        m.put("documentTypeId", this.documentTypeId);
+        m.put("name", this.name);
+        return m;
     }
 
-    
     private IdentityManagementService getIdentityManagementService() {
     	return KIMServiceLocator.getIdentityManagementService();
     }

@@ -27,6 +27,8 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.dto.DocumentTypeDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.AttributeSecurity;
@@ -43,9 +45,11 @@ import org.kuali.rice.kns.datadictionary.exporter.DataDictionaryMap;
 import org.kuali.rice.kns.datadictionary.mask.Mask;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.exception.UnknownBusinessClassAttributeException;
+import org.kuali.rice.kns.exception.UnknownDocumentTypeException;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.rule.PreRulesCheck;
 import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.web.format.Formatter;
@@ -711,12 +715,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
      * @see org.kuali.rice.kns.service.DataDictionaryService#getDocumentLabelByClass(java.lang.Class)
      */
     public String getDocumentLabelByClass(Class documentOrBusinessObjectClass) {
-        String label = null;
-        DocumentEntry documentEntry = getDataDictionary().getDocumentEntry(documentOrBusinessObjectClass.getName());
-        if (documentEntry != null) {
-            label = documentEntry.getLabel();
-        }
-        return label;
+        return getDocumentLabelByTypeName(KNSServiceLocator.getDataDictionaryService().getDocumentTypeNameByClass(documentOrBusinessObjectClass));
     }
 
     /**
@@ -724,11 +723,15 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
      */
     public String getDocumentLabelByTypeName(String documentTypeName) {
         String label = null;
-        DocumentEntry documentEntry = getDataDictionary().getDocumentEntry(documentTypeName);
-        if (documentEntry != null) {
-            label = documentEntry.getLabel();
+        try {
+            DocumentTypeDTO documentType = KNSServiceLocator.getWorkflowInfoService().getDocType(documentTypeName);
+            if (documentType != null) {
+                label = documentType.getDocTypeLabel();
+            }
+            return label;
+        } catch (WorkflowException e) {
+            throw new RuntimeException("Caught Workflow Exception trying to get document type '" + documentTypeName + "'", e);
         }
-        return label;
     }
 
     /**
@@ -753,6 +756,17 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     }
 
     /**
+     * @see org.kuali.rice.kns.service.DataDictionaryService#getValidDocumentTypeNameByClass(java.lang.Class)
+     */
+    public String getValidDocumentTypeNameByClass(Class documentClass) {
+        String documentTypeName = getDocumentTypeNameByClass(documentClass);
+        if (StringUtils.isBlank(documentTypeName)) {
+            throw new UnknownDocumentTypeException("unable to get documentTypeName for unknown documentClass '" + documentClass.getName() + "'");
+        }
+        return documentTypeName;
+    }
+
+    /**
      * @see org.kuali.rice.kns.service.DataDictionaryService#getDocumentClassByTypeName(java.lang.String)
      */
     public Class<? extends Document> getDocumentClassByTypeName(String documentTypeName) {
@@ -767,14 +781,14 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     }
 
     /**
-     * @see org.kuali.rice.kns.service.DataDictionaryService#getDocumentTypeCodeByTypeName(java.lang.String)
+     * @see org.kuali.rice.kns.service.DataDictionaryService#getValidDocumentClassByTypeName(java.lang.String)
      */
-    public String getDocumentTypeCodeByTypeName(String documentTypeName) {
-        DocumentEntry documentEntry = getDataDictionary().getDocumentEntry(documentTypeName);
-        if (documentEntry != null) {
-            return documentEntry.getDocumentTypeCode();
+    public Class<? extends Document> getValidDocumentClassByTypeName(String documentTypeName) {
+        Class clazz = getDocumentClassByTypeName(documentTypeName);
+        if (clazz == null) {
+            throw new UnknownDocumentTypeException("unable to get class for unknown documentTypeName '" + documentTypeName + "'");
         }
-        return null;
+        return clazz;
     }
 
     /**

@@ -16,6 +16,8 @@
  */
 package org.kuali.rice.kew.xml;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -49,6 +51,7 @@ import org.kuali.rice.kew.exception.InvalidWorkgroupException;
 import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.role.RoleRouteModule;
 import org.kuali.rice.kew.rule.FlexRM;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
@@ -61,6 +64,7 @@ import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.util.ObjectUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -91,51 +95,163 @@ public class DocumentTypeXmlParser implements XmlConstants {
     private static final String NEXT_NODE_EXP = "./@nextNode";
     private static final String PARENT_NEXT_NODE_EXP = "../@nextNode";
     private static final String PROCESS_NAME_ATTR = "processName";
-
+    
+    protected XPath getXPath() {
+        if (this.xpath == null) {
+            this.xpath = XPathHelper.newXPath();
+        }
+        return xpath;
+    }
+    
     public List parseDocumentTypes(InputStream input) throws SAXException, IOException, ParserConfigurationException, XPathExpressionException, WorkflowException, TransformerException {
+        Document routeDocument=XmlHelper.trimXml(input);
+        Map documentTypesByName = new HashMap();
+        for (Iterator iterator = parseStandardDocumentTypes(routeDocument).iterator(); iterator.hasNext();) {
+            DocumentType type = (DocumentType) iterator.next();
+            documentTypesByName.put(type.getName(), type);
+        }
+        for (Iterator iterator = parseRoutingDocumentTypes(routeDocument).iterator(); iterator.hasNext();) {
+            DocumentType type = (DocumentType) iterator.next();
+            documentTypesByName.put(type.getName(), type);
+        }
+        return new ArrayList(documentTypesByName.values());
+    }
 
+    private List parseRoutingDocumentTypes(Document routeDocument) throws SAXException, IOException, ParserConfigurationException, XPathExpressionException, WorkflowException, TransformerException {
+        List documentTypeBeans = new ArrayList();
+//        Document routeDocument=XmlHelper.trimXml(input);
+        xpath = XPathHelper.newXPath();
+        NodeList documentTypeRoutingNodes = (NodeList) xpath.evaluate("/data/documentTypes/documentTypeRouting", routeDocument, XPathConstants.NODESET);
+        for (int i = 0; i < documentTypeRoutingNodes.getLength(); i++) {
+            Node documentTypeRoutingNode = documentTypeRoutingNodes.item(i);
+            String documentTypeName = getDocumentTypeNameFromNode(documentTypeRoutingNode);
+//            // export the document type that exists in the database
+//            DocumentType docTypeFromDatabase = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
+//            if (ObjectUtils.isNull(docTypeFromDatabase)) {
+//                throw new InvalidXmlException("Could not find document type '" + documentTypeName + "' in the database");
+//            }
+//            ExportDataSet exportDataSet = new ExportDataSet();
+//            exportDataSet.getDocumentTypes().add(docTypeFromDatabase);
+//            byte[] xmlBytes = KEWServiceLocator.getXmlExporterService().export(exportDataSet);
+//            // use the exported document type from the database to generate the new document type
+//            Document tempDocument = XmlHelper.trimXml(new BufferedInputStream(new ByteArrayInputStream(xmlBytes)));
+//            Node documentTypeNode = (Node) xpath.evaluate("/data/documentTypes/documentType", tempDocument, XPathConstants.NODE);
+//            DocumentType newDocumentType = getFullDocumentType(documentTypeNode);
+            DocumentType newDocumentType = generateNewDocumentTypeFromExisting(documentTypeName);
+            // use the existingDocumentType variable and overwrite the routing information on it before saving it
+            setupRoutingVersion(newDocumentType, documentTypeRoutingNode);
+            parseStructure(documentTypeRoutingNode, routeDocument, newDocumentType, new RoutePathContext());
+
+            /*   save the newly generated document type which should have both the
+             *   new routing data and all the old values of other fields (ex:
+             *   description, label, docHandlerUrl) from the database
+             */
+            LOG.debug("Saving document type " + newDocumentType.getName());
+            routeDocumentType(newDocumentType);
+            documentTypeBeans.add(newDocumentType);
+        }
+        return documentTypeBeans;
+    }
+    
+    public DocumentType generateNewDocumentTypeFromExisting(String documentTypeName) throws SAXException, IOException, ParserConfigurationException, XPathExpressionException, InvalidWorkgroupException, WorkflowException {
+        // export the document type that exists in the database
+        DocumentType docTypeFromDatabase = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
+        if (ObjectUtils.isNull(docTypeFromDatabase)) {
+            throw new InvalidXmlException("Could not find document type '" + documentTypeName + "' in the database");
+        }
+        ExportDataSet exportDataSet = new ExportDataSet();
+        exportDataSet.getDocumentTypes().add(docTypeFromDatabase);
+        byte[] xmlBytes = KEWServiceLocator.getXmlExporterService().export(exportDataSet);
+        // use the exported document type from the database to generate the new document type
+        Document tempDocument = XmlHelper.trimXml(new BufferedInputStream(new ByteArrayInputStream(xmlBytes)));
+        Node documentTypeNode = (Node) getXPath().evaluate("/data/documentTypes/documentType", tempDocument, XPathConstants.NODE);
+        return getFullDocumentType(documentTypeNode);
+    }
+
+    private DocumentType getFullDocumentType(Node documentTypeNode) throws XPathExpressionException, InvalidWorkgroupException, InvalidXmlException, WorkflowException {
+        DocumentType documentType = getDocumentType(documentTypeNode);
+        NodeList policiesList = (NodeList) xpath.evaluate("./policies", documentTypeNode, XPathConstants.NODESET);
+        if (policiesList.getLength() > 1) {
+            throw new InvalidXmlException("More than one policies node is present in a document type node");
+        }
+        if (policiesList.getLength() > 0) {
+            NodeList policyNodes = (NodeList) xpath.evaluate("./policy", policiesList.item(0), XPathConstants.NODESET);
+            documentType.setPolicies(getDocumentTypePolicies(policyNodes, documentType));
+        }
+
+        NodeList attributeList = (NodeList) xpath.evaluate("./attributes", documentTypeNode, XPathConstants.NODESET);
+        if (attributeList.getLength() > 1) {
+            throw new InvalidXmlException("More than one attributes node is present in a document type node");
+        }
+
+        if (attributeList.getLength() > 0) {
+            NodeList attributeNodes = (NodeList) xpath.evaluate("./attribute", attributeList.item(0), XPathConstants.NODESET);
+            documentType.setDocumentTypeAttributes(getDocumentTypeAttributes(attributeNodes, documentType));
+        }
+
+
+        NodeList securityList = (NodeList) xpath.evaluate("./security", documentTypeNode, XPathConstants.NODESET);
+        if (securityList.getLength() > 1) {
+            throw new InvalidXmlException("More than one security node is present in a document type node");
+        }
+
+        if (securityList.getLength() > 0) {
+           try {
+             Node securityNode = securityList.item(0);
+             String securityText = XmlHelper.writeNode(securityNode);
+             documentType.setDocumentTypeSecurityXml(securityText);
+           }
+           catch (Exception e) {
+             throw new InvalidXmlException(e);
+           }
+        }
+        return documentType;
+    }
+
+    private List parseStandardDocumentTypes(Document routeDocument) throws SAXException, IOException, ParserConfigurationException, XPathExpressionException, WorkflowException, TransformerException {
         List documentTypeBeans = new ArrayList();
 
-    	Document routeDocument=XmlHelper.trimXml(input);
+//    	Document routeDocument=XmlHelper.trimXml(input);
         xpath = XPathHelper.newXPath();
         NodeList documentTypeNodes = (NodeList) xpath.evaluate("/data/documentTypes/documentType", routeDocument, XPathConstants.NODESET);
         for (int i = 0; i < documentTypeNodes.getLength(); i++) {
-            DocumentType documentType = getDocumentType(documentTypeNodes.item(i));
-            NodeList policiesList = (NodeList) xpath.evaluate("./policies", documentTypeNodes.item(i), XPathConstants.NODESET);
-            if (policiesList.getLength() > 1) {
-                throw new InvalidXmlException("More than one policies node is present in a document type node");
-            }
-            if (policiesList.getLength() > 0) {
-                NodeList policyNodes = (NodeList) xpath.evaluate("./policy", policiesList.item(0), XPathConstants.NODESET);
-                documentType.setPolicies(getDocumentTypePolicies(policyNodes, documentType));
-            }
-
-            NodeList attributeList = (NodeList) xpath.evaluate("./attributes", documentTypeNodes.item(i), XPathConstants.NODESET);
-            if (attributeList.getLength() > 1) {
-                throw new InvalidXmlException("More than one attributes node is present in a document type node");
-            }
-
-            if (attributeList.getLength() > 0) {
-                NodeList attributeNodes = (NodeList) xpath.evaluate("./attribute", attributeList.item(0), XPathConstants.NODESET);
-                documentType.setDocumentTypeAttributes(getDocumentTypeAttributes(attributeNodes, documentType));
-            }
-
-
-            NodeList securityList = (NodeList) xpath.evaluate("./security", documentTypeNodes.item(i), XPathConstants.NODESET);
-            if (securityList.getLength() > 1) {
-                throw new InvalidXmlException("More than one security node is present in a document type node");
-            }
-
-            if (securityList.getLength() > 0) {
-               try {
-                 Node securityNode = securityList.item(0);
-                 String securityText = XmlHelper.writeNode(securityNode);
-                 documentType.setDocumentTypeSecurityXml(securityText);
-               }
-               catch (Exception e) {
-                 throw new InvalidXmlException(e);
-               }
-            }
+            DocumentType documentType = getFullDocumentType(documentTypeNodes.item(i));
+//            DocumentType documentType = getDocumentType(documentTypeNodes.item(i));
+//            NodeList policiesList = (NodeList) xpath.evaluate("./policies", documentTypeNodes.item(i), XPathConstants.NODESET);
+//            if (policiesList.getLength() > 1) {
+//                throw new InvalidXmlException("More than one policies node is present in a document type node");
+//            }
+//            if (policiesList.getLength() > 0) {
+//                NodeList policyNodes = (NodeList) xpath.evaluate("./policy", policiesList.item(0), XPathConstants.NODESET);
+//                documentType.setPolicies(getDocumentTypePolicies(policyNodes, documentType));
+//            }
+//
+//            NodeList attributeList = (NodeList) xpath.evaluate("./attributes", documentTypeNodes.item(i), XPathConstants.NODESET);
+//            if (attributeList.getLength() > 1) {
+//                throw new InvalidXmlException("More than one attributes node is present in a document type node");
+//            }
+//
+//            if (attributeList.getLength() > 0) {
+//                NodeList attributeNodes = (NodeList) xpath.evaluate("./attribute", attributeList.item(0), XPathConstants.NODESET);
+//                documentType.setDocumentTypeAttributes(getDocumentTypeAttributes(attributeNodes, documentType));
+//            }
+//
+//
+//            NodeList securityList = (NodeList) xpath.evaluate("./security", documentTypeNodes.item(i), XPathConstants.NODESET);
+//            if (securityList.getLength() > 1) {
+//                throw new InvalidXmlException("More than one security node is present in a document type node");
+//            }
+//
+//            if (securityList.getLength() > 0) {
+//               try {
+//                 Node securityNode = securityList.item(0);
+//                 String securityText = XmlHelper.writeNode(securityNode);
+//                 documentType.setDocumentTypeSecurityXml(securityText);
+//               }
+//               catch (Exception e) {
+//                 throw new InvalidXmlException(e);
+//               }
+//            }
 
             parseStructure(documentTypeNodes.item(i), routeDocument, documentType, new RoutePathContext());
 
@@ -150,15 +266,25 @@ public class DocumentTypeXmlParser implements XmlConstants {
     private void routeDocumentType(DocumentType documentType) {
         KEWServiceLocator.getDocumentTypeService().versionAndSave(documentType);
     }
-
-    private DocumentType getDocumentType(Node documentTypeNode) throws XPathExpressionException, InvalidWorkgroupException, InvalidXmlException {
-        DocumentType documentType = new DocumentType();
+    
+    private String getDocumentTypeNameFromNode(Node documentTypeNode) throws XPathExpressionException {
         try {
-            documentType.setName((String) xpath.evaluate("./name", documentTypeNode, XPathConstants.STRING));
+            return (String) xpath.evaluate("./name", documentTypeNode, XPathConstants.STRING);
         } catch (XPathExpressionException xpee) {
             LOG.error("Error obtaining document type name", xpee);
             throw xpee;
         }
+    }
+
+    private DocumentType getDocumentType(Node documentTypeNode) throws XPathExpressionException, InvalidWorkgroupException, InvalidXmlException {
+        DocumentType documentType = new DocumentType();
+        documentType.setName(getDocumentTypeNameFromNode(documentTypeNode));
+//        try {
+//            documentType.setName((String) xpath.evaluate("./name", documentTypeNode, XPathConstants.STRING));
+//        } catch (XPathExpressionException xpee) {
+//            LOG.error("Error obtaining document type name", xpee);
+//            throw xpee;
+//        }
         try {
             documentType.setDescription((String) xpath.evaluate("./description", documentTypeNode, XPathConstants.STRING));
         } catch (XPathExpressionException xpee) {
@@ -166,13 +292,25 @@ public class DocumentTypeXmlParser implements XmlConstants {
             throw xpee;
         }
         try {
-        	String label = (String) xpath.evaluate("./label", documentTypeNode, XPathConstants.STRING);
-        	if (StringUtils.isEmpty(label)) {
-        		label = DEFAULT_LABEL;
-        	}
+            documentType.setSummary((String) xpath.evaluate("./summary", documentTypeNode, XPathConstants.STRING));
+        } catch (XPathExpressionException xpee) {
+            LOG.error("Error obtaining document type summary", xpee);
+            throw xpee;
+        }
+        try {
+            String label = (String) xpath.evaluate("./label", documentTypeNode, XPathConstants.STRING);
+            if (StringUtils.isEmpty(label)) {
+                label = DEFAULT_LABEL;
+            }
             documentType.setLabel(label);
         } catch (XPathExpressionException xpee) {
             LOG.error("Error obtaining document type label", xpee);
+            throw xpee;
+        }
+        try {
+            documentType.setShortLabel((String) xpath.evaluate("./shortLabel", documentTypeNode, XPathConstants.STRING));
+        } catch (XPathExpressionException xpee) {
+            LOG.error("Error obtaining document type shortLabel", xpee);
             throw xpee;
         }
         try {
@@ -365,7 +503,30 @@ public class DocumentTypeXmlParser implements XmlConstants {
             throw xpee;
         }
 
+        setupRoutingVersion(documentType, documentTypeNode);
+//        try {
+//            if (((Boolean) xpath.evaluate("./routingVersion", documentTypeNode, XPathConstants.BOOLEAN)).booleanValue()) {
+//                String version;
+//                try {
+//                    version = (String) xpath.evaluate("./routingVersion", documentTypeNode, XPathConstants.STRING);
+//                } catch (XPathExpressionException xpee) {
+//                    LOG.error("Error obtaining document type routingVersion", xpee);
+//                    throw xpee;
+//                }
+//                if (!(version.equals(KEWConstants.ROUTING_VERSION_ROUTE_LEVEL) || version.equals(KEWConstants.ROUTING_VERSION_NODAL))) {
+//                    throw new WorkflowRuntimeException("Invalid routing version on document type: " + version);
+//                }
+//                documentType.setRoutingVersion(version);
+//            }
+//        } catch (XPathExpressionException xpee) {
+//            LOG.error("Error obtaining document type routingVersion", xpee);
+//            throw xpee;
+//        }
 
+        return documentType;
+    }
+    
+    private void setupRoutingVersion(DocumentType documentType, Node documentTypeNode) throws XPathExpressionException {
         try {
             if (((Boolean) xpath.evaluate("./routingVersion", documentTypeNode, XPathConstants.BOOLEAN)).booleanValue()) {
                 String version;
@@ -384,8 +545,6 @@ public class DocumentTypeXmlParser implements XmlConstants {
             LOG.error("Error obtaining document type routingVersion", xpee);
             throw xpee;
         }
-
-        return documentType;
     }
 
     private void parseStructure(Node documentTypeNode, Document routeDocument, DocumentType documentType, RoutePathContext context) throws XPathExpressionException, InvalidXmlException, InvalidWorkgroupException, TransformerException {

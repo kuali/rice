@@ -73,8 +73,8 @@ import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.service.DocumentHelperService;
 import org.kuali.rice.kns.service.DocumentService;
-import org.kuali.rice.kns.service.DocumentTypeService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.KualiRuleService;
@@ -106,7 +106,7 @@ public class KualiDocumentActionBase extends KualiAction {
     private static final String[] DOCUMENT_LOAD_COMMANDS = { KEWConstants.ACTIONLIST_COMMAND, KEWConstants.DOCSEARCH_COMMAND, KEWConstants.SUPERUSER_COMMAND, KEWConstants.HELPDESK_ACTIONLIST_COMMAND };
 
     private DataDictionaryService dataDictionaryService;
-    private DocumentTypeService documentTypeService;
+    private DocumentHelperService documentHelperService;
     private DocumentService documentService;
     private KualiConfigurationService kualiConfigurationService;
     private PessimisticLockService pessimisticLockService;
@@ -332,7 +332,7 @@ public class KualiDocumentActionBase extends KualiAction {
         if (doc == null) {
             throw new UnknownDocumentIdException("Document no longer exists.  It may have been cancelled before being saved.");
         }
-        if (!getDocumentTypeService().getDocumentAuthorizer(doc).canOpen(doc, GlobalVariables.getUserSession().getPerson())) {
+        if (!getDocumentHelperService().getDocumentAuthorizer(doc).canOpen(doc, GlobalVariables.getUserSession().getPerson())) {
         	throw buildAuthorizationException("open", doc);
         }
         kualiDocumentFormBase.setDocument(doc);
@@ -1441,8 +1441,8 @@ public class KualiDocumentActionBase extends KualiAction {
     	if (formBase.isFormDocumentInitialized()) {
         	Document document = formBase.getDocument();
         	Person user = GlobalVariables.getUserSession().getPerson();
-    		DocumentPresentationController documentPresentationController = getDocumentTypeService().getDocumentPresentationController(document);
-            DocumentAuthorizer documentAuthorizer = getDocumentTypeService().getDocumentAuthorizer(document);
+    		DocumentPresentationController documentPresentationController = KNSServiceLocator.getDocumentHelperService().getDocumentPresentationController(document);
+            DocumentAuthorizer documentAuthorizer = getDocumentHelperService().getDocumentAuthorizer(document);
             Set<String> documentActions =  documentPresentationController.getDocumentActions(document);
             documentActions = documentAuthorizer.getDocumentActions(document, user, documentActions);
 
@@ -1476,11 +1476,11 @@ public class KualiDocumentActionBase extends KualiAction {
 		return dataDictionaryService;
 	}
 
-	protected DocumentTypeService getDocumentTypeService() {
-		if ( documentTypeService == null ) {
-			documentTypeService = KNSServiceLocator.getDocumentTypeService();
-		}
-		return this.documentTypeService;
+	protected DocumentHelperService getDocumentHelperService() {
+	    if ( documentHelperService == null ) {
+	        documentHelperService = KNSServiceLocator.getDocumentHelperService();
+	    }
+	    return this.documentHelperService;
 	}
 
 	protected DocumentService getDocumentService() {

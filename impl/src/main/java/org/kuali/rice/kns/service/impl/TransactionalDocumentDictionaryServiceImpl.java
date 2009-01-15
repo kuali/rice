@@ -17,11 +17,13 @@ package org.kuali.rice.kns.service.impl;
 
 import java.util.Collection;
 
+import org.kuali.rice.kew.dto.DocumentTypeDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kns.datadictionary.DataDictionary;
-import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.datadictionary.TransactionalDocumentEntry;
 import org.kuali.rice.kns.document.TransactionalDocument;
 import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.TransactionalDocumentDictionaryService;
 
 /**
@@ -65,9 +67,9 @@ public class TransactionalDocumentDictionaryServiceImpl implements Transactional
     public String getSummary(String transactionalDocumentTypeName) {
         String summary = null;
 
-        TransactionalDocumentEntry entry = getTransactionalDocumentEntryBydocumentTypeName(transactionalDocumentTypeName);
-        if (entry != null) {
-            summary = String.valueOf(entry.getSummary());
+        DocumentTypeDTO docType = getDocumentType(transactionalDocumentTypeName);
+        if (docType != null) {
+            summary = docType.getDocTypeSummary();
         }
 
         return summary;
@@ -79,9 +81,9 @@ public class TransactionalDocumentDictionaryServiceImpl implements Transactional
     public String getDescription(String transactionalDocumentTypeName) {
         String description = null;
 
-        TransactionalDocumentEntry entry = getTransactionalDocumentEntryBydocumentTypeName(transactionalDocumentTypeName);
-        if (entry != null) {
-            description = String.valueOf(entry.getDescription());
+        DocumentTypeDTO docType = getDocumentType(transactionalDocumentTypeName);
+        if (docType != null) {
+            description = docType.getDocTypeDescription();
         }
 
         return description;
@@ -93,9 +95,9 @@ public class TransactionalDocumentDictionaryServiceImpl implements Transactional
     public String getLabel(String transactionalDocumentTypeName) {
         String label = null;
 
-        TransactionalDocumentEntry entry = getTransactionalDocumentEntryBydocumentTypeName(transactionalDocumentTypeName);
-        if (entry != null) {
-            label = String.valueOf(entry.getLabel());
+        DocumentTypeDTO docType = getDocumentType(transactionalDocumentTypeName);
+        if (docType != null) {
+            label = docType.getDocTypeLabel();
         }
 
         return label;
@@ -133,6 +135,20 @@ public class TransactionalDocumentDictionaryServiceImpl implements Transactional
      */
     public DataDictionary getDataDictionary() {
         return this.dataDictionaryService.getDataDictionary();
+    }
+
+    /**
+     * This method gets the workflow document type for the given documentTypeName
+     * 
+     * @param documentTypeName
+     * @return
+     */
+    protected DocumentTypeDTO getDocumentType(String documentTypeName) {
+        try {
+            return KNSServiceLocator.getWorkflowInfoService().getDocType(documentTypeName);
+        } catch (WorkflowException e) {
+            throw new RuntimeException("Caught exception attempting to get document type for doc type name '" + documentTypeName + "'", e);
+        }
     }
 
     /**

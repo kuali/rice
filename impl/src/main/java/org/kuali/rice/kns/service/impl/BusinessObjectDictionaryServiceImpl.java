@@ -26,8 +26,7 @@ import java.util.List;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.kns.authorization.BusinessObjectAuthorizer;
-import org.kuali.rice.kns.authorization.BusinessObjectAuthorizerBase;
+import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
@@ -43,6 +42,7 @@ import org.kuali.rice.kns.inquiry.InquiryPresentationController;
 import org.kuali.rice.kns.inquiry.InquiryPresentationControllerBase;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.ObjectUtils;
 
@@ -398,9 +398,14 @@ public class BusinessObjectDictionaryServiceImpl implements
     public String getMaintainableLabel(Class businessObjectClass) {
         String label = "";
 
-        MaintenanceDocumentEntry entry = getMaintenanceDocumentEntry(businessObjectClass);
-        if (entry != null) {
-            label = entry.getLabel();
+        try {
+            MaintenanceDocumentEntry entry = getMaintenanceDocumentEntry(businessObjectClass);
+            if (entry != null) {
+                label = KNSServiceLocator.getWorkflowInfoService().getDocType(entry.getDocumentTypeName()).getDocTypeLabel();
+            }
+
+        } catch (WorkflowException e) {
+            throw new RuntimeException("Caught Exception trying to get the document type", e);
         }
 
         return label;

@@ -26,6 +26,7 @@ import org.junit.Test;
 import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.exception.InvalidWorkgroupException;
 import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -273,7 +274,23 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
     	DocumentType documentType = (DocumentType)documentTypes.get(0);
     	assertEquals("Document type has incorrect name", "DocumentTypeXmlParserTestDoc_DocTypeWithNoLabel", documentType.getName());
     	assertEquals("Document type has incorrect label", "Undefined", documentType.getLabel());
-    	
+    }
+
+    @Test public void testLoadRoutePathOnlyAdjustsDocument() throws Exception {
+        List documentTypes = testDoc("RoutePathAdjustment1", null);
+        assertEquals("Incorrect parsed document type count", 1, documentTypes.size());
+        DocumentType docType1 = (DocumentType) documentTypes.get(0);
+        List routeNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(docType1, true);
+        assertEquals("Incorrect document route node count", 1, routeNodes.size());
+        assertEquals("Expected Route Node Name is incorrect", "First", ((RouteNode)routeNodes.get(0)).getRouteNodeName());
+
+        documentTypes = testDoc("RoutePathAdjustment2", null);
+        assertEquals("Incorrect parsed document type count", 1, documentTypes.size());
+        DocumentType docType2 = (DocumentType) documentTypes.get(0);
+        routeNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(docType2, true);
+        assertEquals("Incorrect document route node count", 2, routeNodes.size());
+        assertEquals("Expected Route Node Name is incorrect", "First", ((RouteNode)routeNodes.get(0)).getRouteNodeName());
+        assertEquals("Expected Route Node Name is incorrect", "Second", ((RouteNode)routeNodes.get(1)).getRouteNodeName());
     }
 
 }

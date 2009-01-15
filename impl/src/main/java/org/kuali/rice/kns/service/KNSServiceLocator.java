@@ -174,12 +174,6 @@ public class KNSServiceLocator<T extends Object> {
 	return (DateTimeService) getService(DATETIME_SERVICE);
     }
 
-    public static final String DOCUMENT_TYPE_SERVICE = "documentTypeService";
-
-    public static DocumentTypeService getDocumentTypeService() {
-	return (DocumentTypeService) getService(DOCUMENT_TYPE_SERVICE);
-    }
-
     public static final String LOOKUP_SERVICE = "lookupService";
 
     public static LookupService getLookupService() {
@@ -447,5 +441,11 @@ public class KNSServiceLocator<T extends Object> {
     
     public static BusinessObjectAuthorizationService getMaintenanceDocumentAuthorizationService() {
     	return (BusinessObjectAuthorizationService) getService(MAINTENANCE_DOCUMENT_AUTHORIZATION_SERVICE);
+    }
+    
+    public static final String DOCUMENT_HELPER_SERVICE = "documentHelperService";
+    
+    public static DocumentHelperService getDocumentHelperService() {
+        return (DocumentHelperService) getService(DOCUMENT_HELPER_SERVICE);
     }
 }

@@ -17,11 +17,12 @@ package org.kuali.rice.kns.datadictionary.exporter;
 
 import java.util.List;
 
+import org.kuali.rice.kew.dto.DocumentTypeDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kns.datadictionary.AuthorizationDefinition;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
-import org.kuali.rice.kns.service.DocumentTypeService;
+import org.kuali.rice.kns.service.DocumentHelperService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
  * DocumentEntryMapper
@@ -29,6 +30,15 @@ import org.kuali.rice.kns.util.ObjectUtils;
  * 
  */
 public abstract class DocumentEntryMapper {
+    
+    protected DocumentTypeDTO getDocumentType(String documentTypeName) {
+        try {
+            return KNSServiceLocator.getWorkflowInfoService().getDocType(documentTypeName);
+        } catch (WorkflowException e) {
+            throw new RuntimeException("Caught Exception trying to get the Workflow Document Type", e);
+        }
+    }
+
     /**
      * @param entry
      * @return Map containing entries for properties common to all DocumentEntry subclasses
@@ -47,23 +57,21 @@ public abstract class DocumentEntryMapper {
         }
 
         entryMap.set("documentTypeName", entry.getDocumentTypeName());
-        if (ObjectUtils.isNotNull(entry.getDocumentTypeCode())) {
-        	entryMap.set("documentTypeCode", entry.getDocumentTypeCode());
+
+        DocumentTypeDTO docType = getDocumentType(entry.getDocumentTypeName());
+        entryMap.set("label", docType.getDocTypeLabel());
+        entryMap.set("shortLabel", docType.getDocTypeShortLabel());
+
+        if (docType.getDocTypeSummary() != null) {
+            entryMap.set("summary", docType.getDocTypeSummary());
+        }
+        if (docType.getDocTypeDescription() != null) {
+            entryMap.set("description", docType.getDocTypeDescription());
         }
 
-        entryMap.set("label", entry.getLabel());
-        entryMap.set("shortLabel", entry.getShortLabel());
-
-        if (entry.getSummary() != null) {
-            entryMap.set("summary", entry.getSummary());
-        }
-        if (entry.getDescription() != null) {
-            entryMap.set("description", entry.getDescription());
-        }
-
-        DocumentTypeService documentTypeService = KNSServiceLocator.getDocumentTypeService();
-        entryMap.set("documentAuthorizerClass", documentTypeService.getDocumentAuthorizer(entry.getDocumentTypeName()).getClass().getName());
-        entryMap.set("documentPresentationControllerClass", documentTypeService.getDocumentPresentationController(entry.getDocumentTypeName()).getClass().getName());
+        DocumentHelperService documentHelperService = KNSServiceLocator.getDocumentHelperService();
+        entryMap.set("documentAuthorizerClass", documentHelperService.getDocumentAuthorizer(entry.getDocumentTypeName()).getClass().getName());
+        entryMap.set("documentPresentationControllerClass", documentHelperService.getDocumentPresentationController(entry.getDocumentTypeName()).getClass().getName());
 
         entryMap.set("allowsNoteDelete", Boolean.toString(entry.getAllowsNoteDelete()));
 

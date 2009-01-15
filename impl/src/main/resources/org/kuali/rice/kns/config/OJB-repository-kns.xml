@@ -136,32 +136,6 @@
 	</class-descriptor>
 
 
-	<class-descriptor class="org.kuali.rice.kns.bo.DocumentType" table="KRNS_DOC_TYP_T">
-		<field-descriptor name="documentTypeCode" column="DOC_TYP_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
-		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
-		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-		<field-descriptor name="documentName" column="NM" jdbc-type="VARCHAR" />
-		<field-descriptor name="documentTypeActiveIndicator" column="ACTV_IND" jdbc-type="VARCHAR"
-			conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
-
-		<collection-descriptor name="documentTypeAttributes" element-class-ref="org.kuali.rice.kns.bo.DocumentTypeAttribute" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object">
-			<inverse-foreignkey field-ref="documentTypeCode" />
-		</collection-descriptor>
-
-	</class-descriptor>
-
-	<class-descriptor class="org.kuali.rice.kns.bo.DocumentTypeAttribute" table="KRNS_DOC_TYP_ATTR_T">
-		<field-descriptor name="id" column="DOC_TYP_ATTR_ID" jdbc-type="BIGINT" primarykey="true" index="true" autoincrement="true" sequence-name="KRNS_DOC_TYP_ATTR_S" />
-		<field-descriptor name="key" column="CD" jdbc-type="VARCHAR"/>
-		<field-descriptor name="documentTypeCode" column="DOC_TYP_CD" jdbc-type="VARCHAR"/>
-		<field-descriptor name="value" column="VAL" jdbc-type="VARCHAR" />
-		<field-descriptor name="label" column="LBL" jdbc-type="VARCHAR" />
-
-		<field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
-		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
-		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-	</class-descriptor>
-
 	<class-descriptor class="org.kuali.rice.kns.bo.ParameterNamespace" table="KRNS_NMSPC_T">
 		<field-descriptor name="code" column="NMSPC_CD" jdbc-type="VARCHAR" primarykey="true" />
 		<field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />

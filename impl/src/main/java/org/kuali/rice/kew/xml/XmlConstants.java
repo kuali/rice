@@ -55,7 +55,9 @@ public interface XmlConstants {
     // general
     public static final String NAME = "name";
     public static final String DESCRIPTION = "description";
+    public static final String SUMMARY = "summary";
     public static final String LABEL = "label";
+    public static final String SHORT_LABEL = "shortLabel";
     public static final String KEY = "key";
     public static final String VALUE = "value";
     public static final String ACTIVE= "active";

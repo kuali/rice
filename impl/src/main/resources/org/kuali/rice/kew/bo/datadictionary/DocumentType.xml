@@ -25,6 +25,14 @@
           <property name="primitiveAttributes" >
             <list>
               <bean parent="PrimitiveAttributeDefinition"
+                    p:sourceName="docTypeParentId"
+                    p:targetName="documentTypeId" />
+            </list>
+          </property>
+          <property name="supportAttributes" >
+            <list>
+              <bean parent="SupportAttributeDefinition"
+                    p:identifier="true"
                     p:sourceName="parentDocType.name"
                     p:targetName="name" />
             </list>
@@ -39,7 +47,9 @@
         <ref bean="DocumentType-documentTypeId" />
         <ref bean="DocumentType-name" />
         <ref bean="DocumentType-description" />
+        <ref bean="DocumentType-summary" />
         <ref bean="DocumentType-label" />
+        <ref bean="DocumentType-shortLabel" />
         <ref bean="DocumentType-serviceNamespace" />
         <ref bean="DocumentType-descendHierarchy" />
         <ref bean="DocumentType-active" />
@@ -58,8 +68,7 @@
       <bean parent="NumericValidationPattern" />
     </property>
     <property name="control" >
-      <bean parent="TextControlDefinition"
-            p:size="30" />
+      <bean parent="HiddenControlDefinition" />
     </property>
     <property name="name" value="documentTypeId" />
     <property name="label" value="Id" />
@@ -81,6 +90,22 @@
     </property>
     <property name="name" value="docTypeParentId" />
     <property name="label" value="Parent Id" />
+  </bean>
+  
+  <bean id="DocumentType-parentDocType.name" parent="DocumentType-parentDocType.name-parentBean" />
+
+  <bean id="DocumentType-parentDocType.name-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="shortLabel" value="Parent Name" />
+    <property name="maxLength" value="30" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="30" />
+    </property>
+    <property name="name" value="parentDocType.name" />
+    <property name="label" value="Parent Name" />
   </bean>
   
   <bean id="DocumentType-docTypeParentName" parent="DocumentType-docTypeParentName-parentBean" />
@@ -119,7 +144,7 @@
 
   <bean id="DocumentType-label-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="Label" />
-    <property name="maxLength" value="30" />
+    <property name="maxLength" value="500" />
     <property name="validationPattern" >
       <bean parent="AnyCharacterValidationPattern" />
     </property>
@@ -129,6 +154,22 @@
     </property>
     <property name="name" value="label" />
     <property name="label" value="Label" />
+  </bean>
+
+  <bean id="DocumentType-shortLabel" parent="DocumentType-shortLabel-parentBean" />
+
+  <bean id="DocumentType-shortLabel-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="shortLabel" value="Shrt Lbl" />
+    <property name="maxLength" value="255" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="30" />
+    </property>
+    <property name="name" value="shortLabel" />
+    <property name="label" value="Short Label" />
   </bean>
 
   <bean id="DocumentType-active" parent="DocumentType-active-parentBean"/>
@@ -171,7 +212,7 @@
 
   <bean id="DocumentType-description-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="Description" />
-    <property name="maxLength" value="1" />
+    <property name="maxLength" value="4000" />
     <property name="validationPattern" >
       <bean parent="AnyCharacterValidationPattern" />
     </property>
@@ -181,6 +222,22 @@
     </property>
     <property name="name" value="description" />
     <property name="label" value="Description" />
+  </bean>
+  
+  <bean id="DocumentType-summary" parent="DocumentType-summary-parentBean" />
+
+  <bean id="DocumentType-summary-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="shortLabel" value="Summary" />
+    <property name="maxLength" value="4000" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="30" />
+    </property>
+    <property name="name" value="summary" />
+    <property name="label" value="Summary" />
   </bean>
   
   <bean id="DocumentType-serviceNamespace" parent="DocumentType-serviceNamespace-parentBean" />
@@ -213,6 +270,8 @@
             <list>
               <bean parent="FieldDefinition"
                     p:attributeName="docTypeParentId" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="parentDocType.name" />
               <bean parent="FieldDefinition"
                     p:attributeName="documentTypeId" />
               <bean parent="FieldDefinition"
@@ -248,6 +307,11 @@
         <bean parent="FieldDefinition"
         	p:attributeName="parentDocType.name"
             p:noDirectInquiry="true"/>
+<!--
+        <bean parent="FieldDefinition"
+            p:attributeName="docTypeParentId"
+            p:noDirectInquiry="true"/>
+-->
         <bean parent="FieldDefinition"
         	p:attributeName="descendHierarchy"
               p:defaultValue="No"/> 
@@ -258,15 +322,13 @@
         <bean parent="FieldDefinition"
               p:attributeName="documentTypeId"/>
         <bean parent="FieldDefinition"
-              p:attributeName="active"/>
-        <bean parent="FieldDefinition"
               p:attributeName="serviceNamespace"/>
+        <bean parent="FieldDefinition"
+              p:attributeName="active"/>
       </list>
     </property>
     <property name="resultFields" >
       <list>
-        <bean parent="FieldDefinition"
-              p:attributeName="docTypeParentId" />
         <bean parent="FieldDefinition"
               p:attributeName="documentTypeId" />
         <bean parent="FieldDefinition"

@@ -30,10 +30,9 @@ import org.kuali.rice.kns.rule.RouteDocumentRule;
 import org.kuali.rice.kns.rule.SaveDocumentRule;
 import org.kuali.rice.kns.rule.event.ApproveDocumentEvent;
 import org.kuali.rice.kns.service.DictionaryValidationService;
-import org.kuali.rice.kns.service.DocumentTypeService;
+import org.kuali.rice.kns.service.DocumentHelperService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
-import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.util.ErrorMap;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -53,8 +52,8 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     private static DictionaryValidationService dictionaryValidationService;
     private static KualiWorkflowInfo workflowInfoService;
     private static KualiConfigurationService kualiConfigurationService;
-    private static DocumentTypeService documentTypeService;
-
+    private static DocumentHelperService documentHelperService;
+    
     /**
      * Just some arbitrarily high max depth that's unlikely to occur in real life to prevent recursion problems
      */
@@ -66,7 +65,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 	    kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
 	    dictionaryValidationService = KNSServiceLocator.getDictionaryValidationService();
 	    personService = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService();
-	    documentTypeService = KNSServiceLocator.getDocumentTypeService();
+	    documentHelperService = KNSServiceLocator.getDocumentHelperService();
 	}
     }
 
@@ -74,10 +73,10 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 	initStatics();
 	return personService;
     }
-
-    protected DocumentTypeService getDocumentTypeService() {
+    
+    protected DocumentHelperService getDocumentHelperService() {
     	initStatics();
-    	return documentTypeService;
+    	return documentHelperService;
     }
 
     protected DictionaryValidationService getDictionaryValidationService() {
@@ -361,7 +360,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 		} else {
 		    docOrBoClass = document.getClass();
 		}
-		if (!getDocumentTypeService().getDocumentAuthorizer(document).canReceiveAdHoc(document, user, person.getActionRequested())) {
+		if (!getDocumentHelperService().getDocumentAuthorizer(document).canReceiveAdHoc(document, user, person.getActionRequested())) {
 		    GlobalVariables.getErrorMap().putError(KNSPropertyConstants.ID,
 			    RiceKeyConstants.ERROR_UNAUTHORIZED_ADHOC_PERSON_ID);
 		}

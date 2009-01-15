@@ -18,7 +18,9 @@
 		<documentType>
 			<name>DocumentType</name>
 			<description>TestDocumentType</description>
+			<summary>TestDocumentType Summary</summary>
 			<label>TestDocumentType</label>
+			<shortLabel>Test Doc Typ</shortLabel>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<superUserWorkgroupName>${test.doctype.workgroup}</superUserWorkgroupName>
 			<docHandler>${test.base.url}/_blank</docHandler>

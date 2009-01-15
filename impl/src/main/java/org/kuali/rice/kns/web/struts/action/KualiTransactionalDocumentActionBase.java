@@ -31,6 +31,7 @@ import org.kuali.rice.kns.document.Copyable;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.authorization.TransactionalDocumentAuthorizer;
 import org.kuali.rice.kns.document.authorization.TransactionalDocumentPresentationController;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
@@ -67,9 +68,10 @@ public class KualiTransactionalDocumentActionBase extends KualiDocumentActionBas
     	
     	if (formBase.isFormDocumentInitialized()) {
         	Person user = GlobalVariables.getUserSession().getPerson();
-        	TransactionalDocumentPresentationController documentPresentationController = (TransactionalDocumentPresentationController) getDocumentTypeService().getDocumentPresentationController(document);
-            TransactionalDocumentAuthorizer documentAuthorizer = (TransactionalDocumentAuthorizer) getDocumentTypeService().getDocumentAuthorizer(document);
-            Set<String> editModes = documentAuthorizer.getEditModes(document, user, documentPresentationController.getEditModes(document));
+        	
+        	TransactionalDocumentPresentationController documentPresentationController = (TransactionalDocumentPresentationController) getDocumentHelperService().getDocumentPresentationController(document);
+            TransactionalDocumentAuthorizer documentAuthorizer = (TransactionalDocumentAuthorizer) KNSServiceLocator.getDocumentHelperService().getDocumentAuthorizer(document);
+            Set<String> editModes = documentPresentationController.getEditModes(document);
             editMode = this.convertSetToMap(editModes);
             if (getDataDictionaryService().getDataDictionary().getDocumentEntry(document.getClass().getName()).getUsePessimisticLocking()) {
                 editMode = getPessimisticLockService().establishLocks(document, editMode, user);

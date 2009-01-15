@@ -23,6 +23,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.DataDictionary;
@@ -216,9 +217,10 @@ public class KualiHelpAction extends KualiAction {
         HelpDefinition helpDefinition = null;
         String apcHelpUrl = null;
         if (entry != null) {
-            label = entry.getLabel();
-            summary = entry.getSummary();
-            description = entry.getDescription();
+            DocumentTypeDTO docType = KNSServiceLocator.getWorkflowInfoService().getDocType(entry.getDocumentTypeName());
+            label = docType.getDocTypeLabel();
+            summary = docType.getDocTypeSummary();
+            description = docType.getDocTypeDescription();
             helpDefinition = entry.getHelpDefinition();
 
             if (null != helpDefinition && null != helpDefinition.getParameterNamespace() && null != helpDefinition.getParameterDetailType() && null != helpDefinition.getParameterName()) {

@@ -17,7 +17,6 @@ package org.kuali.rice.core.util;
 
 import org.kuali.rice.kns.dao.DocumentDao;
 import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.DocumentTypeService;
 import org.kuali.rice.kns.service.impl.DocumentServiceImpl;
 import org.kuali.rice.kns.workflow.service.WorkflowDocumentService;
 import org.springframework.beans.factory.InitializingBean;

@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.datadictionary.exception.ClassValidationException;
+import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kns.datadictionary.exception.DuplicateEntryException;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
@@ -32,7 +32,6 @@ import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.rule.BusinessRule;
 import org.kuali.rice.kns.rule.PreRulesCheck;
-import org.kuali.rice.kns.service.DocumentTypeService;
 
 /**
  * A single Document entry in the DataDictionary, which contains information relating to the display, validation, and general
@@ -51,10 +50,9 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     protected Class<? extends PreRulesCheck> preRulesCheckClass;
 
     protected String documentTypeName;
-    protected String documentTypeCode;
 
-    protected String label;
-    protected String shortLabel;
+//    protected String label;
+//    protected String shortLabel;
 
     protected HelpDefinition helpDefinition;
 
@@ -65,8 +63,8 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     protected boolean usePessimisticLocking = false;
     protected boolean useWorkflowPessimisticLocking = false;
     
-    protected String summary;
-    protected String description;
+//    protected String summary;
+//    protected String description;
     protected List<String> webScriptFiles = new ArrayList<String>( 3 );
 
     protected Class<? extends DocumentAuthorizer> documentAuthorizerClass;
@@ -176,76 +174,6 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
 
     public String getDocumentTypeName() {
         return this.documentTypeName;
-    }
-
-    /**
-            The documentTypeCode element is the unique identifier of the
-            document as defined in the KFS system. The DocumentType table
-            contains additional data about the document including whether or
-            not the document type is currently active.
-     */
-    public void setDocumentTypeCode(String documentTypeCode) {
-        if (StringUtils.isBlank(documentTypeCode)) {
-            throw new IllegalArgumentException("invalid (blank) documentTypeCode");
-        }
-        this.documentTypeCode = documentTypeCode;
-    }
-
-    public String getDocumentTypeCode() {
-        return documentTypeCode;
-    }
-
-    public String getLabel() {
-        return label;
-    }
-
-    /**
-     * The displayed label for this document.  Usually a properly formatted version of the documentTypeName.
-     */
-    public void setLabel(String label) {
-        if (StringUtils.isBlank(label)) {
-            throw new IllegalArgumentException("invalid (blank) label");
-        }
-        this.label = label;
-    }
-
-    /**
-     * @return the shortLabel, or the label if no shortLabel has been set
-     */
-    public String getShortLabel() {
-        return (shortLabel != null) ? shortLabel : label;
-    }
-
-    /**
-     * A shorter version of the label for this document.
-     */
-    public void setShortLabel(String shortLabel) {
-        if (StringUtils.isBlank(shortLabel)) {
-            throw new IllegalArgumentException("invalid (blank) shortLabel");
-        }
-        this.shortLabel = shortLabel;
-    }
-
-    public String getSummary() {
-        return summary;
-    }
-
-    /**
-     * A summary of this document's purpose.
-     */
-    public void setSummary(String summary) {
-        this.summary = summary;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * A detailed description of this document's functionality.
-     */
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     /**
@@ -586,5 +514,94 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
 		this.documentPresentationControllerClass = documentPresentationControllerClass;
 	}
     
-	
+//    /**
+//     * @return the displayed label for this document.  Usually a properly formatted version of the documentTypeName.
+//     */
+//    public String getLabel() {
+//        return label;
+//    }
+//
+//    /**
+//     * The displayed label for this document.  Usually a properly formatted version of the documentTypeName.
+//     */
+//    public void setLabel(String label) {
+//        if (StringUtils.isBlank(label)) {
+//            throw new IllegalArgumentException("invalid (blank) label");
+//        }
+//        this.label = label;
+//    }
+//
+//    /**
+//     * @return the shortLabel, or the label if no shortLabel has been set
+//     */
+//    public String getShortLabel() {
+//        return (shortLabel != null) ? shortLabel : label;
+//    }
+//
+//    /**
+//     * A shorter version of the label for this document.
+//     */
+//    public void setShortLabel(String shortLabel) {
+//        if (StringUtils.isBlank(shortLabel)) {
+//            throw new IllegalArgumentException("invalid (blank) shortLabel");
+//        }
+//        this.shortLabel = shortLabel;
+//    }
+//
+//    public String getSummary() {
+//        return summary;
+//    }
+//
+//    /**
+//     * A summary of this document's purpose.
+//     */
+//    public void setSummary(String summary) {
+//        this.summary = summary;
+//    }
+//
+//    public String getDescription() {
+//        return description;
+//    }
+//
+//    /**
+//     * A detailed description of this document's functionality.
+//     */
+//    public void setDescription(String description) {
+//        this.description = description;
+//    }
+
+    /**
+     * @deprecated This was removed as of Rice 1.0.
+     */
+    public void setDocumentTypeCode(String documentTypeCode) {
+        // DO NOTHING
+    }
+
+    /**
+     * @deprecated This was moved to the KEW Document Type object for Rice 1.0.
+     */
+    public void setLabel(String label) {
+        // DO NOTHING
+    }
+
+    /**
+     * @deprecated This was moved to the KEW Document Type object for Rice 1.0.
+     */
+    public void setShortLabel(String shortLabel) {
+        // DO NOTHING
+    }
+
+    /**
+     * @deprecated This was moved to the KEW Document Type object for Rice 1.0.
+     */
+    public void setSummary(String summary) {
+        // DO NOTHING
+    }
+
+    /**
+     * @deprecated This was moved to the KEW Document Type object for Rice 1.0.
+     */
+    public void setDescription(String description) {
+        // DO NOTHING
+    }
 }

@@ -6,7 +6,10 @@ import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.EntityPrivacyPreferences;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.PersonService;
+import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
  * Provides some utility methods for translating user ID types.
@@ -17,6 +20,9 @@ public class UserUtils {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(UserUtils.class);
 
+	private static PersonService personService;
+	private static IdentityManagementService identityManagementService;
+	
 	private static final String RESTRICTED_DATA_MASK = "xxxxxx";
 	
 	public static String getIdValue(String idType, Person user) {
@@ -40,7 +46,7 @@ public class UserUtils {
 		if (userSession != null && userSession.getPrincipalId().equals(principal.getPrincipalId()) && isEntityNameRestricted(principal.getEntityId())) {
 			return RESTRICTED_DATA_MASK;
 		}
-		Person person = KIMServiceLocator.getPersonService().getPerson(principal.getPrincipalId());
+		Person person = getPersonService().getPerson(principal.getPrincipalId());
 		return person.getName();
 	}
 	
@@ -48,7 +54,7 @@ public class UserUtils {
 		if (userSession != null && userSession.getPrincipalId().equals(principal.getPrincipalId()) && isEntityNameRestricted(principal.getEntityId())) {
 			return RESTRICTED_DATA_MASK;
 		}
-		Person person = KIMServiceLocator.getPersonService().getPerson(principal.getPrincipalId());
+		Person person = getPersonService().getPerson(principal.getPrincipalId());
 		return contructTransposedName(person);
 	}
 	
@@ -60,26 +66,46 @@ public class UserUtils {
 		if (userSession != null && userSession.getPrincipalId().equals(principal.getPrincipalId()) && isEntityEmailRestricted(principal.getEntityId())) {
 			return RESTRICTED_DATA_MASK;
 		}
-		Person person = KIMServiceLocator.getPersonService().getPerson(principal.getPrincipalId());
+		Person person = getPersonService().getPerson(principal.getPrincipalId());
 		return person.getEmailAddress();
 	}
 	
 	public static boolean isEntityNameRestricted(String entityId) {
-		KimEntity entity = KIMServiceLocator.getIdentityManagementService().getEntity(entityId);
+		KimEntity entity = getIdentityManagementService().getEntity(entityId);
 		EntityPrivacyPreferences privacy = entity.getPrivacyPreferences();
-		if (privacy != null) {
-			return entity.getPrivacyPreferences().isSuppressName();
+		if ( ObjectUtils.isNotNull(privacy) ) {
+			return privacy.isSuppressName();
 		}
 		return false;
 	}
 
 	public static boolean isEntityEmailRestricted(String entityId) {
-		KimEntity entity = KIMServiceLocator.getIdentityManagementService().getEntity(entityId);
+		KimEntity entity = getIdentityManagementService().getEntity(entityId);
 		EntityPrivacyPreferences privacy = entity.getPrivacyPreferences();
-		if (privacy != null) {
-			return entity.getPrivacyPreferences().isSuppressEmail();
+		if (ObjectUtils.isNotNull(privacy) ) {
+			return privacy.isSuppressEmail();
 		}
 		return false;
+	}
+
+	/**
+	 * @return the personService
+	 */
+	public static PersonService getPersonService() {
+		if ( personService == null ) {
+			personService = KIMServiceLocator.getPersonService();
+		}
+		return personService;
+	}
+
+	/**
+	 * @return the identityManagementService
+	 */
+	public static IdentityManagementService getIdentityManagementService() {
+		if ( identityManagementService == null ) {
+			identityManagementService = KIMServiceLocator.getIdentityManagementService();
+		}
+		return identityManagementService;
 	}
 
 }

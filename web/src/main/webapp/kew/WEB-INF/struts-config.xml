@@ -3,7 +3,7 @@
 
 <struts-config>
     <data-sources />
-  
+
     <form-beans>
     	<!-- Begin required KNS forms -->
         <form-bean name="KualiForm" type="org.kuali.rice.kns.web.struts.form.KualiForm" />
@@ -22,7 +22,7 @@
         <exception type="java.lang.Throwable" handler="org.kuali.rice.kns.web.struts.pojo.StrutsExceptionIncidentHandler" key="na"/>
        	End required KNS exceptions -->
        	<exception type="org.kuali.rice.kns.exception.KualiException" handler="org.kuali.rice.kns.web.struts.pojo.StrutsExceptionIncidentHandler" key="na"/>
-    </global-exceptions>  
+    </global-exceptions>
 
     <global-forwards>
        	<!-- Begin required KNS forwards -->
@@ -39,7 +39,7 @@
 
 
     <action-mappings>
-       	<!-- Begin required KNS mappings -->       
+       	<!-- Begin required KNS mappings -->
         <action path="/portal" name="KualiForm" type="org.kuali.rice.kns.web.struts.action.KualiSimpleAction">
             <forward name="basic" path="/portal.jsp" />
         </action>
@@ -48,10 +48,10 @@
         </action>
         <action path="/authorizationException" name="KualiForm" type="org.kuali.rice.kns.web.struts.action.KualiAuthorizationExceptionAction">
             <forward name="basic" path="/../kr/WEB-INF/jsp/authorizationException.jsp"/>
-        </action>        
+        </action>
         <action path="/initiationAuthorizationException" name="KualiForm" type="org.kuali.rice.kns.web.struts.action.KualiDocumentInitiationAuthorizationExceptionAction">
             <forward name="basic" path="/../kr/WEB-INF/jsp/authorizationException.jsp"/>
-        </action>   
+        </action>
         <action path="/kualiExceptionIncidentReport"
                 name="KualiExceptionIncidentForm"
                 attribute="KualiForm"
@@ -59,7 +59,7 @@
             <forward name="basic" path="/../kr/WEB-INF/jsp/KualiExceptionIncident.jsp" />
             <forward name="AuthorizationException" path="/authorizationException.do" />
             <forward name="DocumentInitiationAuthorizationException" path="/initiationAuthorizationException.do" />
-        </action>        
+        </action>
         <action path="/updateTextArea" name="KualiForm" type="org.kuali.rice.kns.web.struts.action.KualiDocumentActionBase">
             <forward name="basic" path="/../kr/WEB-INF/jsp/TextArea.jsp"/>
         </action>
@@ -69,7 +69,7 @@
 			<forward name="basic" path="/WEB-INF/jsp/rule/RuleInit.jsp" />
 			<forward name="init" path="/WEB-INF/jsp/rule/RuleInit.jsp" />
 		</action>
-		
+
       <action path="/ActionList" scope="request" validate="false" parameter="methodToCall"
         type="org.kuali.rice.kew.actionlist.web.ActionListAction" name="ActionListFormNew"
         input="/WEB-INF/jsp/ActionList/ActionListNew.jsp" >
@@ -78,17 +78,17 @@
         <forward name="count" path="/WEB-INF/jsp/ActionList/ActionListCountNew.jsp"/>
         <forward name="requiredStateError" path="/WEB-INF/jsp/ActionList/ActionListNew.jsp"/>
         <forward name="finalStateError" path="/WEB-INF/jsp/ActionList/ActionListNew.jsp"/>
-      </action> 
-      
+      </action>
+
       <action path="/ActionListFilter" scope="request" validate="false" name="ActionListFilterFormNew"
         input="/WEB-INF/jsp/ActionList/ActionListFilter.jsp"
         type="org.kuali.rice.kew.actionlist.web.ActionListFilterAction" parameter="methodToCall">
         <forward name="viewFilter" path="/WEB-INF/jsp/ActionList/ActionListFilter.jsp" />
-        <forward name="viewActionList" path="/ActionListNew.do?methodToCall=start" redirect="true" />
+        <forward name="viewActionList" path="/ActionList.do?methodToCall=start" redirect="true" />
         <forward name="requiredStateError" path="/WEB-INF/jsp/ActionList/ActionListFilter.jsp"/>
         <forward name="finalStateError" path="/WEB-INF/jsp/ActionList/ActionListFilter.jsp"/>
-      </action>      
-      
+      </action>
+
       <action path="/DocumentOperation" name="DocumentOperationForm" scope="request" input="/WEB-INF/jsp/documentoperation/DocumentOperation.jsp"
       			validate="false" type="org.kuali.rice.kew.documentoperation.web.DocumentOperationAction" parameter="methodToCall">
 	      <forward name="basic" path="/WEB-INF/jsp/documentoperation/DocumentOperation.jsp"/>
@@ -98,8 +98,8 @@
           <forward name="finalStateError" path="/WEB-INF/jsp/documentoperation/DocumentOperationSummary.jsp"/>
       </action>
     </action-mappings>
-    
-    
+
+
 
     <controller processorClass="org.kuali.rice.kns.web.struts.action.KualiRequestProcessor" />
     <message-resources parameter="org.kuali.rice.kew.ApplicationResources" />

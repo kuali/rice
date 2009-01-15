@@ -7,7 +7,7 @@
       <form-bean name="ActionListForm" type="org.kuali.rice.kew.actionlist.web.ActionListFormOld" />
       <form-bean name="DocumentSearchForm" type="org.kuali.rice.kew.docsearch.web.DocumentSearchForm" />
       <form-bean name="PreferencesForm" type="org.kuali.rice.kew.preferences.web.PreferencesForm" />
-      <form-bean name="ActionListFilterForm" type="org.kuali.rice.kew.actionlist.web.ActionListFilterFormOld" />
+      <form-bean name="ActionListFilterForm" type="org.kuali.rice.kew.actionlist.web.ActionListFilterForm" />
       <form-bean name="BackdoorForm" type="org.kuali.rice.kew.web.backdoor.BackdoorForm" />
       <form-bean name="RouteLogForm" type="org.kuali.rice.kew.routelog.web.RouteLogForm" />
       <form-bean name="DocHandlerForm" type="org.kuali.rice.kew.routing.web.DocHandlerForm" />
@@ -38,7 +38,7 @@
    	    <forward name="WorkflowError" path="/WEB-INF/jsp/Error.jsp" />
    	    <forward name="DeleteRouteHeaderConfirmation" path="/WEB-INF/jsp/DeleteRouteHeaderConfirmation.jsp" />
    	    <forward name="NotAuthorized" path="/WEB-INF/jsp/NotAuthorized.jsp" />
-   	    <forward name="ActionListNew" contextRelative="true" path="/kew/ActionListNew.do" redirect="true"/>
+   	    <forward name="ActionListNew" contextRelative="true" path="/kew/ActionList.do" redirect="true"/>
     </global-forwards>
 
     <!--  ========== action mapping definitions ============================= -->
@@ -71,7 +71,7 @@
      		parameter="/kew/ActionList.do"/>
      <action path="/ActionListFilter" scope="request" validate="false" type="org.apache.struts.actions.ForwardAction"
      		parameter="/kew/ActionListFilter.do"/>
-     		
+
 
       <action path="/ActionListOld" scope="request" validate="false" parameter="methodToCall"
         type="org.kuali.rice.kew.actionlist.web.ActionListActionOld" name="ActionListForm"

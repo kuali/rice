@@ -15,14 +15,14 @@
  */
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -46,7 +46,7 @@ import org.kuali.rice.kns.web.struts.form.KualiForm;
  * Struts form class for ActionListFilterAction
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- * 
+ *
  */
 public class ActionListFilterForm extends KualiForm {
 
@@ -57,25 +57,25 @@ public class ActionListFilterForm extends KualiForm {
     private String createDateTo;
     private String lastAssignedDateTo;
     private String lastAssignedDateFrom;
-    //private String methodToCall = "";
+    private String methodToCall = "";
     private String lookupableImplServiceName;
     private String lookupType;
     private String docTypeFullName;
     private List userWorkgroups;
     private String cssFile = "kuali.css";
     private String test = "";
-    
+
     public String getTest(){
     	return test;
     }
     public void setTest(String test){
     	this.test = test;
     }
-    
+
     public ActionListFilterForm() {
         filter = new ActionListFilter();
     }
-    
+
     public String getCreateDateTo() {
         return createDateTo;
     }
@@ -114,27 +114,27 @@ public class ActionListFilterForm extends KualiForm {
         return filter;
     }
 
-//    public String getMethodToCall() {
-//        return methodToCall;
-//    }
-//
-//    public void setMethodToCall(String methodToCall) {
-//        this.methodToCall = methodToCall;
-//    }
+    public String getMethodToCall() {
+        return methodToCall;
+    }
+
+    public void setMethodToCall(String methodToCall) {
+        this.methodToCall = methodToCall;
+    }
 
     public void setFilter(ActionListFilter filter) {
         this.filter = filter;
         if (filter.getCreateDateFrom() != null) {
-            setCreateDateFrom(RiceConstants.getDefaultDateFormat().format(filter.getCreateDateFrom()));    
+            setCreateDateFrom(RiceConstants.getDefaultDateFormat().format(filter.getCreateDateFrom()));
         }
         if (filter.getCreateDateTo() != null) {
-            setCreateDateTo(RiceConstants.getDefaultDateFormat().format(filter.getCreateDateTo()));    
+            setCreateDateTo(RiceConstants.getDefaultDateFormat().format(filter.getCreateDateTo()));
         }
         if (filter.getLastAssignedDateFrom() != null) {
-            setLastAssignedDateFrom(RiceConstants.getDefaultDateFormat().format(filter.getLastAssignedDateFrom()));    
+            setLastAssignedDateFrom(RiceConstants.getDefaultDateFormat().format(filter.getLastAssignedDateFrom()));
         }
         if (filter.getLastAssignedDateTo() != null) {
-            setLastAssignedDateTo(RiceConstants.getDefaultDateFormat().format(filter.getLastAssignedDateTo()));    
+            setLastAssignedDateTo(RiceConstants.getDefaultDateFormat().format(filter.getLastAssignedDateTo()));
         }
     }
 
@@ -185,24 +185,24 @@ public class ActionListFilterForm extends KualiForm {
             throw new WorkflowServiceErrorException("Action List Filter Dates Validation Error", errors);
         }
     }
-    
+
     public ActionListFilter getLoadedFilter() throws ParseException {
         if (getCreateDateFrom() != null && getCreateDateFrom().length() != 0) {
-            filter.setCreateDateFrom(RiceConstants.getDefaultDateFormat().parse(getCreateDateFrom()));    
+            filter.setCreateDateFrom(RiceConstants.getDefaultDateFormat().parse(getCreateDateFrom()));
         }
         if (getCreateDateTo() != null && getCreateDateTo().length() != 0) {
             filter.setCreateDateTo(RiceConstants.getDefaultDateFormat().parse(getCreateDateTo()));
         }
         if (getLastAssignedDateFrom() != null && getLastAssignedDateFrom().length() != 0) {
-            filter.setLastAssignedDateFrom(RiceConstants.getDefaultDateFormat().parse(getLastAssignedDateFrom()));    
+            filter.setLastAssignedDateFrom(RiceConstants.getDefaultDateFormat().parse(getLastAssignedDateFrom()));
         }
         if (getLastAssignedDateTo() != null && getLastAssignedDateTo().length() != 0) {
-            filter.setLastAssignedDateTo(RiceConstants.getDefaultDateFormat().parse(getLastAssignedDateTo()));    
+            filter.setLastAssignedDateTo(RiceConstants.getDefaultDateFormat().parse(getLastAssignedDateTo()));
         }
         if (getDocTypeFullName() != null && ! "".equals(getDocTypeFullName())) {
             filter.setDocumentType(getDocTypeFullName());
         }
-        
+
         return filter;
     }
 

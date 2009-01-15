@@ -53,10 +53,10 @@ function setMethodToCallAndSubmit(methodToCallValue) {
 <html-el:hidden property="lookupableImplServiceName" />
 <html-el:hidden property="lookupType" />
 <html-el:hidden property="docTypeFullName" />
-<html-el:hidden property="methodToCall" />
+<%--<html-el:hidden property="methodToCall" />--%>
 <div id="workarea" >
-<div class="tab-container">
-<table class="datatable-80" cellspacing="0" align="center">
+<div class="tab-container" align="center">
+<table class="datatable-80" style="align:center" cellspacing="0" align="center">
     <tr>
       <td class="subhead" colspan="2"><bean-el:message key="actionList.ActionListFilter.filter.label.parametersTitle"/></td>
     </tr>
@@ -211,11 +211,11 @@ function setMethodToCallAndSubmit(methodToCallValue) {
 </table>
 </div>
 <br />
-  <div align="center">
-            <html-el:image src="../en/images/buttonsmall_filter.gif" align="absmiddle" property="methodToCall.filter" onclick="javascript: setMethodToCallAndSubmit('filter')" />&nbsp;&nbsp;
-            <html-el:image src="../en/images/buttonsmall_clear.gif" align="absmiddle" property="methodToCall.clear" onclick="document.forms[0].elements['methodToCall'].value = 'clear';" />&nbsp;&nbsp;
-            <a href="javascript:document.forms[0].reset()"><img src="../en/images/buttonsmall_reset.gif" border=0 alt="reset" align="absmiddle"></a>
-  </div>
+<div align="center">
+    <html-el:image property="methodToCall.filter" src="../en/images/buttonsmall_filter.gif" align="absmiddle" />&nbsp;&nbsp;
+    <html-el:image property="methodToCall.clear" src="../en/images/buttonsmall_clear.gif" align="absmiddle" />&nbsp;&nbsp;
+    <a href="javascript:document.forms[0].reset()"><img src="../en/images/buttonsmall_reset.gif" border=0 alt="reset" align="absmiddle"></a>
+</div>
 <br />
 <br />
 <jsp:include page="../BackdoorMessage.jsp" flush="true"/>

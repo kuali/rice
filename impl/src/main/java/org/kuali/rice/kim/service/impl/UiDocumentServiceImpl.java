@@ -142,11 +142,11 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	public Map<String,Object> getAttributeEntries( AttributeDefinitionMap definitions ) {
 		Map<String,Object> attributeEntries = new HashMap<String,Object>();
         for (String key : definitions.keySet()) {
-			AttributeDefinition attrDefinition = definitions.get(key);
+			AttributeDefinition definition = definitions.get(key);
 			Map<String,Object> attribute = new HashMap<String,Object>();
-			if (attrDefinition instanceof KimDataDictionaryAttributeDefinition) {
-				AttributeDefinition definition = ((KimDataDictionaryAttributeDefinition) attrDefinition)
-						.getDataDictionaryAttributeDefinition();
+			if (definition instanceof KimDataDictionaryAttributeDefinition) {
+//				AttributeDefinition definition = ((KimDataDictionaryAttributeDefinition) attrDefinition)
+//						.getDataDictionaryAttributeDefinition();
 				ControlDefinition control = definition.getControl();
 				if (control.isSelect()) {
 					Map<String,Object> controlMap = new HashMap<String,Object>();
@@ -166,6 +166,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		            }
 					attribute.put("control", controlMap);
 		        } else {
+		        	// FIXME: Huh!?!?, control is a Map in the above code but a ControlDefinition here?!?!?
+		        	// Maybe this should use the AttributesMapBuilder code to create this
 		        	attribute.put("control", definition.getControl());
 		        }
 				attribute.put("label", definition.getLabel());
@@ -177,11 +179,11 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				TextControlDefinition control = new TextControlDefinition();
 				control.setSize(10);
 				attribute.put("control", control);
-				attribute.put("label", attrDefinition.getLabel());
+				attribute.put("label", definition.getLabel());
 				attribute.put("maxLength", 20);
 				attribute.put("required", true);
-				attribute.put("shortLabel", attrDefinition.getLabel());
-				attributeEntries.put(attrDefinition.getName(),attribute);
+				attribute.put("shortLabel", definition.getLabel());
+				attributeEntries.put(definition.getName(),attribute);
 			}
 		}
         return attributeEntries;

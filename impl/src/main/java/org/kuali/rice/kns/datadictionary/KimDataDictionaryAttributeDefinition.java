@@ -17,7 +17,8 @@ package org.kuali.rice.kns.datadictionary;
 
 import java.util.Map;
 
-import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.mask.Mask;
 import org.kuali.rice.kns.web.format.Formatter;
 
@@ -26,21 +27,20 @@ import org.kuali.rice.kns.web.format.Formatter;
  */
 public class KimDataDictionaryAttributeDefinition extends AttributeDefinition {
 	
-	private AttributeDefinition dataDictionaryAttributeDefinition;
-	private Class<? extends Formatter> formatterClass;
-	private ControlDefinition controlDefinition;
-	private Mask mask;
-	private String sortCode;
-	private String applicationUrl;
-	private Map<String, String> lookupInputPropertyConversions;
-	private Map<String, String> lookupReturnPropertyConversions;
+	@Deprecated
+	protected AttributeDefinition dataDictionaryAttributeDefinition;
+	protected Class<? extends Formatter> formatterClass;
+	protected Mask mask;
+	protected String sortCode;
+	protected String applicationUrl;
+	protected Map<String, String> lookupInputPropertyConversions;
+	protected Map<String, String> lookupReturnPropertyConversions;
+	protected Class<? extends BusinessObject> lookupBoClass;
 
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.AttributeDefinition#getControl()
+	 * 
 	 */
-	@Override
-	public ControlDefinition getControl() {
-		return controlDefinition;
+	public KimDataDictionaryAttributeDefinition() {
 	}
 
 	/**
@@ -114,6 +114,7 @@ public class KimDataDictionaryAttributeDefinition extends AttributeDefinition {
 	/**
 	 * @return the dataDictionaryAttributeDefinition
 	 */
+	@Deprecated
 	public AttributeDefinition getDataDictionaryAttributeDefinition() {
 		return this.dataDictionaryAttributeDefinition;
 	}
@@ -121,9 +122,46 @@ public class KimDataDictionaryAttributeDefinition extends AttributeDefinition {
 	/**
 	 * @param dataDictionaryAttributeDefinition the dataDictionaryAttributeDefinition to set
 	 */
+	@Deprecated
 	public void setDataDictionaryAttributeDefinition(
 			AttributeDefinition dataDictionaryAttributeDefinition) {
 		this.dataDictionaryAttributeDefinition = dataDictionaryAttributeDefinition;
 	}
 
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString() {
+		return new ToStringBuilder( this )
+			.append( "name", getName() )
+			.append( "label", getLabel() )
+			.append( "lookupBoClass", this.lookupBoClass )
+			.append( "required", isRequired() )
+			.append( "lookupInputPropertyConversions", this.lookupInputPropertyConversions )
+			.append( "lookupReturnPropertyConversions", this.lookupReturnPropertyConversions )
+//			.append( "formatterClass", this.formatterClass )
+//			.append( "maxLength", this.maxLength )
+//			.append( "dataDictionaryAttributeDefinition", this.dataDictionaryAttributeDefinition )				
+//			.append( "control", this.control )
+//			.append( "validationPattern", this.validationPattern )
+//			.append( "applicationUrl", this.applicationUrl )
+//			.append( "exclusiveMin", this.exclusiveMin )
+//			.append( "attributeSecurity", this.attributeSecurity )
+//			.append( "forceUppercase", this.forceUppercase )
+//			.append( "shortLabel", this.shortLabel )
+//			.append( "inclusiveMax", this.inclusiveMax )
+//			.append( "displayLabelAttribute", this.displayLabelAttribute )
+//			.append( "sortCode", this.sortCode )
+			.toString();
+	}
+
+	public Class<? extends BusinessObject> getLookupBoClass() {
+		return this.lookupBoClass;
+	}
+
+	public void setLookupBoClass(Class<? extends BusinessObject> lookupBoClass) {
+		this.lookupBoClass = lookupBoClass;
+	}
+
+	
 }

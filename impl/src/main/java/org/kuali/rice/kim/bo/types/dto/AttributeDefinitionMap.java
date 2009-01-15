@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.kim.bo.types.dto;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 
@@ -26,19 +26,10 @@ import org.kuali.rice.kns.datadictionary.AttributeDefinition;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class AttributeDefinitionMap extends HashMap<String,AttributeDefinition> {
+public class AttributeDefinitionMap extends TreeMap<String,AttributeDefinition> {
 
 	public AttributeDefinitionMap() {
 		super();
-	}
-	
-	/**
-	 * @see HashMap#HashMap(int)
-	 * 
-	 * @param initialSize
-	 */
-	public AttributeDefinitionMap( int initialSize ) {
-		super( initialSize );
 	}
 	
 	public AttributeDefinitionMap( Map<String,AttributeDefinition> map ) {

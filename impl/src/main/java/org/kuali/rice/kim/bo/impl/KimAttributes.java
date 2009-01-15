@@ -17,6 +17,7 @@ package org.kuali.rice.kim.bo.impl;
 
 import java.util.LinkedHashMap;
 
+import org.kuali.rice.kns.bo.Campus;
 import org.kuali.rice.kns.bo.TransientBusinessObjectBase;
 
 /**
@@ -78,6 +79,7 @@ public class KimAttributes extends TransientBusinessObjectBase {
 	protected boolean actionDetailsAtRoleMemberLevel;
 	protected String documentNumber;
 	protected String sectionId;
+	protected Campus campus;
 
 	/**
 	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
@@ -452,6 +454,14 @@ public class KimAttributes extends TransientBusinessObjectBase {
 
 	public void setSectionId(String sectionId) {
 		this.sectionId = sectionId;
+	}
+
+	public Campus getCampus() {
+		return this.campus;
+	}
+
+	public void setCampus(Campus campus) {
+		this.campus = campus;
 	}
 	
 }

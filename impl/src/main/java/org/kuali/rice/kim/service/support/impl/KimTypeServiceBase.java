@@ -31,10 +31,12 @@ import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.service.support.KimTypeService;
+import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
+import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.KimAttributeValuesFinder;
 import org.kuali.rice.kns.service.BusinessObjectService;
@@ -240,15 +242,26 @@ public class KimTypeServiceBase implements KimTypeService {
 	
 	@SuppressWarnings("unchecked")
 	protected AttributeDefinition getDataDictionaryAttributeDefinition(KimTypeAttributeImpl typeAttribute) {
-		KimDataDictionaryAttributeDefinition definition = new KimDataDictionaryAttributeDefinition(); 
-		definition.setDataDictionaryAttributeDefinition(getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(typeAttribute.getKimAttribute().getComponentName()).getAttributeDefinition(typeAttribute.getKimAttribute().getAttributeName()));
-		if (definition.getDataDictionaryAttributeDefinition().getFormatterClass() != null) {
-			definition.setFormatterClass(Formatter.findFormatter(definition.getDataDictionaryAttributeDefinition().getFormatterClass()));
+		KimDataDictionaryAttributeDefinition definition = new KimDataDictionaryAttributeDefinition();
+		String componentClassName = typeAttribute.getKimAttribute().getComponentName();
+		String attributeName = typeAttribute.getKimAttribute().getAttributeName();
+		AttributeDefinition baseDefinition = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(componentClassName).getAttributeDefinition(attributeName);
+		definition.setDataDictionaryAttributeDefinition( baseDefinition );
+		
+		// copy all the base attributes
+		definition.setName( baseDefinition.getName() );
+		definition.setLabel( baseDefinition.getLabel() );
+		definition.setShortLabel( baseDefinition.getShortLabel() );
+		definition.setMaxLength( baseDefinition.getMaxLength() );
+		definition.setRequired( baseDefinition.isRequired() );
+		
+		if (baseDefinition.getFormatterClass() != null) {
+			definition.setFormatterClass(Formatter.findFormatter(baseDefinition.getFormatterClass()));
 		}
-		ControlDefinition control = copy(definition.getDataDictionaryAttributeDefinition().getControl());
-		if (control.getValuesFinderClass() != null) {
-			control.setValuesFinderClass(KimAttributeValuesFinder.class);
-		}
+		ControlDefinition control = copy(baseDefinition.getControl());
+//		if (control.getValuesFinderClass() != null) {
+//			control.setValuesFinderClass(KimAttributeValuesFinder.class);
+//		}
 		definition.setControl(control);
 		definition.setSortCode(typeAttribute.getSortCode());
 		definition.setApplicationUrl(typeAttribute.getKimAttribute().getApplicationUrl());
@@ -256,23 +269,32 @@ public class KimTypeServiceBase implements KimTypeService {
 		Map<String, String> lookupInputPropertyConversionsMap = new HashMap<String, String>();
 		Map<String, String> lookupReturnPropertyConversionsMap = new HashMap<String, String>();
 		try {
-			Field field = FieldUtils.getPropertyField(Class.forName(typeAttribute.getKimAttribute().getComponentName()), typeAttribute.getKimAttribute().getAttributeName(), false);
+			Class<? extends BusinessObject> componentClass = (Class<? extends BusinessObject>)Class.forName(componentClassName);
+			BusinessObject sampleComponent = componentClass.newInstance();
+			List<String> displayedFieldNames = new ArrayList<String>( 1 );
+			displayedFieldNames.add( attributeName );
+			Field field = FieldUtils.getPropertyField(componentClass, attributeName, false);
 			if ( field != null ) {
-				if ( field.getLookupParameters() != null ) {
-					String [] lookupInputPropertyConversions = field.getLookupParameters().split(",");
-					for (String string : lookupInputPropertyConversions) {
-						String [] keyVal = string.split(":");
-						lookupInputPropertyConversionsMap.put(keyVal[0], keyVal[1]);
+				field = LookupUtils.setFieldQuickfinder( sampleComponent, attributeName, field, displayedFieldNames );
+				if ( StringUtils.isNotBlank( field.getQuickFinderClassNameImpl() ) ) {
+					Class<? extends BusinessObject> lookupClass = (Class<? extends BusinessObject>)Class.forName( field.getQuickFinderClassNameImpl() );
+					definition.setLookupBoClass( lookupClass );
+					if ( field.getLookupParameters() != null ) {
+						String [] lookupInputPropertyConversions = field.getLookupParameters().split(",");
+						for (String string : lookupInputPropertyConversions) {
+							String [] keyVal = string.split(":");
+							lookupInputPropertyConversionsMap.put(keyVal[0], keyVal[1]);
+						}
+						definition.setLookupInputPropertyConversions(lookupInputPropertyConversionsMap);
 					}
-					definition.setLookupInputPropertyConversions(lookupInputPropertyConversionsMap);
-				}
-				if ( field.getFieldConversions() != null ) {
-					String [] lookupReturnPropertyConversions = field.getFieldConversions().split(",");
-					for (String string : lookupReturnPropertyConversions) {
-						String [] keyVal = string.split(":");
-						lookupReturnPropertyConversionsMap.put(keyVal[0], keyVal[1]);
+					if ( field.getFieldConversions() != null ) {
+						String [] lookupReturnPropertyConversions = field.getFieldConversions().split(",");
+						for (String string : lookupReturnPropertyConversions) {
+							String [] keyVal = string.split(":");
+							lookupReturnPropertyConversionsMap.put(keyVal[0], keyVal[1]);
+						}
+						definition.setLookupReturnPropertyConversions(lookupReturnPropertyConversionsMap);
 					}
-					definition.setLookupReturnPropertyConversions(lookupReturnPropertyConversionsMap);
 				}
 			}
 		} catch (Exception e) {
@@ -314,19 +336,26 @@ public class KimTypeServiceBase implements KimTypeService {
 		return definition;
 	}
 	
+	private Map<String,AttributeDefinitionMap> attributeDefinitionCache = new HashMap<String,AttributeDefinitionMap>();
+	
 	public AttributeDefinitionMap getAttributeDefinitions(KimTypeImpl kimType) {
-		AttributeDefinitionMap definitions = new AttributeDefinitionMap();
-		for (KimTypeAttributeImpl typeAttribute : kimType.getAttributeDefinitions()) {
-			AttributeDefinition definition;
-			if (typeAttribute.getKimAttribute().getComponentName() == null) {
-				definition = getNonDataDictionaryAttributeDefinition(typeAttribute);
-			} else {
-				definition = getDataDictionaryAttributeDefinition(typeAttribute);
+		AttributeDefinitionMap definitions = attributeDefinitionCache.get( kimType.getKimTypeId() );
+		if ( definitions == null ) {
+			definitions = new AttributeDefinitionMap();
+			for (KimTypeAttributeImpl typeAttribute : kimType.getAttributeDefinitions()) {
+				AttributeDefinition definition = null;
+				if (typeAttribute.getKimAttribute().getComponentName() == null) {
+					definition = getNonDataDictionaryAttributeDefinition(typeAttribute);
+				} else {
+					definition = getDataDictionaryAttributeDefinition(typeAttribute);
+				}
+				// TODO : use id for defnid ?
+				definition.setId(typeAttribute.getKimAttributeId());
+				// FIXME: I don't like this - if two attributes have the same sort code, they will overwrite each other
+				definitions.put(typeAttribute.getSortCode(), definition);
 			}
-			// TODO : use id for defnid ?
-			definition.setId(typeAttribute.getKimAttributeId());
-			definitions.put(typeAttribute.getSortCode(), definition);
-		}		
+			attributeDefinitionCache.put( kimType.getKimTypeId(), definitions );
+		}
 		return definitions;
 	}
 	

@@ -50,8 +50,8 @@ public class PersonDocumentRole extends PersonDocumentBoBase {
 	protected String namespaceCode;
 	protected KimTypeImpl kimRoleType;
 	protected List<? extends KimAttributes> attributes;
-	transient AttributeDefinitionMap definitions;
-	transient Map<String,Object> attributeEntry;
+	protected transient AttributeDefinitionMap definitions;
+	protected transient Map<String,Object> attributeEntry;
 	protected List<PersonDocumentRolePrncpl> rolePrncpls;
     protected PersonDocumentRolePrncpl newRolePrncpl;
 	
@@ -132,9 +132,9 @@ public class PersonDocumentRole extends PersonDocumentBoBase {
 				serviceName = "kimTypeService";				
 			}
 	        KimTypeService kimTypeService = (KimTypeServiceBase)KIMServiceLocator.getService(serviceName);
-			setDefinitions(kimTypeService.getAttributeDefinitions(getKimRoleType()));
+			definitions = kimTypeService.getAttributeDefinitions(getKimRoleType());
 		}
-		return this.definitions;
+		return definitions;
 	}
 
 	public void setDefinitions(AttributeDefinitionMap definitions) {

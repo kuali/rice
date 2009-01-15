@@ -38,6 +38,18 @@
         <ref bean="KimAttributes-sectionId" />
       </list>
     </property>
+    <property name="relationships">
+      <list>
+        <bean parent="RelationshipDefinition" p:objectAttributeName="campus">
+          <property name="primitiveAttributes" >
+            <list>
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="campusCode" p:targetName="campusCode" />
+            </list>
+          </property>
+        </bean>
+      
+      </list>
+    </property>
   </bean>
 
   <bean id="KimAttributes-campusCode" parent="Campus-campusCode"> 

@@ -5,7 +5,7 @@
 <kul:subtab lookedUpCollectionName="role" width="${tableWidth}" subTabTitle="Roles" noShowHideButton="true">      
         <table cellpadding=0 cellspacing=0 summary="">
           	<tr>
-          		<th><div align="left">&nbsp</div></th> 
+          		<th>&nbsp;</th> 
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRoleAttributes.roleId}" noColon="true" /></div></th>
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRoleAttributes.kimTypeId}" noColon="true" /></div></th>
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRoleAttributes.roleName}" noColon="true" /></div></th>
@@ -20,11 +20,11 @@
 					<c:out value="Add:" />
 				</th>
 
-                <td align="left" valign="middle" class="infoline" colspan=3>
+                <td align="left" valign="middle" class="infoline">
                 <div align="center">
                 	<kul:htmlControlAttribute property="newRole.roleId" attributeEntry="${docRoleAttributes.roleId}" disabled="true"/>
                 	<kul:lookup boClassName="org.kuali.rice.kim.bo.role.impl.KimRoleImpl" fieldConversions="roleId:newRole.roleId,kimTypeId:newRole.kimTypeId,roleName:newRole.roleName,namespaceCode:newRole.namespaceCode,kimRoleType.name:newRole.kimRoleType.name,kimRoleType.kimTypeServiceName:newRole.kimRoleType.kimTypeServiceName" anchor="${tabKey}" />
-					${KualiForm.newRole.roleName}
+					
 					<html:hidden property="newRole.roleName" />
 					<html:hidden property="newRole.namespaceCode" />
 					<html:hidden property="newRole.kimTypeId" />
@@ -32,11 +32,13 @@
 					<html:hidden property="newRole.kimRoleType.kimTypeServiceName" />
 	            </div>
 				</td>
+				<td>&nbsp;</td>
+				<td>${KualiForm.newRole.roleName}&nbsp;</td>
                                 
                 <td class="infoline">
-					<div align=center>
+					<div align="center">
 						<html:image property="methodToCall.addRole.anchor${tabKey}"
-							src='${ConfigProperties.kr.externalizable.images.url}tinybutton-add1.gif' styleClass="tinybutton"/>
+							src="${ConfigProperties.kr.externalizable.images.url}tinybutton-add1.gif" styleClass="tinybutton"/>
 					</div>
                 </td>
        </tr>         
@@ -75,23 +77,22 @@
 	                </td>
 	           </c:if>     
 	            </tr>
-		              <c:choose>
+		      <c:choose>
 	            <c:when test="${!empty role.definitions  and fn:length(role.definitions) > 0}" >
 	            	<tr>
-		              <td colspan=5 style="padding:0px;">	            
-		              <kim:personRoleQualifier roleIdx="${status.index}"></kim:personRoleQualifier>
+		              <td colspan="5" style="padding:0px;">
+		              	<kim:personRoleQualifier roleIdx="${status.index}" role="${role}" />
 			          </td>
 			        </tr>
  		        </c:when>
 		        <c:otherwise>
-		        		            <tr>
-		              <td colspan=5 style="padding:0px;">
-		        
-		              <kim:personRoleActiveDates roleIdx="${status.index}"></kim:personRoleActiveDates>
+     			    <tr>
+		              <td colspan="5" style="padding:0px;">
+		              	<kim:personRoleActiveDates roleIdx="${status.index}" />
 			          </td>
 			        </tr>
  		        </c:otherwise>
-		        </c:choose>
+		      </c:choose>
        	</c:forEach>        
 
             

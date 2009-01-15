@@ -31,6 +31,7 @@ import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.impl.PersonCacheImpl;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.dao.PersonDao;
+import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -66,45 +67,44 @@ public class PersonDaoOjb<T extends PersonImpl> extends PlatformAwareDaoBaseOjb 
 	{
 		// init the criteria which will need to be applied to every lookup against
 		// the entity data tables
-		baseLookupCriteria.put( "active", "Y" );
+		baseLookupCriteria.put( KIMPropertyConstants.Person.ACTIVE, "Y" );
 		baseLookupCriteria.put( "entityTypes.active", "Y" );
 		
 		// create the field mappings between the Person object and the KimEntity object
-		criteriaConversion.put( "entityId", "entityId" );
-		criteriaConversion.put( "active", "principals.active" );
-		criteriaConversion.put( "principalId", "principals.principalId" );
-		criteriaConversion.put( "principalName", "principals.principalName" );
-		criteriaConversion.put( "firstName", "names.firstName" );
-		criteriaConversion.put( "lastName", "names.lastName" );
-		criteriaConversion.put( "middleName", "names.middleName" );
-		criteriaConversion.put( "emailAddress", "entityTypes.emailAddresses.emailAddress" );
-		criteriaConversion.put( "phoneNumber", "entityTypes.phoneNumbers.phoneNumber" );
-		criteriaConversion.put( "line1", "entityTypes.addresses.line1" );
-		criteriaConversion.put( "line2", "entityTypes.addresses.line2" );
-		criteriaConversion.put( "line3", "entityTypes.addresses.line3" );
-		criteriaConversion.put( "cityName", "entityTypes.addresses.cityName" );
-		criteriaConversion.put( "stateCode", "entityTypes.addresses.stateCode" );
-		criteriaConversion.put( "postalCode", "entityTypes.addresses.postalCode" );
-		criteriaConversion.put( "countryCode", "entityTypes.addresses.countryCode" );
-		criteriaConversion.put( "campusCode", "affiliations.campusCode" );
-		criteriaConversion.put( "affiliationTypeCode", "affiliations.affiliationTypeCode" );
-		criteriaConversion.put( "externalIdentifierTypeCode", "externalIdentifiers.externalIdentifierTypeCode" );
-		criteriaConversion.put( "externalId", "externalIdentifiers.externalId" );		
-		criteriaConversion.put( "employeeTypeCode", "employmentInformation.employeeTypeCode" );
-		criteriaConversion.put( "employeeStatusCode", "employmentInformation.employeeStatusCode" );
-		criteriaConversion.put( "employeeId", "employmentInformation.employeeId" );
-		criteriaConversion.put( "baseSalaryAmount", "employmentInformation.baseSalaryAmount" );
-		criteriaConversion.put( "primaryDepartmentCode", "employmentInformation.primaryDepartmentCode" );
+		criteriaConversion.put( KIMPropertyConstants.Person.ENTITY_ID, "entityId" );
+		criteriaConversion.put( KIMPropertyConstants.Person.ACTIVE, "principals.active" );
+		criteriaConversion.put( KIMPropertyConstants.Person.PRINCIPAL_ID, "principals.principalId" );
+		criteriaConversion.put( KIMPropertyConstants.Person.PRINCIPAL_NAME, "principals.principalName" );
+		criteriaConversion.put( KIMPropertyConstants.Person.FIRST_NAME, "names.firstName" );
+		criteriaConversion.put( KIMPropertyConstants.Person.LAST_NAME, "names.lastName" );
+		criteriaConversion.put( KIMPropertyConstants.Person.MIDDLE_NAME, "names.middleName" );
+		criteriaConversion.put( KIMPropertyConstants.Person.EMAIL_ADDRESS, "entityTypes.emailAddresses.emailAddress" );
+		criteriaConversion.put( KIMPropertyConstants.Person.PHONE_NUMBER, "entityTypes.phoneNumbers.phoneNumber" );
+		criteriaConversion.put( KIMPropertyConstants.Person.ADDRESS_LINE_1, "entityTypes.addresses.line1" );
+		criteriaConversion.put( KIMPropertyConstants.Person.ADDRESS_LINE_2, "entityTypes.addresses.line2" );
+		criteriaConversion.put( KIMPropertyConstants.Person.ADDRESS_LINE_3, "entityTypes.addresses.line3" );
+		criteriaConversion.put( KIMPropertyConstants.Person.CITY_NAME, "entityTypes.addresses.cityName" );
+		criteriaConversion.put( KIMPropertyConstants.Person.STATE_CODE, "entityTypes.addresses.stateCode" );
+		criteriaConversion.put( KIMPropertyConstants.Person.POSTAL_CODE, "entityTypes.addresses.postalCode" );
+		criteriaConversion.put( KIMPropertyConstants.Person.COUNTRY_CODE, "entityTypes.addresses.countryCode" );
+		criteriaConversion.put( KIMPropertyConstants.Person.CAMPUS_CODE, "affiliations.campusCode" );
+		criteriaConversion.put( KIMPropertyConstants.Person.AFFILIATION_TYPE_CODE, "affiliations.affiliationTypeCode" );
+		criteriaConversion.put( KIMPropertyConstants.Person.EXTERNAL_IDENTIFIER_TYPE_CODE, "externalIdentifiers.externalIdentifierTypeCode" );
+		criteriaConversion.put( KIMPropertyConstants.Person.EXTERNAL_ID, "externalIdentifiers.externalId" );		
+		criteriaConversion.put( KIMPropertyConstants.Person.EMPLOYEE_TYPE_CODE, "employmentInformation.employeeTypeCode" );
+		criteriaConversion.put( KIMPropertyConstants.Person.EMPLOYEE_STATUS_CODE, "employmentInformation.employeeStatusCode" );
+		criteriaConversion.put( KIMPropertyConstants.Person.EMPLOYEE_ID, "employmentInformation.employeeId" );
+		criteriaConversion.put( KIMPropertyConstants.Person.BASE_SALARY_AMOUNT, "employmentInformation.baseSalaryAmount" );
 		
-		personCachePropertyNames.add( "principalId" );
-		personCachePropertyNames.add( "principalName" );
-		personCachePropertyNames.add( "entityId" );
-		personCachePropertyNames.add( "firstName" );
-		personCachePropertyNames.add( "lastName" );
-		personCachePropertyNames.add( "middleName" );
-		personCachePropertyNames.add( "campusCode" );
-		personCachePropertyNames.add( "employeeId" );
-		personCachePropertyNames.add( "primaryDepartmentCode" );
+		personCachePropertyNames.add( KIMPropertyConstants.Person.PRINCIPAL_ID );
+		personCachePropertyNames.add( KIMPropertyConstants.Person.PRINCIPAL_NAME );
+		personCachePropertyNames.add( KIMPropertyConstants.Person.ENTITY_ID );
+		personCachePropertyNames.add( KIMPropertyConstants.Person.FIRST_NAME );
+		personCachePropertyNames.add( KIMPropertyConstants.Person.LAST_NAME );
+		personCachePropertyNames.add( KIMPropertyConstants.Person.MIDDLE_NAME );
+		personCachePropertyNames.add( KIMPropertyConstants.Person.CAMPUS_CODE );
+		personCachePropertyNames.add( KIMPropertyConstants.Person.EMPLOYEE_ID );
+		personCachePropertyNames.add( KIMPropertyConstants.Person.PRIMARY_DEPARTMENT_CODE );
 	}
 
 	public T convertEntityToPerson( KimEntity entity, KimPrincipal principal ) {

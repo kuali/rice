@@ -23,6 +23,7 @@ import java.util.Map;
 
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kns.document.authorization.PessimisticLock;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.PessimisticLockService;
@@ -83,7 +84,7 @@ public class PessimisticLockLookupableHelperServiceImpl extends AbstractLookupab
                     boolean addRow = true;
                     for (Iterator<Field> iterator2 = row.getFields().iterator(); iterator2.hasNext();) {
                         Field field = (Field) iterator2.next();
-                        if ((KNSPropertyConstants.OWNED_BY_USER + "." + KNSPropertyConstants.KUALI_USER_PERSON_USER_IDENTIFIER).equals(field.getPropertyName())) {
+                        if ((KNSPropertyConstants.OWNED_BY_USER + "." + KIMPropertyConstants.Person.PRINCIPAL_NAME).equals(field.getPropertyName())) {
                             addRow = false;
                             break;
                         }

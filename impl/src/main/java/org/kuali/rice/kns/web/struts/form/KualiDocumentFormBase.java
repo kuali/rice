@@ -31,6 +31,7 @@ import org.apache.struts.upload.FormFile;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kns.bo.AdHocRoutePerson;
 import org.kuali.rice.kns.bo.AdHocRouteRecipient;
 import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
@@ -186,7 +187,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         
         if(StringUtils.isNotEmpty(id) && StringUtils.isNotEmpty(linkBody) ) {
             Person user = new org.kuali.rice.kim.bo.impl.PersonImpl();
-            AnchorHtmlData inquiryHref = (AnchorHtmlData)KNSServiceLocator.getKualiInquirable().getInquiryUrl(user, KNSPropertyConstants.PERSON_UNIVERSAL_IDENTIFIER, false);
+            AnchorHtmlData inquiryHref = (AnchorHtmlData)KNSServiceLocator.getKualiInquirable().getInquiryUrl(user, KIMPropertyConstants.Person.PRINCIPAL_ID, false);
             String inquiryUrlSection = inquiryHref.getHref();
             urlBuffer.append("<a href='");
             urlBuffer.append(KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY));

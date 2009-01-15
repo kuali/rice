@@ -103,7 +103,7 @@
 	</c:if>
 	<html-el:form action="ActionList">
 		<html-el:hidden property="methodToCall" value="" />
-		<table width="100%">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0">
 			<tr>
 				<td width="20" height="30">&nbsp;</td>
 				<td><jsp:include page="../WorkflowMessages.jsp" flush="true" /></td>
@@ -112,7 +112,7 @@
 			<tr>
 				<td></td>
 				<td>
-				<table width="100%" border=0 cellspacing=0 cellpadding=0>
+				<table width="100%" border="0" cellspacing="0" cellpadding="0">
 					<tr>
 						<td>
 
@@ -135,25 +135,31 @@
 						</c:choose>
 
 						</td>
+                        <td>
+                        <div align="right">
+                          <c:if test="${ActionListFormNew.viewOutbox && ActionListFormNew.showOutbox && !ActionListFormNew.outBoxEmpty}">
+                           <td align="right"><html-el:image
+                              src="../kr/images/buttonsmall_delselitems.gif" align="absmiddle"
+                              property="methodToCall.removeOutboxItems" />
+                           </td>
+                          </c:if>
+                        </div>
+                        </td>
 					</tr>
 				</table>
-				</td>
-				<div align="right">
-                    <c:if test="${ActionListFormNew.viewOutbox && ActionListFormNew.showOutbox && !ActionListFormNew.outBoxEmpty}">
-                         <td align="right"><html-el:image
-                            src="../kr/images/buttonsmall_delselitems.gif" align="absmiddle"
-                            property="methodToCall.removeOutboxItems" />
-                         </td>
-                    </c:if>
-                </div>
+
+                </td>
+                <td></td>
 			</tr>
             <tr>
-			 <table width="100%">
+              <td></td>
+              <td>
+			 <table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr>
             <td>
 				<div id="row" >
 				<div class="tab-container"><br />
-				<display:table class="datatable-100" cellspacing="0" cellpadding="0"
+				<display:table class="datatable-100" cellpadding="2" cellspacing="0"
 					name="actionListPage" pagesize="${preferences.pageSize}"
 					export="true" id="result"
 					decorator="org.kuali.rice.kew.actionlist.web.ActionListDecorator"
@@ -344,11 +350,12 @@
 				</td>
 				</tr>
 				</table>
-
+              </td>
+              <td></td>
 			</tr>
 
 			<tr>
-				<td><br />
+				<td colspan="3"><br />
 				</td>
 			</tr>
 			<c:if

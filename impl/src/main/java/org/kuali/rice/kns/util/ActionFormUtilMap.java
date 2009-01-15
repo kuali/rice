@@ -77,7 +77,7 @@ public class ActionFormUtilMap extends HashMap {
             methodValue = method.invoke(this, methodParms);
         }
         catch (Exception e) {
-            throw new RuntimeException("Unable to invoke method " + e.getMessage());
+            throw new RuntimeException("Unable to invoke method " + methodToCall,e);
         }
 
         if (cacheValueFinderResults) {

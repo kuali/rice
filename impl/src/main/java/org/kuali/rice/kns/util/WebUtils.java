@@ -48,6 +48,7 @@ import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.datadictionary.mask.MaskFormatter;
 import org.kuali.rice.kns.datadictionary.mask.MaskFormatterLiteral;
 import org.kuali.rice.kns.document.Document;
+import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.exception.FileUploadLimitExceededException;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -466,5 +467,35 @@ public class WebUtils {
 	    }
 	    return KNSServiceLocator.getBusinessObjectAuthorizationService().canPartiallyUnmaskField(GlobalVariables.getUserSession().getPerson(),
 	  			   businessObjClass, fieldName);
-}
+    }
+    
+    public static boolean canAddNoteAttachment(Document document) {
+    	boolean canViewNoteAttachment = false;
+    	DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentHelperService().getDocumentAuthorizer(document);
+    	canViewNoteAttachment = documentAuthorizer.canAddNoteAttachment(document, null, GlobalVariables.getUserSession().getPerson());
+    	return canViewNoteAttachment;
+    }
+    
+    public static boolean canViewNoteAttachment(Document document, String attachmentTypeCode) {
+    	boolean canViewNoteAttachment = false;
+    	DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentHelperService().getDocumentAuthorizer(document);
+    	canViewNoteAttachment = documentAuthorizer.canViewNoteAttachment(document, attachmentTypeCode, GlobalVariables.getUserSession().getPerson());
+    	return canViewNoteAttachment;
+    }
+    
+    public static boolean canDeleteNoteAttachment(Document document, String attachmentTypeCode, String authorUniversalIdentifier) {
+    	boolean canDeleteNoteAttachment = false;
+    	DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentHelperService().getDocumentAuthorizer(document);
+    	canDeleteNoteAttachment = documentAuthorizer.canDeleteNoteAttachment(document, attachmentTypeCode, "false", GlobalVariables.getUserSession().getPerson());
+    	if(canDeleteNoteAttachment){
+    		return canDeleteNoteAttachment;
+    	}else{
+    		canDeleteNoteAttachment = documentAuthorizer.canDeleteNoteAttachment(document, attachmentTypeCode, "true", GlobalVariables.getUserSession().getPerson());
+    		if(canDeleteNoteAttachment && authorUniversalIdentifier.equals(GlobalVariables.getUserSession().getPerson().getPrincipalId())){
+    			return true;
+    		}
+    	}
+    	return canDeleteNoteAttachment;
+    }
+    
 }

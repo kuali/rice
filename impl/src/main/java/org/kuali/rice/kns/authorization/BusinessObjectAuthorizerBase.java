@@ -147,7 +147,7 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 				permissionDetails, roleQualifiers);
 	}
 
-	private AttributeSet getRoleQualification(BusinessObject businessObject) {
+	protected AttributeSet getRoleQualification(BusinessObject businessObject) {
 		if (roleQualification.get() == null) {
 			Map<String, String> attributes = new HashMap<String, String>();
 			addRoleQualification(businessObject, attributes);

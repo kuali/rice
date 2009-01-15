@@ -81,5 +81,25 @@
 	    <function-signature>java.lang.String getDisplayMaskValue(java.lang.String, java.lang.Object, java.lang.String)</function-signature>
 	    <example>${kfunc:getDisplayMaskValue(literal, kualiForm, propertyName)}</example>
 	</function>
-
+	<function>
+    	<description>Check Add Note Permission</description>
+    	<name>canAddNoteAttachment</name>
+	    <function-class>org.kuali.rice.kns.util.WebUtils</function-class>
+	    <function-signature>boolean canAddNoteAttachment(org.kuali.rice.kns.document.Document)</function-signature>
+	    <example>${kfunc:canAddNoteAttachement(document)}</example>
+	</function>
+	<function>
+    	<description>Check View Note Permission</description>
+    	<name>canViewNoteAttachment</name>
+	    <function-class>org.kuali.rice.kns.util.WebUtils</function-class>
+	    <function-signature>boolean canViewNoteAttachment(org.kuali.rice.kns.document.Document, java.lang.String)</function-signature>
+	    <example>${kfunc:canAddNoteAttachement(document, attachmentTypeCode)}</example>
+	</function>
+	<function>
+    	<description>Check Delete Note Permission</description>
+    	<name>canDeleteNoteAttachment</name>
+	    <function-class>org.kuali.rice.kns.util.WebUtils</function-class>
+	    <function-signature>boolean canDeleteNoteAttachment(org.kuali.rice.kns.document.Document, java.lang.String, java.lang.String)</function-signature>
+	    <example>${kfunc:canDeleteNoteAttachement(document, attachmentTypeCode, authorUniversalIdentifier)}</example>
+	</function>
 </taglib>

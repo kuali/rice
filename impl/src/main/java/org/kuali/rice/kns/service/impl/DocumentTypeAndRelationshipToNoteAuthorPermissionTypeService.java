@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -34,17 +35,18 @@ public class DocumentTypeAndRelationshipToNoteAuthorPermissionTypeService
 			List<KimPermissionInfo> permissionsList) {
 		List<KimPermissionInfo> matchingPermissions = super
 				.performPermissionMatches(requestedDetails, permissionsList);
+		List<KimPermissionInfo> returnPermissions = new ArrayList<KimPermissionInfo>();
 		for (KimPermissionInfo kimPermissionInfo : matchingPermissions) {
 			if (Boolean.parseBoolean(requestedDetails
 					.get(KimAttributes.CREATED_BY_SELF))) {
-				matchingPermissions.add(kimPermissionInfo);
+				returnPermissions.add(kimPermissionInfo);
 			} else {
 				if (!Boolean.parseBoolean(kimPermissionInfo.getDetails().get(
 						KimAttributes.CREATED_BY_SELF_ONLY))) {
-					matchingPermissions.add(kimPermissionInfo);
+					returnPermissions.add(kimPermissionInfo);
 				}
 			}
 		}
-		return matchingPermissions;
+		return returnPermissions;
 	}
 }

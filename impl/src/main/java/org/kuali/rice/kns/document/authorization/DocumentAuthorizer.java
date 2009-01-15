@@ -38,4 +38,10 @@ public interface DocumentAuthorizer extends BusinessObjectAuthorizer {
 
 	public boolean canReceiveAdHoc(Document document, Person user,
 			String actionRequestCode);
+	
+	public boolean canAddNoteAttachment(Document document, String attachmentTypeCode, Person user);
+	
+	public boolean canDeleteNoteAttachment(Document document, String attachmentTypeCode, String createdBySelfOnly, Person user);
+	
+	public boolean canViewNoteAttachment(Document document, String attachmentTypeCode, Person user);
 }

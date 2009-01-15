@@ -125,7 +125,7 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 		if (canAcknowledge(document, user)) {
 			documentActions.add(KNSConstants.KUALI_ACTION_CAN_ACKNOWLEDGE);
 		}
-
+		
 		if (canClearFYI(document, user)) {
 			documentActions.add(KNSConstants.KUALI_ACTION_CAN_FYI);
 		}
@@ -184,6 +184,55 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 				KimConstants.PermissionTemplateNames.OPEN_DOCUMENT, user
 						.getPrincipalId());
 	}
+	
+	public final boolean canAddNoteAttachment (Document document, String attachmentTypeCode, Person user) {
+		String nameSpaceCode = KNSConstants.KNS_NAMESPACE;
+		AttributeSet permissionDetails = new AttributeSet();
+		permissionDetails.put(KimAttributes.DOCUMENT_TYPE_NAME,
+				document.getDocumentHeader().getWorkflowDocument().getDocumentType());
+		if(attachmentTypeCode != null){
+			permissionDetails.put(KimAttributes.ATTACHMENT_TYPE_CODE, 
+					attachmentTypeCode);
+		}
+		AttributeSet qualifications = this.getRoleQualification(document);
+		return getIdentityManagementService().isAuthorizedByTemplateName(
+				user.getPrincipalId(), nameSpaceCode,
+				KimConstants.PermissionTemplateNames.ADD_NOTE_ATTACHMENT,
+				permissionDetails, qualifications );
+	}
+	
+	public final boolean canDeleteNoteAttachment (Document document, String attachmentTypeCode, String createdBySelfOnly, Person user) {
+		String nameSpaceCode = KNSConstants.KNS_NAMESPACE;
+		AttributeSet permissionDetails = new AttributeSet();
+		permissionDetails.put(KimAttributes.DOCUMENT_TYPE_NAME,
+				document.getDocumentHeader().getWorkflowDocument().getDocumentType());
+		if(attachmentTypeCode != null){
+			permissionDetails.put(KimAttributes.ATTACHMENT_TYPE_CODE, 
+					attachmentTypeCode);
+		}
+		permissionDetails.put(KimAttributes.CREATED_BY_SELF_ONLY, createdBySelfOnly);
+		
+		return getIdentityManagementService().isAuthorizedByTemplateName(
+				user.getPrincipalId(), nameSpaceCode,
+				KimConstants.PermissionTemplateNames.DELETE_NOTE_ATTACHMENT,
+				permissionDetails, this.getRoleQualification(document));
+	}
+	
+	public final boolean canViewNoteAttachment (Document document, String attachmentTypeCode, Person user) {
+		String nameSpaceCode = KNSConstants.KNS_NAMESPACE;
+		AttributeSet permissionDetails = new AttributeSet();
+		permissionDetails.put(KimAttributes.DOCUMENT_TYPE_NAME,
+				document.getDocumentHeader().getWorkflowDocument().getDocumentType());
+		if(attachmentTypeCode != null){
+			permissionDetails.put(KimAttributes.ATTACHMENT_TYPE_CODE, 
+					attachmentTypeCode);
+		}
+		return getIdentityManagementService().isAuthorizedByTemplateName(
+				user.getPrincipalId(), nameSpaceCode,
+				KimConstants.PermissionTemplateNames.VIEW_NOTE_ATTACHMENT,
+				permissionDetails, this.getRoleQualification(document));
+	}
+	
 
 	private boolean canApprove(Document document, Person user) {
 		AttributeSet permissionDetails = getPermissionDetailValues(document);

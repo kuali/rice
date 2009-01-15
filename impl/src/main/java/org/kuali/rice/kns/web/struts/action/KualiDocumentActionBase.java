@@ -118,7 +118,7 @@ public class KualiDocumentActionBase extends KualiAction {
     private BusinessObjectService businessObjectService;
     private BusinessObjectMetaDataService businessObjectMetaDataService;
     private EntityManagerFactory entityManagerFactory;
-
+    
 	protected void checkAuthorization( ActionForm form, String methodToCall ) throws AuthorizationException {
         if ( !(form instanceof KualiDocumentFormBase) ) {
             super.checkAuthorization(form, methodToCall);
@@ -1072,14 +1072,21 @@ public class KualiDocumentActionBase extends KualiAction {
     public ActionForward insertBONote(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
         Document document = kualiDocumentFormBase.getDocument();
+        Note newNote = kualiDocumentFormBase.getNewNote();
+        String attachmentTypeCode = null;
+        
+        if(newNote.getAttachment() != null){
+        	attachmentTypeCode = newNote.getAttachment().getAttachmentTypeCode();
+        }
 
         // check authorization for adding notes
         //DocumentActionFlags flags = getDocumentActionFlags(document);
-        if (!kualiDocumentFormBase.getDocumentActions().containsKey(KNSConstants.KUALI_ACTION_CAN_AD_HOC_ROUTE)) {
-            buildAuthorizationException("annotate", document);
+        //if (!kualiDocumentFormBase.getDocumentActions().containsKey(KNSConstants.KUALI_ACTION_CAN_ADD_NOTE_ATTACHMENT)) {
+        DocumentAuthorizer documentAuthorizer = getDocumentHelperService().getDocumentAuthorizer(document);
+        if(!documentAuthorizer.canAddNoteAttachment(document, attachmentTypeCode, GlobalVariables.getUserSession().getPerson())){
+          throw buildAuthorizationException("annotate", document);
         }
-
-        Note newNote = kualiDocumentFormBase.getNewNote();
+        
         PersistableBusinessObject noteParent = getNoteParent(document, newNote);
 
 
@@ -1208,19 +1215,25 @@ public class KualiDocumentActionBase extends KualiAction {
 
         // check authorization for adding notes
         //DocumentActionFlags flags = getDocumentActionFlags(document);
-        if (!kualiDocumentFormBase.getDocumentActions().containsKey(KNSConstants.KUALI_ACTION_CAN_ANNOTATE) || !entry.getAllowsNoteDelete()) {
-            buildAuthorizationException("annotate", document);
-            return mapping.findForward(RiceConstants.MAPPING_BASIC);
-        }
-
+        //if (!kualiDocumentFormBase.getDocumentActions().containsKey(KNSConstants.KUALI_ACTION_CAN_ANNOTATE) || !entry.getAllowsNoteDelete()) {
+        //    buildAuthorizationException("annotate", document);
+        //    return mapping.findForward(RiceConstants.MAPPING_BASIC);
+        //}
+        
         // ok to delete the note/attachment
         // derive the note property from the newNote on the form
         Note newNote = kualiDocumentFormBase.getNewNote();
         PersistableBusinessObject noteParent = this.getNoteParent(document, newNote);
-
         Note note = noteParent.getBoNote(getLineToDelete(request));
-
         Attachment attachment = note.getAttachment();
+        String attachmentTypeCode = null;
+        if(attachment != null){
+        	attachmentTypeCode = attachment.getAttachmentTypeCode();
+        }
+        String authorUniversalIdentifier = note.getAuthorUniversalIdentifier();
+        if(!entry.getAllowsNoteDelete() || WebUtils.canDeleteNoteAttachment(document, attachmentTypeCode, authorUniversalIdentifier) ){
+        	throw buildAuthorizationException("annotate", document);
+        }
 
         if (attachment != null) {
             //KFSMI-798 - refresh() changed to refreshNonUpdateableReferences()
@@ -1307,7 +1320,7 @@ public class KualiDocumentActionBase extends KualiAction {
 	            infix = sourceObject.getClass().getName();
 	        }
 	        message.append(infix);
-
+	
 	        if (sourceObject instanceof PersistableBusinessObject) {
 	            PersistableBusinessObject persistableObject = (PersistableBusinessObject) sourceObject;
 	            message.append(" [versionNumber = " ).append( persistableObject.getVersionNumber() ).append( "]" );
@@ -1479,7 +1492,7 @@ public class KualiDocumentActionBase extends KualiAction {
 	protected DocumentHelperService getDocumentHelperService() {
 	    if ( documentHelperService == null ) {
 	        documentHelperService = KNSServiceLocator.getDocumentHelperService();
-	    }
+		}
 	    return this.documentHelperService;
 	}
 
@@ -1517,7 +1530,7 @@ public class KualiDocumentActionBase extends KualiAction {
 		}
 		return this.identityManagementService;
 	}
-
+	
 	protected AttachmentService getAttachmentService() {
 		if ( attachmentService == null ) {
 			attachmentService = KNSServiceLocator.getAttachmentService();
@@ -1531,14 +1544,14 @@ public class KualiDocumentActionBase extends KualiAction {
 		}
 		return this.noteService;
 	}
-
+	
 	protected BusinessObjectService getBusinessObjectService() {
     	if ( businessObjectService == null ) {
     		businessObjectService = KNSServiceLocator.getBusinessObjectService();
     	}
 		return this.businessObjectService;
 	}
-
+	
     protected BusinessObjectAuthorizationService getBusinessObjectAuthorizationService() {
     	if ( businessObjectAuthorizationService == null ) {
     		businessObjectAuthorizationService = KNSServiceLocator.getBusinessObjectAuthorizationService();
@@ -1559,7 +1572,7 @@ public class KualiDocumentActionBase extends KualiAction {
     	}
 		return this.entityManagerFactory;
 	}
-
+    
 
 }
 

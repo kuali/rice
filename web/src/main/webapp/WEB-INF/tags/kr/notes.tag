@@ -87,39 +87,43 @@
                     </c:if>
                     <kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
                 </tr>
-
-                <tr>
-                  <html:hidden property="newNote.noteTypeCode" value="${noteType.code}"/>
-                    <kul:htmlAttributeHeaderCell literalLabel="add:" scope="row"/>
-                    <td class="infoline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                    <td class="infoline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                    <c:if test="${displayTopicFieldInNotes eq true}">
-            <td class="infoline"><kul:htmlControlAttribute attributeEntry="${notesAttributes.noteTopicText}" property="newNote.noteTopicText" forceRequired="true" /></td>
-          </c:if>
-                    <td class="infoline"><kul:htmlControlAttribute attributeEntry="${notesAttributes.noteText}" property="newNote.noteText" forceRequired="${notesAttributes.noteText.required}" /></td>
-                    <c:if test="${allowsNoteAttachments eq true}">
-                      <td class="infoline">
-                        <div align="center"><br />
-                        <html:file property="attachmentFile" size="30" styleId="attachmentFile" value="" /><br /><br />
-                        <html:image property="methodToCall.cancelBOAttachment" src="${ConfigProperties.kr.externalizable.images.url}tinygrey-cancel.gif" title="Cancel Attachment" alt="Cancel Attachment" styleClass="tinybutton"/>
-                        </div>
-                      </td>
-          </c:if>
-                    <c:if test="${(not empty attachmentTypesValuesFinderClass) and (allowsNoteAttachments eq true)}">
+				<c:if test="${kfunc:canAddNoteAttachment(KualiForm.document)}" >
+                  <tr>
+                    <html:hidden property="newNote.noteTypeCode" value="${noteType.code}"/>
+                      <kul:htmlAttributeHeaderCell literalLabel="add:" scope="row"/>
+                      <td class="infoline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                      <td class="infoline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                      <c:if test="${displayTopicFieldInNotes eq true}">
+                       <td class="infoline"><kul:htmlControlAttribute attributeEntry="${notesAttributes.noteTopicText}" property="newNote.noteTopicText" forceRequired="true" /></td>
+                      </c:if>
+                      <td class="infoline"><kul:htmlControlAttribute attributeEntry="${notesAttributes.noteText}" property="newNote.noteText" forceRequired="${notesAttributes.noteText.required}" /></td>
+                      <c:if test="${allowsNoteAttachments eq true}">
+                        <td class="infoline">
+                          <div align="center"><br />
+                          <html:file property="attachmentFile" size="30" styleId="attachmentFile" value="" /><br /><br />
+                          <html:image property="methodToCall.cancelBOAttachment" src="${ConfigProperties.kr.externalizable.images.url}tinygrey-cancel.gif" title="Cancel Attachment" alt="Cancel Attachment" styleClass="tinybutton"/>
+                          </div>
+                        </td>
+                     </c:if>
+                     <c:if test="${(not empty attachmentTypesValuesFinderClass) and (allowsNoteAttachments eq true)}">
                         <c:set var="finderClass" value="${fn:replace(attachmentTypesValuesFinderClass,'.','|')}"/>
                         <td class="infoline">
                             <html:select property="newNote.attachment.attachmentTypeCode">
                                 <html:optionsCollection property="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}" label="label" value="key"/>
                             </html:select>
                         </td>
-                    </c:if>
-                    <c:if test="${allowsNoteFYI}" >
+                     </c:if>
+                     <c:if test="${allowsNoteFYI}" >
                       <td>&nbsp;</td>
-                    </c:if>
-                    <td class="infoline"><div align="center"><html:image property="methodToCall.insertBONote" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-add1.gif" alt="Add a Note" title="Add a Note" styleClass="tinybutton"/></div></td>
-                </tr>
+                     </c:if>
+                     <td class="infoline"><div align="center"><html:image property="methodToCall.insertBONote" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-add1.gif" alt="Add a Note" title="Add a Note" styleClass="tinybutton"/></div></td>	 
+			       </tr>
+			   </c:if>   
 
   <c:forEach var="note" items="${notesBo}" varStatus="status">
+	<c:set var="attachmentTypeCode" value ="${note.attachment.attachmentTypeCode}" />
+	<c:set var="authorUniversalIdentifier" value = "${note.authorUniversalIdentifier}" />
+	<c:if test="${kfunc:canViewNoteAttachment(KualiForm.document, attachmentTypeCode)}" >
       <tr>
           <html:hidden property="${propPrefix}boNote[${status.index}].versionNumber" />
           <html:hidden property="${propPrefix}boNote[${status.index}].remoteObjectIdentifier" />
@@ -209,7 +213,7 @@
                            </c:if>
                            
                         <td class="datacell center"><div align="center">
-                          <c:if test="${allowsNoteDelete}">
+                          <c:if test="${allowsNoteDelete && kfunc:canDeleteNoteAttachment(KualiForm.document, attachmentTypeCode, authorUniversalIdentifier)}">
                             <html:image property="methodToCall.deleteBONote.line${status.index}" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-delete1.gif" title="Delete a Note" alt="Delete a Note" styleClass="tinybutton"/>
                           </c:if> &nbsp;
                           <c:if test="${allowsNoteFYI && KualiForm.documentActionFlags.canAdHocRoute}" >
@@ -219,6 +223,7 @@
                           </c:if>  
                         </div></td>
                     </tr>
+	</c:if>
   </c:forEach>
               </tbody>
         </table>

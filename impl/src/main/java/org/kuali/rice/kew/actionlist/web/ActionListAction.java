@@ -302,7 +302,7 @@ public class ActionListAction extends KualiAction {
     private static final String OUT_BOX_MODE = "_OUT_BOX_MODE";
 
     /**
-     * this method is setting 2 props on the {@link ActionListFormOld} that controls outbox behavior.
+     * this method is setting 2 props on the {@link ActionListForm} that controls outbox behavior.
      *  alForm.setViewOutbox("false"); -> this is set by user preferences and the actionlist.outbox.off config prop
      *  alForm.setShowOutbox(false); -> this is set by user action clicking the ActionList vs. Outbox links.
      *
@@ -530,7 +530,7 @@ public class ActionListAction extends KualiAction {
         ActionListForm actionListForm = (ActionListForm) form;
         List actionList = (List) request.getSession().getAttribute(ACTION_LIST_KEY);
         if (actionList == null) {
-            return start(mapping, new ActionListFormOld(), request, response);
+            return start(mapping, new ActionListForm(), request, response);
         }
         ActionMessages messages = new ActionMessages();
         List invocations = new ArrayList();

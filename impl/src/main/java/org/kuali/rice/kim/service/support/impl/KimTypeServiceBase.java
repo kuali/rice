@@ -38,7 +38,6 @@ import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
-import org.kuali.rice.kns.lookup.keyvalues.KimAttributeValuesFinder;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.DictionaryValidationService;
@@ -99,10 +98,16 @@ public class KimTypeServiceBase implements KimTypeService {
 
 	/**
 	 * 
-	 * This method matches input attribute set entries and standard attribute set entries using liternal string match.
+	 * This method matches input attribute set entries and standard attribute set entries using literal string match.
 	 * 
 	 */
 	protected boolean performMatch(AttributeSet inputAttributeSet, AttributeSet storedAttributeSet) {
+		if ( storedAttributeSet == null && inputAttributeSet == null ) {
+			return true;
+		} else if ( (storedAttributeSet == null && inputAttributeSet != null) 
+				|| (inputAttributeSet == null && storedAttributeSet != null) ) {
+			return false;
+		}
 		for ( Map.Entry<String, String> entry : storedAttributeSet.entrySet() ) {
 			if ( !inputAttributeSet.containsKey(entry.getKey() ) ) {
 				return false;
@@ -157,6 +162,9 @@ public class KimTypeServiceBase implements KimTypeService {
 	 */
 	public AttributeSet validateAttributes(AttributeSet attributes) {
 		AttributeSet validationErrors = new AttributeSet();
+		if ( attributes == null ) {
+			return validationErrors;
+		}
 		for ( String attributeName : attributes.keySet() ) {
 			Map<String,String> criteria = new HashMap<String,String>();
             criteria.put("attributeName", attributeName);
@@ -246,7 +254,6 @@ public class KimTypeServiceBase implements KimTypeService {
 		String componentClassName = typeAttribute.getKimAttribute().getComponentName();
 		String attributeName = typeAttribute.getKimAttribute().getAttributeName();
 		AttributeDefinition baseDefinition = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(componentClassName).getAttributeDefinition(attributeName);
-		definition.setDataDictionaryAttributeDefinition( baseDefinition );
 		
 		// copy all the base attributes
 		definition.setName( baseDefinition.getName() );

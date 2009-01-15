@@ -1,8 +1,8 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 <html>
 <head>
-<script language="javascript" src="scripts/en-common.js"></script>
-<script language="javascript" src="scripts/cal2.js">
+<script language="javascript" src="../en/scripts/en-common.js"></script>
+<script language="javascript" src="../en/scripts/cal2.js">
     /*
     Xin's Popup calendar script-  Xin Yang (http://www.yxscripts.com/) Script
     featured on/available at http://www.dynamicdrive.com/
@@ -13,10 +13,10 @@
     rel="stylesheet" type="text/css">
 
 
-<script language="JavaScript" src="scripts/actionlist-common.js"></script>
-<script language="JavaScript" src=scripts/cal_conf2.js"></script>
+<script language="JavaScript" src="../en/scripts/actionlist-common.js"></script>
+<script language="JavaScript" src="../en/scripts/cal_conf2.js"></script>
 <script>
-function setMethodToCallAndSubmit(methodToCallValue) { 
+function setMethodToCallAndSubmit(methodToCallValue) {
             alert('Method to call value: ' + methodToCallValue);
             document.forms[0].elements['methodToCall'].value = methodToCallValue;
             document.forms[0].submit();

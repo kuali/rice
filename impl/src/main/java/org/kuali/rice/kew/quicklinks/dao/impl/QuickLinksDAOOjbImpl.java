@@ -121,13 +121,15 @@ public class QuickLinksDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                     	"where A.INITR_PRNCPL_ID = ? and A.DOC_TYP_ID = B.DOC_TYP_ID and " +
                     	"B.ACTV_IND = 1 and B.CUR_IND = 1 " +
                     	"order by upper(B.LBL)";
+                    
                     selectDistinctDocumentTypes = connection.prepareStatement(sql);
                     selectDistinctDocumentTypes.setString(1, principalId);
                     selectedDistinctDocumentTypes = selectDistinctDocumentTypes.executeQuery();
-                    String documentNames = Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.QUICK_LINK_DETAIL_TYPE, KEWConstants.QUICK_LINKS_RESTRICT_DOCUMENT_TYPES).trim();
+                    String documentNames = Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.QUICK_LINK_DETAIL_TYPE, KEWConstants.QUICK_LINKS_RESTRICT_DOCUMENT_TYPES);
                     if (documentNames == null || "none".equals(documentNames)) {
                     	documentNames = "";
                     }
+                    
                     List docTypesToRestrict = new ArrayList();
                     StringTokenizer st = new StringTokenizer(documentNames, ",");
                     while (st.hasMoreTokens()) {
@@ -150,7 +152,7 @@ public class QuickLinksDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                             	documentTypesByName.add(new InitiatedDocumentType(docTypeName, selectedDistinctDocumentTypes.getString(2)));
                             }
                         }
-                    }
+                    }                   
                     return documentTypesByName;
                 } catch (Exception e) {
                     throw new WorkflowRuntimeException("Error getting initiated document types for user: " + principalId, e);

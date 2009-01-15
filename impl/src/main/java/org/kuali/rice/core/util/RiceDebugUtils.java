@@ -36,6 +36,7 @@ public class RiceDebugUtils {
     	for ( StackTraceElement ste : t.getStackTrace() ) {
     		if ( ste.getClassName().startsWith( "org.kuali" ) 
     				&& !ste.getClassName().endsWith( "RiceDebugUtils" )
+    				&& !ste.getClassName().endsWith( "DaoProxy" )
     				&& !ste.getClassName().startsWith( "org.kuali.rice.kns.web.filter" ) 
     				&& !ste.getMethodName().equals( "doFilter" )
     				&& !ste.getMethodName().equals( "doInTransaction" )

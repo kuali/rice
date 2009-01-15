@@ -25,7 +25,6 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
-import org.displaytag.util.LookupUtil;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.authorization.FieldRestriction;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -52,7 +51,7 @@ import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KualiConfigurationService;
+import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.web.format.FormatException;
 import org.kuali.rice.kns.web.format.Formatter;
@@ -69,7 +68,7 @@ public class FieldUtils {
     private static DataDictionaryService dictionaryService = KNSServiceLocator.getDataDictionaryService();
     private static BusinessObjectMetaDataService businessObjectMetaDataService = KNSServiceLocator.getBusinessObjectMetaDataService();
     private static BusinessObjectDictionaryService businessObjectDictionaryService = KNSServiceLocator.getBusinessObjectDictionaryService();
-    private static KualiConfigurationService kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
+    private static KualiModuleService kualiModuleService = KNSServiceLocator.getKualiModuleService();
 
     public static void setInquiryURL(Field field, BusinessObject bo, String propertyName) {
         HtmlData inquiryHref = new AnchorHtmlData(KNSConstants.EMPTY_STRING, KNSConstants.EMPTY_STRING);
@@ -292,7 +291,7 @@ public class FieldUtils {
 
         field.setFieldType(fieldType);
 
-        Boolean fieldRequired = KNSServiceLocator.getBusinessObjectDictionaryService().getLookupAttributeRequired(businessObjectClass, attributeName);
+        Boolean fieldRequired = businessObjectDictionaryService.getLookupAttributeRequired(businessObjectClass, attributeName);
         if (fieldRequired != null) {
             field.setFieldRequired(fieldRequired.booleanValue());
         }
@@ -1077,7 +1076,7 @@ public class FieldUtils {
 
             BusinessObject newBusinessObjectInstance;
             if (ExternalizableBusinessObjectUtils.isExternalizableBusinessObjectInterface(businessObjectClass)) {
-            	ModuleService moduleService = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService(businessObjectClass);
+            	ModuleService moduleService = kualiModuleService.getResponsibleModuleService(businessObjectClass);
             	newBusinessObjectInstance = (BusinessObject) moduleService.createNewObjectFromExternalizableClass(businessObjectClass);
             }
             else {

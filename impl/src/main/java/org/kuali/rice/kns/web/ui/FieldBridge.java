@@ -24,7 +24,6 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Summarizable;
-import org.kuali.rice.kns.datadictionary.AttributeSecurity;
 import org.kuali.rice.kns.datadictionary.CollectionDefinitionI;
 import org.kuali.rice.kns.datadictionary.FieldDefinition;
 import org.kuali.rice.kns.datadictionary.FieldDefinitionI;
@@ -40,10 +39,10 @@ import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.PersistableBusinessObjectValuesFinder;
 import org.kuali.rice.kns.lookup.valueFinder.ValueFinder;
 import org.kuali.rice.kns.maintenance.Maintainable;
-import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
+import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.FieldUtils;
-import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.MaintenanceUtils;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -53,13 +52,8 @@ import org.kuali.rice.kns.web.format.SummarizableFormatter;
 
 public class FieldBridge {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(FieldBridge.class);
-    private static BusinessObjectAuthorizationService businessObjectAuthorizationService;
-    private static BusinessObjectAuthorizationService getBusinessObjectAuthorizationService() {
-    	if (businessObjectAuthorizationService == null) {
-    		businessObjectAuthorizationService = KNSServiceLocator.getBusinessObjectAuthorizationService();
-    	}
-    	return businessObjectAuthorizationService;
-    }
+    private static DataDictionaryService dataDictionaryService;
+    private static PersistenceStructureService persistenceStructureService;
 
     /**
      * This method creates a Field for an Inquiry Screen.
@@ -111,7 +105,7 @@ public class FieldBridge {
         String propertyName = field.getPropertyName();
 
         // get the field type for the property
-        ControlDefinition fieldControl = KNSServiceLocator.getDataDictionaryService().getAttributeControlDefinition(bo.getClass(), propertyName);
+        ControlDefinition fieldControl = getDataDictionaryService().getAttributeControlDefinition(bo.getClass(), propertyName);
 
         try {
             String propValue = null;
@@ -123,7 +117,7 @@ public class FieldBridge {
             }
 
             if (formatter == null && prop != null) {
-                Map<String, Class> references = KNSServiceLocator.getPersistenceStructureService().getReferencesForForeignKey(bo.getClass(), propertyName);
+                Map<String, Class> references = getPersistenceStructureService().getReferencesForForeignKey(bo.getClass(), propertyName);
                 if (references != null && references.size() > 0) {
                     for (String fieldName : references.keySet()) {
                         if (propertyName.startsWith(fieldName)) {
@@ -433,12 +427,12 @@ public class FieldBridge {
      */
     public static List<Field> constructContainerField(CollectionDefinitionI collectionDefinition, String parents, BusinessObject o, boolean hideAdd, int numberOfColumns, String collName, List<Field> collFields) {
         // get label for collection
-        String collectionLabel = KNSServiceLocator.getDataDictionaryService().getCollectionLabel(o.getClass(), collectionDefinition.getName());
+        String collectionLabel = getDataDictionaryService().getCollectionLabel(o.getClass(), collectionDefinition.getName());
 
         // retrieve the summary label either from the override or from the DD
         String collectionElementLabel = collectionDefinition.getSummaryTitle();
         if(StringUtils.isEmpty(collectionElementLabel)){
-            collectionElementLabel = KNSServiceLocator.getDataDictionaryService().getCollectionElementLabel(o.getClass().getName(), collectionDefinition.getName(),collectionDefinition.getBusinessObjectClass());
+            collectionElementLabel = getDataDictionaryService().getCollectionElementLabel(o.getClass().getName(), collectionDefinition.getName(),collectionDefinition.getBusinessObjectClass());
         }
 
         // container field
@@ -490,14 +484,14 @@ public class FieldBridge {
      *
      * @return The populated Field.
      */
-    public static final Field toField(FieldDefinition d, BusinessObject o, Section s) {
-        final Field field = FieldUtils.getPropertyField(o.getClass(), d.getAttributeName(), false);
+    public static Field toField(FieldDefinition d, BusinessObject o, Section s) {
+        Field field = FieldUtils.getPropertyField(o.getClass(), d.getAttributeName(), false);
         field.setPropertyName(d.getAttributeName());
         field.setBusinessObjectClassName(o.getClass().getName());
-        field.setFieldLabel(KNSServiceLocator.getDataDictionaryService().getAttributeLabel(o.getClass(), d.getAttributeName()));
+        field.setFieldLabel(getDataDictionaryService().getAttributeLabel(o.getClass(), d.getAttributeName()));
         FieldUtils.setInquiryURL(field, o, field.getPropertyName());
 
-        Class formatterClass = KNSServiceLocator.getDataDictionaryService().getAttributeFormatter(o.getClass(), d.getAttributeName());
+        Class<? extends Formatter> formatterClass = getDataDictionaryService().getAttributeFormatter(o.getClass(), d.getAttributeName());
         if (formatterClass != null) {
             try {
                 field.setFormatter((Formatter) formatterClass.newInstance());
@@ -517,6 +511,20 @@ public class FieldBridge {
         return field;
 
     }
+
+	public static DataDictionaryService getDataDictionaryService() {
+    	if (dataDictionaryService == null) {
+    		dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+    	}
+		return dataDictionaryService;
+	}
+
+	public static PersistenceStructureService getPersistenceStructureService() {
+    	if (persistenceStructureService == null) {
+    		persistenceStructureService = KNSServiceLocator.getPersistenceStructureService();
+    	}
+		return persistenceStructureService;
+	}
 
 }
 

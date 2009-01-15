@@ -288,7 +288,7 @@ public class RuleXmlParser implements XmlConstants {
         // should we use name or id? which should we consider the primary key for purposes
         // of equality evaluation?
         String ruleTemplateName = rule.getRuleTemplateName();
-        List rules = KEWServiceLocator.getRuleService().fetchAllRules(true);
+        List rules = KEWServiceLocator.getRuleService().fetchAllCurrentRulesForTemplateDocCombination(rule.getRuleTemplateName(), rule.getDocTypeName(), false);
         Iterator it = rules.iterator();
         while (it.hasNext()) {
             RuleBaseValues r = (RuleBaseValues) it.next();

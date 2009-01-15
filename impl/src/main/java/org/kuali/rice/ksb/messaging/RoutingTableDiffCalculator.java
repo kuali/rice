@@ -35,6 +35,9 @@ import org.kuali.rice.core.exception.RiceRuntimeException;
  */
 public class RoutingTableDiffCalculator {
 	
+	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
+			.getLogger(RoutingTableDiffCalculator.class);
+	
 	private List<ServiceInfo> servicesNeedUpdated = new ArrayList<ServiceInfo>();
 	private List<ServiceInfo> servicesNeedRemoved = new ArrayList<ServiceInfo>();
 	private List<ServiceInfo> masterServiceList = new ArrayList<ServiceInfo>();
@@ -118,11 +121,11 @@ public class RoutingTableDiffCalculator {
 		for (ServiceInfo info : serviceInfos) {
 			String endpointURL = info.getEndpointUrl();
 			if (serviceMap.containsKey(endpointURL)) {
-				throw new RiceRuntimeException("Multiple services with same endpoint url declared and saved in routing table.  " +
-						"Stopping service registration.  Endpoint " + endpointURL);
+				LOG.warn("Multiple services with same endpoint url declared and saved in routing table.  " +
+						"Service will be ingored.  Endpoint " + endpointURL);
+			} else {			
+				serviceMap.put(endpointURL, info);
 			}
-			
-			serviceMap.put(endpointURL, info);
 		}
 		return serviceMap;
 	}

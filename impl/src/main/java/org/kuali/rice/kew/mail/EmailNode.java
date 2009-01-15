@@ -60,6 +60,11 @@ public class EmailNode implements SimpleNode {
     private String to;
 
     public SimpleResult process(RouteContext context, RouteHelper helper) throws Exception {
+    	if (context.isSimulation()) {
+            if (!context.getActivationContext().isActivateRequests()) {
+            	return new SimpleResult(true);
+            }
+        } 
 	loadConfiguration(context);
 	Document document = generateXmlInput(context);
 	if (LOG.isDebugEnabled()) {
@@ -134,7 +139,7 @@ public class EmailNode implements SimpleNode {
 			to = (person == null ? "" : person.getEmailAddress());
 	    }
 	    if (StringUtils.isBlank(to)) {
-		throw new WorkflowRuntimeException("Must have exactly one 'to' address");
+	    	throw new WorkflowRuntimeException("Email Address is missing from user's profile.");
 	    }
 	}
 

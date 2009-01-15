@@ -32,14 +32,15 @@ function setMethodToCallAndSubmit(methodToCallValue) {
     <td width="60%"><html-el:link action="../kew/ActionList.do?methodToCall=start">Return to Action List</html-el:link></td>
     </tr>
 </table>
+</div>
 <br>
 <jsp:include page="../../en/WorkflowMessages.jsp" flush="true" />
 
 <br/>
 <br/>
-<table width="100%" cellspacing=0 cellpadding=0>
+<table width="100%" cellspacing="0" cellpadding="0">
   <tr>
-
+    <td class="column-left"><img height="20" width="20" alt="" src="../en/images/pixel_clear.gif"/></td>
     <td><table width="100%" border="0" cellpadding="0" cellspacing="0" class="t3" summary="">
         <tbody>
           <tr>
@@ -55,10 +56,13 @@ function setMethodToCallAndSubmit(methodToCallValue) {
 <html-el:hidden property="methodToCall" />
 <div id="workarea" >
 <div class="tab-container">
-<table width="100%" class="datatable-80" align="center">
+<table class="datatable-80" cellspacing="0" align="center">
+    <tr>
+      <td class="subhead" colspan="2">Parameters</td>
+    </tr>
     <c:if test="${! empty delegators}">
         <tr>
-	    <th><bean-el:message key="actionList.ActionListFilter.filter.label.secondaryDelegatorId"/> <bean-el:message key="general.help.delegatorId"/></th>
+	    <th><div align="right"><span class="thnormal"><bean-el:message key="actionList.ActionListFilter.filter.label.secondaryDelegatorId"/>: <bean-el:message key="general.help.delegatorId"/></span></div></th>
 	    <td>
 		     <html-el:select property="filter.delegatorId">
 			   <html-el:option value="${Constants.DELEGATION_DEFAULT}"><c:out value="${Constants.DELEGATION_DEFAULT}" /></html-el:option>
@@ -72,7 +76,7 @@ function setMethodToCallAndSubmit(methodToCallValue) {
     </c:if>
     <c:if test="${! empty primaryDelegates}">
       <tr>
-	    <th><bean-el:message key="actionList.ActionListFilter.filter.label.primaryDelegateId"/> <bean-el:message key="general.help.primaryDelegateId"/></th>
+	    <th><div align="right"><span class="thnormal"><bean-el:message key="actionList.ActionListFilter.filter.label.primaryDelegateId"/>: <bean-el:message key="general.help.primaryDelegateId"/></span></div></th>
 	    <td class="datacell">
 		     <html-el:select property="filter.primaryDelegateId">
 			   <html-el:option value="${Constants.PRIMARY_DELEGATION_DEFAULT}"><c:out value="${Constants.PRIMARY_DELEGATION_DEFAULT}" /></html-el:option>
@@ -85,11 +89,11 @@ function setMethodToCallAndSubmit(methodToCallValue) {
       </tr>
     </c:if>
 	<tr>
-		<th><bean-el:message key="actionList.ActionListFilter.filter.label.documentTitle"/> <bean-el:message key="general.help.documentTitle"/></th>
+		<th><div align="right"><span class="thnormal"><bean-el:message key="actionList.ActionListFilter.filter.label.documentTitle"/>: <bean-el:message key="general.help.documentTitle"/></span></div></th>
 		<td><html-el:text property="filter.documentTitle"/>&nbsp;<bean-el:message key="actionList.ActionListFilter.filter.label.exclude"/><html-el:checkbox property="filter.excludeDocumentTitle"/></td>
 	</tr>
 	<tr>
-		<th><bean-el:message key="actionList.ActionListFilter.filter.label.documentRouteStatus"/> <bean-el:message key="general.help.routeStatus"/></th>
+		<th><div align="right"><span class="thnormal"><bean-el:message key="actionList.ActionListFilter.filter.label.documentRouteStatus"/>: <bean-el:message key="general.help.routeStatus"/></span></div></th>
 		<td class="datacell"><html-el:select property="filter.docRouteStatus">
 			<html-el:option value="${Constants.ALL_CODE}"><c:out value="${Constants.ALL_CODE}" /></html-el:option>
 			<html-el:option value="${Constants.ROUTE_HEADER_APPROVED_CD}"><c:out value="${Constants.ROUTE_HEADER_APPROVED_LABEL}" /></html-el:option>
@@ -102,7 +106,7 @@ function setMethodToCallAndSubmit(methodToCallValue) {
 			&nbsp;<bean-el:message key="actionList.ActionListFilter.filter.label.exclude"/><html-el:checkbox property="filter.excludeRouteStatus"/></td>
 	</tr>
 	<tr>
-		<th><bean-el:message key="actionList.ActionListFilter.filter.label.actionRequested"/><bean-el:message key="general.help.actionRequested"/></th>
+		<th><div align="right"><span class="thnormal"><bean-el:message key="actionList.ActionListFilter.filter.label.actionRequested"/>: <bean-el:message key="general.help.actionRequested"/></span></div></th>
 		<td class="datacell"><html-el:select property="filter.actionRequestCd">
 			<html-el:option value="${Constants.ALL_CODE}"><c:out value="${Constants.ALL_CODE}" /></html-el:option>
 			<html-el:option value="${Constants.ACTION_REQUEST_ACKNOWLEDGE_REQ}"><c:out value="${Constants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL}" /></html-el:option>
@@ -113,45 +117,45 @@ function setMethodToCallAndSubmit(methodToCallValue) {
 			&nbsp;<bean-el:message key="actionList.ActionListFilter.filter.label.exclude"/><html-el:checkbox property="filter.excludeActionRequestCd"/></td>
 	</tr>
 	<tr>
-		<th><bean-el:message key="actionList.ActionListFilter.filter.label.actionRequestWorkgroup"/> <bean-el:message key="general.help.actionRequestWorkgroup"/></th>
+		<th><div align="right"><span class="thnormal"><bean-el:message key="actionList.ActionListFilter.filter.label.actionRequestWorkgroup"/>: <bean-el:message key="general.help.actionRequestWorkgroup"/></span></div></th>
 		<td class="datacell">
 		    <html-el:select name="ActionListFilterFormNew" property="filter.groupId">
               <html-el:optionsCollection property="userWorkgroups" label="value" value="key" filter="false"/>
             </html-el:select>&nbsp;<bean-el:message key="actionList.ActionListFilter.filter.label.exclude"/><html-el:checkbox property="filter.excludeGroupId"/></td>
 	</tr>
 	<tr>
-		<th><bean-el:message key="actionList.ActionListFilter.filter.label.documentType"/> <bean-el:message key="general.help.documentType"/></th>
+		<th><div align="right"><span class="thnormal"><bean-el:message key="actionList.ActionListFilter.filter.label.documentType"/>: <bean-el:message key="general.help.documentType"/></span></div></th>
 		<td class="datacell"><span id="docTypeElementId"><c:out value="${ActionListFilterFormNew.docTypeFullName}" /></span>
 		    <html-el:image property="methodToCall.performLookup" src="../en/images/searchicon.gif" alt="search" align="absmiddle"
 		     onclick="document.forms[0].elements['lookupableImplServiceName'].value = 'DocumentTypeLookupableImplService';"/>&nbsp;<bean-el:message key="actionList.ActionListFilter.filter.label.exclude"/><html-el:checkbox property="filter.excludeDocumentType"/></td>
 	</tr>
 	<tr>
-		<th><bean-el:message key="actionList.ActionListFilter.filter.label.dateCreated"/> <bean-el:message key="general.help.dateCreated"/></th>
-		<td>
-          <table>
+		<th><div align="right"><span class="thnormal"><bean-el:message key="actionList.ActionListFilter.filter.label.dateCreated"/>: <bean-el:message key="general.help.dateCreated"/></span></div></th>
+		<td class="datacell">
+          <table class="neutral" border="0" cellspacing="0" cellpadding="1">
             <tr>
-              <td>
-		        <table border="0" cellspacing="0" cellpadding="1">
+              <td class="neutral">
+		        <table class="neutral" border="0" cellspacing="0" cellpadding="0">
                   <tr>
-                    <td align="right" nowrap><bean-el:message key="actionList.ActionListFilter.filter.label.from"/>:</td>
-                    <td nowrap>
+                    <td class="neutral" style="text-align:right" nowrap><bean-el:message key="actionList.ActionListFilter.filter.label.from"/>:</td>
+                    <td class="neutral" nowrap>
                       <html-el:text property="createDateFrom" size="10"/>
                       <a href="javascript:showCal('createDateFrom');"><img src="../en/images/cal.gif" width="16" height="16" border="0" alt="Click Here to pick up the from date created"></a>&nbsp;
                     </td>
                   </tr>
                   <tr>
-                    <td align="right" nowrap><bean-el:message key="actionList.ActionListFilter.filter.label.to"/>:</td>
-                    <td nowrap>
+                    <td class="neutral" style="text-align:right" nowrap><bean-el:message key="actionList.ActionListFilter.filter.label.to"/>:</td>
+                    <td class="neutral" nowrap>
                       <html-el:text property="createDateTo" size="10"/>
                       <a href="javascript:showCal('createDateTo');"><img src="../en/images/cal.gif" width="16" height="16" border="0" alt="Click Here to pick up the to date created"></a>&nbsp;
                     </td>
                   </tr>
                 </table>
               </td>
-              <td>
-		        <table border="0" cellspacing="0" cellpadding="1">
+              <td  class="neutral">
+		        <table  class="neutral" border="0" cellspacing="0" cellpadding="1">
                   <tr>
-                    <td align="right" nowrap><bean-el:message key="actionList.ActionListFilter.filter.label.exclude"/><html-el:checkbox property="filter.excludeCreateDate"/></td>
+                    <td  class="neutral" align="right" nowrap><bean-el:message key="actionList.ActionListFilter.filter.label.exclude"/><html-el:checkbox property="filter.excludeCreateDate"/></td>
                   </tr>
                 </table>
               </td>
@@ -160,32 +164,32 @@ function setMethodToCallAndSubmit(methodToCallValue) {
 		</td>
 	</tr>
 	<tr>
-		<th><bean-el:message key="actionList.ActionListFilter.filter.label.dateLastAssigned"/> <bean-el:message key="general.help.dateLastAssigned"/></th>
-		<td >
-          <table>
+		<th><div align="right"><span class="thnormal"><bean-el:message key="actionList.ActionListFilter.filter.label.dateLastAssigned"/>: <bean-el:message key="general.help.dateLastAssigned"/></span></div></th>
+		<td class="datacell" >
+          <table class="neutral" >
             <tr>
-              <td>
-                <table border="0" cellspacing="0" cellpadding="1">
+              <td class="neutral">
+                <table class="neutral"  border="0" cellspacing="0" cellpadding="1">
                   <tr>
-                    <td align="right" nowrap><bean-el:message key="actionList.ActionListFilter.filter.label.from"/>:</td>
-                    <td nowrap>
+                    <td class="neutral" style="text-align:right" nowrap><bean-el:message key="actionList.ActionListFilter.filter.label.from"/>:</td>
+                    <td class="neutral"  nowrap>
                       <html-el:text property="lastAssignedDateFrom" size="10" />
                       <a href="javascript:showCal('lastAssignedDateFrom');"><img src="../en/images/cal.gif" width="16" height="16" border="0" alt="Click Here to pick up the from last assigned date"></a>&nbsp;
                     </td>
                   </tr>
                   <tr>
-                    <td align="right" nowrap><bean-el:message key="actionList.ActionListFilter.filter.label.to"/>:</td>
-                    <td nowrap>
+                    <td class="neutral" style="text-align:right" nowrap><bean-el:message key="actionList.ActionListFilter.filter.label.to"/>:</td>
+                    <td class="neutral" nowrap>
                       <html-el:text property="lastAssignedDateTo" size="10" />
                       <a href="javascript:showCal('lastAssignedDateTo');"><img src="../en/images/cal.gif" width="16" height="16" border="0" alt="Click Here to pick up the to last assigned date"></a>&nbsp;
                     </td>
                   </tr>
                 </table>
               </td>
-              <td>
-		        <table border="0" cellspacing="0" cellpadding="1">
+              <td class="neutral">
+		        <table class="neutral" border="0" cellspacing="0" cellpadding="1">
                   <tr>
-                    <td align="right" nowrap><bean-el:message key="actionList.ActionListFilter.filter.label.exclude"/><html-el:checkbox property="filter.excludeLastAssignedDate"/></td>
+                    <td class="neutral" align="right" nowrap><bean-el:message key="actionList.ActionListFilter.filter.label.exclude"/><html-el:checkbox property="filter.excludeLastAssignedDate"/></td>
                   </tr>
                 </table>
               </td>
@@ -193,14 +197,6 @@ function setMethodToCallAndSubmit(methodToCallValue) {
           </table>
 		</td>
     </tr>
-	<tr>
-		<th colspan="2" align="center">
-
-            <html-el:image src="../en/images/buttonsmall_filter.gif" align="absmiddle" property="methodToCall.filter" onclick="javascript: setMethodToCallAndSubmit('filter')" />&nbsp;&nbsp;
-            <html-el:image src="../en/images/buttonsmall_clear.gif" align="absmiddle" property="methodToCall.clear" onclick="document.forms[0].elements['methodToCall'].value = 'clear';" />&nbsp;&nbsp;
-            <a href="javascript:document.forms[0].reset()"><img src="../en/images/buttonsmall_reset.gif" border=0 alt="reset" align="absmiddle"></a>
-		</th>
-	</tr>
 </table>
 </div>
         <table width="100%" border="0" cellpadding="0" cellspacing="0" class="b3" summary="">
@@ -210,9 +206,18 @@ function setMethodToCallAndSubmit(methodToCallValue) {
           </tr>
         </table>
 </td>
+<td class="column-right"><img height="20" width="20" alt="" src="../en/images/pixel_clear.gif"/></td>
 </tr>
 </table>
 </div>
+<br />
+  <div align="center">
+            <html-el:image src="../en/images/buttonsmall_filter.gif" align="absmiddle" property="methodToCall.filter" onclick="javascript: setMethodToCallAndSubmit('filter')" />&nbsp;&nbsp;
+            <html-el:image src="../en/images/buttonsmall_clear.gif" align="absmiddle" property="methodToCall.clear" onclick="document.forms[0].elements['methodToCall'].value = 'clear';" />&nbsp;&nbsp;
+            <a href="javascript:document.forms[0].reset()"><img src="../en/images/buttonsmall_reset.gif" border=0 alt="reset" align="absmiddle"></a>
+  </div>
+<br />
+<br />
 <jsp:include page="../BackdoorMessage.jsp" flush="true"/>
 </html-el:form>
 </body>

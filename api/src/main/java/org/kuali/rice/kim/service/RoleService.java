@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -76,7 +77,21 @@ public interface RoleService {
     boolean isRoleActive( String roleId );
 
     List<AttributeSet> getRoleQualifiersForPrincipal( String principalId, List<String> roleIds, AttributeSet qualification );
+
+    /**
+     * Returns a list of role qualifiers that the given principal has without taking into consideration
+     * that the principal may be a member via an assigned group or role.  Use in situations where
+     * you are only interested in the qualifiers that are directly assigned to the principal.
+     */
     List<AttributeSet> getRoleQualifiersForPrincipal( String principalId, String namespaceCode, String roleName, AttributeSet qualification );
+    
+    /**
+     * Returns a list of role qualifiers that the given principal.  If the principal's membership
+     * is via a group or role, that group or role's qualifier on the given role is returned.
+     */
+	List<AttributeSet> getRoleQualifiersForPrincipalIncludingNested( String principalId, String namespaceCode, String roleName, AttributeSet qualification );
+	List<AttributeSet> getRoleQualifiersForPrincipalIncludingNested( String principalId, List<String> roleIds, AttributeSet qualification );
+
     // --------------------
     // Role Membership Checks
     // --------------------

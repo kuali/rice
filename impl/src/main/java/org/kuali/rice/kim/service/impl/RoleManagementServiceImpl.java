@@ -371,6 +371,27 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		}
 	}
 	
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kim.service.RoleService#getRoleQualifiersForPrincipalIncludingNested(java.lang.String, java.util.List, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 */
+	public List<AttributeSet> getRoleQualifiersForPrincipalIncludingNested(
+			String principalId, List<String> roleIds, AttributeSet qualification) {
+		return getRoleService().getRoleQualifiersForPrincipalIncludingNested(principalId, roleIds, qualification);
+	}
+	
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kim.service.RoleService#getRoleQualifiersForPrincipalIncludingNested(java.lang.String, java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 */
+	public List<AttributeSet> getRoleQualifiersForPrincipalIncludingNested(
+			String principalId, String namespaceCode, String roleName,
+			AttributeSet qualification) {
+		return getRoleService().getRoleQualifiersForPrincipalIncludingNested(principalId, namespaceCode, roleName, qualification);
+	}
+	
 	public void assignGroupToRole(String groupId, String namespaceCode, String roleName,
 			AttributeSet qualifications) {
 		getRoleService().assignGroupToRole( groupId, namespaceCode, roleName, qualifications );

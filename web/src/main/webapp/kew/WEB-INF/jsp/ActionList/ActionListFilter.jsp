@@ -58,7 +58,7 @@ function setMethodToCallAndSubmit(methodToCallValue) {
 <div class="tab-container">
 <table class="datatable-80" cellspacing="0" align="center">
     <tr>
-      <td class="subhead" colspan="2">Parameters</td>
+      <td class="subhead" colspan="2"><bean-el:message key="actionList.ActionListFilter.filter.label.parametersTitle"/></td>
     </tr>
     <c:if test="${! empty delegators}">
         <tr>

@@ -37,7 +37,8 @@
         p:maxLength="50"
         p:required="false" >
     <property name="validationPattern" >
-      <bean parent="AlphaNumericValidationPattern" />
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="true" />
     </property>
     <property name="control" >
       <bean parent="TextControlDefinition" p:size="10" />
@@ -53,7 +54,8 @@
         p:maxLength="50"
         p:required="false" >
     <property name="validationPattern" >
-      <bean parent="AlphaNumericValidationPattern" />
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="true" />
     </property>
     <property name="control" >
       <bean parent="TextControlDefinition" p:size="10" />
@@ -99,6 +101,10 @@
         p:shortLabel="Line 1"
         p:maxLength="50"
         p:required="false" >
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="true" />
+    </property>
     <property name="control" >
       <bean parent="TextControlDefinition" p:size="10" />
     </property>

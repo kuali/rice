@@ -42,8 +42,10 @@ import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.DictionaryValidationService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.ErrorMessage;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.TypedArrayList;
 import org.kuali.rice.kns.web.format.Formatter;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.KeyLabelPair;
@@ -204,16 +206,27 @@ public class KimTypeServiceBase implements KimTypeService {
 		getDictionaryValidationService().validatePrimitiveFromDescriptor(entryName, object, propertyDescriptor, "", validateRequired);
 
 		Object results = GlobalVariables.getErrorMap().get(propertyDescriptor.getName());
-		List<String> errors = new ArrayList<String>();
+		List errors = new ArrayList();
         if (results instanceof String) {
         	errors.add((String)results);
-        } else if ( results != null ) {
-        	String [] temp = (String []) results;
-        	for (String string : temp) {
-				errors.add(string);
-			}
+        } else if ( results != null) {
+        	if (results instanceof List) {
+	        	List errorList = (List)results;
+	        	for (Object msg : errorList) {
+	        		ErrorMessage errorMessage = (ErrorMessage)msg;
+	        		String retVal = errorMessage.getErrorKey()+":";
+	        		for (String param : errorMessage.getMessageParameters()) {
+	        			retVal = retVal + param +";";
+	        		}
+	        		errors.add(retVal);
+				}
+	        } else {
+	        	String [] temp = (String []) results;
+	        	for (String string : temp) {
+					errors.add(string);
+				}
+	        }
         }
-		
         GlobalVariables.getErrorMap().remove(propertyDescriptor.getName());
 		return errors;
 	}

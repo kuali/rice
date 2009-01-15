@@ -95,13 +95,15 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
     			// need this if submit without saving
     			personDoc.getPrivacy().setDocumentNumber(personDoc.getDocumentNumber());
     		}
-
+    		// persondoc might be overwritten from session
         	forward =  super.execute(mapping, form, request, response);
         }
 		// move the following to service
 		// get set up person document
         String commandParam = request.getParameter(KNSConstants.PARAMETER_COMMAND);
 		if (StringUtils.isNotBlank(commandParam) && commandParam.equals(KEWConstants.INITIATE_COMMAND) && StringUtils.isNotBlank(request.getParameter(KimConstants.PropertyNames.PRINCIPAL_ID))) {
+			// persondoc changed
+			personDoc = (IdentityManagementPersonDocument)personDocumentForm.getDocument();
 	        KimPrincipal principal = getIdentityService().getPrincipal(request.getParameter(KimConstants.PropertyNames.PRINCIPAL_ID));
 	        personDoc.setPrincipalId(principal.getPrincipalId());
 	        personDoc.setPrincipalName(principal.getPrincipalName());

@@ -177,7 +177,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	return attributeImpl;
     }
     
-	public AttributeSet convertQualifiersToMap( List<PersonDocumentRoleQualifier> qualifiers ) {
+	private AttributeSet convertQualifiersToMap( List<PersonDocumentRoleQualifier> qualifiers ) {
 		AttributeSet m = new AttributeSet();
 		for ( PersonDocumentRoleQualifier data : qualifiers ) {
 			KimAttributeImpl attrib = getAttributeDefinition( data.getKimAttrDefnId() );
@@ -190,28 +190,63 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 		return m;
 	}
     
+	private AttributeSet convertQualifiersToAttrIdxMap( List<PersonDocumentRoleQualifier> qualifiers ) {
+		AttributeSet m = new AttributeSet();
+		int i = 0;
+		for ( PersonDocumentRoleQualifier data : qualifiers ) {
+			KimAttributeImpl attrib = getAttributeDefinition( data.getKimAttrDefnId() );
+			if ( attrib != null ) {
+				m.put( attrib.getAttributeName(), Integer.toString(i) );
+			} else {
+				LOG.error("Unable to get attribute name for ID:" + data.getKimAttrDefnId() );
+			}
+		}
+		return m;
+	}
+
+	private AttributeSet convertErrors(String errorPath, AttributeSet attrIdxMap, AttributeSet localErrors) {
+		AttributeSet errors = new AttributeSet();
+		for ( String key : localErrors.keySet() ) {
+			errors.put(errorPath+".qualifiers["+attrIdxMap.get(key)+"].attrVal", localErrors.get(key));
+		}
+		return errors;
+
+	}
+	
     private boolean validateRoleQualifier( List<PersonDocumentRole> roles ) {
 
     	//boolean valid = true;
 		AttributeSet validationErrors = new AttributeSet();
 		// TODO : "kimTypeService.validateAttributes(attributes)" is not working yet 
+        GlobalVariables.getErrorMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
+        int i = 0;
     	for(PersonDocumentRole role : roles ) {
-	        KimTypeService kimTypeService = (KimTypeServiceBase)KIMServiceLocator.getService(role.getKimRoleType().getKimTypeServiceName());
+    		String serviceName = role.getKimRoleType().getKimTypeServiceName();
+    		if (StringUtils.isBlank(serviceName)) {
+    			serviceName = "kimTypeService";
+    		}
+	        KimTypeService kimTypeService = (KimTypeServiceBase)KIMServiceLocator.getService(serviceName);
+	        int j = 0;
         	for ( PersonDocumentRolePrncpl rolePrincipal : role.getRolePrncpls() ) {
         		// TODO: cache the attribute definitions for a given role type
         		// PROBLEM: this role qualifiers map does not have any keys with which to link to the attributes
         		AttributeSet localErrors = kimTypeService.validateAttributes( convertQualifiersToMap( rolePrincipal.getQualifiers() ) );
         		// TODO: prefix all these errors with the proper prefix for their path on the document
-		        validationErrors.putAll( localErrors );
+		        validationErrors.putAll( convertErrors("roles["+i+"].rolePrncpls["+j+"]",convertQualifiersToAttrIdxMap(rolePrincipal.getQualifiers()),localErrors) );
+		        j++;
 	        }
+        	i++;
     	}
+        GlobalVariables.getErrorMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
     	if (validationErrors.isEmpty()) {
     		return true;
     	} else {
     		// FIXME: This does not use the correct error path yet - may need to be moved up so that the error path is known
     		// Also, the above code would overwrite messages on the same attributes (namespaceCode) but on different rows
     		for ( String key : validationErrors.keySet() ) {
-    			GlobalVariables.getErrorMap().putError( key, RiceKeyConstants.ERROR_CUSTOM, validationErrors.get( key ) );
+        		String[] errorMsg = StringUtils.split(validationErrors.get( key ), ":");
+        		
+    			GlobalVariables.getErrorMap().putError( key, errorMsg[0], errorMsg.length > 1 ? StringUtils.split(errorMsg[1], ";") : new String[] {} );
     		}
     		return false;
     	}

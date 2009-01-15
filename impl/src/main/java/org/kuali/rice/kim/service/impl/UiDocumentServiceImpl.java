@@ -70,6 +70,7 @@ import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.TextControlDefinition;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -217,7 +218,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		identityManagementPersonDocument.setEmails(loadEmails(entityType.getEmailAddresses()));
 		identityManagementPersonDocument.setPhones(loadPhones(entityType.getPhoneNumbers()));
 		identityManagementPersonDocument.setAddrs(loadAddresses(entityType.getAddresses()));
-		if (kimEntity.getPrivacyPreferences() != null) {
+		if ( ObjectUtils.isNotNull( kimEntity.getPrivacyPreferences() ) ) {
 			identityManagementPersonDocument.setPrivacy(loadPrivacyReferences(kimEntity.getPrivacyPreferences()));
 		}
 		

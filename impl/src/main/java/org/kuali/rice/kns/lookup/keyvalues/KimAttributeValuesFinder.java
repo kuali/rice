@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kns.lookup.keyvalues;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +25,7 @@ import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -35,12 +38,20 @@ public class KimAttributeValuesFinder extends KeyValuesBase {
 	/**
 	 * @see org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder#getKeyValues()
 	 */
-	public List getKeyValues() {
+	@SuppressWarnings("unchecked")
+	public List<KeyLabelPair> getKeyValues() {
 		Map<String,String> criteria = new HashMap<String,String>();
         criteria.put("name", kimTypeName);
-        KimTypeImpl kimType = (KimTypeImpl) KNSServiceLocator.getBusinessObjectService().findMatching(KimTypeImpl.class, criteria).iterator().next();
-		KimTypeService service = (KimTypeService) KIMServiceLocator.getBean(kimType.getKimTypeServiceName());	
-		return service.getAttributeValidValues(kimAttributeName);
+        Collection<KimTypeImpl> typeList = (Collection<KimTypeImpl>)KNSServiceLocator.getBusinessObjectService().findMatching(KimTypeImpl.class, criteria);
+        if ( !typeList.isEmpty() ) {
+	        KimTypeImpl kimType = typeList.iterator().next();
+	        String serviceName = kimType.getKimTypeServiceName();
+	        if ( serviceName == null ) {
+	        	KimTypeService service = (KimTypeService)KIMServiceLocator.getBean(serviceName);	
+				return service.getAttributeValidValues(kimAttributeName);
+	        }
+        }
+        return new ArrayList<KeyLabelPair>(0);
 	}
 
 	/**

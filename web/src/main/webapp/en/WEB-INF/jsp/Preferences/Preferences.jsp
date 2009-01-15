@@ -122,7 +122,7 @@
 			<td class="datacell"><html-el:checkbox styleClass="nobord" property="preferences.showInitiator" value="${Constants.PREFERENCES_YES_VAL }"/>
           </td>
         </tr>
-        
+
         <tr>
           <th ><div align="right">Delegator</div></th>
 			<td class="datacell"><html-el:checkbox styleClass="nobord" property="preferences.showDelegator" value="${Constants.PREFERENCES_YES_VAL }"/>
@@ -166,7 +166,7 @@
 	          <td class="datacell"><html-el:checkbox styleClass="nobord" property="preferences.useOutbox" value="${Constants.PREFERENCES_YES_VAL }"/>	          </td>
 	        </tr>
         </c:if>
-        
+
         <tr>
          <td colspan="2" class="subhead" >Document Route Status Colors for Actionlist Entries</td>
         </tr>
@@ -183,7 +183,7 @@
 			 </table>
 			</td>
 		</tr>
-		
+
 		<tr>
 			<th class="thnormal"><div align="right">Initiated</div></th>
 			<td>
@@ -298,7 +298,7 @@
           </tr>
         </table>
 	 <div class="globalbuttons">
-	 			<a href="overview.html"><img src="images/buttonsmall_save.gif" alt="save" width="53" height="18" hspace="5" border="0" property="methodToCall.save"></a>
+                <html-el:image style="border-width:0px" property="methodToCall.save" src="images/buttonsmall_save.gif"  />
 	 				<a href="javascript:document.forms[0].reset()"><img src="images/buttonsmall_reset.gif" alt="cancel" width="59" height="18" hspace="5" border="0"></a> </div>
     </div>
       <div class="globalbuttons"></div></td>

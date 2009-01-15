@@ -110,6 +110,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		hasPermissionByTemplateCache.clear();
 		isPermissionDefinedForTemplateNameCache.clear();
 		isAuthorizedByTemplateNameCache.clear();
+		isAuthorizedCache.clear();
 	}
 
 	public void flushResponsibilityCaches() {
@@ -224,7 +225,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		return null;
 	}
 	
-	protected Boolean getHasPermissionByTemplateCache( String key, AttributeSet attrs ) {
+	protected Boolean getHasPermissionByTemplateCache( String key ) {
 		MaxAgeSoftReference<Boolean> hasPermissionRef = hasPermissionByTemplateCache.get( key );
 		if ( hasPermissionRef != null ) {
 			return hasPermissionRef.get();
@@ -369,7 +370,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     	cacheKey.append( principalId ).append(  '/' );
     	cacheKey.append( namespaceCode ).append( '-' ).append( permissionTemplateName ).append( '/' );
     	addAttributeSetToKey( permissionDetails, cacheKey );
-    	Boolean hasPerm = getHasPermissionCache(cacheKey.toString());
+    	Boolean hasPerm = getHasPermissionByTemplateCache(cacheKey.toString());
 		if (hasPerm == null) {
 			hasPerm = getPermissionService().hasPermissionByTemplateName( principalId, namespaceCode, permissionTemplateName, permissionDetails );
 	    	addHasPermissionByTemplateToCache(cacheKey.toString(), hasPerm);

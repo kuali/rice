@@ -27,8 +27,6 @@ import org.kuali.rice.kns.web.format.Formatter;
  */
 public class KimDataDictionaryAttributeDefinition extends AttributeDefinition {
 	
-	@Deprecated
-	protected AttributeDefinition dataDictionaryAttributeDefinition;
 	protected Class<? extends Formatter> formatterClass;
 	protected Mask mask;
 	protected String sortCode;
@@ -109,23 +107,6 @@ public class KimDataDictionaryAttributeDefinition extends AttributeDefinition {
 	 */
 	public void setLookupReturnPropertyConversions(Map<String, String> lookupReturnPropertyConversions) {
 		this.lookupReturnPropertyConversions = lookupReturnPropertyConversions;
-	}
-
-	/**
-	 * @return the dataDictionaryAttributeDefinition
-	 */
-	@Deprecated
-	public AttributeDefinition getDataDictionaryAttributeDefinition() {
-		return this.dataDictionaryAttributeDefinition;
-	}
-
-	/**
-	 * @param dataDictionaryAttributeDefinition the dataDictionaryAttributeDefinition to set
-	 */
-	@Deprecated
-	public void setDataDictionaryAttributeDefinition(
-			AttributeDefinition dataDictionaryAttributeDefinition) {
-		this.dataDictionaryAttributeDefinition = dataDictionaryAttributeDefinition;
 	}
 
 	/**

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/rice-0.9.4-doctype/impl/src/main/java/org/kuali/rice/core/web/jetty/JettyServer.java"/>
+<listEntry value="/rice-0.9.4/impl/src/main/java/org/kuali/rice/core/web/jetty/JettyServer.java"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>
@@ -13,7 +13,7 @@
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.kuali.rice.core.web.jetty.JettyServer"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="8080 &quot;/kr-dev&quot; &quot;/web/src/main/webapp&quot;"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="rice-0.9.4-doctype"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="rice-0.9.4"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx128M -Dkew.bootstrap.spring.file=SampleAppBeans.xml"/>
 <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${project_loc}"/>
 </launchConfiguration>

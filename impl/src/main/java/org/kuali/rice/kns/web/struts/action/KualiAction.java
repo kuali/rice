@@ -554,10 +554,10 @@ public abstract class KualiAction extends DispatchAction {
     	}
 
 		Class boClass = null;
-		try{
+		try {
 			boClass = Class.forName(boClassName);
 		} catch(ClassNotFoundException cnfex){
-			throw new IllegalArgumentException("The classname does not represent a valid class.");
+			throw new IllegalArgumentException("The classname (" + boClassName + ") does not represent a valid class.");
 		}
     	ModuleService responsibleModuleService = getKualiModuleService().getResponsibleModuleService(boClass);
 		if(responsibleModuleService!=null && responsibleModuleService.isExternalizable(boClass)){

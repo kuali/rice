@@ -113,8 +113,8 @@ public class ActionListAction extends KualiAction {
 
     	return headerButtons;
     }
-    
-    
+
+
 
 	@Override
 	protected ActionForward defaultDispatch(ActionMapping mapping,
@@ -570,7 +570,7 @@ public class ActionListAction extends KualiAction {
     }
 
     public ActionForward helpDeskActionListLogin(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        ActionListFormOld actionListForm = (ActionListFormOld) form;
+        ActionListForm actionListForm = (ActionListForm) form;
         if (!"true".equals(request.getAttribute("helpDeskActionList"))) {
         	throw new AuthorizationException(UserSession.getAuthenticatedUser().getPrincipalId(), "helpDeskActionListLogin", getClass().getSimpleName());
         }
@@ -601,7 +601,7 @@ public class ActionListAction extends KualiAction {
      * Generates an Action List count.
      */
     public ActionForward count(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-    	ActionListFormOld alForm = (ActionListFormOld)form;
+    	ActionListForm alForm = (ActionListForm)form;
     	Person user = getUserSession(request).getPerson();
     	alForm.setCount(KEWServiceLocator.getActionListService().getCount(user.getPrincipalId()));
     	LOG.info("Fetched Action List count of " + alForm.getCount() + " for user " + user.getPrincipalName());

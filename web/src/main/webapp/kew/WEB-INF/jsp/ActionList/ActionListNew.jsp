@@ -81,6 +81,17 @@
          href='<c:out value="ActionListFilter.do?methodToCall=start" />'  title="filter"><img
          src="../kr/images/tinybutton-filter.gif" class="tinybutton" alt="filter" title="filter"
          border="0" /></a>
+
+         <c:if test="${helpDeskActionList != null}">
+			<html-el:text property="helpDeskActionListUserName" size="12" />&nbsp;
+            <html-el:image src="../kr/images/tinybutton-hlpdesk.gif" property="methodToCall.helpDeskActionListLogin" border="0"/>
+			<c:if test="${kewUserSession.helpDeskActionListPerson != null}">
+				<a href="
+					<c:url value="ActionList.do">
+						<c:param name="methodToCall" value="clearHelpDeskActionListUser" />
+					</c:url>">Clear <c:out value="${kewUserSession.helpDeskActionListPerson.name}"/>'s List</a>
+			</c:if>&nbsp;&nbsp;
+		</c:if>
     </div>
 	</div>
 

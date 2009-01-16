@@ -90,7 +90,7 @@
 		
 		<helpEntry>
 			<helpName>Action Taken ID</helpName>
-			<helpText>An internal integer that EDEN Workflow creates to unique identify an Action Taken entry.</helpText>
+			<helpText>An internal integer that Workflow creates to unique identify an Action Taken entry.</helpText>
 			<helpKey>ActionTakenID</helpKey>
 		</helpEntry>
 		
@@ -260,7 +260,7 @@
 			<helpName>Document Type JNDI Factory Class</helpName>
 			<helpText>The name of the Factory Class of the JNDI service for the Document Type. Together with the JNDI URL, it locates the applications which support this Document Type.
   	      
-  	      This field is used only if the applications are not coresident with EDEN Workflow, and is normally left blank.</helpText>
+  	      This field is used only if the applications are not coresident with Workflow, and is normally left blank.</helpText>
 			<helpKey>DocumentTypeJNDIFactoryClass</helpKey>
 		</helpEntry>	
 		
@@ -344,15 +344,15 @@
 		</helpEntry>	
 		
 		<helpEntry>
-			<helpName>Eden Annotation</helpName>
+			<helpName>Annotation</helpName>
 			<helpText>Notes to be included in the Route Header.</helpText>
-			<helpKey>EdenAnnotation</helpKey>
+			<helpKey>Annotation</helpKey>
 		</helpEntry>	
 		
 		<helpEntry>
-			<helpName>Eden Description</helpName>
+			<helpName>Description</helpName>
 			<helpText>Description of the document.</helpText>
-			<helpKey>EdenDescription</helpKey>
+			<helpKey>Description</helpKey>
 		</helpEntry>	
 		
 		<helpEntry>
@@ -416,7 +416,7 @@
 			<helpName>Route Template Exception Workgroup</helpName>
 			<helpText>The Exception Workgroup for this entry in the Route Template of this Document Type or Document Type Group. This Workgroup will respond to any Exception routing.
               
-              Enter a valid EDEN Workgroup name or choose one in the QuickFinder.
+              Enter a valid Workgroup name or choose one in the QuickFinder.
               
               The entries in the Route Template are run in ascending order by their numeric Route Level: 1, 2, 3, ... Entries with the same Route Level (but different Route Types) are run concurrently.
               
@@ -627,7 +627,7 @@
 		
 		<helpEntry>
 			<helpName>Action Request ID</helpName>
-			<helpText>An internal number that EDEN Workflow creates to uniquely identify an Action Request entry.</helpText>
+			<helpText>An internal number that Workflow creates to uniquely identify an Action Request entry.</helpText>
 			<helpKey>ActionRequestID</helpKey>
 		</helpEntry>
 		
@@ -665,7 +665,7 @@
 		
 		<helpEntry>
 			<helpName>Routing Priority</helpName>
-			<helpText>An internal integer that EDEN Workflow assigns to reviewers to order routing within the same Route Level. The highest priority is 1.</helpText>
+			<helpText>An internal integer that Workflow assigns to reviewers to order routing within the same Route Level. The highest priority is 1.</helpText>
 			<helpKey>RoutingPriority</helpKey>
 		</helpEntry>
 		
@@ -677,7 +677,7 @@
 		
 		<helpEntry>
 			<helpName>Responsibility ID</helpName>
-			<helpText>An internal number that EDEN Workflow creates to uniquely identify an organizational responsibility or role.</helpText>
+			<helpText>An internal number that Workflow creates to uniquely identify an organizational responsibility or role.</helpText>
 			<helpKey>ResponsibilityID</helpKey>
 		</helpEntry>
 		
@@ -691,7 +691,7 @@
 		
 		<helpEntry>
 			<helpName>Route Type Route Module Name</helpName>
-			<helpText>The name of the EDEN Workflow Route Module used with the Route Type.
+			<helpText>The name of the Workflow Route Module used with the Route Type.
          
          Enter the name of a registered Route Module.</helpText>
 			<helpKey>RouteTypeRouteModuleName</helpKey>
@@ -720,7 +720,7 @@
 			<helpName>Route Type Route Module JNDI Factory Class</helpName>
 			<helpText>The Factory Class of the JNDI service for the Route Type. Together with the JNDI URL, it locates the applications which support this Route Type.
          
-         This field is used only if the applications are not coresident with EDEN Workflow, and is normally left blank.</helpText>
+         This field is used only if the applications are not coresident with Workflow, and is normally left blank.</helpText>
 			<helpKey>RouteTypeRouteModuleJNDIFactoryClass</helpKey>
 		</helpEntry>
 		
@@ -728,7 +728,7 @@
 			<helpName>Route Type Route Module JNDI URL</helpName>
 			<helpText>The URL of the JNDI service for the Route Type. Together with the JNDI Factory Class, it locates the applications which support this Route Type.
          
-         This field is used only if the applications are not coresident with EDEN Workflow, and is normally left blank.</helpText>
+         This field is used only if the applications are not coresident with Workflow, and is normally left blank.</helpText>
 			<helpKey>RouteTypeRouteModuleJNDIURL</helpKey>
 		</helpEntry>
 		

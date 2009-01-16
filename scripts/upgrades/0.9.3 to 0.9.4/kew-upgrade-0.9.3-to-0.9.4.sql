@@ -434,3 +434,47 @@ UPDATE KREW_DOC_TYP_T SET POST_PRCSR = 'org.kuali.rice.kns.workflow.postprocesso
 /
 UPDATE KREW_DOC_TYP_T SET DOC_HDLR_URL = '${kr.url}/maintenance.do?methodToCall=docHandler' WHERE CUR_IND = 1 AND DOC_TYP_NM = 'EDENSERVICE-DOCS.DocumentType'
 /
+
+
+
+UPDATE KREW_DOC_TYP_T set DOC_TYP_NM='DocumentTypeDocument', PARNT_ID=(select DOC_TYP_ID from KREW_DOC_TYP_T where DOC_TYP_NM = 'RiceDocument' and CUR_IND=1) where DOC_TYP_NM='EDENSERVICE-DOCS.DocumentType' and CUR_IND=1
+/
+UPDATE KREW_DOC_TYP_T set DOC_TYP_NM='RoutingRuleDocument', PARNT_ID=(select DOC_TYP_ID from KREW_DOC_TYP_T where DOC_TYP_NM = 'RiceDocument' and CUR_IND=1) where DOC_TYP_NM='EDENSERVICE-DOCS.RuleDocument' and CUR_IND=1
+/
+UPDATE KREW_DOC_TYP_T set DOC_TYP_NM='RemoveReplaceUserDocument', PARNT_ID=(select DOC_TYP_ID from KREW_DOC_TYP_T where DOC_TYP_NM = 'RiceDocument' and CUR_IND=1) where DOC_TYP_NM='EDENSERVICE-DOCS.RemoveReplaceUser' and CUR_IND=1
+/
+
+UPDATE KREW_ACTN_ITM_T set DOC_TYP_NM='DocumentTypeDocument' where DOC_TYP_NM='EDENSERVICE-DOCS.DocumentType'
+/
+UPDATE KREW_ACTN_ITM_T set DOC_TYP_NM='RoutingRuleDocument' where DOC_TYP_NM='EDENSERVICE-DOCS.RuleDocument'
+/
+UPDATE KREW_ACTN_ITM_T set DOC_TYP_NM='RemoveReplaceUserDocument' where DOC_TYP_NM='EDENSERVICE-DOCS.RemoveReplaceUser'
+/
+
+UPDATE KREW_EDL_ASSCTN_T set DOC_TYP_NM='DocumentTypeDocument' where DOC_TYP_NM='EDENSERVICE-DOCS.DocumentType'
+/
+UPDATE KREW_EDL_ASSCTN_T set DOC_TYP_NM='RoutingRuleDocument' where DOC_TYP_NM='EDENSERVICE-DOCS.RuleDocument'
+/
+UPDATE KREW_EDL_ASSCTN_T set DOC_TYP_NM='RemoveReplaceUserDocument' where DOC_TYP_NM='EDENSERVICE-DOCS.RemoveReplaceUser'
+/
+
+UPDATE KREW_EDL_DMP_T set DOC_TYP_NM='DocumentTypeDocument' where DOC_TYP_NM='EDENSERVICE-DOCS.DocumentType'
+/
+UPDATE KREW_EDL_DMP_T set DOC_TYP_NM='RoutingRuleDocument' where DOC_TYP_NM='EDENSERVICE-DOCS.RuleDocument'
+/
+UPDATE KREW_EDL_DMP_T set DOC_TYP_NM='RemoveReplaceUserDocument' where DOC_TYP_NM='EDENSERVICE-DOCS.RemoveReplaceUser'
+/
+
+UPDATE KREW_OUT_BOX_ITM_T set DOC_TYP_NM='DocumentTypeDocument' where DOC_TYP_NM='EDENSERVICE-DOCS.DocumentType'
+/
+UPDATE KREW_OUT_BOX_ITM_T set DOC_TYP_NM='RoutingRuleDocument' where DOC_TYP_NM='EDENSERVICE-DOCS.RuleDocument'
+/
+UPDATE KREW_OUT_BOX_ITM_T set DOC_TYP_NM='RemoveReplaceUserDocument' where DOC_TYP_NM='EDENSERVICE-DOCS.RemoveReplaceUser'
+/
+
+UPDATE KREW_RULE_T set DOC_TYP_NM='DocumentTypeDocument' where DOC_TYP_NM='EDENSERVICE-DOCS.DocumentType'
+/
+UPDATE KREW_RULE_T set DOC_TYP_NM='RoutingRuleDocument' where DOC_TYP_NM='EDENSERVICE-DOCS.RuleDocument'
+/
+UPDATE KREW_RULE_T set DOC_TYP_NM='RemoveReplaceUserDocument' where DOC_TYP_NM='EDENSERVICE-DOCS.RemoveReplaceUser'
+/

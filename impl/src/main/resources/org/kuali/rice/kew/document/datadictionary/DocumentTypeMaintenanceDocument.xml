@@ -22,7 +22,7 @@
     </property>
     <property name="label" value="Document Type" />
     <property name="shortLabel" value="Document Type" />
-    <property name="documentTypeName" value="EDENSERVICE-DOCS.DocumentType" />
+    <property name="documentTypeName" value="DocumentTypeDocument" />
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase" />
 <!--
     <property name="workflowProperties" >

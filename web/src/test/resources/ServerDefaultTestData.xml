@@ -278,7 +278,7 @@
 
 	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
 		<documentType>
-			<name>EDENSERVICE-DOCS</name>
+			<name>RiceDocument</name>
 			<description>Workflow Maintenance Document</description>
 			<label>Workflow Maintenance Document</label>
 			<postProcessorName>none</postProcessorName>
@@ -322,8 +322,8 @@
 			</routeNodes>
 		</documentType>
 		<documentType>
-			<name>EDENSERVICE-DOCS.DocumentType</name>
-			<parent>EDENSERVICE-DOCS</parent>
+			<name>RiceDocument.DocumentType</name>
+			<parent>RiceDocument</parent>
 			<description>Workflow Maintenance Document Type Document</description>
 			<label>Workflow Maintenance Document Type Document</label>
 			<postProcessorName>org.kuali.rice.kew.doctype.DocumentTypePostProcessor</postProcessorName>
@@ -345,8 +345,8 @@
 			</routeNodes>
 		</documentType>
 		<documentType>
-			<name>EDENSERVICE-DOCS.RuleDocument</name>
-			<parent>EDENSERVICE-DOCS</parent>
+			<name>RiceDocument.RuleDocument</name>
+			<parent>RiceDocument</parent>
 			<description>Rule Maintenance Document Type Document</description>
 			<label>Rule Maintenance Document Type Document</label>
 			<postProcessorName>org.kuali.rice.kew.rule.RulePostProcessor</postProcessorName>
@@ -368,8 +368,8 @@
 			</routeNodes>
 		</documentType>
 		<documentType>
-			<name>EDENSERVICE-DOCS.WKGRPREQ</name>
-			<parent>EDENSERVICE-DOCS</parent>
+			<name>RiceDocument.WKGRPREQ</name>
+			<parent>RiceDocument</parent>
 			<description>Document to generate a new workgroup</description>
 			<label>Add/modify EDEN workgroup</label>
 			<postProcessorName>org.kuali.rice.kew.workgroup.WorkgroupPostProcessor</postProcessorName>
@@ -478,7 +478,7 @@
 	</documentTypes>
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>
-			<documentType>EDENSERVICE-DOCS</documentType>
+			<documentType>RiceDocument</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>workflowdocumenttemplate description</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -491,7 +491,7 @@
 			</responsibilities>
 		</rule>
 		<rule>
-			<documentType>EDENSERVICE-DOCS.WKGRPREQ</documentType>
+			<documentType>RiceDocument.WKGRPREQ</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>Workgroup Approval Rule</description>
 			<ignorePrevious>false</ignorePrevious>

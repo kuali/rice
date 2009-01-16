@@ -2,10 +2,10 @@
 <data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
 	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
 		<documentType>
-			<name>EDENSERVICE-DOCS.child1child</name>
-			<parent>EDENSERVICE-DOCS.child1</parent>
-			<description>EDENSERVICE-DOCS.child1child1</description>
-			<label>EDENSERVICE-DOCS.child1child1</label>
+			<name>RiceDocument.child1child</name>
+			<parent>RiceDocument.child1</parent>
+			<description>RiceDocument.child1child1</description>
+			<label>RiceDocument.child1child1</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
@@ -13,10 +13,10 @@
 			<active>true</active>
 		</documentType>
 		<documentType>
-			<name>EDENSERVICE-DOCS.child1child1child</name>
-			<parent>EDENSERVICE-DOCS.child1child</parent>
-			<description>EDENSERVICE-DOCS.child1child1child</description>
-			<label>EDENSERVICE-DOCS.child1child1child</label>
+			<name>RiceDocument.child1child1child</name>
+			<parent>RiceDocument.child1child</parent>
+			<description>RiceDocument.child1child1child</description>
+			<label>RiceDocument.child1child1child</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
@@ -24,10 +24,10 @@
 			<active>true</active>
 		</documentType>
 		<documentType>
-			<name>EDENSERVICE-DOCS.child3</name>
-			<parent>EDENSERVICE-DOCS</parent>
-			<description>EDENSERVICE-DOCS.child3</description>
-			<label>EDENSERVICE-DOCS.child3</label>
+			<name>RiceDocument.child3</name>
+			<parent>RiceDocument</parent>
+			<description>RiceDocument.child3</description>
+			<label>RiceDocument.child3</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
@@ -37,7 +37,7 @@
 	</documentTypes>
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>
-			<documentType>EDENSERVICE-DOCS.child1child1child</documentType>
+			<documentType>RiceDocument.child1child1child</documentType>
 			<ruleTemplate>DocumentTypeRouting</ruleTemplate>
 			<description>DocumentTypeRoutingchild1child1child</description>
 			<ignorePrevious>false</ignorePrevious>

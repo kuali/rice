@@ -135,7 +135,7 @@ public class TestUtilities {
 
     public static void verifyTestEnvironment(DataSource dataSource) {
         if (dataSource == null) {
-            Assert.fail("Could not locate the EDEN data source.");
+            Assert.fail("Could not locate the data source.");
         }
         JdbcTemplate template = new JdbcTemplate(dataSource);
         template.execute(new ConnectionCallback() {

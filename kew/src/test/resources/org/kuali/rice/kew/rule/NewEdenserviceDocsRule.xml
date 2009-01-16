@@ -2,9 +2,9 @@
 <data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>
-			<documentType>EDENSERVICE-DOCS</documentType>
+			<documentType>RiceDocument</documentType>
 			<ruleTemplate>DocumentTypeRouting</ruleTemplate>
-			<description>DocumentTypeRouting for EDENSERVICE-DOCS</description>
+			<description>DocumentTypeRouting for RiceDocument</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
 				<responsibility>

@@ -39,7 +39,7 @@
 
     <documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
     <documentType>
-            <name>EDENSERVICE-DOCS</name>
+            <name>RiceDocument</name>
             <description>Workflow Maintenance Document</description>
             <label>Workflow Maintenance Document</label>
             <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
@@ -78,8 +78,8 @@
         </documentType>
 
         <documentType>
-            <name>EDENSERVICE-DOCS.RuleDocument</name>
-            <parent>EDENSERVICE-DOCS</parent>
+            <name>RiceDocument.RuleDocument</name>
+            <parent>RiceDocument</parent>
             <description>Rule Maintenance Document Type Document</description>
             <label>Rule Maintenance Document Type Document</label>
             <postProcessorName>org.kuali.rice.kew.rule.RulePostProcessor</postProcessorName>

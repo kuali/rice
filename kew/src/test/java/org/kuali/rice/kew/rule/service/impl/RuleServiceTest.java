@@ -48,40 +48,40 @@ public class RuleServiceTest extends KEWTestCase {
 
     @Test public void testClearCacheWithDocumentTypeUpdate() throws Exception {
         //put the rules in the cache by routing documents
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "EDENSERVICE-DOCS.child1");
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "RiceDocument.child1");
         document.routeDocument("");
-        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "EDENSERVICE-DOCS.child1child");
+        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "RiceDocument.child1child");
         document.routeDocument("");
-        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "EDENSERVICE-DOCS.child2");
+        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "RiceDocument.child2");
         document.routeDocument("");
-        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "EDENSERVICE-DOCS.child3");
+        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "RiceDocument.child3");
         document.routeDocument("");
         document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "NotRelated");
         document.routeDocument("");
 
         //verify the cache's contents are correct
-        List<RuleBaseValues> rulesCached = getListFromCache("DocumentTypeRouting", "EDENSERVICE-DOCS.child1");
+        List<RuleBaseValues> rulesCached = getListFromCache("DocumentTypeRouting", "RiceDocument.child1");
         assertEquals("Wrong number of rules cached", 1, rulesCached.size());
         RuleBaseValues child1RuleFirstCached = (RuleBaseValues)rulesCached.get(0);
 
-        rulesCached = getListFromCache("DocumentTypeRouting", "EDENSERVICE-DOCS.child1child");
+        rulesCached = getListFromCache("DocumentTypeRouting", "RiceDocument.child1child");
         assertEquals("Wrong number of rules cached", 2, rulesCached.size());
         RuleBaseValues child1childRuleFirstCached = null;
         // make sure this has the right rules which is the rule to the document type above and it's parent
         for (Iterator iter = rulesCached.iterator(); iter.hasNext();) {
             RuleBaseValues rule = (RuleBaseValues) iter.next();
-            if (!(rule.getDocTypeName().equals("EDENSERVICE-DOCS.child1") || rule.getDocTypeName().equals("EDENSERVICE-DOCS.child1child"))) {
+            if (!(rule.getDocTypeName().equals("RiceDocument.child1") || rule.getDocTypeName().equals("RiceDocument.child1child"))) {
                 fail("Wrong rule in the cache");
             }
-            if (rule.getDocTypeName().equals("EDENSERVICE-DOCS.child1child")) {
+            if (rule.getDocTypeName().equals("RiceDocument.child1child")) {
                 child1childRuleFirstCached = rule;
             }
         }
-        rulesCached = getListFromCache("DocumentTypeRouting", "EDENSERVICE-DOCS.child2");
+        rulesCached = getListFromCache("DocumentTypeRouting", "RiceDocument.child2");
         assertEquals("Wrong number of rules cached", 1, rulesCached.size());
         RuleBaseValues child2RuleFirstCached = (RuleBaseValues)rulesCached.get(0);
 
-        rulesCached = getListFromCache("DocumentTypeRouting", "EDENSERVICE-DOCS.child3");
+        rulesCached = getListFromCache("DocumentTypeRouting", "RiceDocument.child3");
         assertEquals("Wrong number of rules cached", 1, rulesCached.size());
         RuleBaseValues child3RuleFirstCached = (RuleBaseValues)rulesCached.get(0);
 
@@ -91,31 +91,31 @@ public class RuleServiceTest extends KEWTestCase {
 
         /**
          * Import a replacement document type from xml.  This should clear out all rules within the
-         * DocumentType hierarchy of EDENSERVICE-DOCS.
+         * DocumentType hierarchy of RiceDocument.
          *
          * This will upload a new child document type to child1child and then update the child3 and child1child document types.
          */
 
-        DocumentType root = KEWServiceLocator.getDocumentTypeService().findByName("EDENSERVICE-DOCS");
+        DocumentType root = KEWServiceLocator.getDocumentTypeService().findByName("RiceDocument");
 
         loadXmlFile("org/kuali/rice/kew/rule/DocumentTypeToImportForCacheTest.xml");
 
-        root = KEWServiceLocator.getDocumentTypeService().findByName("EDENSERVICE-DOCS");
+        root = KEWServiceLocator.getDocumentTypeService().findByName("RiceDocument");
 
         /**
-         * Check the EDENSERVICE-DOCS.child1 rules.
+         * Check the RiceDocument.child1 rules.
          */
 
-        rulesCached = getListFromCache("DocumentTypeRouting", "EDENSERVICE-DOCS.child1");
+        rulesCached = getListFromCache("DocumentTypeRouting", "RiceDocument.child1");
         assertNull("The rules should not be cached.", rulesCached);
 
         // now fetch the rules to put them in the cache
-        List rulesFetched = KEWServiceLocator.getRuleService().fetchAllCurrentRulesForTemplateDocCombination("DocumentTypeRouting", "EDENSERVICE-DOCS.child1");
+        List rulesFetched = KEWServiceLocator.getRuleService().fetchAllCurrentRulesForTemplateDocCombination("DocumentTypeRouting", "RiceDocument.child1");
         assertNotNull("List of rules should be fetched from the service.", rulesFetched);
         assertEquals("Wrong number of rules fetched", 1, rulesFetched.size());
 
         // now fetch from cache again
-        rulesCached = getListFromCache("DocumentTypeRouting", "EDENSERVICE-DOCS.child1");
+        rulesCached = getListFromCache("DocumentTypeRouting", "RiceDocument.child1");
         assertNotNull("The rules should be cached.", rulesCached);
         assertEquals("Wrong number of rules cached", 1, rulesCached.size());
         RuleBaseValues child1RuleSecondCached = (RuleBaseValues)rulesCached.get(0);
@@ -123,19 +123,19 @@ public class RuleServiceTest extends KEWTestCase {
         assertEquals("The rule ids should be the same.", child1RuleFirstCached.getRuleBaseValuesId(), child1RuleSecondCached.getRuleBaseValuesId());
 
         /**
-         * Check the EDENSERVICE-DOCS.child2 rules.
+         * Check the RiceDocument.child2 rules.
          */
 
-        rulesCached = getListFromCache("DocumentTypeRouting", "EDENSERVICE-DOCS.child2");
+        rulesCached = getListFromCache("DocumentTypeRouting", "RiceDocument.child2");
         assertNull("The rules should not be cached.", rulesCached);
 
         // now fetch the rules to put them in the cache
-        rulesFetched = KEWServiceLocator.getRuleService().fetchAllCurrentRulesForTemplateDocCombination("DocumentTypeRouting", "EDENSERVICE-DOCS.child2");
+        rulesFetched = KEWServiceLocator.getRuleService().fetchAllCurrentRulesForTemplateDocCombination("DocumentTypeRouting", "RiceDocument.child2");
         assertNotNull("List of rules should be fetched from the service.", rulesFetched);
         assertEquals("Wrong number of rules fetched", 1, rulesFetched.size());
 
         // now fetch from cache again
-        rulesCached = getListFromCache("DocumentTypeRouting", "EDENSERVICE-DOCS.child2");
+        rulesCached = getListFromCache("DocumentTypeRouting", "RiceDocument.child2");
         assertNotNull("The rules should be cached.", rulesCached);
         assertEquals("Wrong number of rules cached", 1, rulesCached.size());
         RuleBaseValues child2RuleSecondCached = (RuleBaseValues)rulesCached.get(0);
@@ -143,47 +143,47 @@ public class RuleServiceTest extends KEWTestCase {
         assertEquals("The rule ids should be the same.", child2RuleFirstCached.getRuleBaseValuesId(), child2RuleSecondCached.getRuleBaseValuesId());
 
         /**
-         * Check EDENSERVICE-DOCS.child3 rules.
+         * Check RiceDocument.child3 rules.
          */
 
-        rulesCached = getListFromCache("DocumentTypeRouting", "EDENSERVICE-DOCS.child3");
+        rulesCached = getListFromCache("DocumentTypeRouting", "RiceDocument.child3");
         assertNull("The rules should not be cached.", rulesCached);
 
         // now fetch the rules to put them in the cache
-        rulesFetched = KEWServiceLocator.getRuleService().fetchAllCurrentRulesForTemplateDocCombination("DocumentTypeRouting", "EDENSERVICE-DOCS.child3");
+        rulesFetched = KEWServiceLocator.getRuleService().fetchAllCurrentRulesForTemplateDocCombination("DocumentTypeRouting", "RiceDocument.child3");
         assertNotNull("List of rules should be fetched from the service.", rulesFetched);
         assertEquals("Wrong number of rules fetched", 1, rulesFetched.size());
 
         // now fetch from cache again
-        rulesCached = getListFromCache("DocumentTypeRouting", "EDENSERVICE-DOCS.child3");
+        rulesCached = getListFromCache("DocumentTypeRouting", "RiceDocument.child3");
         assertEquals("Wrong number of rules cached", 1, rulesCached.size());
         RuleBaseValues child3RuleSecondCached = (RuleBaseValues)rulesCached.get(0);
         assertFalse("These rules should be different because the cache was updated.", child3RuleFirstCached.equals(child3RuleSecondCached));
         assertEquals("The rule ids should be the same.", child3RuleFirstCached.getRuleBaseValuesId(), child3RuleSecondCached.getRuleBaseValuesId());
 
         /**
-         * Check the EDENSERVICE-DOCS.child1child rules.
+         * Check the RiceDocument.child1child rules.
          */
 
-        rulesCached = getListFromCache("DocumentTypeRouting", "EDENSERVICE-DOCS.child1child");
+        rulesCached = getListFromCache("DocumentTypeRouting", "RiceDocument.child1child");
         assertNull("The rules should not be cached.", rulesCached);
 
         // now fetch the rules to put them in the cache
-        rulesFetched = KEWServiceLocator.getRuleService().fetchAllCurrentRulesForTemplateDocCombination("DocumentTypeRouting", "EDENSERVICE-DOCS.child1child");
+        rulesFetched = KEWServiceLocator.getRuleService().fetchAllCurrentRulesForTemplateDocCombination("DocumentTypeRouting", "RiceDocument.child1child");
         assertNotNull("List of rules should be fetched from the service.", rulesFetched);
         assertEquals("Wrong number of rules fetched", 2, rulesFetched.size());
 
         // fetch from cache again
-        rulesCached = getListFromCache("DocumentTypeRouting", "EDENSERVICE-DOCS.child1child");
+        rulesCached = getListFromCache("DocumentTypeRouting", "RiceDocument.child1child");
         assertEquals("Wrong number of rules cached", 2, rulesCached.size());
         RuleBaseValues child1childRuleSecondCached = null;
         //make sure this has the right rules which is the rule to the document type above and it's parent
         for (Iterator iter = rulesCached.iterator(); iter.hasNext();) {
             RuleBaseValues rule = (RuleBaseValues) iter.next();
-            if (!(rule.getDocTypeName().equals("EDENSERVICE-DOCS.child1") || rule.getDocTypeName().equals("EDENSERVICE-DOCS.child1child"))) {
+            if (!(rule.getDocTypeName().equals("RiceDocument.child1") || rule.getDocTypeName().equals("RiceDocument.child1child"))) {
                 fail("Wrong rule in the cache");
             }
-            if (rule.getDocTypeName().equals("EDENSERVICE-DOCS.child1child")) {
+            if (rule.getDocTypeName().equals("RiceDocument.child1child")) {
                 child1childRuleSecondCached = rule;
             }
         }
@@ -200,46 +200,46 @@ public class RuleServiceTest extends KEWTestCase {
         assertTrue("These rules should be the same because the cache was not updated", notRelatedRuleFirstCached.equals(notRelatedRuleSecondCached));
 
         /**
-         * Grab the EDENSERVICE-DOCS.child1child1child rules from the cache, they should initially be null since
+         * Grab the RiceDocument.child1child1child rules from the cache, they should initially be null since
          * this is a brand new document type.
          *
-         * After fetching them we should see the rules from EDENSERVICE-DOCS.child1, EDENSERVICE-DOCS.child1child,
-         * and EDENSERVICE-DOCS.child1child1child.
+         * After fetching them we should see the rules from RiceDocument.child1, RiceDocument.child1child,
+         * and RiceDocument.child1child1child.
          */
 
-        rulesCached = getListFromCache("DocumentTypeRouting", "EDENSERVICE-DOCS.child1child1child");
+        rulesCached = getListFromCache("DocumentTypeRouting", "RiceDocument.child1child1child");
         assertNull("Rules should not be cached yet.", rulesCached);
 
         // routing a doc should put the rules into the cache
-        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "EDENSERVICE-DOCS.child1child1child");
+        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "RiceDocument.child1child1child");
         document.routeDocument("");
 
-        rulesCached = getListFromCache("DocumentTypeRouting", "EDENSERVICE-DOCS.child1child1child");
+        rulesCached = getListFromCache("DocumentTypeRouting", "RiceDocument.child1child1child");
         assertNotNull(rulesCached);
         assertEquals(3, rulesCached.size());
         boolean hasRule1 = false;
         boolean hasRule2 = false;
         boolean hasRule3 = false;
         for (RuleBaseValues rule : rulesCached) {
-            if (rule.getDocTypeName().equals("EDENSERVICE-DOCS.child1")) {
+            if (rule.getDocTypeName().equals("RiceDocument.child1")) {
                 hasRule1 = true;
-            } else if (rule.getDocTypeName().equals("EDENSERVICE-DOCS.child1child")) {
+            } else if (rule.getDocTypeName().equals("RiceDocument.child1child")) {
                 hasRule2 = true;
-            } else if (rule.getDocTypeName().equals("EDENSERVICE-DOCS.child1child1child")) {
+            } else if (rule.getDocTypeName().equals("RiceDocument.child1child1child")) {
                 hasRule3 = true;
             }
         }
-        assertTrue("Should have had EDENSERVICE-DOCS.child1 rule", hasRule1);
-        assertTrue("Should have had EDENSERVICE-DOCS.child1child rule", hasRule2);
-        assertTrue("Should have had EDENSERVICE-DOCS.child1child1child rule", hasRule3);
+        assertTrue("Should have had RiceDocument.child1 rule", hasRule1);
+        assertTrue("Should have had RiceDocument.child1child rule", hasRule2);
+        assertTrue("Should have had RiceDocument.child1child1child rule", hasRule3);
 
         /**
-         * Import a new rule for EDENSERVICE-DOCS and verify that the entire hierarchy is flushed
+         * Import a new rule for RiceDocument and verify that the entire hierarchy is flushed
          * from the cache.
          */
 
-        // first verify that there are no rules for EDENSERVICE-DOCS
-        rulesFetched = KEWServiceLocator.getRuleService().fetchAllCurrentRulesForTemplateDocCombination("DocumentTypeRouting", "EDENSERVICE-DOCS");
+        // first verify that there are no rules for RiceDocument
+        rulesFetched = KEWServiceLocator.getRuleService().fetchAllCurrentRulesForTemplateDocCombination("DocumentTypeRouting", "RiceDocument");
         assertNotNull("The list should not be null.", rulesFetched);
         assertEquals("The list should be empty.", 0, rulesFetched.size());
 
@@ -247,31 +247,31 @@ public class RuleServiceTest extends KEWTestCase {
 
         // verify that all rules for doc types in the hierarchy have been flushed from the cache
 
-        rulesCached = getListFromCache("DocumentTypeRouting", "EDENSERVICE-DOCS");
-        assertNull("There should be no cache entry for EDENSERVICE-DOCS", rulesCached);
+        rulesCached = getListFromCache("DocumentTypeRouting", "RiceDocument");
+        assertNull("There should be no cache entry for RiceDocument", rulesCached);
 
-        rulesCached = getListFromCache("DocumentTypeRouting", "EDENSERVICE-DOCS.child1");
-        assertNull("There should be no cache entry for EDENSERVICE-DOCS.child1", rulesCached);
+        rulesCached = getListFromCache("DocumentTypeRouting", "RiceDocument.child1");
+        assertNull("There should be no cache entry for RiceDocument.child1", rulesCached);
 
-        rulesCached = getListFromCache("DocumentTypeRouting", "EDENSERVICE-DOCS.child2");
-        assertNull("There should be no cache entry for EDENSERVICE-DOCS.child2", rulesCached);
+        rulesCached = getListFromCache("DocumentTypeRouting", "RiceDocument.child2");
+        assertNull("There should be no cache entry for RiceDocument.child2", rulesCached);
 
-        rulesCached = getListFromCache("DocumentTypeRouting", "EDENSERVICE-DOCS.child3");
-        assertNull("There should be no cache entry for EDENSERVICE-DOCS.child3", rulesCached);
+        rulesCached = getListFromCache("DocumentTypeRouting", "RiceDocument.child3");
+        assertNull("There should be no cache entry for RiceDocument.child3", rulesCached);
 
-        rulesCached = getListFromCache("DocumentTypeRouting", "EDENSERVICE-DOCS.child1child");
-        assertNull("There should be no cache entry for EDENSERVICE-DOCS.child1child", rulesCached);
+        rulesCached = getListFromCache("DocumentTypeRouting", "RiceDocument.child1child");
+        assertNull("There should be no cache entry for RiceDocument.child1child", rulesCached);
 
-        rulesCached = getListFromCache("DocumentTypeRouting", "EDENSERVICE-DOCS.child1child1child");
-        assertNull("There should be no cache entry for EDENSERVICE-DOCS.child1child1child", rulesCached);
+        rulesCached = getListFromCache("DocumentTypeRouting", "RiceDocument.child1child1child");
+        assertNull("There should be no cache entry for RiceDocument.child1child1child", rulesCached);
 
         // now fetch them from service so they are cached
-        rulesFetched = KEWServiceLocator.getRuleService().fetchAllCurrentRulesForTemplateDocCombination("DocumentTypeRouting", "EDENSERVICE-DOCS");
+        rulesFetched = KEWServiceLocator.getRuleService().fetchAllCurrentRulesForTemplateDocCombination("DocumentTypeRouting", "RiceDocument");
         assertNotNull("The list should not be null.", rulesFetched);
         assertEquals("The list should contain a single rule.", 1, rulesFetched.size());
 
         // fetch the cache now and verify the same
-        rulesCached = getListFromCache("DocumentTypeRouting", "EDENSERVICE-DOCS");
+        rulesCached = getListFromCache("DocumentTypeRouting", "RiceDocument");
         assertNotNull("The list should not be null.", rulesCached);
         assertEquals("The list should contain a single rule.", 1, rulesCached.size());
 
@@ -280,34 +280,34 @@ public class RuleServiceTest extends KEWTestCase {
          * also include all rules from parent document types, each of the rule lists should be increased by one
          */
 
-        // EDENSERVICE-DOCS.child1 should now have 2 rules
-        rulesFetched = KEWServiceLocator.getRuleService().fetchAllCurrentRulesForTemplateDocCombination("DocumentTypeRouting", "EDENSERVICE-DOCS.child1");
+        // RiceDocument.child1 should now have 2 rules
+        rulesFetched = KEWServiceLocator.getRuleService().fetchAllCurrentRulesForTemplateDocCombination("DocumentTypeRouting", "RiceDocument.child1");
         assertEquals(2, rulesFetched.size());
-        rulesCached = getListFromCache("DocumentTypeRouting", "EDENSERVICE-DOCS.child1");
+        rulesCached = getListFromCache("DocumentTypeRouting", "RiceDocument.child1");
         assertEquals(2, rulesCached.size());
 
-        // EDENSERVICE-DOCS.child2 should now have 2 rules
-        rulesFetched = KEWServiceLocator.getRuleService().fetchAllCurrentRulesForTemplateDocCombination("DocumentTypeRouting", "EDENSERVICE-DOCS.child2");
+        // RiceDocument.child2 should now have 2 rules
+        rulesFetched = KEWServiceLocator.getRuleService().fetchAllCurrentRulesForTemplateDocCombination("DocumentTypeRouting", "RiceDocument.child2");
         assertEquals(2, rulesFetched.size());
-        rulesCached = getListFromCache("DocumentTypeRouting", "EDENSERVICE-DOCS.child2");
+        rulesCached = getListFromCache("DocumentTypeRouting", "RiceDocument.child2");
         assertEquals(2, rulesCached.size());
 
-        // EDENSERVICE-DOCS.child3 should now have 2 rules
-        rulesFetched = KEWServiceLocator.getRuleService().fetchAllCurrentRulesForTemplateDocCombination("DocumentTypeRouting", "EDENSERVICE-DOCS.child3");
+        // RiceDocument.child3 should now have 2 rules
+        rulesFetched = KEWServiceLocator.getRuleService().fetchAllCurrentRulesForTemplateDocCombination("DocumentTypeRouting", "RiceDocument.child3");
         assertEquals(2, rulesFetched.size());
-        rulesCached = getListFromCache("DocumentTypeRouting", "EDENSERVICE-DOCS.child3");
+        rulesCached = getListFromCache("DocumentTypeRouting", "RiceDocument.child3");
         assertEquals(2, rulesCached.size());
 
-        // EDENSERVICE-DOCS.child1child should now have 3 rules
-        rulesFetched = KEWServiceLocator.getRuleService().fetchAllCurrentRulesForTemplateDocCombination("DocumentTypeRouting", "EDENSERVICE-DOCS.child1child");
+        // RiceDocument.child1child should now have 3 rules
+        rulesFetched = KEWServiceLocator.getRuleService().fetchAllCurrentRulesForTemplateDocCombination("DocumentTypeRouting", "RiceDocument.child1child");
         assertEquals(3, rulesFetched.size());
-        rulesCached = getListFromCache("DocumentTypeRouting", "EDENSERVICE-DOCS.child1child");
+        rulesCached = getListFromCache("DocumentTypeRouting", "RiceDocument.child1child");
         assertEquals(3, rulesCached.size());
 
-        // EDENSERVICE-DOCS.child1child1child should now have 4 rules
-        rulesFetched = KEWServiceLocator.getRuleService().fetchAllCurrentRulesForTemplateDocCombination("DocumentTypeRouting", "EDENSERVICE-DOCS.child1child1child");
+        // RiceDocument.child1child1child should now have 4 rules
+        rulesFetched = KEWServiceLocator.getRuleService().fetchAllCurrentRulesForTemplateDocCombination("DocumentTypeRouting", "RiceDocument.child1child1child");
         assertEquals(4, rulesFetched.size());
-        rulesCached = getListFromCache("DocumentTypeRouting", "EDENSERVICE-DOCS.child1child1child");
+        rulesCached = getListFromCache("DocumentTypeRouting", "RiceDocument.child1child1child");
         assertEquals(4, rulesCached.size());
 
         // NotRelated should still only have 1 rule

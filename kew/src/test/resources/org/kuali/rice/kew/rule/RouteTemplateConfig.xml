@@ -42,7 +42,7 @@
 	</ruleTemplates>
 	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
 		<documentType>
-			<name>EDENSERVICE-DOCS</name>
+			<name>RiceDocument</name>
 			<description>Workflow Maintenance Document</description>
 			<label>Workflow Maintenance Document</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
@@ -80,10 +80,10 @@
 			</routeNodes>
 		</documentType>
 		<documentType>
-			<name>EDENSERVICE-DOCS.child1</name>
-			<parent>EDENSERVICE-DOCS</parent>
-			<description>EDENSERVICE-DOCS.child1</description>
-			<label>EDENSERVICE-DOCS.child1</label>
+			<name>RiceDocument.child1</name>
+			<parent>RiceDocument</parent>
+			<description>RiceDocument.child1</description>
+			<label>RiceDocument.child1</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
@@ -91,10 +91,10 @@
 			<active>true</active>
 		</documentType>
 		<documentType>
-			<name>EDENSERVICE-DOCS.child1child</name>
-			<parent>EDENSERVICE-DOCS.child1</parent>
-			<description>EDENSERVICE-DOCS.child1child1</description>
-			<label>EDENSERVICE-DOCS.child1child1</label>
+			<name>RiceDocument.child1child</name>
+			<parent>RiceDocument.child1</parent>
+			<description>RiceDocument.child1child1</description>
+			<label>RiceDocument.child1child1</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
@@ -102,10 +102,10 @@
 			<active>true</active>
 		</documentType>
 		<documentType>
-			<name>EDENSERVICE-DOCS.child2</name>
-			<parent>EDENSERVICE-DOCS</parent>
-			<description>EDENSERVICE-DOCS.child2</description>
-			<label>EDENSERVICE-DOCS.child2</label>
+			<name>RiceDocument.child2</name>
+			<parent>RiceDocument</parent>
+			<description>RiceDocument.child2</description>
+			<label>RiceDocument.child2</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
@@ -113,10 +113,10 @@
 			<active>true</active>
 		</documentType>
 		<documentType>
-			<name>EDENSERVICE-DOCS.child3</name>
-			<parent>EDENSERVICE-DOCS</parent>
-			<description>EDENSERVICE-DOCS.child3</description>
-			<label>EDENSERVICE-DOCS.child3</label>
+			<name>RiceDocument.child3</name>
+			<parent>RiceDocument</parent>
+			<description>RiceDocument.child3</description>
+			<label>RiceDocument.child3</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
@@ -124,8 +124,8 @@
 			<active>true</active>
 		</documentType>
 		<documentType>
-			<name>EDENSERVICE-DOCS.RuleDocument</name>
-			<parent>EDENSERVICE-DOCS</parent>
+			<name>RiceDocument.RuleDocument</name>
+			<parent>RiceDocument</parent>
 			<description>Rule Maintenance Document Type Document</description>
 			<label>Rule Maintenance Document Type Document</label>
 			<postProcessorName>org.kuali.rice.kew.rule.RulePostProcessor</postProcessorName>
@@ -194,7 +194,7 @@
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>
             <name>RuleDocRuleRouting</name>
-			<documentType>EDENSERVICE-DOCS.RuleDocument</documentType>
+			<documentType>RiceDocument.RuleDocument</documentType>
 			<ruleTemplate>RuleRouting</ruleTemplate>
 			<description>Rule Routing</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -219,7 +219,7 @@
 			</responsibilities>
 		</rule>
 		<rule>
-			<documentType>EDENSERVICE-DOCS.child1</documentType>
+			<documentType>RiceDocument.child1</documentType>
 			<ruleTemplate>DocumentTypeRouting</ruleTemplate>
 			<description>DocumentTypeRouting</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -232,7 +232,7 @@
 			</responsibilities>
 		</rule>
 		<rule>
-			<documentType>EDENSERVICE-DOCS.child1child</documentType>
+			<documentType>RiceDocument.child1child</documentType>
 			<ruleTemplate>DocumentTypeRouting</ruleTemplate>
 			<description>DocumentTypeRouting</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -245,7 +245,7 @@
 			</responsibilities>
 		</rule>
 		<rule>
-			<documentType>EDENSERVICE-DOCS.child2</documentType>
+			<documentType>RiceDocument.child2</documentType>
 			<ruleTemplate>DocumentTypeRouting</ruleTemplate>
 			<description>DocumentTypeRouting</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -258,7 +258,7 @@
 			</responsibilities>
 		</rule>
 		<rule>
-			<documentType>EDENSERVICE-DOCS.child3</documentType>
+			<documentType>RiceDocument.child3</documentType>
 			<ruleTemplate>DocumentTypeRouting</ruleTemplate>
 			<description>DocumentTypeRouting</description>
 			<ignorePrevious>false</ignorePrevious>

@@ -34,11 +34,6 @@ public class PluginConfigParserTest extends KEWTestCase {
 
     private PluginConfigParser parser = new PluginConfigParser();
     private static final String CONFIG_PATH_SUFFIX = "/src/test/resources/org/kuali/rice/kew/plugin/workflow.xml";
-    private static final String EDEN_NAME = "jdbc/dev/en/EDEN";
-    private static final String SUDS_NAME = "jdbc/dev/en/SUDS";
-    private static final String DS_TYPE = "javax.sql.DataSource";
-    private static final String FACTORY = "org.apache.commons.dbcp.BasicDataSourceFactory";
-    private static final String URL = "jdbc:oracle:thin:@es01.uits.indiana.edu:1521:GEN2DEV";
     
     @Test public void testParse() throws Exception {
     	

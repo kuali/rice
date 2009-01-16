@@ -40,8 +40,8 @@
     </ruleTemplates>
     <documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
         <documentType>
-            <name>EDENSERVICE-DOCS.RemoveReplaceUser</name>
-            <parent>EDENSERVICE-DOCS</parent>
+            <name>RemoveReplaceUserDocument</name>
+            <parent>RiceDocument</parent>
             <description>A document to remove or replace users within rules and workgroups.</description>
             <label>Remove/Replace User</label>
             <postProcessorName>org.kuali.rice.kew.removereplace.RemoveReplacePostProcessor</postProcessorName>

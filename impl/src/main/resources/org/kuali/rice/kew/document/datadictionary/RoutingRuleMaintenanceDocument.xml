@@ -17,7 +17,7 @@
     <property name="allowsNewOrCopy" value="true" />
     <property name="label" value="Rule" />
     <property name="shortLabel" value="Rule" />
-    <property name="documentTypeName" value="EDENSERVICE-DOCS.RuleDocument" />
+    <property name="documentTypeName" value="RoutingRuleDocument" />
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase" />
   </bean>
 

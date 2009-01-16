@@ -222,9 +222,6 @@ public class KEWConstants {
 
     public static final String HEADER_TAG = "ROUTE_HEADER";
     public static final String DOCTYPE_TAG = "DOCTYPE";
-    public static final String DOC_TYPE_GROUP_DOCUMENT_SHORT_NAME = "EDENSERVICE-DOCS.DocumentTypeGroup";
-    public static final String DOC_TYPE_DOCUMENT_SHORT_NAME = "EDENSERVICE-DOCS.DocumentType";
-    public static final String WORKFLOW_DOCUMENT_ROOT = "EDENSERVICE-DOCS";
 
     // order of these is important since this forms a priority according to the codes index into the string
     public static final String REQUEST_CODES = KEWConstants.ACTION_REQUEST_FYI_REQ + KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ + KEWConstants.ACTION_REQUEST_APPROVE_REQ + KEWConstants.ACTION_REQUEST_COMPLETE_REQ;
@@ -477,7 +474,7 @@ public class KEWConstants {
     public static final String RULE_RESPONSIBILITY_GROUP_ID = "G";
     public static final String RULE_RESPONSIBILITY_ROLE_ID = "R";
 
-    public static final String DEFAULT_RULE_DOCUMENT_NAME = "EDENSERVICE-DOCS.RuleDocument";
+    public static final String DEFAULT_RULE_DOCUMENT_NAME = "RuleDocument";
 
     public static class Sorting {
         public static final String SORT_COLUMN_SEQUENCES = "columnSortSequences";
@@ -754,7 +751,7 @@ public class KEWConstants {
     public static final String DAILY_EMAIL_ACTIVE = "dailyEmail.active";
     public static final String WEEKLY_EMAIL_ACTIVE = "weeklyEmail.active";
 
-    public static final String REMOVE_REPLACE_DOCUMENT_TYPE = "EDENSERVICE-DOCS.RemoveReplaceUser";
+    public static final String REMOVE_REPLACE_DOCUMENT_TYPE = "RemoveReplaceUserDocument";
     public static final String ACTION_LIST_NO_REFRESH = "ActionList.norefresh";
 
 

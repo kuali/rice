@@ -11,7 +11,7 @@
     <property name="shortLabel" value="Routing Rule" />
     <property name="summary" value="Routing Rule Summary;" />
     <property name="description" value="The Routing Rule document is used to create rules which drive the routing process for various documents."/>
-    <property name="documentTypeName" value="EDENSERVICE-DOCS.RuleDocument" />
+    <property name="documentTypeName" value="RoutingRuleDocument" />
     <property name="documentClass" value="org.kuali.rice.kew.rule.document.RuleDocument" />
     <!-- <property name="businessRulesClass" value="org.kuali.kfs.sys.document.validation.impl.AccountingRuleEngineRuleBase" /> -->
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.TransactionalDocumentAuthorizerBase" />

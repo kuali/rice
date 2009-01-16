@@ -39,50 +39,6 @@
       <description>Parent Document Type for all Rice Documents</description>
       <label>Rice Document</label>
     </documentType>
-    <documentType>
-      <name>EDENSERVICE-DOCS</name>
-      <parent>RiceDocument</parent>
-      <description>Workflow Maintenance Document</description>
-      <label>Workflow Maintenance Document</label>
-      <postProcessorName>none</postProcessorName>
-      <superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
-      <blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
-      <defaultExceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
-      <docHandler>docHandler is now mandatory...</docHandler>
-      <active>true</active>
-      <policies>
-        <policy>
-          <name>PRE_APPROVE</name>
-          <value>false</value>
-        </policy>
-        <policy>
-          <name>DEFAULT_APPROVE</name>
-          <value>true</value>
-        </policy>
-      </policies>
-      <routingVersion>2</routingVersion>
-      <routePaths>
-        <routePath>
-          <start name="PreRoute" nextNode="exception" />
-          <requests name="exception" nextNode="Workflow Document Routing" />
-          <requests name="Workflow Document Routing" />
-        </routePath>
-      </routePaths>
-      <routeNodes>
-        <start name="PreRoute">
-          <activationType>S</activationType>
-        </start>
-        <requests name="exception">
-          <activationType>S</activationType>
-          <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
-        </requests>
-        <requests name="Workflow Document Routing">
-          <activationType>S</activationType>
-          <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
-          <mandatoryRoute>true</mandatoryRoute>
-        </requests>
-      </routeNodes>
-    </documentType>
   </documentTypes>
 </data>
 

@@ -145,62 +145,50 @@
     </ruleTemplates>
 
     <!-- Core doctypes -->
-
-    <!-- "bootstrap" doc types to be loaded upon initial startup -->
-    <documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+    <documentType>
+      <name>KualiDocument</name>
+      <description>KualiDocument</description>
+      <label>KualiDocument</label>
+      <postProcessorName>none</postProcessorName>
+      <policies>
+        <policy>
+          <name>DEFAULT_APPROVE</name>
+          <value>true</value>
+        </policy>
+        <policy>
+          <name>LOOK_FUTURE</name>
+          <value>true</value>
+        </policy>
+        <policy>
+          <name>PRE_APPROVE</name>
+          <value>false</value>
+        </policy>
+      </policies>
+      <routePaths>
+        <routePath>
+          <start name="PreRoute" />
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="PreRoute">
+          <activationType>S</activationType>
+          <mandatoryRoute>false</mandatoryRoute>
+          <finalApproval>false</finalApproval>
+        </start>
+      </routeNodes>
+    </documentType>
+    <documentType>
+      <name>RiceDocument</name>
+      <parent>KualiDocument</parent>
+      <description>Parent Document Type for all Rice Documents</description>
+      <label>Rice Document</label>
+    </documentType>
         <documentType>
-            <name>EDENSERVICE-DOCS</name>
-            <description>Workflow Maintenance Document</description>
-            <label>Workflow Maintenance Document</label>
-            <postProcessorName>none</postProcessorName>
-            <docHandler>docHandler is now mandatory...</docHandler>
-            <superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
-            <blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
-            <defaultExceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
-            <active>true</active>
-            <policies>
-                <policy>
-                    <name>PRE_APPROVE</name>
-                    <value>false</value>
-                    <!-- <inherited>false</inherited> -->
-                </policy>
-                <policy>
-                    <name>DEFAULT_APPROVE</name>
-                    <value>true</value>
-                    <!-- <inherited>false</inherited> -->
-                </policy>
-            </policies>
-            <routePaths>
-                <routePath>
-                    <start name="adhoc" nextNode="exception" />
-                    <requests name="exception" nextNode="Workflow Document Routing" />
-                    <requests name="Workflow Document Routing" />
-                </routePath>
-            </routePaths>
-            <routeNodes>
-                <start name="adhoc">
-                    <activationType>S</activationType>
-                </start>
-                <requests name="exception">
-                    <activationType>S</activationType>
-                    <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
-                </requests>
-                <requests name="Workflow Document Routing">
-                    <activationType>S</activationType>
-                    <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
-                    <mandatoryRoute>true</mandatoryRoute>
-                </requests>
-            </routeNodes>
-        </documentType>
-        <documentType>
-            <name>EDENSERVICE-DOCS.DocumentType</name>
-            <parent>EDENSERVICE-DOCS</parent>
+            <name>DocumentTypeDocument</name>
+            <parent>RiceDocument</parent>
             <description>Workflow Maintenance Document Type Document</description>
             <label>Workflow Maintenance Document Type Document</label>
             <postProcessorName>org.kuali.rice.kew.doctype.DocumentTypePostProcessor</postProcessorName>
-            <superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
-            <blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
-            <defaultExceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
             <docHandler>${workflow.url}/DocumentType.do?methodToCall=docHandler</docHandler>
             <active>true</active>
             <policies />
@@ -216,14 +204,11 @@
             </routeNodes>
         </documentType>
         <documentType>
-            <name>EDENSERVICE-DOCS.RuleDocument</name>
-            <parent>EDENSERVICE-DOCS</parent>
+            <name>RoutingRuleDocument</name>
+            <parent>RiceDocument</parent>
             <description>Rule Maintenance Document Type Document</description>
             <label>Rule Maintenance Document Type Document</label>
             <postProcessorName>org.kuali.rice.kew.rule.RulePostProcessor</postProcessorName>
-            <superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
-            <blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
-            <defaultExceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
             <docHandler>${workflow.url}/Rule.do?methodToCall=docHandler</docHandler>
             <active>true</active>
             <policies />
@@ -239,46 +224,11 @@
             </routeNodes>
         </documentType>
         <documentType>
-            <name>EDENSERVICE-DOCS.WKGRPREQ</name>
-            <parent>EDENSERVICE-DOCS</parent>
-            <description>Document to generate a new workgroup</description>
-            <label>Add/modify EDEN workgroup</label>
-            <postProcessorName>org.kuali.rice.kew.workgroup.WorkgroupPostProcessor</postProcessorName>
-            <superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
-            <blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
-            <defaultExceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
-            <docHandler>${workflow.url}/Workgroup.do?methodToCall=docHandler</docHandler>
-            <active>true</active>
-            <routingVersion>1</routingVersion>
-            <routePaths>
-                <routePath>
-                    <start name="Adhoc Routing" nextNode="Workgroup Approvers" />
-                    <requests name="Workgroup Approvers" />
-                </routePath>
-            </routePaths>
-            <routeNodes>
-                <start name="Adhoc Routing">
-                    <activationType>P</activationType>
-                    <mandatoryRoute>false</mandatoryRoute>
-                    <finalApproval>false</finalApproval>
-                </start>
-                <requests name="Workgroup Approvers">
-                    <activationType>P</activationType>
-                    <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
-                    <mandatoryRoute>true</mandatoryRoute>
-                    <finalApproval>false</finalApproval>
-                </requests>
-            </routeNodes>
-        </documentType>
-        <documentType>
-            <name>EDENSERVICE-DOCS.RemoveReplaceUser</name>
-            <parent>EDENSERVICE-DOCS</parent>
+            <name>RemoveReplaceUserDocument</name>
+            <parent>RiceDocument</parent>
             <description>A document to remove or replace users within rules and workgroups.</description>
             <label>Remove/Replace User</label>
             <postProcessorName>org.kuali.rice.kew.removereplace.RemoveReplacePostProcessor</postProcessorName>
-            <superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
-            <blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
-            <defaultExceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
             <docHandler>${workflow.url}/RemoveReplace.do?methodToCall=docHandler</docHandler>
             <active>true</active>
             <routingVersion>1</routingVersion>
@@ -317,7 +267,7 @@
     <!-- "bootstrap" rule to be loaded upon initial startup -->
     <rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
         <rule>
-            <documentType>EDENSERVICE-DOCS</documentType>
+            <documentType>RiceDocument</documentType>
             <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
             <description>workflowdocumenttemplate description</description>
             <ignorePrevious>false</ignorePrevious>
@@ -329,19 +279,6 @@
             <responsibilities>
                 <responsibility>
                     <user>admin</user>
-                    <actionRequested>A</actionRequested>
-                    <priority>1</priority>
-                </responsibility>
-            </responsibilities>
-        </rule>
-        <rule>
-            <documentType>EDENSERVICE-DOCS.WKGRPREQ</documentType>
-            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
-            <description>Workgroup Approval Rule</description>
-            <ignorePrevious>false</ignorePrevious>
-            <responsibilities>
-                <responsibility>
-                    <workgroup>KR-WKFLW:WorkflowAdmin</workgroup>
                     <actionRequested>A</actionRequested>
                     <priority>1</priority>
                 </responsibility>

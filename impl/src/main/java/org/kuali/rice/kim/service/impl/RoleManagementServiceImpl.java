@@ -16,12 +16,11 @@
 package org.kuali.rice.kim.service.impl;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
+import org.kuali.rice.core.util.MaxSizeMap;
 import org.kuali.rice.kim.bo.role.KimRole;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
@@ -42,28 +41,35 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	protected int roleCacheMaxSize = 200;
 	protected int roleCacheMaxAge = 30;
 	
-	protected Map<String,MaxAgeSoftReference<List<String>>> impliedRoleIdsCache;
-	protected Map<String,MaxAgeSoftReference<List<String>>> implyingRoleIdsCache;
-	protected Map<String,MaxAgeSoftReference<KimRoleInfo>> roleByIdCache;
-	protected Map<String,MaxAgeSoftReference<KimRoleInfo>> roleByNameCache;
-	protected Map<String,MaxAgeSoftReference<String>> roleIdByNameCache;
-	protected Map<String,MaxAgeSoftReference<Collection<RoleMembershipInfo>>> roleMembersWithDelegationCache;
-	protected Map<String,MaxAgeSoftReference<List<AttributeSet>>> roleQualifiersForPrincipalCache;
-	protected Map<String,MaxAgeSoftReference<Boolean>> isRoleActiveCache;
-	protected Map<String,MaxAgeSoftReference<Boolean>> principalHasRoleCache;
-	protected Map<String,MaxAgeSoftReference<Collection<String>>> memberPrincipalIdsCache;
+	protected MaxSizeMap<String,MaxAgeSoftReference<List<String>>> impliedRoleIdsCache;
+	protected MaxSizeMap<String,MaxAgeSoftReference<List<String>>> implyingRoleIdsCache;
+	protected MaxSizeMap<String,MaxAgeSoftReference<KimRoleInfo>> roleByIdCache;
+	protected MaxSizeMap<String,MaxAgeSoftReference<KimRoleInfo>> roleByNameCache;
+	protected MaxSizeMap<String,MaxAgeSoftReference<Collection<RoleMembershipInfo>>> roleMembersWithDelegationCache;
+	protected MaxSizeMap<String,MaxAgeSoftReference<List<AttributeSet>>> roleQualifiersForPrincipalCache;
+	protected MaxSizeMap<String,MaxAgeSoftReference<Boolean>> principalHasRoleCache;
+	protected MaxSizeMap<String,MaxAgeSoftReference<Collection<String>>> memberPrincipalIdsCache;
 	
 	public void afterPropertiesSet() throws Exception {
-		impliedRoleIdsCache = new HashMap<String,MaxAgeSoftReference<List<String>>>( roleCacheMaxSize );
-		implyingRoleIdsCache = new HashMap<String,MaxAgeSoftReference<List<String>>>( roleCacheMaxSize );
-		roleByIdCache = new HashMap<String,MaxAgeSoftReference<KimRoleInfo>>( roleCacheMaxSize );
-		roleByNameCache = new HashMap<String,MaxAgeSoftReference<KimRoleInfo>>( roleCacheMaxSize );
-		roleIdByNameCache = new HashMap<String,MaxAgeSoftReference<String>>( roleCacheMaxSize );
-		roleMembersWithDelegationCache = new HashMap<String,MaxAgeSoftReference<Collection<RoleMembershipInfo>>>( roleCacheMaxSize );
-		roleQualifiersForPrincipalCache = new HashMap<String,MaxAgeSoftReference<List<AttributeSet>>>( roleCacheMaxSize );
-		isRoleActiveCache = new HashMap<String,MaxAgeSoftReference<Boolean>>( roleCacheMaxSize );
-		principalHasRoleCache = new HashMap<String,MaxAgeSoftReference<Boolean>>( roleCacheMaxSize );
-		memberPrincipalIdsCache = new HashMap<String,MaxAgeSoftReference<Collection<String>>>(roleCacheMaxSize );
+		impliedRoleIdsCache = new MaxSizeMap<String,MaxAgeSoftReference<List<String>>>( roleCacheMaxSize );
+		implyingRoleIdsCache = new MaxSizeMap<String,MaxAgeSoftReference<List<String>>>( roleCacheMaxSize );
+		roleByIdCache = new MaxSizeMap<String,MaxAgeSoftReference<KimRoleInfo>>( roleCacheMaxSize );
+		roleByNameCache = new MaxSizeMap<String,MaxAgeSoftReference<KimRoleInfo>>( roleCacheMaxSize );
+		roleMembersWithDelegationCache = new MaxSizeMap<String,MaxAgeSoftReference<Collection<RoleMembershipInfo>>>( roleCacheMaxSize );
+		roleQualifiersForPrincipalCache = new MaxSizeMap<String,MaxAgeSoftReference<List<AttributeSet>>>( roleCacheMaxSize );
+		principalHasRoleCache = new MaxSizeMap<String,MaxAgeSoftReference<Boolean>>( roleCacheMaxSize );
+		memberPrincipalIdsCache = new MaxSizeMap<String,MaxAgeSoftReference<Collection<String>>>(roleCacheMaxSize );
+	}
+	
+	public void flushRoleCaches() {
+		impliedRoleIdsCache.clear();
+		implyingRoleIdsCache.clear();
+		roleByIdCache.clear();
+		roleByNameCache.clear();
+		roleMembersWithDelegationCache.clear();
+		roleQualifiersForPrincipalCache.clear();
+		principalHasRoleCache.clear();
+		memberPrincipalIdsCache.clear();		
 	}
 	
 	// Caching helper methods
@@ -100,14 +106,6 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		return null;
 	}
 	
-	protected String getRoleIdByNameCache( String key ) {
-		MaxAgeSoftReference<String> roleIdRef = roleIdByNameCache.get( key );
-		if ( roleIdRef != null ) {
-			return roleIdRef.get();
-		}
-		return null;
-	}
-
 	protected Collection<RoleMembershipInfo> getRoleMembersWithDelegationCache( String key ) {
 		MaxAgeSoftReference<Collection<RoleMembershipInfo>> roleMembersRef = roleMembersWithDelegationCache.get( key );
 		if ( roleMembersRef != null ) {
@@ -124,14 +122,6 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		return null;
 	}
 	
-	protected Boolean getIsRoleActiveCache( String key ) {
-		MaxAgeSoftReference<Boolean> activeRef = isRoleActiveCache.get( key );
-		if ( activeRef != null ) {
-			return activeRef.get();
-		}
-		return null;
-	}
-
 	protected Boolean getPrincipalHasRoleCacheCache( String key ) {
 		MaxAgeSoftReference<Boolean> hasRoleRef = principalHasRoleCache.get( key );
 		if ( hasRoleRef != null ) {
@@ -151,22 +141,11 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 			implyingRoleIdsCache.put( roleId, new MaxAgeSoftReference<List<String>>( roleCacheMaxAge, ids ) );
 		}
 	}
-	
-	protected void addRoleByIdToCache( KimRoleInfo role ) {
+
+	protected void addRoleToCaches( KimRoleInfo role ) {
 		if ( role != null ) {
+			roleByNameCache.put( role.getNamespaceCode() + "-" + role.getRoleName(), new MaxAgeSoftReference<KimRoleInfo>( roleCacheMaxAge, role ) );
 			roleByIdCache.put( role.getRoleId(), new MaxAgeSoftReference<KimRoleInfo>( roleCacheMaxAge, role ) );
-		}
-	}
-
-	protected void addRoleByNameToCache( String key, KimRoleInfo role ) {
-		if ( role != null ) {
-			roleByNameCache.put( key, new MaxAgeSoftReference<KimRoleInfo>( roleCacheMaxAge, role ) );
-		}
-	}
-
-	protected void addRoleIdByNameToCache( String key, String roleId ) {
-		if ( roleId != null ) {
-			roleIdByNameCache.put( key, new MaxAgeSoftReference<String>( roleCacheMaxAge, roleId ) );
 		}
 	}
 
@@ -180,10 +159,6 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		if ( qualifiers != null ) {
 			roleQualifiersForPrincipalCache.put( key, new MaxAgeSoftReference<List<AttributeSet>>( roleCacheMaxAge, qualifiers ) );
 		}
-	}
-	
-	protected void addIsRoleActiveToCache( String key, boolean active ) {
-		isRoleActiveCache.put( key, new MaxAgeSoftReference<Boolean>( roleCacheMaxAge, active ) );
 	}
 	
 	protected void addPrincipalHasRoleCacheToCache( String key, boolean hasRole ) {
@@ -223,7 +198,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		memberPrincipalIdsCache.put(key, new MaxAgeSoftReference<Collection<String>>(principalIds));
 	}
 	public Collection<String> getRoleMemberPrincipalIds(String namespaceCode, String roleName, AttributeSet qualification) {
-		String key = namespaceCode + roleName;
+		String key = namespaceCode + "-" + roleName;
 		Collection<String> principalIds = getRoleMemberPrincipalIdsCache(key);
 		if (principalIds != null) {
 			return principalIds;
@@ -239,34 +214,54 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 			return role;
 		}
 		role = getRoleService().getRole(roleId);
-		addRoleByIdToCache(role);
+		addRoleToCaches(role);
     	return role;
 	}
 
 	public KimRoleInfo getRoleByName(String namespaceCode, String roleName) {
-		String key = namespaceCode + "-" + roleName;
-		KimRoleInfo role = getRoleByNameCache(key);
+		KimRoleInfo role = getRoleByNameCache(namespaceCode + "-" + roleName);
 		if (role != null) {
 			return role;
 		}
 		role = getRoleService().getRoleByName(namespaceCode, roleName);
-		addRoleByNameToCache(key, role);
+		addRoleToCaches(role);
     	return role;
 	}
 
 	public String getRoleIdByName(String namespaceCode, String roleName) {
-		String key = namespaceCode + "-" + roleName;
-		String roleId = getRoleIdByNameCache(key);
-		if (roleId != null) {
-			return roleId;
+		KimRoleInfo role = getRoleByName( namespaceCode, roleName );
+		if ( role == null ) {
+			return null;
 		}
-		roleId = getRoleService().getRoleIdByName(namespaceCode, roleName);
-		addRoleIdByNameToCache(key, roleId);
-    	return roleId;
+		return role.getRoleId();
+	}
+	
+	protected void addIdsToKey( StringBuffer key, List<String> idList ) {
+		if ( idList == null || idList.isEmpty() ) {
+			key.append( "[null]" );
+		} else {
+			for ( String id : idList ) {
+				key.append( '|' ).append( id ).append( '|' );
+			}
+		}
+	}
+	
+	protected void addAttributesToKey( StringBuffer key, AttributeSet attributes ) {
+		if ( attributes == null || attributes.isEmpty() ) {
+			key.append( "[null]" );
+		} else {
+			for (Map.Entry<String, String> entry : attributes.entrySet()) {
+				key.append( entry.getKey() ).append( '=' ).append( entry.getValue() ).append( '|' );
+			}
+		}
 	}
 
 	public Collection<RoleMembershipInfo> getRoleMembers(List<String> roleIds, AttributeSet qualification) {
-		String key = buildIdsKey(roleIds) + "-" + buildQualificationKey(qualification);
+		StringBuffer cacheKey = new StringBuffer();
+		addIdsToKey( cacheKey, roleIds );
+		cacheKey.append(  '/' );
+		addAttributesToKey( cacheKey, qualification );
+		String key = cacheKey.toString();
 		Collection<RoleMembershipInfo> members = getRoleMembersWithDelegationCache(key);
 		if (members != null) {
 			return members;
@@ -277,7 +272,12 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
     }
 
 	public List<AttributeSet> getRoleQualifiersForPrincipal(String principalId, List<String> roleIds, AttributeSet qualification) {		
-		String key = principalId + "-" + buildIdsKey(roleIds) + "-" + buildQualificationKey(qualification);
+		StringBuffer cacheKey = new StringBuffer( principalId );
+		cacheKey.append( '/' );
+		addIdsToKey( cacheKey, roleIds );
+		cacheKey.append(  '/' );
+		addAttributesToKey( cacheKey, qualification );
+		String key = cacheKey.toString();
 		List<AttributeSet> qualifiers = getRoleQualifiersForPrincipalCache(key);
 		if (qualifiers != null) {
 			return qualifiers;
@@ -288,7 +288,12 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	}
 
 	public List<AttributeSet> getRoleQualifiersForPrincipal(String principalId, String namespaceCode, String roleName, AttributeSet qualification) {
-		String key = principalId + "-" + namespaceCode + "-" + roleName + "-" + buildQualificationKey(qualification);
+		StringBuffer cacheKey = new StringBuffer( principalId );
+		cacheKey.append( '/' );
+		cacheKey.append( namespaceCode ).append( '-' ).append( roleName );
+		cacheKey.append( '/' );
+		addAttributesToKey( cacheKey, qualification );
+		String key = cacheKey.toString();
 		List<AttributeSet> qualifiers = getRoleQualifiersForPrincipalCache(key);
 		if (qualifiers != null) {
 			return qualifiers;
@@ -299,17 +304,17 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	}
 
 	public boolean isRoleActive(String roleId) {
-		Boolean active = getIsRoleActiveCache(roleId);
-		if (active != null) {
-			return active;
-		}
-		active = getRoleService().isRoleActive(roleId);
-		addIsRoleActiveToCache(roleId, active);
-    	return active;
+		KimRoleInfo role = getRole( roleId );
+		return role != null && role.isActive();
 	}
 
 	public boolean principalHasRole(String principalId, List<String> roleIds, AttributeSet qualification) {
-		String key = principalId + "-" + buildIdsKey(roleIds) + "-" + buildQualificationKey(qualification);
+		StringBuffer cacheKey = new StringBuffer( principalId );
+		cacheKey.append( '/' );
+		addIdsToKey( cacheKey, roleIds );
+		cacheKey.append( '/' );
+		addAttributesToKey( cacheKey, qualification );
+		String key = cacheKey.toString();
 		Boolean hasRole = getPrincipalHasRoleCacheCache(key);
 		if (hasRole != null) {
 			return hasRole;
@@ -323,47 +328,55 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 
 	// Helper methods
 	
-	protected void removeCacheEntries( String roleId, String principalId ) {
+	public void removeCacheEntries( String roleId, String principalId ) {
 		if ( principalId != null ) {
-			String key = principalId + "-";
+			String keyPrefix = principalId + "-";
 			Iterator<String> cacheIterator = principalHasRoleCache.keySet().iterator();
 			while ( cacheIterator.hasNext() ) {
 				String cacheKey = cacheIterator.next();
-				if ( cacheKey.startsWith( key ) ) {
+				if ( cacheKey.startsWith( keyPrefix ) ) {
 					cacheIterator.remove();
 				}
 			}
 			cacheIterator = roleQualifiersForPrincipalCache.keySet().iterator();
 			while ( cacheIterator.hasNext() ) {
 				String cacheKey = cacheIterator.next();
-				if ( cacheKey.startsWith( key ) ) {
+				if ( cacheKey.startsWith( keyPrefix ) ) {
 					cacheIterator.remove();
 				}
 			}
 		}
 		if ( roleId != null ) {
-			// Yes, this pattern will get too many entries if one role ID is a substring of another
-			// But...better too many than too few  :-)
-			Pattern matchPattern = Pattern.compile( ".*-.*" + roleId + ".*-.*" );
+			impliedRoleIdsCache.remove( roleId );
+			implyingRoleIdsCache.remove( roleId );
+			roleByIdCache.remove( roleId );
+			roleByNameCache.clear();
+			String keySubstring = "|" + roleId + "|";
 			Iterator<String> cacheIterator = principalHasRoleCache.keySet().iterator();
 			while ( cacheIterator.hasNext() ) {
 				String cacheKey = cacheIterator.next();
-				if ( matchPattern.matcher( cacheKey ).matches() ) {
+				if( cacheKey.contains( keySubstring ) ) {
 					cacheIterator.remove();
 				}
 			}
 			cacheIterator = roleQualifiersForPrincipalCache.keySet().iterator();
 			while ( cacheIterator.hasNext() ) {
 				String cacheKey = cacheIterator.next();
-				if ( matchPattern.matcher( cacheKey ).matches() ) {
+				if( cacheKey.contains( keySubstring ) ) {
 					cacheIterator.remove();
 				}
 			}
-			Pattern.compile( ".*" + roleId + ".*-.*" );
 			cacheIterator = roleMembersWithDelegationCache.keySet().iterator();
 			while ( cacheIterator.hasNext() ) {
 				String cacheKey = cacheIterator.next();
-				if ( matchPattern.matcher( cacheKey ).matches() ) {
+				if( cacheKey.contains( keySubstring ) ) {
+					cacheIterator.remove();
+				}
+			}
+			cacheIterator = memberPrincipalIdsCache.keySet().iterator();
+			while ( cacheIterator.hasNext() ) {
+				String cacheKey = cacheIterator.next();
+				if( cacheKey.contains( keySubstring ) ) {
 					cacheIterator.remove();
 				}
 			}
@@ -401,8 +414,9 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 
 	public void assignPrincipalToRole(String principalId, String namespaceCode, String roleName,
 			AttributeSet qualifications) {
+		KimRoleInfo role = getRoleByName( namespaceCode, roleName );
 		getRoleService().assignPrincipalToRole( principalId, namespaceCode, roleName, qualifications );
-		removeCacheEntries( null, principalId );
+		removeCacheEntries( role.getRoleId(), principalId );
 	}
 
 	public void removeGroupFromRole(String groupId, String namespaceCode, String roleName,
@@ -414,30 +428,9 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 
 	public void removePrincipalFromRole(String principalId, String namespaceCode, String roleName,
 			AttributeSet qualifications) {
+		KimRoleInfo role = getRoleByName( namespaceCode, roleName );
 		getRoleService().removePrincipalFromRole( principalId, namespaceCode, roleName, qualifications );
-		removeCacheEntries( null, principalId );
-	}
-
-	private String buildIdsKey(List<String> roleIds) {
-		if ( roleIds == null || roleIds.isEmpty() ) {
-			return "null";
-		}
-		String key = "";
-		for (String id : roleIds) {
-			key += id + "-";
-		}
-		return key.substring(0, key.length() - 1);
-	}
-
-	private String buildQualificationKey(AttributeSet qualifications) {
-		if ( qualifications == null || qualifications.isEmpty() ) {
-			return "null";
-		}
-		String key = "";
-		for (Map.Entry<String, String> qualification : qualifications.entrySet()) {
-			key += qualification.getKey() + ":" + qualification.getValue() + "-";
-		}
-		return key.substring(0, key.length() - 1);
+		removeCacheEntries( role.getRoleId(), principalId );
 	}
 
 	// Spring and injection methods
@@ -458,13 +451,10 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	}
 
 	/**
-	 * This overridden method ...
-	 * 
 	 * @see org.kuali.rice.kim.service.RoleService#getRolesSearchResults(java.util.Map)
 	 */
 	public List<? extends KimRole> getRolesSearchResults(
 			Map<String, String> fieldValues) {
-		// TODO shyu - THIS METHOD NEEDS JAVADOCS
 		return getRoleService().getRolesSearchResults(fieldValues);
 	}
 

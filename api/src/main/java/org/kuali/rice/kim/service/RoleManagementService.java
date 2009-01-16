@@ -20,4 +20,9 @@ package org.kuali.rice.kim.service;
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public interface RoleManagementService extends RoleService {}
+public interface RoleManagementService extends RoleService {
+
+	void flushRoleCaches();
+	
+	void removeCacheEntries( String roleId, String principalId );
+}

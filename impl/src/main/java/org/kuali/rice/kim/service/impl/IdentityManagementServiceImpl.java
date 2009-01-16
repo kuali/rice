@@ -1,13 +1,13 @@
 package org.kuali.rice.kim.service.impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.kuali.rice.core.util.MaxSizeMap;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
@@ -44,41 +44,39 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	protected int responsibilityCacheMaxSize = 200;
 	protected int responsibilityCacheMaxAge = 30;
 	
-	protected Map<String,MaxAgeSoftReference<KimEntity>> entityByIdCache;
-	protected Map<String,MaxAgeSoftReference<KimEntity>> entityByPrincipalNameCache;
-	protected Map<String,MaxAgeSoftReference<KimPrincipal>> principalByIdCache;
-	protected Map<String,MaxAgeSoftReference<KimPrincipal>> principalByNameCache;
-	protected Map<String,MaxAgeSoftReference<GroupInfo>> groupByIdCache;
-	protected Map<String,MaxAgeSoftReference<GroupInfo>> groupByNameCache;
-	protected Map<String,MaxAgeSoftReference<List<String>>> groupIdsForPrincipalCache;
-	protected Map<String,MaxAgeSoftReference<List<? extends KimGroup>>> groupsForPrincipalCache;
-	protected Map<String,MaxAgeSoftReference<Boolean>> isMemberOfGroupCache;
-	protected Map<String,MaxAgeSoftReference<Boolean>> isGroupMemberOfGroupCache;
-	protected Map<String,MaxAgeSoftReference<Boolean>> isMemberOfGroupByNameCache;
-	protected Map<String,MaxAgeSoftReference<List<String>>> groupMemberPrincipalIdsCache;
-	protected Map<String,MaxAgeSoftReference<Boolean>> hasPermissionCache;
-	protected Map<String,MaxAgeSoftReference<Boolean>> hasPermissionByTemplateCache;
-	protected Map<String,MaxAgeSoftReference<Boolean>> isAuthorizedCache;
-	protected Map<String,MaxAgeSoftReference<Boolean>> isAuthorizedByTemplateNameCache;
-    protected Map<String,MaxAgeSoftReference<Boolean>> isPermissionDefinedForTemplateNameCache;
+	protected MaxSizeMap<String,MaxAgeSoftReference<KimEntity>> entityByIdCache;
+	protected MaxSizeMap<String,MaxAgeSoftReference<KimEntity>> entityByPrincipalNameCache;
+	protected MaxSizeMap<String,MaxAgeSoftReference<KimPrincipal>> principalByIdCache;
+	protected MaxSizeMap<String,MaxAgeSoftReference<KimPrincipal>> principalByNameCache;
+	protected MaxSizeMap<String,MaxAgeSoftReference<GroupInfo>> groupByIdCache;
+	protected MaxSizeMap<String,MaxAgeSoftReference<GroupInfo>> groupByNameCache;
+	protected MaxSizeMap<String,MaxAgeSoftReference<List<String>>> groupIdsForPrincipalCache;
+	protected MaxSizeMap<String,MaxAgeSoftReference<List<? extends KimGroup>>> groupsForPrincipalCache;
+	protected MaxSizeMap<String,MaxAgeSoftReference<Boolean>> isMemberOfGroupCache;
+	protected MaxSizeMap<String,MaxAgeSoftReference<Boolean>> isGroupMemberOfGroupCache;
+	protected MaxSizeMap<String,MaxAgeSoftReference<List<String>>> groupMemberPrincipalIdsCache;
+	protected MaxSizeMap<String,MaxAgeSoftReference<Boolean>> hasPermissionCache;
+	protected MaxSizeMap<String,MaxAgeSoftReference<Boolean>> hasPermissionByTemplateCache;
+	protected MaxSizeMap<String,MaxAgeSoftReference<Boolean>> isAuthorizedCache;
+	protected MaxSizeMap<String,MaxAgeSoftReference<Boolean>> isAuthorizedByTemplateNameCache;
+    protected MaxSizeMap<String,MaxAgeSoftReference<Boolean>> isPermissionDefinedForTemplateNameCache;
 	
 	public void afterPropertiesSet() throws Exception {
-		entityByIdCache = new HashMap<String,MaxAgeSoftReference<KimEntity>>( entityPrincipalCacheMaxSize );
-		entityByPrincipalNameCache = new HashMap<String,MaxAgeSoftReference<KimEntity>>( entityPrincipalCacheMaxSize );
-		principalByIdCache = new HashMap<String,MaxAgeSoftReference<KimPrincipal>>( entityPrincipalCacheMaxSize );
-		principalByNameCache = new HashMap<String,MaxAgeSoftReference<KimPrincipal>>( entityPrincipalCacheMaxSize );
-		groupByIdCache = new HashMap<String,MaxAgeSoftReference<GroupInfo>>( groupCacheMaxSize );
-		groupByNameCache = new HashMap<String,MaxAgeSoftReference<GroupInfo>>( groupCacheMaxSize );
-		groupIdsForPrincipalCache = new HashMap<String,MaxAgeSoftReference<List<String>>>( groupCacheMaxSize );
-		groupsForPrincipalCache = new HashMap<String,MaxAgeSoftReference<List<? extends KimGroup>>>( groupCacheMaxSize );
-		isMemberOfGroupCache = new HashMap<String,MaxAgeSoftReference<Boolean>>( groupCacheMaxSize );
-		isMemberOfGroupByNameCache = new HashMap<String,MaxAgeSoftReference<Boolean>>( groupCacheMaxSize );
-		groupMemberPrincipalIdsCache = new HashMap<String,MaxAgeSoftReference<List<String>>>( groupCacheMaxSize );
-		hasPermissionCache = new HashMap<String,MaxAgeSoftReference<Boolean>>( permissionCacheMaxSize );
-		hasPermissionByTemplateCache = new HashMap<String,MaxAgeSoftReference<Boolean>>( permissionCacheMaxSize );
-		isPermissionDefinedForTemplateNameCache = new HashMap<String,MaxAgeSoftReference<Boolean>>( permissionCacheMaxSize );
-		isAuthorizedByTemplateNameCache = new HashMap<String,MaxAgeSoftReference<Boolean>>( permissionCacheMaxSize );
-		isAuthorizedCache = new HashMap<String,MaxAgeSoftReference<Boolean>>( permissionCacheMaxSize );
+		entityByIdCache = new MaxSizeMap<String,MaxAgeSoftReference<KimEntity>>( entityPrincipalCacheMaxSize );
+		entityByPrincipalNameCache = new MaxSizeMap<String,MaxAgeSoftReference<KimEntity>>( entityPrincipalCacheMaxSize );
+		principalByIdCache = new MaxSizeMap<String,MaxAgeSoftReference<KimPrincipal>>( entityPrincipalCacheMaxSize );
+		principalByNameCache = new MaxSizeMap<String,MaxAgeSoftReference<KimPrincipal>>( entityPrincipalCacheMaxSize );
+		groupByIdCache = new MaxSizeMap<String,MaxAgeSoftReference<GroupInfo>>( groupCacheMaxSize );
+		groupByNameCache = new MaxSizeMap<String,MaxAgeSoftReference<GroupInfo>>( groupCacheMaxSize );
+		groupIdsForPrincipalCache = new MaxSizeMap<String,MaxAgeSoftReference<List<String>>>( groupCacheMaxSize );
+		groupsForPrincipalCache = new MaxSizeMap<String,MaxAgeSoftReference<List<? extends KimGroup>>>( groupCacheMaxSize );
+		isMemberOfGroupCache = new MaxSizeMap<String,MaxAgeSoftReference<Boolean>>( groupCacheMaxSize );
+		groupMemberPrincipalIdsCache = new MaxSizeMap<String,MaxAgeSoftReference<List<String>>>( groupCacheMaxSize );
+		hasPermissionCache = new MaxSizeMap<String,MaxAgeSoftReference<Boolean>>( permissionCacheMaxSize );
+		hasPermissionByTemplateCache = new MaxSizeMap<String,MaxAgeSoftReference<Boolean>>( permissionCacheMaxSize );
+		isPermissionDefinedForTemplateNameCache = new MaxSizeMap<String,MaxAgeSoftReference<Boolean>>( permissionCacheMaxSize );
+		isAuthorizedByTemplateNameCache = new MaxSizeMap<String,MaxAgeSoftReference<Boolean>>( permissionCacheMaxSize );
+		isAuthorizedCache = new MaxSizeMap<String,MaxAgeSoftReference<Boolean>>( permissionCacheMaxSize );
 	}
 
 	public void flushAllCaches() {
@@ -101,7 +99,6 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		groupIdsForPrincipalCache.clear();
 		groupsForPrincipalCache.clear();
 		isMemberOfGroupCache.clear();
-		isMemberOfGroupByNameCache.clear();
 		groupMemberPrincipalIdsCache.clear();
 	}
 	
@@ -201,15 +198,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		}
 		return null;
 	}
-		protected Boolean getIsMemberOfGroupByNameCache( String principalId, String namespaceCode, String groupName ) {
-		MaxAgeSoftReference<Boolean> isMemberRef = isMemberOfGroupByNameCache.get( principalId + "-" + namespaceCode + "-" + groupName );
-		if ( isMemberRef != null ) {
-			return isMemberRef.get();
-		}
-		return null;
-	}
-	
-	protected List<String> getGroupMemberPrincipalIdsCache( String groupId ) {
+		protected List<String> getGroupMemberPrincipalIdsCache( String groupId ) {
 		MaxAgeSoftReference<List<String>> memberIdsRef = groupMemberPrincipalIdsCache.get( groupId );
 		if ( memberIdsRef != null ) {
 			return memberIdsRef.get();
@@ -295,10 +284,6 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	{
         isMemberOfGroupCache.put( potentialMemberId + "-" + potentialParentId, new MaxAgeSoftReference<Boolean>( groupCacheMaxAge, member ) );
     }
-	
-	protected void addIsMemberOfGroupByNameToCache( String principalId, String namespaceCode, String groupName, boolean member ) {
-		isMemberOfGroupByNameCache.put( principalId + "-" + namespaceCode + "-" + groupName, new MaxAgeSoftReference<Boolean>( groupCacheMaxAge, member ) );
-	}
 	
 	protected void addGroupMemberPrincipalIdsToCache( String groupId, List<String> ids ) {
 		if ( ids != null ) {
@@ -456,18 +441,11 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	}
 
 	public boolean isMemberOfGroup(String principalId, String namespaceCode, String groupName) {
-    	Boolean isMember = getIsMemberOfGroupByNameCache(principalId, namespaceCode, groupName);
-		if (isMember != null) {
-			return isMember;
-		}
 		KimGroup group = getGroupByName(namespaceCode, groupName);
 		if ( group == null ) {
-			isMember = Boolean.FALSE;
-		} else {
-			isMember = getGroupService().isMemberOfGroup(principalId, group.getGroupId());
+			return false;
 		}
-    	addIsMemberOfGroupByNameToCache(principalId, namespaceCode, groupName, isMember);
-    	return isMember;    	
+		return isMemberOfGroup(principalId, group.getGroupId());
     }
 
 	public boolean isGroupMemberOfGroup(String potentialMemberId, String potentialParentId)
@@ -587,8 +565,6 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     		// affected - is this necessary or do we just wait for the cache items to expire    		
     	}
     	groupMemberPrincipalIdsCache.remove(groupId);
-    	KimGroup group = getGroup(groupId);
-    	isMemberOfGroupByNameCache.remove(principalId + "-" + group.getNamespaceCode() + "-" + group.getGroupName() );
     }
     
     

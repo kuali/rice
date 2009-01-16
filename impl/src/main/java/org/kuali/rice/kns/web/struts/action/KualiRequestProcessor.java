@@ -20,7 +20,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -33,14 +32,13 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.InvalidCancelException;
 import org.apache.struts.action.RequestProcessor;
 import org.apache.struts.config.ForwardConfig;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.IdentityManagementService;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.UserSession;
-import org.kuali.rice.kns.datadictionary.DataDictionary;
-import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.service.BusinessObjectService;
@@ -57,9 +55,7 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
-import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
 import org.kuali.rice.kns.web.struts.pojo.PojoForm;
-import org.kuali.rice.kns.web.struts.pojo.PojoFormBase;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -79,6 +75,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 	protected DataDictionaryService dataDictionaryService;
 	protected BusinessObjectService businessObjectService;
 	protected PlatformTransactionManager transactionManager;
+	protected IdentityManagementService identityManagementService;
 	
 	@Override
 	public void process(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -131,16 +128,19 @@ public class KualiRequestProcessor extends RequestProcessor {
 	protected boolean processPreprocess(HttpServletRequest request, HttpServletResponse response) {
 		UserSession userSession = null;
 		if (!isUserSessionEstablished(request)) {
-			IdentityManagementService idmService = (IdentityManagementService) GlobalResourceLoader.getService(new QName("KIM", "kimIdentityManagementService")); 
-			String principalName = idmService.getAuthenticatedPrincipalName(request);
+			String principalName = getIdentityManagementService().getAuthenticatedPrincipalName(request);
 			if ( StringUtils.isNotBlank(principalName) ) {
-				KimPrincipal principal = idmService.getPrincipalByPrincipalName( principalName );
+				KimPrincipal principal = getIdentityManagementService().getPrincipalByPrincipalName( principalName );
 				if ( principal != null ) {
 					AttributeSet qualification = new AttributeSet();
 					qualification.put( "principalId", principal.getPrincipalId() );
 					// check to see if the given principal is an active principal/entity
-					if ( idmService.isAuthorized( principal.getPrincipalId(), 
-							"KUALI", "Log In", null, qualification ) ) {
+					if ( getIdentityManagementService().isAuthorized( 
+							principal.getPrincipalId(), 
+							KimConstants.KIM_TYPE_DEFAULT_NAMESPACE, 
+							KimConstants.PermissionNames.LOG_IN, 
+							null, 
+							qualification ) ) {
 					
 						// This is a temp solution to show KIM AuthN checking existence of Principals.
 						// We may want to move this code to the IdentityService once it is finished.
@@ -644,4 +644,12 @@ public class KualiRequestProcessor extends RequestProcessor {
 		return this.transactionManager;
 	}
 
+	
+	public IdentityManagementService getIdentityManagementService() {
+		if ( identityManagementService == null ) {
+			identityManagementService = KIMServiceLocator.getIdentityManagementService();
+		}
+		return this.identityManagementService;
+	}
+	
 }

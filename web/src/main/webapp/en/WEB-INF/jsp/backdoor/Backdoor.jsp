@@ -51,9 +51,6 @@
 		<td><a href="../kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.rule.RuleBaseValues&docFormKey=88888888&returnLocation=http://localhost:8080/kr-dev/portal.do&hideReturnLink=true" target="<c:out value="${BackdoorForm.targetName}" />">Routing Rules</a></td>
 	</tr>
 	<tr>
-	    <td><a href="RemoveReplace.do" target="<c:out value="${BackdoorForm.targetName}" />">Remove/Replace User</a></td>
-	</tr>
-	<tr>
 		<td><a href="RoutingReport.do" target="<c:out value="${BackdoorForm.targetName}" />">Routing Report</a></td>
 	</tr>
 	<tr>

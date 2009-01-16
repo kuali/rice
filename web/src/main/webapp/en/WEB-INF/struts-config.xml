@@ -21,7 +21,10 @@
       <form-bean name="NoteForm" type="org.kuali.rice.kew.notes.web.NoteForm" />
       <form-bean name="HelpForm" type="org.kuali.rice.kew.help.web.HelpForm" />
       <form-bean name="IngesterForm" type="org.kuali.rice.kew.batch.web.IngesterForm" />
+      
+      <!-- Removing Remove/replace functionality for now, as per Application Roadmap committee, will revisit in 1.1
       <form-bean name="RemoveReplaceForm" type="org.kuali.rice.kew.removereplace.web.RemoveReplaceForm"/>
+      -->
 
 
     </form-beans>
@@ -224,6 +227,7 @@
       	<forward name="view" path="/WEB-INF/jsp/batch/ingester.jsp"/>
 	  </action>
 
+	  <!-- Removing Remove/replace functionality for now, as per Application Roadmap committee, will revisit in 1.1
        <action path="/RemoveReplace" name="RemoveReplaceForm" scope="request" validate="true"
          input="/WEB-INF/jsp/removereplace/RemoveReplaceEntry.jsp"
          type="org.kuali.rice.kew.removereplace.web.RemoveReplaceAction" parameter="methodToCall">
@@ -235,6 +239,7 @@
          <forward name="requiredStateError" path="/WEB-INF/jsp/removereplace/RemoveReplaceEntry.jsp"/>
          <forward name="finalStateError" path="/WEB-INF/jsp/removereplace/RemoveReplaceEntry.jsp"/>
        </action>
+     -->
 
     </action-mappings>
 

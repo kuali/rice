@@ -87,6 +87,10 @@ public class DocumentTypePolicy implements WorkflowPersistable {
     public void setInheritedFlag(Boolean inheritedFlag) {
         this.inheritedFlag = inheritedFlag;
     }
+    
+    public boolean isAllowUnrequestedAction() {
+        return KEWConstants.ALLOW_UNREQUESTED_ACTION_POLICY.equals(policyName);
+    }
 
     public boolean isDefaultApprove() {
         return KEWConstants.DEFAULT_APPROVE_POLICY.equals(policyName);

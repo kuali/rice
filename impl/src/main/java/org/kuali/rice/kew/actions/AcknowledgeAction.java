@@ -23,13 +23,13 @@ import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.doctype.DocumentTypePolicy;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-
 
 /**
  * <p>
@@ -136,6 +136,15 @@ public class AcknowledgeAction extends ActionTakenEvent {
 
         LOG.debug("Checking to see if the action is legal");
         List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
+        if (actionRequests == null || actionRequests.isEmpty()) {
+            DocumentTypePolicy allowUnrequested = getRouteHeader().getDocumentType().getAllowUnrequestedActionPolicy();
+            if (allowUnrequested != null) {
+            	if (!allowUnrequested.getPolicyValue()) {
+            		throw new InvalidActionTakenException("No request for the user is compatible " + "with the ACKNOWLEDGE action. " + "Doctype policy ALLOW_UNREQUESTED_ACTION is set to false and someone else likely just took action on the document.");
+            	}
+            }
+        }
+
         String errorMessage = validateActionRules(actionRequests);
         if (!Utilities.isEmpty(errorMessage)) {
             throw new InvalidActionTakenException(errorMessage);

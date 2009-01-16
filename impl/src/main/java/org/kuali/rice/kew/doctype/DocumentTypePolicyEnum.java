@@ -27,7 +27,7 @@ import org.kuali.rice.kew.util.KEWConstants;
  */
 public final class DocumentTypePolicyEnum {
     /**
-     * FIXME: needs docs
+     * This policy currently does not do anything.
      */
     public static final DocumentTypePolicyEnum PRE_APPROVE = new DocumentTypePolicyEnum(KEWConstants.PREAPPROVE_POLICY);
     /**
@@ -43,6 +43,15 @@ public final class DocumentTypePolicyEnum {
      */
     public static final DocumentTypePolicyEnum USE_KEW_SUPERUSER_DOCHANDLER = new DocumentTypePolicyEnum(KEWConstants.USE_KEW_SUPERUSER_DOCHANDLER);
 
+    /**
+     * determines how to handle the situation where the user has initiated an action but there is not a corresponding pending request. This policy has a default of true.
+     * If set to false an exception should be thrown from ApproveAction, CompleteAction, AcknowledgeAction
+     * and ClearFYIAction classes when there does not exist a corresponding pending request for the user who is submitting the action. 
+     * When set to false, this will result in one of the users getting an error message if 2 users attempt to submit the same action
+     * at the same time (this can happen in workgroup situtations). 
+     */
+    public static final DocumentTypePolicyEnum ALLOW_UNREQUESTED_ACTION = new DocumentTypePolicyEnum(KEWConstants.ALLOW_UNREQUESTED_ACTION_POLICY);
+    
     /**
      * determines whether a document will go processed without any approval requests.  If
      * a document has this policy set to false and doesn't generate and approval requests the document will
@@ -101,6 +110,8 @@ public final class DocumentTypePolicyEnum {
             return DEFAULT_APPROVE;
         } else if (PRE_APPROVE.name.equalsIgnoreCase(name)) {
             return PRE_APPROVE;
+        } else if (ALLOW_UNREQUESTED_ACTION.name.equalsIgnoreCase(name)) {
+            return ALLOW_UNREQUESTED_ACTION;
         } else if (INITIATOR_MUST_ROUTE.name.equalsIgnoreCase(name)) {
             return INITIATOR_MUST_ROUTE;
         } else if (INITIATOR_MUST_SAVE.name.equalsIgnoreCase(name)) {

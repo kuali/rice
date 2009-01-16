@@ -220,6 +220,9 @@ public class DocumentType extends PersistableBusinessObjectBase
         }
     }
 
+    public DocumentTypePolicy getAllowUnrequestedActionPolicy() {
+        return getPolicyByName(DocumentTypePolicyEnum.ALLOW_UNREQUESTED_ACTION.getName(), Boolean.TRUE);
+    }
 
     public DocumentTypePolicy getDefaultApprovePolicy() {
         return getPolicyByName(DocumentTypePolicyEnum.DEFAULT_APPROVE.getName(), Boolean.TRUE);
@@ -272,6 +275,13 @@ public class DocumentType extends PersistableBusinessObjectBase
         return null;
     }
 
+    public String getAllowUnrequestedActionPolicyDisplayValue() {
+        if (getAllowUnrequestedActionPolicy() != null) {
+            return getAllowUnrequestedActionPolicy().getPolicyDisplayValue();
+        }
+        return null;
+    }
+    
     public String getDefaultApprovePolicyDisplayValue() {
         if (getDefaultApprovePolicy() != null) {
             return getDefaultApprovePolicy().getPolicyDisplayValue();

@@ -22,6 +22,7 @@ import java.util.List;
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.doctype.DocumentTypePolicy;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -131,6 +132,14 @@ public class CompleteAction extends ActionTakenEvent {
         LOG.debug("Completing document : " + annotation);
 
         List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
+        if (actionRequests == null || actionRequests.isEmpty()) {
+            DocumentTypePolicy allowUnrequested = getRouteHeader().getDocumentType().getAllowUnrequestedActionPolicy();
+            if (allowUnrequested != null) {
+            	if (!allowUnrequested.getPolicyValue()) {
+            		throw new InvalidActionTakenException("No request for the user is compatible " + "with the COMPLETE action. " + "Doctype policy ALLOW_UNREQUESTED_ACTION is set to false and someone else likely just took action on the document.");
+            	}
+            }
+        }
         LOG.debug("Checking to see if the action is legal");
         String errorMessage = validateActionRules(actionRequests);
         if (!Utilities.isEmpty(errorMessage)) {

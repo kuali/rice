@@ -103,6 +103,7 @@ public class KEWConstants {
 
     public static final String DISAPPROVE_POLICY = "DISAPPROVE";
     public static final String DISAPPROVE_POLICY_CANCEL_CD = "C";
+    public static final String ALLOW_UNREQUESTED_ACTION_POLICY = "ALLOW_UNREQUESTED_ACTION";
     public static final String DEFAULT_APPROVE_POLICY = "DEFAULT_APPROVE";
     public static final String PREAPPROVE_POLICY = "PRE_APPROVE";
     public static final String INITIATOR_MUST_ROUTE_POLICY = "INITIATOR_MUST_ROUTE";

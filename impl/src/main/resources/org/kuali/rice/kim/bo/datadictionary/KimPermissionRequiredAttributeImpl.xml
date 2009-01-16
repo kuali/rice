@@ -1,0 +1,163 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+  <bean id="KimPermissionRequiredAttributeImpl" parent="KimPermissionRequiredAttributeImpl-parentBean" />
+
+  <bean id="KimPermissionRequiredAttributeImpl-parentBean" abstract="true" parent="BusinessObjectEntry"
+        p:businessObjectClass="org.kuali.rice.kim.bo.role.impl.KimPermissionRequiredAttributeImpl"
+        p:titleAttribute="kimPermissionRequiredAttributeId"
+        p:objectLabel="Kim Attribute Definition"
+        p:inquiryDefinition-ref="KimPermissionRequiredAttributeImpl-inquiryDefinition" >
+    <property name="attributes" >
+      <list>
+        <ref bean="KimPermissionRequiredAttributeImpl-kimPermissionRequiredAttributeId" />
+        <ref bean="KimPermissionRequiredAttributeImpl-permissionId" />
+        <ref bean="KimPermissionRequiredAttributeImpl-kimAttributeId" />
+        <ref bean="KimPermissionRequiredAttributeImpl-active" />
+        <ref bean="KimPermissionRequiredAttributeImpl-kimAttribute.attributeName" />
+        <ref bean="KimPermissionRequiredAttributeImpl-kimAttribute.namespaceCode" />
+        <ref bean="KimPermissionRequiredAttributeImpl-kimAttribute.attributeLabel" />
+        <ref bean="KimPermissionRequiredAttributeImpl-kimAttribute.active" />
+        <ref bean="KimPermissionRequiredAttributeImpl-kimAttribute.componentName" />
+        <ref bean="KimPermissionRequiredAttributeImpl-kimAttribute.applicationUrl" />
+      </list>
+    </property>
+  </bean>
+
+  <bean id="KimPermissionRequiredAttributeImpl-kimPermissionRequiredAttributeId" parent="KimPermissionRequiredAttributeImpl-kimPermissionRequiredAttributeId-parentBean" />
+  <bean id="KimPermissionRequiredAttributeImpl-kimPermissionRequiredAttributeId-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="kimPermissionRequiredAttributeId"
+        p:forceUppercase="true"
+        p:label="Permission Required Attribute Id"
+        p:shortLabel="Permission Required Attribute Id"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="40" />
+    </property>
+  </bean>
+    
+  <bean id="KimPermissionRequiredAttributeImpl-permissionId" parent="KimPermissionRequiredAttributeImpl-permissionId-parentBean" />
+  <bean id="KimPermissionRequiredAttributeImpl-permissionId-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="permissionId"
+        p:label="Permission Id"
+        p:shortLabel="Permission Id"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="40" />
+    </property>
+  </bean>
+
+  <bean id="KimPermissionRequiredAttributeImpl-kimAttributeId" parent="KimPermissionRequiredAttributeImpl-kimAttributeId-parentBean" />
+  <bean id="KimPermissionRequiredAttributeImpl-kimAttributeId-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="kimAttributeId"
+        p:forceUppercase="true"
+        p:label="Attribute Id"
+        p:shortLabel="Attribute Id"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="40" />
+    </property>
+  </bean>
+
+  <bean id="KimPermissionRequiredAttributeImpl-active" parent="KimPermissionRequiredAttributeImpl-active-parentBean" />
+  <bean id="KimPermissionRequiredAttributeImpl-active-parentBean" parent="KimAttributeImpl-active" abstract="true"
+  	    p:name="active" 
+  	    p:label="Permission Required Active Indicator" />
+
+  <bean id="KimPermissionRequiredAttributeImpl-kimAttribute.attributeName" parent="KimPermissionRequiredAttributeImpl-kimAttribute.attributeName-parentBean" />
+  <bean id="KimPermissionRequiredAttributeImpl-kimAttribute.attributeName-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="kimAttribute.attributeName"
+        p:label="Attribute Name"
+        p:shortLabel="Attribute Name"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="40" />
+    </property>
+  </bean>
+
+  <bean id="KimPermissionRequiredAttributeImpl-kimAttribute.namespaceCode" parent="KimPermissionRequiredAttributeImpl-kimAttribute.namespaceCode-parentBean" />
+  <bean id="KimPermissionRequiredAttributeImpl-kimAttribute.namespaceCode-parentBean" parent="KimRoleImpl-namespaceCode" abstract="true"
+        p:name="kimAttribute.namespaceCode"
+        p:label="Attribute Namespace Code"
+        p:shortLabel="Attribute Namespace Code">
+  </bean>
+  
+  <bean id="KimPermissionRequiredAttributeImpl-kimAttribute.attributeLabel" parent="KimPermissionRequiredAttributeImpl-kimAttribute.attributeLabel-parentBean" />
+  <bean id="KimPermissionRequiredAttributeImpl-kimAttribute.attributeLabel-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="kimAttribute.attributeLabel"
+        p:forceUppercase="true"
+        p:label="Attribute Label"
+        p:shortLabel="Attribute Label"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="40" />
+    </property>
+  </bean>
+
+  <bean id="KimPermissionRequiredAttributeImpl-kimAttribute.active" parent="KimPermissionRequiredAttributeImpl-kimAttribute.active-parentBean" />
+  <bean id="KimPermissionRequiredAttributeImpl-kimAttribute.active-parentBean" parent="KimAttributeImpl-active" abstract="true"
+  	    p:name="kimAttribute.active" 
+  	    p:label="Attribute Active Indicator"/>
+  
+  <bean id="KimPermissionRequiredAttributeImpl-kimAttribute.componentName" parent="KimPermissionRequiredAttributeImpl-kimAttribute.componentName-parentBean" />
+  <bean id="KimPermissionRequiredAttributeImpl-kimAttribute.componentName-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="kimAttribute.componentName"
+        p:forceUppercase="true"
+        p:label="Component Name"
+        p:shortLabel="Component Name"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="40" />
+    </property>
+  </bean>
+
+  <bean id="KimPermissionRequiredAttributeImpl-kimAttribute.applicationUrl" parent="KimPermissionRequiredAttributeImpl-kimAttribute.applicationUrl-parentBean" />
+  <bean id="KimPermissionRequiredAttributeImpl-kimAttribute.applicationUrl-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="kimAttribute.applicationUrl"
+        p:forceUppercase="true"
+        p:label="Application Url"
+        p:shortLabel="Application Url"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="40" />
+    </property>
+  </bean>  
+    
+  <bean id="KimPermissionRequiredAttributeImpl-inquiryDefinition" parent="KimPermissionRequiredAttributeImpl-inquiryDefinition-parentBean" />
+  <bean id="KimPermissionRequiredAttributeImpl-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition"
+        p:title="Kim Attribute Data Inquiry" >
+    <property name="inquirySections" >
+      <list>
+        <bean parent="InquirySectionDefinition"
+              p:title="Kim Attribute Data"
+              p:numberOfColumns="1" >
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="FieldDefinition" p:attributeName="kimPermissionRequiredAttributeId" />
+              <bean parent="FieldDefinition" p:attributeName="permissionId" />
+              <bean parent="FieldDefinition" p:attributeName="active" />
+              <bean parent="FieldDefinition" p:attributeName="kimAttributeId" />
+              <bean parent="FieldDefinition" p:attributeName="kimAttribute.attributeName" />
+        	  <bean parent="FieldDefinition" p:attributeName="kimAttribute.namespaceCode" />
+        	  <bean parent="FieldDefinition" p:attributeName="kimAttribute.attributeLabel" />
+        	  <bean parent="FieldDefinition" p:attributeName="kimAttribute.active" />
+        	  <bean parent="FieldDefinition" p:attributeName="kimAttribute.componentName" />
+        	  <bean parent="FieldDefinition" p:attributeName="kimAttribute.applicationUrl" />
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+  
+</beans>

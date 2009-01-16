@@ -54,7 +54,8 @@ public abstract class HtmlData implements Serializable {
 	protected String prependDisplayText = "";
 	protected String appendDisplayText = "";
 	protected List<HtmlData> childUrlDataList;
-
+	protected String maxLength;
+	
 	/**
 	 * 
 	 * This method constructs the complete html tag based on the class attribute
@@ -431,6 +432,60 @@ public abstract class HtmlData implements Serializable {
 			this.value = value;
 		}
 
+	}
+
+	public static class MultipleAnchorHtmlData extends AnchorHtmlData {
+		protected List<AnchorHtmlData> anchorHtmlData;
+		protected static final String ANCHORS_SEPARATOR = ", ";
+		
+		/**
+		 * Needed by inquiry framework
+		 */
+		public MultipleAnchorHtmlData(List<AnchorHtmlData> anchorHtmlData) {
+			this.anchorHtmlData = anchorHtmlData;
+		}
+		
+		/**
+		 * 
+		 * This method generates anchor tag.
+		 * 
+		 * @see org.kuali.rice.kns.lookup.HtmlData#constructCompleteHtmlTag()
+		 */
+		public String constructCompleteHtmlTag() {
+			StringBuffer completeHtmlTag = new StringBuffer();
+			for(AnchorHtmlData anchor: anchorHtmlData){
+				completeHtmlTag.append(anchor.constructCompleteHtmlTag()+",");
+			}
+	        if(completeHtmlTag.toString().endsWith(ANCHORS_SEPARATOR))
+	        	completeHtmlTag.delete(completeHtmlTag.length()-ANCHORS_SEPARATOR.length(), completeHtmlTag.length());
+			return completeHtmlTag.toString();
+		}
+
+		/**
+		 * @return the anchorHtmlData
+		 */
+		public List<AnchorHtmlData> getAnchorHtmlData() {
+			return this.anchorHtmlData;
+		}
+
+	}
+
+	/**
+	 * @return the maxLength
+	 */
+	public int getMaxLength() {
+		try{
+			return Integer.parseInt(this.maxLength);
+		} catch(Exception ex){
+			return -1;
+		}
+	}
+
+	/**
+	 * @param maxLength the maxLength to set
+	 */
+	public void setMaxLength(String maxLength) {
+		this.maxLength = maxLength;
 	}
 
 }

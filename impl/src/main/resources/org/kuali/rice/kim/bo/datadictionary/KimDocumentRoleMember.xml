@@ -7,7 +7,7 @@
   <bean id="DocRolePrncpl" parent="DocRolePrncpl-parentBean" />
 
   <bean id="DocRolePrncpl-parentBean" abstract="true" parent="BusinessObjectEntry"
-        p:businessObjectClass="org.kuali.rice.kim.bo.ui.PersonDocumentRolePrncpl"
+        p:businessObjectClass="org.kuali.rice.kim.bo.ui.KimDocumentRoleMember"
         p:titleAttribute="roleMemberId"
         p:objectLabel="Names"
         p:inquiryDefinition-ref="DocRolePrncpl-inquiryDefinition"
@@ -15,7 +15,10 @@
     <property name="attributes" >
       <list>
         <ref bean="DocRolePrncpl-roleMemberId" />
-        <ref bean="DocRolePrncpl-principalId" />
+        <ref bean="DocRolePrncpl-memberId" />
+        <!-- TODO: create entry for this  -->
+        <ref bean="DocRolePrncpl-memberTypeCode" />
+        <ref bean="DocRolePrncpl-memberName" />
         <ref bean="DocRolePrncpl-activeFromDate" />
         <ref bean="DocRolePrncpl-activeToDate" />
       </list>
@@ -36,12 +39,12 @@
     </property>
   </bean>
   
-  <bean id="DocRolePrncpl-principalId" parent="DocRolePrncpl-principalId-parentBean" />
-  <bean id="DocRolePrncpl-principalId-parentBean" parent="AttributeDefinition" abstract="true"
-        p:name="principalId"
+  <bean id="DocRolePrncpl-memberId" parent="DocRolePrncpl-memberId-parentBean" />
+  <bean id="DocRolePrncpl-memberId-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="memberId"
         p:forceUppercase="true"
-        p:label="Principal Id"
-        p:shortLabel="Principal Id"
+        p:label="Member Id"
+        p:shortLabel="Member Id"
         p:maxLength="40"
         p:required="false" >
     <property name="control" >
@@ -49,6 +52,32 @@
     </property>
   </bean>
     
+  <bean id="DocRolePrncpl-memberTypeCode" parent="DocRolePrncpl-memberTypeCode-parentBean" />
+  <bean id="DocRolePrncpl-memberTypeCode-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="memberTypeCode"
+        p:forceUppercase="true"
+        p:label="Member Type Code"
+        p:shortLabel="Type Code"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.rice.kim.bo.options.MemberTypeValuesFinder"/>
+    </property>
+  </bean>
+
+  <bean id="DocRolePrncpl-memberName" parent="DocRolePrncpl-memberName-parentBean" />
+  <bean id="DocRolePrncpl-memberName-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="memberName"
+        p:forceUppercase="true"
+        p:label="Member Name"
+        p:shortLabel="Name"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="10" />
+    </property>
+  </bean>
+            
   <bean id="DocRolePrncpl-activeFromDate" parent="DocRolePrncpl-activeFromDate-parentBean" />
   <bean id="DocRolePrncpl-activeFromDate-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
     <property name="name" value="activeFromDate" />
@@ -84,7 +113,7 @@
           <property name="inquiryFields" >
             <list>
               <bean parent="FieldDefinition" p:attributeName="roleMemberId" />
-              <bean parent="FieldDefinition" p:attributeName="principalId" />
+              <bean parent="FieldDefinition" p:attributeName="memberId" />
               <bean parent="FieldDefinition" p:attributeName="activeFromDate" />
               <bean parent="FieldDefinition" p:attributeName="activeToDate" />
             </list>
@@ -112,7 +141,7 @@
     <property name="lookupFields" >
       <list>
               <bean parent="FieldDefinition" p:attributeName="roleMemberId" />
-              <bean parent="FieldDefinition" p:attributeName="principalId" />
+              <bean parent="FieldDefinition" p:attributeName="memberId" />
               <bean parent="FieldDefinition" p:attributeName="activeFromDate" />
               <bean parent="FieldDefinition" p:attributeName="activeToDate" />
       </list>
@@ -120,7 +149,7 @@
     <property name="resultFields" >
       <list>
               <bean parent="FieldDefinition" p:attributeName="roleMemberId" />
-              <bean parent="FieldDefinition" p:attributeName="principalId" />
+              <bean parent="FieldDefinition" p:attributeName="memberId" />
               <bean parent="FieldDefinition" p:attributeName="activeFromDate" />
               <bean parent="FieldDefinition" p:attributeName="activeToDate" />
       </list>

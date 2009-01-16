@@ -24,6 +24,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.entity.EntityAddress;
 import org.kuali.rice.kim.bo.entity.EntityEmail;
 import org.kuali.rice.kim.bo.entity.EntityPhone;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.impl.EntityAddressImpl;
 import org.kuali.rice.kim.bo.entity.impl.EntityAffiliationImpl;
 import org.kuali.rice.kim.bo.entity.impl.EntityEmailImpl;
@@ -39,11 +40,17 @@ import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
 import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
 import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.bo.role.KimRole;
+import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
+import org.kuali.rice.kim.bo.role.impl.KimDelegationAttributeDataImpl;
+import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
 import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl;
+import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
+import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAddress;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAffiliation;
 import org.kuali.rice.kim.bo.ui.PersonDocumentEmail;
@@ -53,12 +60,14 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentName;
 import org.kuali.rice.kim.bo.ui.PersonDocumentPhone;
 import org.kuali.rice.kim.bo.ui.PersonDocumentPrivacy;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
-import org.kuali.rice.kim.bo.ui.PersonDocumentRolePrncpl;
-import org.kuali.rice.kim.bo.ui.PersonDocumentRoleQualifier;
+import org.kuali.rice.kim.bo.ui.RoleDocumentDelegation;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
+import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.PermissionService;
+import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
@@ -79,6 +88,8 @@ import org.kuali.rice.kns.util.ObjectUtils;
  *
  */
 public class UiDocumentServiceImpl implements UiDocumentService {
+	protected PermissionService permissionService;
+	protected RoleService roleService;
 	protected BusinessObjectService businessObjectService;
 	protected IdentityService identityService;
 	protected GroupService groupService;
@@ -296,8 +307,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	        KimTypeService kimTypeService = (KimTypeServiceBase)KIMServiceLocator.getService(serviceName);
 			role.setDefinitions(kimTypeService.getAttributeDefinitions(role.getKimRoleType()));
 			// TODO : refactor qualifier key to connect between defn & qualifier
-        	for (PersonDocumentRolePrncpl principal : role.getRolePrncpls()) {
-        		for (PersonDocumentRoleQualifier qualifier : principal.getQualifiers()) {
+        	for (KimDocumentRoleMember principal : role.getRolePrncpls()) {
+        		for (KimDocumentRoleQualifier qualifier : principal.getQualifiers()) {
     		        for (KimTypeAttributeImpl attrDef : role.getKimRoleType().getAttributeDefinitions()) {
     		        	if (qualifier.getKimAttrDefnId().equals(attrDef.getKimAttributeId())) {
     		        		qualifier.setQualifierKey(attrDef.getSortCode());
@@ -307,9 +318,9 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         		}
         	}
         	// when post again, it will need this during populate
-            role.setNewRolePrncpl(new PersonDocumentRolePrncpl());
+            role.setNewRolePrncpl(new KimDocumentRoleMember());
             for (String key : role.getDefinitions().keySet()) {
-            	PersonDocumentRoleQualifier qualifier = new PersonDocumentRoleQualifier();
+            	KimDocumentRoleQualifier qualifier = new KimDocumentRoleQualifier();
             	qualifier.setQualifierKey(key);
             	role.getNewRolePrncpl().getQualifiers().add(qualifier);
             }
@@ -334,12 +345,12 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return (List<KimRoleImpl>)getBusinessObjectService().findMatching(KimRoleImpl.class, criteria);
 	}
 
-    private List<PersonDocumentRolePrncpl> populateDocRolePrncpl(List <RoleMemberImpl> roleMembers, String principalId) {
-		List <PersonDocumentRolePrncpl> docRoleMembers = new ArrayList <PersonDocumentRolePrncpl>();
+    private List<KimDocumentRoleMember> populateDocRolePrncpl(List <RoleMemberImpl> roleMembers, String principalId) {
+		List <KimDocumentRoleMember> docRoleMembers = new ArrayList <KimDocumentRoleMember>();
     	for (RoleMemberImpl rolePrincipal : roleMembers) {
     		if (rolePrincipal.getMemberTypeCode().equals(KimRoleImpl.PRINCIPAL_MEMBER_TYPE) && rolePrincipal.getMemberId().equals(principalId)) {
-        		PersonDocumentRolePrncpl docRolePrncpl = new PersonDocumentRolePrncpl();
-        		docRolePrncpl.setPrincipalId(rolePrincipal.getMemberId());
+        		KimDocumentRoleMember docRolePrncpl = new KimDocumentRoleMember();
+        		docRolePrncpl.setMemberId(rolePrincipal.getMemberId());
         		docRolePrncpl.setRoleMemberId(rolePrincipal.getRoleMemberId());
         		docRolePrncpl.setActive(rolePrincipal.isActive());
         		docRolePrncpl.setRoleId(rolePrincipal.getRoleId());
@@ -356,10 +367,10 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     // UI layout for rolequalifier is a little different from kimroleattribute set up.
     // each principal may have member with same role multiple times with different qualifier, but the role
     // only displayed once, and the qualifier displayed multiple times.
-    private List<PersonDocumentRoleQualifier> populateDocRoleQualifier(List <RoleMemberAttributeDataImpl> qualifiers) {
-		List <PersonDocumentRoleQualifier> docRoleQualifiers = new ArrayList <PersonDocumentRoleQualifier>();
+    private List<KimDocumentRoleQualifier> populateDocRoleQualifier(List <RoleMemberAttributeDataImpl> qualifiers) {
+		List <KimDocumentRoleQualifier> docRoleQualifiers = new ArrayList <KimDocumentRoleQualifier>();
 		for (RoleMemberAttributeDataImpl qualifier : qualifiers) {
-    		PersonDocumentRoleQualifier docRoleQualifier = new PersonDocumentRoleQualifier();
+    		KimDocumentRoleQualifier docRoleQualifier = new KimDocumentRoleQualifier();
     		docRoleQualifier.setAttrDataId(qualifier.getAttributeDataId());
     		docRoleQualifier.setAttrVal(qualifier.getAttributeValue());
     		docRoleQualifier.setKimAttrDefnId(qualifier.getKimAttributeId());
@@ -761,7 +772,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					break;
 				}
 			}
-			for (PersonDocumentRolePrncpl principal : role.getRolePrncpls()) {
+			for (KimDocumentRoleMember principal : role.getRolePrncpls()) {
 				RoleMemberImpl rolePrincipalImpl = new RoleMemberImpl();
 				rolePrincipalImpl.setRoleId(role.getRoleId());
 				// TODO : principalId is not ready here yet ?
@@ -778,7 +789,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					}
 				}
 				List<RoleMemberAttributeDataImpl> attributes = new ArrayList<RoleMemberAttributeDataImpl>();
-				for (PersonDocumentRoleQualifier qualifier : principal.getQualifiers()) {
+				for (KimDocumentRoleQualifier qualifier : principal.getQualifiers()) {
 					RoleMemberAttributeDataImpl attribute = new RoleMemberAttributeDataImpl();
 					attribute.setAttributeDataId(qualifier.getAttrDataId());
 					attribute.setAttributeValue(qualifier.getAttrVal());
@@ -820,6 +831,145 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			groupService = KIMServiceLocator.getGroupService();
 		}
 		return groupService;
+	}
+
+
+	/* Role document methods */
+	public void loadRoleDoc(IdentityManagementRoleDocument identityManagementRoleDocument, KimRole kimRole){
+		KimRoleInfo kimRoleInfo = (KimRoleInfo)kimRole;
+		Map<String, String> criteria = new HashMap<String, String>();
+		criteria.put("roleId", kimRoleInfo.getRoleId());
+		KimRoleImpl kimRoleImpl = (KimRoleImpl)
+			KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimRoleImpl.class, criteria);
+		identityManagementRoleDocument.setRoleId(kimRoleImpl.getRoleId());
+		identityManagementRoleDocument.setRoleName(kimRoleImpl.getRoleName());
+		identityManagementRoleDocument.setActive(kimRoleImpl.isActive());
+		identityManagementRoleDocument.setRoleNamespace(kimRoleImpl.getNamespaceCode());
+		identityManagementRoleDocument.setMembers(loadMembers(identityManagementRoleDocument, kimRoleImpl.getMembers()));
+		identityManagementRoleDocument.setPermissions(kimRoleImpl.getAssignedPermissions());
+		identityManagementRoleDocument.setResponsibilities(kimRoleImpl.getAssignedResponsibilities());
+		identityManagementRoleDocument.setDelegations(loadRoleDocumentDelegations(getRoleDelegations(kimRoleImpl.getRoleId())));
+		identityManagementRoleDocument.setKimType(kimRoleImpl.getKimRoleType());
+		//Delegations
+	}
+
+	private List<KimDocumentRoleMember> loadMembers(
+			IdentityManagementRoleDocument identityManagementRoleDocument, List<RoleMemberImpl> members){
+		List<KimDocumentRoleMember> pndMembers = new ArrayList<KimDocumentRoleMember>();
+		KimDocumentRoleMember pndMember = new KimDocumentRoleMember();
+		for(RoleMemberImpl member: members){
+			pndMember = new KimDocumentRoleMember();
+			pndMember.setRoleMemberId(member.getMemberId());
+			pndMember.setRoleId(member.getRoleId());
+			pndMember.setMemberId(member.getMemberId());
+			pndMember.setMemberName(getMemberName(member));
+			pndMember.setMemberTypeCode(member.getMemberTypeCode());
+			pndMember.setActiveFromDate(member.getActiveFromDate());
+			pndMember.setActiveToDate(member.getActiveToDate());
+			pndMember.setActive(member.isActive());
+			pndMember.setQualifiers(loadRoleMemberQualifiers(member.getAttributes()));
+			pndMembers.add(pndMember);
+		}
+		return pndMembers;
+	}
+
+	private List loadRoleMemberQualifiers(List<RoleMemberAttributeDataImpl> attributeDataList){
+		List<KimDocumentRoleQualifier> pndMemberRoleQualifiers = new ArrayList<KimDocumentRoleQualifier>();
+		KimDocumentRoleQualifier pndMemberRoleQualifier = new KimDocumentRoleQualifier();
+		for(RoleMemberAttributeDataImpl memberRoleQualifier: attributeDataList){
+			pndMemberRoleQualifier = new KimDocumentRoleQualifier();
+			pndMemberRoleQualifier.setAttrDataId(memberRoleQualifier.getAttributeDataId());
+			pndMemberRoleQualifier.setAttrVal(memberRoleQualifier.getAttributeValue());
+			pndMemberRoleQualifier.setTargetPrimaryKey(memberRoleQualifier.getTargetPrimaryKey());
+			pndMemberRoleQualifier.setKimTypId(memberRoleQualifier.getKimTypeId());
+			pndMemberRoleQualifier.setKimAttrDefnId(memberRoleQualifier.getKimAttributeId());
+			pndMemberRoleQualifiers.add(pndMemberRoleQualifier);
+		}
+		return pndMemberRoleQualifiers;
+	}
+
+	private List<KimDocumentRoleQualifier> loadDelegationQualifiers(List<KimDelegationAttributeDataImpl> attributeDataList){
+		List<KimDocumentRoleQualifier> pndDelegationQualifiers = new ArrayList<KimDocumentRoleQualifier>();
+		KimDocumentRoleQualifier pndDelegationQualifier = new KimDocumentRoleQualifier();
+		for(KimDelegationAttributeDataImpl delegationQualifier: attributeDataList){
+			pndDelegationQualifier = new KimDocumentRoleQualifier();
+			pndDelegationQualifier.setAttrDataId(delegationQualifier.getAttributeDataId());
+			pndDelegationQualifier.setAttrVal(delegationQualifier.getAttributeValue());
+			pndDelegationQualifier.setTargetPrimaryKey(delegationQualifier.getTargetPrimaryKey());
+			pndDelegationQualifier.setKimTypId(delegationQualifier.getKimTypeId());
+			pndDelegationQualifier.setKimAttrDefnId(delegationQualifier.getKimAttributeId());
+			pndDelegationQualifiers.add(pndDelegationQualifier);
+		}
+		return pndDelegationQualifiers;
+	}
+
+	private List<KimDelegationImpl> getRoleDelegations(String roleId){
+		if(roleId==null)
+			return new ArrayList<KimDelegationImpl>();
+		Map<String,String> criteria = new HashMap<String,String>(1);
+		criteria.put("roleId", roleId);
+		return (List<KimDelegationImpl>)getBusinessObjectService().findMatching(KimDelegationImpl.class, criteria);	
+	}
+	
+	private List<RoleDocumentDelegation> loadRoleDocumentDelegations(List<KimDelegationImpl> delegations){
+		List<RoleDocumentDelegation> delList = new ArrayList<RoleDocumentDelegation>();
+		RoleDocumentDelegation documentDelegation;
+		for(KimDelegationImpl del: delegations){
+			documentDelegation = new RoleDocumentDelegation();
+			documentDelegation.setActive(del.isActive());
+			documentDelegation.setDelegationId(del.getDelegationId());
+			documentDelegation.setDelegationTypeCode(del.getDelegationTypeCode());
+			documentDelegation.setKimType(del.getKimType());
+			documentDelegation.setKimTypeId(del.getKimTypeId());
+			documentDelegation.setQualifiers(loadDelegationQualifiers(del.getAttributes()));
+			documentDelegation.setRoleId(del.getRoleId());
+			delList.add(documentDelegation);
+		}
+		return delList;
+	}
+	
+	//TODO: remove this and find a better way to do this. Should be done by next week with role doc task
+	//Also, inject services
+	private String getMemberName(RoleMemberImpl member){
+		if("P".equals(member.getMemberTypeCode())){
+			KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(member.getMemberId());
+			return principal==null?"":principal.getPrincipalName();
+		} else if("G".equals(member.getMemberTypeCode())){
+			KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(member.getMemberId());
+			return group==null?"":group.getGroupName();
+		} else if("R".equals(member.getMemberTypeCode())){
+			KimRoleInfo role = KIMServiceLocator.getRoleService().getRole(member.getMemberId());
+			return role==null?"":role.getRoleName();
+		}
+		return "";
+	}
+	
+	/**
+	 * @return the permissionService
+	 */
+	public PermissionService getPermissionService() {
+		return this.permissionService;
+	}
+
+	/**
+	 * @param permissionService the permissionService to set
+	 */
+	public void setPermissionService(PermissionService permissionService) {
+		this.permissionService = permissionService;
+	}
+
+	/**
+	 * @return the roleService
+	 */
+	public RoleService getRoleService() {
+		return this.roleService;
+	}
+
+	/**
+	 * @param roleService the roleService to set
+	 */
+	public void setRoleService(RoleService roleService) {
+		this.roleService = roleService;
 	}
 
 }

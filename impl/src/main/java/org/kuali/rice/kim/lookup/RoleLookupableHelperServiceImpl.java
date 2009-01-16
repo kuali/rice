@@ -32,7 +32,9 @@ import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
+import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
+import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.ModuleService;
@@ -286,4 +288,22 @@ public class RoleLookupableHelperServiceImpl   extends KualiLookupableHelperServ
 
 	}
 	
+	/**
+	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getInquiryUrl(org.kuali.rice.kns.bo.BusinessObject, java.lang.String)
+	 */
+	@Override
+	public HtmlData getInquiryUrl(BusinessObject bo, String propertyName) {
+		HtmlData inqUrl = super.getInquiryUrl(bo, propertyName);
+	    String href = ((AnchorHtmlData)inqUrl).getHref();
+	    if (StringUtils.isNotBlank(href) && href.indexOf("&roleId=")!=-1) {
+		    int idx1 = href.indexOf("&roleId=");
+		    int idx2 = href.indexOf("&", idx1+1);
+		    if (idx2 < 0) {
+		    	idx2 = href.length();
+		    }
+		    ((AnchorHtmlData)inqUrl).setHref("../kim/identityManagementRoleDocument.do?command=initiate&docTypeName=IdentityManagementRoleDocument"+href.substring(idx1, idx2));
+	    }
+	    return inqUrl;
+	}
+
 }

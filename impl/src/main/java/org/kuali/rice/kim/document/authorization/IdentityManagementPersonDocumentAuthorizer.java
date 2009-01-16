@@ -22,13 +22,9 @@ import java.util.Set;
 
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
-import org.kuali.rice.kim.bo.ui.PersonDocumentGroup;
-import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
-import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.document.authorization.TransactionalDocumentAuthorizerBase;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -36,7 +32,7 @@ import org.kuali.rice.kns.document.authorization.TransactionalDocumentAuthorizer
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class IdentityManagementPersonDocumentAuthorizer extends TransactionalDocumentAuthorizerBase {
+public class IdentityManagementPersonDocumentAuthorizer extends IdentityManagementKimDocumentAuthorizer {
 
 	@Override
 	protected void addPermissionDetails(BusinessObject businessObject,
@@ -56,36 +52,5 @@ public class IdentityManagementPersonDocumentAuthorizer extends TransactionalDoc
 		}
 		return readOnlyEntityPropertyNames;
 	}
-	
-	public Map<String,Set<String>> getUnpopulateableGroups(Document document, Person user) {
-		Map<String,Set<String>> unpopulateableGroups = new HashMap<String,Set<String>>();
-		for (PersonDocumentGroup personDocumentGroup : ((IdentityManagementPersonDocument)document).getGroups()) {
-			Map<String,String> collectionOrFieldLevelPermissionDetails = new HashMap<String,String>();
-			collectionOrFieldLevelPermissionDetails.put(KimAttributes.NAMESPACE_CODE, personDocumentGroup.getNamespaceCode());
-			collectionOrFieldLevelPermissionDetails.put(KimAttributes.GROUP_NAME, personDocumentGroup.getGroupName());
-			if (!isAuthorizedByTemplate(document, KimConstants.NAMESPACE_CODE, KimConstants.PermissionTemplateNames.POPULATE_GROUP, user.getPrincipalId(), collectionOrFieldLevelPermissionDetails, null)) {
-				if (!unpopulateableGroups.containsKey(personDocumentGroup.getNamespaceCode())) {
-					unpopulateableGroups.put(personDocumentGroup.getNamespaceCode(), new HashSet<String>());
-				}
-				unpopulateableGroups.get(personDocumentGroup.getNamespaceCode()).add(personDocumentGroup.getGroupName());
-			}
-		}
-		return unpopulateableGroups;
-	}
-	
-	public Map<String,Set<String>> getUnassignableRoles(Document document, Person user) {
-		Map<String,Set<String>> unassignableRoles = new HashMap<String,Set<String>>();
-		for (PersonDocumentRole personDocumentRole : ((IdentityManagementPersonDocument)document).getRoles()) {
-			Map<String,String> collectionOrFieldLevelPermissionDetails = new HashMap<String,String>();
-			collectionOrFieldLevelPermissionDetails.put(KimAttributes.NAMESPACE_CODE, personDocumentRole.getNamespaceCode());
-			collectionOrFieldLevelPermissionDetails.put(KimAttributes.ROLE_NAME, personDocumentRole.getRoleName());
-			if (!isAuthorizedByTemplate(document, KimConstants.NAMESPACE_CODE, KimConstants.PermissionTemplateNames.ASSIGN_ROLE, user.getPrincipalId(), collectionOrFieldLevelPermissionDetails, null)) {
-				if (!unassignableRoles.containsKey(personDocumentRole.getNamespaceCode())) {
-					unassignableRoles.put(personDocumentRole.getNamespaceCode(), new HashSet<String>());
-				}
-				unassignableRoles.get(personDocumentRole.getNamespaceCode()).add(personDocumentRole.getRoleName());
-			}
-		}
-		return unassignableRoles;
-	}
+
 }

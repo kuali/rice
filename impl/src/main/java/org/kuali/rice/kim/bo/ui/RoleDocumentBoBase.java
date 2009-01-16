@@ -21,17 +21,16 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
 import org.hibernate.annotations.Type;
-import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
+import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
- * This is a description of what this class does - shyu don't forget to fill this in. 
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 @MappedSuperclass
-public class PersonDocumentBoBase  extends PersistableBusinessObjectBase {
+public class RoleDocumentBoBase  extends PersistableBusinessObjectBase {
     @Column(name="DOC_HDR_ID")
     protected String documentNumber;
 	@Type(type="yes_no")
@@ -40,7 +39,7 @@ public class PersonDocumentBoBase  extends PersistableBusinessObjectBase {
 	@Type(type="yes_no")
 	@Column(name="EDIT_FLAG")
     protected boolean edit;
-	protected IdentityManagementPersonDocument personDocument;
+	protected IdentityManagementRoleDocument roleDocument;
 
 	/**
 	 * This overridden method ...
@@ -70,12 +69,12 @@ public class PersonDocumentBoBase  extends PersistableBusinessObjectBase {
 		this.active = active;
 	}
 
-	public IdentityManagementPersonDocument getPersonDocument() {
-		return this.personDocument;
+	public IdentityManagementRoleDocument getRoleDocument() {
+		return this.roleDocument;
 	}
 
-	public void setPersonDocument(IdentityManagementPersonDocument personDocument) {
-		this.personDocument = personDocument;
+	public void setRoleDocument(IdentityManagementRoleDocument roleDocument) {
+		this.roleDocument = roleDocument;
 	}
 
 	public boolean isEdit() {

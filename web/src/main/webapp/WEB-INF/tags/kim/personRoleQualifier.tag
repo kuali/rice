@@ -2,7 +2,7 @@
 <%@ tag body-content="empty" %>
 <%@ attribute name="roleIdx" required="true" %>
 <%@ attribute name="role" required="true" type="org.kuali.rice.kim.bo.ui.PersonDocumentRole" %>
-<c:set var="docRolePrncplAttributes" value="${DataDictionary.PersonDocumentRolePrncpl.attributes}" />
+<c:set var="docRolePrncplAttributes" value="${DataDictionary.KimDocumentRoleMember.attributes}" />
 
 <kul:subtab lookedUpCollectionName="roleQualifier" width="${tableWidth}" subTabTitle="Role Qualifier">      
 	<table cellpadding="0" cellspacing="0" summary="">

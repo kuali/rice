@@ -24,6 +24,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.RiceDebugUtils;
+import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.role.KimRole;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
@@ -500,6 +501,15 @@ public class PermissionServiceImpl implements PermissionService {
 
 	public void setPermissionDao(KimPermissionDao permissionDao) {
 		this.permissionDao = permissionDao;
+	}
+
+	/**
+	 * @see org.kuali.rice.kim.service.IdentityService#lookupEntitys(java.util.Map)
+	 */
+	@SuppressWarnings("unchecked")
+	public List<KimPermission> lookupPermissions(Map<String, String> searchCriteria){
+		return new ArrayList(
+				KNSServiceLocator.getLookupService().findCollectionBySearchUnbounded(KimPermissionImpl.class, searchCriteria));
 	}
 
 }

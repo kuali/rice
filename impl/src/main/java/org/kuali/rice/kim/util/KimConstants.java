@@ -94,4 +94,9 @@ public class KimConstants {
 
 	@Deprecated
 	public static final String TEMP_GROUP_NAMESPACE = "KFS";
+	
+	public static final String NAME_VALUE_SEPARATOR = " : ";
+	public static final String COMMA_SEPARATOR = ", ";
+	public static final String OR_OPERATOR = "|";
+
 }

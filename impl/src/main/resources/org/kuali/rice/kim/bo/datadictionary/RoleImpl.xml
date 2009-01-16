@@ -260,7 +260,7 @@
     <property name="inquirySections" >
       <list>
         <bean parent="InquirySectionDefinition"
-              p:title="Person Attributes"
+              p:title="Role Details"
               p:numberOfColumns="1" >
           <property name="inquiryFields" >
             <list>

@@ -36,7 +36,7 @@ import org.kuali.rice.kim.bo.reference.ExternalIdentifierType;
  */
 @Entity
 @Table(name = "KRIM_PND_EXT_ID_MT")
-public class PersonDocumentExternalId extends PersonDocumentBoBase{
+public class PersonDocumentExternalId extends KimDocumentBoBase{
 	@Id
 	@Column(name = "ENTITY_EXT_ID_ID")
 	protected String entityExternalIdentifierId;

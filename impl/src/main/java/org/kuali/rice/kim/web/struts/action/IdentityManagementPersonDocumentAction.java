@@ -40,8 +40,8 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentGroup;
 import org.kuali.rice.kim.bo.ui.PersonDocumentName;
 import org.kuali.rice.kim.bo.ui.PersonDocumentPhone;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
-import org.kuali.rice.kim.bo.ui.PersonDocumentRolePrncpl;
-import org.kuali.rice.kim.bo.ui.PersonDocumentRoleQualifier;
+import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
+import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.rule.event.ui.AddGroupEvent;
 import org.kuali.rice.kim.rule.event.ui.AddRoleEvent;
@@ -120,8 +120,8 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
 		        KimTypeService kimTypeService = (KimTypeServiceBase)KIMServiceLocator.getService(getKimTypeServiceName(role.getKimRoleType()));
 				role.setDefinitions(kimTypeService.getAttributeDefinitions(role.getKimRoleType()));
 				// TODO : refactor qualifier key to connect between defn & qualifier
-	        	for (PersonDocumentRolePrncpl principal : role.getRolePrncpls()) {
-	        		for (PersonDocumentRoleQualifier qualifier : principal.getQualifiers()) {
+	        	for (KimDocumentRoleMember principal : role.getRolePrncpls()) {
+	        		for (KimDocumentRoleQualifier qualifier : principal.getQualifiers()) {
 	    		        for (KimTypeAttributeImpl attrDef : role.getKimRoleType().getAttributeDefinitions()) {
 	    		        	if (qualifier.getKimAttrDefnId().equals(attrDef.getKimAttributeId())) {
 	    		        		qualifier.setQualifierKey(attrDef.getSortCode());
@@ -131,9 +131,9 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
 	        		}
 	        	}
 	        	// when post again, it will need this during populate
-	            role.setNewRolePrncpl(new PersonDocumentRolePrncpl());
+	            role.setNewRolePrncpl(new KimDocumentRoleMember());
 	            for (String key : role.getDefinitions().keySet()) {
-	            	PersonDocumentRoleQualifier qualifier = new PersonDocumentRoleQualifier();
+	            	KimDocumentRoleQualifier qualifier = new KimDocumentRoleQualifier();
 	            	qualifier.setQualifierKey(key);
 	            	role.getNewRolePrncpl().getQualifiers().add(qualifier);
 	            }
@@ -330,16 +330,16 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
 	        newRole.getKimRoleType().setKimTypeId(newRole.getKimTypeId());
 	        newRole.getKimRoleType().refreshReferenceObject("attributeDefinitions");
 	        newRole.setDefinitions(kimTypeService.getAttributeDefinitions(newRole.getKimRoleType()));
-	        PersonDocumentRolePrncpl newRolePrncpl = new PersonDocumentRolePrncpl();
+	        KimDocumentRoleMember newRolePrncpl = new KimDocumentRoleMember();
 	        
 	        for (String key : newRole.getDefinitions().keySet()) {
-	        	PersonDocumentRoleQualifier qualifier = new PersonDocumentRoleQualifier();
+	        	KimDocumentRoleQualifier qualifier = new KimDocumentRoleQualifier();
 	        	qualifier.setQualifierKey(key);
 	        	newRolePrncpl.getQualifiers().add(qualifier);
 	        }
 	        if (newRole.getDefinitions().isEmpty()) {
-	        	List<PersonDocumentRolePrncpl> rolePrncpls = new ArrayList<PersonDocumentRolePrncpl>();
-	        	rolePrncpls.add(new PersonDocumentRolePrncpl());
+	        	List<KimDocumentRoleMember> rolePrncpls = new ArrayList<KimDocumentRoleMember>();
+	        	rolePrncpls.add(new KimDocumentRoleMember());
 	        	newRole.setRolePrncpls(rolePrncpls);
 	        }
 	        newRole.setNewRolePrncpl(newRolePrncpl);
@@ -361,11 +361,11 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
         IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
         IdentityManagementPersonDocument personDOc = personDocumentForm.getPersonDocument();
         PersonDocumentRole role = personDOc.getRoles().get(getSelectedLine(request));
-        PersonDocumentRolePrncpl newRolePrncpl = role.getNewRolePrncpl();
+        KimDocumentRoleMember newRolePrncpl = role.getNewRolePrncpl();
         role.getRolePrncpls().add(newRolePrncpl);
-        role.setNewRolePrncpl(new PersonDocumentRolePrncpl());
+        role.setNewRolePrncpl(new KimDocumentRoleMember());
         for (String key : role.getDefinitions().keySet()) {
-        	PersonDocumentRoleQualifier qualifier = new PersonDocumentRoleQualifier();
+        	KimDocumentRoleQualifier qualifier = new KimDocumentRoleQualifier();
         	qualifier.setQualifierKey(key);
         	role.getNewRolePrncpl().getQualifiers().add(qualifier);
         }
@@ -396,9 +396,9 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
 //		}
 		// TODO : refactor this, also probably move to service ?
 		for (PersonDocumentRole role : personDoc.getRoles()) {
-			for(PersonDocumentRolePrncpl rolePrncpl : role.getRolePrncpls()) {
+			for(KimDocumentRoleMember rolePrncpl : role.getRolePrncpls()) {
 				rolePrncpl.setDocumentNumber(personDoc.getDocumentNumber());
-				for (PersonDocumentRoleQualifier qualifier : rolePrncpl.getQualifiers()) {
+				for (KimDocumentRoleQualifier qualifier : rolePrncpl.getQualifiers()) {
 					qualifier.setDocumentNumber(personDoc.getDocumentNumber());	
 					qualifier.setKimTypId(role.getKimTypeId());
 					//qualifier.getQualifierKey().substring(qualifier.getQualifierKey().indexOf(".")+1, qualifier.getQualifierKey().length());

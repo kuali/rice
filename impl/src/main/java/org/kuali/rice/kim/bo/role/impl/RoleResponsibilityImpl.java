@@ -52,7 +52,10 @@ public class RoleResponsibilityImpl extends PersistableBusinessObjectBase implem
 	@JoinColumn(name = "RSP_ID", insertable = false, updatable = false)
 	protected KimResponsibilityImpl kimResponsibility;
 
-	/**
+	@OneToOne(targetEntity=KimRoleImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@JoinColumn(name = "ROLE_ID", insertable = false, updatable = false)
+	protected KimRoleImpl kimRole;
+		/**
 	 * @see org.kuali.rice.kim.bo.role.RoleResponsibility#getResponsibilityId()
 	 */
 	public String getResponsibilityId() {
@@ -112,6 +115,20 @@ public class RoleResponsibilityImpl extends PersistableBusinessObjectBase implem
 
 	public void setKimResponsibility(KimResponsibilityImpl kimResponsibility) {
 		this.kimResponsibility = kimResponsibility;
+	}
+
+	/**
+	 * @return the kimRole
+	 */
+	public KimRoleImpl getKimRole() {
+		return this.kimRole;
+	}
+
+	/**
+	 * @param kimRole the kimRole to set
+	 */
+	public void setKimRole(KimRoleImpl kimRole) {
+		this.kimRole = kimRole;
 	}
 
 }

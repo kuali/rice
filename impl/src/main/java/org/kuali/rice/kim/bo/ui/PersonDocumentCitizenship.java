@@ -38,7 +38,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  */
 @Entity
 @Table(name = "KRIM_PND_CTZNSHP_MT")
-public class PersonDocumentCitizenship extends PersonDocumentBoBase {
+public class PersonDocumentCitizenship extends KimDocumentBoBase {
 	@Id
 	@Column(name = "ENTITY_CTZNSHP_ID")
 	protected String entityCitizenshipId;

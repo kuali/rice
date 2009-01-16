@@ -19,6 +19,7 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
 import org.hibernate.annotations.Type;
+import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -27,10 +28,26 @@ import org.hibernate.annotations.Type;
  *
  */
 @MappedSuperclass
-public class PersonDocumentBoDefaultBase extends PersonDocumentBoBase{
+public class PersonDocumentBoDefaultBase extends KimDocumentBoBase{
     @Type(type="yes_no")
 	@Column(name="DFLT_IND")
 	protected boolean dflt;
+
+	protected IdentityManagementPersonDocument personDocument;
+	
+	/**
+	 * @return the personDocument
+	 */
+	public IdentityManagementPersonDocument getPersonDocument() {
+		return this.personDocument;
+	}
+
+	/**
+	 * @param personDocument the personDocument to set
+	 */
+	public void setPersonDocument(IdentityManagementPersonDocument personDocument) {
+		this.personDocument = personDocument;
+	}
 
 	public boolean isDflt() {
 		return this.dflt;

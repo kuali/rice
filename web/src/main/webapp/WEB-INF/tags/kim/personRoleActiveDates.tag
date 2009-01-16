@@ -1,7 +1,7 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 <%@ attribute name="roleIdx" required="true" %>
 <c:set var="role" value="${KualiForm.document.roles[roleIdx]}"/>
-<c:set var="docRolePrncplAttributes" value="${DataDictionary.PersonDocumentRolePrncpl.attributes}" />
+<c:set var="docRolePrncplAttributes" value="${DataDictionary.KimDocumentRoleMember.attributes}" />
 
                <kul:subtab lookedUpCollectionName="roleActivedates" noShowHideButton="true" width="${tableWidth}" subTabTitle="Active Dates">      
         				<table cellpadding=0 cellspacing=0 summary="">

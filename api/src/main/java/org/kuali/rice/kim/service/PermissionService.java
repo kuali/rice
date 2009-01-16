@@ -16,7 +16,9 @@
 package org.kuali.rice.kim.service;
 
 import java.util.List;
+import java.util.Map;
 
+import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
@@ -214,5 +216,7 @@ public interface PermissionService {
     List<AttributeSet> getRoleQualifiersByPermissionName( String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification );
 
     List<AttributeSet> getRoleQualifiersByTemplateName( String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification );
+
+	public List<KimPermission> lookupPermissions(Map<String, String> searchCriteria);
 
 }

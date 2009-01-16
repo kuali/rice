@@ -17,13 +17,14 @@ package org.kuali.rice.kim.bo.ui;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+
+import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
+import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -32,16 +33,22 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name="KRIM_PND_ROLE_PRNCPL_MT")
-public class PersonDocumentRolePrncpl  extends PersonDocumentBoBase {
+@Table(name="KRIM_PND_ROLE_MBR_MT")
+public class KimDocumentRoleMember  extends KimDocumentBoBase {
 	@Column(name="ROLE_MBR_ID")
 	protected String roleMemberId;
 	
 	@Column(name="ROLE_ID")
 	protected String roleId;
-	@Column(name="PRNCPL_ID")
-	protected String principalId;
-	protected List <PersonDocumentRoleQualifier> qualifiers;
+	@Column(name="MBR_ID")
+	protected String memberId;
+	
+	//TODO: remove the default
+	@Column(name="MBR_TYP_CD")
+	protected String memberTypeCode = "P";
+	@Column(name="MBR_NM")
+	protected String memberName;
+	protected List <KimDocumentRoleQualifier> qualifiers = new TypedArrayList(KimDocumentRoleQualifier.class);
 	
 	@Column(name="ACTV_FRM_DT")
 	protected Timestamp activeFromDate;
@@ -49,16 +56,26 @@ public class PersonDocumentRolePrncpl  extends PersonDocumentBoBase {
 	protected Timestamp activeToDate;
 
 	
-	public PersonDocumentRolePrncpl() {
-		qualifiers = new ArrayList <PersonDocumentRoleQualifier>();
+	public KimDocumentRoleMember() {
+		qualifiers = new ArrayList <KimDocumentRoleQualifier>();
 	}
 
-	public String getPrincipalId() {
-		return this.principalId;
+	public int getNumberOfQualifiers(){
+		return qualifiers==null?0:qualifiers.size();
+	}
+	
+	/**
+	 * @return the memberId
+	 */
+	public String getMemberId() {
+		return this.memberId;
 	}
 
-	public void setPrincipalId(String principalId) {
-		this.principalId = principalId;
+	/**
+	 * @param memberId the memberId to set
+	 */
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
 	}
 
 	public String getRoleMemberId() {
@@ -77,11 +94,11 @@ public class PersonDocumentRolePrncpl  extends PersonDocumentBoBase {
 		this.roleId = roleId;
 	}
 
-	public List<PersonDocumentRoleQualifier> getQualifiers() {
+	public List<KimDocumentRoleQualifier> getQualifiers() {
 		return this.qualifiers;
 	}
 
-	public void setQualifiers(List<PersonDocumentRoleQualifier> qualifiers) {
+	public void setQualifiers(List<KimDocumentRoleQualifier> qualifiers) {
 		this.qualifiers = qualifiers;
 	}
 
@@ -99,6 +116,46 @@ public class PersonDocumentRolePrncpl  extends PersonDocumentBoBase {
 
 	public void setActiveToDate(Timestamp activeToDate) {
 		this.activeToDate = activeToDate;
+	}
+
+	//TODO: remove this and find a better way to do this. Should be done by next week with role doc task
+	public String getMemberType(){
+		if("P".equals(getMemberTypeCode())){
+			return "Principal";
+		} else if("G".equals(getMemberTypeCode())){
+			return "Group";
+		} else if("R".equals(getMemberTypeCode())){
+			return "Role";
+		}
+		return "";
+	}
+	
+	/**
+	 * @return the memberTypeCode
+	 */
+	public String getMemberTypeCode() {
+		return this.memberTypeCode;
+	}
+
+	/**
+	 * @param memberTypeCode the memberTypeCode to set
+	 */
+	public void setMemberTypeCode(String memberTypeCode) {
+		this.memberTypeCode = memberTypeCode;
+	}
+
+	/**
+	 * @return the memberName
+	 */
+	public String getMemberName() {
+		return this.memberName;
+	}
+
+	/**
+	 * @param memberName the memberName to set
+	 */
+	public void setMemberName(String memberName) {
+		this.memberName = memberName;
 	}
 
 }

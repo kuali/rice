@@ -18,8 +18,10 @@ package org.kuali.rice.kim.service;
 import java.util.Map;
 
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
+import org.kuali.rice.kim.bo.role.KimRole;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
+import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -51,5 +53,13 @@ public interface UiDocumentService {
 	 * @param kimEntity
 	 */
 	void loadEntityToPersonDoc(IdentityManagementPersonDocument identityManagementPersonDocument, KimEntityImpl kimEntity);
+
+	/**
+	 * 
+	 * This method loads a role document
+	 * 
+	 * @param identityManagementPersonDocument
+	 */
+	public void loadRoleDoc(IdentityManagementRoleDocument identityManagementRoleDocument, KimRole kimRole);
 	
 }

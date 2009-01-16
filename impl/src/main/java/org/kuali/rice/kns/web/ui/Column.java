@@ -15,10 +15,13 @@
  */
 package org.kuali.rice.kns.web.ui;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
+import org.kuali.rice.kns.lookup.HtmlData.MultipleAnchorHtmlData;
 import org.kuali.rice.kns.web.format.Formatter;
 
 /**
@@ -153,6 +156,22 @@ public class Column implements java.io.Serializable {
 	 */
 	public HtmlData getColumnAnchor() {
 		return this.columnAnchor;
+	}
+
+	public boolean isMultipleAnchors(){
+		return this.columnAnchor instanceof MultipleAnchorHtmlData;
+	}
+
+	public List<AnchorHtmlData> getColumnAnchors(){
+		if(isMultipleAnchors())
+			return ((MultipleAnchorHtmlData)this.columnAnchor).getAnchorHtmlData();
+		List<AnchorHtmlData> htmlData = new ArrayList<AnchorHtmlData>();
+		htmlData.add((AnchorHtmlData)columnAnchor);
+		return htmlData;
+	}
+
+	public int getNumberOfColumnAnchors(){
+		return getColumnAnchors().size();
 	}
 
 	/**

@@ -41,7 +41,7 @@ import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
  */
 @Entity
 @Table(name="KRIM_PND_ROLE_MT")
-public class PersonDocumentRole extends PersonDocumentBoBase {
+public class PersonDocumentRole extends KimDocumentBoBase {
 	@Column(name="ROLE_ID")
 	protected String roleId;
 	protected String kimTypeId;
@@ -52,12 +52,12 @@ public class PersonDocumentRole extends PersonDocumentBoBase {
 	protected List<? extends KimAttributes> attributes;
 	protected transient AttributeDefinitionMap definitions;
 	protected transient Map<String,Object> attributeEntry;
-	protected List<PersonDocumentRolePrncpl> rolePrncpls;
-    protected PersonDocumentRolePrncpl newRolePrncpl;
+	protected List<KimDocumentRoleMember> rolePrncpls;
+    protected KimDocumentRoleMember newRolePrncpl;
 	
 	public PersonDocumentRole() {
 		attributes = new ArrayList<KimAttributes>();	
-		rolePrncpls = new ArrayList<PersonDocumentRolePrncpl>();	
+		rolePrncpls = new ArrayList<KimDocumentRoleMember>();	
 		// set following for testing
 //		KimAttributeImpl attrDefn = new KimAttributeImpl();
 //		KimAttributeImpl attrDefn1 = new KimAttributeImpl();
@@ -153,19 +153,19 @@ public class PersonDocumentRole extends PersonDocumentBoBase {
 		this.attributeEntry = attributeEntry;
 	}
 
-	public List<PersonDocumentRolePrncpl> getRolePrncpls() {
+	public List<KimDocumentRoleMember> getRolePrncpls() {
 		return this.rolePrncpls;
 	}
 
-	public void setRolePrncpls(List<PersonDocumentRolePrncpl> rolePrncpls) {
+	public void setRolePrncpls(List<KimDocumentRoleMember> rolePrncpls) {
 		this.rolePrncpls = rolePrncpls;
 	}
 
-	public PersonDocumentRolePrncpl getNewRolePrncpl() {
+	public KimDocumentRoleMember getNewRolePrncpl() {
 		return this.newRolePrncpl;
 	}
 
-	public void setNewRolePrncpl(PersonDocumentRolePrncpl newRolePrncpl) {
+	public void setNewRolePrncpl(KimDocumentRoleMember newRolePrncpl) {
 		this.newRolePrncpl = newRolePrncpl;
 	}
 

@@ -18,6 +18,7 @@
         <ref bean="KimRoleImpl-kimTypeId" />
         <ref bean="KimRoleImpl-roleName" />
         <ref bean="KimRoleImpl-namespaceCode" />
+        <ref bean="KimRoleImpl-active" />
         <ref bean="KimRoleImpl-kimRoleType.name" />
       </list>
     </property>
@@ -53,8 +54,8 @@
   <bean id="KimRoleImpl-roleId-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="roleId"
         p:forceUppercase="true"
-        p:label="Role"
-        p:shortLabel="Role"
+        p:label="Role ID"
+        p:shortLabel="Role ID"
         p:maxLength="10"
         p:required="false" >
     <property name="control" >
@@ -74,7 +75,7 @@
       <bean parent="TextControlDefinition" p:size="10" />
     </property>
   </bean>
-    
+
   <bean id="KimRoleImpl-roleName" parent="KimRoleImpl-roleName-parentBean" />
   <bean id="KimRoleImpl-roleName-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="roleName"
@@ -93,14 +94,17 @@
   <bean id="KimRoleImpl-namespaceCode-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="namespaceCode"
         p:forceUppercase="true"
-        p:label="Name Space"
-        p:shortLabel="Name Space"
+        p:label="Role Namespace"
+        p:shortLabel="Role Namespace"
         p:maxLength="40"
         p:required="false" >
     <property name="control" >
       <bean parent="TextControlDefinition" p:size="10" />
     </property>
   </bean>
+
+  <bean id="KimRoleImpl-active" parent="KimRoleImpl-active-parentBean" />
+  <bean id="KimRoleImpl-active-parentBean" parent="KimTypeImpl-active" abstract="true" p:label="Active?"/>
   
   <bean id="KimRoleImpl-kimRoleType.name" parent="KimRoleImpl-kimRoleType.name-parentBean" />
 
@@ -118,7 +122,7 @@
     <property name="inquirySections" >
       <list>
         <bean parent="InquirySectionDefinition"
-              p:title="Person Attributes"
+              p:title="Role Details"
               p:numberOfColumns="1" >
           <property name="inquiryFields" >
             <list>

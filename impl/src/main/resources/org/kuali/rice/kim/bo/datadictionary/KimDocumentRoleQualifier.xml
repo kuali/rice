@@ -22,15 +22,16 @@
 		http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
 	<bean id="DocRoleQualifier" parent="DocRoleQualifier-parentBean" />
-	<bean id="DocRoleQualifier-parentBean" abstract="true" parent="BusinessObjectEntry">
-		<property name="businessObjectClass" value="org.kuali.rice.kim.bo.ui.PersonDocumentRoleQualifier" />
+	<bean id="DocRoleQualifier-parentBean" abstract="true" parent="BusinessObjectEntry" 
+        p:businessObjectClass="org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier"
+		p:titleAttribute="attrDataId"
+        p:objectLabel="Role Qualifier">
 		<property name="inquiryDefinition" >
 			<ref bean="DocRoleQualifier-inquiryDefinition" />
 		</property>
 		<property name="lookupDefinition" >
 			<ref bean="DocRoleQualifier-lookupDefinition" />
 		</property>
-		<property name="titleAttribute" value="attrDataId" />
 		<property name="attributes" >
 			<list>
 				<ref bean="DocRoleQualifier-attrDataId" />

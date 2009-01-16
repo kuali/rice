@@ -32,7 +32,7 @@ import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
  */
 @Entity
 @Table(name="KRIM_PND_GRP_PRNCPL_MT")
-public class PersonDocumentGroup extends PersonDocumentBoBase {
+public class PersonDocumentGroup extends KimDocumentBoBase {
 	@Id
 	@Column(name="GRP_MBR_ID")
 	protected String groupMemberId;

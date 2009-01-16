@@ -41,7 +41,7 @@ import org.kuali.rice.kns.util.KualiDecimal;
  */
 @Entity
 @Table(name = "KRIM_PND_EMP_INFO_MT")
-public class PersonDocumentEmploymentInfo extends PersonDocumentBoBase {
+public class PersonDocumentEmploymentInfo extends KimDocumentBoBase {
 	@Id
 	@Column(name = "ENTITY_EMP_ID")
 	protected String entityEmploymentId;

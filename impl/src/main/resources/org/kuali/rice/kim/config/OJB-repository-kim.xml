@@ -476,6 +476,12 @@
     <collection-descriptor name="members" element-class-ref="org.kuali.rice.kim.bo.role.impl.RoleMemberImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
       <inverse-foreignkey field-ref="roleId" />
     </collection-descriptor>
+	<collection-descriptor name="assignedPermissions" element-class-ref="org.kuali.rice.kim.bo.role.impl.RolePermissionImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
+      <inverse-foreignkey field-ref="roleId" />
+    </collection-descriptor>
+    <collection-descriptor name="assignedResponsibilities" element-class-ref="org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
+      <inverse-foreignkey field-ref="roleId" />
+    </collection-descriptor>
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.bo.role.impl.RoleRelationshipImpl" table="KRIM_ROLE_REL_T">
@@ -608,6 +614,9 @@
     <collection-descriptor name="requiredRoleQualifierAttributes" element-class-ref="org.kuali.rice.kim.bo.role.impl.KimPermissionRequiredAttributeImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
       <inverse-foreignkey field-ref="permissionId" />
     </collection-descriptor>
+	<collection-descriptor name="assignedToRoles" element-class-ref="org.kuali.rice.kim.bo.role.impl.RolePermissionImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
+      <inverse-foreignkey field-ref="permissionId" />
+    </collection-descriptor>
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl" table="KRIM_PERM_TMPL_T">
@@ -633,6 +642,9 @@
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
     <reference-descriptor name="kimPermission" class-ref="org.kuali.rice.kim.bo.role.impl.KimPermissionImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
       <foreignkey field-ref="permissionId" />
+    </reference-descriptor>
+	<reference-descriptor name="kimRole" class-ref="org.kuali.rice.kim.bo.role.impl.KimRoleImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
+      <foreignkey field-ref="roleId" />
     </reference-descriptor>
   </class-descriptor>
 
@@ -685,6 +697,12 @@
     <collection-descriptor name="detailObjects" element-class-ref="org.kuali.rice.kim.bo.role.impl.ResponsibilityAttributeDataImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       <inverse-foreignkey field-ref="targetPrimaryKey" />
     </collection-descriptor>
+    <collection-descriptor name="requiredRoleQualifierAttributes" element-class-ref="org.kuali.rice.kim.bo.role.impl.KimResponsibilityRequiredAttributeImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
+      <inverse-foreignkey field-ref="responsibilityId" />
+    </collection-descriptor>
+	<collection-descriptor name="assignedToRoles" element-class-ref="org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
+      <inverse-foreignkey field-ref="responsibilityId" />
+    </collection-descriptor>    
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.bo.role.impl.KimResponsibilityTemplateImpl" table="KRIM_RSP_TMPL_T">
@@ -710,6 +728,9 @@
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
     <reference-descriptor name="kimResponsibility" class-ref="org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
       <foreignkey field-ref="responsibilityId" />
+    </reference-descriptor>
+	<reference-descriptor name="kimRole" class-ref="org.kuali.rice.kim.bo.role.impl.KimRoleImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
+      <foreignkey field-ref="roleId" />
     </reference-descriptor>
   </class-descriptor>
 
@@ -964,17 +985,19 @@
     <reference-descriptor name="kimRoleType" class-ref="org.kuali.rice.kim.bo.types.impl.KimTypeImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
       <foreignkey field-ref="kimTypeId" />
     </reference-descriptor>
-    <collection-descriptor name="rolePrncpls" element-class-ref="org.kuali.rice.kim.bo.ui.PersonDocumentRolePrncpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
+	<collection-descriptor name="rolePrncpls" element-class-ref="org.kuali.rice.kim.bo.ui.KimDocumentRoleMember" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
       <inverse-foreignkey field-ref="roleId" />
       <inverse-foreignkey field-ref="documentNumber" />
     </collection-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.kim.bo.ui.PersonDocumentRolePrncpl" table="KRIM_PND_ROLE_PRNCPL_MT">
+  <class-descriptor class="org.kuali.rice.kim.bo.ui.KimDocumentRoleMember" table="KRIM_PND_ROLE_MBR_MT">
     <field-descriptor name="roleMemberId" column="ROLE_MBR_ID" jdbc-type="VARCHAR" primarykey="true"   autoincrement="true" sequence-name="KRIM_ROLE_MBR_ID_S" />
 	<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primarykey="true" />
     <field-descriptor name="roleId" column="ROLE_ID" jdbc-type="VARCHAR" />
-    <field-descriptor name="principalId" column="PRNCPL_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="memberId" column="PRNCPL_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="memberTypeCode" column="MBR_TYP_CD" jdbc-type="VARCHAR" />
+    <field-descriptor name="memberName" column="MBR_NM" jdbc-type="VARCHAR" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
@@ -986,13 +1009,13 @@
       <foreignkey field-ref="documentNumber" />
     </reference-descriptor>
     -->
-    <collection-descriptor name="qualifiers" element-class-ref="org.kuali.rice.kim.bo.ui.PersonDocumentRoleQualifier" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
+    <collection-descriptor name="qualifiers" element-class-ref="org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
       <inverse-foreignkey field-ref="targetPrimaryKey" />
       <inverse-foreignkey field-ref="documentNumber" />
     </collection-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.kim.bo.ui.PersonDocumentRoleQualifier" table="KRIM_PND_ROLE_MBR_ATTR_DATA_MT">
+  <class-descriptor class="org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier" table="KRIM_PND_ROLE_MBR_ATTR_DATA_MT">
     <field-descriptor name="attrDataId" column="ATTR_DATA_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KRIM_ATTR_DATA_ID_S" />
 	<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primarykey="true"/>
     <field-descriptor name="targetPrimaryKey" column="TARGET_PRIMARY_KEY" jdbc-type="VARCHAR" />
@@ -1008,6 +1031,9 @@
       <foreignkey field-ref="documentNumber" />
     </reference-descriptor>
     -->
+    <reference-descriptor name="kimAttribute" class-ref="org.kuali.rice.kim.bo.types.impl.KimAttributeImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
+      <foreignkey field-ref="kimAttributeId" />
+    </reference-descriptor>
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.bo.ui.PersonDocumentGroup" table="KRIM_PND_GRP_PRNCPL_MT">

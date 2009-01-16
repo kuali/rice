@@ -165,12 +165,26 @@
 									title="${column.columnTitle}" comparator="${column.comparator}"
 									maxLength="${column.maxLength}"><c:out value="${column.propertyValue}" escapeXml="false" default="" /></display:column>
 						</c:when>
-						<c:when	test="${!empty column.columnAnchor.href}">
+						<c:when	test="${!empty column.columnAnchor.href || column.multipleAnchors}">
 							<display:column class="${colClass}" sortable="${column.sortable}"
 								title="${column.columnTitle}" comparator="${column.comparator}">
-								<a href="<c:out value="${column.columnAnchor.href}"/>" target="blank" title="${column.columnAnchor.title}"><c:out
-									value="${fn:substring(column.propertyValue, 0, column.maxLength)}"
-									/><c:if test="${column.maxLength gt 0 && fn:length(column.propertyValue) gt column.maxLength}">...</c:if></a> &nbsp;</display:column>
+								<c:choose>
+									<c:when	test="${column.multipleAnchors}">
+										<c:set var="numberOfColumnAnchors" value="${column.numberOfColumnAnchors}" />
+										<logic:iterate id="columnAnchor" name="column" property="columnAnchors" indexId="ctr">
+										<a href="<c:out value="${columnAnchor.href}"/>" target="blank" title="${columnAnchor.title}"><c:out
+											value="${fn:substring(columnAnchor.displayText, 0, column.maxLength)}"
+											/><c:if test="${column.maxLength gt 0 && fn:length(columnAnchor.displayText) gt column.maxLength}">...</c:if></a>
+											<c:if test="${ctr lt numberOfColumnAnchors-1}">,</c:if>
+										</logic:iterate>
+									</c:when>
+									<c:otherwise>
+										<a href="<c:out value="${column.columnAnchor.href}"/>" target="blank" title="${column.columnAnchor.title}"><c:out
+											value="${fn:substring(column.propertyValue, 0, column.maxLength)}"
+											/><c:if test="${column.maxLength gt 0 && fn:length(column.propertyValue) gt column.maxLength}">...</c:if></a>
+			                        </c:otherwise>
+			                     </c:choose>
+			                </display:column>
 						</c:when>
 <%--NOTE: DO NOT FORMAT THIS FILE, DISPLAY:COLUMN WILL NOT WORK CORRECTLY IF IT CONTAINS LINE BREAKS --%>
 						<c:otherwise>

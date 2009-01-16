@@ -31,8 +31,8 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentBoDefaultBase;
 import org.kuali.rice.kim.bo.ui.PersonDocumentEmploymentInfo;
 import org.kuali.rice.kim.bo.ui.PersonDocumentGroup;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
-import org.kuali.rice.kim.bo.ui.PersonDocumentRolePrncpl;
-import org.kuali.rice.kim.bo.ui.PersonDocumentRoleQualifier;
+import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
+import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.document.authorization.IdentityManagementPersonDocumentAuthorizer;
 import org.kuali.rice.kim.rule.event.ui.AddGroupEvent;
@@ -177,9 +177,9 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	return attributeImpl;
     }
     
-	private AttributeSet convertQualifiersToMap( List<PersonDocumentRoleQualifier> qualifiers ) {
+	private AttributeSet convertQualifiersToMap( List<KimDocumentRoleQualifier> qualifiers ) {
 		AttributeSet m = new AttributeSet();
-		for ( PersonDocumentRoleQualifier data : qualifiers ) {
+		for ( KimDocumentRoleQualifier data : qualifiers ) {
 			KimAttributeImpl attrib = getAttributeDefinition( data.getKimAttrDefnId() );
 			if ( attrib != null ) {
 				m.put( attrib.getAttributeName(), data.getAttrVal() );
@@ -190,10 +190,10 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 		return m;
 	}
     
-	private AttributeSet convertQualifiersToAttrIdxMap( List<PersonDocumentRoleQualifier> qualifiers ) {
+	private AttributeSet convertQualifiersToAttrIdxMap( List<KimDocumentRoleQualifier> qualifiers ) {
 		AttributeSet m = new AttributeSet();
 		int i = 0;
-		for ( PersonDocumentRoleQualifier data : qualifiers ) {
+		for ( KimDocumentRoleQualifier data : qualifiers ) {
 			KimAttributeImpl attrib = getAttributeDefinition( data.getKimAttrDefnId() );
 			if ( attrib != null ) {
 				m.put( attrib.getAttributeName(), Integer.toString(i) );
@@ -227,7 +227,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     		}
 	        KimTypeService kimTypeService = (KimTypeServiceBase)KIMServiceLocator.getService(serviceName);
 	        int j = 0;
-        	for ( PersonDocumentRolePrncpl rolePrincipal : role.getRolePrncpls() ) {
+        	for ( KimDocumentRoleMember rolePrincipal : role.getRolePrncpls() ) {
         		// TODO: cache the attribute definitions for a given role type
         		// PROBLEM: this role qualifiers map does not have any keys with which to link to the attributes
         		AttributeSet localErrors = kimTypeService.validateAttributes( convertQualifiersToMap( rolePrincipal.getQualifiers() ) );
@@ -257,7 +257,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 		int i = 0;
     	for(PersonDocumentRole role : roles ) {
 			int j = 0;
-    		for (PersonDocumentRolePrncpl principal : role.getRolePrncpls()) {
+    		for (KimDocumentRoleMember principal : role.getRolePrncpls()) {
     			valid &= validateActiveDate("roles["+i+"].rolePrncpls["+j+"].activeToDate",principal.getActiveFromDate(), principal.getActiveToDate());
     			j++;    			
     		}

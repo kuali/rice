@@ -23,6 +23,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
+
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -32,7 +34,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name="KRIM_PND_ROLE_MBR_ATTR_DATA_MT")
-public class PersonDocumentRoleQualifier extends PersonDocumentBoBase{
+public class KimDocumentRoleQualifier extends KimDocumentBoBase{
 	@Id 
 	@Column(name="ATTR_DATA_ID")
 	private String attrDataId; 
@@ -44,6 +46,7 @@ public class PersonDocumentRoleQualifier extends PersonDocumentBoBase{
 	private String kimAttrDefnId; 
 	@Column(name="ATTR_VAL")
 	private String attrVal; 
+	private KimAttributeImpl kimAttribute;
 	
 	// a temporary for display that matches definition key
 	@Transient
@@ -108,4 +111,19 @@ public class PersonDocumentRoleQualifier extends PersonDocumentBoBase{
 	public void setQualifierKey(String qualifierKey) {
 		this.qualifierKey = qualifierKey;
 	}
+
+	/**
+	 * @return the kimAttribute
+	 */
+	public KimAttributeImpl getKimAttribute() {
+		return this.kimAttribute;
+	}
+
+	/**
+	 * @param kimAttribute the kimAttribute to set
+	 */
+	public void setKimAttribute(KimAttributeImpl kimAttribute) {
+		this.kimAttribute = kimAttribute;
+	}
+
 }

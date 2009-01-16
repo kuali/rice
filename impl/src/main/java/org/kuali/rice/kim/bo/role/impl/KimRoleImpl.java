@@ -37,6 +37,7 @@ import org.kuali.rice.kim.bo.role.KimRole;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -70,7 +71,16 @@ public class KimRoleImpl extends PersistableBusinessObjectBase implements KimRol
 
 	@OneToMany(targetEntity=RoleMemberImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
 	@JoinColumn(name="ROLE_ID", insertable=false, updatable=false)
-	protected List<RoleMemberImpl> members;
+	protected List<RoleMemberImpl> members = new TypedArrayList(RoleMemberImpl.class);
+
+	@OneToMany(targetEntity=RolePermissionImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
+	@JoinColumn(name="ROLE_ID", insertable=false, updatable=false)
+	protected List<RolePermissionImpl> assignedPermissions = new TypedArrayList(RolePermissionImpl.class);
+
+
+	@OneToMany(targetEntity=RolePermissionImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
+	@JoinColumn(name="ROLE_ID", insertable=false, updatable=false)
+	protected List<RoleResponsibilityImpl> assignedResponsibilities = new TypedArrayList(RoleResponsibilityImpl.class);
 
 	@ManyToOne(targetEntity=KimTypeImpl.class,fetch=FetchType.LAZY)
 	@Transient
@@ -218,6 +228,35 @@ public class KimRoleImpl extends PersistableBusinessObjectBase implements KimRol
 
 	public void setMembers(List<RoleMemberImpl> members) {
 		this.members = members;
+	}
+
+	/**
+	 * @return the assignedPermissions
+	 */
+	public List<RolePermissionImpl> getAssignedPermissions() {
+		return this.assignedPermissions;
+	}
+
+	/**
+	 * @param assignedPermissions the assignedPermissions to set
+	 */
+	public void setAssignedPermissions(List<RolePermissionImpl> assignedPermissions) {
+		this.assignedPermissions = assignedPermissions;
+	}
+
+	/**
+	 * @return the assignedResponsibilities
+	 */
+	public List<RoleResponsibilityImpl> getAssignedResponsibilities() {
+		return this.assignedResponsibilities;
+	}
+
+	/**
+	 * @param assignedResponsibilities the assignedResponsibilities to set
+	 */
+	public void setAssignedResponsibilities(
+			List<RoleResponsibilityImpl> assignedResponsibilities) {
+		this.assignedResponsibilities = assignedResponsibilities;
 	}
 	
 }

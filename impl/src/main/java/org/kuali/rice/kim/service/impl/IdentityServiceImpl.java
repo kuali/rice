@@ -15,6 +15,7 @@ import org.kuali.rice.kim.bo.entity.dto.NamePrincipalNameInfo;
 import org.kuali.rice.kim.bo.entity.impl.EntityNameImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
+import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
 import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;

@@ -16,6 +16,7 @@
  */
 package org.kuali.rice.kew.edl;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -81,27 +82,31 @@ public class RequestParser {
 		
 		Iterator iter = items.iterator();
 		while (iter.hasNext()) {
-
-			FileItem item = (FileItem) iter.next();
-			if (item.isFormField()) {
-        		String fieldName = item.getFieldName();
-        		String fieldValue = item.getString();
-        		String[] paramVals = null;
-				if (requestParams.containsKey(fieldName)) {
-					paramVals = (String[])requestParams.get(fieldName);
-					paramVals = (String[]) ArrayUtils.add(paramVals, fieldValue);
+			
+			try {
+				FileItem item = (FileItem) iter.next();
+				if (item.isFormField()) {
+					String fieldName = item.getFieldName();
+					String fieldValue = item.getString("utf-8");
+					String[] paramVals = null;
+					if (requestParams.containsKey(fieldName)) {
+						paramVals = (String[])requestParams.get(fieldName);
+						paramVals = (String[]) ArrayUtils.add(paramVals, fieldValue);
+					} else {
+						paramVals = new String[1];
+						paramVals[0] = fieldValue;
+					}
+					requestParams.put(fieldName, paramVals);
 				} else {
-					paramVals = new String[1];
-					paramVals[0] = fieldValue;
+					List uploadedFiles = (List)request.getAttribute(UPLOADED_FILES_KEY);
+					if (uploadedFiles == null) {
+						uploadedFiles = new ArrayList();
+						request.setAttribute(UPLOADED_FILES_KEY, uploadedFiles);
+					}
+					uploadedFiles.add(item);
 				}
-				requestParams.put(fieldName, paramVals);
-			} else {
-				List uploadedFiles = (List)request.getAttribute(UPLOADED_FILES_KEY);
-				if (uploadedFiles == null) {
-					uploadedFiles = new ArrayList();
-					request.setAttribute(UPLOADED_FILES_KEY, uploadedFiles);
-				}
-				uploadedFiles.add(item);
+			} catch (UnsupportedEncodingException e) {
+				throw new WorkflowRuntimeException(e);
 			}
 		}
 	}

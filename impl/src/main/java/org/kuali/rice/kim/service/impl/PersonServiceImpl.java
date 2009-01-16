@@ -476,10 +476,6 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 		return personDao.getPersonImplementationClass();
 	}
 	
-	public List<String> getPersonEntityTypeCodes() {
-		return personDao.getPersonEntityTypeCodes();
-	}
-
 	/**
 	 * @return the personDao
 	 */

@@ -24,7 +24,7 @@ import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.dao.PersonDao;
-import org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb;
+import org.springframework.beans.factory.InitializingBean;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -32,27 +32,20 @@ import org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class PersonDaoProxy<T extends PersonImpl> extends PlatformAwareDaoBaseOjb implements PersonDao<T> {
+public class PersonDaoProxy<T extends PersonImpl> implements PersonDao<T>, InitializingBean {
 
 	private PersonDao<T> daoOjb;
 	private PersonDao<T> daoJpa;
 	
 	private PersonDao<T> actualDao;
 	
+	
 	/**
-	 * @see org.springframework.dao.support.DaoSupport#initDao()
+	 * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
 	 */
-	@Override
-	protected void initDao() throws Exception {
-		super.initDao();
+	public void afterPropertiesSet() throws Exception {
 		actualDao = (OrmUtils.isJpaAnnotated(PersonImpl.class) && OrmUtils.isJpaEnabled()) ? daoJpa : daoOjb;
 	}
-		
-	public List<T> findPeople(Map<String,String> criteria) {
-		return actualDao.findPeople( criteria );
-	}
-	
-	
 
 	public void setDaoOjb(PersonDao<T> daoOjb) {
 		this.daoOjb = daoOjb;
@@ -88,13 +81,6 @@ public class PersonDaoProxy<T extends PersonImpl> extends PlatformAwareDaoBaseOj
 	 */
 	public List<T> findPeople(Map<String, String> criteria, boolean unbounded) {
 		return actualDao.findPeople(criteria, unbounded);
-	}
-	
-	/**
-	 * @see org.kuali.rice.kim.dao.PersonDao#getPersonEntityTypeCodes()
-	 */
-	public List<String> getPersonEntityTypeCodes() {
-		return actualDao.getPersonEntityTypeCodes();
 	}
 
 	/**

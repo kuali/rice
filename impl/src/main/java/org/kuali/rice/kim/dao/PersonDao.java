@@ -30,7 +30,6 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
  */
 public interface PersonDao<T extends Person> {
 
-	List<T> findPeople( Map<String,String> criteria );
 	List<T> findPeople( Map<String,String> criteria, boolean unbounded );
 	
 	/**
@@ -40,13 +39,6 @@ public interface PersonDao<T extends Person> {
 	 * to a specific implementation.
 	 */
 	Class<? extends Person> getPersonImplementationClass();
-	
-	/**
-	 * Get the entityTypeCode that can be associated with a Person.  This will determine
-	 * where EntityType-related data is pulled from within the KimEntity object.  The codes
-	 * in the list will be examined in the order present.
-	 */
-	List<String> getPersonEntityTypeCodes();
 	
 	Map<String,String> convertPersonPropertiesToEntityProperties( Map<String,String> criteria );
 	

@@ -36,6 +36,8 @@ import org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.LookupService;
+import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.springframework.orm.ObjectRetrievalFailureException;
 
 /**
@@ -48,10 +50,12 @@ public class PersonDaoOjb<T extends PersonImpl> extends PlatformAwareDaoBaseOjb 
 
 	protected static final String ENTITY_EXT_ID_PROPERTY_PREFIX = "externalIdentifiers.";
 	protected static final String ENTITY_AFFILIATION_PROPERTY_PREFIX = "affiliations.";
+	protected static final String ENTITY_TYPE_PROPERTY_PREFIX = "entityTypes.";
 	protected static final String ENTITY_EMAIL_PROPERTY_PREFIX = "entityTypes.emailAddresses.";
 	protected static final String ENTITY_PHONE_PROPERTY_PREFIX = "entityTypes.phoneNumbers.";
 	protected static final String ENTITY_ADDRESS_PROPERTY_PREFIX = "entityTypes.addresses.";
 	protected static final String ENTITY_NAME_PROPERTY_PREFIX = "names.";
+	protected static final String PRINCIPAL_PROPERTY_PREFIX = "principals.";
 	protected static final String ENTITY_EMPLOYEE_ID_PROPERTY_PREFIX = "employmentInformation.";
 
 	private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(PersonDaoOjb.class);
@@ -68,13 +72,13 @@ public class PersonDaoOjb<T extends PersonImpl> extends PlatformAwareDaoBaseOjb 
 		// init the criteria which will need to be applied to every lookup against
 		// the entity data tables
 		baseLookupCriteria.put( KIMPropertyConstants.Person.ACTIVE, "Y" );
-		baseLookupCriteria.put( "entityTypes.active", "Y" );
+		baseLookupCriteria.put( ENTITY_TYPE_PROPERTY_PREFIX + KNSPropertyConstants.ACTIVE, "Y" );
 		
 		// create the field mappings between the Person object and the KimEntity object
-		criteriaConversion.put( KIMPropertyConstants.Person.ENTITY_ID, "entityId" );
-		criteriaConversion.put( KIMPropertyConstants.Person.ACTIVE, "principals.active" );
-		criteriaConversion.put( KIMPropertyConstants.Person.PRINCIPAL_ID, "principals.principalId" );
-		criteriaConversion.put( KIMPropertyConstants.Person.PRINCIPAL_NAME, "principals.principalName" );
+		criteriaConversion.put( KIMPropertyConstants.Person.ENTITY_ID, KIMPropertyConstants.Person.ENTITY_ID );
+		criteriaConversion.put( KIMPropertyConstants.Person.ACTIVE, PRINCIPAL_PROPERTY_PREFIX + KNSPropertyConstants.ACTIVE );
+		criteriaConversion.put( KIMPropertyConstants.Person.PRINCIPAL_ID, PRINCIPAL_PROPERTY_PREFIX + KIMPropertyConstants.Person.PRINCIPAL_ID );
+		criteriaConversion.put( KIMPropertyConstants.Person.PRINCIPAL_NAME, PRINCIPAL_PROPERTY_PREFIX + KIMPropertyConstants.Person.PRINCIPAL_NAME );
 		criteriaConversion.put( KIMPropertyConstants.Person.FIRST_NAME, "names.firstName" );
 		criteriaConversion.put( KIMPropertyConstants.Person.LAST_NAME, "names.lastName" );
 		criteriaConversion.put( KIMPropertyConstants.Person.MIDDLE_NAME, "names.middleName" );
@@ -131,15 +135,6 @@ public class PersonDaoOjb<T extends PersonImpl> extends PlatformAwareDaoBaseOjb 
 				throw new RuntimeException( "Problem building person object", ex );
 			}
 		}
-	}
-	
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kim.dao.PersonDao#findPeople(java.util.Map)
-	 */
-	public List<T> findPeople(Map<String,String> entityCriteria) {
-		return findPeople(entityCriteria, true);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -309,21 +304,10 @@ public class PersonDaoOjb<T extends PersonImpl> extends PlatformAwareDaoBaseOjb 
 	}
 
 	/**
-	 * @param personEntityTypeCode the personEntityTypeCode to set
+	 * Get the entityTypeCode that can be associated with a Person.  This will determine
+	 * where EntityType-related data is pulled from within the KimEntity object.  The codes
+	 * in the list will be examined in the order present.
 	 */
-	@Deprecated
-	public void setPersonEntityTypeCode(String personEntityTypeCode) {
-		personEntityTypeCodes.add( personEntityTypeCode );
-		personEntityTypeLookupCriteria = null;
-		for ( String entityTypeCode : personEntityTypeCodes ) {
-			if ( personEntityTypeLookupCriteria == null ) {
-				personEntityTypeLookupCriteria = entityTypeCode;
-			} else {
-				personEntityTypeLookupCriteria = personEntityTypeLookupCriteria + "|" + entityTypeCode;
-			}
-		}
-	}
-
 	public List<String> getPersonEntityTypeCodes() {
 		return this.personEntityTypeCodes;
 	}

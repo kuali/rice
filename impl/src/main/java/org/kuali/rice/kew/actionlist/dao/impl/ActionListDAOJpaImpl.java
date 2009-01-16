@@ -22,6 +22,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -37,11 +38,12 @@ import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
 import org.kuali.rice.kew.actionitem.OutboxItemActionListExtension;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.actionlist.dao.ActionListDAO;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtension;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-
 
 /**
  * OJB implementation of the {@link ActionListDAO}.
@@ -232,7 +234,16 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
             if (filter.isExcludeDocumentType()) {
                 crit.notLike("docName", "%" + filter.getDocumentType() + "%");
             } else {
-                crit.like("docName", "%" + filter.getDocumentType() + "%");
+            	String documentTypeName = filter.getDocumentType();
+            	DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
+            	if (documentType == null) {
+            	    crit.like("docName", "%" + filter.getDocumentType() + "%");
+            	} else {
+            	    // search this document type plus it's children
+            	    Criteria docTypeCrit = new Criteria(objectsToRetrieve.getName());
+            	    constructDocumentTypeCriteria(objectsToRetrieve.getName(), docTypeCrit, documentType);
+            	    crit.and(docTypeCrit);
+            	}
             }
             filteredByItems += filteredByItems.length() > 0 ? ", " : "";
             filteredByItems += "Document Type";
@@ -404,6 +415,20 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
 
         LOG.debug("returning from Action List criteria");
         return crit;
+    }
+    
+    private void constructDocumentTypeCriteria(String entityName, Criteria criteria, DocumentType documentType) {
+    	// search this document type plus it's children
+    	Criteria docTypeBaseCrit = new Criteria(entityName);
+    	docTypeBaseCrit.eq("docName", documentType.getName());
+    	criteria.or(docTypeBaseCrit);
+    	Collection children = documentType.getChildrenDocTypes();
+    	if (children != null) {
+    	    for (Iterator iterator = children.iterator(); iterator.hasNext();) {
+    	    	DocumentType childDocumentType = (DocumentType) iterator.next();
+    	    	constructDocumentTypeCriteria(entityName, criteria, childDocumentType);
+    	    }
+    	}
     }
     
     private void addToFilterDescription(String filterDescription, String labelToAdd) {

@@ -25,6 +25,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -38,12 +39,13 @@ import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
 import org.kuali.rice.kew.actionitem.OutboxItemActionListExtension;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.actionlist.dao.ActionListDAO;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
-
 
 /**
  * OJB implementation of the {@link ActionListDAO}.
@@ -146,7 +148,16 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
             if (filter.isExcludeDocumentType()) {
                 crit.addNotLike("docName", "%" + filter.getDocumentType() + "%");
             } else {
-                crit.addLike("docName", "%" + filter.getDocumentType() + "%");
+            	String documentTypeName = filter.getDocumentType();
+            	DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
+            	if (documentType == null) {
+            	    crit.addLike("docName", "%" + filter.getDocumentType() + "%");
+            	} else {
+            	    // search this document type plus it's children
+            	    Criteria docTypeCrit = new Criteria();
+            	    constructDocumentTypeCriteria(docTypeCrit, documentType);
+            	    crit.addAndCriteria(docTypeCrit);
+            	}
             }
             filteredByItems += filteredByItems.length() > 0 ? ", " : "";
             filteredByItems += "Document Type";
@@ -511,6 +522,20 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         return crit;
     }
 
+    private void constructDocumentTypeCriteria(Criteria criteria, DocumentType documentType) {
+    	// search this document type plus it's children
+    	Criteria docTypeBaseCrit = new Criteria();
+    	docTypeBaseCrit.addEqualTo("docName", documentType.getName());
+    	criteria.addOrCriteria(docTypeBaseCrit);
+    	Collection children = documentType.getChildrenDocTypes();
+    	if (children != null) {
+    	    for (Iterator iterator = children.iterator(); iterator.hasNext();) {
+    	    	DocumentType childDocumentType = (DocumentType) iterator.next();
+    	    	constructDocumentTypeCriteria(criteria, childDocumentType);
+    	    }
+    	}
+    }
+    
     private void addToFilterDescription(String filterDescription, String labelToAdd) {
         filterDescription += filterDescription.length() > 0 ? ", " : "";
         filterDescription += labelToAdd;

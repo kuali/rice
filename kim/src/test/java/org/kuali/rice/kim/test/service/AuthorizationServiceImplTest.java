@@ -130,20 +130,6 @@ public class AuthorizationServiceImplTest extends RiceTestCase {
 		assertFalse( "p2 must not belong to r1 (higher role)", principalIds.contains("p2") );
 	}
 	
-	@Test
-	public void testRoleImplication() {
-		List<String> impliedRoles = roleService.getImpliedRoleIds("r1");
-		System.out.println( impliedRoles );
-		assertNotNull( "implied role list may not be null", impliedRoles );
-		assertFalse( "implied roles list must not be empty", impliedRoles.isEmpty() );
-		assertTrue( "list must contain the source role", impliedRoles.contains("r1") );
-		assertTrue( "list must contain r2", impliedRoles.contains("r2") );
-		
-		impliedRoles = roleService.getImpliedRoleIds("r2");
-		assertTrue( "list must contain the source role", impliedRoles.contains("r2") );
-		assertFalse( "list must not contain r1", impliedRoles.contains("r1") );
-	}
-	
 //	@Test
 //	public void testGetPermissionsForRole() {
 //		List<PermissionDetailInfo> perms = authorizationService.getPermissionsForRole( "r1" );

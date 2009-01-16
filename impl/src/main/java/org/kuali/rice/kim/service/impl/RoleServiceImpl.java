@@ -845,57 +845,8 @@ public class RoleServiceImpl implements RoleService {
     	}
     	return roleTypeServices;
     }
- 
-	public List<String> getImpliedRoleIds(String roleId) {
-		List<String> roleIds = new ArrayList<String>();
-		for ( KimRoleImpl role : getImpliedRoles(roleId) ) {
-			roleIds.add( role.getRoleId() );
-		}
-		return roleIds;
-	}
-
     
-	protected List<KimRoleImpl> getImpliedRoles(String roleId) {
-		// using set to automatically remove duplicates
-		KimRoleImpl role = getRoleImpl(roleId);
-		return getImpliedRoles( role );
-	}
-
-	protected List<KimRoleImpl> getImpliedRoles(KimRoleImpl role) {
-		if ( role == null || !role.isActive() ) {
-			return new ArrayList<KimRoleImpl>(0);
-		}
-		// using set to automatically remove duplicates
-		Set<KimRoleImpl> roles = new HashSet<KimRoleImpl>();
-
-		// add the top-level role
-		roles.add( role );
-		getImpliedRolesInternal( role, roles );
-		
-		return new ArrayList<KimRoleImpl>(roles);
-	}
-	
-	/**
-	 * This is a helper method to allow visibility of what's been added to the set before
-	 * to prevent infinite recursion. 
-	 */
-	protected void getImpliedRolesInternal( KimRoleImpl role, Set<KimRoleImpl> roles ) {
-		if ( role == null ) {
-			return;
-		}
-		List<RoleRelationshipImpl> roleRoles = role.getAssignedRoles();
-
-		for (RoleRelationshipImpl roleRole : roleRoles) {
-			KimRoleImpl containedRole = getRoleImpl(roleRole.getContainedRoleId());
-			// if we've already seen that role (or it's not active), don't recurse into it
-			if ( !containedRole.isActive() && !roles.contains( containedRole ) ) {
-				roles.add(containedRole);
-				getImpliedRolesInternal(containedRole,roles);
-			}
-		}
-	}
-    
-	public List<String> getImplyingRoleIds( String roleId ) {
+	protected List<String> getImplyingRoleIds( String roleId ) {
 		// check the cache
 		Map<String,List<String>> cache = impliedRoleCache.get();
 		// create the cache if necessary

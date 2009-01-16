@@ -41,8 +41,6 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	protected int roleCacheMaxSize = 200;
 	protected int roleCacheMaxAge = 30;
 	
-	protected MaxSizeMap<String,MaxAgeSoftReference<List<String>>> impliedRoleIdsCache;
-	protected MaxSizeMap<String,MaxAgeSoftReference<List<String>>> implyingRoleIdsCache;
 	protected MaxSizeMap<String,MaxAgeSoftReference<KimRoleInfo>> roleByIdCache;
 	protected MaxSizeMap<String,MaxAgeSoftReference<KimRoleInfo>> roleByNameCache;
 	protected MaxSizeMap<String,MaxAgeSoftReference<Collection<RoleMembershipInfo>>> roleMembersWithDelegationCache;
@@ -51,8 +49,6 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	protected MaxSizeMap<String,MaxAgeSoftReference<Collection<String>>> memberPrincipalIdsCache;
 	
 	public void afterPropertiesSet() throws Exception {
-		impliedRoleIdsCache = new MaxSizeMap<String,MaxAgeSoftReference<List<String>>>( roleCacheMaxSize );
-		implyingRoleIdsCache = new MaxSizeMap<String,MaxAgeSoftReference<List<String>>>( roleCacheMaxSize );
 		roleByIdCache = new MaxSizeMap<String,MaxAgeSoftReference<KimRoleInfo>>( roleCacheMaxSize );
 		roleByNameCache = new MaxSizeMap<String,MaxAgeSoftReference<KimRoleInfo>>( roleCacheMaxSize );
 		roleMembersWithDelegationCache = new MaxSizeMap<String,MaxAgeSoftReference<Collection<RoleMembershipInfo>>>( roleCacheMaxSize );
@@ -62,8 +58,6 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	}
 	
 	public void flushRoleCaches() {
-		impliedRoleIdsCache.clear();
-		implyingRoleIdsCache.clear();
 		roleByIdCache.clear();
 		roleByNameCache.clear();
 		roleMembersWithDelegationCache.clear();
@@ -73,22 +67,6 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	}
 	
 	// Caching helper methods
-	
-	protected List<String> getImpliedRoleIdsCache( String roleId ) {
-		MaxAgeSoftReference<List<String>> roleIdRef = impliedRoleIdsCache.get( roleId );
-		if ( roleIdRef != null ) {
-			return roleIdRef.get();
-		}
-		return null;
-	}
-	
-	protected List<String> getImplyingRoleIdsCache( String roleId ) {
-		MaxAgeSoftReference<List<String>> roleIdRef = implyingRoleIdsCache.get( roleId );
-		if ( roleIdRef != null ) {
-			return roleIdRef.get();
-		}
-		return null;
-	}
 
 	protected KimRoleInfo getRoleByIdCache( String roleId ) {
 		MaxAgeSoftReference<KimRoleInfo> roleRef = roleByIdCache.get( roleId );
@@ -130,18 +108,6 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		return null;
 	}
 	
-	protected void addImpliedRoleIdsToCache( String roleId, List<String> ids ) {
-		if ( ids != null ) {
-			impliedRoleIdsCache.put( roleId, new MaxAgeSoftReference<List<String>>( roleCacheMaxAge, ids ) );
-		}
-	}
-
-	protected void addImplyingRoleIdsToCache( String roleId, List<String> ids ) {
-		if ( ids != null ) {
-			implyingRoleIdsCache.put( roleId, new MaxAgeSoftReference<List<String>>( roleCacheMaxAge, ids ) );
-		}
-	}
-
 	protected void addRoleToCaches( KimRoleInfo role ) {
 		if ( role != null ) {
 			roleByNameCache.put( role.getNamespaceCode() + "-" + role.getRoleName(), new MaxAgeSoftReference<KimRoleInfo>( roleCacheMaxAge, role ) );
@@ -166,26 +132,6 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	}
 		
 	// Cached methods
-	
-	public List<String> getImpliedRoleIds(String roleId) {
-		List<String> ids = getImpliedRoleIdsCache(roleId);
-		if (ids != null) {
-			return ids;
-		}
-    	ids = getRoleService().getImpliedRoleIds(roleId);
-    	addImpliedRoleIdsToCache(roleId, ids);
-    	return ids;
-	}
-
-	public List<String> getImplyingRoleIds(String roleId) {
-		List<String> ids = getImplyingRoleIdsCache(roleId);
-		if (ids != null) {
-			return ids;
-		}
-    	ids = getRoleService().getImplyingRoleIds(roleId);
-    	addImplyingRoleIdsToCache(roleId, ids);
-    	return ids;
-	}
 
 	protected Collection<String> getRoleMemberPrincipalIdsCache(String key) {
 		MaxAgeSoftReference<Collection<String>> memberPrincipalIdsRef = memberPrincipalIdsCache.get(key);
@@ -347,8 +293,6 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 			}
 		}
 		if ( roleId != null ) {
-			impliedRoleIdsCache.remove( roleId );
-			implyingRoleIdsCache.remove( roleId );
 			roleByIdCache.remove( roleId );
 			roleByNameCache.clear();
 			String keySubstring = "|" + roleId + "|";

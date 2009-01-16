@@ -54,25 +54,6 @@ public interface RoleService {
 	 * component and role name.
 	 */
 	String getRoleIdByName( String namespaceCode, String roleName );
-	
-
-	/**
-	 * Get the complete list of all roles which imply the given role.  This includes the role passed in.
-	 * 
-	 * I.e., where the given role is contained within a higher level role.
-	 */
-    List<String> getImplyingRoleIds( String roleId );    
-    
-	/**
-	 * Get all the roles implied by the given role.  This method will recurse down
-	 * through all role relationships to return a complete list of all roles that
-	 * a principal would have if they have the given role.
-	 * 
-	 * An empty list will be returned if the given role is invalid.
-	 * If the role has no contained roles, then this method will return a 
-	 * one-element list containing the given role.
-	 */
-    List<String> getImpliedRoleIds( String roleId );
     
     boolean isRoleActive( String roleId );
 

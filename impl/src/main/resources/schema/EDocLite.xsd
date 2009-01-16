@@ -41,16 +41,16 @@
   <element name="edoclite">
     <complexType>
       <sequence>
-	    <element ref="ed:edl" minOccurs="0"/>
+	    <element ref="ed:edl" minOccurs="0" maxOccurs="unbounded"/>
 	    
-        <element name="style" type="ed:StyleType" minOccurs="0">
+        <element name="style" type="ed:StyleType" minOccurs="0" maxOccurs="unbounded">
         	<annotation>
         		<documentation>
         		 The XSLT stylesheet for this EDL.	
         		</documentation>
         	</annotation>
         </element>
-        <element name="association" type="ed:AssociationType" minOccurs="0">
+        <element name="association" type="ed:AssociationType" minOccurs="0" maxOccurs="unbounded">
         	<annotation>
         		<documentation>
         		 Defines the association between an edl, style, and documentType.

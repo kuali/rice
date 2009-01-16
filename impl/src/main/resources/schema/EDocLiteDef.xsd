@@ -55,7 +55,7 @@
         <element name="createInstructions" type="c:LongStringType" minOccurs="0">
         	<annotation>
         		<documentation>
-        		 The creation instructinos for the EDL.
+        		 The creation instructions for the EDL.
         		</documentation>
         	</annotation>
         </element>
@@ -200,6 +200,7 @@
       <enumeration value="select"/>
       <enumeration value="select_refresh"/>
       <enumeration value="networkId"/>
+      <enumeration value="workgroupName"/>
       <enumeration value="universityId"/>
       <enumeration value="hidden"/>
     </restriction>
@@ -227,7 +228,7 @@
 
   <complexType name="ValuesType">
     <simpleContent>
-      <extension base="c:ShortStringType">
+      <extension base="c:MayBeEmptyShortStringType">
         <attribute name="title" type="string">
         	<annotation>
         		<documentation>
@@ -299,7 +300,7 @@
       <element name="message" type="c:ShortStringType" minOccurs="0">
       	<annotation>
       		<documentation>
-      		 A message associated witht the node created.
+      		 A message associated with the node created.
       		</documentation>
       	</annotation>
       </element>

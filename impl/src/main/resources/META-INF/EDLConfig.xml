@@ -24,6 +24,10 @@
 			<className>org.kuali.rice.kew.edl.components.NetworkIdWorkflowEDLConfigComponent</className>
 		</configProcessor>
 		<configProcessor>
+			<xpathExp>display/type = 'workgroupName'</xpathExp>
+			<className>org.kuali.rice.kew.edl.components.WorkgroupWorkflowEDLConfigComponent</className>
+		</configProcessor>
+		<configProcessor>
 			<xpathExp>display/type = 'universityId'</xpathExp>
 			<className>org.kuali.rice.kew.edl.components.UniversityIdWorkflowEDLConfigComponent</className>
 		</configProcessor>

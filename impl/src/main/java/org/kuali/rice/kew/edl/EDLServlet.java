@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -53,6 +54,10 @@ public class EDLServlet extends HttpServlet {
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 		    RequestParser requestParser = new RequestParser(request);
+		    String inputCommand = requestParser.getParameterValue("command");
+		    if (StringUtils.equals(inputCommand, "initiate")){
+		    	requestParser.setParameterValue("userAction","initiate");
+		    }
 		    String edlName = requestParser.getParameterValue("edlName");
 		    if (edlName == null) {
 		        edlName = requestParser.getParameterValue("docTypeName");//this is for 'WorkflowQuicklinks'

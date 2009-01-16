@@ -140,7 +140,9 @@ public class WorkflowDocumentState implements EDLModelComponent {
 			if (wfdoc.isBlanketApproveCapable()) {
 				list.add(UserAction.ACTION_BLANKETAPPROVE);
 			}
+			if (!wfdoc.stateIsSaved()){
 			list.add(UserAction.ACTION_DISAPPROVE);
+			}
 	 	 	//should invoke WorkflowDocument.saveRoutingData(...).
 			list.add(UserAction.ACTION_SAVE);
 			if (wfdoc.getPreviousNodeNames().length > 0) {

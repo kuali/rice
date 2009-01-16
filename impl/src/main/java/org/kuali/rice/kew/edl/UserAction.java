@@ -39,6 +39,20 @@ public class UserAction {
     public static final String ACTION_DELETE = "delete";
     public static final String ACTION_RETURN_TO_PREVIOUS = "returnToPrevious";
     
+    public static final String ACTION_CREATE_LABEL = "initiate";
+    public static final String ACTION_LOAD_LABEL = "load";
+    public static final String ACTION_ROUTE_LABEL = "submit";
+    public static final String ACTION_APPROVE_LABEL = "approve";
+    public static final String ACTION_DISAPPROVE_LABEL = "disapprove";
+    public static final String ACTION_CANCEL_LABEL = "cancel";
+    public static final String ACTION_BLANKETAPPROVE_LABEL = "blanket approve";
+    public static final String ACTION_FYI_LABEL = "fyi";
+    public static final String ACTION_ACKNOWLEDGE_LABEL = "acknowledge";
+    public static final String ACTION_SAVE_LABEL = "save";
+    public static final String ACTION_COMPLETE_LABEL = "complete";
+    public static final String ACTION_DELETE_LABEL = "delete";
+    public static final String ACTION_RETURN_TO_PREVIOUS_LABEL = "return to previous";
+    
     public static final String[] LOAD_ACTIONS = new String[] {
 	ACTION_LOAD,
 	ACTION_CREATE
@@ -80,8 +94,36 @@ public class UserAction {
     private String action;
     
     public UserAction(String action) {
-	this.action = action;
-    }
+		if (action.equals(ACTION_CREATE_LABEL)) {
+			this.action = ACTION_CREATE;
+		} else if (action.equals(ACTION_LOAD_LABEL)) {
+			this.action = ACTION_LOAD;
+		} else if (action.equals(ACTION_ROUTE_LABEL)) {
+			this.action = ACTION_ROUTE;
+		} else if (action.equals(ACTION_APPROVE_LABEL)) {
+			this.action = ACTION_APPROVE;
+		} else if (action.equals(ACTION_DISAPPROVE_LABEL)) {
+			this.action = ACTION_DISAPPROVE;
+		} else if (action.equals(ACTION_CANCEL_LABEL)) {
+			this.action = ACTION_CANCEL;
+		} else if (action.equals(ACTION_BLANKETAPPROVE_LABEL)) {
+			this.action = ACTION_BLANKETAPPROVE;
+		} else if (action.equals(ACTION_FYI_LABEL)) {
+			this.action = ACTION_FYI;
+		} else if (action.equals(ACTION_ACKNOWLEDGE_LABEL)) {
+			this.action = ACTION_ACKNOWLEDGE;
+		} else if (action.equals(ACTION_SAVE_LABEL)) {
+			this.action = ACTION_SAVE;
+		} else if (action.equals(ACTION_COMPLETE_LABEL)) {
+			this.action = ACTION_COMPLETE;
+		} else if (action.equals(ACTION_DELETE_LABEL)) {
+			this.action = ACTION_DELETE;
+		} else if (action.equals(ACTION_RETURN_TO_PREVIOUS_LABEL)) {
+			this.action = ACTION_RETURN_TO_PREVIOUS;
+		} else {
+			this.action = action;
+		}
+	}
     
     public String getAction() {
 	return action;

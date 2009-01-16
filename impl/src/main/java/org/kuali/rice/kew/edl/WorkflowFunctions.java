@@ -174,4 +174,10 @@ public class WorkflowFunctions {
 	    return false;
 	}
 
+	public static String getAuthenticationId() {
+	    UserSession userSession=UserSession.getAuthenticatedUser();
+	    return userSession.getPrincipalName();
+	
+	}
+	
 }

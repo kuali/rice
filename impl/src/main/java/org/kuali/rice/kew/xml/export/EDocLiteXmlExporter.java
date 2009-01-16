@@ -18,6 +18,7 @@ package org.kuali.rice.kew.xml.export;
 
 import java.io.StringReader;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.jdom.Element;
@@ -50,16 +51,24 @@ public class EDocLiteXmlExporter implements XmlExporter, XmlConstants {
 		if (!dataSet.getEdocLites().isEmpty()) {
 			Element rootElement = renderer.renderElement(null, EDL_EDOCLITE);
 			rootElement.setAttribute(SCHEMA_LOCATION_ATTR, EDL_SCHEMA_LOCATION, SCHEMA_NAMESPACE);
-			for (Iterator iter = dataSet.getEdocLites().iterator(); iter.hasNext();) {
-				EDocLiteAssociation edocLite = (EDocLiteAssociation) iter.next();
-				exportEDocLite(rootElement, edocLite);
+			// create output in order of all edl followed by all stylesheets, followed by all associations, this is so multiple edoclite's can be ingested in a single xml file.
+			List<EDocLiteAssociation> assocList = dataSet.getEdocLites();
+			// loop thru same list 3 times.
+			for (EDocLiteAssociation e : assocList) {
+				exportEdlDefinitions(rootElement, e);
+			}
+			for (EDocLiteAssociation e : assocList) {
+				exportStyles(rootElement, e);
+			}
+			for (EDocLiteAssociation e : assocList) {
+				exportAssociations(rootElement, e);
 			}
 			return rootElement;
 		}
 		return null;
 	}
 
-	private void exportEDocLite(Element parentEl, EDocLiteAssociation edl) {
+	private void exportEdlDefinitions(Element parentEl, EDocLiteAssociation edl) {
 
 		try {
 			EDocLiteService edlService = KEWServiceLocator.getEDocLiteService();
@@ -73,6 +82,15 @@ public class EDocLiteXmlExporter implements XmlExporter, XmlConstants {
 				setNamespace(defEl, EDL_NAMESPACE);
 				parentEl.addContent(defEl.detach());
 			}
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	private void exportStyles(Element parentEl, EDocLiteAssociation edl) {
+
+		try {
+			EDocLiteService edlService = KEWServiceLocator.getEDocLiteService();
 
 			if (edl.getStyle() != null) {//this probably shouldn't be supported on the entry side...
 				Element styleWrapperEl = renderer.renderElement(parentEl, EDL_STYLE);
@@ -85,8 +103,13 @@ public class EDocLiteXmlExporter implements XmlExporter, XmlConstants {
 				Element styleEl = XmlHelper.buildJDocument(new StringReader(style.getXmlContent())).getRootElement();
 				styleWrapperEl.addContent(styleEl.detach());
 			}
-
-
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	private void exportAssociations(Element parentEl, EDocLiteAssociation edl) {
+		try {
 			Element associationEl = renderer.renderElement(parentEl, EDL_ASSOCIATION);
 			renderer.renderTextElement(associationEl, EDL_DOC_TYPE, edl.getEdlName());
 			if (edl.getDefinition() != null) {

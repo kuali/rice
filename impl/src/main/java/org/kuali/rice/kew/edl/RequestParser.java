@@ -52,6 +52,7 @@ public class RequestParser {
 	public static final String GLOBAL_FIELD_ERRORS_KEY = "org.kuali.rice.kew.edl.GlobalFieldErrors";
 	
 	private HttpServletRequest request;
+	private Map<String, String[]> additionalParameters = new HashMap<String, String[]>();
 	
 	public RequestParser(HttpServletRequest request) {
 		this.request = request;
@@ -113,16 +114,17 @@ public class RequestParser {
 	
 	public String[] getParameterValues(String paramName) {
 		boolean isMultipart = ServletFileUpload.isMultipartContent(this.getRequest());
-		if (isMultipart) {
-			parseRequest(this.getRequest());
-			String[] params = (String[]) ((Map)request.getAttribute(PARSED_MULTI_REQUEST_KEY)).get(paramName);
-			if (params == null) {
-				return null;
-			}
-			return params;
-		} else {
-			return this.getRequest().getParameterValues(paramName);
-		}
+	    String[] params = null;
+	    if (isMultipart) {
+	    	parseRequest(this.getRequest());
+	    	params = (String[]) ((Map)request.getAttribute(PARSED_MULTI_REQUEST_KEY)).get(paramName);
+	    } else {
+	    	params = this.getRequest().getParameterValues(paramName);
+	    }
+	    if (params == null) {
+	    	params = additionalParameters.get(paramName);
+	    }
+	    return params;
 	}
 	
 	public void setAttribute(String name, Object value) {
@@ -139,6 +141,14 @@ public class RequestParser {
 			return paramVals[0];
 		}
 		return null;
+	}
+	
+	public void setParameterValue(String paramName, String paramValue) {
+	    additionalParameters.put(paramName, new String[] { paramValue });
+	}
+	
+	public void setParameterValue(String paramName, String[] paramValue) {
+	    additionalParameters.put(paramName, paramValue);
 	}
 	
 	public List<String> getParameterNames() {

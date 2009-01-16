@@ -81,7 +81,7 @@ public class RelationshipDefinition extends DataDictionaryDefinitionBase {
 	            throw new AttributeValidationException("cannot get valid class for property '" + objectAttributeName + "' as an attribute of '" + sourceClass + "'");
 	        }
 	        if (!BusinessObject.class.isAssignableFrom(propertyClass)) {
-	            throw new AttributeValidationException("property '" + objectAttributeName + "' is not a BusinessObject (" + "" + ")");
+	            throw new AttributeValidationException("property '" + objectAttributeName + "' is not a BusinessObject (" + propertyClass.getName() + ")");
 	        }
 	
 	

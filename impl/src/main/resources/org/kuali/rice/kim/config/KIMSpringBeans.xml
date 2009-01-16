@@ -237,13 +237,13 @@
 
   <bean id="kimIdentityManagementService" class="org.kuali.rice.kim.service.impl.IdentityManagementServiceImpl"
     p:entityPrincipalCacheMaxSize="3000"
-    p:entityPrincipalCacheMaxAge="3600"
+    p:entityPrincipalCacheMaxAgeSeconds="3600"
     p:groupCacheMaxSize="3000"
-    p:groupCacheMaxAge="3600"
+    p:groupCacheMaxAgeSeconds="3600"
     p:permissionCacheMaxSize="3000"
-    p:permissionCacheMaxAge="3600"
+    p:permissionCacheMaxAgeSeconds="300"
     p:responsibilityCacheMaxSize="3000"
-    p:responsibilityCacheMaxAge="3600" />
+    p:responsibilityCacheMaxAgeSeconds="300" />
 
   <bean id="kimRoleDao" class="org.kuali.rice.kim.dao.impl.KimRoleDaoOjb" parent="platformAwareDao" />
   <bean id="kimGroupDao" class="org.kuali.rice.kim.dao.impl.KimGroupDaoOjb" parent="platformAwareDao" />
@@ -251,7 +251,7 @@
 
   <bean id="kimRoleManagementService" class="org.kuali.rice.kim.service.impl.RoleManagementServiceImpl"
     p:roleCacheMaxSize="3000"
-    p:roleCacheMaxAge="3600" />
+    p:roleCacheMaxAgeSeconds="3600" />
 
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>

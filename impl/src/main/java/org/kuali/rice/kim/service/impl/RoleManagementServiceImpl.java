@@ -39,7 +39,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	
 	// Max age defined in seconds
 	protected int roleCacheMaxSize = 200;
-	protected int roleCacheMaxAge = 30;
+	protected int roleCacheMaxAgeSeconds = 30;
 	
 	protected MaxSizeMap<String,MaxAgeSoftReference<KimRoleInfo>> roleByIdCache;
 	protected MaxSizeMap<String,MaxAgeSoftReference<KimRoleInfo>> roleByNameCache;
@@ -110,25 +110,25 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	
 	protected void addRoleToCaches( KimRoleInfo role ) {
 		if ( role != null ) {
-			roleByNameCache.put( role.getNamespaceCode() + "-" + role.getRoleName(), new MaxAgeSoftReference<KimRoleInfo>( roleCacheMaxAge, role ) );
-			roleByIdCache.put( role.getRoleId(), new MaxAgeSoftReference<KimRoleInfo>( roleCacheMaxAge, role ) );
+			roleByNameCache.put( role.getNamespaceCode() + "-" + role.getRoleName(), new MaxAgeSoftReference<KimRoleInfo>( roleCacheMaxAgeSeconds, role ) );
+			roleByIdCache.put( role.getRoleId(), new MaxAgeSoftReference<KimRoleInfo>( roleCacheMaxAgeSeconds, role ) );
 		}
 	}
 
 	protected void addRoleMembersWithDelegationToCache( String key, Collection<RoleMembershipInfo> members ) {
 		if ( members != null ) {
-			roleMembersWithDelegationCache.put( key, new MaxAgeSoftReference<Collection<RoleMembershipInfo>>( roleCacheMaxAge, members ) );
+			roleMembersWithDelegationCache.put( key, new MaxAgeSoftReference<Collection<RoleMembershipInfo>>( roleCacheMaxAgeSeconds, members ) );
 		}
 	}
 
 	protected void addRoleQualifiersForPrincipalToCache( String key, List<AttributeSet> qualifiers ) {
 		if ( qualifiers != null ) {
-			roleQualifiersForPrincipalCache.put( key, new MaxAgeSoftReference<List<AttributeSet>>( roleCacheMaxAge, qualifiers ) );
+			roleQualifiersForPrincipalCache.put( key, new MaxAgeSoftReference<List<AttributeSet>>( roleCacheMaxAgeSeconds, qualifiers ) );
 		}
 	}
 	
 	protected void addPrincipalHasRoleCacheToCache( String key, boolean hasRole ) {
-		principalHasRoleCache.put( key, new MaxAgeSoftReference<Boolean>( roleCacheMaxAge, hasRole ) );
+		principalHasRoleCache.put( key, new MaxAgeSoftReference<Boolean>( roleCacheMaxAgeSeconds, hasRole ) );
 	}
 		
 	// Cached methods
@@ -390,8 +390,8 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		this.roleCacheMaxSize = roleCacheMaxSize;
 	}
 
-	public void setRoleCacheMaxAge(int roleCacheMaxAge) {
-		this.roleCacheMaxAge = roleCacheMaxAge;
+	public void setRoleCacheMaxAgeSeconds(int roleCacheMaxAge) {
+		this.roleCacheMaxAgeSeconds = roleCacheMaxAge;
 	}
 
 	/**

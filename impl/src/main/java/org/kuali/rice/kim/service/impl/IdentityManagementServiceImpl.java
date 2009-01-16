@@ -36,13 +36,13 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	
 	// Max age defined in seconds
 	protected int entityPrincipalCacheMaxSize = 200;
-	protected int entityPrincipalCacheMaxAge = 30;
+	protected int entityPrincipalCacheMaxAgeSeconds = 30;
 	protected int groupCacheMaxSize = 200;
-	protected int groupCacheMaxAge = 30;
+	protected int groupCacheMaxAgeSeconds = 30;
 	protected int permissionCacheMaxSize = 200;
-	protected int permissionCacheMaxAge = 30;
+	protected int permissionCacheMaxAgeSeconds = 30;
 	protected int responsibilityCacheMaxSize = 200;
-	protected int responsibilityCacheMaxAge = 30;
+	protected int responsibilityCacheMaxAgeSeconds = 30;
 	
 	protected MaxSizeMap<String,MaxAgeSoftReference<KimEntity>> entityByIdCache;
 	protected MaxSizeMap<String,MaxAgeSoftReference<KimEntity>> entityByPrincipalNameCache;
@@ -240,34 +240,34 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	
 	protected void addEntityToCache( KimEntity entity ) {
 		if ( entity != null ) {
-			entityByPrincipalNameCache.put( entity.getPrincipals().get(0).getPrincipalName(), new MaxAgeSoftReference<KimEntity>( entityPrincipalCacheMaxAge, entity ) );
-			entityByIdCache.put( entity.getEntityId(), new MaxAgeSoftReference<KimEntity>( entityPrincipalCacheMaxAge, entity ) );
+			entityByPrincipalNameCache.put( entity.getPrincipals().get(0).getPrincipalName(), new MaxAgeSoftReference<KimEntity>( entityPrincipalCacheMaxAgeSeconds, entity ) );
+			entityByIdCache.put( entity.getEntityId(), new MaxAgeSoftReference<KimEntity>( entityPrincipalCacheMaxAgeSeconds, entity ) );
 		}
 	}
 	
 	protected void addPrincipalToCache( KimPrincipal principal ) {
 		if ( principal != null ) {
-			principalByNameCache.put( principal.getPrincipalName(), new MaxAgeSoftReference<KimPrincipal>( entityPrincipalCacheMaxAge, principal ) );
-			principalByIdCache.put( principal.getPrincipalId(), new MaxAgeSoftReference<KimPrincipal>( entityPrincipalCacheMaxAge, principal ) );
+			principalByNameCache.put( principal.getPrincipalName(), new MaxAgeSoftReference<KimPrincipal>( entityPrincipalCacheMaxAgeSeconds, principal ) );
+			principalByIdCache.put( principal.getPrincipalId(), new MaxAgeSoftReference<KimPrincipal>( entityPrincipalCacheMaxAgeSeconds, principal ) );
 		}
 	}
 	
 	protected void addGroupToCache( GroupInfo group ) {
 		if ( group != null ) {
-			groupByNameCache.put( group.getGroupName(), new MaxAgeSoftReference<GroupInfo>( groupCacheMaxAge, group ) );
-			groupByIdCache.put( group.getGroupId(), new MaxAgeSoftReference<GroupInfo>( groupCacheMaxAge, group ) );
+			groupByNameCache.put( group.getGroupName(), new MaxAgeSoftReference<GroupInfo>( groupCacheMaxAgeSeconds, group ) );
+			groupByIdCache.put( group.getGroupId(), new MaxAgeSoftReference<GroupInfo>( groupCacheMaxAgeSeconds, group ) );
 		}
 	}
 
 	protected void addGroupIdsForPrincipalToCache( String principalId, List<String> ids ) {
 		if ( ids != null ) {
-			groupIdsForPrincipalCache.put( principalId, new MaxAgeSoftReference<List<String>>( groupCacheMaxAge, ids ) );
+			groupIdsForPrincipalCache.put( principalId, new MaxAgeSoftReference<List<String>>( groupCacheMaxAgeSeconds, ids ) );
 		}
 	}
 
 	protected void addGroupsForPrincipalToCache( String principalId, List<? extends KimGroup> groups ) {
 		if ( groups != null ) {
-			groupsForPrincipalCache.put( principalId, new MaxAgeSoftReference<List<? extends KimGroup>>( groupCacheMaxAge, groups ) );
+			groupsForPrincipalCache.put( principalId, new MaxAgeSoftReference<List<? extends KimGroup>>( groupCacheMaxAgeSeconds, groups ) );
 			List<String> groupIds = new ArrayList<String>( groups.size() );
 			for ( KimGroup group : groups ) {
 				groupIds.add( group.getGroupId() );
@@ -277,34 +277,34 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	}
 	
 	protected void addIsMemberOfGroupToCache( String principalId, String groupId, boolean member ) {
-		isMemberOfGroupCache.put( principalId + "-" + groupId, new MaxAgeSoftReference<Boolean>( groupCacheMaxAge, member ) );
+		isMemberOfGroupCache.put( principalId + "-" + groupId, new MaxAgeSoftReference<Boolean>( groupCacheMaxAgeSeconds, member ) );
 	}
 	
 	protected void addIsGroupMemberOfGroupToCache( String potentialMemberId, String potentialParentId, boolean member ) 
 	{
-        isMemberOfGroupCache.put( potentialMemberId + "-" + potentialParentId, new MaxAgeSoftReference<Boolean>( groupCacheMaxAge, member ) );
+        isMemberOfGroupCache.put( potentialMemberId + "-" + potentialParentId, new MaxAgeSoftReference<Boolean>( groupCacheMaxAgeSeconds, member ) );
     }
 	
 	protected void addGroupMemberPrincipalIdsToCache( String groupId, List<String> ids ) {
 		if ( ids != null ) {
-			groupMemberPrincipalIdsCache.put( groupId, new MaxAgeSoftReference<List<String>>( groupCacheMaxAge, ids ) );
+			groupMemberPrincipalIdsCache.put( groupId, new MaxAgeSoftReference<List<String>>( groupCacheMaxAgeSeconds, ids ) );
 		}
 	}
 
 	protected void addHasPermissionToCache( String key, boolean hasPerm ) {
-		hasPermissionCache.put( key, new MaxAgeSoftReference<Boolean>( permissionCacheMaxAge, hasPerm ) );
+		hasPermissionCache.put( key, new MaxAgeSoftReference<Boolean>( permissionCacheMaxAgeSeconds, hasPerm ) );
 	}
 
 	protected void addHasPermissionByTemplateToCache( String key, boolean hasPerm ) {
-		hasPermissionByTemplateCache.put( key, new MaxAgeSoftReference<Boolean>( permissionCacheMaxAge, hasPerm ) );
+		hasPermissionByTemplateCache.put( key, new MaxAgeSoftReference<Boolean>( permissionCacheMaxAgeSeconds, hasPerm ) );
 	}
 
 	protected void addIsAuthorizedByTemplateNameToCache( String key, boolean authorized ) {
-		isAuthorizedByTemplateNameCache.put( key, new MaxAgeSoftReference<Boolean>( permissionCacheMaxAge, authorized ) );
+		isAuthorizedByTemplateNameCache.put( key, new MaxAgeSoftReference<Boolean>( permissionCacheMaxAgeSeconds, authorized ) );
 	}
 
 	protected void addIsAuthorizedToCache( String key, boolean authorized ) {
-		isAuthorizedCache.put( key, new MaxAgeSoftReference<Boolean>( permissionCacheMaxAge, authorized ) );
+		isAuthorizedCache.put( key, new MaxAgeSoftReference<Boolean>( permissionCacheMaxAgeSeconds, authorized ) );
 	}
 	
 	// AUTHENTICATION SERVICE
@@ -424,7 +424,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
             }
         }
         boolean result = getPermissionService().isPermissionDefinedForTemplateName(namespaceCode, permissionTemplateName, permissionDetails);
-        isPermissionDefinedForTemplateNameCache.put(key.toString(),new MaxAgeSoftReference<Boolean>( permissionCacheMaxAge, result ));
+        isPermissionDefinedForTemplateNameCache.put(key.toString(),new MaxAgeSoftReference<Boolean>( permissionCacheMaxAgeSeconds, result ));
         return result; 
     }
     
@@ -735,32 +735,32 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		this.entityPrincipalCacheMaxSize = entityPrincipalCacheMaxSize;
 	}
 
-	public void setEntityPrincipalCacheMaxAge(int entityPrincipalCacheMaxAge) {
-		this.entityPrincipalCacheMaxAge = entityPrincipalCacheMaxAge;
+	public void setEntityPrincipalCacheMaxAgeSeconds(int entityPrincipalCacheMaxAge) {
+		this.entityPrincipalCacheMaxAgeSeconds = entityPrincipalCacheMaxAge;
 	}
 
 	public void setGroupCacheMaxSize(int groupCacheMaxSize) {
 		this.groupCacheMaxSize = groupCacheMaxSize;
 	}
 
-	public void setGroupCacheMaxAge(int groupCacheMaxAge) {
-		this.groupCacheMaxAge = groupCacheMaxAge;
+	public void setGroupCacheMaxAgeSeconds(int groupCacheMaxAge) {
+		this.groupCacheMaxAgeSeconds = groupCacheMaxAge;
 	}
 
 	public void setPermissionCacheMaxSize(int permissionCacheMaxSize) {
 		this.permissionCacheMaxSize = permissionCacheMaxSize;
 	}
 
-	public void setPermissionCacheMaxAge(int permissionCacheMaxAge) {
-		this.permissionCacheMaxAge = permissionCacheMaxAge;
+	public void setPermissionCacheMaxAgeSeconds(int permissionCacheMaxAge) {
+		this.permissionCacheMaxAgeSeconds = permissionCacheMaxAge;
 	}
 
 	public void setResponsibilityCacheMaxSize(int responsibilityCacheMaxSize) {
 		this.responsibilityCacheMaxSize = responsibilityCacheMaxSize;
 	}
 
-	public void setResponsibilityCacheMaxAge(int responsibilityCacheMaxAge) {
-		this.responsibilityCacheMaxAge = responsibilityCacheMaxAge;
+	public void setResponsibilityCacheMaxAgeSeconds(int responsibilityCacheMaxAge) {
+		this.responsibilityCacheMaxAgeSeconds = responsibilityCacheMaxAge;
 	}
 	
 }

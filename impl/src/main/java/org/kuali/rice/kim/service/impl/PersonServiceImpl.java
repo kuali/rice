@@ -462,10 +462,6 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
         return processedFieldValues;
     }
 	
-	public boolean canAccessAnyModule( Person person ) {
-		return true;
-	}
-	
 	// OTHER METHODS
 
 	protected IdentityManagementService getIdentityManagementService() {

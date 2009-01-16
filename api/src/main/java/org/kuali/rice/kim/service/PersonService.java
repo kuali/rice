@@ -98,6 +98,4 @@ public interface PersonService<T extends Person> {
 	 */
 	boolean hasPersonProperty(Class<? extends BusinessObject> businessObjectClass, Map<String,String> fieldValues);
 	
-	boolean canAccessAnyModule( Person person );
-	
 }

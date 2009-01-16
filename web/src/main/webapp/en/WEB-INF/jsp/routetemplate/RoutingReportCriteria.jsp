@@ -1,4 +1,5 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
+<c:set var="KualiForm" value="${RoutingReportForm}" scope="request"/>
 <script language="JavaScript" src="scripts/en-common.js"></script>
 <script language="JavaScript" src="scripts/routetemplate-common.js"></script>
 <script language="JavaScript" src="scripts/cal2.js">
@@ -73,7 +74,12 @@
 		</tr>
 		<tr>
 			<kul:htmlAttributeHeaderCell scope="col" align="left">Document Type:</kul:htmlAttributeHeaderCell>
-			<td class="datacell">&nbsp;&nbsp;<html-el:text property="documentType" />&nbsp;<html-el:image property="methodToCall.performLookup" src="images/searchicon.gif" onclick="document.forms[0].elements['lookupableImplServiceName'].value = 'DocumentTypeLookupableImplService';" /></td>
+			<td class="datacell">
+				&nbsp;&nbsp;
+				<html-el:text property="documentType" />
+				&nbsp;<!-- html-el:image property="methodToCall.performLookup" src="images/searchicon.gif" onclick="document.forms[0].elements['lookupableImplServiceName'].value = 'DocumentTypeLookupableImplService';" / -->
+				<kul:lookup boClassName="org.kuali.rice.kew.doctype.bo.DocumentType" /><%-- fieldConversions="documentTypeId:routeHeader.documentTypeId" lookupParameters="routeHeader.documentTypeId:documentTypeId" / --%>
+			</td>
 		</tr>
 		<c:set var="FieldRows" value="${RoutingReportForm.ruleTemplateAttributes}" scope="request" />
 		<c:set var="ActionName" value="RoutingReport.do" scope="request" />

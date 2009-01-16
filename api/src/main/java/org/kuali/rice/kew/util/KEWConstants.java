@@ -12,6 +12,8 @@ public class KEWConstants {
 
     private static final long serialVersionUID = -3897059085433394648L;
 
+    public static final String WEBAPP_DIRECTORY = "/kew";
+    
     /**
      * Node state key under which rule selector can be specified on a per-nodeinstance basis
      */

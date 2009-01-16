@@ -175,7 +175,7 @@ public class MaintenanceUtils {
     
     private static String prefixFieldConversionsDestinationsWithCollectionPrefix(String originalFieldConversions, String collectionPrefix) {
         StringBuilder buf = new StringBuilder();
-        StringTokenizer tok = new StringTokenizer(originalFieldConversions, KNSConstants.FIELD_CONVERSIONS_SEPERATOR);
+        StringTokenizer tok = new StringTokenizer(originalFieldConversions, KNSConstants.FIELD_CONVERSIONS_SEPARATOR);
         boolean needsSeparator = false;
         while (tok.hasMoreTokens()) {
             String conversionPair = tok.nextToken();
@@ -183,15 +183,15 @@ public class MaintenanceUtils {
                 continue;
             }
             
-            String fromValue = StringUtils.substringBefore(conversionPair, KNSConstants.FIELD_CONVERSION_PAIR_SEPERATOR);
-            String toValue = StringUtils.substringAfter(conversionPair, KNSConstants.FIELD_CONVERSION_PAIR_SEPERATOR);
+            String fromValue = StringUtils.substringBefore(conversionPair, KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR);
+            String toValue = StringUtils.substringAfter(conversionPair, KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR);
             
             if (needsSeparator) {
-                buf.append(KNSConstants.FIELD_CONVERSIONS_SEPERATOR);
+                buf.append(KNSConstants.FIELD_CONVERSIONS_SEPARATOR);
             }
             needsSeparator = true;
             
-            buf.append(fromValue).append(KNSConstants.FIELD_CONVERSION_PAIR_SEPERATOR).append(collectionPrefix).append(toValue);
+            buf.append(fromValue).append(KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR).append(collectionPrefix).append(toValue);
         }
         return buf.toString();
     }

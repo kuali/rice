@@ -71,9 +71,6 @@
 	  	  <tr>
 	  	    <td width="33%" align=right class="thnormal">Doc Type ID:</td>
 	  	    <td width="66%" class="datacell"><html-el:text property="routeHeader.documentTypeId" />
-	  	      <%-- html-el:image property="methodToCall.performLookup" src="images/searchicon.gif" onclick="javascript:configureLookup('DocumentType', 'RouteHeader', 'documentTypeId', '0')"/ --%>
-	  	      <%-- document.forms[0].elements['lookupableImplServiceName'].value = 'DocumentTypeLookupableImplService';" />             --%>
-	 	      <%-- kul:lookup boClassName="org.kuali.rice.kns.bo.DocumentType" fieldConversions="documentTypeId:routeHeader.documentTypeId" lookupParameters="routeHeader.documentTypeId:documentTypeId" / --%><%-- 'RouteHeader', 'documentTypeId', '0')"/ --%>
 	  	    	<kul:lookup boClassName="org.kuali.rice.kew.doctype.bo.DocumentType" fieldConversions="documentTypeId:routeHeader.documentTypeId" lookupParameters="routeHeader.documentTypeId:documentTypeId" />
 	  	    </td>
 		  </tr>

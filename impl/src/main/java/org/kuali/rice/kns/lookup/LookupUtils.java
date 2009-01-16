@@ -420,17 +420,17 @@ public class LookupUtils {
                 if (StringUtils.isNotBlank(field.getFieldConversions())) {
                     String fieldConversions = field.getFieldConversions();
                     String newInquiryParameters = KNSConstants.EMPTY_STRING;
-                    String[] conversions = StringUtils.split(fieldConversions, KNSConstants.FIELD_CONVERSIONS_SEPERATOR);
+                    String[] conversions = StringUtils.split(fieldConversions, KNSConstants.FIELD_CONVERSIONS_SEPARATOR);
 
                     for (int l = 0; l < conversions.length; l++) {
                         String conversion = conversions[l];
-                        String[] conversionPair = StringUtils.split(conversion, KNSConstants.FIELD_CONVERSION_PAIR_SEPERATOR);
+                        String[] conversionPair = StringUtils.split(conversion, KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR);
                         String conversionFrom = conversionPair[0];
                         String conversionTo = conversionPair[1];
-                        newInquiryParameters += (conversionTo + KNSConstants.FIELD_CONVERSION_PAIR_SEPERATOR + conversionFrom);
+                        newInquiryParameters += (conversionTo + KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR + conversionFrom);
 
                         if (l < conversions.length - 1) {
-                            newInquiryParameters += KNSConstants.FIELD_CONVERSIONS_SEPERATOR;
+                            newInquiryParameters += KNSConstants.FIELD_CONVERSIONS_SEPARATOR;
                         }
                     }
 

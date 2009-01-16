@@ -1,4 +1,5 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
+<c:set var="KualiForm" value="${ActionListFilterFormNew}" scope="request"/>
 <html>
 <head>
 <script language="javascript" src="../en/scripts/en-common.js"></script>
@@ -126,8 +127,9 @@ function setMethodToCallAndSubmit(methodToCallValue) {
 	<tr>
 		<th><div align="right"><span class="thnormal"><bean-el:message key="actionList.ActionListFilter.filter.label.documentType"/>: <bean-el:message key="general.help.documentType"/></span></div></th>
 		<td class="datacell"><span id="docTypeElementId"><c:out value="${ActionListFilterFormNew.docTypeFullName}" /></span>
-		    <html-el:image property="methodToCall.performLookup" src="../en/images/searchicon.gif" alt="search" align="absmiddle"
-		     onclick="document.forms[0].elements['lookupableImplServiceName'].value = 'DocumentTypeLookupableImplService';"/>&nbsp;<bean-el:message key="actionList.ActionListFilter.filter.label.exclude"/><html-el:checkbox property="filter.excludeDocumentType"/></td>
+		    <kul:lookup boClassName="org.kuali.rice.kew.doctype.bo.DocumentType" fieldConversions="label:docTypeFullName"/>
+			&nbsp;<bean-el:message key="actionList.ActionListFilter.filter.label.exclude"/><html-el:checkbox property="filter.excludeDocumentType"/>
+	    </td>
 	</tr>
 	<tr>
 		<th><div align="right"><span class="thnormal"><bean-el:message key="actionList.ActionListFilter.filter.label.dateCreated"/>: <bean-el:message key="general.help.dateCreated"/></span></div></th>

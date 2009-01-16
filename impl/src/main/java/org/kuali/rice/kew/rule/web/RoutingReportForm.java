@@ -35,6 +35,8 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.KeyValue;
+import org.kuali.rice.kns.web.struts.form.KualiForm;
+import org.kuali.rice.kns.web.ui.Row;
 
 
 /**
@@ -42,7 +44,7 @@ import org.kuali.rice.kew.web.KeyValue;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class RoutingReportForm extends ActionForm {
+public class RoutingReportForm extends KualiForm {
 
 	private static final long serialVersionUID = 509542372934250061L;
 
@@ -67,7 +69,11 @@ public class RoutingReportForm extends ActionForm {
     private List ruleTemplates;
     private List actionRequests;
     private Map fields;
-    private List ruleTemplateAttributes;
+    
+    /*chb: 15Jan2009
+    ruleTemplateAttributes is set by RoutingReportAction.loadRuleTemplateOnForm(...) 
+    */
+    private List<Row> ruleTemplateAttributes;
     private List attributes;
 
     private boolean showFields;
@@ -112,11 +118,12 @@ public class RoutingReportForm extends ActionForm {
         this.methodToCall = methodToCall;
     }
 
-    public List getRuleTemplateAttributes() {
+    public List<Row> getRuleTemplateAttributes() {
         return ruleTemplateAttributes;
     }
 
-    public void setRuleTemplateAttributes(List ruleTemplateAttributes) {
+    //chb: 15Jan2009 set in RoutingReportAction.loadRuleTemplateOnForm(...)
+    public void setRuleTemplateAttributes(List<Row> ruleTemplateAttributes) {
         this.ruleTemplateAttributes = ruleTemplateAttributes;
     }
 

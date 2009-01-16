@@ -29,7 +29,7 @@
   	  <tr>
   	    <td width="33%" align=right class="thnormal">* Doc Type Name:</td>
   	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionItem[${ctr}].docName" />
-  	      <html-el:image property="methodToCall.performLookup" src="images/searchicon.gif" onclick="javascript:configureLookup('DocumentTypeLookupableImplService', 'ActionItem', 'docName', '${ctr}')"/>
+			<kul:lookup boClassName="org.kuali.rice.kew.doctype.bo.DocumentType" fieldConversions="name:routeHeader.docActionItem[${ctr}].docName" lookupParameters="routeHeader.docActionItem[${ctr}].docName:name" />
   	    </td>
   	  </tr> 
   	   <tr>

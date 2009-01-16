@@ -128,7 +128,7 @@ public class KualiExceptionIncidentServiceImpl implements KualiExceptionIncident
                 throw new KualiException(em);
             } else {
                 msg.setToAddresses(new HashSet<String>(split(mailingList,
-                        KNSConstants.FIELD_CONVERSIONS_SEPERATOR)));
+                        KNSConstants.FIELD_CONVERSIONS_SEPARATOR)));
             }
         } else {
             msg.setToAddresses(emails);

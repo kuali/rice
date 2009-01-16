@@ -399,11 +399,13 @@ public class RoutingReportAction extends WorkflowAction {
 			}
 
 			workflowAttribute.validateRuleData(fieldValues);// populate attribute
-			for (Iterator iterator = workflowAttribute.getRoutingDataRows().iterator(); iterator.hasNext();) {
-				Row row = (Row) iterator.next();
+			List<Row> rdRows = workflowAttribute.getRoutingDataRows();
+			for (Row row : rdRows)
+			{
 				List fields = new ArrayList();
-				for (Iterator iterator2 = row.getFields().iterator(); iterator2.hasNext();) {
-					Field field = (Field) iterator2.next();
+				List<Field> rowFields = row.getFields();
+				for (Field field : rowFields )
+				{
 					if (request.getParameter(field.getPropertyName()) != null) {
 						field.setPropertyValue(request.getParameter(field.getPropertyName()));
 					} else if (routingReportForm.getFields() != null && !routingReportForm.getFields().isEmpty()) {
@@ -419,9 +421,7 @@ public class RoutingReportAction extends WorkflowAction {
 		}
 
 		routingReportForm.getFields().putAll(fieldValues);
-		// routingReportForm.setFields(fieldValues);
 		routingReportForm.getRuleTemplateAttributes().addAll(rows);
-		// routingReportForm.setRuleTemplateAttributes(rows);
 		routingReportForm.setShowFields(true);
 		routingReportForm.setShowViewResults(true);
 	}

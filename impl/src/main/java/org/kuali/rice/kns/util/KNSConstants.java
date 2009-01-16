@@ -178,8 +178,8 @@ public class KNSConstants extends JSTLConstants {
     public static final String DOCUMENT_TYPE_NAME = "docTypeName";
     public static final String EDIT_PREFIX = "edit";
     public static final String EMPTY_STRING = "";
-    public static final String FIELD_CONVERSION_PAIR_SEPERATOR = ":";
-    public static final String FIELD_CONVERSIONS_SEPERATOR = ",";
+    public static final String FIELD_CONVERSION_PAIR_SEPARATOR = ":";
+    public static final String FIELD_CONVERSIONS_SEPARATOR = ",";
     public static final String REFERENCES_TO_REFRESH_SEPARATOR = ",";
 //    public static final String GENERIC_FIELD_NAME = "Field";
 //    public static final String GENERIC_CODE_PROPERTY_NAME = "code";

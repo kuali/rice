@@ -43,6 +43,7 @@ import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kns.authorization.FieldRestriction;
 import org.kuali.rice.kns.bo.DocumentAttachment;
 import org.kuali.rice.kns.bo.PersistableAttachment;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
@@ -550,7 +551,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         // are override keys listed in the request? If so, then those need to be our keys,
         // not the primary keye fields for the BO
         if (!StringUtils.isBlank(request.getParameter(KNSConstants.OVERRIDE_KEYS))) {
-            String[] overrideKeys = request.getParameter(KNSConstants.OVERRIDE_KEYS).split(KNSConstants.FIELD_CONVERSIONS_SEPERATOR);
+            String[] overrideKeys = request.getParameter(KNSConstants.OVERRIDE_KEYS).split(KNSConstants.FIELD_CONVERSIONS_SEPARATOR);
             keyFieldNames = new ArrayList();
             for (String overrideKey : overrideKeys) {
                 keyFieldNames.add(overrideKey);

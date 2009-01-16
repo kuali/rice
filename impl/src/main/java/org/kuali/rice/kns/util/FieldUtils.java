@@ -25,6 +25,7 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.displaytag.util.LookupUtil;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.authorization.FieldRestriction;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -51,6 +52,7 @@ import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.web.format.FormatException;
@@ -684,18 +686,18 @@ public class FieldUtils {
             if (StringUtils.isNotBlank(field.getFieldConversions())) {
                 String fieldConversions = field.getFieldConversions();
                 String newFieldConversions = KNSConstants.EMPTY_STRING;
-                String[] conversions = StringUtils.split(fieldConversions, KNSConstants.FIELD_CONVERSIONS_SEPERATOR);
+                String[] conversions = StringUtils.split(fieldConversions, KNSConstants.FIELD_CONVERSIONS_SEPARATOR);
 
                 for (int l = 0; l < conversions.length; l++) {
                     String conversion = conversions[l];
-                    String[] conversionPair = StringUtils.split(conversion, KNSConstants.FIELD_CONVERSION_PAIR_SEPERATOR);
+                    String[] conversionPair = StringUtils.split(conversion, KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR);
                     String conversionFrom = conversionPair[0];
                     String conversionTo = conversionPair[1];
                     conversionTo = KNSConstants.MAINTENANCE_NEW_MAINTAINABLE + conversionTo;
-                    newFieldConversions += (conversionFrom + KNSConstants.FIELD_CONVERSION_PAIR_SEPERATOR + conversionTo);
+                    newFieldConversions += (conversionFrom + KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR + conversionTo);
 
                     if (l < conversions.length) {
-                        newFieldConversions += KNSConstants.FIELD_CONVERSIONS_SEPERATOR;
+                        newFieldConversions += KNSConstants.FIELD_CONVERSIONS_SEPARATOR;
                     }
                 }
 
@@ -706,21 +708,21 @@ public class FieldUtils {
             if (StringUtils.isNotBlank(field.getInquiryParameters())) {
                 String inquiryParameters = field.getInquiryParameters();
                 StringBuilder newInquiryParameters = new StringBuilder();
-                String[] parameters = StringUtils.split(inquiryParameters, KNSConstants.FIELD_CONVERSIONS_SEPERATOR);
+                String[] parameters = StringUtils.split(inquiryParameters, KNSConstants.FIELD_CONVERSIONS_SEPARATOR);
 
                 for (int l = 0; l < parameters.length; l++) {
                     String parameter = parameters[l];
-                    String[] parameterPair = StringUtils.split(parameter, KNSConstants.FIELD_CONVERSION_PAIR_SEPERATOR);
+                    String[] parameterPair = StringUtils.split(parameter, KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR);
                     String conversionFrom = parameterPair[0];
                     String conversionTo = parameterPair[1];
 
                     // append the conversionFrom string, prefixed by document.newMaintainable
                     newInquiryParameters.append(KNSConstants.MAINTENANCE_NEW_MAINTAINABLE).append(conversionFrom);
                     
-                    newInquiryParameters.append(KNSConstants.FIELD_CONVERSION_PAIR_SEPERATOR).append(conversionTo);
+                    newInquiryParameters.append(KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR).append(conversionTo);
                     
                     if (l < parameters.length - 1) {
-                        newInquiryParameters.append(KNSConstants.FIELD_CONVERSIONS_SEPERATOR);
+                        newInquiryParameters.append(KNSConstants.FIELD_CONVERSIONS_SEPARATOR);
                     }
                 }
 
@@ -743,18 +745,18 @@ public class FieldUtils {
             if (StringUtils.isNotBlank(field.getLookupParameters())) {
                 String lookupParameters = field.getLookupParameters();
                 String newLookupParameters = KNSConstants.EMPTY_STRING;
-                String[] conversions = StringUtils.split(lookupParameters, KNSConstants.FIELD_CONVERSIONS_SEPERATOR);
+                String[] conversions = StringUtils.split(lookupParameters, KNSConstants.FIELD_CONVERSIONS_SEPARATOR);
 
                 for (int m = 0; m < conversions.length; m++) {
                     String conversion = conversions[m];
-                    String[] conversionPair = StringUtils.split(conversion, KNSConstants.FIELD_CONVERSION_PAIR_SEPERATOR);
+                    String[] conversionPair = StringUtils.split(conversion, KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR);
                     String conversionFrom = conversionPair[0];
                     String conversionTo = conversionPair[1];
                     conversionFrom = KNSConstants.MAINTENANCE_NEW_MAINTAINABLE + conversionFrom;
-                    newLookupParameters += (conversionFrom + KNSConstants.FIELD_CONVERSION_PAIR_SEPERATOR + conversionTo);
+                    newLookupParameters += (conversionFrom + KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR + conversionTo);
 
                     if (m < conversions.length) {
-                        newLookupParameters += KNSConstants.FIELD_CONVERSIONS_SEPERATOR;
+                        newLookupParameters += KNSConstants.FIELD_CONVERSIONS_SEPARATOR;
                     }
                 }
 

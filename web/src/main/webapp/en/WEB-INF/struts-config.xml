@@ -18,7 +18,6 @@
       <form-bean name="StatsForm" type="org.kuali.rice.kew.stats.web.StatsForm" />
       <form-bean name="QuickLinksForm" type="org.kuali.rice.kew.quicklinks.web.QuickLinksForm"/>
       <form-bean name="RuleQuickLinkForm" type="org.kuali.rice.kew.rule.web.RuleQuickLinksForm" />
-      <form-bean name="DocumentOperationForm" type="org.kuali.rice.kew.documentoperation.web.DocumentOperationForm" />
       <form-bean name="NoteForm" type="org.kuali.rice.kew.notes.web.NoteForm" />
       <form-bean name="HelpForm" type="org.kuali.rice.kew.help.web.HelpForm" />
       <form-bean name="IngesterForm" type="org.kuali.rice.kew.batch.web.IngesterForm" />
@@ -71,7 +70,7 @@
      		parameter="/kew/ActionList.do"/>
      <action path="/ActionListFilter" scope="request" validate="false" type="org.apache.struts.actions.ForwardAction"
      		parameter="/kew/ActionListFilter.do"/>
-
+     		
 
       <action path="/ActionListOld" scope="request" validate="false" parameter="methodToCall"
         type="org.kuali.rice.kew.actionlist.web.ActionListActionOld" name="ActionListForm"

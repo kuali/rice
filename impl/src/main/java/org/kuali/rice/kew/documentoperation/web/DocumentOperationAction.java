@@ -572,32 +572,6 @@ public class DocumentOperationAction extends KualiAction {
 		}
 	}
 
-	public ActionForward performLookup(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		/*DocumentOperationForm docForm = (DocumentOperationForm) form;
-		String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + mapping.getModuleConfig().getPrefix();;
-		StringBuffer lookupUrl = new StringBuffer(basePath);
-
-		String lookupType = docForm.getLookupType();
-		docForm.setLookupType(null);
-
-		lookupUrl.append("/Lookup.do?methodToCall=start&docFormKey=").append(getUserSession(request).addObject(docForm)).append("&lookupableImplServiceName=");
-		lookupUrl.append(request.getParameter("lookupableImplServiceName"));
-
-		if (lookupType != null && !lookupType.equals("")) {
-			lookupUrl.append("&conversionFields=");
-			//WorkflowLookupable workflowLookupable = (WorkflowLookupable) GlobalResourceLoader.getService(request.getParameter("lookupableImplServiceName"));//SpringServiceLocator.getExtensionService().getLookupable(request.getParameter("lookupableImplServiceName"));
-			//for (Iterator iterator = workflowLookupable.getDefaultReturnType().iterator(); iterator.hasNext();) {
-			//	String returnType = (String) iterator.next();
-			//	lookupUrl.append(returnType).append(":").append(lookupType);
-			//}
-		}
-
-		lookupUrl.append("&returnLocation=").append(basePath).append(mapping.getPath()).append(".do");
-		return new ActionForward(lookupUrl.toString(), true); */
-		KualiLookupAction kla = new KualiLookupAction();
-		return kla.performLookup(mapping, form, request, response);
-	}
-
 	public ActionForward refresh(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		DocumentOperationForm docForm = (DocumentOperationForm) form;
 		String lookupInvocationModule = docForm.getLookupInvocationModule();
@@ -780,6 +754,16 @@ public class DocumentOperationAction extends KualiAction {
 			throw new WorkflowRuntimeException(e);
 		}
 	}
+	
+	/**
+	 * chb: 12Jan2009
+	 * This needs to be fleshed out after permissions are built
+	 */
+	//TODO
+	@Override
+	public void checkAuthorization(ActionForm form, String methodToCall) throws AuthorizationException
+	{
+	}
 
 	public ActionForward moveDocument(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		try {
@@ -803,6 +787,14 @@ public class DocumentOperationAction extends KualiAction {
 			throw new WorkflowRuntimeException(e);
 		}
 	}
+
+	@Override 
+	protected String getReturnLocation(HttpServletRequest request, ActionMapping mapping) 
+    {
+    	String mappingPath = mapping.getPath();
+    	String basePath = getBasePath(request);
+        return basePath + KEWConstants.WEBAPP_DIRECTORY + mappingPath + ".do";
+    }
 
 	public ActionForward queueActionInvocation(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		try {

@@ -364,8 +364,11 @@ public abstract class KualiAction extends DispatchAction {
         return request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
     }
 
-    protected String getReturnLocation(HttpServletRequest request, ActionMapping mapping) {
-        return getBasePath(request) + ("/lookup".equals(mapping.getPath()) || "/maintenance".equals(mapping.getPath()) || "/multipleValueLookup".equals(mapping.getPath()) ? "/kr" : "") + mapping.getPath() + ".do";
+    protected String getReturnLocation(HttpServletRequest request, ActionMapping mapping) 
+    {
+    	String mappingPath = mapping.getPath();
+    	String basePath = getBasePath(request);
+        return basePath + ("/lookup".equals(mappingPath) || "/maintenance".equals(mappingPath) || "/multipleValueLookup".equals(mappingPath) ? "/kr" : "") + mappingPath + ".do";
     }
 
     /**
@@ -431,9 +434,9 @@ public abstract class KualiAction extends DispatchAction {
             parameters.put(KNSConstants.CONVERSION_FIELDS_PARAMETER, conversionFields);
             
             // register each of the destination parameters of the field conversion string as editable
-            String[] fieldConversions = conversionFields.split(KNSConstants.FIELD_CONVERSIONS_SEPERATOR);
+            String[] fieldConversions = conversionFields.split(KNSConstants.FIELD_CONVERSIONS_SEPARATOR);
             for (int i = 0; i < fieldConversions.length; i++) {
-            	String destination = fieldConversions[i].split(KNSConstants.FIELD_CONVERSION_PAIR_SEPERATOR)[1];
+            	String destination = fieldConversions[i].split(KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR)[1];
             	kualiForm.registerEditableProperty(destination);
             }
         }
@@ -445,12 +448,12 @@ public abstract class KualiAction extends DispatchAction {
             LOG.debug( "parameterFields: " + parameterFields );
         }
         if (StringUtils.isNotBlank(parameterFields)) {
-            String[] lookupParams = parameterFields.split(KNSConstants.FIELD_CONVERSIONS_SEPERATOR);
+            String[] lookupParams = parameterFields.split(KNSConstants.FIELD_CONVERSIONS_SEPARATOR);
             if ( LOG.isDebugEnabled() ) {
                 LOG.debug( "lookupParams: " + lookupParams );
             }
             for (int i = 0; i < lookupParams.length; i++) {
-                String[] keyValue = lookupParams[i].split(KNSConstants.FIELD_CONVERSION_PAIR_SEPERATOR);
+                String[] keyValue = lookupParams[i].split(KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR);
 
                 String lookupParameterValue = retrieveLookupParameterValue(keyValue[1], keyValue[0], form, request);
                 if (StringUtils.isNotBlank(lookupParameterValue)) {
@@ -554,7 +557,7 @@ public abstract class KualiAction extends DispatchAction {
     	}
 
 		Class boClass = null;
-		try {
+		try{
 			boClass = Class.forName(boClassName);
 		} catch(ClassNotFoundException cnfex){
 			throw new IllegalArgumentException("The classname (" + boClassName + ") does not represent a valid class.");
@@ -609,12 +612,12 @@ public abstract class KualiAction extends DispatchAction {
         }
         if (StringUtils.isNotBlank(parameterFields)) {
             // TODO : create a method for this to be used by both lookup & inquiry ?
-            String[] inquiryParams = parameterFields.split(KNSConstants.FIELD_CONVERSIONS_SEPERATOR);
+            String[] inquiryParams = parameterFields.split(KNSConstants.FIELD_CONVERSIONS_SEPARATOR);
             if ( LOG.isDebugEnabled() ) {
                 LOG.debug( "inquiryParams: " + inquiryParams );
             }
             for (int i = 0; i < inquiryParams.length; i++) {
-                String[] keyValue = inquiryParams[i].split(KNSConstants.FIELD_CONVERSION_PAIR_SEPERATOR);
+                String[] keyValue = inquiryParams[i].split(KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR);
 
                 String inquiryParameterValue = retrieveLookupParameterValue(keyValue[1], keyValue[0], form, request);
                 if (inquiryParameterValue == null) {
@@ -936,13 +939,13 @@ public abstract class KualiAction extends DispatchAction {
         String[] keyValue = null;
         if (StringUtils.isNotBlank(parameterFields)) {
             String[] textAreaParams = parameterFields.split(
-                    KNSConstants.FIELD_CONVERSIONS_SEPERATOR);
+                    KNSConstants.FIELD_CONVERSIONS_SEPARATOR);
             if ( LOG.isDebugEnabled() ) {
                 LOG.debug( "lookupParams: " + textAreaParams );
             }
             for (int i = 0; i < textAreaParams.length; i++) {
                 keyValue = textAreaParams[i].split(
-                        KNSConstants.FIELD_CONVERSION_PAIR_SEPERATOR);
+                        KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR);
 
                 if ( LOG.isDebugEnabled() ) {
                     LOG.debug( "keyValue[0]: " + keyValue[0] );

@@ -83,6 +83,20 @@ public class ActionListFilterAction extends KualiAction {
 		return super.execute(mapping, form, request, response);
 	}
 
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.web.struts.action.KualiAction#getReturnLocation(javax.servlet.http.HttpServletRequest, org.apache.struts.action.ActionMapping)
+	 */
+	@Override
+	protected String getReturnLocation(HttpServletRequest request,
+			ActionMapping mapping)
+	{
+    	String mappingPath = mapping.getPath();
+    	String basePath = getBasePath(request);
+        return basePath + KEWConstants.WEBAPP_DIRECTORY + mappingPath + ".do";
+	}
+
 	public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         ActionListFilterForm filterForm = (ActionListFilterForm) form;
         if (getUserSession(request).getActionListFilter() != null) {

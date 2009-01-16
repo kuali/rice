@@ -15,6 +15,7 @@
         		<th><div align="left">&nbsp</div></th> 
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${delegationAttributes.kimTypeId}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${delegationAttributes.active}" noColon="true" /></div></th>
+        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${delegationAttributes.delegationTypeCode}" noColon="true" /></div></th>
 				<c:forEach var="attrDefn" items="${KualiForm.document.kimType.attributeDefinitions}" varStatus="status">
         			<c:set var="fieldName" value="${attrDefn.kimAttribute.attributeName}" />
 <!-- >	        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${KualiForm.document.attributeEntry[fieldName]}" noColon="true" /></div></th> -->
@@ -65,6 +66,11 @@
 	               	<div align="left"> <kul:htmlControlAttribute property="document.delegations[${statusDelegation.index}].active"  attributeEntry="${delegationAttributes.activeToDate}" readOnly="true"  />
 					</div>
 				</td>
+	            <td align="left" valign="middle">
+	               	<div align="left"> <kul:htmlControlAttribute property="document.delegations[${statusDelegation.index}].delegationTypeCode"  attributeEntry="${delegationAttributes.delegationTypeCode}" readOnly="true"  />
+					</div>
+				</td>
+				
 				<c:forEach var="qualifier" items="${KualiForm.document.kimType.attributeDefinitions}" varStatus="statusQualifier">
 					<c:set var="fieldName" value="${qualifier.kimAttribute.attributeName}" />
 					<c:set var="sizeq" value="${KualiForm.document.delegations[statusDelegation.index].numberOfQualifiers}" />

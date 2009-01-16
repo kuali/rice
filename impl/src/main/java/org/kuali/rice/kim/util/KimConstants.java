@@ -30,11 +30,6 @@ public class KimConstants {
 	public static final String KIM_GROUP_KFS_NAMESPACE_CODE = "KFS";
 	public static final String KIM_GROUP_WORKFLOW_NAMESPACE_CODE = "KR-WKFLW";
 
-	public class PropertyNames {
-		public static final String PRINCIPAL_ID = "principalId";
-		public static final String PRINCIPAL_NAME = "principalName";
-	}
-
 	public class EntityTypes {
 		public static final String PERSON = "PERSON";
 		public static final String SYSTEM = "SYSTEM";
@@ -96,9 +91,6 @@ public class KimConstants {
 		public static final String LOG_IN = "Log In";
 	}
 
-	@Deprecated
-	public static final String TEMP_GROUP_NAMESPACE = "KFS";
-	
 	public static final String NAME_VALUE_SEPARATOR = " : ";
 	public static final String COMMA_SEPARATOR = ", ";
 	public static final String OR_OPERATOR = "|";

@@ -35,10 +35,11 @@ import org.kuali.rice.kim.rule.ui.AddGroupRule;
 import org.kuali.rice.kim.rule.ui.AddRoleRule;
 import org.kuali.rice.kim.rules.ui.PersonDocumentGroupRule;
 import org.kuali.rice.kim.rules.ui.PersonDocumentRoleRule;
+import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
-import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.rules.TransactionalDocumentRuleBase;
 import org.kuali.rice.kns.util.ErrorMap;
@@ -54,7 +55,16 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
 public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRuleBase implements AddGroupRule, AddRoleRule {
 
 	private IdentityManagementKimDocumentAuthorizer authorizer;
+	private IdentityService identityService; 
 	
+    public IdentityService getIdentityService() {
+        if ( identityService == null) {
+            identityService = KIMServiceLocator.getIdentityService();
+        }
+        return identityService;
+    }
+
+
     @Override
     protected boolean processCustomSaveDocumentBusinessRules(Document document) {
         return true;
@@ -64,9 +74,9 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     private boolean isPrincipalNameExist (String principalName, String principalId) {
         ErrorMap errorMap = GlobalVariables.getErrorMap();
     	boolean valid = true;
-    	KimPrincipal principal = KIMServiceLocator.getIdentityService().getPrincipalByPrincipalName(principalName);
+    	KimPrincipal principal = getIdentityService().getPrincipalByPrincipalName(principalName);
     	if (principal != null && (StringUtils.isBlank(principalId) || !principal.getPrincipalId().equals(principalId))) {
-            errorMap.putError(KimConstants.PropertyNames.PRINCIPAL_NAME,RiceKeyConstants.ERROR_EXIST_PRINCIPAL_NAME, principalName);
+            errorMap.putError(KIMPropertyConstants.Person.PRINCIPAL_NAME,RiceKeyConstants.ERROR_EXIST_PRINCIPAL_NAME, principalName);
 			valid = false;
     	}
     	return valid;

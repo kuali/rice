@@ -22,6 +22,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
+import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -151,7 +152,7 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 		if (roleQualification.get() == null) {
 			Map<String, String> attributes = new HashMap<String, String>();
 			addRoleQualification(businessObject, attributes);
-			attributes.put(KimConstants.PropertyNames.PRINCIPAL_ID,
+			attributes.put(KIMPropertyConstants.Person.PRINCIPAL_ID,
 					GlobalVariables.getUserSession().getPerson()
 							.getPrincipalId());
 			roleQualification.set(new AttributeSet(attributes));

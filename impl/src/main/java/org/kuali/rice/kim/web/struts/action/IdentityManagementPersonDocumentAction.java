@@ -50,6 +50,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
+import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementPersonDocumentForm;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -101,10 +102,10 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
 		// move the following to service
 		// get set up person document
         String commandParam = request.getParameter(KNSConstants.PARAMETER_COMMAND);
-		if (StringUtils.isNotBlank(commandParam) && commandParam.equals(KEWConstants.INITIATE_COMMAND) && StringUtils.isNotBlank(request.getParameter(KimConstants.PropertyNames.PRINCIPAL_ID))) {
+		if (StringUtils.isNotBlank(commandParam) && commandParam.equals(KEWConstants.INITIATE_COMMAND) && StringUtils.isNotBlank(request.getParameter(KIMPropertyConstants.Person.PRINCIPAL_ID))) {
 			// persondoc changed
 			personDoc = (IdentityManagementPersonDocument)personDocumentForm.getDocument();
-	        KimPrincipal principal = getIdentityService().getPrincipal(request.getParameter(KimConstants.PropertyNames.PRINCIPAL_ID));
+	        KimPrincipal principal = getIdentityService().getPrincipal(request.getParameter(KIMPropertyConstants.Person.PRINCIPAL_ID));
 	        personDoc.setPrincipalId(principal.getPrincipalId());
 	        personDoc.setPrincipalName(principal.getPrincipalName());
 	        personDoc.setPassword(principal.getPassword());

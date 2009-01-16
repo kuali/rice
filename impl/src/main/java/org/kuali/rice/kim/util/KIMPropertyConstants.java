@@ -53,6 +53,9 @@ public class KIMPropertyConstants extends JSTLConstants {
 		public static final String AFFILIATION_TYPE_CODE = "affiliationTypeCode";
 		public static final String PRIMARY_DEPARTMENT_CODE = "primaryDepartmentCode";
 		public static final String BASE_SALARY_AMOUNT = "baseSalaryAmount";
-		
+	}
+	
+	public static class Group {
+	    public static final String GROUP_ID = "groupId";
 	}
 }

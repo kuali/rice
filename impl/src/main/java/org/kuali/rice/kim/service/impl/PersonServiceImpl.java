@@ -31,6 +31,7 @@ import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.dao.PersonDao;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.PersonService;
+import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
@@ -350,7 +351,7 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
             	// strip off the prefix on the property
                 String personPropertyName = ObjectUtils.getNestedAttributePrimitive( propertyName );
                 // special case - the user ID 
-                if ( StringUtils.equals( KimConstants.PropertyNames.PRINCIPAL_NAME, personPropertyName) ) {
+                if ( StringUtils.equals( KIMPropertyConstants.Person.PRINCIPAL_NAME, personPropertyName) ) {
                     Class targetBusinessObjectClass = null;
                     BusinessObject targetBusinessObject = null;
                     resolvedPrincipalIdPropertyName.setLength( 0 ); // clear the buffer without requiring a new object allocation on each iteration
@@ -380,7 +381,7 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
                         String propName = ObjectUtils.getNestedAttributePrimitive( personReferenceObjectPropertyName );
                         BusinessObjectRelationship rel = getBusinessObjectMetaDataService().getBusinessObjectRelationship( targetBusinessObject, propName );
                         if ( rel != null ) {
-                            String sourcePrimitivePropertyName = rel.getParentAttributeForChildAttribute(KimConstants.PropertyNames.PRINCIPAL_ID);
+                            String sourcePrimitivePropertyName = rel.getParentAttributeForChildAttribute(KIMPropertyConstants.Person.PRINCIPAL_ID);
                             resolvedPrincipalIdPropertyName.append(sourcePrimitivePropertyName);
                         	// get the principal - for translation of the principalName to principalId
                         	KimPrincipal principal = identityManagementService.getPrincipalByPrincipalName( fieldValues.get( propertyName ) );
@@ -399,7 +400,7 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
             // if the property does not seem to match the definition of a Person property but it
             // does end in principalName then...
             // this is to handle the case where the user ID is on an ADD line - a case excluded from isPersonProperty()
-            } else if (propertyName.endsWith("." + KimConstants.PropertyNames.PRINCIPAL_NAME)){
+            } else if (propertyName.endsWith("." + KIMPropertyConstants.Person.PRINCIPAL_NAME)){
                 // if we're adding to a collection and we've got the principalName; let's populate universalUser
                 String principalName = fieldValues.get(propertyName);
                 if ( StringUtils.isNotEmpty( principalName ) ) {
@@ -428,13 +429,13 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
                             // JHK: this seems like a hack - looking at all relationships for a BO does not guarantee that we get the right one
                             // JHK: why not inspect the objects like above?  Is it the property path problems because of the .add. portion?
                             for ( BusinessObjectRelationship rel : relationships ) {
-                            	String parentAttribute = rel.getParentAttributeForChildAttribute( KimConstants.PropertyNames.PRINCIPAL_ID );
+                            	String parentAttribute = rel.getParentAttributeForChildAttribute( KIMPropertyConstants.Person.PRINCIPAL_ID );
                             	if ( parentAttribute == null ) {
                             		continue;
                             	}
                                 // there is a relationship for personUserIdentifier; use that to find the universal user
                             	processedFieldValues.remove( propertyName );
-                        		String fieldPrefix = StringUtils.substringBeforeLast( StringUtils.substringBeforeLast( propertyName, "." + KimConstants.PropertyNames.PRINCIPAL_NAME ), "." );
+                        		String fieldPrefix = StringUtils.substringBeforeLast( StringUtils.substringBeforeLast( propertyName, "." + KIMPropertyConstants.Person.PRINCIPAL_NAME ), "." );
                                 String relatedPrincipalIdPropertyName = fieldPrefix + "." + parentAttribute;
                                 String currRelatedPersonPrincipalId = processedFieldValues.get(relatedPrincipalIdPropertyName);
                                 if ( StringUtils.isBlank( currRelatedPersonPrincipalId ) ) {

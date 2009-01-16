@@ -24,7 +24,9 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.ken.exception.ErrorList;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.dto.GroupInfo;
+import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.service.GroupService;
+import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
@@ -41,7 +43,16 @@ public class BaseSendNotificationController extends MultiActionController {
     private static final String USER_RECIPS_PARAM = "userRecipients";
     private static final String WORKGROUP_RECIPS_PARAM = "workgroupRecipients";
     private static final String SPLIT_REGEX = "(%2C|,)";
+    
+    private static IdentityManagementService identityManagementService;
 
+    protected static IdentityManagementService getIdentityManagementService() {
+        if ( identityManagementService == null ) {
+            identityManagementService = KIMServiceLocator.getIdentityManagementService();
+        }
+        return identityManagementService;
+    }
+    
     protected String[] parseUserRecipients(HttpServletRequest request) {
         return parseCommaSeparatedValues(request, USER_RECIPS_PARAM);
     }
@@ -68,12 +79,7 @@ public class BaseSendNotificationController extends MultiActionController {
 
     protected boolean isUserRecipientValid(String user, ErrorList errors) {
         boolean valid = true;
-        /*KimEntity e = KIMServiceLocator.getIdentityManagementService().getEntityByPrincipalName(user);
-        if (e == null) {
-            valid = false;
-            errors.addError("'" + user + "' is not a valid principal name");
-        }*/
-        KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(user);
+        KimPrincipal principal = getIdentityManagementService().getPrincipalByPrincipalName(user);
         if (principal == null) {
         	valid = false;
         	errors.addError("'" + user + "' is not a valid principal name");
@@ -83,9 +89,12 @@ public class BaseSendNotificationController extends MultiActionController {
     }
 
     protected boolean isWorkgroupRecipientValid(String group, ErrorList errors) {
-        GroupInfo i = KIMServiceLocator.getGroupService().getGroupInfoByName(KimConstants.TEMP_GROUP_NAMESPACE, group);
+        // FIXME: this will probably need to split the given group name
+        // on some delimiter to separate the namespace and group name
+        // or switch to using the group ID number
+        KimGroup i = getIdentityManagementService().getGroupByName("", group);
         if (i == null) {
-            errors.addError(KimConstants.TEMP_GROUP_NAMESPACE + ":" + group + " is not a valid group name");
+            errors.addError( group + " is not a valid group name");
             return false;
         } else {
             return true;

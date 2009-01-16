@@ -45,6 +45,7 @@ import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
+import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.rules.TransactionalDocumentRuleBase;
@@ -157,7 +158,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     private boolean doesPrincipalNameExist (String principalName, String principalId) {
     	KimPrincipal principal = getIdentityService().getPrincipalByPrincipalName(principalName);
     	if (principal != null && (StringUtils.isBlank(principalId) || !principal.getPrincipalId().equals(principalId))) {
-        	GlobalVariables.getErrorMap().putError(KimConstants.PropertyNames.PRINCIPAL_NAME,RiceKeyConstants.ERROR_EXIST_PRINCIPAL_NAME, principalName);
+        	GlobalVariables.getErrorMap().putError(KIMPropertyConstants.Person.PRINCIPAL_NAME,RiceKeyConstants.ERROR_EXIST_PRINCIPAL_NAME, principalName);
 			return false;
     	}
     	return true;

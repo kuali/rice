@@ -29,6 +29,7 @@ import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
 import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
 import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.kim.dao.KimGroupDao;
+import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
@@ -69,14 +70,14 @@ public class KimGroupDaoOjb extends PlatformAwareDaoBaseOjb implements KimGroupD
             			String value = entry.getValue().replace('*', '%');
         				crit.addLike(entry.getKey(), value);
         			} else {
-        				if (entry.getKey().equals(KimConstants.PropertyNames.PRINCIPAL_NAME)) {
+        				if (entry.getKey().equals(KIMPropertyConstants.Person.PRINCIPAL_NAME)) {
                 	        Criteria subCrit = new Criteria();
                 			String principalName = entry.getValue().replace('*', '%');
-                			subCrit.addLike(KimConstants.PropertyNames.PRINCIPAL_NAME, principalName );
-                	        subCrit.addEqualToField("principalId", Criteria.PARENT_QUERY_PREFIX + "memberId");
+                			subCrit.addLike(KIMPropertyConstants.Person.PRINCIPAL_NAME, principalName );
+                	        subCrit.addEqualToField(KIMPropertyConstants.Person.PRINCIPAL_ID, Criteria.PARENT_QUERY_PREFIX + "memberId");
                 			ReportQueryByCriteria subQuery = QueryFactory.newReportQuery(KimPrincipalImpl.class, subCrit);
                 	        Criteria memberSubCrit = new Criteria();
-                	        memberSubCrit.addEqualToField("groupId", Criteria.PARENT_QUERY_PREFIX + "groupId");
+                	        memberSubCrit.addEqualToField(KIMPropertyConstants.Group.GROUP_ID, Criteria.PARENT_QUERY_PREFIX + KIMPropertyConstants.Group.GROUP_ID);
                 	        memberSubCrit.addExists(subQuery);
                 			ReportQueryByCriteria memberSubQuery = QueryFactory.newReportQuery(GroupMemberImpl.class, memberSubCrit);
                 			crit.addExists(memberSubQuery);        					

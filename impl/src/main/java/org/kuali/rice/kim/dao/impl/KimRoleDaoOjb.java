@@ -39,6 +39,7 @@ import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.dao.KimRoleDao;
+import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb;
 
@@ -214,7 +215,7 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
         Map<String,String> lookupNames = critMap.get("lookupNames");
         for (Entry<String, String> entry : lookupNames.entrySet()) {
         	if (StringUtils.isNotBlank(entry.getValue())) {
-        			if (!entry.getKey().equals(KimConstants.PropertyNames.PRINCIPAL_NAME)) {
+        			if (!entry.getKey().equals(KIMPropertyConstants.Person.PRINCIPAL_NAME)) {
         				crit.addLike(entry.getKey(), entry.getValue());
         			} else {
         					List roleIds = getRoleIdsForPrincipalName(entry.getValue());
@@ -257,8 +258,8 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
     private List<String> getRoleIdsForPrincipalName(String value) {
         Criteria subCrit = new Criteria();
 		String principalName = value.replace('*', '%');
-		subCrit.addLike(KimConstants.PropertyNames.PRINCIPAL_NAME,principalName );
-        subCrit.addEqualToField("principalId", Criteria.PARENT_QUERY_PREFIX + "memberId");
+		subCrit.addLike(KIMPropertyConstants.Person.PRINCIPAL_NAME,principalName );
+        subCrit.addEqualToField(KIMPropertyConstants.Person.PRINCIPAL_ID, Criteria.PARENT_QUERY_PREFIX + "memberId");
 		ReportQueryByCriteria subQuery = QueryFactory.newReportQuery(KimPrincipalImpl.class, subCrit);
         Criteria memberSubCrit = new Criteria();
         //memberSubCrit.addEqualToField("roleId", Criteria.PARENT_QUERY_PREFIX + "roleId");

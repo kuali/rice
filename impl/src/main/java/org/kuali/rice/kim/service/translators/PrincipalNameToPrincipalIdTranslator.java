@@ -22,6 +22,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.impl.KimAttributesTranslatorBase;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimConstants;
 
 /**
@@ -40,10 +41,10 @@ public class PrincipalNameToPrincipalIdTranslator extends KimAttributesTranslato
 	 */
 	public PrincipalNameToPrincipalIdTranslator() {
 		ArrayList<String> attribs = new ArrayList<String>( 1 );
-		attribs.add(KimConstants.PropertyNames.PRINCIPAL_NAME);
+		attribs.add(KIMPropertyConstants.Person.PRINCIPAL_NAME);
 		setSupportedAttributeNames( attribs );
 		attribs = new ArrayList<String>( 1 );
-		attribs.add(KimConstants.PropertyNames.PRINCIPAL_ID);
+		attribs.add(KIMPropertyConstants.Person.PRINCIPAL_ID);
 		setResultAttributeNames( attribs );
 	}
 	
@@ -52,10 +53,10 @@ public class PrincipalNameToPrincipalIdTranslator extends KimAttributesTranslato
 	 */
 	public AttributeSet translateAttributes(AttributeSet attributes) {
 		AttributeSet results = new AttributeSet( attributes );
-		if ( !results.containsKey(KimConstants.PropertyNames.PRINCIPAL_ID) ) { 
-			KimPrincipal p = getIdentityManagementService().getPrincipalByPrincipalName( attributes.get(KimConstants.PropertyNames.PRINCIPAL_NAME) );
+		if ( !results.containsKey(KIMPropertyConstants.Person.PRINCIPAL_ID) ) { 
+			KimPrincipal p = getIdentityManagementService().getPrincipalByPrincipalName( attributes.get(KIMPropertyConstants.Person.PRINCIPAL_NAME) );
 			if ( p != null ) {
-				results.put(KimConstants.PropertyNames.PRINCIPAL_ID, p.getPrincipalId() );
+				results.put(KIMPropertyConstants.Person.PRINCIPAL_ID, p.getPrincipalId() );
 			}
 		}
 		return results;

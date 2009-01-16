@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kim.bo.role;
 
-import java.util.List;
-
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kns.bo.Inactivateable;
 
@@ -44,7 +42,5 @@ public interface KimPermission extends Inactivateable {
 
 	/** Verbose description of the Permission and functionally what permissions it implies. */
 	String getDescription();
-
-	KimPermissionTemplate getTemplate();
 	
 }

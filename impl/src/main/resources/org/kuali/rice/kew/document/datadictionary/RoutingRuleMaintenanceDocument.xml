@@ -1,0 +1,58 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+  <bean id="RoutingRuleMaintenanceDocument" parent="RoutingRuleMaintenanceDocument-parentBean" />
+
+  <bean id="RoutingRuleMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
+    <property name="businessObjectClass" value="org.kuali.rice.kew.rule.RuleBaseValues" />
+    <property name="maintainableClass" value="org.kuali.rice.kew.document.RoutingRuleMaintainable" />
+    <property name="maintainableSections" >
+      <list>
+        <ref bean="RoutingRuleMaintenanceDocument-Rule" />
+      </list>
+    </property>
+    <property name="allowsNewOrCopy" value="true" />
+    <property name="label" value="Rule" />
+    <property name="shortLabel" value="Rule" />
+    <property name="documentTypeName" value="EDENSERVICE-DOCS.RuleDocument" />
+    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase" />
+  </bean>
+
+  <!-- Maintenance Section Definitions -->
+
+  <bean id="RoutingRuleMaintenanceDocument-Rule" parent="RoutingRuleMaintenanceDocument-Rule-parentBean" />
+
+  <bean id="RoutingRuleMaintenanceDocument-Rule-parentBean" abstract="true" parent="MaintainableSectionDefinition">
+    <property name="id" value="Rule" />
+    <property name="title" value="Rule" />
+    <property name="maintainableItems" >
+      <list>
+        <bean parent="MaintainableFieldDefinition"
+              p:name="docTypeName"
+              p:unconditionallyReadOnly="true"/>
+        <bean parent="MaintainableFieldDefinition"
+              p:name="ruleTemplate.name"
+              p:unconditionallyReadOnly="true"/>
+        <bean parent="MaintainableFieldDefinition"
+              p:name="description"
+              p:required="true" />
+        <bean parent="MaintainableFieldDefinition"
+              p:name="fromDate"
+              p:required="false" />
+        <bean parent="MaintainableFieldDefinition"
+              p:name="toDate"
+              p:required="false" />
+        <bean parent="MaintainableFieldDefinition"
+              p:name="ignorePrevious"
+              p:required="true" />
+        <bean parent="MaintainableFieldDefinition"
+              p:name="activeInd"
+              p:required="true" />
+      </list>
+    </property>
+  </bean>
+
+</beans>

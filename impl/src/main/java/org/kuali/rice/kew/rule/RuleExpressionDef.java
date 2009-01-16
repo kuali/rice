@@ -15,16 +15,18 @@
  */
 package org.kuali.rice.kew.rule;
 
+import java.util.LinkedHashMap;
+
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.CascadeType;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Entity;
 
 import org.apache.commons.lang.ObjectUtils;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
  * BO for rule expressions 
@@ -32,7 +34,7 @@ import org.apache.commons.lang.ObjectUtils;
  */
 @Entity
 @Table(name="KREW_RULE_EXPR_T")
-public class RuleExpressionDef {
+public class RuleExpressionDef extends PersistableBusinessObjectBase {
     /**
      * Primary key
      */
@@ -101,4 +103,18 @@ public class RuleExpressionDef {
         RuleExpressionDef arg = (RuleExpressionDef) obj;
         return ObjectUtils.equals(type, arg.getType()) && ObjectUtils.equals(expression, arg.getExpression());
     }
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
+	 */
+	@Override
+	protected LinkedHashMap toStringMapper() {
+		LinkedHashMap map = new LinkedHashMap();
+		map.put("type", type);
+		map.put("expression", expression);
+		return map;
+	}
+    
+    
 }

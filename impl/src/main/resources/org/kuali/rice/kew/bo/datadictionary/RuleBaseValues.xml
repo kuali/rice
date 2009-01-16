@@ -23,6 +23,9 @@
         <ref bean="RuleBaseValues-documentTypeName" />
         <ref bean="RuleBaseValues-ruleTemplateId" />
         <ref bean="RuleBaseValues-ruleTemplateName" />
+        <ref bean="RuleBaseValues-description"/>
+        <ref bean="RuleBaseValues-fromDate"/>
+        <ref bean="RuleBaseValues-toDate"/>
       </list>
     </property>
     <property name="relationships" >
@@ -135,6 +138,95 @@
     <property name="name" value="docTypeName" />
     <property name="label" value="Document Type" />
   </bean>
+  
+  <bean id="RuleBaseValues-description" parent="RuleBaseValues-description-parentBean" />
+
+  <bean id="RuleBaseValues-description-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="description" />
+    <property name="forceUppercase" value="false" />
+    <property name="label" value="Description" />
+    <property name="shortLabel" value="Description" />
+    <property name="maxLength" value="60" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="true" />
+    </property>
+    <property name="control" >
+      <bean parent="TextareaControlDefinition"
+            p:rows="3"
+            p:cols="60" />
+    </property>
+  </bean>
+  
+  <bean id="RuleBaseValues-fromDate" parent="RuleBaseValues-fromDate-parentBean" />
+
+  <bean id="RuleBaseValues-fromDate-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="fromDate" />
+    <property name="forceUppercase" value="false" />
+    <property name="label" value="From Date" />
+    <property name="shortLabel" value="From Date" />
+    <property name="maxLength" value="30" />
+    <property name="validationPattern" >
+      <bean parent="DateValidationPattern"/>
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+      	p:size="30"/>
+    </property>
+  </bean>
+
+  <bean id="RuleBaseValues-toDate" parent="RuleBaseValues-toDate-parentBean" />
+
+  <bean id="RuleBaseValues-toDate-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="toDate" />
+    <property name="forceUppercase" value="false" />
+    <property name="label" value="To Date" />
+    <property name="shortLabel" value="To Date" />
+    <property name="maxLength" value="30" />
+    <property name="validationPattern" >
+      <bean parent="DateValidationPattern"/>
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+      	p:size="30"/>
+    </property>
+  </bean>
+  
+  <bean id="RuleBaseValues-active" parent="RuleBaseValues-active-parentBean"/>
+  
+  <bean id="RuleBaseValues-active-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="activeInd" />
+    <property name="forceUppercase" value="false" />
+    <property name="label" value="Active" />
+    <property name="shortLabel" value="Active" />
+    <property name="maxLength" value="1" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="CheckboxControlDefinition" />
+    </property>
+    <property name="formatterClass" value="org.kuali.rice.kns.web.format.BooleanFormatter" />
+  </bean>
+  
+  <bean id="RuleBaseValues-ignorePrevious" parent="RuleBaseValues-ignorePrevious-parentBean"/>
+  
+  <bean id="RuleBaseValues-ignorePrevious-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="ignorePrevious" />
+    <property name="forceUppercase" value="false" />
+    <property name="label" value="Ignore Previous" />
+    <property name="shortLabel" value="Ignore Previous" />
+    <property name="maxLength" value="1" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="CheckboxControlDefinition" />
+    </property>
+    <property name="formatterClass" value="org.kuali.rice.kns.web.format.BooleanFormatter" />
+  </bean>
+  
+
   
   <!-- Business Object Inquiry Definition -->
 

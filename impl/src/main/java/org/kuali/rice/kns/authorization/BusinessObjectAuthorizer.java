@@ -17,7 +17,6 @@ package org.kuali.rice.kns.authorization;
 
 import java.util.Map;
 
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.bo.BusinessObject;
 
 public interface BusinessObjectAuthorizer {
@@ -38,4 +37,8 @@ public interface BusinessObjectAuthorizer {
 			String principalId,
 			Map<String, String> additionalPermissionDetails,
 			Map<String, String> additionalRoleQualifiers);
+	
+	public Map<String,String> getCollectionItemRoleQualifications(BusinessObject collectionItemBusinessObject);
+	
+	public Map<String,String> getCollectionItemPermissionDetails(BusinessObject collectionItemBusinessObject);
 }

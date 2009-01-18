@@ -93,14 +93,14 @@
 				###################################################################
 				# GATHER SOME INFORMATION ABOUT THE FIELD AND STORE IT IN VARIABLES
 				################################################################### --%>
-			<%-- isFieldReadOnly determines whether or not a field is readOnly --%>
-			<%-- NOTE: The part about "fieldVarStatus.count mod 2" will work for any even number 
-			of columns assuming that all columns alternate between read-only and not-read-only. --%>
-			<c:set var="isFieldReadOnly" value="${field.readOnly || isFormReadOnly || (isMaintenance && not isActionNew && fieldVarStatus.count le numberOfColumns)}" />
-                
 			<%-- isFieldSecure determines whether or not the encrypted value should be shown for 
 			non-collections and a similar function for collections --%>
 			<c:set var="isFieldSecure" value="${field.secure}" />
+			
+			<%-- isFieldReadOnly determines whether or not a field is readOnly --%>
+			<%-- NOTE: The part about "fieldVarStatus.count mod 2" will work for any even number 
+			of columns assuming that all columns alternate between read-only and not-read-only. --%>
+			<c:set var="isFieldReadOnly" value="${isFieldSecure || field.readOnly || isFormReadOnly || (isMaintenance && not isActionNew && fieldVarStatus.count le numberOfColumns)}" />
 				
 			<%-- textStyle is used to store the style of the field value. i.e. whether or not it 
 			should display as red text. --%>

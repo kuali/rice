@@ -553,22 +553,6 @@ public class SectionBridge {
                                         Object propertyValue = ObjectUtils.getPropertyValue(lineSubBusinessObject, fieldDefinition.getName());
                                         
                                         subCollField.setPropertyValue(propertyValue);
-                                        
-                                        AttributeSecurity attributeSecurity = getDataDictionaryService().getAttributeSecurity(lineBusinessObject.getClass().getName(), name);
-                                        if(attributeSecurity != null && attributeSecurity.isPartialMask()){
-                                        	boolean viewAuthorized = getBusinessObjectAuthorizationService().canPartiallyUnmaskField(GlobalVariables.getUserSession().getPerson(), lineBusinessObject.getClass(), name);
-                                        	if(!viewAuthorized){
-                                        		subCollField.setPropertyValue(attributeSecurity.getPartialMaskFormatter().maskValue(propertyValue));
-                                        		subCollField.setDisplayMaskValue(attributeSecurity.getPartialMaskFormatter().maskValue(propertyValue));
-                                        	}
-                                        }
-                                        if(attributeSecurity != null && attributeSecurity.isMask()){
-                                        	boolean viewAuthorized = getBusinessObjectAuthorizationService().canFullyUnmaskField(GlobalVariables.getUserSession().getPerson(), lineBusinessObject.getClass(), name);
-                                        	if(!viewAuthorized){
-                                        		subCollField.setPropertyValue(attributeSecurity.getMaskFormatter().maskValue(propertyValue));
-                                        		subCollField.setDisplayMaskValue(attributeSecurity.getMaskFormatter().maskValue(propertyValue));
-                                        	}	
-                                        }
                                      
                                         // check if this is a summary field
                                         if (subCollectionDefinition.hasSummaryField(fieldDefinition.getName())) {

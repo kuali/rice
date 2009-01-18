@@ -41,22 +41,4 @@ public class TransactionalDocumentAuthorizerBase extends DocumentAuthorizerBase 
         }
         return editModes;
     }
-    
-     @Deprecated
-     public Map getEditMode(Document d, Person u) {
-        Map editModeMap = new HashMap();
-        String editMode = AuthorizationConstants.EditMode.VIEW_ONLY;
-
-        KualiWorkflowDocument workflowDocument = d.getDocumentHeader().getWorkflowDocument();
-        if (workflowDocument.stateIsInitiated() || workflowDocument.stateIsSaved()) {
-                editMode = AuthorizationConstants.EditMode.FULL_ENTRY;
-        }
-        else if (workflowDocument.stateIsEnroute() && workflowDocument.isApprovalRequested()) {
-            editMode = AuthorizationConstants.EditMode.FULL_ENTRY;
-        }
-
-        editModeMap.put(editMode, EDIT_MODE_DEFAULT_TRUE_VALUE);
-
-        return editModeMap;
-    }
 }

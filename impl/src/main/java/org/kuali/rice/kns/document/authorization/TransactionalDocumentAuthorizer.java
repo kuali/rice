@@ -31,7 +31,4 @@ public interface TransactionalDocumentAuthorizer extends DocumentAuthorizer {
      * @return Map of operations that allow to take on that document.
      */
     public Set<String> getEditModes(Document document, Person user, Set<String> editModes);
-
-	@Deprecated
-    public Map getEditMode(Document document, Person user);
 }

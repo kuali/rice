@@ -24,7 +24,6 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimCommonUtils;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -36,50 +35,68 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 	private static PersonService personService;
 	private static KualiModuleService kualiModuleService;
 	private static DataDictionaryService dataDictionaryService;
-	private ThreadLocal<AttributeSet> roleQualification = new ThreadLocal<AttributeSet>();
-	private ThreadLocal<AttributeSet> permissionDetails = new ThreadLocal<AttributeSet>();
+	private ThreadLocal<Map<String, String>> roleQualification = new ThreadLocal<Map<String, String>>();
+	private ThreadLocal<Map<String, String>> permissionDetails = new ThreadLocal<Map<String, String>>();
 
 	/**
 	 * Override this method to populate the role qualifier attributes from the
-	 * primary business object or document. This will only be called once per request.
-	 * 
-	 * @param primaryBusinessObjectOrDocument the primary business object (i.e. the main BO instance behind the lookup result row or inquiry) or the document
-	 * @param attributes role qualifiers will be added to this map
-	 */
-	protected void addRoleQualification(BusinessObject primaryBusinessObjectOrDocument,
-			Map<String, String> attributes) {
-		addStandardAttributes(primaryBusinessObjectOrDocument, attributes);
-	}
-
-	/**
-	 * Override this method to populate the permission details from the
 	 * primary business object or document. This will only be called once per
 	 * request.
 	 * 
-	 * @param primaryBusinessObjectOrDocument the primary business object (i.e. the main BO instance behind the lookup result row or inquiry) or the document
-	 * @param attributes permission details will be added to this map
+	 * @param primaryBusinessObjectOrDocument
+	 *            the primary business object (i.e. the main BO instance behind
+	 *            the lookup result row or inquiry) or the document
+	 * @param attributes
+	 *            role qualifiers will be added to this map
 	 */
-	protected void addPermissionDetails(BusinessObject primaryBusinessObjectOrDocument,
+	protected void addRoleQualification(
+			BusinessObject primaryBusinessObjectOrDocument,
 			Map<String, String> attributes) {
 		addStandardAttributes(primaryBusinessObjectOrDocument, attributes);
 	}
 
 	/**
-	 * @param primaryBusinessObjectOrDocument the primary business object (i.e. the main BO instance behind the lookup result row or inquiry) or the document
-	 * @param attributes attributes (i.e. role qualifications or permission details) will be added to this map
+	 * Override this method to populate the permission details from the primary
+	 * business object or document. This will only be called once per request.
+	 * 
+	 * @param primaryBusinessObjectOrDocument
+	 *            the primary business object (i.e. the main BO instance behind
+	 *            the lookup result row or inquiry) or the document
+	 * @param attributes
+	 *            permission details will be added to this map
 	 */
-	private void addStandardAttributes(BusinessObject primaryBusinessObjectOrDocument,
+	protected void addPermissionDetails(
+			BusinessObject primaryBusinessObjectOrDocument,
 			Map<String, String> attributes) {
-		attributes.putAll(KimCommonUtils
-				.getNamespaceAndComponentSimpleName(primaryBusinessObjectOrDocument.getClass()));
+		addStandardAttributes(primaryBusinessObjectOrDocument, attributes);
 	}
 
-	protected final boolean permissionExistsByTemplate(String namespaceCode,
-			String permissionTemplateName, BusinessObject businessObject) {
+	/**
+	 * @param primaryBusinessObjectOrDocument
+	 *            the primary business object (i.e. the main BO instance behind
+	 *            the lookup result row or inquiry) or the document
+	 * @param attributes
+	 *            attributes (i.e. role qualifications or permission details)
+	 *            will be added to this map
+	 */
+	private void addStandardAttributes(
+			BusinessObject primaryBusinessObjectOrDocument,
+			Map<String, String> attributes) {
+		attributes
+				.putAll(KimCommonUtils
+						.getNamespaceAndComponentSimpleName(primaryBusinessObjectOrDocument
+								.getClass()));
+	}
+
+	protected final boolean permissionExistsByTemplate(
+			BusinessObject businessObject, String namespaceCode,
+			String permissionTemplateName) {
 		return getIdentityManagementService()
-				.isPermissionDefinedForTemplateName(namespaceCode,
+				.isPermissionDefinedForTemplateName(
+						namespaceCode,
 						permissionTemplateName,
-						getPermissionDetailValues(businessObject));
+						new AttributeSet(
+								getPermissionDetailValues(businessObject)));
 	}
 
 	protected final boolean permissionExistsByTemplate(String namespaceCode,
@@ -90,12 +107,23 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 						new AttributeSet(permissionDetails));
 	}
 
+	protected final boolean permissionExistsByTemplate(
+			BusinessObject businessObject, String namespaceCode,
+			String permissionTemplateName, Map<String, String> permissionDetails) {
+		AttributeSet combinedPermissionDetails = new AttributeSet(
+				getPermissionDetailValues(businessObject));
+		combinedPermissionDetails.putAll(permissionDetails);
+		return getIdentityManagementService()
+				.isPermissionDefinedForTemplateName(namespaceCode,
+						permissionTemplateName, combinedPermissionDetails);
+	}
+
 	public final boolean isAuthorized(BusinessObject businessObject,
 			String namespaceCode, String permissionName, String principalId) {
 		return getIdentityManagementService().isAuthorized(principalId,
 				namespaceCode, permissionName,
-				getPermissionDetailValues(businessObject),
-				getRoleQualification(businessObject));
+				new AttributeSet(getPermissionDetailValues(businessObject)),
+				new AttributeSet(getRoleQualification(businessObject)));
 	}
 
 	public final boolean isAuthorizedByTemplate(BusinessObject businessObject,
@@ -103,8 +131,8 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 			String principalId) {
 		return getIdentityManagementService().isAuthorizedByTemplateName(
 				principalId, namespaceCode, permissionTemplateName,
-				getPermissionDetailValues(businessObject),
-				getRoleQualification(businessObject));
+				new AttributeSet(getPermissionDetailValues(businessObject)),
+				new AttributeSet(getRoleQualification(businessObject)));
 	}
 
 	public final boolean isAuthorized(BusinessObject businessObject,
@@ -118,14 +146,16 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 					getRoleQualification(businessObject));
 			roleQualifiers.putAll(collectionOrFieldLevelRoleQualification);
 		} else {
-			roleQualifiers = getRoleQualification(businessObject);
+			roleQualifiers = new AttributeSet(
+					getRoleQualification(businessObject));
 		}
 		if (collectionOrFieldLevelPermissionDetails != null) {
 			permissionDetails = new AttributeSet(
 					getPermissionDetailValues(businessObject));
 			permissionDetails.putAll(collectionOrFieldLevelPermissionDetails);
 		} else {
-			permissionDetails = getPermissionDetailValues(businessObject);
+			permissionDetails = new AttributeSet(
+					getPermissionDetailValues(businessObject));
 		}
 		return getIdentityManagementService().isAuthorized(principalId,
 				namespaceCode, permissionName, permissionDetails,
@@ -137,10 +167,12 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 			String principalId,
 			Map<String, String> collectionOrFieldLevelPermissionDetails,
 			Map<String, String> collectionOrFieldLevelRoleQualification) {
-		return isAuthorizedByTemplate(businessObject, null, namespaceCode, permissionTemplateName,
-				principalId, collectionOrFieldLevelPermissionDetails, collectionOrFieldLevelRoleQualification);
+		return isAuthorizedByTemplate(businessObject, null, namespaceCode,
+				permissionTemplateName, principalId,
+				collectionOrFieldLevelPermissionDetails,
+				collectionOrFieldLevelRoleQualification);
 	}
-	
+
 	public final boolean isAuthorizedByTemplate(BusinessObject businessObject,
 			BusinessObject collectionElementBusinessObject,
 			String namespaceCode, String permissionTemplateName,
@@ -154,34 +186,36 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 					getRoleQualification(businessObject));
 			roleQualifiers.putAll(collectionOrFieldLevelRoleQualification);
 		} else {
-			roleQualifiers = getRoleQualification(businessObject);
+			roleQualifiers = new AttributeSet(
+					getRoleQualification(businessObject));
 		}
 		if (collectionElementBusinessObject != null) {
-			
+
 		}
-		
 		if (collectionOrFieldLevelPermissionDetails != null) {
 			permissionDetails = new AttributeSet(
 					getPermissionDetailValues(businessObject));
 			permissionDetails.putAll(collectionOrFieldLevelPermissionDetails);
 		} else {
-			permissionDetails = getPermissionDetailValues(businessObject);
+			permissionDetails = new AttributeSet(
+					getPermissionDetailValues(businessObject));
 		}
 		return getIdentityManagementService().isAuthorizedByTemplateName(
 				principalId, namespaceCode, permissionTemplateName,
 				permissionDetails, roleQualifiers);
 	}
 
-
-	
 	/**
-	 * Returns a role qualification map based off data from the primary business object or the document.  DO NOT MODIFY THE MAP RETURNED BY
-	 * THIS METHOD
+	 * Returns a role qualification map based off data from the primary business
+	 * object or the document. DO NOT MODIFY THE MAP RETURNED BY THIS METHOD
 	 * 
-	 * @param primaryBusinessObjectOrDocument the primary business object (i.e. the main BO instance behind the lookup result row or inquiry) or the document
+	 * @param primaryBusinessObjectOrDocument
+	 *            the primary business object (i.e. the main BO instance behind
+	 *            the lookup result row or inquiry) or the document
 	 * @return a Map containing role qualifications
 	 */
-	protected AttributeSet getRoleQualification(BusinessObject primaryBusinessObjectOrDocument) {
+	protected final Map<String, String> getRoleQualification(
+			BusinessObject primaryBusinessObjectOrDocument) {
 		if (roleQualification.get() == null) {
 			Map<String, String> attributes = new HashMap<String, String>();
 			addRoleQualification(primaryBusinessObjectOrDocument, attributes);
@@ -212,15 +246,17 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 			BusinessObject collectionItemBusinessObject) {
 		return new AttributeSet();
 	}
-	
+
 	/**
-	 * Returns a permission details map based off data from the primary business object or the document.  DO NOT MODIFY THE MAP RETURNED BY
-	 * THIS METHOD
+	 * Returns a permission details map based off data from the primary business
+	 * object or the document. DO NOT MODIFY THE MAP RETURNED BY THIS METHOD
 	 * 
-	 * @param primaryBusinessObjectOrDocument the primary business object (i.e. the main BO instance behind the lookup result row or inquiry) or the document
+	 * @param primaryBusinessObjectOrDocument
+	 *            the primary business object (i.e. the main BO instance behind
+	 *            the lookup result row or inquiry) or the document
 	 * @return a Map containing permission details
 	 */
-	protected final AttributeSet getPermissionDetailValues(
+	protected final Map<String, String> getPermissionDetailValues(
 			BusinessObject businessObject) {
 		if (permissionDetails.get() == null) {
 			Map<String, String> attributes = new HashMap<String, String>();

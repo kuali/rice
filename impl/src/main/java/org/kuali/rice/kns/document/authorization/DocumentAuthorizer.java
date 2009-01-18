@@ -29,7 +29,7 @@ import org.kuali.rice.kns.document.Document;
  * 
  */
 public interface DocumentAuthorizer extends BusinessObjectAuthorizer {
-	public Set getDocumentActions(Document document, Person user,
+	public Set<String> getDocumentActions(Document document, Person user,
 			Set<String> documentActions);
 
 	public boolean canInitiate(String documentTypeName, Person user);

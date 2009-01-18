@@ -72,9 +72,9 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase
 
 	public final boolean canCreateOrMaintain(
 			MaintenanceDocument maintenanceDocument, Person user) {
-		return !permissionExistsByTemplate(KNSConstants.KNS_NAMESPACE,
-				KimConstants.PermissionTemplateNames.CREATE_MAINTAIN_RECORDS,
-				maintenanceDocument)
+		return !permissionExistsByTemplate(maintenanceDocument,
+				KNSConstants.KNS_NAMESPACE,
+				KimConstants.PermissionTemplateNames.CREATE_MAINTAIN_RECORDS)
 				|| isAuthorizedByTemplate(
 						maintenanceDocument,
 						KNSConstants.KNS_NAMESPACE,

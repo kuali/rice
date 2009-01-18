@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.document.authorization;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -34,14 +35,8 @@ import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
 
 /**
- * DocumentAuthorizer containing common, reusable document-level authorization code.
- */
-/**
- * This is a description of what this class does - zjzhou don't forget to fill
- * this in.
- * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- * 
+ * DocumentAuthorizer containing common, reusable document-level authorization
+ * code.
  */
 public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 		implements DocumentAuthorizer {
@@ -62,7 +57,7 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 	 * @see org.kuali.rice.kns.authorization.DocumentAuthorizer#getDocumentActionFlags(org.kuali.rice.kns.document.Document,
 	 *      org.kuali.rice.kns.bo.user.KualiUser)
 	 */
-	public Set getDocumentActions(Document document, Person user,
+	public Set<String> getDocumentActions(Document document, Person user,
 			Set<String> documentActions) {
 		if (LOG.isDebugEnabled()) {
 			LOG
@@ -122,11 +117,13 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 			documentActions.remove(KNSConstants.KUALI_ACTION_CAN_ROUTE);
 		}
 
-		if (canAcknowledge(document, user)) {
+		if (canTakeRequestedAction(document,
+				KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, user)) {
 			documentActions.add(KNSConstants.KUALI_ACTION_CAN_ACKNOWLEDGE);
 		}
-		
-		if (canClearFYI(document, user)) {
+
+		if (canTakeRequestedAction(document,
+				KEWConstants.ACTION_REQUEST_FYI_REQ, user)) {
 			documentActions.add(KNSConstants.KUALI_ACTION_CAN_FYI);
 		}
 
@@ -137,15 +134,18 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 			documentActions.remove(KNSConstants.KUALI_ACTION_CAN_AD_HOC_ROUTE);
 		}
 
-		if (documentActions.contains(KNSConstants.KUALI_ACTION_CAN_APPROVE) || documentActions.contains(KNSConstants.KUALI_ACTION_CAN_DISAPPROVE)) {
-			if (!canApprove(document, user)) {
+		if (documentActions.contains(KNSConstants.KUALI_ACTION_CAN_APPROVE)
+				|| documentActions
+						.contains(KNSConstants.KUALI_ACTION_CAN_DISAPPROVE)) {
+			if (!canTakeRequestedAction(document,
+					KEWConstants.ACTION_REQUEST_APPROVE_REQ, user)) {
 				documentActions.remove(KNSConstants.KUALI_ACTION_CAN_APPROVE);
-				documentActions.remove(KNSConstants.KUALI_ACTION_CAN_DISAPPROVE);
+				documentActions
+						.remove(KNSConstants.KUALI_ACTION_CAN_DISAPPROVE);
 			}
-		} 
-		
-		if (documentActions
-				.contains(KNSConstants.KUALI_ACTION_CAN_ANNOTATE)
+		}
+
+		if (documentActions.contains(KNSConstants.KUALI_ACTION_CAN_ANNOTATE)
 				&& !documentActions
 						.contains(KNSConstants.KUALI_ACTION_CAN_EDIT)) {
 			documentActions.remove(KNSConstants.KUALI_ACTION_CAN_ANNOTATE);
@@ -153,13 +153,6 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 		return documentActions;
 	}
 
-	/**
-	 * DocumentTypeAuthorizationException can be extended to customize the
-	 * initiate error message
-	 * 
-	 * @see org.kuali.rice.kns.authorization.DocumentAuthorizer#canInitiate(java.lang.String,
-	 *      org.kuali.rice.kns.bo.user.KualiUser)
-	 */
 	public final boolean canInitiate(String documentTypeName, Person user) {
 		String nameSpaceCode = KNSConstants.KUALI_RICE_SYSTEM_NAMESPACE;
 		AttributeSet permissionDetails = new AttributeSet();
@@ -184,103 +177,61 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 				KimConstants.PermissionTemplateNames.OPEN_DOCUMENT, user
 						.getPrincipalId());
 	}
-	
-	public final boolean canAddNoteAttachment (Document document, String attachmentTypeCode, Person user) {
-		String nameSpaceCode = KNSConstants.KNS_NAMESPACE;
-		AttributeSet permissionDetails = new AttributeSet();
-		permissionDetails.put(KimAttributes.DOCUMENT_TYPE_NAME,
-				document.getDocumentHeader().getWorkflowDocument().getDocumentType());
-		if(attachmentTypeCode != null){
-			permissionDetails.put(KimAttributes.ATTACHMENT_TYPE_CODE, 
+
+	public final boolean canAddNoteAttachment(Document document,
+			String attachmentTypeCode, Person user) {
+		Map<String, String> additionalPermissionDetails = new HashMap<String, String>();
+		if (attachmentTypeCode != null) {
+			additionalPermissionDetails.put(KimAttributes.ATTACHMENT_TYPE_CODE,
 					attachmentTypeCode);
 		}
-		AttributeSet qualifications = this.getRoleQualification(document);
-		return getIdentityManagementService().isAuthorizedByTemplateName(
-				user.getPrincipalId(), nameSpaceCode,
-				KimConstants.PermissionTemplateNames.ADD_NOTE_ATTACHMENT,
-				permissionDetails, qualifications );
+		return isAuthorizedByTemplate(document, KNSConstants.KNS_NAMESPACE,
+				KimConstants.PermissionTemplateNames.ADD_NOTE_ATTACHMENT, user
+						.getPrincipalId(), additionalPermissionDetails, null);
 	}
-	
-	public final boolean canDeleteNoteAttachment (Document document, String attachmentTypeCode, String createdBySelfOnly, Person user) {
-		String nameSpaceCode = KNSConstants.KNS_NAMESPACE;
-		AttributeSet permissionDetails = new AttributeSet();
-		permissionDetails.put(KimAttributes.DOCUMENT_TYPE_NAME,
-				document.getDocumentHeader().getWorkflowDocument().getDocumentType());
-		if(attachmentTypeCode != null){
-			permissionDetails.put(KimAttributes.ATTACHMENT_TYPE_CODE, 
+
+	public final boolean canDeleteNoteAttachment(Document document,
+			String attachmentTypeCode, String createdBySelfOnly, Person user) {
+		Map<String, String> additionalPermissionDetails = new HashMap<String, String>();
+		if (attachmentTypeCode != null) {
+			additionalPermissionDetails.put(KimAttributes.ATTACHMENT_TYPE_CODE,
 					attachmentTypeCode);
 		}
-		permissionDetails.put(KimAttributes.CREATED_BY_SELF_ONLY, createdBySelfOnly);
-		
-		return getIdentityManagementService().isAuthorizedByTemplateName(
-				user.getPrincipalId(), nameSpaceCode,
+		additionalPermissionDetails.put(KimAttributes.CREATED_BY_SELF_ONLY,
+				createdBySelfOnly);
+		return isAuthorizedByTemplate(document, KNSConstants.KNS_NAMESPACE,
 				KimConstants.PermissionTemplateNames.DELETE_NOTE_ATTACHMENT,
-				permissionDetails, this.getRoleQualification(document));
+				user.getPrincipalId(), additionalPermissionDetails, null);
 	}
-	
-	public final boolean canViewNoteAttachment (Document document, String attachmentTypeCode, Person user) {
-		String nameSpaceCode = KNSConstants.KNS_NAMESPACE;
-		AttributeSet permissionDetails = new AttributeSet();
-		permissionDetails.put(KimAttributes.DOCUMENT_TYPE_NAME,
-				document.getDocumentHeader().getWorkflowDocument().getDocumentType());
-		if(attachmentTypeCode != null){
-			permissionDetails.put(KimAttributes.ATTACHMENT_TYPE_CODE, 
+
+	public final boolean canViewNoteAttachment(Document document,
+			String attachmentTypeCode, Person user) {
+		Map<String, String> additionalPermissionDetails = new HashMap<String, String>();
+		if (attachmentTypeCode != null) {
+			additionalPermissionDetails.put(KimAttributes.ATTACHMENT_TYPE_CODE,
 					attachmentTypeCode);
 		}
-		return getIdentityManagementService().isAuthorizedByTemplateName(
-				user.getPrincipalId(), nameSpaceCode,
-				KimConstants.PermissionTemplateNames.VIEW_NOTE_ATTACHMENT,
-				permissionDetails, this.getRoleQualification(document));
-	}
-	
-
-	private boolean canApprove(Document document, Person user) {
-		AttributeSet permissionDetails = getPermissionDetailValues(document);
-		if (permissionDetails.containsKey(KimAttributes.ACTION_REQUEST_CD)
-				&& KEWConstants.ACTION_REQUEST_APPROVE_REQ
-						.equals(permissionDetails
-								.get(KimAttributes.ACTION_REQUEST_CD))) {
-			return canTakeRequestedAction(document, user);
-		} else {
-			return false;
-		}
+		return isAuthorizedByTemplate(document, KNSConstants.KNS_NAMESPACE,
+				KimConstants.PermissionTemplateNames.VIEW_NOTE_ATTACHMENT, user
+						.getPrincipalId(), additionalPermissionDetails, null);
 	}
 
-	private boolean canClearFYI(Document document, Person user) {
-		AttributeSet permissionDetails = getPermissionDetailValues(document);
-		if (permissionDetails.containsKey(KimAttributes.ACTION_REQUEST_CD)
-				&& KEWConstants.ACTION_REQUEST_FYI_REQ.equals(permissionDetails
-						.get(KimAttributes.ACTION_REQUEST_CD))) {
-			return canTakeRequestedAction(document, user);
-		} else {
-			return false;
-		}
-	}
-
-	private boolean canAcknowledge(Document document, Person user) {
-		AttributeSet permissionDetails = getPermissionDetailValues(document);
-		if (permissionDetails.containsKey(KimAttributes.ACTION_REQUEST_CD)
-				&& KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ
-						.equals(permissionDetails
-								.get(KimAttributes.ACTION_REQUEST_CD))) {
-			return canTakeRequestedAction(document, user);
-		} else {
-			return false;
-		}
-	}
-
-	private boolean canTakeRequestedAction(Document document, Person user) {
+	private boolean canTakeRequestedAction(Document document,
+			String actionRequestCode, Person user) {
+		Map<String, String> additionalRoleQualification = new HashMap<String, String>();
+		additionalRoleQualification.put(KimAttributes.ACTION_REQUEST_CD,
+				actionRequestCode);
 		return isAuthorizedByTemplate(document, KNSConstants.KNS_NAMESPACE,
 				KimConstants.PermissionTemplateNames.TAKE_REQUESTED_ACTION,
-				user.getPrincipalId());
+				user.getPrincipalId(), null, additionalRoleQualification);
 	}
-	
+
 	@Override
 	protected void addPermissionDetails(BusinessObject businessObject,
 			Map<String, String> attributes) {
 		super.addPermissionDetails(businessObject, attributes);
 		if (businessObject instanceof Document) {
-			addStandardAttributes((Document)businessObject, attributes);
+			addStandardAttributes((Document) businessObject, attributes);
 		}
 	}
 
@@ -289,7 +240,7 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 			Map<String, String> attributes) {
 		super.addRoleQualification(businessObject, attributes);
 		if (businessObject instanceof Document) {
-			addStandardAttributes((Document)businessObject, attributes);
+			addStandardAttributes((Document) businessObject, attributes);
 		}
 	}
 
@@ -309,16 +260,5 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 		}
 		attributes.put(KimAttributes.ROUTE_STATUS_CODE, wd.getRouteHeader()
 				.getDocRouteStatus());
-
-		if (wd.isApprovalRequested()) {
-			attributes.put(KimAttributes.ACTION_REQUEST_CD,
-					KEWConstants.ACTION_REQUEST_APPROVE_REQ);
-		} else if (wd.isAcknowledgeRequested()) {
-			attributes.put(KimAttributes.ACTION_REQUEST_CD,
-					KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
-		} else if (wd.isFYIRequested()) {
-			attributes.put(KimAttributes.ACTION_REQUEST_CD,
-					KEWConstants.ACTION_REQUEST_FYI_REQ);
-		}
 	}
 }

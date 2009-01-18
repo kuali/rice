@@ -41,10 +41,9 @@
       		   TODO: code does not handle multiple lookup/conversion parameters 
       		   --%>
        		   <c:if test="${!empty attr.lookupBoClass}">
-					<kul:lookup boClassName="${attr.lookupBoClass.name}" 
-					fieldConversions="${fieldName}:document.roles[${roleIdx}].newRolePrncpl.qualifiers[${status1.index}].attrVal"
-					lookupParameters="document.roles[${roleIdx}].newRolePrncpl.qualifiers[${status1.index}].attrVal:${fieldName}" />
+       		       <kim:roleQualifierLookup role="${role}" pathPrefix="document.roles[${roleIdx}].newRolePrncpl" attr="${attr}" />
           	   </c:if>
+          	   
   			</div>
 			<%--
 			Field: ${fieldName}<br />
@@ -83,7 +82,7 @@
 			        		 <c:forEach var="qualifier" items="${rolePrncpl.qualifiers}" varStatus="status2">
 			        			    
 				        		  <c:forEach var="attrDefn" items="${role.definitions}" varStatus="status">
-				        		    <c:if test="${attrDefn.key == qualifier.qualifierKey}">
+				        		    <c:if test="${attrDefn.value.name == qualifier.kimAttribute.attributeName}">
 					        		    <c:set var="attr" value="${attrDefn.value}" />
 					        			<c:set var="fieldName" value="${attr.name}" />
 					        			<c:set var="attrEntry" value="${role.attributeEntry[fieldName]}" />
@@ -94,12 +93,10 @@
 				                		   <kul:htmlControlAttribute property="document.roles[${roleIdx}].rolePrncpls[${status1.index}].qualifiers[${status2.index}].attrVal"  attributeEntry="${attrEntry}" />
       		   <%-- 
       		   TODO: code (probably) does not pull the remote property name properly
-      		   TODO: code does not handle multiple lookup/conversion parameters 
+      		   TODO: need real multiple lookup/conversion parameters test from attributedefinitions
       		   --%>
        		   <c:if test="${!empty attr.lookupBoClass}">
-					<kul:lookup boClassName="${attr.lookupBoClass.name}" 
-					fieldConversions="${fieldName}:document.roles[${roleIdx}].rolePrncpls[${status1.index}].qualifiers[${status2.index}].attrVal"
-					lookupParameters="document.roles[${roleIdx}].rolePrncpls[${status1.index}].qualifiers[${status2.index}].attrVal:${fieldName}" />
+       		       <kim:roleQualifierLookup role="${role}" pathPrefix="document.roles[${roleIdx}].rolePrncpls[${status1.index}]" attr="${attr}" />
           	   </c:if>
 									   </div>
 									</td>

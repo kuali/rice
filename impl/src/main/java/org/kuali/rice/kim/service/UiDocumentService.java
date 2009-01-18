@@ -52,7 +52,7 @@ public interface UiDocumentService {
 	 * @param identityManagementPersonDocument
 	 * @param kimEntity
 	 */
-	void loadEntityToPersonDoc(IdentityManagementPersonDocument identityManagementPersonDocument, KimEntityImpl kimEntity);
+	void loadEntityToPersonDoc(IdentityManagementPersonDocument identityManagementPersonDocument, String principalId);
 
 	/**
 	 * 

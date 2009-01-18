@@ -158,7 +158,7 @@ public class UiDocumentServiceImplTest extends RiceTestCase {
 	public void testLoadToPersonDocument() {
 		KimEntityImpl entity = (KimEntityImpl)KIMServiceLocator.getIdentityService().getEntity("ent123");
 		IdentityManagementPersonDocument personDoc = new IdentityManagementPersonDocument();
-		uiDocumentService.loadEntityToPersonDoc(personDoc, entity);
+		uiDocumentService.loadEntityToPersonDoc(personDoc, "ent123");
         EntityEntityTypeImpl entityType = entity.getEntityTypes().get(0);
         personDoc.getExternalIdentifiers();
 		assertAddressTrue((PersonDocumentAddress)personDoc.getAddrs().get(0), (EntityAddressImpl)entityType.getAddresses().get(0));

@@ -27,10 +27,9 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
-import org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
+import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAddress;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAffiliation;
 import org.kuali.rice.kim.bo.ui.PersonDocumentCitizenship;
@@ -40,8 +39,6 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentGroup;
 import org.kuali.rice.kim.bo.ui.PersonDocumentName;
 import org.kuali.rice.kim.bo.ui.PersonDocumentPhone;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
-import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
-import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.rule.event.ui.AddGroupEvent;
 import org.kuali.rice.kim.rule.event.ui.AddRoleEvent;
@@ -51,8 +48,10 @@ import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementPersonDocumentForm;
+import org.kuali.rice.kns.datadictionary.AttributeDefinition;
+import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
+import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.web.struts.action.KualiTransactionalDocumentActionBase;
 
@@ -103,16 +102,7 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
 		// get set up person document
         String commandParam = request.getParameter(KNSConstants.PARAMETER_COMMAND);
 		if (StringUtils.isNotBlank(commandParam) && commandParam.equals(KEWConstants.INITIATE_COMMAND) && StringUtils.isNotBlank(request.getParameter(KIMPropertyConstants.Person.PRINCIPAL_ID))) {
-			// persondoc changed
-			personDoc = (IdentityManagementPersonDocument)personDocumentForm.getDocument();
-	        KimPrincipal principal = getIdentityService().getPrincipal(request.getParameter(KIMPropertyConstants.Person.PRINCIPAL_ID));
-	        personDoc.setPrincipalId(principal.getPrincipalId());
-	        personDoc.setPrincipalName(principal.getPrincipalName());
-	        personDoc.setPassword(principal.getPassword());
-			KimEntityImpl entity = (KimEntityImpl)getIdentityService().getEntity(principal.getEntityId());
-			getUiDocumentService().loadEntityToPersonDoc(personDoc, entity);
-			//List<? extends KimGroup> groups = KIMServiceLocator.getIdentityManagementService().getGroupsForPrincipal(principal.getPrincipalId());
-			//KIMServiceLocator.getUiDocumentService().loadGroupToPersonDoc(personDoc, groups);
+			getUiDocumentService().loadEntityToPersonDoc((IdentityManagementPersonDocument)personDocumentForm.getDocument(), request.getParameter(KIMPropertyConstants.Person.PRINCIPAL_ID));
 		}
 		if (StringUtils.isNotBlank(commandParam) && (commandParam.equals(KEWConstants.DOCSEARCH_COMMAND) || commandParam.equals(KEWConstants.ACTIONLIST_COMMAND))) {
 			// persondoc changed
@@ -121,21 +111,22 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
 		        KimTypeService kimTypeService = (KimTypeServiceBase)KIMServiceLocator.getService(getKimTypeServiceName(role.getKimRoleType()));
 				role.setDefinitions(kimTypeService.getAttributeDefinitions(role.getKimRoleType()));
 				// TODO : refactor qualifier key to connect between defn & qualifier
-	        	for (KimDocumentRoleMember principal : role.getRolePrncpls()) {
-	        		for (KimDocumentRoleQualifier qualifier : principal.getQualifiers()) {
-	    		        for (KimTypeAttributeImpl attrDef : role.getKimRoleType().getAttributeDefinitions()) {
-	    		        	if (qualifier.getKimAttrDefnId().equals(attrDef.getKimAttributeId())) {
-	    		        		qualifier.setQualifierKey(attrDef.getSortCode());
-	    		        	}
-	    		        }
-	        			
-	        		}
-	        	}
+//	        	for (KimDocumentRoleMember principal : role.getRolePrncpls()) {
+//	        		for (KimDocumentRoleQualifier qualifier : principal.getQualifiers()) {
+//	    		        for (KimTypeAttributeImpl attrDef : role.getKimRoleType().getAttributeDefinitions()) {
+//	    		        	if (qualifier.getKimAttrDefnId().equals(attrDef.getKimAttributeId())) {
+//	    		        		qualifier.setQualifierKey(attrDef.getSortCode());
+//	    		        	}
+//	    		        }
+//	        			
+//	        		}
+//	        	}
 	        	// when post again, it will need this during populate
 	            role.setNewRolePrncpl(new KimDocumentRoleMember());
 	            for (String key : role.getDefinitions().keySet()) {
 	            	KimDocumentRoleQualifier qualifier = new KimDocumentRoleQualifier();
-	            	qualifier.setQualifierKey(key);
+	            	//qualifier.setQualifierKey(key);
+		        	setAttrDefnIdForQualifier(qualifier,role.getDefinitions().get(key));
 	            	role.getNewRolePrncpl().getQualifiers().add(qualifier);
 	            }
 		        role.setAttributeEntry( getUiDocumentService().getAttributeEntries( role.getDefinitions() ) );
@@ -181,44 +172,41 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
         newAffln.setDocumentNumber(personDocumentForm.getPersonDocument().getDocumentNumber());
         newAffln.refreshReferenceObject("affiliationType");
         personDocumentForm.getPersonDocument().getAffiliations().add(newAffln);
-        personDocumentForm.setNewAffln(new PersonDocumentAffiliation());
-        
+        personDocumentForm.setNewAffln(new PersonDocumentAffiliation());        
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
+	
     public ActionForward deleteAffln(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
         personDocumentForm.getPersonDocument().getAffiliations().remove(getLineToDelete(request));
-
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
     public ActionForward addCitizenship(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
         PersonDocumentCitizenship newCitizenship = personDocumentForm.getNewCitizenship();
         personDocumentForm.getPersonDocument().getCitizenships().add(newCitizenship);
-        personDocumentForm.setNewCitizenship(new PersonDocumentCitizenship());
-        
+        personDocumentForm.setNewCitizenship(new PersonDocumentCitizenship());        
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
+    
     public ActionForward deleteCitizenship(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
         personDocumentForm.getPersonDocument().getCitizenships().remove(getLineToDelete(request));
-
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
     public ActionForward addEmpInfo(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
         IdentityManagementPersonDocument personDOc = personDocumentForm.getPersonDocument();
-        PersonDocumentAffiliation affiliation = personDOc.getAffiliations().get(getSelectedLine(request));
-        
+        PersonDocumentAffiliation affiliation = personDOc.getAffiliations().get(getSelectedLine(request));        
         PersonDocumentEmploymentInfo newempInfo = affiliation.getNewEmpInfo();
         newempInfo.setDocumentNumber(personDOc.getDocumentNumber());
         newempInfo.setVersionNumber(new Long(1));
         affiliation.getEmpInfos().add(newempInfo);
-        affiliation.setNewEmpInfo(new PersonDocumentEmploymentInfo());
-        
+        affiliation.setNewEmpInfo(new PersonDocumentEmploymentInfo());        
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
+    
     public ActionForward deleteEmpInfo(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
         String selectedIndexes = getSelectedParentChildIdx(request);
@@ -227,7 +215,6 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
 	        PersonDocumentAffiliation affiliation = personDocumentForm.getPersonDocument().getAffiliations().get(Integer.parseInt(indexes[0]));
 	        affiliation.getEmpInfos().remove(Integer.parseInt(indexes[1]));
         }
-        // TODO : error msg if not found ?
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
     
@@ -237,7 +224,6 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
         if (StringUtils.isNotBlank(parameterName)) {
             lineNumber = StringUtils.substringBetween(parameterName, ".line", ".");
         }
-
         return lineNumber;
     }
 
@@ -246,14 +232,13 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
         PersonDocumentName newName = personDocumentForm.getNewName();
         newName.setDocumentNumber(personDocumentForm.getDocument().getDocumentNumber());
         personDocumentForm.getPersonDocument().getNames().add(newName);
-        personDocumentForm.setNewName(new PersonDocumentName());
-        
+        personDocumentForm.setNewName(new PersonDocumentName());        
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
+    
     public ActionForward deleteName(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
         personDocumentForm.getPersonDocument().getNames().remove(getLineToDelete(request));
-
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
@@ -262,14 +247,13 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
         PersonDocumentAddress newAddress = personDocumentForm.getNewAddress();
         newAddress.setDocumentNumber(personDocumentForm.getDocument().getDocumentNumber());
         personDocumentForm.getPersonDocument().getAddrs().add(newAddress);
-        personDocumentForm.setNewAddress(new PersonDocumentAddress());
-        
+        personDocumentForm.setNewAddress(new PersonDocumentAddress());        
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
+    
     public ActionForward deleteAddress(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
         personDocumentForm.getPersonDocument().getAddrs().remove(getLineToDelete(request));
-
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
@@ -278,14 +262,13 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
         PersonDocumentPhone newPhone = personDocumentForm.getNewPhone();
         newPhone.setDocumentNumber(personDocumentForm.getDocument().getDocumentNumber());
         personDocumentForm.getPersonDocument().getPhones().add(newPhone);
-        personDocumentForm.setNewPhone(new PersonDocumentPhone());
-        
+        personDocumentForm.setNewPhone(new PersonDocumentPhone());        
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
+    
     public ActionForward deletePhone(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
         personDocumentForm.getPersonDocument().getPhones().remove(getLineToDelete(request));
-
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
@@ -294,14 +277,13 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
         PersonDocumentEmail newEmail = personDocumentForm.getNewEmail();
         newEmail.setDocumentNumber(personDocumentForm.getDocument().getDocumentNumber());
         personDocumentForm.getPersonDocument().getEmails().add(newEmail);
-        personDocumentForm.setNewEmail(new PersonDocumentEmail());
-        
+        personDocumentForm.setNewEmail(new PersonDocumentEmail());        
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
+    
     public ActionForward deleteEmail(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
         personDocumentForm.getPersonDocument().getEmails().remove(getLineToDelete(request));
-
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
@@ -314,10 +296,10 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
         }
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
+    
     public ActionForward deleteGroup(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
         personDocumentForm.getPersonDocument().getGroups().remove(getLineToDelete(request));
-
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
@@ -335,7 +317,8 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
 	        
 	        for (String key : newRole.getDefinitions().keySet()) {
 	        	KimDocumentRoleQualifier qualifier = new KimDocumentRoleQualifier();
-	        	qualifier.setQualifierKey(key);
+	        	//qualifier.setQualifierKey(key);
+	        	setAttrDefnIdForQualifier(qualifier,newRole.getDefinitions().get(key));
 	        	newRolePrncpl.getQualifiers().add(qualifier);
 	        }
 	        if (newRole.getDefinitions().isEmpty()) {
@@ -351,10 +334,20 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
     
+    private void setAttrDefnIdForQualifier(KimDocumentRoleQualifier qualifier,AttributeDefinition definition) {
+    	if (definition instanceof KimDataDictionaryAttributeDefinition) {
+    		qualifier.setKimAttrDefnId(((KimDataDictionaryAttributeDefinition)definition).getKimAttrDefnId());
+    		qualifier.refreshReferenceObject("kimAttribute");
+    	} else {
+    		qualifier.setKimAttrDefnId(((KimNonDataDictionaryAttributeDefinition)definition).getKimAttrDefnId());
+    		qualifier.refreshReferenceObject("kimAttribute");
+
+    	}
+    }
+    
     public ActionForward deleteRole(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
         personDocumentForm.getPersonDocument().getRoles().remove(getLineToDelete(request));
-
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
@@ -367,7 +360,8 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
         role.setNewRolePrncpl(new KimDocumentRoleMember());
         for (String key : role.getDefinitions().keySet()) {
         	KimDocumentRoleQualifier qualifier = new KimDocumentRoleQualifier();
-        	qualifier.setQualifierKey(key);
+        	//qualifier.setQualifierKey(key);
+        	setAttrDefnIdForQualifier(qualifier,role.getDefinitions().get(key));
         	role.getNewRolePrncpl().getQualifiers().add(qualifier);
         }
 
@@ -382,9 +376,9 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
 	        PersonDocumentRole role = personDocumentForm.getPersonDocument().getRoles().get(Integer.parseInt(indexes[0]));
 	        role.getRolePrncpls().remove(Integer.parseInt(indexes[1]));
         }
-        // TODO : error msg if not found ?
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
+    
 	@Override
 	public ActionForward save(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
@@ -404,11 +398,11 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
 					qualifier.setKimTypId(role.getKimTypeId());
 					//qualifier.getQualifierKey().substring(qualifier.getQualifierKey().indexOf(".")+1, qualifier.getQualifierKey().length());
 					// TODO : need rework to set attributedefid
-					for (KimTypeAttributeImpl attr : role.getKimRoleType().getAttributeDefinitions()) {
-						if (attr.getSortCode().equals(qualifier.getQualifierKey())) {
-							qualifier.setKimAttrDefnId(attr.getKimAttributeId());
-						}
-					}
+//					for (KimTypeAttributeImpl attr : role.getKimRoleType().getAttributeDefinitions()) {
+//						if (attr.getSortCode().equals(qualifier.getQualifierKey())) {
+//							qualifier.setKimAttrDefnId(attr.getKimAttributeId());
+//						}
+//					}
 				}
 			}
 		}

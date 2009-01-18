@@ -22,6 +22,7 @@ package org.kuali.rice.kns.datadictionary;
 public class KimNonDataDictionaryAttributeDefinition extends AttributeDefinition {
 	
 	private String sortCode;
+	protected String kimAttrDefnId;
 
 	/**
 	 * @return the sortCode
@@ -36,6 +37,14 @@ public class KimNonDataDictionaryAttributeDefinition extends AttributeDefinition
 	 */
 	public void setSortCode(String sortCode) {
 		this.sortCode = sortCode;
+	}
+
+	public String getKimAttrDefnId() {
+		return this.kimAttrDefnId;
+	}
+
+	public void setKimAttrDefnId(String kimAttrDefnId) {
+		this.kimAttrDefnId = kimAttrDefnId;
 	}
 
 }

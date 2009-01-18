@@ -28,6 +28,7 @@ import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.bo.ui.KimAttributeDataComparator;
+import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
 import org.kuali.rice.kim.dao.KimGroupDao;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
@@ -35,6 +36,8 @@ import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
+import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
+import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.web.format.Formatter;
@@ -217,7 +220,8 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
 				        List<Field> fields = new ArrayList<Field>();
 						Field typeField = new Field();
 						//String attrDefnId = mapEntry.getKey().substring(mapEntry.getKey().indexOf("."), mapEntry.getKey().length());
-						String attrDefnId = definition.getId();
+//						String attrDefnId = definition.getId();
+						String attrDefnId = getAttrDefnId(definition);
 						typeField.setFieldLabel(definition.getLabel());
 						typeField.setPropertyName(definition.getName()+"."+attrDefnId);
 						if (definition.getControl().isSelect()) {
@@ -251,6 +255,15 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
 
 	}
 	
+    private String getAttrDefnId(AttributeDefinition definition) {
+    	if (definition instanceof KimDataDictionaryAttributeDefinition) {
+    		return ((KimDataDictionaryAttributeDefinition)definition).getKimAttrDefnId();
+    	} else {
+    		return ((KimNonDataDictionaryAttributeDefinition)definition).getKimAttrDefnId();
+
+    	}
+    }
+
 	public List<Row> getGrpRows() {
 		return this.grpRows;
 	}

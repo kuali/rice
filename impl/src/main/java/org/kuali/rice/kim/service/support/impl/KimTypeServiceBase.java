@@ -284,6 +284,7 @@ public class KimTypeServiceBase implements KimTypeService {
 //		}
 		definition.setControl(control);
 		definition.setSortCode(typeAttribute.getSortCode());
+		definition.setKimAttrDefnId(typeAttribute.getKimAttributeId());
 		definition.setApplicationUrl(typeAttribute.getKimAttribute().getApplicationUrl());
 		
 		Map<String, String> lookupInputPropertyConversionsMap = new HashMap<String, String>();
@@ -353,6 +354,7 @@ public class KimTypeServiceBase implements KimTypeService {
 		definition.setName(typeAttribute.getKimAttribute().getAttributeName());
 		definition.setLabel(typeAttribute.getKimAttribute().getAttributeLabel());
 		definition.setSortCode(typeAttribute.getSortCode());
+		definition.setKimAttrDefnId(typeAttribute.getKimAttributeId());
 		return definition;
 	}
 	
@@ -370,7 +372,7 @@ public class KimTypeServiceBase implements KimTypeService {
 					definition = getDataDictionaryAttributeDefinition(typeAttribute);
 				}
 				// TODO : use id for defnid ?
-				definition.setId(typeAttribute.getKimAttributeId());
+		//		definition.setId(typeAttribute.getKimAttributeId());
 				// FIXME: I don't like this - if two attributes have the same sort code, they will overwrite each other
 				definitions.put(typeAttribute.getSortCode(), definition);
 			}

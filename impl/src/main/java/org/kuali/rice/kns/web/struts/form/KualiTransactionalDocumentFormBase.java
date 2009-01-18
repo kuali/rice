@@ -23,7 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.kns.document.TransactionalDocument;
-import org.kuali.rice.kns.document.authorization.TransactionalDocumentActionFlags;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
@@ -45,7 +44,6 @@ public class KualiTransactionalDocumentFormBase extends KualiDocumentFormBase {
         super();
 
         // create a blank DocumentActionFlags instance, since form-recreation needs it
-        setDocumentActionFlags(new TransactionalDocumentActionFlags());
         forcedReadOnlyFields = new HashMap();
     }
 

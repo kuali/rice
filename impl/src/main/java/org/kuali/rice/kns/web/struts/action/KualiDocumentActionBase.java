@@ -54,7 +54,6 @@ import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.DataDictionary;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.document.authorization.DocumentActionFlags;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase;
 import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
@@ -494,12 +493,6 @@ public class KualiDocumentActionBase extends KualiAction {
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
         Document document = kualiDocumentFormBase.getDocument();
 
-        // check authorization for reloading document
-        DocumentActionFlags flags = getDocumentActionFlags(document);
-        if (!kualiDocumentFormBase.getDocumentActions().containsKey(KNSConstants.KUALI_ACTION_CAN_RELOAD)) {
-            throw buildAuthorizationException("reload", document);
-        }
-
         // prepare for the reload action - set doc id and command
         kualiDocumentFormBase.setDocId(document.getDocumentNumber());
         kualiDocumentFormBase.setCommand(DOCUMENT_LOAD_COMMANDS[1]);
@@ -815,7 +808,7 @@ public class KualiDocumentActionBase extends KualiAction {
         KualiDocumentFormBase docForm = (KualiDocumentFormBase) form;
 
         // only want to prompt them to save if they already can save
-        if (docForm.getDocumentActionFlags().getCanSave()) {
+        if (docForm.getDocumentActions().containsKey(KNSConstants.KUALI_ACTION_CAN_SAVE)) {
             Object question = request.getParameter(KNSConstants.QUESTION_INST_ATTRIBUTE_NAME);
             // logic for close question
             if (question == null) {
@@ -1394,19 +1387,6 @@ public class KualiDocumentActionBase extends KualiAction {
         return null;
     }
 
-
-    /**
-     * Convenience method for retrieving current DocumentActionFlags
-     *
-     * @param document
-     */
-    protected DocumentActionFlags getDocumentActionFlags(Document document) {
-        Person kualiUser = GlobalVariables.getUserSession().getPerson();
-        //TODO: need remove this method later
-        //DocumentAuthorizationService documentAuthorizationService = KNSServiceLocator.getDocumentAuthorizationService();
-        //DocumentActionFlags flags = documentAuthorizationService.getDocumentAuthorizer(document).getDocumentActionFlags(document, kualiUser);
-        return new DocumentActionFlags();
-    }
 
     /**
      * Convenience method for building authorization exceptions

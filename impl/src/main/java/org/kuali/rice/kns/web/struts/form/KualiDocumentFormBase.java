@@ -37,12 +37,10 @@ import org.kuali.rice.kns.bo.AdHocRouteRecipient;
 import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.document.authorization.DocumentActionFlags;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.UrlFactory;
@@ -82,7 +80,6 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
     protected Map editingMode;
     protected Map documentActions;
     protected boolean suppressAllButtons;
-    protected DocumentActionFlags documentActionFlags;
 
     private boolean returnToActionList;
 
@@ -142,8 +139,6 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         setFormatterType("editingMode", NoOpStringFormatter.class);
         setFormatterType("editableAccounts", NoOpStringFormatter.class);
 
-        // create a blank DocumentActionFlags instance, since form-recreation needs it
-        setDocumentActionFlags(new DocumentActionFlags());
         setDocumentActions(new HashMap());
         suppressAllButtons = false;
     }
@@ -330,33 +325,11 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
     }
 
     /**
-     * Set editingMode for this document - unfortunately necessary, since validation failures bypass the normal
-     * populateAuthorizationFields call. (Unfortunate because it makes the UI just a bit easier to hack, until we have the back-end
-     * checks of editingMode et al in place.)
+     * Set editingMode for this document
      */
     public void setEditingMode(Map editingMode) {
         this.editingMode = editingMode;
     }
-
-
-    /**
-     * @return DocumentActionFlags instance indicating what actions the current user can take on this document
-     */
-    public DocumentActionFlags getDocumentActionFlags() {
-        return documentActionFlags;
-    }
-
-   
-    /**
-     * set document action flags
-     * 
-     * @param documentActionFlags
-     */
-    public void setDocumentActionFlags(DocumentActionFlags documentActionFlags) {
-        this.documentActionFlags = documentActionFlags;
-    }
-
-
     
     /**
 	 * @return the documentActions

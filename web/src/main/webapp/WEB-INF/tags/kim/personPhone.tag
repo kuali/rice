@@ -1,7 +1,7 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 <c:set var="docPhoneAttributes" value="${DataDictionary.PersonDocumentPhone.attributes}" />
-<kul:subtab lookedUpCollectionName="phone" width="${tableWidth}" subTabTitle="Phone Numbers">      
+<kul:subtab lookedUpCollectionName="phone" width="${tableWidth}" subTabTitle="Phone Numbers" noShowHideButton="true">      
         <table cellpadding=0 cellspacing=0 summary="">
           	<tr>
           		<th><div align="left">&nbsp</div></th> 

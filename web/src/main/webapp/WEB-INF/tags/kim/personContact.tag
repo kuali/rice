@@ -4,7 +4,7 @@
 <c:set var="readOnly" value="${empty KualiForm.editingMode['fullEntry']}" />
 
 
-	<kul:tab tabTitle="Contact" defaultOpen="true" tabErrorKey="document.names*,document.phones*,newName.*,newPhone.*,document.addrs*,newAddr.*,document.emails*,newEmail.*">
+	<kul:tab tabTitle="Contact" defaultOpen="false" tabErrorKey="document.names*,document.phones*,newName.*,newPhone.*,document.addrs*,newAddr.*,document.emails*,newEmail.*">
 	<div class="tab-container" align="center">
     	<h3>
     		<span class="subhead-left">Contact</span>

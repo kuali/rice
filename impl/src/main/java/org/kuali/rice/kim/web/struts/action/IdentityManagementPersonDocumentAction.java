@@ -87,15 +87,10 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
        // String methodToCall = findMethodToCall(form, request);
 		ActionForward forward;
         IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
-        IdentityManagementPersonDocument personDoc = (IdentityManagementPersonDocument)personDocumentForm.getDocument();
         if (findMethodToCall(form, request) == null) {
         	forward = mapping.findForward(KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY);
         } else {
-    		if (StringUtils.isBlank(personDoc.getPrivacy().getDocumentNumber())) {
-    			// need this if submit without saving
-    			personDoc.getPrivacy().setDocumentNumber(personDoc.getDocumentNumber());
-    		}
-    		// persondoc might be overwritten from session
+            preSaveSubmitCheck(personDocumentForm.getPersonDocument());
         	forward =  super.execute(mapping, form, request, response);
         }
 		// move the following to service
@@ -105,22 +100,10 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
 			getUiDocumentService().loadEntityToPersonDoc((IdentityManagementPersonDocument)personDocumentForm.getDocument(), request.getParameter(KIMPropertyConstants.Person.PRINCIPAL_ID));
 		}
 		if (StringUtils.isNotBlank(commandParam) && (commandParam.equals(KEWConstants.DOCSEARCH_COMMAND) || commandParam.equals(KEWConstants.ACTIONLIST_COMMAND))) {
-			// persondoc changed
-			personDoc = (IdentityManagementPersonDocument)personDocumentForm.getDocument();
+			IdentityManagementPersonDocument personDoc = (IdentityManagementPersonDocument)personDocumentForm.getDocument();
 			for (PersonDocumentRole role : personDoc.getRoles()) {
 		        KimTypeService kimTypeService = (KimTypeServiceBase)KIMServiceLocator.getService(getKimTypeServiceName(role.getKimRoleType()));
 				role.setDefinitions(kimTypeService.getAttributeDefinitions(role.getKimRoleType()));
-				// TODO : refactor qualifier key to connect between defn & qualifier
-//	        	for (KimDocumentRoleMember principal : role.getRolePrncpls()) {
-//	        		for (KimDocumentRoleQualifier qualifier : principal.getQualifiers()) {
-//	    		        for (KimTypeAttributeImpl attrDef : role.getKimRoleType().getAttributeDefinitions()) {
-//	    		        	if (qualifier.getKimAttrDefnId().equals(attrDef.getKimAttributeId())) {
-//	    		        		qualifier.setQualifierKey(attrDef.getSortCode());
-//	    		        	}
-//	    		        }
-//	        			
-//	        		}
-//	        	}
 	        	// when post again, it will need this during populate
 	            role.setNewRolePrncpl(new KimDocumentRoleMember());
 	            for (String key : role.getDefinitions().keySet()) {
@@ -385,30 +368,29 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
 			throws Exception {
 
         IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
-        IdentityManagementPersonDocument personDoc = personDocumentForm.getPersonDocument();
-//		if (StringUtils.isBlank(personDoc.getPrivacy().getDocumentNumber())) {
-//			personDoc.getPrivacy().setDocumentNumber(personDoc.getDocumentNumber());
-//		}
-		// TODO : refactor this, also probably move to service ?
-		for (PersonDocumentRole role : personDoc.getRoles()) {
-			for(KimDocumentRoleMember rolePrncpl : role.getRolePrncpls()) {
-				rolePrncpl.setDocumentNumber(personDoc.getDocumentNumber());
-				for (KimDocumentRoleQualifier qualifier : rolePrncpl.getQualifiers()) {
-					qualifier.setDocumentNumber(personDoc.getDocumentNumber());	
-					qualifier.setKimTypId(role.getKimTypeId());
-					//qualifier.getQualifierKey().substring(qualifier.getQualifierKey().indexOf(".")+1, qualifier.getQualifierKey().length());
-					// TODO : need rework to set attributedefid
-//					for (KimTypeAttributeImpl attr : role.getKimRoleType().getAttributeDefinitions()) {
-//						if (attr.getSortCode().equals(qualifier.getQualifierKey())) {
-//							qualifier.setKimAttrDefnId(attr.getKimAttributeId());
-//						}
-//					}
-				}
-			}
-		}
+        preSaveSubmitCheck(personDocumentForm.getPersonDocument());
 		return super.save(mapping, form, request, response);
 	}
 
+	private void preSaveSubmitCheck(IdentityManagementPersonDocument personDoc) {
+
+		if (StringUtils.isBlank(personDoc.getPrivacy().getDocumentNumber())) {
+			personDoc.getPrivacy().setDocumentNumber(
+					personDoc.getDocumentNumber());
+		}
+		for (PersonDocumentRole role : personDoc.getRoles()) {
+			for (KimDocumentRoleMember rolePrncpl : role.getRolePrncpls()) {
+				rolePrncpl.setDocumentNumber(personDoc.getDocumentNumber());
+				for (KimDocumentRoleQualifier qualifier : rolePrncpl
+						.getQualifiers()) {
+					qualifier.setDocumentNumber(personDoc.getDocumentNumber());
+					qualifier.setKimTypId(role.getKimTypeId());
+				}
+			}
+		}
+		
+	}
+	
 	private String getKimTypeServiceName (KimTypeImpl kimType) {
     	String serviceName = kimType.getKimTypeServiceName();
     	if (StringUtils.isBlank(serviceName)) {

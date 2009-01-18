@@ -3,7 +3,7 @@
 <c:set var="docPrivacyAttributes" value="${DataDictionary.PersonDocumentPrivacy.attributes}" />
 
 
-	<kul:tab tabTitle="Privacy Preferences" defaultOpen="true" tabErrorKey="document.privacy*">
+	<kul:tab tabTitle="Privacy Preferences" defaultOpen="false" tabErrorKey="document.privacy*">
 	<div class="tab-container" align="center">
     	<h3>
     		<span class="subhead-left">Privacy Preferences</span>

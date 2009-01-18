@@ -125,7 +125,7 @@
 		<property name="shortLabel" value="Attr Val" />
 		<property name="maxLength" value="400" />
 		<property name="validationPattern" >
-			<bean parent="AlphaNumericValidationPattern" />
+			<bean parent="AnyCharacterValidationPattern" />
 		</property>
 		<property name="control" >
 			<bean parent="TextControlDefinition"

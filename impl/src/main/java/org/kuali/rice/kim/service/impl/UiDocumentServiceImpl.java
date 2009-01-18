@@ -775,40 +775,50 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					break;
 				}
 			}
-			for (KimDocumentRoleMember principal : role.getRolePrncpls()) {
-				RoleMemberImpl rolePrincipalImpl = new RoleMemberImpl();
-				rolePrincipalImpl.setRoleId(role.getRoleId());
-				// TODO : principalId is not ready here yet ?
-				rolePrincipalImpl.setMemberId(identityManagementPersonDocument.getPrincipalId());
-				rolePrincipalImpl.setMemberTypeCode(KimRoleImpl.PRINCIPAL_MEMBER_TYPE);
-				rolePrincipalImpl.setRoleMemberId(principal.getRoleMemberId());
-				rolePrincipalImpl.setActiveFromDate(principal.getActiveFromDate());
-				rolePrincipalImpl.setActiveToDate(principal.getActiveToDate());
-				List<RoleMemberAttributeDataImpl> origAttributes = new ArrayList<RoleMemberAttributeDataImpl>();
-				for (RoleMemberImpl origMember : origRoleMembers) {
-					if (origMember.getRoleMemberId().equals(principal.getRoleMemberId())) {
-						origAttributes = origMember.getAttributes();
-						rolePrincipalImpl.setVersionNumber(origMember.getVersionNumber());
-					}
+			if (role.getRolePrncpls().isEmpty()) {
+				if (!role.getDefinitions().isEmpty()) {
+					RoleMemberImpl rolePrincipalImpl = new RoleMemberImpl();
+					rolePrincipalImpl.setRoleId(role.getRoleId());
+					rolePrincipalImpl.setMemberId(identityManagementPersonDocument.getPrincipalId());
+					rolePrincipalImpl.setMemberTypeCode(KimRoleImpl.PRINCIPAL_MEMBER_TYPE);
+					rolePrincipals.add(rolePrincipalImpl);
 				}
-				List<RoleMemberAttributeDataImpl> attributes = new ArrayList<RoleMemberAttributeDataImpl>();
-				for (KimDocumentRoleQualifier qualifier : principal.getQualifiers()) {
-					RoleMemberAttributeDataImpl attribute = new RoleMemberAttributeDataImpl();
-					attribute.setAttributeDataId(qualifier.getAttrDataId());
-					attribute.setAttributeValue(qualifier.getAttrVal());
-					attribute.setKimAttributeId(qualifier.getKimAttrDefnId());
-					attribute.setTargetPrimaryKey(qualifier.getTargetPrimaryKey());
-					attribute.setKimTypeId(qualifier.getKimTypId());
-					for (RoleMemberAttributeDataImpl origAttribute : origAttributes) {
-						if (origAttribute.getAttributeDataId().equals(qualifier.getAttrDataId())) {
-							attribute.setVersionNumber(origAttribute.getVersionNumber());
+			} else {
+				for (KimDocumentRoleMember principal : role.getRolePrncpls()) {
+					RoleMemberImpl rolePrincipalImpl = new RoleMemberImpl();
+					rolePrincipalImpl.setRoleId(role.getRoleId());
+					// TODO : principalId is not ready here yet ?
+					rolePrincipalImpl.setMemberId(identityManagementPersonDocument.getPrincipalId());
+					rolePrincipalImpl.setMemberTypeCode(KimRoleImpl.PRINCIPAL_MEMBER_TYPE);
+					rolePrincipalImpl.setRoleMemberId(principal.getRoleMemberId());
+					rolePrincipalImpl.setActiveFromDate(principal.getActiveFromDate());
+					rolePrincipalImpl.setActiveToDate(principal.getActiveToDate());
+					List<RoleMemberAttributeDataImpl> origAttributes = new ArrayList<RoleMemberAttributeDataImpl>();
+					for (RoleMemberImpl origMember : origRoleMembers) {
+						if (origMember.getRoleMemberId().equals(principal.getRoleMemberId())) {
+							origAttributes = origMember.getAttributes();
+							rolePrincipalImpl.setVersionNumber(origMember.getVersionNumber());
 						}
 					}
-
-					attributes.add(attribute);
+					List<RoleMemberAttributeDataImpl> attributes = new ArrayList<RoleMemberAttributeDataImpl>();
+					for (KimDocumentRoleQualifier qualifier : principal.getQualifiers()) {
+						RoleMemberAttributeDataImpl attribute = new RoleMemberAttributeDataImpl();
+						attribute.setAttributeDataId(qualifier.getAttrDataId());
+						attribute.setAttributeValue(qualifier.getAttrVal());
+						attribute.setKimAttributeId(qualifier.getKimAttrDefnId());
+						attribute.setTargetPrimaryKey(qualifier.getTargetPrimaryKey());
+						attribute.setKimTypeId(qualifier.getKimTypId());
+						for (RoleMemberAttributeDataImpl origAttribute : origAttributes) {
+							if (origAttribute.getAttributeDataId().equals(qualifier.getAttrDataId())) {
+								attribute.setVersionNumber(origAttribute.getVersionNumber());
+							}
+						}
+	
+						attributes.add(attribute);
+					}
+					rolePrincipalImpl.setAttributes(attributes);
+					rolePrincipals.add(rolePrincipalImpl);
 				}
-				rolePrincipalImpl.setAttributes(attributes);
-				rolePrincipals.add(rolePrincipalImpl);
 			}
 		}
 		return rolePrincipals;

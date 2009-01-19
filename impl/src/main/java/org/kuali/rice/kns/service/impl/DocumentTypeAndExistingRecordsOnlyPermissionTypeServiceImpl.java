@@ -22,46 +22,18 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
 import org.kuali.rice.kns.util.KNSConstants;
 
-/**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- */
 public class DocumentTypeAndExistingRecordsOnlyPermissionTypeServiceImpl extends
-                DocumentTypePermissionTypeServiceImpl {
-
-    protected List<String> inputRequiredAttributes = new ArrayList<String>();
-//    protected List<String> storedRequiredAttributes = new ArrayList<String>();
-
-    {
-        inputRequiredAttributes.add(KimAttributes.DOCUMENT_TYPE_NAME);
-		inputRequiredAttributes.add(KNSConstants.MAINTENANCE_ACTN);
-		
-//        storedRequiredAttributes.add(KimAttributes.DOCUMENT_TYPE_NAME);
-//		storedRequiredAttributes.add(KimAttributes.EXISTING_RECORDS_ONLY);
+		KimPermissionTypeServiceBase {
+	protected boolean performMatch(AttributeSet inputAttributeSet,
+			AttributeSet storedAttributeSet) {
+		return inputAttributeSet.get(KimAttributes.DOCUMENT_TYPE_NAME).equals(
+				storedAttributeSet.get(KimAttributes.DOCUMENT_TYPE_NAME))
+				&& (!Boolean.parseBoolean(storedAttributeSet
+						.get(KimAttributes.EXISTING_RECORDS_ONLY)) || KNSConstants.MAINTENANCE_EDIT_ACTION
+						.equals(inputAttributeSet
+								.get(KNSConstants.MAINTENANCE_ACTION)));
 	}
-    
-    
-    /**
-     * @see org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl#performPermissionMatches(org.kuali.rice.kim.bo.types.dto.AttributeSet, java.util.List)
-     */
-    @Override
-    public List<KimPermissionInfo> performPermissionMatches(AttributeSet requestedDetails,
-    		List<KimPermissionInfo> permissionsList) {
-	    List<KimPermissionInfo> matchingPermissions = new ArrayList<KimPermissionInfo>();
-	    String maintenanceAction = requestedDetails.get(KNSConstants.MAINTENANCE_ACTN);
-	    // filter the permissions based on the maintenance action requested before checking
-	    // the document hierarchy
-	    for ( KimPermissionInfo kpi : permissionsList ) {
-	    	if ( Boolean.parseBoolean(kpi.getDetails().get(KimAttributes.EXISTING_RECORDS_ONLY) ) ) {
-	    		if ( StringUtils.equals( maintenanceAction, KNSConstants.MAINTENANCE_ACTN ) ) {
-		            matchingPermissions.add(kpi);
-	    		}
-	    	} else {
-	            matchingPermissions.add(kpi);
-	        }
-	    }
-	    return super.performPermissionMatches( requestedDetails, matchingPermissions );
-    }
-    
 }

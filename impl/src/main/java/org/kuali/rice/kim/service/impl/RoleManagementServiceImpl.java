@@ -20,7 +20,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.MaxSizeMap;
+import org.kuali.rice.core.util.RiceDebugUtils;
 import org.kuali.rice.kim.bo.role.KimRole;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
@@ -34,6 +36,7 @@ import org.springframework.beans.factory.InitializingBean;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RoleManagementServiceImpl implements RoleManagementService, InitializingBean {
+	private static final Logger LOG = Logger.getLogger( RoleManagementServiceImpl.class );
 	
 	protected RoleService roleService;
 	
@@ -127,7 +130,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		}
 	}
 	
-	protected void addPrincipalHasRoleCacheToCache( String key, boolean hasRole ) {
+	protected void addPrincipalHasRoleToCache( String key, boolean hasRole ) {
 		principalHasRoleCache.put( key, new MaxAgeSoftReference<Boolean>( roleCacheMaxAgeSeconds, hasRole ) );
 	}
 		
@@ -255,6 +258,9 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	}
 
 	public boolean principalHasRole(String principalId, List<String> roleIds, AttributeSet qualification) {
+		if ( LOG.isDebugEnabled() ) {
+			logPrincipalHasRoleCheck(principalId, roleIds, qualification);
+		}
 		StringBuffer cacheKey = new StringBuffer( principalId );
 		cacheKey.append( '/' );
 		addIdsToKey( cacheKey, roleIds );
@@ -262,11 +268,17 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		addAttributesToKey( cacheKey, qualification );
 		String key = cacheKey.toString();
 		Boolean hasRole = getPrincipalHasRoleCacheCache(key);
-		if (hasRole != null) {
-			return hasRole;
+		if (hasRole == null) {
+			hasRole = getRoleService().principalHasRole(principalId, roleIds, qualification);
+			addPrincipalHasRoleToCache(key, hasRole);
+    		if ( LOG.isDebugEnabled() ) {
+    			LOG.debug( "Result: " + hasRole );
+    		}
+		} else {
+			if ( LOG.isDebugEnabled() ) {
+				LOG.debug( "Result Found in cache using key: " + key + "\nResult: " + hasRole );
+			}
 		}
-		hasRole = getRoleService().principalHasRole(principalId, roleIds, qualification);
-		addPrincipalHasRoleCacheToCache(key, hasRole);
     	return hasRole;
 	}
 
@@ -402,4 +414,23 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		return getRoleService().getRolesSearchResults(fieldValues);
 	}
 
+    protected void logPrincipalHasRoleCheck(String principalId, List<String> roleIds, AttributeSet roleQualifiers ) {
+		StringBuffer sb = new StringBuffer();
+		sb.append(  '\n' );
+		sb.append( "Has Role     : " ).append( roleIds ).append( '\n' );
+		if ( roleIds.size() == 1 ) {
+			KimRoleInfo role = getRole( roleIds.get(0));
+			sb.append( "        Name : " ).append( role.getNamespaceCode() ).append( '/').append( role.getRoleName() ).append( '\n' );
+		}
+		//.append( namespaceCode ).append( "/" ).append( permissionName ).append( '\n' );
+		sb.append( "   Principal : " ).append( principalId ).append( '\n' );
+		sb.append( "     Details :\n" );
+		if ( roleQualifiers != null ) {
+			sb.append( roleQualifiers.formattedDump( 15 ) );
+		} else {
+			sb.append( "               [null]\n" );
+		}
+		LOG.debug( sb.append( RiceDebugUtils.getTruncatedStackTrace(true) ).toString() );
+    }
+	
 }

@@ -62,8 +62,6 @@ public class IdentityManagementPersonDocument extends TransactionalDocumentBase 
 
 	protected boolean active;
 
-	// bio
-	protected List<? extends EntityBioDemographics> bios;
 	// citizenship
 	protected List<PersonDocumentCitizenship> citizenships;
 	// protected List<DocEmploymentInfo> employmentInformations;
@@ -143,14 +141,6 @@ public class IdentityManagementPersonDocument extends TransactionalDocumentBase 
 
 	public void setExternalIdentifiers(Map<String, String> externalIdentifiers) {
 		this.externalIdentifiers = externalIdentifiers;
-	}
-
-	public List<? extends EntityBioDemographics> getBios() {
-		return this.bios;
-	}
-
-	public void setBios(List<? extends EntityBioDemographics> bios) {
-		this.bios = bios;
 	}
 
 	public String getPassword() {

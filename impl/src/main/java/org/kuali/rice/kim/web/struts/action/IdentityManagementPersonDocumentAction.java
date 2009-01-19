@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.web.struts.action;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -84,13 +85,14 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-       // String methodToCall = findMethodToCall(form, request);
 		ActionForward forward;
         IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
         if (findMethodToCall(form, request) == null) {
         	forward = mapping.findForward(KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY);
         } else {
-            preSaveSubmitCheck(personDocumentForm.getPersonDocument());
+        	if (isSaveRouteMethodCall(findMethodToCall(form, request))) {
+        		preSaveSubmitCheck(personDocumentForm.getPersonDocument());
+        	}
         	forward =  super.execute(mapping, form, request, response);
         }
 		// move the following to service
@@ -368,7 +370,7 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
 			throws Exception {
 
         IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
-        preSaveSubmitCheck(personDocumentForm.getPersonDocument());
+//        preSaveSubmitCheck(personDocumentForm.getPersonDocument());
 		return super.save(mapping, form, request, response);
 	}
 
@@ -389,6 +391,11 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
 			}
 		}
 		
+	}
+	
+	private boolean isSaveRouteMethodCall(String methodToCall) {
+		String[] methods = new String[] {"save","route","approve","blanketApprove"};
+		return Arrays.asList(methods).contains(methodToCall);   
 	}
 	
 	private String getKimTypeServiceName (KimTypeImpl kimType) {

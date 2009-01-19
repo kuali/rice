@@ -67,53 +67,13 @@ public class PermissionServiceImpl implements PermissionService {
      * @see org.kuali.rice.kim.service.PermissionService#hasPermission(java.lang.String, String, java.lang.String, AttributeSet)
      */
     public boolean hasPermission(String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails) {
-//    	if ( LOG.isDebugEnabled() ) {
-//    		logHasPermissionCheck("Permission", principalId, namespaceCode, permissionName, permissionDetails);
-//    	}
     	return isAuthorized( principalId, namespaceCode, permissionName, permissionDetails, null );
     }
 
-    protected void logAuthorizationCheck(String checkType, String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
-		StringBuffer sb = new StringBuffer();
-		sb.append(  '\n' );
-		sb.append( "Is AuthZ for " ).append( checkType ).append( ": " ).append( namespaceCode ).append( "/" ).append( permissionName ).append( '\n' );
-		sb.append( "             Principal:  " ).append( principalId ).append( '\n' );
-		sb.append( "             Details:\n" );
-		if ( permissionDetails != null ) {
-			sb.append( permissionDetails.formattedDump( 25 ) );
-		} else {
-			sb.append( "                         [null]\n" );
-		}
-		sb.append( "             Qualifiers:\n" );
-		if ( qualification != null ) {
-			sb.append( qualification.formattedDump( 25 ) );
-		} else {
-			sb.append( "                         [null]\n" );
-		}
-		LOG.debug( sb.append( RiceDebugUtils.getTruncatedStackTrace(true) ).toString() );
-    }
-
-    protected void logHasPermissionCheck(String checkType, String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails ) {
-		StringBuffer sb = new StringBuffer();
-		sb.append(  '\n' );
-		sb.append( "Has Perm for " ).append( checkType ).append( ": " ).append( namespaceCode ).append( "/" ).append( permissionName ).append( '\n' );
-		sb.append( "             Principal:  " ).append( principalId ).append( '\n' );
-		sb.append( "             Details:\n" );
-		if ( permissionDetails != null ) {
-			sb.append( permissionDetails.formattedDump( 25 ) );
-		} else {
-			sb.append( "                         [null]\n" );
-		}
-		LOG.debug( sb.append( RiceDebugUtils.getTruncatedStackTrace(true) ).toString() );
-    }
-    
     /**
      * @see org.kuali.rice.kim.service.PermissionService#isAuthorized( java.lang.String, String, java.lang.String, AttributeSet, AttributeSet)
      */
     public boolean isAuthorized(String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
-    	if ( LOG.isDebugEnabled() ) {
-    		logAuthorizationCheck("Permission", principalId, namespaceCode, permissionName, permissionDetails, qualification);
-    	}
     	List<String> roleIds = getRoleIdsForPermission( namespaceCode, permissionName, permissionDetails );
     	return getRoleService().principalHasRole( principalId, roleIds, qualification );
     }
@@ -122,9 +82,6 @@ public class PermissionServiceImpl implements PermissionService {
      * @see org.kuali.rice.kim.service.PermissionService#hasPermission(String, String, String, AttributeSet)
      */
     public boolean hasPermissionByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails) {
-//    	if ( LOG.isDebugEnabled() ) {
-//    		logHasPermissionCheck("Perm Templ", principalId, namespaceCode, permissionTemplateName, permissionDetails);
-//    	}
     	return isAuthorizedByTemplateName( principalId, namespaceCode, permissionTemplateName, permissionDetails, null );
     }
 
@@ -132,9 +89,6 @@ public class PermissionServiceImpl implements PermissionService {
      * @see org.kuali.rice.kim.service.PermissionService#isAuthorized( java.lang.String, String, java.lang.String, AttributeSet, AttributeSet)
      */
     public boolean isAuthorizedByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification ) {
-    	if ( LOG.isDebugEnabled() ) {
-    		logAuthorizationCheck("Perm Templ", principalId, namespaceCode, permissionTemplateName, permissionDetails, qualification);
-    	}
     	List<String> roleIds = getRoleIdsForPermissionTemplate( namespaceCode, permissionTemplateName, permissionDetails );
     	return getRoleService().principalHasRole( principalId, roleIds, qualification );
     }

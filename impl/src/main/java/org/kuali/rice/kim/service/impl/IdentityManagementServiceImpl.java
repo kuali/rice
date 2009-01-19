@@ -7,7 +7,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.MaxSizeMap;
+import org.kuali.rice.core.util.RiceDebugUtils;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
@@ -26,6 +28,7 @@ import org.kuali.rice.kim.service.ResponsibilityService;
 import org.springframework.beans.factory.InitializingBean;
 
 public class IdentityManagementServiceImpl implements IdentityManagementService, InitializingBean {
+	private static final Logger LOG = Logger.getLogger( IdentityManagementServiceImpl.class );
 	
 	protected AuthenticationService authenticationService; 
 //	protected AuthorizationService authorizationService; 
@@ -320,14 +323,25 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     // AUTHORIZATION SERVICE
     
     public boolean hasPermission(String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails) {
+    	if ( LOG.isDebugEnabled() ) {
+    		logHasPermissionCheck("Permission", principalId, namespaceCode, permissionName, permissionDetails);
+    	}
     	StringBuffer cacheKey = new StringBuffer();
     	cacheKey.append( principalId ).append(  '/' );
     	cacheKey.append( namespaceCode ).append( '-' ).append( permissionName ).append( '/' );
     	addAttributeSetToKey( permissionDetails, cacheKey );
-    	Boolean hasPerm = getHasPermissionCache(cacheKey.toString());
+    	String key = cacheKey.toString();
+    	Boolean hasPerm = getHasPermissionCache(key);
 		if (hasPerm == null) {
 			hasPerm = getPermissionService().hasPermission( principalId, namespaceCode, permissionName, permissionDetails );
-	    	addHasPermissionToCache(cacheKey.toString(), hasPerm);
+	    	addHasPermissionToCache(key, hasPerm);
+    		if ( LOG.isDebugEnabled() ) {
+    			LOG.debug( "Result: " + hasPerm );
+    		}
+		} else {
+			if ( LOG.isDebugEnabled() ) {
+				LOG.debug( "Result Found in cache using key: " + key + "\nResult: " + hasPerm );
+			}
 		}
     	return hasPerm;        	
     }
@@ -336,29 +350,51 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     	if ( qualification == null ) {
     		return hasPermission( principalId, namespaceCode, permissionName, permissionDetails );
     	}
+    	if ( LOG.isDebugEnabled() ) {
+    		logAuthorizationCheck("Permission", principalId, namespaceCode, permissionName, permissionDetails, qualification);
+    	}
     	StringBuffer cacheKey = new StringBuffer();
     	cacheKey.append( principalId ).append(  '/' );
     	cacheKey.append( namespaceCode ).append( '-' ).append( permissionName ).append( '/' );
     	addAttributeSetToKey( permissionDetails, cacheKey );
     	cacheKey.append( '/' );
     	addAttributeSetToKey( qualification, cacheKey );
-    	Boolean isAuthorized = getIsAuthorizedFromCache( cacheKey.toString() );
+    	String key = cacheKey.toString();
+    	Boolean isAuthorized = getIsAuthorizedFromCache( key );
     	if ( isAuthorized == null ) {
     		isAuthorized = getPermissionService().isAuthorized( principalId, namespaceCode, permissionName, permissionDetails, qualification );
-    		addIsAuthorizedToCache( cacheKey.toString(), isAuthorized );
+    		addIsAuthorizedToCache( key, isAuthorized );
+    		if ( LOG.isDebugEnabled() ) {
+    			LOG.debug( "Result: " + isAuthorized );
+    		}
+		} else {
+			if ( LOG.isDebugEnabled() ) {
+				LOG.debug( "Result Found in cache using key: " + key + "\nResult: " + isAuthorized );
+			}
     	}
     	return isAuthorized;
     }
 
     public boolean hasPermissionByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails) {
+    	if ( LOG.isDebugEnabled() ) {
+    		logHasPermissionCheck("Perm Templ", principalId, namespaceCode, permissionTemplateName, permissionDetails);
+    	}
     	StringBuffer cacheKey = new StringBuffer();
     	cacheKey.append( principalId ).append(  '/' );
     	cacheKey.append( namespaceCode ).append( '-' ).append( permissionTemplateName ).append( '/' );
     	addAttributeSetToKey( permissionDetails, cacheKey );
-    	Boolean hasPerm = getHasPermissionByTemplateCache(cacheKey.toString());
+    	String key = cacheKey.toString();
+    	Boolean hasPerm = getHasPermissionByTemplateCache(key);
 		if (hasPerm == null) {
 			hasPerm = getPermissionService().hasPermissionByTemplateName( principalId, namespaceCode, permissionTemplateName, permissionDetails );
-	    	addHasPermissionByTemplateToCache(cacheKey.toString(), hasPerm);
+	    	addHasPermissionByTemplateToCache(key, hasPerm);
+    		if ( LOG.isDebugEnabled() ) {
+    			LOG.debug( "Result: " + hasPerm );
+    		}
+		} else {
+			if ( LOG.isDebugEnabled() ) {
+				LOG.debug( "Result Found in cache using key: " + key + "\nResult: " + hasPerm );
+			}
 		}
     	return hasPerm;        	
     }
@@ -367,16 +403,27 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     	if ( qualification == null ) {
     		return hasPermissionByTemplateName( principalId, namespaceCode, permissionTemplateName, permissionDetails );
     	}
+    	if ( LOG.isDebugEnabled() ) {
+    		logAuthorizationCheck("Perm Templ", principalId, namespaceCode, permissionTemplateName, permissionDetails, qualification);
+    	}
     	StringBuffer cacheKey = new StringBuffer();
     	cacheKey.append( principalId ).append(  '/' );
     	cacheKey.append( namespaceCode ).append( '-' ).append( permissionTemplateName ).append( '/' );
     	addAttributeSetToKey( permissionDetails, cacheKey );
     	cacheKey.append( '/' );
     	addAttributeSetToKey( qualification, cacheKey );
-    	Boolean isAuthorized = getIsAuthorizedByTemplateNameFromCache( cacheKey.toString() );
+    	String key = cacheKey.toString();
+    	Boolean isAuthorized = getIsAuthorizedByTemplateNameFromCache( key );
     	if ( isAuthorized == null ) {
     		isAuthorized = getPermissionService().isAuthorizedByTemplateName( principalId, namespaceCode, permissionTemplateName, permissionDetails, qualification );
-    		addIsAuthorizedByTemplateNameToCache( cacheKey.toString(), isAuthorized );
+    		addIsAuthorizedByTemplateNameToCache( key, isAuthorized );
+    		if ( LOG.isDebugEnabled() ) {
+    			LOG.debug( "Result: " + isAuthorized );
+    		}
+		} else {
+			if ( LOG.isDebugEnabled() ) {
+				LOG.debug( "Result Found in cache using key: " + key + "\nResult: " + isAuthorized );
+			}
     	}
     	return isAuthorized;
     }
@@ -762,5 +809,41 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	public void setResponsibilityCacheMaxAgeSeconds(int responsibilityCacheMaxAge) {
 		this.responsibilityCacheMaxAgeSeconds = responsibilityCacheMaxAge;
 	}
+	
+    protected void logAuthorizationCheck(String checkType, String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
+		StringBuffer sb = new StringBuffer();
+		sb.append(  '\n' );
+		sb.append( "Is AuthZ for " ).append( checkType ).append( ": " ).append( namespaceCode ).append( "/" ).append( permissionName ).append( '\n' );
+		sb.append( "             Principal:  " ).append( principalId ).append( '\n' );
+		sb.append( "             Details:\n" );
+		if ( permissionDetails != null ) {
+			sb.append( permissionDetails.formattedDump( 25 ) );
+		} else {
+			sb.append( "                         [null]\n" );
+		}
+		sb.append( "             Qualifiers:\n" );
+		if ( qualification != null ) {
+			sb.append( qualification.formattedDump( 25 ) );
+		} else {
+			sb.append( "                         [null]\n" );
+		}
+		LOG.debug( sb.append( RiceDebugUtils.getTruncatedStackTrace(true) ).toString() );
+    }
+
+    protected void logHasPermissionCheck(String checkType, String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails ) {
+		StringBuffer sb = new StringBuffer();
+		sb.append(  '\n' );
+		sb.append( "Has Perm for " ).append( checkType ).append( ": " ).append( namespaceCode ).append( "/" ).append( permissionName ).append( '\n' );
+		sb.append( "             Principal:  " ).append( principalId ).append( '\n' );
+		sb.append( "             Details:\n" );
+		if ( permissionDetails != null ) {
+			sb.append( permissionDetails.formattedDump( 25 ) );
+		} else {
+			sb.append( "                         [null]\n" );
+		}
+		LOG.debug( sb.append( RiceDebugUtils.getTruncatedStackTrace(true) ).toString() );
+    }
+    
+
 	
 }

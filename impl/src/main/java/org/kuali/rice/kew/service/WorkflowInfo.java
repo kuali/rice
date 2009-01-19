@@ -37,7 +37,6 @@ import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
 import org.kuali.rice.kew.dto.RuleDTO;
 import org.kuali.rice.kew.dto.RuleReportCriteriaDTO;
-import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -68,29 +67,6 @@ public class WorkflowInfo implements java.io.Serializable {
     	}
     	return workflowUtility;
 
-    }
-
-    /**
-     * Initializes the KSB configuration if it has not already been initialized by the application;
-     * in that case only the KEW configurer is added.
-     * @throws WorkflowException if there is an error starting the RiceConfigurer
-     */
-    private synchronized void initializeBus() throws WorkflowException {
-    	if (!isLocal() && !GlobalResourceLoader.isInitialized()) {
-    		RiceConfigurer configurer = new RiceConfigurer();
-    		configurer.setServiceNamespace(KEWConstants.KEW_MESSAGING_ENTITY);
-    		configurer.getModules().add(new KEWConfigurer());
-    		try {
-    			configurer.start();
-    		} catch (Exception e) {
-    			if (e instanceof WorkflowException) {
-    				throw (WorkflowException)e;
-    			} else if (e instanceof RuntimeException) {
-    				throw (RuntimeException)e;
-    			}
-    			throw new WorkflowException(e);
-    		}
-    	}
     }
 
     private boolean isLocal() {
@@ -276,7 +252,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @param lookFuture whether to evaluate potential future requests
      * @return whether the user is in the document's route log
      * @throws WorkflowException if an error occurs determining whether the user is in the document's route log
-     * @see WorkflowUtility#isUserInRouteLog(Long, UserIdDTO, boolean)
+     * @see WorkflowUtility#isUserInRouteLog(Long, String, boolean)
      */
     public boolean isUserAuthenticatedByRouteLog(Long routeHeaderId, String principalId, boolean lookFuture) throws WorkflowException {
         try {
@@ -292,7 +268,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @param userId the id of the user to check
      * @return whether the specified user is the final approver for the document
      * @throws WorkflowException if an error occurs determining whether the user is the final approver on the document
-     * @see WorkflowUtility#isFinalApprover(Long, UserIdDTO)
+     * @see WorkflowUtility#isFinalApprover(Long, String)
      */
     public boolean isFinalApprover(Long routeHeaderId, String principalId) throws WorkflowException {
         try {
@@ -516,7 +492,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @param nodeName name of node to check
      * @return whether the specified user is the last approver at the specified node name
      * @throws WorkflowException if an error occurs determining whether the user is the last approver at the specified node
-     * @see WorkflowUtility#isLastApproverAtNode(Long, UserIdDTO, String)
+     * @see WorkflowUtility#isLastApproverAtNode(Long, String, String)
      */
     public boolean isLastApproverAtNode(Long routeHeaderId, String principalId, String nodeName) throws WorkflowException {
         try {
@@ -643,7 +619,7 @@ public class WorkflowInfo implements java.io.Serializable {
     // DEPRECATED: as of Workflow 2.1
 
     /**
-     * @deprecated use {@link #isLastApproverAtNode(Long, UserIdDTO, String)} instead
+     * @deprecated use {@link #isLastApproverAtNode(Long, String, String) instead
      */
     protected boolean isLastApproverInRouteLevel(Long routeHeaderId, String principalId, Integer routeLevel) throws WorkflowException {
         try {
@@ -696,6 +672,21 @@ public class WorkflowInfo implements java.io.Serializable {
     public List<String> getPrincipalIdsInRouteLog(Long routeHeaderId, boolean lookFuture) throws WorkflowException {
     	try{
     		return getWorkflowUtility().getPrincipalIdsInRouteLog(routeHeaderId, lookFuture);
+    	} catch (Exception e) {
+            throw handleException(e);
+        }
+    }
+    
+    public String getDocumentInitiatorPrincipalId( Long routeHeaderId ) throws WorkflowException {
+    	try{
+    		return getWorkflowUtility().getDocumentInitiatorPrincipalId(routeHeaderId);
+    	} catch (Exception e) {
+            throw handleException(e);
+        }
+    }
+    public String getDocumentRoutedByPrincipalId( Long routeHeaderId ) throws WorkflowException {
+    	try{
+    		return getWorkflowUtility().getDocumentRoutedByPrincipalId(routeHeaderId);
     	} catch (Exception e) {
             throw handleException(e);
         }

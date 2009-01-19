@@ -141,4 +141,17 @@ public interface WorkflowUtility {
      */
     public List<String> getPrincipalIdsInRouteLog(Long routeHeaderId, boolean lookFuture) throws WorkflowException;
 
+    /**
+     * Returns the principal ID of the initiator of the given document.  <b>null</b> if the document can not be found.
+     * 
+     * @throws WorkflowException
+     */
+    public String getDocumentInitiatorPrincipalId( Long routeHeaderId ) throws WorkflowException;
+
+    /**
+     * Returns the principal ID of the user who routed the given document.  <b>null</b> if the document can not be found.
+     * 
+     * @throws WorkflowException
+     */
+    public String getDocumentRoutedByPrincipalId( Long routeHeaderId ) throws WorkflowException;
 }

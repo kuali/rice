@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
@@ -102,7 +101,6 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
     		try {
     			Long documentNumberLong = Long.parseLong(documentNumber);
     			if (INITIATOR_ROLE_NAME.equals(roleName)){
-    				workflowInfo.getDocumentDetail( documentNumberLong );
     				isUserInRouteLog = principalId.equals(workflowInfo.getDocumentInitiatorPrincipalId(documentNumberLong));
     			} else if(INITIATOR_OR_REVIEWER_ROLE_NAME.equals(roleName)){
     				isUserInRouteLog = workflowInfo.isUserAuthenticatedByRouteLog(documentNumberLong, principalId, true);

@@ -50,7 +50,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase
 								user.getPrincipalId(),
 								KNSConstants.KNS_NAMESPACE,
 								KimConstants.PermissionTemplateNames.CREATE_MAINTAIN_RECORDS,
-								permissionDetails, null);
+								permissionDetails, new AttributeSet());
 	}
 
 	public final boolean canMaintain(BusinessObject businessObject, Person user) {

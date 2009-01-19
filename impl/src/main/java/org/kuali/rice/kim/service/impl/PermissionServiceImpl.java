@@ -296,7 +296,7 @@ public class PermissionServiceImpl implements PermissionService {
     
     public boolean isPermissionDefinedForTemplateName( String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails ) {
     	// get all the permission objects whose name match that requested
-    	List<KimPermissionImpl> permissions = getPermissionImplsByName( namespaceCode, permissionTemplateName );
+    	List<KimPermissionImpl> permissions = getPermissionImplsByTemplateName( namespaceCode, permissionTemplateName );
     	// now, filter the full list by the detail passed
     	return !getMatchingPermissions( permissions, permissionDetails ).isEmpty();   
     }

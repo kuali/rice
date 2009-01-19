@@ -15,12 +15,8 @@
  */
 package org.kuali.rice.kns.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
-import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -29,11 +25,26 @@ public class DocumentTypeAndExistingRecordsOnlyPermissionTypeServiceImpl extends
 		KimPermissionTypeServiceBase {
 	protected boolean performMatch(AttributeSet inputAttributeSet,
 			AttributeSet storedAttributeSet) {
-		return inputAttributeSet.get(KimAttributes.DOCUMENT_TYPE_NAME).equals(
-				storedAttributeSet.get(KimAttributes.DOCUMENT_TYPE_NAME))
-				&& (!Boolean.parseBoolean(storedAttributeSet
-						.get(KimAttributes.EXISTING_RECORDS_ONLY)) || KNSConstants.MAINTENANCE_EDIT_ACTION
-						.equals(inputAttributeSet
-								.get(KNSConstants.MAINTENANCE_ACTION)));
+		// this type doesn't work without attributes passed in 
+		if ( inputAttributeSet == null || storedAttributeSet == null ) {
+			return false;
+		}
+		String requestedDocumentType = inputAttributeSet.get(KimAttributes.DOCUMENT_TYPE_NAME);
+		String permissionDocumentType = storedAttributeSet.get(KimAttributes.DOCUMENT_TYPE_NAME);
+		if ( requestedDocumentType == null || permissionDocumentType == null ) {
+			return false; // again, don't match if missing document types
+		}
+		// exit if document types don't match
+		if ( !requestedDocumentType.equals(permissionDocumentType) ) {
+			return false;
+		}
+		// check the existing attributes only flag
+		if ( !Boolean.parseBoolean(storedAttributeSet.get(KimAttributes.EXISTING_RECORDS_ONLY)) ) {
+			// if not set, then any document action allowed
+			return true;
+		}
+		// otherwise, only edit actions are allowed (no New/Copy)
+		return StringUtils.equals(inputAttributeSet
+				.get(KNSConstants.MAINTENANCE_ACTN), KNSConstants.MAINTENANCE_EDIT_ACTION);
 	}
 }

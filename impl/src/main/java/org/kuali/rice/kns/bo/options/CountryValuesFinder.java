@@ -31,32 +31,30 @@ public class CountryValuesFinder extends KeyValuesBase {
 
 	static List<Country> boList;
 	static Country defaultCountry;
+	static List<KeyLabelPair> labels;
 	
     /*
      * @see org.kuali.keyvalues.KeyValuesFinder#getKeyValues()
      */
     public List<KeyLabelPair> getKeyValues() {
-    	if ( boList == null ) {
-    		boList = KNSServiceLocator.getCountryService().findAllCountries();
-    		defaultCountry = KNSServiceLocator.getCountryService().getDefaultCountry();
+    	if ( labels == null ) {
+    		List<Country> boList = KNSServiceLocator.getCountryService().findAllCountries();
+    		Country defaultCountry = KNSServiceLocator.getCountryService().getDefaultCountry();
+    		labels = new ArrayList<KeyLabelPair>( boList.size() + 1 );
+    		
+	        labels.add(new KeyLabelPair("", ""));
+	        labels.add(new KeyLabelPair(defaultCountry.getPostalCountryCode(), defaultCountry.getPostalCountryName()));
+
+	        for (Country element : boList) {
+	            // Find default country code and pull it out so we can set it first in the results list later.
+	            if (!StringUtils.equals(defaultCountry.getPostalCountryCode(), element.getPostalCountryCode())) {
+	                if(element.isActive()) {
+	                	labels.add(new KeyLabelPair(element.getPostalCountryCode(), element.getPostalCountryName()));
+	                }
+	            }
+	        }
+
     	}
-        List<KeyLabelPair> keyValues = new ArrayList<KeyLabelPair>();
-
-        for (Country element : boList) {
-            
-            // Find default country code and pull it out so we can set it first in the results list later.
-            if (!StringUtils.equals(defaultCountry.getPostalCountryCode(), element.getPostalCountryCode())) {
-                if(element.isActive()) {
-                    keyValues.add(new KeyLabelPair(element.getPostalCountryCode(), element.getPostalCountryName()));
-                }
-            }
-        }
-
-        List<KeyLabelPair> keyValueUSFirst = new ArrayList<KeyLabelPair>();
-        keyValueUSFirst.add(new KeyLabelPair("", ""));
-        keyValueUSFirst.add(new KeyLabelPair(defaultCountry.getPostalCountryCode(), defaultCountry.getPostalCountryName()));
-        keyValueUSFirst.addAll(keyValues);
-
-        return keyValueUSFirst;
+        return labels;
     }
 }

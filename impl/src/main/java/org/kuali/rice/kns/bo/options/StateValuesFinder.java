@@ -28,21 +28,21 @@ import org.kuali.rice.kns.web.ui.KeyLabelPair;
  */
 public class StateValuesFinder extends KeyValuesBase {
 
-	List<State> codes;
+	private static List<KeyLabelPair> labels;
     /*
      * @see org.kuali.keyvalues.KeyValuesFinder#getKeyValues()
      */
     public List<KeyLabelPair> getKeyValues() {
-    	if ( codes == null ) {
-    		codes = KNSServiceLocator.getStateService().findAllStates();
+    	if ( labels == null ) {
+    		List<State> codes = KNSServiceLocator.getStateService().findAllStates();
+	        labels = new ArrayList<KeyLabelPair>();
+	        labels.add(new KeyLabelPair("", ""));
+	        for (State state : codes) {
+	            if(state.isActive()) {
+	                labels.add(new KeyLabelPair(state.getPostalStateCode(), state.getPostalStateName()));
+	            }
+	        }
     	}
-        List<KeyLabelPair> labels = new ArrayList<KeyLabelPair>();
-        labels.add(new KeyLabelPair("", ""));
-        for (State state : codes) {
-            if(state.isActive()) {
-                labels.add(new KeyLabelPair(state.getPostalStateCode(), state.getPostalStateName()));
-            }
-        }
 
         return labels;
     }

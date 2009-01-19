@@ -18,11 +18,11 @@ package org.kuali.rice.kns.authorization;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
-import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.service.DataDictionaryService;
@@ -219,7 +219,7 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 		if (roleQualification.get() == null) {
 			Map<String, String> attributes = new HashMap<String, String>();
 			addRoleQualification(primaryBusinessObjectOrDocument, attributes);
-			attributes.put(KIMPropertyConstants.Person.PRINCIPAL_ID,
+			attributes.put(KimAttributes.PRINCIPAL_ID,
 					GlobalVariables.getUserSession().getPerson()
 							.getPrincipalId());
 			roleQualification.set(new AttributeSet(attributes));

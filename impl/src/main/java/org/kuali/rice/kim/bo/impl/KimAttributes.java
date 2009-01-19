@@ -17,6 +17,7 @@ package org.kuali.rice.kim.bo.impl;
 
 import java.util.LinkedHashMap;
 
+import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kns.bo.Campus;
 import org.kuali.rice.kns.bo.TransientBusinessObjectBase;
 
@@ -26,6 +27,8 @@ import org.kuali.rice.kns.bo.TransientBusinessObjectBase;
 public class KimAttributes extends TransientBusinessObjectBase {
 
 	private static final long serialVersionUID = 8976113842166331719L;
+
+	public static final String PRINCIPAL_ID = KIMPropertyConstants.Person.PRINCIPAL_ID;
 	
 	public static final String BUTTON_NAME = "buttonName";
 	public static final String BEAN_NAME = "beanName";

@@ -23,7 +23,6 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.RiceDebugUtils;
 import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.role.KimRole;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
@@ -75,7 +74,10 @@ public class PermissionServiceImpl implements PermissionService {
      */
     public boolean isAuthorized(String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
     	List<String> roleIds = getRoleIdsForPermission( namespaceCode, permissionName, permissionDetails );
-    	return getRoleService().principalHasRole( principalId, roleIds, qualification );
+    	if ( roleIds.isEmpty() ) {
+    		return false;
+    	}
+		return getRoleService().principalHasRole( principalId, roleIds, qualification );
     }
 
     /**
@@ -90,6 +92,9 @@ public class PermissionServiceImpl implements PermissionService {
      */
     public boolean isAuthorizedByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification ) {
     	List<String> roleIds = getRoleIdsForPermissionTemplate( namespaceCode, permissionTemplateName, permissionDetails );
+    	if ( roleIds.isEmpty() ) {
+    		return false;
+    	}
     	return getRoleService().principalHasRole( principalId, roleIds, qualification );
     }
 
@@ -212,6 +217,9 @@ public class PermissionServiceImpl implements PermissionService {
     public List<PermissionAssigneeInfo> getPermissionAssignees( String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
     	List<PermissionAssigneeInfo> results = new ArrayList<PermissionAssigneeInfo>();
     	List<String> roleIds = getRoleIdsForPermission( namespaceCode, permissionName, permissionDetails);
+    	if ( roleIds.isEmpty() ) {
+    		return results;
+    	}
     	Collection<RoleMembershipInfo> roleMembers = getRoleService().getRoleMembers( roleIds, qualification );
     	for ( RoleMembershipInfo rm : roleMembers ) {
     		if ( rm.getMemberTypeCode().equals( KimRole.PRINCIPAL_MEMBER_TYPE ) ) {
@@ -226,6 +234,9 @@ public class PermissionServiceImpl implements PermissionService {
     public List<PermissionAssigneeInfo> getPermissionAssigneesForTemplateName( String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification ) {
     	List<PermissionAssigneeInfo> results = new ArrayList<PermissionAssigneeInfo>();
     	List<String> roleIds = getRoleIdsForPermissionTemplate( namespaceCode, permissionTemplateName, permissionDetails);
+    	if ( roleIds.isEmpty() ) {
+    		return results;
+    	}
     	Collection<RoleMembershipInfo> roleMembers = getRoleService().getRoleMembers( roleIds, qualification );
     	for ( RoleMembershipInfo rm : roleMembers ) {
     		if ( rm.getMemberTypeCode().equals( KimRole.PRINCIPAL_MEMBER_TYPE ) ) {

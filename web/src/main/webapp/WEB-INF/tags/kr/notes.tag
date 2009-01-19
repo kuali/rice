@@ -194,7 +194,7 @@
 
                             <c:if test="${allowsNoteFYI}" >
                               <td class="infoline">
-                                <c:if test="${KualiForm.documentActionFlags.canAdHocRoute}">
+                                <c:if test="${!empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_AD_HOC_ROUTE]}">
                              <kul:user userIdFieldName="${propPrefix}boNote[${status.index}].adHocRouteRecipient.id" 
                               userId="${note.adHocRouteRecipient.id}" 
                               universalIdFieldName=""
@@ -206,7 +206,7 @@
                               fieldConversions="principalName:${propPrefix}boNote[${status.index}].adHocRouteRecipient.id,name:${propPrefix}boNote[${status.index}].adHocRouteRecipient.name" 
                               lookupParameters="${propPrefix}boNote[${status.index}].adHocRouteRecipient.id:principalName" />
                             </c:if>
-                            <c:if test="${!KualiForm.documentActionFlags.canAdHocRoute}">
+                            <c:if test="${empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_AD_HOC_ROUTE]}">
                               &nbsp;
                             </c:if>
                              </td>
@@ -216,10 +216,8 @@
                           <c:if test="${allowsNoteDelete && kfunc:canDeleteNoteAttachment(KualiForm.document, attachmentTypeCode, authorUniversalIdentifier)}">
                             <html:image property="methodToCall.deleteBONote.line${status.index}" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-delete1.gif" title="Delete a Note" alt="Delete a Note" styleClass="tinybutton"/>
                           </c:if> &nbsp;
-                          <c:if test="${allowsNoteFYI && KualiForm.documentActionFlags.canAdHocRoute}" >
-                            <c:if test="${KualiForm.documentActionFlags.canAdHocRoute}">
+                          <c:if test="${allowsNoteFYI && !empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_AD_HOC_ROUTE]}" >
                               <html:image property="methodToCall.sendNoteWorkflowNotification.line${status.index}" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-send.gif" title="Send FYI" alt="Send FYI" styleClass="tinybutton"/>
-                            </c:if>
                           </c:if>  
                         </div></td>
                     </tr>

@@ -8,17 +8,27 @@
 <html-el:form method="post" action="/DocumentSearch.do" >
 <html-el:hidden property="methodToCall"/>
 <div class="tab-container" align=center>
-	<table width="100%" border=0 cellpadding=0 cellspacing=0
-			class="datatable">
-	<tr><kul:htmlAttributeHeaderCell scope="col" align="left" literalLabel="Quick EDoc Watch"/>
-		<kul:htmlAttributeHeaderCell scope="col" align="left" literalLabel="Quick EDoc Search"/>
-		<kul:htmlAttributeHeaderCell scope="col" align="left" >		
-        <html-el:select  property="namedSearch" onchange="if (this.options[this.selectedIndex].value != 'ignore') { this.value = this.options[this.selectedIndex].value; document.forms[0].methodToCall.value='doDocSearch'; document.forms[0].target = '_blank'; document.forms[0].submit(); }">
-          <html-el:options collection="namedSearches" labelProperty="value" property="key" filter="false"/>
-        </html-el:select>
-        </kul:htmlAttributeHeaderCell>
-	</tr>   			
-	<tr>	<td class="datacell" valign=top>	<ul>
+	<table width="100%" border=0 cellpadding=0 cellspacing=0>
+	<tr>
+	<td width=100%  background="../kr/images/masthead1.gif">
+	<table width="100%" border=0 cellspacing=0 cellpadding=0 align="center" class="datatable">
+		<tr><td colspan=3 >&nbsp;</td></tr>    
+		<tr><kul:htmlAttributeHeaderCell scope="col" align="left" literalLabel="Quick EDoc Watch"/>
+			<kul:htmlAttributeHeaderCell scope="col" align="left" literalLabel="Quick EDoc Search"/>
+			<kul:htmlAttributeHeaderCell scope="col" align="left" >		
+        		<html-el:select  property="namedSearch" onchange="if (this.options[this.selectedIndex].value != 'ignore') { this.value = this.options[this.selectedIndex].value; document.forms[0].methodToCall.value='doDocSearch'; document.forms[0].target = '_blank'; document.forms[0].submit(); }">
+          			<html-el:options collection="namedSearches" labelProperty="value" property="key" filter="false"/>
+        		</html-el:select>
+        	</kul:htmlAttributeHeaderCell>
+    	</tr>
+    	<tr><td colspan=3 >&nbsp;</td></tr>    
+    </table>
+    </td>    
+	</tr>		
+	<tr>	
+	<td width=100% >
+	<table width="100%" border=0 cellspacing=0 cellpadding=0 align="center" class="datatable">
+	<tr><td lass="datacell" valign=top>	<ul>
 	<c:forEach begin="0" end="4" var="watchedDoc" items="${QuickLinksForm.watchedDocuments}" >
 		<li><a target="_blank" title="<c:out value="${watchedDoc.documentTitle}"/>" href="DocHandler.do?docId=<c:out value="${watchedDoc.documentHeaderId}" />&command=displayDocSearchView"><c:out value="${watchedDoc.documentHeaderId}" /></a>: <c:out value="${watchedDoc.documentStatusCode}" /> <a target="_blank" href="RouteLog.do?routeHeaderId=<c:out value="${watchedDoc.documentHeaderId}"/>">Route Log</a></li>
 	</c:forEach>
@@ -30,12 +40,24 @@
         </ul>
       </td>
 	</tr>
-    <tr>
-      <kul:htmlAttributeHeaderCell scope="col" align="left" literalLabel="Quick Action List"/>
+	</table>
+	</td>
+	</tr>
+	<tr>
+	<td width=100%  background="../kr/images/masthead1.gif">
+	<table width="100%" border=0 cellspacing=0 cellpadding=0 align="center" class="datatable">
+    <tr><td colspan=3 >&nbsp;</td></tr>    
+    <tr>  <kul:htmlAttributeHeaderCell scope="col" align="left" literalLabel="Quick Action List"/>
       <kul:htmlAttributeHeaderCell scope="col" align="left" literalLabel="Quick EDoc Initiate"/>
       <td>&nbsp;</td>
     </tr>
-    <tr>
+    <tr><td colspan=3 >&nbsp;</td></tr>    
+    </table>
+    </td>
+    </tr>    
+    <tr><td width=100% >
+	<table width="100%" border=0 cellspacing=0 cellpadding=0 align="center" class="datatable">
+	<tr>
       <td class="datacell" >
 		<ul>
 		  <c:forEach begin="0" end="4" var="actionListStat" items="${QuickLinksForm.actionListStats}" >
@@ -51,7 +73,10 @@
         </ul>
       </td>
       <td width=20>&nbsp;</td>
-    </tr> 
+    </tr>        
+    </table>
+    </td>
+    </tr>    
 </table>
 </html-el:form>
 </body>

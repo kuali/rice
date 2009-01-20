@@ -157,11 +157,10 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 
 	public final boolean canReceiveAdHoc(Document document, Person user,
 			String actionRequestCode) {
-		return true;
-		/*return isAuthorizedByTemplate(document,
+		return isAuthorizedByTemplate(document,
 				KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE,
 				KimConstants.PermissionTemplateNames.AD_HOC_REVIEW_DOCUMENT,
-				user.getPrincipalId());*/
+				user.getPrincipalId());
 	}
 
 	public final boolean canOpen(Document document, Person user) {

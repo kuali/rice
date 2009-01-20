@@ -16,74 +16,73 @@
 package org.kuali.rice.kew.role.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
 
 /**
- *
+ * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- *
+ * 
  */
-public class ActionRequestDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServiceBase {
-	private static final String ACTION_REQUEST_RECIPIENT_ROLE_NAME = "Action Request Recipient";
+public class ActionRequestDerivedRoleTypeServiceImpl extends
+		KimDerivedRoleTypeServiceBase {
+	private static final String APPROVE_REQUEST_RECIPIENT_ROLE_NAME = "Approve Request Recipient";
+	private static final String ACKNOWLEDGE_REQUEST_RECIPIENT_ROLE_NAME = "Acknowledge Request Recipient";
+	private static final String FYI_REQUEST_RECIPIENT_ROLE_NAME = "FYI Request Recipient";
+	protected WorkflowInfo workflowInfo = new WorkflowInfo();
+	protected ThreadLocal<Map<String, RouteHeaderDTO>> routeHeaderCache = new ThreadLocal<Map<String, RouteHeaderDTO>>();
 
-	protected List<String> requiredAttributes = new ArrayList<String>();
-	{
-		requiredAttributes.add(KimAttributes.DOCUMENT_NUMBER);
-		requiredAttributes.add(KimAttributes.ACTION_REQUEST_CD);
-	}
-
-    /**
-	 *	Attributes:
-	 *	Document Id
-	 *	Action Request Code
-	 *
-	 *	Requirements:
-	 *	- the only role that will be of this type is KR-WKFLW Action Request Recipient
-	 *	- users who have a pending action request of the given type for the document in question should be considered to be in this role
-     *
-     *  Action Requests - Approve, Complete, Clear FYI, Acknowledge
-     *
-     * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#getPrincipalIdsFromApplicationRole(java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
-     */
-    @Override
-    public List<String> getPrincipalIdsFromApplicationRole(String namespaceCode, String roleName, AttributeSet qualification){
-    	validateRequiredAttributesAgainstReceived(requiredAttributes, qualification, QUALIFICATION_RECEIVED_ATTIBUTES_NAME);
-
-    	String documentNumber = qualification.get(KimAttributes.DOCUMENT_NUMBER);
-		String actionRequestCode = qualification.get(KimAttributes.ACTION_REQUEST_CD);
+	@Override
+	public List<String> getPrincipalIdsFromApplicationRole(
+			String namespaceCode, String roleName, AttributeSet qualification) {
 		List<String> principalIds = new ArrayList<String>();
-		if(ACTION_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName)){
-			try{
-				WorkflowInfo workflowInfo = new WorkflowInfo();
-				principalIds.addAll(
-						workflowInfo.getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(
-								actionRequestCode, Long.parseLong(documentNumber)));
-			} catch (NumberFormatException e) {
-				throw new RuntimeException("Invalid (non-numeric) document number: "+documentNumber);
-			} catch(WorkflowException wex){
-				throw new RuntimeException("Unable to get principal Ids with pending request " +
-						"for actionRequestCode: "+actionRequestCode+" and document number: "+documentNumber);
-			}
+		if (qualification.containsKey(KimAttributes.PRINCIPAL_ID)
+				&& hasApplicationRole(qualification
+						.get(KimAttributes.PRINCIPAL_ID), null, namespaceCode,
+						roleName, qualification)) {
+			principalIds.add(qualification.get(KimAttributes.PRINCIPAL_ID));
 		}
 		return principalIds;
-    }
-
-    /***
-     * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#hasApplicationRole(java.lang.String, java.util.List, java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
-     */
-    @Override
-	public boolean hasApplicationRole(
-			String principalId, List<String> groupIds, String namespaceCode, String roleName, AttributeSet qualification){
-		validateRequiredAttributesAgainstReceived(requiredAttributes, qualification, QUALIFICATION_RECEIVED_ATTIBUTES_NAME);
-		String documentNumber = qualification.get(KimAttributes.DOCUMENT_NUMBER);
-		return KEWServiceLocator.getActionRequestService().doesPrincipalHaveRequest(principalId, Long.parseLong(documentNumber));
 	}
 
+	@Override
+	public boolean hasApplicationRole(String principalId,
+			List<String> groupIds, String namespaceCode, String roleName,
+			AttributeSet qualification) {
+		try {
+			if (routeHeaderCache.get() == null) {
+				routeHeaderCache.set(new HashMap<String, RouteHeaderDTO>());
+			}
+			String cacheKey = principalId
+					+ qualification.get(KimAttributes.DOCUMENT_NUMBER);
+			if (!routeHeaderCache.get().containsKey(cacheKey)) {
+				routeHeaderCache.get().put(
+						cacheKey,
+						workflowInfo.getRouteHeader(principalId, Long
+								.parseLong(qualification
+										.get(KimAttributes.DOCUMENT_NUMBER))));
+			}
+			if (APPROVE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName)) {
+				return routeHeaderCache.get().get(cacheKey)
+						.isApproveRequested();
+			}
+			if (ACKNOWLEDGE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName)) {
+				return routeHeaderCache.get().get(cacheKey).isAckRequested();
+			}
+			if (FYI_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName)) {
+				return routeHeaderCache.get().get(cacheKey).isFyiRequested();
+			}
+			return false;
+		} catch (WorkflowException e) {
+			throw new RuntimeException("Unable to load route header", e);
+		}
+	}
 }

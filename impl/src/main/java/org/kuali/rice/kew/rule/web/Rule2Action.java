@@ -202,7 +202,7 @@ public class Rule2Action extends WorkflowAction {
             defaultRule.setCurrentInd(null);
             defaultRule.setDeactivationDate(null);
             defaultRule.setDocTypeName(null);
-            defaultRule.setLockVerNbr(null);
+            defaultRule.setVersionNumber(null);
             defaultRule.setRuleBaseValuesId(null);
             defaultRule.setTemplateRuleInd(Boolean.FALSE);
             defaultRule.setVersionNbr(null);
@@ -411,7 +411,7 @@ public class Rule2Action extends WorkflowAction {
                 defaultRule.setCurrentInd(null);
                 defaultRule.setDeactivationDate(null);
                 defaultRule.setDocTypeName(null);
-                defaultRule.setLockVerNbr(null);
+                defaultRule.setVersionNumber(null);
                 defaultRule.setRuleBaseValuesId(null);
                 defaultRule.setTemplateRuleInd(Boolean.FALSE);
                 defaultRule.setVersionNbr(null);

@@ -404,14 +404,14 @@ public class WebRuleResponsibility extends RuleResponsibility {
 			delegation.setRuleResponsibilityId(null);
 
 			RuleBaseValues rule = delegation.getDelegationRuleBaseValues();
-			rule.setLockVerNbr(null);
+			rule.setVersionNumber(null);
 			rule.setPreviousVersionId(rule.getRuleBaseValuesId());
 			rule.setRouteHeaderId(null);
 			rule.setRuleBaseValuesId(null);
 
 			for (Iterator iterator = rule.getResponsibilities().iterator(); iterator.hasNext();) {
 				RuleResponsibility responsibility = (RuleResponsibility) iterator.next();
-				responsibility.setLockVerNbr(null);
+				responsibility.setVersionNumber(null);
 				responsibility.setRuleBaseValuesId(null);
 				responsibility.setRuleBaseValues(rule);
 				responsibility.setRuleResponsibilityKey(null);

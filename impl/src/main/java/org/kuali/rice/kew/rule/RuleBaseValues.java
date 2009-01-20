@@ -101,9 +101,6 @@ public class RuleBaseValues extends PersistableBusinessObjectBase {
 	private Boolean currentInd;
     @Column(name="RULE_VER_NBR")
 	private Integer versionNbr;
-    @Version
-	@Column(name="VER_NBR")
-	private Integer lockVerNbr;
     @Column(name="IGNR_PRVS")
 	private Boolean ignorePrevious;
     @Fetch(value = FetchMode.SUBSELECT)
@@ -279,7 +276,7 @@ public class RuleBaseValues extends PersistableBusinessObjectBase {
                 if (counter.intValue() == location) {
                     ruleResponsibilityRow.setPriority(ruleResponsibility.getPriority());
                     ruleResponsibilityRow.setActionRequestedCd(ruleResponsibility.getActionRequestedCd());
-                    ruleResponsibilityRow.setLockVerNbr(ruleResponsibility.getLockVerNbr());
+                    ruleResponsibilityRow.setVersionNumber(ruleResponsibility.getVersionNumber());
                     ruleResponsibilityRow.setRuleBaseValuesId(ruleResponsibility.getRuleBaseValuesId());
                     ruleResponsibilityRow.setRuleResponsibilityName(ruleResponsibility.getRuleResponsibilityName());
                     ruleResponsibilityRow.setRuleResponsibilityType(ruleResponsibility.getRuleResponsibilityType());
@@ -383,14 +380,6 @@ public class RuleBaseValues extends PersistableBusinessObjectBase {
 
     public void setFromDate(Timestamp fromDate) {
         this.fromDate = fromDate;
-    }
-
-    public Integer getLockVerNbr() {
-        return lockVerNbr;
-    }
-
-    public void setLockVerNbr(Integer lockVerNbr) {
-        this.lockVerNbr = lockVerNbr;
     }
 
     public String getDescription() {
@@ -681,7 +670,6 @@ public class RuleBaseValues extends PersistableBusinessObjectBase {
         mapper.put("ruleTemplateId", ruleTemplateId);
         mapper.put("returnUrl", returnUrl);
         mapper.put("responsibilities", responsibilities == null ? responsibilities : "size: " + responsibilities.size());
-        mapper.put("lockVerNbr", lockVerNbr);
 		return mapper;
 	}
 

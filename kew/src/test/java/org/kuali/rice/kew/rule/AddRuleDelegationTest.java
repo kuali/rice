@@ -284,7 +284,7 @@ public class AddRuleDelegationTest extends KEWTestCase {
 				defaultRule.setCurrentInd(null);
 				defaultRule.setDeactivationDate(null);
 				defaultRule.setDocTypeName(null);
-				defaultRule.setLockVerNbr(null);
+				defaultRule.setVersionNumber(null);
 				defaultRule.setRuleBaseValuesId(null);
 				defaultRule.setTemplateRuleInd(Boolean.FALSE);
 				defaultRule.setVersionNbr(null);

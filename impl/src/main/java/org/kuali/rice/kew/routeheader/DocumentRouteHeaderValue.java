@@ -37,7 +37,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.persistence.Version;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -150,9 +149,6 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase {
 	private java.lang.String appDocId;
     @Column(name="DOC_VER_NBR")
     private java.lang.Integer docVersion = new Integer(KEWConstants.DOCUMENT_VERSION_NODAL);
-    @Version
-	@Column(name="VER_NBR")
-	private java.lang.Integer jrfVerNbr;
     @Column(name="INITR_PRNCPL_ID")
 	private java.lang.String initiatorWorkflowId;
     @Column(name="RTE_PRNCPL_ID")
@@ -432,14 +428,6 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase {
 
     public void setRoutedByUserWorkflowId(java.lang.String routedByUserWorkflowId) {
         this.routedByUserWorkflowId = routedByUserWorkflowId;
-    }
-
-    public java.lang.Integer getJrfVerNbr() {
-        return jrfVerNbr;
-    }
-
-    public void setJrfVerNbr(java.lang.Integer jrfVerNbr) {
-        this.jrfVerNbr = jrfVerNbr;
     }
 
     public java.lang.Long getRouteHeaderId() {

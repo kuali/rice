@@ -33,7 +33,7 @@
     <field-descriptor name="docVersion"  column="DOC_VER_NBR"  jdbc-type="INTEGER" />
     <field-descriptor name="initiatorWorkflowId" column="INITR_PRNCPL_ID"  jdbc-type="VARCHAR" />
     <field-descriptor name="routedByUserWorkflowId" column="RTE_PRNCPL_ID"  jdbc-type="VARCHAR" />
-    <field-descriptor name="jrfVerNbr" column="VER_NBR" jdbc-type="INTEGER" locking="true" />
+    <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <collection-descriptor element-class-ref="org.kuali.rice.kew.actionitem.ActionItem" auto-retrieve="true" auto-update="false"
       auto-delete="true" name="actionItems">
       <inverse-foreignkey field-ref="routeHeaderId" />
@@ -119,7 +119,7 @@
     <field-descriptor name="appDocId" column="APP_DOC_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="docVersion"  column="DOC_VER_NBR"  jdbc-type="INTEGER" />
     <field-descriptor name="initiatorWorkflowId" column="INITR_PRNCPL_ID"  jdbc-type="VARCHAR" />
-    <field-descriptor name="jrfVerNbr" column="VER_NBR" jdbc-type="INTEGER" locking="true" />
+    <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kew.actionitem.ActionItem" table="KREW_ACTN_ITM_T">
@@ -474,7 +474,7 @@
     <field-descriptor column="ACTV_IND" name="active" jdbc-type="BIT" />
     <field-descriptor column="DSPL_ORD" name="displayOrder" jdbc-type="INTEGER" />
     <field-descriptor column="DFLT_VAL" name="defaultValue" jdbc-type="VARCHAR" />
-    <field-descriptor column="VER_NBR" name="versionNumber" locking="true" />
+    <field-descriptor column="VER_NBR" name="versionNumber" jdbc-type="BIGINT" locking="true" />
     <reference-descriptor class-ref="org.kuali.rice.kew.rule.bo.RuleAttribute" name="ruleAttribute"
       auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="ruleAttributeId" />
@@ -509,7 +509,7 @@
     <field-descriptor column="PREV_RULE_VER_NBR" name="previousVersionId" jdbc-type="BIGINT" />
     <field-descriptor column="DLGN_IND" name="delegateRule" jdbc-type="BIT" />
     <field-descriptor column="ACTVN_DT" name="activationDate" jdbc-type="TIMESTAMP" />
-    <field-descriptor column="VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true" />
+    <field-descriptor column="VER_NBR" name="versionNumber" jdbc-type="BIGINT" locking="true" />
     <reference-descriptor name="ruleTemplate" class-ref="org.kuali.rice.kew.rule.bo.RuleTemplate"
         auto-delete="false" auto-retrieve="true" auto-update="false">
         <foreignkey field-ref="ruleTemplateId" />
@@ -560,7 +560,7 @@
     <field-descriptor column="NM" name="ruleResponsibilityName" jdbc-type="VARCHAR" />
     <field-descriptor column="TYP" name="ruleResponsibilityType" jdbc-type="VARCHAR" />
     <field-descriptor column="APPR_PLCY" name="approvePolicy" jdbc-type="CHAR" />
-    <field-descriptor column="VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true" />
+    <field-descriptor column="VER_NBR" name="versionNumber" jdbc-type="BIGINT" locking="true" />
 
 	  <reference-descriptor class-ref="org.kuali.rice.kew.rule.RuleBaseValues" name="ruleBaseValues" auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="ruleBaseValuesId" />

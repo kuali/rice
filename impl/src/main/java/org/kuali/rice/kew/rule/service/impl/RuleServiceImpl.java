@@ -1447,7 +1447,7 @@ public class RuleServiceImpl implements RuleService {
         rule.setRuleBaseValuesId(null);
         rule.setActivationDate(null);
         rule.setDeactivationDate(null);
-        rule.setLockVerNbr(0);
+        rule.setVersionNumber(0L);
         rule.setRouteHeaderId(documentId);
 
         // TODO: FIXME: need to copy the rule expression here too?
@@ -1459,7 +1459,7 @@ public class RuleServiceImpl implements RuleService {
             responsibility.setRuleBaseValues(rule);
             responsibility.setRuleBaseValuesId(null);
             responsibility.setRuleResponsibilityKey(null);
-            responsibility.setLockVerNbr(0);
+            responsibility.setVersionNumber(0L);
             rule.getResponsibilities().add(responsibility);
             responsibility.setDelegationRules(new ArrayList());
             for (RuleDelegation existingDelegation : (List<RuleDelegation>)existingResponsibility.getDelegationRules()) {

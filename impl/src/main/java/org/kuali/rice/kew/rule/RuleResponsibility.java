@@ -76,9 +76,6 @@ public class RuleResponsibility extends PersistableBusinessObjectBase {
 	private String ruleResponsibilityName;
     @Column(name="TYP")
 	private String ruleResponsibilityType;
-    @Version
-	@Column(name="VER_NBR")
-	private Integer lockVerNbr;
     @Column(name="PRIO")
 	private Integer priority;
     @Column(name="APPR_PLCY")
@@ -166,14 +163,6 @@ public class RuleResponsibility extends PersistableBusinessObjectBase {
 
     public void setActionRequestedCd(String actionRequestedCd) {
         this.actionRequestedCd = actionRequestedCd;
-    }
-
-    public Integer getLockVerNbr() {
-        return lockVerNbr;
-    }
-
-    public void setLockVerNbr(Integer lockVerNbr) {
-        this.lockVerNbr = lockVerNbr;
     }
 
     public Long getRuleResponsibilityKey() {

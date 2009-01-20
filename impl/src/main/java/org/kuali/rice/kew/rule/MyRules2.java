@@ -54,7 +54,7 @@ public class MyRules2 implements Serializable {
             if (counter != null && counter.intValue() == location) {
                 ruleRow.setActiveInd(rule.getActiveInd());
                 ruleRow.setCurrentInd(rule.getCurrentInd());
-                ruleRow.setLockVerNbr(rule.getLockVerNbr());
+                ruleRow.setVersionNumber(rule.getVersionNumber());
                 ruleRow.setDescription(rule.getDescription());
                 ruleRow.setIgnorePrevious(rule.getIgnorePrevious());
                 ruleRow.setDocTypeName(rule.getDocTypeName());

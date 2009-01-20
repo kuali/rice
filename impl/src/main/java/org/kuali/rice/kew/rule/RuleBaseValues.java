@@ -38,7 +38,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.persistence.Version;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -139,6 +138,7 @@ public class RuleBaseValues extends PersistableBusinessObjectBase {
     private MyColumns myColumns;
     @Transient
     private List<PersonRuleResponsibility> personResponsibilities;
+    @Transient
     private List<GroupRuleResponsibility> groupResponsibilities;
 
     public RuleBaseValues() {

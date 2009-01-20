@@ -45,6 +45,7 @@ import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.AdHocRoutePerson;
 import org.kuali.rice.kns.bo.AdHocRouteRecipient;
 import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
@@ -118,7 +119,7 @@ public class KualiDocumentActionBase extends KualiAction {
     private BusinessObjectService businessObjectService;
     private BusinessObjectMetaDataService businessObjectMetaDataService;
     private EntityManagerFactory entityManagerFactory;
-    
+
 	protected void checkAuthorization( ActionForm form, String methodToCall ) throws AuthorizationException {
         if ( !(form instanceof KualiDocumentFormBase) ) {
             super.checkAuthorization(form, methodToCall);
@@ -482,7 +483,7 @@ public class KualiDocumentActionBase extends KualiAction {
     public ActionForward sendAdHocRequests(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
     	Document document = kualiDocumentFormBase.getDocument();
-    	
+
     	getDocumentService().sendAdHocRequests(document, kualiDocumentFormBase.getAnnotation(), combineAdHocRecipients(kualiDocumentFormBase));
     	GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_SEND_AD_HOC_REQUESTS_SUCCESSFUL);
     	return mapping.findForward(RiceConstants.MAPPING_BASIC);
@@ -533,6 +534,8 @@ public class KualiDocumentActionBase extends KualiAction {
      */
     public ActionForward save(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
+        //get any possible changes to to adHocWorkgroups
+        refreshAdHocRoutingWorkgroupLookups(request, kualiDocumentFormBase);
         Document document = kualiDocumentFormBase.getDocument();
 
         // save in workflow
@@ -930,29 +933,61 @@ public class KualiDocumentActionBase extends KualiAction {
     protected void refreshAdHocRoutingWorkgroupLookups(HttpServletRequest request, KualiDocumentFormBase kualiForm) throws InvalidWorkgroupException, WorkflowException {
         for (Enumeration i = request.getParameterNames(); i.hasMoreElements();) {
             String parameterName = (String) i.nextElement();
-            // TODO replace this with the workflow workgroup service call
-            // once it is done
-            // can kuali workgroup service work here it is backed by workflow groups
-            if (parameterName.equals("newAdHocRouteWorkgroup.id") && !"".equals(request.getParameter(parameterName))) {
-            	// FIXME: workgroup IDs are not necessarily numeric
-                if (Long.parseLong(request.getParameter(parameterName)) > 0) {
-                	KimGroup group = getIdentityManagementService().getGroup(request.getParameter(parameterName));
-                    kualiForm.getNewAdHocRouteWorkgroup().setId(group.getGroupId());
+            if (parameterName.equals("newAdHocRouteWorkgroup.recipientName") && !"".equals(request.getParameter(parameterName))) {
+                //check for namespace
+                String namespace = KimConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE;
+                if (request.getParameter("newAdHocRouteWorkgroup.recipientNamespaceCode") != null && !"".equals(request.getParameter("newAdHocRouteWorkgroup.recipientName").trim())) {
+                    namespace = request.getParameter("newAdHocRouteWorkgroup.recipientNamespaceCode").trim();
                 }
-                else {
+                KimGroup group = getIdentityManagementService().getGroupByName(namespace, request.getParameter(parameterName));
+                if (group != null) {
+                    kualiForm.getNewAdHocRouteWorkgroup().setId(group.getGroupId());
+                    kualiForm.getNewAdHocRouteWorkgroup().setRecipientName(group.getGroupName());
+                    kualiForm.getNewAdHocRouteWorkgroup().setRecipientNamespaceCode(group.getNamespaceCode());
+                } else {
                     throw new RuntimeException("Invalid workgroup id passed as parameter.");
                 }
             }
             if (parameterName.startsWith("adHocRouteWorkgroup[") && !"".equals(request.getParameter(parameterName))) {
-                if (Long.getLong(request.getParameter(parameterName)) != null) {
-                	KimGroup group = getIdentityManagementService().getGroup(request.getParameter(parameterName));
+                if (parameterName.endsWith(".recipientName")) {
                     int lineNumber = Integer.parseInt(StringUtils.substringBetween(parameterName, "[", "]"));
-                    kualiForm.getAdHocRouteWorkgroup(lineNumber).setId(group.getGroupName());
-                }
-                else {
-                    throw new RuntimeException("Invalid workgroup id passed as parameter.");
+                  //check for namespace
+                    String namespaceParam = "adHocRouteWorkgroup[" + lineNumber + "].recipientNamespaceCode";
+                    String namespace = KimConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE;
+                    if (request.getParameter(namespaceParam) != null && !"".equals(request.getParameter(namespaceParam).trim())) {
+                        namespace = request.getParameter(namespaceParam).trim();
+                    }
+                    KimGroup group = getIdentityManagementService().getGroupByName(namespace, request.getParameter(parameterName));
+                    if (group != null) {
+                        kualiForm.getAdHocRouteWorkgroup(lineNumber).setId(group.getGroupId());
+                        kualiForm.getAdHocRouteWorkgroup(lineNumber).setRecipientName(group.getGroupName());
+                        kualiForm.getAdHocRouteWorkgroup(lineNumber).setRecipientNamespaceCode(group.getNamespaceCode());
+                    } else {
+                        throw new RuntimeException("Invalid workgroup id passed as parameter.");
+                    }
                 }
             }
+            /*
+            if (parameterName.startsWith("newAdHocRouteWorkgroup[") && !"".equals(request.getParameter(parameterName))) {
+                if (parameterName.endsWith(".recipientName")) {
+                    int lineNumber = Integer.parseInt(StringUtils.substringBetween(parameterName, "[", "]"));
+                  //check for namespace
+                    String namespaceParam = "newAdHocRouteWorkgroup[" + lineNumber + "].recipientNamespaceCode";
+                    String namespace = KimConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE;
+                    if (request.getParameter(namespaceParam) != null && !"".equals(request.getParameter(namespaceParam).trim())) {
+                        namespace = request.getParameter(namespaceParam).trim();
+                    }
+                    KimGroup group = getIdentityManagementService().getGroupByName(namespace, request.getParameter(parameterName));
+                    if (group != null) {
+                        kualiForm.getAdHocRouteWorkgroup(lineNumber).setId(group.getGroupId());
+                        kualiForm.getAdHocRouteWorkgroup(lineNumber).setRecipientName(group.getGroupName());
+                        kualiForm.getAdHocRouteWorkgroup(lineNumber).setRecipientNamespaceCode(group.getNamespaceCode());
+                    } else {
+                        throw new RuntimeException("Invalid workgroup id passed as parameter.");
+                    }
+                }
+            }
+            */
         }
     }
 
@@ -1075,7 +1110,7 @@ public class KualiDocumentActionBase extends KualiAction {
         Document document = kualiDocumentFormBase.getDocument();
         Note newNote = kualiDocumentFormBase.getNewNote();
         String attachmentTypeCode = null;
-        
+
         if(newNote.getAttachment() != null){
         	attachmentTypeCode = newNote.getAttachment().getAttachmentTypeCode();
         }
@@ -1087,7 +1122,7 @@ public class KualiDocumentActionBase extends KualiAction {
         if(!documentAuthorizer.canAddNoteAttachment(document, attachmentTypeCode, GlobalVariables.getUserSession().getPerson())){
           throw buildAuthorizationException("annotate", document);
         }
-        
+
         PersistableBusinessObject noteParent = getNoteParent(document, newNote);
 
 
@@ -1220,7 +1255,7 @@ public class KualiDocumentActionBase extends KualiAction {
         //    buildAuthorizationException("annotate", document);
         //    return mapping.findForward(RiceConstants.MAPPING_BASIC);
         //}
-        
+
         // ok to delete the note/attachment
         // derive the note property from the newNote on the form
         Note newNote = kualiDocumentFormBase.getNewNote();
@@ -1321,7 +1356,7 @@ public class KualiDocumentActionBase extends KualiAction {
 	            infix = sourceObject.getClass().getName();
 	        }
 	        message.append(infix);
-	
+
 	        if (sourceObject instanceof PersistableBusinessObject) {
 	            PersistableBusinessObject persistableObject = (PersistableBusinessObject) sourceObject;
 	            message.append(" [versionNumber = " ).append( persistableObject.getVersionNumber() ).append( "]" );
@@ -1518,7 +1553,7 @@ public class KualiDocumentActionBase extends KualiAction {
 		}
 		return this.identityManagementService;
 	}
-	
+
 	protected AttachmentService getAttachmentService() {
 		if ( attachmentService == null ) {
 			attachmentService = KNSServiceLocator.getAttachmentService();
@@ -1532,14 +1567,14 @@ public class KualiDocumentActionBase extends KualiAction {
 		}
 		return this.noteService;
 	}
-	
+
 	protected BusinessObjectService getBusinessObjectService() {
     	if ( businessObjectService == null ) {
     		businessObjectService = KNSServiceLocator.getBusinessObjectService();
     	}
 		return this.businessObjectService;
 	}
-	
+
     protected BusinessObjectAuthorizationService getBusinessObjectAuthorizationService() {
     	if ( businessObjectAuthorizationService == null ) {
     		businessObjectAuthorizationService = KNSServiceLocator.getBusinessObjectAuthorizationService();

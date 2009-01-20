@@ -58,10 +58,6 @@
 	<param name="attachment.dir.location">/opt/ears/</param>
 	<param name="data.xml.pollIntervalSecs">30</param>
 	<param name="initialDelaySecs">10</param>
-	<param name="workgroup.url">Workgroup.do</param>
-	<param name="workgroup.report.url">Workgroup.do</param>
-	<param name="user.url">WorkflowUser.do</param>
-	<param name="user.report.url">WorkflowUserReport.do</param>
 
 	<!-- Kuali parameters -->
 	<param name="mail.relay.server">mail.relay.server</param>

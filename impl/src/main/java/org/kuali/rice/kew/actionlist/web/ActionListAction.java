@@ -60,7 +60,6 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.WebFriendlyRecipient;
-import org.kuali.rice.kew.web.UrlResolver;
 import org.kuali.rice.kew.web.UserLoginFilter;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Person;
@@ -88,7 +87,6 @@ public class ActionListAction extends KualiAction {
     	ActionListForm frm = (ActionListForm)actionForm;
     	request.setAttribute("Constants", new JSTLConstants(KEWConstants.class));
     	request.setAttribute("preferences", this.getUserSession(request).getPreferences());
-    	request.setAttribute("UrlResolver", UrlResolver.getInstance());
     	frm.setHeaderButtons(getHeaderButtons());
     	return super.execute(mapping, actionForm, request, response);
     }

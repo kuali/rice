@@ -74,7 +74,6 @@ public abstract class WorkflowAction extends DispatchAction {
 
 	    try {
 			request.setAttribute("Constants", new JSTLConstants(KEWConstants.class));
-			request.setAttribute("UrlResolver", UrlResolver.getInstance());
 			ActionMessages messages = null;
 			messages = establishRequiredState(request, form);
 			if (messages != null && !messages.isEmpty()) {
@@ -131,23 +130,23 @@ public abstract class WorkflowAction extends DispatchAction {
 		    throw new WorkflowRuntimeException(e);
 		}
 	}
-	
-	protected void checkAuthorization( ActionForm form, String methodToCall) throws AuthorizationException 
+
+	protected void checkAuthorization( ActionForm form, String methodToCall) throws AuthorizationException
     {
     	String principalId = UserSession.getAuthenticatedUser().getPrincipalId();
     	AttributeSet roleQualifier = new AttributeSet(getRoleQualification(form, methodToCall));
     	AttributeSet permissionDetails = KimCommonUtils.getNamespaceAndActionClass(this.getClass());
-    	
-        if (!KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(principalId, KNSConstants.KNS_NAMESPACE, 
-        		KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails, roleQualifier )) 
+
+        if (!KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(principalId, KNSConstants.KNS_NAMESPACE,
+        		KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails, roleQualifier ))
         {
-        	throw new AuthorizationException(UserSession.getAuthenticatedUser().getPrincipalName(), 
+        	throw new AuthorizationException(UserSession.getAuthenticatedUser().getPrincipalName(),
             		methodToCall,
             		this.getClass().getSimpleName());
         }
     }
-    
-    /** 
+
+    /**
      * override this method to add data from the form for role qualification in the authorization check
      */
     protected Map<String,String> getRoleQualification(ActionForm form, String methodToCall) {

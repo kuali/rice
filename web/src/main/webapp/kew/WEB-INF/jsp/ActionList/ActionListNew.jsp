@@ -231,15 +231,13 @@
 							title="${actionRequestedLabel}" class="infocell" />
 					</c:if>
 					<c:if test="${preferences.showInitiator == Constants.PREFERENCES_YES_VAL}">
-					   User URL: ${UrlResolver.userReportUrl}
 						<display-el:column sortable="true" title="${initiatorLabel}"
 							sortProperty="routeHeader.initiatorName" class="display-column">
-							<a href="../en/<c:url value="${UrlResolver.userReportUrl}">
-                        <c:param name="workflowId" value="${result.routeHeader.actionListInitiatorPrincipal.principalId}"/>
-                        <c:param name="showEdit" value="no"/>
-                        <c:param name="methodToCall" value="report"/></c:url>"
-								target="_blank"> <c:out
-								value="${result.routeHeader.initiatorName}" /></a>
+                            <kul:inquiry boClassName="org.kuali.rice.kim.bo.impl.PersonImpl"
+                                keyValues="principalId=${result.routeHeader.actionListInitiatorPrincipal.principalId}"
+                                render="true">
+                                  <c:out value="${result.routeHeader.initiatorName}" />
+                            </kul:inquiry>
 						</display-el:column>
 					</c:if>
 
@@ -248,22 +246,16 @@
 							sortProperty="delegatorName" class="infocell">
 							<c:choose>
 								<c:when test="${result.delegatorPerson != null}">
-									<a
-										href="<c:url value="${UrlResolver.userReportUrl}">
-                            <c:param name="workflowId" value="${result.delegatorPerson.principalId}"/>
-                            <c:param name="showEdit" value="no"/>
-                            <c:param name="methodToCall" value="report"/></c:url>"
-										target="_blank"> <c:out
-										value="${result.delegatorPerson.name}" /></a>
+                                    <kul:inquiry boClassName="org.kuali.rice.kim.bo.impl.PersonImpl"
+                                        keyValues="principalId=${result.delegatorPerson.principalId}"
+                                        render="true">
+                                          <c:out value="${result.delegatorPerson.name}" />
+                                    </kul:inquiry>
 								</c:when>
 								<c:when test="${result.delegatorGroup != null}">
-									<a href="<c:url value="${UrlResolver.workgroupReportUrl}">
-                                     <c:param name="groupId" value="${result.delegatorGroup.groupId}"/>
-                                      <c:param name="methodToCall" value="report"/>
-                                      <c:param name="showEdit" value="no"/>
-                                    </c:url>"
-										target="_blank"><c:out
-										value="${result.delegatorGroup.groupName}" /></a>
+                                    <kul:inquiry boClassName="org.kuali.rice.kim.bo.group.impl.KimGroupImpl" keyValues="groupId=${result.delegatorGroup.groupId}" render="true">
+                                        <c:out value="${result.delegatorGroup.groupName}" />
+                                    </kul:inquiry>
 								</c:when>
 								<c:otherwise>
                                        &nbsp;
@@ -295,13 +287,9 @@
 							class="infocell">
 							<c:choose>
 								<c:when test="${result.groupId != null && result.groupId != 0}">
-									<a href="<c:url value="${UrlResolver.workgroupReportUrl}">
-                                     <c:param name="groupId" value="${result.group.groupId}"/>
-                                <c:param name="methodToCall" value="report"/>
-                                <c:param name="showEdit" value="no"/>
-                                </c:url>"
-										target="_blank"><c:out value="${result.group.groupName}" />
-									</a>
+                                    <kul:inquiry boClassName="org.kuali.rice.kim.bo.group.impl.KimGroupImpl" keyValues="groupId=${result.group.groupId}" render="true">
+                                        <c:out value="${result.group.groupName}" />
+                                    </kul:inquiry>
 								</c:when>
 								<c:otherwise>
                                       &nbsp;

@@ -57,24 +57,17 @@
 			                           <td align="left" class="<c:out value="${headerClass}"/>">
 		                              	<c:choose>
 		                              		<c:when test="${actionRequest.userRequest}">
-	                          					<a style="${fontStyle}" href="
-													<c:url value="${UrlResolver.userReportUrl}">
-														<c:param name="workflowId" value="${actionRequest.principalId}" />
-														<c:param name="methodToCall" value="report" />
-														<c:param name="showEdit" value="no" />
-													</c:url>"><c:out value="${displayName}" />
-												</a>
+                                                <kul:inquiry boClassName="org.kuali.rice.kim.bo.impl.PersonImpl"
+                                                    keyValues="principalId=${actionRequest.principalId}"
+                                                    render="true">
+                                                      <c:out value="${displayName}" />
+                                                </kul:inquiry>
 												<c:if test="${delegation != null}">
 													&nbsp;<c:out value="${delegation}" />
 												</c:if>
 		                              		</c:when>
 			                              	<c:when test="${actionRequest.groupRequest}">
-			                              		<a style="${fontStyle}" href="
-													<c:url value="${UrlResolver.workgroupReportUrl}">
-														<c:param name="groupId" value="${actionRequest.groupId}" />
-														<c:param name="methodToCall" value="report" />
-													</c:url>"><c:out value="${actionRequest.groupId}" />
-												</a>
+                                                <kul:inquiry boClassName="org.kuali.rice.kim.bo.group.impl.KimGroupImpl" keyValues="groupId=${actionRequest.groupId}" render="true"><c:out value="${actionRequest.groupName}" /></kul:inquiry>
 												<c:if test="${delegation != null}">
 													&nbsp;<c:out value="${delegation}" />
 												</c:if>
@@ -86,23 +79,14 @@
 										              	 	<c:forEach var="primDelegateRequest" items="${roleRequest.primaryDelegateRequests}" varStatus="pDelegateArStatus">
 										              	 	<c:set var="primDelegateDisplayName" value="${primDelegateRequest.displayName}"/>
 										              	 	<c:if test="${primDelegateRequest.userRequest}">
-												              	 <a style="${fontStyle}" href="
-																		<c:url value="${UrlResolver.userReportUrl}">
-																			<c:param name="workflowId" value="${primDelegateRequest.principalId}" />
-																			<c:param name="methodToCall" value="report" />
-																			<c:param name="showEdit" value="no" />
-																		</c:url>">
-																		<c:out value="${primDelegateDisplayName}" />
-																	</a>
+                                                                 <kul:inquiry boClassName="org.kuali.rice.kim.bo.impl.PersonImpl"
+                                                                     keyValues="principalId=${primDelegateRequest.principalId}"
+                                                                     render="true">
+                                                                       <c:out value="${primDelegateDisplayName}" />
+                                                                 </kul:inquiry>
 															</c:if>
 							                              	<c:if test="${primDelegateRequest.groupRequest}">
-							                              		<a style="${fontStyle}" href="
-																	<c:url value="${UrlResolver.workgroupReportUrl}">
-																		<c:param name="groupId" value="${primDelegateRequest.groupId}" />
-																		<c:param name="methodToCall" value="report" />
-																	</c:url>">
-																	<c:out value="${primDelegateRequest.groupId}" />
-																</a>
+                                                                <kul:inquiry boClassName="org.kuali.rice.kim.bo.group.impl.KimGroupImpl" keyValues="groupId=${primDelegateRequest.groupId}" render="true"><c:out value="${primDelegateRequest.groupName}" /></kul:inquiry>
    						                              		</c:if>
 																	  <c:if test="${!empty primDelegateRequest.qualifiedRoleNameLabel}">
 																	  	&nbsp;(<c:out value="${primDelegateRequest.qualifiedRoleNameLabel}" />)
@@ -111,27 +95,19 @@
 									                      	</c:forEach>
 										              	 </c:when>
 										              	 <c:when test="${roleRequest.groupRequest}">
-										              	   <a style="${fontStyle}" href="
-															 <c:url value="${UrlResolver.workgroupReportUrl}">
-																<c:param name="groupId" value="${roleRequest.groupId}" />
-																		<c:param name="methodToCall" value="report" />
-																	</c:url>">
-																	<c:out value="${roleRequest.groupId}" />
-																</a>
-																<c:if test="${!empty actionRequest.qualifiedRoleNameLabel}">
-																  &nbsp;(<c:out value="${actionRequest.qualifiedRoleNameLabel}" />)
-																</c:if>
-																<c:if test="${!arStatus.last}"><br></c:if>
+                                                             <kul:inquiry boClassName="org.kuali.rice.kim.bo.group.impl.KimGroupImpl" keyValues="groupId=${roleRequest.groupId}" render="true"><c:out value="${roleRequest.groupName}" /></kul:inquiry>
+														     <c:if test="${!empty actionRequest.qualifiedRoleNameLabel}">
+															     &nbsp;(<c:out value="${actionRequest.qualifiedRoleNameLabel}" />)
+															 </c:if>
+															<c:if test="${!arStatus.last}"><br></c:if>
 										              	 </c:when>
     										             <c:otherwise>
     										                <c:set var="roleDisplayName" value="${roleRequest.displayName}"/>
-											              	 <a style="${fontStyle}" href="
-																	<c:url value="${UrlResolver.userReportUrl}">
-																		<c:param name="workflowId" value="${roleRequest.principalId}" />
-																		<c:param name="methodToCall" value="report" />
-																		<c:param name="showEdit" value="no" />
-																	</c:url>"><c:out value="${roleDisplayName}" />
-																</a>
+                                                              <kul:inquiry boClassName="org.kuali.rice.kim.bo.impl.PersonImpl"
+                                                                  keyValues="principalId=${roleRequest.principalId}"
+                                                                  render="true">
+                                                                    <c:out value="${roleDisplayName}" />
+                                                              </kul:inquiry>
 																<c:if test="${!empty actionRequest.qualifiedRoleNameLabel}">
 																  &nbsp;(<c:out value="${actionRequest.qualifiedRoleNameLabel}" />)
 																</c:if>

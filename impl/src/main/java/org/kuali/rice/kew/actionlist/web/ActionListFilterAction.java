@@ -41,7 +41,6 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kew.web.KeyValue;
-import org.kuali.rice.kew.web.UrlResolver;
 import org.kuali.rice.kew.web.UserLoginFilter;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.group.KimGroup;
@@ -62,7 +61,6 @@ public class ActionListFilterAction extends KualiAction {
 			throws Exception {
     	request.setAttribute("Constants", new JSTLConstants(KEWConstants.class));
     	request.setAttribute("preferences", this.getUserSession(request).getPreferences());
-    	request.setAttribute("UrlResolver", UrlResolver.getInstance());
 		ActionMessages messages = null;
 		messages = establishRequiredState(request, form);
 		if (messages != null && !messages.isEmpty()) {
@@ -85,7 +83,7 @@ public class ActionListFilterAction extends KualiAction {
 
 	/**
 	 * This overridden method ...
-	 * 
+	 *
 	 * @see org.kuali.rice.kns.web.struts.action.KualiAction#getReturnLocation(javax.servlet.http.HttpServletRequest, org.apache.struts.action.ActionMapping)
 	 */
 	@Override
@@ -186,7 +184,7 @@ public class ActionListFilterAction extends KualiAction {
         });
         return recipientList;
     }
-    
+
 	private UserSession getUserSession(HttpServletRequest request){
 		return UserLoginFilter.getUserSession(request);
 	}

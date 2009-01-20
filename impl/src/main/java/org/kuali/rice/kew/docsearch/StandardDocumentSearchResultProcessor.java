@@ -33,7 +33,6 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.KEWPropertyConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.KeyValueSort;
-import org.kuali.rice.kew.web.UrlResolver;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.web.ui.Field;
 
@@ -404,9 +403,8 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 	}
 
 	protected DisplayValues getInitiatorFieldDisplayValue(String fieldLinkTextValue, String initiatorWorkflowId) {
-		UrlResolver urlResolver = new UrlResolver();
 		DisplayValues dv = new DisplayValues();
-		dv.htmlValue = "<a href=\"" + urlResolver.getUserReportUrl() +  "?showEdit=no&methodToCall=report&workflowId=" + initiatorWorkflowId + "\" target=\"_blank\">" + fieldLinkTextValue + "</a>";
+		dv.htmlValue = "<a href=\"../kr/inquiry.do?businessObjectClassName=org.kuali.rice.kim.bo.impl.PersonImpl&methodToCall=continueWithInquiry&principalId=" + initiatorWorkflowId + "\" target=\"_blank\">" + fieldLinkTextValue + "</a>";
 		dv.userDisplayValue = fieldLinkTextValue;
 		return dv;
 	}

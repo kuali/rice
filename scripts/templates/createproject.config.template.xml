@@ -59,10 +59,6 @@
 	<param name="attachment.dir.location">/opt/ears/</param>
 	<param name="data.xml.pollIntervalSecs">30</param>
 	<param name="initialDelaySecs">10</param>
-	<param name="workgroup.url">Workgroup.do</param>
-	<param name="workgroup.report.url">Workgroup.do</param>
-	<param name="user.url">WorkflowUser.do</param>
-	<param name="user.report.url">WorkflowUserReport.do</param>
 
 	<!-- Kuali parameters -->
 	<param name="mail.relay.server">mail.relay.server</param>
@@ -86,12 +82,12 @@
 
     <param name="notification.quartz.autostartup">true</param>
     <param name="notification.concurrent.jobs">true</param>
-    
-        
+
+
     <!-- Email Plugin Properties -->
     <param name="emailDeliverer.smtp.host">no_such_smtp_host</param>
-    
+
 
     <param name="css.files">kr/css/kuali.css</param>
     <param name="javascript.files">kr/scripts/core.js,kr/scripts/dhtml.js,kr/scripts/documents.js,kr/scripts/my_common.js,kr/scripts/objectInfo.js</param>
-</config>	
+</config>

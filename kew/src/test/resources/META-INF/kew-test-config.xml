@@ -44,11 +44,6 @@
     <param name="filter.login.class">org.kuali.rice.kew.web.DummyLoginFilter</param>
     <param name="filtermapping.login.1">/*</param>
 
-    <param name="workgroup.url">Workgroup.do</param>
-    <param name="workgroup.report.url">Workgroup.do</param>
-    <param name="user.url">WorkflowUser.do</param>
-    <param name="user.report.url">WorkflowUserReport.do</param>
-
     <param name="RouteQueue.maxRetryAttemptsOverride">0</param>
 
 	<param name="plugin.registry.enabled">true</param>

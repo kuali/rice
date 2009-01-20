@@ -48,14 +48,11 @@
 				<td  class="datacell" width="25%"><c:set
 					var="initiatorDisplayName"
 					value="${routeHeader.initiatorDisplayName}" />
-				<a
-					href="
-               						<c:url value="${UrlResolver.userReportUrl}">
-										<c:param name="workflowId" value="${routeHeader.initiatorWorkflowId}" />
-										<c:param name="methodToCall" value="report" />
-										<c:param name="showEdit" value="no" />
-									</c:url>"><c:out
-					value="${initiatorDisplayName}" /> </a>&nbsp;</td>
+                    <kul:inquiry boClassName="org.kuali.rice.kim.bo.impl.PersonImpl"
+                        keyValues="principalId=${routeHeader.initiatorWorkflowId}"
+                        render="true">
+                          <c:out value="${initiatorDisplayName}" />
+                    </kul:inquiry>&nbsp;</td>
 				<kul:htmlAttributeHeaderCell scope="col" align="left"><bean-el:message
 					key="routeLog.RouteLog.header.label.lastModified" /></kul:htmlAttributeHeaderCell>
 				<td  class="datacell" width="25%"><fmt:formatDate
@@ -135,24 +132,18 @@
 	                               <b><c:out value="${actionTaken.actionTakenLabel}" /></b>
 	                            </td>
 	                            <td align="left" class="datacell">
-	                               <a style="color:black" href="
-										<c:url value="${UrlResolver.userReportUrl}">
-											<c:param name="workflowId" value="${actionTaken.principalId}" />
-											<c:param name="methodToCall" value="report" />
-											<c:param name="showEdit" value="no" />
-										</c:url>"><c:out value="${actionTaken.principalDisplayName}" />
-									</a>
+                                   <kul:inquiry boClassName="org.kuali.rice.kim.bo.impl.PersonImpl"
+                                       keyValues="principalId=${actionTaken.principalId}"
+                                       render="true">
+                                         <c:out value="${actionTaken.principalDisplayName}" />
+                                   </kul:inquiry>
 	                       		</td>
 	                       		<td align="left" class="headercell4">
 							        <c:if test="${actionTaken.forDelegator}">
-							        <c:set var="actionDisplayName" value="${actionTaken.principalDisplayName}"/>
-											<a style="color:black" href="
-									  			<c:url value="${UrlResolver.userReportUrl}">
-													<c:param name="workflowId" value="${actionTaken.delegatorPrincipalId}" />
-													<c:param name="methodToCall" value="report" />
-													<c:param name="showEdit" value="no" />
-												</c:url>"><c:out value="${actionDisplayName}" />
-											</a>
+							        <c:set var="actionDisplayName" value="${actionTaken.delegatorPrincipalId}"/>
+                                        <kul:inquiry boClassName="org.kuali.rice.kim.bo.impl.PersonImpl" keyValues="principalId=${RemoveReplaceForm.replacementUser.workflowId}" render="true">
+                                          <c:out value="${actionDisplayName}" />
+                                        </kul:inquiry>
 							         </c:if>&nbsp;
 						         </td>
 						         <td align="center" class="headercell4">

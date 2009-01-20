@@ -151,7 +151,8 @@
                     </td>
                     <td class="infoline" ><div align=center>
                         <kul:htmlControlAttribute property="newAdHocRouteWorkgroup.recipientName" attributeEntry="${DataDictionary.PersonDocumentGroup.attributes.groupName}" readOnly="${displayReadOnly}" />
-                        <kul:workflowWorkgroupLookup fieldConversions="namespaceCode:newAdHocRouteWorkgroup.recipientNamespaceCode,groupName:newAdHocRouteWorkgroup.recipientName" /></div>
+                        <kul:workflowWorkgroupLookup fieldConversions="namespaceCode:newAdHocRouteWorkgroup.recipientNamespaceCode,groupName:newAdHocRouteWorkgroup.recipientName"
+                          lookupParameters="newAdHocRouteWorkgroup.recipientNamespaceCode:namespaceCode,newAdHocRouteWorkgroup.recipientName:groupName" /></div>
                     </td>
                     <td class="infoline" ><div align=center>
                         <html:image property="methodToCall.insertAdHocRouteWorkgroup" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-add1.gif" title="Insert Additional Ad Hoc Workgroup" alt="Insert Additional Ad Hoc Workgroup" styleClass="tinybutton"/></div>
@@ -169,13 +170,12 @@
                         </td>
                         <td class="datacell center"><div align=center>
                             <kul:htmlControlAttribute property="adHocRouteWorkgroup[${ctr}].recipientNamespaceCode" attributeEntry="${DataDictionary.PersonDocumentGroup.attributes.namespaceCode}" readOnly="displayReadOnly" />
-                            <%--<kul:workflowWorkgroupLookup fieldConversions="workgroupId:adHocRouteWorkgroup[${ctr}].id" /></div>--%>
                         </td>
                         <td class="datacell center"><div align=center>
                             <kul:htmlControlAttribute property="adHocRouteWorkgroup[${ctr}].recipientName" attributeEntry="${DataDictionary.PersonDocumentGroup.attributes.groupName}" readOnly="displayReadOnly" />
-                            <kul:workflowWorkgroupLookup fieldConversions="namespaceCode:newAdHocRouteWorkgroup[${ctr}].recipientNamespaceCode,groupName:newAdHocRouteWorkgroup[${ctr}].recipientName" /></div>
-                            <%--<kul:workflowWorkgroupLookup fieldConversions="workgroupId:adHocRouteWorkgroup[${ctr}].id" /></div>--%>
-                        </td>
+                            <kul:workflowWorkgroupLookup fieldConversions="namespaceCode:adHocRouteWorkgroup[${ctr}].recipientNamespaceCode,groupName:adHocRouteWorkgroup[${ctr}].recipientName"
+                                 lookupParameters="adHocRouteWorkgroup[${ctr}].recipientNamespaceCode:namespaceCode,adHocRouteWorkgroup[${ctr}].recipientName:groupName" /></div>
+                       </td>
                         <td class="datacell center" ><div align=center>
                             <html:image property="methodToCall.deleteAdHocRouteWorkgroup.line${ctr}" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-delete1.gif" title="Delete Additional Ad Hoc Workgroup" alt="Delete Additional Ad Hoc Workgroup" styleClass="tinybutton"/></div>
                         </td>

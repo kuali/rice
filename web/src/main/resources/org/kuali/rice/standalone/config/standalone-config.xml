@@ -9,13 +9,13 @@
 <config>
 
     <param name="transaction.timeout">3600</param>
-    
+
 
     <!-- KSB -->
 
     <param name="service.namespace">RICE</param>
     <param name="http.port">8080</param>
-    
+
     <param name="bam.enabled">false</param>
     <param name="threadPool.on">true</param>
     <param name="dev.mode">false</param>
@@ -39,12 +39,6 @@
 
 	<!-- shared class loader in workflow war - don't change -->
 	<param name="en.plugin.dir">${rice.base}WEB-INF/plugins</param>
-
-	<!-- Default configurations for workgroups and users -->
-	<param name="workgroup.url">Workgroup.do</param>
-	<param name="workgroup.report.url">Workgroup.do</param>
-	<param name="user.url">WorkflowUser.do</param>
-	<param name="user.report.url">WorkflowUserReport.do</param>
 
     <param name="data.xml.root.location">${rice.base}xml/${environment}/</param>
     <param name="data.xml.pending.location">${data.xml.root.location}pending</param>

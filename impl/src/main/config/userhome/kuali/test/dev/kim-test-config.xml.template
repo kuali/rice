@@ -40,7 +40,7 @@
 	<param name="datasource.driver.name">oracle.jdbc.driver.OracleDriver</param>
 	<param name="datasource.pool.validationQuery">select 1 from dual</param>
 	<param name="datasource.pool.maxWait">30000</param>
-	
+
 	<param name="keystore.alias">rice.keystore</param>
 	<param name="keystore.location">keystore/rice.keystore</param>
 	<param name="keystore.password">s1t0spss!xX-tst</param>
@@ -60,10 +60,6 @@
 	<param name="attachment.dir.location">/opt/ears/</param>
 	<param name="data.xml.pollIntervalSecs">30</param>
 	<param name="initialDelaySecs">10</param>
-	<param name="workgroup.url">Workgroup.do</param>
-	<param name="workgroup.report.url">Workgroup.do</param>
-	<param name="user.url">WorkflowUser.do</param>
-	<param name="user.report.url">WorkflowUserReport.do</param>
 
 	<!-- Kuali parameters -->
 	<param name="mail.relay.server">mail.relay.server</param>

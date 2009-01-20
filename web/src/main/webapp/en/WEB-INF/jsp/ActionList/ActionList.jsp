@@ -121,10 +121,10 @@
 	            </c:otherwise>
             </c:choose>
           </td>
-          
 
-          
-          
+
+
+
         </tr>
       </table>
     </td>
@@ -251,11 +251,11 @@
   </c:if>
   <c:if test="${preferences.showInitiator == Constants.PREFERENCES_YES_VAL}">
 	  <display-el:column sortable="true" title="${initiatorLabel}" sortProperty="routeHeader.initiatorName" class="display-column" >
-          <a href="<c:url value="${UrlResolver.userReportUrl}">
-                     <c:param name="workflowId" value="${result.routeHeader.actionListInitiatorPrincipal.principalId}"/>
-                     <c:param name="showEdit" value="no"/>
-                     <c:param name="methodToCall" value="report"/></c:url>" target="_blank">
-            <c:out value="${result.routeHeader.initiatorName}"/></a>
+          <kul:inquiry boClassName="org.kuali.rice.kim.bo.impl.PersonImpl"
+            keyValues="principalId=${result.routeHeader.actionListInitiatorPrincipal.principalId}"
+            render="true">
+              <c:out value="${result.routeHeader.initiatorName}" />
+          </kul:inquiry>
  	  </display-el:column>
   </c:if>
 
@@ -263,18 +263,16 @@
     <display-el:column sortable="true" title="${delegatorLabel}" sortProperty="delegatorName" class="display-column">
     	<c:choose>
         <c:when test="${result.delegatorPerson != null}">
-          <a href="<c:url value="${UrlResolver.userReportUrl}">
-                     <c:param name="workflowId" value="${result.delegatorPerson.principalId}"/>
-                     <c:param name="showEdit" value="no"/>
-                     <c:param name="methodToCall" value="report"/></c:url>" target="_blank">
-            <c:out value="${result.delegatorPerson.name}"/></a>
+          <kul:inquiry boClassName="org.kuali.rice.kim.bo.impl.PersonImpl"
+            keyValues="principalId=${result.delegatorPerson.principalId}"
+            render="true">
+              <c:out value="${result.delegatorPerson.name}" />
+          </kul:inquiry>
         </c:when>
         <c:when test="${result.delegatorGroup != null}">
-           <a href="<c:url value="${UrlResolver.workgroupReportUrl}">
-                      <c:param name="groupId" value="${result.delegatorGroup.groupId}"/>
-                      <c:param name="methodToCall" value="report"/>
-                      <c:param name="showEdit" value="no"/>
-                    </c:url>" target="_blank"><c:out value="${result.delegatorGroup.groupName}"/></a>
+           <kul:inquiry boClassName="org.kuali.rice.kim.bo.group.impl.KimGroupImpl" keyValues="groupId=${result.delegatorGroup.groupId}" render="true">
+               <c:out value="${result.delegatorGroup.groupName}" />
+           </kul:inquiry>
        </c:when>
         <c:otherwise>
         	&nbsp;
@@ -297,12 +295,9 @@
   	<display-el:column sortable="true" title="${workgroupRequestLabel}" sortProperty="group.groupName" class="display-column">
   		<c:choose>
   			<c:when test="${result.groupId != null && result.groupId != 0}">
-  			  <a href="<c:url value="${UrlResolver.workgroupReportUrl}">
-                      <c:param name="groupId" value="${result.group.groupId}"/>
-                      <c:param name="methodToCall" value="report"/>
-                      <c:param name="showEdit" value="no"/>
-                    </c:url>" target="_blank"><c:out value="${result.group.groupName}"/>
-              </a>
+              <kul:inquiry boClassName="org.kuali.rice.kim.bo.group.impl.KimGroupImpl" keyValues="groupId=${result.group.groupId}" render="true">
+                  <c:out value="${result.group.groupName}" />
+              </kul:inquiry>
   			</c:when>
   			<c:otherwise>
   				&nbsp;
@@ -310,7 +305,7 @@
   		</c:choose>
 	</display-el:column>
   </c:if>
-  
+
   <c:if test="${preferences.showCurrentNode == Constants.PREFERENCES_YES_VAL}">
     <display-el:column sortable="true" title="${currentRouteNodesLabel}" sortProperty="routeHeader.currentRouteLevelName" class="display-column">
     	<c:out value="${result.routeHeader.currentRouteLevelName}"/>&nbsp;
@@ -329,7 +324,7 @@
         </c:if>&nbsp;
     </display-el:column>
   </c:if>
-  
+
   <c:if test="${ActionListForm.viewOutbox }">
       <display-el:column title="${outboxActionItemDelete}" class="display-column">
           <html-el:checkbox property="outboxItems" value="${result.actionItemId}"/>

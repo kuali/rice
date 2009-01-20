@@ -179,6 +179,8 @@ public class ActionRequestValue implements WorkflowPersistable {
     private Boolean currentIndicator = new Boolean(true);
     @Transient
     private String createDateString;
+    @Transient
+    private String groupName;
 
     /* New Workflow 2.1 Field */
     // The node instance at which this request was generated
@@ -944,4 +946,9 @@ public class ActionRequestValue implements WorkflowPersistable {
 	public void setRequestLabel(String requestLabel) {
 		this.requestLabel = requestLabel;
 	}
+
+    public String getGroupName() {
+        return KIMServiceLocator.getIdentityManagementService().getGroup(this.groupId).getGroupName();
+    }
+
 }

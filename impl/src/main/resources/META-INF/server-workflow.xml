@@ -24,10 +24,6 @@
 	<param name="en.plugin.dir">${workflow.base}WEB-INF/plugins</param>
 
 	<!-- Default configurations for workgroups and users -->
-	<param name="workgroup.url">Workgroup.do</param>
-	<param name="workgroup.report.url">Workgroup.do</param>
-	<param name="user.url">WorkflowUser.do</param>
-	<param name="user.report.url">WorkflowUserReport.do</param>
 	<param name="http.port">8080</param>
 	<param name="serviceServletUrl">http://${host.ip}:${http.port}/en-${environment}/remoting/</param>
 

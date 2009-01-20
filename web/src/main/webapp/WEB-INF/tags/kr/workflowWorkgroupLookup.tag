@@ -15,6 +15,12 @@
 --%>
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 <%@ attribute name="fieldConversions" required="false" %>
+<%@ attribute name="lookupParameters" required="false" %>
+<%@ attribute name="tabKey" required="false" %>
 
 <%--<input type="image" tabindex="-1" name="methodToCall.performWorkgroupLookup.(((${fieldConversions})))" title="Search Workgroup" alt="Search Workgroup" src="${ConfigProperties.kr.externalizable.images.url}searchicon.gif" border="0" class="tinybutton" />--%>
-<kul:lookup boClassName="org.kuali.rice.kim.bo.group.impl.KimGroupImpl" fieldConversions="${fieldConversions}" anchor="${tabKey}" />
+<kul:lookup boClassName="org.kuali.rice.kim.bo.group.impl.KimGroupImpl"
+    fieldConversions="${fieldConversions}"
+    lookupParameters="${lookupParameters}"
+    anchor="${tabKey}"
+/>

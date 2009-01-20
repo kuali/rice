@@ -89,7 +89,7 @@ public class UserXmlParser implements XmlConstants {
     	String firstName = userElement.getChildTextTrim(GIVEN_NAME_ELEMENT, NAMESPACE);
         String lastName = userElement.getChildTextTrim(LAST_NAME_ELEMENT, NAMESPACE);
     	
-    	Long entityId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ENTITY_ENT_TYP_ID_S");
+    	Long entityId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ENTITY_ID_S");
 		KimEntityImpl entity = new KimEntityImpl();
 		entity.setActive(true);
 		entity.setEntityId("" + entityId);

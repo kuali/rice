@@ -245,16 +245,18 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 		qualifiers.put(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL, documentType.getName());
 		
 		DocumentEntry documentEntry = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(documentType.getName());
-		Class<? extends Document> documentClass = documentEntry.getDocumentClass();
-		String namespaceCode;
-		if (MaintenanceDocument.class.isAssignableFrom(documentClass)) {
-			MaintenanceDocumentEntry maintenanceDocumentEntry = (MaintenanceDocumentEntry) documentEntry;
-			namespaceCode = KimCommonUtils.getNamespaceCode(maintenanceDocumentEntry.getBusinessObjectClass());
+		if (documentEntry != null) {
+			Class<? extends Document> documentClass = documentEntry.getDocumentClass();
+			String namespaceCode;
+			if (MaintenanceDocument.class.isAssignableFrom(documentClass)) {
+				MaintenanceDocumentEntry maintenanceDocumentEntry = (MaintenanceDocumentEntry) documentEntry;
+				namespaceCode = KimCommonUtils.getNamespaceCode(maintenanceDocumentEntry.getBusinessObjectClass());
+			}
+			else {
+				namespaceCode = KimCommonUtils.getNamespaceCode(documentClass);
+			}
+			qualifiers.put(KimAttributes.NAMESPACE_CODE, namespaceCode);
 		}
-		else {
-			namespaceCode = KimCommonUtils.getNamespaceCode(documentClass);
-		}
-		qualifiers.put(KimAttributes.NAMESPACE_CODE, namespaceCode);
 		
 		return qualifiers;
 	}

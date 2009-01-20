@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -52,7 +53,6 @@ import org.kuali.rice.kew.actionlist.DefaultCustomActionListAttribute;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
-import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.dto.DTOConverter;
@@ -79,6 +79,7 @@ import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 
 /**
@@ -121,7 +122,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 @NamedQueries({
 	@NamedQuery(name="DocumentRouteHeaderValue.FindByRouteHeaderId", query="select d from DocumentRouteHeaderValue as d where d.routeHeaderId = :routeHeaderId")
 })
-public class DocumentRouteHeaderValue implements WorkflowPersistable {
+public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase {
     private static final long serialVersionUID = -4700736340527913220L;
     private static final Logger LOG = Logger.getLogger(DocumentRouteHeaderValue.class);
 
@@ -332,7 +333,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
     public DocumentType getDocumentType() {
     	return KEWServiceLocator.getDocumentTypeService().findById(getDocumentTypeId());
     }
-
+    
     public java.lang.String getAppDocId() {
         return appDocId;
     }
@@ -924,6 +925,17 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
             .append("finalizedDate", finalizedDate)
             .append("appDocId", appDocId)
             .toString();
+	}
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
+	 */
+	@Override
+	protected LinkedHashMap toStringMapper() {
+		// TODO chris - THIS METHOD NEEDS JAVADOCS
+		return null;
 	}
 
 	@PrePersist

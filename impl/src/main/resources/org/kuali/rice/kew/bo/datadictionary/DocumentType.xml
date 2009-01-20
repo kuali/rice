@@ -115,10 +115,10 @@
     <property name="maxLength" value="30" />
     <property name="validationPattern" >
       <bean parent="AnyCharacterValidationPattern" />
-    </property>
+    </property>    
     <property name="control" >
-      <bean parent="TextControlDefinition"
-            p:size="30" />
+    	<bean parent="LookupReadonlyControlDefinition"
+    		p:size="20" />
     </property>
     <property name="name" value="parentDocType.name" />
     <property name="label" value="Parent Name" />

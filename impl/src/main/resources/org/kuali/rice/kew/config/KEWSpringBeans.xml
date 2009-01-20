@@ -816,6 +816,7 @@
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleTemplate.xml</value>
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleTemplateAttribute.xml</value>
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleBaseValues.xml</value>
+			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/PersonRuleResponsibility.xml</value>
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/EDocLiteAssociation.xml</value>
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/EDocLiteDefinition.xml</value>
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/EDocLiteStyle.xml</value>

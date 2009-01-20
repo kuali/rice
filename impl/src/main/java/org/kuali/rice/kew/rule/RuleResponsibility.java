@@ -18,6 +18,7 @@ package org.kuali.rice.kew.rule;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -34,11 +35,9 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -46,6 +45,7 @@ import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 
 /**
@@ -58,7 +58,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  */
 @Entity
 @Table(name="KREW_RULE_RSP_T")
-public class RuleResponsibility implements WorkflowPersistable {
+public class RuleResponsibility extends PersistableBusinessObjectBase {
 
 	private static final long serialVersionUID = -1565688857123316797L;
 	@Id
@@ -87,7 +87,6 @@ public class RuleResponsibility implements WorkflowPersistable {
     @ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="RULE_ID")
 	private RuleBaseValues ruleBaseValues;
-    //@Transient
     @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
             targetEntity=org.kuali.rice.kew.rule.RuleDelegation.class, mappedBy="ruleResponsibility")
     private List delegationRules = new ArrayList();
@@ -288,17 +287,18 @@ public class RuleResponsibility implements WorkflowPersistable {
                Utilities.equals(approvePolicy, pred.getApprovePolicy());
     }
 
-    public String toString() {
-        return "[RuleResponsibility:"
-               +  " responsibilityId=" + responsibilityId
-               + ", ruleResponsibilityKey=" + ruleResponsibilityKey
-               + ", ruleResponsibilityName=" + ruleResponsibilityName
-               + ", ruleResponsibilityType=" + ruleResponsibilityType
-               + ", ruleBaseValuesId=" + ruleBaseValuesId
-               + ", actionRequestedCd=" + actionRequestedCd
-               + ", priority=" + priority
-               + ", approvePolicy=" + approvePolicy
-               + ", lockVerNbr=" + lockVerNbr
-               + "]";
-    }
+    @Override
+	protected LinkedHashMap toStringMapper() {
+    	LinkedHashMap map = new LinkedHashMap();
+    	map.put("responsibilityId", responsibilityId);
+    	map.put("ruleResponsibilityKey", ruleResponsibilityKey);
+    	map.put("ruleResponsibilityName", ruleResponsibilityName);
+    	map.put("ruleResponsibilityType", ruleResponsibilityType);
+    	map.put("ruleBaseValuesId", ruleBaseValuesId);
+    	map.put("actionRequestedCd", actionRequestedCd);
+    	map.put("priority", priority);
+    	return map;
+	}
+    
+    
 }

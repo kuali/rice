@@ -26,11 +26,27 @@
         <ref bean="RuleBaseValues-description"/>
         <ref bean="RuleBaseValues-fromDate"/>
         <ref bean="RuleBaseValues-toDate"/>
+        <ref bean="RuleBaseValues-ignorePrevious"/>
+        <ref bean="RuleBaseValues-active"/>
+      </list>
+    </property> 
+    <property name="collections" >
+      <list>
+        <bean parent="CollectionDefinition"
+              p:name="personResponsibilities"
+              p:label="Persons"
+              p:shortLabel="Persons"
+              p:elementLabel="Persons" />
+        <bean parent="CollectionDefinition"
+              p:name="groupResponsibilities"
+              p:label="Groups"
+              p:shortLabel="Groups"
+              p:elementLabel="Groups" />
+              
       </list>
     </property>
     <property name="relationships" >
-      <list>
-      
+      <list>  
         <bean parent="RelationshipDefinition">
           <property name="objectAttributeName" value="ruleTemplate" />
           <property name="primitiveAttributes" >
@@ -64,6 +80,25 @@
               <bean parent="SupportAttributeDefinition"
                     p:identifier="true"
                     p:sourceName="docTypeName"
+                    p:targetName="name" />
+            </list>
+          </property>
+        </bean>
+        
+        <bean parent="RelationshipDefinition">
+          <property name="objectAttributeName" value="ruleTemplate" />
+          <property name="primitiveAttributes" >
+            <list>
+              <bean parent="PrimitiveAttributeDefinition"
+                    p:sourceName="ruleTemplateId"
+                    p:targetName="ruleTemplateId" />
+            </list>
+          </property>
+          <property name="supportAttributes" >
+            <list>
+              <bean parent="SupportAttributeDefinition"
+                    p:identifier="true"
+                    p:sourceName="ruleTemplate.name"
                     p:targetName="name" />
             </list>
           </property>
@@ -171,7 +206,8 @@
     </property>
     <property name="control" >
       <bean parent="TextControlDefinition"
-      	p:size="30"/>
+      	p:size="30"
+      	p:datePicker="true"/>
     </property>
   </bean>
 
@@ -188,7 +224,8 @@
     </property>
     <property name="control" >
       <bean parent="TextControlDefinition"
-      	p:size="30"/>
+      	p:size="30"
+      	p:datePicker="true"/>
     </property>
   </bean>
   

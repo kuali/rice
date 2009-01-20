@@ -140,10 +140,15 @@ public class RuleBaseValues extends PersistableBusinessObjectBase {
     private String destinationUrl;
     @Transient
     private MyColumns myColumns;
+    @Transient
+    private List<PersonRuleResponsibility> personResponsibilities;
+    private List<GroupRuleResponsibility> groupResponsibilities;
 
     public RuleBaseValues() {
         responsibilities = new ArrayList<RuleResponsibility>();
         ruleExtensions = new ArrayList<RuleExtension>();
+        personResponsibilities = new ArrayList<PersonRuleResponsibility>();
+        groupResponsibilities = new ArrayList<GroupRuleResponsibility>();
     }
 
     /**
@@ -643,8 +648,24 @@ public class RuleBaseValues extends PersistableBusinessObjectBase {
     public void setName(String name) {
         this.name = name;
     }
+    
+	public List<PersonRuleResponsibility> getPersonResponsibilities() {
+		return this.personResponsibilities;
+	}
 
-    @Override
+	public void setPersonResponsibilities(List<PersonRuleResponsibility> personResponsibilities) {
+		this.personResponsibilities = personResponsibilities;
+	}
+	
+	public List<GroupRuleResponsibility> getGroupResponsibilities() {
+		return this.groupResponsibilities;
+	}
+
+	public void setGroupResponsibilities(List<GroupRuleResponsibility> groupResponsibilities) {
+		this.groupResponsibilities = groupResponsibilities;
+	}
+
+	@Override
 	protected LinkedHashMap<String, Object> toStringMapper() {
 		LinkedHashMap<String, Object> mapper = new LinkedHashMap<String, Object>();
         mapper.put("ruleBaseValuesId", ruleBaseValuesId);

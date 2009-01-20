@@ -505,6 +505,9 @@ public class DocumentType extends PersistableBusinessObjectBase
     }
 
     public String getDocHandlerUrl() {
+    	if (StringUtils.isBlank(docHandlerUrl) && getParentDocType() != null) {
+    		return getParentDocType().getDocHandlerUrl();
+    	}
         return resolveDocHandlerUrl(docHandlerUrl);
     }
 
@@ -517,6 +520,9 @@ public class DocumentType extends PersistableBusinessObjectBase
      * for those variables and replace them in the doc handler URL.
      */
     protected String resolveDocHandlerUrl(String docHandlerUrl) {
+    	if (StringUtils.isBlank(docHandlerUrl)) {
+    		return "";
+    	}
     	return Utilities.substituteConfigParameters(docHandlerUrl);
     }
 

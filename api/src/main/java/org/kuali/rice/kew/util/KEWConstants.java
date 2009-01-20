@@ -452,7 +452,7 @@ public class KEWConstants {
     /** Personal workgroup code */
     //public static final String WORKGROUP_PERSONAL = "P";
 
-    public static final Map ACTION_REQUEST_CODES = new HashMap();
+    public static final Map<String, String> ACTION_REQUEST_CODES = new HashMap<String, String>();
     static {
     	ACTION_REQUEST_CODES.put(ACTION_REQUEST_COMPLETE_REQ, ACTION_REQUEST_COMPLETE_REQ_LABEL);
     	ACTION_REQUEST_CODES.put(ACTION_REQUEST_APPROVE_REQ, ACTION_REQUEST_APPROVE_REQ_LABEL);

@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.core.util.MaxSizeMap;
 import org.kuali.rice.core.util.RiceDebugUtils;
 import org.kuali.rice.kim.bo.role.KimRole;
@@ -144,7 +145,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		return null;
 	}
 	protected void addRoleMemberPrincipalIdsToCache(String key, Collection<String> principalIds) {
-		memberPrincipalIdsCache.put(key, new MaxAgeSoftReference<Collection<String>>(principalIds));
+		memberPrincipalIdsCache.put(key, new MaxAgeSoftReference<Collection<String>>(roleCacheMaxAgeSeconds, principalIds ));
 	}
 	public Collection<String> getRoleMemberPrincipalIds(String namespaceCode, String roleName, AttributeSet qualification) {
 		String key = namespaceCode + "-" + roleName;

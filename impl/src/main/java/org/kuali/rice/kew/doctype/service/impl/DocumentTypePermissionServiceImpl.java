@@ -29,7 +29,12 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PermissionService;
+import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kns.bo.Parameter;
+import org.kuali.rice.kns.datadictionary.DocumentEntry;
+import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
+import org.kuali.rice.kns.document.Document;
+import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 
@@ -230,6 +235,19 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 			qualifiers.put(KEWConstants.DOCUMENT_STATUS_DETAIL, documentStatus);
 		}
 		qualifiers.put(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL, documentType.getName());
+		
+		DocumentEntry documentEntry = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(documentType.getName());
+		Class<? extends Document> documentClass = documentEntry.getDocumentClass();
+		String namespaceCode;
+		if (MaintenanceDocument.class.isAssignableFrom(documentClass)) {
+			MaintenanceDocumentEntry maintenanceDocumentEntry = (MaintenanceDocumentEntry) documentEntry;
+			namespaceCode = KimCommonUtils.getNamespaceCode(maintenanceDocumentEntry.getBusinessObjectClass());
+		}
+		else {
+			namespaceCode = KimCommonUtils.getNamespaceCode(documentClass);
+		}
+		qualifiers.put(KimAttributes.NAMESPACE_CODE, namespaceCode);
+		
 		return qualifiers;
 	}
 	

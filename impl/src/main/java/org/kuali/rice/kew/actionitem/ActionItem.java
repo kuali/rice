@@ -68,7 +68,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 @Table(name="KREW_ACTN_ITM_T")
 @NamedQueries({
     @NamedQuery(name="ActionItem.QuickLinks.FindActionListStatsByPrincipalId", query="SELECT docName, COUNT(*) FROM ActionItem WHERE principalId = :principalId " +
-        "AND (delegationType IS null OR delegationType != '" + KEWConstants.DELEGATION_SECONDARY + "') GROUP BY docName"),
+        "AND (delegationType IS null OR delegationType != '" + KEWConstants.DELEGATION_SECONDARY + "') GROUP BY docName")
 })
 public class ActionItem implements WorkflowPersistable, RowStyleable {
 

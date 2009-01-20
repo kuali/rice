@@ -34,6 +34,7 @@ import org.kuali.rice.kew.dto.RuleReportCriteriaDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 
 /**
@@ -154,4 +155,6 @@ public interface WorkflowUtility {
      * @throws WorkflowException
      */
     public String getDocumentRoutedByPrincipalId( Long routeHeaderId ) throws WorkflowException;
+    
+    public AttributeSet getActionsRequested(String principalId, Long documentId);
 }

@@ -21,9 +21,7 @@ import java.util.List;
 
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.config.RiceConfigurer;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kew.config.KEWConfigurer;
 import org.kuali.rice.kew.dto.ActionItemDTO;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.ActionTakenDTO;
@@ -41,6 +39,7 @@ import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 
 /**
@@ -92,6 +91,10 @@ public class WorkflowInfo implements java.io.Serializable {
             throw handleException(e);
         }
 
+    }
+    
+    public AttributeSet getActionsRequested(String principalId, Long documentId) throws WorkflowException {
+    	return getWorkflowUtility().getActionsRequested(principalId, documentId);
     }
 
     /**

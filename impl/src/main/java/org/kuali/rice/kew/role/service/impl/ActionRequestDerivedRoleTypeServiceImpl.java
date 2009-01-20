@@ -20,9 +20,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowInfo;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
@@ -38,7 +38,7 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends
 	private static final String ACKNOWLEDGE_REQUEST_RECIPIENT_ROLE_NAME = "Acknowledge Request Recipient";
 	private static final String FYI_REQUEST_RECIPIENT_ROLE_NAME = "FYI Request Recipient";
 	protected WorkflowInfo workflowInfo = new WorkflowInfo();
-	protected ThreadLocal<Map<String, RouteHeaderDTO>> routeHeaderCache = new ThreadLocal<Map<String, RouteHeaderDTO>>();
+	protected ThreadLocal<Map<String, AttributeSet>> actionsRequestedCache = new ThreadLocal<Map<String, AttributeSet>>();
 
 	@Override
 	public List<String> getPrincipalIdsFromApplicationRole(
@@ -58,27 +58,30 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends
 			List<String> groupIds, String namespaceCode, String roleName,
 			AttributeSet qualification) {
 		try {
-			if (routeHeaderCache.get() == null) {
-				routeHeaderCache.set(new HashMap<String, RouteHeaderDTO>());
+			if (actionsRequestedCache.get() == null) {
+				actionsRequestedCache.set(new HashMap<String, AttributeSet>());
 			}
 			String cacheKey = principalId
 					+ qualification.get(KimAttributes.DOCUMENT_NUMBER);
-			if (!routeHeaderCache.get().containsKey(cacheKey)) {
-				routeHeaderCache.get().put(
+			if (!actionsRequestedCache.get().containsKey(cacheKey)) {
+				actionsRequestedCache.get().put(
 						cacheKey,
-						workflowInfo.getRouteHeader(principalId, Long
+						workflowInfo.getActionsRequested(principalId, Long
 								.parseLong(qualification
 										.get(KimAttributes.DOCUMENT_NUMBER))));
 			}
 			if (APPROVE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName)) {
-				return routeHeaderCache.get().get(cacheKey)
-						.isApproveRequested();
+				return Boolean.parseBoolean(actionsRequestedCache.get().get(
+						cacheKey).get(KEWConstants.ACTION_REQUEST_APPROVE_REQ));
 			}
 			if (ACKNOWLEDGE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName)) {
-				return routeHeaderCache.get().get(cacheKey).isAckRequested();
+				return Boolean.parseBoolean(actionsRequestedCache.get().get(
+						cacheKey).get(
+						KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
 			}
 			if (FYI_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName)) {
-				return routeHeaderCache.get().get(cacheKey).isFyiRequested();
+				return Boolean.parseBoolean(actionsRequestedCache.get().get(
+						cacheKey).get(KEWConstants.ACTION_REQUEST_FYI_REQ));
 			}
 			return false;
 		} catch (WorkflowException e) {

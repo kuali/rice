@@ -97,6 +97,7 @@ import org.kuali.rice.kew.web.KeyValueSort;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -110,7 +111,7 @@ import org.w3c.dom.NodeList;
  */
 public class DTOConverter {
     private static final Logger LOG = Logger.getLogger(DTOConverter.class);
-
+    
     public static RouteHeaderDTO convertRouteHeader(DocumentRouteHeaderValue routeHeader, String principalId) throws WorkflowException {
         RouteHeaderDTO routeHeaderVO = new RouteHeaderDTO();
         if (routeHeader == null) {
@@ -124,30 +125,21 @@ public class DTOConverter {
             	boolean isBlanketApprover = KEWServiceLocator.getDocumentTypePermissionService().canBlanketApprove(principalId, routeHeader.getDocumentType(), routeHeader.getDocRouteStatus(), routeHeader.getInitiatorWorkflowId());
                 routeHeaderVO.setUserBlanketApprover(isBlanketApprover);
             }
-            String topActionRequested = KEWConstants.ACTION_REQUEST_FYI_REQ;
-            for (Iterator iter = routeHeader.getActionRequests().iterator(); iter.hasNext();) {
-                ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
-                // below will control what buttons are drawn on the client we only want the
-                // heaviest action button to show on the client making this code a little combersome
-                if (actionRequest.isRecipientRoutedRequest(principalId) && actionRequest.isActive()) {
-                    int actionRequestComparison = ActionRequestValue.compareActionCode(actionRequest.getActionRequested(), topActionRequested);
-                    if (actionRequest.isFYIRequest() && actionRequestComparison >= 0) {
-                        routeHeaderVO.setFyiRequested(true);
-                    } else if (actionRequest.isAcknowledgeRequest() && actionRequestComparison >= 0) {
-                        routeHeaderVO.setAckRequested(true);
-                        routeHeaderVO.setFyiRequested(false);
-                        topActionRequested = actionRequest.getActionRequested();
-                    } else if (actionRequest.isApproveRequest() && actionRequestComparison >= 0) {
-                        routeHeaderVO.setApproveRequested(true);
-                        routeHeaderVO.setAckRequested(false);
-                        routeHeaderVO.setFyiRequested(false);
-                        topActionRequested = actionRequest.getActionRequested();
-                        if (actionRequest.isCompleteRequst()) {
-                            routeHeaderVO.setCompleteRequested(true);
-                        }
-                    }
-                }
-            }
+            AttributeSet actionsRequested = KEWServiceLocator.getActionRequestService().getActionsRequested(routeHeader, principalId);
+            for (String actionRequestCode : actionsRequested.keySet()) {
+				if (KEWConstants.ACTION_REQUEST_FYI_REQ.equals(actionRequestCode)) {
+                    routeHeaderVO.setFyiRequested(Boolean.parseBoolean(actionsRequested.get(actionRequestCode)));					
+				}
+				else if (KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ.equals(actionRequestCode)) {
+                    routeHeaderVO.setAckRequested(Boolean.parseBoolean(actionsRequested.get(actionRequestCode)));
+				}
+				else if (KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(actionRequestCode)) {
+                    routeHeaderVO.setApproveRequested(Boolean.parseBoolean(actionsRequested.get(actionRequestCode)));					
+				}
+				else {
+                    routeHeaderVO.setCompleteRequested(Boolean.parseBoolean(actionsRequested.get(actionRequestCode)));
+				}
+			}
             // Update notes and notesToDelete arrays in routeHeaderVO
             routeHeaderVO.setNotesToDelete(null);
             routeHeaderVO.setNotes(convertNotesArrayListToNoteVOArray(routeHeader.getNotes()));

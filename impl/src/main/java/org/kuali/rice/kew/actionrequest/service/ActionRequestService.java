@@ -26,6 +26,7 @@ import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.engine.ActivationContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 /**
  * Service to handle the building, sorting, saving, activating and deactivating of action request graphs.  These lists are 
@@ -158,5 +159,6 @@ public interface ActionRequestService {
      * Checks if the given user has any Action Requests on the given document.
      */
     public boolean doesPrincipalHaveRequest(String principalId, Long documentId);
-
+    
+    public AttributeSet getActionsRequested(DocumentRouteHeaderValue routeHeader, String principalId);
 }

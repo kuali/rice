@@ -49,6 +49,7 @@ import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.ResponsibleParty;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 
@@ -65,6 +66,36 @@ public class ActionRequestServiceImpl implements ActionRequestService {
 
     public ActionRequestValue findByActionRequestId(Long actionRequestId) {
         return getActionRequestDAO().getActionRequestByActionRequestId(actionRequestId);
+    }
+
+    public AttributeSet getActionsRequested(DocumentRouteHeaderValue routeHeader, String principalId) {
+    	AttributeSet actionsRequested = new AttributeSet();
+        actionsRequested.put(KEWConstants.ACTION_REQUEST_FYI_REQ, "false");
+        actionsRequested.put(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "false");
+        actionsRequested.put(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "false");
+        actionsRequested.put(KEWConstants.ACTION_REQUEST_COMPLETE_REQ, "false");
+    	String topActionRequested = KEWConstants.ACTION_REQUEST_FYI_REQ;
+        for (ActionRequestValue actionRequest : routeHeader.getActionRequests()) {
+            if (actionRequest.isRecipientRoutedRequest(principalId) && actionRequest.isActive()) {
+                int actionRequestComparison = ActionRequestValue.compareActionCode(actionRequest.getActionRequested(), topActionRequested);
+                if (actionRequest.isFYIRequest() && actionRequestComparison >= 0) {
+                    actionsRequested.put(KEWConstants.ACTION_REQUEST_FYI_REQ, "true");
+                } else if (actionRequest.isAcknowledgeRequest() && actionRequestComparison >= 0) {
+                    actionsRequested.put(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "true");
+                    actionsRequested.put(KEWConstants.ACTION_REQUEST_FYI_REQ, "false");
+                    topActionRequested = actionRequest.getActionRequested();
+                } else if (actionRequest.isApproveRequest() && actionRequestComparison >= 0) {
+                    actionsRequested.put(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "true");
+                    actionsRequested.put(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "false");
+                    actionsRequested.put(KEWConstants.ACTION_REQUEST_FYI_REQ, "false");
+                    topActionRequested = actionRequest.getActionRequested();
+                    if (actionRequest.isCompleteRequst()) {
+                        actionsRequested.put(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "true");
+                    }
+                }
+            }
+        }
+        return actionsRequested;
     }
 
     public ActionRequestValue initializeActionRequestGraph(ActionRequestValue actionRequest,

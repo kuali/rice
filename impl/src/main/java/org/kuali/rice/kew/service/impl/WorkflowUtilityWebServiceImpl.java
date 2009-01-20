@@ -80,6 +80,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 
@@ -109,6 +110,22 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
             LOG.debug("Returning RouteHeaderVO [id=" + documentId + ", user=" + principalId + "]");
         }
         return routeHeaderVO;
+    }
+    
+    public AttributeSet getActionsRequested(String principalId, Long documentId) {
+        if (documentId == null) {
+            LOG.error("null routeHeaderId passed in.  Throwing RuntimeExcpetion");
+            throw new RuntimeException("Null documentId passed in.");
+        }
+        if (principalId == null) {
+            LOG.error("null principalId passed in.");
+            throw new RuntimeException("null principalId passed in");
+        }
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("Fetching DocumentRouteHeaderValue [id="+documentId+", user="+principalId+"]");
+        }
+        DocumentRouteHeaderValue document = loadDocument(documentId);
+        return KEWServiceLocator.getActionRequestService().getActionsRequested(document, principalId);
     }
 
     public RouteHeaderDTO getRouteHeader(Long documentId) throws WorkflowException {

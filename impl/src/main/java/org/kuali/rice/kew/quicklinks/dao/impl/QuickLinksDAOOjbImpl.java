@@ -38,6 +38,7 @@ import org.kuali.rice.kew.quicklinks.dao.QuickLinksDAO;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.web.KeyValue;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
@@ -45,14 +46,14 @@ import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
 public class QuickLinksDAOOjbImpl extends PersistenceBrokerDaoSupport implements QuickLinksDAO {
 
-    public List getActionListStats(final String principalId) {
-        return (List) this.getPersistenceBrokerTemplate().execute(new PersistenceBrokerCallback() {
+    public List<ActionListStats> getActionListStats(final String principalId) {
+        return (List<ActionListStats>) this.getPersistenceBrokerTemplate().execute(new PersistenceBrokerCallback() {
             public Object doInPersistenceBroker(PersistenceBroker broker) {
                 PreparedStatement selectActionItems = null;
                 PreparedStatement selectDocTypeLabel = null;
                 ResultSet selectedActionItems = null;
                 ResultSet selectedDocTypeLabel = null;
-                List docTypes = new ArrayList();
+                List<ActionListStats> docTypes = new ArrayList<ActionListStats>();
                 try {
                     Connection connection = broker.serviceConnectionManager().getConnection();
                     selectActionItems = connection.prepareStatement("select DOC_TYP_NM, COUNT(*) from KREW_ACTN_ITM_T where PRNCPL_ID = ? " +
@@ -107,13 +108,13 @@ public class QuickLinksDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         });
     }
 
-    public List getInitiatedDocumentTypesList(final String principalId) {
-        return (List)  this.getPersistenceBrokerTemplate().execute(new PersistenceBrokerCallback() {
+    public List<InitiatedDocumentType> getInitiatedDocumentTypesList(final String principalId) {
+        return (List<InitiatedDocumentType>)  this.getPersistenceBrokerTemplate().execute(new PersistenceBrokerCallback() {
 
             public Object doInPersistenceBroker(PersistenceBroker broker) {
                 PreparedStatement selectDistinctDocumentTypes = null;
                 ResultSet selectedDistinctDocumentTypes = null;
-                List documentTypesByName = new ArrayList();
+                List<InitiatedDocumentType> documentTypesByName = new ArrayList<InitiatedDocumentType>();
                 try {
                     Connection connection = broker.serviceConnectionManager().getConnection();
 //                  select the doc type only if the SUPPORTS_QUICK_INITIATE policy is NULL or true
@@ -121,15 +122,20 @@ public class QuickLinksDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                     	"where A.INITR_PRNCPL_ID = ? and A.DOC_TYP_ID = B.DOC_TYP_ID and " +
                     	"B.ACTV_IND = 1 and B.CUR_IND = 1 " +
                     	"order by upper(B.LBL)";
-                    
+
                     selectDistinctDocumentTypes = connection.prepareStatement(sql);
                     selectDistinctDocumentTypes.setString(1, principalId);
                     selectedDistinctDocumentTypes = selectDistinctDocumentTypes.executeQuery();
+
                     String documentNames = Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.QUICK_LINK_DETAIL_TYPE, KEWConstants.QUICK_LINKS_RESTRICT_DOCUMENT_TYPES);
+                    if (documentNames != null) {
+                        // TODO Should this happen???
+                        documentNames = documentNames.trim();
+                    }
                     if (documentNames == null || "none".equals(documentNames)) {
                     	documentNames = "";
                     }
-                    
+
                     List docTypesToRestrict = new ArrayList();
                     StringTokenizer st = new StringTokenizer(documentNames, ",");
                     while (st.hasMoreTokens()) {
@@ -152,7 +158,7 @@ public class QuickLinksDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                             	documentTypesByName.add(new InitiatedDocumentType(docTypeName, selectedDistinctDocumentTypes.getString(2)));
                             }
                         }
-                    }                   
+                    }
                     return documentTypesByName;
                 } catch (Exception e) {
                     throw new WorkflowRuntimeException("Error getting initiated document types for user: " + principalId, e);
@@ -176,18 +182,18 @@ public class QuickLinksDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         });
     }
 
-    public List getNamedSearches(String principalId) {
+    public List<KeyValue> getNamedSearches(String principalId) {
         return getDocumentSearchService().getNamedSearches(principalId);
     }
 
-    public List getRecentSearches(String principalId) {
+    public List<KeyValue> getRecentSearches(String principalId) {
         return getDocumentSearchService().getMostRecentSearches(principalId);
     }
 
-    public List getWatchedDocuments(final String principalId) {
-        return (List) this.getPersistenceBrokerTemplate().execute(new PersistenceBrokerCallback() {
+    public List<WatchedDocument> getWatchedDocuments(final String principalId) {
+        return (List<WatchedDocument>) this.getPersistenceBrokerTemplate().execute(new PersistenceBrokerCallback() {
             public Object doInPersistenceBroker(PersistenceBroker broker) {
-                List watchedDocuments = new ArrayList();
+                List<WatchedDocument> watchedDocuments = new ArrayList<WatchedDocument>();
                 PreparedStatement selectWatchedDocuments = null;
                 ResultSet selectedWatchedDocuments = null;
                 try {

@@ -31,6 +31,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -89,6 +91,12 @@ import org.kuali.rice.kns.web.format.FormatException;
 @Entity
 @Sequence(name="KREW_RTE_NODE_S", property="documentTypeId")
 @Table(name="KREW_DOC_TYP_T")
+@NamedQueries({
+    @NamedQuery(name="DocumentType.QuickLinks.FindLabelByTypeName", query="SELECT label FROM DocumentType WHERE name = :docTypeName AND currentInd = 1"),
+    @NamedQuery(name="DocumentType.QuickLinks.FindInitiatedDocumentTypesListByInitiatorWorkflowId", query="SELECT DISTINCT dt.name, dt.label FROM DocumentType dt, DocumentRouteHeaderValue drhv "+
+            "WHERE drhv.initiatorWorkflowId = :initiatorWorkflowId AND drhv.documentTypeId = dt.documentTypeId AND dt.active = 1 AND dt.currentInd = 1 " +
+            "ORDER BY UPPER(dt.label)")
+})
 public class DocumentType extends PersistableBusinessObjectBase
 {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentType.class);
@@ -197,7 +205,7 @@ public class DocumentType extends PersistableBusinessObjectBase
         policies = new ArrayList();
         version = new Integer(0);
     }
-    
+
     public void populateDataDictionaryEditableFields(DocumentType dataDictionaryEditedType) {
         String currentPropertyName = "";
         try {
@@ -281,7 +289,7 @@ public class DocumentType extends PersistableBusinessObjectBase
         }
         return null;
     }
-    
+
     public String getDefaultApprovePolicyDisplayValue() {
         if (getDefaultApprovePolicy() != null) {
             return getDefaultApprovePolicy().getPolicyDisplayValue();
@@ -309,7 +317,7 @@ public class DocumentType extends PersistableBusinessObjectBase
         }
         return null;
     }
-    
+
     public boolean isPolicyDefined(DocumentTypePolicyEnum policyToCheck) {
     	Iterator policyIter = getPolicies().iterator();
         while (policyIter.hasNext()) {
@@ -646,24 +654,24 @@ public class DocumentType extends PersistableBusinessObjectBase
 	return getIdentityManagementService().getGroup(this.workgroupId);
     }
 
-    public void setSuperUserWorkgroupNoInheritence(KimGroup suWorkgroup) 
+    public void setSuperUserWorkgroupNoInheritence(KimGroup suWorkgroup)
     {
-		if (suWorkgroup == null) 
+		if (suWorkgroup == null)
 		{
 		    this.workgroupId = null;
-		} 
-		else 
+		}
+		else
 		{
 		    this.workgroupId = suWorkgroup.getGroupId();
 		}
     }
-    
+
     /**
      * Returns true if this DocumentType has a super user group defined.
      */
     public boolean isSuperUserGroupDefined() {
     	if (this.workgroupId == null) {
-    		return getParentDocType() != null && getParentDocType().isSuperUserGroupDefined(); 
+    		return getParentDocType() != null && getParentDocType().isSuperUserGroupDefined();
     	}
     	return true;
     }
@@ -713,14 +721,14 @@ public class DocumentType extends PersistableBusinessObjectBase
     	}
     	return false;
     }
-    
+
     /**
      * Returns true if either a blanket approve group or blanket approve policy is defined
      * on this Document Type.
      */
     public boolean isBlanketApproveGroupDefined() {
     	if (StringUtils.isBlank(getBlanketApprovePolicy()) && this.blanketApproveWorkgroupId == null) {
-    		return getParentDocType() != null && getParentDocType().isBlanketApproveGroupDefined(); 
+    		return getParentDocType() != null && getParentDocType().isBlanketApproveGroupDefined();
     	}
     	return true;
     }
@@ -732,7 +740,7 @@ public class DocumentType extends PersistableBusinessObjectBase
     public void setReportingWorkgroup(KimGroup reportingWorkgroup) {
     	this.reportingWorkgroupId = reportingWorkgroup.getGroupId();
     }
-    
+
     public KimGroup getDefaultExceptionWorkgroup() {
         return defaultExceptionWorkgroup;
     }
@@ -1099,7 +1107,7 @@ public class DocumentType extends PersistableBusinessObjectBase
     /**
      * Returns the service namespace for this DocumentType which can be specified on the document type itself,
      * inherited from the parent, or defaults to the configured service namespace of the application.
-     * 
+     *
      * chb:12Nov2008: seems like the accessor should return the field and the auxiliary method "getActualFoo" should
      * be the one to do more elaborate checking
      */

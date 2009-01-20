@@ -115,11 +115,14 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+
+
 @Entity
 @Table(name="KREW_DOC_HDR_T")
 @Sequence(name="KREW_DOC_HDR_S", property="routeHeaderId")
 @NamedQueries({
-	@NamedQuery(name="DocumentRouteHeaderValue.FindByRouteHeaderId", query="select d from DocumentRouteHeaderValue as d where d.routeHeaderId = :routeHeaderId")
+	@NamedQuery(name="DocumentRouteHeaderValue.FindByRouteHeaderId", query="select d from DocumentRouteHeaderValue as d where d.routeHeaderId = :routeHeaderId"),
+	@NamedQuery(name="DocumentRouteHeaderValue.QuickLinks.FindWatchedDocumentsByInitiatorWorkflowId", query="SELECT NEW org.kuali.rice.kew.quicklinks.WatchedDocument(routeHeaderId, docRouteStatus, docTitle) FROM DocumentRouteHeaderValue WHERE initiatorWorkflowId = :initiatorWorkflowId AND docRouteStatus IN ('"+ KEWConstants.ROUTE_HEADER_ENROUTE_CD +"','"+ KEWConstants.ROUTE_HEADER_EXCEPTION_CD +"') ORDER BY createDate DESC")
 })
 public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase {
     private static final long serialVersionUID = -4700736340527913220L;
@@ -185,7 +188,7 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase {
 
     /* New Workflow 2.1 Field */
     @ManyToMany(fetch=FetchType.EAGER, cascade = CascadeType.REMOVE)
-    @JoinTable(name = "KREW_INIT_RTE_NODE_INSTN_T", joinColumns = @JoinColumn(name = "DOC_HDR_ID"), inverseJoinColumns = @JoinColumn(name = "RTE_NODE_INSTN_ID"))    
+    @JoinTable(name = "KREW_INIT_RTE_NODE_INSTN_T", joinColumns = @JoinColumn(name = "DOC_HDR_ID"), inverseJoinColumns = @JoinColumn(name = "RTE_NODE_INSTN_ID"))
     private List<RouteNodeInstance> initialRouteNodeInstances = new ArrayList<RouteNodeInstance>();
 
     static {
@@ -231,7 +234,7 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase {
     	}
     	return KEWServiceLocator.getIdentityHelperService().getPrincipal(getInitiatorWorkflowId());
     }
-    
+
     public KimPrincipal getRoutedByPrincipal()
     {
         if (getRoutedByUserWorkflowId() == null) {
@@ -239,15 +242,15 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase {
         }
         return KEWServiceLocator.getIdentityHelperService().getPrincipal(getRoutedByUserWorkflowId());
     }
-    
+
     public String getInitiatorDisplayName() {
     	UserSession userSession = UserSession.getAuthenticatedUser();
     	return UserUtils.getDisplayableName(userSession, getInitiatorPrincipal());
     }
-    
+
     public String getRoutedByDisplayName() {
     	UserSession userSession = UserSession.getAuthenticatedUser();
-    	return UserUtils.getDisplayableName(userSession, getRoutedByPrincipal());    	
+    	return UserUtils.getDisplayableName(userSession, getRoutedByPrincipal());
     }
 
     public String getDocRouteStatusLabel() {
@@ -276,7 +279,7 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase {
         }
         return name;
     }
-    
+
     public List<String> getCurrentNodeNames() {
     	List<String> currentNodeNames = new ArrayList<String>();
     	Collection nodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(getRouteHeaderId());
@@ -731,7 +734,7 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase {
 	}
 	this.getRootBranchState().removeAll(statesToRemove);
     }
-    
+
     /**
      * Sets a variable
      * @param name variable name
@@ -762,7 +765,7 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase {
             }
         }
     }
-    
+
     public List<BranchState> getRootBranchState() {
 	return this.getRootBranch().getBranchState();
     }

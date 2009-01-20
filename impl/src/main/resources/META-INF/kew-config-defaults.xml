@@ -13,7 +13,7 @@
 
   <param name="message.delivery">async</param>
   <param name="message.persistence">true</param>
-  
+
   <param name="simpleDocumentActionsService.security">true</param>
   <param name="secure.workflowdocument.javaservice.endpoint">true</param>
   <param name="secure.workflowutility.javaservice.endpoint">true</param>
@@ -68,9 +68,10 @@
       enEmailContentService,
       enActionRegistry,
       enCacheAdministrator,
-      enEncryptionService
+      enEncryptionService,
+      enQuickLinksService
   </param>
- 
+
   <param name="edl.config.loc">classpath:META-INF/EDLConfig.xml</param>
 
 </config>

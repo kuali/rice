@@ -154,9 +154,9 @@ public class KEWConstants {
     public static final String DELEGATORS_ON_FILTER_PAGE = "Secondary Delegators only on Filter Page";
     public static final String DELEGATORS_ON_ACTION_LIST_PAGE = "Secondary Delegators on Action List Page";
 
-    public static final Map ACTION_LIST_CONTENT;
+    public static final Map<String, String> ACTION_LIST_CONTENT;
     static {
-        ACTION_LIST_CONTENT = new HashMap();
+        ACTION_LIST_CONTENT = new HashMap<String, String>();
         ACTION_LIST_CONTENT.put(KEWConstants.ACTION_LIST_ALL_REQUESTS, "All Requests");
         ACTION_LIST_CONTENT.put(KEWConstants.ACTION_LIST_NONDELEGATED_REQUESTS, "No Delegations");
         ACTION_LIST_CONTENT.put(KEWConstants.ACTION_LIST_DELEGATED_REQUESTS, "Delegations Only");
@@ -188,13 +188,13 @@ public class KEWConstants {
     public static final int TITLE_MAX_LENGTH = 255;
 
     public static final Date CURRENT_DATE = new Date(-7);
-    public static final Map DOCUMENT_STATUSES;
+    public static final Map<String, String> DOCUMENT_STATUSES;
 
     static {
         /*
          * see values in RouteHeader inner class; this HashMap is the definitive list used for the Document Route Statuses in ActionList preferences
          */
-        DOCUMENT_STATUSES = new HashMap();
+        DOCUMENT_STATUSES = new HashMap<String, String>();
         DOCUMENT_STATUSES.put(KEWConstants.ROUTE_HEADER_APPROVED_CD, KEWConstants.ROUTE_HEADER_APPROVED_LABEL);
         DOCUMENT_STATUSES.put(KEWConstants.ROUTE_HEADER_CANCEL_CD, KEWConstants.ROUTE_HEADER_CANCEL_LABEL);
         DOCUMENT_STATUSES.put(KEWConstants.ROUTE_HEADER_CANCEL_DISAPPROVE_CD, KEWConstants.ROUTE_HEADER_CANCEL_DISAPPROVE_LABEL);
@@ -211,9 +211,9 @@ public class KEWConstants {
     public static final Integer DOCUMENT_SEARCH_DOC_TITLE_CREATE_DATE_DAYS_AGO = new Integer(-30);
     public static final Integer DOCUMENT_SEARCH_NO_CRITERIA_CREATE_DATE_DAYS_AGO = new Integer(0);
 
-    public static final Map ACTION_LIST_COLOR_PALETTE;
+    public static final Map<String, String> ACTION_LIST_COLOR_PALETTE;
     static {
-        ACTION_LIST_COLOR_PALETTE = new HashMap();
+        ACTION_LIST_COLOR_PALETTE = new HashMap<String, String>();
         ACTION_LIST_COLOR_PALETTE.put("white", "#FFFFFF");
         ACTION_LIST_COLOR_PALETTE.put("pink", "#FFDDDE");
         ACTION_LIST_COLOR_PALETTE.put("orange", "#FFCC99");
@@ -550,34 +550,34 @@ public class KEWConstants {
     public static final String TIMESTAMP_DATE_FORMAT_PATTERN = "yyyy-mm-dd hh:mm:ss.fffffffff";
     public static final String TIMESTAMP_DATE_FORMAT_PATTERN2 = "MM/dd/yyyy hh:mm a";
 
-    public static final Map ACTION_REQUEST_RECIPIENT_TYPE;
+    public static final Map<String, String> ACTION_REQUEST_RECIPIENT_TYPE;
     static {
-        ACTION_REQUEST_RECIPIENT_TYPE = new HashMap();
+        ACTION_REQUEST_RECIPIENT_TYPE = new HashMap<String, String>();
         ACTION_REQUEST_RECIPIENT_TYPE.put(KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD, KEWConstants.WORKGROUP);
         ACTION_REQUEST_RECIPIENT_TYPE.put(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD, KEWConstants.PERSON);
         ACTION_REQUEST_RECIPIENT_TYPE.put(KEWConstants.ACTION_REQUEST_ROLE_RECIPIENT_CD, KEWConstants.ROLE);
     }
 
-    public static final Map ACTION_REQUEST_CD;
+    public static final Map<String, String> ACTION_REQUEST_CD;
     static{
-        ACTION_REQUEST_CD = new HashMap();
+        ACTION_REQUEST_CD = new HashMap<String, String>();
         ACTION_REQUEST_CD.put(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
         ACTION_REQUEST_CD.put(KEWConstants.ACTION_REQUEST_APPROVE_REQ, KEWConstants.ACTION_REQUEST_APPROVE_REQ_LABEL);
         ACTION_REQUEST_CD.put(KEWConstants.ACTION_REQUEST_COMPLETE_REQ, KEWConstants.ACTION_REQUEST_COMPLETE_REQ_LABEL);
         ACTION_REQUEST_CD.put(KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ_LABEL);
     }
 
-    public static final Map ACTION_REQUEST_STATUS;
+    public static final Map<String, String> ACTION_REQUEST_STATUS;
     static {
-        ACTION_REQUEST_STATUS = new HashMap();
+        ACTION_REQUEST_STATUS = new HashMap<String, String>();
         ACTION_REQUEST_STATUS.put(KEWConstants.ACTION_REQUEST_ACTIVATED, KEWConstants.ACTIVE_LABEL);
         ACTION_REQUEST_STATUS.put(KEWConstants.ACTION_REQUEST_INITIALIZED, KEWConstants.ACTION_REQUEST_INITIALIZED_LABEL);
         ACTION_REQUEST_STATUS.put(KEWConstants.ACTION_REQUEST_DONE_STATE, KEWConstants.ACTION_REQUEST_DONE_STATE_LABEL);
     }
 
-    public static final Map ACTION_TAKEN_CD;
+    public static final Map<String, String> ACTION_TAKEN_CD;
     static{
-        ACTION_TAKEN_CD = new HashMap();
+        ACTION_TAKEN_CD = new HashMap<String, String>();
         ACTION_TAKEN_CD.put(KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD, KEWConstants.ACTION_TAKEN_ACKNOWLEDGED);
         ACTION_TAKEN_CD.put(KEWConstants.ACTION_TAKEN_ADHOC_CD, KEWConstants.ACTION_TAKEN_ADHOC);
         ACTION_TAKEN_CD.put(KEWConstants.ACTION_TAKEN_ADHOC_REVOKED_CD, KEWConstants.ACTION_TAKEN_ADHOC_REVOKED);
@@ -729,7 +729,7 @@ public class KEWConstants {
     public static final String RMI_CLIENT_PROTOCOL = "rmi";
     public static final String SPRING_INVOKER_CLIENT_PROTOCOL = "springInvoker";
 
-    public static final Set CLIENT_PROTOCOLS = new HashSet();
+    public static final Set<String> CLIENT_PROTOCOLS = new HashSet<String>();
     static {
     	CLIENT_PROTOCOLS.add(LOCAL_CLIENT_PROTOCOL);
     	CLIENT_PROTOCOLS.add(EMBEDDED_CLIENT_PROTOCOL);
@@ -830,7 +830,7 @@ public class KEWConstants {
 	public static final String KEW_NAMESPACE = "KR-WKFLW";
 
 	public static final String DEFAULT_RESPONSIBILITY_TEMPLATE_NAME = "Review";
-	
+
 	public static final String EXCEPTION_ROUTING_RESPONSIBILITY_TEMPLATE_NAME = "Resolve Exception";
 
 	// Permission Details

@@ -18,11 +18,16 @@ package org.kuali.rice.kew.quicklinks.dao;
 
 import java.util.List;
 
+import org.kuali.rice.kew.quicklinks.ActionListStats;
+import org.kuali.rice.kew.quicklinks.InitiatedDocumentType;
+import org.kuali.rice.kew.quicklinks.WatchedDocument;
+import org.kuali.rice.kew.web.KeyValue;
+
 
 public interface QuickLinksDAO {
-    public List getWatchedDocuments(String principalId);
-    public List getRecentSearches(String principalId);
-    public List getNamedSearches(String principalId);
-    public List getActionListStats(String principalId);
-    public List getInitiatedDocumentTypesList(String principalId);
+    public List<WatchedDocument> getWatchedDocuments(String principalId);
+    public List<KeyValue> getRecentSearches(String principalId);
+    public List<KeyValue> getNamedSearches(String principalId);
+    public List<ActionListStats> getActionListStats(String principalId);
+    public List<InitiatedDocumentType> getInitiatedDocumentTypesList(String principalId);
 }

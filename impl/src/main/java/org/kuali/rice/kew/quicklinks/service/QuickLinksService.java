@@ -18,6 +18,11 @@ package org.kuali.rice.kew.quicklinks.service;
 
 import java.util.List;
 
+import org.kuali.rice.kew.quicklinks.ActionListStats;
+import org.kuali.rice.kew.quicklinks.InitiatedDocumentType;
+import org.kuali.rice.kew.quicklinks.WatchedDocument;
+import org.kuali.rice.kew.web.KeyValue;
+
 
 /**
  * A service providing data access to Quick Links information.  The Quick
@@ -27,9 +32,9 @@ import java.util.List;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface QuickLinksService {
-    public List getWatchedDocuments(String principalId);
-    public List getRecentSearches(String principalId);
-    public List getNamedSearches(String principalId);
-    public List getActionListStats(String principalId);
-    public List getInitiatedDocumentTypesList(String principalId);
+    public List<WatchedDocument> getWatchedDocuments(String principalId);
+    public List<KeyValue> getRecentSearches(String principalId);
+    public List<KeyValue> getNamedSearches(String principalId);
+    public List<ActionListStats> getActionListStats(String principalId);
+    public List<InitiatedDocumentType> getInitiatedDocumentTypesList(String principalId);
 }

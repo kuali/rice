@@ -115,6 +115,7 @@
                 <idref local="enWorkflowUtilityService" />
                 <idref local="enWorkflowDocumentActionsService" />
                 <idref local="enRemoveReplaceDocumentService"/>
+                <idref local="enQuickLinksService" />
                 <!-- it's important that this service remains non-transactionally proxied for various reasons
                 <idref local="enUserOptionsService"/>
                 -->
@@ -184,7 +185,7 @@
 	<!--  RuleAttributeService -->
 	<bean id="enRuleAttributeService" class="org.kuali.rice.kew.rule.service.impl.RuleAttributeServiceImpl" lazy-init="true">
 		<property name="ruleAttributeDAO">
-            <!-- <ref bean="enRuleAttributeDAOJpa" /> -->
+            <!-- <ref bean="enRuleAttributeDAOJpa" />-->
 			<ref bean="enRuleAttributeDAO" />
 		</property>
 	</bean>
@@ -359,7 +360,7 @@
         </bean>
       </property>
     </bean>
-    
+
     <bean id="edlLookupHelperService" class="org.kuali.rice.kew.lookupable.EDocLiteLookupableHelperServiceImpl" scope="prototype"/>
 
     <bean id="edlLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
@@ -562,16 +563,15 @@
 
   <!--  QuickLinksService -->
   <bean id="enQuickLinksService" class="org.kuali.rice.kew.quicklinks.service.impl.QuickLinksServiceImpl">
-    <property name="quickLinksDAO">
-      <ref bean="enQuickLinksDAO" />
-    </property>
+    <property name="quickLinksDAO" ref="enQuickLinksDAO" />
   </bean>
+  <!--  <bean id="enQuickLinksDAO" class="org.kuali.rice.kew.quicklinks.dao.impl.QuickLinksDAOJpaImpl"/> -->
   <bean id="enQuickLinksDAO" class="org.kuali.rice.kew.quicklinks.dao.impl.QuickLinksDAOOjbImpl">
 		<property name="jcdAlias" value="enWorkflowDataSource" />
   </bean>
 
   <bean id="kewIdentityHelperService" class="org.kuali.rice.kew.identity.service.impl.IdentityHelperServiceImpl"/>
-  
+
   <!-- XML parsing/export has not been promoted out of KEW into the core yet, until then let's wire up the GroupXmlServiceImpl here -->
   <bean id="enGroupXmlService" class="org.kuali.rice.kew.xml.GroupXmlServiceImpl" />
   <bean id="enUserXmlService" class="org.kuali.rice.kew.xml.UserXmlServiceImpl"/>
@@ -913,7 +913,7 @@
 	       </bean>
 		</property>
   </bean>
-  
+
   <bean id="documentTypeAndActionRequestTypePermissionTypeService" class="org.kuali.rice.kew.service.impl.DocumentTypeAndActionRequestTypePermissionTypeServiceImpl" />
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
@@ -945,7 +945,7 @@
 	       </bean>
 		</property>
   </bean>
-  
+
   <bean id="reviewResponsibilityTypeService" class="org.kuali.rice.kew.service.impl.ReviewResponsibilityTypeServiceImpl" />
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
@@ -961,7 +961,7 @@
 	       </bean>
 		</property>
   </bean>
-  
+
   <bean id="documentTypeResponsibilityTypeService" class="org.kuali.rice.kew.service.impl.DocumentTypeResponsibilityTypeServiceImpl" />
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>

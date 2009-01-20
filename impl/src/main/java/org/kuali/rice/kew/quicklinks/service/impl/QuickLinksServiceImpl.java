@@ -18,31 +18,35 @@ package org.kuali.rice.kew.quicklinks.service.impl;
 
 import java.util.List;
 
+import org.kuali.rice.kew.quicklinks.ActionListStats;
+import org.kuali.rice.kew.quicklinks.InitiatedDocumentType;
+import org.kuali.rice.kew.quicklinks.WatchedDocument;
 import org.kuali.rice.kew.quicklinks.dao.QuickLinksDAO;
 import org.kuali.rice.kew.quicklinks.service.QuickLinksService;
+import org.kuali.rice.kew.web.KeyValue;
 
 
 public class QuickLinksServiceImpl implements QuickLinksService {
 
     private QuickLinksDAO quickLinksDAO;
 
-    public List getActionListStats(String principalId) {
+    public List<ActionListStats> getActionListStats(String principalId) {
         return getQuickLinksDAO().getActionListStats(principalId);
     }
 
-    public List getInitiatedDocumentTypesList(String principalId) {
+    public List<InitiatedDocumentType> getInitiatedDocumentTypesList(String principalId) {
         return getQuickLinksDAO().getInitiatedDocumentTypesList(principalId);
     }
 
-    public List getNamedSearches(String principalId) {
+    public List<KeyValue> getNamedSearches(String principalId) {
         return getQuickLinksDAO().getNamedSearches(principalId);
     }
 
-    public List getRecentSearches(String principalId) {
+    public List<KeyValue> getRecentSearches(String principalId) {
         return getQuickLinksDAO().getRecentSearches(principalId);
     }
 
-    public List getWatchedDocuments(String principalId) {
+    public List<WatchedDocument> getWatchedDocuments(String principalId) {
         return getQuickLinksDAO().getWatchedDocuments(principalId);
     }
 

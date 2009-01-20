@@ -56,4 +56,15 @@ public class KimPermissionTypeServiceBase extends KimTypeServiceBase implements 
 		}
 		return matchingPermissions;
 	}
+	
+	/**
+	 * Base implementation just returns the passed in qualifier.
+	 * 
+	 * @see org.kuali.rice.kim.service.support.KimPermissionTypeService#filterRoleQualifier(java.lang.String, java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 */
+	public AttributeSet filterRoleQualifier(String namespaceCode,
+			String permissionTemplateName, String permissionName,
+			AttributeSet roleQualifier) {
+		return roleQualifier;
+	}
 }

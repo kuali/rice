@@ -929,6 +929,22 @@
 	       </bean>
 		</property>
   </bean>
+
+  <bean id="adhocRecipientPermissionTypeService" class="org.kuali.rice.kew.service.impl.AdhocRecipientPermissionTypeServiceImpl" />
+  <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+		<property name="serviceDefinition">
+	       <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+	         <property name="service">
+	           <ref bean="adhocRecipientPermissionTypeService" />
+	         </property>
+	         <property name="localServiceName" value="adhocRecipientPermissionTypeService" />
+	         <property name="priority" value="3" />
+	         <property name="retryAttempts" value="0" />
+	         <property name="busSecurity" value="${secure.workflowdocument.javaservice.endpoint}"/>
+	       </bean>
+		</property>
+  </bean>
   
   <bean id="reviewResponsibilityTypeService" class="org.kuali.rice.kew.service.impl.ReviewResponsibilityTypeServiceImpl" />
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">

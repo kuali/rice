@@ -29,10 +29,8 @@ import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.authorization.BusinessObjectAuthorizerBase;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
-import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
 
 /**
  * DocumentAuthorizer containing common, reusable document-level authorization
@@ -45,9 +43,6 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 	public static final String EDIT_MODE_DEFAULT_TRUE_VALUE = "TRUE";
 	public static final String USER_SESSION_METHOD_TO_CALL_OBJECT_KEY = "METHOD_TO_CALL_KEYS_METHOD_OBJECT_KEY";
 	public static final String USER_SESSION_METHOD_TO_CALL_COMPLETE_OBJECT_KEY = "METHOD_TO_CALL_KEYS_COMPLETE_OBJECT_KEY";
-
-	private static KualiWorkflowInfo kualiWorkflowInfo;
-	private static KualiConfigurationService kualiConfigurationService;
 
 	/**
 	 * Individual document families will need to reimplement this according to
@@ -157,10 +152,12 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 
 	public final boolean canReceiveAdHoc(Document document, Person user,
 			String actionRequestCode) {
+		Map<String,String> additionalPermissionDetails = new HashMap<String, String>();
+		additionalPermissionDetails.put(KimAttributes.ACTION_REQUEST_CD, actionRequestCode);
 		return isAuthorizedByTemplate(document,
 				KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE,
 				KimConstants.PermissionTemplateNames.AD_HOC_REVIEW_DOCUMENT,
-				user.getPrincipalId());
+				user.getPrincipalId(), additionalPermissionDetails, null );
 	}
 
 	public final boolean canOpen(Document document, Person user) {

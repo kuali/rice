@@ -29,6 +29,7 @@ import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
+import org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.dao.KimPermissionDao;
@@ -58,10 +59,60 @@ public class PermissionServiceImpl implements PermissionService {
 
 	private ThreadLocal<Map<String,List<KimPermissionImpl>>> permissionCache = new ThreadLocal<Map<String,List<KimPermissionImpl>>>();
 	private ThreadLocal<Map<List<KimPermissionInfo>,List<String>>> permissionToRoleCache = new ThreadLocal<Map<List<KimPermissionInfo>,List<String>>>();
+	
+	private Map<String,KimPermissionTypeService> permissionTypeServiceByNameCache = new HashMap<String, KimPermissionTypeService>();
     // --------------------
     // Authorization Checks
     // --------------------
     
+	protected KimPermissionTypeService getPermissionTypeService( String namespaceCode, String permissionTemplateName, String permissionName, String permissionId ) {
+		StringBuffer key = new StringBuffer();
+		if ( namespaceCode != null ) {
+			key.append( namespaceCode );
+		}
+		key.append( '|' );
+		if ( permissionTemplateName != null ) {
+			key.append( permissionTemplateName );
+		}
+		key.append( '|' );
+		if ( permissionName != null ) {
+			key.append( permissionName );
+		}
+		key.append( '|' );
+		if ( permissionId != null ) {
+			key.append( permissionId );
+		}
+		KimPermissionTypeService service = permissionTypeServiceByNameCache.get(key.toString());
+		if ( service == null ) {
+			KimPermissionTemplateImpl permTemplate = null;
+			if ( permissionTemplateName != null ) {
+				List<KimPermissionImpl> perms = getPermissionImplsByTemplateName(namespaceCode, permissionTemplateName);
+				if ( !perms.isEmpty() ) {
+					permTemplate = perms.get(0).getTemplate();
+				}
+			} else if ( permissionName != null ) {
+				List<KimPermissionImpl> perms = getPermissionImplsByName(namespaceCode, permissionName); 
+				if ( !perms.isEmpty() ) {
+					permTemplate = perms.get(0).getTemplate();
+				}
+			} else if ( permissionId != null ) {
+				KimPermissionImpl perm = getPermissionImpl(permissionId);
+				if ( perm != null ) {
+					permTemplate = perm.getTemplate();
+				}
+			}
+			String serviceName = permTemplate.getKimType().getKimTypeServiceName();
+    		if ( serviceName != null ) {
+    			service = (KimPermissionTypeService)KIMServiceLocator.getService( serviceName );
+    		}
+    		if ( service == null ) {
+    			service = getDefaultPermissionTypeService();
+    		}
+    		permissionTypeServiceByNameCache.put(key.toString(), service);
+		}
+		return service;
+	}
+	
     /**
      * @see org.kuali.rice.kim.service.PermissionService#hasPermission(java.lang.String, String, java.lang.String, AttributeSet)
      */
@@ -77,6 +128,8 @@ public class PermissionServiceImpl implements PermissionService {
     	if ( roleIds.isEmpty() ) {
     		return false;
     	}
+    	// convert the qualifications for the given permission template type
+    	qualification = getPermissionTypeService(namespaceCode, null, permissionName, null).filterRoleQualifier(namespaceCode, null, permissionName, qualification);
 		return getRoleService().principalHasRole( principalId, roleIds, qualification );
     }
 
@@ -95,6 +148,8 @@ public class PermissionServiceImpl implements PermissionService {
     	if ( roleIds.isEmpty() ) {
     		return false;
     	}
+    	// convert the qualifications for the given permission template type
+    	qualification = getPermissionTypeService(namespaceCode, permissionTemplateName, null, null).filterRoleQualifier(namespaceCode, permissionTemplateName, null, qualification);
     	return getRoleService().principalHasRole( principalId, roleIds, qualification );
     }
 
@@ -134,7 +189,9 @@ public class PermissionServiceImpl implements PermissionService {
     		// a set and then processing the distinct list rather than a check
     		// for every permission
     		if ( roleIds != null && !roleIds.isEmpty() ) {
-    			if ( getRoleService().principalHasRole( principalId, roleIds, qualification ) ) {
+    	    	// convert the qualifications for the given permission template type
+    	    	AttributeSet filteredQualification = getPermissionTypeService(null, null, null, perm.getPermissionId()).filterRoleQualifier(perm.getNamespaceCode(), perm.getTemplate().getName(), perm.getName(), qualification);
+    			if ( getRoleService().principalHasRole( principalId, roleIds, filteredQualification ) ) {
     				results.add( perm );
     			}
     		}
@@ -220,6 +277,7 @@ public class PermissionServiceImpl implements PermissionService {
     	if ( roleIds.isEmpty() ) {
     		return results;
     	}
+    	qualification = getPermissionTypeService(namespaceCode, null, permissionName, null).filterRoleQualifier(namespaceCode, null, permissionName, qualification);
     	Collection<RoleMembershipInfo> roleMembers = getRoleService().getRoleMembers( roleIds, qualification );
     	for ( RoleMembershipInfo rm : roleMembers ) {
     		if ( rm.getMemberTypeCode().equals( KimRole.PRINCIPAL_MEMBER_TYPE ) ) {
@@ -237,6 +295,7 @@ public class PermissionServiceImpl implements PermissionService {
     	if ( roleIds.isEmpty() ) {
     		return results;
     	}
+    	qualification = getPermissionTypeService(namespaceCode, permissionTemplateName, null, null).filterRoleQualifier(namespaceCode, permissionTemplateName, null, qualification);
     	Collection<RoleMembershipInfo> roleMembers = getRoleService().getRoleMembers( roleIds, qualification );
     	for ( RoleMembershipInfo rm : roleMembers ) {
     		if ( rm.getMemberTypeCode().equals( KimRole.PRINCIPAL_MEMBER_TYPE ) ) {
@@ -362,6 +421,7 @@ public class PermissionServiceImpl implements PermissionService {
     	List<KimPermissionImpl> impls = getPermissionImplsByName( namespaceCode, permissionName );    	
     	List<KimPermissionInfo> applicablePermissions = getMatchingPermissions( impls, permissionDetails );    	
     	List<String> roleIds = permissionDao.getRoleIdsForPermissions(applicablePermissions);
+    	qualification = getPermissionTypeService(namespaceCode, null, permissionName, null).filterRoleQualifier(namespaceCode, null, permissionName, qualification);
     	return getRoleService().getRoleQualifiersForPrincipal(principalId, roleIds, qualification);    	
     }
 
@@ -369,6 +429,7 @@ public class PermissionServiceImpl implements PermissionService {
     	List<KimPermissionImpl> impls = getPermissionImplsByTemplateName( namespaceCode, permissionTemplateName );    	
     	List<KimPermissionInfo> applicablePermissions = getMatchingPermissions( impls, permissionDetails );    	
     	List<String> roleIds = permissionDao.getRoleIdsForPermissions(applicablePermissions);
+    	qualification = getPermissionTypeService(namespaceCode, permissionTemplateName, null, null).filterRoleQualifier(namespaceCode, permissionTemplateName, null, qualification);
     	return getRoleService().getRoleQualifiersForPrincipal(principalId, roleIds, qualification);
     }
 

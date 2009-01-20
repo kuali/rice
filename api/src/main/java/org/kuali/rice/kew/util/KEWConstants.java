@@ -23,6 +23,8 @@ public class KEWConstants {
      */
     public static final String RULE_NAME_NODE_STATE_KEY = "__RULE_NAME__";
 
+    public static final String DEFAULT_DOCUMENT_TYPE_LABEL = "Undefined";
+
     public static final String KEW_MESSAGING_ENTITY = "KEW";
 
     public static final String MESSAGING_MEMORY = "memory";
@@ -116,6 +118,11 @@ public class KEWConstants {
     public static final String DOCUMENT_TYPE_BLANKET_APPROVE_POLICY_NONE = "none";
     public static final String DOCUMENT_TYPE_BLANKET_APPROVE_POLICY_ANY = "any";
 
+    public static final String[] DOCUMENT_TYPE_BLANKET_APPROVE_POLICY_VALUES = {
+        DOCUMENT_TYPE_BLANKET_APPROVE_POLICY_NONE,
+        DOCUMENT_TYPE_BLANKET_APPROVE_POLICY_ANY
+    };
+    
     //determines if route log will show the look into the future link
     public static final String LOOK_INTO_FUTURE_POLICY = "LOOK_FUTURE";
     public static final String SUPPORTS_QUICK_INITIATE_POLICY = "SUPPORTS_QUICK_INITIATE";

@@ -525,6 +525,9 @@ public class DocumentType extends PersistableBusinessObjectBase
     }
 
     public java.lang.String getLabel() {
+        if (StringUtils.isBlank(label)) {
+            return KEWConstants.DEFAULT_DOCUMENT_TYPE_LABEL;
+        }
         return label;
     }
 

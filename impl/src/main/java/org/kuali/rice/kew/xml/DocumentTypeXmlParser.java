@@ -86,7 +86,6 @@ public class DocumentTypeXmlParser implements XmlConstants {
      * Default route node activation type to use if omitted
      */
     private static final String DEFAULT_ACTIVATION_TYPE = "S";
-    private static final String DEFAULT_LABEL = "Undefined";
 
     public List docTypeRouteNodes;
     private Map nodesMap;
@@ -299,9 +298,6 @@ public class DocumentTypeXmlParser implements XmlConstants {
         }
         try {
             String label = (String) xpath.evaluate("./label", documentTypeNode, XPathConstants.STRING);
-            if (StringUtils.isEmpty(label)) {
-                label = DEFAULT_LABEL;
-            }
             documentType.setLabel(label);
         } catch (XPathExpressionException xpee) {
             LOG.error("Error obtaining document type label", xpee);

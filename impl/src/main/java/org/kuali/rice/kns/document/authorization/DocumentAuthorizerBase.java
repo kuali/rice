@@ -73,7 +73,6 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 						user.getPrincipalId())) {
 			documentActions.remove(KNSConstants.KUALI_ACTION_CAN_EDIT);
 		}
-
 		if (documentActions.contains(KNSConstants.KUALI_ACTION_CAN_COPY)
 				&& !isAuthorizedByTemplate(document,
 						KNSConstants.KNS_NAMESPACE,
@@ -81,7 +80,6 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 						user.getPrincipalId())) {
 			documentActions.remove(KNSConstants.KUALI_ACTION_CAN_COPY);
 		}
-
 		if (documentActions
 				.contains(KNSConstants.KUALI_ACTION_CAN_BLANKET_APPROVE)
 				&& !isAuthorizedByTemplate(
@@ -92,7 +90,6 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 			documentActions
 					.remove(KNSConstants.KUALI_ACTION_CAN_BLANKET_APPROVE);
 		}
-
 		if (documentActions.contains(KNSConstants.KUALI_ACTION_CAN_CANCEL)
 				&& !isAuthorizedByTemplate(document,
 						KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE,
@@ -100,7 +97,6 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 						user.getPrincipalId())) {
 			documentActions.remove(KNSConstants.KUALI_ACTION_CAN_CANCEL);
 		}
-
 		if (documentActions.contains(KNSConstants.KUALI_ACTION_CAN_SAVE)
 				&& !isAuthorizedByTemplate(document,
 						KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE,
@@ -108,7 +104,6 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 						user.getPrincipalId())) {
 			documentActions.remove(KNSConstants.KUALI_ACTION_CAN_SAVE);
 		}
-
 		if (documentActions.contains(KNSConstants.KUALI_ACTION_CAN_ROUTE)
 				&& !isAuthorizedByTemplate(document,
 						KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE,
@@ -116,24 +111,14 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 						user.getPrincipalId())) {
 			documentActions.remove(KNSConstants.KUALI_ACTION_CAN_ROUTE);
 		}
-
 		if (canTakeRequestedAction(document,
 				KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, user)) {
 			documentActions.add(KNSConstants.KUALI_ACTION_CAN_ACKNOWLEDGE);
 		}
-
 		if (canTakeRequestedAction(document,
 				KEWConstants.ACTION_REQUEST_FYI_REQ, user)) {
 			documentActions.add(KNSConstants.KUALI_ACTION_CAN_FYI);
 		}
-
-		if (documentActions
-				.contains(KNSConstants.KUALI_ACTION_CAN_AD_HOC_ROUTE)
-				&& !documentActions
-						.contains(KNSConstants.KUALI_ACTION_CAN_EDIT)) {
-			documentActions.remove(KNSConstants.KUALI_ACTION_CAN_AD_HOC_ROUTE);
-		}
-
 		if (documentActions.contains(KNSConstants.KUALI_ACTION_CAN_APPROVE)
 				|| documentActions
 						.contains(KNSConstants.KUALI_ACTION_CAN_DISAPPROVE)) {
@@ -144,7 +129,12 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 						.remove(KNSConstants.KUALI_ACTION_CAN_DISAPPROVE);
 			}
 		}
-
+		if (documentActions
+				.contains(KNSConstants.KUALI_ACTION_CAN_AD_HOC_ROUTE)
+				&& !documentActions
+						.contains(KNSConstants.KUALI_ACTION_CAN_EDIT)) {
+			documentActions.remove(KNSConstants.KUALI_ACTION_CAN_AD_HOC_ROUTE);
+		}
 		if (documentActions.contains(KNSConstants.KUALI_ACTION_CAN_ANNOTATE)
 				&& !documentActions
 						.contains(KNSConstants.KUALI_ACTION_CAN_EDIT)) {
@@ -218,12 +208,12 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 
 	private boolean canTakeRequestedAction(Document document,
 			String actionRequestCode, Person user) {
-		Map<String, String> additionalRoleQualification = new HashMap<String, String>();
-		additionalRoleQualification.put(KimAttributes.ACTION_REQUEST_CD,
+		Map<String, String> additionalPermissionDetails = new HashMap<String, String>();
+		additionalPermissionDetails.put(KimAttributes.ACTION_REQUEST_CD,
 				actionRequestCode);
 		return isAuthorizedByTemplate(document, KNSConstants.KNS_NAMESPACE,
 				KimConstants.PermissionTemplateNames.TAKE_REQUESTED_ACTION,
-				user.getPrincipalId(), null, additionalRoleQualification);
+				user.getPrincipalId(), additionalPermissionDetails, null);
 	}
 
 	@Override

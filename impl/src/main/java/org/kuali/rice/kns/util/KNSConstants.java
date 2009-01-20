@@ -54,6 +54,7 @@ public class KNSConstants extends JSTLConstants {
     public static final String KUALI_ACTION_CAN_APPROVE = "canApprove";
     public static final String KUALI_ACTION_CAN_DISAPPROVE = "canDisapprove";
     public static final String KUALI_ACTION_CAN_CREATE = "canCreate";
+    public static final String KUALI_ACTION_CAN_SEND_ADHOC_REQUESTS = "canSendAdHocRequests";
     public static final String KUALI_DEFAULT_TRUE_VALUE = "true";
     
     public static class DetailTypes {

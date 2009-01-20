@@ -217,7 +217,7 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 	/**
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#delete(java.util.List)
 	 */
-	public void delete(List<PersistableBusinessObject> boList) {
+	public void delete(List<? extends PersistableBusinessObject> boList) {
 		for (PersistableBusinessObject bo : boList) {
 			// Rice JPA MetadataManager
 			// TODO: Check for an extension object and delete it if exists

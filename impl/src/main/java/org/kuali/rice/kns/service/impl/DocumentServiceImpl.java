@@ -747,6 +747,17 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     /**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.service.DocumentService#sendAdHocRequests(org.kuali.rice.kns.document.Document, java.util.List)
+	 */
+	public void sendAdHocRequests(Document document, String annotation, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException{
+		prepareWorkflowDocument(document);
+		getWorkflowDocumentService().sendWorkflowNotification(document.getDocumentHeader().getWorkflowDocument(),
+        		annotation, adHocRecipients);		
+	}
+
+	/**
      * @param documentTypeName
      * @return DocumentAuthorizer instance for the given documentType name
      */

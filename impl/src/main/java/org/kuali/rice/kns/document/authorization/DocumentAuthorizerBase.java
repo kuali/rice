@@ -41,7 +41,7 @@ import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
 public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 		implements DocumentAuthorizer {
 	private static Log LOG = LogFactory.getLog(DocumentAuthorizerBase.class);
-	private static final String PRE_ROUTING_ROUTE_NAME = "PreRoute";
+	public static final String PRE_ROUTING_ROUTE_NAME = "PreRoute";
 	public static final String EDIT_MODE_DEFAULT_TRUE_VALUE = "TRUE";
 	public static final String USER_SESSION_METHOD_TO_CALL_OBJECT_KEY = "METHOD_TO_CALL_KEYS_METHOD_OBJECT_KEY";
 	public static final String USER_SESSION_METHOD_TO_CALL_COMPLETE_OBJECT_KEY = "METHOD_TO_CALL_KEYS_COMPLETE_OBJECT_KEY";
@@ -134,6 +134,7 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 				&& !documentActions
 						.contains(KNSConstants.KUALI_ACTION_CAN_EDIT)) {
 			documentActions.remove(KNSConstants.KUALI_ACTION_CAN_AD_HOC_ROUTE);
+			documentActions.remove(KNSConstants.KUALI_ACTION_CAN_SEND_ADHOC_REQUESTS);
 		}
 		if (documentActions.contains(KNSConstants.KUALI_ACTION_CAN_ANNOTATE)
 				&& !documentActions
@@ -156,10 +157,11 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 
 	public final boolean canReceiveAdHoc(Document document, Person user,
 			String actionRequestCode) {
-		return isAuthorizedByTemplate(document,
+		return true;
+		/*return isAuthorizedByTemplate(document,
 				KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE,
 				KimConstants.PermissionTemplateNames.AD_HOC_REVIEW_DOCUMENT,
-				user.getPrincipalId());
+				user.getPrincipalId());*/
 	}
 
 	public final boolean canOpen(Document document, Person user) {

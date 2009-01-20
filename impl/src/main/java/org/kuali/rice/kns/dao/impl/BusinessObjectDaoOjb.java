@@ -225,7 +225,7 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
     /**
      * @see org.kuali.rice.kns.dao.BusinessObjectDao#delete(java.util.List)
      */
-    public void delete(List<PersistableBusinessObject> boList) {
+    public void delete(List<? extends PersistableBusinessObject> boList) {
         for (PersistableBusinessObject bo : boList) {
             getPersistenceBrokerTemplate().delete(bo);
         }

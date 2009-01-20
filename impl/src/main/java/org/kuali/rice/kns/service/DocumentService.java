@@ -18,6 +18,7 @@ package org.kuali.rice.kns.service;
 import java.util.List;
 
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kns.bo.AdHocRouteRecipient;
 import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.document.Document;
@@ -272,4 +273,6 @@ public interface DocumentService {
      * @return Business Object that the note is attached to.
      */
     public PersistableBusinessObject getNoteParent(Document document, Note newNote);
+    
+    public void sendAdHocRequests(Document document, String annotation, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException;
 }

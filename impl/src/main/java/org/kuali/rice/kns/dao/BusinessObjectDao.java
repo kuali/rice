@@ -169,7 +169,7 @@ public interface BusinessObjectDao {
      * 
      * @param boList
      */
-    public void delete(List<PersistableBusinessObject> boList);
+    public void delete(List<? extends PersistableBusinessObject> boList);
 
     /**
      * Deletes the business objects matching the given fieldValues

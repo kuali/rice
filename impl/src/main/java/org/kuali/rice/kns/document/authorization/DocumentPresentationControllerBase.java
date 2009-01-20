@@ -175,8 +175,11 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
     	return canApprove(document);
     }
     
+    protected boolean canSendAdhocRequests(Document document) {
+    	return canAdHocRoute(document) && document.getDocumentHeader().getWorkflowDocument().stateIsEnroute();
+    }
+
     /**
-     
      * @see org.kuali.rice.kns.document.authorization.DocumentPresentationController#getDocumentActions(org.kuali.rice.kns.document.Document)
      */
     public Set<String> getDocumentActions(Document document){
@@ -226,6 +229,9 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
     	}
     	if (canDisapprove(document)) {
     		documentActions.add(KNSConstants.KUALI_ACTION_CAN_DISAPPROVE);
+    	}
+    	if (canSendAdhocRequests(document)) {
+    		documentActions.add(KNSConstants.KUALI_ACTION_CAN_SEND_ADHOC_REQUESTS);
     	}
     	return documentActions;
     }

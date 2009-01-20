@@ -46,6 +46,7 @@ import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.bo.AdHocRoutePerson;
+import org.kuali.rice.kns.bo.AdHocRouteRecipient;
 import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.kns.bo.Attachment;
 import org.kuali.rice.kns.bo.DocumentHeader;
@@ -443,7 +444,7 @@ public class KualiDocumentActionBase extends KualiAction {
         // if the rule evaluation passed, let's add the ad hoc route workgroup
         if (rulePassed) {
             //fill id if not already filled
-            AdHocRouteWorkgroup newWorkgroup = (AdHocRouteWorkgroup)kualiDocumentFormBase.getNewAdHocRouteWorkgroup();
+            AdHocRouteWorkgroup newWorkgroup = kualiDocumentFormBase.getNewAdHocRouteWorkgroup();
             if (newWorkgroup.getId() == null) {
                 newWorkgroup.setId(KIMServiceLocator.getIdentityManagementService().getGroupByName(newWorkgroup.getRecipientNamespaceCode(), newWorkgroup.getRecipientName()).getGroupId());
             }
@@ -478,7 +479,14 @@ public class KualiDocumentActionBase extends KualiAction {
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
-
+    public ActionForward sendAdHocRequests(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
+    	Document document = kualiDocumentFormBase.getDocument();
+    	
+    	getDocumentService().sendAdHocRequests(document, kualiDocumentFormBase.getAnnotation(), combineAdHocRecipients(kualiDocumentFormBase));
+    	GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_SEND_AD_HOC_REQUESTS_SUCCESSFUL);
+    	return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    }
     /**
      * This method will reload the document.
      *
@@ -891,8 +899,8 @@ public class KualiDocumentActionBase extends KualiAction {
      * @param kualiDocumentFormBase
      * @return List
      */
-    protected List combineAdHocRecipients(KualiDocumentFormBase kualiDocumentFormBase) {
-        List adHocRecipients = new ArrayList();
+    protected List<AdHocRouteRecipient> combineAdHocRecipients(KualiDocumentFormBase kualiDocumentFormBase) {
+        List<AdHocRouteRecipient> adHocRecipients = new ArrayList<AdHocRouteRecipient>();
         adHocRecipients.addAll(kualiDocumentFormBase.getAdHocRoutePersons());
         adHocRecipients.addAll(kualiDocumentFormBase.getAdHocRouteWorkgroups());
         return adHocRecipients;
@@ -1552,7 +1560,5 @@ public class KualiDocumentActionBase extends KualiAction {
     	}
 		return this.entityManagerFactory;
 	}
-    
-
 }
 

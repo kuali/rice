@@ -43,6 +43,10 @@
 	            <c:if test="${!empty KualiForm.documentActions[Constants.KUALI_ACTION_PERFORM_ROUTE_REPORT] and not suppressRoutingControls}">
 				    <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_routereport.gif" styleClass="globalbuttons" property="methodToCall.performRouteReport" title="Perform Route Report" alt="Perform Route Report" />
 	            </c:if>
+	            <c:if test="${!empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_SEND_ADHOC_REQUESTS] and not suppressRoutingControls}">
+	            	<!--  remove .x when converting to an image submit -->
+	                <html:submit property="methodToCall.sendAdHocRequests.x" value="Send AdHoc Requests (image to be created later)" />
+	            </c:if>
 	            <c:if test="${!empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_ROUTE] and not suppressRoutingControls}">
 	                <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_submit.gif" styleClass="globalbuttons" property="methodToCall.route" title="submit" alt="submit"/>
 	            </c:if>
@@ -68,7 +72,6 @@
 	                <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_acknowledge.gif" styleClass="globalbuttons" property="methodToCall.acknowledge" title="acknowledge" alt="acknowledge"/>
 	            </c:if>
 	            <c:if test="${!empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_CLOSE]}">
-						
 	                <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_close.gif" styleClass="globalbuttons" property="methodToCall.close" title="close" alt="close"/>
 	            </c:if>            
 	            <c:if test="${!empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_CANCEL]}">

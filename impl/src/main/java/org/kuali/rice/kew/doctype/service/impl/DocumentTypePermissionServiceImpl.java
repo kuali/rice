@@ -23,6 +23,7 @@ import org.kuali.rice.kew.doctype.DocumentTypePolicyEnum;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypePermissionService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
@@ -35,6 +36,7 @@ import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
+import org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 
@@ -233,6 +235,12 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 		qualifiers.put(KimAttributes.DOCUMENT_NUMBER, routeHeaderId);
 		if (!StringUtils.isBlank(documentStatus)) {
 			qualifiers.put(KEWConstants.DOCUMENT_STATUS_DETAIL, documentStatus);
+			if (KEWConstants.ROUTE_HEADER_INITIATED_CD.equals(documentStatus) || KEWConstants.ROUTE_HEADER_SAVED_CD.equals(documentStatus)) {
+				qualifiers.put(KimAttributes.ROUTE_NODE_NAME, DocumentAuthorizerBase.PRE_ROUTING_ROUTE_NAME);
+			}
+			else {
+				qualifiers.put(KimAttributes.ROUTE_NODE_NAME, CodeTranslator.getRouteStatusLabel(documentStatus));
+			}
 		}
 		qualifiers.put(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL, documentType.getName());
 		
@@ -267,11 +275,13 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 	}
 	
 	protected boolean useKimPermission(String namespace, String permissionTemplateName, AttributeSet permissionDetails) {
-		Parameter kimPriorityParam = KNSServiceLocator.getKualiConfigurationService().getParameterWithoutExceptions(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.KIM_PRIORITY_ON_DOC_TYP_PERMS_IND);
+		return false;
+		// TODO: wliang uncomment when kim stuff fixed
+		/*Parameter kimPriorityParam = KNSServiceLocator.getKualiConfigurationService().getParameterWithoutExceptions(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.KIM_PRIORITY_ON_DOC_TYP_PERMS_IND);
 		if (kimPriorityParam == null || "Y".equals(kimPriorityParam.getParameterValue())) {
 			return getIdentityManagementService().isPermissionDefinedForTemplateName(namespace, permissionTemplateName, permissionDetails);
 		}
-		return false;
+		return false;*/
 	}
 	
 	private boolean executeInitiatorPolicyCheck(String principalId, String initiatorPrincipalId, String documentStatus) {

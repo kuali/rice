@@ -170,7 +170,7 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
      * @see org.kuali.rice.kns.service.BusinessObjectService#delete(java.util.List)
      */
     @Transactional
-    public void delete(List<PersistableBusinessObject> boList) {
+    public void delete(List<? extends PersistableBusinessObject> boList) {
         businessObjectDao.delete(boList);
     }
 

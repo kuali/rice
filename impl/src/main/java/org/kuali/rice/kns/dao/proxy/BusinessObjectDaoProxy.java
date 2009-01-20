@@ -62,7 +62,7 @@ public class BusinessObjectDaoProxy implements BusinessObjectDao {
 	/**
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#delete(java.util.List)
 	 */
-	public void delete(List<PersistableBusinessObject> boList) {
+	public void delete(List<? extends PersistableBusinessObject> boList) {
 		if (!boList.isEmpty()) {
 			getDao(boList.get(0).getClass()).delete(boList);			
 		}

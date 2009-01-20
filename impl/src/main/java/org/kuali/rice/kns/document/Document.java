@@ -20,6 +20,8 @@ import java.util.List;
 import org.kuali.rice.kew.dto.ActionTakenEventDTO;
 import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
+import org.kuali.rice.kns.bo.AdHocRoutePerson;
+import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.document.authorization.PessimisticLock;
@@ -125,14 +127,14 @@ public interface Document extends PersistableBusinessObject{
      * for a given users version of a document as this state is only persisted in workflow itself when someone takes an action on a
      * document
      */
-    public List getAdHocRoutePersons();
+    public List<AdHocRoutePerson> getAdHocRoutePersons();
 
     /**
      * getter method to get the list of ad hoc route workgroups associated with a document at a point in time, this list is only
      * valid for a given users version of a document as this state is only persisted in workflow itself when someone takes an action
      * on a document
      */
-    public List getAdHocRouteWorkgroups();
+    public List<AdHocRouteWorkgroup> getAdHocRouteWorkgroups();
 
     /**
      * setter method to set the list of ad hoc route persons associated with a document at a point in time, this list is only valid
@@ -141,7 +143,7 @@ public interface Document extends PersistableBusinessObject{
      * 
      * @param adHocRoutePersons
      */
-    public void setAdHocRoutePersons(List adHocRoutePersons);
+    public void setAdHocRoutePersons(List<AdHocRoutePerson> adHocRoutePersons);
 
     /**
      * setter method to set the list of ad hoc route workgroups associated with a document at a point in time, this list is only
@@ -150,7 +152,7 @@ public interface Document extends PersistableBusinessObject{
      * 
      * @param adHocRouteWorkgroups
      */
-    public void setAdHocRouteWorkgroups(List adHocRouteWorkgroups);
+    public void setAdHocRouteWorkgroups(List<AdHocRouteWorkgroup> adHocRouteWorkgroups);
 
     /**
      * This method provides a hook that will be called before the document is saved. This method is useful for applying document

@@ -40,6 +40,8 @@ import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kns.bo.AdHocRoutePerson;
+import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
@@ -88,9 +90,9 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     private List<PessimisticLock> pessimisticLocks;
 
     @Transient
-    private List adHocRoutePersons;
+    private List<AdHocRoutePerson> adHocRoutePersons;
     @Transient
-    private List adHocRouteWorkgroups;
+    private List<AdHocRouteWorkgroup> adHocRouteWorkgroups;
 
     /**
      * Constructs a DocumentBase.java.
@@ -519,27 +521,27 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     /**
      * @see org.kuali.rice.kns.document.Document#getAdHocRoutePersons()
      */
-    public List getAdHocRoutePersons() {
+    public List<AdHocRoutePerson> getAdHocRoutePersons() {
         return adHocRoutePersons;
     }
 
     /**
      * @see org.kuali.rice.kns.document.Document#setAdHocRoutePersons(java.util.List)
      */
-    public void setAdHocRoutePersons(List adHocRoutePersons) {
+    public void setAdHocRoutePersons(List<AdHocRoutePerson> adHocRoutePersons) {
         this.adHocRoutePersons = adHocRoutePersons;
 }
     /**
      * @see org.kuali.rice.kns.document.Document#getAdHocRouteWorkgroups()
      */
-    public List getAdHocRouteWorkgroups() {
+    public List<AdHocRouteWorkgroup> getAdHocRouteWorkgroups() {
         return adHocRouteWorkgroups;
     }
 
     /**
      * @see org.kuali.rice.kns.document.Document#setAdHocRouteWorkgroups(java.util.List)
      */
-    public void setAdHocRouteWorkgroups(List adHocRouteWorkgroups) {
+    public void setAdHocRouteWorkgroups(List<AdHocRouteWorkgroup> adHocRouteWorkgroups) {
         this.adHocRouteWorkgroups = adHocRouteWorkgroups;
     }
 

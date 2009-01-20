@@ -155,7 +155,7 @@ public interface BusinessObjectService {
      * 
      * @param boList
      */
-    public void delete(List<PersistableBusinessObject> boList);
+    public void delete(List<? extends PersistableBusinessObject> boList);
 
     /**
      * Deletes the object(s) matching the given field values

@@ -67,8 +67,8 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 
     private List<String> additionalScriptFiles;
 
-    private AdHocRouteRecipient newAdHocRoutePerson;
-    private AdHocRouteRecipient newAdHocRouteWorkgroup;
+    private AdHocRoutePerson newAdHocRoutePerson;
+    private AdHocRouteWorkgroup newAdHocRouteWorkgroup;
 
     private Note newNote;
     
@@ -371,7 +371,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
     /**
      * @return the list of ad hoc routing persons
      */
-    public List getAdHocRoutePersons() {
+    public List<AdHocRoutePerson> getAdHocRoutePersons() {
         return document.getAdHocRoutePersons();
     }
 
@@ -396,7 +396,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
      *
      * @param adHocRouteRecipients
      */
-    public void setAdHocRoutePersons(List adHocRouteRecipients) {
+    public void setAdHocRoutePersons(List<AdHocRoutePerson> adHocRouteRecipients) {
         document.setAdHocRoutePersons(adHocRouteRecipients);
     }
 
@@ -405,7 +405,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
      *
      * @return
      */
-    public List getAdHocRouteWorkgroups() {
+    public List<AdHocRouteWorkgroup> getAdHocRouteWorkgroups() {
         return document.getAdHocRouteWorkgroups();
     }
 
@@ -414,7 +414,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
      *
      * @param adHocRouteWorkgroups
      */
-    public void setAdHocRouteWorkgroups(List adHocRouteWorkgroups) {
+    public void setAdHocRouteWorkgroups(List<AdHocRouteWorkgroup> adHocRouteWorkgroups) {
         document.setAdHocRouteWorkgroups(adHocRouteWorkgroups);
     }
 
@@ -447,7 +447,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
     /**
      * @return the new ad hoc route person object
      */
-    public AdHocRouteRecipient getNewAdHocRoutePerson() {
+    public AdHocRoutePerson getNewAdHocRoutePerson() {
         return newAdHocRoutePerson;
     }
 
@@ -463,7 +463,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
     /**
      * @return the new ad hoc route workgroup object
      */
-    public AdHocRouteRecipient getNewAdHocRouteWorkgroup() {
+    public AdHocRouteWorkgroup getNewAdHocRouteWorkgroup() {
         return newAdHocRouteWorkgroup;
     }
 

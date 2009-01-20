@@ -667,5 +667,7 @@ public class RiceKeyConstants {
     public static final String ERROR_ASSIGN_ROLE = "error.assign.role";
     public static final String ERROR_POPULATE_GROUP = "error.populate.group";
     public static final String ERROR_ACTIVE_TO_DATE_BEFORE_FROM_DATE = "error.active.todate.before.fromdate";
+    
+    public static final String MESSAGE_SEND_AD_HOC_REQUESTS_SUCCESSFUL = "message.sendAdHocRequests.successful";
 }
 

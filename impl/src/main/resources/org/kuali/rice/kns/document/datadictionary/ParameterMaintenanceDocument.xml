@@ -95,9 +95,6 @@
               p:required="true"
               p:name="parameterConstraintCode" />
         <bean parent="MaintainableFieldDefinition"
-              p:required="true"
-              p:name="parameterWorkgroupName" />
-        <bean parent="MaintainableFieldDefinition"
               p:name="versionNumber" />
       </list>
     </property>

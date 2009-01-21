@@ -101,7 +101,7 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
         ps.setParameterName(KEWConstants.DOC_SEARCH_RESULT_CAP);
         ps.setParameterValue(newValue.toString());
         ps.setParameterTypeCode("CONFG");
-        ps.setParameterWorkgroupName(KEWConstants.WORKFLOW_SUPER_USER_WORKGROUP_NAME);
+        //ps.setParameterWorkgroupName(KEWConstants.WORKFLOW_SUPER_USER_WORKGROUP_NAME);
         ps.setParameterDetailTypeCode(KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE);
         KNSServiceLocator.getBusinessObjectService().save(ps);
     }

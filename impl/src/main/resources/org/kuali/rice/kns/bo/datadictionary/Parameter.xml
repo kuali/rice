@@ -25,7 +25,6 @@
         <ref bean="Parameter-parameterConstraintCode" />
         <ref bean="Parameter-parameterTypeCode" />
         <ref bean="Parameter-parameterType.name" />
-        <ref bean="Parameter-parameterWorkgroupName" />
         <ref bean="Parameter-parameterNamespace.codeAndDescription" />
         <ref bean="Parameter-objectId" />
         <ref bean="Parameter-versionNumber" />
@@ -142,21 +141,7 @@
     <property name="name" value="parameterType.name" />
     <property name="label" value="Parameter Type" />
   </bean>
-  <bean id="Parameter-parameterWorkgroupName" parent="Parameter-parameterWorkgroupName-parentBean" />
-
-  <bean id="Parameter-parameterWorkgroupName-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="forceUppercase" value="false" />
-    <property name="shortLabel" value="Workgroup" />
-    <property name="maxLength" value="70" />
-    <property name="required" value="true" />
-    <property name="control" >
-      <bean parent="WorkflowWorkgroupControlDefinition" />
-    </property>
-    <property name="summary" value="ID of workgroup which can edit this parameter." />
-    <property name="name" value="parameterWorkgroupName" />
-    <property name="label" value="Workgroup" />
-    <property name="description" value="ID of workgroup which can edit this parameter." />
-  </bean>
+ 
   <bean id="Parameter-parameterNamespace.codeAndDescription" parent="Parameter-parameterNamespace.codeAndDescription-parentBean" />
 
   <bean id="Parameter-parameterNamespace.codeAndDescription-parentBean" abstract="true" parent="ParameterNamespace-codeAndDescription">
@@ -199,8 +184,6 @@
                     p:attributeName="parameterDescription" />
               <bean parent="FieldDefinition"
                     p:attributeName="parameterType.name" />
-              <bean parent="FieldDefinition"
-                    p:attributeName="parameterWorkgroupName" />
             </list>
           </property>
           <property name="title" value="Parameter Information" />
@@ -240,8 +223,6 @@
               p:attributeName="parameterValue" />
         <bean parent="FieldDefinition"
               p:attributeName="parameterTypeCode" />
-        <bean parent="FieldDefinition"
-              p:attributeName="parameterWorkgroupName" />
       </list>
     </property>
     <property name="resultFields" >
@@ -264,8 +245,6 @@
         <bean parent="FieldDefinition"
               p:attributeName="parameterType.name"
               p:forceInquiry="true" />
-        <bean parent="FieldDefinition"
-              p:attributeName="parameterWorkgroupName" />
       </list>
     </property>
     <property name="title" value="Parameter Lookup" />

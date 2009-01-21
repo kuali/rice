@@ -17,11 +17,15 @@ package org.kuali.rice.kns.lookup;
 
 import java.util.List;
 
-import org.kuali.rice.kim.service.IdentityManagementService;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in.
@@ -31,15 +35,6 @@ import org.kuali.rice.kns.util.GlobalVariables;
  */
 public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperServiceImpl {
 
-    protected static IdentityManagementService identityManagementService;
-    
-    protected static IdentityManagementService getIdentityManagementService() {
-        if ( identityManagementService == null ) {
-            identityManagementService = KIMServiceLocator.getIdentityManagementService();
-        }
-        return identityManagementService;
-    }
-    
     /**
      * Hides the edit/copy links when not valid for the current user.
      *
@@ -47,14 +42,30 @@ public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperS
      */
     @Override
     public List<HtmlData> getCustomActionUrls(BusinessObject businessObject, List pkNames) {
+        return super.getCustomActionUrls(businessObject, pkNames);
+    	//Parameter parm = (Parameter)businessObject;
+        
+        //if ( KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(GlobalVariables.getUserSession().getPerson().getPrincipalId(), org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE, parm.getParameterWorkgroupName() ) ) {
+        //    return super.getCustomActionUrls(businessObject, pkNames);
+        //} else {
+        //    return super.getEmptyActionUrls();
+        //}
+    }
+    @Override
+    protected boolean allowsMaintenanceEditAction(BusinessObject businessObject) {
+        boolean allowsEdit = false;
         Parameter parm = (Parameter)businessObject;
-        // FIXME: need to get namespace for the group on the parameter
-        // however, I think the workgroup on the parameter records may be going away
-        if ( getIdentityManagementService().isMemberOfGroup(GlobalVariables.getUserSession().getPrincipalId(), "", parm.getParameterWorkgroupName() ) ) {
-            return super.getCustomActionUrls(businessObject, pkNames);
-        } else {
-            return super.getEmptyActionUrls();
-        }
+        
+        AttributeSet permissionDetails = new AttributeSet();
+        permissionDetails.put(KimAttributes.NAMESPACE_CODE, parm.getParameterNamespaceCode());
+        permissionDetails.put(KimAttributes.COMPONENT_NAME, parm.getParameterDetailTypeCode());
+        permissionDetails.put(KimAttributes.PARAMETER_NAME, parm.getParameterName());
+        KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(
+        		GlobalVariables.getUserSession().getPerson().getPrincipalId(),
+				KNSConstants.KNS_NAMESPACE,
+				KimConstants.PermissionTemplateNames.MAINAIN_SYSTEM_PARAMETER,
+				permissionDetails, null);
+        return allowsEdit;
     }
 }
 

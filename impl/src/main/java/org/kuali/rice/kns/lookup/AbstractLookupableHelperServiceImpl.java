@@ -304,7 +304,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         return allowsNewOrCopy;
     }
 
-    private boolean allowsMaintenanceEditAction(BusinessObject businessObject) {
+    protected boolean allowsMaintenanceEditAction(BusinessObject businessObject) {
         boolean allowsEdit = false;
 
         String maintDocTypeName = getMaintenanceDocumentTypeName();

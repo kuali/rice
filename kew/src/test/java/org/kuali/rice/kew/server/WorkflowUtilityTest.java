@@ -522,7 +522,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         parameter.setParameterNamespaceCode(KEWConstants.KEW_NAMESPACE);
         parameter.setParameterTypeCode("CONFG");
         parameter.setParameterDetailTypeCode(KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE);
-        parameter.setParameterWorkgroupName(KEWConstants.WORKFLOW_SUPER_USER_WORKGROUP_NAME);
+        //parameter.setParameterWorkgroupName(KEWConstants.WORKFLOW_SUPER_USER_WORKGROUP_NAME);
         KNSServiceLocator.getBusinessObjectService().save(parameter);
 
         parameter = KNSServiceLocator.getKualiConfigurationService().getParameterWithoutExceptions(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);

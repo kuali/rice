@@ -177,7 +177,6 @@
 		<field-descriptor name="parameterDescription" column="PARM_DESC_TXT" jdbc-type="VARCHAR" />
 		<field-descriptor name="parameterTypeCode" column="PARM_TYP_CD" jdbc-type="VARCHAR" />
 		<field-descriptor name="parameterConstraintCode" column="CONS_CD" jdbc-type="VARCHAR" />
-        <field-descriptor name="parameterWorkgroupName" column="GRP_NM" jdbc-type="VARCHAR" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 

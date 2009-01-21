@@ -56,8 +56,7 @@ public class Parameter extends PersistableBusinessObjectBase {
 	@Column(name="CONS_CD")
 	private String parameterConstraintCode;
 
-	@Column(name="GRP_NM")
-	private String parameterWorkgroupName;
+	
 
 	@ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
 	@JoinColumn(name="NMSPC_CD", insertable=false, updatable=false)
@@ -122,13 +121,6 @@ public class Parameter extends PersistableBusinessObjectBase {
 		this.parameterConstraintCode = parameterConstraintCode;
 	}
 
-	public String getParameterWorkgroupName() {
-		return parameterWorkgroupName;
-	}
-
-	public void setParameterWorkgroupName(String parameterWorkgroupName) {
-		this.parameterWorkgroupName = parameterWorkgroupName;
-	}
 
 	/**
 	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()

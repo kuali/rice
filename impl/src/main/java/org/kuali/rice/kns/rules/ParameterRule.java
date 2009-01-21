@@ -16,6 +16,7 @@ import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.RiceKeyConstants;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill
@@ -53,6 +54,9 @@ public class ParameterRule extends MaintenanceDocumentRuleBase {
 					KNSConstants.KNS_NAMESPACE,
 					KimConstants.PermissionTemplateNames.MAINAIN_SYSTEM_PARAMETER,
 					permissionDetails, null);
+	        if(!allowsEdit){
+	        	putGlobalError(RiceKeyConstants.AUTHORIZATION_ERROR_PARAMETER);
+	        }
 	        return allowsEdit;
 	}
 

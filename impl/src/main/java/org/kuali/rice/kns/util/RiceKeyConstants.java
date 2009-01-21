@@ -669,5 +669,8 @@ public class RiceKeyConstants {
     public static final String ERROR_ACTIVE_TO_DATE_BEFORE_FROM_DATE = "error.active.todate.before.fromdate";
     
     public static final String MESSAGE_SEND_AD_HOC_REQUESTS_SUCCESSFUL = "message.sendAdHocRequests.successful";
+    
+    //parameter document
+    public static final String AUTHORIZATION_ERROR_PARAMETER = "error.authorization.parameter";
 }
 

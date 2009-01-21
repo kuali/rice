@@ -3,6 +3,7 @@
 <%@ attribute name="roleIdx" required="true" %>
 <%@ attribute name="role" required="true" type="org.kuali.rice.kim.bo.ui.PersonDocumentRole" %>
 <c:set var="docRolePrncplAttributes" value="${DataDictionary.KimDocumentRoleMember.attributes}" />
+<c:set var="docRoleRspActionAttributes" value="${DataDictionary.KimDocumentRoleResponsibilityAction.attributes}" />
 
 <kul:subtab lookedUpCollectionName="roleQualifier" width="${tableWidth}" subTabTitle="Role Qualifier">      
 	<table cellpadding="0" cellspacing="0" summary="">
@@ -76,7 +77,13 @@
 		        	 <c:forEach var="rolePrncpl" items="${role.rolePrncpls}" varStatus="status1">
 		                <c:if test="${fn:length(rolePrncpl.qualifiers) > 0}">	
 		        		<tr>
-							<th class="infoline">
+		        		  <%-- TODO : rowspan=2 if there is responsibilityaction only --%>
+		        		 <c:set var="rows" value="1"/>
+		        		 <c:if test="${fn:length(rolePrncpl.roleRspActions) > 0}">	
+		        		 	<c:set var="rows" value="2"/>
+		        		 
+		        		 </c:if> 
+							<th rowspan="${rows}"  class="infoline">
 								<c:out value="${status1.index+1}" />
 							</th>
 			        		 <c:forEach var="qualifier" items="${rolePrncpl.qualifiers}" varStatus="status2">
@@ -129,7 +136,14 @@
                 		   		</td>
                </c:if> 		   		
 					      </tr>
-					      
+
+		          <c:if test="${fn:length(rolePrncpl.roleRspActions) > 0}">	
+     			    <tr>
+		              <td colspan="5" style="padding:0px;">
+		              	<kim:roleResponsibilityAction roleIdx="${roleIdx}" mbrIdx="${status1.index}" />
+			          </td>
+			        </tr>
+				</c:if>	      
 					     </c:if> 
 						</c:forEach>
 					      <tr>

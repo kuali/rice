@@ -22,6 +22,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kns.util.TypedArrayList;
@@ -55,9 +56,12 @@ public class KimDocumentRoleMember  extends KimDocumentBoBase {
 	@Column(name="ACTV_TO_DT")
 	protected Timestamp activeToDate;
 
-	
+	@Transient
+	private List<KimDocumentRoleResponsibilityAction> roleRspActions;
+
 	public KimDocumentRoleMember() {
 		qualifiers = new ArrayList <KimDocumentRoleQualifier>();
+		roleRspActions = new ArrayList <KimDocumentRoleResponsibilityAction>();
 	}
 
 	public int getNumberOfQualifiers(){
@@ -156,6 +160,15 @@ public class KimDocumentRoleMember  extends KimDocumentBoBase {
 	 */
 	public void setMemberName(String memberName) {
 		this.memberName = memberName;
+	}
+
+	public List<KimDocumentRoleResponsibilityAction> getRoleRspActions() {
+		return this.roleRspActions;
+	}
+
+	public void setRoleRspActions(
+			List<KimDocumentRoleResponsibilityAction> roleRspActions) {
+		this.roleRspActions = roleRspActions;
 	}
 
 }

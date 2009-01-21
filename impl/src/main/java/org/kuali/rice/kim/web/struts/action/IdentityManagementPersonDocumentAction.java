@@ -28,9 +28,11 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
+import org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibilityAction;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAddress;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAffiliation;
 import org.kuali.rice.kim.bo.ui.PersonDocumentCitizenship;
@@ -45,6 +47,7 @@ import org.kuali.rice.kim.rule.event.ui.AddGroupEvent;
 import org.kuali.rice.kim.rule.event.ui.AddRoleEvent;
 import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.ResponsibilityService;
 import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
@@ -65,6 +68,7 @@ import org.kuali.rice.kns.web.struts.action.KualiTransactionalDocumentActionBase
 public class IdentityManagementPersonDocumentAction extends KualiTransactionalDocumentActionBase {
 
 	protected IdentityService identityService;
+	protected ResponsibilityService responsibilityService;
 	protected UiDocumentService uiDocumentService;
 	
     public IdentityService getIdentityService() {
@@ -72,6 +76,13 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
     		identityService = KIMServiceLocator.getIdentityService();
     	}
 		return identityService;
+	}
+
+    public ResponsibilityService getResponsibilityService() {
+    	if ( responsibilityService == null ) {
+    		responsibilityService = KIMServiceLocator.getResponsibilityService();
+    	}
+		return responsibilityService;
 	}
 
 	public UiDocumentService getUiDocumentService() {
@@ -139,13 +150,13 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
 		// rice  has 'kr.url' as '/${env}/kr' while kfs is full base path
 		// the returnlocalurl may have 'http' so, it should start from the beginning
 		// this is kind of hack
-		if (path.indexOf(request.getScheme()) != 0 && path.indexOf("lookup.do") > 0) {
-			if (request.getServerPort() == 443) {
-				path = request.getScheme() + "://" + request.getServerName()+path;
-			} else {
-				path = request.getScheme() + "://" + request.getServerName()+ ":" + request.getServerPort()+path;
-			}
-		}
+//		if (path.indexOf(request.getScheme()) != 0 && path.indexOf("lookup.do") > 0) {
+//			if (request.getServerPort() == 443) {
+//				path = request.getScheme() + "://" + request.getServerName()+path;
+//			} else {
+//				path = request.getScheme() + "://" + request.getServerName()+ ":" + request.getServerPort()+path;
+//			}
+//		}
 		path = path.replace("identityManagementPersonDocument.do", "kim/identityManagementPersonDocument.do");
 		forward.setPath(path);
 		return forward;
@@ -313,6 +324,7 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
 	        }
 	        newRole.setNewRolePrncpl(newRolePrncpl);
 	        newRole.setAttributeEntry( getUiDocumentService().getAttributeEntries( newRole.getDefinitions() ) );
+	        newRole.refreshReferenceObject("assignedResponsibilities");
 	        personDocumentForm.getPersonDocument().getRoles().add(newRole);
 	        personDocumentForm.setNewRole(new PersonDocumentRole());
         }
@@ -341,6 +353,14 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
         IdentityManagementPersonDocument personDOc = personDocumentForm.getPersonDocument();
         PersonDocumentRole role = personDOc.getRoles().get(getSelectedLine(request));
         KimDocumentRoleMember newRolePrncpl = role.getNewRolePrncpl();
+        for (RoleResponsibilityImpl roleResp : role.getAssignedResponsibilities()) {
+        	if (getResponsibilityService().areActionsAtAssignmentLevelById(roleResp.getResponsibilityId())) {
+        		KimDocumentRoleResponsibilityAction roleRspAction = new KimDocumentRoleResponsibilityAction();
+        		roleRspAction.setRoleResponsibilityId(roleResp.getRoleResponsibilityId());        		
+        		roleRspAction.refreshReferenceObject("roleResponsibility");
+        		newRolePrncpl.getRoleRspActions().add(roleRspAction);
+        	}        	
+        }
         role.getRolePrncpls().add(newRolePrncpl);
         role.setNewRolePrncpl(new KimDocumentRoleMember());
         for (String key : role.getDefinitions().keySet()) {

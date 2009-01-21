@@ -27,11 +27,13 @@ import javax.persistence.Table;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
+import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
+import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -54,7 +56,8 @@ public class PersonDocumentRole extends KimDocumentBoBase {
 	protected transient Map<String,Object> attributeEntry;
 	protected List<KimDocumentRoleMember> rolePrncpls;
     protected KimDocumentRoleMember newRolePrncpl;
-	
+	protected List<RoleResponsibilityImpl> assignedResponsibilities = new TypedArrayList(RoleResponsibilityImpl.class);
+
 	public PersonDocumentRole() {
 		attributes = new ArrayList<KimAttributes>();	
 		rolePrncpls = new ArrayList<KimDocumentRoleMember>();	
@@ -175,6 +178,15 @@ public class PersonDocumentRole extends KimDocumentBoBase {
 
 	public void setNamespaceCode(String namespaceCode) {
 		this.namespaceCode = namespaceCode;
+	}
+
+	public List<RoleResponsibilityImpl> getAssignedResponsibilities() {
+		return this.assignedResponsibilities;
+	}
+
+	public void setAssignedResponsibilities(
+			List<RoleResponsibilityImpl> assignedResponsibilities) {
+		this.assignedResponsibilities = assignedResponsibilities;
 	}
 
 }

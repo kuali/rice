@@ -147,8 +147,12 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	protected void addRoleMemberPrincipalIdsToCache(String key, Collection<String> principalIds) {
 		memberPrincipalIdsCache.put(key, new MaxAgeSoftReference<Collection<String>>(roleCacheMaxAgeSeconds, principalIds ));
 	}
+	
 	public Collection<String> getRoleMemberPrincipalIds(String namespaceCode, String roleName, AttributeSet qualification) {
-		String key = namespaceCode + "-" + roleName;
+		StringBuffer cacheKey = new StringBuffer();
+		cacheKey.append( namespaceCode ).append( '/' ).append( roleName );
+		addAttributesToKey(cacheKey, qualification);
+		String key = cacheKey.toString();
 		Collection<String> principalIds = getRoleMemberPrincipalIdsCache(key);
 		if (principalIds != null) {
 			return principalIds;

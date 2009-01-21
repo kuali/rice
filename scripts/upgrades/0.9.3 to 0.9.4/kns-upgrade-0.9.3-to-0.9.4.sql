@@ -112,6 +112,9 @@ FOREIGN KEY (COUNTY_CD, POSTAL_STATE_CD, POSTAL_CNTRY_CD)
 REFERENCES KR_COUNTY_T
 /
 
+ALTER TABLE KRNS_PARM_T DROP COLUMN GRP_NM;
+
+
 INSERT INTO SH_PARM_T
 VALUES
 ('KR-NS','State','STATE', SYS_GUID(), 1,'HELP','default.htm?turl=WordDocuments%2Fstatemaintenancedocument.htm','Help URL for State document.','A','FP_OPERATIONS')

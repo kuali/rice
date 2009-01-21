@@ -30,17 +30,22 @@ public class ParameterPermissionTypeServiceImpl extends
 		NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl {
     
     {
-        requiredAttributes.add(KimAttributes.PARAMETER_NAME);        
+        requiredAttributes.add(KimAttributes.PARAMETER_NAME);
+        requiredAttributes.add(KimAttributes.COMPONENT_NAME);
     }
     
     @Override
     protected List<KimPermissionInfo> performPermissionMatches(AttributeSet requestedDetails, List<KimPermissionInfo> permissionsList) {
         String requestedParameterName = requestedDetails.get(KimAttributes.PARAMETER_NAME);
+        String requestedComponentName = requestedDetails.get(KimAttributes.COMPONENT_NAME);
         List<KimPermissionInfo> matchingPermissions = new ArrayList<KimPermissionInfo>();
         for ( KimPermissionInfo kpi : permissionsList ) {
             String parameterName = kpi.getDetails().get(KimAttributes.PARAMETER_NAME);
-            if ( StringUtils.isBlank(parameterName)
-                    || StringUtils.equals(requestedParameterName, parameterName)) {
+            String componentName = kpi.getDetails().get(KimAttributes.COMPONENT_NAME);
+            if ( (StringUtils.isBlank(parameterName)
+                    || StringUtils.equals(requestedParameterName, parameterName)) 
+                &&(StringUtils.isBlank(componentName)
+                        || StringUtils.equals(requestedComponentName, componentName))) {
                 matchingPermissions.add(kpi);
             }
         }

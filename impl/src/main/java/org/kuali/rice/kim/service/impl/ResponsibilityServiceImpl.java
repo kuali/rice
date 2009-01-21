@@ -207,6 +207,12 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     		}
     		// get associated resp resolution objects
     		RoleResponsibilityActionImpl action = responsibilityDao.getResponsibilityAction( rm.getRoleId(), responsibility.getResponsibilityId(), rm.getRoleMemberId() );
+    		if ( action == null ) {
+    			LOG.error( "Unable to get responsibility action record for role/responsibility/roleMember: " 
+    					+ rm.getRoleId() + "/" + responsibility.getResponsibilityId() + "/" + rm.getRoleMemberId() );
+    			LOG.error( "Skipping this role member in getActionsForResponsibilityRoles()");
+    			continue;
+    		}
     		// add the data to the ResponsibilityActionInfo objects
     		rai.setActionTypeCode( action.getActionTypeCode() );
     		rai.setActionPolicyCode( action.getActionPolicyCode() );

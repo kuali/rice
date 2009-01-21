@@ -27,6 +27,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -59,7 +60,9 @@ import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
  * returning a DataDictionary. This is the default, Kuali delivered implementation.
  */
 public class DataDictionaryServiceImpl implements DataDictionaryService {
-
+    private static final Logger LOG = Logger.getLogger( DataDictionaryServiceImpl.class );
+    
+    
     private DataDictionary dataDictionary;
     private DataDictionaryMap dataDictionaryMap = new DataDictionaryMap(this);
 
@@ -731,7 +734,9 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
             }
             return label;
         } catch (WorkflowException e) {
-            throw new RuntimeException("Caught Workflow Exception trying to get document type '" + documentTypeName + "'", e);
+            // stop blowing up when workflow doc does not exist
+            LOG.error( "Caught Workflow Exception trying to get document type '" + documentTypeName + "'", e);
+            return documentTypeName;
         }
     }
 

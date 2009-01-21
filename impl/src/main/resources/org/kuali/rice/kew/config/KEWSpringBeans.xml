@@ -914,31 +914,15 @@
 		</property>
   </bean>
 
-  <bean id="documentTypeAndActionRequestTypePermissionTypeService" class="org.kuali.rice.kew.service.impl.DocumentTypeAndActionRequestTypePermissionTypeServiceImpl" />
+  <bean id="adhocReviewPermissionTypeService" class="org.kuali.rice.kew.service.impl.AdhocReviewPermissionTypeServiceImpl" />
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
 		<property name="serviceDefinition">
 	       <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
 	         <property name="service">
-	           <ref bean="documentTypeAndActionRequestTypePermissionTypeService" />
+	           <ref bean="adhocReviewPermissionTypeService" />
 	         </property>
-	         <property name="localServiceName" value="documentTypeAndActionRequestTypePermissionTypeService" />
-	         <property name="priority" value="3" />
-	         <property name="retryAttempts" value="0" />
-	         <property name="busSecurity" value="${secure.workflowdocument.javaservice.endpoint}"/>
-	       </bean>
-		</property>
-  </bean>
-
-  <bean id="adhocRecipientPermissionTypeService" class="org.kuali.rice.kew.service.impl.AdhocRecipientPermissionTypeServiceImpl" />
-  <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
-		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-		<property name="serviceDefinition">
-	       <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
-	         <property name="service">
-	           <ref bean="adhocRecipientPermissionTypeService" />
-	         </property>
-	         <property name="localServiceName" value="adhocRecipientPermissionTypeService" />
+	         <property name="localServiceName" value="adhocReviewPermissionTypeService" />
 	         <property name="priority" value="3" />
 	         <property name="retryAttempts" value="0" />
 	         <property name="busSecurity" value="${secure.workflowdocument.javaservice.endpoint}"/>

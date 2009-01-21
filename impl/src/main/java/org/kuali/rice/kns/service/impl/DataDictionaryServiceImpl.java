@@ -42,7 +42,6 @@ import org.kuali.rice.kns.datadictionary.PrimitiveAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.RelationshipDefinition;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.datadictionary.exporter.DataDictionaryMap;
-import org.kuali.rice.kns.datadictionary.mask.Mask;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.exception.UnknownBusinessClassAttributeException;
 import org.kuali.rice.kns.exception.UnknownDocumentTypeException;
@@ -53,6 +52,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.web.format.Formatter;
+import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
 
 /**
  * This class is the service implementation for a DataDictionary. It is a thin wrapper around creating, initializing, and
@@ -65,6 +65,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 
     private KualiConfigurationService kualiConfigurationService;
     private KualiModuleService kualiModuleService;
+    private KualiWorkflowInfo workflowInfoService; 
 
     
     /**
@@ -715,7 +716,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
      * @see org.kuali.rice.kns.service.DataDictionaryService#getDocumentLabelByClass(java.lang.Class)
      */
     public String getDocumentLabelByClass(Class documentOrBusinessObjectClass) {
-        return getDocumentLabelByTypeName(KNSServiceLocator.getDataDictionaryService().getDocumentTypeNameByClass(documentOrBusinessObjectClass));
+        return getDocumentLabelByTypeName(getDocumentTypeNameByClass(documentOrBusinessObjectClass));
     }
 
     /**
@@ -724,7 +725,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     public String getDocumentLabelByTypeName(String documentTypeName) {
         String label = null;
         try {
-            DocumentTypeDTO documentType = KNSServiceLocator.getWorkflowInfoService().getDocType(documentTypeName);
+            DocumentTypeDTO documentType = getWorkflowInfoService().getDocType(documentTypeName);
             if (documentType != null) {
                 label = documentType.getDocTypeLabel();
             }
@@ -863,4 +864,11 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     	}
     	return encryptedFieldsList;
     }
+
+	public KualiWorkflowInfo getWorkflowInfoService() {
+		if ( workflowInfoService == null ) {
+			workflowInfoService = KNSServiceLocator.getWorkflowInfoService();
+		}
+		return workflowInfoService;
+	}
 }

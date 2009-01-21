@@ -103,8 +103,8 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
             Class documentHeaderClass = KNSServiceLocator.getDocumentHeaderService().getDocumentHeaderBaseClass();
             setDocumentHeader((DocumentHeader) documentHeaderClass.newInstance());
             pessimisticLocks = new ArrayList<PessimisticLock>();
-            adHocRoutePersons = new ArrayList();
-            adHocRouteWorkgroups = new ArrayList();
+            adHocRoutePersons = new ArrayList<AdHocRoutePerson>();
+            adHocRouteWorkgroups = new ArrayList<AdHocRouteWorkgroup>();
         }
         catch (IllegalAccessException e) {
             throw new RuntimeException("Error instantiating DocumentHeader", e);

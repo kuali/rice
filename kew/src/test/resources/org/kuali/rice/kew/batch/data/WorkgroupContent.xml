@@ -23,7 +23,7 @@
       <name>Unit Test Workgroup 2</name>
       <namespace>KR-WKFLW</namespace>
       <description>fake group 2 for testing xml</description>
-      <activeInd>false</activeInd>
+      <active>false</active>
       <!-- <workgroupType>W</workgroupType>
       <workgroupCurInd>false</workgroupCurInd>-->
 

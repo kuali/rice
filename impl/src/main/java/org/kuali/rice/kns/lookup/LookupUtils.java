@@ -783,7 +783,7 @@ public class LookupUtils {
                 String attributeName = (String) iter.next();
                 if (fieldValues.containsKey(attributeName)) {
                     ControlDefinition controlDef = dataDictionaryService.getAttributeControlDefinition(businessObjectClass, attributeName);
-                    if ( controlDef.isHidden() ) {
+                    if (controlDef != null && controlDef.isHidden() ) {
                         fieldValues.remove(attributeName);
                     }
                 }

@@ -7,10 +7,10 @@
         <table cellpadding=0 cellspacing=0 summary="">
           <tr>
             <th width="5%" rowspan=20 style=border-style:none>&nbsp;</th>
-			<kul:htmlAttributeHeaderCell literalLabel="Name"/>
-			<kul:htmlAttributeHeaderCell attributeEntry="${docRoleRspActionAttributes.actionTypeCode}" />
-         	<kul:htmlAttributeHeaderCell attributeEntry="${docRoleRspActionAttributes.priorityNumber}"  />
-         	<kul:htmlAttributeHeaderCell attributeEntry="${docRoleRspActionAttributes.actionPolicyCode}"  />
+			<kul:htmlAttributeHeaderCell literalLabel="Name"  align="center"/>
+			<kul:htmlAttributeHeaderCell attributeEntry="${docRoleRspActionAttributes.actionTypeCode}"  align="center"/>
+         	<kul:htmlAttributeHeaderCell attributeEntry="${docRoleRspActionAttributes.priorityNumber}"  align="center" />
+         	<kul:htmlAttributeHeaderCell attributeEntry="${docRoleRspActionAttributes.actionPolicyCode}"  align="center" />
            </tr>
 
 			<c:forEach var="roleRspAction" items="${rolePrncpl.roleRspActions}" varStatus="actionStatus">
@@ -23,7 +23,7 @@
 		        		</td>
 						<td>
 						<div align="center">
-			            <kul:htmlControlAttribute property="document.roles[${roleIdx}].rolePrncpls[${mbrIdx}].roleRspActions[${actionStatus.index}].actionTypeCode"  attributeEntry="${docRoleRspActionAttributes.actionTypeCode}" />
+			            <kul:htmlControlAttribute property="document.roles[${roleIdx}].rolePrncpls[${mbrIdx}].roleRspActions[${actionStatus.index}].actionTypeCode"  attributeEntry="${docRoleRspActionAttributes.actionTypeCode}" readOnlyAlternateDisplay="${roleRspAction.actionTypeDescription}"/>
 			            </div>
 		        		</td>
 		        		<td>
@@ -33,7 +33,7 @@
 		        		</td>
 		        		<td>
 		        		<div align="center">
-			            <kul:htmlControlAttribute property="document.roles[${roleIdx}].rolePrncpls[${mbrIdx}].roleRspActions[${actionStatus.index}].actionPolicyCode"  attributeEntry="${docRoleRspActionAttributes.actionPolicyCode}" />
+			            <kul:htmlControlAttribute property="document.roles[${roleIdx}].rolePrncpls[${mbrIdx}].roleRspActions[${actionStatus.index}].actionPolicyCode"  attributeEntry="${docRoleRspActionAttributes.actionPolicyCode}" readOnlyAlternateDisplay="${roleRspAction.actionPolicyDescription}"/>
 		        		</div>
 		        		</td>
 		        	</tr>

@@ -17,6 +17,7 @@ package org.kuali.rice.kim.bo.ui;
 
 import java.util.LinkedHashMap;
 
+import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 
 /**
@@ -90,6 +91,26 @@ public class KimDocumentRoleResponsibilityAction extends KimDocumentBoBase {
 	}
 	public void setRoleResponsibility(RoleResponsibilityImpl roleResponsibility) {
 		this.roleResponsibility = roleResponsibility;
+	}
+	
+	/**
+	 * 
+	 * This method fore readonlyalterdisplay
+	 * 
+	 * @return
+	 */
+	public String getActionPolicyDescription() {
+		return (String)CodeTranslator.approvePolicyLabels.get(this.actionPolicyCode);
+	}
+
+	/**
+	 * 
+	 * This method fore readonlyalterdisplay
+	 * 
+	 * @return
+	 */
+	public String getActionTypeDescription() {
+		return (String)CodeTranslator.arLabels.get(this.actionTypeCode);
 	}
 
 }

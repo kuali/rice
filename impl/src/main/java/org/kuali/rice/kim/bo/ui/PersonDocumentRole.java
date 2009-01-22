@@ -61,20 +61,7 @@ public class PersonDocumentRole extends KimDocumentBoBase {
 	public PersonDocumentRole() {
 		attributes = new ArrayList<KimAttributes>();	
 		rolePrncpls = new ArrayList<KimDocumentRoleMember>();	
-		// set following for testing
-//		KimAttributeImpl attrDefn = new KimAttributeImpl();
-//		KimAttributeImpl attrDefn1 = new KimAttributeImpl();
-//		attrDefn.setAttributeName("campusCode");
-//		attrDefn.setComponentName("org.kuali.rice.kns.bo.Campus");
-//		attributes.add(attrDefn);
 		attributeEntry = new HashMap<String,Object>();
-//		attrDefn.setAttributeName("chartOfAccountsCode");
-//		attrDefn.setComponentName("org.kuali.kfs.coa.businessobject.Chart");
-//		attributes.add(attrDefn);
-//		
-//		attrDefn1.setAttributeName("organizationCode");
-//		attrDefn1.setComponentName("org.kuali.kfs.coa.businessobject.Org");
-//		attributes.add(attrDefn1);
 	}
 	
 	public String getRoleId() {

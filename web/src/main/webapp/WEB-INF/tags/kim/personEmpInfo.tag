@@ -41,7 +41,7 @@
                 </div>
                 </td>
                 <td align="left" valign="middle" class="infoline">
-                	<div align="center"><kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].newEmpInfo.employeeTypeCode" attributeEntry="${docEmploymentInfoAttributes.employeeTypeCode}"/>
+                	<div align="center"><kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].newEmpInfo.employeeTypeCode" attributeEntry="${docEmploymentInfoAttributes.employeeTypeCode}" />
                 </div>
                 </td>
                 <td align="left" valign="middle" class="infoline">
@@ -87,7 +87,7 @@
                 </div>
                 </td>
                 <td align="left" valign="middle" class="infoline">
-                	<div align="center"><kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].empInfos[${status.index}].employeeTypeCode" attributeEntry="${docEmploymentInfoAttributes.employeeTypeCode}"/>
+                	<div align="center"><kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].empInfos[${status.index}].employeeTypeCode" attributeEntry="${docEmploymentInfoAttributes.employeeTypeCode}" readOnlyAlternateDisplay="${empInfo.employmentType.employmentTypeName}"/>
                 </div>
                 </td>
                 <td align="left" valign="middle" class="infoline">

@@ -309,7 +309,7 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
 	        newRole.getKimRoleType().setKimTypeId(newRole.getKimTypeId());
 	        newRole.getKimRoleType().refreshReferenceObject("attributeDefinitions");
 	        newRole.setDefinitions(kimTypeService.getAttributeDefinitions(newRole.getKimRoleType()));
-	        KimDocumentRoleMember newRolePrncpl = new KimDocumentRoleMember();
+	        KimDocumentRoleMember newRolePrncpl = newRole.getNewRolePrncpl();
 	        newRole.refreshReferenceObject("assignedResponsibilities");
 	        
 	        for (String key : newRole.getDefinitions().keySet()) {
@@ -324,7 +324,7 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
 	            rolePrncpls.add(newRolePrncpl);
 	        	newRole.setRolePrncpls(rolePrncpls);
 	        }
-	        newRole.setNewRolePrncpl(newRolePrncpl);
+	        //newRole.setNewRolePrncpl(newRolePrncpl);
 	        newRole.setAttributeEntry( getUiDocumentService().getAttributeEntries( newRole.getDefinitions() ) );
 	        personDocumentForm.getPersonDocument().getRoles().add(newRole);
 	        personDocumentForm.setNewRole(new PersonDocumentRole());

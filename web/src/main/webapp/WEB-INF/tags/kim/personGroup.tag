@@ -34,6 +34,7 @@
 	                <td align="left" valign="middle">
 	                	<div align="center"> <kul:htmlControlAttribute property="newGroup.activeFromDate"  attributeEntry="${docGroupAttributes.activeFromDate}"  datePicker="true"/>
 					</div>
+					</td>
 	                <td align="left" valign="middle">
 	                	<div align="center"> <kul:htmlControlAttribute property="newGroup.activeToDate"  attributeEntry="${docGroupAttributes.activeToDate}"  datePicker="true"/>
 					</div>

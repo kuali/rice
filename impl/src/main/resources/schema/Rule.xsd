@@ -69,8 +69,8 @@
       		</documentation>
       	</annotation>
       </element>      
-	  <element name="toDate" type="c:ShortStringType" />
-	  <element name="fromDate" type="c:ShortStringType" />	  
+	  <element name="toDate" type="c:ShortStringType" minOccurs="0" maxOccurs="1" />
+	  <element name="fromDate" type="c:ShortStringType" minOccurs="0" maxOccurs="1" />	  
       <element name="ruleTemplate" type="c:ShortStringType" minOccurs="0">
       	<annotation>
       		<documentation>

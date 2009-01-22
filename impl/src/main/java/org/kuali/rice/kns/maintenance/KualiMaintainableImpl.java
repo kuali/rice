@@ -36,6 +36,7 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
 import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
+import org.kuali.rice.kns.datadictionary.InquirySectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
@@ -43,6 +44,7 @@ import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.MaintenanceLock;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions;
+import org.kuali.rice.kns.inquiry.InquiryRestrictions;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.lookup.valueFinder.ValueFinder;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
@@ -262,9 +264,10 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     public List getSections(MaintenanceDocument document, Maintainable oldMaintainable) {
         List<Section> sections = new ArrayList<Section>();
         sections.addAll(getCoreSections(document, oldMaintainable));
-
+        
         return sections;
     }
+    
 
     /**
      * Gets list of maintenance sections built from the data dictionary. If the section contains maintenance fields, construct
@@ -276,7 +279,8 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     public List<Section> getCoreSections(MaintenanceDocument document, Maintainable oldMaintainable) {
         
         List<Section> sections = new ArrayList<Section>();
-
+        MaintenanceDocumentRestrictions maintenanceRestrictions = KNSServiceLocator.getBusinessObjectAuthorizationService().getMaintenanceDocumentRestrictions(document, GlobalVariables.getUserSession().getPerson());
+        
         List<MaintainableSectionDefinition> sectionDefinitions = getMaintenanceDocumentDictionaryService().getMaintainableSections(docTypeName);
 
         try {
@@ -286,20 +290,22 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
                 MaintainableSectionDefinition maintSectionDef = (MaintainableSectionDefinition) iter.next();
 
                 List<String> displayedFieldNames = new ArrayList<String>();
-                
-                for (Iterator iter2 = maintSectionDef.getMaintainableItems().iterator(); iter2.hasNext();) {
+                if (!maintenanceRestrictions.isHiddenSectionId(maintSectionDef.getId())) {
+                	
+                	for (Iterator iter2 = maintSectionDef.getMaintainableItems().iterator(); iter2.hasNext();) {
                     
-                    MaintainableItemDefinition item = (MaintainableItemDefinition) iter2.next();
-                    if (item instanceof MaintainableFieldDefinition) {
-                        displayedFieldNames.add(((MaintainableFieldDefinition) item).getName());
-                    }
+                		MaintainableItemDefinition item = (MaintainableItemDefinition) iter2.next();
+                		if (item instanceof MaintainableFieldDefinition) {
+                			displayedFieldNames.add(((MaintainableFieldDefinition) item).getName());
+                		}
+                	}
+                
+                	Section section = SectionBridge.toSection(maintSectionDef, getBusinessObject(), this, oldMaintainable, getMaintenanceAction(), isGenerateDefaultValues(), isGenerateBlankRequiredValues(), displayedFieldNames);
+                	setGenerateDefaultValues(false);
+                
+                	// add to section list
+                	sections.add(section);
                 }
-                
-                Section section = SectionBridge.toSection(maintSectionDef, getBusinessObject(), this, oldMaintainable, getMaintenanceAction(), isGenerateDefaultValues(), isGenerateBlankRequiredValues(), displayedFieldNames);
-                setGenerateDefaultValues(false);
-                
-                // add to section list
-                sections.add(section);
                 
             }
             
@@ -313,7 +319,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 
         return sections;
     }
-
+    
     /**
      * 
      * @see org.kuali.rice.kns.maintenance.Maintainable#saveBusinessObject()

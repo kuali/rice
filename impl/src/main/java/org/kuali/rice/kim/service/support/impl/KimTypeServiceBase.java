@@ -111,10 +111,7 @@ public class KimTypeServiceBase implements KimTypeService {
 			return false;
 		}
 		for ( Map.Entry<String, String> entry : storedAttributeSet.entrySet() ) {
-			if ( !inputAttributeSet.containsKey(entry.getKey() ) ) {
-				return false;
-			}
-			if ( !StringUtils.equals(inputAttributeSet.get(entry.getKey()), entry.getValue()) ) {
+			if (inputAttributeSet.containsKey(entry.getKey()) && !StringUtils.equals(inputAttributeSet.get(entry.getKey()), entry.getValue()) ) {
 				return false;
 			}
 		}

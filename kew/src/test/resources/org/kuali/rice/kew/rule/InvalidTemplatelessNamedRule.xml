@@ -8,9 +8,7 @@
             <toDate>2100-01-10 00:00:00</toDate>
             <fromDate>2009-01-28 15:04:55</fromDate>
             <description>A named rule with previously defined template removed, but extensions defined</description>
-            <ignorePrevious>false</ignorePrevious>
-            <toDate>2009-05-30T09:00:00</toDate>
-            <fromDate>2002-05-30T09:00:00</fromDate>
+            <ignorePrevious>false</ignorePrevious>            
             <ruleExtensions>
                 <ruleExtension>
                     <attribute>TestRuleAttribute</attribute>

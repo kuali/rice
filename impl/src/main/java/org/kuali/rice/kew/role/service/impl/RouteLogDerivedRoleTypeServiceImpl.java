@@ -34,9 +34,9 @@ import org.kuali.rice.kim.util.KimCache;
  *
  */
 public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServiceBase {
-    protected static final String INITIATOR_ROLE_NAME = "Initiator";
-    protected static final String INITIATOR_OR_REVIEWER_ROLE_NAME = "Initiator or Reviewer";
-    protected static final String ROUTER_ROLE_NAME = "Router";
+    public static final String INITIATOR_ROLE_NAME = "Initiator";
+    public static final String INITIATOR_OR_REVIEWER_ROLE_NAME = "Initiator or Reviewer";
+    public static final String ROUTER_ROLE_NAME = "Router";
 	private static final String HAS_APPLICATION_ROLE_CACHE_NAME = "RouteLogDerivedRoleTypeServiceImpl.hasApplicationRole";
 
 	protected WorkflowInfo workflowInfo = new WorkflowInfo();

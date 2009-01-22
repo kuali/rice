@@ -69,6 +69,7 @@ import org.kuali.rice.kns.rule.event.AddAdHocRoutePersonEvent;
 import org.kuali.rice.kns.rule.event.AddAdHocRouteWorkgroupEvent;
 import org.kuali.rice.kns.rule.event.AddNoteEvent;
 import org.kuali.rice.kns.rule.event.PreRulesCheckEvent;
+import org.kuali.rice.kns.rule.event.SendAdHocRequestsEvent;
 import org.kuali.rice.kns.service.AttachmentService;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
@@ -484,8 +485,13 @@ public class KualiDocumentActionBase extends KualiAction {
     	KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
     	Document document = kualiDocumentFormBase.getDocument();
 
-    	getDocumentService().sendAdHocRequests(document, kualiDocumentFormBase.getAnnotation(), combineAdHocRecipients(kualiDocumentFormBase));
-    	GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_SEND_AD_HOC_REQUESTS_SUCCESSFUL);
+    	boolean rulePassed = getKualiRuleService().applyRules(new SendAdHocRequestsEvent(document));
+    	
+    	if (rulePassed) {
+	    	getDocumentService().sendAdHocRequests(document, kualiDocumentFormBase.getAnnotation(), combineAdHocRecipients(kualiDocumentFormBase));
+	    	GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_SEND_AD_HOC_REQUESTS_SUCCESSFUL);
+    	}
+    	
     	return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
     /**

@@ -754,7 +754,10 @@ public class DocumentServiceImpl implements DocumentService {
 	public void sendAdHocRequests(Document document, String annotation, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException{
 		prepareWorkflowDocument(document);
 		getWorkflowDocumentService().sendWorkflowNotification(document.getDocumentHeader().getWorkflowDocument(),
-        		annotation, adHocRecipients);		
+        		annotation, adHocRecipients);
+		GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
+		getBusinessObjectService().delete(document.getAdHocRoutePersons());
+		getBusinessObjectService().delete(document.getAdHocRouteWorkgroups());
 	}
 
 	/**

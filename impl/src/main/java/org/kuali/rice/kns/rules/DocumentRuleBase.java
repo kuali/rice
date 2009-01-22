@@ -31,6 +31,7 @@ import org.kuali.rice.kns.rule.AddNoteRule;
 import org.kuali.rice.kns.rule.ApproveDocumentRule;
 import org.kuali.rice.kns.rule.RouteDocumentRule;
 import org.kuali.rice.kns.rule.SaveDocumentRule;
+import org.kuali.rice.kns.rule.SendAdHocRequestsRule;
 import org.kuali.rice.kns.rule.event.ApproveDocumentEvent;
 import org.kuali.rice.kns.service.DictionaryValidationService;
 import org.kuali.rice.kns.service.DocumentHelperService;
@@ -47,7 +48,7 @@ import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
 /**
  * This class contains all of the business rules that are common to all documents.
  */
-public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumentRule, ApproveDocumentRule, AddNoteRule, AddAdHocRoutePersonRule, AddAdHocRouteWorkgroupRule {
+public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumentRule, ApproveDocumentRule, AddNoteRule, AddAdHocRoutePersonRule, AddAdHocRouteWorkgroupRule, SendAdHocRequestsRule {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentRuleBase.class);
 
     private static PersonService personService;
@@ -293,7 +294,20 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
         return isValid;
     }
 
+    
     /**
+	 * @see org.kuali.rice.kns.rule.SendAdHocRequestsRule#processSendAdHocRequests(org.kuali.rice.kns.document.Document)
+	 */
+	public boolean processSendAdHocRequests(Document document) {
+		// count on the generated events from 
+		return processCustomSendAdHocRequests(document);
+	}
+
+	protected boolean processCustomSendAdHocRequests(Document document) {
+		return true;
+	}
+	
+	/**
      * Verifies that the adHocRoutePerson's fields are valid - it does required and format checks.
      * 
      * @param person

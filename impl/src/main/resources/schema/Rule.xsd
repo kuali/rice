@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schema xmlns="http://www.w3.org/2001/XMLSchema"
+		xmlns:xs="http://www.w3.org/2001/XMLSchema"
         xmlns:c="ns:workflow/common"
         xmlns:rc="ns:workflow/Rule"
         targetNamespace="ns:workflow/Rule"
@@ -67,8 +68,9 @@
       		 Name of the document type under the rule.
       		</documentation>
       	</annotation>
-      </element>
-
+      </element>      
+	  <element name="toDate" type="c:ShortStringType" />
+	  <element name="fromDate" type="c:ShortStringType" />	  
       <element name="ruleTemplate" type="c:ShortStringType" minOccurs="0">
       	<annotation>
       		<documentation>

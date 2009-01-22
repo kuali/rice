@@ -83,6 +83,14 @@ public class RuleXmlExporter implements XmlExporter, XmlConstants {
         if (delegation != null) {
             renderer.renderTextElement(ruleElement, DELEGATION_TYPE, delegation.getDelegationType());
         }
+        if(rule.getToDateString()!=null){
+        	renderer.renderTextElement(ruleElement, TO_DATE, rule.getToDateString());
+        }
+        if(rule.getFromDateString()!=null){
+        	renderer.renderTextElement(ruleElement, FROM_DATE, rule.getFromDateString());
+        }
+        
+        
     }
 
     private void exportRuleExtensions(Element parent, List ruleExtensions) {

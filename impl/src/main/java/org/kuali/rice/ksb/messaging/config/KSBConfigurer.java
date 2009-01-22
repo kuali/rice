@@ -36,7 +36,9 @@ import org.kuali.rice.core.config.event.RiceConfigEvent;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.lifecycle.ServiceDelegatingLifecycle;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
+import org.kuali.rice.core.resourceloader.SpringLoader;
 import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.ksb.messaging.AlternateEndpoint;
 import org.kuali.rice.ksb.messaging.AlternateEndpointLocation;
@@ -115,7 +117,16 @@ public class KSBConfigurer extends ModuleConfigurer {
 
 	@Override
 	public String getSpringFileLocations(){
-		return "classpath:org/kuali/rice/ksb/config/KSBSpringBeans.xml";
+	    String files = "classpath:org/kuali/rice/ksb/config/KSBSpringBeans.xml" + SpringLoader.SPRING_SEPARATOR_CHARACTER;
+        
+        if (OrmUtils.isJpaEnabled("rice.ksb")) {
+            files += "classpath:org/kuali/rice/ksb/config/KSBJPASpringBeans.xml";
+        }
+        else {
+            files += "classpath:org/kuali/rice/ksb/config/KSBOJBSpringBeans.xml";
+        }
+        
+        return files;
 	}
 	
 	@Override

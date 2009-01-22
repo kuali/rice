@@ -853,12 +853,13 @@
 
   <!-- START JPA CONFIGURATION -->
 
-  <!-- Used for @PersistenceContext auto-injection -->
-  <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
-
-  <bean id="entityManagerFactory" class="org.kuali.rice.core.jpa.spring.RiceEntityManagerProxyFactoryBean">
+  <bean id="kewEntityManagerFactory" class="org.kuali.rice.core.jpa.spring.RiceEntityManagerProxyFactoryBean">
     <constructor-arg value="rice.kew"/>
     <constructor-arg ref="enWorkflowDataSource"/>
+  </bean>
+  
+  <bean id="kewEntityManager" class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
+  	<property name="entityManagerFactory" ref="kewEntityManagerFactory"/>
   </bean>
 
   <tx:annotation-driven transaction-manager="transactionManager"/>

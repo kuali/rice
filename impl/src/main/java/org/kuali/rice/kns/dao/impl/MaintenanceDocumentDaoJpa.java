@@ -109,4 +109,18 @@ public class MaintenanceDocumentDaoJpa implements MaintenanceDocumentDao {
 		}
 	}
 
+    /**
+     * @return the entityManager
+     */
+    public EntityManager getEntityManager() {
+        return this.entityManager;
+    }
+
+    /**
+     * @param entityManager the entityManager to set
+     */
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
 }

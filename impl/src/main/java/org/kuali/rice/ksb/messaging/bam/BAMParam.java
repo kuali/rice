@@ -29,7 +29,7 @@ import javax.persistence.Table;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.util.OrmUtils;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 /**
  * A parameter of a method invocation recorded by the BAM.
@@ -52,7 +52,7 @@ public class BAMParam {
 	
 	@PrePersist
     public void beforeInsert(){
-        OrmUtils.populateAutoIncValue(this, KNSServiceLocator.getEntityManagerFactory().createEntityManager());
+	    OrmUtils.populateAutoIncValue(this, KSBServiceLocator.getRegistryEntityManagerFactory().createEntityManager());
     }
 	
 	public BAMTargetEntry getBamTargetEntry() {

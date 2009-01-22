@@ -77,4 +77,18 @@ public class NoteDaoJpa implements NoteDao {
 		return new ArrayList(new QueryByCriteria(entityManager, criteria).toQuery().getResultList());
 	}
 
+    /**
+     * @return the entityManager
+     */
+    public EntityManager getEntityManager() {
+        return this.entityManager;
+    }
+
+    /**
+     * @param entityManager the entityManager to set
+     */
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
 }

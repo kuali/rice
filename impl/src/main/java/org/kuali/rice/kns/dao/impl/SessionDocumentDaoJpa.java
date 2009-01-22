@@ -42,5 +42,19 @@ public class SessionDocumentDaoJpa implements SessionDocumentDao {
         new QueryByCriteria(entityManager, criteria, QueryByCriteriaType.DELETE).toQuery().executeUpdate();
     }
 
+    /**
+     * @return the entityManager
+     */
+    public EntityManager getEntityManager() {
+        return this.entityManager;
+    }
+
+    /**
+     * @param entityManager the entityManager to set
+     */
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
 
 }

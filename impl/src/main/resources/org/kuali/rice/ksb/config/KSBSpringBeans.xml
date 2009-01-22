@@ -134,12 +134,8 @@
 
 
 	<bean id="bamService" class="org.kuali.rice.ksb.messaging.bam.service.impl.BAMServiceImpl">
-		<property name="dao">
+		<property name="dao" ref="bamDao" />
 		  <!-- <bean class="org.kuali.rice.ksb.messaging.bam.dao.impl.BAMDaoJpaImpl" /> -->
-			<bean class="org.kuali.rice.ksb.messaging.bam.dao.impl.BAMDAOOjbImpl">
-				<property name="jcdAlias" value="ksbRegistryDataSource" />
-			</bean>
-		</property>
 	</bean>
 
 	<bean id="enMessageHelper" class="org.kuali.rice.ksb.messaging.MessageHelperImpl" lazy-init="true" />
@@ -150,20 +146,12 @@
 	</bean>
 	
 	<bean id="enRouteQueueService" class="org.kuali.rice.ksb.messaging.service.impl.MessageQueueServiceImpl" lazy-init="true">
-		<property name="messageQueueDAO">
-			<bean class="org.kuali.rice.ksb.messaging.dao.impl.MessageQueueDAOOjbImpl">
-				<property name="jcdAlias" value="ksbMessageDataSource" />
-			</bean>
-		</property>
+		<property name="messageQueueDAO" ref="messageQueueDao" />
 	</bean>
 
 	<bean id="enRoutingTableService" class="org.kuali.rice.ksb.messaging.service.impl.ServiceRegistryImpl" lazy-init="true">
 		<property name="serviceLocator" ref="ksbContextServiceLocator"></property>
-		<property name="dao">
-			<bean class="org.kuali.rice.ksb.messaging.dao.impl.ServiceInfoDAOOjbImpl">
-				<property name="jcdAlias" value="ksbRegistryDataSource" />
-			</bean>
-		</property>
+		<property name="dao" ref="serviceInfoDao" />
 	</bean>
 
 	<bean id="exceptionMessagingService" class="org.kuali.rice.ksb.messaging.exceptionhandling.DefaultExceptionServiceImpl" lazy-init="true" />
@@ -241,13 +229,7 @@
 
   <!-- START JPA CONFIGURATION -->
 
-  <!-- Used for @PersistenceContext auto-injection -->
-  <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
-
-  <bean id="entityManagerFactory" class="org.kuali.rice.core.jpa.spring.RiceEntityManagerProxyFactoryBean">    
-    <constructor-arg value="rice.ksb"/>
-    <constructor-arg ref="ksbMessageDataSource"/>
-  </bean>
+  <!-- entity managers defined in KSBJPASpringBeans.xml so both can be controlled by rice.ksb.jpa.enabled -->
 
   <!-- Used for @Transactional so you don't have to wire services up in here -->
   <tx:annotation-driven transaction-manager="transactionManager"/>

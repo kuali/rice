@@ -38,7 +38,7 @@ public class MessageQueueDAOJpaImpl implements MessageQueueDAO {
     
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MessageQueueDAOJpaImpl.class);
     
-    @PersistenceContext(name = "ksb-unit")
+    @PersistenceContext
     private EntityManager entityManager;
     
     @SuppressWarnings("unchecked")
@@ -134,18 +134,23 @@ public class MessageQueueDAOJpaImpl implements MessageQueueDAO {
     
     public void save(PersistedMessage routeQueue) {
         if(routeQueue.getRouteQueueId() == null) {
-            Long routeQueueId = OrmUtils.getNextAutoIncValue(PersistedMessage.class, entityManager);
-            
-            routeQueue.setRouteQueueId(routeQueueId);
             entityManager.persist(routeQueue);
             
-            routeQueue.getPayload().setRouteQueueId(routeQueueId);
+            routeQueue.getPayload().setRouteQueueId(routeQueue.getRouteQueueId());
             entityManager.persist(routeQueue.getPayload());
         }
         else {
             entityManager.merge(routeQueue);
             entityManager.merge(routeQueue.getPayload());
         }
+    }
+
+    public EntityManager getEntityManager() {
+        return this.entityManager;
+    }
+
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
 }

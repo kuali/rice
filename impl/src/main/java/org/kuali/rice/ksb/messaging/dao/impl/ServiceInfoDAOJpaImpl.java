@@ -77,4 +77,12 @@ public class ServiceInfoDAOJpaImpl extends PersistenceBrokerDaoSupport implement
 		query.executeUpdate();
     }
 
+    public EntityManager getEntityManager() {
+        return this.entityManager;
+    }
+
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
 }

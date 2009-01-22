@@ -412,7 +412,7 @@
     	<property name="persistenceDaoOjb" ref="persistenceDaoOjb" />
 	</bean>
 
-  <bean id="persistenceDaoJpa" class="org.kuali.rice.kns.dao.impl.PersistenceDaoJpa" />
+	<bean id="persistenceDaoJpa" class="org.kuali.rice.kns.dao.impl.PersistenceDaoJpa" />
 
   <bean id="persistenceDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.PersistenceDaoOjb" />
 
@@ -563,7 +563,9 @@
     <property name="persistedLookupMetadataDaoOjb" ref="persistedLookupMetadataDaoOjb" />
   </bean>
 
-	<bean id="persistedLookupMetadataDaoJpa" class="org.kuali.rice.kns.dao.impl.PersistedLookupMetadataDaoJpa" />
+	<bean id="persistedLookupMetadataDaoJpa" class="org.kuali.rice.kns.dao.impl.PersistedLookupMetadataDaoJpa">
+		<property name="entityManager" ref="knsEntityManager"/>
+	</bean>
 
 	<bean id="persistedLookupMetadataDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.PersistedLookupMetadataDaoOjb" />
 	<bean id="businessObjectMetaDataService" class="org.kuali.rice.kns.service.impl.BusinessObjectMetaDataServiceImpl">
@@ -726,6 +728,7 @@
 
   <bean id="documentDaoJpa" class="org.kuali.rice.kns.dao.impl.DocumentDaoJpa">
     <property name="businessObjectDao" ref="businessObjectDao" />
+    <property name="entityManager" ref="knsEntityManager"/>
   </bean>
 
   <bean id="documentDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.DocumentDaoOjb">
@@ -737,7 +740,9 @@
     <property name="documentHeaderDaoOjb" ref="documentHeaderDaoOjb" />
   </bean>
 
-  <bean id="documentHeaderDaoJpa" class="org.kuali.rice.kns.dao.impl.DocumentHeaderDaoJpa" />
+  <bean id="documentHeaderDaoJpa" class="org.kuali.rice.kns.dao.impl.DocumentHeaderDaoJpa">
+  	<property name="entityManager" ref="knsEntityManager"/>
+  </bean>
 
 	<bean id="documentHeaderDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.DocumentHeaderDaoOjb" />
 
@@ -749,6 +754,7 @@
   <bean id="lookupDaoJpa" class="org.kuali.rice.kns.dao.impl.LookupDaoJpa">
     <property name="persistenceStructureService" ref="persistenceStructureService" />
     <property name="dateTimeService" ref="dateTimeService" />
+    <property name="entityManager" ref="knsEntityManager"/>
   </bean>
 
   <bean id="lookupDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.LookupDaoOjb">
@@ -761,7 +767,9 @@
     <property name="maintenanceDocumentDaoOjb" ref="maintenanceDocumentDaoOjb" />
   </bean>
 
-	<bean id="maintenanceDocumentDaoJpa" class="org.kuali.rice.kns.dao.impl.MaintenanceDocumentDaoJpa" />
+	<bean id="maintenanceDocumentDaoJpa" class="org.kuali.rice.kns.dao.impl.MaintenanceDocumentDaoJpa">
+		<property name="entityManager" ref="knsEntityManager"/>
+	</bean>
 
   <bean id="maintenanceDocumentDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.MaintenanceDocumentDaoOjb" />
 
@@ -770,7 +778,9 @@
     <property name="noteDaoOjb" ref="noteDaoOjb" />
   </bean>
 
-	<bean id="noteDaoJpa" class="org.kuali.rice.kns.dao.impl.NoteDaoJpa" />
+	<bean id="noteDaoJpa" class="org.kuali.rice.kns.dao.impl.NoteDaoJpa">
+		<property name="entityManager" ref="knsEntityManager"/>
+	</bean>
 
   <bean id="noteDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.NoteDaoOjb" />
 
@@ -781,6 +791,7 @@
 
   <bean id="businessObjectDaoJpa" class="org.kuali.rice.kns.dao.impl.BusinessObjectDaoJpa">
     <property name="persistenceStructureService" ref="persistenceStructureService" />
+    <property name="entityManager" ref="knsEntityManager"/>
   </bean>
 
 	<bean id="businessObjectDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.BusinessObjectDaoOjb">
@@ -792,7 +803,9 @@
     	<property name="sessionDocumentDaoOjb" ref="sessionDocumentDaoOjb" />
   	</bean>
 
-    <bean id="sessionDocumentDaoJpa" class="org.kuali.rice.kns.dao.impl.SessionDocumentDaoJpa" />
+    <bean id="sessionDocumentDaoJpa" class="org.kuali.rice.kns.dao.impl.SessionDocumentDaoJpa">
+    	<property name="entityManager" ref="knsEntityManager"/>
+   	</bean>
 
 	<bean id="sessionDocumentDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.SessionDocumentDaoOjb" />
 
@@ -822,12 +835,13 @@
 
   <!-- START JPA CONFIGURATION -->
 
-  <!-- Used for @PersistenceContext auto-injection -->
-  <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
-
-  <bean id="entityManagerFactory" class="org.kuali.rice.core.jpa.spring.RiceEntityManagerProxyFactoryBean">
+  <bean id="knsEntityManagerFactory" class="org.kuali.rice.core.jpa.spring.RiceEntityManagerProxyFactoryBean">
     <constructor-arg value="rice.kns"/>
     <constructor-arg ref="knsDataSource"/>
+  </bean>
+  
+  <bean id="knsEntityManager" class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
+  	<property name="entityManagerFactory" ref="knsEntityManagerFactory"/>
   </bean>
 
   <!-- Used for @Transactional so you don't have to wire services up in here-->

@@ -37,6 +37,7 @@ import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.ksb.messaging.AsynchronousCallback;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 
 /**
@@ -84,7 +85,7 @@ public class BAMTargetEntry implements Serializable {
 	
 	@PrePersist
     public void beforeInsert(){
-        OrmUtils.populateAutoIncValue(this, KNSServiceLocator.getEntityManagerFactory().createEntityManager());
+        OrmUtils.populateAutoIncValue(this, KSBServiceLocator.getRegistryEntityManagerFactory().createEntityManager());
     }
 	
 	public void addBamParam(BAMParam bamParam) {

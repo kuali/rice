@@ -182,14 +182,15 @@
 
   <!-- START JPA CONFIGURATION -->
 
-  <!-- Used for @PersistenceContext auto-injection -->
-  <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
-
-  <bean id="entityManagerFactory" class="org.kuali.rice.core.jpa.spring.RiceEntityManagerProxyFactoryBean">
+  <bean id="kimEntityManagerFactory" class="org.kuali.rice.core.jpa.spring.RiceEntityManagerProxyFactoryBean">
     <constructor-arg value="rice.kim"/>
     <constructor-arg ref="kimDataSource"/>
   </bean>
 
+  <bean id="kimEntityManager" class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
+  	<property name="entityManagerFactory" ref="kimEntityManagerFactory"/>
+  </bean>
+  
   <!-- Used for @Transactional so you don't have to wire services up in here -->
   <tx:annotation-driven transaction-manager="transactionManager"/>
 
@@ -356,7 +357,10 @@
   </bean>
 
   <!-- Kim Type Internal Service -->
-  <bean id="kimTypeDaoJpa" class="org.kuali.rice.kim.dao.impl.KimTypeDaoJpa"/>
+  <bean id="kimTypeDaoJpa" class="org.kuali.rice.kim.dao.impl.KimTypeDaoJpa">
+    <property name="entityManager" ref="kimEntityManager"/>
+  </bean>
+  
   <bean id="kimTypeDao" class="org.kuali.rice.kim.dao.impl.KimTypeDaoOjb" parent="platformAwareDao" />
 
   <bean id="kimTypeInternalService" class="org.kuali.rice.kim.service.support.impl.KimTypeInternalServiceImpl"

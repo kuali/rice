@@ -87,9 +87,9 @@ public class PersistedMessage implements Serializable {
         // default constructor
     }
     
-//    @PrePersist
+    @PrePersist
     public void beforeInsert(){
-        OrmUtils.populateAutoIncValue(this, KNSServiceLocator.getEntityManagerFactory().createEntityManager());
+        OrmUtils.populateAutoIncValue(this, KSBServiceLocator.getMessageEntityManagerFactory().createEntityManager());
     }
     
 	public String getServiceNamespace() {

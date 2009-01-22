@@ -50,4 +50,12 @@ public class KimTypeDaoJpa implements KimTypeDao {
         return (KimTypeImpl) entityManager.createNamedQuery("KimTypeImpl.FindByKimTypeName").setParameter("namespaceCode", namespace).setParameter("name", name).getSingleResult();
     }
 
+    public EntityManager getEntityManager() {
+        return this.entityManager;
+    }
+
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
 }

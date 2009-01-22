@@ -37,7 +37,7 @@ public class RiceEntityManagerProxyFactoryBean implements FactoryBean, Initializ
 	}	
 
 	public void afterPropertiesSet() throws Exception {
-		if (OrmUtils.isJpaEnabled()) {
+		if (OrmUtils.isJpaEnabled(prefix)) {
 			factoryBean = new RiceLocalContainerEntityManagerFactoryBean(prefix, datasource);
 			factoryBean.afterPropertiesSet();
 		}
@@ -48,7 +48,7 @@ public class RiceEntityManagerProxyFactoryBean implements FactoryBean, Initializ
 	}
 
 	public Object getObject() throws Exception {
-		return (factoryBean != null ? factoryBean.getObject() : null);
+		return (factoryBean != null ? factoryBean.getObject() : new NullEntityManagerFactory());
 	}
 
 	public boolean isSingleton() {

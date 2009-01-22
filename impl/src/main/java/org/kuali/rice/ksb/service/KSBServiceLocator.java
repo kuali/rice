@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.ksb.service;
 
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 import org.apache.cxf.Bus;
@@ -52,11 +53,21 @@ public class KSBServiceLocator {
     public static final String JTA_TRANSACTION_MANAGER = "jtaTransactionManager";
     public static final String SCHEDULED_THREAD_POOL_SERVICE = "enScheduledThreadPool";
     public static final String BUS_ADMIN_SERVICE = "busAdminService";
+    public static final String MESSAGE_ENTITY_MANAGER_FACTORY = "ksbMessageEntityManagerFactory";
+    public static final String REGISTRY_ENTITY_MANAGER_FACTORY = "ksbRegistryEntityManagerFactory";
 
     public static Object getService(String name) {
         return GlobalResourceLoader.getService(name);
     }
 
+    public static EntityManagerFactory getMessageEntityManagerFactory() {
+        return (EntityManagerFactory) getService(MESSAGE_ENTITY_MANAGER_FACTORY);
+    }
+    
+    public static EntityManagerFactory getRegistryEntityManagerFactory() {
+        return (EntityManagerFactory) getService(REGISTRY_ENTITY_MANAGER_FACTORY);
+    }
+    
     public static TransactionTemplate getTransactionTemplate() {
         return (TransactionTemplate) getService("transactionTemplate");
     }

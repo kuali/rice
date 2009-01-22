@@ -329,5 +329,19 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 			entityManager.merge(attachedBo);
 		}
 	}
+
+    /**
+     * @return the entityManager
+     */
+    public EntityManager getEntityManager() {
+        return this.entityManager;
+    }
+
+    /**
+     * @param entityManager the entityManager to set
+     */
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 	
 }

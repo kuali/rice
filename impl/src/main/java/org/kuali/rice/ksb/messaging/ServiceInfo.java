@@ -68,8 +68,6 @@ public class ServiceInfo implements Serializable {
 	private ServiceDefinition serviceDefinition;
 	@Id
 	@Column(name="SVC_DEF_ID")  
-	@GeneratedValue(strategy=javax.persistence.GenerationType.SEQUENCE, generator="SvcDefSeq")
-	@SequenceGenerator(name="SvcDefSeq",sequenceName="KRSB_SVC_DEF_S", allocationSize=1)
 	private Long messageEntryId;
     @Transient
 	private QName qname;
@@ -99,6 +97,11 @@ public class ServiceInfo implements Serializable {
 	public ServiceInfo() {
 	    // default constructor with nothing to do
 	}
+	
+	@PrePersist
+    public void beforeInsert(){
+        OrmUtils.populateAutoIncValue(this, KSBServiceLocator.getRegistryEntityManagerFactory().createEntityManager());
+    }
 	
 	public ServiceInfo(ServiceDefinition serviceDefinition) {
 		this.setServiceDefinition(serviceDefinition);

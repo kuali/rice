@@ -51,4 +51,18 @@ public class PersistedLookupMetadataDaoJpa implements PersistedLookupMetadataDao
         criteria.lt(KNSPropertyConstants.LOOKUP_DATE, expirationDate);
         new QueryByCriteria(entityManager, criteria, QueryByCriteriaType.DELETE).toQuery().executeUpdate();
     }
+
+    /**
+     * @return the entityManager
+     */
+    public EntityManager getEntityManager() {
+        return this.entityManager;
+    }
+
+    /**
+     * @param entityManager the entityManager to set
+     */
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 }

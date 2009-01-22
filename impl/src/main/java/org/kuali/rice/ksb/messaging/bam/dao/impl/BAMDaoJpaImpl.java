@@ -45,7 +45,12 @@ public class BAMDaoJpaImpl implements BAMDAO {
     }
 
     public void save(BAMTargetEntry bamEntry) {
-        entityManager.persist(bamEntry);
+        if(bamEntry.getBamId() == null) {
+            entityManager.persist(bamEntry);
+        }
+        else {
+            entityManager.merge(bamEntry);
+        }
     }
 
     public List<BAMTargetEntry> getCallsForService(QName serviceName) {

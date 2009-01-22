@@ -56,7 +56,7 @@
 		<tr>
   	  	 	<kul:htmlAttributeHeaderCell scope="col" align="left" >Effective Date:</kul:htmlAttributeHeaderCell>
 		  	<td class="datacell">&nbsp;&nbsp;<html-el:text property="dateRef" size="10"/>&nbsp;
-		    <a href="javascript:showCal('<c:out value="dateRef"/>');"><img src="images/cal.gif" alt="Click Here to select the from date" align=middle height=16 width=16></a>
+		    <a href="javascript:showCal('<c:out value="dateRef"/>');"><img src="images/cal.gif" alt="Click Here to select the from date" align="middle" height="16" width="16"/></a>
 		    &nbsp;&nbsp;Time:&nbsp;
 	      <c:set var="hour" value="${RoutingReportForm.hours}" />
         <html-el:select property="effectiveHour">
@@ -77,8 +77,8 @@
 			<td class="datacell">
 				&nbsp;&nbsp;
 				<html-el:text property="documentType" />
-				&nbsp;<!-- html-el:image property="methodToCall.performLookup" src="images/searchicon.gif" onclick="document.forms[0].elements['lookupableImplServiceName'].value = 'DocumentTypeLookupableImplService';" / -->
-				<kul:lookup boClassName="org.kuali.rice.kew.doctype.bo.DocumentType" /><%-- fieldConversions="documentTypeId:routeHeader.documentTypeId" lookupParameters="routeHeader.documentTypeId:documentTypeId" / --%>
+				&nbsp;
+				<kul:lookup boClassName="org.kuali.rice.kew.doctype.bo.DocumentType" />
 			</td>
 		</tr>
 		<c:set var="FieldRows" value="${RoutingReportForm.ruleTemplateAttributes}" scope="request" />

@@ -69,7 +69,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     private static final String FINALIZATION_DATE_FIELD_STRING = " DOC_HDR.FNL_DT ";
     private static final String LAST_STATUS_UPDATE_DATE = " DOC_HDR.STAT_MDFN_DT ";
 
-    private static List searchableAttributes;
+    private static List<SearchableAttribute> searchableAttributes;
     private static DocSearchCriteriaDTO criteria;
     private static String searchingUser;
 
@@ -77,13 +77,13 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
 	public StandardDocumentSearchGenerator() {
 		super();
-		this.searchableAttributes = new ArrayList();
+		this.searchableAttributes = new ArrayList<SearchableAttribute>();
 	}
 
 	/**
 	 * @param searchableAttributes
 	 */
-	public StandardDocumentSearchGenerator(List searchableAttributes) {
+	public StandardDocumentSearchGenerator(List<SearchableAttribute> searchableAttributes) {
 		this();
 		this.searchableAttributes = searchableAttributes;
 	}
@@ -96,11 +96,11 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 		StandardDocumentSearchGenerator.criteria = criteria;
 	}
 
-	public List getSearchableAttributes() {
+	public List<SearchableAttribute> getSearchableAttributes() {
 		return searchableAttributes;
 	}
 
-	public void setSearchableAttributes(List searchableAttributes) {
+	public void setSearchableAttributes(List<SearchableAttribute> searchableAttributes) {
 		this.searchableAttributes = searchableAttributes;
 	}
 
@@ -163,11 +163,10 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     public List<WorkflowServiceError> validateSearchableAttributes(DocSearchCriteriaDTO searchCriteria) {
     	setCriteria(searchCriteria);
         List<WorkflowServiceError> errors = new ArrayList<WorkflowServiceError>();
-        List searchableAttributes = criteria.getSearchableAttributes();
+        List<SearchAttributeCriteriaComponent> searchableAttributes = criteria.getSearchableAttributes();
         if (searchableAttributes != null && !searchableAttributes.isEmpty()) {
-            Map paramMap = new HashMap();
-            for (Iterator iter = searchableAttributes.iterator(); iter.hasNext();) {
-            	SearchAttributeCriteriaComponent component = (SearchAttributeCriteriaComponent) iter.next();
+            Map<String, Object> paramMap = new HashMap<String, Object>();
+            for (SearchAttributeCriteriaComponent component : searchableAttributes) {
                 if (!Utilities.isEmpty(component.getValues())) {
                     paramMap.put(component.getFormKey(),component.getValues());
                 } else {
@@ -176,13 +175,11 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             }
             DocumentType documentType = getValidDocumentType(criteria.getDocTypeFullName());
             try {
-	            for (Iterator iter = documentType.getSearchableAttributes().iterator(); iter.hasNext();) {
-	            	SearchableAttribute searchableAttribute = (SearchableAttribute) iter.next();
-	                List searchableErrors = validateSearchableAttribute(
+	            for (SearchableAttribute searchableAttribute : documentType.getSearchableAttributes()) {
+	                List<WorkflowAttributeValidationError> searchableErrors = validateSearchableAttribute(
 	                		searchableAttribute, paramMap, DocSearchUtils.getDocumentSearchContext("", documentType.getName(), ""));
 	                if(!Utilities.isEmpty(searchableAttributes)){
-	                    for (Iterator iterator = searchableErrors.iterator(); iterator.hasNext();) {
-	                        WorkflowAttributeValidationError error = (WorkflowAttributeValidationError) iterator.next();
+	                    for (WorkflowAttributeValidationError error : searchableErrors) {
 	                        errors.add(new WorkflowServiceErrorImpl(error.getKey(), "routetemplate.xmlattribute.error", error.getMessage()));
 	                    }
 	                }
@@ -199,13 +196,13 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         return searchableAttribute.validateUserSearchInputs(searchAttributesParameterMap, documentSearchContext);
     }
 
-    protected QueryComponent getSearchableAttributeSql(List searchableAttributes, String whereClausePredicatePrefix) {
+    protected QueryComponent getSearchableAttributeSql(List<SearchAttributeCriteriaComponent> searchableAttributes, String whereClausePredicatePrefix) {
         StringBuffer fromSql = new StringBuffer();
         StringBuffer whereSql = new StringBuffer();
 
         int tableIndex = 1;
 
-        Map<String, List> searchableAttributeRangeComponents = new HashMap<String,List>();
+        Map<String, List<SearchAttributeCriteriaComponent>> searchableAttributeRangeComponents = new HashMap<String,List<SearchAttributeCriteriaComponent>>();
         for (Iterator iterator = searchableAttributes.iterator(); iterator.hasNext(); tableIndex++) {
             SearchAttributeCriteriaComponent criteriaComponent = (SearchAttributeCriteriaComponent) iterator.next();
             if (!criteriaComponent.isSearchable()) {
@@ -221,7 +218,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             }
             if (criteriaComponent.isRangeSearch()) {
             	if (searchableAttributeRangeComponents.containsKey(criteriaComponent.getSavedKey())) {
-					List<SearchAttributeCriteriaComponent> criteriaComponents = (List)searchableAttributeRangeComponents.get(criteriaComponent.getSavedKey());
+					List<SearchAttributeCriteriaComponent> criteriaComponents = searchableAttributeRangeComponents.get(criteriaComponent.getSavedKey());
 					List<SearchAttributeCriteriaComponent> newCriteriaComponents = new ArrayList<SearchAttributeCriteriaComponent>();
 					newCriteriaComponents.addAll(criteriaComponents);
             		newCriteriaComponents.add(criteriaComponent);
@@ -239,9 +236,8 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
         }
 
-        for (Iterator iter = searchableAttributeRangeComponents.keySet().iterator(); iter.hasNext();) {
-        	String keyName = (String) iter.next();
-			List criteriaComponents = searchableAttributeRangeComponents.get(keyName);
+        for (String keyName : searchableAttributeRangeComponents.keySet()) {
+			List<SearchAttributeCriteriaComponent> criteriaComponents = searchableAttributeRangeComponents.get(keyName);
             // if where clause is empty then use passed in prefix... otherwise generate one
             String whereClausePrefix = (whereSql.length() == 0) ? whereClausePredicatePrefix : getGeneratedPredicatePrefix(whereSql.length());
 			QueryComponent qc = generateSearchableAttributeRangeSql(keyName, criteriaComponents, whereClausePrefix, tableIndex);
@@ -265,15 +261,14 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         return new QueryComponent("",fromSql.toString(),whereSql.toString());
     }
 
-    protected QueryComponent generateSearchableAttributeRangeSql(String searchAttributeKeyName, List criteriaComponents,String whereSqlStarter,int tableIndex) {
+    protected QueryComponent generateSearchableAttributeRangeSql(String searchAttributeKeyName, List<SearchAttributeCriteriaComponent> criteriaComponents,String whereSqlStarter,int tableIndex) {
         StringBuffer fromSql = new StringBuffer();
         StringBuffer whereSql = new StringBuffer();
     	boolean joinAlreadyPerformed = false;
         String tableIdentifier = "EXT" + tableIndex;
         String queryTableColumnName = tableIdentifier + ".VAL";
 
-        for (Iterator iter = criteriaComponents.iterator(); iter.hasNext();) {
-			SearchAttributeCriteriaComponent criteriaComponent = (SearchAttributeCriteriaComponent) iter.next();
+        for (SearchAttributeCriteriaComponent criteriaComponent : criteriaComponents) {
 			if (!searchAttributeKeyName.equals(criteriaComponent.getSavedKey())) {
 				String errorMsg = "Key value of searchable attribute component with savedKey '" + criteriaComponent.getSavedKey() + "' does not match specified savedKey value '" + searchAttributeKeyName + "'";
 				LOG.error("generateSearchableAttributeRangeSql() " + errorMsg);
@@ -291,8 +286,8 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         return new QueryComponent("",fromSql.toString(),whereSql.toString());
     }
 
-    protected StringBuffer generateSearchableAttributeDefaultWhereSql(SearchAttributeCriteriaComponent criteriaComponent,String queryTableColumnName) {
-        StringBuffer whereSql = new StringBuffer();
+    protected StringBuilder generateSearchableAttributeDefaultWhereSql(SearchAttributeCriteriaComponent criteriaComponent,String queryTableColumnName) {
+        StringBuilder whereSql = new StringBuilder();
         String initialClauseStarter = "and";
 //        whereSql.append(" " + initialClauseStarter + " ");
 
@@ -302,7 +297,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         String attributeValueSearched = criteriaComponent.getValue();
         List<String> attributeValuesSearched = criteriaComponent.getValues();
 
-        StringBuffer whereSqlTemp = new StringBuffer();
+        StringBuilder whereSqlTemp = new StringBuilder();
         if (valueIsDate) {
         	if (criteriaComponent.isRangeSearch()) {
                 // for a range search just add the criteria
@@ -312,8 +307,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
                     // for a multivalue date search we need multiple ranges entered
                     whereSqlTemp.append(initialClauseStarter).append(" (");
                     boolean firstValue = true;
-                    for (Iterator iter = attributeValuesSearched.iterator(); iter.hasNext();) {
-                        String attributeValueEntered = (String) iter.next();
+                    for (String attributeValueEntered : attributeValuesSearched) {
                         whereSqlTemp.append(" ( ");
                         whereSqlTemp.append(constructWhereClauseDateElement("", queryTableColumnName, criteriaComponent.isSearchInclusive(), true, attributeValueEntered));
                         whereSqlTemp.append(constructWhereClauseDateElement("and", queryTableColumnName, criteriaComponent.isSearchInclusive(), false, attributeValueEntered));
@@ -343,8 +337,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         	if (criteriaComponent.isAllowWildcards() && criteriaComponent.getSearchableAttributeValue().allowsWildcards()) {
                 if (!Utilities.isEmpty(attributeValuesSearched)) {
                     List<String> newList = new ArrayList<String>();
-                    for (Iterator iter = attributeValuesSearched.iterator(); iter.hasNext();) {
-                        String attributeValueEntered = (String) iter.next();
+                    for (String attributeValueEntered : attributeValuesSearched) {
                         newList.add(attributeValueEntered.trim().replace('*', DATABASE_WILDCARD_CHARACTER));
                         usingWildcards |= (attributeValueEntered.indexOf(DATABASE_WILDCARD_CHARACTER_STRING) != -1);
                     }
@@ -381,8 +374,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
                 // for a multivalue search we need multiple 'or' clause statements entered
                 whereSqlTemp.append(initialClauseStarter).append(" (");
                 boolean firstValue = true;
-                for (Iterator iter = attributeValuesSearched.iterator(); iter.hasNext();) {
-                    String attributeValueEntered = (String) iter.next();
+                for (String attributeValueEntered : attributeValuesSearched) {
                     String separator = " or ";
                     if (firstValue) {
                         firstValue = false;
@@ -482,8 +474,8 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     public List<DocSearchDTO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet,DocSearchCriteriaDTO searchCriteria, String principalId) throws SQLException {
     	setCriteria(searchCriteria);
         int size = 0;
-        List docList = new ArrayList();
-        Map resultMap = new HashMap();
+        List<DocSearchDTO> docList = new ArrayList<DocSearchDTO>();
+        Map<Long, DocSearchDTO> resultMap = new HashMap<Long, DocSearchDTO>();
         PerformanceLogger perfLog = new PerformanceLogger();
         int iteration = 0;
         boolean resultSetHasNext = resultSet.next();
@@ -549,12 +541,10 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
      */
     private void handleMultipleDocumentRows(DocSearchDTO existingRow, DocSearchDTO newRow) {
 
-    	for (Iterator iterator = newRow.getSearchableAttributes().iterator(); iterator.hasNext();) {
-    		KeyValueSort newData = (KeyValueSort) iterator.next();
+    	for (KeyValueSort newData : newRow.getSearchableAttributes()) {
     		String newRowValue = newData.getValue();
             boolean foundMatch = false;
-            for (Iterator dataIt = existingRow.getSearchableAttributes().iterator(); dataIt.hasNext();) {
-            	KeyValueSort existingData = (KeyValueSort) dataIt.next();
+            for (KeyValueSort existingData : existingRow.getSearchableAttributes()) {
                 if (existingData.getKey().equals(newData.getKey())) {
                 	String existingRowValue = existingData.getValue();
                 	if (!Utilities.isEmpty(newRowValue)) {
@@ -635,8 +625,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         Long documentId = docCriteriaDTO.getRouteHeaderId();
         List<SearchableAttributeValue> attributeValues = DocSearchUtils.getSearchableAttributeValueObjectTypes();
         PerformanceLogger perfLog = new PerformanceLogger(documentId);
-        for (Iterator iter = attributeValues.iterator(); iter.hasNext();) {
-            SearchableAttributeValue searchAttValue = (SearchableAttributeValue) iter.next();
+        for (SearchableAttributeValue searchAttValue : attributeValues) {
             String attributeSql = "select KEY_CD, VAL from " + searchAttValue.getAttributeTableName() + " where DOC_HDR_ID = " + documentId;
             ResultSet attributeResultSet = null;
             try {
@@ -667,9 +656,8 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
      */
     @Deprecated
     public void populateRowSearchableAttributes(DocSearchDTO docCriteriaDTO, Statement searchAttributeStatement, ResultSet rs) throws SQLException {
-        List searchAttributeValues = DocSearchUtils.getSearchableAttributeValueObjectTypes();
-        for (Iterator iter = searchAttributeValues.iterator(); iter.hasNext();) {
-            SearchableAttributeValue searchAttValue = (SearchableAttributeValue) iter.next();
+        List<SearchableAttributeValue> searchAttributeValues = DocSearchUtils.getSearchableAttributeValueObjectTypes();
+        for (SearchableAttributeValue searchAttValue : searchAttributeValues) {
             String prefixName = searchAttValue.getAttributeDataType().toUpperCase();
             searchAttValue.setSearchableAttributeKey(rs.getString(prefixName + "_KEY"));
             searchAttValue.setupAttributeValue(rs, prefixName + "_VALUE");
@@ -782,14 +770,12 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     @Deprecated
     protected String generateFinalSQL(QueryComponent searchSQL,String docHeaderTableAlias, String standardSqlPrefix, String standardSqlSuffix) {
     	StringBuffer finalSql = new StringBuffer();
-    	List searchableAttributeValues = DocSearchUtils.getSearchableAttributeValueObjectTypes();
-    	List tableAliasComponentNames = new ArrayList();
-    	for (Iterator iterator = searchableAttributeValues.iterator(); iterator.hasNext();) {
-			SearchableAttributeValue attValue = (SearchableAttributeValue) iterator.next();
+    	List<SearchableAttributeValue> searchableAttributeValues = DocSearchUtils.getSearchableAttributeValueObjectTypes();
+    	List<String> tableAliasComponentNames = new ArrayList<String>(searchableAttributeValues.size());
+    	for (SearchableAttributeValue attValue : searchableAttributeValues) {
 			tableAliasComponentNames.add(attValue.getAttributeDataType().toUpperCase());
 		}
-    	for (Iterator iter = searchableAttributeValues.iterator(); iter.hasNext();) {
-			SearchableAttributeValue attributeValue = (SearchableAttributeValue) iter.next();
+    	for (SearchableAttributeValue attributeValue : searchableAttributeValues) {
 			QueryComponent qc = generateSqlForSearchableAttributeValue(attributeValue, tableAliasComponentNames, docHeaderTableAlias);
 			StringBuffer currentSql = new StringBuffer();
 			currentSql.append(searchSQL.getSelectSql() + qc.getSelectSql() + searchSQL.getFromSql() + qc.getFromSql() + searchSQL.getWhereSql() + qc.getWhereSql());
@@ -941,9 +927,8 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         return returnSql.toString();
     }
 
-    private void addChildDocumentTypes(StringBuffer whereSql, Collection childDocumentTypes) {
-        for (Iterator iter = childDocumentTypes.iterator(); iter.hasNext();) {
-            DocumentType child = (DocumentType) iter.next();
+    private void addChildDocumentTypes(StringBuffer whereSql, Collection<DocumentType> childDocumentTypes) {
+        for (DocumentType child : childDocumentTypes) {
             addDocumentTypeNameToSearchOn(whereSql, child.getName());
             addChildDocumentTypes(whereSql, child.getChildrenDocTypes());
         }
@@ -972,9 +957,8 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         		// below buffer used to facilitate the addition of the string ", " to separate out route node names
         		StringBuffer routeNodeInCriteria = new StringBuffer();
         		boolean foundSpecifiedNode = false;
-        		List routeNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(getValidDocumentType(documentTypeFullName), true);
-    			for (Iterator iter = routeNodes.iterator(); iter.hasNext();) {
-                    RouteNode routeNode = (RouteNode) iter.next();
+        		List<RouteNode> routeNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(getValidDocumentType(documentTypeFullName), true);
+    			for (RouteNode routeNode : routeNodes) {
                     if (docRouteLevel.equals(routeNode.getRouteNodeName())) {
                     	// current node is specified node so we ignore it outside of the boolean below
                     	foundSpecifiedNode = true;
@@ -1021,9 +1005,8 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
      * At some point we will probably need to do some more work to untangle this mess
      */
     private void filterOutNonQueryAttributes() {
-        List newAttributes = new ArrayList();
-        for (Iterator iterator = criteria.getSearchableAttributes().iterator(); iterator.hasNext();) {
-            SearchAttributeCriteriaComponent component = (SearchAttributeCriteriaComponent) iterator.next();
+        List<SearchAttributeCriteriaComponent> newAttributes = new ArrayList<SearchAttributeCriteriaComponent>();
+        for (SearchAttributeCriteriaComponent component : criteria.getSearchableAttributes()) {
             if (component != null) {
                 if ( (StringUtils.isNotBlank(component.getValue())) || (!Utilities.isEmpty(component.getValues())) ) {
                     newAttributes.add(component);

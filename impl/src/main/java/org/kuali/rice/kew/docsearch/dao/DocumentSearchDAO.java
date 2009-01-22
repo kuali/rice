@@ -19,10 +19,11 @@ package org.kuali.rice.kew.docsearch.dao;
 import java.util.List;
 
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
+import org.kuali.rice.kew.docsearch.DocSearchDTO;
 import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
 
 
 public interface DocumentSearchDAO {
-    public List getListBoundedByCritera(DocumentSearchGenerator documentSearchGenerator, DocSearchCriteriaDTO criteria, String principalId);
-    public List getList(DocumentSearchGenerator docSearchGenerator,DocSearchCriteriaDTO criteria, String principalId);
+    public List<DocSearchDTO> getListBoundedByCritera(DocumentSearchGenerator documentSearchGenerator, DocSearchCriteriaDTO criteria, String principalId);
+    public List<DocSearchDTO> getList(DocumentSearchGenerator docSearchGenerator,DocSearchCriteriaDTO criteria, String principalId);
 }

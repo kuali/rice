@@ -296,22 +296,21 @@
 
 	<!--  DocumentSearchService -->
 	<bean id="enDocumentSearchService" class="org.kuali.rice.kew.docsearch.service.impl.DocumentSearchServiceImpl" lazy-init="true">
-		<property name="documentSearchDAO">
-			<ref bean="enDocumentSearchDAO" />
-		</property>
-		<property name="userOptionsService">
-			<ref bean="enUserOptionsService" />
-		</property>
+		<property name="documentSearchDAO" ref="enDocumentSearchDAO" />
+		<property name="userOptionsService" ref="enUserOptionsService" />
 	</bean>
+    <bean id="enDocumentSearchDAO" class="org.kuali.rice.kew.docsearch.dao.impl.DocumentSearchDAOJdbcImpl" lazy-init="true">
+        <property name="dataSource" ref="enWorkflowDataSource" />
+    </bean>
+    <!--
 	<bean id="enDocumentSearchDAO" class="org.kuali.rice.kew.docsearch.dao.impl.DocumentSearchDAOOjbImpl" lazy-init="true">
 		<property name="jcdAlias" value="enWorkflowDataSource" />
 	</bean>
+    -->
 
 	<!--  DocumentTypeService -->
 	<bean id="enDocumentTypeService" class="org.kuali.rice.kew.doctype.service.impl.DocumentTypeServiceImpl" lazy-init="true">
-		<property name="documentTypeDAO">
-			<ref bean="enDocumentTypeDAO" />
-		</property>
+		<property name="documentTypeDAO" ref="enDocumentTypeDAO" />
 	</bean>
 	<bean id="enDocumentTypeDAO" class="org.kuali.rice.kew.doctype.dao.impl.DocumentTypeDAOOjbImpl" lazy-init="true">
 		<property name="jcdAlias" value="enWorkflowDataSource" />

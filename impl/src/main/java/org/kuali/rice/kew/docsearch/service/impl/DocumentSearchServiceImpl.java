@@ -25,6 +25,7 @@ import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
+import org.kuali.rice.kew.docsearch.DocSearchDTO;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
 import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
@@ -119,7 +120,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         validateDocumentSearchCriteria(docSearchGenerator,criteria);
         DocumentSearchResultComponents searchResult = null;
         try {
-            List docListResults = null;
+            List<DocSearchDTO> docListResults = null;
             if (useCriteriaRestrictions) {
                 docListResults = docSearchDao.getListBoundedByCritera(docSearchGenerator,criteria, principalId);
             } else {
@@ -374,12 +375,11 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
     }
 
 	public List<KeyValue> getNamedSearches(String principalId) {
-		List namedSearches = userOptionsService.findByUserQualified(principalId, NAMED_SEARCH_ORDER_BASE + "%");
-		List sortedNamedSearches = new ArrayList();
+		List<UserOptions> namedSearches = userOptionsService.findByUserQualified(principalId, NAMED_SEARCH_ORDER_BASE + "%");
+		List<KeyValue> sortedNamedSearches = new ArrayList<KeyValue>(0);
 		if (namedSearches != null && namedSearches.size() > 0) {
 			Collections.sort(namedSearches);
-			for (Iterator iter = namedSearches.iterator(); iter.hasNext();) {
-				UserOptions namedSearch = (UserOptions) iter.next();
+			for (UserOptions namedSearch : namedSearches) {
 				KeyValue keyValue = new KeyValue(namedSearch.getOptionId(), namedSearch.getOptionId().substring(NAMED_SEARCH_ORDER_BASE.length(), namedSearch.getOptionId().length()));
 				sortedNamedSearches.add(keyValue);
 			}
@@ -389,14 +389,13 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 
 	public List<KeyValue> getMostRecentSearches(String principalId) {
 		UserOptions order = userOptionsService.findByOptionId(LAST_SEARCH_ORDER_OPTION, principalId);
-		List sortedMostRecentSearches = new ArrayList();
+		List<KeyValue> sortedMostRecentSearches = new ArrayList<KeyValue>();
 		if (order != null && order.getOptionVal() != null && !"".equals(order.getOptionVal())) {
-			List mostRecentSearches = userOptionsService.findByUserQualified(principalId, LAST_SEARCH_BASE_NAME + "%");
+			List<UserOptions> mostRecentSearches = userOptionsService.findByUserQualified(principalId, LAST_SEARCH_BASE_NAME + "%");
 			String[] ordered = order.getOptionVal().split(",");
 			for (int i = 0; i < ordered.length; i++) {
 				UserOptions matchingOption = null;
-				for (Iterator iter = mostRecentSearches.iterator(); iter.hasNext();) {
-					UserOptions option = (UserOptions) iter.next();
+				for (UserOptions option : mostRecentSearches) {
 					if (ordered[i].equals(option.getOptionId())) {
 						matchingOption = option;
 						break;
@@ -524,11 +523,10 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 	 *            searchable attributes to save
 	 * @return String representation of searchable attributes
 	 */
-	private String buildSearchableAttributeString(List searchableAttributes) {
-		StringBuffer searchableAttributeBuffer = new StringBuffer();
+	private String buildSearchableAttributeString(List<SearchAttributeCriteriaComponent> searchableAttributes) {
+		final StringBuilder searchableAttributeBuffer = new StringBuilder();
 
-		for (Iterator iterator = searchableAttributes.iterator(); iterator.hasNext();) {
-			SearchAttributeCriteriaComponent component = (SearchAttributeCriteriaComponent) iterator.next();
+		for (SearchAttributeCriteriaComponent component : searchableAttributes) {
 			// the following code will remove quickfinder fields
 			if ( (component.getFormKey() == null) ||
                  (component.getValue() == null && (Utilities.isEmpty(component.getValues()))) ) {
@@ -543,8 +541,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 				searchableAttributeBuffer.append(":");
 				searchableAttributeBuffer.append(component.getValue());
             } else if (!Utilities.isEmpty(component.getValues())) {
-                for (Iterator iter = component.getValues().iterator(); iter.hasNext();) {
-                    String value = (String) iter.next();
+                for (String value : component.getValues()) {
                     if (searchableAttributeBuffer.length() > 0) {
                         searchableAttributeBuffer.append(",");
                     }

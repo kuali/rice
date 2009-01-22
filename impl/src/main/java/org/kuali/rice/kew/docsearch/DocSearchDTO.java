@@ -55,7 +55,7 @@ public class DocSearchDTO implements Serializable, RowStyleable {
 	private String rowStyleClass;
 	private String superUserSearch;
 
-	private List searchableAttributes = new ArrayList();
+	private List<KeyValueSort> searchableAttributes = new ArrayList<KeyValueSort>();
 
 	public DocSearchDTO() {
 	}
@@ -246,13 +246,13 @@ public class DocSearchDTO implements Serializable, RowStyleable {
 	/**
 	 * @param searchableAttributes The searchableAttributes to set.
 	 */
-	public void setSearchableAttributes(List searchableAttributes) {
+	public void setSearchableAttributes(List<KeyValueSort> searchableAttributes) {
 		this.searchableAttributes = searchableAttributes;
 	}
 	/**
 	 * @return Returns the searchableAttributes.
 	 */
-	public List getSearchableAttributes() {
+	public List<KeyValueSort> getSearchableAttributes() {
 		return searchableAttributes;
 	}
 }

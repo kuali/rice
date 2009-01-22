@@ -20,38 +20,37 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import org.apache.commons.lang.StringUtils;
-import org.apache.ojb.broker.PersistenceBroker;
-import org.apache.ojb.broker.accesslayer.LookupException;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocSearchDTO;
 import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
 import org.kuali.rice.kew.docsearch.dao.DocumentSearchDAO;
-import org.kuali.rice.kew.doctype.service.DocumentSecurityService;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.springmodules.orm.ojb.OjbFactoryUtils;
-import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.ConnectionCallback;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 
 /**
  *
- * Ojb implementation of the DocumentSearchDAO
+ * Spring JdbcTemplate implementation of DocumentSearchDAO
  *
- * @deprecated Replaced by {@link DocumentSearchDAOJdbcImpl}
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class DocumentSearchDAOOjbImpl extends PersistenceBrokerDaoSupport implements DocumentSearchDAO {
+public class DocumentSearchDAOJdbcImpl implements DocumentSearchDAO {
 
-    public static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentSearchDAOOjbImpl.class);
+    public static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentSearchDAOJdbcImpl.class);
 
     private static final int DEFAULT_FETCH_MORE_ITERATION_LIMIT = 10;
+    private DataSource ds;
 
     public List<DocSearchDTO> getListBoundedByCritera(DocumentSearchGenerator documentSearchGenerator, DocSearchCriteriaDTO criteria, String principalId) {
         return getList(documentSearchGenerator, criteria, criteria.getThreshold(), principalId);
@@ -61,80 +60,76 @@ public class DocumentSearchDAOOjbImpl extends PersistenceBrokerDaoSupport implem
         return getList(documentSearchGenerator, criteria, Integer.valueOf(getSearchResultCap(documentSearchGenerator)), principalId);
     }
 
-    private List<DocSearchDTO> getList(DocumentSearchGenerator documentSearchGenerator, DocSearchCriteriaDTO criteria, Integer searchResultCap, String principalId) {
-        LOG.debug("start getList");
-        DocumentSecurityService documentSecurityService = KEWServiceLocator.getDocumentSecurityService();
-        List docList = new ArrayList();
-        PersistenceBroker broker = null;
-        Connection conn = null;
-        Statement statement = null;
-        Statement searchAttributeStatement = null;
-        ResultSet rs = null;
-        try {
-            broker = getPersistenceBroker(false);
-            conn = broker.serviceConnectionManager().getConnection();
-            statement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            criteria.setThreshold(searchResultCap);
-            if (searchResultCap != null) {
-                int fetchLimit = getFetchMoreIterationLimit() * searchResultCap.intValue();
-                criteria.setFetchLimit(Integer.valueOf(fetchLimit));
-                statement.setFetchSize(searchResultCap.intValue() + 1);
-                statement.setMaxRows(fetchLimit + 1);
-            } else {
-                criteria.setFetchLimit(null);
-            }
-            PerformanceLogger perfLog = new PerformanceLogger();
-            String sql = documentSearchGenerator.generateSearchSql(criteria);
-            perfLog.log("Time to generate search sql from documentSearchGenerator class: " + documentSearchGenerator.getClass().getName(), true);
-            LOG.info("Executing document search with statement max rows: " + statement.getMaxRows());
-            LOG.info("Executing document search with statement fetch size: " + statement.getFetchSize());
-            perfLog = new PerformanceLogger();
-            rs = statement.executeQuery(sql);
-            perfLog.log("Time to execute doc search database query.", true);
-            // TODO delyea - look at refactoring
-            searchAttributeStatement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            docList = documentSearchGenerator.processResultSet(searchAttributeStatement, rs, criteria, principalId);
-        } catch (SQLException sqle) {
-            String errorMsg = "SQLException: " + sqle.getMessage();
-            LOG.error("getList() " + errorMsg, sqle);
-            throw new RuntimeException(errorMsg, sqle);
-        } catch (LookupException le) {
-            String errorMsg = "LookupException: " + le.getMessage();
-            LOG.error("getList() " + errorMsg, le);
-            throw new RuntimeException(errorMsg, le);
-        } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    LOG.warn("Could not close result set.");
-                }
-            }
-            if (statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException e) {
-                    LOG.warn("Could not close statement.");
-                }
-            }
-            if (searchAttributeStatement != null) {
-                try {
-                    searchAttributeStatement.close();
-                } catch (SQLException e) {
-                    LOG.warn("Could not close search attribute statement.");
-                }
-            }
-            if (broker != null) {
-                try {
-                    OjbFactoryUtils.releasePersistenceBroker(broker, this.getPersistenceBrokerTemplate().getPbKey());
-                } catch (Exception e) {
-                    LOG.error("Failed closing connection: " + e.getMessage(), e);
-                }
-            }
-        }
+    public void setDataSource(DataSource ds) {
+        this.ds = new TransactionAwareDataSourceProxy(ds);
+     }
 
-        LOG.info("end getlist");
-        return docList;
+    @SuppressWarnings("unchecked")
+    private List<DocSearchDTO> getList(final DocumentSearchGenerator documentSearchGenerator, final DocSearchCriteriaDTO criteria, final Integer searchResultCap, final String principalId) {
+        LOG.debug("start getList");
+        try {
+            final JdbcTemplate template = new JdbcTemplate(ds);
+
+            return (List<DocSearchDTO>) template.execute(new ConnectionCallback() {
+                @Override
+                public Object doInConnection(final Connection con) throws SQLException {
+                    final Statement statement = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                    try {
+                        criteria.setThreshold(searchResultCap);
+                        if (searchResultCap != null) {
+                            final int fetchLimit = getFetchMoreIterationLimit() * searchResultCap.intValue();
+                            criteria.setFetchLimit(fetchLimit);
+                            statement.setFetchSize(searchResultCap.intValue() + 1);
+                            statement.setMaxRows(fetchLimit + 1);
+                        } else {
+                            criteria.setFetchLimit(null);
+                        }
+                        PerformanceLogger perfLog = new PerformanceLogger();
+                        String sql = documentSearchGenerator.generateSearchSql(criteria);
+                        perfLog.log("Time to generate search sql from documentSearchGenerator class: " + documentSearchGenerator.getClass().getName(), true);
+                        LOG.info("Executing document search with statement max rows: " + statement.getMaxRows());
+                        LOG.info("Executing document search with statement fetch size: " + statement.getFetchSize());
+                        perfLog = new PerformanceLogger();
+                        final ResultSet rs = statement.executeQuery(sql);
+                        try {
+                            perfLog.log("Time to execute doc search database query.", true);
+                            // TODO delyea - look at refactoring
+                            final Statement searchAttributeStatement = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                            try {
+                                return documentSearchGenerator.processResultSet(searchAttributeStatement, rs, criteria, principalId);
+                            } finally {
+                                try {
+                                    searchAttributeStatement.close();
+                                } catch (SQLException e) {
+                                    LOG.warn("Could not close search attribute statement.");
+                                }
+                            }
+                        } finally {
+                            try {
+                                rs.close();
+                            } catch (SQLException e) {
+                                LOG.warn("Could not close result set.");
+                            }
+                        }
+                    } finally {
+                        try {
+                            statement.close();
+                        } catch (SQLException e) {
+                            LOG.warn("Could not close statement.");
+                        }
+                    }
+                }
+            });
+
+        } catch (DataAccessException dae) {
+            String errorMsg = "DataAccessException: " + dae.getMessage();
+            LOG.error("getList() " + errorMsg, dae);
+            throw new RuntimeException(errorMsg, dae);
+        } catch (Exception e) {
+            String errorMsg = "LookupException: " + e.getMessage();
+            LOG.error("getList() " + errorMsg, e);
+            throw new RuntimeException(errorMsg, e);
+        }
     }
 
     private int getSearchResultCap(DocumentSearchGenerator docSearchGenerator) {

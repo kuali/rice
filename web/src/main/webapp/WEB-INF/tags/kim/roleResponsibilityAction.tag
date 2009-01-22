@@ -4,15 +4,16 @@
 <c:set var="rolePrncpl" value="${KualiForm.document.roles[roleIdx].rolePrncpls[mbrIdx]}"/>
 <c:set var="docRoleRspActionAttributes" value="${DataDictionary.KimDocumentRoleResponsibilityAction.attributes}" />
        <kul:subtab lookedUpCollectionName="roleRspActions" noShowHideButton="true" width="${tableWidth}" subTabTitle="Responsibility Actions">      
+        <table cellpadding=0 cellspacing=0 summary="">
+          <tr>
+            <th width="5%" rowspan=20 style=border-style:none>&nbsp;</th>
+			<kul:htmlAttributeHeaderCell literalLabel="Name"/>
+			<kul:htmlAttributeHeaderCell attributeEntry="${docRoleRspActionAttributes.actionTypeCode}" />
+         	<kul:htmlAttributeHeaderCell attributeEntry="${docRoleRspActionAttributes.priorityNumber}"  />
+         	<kul:htmlAttributeHeaderCell attributeEntry="${docRoleRspActionAttributes.actionPolicyCode}"  />
+           </tr>
+
 			<c:forEach var="roleRspAction" items="${rolePrncpl.roleRspActions}" varStatus="actionStatus">
-        				<table cellpadding=0 cellspacing=0 summary="">
-                        <tr>
-                 <th width="5%" rowspan=20 style=border-style:none>&nbsp;</th>
-				<kul:htmlAttributeHeaderCell literalLabel="Name"/>
-				<kul:htmlAttributeHeaderCell attributeEntry="${docRoleRspActionAttributes.actionTypeCode}" />
-          		<kul:htmlAttributeHeaderCell attributeEntry="${docRoleRspActionAttributes.priorityNumber}"  />
-          		<kul:htmlAttributeHeaderCell attributeEntry="${docRoleRspActionAttributes.actionPolicyCode}"  />
-                		</tr>
                 	<tr>	
 						<td>
 						<div align="center">
@@ -36,12 +37,10 @@
 		        		</div>
 		        		</td>
 		        	</tr>
-		        		 <tr>
-   <!-- need to decide colspan -->
-                             <td colspan=7 style="padding:0px; border-style:none; height:22px; background-color:#F6F6F6">&nbsp;</td>
-                           </tr>
-		        	
-		       </table>       
 		</c:forEach>
+		<tr>
+               <td colspan=7 style="padding:0px; border-style:none; height:22px; background-color:#F6F6F6">&nbsp;</td>
+        </tr>		        	
+		</table>       
 	</kul:subtab>
 	

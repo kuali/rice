@@ -303,7 +303,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	        	docRole.setEdit(true);
 	        	docRole.setRoleId(role.getRoleId());
 	        	docRole.setKimRoleType(role.getKimRoleType());
-	        	docRole.setRoleName(role.getKimRoleType().getName());
+	        	docRole.setRoleName(role.getRoleName());
 	        	docRole.setRolePrncpls(populateDocRolePrncpl(role.getMembers(), identityManagementPersonDocument.getPrincipalId()));
 	        	docRole.refreshReferenceObject("assignedResponsibilities");
 	        	docRoles.add(docRole);

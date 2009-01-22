@@ -310,6 +310,7 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
 	        newRole.getKimRoleType().refreshReferenceObject("attributeDefinitions");
 	        newRole.setDefinitions(kimTypeService.getAttributeDefinitions(newRole.getKimRoleType()));
 	        KimDocumentRoleMember newRolePrncpl = new KimDocumentRoleMember();
+	        newRole.refreshReferenceObject("assignedResponsibilities");
 	        
 	        for (String key : newRole.getDefinitions().keySet()) {
 	        	KimDocumentRoleQualifier qualifier = new KimDocumentRoleQualifier();
@@ -319,16 +320,27 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
 	        }
 	        if (newRole.getDefinitions().isEmpty()) {
 	        	List<KimDocumentRoleMember> rolePrncpls = new ArrayList<KimDocumentRoleMember>();
-	        	rolePrncpls.add(new KimDocumentRoleMember());
+	        	setupRoleRspActions(newRole, newRolePrncpl);
+	            rolePrncpls.add(newRolePrncpl);
 	        	newRole.setRolePrncpls(rolePrncpls);
 	        }
 	        newRole.setNewRolePrncpl(newRolePrncpl);
 	        newRole.setAttributeEntry( getUiDocumentService().getAttributeEntries( newRole.getDefinitions() ) );
-	        newRole.refreshReferenceObject("assignedResponsibilities");
 	        personDocumentForm.getPersonDocument().getRoles().add(newRole);
 	        personDocumentForm.setNewRole(new PersonDocumentRole());
         }
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    }
+    
+    private void setupRoleRspActions(PersonDocumentRole role, KimDocumentRoleMember rolePrncpl) {
+        for (RoleResponsibilityImpl roleResp : role.getAssignedResponsibilities()) {
+        	if (getResponsibilityService().areActionsAtAssignmentLevelById(roleResp.getResponsibilityId())) {
+        		KimDocumentRoleResponsibilityAction roleRspAction = new KimDocumentRoleResponsibilityAction();
+        		roleRspAction.setRoleResponsibilityId(roleResp.getRoleResponsibilityId());        		
+        		roleRspAction.refreshReferenceObject("roleResponsibility");
+        		rolePrncpl.getRoleRspActions().add(roleRspAction);
+        	}        	
+        }
     }
     
     private void setAttrDefnIdForQualifier(KimDocumentRoleQualifier qualifier,AttributeDefinition definition) {
@@ -353,14 +365,7 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
         IdentityManagementPersonDocument personDOc = personDocumentForm.getPersonDocument();
         PersonDocumentRole role = personDOc.getRoles().get(getSelectedLine(request));
         KimDocumentRoleMember newRolePrncpl = role.getNewRolePrncpl();
-        for (RoleResponsibilityImpl roleResp : role.getAssignedResponsibilities()) {
-        	if (getResponsibilityService().areActionsAtAssignmentLevelById(roleResp.getResponsibilityId())) {
-        		KimDocumentRoleResponsibilityAction roleRspAction = new KimDocumentRoleResponsibilityAction();
-        		roleRspAction.setRoleResponsibilityId(roleResp.getRoleResponsibilityId());        		
-        		roleRspAction.refreshReferenceObject("roleResponsibility");
-        		newRolePrncpl.getRoleRspActions().add(roleRspAction);
-        	}        	
-        }
+    	setupRoleRspActions(role, newRolePrncpl);
         role.getRolePrncpls().add(newRolePrncpl);
         role.setNewRolePrncpl(new KimDocumentRoleMember());
         for (String key : role.getDefinitions().keySet()) {
@@ -389,8 +394,6 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 
-        IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
-//        preSaveSubmitCheck(personDocumentForm.getPersonDocument());
 		return super.save(mapping, form, request, response);
 	}
 

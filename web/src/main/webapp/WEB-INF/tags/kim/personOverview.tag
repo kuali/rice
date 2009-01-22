@@ -1,7 +1,6 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 <c:set var="personAttributes" value="${DataDictionary.IdentityManagementPersonDocument.attributes}" />
-<c:set var="readOnly" value="${empty KualiForm.editingMode['fullEntry']}" />
 
 	<kul:tab tabTitle="Overview" defaultOpen="true" transparentBackground="${inquiry}" tabErrorKey="document.pr*,document.tax*,document.univ*,document.active,document.affiliations*">
 
@@ -27,7 +26,11 @@
 				 	</tr>
 				 	<tr>
           				<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${personAttributes.password}"  /></div></th>
-				 		<td><html:password property="document.password" /></td>
+				 		<td>
+				 		  <c:if test="${not readOnly}">
+				 		    <html:password property="document.password" />
+				 		  </c:if>
+				 		</td>
           				<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${personAttributes.active}"  /></div></th>
 				 		<td><kul:htmlControlAttribute property="document.active" attributeEntry="${personAttributes.active}" /></td>
 				 	</tr>

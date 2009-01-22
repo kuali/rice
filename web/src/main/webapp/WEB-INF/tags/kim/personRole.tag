@@ -44,8 +44,13 @@
        </tr>         
      </c:if>       
         	<c:forEach var="role" items="${KualiForm.document.roles}" varStatus="status">
+        	    <c:set var="rows" value="2"/>
+        		<c:if test="${empty role.definitions and fn:length(role.rolePrncpls[0].roleRspActions) > 0}">	
+         	       <c:set var="rows" value="3"/>       		
+        		</c:if>
+        	
 	             <tr>
-					<th rowspan="2" class="infoline">
+					<th rowspan="${rows}" class="infoline">
 						<c:out value="${status.index+1}" />
 					</th>
 	                <td align="left" valign="middle">
@@ -91,6 +96,15 @@
 		              	<kim:personRoleActiveDates roleIdx="${status.index}" />
 			          </td>
 			        </tr>
+		          <c:if test="${fn:length(role.rolePrncpls[0].roleRspActions) > 0}">	
+     			    <tr>
+		              <td colspan="5" style="padding:0px;">
+		              	<kim:roleResponsibilityAction roleIdx="${status.index}" mbrIdx="0" />
+			          </td>
+			        </tr>
+				</c:if>	      
+			        
+			        
  		        </c:otherwise>
 		      </c:choose>
        	</c:forEach>        

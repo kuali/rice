@@ -120,6 +120,10 @@ public class RuleXmlParserTest extends KEWTestCase {
         assertNotNull(rule);
         assertEquals("ANamedRule", rule.getName());
         assertEquals("A named rule", rule.getDescription());
+        LOG.info("Before Testing  To and From Dates : " + rule.getToDateString()+" "+rule.getFromDateString());
+        assertEquals("01/01/2100", rule.getToDateString());
+        assertEquals("01/22/2009", rule.getFromDateString());
+        LOG.info("Rule To and From Dates : " + rule.getDocTypeName()+" "+rule.getName());
         List extensions = rule.getRuleExtensions();
         assertEquals(1, extensions.size());
         RuleExtension extension = (RuleExtension) extensions.get(0);

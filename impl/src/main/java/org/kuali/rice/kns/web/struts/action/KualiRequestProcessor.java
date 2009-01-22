@@ -178,9 +178,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 
 		request.getSession().setAttribute(KNSConstants.USER_SESSION_KEY, userSession);
 		GlobalVariables.setUserSession(userSession);
-		GlobalVariables.setErrorMap(new ErrorMap());
-		GlobalVariables.setMessageList(new ArrayList());
-		GlobalVariables.setAuditErrorMap(new HashMap());
+		GlobalVariables.clear();
 		return true;
 	}
 

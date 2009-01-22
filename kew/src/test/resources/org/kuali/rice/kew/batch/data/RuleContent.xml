@@ -3,7 +3,9 @@
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>
 			<documentType>KualiMaintenanceDocument</documentType>
-			<ruleTemplate>KualiOrgReviewTemplate</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>KualiOrgReviewTemplate</ruleTemplate>
 			<description>org rule</description>
 			<ignorePrevious>false</ignorePrevious>
 			<ruleExtensions>
@@ -32,7 +34,9 @@
 		</rule>
 		<rule>
 			<documentType>KualiFinancialDocument</documentType>
-			<ruleTemplate>KualiOrgReviewTemplate</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>KualiOrgReviewTemplate</ruleTemplate>
 			<description>base org rule for kuali docs</description>
 			<ignorePrevious>false</ignorePrevious>
 			<ruleExtensions>
@@ -61,7 +65,9 @@
 		</rule>
 		<rule>
 			<documentType>KualiFinancialDocument</documentType>
-			<ruleTemplate>KualiAccountTemplate</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>KualiAccountTemplate</ruleTemplate>
 			<description>main account rule</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
@@ -73,7 +79,9 @@
 					<delegations>
 						<rule>
 							<documentType>KualiFinancialDocument</documentType>
-							<ruleTemplate>KualiAccountTemplate</ruleTemplate>
+							<toDate>2009-05-30T09:00:00</toDate>
+            				<fromDate>2002-05-30T09:00:00</fromDate>		
+            				<ruleTemplate>KualiAccountTemplate</ruleTemplate>
 							<description>primary delegation</description>
 							<ignorePrevious>false</ignorePrevious>
 							<responsibilities>
@@ -86,7 +94,9 @@
 						</rule>
 						<rule>
 							<documentType>KualiFinancialDocument</documentType>
-							<ruleTemplate>KualiAccountTemplate</ruleTemplate>
+							<toDate>2009-05-30T09:00:00</toDate>
+            				<fromDate>2002-05-30T09:00:00</fromDate>		
+            				<ruleTemplate>KualiAccountTemplate</ruleTemplate>
 							<description>secondary delegate</description>
 							<ignorePrevious>false</ignorePrevious>
 							<responsibilities>
@@ -103,7 +113,9 @@
 		</rule>
 		<rule>
 			<documentType>KualiAccountMaintenanceDocument</documentType>
-			<ruleTemplate>KualiChartTemplate</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>KualiChartTemplate</ruleTemplate>
 			<description>test rule on account doc</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
@@ -124,6 +136,8 @@
         <rule>
             <name>ANamedRule</name>
             <documentType>TestDocumentType</documentType>
+            <toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
             <description>A named rule</description>
             <expression type="someType">some expression</expression>
             <ignorePrevious>false</ignorePrevious>

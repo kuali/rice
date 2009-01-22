@@ -24,7 +24,6 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
-import org.kuali.rice.kim.util.KimCache;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.service.DataDictionaryService;
@@ -219,7 +218,7 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 	@SuppressWarnings("unchecked")
 	protected final Map<String, String> getRoleQualification(
 			BusinessObject primaryBusinessObjectOrDocument) {
-		Object roleQualification = KimCache.getRequestCache(ROLE_QUALIFICATION_CACHE_NAME);
+		Object roleQualification = GlobalVariables.getRequestCache(ROLE_QUALIFICATION_CACHE_NAME);
 		if (roleQualification == null ) {
 			Map<String, String> attributes = new HashMap<String, String>();
 			addRoleQualification(primaryBusinessObjectOrDocument, attributes);
@@ -227,7 +226,7 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 					GlobalVariables.getUserSession().getPerson()
 							.getPrincipalId());
 			roleQualification = attributes;
-			KimCache.setRequestCache(ROLE_QUALIFICATION_CACHE_NAME, roleQualification);
+			GlobalVariables.setRequestCache(ROLE_QUALIFICATION_CACHE_NAME, roleQualification);
 		}
 		return (Map<String,String>)roleQualification;
 	}
@@ -264,12 +263,12 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 	@SuppressWarnings("unchecked")
 	protected final Map<String, String> getPermissionDetailValues(
 			BusinessObject businessObject) {
-		Object permissionDetails = KimCache.getRequestCache(PERMISSION_DETAILS_CACHE_NAME);
+		Object permissionDetails = GlobalVariables.getRequestCache(PERMISSION_DETAILS_CACHE_NAME);
 		if (permissionDetails == null) {
 			Map<String, String> attributes = new HashMap<String, String>();
 			addPermissionDetails(businessObject, attributes);
 			permissionDetails = attributes;
-			KimCache.setRequestCache(PERMISSION_DETAILS_CACHE_NAME, permissionDetails);
+			GlobalVariables.setRequestCache(PERMISSION_DETAILS_CACHE_NAME, permissionDetails);
 		}
 		return (Map<String,String>)permissionDetails;
 	}

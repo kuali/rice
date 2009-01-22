@@ -17,6 +17,7 @@ package org.kuali.rice.kns.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
@@ -35,6 +36,7 @@ public class GlobalVariables {
     private static ThreadLocal<ArrayList> messageLists = new ThreadLocal<ArrayList>();
     private static ThreadLocal<HashMap> auditErrorMaps = new ThreadLocal<HashMap>();
     private static ThreadLocal<KualiForm> kualiForms = new ThreadLocal<KualiForm>();
+    private static ThreadLocal<Map<String,Object>> requestCaches = new ThreadLocal<Map<String,Object>>();
 
     /**
      * @return the UserSession that has been assigned to this thread of execution it is important that this not be called by
@@ -128,10 +130,18 @@ public class GlobalVariables {
      * @param kualiForm
      */
     public static void setKualiForm(KualiForm kualiForm) {
-	kualiForms.set(kualiForm);
+    	kualiForms.set(kualiForm);
     }
 
-
+    public static Object getRequestCache( String cacheName ) {
+    	return requestCaches.get().get(cacheName);
+    }
+    
+    public static void setRequestCache( String cacheName, Object cacheObject ) {
+    	requestCaches.get().put(cacheName, cacheObject);
+    }
+    
+    
     /**
      * Clears out GlobalVariable objects
      */
@@ -139,6 +149,7 @@ public class GlobalVariables {
         errorMaps.set(new ErrorMap());
         auditErrorMaps.set(new HashMap());
         messageLists.set(new ArrayList());
+        requestCaches.set(new HashMap<String,Object>() );
         kualiForms.set(null);
     }
 }

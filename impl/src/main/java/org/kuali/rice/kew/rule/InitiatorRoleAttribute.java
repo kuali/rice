@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,12 +21,13 @@ import java.util.Collections;
 import java.util.List;
 
 import org.kuali.rice.kew.engine.RouteContext;
+import org.kuali.rice.kew.identity.PrincipalId;
 
 
 /**
  * RoleAttribute that exposes an INITIATOR abstract role which resolves to the
  * initiator of the document.
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class InitiatorRoleAttribute extends UnqualifiedRoleAttribute {
@@ -47,7 +48,7 @@ public class InitiatorRoleAttribute extends UnqualifiedRoleAttribute {
 
     public ResolvedQualifiedRole resolveRole(RouteContext routeContext, String roleName) {
         List members = new ArrayList(1);
-        members.add(routeContext.getDocument().getInitiatorWorkflowId());
+        members.add(new PrincipalId(routeContext.getDocument().getInitiatorWorkflowId()));
         return new ResolvedQualifiedRole(INITIATOR_ROLE_LABEL, members);
     }
 }

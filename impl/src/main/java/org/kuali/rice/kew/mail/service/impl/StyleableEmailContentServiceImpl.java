@@ -58,6 +58,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 
+
 /**
  * EmailContentService that serves EmailContent customizable via XSLT style sheets
  * The global email style name is: kew.email.style
@@ -371,11 +372,11 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
             // keep adding stuff until we have all the xml we need to formulate the message :/
             addObjectXML(doc, actionItem, root, "actionItem");
             addObjectXML(doc, actionItem.getPerson(), root, "actionItemPerson");
-            addObjectXML(doc, actionItem.getPerson().getPrincipalId(), root, "actionItemPrincipalId");
-            addObjectXML(doc, actionItem.getPerson().getPrincipalName(), root, "actionItemPrincipalName");
+            addTextElement(doc, root, "actionItemPrincipalId", actionItem.getPerson().getPrincipalId());
+            addTextElement(doc, root, "actionItemPrincipalName", actionItem.getPerson().getPrincipalName());
             addObjectXML(doc, actionItem.getRouteHeader(), root, "doc");
             addObjectXML(doc, actionItem.getRouteHeader().getInitiatorPrincipal(), root, "docInitiator");
-            addObjectXML(doc, actionItem.getRouteHeader().getInitiatorDisplayName(), root, "docInitiatorDisplayName");
+            addTextElement(doc, root, "docInitiatorDisplayName", actionItem.getRouteHeader().getInitiatorDisplayName());
             addObjectXML(doc, actionItem.getRouteHeader().getDocumentType(), root, "documentType");
 
             node.appendChild(root);

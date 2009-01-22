@@ -27,6 +27,8 @@ import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 import org.kuali.rice.ken.core.SpringNotificationServiceLocator;
 import org.kuali.rice.kew.batch.KEWXmlDataLoaderLifecycle;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.test.KEWTestCase.ClearCacheLifecycle;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
@@ -142,10 +144,25 @@ public abstract class NotificationTestCaseBase extends BaselineTestCase {
     protected List<Lifecycle> getPerTestLifecycles() {
         List<Lifecycle> lifecycles = super.getPerTestLifecycles();
         lifecycles.add(new ClearDatabaseLifecycle(getTablesToClear(), getTablesNotToClear()));
+
+        lifecycles.add(new ClearCacheLifecycle());
+
         lifecycles.addAll(getNotificationPerTestLifecycles());
         return lifecycles;
     }
 
+    /**
+     * Flushes the KEW cache(s)
+     */
+    public class ClearCacheLifecycle extends BaseLifecycle {
+        @Override
+        public void stop() throws Exception {
+            KEWServiceLocator.getCacheAdministrator().flushAll();
+            KIMServiceLocator.getIdentityManagementService().flushAllCaches();
+            super.stop();
+        }
+
+    }
     /**
      * This method makes sure to disable the Quartz scheduler
      * @throws SchedulerException

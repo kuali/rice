@@ -18,6 +18,7 @@ package org.kuali.rice.kns.authorization;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.IdentityManagementService;
@@ -32,11 +33,11 @@ import org.kuali.rice.kns.util.GlobalVariables;
 
 public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 	private static IdentityManagementService identityManagementService;
-	private static PersonService personService;
+	private static PersonService<Person> personService;
 	private static KualiModuleService kualiModuleService;
 	private static DataDictionaryService dataDictionaryService;
-	private ThreadLocal<Map<String, String>> roleQualification = new ThreadLocal<Map<String, String>>();
-	private ThreadLocal<Map<String, String>> permissionDetails = new ThreadLocal<Map<String, String>>();
+	private static final String ROLE_QUALIFICATION_CACHE_NAME = "BusinessObjectAuthorizerBase.roleQualification";
+	private static final String PERMISSION_DETAILS_CACHE_NAME = "BusinessObjectAuthorizerBase.permissionDetails";
 
 	/**
 	 * Override this method to populate the role qualifier attributes from the
@@ -214,17 +215,20 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 	 *            the lookup result row or inquiry) or the document
 	 * @return a Map containing role qualifications
 	 */
+	@SuppressWarnings("unchecked")
 	protected final Map<String, String> getRoleQualification(
 			BusinessObject primaryBusinessObjectOrDocument) {
-		if (roleQualification.get() == null) {
+		Object roleQualification = GlobalVariables.getRequestCache(ROLE_QUALIFICATION_CACHE_NAME);
+		if (roleQualification == null ) {
 			Map<String, String> attributes = new HashMap<String, String>();
 			addRoleQualification(primaryBusinessObjectOrDocument, attributes);
 			attributes.put(KimAttributes.PRINCIPAL_ID,
 					GlobalVariables.getUserSession().getPerson()
 							.getPrincipalId());
-			roleQualification.set(new AttributeSet(attributes));
+			roleQualification = attributes;
+			GlobalVariables.setRequestCache(ROLE_QUALIFICATION_CACHE_NAME, roleQualification);
 		}
-		return roleQualification.get();
+		return (Map<String,String>)roleQualification;
 	}
 
 	/**
@@ -256,14 +260,17 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 	 *            the lookup result row or inquiry) or the document
 	 * @return a Map containing permission details
 	 */
+	@SuppressWarnings("unchecked")
 	protected final Map<String, String> getPermissionDetailValues(
 			BusinessObject businessObject) {
-		if (permissionDetails.get() == null) {
+		Object permissionDetails = GlobalVariables.getRequestCache(PERMISSION_DETAILS_CACHE_NAME);
+		if (permissionDetails == null) {
 			Map<String, String> attributes = new HashMap<String, String>();
 			addPermissionDetails(businessObject, attributes);
-			permissionDetails.set(new AttributeSet(attributes));
+			permissionDetails = attributes;
+			GlobalVariables.setRequestCache(PERMISSION_DETAILS_CACHE_NAME, permissionDetails);
 		}
-		return permissionDetails.get();
+		return (Map<String,String>)permissionDetails;
 	}
 
 	protected static final IdentityManagementService getIdentityManagementService() {
@@ -274,7 +281,7 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 		return identityManagementService;
 	}
 
-	protected static final PersonService getPersonService() {
+	protected static final PersonService<Person> getPersonService() {
 		if (personService == null) {
 			personService = KIMServiceLocator.getPersonService();
 		}

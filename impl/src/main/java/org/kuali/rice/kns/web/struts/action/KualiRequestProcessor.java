@@ -13,8 +13,6 @@
 package org.kuali.rice.kns.web.struts.action;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -46,7 +44,6 @@ import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.SessionDocumentService;
 import org.kuali.rice.kns.util.ErrorContainer;
-import org.kuali.rice.kns.util.ErrorMap;
 import org.kuali.rice.kns.util.ExceptionUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.Guid;
@@ -127,6 +124,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 	@Override
 	protected boolean processPreprocess(HttpServletRequest request, HttpServletResponse response) {
 		UserSession userSession = null;
+		GlobalVariables.clear();
 		if (!isUserSessionEstablished(request)) {
 			String principalName = getIdentityManagementService().getAuthenticatedPrincipalName(request);
 			if ( StringUtils.isNotBlank(principalName) ) {
@@ -178,7 +176,6 @@ public class KualiRequestProcessor extends RequestProcessor {
 
 		request.getSession().setAttribute(KNSConstants.USER_SESSION_KEY, userSession);
 		GlobalVariables.setUserSession(userSession);
-		GlobalVariables.clear();
 		return true;
 	}
 
@@ -310,7 +307,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 		String docFormKey = request.getParameter(KNSConstants.DOC_FORM_KEY);
 		String methodToCall = request.getParameter(KNSConstants.DISPATCH_REQUEST_PARAMETER);
 		String refreshCaller = request.getParameter(KNSConstants.REFRESH_CALLER);
-		String searchListRequestKey = request.getParameter(KNSConstants.SEARCH_LIST_REQUEST_KEY);
+//		String searchListRequestKey = request.getParameter(KNSConstants.SEARCH_LIST_REQUEST_KEY);
 		String documentWebScope = request.getParameter(KNSConstants.DOCUMENT_WEB_SCOPE);
 
 		String documentNumber = request.getParameter(KNSConstants.DOCUMENT_DOCUMENT_NUMBER);
@@ -573,12 +570,14 @@ public class KualiRequestProcessor extends RequestProcessor {
 	 * A simple exception that allows us to wrap an exception that is thrown out
 	 * of a transaction template.
 	 */
+	@SuppressWarnings("serial")
 	private static class WrappedRuntimeException extends RuntimeException {
 		public WrappedRuntimeException(Exception e) {
 			super(e);
 		}
 	}
 
+	@SuppressWarnings("serial")
 	private static class WrappedActionForwardRuntimeException extends RuntimeException {
 		private ActionForward actionForward;
 

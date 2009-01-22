@@ -40,6 +40,7 @@ import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.support.KimPermissionTypeService;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.GlobalVariables;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -57,9 +58,12 @@ public class PermissionServiceImpl implements PermissionService {
 	private KimPermissionDao permissionDao;
     private KimPermissionTypeService defaultPermissionTypeService;
 
-	private ThreadLocal<Map<String,List<KimPermissionImpl>>> permissionCache = new ThreadLocal<Map<String,List<KimPermissionImpl>>>();
-	private ThreadLocal<Map<List<KimPermissionInfo>,List<String>>> permissionToRoleCache = new ThreadLocal<Map<List<KimPermissionInfo>,List<String>>>();
-	
+    private static final String PERMISSION_CACHE_NAME = "PermissionServiceImpl.permissionCache";
+    private static final String PERMISSION_TO_ROLE_CACHE_NAME = "PermissionServiceImpl.permissionToRoleCache";
+//	private ThreadLocal<Map<String,List<KimPermissionImpl>>> permissionCache = new ThreadLocal<Map<String,List<KimPermissionImpl>>>();
+//	private ThreadLocal<Map<List<KimPermissionInfo>,List<String>>> permissionToRoleCache = new ThreadLocal<Map<List<KimPermissionInfo>,List<String>>>();
+
+    // Not ThreadLocal - should not change during the life of the system
 	private Map<String,KimPermissionTypeService> permissionTypeServiceByNameCache = new HashMap<String, KimPermissionTypeService>();
     // --------------------
     // Authorization Checks
@@ -325,18 +329,27 @@ public class PermissionServiceImpl implements PermissionService {
     	return !getMatchingPermissions( permissions, permissionDetails ).isEmpty();   
     }
 
+    @SuppressWarnings("unchecked")
+	protected Map<List<KimPermissionInfo>,List<String>> getPermissionToRoleCache() {
+    	Map<List<KimPermissionInfo>,List<String>> permissionToRoleCache = 
+    			(Map<List<KimPermissionInfo>,List<String>>)GlobalVariables.getRequestCache(PERMISSION_TO_ROLE_CACHE_NAME);
+    	if ( permissionToRoleCache == null ) {
+    		permissionToRoleCache = new HashMap<List<KimPermissionInfo>,List<String>>();
+    		GlobalVariables.setRequestCache(PERMISSION_TO_ROLE_CACHE_NAME, permissionToRoleCache);
+    	}
+    	return permissionToRoleCache;
+    }
+    
     protected List<String> getRoleIdsForPermission( String namespaceCode, String permissionName, AttributeSet permissionDetails) {
     	// get all the permission objects whose name match that requested
     	List<KimPermissionImpl> permissions = getPermissionImplsByName( namespaceCode, permissionName );
     	// now, filter the full list by the detail passed
     	List<KimPermissionInfo> applicablePermissions = getMatchingPermissions( permissions, permissionDetails );    	
-    	if ( permissionToRoleCache.get() == null ) {
-    		permissionToRoleCache.set( new HashMap<List<KimPermissionInfo>,List<String>>() );
-    	}
-    	List<String> roleIds = permissionToRoleCache.get().get( applicablePermissions );
+    	Map<List<KimPermissionInfo>,List<String>> permissionToRoleCache = getPermissionToRoleCache();
+    	List<String> roleIds = permissionToRoleCache.get( applicablePermissions );
     	if ( roleIds == null ) {
     		roleIds = permissionDao.getRoleIdsForPermissions( applicablePermissions );
-    		permissionToRoleCache.get().put( applicablePermissions, roleIds );
+    		permissionToRoleCache.put( applicablePermissions, roleIds );
     	}
     	return roleIds;    	
     }
@@ -346,13 +359,11 @@ public class PermissionServiceImpl implements PermissionService {
     	List<KimPermissionImpl> permissions = getPermissionImplsByTemplateName( namespaceCode, permissionTemplateName );
     	// now, filter the full list by the detail passed
     	List<KimPermissionInfo> applicablePermissions = getMatchingPermissions( permissions, permissionDetails );
-    	if ( permissionToRoleCache.get() == null ) {
-    		permissionToRoleCache.set( new HashMap<List<KimPermissionInfo>,List<String>>() );
-    	}
-    	List<String> roleIds = permissionToRoleCache.get().get( applicablePermissions );
+    	Map<List<KimPermissionInfo>,List<String>> permissionToRoleCache = getPermissionToRoleCache();
+    	List<String> roleIds = permissionToRoleCache.get( applicablePermissions );
     	if ( roleIds == null ) {
     		roleIds = permissionDao.getRoleIdsForPermissions( applicablePermissions );
-    		permissionToRoleCache.get().put( applicablePermissions, roleIds );
+    		permissionToRoleCache.put( applicablePermissions, roleIds );
     	}
     	return roleIds;
     }
@@ -433,54 +444,60 @@ public class PermissionServiceImpl implements PermissionService {
     	return getRoleService().getRoleQualifiersForPrincipal(principalId, roleIds, qualification);
     }
 
+    @SuppressWarnings("unchecked")
+	protected Map<String,List<KimPermissionImpl>> getPermissionCache() {
+    	Map<String,List<KimPermissionImpl>> permissionCache = 
+    			(Map<String,List<KimPermissionImpl>>)GlobalVariables.getRequestCache(PERMISSION_CACHE_NAME);
+    	if ( permissionCache == null ) {
+    		permissionCache = new HashMap<String,List<KimPermissionImpl>>();
+    		GlobalVariables.setRequestCache(PERMISSION_CACHE_NAME, permissionCache);
+    	}
+    	return permissionCache;
+    }
+
     
     protected KimPermissionImpl getPermissionImpl(String permissionId) {
     	if ( StringUtils.isBlank( permissionId ) ) {
     		return null;
     	}
-    	if ( permissionCache.get() == null ) {
-    		permissionCache.set( new HashMap<String,List<KimPermissionImpl>>() );
-    	}
-    	List<KimPermissionImpl> permissions = permissionCache.get().get( permissionId );
+    	Map<String,List<KimPermissionImpl>> permissionCache = getPermissionCache();
+    	List<KimPermissionImpl> permissions = permissionCache.get( permissionId );
     	if ( permissions == null ) {
 	    	HashMap<String,Object> pk = new HashMap<String,Object>( 1 );
 	    	pk.put( "permissionId", permissionId );
 	    	permissions = new ArrayList<KimPermissionImpl>( 1 );
 	    	permissions.add( (KimPermissionImpl)getBusinessObjectService().findByPrimaryKey( KimPermissionImpl.class, pk ) );
+	    	permissionCache.put(permissionId, permissions);
     	}
     	return permissions.get( 0 );
     }
     
     @SuppressWarnings("unchecked")
 	protected List<KimPermissionImpl> getPermissionImplsByTemplateName( String namespaceCode, String permissionTemplateName ) {
-    	if ( permissionCache.get() == null ) {
-    		permissionCache.set( new HashMap<String,List<KimPermissionImpl>>() );
-    	}
-    	List<KimPermissionImpl> permissions = permissionCache.get().get( namespaceCode+"-TEMPLATE-"+permissionTemplateName );
+    	Map<String,List<KimPermissionImpl>> permissionCache = getPermissionCache();
+    	List<KimPermissionImpl> permissions = permissionCache.get( namespaceCode+"-TEMPLATE-"+permissionTemplateName );
     	if ( permissions == null ) {    	
 	    	HashMap<String,Object> pk = new HashMap<String,Object>( 3 );
 	    	pk.put( "template.namespaceCode", namespaceCode );
 	    	pk.put( "template.name", permissionTemplateName );
 			pk.put( "active", "Y" );
 	    	permissions = (List<KimPermissionImpl>)getBusinessObjectService().findMatching( KimPermissionImpl.class, pk );
-	    	permissionCache.get().put( namespaceCode+"-TEMPLATE-"+permissionTemplateName, permissions );
+	    	permissionCache.put( namespaceCode+"-TEMPLATE-"+permissionTemplateName, permissions );
     	}
     	return permissions;
     }
 
     @SuppressWarnings("unchecked")
 	protected List<KimPermissionImpl> getPermissionImplsByName( String namespaceCode, String permissionName ) {
-    	if ( permissionCache.get() == null ) {
-    		permissionCache.set( new HashMap<String,List<KimPermissionImpl>>() );
-    	}
-    	List<KimPermissionImpl> permissions = permissionCache.get().get( namespaceCode+"-"+permissionName );
+    	Map<String,List<KimPermissionImpl>> permissionCache = getPermissionCache();
+    	List<KimPermissionImpl> permissions = permissionCache.get( namespaceCode+"-"+permissionName );
     	if ( permissions == null ) {
 	    	HashMap<String,Object> pk = new HashMap<String,Object>( 3 );
 	    	pk.put( "namespaceCode", namespaceCode );
 	    	pk.put( "name", permissionName );
 			pk.put( "active", "Y" );
 	    	permissions = (List<KimPermissionImpl>)getBusinessObjectService().findMatching( KimPermissionImpl.class, pk );
-	    	permissionCache.get().put( namespaceCode+"-"+permissionName, permissions );
+	    	permissionCache.put( namespaceCode+"-"+permissionName, permissions );
     	}
     	return permissions;
     }

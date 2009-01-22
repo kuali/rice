@@ -47,6 +47,7 @@ import org.kuali.rice.kim.service.support.KimRoleTypeService;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.SequenceAccessorService;
+import org.kuali.rice.kns.util.GlobalVariables;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -66,25 +67,51 @@ public class RoleServiceImpl implements RoleService {
 	private IdentityManagementService identityManagementService;
 	private KimRoleDao roleDao; 
 
-	private ThreadLocal<Map<String,KimRoleImpl>> roleCache = new ThreadLocal<Map<String,KimRoleImpl>>();
-	private ThreadLocal<Map<String,List<String>>> impliedRoleCache = new ThreadLocal<Map<String,List<String>>>();
-	private ThreadLocal<Map<Collection<String>,Map<String,KimRoleImpl>>> roleImplMapCache = new ThreadLocal<Map<Collection<String>,Map<String,KimRoleImpl>>>();
+    private static final String ROLE_CACHE_NAME = "RoleServiceImpl.roleCache";
+    private static final String IMPLIED_ROLE_CACHE_NAME = "RoleServiceImpl.impliedRoleCache";
+    private static final String ROLE_IMPL_MAP_CACHE_NAME = "RoleServiceImpl.roleImplMapCache";
 	
     // --------------------
     // Role Data
     // --------------------
    
+    @SuppressWarnings("unchecked")
+	protected Map<String,KimRoleImpl> getRoleCache() {
+    	Map<String,KimRoleImpl> roleCache = (Map<String,KimRoleImpl>)GlobalVariables.getRequestCache(ROLE_CACHE_NAME);
+    	if ( roleCache == null ) {
+    		roleCache = new HashMap<String, KimRoleImpl>();
+    		GlobalVariables.setRequestCache(ROLE_CACHE_NAME, roleCache);
+    	}
+    	return roleCache;
+    }
+
+    @SuppressWarnings("unchecked")
+	protected Map<String,List<String>> getImpliedRoleCache() {
+    	Map<String,List<String>> impliedRoleCache = (Map<String,List<String>>)GlobalVariables.getRequestCache(IMPLIED_ROLE_CACHE_NAME);
+    	if ( impliedRoleCache == null ) {
+    		impliedRoleCache = new HashMap<String, List<String>>();
+    		GlobalVariables.setRequestCache(IMPLIED_ROLE_CACHE_NAME, impliedRoleCache);
+    	}
+    	return impliedRoleCache;
+    }
+    
+    @SuppressWarnings("unchecked")
+	protected Map<Collection<String>,Map<String,KimRoleImpl>> getRoleImplMapCache() {
+    	Map<Collection<String>,Map<String,KimRoleImpl>> roleImplMapCache = (Map<Collection<String>,Map<String,KimRoleImpl>>)GlobalVariables.getRequestCache(ROLE_IMPL_MAP_CACHE_NAME);
+    	if ( roleImplMapCache == null ) {
+    		roleImplMapCache = new HashMap<Collection<String>, Map<String,KimRoleImpl>>();
+    		GlobalVariables.setRequestCache(ROLE_IMPL_MAP_CACHE_NAME, roleImplMapCache);
+    	}
+    	return roleImplMapCache;
+    }
+    
+    
 	protected KimRoleImpl getRoleImpl(String roleId) {
 		if ( StringUtils.isBlank( roleId ) ) {
 			return null;
 		}
 		// check the cache
-		Map<String,KimRoleImpl> cache = roleCache.get();
-		// create the cache if necessary
-		if ( cache == null ) {
-			cache = new HashMap<String,KimRoleImpl>();
-			roleCache.set( cache );
-		}
+		Map<String,KimRoleImpl> cache = getRoleCache();
 		// check for a non-null result in the cache, return it if found
 		KimRoleImpl cachedResult = cache.get( roleId );
 		if ( cachedResult != null ) {
@@ -146,12 +173,7 @@ public class RoleServiceImpl implements RoleService {
 	
 	protected Map<String,KimRoleImpl> getRoleImplMap(Collection<String> roleIds) {
 		// check the cache
-		Map<Collection<String>,Map<String,KimRoleImpl>> cache = roleImplMapCache.get();
-		// create the cache if necessary
-		if ( cache == null ) {
-			cache = new HashMap<Collection<String>,Map<String,KimRoleImpl>>();
-			roleImplMapCache.set( cache );
-		}
+		Map<Collection<String>,Map<String,KimRoleImpl>> cache = getRoleImplMapCache();
 		// check for a non-null result in the cache, return it if found
 		Map<String,KimRoleImpl> cachedResult = cache.get( roleIds );
 		if ( cachedResult != null ) {
@@ -848,12 +870,7 @@ public class RoleServiceImpl implements RoleService {
     
 	protected List<String> getImplyingRoleIds( String roleId ) {
 		// check the cache
-		Map<String,List<String>> cache = impliedRoleCache.get();
-		// create the cache if necessary
-		if ( cache == null ) {
-			cache = new HashMap<String,List<String>>();
-			impliedRoleCache.set( cache );
-		}
+		Map<String,List<String>> cache = getImpliedRoleCache();
 		// check for a non-null result in the cache, return it if found
 		List<String> cachedResult = cache.get( roleId );
 		if ( cachedResult != null ) {

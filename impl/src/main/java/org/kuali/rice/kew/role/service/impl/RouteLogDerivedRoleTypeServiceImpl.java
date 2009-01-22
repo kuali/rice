@@ -26,6 +26,7 @@ import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
+import org.kuali.rice.kns.util.GlobalVariables;
 
 /**
  * 
@@ -33,19 +34,17 @@ import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
  *
  */
 public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServiceBase {
-    public static final String INITIATOR_ROLE_NAME = "Initiator";
-    public static final String INITIATOR_OR_REVIEWER_ROLE_NAME = "Initiator or Reviewer";
-    public static final String ROUTER_ROLE_NAME = "Router";
+    protected static final String INITIATOR_ROLE_NAME = "Initiator";
+    protected static final String INITIATOR_OR_REVIEWER_ROLE_NAME = "Initiator or Reviewer";
+    protected static final String ROUTER_ROLE_NAME = "Router";
+	private static final String HAS_APPLICATION_ROLE_CACHE_NAME = "RouteLogDerivedRoleTypeServiceImpl.hasApplicationRole";
 
-    // This is a *VERY* expensive check - cache during the thread if possible.
-    protected ThreadLocal<Map<String,Boolean>> hasApplicationRoleCache = new ThreadLocal<Map<String,Boolean>>();
+	protected WorkflowInfo workflowInfo = new WorkflowInfo();
     
 	protected List<String> requiredAttributes = new ArrayList<String>();
 	{
 		requiredAttributes.add(KimAttributes.DOCUMENT_NUMBER);
 	}
-	
-	protected WorkflowInfo workflowInfo = new WorkflowInfo();
 	
 	/**
 	 *	- qualifier is document number
@@ -85,17 +84,21 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
 	/***
 	 * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#hasApplicationRole(java.lang.String, java.util.List, java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean hasApplicationRole(
 			String principalId, List<String> groupIds, String namespaceCode, String roleName, AttributeSet qualification){
 		validateRequiredAttributesAgainstReceived(requiredAttributes, qualification, QUALIFICATION_RECEIVED_ATTIBUTES_NAME);
 	
 		String documentNumber = qualification.get(KimAttributes.DOCUMENT_NUMBER);
-		if ( hasApplicationRoleCache.get() == null ) {
-		    hasApplicationRoleCache.set( new HashMap<String, Boolean>() );
+		Map<String,Boolean> hasApplicationRoleCache = (Map<String,Boolean>)GlobalVariables.getRequestCache(HAS_APPLICATION_ROLE_CACHE_NAME);
+
+		if ( hasApplicationRoleCache == null ) {
+		    hasApplicationRoleCache = new HashMap<String, Boolean>();
+		    GlobalVariables.setRequestCache(HAS_APPLICATION_ROLE_CACHE_NAME, hasApplicationRoleCache);
 		}
 		String cacheKey = principalId+"-"+roleName+"-"+documentNumber;
-		Boolean result = hasApplicationRoleCache.get().get(cacheKey);
+		Boolean result = hasApplicationRoleCache.get(cacheKey);
 		if ( result == null ) {
 	        boolean isUserInRouteLog = false;
     		try {
@@ -114,7 +117,7 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
     					"for document number: "+documentNumber+" :"+wex.getLocalizedMessage(),wex);
     		}
     		result = isUserInRouteLog;
-    		hasApplicationRoleCache.get().put(cacheKey,result);
+    		hasApplicationRoleCache.put(cacheKey,result);
 		}
 		return result;
 	}

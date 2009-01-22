@@ -38,9 +38,9 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.support.KimPermissionTypeService;
+import org.kuali.rice.kim.util.KimCache;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.GlobalVariables;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -332,10 +332,10 @@ public class PermissionServiceImpl implements PermissionService {
     @SuppressWarnings("unchecked")
 	protected Map<List<KimPermissionInfo>,List<String>> getPermissionToRoleCache() {
     	Map<List<KimPermissionInfo>,List<String>> permissionToRoleCache = 
-    			(Map<List<KimPermissionInfo>,List<String>>)GlobalVariables.getRequestCache(PERMISSION_TO_ROLE_CACHE_NAME);
+    			(Map<List<KimPermissionInfo>,List<String>>)KimCache.getRequestCache(PERMISSION_TO_ROLE_CACHE_NAME);
     	if ( permissionToRoleCache == null ) {
     		permissionToRoleCache = new HashMap<List<KimPermissionInfo>,List<String>>();
-    		GlobalVariables.setRequestCache(PERMISSION_TO_ROLE_CACHE_NAME, permissionToRoleCache);
+    		KimCache.setRequestCache(PERMISSION_TO_ROLE_CACHE_NAME, permissionToRoleCache);
     	}
     	return permissionToRoleCache;
     }
@@ -447,10 +447,10 @@ public class PermissionServiceImpl implements PermissionService {
     @SuppressWarnings("unchecked")
 	protected Map<String,List<KimPermissionImpl>> getPermissionCache() {
     	Map<String,List<KimPermissionImpl>> permissionCache = 
-    			(Map<String,List<KimPermissionImpl>>)GlobalVariables.getRequestCache(PERMISSION_CACHE_NAME);
+    			(Map<String,List<KimPermissionImpl>>)KimCache.getRequestCache(PERMISSION_CACHE_NAME);
     	if ( permissionCache == null ) {
     		permissionCache = new HashMap<String,List<KimPermissionImpl>>();
-    		GlobalVariables.setRequestCache(PERMISSION_CACHE_NAME, permissionCache);
+    		KimCache.setRequestCache(PERMISSION_CACHE_NAME, permissionCache);
     	}
     	return permissionCache;
     }

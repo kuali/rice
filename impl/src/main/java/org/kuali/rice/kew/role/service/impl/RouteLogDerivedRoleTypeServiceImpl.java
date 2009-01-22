@@ -26,7 +26,7 @@ import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
-import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kim.util.KimCache;
 
 /**
  * 
@@ -91,11 +91,11 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
 		validateRequiredAttributesAgainstReceived(requiredAttributes, qualification, QUALIFICATION_RECEIVED_ATTIBUTES_NAME);
 	
 		String documentNumber = qualification.get(KimAttributes.DOCUMENT_NUMBER);
-		Map<String,Boolean> hasApplicationRoleCache = (Map<String,Boolean>)GlobalVariables.getRequestCache(HAS_APPLICATION_ROLE_CACHE_NAME);
+		Map<String,Boolean> hasApplicationRoleCache = (Map<String,Boolean>)KimCache.getRequestCache(HAS_APPLICATION_ROLE_CACHE_NAME);
 
 		if ( hasApplicationRoleCache == null ) {
 		    hasApplicationRoleCache = new HashMap<String, Boolean>();
-		    GlobalVariables.setRequestCache(HAS_APPLICATION_ROLE_CACHE_NAME, hasApplicationRoleCache);
+		    KimCache.setRequestCache(HAS_APPLICATION_ROLE_CACHE_NAME, hasApplicationRoleCache);
 		}
 		String cacheKey = principalId+"-"+roleName+"-"+documentNumber;
 		Boolean result = hasApplicationRoleCache.get(cacheKey);

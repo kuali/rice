@@ -35,6 +35,7 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimCache;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.document.Document;
@@ -125,6 +126,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 	protected boolean processPreprocess(HttpServletRequest request, HttpServletResponse response) {
 		UserSession userSession = null;
 		GlobalVariables.clear();
+		KimCache.init();
 		if (!isUserSessionEstablished(request)) {
 			String principalName = getIdentityManagementService().getAuthenticatedPrincipalName(request);
 			if ( StringUtils.isNotBlank(principalName) ) {

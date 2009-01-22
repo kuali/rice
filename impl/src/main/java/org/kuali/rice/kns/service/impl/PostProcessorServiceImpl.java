@@ -27,6 +27,7 @@ import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.util.KimCache;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.service.DateTimeService;
@@ -248,6 +249,7 @@ public class PostProcessorServiceImpl implements PostProcessorService {
             GlobalVariables.setUserSession(new UserSession(KNSConstants.SYSTEM_USER));
         }
         GlobalVariables.clear();
+		KimCache.init();
     }
 
 }

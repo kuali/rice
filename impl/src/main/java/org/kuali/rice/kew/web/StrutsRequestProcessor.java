@@ -28,7 +28,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.RequestProcessor;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.session.UserSession;
-import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kim.util.KimCache;
 
 
 /**
@@ -52,7 +52,7 @@ public class StrutsRequestProcessor extends RequestProcessor {
     @Override
     protected boolean processPreprocess(HttpServletRequest request,
     		HttpServletResponse response) {
-    	GlobalVariables.clear();
+		KimCache.init();
     	return super.processPreprocess(request, response);
     }
     

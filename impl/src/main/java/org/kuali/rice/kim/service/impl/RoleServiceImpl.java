@@ -44,10 +44,10 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.support.KimDelegationTypeService;
 import org.kuali.rice.kim.service.support.KimRoleTypeService;
+import org.kuali.rice.kim.util.KimCache;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.SequenceAccessorService;
-import org.kuali.rice.kns.util.GlobalVariables;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -77,30 +77,30 @@ public class RoleServiceImpl implements RoleService {
    
     @SuppressWarnings("unchecked")
 	protected Map<String,KimRoleImpl> getRoleCache() {
-    	Map<String,KimRoleImpl> roleCache = (Map<String,KimRoleImpl>)GlobalVariables.getRequestCache(ROLE_CACHE_NAME);
+    	Map<String,KimRoleImpl> roleCache = (Map<String,KimRoleImpl>)KimCache.getRequestCache(ROLE_CACHE_NAME);
     	if ( roleCache == null ) {
     		roleCache = new HashMap<String, KimRoleImpl>();
-    		GlobalVariables.setRequestCache(ROLE_CACHE_NAME, roleCache);
+    		KimCache.setRequestCache(ROLE_CACHE_NAME, roleCache);
     	}
     	return roleCache;
     }
 
     @SuppressWarnings("unchecked")
 	protected Map<String,List<String>> getImpliedRoleCache() {
-    	Map<String,List<String>> impliedRoleCache = (Map<String,List<String>>)GlobalVariables.getRequestCache(IMPLIED_ROLE_CACHE_NAME);
+    	Map<String,List<String>> impliedRoleCache = (Map<String,List<String>>)KimCache.getRequestCache(IMPLIED_ROLE_CACHE_NAME);
     	if ( impliedRoleCache == null ) {
     		impliedRoleCache = new HashMap<String, List<String>>();
-    		GlobalVariables.setRequestCache(IMPLIED_ROLE_CACHE_NAME, impliedRoleCache);
+    		KimCache.setRequestCache(IMPLIED_ROLE_CACHE_NAME, impliedRoleCache);
     	}
     	return impliedRoleCache;
     }
     
     @SuppressWarnings("unchecked")
 	protected Map<Collection<String>,Map<String,KimRoleImpl>> getRoleImplMapCache() {
-    	Map<Collection<String>,Map<String,KimRoleImpl>> roleImplMapCache = (Map<Collection<String>,Map<String,KimRoleImpl>>)GlobalVariables.getRequestCache(ROLE_IMPL_MAP_CACHE_NAME);
+    	Map<Collection<String>,Map<String,KimRoleImpl>> roleImplMapCache = (Map<Collection<String>,Map<String,KimRoleImpl>>)KimCache.getRequestCache(ROLE_IMPL_MAP_CACHE_NAME);
     	if ( roleImplMapCache == null ) {
     		roleImplMapCache = new HashMap<Collection<String>, Map<String,KimRoleImpl>>();
-    		GlobalVariables.setRequestCache(ROLE_IMPL_MAP_CACHE_NAME, roleImplMapCache);
+    		KimCache.setRequestCache(ROLE_IMPL_MAP_CACHE_NAME, roleImplMapCache);
     	}
     	return roleImplMapCache;
     }

@@ -26,7 +26,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
-import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kim.util.KimCache;
 
 /**
  * 
@@ -59,11 +59,11 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends
 	public boolean hasApplicationRole(String principalId,
 			List<String> groupIds, String namespaceCode, String roleName,
 			AttributeSet qualification) {
-		Map<String,AttributeSet> actionsRequestedCache = (Map<String,AttributeSet>)GlobalVariables.getRequestCache(ACTIONS_REQUESTED_CACHE_NAME);
+		Map<String,AttributeSet> actionsRequestedCache = (Map<String,AttributeSet>)KimCache.getRequestCache(ACTIONS_REQUESTED_CACHE_NAME);
 		try {
 			if (actionsRequestedCache == null) {
 				actionsRequestedCache = (new HashMap<String, AttributeSet>());
-				GlobalVariables.setRequestCache(ACTIONS_REQUESTED_CACHE_NAME, actionsRequestedCache);
+				KimCache.setRequestCache(ACTIONS_REQUESTED_CACHE_NAME, actionsRequestedCache);
 			}
 			String cacheKey = principalId
 					+ qualification.get(KimAttributes.DOCUMENT_NUMBER);

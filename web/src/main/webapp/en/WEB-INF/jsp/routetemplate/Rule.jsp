@@ -163,7 +163,7 @@
 			</tr>
 			<c:set var="FieldRows" value="${RuleForm.ruleTemplateAttributes}" scope="request" />
 			<c:set var="ActionName" value="Rule.do" scope="request" />
-			<jsp:include page="../RowDisplay.jsp" />
+			<jsp:include page="../RowDisplayNew.jsp" />
 		</table>&nbsp;
 </td>
 <td valign="top" class="datacell">

@@ -17,15 +17,21 @@ package org.kuali.rice.kew.document;
 
 import java.util.Map;
 
+import org.apache.commons.lang.ArrayUtils;
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
-import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.rule.GroupRuleResponsibility;
+import org.kuali.rice.kew.rule.PersonRuleResponsibility;
+import org.kuali.rice.kew.rule.RuleBaseValues;
+import org.kuali.rice.kew.rule.RuleResponsibility;
+import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.xml.DocumentTypeXmlParser;
+import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
-import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
  * This class is the maintainable implementation for the Workflow {@link DocumentType} 
@@ -36,6 +42,10 @@ import org.kuali.rice.kns.util.ObjectUtils;
 public class RoutingRuleMaintainable extends KualiMaintainableImpl {
 
     private static final long serialVersionUID = -5920808902137192662L;
+
+	private static final String RULE_TEMPLATE_ID_PARAM = "ruleCreationValues.ruleTemplateId";
+	private static final String RULE_TEMPLATE_NAME_PARAM = "ruleCreationValues.ruleTemplateName";
+	private static final String DOCUMENT_TYPE_NAME_PARAM = "ruleCreationValues.docTypeName";
 
     
     /**
@@ -66,7 +76,89 @@ public class RoutingRuleMaintainable extends KualiMaintainableImpl {
      */
     @Override
     public void saveBusinessObject() {
-    	super.saveBusinessObject();
+    	RuleBaseValues rule = (RuleBaseValues)getBusinessObject();
+    	translateResponsibilitiesBeforeSave(rule);
     }
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#processAfterNew(org.kuali.rice.kns.document.MaintenanceDocument, java.util.Map)
+	 */
+	@Override
+	public void processAfterNew(MaintenanceDocument document,
+			Map<String, String[]> parameters) {
+		validateRuleTemplateAndDocumentType(document, parameters);
+	}
+	
+	protected void validateRuleTemplateAndDocumentType(MaintenanceDocument document, Map<String, String[]> parameters) {
+		String[] ruleTemplateIds = parameters.get(RULE_TEMPLATE_ID_PARAM);
+		String[] ruleTemplateNames = parameters.get(RULE_TEMPLATE_NAME_PARAM);
+		String[] documentTypeNames = parameters.get(DOCUMENT_TYPE_NAME_PARAM);
+		if (ArrayUtils.isEmpty(ruleTemplateIds) && ArrayUtils.isEmpty(ruleTemplateNames)) {
+			throw new RiceRuntimeException("Rule document must be initiated with a valid rule template id or rule template name.");
+		}
+		if (ArrayUtils.isEmpty(documentTypeNames)) {
+			throw new RiceRuntimeException("Rule document must be initiated with a valid document type name.");
+		}
+		RuleTemplate ruleTemplate = null;
+		if (!ArrayUtils.isEmpty(ruleTemplateIds)) {
+			String ruleTemplateId = ruleTemplateIds[0];
+			ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateId(new Long(ruleTemplateId));
+			if (ruleTemplate == null) {
+				throw new RiceRuntimeException("Failed to load rule template with id '" + ruleTemplateId + "'");
+			}
+		}
+		if (ruleTemplate == null) {
+			String ruleTemplateName = ruleTemplateNames[0];
+			ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(ruleTemplateName);
+			if (ruleTemplate == null) {
+				throw new RiceRuntimeException("Failed to load rule template with name '" + ruleTemplateName + "'");
+			}
+		}
+		String documentTypeName = documentTypeNames[0];
+		DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
+		if (documentType == null) {
+			throw new RiceRuntimeException("Failed to locate document type with name '" + documentTypeName + "'");
+		}
+		
+		RuleBaseValues newRule = getNewRule(document);
+		newRule.setRuleTemplate(ruleTemplate);
+		newRule.setRuleTemplateId(ruleTemplate.getRuleTemplateId());
+		newRule.setDocTypeName(documentTypeName);
+		
+	}
+	
+	protected void translateResponsibilitiesBeforeSave(RuleBaseValues rule) {
+		rule.getResponsibilities().clear();
+		for (PersonRuleResponsibility responsibility : rule.getPersonResponsibilities()) {
+			RuleResponsibility ruleResponsibility = new RuleResponsibility();
+			ruleResponsibility.setActionRequestedCd(responsibility.getActionRequestedCd());
+			ruleResponsibility.setPriority(responsibility.getPriority());
+			ruleResponsibility.setResponsibilityId(ruleResponsibility.getResponsibilityId());
+			String principalId = KEWServiceLocator.getIdentityHelperService().getIdForPrincipalName(responsibility.getPrincipalName());
+			ruleResponsibility.setRuleResponsibilityName(principalId);
+			ruleResponsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
+		}
+		for (GroupRuleResponsibility responsibility : rule.getGroupResponsibilities()) {
+			RuleResponsibility ruleResponsibility = new RuleResponsibility();
+			ruleResponsibility.setActionRequestedCd(responsibility.getActionRequestedCd());
+			ruleResponsibility.setPriority(responsibility.getPriority());
+			ruleResponsibility.setResponsibilityId(ruleResponsibility.getResponsibilityId());
+			KimGroup group = KEWServiceLocator.getIdentityHelperService().getGroupByName(responsibility.getNamespaceCode(), responsibility.getName());
+			ruleResponsibility.setRuleResponsibilityName(group.getGroupId());
+			ruleResponsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
+		}
+		// TODO add role responsibilities
+	}
+	
+	/**
+	 * Returns the new RuleBaseValues business object.
+	 */
+	protected RuleBaseValues getNewRule(MaintenanceDocument document) {
+		return (RuleBaseValues)document.getNewMaintainableObject().getBusinessObject();
+	}
+    
+    
 
 }

@@ -54,6 +54,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.kns.util.TypedArrayList;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 
@@ -144,8 +145,8 @@ public class RuleBaseValues extends PersistableBusinessObjectBase {
     public RuleBaseValues() {
         responsibilities = new ArrayList<RuleResponsibility>();
         ruleExtensions = new ArrayList<RuleExtension>();
-        personResponsibilities = new ArrayList<PersonRuleResponsibility>();
-        groupResponsibilities = new ArrayList<GroupRuleResponsibility>();
+        personResponsibilities = new TypedArrayList(PersonRuleResponsibility.class);
+        groupResponsibilities = new TypedArrayList(GroupRuleResponsibility.class);
     }
 
     /**

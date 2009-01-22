@@ -92,6 +92,14 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 		}
 		return principal;
 	}
+	
+	public KimGroup getGroupByName(String namespaceCode, String name) {
+		KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroupByName(namespaceCode, name);
+		if (group == null) {
+			throw new RiceRuntimeException("Could not locate a group with the given namspace of '" + namespaceCode + "' and group name of '" + name + "'");
+		}
+		return group;
+	}
 
 	public Person getPerson(String principalId) {
 		Person person = KIMServiceLocator.getPersonService().getPerson(principalId);

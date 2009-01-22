@@ -82,6 +82,8 @@ public interface IdentityHelperService {
 	
 	public KimGroup getGroup(GroupId groupId);
 	
+	public KimGroup getGroupByName(String namespaceCode, String name);
+	
 	public Recipient getPrincipalRecipient(String principalId);
 		
 	/**

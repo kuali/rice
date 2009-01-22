@@ -34,11 +34,9 @@
     <property name="maintainableItems" >
       <list>
         <bean parent="MaintainableFieldDefinition"
-              p:name="docTypeName"
-              p:unconditionallyReadOnly="true"/>
+              p:name="docTypeName"/>
         <bean parent="MaintainableFieldDefinition"
-              p:name="ruleTemplate.name"
-              p:unconditionallyReadOnly="true"/>
+              p:name="ruleTemplate.name"/>
         <bean parent="MaintainableFieldDefinition"
               p:name="description"
               p:required="true" />

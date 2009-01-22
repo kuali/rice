@@ -87,7 +87,9 @@
   <rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>
 			<documentType>TestDocumentType</documentType>
-			<ruleTemplate>TestRuleTemplate</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>
+            <ruleTemplate>TestRuleTemplate</ruleTemplate>
 			<description>DuplicateTestRule</description>
 			<ignorePrevious>false</ignorePrevious>
       <ruleExtensions>

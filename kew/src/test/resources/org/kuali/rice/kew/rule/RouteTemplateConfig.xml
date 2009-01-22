@@ -195,6 +195,8 @@
 		<rule>
             <name>RuleDocRuleRouting</name>
 			<documentType>RiceDocument.RuleDocument</documentType>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>
 			<ruleTemplate>RuleRouting</ruleTemplate>
 			<description>Rule Routing</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -220,7 +222,9 @@
 		</rule>
 		<rule>
 			<documentType>RiceDocument.child1</documentType>
-			<ruleTemplate>DocumentTypeRouting</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>DocumentTypeRouting</ruleTemplate>
 			<description>DocumentTypeRouting</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
@@ -233,7 +237,9 @@
 		</rule>
 		<rule>
 			<documentType>RiceDocument.child1child</documentType>
-			<ruleTemplate>DocumentTypeRouting</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>DocumentTypeRouting</ruleTemplate>
 			<description>DocumentTypeRouting</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
@@ -246,7 +252,9 @@
 		</rule>
 		<rule>
 			<documentType>RiceDocument.child2</documentType>
-			<ruleTemplate>DocumentTypeRouting</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>
+            <ruleTemplate>DocumentTypeRouting</ruleTemplate>
 			<description>DocumentTypeRouting</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
@@ -259,7 +267,9 @@
 		</rule>
 		<rule>
 			<documentType>RiceDocument.child3</documentType>
-			<ruleTemplate>DocumentTypeRouting</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>
+            <ruleTemplate>DocumentTypeRouting</ruleTemplate>
 			<description>DocumentTypeRouting</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
@@ -273,7 +283,9 @@
 		<rule>
             <name>DTR-NotRelated</name>
 			<documentType>NotRelated</documentType>
-			<ruleTemplate>DocumentTypeRouting</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>
+            <ruleTemplate>DocumentTypeRouting</ruleTemplate>
 			<description>DocumentTypeRouting</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>

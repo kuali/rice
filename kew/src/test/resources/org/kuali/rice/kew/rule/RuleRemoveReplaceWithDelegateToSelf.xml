@@ -4,7 +4,9 @@
     <rule>
             <name>RuleWithDelegateToSelf</name>
       <documentType>TestDocumentType</documentType>
-      <ruleTemplate>RuleRouting2</ruleTemplate>
+      <toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>RuleRouting2</ruleTemplate>
       <description>Rule Routing</description>
       <ignorePrevious>false</ignorePrevious>
       <ruleExtensions>

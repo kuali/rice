@@ -51,7 +51,9 @@
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 	  	<rule>
 			<documentType>NetworkIdRoleAttributeTest</documentType>
-			<ruleTemplate>NetworkIdRoleTemplate</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>NetworkIdRoleTemplate</ruleTemplate>
 			<description>network id routing test</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>

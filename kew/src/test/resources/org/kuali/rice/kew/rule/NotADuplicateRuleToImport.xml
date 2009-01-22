@@ -20,7 +20,9 @@
   <rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>
 			<documentType>TestDocumentType</documentType>
-			<ruleTemplate>TestRuleTemplate</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>
+            <ruleTemplate>TestRuleTemplate</ruleTemplate>
 			<description>NotADuplicateTestRule</description>
 			<ignorePrevious>false</ignorePrevious>
       <ruleExtensions>
@@ -52,6 +54,8 @@
        so it should NOT be considered a duplicate -->
         <rule>
             <documentType>TestDocumentType</documentType>
+            <toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>
             <ruleTemplate>TestRuleTemplate</ruleTemplate>
             <description>NotADuplicateTestRule</description>
             <expression type="imnew">this is different</expression>
@@ -85,7 +89,9 @@
        so it should NOT be considered a duplicate -->
     <rule>
       <documentType>TestDocumentType</documentType>
-      <ruleTemplate>TestRuleTemplate2</ruleTemplate>
+      <toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>
+            <ruleTemplate>TestRuleTemplate2</ruleTemplate>
       <description>NotADuplicateTestRule2</description>
       <ignorePrevious>false</ignorePrevious>
       <ruleExtensions>
@@ -117,7 +123,9 @@
          so it should NOT be considered a duplicate -->
     <rule>
       <documentType>TestDocumentType</documentType>
-      <ruleTemplate>TestRuleTemplate</ruleTemplate>
+      <toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>
+            <ruleTemplate>TestRuleTemplate</ruleTemplate>
       <description>NotADuplicateTestRule3</description>
       <ignorePrevious>false</ignorePrevious>
       <ruleExtensions>
@@ -149,7 +157,9 @@
          so it should NOT be considered a duplicate -->
     <rule>
       <documentType>TestDocumentType</documentType>
-      <ruleTemplate>TestRuleTemplate</ruleTemplate>
+      <toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>
+            <ruleTemplate>TestRuleTemplate</ruleTemplate>
       <description>NotADuplicateTestRule4</description>
       <ignorePrevious>false</ignorePrevious>
       <ruleExtensions>

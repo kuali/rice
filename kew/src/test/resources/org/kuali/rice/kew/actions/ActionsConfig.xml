@@ -955,7 +955,9 @@
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>
 			<documentType>SuperUserActionInvalidPostProcessor</documentType>
-			<ruleTemplate>WorkflowDocument2Template</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>WorkflowDocument2Template</ruleTemplate>
 			<description>WorkflowDocument2Template and SuperUserActionInvalidPostProcessor Rule 1</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -968,7 +970,9 @@
 		</rule>
 		<rule>
 			<documentType>SuperUserActionInvalidPostProcessor</documentType>
-			<ruleTemplate>WorkflowDocument2Template</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>WorkflowDocument2Template</ruleTemplate>
 			<description>WorkflowDocument2Template and SuperUserActionInvalidPostProcessor Rule 2</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -981,7 +985,9 @@
 		</rule>
 		<rule>
 			<documentType>SuperUserApproveActionRequestApproveTest</documentType>
-			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>WorkflowDocumentTemplate Rule 1</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -994,7 +1000,9 @@
 		</rule>
 		<rule>
 			<documentType>BlanketApproveTest</documentType>
-			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>WorkflowDocumentTemplate Rule 3</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -1007,7 +1015,9 @@
 		</rule>
 		<rule>
 			<documentType>BlanketApproveTest</documentType>
-			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>WorkflowDocumentTemplate Rule 2</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -1020,7 +1030,9 @@
 		</rule>
 		<rule>
 			<documentType>BlanketApproveTest</documentType>
-			<ruleTemplate>WorkflowDocument2Template</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>WorkflowDocument2Template</ruleTemplate>
 			<description>WorkflowDocument2Template Rule 1</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -1033,7 +1045,9 @@
 		</rule>
 		<rule>
 			<documentType>BlanketApproveTest</documentType>
-			<ruleTemplate>WorkflowDocument3Template</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>WorkflowDocument3Template</ruleTemplate>
 			<description>WorkflowDocument3Template Rule 1</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -1046,7 +1060,9 @@
 		</rule>
 		<rule>
 			<documentType>BlanketApproveTest</documentType>
-			<ruleTemplate>WorkflowDocument4Template</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>WorkflowDocument4Template</ruleTemplate>
 			<description>WorkflowDocument4Template Rule 1</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -1059,7 +1075,9 @@
 		</rule>
 		<rule>
 			<documentType>BlanketApproveTest</documentType>
-			<ruleTemplate>WorkflowDocumentFinalTemplate</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>WorkflowDocumentFinalTemplate</ruleTemplate>
 			<description>WorkflowDocumentFinalTemplate Rule 1</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -1072,7 +1090,9 @@
 		</rule>
 		<rule>
 			<documentType>BlanketApproveTest</documentType>
-			<ruleTemplate>Ack1Template</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>Ack1Template</ruleTemplate>
 			<description>Ack1Template Rule 1</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -1085,7 +1105,9 @@
 		</rule>
 		<rule>
 			<documentType>BlanketApproveTest</documentType>
-			<ruleTemplate>Ack2Template</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>Ack2Template</ruleTemplate>
 			<description>Ack2Template Rule 1</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -1099,7 +1121,9 @@
 
 		<rule>
 			<documentType>NotificationTest</documentType>
-			<ruleTemplate>NotifyFirstTemplate</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>NotifyFirstTemplate</ruleTemplate>
 			<description>Notify First Rule 1</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -1117,7 +1141,9 @@
 		</rule>
 		<rule>
 			<documentType>NotificationTest</documentType>
-			<ruleTemplate>NotifyLeftBranchTemplate</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>NotifyLeftBranchTemplate</ruleTemplate>
 			<description>Notify Left Branch Rule 1</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -1128,7 +1154,9 @@
 					<delegations>
 						<rule>
 							<documentType>NotificationTest</documentType>
-							<ruleTemplate>NotifyLeftBranchTemplate</ruleTemplate>
+							<toDate>2009-05-30T09:00:00</toDate>
+            				<fromDate>2002-05-30T09:00:00</fromDate>		
+            				<ruleTemplate>NotifyLeftBranchTemplate</ruleTemplate>
 							<description>Notify left Branch Prim Del</description>
 							<ignorePrevious>false</ignorePrevious>
 							<responsibilities>
@@ -1143,8 +1171,10 @@
 						</rule>
 						<rule>
 							<documentType>NotificationTest</documentType>
-							<ruleTemplate>NotifyLeftBranchTemplate</ruleTemplate>
-							<description>Notify Left Branch Sec Del</description>
+							<toDate>2009-05-30T09:00:00</toDate>
+		            <fromDate>2002-05-30T09:00:00</fromDate>		
+		            <ruleTemplate>NotifyLeftBranchTemplate</ruleTemplate>
+									<description>Notify Left Branch Sec Del</description>
 							<ignorePrevious>true</ignorePrevious>
 							<responsibilities>
 								<responsibility>
@@ -1159,7 +1189,9 @@
 		</rule>
 		<rule>
 			<documentType>NotificationTest</documentType>
-			<ruleTemplate>NotifyRightBranchTemplate</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>NotifyRightBranchTemplate</ruleTemplate>
 			<description>Notify Right Branch Rule 1</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -1171,7 +1203,9 @@
 					<delegations>
 						<rule>
 							<documentType>NotificationTest</documentType>
-							<ruleTemplate>NotifyRightBranchTemplate</ruleTemplate>
+							<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>NotifyRightBranchTemplate</ruleTemplate>
 							<description>Notify Right Delegation</description>
 							<ignorePrevious>true</ignorePrevious>
 							<responsibilities>
@@ -1188,7 +1222,9 @@
 		</rule>
 		<rule>
 			<documentType>NotificationTest</documentType>
-			<ruleTemplate>NotifyFinalTemplate</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>NotifyFinalTemplate</ruleTemplate>
 			<description>Notify Final Rule 1</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -1212,7 +1248,9 @@
 		<!--  SAE Rules -->
 		<rule>
 			<documentType>SaveActionEventTest</documentType>
-			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>WorkflowDocumentTemplate SaveAction Rule 1</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -1225,7 +1263,9 @@
 		</rule>
 		<rule>
 			<documentType>SaveActionEventTest</documentType>
-			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>WorkflowDocumentTemplate SaveAction Rule 2</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -1240,7 +1280,9 @@
 		<!--  workgroup authority rules -->
 		<rule>
 			<documentType>TakeWorkgroupAuthorityDoc</documentType>
-			<ruleTemplate>WorkgroupByDocument</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>WorkgroupByDocument</ruleTemplate>
 			<description>TakeWorkgroupAuthorityDoc route to TestWorkgroup</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -1255,7 +1297,9 @@
 		<!-- begin AdhocRouteTest rules -->
 		<rule>
 			<documentType>AdhocRouteTest</documentType>
-			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>required AdhocRouteTest</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
@@ -1271,7 +1315,9 @@
 		<!--  pre approval test rules -->
 		<rule>
 			<documentType>PreApprovalTest</documentType>
-			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>required PreApprovalTest1</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
@@ -1284,7 +1330,9 @@
 		</rule>
 		<rule>
 			<documentType>PreApprovalTest</documentType>
-			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>required PreApprovalTest2</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
@@ -1297,7 +1345,9 @@
 		</rule>
 		<rule>
 			<documentType>PreApprovalTest</documentType>
-			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>required PreApprovalTest3</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
@@ -1310,7 +1360,9 @@
 		</rule>
 		<rule>
 			<documentType>PreApprovalTest</documentType>
-			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>required PreApprovalTest4</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
@@ -1326,7 +1378,9 @@
 <!-- variables test rules -->
 <rule>
 			<documentType>VariablesTest</documentType>
-			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>required VariablesTest1</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
@@ -1339,6 +1393,8 @@
 		</rule>
 		<rule>
 			<documentType>VariablesTest</documentType>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>required VariablesTest2</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -1352,7 +1408,9 @@
 		</rule>
 		<rule>
 			<documentType>VariablesTest</documentType>
-			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>required VariablesTest3</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
@@ -1365,7 +1423,9 @@
 		</rule>
 		<rule>
 			<documentType>VariablesTest</documentType>
-			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>required VariablesTest4</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
@@ -1380,7 +1440,9 @@
 		<!--  initiator role test rules -->
 		<rule>
 			<documentType>InitiatorRoleApprovalTest</documentType>
-			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>required InitiatorRoleApprovalTest1</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -1393,7 +1455,9 @@
 		</rule>
 		<rule>
 			<documentType>InitiatorRoleApprovalTest</documentType>
-			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>required InitiatorRoleApprovalTest2</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
@@ -1406,7 +1470,9 @@
 		</rule>
 		<rule>
 			<documentType>InitiatorRoleApprovalTest</documentType>
-			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>required InitiatorRoleApprovalTest3</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
@@ -1419,7 +1485,9 @@
 		</rule>
 		<rule>
 			<documentType>InitiatorRoleApprovalTest</documentType>
-			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>required InitiatorRoleApprovalTest4</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
@@ -1435,7 +1503,9 @@
 		<!-- rules for testing blanket approval past a role -->
 		<rule>
 			<documentType>BlanketApproveThroughRoleAndWorkgroupTest</documentType>
-			<ruleTemplate>BANotificationRoleTemplate</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>BANotificationRoleTemplate</ruleTemplate>
 			<description>BA Notification Rule 1</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -1449,7 +1519,9 @@
 		</rule>
 		<rule>
 			<documentType>BlanketApproveThroughRoleAndWorkgroupTest</documentType>
-			<ruleTemplate>BANotificationRoleTemplate</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>BANotificationRoleTemplate</ruleTemplate>
 			<description>BA Notification Rule 2</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -1463,7 +1535,9 @@
 		</rule>
 		<rule>
 			<documentType>BlanketApproveThroughRoleAndWorkgroupTest</documentType>
-			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>BA Notification Workgroup Rule 1</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -1476,7 +1550,9 @@
 		</rule>
 		<rule>
 			<documentType>BlanketApproveThroughRoleAndWorkgroupTest</documentType>
-			<ruleTemplate>WorkflowDocument2Template</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>WorkflowDocument2Template</ruleTemplate>
 			<description>BA Notification Workgroup Rule 2</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -1491,7 +1567,9 @@
 		<!-- su approve exception case rules -->
 		<rule>
 			<documentType>SUApproveDocument</documentType>
-			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>SUApproveDocument rule</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
@@ -1504,7 +1582,9 @@
 		</rule>
 		<rule>
 			<documentType>SUApproveDocument</documentType>
-			<ruleTemplate>WorkflowDocument3Template</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>WorkflowDocument3Template</ruleTemplate>
 			<description>SUApproveDocument rule WorkflowDocument3Template</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>

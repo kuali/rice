@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.kim.bo.role.KimRole;
 import org.kuali.rice.kim.bo.role.dto.DelegateInfo;
 import org.kuali.rice.kim.bo.role.dto.KimDelegationMemberInfo;
@@ -44,7 +45,6 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.support.KimDelegationTypeService;
 import org.kuali.rice.kim.service.support.KimRoleTypeService;
-import org.kuali.rice.kim.util.KimCache;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.SequenceAccessorService;
@@ -67,53 +67,63 @@ public class RoleServiceImpl implements RoleService {
 	private IdentityManagementService identityManagementService;
 	private KimRoleDao roleDao; 
 
-    private static final String ROLE_CACHE_NAME = "RoleServiceImpl.roleCache";
-    private static final String IMPLIED_ROLE_CACHE_NAME = "RoleServiceImpl.impliedRoleCache";
-    private static final String ROLE_IMPL_MAP_CACHE_NAME = "RoleServiceImpl.roleImplMapCache";
+    private static final long CACHE_MAX_AGE_SECONDS = 60L;
 	
+    private Map<String,MaxAgeSoftReference<KimRoleImpl>> roleCache = new HashMap<String,MaxAgeSoftReference<KimRoleImpl>>();
+    private Map<String,MaxAgeSoftReference<List<String>>> impliedRoleCache = new HashMap<String,MaxAgeSoftReference<List<String>>>();
+    private Map<Collection<String>,MaxAgeSoftReference<Map<String,KimRoleImpl>>> roleImplMapCache = new HashMap<Collection<String>,MaxAgeSoftReference<Map<String,KimRoleImpl>>>();
+    
+    
     // --------------------
     // Role Data
     // --------------------
    
-    @SuppressWarnings("unchecked")
-	protected Map<String,KimRoleImpl> getRoleCache() {
-    	Map<String,KimRoleImpl> roleCache = (Map<String,KimRoleImpl>)KimCache.getRequestCache(ROLE_CACHE_NAME);
-    	if ( roleCache == null ) {
-    		roleCache = new HashMap<String, KimRoleImpl>();
-    		KimCache.setRequestCache(ROLE_CACHE_NAME, roleCache);
+	protected KimRoleImpl getRoleFromCache( String roleId ) {
+    	KimRoleImpl cachedResult = null; 
+    	MaxAgeSoftReference<KimRoleImpl> cacheRef = roleCache.get( roleId );
+    	if ( cacheRef != null ) {
+    		cachedResult = cacheRef.get();
     	}
-    	return roleCache;
+    	return cachedResult;
+    }
+    
+    protected void addRoleImplToCache( String roleId, KimRoleImpl role ) {
+    	roleCache.put( roleId, new MaxAgeSoftReference<KimRoleImpl>( CACHE_MAX_AGE_SECONDS, role ) );
+    }
+    
+
+	protected List<String> getImpliedRoleIdsFromCache( String roleId ) {
+		List<String> cachedResult = null; 
+    	MaxAgeSoftReference<List<String>> cacheRef = impliedRoleCache.get( roleId );
+    	if ( cacheRef != null ) {
+    		cachedResult = cacheRef.get();
+    	}
+    	return cachedResult;
     }
 
-    @SuppressWarnings("unchecked")
-	protected Map<String,List<String>> getImpliedRoleCache() {
-    	Map<String,List<String>> impliedRoleCache = (Map<String,List<String>>)KimCache.getRequestCache(IMPLIED_ROLE_CACHE_NAME);
-    	if ( impliedRoleCache == null ) {
-    		impliedRoleCache = new HashMap<String, List<String>>();
-    		KimCache.setRequestCache(IMPLIED_ROLE_CACHE_NAME, impliedRoleCache);
+    protected void addImpliedRoleIdsToCache( String roleId, List<String> roleIds ) {
+    	impliedRoleCache.put( roleId, new MaxAgeSoftReference<List<String>>( CACHE_MAX_AGE_SECONDS, roleIds ) );
+    }
+	
+	protected Map<String,KimRoleImpl> getRoleImplMapFromCache( Collection<String> roleIds ) {
+		Map<String,KimRoleImpl> cachedResult = null; 
+    	MaxAgeSoftReference<Map<String,KimRoleImpl>> cacheRef = roleImplMapCache.get( roleIds );
+    	if ( cacheRef != null ) {
+    		cachedResult = cacheRef.get();
     	}
-    	return impliedRoleCache;
+    	return cachedResult;
     }
     
-    @SuppressWarnings("unchecked")
-	protected Map<Collection<String>,Map<String,KimRoleImpl>> getRoleImplMapCache() {
-    	Map<Collection<String>,Map<String,KimRoleImpl>> roleImplMapCache = (Map<Collection<String>,Map<String,KimRoleImpl>>)KimCache.getRequestCache(ROLE_IMPL_MAP_CACHE_NAME);
-    	if ( roleImplMapCache == null ) {
-    		roleImplMapCache = new HashMap<Collection<String>, Map<String,KimRoleImpl>>();
-    		KimCache.setRequestCache(ROLE_IMPL_MAP_CACHE_NAME, roleImplMapCache);
-    	}
-    	return roleImplMapCache;
+    protected void addRoleImplMapToCache( Collection<String> roleIds, Map<String,KimRoleImpl> roleMap ) {
+    	roleImplMapCache.put( roleIds, new MaxAgeSoftReference<Map<String,KimRoleImpl>>( CACHE_MAX_AGE_SECONDS, roleMap ) );
     }
-    
     
 	protected KimRoleImpl getRoleImpl(String roleId) {
 		if ( StringUtils.isBlank( roleId ) ) {
 			return null;
 		}
-		// check the cache
-		Map<String,KimRoleImpl> cache = getRoleCache();
 		// check for a non-null result in the cache, return it if found
-		KimRoleImpl cachedResult = cache.get( roleId );
+		KimRoleImpl cachedResult = getRoleFromCache( roleId );
 		if ( cachedResult != null ) {
 			return cachedResult;
 		}		
@@ -121,7 +131,7 @@ public class RoleServiceImpl implements RoleService {
 		AttributeSet criteria = new AttributeSet();
 		criteria.put("roleId", roleId);
 		KimRoleImpl result = (KimRoleImpl)getBusinessObjectService().findByPrimaryKey(KimRoleImpl.class, criteria);
-		cache.put( roleId, result );
+		addRoleImplToCache( roleId, result );
 		return result;
 	}
 
@@ -172,16 +182,14 @@ public class RoleServiceImpl implements RoleService {
 	}
 	
 	protected Map<String,KimRoleImpl> getRoleImplMap(Collection<String> roleIds) {
-		// check the cache
-		Map<Collection<String>,Map<String,KimRoleImpl>> cache = getRoleImplMapCache();
 		// check for a non-null result in the cache, return it if found
-		Map<String,KimRoleImpl> cachedResult = cache.get( roleIds );
+		Map<String,KimRoleImpl> cachedResult = getRoleImplMapFromCache( roleIds );
 		if ( cachedResult != null ) {
 			return cachedResult;
 		}		
 		// otherwise, run the query
 		Map<String,KimRoleImpl> result = roleDao.getRoleImplMap(roleIds);
-		cache.put(roleIds, result);
+		addRoleImplMapToCache( roleIds, result );
 		return result;
 	}
 	
@@ -869,10 +877,8 @@ public class RoleServiceImpl implements RoleService {
     }
     
 	protected List<String> getImplyingRoleIds( String roleId ) {
-		// check the cache
-		Map<String,List<String>> cache = getImpliedRoleCache();
 		// check for a non-null result in the cache, return it if found
-		List<String> cachedResult = cache.get( roleId );
+		List<String> cachedResult = getImpliedRoleIdsFromCache( roleId );
 		if ( cachedResult != null ) {
 			return cachedResult;
 		}		
@@ -885,7 +891,7 @@ public class RoleServiceImpl implements RoleService {
 			getImplyingRolesInternal(roleId, roleIds);		
 		}
 		List<String> result = new ArrayList<String>( roleIds );
-		cache.put( roleId, result );
+		addImpliedRoleIdsToCache( roleId, result );
 		return result;
 	}
 	

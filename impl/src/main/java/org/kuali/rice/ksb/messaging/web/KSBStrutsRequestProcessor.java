@@ -16,7 +16,11 @@
  */
 package org.kuali.rice.ksb.messaging.web;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.struts.action.RequestProcessor;
+import org.kuali.rice.kns.util.GlobalVariables;
 
 /**
  * A RequestProcessor implementation for Struts which handles determining whether or not access
@@ -25,4 +29,16 @@ import org.apache.struts.action.RequestProcessor;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KSBStrutsRequestProcessor extends RequestProcessor {
+	
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.apache.struts.action.RequestProcessor#processPreprocess(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	 */
+	@Override
+	protected boolean processPreprocess(HttpServletRequest request,
+			HttpServletResponse response) {
+		GlobalVariables.clear();
+		return super.processPreprocess(request, response);
+	}
 }

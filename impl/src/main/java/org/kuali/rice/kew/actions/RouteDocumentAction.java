@@ -61,12 +61,13 @@ public class RouteDocumentAction extends ActionTakenEvent {
      */
     @Override
     public String validateActionRules() {
-    	if (! KEWServiceLocator.getDocumentTypePermissionService().canRoute(getPrincipal().getPrincipalId(), getRouteHeader())) {
-    		return "User is not authorized to Route document";
-    	}
+    	// check state before checking kim
         if (!getRouteHeader().isValidActionToTake(getActionPerformedCode())) {
             return "Document is not in a state to be routed";
         }
+    	if (! KEWServiceLocator.getDocumentTypePermissionService().canRoute(getPrincipal().getPrincipalId(), getRouteHeader())) {
+    		return "User is not authorized to Route document";
+    	}
         return "";
     }
 

@@ -57,15 +57,16 @@ public class CancelAction extends ActionTakenEvent {
     }
 
     private String validateActionRules(List<ActionRequestValue> actionRequests) {
-        if (! KEWServiceLocator.getDocumentTypePermissionService().canCancel(getPrincipal().getPrincipalId(), getRouteHeader().getDocumentType(), getRouteHeader().getCurrentNodeNames(), getRouteHeader().getDocRouteStatus(), getRouteHeader().getInitiatorWorkflowId())) {
-            return "User is not authorized to Cancel document";
-        }
         // FYI delyea:  This is new validation check... was not being checked previously
         if (!getRouteHeader().isValidActionToTake(getActionPerformedCode())) {
             return "Document is not in a state to be cancelled";
         }
         if (!isActionCompatibleRequest(actionRequests)) {
             return "No request for the user is compatible with the Cancel Action";
+        }
+    	// check state before checking kim
+        if (! KEWServiceLocator.getDocumentTypePermissionService().canCancel(getPrincipal().getPrincipalId(), getRouteHeader().getDocumentType(), getRouteHeader().getCurrentNodeNames(), getRouteHeader().getDocRouteStatus(), getRouteHeader().getInitiatorWorkflowId())) {
+            return "User is not authorized to Cancel document";
         }
         return "";
     }

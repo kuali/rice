@@ -61,11 +61,12 @@ public class SaveActionEvent extends ActionTakenEvent {
     }
 
     private String validateActionRulesCustom(boolean checkIfActionIsValid) {
-    	if (! KEWServiceLocator.getDocumentTypePermissionService().canSave(getPrincipal().getPrincipalId(), getRouteHeader().getRouteHeaderId().toString(), getRouteHeader().getDocumentType(), getRouteHeader().getCurrentNodeNames(), getRouteHeader().getDocRouteStatus(), getRouteHeader().getInitiatorWorkflowId())) {
-    		return "User is not authorized to Cancel document";
-    	}
     	if (checkIfActionIsValid && (!getRouteHeader().isValidActionToTake(getActionPerformedCode()))) {
     		return "Document is not in a state to be saved";
+    	}
+    	// check state before checking kim
+    	if (! KEWServiceLocator.getDocumentTypePermissionService().canSave(getPrincipal().getPrincipalId(), getRouteHeader().getRouteHeaderId().toString(), getRouteHeader().getDocumentType(), getRouteHeader().getCurrentNodeNames(), getRouteHeader().getDocRouteStatus(), getRouteHeader().getInitiatorWorkflowId())) {
+    		return "User is not authorized to Cancel document";
     	}
     	return "";
     }

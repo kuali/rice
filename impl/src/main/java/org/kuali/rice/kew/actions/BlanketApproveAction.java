@@ -90,9 +90,6 @@ public class BlanketApproveAction extends ActionTakenEvent {
     }
 
     private String validateActionRules(List<ActionRequestValue> actionRequests) {
-        if (! KEWServiceLocator.getDocumentTypePermissionService().canBlanketApprove(getPrincipal().getPrincipalId(), getRouteHeader().getDocumentType(), getRouteHeader().getDocRouteStatus(), getRouteHeader().getInitiatorWorkflowId())) {
-            return "User is not authorized to BlanketApprove document";
-        }
         if ( (nodeNames != null) && (!nodeNames.isEmpty()) ) {
             String nodeName = isGivenNodeListValid();
             if (!Utilities.isEmpty(nodeName)) {
@@ -104,6 +101,10 @@ public class BlanketApproveAction extends ActionTakenEvent {
         }
         if (!isActionCompatibleRequest(actionRequests)) {
             return "No request for the user is compatible with the BlanketApprove Action";
+        }
+    	// check state before checking kim
+        if (! KEWServiceLocator.getDocumentTypePermissionService().canBlanketApprove(getPrincipal().getPrincipalId(), getRouteHeader().getDocumentType(), getRouteHeader().getDocRouteStatus(), getRouteHeader().getInitiatorWorkflowId())) {
+            return "User is not authorized to BlanketApprove document";
         }
         return "";
     }

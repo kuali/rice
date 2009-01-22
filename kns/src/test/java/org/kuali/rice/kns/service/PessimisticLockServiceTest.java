@@ -22,7 +22,6 @@ import java.util.Map;
 
 import org.junit.Test;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.document.authorization.PessimisticLock;
@@ -49,10 +48,6 @@ public class PessimisticLockServiceTest extends TestBase {
         GlobalVariables.setUserSession(new UserSession("quickstart"));
     }
 
-    private String getPessimisticLockAdminWorkgroupName() {
-        return KNSServiceLocator.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.PESSIMISTIC_LOCK_ADMIN_GROUP_PARM_NM);
-    }
-
     /**
      * This method tests deleting {@link PessimisticLock} objects. Tests that invalid deletes throw exceptions and valid
      * deletes by owner users as well as lock admin users do work as expected
@@ -75,15 +70,15 @@ public class PessimisticLockServiceTest extends TestBase {
 
         String userId = "fran";
         String[] lockIdsToVerify = new String[]{"1112", "1113"};
-        assertFalse("User " + userId + " should not be member of pessimistic lock admin workgroup", KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(new UserSession(userId).getPerson().getPrincipalId(), org.kuali.rice.kim.util.KimConstants.KIM_GROUP_KFS_NAMESPACE_CODE, getPessimisticLockAdminWorkgroupName()));
+        assertFalse("User " + userId + " should not be member of pessimistic lock admin workgroup", KIMServiceLocator.getIdentityManagementService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KNSConstants.KNS_NAMESPACE, KNSConstants.Permissions.ADMIN_PESSIMISTIC_LOCKING, null, null ) );
         verifyDelete(userId, Arrays.asList(lockIdsToVerify), AuthorizationException.class, true);
         userId = "frank";
         lockIdsToVerify = new String[]{"1111", "1113"};
-        assertFalse("User " + userId + " should not be member of pessimistic lock admin workgroup", KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(new UserSession(userId).getPerson().getPrincipalId(), org.kuali.rice.kim.util.KimConstants.KIM_GROUP_KFS_NAMESPACE_CODE, getPessimisticLockAdminWorkgroupName()));
+        assertFalse("User " + userId + " should not be member of pessimistic lock admin workgroup", KIMServiceLocator.getIdentityManagementService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KNSConstants.KNS_NAMESPACE, KNSConstants.Permissions.ADMIN_PESSIMISTIC_LOCKING, null, null ) );
         verifyDelete(userId, Arrays.asList(lockIdsToVerify), AuthorizationException.class, true);
         userId = "fred";
         lockIdsToVerify = new String[]{"1111", "1112"};
-        assertFalse("User " + userId + " should not be member of pessimistic lock admin workgroup", KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(new UserSession(userId).getPerson().getPrincipalId(), org.kuali.rice.kim.util.KimConstants.KIM_GROUP_KFS_NAMESPACE_CODE, getPessimisticLockAdminWorkgroupName()));
+        assertFalse("User " + userId + " should not be member of pessimistic lock admin workgroup", KIMServiceLocator.getIdentityManagementService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KNSConstants.KNS_NAMESPACE, KNSConstants.Permissions.ADMIN_PESSIMISTIC_LOCKING, null, null ) );
         verifyDelete(userId, Arrays.asList(lockIdsToVerify), AuthorizationException.class, true);
 
         verifyDelete("fran", Arrays.asList(new String[]{"1111"}), null, false);
@@ -94,7 +89,7 @@ public class PessimisticLockServiceTest extends TestBase {
 
         // test admin user can delete any lock
         userId = "supervisr";
-        assertTrue("User " + userId + " should be member of pessimistic lock admin workgroup", KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(new UserSession(userId).getPerson().getPrincipalId(), org.kuali.rice.kim.util.KimConstants.KIM_GROUP_KFS_NAMESPACE_CODE, getPessimisticLockAdminWorkgroupName()));
+        assertTrue("User " + userId + " should be member of pessimistic lock admin workgroup", KIMServiceLocator.getIdentityManagementService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KNSConstants.KNS_NAMESPACE, KNSConstants.Permissions.ADMIN_PESSIMISTIC_LOCKING, null, null ) );
         verifyDelete(userId, Arrays.asList(new String[]{"1114"}), null, false);
         locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be 0 locks left in DB", 0, locks.size());
@@ -137,7 +132,7 @@ public class PessimisticLockServiceTest extends TestBase {
         assertNotNull("Generated lock should have id", lock.getId());
         assertEquals("Document Number should match", documentNumber, lock.getDocumentNumber());
         assertNotNull("Generated lock should have a generated timestamp ", lock.getGeneratedTimestamp());
-        assertEquals("Generated lock should have default lock descriptor", PessimisticLock.DEFAUL_LOCK_DESCRIPTOR, lock.getLockDescriptor());
+        assertEquals("Generated lock should have default lock descriptor", PessimisticLock.DEFAULT_LOCK_DESCRIPTOR, lock.getLockDescriptor());
         assertEquals("Generated lock should be owned by current user", GlobalVariables.getUserSession().getPerson().getPrincipalName(), lock.getOwnedByUser().getPrincipalName());
         Map primaryKeys = new HashMap();
         primaryKeys.put(KNSPropertyConstants.ID, lock.getId());
@@ -147,7 +142,7 @@ public class PessimisticLockServiceTest extends TestBase {
         assertNotNull("Generated lock should have id", lock.getId());
         assertEquals("Document Number should match", documentNumber, lock.getDocumentNumber());
         assertNotNull("Generated lock should have a generated timestamp ", lock.getGeneratedTimestamp());
-        assertEquals("Generated lock should have default lock descriptor", PessimisticLock.DEFAUL_LOCK_DESCRIPTOR, lock.getLockDescriptor());
+        assertEquals("Generated lock should have default lock descriptor", PessimisticLock.DEFAULT_LOCK_DESCRIPTOR, lock.getLockDescriptor());
         assertEquals("Generated lock should be owned by current user", GlobalVariables.getUserSession().getPerson().getPrincipalName(), lock.getOwnedByUser().getPrincipalName());
 
         // test generating lock with given lock descriptor
@@ -246,26 +241,6 @@ public class PessimisticLockServiceTest extends TestBase {
         KNSServiceLocator.getPessimisticLockService().releaseAllLocksForUser(locks, org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().getPerson("fred"));
         locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be no locks left after releasing locks for fran, frank, and fred with no lock descriptor", 0, locks.size());
-    }
-
-    /**
-     * This method tests for admin users of {@link PessimisticLock} objects
-     *
-     * @throws Exception
-     */
-    @Test
-    public void testIsPessimisticLockAdminUser() throws Exception {
-    	KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroupByName(org.kuali.rice.kim.util.KimConstants.KIM_GROUP_KFS_NAMESPACE_CODE, getPessimisticLockAdminWorkgroupName());
-        List adminGroupUsers = KIMServiceLocator.getIdentityManagementService().getGroupMemberPrincipalIds(group.getGroupId());
-        assertTrue("Admin group requires more than one user", adminGroupUsers.size() > 0);
-        String userId = "fred";
-        assertFalse(userId + " should not be an admin user for Pessimistic Locks", KNSServiceLocator.getPessimisticLockService().isPessimisticLockAdminUser(new UserSession(userId).getPerson()));
-        userId = "fran";
-        assertFalse(userId + " should not be an admin user for Pessimistic Locks", KNSServiceLocator.getPessimisticLockService().isPessimisticLockAdminUser(new UserSession(userId).getPerson()));
-        userId = "quickstart";
-        assertFalse(userId + " should not be an admin user for Pessimistic Locks", KNSServiceLocator.getPessimisticLockService().isPessimisticLockAdminUser(new UserSession(userId).getPerson()));
-        userId = "supervisr";
-        assertTrue(userId + " should be an admin user for Pessimistic Locks", KNSServiceLocator.getPessimisticLockService().isPessimisticLockAdminUser(new UserSession(userId).getPerson()));
     }
 
     /**

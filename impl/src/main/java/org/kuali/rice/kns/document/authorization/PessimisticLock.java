@@ -32,7 +32,7 @@ public class PessimisticLock extends PersistableBusinessObjectBase {
     
     private static final long serialVersionUID = -5210762282545093555L;
     
-    public static final String DEFAUL_LOCK_DESCRIPTOR = null;
+    public static final String DEFAULT_LOCK_DESCRIPTOR = null;
     
     // id is sequence number and primary key
     private Long id;

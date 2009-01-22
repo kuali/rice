@@ -325,7 +325,6 @@ public class KNSConstants extends JSTLConstants {
     // if more strings needed, then add more colons to the PARM11 strings above, e.g. (::; (:::;, etc.
 
     // Pessimistic Locking Constants
-    public static final String PESSIMISTIC_LOCK_ADMIN_GROUP_PARM_NM = "PESSIMISTIC_LOCK_ADMIN_GROUP";
     public static final String SESSION_TIMEOUT_WARNING_MESSAGE_TIME_PARM_NM = "SESSION_TIMEOUT_WARNING_MESSAGE_TIME";
     public static final String SESSION_TIMEOUT_WARNING_MILLISECONDS = "SESSION_TIMEOUT_WARNING_MILLISECONDS";
     public static final String SESSION_TIMEOUT_WARNING_MINUTES = "SESSION_TIMEOUT_WARNING_MINUTES";
@@ -448,12 +447,8 @@ public class KNSConstants extends JSTLConstants {
 
     public static final String APC_ALLOWED_OPERATOR = "A";
 //    public static final String APC_DENIED_OPERATOR = "D";
-    // country
-//    public static final String COUNTRY_CODE_UNITED_STATES = "US";
 
     public static final String MULTIPLE_VALUE = "multipleValues";
-//    public static final String MULTIPLE_VALUE_LABEL = "Lookup initial values";
-//    public static final String MULTIPLE_VALUE_NAME = "Multiple Value Name";
 
     // Agency type codes
 //    public static final String AGENCY_TYPE_CODE_FEDERAL = "F";
@@ -462,17 +457,6 @@ public class KNSConstants extends JSTLConstants {
     // below field used in tag files
     public static final String NEWLINE = "\n";
 
-    // Workflow constants
-//    public static final String WORKFLOW_FYI_REQUEST = "F";
-//    public static final String WORKFLOW_APPROVE_REQUEST = "A";
-
-    // Permission codes
-//    public static final String PERMISSION_READ_CODE = "R";
-//    public static final String PERMISSION_READ_DESCRIPTION = "READ";
-//    public static final String PERMISSION_MOD_CODE = "M";
-//    public static final String PERMISSION_MOD_DESCRIPTION = "MOD";
-//    public static final String PERMISSION_MODIFY = "modify";
-//    public static final String PERMISSION_VIEW = "view";
     // websession
     public static final String DOCUMENT_WEB_SCOPE = "documentWebScope";
     public static final String SESSION_SCOPE = "session";
@@ -511,50 +495,17 @@ public class KNSConstants extends JSTLConstants {
         public static final String ENABLE_DIRECT_INQUIRIES_IND = "ENABLE_DIRECT_INQUIRIES_IND";
     }
 
-//    public static class GeneralLedgerApplicationParameterKeys {
-//        public static final String INCOME_OBJECT_TYPE_CODES = "INCOME_OBJECT_TYPE_CODES";
-//        public static final String INCOME_TRANSFER_OBJECT_TYPE_CODES = "INCOME_TRANSFER_OBJECT_TYPE_CODES";
-//        public static final String EXPENSE_OBJECT_TYPE_CODES = "EXPENSE_OBJECT_TYPE_CODES";
-//        public static final String EXPENSE_TRANSFER_OBJECT_TYPE_CODES = "EXPENSE_TRANSFER_OBJECT_TYPE_CODES";
-//    }
-
-//    public static class GeneralLedgerCorrectionProcessApplicationParameterKeys {
-//        public static final String RECORD_COUNT_FUNCTIONALITY_LIMIT = "RECORD_COUNT_FUNCTIONALITY_LIMIT";
-//        public static final String RECORDS_PER_PAGE = "RECORDS_PER_PAGE";
-//    }
-
-//    public static class ParameterValues {
-//        public static final String YES = "Y";
-//        public static final String NO = "N";
-//    }
-
     public static class Maintenance {
         public static final String AFTER_CLASS_DELIM = "!!";
         public static final String AFTER_FIELDNAME_DELIM = "^^";
         public static final String AFTER_VALUE_DELIM = "::";
     }
 
-//    public static final String REQUEST_SEARCH_RESULTS = "reqSearchResults";
-//    public static final String REQUEST_SEARCH_RESULTS_SIZE = "reqSearchResultsSize";
-
     public static final int DEFAULT_NUM_OF_COLUMNS = 1;
-
-//    public static final String EMPLOYEE_LOOKUP_ERRORS = "document.employeeLookups";
-
-//    public static class OperationType {
-//        public static final String READ = "read";
-//        public static final String REPORT_ERROR = "with error";
-//        public static final String INSERT = "insert";
-//        public static final String UPDATE = "update";
-//        public static final String DELETE = "delete";
-//        public static final String SELECT = "select";
-//    }
 
     public static class TableRenderConstants {
         public static final String SWITCH_TO_PAGE_METHOD = "switchToPage";
         public static final String SORT_METHOD = "sort";
-//        public static final String SELECT_ALL_METHOD = "selectAll";
-//        public static final String UNSELECT_ALL_METHOD = "unselectAll";
 
         // below field used on displayMultipleValueLookupResults.tag
         public static final String PREVIOUSLY_SORTED_COLUMN_INDEX_PARAM = "previouslySortedColumnIndex";
@@ -562,4 +513,8 @@ public class KNSConstants extends JSTLConstants {
     }
 
     public static final String TAB_STATES = "tabStates";
+    
+    public static class Permissions {
+    	public static final String ADMIN_PESSIMISTIC_LOCKING = "Administer Pessimistic Locking";
+    }
 }

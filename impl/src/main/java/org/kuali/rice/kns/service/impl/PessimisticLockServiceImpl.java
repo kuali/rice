@@ -25,8 +25,8 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kns.authorization.AuthorizationConstants;
@@ -35,8 +35,8 @@ import org.kuali.rice.kns.document.authorization.PessimisticLock;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.exception.PessimisticLockingException;
 import org.kuali.rice.kns.service.BusinessObjectService;
+import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.PessimisticLockService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -56,24 +56,25 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
 
     public static final String EDIT_MODE_DEFAULT_TRUE_VALUE = "TRUE";
 
-    private static PersonService personService;
-    private static KualiModuleService kualiModuleService;
+    private PersonService<Person> personService;
     private BusinessObjectService businessObjectService;
+    private DataDictionaryService dataDictionaryService;
+    private IdentityManagementService identityManagementService;
 
     /**
      * @see org.kuali.rice.kns.service.PessimisticLockService#delete(java.lang.String)
      */
     public void delete(String id) {
-        Person user = GlobalVariables.getUserSession().getPerson();
         if (StringUtils.isBlank(id)) {
             throw new IllegalArgumentException("An invalid blank id was passed to delete a Pessimistic Lock.");
         }
-        Map primaryKeys = new HashMap();
+        Map<String,Object> primaryKeys = new HashMap<String,Object>();
         primaryKeys.put(KNSPropertyConstants.ID, Long.valueOf(id));
-        PessimisticLock lock = (PessimisticLock) businessObjectService.findByPrimaryKey(PessimisticLock.class, primaryKeys);
+        PessimisticLock lock = (PessimisticLock) getBusinessObjectService().findByPrimaryKey(PessimisticLock.class, primaryKeys);
         if (ObjectUtils.isNull(lock)) {
             throw new IllegalArgumentException("Pessimistic Lock with id " + id + " cannot be found in the database.");
         }
+        Person user = GlobalVariables.getUserSession().getPerson();
         if ( (!lock.isOwnedByUser(user)) && (!isPessimisticLockAdminUser(user)) ) {
             throw new AuthorizationException(user.getName(),"delete", "Pessimistick Lock (id " + id + ")");
         }
@@ -81,12 +82,14 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
     }
 
     private void delete(PessimisticLock lock) {
-        LOG.debug("Deleting lock: " + lock);
+    	if ( LOG.isDebugEnabled() ) {
+    		LOG.debug("Deleting lock: " + lock);
+    	}
         getBusinessObjectService().delete(lock);
     }
 
     /**
-     * @see org.kuali.rice.kns.service.PessimisticLockService#generateNewLock()
+     * @see org.kuali.rice.kns.service.PessimisticLockService#generateNewLock(String)
      */
     public PessimisticLock generateNewLock(String documentNumber) {
         return generateNewLock(documentNumber, GlobalVariables.getUserSession().getPerson());
@@ -103,7 +106,7 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
      * @see org.kuali.rice.kns.service.PessimisticLockService#generateNewLock(java.lang.String, org.kuali.rice.kim.bo.Person)
      */
     public PessimisticLock generateNewLock(String documentNumber, Person user) {
-        return generateNewLock(documentNumber, PessimisticLock.DEFAUL_LOCK_DESCRIPTOR, user);
+        return generateNewLock(documentNumber, PessimisticLock.DEFAULT_LOCK_DESCRIPTOR, user);
     }
 
     /**
@@ -112,7 +115,9 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
     public PessimisticLock generateNewLock(String documentNumber, String lockDescriptor, Person user) {
         PessimisticLock lock = new PessimisticLock(documentNumber, lockDescriptor, user);
         save(lock);
-        LOG.debug("Generated new lock: " + lock);
+        if ( LOG.isDebugEnabled() ) {
+        	LOG.debug("Generated new lock: " + lock);
+        }
         return lock;
     }
 
@@ -130,12 +135,7 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
      * @see org.kuali.rice.kns.service.PessimisticLockService#isPessimisticLockAdminUser(org.kuali.rice.kim.bo.Person)
      */
     public boolean isPessimisticLockAdminUser(Person user) {
-        String workgroupName = KNSServiceLocator.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.PESSIMISTIC_LOCK_ADMIN_GROUP_PARM_NM);
-        if (StringUtils.isNotBlank(workgroupName)) {
-            boolean returnValue = KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(user.getPrincipalId(), Utilities.parseGroupNamespaceCode(workgroupName), Utilities.parseGroupName(workgroupName));
-            return returnValue;
-        }
-        return false;
+    	return getIdentityManagementService().isAuthorized( user.getPrincipalId(), KNSConstants.KNS_NAMESPACE, KNSConstants.Permissions.ADMIN_PESSIMISTIC_LOCKING, null, null );
     }
 
     /**
@@ -166,7 +166,9 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
      * @see org.kuali.rice.kns.service.PessimisticLockService#save(org.kuali.rice.kns.document.authorization.PessimisticLock)
      */
     public void save(PessimisticLock lock) {
-        LOG.debug("Saving lock: " + lock);
+    	if ( LOG.isDebugEnabled() ) {
+    		LOG.debug("Saving lock: " + lock);
+    	}
         getBusinessObjectService().save(lock);
     }
 
@@ -220,7 +222,7 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
 
 
     protected boolean usesPessimisticLocking(Document document) {
-        return KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(document.getClass().getName()).getUsePessimisticLocking();
+        return getDataDictionaryService().getDataDictionary().getDocumentEntry(document.getClass().getName()).getUsePessimisticLocking();
     }
 
 
@@ -242,7 +244,7 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
      * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#releaseWorkflowPessimisticLocking(org.kuali.rice.kns.document.Document)
      */
     public void releaseWorkflowPessimisticLocking(Document document) {
-        KNSServiceLocator.getPessimisticLockService().releaseAllLocksForUser(document.getPessimisticLocks(), getWorkflowPessimisticLockOwnerUser());
+        releaseAllLocksForUser(document.getPessimisticLocks(), getWorkflowPessimisticLockOwnerUser());
         document.refreshPessimisticLocks();
     }
 
@@ -458,9 +460,9 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
      */
     protected PessimisticLock createNewPessimisticLock(Document document, Map editMode, Person user) {
         if (useCustomLockDescriptors()) {
-            return KNSServiceLocator.getPessimisticLockService().generateNewLock(document.getDocumentNumber(), getCustomLockDescriptor(document, editMode, user), user);
+            return generateNewLock(document.getDocumentNumber(), getCustomLockDescriptor(document, editMode, user), user);
         } else {
-            return KNSServiceLocator.getPessimisticLockService().generateNewLock(document.getDocumentNumber(), user);
+            return generateNewLock(document.getDocumentNumber(), user);
         }
     }
 
@@ -492,12 +494,26 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
 
 
 
-    public static PersonService getPersonService() {
+    public PersonService getPersonService() {
         if ( personService == null ) {
             personService = KIMServiceLocator.getPersonService();
         }
         return personService;
     }
+
+	public DataDictionaryService getDataDictionaryService() {
+        if ( dataDictionaryService == null ) {
+        	dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+        }
+		return dataDictionaryService;
+	}
+
+	public IdentityManagementService getIdentityManagementService() {
+        if ( identityManagementService == null ) {
+        	identityManagementService = KIMServiceLocator.getIdentityManagementService();
+        }
+		return identityManagementService;
+	}
 
 
 

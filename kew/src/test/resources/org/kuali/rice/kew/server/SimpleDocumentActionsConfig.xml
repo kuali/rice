@@ -39,11 +39,7 @@
             <docHandler>null</docHandler>
             <active>true</active>
             <policies>
-                <policy>
-                    <name>PRE_APPROVE</name>
-                    <value>false</value>
-                </policy>
-                <policy>
+              <policy>
                     <name>DEFAULT_APPROVE</name>
                     <value>true</value>
                     <!-- this should be false in a production scenario -->
@@ -83,7 +79,9 @@
       <rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
     <rule>
       <documentType>servicesTestRequest</documentType>
-      <ruleTemplate>testApproveTemplate</ruleTemplate>
+      <toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>testApproveTemplate</ruleTemplate>
       <description>Test Approve</description>
       <ignorePrevious>true</ignorePrevious>
       <responsibilities>
@@ -96,7 +94,9 @@
     </rule>
     <rule>
       <documentType>servicesTestRequest</documentType>
-      <ruleTemplate>testAcknowledgeTemplate</ruleTemplate>
+      <toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>testAcknowledgeTemplate</ruleTemplate>
       <description>Test Acknowledge</description>
       <ignorePrevious>true</ignorePrevious>
       <responsibilities>
@@ -109,7 +109,9 @@
     </rule>
     <rule>
       <documentType>servicesTestRequest</documentType>
-      <ruleTemplate>testFYITemplate</ruleTemplate>
+      <toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>testFYITemplate</ruleTemplate>
       <description>Test FYI</description>
       <ignorePrevious>true</ignorePrevious>
       <responsibilities>

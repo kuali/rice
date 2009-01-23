@@ -13,10 +13,6 @@
 			<active>true</active>
 			<policies>
 				<policy>
-					<name>PRE_APPROVE</name>
-					<value>false</value>
-				</policy>
-				<policy>
 					<name>DEFAULT_APPROVE</name>
 					<value>false</value>
 				</policy>
@@ -82,7 +78,9 @@
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 	    <rule>
 	      <documentType>OrgReviewTestDocType</documentType>
-	      <ruleTemplate>OrgReviewTemplate</ruleTemplate>
+	      <toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>OrgReviewTemplate</ruleTemplate>
 	      <description>OrgReviewTemplate Rule for Rule Test UA-FMOP (Fake)</description>
 	      <ignorePrevious>true</ignorePrevious>
           <ruleExtensions>
@@ -111,7 +109,9 @@
 	    </rule>
 	    <rule>
 	      <documentType>OrgReviewTestDocType</documentType>
-	      <ruleTemplate>OrgReviewTemplate</ruleTemplate>
+	      <toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>OrgReviewTemplate</ruleTemplate>
 	      <description>OrgReviewTemplate Rule for Rule Test UA-VPIT (Fake)</description>
 	      <ignorePrevious>true</ignorePrevious>
           <ruleExtensions>
@@ -140,7 +140,9 @@
 	    </rule>
 	    <rule>
 	      <documentType>OrgReviewTestDocType</documentType>
-	      <ruleTemplate>OrgReviewTemplate</ruleTemplate>
+	      <toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>OrgReviewTemplate</ruleTemplate>
 	      <description>OrgReviewTemplate Rule for Rule Test BA-FMOP(Fake)</description>
 	      <ignorePrevious>true</ignorePrevious>
           <ruleExtensions>
@@ -169,7 +171,9 @@
 	    </rule>
 	    <rule>
 	      <documentType>OrgReviewTestDocType</documentType>
-	      <ruleTemplate>OrgReviewTemplate</ruleTemplate>
+	      <toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>OrgReviewTemplate</ruleTemplate>
 	      <description>OrgReviewTemplate Rule 2 for Rule Test BA-FMOP(Fake)</description>
 	      <ignorePrevious>true</ignorePrevious>
           <ruleExtensions>

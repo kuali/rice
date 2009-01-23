@@ -23,5 +23,36 @@ package org.kuali.rice.kns.datadictionary;
  *
  */
 public class SearchingAttribute extends WorkflowAttributeMetadata {
-
+	private boolean showAttributeInSearchCriteria = true;
+	private boolean showAttributeInResultSet = false;
+	
+	/**
+	 * Returns whether this attribute should appear in the search criteria
+	 * @return the showAttributeInSearchCriteria
+	 */
+	public boolean isShowAttributeInSearchCriteria() {
+		return this.showAttributeInSearchCriteria;
+	}
+	/**
+	 * Sets whether this attribute should appear in the search criteria
+	 * @param showAttributeInSearchCriteria the showAttributeInSearchCriteria to set
+	 */
+	public void setShowAttributeInSearchCriteria(
+			boolean showAttributeInSearchCriteria) {
+		this.showAttributeInSearchCriteria = showAttributeInSearchCriteria;
+	}
+	/**
+	 * Returns whether this attribute should appear in the result set
+	 * @return the showAttributeInResultSet
+	 */
+	public boolean isShowAttributeInResultSet() {
+		return this.showAttributeInResultSet;
+	}
+	/**
+	 * Sets whether this attribute should appear in the result set
+	 * @param showAttributeInResultSet the showAttributeInResultSet to set
+	 */
+	public void setShowAttributeInResultSet(boolean showAttributeInResultSet) {
+		this.showAttributeInResultSet = showAttributeInResultSet;
+	}
 }

@@ -17,9 +17,11 @@ package org.kuali.rice.kns.document.authorization;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
@@ -29,11 +31,15 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
+import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.KNSConstants;
 
 public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase
 		implements MaintenanceDocumentAuthorizer {
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MaintenanceDocumentAuthorizerBase.class);
+	
 	private static MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
+	private static PersistenceStructureService persistenceStructureService;
 
 	public final boolean canCreate(Class boClass, Person user) {
 		AttributeSet permissionDetails = new AttributeSet();
@@ -42,44 +48,63 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase
 						boClass));
 		permissionDetails.put(KNSConstants.MAINTENANCE_ACTN,
 				KNSConstants.MAINTENANCE_NEW_ACTION);
-		return !permissionExistsByTemplate(KNSConstants.KNS_NAMESPACE,
+		// check if permissions exist at all for this document and action
+		// if not, then there are no restrictions and this action is allowed
+		if ( !permissionExistsByTemplate(KNSConstants.KNS_NAMESPACE,
 				KimConstants.PermissionTemplateNames.CREATE_MAINTAIN_RECORDS,
-				permissionDetails)
-				|| getIdentityManagementService()
-						.isAuthorizedByTemplateName(
-								user.getPrincipalId(),
-								KNSConstants.KNS_NAMESPACE,
-								KimConstants.PermissionTemplateNames.CREATE_MAINTAIN_RECORDS,
-								permissionDetails, new AttributeSet());
+				permissionDetails) ) {
+			return true;
+		}
+		return getIdentityManagementService()
+				.isAuthorizedByTemplateName(
+						user.getPrincipalId(),
+						KNSConstants.KNS_NAMESPACE,
+						KimConstants.PermissionTemplateNames.CREATE_MAINTAIN_RECORDS,
+						permissionDetails, new AttributeSet());
+		// FIXME: should not need to pass in an empty AttributeSet
 	}
 
+	@SuppressWarnings("unchecked")
 	public final boolean canMaintain(BusinessObject businessObject, Person user) {
-		Map<String, String> permissionDetails = new HashMap<String, String>();
+		Map<String, String> permissionDetails = new HashMap<String, String>( 2 );
 		permissionDetails.put(KimAttributes.DOCUMENT_TYPE_NAME,
 				getMaintenanceDocumentDictionaryService().getDocumentTypeName(
 						businessObject.getClass()));
 		permissionDetails.put(KNSConstants.MAINTENANCE_ACTN,
 				KNSConstants.MAINTENANCE_EDIT_ACTION);
-		return !permissionExistsByTemplate(KNSConstants.KNS_NAMESPACE,
+		// check if permissions exist at all for this document and action
+		// if not, then there are no restrictions and this action is allowed
+		if ( !permissionExistsByTemplate(KNSConstants.KNS_NAMESPACE,
 				KimConstants.PermissionTemplateNames.CREATE_MAINTAIN_RECORDS,
-				permissionDetails)
-				|| isAuthorizedByTemplate(
-						businessObject,
-						KNSConstants.KNS_NAMESPACE,
-						KimConstants.PermissionTemplateNames.CREATE_MAINTAIN_RECORDS,
-						user.getPrincipalId(), permissionDetails, null);
+				permissionDetails) ) {
+			return true;
+		}
+		List<String> pkFieldNames = getPersistenceStructureService().getPrimaryKeys( businessObject.getClass() );
+		Map<String,String> additionalQualifiers = new HashMap<String,String>( pkFieldNames.size() );
+		for ( String pkField : pkFieldNames ) {
+			try {
+				Object pkFieldValue = PropertyUtils.getSimpleProperty( businessObject, pkField );
+				if ( pkFieldValue != null ) {
+					additionalQualifiers.put( pkField, pkFieldValue.toString() );
+				}
+			} catch ( Exception ex ) {
+				// do nothing, we don't care at this point
+				if ( LOG.isDebugEnabled() ) {
+					LOG.debug( "Unable to retrieve PK property (" + pkField + ") from: " + businessObject, ex );
+				}
+			}
+		}
+		return isAuthorizedByTemplate(
+				businessObject,
+				KNSConstants.KNS_NAMESPACE,
+				KimConstants.PermissionTemplateNames.CREATE_MAINTAIN_RECORDS,
+				user.getPrincipalId(), permissionDetails, additionalQualifiers);
 	}
 
 	public final boolean canCreateOrMaintain(
 			MaintenanceDocument maintenanceDocument, Person user) {
-		return !permissionExistsByTemplate(maintenanceDocument,
-				KNSConstants.KNS_NAMESPACE,
-				KimConstants.PermissionTemplateNames.CREATE_MAINTAIN_RECORDS)
-				|| isAuthorizedByTemplate(
-						maintenanceDocument,
-						KNSConstants.KNS_NAMESPACE,
-						KimConstants.PermissionTemplateNames.CREATE_MAINTAIN_RECORDS,
-						user.getPrincipalId());
+		return canCreate( maintenanceDocument.getNewMaintainableObject().getBoClass(), user )
+				|| canMaintain( maintenanceDocument.getNewMaintainableObject().getBusinessObject(), user );
 	}
 
 	public Set<String> getSecurePotentiallyHiddenSectionIds() {
@@ -119,11 +144,17 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase
 		}
 	}
 
-	protected static final MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
+	protected final MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
 		if (maintenanceDocumentDictionaryService == null) {
-			maintenanceDocumentDictionaryService = KNSServiceLocator
-					.getMaintenanceDocumentDictionaryService();
+			maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
 		}
 		return maintenanceDocumentDictionaryService;
+	}
+
+	protected final PersistenceStructureService getPersistenceStructureService() {
+		if (persistenceStructureService == null) {
+			persistenceStructureService = KNSServiceLocator.getPersistenceStructureService();
+		}
+		return persistenceStructureService;
 	}
 }

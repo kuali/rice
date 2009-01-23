@@ -206,6 +206,26 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 				permissionDetails, roleQualifiers);
 	}
 
+	@SuppressWarnings("unchecked")
+	private Map<Object,Map<String,String>> getRoleQualificationCache() {
+		Map<Object,Map<String,String>> roleQualificationCache = (Map<Object,Map<String,String>>)GlobalVariables.getRequestCache(ROLE_QUALIFICATION_CACHE_NAME);
+		if ( roleQualificationCache == null ) {
+			roleQualificationCache = new HashMap<Object,Map<String,String>>();
+			GlobalVariables.setRequestCache(ROLE_QUALIFICATION_CACHE_NAME, roleQualificationCache);
+		}		
+		return roleQualificationCache;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private Map<Object,Map<String,String>> getPermissionDetailsCache() {
+		Map<Object,Map<String,String>> permissionDetailsCache = (Map<Object,Map<String,String>>)GlobalVariables.getRequestCache(PERMISSION_DETAILS_CACHE_NAME);
+		if ( permissionDetailsCache == null ) {
+			permissionDetailsCache = new HashMap<Object,Map<String,String>>();
+			GlobalVariables.setRequestCache(PERMISSION_DETAILS_CACHE_NAME, permissionDetailsCache);
+		}		
+		return permissionDetailsCache;
+	}
+	
 	/**
 	 * Returns a role qualification map based off data from the primary business
 	 * object or the document. DO NOT MODIFY THE MAP RETURNED BY THIS METHOD
@@ -215,25 +235,21 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 	 *            the lookup result row or inquiry) or the document
 	 * @return a Map containing role qualifications
 	 */
-	@SuppressWarnings("unchecked")
 	protected final Map<String, String> getRoleQualification(
 			BusinessObject primaryBusinessObjectOrDocument) {
-		Object roleQualification = GlobalVariables.getRequestCache(ROLE_QUALIFICATION_CACHE_NAME);
+		Map<Object,Map<String,String>> roleQualificationCache = getRoleQualificationCache();
+		Map<String, String> roleQualification = roleQualificationCache.get( primaryBusinessObjectOrDocument );
 		if (roleQualification == null ) {
-			Map<String, String> attributes = new HashMap<String, String>();
-			addRoleQualification(primaryBusinessObjectOrDocument, attributes);
-			attributes.put(KimAttributes.PRINCIPAL_ID,
-					GlobalVariables.getUserSession().getPerson()
-							.getPrincipalId());
-			roleQualification = attributes;
-			GlobalVariables.setRequestCache(ROLE_QUALIFICATION_CACHE_NAME, roleQualification);
+			roleQualification = new HashMap<String, String>();
+			addRoleQualification(primaryBusinessObjectOrDocument, roleQualification);
+			roleQualification.put(KimAttributes.PRINCIPAL_ID,
+					GlobalVariables.getUserSession().getPerson().getPrincipalId());
+			roleQualificationCache.put( primaryBusinessObjectOrDocument, roleQualification );
 		}
-		return (Map<String,String>)roleQualification;
+		return roleQualification;
 	}
 
 	/**
-	 * This overridden method ...
-	 * 
 	 * @see org.kuali.rice.kns.authorization.BusinessObjectAuthorizer#getCollectionItemPermissionDetails(org.kuali.rice.kns.bo.BusinessObject)
 	 */
 	public Map<String, String> getCollectionItemPermissionDetails(
@@ -242,8 +258,6 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 	}
 
 	/**
-	 * This overridden method ...
-	 * 
 	 * @see org.kuali.rice.kns.authorization.BusinessObjectAuthorizer#getCollectionItemRoleQualifications(org.kuali.rice.kns.bo.BusinessObject)
 	 */
 	public Map<String, String> getCollectionItemRoleQualifications(
@@ -260,17 +274,16 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 	 *            the lookup result row or inquiry) or the document
 	 * @return a Map containing permission details
 	 */
-	@SuppressWarnings("unchecked")
 	protected final Map<String, String> getPermissionDetailValues(
 			BusinessObject businessObject) {
-		Object permissionDetails = GlobalVariables.getRequestCache(PERMISSION_DETAILS_CACHE_NAME);
+		Map<Object,Map<String,String>> permissionDetailsCache = getPermissionDetailsCache();
+		Map<String, String> permissionDetails = permissionDetailsCache.get( businessObject );
 		if (permissionDetails == null) {
-			Map<String, String> attributes = new HashMap<String, String>();
-			addPermissionDetails(businessObject, attributes);
-			permissionDetails = attributes;
-			GlobalVariables.setRequestCache(PERMISSION_DETAILS_CACHE_NAME, permissionDetails);
+			permissionDetails = new HashMap<String, String>();
+			addPermissionDetails(businessObject, permissionDetails);
+			permissionDetailsCache.put( businessObject, permissionDetails );
 		}
-		return (Map<String,String>)permissionDetails;
+		return permissionDetails;
 	}
 
 	protected static final IdentityManagementService getIdentityManagementService() {

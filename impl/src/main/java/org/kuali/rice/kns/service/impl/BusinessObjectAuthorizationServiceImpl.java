@@ -546,9 +546,9 @@ public class BusinessObjectAuthorizationServiceImpl implements
 	
 	public <T extends BusinessObject> boolean canCreate(Class<T> boClass, Person user, String docTypeName){
 		DocumentPresentationController documentPresentationController = getDocumentHelperService().getDocumentPresentationController(docTypeName);
-		DocumentAuthorizer documentAuthorizer = getDocumentHelperService().getDocumentAuthorizer(docTypeName);
 	    boolean canCreate = ((MaintenanceDocumentPresentationController) documentPresentationController).canCreate(boClass);
 	    if(canCreate){
+			DocumentAuthorizer documentAuthorizer = getDocumentHelperService().getDocumentAuthorizer(docTypeName);
 	    	canCreate = ((MaintenanceDocumentAuthorizer) documentAuthorizer).canCreate(boClass, user);
 	    }
 		return canCreate;
@@ -556,9 +556,9 @@ public class BusinessObjectAuthorizationServiceImpl implements
 	
 	public boolean canMaintain(BusinessObject businessObject, Person user, String docTypeName){
 		DocumentPresentationController documentPresentationController = getDocumentHelperService().getDocumentPresentationController(docTypeName);
-		DocumentAuthorizer documentAuthorizer = getDocumentHelperService().getDocumentAuthorizer(docTypeName);
 	    boolean canMaintain = ((MaintenanceDocumentPresentationController) documentPresentationController).canCreate(businessObject.getClass());
 	    if(canMaintain){
+			DocumentAuthorizer documentAuthorizer = getDocumentHelperService().getDocumentAuthorizer(docTypeName);
 	    	canMaintain = ((MaintenanceDocumentAuthorizer) documentAuthorizer).canMaintain(businessObject, user);
 	    }
 		return canMaintain;

@@ -71,7 +71,6 @@ public class DocumentSearchDAOJdbcImpl implements DocumentSearchDAO {
             final JdbcTemplate template = new JdbcTemplate(ds);
 
             return (List<DocSearchDTO>) template.execute(new ConnectionCallback() {
-                @Override
                 public Object doInConnection(final Connection con) throws SQLException {
                     final Statement statement = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
                     try {

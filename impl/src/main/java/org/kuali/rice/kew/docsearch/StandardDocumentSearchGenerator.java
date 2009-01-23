@@ -100,7 +100,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 		return searchableAttributes;
 	}
 
-	public void setSearchableAttributes(List<SearchableAttribute> searchableAttributes) {
+	public void setSearchableAttributes(List searchableAttributes) {
 		this.searchableAttributes = searchableAttributes;
 	}
 

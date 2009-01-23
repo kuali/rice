@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.role.KimRole;
@@ -50,7 +49,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  */
 public class PermissionServiceImpl implements PermissionService {
 	private static final String DEFAULT_PERMISSION_TYPE_SERVICE = "defaultPermissionTypeService";
-	private static final Logger LOG = Logger.getLogger( PermissionServiceImpl.class );
+//	private static final Logger LOG = Logger.getLogger( PermissionServiceImpl.class );
 	
 	private BusinessObjectService businessObjectService;
 	private GroupService groupService;
@@ -107,16 +106,44 @@ public class PermissionServiceImpl implements PermissionService {
 					permTemplate = perm.getTemplate();
 				}
 			}
-			String serviceName = permTemplate.getKimType().getKimTypeServiceName();
-    		if ( serviceName != null ) {
-    			service = (KimPermissionTypeService)KIMServiceLocator.getService( serviceName );
-    		}
-    		if ( service == null ) {
-    			service = getDefaultPermissionTypeService();
-    		}
+			service = getPermissionTypeService( permTemplate );
     		permissionTypeServiceByNameCache.put(key, service);
 		}
 		return service;
+	}
+
+    protected KimPermissionTypeService getPermissionTypeService( KimPermissionTemplateImpl permissionTemplate ) {
+    	if ( permissionTemplate == null ) {
+    		throw new IllegalArgumentException( "permissionTemplate may not be null" );
+    	}
+    	KimTypeImpl kimType = permissionTemplate.getKimType();
+    	String serviceName = kimType.getKimTypeServiceName();
+    	// if no service specified, return a default implementation
+    	if ( StringUtils.isBlank( serviceName ) ) {
+    		return getDefaultPermissionTypeService();
+    	}
+    	try {
+	    	Object service = KIMServiceLocator.getService( serviceName );
+	    	// if we have a service name, it must exist
+	    	if ( service == null ) {
+				throw new RuntimeException("null returned for permission type service for service name: " + serviceName);
+	    	}
+	    	// whatever we retrieved must be of the correct type
+	    	if ( !(service instanceof KimPermissionTypeService)  ) {
+	    		throw new RuntimeException( "Service " + serviceName + " was not a KimPermissionTypeService.  Was: " + service.getClass().getName() );
+	    	}
+	    	return (KimPermissionTypeService)service;
+    	} catch( Exception ex ) {
+    		// sometimes service locators throw exceptions rather than returning null, handle that
+    		throw new RuntimeException( "Error retrieving service: " + serviceName + " from the KIMServiceLocator.", ex );
+    	}
+    }
+    
+    protected KimPermissionTypeService getDefaultPermissionTypeService() {
+    	if ( defaultPermissionTypeService == null ) {
+    		defaultPermissionTypeService = (KimPermissionTypeService)KIMServiceLocator.getBean(DEFAULT_PERMISSION_TYPE_SERVICE);
+    	}
+		return defaultPermissionTypeService;
 	}
 	
     /**
@@ -205,27 +232,11 @@ public class PermissionServiceImpl implements PermissionService {
     	
     	return results;    	
     }
-    
-    public KimPermissionTypeService getDefaultPermissionTypeService() {
-    	if ( defaultPermissionTypeService == null ) {
-    		defaultPermissionTypeService = (KimPermissionTypeService)KIMServiceLocator.getBean(DEFAULT_PERMISSION_TYPE_SERVICE);
-    	}
-		return defaultPermissionTypeService;
-	}
 
     protected Map<String,KimPermissionTypeService> getPermissionTypeServicesByTemplateId( Collection<KimPermissionImpl> permissions ) {
     	Map<String,KimPermissionTypeService> permissionTypeServices = new HashMap<String, KimPermissionTypeService>( permissions.size() );
     	for ( KimPermissionImpl perm : permissions ) {
-    		String serviceName = perm.getTemplate().getKimType().getKimTypeServiceName();
-    		if ( serviceName != null ) {
-    			KimPermissionTypeService permissionTypeService = (KimPermissionTypeService)KIMServiceLocator.getService( serviceName );
-    			if ( permissionTypeService != null ) {
-    	    		permissionTypeServices.put(perm.getTemplateId(), permissionTypeService );    				
-    			} else {
-					LOG.error("Can't find permission type service for " + perm + " permission type service bean name " + serviceName);
-					throw new RuntimeException("Can't find permission type service for " + perm + " permission type service bean name " + serviceName);
-    			}
-    		}
+    		permissionTypeServices.put(perm.getTemplateId(), getPermissionTypeService( perm.getTemplate() ) );    				
     	}
     	return permissionTypeServices;
     }
@@ -265,9 +276,6 @@ public class PermissionServiceImpl implements PermissionService {
     		for ( String templateId : permissionMap.keySet() ) {
     			KimPermissionTypeService permissionTypeService = permissionTypeServices.get( templateId );
     			List<KimPermissionInfo> permissionList = permissionMap.get( templateId );
-    			if ( permissionTypeService == null ) {
-    				permissionTypeService = getDefaultPermissionTypeService();
-    			}
 				applicablePermissions.addAll( permissionTypeService.getMatchingPermissions( permissionDetails, permissionList ) );    				
     		}
     	}

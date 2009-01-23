@@ -9,11 +9,19 @@
 		<version>0.9.4-SNAPSHOT</version>
 	</parent>
 	<artifactId>rice-api</artifactId>
-    
+
     <dependencies>
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>

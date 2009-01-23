@@ -21,6 +21,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -989,8 +990,8 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         }
     	return header.getRoutedByUserWorkflowId();
     }
-
-	/**
+    	
+    /**
 	 *
 	 * @see org.kuali.rice.kew.service.WorkflowUtility#getSearchableAttributeDateTimeValuesByKey(java.lang.Long, java.lang.String)
 	 */
@@ -1026,4 +1027,20 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
 			Long documentId, String key) {
 		return KEWServiceLocator.getRouteHeaderService().getSearchableAttributeStringValuesByKey(documentId, key);
 	}
+
+    public String getFutureRequestsKey(String principalId) {
+        return KEWConstants.RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_KEY + "," + principalId + "," + new Date().toString() + ", " + Math.random();
+    }
+
+    public String getReceiveFutureRequestsValue() {
+        return KEWConstants.RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_VALUE;
+    }
+
+    public String getDoNotReceiveFutureRequestsValue() {
+        return KEWConstants.DONT_RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_VALUE;
+    }
+
+    public String getClearFutureRequestsValue() {
+        return KEWConstants.CLEAR_FUTURE_REQUESTS_BRANCH_STATE_VALUE;
+    }
 }

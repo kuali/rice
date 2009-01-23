@@ -126,9 +126,7 @@ public class GlobalResourceLoader {
 		if (serviceName == null) {
 			throw new IllegalArgumentException("The service name must be non-null.");
 		}
-		if ( LOG.isDebugEnabled() ) {
-		    LOG.debug("GlobalResourceLoader fetching service " + serviceName);
-		}
+		LOG.debug("GlobalResourceLoader fetching service " + serviceName);
 		return getResourceLoader().getService(serviceName);
 	}
 

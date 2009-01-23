@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,14 +25,11 @@ import java.util.List;
  * This class supports re-entrancy by maintaining a stack of context classloaders.
  * NOTE: maybe implement stricter checks, by matching some contextual object or original
  * classloader on bind to the unbind so that they are always matched (within a given context)
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public final class ContextClassLoaderBinder {
-    
-	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
-			.getLogger(ContextClassLoaderBinder.class);
-	
+
 	/**
      * Stack of previous context classloaders that should be
      * restored on unbind

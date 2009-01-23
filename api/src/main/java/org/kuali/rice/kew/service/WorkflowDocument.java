@@ -21,14 +21,17 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.ActionTakenDTO;
 import org.kuali.rice.kew.dto.AdHocRevokeDTO;
 import org.kuali.rice.kew.dto.DocumentContentDTO;
 import org.kuali.rice.kew.dto.DocumentDetailDTO;
+import org.kuali.rice.kew.dto.EmplIdDTO;
 import org.kuali.rice.kew.dto.ModifiableDocumentContentDTO;
 import org.kuali.rice.kew.dto.MovePointDTO;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.NoteDTO;
 import org.kuali.rice.kew.dto.ReturnPointDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
@@ -36,10 +39,15 @@ import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
+import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
-import org.kuali.rice.kew.util.FutureRequestDocumentStateManager;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.service.IdentityManagementService;
+import org.kuali.rice.kim.service.PersonService;
+import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * Represents a document in Workflow from the perspective of the client.  This class is one of two
@@ -100,7 +108,26 @@ public class WorkflowDocument implements java.io.Serializable {
     }
 
     private String convertUserIdToPrincipalId(UserIdDTO userId) {
-    	return KEWServiceLocator.getIdentityHelperService().getPrincipalId(userId);
+
+        if (userId == null) {
+            return null;
+        } else if (userId instanceof WorkflowIdDTO) {
+            return ((WorkflowIdDTO)userId).getWorkflowId();
+        } else if (userId instanceof NetworkIdDTO) {
+            IdentityManagementService identityManagementService = (IdentityManagementService)GlobalResourceLoader.getService(KimConstants.KIM_IDENTITY_MANAGEMENT_SERVICE);
+            String principalName = ((NetworkIdDTO)userId).getNetworkId();
+            KimPrincipal principal = identityManagementService.getPrincipalByPrincipalName(principalName);
+            return principal.getPrincipalId();
+        } else if (userId instanceof EmplIdDTO) {
+            PersonService personService = (PersonService)GlobalResourceLoader.getService(KimConstants.KIM_PERSON_SERVICE);
+            String employeeId = ((EmplIdDTO)userId).getEmplId();
+            Person person = personService.getPersonByEmployeeId(employeeId);
+            if (person == null) {
+                throw new RiceRuntimeException("Could not locate a person with the given employee id of " + employeeId);
+            }
+            return person.getPrincipalId();
+        }
+        throw new IllegalArgumentException("Invalid UserIdDTO type was passed: " + userId);
     }
 
     /**
@@ -1459,7 +1486,8 @@ public class WorkflowDocument implements java.io.Serializable {
      * @throws WorkflowException
      */
     public void setReceiveFutureRequests() throws WorkflowException {
-	this.setVariable(FutureRequestDocumentStateManager.getFutureRequestsKey(principalId), FutureRequestDocumentStateManager.getReceiveFutureRequestsValue());
+        WorkflowUtility workflowUtility = getWorkflowUtility();
+        this.setVariable(workflowUtility.getFutureRequestsKey(principalId), workflowUtility.getReceiveFutureRequestsValue());
     }
 
     /**
@@ -1470,7 +1498,8 @@ public class WorkflowDocument implements java.io.Serializable {
      * @throws WorkflowException
      */
     public void setDoNotReceiveFutureRequests() throws WorkflowException {
-	this.setVariable(FutureRequestDocumentStateManager.getFutureRequestsKey(principalId), FutureRequestDocumentStateManager.getDoNotReceiveFutureRequestsValue());
+        WorkflowUtility workflowUtility = getWorkflowUtility();
+        this.setVariable(workflowUtility.getFutureRequestsKey(principalId), workflowUtility.getDoNotReceiveFutureRequestsValue());
     }
 
     /**
@@ -1480,7 +1509,8 @@ public class WorkflowDocument implements java.io.Serializable {
      * @throws WorkflowException
      */
     public void setClearFutureRequests() throws WorkflowException {
-	this.setVariable(FutureRequestDocumentStateManager.getFutureRequestsKey(principalId), FutureRequestDocumentStateManager.getClearFutureRequestsValue());
+        WorkflowUtility workflowUtility = getWorkflowUtility();
+        this.setVariable(workflowUtility.getFutureRequestsKey(principalId), workflowUtility.getClearFutureRequestsValue());
     }
 
     /**

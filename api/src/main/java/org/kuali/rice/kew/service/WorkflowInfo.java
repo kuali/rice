@@ -16,9 +16,7 @@
  */
 package org.kuali.rice.kew.service;
 
-import java.math.BigDecimal;
 import java.rmi.RemoteException;
-import java.sql.Timestamp;
 import java.util.List;
 
 import org.kuali.rice.core.config.Config;
@@ -94,7 +92,7 @@ public class WorkflowInfo implements java.io.Serializable {
         }
 
     }
-
+    
     public AttributeSet getActionsRequested(String principalId, Long documentId) throws WorkflowException {
     	return getWorkflowUtility().getActionsRequested(principalId, documentId);
     }
@@ -180,7 +178,7 @@ public class WorkflowInfo implements java.io.Serializable {
             throw handleException(e);
         }
     }
-
+    
     public ActionItemDTO[] getActionItems(Long routeHeaderId) throws WorkflowException {
         try {
             return getWorkflowUtility().getActionItems(routeHeaderId);
@@ -406,7 +404,7 @@ public class WorkflowInfo implements java.io.Serializable {
             throw handleException(e);
         }
     }
-
+    
     /**
      * Returns the current node instances on the document.  If the document has active nodes, those will
      * be returned.  Otherwise, all terminal nodes will be returned.
@@ -422,7 +420,7 @@ public class WorkflowInfo implements java.io.Serializable {
             throw handleException(e);
         }
     }
-
+    
     /**
      * Returns names of all current nodes the document is currently at.  If the document has active nodes, those
      * will be returned.  Otherwise, the document's terminal nodes will be returned.
@@ -527,7 +525,7 @@ public class WorkflowInfo implements java.io.Serializable {
     /**
      * This method allows a document search to be executed just as would occur from the User Interface using the given user as
      * the searching user
-     *
+     * 
      * @param userId - user to use when executing the search (for security filtering purposes)
      * @param criteriaVO - criteria to use for the search
      * @return a {@link DocumentSearchResultDTO} object containing a list of search result columns and data rows
@@ -544,7 +542,7 @@ public class WorkflowInfo implements java.io.Serializable {
 
     /**
      * This method allows a document search to be executed just as would occur from the User Interface
-     *
+     * 
      * @param criteriaVO - criteria to use for the search
      * @return a {@link DocumentSearchResultDTO} object containing a list of search result columns and data rows
      * @throws RemoteException
@@ -594,7 +592,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * Checks whether a document would product at least one action request under the specified criteria
      * @param reportCriteriaDTO criteria under which to perform the check
      * @param actionRequestedCodes the types of action requests to check for
-     * @param ignoreCurrentActionRequests determines if method should look only at simulation generated requests
+     * @param ignoreCurrentActionRequests determines if method should look only at simulation generated requests 
      *        or both simulation generated requests and requests that are currently active on the document
      * @return whether a document would product at least one action request under the specified criteria
      * @throws WorkflowException if an error occurs
@@ -610,7 +608,7 @@ public class WorkflowInfo implements java.io.Serializable {
 
     /**
      * @deprecated use {@link #documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO, String[], boolean)} instead
-     *
+     * 
      * This method assumes both existing and generated requests should be taken into account
      */
     public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaDTO, String[] actionRequestedCodes) throws WorkflowException {
@@ -644,11 +642,11 @@ public class WorkflowInfo implements java.io.Serializable {
             throw handleException(e);
         }
     }
-
+    
     /**
-     *
+     * 
      * This method gets a list of ids of all principals who have a pending action request for a document.
-     *
+     * 
      * @param actionRequestedCd
      * @param routeHeaderId
      * @return
@@ -663,12 +661,12 @@ public class WorkflowInfo implements java.io.Serializable {
     }
 
     /**
-     * This method gets a list of ids of all principals in the route log -
-     * - initiators,
-     * - people who have taken action,
-     * - people with a pending action request,
+     * This method gets a list of ids of all principals in the route log - 
+     * - initiators, 
+     * - people who have taken action, 
+     * - people with a pending action request, 
 	 * - people who will receive an action request for the document in question
-	 *
+	 * 
      * @param routeHeaderId
      * @param lookFuture
      * @return
@@ -681,7 +679,7 @@ public class WorkflowInfo implements java.io.Serializable {
             throw handleException(e);
         }
     }
-
+    
     public String getDocumentInitiatorPrincipalId( Long routeHeaderId ) throws WorkflowException {
     	try{
     		return getWorkflowUtility().getDocumentInitiatorPrincipalId(routeHeaderId);
@@ -695,21 +693,5 @@ public class WorkflowInfo implements java.io.Serializable {
     	} catch (Exception e) {
             throw handleException(e);
         }
-    }
-
-    public List<String> getSearchableAttributeStringValuesByKey(Long documentId, String key) throws WorkflowException{
-    	return getWorkflowUtility().getSearchableAttributeStringValuesByKey(documentId, key);
-    }
-
-    public List<Timestamp> getSearchableAttributeDateTimeValuesByKey(Long documentId, String key) throws WorkflowException{
-    	return getWorkflowUtility().getSearchableAttributeDateTimeValuesByKey(documentId, key);
-    }
-
-    public List<BigDecimal> getSearchableAttributeFloatValuesByKey(Long documentId, String key) throws WorkflowException{
-    	return getWorkflowUtility().getSearchableAttributeFloatValuesByKey(documentId, key);
-    }
-
-    public List<Long> getSearchableAttributeValuesByKey(Long documentId, String key) throws WorkflowException{
-    	return getWorkflowUtility().getSearchableAttributeLongValuesByKey(documentId, key);
     }
 }

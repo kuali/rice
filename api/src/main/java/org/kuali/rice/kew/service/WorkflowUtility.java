@@ -36,6 +36,7 @@ import org.kuali.rice.kew.dto.RuleReportCriteriaDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 
@@ -159,7 +160,7 @@ public interface WorkflowUtility {
     public String getDocumentRoutedByPrincipalId( Long routeHeaderId ) throws WorkflowException;
 
     public AttributeSet getActionsRequested(String principalId, Long documentId);
-
+    
     /**
      *
      * This method does a direct search for the searchableAttribute without going through the doc search.
@@ -196,4 +197,12 @@ public interface WorkflowUtility {
      * @return
      */
     public List<Long> getSearchableAttributeLongValuesByKey(Long documentId, String key);
+
+    public String getFutureRequestsKey(String principalId);
+
+    public String getReceiveFutureRequestsValue();
+
+    public String getDoNotReceiveFutureRequestsValue();
+
+    public String getClearFutureRequestsValue();
 }

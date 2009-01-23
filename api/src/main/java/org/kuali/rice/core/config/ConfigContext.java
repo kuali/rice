@@ -55,7 +55,7 @@ public class ConfigContext {
     public static void init(Config rootCfg) {
     	init(Thread.currentThread().getContextClassLoader(), rootCfg);
     }
-    
+
     /**
      * Initializes the ConfigContext with the given Config and binds it to the given ClassLoader.
      */
@@ -104,8 +104,8 @@ public class ConfigContext {
     		throw new ConfigurationException("The " + Config.SERVICE_NAMESPACE + " configuration parameter is required.");
     	}
     }
-    
-    
+
+
 
     /**
      * Utility method that all code should call to obtain its appropriate Config object.
@@ -173,9 +173,9 @@ public class ConfigContext {
     public static Set<Map.Entry<ClassLoader, Config>> getConfigs() {
         return Collections.unmodifiableSet(CONFIGS.entrySet());
     }
-    
+
     /**
-     * Overrides any existing Config for the classloader 
+     * Overrides any existing Config for the classloader
      * @param cl the classloader whose Config should be overridden
      * @param config the config
      */

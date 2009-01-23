@@ -87,7 +87,7 @@ public class KimConstants {
     	public static final String PERFORM_CUSTOM_MAINTENANCE_DOCUMENT_FUNCTION ="Perform Custom Maintenance Document Function";
     	public static final String MAINAIN_SYSTEM_PARAMETER = "Maintain System Parameter";
 	}
-	
+
 	public static class PermissionNames {
 		public static final String LOG_IN = "Log In";
 		public static final String ADMIN_PESSIMISTIC_LOCKING = "Administer Pessimistic Locking";
@@ -97,4 +97,7 @@ public class KimConstants {
 	public static final String COMMA_SEPARATOR = ", ";
 	public static final String OR_OPERATOR = "|";
 
+	//Kim services constants for API
+	public static final String KIM_IDENTITY_MANAGEMENT_SERVICE = "kimIdentityManagementService";
+	public static final String KIM_PERSON_SERVICE = "personService";
 }

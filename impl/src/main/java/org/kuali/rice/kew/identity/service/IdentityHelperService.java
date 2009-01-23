@@ -28,15 +28,15 @@ import org.kuali.rice.kim.bo.group.KimGroup;
  * management services.  Some of the methods on here exist solely for
  * the purpose of assisting with the piece-by-piece migration of
  * KEW to use the KIM services.
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface IdentityHelperService {
-	
+
 	public String getIdForPrincipalName(String principalName);
-	
+
 	public String getIdForGroupName(String namespace, String groupName);
-	
+
 	/**
 	 * Returns the KimPrincipal for the given principal id.  Throws an exception
 	 * if the principal id cannot be resolved to a principal.
@@ -60,50 +60,45 @@ public interface IdentityHelperService {
 	 * if the principal name cannot be resolved to a person.
 	 */
 	public Person getPersonByPrincipalName(String principalName);
-	
+
 	/**
 	 * Returns the Person for the given employee id.  Throws an exception
 	 * if the principal name cannot be resolved to a person.
 	 */
 	public Person getPersonByEmployeeId(String employeeId);
-	
+
 	/**
 	 * Checks that the given principalId is valid.  Throws a RiceRuntimeException if it is not.
 	 */
 	public void validatePrincipalId(String principalId);
-	
+
 	public KimPrincipal getPrincipal(UserId userId);
-	
+
 	/**
 	 * Returns the KimGroup for the given groupId.  Throws an exception
 	 * if the groupId cannot be resolved to a group.
 	 */
 	public KimGroup getGroup(String groupId);
-	
+
 	public KimGroup getGroup(GroupId groupId);
-	
+
 	public KimGroup getGroupByName(String namespaceCode, String name);
-	
+
 	public Recipient getPrincipalRecipient(String principalId);
-		
+
 	/**
 	 * @deprecated
 	 */
 	public String getGroupId(GroupId groupId);
-		
+
 	/**
 	 * @deprecated
 	 */
 	public KimPrincipal getPrincipal(UserIdDTO userId);
-	
-	/**
-	 * @deprecated
-	 */
-	public String getPrincipalId(UserIdDTO userId);
-		
+
 	/**
 	 * @deprecated
 	 */
 	public Recipient getGroupRecipient(String groupId);
-	
+
 }

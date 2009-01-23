@@ -48,23 +48,23 @@ public class FutureRequestDocumentStateManager {
 
     public FutureRequestDocumentStateManager (DocumentRouteHeaderValue document, String principalId)
     {
-	for (BranchState state : document.getRootBranchState()) {
-	    if (isStateForUser(state, principalId)) {
-		if (isReceiveFutureRequests(state)) {
-		    this.receiveFutureRequests = true;
-		} else if (isDoNotReceiveFutureRequests(state)) {
-		    this.doNotReceiveFutureRequests = true;
-		} else if (isClearFutureRequests(state)) {
-		    this.clearFutureRequestState = true;
-		    this.receiveFutureRequests = false;
-		    this.doNotReceiveFutureRequests = false;
-		    break;
-		}
-	    }
-	}
-	if (this.isClearFutureRequestState()) {
-	    this.clearStateFromDocument(document);
-	}
+    	for (BranchState state : document.getRootBranchState()) {
+    	    if (isStateForUser(state, principalId)) {
+    		if (isReceiveFutureRequests(state)) {
+    		    this.receiveFutureRequests = true;
+    		} else if (isDoNotReceiveFutureRequests(state)) {
+    		    this.doNotReceiveFutureRequests = true;
+    		} else if (isClearFutureRequests(state)) {
+    		    this.clearFutureRequestState = true;
+    		    this.receiveFutureRequests = false;
+    		    this.doNotReceiveFutureRequests = false;
+    		    break;
+    		}
+    	    }
+    	}
+    	if (this.isClearFutureRequestState()) {
+    	    this.clearStateFromDocument(document);
+    	}
     }
 
     public FutureRequestDocumentStateManager (DocumentRouteHeaderValue document, KimGroup kimGroup)
@@ -86,13 +86,13 @@ public class FutureRequestDocumentStateManager {
     }
 
     protected void clearStateFromDocument(DocumentRouteHeaderValue document) {
-	for (BranchState state : document.getRootBranchState()) {
-	    if (state.getKey().contains(FUTURE_REQUESTS_VAR_KEY)) {
-		String values[] = state.getKey().split(",");
-		state.setKey(DEACTIVATED_REQUESTS_VARY_KEY + "," + values[0] + "," + new Date().toString());
-	    }
-	}
-	KEWServiceLocator.getRouteHeaderService().saveRouteHeader(document);
+    	for (BranchState state : document.getRootBranchState()) {
+    	    if (state.getKey().contains(FUTURE_REQUESTS_VAR_KEY)) {
+    		String values[] = state.getKey().split(",");
+    		state.setKey(DEACTIVATED_REQUESTS_VARY_KEY + "," + values[0] + "," + new Date().toString());
+    	    }
+    	}
+    	KEWServiceLocator.getRouteHeaderService().saveRouteHeader(document);
     }
 
     protected boolean isStateForUser(BranchState state, String principalId)
@@ -106,16 +106,16 @@ public class FutureRequestDocumentStateManager {
     }
 
     protected boolean isReceiveFutureRequests(BranchState state) {
-	return state.getValue().equals(KEWConstants.RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_VALUE);
+        return state.getValue().equals(KEWConstants.RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_VALUE);
     }
 
 
     protected boolean isDoNotReceiveFutureRequests(BranchState state) {
-	return state.getValue().equals(KEWConstants.DONT_RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_VALUE);
+        return state.getValue().equals(KEWConstants.DONT_RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_VALUE);
     }
 
     protected boolean isClearFutureRequests(BranchState state) {
-	return state.getValue().equals(KEWConstants.CLEAR_FUTURE_REQUESTS_BRANCH_STATE_VALUE);
+        return state.getValue().equals(KEWConstants.CLEAR_FUTURE_REQUESTS_BRANCH_STATE_VALUE);
     }
 
     public boolean isClearFutureRequestState() {
@@ -128,22 +128,6 @@ public class FutureRequestDocumentStateManager {
 
     public boolean isReceiveFutureRequests() {
         return this.receiveFutureRequests;
-    }
-
-    public static String getFutureRequestsKey(String principalId) {
-	return KEWConstants.RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_KEY + "," + principalId + "," + new Date().toString() + ", " + Math.random();
-    }
-
-    public static String getReceiveFutureRequestsValue() {
-	return KEWConstants.RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_VALUE;
-    }
-
-    public static String getDoNotReceiveFutureRequestsValue() {
-	return KEWConstants.DONT_RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_VALUE;
-    }
-
-    public static String getClearFutureRequestsValue() {
-	return KEWConstants.CLEAR_FUTURE_REQUESTS_BRANCH_STATE_VALUE;
     }
 
 }

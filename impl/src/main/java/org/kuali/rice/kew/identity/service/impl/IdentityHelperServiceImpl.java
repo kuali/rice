@@ -92,7 +92,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 		}
 		return principal;
 	}
-	
+
 	public KimGroup getGroupByName(String namespaceCode, String name) {
 		KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroupByName(namespaceCode, name);
 		if (group == null) {
@@ -116,7 +116,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 		}
 		return person;
 	}
-	
+
 	public Person getPersonByEmployeeId(String employeeId) {
 		Person person = KIMServiceLocator.getPersonService().getPersonByEmployeeId(employeeId);
 		if (person == null) {
@@ -190,23 +190,6 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 			return getPrincipal(person.getPrincipalId());
 		}
 		throw new IllegalArgumentException("Invalid UserIdDTO type was passed: " + userId.getClass());
-	}
-
-	public String getPrincipalId(UserIdDTO userId) {
-		if (userId == null) {
-			return null;
-		} else if (userId instanceof WorkflowIdDTO) {
-			return ((WorkflowIdDTO)userId).getWorkflowId();
-		} else if (userId instanceof NetworkIdDTO) {
-			String principalName = ((NetworkIdDTO)userId).getNetworkId();
-			KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
-			return principal.getPrincipalId();
-		} else if (userId instanceof EmplIdDTO) {
-			String employeeId = ((EmplIdDTO)userId).getEmplId();
-			Person person = getPersonByEmployeeId(employeeId);
-			return person.getPrincipalId();
-		}
-		throw new IllegalArgumentException("Invalid UserIdDTO type was passed: " + userId);
 	}
 
 	public Recipient getGroupRecipient(String groupId) {

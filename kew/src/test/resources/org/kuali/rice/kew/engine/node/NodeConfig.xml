@@ -12,10 +12,6 @@
 			<active>true</active>
 			<policies>
 				<policy>
-					<name>PRE_APPROVE</name>
-					<value>false</value>
-				</policy>
-				<policy>
 					<name>DEFAULT_APPROVE</name>
 					<value>false</value>
 				</policy>
@@ -61,10 +57,6 @@
 			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<active>true</active>
 			<policies>
-				<policy>
-					<name>PRE_APPROVE</name>
-					<value>false</value>
-				</policy>
 			</policies>
 			<routePaths>
 				<routePath>

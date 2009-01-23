@@ -48,11 +48,7 @@
             <blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
             <active>true</active>
             <policies>
-                <policy>
-                    <name>PRE_APPROVE</name>
-                    <value>false</value>
-                </policy>
-                <policy>
+                  <policy>
                     <name>DEFAULT_APPROVE</name>
                     <value>false</value>
                 </policy>
@@ -88,11 +84,7 @@
             <docHandler>http://localhost:8080/en-dev/Rule.do?methodToCall=docHandler</docHandler>
             <active>true</active>
             <policies>
-                <policy>
-                    <name>PRE_APPROVE</name>
-                    <value>false</value>
-                </policy>
-                <policy>
+              <policy>
                     <name>DEFAULT_APPROVE</name>
                     <value>true</value>
                 </policy>
@@ -128,11 +120,7 @@
             <defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
             <serviceNamespace>KEW</serviceNamespace>
             <policies>
-                <policy>
-                    <name>PRE_APPROVE</name>
-                    <value>false</value>
-                </policy>
-                <policy>
+               <policy>
                     <name>DEFAULT_APPROVE</name>
                     <value>false</value>
                 </policy>

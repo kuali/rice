@@ -16,6 +16,8 @@
  */
 package org.kuali.rice.kew.service;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.kuali.rice.kew.dto.ActionItemDTO;
@@ -101,7 +103,7 @@ public interface WorkflowUtility {
 
     /**
      * @deprecated use {@link #documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO, String[], boolean)} instead
-     * 
+     *
      * This method assumes both existing and generated requests should be taken into account
      */
     public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaDTO, String[] actionRequestedCodes);
@@ -111,15 +113,15 @@ public interface WorkflowUtility {
      */
     public String getDocumentStatus(Long documentId) throws WorkflowException;
     public RouteNodeInstanceDTO[] getCurrentNodeInstances(Long documentId) throws WorkflowException;
-    
-    
+
+
     // added for KS per Scott
     ActionItemDTO[] getActionItemsForPrincipal(String principalId) throws WorkflowException;
-    
+
     /**
-     * 
+     *
      * This method gets a list of ids of all principals who have a pending action request for a document.
-     * 
+     *
      * @param actionRequestedCd
      * @param routeHeaderId
      * @return
@@ -129,12 +131,12 @@ public interface WorkflowUtility {
     		String actionRequestedCd, Long routeHeaderId) throws WorkflowException;
 
     /**
-     * This method gets a list of ids of all principals in the route log - 
-     * - initiators, 
-     * - people who have taken action, 
-     * - people with a pending action request, 
+     * This method gets a list of ids of all principals in the route log -
+     * - initiators,
+     * - people who have taken action,
+     * - people with a pending action request,
 	 * - people who will receive an action request for the document in question
-     * 
+     *
      * @param routeHeaderId
      * @param lookFuture
      * @return
@@ -144,17 +146,54 @@ public interface WorkflowUtility {
 
     /**
      * Returns the principal ID of the initiator of the given document.  <b>null</b> if the document can not be found.
-     * 
+     *
      * @throws WorkflowException
      */
     public String getDocumentInitiatorPrincipalId( Long routeHeaderId ) throws WorkflowException;
 
     /**
      * Returns the principal ID of the user who routed the given document.  <b>null</b> if the document can not be found.
-     * 
+     *
      * @throws WorkflowException
      */
     public String getDocumentRoutedByPrincipalId( Long routeHeaderId ) throws WorkflowException;
-    
+
     public AttributeSet getActionsRequested(String principalId, Long documentId);
+
+    /**
+     *
+     * This method does a direct search for the searchableAttribute without going through the doc search.
+     *
+     * @param documentId
+     * @param key
+     * @return
+     */
+    public List<String> getSearchableAttributeStringValuesByKey(Long documentId, String key);
+    /**
+     *
+     * This method does a direct search for the searchableAttribute without going through the doc search.
+     *
+     * @param documentId
+     * @param key
+     * @return
+     */
+    public List<Timestamp> getSearchableAttributeDateTimeValuesByKey(Long documentId, String key);
+    /**
+     *
+     * This method does a direct search for the searchableAttribute without going through the doc search.
+     *
+     * @param documentId
+     * @param key
+     * @return
+     */
+    public List<BigDecimal> getSearchableAttributeFloatValuesByKey(Long documentId, String key);
+    /**
+     *
+     * This method does a direct search for the searchableAttribute without going through the doc search.
+     *
+     * @param documentId
+     * @param key
+     * @return
+     */
+    public List<Long> getSearchableAttributeLongValuesByKey(Long documentId, String key);
 }

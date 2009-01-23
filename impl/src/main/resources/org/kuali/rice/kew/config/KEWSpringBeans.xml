@@ -255,10 +255,17 @@
 		<property name="routeHeaderDAO">
 			<ref bean="enDocumentRouteHeaderDAO" />
 		</property>
+		<property name="searchableAttributeDAO">
+			<ref bean="enSearchableAttributeDAO" />
+		</property>
 	</bean>
 	<bean id="enDocumentRouteHeaderDAO" class="org.kuali.rice.kew.routeheader.dao.impl.DocumentRouteHeaderDAOOjbImpl" lazy-init="true">
 		<property name="jcdAlias" value="enWorkflowDataSource" />
 	</bean>
+	<bean id="enSearchableAttributeDAO" class="org.kuali.rice.kew.docsearch.dao.impl.SearchableAttributeDAOOjbImpl" lazy-init="true">
+		<property name="jcdAlias" value="enWorkflowDataSource" />
+	</bean>
+	<bean id="enSearchableAttributeDAOJpa" class="org.kuali.rice.kew.docsearch.dao.impl.SearchableAttributeDAOJpaImpl" lazy-init="true"/>
 
   <!--  EDL Extract Service -->
   <bean id="enExtractService" class="org.kuali.rice.kew.edl.extract.ExtractServiceImpl">

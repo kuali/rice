@@ -16,7 +16,10 @@
  */
 package org.kuali.rice.kew.routeheader.service;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -58,4 +61,42 @@ public interface RouteHeaderService {
     public boolean hasSearchableAttributeValue(Long documentId, String searchableAttributeKey, String searchableAttributeValue);
 
     public String getDocumentStatus(Long documentId);
+
+    /**
+     *
+     * This method is a more direct way to get the searchable attribute values
+     *
+     * @param documentId
+     * @param key
+     * @return
+     */
+    public List<String> getSearchableAttributeStringValuesByKey(Long documentId, String key);
+    /**
+     *
+     * This method is a more direct way to get the searchable attribute values
+     *
+     * @param documentId
+     * @param key
+     * @return
+     */
+    public List<Timestamp> getSearchableAttributeDateTimeValuesByKey(Long documentId, String key);
+    /**
+     *
+     * This method is a more direct way to get the searchable attribute values
+     *
+     * @param documentId
+     * @param key
+     * @return
+     */
+    public List<BigDecimal> getSearchableAttributeFloatValuesByKey(Long documentId, String key);
+    /**
+     *
+     * This method is a more direct way to get the searchable attribute values
+     *
+     * @param documentId
+     * @param key
+     * @return
+     */
+    public List<Long> getSearchableAttributeLongValuesByKey(Long documentId, String key);
+
 }

@@ -16,11 +16,14 @@
  */
 package org.kuali.rice.kew.routeheader.service.impl;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import org.kuali.rice.kew.docsearch.dao.SearchableAttributeDAO;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
@@ -40,6 +43,7 @@ public class RouteHeaderServiceImpl implements RouteHeaderService {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RouteHeaderServiceImpl.class);
 
     private DocumentRouteHeaderDAO routeHeaderDAO;
+    private SearchableAttributeDAO searchableAttributeDAO;
 
     public DocumentRouteHeaderValue getRouteHeader(Long routeHeaderId) {
         return getRouteHeaderDAO().findRouteHeader(routeHeaderId);
@@ -101,13 +105,13 @@ public class RouteHeaderServiceImpl implements RouteHeaderService {
 
         if (routeHeader.getInitiatorWorkflowId () == null || routeHeader.getInitiatorWorkflowId().trim().equals("")) {
             errors.add(new WorkflowServiceErrorImpl("RouteHeader initiator null.", "routeheader.initiator.empty"));
-        } 
-        else 
+        }
+        else
         {
            	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(routeHeader.getInitiatorWorkflowId());
             if(principal == null)
             {
-               	errors.add(new WorkflowServiceErrorImpl("RouteHeader initiator id invalid.", "routeheader.initiator.invalid"));	
+               	errors.add(new WorkflowServiceErrorImpl("RouteHeader initiator id invalid.", "routeheader.initiator.invalid"));
             }
         }
 
@@ -154,4 +158,33 @@ public class RouteHeaderServiceImpl implements RouteHeaderService {
     public void setRouteHeaderDAO(DocumentRouteHeaderDAO routeHeaderDAO) {
         this.routeHeaderDAO = routeHeaderDAO;
     }
+
+	public List<Timestamp> getSearchableAttributeDateTimeValuesByKey(
+			Long documentId, String key) {
+		return getSearchableAttributeDAO().getSearchableAttributeDateTimeValuesByKey(documentId, key);
+	}
+
+	public List<BigDecimal> getSearchableAttributeFloatValuesByKey(
+			Long documentId, String key) {
+		return getSearchableAttributeDAO().getSearchableAttributeFloatValuesByKey(documentId, key);
+	}
+
+	public List<Long> getSearchableAttributeLongValuesByKey(Long documentId,
+			String key) {
+		return getSearchableAttributeDAO().getSearchableAttributeLongValuesByKey(documentId, key);
+	}
+
+	public List<String> getSearchableAttributeStringValuesByKey(
+			Long documentId, String key) {
+
+		return getSearchableAttributeDAO().getSearchableAttributeStringValuesByKey(documentId, key);
+	}
+
+	public void setSearchableAttributeDAO(SearchableAttributeDAO searchableAttributeDAO) {
+		this.searchableAttributeDAO = searchableAttributeDAO;
+	}
+
+	public SearchableAttributeDAO getSearchableAttributeDAO() {
+		return searchableAttributeDAO;
+	}
 }

@@ -16,6 +16,8 @@
  */
 package org.kuali.rice.kew.service.impl;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -111,7 +113,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         }
         return routeHeaderVO;
     }
-    
+
     public AttributeSet getActionsRequested(String principalId, Long documentId) {
         if (documentId == null) {
             LOG.error("null routeHeaderId passed in.  Throwing RuntimeExcpetion");
@@ -226,7 +228,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
     public Integer getUserActionItemCount(String principalId) throws WorkflowException {
         return Integer.valueOf(KEWServiceLocator.getActionListService().getCount(principalId));
     }
-    
+
 	public ActionItemDTO[] getActionItemsForPrincipal(String principalId) throws WorkflowException {
         //added by Derek
         Collection actionItems = KEWServiceLocator.getActionListService().getActionList(principalId, null);
@@ -428,7 +430,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         DocumentRouteHeaderValue routeHeader = loadDocument(routeHeaderId);
         KimPrincipal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);
         List actionsTaken = KEWServiceLocator.getActionTakenService().findByRouteHeaderIdWorkflowId(routeHeaderId, principal.getPrincipalId());
-        
+
         if(routeHeader.getInitiatorWorkflowId().equals(principal.getPrincipalId())){
         	return true;
         }
@@ -452,7 +454,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         SimulationCriteria criteria = new SimulationCriteria(routeHeaderId);
         criteria.setDestinationNodeName(null); // process entire document to conclusion
         criteria.getDestinationRecipients().add(new KimPrincipalRecipient(principal));
-        
+
         try {
         	SimulationResults results = simulationEngine.runSimulation(criteria);
         	if (actionRequestListHasPrincipal(principal, results.getSimulatedActionRequests())) {
@@ -954,7 +956,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         resultVO.setSecurityFilteredRows(Integer.valueOf(criteria.getSecurityFilteredRows()));
         return resultVO;
     }
-    
+
     /**
      * @see org.kuali.rice.kew.service.WorkflowUtility#getDocumentInitiatorPrincipalId(java.lang.Long)
      */
@@ -964,7 +966,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
             LOG.error("null routeHeaderId passed in.");
             throw new RuntimeException("null routeHeaderId passed in.");
         }
-    	
+
         DocumentRouteHeaderValue header = KEWServiceLocator.getRouteHeaderService().getRouteHeader(routeHeaderId, false);
         if ( header == null) {
         	return null;
@@ -980,11 +982,48 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
             LOG.error("null routeHeaderId passed in.");
             throw new RuntimeException("null routeHeaderId passed in.");
         }
-    	
+
         DocumentRouteHeaderValue header = KEWServiceLocator.getRouteHeaderService().getRouteHeader(routeHeaderId, false);
         if ( header == null) {
         	return null;
         }
     	return header.getRoutedByUserWorkflowId();
     }
+
+	/**
+	 *
+	 * @see org.kuali.rice.kew.service.WorkflowUtility#getSearchableAttributeDateTimeValuesByKey(java.lang.Long, java.lang.String)
+	 */
+	public List<Timestamp> getSearchableAttributeDateTimeValuesByKey(
+			Long documentId, String key) {
+		// TODO Garey - THIS METHOD NEEDS JAVADOCS
+		return null;
+	}
+
+	/**
+	 *
+	 * @see org.kuali.rice.kew.service.WorkflowUtility#getSearchableAttributeFloatValuesByKey(java.lang.Long, java.lang.String)
+	 */
+	public List<BigDecimal> getSearchableAttributeFloatValuesByKey(
+			Long documentId, String key) {
+		return KEWServiceLocator.getRouteHeaderService().getSearchableAttributeFloatValuesByKey(documentId, key);
+	}
+
+	/**
+	 *
+	 * @see org.kuali.rice.kew.service.WorkflowUtility#getSearchableAttributeLongValuesByKey(java.lang.Long, java.lang.String)
+	 */
+	public List<Long> getSearchableAttributeLongValuesByKey(Long documentId,
+			String key) {
+		return KEWServiceLocator.getRouteHeaderService().getSearchableAttributeLongValuesByKey(documentId, key);
+	}
+
+	/**
+	 *
+	 * @see org.kuali.rice.kew.service.WorkflowUtility#getSearchableAttributeStringValuesByKey(java.lang.Long, java.lang.String)
+	 */
+	public List<String> getSearchableAttributeStringValuesByKey(
+			Long documentId, String key) {
+		return KEWServiceLocator.getRouteHeaderService().getSearchableAttributeStringValuesByKey(documentId, key);
+	}
 }

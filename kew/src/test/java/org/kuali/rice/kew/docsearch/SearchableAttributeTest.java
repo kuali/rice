@@ -16,6 +16,7 @@
  */
 package org.kuali.rice.kew.docsearch;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Iterator;
@@ -29,6 +30,7 @@ import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kim.bo.Person;
@@ -82,19 +84,90 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
 //		return null;
 //    }
 
+    /**
+     * This tests the ability to get the searchableAttributeValues directly without going through the document.
+     */
+    @Test public void testSearchableAttributeSearch()throws Exception {
+    	String documentTypeName = "SearchDocType";
+        String userNetworkId = "rkirkend";
+        WorkflowDocument workflowDocument = new WorkflowDocument(getPrincipalId(userNetworkId), documentTypeName);
+        workflowDocument.setTitle("Routing style");
+        workflowDocument.routeDocument("routing this document.");
+
+        workflowDocument = new WorkflowDocument(getPrincipalId(userNetworkId), workflowDocument.getRouteHeaderId());
+        DocumentRouteHeaderValue doc = KEWServiceLocator.getRouteHeaderService().getRouteHeader(workflowDocument.getRouteHeaderId());
+        assertEquals("Wrong number of searchable attributes", 4, doc.getSearchableAttributeValues().size());
+
+        for (Iterator<SearchableAttributeValue> iter = doc.getSearchableAttributeValues().iterator(); iter.hasNext();) {
+            SearchableAttributeValue attributeValue = iter.next();
+            if (attributeValue instanceof SearchableAttributeStringValue) {
+                SearchableAttributeStringValue realValue = (SearchableAttributeStringValue) attributeValue;
+
+                for(String value:getRouteHeaderService().getSearchableAttributeStringValuesByKey(doc.getRouteHeaderId(), realValue.getSearchableAttributeKey())){
+                	assertEquals("Assert that the values are the same", value, attributeValue.getSearchableAttributeValue());
+                }
+
+            } else if (attributeValue instanceof SearchableAttributeLongValue) {
+                SearchableAttributeLongValue realValue = (SearchableAttributeLongValue) attributeValue;
+                for(Long value:getRouteHeaderService().getSearchableAttributeLongValuesByKey(doc.getRouteHeaderId(), realValue.getSearchableAttributeKey())){
+                	assertEquals("Assert that the values are the same", value, attributeValue.getSearchableAttributeValue());
+                }
+            } else if (attributeValue instanceof SearchableAttributeFloatValue) {
+                SearchableAttributeFloatValue realValue = (SearchableAttributeFloatValue) attributeValue;
+                for(BigDecimal value:getRouteHeaderService().getSearchableAttributeFloatValuesByKey(doc.getRouteHeaderId(), realValue.getSearchableAttributeKey())){
+                	assertEquals("Assert that the values are the same", value, attributeValue.getSearchableAttributeValue());
+                }
+
+            } else if (attributeValue instanceof SearchableAttributeDateTimeValue) {
+                SearchableAttributeDateTimeValue realValue = (SearchableAttributeDateTimeValue) attributeValue;
+                assertEquals("The only DateTime attribute that should have been added has key '" + TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY + "'", TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, realValue.getSearchableAttributeKey());
+
+                Calendar testDate = Calendar.getInstance();
+                testDate.setTimeInMillis(realValue.getSearchableAttributeValue().getTime());
+                testDate.set(Calendar.SECOND, 0);
+                testDate.set(Calendar.MILLISECOND, 0);
+
+                for(Timestamp value:getRouteHeaderService().getSearchableAttributeDateTimeValuesByKey(doc.getRouteHeaderId(), realValue.getSearchableAttributeKey())){
+                	Calendar attributeDate = Calendar.getInstance();
+                    attributeDate.setTimeInMillis(value.getTime());
+                    attributeDate.set(Calendar.SECOND, 0);
+                    attributeDate.set(Calendar.MILLISECOND, 0);
+
+                    assertEquals("The month value for the searchable attribute is wrong",testDate.get(Calendar.MONTH),attributeDate.get(Calendar.MONTH));
+                    assertEquals("The date value for the searchable attribute is wrong",testDate.get(Calendar.DATE),attributeDate.get(Calendar.DATE));
+                    assertEquals("The year value for the searchable attribute is wrong",testDate.get(Calendar.YEAR),attributeDate.get(Calendar.YEAR));
+                }
+
+            } else {
+                fail("Searchable Attribute Value base class should be one of the four checked always");
+            }
+        }
+
+
+    }
+
+    protected RouteHeaderService getRouteHeaderService(){
+    	RouteHeaderService rRet = KEWServiceLocator.getRouteHeaderService();
+    	return rRet;
+    }
+
+    protected String getPrincipalId(String networkId){
+    	return KIMServiceLocator.getPersonService().getPersonByPrincipalName(networkId).getPrincipalId();
+    }
+
     @Test public void testCustomSearchableAttributesWithDataType() throws Exception {
         String documentTypeName = "SearchDocType";
     	DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
         String userNetworkId = "rkirkend";
-        WorkflowDocument workflowDocument = new WorkflowDocument(new NetworkIdDTO(userNetworkId), documentTypeName);
+        WorkflowDocument workflowDocument = new WorkflowDocument(getPrincipalId(userNetworkId), documentTypeName);
         workflowDocument.setTitle("Routing style");
         workflowDocument.routeDocument("routing this document.");
 
-        workflowDocument = new WorkflowDocument(new NetworkIdDTO(userNetworkId), workflowDocument.getRouteHeaderId());
+        workflowDocument = new WorkflowDocument(getPrincipalId(userNetworkId), workflowDocument.getRouteHeaderId());
         DocumentRouteHeaderValue doc = KEWServiceLocator.getRouteHeaderService().getRouteHeader(workflowDocument.getRouteHeaderId());
         assertEquals("Wrong number of searchable attributes", 4, doc.getSearchableAttributeValues().size());
-        for (Iterator iter = doc.getSearchableAttributeValues().iterator(); iter.hasNext();) {
-            SearchableAttributeValue attributeValue = (SearchableAttributeValue) iter.next();
+        for (Iterator<SearchableAttributeValue> iter = doc.getSearchableAttributeValues().iterator(); iter.hasNext();) {
+            SearchableAttributeValue attributeValue = iter.next();
             if (attributeValue instanceof SearchableAttributeStringValue) {
                 SearchableAttributeStringValue realValue = (SearchableAttributeStringValue) attributeValue;
                 assertEquals("The only String attribute that should have been added has key '" + TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY + "'", TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, realValue.getSearchableAttributeKey());

@@ -34,10 +34,6 @@
 			<active>true</active>
 			<policies>
 				<policy>
-					<name>PRE_APPROVE</name>
-					<value>false</value>
-				</policy>
-				<policy>
 					<name>DEFAULT_APPROVE</name>
 					<value>false</value>
 				</policy>
@@ -69,10 +65,6 @@
 			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
 			<active>true</active>
 			<policies>
-				<policy>
-					<name>PRE_APPROVE</name>
-					<value>false</value>
-				</policy>
 				<policy>
 					<name>DEFAULT_APPROVE</name>
 					<value>false</value>
@@ -140,10 +132,6 @@
 			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
 			<active>true</active>
 			<policies>
-				<policy>
-					<name>PRE_APPROVE</name>
-					<value>false</value>
-				</policy>
 				<policy>
 					<name>DEFAULT_APPROVE</name>
 					<value>false</value>

@@ -23,6 +23,7 @@ import java.util.Map;
 import org.junit.Test;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimConstants.PermissionNames;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.document.authorization.PessimisticLock;
 import org.kuali.rice.kns.exception.AuthorizationException;
@@ -70,15 +71,15 @@ public class PessimisticLockServiceTest extends TestBase {
 
         String userId = "fran";
         String[] lockIdsToVerify = new String[]{"1112", "1113"};
-        assertFalse("User " + userId + " should not be member of pessimistic lock admin workgroup", KIMServiceLocator.getIdentityManagementService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KNSConstants.KNS_NAMESPACE, KNSConstants.Permissions.ADMIN_PESSIMISTIC_LOCKING, null, null ) );
+        assertFalse("User " + userId + " should not be member of pessimistic lock admin workgroup", KIMServiceLocator.getIdentityManagementService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KNSConstants.KNS_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING, null, null ) );
         verifyDelete(userId, Arrays.asList(lockIdsToVerify), AuthorizationException.class, true);
         userId = "frank";
         lockIdsToVerify = new String[]{"1111", "1113"};
-        assertFalse("User " + userId + " should not be member of pessimistic lock admin workgroup", KIMServiceLocator.getIdentityManagementService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KNSConstants.KNS_NAMESPACE, KNSConstants.Permissions.ADMIN_PESSIMISTIC_LOCKING, null, null ) );
+        assertFalse("User " + userId + " should not be member of pessimistic lock admin workgroup", KIMServiceLocator.getIdentityManagementService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KNSConstants.KNS_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING, null, null ) );
         verifyDelete(userId, Arrays.asList(lockIdsToVerify), AuthorizationException.class, true);
         userId = "fred";
         lockIdsToVerify = new String[]{"1111", "1112"};
-        assertFalse("User " + userId + " should not be member of pessimistic lock admin workgroup", KIMServiceLocator.getIdentityManagementService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KNSConstants.KNS_NAMESPACE, KNSConstants.Permissions.ADMIN_PESSIMISTIC_LOCKING, null, null ) );
+        assertFalse("User " + userId + " should not be member of pessimistic lock admin workgroup", KIMServiceLocator.getIdentityManagementService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KNSConstants.KNS_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING, null, null ) );
         verifyDelete(userId, Arrays.asList(lockIdsToVerify), AuthorizationException.class, true);
 
         verifyDelete("fran", Arrays.asList(new String[]{"1111"}), null, false);
@@ -89,7 +90,7 @@ public class PessimisticLockServiceTest extends TestBase {
 
         // test admin user can delete any lock
         userId = "supervisr";
-        assertTrue("User " + userId + " should be member of pessimistic lock admin workgroup", KIMServiceLocator.getIdentityManagementService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KNSConstants.KNS_NAMESPACE, KNSConstants.Permissions.ADMIN_PESSIMISTIC_LOCKING, null, null ) );
+        assertTrue("User " + userId + " should be member of pessimistic lock admin workgroup", KIMServiceLocator.getIdentityManagementService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KNSConstants.KNS_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING, null, null ) );
         verifyDelete(userId, Arrays.asList(new String[]{"1114"}), null, false);
         locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be 0 locks left in DB", 0, locks.size());

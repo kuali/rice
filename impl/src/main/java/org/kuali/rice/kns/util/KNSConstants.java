@@ -514,7 +514,4 @@ public class KNSConstants extends JSTLConstants {
 
     public static final String TAB_STATES = "tabStates";
     
-    public static class Permissions {
-    	public static final String ADMIN_PESSIMISTIC_LOCKING = "Administer Pessimistic Locking";
-    }
 }

@@ -29,6 +29,7 @@ import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
+import org.kuali.rice.kim.util.KimConstants.PermissionNames;
 import org.kuali.rice.kns.authorization.AuthorizationConstants;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.authorization.PessimisticLock;
@@ -135,7 +136,7 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
      * @see org.kuali.rice.kns.service.PessimisticLockService#isPessimisticLockAdminUser(org.kuali.rice.kim.bo.Person)
      */
     public boolean isPessimisticLockAdminUser(Person user) {
-    	return getIdentityManagementService().isAuthorized( user.getPrincipalId(), KNSConstants.KNS_NAMESPACE, KNSConstants.Permissions.ADMIN_PESSIMISTIC_LOCKING, null, null );
+    	return getIdentityManagementService().isAuthorized( user.getPrincipalId(), KNSConstants.KNS_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING, null, null );
     }
 
     /**

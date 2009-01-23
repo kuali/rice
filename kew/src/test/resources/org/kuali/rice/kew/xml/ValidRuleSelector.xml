@@ -23,11 +23,7 @@
         </start>
       </routeNodes>
       <policies>
-        <policy>
-          <name>PRE_APPROVE</name>
-          <value>false</value>
-        </policy>
-        <policy>
+          <policy>
           <name>DISAPPROVE</name>
           <value>false</value>
         </policy>

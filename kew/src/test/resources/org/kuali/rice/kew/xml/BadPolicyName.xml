@@ -23,10 +23,6 @@
       </routeNodes>
       <policies>
         <policy>
-          <name>PRE_APPROVE</name>
-          <value>false</value>
-        </policy>
-        <policy>
           <name>BOGUS_POLICY_NAME</name>
           <value>false</value>
         </policy>

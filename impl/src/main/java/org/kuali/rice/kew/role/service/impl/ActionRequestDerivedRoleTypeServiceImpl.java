@@ -18,6 +18,7 @@ package org.kuali.rice.kew.role.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -41,11 +42,13 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends
 	public List<String> getPrincipalIdsFromApplicationRole(
 			String namespaceCode, String roleName, AttributeSet qualification) {
 		List<String> principalIds = new ArrayList<String>();
-		if (qualification.containsKey(KimAttributes.PRINCIPAL_ID)
-				&& hasApplicationRole(qualification
-						.get(KimAttributes.PRINCIPAL_ID), null, namespaceCode,
-						roleName, qualification)) {
-			principalIds.add(qualification.get(KimAttributes.PRINCIPAL_ID));
+		if ( qualification != null ) {
+			if (qualification.containsKey(KimAttributes.PRINCIPAL_ID)
+					&& hasApplicationRole(qualification
+							.get(KimAttributes.PRINCIPAL_ID), null, namespaceCode,
+							roleName, qualification)) {
+				principalIds.add(qualification.get(KimAttributes.PRINCIPAL_ID));
+			}
 		}
 		return principalIds;
 	}
@@ -56,18 +59,20 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends
 			List<String> groupIds, String namespaceCode, String roleName,
 			AttributeSet qualification) {
 		try {
-			AttributeSet actionsRequested = workflowInfo.getActionsRequested(principalId, Long
-								.parseLong(qualification
-										.get(KimAttributes.DOCUMENT_NUMBER)));
-			if (APPROVE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName)) {
-				return Boolean.parseBoolean(actionsRequested.get(KEWConstants.ACTION_REQUEST_APPROVE_REQ));
-			}
-			if (ACKNOWLEDGE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName)) {
-				return Boolean.parseBoolean(actionsRequested.get(
-						KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
-			}
-			if (FYI_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName)) {
-				return Boolean.parseBoolean(actionsRequested.get(KEWConstants.ACTION_REQUEST_FYI_REQ));
+			if ( qualification != null && StringUtils.isNumeric( qualification.get(KimAttributes.DOCUMENT_NUMBER) ) ) {
+				AttributeSet actionsRequested = workflowInfo.getActionsRequested(principalId, Long
+									.parseLong(qualification
+											.get(KimAttributes.DOCUMENT_NUMBER)));
+				if (APPROVE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName)) {
+					return Boolean.parseBoolean(actionsRequested.get(KEWConstants.ACTION_REQUEST_APPROVE_REQ));
+				}
+				if (ACKNOWLEDGE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName)) {
+					return Boolean.parseBoolean(actionsRequested.get(
+							KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
+				}
+				if (FYI_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName)) {
+					return Boolean.parseBoolean(actionsRequested.get(KEWConstants.ACTION_REQUEST_FYI_REQ));
+				}
 			}
 			return false;
 		} catch (WorkflowException e) {

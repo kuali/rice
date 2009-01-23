@@ -39,7 +39,7 @@
 		        	</tr>
 		</c:forEach>
 		<tr>
-               <td colspan=7 style="padding:0px; border-style:none; height:22px; background-color:#F6F6F6">&nbsp;</td>
+               <td colspan=15 style="padding:0px; border-style:none; height:22px; background-color:#F6F6F6">&nbsp;</td>
         </tr>		        	
 		</table>       
 	</kul:subtab>

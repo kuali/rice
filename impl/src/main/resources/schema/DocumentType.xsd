@@ -393,8 +393,6 @@
       <enumeration value="default_approve"/>
       <enumeration value="ALLOW_UNREQUESTED_ACTION"/>
       <enumeration value="allow_unrequested_action" /> 
-      <enumeration value="PRE_APPROVE"/>
-      <enumeration value="pre_approve"/>
       <enumeration value="INITIATOR_MUST_ROUTE"/>
       <enumeration value="initiator_must_route"/>
       <enumeration value="INITIATOR_MUST_SAVE"/>

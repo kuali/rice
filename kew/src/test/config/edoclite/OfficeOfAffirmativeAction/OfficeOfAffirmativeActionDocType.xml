@@ -12,11 +12,7 @@
       <docHandler>${workflow.url}/EDocLite</docHandler>
       <active>true</active>
       <policies>
-        <policy>
-          <name>PRE_APPROVE</name>
-          <value>false</value>
-        </policy>
-        <policy>
+     	 <policy>
           <name>DEFAULT_APPROVE</name>
           <value>false</value>
         </policy>

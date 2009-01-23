@@ -21,12 +21,7 @@
       <docHandler>http://localhost:8080/en-dev/EDocLite</docHandler>
       <active>true</active>
       <policies>
-        <policy>
-          <name>PRE_APPROVE</name>
-          <value>false</value>
-          <!-- <inherited>false</inherited> -->
-        </policy>
-        <policy>
+       	<policy>
           <name>DEFAULT_APPROVE</name>
           <value>false</value>
           <!-- <inherited>false</inherited> -->

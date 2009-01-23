@@ -10,10 +10,6 @@
 			<docHandler>_blank</docHandler>
 			<policies>
 				<policy>
-					<name>PRE_APPROVE</name>
-					<value>false</value>
-				</policy>
-				<policy>
 					<name>DEFAULT_APPROVE</name>
 					<value>true</value>
 				</policy>

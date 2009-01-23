@@ -21,10 +21,6 @@
 			<docHandler>none</docHandler>
 			<policies>
 				<policy>
-					<name>PRE_APPROVE</name>
-					<value>false</value>
-				</policy>
-				<policy>
 					<name>DEFAULT_APPROVE</name>
 					<value>false</value>
 				</policy>
@@ -62,11 +58,7 @@
 			<docHandler>none</docHandler>
 			<notificationFromAddress>fakey@mcfakey.com</notificationFromAddress>
 			<policies>
-				<policy>
-					<name>PRE_APPROVE</name>
-					<value>false</value>
-				</policy>
-				<policy>
+					<policy>
 					<name>DEFAULT_APPROVE</name>
 					<value>false</value>
 				</policy>

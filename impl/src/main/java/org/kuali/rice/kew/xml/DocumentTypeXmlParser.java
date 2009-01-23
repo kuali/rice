@@ -277,7 +277,9 @@ public class DocumentTypeXmlParser implements XmlConstants {
 
     private DocumentType getDocumentType(Node documentTypeNode) throws XPathExpressionException, InvalidWorkgroupException, InvalidXmlException {
         DocumentType documentType = new DocumentType();
-        documentType.setName(getDocumentTypeNameFromNode(documentTypeNode));
+        String documentTypeName = getDocumentTypeNameFromNode(documentTypeNode); 
+        documentType.setName(documentTypeName);
+        DocumentType previousDocumentType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
 //        try {
 //            documentType.setName((String) xpath.evaluate("./name", documentTypeNode, XPathConstants.STRING));
 //        } catch (XPathExpressionException xpee) {
@@ -298,6 +300,15 @@ public class DocumentTypeXmlParser implements XmlConstants {
         }
         try {
             String label = (String) xpath.evaluate("./label", documentTypeNode, XPathConstants.STRING);
+            if (StringUtils.isBlank(label)) {
+            	if (previousDocumentType != null && !StringUtils.isBlank(previousDocumentType.getLabel())) {
+            		// keep the same label as before, even if it's not specified here
+            		label = previousDocumentType.getLabel();
+            	} else {
+            		// otherwise set it to undefined
+            		label = KEWConstants.DEFAULT_DOCUMENT_TYPE_LABEL;
+            	}
+            }
             documentType.setLabel(label);
         } catch (XPathExpressionException xpee) {
             LOG.error("Error obtaining document type label", xpee);

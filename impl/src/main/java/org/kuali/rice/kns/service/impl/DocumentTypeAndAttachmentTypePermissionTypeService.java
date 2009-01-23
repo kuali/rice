@@ -39,11 +39,9 @@ public class DocumentTypeAndAttachmentTypePermissionTypeService extends
 		for (KimPermissionInfo kimPermissionInfo : matchingPermissions) {
 			if (!kimPermissionInfo.getDetails().containsKey(
 					KimAttributes.ATTACHMENT_TYPE_CODE)
-					|| requestedDetails
-							.get(KimAttributes.ATTACHMENT_TYPE_CODE)
-							.equals(
-									kimPermissionInfo.getDetails().get(
-											KimAttributes.ATTACHMENT_TYPE_CODE))) {
+					|| kimPermissionInfo.getDetails().get(KimAttributes.ATTACHMENT_TYPE_CODE)
+						.equals(requestedDetails.get(KimAttributes.ATTACHMENT_TYPE_CODE))) 		
+			{
 				returnPermissions.add(kimPermissionInfo);
 			}
 		}

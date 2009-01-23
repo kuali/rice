@@ -31,7 +31,7 @@ import org.kuali.rice.kew.exception.WorkflowServiceError;
 public interface DocumentSearchGenerator {
 	public static final int DEFAULT_SEARCH_RESULT_CAP = 500;
 
-	public void setSearchableAttributes(List searchableAttributes);
+	public void setSearchableAttributes(List<SearchableAttribute> searchableAttributes);
 	public void setSearchingUser(String principalId);
     public List<WorkflowServiceError> performPreSearchConditions(String principalId, DocSearchCriteriaDTO searchCriteria);
     public List<WorkflowServiceError> validateSearchableAttributes(DocSearchCriteriaDTO searchCriteria);

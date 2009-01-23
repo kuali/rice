@@ -478,3 +478,5 @@ UPDATE KREW_RULE_T set DOC_TYP_NM='RoutingRuleDocument' where DOC_TYP_NM='EDENSE
 /
 UPDATE KREW_RULE_T set DOC_TYP_NM='RemoveReplaceUserDocument' where DOC_TYP_NM='EDENSERVICE-DOCS.RemoveReplaceUser'
 /
+DELETE FROM KREW_DOC_TYP_PLCY_RELN_T where doc_plcy_nm like 'PRE_APPROVE'
+/

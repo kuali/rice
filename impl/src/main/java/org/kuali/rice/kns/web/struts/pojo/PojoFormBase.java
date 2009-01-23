@@ -573,5 +573,19 @@ public class PojoFormBase extends ActionForm implements PojoForm {
 	public Set<String> getEditablePropertiesFromPreviousRequest() {
 		return editablePropertiesFromPreviousRequest;
 	}
+
+
+
+	/**
+	 * Base implementation that returns {@link Collections#emptySet()}.  sub-implementations should not add values to Set instance returned
+	 * by this method, and should create its own instance.
+	 * 
+	 * @see org.kuali.rice.kns.web.struts.pojo.PojoForm#getMethodToCallsToBypassSessionRetrievalForGETRequests()
+	 */
+	public Set<String> getMethodToCallsToBypassSessionRetrievalForGETRequests() {
+		return Collections.emptySet();
+	}
+	
+	
 	// end Kuali Foundation modification
 }

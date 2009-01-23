@@ -92,6 +92,18 @@ public interface PojoForm {
 	 * 
 	 */
 	public Set<String> getEditablePropertiesFromPreviousRequest();
+	
+	/**
+	 * Returns a set of methodToCalls for which the system will bypass the session.  The return value of this method may depend ONLY upon the
+	 * type of the class implementing it.  Each instance of an implementation of this interface
+	 * must return the same result.  More formally, for 2 instances of this interfaces a1 and a2, if a1.getClass().equals(a2.getClass()), then
+	 * a1.getMethodToCallsToBypassSessionRetrievalForGETRequests().equals(a2.getMethodToCallsToBypassSessionRetrievalForGETRequests())
+	 * 
+	 * NOTE: read Javadoc of {@link PojoFormBase#getMethodToCallsToBypassSessionRetrievalForGETRequests()} for important implementation details.
+	 * 
+	 * @return
+	 */
+	public Set<String> getMethodToCallsToBypassSessionRetrievalForGETRequests();
     // end Kuali Foundation modification
 
 }

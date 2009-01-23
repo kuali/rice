@@ -18,6 +18,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -29,7 +30,9 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.InvalidCancelException;
 import org.apache.struts.action.RequestProcessor;
+import org.apache.struts.config.FormBeanConfig;
 import org.apache.struts.config.ForwardConfig;
+import org.apache.struts.util.RequestUtils;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
@@ -362,6 +365,11 @@ public class KualiRequestProcessor extends RequestProcessor {
 		String contentType = request.getContentType();
 		String method = request.getMethod();
 
+		if ("GET".equalsIgnoreCase(method) && StringUtils.isNotBlank(methodToCall) && form instanceof PojoForm &&
+				((PojoForm) form).getMethodToCallsToBypassSessionRetrievalForGETRequests().contains(methodToCall)) {
+			return createNewActionForm(mapping, request);
+		}
+		
 		// if we have a multipart request, parse it and return the stored form
 		// from session if the doc form key is not blank. If it is blank, then
 		// we just return the form
@@ -649,4 +657,20 @@ public class KualiRequestProcessor extends RequestProcessor {
 		return this.identityManagementService;
 	}
 	
+	private ActionForm createNewActionForm(ActionMapping mapping, HttpServletRequest request) {
+        String name = mapping.getName();
+        FormBeanConfig config = moduleConfig.findFormBeanConfig(name);
+        if (config == null) {
+            log.warn("No FormBeanConfig found under '" + name + "'");
+            return (null);
+        }
+        ActionForm instance = RequestUtils.createActionForm(config, servlet);
+        if ("request".equals(mapping.getScope())) {
+            request.setAttribute(mapping.getAttribute(), instance);
+        } else {
+            HttpSession session = request.getSession();
+            session.setAttribute(mapping.getAttribute(), instance);
+        }
+        return instance;
+	}
 }

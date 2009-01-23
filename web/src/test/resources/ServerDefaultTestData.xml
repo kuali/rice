@@ -288,10 +288,6 @@
 			<active>true</active>
 			<policies>
 				<policy>
-					<name>PRE_APPROVE</name>
-					<value>false</value>
-				</policy>
-				<policy>
 					<name>DEFAULT_APPROVE</name>
 					<value>true</value>
 				</policy>
@@ -479,7 +475,9 @@
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>
 			<documentType>RiceDocument</documentType>
-			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>workflowdocumenttemplate description</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
@@ -492,7 +490,9 @@
 		</rule>
 		<rule>
 			<documentType>RiceDocument.WKGRPREQ</documentType>
-			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>Workgroup Approval Rule</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
@@ -505,7 +505,9 @@
 		</rule>
 		<rule>
 			<documentType>TravelRequest</documentType>
-			<ruleTemplate>TravelRequest-DestinationRouting</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>TravelRequest-DestinationRouting</ruleTemplate>
 			<description>Destination Rule</description>
 			<ruleExtensions>
 				<ruleExtension>
@@ -528,7 +530,9 @@
 		</rule>
 		<rule>
 			<documentType>TravelRequest</documentType>
-			<ruleTemplate>TravelRequest-TravelerRouting</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>TravelRequest-TravelerRouting</ruleTemplate>
 			<description>Traveler Routing</description>
 			<responsibilities>
 				<responsibility>
@@ -539,7 +543,9 @@
 		</rule>
 		<rule>
 			<documentType>TravelRequest</documentType>
-			<ruleTemplate>TravelRequest-SupervisorRouting</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>TravelRequest-SupervisorRouting</ruleTemplate>
 			<description>Supervisor Routing</description>
 			<responsibilities>
 				<responsibility>
@@ -550,7 +556,9 @@
 		</rule>
 		<rule>
 			<documentType>TravelRequest</documentType>
-			<ruleTemplate>TravelRequest-SupervisorRouting</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>TravelRequest-SupervisorRouting</ruleTemplate>
 			<description>Dean/Director Routing</description>
 			<responsibilities>
 				<responsibility>
@@ -561,7 +569,9 @@
 		</rule>
 		<rule>
 			<documentType>TravelRequest</documentType>
-			<ruleTemplate>TravelRequest-AccountRouting</ruleTemplate>
+			<toDate>2009-05-30T09:00:00</toDate>
+            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <ruleTemplate>TravelRequest-AccountRouting</ruleTemplate>
 			<description>Fiscal Officer Routing</description>
 			<responsibilities>
 				<responsibility>

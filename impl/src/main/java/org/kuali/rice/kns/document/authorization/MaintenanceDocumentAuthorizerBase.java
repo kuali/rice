@@ -17,11 +17,9 @@ package org.kuali.rice.kns.document.authorization;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.beanutils.PropertyUtils;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
@@ -31,16 +29,15 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
-import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.KNSConstants;
 
 public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase
 		implements MaintenanceDocumentAuthorizer {
-    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MaintenanceDocumentAuthorizerBase.class);
+//    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MaintenanceDocumentAuthorizerBase.class);
 	
 	private static MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
-	private static PersistenceStructureService persistenceStructureService;
 
+	@SuppressWarnings("unchecked")
 	public final boolean canCreate(Class boClass, Person user) {
 		AttributeSet permissionDetails = new AttributeSet();
 		permissionDetails.put(KimAttributes.DOCUMENT_TYPE_NAME,
@@ -79,28 +76,15 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase
 				permissionDetails) ) {
 			return true;
 		}
-		List<String> pkFieldNames = getPersistenceStructureService().getPrimaryKeys( businessObject.getClass() );
-		Map<String,String> additionalQualifiers = new HashMap<String,String>( pkFieldNames.size() );
-		for ( String pkField : pkFieldNames ) {
-			try {
-				Object pkFieldValue = PropertyUtils.getSimpleProperty( businessObject, pkField );
-				if ( pkFieldValue != null ) {
-					additionalQualifiers.put( pkField, pkFieldValue.toString() );
-				}
-			} catch ( Exception ex ) {
-				// do nothing, we don't care at this point
-				if ( LOG.isDebugEnabled() ) {
-					LOG.debug( "Unable to retrieve PK property (" + pkField + ") from: " + businessObject, ex );
-				}
-			}
-		}
+		Map<String,String> additionalQualifiers = new HashMap<String,String>();
+		addBusinessObjectPrimaryKeyAttributes( businessObject, additionalQualifiers );
 		return isAuthorizedByTemplate(
 				businessObject,
 				KNSConstants.KNS_NAMESPACE,
 				KimConstants.PermissionTemplateNames.CREATE_MAINTAIN_RECORDS,
 				user.getPrincipalId(), permissionDetails, additionalQualifiers);
 	}
-
+	
 	public final boolean canCreateOrMaintain(
 			MaintenanceDocument maintenanceDocument, Person user) {
 		return canCreate( maintenanceDocument.getNewMaintainableObject().getBoClass(), user )
@@ -125,6 +109,9 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase
 							.getNamespaceAndComponentSimpleName(((MaintenanceDocument) businessObject)
 									.getNewMaintainableObject()
 									.getBusinessObject().getClass()));
+			addBusinessObjectPrimaryKeyAttributes( ((MaintenanceDocument) businessObject)
+					.getNewMaintainableObject()
+					.getBusinessObject(), attributes );
 		}
 	}
 
@@ -151,10 +138,4 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase
 		return maintenanceDocumentDictionaryService;
 	}
 
-	protected final PersistenceStructureService getPersistenceStructureService() {
-		if (persistenceStructureService == null) {
-			persistenceStructureService = KNSServiceLocator.getPersistenceStructureService();
-		}
-		return persistenceStructureService;
-	}
 }

@@ -16,8 +16,10 @@
 package org.kuali.rice.kns.authorization;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
@@ -26,16 +28,21 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
+import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.GlobalVariables;
 
 public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
-	private static IdentityManagementService identityManagementService;
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BusinessObjectAuthorizerBase.class);
+
+    private static IdentityManagementService identityManagementService;
 	private static PersonService<Person> personService;
 	private static KualiModuleService kualiModuleService;
 	private static DataDictionaryService dataDictionaryService;
+	private static PersistenceStructureService persistenceStructureService;
 	private static final String ROLE_QUALIFICATION_CACHE_NAME = "BusinessObjectAuthorizerBase.roleQualification";
 	private static final String PERMISSION_DETAILS_CACHE_NAME = "BusinessObjectAuthorizerBase.permissionDetails";
 
@@ -54,6 +61,7 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 			BusinessObject primaryBusinessObjectOrDocument,
 			Map<String, String> attributes) {
 		addStandardAttributes(primaryBusinessObjectOrDocument, attributes);
+		addBusinessObjectPrimaryKeyAttributes( primaryBusinessObjectOrDocument, attributes );
 	}
 
 	/**
@@ -285,7 +293,34 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 		}
 		return permissionDetails;
 	}
+	
+	@SuppressWarnings("unchecked")
+	protected void addBusinessObjectPrimaryKeyAttributes( BusinessObject businessObject, Map<String,String> attributes ) {
+		if ( !(businessObject instanceof Document) ) {
+			List<String> pkFieldNames = getPersistenceStructureService().getPrimaryKeys( businessObject.getClass() );
+			for ( String pkField : pkFieldNames ) {
+				try {
+					Object pkFieldValue = PropertyUtils.getSimpleProperty( businessObject, pkField );
+					if ( pkFieldValue != null ) {
+						attributes.put( pkField, pkFieldValue.toString() );
+					}
+				} catch ( Exception ex ) {
+					// do nothing, we don't care at this point
+					if ( LOG.isDebugEnabled() ) {
+						LOG.debug( "Unable to retrieve PK property (" + pkField + ") from: " + businessObject, ex );
+					}
+				}
+			}
+		}
+	}	
 
+	protected final PersistenceStructureService getPersistenceStructureService() {
+		if (persistenceStructureService == null) {
+			persistenceStructureService = KNSServiceLocator.getPersistenceStructureService();
+		}
+		return persistenceStructureService;
+	}
+	
 	protected static final IdentityManagementService getIdentityManagementService() {
 		if (identityManagementService == null) {
 			identityManagementService = KIMServiceLocator

@@ -54,10 +54,6 @@
 			<docHandler>_blank</docHandler>
 			<policies>
 				<policy>
-					<name>PRE_APPROVE</name>
-					<value>false</value>
-				</policy>
-				<policy>
 					<name>DEFAULT_APPROVE</name>
 					<value>true</value>
 				</policy>
@@ -86,10 +82,6 @@
 			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<docHandler>_blank</docHandler>
 			<policies>
-				<policy>
-					<name>PRE_APPROVE</name>
-					<value>false</value>
-				</policy>
 				<policy>
 					<name>DEFAULT_APPROVE</name>
 					<value>true</value>
@@ -122,10 +114,6 @@
 			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 			<docHandler>_blank</docHandler>
 			<policies>
-				<policy>
-					<name>PRE_APPROVE</name>
-					<value>false</value>
-				</policy>
 				<policy>
 					<name>DEFAULT_APPROVE</name>
 					<value>true</value>

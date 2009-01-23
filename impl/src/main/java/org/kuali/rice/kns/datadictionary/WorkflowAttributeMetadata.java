@@ -55,8 +55,6 @@ public class WorkflowAttributeMetadata extends DataDictionaryDefinitionBase {
 	 */
 	public void completeValidation(Class rootBusinessObjectClass,
 			Class otherBusinessObjectClass) {
-		// TODO wliang - THIS METHOD NEEDS JAVADOCS
-		
 	}
 
 }

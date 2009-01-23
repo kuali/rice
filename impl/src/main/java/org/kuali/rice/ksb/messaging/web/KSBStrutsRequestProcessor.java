@@ -20,7 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts.action.RequestProcessor;
-import org.kuali.rice.kim.util.KimCache;
 
 /**
  * A RequestProcessor implementation for Struts which handles determining whether or not access
@@ -38,7 +37,6 @@ public class KSBStrutsRequestProcessor extends RequestProcessor {
 	@Override
 	protected boolean processPreprocess(HttpServletRequest request,
 			HttpServletResponse response) {
-		KimCache.init();
 		return super.processPreprocess(request, response);
 	}
 }

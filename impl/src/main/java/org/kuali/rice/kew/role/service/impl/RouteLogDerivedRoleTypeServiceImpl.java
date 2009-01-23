@@ -16,9 +16,7 @@
 package org.kuali.rice.kew.role.service.impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -26,7 +24,6 @@ import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
-import org.kuali.rice.kim.util.KimCache;
 
 /**
  * 
@@ -37,7 +34,6 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
     public static final String INITIATOR_ROLE_NAME = "Initiator";
     public static final String INITIATOR_OR_REVIEWER_ROLE_NAME = "Initiator or Reviewer";
     public static final String ROUTER_ROLE_NAME = "Router";
-	private static final String HAS_APPLICATION_ROLE_CACHE_NAME = "RouteLogDerivedRoleTypeServiceImpl.hasApplicationRole";
 
 	protected WorkflowInfo workflowInfo = new WorkflowInfo();
     
@@ -91,35 +87,23 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
 		validateRequiredAttributesAgainstReceived(requiredAttributes, qualification, QUALIFICATION_RECEIVED_ATTIBUTES_NAME);
 	
 		String documentNumber = qualification.get(KimAttributes.DOCUMENT_NUMBER);
-		Map<String,Boolean> hasApplicationRoleCache = (Map<String,Boolean>)KimCache.getRequestCache(HAS_APPLICATION_ROLE_CACHE_NAME);
-
-		if ( hasApplicationRoleCache == null ) {
-		    hasApplicationRoleCache = new HashMap<String, Boolean>();
-		    KimCache.setRequestCache(HAS_APPLICATION_ROLE_CACHE_NAME, hasApplicationRoleCache);
+        boolean isUserInRouteLog = false;
+		try {
+			Long documentNumberLong = Long.parseLong(documentNumber);
+			if (INITIATOR_ROLE_NAME.equals(roleName)){
+				isUserInRouteLog = principalId.equals(workflowInfo.getDocumentInitiatorPrincipalId(documentNumberLong));
+			} else if(INITIATOR_OR_REVIEWER_ROLE_NAME.equals(roleName)){
+				isUserInRouteLog = workflowInfo.isUserAuthenticatedByRouteLog(documentNumberLong, principalId, true);
+			} else if(ROUTER_ROLE_NAME.equals(roleName)){
+				isUserInRouteLog = principalId.equals(workflowInfo.getDocumentRoutedByPrincipalId(documentNumberLong));
+			}
+		} catch (NumberFormatException e) {
+			throw new RuntimeException("Invalid (non-numeric) document number: "+documentNumber,e);
+		} catch (WorkflowException wex) {
+			throw new RuntimeException("Error in determining whether the principal Id: "+principalId+" is in route log " +
+					"for document number: "+documentNumber+" :"+wex.getLocalizedMessage(),wex);
 		}
-		String cacheKey = principalId+"-"+roleName+"-"+documentNumber;
-		Boolean result = hasApplicationRoleCache.get(cacheKey);
-		if ( result == null ) {
-	        boolean isUserInRouteLog = false;
-    		try {
-    			Long documentNumberLong = Long.parseLong(documentNumber);
-    			if (INITIATOR_ROLE_NAME.equals(roleName)){
-    				isUserInRouteLog = principalId.equals(workflowInfo.getDocumentInitiatorPrincipalId(documentNumberLong));
-    			} else if(INITIATOR_OR_REVIEWER_ROLE_NAME.equals(roleName)){
-    				isUserInRouteLog = workflowInfo.isUserAuthenticatedByRouteLog(documentNumberLong, principalId, true);
-    			} else if(ROUTER_ROLE_NAME.equals(roleName)){
-    				isUserInRouteLog = principalId.equals(workflowInfo.getDocumentRoutedByPrincipalId(documentNumberLong));
-    			}
-    		} catch (NumberFormatException e) {
-    			throw new RuntimeException("Invalid (non-numeric) document number: "+documentNumber,e);
-    		} catch (WorkflowException wex) {
-    			throw new RuntimeException("Error in determining whether the principal Id: "+principalId+" is in route log " +
-    					"for document number: "+documentNumber+" :"+wex.getLocalizedMessage(),wex);
-    		}
-    		result = isUserInRouteLog;
-    		hasApplicationRoleCache.put(cacheKey,result);
-		}
-		return result;
+		return isUserInRouteLog;
 	}
 
 }

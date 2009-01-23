@@ -16,9 +16,7 @@
 package org.kuali.rice.kew.role.service.impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowInfo;
@@ -26,7 +24,6 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
-import org.kuali.rice.kim.util.KimCache;
 
 /**
  * 
@@ -38,7 +35,6 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends
 	private static final String APPROVE_REQUEST_RECIPIENT_ROLE_NAME = "Approve Request Recipient";
 	private static final String ACKNOWLEDGE_REQUEST_RECIPIENT_ROLE_NAME = "Acknowledge Request Recipient";
 	private static final String FYI_REQUEST_RECIPIENT_ROLE_NAME = "FYI Request Recipient";
-	private static final String ACTIONS_REQUESTED_CACHE_NAME = "ActionRequestDerivedRoleTypeServiceImpl.cache";
 	protected WorkflowInfo workflowInfo = new WorkflowInfo();
 
 	@Override
@@ -59,33 +55,19 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends
 	public boolean hasApplicationRole(String principalId,
 			List<String> groupIds, String namespaceCode, String roleName,
 			AttributeSet qualification) {
-		Map<String,AttributeSet> actionsRequestedCache = (Map<String,AttributeSet>)KimCache.getRequestCache(ACTIONS_REQUESTED_CACHE_NAME);
 		try {
-			if (actionsRequestedCache == null) {
-				actionsRequestedCache = (new HashMap<String, AttributeSet>());
-				KimCache.setRequestCache(ACTIONS_REQUESTED_CACHE_NAME, actionsRequestedCache);
-			}
-			String cacheKey = principalId
-					+ qualification.get(KimAttributes.DOCUMENT_NUMBER);
-			if (!actionsRequestedCache.containsKey(cacheKey)) {
-				actionsRequestedCache.put(
-						cacheKey,
-						workflowInfo.getActionsRequested(principalId, Long
+			AttributeSet actionsRequested = workflowInfo.getActionsRequested(principalId, Long
 								.parseLong(qualification
-										.get(KimAttributes.DOCUMENT_NUMBER))));
-			}
+										.get(KimAttributes.DOCUMENT_NUMBER)));
 			if (APPROVE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName)) {
-				return Boolean.parseBoolean(actionsRequestedCache.get(
-						cacheKey).get(KEWConstants.ACTION_REQUEST_APPROVE_REQ));
+				return Boolean.parseBoolean(actionsRequested.get(KEWConstants.ACTION_REQUEST_APPROVE_REQ));
 			}
 			if (ACKNOWLEDGE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName)) {
-				return Boolean.parseBoolean(actionsRequestedCache.get(
-						cacheKey).get(
+				return Boolean.parseBoolean(actionsRequested.get(
 						KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
 			}
 			if (FYI_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName)) {
-				return Boolean.parseBoolean(actionsRequestedCache.get(
-						cacheKey).get(KEWConstants.ACTION_REQUEST_FYI_REQ));
+				return Boolean.parseBoolean(actionsRequested.get(KEWConstants.ACTION_REQUEST_FYI_REQ));
 			}
 			return false;
 		} catch (WorkflowException e) {

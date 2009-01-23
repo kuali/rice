@@ -28,7 +28,6 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.RequestProcessor;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.session.UserSession;
-import org.kuali.rice.kim.util.KimCache;
 
 
 /**
@@ -43,18 +42,6 @@ public class StrutsRequestProcessor extends RequestProcessor {
     private static final String REFRESH_MAPPING_PREFIX = "/Refresh";
     private static final String METHOD_PARAM = "methodToCall";
     private static final String DOC_FORM_KEY_ATTRIBUTE = "docFormKey";
-
-    /**
-     * This overridden method ...
-     * 
-     * @see org.apache.struts.action.RequestProcessor#processPreprocess(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
-     */
-    @Override
-    protected boolean processPreprocess(HttpServletRequest request,
-    		HttpServletResponse response) {
-		KimCache.init();
-    	return super.processPreprocess(request, response);
-    }
     
     @Override
 	public void process(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {

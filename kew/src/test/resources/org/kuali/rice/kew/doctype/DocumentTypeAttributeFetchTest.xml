@@ -168,10 +168,6 @@
 		    </attributes>
 			<policies>
 				<policy>
-					<name>PRE_APPROVE</name>
-					<value>false</value>
-				</policy>
-				<policy>
 					<name>DEFAULT_APPROVE</name>
 					<value>false</value>
 				</policy>
@@ -227,10 +223,6 @@
 		        </attribute>
 		    </attributes>
 			<policies>
-				<policy>
-					<name>PRE_APPROVE</name>
-					<value>false</value>
-				</policy>
 				<policy>
 					<name>DEFAULT_APPROVE</name>
 					<value>false</value>

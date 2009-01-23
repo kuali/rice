@@ -15,11 +15,7 @@
           <name>LOOK_FUTURE</name>
           <value>true</value>
         </policy>
-        <policy>
-          <name>PRE_APPROVE</name>
-          <value>false</value>
-        </policy>
-      </policies>
+     </policies>
       <routePaths>
         <routePath>
           <start name="PreRoute" />

@@ -1088,12 +1088,7 @@
             <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
             <active>true</active>
             <policies>
-                <policy>
-                    <name>PRE_APPROVE</name>
-                    <value>false</value>
-
-                </policy>
-                <policy>
+              <policy>
                     <name>DEFAULT_APPROVE</name>
                     <value>true</value>
 
@@ -1576,11 +1571,7 @@
             </attributes>
 
             <policies>
-                <policy>
-                    <name>PRE_APPROVE</name>
-                    <value>false</value>
-                </policy>
-                <policy>
+             	 <policy>
                     <name>DEFAULT_APPROVE</name>
                     <value>true</value>
                     <!-- this should be false in a production scenario -->

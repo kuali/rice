@@ -284,11 +284,7 @@
               </attribute>
             </attributes>
 
-            <policies>
-                <policy>
-                    <name>PRE_APPROVE</name>
-                    <value>false</value>
-                </policy>
+            <policies>                
                 <policy>
                     <name>DEFAULT_APPROVE</name>
                     <value>true</value>

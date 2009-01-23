@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+  <documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+    <!-- TestDocumentType3 should already exist with a previous label since it should have been ingested from DefaultTestData.xml -->
+    <documentType>
+	  <name>TestDocumentType3</name>
+	  <parent>TestDocumentType</parent>
+	</documentType>
+  </documentTypes>
+</data>

@@ -274,6 +274,22 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
     	DocumentType documentType = (DocumentType)documentTypes.get(0);
     	assertEquals("Document type has incorrect name", "DocumentTypeXmlParserTestDoc_DocTypeWithNoLabel", documentType.getName());
     	assertEquals("Document type has incorrect label", "Undefined", documentType.getLabel());
+    	
+    	// now test a DocumentType ingestion with no label for a DocumentType that has a previous version
+    	// in this case we use TestDocumentType3 which should have been ingested from DefaultTestData.xml
+    	DocumentType testDocType3 = KEWServiceLocator.getDocumentTypeService().findByName("TestDocumentType3");
+    	assertNotNull("TestDocumentType3 should exist.", testDocType3);
+    	// the current label for TestDocumentType3 should be TestDocumentType
+    	String expectedLabel = "TestDocumentType";
+    	assertEquals("Incorrect label", expectedLabel, testDocType3.getLabel());
+    	
+    	// now let's ingest a new version without the label, it should maintain the original label and not
+    	// end up with a value of Undefined
+    	documentTypes = testDoc("DocTypeWithNoLabelPreviousVersion", null);
+    	assertEquals("Should have parsed 1 document type", 1, documentTypes.size());
+    	testDocType3 = (DocumentType)documentTypes.get(0);
+    	assertEquals("Document type has incorrect name", "TestDocumentType3", testDocType3.getName());
+    	assertEquals("Document type has incorrect label", expectedLabel, testDocType3.getLabel());
     }
 
     @Test public void testLoadRoutePathOnlyAdjustsDocument() throws Exception {

@@ -15,18 +15,21 @@
  */
 package org.kuali.rice.kew.engine.node;
 
+import java.io.Serializable;
+
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
-import javax.persistence.JoinColumn;
-import javax.persistence.FetchType;
-import javax.persistence.OneToOne;
 import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.CascadeType;
-import javax.persistence.Table;
 import javax.persistence.Entity;
-
-import java.io.Serializable;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 
@@ -49,11 +52,13 @@ public class RouteNodeConfigParam extends KeyValuePair implements Serializable {
      */
     @Id
 	@Column(name="RTE_NODE_CFG_PARM_ID")
+	@GeneratedValue(strategy=GenerationType.AUTO, generator="KREW_RTE_NODE_CFG_PARM_SEQ_GEN")
+    @SequenceGenerator(name="KREW_RTE_NODE_CFG_PARM_SEQ_GEN", sequenceName="KREW_RTE_NODE_CFG_PARM_S")	
 	private Long id;
     /**
      * Foreign key to routenode table
      */
-    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+    @ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="RTE_NODE_ID")
 	private RouteNode routeNode;
 
@@ -96,4 +101,5 @@ public class RouteNodeConfigParam extends KeyValuePair implements Serializable {
                                         .append("value", value)
                                         .toString();
     }
+    
 }

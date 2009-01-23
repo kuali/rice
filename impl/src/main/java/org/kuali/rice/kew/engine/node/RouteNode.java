@@ -32,6 +32,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
@@ -118,7 +119,8 @@ public class RouteNode implements Serializable {
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name="BRCH_PROTO_ID")
 	private BranchPrototype branch;
-    @Transient
+    @OneToMany(fetch=FetchType.EAGER,mappedBy="routeNode",cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @Fetch(value = FetchMode.SUBSELECT)
     private List<RouteNodeConfigParam> configParams  = new ArrayList<RouteNodeConfigParam>(0);
 
     /**
@@ -343,8 +345,8 @@ public class RouteNode implements Serializable {
         this.branch = branch;
     }
 
-    @PrePersist
-    public void beforeInsert(){
-		OrmUtils.populateAutoIncValue(this, KNSServiceLocator.getEntityManagerFactory().createEntityManager());    	
-    }
+	@PrePersist
+	public void beforeInsert(){
+		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());		
+	}
 }

@@ -48,8 +48,8 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 @Table(name="KREW_DOC_HDR_EXT_T")
 @Sequence(name="KREW_SRCH_ATTR_S",property="searchableAttributeValueId")
 @NamedQueries({
-	@NamedQuery(name="SearchableAttributeStringValue.FindByRouteHeaderId", query="select s from SearchableAttributeStringValue as s where s.routeHeaderId = :routHeaderId"),
-	@NamedQuery(name="SearchableAttributeStringtValue.FindByKey", query="select s from SearchableAttributeStringValue as s where s.routeHeaderId = :routHeaderId and s.searchableAttributeKey = :searchableAttributeKey")
+	@NamedQuery(name="SearchableAttributeStringValue.FindByRouteHeaderId", query="select s from SearchableAttributeStringValue as s where s.routeHeaderId = :routeHeaderId"),
+	@NamedQuery(name="SearchableAttributeStringtValue.FindByKey", query="select s from SearchableAttributeStringValue as s where s.routeHeaderId = :routeHeaderId and s.searchableAttributeKey = :searchableAttributeKey")
 })
 public class SearchableAttributeStringValue implements WorkflowPersistable, SearchableAttributeValue {
 
@@ -227,9 +227,9 @@ public class SearchableAttributeStringValue implements WorkflowPersistable, Sear
         return null;
     }
     
-    @PrePersist
-    public void beforeInsert(){
-    	OrmUtils.populateAutoIncValue(this, KNSServiceLocator.getEntityManagerFactory().createEntityManager());
-    }    
+	@PrePersist
+	public void beforeInsert(){
+		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());		
+	}
 }
 

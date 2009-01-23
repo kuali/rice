@@ -89,15 +89,21 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     }
 
     public DocumentType findByName(String name) {
+
     	if (name == null) {
     		return null;
     	}
-        DocumentType documentType = fetchFromCacheByName(name);
+        
+    	/*
+    	DocumentType documentType = fetchFromCacheByName(name);
         if (documentType == null) {
         	documentType = getDocumentTypeDAO().findByName(name);
         	insertIntoCache(documentType);
         }
     	return documentType;
+		*/
+
+    	return getDocumentTypeDAO().findByName(name);
     }
 
     /**
@@ -236,7 +242,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     		//
     		// also we flush in the finally block because if an exception is thrown then it's still possible
     		// the the "oldDocumentType" which was fetched from the cache has had it's dbLockVerNbr incremented
-    		flushCache();
+    		//flushCache(); WJG 
     	}
     }
 

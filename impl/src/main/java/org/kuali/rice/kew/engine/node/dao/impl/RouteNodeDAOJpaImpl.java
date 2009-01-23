@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -29,6 +30,7 @@ import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.NodeState;
 import org.kuali.rice.kew.engine.node.RouteNode;
+import org.kuali.rice.kew.engine.node.RouteNodeConfigParam;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.node.dao.RouteNodeDAO;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -41,7 +43,21 @@ public class RouteNodeDAOJpaImpl implements RouteNodeDAO {
 	@PersistenceContext(unitName="kew-unit")
 	EntityManager entityManager;
 	
-    public void save(RouteNode node) {
+    /**
+	 * @return the entityManager
+	 */
+	public EntityManager getEntityManager() {
+		return this.entityManager;
+	}
+
+	/**
+	 * @param entityManager the entityManager to set
+	 */
+	public void setEntityManager(EntityManager entityManager) {
+		this.entityManager = entityManager;
+	}
+
+	public void save(RouteNode node) {
     	if (node.getRouteNodeId() == null){
     		entityManager.persist(node);
     	} else {
@@ -65,7 +81,7 @@ public class RouteNodeDAOJpaImpl implements RouteNodeDAO {
     	}
     }
 
-    public void save(Branch branch) {
+    public void save(Branch branch) {   	
     	if (branch.getBranchId() == null){
     		entityManager.persist(branch);
     	} else {
@@ -82,8 +98,15 @@ public class RouteNodeDAOJpaImpl implements RouteNodeDAO {
 
     public RouteNodeInstance findRouteNodeInstanceById(Long nodeInstanceId) {
     	Query query = entityManager.createNamedQuery("RouteNodeInstance.FindByRouteNodeInstanceId");
-    	query.setParameter(KEWPropertyConstants.ROUTE_NODE_ID, nodeInstanceId);
-    	return (RouteNodeInstance) query.getSingleResult();
+    	query.setParameter(KEWPropertyConstants.ROUTE_NODE_INSTANCE_ID, nodeInstanceId);
+
+		//TODO: Should we make use of the spring interceptor to catch this exception
+    	try {
+    	 	return (RouteNodeInstance) query.getSingleResult(); 		
+    	} catch (NoResultException nre){
+    		return null;
+    	}
+   
     }
 
     public List getActiveNodeInstances(Long documentId) {

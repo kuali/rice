@@ -24,6 +24,7 @@ import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -50,7 +51,22 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
 	private EntityManager entityManager;
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentRouteHeaderDAOJpaImpl.class);
 
-    public void saveRouteHeader(DocumentRouteHeaderValue routeHeader) {   	
+    
+    /**
+	 * @return the entityManager
+	 */
+	public EntityManager getEntityManager() {
+		return this.entityManager;
+	}
+
+	/**
+	 * @param entityManager the entityManager to set
+	 */
+	public void setEntityManager(EntityManager entityManager) {
+		this.entityManager = entityManager;
+	}
+
+	public void saveRouteHeader(DocumentRouteHeaderValue routeHeader) {   	
     	DocumentRouteHeaderValueContent documentContent = routeHeader.getDocumentContent();
     	List<SearchableAttributeValue> searchableAttributes = routeHeader.getSearchableAttributeValues();
     	
@@ -67,7 +83,12 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
         
         //Save searchable attributes
         for (SearchableAttributeValue searchableAttributeValue:searchableAttributes){
-        	entityManager.merge(searchableAttributeValue);
+        	searchableAttributeValue.setRouteHeaderId(routeHeader.getRouteHeaderId());
+        	if (searchableAttributeValue.getSearchableAttributeValueId() == null){
+        		entityManager.persist(searchableAttributeValue);
+        	} else {
+        		entityManager.merge(searchableAttributeValue);
+        	}
         }
     }
 
@@ -79,21 +100,31 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
 
     public void clearRouteHeaderSearchValues(DocumentRouteHeaderValue routeHeader) {
     	Long routeHeaderId = routeHeader.getRouteHeaderId();
-		removeRouteHeaderSearchValues("SearchableAttributeFloatValue.findByRouteHeaderId", routeHeaderId);
-		removeRouteHeaderSearchValues("SearchableAttributeDateTimeValue.findByRouteHeaderId", routeHeaderId);
-		removeRouteHeaderSearchValues("SearchableAttributeLongValue.findByRouteHeaderId", routeHeaderId);
-		removeRouteHeaderSearchValues("SearchableAttributeStringValue.findByRouteHeaderId", routeHeaderId);
-    }
-
-    private void removeRouteHeaderSearchValues(String namedQuery, Long routeHeaderId){
-    	Query query = entityManager.createNamedQuery(namedQuery);
-    	query.setParameter("routeHeaderid", routeHeaderId);
-    	List<SearchableAttributeValue> searchableAttributeValues = query.getResultList();    	
+    	List<SearchableAttributeValue> searchableAttributeValues = findSearchableAttributeValues(routeHeaderId);
     	for (SearchableAttributeValue searchableAttributeValue:searchableAttributeValues){
     		entityManager.remove(searchableAttributeValue);
     	}
     }
-    
+   
+    private List<SearchableAttributeValue> findSearchableAttributeValues(Long routeHeaderId){
+    	List<SearchableAttributeValue> searchableAttributeValues = new ArrayList<SearchableAttributeValue>();
+    	
+    	for (int i=1;i<=4; i++){
+    		String namedQuery = "";
+    		switch (i) {
+				case 1: namedQuery = "SearchableAttributeFloatValue.FindByRouteHeaderId"; break;
+				case 2: namedQuery = "SearchableAttributeDateTimeValue.FindByRouteHeaderId"; break;
+				case 3: namedQuery = "SearchableAttributeLongValue.FindByRouteHeaderId";break;
+				case 4: namedQuery = "SearchableAttributeStringValue.FindByRouteHeaderId"; break;
+    		}
+	    	Query query = entityManager.createNamedQuery(namedQuery);
+	    	query.setParameter("routeHeaderId", routeHeaderId);   	
+	    	searchableAttributeValues.addAll(query.getResultList());
+    	}    	
+
+    	return searchableAttributeValues;
+    }
+
     public void lockRouteHeader(final Long routeHeaderId, final boolean wait) {
     	String sql = getPlatform().getLockRouteHeaderQuerySQL(routeHeaderId, wait);
     	try{
@@ -118,7 +149,14 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
         if (clearCache) {
         	//this.getPersistenceBrokerTemplate().clearCache();
         }
-        return (DocumentRouteHeaderValue) query.getSingleResult();
+        
+        try {
+	        DocumentRouteHeaderValue routeHeader = (DocumentRouteHeaderValue) query.getSingleResult(); 
+	    	routeHeader.setSearchableAttributeValues(findSearchableAttributeValues(routeHeaderId));
+	    	return routeHeader;
+        } catch (NoResultException nre){
+        	return null;
+        }    	        
     }
 
 

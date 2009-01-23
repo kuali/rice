@@ -38,6 +38,7 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.kuali.rice.core.jpa.annotations.Sequence;
@@ -59,7 +60,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 @Table(name="KREW_RTE_NODE_INSTN_T")
 @Sequence(name="KREW_RTE_NODE_S",property="routeNodeInstanceId")
 @NamedQueries({
-	@NamedQuery(name="RouteNodeInstance.FindByRouteNodeInstanceId",query="select r from RouteNodeInstance r where r.routeNodeInstanceId = :roudeNodeInstanceId"),
+	@NamedQuery(name="RouteNodeInstance.FindByRouteNodeInstanceId",query="select r from RouteNodeInstance r where r.routeNodeInstanceId = :routeNodeInstanceId"),
 	@NamedQuery(name="RouteNodeInstance.FindActiveNodeInstances",query="select r from RouteNodeInstance r where r.documentId = :documentId and r.active = true"),
 	@NamedQuery(name="RouteNodeInstance.FindTerminalNodeInstances",query="select r from RouteNodeInstance r where r.documentId = :documentId and r.active = false and r.complete = true"),
 	@NamedQuery(name="RouteNodeInstance.FindInitialNodeInstances",query="select d.initialRouteNodeInstances from DocumentRouteHeaderValue d where d.routeHeaderId = :routeHeaderId"),
@@ -72,15 +73,13 @@ public class RouteNodeInstance implements Serializable {
 	
 	@Id
 	@Column(name="RTE_NODE_INSTN_ID")
-	//@GeneratedValue(strategy=javax.persistence.GenerationType.SEQUENCE, generator="KREWSeq")
-	//@SequenceGenerator(name="KREWSeq",sequenceName="KREW_RTE_NODE_S", allocationSize=1)
 	private Long routeNodeInstanceId;
     @Column(name="DOC_HDR_ID")
 	private Long documentId;
     @OneToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name="BRCH_ID")
 	private Branch branch;
-    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.MERGE, CascadeType.PERSIST})
+    @OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="RTE_NODE_ID")
     private RouteNode routeNode;
     @Column(name="ACTV_IND")
@@ -104,6 +103,7 @@ public class RouteNodeInstance implements Serializable {
     private List<RouteNodeInstance> previousNodeInstances = new ArrayList<RouteNodeInstance>();
 
     @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, mappedBy="nodeInstance")    
+    @Cascade({org.hibernate.annotations.CascadeType.DELETE_ORPHAN})
     @Fetch(value = FetchMode.SUBSELECT)
     private List<NodeState> state = new ArrayList<NodeState>();
     	
@@ -182,7 +182,9 @@ public class RouteNodeInstance implements Serializable {
         return state;
     }
     public void setState(List<NodeState> state) {
-        this.state = state;
+        this.state.clear();
+    	this.state.addAll(state);
+        //this.state = state;
     }
     public RouteNodeInstance getProcess() {
 		return process;
@@ -285,7 +287,7 @@ public class RouteNodeInstance implements Serializable {
     
 	@PrePersist
 	public void beforeInsert(){
-		OrmUtils.populateAutoIncValue(this, KNSServiceLocator.getEntityManagerFactory().createEntityManager());		
+		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());		
 	}
     
 }

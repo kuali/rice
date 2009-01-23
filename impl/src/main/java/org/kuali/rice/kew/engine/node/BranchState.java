@@ -21,7 +21,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -42,7 +42,7 @@ public class BranchState extends State {
 
     private static final long serialVersionUID = -7642477013444817952L;
 
-    @OneToOne(fetch=FetchType.EAGER)
+    @ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="RTE_BRCH_ID")
 	private Branch branch;
     @Version

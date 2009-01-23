@@ -33,11 +33,12 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.util.OrmUtils;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 
 /**
  * Represents a branch in the routing path of the document.
@@ -54,13 +55,13 @@ public class Branch implements Serializable {
 	@Id
 	@Column(name="RTE_BRCH_ID")
 	private Long branchId;
-	@OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="PARNT_ID")
 	private Branch parentBranch;
 	@Column(name="NM")
 	private String name;
-    @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST,CascadeType.MERGE})
-    @JoinColumn(name="RTE_BRCH_ST_ID")
+    @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.REMOVE,CascadeType.PERSIST,CascadeType.MERGE}, mappedBy="branch")
+    @Cascade({org.hibernate.annotations.CascadeType.DELETE_ORPHAN})    
     @Fetch(value=FetchMode.SUBSELECT)
 	private List<BranchState> branchState = new ArrayList<BranchState>();
 //	  apache lazy list commented out due to not being serializable
@@ -70,19 +71,16 @@ public class Branch implements Serializable {
 //					return new BranchState();
 //				}
 //			});
-    @OneToOne
+    @OneToOne(cascade={CascadeType.PERSIST})
 	@JoinColumn(name="INIT_RTE_NODE_INSTN_ID")
 	private RouteNodeInstance initialNode;
     @OneToOne
 	@JoinColumn(name="SPLT_RTE_NODE_INSTN_ID")
 	private RouteNodeInstance splitNode;
-	@OneToOne
+	@OneToOne(cascade={CascadeType.PERSIST,CascadeType.MERGE})
 	@JoinColumn(name="JOIN_RTE_NODE_INSTN_ID")
 	private RouteNodeInstance joinNode;
-	
-	@Column(name="INIT_RTE_NODE_INSTN_ID", insertable=false, updatable=false)
-	private Long initialNodeId;
-	
+		
 	@Version
 	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
@@ -142,7 +140,9 @@ public class Branch implements Serializable {
         return branchState;
     }
     public void setBranchState(List<BranchState> branchState) {
-        this.branchState = branchState;
+        this.branchState.clear();
+        this.branchState.addAll(branchState);
+    	//this.branchState = branchState;
     }
     
     public BranchState getDocBranchState(int index){
@@ -168,7 +168,7 @@ public class Branch implements Serializable {
     
     @PrePersist
     public void beforeInsert(){
-    	OrmUtils.populateAutoIncValue(this, KNSServiceLocator.getEntityManagerFactory().createEntityManager());
-    }
+    	OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
+    }    
 }
 

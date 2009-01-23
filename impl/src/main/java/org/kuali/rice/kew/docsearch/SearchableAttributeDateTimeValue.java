@@ -56,8 +56,8 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 @Table(name="KREW_DOC_HDR_EXT_DT_T")
 @Sequence(name="KREW_SRCH_ATTR_S",property="searchableAttributeValueId")
 @NamedQueries({
-	@NamedQuery(name="SearchableAttributeDateTimeValue.FindByRouteHeaderId", query="select s from SearchableAttributeDateTimeValue as s where s.routeHeaderId = :routHeaderId"),
-	@NamedQuery(name="SearchableAttributeDateTimeValue.FindByKey", query="select s from SearchableAttributeDateTimeValue as s where s.routeHeaderId = :routHeaderId and s.searchableAttributeKey = :searchableAttributeKey")
+	@NamedQuery(name="SearchableAttributeDateTimeValue.FindByRouteHeaderId", query="select s from SearchableAttributeDateTimeValue as s where s.routeHeaderId = :routeHeaderId"),
+	@NamedQuery(name="SearchableAttributeDateTimeValue.FindByKey", query="select s from SearchableAttributeDateTimeValue as s where s.routeHeaderId = :routeHeaderId and s.searchableAttributeKey = :searchableAttributeKey")
 })
 public class SearchableAttributeDateTimeValue implements WorkflowPersistable, SearchableAttributeValue {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SearchableAttributeDateTimeValue.class);
@@ -266,9 +266,9 @@ public class SearchableAttributeDateTimeValue implements WorkflowPersistable, Se
         return null;
     }
     
-    @PrePersist
-    public void beforeInsert(){
-    	OrmUtils.populateAutoIncValue(this, KNSServiceLocator.getEntityManagerFactory().createEntityManager());
-    }
+	@PrePersist
+	public void beforeInsert(){
+		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());		
+	}
 }
 

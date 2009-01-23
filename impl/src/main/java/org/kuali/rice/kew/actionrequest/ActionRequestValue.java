@@ -164,7 +164,7 @@ public class ActionRequestValue implements WorkflowPersistable {
 	@JoinColumn(name="PARNT_ID")
 	private ActionRequestValue parentActionRequest;
     @Fetch(value = FetchMode.SUBSELECT)
-    @ManyToMany(mappedBy="parentActionRequest",cascade={CascadeType.PERSIST/*,CascadeType.MERGE*/},fetch=FetchType.EAGER)
+    @ManyToMany(mappedBy="parentActionRequest",cascade={CascadeType.PERSIST, CascadeType.MERGE},fetch=FetchType.EAGER)
     private List<ActionRequestValue> childrenRequests = new ArrayList<ActionRequestValue>();
     @ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="ACTN_TKN_ID")
@@ -184,22 +184,22 @@ public class ActionRequestValue implements WorkflowPersistable {
 
     /* New Workflow 2.1 Field */
     // The node instance at which this request was generated
-    @OneToOne(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST})
+    @OneToOne(fetch=FetchType.EAGER/*, cascade={CascadeType.PERSIST}*/)
 	@JoinColumn(name="RTE_NODE_INSTN_ID")
 	private RouteNodeInstance nodeInstance;
 
     @Column(name="RQST_LBL")
     private String requestLabel;
-
+    
     public ActionRequestValue() {
         createDate = new Timestamp(System.currentTimeMillis());
     }
-
+    
     @PrePersist
     public void beforeInsert(){
-        OrmUtils.populateAutoIncValue(this, KNSServiceLocator.getEntityManagerFactory().createEntityManager());
+    	OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
     }
-
+   
     public KimGroup getGroup() {
         if (getGroupId() == null) {
             LOG.error("Attempting to get a group with a blank group id");
@@ -236,7 +236,7 @@ public class ActionRequestValue implements WorkflowPersistable {
     	}
     	return KEWServiceLocator.getIdentityHelperService().getPrincipal(getPrincipalId());
     }
-
+    
     public Person getPerson() {
     	if (getPrincipalId() == null) {
     		return null;
@@ -406,7 +406,7 @@ public class ActionRequestValue implements WorkflowPersistable {
     public void setPrincipalId(String principalId) {
         this.principalId = principalId;
     }
-
+    
     /**
      * @return Returns the ignorePrevAction.
      */
@@ -849,7 +849,7 @@ public class ActionRequestValue implements WorkflowPersistable {
     public void setRuleBaseValuesId(Long ruleBaseValuesId) {
         this.ruleBaseValuesId = ruleBaseValuesId;
     }
-
+    
 	private RuleService getRuleService() {
         return (RuleService) KEWServiceLocator.getService(KEWServiceLocator.RULE_SERVICE);
     }
@@ -950,5 +950,4 @@ public class ActionRequestValue implements WorkflowPersistable {
     public String getGroupName() {
         return KIMServiceLocator.getIdentityManagementService().getGroup(this.groupId).getGroupName();
     }
-
 }

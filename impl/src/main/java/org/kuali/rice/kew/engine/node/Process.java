@@ -24,10 +24,10 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.kuali.rice.core.jpa.annotations.Sequence;
@@ -55,7 +55,7 @@ public class Process implements Serializable {
 	private Long processId;
 	@Column(name="NM")
 	private String name;
-	@OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="DOC_TYP_ID")
 	private DocumentType documentType;
 	@OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.MERGE})
@@ -105,8 +105,8 @@ public class Process implements Serializable {
 	}
 
 	@PrePersist
-    public void beforeInsert(){
-    	OrmUtils.populateAutoIncValue(this, KNSServiceLocator.getEntityManagerFactory().createEntityManager());
-    }
+	public void beforeInsert(){
+		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());		
+	}
 
 }

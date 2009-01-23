@@ -34,8 +34,22 @@ public class RuleAttributeDAOJpaImpl implements RuleAttributeDAO {
     private EntityManager entityManager;
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RuleAttributeDAOJpaImpl.class);
+   
+    /**
+	 * @return the entityManager
+	 */
+	public EntityManager getEntityManager() {
+		return this.entityManager;
+	}
 
-    public void save(RuleAttribute ruleAttribute) {
+	/**
+	 * @param entityManager the entityManager to set
+	 */
+	public void setEntityManager(EntityManager entityManager) {
+		this.entityManager = entityManager;
+	}
+
+	public void save(RuleAttribute ruleAttribute) {
         if (ruleAttribute.getRuleAttributeId() == null) {
             OrmUtils.populateAutoIncValue(ruleAttribute, entityManager);
             entityManager.persist(ruleAttribute);
@@ -80,7 +94,11 @@ public class RuleAttributeDAOJpaImpl implements RuleAttributeDAO {
 
     public RuleAttribute findByClassName(String classname) {
         LOG.debug("findByClassName classname=" + classname);
-        return (RuleAttribute) entityManager.createNamedQuery("RuleAttribute.FindByClassName").setParameter("className", classname).getSingleResult();
+
+        //FIXME: This query is returning multiple rows, which one should it return
+        List<RuleAttribute> ruleAttributes = entityManager.createNamedQuery("RuleAttribute.FindByClassName").setParameter("className", classname).getResultList();
+
+        return (RuleAttribute)ruleAttributes.get(0); 
     }
 
 }

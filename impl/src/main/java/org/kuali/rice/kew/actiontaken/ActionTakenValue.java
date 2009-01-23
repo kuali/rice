@@ -30,6 +30,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -37,6 +38,8 @@ import javax.persistence.Version;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
@@ -53,6 +56,7 @@ import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 
 /**
@@ -62,6 +66,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
+@Sequence(name="KREW_RTE_NODE_S", property="actionTakenId")
 @Table(name="KREW_ACTN_TKN_T")
 public class ActionTakenValue implements WorkflowPersistable {
 
@@ -74,7 +79,7 @@ public class ActionTakenValue implements WorkflowPersistable {
     @GeneratedValue(strategy=GenerationType.AUTO, generator="KREW_ACTN_ITM_SEQ_GEN")
     @SequenceGenerator(name="KREW_ACTN_ITM_SEQ_GEN", sequenceName="KREW_ACTN_ITM_S")
 	private Long actionTakenId;
-    @Column(name="DOC_HDR_ID")
+    @Column(name="DOC_HDR_ID",insertable=false, updatable=false)
 	private Long routeHeaderId;
     @Column(name="ACTN_CD")
 	private String actionTaken;
@@ -94,9 +99,9 @@ public class ActionTakenValue implements WorkflowPersistable {
     @Column(name="DLGTR_GRP_ID")
 	private String delegatorGroupId;
     @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-    @JoinColumn(name="DOC_HDR_ID", insertable=false, updatable=false)
+    @JoinColumn(name="DOC_HDR_ID")
     private DocumentRouteHeaderValue routeHeader;
-    @OneToMany(cascade={CascadeType.PERSIST}, mappedBy="actionTaken")
+    @OneToMany(mappedBy="actionTaken")
 	private Collection<ActionRequestValue> actionRequests;
     @Column(name="CUR_IND")
     private Boolean currentIndicator = new Boolean(true);
@@ -107,12 +112,17 @@ public class ActionTakenValue implements WorkflowPersistable {
     	return getPrincipalForId( principalId );
     }
     
+	@PrePersist
+	public void beforeInsert(){
+		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());		
+	}
+
     public String getPrincipalDisplayName() {
     	// TODO this stinks to have to have a dependency on UserSession here
     	UserSession userSession = UserSession.getAuthenticatedUser();
     	return UserUtils.getDisplayableName(userSession, getPrincipal());
     }
-    
+
     public KimPrincipal getDelegatorPrincipal() {
     	return getPrincipalForId(delegatorPrincipalId);
     }
@@ -148,7 +158,7 @@ public class ActionTakenValue implements WorkflowPersistable {
         	return UserUtils.getDisplayableName(userSession, getDelegatorPrincipal());
         } else {
             return getDelegatorGroup().getGroupName();
-        }
+      }
     }
     
     private KimPrincipal getPrincipalForId(String principalId) {
@@ -251,7 +261,8 @@ public class ActionTakenValue implements WorkflowPersistable {
     }
 
     public Long getRouteHeaderId() {
-        return routeHeaderId;
+
+    	return routeHeaderId;
     }
 
     public void setRouteHeaderId(Long routeHeaderId) {

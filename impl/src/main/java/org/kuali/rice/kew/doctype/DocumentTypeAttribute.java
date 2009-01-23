@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- *
- *
+ * 
+ * 
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * 
  * http://www.opensource.org/licenses/ecl1.php
- *
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,15 +16,19 @@
  */
 package org.kuali.rice.kew.doctype;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
@@ -33,13 +37,14 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 
 
 /**
- * Data bean representing an attribute associated at the document type level.  e.g. NoteAttribute,
+ * Data bean representing an attribute associated at the document type level.  e.g. NoteAttribute, 
  * EmailAttribute, SearchableAttribute, etc.
- *
+ * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 @Entity
+@Sequence(name="KREW_RTE_NODE_S", property="documentTypeAttributeId")
 @Table(name="KREW_DOC_TYP_ATTR_T")
 public class DocumentTypeAttribute implements WorkflowPersistable, Comparable {
 
@@ -47,21 +52,28 @@ public class DocumentTypeAttribute implements WorkflowPersistable, Comparable {
 
 	@Id
 	@Column(name="DOC_TYP_ATTRIB_ID")
-	private Long documentTypeAttributeId;
-    @Column(name="RULE_ATTR_ID")
+	@GeneratedValue(strategy=javax.persistence.GenerationType.SEQUENCE, generator="KREWSeq")
+	@SequenceGenerator(name="KREWSeq",sequenceName="KREW_RTE_NODE_S", allocationSize=1)
+	private Long documentTypeAttributeId; 
+    @Column(name="RULE_ATTR_ID",insertable=false, updatable=false)
 	private Long ruleAttributeId;
     @ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="RULE_ATTR_ID", insertable=false, updatable=false)
+	@JoinColumn(name="RULE_ATTR_ID")
 	private RuleAttribute ruleAttribute;
-    @Column(name="DOC_TYP_ID")
+    @Column(name="DOC_TYP_ID",insertable=false, updatable=false)
 	private Long documentTypeId;
     @ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="DOC_TYP_ID", insertable=false, updatable=false)
+	@JoinColumn(name="DOC_TYP_ID")
 	private DocumentType documentType;
     @Column(name="ORD_INDX")
 	private int orderIndex;
     @Transient
     private Integer lockVerNbr;
+    
+	@PrePersist
+	public void beforeInsert(){
+		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());		
+	}
 
 	/**
 	 * @param documentTypeAttributeId The documentTypeAttributeId to set.
@@ -152,7 +164,7 @@ public class DocumentTypeAttribute implements WorkflowPersistable, Comparable {
 	public void setDocumentType(DocumentType documentType) {
 		this.documentType = documentType;
 	}
-
+	
     public int getOrderIndex() {
         return orderIndex;
     }

@@ -41,7 +41,21 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
     @PersistenceContext(name = "kew-unit")
     private EntityManager entityManager;
 
-    public void delete(Long actionRequestId) {
+    /**
+	 * @return the entityManager
+	 */
+	public EntityManager getEntityManager() {
+		return this.entityManager;
+	}
+
+	/**
+	 * @param entityManager the entityManager to set
+	 */
+	public void setEntityManager(EntityManager entityManager) {
+		this.entityManager = entityManager;
+	}
+
+	public void delete(Long actionRequestId) {
         ActionRequestValue actionRequestValue = (ActionRequestValue) entityManager.find(ActionRequestValue.class, actionRequestId);
         entityManager.remove(actionRequestValue);
     }
@@ -206,13 +220,12 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
     }
 
     public void saveActionRequest(ActionRequestValue actionRequest) {
-        if(actionRequest.getActionRequestId() == null) {
+    	if(actionRequest.getActionRequestId() == null) {
         	loadDefaultValues(actionRequest);
         	entityManager.persist(actionRequest);
         }else{
         	OrmUtils.reattach(actionRequest,entityManager.merge(actionRequest));
         }
-        //entityManager.flush();
     }
     private void loadDefaultValues(ActionRequestValue actionRequest) {
         checkNull(actionRequest.getActionRequested(), "action requested");

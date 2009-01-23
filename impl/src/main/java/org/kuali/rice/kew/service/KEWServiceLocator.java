@@ -1,5 +1,6 @@
 package org.kuali.rice.kew.service;
 
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import javax.transaction.TransactionManager;
 import javax.transaction.UserTransaction;
@@ -213,6 +214,14 @@ public final class KEWServiceLocator {
 	
 	public static final String IDENTITY_HELPER_SERVICE = "kewIdentityHelperService";
 
+	public static final String ENTITY_MANAGER_FACTORY = "kewEntityManagerFactory";
+
+
+    public static EntityManagerFactory getEntityManagerFactory() {
+        return (EntityManagerFactory) getService(ENTITY_MANAGER_FACTORY);
+    }
+	
+	
 	/**
 	 * @param serviceName
 	 *            the name of the service bean
@@ -221,7 +230,7 @@ public final class KEWServiceLocator {
 	public static Object getService(String serviceName) {
 		return getBean(serviceName);
 	}
-
+	
 	public static Object getBean(String serviceName) {
 		LOG.debug("Fetching service " + serviceName);
 		return GlobalResourceLoader.getResourceLoader().getService(new QName(serviceName));

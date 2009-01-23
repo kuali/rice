@@ -16,10 +16,6 @@
  */
 package org.kuali.rice.kew.doctype.dao.impl;
 
-import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -37,10 +33,8 @@ import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.dao.DocumentTypeDAO;
-import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.util.Utilities;
-import org.springmodules.orm.ojb.OjbFactoryUtils;
 
 
 public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
@@ -50,6 +44,21 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 	@PersistenceContext(unitName="kew-unit")
 	private EntityManager entityManager;
 	
+	
+	/**
+	 * @return the entityManager
+	 */
+	public EntityManager getEntityManager() {
+		return this.entityManager;
+	}
+
+	/**
+	 * @param entityManager the entityManager to set
+	 */
+	public void setEntityManager(EntityManager entityManager) {
+		this.entityManager = entityManager;
+	}
+
 	public void delete(DocumentType documentType) {
 		DocumentType docType = findByDocId(documentType.getDocumentTypeId());
 		entityManager.remove(documentType);
@@ -117,7 +126,9 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 			for(org.kuali.rice.kew.engine.node.Process process:(List<org.kuali.rice.kew.engine.node.Process>)documentType.getProcesses()){
 				if(process.getInitialRouteNode().getRouteNodeId()==null){
 					process.getInitialRouteNode().setDocumentTypeId(documentType.getDocumentTypeId());
-					entityManager.persist(process.getInitialRouteNode());
+					entityManager.persist(process.getInitialRouteNode());					
+				} else {
+					OrmUtils.reattach(process.getInitialRouteNode(),entityManager.merge(process.getInitialRouteNode()));
 				}
 			}
 			OrmUtils.reattach(documentType, entityManager.merge(documentType));
@@ -133,7 +144,6 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 		}
 		
 		documentType.setPolicies(docPolicies);
-
 	}
 
 	public List findByRouteHeaderId(Long routeHeaderId) {

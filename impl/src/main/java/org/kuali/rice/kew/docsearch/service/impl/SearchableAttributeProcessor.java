@@ -62,7 +62,8 @@ public class SearchableAttributeProcessor implements SearchableAttributeProcessi
 		try {
 			if (shouldIndex(document)) {
 				KEWServiceLocator.getRouteHeaderService().clearRouteHeaderSearchValues(document);
-				document.setSearchableAttributeValues(buildSearchableAttributeValues(document.getDocumentType(), document, document.getDocContent(), useMostRecentDocType));
+				List<SearchableAttributeValue> attributes = buildSearchableAttributeValues(document.getDocumentType(), document, document.getDocContent(), useMostRecentDocType); 
+				document.setSearchableAttributeValues(attributes);
 				KEWServiceLocator.getRouteHeaderService().saveRouteHeader(document);
 			}
 		} catch (Exception e) {

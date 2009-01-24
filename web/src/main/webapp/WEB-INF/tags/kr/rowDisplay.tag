@@ -448,11 +448,13 @@
 							</c:when>
 									
 							<c:otherwise>
-								${kfunc:registerEditableProperty(KualiForm, field.propertyName)}																		
+								${kfunc:registerEditableProperty(KualiForm, field.propertyName)}
+								<c:set var="checkboxPresentOnFormAnnotationFieldName" value="${field.propertyName}${Constants.CHECKBOX_PRESENT_ON_FORM_ANNOTATION}" />
+								${kfunc:registerEditableProperty(KualiForm, checkboxPresentOnFormAnnotationFieldName)}																
 								<input type="checkbox" id='${field.propertyName}' name="${field.propertyName}" 
 									${field.propertyValue eq 'Yes' || field.propertyValue eq 'YES' ? 'checked="checked"' : ''}
 									${onblurcall} />
-								<input type="hidden" name="${field.propertyName}${Constants.CHECKBOX_PRESENT_ON_FORM_ANNOTATION}" value="present"/>
+								<input type="hidden" name="${checkboxPresentOnFormAnnotationFieldName}" value="present"/>
 									
 							</c:otherwise>
 					

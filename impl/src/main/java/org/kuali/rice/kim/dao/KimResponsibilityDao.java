@@ -18,7 +18,7 @@ package org.kuali.rice.kim.dao;
 import java.util.Collection;
 import java.util.List;
 
-import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
+import org.kuali.rice.kim.bo.role.KimResponsibility;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
 
 /**
@@ -29,10 +29,9 @@ import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
  */
 public interface KimResponsibilityDao {
 
-	List<String> getRoleIdsForResponsibilities( Collection<KimResponsibilityImpl> responsibilities );
-
+	List<String> getRoleIdsForResponsibilities( Collection<? extends KimResponsibility> responsibilities );
 	
-	List<String> getRoleIdsForResponsibility( KimResponsibilityImpl responsibility );
+	List<String> getRoleIdsForResponsibility( KimResponsibility responsibility );
 	
 	RoleResponsibilityActionImpl getResponsibilityAction( String roleId, String responsibilityId, String roleMemberId );
 }

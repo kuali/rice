@@ -22,6 +22,7 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
+import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.impl.KimResponsibilityTypeServiceBase;
 import org.kuali.rice.kim.util.KimCommonUtils;
@@ -29,13 +30,8 @@ import org.kuali.rice.kim.util.KimCommonUtils;
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class ReviewResponsibilityTypeServiceImpl extends KimResponsibilityTypeServiceBase {
-	
-	/**
-	 * @see org.kuali.rice.kim.service.support.impl.KimTypeServiceBase#performMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)
-	 */
-	@Override
-	protected boolean performMatch(AttributeSet inputAttributeSet, AttributeSet storedAttributeSet) {
-		return (inputAttributeSet.get(KimAttributes.DOCUMENT_TYPE_NAME).equals(storedAttributeSet.get(KimAttributes.DOCUMENT_TYPE_NAME)) || KimCommonUtils.isParentDocument(KEWServiceLocator.getDocumentTypeService().findByName(inputAttributeSet.get(KimAttributes.DOCUMENT_TYPE_NAME)), storedAttributeSet.get(KimAttributes.DOCUMENT_TYPE_NAME))) && inputAttributeSet.get(KimAttributes.ROUTE_NODE_NAME).equals(storedAttributeSet.get(KimAttributes.ROUTE_NODE_NAME)); 
+public class ReviewResponsibilityTypeServiceImpl extends DocumentTypeResponsibilityTypeServiceImpl {
+	{
+		exactMatchStringAttributeName = KimAttributes.ROUTE_NODE_NAME;
 	}
 }

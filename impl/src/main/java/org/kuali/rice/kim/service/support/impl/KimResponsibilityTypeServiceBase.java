@@ -15,9 +15,10 @@
  */
 package org.kuali.rice.kim.service.support.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.KimResponsibilityTypeService;
 
@@ -30,32 +31,27 @@ import org.kuali.rice.kim.service.support.KimResponsibilityTypeService;
 public class KimResponsibilityTypeServiceBase extends KimTypeServiceBase
 		implements KimResponsibilityTypeService {
 
-	public boolean doResponsibilityDetailsMatch(
-			AttributeSet requestedDetails,
-			List<AttributeSet> responsibilityDetailsList) {
-		for (AttributeSet responsibilityDetails : responsibilityDetailsList) {
-			if (doesResponsibilityDetailMatch(requestedDetails, responsibilityDetails)) {
-				return true;
-			}
-		}
-		return false;
+	/**
+	 * @see org.kuali.rice.kim.service.support.KimResponsibilityTypeService#getMatchingResponsibilities(AttributeSet, List)
+	 */
+	public final List<KimResponsibilityInfo> getMatchingResponsibilities( AttributeSet requestedDetails, List<KimResponsibilityInfo> responsibilitiesList ) {
+		requestedDetails = translateInputAttributeSet(requestedDetails);
+		return performResponsibilityMatches(requestedDetails, responsibilitiesList);
 	}
 
-	public boolean doesResponsibilityDetailMatch(
-			AttributeSet requestedDetails,
-			AttributeSet responsibilityDetails) {
-		for (String requestedDetailKey : requestedDetails.keySet()) {
-			String requestedDetailValue = requestedDetails.get(requestedDetailKey);
-			if (!responsibilityDetails.containsKey(requestedDetailKey)) {
-				return false;
-			}
-			String responsibilityDetailValue = responsibilityDetails.get(requestedDetailKey);
-			if (!StringUtils.equals(responsibilityDetailValue, requestedDetailValue)) {
-				return false;
+	/**
+	 * Internal method for matching Responsibilities.  Override this method to customize the matching behavior.
+	 * 
+	 * This base implementation uses the {@link #performMatch(AttributeSet, AttributeSet)} method
+	 * to perform an exact match on the Responsibility details and return all that are equal.
+	 */
+	protected List<KimResponsibilityInfo> performResponsibilityMatches(AttributeSet requestedDetails, List<KimResponsibilityInfo> responsibilitiesList) {
+		List<KimResponsibilityInfo> matchingResponsibilities = new ArrayList<KimResponsibilityInfo>();
+		for (KimResponsibilityInfo Responsibility : responsibilitiesList) {
+			if ( performMatch(requestedDetails, Responsibility.getDetails()) ) {
+				matchingResponsibilities.add( Responsibility );
 			}
 		}
-		return true;
+		return matchingResponsibilities;
 	}
-
-
 }

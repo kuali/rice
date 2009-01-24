@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -47,12 +48,14 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  *
  */
 public class ResponsibilityServiceImpl implements ResponsibilityService {
+	private static final String DEFAULT_RESPONSIBILITY_TYPE_SERVICE = "defaultResponsibilityTypeService";
 	private static final Logger LOG = Logger.getLogger( ResponsibilityServiceImpl.class );
 	private static final Integer DEFAULT_PRIORITY_NUMBER = new Integer(1);
 	private BusinessObjectService businessObjectService;
 	private GroupService groupService;
 	private RoleService roleService;
 	private KimResponsibilityDao responsibilityDao;   
+	private KimResponsibilityTypeService responsibilityTypeService;
 
     // --------------------------
     // Responsibility Methods
@@ -118,7 +121,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     	// get all the responsibility objects whose name match that requested
     	List<KimResponsibilityImpl> responsibilities = getResponsibilityImplsByName( namespaceCode, responsibilityName );
     	// now, filter the full list by the detail passed
-    	List<KimResponsibilityImpl> applicableResponsibilities = getMatchingResponsibilities( responsibilities, responsibilityDetails );    	
+    	List<KimResponsibilityInfo> applicableResponsibilities = getMatchingResponsibilities( responsibilities, responsibilityDetails );    	
     	List<String> roleIds = getRoleIdsForResponsibilities( applicableResponsibilities, qualification );
     	return getRoleService().principalHasRole( principalId, roleIds, qualification );
     }
@@ -134,7 +137,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     	// get all the responsibility objects whose name match that requested
     	List<KimResponsibilityImpl> responsibilities = getResponsibilityImplsByTemplateName( namespaceCode, responsibilityTemplateName );
     	// now, filter the full list by the detail passed
-    	List<KimResponsibilityImpl> applicableResponsibilities = getMatchingResponsibilities( responsibilities, responsibilityDetails );    	
+    	List<KimResponsibilityInfo> applicableResponsibilities = getMatchingResponsibilities( responsibilities, responsibilityDetails );    	
     	List<String> roleIds = getRoleIdsForResponsibilities( applicableResponsibilities, qualification );
     	return getRoleService().principalHasRole( principalId, roleIds, qualification );
     }
@@ -147,9 +150,9 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     	// get all the responsibility objects whose name match that requested
     	List<KimResponsibilityImpl> responsibilities = getResponsibilityImplsByName( namespaceCode, responsibilityName );
     	// now, filter the full list by the detail passed
-    	List<KimResponsibilityImpl> applicableResponsibilities = getMatchingResponsibilities( responsibilities, responsibilityDetails );    	
+    	List<KimResponsibilityInfo> applicableResponsibilities = getMatchingResponsibilities( responsibilities, responsibilityDetails );    	
     	List<ResponsibilityActionInfo> results = new ArrayList<ResponsibilityActionInfo>();
-    	for ( KimResponsibilityImpl r : applicableResponsibilities ) {
+    	for ( KimResponsibilityInfo r : applicableResponsibilities ) {
     		List<String> roleIds = getRoleIdsForResponsibility( r, qualification );
     		results.addAll( getActionsForResponsibilityRoles( r, roleIds, qualification) );
     	}
@@ -186,16 +189,16 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     	// get all the responsibility objects whose name match that requested
     	List<KimResponsibilityImpl> responsibilities = getResponsibilityImplsByTemplateName( namespaceCode, responsibilityTemplateName );
     	// now, filter the full list by the detail passed
-    	List<KimResponsibilityImpl> applicableResponsibilities = getMatchingResponsibilities( responsibilities, responsibilityDetails );
+    	List<KimResponsibilityInfo> applicableResponsibilities = getMatchingResponsibilities( responsibilities, responsibilityDetails );
     	List<ResponsibilityActionInfo> results = new ArrayList<ResponsibilityActionInfo>();
-    	for ( KimResponsibilityImpl r : applicableResponsibilities ) {
+    	for ( KimResponsibilityInfo r : applicableResponsibilities ) {
     		List<String> roleIds = getRoleIdsForResponsibility( r, qualification );
     		results.addAll( getActionsForResponsibilityRoles( r, roleIds, qualification) );
     	}
     	return results;
     }
     
-    protected List<ResponsibilityActionInfo> getActionsForResponsibilityRoles( KimResponsibilityImpl responsibility, List<String> roleIds, AttributeSet qualification ) {
+    protected List<ResponsibilityActionInfo> getActionsForResponsibilityRoles( KimResponsibilityInfo responsibility, List<String> roleIds, AttributeSet qualification ) {
     	List<ResponsibilityActionInfo> results = new ArrayList<ResponsibilityActionInfo>();
     	Collection<RoleMembershipInfo> roleMembers = getRoleService().getRoleMembers( roleIds, qualification );
     	for ( RoleMembershipInfo rm : roleMembers ) {    		
@@ -222,42 +225,72 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     	return results;
     }
     
+    
+    protected Map<String,KimResponsibilityTypeService> getResponsibilityTypeServicesByTemplateId(Collection<KimResponsibilityImpl> responsibilities) {
+    	Map<String,KimResponsibilityTypeService> responsibilityTypeServices = new HashMap<String, KimResponsibilityTypeService>(responsibilities.size());
+    	for ( KimResponsibilityImpl responsibility : responsibilities ) {
+    		String serviceName = responsibility.getTemplate().getKimType().getKimTypeServiceName();
+    		if ( serviceName != null ) {
+    			KimResponsibilityTypeService responsibiltyTypeService = (KimResponsibilityTypeService)KIMServiceLocator.getService(serviceName);
+    			if ( responsibiltyTypeService != null ) {
+    	    		responsibilityTypeServices.put(responsibility.getTemplateId(), responsibiltyTypeService);    				
+    			} else {
+    				responsibilityTypeServices.put(responsibility.getTemplateId(), getDefaultResponsibilityTypeService());
+    			}
+    		}
+    	}
+    	return responsibilityTypeServices;
+    }
+    
+    protected Map<String,List<KimResponsibilityInfo>> groupResponsibilitiesByTemplate(Collection<KimResponsibilityImpl> responsibilities) {
+    	Map<String,List<KimResponsibilityInfo>> results = new HashMap<String,List<KimResponsibilityInfo>>();
+    	for (KimResponsibilityImpl responsibility : responsibilities) {
+    		List<KimResponsibilityInfo> responsibilityInfos = results.get( responsibility.getTemplateId() );
+    		if ( responsibilityInfos == null ) {
+    			responsibilityInfos = new ArrayList<KimResponsibilityInfo>();
+    			results.put( responsibility.getTemplateId(), responsibilityInfos );
+    		}
+    		responsibilityInfos.add(responsibility.toSimpleInfo());
+    	}
+    	return results;
+    }
+    
     /**
      * Compare each of the passed in responsibilities with the given responsibilityDetails.  Those that
      * match are added to the result list.
      */
-    protected List<KimResponsibilityImpl> getMatchingResponsibilities( List<KimResponsibilityImpl> responsibilities, AttributeSet responsibilityDetails ) {
-    	List<KimResponsibilityImpl> applicableResponsibilities;    	
+    protected List<KimResponsibilityInfo> getMatchingResponsibilities( List<KimResponsibilityImpl> responsibilities, AttributeSet responsibilityDetails ) {
+    	List<KimResponsibilityInfo> applicableResponsibilities = new ArrayList<KimResponsibilityInfo>();    	
     	if ( responsibilityDetails == null || responsibilityDetails.isEmpty() ) {
     		// if no details passed, assume that all match
-    		applicableResponsibilities = responsibilities;
+    		for ( KimResponsibilityImpl responsibility : responsibilities ) {
+    			applicableResponsibilities.add(responsibility.toSimpleInfo());
+    		}
     	} else {
-    		// otherwise, attempt to match the 
-    		applicableResponsibilities = new ArrayList<KimResponsibilityImpl>();
-    		for ( KimResponsibilityImpl perm : responsibilities ) {
-    			String serviceName = perm.getTemplate().getKimType().getKimTypeServiceName();
-    			if ( serviceName == null ) { // no service - assume a match
-    				applicableResponsibilities.add( perm );
-    			} else {
-    				KimResponsibilityTypeService responsibilityTypeService = (KimResponsibilityTypeService)KIMServiceLocator.getBean( serviceName );
-    				if ( responsibilityTypeService == null ) { // can't find the service - assume a match
-    					applicableResponsibilities.add( perm );
-    				} else { // got a service - check with it
-    					if ( responsibilityTypeService.doesResponsibilityDetailMatch( responsibilityDetails, perm.getDetails() ) ) {
-    						applicableResponsibilities.add( perm );
-    					}
-    				}
+    		// otherwise, attempt to match the permission details
+    		// build a map of the template IDs to the type services
+    		Map<String,KimResponsibilityTypeService> responsibilityTypeServices = getResponsibilityTypeServicesByTemplateId(responsibilities);
+    		// build a map of permissions by template ID
+    		Map<String,List<KimResponsibilityInfo>> responsibilityMap = groupResponsibilitiesByTemplate(responsibilities);
+    		// loop over the different templates, matching all of the same template against the type
+    		// service at once
+    		for ( String templateId : responsibilityMap.keySet() ) {
+    			KimResponsibilityTypeService responsibilityTypeService = responsibilityTypeServices.get( templateId );
+    			List<KimResponsibilityInfo> responsibilityInfos = responsibilityMap.get( templateId );
+    			if (responsibilityTypeService == null) {
+    				responsibilityTypeService = getDefaultResponsibilityTypeService();
     			}
+				applicableResponsibilities.addAll(responsibilityTypeService.getMatchingResponsibilities(responsibilityDetails, responsibilityInfos));    				
     		}
     	}
     	return applicableResponsibilities;
     }
 	
-    protected List<String> getRoleIdsForResponsibilities( List<KimResponsibilityImpl> responsibilities, AttributeSet qualification ) {
+    protected List<String> getRoleIdsForResponsibilities( List<KimResponsibilityInfo> responsibilities, AttributeSet qualification ) {
     	return responsibilityDao.getRoleIdsForResponsibilities( responsibilities );    	
     }
 
-    protected List<String> getRoleIdsForResponsibility( KimResponsibilityImpl responsibility, AttributeSet qualification ) {
+    protected List<String> getRoleIdsForResponsibility( KimResponsibilityInfo responsibility, AttributeSet qualification ) {
     	return responsibilityDao.getRoleIdsForResponsibility( responsibility );    	
     }
     
@@ -327,6 +360,13 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 
 	public void setResponsibilityDao(KimResponsibilityDao responsibilityDao) {
 		this.responsibilityDao = responsibilityDao;
+	}
+
+	protected KimResponsibilityTypeService getDefaultResponsibilityTypeService() {
+		if (responsibilityTypeService == null) {
+			responsibilityTypeService = (KimResponsibilityTypeService)KIMServiceLocator.getBean(DEFAULT_RESPONSIBILITY_TYPE_SERVICE);
+		}
+		return responsibilityTypeService;
 	}
 
 }

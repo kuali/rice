@@ -400,6 +400,8 @@
 
   <bean id="defaultPermissionTypeService" class="org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase" />
 
+  <bean id="defaultResponsibilityTypeService" class="org.kuali.rice.kim.service.support.impl.KimResponsibilityTypeServiceBase" />
+
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
     <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
     <property name="serviceDefinition">

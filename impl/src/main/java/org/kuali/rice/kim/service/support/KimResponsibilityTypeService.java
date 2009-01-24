@@ -16,8 +16,8 @@
 package org.kuali.rice.kim.service.support;
 
 import java.util.List;
-import java.util.Map;
 
+import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 
@@ -29,22 +29,5 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
  */
 public interface KimResponsibilityTypeService extends KimTypeService {
 
-    /** Return whether a permission assignment with the given details is applicable for the given request details. 
-     * 
-     * For example, the details for a permission (say edit) could be as follows:
-     *   component = Account
-     *   field = incomeStreamAccountNumber
-     *   
-     * The Account component is known to belong to the KFS-COA namespace.  If this service is requested...
-     * component = Account, field = All  
-     *   
-     *   
-     * TODO: clarify this description
-     */
-    boolean doesResponsibilityDetailMatch( AttributeSet requestedDetails, AttributeSet responsibilityDetails );
-
-    /** Same as {@link #doesResponsibilityDetailMatch(Map, Map)} except that it takes a list of details to check.
-     */
-    boolean doResponsibilityDetailsMatch( AttributeSet requestedDetails, List<AttributeSet> responsibilityDetailsList );
-
+    List<KimResponsibilityInfo> getMatchingResponsibilities( AttributeSet requestedDetails, List<KimResponsibilityInfo> responsibilitiesList );
 }

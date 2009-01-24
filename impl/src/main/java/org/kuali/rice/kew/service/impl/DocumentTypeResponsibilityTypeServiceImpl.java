@@ -16,26 +16,94 @@
 package org.kuali.rice.kew.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
+import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.impl.KimResponsibilityTypeServiceBase;
-import org.kuali.rice.kim.util.KimCommonUtils;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class DocumentTypeResponsibilityTypeServiceImpl extends KimResponsibilityTypeServiceBase {
-	
-	/**
-	 * @see org.kuali.rice.kim.service.support.impl.KimTypeServiceBase#performMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)
-	 */
+public class DocumentTypeResponsibilityTypeServiceImpl extends
+		KimResponsibilityTypeServiceBase {
+	DocumentTypeService documentTypeService;
+	protected String exactMatchStringAttributeName;
+
 	@Override
-	protected boolean performMatch(AttributeSet inputAttributeSet, AttributeSet storedAttributeSet) {
-		return (inputAttributeSet.get(KimAttributes.DOCUMENT_TYPE_NAME).equals(storedAttributeSet.get(KimAttributes.DOCUMENT_TYPE_NAME)) || KimCommonUtils.isParentDocument(KEWServiceLocator.getDocumentTypeService().findByName(inputAttributeSet.get(KimAttributes.DOCUMENT_TYPE_NAME)), storedAttributeSet.get(KimAttributes.DOCUMENT_TYPE_NAME))); 
+	protected List<KimResponsibilityInfo> performResponsibilityMatches(
+			AttributeSet requestedDetails,
+			List<KimResponsibilityInfo> responsibilitiesList) {
+		Map<String, List<KimResponsibilityInfo>> potentialDocumentTypeMatches = new HashMap<String, List<KimResponsibilityInfo>>();
+		for (KimResponsibilityInfo responsibility : responsibilitiesList) {
+			if ((exactMatchStringAttributeName == null)
+					|| responsibility
+							.getDetails()
+							.get(exactMatchStringAttributeName)
+							.equals(
+									requestedDetails
+											.get(exactMatchStringAttributeName))) {
+				if (!potentialDocumentTypeMatches.containsKey(responsibility
+						.getDetails().get(KimAttributes.DOCUMENT_TYPE_NAME))) {
+					potentialDocumentTypeMatches.put(
+							responsibility.getDetails().get(
+									KimAttributes.DOCUMENT_TYPE_NAME),
+							new ArrayList<KimResponsibilityInfo>());
+				}
+				potentialDocumentTypeMatches.get(
+						responsibility.getDetails().get(
+								KimAttributes.DOCUMENT_TYPE_NAME)).add(
+						responsibility);
+			}
+		}
+		List<KimResponsibilityInfo> matchingResponsibilities = new ArrayList<KimResponsibilityInfo>();
+		if (potentialDocumentTypeMatches.containsKey(requestedDetails
+				.get(KimAttributes.DOCUMENT_TYPE_NAME))) {
+			matchingResponsibilities
+					.addAll(potentialDocumentTypeMatches.get(requestedDetails
+							.get(KimAttributes.DOCUMENT_TYPE_NAME)));
+		} else {
+			String closestParentDocumentTypeName = getClosestParentDocumentTypeName(
+					getDocumentTypeService().findByName(
+							requestedDetails
+									.get(KimAttributes.DOCUMENT_TYPE_NAME)),
+					potentialDocumentTypeMatches.keySet());
+			if (closestParentDocumentTypeName != null) {
+				matchingResponsibilities.addAll(potentialDocumentTypeMatches
+						.get(closestParentDocumentTypeName));
+			}
+		}
+		return matchingResponsibilities;
+	}
+
+	protected String getClosestParentDocumentTypeName(
+			DocumentType documentType,
+			Set<String> potentialParentDocumentTypeNames) {
+		if (potentialParentDocumentTypeNames.contains(documentType.getName())) {
+			return documentType.getName();
+		} else {
+			if ((documentType.getDocTypeParentId() == null)
+					|| documentType.getDocTypeParentId().equals(
+							documentType.getDocumentTypeId())) {
+				return null;
+			} else {
+				return getClosestParentDocumentTypeName(documentType
+						.getParentDocType(), potentialParentDocumentTypeNames);
+			}
+		}
+	}
+
+	public DocumentTypeService getDocumentTypeService() {
+		if (documentTypeService == null) {
+			documentTypeService = KEWServiceLocator.getDocumentTypeService();
+		}
+		return this.documentTypeService;
 	}
 }

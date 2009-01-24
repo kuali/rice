@@ -22,7 +22,7 @@ import java.util.List;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.Query;
 import org.apache.ojb.broker.query.QueryFactory;
-import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
+import org.kuali.rice.kim.bo.role.KimResponsibility;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.dao.KimResponsibilityDao;
@@ -40,9 +40,9 @@ public class KimResponsibilityDaoOjb extends PlatformAwareDaoBaseOjb implements 
 	 * @see org.kuali.rice.kim.dao.KimResponsibilityDao#getRoleIdsForResponsibilities(java.util.Collection)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<String> getRoleIdsForResponsibilities(Collection<KimResponsibilityImpl> responsibilities) {
+	public List<String> getRoleIdsForResponsibilities(Collection<? extends KimResponsibility> responsibilities) {
 		List<String> responsibilityIds = new ArrayList<String>( responsibilities.size() );
-		for ( KimResponsibilityImpl kp : responsibilities ) {
+		for ( KimResponsibility kp : responsibilities ) {
 			responsibilityIds.add( kp.getResponsibilityId() );
 		}
 		Criteria c = new Criteria();
@@ -62,7 +62,7 @@ public class KimResponsibilityDaoOjb extends PlatformAwareDaoBaseOjb implements 
 	 * @see org.kuali.rice.kim.dao.KimResponsibilityDao#getRoleIdsForResponsibility(org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<String> getRoleIdsForResponsibility( KimResponsibilityImpl responsibility) {
+	public List<String> getRoleIdsForResponsibility( KimResponsibility responsibility) {
 		Criteria c = new Criteria();
 		c.addEqualTo( "responsibilityId", responsibility.getResponsibilityId() );
 		c.addEqualTo( "active", true );

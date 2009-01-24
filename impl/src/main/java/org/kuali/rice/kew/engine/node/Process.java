@@ -33,7 +33,7 @@ import javax.persistence.Version;
 import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 
 
 /**

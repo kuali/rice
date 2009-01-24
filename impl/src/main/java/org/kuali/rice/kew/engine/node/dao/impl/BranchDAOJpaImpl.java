@@ -70,4 +70,12 @@ public class BranchDAOJpaImpl implements BranchDAO {
 	        entityManager.remove(br);
 	    }
 
+    public EntityManager getEntityManager() {
+        return this.entityManager;
+    }
+
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
 }

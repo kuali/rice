@@ -78,4 +78,12 @@ public class UserOptionsDaoJpaImpl implements UserOptionsDAO {
     public Collection findByOptionValue(String optionId, String optionValue) {
         return entityManager.createNamedQuery("UserOptions.FindByOptionValue").setParameter("optionId", optionId).setParameter("optionValue", optionValue).getResultList();
     }
+
+    public EntityManager getEntityManager() {
+        return this.entityManager;
+    }
+
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 }

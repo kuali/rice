@@ -25,7 +25,6 @@
     <class>org.kuali.rice.kew.doctype.DocumentTypePolicy</class>
     <class>org.kuali.rice.kew.doctype.DocumentTypeAttribute</class>
     <class>org.kuali.rice.kew.useroptions.UserOptions</class>
-    <class>org.kuali.rice.kew.applicationconstants.ApplicationConstant</class>
     <class>org.kuali.rice.kew.rule.bo.RuleTemplate</class>
     <class>org.kuali.rice.kew.rule.RuleTemplateOption</class>
     <class>org.kuali.rice.kew.rule.bo.RuleAttribute</class>
@@ -48,14 +47,6 @@
     <class>org.kuali.rice.kew.edl.bo.EDocLiteStyle</class>
     <class>org.kuali.rice.kew.edl.bo.EDocLiteDefinition</class>
     <class>org.kuali.rice.kew.edl.bo.EDocLiteAssociation</class>
-    <class>org.kuali.rice.kew.user.BaseWorkflowUser</class>
-    <class>org.kuali.rice.kew.workgroup.BaseWorkgroup</class>
-    <class>org.kuali.rice.kew.workgroup.BaseWorkgroupMember</class>
-    <class>org.kuali.rice.kew.workgroup.BaseWorkgroupExtension</class>
-    <class>org.kuali.rice.kew.workgroup.BaseWorkgroupExtensionData</class>
-    <class>org.kuali.rice.kew.workgroup.WorkgroupType</class>
-    <class>org.kuali.rice.kew.workgroup.WorkgroupTypeAttribute</class>
-    <class>org.kuali.rice.ksb.messaging.bam.BAMTargetEntry</class>
     <!-- 
     <class>org.kuali.rice.kew.role.QualifiedRole</class>
     <class>org.kuali.rice.kew.role.QualifiedRoleMember</class>

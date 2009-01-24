@@ -37,7 +37,7 @@ import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 
 
 /**

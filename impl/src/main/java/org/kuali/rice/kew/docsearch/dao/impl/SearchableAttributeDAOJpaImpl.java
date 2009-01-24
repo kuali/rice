@@ -130,4 +130,12 @@ public class SearchableAttributeDAOJpaImpl implements SearchableAttributeDAO {
 		return lRet;
 	}
 
+    public EntityManager getEntityManager() {
+        return this.entityManager;
+    }
+
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
 }

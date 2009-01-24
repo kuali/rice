@@ -461,14 +461,10 @@ public class KNSConstants extends JSTLConstants {
     public static final String DOCUMENT_WEB_SCOPE = "documentWebScope";
     public static final String SESSION_SCOPE = "session";
 
-    public static final String ALLOWED_EMPLOYEE_STATUS_RULE = "ACTIVE_EMPLOYEE_STATUSES";
-
     public static class CoreApcParms {
 
-        public static final String UNIVERSAL_USER_EDIT_WORKGROUP = "UNIVERSAL_USER_EDIT_GROUP";
         public static final String WORKFLOW_EXCEPTION_WORKGROUP = "EXCEPTION_GROUP";
         public static final String SUPERVISOR_WORKGROUP = "SUPERVISOR_GROUP";
-        public static final String DEFAULT_COUNTRY = "DEFAULT_COUNTRY";
     }
 
     public static class SystemGroupParameterNames {

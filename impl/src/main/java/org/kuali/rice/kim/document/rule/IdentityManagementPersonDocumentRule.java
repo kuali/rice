@@ -201,6 +201,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 			} else {
 				LOG.error("Unable to get attribute name for ID:" + data.getKimAttrDefnId() );
 			}
+			i++;
 		}
 		return m;
 	}

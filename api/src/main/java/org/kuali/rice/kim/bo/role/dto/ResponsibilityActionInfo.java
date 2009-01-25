@@ -32,6 +32,8 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
  */
 public class ResponsibilityActionInfo implements ResponsibilityAction, Serializable {
 
+	private static final long serialVersionUID = 308199072590100177L;
+	
 	protected String principalId;
 	protected String groupId;
 	protected String memberRoleId; 
@@ -41,6 +43,7 @@ public class ResponsibilityActionInfo implements ResponsibilityAction, Serializa
 	protected String roleId;
 	protected String actionTypeCode;
 	protected String actionPolicyCode;
+	protected boolean ignorePrevious;
 	protected Integer priorityNumber;
 	protected AttributeSet qualifier;
 	protected List<DelegateInfo> delegates = new ArrayList<DelegateInfo>();
@@ -164,5 +167,19 @@ public class ResponsibilityActionInfo implements ResponsibilityAction, Serializa
 
 	public void setMemberRoleId(String memberRoleId) {
 		this.memberRoleId = memberRoleId;
+	}
+
+	/**
+	 * @return the ignorePrevious
+	 */
+	public boolean isIgnorePrevious() {
+		return this.ignorePrevious;
+	}
+
+	/**
+	 * @param ignorePrevious the ignorePrevious to set
+	 */
+	public void setIgnorePrevious(boolean ignorePrevious) {
+		this.ignorePrevious = ignorePrevious;
 	}
 }

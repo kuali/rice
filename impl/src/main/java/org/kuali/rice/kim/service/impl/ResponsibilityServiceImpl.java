@@ -220,6 +220,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     		rai.setActionTypeCode( action.getActionTypeCode() );
     		rai.setActionPolicyCode( action.getActionPolicyCode() );
     		rai.setPriorityNumber(action.getPriorityNumber() == null ? DEFAULT_PRIORITY_NUMBER : action.getPriorityNumber());
+    		rai.setIgnorePrevious( action.isIgnorePrevious() );
     		results.add( rai );
     	}
     	return results;

@@ -34,6 +34,7 @@ public interface ResponsibilityAction {
 	String getActionTypeCode();	
 	String getActionPolicyCode();
 	Integer getPriorityNumber();
+	boolean isIgnorePrevious();
 	AttributeSet getQualifier();
 	List<DelegateInfo> getDelegates();
 }

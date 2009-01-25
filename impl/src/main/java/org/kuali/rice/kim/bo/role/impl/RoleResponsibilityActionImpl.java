@@ -32,6 +32,7 @@ public class RoleResponsibilityActionImpl extends PersistableBusinessObjectBase 
 	protected String roleMemberId;
 	protected String actionTypeCode;
 	protected String actionPolicyCode;
+	protected boolean ignorePrevious;
 	protected Integer priorityNumber;
 	
 	protected RoleResponsibilityImpl roleResponsibility;
@@ -91,5 +92,17 @@ public class RoleResponsibilityActionImpl extends PersistableBusinessObjectBase 
 	}
 	public void setRoleResponsibility(RoleResponsibilityImpl roleResponsibility) {
 		this.roleResponsibility = roleResponsibility;
+	}
+	/**
+	 * @return the ignorePrevious
+	 */
+	public boolean isIgnorePrevious() {
+		return this.ignorePrevious;
+	}
+	/**
+	 * @param ignorePrevious the ignorePrevious to set
+	 */
+	public void setIgnorePrevious(boolean ignorePrevious) {
+		this.ignorePrevious = ignorePrevious;
 	}
 }

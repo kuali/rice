@@ -193,8 +193,7 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
     public void setNestedProperty(Object bean, String name, Object value) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 
         if (bean == null) {
-            //throw new IllegalArgumentException("No bean specified");
-        	LOG.warn("No bean specified, name = " + name + ", value = " + value);
+        	if (LOG.isDebugEnabled()) LOG.debug("No bean specified, name = " + name + ", value = " + value);
         	return;
         }
         if (name == null) {
@@ -287,8 +286,7 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
      */
     public PropertyDescriptor getPropertyDescriptor(Object bean, String name) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         if (bean == null) {
-            //throw new IllegalArgumentException("No bean specified");
-        	LOG.warn("No bean specified, name = " + name);
+        	if (LOG.isDebugEnabled()) LOG.debug("No bean specified, name = " + name);
         	return null;
         }
         if (name == null) {
@@ -438,8 +436,7 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
             NoSuchMethodException {
 
         if (bean == null) {
-            //throw new IllegalArgumentException("No bean specified");
-        	LOG.warn("No bean specified, name = " + name);
+        	if (LOG.isDebugEnabled()) LOG.debug("No bean specified, name = " + name + ", value = " + value);
         	return;
         }
         if (name == null) {

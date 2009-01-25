@@ -180,22 +180,18 @@ public class RoleRouteModule implements RouteModule {
 	
 	
 	class ResponsibilitySet {
-		private String roleId;
 		private String actionRequestCode;
 		private String approvePolicy;
-		private Integer priorityNumber;
 		private List<ResponsibilityActionInfo> responsibilities = new ArrayList<ResponsibilityActionInfo>();
 
 		public ResponsibilitySet(ResponsibilityActionInfo responsibility) {
-			this.roleId = responsibility.getRoleId();
 			this.actionRequestCode = responsibility.getActionTypeCode();
 			this.approvePolicy = responsibility.getActionPolicyCode();
-			this.priorityNumber = responsibility.getPriorityNumber();
 		}
 		
 		public boolean matches(ResponsibilityActionInfo responsibility) {
-			return  responsibility.getRoleId().equals(roleId) && responsibility.getActionTypeCode().equals(actionRequestCode) &&
-				responsibility.getActionPolicyCode().equals(approvePolicy) && responsibility.getPriorityNumber().equals(priorityNumber);
+			return responsibility.getActionTypeCode().equals(actionRequestCode) &&
+				responsibility.getActionPolicyCode().equals(approvePolicy);
 		}
 
 		public String getActionRequestCode() {

@@ -182,4 +182,35 @@ public class ResponsibilityActionInfo implements ResponsibilityAction, Serializa
 	public void setIgnorePrevious(boolean ignorePrevious) {
 		this.ignorePrevious = ignorePrevious;
 	}
+
+	/**
+	 * Constructs a <code>String</code> with all attributes
+	 * in name = value format.
+	 *
+	 * @return a <code>String</code> representation 
+	 * of this object.
+	 */
+	public String toString() {
+	    final String TAB = "\n";
+	    
+	    String retValue = "ResponsibilityActionInfo ( "
+	        + "principalId = " + this.principalId + TAB
+	        + "groupId = " + this.groupId + TAB
+	        + "memberRoleId = " + this.memberRoleId + TAB
+	        + "responsibilityNamespaceCode = " + this.responsibilityNamespaceCode + TAB
+	        + "responsibilityName = " + this.responsibilityName + TAB
+	        + "responsibilityId = " + this.responsibilityId + TAB
+	        + "roleId = " + this.roleId + TAB
+	        + "actionTypeCode = " + this.actionTypeCode + TAB
+	        + "actionPolicyCode = " + this.actionPolicyCode + TAB
+	        + "ignorePrevious = " + this.ignorePrevious + TAB
+	        + "priorityNumber = " + this.priorityNumber + TAB
+	        + "qualifier = " + this.qualifier + TAB
+	        + "delegates = " + this.delegates + TAB
+	        + " )";
+	
+	    return retValue;
+	}
+	
+	
 }

@@ -232,7 +232,9 @@ public final class KEWServiceLocator {
 	}
 	
 	public static Object getBean(String serviceName) {
-		LOG.debug("Fetching service " + serviceName);
+		if ( LOG.isDebugEnabled() ) {
+			LOG.debug("Fetching service " + serviceName);
+		}
 		return GlobalResourceLoader.getResourceLoader().getService(new QName(serviceName));
 	}
 

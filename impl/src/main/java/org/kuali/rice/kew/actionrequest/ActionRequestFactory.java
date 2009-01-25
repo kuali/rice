@@ -28,6 +28,7 @@ import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.identity.Id;
+import org.kuali.rice.kew.identity.service.IdentityHelperService;
 import org.kuali.rice.kew.role.KimRoleRecipient;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.ResolvedQualifiedRole;
@@ -41,8 +42,12 @@ import org.kuali.rice.kew.workgroup.GroupId;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.role.dto.DelegateInfo;
+import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.RoleManagementService;
 import org.kuali.rice.kns.util.KNSConstants;
 
 
@@ -55,6 +60,11 @@ public class ActionRequestFactory {
 
 	private static final Logger LOG = Logger.getLogger(ActionRequestFactory.class);
 
+	private static RoleManagementService roleManagementService;
+	private static IdentityHelperService identityHelperService;
+	private static IdentityManagementService identityManagementService;
+	private static ActionRequestService actionRequestService;
+	
 	private DocumentRouteHeaderValue document;
 	private RouteNodeInstance routeNode;
 	private List<ActionRequestValue> requestGraphs = new ArrayList<ActionRequestValue>();
@@ -138,7 +148,7 @@ public class ActionRequestFactory {
 		        KNSConstants.DetailTypes.WORKGROUP_DETAIL_TYPE,
 		        KEWConstants.NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME_IND);
 
-        KimGroup notifyExclusionWorkgroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(Utilities.parseGroupNamespaceCode(groupName), Utilities.parseGroupName(groupName));
+        KimGroup notifyExclusionWorkgroup = getIdentityManagementService().getGroupByName(Utilities.parseGroupNamespaceCode(groupName), Utilities.parseGroupName(groupName));
         return generateNotifications(null, getActionRequestService().getRootRequests(requests), principal, delegator, notificationRequestCode, actionTakenCode, notifyExclusionWorkgroup);
     }
 
@@ -176,13 +186,12 @@ public class ActionRequestFactory {
         {
             String principalId = ((KimPrincipalRecipient) recipient).getPrincipalId();
             String groupId = group.getGroupId();
-            isMember =
-                KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(principalId, groupId);
+            isMember = getIdentityManagementService().isMemberOfGroup(principalId, groupId);
         }
         else if (recipient instanceof KimGroupRecipient)
         {
             String kimRecipientId = ((KimGroupRecipient) recipient).getGroup().getGroupId();
-            isMember = KIMServiceLocator.getIdentityManagementService().isGroupMemberOfGroup(kimRecipientId, group.getGroupId() );
+            isMember = getIdentityManagementService().isGroupMemberOfGroup(kimRecipientId, group.getGroupId() );
         }
         return isMember;
     }
@@ -249,7 +258,7 @@ public class ActionRequestFactory {
     		actionRequest.setRoleName(roleRecipient.getResponsibilities().get(0).getRoleId());
     		actionRequest.setQualifiedRoleName(roleRecipient.getResponsibilities().get(0).getResponsibilityName());
     		// what about qualified role name label?
-    		actionRequest.setAnnotation(roleRecipient.getResponsibilities().get(0).getResponsibilityName());
+//    		actionRequest.setAnnotation(roleRecipient.getResponsibilities().get(0).getResponsibilityName());
     		Recipient targetRecipient = roleRecipient.getTarget();
     		if (targetRecipient != null) {
     			if (targetRecipient instanceof RoleRecipient) {
@@ -282,10 +291,10 @@ public class ActionRequestFactory {
 				throw new WorkflowRuntimeException("Failed to resolve id of type " + recipientId.getClass().getName() + " returned from role '" + role.getRoleName() + "'.  Id returned contained a null or empty value.");
 			}
 			if (recipientId instanceof UserId) {
-				KimPrincipal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal((UserId)recipientId);
+				KimPrincipal principal = getIdentityHelperService().getPrincipal((UserId)recipientId);
 				role.setTarget(new KimPrincipalRecipient(principal));
 			} else if (recipientId instanceof GroupId){
-				role.setTarget(new KimGroupRecipient(KEWServiceLocator.getIdentityHelperService().getGroup((GroupId) recipientId)));
+				role.setTarget(new KimGroupRecipient(getIdentityHelperService().getGroup((GroupId) recipientId)));
 			} else {
 				throw new WorkflowRuntimeException("Could not process the given type of id: " + recipientId.getClass());
 			}
@@ -319,9 +328,25 @@ public class ActionRequestFactory {
     	Integer priority = responsibilities.get(0).getPriorityNumber();
     	KimRoleRecipient roleRecipient = new KimRoleRecipient(responsibilities);
 
+    	// KFSMI-2381 - pull information from KIM to populate annotation
+    	
+    	
     	ActionRequestValue requestGraph = createActionRequest(actionTypeCode, priority, roleRecipient, "", KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, true, approvePolicy, null, null);
 
     	for (ResponsibilityActionInfo responsibility : responsibilities) {
+    		if ( LOG.isDebugEnabled() ) {
+    			LOG.debug( "Processing Responsibility for action request: " + responsibility );
+    		}
+    		StringBuffer annotation = new StringBuffer();
+    		KimRoleInfo role = getRoleManagementService().getRole(responsibility.getRoleId());
+    		annotation.append( role.getNamespaceCode() ).append( ' ' ).append( role.getRoleName() );
+    		AttributeSet qualifier = responsibility.getQualifier();
+    		if ( qualifier != null ) {
+	    		for ( String key : qualifier.keySet() ) {
+	        		annotation.append( '\n' );
+	        		annotation.append( key ).append( '=' ).append( qualifier.get(key) );
+	    		}
+    		}
 			if (responsibility.getPrincipalId() != null) {
 				roleRecipient.setTarget(new KimPrincipalRecipient(responsibility.getPrincipalId()));
 			} else if (responsibility.getGroupId() != null) {
@@ -329,7 +354,7 @@ public class ActionRequestFactory {
 			} else {
 				throw new RiceRuntimeException("Failed to identify a group or principal on the given ResponsibilityResolutionInfo.");
 			}
-			ActionRequestValue request = createActionRequest(responsibility.getActionTypeCode(), responsibility.getPriorityNumber(), roleRecipient, "", new Long(responsibility.getResponsibilityId()), true, approvePolicy, null, null);
+			ActionRequestValue request = createActionRequest(responsibility.getActionTypeCode(), responsibility.getPriorityNumber(), roleRecipient, "", new Long(responsibility.getResponsibilityId()), true, approvePolicy, null, annotation.toString());
 			request.setParentActionRequest(requestGraph);
 			generateRoleResponsibilityDelegationRequests(responsibility, request);
 			requestGraph.getChildrenRequests().add(request);
@@ -385,9 +410,9 @@ public class ActionRequestFactory {
 				throw new WorkflowRuntimeException("Failed to resolve id of type " + recipientId.getClass().getName() + " returned from role '" + role.getRoleName() + "'.  Id returned contained a null or empty value.");
 			}
 			if (recipientId instanceof UserId) {
-				role.setTarget(new KimPrincipalRecipient(KEWServiceLocator.getIdentityHelperService().getPrincipal((UserId) recipientId)));
+				role.setTarget(new KimPrincipalRecipient(getIdentityHelperService().getPrincipal((UserId) recipientId)));
 			} else if (recipientId instanceof GroupId) {
-			    role.setTarget(new KimGroupRecipient(KEWServiceLocator.getIdentityHelperService().getGroup((GroupId) recipientId)));
+			    role.setTarget(new KimGroupRecipient(getIdentityHelperService().getGroup((GroupId) recipientId)));
 			} else {
 				throw new WorkflowRuntimeException("Could not process the given type of id: " + recipientId.getClass());
 			}
@@ -479,7 +504,40 @@ public class ActionRequestFactory {
 	}
 
     public ActionRequestService getActionRequestService() {
-        return (ActionRequestService) KEWServiceLocator.getService(KEWServiceLocator.ACTION_REQUEST_SRV);
+		if ( actionRequestService == null ) {
+			actionRequestService = KEWServiceLocator.getActionRequestService();
+		}
+		return actionRequestService;
     }
+
+	/**
+	 * @return the roleManagementService
+	 */
+	public RoleManagementService getRoleManagementService() {
+		if ( roleManagementService == null ) {
+			roleManagementService = KIMServiceLocator.getRoleManagementService();
+		}
+		return roleManagementService;
+	}
+
+	/**
+	 * @return the identityHelperService
+	 */
+	public IdentityHelperService getIdentityHelperService() {
+		if ( identityHelperService == null ) {
+			identityHelperService = KEWServiceLocator.getIdentityHelperService();
+		}
+		return identityHelperService;
+	}
+
+	/**
+	 * @return the identityManagementService
+	 */
+	public IdentityManagementService getIdentityManagementService() {
+		if ( identityManagementService == null ) {
+			identityManagementService = KIMServiceLocator.getIdentityManagementService();
+		}
+		return identityManagementService;
+	}
 
 }

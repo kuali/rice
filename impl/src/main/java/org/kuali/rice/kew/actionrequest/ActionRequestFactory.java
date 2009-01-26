@@ -48,6 +48,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.RoleManagementService;
+import org.kuali.rice.kim.service.support.KimRoleTypeService;
 import org.kuali.rice.kns.util.KNSConstants;
 
 
@@ -326,23 +327,35 @@ public class ActionRequestFactory {
     	// it's assumed the that all in the list have the same action type code, priority number, etc.
     	String actionTypeCode = responsibilities.get(0).getActionTypeCode();
     	Integer priority = responsibilities.get(0).getPriorityNumber();
+    	boolean ignorePrevious = responsibilities.get(0).isIgnorePrevious();
     	KimRoleRecipient roleRecipient = new KimRoleRecipient(responsibilities);
 
-    	// KFSMI-2381 - pull information from KIM to populate annotation
     	
     	
-    	ActionRequestValue requestGraph = createActionRequest(actionTypeCode, priority, roleRecipient, "", KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, true, approvePolicy, null, null);
-
+    	ActionRequestValue requestGraph = createActionRequest(
+    	        actionTypeCode, 
+    	        priority, 
+    	        roleRecipient, 
+    	        "", // description 
+    	        KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, 
+    	        ignorePrevious, 
+    	        approvePolicy, 
+    	        null, // ruleId
+    	        null );// annotation
+    	
+    	StringBuffer parentAnnotation = new StringBuffer(); 
     	for (ResponsibilityActionInfo responsibility : responsibilities) {
     		if ( LOG.isDebugEnabled() ) {
     			LOG.debug( "Processing Responsibility for action request: " + responsibility );
     		}
+        	// KFSMI-2381 - pull information from KIM to populate annotation
     		StringBuffer annotation = new StringBuffer();
     		KimRoleInfo role = getRoleManagementService().getRole(responsibility.getRoleId());
     		annotation.append( role.getNamespaceCode() ).append( ' ' ).append( role.getRoleName() );
     		AttributeSet qualifier = responsibility.getQualifier();
     		if ( qualifier != null ) {
 	    		for ( String key : qualifier.keySet() ) {
+	    		    
 	        		annotation.append( '\n' );
 	        		annotation.append( key ).append( '=' ).append( qualifier.get(key) );
 	    		}
@@ -354,11 +367,22 @@ public class ActionRequestFactory {
 			} else {
 				throw new RiceRuntimeException("Failed to identify a group or principal on the given ResponsibilityResolutionInfo.");
 			}
-			ActionRequestValue request = createActionRequest(responsibility.getActionTypeCode(), responsibility.getPriorityNumber(), roleRecipient, "", new Long(responsibility.getResponsibilityId()), true, approvePolicy, null, annotation.toString());
+			ActionRequestValue request = createActionRequest(
+			        responsibility.getActionTypeCode(), 
+			        responsibility.getPriorityNumber(), 
+			        roleRecipient, 
+			        "", // description
+			        new Long(responsibility.getResponsibilityId()), 
+			        responsibility.isIgnorePrevious(), 
+			        approvePolicy, 
+			        null, // ruleId
+			        annotation.toString());
 			request.setParentActionRequest(requestGraph);
 			generateRoleResponsibilityDelegationRequests(responsibility, request);
 			requestGraph.getChildrenRequests().add(request);
-	     }
+			parentAnnotation.append( annotation );
+	    }
+    	requestGraph.setAnnotation( parentAnnotation.toString() );
     	requestGraphs.add(requestGraph);
     	return requestGraph;
     }
@@ -503,7 +527,7 @@ public class ActionRequestFactory {
     	return notification;
 	}
 
-    public ActionRequestService getActionRequestService() {
+    protected static ActionRequestService getActionRequestService() {
 		if ( actionRequestService == null ) {
 			actionRequestService = KEWServiceLocator.getActionRequestService();
 		}
@@ -513,7 +537,7 @@ public class ActionRequestFactory {
 	/**
 	 * @return the roleManagementService
 	 */
-	public RoleManagementService getRoleManagementService() {
+    protected static RoleManagementService getRoleManagementService() {
 		if ( roleManagementService == null ) {
 			roleManagementService = KIMServiceLocator.getRoleManagementService();
 		}
@@ -523,7 +547,7 @@ public class ActionRequestFactory {
 	/**
 	 * @return the identityHelperService
 	 */
-	public IdentityHelperService getIdentityHelperService() {
+    protected static IdentityHelperService getIdentityHelperService() {
 		if ( identityHelperService == null ) {
 			identityHelperService = KEWServiceLocator.getIdentityHelperService();
 		}
@@ -533,7 +557,7 @@ public class ActionRequestFactory {
 	/**
 	 * @return the identityManagementService
 	 */
-	public IdentityManagementService getIdentityManagementService() {
+    protected static IdentityManagementService getIdentityManagementService() {
 		if ( identityManagementService == null ) {
 			identityManagementService = KIMServiceLocator.getIdentityManagementService();
 		}

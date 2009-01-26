@@ -16,7 +16,6 @@
 package org.kuali.rice.kew.actionrequest;
 
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 
 /**
  * Represents an ActionRequest recipient who is a KimGroup
@@ -30,7 +29,7 @@ public class KimPrincipalRecipient implements Recipient {
 	private KimPrincipal principal;
 	
 	public KimPrincipalRecipient(String principalId) {
-		this(KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId));
+		this(ActionRequestFactory.getIdentityManagementService().getPrincipal(principalId));
 	}
 	
 	public KimPrincipalRecipient(KimPrincipal principal) {

@@ -16,7 +16,6 @@
 package org.kuali.rice.kew.actionrequest;
 
 import org.kuali.rice.kim.bo.group.KimGroup;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 
 /**
  * Represents an ActionRequest recipient who is a KimGroup
@@ -30,7 +29,7 @@ public class KimGroupRecipient implements Recipient {
 	private KimGroup group;
 	
 	public KimGroupRecipient(String groupId) {
-		this(KIMServiceLocator.getIdentityManagementService().getGroup(groupId));
+		this(ActionRequestFactory.getIdentityManagementService().getGroup(groupId));
 	}
 		
 	public KimGroupRecipient(KimGroup group) {

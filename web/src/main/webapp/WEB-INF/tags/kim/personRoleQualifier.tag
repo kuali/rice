@@ -28,28 +28,28 @@
 				<th class="infoline">
 					<c:out value="Add:" />
 				</th>
-			<c:forEach var="attrDefn" items="${role.definitions}" varStatus="status1">
-				<c:set var="attr" value="${attrDefn.value}" />
-				<c:set var="fieldName" value="${attr.name}" />
-				<c:set var="attrEntry" value="${role.attributeEntry[fieldName]}" />
-		       	<td align="left" valign="middle">
-		       		<div align="center"> 
-		      		   <kul:htmlControlAttribute property="document.roles[${roleIdx}].newRolePrncpl.qualifiers[${status1.index}].attrVal"  attributeEntry="${attrEntry}" />
-		      		   <%-- 
-		      		   TODO: code (probably) does not pull the remote property name properly
-		      		   TODO: code does not handle multiple lookup/conversion parameters 
-		      		   --%>
-		       		   <c:if test="${!empty attr.lookupBoClass}">
-		       		       <kim:roleQualifierLookup role="${role}" pathPrefix="document.roles[${roleIdx}].newRolePrncpl" attr="${attr}" />
-		          	   </c:if>
-		          	   
-		  			</div>
-					<%--
-					Field: ${fieldName}<br />
-					Attribute Definition: ${attr}<br />
-					--%>
-				</td>
-			</c:forEach>	
+				<c:forEach var="attrDefn" items="${role.definitions}" varStatus="status1">
+					<c:set var="attr" value="${attrDefn.value}" />
+					<c:set var="fieldName" value="${attr.name}" />
+					<c:set var="attrEntry" value="${role.attributeEntry[fieldName]}" />
+			       	<td align="left" valign="middle">
+			       		<div align="center"> 
+			      		   <kul:htmlControlAttribute property="document.roles[${roleIdx}].newRolePrncpl.qualifiers[${status1.index}].attrVal"  attributeEntry="${attrEntry}" />
+			      		   <%-- 
+			      		   TODO: code (probably) does not pull the remote property name properly
+			      		   TODO: code does not handle multiple lookup/conversion parameters 
+			      		   --%>
+			       		   <c:if test="${!empty attr.lookupBoClass}">
+			       		       <kim:roleQualifierLookup role="${role}" pathPrefix="document.roles[${roleIdx}].newRolePrncpl" attr="${attr}" />
+			          	   </c:if>
+			          	   
+			  			</div>
+						<%--
+						Field: ${fieldName}<br />
+						Attribute Definition: ${attr}<br />
+						--%>
+					</td>
+				</c:forEach>	
 				<td>
 					<div align="center">
 			            <kul:htmlControlAttribute property="document.roles[${roleIdx}].newRolePrncpl.activeFromDate"  attributeEntry="${docRolePrncplAttributes.activeFromDate}" datePicker="true"/>
@@ -59,13 +59,12 @@
 					<div align="center">
 					   <kul:htmlControlAttribute property="document.roles[${roleIdx}].newRolePrncpl.activeToDate"  attributeEntry="${docRolePrncplAttributes.activeToDate}" datePicker="true"/>
 					</div>
-				</td>
-			        		
+				</td>			        		
 			   	<td class="infoline">
-				<div align=center>
-					<html:image property="methodToCall.addRoleQualifier.line${roleIdx}.anchor${tabKey}"
-								src="${ConfigProperties.kr.externalizable.images.url}tinybutton-add1.gif" styleClass="tinybutton"/>
-				</div>
+					<div align=center>
+						<html:image property="methodToCall.addRoleQualifier.line${roleIdx}.anchor${tabKey}"
+									src="${ConfigProperties.kr.externalizable.images.url}tinybutton-add1.gif" styleClass="tinybutton"/>
+					</div>
 				</td>
 			</tr> 
 		</c:if>        				        		
@@ -83,8 +82,7 @@
 						<th rowspan="${rows}"  class="infoline">
 							<c:out value="${status1.index+1}" />
 						</th>
-			        	<c:forEach var="qualifier" items="${rolePrncpl.qualifiers}" varStatus="status2">
-			        			    
+			        	<c:forEach var="qualifier" items="${rolePrncpl.qualifiers}" varStatus="status2">			        			    
 				        	<c:forEach var="attrDefn" items="${role.definitions}" varStatus="status">
 				        		<c:if test="${attrDefn.value.name == qualifier.kimAttribute.attributeName}">
 					        		<c:set var="attr" value="${attrDefn.value}" />
@@ -102,37 +100,35 @@
 						      		   <c:if test="${!empty attr.lookupBoClass}">
 						      		       <kim:roleQualifierLookup role="${role}" pathPrefix="document.roles[${roleIdx}].rolePrncpls[${status1.index}]" attr="${attr}" />
 						         	   </c:if>
+								</div>
+							</td>
+						</c:forEach>									
+						<td>
+							<div align="center">
+				            <kul:htmlControlAttribute property="document.roles[${roleIdx}].rolePrncpls[${status1.index}].activeFromDate"  attributeEntry="${docRolePrncplAttributes.activeFromDate}" datePicker="true"/>
+			        		</div>
+		        		</td>
+		        		<td>
+			        		<div align="center">
+				            <kul:htmlControlAttribute property="document.roles[${roleIdx}].rolePrncpls[${status1.index}].activeToDate"  attributeEntry="${docRolePrncplAttributes.activeToDate}" datePicker="true"/>
+			        		</div>
+		        		</td>
+           				<c:if test="${not inquiry}">									
+								<td class="infoline">
+								<div align=center>
+				        	     <c:choose>
+				        	       <c:when test="${rolePrncpl.edit}">
+				        	          <img class='nobord' src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete2.gif' styleClass='tinybutton'/>
+				        	       </c:when>
+				        	       <c:otherwise>
+				        	          <html:image property='methodToCall.deleteRoleQualifier.line${roleIdx}:${status1.index}.anchor${currentTabIndex}'
+											src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete1.gif' styleClass='tinybutton'/>
+				        	       </c:otherwise>
+				        	     </c:choose>  
 									</div>
-								</td>
-							</c:forEach>
-									
-							<td>
-								<div align="center">
-					            <kul:htmlControlAttribute property="document.roles[${roleIdx}].rolePrncpls[${status1.index}].activeFromDate"  attributeEntry="${docRolePrncplAttributes.activeFromDate}" datePicker="true"/>
-				        		</div>
-			        		</td>
-			        		<td>
-				        		<div align="center">
-					            <kul:htmlControlAttribute property="document.roles[${roleIdx}].rolePrncpls[${status1.index}].activeToDate"  attributeEntry="${docRolePrncplAttributes.activeToDate}" datePicker="true"/>
-				        		</div>
-			        		</td>
-	           				<c:if test="${not inquiry}">									
-									<td class="infoline">
-									<div align=center>
-					        	     <c:choose>
-					        	       <c:when test="${rolePrncpl.edit}">
-					        	          <img class='nobord' src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete2.gif' styleClass='tinybutton'/>
-					        	       </c:when>
-					        	       <c:otherwise>
-					        	          <html:image property='methodToCall.deleteRoleQualifier.line${roleIdx}:${status1.index}.anchor${currentTabIndex}'
-												src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete1.gif' styleClass='tinybutton'/>
-					        	       </c:otherwise>
-					        	     </c:choose>  
-										</div>
-	                		   		</td>
-	               			</c:if> 		   		
-					</tr>
-	
+                		   		</td>
+               			</c:if> 		   		
+					</tr>	
 			        <c:if test="${fn:length(rolePrncpl.roleRspActions) > 0}">	
 	     			    <tr>
 			              <td colspan="5" style="padding:0px;">
@@ -145,8 +141,7 @@
 			<tr>
 	   <!-- need to decide colspan -->
 	             <td colspan=15 style="padding:0px; border-style:none; height:22px; background-color:#F6F6F6">&nbsp;</td>
-	        </tr>
-								
+	        </tr>								
 		</c:if>	
 	</table>       
 </kul:subtab>

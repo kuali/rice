@@ -515,7 +515,9 @@ public class KualiMultipleValueLookupAction extends KualiLookupAction implements
         Map<String, String> selectedObjectIds = new HashMap<String, String>();
         for (ResultRow row : resultTable) {
             String objId = row.getObjectId();
-            selectedObjectIds.put(objId, objId);
+            if(objId != null){
+            	selectedObjectIds.put(objId, objId);
+            }
         }
         
         multipleValueLookupForm.jumpToPage(multipleValueLookupForm.getViewedPageNumber(), resultTable.size(), maxRowsPerPage);

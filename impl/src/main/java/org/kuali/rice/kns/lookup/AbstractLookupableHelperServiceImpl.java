@@ -1068,6 +1068,10 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
             if (getBusinessObjectDictionaryService().isExportable(getBusinessObjectClass())) {
             	row.setBusinessObject(element);
             }
+            if(element instanceof PersistableBusinessObject){
+                row.setObjectId((((PersistableBusinessObject)element).getObjectId()));
+            }
+            
 
             boolean rowReturnable = isResultReturnable(element);
             row.setRowReturnable(rowReturnable);

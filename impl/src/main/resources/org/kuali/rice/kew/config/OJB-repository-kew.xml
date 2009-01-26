@@ -343,9 +343,7 @@
     <field-descriptor column="ACTV_IND" name="active" jdbc-type="BIT"/>
     <field-descriptor column="CUR_IND" name="currentInd" jdbc-type="BIT"/>
     <field-descriptor column="DOC_TYP_DESC" name="description" jdbc-type="VARCHAR"/>
-    <field-descriptor column="DOC_TYP_SUM" name="summary" jdbc-type="VARCHAR"/>
     <field-descriptor column="LBL" name="label" jdbc-type="VARCHAR"/>
-    <field-descriptor column="SHRT_LBL" name="shortLabel" jdbc-type="VARCHAR"/>
     <field-descriptor column="PREV_DOC_TYP_VER_NBR" name="previousVersionId" jdbc-type="BIGINT"/>
     <field-descriptor column="DOC_HDR_ID" name="routeHeaderId" jdbc-type="BIGINT"/>
     <field-descriptor column="DOC_HDLR_URL" name="docHandlerUrl" jdbc-type="VARCHAR"/>

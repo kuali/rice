@@ -118,16 +118,8 @@ public class DocumentType extends PersistableBusinessObjectBase
 	private Boolean currentInd;
     @Column(name="DOC_TYP_DESC")
 	private String description;
-
-    @Column(name="DOC_TYP_SUM")
-    private String summary;
-
     @Column(name="LBL")
 	private String label;
-
-    @Column(name="SHRT_LBL")
-    private String shortLabel;
-
     @Column(name="PREV_DOC_TYP_VER_NBR")
 	private Long previousVersionId;
     @Column(name="DOC_HDR_ID")
@@ -1181,37 +1173,6 @@ public class DocumentType extends PersistableBusinessObjectBase
 	public void setDescendHierarchy(boolean descendHierarchy) {
 		this.descendHierarchy = descendHierarchy;
 	}
-
-    /**
-     * @return the summary
-     */
-    public String getSummary() {
-        return this.summary;
-    }
-
-    /**
-     * @param summary the summary to set
-     */
-    public void setSummary(String summary) {
-        this.summary = summary;
-    }
-
-    /**
-     * @return the shortLabel
-     */
-    public String getShortLabel() {
-        if (StringUtils.isBlank(this.shortLabel)) {
-            return getLabel();
-        }
-        return this.shortLabel;
-    }
-
-    /**
-     * @param shortLabel the shortLabel to set
-     */
-    public void setShortLabel(String shortLabel) {
-        this.shortLabel = shortLabel;
-    }
 
     /**
      * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()

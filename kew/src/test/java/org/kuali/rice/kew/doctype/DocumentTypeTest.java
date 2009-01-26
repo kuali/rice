@@ -144,9 +144,7 @@ public class DocumentTypeTest extends KEWTestCase {
         DocumentType parsedDocument = KEWServiceLocator.getDocumentTypeService().findByName("DocumentType");
         assertEquals("Wrong name", "DocumentType", parsedDocument.getName());
         assertEquals("Wrong description", "TestDocumentType", parsedDocument.getDescription());
-        assertEquals("Wrong summary", "TestDocumentType Summary", parsedDocument.getSummary());
         assertEquals("Wrong label", "TestDocumentType", parsedDocument.getLabel());
-        assertEquals("Wrong short label", "Test Doc Typ", parsedDocument.getShortLabel());
         assertEquals("Wrong postprocessor", "org.kuali.rice.kew.postprocessor.DefaultPostProcessor", parsedDocument.getPostProcessorName());
         assertEquals("Wrong su workgroup", "TestWorkgroup", parsedDocument.getSuperUserWorkgroup().getGroupName());
         // roundabout way of testing to see if the exception workgroup has been processed properly
@@ -254,10 +252,8 @@ public class DocumentTypeTest extends KEWTestCase {
     	childEdit.setBlanketApproveWorkgroup(workflowAdmin);
     	childEdit.setDefaultExceptionWorkgroup(workflowAdmin);
     	childEdit.setDescription("desc");
-    	childEdit.setSummary("summary");
     	childEdit.setDocHandlerUrl("url");
     	childEdit.setLabel("lable");
-    	childEdit.setShortLabel("short lable");
     	childEdit.setPolicies(new ArrayList());
     	childEdit.setRoutingVersion("1");
     	childEdit.setDocTypeParentId(child.getDocTypeParentId());

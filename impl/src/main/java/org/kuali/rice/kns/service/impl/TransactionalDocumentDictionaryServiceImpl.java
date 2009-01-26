@@ -62,20 +62,6 @@ public class TransactionalDocumentDictionaryServiceImpl implements Transactional
     }
 
     /**
-     * @see org.kuali.rice.kns.service.TransactionalDocumentDictionaryService#getSummary(org.kuali.bo.TransactionalDocument)
-     */
-    public String getSummary(String transactionalDocumentTypeName) {
-        String summary = null;
-
-        DocumentTypeDTO docType = getDocumentType(transactionalDocumentTypeName);
-        if (docType != null) {
-            summary = docType.getDocTypeSummary();
-        }
-
-        return summary;
-    }
-
-    /**
      * @see org.kuali.rice.kns.service.TransactionalDocumentDictionaryService#getDescription(org.kuali.bo.TransactionalDocument)
      */
     public String getDescription(String transactionalDocumentTypeName) {

@@ -60,11 +60,7 @@ public abstract class DocumentEntryMapper {
 
         DocumentTypeDTO docType = getDocumentType(entry.getDocumentTypeName());
         entryMap.set("label", docType.getDocTypeLabel());
-        entryMap.set("shortLabel", docType.getDocTypeShortLabel());
 
-        if (docType.getDocTypeSummary() != null) {
-            entryMap.set("summary", docType.getDocTypeSummary());
-        }
         if (docType.getDocTypeDescription() != null) {
             entryMap.set("description", docType.getDocTypeDescription());
         }

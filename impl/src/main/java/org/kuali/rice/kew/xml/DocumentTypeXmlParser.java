@@ -293,12 +293,6 @@ public class DocumentTypeXmlParser implements XmlConstants {
             throw xpee;
         }
         try {
-            documentType.setSummary((String) xpath.evaluate("./summary", documentTypeNode, XPathConstants.STRING));
-        } catch (XPathExpressionException xpee) {
-            LOG.error("Error obtaining document type summary", xpee);
-            throw xpee;
-        }
-        try {
             String label = (String) xpath.evaluate("./label", documentTypeNode, XPathConstants.STRING);
             if (StringUtils.isBlank(label)) {
             	if (previousDocumentType != null && !StringUtils.isBlank(previousDocumentType.getLabel())) {
@@ -312,12 +306,6 @@ public class DocumentTypeXmlParser implements XmlConstants {
             documentType.setLabel(label);
         } catch (XPathExpressionException xpee) {
             LOG.error("Error obtaining document type label", xpee);
-            throw xpee;
-        }
-        try {
-            documentType.setShortLabel((String) xpath.evaluate("./shortLabel", documentTypeNode, XPathConstants.STRING));
-        } catch (XPathExpressionException xpee) {
-            LOG.error("Error obtaining document type shortLabel", xpee);
             throw xpee;
         }
         try {

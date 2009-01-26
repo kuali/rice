@@ -66,11 +66,9 @@ public class MockDocumentTypeServiceImpl implements DocumentTypeService {
         DocumentTypeDTO docTypeVO = new DocumentTypeDTO();
         docTypeVO.setDocTypeParentId(docType.getDocTypeParentId());
         docTypeVO.setDocTypeDescription(docType.getDescription());
-        docTypeVO.setDocTypeSummary(docType.getSummary());
         docTypeVO.setDocTypeHandlerUrl(docType.getDocHandlerUrl());
         docTypeVO.setDocTypeId(docType.getDocumentTypeId());
         docTypeVO.setDocTypeLabel(docType.getLabel());
-        docTypeVO.setDocTypeShortLabel(docType.getShortLabel());
         docTypeVO.setName(docType.getName());
         docTypeVO.setDocTypeVersion(docType.getVersion());
         if (docType.getCurrentInd().booleanValue()) {

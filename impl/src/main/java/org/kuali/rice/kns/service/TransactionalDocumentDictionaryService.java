@@ -41,14 +41,6 @@ public interface TransactionalDocumentDictionaryService {
     public Class getDocumentClassByName(String documentTypeName);
 
     /**
-     * Retrieves the summary of the transactional document as described in the data dictionary entry.
-     * 
-     * @param transactionalDocumentTypeName
-     * @return The transactional document's summary.
-     */
-    public String getSummary(String transactionalDocumentTypeName);
-
-    /**
      * Retrieves the full description of the transactional document as described in its data dictionary entry.
      * 
      * @param transactionalDocumentTypeName

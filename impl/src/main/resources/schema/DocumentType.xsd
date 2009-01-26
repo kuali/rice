@@ -117,28 +117,12 @@
       	</annotation>
       </element>
 
-      <element name="summary" type="c:LongStringType" minOccurs="0">
-        <annotation>
-            <documentation>
-             The summary of the document type.
-            </documentation>
-        </annotation>
-      </element>
-
       <element name="label" type="c:LongStringType" minOccurs="0">
       	<annotation>
       		<documentation>
       	 	 The label of the document type. This is intended to be the value displayed to end users when referring to the Document Type.
       		</documentation>
       	</annotation>
-      </element>
-
-      <element name="shortLabel" type="c:ShortStringType" minOccurs="0">
-        <annotation>
-            <documentation>
-             The label of the document type. This is intended to be a short version of the label value displayed to end users when referring to the Document Type.
-            </documentation>
-        </annotation>
       </element>
 
       <element name="postProcessorName" type="c:ShortStringType" default="org.kuali.rice.kew.postprocessor.DefaultPostProcessor" minOccurs="0">

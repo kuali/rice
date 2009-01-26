@@ -219,7 +219,6 @@ public class KualiHelpAction extends KualiAction {
         if (entry != null) {
             DocumentTypeDTO docType = KNSServiceLocator.getWorkflowInfoService().getDocType(entry.getDocumentTypeName());
             label = docType.getDocTypeLabel();
-            summary = docType.getDocTypeSummary();
             description = docType.getDocTypeDescription();
             helpDefinition = entry.getHelpDefinition();
 

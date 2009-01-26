@@ -60,7 +60,7 @@ public class WebRuleUtils {
                 PropertyUtils.copyProperties(delegationCopy, delegation);
 
                 delegationCopy.setDelegateRuleId(null);
-                delegationCopy.setLockVerNbr(null);
+                delegationCopy.setVersionNumber(null);
                 delegationCopy.setRuleDelegationId(null);
                 delegationCopy.setRuleResponsibilityId(null);
 

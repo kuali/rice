@@ -16,6 +16,8 @@
  */
 package org.kuali.rice.kew.rule;
 
+import java.util.LinkedHashMap;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,11 +30,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.persistence.Version;
 
-import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 
 /**
@@ -44,7 +44,7 @@ import org.kuali.rice.kew.util.KEWConstants;
  */
 @Entity
 @Table(name="KREW_DLGN_RSP_T")
-public class RuleDelegation implements WorkflowPersistable {
+public class RuleDelegation extends PersistableBusinessObjectBase {
     
 	private static final long serialVersionUID = 7989203310473741293L;
 	@Id
@@ -58,9 +58,6 @@ public class RuleDelegation implements WorkflowPersistable {
 	private Long delegateRuleId;
     @Column(name="DLGN_TYP")
     private String delegationType = KEWConstants.DELEGATION_PRIMARY;
-    @Version
-	@Column(name="VER_NBR")
-	private Integer lockVerNbr;
     
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
 	@JoinColumn(name="DLGN_RULE_BASE_VAL_ID")
@@ -103,12 +100,6 @@ public class RuleDelegation implements WorkflowPersistable {
     public void setDelegationType(String delegationType) {
         this.delegationType = delegationType;
     }
-    public Integer getLockVerNbr() {
-        return lockVerNbr;
-    }
-    public void setLockVerNbr(Integer lockVerNbr) {
-        this.lockVerNbr = lockVerNbr;
-    }
     public Long getRuleDelegationId() {
         return ruleDelegationId;
     }
@@ -127,5 +118,17 @@ public class RuleDelegation implements WorkflowPersistable {
     public void setRuleResponsibilityId(Long ruleResponsibilityId) {
         this.ruleResponsibilityId = ruleResponsibilityId;
     }
+
+	@Override
+	protected LinkedHashMap toStringMapper() {
+		LinkedHashMap map = new LinkedHashMap();
+		map.put("ruleDelegationId", ruleDelegationId);
+		map.put("ruleResponsibilityId", ruleResponsibilityId);
+		map.put("delegateRuleId", delegateRuleId);
+		map.put("delegationType", delegationType);
+		return map;
+	}
+    
+    
 }
 

@@ -33,6 +33,7 @@
     <field-descriptor name="docVersion"  column="DOC_VER_NBR"  jdbc-type="INTEGER" />
     <field-descriptor name="initiatorWorkflowId" column="INITR_PRNCPL_ID"  jdbc-type="VARCHAR" />
     <field-descriptor name="routedByUserWorkflowId" column="RTE_PRNCPL_ID"  jdbc-type="VARCHAR" />
+    <field-descriptor column="OBJ_ID" name="objectId" jdbc-type="VARCHAR" index="true" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <collection-descriptor element-class-ref="org.kuali.rice.kew.actionitem.ActionItem" auto-retrieve="true" auto-update="false"
       auto-delete="true" name="actionItems">
@@ -357,6 +358,7 @@
     <field-descriptor column="SEC_XML" name="documentTypeSecurityXml" jdbc-type="CLOB"/>
     <field-descriptor column="EMAIL_XSL" name="customEmailStylesheet" jdbc-type="VARCHAR"/>
     <field-descriptor column="SVC_NMSPC" name="serviceNamespace" jdbc-type="VARCHAR"/>
+    <field-descriptor column="OBJ_ID" name="objectId" jdbc-type="VARCHAR" index="true" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"/>
     <collection-descriptor auto-retrieve="true" auto-update="true" auto-delete="true"
       element-class-ref="org.kuali.rice.kew.doctype.DocumentTypePolicy"
@@ -414,6 +416,7 @@
     <field-descriptor column="NM" name="name" jdbc-type="VARCHAR" />
     <field-descriptor column="RULE_TMPL_DESC" name="description" jdbc-type="VARCHAR" />
     <field-descriptor column="DLGN_RULE_TMPL_ID" name="delegationTemplateId" jdbc-type="BIGINT"/>
+    <field-descriptor column="OBJ_ID" name="objectId" jdbc-type="VARCHAR" index="true" />
     <field-descriptor column="VER_NBR" name="versionNumber" jdbc-type="BIGINT" locking="true"/>
     <reference-descriptor name="delegationTemplate" class-ref="org.kuali.rice.kew.rule.bo.RuleTemplate"
     	auto-delete="false" auto-retrieve="true" auto-update="false">
@@ -456,6 +459,7 @@
     <field-descriptor column="SVC_NMSPC" name="serviceNamespace" jdbc-type="VARCHAR"/>
     <field-descriptor column="DESC_TXT" name="description" jdbc-type="VARCHAR" />
     <field-descriptor column="XML" name="xmlConfigData" jdbc-type="CLOB" />
+    <field-descriptor column="OBJ_ID" name="objectId" jdbc-type="VARCHAR" index="true" />
     <field-descriptor column="VER_NBR" name="versionNumber" jdbc-type="BIGINT" locking="true" />
     <collection-descriptor name="ruleTemplateAttributes" element-class-ref="org.kuali.rice.kew.rule.bo.RuleTemplateAttribute"
         auto-delete="true" auto-retrieve="true" auto-update="true">
@@ -472,6 +476,7 @@
     <field-descriptor column="ACTV_IND" name="active" jdbc-type="BIT" />
     <field-descriptor column="DSPL_ORD" name="displayOrder" jdbc-type="INTEGER" />
     <field-descriptor column="DFLT_VAL" name="defaultValue" jdbc-type="VARCHAR" />
+    <field-descriptor column="OBJ_ID" name="objectId" jdbc-type="VARCHAR" index="true" />
     <field-descriptor column="VER_NBR" name="versionNumber" jdbc-type="BIGINT" locking="true" />
     <reference-descriptor class-ref="org.kuali.rice.kew.rule.bo.RuleAttribute" name="ruleAttribute"
       auto-delete="false" auto-retrieve="true" auto-update="false">
@@ -507,6 +512,7 @@
     <field-descriptor column="PREV_RULE_VER_NBR" name="previousVersionId" jdbc-type="BIGINT" />
     <field-descriptor column="DLGN_IND" name="delegateRule" jdbc-type="BIT" />
     <field-descriptor column="ACTVN_DT" name="activationDate" jdbc-type="TIMESTAMP" />
+    <field-descriptor column="OBJ_ID" name="objectId" jdbc-type="VARCHAR" index="true" />
     <field-descriptor column="VER_NBR" name="versionNumber" jdbc-type="BIGINT" locking="true" />
     <reference-descriptor name="ruleTemplate" class-ref="org.kuali.rice.kew.rule.bo.RuleTemplate"
         auto-delete="false" auto-retrieve="true" auto-update="false">
@@ -530,6 +536,8 @@
     <field-descriptor column="RULE_EXPR_ID" name="id" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="KREW_RULE_EXPR_S"/>
     <field-descriptor column="TYP" name="type" jdbc-type="VARCHAR" />
     <field-descriptor column="RULE_EXPR" name="expression" jdbc-type="VARCHAR" nullable="true"/>
+    <field-descriptor column="OBJ_ID" name="objectId" jdbc-type="VARCHAR" index="true" />
+	<field-descriptor column="VER_NBR" name="versionNumber" jdbc-type="BIGINT" locking="true" />
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kew.rule.RuleDelegation" table="KREW_DLGN_RSP_T">
@@ -537,6 +545,7 @@
   	<field-descriptor column="RULE_RSP_ID" name="ruleResponsibilityId" jdbc-type="BIGINT"/>
   	<field-descriptor column="DLGN_RULE_BASE_VAL_ID" name="delegateRuleId" jdbc-type="BIGINT" />
   	<field-descriptor column="DLGN_TYP" name="delegationType" jdbc-type="VARCHAR" />
+  	<field-descriptor column="OBJ_ID" name="objectId" jdbc-type="VARCHAR" index="true" />
     <field-descriptor column="VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true" />
 
     <reference-descriptor class-ref="org.kuali.rice.kew.rule.RuleBaseValues" name="delegationRuleBaseValues" auto-delete="false" auto-retrieve="true" auto-update="false">
@@ -558,6 +567,7 @@
     <field-descriptor column="NM" name="ruleResponsibilityName" jdbc-type="VARCHAR" />
     <field-descriptor column="TYP" name="ruleResponsibilityType" jdbc-type="VARCHAR" />
     <field-descriptor column="APPR_PLCY" name="approvePolicy" jdbc-type="CHAR" />
+    <field-descriptor column="OBJ_ID" name="objectId" jdbc-type="VARCHAR" index="true" />
     <field-descriptor column="VER_NBR" name="versionNumber" jdbc-type="BIGINT" locking="true" />
 
 	  <reference-descriptor class-ref="org.kuali.rice.kew.rule.RuleBaseValues" name="ruleBaseValues" auto-delete="false" auto-retrieve="true" auto-update="false">
@@ -801,6 +811,7 @@
     <field-descriptor column="NM" name="name" jdbc-type="VARCHAR"/>
     <field-descriptor column="XML" name="xmlContent" jdbc-type="CLOB"/>
     <field-descriptor column="ACTV_IND" name="activeInd" jdbc-type="BIT" conversion="org.kuali.rice.kew.ojb.OjbCharBooleanConversion"/>
+    <field-descriptor column="OBJ_ID" name="objectId" jdbc-type="VARCHAR" index="true" />
     <field-descriptor column="VER_NBR" name="versionNumber" jdbc-type="BIGINT" locking="true"/>
   </class-descriptor>
 
@@ -809,6 +820,7 @@
     <field-descriptor column="NM" name="name" jdbc-type="VARCHAR"/>
     <field-descriptor column="XML" name="xmlContent" jdbc-type="CLOB"/>
     <field-descriptor column="ACTV_IND" name="activeInd" jdbc-type="BIT"/>
+    <field-descriptor column="OBJ_ID" name="objectId" jdbc-type="VARCHAR" index="true" />
     <field-descriptor column="VER_NBR" name="versionNumber" jdbc-type="BIGINT" locking="true"/>
   </class-descriptor>
 
@@ -818,6 +830,7 @@
     <field-descriptor column="EDL_DEF_NM" name="definition" jdbc-type="VARCHAR"/>
     <field-descriptor column="STYLE_NM" name="style" jdbc-type="VARCHAR"/>
     <field-descriptor column="ACTV_IND" name="activeInd" jdbc-type="BIT" conversion="org.kuali.rice.kew.ojb.OjbCharBooleanConversion"/>
+    <field-descriptor column="OBJ_ID" name="objectId" jdbc-type="VARCHAR" index="true" />
     <field-descriptor column="VER_NBR" name="versionNumber" jdbc-type="BIGINT" locking="true"/>
   </class-descriptor>
 

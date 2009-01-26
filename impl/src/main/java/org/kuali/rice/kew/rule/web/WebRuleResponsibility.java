@@ -398,7 +398,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 		for (Iterator iter = getDelegationRules().iterator(); iter.hasNext();) {
 			RuleDelegation delegation = (RuleDelegation) iter.next();
 			delegation.setDelegateRuleId(null);
-			delegation.setLockVerNbr(null);
+			delegation.setVersionNumber(null);
 			delegation.setRuleDelegationId(null);
 			delegation.setRuleResponsibility(this);
 			delegation.setRuleResponsibilityId(null);

@@ -1468,7 +1468,7 @@ public class RuleServiceImpl implements RuleService {
                 delegation.setRuleDelegationId(null);
                 delegation.setRuleResponsibility(responsibility);
                 delegation.setRuleResponsibilityId(null);
-                delegation.setLockVerNbr(0);
+                delegation.setVersionNumber(0L);
                 // it's very important that we do NOT recurse down into the delegation rules and reversion those,
                 // this is important to how rule versioning works
                 responsibility.getDelegationRules().add(delegation);

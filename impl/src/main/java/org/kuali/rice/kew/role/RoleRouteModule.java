@@ -110,8 +110,7 @@ public class RoleRouteModule implements RouteModule {
 			resolver = (QualifierResolver)GlobalResourceLoader.getObject(new ObjectDefinition(qualifierResolverClassName));
 		}
 		if (resolver == null) {
-			// TODO alternatively, in future could provide a default implementation?
-			throw new RiceRuntimeException("Could not determine qualiferResolver for this node.  QualifierResolver name was " + qualifierResolverName + ".  Please define one in document type XML.");
+			resolver = new NullQualifierResolver();
 		}
 		return resolver;
 	}

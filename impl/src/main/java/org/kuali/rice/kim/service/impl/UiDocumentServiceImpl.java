@@ -318,7 +318,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		    	}
 
 	        KimTypeService kimTypeService = (KimTypeServiceBase)KIMServiceLocator.getService(serviceName);
-			role.setDefinitions(kimTypeService.getAttributeDefinitions(role.getKimRoleType()));
+			role.setDefinitions(kimTypeService.getAttributeDefinitions(role.getKimTypeId()));
         	// when post again, it will need this during populate
             role.setNewRolePrncpl(new KimDocumentRoleMember());
             for (String key : role.getDefinitions().keySet()) {

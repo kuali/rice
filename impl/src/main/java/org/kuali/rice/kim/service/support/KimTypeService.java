@@ -81,6 +81,6 @@ public interface KimTypeService {
 
     List<KeyLabelPair> getAttributeValidValues(String attributeName);
     
-    AttributeDefinitionMap getAttributeDefinitions(KimTypeImpl kimType);
+    AttributeDefinitionMap getAttributeDefinitions(String kimTypeId);
     
 }

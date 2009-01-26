@@ -75,7 +75,7 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
         return new ArrayList<String>(0);
     }
 
-    public AttributeDefinitionMap getAttributeDefinitions(KimTypeImpl kimType) {
+    public AttributeDefinitionMap getAttributeDefinitions(String kimTypeId) {
         return null;
     }
 

@@ -302,7 +302,7 @@ public class IdentityManagementRoleDocumentAction extends KualiTransactionalDocu
 	        // role type populated from form is not a complete record
 	        newRole.getKimRoleType().setKimTypeId(newRole.getKimTypeId());
 	        newRole.getKimRoleType().refreshReferenceObject("attributeDefinitions");
-	        newRole.setDefinitions(kimTypeService.getAttributeDefinitions(newRole.getKimRoleType()));
+	        newRole.setDefinitions(kimTypeService.getAttributeDefinitions(newRole.getKimTypeId()));
 	        KimDocumentRoleMember newRolePrncpl = new KimDocumentRoleMember();
 	        
 	        for (String key : newRole.getDefinitions().keySet()) {

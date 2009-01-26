@@ -125,7 +125,7 @@ public class RoleLookupableHelperServiceImpl   extends KualiLookupableHelperServ
 						serviceName = "kimTypeService";
 					}
 			        KimTypeService kimTypeService = (KimTypeService)KIMServiceLocator.getService(serviceName);
-			        AttributeDefinitionMap definitions = kimTypeService.getAttributeDefinitions(kimType);
+			        AttributeDefinitionMap definitions = kimTypeService.getAttributeDefinitions(kimType.getKimTypeId());
 			        setAttrDefinitions(definitions);
 		            for ( AttributeDefinition definition : definitions.values()) {
 				        List<Field> fields = new ArrayList<Field>();

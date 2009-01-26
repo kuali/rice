@@ -177,7 +177,7 @@ public class UiDocumentServiceImplTest extends RiceTestCase {
 	public void testSetAttributeEntry() {
 		PersonDocumentRole personDocRole = initPersonDocRole();
         KimTypeService kimTypeService = (KimTypeServiceBase)KIMServiceLocator.getService(personDocRole.getKimRoleType().getKimTypeServiceName());
-		personDocRole.setDefinitions(kimTypeService.getAttributeDefinitions(personDocRole.getKimRoleType()));
+		personDocRole.setDefinitions(kimTypeService.getAttributeDefinitions(personDocRole.getKimTypeId()));
 
 		personDocRole.setAttributeEntry( uiDocumentService.getAttributeEntries( personDocRole.getDefinitions() ) );
 		for (Object key : personDocRole.getAttributeEntry().keySet()) {

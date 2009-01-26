@@ -122,7 +122,7 @@ public class PersonDocumentRole extends KimDocumentBoBase {
 				serviceName = "kimTypeService";				
 			}
 	        KimTypeService kimTypeService = (KimTypeServiceBase)KIMServiceLocator.getService(serviceName);
-			definitions = kimTypeService.getAttributeDefinitions(getKimRoleType());
+			definitions = kimTypeService.getAttributeDefinitions(getKimTypeId());
 		}
 		return definitions;
 	}

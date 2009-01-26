@@ -116,7 +116,7 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
 			IdentityManagementPersonDocument personDoc = (IdentityManagementPersonDocument)personDocumentForm.getDocument();
 			for (PersonDocumentRole role : personDoc.getRoles()) {
 		        KimTypeService kimTypeService = (KimTypeServiceBase)KIMServiceLocator.getService(getKimTypeServiceName(role.getKimRoleType()));
-				role.setDefinitions(kimTypeService.getAttributeDefinitions(role.getKimRoleType()));
+				role.setDefinitions(kimTypeService.getAttributeDefinitions(role.getKimTypeId()));
 	        	// when post again, it will need this during populate
 	            role.setNewRolePrncpl(new KimDocumentRoleMember());
 	            for (String key : role.getDefinitions().keySet()) {
@@ -308,7 +308,7 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
 	        // role type populated from form is not a complete record
 	        newRole.getKimRoleType().setKimTypeId(newRole.getKimTypeId());
 	        newRole.getKimRoleType().refreshReferenceObject("attributeDefinitions");
-	        newRole.setDefinitions(kimTypeService.getAttributeDefinitions(newRole.getKimRoleType()));
+	        newRole.setDefinitions(kimTypeService.getAttributeDefinitions(newRole.getKimTypeId()));
 	        KimDocumentRoleMember newRolePrncpl = newRole.getNewRolePrncpl();
 	        newRole.refreshReferenceObject("assignedResponsibilities");
 	        

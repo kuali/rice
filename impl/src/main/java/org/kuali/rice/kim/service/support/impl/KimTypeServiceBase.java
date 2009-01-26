@@ -357,9 +357,12 @@ public class KimTypeServiceBase implements KimTypeService {
 	
 	private Map<String,AttributeDefinitionMap> attributeDefinitionCache = new HashMap<String,AttributeDefinitionMap>();
 	
-	public AttributeDefinitionMap getAttributeDefinitions(KimTypeImpl kimType) {
-		AttributeDefinitionMap definitions = attributeDefinitionCache.get( kimType.getKimTypeId() );
+	public AttributeDefinitionMap getAttributeDefinitions(String kimTypeId) {
+		AttributeDefinitionMap definitions = attributeDefinitionCache.get( kimTypeId );
 		if ( definitions == null ) {
+	        Map<String,String> pk = new HashMap<String, String>( 1 );
+	        pk.put("kimTypeId", kimTypeId);
+	        KimTypeImpl kimType = (KimTypeImpl)getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, pk);
 			definitions = new AttributeDefinitionMap();
 			for (KimTypeAttributeImpl typeAttribute : kimType.getAttributeDefinitions()) {
 				AttributeDefinition definition = null;
@@ -373,7 +376,7 @@ public class KimTypeServiceBase implements KimTypeService {
 				// FIXME: I don't like this - if two attributes have the same sort code, they will overwrite each other
 				definitions.put(typeAttribute.getSortCode(), definition);
 			}
-			attributeDefinitionCache.put( kimType.getKimTypeId(), definitions );
+			attributeDefinitionCache.put( kimTypeId, definitions );
 		}
 		return definitions;
 	}

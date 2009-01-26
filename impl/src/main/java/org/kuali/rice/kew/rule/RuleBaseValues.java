@@ -141,12 +141,15 @@ public class RuleBaseValues extends PersistableBusinessObjectBase {
     private List<PersonRuleResponsibility> personResponsibilities;
     @Transient
     private List<GroupRuleResponsibility> groupResponsibilities;
-
+    @Transient
+    private Map<String, String> fieldValues;
+    
     public RuleBaseValues() {
         responsibilities = new ArrayList<RuleResponsibility>();
         ruleExtensions = new ArrayList<RuleExtension>();
         personResponsibilities = new TypedArrayList(PersonRuleResponsibility.class);
         groupResponsibilities = new TypedArrayList(GroupRuleResponsibility.class);
+        fieldValues = new HashMap<String, String>();
     }
 
     /**
@@ -653,6 +656,22 @@ public class RuleBaseValues extends PersistableBusinessObjectBase {
 
 	public void setGroupResponsibilities(List<GroupRuleResponsibility> groupResponsibilities) {
 		this.groupResponsibilities = groupResponsibilities;
+	}
+	
+	
+
+	/**
+	 * @return the fieldValues
+	 */
+	public Map<String, String> getFieldValues() {
+		return this.fieldValues;
+	}
+
+	/**
+	 * @param fieldValues the fieldValues to set
+	 */
+	public void setFieldValues(Map<String, String> fieldValues) {
+		this.fieldValues = fieldValues;
 	}
 
 	@Override

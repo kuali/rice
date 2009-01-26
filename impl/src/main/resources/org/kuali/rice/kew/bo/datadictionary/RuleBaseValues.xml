@@ -127,7 +127,7 @@
 
   <bean id="RuleBaseValues-ruleTemplateName-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="Rule Template" />
-    <property name="maxLength" value="30" />
+    <property name="maxLength" value="256" />
     <property name="validationPattern" >
       <bean parent="AnyCharacterValidationPattern" />
     </property>
@@ -143,9 +143,9 @@
 
   <bean id="RuleBaseValues-documentTypeName-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="Document Type" />
-    <property name="maxLength" value="30" />
+    <property name="maxLength" value="256" />
     <property name="validationPattern" >
-      <bean parent="AnyCharacterValidationPattern" />
+      <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
     </property>
     <property name="control" >
       <bean parent="TextControlDefinition"
@@ -162,7 +162,7 @@
     <property name="forceUppercase" value="false" />
     <property name="label" value="Description" />
     <property name="shortLabel" value="Description" />
-    <property name="maxLength" value="60" />
+    <property name="maxLength" value="2000" />
     <property name="validationPattern" >
       <bean parent="AnyCharacterValidationPattern"
             p:allowWhitespace="true" />

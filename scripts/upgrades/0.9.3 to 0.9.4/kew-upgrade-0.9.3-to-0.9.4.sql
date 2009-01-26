@@ -476,3 +476,9 @@ UPDATE KREW_RULE_T set DOC_TYP_NM='RemoveReplaceUserDocument' where DOC_TYP_NM='
 /
 DELETE FROM KREW_DOC_TYP_PLCY_RELN_T where doc_plcy_nm like 'PRE_APPROVE'
 /
+
+ALTER TABLE KREW_DOC_TYP_T ADD HELP_DEF_URL VARCHAR2(4000)
+/
+
+UPDATE KREW_DOC_TYP_T set POST_PRCSR='org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor' where DOC_TYP_NM='RoutingRuleDocument' and CUR_IND=1
+/

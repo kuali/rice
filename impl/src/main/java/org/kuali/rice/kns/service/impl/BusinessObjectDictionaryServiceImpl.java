@@ -20,8 +20,10 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
@@ -441,6 +443,19 @@ public class BusinessObjectDictionaryServiceImpl implements
      * @see DataDictionaryService#getAttributeForceUppercase(Class, String)
      */
     public void performForceUppercase(BusinessObject bo) {
+    	performForceUppercaseCycleSafe(bo, new HashSet<BusinessObject>());
+    }
+    
+    /**
+     * Handles recursion for performForceUppercase in a cycle-safe manner,
+     * keeping track of visited BusinessObjects to prevent infinite recursion.
+     */
+    protected void performForceUppercaseCycleSafe(BusinessObject bo, Set<BusinessObject> visited) {
+    	if (visited.contains(bo)) {
+    		return;
+    	} else {
+    		visited.add(bo);
+    	}
 		PropertyDescriptor descriptors[] = PropertyUtils
 				.getPropertyDescriptors(bo);
         for (int i = 0; i < descriptors.length; ++i) {
@@ -474,7 +489,7 @@ public class BusinessObjectDictionaryServiceImpl implements
 												.isAllFieldsPopulated()) {
 											// check FKs to prevent probs caused
 											// by referential integrity problems
-                                            performForceUppercase((BusinessObject) nestedObject);
+                                            performForceUppercaseCycleSafe((BusinessObject) nestedObject, visited);
                                     }
                                     }
                                 }
@@ -512,7 +527,7 @@ public class BusinessObjectDictionaryServiceImpl implements
 											if (persistenceStructureService
 													.isPersistable(collElem
 															.getClass())) {
-                                                performForceUppercase((BusinessObject) collElem);
+                                                performForceUppercaseCycleSafe((BusinessObject) collElem, visited);
                                             }
                                         }
                                     }

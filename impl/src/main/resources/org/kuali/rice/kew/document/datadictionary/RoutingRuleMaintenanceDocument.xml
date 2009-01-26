@@ -18,10 +18,14 @@
       </list>
     </property>
     <property name="allowsNewOrCopy" value="true" />
-    <property name="label" value="Rule" />
-    <property name="shortLabel" value="Rule" />
     <property name="documentTypeName" value="RoutingRuleDocument" />
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase" />
+    <property name="lockingKeys" >
+      <list>
+        <value>previousVersionId</value>
+      </list>
+    </property>
+    
   </bean>
 
   <!-- Maintenance Section Definitions -->
@@ -34,9 +38,11 @@
     <property name="maintainableItems" >
       <list>
         <bean parent="MaintainableFieldDefinition"
-              p:name="docTypeName"/>
+              p:name="docTypeName"
+              p:unconditionallyReadOnly="true"/>
         <bean parent="MaintainableFieldDefinition"
-              p:name="ruleTemplate.name"/>
+              p:name="ruleTemplate.name"
+              p:unconditionallyReadOnly="true"/>
         <bean parent="MaintainableFieldDefinition"
               p:name="description"
               p:required="true" />
@@ -81,8 +87,6 @@
                     p:name="principalName" />
               <bean parent="MaintainableFieldDefinition"
                     p:name="actionRequestedCd" />
-              <bean parent="MaintainableFieldDefinition"
-                    p:name="priority" />
             </list>
           </property>
           <property name="maintainableFields" >
@@ -119,8 +123,6 @@
                     p:name="name" />      
               <bean parent="MaintainableFieldDefinition"
                     p:name="actionRequestedCd" />
-              <bean parent="MaintainableFieldDefinition"
-                    p:name="priority" />
             </list>
           </property>
           <property name="maintainableFields" >

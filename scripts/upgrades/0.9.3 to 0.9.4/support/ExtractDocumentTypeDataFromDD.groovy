@@ -67,13 +67,13 @@ def processHelpDefinition(beanElement, documentTypeName) {
 }
 
 def generateLabelUpdateStatement(label, documentTypeName) {
-	return "UPDATE KREW_DOC_TYP_T SET LBL='" + label + "' WHERE DOC_TYP_NM='" + documentTypeName + "'\n\\"
+	return "UPDATE KREW_DOC_TYP_T SET LBL='" + label + "' WHERE DOC_TYP_NM='" + documentTypeName + "'\n/"
 }
 
 def generateHelpUrlUpdateStatement(helpParameterName, documentTypeName) {
-	return "UPDATE KREW_DOC_TYP_T SET HLP_URL=" + 
+	return "UPDATE KREW_DOC_TYP_T SET HELP_DEF_URL=" + 
 		"(SELECT TXT FROM KRNS_PARM_T WHERE PARM_NM='" + helpParameterName + "' AND PARM_TYP_CD='HELP') " +
-		"WHERE DOC_TYP_NM='" + documentTypeName + "'\n\\"
+		"WHERE DOC_TYP_NM='" + documentTypeName + "'\n/"
 }
 
 def getBeanPropertyValue(beanElement, propertyName) {

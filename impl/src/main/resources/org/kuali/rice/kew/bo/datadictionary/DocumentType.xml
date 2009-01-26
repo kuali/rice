@@ -47,9 +47,7 @@
         <ref bean="DocumentType-documentTypeId" />
         <ref bean="DocumentType-name" />
         <ref bean="DocumentType-description" />
-        <ref bean="DocumentType-summary" />
         <ref bean="DocumentType-label" />
-        <ref bean="DocumentType-shortLabel" />
         <ref bean="DocumentType-serviceNamespace" />
         <ref bean="DocumentType-descendHierarchy" />
         <ref bean="DocumentType-active" />
@@ -156,22 +154,6 @@
     <property name="label" value="Label" />
   </bean>
 
-  <bean id="DocumentType-shortLabel" parent="DocumentType-shortLabel-parentBean" />
-
-  <bean id="DocumentType-shortLabel-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="shortLabel" value="Shrt Lbl" />
-    <property name="maxLength" value="255" />
-    <property name="validationPattern" >
-      <bean parent="AnyCharacterValidationPattern" />
-    </property>
-    <property name="control" >
-      <bean parent="TextControlDefinition"
-            p:size="30" />
-    </property>
-    <property name="name" value="shortLabel" />
-    <property name="label" value="Short Label" />
-  </bean>
-
   <bean id="DocumentType-active" parent="DocumentType-active-parentBean"/>
   
   <bean id="DocumentType-active-parentBean" abstract="true" parent="AttributeDefinition">
@@ -223,23 +205,7 @@
     <property name="name" value="description" />
     <property name="label" value="Description" />
   </bean>
-  
-  <bean id="DocumentType-summary" parent="DocumentType-summary-parentBean" />
-
-  <bean id="DocumentType-summary-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="shortLabel" value="Summary" />
-    <property name="maxLength" value="4000" />
-    <property name="validationPattern" >
-      <bean parent="AnyCharacterValidationPattern" />
-    </property>
-    <property name="control" >
-      <bean parent="TextControlDefinition"
-            p:size="30" />
-    </property>
-    <property name="name" value="summary" />
-    <property name="label" value="Summary" />
-  </bean>
-  
+    
   <bean id="DocumentType-serviceNamespace" parent="DocumentType-serviceNamespace-parentBean" />
 
   <bean id="DocumentType-serviceNamespace-parentBean" abstract="true" parent="AttributeDefinition">

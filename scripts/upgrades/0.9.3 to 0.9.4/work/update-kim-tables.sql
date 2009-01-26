@@ -1083,6 +1083,36 @@ INSERT INTO KRIM_PERM_ATTR_DATA_T(ATTR_DATA_ID, OBJ_ID, VER_NBR, TARGET_PRIMARY_
 INSERT INTO KRIM_ROLE_PERM_T(ROLE_PERM_ID, OBJ_ID, VER_NBR, ROLE_ID, PERM_ID, ACTV_IND)
     VALUES('519', sys_guid(), 1, '63', '264', 'Y')
 /
+
+-- added 01/26/2009
+
+update krim_role_t set role_nm = 'Approve Request Recipient' where role_id = '59'
+/
+INSERT INTO KRIM_ROLE_T(ROLE_ID, OBJ_ID, VER_NBR, ROLE_NM, NMSPC_CD, DESC_TXT, KIM_TYP_ID, ACTV_IND, LAST_UPDT_DT)
+    VALUES('88', sys_guid(), 1, 'Acknowledge Request Recipient', 'KR-WKFLW', null, '42', 'Y', SYSDATE)
+/
+INSERT INTO KRIM_ROLE_T(ROLE_ID, OBJ_ID, VER_NBR, ROLE_NM, NMSPC_CD, DESC_TXT, KIM_TYP_ID, ACTV_IND, LAST_UPDT_DT)
+    VALUES('89', sys_guid(), 1, 'FYI Request Recipient', 'KR-WKFLW', null, '42', 'Y', SYSDATE)
+/
+delete from krim_perm_attr_data_t where target_primary_key = '171'
+/
+delete from krim_perm_rqrd_attr_t where perm_id = '171'
+/
+delete from krim_role_perm_t where perm_id = '171'
+/
+delete from krim_perm_t where perm_id = '171'
+/
+delete from krim_typ_attr_t where kim_typ_id = '42' and kim_attr_defn_id = '14'
+/
+update krim_role_perm_t set role_id = '88' where perm_id = '173'
+/
+update krim_role_perm_t set role_id = '89' where perm_id = '172'
+/
+
+update krim_typ_t set nm = 'Ad Hoc Review', srvc_nm = 'adhocReviewPermissionTypeService' where kim_typ_id = '5'
+/
+
+
 commit
 /
 

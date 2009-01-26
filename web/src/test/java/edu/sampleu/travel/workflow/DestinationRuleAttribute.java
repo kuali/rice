@@ -31,12 +31,7 @@ public class DestinationRuleAttribute extends GenericWorkflowAttribute {
 	private static final String DEST_LABEL = "Destination";
 	private static final String DEST_FIELD_KEY = "destination";
 
-    private static final List<Row> rows = new ArrayList<Row>();
-    static {
-        List<Field> fields = new ArrayList<Field>();
-        fields.add(new Field(DEST_LABEL, "", Field.TEXT, false, DEST_FIELD_KEY, "", false, false, null, null));
-        rows.add(new Row(fields));
-    }
+    private final List<Row> rows = new ArrayList<Row>();
 
 	private String destination;
 
@@ -91,6 +86,10 @@ public class DestinationRuleAttribute extends GenericWorkflowAttribute {
 
     private List<Row> getRows() {
         log.info("Returning rows: " + rows);
+        List<Field> fields = new ArrayList<Field>();
+        fields.add(new Field(DEST_LABEL, "", Field.TEXT, false, DEST_FIELD_KEY, "", false, false, null, null));
+        List<Row> rows = new ArrayList<Row>();
+        rows.add(new Row(fields));
         return rows;
     }
 

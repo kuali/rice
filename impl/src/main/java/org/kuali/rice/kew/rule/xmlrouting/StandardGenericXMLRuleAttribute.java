@@ -93,7 +93,7 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
 
     private boolean evaluateForMissingExtensions = false;
 
-    private static NodeList getFields(XPath xpath, Element root, String[] types) throws XPathExpressionException {
+    private NodeList getFields(XPath xpath, Element root, String[] types) throws XPathExpressionException {
         final String OR = " or ";
         StringBuffer findField = new StringBuffer("//routingConfig/" + FIELD_DEF_E);
         if (types != null && types.length > 0) {
@@ -120,7 +120,7 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
         }
     }
 
-    private static List<Row> getRows(Element root, String[] types) {
+    private List<Row> getRows(Element root, String[] types) {
         List<Row> rows = new ArrayList<Row>();
         XPath xpath = XPathHelper.newXPath();
         NodeList fieldNodeList;
@@ -400,12 +400,12 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
         return ruleRows;
     }
 
-    private static String getValidationErrorMessage(XPath xpath, Element root, String fieldName) throws XPathExpressionException {
+    private String getValidationErrorMessage(XPath xpath, Element root, String fieldName) throws XPathExpressionException {
         String findErrorMessage = "//routingConfig/" + FIELD_DEF_E + "[@name='" + fieldName + "']/validation/message";
         return (String) xpath.evaluate(findErrorMessage, root, XPathConstants.STRING);
     }
 
-    private static List validate(Element root, String[] types, Map map, ErrorGenerator errorGenerator) throws XPathExpressionException {
+    private List validate(Element root, String[] types, Map map, ErrorGenerator errorGenerator) throws XPathExpressionException {
         List errors = new ArrayList();
         XPath xpath = XPathHelper.newXPath();
 

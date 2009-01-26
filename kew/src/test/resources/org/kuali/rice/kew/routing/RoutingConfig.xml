@@ -2,7 +2,7 @@
 <data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
 	<groups xmlns="ns:workflow/Group" xsi:schemaLocation="ns:workflow/Group resource:Group">
 		<group>
-			<id>1</id>
+			<id>5</id>
 			<name>InactiveWorkgroup</name>
 			<namespace>KR-WKFLW</namespace>
 			<description>InactiveWorkgroup</description>

@@ -117,6 +117,7 @@
                 <idref local="enWorkflowDocumentActionsService" />
                 <idref local="enRemoveReplaceDocumentService"/>
                 <idref local="enQuickLinksService" />
+                <idref local="enDocumentRequeuerService"/>
                 <!-- it's important that this service remains non-transactionally proxied for various reasons
                 <idref local="enUserOptionsService"/>
                 -->
@@ -483,6 +484,7 @@
     <bean id="enActionInvocationService" class="org.kuali.rice.kew.actions.asyncservices.ActionInvocationProcessor" />
     <bean id="enImmediateEmailReminderService" class="org.kuali.rice.kew.mail.service.impl.ActionListImmediateProcessorImpl" />
     <bean id="simpleDocumentActionsService" class="org.kuali.rice.kew.webservice.impl.SimpleDocumentActionsWebServiceImpl"/>
+    <bean id="enDocumentRequeuerService" class="edu.iu.uis.eden.actionrequests.DocumentRequeuerImpl" />
 
 	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
@@ -609,7 +611,7 @@
 		<property name="serviceDefinition">
         <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
           <property name="service">
-            <bean class="org.kuali.rice.kew.actionrequest.service.impl.DocumentRequeuerImpl" />
+            <ref bean="enDocumentRequeuerService" />
           </property>
           <property name="localServiceName" value="DocumentRequeueProcessorService" />
           <property name="priority" value="10"/>

@@ -10,6 +10,8 @@
                            http://www.springframework.org/schema/aop
                            http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 
+    <!-- DAO's are located in KEWOJBSpringBeans.xml and KEWJPASpringBeans.xml -->
+
 	<import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
 
 	<bean id="kewOjbConfigurer" class="org.kuali.rice.core.ojb.BaseOjbConfigurer">
@@ -46,7 +48,6 @@
 			<value>PROPAGATION_REQUIRED,-Exception</value>
 		</property>
 	</bean>
-
 
 
 	<!-- Proxy for rollback on only runtime exceptions -->
@@ -126,11 +127,8 @@
 	<!--  END PROPAGATION REQUIRED TX DECLARATIONS -->
 
 
-
-
 	<!-- WorkflowDocument -->
 	<bean id="enWorkflowDocumentService" class="org.kuali.rice.kew.routeheader.service.impl.WorkflowDocumentServiceImpl" lazy-init="true" />
-
 
 	<!--  RouteModuleService -->
 	<bean id="enRouteModuleService" class="org.kuali.rice.kew.routemodule.service.impl.RouteModuleServiceImpl"  lazy-init="true"/>
@@ -144,33 +142,15 @@
 		</property>
 	</bean>
 
-
-
-	<bean id="enRouteNodeDAO" class="org.kuali.rice.kew.engine.node.dao.impl.RouteNodeDAOOjbImpl" lazy-init="true">
-		<property name="jcdAlias" value="enWorkflowDataSource" />
-	</bean>
-
-
 	<bean id="enBranchService" class="org.kuali.rice.kew.engine.node.service.impl.BranchServiceImpl" lazy-init="true">
 		<property name="branchDAO">
-		<!-- <ref bean="enBranchDAOJpa" /> -->
 			<ref bean="enBranchDAO"/>
 		</property>
 	</bean>
-
-	<bean id="enBranchDAOJpa" class="org.kuali.rice.kew.engine.node.dao.impl.BranchDAOJpaImpl" lazy-init="true"/>
-	<bean id="enBranchDAO" class="org.kuali.rice.kew.engine.node.dao.impl.BranchDAOOjbImpl" lazy-init="true">
-		<property name="jcdAlias" value="enWorkflowDataSource" />
-	</bean>
-
+	
 	<!--  ResponsibilityIdService -->
 	<bean id="enResponsibilityIdService" class="org.kuali.rice.kew.responsibility.service.impl.ResponsibilityIdServiceImpl" lazy-init="true">
 		<property name="responsibilityIdDAO" ref="enResponsibilityIdDAO" />
-	</bean>
-
-    <!--  <bean id="enResponsibilityIdDAO" class="org.kuali.rice.kew.responsibility.dao.impl.ResponsibilityIdDAOJpaImpl" lazy-init="true" />  -->
-	<bean id="enResponsibilityIdDAO" class="org.kuali.rice.kew.responsibility.dao.impl.ResponsibilityIdDAOOjbImpl" lazy-init="true">
-		<property name="jcdAlias" value="enWorkflowDataSource" />
 	</bean>
 
 	<!--  ActionRequestService -->
@@ -179,22 +159,13 @@
 			<ref bean="enActionRequestDAO" />
 		</property>
 	</bean>
-	<bean id="enActionRequestDAO" class="org.kuali.rice.kew.actionrequest.dao.impl.ActionRequestDAOOjbImpl" lazy-init="true">
-		<property name="jcdAlias" value="enWorkflowDataSource" />
-	</bean>
+	
 	<!--  RuleAttributeService -->
 	<bean id="enRuleAttributeService" class="org.kuali.rice.kew.rule.service.impl.RuleAttributeServiceImpl" lazy-init="true">
 		<property name="ruleAttributeDAO">
-            <!-- <ref bean="enRuleAttributeDAOJpa" />-->
 			<ref bean="enRuleAttributeDAO" />
 		</property>
 	</bean>
-
-	<bean id="enRuleAttributeDAOJpa" class="org.kuali.rice.kew.rule.dao.impl.RuleAttributeDAOJpaImpl" lazy-init="true"/>
-	<bean id="enRuleAttributeDAO" class="org.kuali.rice.kew.rule.dao.impl.RuleAttributeDAOOjbImpl" lazy-init="true">
-		<property name="jcdAlias" value="enWorkflowDataSource" />
-	</bean>
-
 
 	<!--  RuleTemplateService -->
 	<bean id="enRuleTemplateService" class="org.kuali.rice.kew.rule.service.impl.RuleTemplateServiceImpl" lazy-init="true">
@@ -214,23 +185,12 @@
 			<ref bean="enRuleDelegationDAO" />
 		</property>
 	</bean>
-	<bean id="enRuleTemplateAttributeDAO" class="org.kuali.rice.kew.rule.dao.impl.RuleTemplateAttributeDAOOjbImpl" lazy-init="true">
-		<property name="jcdAlias" value="enWorkflowDataSource" />
-	</bean>
-	<bean id="enRuleTemplateOptionDAO" class="org.kuali.rice.kew.rule.dao.impl.RuleTemplateOptionDAOOjbImpl" lazy-init="true">
-		<property name="jcdAlias" value="enWorkflowDataSource" />
-	</bean>
-	<bean id="enRuleTemplateDAO" class="org.kuali.rice.kew.rule.dao.impl.RuleTemplateDAOOjbImpl" lazy-init="true">
-		<property name="jcdAlias" value="enWorkflowDataSource" />
-	</bean>
+	
 	<!--  RuleDelegationService -->
 	<bean id="enRuleDelegationService" class="org.kuali.rice.kew.rule.service.impl.RuleDelegationServiceImpl" lazy-init="true">
 		<property name="ruleDelegationDAO">
 			<ref bean="enRuleDelegationDAO" />
 		</property>
-	</bean>
-	<bean id="enRuleDelegationDAO" class="org.kuali.rice.kew.rule.dao.impl.RuleDelegationDAOOjbImpl" lazy-init="true">
-		<property name="jcdAlias" value="enWorkflowDataSource" />
 	</bean>
 
 	<!--  RuleService -->
@@ -242,13 +202,6 @@
 			<ref bean="enRuleResponsibilityDAO" />
 		</property>
 	</bean>
-	<bean id="enRuleDAO" class="org.kuali.rice.kew.rule.dao.impl.RuleDAOOjbImpl" lazy-init="true">
-		<property name="jcdAlias" value="enWorkflowDataSource" />
-	</bean>
-
-	<bean id="enRuleResponsibilityDAO" class="org.kuali.rice.kew.rule.dao.impl.RuleResponsibilityDAOOjbImpl" lazy-init="true">
-		<property name="jcdAlias" value="enWorkflowDataSource" />
-	</bean>
 
 	<!--  RouteHeaderService -->
 	<bean id="enDocumentRouteHeaderService" class="org.kuali.rice.kew.routeheader.service.impl.RouteHeaderServiceImpl" lazy-init="true">
@@ -259,29 +212,14 @@
 			<ref bean="enSearchableAttributeDAO" />
 		</property>
 	</bean>
-	<bean id="enDocumentRouteHeaderDAO" class="org.kuali.rice.kew.routeheader.dao.impl.DocumentRouteHeaderDAOOjbImpl" lazy-init="true">
-		<property name="jcdAlias" value="enWorkflowDataSource" />
-	</bean>
-	<bean id="enSearchableAttributeDAO" class="org.kuali.rice.kew.docsearch.dao.impl.SearchableAttributeDAOOjbImpl" lazy-init="true">
-		<property name="jcdAlias" value="enWorkflowDataSource" />
-	</bean>
-	<bean id="enSearchableAttributeDAOJpa" class="org.kuali.rice.kew.docsearch.dao.impl.SearchableAttributeDAOJpaImpl" lazy-init="true"/>
+	
 
   <!--  EDL Extract Service -->
   <bean id="enExtractService" class="org.kuali.rice.kew.edl.extract.ExtractServiceImpl">
     <property name="extractDAO">
-      <!-- ref bean="enExtractDAO"/ -->
-      <ref bean="enExtractOjbDAO"/>
+      <ref bean="enExtractDAO"/>
     </property>
   </bean>
-
-    <bean id="enExtractOjbDAO" class="org.kuali.rice.kew.edl.extract.dao.impl.ExtractDAOOjbImpl">
-          <property name="jcdAlias" value="enWorkflowDataSource" />
-    </bean>
-
-    <!--
-    <bean id="enExtractDAO" class="org.kuali.rice.kew.edl.extract.dao.impl.ExtractDaoJpaImpl"/>
-    -->
 
 	<!--  Routing Report Service -->
 	<bean id="enRoutingReportService" class="org.kuali.rice.kew.routemodule.service.impl.RoutingReportServiceImpl"  lazy-init="true"/>
@@ -293,12 +231,6 @@
 		<property name="actionItemDAO">
 			<ref bean="enActionItemDAO" />
 		</property>
-	</bean>
-	<bean id="enActionListDAO" class="org.kuali.rice.kew.actionlist.dao.impl.ActionListDAOOjbImpl" lazy-init="true">
-		<property name="jcdAlias" value="enWorkflowDataSource" />
-	</bean>
-	<bean id="enActionItemDAO" class="org.kuali.rice.kew.actionitem.dao.impl.ActionItemDAOOjbImpl" lazy-init="true">
-		<property name="jcdAlias" value="enWorkflowDataSource" />
 	</bean>
 
 	<!--  DocumentSearchService -->
@@ -319,9 +251,6 @@
 	<bean id="enDocumentTypeService" class="org.kuali.rice.kew.doctype.service.impl.DocumentTypeServiceImpl" lazy-init="true">
 		<property name="documentTypeDAO" ref="enDocumentTypeDAO" />
 	</bean>
-	<bean id="enDocumentTypeDAO" class="org.kuali.rice.kew.doctype.dao.impl.DocumentTypeDAOOjbImpl" lazy-init="true">
-		<property name="jcdAlias" value="enWorkflowDataSource" />
-	</bean>
 
 	<bean id="enDocumentTypePermissionService" class="org.kuali.rice.kew.doctype.service.impl.DocumentTypePermissionServiceImpl" lazy-init="true"/>
 
@@ -336,16 +265,10 @@
 	<!--  UserOptionsService -->
 	<bean id="enUserOptionsService" class="org.kuali.rice.kew.useroptions.UserOptionsServiceImpl" lazy-init="true">
 		<property name="userOptionsDAO">
-			<!-- <ref bean="enUserOptionsDAO" /> -->
-      <ref bean="enUserOptionsOJBDAO" />
+            <ref bean="enUserOptionsDAO" />
 		</property>
 	</bean>
-  <bean id="enUserOptionsDAO" class="org.kuali.rice.kew.useroptions.dao.impl.UserOptionsDaoJpaImpl" lazy-init="true"/>
-
-	<bean id="enUserOptionsOJBDAO" class="org.kuali.rice.kew.useroptions.dao.impl.UserOptionsDAOOjbImpl" lazy-init="true">
-		<property name="jcdAlias" value="enWorkflowDataSource" />
-	</bean>
-
+  
 
 	<!--  ActionTakenService -->
 	<bean id="enActionTakenService" class="org.kuali.rice.kew.actiontaken.service.impl.ActionTakenServiceImpl" lazy-init="true">
@@ -353,19 +276,9 @@
 			<ref bean="enActionTakenDAO" />
 		</property>
 	</bean>
-	<bean id="enActionTakenDAO" class="org.kuali.rice.kew.actiontaken.dao.impl.ActionTakenDAOOjbImpl" lazy-init="true">
-		<property name="jcdAlias" value="enWorkflowDataSource" />
-	</bean>
-
-
+	
 	<!--  RoleService -->
-	<bean id="enRoleService" class="org.kuali.rice.kew.role.service.impl.RoleServiceImpl"  lazy-init="true">
-      <property name="roleDAO">
-        <bean class="org.kuali.rice.kew.role.dao.impl.RoleDAOOjbImpl">
-          <property name="jcdAlias" value="enWorkflowDataSource"/>
-        </bean>
-      </property>
-    </bean>
+	<bean id="enRoleService" class="org.kuali.rice.kew.role.service.impl.RoleServiceImpl"  lazy-init="true"/>
 
     <bean id="edlLookupHelperService" class="org.kuali.rice.kew.lookupable.EDocLiteLookupableHelperServiceImpl" scope="prototype"/>
 
@@ -445,12 +358,6 @@
 
     <bean id="enXmlDigesterService" class="org.kuali.rice.kew.batch.XmlDigesterServiceImpl"  lazy-init="true"/>
 
-
-    <!-- <bean id="enEDocLiteDAO" class="org.kuali.rice.kew.edl.dao.impl.EDocLiteDAOJpaImpl" lazy-init="true"/> -->
-    <bean id="enEDocLiteDAO" class="org.kuali.rice.kew.edl.dao.impl.EDocLiteDAOOjbImpl" lazy-init="true">
-		<property name="jcdAlias" value="enWorkflowDataSource" />
-    </bean>
-
     <bean id="enEDocLiteService" class="org.kuali.rice.kew.edl.service.impl.EDocLiteServiceImpl" lazy-init="true">
         <property name="EDocLiteDAO" ref="enEDocLiteDAO"/>
         <property name="styleService" ref="enStyleService"/>
@@ -461,18 +368,10 @@
     </bean>
 
     <bean id="enHelpService" class="org.kuali.rice.kew.help.service.impl.HelpServiceImpl" lazy-init="true">
-        <property name="helpDAO">
-            <!-- <ref bean="enHelpDAO" /> -->
-            <ref bean="enHelpOJBDAO" />
-        </property>
+        <property name="helpDAO" ref="enHelpDAO" />
     </bean>
 
-    <bean id="enHelpDAO" class="org.kuali.rice.kew.help.dao.impl.HelpDaoJpaImpl" lazy-init="true"/>
-
-    <bean id="enHelpOJBDAO" class="org.kuali.rice.kew.help.dao.impl.HelpDAOOjbImpl" lazy-init="true">
-		<property name="jcdAlias" value="enWorkflowDataSource" />
-    </bean>
-
+    
     <!-- <bean id="enEncryptionService" class="org.kuali.rice.core.service.impl.DESEncryptionService" lazy-init="true"/> -->
 	<bean id="enEncryptionService" class="org.kuali.rice.core.service.impl.DemonstrationGradeEncryptionServiceImpl" lazy-init="true">
 		<property name="secretKey">
@@ -549,17 +448,10 @@
       <ref bean="enStatsDAO" />
     </property>
   </bean>
-  <bean id="enStatsDAO" class="org.kuali.rice.kew.stats.dao.impl.StatsDAOOjbImpl">
-		<property name="jcdAlias" value="enWorkflowDataSource" />
-  </bean>
 
   <!--  NoteService -->
   <bean id="enNoteService" class="org.kuali.rice.kew.notes.service.impl.NoteServiceImpl">
-    <property name="noteDAO">
-      <bean class="org.kuali.rice.kew.notes.dao.impl.NoteDAOOjbImpl">
-				<property name="jcdAlias" value="enWorkflowDataSource" />
-      </bean>
-    </property>
+    <property name="noteDAO" ref="enNoteDAO" />
     <property name="attachmentService">
       <bean class="org.kuali.rice.kew.notes.service.impl.AttachmentServiceImpl">
         <property name="attachmentDir" value="${attachment.dir.location}" />
@@ -571,10 +463,6 @@
   <bean id="enQuickLinksService" class="org.kuali.rice.kew.quicklinks.service.impl.QuickLinksServiceImpl">
     <property name="quickLinksDAO" ref="enQuickLinksDAO" />
   </bean>
-  <!--  <bean id="enQuickLinksDAO" class="org.kuali.rice.kew.quicklinks.dao.impl.QuickLinksDAOJpaImpl"/> -->
-  <bean id="enQuickLinksDAO" class="org.kuali.rice.kew.quicklinks.dao.impl.QuickLinksDAOOjbImpl">
-		<property name="jcdAlias" value="enWorkflowDataSource" />
-  </bean>
 
   <bean id="kewIdentityHelperService" class="org.kuali.rice.kew.identity.service.impl.IdentityHelperServiceImpl"/>
 
@@ -583,11 +471,7 @@
   <bean id="enUserXmlService" class="org.kuali.rice.kew.xml.UserXmlServiceImpl"/>
 
     <bean id="enRemoveReplaceDocumentService" class="org.kuali.rice.kew.removereplace.service.impl.RemoveReplaceDocumentServiceImpl">
-      <property name="removeReplaceDocumentDAO">
-        <bean class="org.kuali.rice.kew.removereplace.dao.impl.RemoveReplaceDocumentDAOOjbImpl">
-          <property name="jcdAlias" value="enWorkflowDataSource"/>
-        </bean>
-      </property>
+      <property name="removeReplaceDocumentDAO" ref="enRemoveReplaceDocumentDAO" />
     </bean>
 
 
@@ -855,8 +739,6 @@
   </bean>
 
 
-
-
   <!-- START JPA CONFIGURATION -->
 
   <bean id="kewEntityManagerFactory" class="org.kuali.rice.core.jpa.spring.RiceEntityManagerProxyFactoryBean">
@@ -870,24 +752,6 @@
 
   <tx:annotation-driven transaction-manager="transactionManager"/>
 
-  <bean id="NoResultExceptionInterceptor" class="org.kuali.rice.core.jpa.spring.NoResultExceptionInterceptor" />
-
-  <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
-    <property name="interceptorNames">
-      <list>
-        <idref local="NoResultExceptionInterceptor" />
-      </list>
-    </property>
-    <property name="beanNames">
-      <list>
-        <idref local="enUserOptionsDAO"/>
-        <idref local="enHelpDAO"/>
-        <idref local="enBranchDAOJpa"/>
-        <idref local="enRuleAttributeDAOJpa"/>
-        <!-- <idref local="enExtractDAO"/> -->
-      </list>
-    </property>
-  </bean>
   <!-- END JPA CONFIGURATION -->
 
   <bean id="routeLogDerivedRoleTypeService" class="org.kuali.rice.kew.role.service.impl.RouteLogDerivedRoleTypeServiceImpl" />
@@ -955,6 +819,7 @@
   </bean>
 
   <bean id="documentTypeResponsibilityTypeService" class="org.kuali.rice.kew.service.impl.DocumentTypeResponsibilityTypeServiceImpl" />
+
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
 		<property name="serviceDefinition">
@@ -969,4 +834,5 @@
 	       </bean>
 		</property>
   </bean>
+  
 </beans>

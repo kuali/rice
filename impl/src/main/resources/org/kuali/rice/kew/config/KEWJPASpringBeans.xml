@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:aop="http://www.springframework.org/schema/aop"
+  xmlns:tx="http://www.springframework.org/schema/tx"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+                           http://www.springframework.org/schema/tx
+                           http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+                           http://www.springframework.org/schema/aop
+                           http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+
+  <bean id="kewJpaParent" abstract="true">
+    <property name="entityManager" ref="kewEntityManager" />
+  </bean>
+
+
+  <bean id="enActionListDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.actionlist.dao.impl.ActionListDAOJpaImpl" />
+
+  <bean id="enActionItemDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.actionitem.dao.impl.ActionItemDAOJpaImpl" />
+
+  <bean id="enActionTakenDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.actiontaken.dao.impl.ActionTakenDAOJpaImpl" />
+
+  <bean id="enActionRequestDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.actionrequest.dao.impl.ActionRequestDAOJpaImpl" />
+
+  <bean id="enBranchDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.engine.node.dao.impl.BranchDAOJpaImpl" />
+
+  <bean id="enDocumentRouteHeaderDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.routeheader.dao.impl.DocumentRouteHeaderDAOJpaImpl" />
+
+  <bean id="enDocumentTypeDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.doctype.dao.impl.DocumentTypeDAOJpaImpl" />
+
+  <bean id="enEDocLiteDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.edl.dao.impl.EDocLiteDAOJpaImpl" />
+
+  <bean id="enExtractDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.edl.extract.dao.impl.ExtractDAOJpaImpl" />
+
+  <bean id="enHelpDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.help.dao.impl.HelpDaoJpaImpl" />
+
+  <bean id="enNoteDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.notes.dao.impl.NoteDAOJpaImpl" />
+
+  <bean id="enQuickLinksDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.quicklinks.dao.impl.QuickLinksDAOJpaImpl" />
+
+  <bean id="enRemoveReplaceDocumentDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.removereplace.dao.impl.RemoveReplaceDocumentDAOJpaImpl" />
+
+  <bean id="enResponsibilityIdDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.responsibility.dao.impl.ResponsibilityIdDAOJpaImpl" />
+
+  <bean id="enRouteNodeDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.engine.node.dao.impl.RouteNodeDAOJpaImpl" />
+
+  <bean id="enRuleDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.rule.dao.impl.RuleDAOJpaImpl" />
+
+  <bean id="enRuleAttributeDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.rule.dao.impl.RuleAttributeDAOJpaImpl" />
+
+  <bean id="enRuleDelegationDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.rule.dao.impl.RuleDelegationDAOJpaImpl" />
+
+  <bean id="enRuleResponsibilityDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.rule.dao.impl.RuleResponsibilityDAOJpaImpl" />
+
+  <bean id="enRuleTemplateAttributeDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.rule.dao.impl.RuleTemplateAttributeDAOJpaImpl" />
+
+  <bean id="enRuleTemplateOptionDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.rule.dao.impl.RuleTemplateOptionDAOJpaImpl" />
+
+  <bean id="enRuleTemplateDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.rule.dao.impl.RuleTemplateDAOJpaImpl" />
+
+  <bean id="enSearchableAttributeDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.docsearch.dao.impl.SearchableAttributeDAOJpaImpl" />
+
+  <bean id="enStatsDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.stats.dao.impl.StatsDaoJpaImpl" />
+
+  <bean id="enUserOptionsDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.useroptions.dao.impl.UserOptionsDaoJpaImpl" />
+
+
+  <bean id="NoResultExceptionInterceptor"
+    class="org.kuali.rice.core.jpa.spring.NoResultExceptionInterceptor" />
+
+  <bean
+    class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+    <property name="interceptorNames">
+      <list>
+        <idref local="NoResultExceptionInterceptor" />
+      </list>
+    </property>
+    <property name="beanNames">
+      <list>
+        <idref local="enUserOptionsDAO" />
+        <!--
+          <idref local="enHelpDAO" />
+        -->
+        <idref local="enBranchDAO" />
+        <idref local="enRuleAttributeDAO" />
+        <idref local="enExtractDAO" />
+      </list>
+    </property>
+  </bean>
+
+</beans>

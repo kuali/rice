@@ -33,6 +33,8 @@ import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
 import org.kuali.rice.core.resourceloader.RiceResourceLoaderFactory;
+import org.kuali.rice.core.resourceloader.SpringLoader;
+import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.lifecycle.EmbeddedLifeCycle;
 import org.kuali.rice.kew.plugin.PluginRegistry;
 import org.kuali.rice.kew.plugin.PluginRegistryFactory;
@@ -86,6 +88,16 @@ public class KEWConfigurer extends ModuleConfigurer {
     	if (springLocation == null) {
     	    springLocation = "classpath:org/kuali/rice/kew/config/KEWSpringBeans.xml";
     	}
+    	
+    	springLocation += SpringLoader.SPRING_SEPARATOR_CHARACTER;
+        
+        if (OrmUtils.isJpaEnabled("rice.kew")) {
+            springLocation += "classpath:org/kuali/rice/kew/config/KEWJPASpringBeans.xml";
+        }
+        else {
+            springLocation += "classpath:org/kuali/rice/kew/config/KEWOJBSpringBeans.xml";
+        }
+    	
     	String additionalSpringFiles = ConfigContext.getCurrentContextConfig().getProperty(ADDITIONAL_SPRING_FILES_PARAM);
     	if(StringUtils.isNotEmpty(additionalSpringFiles) && 	additionalSpringFiles.contains(","))
     		StringUtils.split(additionalSpringFiles, ",");

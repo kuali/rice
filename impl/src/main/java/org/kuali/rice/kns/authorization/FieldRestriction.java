@@ -24,6 +24,12 @@ import org.kuali.rice.kns.datadictionary.mask.MaskFormatter;
  * 
  * 
  */
+/**
+ * This is a description of what this class does - zjzhou don't forget to fill this in. 
+ * 
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ *
+ */
 public class FieldRestriction {
 
     private String fieldName;
@@ -32,6 +38,7 @@ public class FieldRestriction {
     private boolean masked;
     private boolean partiallyMasked;
     private MaskFormatter maskFormatter;
+    private boolean shouldBeEncrypted;
     /**
      * Constructs a FieldAuthorization.java.
      */
@@ -295,8 +302,19 @@ public class FieldRestriction {
 		return this.partiallyMasked;
 	}
 
-	public boolean shouldBeEncrypted(){
-		return isMasked() || isPartiallyMasked();
+	
+	/**
+	 * @return the shouldBeEncrypted
+	 */
+	public boolean isShouldBeEncrypted() {
+		return this.shouldBeEncrypted;
+	}
+
+	/**
+	 * @param shouldBeEncrypted the shouldBeEncrypted to set
+	 */
+	public void setShouldBeEncrypted(boolean shouldBeEncrypted) {
+		this.shouldBeEncrypted = shouldBeEncrypted;
 	}
 
 	/**

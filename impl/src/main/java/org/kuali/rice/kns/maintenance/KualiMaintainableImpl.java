@@ -243,7 +243,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     	// Note: this "if" stmt is same as "${field.secure && empty KualiForm.editingMode[field.displayEditMode]}" of rowDisplay.jsp
     	if(auths!=null && auths.hasRestriction(fieldName)){
     		FieldRestriction fieldAuth = auths.getFieldRestriction(fieldName);
-    		return fieldAuth.shouldBeEncrypted();
+    		return fieldAuth.isShouldBeEncrypted();
     	}
     	return false;
     }

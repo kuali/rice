@@ -804,6 +804,7 @@ public class FieldUtils {
                 	// if there's existing data on the page that we're not going to clear out, then we will mask it out
                 	if(fieldAuth.isPartiallyMasked()){
 	                	field.setSecure(true);
+	                	fieldAuth.setShouldBeEncrypted(true);
 	                	MaskFormatter maskFormatter = fieldAuth.getMaskFormatter();
 	                	String displayMaskValue = maskFormatter.maskValue(field.getPropertyValue());
 	                	field.setDisplayMaskValue(displayMaskValue);
@@ -811,6 +812,7 @@ public class FieldUtils {
                 	}
 	                else if(fieldAuth.isMasked()){
 	                	field.setSecure(true);
+	                	fieldAuth.setShouldBeEncrypted(true);
 	                	MaskFormatter maskFormatter = fieldAuth.getMaskFormatter();
 	                	String displayMaskValue = maskFormatter.maskValue(field.getPropertyValue());
 	                	field.setDisplayMaskValue(displayMaskValue);

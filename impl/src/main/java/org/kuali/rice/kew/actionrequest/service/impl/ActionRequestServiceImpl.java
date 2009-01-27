@@ -90,7 +90,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
                     actionsRequested.put(KEWConstants.ACTION_REQUEST_FYI_REQ, "false");
                     topActionRequested = actionRequest.getActionRequested();
                     if (actionRequest.isCompleteRequst()) {
-                        actionsRequested.put(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "true");
+                        actionsRequested.put(KEWConstants.ACTION_REQUEST_COMPLETE_REQ, "true");
                     }
                 }
             }

@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -60,18 +61,35 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends
 			AttributeSet qualification) {
 		try {
 			if ( qualification != null && StringUtils.isNumeric( qualification.get(KimAttributes.DOCUMENT_NUMBER) ) ) {
-				AttributeSet actionsRequested = workflowInfo.getActionsRequested(principalId, Long
+				ActionRequestDTO[] actionRequests = workflowInfo.getActionRequests(Long
 									.parseLong(qualification
-											.get(KimAttributes.DOCUMENT_NUMBER)));
+											.get(KimAttributes.DOCUMENT_NUMBER)), null, principalId);
 				if (APPROVE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName)) {
-					return Boolean.parseBoolean(actionsRequested.get(KEWConstants.ACTION_REQUEST_APPROVE_REQ));
+					for ( ActionRequestDTO ar : actionRequests ) {
+						if ( ar.getActionRequested().equals( KEWConstants.ACTION_REQUEST_APPROVE_REQ )
+								&& ar.getStatus().equals( KEWConstants.ACTION_REQUEST_ACTIVATED ) ) {
+							return true;
+						}
+					}
+					return false;
 				}
 				if (ACKNOWLEDGE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName)) {
-					return Boolean.parseBoolean(actionsRequested.get(
-							KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
+					for ( ActionRequestDTO ar : actionRequests ) {
+						if ( ar.getActionRequested().equals( KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ ) 
+							&& ar.getStatus().equals( KEWConstants.ACTION_REQUEST_ACTIVATED ) ) {
+							return true;
+						}
+					}
+					return false;
 				}
 				if (FYI_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName)) {
-					return Boolean.parseBoolean(actionsRequested.get(KEWConstants.ACTION_REQUEST_FYI_REQ));
+					for ( ActionRequestDTO ar : actionRequests ) {
+						if ( ar.getActionRequested().equals( KEWConstants.ACTION_REQUEST_FYI_REQ ) 
+							&& ar.getStatus().equals( KEWConstants.ACTION_REQUEST_ACTIVATED ) ) {
+							return true;
+						}
+					}
+					return false;
 				}
 			}
 			return false;

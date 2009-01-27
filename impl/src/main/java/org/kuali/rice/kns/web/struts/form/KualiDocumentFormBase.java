@@ -95,6 +95,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
     	super.addRequiredNonEditableProperties();
     	registerRequiredNonEditableProperty(KNSConstants.DOCUMENT_TYPE_NAME);
     	registerRequiredNonEditableProperty(KNSConstants.FORM_KEY);
+    	registerRequiredNonEditableProperty(KNSConstants.NEW_NOTE_NOTE_TYPE_CODE);
     }
 
 	/**

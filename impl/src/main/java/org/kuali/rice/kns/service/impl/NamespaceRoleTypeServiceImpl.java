@@ -43,7 +43,7 @@ public class NamespaceRoleTypeServiceImpl extends KimRoleTypeServiceBase {
 	public boolean performMatch(AttributeSet qualification, AttributeSet roleQualifier) {
 		validateRequiredAttributesAgainstReceived(requiredAttributes, qualification, QUALIFICATION_RECEIVED_ATTIBUTES_NAME);
 		validateRequiredAttributesAgainstReceived(requiredAttributes, roleQualifier, ROLE_QUALIFIERS_RECEIVED_ATTIBUTES_NAME);
-		return qualification.get(KimAttributes.NAMESPACE_CODE).matches(
+		return !qualification.containsKey(KimAttributes.NAMESPACE_CODE) || qualification.get(KimAttributes.NAMESPACE_CODE).matches(
 				roleQualifier.get(KimAttributes.NAMESPACE_CODE)
 						.replaceAll("\\*", ".*"));
 	}

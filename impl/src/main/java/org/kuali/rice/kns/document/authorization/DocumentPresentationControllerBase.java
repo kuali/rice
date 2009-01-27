@@ -18,8 +18,6 @@ package org.kuali.rice.kns.document.authorization;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
@@ -28,7 +26,7 @@ import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 
 
 public class DocumentPresentationControllerBase implements DocumentPresentationController {
-    private static Log LOG = LogFactory.getLog(DocumentPresentationControllerBase.class);
+//    private static Log LOG = LogFactory.getLog(DocumentPresentationControllerBase.class);
     
   
     public boolean canInitiate(String documentTypeName) {
@@ -183,7 +181,7 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
      * @see org.kuali.rice.kns.document.authorization.DocumentPresentationController#getDocumentActions(org.kuali.rice.kns.document.Document)
      */
     public Set<String> getDocumentActions(Document document){
-    	Set<String> documentActions = new HashSet();
+    	Set<String> documentActions = new HashSet<String>();
     	if (canEdit(document)){
     		documentActions.add(KNSConstants.KUALI_ACTION_CAN_EDIT);
     	}

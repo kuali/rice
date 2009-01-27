@@ -40,6 +40,7 @@ import org.apache.struts.upload.FormFile;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.exception.InvalidWorkgroupException;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.group.KimGroup;
@@ -190,20 +191,20 @@ public class KualiDocumentActionBase extends KualiAction {
             if ("displayActionListView".equals(formBase.getCommand())) {
                 formBase.setReturnToActionList(true);
             }
-            // This is a hack for KULRICE-1602 since the document entry is modified by a
-            // global configuration that overrides the document templates without some sort
-            // of rules or control
-            //DataDictionary dataDictionary = getDataDictionaryService().getDataDictionary();
-            DataDictionary dataDictionary = getDataDictionaryService().getDataDictionary();
 
-            DocumentEntry entry = dataDictionary.getDocumentEntry(document.getClass().getName());
-
-            String attachementEnabled=
+            String attachmentEnabled=
                 getKualiConfigurationService().getPropertyString(
                     KNSConstants.NOTE_ATTACHMENT_ENABLED);
             // Override the document entry
-            if (attachementEnabled != null) {
-                entry.setAllowsNoteAttachments(Boolean.parseBoolean(attachementEnabled));
+            if (attachmentEnabled != null) {
+                // This is a hack for KULRICE-1602 since the document entry is modified by a
+                // global configuration that overrides the document templates without some sort
+                // of rules or control
+                //DataDictionary dataDictionary = getDataDictionaryService().getDataDictionary();
+                DataDictionary dataDictionary = getDataDictionaryService().getDataDictionary();
+
+                DocumentEntry entry = dataDictionary.getDocumentEntry(document.getClass().getName());
+                entry.setAllowsNoteAttachments(Boolean.parseBoolean(attachmentEnabled));
             }
 			//the request attribute will be used in KualiRequestProcess#processActionPerform
             if(exitingDocument()){
@@ -334,8 +335,14 @@ public class KualiDocumentActionBase extends KualiAction {
         if (doc == null) {
             throw new UnknownDocumentIdException("Document no longer exists.  It may have been cancelled before being saved.");
         }
+        KualiWorkflowDocument workflowDocument = doc.getDocumentHeader().getWorkflowDocument();
         if (!getDocumentHelperService().getDocumentAuthorizer(doc).canOpen(doc, GlobalVariables.getUserSession().getPerson())) {
         	throw buildAuthorizationException("open", doc);
+        }
+        // re-retrieve the document using the current user's session - remove the system user from the WorkflowDcument object
+        if ( workflowDocument != doc.getDocumentHeader().getWorkflowDocument() ) {
+        	LOG.warn( "Workflow document changed via canOpen check" );
+        	doc.getDocumentHeader().setWorkflowDocument(workflowDocument);
         }
         kualiDocumentFormBase.setDocument(doc);
         KualiWorkflowDocument workflowDoc = doc.getDocumentHeader().getWorkflowDocument();

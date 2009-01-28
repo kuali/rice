@@ -49,11 +49,11 @@ public class ParameterRule extends MaintenanceDocumentRuleBase {
 	        permissionDetails.put(KimAttributes.NAMESPACE_CODE, parm.getParameterNamespaceCode());
 	        permissionDetails.put(KimAttributes.COMPONENT_NAME, parm.getParameterDetailTypeCode());
 	        permissionDetails.put(KimAttributes.PARAMETER_NAME, parm.getParameterName());
-	        KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(
-	        		GlobalVariables.getUserSession().getPerson().getPrincipalId(),
-					KNSConstants.KNS_NAMESPACE,
-					KimConstants.PermissionTemplateNames.MAINAIN_SYSTEM_PARAMETER,
-					permissionDetails, null);
+	        allowsEdit = KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(
+	        				GlobalVariables.getUserSession().getPerson().getPrincipalId(),
+	        				KNSConstants.KNS_NAMESPACE,
+	        				KimConstants.PermissionTemplateNames.MAINAIN_SYSTEM_PARAMETER,
+	        				permissionDetails, null);
 	        if(!allowsEdit){
 	        	putGlobalError(RiceKeyConstants.AUTHORIZATION_ERROR_PARAMETER);
 	        }

@@ -39,8 +39,6 @@ public class DocumentTypeDTO implements Serializable {
     private String postProcessorName;
     private boolean docTypeDefaultApprovePolicy;
     private boolean docTypeDefaultApprovePolicyInherited;
-    private boolean docTypePreApprovalPolicy;
-    private boolean docTypePreApprovalPolicyInherited;
     private String docTypeJndiFactoryClass;
     private String docTypeJndiUrl;
     private String docTypeCurrentInd;
@@ -182,23 +180,6 @@ public class DocumentTypeDTO implements Serializable {
     public void setDocTypeDefaultApprovePolicyInherited(
             boolean docTypeDefaultApprovePolicyInherited) {
         this.docTypeDefaultApprovePolicyInherited = docTypeDefaultApprovePolicyInherited;
-    }
-
-    public boolean isDocTypePreApprovalPolicy() {
-        return docTypePreApprovalPolicy;
-    }
-
-    public void setDocTypePreApprovalPolicy(boolean docTypePreApprovalPolicy) {
-        this.docTypePreApprovalPolicy = docTypePreApprovalPolicy;
-    }
-
-    public boolean isDocTypePreApprovalPolicyInherited() {
-        return docTypePreApprovalPolicyInherited;
-    }
-
-    public void setDocTypePreApprovalPolicyInherited(
-            boolean docTypePreApprovalPolicyInherited) {
-        this.docTypePreApprovalPolicyInherited = docTypePreApprovalPolicyInherited;
     }
 
     public String getDocTypeJndiFactoryClass() {

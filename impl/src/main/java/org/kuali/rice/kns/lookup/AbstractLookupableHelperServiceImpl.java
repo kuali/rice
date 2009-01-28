@@ -80,6 +80,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     protected static final String ACTION_URLS_CHILDREN_STARTER = "&nbsp;[";
     protected static final String ACTION_URLS_CHILDREN_END = "]";
     protected static final String ACTION_URLS_SEPARATOR = "&nbsp;&nbsp;";
+    protected static final String ACTION_URLS_EMPTY = "&nbsp;";
 
     protected static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(AbstractLookupableHelperServiceImpl.class);
 
@@ -1000,6 +1001,10 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
             HtmlData returnUrl = getReturnUrl(element, lookupForm, returnKeys, businessObjectRestrictions);
 
             String actionUrls = getActionUrls(element, pkNames, businessObjectRestrictions);
+            //Fix for JIRA - KFSMI-2417
+            if("".equals(actionUrls)){
+            	actionUrls = ACTION_URLS_EMPTY;
+            }
 
             List<Column> columns = getColumns();
             for (Iterator iterator = columns.iterator(); iterator.hasNext();) {

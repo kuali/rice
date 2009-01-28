@@ -902,16 +902,6 @@
       <property name="retryAttempts" value="0" />
     </bean>
 
-    <bean id="namespaceRoleTypeService" class="org.kuali.rice.kns.service.impl.NamespaceRoleTypeServiceImpl"/>
-	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
-	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-	  <property name="serviceDefinition">
-	    <bean parent="knsService"
-	      p:service-ref="namespaceRoleTypeService"
-	      p:localServiceName="namespaceRoleTypeService" />
-	  </property>
-	</bean>
-
     <bean id="documentTypePermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl"/>
 	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>

@@ -18,12 +18,14 @@ package org.kuali.rice.kew.engine.node;
 
 import java.io.Serializable;
 
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.PrePersist;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.kuali.rice.core.util.OrmUtils;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 
 /**
  * A KeyValuePair that adds an id fields that makes it sufficient for storing in a database.
@@ -31,14 +33,18 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @MappedSuperclass
+@Sequence(name="KREW_RTE_NODE_S", property="stateId")
 public abstract class State extends KeyValuePair implements Serializable {
     @Id
-	@GeneratedValue(strategy=javax.persistence.GenerationType.SEQUENCE, generator="KREWSeq")
-	@SequenceGenerator(name="KREWSeq",sequenceName="KREW_RTE_NODE_S", allocationSize=1)
-    protected Long stateId;
+	protected Long stateId;
 
     public State() {}
 
+    @PrePersist
+    public void beforeInsert(){
+        OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
+    }
+    
     public State(String key, String value) {
         super(key, value);
     }

@@ -126,4 +126,12 @@ public class QuickLinksDAOJpaImpl implements QuickLinksDAO {
     public DocumentSearchService getDocumentSearchService() {
         return ((DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE));
     }
+
+    public EntityManager getEntityManager() {
+        return this.entityManager;
+    }
+
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 }

@@ -46,8 +46,8 @@ public class OrmUtils {
 	public static void populateAutoIncValue(Object entity, Long value) {
     	try {	    		
     		if (entity.getClass().isAnnotationPresent(Sequence.class)) {
-    			Sequence sequence = entity.getClass().getAnnotation(Sequence.class);   
-    			Field field = entity.getClass().getDeclaredField(sequence.property());
+    			Sequence sequence = entity.getClass().getAnnotation(Sequence.class);
+    			Field field = getPrivateField(entity.getClass(), sequence.property());
     			field.setAccessible(true);
     			if (java.lang.String.class.equals(field.getType())) {    				
         			field.set(entity, value.toString());
@@ -83,6 +83,7 @@ public class OrmUtils {
 	}
 	
     public static void reattach(Object attached, Object detached) {
+        LOG.debug("Reattaching entity: " + detached.getClass().getName());
     	// Don't want to get parent fields if overridden in children since we are walking the tree from child to parent
     	Set<String> cachedFields = new HashSet<String>(); 
     	Class attachedClass = attached.getClass();
@@ -103,7 +104,16 @@ public class OrmUtils {
     	} while (attachedClass != null && !(attachedClass.equals(Object.class)));
     }
     
-    public static boolean isJpaAnnotated(Class clazz) {
+    public static void merge(EntityManager manager, Object entity) {
+        if(manager.contains(entity)) {
+            manager.merge(entity);
+        }
+        else {
+            OrmUtils.reattach(entity, manager.merge(entity));
+        }
+    }
+    
+    public static boolean isJpaAnnotated(Class<?> clazz) {
     	if (clazz == null) {
     		return false;
     	}
@@ -130,4 +140,18 @@ public class OrmUtils {
         
         return "true".equalsIgnoreCase(config.getProperty(RiceConstants.RICE_JPA_ENABLED)) || "true".equalsIgnoreCase(config.getProperty(prefix + RiceConstants.JPA_ENABLED_SUFFIX));
     }
+    
+    private static Field getPrivateField(Class clazz, String fieldName) throws NoSuchFieldException {
+        if(clazz == null) {
+            throw new NoSuchFieldException();
+        }
+        
+        try {
+            return clazz.getDeclaredField(fieldName);
+        }
+        catch(NoSuchFieldException exception) {
+            return getPrivateField(clazz.getSuperclass(), fieldName);
+        }
+    }
+
 }

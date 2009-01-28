@@ -35,8 +35,6 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-//@Entity
-//@Table(name="KREW_ACTN_ITM_T")
 @MappedSuperclass
 public class ActionItemActionListExtension extends ActionItem {
 
@@ -55,10 +53,12 @@ public class ActionItemActionListExtension extends ActionItem {
     @Transient
     private KimGroup group = null;
 
+    @Transient
     public Person getDelegatorPerson() {
         return delegatorPerson;
     }
     
+    @Transient
     public String getDelegatorName() {
         return delegatorName;
     }
@@ -88,10 +88,12 @@ public class ActionItemActionListExtension extends ActionItem {
         isInitialized = true;
     }
 
+    @Transient
     public boolean isInitialized() {
     	return isInitialized;
     }
 
+    @Transient
 	public DisplayParameters getDisplayParameters() {
 		return displayParameters;
 	}
@@ -103,6 +105,7 @@ public class ActionItemActionListExtension extends ActionItem {
 	/**
 	 * @return the group
 	 */
+	@Transient
 	public KimGroup getGroup() {
 		return this.group;
 	}
@@ -117,6 +120,7 @@ public class ActionItemActionListExtension extends ActionItem {
 	/**
 	 * @return the delegatorGroup
 	 */
+	@Transient
 	public KimGroup getDelegatorGroup() {
 		return this.delegatorGroup;
 	}

@@ -22,20 +22,13 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.apache.ojb.broker.query.Criteria;
-import org.apache.ojb.broker.query.QueryByCriteria;
-import org.apache.ojb.broker.query.QueryFactory;
-import org.apache.ojb.broker.query.ReportQueryByCriteria;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.NodeState;
 import org.kuali.rice.kew.engine.node.RouteNode;
-import org.kuali.rice.kew.engine.node.RouteNodeConfigParam;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.node.dao.RouteNodeDAO;
-import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.KEWPropertyConstants;
-import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
 
 public class RouteNodeDAOJpaImpl implements RouteNodeDAO {
@@ -61,7 +54,7 @@ public class RouteNodeDAOJpaImpl implements RouteNodeDAO {
     	if (node.getRouteNodeId() == null){
     		entityManager.persist(node);
     	} else {
-    		OrmUtils.reattach(node,entityManager.merge(node));
+    		OrmUtils.merge(entityManager, node);
     	}
     }
 
@@ -69,7 +62,7 @@ public class RouteNodeDAOJpaImpl implements RouteNodeDAO {
     	if (nodeInstance.getRouteNodeInstanceId() == null){
     		entityManager.persist(nodeInstance);
     	} else {
-    		OrmUtils.reattach(nodeInstance,entityManager.merge(nodeInstance));
+    		OrmUtils.merge(entityManager, nodeInstance);
     	}
     }
 
@@ -77,7 +70,7 @@ public class RouteNodeDAOJpaImpl implements RouteNodeDAO {
     	if (nodeState.getNodeStateId() == null){
     		entityManager.persist(nodeState);
     	} else {
-    		OrmUtils.reattach(nodeState,entityManager.merge(nodeState));
+    		OrmUtils.merge(entityManager, nodeState);
     	}
     }
 
@@ -86,7 +79,7 @@ public class RouteNodeDAOJpaImpl implements RouteNodeDAO {
     		entityManager.persist(branch);
     	} else {
     		entityManager.merge(branch);
-    		OrmUtils.reattach(branch,entityManager.merge(branch));
+    		OrmUtils.merge(entityManager, branch);
     	}
     }
 
@@ -153,7 +146,7 @@ public class RouteNodeDAOJpaImpl implements RouteNodeDAO {
     }
 
     public List findFinalApprovalRouteNodes(Long documentTypeId) {
-    	Query query = entityManager.createNamedQuery("RouteNode.FindFinalApprovalRouteNodes");
+    	Query query = entityManager.createNamedQuery("RouteNode.FindApprovalRouteNodes");
     	query.setParameter(KEWPropertyConstants.DOCUMENT_TYPE_ID, documentTypeId);
     	query.setParameter(KEWPropertyConstants.FINAL_APPROVAL, Boolean.TRUE);
     	return (List) query.getResultList();

@@ -34,7 +34,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -45,13 +44,13 @@ import org.apache.log4j.Logger;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.kuali.rice.core.jpa.annotations.Sequence;
-import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.CustomActionListAttribute;
 import org.kuali.rice.kew.actionlist.DefaultCustomActionListAttribute;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.dto.DTOConverter;
@@ -77,8 +76,6 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 
 /**
@@ -122,7 +119,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 	@NamedQuery(name="DocumentRouteHeaderValue.FindByRouteHeaderId", query="select d from DocumentRouteHeaderValue as d where d.routeHeaderId = :routeHeaderId"),
 	@NamedQuery(name="DocumentRouteHeaderValue.QuickLinks.FindWatchedDocumentsByInitiatorWorkflowId", query="SELECT NEW org.kuali.rice.kew.quicklinks.WatchedDocument(routeHeaderId, docRouteStatus, docTitle) FROM DocumentRouteHeaderValue WHERE initiatorWorkflowId = :initiatorWorkflowId AND docRouteStatus IN ('"+ KEWConstants.ROUTE_HEADER_ENROUTE_CD +"','"+ KEWConstants.ROUTE_HEADER_EXCEPTION_CD +"') ORDER BY createDate DESC")
 })
-public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase {
+public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
     private static final long serialVersionUID = -4700736340527913220L;
     private static final Logger LOG = Logger.getLogger(DocumentRouteHeaderValue.class);
 
@@ -926,8 +923,4 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase {
 		return null;
 	}
 
-	@PrePersist
-	public void beforeInsert(){
-		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());		
-	}
 }

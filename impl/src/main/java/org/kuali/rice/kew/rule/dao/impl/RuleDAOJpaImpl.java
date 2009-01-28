@@ -66,7 +66,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
 		if(ruleBaseValues.getRuleBaseValuesId()==null){
 			entityManager.persist(ruleBaseValues);
 		}else{
-			OrmUtils.reattach(ruleBaseValues, entityManager.merge(ruleBaseValues));
+			OrmUtils.merge(entityManager, ruleBaseValues);
 		}
 	}
 
@@ -285,7 +285,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
         return getResponsibilitySubQuery(workgroupIdStrings,principalId,roleName,new ArrayList<String>(), searchUser, searchUserInWorkgroups);
     }
     private Criteria getResponsibilitySubQuery(Collection<String> workgroupIds, String workflowId, String roleName, Collection actionRequestCodes, Boolean searchUser, Boolean searchUserInWorkgroups) {
-        Criteria responsibilityCrit = new Criteria(RuleResponsibility.class.getName());
+        Criteria responsibilityCrit = new Criteria(RuleResponsibility.class.getName(), "rr");
         if ( (actionRequestCodes != null) && (!actionRequestCodes.isEmpty()) ) {
             responsibilityCrit.in("actionRequestedCd", new ArrayList(actionRequestCodes));
         }
@@ -293,7 +293,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
         Criteria ruleResponsibilityNameCrit = null;
         if (!Utilities.isEmpty(roleName)) {
             // role name exists... nothing else matters
-            ruleResponsibilityNameCrit = new Criteria(RuleResponsibility.class.getName());
+            ruleResponsibilityNameCrit = new Criteria(RuleResponsibility.class.getName(), "rr");
             ruleResponsibilityNameCrit.like("ruleResponsibilityName", workflowId);
             ruleResponsibilityNameCrit.eq("ruleResponsibilityType", KEWConstants.RULE_RESPONSIBILITY_ROLE_ID);
         } else {
@@ -301,28 +301,28 @@ public class RuleDAOJpaImpl implements RuleDAO {
                 // workflow user id exists
                 if (searchUser != null && searchUser) {
                     // searching user wishes to search for rules specific to user
-                    ruleResponsibilityNameCrit = new Criteria(RuleResponsibility.class.getName());
+                    ruleResponsibilityNameCrit = new Criteria(RuleResponsibility.class.getName(), "rr");
                     ruleResponsibilityNameCrit.like("ruleResponsibilityName", workflowId);
                     ruleResponsibilityNameCrit.eq("ruleResponsibilityType", KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
                 }
                 if ( (searchUserInWorkgroups != null && searchUserInWorkgroups) && (workgroupIds != null) && (!workgroupIds.isEmpty()) ) {
                     // at least one workgroup id exists and user wishes to search on workgroups
                     if (ruleResponsibilityNameCrit == null) {
-                        ruleResponsibilityNameCrit = new Criteria(RuleResponsibility.class.getName());
+                        ruleResponsibilityNameCrit = new Criteria(RuleResponsibility.class.getName(), "rr");
                     }
-                    Criteria workgroupCrit = new Criteria(RuleResponsibility.class.getName());
+                    Criteria workgroupCrit = new Criteria(RuleResponsibility.class.getName(), "rr");
                     workgroupCrit.in("ruleResponsibilityName", new ArrayList<String>(workgroupIds));
                     workgroupCrit.eq("ruleResponsibilityType", KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
                     ruleResponsibilityNameCrit.or(workgroupCrit);
                 }
             } else if ( (workgroupIds != null) && (workgroupIds.size() == 1) ) {
                 // no user and one workgroup id
-                ruleResponsibilityNameCrit = new Criteria(RuleResponsibility.class.getName());
+                ruleResponsibilityNameCrit = new Criteria(RuleResponsibility.class.getName(), "rr");
                 ruleResponsibilityNameCrit.like("ruleResponsibilityName", workgroupIds.iterator().next());
                 ruleResponsibilityNameCrit.eq("ruleResponsibilityType", KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
             } else if ( (workgroupIds != null) && (workgroupIds.size() > 1) ) {
                 // no user and more than one workgroup id
-                ruleResponsibilityNameCrit = new Criteria(RuleResponsibility.class.getName());
+                ruleResponsibilityNameCrit = new Criteria(RuleResponsibility.class.getName(), "rr");
                 ruleResponsibilityNameCrit.in("ruleResponsibilityName",  new ArrayList<String>(workgroupIds));
                 ruleResponsibilityNameCrit.eq("ruleResponsibilityType", KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
             }
@@ -469,5 +469,13 @@ public class RuleDAOJpaImpl implements RuleDAO {
 		return oldDelegations;
 
 	}
+
+    public EntityManager getEntityManager() {
+        return this.entityManager;
+    }
+
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 
 }

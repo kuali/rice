@@ -51,7 +51,7 @@ public class SearchableAttributeDAOJpaImpl implements SearchableAttributeDAO {
 			Long documentId, String key) {
 
 		List<Timestamp> lRet = null;
-		Query query = entityManager.createNamedQuery("SearchableAttributeDateTimeValue.findByKey");
+		Query query = entityManager.createNamedQuery("SearchableAttributeDateTimeValue.FindByKey");
         query.setParameter("routeHeaderId", documentId);
         query.setParameter("searchableAttributeKey", key);
         List<SearchableAttributeDateTimeValue> results = query.getResultList();
@@ -73,7 +73,7 @@ public class SearchableAttributeDAOJpaImpl implements SearchableAttributeDAO {
 	public List<BigDecimal> getSearchableAttributeFloatValuesByKey(
 			Long documentId, String key) {
 		List<BigDecimal> lRet = null;
-		Query query = entityManager.createNamedQuery("SearchableAttributeFloatValue.findByKey");
+		Query query = entityManager.createNamedQuery("SearchableAttributeFloatValue.FindByKey");
         query.setParameter("routeHeaderId", documentId);
         query.setParameter("searchableAttributeKey", key);
         List<SearchableAttributeFloatValue> results = query.getResultList();
@@ -95,7 +95,7 @@ public class SearchableAttributeDAOJpaImpl implements SearchableAttributeDAO {
 	public List<Long> getSearchableAttributeLongValuesByKey(Long documentId,
 			String key) {
 		List<Long> lRet = null;
-		Query query = entityManager.createNamedQuery("SearchableAttributeLongValue.findByKey");
+		Query query = entityManager.createNamedQuery("SearchableAttributeLongValue.FindByKey");
         query.setParameter("routeHeaderId", documentId);
         query.setParameter("searchableAttributeKey", key);
         List<SearchableAttributeLongValue> results = query.getResultList();
@@ -117,7 +117,7 @@ public class SearchableAttributeDAOJpaImpl implements SearchableAttributeDAO {
 	public List<String> getSearchableAttributeStringValuesByKey(
 			Long documentId, String key) {
 		List<String> lRet = null;
-		Query query = entityManager.createNamedQuery("SearchableAttributeStringValue.findByKey");
+		Query query = entityManager.createNamedQuery("SearchableAttributeStringValue.FindByKey");
         query.setParameter("routeHeaderId", documentId);
         query.setParameter("searchableAttributeKey", key);
         List<SearchableAttributeStringValue> results = query.getResultList();

@@ -128,10 +128,10 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 					process.getInitialRouteNode().setDocumentTypeId(documentType.getDocumentTypeId());
 					entityManager.persist(process.getInitialRouteNode());					
 				} else {
-					OrmUtils.reattach(process.getInitialRouteNode(),entityManager.merge(process.getInitialRouteNode()));
+					OrmUtils.merge(entityManager, process.getInitialRouteNode());
 				}
 			}
-			OrmUtils.reattach(documentType, entityManager.merge(documentType));
+			OrmUtils.merge(entityManager, documentType);
 		}
 
 		for (DocumentTypePolicy docTypePolicy:docPolicies){
@@ -139,7 +139,7 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 				docTypePolicy.setDocumentTypeId(documentType.getDocumentTypeId());
 				entityManager.persist(docTypePolicy);
 			} else {
-				OrmUtils.reattach(docTypePolicy, entityManager.merge(docTypePolicy));
+				OrmUtils.merge(entityManager, docTypePolicy);
 			}
 		}
 		

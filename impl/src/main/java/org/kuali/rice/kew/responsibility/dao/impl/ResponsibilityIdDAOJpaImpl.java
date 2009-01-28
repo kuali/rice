@@ -37,4 +37,12 @@ public class ResponsibilityIdDAOJpaImpl implements ResponsibilityIdDAO {
     	return (Platform)GlobalResourceLoader.getService(RiceConstants.DB_PLATFORM);
     }
 
+    public EntityManager getEntityManager() {
+        return this.entityManager;
+    }
+
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
 }

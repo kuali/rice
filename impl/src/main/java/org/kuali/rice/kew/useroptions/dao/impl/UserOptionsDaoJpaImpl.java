@@ -36,7 +36,7 @@ public class UserOptionsDaoJpaImpl implements UserOptionsDAO {
     private EntityManager entityManager;
 
 	public Long getNewOptionIdForActionList() {
-        return getPlatform().getNextValSQL("SEQ_ACTION_LIST_OPTN", entityManager);
+        return getPlatform().getNextValSQL("KREW_ACTN_LIST_OPTN_S", entityManager);
     }
 
 	protected Platform getPlatform() {

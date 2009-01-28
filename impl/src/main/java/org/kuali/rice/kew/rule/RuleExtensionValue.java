@@ -16,21 +16,21 @@
  */
 package org.kuali.rice.kew.rule;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.JoinColumn;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-import javax.persistence.Column;
-import javax.persistence.Id;
 import javax.persistence.CascadeType;
-import javax.persistence.Table;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.Table;
+import javax.persistence.Version;
 
+import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
 
 
@@ -46,13 +46,12 @@ import org.kuali.rice.kew.util.Utilities;
  */
 @Entity
 @Table(name="KREW_RULE_EXT_VAL_T")
+@Sequence(name="KREW_RTE_TMPL_S", property="ruleExtensionValueId")
 public class RuleExtensionValue implements WorkflowPersistable {
 
 	private static final long serialVersionUID = 8909789087052290261L;
 	@Id
 	@Column(name="RULE_EXT_VAL_ID")
-	@GeneratedValue(strategy=GenerationType.AUTO, generator="KREW_RTE_TMPL_SEQ_GEN")
-    @SequenceGenerator(name="KREW_RTE_TMPL_SEQ_GEN", sequenceName="KREW_RTE_TMPL_S") 
 	private Long ruleExtensionValueId;
     @Column(name="RULE_EXT_ID", insertable=false, updatable=false)
 	private Long ruleExtensionId;
@@ -74,6 +73,11 @@ public class RuleExtensionValue implements WorkflowPersistable {
     public RuleExtensionValue(String key, String value) {
         this.key = key;
         this.value = value;
+    }
+    
+    @PrePersist
+    public void beforeInsert(){
+        OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
     }
     
     public RuleExtension getExtension() {

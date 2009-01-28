@@ -78,7 +78,7 @@ public class RuleTemplateDAOJpaImpl implements RuleTemplateDAO {
     	if(ruleTemplate.getRuleTemplateId()==null){
     		entityManager.persist(ruleTemplate);
     	}else{
-    		OrmUtils.reattach(ruleTemplate, entityManager.merge(ruleTemplate));
+    		OrmUtils.merge(entityManager, ruleTemplate);
     	}
     }
 
@@ -88,6 +88,14 @@ public class RuleTemplateDAOJpaImpl implements RuleTemplateDAO {
 
     protected Platform getPlatform() {
     	return (Platform)GlobalResourceLoader.getService(RiceConstants.DB_PLATFORM);
+    }
+
+    public EntityManager getEntityManager() {
+        return this.entityManager;
+    }
+
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
 

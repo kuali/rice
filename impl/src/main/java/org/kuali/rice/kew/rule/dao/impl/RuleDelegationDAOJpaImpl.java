@@ -43,7 +43,7 @@ public class RuleDelegationDAOJpaImpl implements RuleDelegationDAO {
     	if(ruleDelegation.getDelegateRuleId()==null){
     		entityManager.persist(ruleDelegation);
     	}else{
-    		OrmUtils.reattach(ruleDelegation, entityManager.merge(ruleDelegation));
+    		OrmUtils.merge(entityManager, ruleDelegation);
     	}
     }
     public List findAllRuleDelegations(){
@@ -57,5 +57,13 @@ public class RuleDelegationDAOJpaImpl implements RuleDelegationDAO {
     }
     public void delete(Long ruleDelegationId){
     	entityManager.remove(findByRuleDelegationId(ruleDelegationId));
+    }
+
+    public EntityManager getEntityManager() {
+        return this.entityManager;
+    }
+
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 }

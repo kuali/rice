@@ -16,18 +16,21 @@
  */
 package org.kuali.rice.kew.rule;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
-import javax.persistence.Version;
 import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.CascadeType;
-import javax.persistence.Table;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.Table;
+import javax.persistence.Version;
 
+import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 
 
 /**
@@ -41,6 +44,7 @@ import org.kuali.rice.kew.rule.bo.RuleTemplate;
  */
 @Entity
 @Table(name="KREW_RULE_TMPL_OPTN_T")
+@Sequence(name="KREW_RULE_TMPL_OPTN_S", property="ruleTemplateOptionId")
 public class RuleTemplateOption implements WorkflowPersistable {
 
 	private static final long serialVersionUID = 8913119135197149224L;
@@ -68,6 +72,11 @@ public class RuleTemplateOption implements WorkflowPersistable {
         this.value = value;
     }
 
+    @PrePersist
+    public void beforeInsert(){
+        OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
+    }
+    
     public Object copy(boolean preserveKeys) {
         RuleTemplateOption ruleTemplateOptionClone = new RuleTemplateOption();
 

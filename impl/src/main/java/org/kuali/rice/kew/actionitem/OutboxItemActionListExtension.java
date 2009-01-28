@@ -31,11 +31,11 @@ import javax.persistence.Table;
 @Table(name="KREW_OUT_BOX_ITM_T")
 @AttributeOverrides({
     @AttributeOverride(name="actionItemId", column=@Column(name="ACTN_ITM_ID")),
-    @AttributeOverride(name="workflowId", column=@Column(name="PRNCPL_ID")),
+    @AttributeOverride(name="principalId", column=@Column(name="PRNCPL_ID")),
     @AttributeOverride(name="dateAssigned", column=@Column(name="ASND_DT")),
     @AttributeOverride(name="actionRequestCd", column=@Column(name="RQST_CD")),
     @AttributeOverride(name="actionRequestId", column=@Column(name="ACTN_RQST_ID")),
-    @AttributeOverride(name="routeHeaderId", column=@Column(name="DOC_HDR_ID")),
+    @AttributeOverride(name="routeHeaderId", column=@Column(name="DOC_HDR_ID", insertable=false, updatable=false)),
     @AttributeOverride(name="responsibilityId", column=@Column(name="RSP_ID")),
     @AttributeOverride(name="groupId", column=@Column(name="GRP_ID")),
     @AttributeOverride(name="roleName", column=@Column(name="ROLE_NM")),

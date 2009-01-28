@@ -16,19 +16,18 @@
  */
 package org.kuali.rice.kew.engine.node;
 
-import javax.persistence.PrePersist;
-import javax.persistence.Version;
+import java.io.Serializable;
+
 import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.CascadeType;
-import javax.persistence.Table;
 import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.PrePersist;
+import javax.persistence.Table;
+import javax.persistence.Version;
 
 import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.util.OrmUtils;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-
-import java.io.Serializable;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 
 /**
  * Represents a Branch in the definition of a DocumentType.  This should not be confused with the
@@ -38,7 +37,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name="KREW_RTE_BRCH_PROTO_T")
-@Sequence(name="KREW_RTE_NODE_S",property="branchId")
+@Sequence(name="KREW_RTE_NODE_S", property="branchId")
 public class BranchPrototype implements Serializable {
 
 	private static final long serialVersionUID = 8645994738204838275L;
@@ -78,7 +77,7 @@ public class BranchPrototype implements Serializable {
 	
 	@PrePersist
 	public void beforeInsert(){
-		OrmUtils.populateAutoIncValue(this, KNSServiceLocator.getEntityManagerFactory().createEntityManager());		
+		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());		
 	}
 	
 }

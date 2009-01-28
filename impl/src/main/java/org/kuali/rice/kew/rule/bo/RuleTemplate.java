@@ -27,15 +27,12 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -43,10 +40,11 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.rule.RuleTemplateOption;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 
 /**
@@ -58,8 +56,9 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  */
 @Entity
 @Table(name="KREW_RULE_TMPL_T")
+@Sequence(name="KREW_RTE_TMPL_S", property="ruleTemplateId")
 @NamedQueries({@NamedQuery(name="findAllOrderedByName", query="SELECT rt FROM RuleTemplate rt ORDER BY rt.name ASC")})
-public class RuleTemplate  extends PersistableBusinessObjectBase implements WorkflowPersistable  {
+public class RuleTemplate  extends KewPersistableBusinessObjectBase implements WorkflowPersistable  {
 
     private static final long serialVersionUID = -3387940485523951302L;
 
@@ -77,8 +76,6 @@ public class RuleTemplate  extends PersistableBusinessObjectBase implements Work
     
     @Id
 	@Column(name="RULE_TMPL_ID")
-	@GeneratedValue(strategy=GenerationType.AUTO, generator="KREW_RTE_TMPL_SEQ_GEN")
-    @SequenceGenerator(name="KREW_RTE_TMPL_SEQ_GEN", sequenceName="KREW_RTE_TMPL_S") 
 	private Long ruleTemplateId;
     @Column(name="NM")
 	private String name;
@@ -92,10 +89,10 @@ public class RuleTemplate  extends PersistableBusinessObjectBase implements Work
 	private RuleTemplate delegationTemplate;
     @Fetch(value = FetchMode.SUBSELECT)
     @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
-           targetEntity=org.kuali.rice.kew.rule.bo.RuleTemplateAttribute.class, mappedBy="ruleTemplate")
+           mappedBy="ruleTemplate")
 	private List<RuleTemplateAttribute> ruleTemplateAttributes;
     @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
-           targetEntity=org.kuali.rice.kew.rule.RuleTemplateOption.class, mappedBy="ruleTemplate")
+           mappedBy="ruleTemplate")
 	private List<RuleTemplateOption> ruleTemplateOptions;
 
     // required to be lookupable
@@ -106,7 +103,8 @@ public class RuleTemplate  extends PersistableBusinessObjectBase implements Work
         ruleTemplateAttributes = new ArrayList<RuleTemplateAttribute>();
         ruleTemplateOptions = new ArrayList<RuleTemplateOption>();
     }
-
+    
+ 
     /**
      * Removes any non-default rule template options on the template
      */
@@ -206,7 +204,7 @@ public class RuleTemplate  extends PersistableBusinessObjectBase implements Work
      */
     public List<RuleTemplateAttribute> getActiveRuleTemplateAttributes() {
         List<RuleTemplateAttribute> activeAttributes = new ArrayList<RuleTemplateAttribute>();
-        for (Iterator iterator = getRuleTemplateAttributes().iterator(); iterator.hasNext();) {
+        for (Iterator<RuleTemplateAttribute> iterator = getRuleTemplateAttributes().iterator(); iterator.hasNext();) {
             RuleTemplateAttribute templateAttribute = (RuleTemplateAttribute) iterator.next();
             if (templateAttribute.isActive()) {
                 activeAttributes.add(templateAttribute);

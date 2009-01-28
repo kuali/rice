@@ -16,6 +16,7 @@ package org.kuali.rice.kew.actionitem.dao.impl;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +28,7 @@ import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.actionitem.OutboxItemActionListExtension;
 import org.kuali.rice.kew.actionitem.dao.ActionItemDAO;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
@@ -51,7 +53,9 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
         Criteria crit = new Criteria(ActionItem.class.getName());
         crit.eq("actionRequestId", actionRequestId);
         for(Object actionItem:new QueryByCriteria(entityManager,crit).toQuery().getResultList()){
-        	entityManager.remove(actionItem);
+            if( ! (actionItem instanceof OutboxItemActionListExtension)) {
+                entityManager.remove(actionItem);
+            }
         }
 
     }
@@ -65,7 +69,9 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
         crit.eq("routeHeader.routeHeaderId", routeHeaderId);
         crit.eq("principalId", workflowUserId);
         for(Object actionItem: new QueryByCriteria(entityManager,crit).toQuery().getResultList()){
-        	entityManager.remove(actionItem);
+            if( ! (actionItem instanceof OutboxItemActionListExtension)) {
+                entityManager.remove(actionItem);
+            }
         }
     }
 
@@ -73,7 +79,9 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
         Criteria crit = new Criteria(ActionItem.class.getName());
         crit.eq("routeHeader.routeHeaderId", routeHeaderId);
         for(Object actionItem: new QueryByCriteria(entityManager,crit).toQuery().getResultList()){
-        	entityManager.remove(actionItem);
+            if( ! (actionItem instanceof OutboxItemActionListExtension)) {
+                entityManager.remove(actionItem);
+            }
         }
     }
 
@@ -86,34 +94,41 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
 		Criteria crit = new Criteria(ActionItem.class.getName());
         crit.eq("principalId", principalId);
         crit.orderBy("routeHeader.routeHeaderId", true);
-        return new QueryByCriteria(entityManager, crit).toQuery().getResultList();
+        List<ActionItem> results = new QueryByCriteria(entityManager, crit).toQuery().getResultList();
+        
+        return removeOutBoxItems(results);
 	}
 
     public Collection<ActionItem> findByWorkflowUserRouteHeaderId(String workflowId, Long routeHeaderId) {
         Criteria crit = new Criteria(ActionItem.class.getName());
         crit.eq("principalId", workflowId);
         crit.eq("routeHeader.routeHeaderId", routeHeaderId);
-        return new QueryByCriteria(entityManager, crit).toQuery().getResultList();
+        List<ActionItem> results = new QueryByCriteria(entityManager, crit).toQuery().getResultList();
+        
+        return removeOutBoxItems(results);
     }
 
     public Collection<ActionItem> findByRouteHeaderId(Long routeHeaderId) {
         Criteria crit = new Criteria(ActionItem.class.getName());
         crit.eq("routeHeader.routeHeaderId", routeHeaderId);
-        return new QueryByCriteria(entityManager, crit).toQuery().getResultList();
+        List<ActionItem> results = new QueryByCriteria(entityManager, crit).toQuery().getResultList();
+        
+        return removeOutBoxItems(results);
     }
 
     public Collection<ActionItem> findByActionRequestId(Long actionRequestId) {
         Criteria crit = new Criteria(ActionItem.class.getName());
         crit.eq("actionRequestId", actionRequestId);
-        return new QueryByCriteria(entityManager, crit).toQuery().getResultList();
+        List<ActionItem> results = new QueryByCriteria(entityManager, crit).toQuery().getResultList();
+        
+        return removeOutBoxItems(results);
     }
 
     public void saveActionItem(ActionItem actionItem) {
-//    	OrmUtils.reattach(actionItem, entityManager.merge(actionItem));
     	if(actionItem.getActionItemId()==null){
         	entityManager.persist(actionItem);
     	}else{
-    		OrmUtils.reattach(actionItem, entityManager.merge(actionItem));
+    		OrmUtils.merge(entityManager, actionItem);
     	}
     }
 
@@ -175,9 +190,28 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
 
         return delegators.values();
     }
+    
+    private List<ActionItem> removeOutBoxItems(List<ActionItem> results) {
+        Iterator<ActionItem> iterator = results.iterator();
+        while(iterator.hasNext()) {
+            if(iterator.next() instanceof OutboxItemActionListExtension) {
+                iterator.remove();
+            }
+        }
+        
+        return results;
+    }
 
     private IdentityManagementService getIdentityManagementService() {
         return (IdentityManagementService) KIMServiceLocator.getService(KIMServiceLocator.KIM_IDENTITY_MANAGEMENT_SERVICE);
+    }
+
+    public EntityManager getEntityManager() {
+        return this.entityManager;
+    }
+
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
 

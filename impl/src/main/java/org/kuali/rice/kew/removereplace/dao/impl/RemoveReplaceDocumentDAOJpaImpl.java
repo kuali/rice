@@ -45,4 +45,12 @@ public class RemoveReplaceDocumentDAOJpaImpl implements RemoveReplaceDocumentDAO
     	return (RemoveReplaceDocument)query.getSingleResult();
     }
 
+    public EntityManager getEntityManager() {
+        return this.entityManager;
+    }
+
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
 }

@@ -22,14 +22,11 @@ import java.util.LinkedHashMap;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.kuali.rice.core.jpa.annotations.Sequence;
-import org.kuali.rice.core.util.OrmUtils;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
 
 /**
  * Association between WorkflowDocument type -&gt; EDocLite definition, EDocLite style
@@ -39,7 +36,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 @Entity
 @Table(name="KREW_EDL_ASSCTN_T")
 @Sequence(name="KREW_EDL_S", property="edocLiteAssocId")
-public class EDocLiteAssociation  extends PersistableBusinessObjectBase implements Serializable{
+public class EDocLiteAssociation  extends KewPersistableBusinessObjectBase implements Serializable{
 
 	private static final long serialVersionUID = 7300251507982374010L;
 	/**
@@ -71,11 +68,6 @@ public class EDocLiteAssociation  extends PersistableBusinessObjectBase implemen
 
     @Transient
     private String actionsUrl;//for quickfinder
-
-    @PrePersist
-    public void beforeInsert(){
-        OrmUtils.populateAutoIncValue(this, KNSServiceLocator.getEntityManagerFactory().createEntityManager());
-    }
 
     public Long getEdocLiteAssocId() {
         return edocLiteAssocId;

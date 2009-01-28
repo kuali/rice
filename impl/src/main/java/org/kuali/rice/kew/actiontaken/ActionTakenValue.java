@@ -24,14 +24,11 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
@@ -56,7 +53,6 @@ import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 
 
 /**
@@ -76,9 +72,7 @@ public class ActionTakenValue implements WorkflowPersistable {
 	private static final long serialVersionUID = -81505450567067594L;
 	@Id
 	@Column(name="ACTN_TKN_ID")
-    @GeneratedValue(strategy=GenerationType.AUTO, generator="KREW_ACTN_ITM_SEQ_GEN")
-    @SequenceGenerator(name="KREW_ACTN_ITM_SEQ_GEN", sequenceName="KREW_ACTN_ITM_S")
-	private Long actionTakenId;
+    private Long actionTakenId;
     @Column(name="DOC_HDR_ID",insertable=false, updatable=false)
 	private Long routeHeaderId;
     @Column(name="ACTN_CD")

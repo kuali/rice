@@ -22,6 +22,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.JoinColumn;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 import javax.persistence.Version;
@@ -31,10 +32,14 @@ import javax.persistence.CascadeType;
 import javax.persistence.Table;
 import javax.persistence.Entity;
 
+import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kns.util.Guid;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -54,14 +59,13 @@ import java.util.List;
  */
 @Entity
 @Table(name="KREW_RULE_EXT_T")
+@Sequence(name="KREW_RTE_TMPL_S", property="ruleExtensionId")
 public class RuleExtension implements WorkflowPersistable {
 
 	private static final long serialVersionUID = 8178135296413950516L;
 
 	@Id
 	@Column(name="RULE_EXT_ID")
-	@GeneratedValue(strategy=GenerationType.AUTO, generator="KREW_RTE_TMPL_SEQ_GEN")
-    @SequenceGenerator(name="KREW_RTE_TMPL_SEQ_GEN", sequenceName="KREW_RTE_TMPL_S") 
 	private Long ruleExtensionId;
 
 	@Column(name="RULE_TMPL_ATTR_ID", insertable=false, updatable=false)
@@ -73,7 +77,7 @@ public class RuleExtension implements WorkflowPersistable {
 	@Version
 	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
-
+	
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="RULE_ID")
 	private RuleBaseValues ruleBaseValues;
@@ -83,13 +87,18 @@ public class RuleExtension implements WorkflowPersistable {
 	private RuleTemplateAttribute ruleTemplateAttribute;
 
 	@OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
-           targetEntity=org.kuali.rice.kew.rule.RuleExtensionValue.class, mappedBy="extension")
+           mappedBy="extension")
 	private List<RuleExtensionValue> extensionValues;
 
 	public RuleExtension() {
 		extensionValues = new ArrayList<RuleExtensionValue>();
 	}
 
+	@PrePersist
+    public void beforeInsert(){
+        OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
+    }
+	
 	public List<RuleExtensionValue> getExtensionValues() {
 		return extensionValues;
 	}
@@ -198,4 +207,5 @@ public class RuleExtension implements WorkflowPersistable {
                + ", lockVerNbr=" + lockVerNbr
                + "]";
     }
+
 }

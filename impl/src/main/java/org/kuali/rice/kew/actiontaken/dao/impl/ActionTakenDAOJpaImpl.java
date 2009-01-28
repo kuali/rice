@@ -82,7 +82,7 @@ public class ActionTakenDAOJpaImpl implements ActionTakenDAO {
         LOG.debug("finding Action Takens by routeHeaderId " + routeHeaderId + " and workflowId" + workflowId);
         Criteria crit = new Criteria(ActionTakenValue.class.getName());
         crit.eq("routeHeaderId", routeHeaderId);
-        crit.eq("workflowId", workflowId);
+        crit.eq("principalId", workflowId);
         crit.eq("currentIndicator", new Boolean(true));
         return (List) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
     }
@@ -113,7 +113,7 @@ public class ActionTakenDAOJpaImpl implements ActionTakenDAO {
         if(actionTaken.getActionTakenId()==null){
         	entityManager.persist(actionTaken);
         }else{
-        	OrmUtils.reattach(actionTaken, entityManager.merge(actionTaken));
+        	OrmUtils.merge(entityManager, actionTaken);
         }
     }
 
@@ -134,10 +134,18 @@ public class ActionTakenDAOJpaImpl implements ActionTakenDAO {
     public boolean hasUserTakenAction(String workflowId, Long routeHeaderId) {
     	Criteria crit = new Criteria(ActionTakenValue.class.getName());
 	    crit.eq("routeHeaderId", routeHeaderId);
-	    crit.eq("workflowId", workflowId);
+	    crit.eq("principalId", workflowId);
 	    crit.eq("currentIndicator", Boolean.TRUE);
 	    int count = (Integer) new QueryByCriteria(entityManager, crit).toCountQuery().getSingleResult();
         return count > 0;
+    }
+
+    public EntityManager getEntityManager() {
+        return this.entityManager;
+    }
+
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
 }

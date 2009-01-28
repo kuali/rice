@@ -45,6 +45,7 @@ import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.actionlist.CustomActionListAttribute;
+import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
 import org.kuali.rice.kew.docsearch.DocumentSearchCriteriaProcessor;
 import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultProcessor;
@@ -74,7 +75,6 @@ import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -89,7 +89,7 @@ import org.kuali.rice.kns.web.format.FormatException;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Sequence(name="KREW_RTE_NODE_S", property="documentTypeId")
+@Sequence(name="KREW_DOC_HDR_S", property="documentTypeId")
 @Table(name="KREW_DOC_TYP_T")
 @NamedQueries({
     @NamedQuery(name="DocumentType.QuickLinks.FindLabelByTypeName", query="SELECT label FROM DocumentType WHERE name = :docTypeName AND currentInd = 1"),
@@ -97,7 +97,7 @@ import org.kuali.rice.kns.web.format.FormatException;
             "WHERE drhv.initiatorWorkflowId = :initiatorWorkflowId AND drhv.documentTypeId = dt.documentTypeId AND dt.active = 1 AND dt.currentInd = 1 " +
             "ORDER BY UPPER(dt.label)")
 })
-public class DocumentType extends PersistableBusinessObjectBase
+public class DocumentType extends KewPersistableBusinessObjectBase
 {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentType.class);
 
@@ -157,22 +157,22 @@ public class DocumentType extends PersistableBusinessObjectBase
     @Transient
     private KimGroup defaultExceptionWorkgroup;
 
-    @OneToMany(fetch=FetchType.EAGER,targetEntity=org.kuali.rice.kew.doctype.DocumentTypePolicy.class, mappedBy="documentType")
+    @OneToMany(fetch=FetchType.EAGER, mappedBy="documentType")
     @Fetch(value=FetchMode.SUBSELECT)
-    private Collection policies;
+    private Collection<DocumentTypePolicy> policies;
     @Transient
     private List routeLevels;
     @Transient
     private Collection childrenDocTypes;
     @Fetch(value=FetchMode.SUBSELECT)
     @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST},
-           targetEntity=org.kuali.rice.kew.doctype.DocumentTypeAttribute.class, mappedBy="documentType")
+           mappedBy="documentType")
 	private List<DocumentTypeAttribute> documentTypeAttributes;
 
     /* New Workflow 2.1 Field */
     @Fetch(value=FetchMode.SUBSELECT)
     @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST},
-            targetEntity=org.kuali.rice.kew.engine.node.Process.class, mappedBy="documentType")
+            mappedBy="documentType")
     private List<Process> processes = new ArrayList();
     @Column(name="RTE_VER_NBR")
     private String routingVersion = KEWConstants.CURRENT_ROUTING_VERSION;
@@ -194,7 +194,7 @@ public class DocumentType extends PersistableBusinessObjectBase
     public DocumentType() {
         routeLevels = new ArrayList();
         documentTypeAttributes = new ArrayList<DocumentTypeAttribute>();
-        policies = new ArrayList();
+        policies = new ArrayList<DocumentTypePolicy>();
         version = new Integer(0);
     }
 
@@ -311,9 +311,9 @@ public class DocumentType extends PersistableBusinessObjectBase
     }
 
     public boolean isPolicyDefined(DocumentTypePolicyEnum policyToCheck) {
-    	Iterator policyIter = getPolicies().iterator();
+    	Iterator<DocumentTypePolicy> policyIter = getPolicies().iterator();
         while (policyIter.hasNext()) {
-            DocumentTypePolicy policy = (DocumentTypePolicy) policyIter.next();
+            DocumentTypePolicy policy = policyIter.next();
             if (policyToCheck.getName().equals(policy.getPolicyName())) {
             	return true;
             }
@@ -417,11 +417,11 @@ public class DocumentType extends PersistableBusinessObjectBase
 //    }
 
 
-    public Collection getPolicies() {
+    public Collection<DocumentTypePolicy> getPolicies() {
         return policies;
     }
 
-    public void setPolicies(Collection policies) {
+    public void setPolicies(Collection<DocumentTypePolicy> policies) {
         this.policies = policies;
     }
 

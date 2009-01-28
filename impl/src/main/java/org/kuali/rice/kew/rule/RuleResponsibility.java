@@ -25,19 +25,17 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Version;
 
+import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -45,7 +43,6 @@ import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 
 /**
@@ -58,13 +55,12 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  */
 @Entity
 @Table(name="KREW_RULE_RSP_T")
-public class RuleResponsibility extends PersistableBusinessObjectBase {
+@Sequence(name="KREW_RSP_S", property="ruleResponsibilityKey")
+public class RuleResponsibility extends KewPersistableBusinessObjectBase {
 
 	private static final long serialVersionUID = -1565688857123316797L;
 	@Id
 	@Column(name="RULE_RSP_ID")
-	@GeneratedValue(strategy=GenerationType.AUTO, generator="KREW_RSP_SEQ_GEN")
-    @SequenceGenerator(name="KREW_RSP_SEQ_GEN", sequenceName="KREW_RSP_S") 
 	private Long ruleResponsibilityKey;
     @Column(name="RSP_ID")
 	private Long responsibilityId;
@@ -85,8 +81,8 @@ public class RuleResponsibility extends PersistableBusinessObjectBase {
 	@JoinColumn(name="RULE_ID")
 	private RuleBaseValues ruleBaseValues;
     @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
-            targetEntity=org.kuali.rice.kew.rule.RuleDelegation.class, mappedBy="ruleResponsibility")
-    private List delegationRules = new ArrayList();
+            mappedBy="ruleResponsibility")
+    private List<RuleDelegation> delegationRules = new ArrayList<RuleDelegation>();
 
     public KimPrincipal getPrincipal() 
     {
@@ -212,7 +208,7 @@ public class RuleResponsibility extends PersistableBusinessObjectBase {
             ruleResponsibilityClone.setPriority(new Integer(priority.intValue()));
         }
         if (delegationRules != null) {
-            for (Iterator iter = delegationRules.iterator(); iter.hasNext();) {
+            for (Iterator<RuleDelegation> iter = delegationRules.iterator(); iter.hasNext();) {
                 RuleDelegation delegation = (RuleDelegation) iter.next();
                 RuleDelegation delegationClone = (RuleDelegation)delegation.copy(preserveKeys);
                 delegationClone.setRuleResponsibility(ruleResponsibilityClone);
@@ -249,10 +245,10 @@ public class RuleResponsibility extends PersistableBusinessObjectBase {
         return !getDelegationRules().isEmpty();
     }
 
-    public List getDelegationRules() {
+    public List<RuleDelegation> getDelegationRules() {
         return delegationRules;
     }
-    public void setDelegationRules(List delegationRules) {
+    public void setDelegationRules(List<RuleDelegation> delegationRules) {
         this.delegationRules = delegationRules;
     }
 

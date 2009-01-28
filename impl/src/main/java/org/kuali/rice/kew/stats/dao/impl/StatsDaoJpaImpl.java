@@ -23,8 +23,6 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -123,6 +121,14 @@ public class StatsDaoJpaImpl implements StatsDAO {
     public void NumberOfDocTypesReport(Stats stats) throws SQLException, LookupException {
         stats.setNumDocTypes(entityManager.createNamedQuery("select count(*) from DocumentType dt where dt.currentInd = true").getSingleResult().toString());
 //        stats.setNumDocTypes(entityManager.createNamedQuery("Stats.NumberOfDocTypesReport").getSingleResult().toString());
+    }
+
+    public EntityManager getEntityManager() {
+        return this.entityManager;
+    }
+
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
 }

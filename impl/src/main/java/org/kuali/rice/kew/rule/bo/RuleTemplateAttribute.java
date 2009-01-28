@@ -19,30 +19,28 @@ package org.kuali.rice.kew.rule.bo;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.rule.RuleExtension;
 import org.kuali.rice.kew.rule.RuleValidationAttribute;
 import org.kuali.rice.kew.rule.WorkflowAttribute;
 import org.kuali.rice.kew.rule.service.RuleAttributeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.bo.Inactivateable;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 
 /**
@@ -53,13 +51,12 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  */
 @Entity
 @Table(name="KREW_RULE_TMPL_ATTR_T")
-public class RuleTemplateAttribute extends PersistableBusinessObjectBase implements Comparable<RuleTemplateAttribute>, Inactivateable {
+@Sequence(name="KREW_RTE_TMPL_S", property="ruleTemplateAttributeId")
+public class RuleTemplateAttribute extends KewPersistableBusinessObjectBase implements Comparable<RuleTemplateAttribute>, Inactivateable {
 
     private static final long serialVersionUID = -3580049225424553828L;
     @Id
 	@Column(name="RULE_TMPL_ATTR_ID")
-	@GeneratedValue(strategy=GenerationType.AUTO, generator="KREW_RTE_TMPL_SEQ_GEN")
-    @SequenceGenerator(name="KREW_RTE_TMPL_SEQ_GEN", sequenceName="KREW_RTE_TMPL_S") 
 	private Long ruleTemplateAttributeId;
     @Column(name="RULE_TMPL_ID", insertable=false, updatable=false)
 	private Long ruleTemplateId;
@@ -80,20 +77,15 @@ public class RuleTemplateAttribute extends PersistableBusinessObjectBase impleme
     @ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="RULE_ATTR_ID")
 	private RuleAttribute ruleAttribute;
-    @OneToMany(targetEntity=org.kuali.rice.kew.rule.RuleExtension.class, mappedBy="ruleTemplateAttribute")
-	private List ruleExtensions;
-
-    @Transient
-    protected Long versionNumber;
-    @Transient
-    protected String objectId;
+    @OneToMany(mappedBy="ruleTemplateAttribute")
+	private List<RuleExtension> ruleExtensions;
     
     
     public RuleTemplateAttribute() {
 	this.required = Boolean.FALSE;
 	this.active = Boolean.TRUE;
     }
-
+   
     public int compareTo(RuleTemplateAttribute ruleTemplateAttribute) {
     	if ((this.getDisplayOrder() != null) && (ruleTemplateAttribute.getDisplayOrder() != null)) {
 	    	return this.getDisplayOrder().compareTo(ruleTemplateAttribute.getDisplayOrder());
@@ -123,7 +115,7 @@ public class RuleTemplateAttribute extends PersistableBusinessObjectBase impleme
 	    if (attributeObject == null) {
 		return false;
 	    }
-	    Class attributeClass = attributeObject.getClass();
+	    Class<?> attributeClass = attributeObject.getClass();
 	    return WorkflowAttribute.class.isAssignableFrom(attributeClass);
 	} catch (Exception e) {
 	    throw new RuntimeException("Caught error attempting to load WorkflowAttribute class: " + getRuleAttribute().getClassName(), e);
@@ -167,11 +159,11 @@ public class RuleTemplateAttribute extends PersistableBusinessObjectBase impleme
 	}
     }
 
-    public List getRuleExtensions() {
+    public List<RuleExtension> getRuleExtensions() {
 	return ruleExtensions;
     }
 
-    public void setRuleExtensions(List ruleExtensions) {
+    public void setRuleExtensions(List<RuleExtension> ruleExtensions) {
 	this.ruleExtensions = ruleExtensions;
     }
 

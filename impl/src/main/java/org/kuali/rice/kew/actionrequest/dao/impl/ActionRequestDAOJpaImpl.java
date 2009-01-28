@@ -37,7 +37,7 @@ import org.kuali.rice.kim.bo.group.KimGroup;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
-
+    
     @PersistenceContext(name = "kew-unit")
     private EntityManager entityManager;
 
@@ -224,7 +224,7 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
         	loadDefaultValues(actionRequest);
         	entityManager.persist(actionRequest);
         }else{
-        	OrmUtils.reattach(actionRequest,entityManager.merge(actionRequest));
+            OrmUtils.merge(entityManager, actionRequest);
         }
     }
     private void loadDefaultValues(ActionRequestValue actionRequest) {

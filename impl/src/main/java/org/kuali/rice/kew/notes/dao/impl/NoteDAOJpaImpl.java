@@ -32,7 +32,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
 
-public class NoteDAOJpaImpl extends PersistenceBrokerDaoSupport implements NoteDAO {
+public class NoteDAOJpaImpl implements NoteDAO {
 
 	@PersistenceContext(unitName="kew-unit")
 	EntityManager entityManager;
@@ -59,7 +59,7 @@ public class NoteDAOJpaImpl extends PersistenceBrokerDaoSupport implements NoteD
 
     public void deleteNote(Note note) {
     	Note n = getNoteByNoteId(note.getNoteId());
-    	OrmUtils.reattach(n, note);
+    	OrmUtils.merge(entityManager, n);
     	entityManager.remove(n);
     }
    
@@ -73,6 +73,14 @@ public class NoteDAOJpaImpl extends PersistenceBrokerDaoSupport implements NoteD
     	Query query = entityManager.createNamedQuery("Attachment.FindAttachmentById");
     	query.setParameter("attachmentId", attachmentId);
     	return (Attachment)query.getSingleResult();
+    }
+
+    public EntityManager getEntityManager() {
+        return this.entityManager;
+    }
+
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
 }

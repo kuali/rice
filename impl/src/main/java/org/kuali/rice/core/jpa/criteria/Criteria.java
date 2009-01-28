@@ -104,7 +104,7 @@ public class Criteria {
 			tokens.add(attribute + " LIKE :" + bind + " ");
 			params.put(bind, value);
 		} else {
-			tokens.add(alias + "." + attribute + " LIKE :" + fixedAttr + " ");
+			tokens.add(alias + "." + attribute + " LIKE :" + stripFunctions(fixedAttr) + " ");
 			params.put(fixedAttr, value);
 		}
 	}
@@ -335,5 +335,14 @@ public class Criteria {
 		
 		tokens.add("EXISTS (" + subQuery.toQuery(QueryByCriteriaType.SELECT) + whereClause + " ) ");
 		
+	}
+	
+	private String stripFunctions(String attribute) {
+	    int index = attribute.lastIndexOf('(');
+	    if(index != -1) {
+	        return attribute.substring(index+1, attribute.indexOf(')'));
+	    }
+	    
+	    return attribute;
 	}
 }

@@ -28,20 +28,19 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.lookupable.MyColumns;
 import org.kuali.rice.kew.routeheader.DocumentContent;
@@ -53,7 +52,6 @@ import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.util.TypedArrayList;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
@@ -66,14 +64,13 @@ import org.kuali.rice.kns.web.ui.Row;
  */
 @Entity
 @Table(name="KREW_RULE_T")
-public class RuleBaseValues extends PersistableBusinessObjectBase {
+@Sequence(name="KREW_RTE_TMPL_S", property="ruleBaseValuesId")
+public class RuleBaseValues extends KewPersistableBusinessObjectBase {
 
     private static final long serialVersionUID = 6137765574728530156L;
     @Id
 	@Column(name="RULE_ID")
-    @GeneratedValue(strategy=GenerationType.AUTO, generator="KREW_RTE_TMPL_SEQ_GEN")
-    @SequenceGenerator(name="KREW_RTE_TMPL_SEQ_GEN", sequenceName="KREW_RTE_TMPL_S")
-	private Long ruleBaseValuesId;
+    private Long ruleBaseValuesId;
     /**
      * Unique Rule name
      */

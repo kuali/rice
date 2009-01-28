@@ -71,7 +71,7 @@ public class ExtractDAOJpaImpl implements ExtractDAO {
         if (dump.getDocId() == null) {
             entityManager.persist(dump);
         } else {
-            OrmUtils.reattach(dump, entityManager.merge(dump));
+            OrmUtils.merge(entityManager, dump);
         }
     }
 
@@ -85,7 +85,7 @@ public class ExtractDAOJpaImpl implements ExtractDAO {
         if (field.getFieldId() == null) {
             entityManager.persist(field);
         } else {
-            OrmUtils.reattach(field, entityManager.merge(field));
+            OrmUtils.merge(entityManager, field);
         }
     }
 
@@ -98,5 +98,13 @@ public class ExtractDAOJpaImpl implements ExtractDAO {
     public void deleteDump(Long routeHeaderId) {
         LOG.debug("deleting record form Extract Dump table");
         entityManager.remove(entityManager.find(Note.class, routeHeaderId));
+    }
+
+    public EntityManager getEntityManager() {
+        return this.entityManager;
+    }
+
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 }

@@ -38,7 +38,15 @@ public class RuleTemplateAttributeDAOJpaImpl implements RuleTemplateAttributeDAO
 		if(ruleTemplateAttribute.getRuleTemplateAttributeId()==null){
 			entityManager.persist(ruleTemplateAttribute);
 		}else{
-			OrmUtils.reattach(ruleTemplateAttribute, entityManager.merge(ruleTemplateAttribute));
+			OrmUtils.merge(entityManager, ruleTemplateAttribute);
 		}
 	}
+
+    public EntityManager getEntityManager() {
+        return this.entityManager;
+    }
+
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 }

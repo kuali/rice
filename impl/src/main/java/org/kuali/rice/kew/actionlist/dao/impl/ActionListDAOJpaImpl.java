@@ -442,7 +442,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
     	
     	javax.persistence.Query q = entityManager.createNativeQuery(ACTION_LIST_COUNT_QUERY);
     	q.setParameter(1, workflowId);
-    	Long result = (Long)q.getSingleResult();
+    	Number result = (Number)q.getSingleResult();
     	return result.intValue();
     }
 
@@ -525,7 +525,8 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
     	if(outboxItem.getActionItemId()==null){
     		entityManager.persist(outboxItem);
     	}else{
-    		OrmUtils.reattach(outboxItem, entityManager.merge(outboxItem)); //TODO, merge will not update the outboxitem pointer to the merged entity
+    	  //TODO, merge will not update the outboxitem pointer to the merged entity
+    		OrmUtils.merge(entityManager, outboxItem);
     	}
     	entityManager.flush();
     }
@@ -573,6 +574,14 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
         cal.set(Calendar.MINUTE, 59);
         cal.set(Calendar.SECOND, 59);
         return cal.getTime();        
+    }
+
+    public EntityManager getEntityManager() {
+        return this.entityManager;
+    }
+
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
 

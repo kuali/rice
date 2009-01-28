@@ -58,7 +58,7 @@ public class BranchDAOJpaImpl implements BranchDAO {
 	        	OrmUtils.populateAutoIncValue(branch, entityManager);
 	            entityManager.persist(branch);
 	        } else {
-	            OrmUtils.reattach(branch,entityManager.merge(branch));
+	            OrmUtils.merge(entityManager, branch);
 	        }
 
 	}

@@ -19,14 +19,12 @@ import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.ObjectUtils;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
 
 /**
  * BO for rule expressions 
@@ -34,14 +32,14 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  */
 @Entity
 @Table(name="KREW_RULE_EXPR_T")
-public class RuleExpressionDef extends PersistableBusinessObjectBase {
+@Sequence(name="KREW_RULE_EXPR_S", property="id")
+public class RuleExpressionDef extends KewPersistableBusinessObjectBase {
+    
     /**
      * Primary key
      */
     @Id
 	@Column(name="RULE_EXPR_ID")
-	@GeneratedValue(strategy=GenerationType.AUTO, generator="KREW_RULE_EXPR_SEQ_GEN")
-	@SequenceGenerator(name="KREW_RULE_EXPR_SEQ_GEN", sequenceName="KREW_RULE_EXPR_S") 
 	private Long id;
     /**
      * The type of the expression

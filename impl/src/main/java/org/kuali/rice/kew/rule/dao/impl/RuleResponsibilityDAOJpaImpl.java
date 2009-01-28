@@ -46,4 +46,12 @@ public class RuleResponsibilityDAOJpaImpl implements RuleResponsibilityDAO {
     public RuleResponsibility findByRuleResponsibilityId(Long ruleResponsibilityId) {
         return entityManager.find(RuleResponsibility.class, ruleResponsibilityId);
     }
+
+    public EntityManager getEntityManager() {
+        return this.entityManager;
+    }
+
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 }

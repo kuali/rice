@@ -24,13 +24,10 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 import org.kuali.rice.core.jpa.annotations.Sequence;
-import org.kuali.rice.core.util.OrmUtils;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
 
 /**
  * EDocLite XSLT stylesheet
@@ -40,7 +37,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 @Entity
 @Table(name="KREW_STYLE_T")
 @Sequence(name="KREW_EDL_S", property="edocLiteStyleId")
-public class EDocLiteStyle  extends PersistableBusinessObjectBase{
+public class EDocLiteStyle  extends KewPersistableBusinessObjectBase{
     private static final long serialVersionUID = 2020611019976731725L;
     /**
      * edoclt_style_id
@@ -65,11 +62,6 @@ public class EDocLiteStyle  extends PersistableBusinessObjectBase{
      */
     @Column(name="ACTV_IND")
 	private Boolean activeInd;
-
-    @PrePersist
-    public void beforeInsert(){
-        OrmUtils.populateAutoIncValue(this, KNSServiceLocator.getEntityManagerFactory().createEntityManager());
-    }
 
     public Long getEdocLiteStyleId() {
         return edocLiteStyleId;

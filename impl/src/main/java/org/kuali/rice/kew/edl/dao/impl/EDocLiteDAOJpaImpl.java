@@ -45,7 +45,7 @@ public class EDocLiteDAOJpaImpl implements EDocLiteDAO {
         if (styleData.getEdocLiteStyleId() == null) {
             entityManager.persist(styleData);
         } else {
-            OrmUtils.reattach(styleData, entityManager.merge(styleData));
+            OrmUtils.merge(entityManager, styleData);
         }
     }
 
@@ -58,7 +58,7 @@ public class EDocLiteDAOJpaImpl implements EDocLiteDAO {
         if (edocLiteData.getEDocLiteDefId() == null) {
             entityManager.persist(edocLiteData);
         } else {
-            OrmUtils.reattach(edocLiteData, entityManager.merge(edocLiteData));
+            OrmUtils.merge(entityManager, edocLiteData);
         }
     }
 
@@ -71,7 +71,7 @@ public class EDocLiteDAOJpaImpl implements EDocLiteDAO {
         if (assoc.getEdocLiteAssocId() == null) {
             entityManager.persist(assoc);
         } else {
-            OrmUtils.reattach(assoc, entityManager.merge(assoc));
+            OrmUtils.merge(entityManager, assoc);
         }
     }
 
@@ -219,5 +219,13 @@ public class EDocLiteDAOJpaImpl implements EDocLiteDAO {
         } catch (NoResultException e) {
             return null;
         }
+    }
+
+    public EntityManager getEntityManager() {
+        return this.entityManager;
+    }
+
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 }

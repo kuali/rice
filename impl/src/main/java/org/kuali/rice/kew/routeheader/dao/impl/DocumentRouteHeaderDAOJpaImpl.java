@@ -73,8 +73,7 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
     	if (routeHeader.getRouteHeaderId() == null){
     		entityManager.persist(routeHeader);
     	} else {
-    		DocumentRouteHeaderValue attachedRouteHeader = entityManager.merge(routeHeader);
-    		OrmUtils.reattach(routeHeader,attachedRouteHeader);
+    		OrmUtils.merge(entityManager, routeHeader);
     	}
         
         //Save document content (document content retrieved via a service call)
@@ -212,10 +211,10 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
     }
 
     public boolean hasSearchableAttributeValue(Long documentId, String searchableAttributeKey, String searchableAttributeValue) {
-    	return hasSearchableAttributeValue(documentId, searchableAttributeKey, searchableAttributeValue, "SearchableAttributeDateTimeValue.findByKey")
-    		|| hasSearchableAttributeValue(documentId, searchableAttributeKey, searchableAttributeValue, "SearchableAttributeFloatValue.findByKey")
-    		|| hasSearchableAttributeValue(documentId, searchableAttributeKey, searchableAttributeValue, "SearchableAttributeLongValue.findByKey")
-    		|| hasSearchableAttributeValue(documentId, searchableAttributeKey, searchableAttributeValue, "SearchableAttributeFloatValue.findByKey");
+    	return hasSearchableAttributeValue(documentId, searchableAttributeKey, searchableAttributeValue, "SearchableAttributeDateTimeValue.FindByKey")
+    		|| hasSearchableAttributeValue(documentId, searchableAttributeKey, searchableAttributeValue, "SearchableAttributeFloatValue.FindByKey")
+    		|| hasSearchableAttributeValue(documentId, searchableAttributeKey, searchableAttributeValue, "SearchableAttributeLongValue.FindByKey")
+    		|| hasSearchableAttributeValue(documentId, searchableAttributeKey, searchableAttributeValue, "SearchableAttributeFloatValue.FindByKey");
     }
     
     private boolean hasSearchableAttributeValue(Long documentId, String searchableAttributeKey, String searchableAttributeValue, String namedQuery) {

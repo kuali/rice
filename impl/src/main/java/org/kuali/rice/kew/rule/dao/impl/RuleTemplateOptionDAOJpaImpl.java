@@ -49,7 +49,15 @@ public class RuleTemplateOptionDAOJpaImpl implements RuleTemplateOptionDAO {
 	  if(ruleTemplateOption.getRuleTemplateOptionId()==null){
 		  entityManager.persist(ruleTemplateOption);
 	  }else{
-		  OrmUtils.reattach(ruleTemplateOption, entityManager.merge(ruleTemplateOption));
+		  OrmUtils.merge(entityManager, ruleTemplateOption);
 	  }
   }
+
+    public EntityManager getEntityManager() {
+        return this.entityManager;
+    }
+    
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 }

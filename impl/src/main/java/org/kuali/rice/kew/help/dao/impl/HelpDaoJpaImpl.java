@@ -84,4 +84,12 @@ public class HelpDaoJpaImpl implements HelpDAO {
         return (HelpEntry) entityManager.createNamedQuery("HelpEntry.FindByKey").setParameter("helpKey", helpKey).getSingleResult();
     }
 
+    public EntityManager getEntityManager() {
+        return this.entityManager;
+    }
+
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
 }

@@ -51,10 +51,9 @@ public class RuleAttributeDAOJpaImpl implements RuleAttributeDAO {
 
 	public void save(RuleAttribute ruleAttribute) {
         if (ruleAttribute.getRuleAttributeId() == null) {
-            OrmUtils.populateAutoIncValue(ruleAttribute, entityManager);
             entityManager.persist(ruleAttribute);
         } else {
-            OrmUtils.reattach(ruleAttribute,entityManager.merge(ruleAttribute));
+            OrmUtils.merge(entityManager, ruleAttribute);
         }
     }
 
@@ -98,7 +97,7 @@ public class RuleAttributeDAOJpaImpl implements RuleAttributeDAO {
         //FIXME: This query is returning multiple rows, which one should it return
         List<RuleAttribute> ruleAttributes = entityManager.createNamedQuery("RuleAttribute.FindByClassName").setParameter("className", classname).getResultList();
 
-        return (RuleAttribute)ruleAttributes.get(0); 
+        return (ruleAttributes.size() > 0 ? ruleAttributes.get(0) : null); 
     }
 
 }

@@ -302,8 +302,8 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
         		if ( rd.getPrimitiveAttributes().size() > 1 ) {
         			throw new RuntimeException( "EBO Links don't work for relationships with multiple-field primary keys." );
         		}
-        		String eboProperty = rd.getPrimitiveAttributes().get( 0 ).getSourceName();
-        		String boProperty = rd.getPrimitiveAttributes().get( 0 ).getTargetName();
+        		String boProperty = rd.getPrimitiveAttributes().get( 0 ).getSourceName();
+        		String eboProperty = rd.getPrimitiveAttributes().get( 0 ).getTargetName();
         		StringBuffer boPropertyValue = new StringBuffer();
         		// loop over the results, making a string that the lookup DAO will convert into an
         		// SQL "IN" clause

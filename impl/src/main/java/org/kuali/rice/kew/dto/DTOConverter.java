@@ -468,8 +468,7 @@ public class DTOConverter {
             docTypeVO.setDocTypeActiveInherited(true);
         } else {
             docTypeVO.setDocTypeActiveInherited(false);
-        }
-        docTypeVO.setDocTypePreApprovalPolicy(docType.getPreApprovePolicy().getPolicyValue().booleanValue());
+        }     
         KimGroup blanketGroup = docType.getBlanketApproveWorkgroup();
         if (blanketGroup != null) {
             docTypeVO.setBlanketApproveGroupId(blanketGroup.getGroupId());

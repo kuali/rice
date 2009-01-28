@@ -17,7 +17,7 @@
 
 
 <kul:documentPage
-	showDocumentInfo="false"
+	showDocumentInfo="true"
 	htmlFormAction="identityManagementPersonDocument"
 	documentTypeName="IdentityManagementPersonDocument"
 	renderMultipart="true"

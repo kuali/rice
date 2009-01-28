@@ -19,6 +19,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.lookup.HtmlData;
 
 
 /**
@@ -32,6 +33,7 @@ public class ResultRow implements Serializable {
     private String objectId;
     private String rowId;
     private BusinessObject businessObject;
+    private HtmlData returnUrlHtmlData;
     /**
      * Whether to show the return URL (for single value lookups invoked from a document or nested lookup) or the return checkbox (for
      * multiple value lookups)
@@ -152,5 +154,22 @@ public class ResultRow implements Serializable {
 	public void setRowId(String rowId) {
 		this.rowId = rowId;
 	}
+
+	/**
+	 * @return the returnUrlHtmlData
+	 */
+	public HtmlData getReturnUrlHtmlData() {
+		return this.returnUrlHtmlData;
+	}
+
+	/**
+	 * @param returnUrlHtmlData the returnUrlHtmlData to set
+	 */
+	public void setReturnUrlHtmlData(HtmlData returnUrlHtmlData) {
+		this.returnUrlHtmlData = returnUrlHtmlData;
+	}
+
+
+	
 
 }

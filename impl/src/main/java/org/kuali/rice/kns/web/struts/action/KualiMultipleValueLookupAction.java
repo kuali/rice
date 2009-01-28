@@ -39,12 +39,12 @@ import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.lookup.LookupResultsService;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.lookup.Lookupable;
+import org.kuali.rice.kns.lookup.HtmlData.InputHtmlData;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.UrlFactory;
-import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.MultipleValueLookupForm;
 import org.kuali.rice.kns.web.ui.Column;
 import org.kuali.rice.kns.web.ui.ResultRow;
@@ -515,6 +515,9 @@ public class KualiMultipleValueLookupAction extends KualiLookupAction implements
         Map<String, String> selectedObjectIds = new HashMap<String, String>();
         for (ResultRow row : resultTable) {
             String objId = row.getObjectId();
+            InputHtmlData returnUrl = (InputHtmlData) row.getReturnUrlHtmlData();
+            returnUrl.setChecked(InputHtmlData.CHECKBOX_CHECKED_VALUE);
+            row.setReturnUrl(returnUrl.constructCompleteHtmlTag());
             if(objId != null){
             	selectedObjectIds.put(objId, objId);
             }

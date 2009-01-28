@@ -96,6 +96,7 @@ public class DocumentSearchField extends Field {
                                String quickFinderClassNameImpl) {
         super(propertyName, fieldLabel);
         super.setFieldHelpUrl(fieldHelpUrl);
+        super.setFieldType(fieldType);
         this.savablePropertyName = propertyName;
         super.setPropertyValue(propertyValue);
         super.setFieldValidValues(fieldValidValues);
@@ -111,6 +112,7 @@ public class DocumentSearchField extends Field {
                                String quickFinderClassNameImpl) {
         super(propertyName, fieldLabel);
         super.setFieldHelpUrl(fieldHelpUrl);
+        super.setFieldType(fieldType);
         this.setPropertyValues(propertyValues);
         this.savablePropertyName = propertyName;
         super.setFieldValidValues(fieldValidValues);

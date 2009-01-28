@@ -139,15 +139,22 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         if (actionRequests == null) {
             return;
         }
-        PerformanceLogger performanceLogger = new PerformanceLogger();
+        PerformanceLogger performanceLogger = null;
+        if ( LOG.isInfoEnabled() ) {
+        	performanceLogger = new PerformanceLogger();
+        }
         activationContext.setGeneratedActionItems(new ArrayList());
         activateRequestsInternal(actionRequests, activationContext);
         if (!activationContext.isSimulation()) {
             KEWServiceLocator.getNotificationService().notify(activationContext.getGeneratedActionItems());
         }
-        performanceLogger.log("Time to " + (activationContext.isSimulation() ? "simulate activation of " : "activate ")
-                + actionRequests.size() + " action requests.");
-        LOG.debug("Generated " + activationContext.getGeneratedActionItems().size() + " action items.");
+        if ( LOG.isInfoEnabled() ) {
+        	performanceLogger.log("Time to " + (activationContext.isSimulation() ? "simulate activation of " : "activate ")
+        			+ actionRequests.size() + " action requests.");
+        }
+        if ( LOG.isDebugEnabled() ) {
+        	LOG.debug("Generated " + activationContext.getGeneratedActionItems().size() + " action items.");
+        }
     }
 
     public void activateRequest(ActionRequestValue actionRequest) {
@@ -191,7 +198,10 @@ public class ActionRequestServiceImpl implements ActionRequestService {
      * generated action items.
      */
     private void activateRequestInternal(ActionRequestValue actionRequest, ActivationContext activationContext) {
-        PerformanceLogger performanceLogger = new PerformanceLogger();
+        PerformanceLogger performanceLogger = null;
+        if ( LOG.isInfoEnabled() ) {
+        	performanceLogger = new PerformanceLogger();
+        }
         if (actionRequest == null || actionRequest.isActive() || actionRequest.isDeactivated()) {
             return;
         }
@@ -206,10 +216,12 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         }
         activateRequestsInternal(actionRequest.getChildrenRequests(), activationContext);
         activateRequestInternal(actionRequest.getParentActionRequest(), activationContext);
-        if (activationContext.isSimulation()) {
-            performanceLogger.log("Time to simulate activation of request.");
-        } else {
-            performanceLogger.log("Time to activate action request with id " + actionRequest.getActionRequestId());
+        if ( LOG.isInfoEnabled() ) {
+        	if (activationContext.isSimulation()) {
+	            performanceLogger.log("Time to simulate activation of request.");
+	        } else {
+	            performanceLogger.log("Time to activate action request with id " + actionRequest.getActionRequestId());
+	        }
         }
     }
 
@@ -219,7 +231,9 @@ public class ActionRequestServiceImpl implements ActionRequestService {
      * @return the List of generated ActionItems
      */
     private List<ActionItem> generateActionItems(ActionRequestValue actionRequest, ActivationContext activationContext) {
-        LOG.debug("generating the action items for request " + actionRequest.getActionRequestId());
+    	if ( LOG.isDebugEnabled() ) {
+    		LOG.debug("generating the action items for request " + actionRequest.getActionRequestId());
+    	}
         List<ActionItem> actionItems = new ArrayList<ActionItem>();
         if (!actionRequest.isPrimaryDelegator()) {
             if (actionRequest.isGroupRequest()) {
@@ -232,7 +246,9 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         }
         if (!activationContext.isSimulation()) {
             for (ActionItem actionItem: actionItems) {
-                LOG.debug("Saving action item: " + actionItems);
+            	if ( LOG.isDebugEnabled() ) {
+            		LOG.debug("Saving action item: " + actionItems);
+            	}
                 getActionListService().saveActionItem(actionItem);
             }
         }
@@ -256,8 +272,10 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         try {
             RouteModule routeModule = KEWServiceLocator.getRouteModuleService().findRouteModule(actionRequest);
             if (responsibilityId != null && actionRequest.isRouteModuleRequest()) {
-                LOG.debug("Resolving responsibility id for action request id=" + actionRequest.getActionRequestId()
+            	if ( LOG.isDebugEnabled() ) {
+            		LOG.debug("Resolving responsibility id for action request id=" + actionRequest.getActionRequestId()
                         + " and responsibility id=" + actionRequest.getResponsibilityId());
+            	}
                 ResponsibleParty responsibleParty = routeModule.resolveResponsibilityId(actionRequest.getResponsibilityId());
                 if (responsibleParty == null) {
                     return;
@@ -303,8 +321,10 @@ public class ActionRequestServiceImpl implements ActionRequestService {
                         activationContext.getSimulatedActionsTaken());
             }
             if (previousActionTaken != null) {
-                LOG.debug("found a satisfying action taken so setting this request done.  Action Request Id "
-                        + actionRequestToActivate.getActionRequestId());
+                if ( LOG.isDebugEnabled() ) {
+                	LOG.debug("found a satisfying action taken so setting this request done.  Action Request Id "
+                            + actionRequestToActivate.getActionRequestId());
+                }
                 // set up the delegation for an action taken if this is a delegate request and the delegate has
                 // already taken action.
                 if (!previousActionTaken.isForDelegator() && actionRequestToActivate.getParentActionRequest() != null) {
@@ -317,7 +337,9 @@ public class ActionRequestServiceImpl implements ActionRequestService {
                 return true;
             }
         }
-        LOG.debug("Ignoring previous for action request " + actionRequestToActivate.getActionRequestId());
+        if ( LOG.isDebugEnabled() ) {
+        	LOG.debug("Ignoring previous for action request " + actionRequestToActivate.getActionRequestId());
+        }
         return false;
     }
 
@@ -455,7 +477,10 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     }
 
     public void updateActionRequestsForResponsibilityChange(Set responsibilityIds) {
-        PerformanceLogger performanceLogger = new PerformanceLogger();
+    	PerformanceLogger performanceLogger = null;
+    	if ( LOG.isInfoEnabled() ) {
+    		performanceLogger = new PerformanceLogger();
+    	}
         Collection documentsAffected = getRouteHeaderService().findPendingByResponsibilityIds(responsibilityIds);
         String cacheWaitValue = Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_CACHE_REQUEUE_DELAY);
         Long cacheWait = new Long(KEWConstants.DEFAULT_CACHE_REQUEUE_WAIT_TIME);
@@ -466,9 +491,11 @@ public class ActionRequestServiceImpl implements ActionRequestService {
                 LOG.warn("Cache wait time is not a valid number: " + cacheWaitValue);
             }
         }
-        LOG.info("Scheduling requeue of " + documentsAffected.size() + " documents, affected by " + responsibilityIds.size()
-                + " responsibility changes.  Installing a processing wait time of " + cacheWait.longValue()
-                + " milliseconds to avoid stale rule cache.");
+        if ( LOG.isInfoEnabled() ) {
+        	LOG.info("Scheduling requeue of " + documentsAffected.size() + " documents, affected by " + responsibilityIds.size()
+                    + " responsibility changes.  Installing a processing wait time of " + cacheWait.longValue()
+                    + " milliseconds to avoid stale rule cache.");
+        }
         for (Iterator iterator = documentsAffected.iterator(); iterator.hasNext();) {
             Long routeHeaderId = (Long) iterator.next();
             String serviceNamespace = KEWServiceLocator.getRouteHeaderService().getServiceNamespaceByDocumentId(routeHeaderId);
@@ -479,7 +506,9 @@ public class ActionRequestServiceImpl implements ActionRequestService {
                     routeHeaderId, cacheWait);
             documentRequeuer.requeueDocument(routeHeaderId);
         }
-        performanceLogger.log("Time to updateActionRequestsForResponsibilityChange");
+        if ( LOG.isInfoEnabled() ) {
+        	performanceLogger.log("Time to updateActionRequestsForResponsibilityChange");
+        }
     }
 
     /**
@@ -503,9 +532,13 @@ public class ActionRequestServiceImpl implements ActionRequestService {
      * @param actionRequest the action request whose action items to delete
      */
     private void deleteActionItems(ActionRequestValue actionRequest) {
-        LOG.debug("deleting " + actionRequest.getActionItems().size() + " action items for action request: " + actionRequest);
+    	if ( LOG.isDebugEnabled() ) {
+    		LOG.debug("deleting " + actionRequest.getActionItems().size() + " action items for action request: " + actionRequest);
+    	}
         for (ActionItem actionItem: actionRequest.getActionItems()) {
-            LOG.debug("deleting action item: " + actionItem);
+        	if ( LOG.isDebugEnabled() ) {
+        		LOG.debug("deleting action item: " + actionItem);
+        	}
             getActionListService().deleteActionItem(actionItem);
         }
     }

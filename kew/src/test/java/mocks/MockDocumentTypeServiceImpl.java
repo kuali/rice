@@ -87,7 +87,6 @@ public class MockDocumentTypeServiceImpl implements DocumentTypeService {
         }
 
         docTypeVO.setDocTypeDefaultApprovePolicy(docType.getDefaultApprovePolicy().getPolicyValue().booleanValue());
-        docTypeVO.setDocTypePreApprovalPolicy(docType.getPreApprovePolicy().getPolicyValue().booleanValue());
         return docTypeVO;
     }
 

@@ -53,7 +53,7 @@
 	            <c:if test="${!empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_SAVE] and not viewOnly}">
 	                <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_save.gif" styleClass="globalbuttons" property="methodToCall.${saveButtonValue}" title="save" alt="save"/>
 	            </c:if>
-	             <c:if test="${!empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_RELOAD]}">
+	            <c:if test="${!empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_RELOAD]}">
 	                <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_reload.gif" styleClass="globalbuttons" property="methodToCall.reload" title="reload" alt="reload" onclick="excludeSubmitRestriction=true"/>
 	            </c:if>
 	            <c:if test="${!empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_BLANKET_APPROVE] and not suppressRoutingControls}">
@@ -68,7 +68,7 @@
 	            <c:if test="${!empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_FYI] and not suppressRoutingControls}">
 	                <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_fyi.gif" styleClass="globalbuttons" property="methodToCall.fyi" title="fyi" alt="fyi"/>
 	            </c:if>
-	            <c:if test="${!empty KualiForm.documentActions[KUALI_ACTION_CAN_ACKNOWLEDGE] and not suppressRoutingControls}">
+	            <c:if test="${!empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_ACKNOWLEDGE] and not suppressRoutingControls}">
 	                <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_acknowledge.gif" styleClass="globalbuttons" property="methodToCall.acknowledge" title="acknowledge" alt="acknowledge"/>
 	            </c:if>
 	            <c:if test="${!empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_CLOSE]}">

@@ -587,3 +587,4 @@ ALTER TABLE KREW_EDL_ASSCTN_T MODIFY (OBJ_ID VARCHAR2(36) NOT NULL)
 /
 ALTER TABLE KREW_DLGN_RSP_T MODIFY (OBJ_ID VARCHAR2(36) NOT NULL)
 /
+update KREW_RTE_NODE_T set typ='org.kuali.rice.kew.engine.node.SimpleSplitNode' where typ like 'edu.iu.uis.tvl.workflow.routing.RouteNodeSplitApprovalNoApproval'; 

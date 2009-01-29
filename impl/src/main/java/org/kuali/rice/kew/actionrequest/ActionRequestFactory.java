@@ -48,7 +48,6 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.RoleManagementService;
-import org.kuali.rice.kim.service.support.KimRoleTypeService;
 import org.kuali.rice.kns.util.KNSConstants;
 
 
@@ -354,10 +353,10 @@ public class ActionRequestFactory {
     		annotation.append( role.getNamespaceCode() ).append( ' ' ).append( role.getRoleName() );
     		AttributeSet qualifier = responsibility.getQualifier();
     		if ( qualifier != null ) {
-	    		for ( String key : qualifier.keySet() ) {
-	    		    
-	        		annotation.append( '\n' );
-	        		annotation.append( key ).append( '=' ).append( qualifier.get(key) );
+	    		for ( String key : qualifier.keySet() ) {	    		    
+//	        		annotation.append( '\n' );
+//	        		annotation.append( key ).append( '=' ).append( qualifier.get(key) );
+	        		annotation.append( qualifier.get( key ) ).append( ' ' );
 	    		}
     		}
 			if (responsibility.getPrincipalId() != null) {
@@ -380,7 +379,7 @@ public class ActionRequestFactory {
 			request.setParentActionRequest(requestGraph);
 			generateRoleResponsibilityDelegationRequests(responsibility, request);
 			requestGraph.getChildrenRequests().add(request);
-			parentAnnotation.append( annotation );
+			parentAnnotation.append( annotation ).append( '/' );
 	    }
     	requestGraph.setAnnotation( parentAnnotation.toString() );
     	requestGraphs.add(requestGraph);

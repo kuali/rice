@@ -131,7 +131,7 @@
 					</tr>	
 			        <c:if test="${fn:length(rolePrncpl.roleRspActions) > 0}">	
 	     			    <tr>
-			              <td colspan="5" style="padding:0px;">
+			              <td colspan="12" style="padding:0px;">
 			              	<kim:roleResponsibilityAction roleIdx="${roleIdx}" mbrIdx="${status1.index}" />
 				          </td>
 				        </tr>

@@ -17,8 +17,12 @@ package org.kuali.rice.kim.bo.impl;
 
 import java.util.LinkedHashMap;
 
+import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kns.bo.Campus;
+import org.kuali.rice.kns.bo.Parameter;
+import org.kuali.rice.kns.bo.ParameterDetailType;
+import org.kuali.rice.kns.bo.ParameterNamespace;
 import org.kuali.rice.kns.bo.TransientBusinessObjectBase;
 
 /**
@@ -82,7 +86,12 @@ public class KimAttributes extends TransientBusinessObjectBase {
 	protected boolean actionDetailsAtRoleMemberLevel;
 	protected String documentNumber;
 	protected String sectionId;
+	
 	protected Campus campus;
+	protected ParameterNamespace parameterNamespace;
+	protected ParameterDetailType parameterDetailType;
+	protected Parameter parameter;
+	protected DocumentType documentType;
 
 	/**
 	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
@@ -465,6 +474,38 @@ public class KimAttributes extends TransientBusinessObjectBase {
 
 	public void setCampus(Campus campus) {
 		this.campus = campus;
+	}
+
+	public ParameterNamespace getParameterNamespace() {
+		return this.parameterNamespace;
+	}
+
+	public void setParameterNamespace(ParameterNamespace parameterNamespace) {
+		this.parameterNamespace = parameterNamespace;
+	}
+
+	public ParameterDetailType getParameterDetailType() {
+		return this.parameterDetailType;
+	}
+
+	public void setParameterDetailType(ParameterDetailType parameterDetailType) {
+		this.parameterDetailType = parameterDetailType;
+	}
+
+	public Parameter getParameter() {
+		return this.parameter;
+	}
+
+	public void setParameter(Parameter parameter) {
+		this.parameter = parameter;
+	}
+
+	public DocumentType getDocumentType() {
+		return this.documentType;
+	}
+
+	public void setDocumentType(DocumentType documentType) {
+		this.documentType = documentType;
 	}
 	
 }

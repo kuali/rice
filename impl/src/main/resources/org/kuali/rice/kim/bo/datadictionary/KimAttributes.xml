@@ -47,7 +47,37 @@
             </list>
           </property>
         </bean>
-      
+        <bean parent="RelationshipDefinition" p:objectAttributeName="parameterNamespace">
+          <property name="primitiveAttributes" >
+            <list>
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="namespaceCode" p:targetName="code" />
+            </list>
+          </property>
+        </bean>
+        <bean parent="RelationshipDefinition" p:objectAttributeName="parameterDetailType">
+          <property name="primitiveAttributes" >
+            <list>
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="namespaceCode" p:targetName="parameterNamespaceCode" />
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="componentName" p:targetName="parameterDetailTypeCode" />
+            </list>
+          </property>
+        </bean>
+        <bean parent="RelationshipDefinition" p:objectAttributeName="parameter">
+          <property name="primitiveAttributes" >
+            <list>
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="namespaceCode" p:targetName="parameterNamespaceCode" />
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="componentName" p:targetName="parameterDetailTypeCode" />
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="parameterName" p:targetName="parameterName" />
+            </list>
+          </property>
+        </bean>
+        <bean parent="RelationshipDefinition" p:objectAttributeName="documentType">
+          <property name="primitiveAttributes" >
+            <list>
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="documentTypeName" p:targetName="name" />
+            </list>
+          </property>
+        </bean>
       </list>
     </property>
   </bean>
@@ -102,7 +132,9 @@
         p:maxLength="40"
         p:required="true" >
     <property name="control" >
-      <bean parent="TextControlDefinition" p:size="20" />
+      <bean parent="SelectControlDefinition"
+            p:valuesFinderClass="org.kuali.rice.kew.actionrequest.bo.ActionRequestCodeValuesFinder"
+            p:includeKeyInLabel="false" />
     </property>
   </bean>
 
@@ -184,18 +216,13 @@
     </property>
   </bean>
     
-  <!-- Should be converted to use KEW once it's converted to use the KNS -->    
   <bean id="KimAttributes-documentTypeName" parent="KimAttributes-documentTypeName-parentBean" />
-  <bean id="KimAttributes-documentTypeName-parentBean" parent="AttributeDefinition" abstract="true"
+  <bean id="KimAttributes-documentTypeName-parentBean" parent="DocumentType-name" abstract="true"
         p:name="documentTypeName"
         p:forceUppercase="false"
         p:label="Document Type Name"
         p:shortLabel="Document Type Name"
-        p:maxLength="40"
         p:required="true" >
-    <property name="control" >
-      <bean parent="TextControlDefinition" p:size="20" />
-    </property>
   </bean>
   
   <!-- Should be converted to use KEW once it's converted to use the KNS -->    
@@ -226,7 +253,7 @@
     </property>
   </bean>
     
-  <!-- Should be converted to use KimEntityEntityTypeImpl.xml once created -->
+  <!-- TODO: Should be converted to use EntityEntityTypeImpl.xml once created -->
   <bean id="KimAttributes-entityTypeCode" parent="KimAttributes-entityTypeCode-parentBean" />
   <bean id="KimAttributes-entityTypeCode-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="entityTypeCode"
@@ -242,30 +269,16 @@
           
   <!-- Should be converted to use KimPermissionImpl.xml once created -->
   <bean id="KimAttributes-permissionName" parent="KimAttributes-permissionName-parentBean" />
-  <bean id="KimAttributes-permissionName-parentBean" parent="AttributeDefinition" abstract="true"
+  <bean id="KimAttributes-permissionName-parentBean" parent="KimPermissionImpl-name" abstract="true"
         p:name="permissionName"
-        p:forceUppercase="false"
-        p:label="Permission Name"
-        p:shortLabel="Permission Name"
-        p:maxLength="40"
         p:required="false" >
-    <property name="control" >
-      <bean parent="TextControlDefinition" p:size="20" />
-    </property>
   </bean>    
 
   <!-- Should be converted to use KimResponsibilityImpl.xml once created -->
   <bean id="KimAttributes-responsibilityName" parent="KimAttributes-responsibilityName-parentBean" />
-  <bean id="KimAttributes-responsibilityName-parentBean" parent="AttributeDefinition" abstract="true"
+  <bean id="KimAttributes-responsibilityName-parentBean" parent="KimResponsibilityImpl-name" abstract="true"
         p:name="responsibilityName"
-        p:forceUppercase="false"
-        p:label="Responsibility Name"
-        p:shortLabel="Responsibility Name"
-        p:maxLength="40"
         p:required="false" >
-    <property name="control" >
-      <bean parent="TextControlDefinition" p:size="20" />
-    </property>
   </bean>  
 
   <bean id="KimAttributes-sectionId" parent="KimAttributes-sectionId-parentBean" />

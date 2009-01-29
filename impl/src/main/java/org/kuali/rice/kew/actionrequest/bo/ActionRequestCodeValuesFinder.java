@@ -29,11 +29,14 @@ import org.kuali.rice.kns.web.ui.KeyLabelPair;
  */
 public class ActionRequestCodeValuesFinder extends KeyValuesBase {
 
-	public List<KeyLabelPair> getKeyValues() {
-		List<KeyLabelPair> actionRequestCodes = new ArrayList<KeyLabelPair>();
+	private static final List<KeyLabelPair> actionRequestCodes = new ArrayList<KeyLabelPair>();
+	static {
 		for (String actionRequestCode : KEWConstants.ACTION_REQUEST_CODES.keySet()) {
 			actionRequestCodes.add(new KeyLabelPair(actionRequestCode, KEWConstants.ACTION_REQUEST_CODES.get(actionRequestCode)));
 		}
+	}
+	
+	public List<KeyLabelPair> getKeyValues() {
 		return actionRequestCodes;
 	}
 

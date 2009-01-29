@@ -31,8 +31,7 @@ import org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  */
-public class AdhocReviewPermissionTypeServiceImpl extends
-		DocumentTypePermissionTypeServiceImpl {
+public class AdhocReviewPermissionTypeServiceImpl extends DocumentTypePermissionTypeServiceImpl {
 	/**
 	 * @see org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl#performPermissionMatches(org.kuali.rice.kim.bo.types.dto.AttributeSet,
 	 *      java.util.List)
@@ -57,21 +56,5 @@ public class AdhocReviewPermissionTypeServiceImpl extends
 		matchingPermissions = super.performPermissionMatches(requestedDetails,
 				matchingPermissions);
 		return matchingPermissions;
-	}
-
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase#filterRoleQualifier(java.lang.String,
-	 *      java.lang.String, java.lang.String,
-	 *      org.kuali.rice.kim.bo.types.dto.AttributeSet)
-	 */
-	@Override
-	public AttributeSet filterRoleQualifier(String namespaceCode,
-			String permissionTemplateName, String permissionName,
-			AttributeSet roleQualifier) {
-		AttributeSet filteredAttributeSet = new AttributeSet();
-		// for the roles assigned to this, we don't need to pass any qualifiers
-		return filteredAttributeSet;
 	}
 }

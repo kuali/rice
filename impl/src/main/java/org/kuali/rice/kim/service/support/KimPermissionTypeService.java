@@ -42,20 +42,4 @@ public interface KimPermissionTypeService extends KimTypeService {
      * TODO: clarify this description
      */
     List<KimPermissionInfo> getMatchingPermissions( AttributeSet requestedDetails, List<KimPermissionInfo> permissionsList );
-
-    /**
-     * This method can be used the filter the qualifiers that are passed to the role service when checking a permission
-     * with this type.  If changes are made, the implementation should create a new AttributeSet object and make
-     * any needed adjustments there.
-     * 
-     * The namespace/template/permission name parameters may or may not be filled out.  Either of the template name
-     * or permission name may be null, depending on how this permission is accessed.
-     * 
-     * @param namespaceCode always populated
-     * @param permissionTemplateName will be *null* if the permission is check by permission name only
-     * @param permissionName will be null if checked by template name or the permission name is null
-     * @param roleQualifier
-     * @return
-     */
-    AttributeSet filterRoleQualifier( String namespaceCode, String permissionTemplateName, String permissionName, AttributeSet roleQualifier );
 }

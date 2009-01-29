@@ -161,8 +161,6 @@ public class PermissionServiceImpl implements PermissionService {
     	if ( roleIds.isEmpty() ) {
     		return false;
     	}
-    	// convert the qualifications for the given permission template type
-    	qualification = getPermissionTypeService(namespaceCode, null, permissionName, null).filterRoleQualifier(namespaceCode, null, permissionName, qualification);
 		return getRoleService().principalHasRole( principalId, roleIds, qualification );
     }
 
@@ -181,8 +179,6 @@ public class PermissionServiceImpl implements PermissionService {
     	if ( roleIds.isEmpty() ) {
     		return false;
     	}
-    	// convert the qualifications for the given permission template type
-    	qualification = getPermissionTypeService(namespaceCode, permissionTemplateName, null, null).filterRoleQualifier(namespaceCode, permissionTemplateName, null, qualification);
     	return getRoleService().principalHasRole( principalId, roleIds, qualification );
     }
 
@@ -222,9 +218,7 @@ public class PermissionServiceImpl implements PermissionService {
     		// a set and then processing the distinct list rather than a check
     		// for every permission
     		if ( roleIds != null && !roleIds.isEmpty() ) {
-    	    	// convert the qualifications for the given permission template type
-    	    	AttributeSet filteredQualification = getPermissionTypeService(null, null, null, perm.getPermissionId()).filterRoleQualifier(perm.getNamespaceCode(), perm.getTemplate().getName(), perm.getName(), qualification);
-    			if ( getRoleService().principalHasRole( principalId, roleIds, filteredQualification ) ) {
+    			if ( getRoleService().principalHasRole( principalId, roleIds, qualification ) ) {
     				results.add( perm );
     			}
     		}
@@ -291,7 +285,6 @@ public class PermissionServiceImpl implements PermissionService {
     	if ( roleIds.isEmpty() ) {
     		return results;
     	}
-    	qualification = getPermissionTypeService(namespaceCode, null, permissionName, null).filterRoleQualifier(namespaceCode, null, permissionName, qualification);
     	Collection<RoleMembershipInfo> roleMembers = getRoleService().getRoleMembers( roleIds, qualification );
     	for ( RoleMembershipInfo rm : roleMembers ) {
     		if ( rm.getMemberTypeCode().equals( KimRole.PRINCIPAL_MEMBER_TYPE ) ) {
@@ -309,7 +302,6 @@ public class PermissionServiceImpl implements PermissionService {
     	if ( roleIds.isEmpty() ) {
     		return results;
     	}
-    	qualification = getPermissionTypeService(namespaceCode, permissionTemplateName, null, null).filterRoleQualifier(namespaceCode, permissionTemplateName, null, qualification);
     	Collection<RoleMembershipInfo> roleMembers = getRoleService().getRoleMembers( roleIds, qualification );
     	for ( RoleMembershipInfo rm : roleMembers ) {
     		if ( rm.getMemberTypeCode().equals( KimRole.PRINCIPAL_MEMBER_TYPE ) ) {
@@ -442,7 +434,6 @@ public class PermissionServiceImpl implements PermissionService {
     	List<KimPermissionImpl> impls = getPermissionImplsByName( namespaceCode, permissionName );    	
     	List<KimPermissionInfo> applicablePermissions = getMatchingPermissions( impls, permissionDetails );    	
     	List<String> roleIds = permissionDao.getRoleIdsForPermissions(applicablePermissions);
-    	qualification = getPermissionTypeService(namespaceCode, null, permissionName, null).filterRoleQualifier(namespaceCode, null, permissionName, qualification);
     	return getRoleService().getRoleQualifiersForPrincipal(principalId, roleIds, qualification);    	
     }
 
@@ -450,7 +441,6 @@ public class PermissionServiceImpl implements PermissionService {
     	List<KimPermissionImpl> impls = getPermissionImplsByTemplateName( namespaceCode, permissionTemplateName );    	
     	List<KimPermissionInfo> applicablePermissions = getMatchingPermissions( impls, permissionDetails );    	
     	List<String> roleIds = permissionDao.getRoleIdsForPermissions(applicablePermissions);
-    	qualification = getPermissionTypeService(namespaceCode, permissionTemplateName, null, null).filterRoleQualifier(namespaceCode, permissionTemplateName, null, qualification);
     	return getRoleService().getRoleQualifiersForPrincipal(principalId, roleIds, qualification);
     }
 

@@ -52,7 +52,8 @@ import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kns.web.ui.Section;
 
 /**
- * This class is the maintainable implementation for the Workflow {@link DocumentType} 
+ * This class is the maintainable implementation for Routing Rules 
+ * in KEW (represented by the {@link RuleBaseValues} business object). 
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
@@ -67,91 +68,159 @@ public class RoutingRuleMaintainable extends KualiMaintainableImpl {
 
 	private static final String RULE_ATTRIBUTES_SECTION_ID = "RuleAttributes";
 	private static final String ID_SEPARATOR = ":";
-	
-    @Override
-    public void processAfterCopy(MaintenanceDocument document, Map<String, String[]> parameters) {
-        super.processAfterCopy(document, parameters);
-    }
-    
-    
 
+	/**
+	 * Override the getSections method on this maintainable so that the Section Containing the various Rule Attributes
+	 * can be dynamically generated based on the RuleTemplate which is selected.
+	 */
 	@Override
-	public void processAfterEdit(MaintenanceDocument document,
-			Map<String, String[]> parameters) {
-		if (!getOldRule(document).getCurrentInd()) {
-			throw new RiceRuntimeException("Cannot edit a non-current version of a rule.");
+	public List getSections(MaintenanceDocument document, Maintainable oldMaintainable) {
+		List<Section> sections = super.getSections(document, oldMaintainable);
+		List<Section> finalSections = new ArrayList<Section>();
+		finalSections = new ArrayList<Section>();
+		for (Section section : sections) {
+			if (section.getSectionId().equals(RULE_ATTRIBUTES_SECTION_ID)) {
+				List<Row> ruleTemplateRows = getRuleTemplateRows(document, oldMaintainable);
+				if (!ruleTemplateRows.isEmpty()) {
+					section.setRows(ruleTemplateRows);
+					finalSections.add(section);
+				}
+			} else {
+				finalSections.add(section);
+			}
 		}
-		populateForEdit(document);
-		super.processAfterEdit(document, parameters);
+		
+		return finalSections;
 	}
+	
+	protected List<Row> getRuleTemplateRows(MaintenanceDocument document, Maintainable oldMaintainable) {
+		List<Row> rows = new ArrayList<Row>();
+		RuleTemplate ruleTemplate = getThisRule().getRuleTemplate();
+		if (ruleTemplate != null) {
 
-	protected void populateForEdit(MaintenanceDocument document) {
-		RuleBaseValues oldRule = getOldRule(document);
-		RuleBaseValues newRule = getNewRule(document);
-		
-		// let's establish the previous version relationship
-		newRule.setPreviousVersionId(oldRule.getRuleBaseValuesId());
-		
-		populateRuleMaintenanceFields(oldRule);
-		populateRuleMaintenanceFields(newRule);
+			List<RuleTemplateAttribute> ruleTemplateAttributes = ruleTemplate.getActiveRuleTemplateAttributes();
+			Collections.sort(ruleTemplateAttributes);
+			
+			for (RuleTemplateAttribute ruleTemplateAttribute : ruleTemplateAttributes) {
+				if (!ruleTemplateAttribute.isWorkflowAttribute()) {
+					continue;
+				}
+				WorkflowAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
+				RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
+				if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
+					((GenericXMLRuleAttribute) workflowAttribute).setRuleAttribute(ruleAttribute);
+				}
+				
+				// TODO move this validation else where
+				//workflowAttribute.validateRuleData(getFieldMap(ruleTemplateAttribute.getRuleTemplateAttributeId()+""));
+				
+				List<Row> attributeRows = transformAndPopulateAttributeRows(workflowAttribute.getRuleRows(), ruleTemplateAttribute, getThisRule());
+				rows.addAll(attributeRows);
+				
+				// TODO move this "role" code else where
+				// if (workflowAttribute instanceof RoleAttribute) {
+				//	RoleAttribute roleAttribute = (RoleAttribute) workflowAttribute;
+				//	getRoles().addAll(roleAttribute.getRoleNames());
+				//}
+				
+			}
+		}
+		return rows;
 	}
 	
 	/**
-	 * This method populates fields on RuleBaseValues which are used only for
-	 * maintenance purposes.  In otherwords, it populates the non-persistent fields
-	 * on the RuleBaseValues which the maintenance document needs to function
-	 * (such as the extension field values and responsibilities).
+	 * Processes the Fields on the various attributes Rows to assign an appropriate field name to them so that the
+	 * field name rendered in the maintenance HTML will properly assign the value to RuleBaseValues.fieldValues.
 	 */
-	protected void populateRuleMaintenanceFields(RuleBaseValues rule) {
-		translateResponsibilitiesForLoad(rule);
-		translateRuleExtensionsForLoad(rule);
-	}
-	
-	protected void translateResponsibilitiesForLoad(RuleBaseValues rule) {
-		for (RuleResponsibility responsibility : rule.getResponsibilities()) {
-			if (responsibility.getRuleResponsibilityType().equals(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID)) {
-				PersonRuleResponsibility personResponsibility = new PersonRuleResponsibility();
-				copyResponsibility(responsibility, personResponsibility);
-				KimPrincipal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(personResponsibility.getRuleResponsibilityName());
-				personResponsibility.setPrincipalName(principal.getPrincipalName());
-				rule.getPersonResponsibilities().add(personResponsibility);
-			} else if (responsibility.getRuleResponsibilityType().equals(KEWConstants.RULE_RESPONSIBILITY_GROUP_ID)) {
-				GroupRuleResponsibility groupResponsibility = new GroupRuleResponsibility();
-				copyResponsibility(responsibility, groupResponsibility);
-				KimGroup group = KEWServiceLocator.getIdentityHelperService().getGroup(groupResponsibility.getRuleResponsibilityName());
-				groupResponsibility.setNamespaceCode(group.getNamespaceCode());
-				groupResponsibility.setName(group.getGroupName());
-				rule.getGroupResponsibilities().add(groupResponsibility);
-			} else if (responsibility.getRuleResponsibilityType().equals(KEWConstants.RULE_RESPONSIBILITY_ROLE_ID)) {
-				// TODO add roles!
-			} else {
-				throw new RiceRuntimeException("Original responsibility with id '" + responsibility.getRuleResponsibilityKey() + "' contained a bad type code of '" + responsibility.getRuleResponsibilityType());
+	protected List<Row> transformAndPopulateAttributeRows(List<Row> attributeRows, RuleTemplateAttribute ruleTemplateAttribute, RuleBaseValues rule) {
+		for (Row row : attributeRows) {
+			for (Field field : row.getFields()) {
+				String fieldName = field.getPropertyName();
+				if (!StringUtils.isBlank(fieldName)) {
+					String valueKey = ruleTemplateAttribute.getRuleTemplateAttributeId() + ID_SEPARATOR + fieldName;
+					field.setPropertyName("fieldValues(" + valueKey + ")");
+					field.setPropertyValue(rule.getFieldValues().get(valueKey));
+				}
 			}
 		}
-		// since we've loaded the responsibilities, let's clear the originals so they don't get serialized to the maint doc XML
-		rule.getResponsibilities().clear();
+		return attributeRows;
 	}
 	
-	private void copyResponsibility(RuleResponsibility source, RuleResponsibility target) {
-		try {
-			BeanUtils.copyProperties(target, source);
-		} catch (Exception e) {
-			throw new RiceRuntimeException("Failed to copy properties from source to target responsibility", e);
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#processAfterNew(org.kuali.rice.kns.document.MaintenanceDocument, java.util.Map)
+	 */
+	@Override
+	public void processAfterNew(MaintenanceDocument document,
+			Map<String, String[]> parameters) {
+		validateRuleTemplateAndDocumentType(document, parameters);
+		establishDefaultValues(document);
+	}
+	
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#isGenerateDefaultValues()
+	 */
+	@Override
+	public boolean isGenerateDefaultValues() {
+		// This is a hack to get around the fact that when a document is first created, this value is
+		// true which causes issues if you want to be able to initialize fields on  the document using
+		// request parameters.  See SectionBridge.toSection for the "if" block where it populates
+		// Field.propertyValue to see why this causes problems
+		return false;
+	}
+	
+	protected void establishDefaultValues(MaintenanceDocument document) {
+		RuleBaseValues rule = getNewRule(document);
+		rule.setActiveInd(true);
+		rule.setRouteHeaderId(new Long(document.getDocumentHeader().getDocumentNumber()));
+	}
+	
+	protected void validateRuleTemplateAndDocumentType(MaintenanceDocument document, Map<String, String[]> parameters) {
+		String[] ruleTemplateIds = parameters.get(RULE_TEMPLATE_ID_PARAM);
+		String[] ruleTemplateNames = parameters.get(RULE_TEMPLATE_NAME_PARAM);
+		String[] documentTypeNames = parameters.get(DOCUMENT_TYPE_NAME_PARAM);
+		if (ArrayUtils.isEmpty(ruleTemplateIds) && ArrayUtils.isEmpty(ruleTemplateNames)) {
+			throw new RiceRuntimeException("Rule document must be initiated with a valid rule template id or rule template name.");
 		}
-	}
-	
-	protected void translateRuleExtensionsForLoad(RuleBaseValues rule) {
-		for (RuleExtension ruleExtension : rule.getRuleExtensions()) {
-			Long ruleTemplateAttributeId = ruleExtension.getRuleTemplateAttributeId();
-			for (RuleExtensionValue ruleExtensionValue : ruleExtension.getExtensionValues()) {
-				String fieldMapKey = ruleTemplateAttributeId + ID_SEPARATOR + ruleExtensionValue.getKey();
-				rule.getFieldValues().put(fieldMapKey, ruleExtensionValue.getValue());
+		if (ArrayUtils.isEmpty(documentTypeNames)) {
+			throw new RiceRuntimeException("Rule document must be initiated with a valid document type name.");
+		}
+		RuleTemplate ruleTemplate = null;
+		if (!ArrayUtils.isEmpty(ruleTemplateIds)) {
+			String ruleTemplateId = ruleTemplateIds[0];
+			ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateId(new Long(ruleTemplateId));
+			if (ruleTemplate == null) {
+				throw new RiceRuntimeException("Failed to load rule template with id '" + ruleTemplateId + "'");
 			}
 		}
-		// since we've loaded the extensions, let's clear the originals so that they don't get serialized to the maint doc XML
-		rule.getRuleExtensions().clear();
+		if (ruleTemplate == null) {
+			String ruleTemplateName = ruleTemplateNames[0];
+			ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(ruleTemplateName);
+			if (ruleTemplate == null) {
+				throw new RiceRuntimeException("Failed to load rule template with name '" + ruleTemplateName + "'");
+			}
+		}
+		String documentTypeName = documentTypeNames[0];
+		DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
+		if (documentType == null) {
+			throw new RiceRuntimeException("Failed to locate document type with name '" + documentTypeName + "'");
+		}
+		
+		// it appears that there is always an old maintainable, even in the case of a new document creation,
+		// if we don't initialize both the old and new versions we get errors during meshSections
+		initializeRuleAfterNew(getOldRule(document), ruleTemplate, documentTypeName);
+		initializeRuleAfterNew(getNewRule(document), ruleTemplate, documentTypeName);
 	}
-
+	
+	protected void initializeRuleAfterNew(RuleBaseValues rule, RuleTemplate ruleTemplate, String documentTypeName) {
+		rule.setRuleTemplate(ruleTemplate);
+		rule.setRuleTemplateId(ruleTemplate.getRuleTemplateId());
+		rule.setDocTypeName(documentTypeName);
+	}
+	
     /**
      * This is a complete override which does not call into
      * {@link KualiMaintainableImpl}. This method calls
@@ -161,7 +230,6 @@ public class RoutingRuleMaintainable extends KualiMaintainableImpl {
      */
     @Override
     public void saveBusinessObject() {
-    	
     	clearKeysForSave(getThisRule());
     	translateResponsibilitiesForSave(getThisRule());
     	translateFieldValuesForSave(getThisRule());
@@ -291,60 +359,88 @@ public class RoutingRuleMaintainable extends KualiMaintainableImpl {
     	}
     	return fieldMap;
     }
+	
+    @Override
+    public void processAfterCopy(MaintenanceDocument document, Map<String, String[]> parameters) {
+    	// TODO implement this for copy, will likely be similar to processAfterEdit
+        super.processAfterCopy(document, parameters);
+    }
 
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#processAfterNew(org.kuali.rice.kns.document.MaintenanceDocument, java.util.Map)
-	 */
 	@Override
-	public void processAfterNew(MaintenanceDocument document,
+	public void processAfterEdit(MaintenanceDocument document,
 			Map<String, String[]> parameters) {
-		validateRuleTemplateAndDocumentType(document, parameters);
-		establishDefaultValues(document);
+		if (!getOldRule(document).getCurrentInd()) {
+			throw new RiceRuntimeException("Cannot edit a non-current version of a rule.");
+		}
+		populateForEdit(document);
+		super.processAfterEdit(document, parameters);
 	}
-	
-	protected void validateRuleTemplateAndDocumentType(MaintenanceDocument document, Map<String, String[]> parameters) {
-		String[] ruleTemplateIds = parameters.get(RULE_TEMPLATE_ID_PARAM);
-		String[] ruleTemplateNames = parameters.get(RULE_TEMPLATE_NAME_PARAM);
-		String[] documentTypeNames = parameters.get(DOCUMENT_TYPE_NAME_PARAM);
-		if (ArrayUtils.isEmpty(ruleTemplateIds) && ArrayUtils.isEmpty(ruleTemplateNames)) {
-			throw new RiceRuntimeException("Rule document must be initiated with a valid rule template id or rule template name.");
-		}
-		if (ArrayUtils.isEmpty(documentTypeNames)) {
-			throw new RiceRuntimeException("Rule document must be initiated with a valid document type name.");
-		}
-		RuleTemplate ruleTemplate = null;
-		if (!ArrayUtils.isEmpty(ruleTemplateIds)) {
-			String ruleTemplateId = ruleTemplateIds[0];
-			ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateId(new Long(ruleTemplateId));
-			if (ruleTemplate == null) {
-				throw new RiceRuntimeException("Failed to load rule template with id '" + ruleTemplateId + "'");
-			}
-		}
-		if (ruleTemplate == null) {
-			String ruleTemplateName = ruleTemplateNames[0];
-			ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(ruleTemplateName);
-			if (ruleTemplate == null) {
-				throw new RiceRuntimeException("Failed to load rule template with name '" + ruleTemplateName + "'");
-			}
-		}
-		String documentTypeName = documentTypeNames[0];
-		DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
-		if (documentType == null) {
-			throw new RiceRuntimeException("Failed to locate document type with name '" + documentTypeName + "'");
-		}
+
+	protected void populateForEdit(MaintenanceDocument document) {
+		RuleBaseValues oldRule = getOldRule(document);
+		RuleBaseValues newRule = getNewRule(document);
 		
-		// it appears that there is always an old maintainable, even in the case of a new document creation,
-		// if we don't initialize both the old and new versions we get errors during meshSections
-		initializeRuleAfterNew(getOldRule(document), ruleTemplate, documentTypeName);
-		initializeRuleAfterNew(getNewRule(document), ruleTemplate, documentTypeName);
+		// let's establish the previous version relationship
+		newRule.setPreviousVersionId(oldRule.getRuleBaseValuesId());
+		
+		populateRuleMaintenanceFields(oldRule);
+		populateRuleMaintenanceFields(newRule);
 	}
 	
-	protected void initializeRuleAfterNew(RuleBaseValues rule, RuleTemplate ruleTemplate, String documentTypeName) {
-		rule.setRuleTemplate(ruleTemplate);
-		rule.setRuleTemplateId(ruleTemplate.getRuleTemplateId());
-		rule.setDocTypeName(documentTypeName);
+	/**
+	 * This method populates fields on RuleBaseValues which are used only for
+	 * maintenance purposes.  In otherwords, it populates the non-persistent fields
+	 * on the RuleBaseValues which the maintenance document needs to function
+	 * (such as the extension field values and responsibilities).
+	 */
+	protected void populateRuleMaintenanceFields(RuleBaseValues rule) {
+		translateResponsibilitiesForLoad(rule);
+		translateRuleExtensionsForLoad(rule);
+	}
+	
+	protected void translateResponsibilitiesForLoad(RuleBaseValues rule) {
+		for (RuleResponsibility responsibility : rule.getResponsibilities()) {
+			if (responsibility.getRuleResponsibilityType().equals(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID)) {
+				PersonRuleResponsibility personResponsibility = new PersonRuleResponsibility();
+				copyResponsibility(responsibility, personResponsibility);
+				KimPrincipal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(personResponsibility.getRuleResponsibilityName());
+				personResponsibility.setPrincipalName(principal.getPrincipalName());
+				rule.getPersonResponsibilities().add(personResponsibility);
+			} else if (responsibility.getRuleResponsibilityType().equals(KEWConstants.RULE_RESPONSIBILITY_GROUP_ID)) {
+				GroupRuleResponsibility groupResponsibility = new GroupRuleResponsibility();
+				copyResponsibility(responsibility, groupResponsibility);
+				KimGroup group = KEWServiceLocator.getIdentityHelperService().getGroup(groupResponsibility.getRuleResponsibilityName());
+				groupResponsibility.setNamespaceCode(group.getNamespaceCode());
+				groupResponsibility.setName(group.getGroupName());
+				rule.getGroupResponsibilities().add(groupResponsibility);
+			} else if (responsibility.getRuleResponsibilityType().equals(KEWConstants.RULE_RESPONSIBILITY_ROLE_ID)) {
+				// TODO add roles!
+			} else {
+				throw new RiceRuntimeException("Original responsibility with id '" + responsibility.getRuleResponsibilityKey() + "' contained a bad type code of '" + responsibility.getRuleResponsibilityType());
+			}
+		}
+		// since we've loaded the responsibilities, let's clear the originals so they don't get serialized to the maint doc XML
+		rule.getResponsibilities().clear();
+	}
+	
+	private void copyResponsibility(RuleResponsibility source, RuleResponsibility target) {
+		try {
+			BeanUtils.copyProperties(target, source);
+		} catch (Exception e) {
+			throw new RiceRuntimeException("Failed to copy properties from source to target responsibility", e);
+		}
+	}
+	
+	protected void translateRuleExtensionsForLoad(RuleBaseValues rule) {
+		for (RuleExtension ruleExtension : rule.getRuleExtensions()) {
+			Long ruleTemplateAttributeId = ruleExtension.getRuleTemplateAttributeId();
+			for (RuleExtensionValue ruleExtensionValue : ruleExtension.getExtensionValues()) {
+				String fieldMapKey = ruleTemplateAttributeId + ID_SEPARATOR + ruleExtensionValue.getKey();
+				rule.getFieldValues().put(fieldMapKey, ruleExtensionValue.getValue());
+			}
+		}
+		// since we've loaded the extensions, let's clear the originals so that they don't get serialized to the maint doc XML
+		rule.getRuleExtensions().clear();
 	}
 	
 	/**
@@ -366,103 +462,6 @@ public class RoutingRuleMaintainable extends KualiMaintainableImpl {
 	 */
 	protected RuleBaseValues getThisRule() {
 		return (RuleBaseValues)getBusinessObject();
-	}
-
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#isGenerateDefaultValues()
-	 */
-	@Override
-	public boolean isGenerateDefaultValues() {
-		// This is a hack to get around the fact that when a document is first created, this value is
-		// true which causes issues if you want to be able to initialize fields on  the document using
-		// request parameters.  See SectionBridge.toSection for the "if" block where it populates
-		// Field.propertyValue to see why this causes problems
-		return false;
-	}
-	
-	protected void establishDefaultValues(MaintenanceDocument document) {
-		RuleBaseValues rule = getNewRule(document);
-		rule.setActiveInd(true);
-		rule.setRouteHeaderId(new Long(document.getDocumentHeader().getDocumentNumber()));
-	}
-
-	/**
-	 * Override the getSections method on this maintainable so that the Section Containing the various Rule Attributes
-	 * can be dynamically generated based on the RuleTemplate which is selected.
-	 */
-	@Override
-	public List getSections(MaintenanceDocument document, Maintainable oldMaintainable) {
-		List<Section> sections = super.getSections(document, oldMaintainable);
-		List<Section> finalSections = new ArrayList<Section>();
-		finalSections = new ArrayList<Section>();
-		for (Section section : sections) {
-			if (section.getSectionId().equals(RULE_ATTRIBUTES_SECTION_ID)) {
-				List<Row> ruleTemplateRows = getRuleTemplateRows(document, oldMaintainable);
-				if (!ruleTemplateRows.isEmpty()) {
-					section.setRows(ruleTemplateRows);
-					finalSections.add(section);
-				}
-			} else {
-				finalSections.add(section);
-			}
-		}
-		
-		return finalSections;
-	}
-	
-	protected List<Row> getRuleTemplateRows(MaintenanceDocument document, Maintainable oldMaintainable) {
-		List<Row> rows = new ArrayList<Row>();
-		RuleTemplate ruleTemplate = getThisRule().getRuleTemplate();
-		if (ruleTemplate != null) {
-
-			List<RuleTemplateAttribute> ruleTemplateAttributes = ruleTemplate.getActiveRuleTemplateAttributes();
-			Collections.sort(ruleTemplateAttributes);
-			
-			for (RuleTemplateAttribute ruleTemplateAttribute : ruleTemplateAttributes) {
-				if (!ruleTemplateAttribute.isWorkflowAttribute()) {
-					continue;
-				}
-				WorkflowAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
-				RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
-				if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
-					((GenericXMLRuleAttribute) workflowAttribute).setRuleAttribute(ruleAttribute);
-				}
-				
-				// TODO move this validation else where
-				//workflowAttribute.validateRuleData(getFieldMap(ruleTemplateAttribute.getRuleTemplateAttributeId()+""));
-				
-				List<Row> attributeRows = transformAndPopulateAttributeRows(workflowAttribute.getRuleRows(), ruleTemplateAttribute, getThisRule());
-				rows.addAll(attributeRows);
-				
-				// TODO move this "role" code else where
-				// if (workflowAttribute instanceof RoleAttribute) {
-				//	RoleAttribute roleAttribute = (RoleAttribute) workflowAttribute;
-				//	getRoles().addAll(roleAttribute.getRoleNames());
-				//}
-				
-			}
-		}
-		return rows;
-	}
-	
-	/**
-	 * Processes the Fields on the various attributes Rows to assign an appropriate field name to them so that the
-	 * field name rendered in the maintenance HTML will properly assign the value to RuleBaseValues.fieldValues.
-	 */
-	protected List<Row> transformAndPopulateAttributeRows(List<Row> attributeRows, RuleTemplateAttribute ruleTemplateAttribute, RuleBaseValues rule) {
-		for (Row row : attributeRows) {
-			for (Field field : row.getFields()) {
-				String fieldName = field.getPropertyName();
-				if (!StringUtils.isBlank(fieldName)) {
-					String valueKey = ruleTemplateAttribute.getRuleTemplateAttributeId() + ID_SEPARATOR + fieldName;
-					field.setPropertyName("fieldValues(" + valueKey + ")");
-					field.setPropertyValue(rule.getFieldValues().get(valueKey));
-				}
-			}
-		}
-		return attributeRows;
 	}
 
 	/**
@@ -492,12 +491,5 @@ public class RoutingRuleMaintainable extends KualiMaintainableImpl {
         }
         return title.toString();	
 	}
-	
-	
-	
-	
-    
-	
-    
 
 }

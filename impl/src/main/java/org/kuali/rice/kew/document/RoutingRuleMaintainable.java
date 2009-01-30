@@ -471,6 +471,8 @@ public class RoutingRuleMaintainable extends KualiMaintainableImpl {
 	 * will be null.
 	 * 
 	 * So for a new Route Rule maintenance document we don't want any locks generated.
+	 * 
+	 * TODO can we just let the locking key be the primary key? (ruleBaseValuesId)
 	 */
 	@Override
 	public List<MaintenanceLock> generateMaintenanceLocks() {

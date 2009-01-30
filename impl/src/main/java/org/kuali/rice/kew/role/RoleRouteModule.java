@@ -74,7 +74,7 @@ public class RoleRouteModule implements RouteModule {
 				for (ResponsibilitySet responsibilitySet : responsibilitySets) {
 					String approvePolicy = responsibilitySet.getApprovePolicy();
 					if (KEWConstants.APPROVE_POLICY_ALL_APPROVE.equals(approvePolicy)) {
-						for (ResponsibilityActionInfo responsibility : responsibilities) {
+						for (ResponsibilityActionInfo responsibility : responsibilitySet.getResponsibilities()) {
 							arFactory.addRoleResponsibilityRequest(Collections.singletonList(responsibility), approvePolicy);
 						}
 					} else {

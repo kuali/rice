@@ -37,6 +37,7 @@ import org.kuali.rice.kew.util.ResponsibleParty;
 import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.ResponsibilityService;
 
 /**
  * The RoleRouteModule is responsible for interfacing with the KIM
@@ -50,6 +51,8 @@ public class RoleRouteModule implements RouteModule {
 	protected static final String QUALIFIER_RESOLVER_CLASS_ELEMENT = "qualifierResolverClass";
 	protected static final String RESPONSIBILITY_TEMPLATE_NAME_ELEMENT = "responsibilityTemplateName";
 	protected static final String NAMESPACE_ELEMENT = "namespace";
+	
+	private static ResponsibilityService responsibilityService;
 	
 	private String qualifierResolverName;
 	private String qualifierResolverClassName;
@@ -69,16 +72,18 @@ public class RoleRouteModule implements RouteModule {
 		AttributeSet responsibilityDetails = loadResponsibilityDetails(context);
 		if ( qualifiers != null ) {
 			for (AttributeSet qualifier : qualifiers) {
-				List<ResponsibilityActionInfo> responsibilities = KIMServiceLocator.getResponsibilityService().getResponsibilityActionsByTemplateName(namespaceCode, responsibilityTemplateName, qualifier, responsibilityDetails);
+				List<ResponsibilityActionInfo> responsibilities = getResponsibilityService().getResponsibilityActionsByTemplateName(namespaceCode, responsibilityTemplateName, qualifier, responsibilityDetails);
+				// split the responsibility list defining characteristics (per the ResponsibilitySet.matches() method)
 				List<ResponsibilitySet> responsibilitySets = partitionResponsibilities(responsibilities);
 				for (ResponsibilitySet responsibilitySet : responsibilitySets) {
 					String approvePolicy = responsibilitySet.getApprovePolicy();
+					// if all must approve, add the responsibilities individually so that the each get their own approval graph
 					if (KEWConstants.APPROVE_POLICY_ALL_APPROVE.equals(approvePolicy)) {
 						for (ResponsibilityActionInfo responsibility : responsibilitySet.getResponsibilities()) {
 							arFactory.addRoleResponsibilityRequest(Collections.singletonList(responsibility), approvePolicy);
 						}
 					} else {
-						arFactory.addRoleResponsibilityRequest(responsibilities, approvePolicy);
+						arFactory.addRoleResponsibilityRequest(responsibilitySet.getResponsibilities(), approvePolicy);
 					}
 				}
 			}		
@@ -181,16 +186,19 @@ public class RoleRouteModule implements RouteModule {
 	class ResponsibilitySet {
 		private String actionRequestCode;
 		private String approvePolicy;
+		private Integer priorityNumber;
 		private List<ResponsibilityActionInfo> responsibilities = new ArrayList<ResponsibilityActionInfo>();
 
 		public ResponsibilitySet(ResponsibilityActionInfo responsibility) {
 			this.actionRequestCode = responsibility.getActionTypeCode();
 			this.approvePolicy = responsibility.getActionPolicyCode();
+			this.priorityNumber = responsibility.getPriorityNumber();
 		}
 		
 		public boolean matches(ResponsibilityActionInfo responsibility) {
 			return responsibility.getActionTypeCode().equals(actionRequestCode) &&
-				responsibility.getActionPolicyCode().equals(approvePolicy);
+				responsibility.getActionPolicyCode().equals(approvePolicy) && 
+				responsibility.getPriorityNumber().equals( priorityNumber );
 		}
 
 		public String getActionRequestCode() {
@@ -199,6 +207,10 @@ public class RoleRouteModule implements RouteModule {
 
 		public String getApprovePolicy() {
 			return this.approvePolicy;
+		}
+		
+		public Integer getPriorityNumber() {
+			return priorityNumber;
 		}
 
 		public List<ResponsibilityActionInfo> getResponsibilities() {
@@ -235,6 +247,13 @@ public class RoleRouteModule implements RouteModule {
 	 */
 	public void setNamespace(String namespace) {
 		this.namespace = namespace;
+	}
+
+	protected ResponsibilityService getResponsibilityService() {
+		if ( responsibilityService == null ) {
+			responsibilityService = KIMServiceLocator.getResponsibilityService();
+		}
+		return responsibilityService;
 	}
 
 }

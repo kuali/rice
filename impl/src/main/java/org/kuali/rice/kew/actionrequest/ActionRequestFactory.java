@@ -329,28 +329,31 @@ public class ActionRequestFactory {
     	boolean ignorePrevious = responsibilities.get(0).isIgnorePrevious();
     	KimRoleRecipient roleRecipient = new KimRoleRecipient(responsibilities);
 
-    	
-    	
-    	ActionRequestValue requestGraph = createActionRequest(
-    	        actionTypeCode, 
-    	        priority, 
-    	        roleRecipient, 
-    	        "", // description 
-    	        KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, 
-    	        ignorePrevious, 
-    	        approvePolicy, 
-    	        null, // ruleId
-    	        null );// annotation
-    	
-    	StringBuffer parentAnnotation = new StringBuffer(); 
+    	// Creation of a parent graph entry for ????
+    	ActionRequestValue requestGraph = null;
+    	StringBuffer parentAnnotation = null;
+    	if ( responsibilities.size() > 1 ) {
+	    	requestGraph = createActionRequest(
+	    	        actionTypeCode, 
+	    	        priority, 
+	    	        roleRecipient, 
+	    	        "", // description 
+	    	        KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, 
+	    	        ignorePrevious, 
+	    	        approvePolicy, 
+	    	        null, // ruleId
+	    	        null );// annotation
+	    	parentAnnotation = new StringBuffer(); 
+    	}
+    	StringBuffer annotation = new StringBuffer();
     	for (ResponsibilityActionInfo responsibility : responsibilities) {
     		if ( LOG.isDebugEnabled() ) {
     			LOG.debug( "Processing Responsibility for action request: " + responsibility );
     		}
         	// KFSMI-2381 - pull information from KIM to populate annotation
-    		StringBuffer annotation = new StringBuffer();
+    		annotation.setLength( 0 );
     		KimRoleInfo role = getRoleManagementService().getRole(responsibility.getRoleId());
-    		annotation.append( role.getNamespaceCode() ).append( ' ' ).append( role.getRoleName() );
+    		annotation.append( role.getNamespaceCode() ).append( ' ' ).append( role.getRoleName() ).append( ' ' );
     		AttributeSet qualifier = responsibility.getQualifier();
     		if ( qualifier != null ) {
 	    		for ( String key : qualifier.keySet() ) {	    		    
@@ -364,24 +367,32 @@ public class ActionRequestFactory {
 			} else if (responsibility.getGroupId() != null) {
 				roleRecipient.setTarget(new KimGroupRecipient(responsibility.getGroupId()));
 			} else {
-				throw new RiceRuntimeException("Failed to identify a group or principal on the given ResponsibilityResolutionInfo.");
+				throw new RiceRuntimeException("Failed to identify a group or principal on the given ResponsibilityResolutionInfo:" + responsibility);
 			}
 			ActionRequestValue request = createActionRequest(
 			        responsibility.getActionTypeCode(), 
 			        responsibility.getPriorityNumber(), 
 			        roleRecipient, 
-			        "", // description
+			        responsibility.getResponsibilityName(), // description
 			        new Long(responsibility.getResponsibilityId()), 
 			        responsibility.isIgnorePrevious(), 
 			        approvePolicy, 
 			        null, // ruleId
 			        annotation.toString());
-			request.setParentActionRequest(requestGraph);
-			generateRoleResponsibilityDelegationRequests(responsibility, request);
-			requestGraph.getChildrenRequests().add(request);
-			parentAnnotation.append( annotation ).append( '/' );
+			// if there is only a single request, don't create the nesting structure
+			if ( responsibilities.size() > 1 ) {
+				request.setParentActionRequest(requestGraph);
+				generateRoleResponsibilityDelegationRequests(responsibility, request);
+				requestGraph.getChildrenRequests().add(request);
+				parentAnnotation.append( annotation ).append( " -- " );
+			} else {
+				generateRoleResponsibilityDelegationRequests(responsibility, request);
+				requestGraph = request;
+			}
 	    }
-    	requestGraph.setAnnotation( parentAnnotation.toString() );
+    	if ( responsibilities.size() > 1 ) {
+	    	requestGraph.setAnnotation( parentAnnotation.toString() );
+    	}
     	requestGraphs.add(requestGraph);
     	return requestGraph;
     }

@@ -278,9 +278,12 @@ public class ActionRequestValue implements WorkflowPersistable {
     }
 
     public String getActionRequestedLabel() {
-    	String sRet = CodeTranslator.getActionRequestLabel(getActionRequested());
+    	String sRet = null;
     	if(KEWConstants.ACTION_REQUEST_FYI_REQ.equals(getActionRequested())){
     		sRet = getRequestLabel();
+    	}
+    	if ( StringUtils.isBlank( sRet ) ) {
+    		sRet = CodeTranslator.getActionRequestLabel(getActionRequested());
     	}
         return sRet;
     }

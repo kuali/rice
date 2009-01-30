@@ -248,10 +248,6 @@ public class DocumentType extends KewPersistableBusinessObjectBase
         return getPolicyByName(DocumentTypePolicyEnum.INITIATOR_MUST_BLANKET_APPROVE.getName(), Boolean.TRUE);
     }
 
-    public DocumentTypePolicy getPreApprovePolicy() {
-        return getPolicyByName(DocumentTypePolicyEnum.PRE_APPROVE.getName(), Boolean.TRUE);
-    }
-
     public DocumentTypePolicy getLookIntoFuturePolicy() {
         return getPolicyByName(DocumentTypePolicyEnum.LOOK_FUTURE.getName(), Boolean.FALSE);
     }
@@ -299,13 +295,6 @@ public class DocumentType extends KewPersistableBusinessObjectBase
     public String getInitiatorMustSaveDisplayValue() {
         if (getInitiatorMustSavePolicy() != null) {
             return getInitiatorMustSavePolicy().getPolicyDisplayValue();
-        }
-        return null;
-    }
-
-    public String getPreApprovePolicyDisplayValue() {
-        if (getPreApprovePolicy() != null) {
-            return getPreApprovePolicy().getPolicyDisplayValue();
         }
         return null;
     }

@@ -182,7 +182,7 @@ public class DelegateRule2Action extends WorkflowAction {
         ruleForm.getRuleCreationValues().setCreating(false);
         createWorkflowDocument(request, ruleForm, ruleForm.getMyRules().getRules());
 
-        ruleForm.getRuleCreationValues().setRuleResponsibilityKey(ruleForm.getRuleDelegation().getRuleResponsibilityId());
+        ruleForm.getRuleCreationValues().setRuleResponsibilityKey(ruleForm.getRuleDelegation().getResponsibilityId());
 
         ruleForm.getRuleDelegation().setDelegationRuleBaseValues(webRule);
         ruleForm.setEditingDelegate(true);
@@ -230,7 +230,7 @@ public class DelegateRule2Action extends WorkflowAction {
             ruleForm.getMyRules().addRule(webRule);
             ruleForm.getRuleCreationValues().setCreating(false);
             ruleForm.getRuleCreationValues().setRuleId(parentRule.getRuleBaseValuesId());
-            ruleForm.getRuleCreationValues().setRuleResponsibilityKey(ruleForm.getRuleDelegation().getRuleResponsibilityId());
+            ruleForm.getRuleCreationValues().setRuleResponsibilityKey(ruleForm.getRuleDelegation().getResponsibilityId());
             ruleForm.setEditingDelegate(true);
             ruleForm.setShowHide(initializeShowHide(ruleForm.getMyRules()));
             String ruleDocTypeName = getRuleService().getRuleDocmentTypeName(ruleForm.getMyRules().getRules());
@@ -556,7 +556,7 @@ public class DelegateRule2Action extends WorkflowAction {
             if (ruleResponsibility != null && !responsibility.getRuleResponsibilityKey().equals(ruleResponsibility.getRuleResponsibilityKey())) {
                 iterator.remove();
             } else {
-                responsibility.setDelegationRules(new ArrayList());
+                //responsibility.setDelegationRules(new ArrayList());
             }
         }
     }

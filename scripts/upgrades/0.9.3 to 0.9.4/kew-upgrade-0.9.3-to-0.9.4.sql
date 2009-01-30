@@ -480,9 +480,6 @@ DELETE FROM KREW_DOC_TYP_PLCY_RELN_T where doc_plcy_nm like 'PRE_APPROVE'
 ALTER TABLE KREW_DOC_TYP_T ADD HELP_DEF_URL VARCHAR2(4000)
 /
 
-UPDATE KREW_DOC_TYP_T set POST_PRCSR='org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor' where DOC_TYP_NM='RoutingRuleDocument' and CUR_IND=1
-/
-
 -- add OJB_ID column to new PersistableBusinessObjects
 
 ALTER TABLE KREW_RULE_EXPR_T ADD (OBJ_ID VARCHAR2(36))
@@ -587,4 +584,41 @@ ALTER TABLE KREW_EDL_ASSCTN_T MODIFY (OBJ_ID VARCHAR2(36) NOT NULL)
 /
 ALTER TABLE KREW_DLGN_RSP_T MODIFY (OBJ_ID VARCHAR2(36) NOT NULL)
 /
-update KREW_RTE_NODE_T set typ='org.kuali.rice.kew.engine.node.SimpleSplitNode' where typ like 'edu.iu.uis.tvl.workflow.routing.RouteNodeSplitApprovalNoApproval'; 
+
+-- Convert System User role to just Rice
+
+update KRIM_ROLE_T set KIM_TYP_ID='1' where ROLE_ID='62'
+/
+update KRIM_ROLE_T set ROLE_NM='Rice' where ROLE_ID='62'
+/
+
+update krim_perm_attr_data_t set attr_val = 'RiceDocument' where attr_data_id = '222'
+/
+
+delete from krim_role_mbr_attr_data_t where kim_typ_id = '44'
+/
+delete from krim_typ_attr_t where kim_typ_id = '44'
+/
+delete from krim_typ_t where kim_typ_id = '44'
+/
+
+-- SQL updates for the rule document
+
+UPDATE KREW_DOC_TYP_T set POST_PRCSR='org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor' where DOC_TYP_NM='RoutingRuleDocument' and CUR_IND=1
+/
+
+ALTER TABLE KREW_RULE_T MODIFY FRM_DT DATE NULL
+/
+ALTER TABLE KREW_RULE_T MODIFY TO_DT DATE NULL
+/
+
+UPDATE KREW_DLGN_RSP_T RSP1 SET RSP1.RULE_RSP_ID=(SELECT RSP2.RSP_ID FROM KREW_RULE_RSP_T RSP2 WHERE RSP1.RULE_RSP_ID=RSP2.RULE_RSP_ID)
+/
+
+ALTER TABLE KREW_DLGN_RSP_T RENAME COLUMN RULE_RSP_ID TO RSP_ID
+/
+
+-- Remove the PRE_APPROVE document type policy
+
+DELETE FROM KREW_DOC_TYP_PLCY_RELN_T where DOC_PLCY_NM='PRE_APPROVE'
+/

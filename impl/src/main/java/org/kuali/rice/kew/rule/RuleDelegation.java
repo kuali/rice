@@ -49,8 +49,8 @@ public class RuleDelegation extends KewPersistableBusinessObjectBase {
 	@Id
 	@Column(name="DLGN_RULE_ID")
 	private Long ruleDelegationId;
-    @Column(name="RULE_RSP_ID", insertable=false, updatable=false)
-	private Long ruleResponsibilityId;
+    @Column(name="RSP_ID", insertable=false, updatable=false)
+	private Long responsibilityId;
     @Column(name="DLGN_RULE_BASE_VAL_ID", insertable=false, updatable=false)
 	private Long delegateRuleId;
     @Column(name="DLGN_TYP")
@@ -109,18 +109,18 @@ public class RuleDelegation extends KewPersistableBusinessObjectBase {
     public void setRuleResponsibility(RuleResponsibility ruleResponsibility) {
         this.ruleResponsibility = ruleResponsibility;
     }
-    public Long getRuleResponsibilityId() {
-        return ruleResponsibilityId;
+    public Long getResponsibilityId() {
+        return responsibilityId;
     }
-    public void setRuleResponsibilityId(Long ruleResponsibilityId) {
-        this.ruleResponsibilityId = ruleResponsibilityId;
+    public void setResponsibilityId(Long ruleResponsibilityId) {
+        this.responsibilityId = ruleResponsibilityId;
     }
 
 	@Override
 	protected LinkedHashMap toStringMapper() {
 		LinkedHashMap map = new LinkedHashMap();
 		map.put("ruleDelegationId", ruleDelegationId);
-		map.put("ruleResponsibilityId", ruleResponsibilityId);
+		map.put("responsibilityId", responsibilityId);
 		map.put("delegateRuleId", delegateRuleId);
 		map.put("delegationType", delegationType);
 		return map;

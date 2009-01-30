@@ -35,4 +35,10 @@ public interface RuleDelegationService {
     public List findAllRuleDelegations();
     public RuleDelegation findByRuleDelegationId(Long ruleDelegationId);
     
+    /**
+     * Returns a List of all RuleDelegations with "current" Rules for the given
+     * responsibility id.
+     */
+    public List<RuleDelegation> findByResponsibilityId(Long responsibilityId);
+    
 }

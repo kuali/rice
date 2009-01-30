@@ -95,8 +95,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
 		crit.eq("delegateRule", new Boolean(false));
 		crit.eq("templateRuleInd", new Boolean(false));
 
-		crit.lte("fromDate", new Timestamp(new Date().getTime()));
-		crit.gte("toDate", new Timestamp(new Date().getTime()));
+		crit.and(generateFromToDateCriteria(new Date()));
 		return (List) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
 	}
 
@@ -112,9 +111,33 @@ public class RuleDAOJpaImpl implements RuleDAO {
 			crit.gte("deactivationDate", effectiveDate);
 		}
 
-		crit.lte("fromDate", new Timestamp(new Date().getTime()));
-		crit.gte("toDate", new Timestamp(new Date().getTime()));
+		crit.and(generateFromToDateCriteria(new Date()));
 		return (List) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
+	}
+	
+	public Criteria generateFromToDateCriteria(Date date) {
+		Criteria crit = new Criteria(RuleBaseValues.class.getName());
+		
+		Criteria fromCrit = new Criteria(RuleBaseValues.class.getName());
+		Criteria fromNullCrit = new Criteria(RuleBaseValues.class.getName());
+		fromNullCrit.isNull("fromDate");
+		Criteria fromLessOrEqualCrit = new Criteria(RuleBaseValues.class.getName());
+		fromLessOrEqualCrit.lte("fromDate", new Timestamp(date.getTime()));
+		fromCrit.or(fromNullCrit);
+		fromCrit.or(fromLessOrEqualCrit);
+		
+		Criteria toCrit = new Criteria(RuleBaseValues.class.getName());
+		Criteria toNullCrit = new Criteria(RuleBaseValues.class.getName());
+		toNullCrit.isNull("toDate");
+		Criteria toGreaterOrEqualCrit = new Criteria(RuleBaseValues.class.getName());
+		toGreaterOrEqualCrit.gte("toDate", new Timestamp(date.getTime()));
+		toCrit.or(toNullCrit);
+		toCrit.or(toGreaterOrEqualCrit);
+		
+		crit.and(fromCrit);
+		crit.and(toCrit);
+		
+		return crit;
 	}
 
 	public List fetchAllRules(boolean currentRules) {

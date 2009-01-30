@@ -18,6 +18,7 @@ package org.kuali.rice.kew.rule;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -281,7 +282,7 @@ public class RuleBaseValues extends KewPersistableBusinessObjectBase {
                     ruleResponsibilityRow.setRuleBaseValuesId(ruleResponsibility.getRuleBaseValuesId());
                     ruleResponsibilityRow.setRuleResponsibilityName(ruleResponsibility.getRuleResponsibilityName());
                     ruleResponsibilityRow.setRuleResponsibilityType(ruleResponsibility.getRuleResponsibilityType());
-                    ruleResponsibilityRow.setDelegationRules(ruleResponsibility.getDelegationRules());
+                    //ruleResponsibilityRow.setDelegationRules(ruleResponsibility.getDelegationRules());
                     ruleResponsibilityRow.setApprovePolicy(ruleResponsibility.getApprovePolicy());
                     alreadyAdded = true;
                 }
@@ -521,6 +522,12 @@ public class RuleBaseValues extends KewPersistableBusinessObjectBase {
 
     public void setIgnorePrevious(Boolean ignorePrevious) {
         this.ignorePrevious = ignorePrevious;
+    }
+    
+    public boolean isActive(Date date) {
+    	boolean isAfterFromDate = getFromDate() == null || date.after(getFromDate());
+    	boolean isBeforeToDate = getToDate() == null || date.before(getToDate());
+    	return getActiveInd() && isAfterFromDate && isBeforeToDate;
     }
 
     public boolean isMatch(DocumentContent docContent) {

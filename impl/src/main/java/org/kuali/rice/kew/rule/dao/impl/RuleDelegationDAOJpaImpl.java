@@ -16,6 +16,8 @@
  */
 package org.kuali.rice.kew.rule.dao.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -66,4 +68,13 @@ public class RuleDelegationDAOJpaImpl implements RuleDelegationDAO {
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
+    
+    public List<RuleDelegation> findByResponsibilityIdWithCurrentRule(Long responsibilityId) {
+    	Criteria crit = new Criteria(RuleDelegation.class.getName());
+    	crit.eq("responsibilityId", responsibilityId);
+    	crit.eq("delegationRuleBaseValues.currentInd", true);
+    	Collection delegations = new QueryByCriteria(entityManager, crit).toQuery().getResultList();
+    	return new ArrayList<RuleDelegation>(delegations);
+    }
+
 }

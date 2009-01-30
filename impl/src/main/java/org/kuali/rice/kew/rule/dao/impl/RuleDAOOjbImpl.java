@@ -104,8 +104,7 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 		crit.addEqualTo("delegateRule", new Boolean(false));
 		crit.addEqualTo("templateRuleInd", new Boolean(false));
 
-		crit.addLessOrEqualThan("fromDate", new Timestamp(new Date().getTime()));
-		crit.addGreaterOrEqualThan("toDate", new Timestamp(new Date().getTime()));
+		crit.addAndCriteria(generateFromToDateCriteria(new Date()));
 		return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleBaseValues.class, crit));
 	}
 
@@ -121,11 +120,35 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 			crit.addGreaterThan("deactivationDate", effectiveDate);
 		}
 
-		crit.addLessOrEqualThan("fromDate", new Timestamp(new Date().getTime()));
-		crit.addGreaterOrEqualThan("toDate", new Timestamp(new Date().getTime()));
+		crit.addAndCriteria(generateFromToDateCriteria(new Date()));
 		return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleBaseValues.class, crit));
 	}
 
+	public Criteria generateFromToDateCriteria(Date date) {
+		Criteria crit = new Criteria();
+		
+		Criteria fromCrit = new Criteria();
+		Criteria fromNullCrit = new Criteria();
+		fromNullCrit.addIsNull("fromDate");
+		Criteria fromLessOrEqualCrit = new Criteria();
+		fromLessOrEqualCrit.addLessOrEqualThan("fromDate", new Timestamp(date.getTime()));
+		fromCrit.addOrCriteria(fromNullCrit);
+		fromCrit.addOrCriteria(fromLessOrEqualCrit);
+		
+		Criteria toCrit = new Criteria();
+		Criteria toNullCrit = new Criteria();
+		toNullCrit.addIsNull("toDate");
+		Criteria toGreaterOrEqualCrit = new Criteria();
+		toGreaterOrEqualCrit.addGreaterOrEqualThan("toDate", new Timestamp(date.getTime()));
+		toCrit.addOrCriteria(toNullCrit);
+		toCrit.addOrCriteria(toGreaterOrEqualCrit);
+		
+		crit.addAndCriteria(fromCrit);
+		crit.addAndCriteria(toCrit);
+		
+		return crit;
+	}
+	
 	public List fetchAllRules(boolean currentRules) {
 		Criteria crit = new Criteria();
 		crit.addEqualTo("currentInd", new Boolean(currentRules));

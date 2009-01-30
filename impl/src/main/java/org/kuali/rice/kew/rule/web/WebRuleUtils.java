@@ -62,7 +62,7 @@ public class WebRuleUtils {
                 delegationCopy.setDelegateRuleId(null);
                 delegationCopy.setVersionNumber(null);
                 delegationCopy.setRuleDelegationId(null);
-                delegationCopy.setRuleResponsibilityId(null);
+                delegationCopy.setResponsibilityId(null);
 
                 WebRuleBaseValues delegationRule = ((WebRuleBaseValues) delegation.getDelegationRuleBaseValues());
                 WebRuleBaseValues ruleDelegateCopy = new WebRuleBaseValues();
@@ -86,7 +86,7 @@ public class WebRuleUtils {
                 delegationCopy.setDelegationRuleBaseValues(ruleDelegateCopy);
                 delegations.add(delegationCopy);
             }
-            responsibilityCopy.setDelegationRules(delegations);
+            //responsibilityCopy.setDelegationRules(delegations);
             responsibilities.add(responsibilityCopy);
         }
         ruleCopy.setResponsibilities(responsibilities);

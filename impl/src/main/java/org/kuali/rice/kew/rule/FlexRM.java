@@ -45,6 +45,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
+import org.kuali.rice.kew.rule.service.RuleDelegationService;
 import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.RoleRecipient;
@@ -264,7 +265,7 @@ public class FlexRM {
 	private void buildDelegationGraph(ActionRequestFactory arFactory, RouteContext context, 
 			RuleBaseValues delegationRule, DocumentRouteHeaderValue routeHeaderValue, ActionRequestValue parentRequest, RuleDelegation ruleDelegation) throws WorkflowException {
 		context.setActionRequest(parentRequest);
-		if (delegationRule.getActiveInd().booleanValue() && delegationRule.getToDate().after(new Date()) && delegationRule.getFromDate().before(new Date())) {
+		if (delegationRule.isActive(new Date())) {
 			for (Iterator iter = delegationRule.getResponsibilities().iterator(); iter.hasNext();) {
 				RuleResponsibility delegationResp = (RuleResponsibility) iter.next();
 				if (delegationResp.isUsingRole()) {
@@ -303,16 +304,32 @@ public class FlexRM {
 			if (parentRequest == null) {
 				ActionRequestValue roleRequest = arFactory.addRoleRequest(recipient, resp.getActionRequestedCd(), resp.getApprovePolicy(), resp.getPriority(), resp.getResponsibilityId(), rule
 						.getIgnorePrevious(), rule.getDescription(), rule.getRuleBaseValuesId());
-				if (resp.isDelegating()) {
+// Old, pre 1.0 delegate code, commenting out for now
+//
+//				if (resp.isDelegating()) {
+//					// create delegations for all the children
+//					for (Iterator iterator = roleRequest.getChildrenRequests().iterator(); iterator.hasNext();) {
+//						ActionRequestValue request = (ActionRequestValue) iterator.next();
+//						for (Iterator ruleDelegationIterator = resp.getDelegationRules().iterator(); ruleDelegationIterator.hasNext();) {
+//							RuleDelegation childRuleDelegation = (RuleDelegation) ruleDelegationIterator.next();
+//							buildDelegationGraph(arFactory, context, childRuleDelegation.getDelegationRuleBaseValues(), routeHeader, request, childRuleDelegation);
+//						}
+//					}
+//				}
+				
+				// new Rice 1.0 delegate rule code
+				
+				List<RuleDelegation> ruleDelegations = getRuleDelegationService().findByResponsibilityId(resp.getResponsibilityId());
+				if (ruleDelegations != null && !ruleDelegations.isEmpty()) {
 					// create delegations for all the children
 					for (Iterator iterator = roleRequest.getChildrenRequests().iterator(); iterator.hasNext();) {
 						ActionRequestValue request = (ActionRequestValue) iterator.next();
-						for (Iterator ruleDelegationIterator = resp.getDelegationRules().iterator(); ruleDelegationIterator.hasNext();) {
-							RuleDelegation childRuleDelegation = (RuleDelegation) ruleDelegationIterator.next();
+						for (RuleDelegation childRuleDelegation : ruleDelegations) {
 							buildDelegationGraph(arFactory, context, childRuleDelegation.getDelegationRuleBaseValues(), routeHeader, request, childRuleDelegation);
 						}
 					}
 				}
+				
 			} else {
 				arFactory.addDelegationRoleRequest(parentRequest, resp.getApprovePolicy(), recipient, resp.getResponsibilityId(), rule.getIgnorePrevious(), ruleDelegation.getDelegationType(), rule.getDescription(), rule.getRuleBaseValuesId());
 			}
@@ -376,12 +393,26 @@ public class FlexRM {
 					rule.getIgnorePrevious(),
 					resp.getApprovePolicy(),
 					rule.getRuleBaseValuesId());
-			if (resp.isDelegating()) {
-				for (Iterator iterator = resp.getDelegationRules().iterator(); iterator.hasNext();) {
-					RuleDelegation childRuleDelegation = (RuleDelegation) iterator.next();
+
+			// old, pre 1.0 delegation code, commented out for now
+			
+//			if (resp.isDelegating()) {
+//			for (Iterator iterator = resp.getDelegationRules().iterator(); iterator.hasNext();) {
+//				RuleDelegation childRuleDelegation = (RuleDelegation) iterator.next();
+//				buildDelegationGraph(arFactory, context, childRuleDelegation.getDelegationRuleBaseValues(), routeHeader, actionRequest, childRuleDelegation);
+//			}
+//		}
+
+			
+			// new Rice 1.0 delegate rule code
+			
+			List<RuleDelegation> ruleDelegations = getRuleDelegationService().findByResponsibilityId(resp.getResponsibilityId());
+			if (ruleDelegations != null && !ruleDelegations.isEmpty()) {
+				for (RuleDelegation childRuleDelegation : ruleDelegations) {
 					buildDelegationGraph(arFactory, context, childRuleDelegation.getDelegationRuleBaseValues(), routeHeader, actionRequest, childRuleDelegation);
 				}
 			}
+			
 		} else {
 			arFactory.addDelegationRequest(parentRequest, recipient, resp.getResponsibilityId(), rule.getIgnorePrevious(), ruleDelegation.getDelegationType(), rule.getDescription(), rule.getRuleBaseValuesId());
 		}
@@ -401,11 +432,16 @@ public class FlexRM {
 	}
 
 	public RuleService getRuleService() {
-		return (RuleService) KEWServiceLocator.getService(KEWServiceLocator.RULE_SERVICE);
+		return KEWServiceLocator.getRuleService();
 	}
 
+	public RuleDelegationService getRuleDelegationService() {
+		return KEWServiceLocator.getRuleDelegationService();
+	}
+
+	
 	private ActionRequestService getActionRequestService() {
-		return (ActionRequestService) KEWServiceLocator.getService(KEWServiceLocator.ACTION_REQUEST_SRV);
+		return KEWServiceLocator.getActionRequestService();
 	}
 
 	public int getNumberOfMatchingRules() {

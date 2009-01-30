@@ -26,11 +26,8 @@ import org.kuali.rice.kew.util.KEWConstants;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public final class DocumentTypePolicyEnum {
-    /**
-     * This policy currently does not do anything.
-     */
-    public static final DocumentTypePolicyEnum PRE_APPROVE = new DocumentTypePolicyEnum(KEWConstants.PREAPPROVE_POLICY);
-    /**
+
+	/**
      * FIXME: needs docs
      */
     public static final DocumentTypePolicyEnum DISAPPROVE = new DocumentTypePolicyEnum(KEWConstants.DISAPPROVE_POLICY);
@@ -108,8 +105,6 @@ public final class DocumentTypePolicyEnum {
             return DISAPPROVE;
         } else if (DEFAULT_APPROVE.name.equalsIgnoreCase(name)) {
             return DEFAULT_APPROVE;
-        } else if (PRE_APPROVE.name.equalsIgnoreCase(name)) {
-            return PRE_APPROVE;
         } else if (ALLOW_UNREQUESTED_ACTION.name.equalsIgnoreCase(name)) {
             return ALLOW_UNREQUESTED_ACTION;
         } else if (INITIATOR_MUST_ROUTE.name.equalsIgnoreCase(name)) {

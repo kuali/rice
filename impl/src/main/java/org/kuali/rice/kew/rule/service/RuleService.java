@@ -68,6 +68,7 @@ public interface RuleService extends XmlLoader, XmlExporter {
     public List fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateName, String documentType, Timestamp effectiveDate);
     public List findByRouteHeaderId(Long routeHeaderId);
     public void makeCurrent(Long routeHeaderId);
+    public void makeCurrent(RuleBaseValues rule);
     public List findRuleBaseValuesByResponsibilityReviewer(String reviewerName, String type);
     public List findRuleBaseValuesByResponsibilityReviewerTemplateDoc(String ruleTemplateName, String documentType, String reviewerName, String type);
     public Long isLockedForRouting(Long currentRuleBaseValuesId);

@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.exception.RiceRuntimeException;
@@ -40,8 +41,8 @@ import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
-import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.MaintenanceLock;
 import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
@@ -67,24 +68,89 @@ public class RoutingRuleMaintainable extends KualiMaintainableImpl {
 	private static final String RULE_ATTRIBUTES_SECTION_ID = "RuleAttributes";
 	private static final String ID_SEPARATOR = ":";
 	
-    /**
-     * This overridden method resets the name
-     * 
-     * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#processAfterCopy(org.kuali.rice.kns.document.MaintenanceDocument, java.util.Map)
-     */
     @Override
     public void processAfterCopy(MaintenanceDocument document, Map<String, String[]> parameters) {
         super.processAfterCopy(document, parameters);
     }
+    
+    
 
-    /**
-     * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#handleRouteStatusChange(org.kuali.rice.kns.bo.DocumentHeader)
-     */
-    @Override
-    public void handleRouteStatusChange(DocumentHeader documentHeader) {
-        super.handleRouteStatusChange(documentHeader);
-        
-    }
+	@Override
+	public void processAfterEdit(MaintenanceDocument document,
+			Map<String, String[]> parameters) {
+		if (!getOldRule(document).getCurrentInd()) {
+			throw new RiceRuntimeException("Cannot edit a non-current version of a rule.");
+		}
+		populateForEdit(document);
+		super.processAfterEdit(document, parameters);
+	}
+
+	protected void populateForEdit(MaintenanceDocument document) {
+		RuleBaseValues oldRule = getOldRule(document);
+		RuleBaseValues newRule = getNewRule(document);
+		
+		// let's establish the previous version relationship
+		newRule.setPreviousVersionId(oldRule.getRuleBaseValuesId());
+		
+		populateRuleMaintenanceFields(oldRule);
+		populateRuleMaintenanceFields(newRule);
+	}
+	
+	/**
+	 * This method populates fields on RuleBaseValues which are used only for
+	 * maintenance purposes.  In otherwords, it populates the non-persistent fields
+	 * on the RuleBaseValues which the maintenance document needs to function
+	 * (such as the extension field values and responsibilities).
+	 */
+	protected void populateRuleMaintenanceFields(RuleBaseValues rule) {
+		translateResponsibilitiesForLoad(rule);
+		translateRuleExtensionsForLoad(rule);
+	}
+	
+	protected void translateResponsibilitiesForLoad(RuleBaseValues rule) {
+		for (RuleResponsibility responsibility : rule.getResponsibilities()) {
+			if (responsibility.getRuleResponsibilityType().equals(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID)) {
+				PersonRuleResponsibility personResponsibility = new PersonRuleResponsibility();
+				copyResponsibility(responsibility, personResponsibility);
+				KimPrincipal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(personResponsibility.getRuleResponsibilityName());
+				personResponsibility.setPrincipalName(principal.getPrincipalName());
+				rule.getPersonResponsibilities().add(personResponsibility);
+			} else if (responsibility.getRuleResponsibilityType().equals(KEWConstants.RULE_RESPONSIBILITY_GROUP_ID)) {
+				GroupRuleResponsibility groupResponsibility = new GroupRuleResponsibility();
+				copyResponsibility(responsibility, groupResponsibility);
+				KimGroup group = KEWServiceLocator.getIdentityHelperService().getGroup(groupResponsibility.getRuleResponsibilityName());
+				groupResponsibility.setNamespaceCode(group.getNamespaceCode());
+				groupResponsibility.setName(group.getGroupName());
+				rule.getGroupResponsibilities().add(groupResponsibility);
+			} else if (responsibility.getRuleResponsibilityType().equals(KEWConstants.RULE_RESPONSIBILITY_ROLE_ID)) {
+				// TODO add roles!
+			} else {
+				throw new RiceRuntimeException("Original responsibility with id '" + responsibility.getRuleResponsibilityKey() + "' contained a bad type code of '" + responsibility.getRuleResponsibilityType());
+			}
+		}
+		// since we've loaded the responsibilities, let's clear the originals so they don't get serialized to the maint doc XML
+		rule.getResponsibilities().clear();
+	}
+	
+	private void copyResponsibility(RuleResponsibility source, RuleResponsibility target) {
+		try {
+			BeanUtils.copyProperties(target, source);
+		} catch (Exception e) {
+			throw new RiceRuntimeException("Failed to copy properties from source to target responsibility", e);
+		}
+	}
+	
+	protected void translateRuleExtensionsForLoad(RuleBaseValues rule) {
+		for (RuleExtension ruleExtension : rule.getRuleExtensions()) {
+			Long ruleTemplateAttributeId = ruleExtension.getRuleTemplateAttributeId();
+			for (RuleExtensionValue ruleExtensionValue : ruleExtension.getExtensionValues()) {
+				String fieldMapKey = ruleTemplateAttributeId + ID_SEPARATOR + ruleExtensionValue.getKey();
+				rule.getFieldValues().put(fieldMapKey, ruleExtensionValue.getValue());
+			}
+		}
+		// since we've loaded the extensions, let's clear the originals so that they don't get serialized to the maint doc XML
+		rule.getRuleExtensions().clear();
+	}
 
     /**
      * This is a complete override which does not call into
@@ -95,10 +161,27 @@ public class RoutingRuleMaintainable extends KualiMaintainableImpl {
      */
     @Override
     public void saveBusinessObject() {
+    	
+    	clearKeysForSave(getThisRule());
     	translateResponsibilitiesForSave(getThisRule());
     	translateFieldValuesForSave(getThisRule());
-    	// TODO execute save on RuleService
+    	KEWServiceLocator.getRuleService().makeCurrent(getThisRule());
     }
+    
+	/**
+	 * Since editing of a Rule should actually result in a rule with a new ID and new
+	 * entries in the rule and rule responsibility tables, we need to clear out
+	 * the primary keys of the rule and related objects.
+	 */
+	protected void clearKeysForSave(RuleBaseValues rule) {
+		rule.setRuleBaseValuesId(null);
+		rule.setActivationDate(null);
+		rule.setDeactivationDate(null);
+		rule.setCurrentInd(false);
+		rule.setVersionNbr(null);
+		rule.setVersionNumber(0L);
+	}
+
     
     protected void translateResponsibilitiesForSave(RuleBaseValues rule) {
 		rule.getResponsibilities().clear();
@@ -106,19 +189,30 @@ public class RoutingRuleMaintainable extends KualiMaintainableImpl {
 			RuleResponsibility ruleResponsibility = new RuleResponsibility();
 			ruleResponsibility.setActionRequestedCd(responsibility.getActionRequestedCd());
 			ruleResponsibility.setPriority(responsibility.getPriority());
-			ruleResponsibility.setResponsibilityId(ruleResponsibility.getResponsibilityId());
+			ruleResponsibility.setResponsibilityId(responsibility.getResponsibilityId());
+			if (ruleResponsibility.getResponsibilityId() == null) {
+				ruleResponsibility.setResponsibilityId(KEWServiceLocator.getResponsibilityIdService().getNewResponsibilityId());
+			}
 			String principalId = KEWServiceLocator.getIdentityHelperService().getIdForPrincipalName(responsibility.getPrincipalName());
 			ruleResponsibility.setRuleResponsibilityName(principalId);
 			ruleResponsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
+			// default the approve policy to First Approve
+			ruleResponsibility.setApprovePolicy(KEWConstants.APPROVE_POLICY_FIRST_APPROVE);
+			rule.getResponsibilities().add(ruleResponsibility);
 		}
 		for (GroupRuleResponsibility responsibility : rule.getGroupResponsibilities()) {
 			RuleResponsibility ruleResponsibility = new RuleResponsibility();
 			ruleResponsibility.setActionRequestedCd(responsibility.getActionRequestedCd());
 			ruleResponsibility.setPriority(responsibility.getPriority());
-			ruleResponsibility.setResponsibilityId(ruleResponsibility.getResponsibilityId());
+			ruleResponsibility.setResponsibilityId(responsibility.getResponsibilityId());
+			if (ruleResponsibility.getResponsibilityId() == null) {
+				ruleResponsibility.setResponsibilityId(KEWServiceLocator.getResponsibilityIdService().getNewResponsibilityId());
+			}
 			KimGroup group = KEWServiceLocator.getIdentityHelperService().getGroupByName(responsibility.getNamespaceCode(), responsibility.getName());
 			ruleResponsibility.setRuleResponsibilityName(group.getGroupId());
 			ruleResponsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
+			ruleResponsibility.setApprovePolicy(KEWConstants.APPROVE_POLICY_FIRST_APPROVE);
+			rule.getResponsibilities().add(ruleResponsibility);
 		}
 		// TODO add role responsibilities
 	}
@@ -291,6 +385,7 @@ public class RoutingRuleMaintainable extends KualiMaintainableImpl {
 	protected void establishDefaultValues(MaintenanceDocument document) {
 		RuleBaseValues rule = getNewRule(document);
 		rule.setActiveInd(true);
+		rule.setRouteHeaderId(new Long(document.getDocumentHeader().getDocumentNumber()));
 	}
 
 	/**
@@ -385,6 +480,20 @@ public class RoutingRuleMaintainable extends KualiMaintainableImpl {
 		}
 		return super.generateMaintenanceLocks();
 	}
+
+	@Override
+	public String getDocumentTitle(MaintenanceDocument document) {
+		StringBuffer title = new StringBuffer();
+        RuleBaseValues rule = getThisRule();
+        if (rule.getPreviousVersionId() != null) {
+            title.append("Editing Rule '").append(rule.getDescription()).append("'");
+        } else {
+            title.append("Adding Rule '").append(rule.getDescription()).append("'");
+        }
+        return title.toString();	
+	}
+	
+	
 	
 	
     

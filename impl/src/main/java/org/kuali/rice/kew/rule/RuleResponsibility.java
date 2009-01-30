@@ -16,8 +16,6 @@
  */
 package org.kuali.rice.kew.rule;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -80,9 +78,9 @@ public class RuleResponsibility extends KewPersistableBusinessObjectBase {
     @ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="RULE_ID")
 	private RuleBaseValues ruleBaseValues;
-    @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
-            mappedBy="ruleResponsibility")
-    private List<RuleDelegation> delegationRules = new ArrayList<RuleDelegation>();
+    //@OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
+    //        mappedBy="ruleResponsibility")
+    //private List<RuleDelegation> delegationRules = new ArrayList<RuleDelegation>();
 
     public KimPrincipal getPrincipal() 
     {
@@ -207,15 +205,15 @@ public class RuleResponsibility extends KewPersistableBusinessObjectBase {
         if (priority != null) {
             ruleResponsibilityClone.setPriority(new Integer(priority.intValue()));
         }
-        if (delegationRules != null) {
-            for (Iterator<RuleDelegation> iter = delegationRules.iterator(); iter.hasNext();) {
-                RuleDelegation delegation = (RuleDelegation) iter.next();
-                RuleDelegation delegationClone = (RuleDelegation)delegation.copy(preserveKeys);
-                delegationClone.setRuleResponsibility(ruleResponsibilityClone);
-                ruleResponsibilityClone.getDelegationRules().add(delegationClone);
-
-            }
-        }
+//        if (delegationRules != null) {
+//            for (Iterator iter = delegationRules.iterator(); iter.hasNext();) {
+//                RuleDelegation delegation = (RuleDelegation) iter.next();
+//                RuleDelegation delegationClone = (RuleDelegation)delegation.copy(preserveKeys);
+//                delegationClone.setRuleResponsibility(ruleResponsibilityClone);
+//                ruleResponsibilityClone.getDelegationRules().add(delegationClone);
+//
+//            }
+//        }
         return ruleResponsibilityClone;
     }
 
@@ -241,26 +239,35 @@ public class RuleResponsibility extends KewPersistableBusinessObjectBase {
     public void setResponsibilityId(Long responsibilityId) {
         this.responsibilityId = responsibilityId;
     }
-    public boolean isDelegating() {
-        return !getDelegationRules().isEmpty();
-    }
-
+    
     public List<RuleDelegation> getDelegationRules() {
-        return delegationRules;
+    	return KEWServiceLocator.getRuleDelegationService().findByResponsibilityId(getResponsibilityId());
     }
-    public void setDelegationRules(List<RuleDelegation> delegationRules) {
-        this.delegationRules = delegationRules;
-    }
-
+    
     public RuleDelegation getDelegationRule(int index) {
-        while (getDelegationRules().size() <= index) {
-            RuleDelegation ruleDelegation = new RuleDelegation();
-            ruleDelegation.setRuleResponsibility(this);
-            ruleDelegation.setDelegationRuleBaseValues(new RuleBaseValues());
-            getDelegationRules().add(ruleDelegation);
-        }
-        return (RuleDelegation) getDelegationRules().get(index);
+    	return getDelegationRules().get(index);
     }
+    
+//    public boolean isDelegating() {
+//        return !getDelegationRules().isEmpty();
+//    }
+//
+//    public List getDelegationRules() {
+//        return delegationRules;
+//    }
+//    public void setDelegationRules(List delegationRules) {
+//        this.delegationRules = delegationRules;
+//    }
+//
+//    public RuleDelegation getDelegationRule(int index) {
+//        while (getDelegationRules().size() <= index) {
+//            RuleDelegation ruleDelegation = new RuleDelegation();
+//            ruleDelegation.setRuleResponsibility(this);
+//            ruleDelegation.setDelegationRuleBaseValues(new RuleBaseValues());
+//            getDelegationRules().add(ruleDelegation);
+//        }
+//        return (RuleDelegation) getDelegationRules().get(index);
+//    }
 
     public boolean equals(Object o) {
         if (o == null) return false;

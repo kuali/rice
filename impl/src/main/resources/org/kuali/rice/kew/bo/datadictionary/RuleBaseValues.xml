@@ -20,6 +20,7 @@
     <property name="attributes" >
       <list>
         <ref bean="RuleBaseValues-ruleBaseValuesId" />
+        <ref bean="RuleBaseValues-name" />
         <ref bean="RuleBaseValues-documentTypeName" />
         <ref bean="RuleBaseValues-ruleTemplateId" />
         <ref bean="RuleBaseValues-ruleTemplateName" />
@@ -106,6 +107,23 @@
     <property name="name" value="ruleBaseValuesId" />
     <property name="label" value="Id" />
   </bean>
+
+  <bean id="RuleBaseValues-name" parent="RuleBaseValues-name-parentBean" />
+
+  <bean id="RuleBaseValues-name-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="shortLabel" value="Id" />
+    <property name="maxLength" value="256" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="30" />
+    </property>
+    <property name="name" value="name" />
+    <property name="label" value="Name" />
+  </bean>
+
 
   <bean id="RuleBaseValues-ruleTemplateId" parent="RuleBaseValues-ruleTemplateId-parentBean" />
 

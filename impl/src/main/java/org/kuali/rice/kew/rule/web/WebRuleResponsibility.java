@@ -143,16 +143,9 @@ public class WebRuleResponsibility extends RuleResponsibility {
         Class[] delegationRulesInterfaces = new Class[0]; // = delegationRulesClass.getInterfaces();
         List<Class> delegationRulesInterfaceList = (List<Class>) ClassUtils.getAllInterfaces(delegationRulesClass);
         delegationRulesInterfaces = delegationRulesInterfaceList.toArray(delegationRulesInterfaces);
-        //System.err.println("# of interfaces: " + delegationRulesInterfaces.length);
-        //for (Class c: delegationRulesInterfaces) {
-        //    System.err.println("a delegationrules list interface: " + c);
-        //}
         ClassLoader delegationRulesClassLoader = getDelegationRules().getClass().getClassLoader();
         Object o = Proxy.newProxyInstance(delegationRulesClassLoader, delegationRulesInterfaces, delegationRulesProxy);
-        //System.err.println("DELEGATIONRULES PROXY OBJECT: " + o);
-        //System.err.println("DELEGATIONRULES PROXY OBJECT CLASS: " + o.getClass());
-        //System.err.println("DELEGATIONRULES PROXY OBJECT instanceof List?: " + (o instanceof List));
-		setDelegationRules((List) o);
+        //setDelegationRules((List) o);
 
 		if (Integer.parseInt(Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_DELEGATE_LIMIT)) > getDelegationRules().size() || showDelegations) {
 			for (Iterator iterator = getDelegationRules().iterator(); iterator.hasNext();) {
@@ -401,7 +394,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 			delegation.setVersionNumber(null);
 			delegation.setRuleDelegationId(null);
 			delegation.setRuleResponsibility(this);
-			delegation.setRuleResponsibilityId(null);
+			delegation.setResponsibilityId(null);
 
 			RuleBaseValues rule = delegation.getDelegationRuleBaseValues();
 			rule.setVersionNumber(null);

@@ -319,6 +319,66 @@ public class RuleServiceImpl implements RuleService {
         performanceLogger.log("Time to make current");
     }
 
+    /**
+     * makeCurrent(RuleBaseValues) is the version of makeCurrent which is initiated from the new Routing Rule
+     * Maintenance document.  Because of the changes in the data model and the front end here,
+     * this method can be much less complicated than the previous 2!
+     */
+    public void makeCurrent(RuleBaseValues rule) {
+        PerformanceLogger performanceLogger = new PerformanceLogger();
+        
+        boolean isGenerateRuleArs = true;
+        String generateRuleArs = Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_GENERATE_ACTION_REQESTS_IND);
+        if (!StringUtils.isBlank(generateRuleArs)) {
+            isGenerateRuleArs = KEWConstants.YES_RULE_CHANGE_AR_GENERATION_VALUE.equalsIgnoreCase(generateRuleArs);
+        }
+        Set<Long> responsibilityIds = new HashSet<Long>();
+
+
+        performanceLogger.log("Preparing rule: " + rule.getDescription());
+
+        Map<Long, RuleBaseValues> rulesToSave = new HashMap<Long, RuleBaseValues>();
+        rule.setCurrentInd(Boolean.TRUE);
+        Timestamp date = new Timestamp(System.currentTimeMillis());
+        rule.setActivationDate(date);
+        try {
+        	rule.setDeactivationDate(new Timestamp(RiceConstants.getDefaultDateFormat().parse("01/01/2100").getTime()));
+        } catch (Exception e) {
+        	LOG.error("Parse Exception", e);
+        }
+        
+        rulesToSave.put(rule.getRuleBaseValuesId(), rule);
+        if (rule.getPreviousVersionId() != null) {
+        	RuleBaseValues oldRule = findRuleBaseValuesById(rule.getPreviousVersionId());
+        	rule.setPreviousVersion(oldRule);
+        }
+        rule.setVersionNbr(0);
+        RuleBaseValues oldRule = rule.getPreviousVersion();
+        if (oldRule != null) {
+        	performanceLogger.log("Setting previous rule: " + oldRule.getRuleBaseValuesId() + " to non current.");
+        	oldRule.setCurrentInd(Boolean.FALSE);
+        	oldRule.setDeactivationDate(date);
+        	rulesToSave.put(oldRule.getRuleBaseValuesId(), oldRule);
+        	responsibilityIds.addAll(getModifiedResponsibilityIds(oldRule, rule));
+        	rule.setVersionNbr(getNextVersionNumber(oldRule));
+        }
+        Map<String, Long> notifyMap = new HashMap<String, Long>();
+        for (RuleBaseValues ruleToSave : rulesToSave.values()) {
+            getRuleDAO().save(ruleToSave);
+            performanceLogger.log("Saved rule: " + ruleToSave.getRuleBaseValuesId());
+            installNotification(ruleToSave, notifyMap);
+        }
+        LOG.info("Notifying rule cache of "+notifyMap.size()+" cache changes.");
+        for (Iterator iterator = notifyMap.values().iterator(); iterator.hasNext();) {
+            queueRuleCache((Long)iterator.next());
+        }
+        if (isGenerateRuleArs) {
+            getActionRequestService().updateActionRequestsForResponsibilityChange(responsibilityIds);
+        }
+        performanceLogger.log("Time to make current");
+    }
+
+    
     private void queueRuleCache(Long ruleId){
 //      PersistedMessage ruleCache = new PersistedMessage();
 //      ruleCache.setQueuePriority(KEWConstants.ROUTE_QUEUE_RULE_CACHE_PRIORITY);
@@ -1461,18 +1521,18 @@ public class RuleServiceImpl implements RuleService {
             responsibility.setRuleResponsibilityKey(null);
             responsibility.setVersionNumber(0L);
             rule.getResponsibilities().add(responsibility);
-            responsibility.setDelegationRules(new ArrayList());
-            for (RuleDelegation existingDelegation : (List<RuleDelegation>)existingResponsibility.getDelegationRules()) {
-                RuleDelegation delegation = new RuleDelegation();
-                PropertyUtils.copyProperties(delegation, existingDelegation);
-                delegation.setRuleDelegationId(null);
-                delegation.setRuleResponsibility(responsibility);
-                delegation.setRuleResponsibilityId(null);
-                delegation.setVersionNumber(0L);
-                // it's very important that we do NOT recurse down into the delegation rules and reversion those,
-                // this is important to how rule versioning works
-                responsibility.getDelegationRules().add(delegation);
-            }
+//            responsibility.setDelegationRules(new ArrayList());
+//            for (RuleDelegation existingDelegation : (List<RuleDelegation>)existingResponsibility.getDelegationRules()) {
+//                RuleDelegation delegation = new RuleDelegation();
+//                PropertyUtils.copyProperties(delegation, existingDelegation);
+//                delegation.setRuleDelegationId(null);
+//                delegation.setRuleResponsibility(responsibility);
+//                delegation.setRuleResponsibilityId(null);
+//                delegation.setVersionNumber(0L);
+//                // it's very important that we do NOT recurse down into the delegation rules and reversion those,
+//                // this is important to how rule versioning works
+//                responsibility.getDelegationRules().add(delegation);
+//            }
         }
         rule.setRuleExtensions(new ArrayList());
         for (RuleExtension existingExtension : (List<RuleExtension>)existingRule.getRuleExtensions()) {
@@ -1496,7 +1556,7 @@ public class RuleServiceImpl implements RuleService {
         }
         return rule;
     }
-
+    
     private static class RuleVersion {
         public RuleBaseValues rule;
         public RuleBaseValues parent;

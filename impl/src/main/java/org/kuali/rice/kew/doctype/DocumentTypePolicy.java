@@ -100,10 +100,6 @@ public class DocumentTypePolicy implements WorkflowPersistable {
         return KEWConstants.DISAPPROVE_POLICY.equals(policyName);
     }
 
-    public boolean isPreApprove() {
-        return KEWConstants.PREAPPROVE_POLICY.equals(policyName);
-    }
-
     public Long getDocumentTypeId() {
         return documentTypeId;
     }

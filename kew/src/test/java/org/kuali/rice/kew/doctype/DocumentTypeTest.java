@@ -157,7 +157,6 @@ public class DocumentTypeTest extends KEWTestCase {
         assertEquals("Wrong doc handler url", "http://someurl/path/_blank", parsedDocument.getDocHandlerUrl());
         assertEquals("Wrong blanketApprover workgroup", "TestWorkgroup", parsedDocument.getBlanketApproveWorkgroup().getGroupName());
         assertEquals("Wrong blanketApprove policy", null, parsedDocument.getBlanketApprovePolicy());
-        assertEquals("Wrong PRE_APPROVE policy value", Boolean.FALSE, parsedDocument.getPreApprovePolicy().getPolicyValue());
         assertEquals("Wrong DEFAULT_APPROVE policy value", Boolean.FALSE, parsedDocument.getDefaultApprovePolicy().getPolicyValue());
         assertEquals("Wrong LOOK_FUTURE", Boolean.TRUE, parsedDocument.getLookIntoFuturePolicy().getPolicyValue());
 

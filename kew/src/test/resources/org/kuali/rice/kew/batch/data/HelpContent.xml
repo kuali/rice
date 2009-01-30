@@ -564,12 +564,6 @@
   	    </helpEntry>
 
   	    <helpEntry>
-  		  <helpName> Document Type Pre Approve Policy </helpName>
-  		  <helpText> This option indicates whether EDocs of this Document Type can have Approval Actions Taken on them before their corresponding Action Requests are generated or activated. </helpText>
-  		  <helpKey>  DocumentTypePreApprovePolicy </helpKey>
-  	    </helpEntry>
-
-  	    <helpEntry>
   		  <helpName>  Initiator Must Route </helpName>
   		  <helpText>  Initiator Must Route </helpText>
   		  <helpKey>   InitiatorMustRoute </helpKey>
@@ -660,15 +654,6 @@
   	      </helpText>
   	      <helpKey>    DocumentDefaultApprovePolicy </helpKey>
   	    </helpEntry>
-
-
-  	    <helpEntry>
-  	      <helpName>    Document Pre Approve Policy </helpName>
-  	      <helpText>  This option indicates whether EDocs of this Document Type can have Approval Actions Taken on them before their corresponding Action Requests are generated or activated.
-  	      </helpText>
-  	      <helpKey>    DocumentPreApprovePolicy </helpKey>
-  	    </helpEntry>
-
 
   	        <!-- =============================== Help Entry Help ================================= -->
   	    <helpEntry>

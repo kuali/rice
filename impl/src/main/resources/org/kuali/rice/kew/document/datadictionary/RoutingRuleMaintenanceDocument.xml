@@ -44,6 +44,9 @@
               p:name="ruleTemplate.name"
               p:unconditionallyReadOnly="true"/>
         <bean parent="MaintainableFieldDefinition"
+              p:name="name"
+              p:required="false" />
+        <bean parent="MaintainableFieldDefinition"
               p:name="description"
               p:required="true" />
         <bean parent="MaintainableFieldDefinition"
@@ -81,6 +84,7 @@
           <property name="name" value="personResponsibilities" />
           <property name="businessObjectClass" value="org.kuali.rice.kew.rule.PersonRuleResponsibility" />
           <property name="summaryTitle" value="Person" />
+          <property name="alwaysAllowCollectionDeletion" value="true"/>
           <property name="summaryFields" >
             <list>
               <bean parent="MaintainableFieldDefinition"
@@ -115,6 +119,7 @@
           <property name="name" value="groupResponsibilities" />
           <property name="businessObjectClass" value="org.kuali.rice.kew.rule.GroupRuleResponsibility" />
           <property name="summaryTitle" value="Group" />
+          <property name="alwaysAllowCollectionDeletion" value="true"/>
           <property name="summaryFields" >
             <list>
               <bean parent="MaintainableFieldDefinition"

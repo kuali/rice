@@ -93,8 +93,12 @@ public class RuleTemplateXmlExporter implements XmlExporter, XmlConstants {
             String instructionsValue = (instructionsOption == null ? "" : instructionsOption.getValue());
             renderer.renderTextElement(defaultsElement, RULE_INSTRUCTIONS, instructionsValue);
             renderer.renderTextElement(defaultsElement, DESCRIPTION, defaultRuleValues.getDescription());
-            renderer.renderDateElement(defaultsElement, FROM_DATE, defaultRuleValues.getFromDate());
-            renderer.renderDateElement(defaultsElement, TO_DATE, defaultRuleValues.getToDate());
+            if (defaultRuleValues.getFromDate() != null) {
+            	renderer.renderDateElement(defaultsElement, FROM_DATE, defaultRuleValues.getFromDate());
+            }
+            if (defaultRuleValues.getToDate() != null) {
+            	renderer.renderDateElement(defaultsElement, TO_DATE, defaultRuleValues.getToDate());
+            }
             renderer.renderBooleanElement(defaultsElement, IGNORE_PREVIOUS, defaultRuleValues.getIgnorePrevious(), false);
             renderer.renderBooleanElement(defaultsElement, ACTIVE, defaultRuleValues.getActiveInd(), true);
             if (defaultDelegationValues == null) {

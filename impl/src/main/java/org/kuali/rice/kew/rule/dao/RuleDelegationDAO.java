@@ -28,4 +28,6 @@ public interface RuleDelegationDAO {
     public List findAllRuleDelegations();
     public void delete(Long ruleDelegationId);
     public RuleDelegation findByRuleDelegationId(Long ruleDelegationId);
+    public List<RuleDelegation> findByResponsibilityIdWithCurrentRule(Long responsibiliytId);
+    
 }

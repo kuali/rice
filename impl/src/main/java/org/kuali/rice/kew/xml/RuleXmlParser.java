@@ -409,7 +409,8 @@ public class RuleXmlParser implements XmlConstants {
             responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_ROLE_ID);
         }
         if (ruleDelegation == null && delegations != null) {
-            responsibility.setDelegationRules(parseRuleDelegations(delegations, responsibility));
+            // TODO needs to be re-implemented
+        	//responsibility.setDelegationRules(parseRuleDelegations(delegations, responsibility));
         }
         return responsibility;
     }

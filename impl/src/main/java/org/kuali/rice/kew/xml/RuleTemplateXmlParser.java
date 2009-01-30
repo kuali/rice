@@ -347,7 +347,7 @@ public class RuleTemplateXmlParser implements XmlConstants {
                 ruleDelegationDefaults = new RuleDelegation();
                 ruleDelegationDefaults.setDelegationRuleBaseValues(ruleDefaults);
                 ruleDelegationDefaults.setDelegationType(delegationType);
-                ruleDelegationDefaults.setRuleResponsibilityId(new Long(-1));
+                ruleDelegationDefaults.setResponsibilityId(new Long(-1));
             }
 
             // explicitly save the new rule delegation defaults and default rule

@@ -53,4 +53,8 @@ public class RuleDelegationServiceImpl implements RuleDelegationService {
     public RuleDelegation findByRuleDelegationId(Long ruleDelegationId){
         return dao.findByRuleDelegationId(ruleDelegationId);
     }
+    
+    public List<RuleDelegation> findByResponsibilityId(Long responsibilityId) {
+    	return dao.findByResponsibilityIdWithCurrentRule(responsibilityId);
+    }
 }

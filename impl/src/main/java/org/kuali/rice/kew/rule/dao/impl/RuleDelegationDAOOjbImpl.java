@@ -16,6 +16,8 @@
  */
 package org.kuali.rice.kew.rule.dao.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.ojb.broker.query.Criteria;
@@ -50,4 +52,13 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
     public void delete(Long ruleDelegationId){
     	this.getPersistenceBrokerTemplate().delete(findByRuleDelegationId(ruleDelegationId));
     }
+    
+    public List<RuleDelegation> findByResponsibilityIdWithCurrentRule(Long responsibilityId) {
+    	Criteria crit = new Criteria();
+    	crit.addEqualTo("responsibilityId", responsibilityId);
+    	crit.addEqualTo("delegationRuleBaseValues.currentInd", true);
+    	Collection delegations = getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleDelegation.class, crit));
+    	return new ArrayList<RuleDelegation>(delegations);
+    }
+    
 }

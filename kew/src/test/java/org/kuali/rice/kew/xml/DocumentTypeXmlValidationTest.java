@@ -64,11 +64,6 @@ public class DocumentTypeXmlValidationTest extends BaseRiceTestCase {
         String xml = "<doc>" +
                        "<policies>" +
                          "<policy>" +
-                             "<inherited>false</inherited>" +
-                             "<name>PRE_APPROVE</name>" +
-                             "<value>true</value>" +
-                         "</policy>" +
-                         "<policy>" +
                            "<inherited>false</inherited>" +
                            "<name>DEFAULT_APPROVE</name>" +
                            "<value>false</value>" +
@@ -90,7 +85,6 @@ public class DocumentTypeXmlValidationTest extends BaseRiceTestCase {
                        "</policies>" +
                      "</doc>";
 
-        testPolicyValue("PRE_APPROVE", true, xml);
         testPolicyValue("DEFAULT_APPROVE", false, xml);
         testPolicyValue("TEST1", false, xml);
         testPolicyValue("TEST2", false, xml);

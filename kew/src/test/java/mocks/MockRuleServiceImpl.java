@@ -163,6 +163,10 @@ public class MockRuleServiceImpl implements RuleService {
     public void makeCurrent(Long routeHeaderId) {
         throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");
     }
+    
+    public void makeCurrent(RuleBaseValues rule) {
+        throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");
+    }
 
     public List findRuleBaseValuesByResponsibilityReviewer(String reviewerName, String type) {
         List rules = new ArrayList();

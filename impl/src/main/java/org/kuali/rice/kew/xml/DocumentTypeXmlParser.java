@@ -287,7 +287,14 @@ public class DocumentTypeXmlParser implements XmlConstants {
 //            throw xpee;
 //        }
         try {
-            documentType.setDescription((String) xpath.evaluate("./description", documentTypeNode, XPathConstants.STRING));
+            String desc = (String) xpath.evaluate("./" + DESCRIPTION, documentTypeNode, XPathConstants.STRING);
+            if (StringUtils.isBlank(desc)) {
+                if (previousDocumentType != null && StringUtils.isNotBlank(previousDocumentType.getDescription())) {
+                    // keep the same value as before, even if it's not specified here
+                    desc = previousDocumentType.getDescription();
+                }
+            }
+            documentType.setDescription(desc);
         } catch (XPathExpressionException xpee) {
             LOG.error("Error obtaining document type description", xpee);
             throw xpee;

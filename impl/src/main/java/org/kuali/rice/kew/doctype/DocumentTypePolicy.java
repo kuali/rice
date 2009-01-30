@@ -16,6 +16,8 @@
  */
 package org.kuali.rice.kew.doctype;
 
+import java.util.LinkedHashMap;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -25,9 +27,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.persistence.Version;
 
-import org.kuali.rice.kew.bo.WorkflowPersistable;
+import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.util.KEWConstants;
 
@@ -40,9 +41,9 @@ import org.kuali.rice.kew.util.KEWConstants;
 @IdClass(org.kuali.rice.kew.doctype.DocumentTypePolicyId.class)
 @Entity
 @Table(name="KREW_DOC_TYP_PLCY_RELN_T")
-public class DocumentTypePolicy implements WorkflowPersistable {
-
+public class DocumentTypePolicy extends KewPersistableBusinessObjectBase {
 	private static final long serialVersionUID = -4612246888683336474L;
+
 	@Id
 	@Column(name="DOC_TYP_ID")
 	private Long documentTypeId;
@@ -53,9 +54,6 @@ public class DocumentTypePolicy implements WorkflowPersistable {
 	private Boolean policyValue;
     @Transient
     private Boolean inheritedFlag;
-    @Version
-	@Column(name="VER_NBR")
-	private Integer lockVerNbr;
 
     @ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="DOC_TYP_ID",updatable=false,insertable=false)
@@ -158,11 +156,15 @@ public class DocumentTypePolicy implements WorkflowPersistable {
         this.documentType = documentType;
     }
 
-    public Integer getLockVerNbr() {
-        return lockVerNbr;
-    }
-
-    public void setLockVerNbr(Integer lockVerNbr) {
-        this.lockVerNbr = lockVerNbr;
+    /**
+     * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
+     */
+    @Override
+    protected LinkedHashMap toStringMapper() {
+        LinkedHashMap m = new LinkedHashMap();
+        m.put("documentTypeId", this.documentTypeId);
+        m.put("policyName", this.policyName);
+        m.put("policyValue", this.policyValue);
+        return m;
     }
 }

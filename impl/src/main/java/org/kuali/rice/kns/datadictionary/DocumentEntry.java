@@ -54,7 +54,7 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
 //    protected String label;
 //    protected String shortLabel;
 
-//    protected HelpDefinition helpDefinition;
+    protected HelpDefinition helpDefinition;
 
     protected boolean allowsNoteDelete = false;
     protected boolean allowsNoteAttachments = true;
@@ -183,6 +183,7 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
      */
     public void completeValidation() {
         super.completeValidation();
+        // TODO: validate documentTypeCode against some external source
 
         if (workflowProperties != null && workflowAttributes != null) {
         	throw new DataDictionaryException(documentTypeName + ": workflowProperties and workflowAttributes cannot both be defined for a document");
@@ -210,30 +211,30 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
         return "DocumentEntry for documentType " + documentTypeName;
     }
 
-//    /**
-//     * Accessor method for contained <code>{@link HelpDefinition}</code>
-//     * 
-//     * @return HelpDefinition
-//     */
-//    public HelpDefinition getHelpDefinition() {
-//        return helpDefinition;
-//    }
-//
-//    /**
-//            The help element provides the keys to obtain a
-//            help description from the database.
-//
-//            On document JSP pages, a help icon may be rendered.  If this tag is specified, then
-//            the filename of this page will be located in the value of the parameter specified by the namespace, detail type, and name.
-//
-//            The value of the parameter is relative to the value of the "externalizable.help.url" property in KualiConfigurationService (see KualiHelpAction).
-//            parameterNamespace: namespace of the parameter that has the path to the help page
-//            parameterName: name of the parameter that has the path to the help page
-//            parameterDetailType: detail type of the parameter that has the path to the help page
-//     */
-//    public void setHelpDefinition(HelpDefinition helpDefinition) {
-//        this.helpDefinition = helpDefinition;
-//    }
+    /**
+     * Accessor method for contained <code>{@link HelpDefinition}</code>
+     * 
+     * @return HelpDefinition
+     */
+    public HelpDefinition getHelpDefinition() {
+        return helpDefinition;
+    }
+
+    /**
+            The help element provides the keys to obtain a
+            help description from the database.
+
+            On document JSP pages, a help icon may be rendered.  If this tag is specified, then
+            the filename of this page will be located in the value of the parameter specified by the namespace, detail type, and name.
+
+            The value of the parameter is relative to the value of the "externalizable.help.url" property in KualiConfigurationService (see KualiHelpAction).
+            parameterNamespace: namespace of the parameter that has the path to the help page
+            parameterName: name of the parameter that has the path to the help page
+            parameterDetailType: detail type of the parameter that has the path to the help page
+     */
+    public void setHelpDefinition(HelpDefinition helpDefinition) {
+        this.helpDefinition = helpDefinition;
+    }
 
     /**
             The allowsNoteDelete element contains a true or false value.
@@ -584,14 +585,14 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     }
 
     /**
-     * @deprecated This was removed for Rice 1.0.
+     * @deprecated This was moved to the KEW Document Type object for Rice 1.0.
      */
     public void setShortLabel(String shortLabel) {
         // DO NOTHING
     }
 
     /**
-     * @deprecated This was removed for Rice 1.0.
+     * @deprecated This was moved to the KEW Document Type object for Rice 1.0.
      */
     public void setSummary(String summary) {
         // DO NOTHING
@@ -603,12 +604,4 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     public void setDescription(String description) {
         // DO NOTHING
     }
-
-    /**
-     * @deprecated This was moved to the KEW Document Type object for Rice 1.0.
-     */
-    public void setHelpDefinition(HelpDefinition helpDefinition) {
-        // DO NOTHING
-    }
-
 }

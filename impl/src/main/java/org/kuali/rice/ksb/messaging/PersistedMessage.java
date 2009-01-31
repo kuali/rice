@@ -38,7 +38,7 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
  */
 @Entity
 @Table(name="KRSB_MSG_QUE_T")
-@Sequence(name="SEQ_ROUTE_QUEUE", property="routeQueueId")
+@Sequence(name="KRSB_MSG_QUE_S", property="routeQueueId")
 @NamedQueries({
   @NamedQuery(name="PersistedMessage.FindAll", query="select pm from PersistedMessage pm"),
   @NamedQuery(name="PersistedMessage.FindByServiceName", query="select pm from PersistedMessage pm where pm.serviceName = :serviceName and pm.methodName = :methodName"),

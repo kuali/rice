@@ -45,7 +45,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
  *
  */
 @Entity
-@Sequence(name="KREW_RTE_NODE_S", property="documentTypeAttributeId")
+@Sequence(name="KREW_DOC_TYP_ATTR_S", property="documentTypeAttributeId")
 @Table(name="KREW_DOC_TYP_ATTR_T")
 public class DocumentTypeAttribute implements WorkflowPersistable, Comparable {
 

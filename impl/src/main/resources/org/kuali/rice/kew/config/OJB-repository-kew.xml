@@ -394,7 +394,7 @@
 
   <class-descriptor class="org.kuali.rice.kew.doctype.DocumentTypeAttribute" table="KREW_DOC_TYP_ATTR_T">
     <field-descriptor column="DOC_TYP_ATTRIB_ID" name="documentTypeAttributeId" jdbc-type="BIGINT"
-      primarykey="true" autoincrement="true" sequence-name="SEQ_DOCUMENT_TYPE_ATTRIBUTE"/>
+      primarykey="true" autoincrement="true" sequence-name="KREW_DOC_TYP_ATTR_S"/>
     <field-descriptor column="DOC_TYP_ID" name="documentTypeId" jdbc-type="BIGINT" access="anonymous"/>
     <field-descriptor column="RULE_ATTR_ID" name="ruleAttributeId" jdbc-type="BIGINT"/>
     <field-descriptor column="ORD_INDX" name="orderIndex" jdbc-type="INTEGER"/>
@@ -820,7 +820,7 @@
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kew.edl.bo.EDocLiteDefinition" table="KREW_EDL_DEF_T">
-    <field-descriptor column="EDOCLT_DEF_ID" name="eDocLiteDefId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_en_edoclt"/>
+    <field-descriptor column="EDOCLT_DEF_ID" name="eDocLiteDefId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="KREW_EDL_S"/>
     <field-descriptor column="NM" name="name" jdbc-type="VARCHAR"/>
     <field-descriptor column="XML" name="xmlContent" jdbc-type="CLOB"/>
     <field-descriptor column="ACTV_IND" name="activeInd" jdbc-type="BIT"/>
@@ -829,7 +829,7 @@
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kew.edl.bo.EDocLiteAssociation" table="KREW_EDL_ASSCTN_T">
-    <field-descriptor column="EDOCLT_ASSOC_ID" name="edocLiteAssocId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_en_edoclt"/>
+    <field-descriptor column="EDOCLT_ASSOC_ID" name="edocLiteAssocId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="KREW_EDL_S"/>
     <field-descriptor column="DOC_TYP_NM" name="edlName" jdbc-type="VARCHAR"/>
     <field-descriptor column="EDL_DEF_NM" name="definition" jdbc-type="VARCHAR"/>
     <field-descriptor column="STYLE_NM" name="style" jdbc-type="VARCHAR"/>

@@ -19,7 +19,7 @@
 
 	<class-descriptor class="org.kuali.rice.ksb.messaging.PersistedMessage" table="KRSB_MSG_QUE_T">
 		<field-descriptor name="routeQueueId" column="MSG_QUE_ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true"
-			sequence-name="SEQ_ROUTE_QUEUE" />
+			sequence-name="KRSB_MSG_QUE_S" />
 		<field-descriptor name="queuePriority" column="PRIO" jdbc-type="INTEGER" />
 		<field-descriptor name="queueStatus" column="STAT_CD" jdbc-type="CHAR" />
 		<field-descriptor name="queueDate" column="DT" jdbc-type="TIMESTAMP" />

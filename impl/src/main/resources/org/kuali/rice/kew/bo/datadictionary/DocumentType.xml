@@ -18,6 +18,47 @@
     </property>
     <property name="titleAttribute" value="documentTypeId" />
     <property name="objectLabel" value="Document Type" />
+    <property name="attributes" >
+      <list>
+        <ref bean="DocumentType-docTypeParentId" /> <!-- option -->
+        <ref bean="DocumentType-parentDocType.name" />
+        <ref bean="DocumentType-documentTypeId" />
+        <ref bean="DocumentType-name" /> <!-- required -->
+        <ref bean="DocumentType-description" /> <!-- option -->
+        <ref bean="DocumentType-label" /> <!-- required -->
+        <ref bean="DocumentType-active" /> <!-- required -->
+        <ref bean="DocumentType-unresolvedDocHandlerUrl" /> <!-- required but inheritable from parent -->
+        <ref bean="DocumentType-unresolvedHelpDefinitionUrl" /> <!-- option -->
+        <ref bean="DocumentType-actualNotificationFromAddress" /> <!-- option -->
+              <!-- Policies
+              editable
+              USE_KEW_SUPERUSER_DOCHANDLER
+              ALLOW_UNREQUESTED_ACTION
+              LOOK_FUTURE
+              NOTIFY_ON_SAVE
+               -->
+
+        <!-- BELOW USED FOR INQUIRY AND LOOKUP ONLY -->
+        <ref bean="DocumentType-displayableServiceNamespace" />
+        <ref bean="DocumentType-serviceNamespace" />
+
+        <!-- BELOW USED FOR INQUIRY ONLY -->
+        <ref bean="DocumentType-displayableUnresolvedDocHandlerUrl" />
+        <ref bean="DocumentType-displayablePostProcessorName" />
+        <ref bean="DocumentType-displayableNotificationFromAddress" />
+
+        <!-- BELOW USED FOR LOOKUP ONLY -->
+        <ref bean="DocumentType-descendHierarchy" />
+<!--
+        <ref bean="DocumentType-postProcessorName" />
+        <ref bean="DocumentType-summary" />
+        <ref bean="DocumentType-shortLabel" />
+        <ref bean="DocumentType-blanketApprovePolicy" />
+        <ref bean="DocumentType-blanketApproveWorkgroupId" />
+        <ref bean="DocumentType-reportingWorkgroupId" />
+-->
+      </list>
+    </property>
     <property name="relationships" >
       <list>
         <bean parent="RelationshipDefinition">
@@ -38,19 +79,6 @@
             </list>
           </property>
         </bean>
-       </list>
-    </property>
-    <property name="attributes" >
-      <list>
-        <ref bean="DocumentType-docTypeParentName"/>
-      	<ref bean="DocumentType-docTypeParentId"/>
-        <ref bean="DocumentType-documentTypeId" />
-        <ref bean="DocumentType-name" />
-        <ref bean="DocumentType-description" />
-        <ref bean="DocumentType-label" />
-        <ref bean="DocumentType-serviceNamespace" />
-        <ref bean="DocumentType-descendHierarchy" />
-        <ref bean="DocumentType-active" />
       </list>
     </property>
   </bean>
@@ -61,94 +89,66 @@
 
   <bean id="DocumentType-documentTypeId-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="Id" />
-    <property name="maxLength" value="30" />
+    <property name="maxLength" value="19" />
     <property name="validationPattern" >
       <bean parent="NumericValidationPattern" />
     </property>
     <property name="control" >
-      <bean parent="HiddenControlDefinition" />
+      <bean parent="TextControlDefinition" />
     </property>
     <property name="name" value="documentTypeId" />
     <property name="label" value="Id" />
   </bean>
   
-  
-  
  <bean id="DocumentType-docTypeParentId" parent="DocumentType-docTypeParentId-parentBean" />
 
-  <bean id="DocumentType-docTypeParentId-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="DocumentType-docTypeParentId-parentBean" abstract="true" parent="DocumentType-documentTypeId">
     <property name="shortLabel" value="Parent Id" />
-    <property name="maxLength" value="30" />
-    <property name="validationPattern" >
-      <bean parent="AnyCharacterValidationPattern" />
-    </property>
-    <property name="control" >
-      <bean parent="TextControlDefinition"
-            p:size="30" />
-    </property>
     <property name="name" value="docTypeParentId" />
     <property name="label" value="Parent Id" />
-  </bean>
-  
-  <bean id="DocumentType-parentDocType.name" parent="DocumentType-parentDocType.name-parentBean" />
-
-  <bean id="DocumentType-parentDocType.name-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="shortLabel" value="Parent Name" />
-    <property name="maxLength" value="30" />
-    <property name="validationPattern" >
-      <bean parent="AnyCharacterValidationPattern" />
-    </property>
-    <property name="control" >
-      <bean parent="TextControlDefinition"
-            p:size="30" />
-    </property>
-    <property name="name" value="parentDocType.name" />
-    <property name="label" value="Parent Name" />
-  </bean>
-  
-  <bean id="DocumentType-docTypeParentName" parent="DocumentType-docTypeParentName-parentBean" />
-
-  <bean id="DocumentType-docTypeParentName-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="shortLabel" value="Parent Name" />
-    <property name="maxLength" value="30" />
-    <property name="validationPattern" >
-      <bean parent="AnyCharacterValidationPattern" />
-    </property>    
-    <property name="control" >
-    	<bean parent="LookupReadonlyControlDefinition"
-    		p:size="20" />
-    </property>
-    <property name="name" value="parentDocType.name" />
-    <property name="label" value="Parent Name" />
   </bean>
   
   <bean id="DocumentType-name" parent="DocumentType-name-parentBean" />
 
   <bean id="DocumentType-name-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="Name" />
-    <property name="maxLength" value="30" />
+    <property name="maxLength" value="255" />
     <property name="validationPattern" >
-      <bean parent="AnyCharacterValidationPattern" />
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="false" />
     </property>
     <property name="control" >
       <bean parent="TextControlDefinition"
-            p:size="30" />
+            p:size="50" />
     </property>
     <property name="name" value="name" />
     <property name="label" value="Name" />
   </bean>
 
+  <bean id="DocumentType-parentDocType.name" parent="DocumentType-parentDocType.name-parentBean" />
+
+  <bean id="DocumentType-parentDocType.name-parentBean" abstract="true" parent="DocumentType-name">
+    <property name="shortLabel" value="Parent Name" />
+    <property name="name" value="parentDocType.name" />
+    <property name="label" value="Parent Name" />
+    <property name="control" >
+    	<bean parent="LookupReadonlyControlDefinition"
+    		p:size="50" />
+    </property>
+  </bean>
+  
   <bean id="DocumentType-label" parent="DocumentType-label-parentBean" />
 
   <bean id="DocumentType-label-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="Label" />
     <property name="maxLength" value="500" />
     <property name="validationPattern" >
-      <bean parent="AnyCharacterValidationPattern" />
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="true" />
     </property>
     <property name="control" >
       <bean parent="TextControlDefinition"
-            p:size="30" />
+            p:size="50" />
     </property>
     <property name="name" value="label" />
     <property name="label" value="Label" />
@@ -171,8 +171,249 @@
     <property name="formatterClass" value="org.kuali.rice.kns.web.format.BooleanFormatter" />
   </bean>
   
-    <bean id="DocumentType-descendHierarchy" parent="DocumentType-descendHierarchy-parentBean"/>
+  <bean id="DocumentType-description" parent="DocumentType-description-parentBean" />
+
+  <bean id="DocumentType-description-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="shortLabel" value="Description" />
+    <property name="maxLength" value="4000" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="true" />
+    </property>
+    <property name="control" >
+        <bean parent="TextareaControlDefinition" p:rows="3" p:cols="80" />
+    </property>
+    <property name="name" value="description" />
+    <property name="label" value="Description" />
+  </bean>
   
+<!--
+  <bean id="DocumentType-shortLabel" parent="DocumentType-shortLabel-parentBean" />
+
+  <bean id="DocumentType-shortLabel-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="shortLabel" value="Shrt Lbl" />
+    <property name="maxLength" value="255" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="true" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="50" />
+    </property>
+    <property name="name" value="shortLabel" />
+    <property name="label" value="Short Label" />
+  </bean>
+
+  <bean id="DocumentType-summary" parent="DocumentType-summary-parentBean" />
+
+  <bean id="DocumentType-summary-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="shortLabel" value="Summary" />
+    <property name="maxLength" value="4000" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="true" />
+    </property>
+    <property name="control" >
+        <bean parent="TextareaControlDefinition" p:rows="3" p:cols="80" />
+    </property>
+    <property name="name" value="summary" />
+    <property name="label" value="Summary" />
+  </bean>
+-->
+
+  <bean id="DocumentType-serviceNamespace" parent="DocumentType-serviceNamespace-parentBean" />
+
+  <bean id="DocumentType-serviceNamespace-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="shortLabel" value="Svc Nmspc" />
+    <property name="maxLength" value="255" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="50" />
+    </property>
+    <property name="name" value="serviceNamespace" />
+    <property name="label" value="Service Namespace" />
+  </bean>
+  
+  <bean id="DocumentType-displayableServiceNamespace" parent="DocumentType-displayableServiceNamespace-parentBean" />
+
+  <bean id="DocumentType-displayableServiceNamespace-parentBean" abstract="true" parent="DocumentType-serviceNamespace">
+    <property name="name" value="displayableServiceNamespace" />
+    <property name="validationPattern" >
+      <null/>
+    </property>
+  </bean>
+  
+  <bean id="DocumentType-unresolvedDocHandlerUrl" parent="DocumentType-unresolvedDocHandlerUrl-parentBean" />
+
+  <bean id="DocumentType-unresolvedDocHandlerUrl-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="shortLabel" value="Doc Handler URL" />
+    <property name="maxLength" value="255" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="false" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="50" />
+    </property>
+    <property name="name" value="unresolvedDocHandlerUrl" />
+    <property name="label" value="Document Handler URL" />
+  </bean>
+
+  <bean id="DocumentType-displayableUnresolvedDocHandlerUrl" parent="DocumentType-displayableUnresolvedDocHandlerUrl-parentBean" />
+
+  <bean id="DocumentType-displayableUnresolvedDocHandlerUrl-parentBean" abstract="true" parent="DocumentType-unresolvedDocHandlerUrl">
+    <property name="name" value="displayableUnresolvedDocHandlerUrl" />
+    <property name="maxLength" value="5000" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="true" />
+    </property>
+  </bean>
+
+  <bean id="DocumentType-unresolvedHelpDefinitionUrl" parent="DocumentType-unresolvedHelpDefinitionUrl-parentBean" />
+
+  <bean id="DocumentType-unresolvedHelpDefinitionUrl-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="unresolvedHelpDefinitionUrl" />
+    <property name="label" value="Help Definition URL" />
+    <property name="shortLabel" value="Help URL" />
+    <property name="maxLength" value="255" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="false" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="50" />
+    </property>
+  </bean>
+  
+  <bean id="DocumentType-postProcessorName" parent="DocumentType-postProcessorName-parentBean" />
+
+  <bean id="DocumentType-postProcessorName-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="shortLabel" value="Post Processor" />
+    <property name="maxLength" value="255" />
+    <property name="validationPattern" >
+      <bean parent="JavaClassValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="100" />
+    </property>
+    <property name="name" value="postProcessorName" />
+    <property name="label" value="Post Processor Class" />
+  </bean>
+  
+  <bean id="DocumentType-displayablePostProcessorName" parent="DocumentType-displayablePostProcessorName-parentBean" />
+
+  <bean id="DocumentType-displayablePostProcessorName-parentBean" abstract="true" parent="DocumentType-postProcessorName">
+    <property name="name" value="displayablePostProcessorName" />
+    <property name="maxLength" value="5000" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="true" />
+    </property>
+  </bean>
+  
+<!--
+  <bean id="DocumentType-blanketApprovePolicy" parent="DocumentType-blanketApprovePolicy-parentBean" />
+
+  <bean id="DocumentType-blanketApprovePolicy-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="shortLabel" value="BA Policy" />
+    <property name="maxLength" value="10" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="SelectControlDefinition"
+            p:valuesFinderClass="org.kuali.rice.kew.doctype.bo.BlanketApprovePolicyValuesFinder" />
+    </property>
+    <property name="name" value="blanketApprovePolicy" />
+    <property name="label" value="Blanket Approve Policy" />
+  </bean>
+
+  <bean id="DocumentType-blanketApproveWorkgroupId" parent="DocumentType-blanketApproveWorkgroupId-parentBean" />
+
+  <bean id="DocumentType-blanketApproveWorkgroupId-parentBean" abstract="true" parent="ExternalizableAttributeDefinitionProxy"
+    p:sourceExternalizableBusinessObjectInterface="org.kuali.rice.kim.bo.group.KimGroup"
+    p:sourceAttributeName="groupId">
+    <property name="name" value="blanketApproveWorkgroupId" />
+    <property name="label" value="Blanket Approve Group" />
+    <property name="shortLabel" value="BA Group" />
+  </bean>
+
+  <bean id="DocumentType-blanketApproveWorkgroup.groupName" parent="DocumentType-blanketApproveWorkgroup.groupName-parentBean" />
+
+  <bean id="DocumentType-blanketApproveWorkgroup.groupName-parentBean" abstract="true" parent="KimGroupImpl-groupName">
+    <property name="name" value="blanketApproveWorkgroup.groupName" />
+    <property name="label" value="Blanket Approve Group Name" />
+    <property name="shortLabel" value="BA Group Name" />
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="30" />
+    </property>
+  </bean>
+
+  <bean id="DocumentType-reportingWorkgroupId" parent="DocumentType-reportingWorkgroupId-parentBean" />
+
+  <bean id="DocumentType-reportingWorkgroupId-parentBean" abstract="true" parent="ExternalizableAttributeDefinitionProxy"
+    p:sourceExternalizableBusinessObjectInterface="org.kuali.rice.kim.bo.group.KimGroup"
+    p:sourceAttributeName="groupId">
+    <property name="name" value="reportingWorkgroupId" />
+    <property name="label" value="Reporting Group" />
+    <property name="shortLabel" value="Report Group" />
+  </bean>
+
+  <bean id="DocumentType-reportingWorkgroup.groupName" parent="DocumentType-reportingWorkgroup.groupName-parentBean" />
+
+  <bean id="DocumentType-reportingWorkgroup.groupName-parentBean" abstract="true" parent="KimGroupImpl-groupName">
+    <property name="name" value="reportingWorkgroup.groupName" />
+    <property name="label" value="Reporting Group Name" />
+    <property name="shortLabel" value="Report Group Name" />
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="30" />
+    </property>
+  </bean>
+-->
+
+  <bean id="DocumentType-actualNotificationFromAddress" parent="DocumentType-actualNotificationFromAddress-parentBean" />
+
+  <bean id="DocumentType-actualNotificationFromAddress-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="shortLabel" value="Notify Address" />
+    <property name="maxLength" value="255" />
+    <property name="validationPattern" >
+      <bean parent="EmailAddressValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="30" />
+    </property>
+    <property name="name" value="actualNotificationFromAddress" />
+    <property name="label" value="Notification From Address" />
+  </bean>
+
+  <bean id="DocumentType-displayableNotificationFromAddress" parent="DocumentType-displayableNotificationFromAddress-parentBean" />
+
+  <bean id="DocumentType-displayableNotificationFromAddress-parentBean" abstract="true" parent="DocumentType-actualNotificationFromAddress">
+    <property name="name" value="displayableNotificationFromAddress" />
+    <property name="maxLength" value="5000" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="true" />
+    </property>
+  </bean>
+
+  <!-- FIELDS USED ONLY BY LOOKUP -->  
+
+  <!-- FIELDS USED ONLY BY LOOKUP -->  
+
+  <bean id="DocumentType-descendHierarchy" parent="DocumentType-descendHierarchy-parentBean"/>
+
   <bean id="DocumentType-descendHierarchy-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="name" value="descendHierarchy" />
     <property name="forceUppercase" value="false" />
@@ -189,39 +430,7 @@
     </property>
     <property name="formatterClass" value="org.kuali.rice.kns.web.format.BooleanFormatter" />
   </bean>
-  
-  <bean id="DocumentType-description" parent="DocumentType-description-parentBean" />
 
-  <bean id="DocumentType-description-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="shortLabel" value="Description" />
-    <property name="maxLength" value="4000" />
-    <property name="validationPattern" >
-      <bean parent="AnyCharacterValidationPattern" />
-    </property>
-    <property name="control" >
-      <bean parent="TextControlDefinition"
-            p:size="30" />
-    </property>
-    <property name="name" value="description" />
-    <property name="label" value="Description" />
-  </bean>
-    
-  <bean id="DocumentType-serviceNamespace" parent="DocumentType-serviceNamespace-parentBean" />
-
-  <bean id="DocumentType-serviceNamespace-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="shortLabel" value="Service Namespace" />
-    <property name="maxLength" value="30" />
-    <property name="validationPattern" >
-      <bean parent="AnyCharacterValidationPattern" />
-    </property>
-    <property name="control" >
-      <bean parent="TextControlDefinition"
-            p:size="30" />
-    </property>
-    <property name="name" value="serviceNamespace" />
-    <property name="label" value="Service Namespace" />
-  </bean>
-  
   <!-- Business Object Inquiry Definition -->
 
   <bean id="DocumentType-inquiryDefinition" parent="DocumentType-inquiryDefinition-parentBean" />
@@ -245,11 +454,20 @@
               <bean parent="FieldDefinition"
                     p:attributeName="label" />
               <bean parent="FieldDefinition"
-              		p:attributeName="active" />
-              <bean parent="FieldDefinition"
                     p:attributeName="description" />
               <bean parent="FieldDefinition"
-                    p:attributeName="serviceNamespace" />            
+                    p:attributeName="displayableUnresolvedDocHandlerUrl" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="unresolvedHelpDefinitionUrl" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="displayablePostProcessorName" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="displayableNotificationFromAddress" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="displayableServiceNamespace" />    
+              <bean parent="FieldDefinition"
+                    p:attributeName="active" />
+              <!-- Policies -->                            
             </list>
           </property>
         </bean>
@@ -273,11 +491,6 @@
         <bean parent="FieldDefinition"
         	p:attributeName="parentDocType.name"
             p:noDirectInquiry="true"/>
-<!--
-        <bean parent="FieldDefinition"
-            p:attributeName="docTypeParentId"
-            p:noDirectInquiry="true"/>
--->
         <bean parent="FieldDefinition"
         	p:attributeName="descendHierarchy"
               p:defaultValue="No"/> 
@@ -306,7 +519,7 @@
         <bean parent="FieldDefinition"
               p:attributeName="active" />
         <bean parent="FieldDefinition"
-              p:attributeName="serviceNamespace" />
+              p:attributeName="displayableServiceNamespace" />
       </list>
     </property>
     <property name="title" value="Document Type Lookup" />

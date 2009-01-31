@@ -300,10 +300,10 @@ public class DocumentTypeXmlParser implements XmlConstants {
             throw xpee;
         }
         try {
-            String label = (String) xpath.evaluate("./label", documentTypeNode, XPathConstants.STRING);
+            String label = (String) xpath.evaluate("./" + LABEL, documentTypeNode, XPathConstants.STRING);
             if (StringUtils.isBlank(label)) {
-            	if (previousDocumentType != null && !StringUtils.isBlank(previousDocumentType.getLabel())) {
-            		// keep the same label as before, even if it's not specified here
+            	if (previousDocumentType != null && StringUtils.isNotBlank(previousDocumentType.getLabel())) {
+            		// keep the same value as before, even if it's not specified here
             		label = previousDocumentType.getLabel();
             	} else {
             		// otherwise set it to undefined
@@ -325,30 +325,40 @@ public class DocumentTypeXmlParser implements XmlConstants {
         }
         String docHandler = null;
         try {
-            docHandler = (String) xpath.evaluate("./docHandler", documentTypeNode, XPathConstants.STRING);
+            docHandler = (String) xpath.evaluate("./" + DOC_HANDLER, documentTypeNode, XPathConstants.STRING);
         } catch (XPathExpressionException xpee) {
             LOG.error("Error obtaining document type docHandler", xpee);
             throw xpee;
         }
-
-        documentType.setDocHandlerUrl(docHandler);
-
-
-        String serviceNamespace = null; // by default set this to null and let the system sort out what the "default" is
-        if (((Boolean) xpath.evaluate("./" + SERVICE_NAMESPACE, documentTypeNode, XPathConstants.BOOLEAN)).booleanValue()) {
-            try {
-                serviceNamespace = (String) xpath.evaluate("./" + SERVICE_NAMESPACE, documentTypeNode, XPathConstants.STRING);
-            } catch (XPathExpressionException xpee) {
-                LOG.error("Error obtaining document type ServiceNamespace", xpee);
-                throw xpee;
+        documentType.setUnresolvedDocHandlerUrl(docHandler);
+        try {
+            String helpDefUrl = (String) xpath.evaluate("./" + HELP_DEFINITION_URL, documentTypeNode, XPathConstants.STRING);
+            if (StringUtils.isBlank(helpDefUrl)) {
+                if (previousDocumentType != null && StringUtils.isNotBlank(previousDocumentType.getUnresolvedHelpDefinitionUrl())) {
+                    // keep the same value as before, even if it's not specified here
+                    helpDefUrl = previousDocumentType.getUnresolvedHelpDefinitionUrl();
+                }
             }
+            documentType.setUnresolvedHelpDefinitionUrl(helpDefUrl);
+        } catch (XPathExpressionException xpee) {
+            LOG.error("Error obtaining document type help definition url", xpee);
+            throw xpee;
         }
 
-        documentType.setServiceNamespace(serviceNamespace);
+        String serviceNamespace = null; // by default set this to null and let the system sort out what the "default" is
+        try {
+            if (((Boolean) xpath.evaluate("./" + SERVICE_NAMESPACE, documentTypeNode, XPathConstants.BOOLEAN)).booleanValue()) {
+                serviceNamespace = (String) xpath.evaluate("./" + SERVICE_NAMESPACE, documentTypeNode, XPathConstants.STRING);
+            }
+        } catch (XPathExpressionException xpee) {
+            LOG.error("Error obtaining document type ServiceNamespace", xpee);
+            throw xpee;
+        }
+        documentType.setActualServiceNamespace(serviceNamespace);
 
         try {
         	if (((Boolean) xpath.evaluate("./" + NOTIFICATION_FROM_ADDRESS, documentTypeNode, XPathConstants.BOOLEAN)).booleanValue()) {
-                documentType.setNotificationFromAddress((String) xpath.evaluate("./" + NOTIFICATION_FROM_ADDRESS, documentTypeNode, XPathConstants.STRING));
+                documentType.setActualNotificationFromAddress((String) xpath.evaluate("./" + NOTIFICATION_FROM_ADDRESS, documentTypeNode, XPathConstants.STRING));
             }
         } catch (XPathExpressionException xpee) {
             LOG.error("Error obtaining document type " + NOTIFICATION_FROM_ADDRESS, xpee);
@@ -986,7 +996,6 @@ public class DocumentTypeXmlParser implements XmlConstants {
 //                policy.setInheritedFlag(Boolean.FALSE);
 //            }
             try {
-
                 if (((Boolean) xpath.evaluate("./value", documentTypePolicies.item(i), XPathConstants.BOOLEAN)).booleanValue()) {
                     policy.setPolicyValue(Boolean.valueOf((String) xpath.evaluate("./value", documentTypePolicies.item(i), XPathConstants.STRING)));
                 } else {

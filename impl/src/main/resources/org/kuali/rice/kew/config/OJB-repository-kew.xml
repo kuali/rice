@@ -347,17 +347,18 @@
     <field-descriptor column="LBL" name="label" jdbc-type="VARCHAR"/>
     <field-descriptor column="PREV_DOC_TYP_VER_NBR" name="previousVersionId" jdbc-type="BIGINT"/>
     <field-descriptor column="DOC_HDR_ID" name="routeHeaderId" jdbc-type="BIGINT"/>
-    <field-descriptor column="DOC_HDLR_URL" name="docHandlerUrl" jdbc-type="VARCHAR"/>
+    <field-descriptor column="DOC_HDLR_URL" name="unresolvedDocHandlerUrl" jdbc-type="VARCHAR"/>
+    <field-descriptor column="HELP_DEF_URL" name="unresolvedHelpDefinitionUrl" jdbc-type="VARCHAR"/>
     <field-descriptor column="POST_PRCSR" name="postProcessorName" jdbc-type="VARCHAR"/>
     <field-descriptor column="GRP_ID" name="workgroupId" jdbc-type="VARCHAR"/>
     <field-descriptor column="BLNKT_APPR_GRP_ID" name="blanketApproveWorkgroupId" jdbc-type="VARCHAR"/>
     <field-descriptor column="BLNKT_APPR_PLCY" name="blanketApprovePolicy" jdbc-type="VARCHAR"/>
     <field-descriptor column="RPT_GRP_ID" name="reportingWorkgroupId" jdbc-type="VARCHAR"/>
     <field-descriptor column="RTE_VER_NBR" name="routingVersion" jdbc-type="VARCHAR"/>
-    <field-descriptor column="NOTIFY_ADDR" name="notificationFromAddress" jdbc-type="VARCHAR"/>
+    <field-descriptor column="NOTIFY_ADDR" name="actualNotificationFromAddress" jdbc-type="VARCHAR"/>
     <field-descriptor column="SEC_XML" name="documentTypeSecurityXml" jdbc-type="CLOB"/>
     <field-descriptor column="EMAIL_XSL" name="customEmailStylesheet" jdbc-type="VARCHAR"/>
-    <field-descriptor column="SVC_NMSPC" name="serviceNamespace" jdbc-type="VARCHAR"/>
+    <field-descriptor column="SVC_NMSPC" name="actualServiceNamespace" jdbc-type="VARCHAR"/>
     <field-descriptor column="OBJ_ID" name="objectId" jdbc-type="VARCHAR" index="true" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"/>
     <collection-descriptor auto-retrieve="true" auto-update="true" auto-delete="true"
@@ -384,9 +385,11 @@
     <field-descriptor column="PLCY_NM" name="policyValue" jdbc-type="BIT"/>
     <field-descriptor column="OBJ_ID" name="objectId" jdbc-type="VARCHAR" index="true" />
     <field-descriptor column="VER_NBR" name="versionNumber" jdbc-type="BIGINT" locking="true"/>
+<!--
     <reference-descriptor class-ref="org.kuali.rice.kew.doctype.bo.DocumentType" name="documentType" auto-retrieve="true" auto-update="false" auto-delete="false">
       <foreignkey field-ref="documentTypeId" />
     </reference-descriptor>
+-->
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kew.doctype.DocumentTypeAttribute" table="KREW_DOC_TYP_ATTR_T">

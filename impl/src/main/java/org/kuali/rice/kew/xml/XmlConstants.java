@@ -76,6 +76,7 @@ public interface XmlConstants {
     public static final String REPORTING_WORKGROUP_NAME = "reportingWorkgroupName";
     public static final String DEFAULT_EXCEPTION_WORKGROUP_NAME = "defaultExceptionWorkgroupName";
     public static final String DOC_HANDLER = "docHandler";
+    public static final String HELP_DEFINITION_URL = "helpDefinitionURL";
     public static final String NOTIFICATION_FROM_ADDRESS = "notificationFromAddress";
     public static final String CUSTOM_EMAIL_STYLESHEET = "emailStylesheet";
     public static final String ROUTE_LEVELS_INHERITED = "routeLevelsInherited";

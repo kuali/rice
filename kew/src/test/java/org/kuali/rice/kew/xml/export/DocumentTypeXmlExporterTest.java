@@ -71,7 +71,8 @@ public class DocumentTypeXmlExporterTest extends XmlExporterTestCase {
         }
         assertEquals(oldDocType.getActive(), newDocType.getActive());
         assertEquals(oldDocType.getDescription(), newDocType.getDescription());
-        assertEquals(oldDocType.getDocHandlerUrl(), newDocType.getDocHandlerUrl());
+        assertEquals(oldDocType.getUnresolvedDocHandlerUrl(), newDocType.getUnresolvedDocHandlerUrl());
+        assertEquals(oldDocType.getUnresolvedHelpDefinitionUrl(), newDocType.getUnresolvedHelpDefinitionUrl());
         assertEquals(oldDocType.getLabel(), newDocType.getLabel());
         assertEquals(oldDocType.getPostProcessorName(), newDocType.getPostProcessorName());
         assertEquals(oldDocType.getRoutingVersion(), newDocType.getRoutingVersion());
@@ -81,7 +82,8 @@ public class DocumentTypeXmlExporterTest extends XmlExporterTestCase {
         
         assertWorkgroupsEqual(oldDocType.getSuperUserWorkgroup(), newDocType.getSuperUserWorkgroup());
         assertWorkgroupsEqual(oldDocType.getSuperUserWorkgroupNoInheritence(), newDocType.getSuperUserWorkgroupNoInheritence());
-        assertEquals(oldDocType.getNotificationFromAddress(), newDocType.getNotificationFromAddress());
+        assertEquals(oldDocType.getActualNotificationFromAddress(), newDocType.getActualNotificationFromAddress());
+        assertEquals(oldDocType.getActualServiceNamespace(), newDocType.getActualServiceNamespace());
         assertRoutePath(oldDocType, newDocType);
         assertPolicies(oldDocType, newDocType);
     }

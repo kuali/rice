@@ -20,29 +20,8 @@
         <value>name</value>
       </list>
     </property>
-    <property name="label" value="Document Type" />
-    <property name="shortLabel" value="Document Type" />
     <property name="documentTypeName" value="DocumentTypeDocument" />
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase" />
-<!--
-    <property name="workflowProperties" >
-      <ref bean="DocumentTypeMaintenanceDocument-workflowProperties" />
-    </property>
--->
-<!--
-    <property name="authorizations" >
-      <list>
-        <bean parent="AuthorizationDefinition">
-          <property name="action" value="initiate" />
-          <property name="authorizedGroups" >
-            <set>
-              <value>WorkflowAdmin</value>
-            </set>
-          </property>
-        </bean>
-      </list>
-    </property>
--->
   </bean>
 
 <!-- Maintenance Section Definitions -->
@@ -54,10 +33,10 @@
     <property name="title" value="Edit Document Type" />
     <property name="maintainableItems" >
       <list>
+<!--
         <bean parent="MaintainableFieldDefinition"
               p:name="documentTypeId"
               p:unconditionallyReadOnly="true" />
-<!--
         <bean parent="MaintainableFieldDefinition"
               p:name="docTypeParentId"
               p:required="false" />
@@ -70,24 +49,28 @@
               p:required="true" />
         <bean parent="MaintainableFieldDefinition"
               p:name="label"
-              p:required="true" />
+              p:required="false" />
         <bean parent="MaintainableFieldDefinition"
               p:name="description"
-              p:required="true" />
+              p:required="false" />
         <bean parent="MaintainableFieldDefinition"
-              p:name="serviceNamespace"
-              p:required="true" />
+              p:name="unresolvedDocHandlerUrl" /> <!-- need business rule to check parent inheritance -->
+        <bean parent="MaintainableFieldDefinition"
+              p:name="unresolvedHelpDefinitionUrl" />
+        <bean parent="MaintainableFieldDefinition"
+              p:name="actualNotificationFromAddress" />
         <bean parent="MaintainableFieldDefinition"
               p:name="active"
-              p:required="true" />
+              p:defaultValue="true" />
       </list>
     </property>
   </bean>
 
-<!-- Exported Workflow Properties -->
+  <bean id="DocumentTypeMaintenanceDocument-EditDocumentTypePolicies" parent="DocumentTypeMaintenanceDocument-EditDocumentTypePolicies-parentBean" />
 
-  <bean id="DocumentTypeMaintenanceDocument-workflowProperties" parent="DocumentTypeMaintenanceDocument-workflowProperties-parentBean" />
-
-  <bean id="DocumentTypeMaintenanceDocument-workflowProperties-parentBean" abstract="true" parent="WorkflowProperties">
+  <bean id="DocumentTypeMaintenanceDocument-EditDocumentTypePolicies-parentBean" abstract="true" parent="MaintainableSectionDefinition">
+    <property name="id" value="Edit Document Type Policies" />
+    <property name="title" value="Edit Document Type Policies" />
   </bean>
+
 </beans>

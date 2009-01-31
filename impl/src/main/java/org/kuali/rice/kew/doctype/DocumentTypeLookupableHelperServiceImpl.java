@@ -78,31 +78,28 @@ public class DocumentTypeLookupableHelperServiceImpl extends
         return searchResults;
     }
 
-	protected DocumentType loadDocumentTypeForSearch(Map<String, String> fieldValues)
-	{
-		DocumentType documentType = new DocumentType();
+	protected DocumentType loadDocumentTypeForSearch(Map<String, String> fieldValues) {
+        DocumentType documentType = new DocumentType();
 
-		String activeIndicator = (String) fieldValues.get(KEWPropertyConstants.ACTIVE);
+        String activeIndicator = (String) fieldValues.get(KEWPropertyConstants.ACTIVE);
         String docTypeLabel = (String) fieldValues.get(KEWPropertyConstants.DOC_TYP_LABEL);
         String documentTypeId = (String) fieldValues.get(KEWPropertyConstants.DOCUMENT_TYPE_ID);
         String docTypeName = (String) fieldValues.get(KEWPropertyConstants.NAME);
         String serviceNamespace = (String) fieldValues.get(KEWPropertyConstants.SERVICE_NAMESPACE);
-
 
         if ("Y".equals(activeIndicator)) {
             documentType.setActive(new Boolean(true));
         } else if ("N".equals(activeIndicator)) {
             documentType.setActive(new Boolean(false));
         } else {
-        	documentType.setActive(null);
+            documentType.setActive(null);
         }
 
         if (docTypeLabel != null && !"".equals(docTypeLabel.trim())) {
             docTypeLabel = docTypeLabel.replace('*', '%');
-            documentType.setLabel("%"+docTypeLabel.trim()+"%");
+            documentType.setLabel("%" + docTypeLabel.trim() + "%");
         }
         if (docTypeName != null && !"".equals(docTypeName.trim())) {
-
             documentType.setName(docTypeName.trim());
         }
 
@@ -113,11 +110,10 @@ public class DocumentTypeLookupableHelperServiceImpl extends
                 documentType.setDocumentTypeId(new Long(-1));
             }
         }
-        if (!StringUtils.isBlank(serviceNamespace))
-        {
-        	documentType.setServiceNamespace(serviceNamespace);
+        if (!StringUtils.isBlank(serviceNamespace)) {
+            documentType.setActualServiceNamespace(serviceNamespace);
         }
 
         return documentType;
-	}
+    }
 }

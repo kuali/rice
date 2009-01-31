@@ -151,10 +151,15 @@ public class DocumentTypeTest extends KEWTestCase {
         DocumentTypeXmlExporter exporter = new DocumentTypeXmlExporter();
         ExportDataSet dataSet = new ExportDataSet();
         dataSet.getDocumentTypes().add(parsedDocument);
-        assertTrue(XmlHelper.jotNode(exporter.export(dataSet)).matches("(?s).*<defaultExceptionWorkgroupName>KR:WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>.*"));
+        String regex = "(?s).*<defaultExceptionWorkgroupName>" + KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE + ":TestWorkgroup</defaultExceptionWorkgroupName>.*";
+        LOG.warn("Using regex: " + regex);
+        assertTrue(XmlHelper.jotNode(exporter.export(dataSet)).matches(regex));
         //assertNotNull(parsedDocument.getDefaultExceptionWorkgroup());
         //assertEquals("Wrong default exception workgroup", "TestWorkgroup", parsedDocument.getDefaultExceptionWorkgroup().getDisplayName());
         assertEquals("Wrong doc handler url", "http://someurl/path/_blank", parsedDocument.getDocHandlerUrl());
+        assertEquals("Wrong unresolved doc handler url", "${test.base.url}/_blank", parsedDocument.getUnresolvedDocHandlerUrl());
+        assertEquals("Wrong help def url", "http://someurl/path/_help", parsedDocument.getHelpDefinitionUrl());
+        assertEquals("Wrong unresolved help def url", "${test.base.url}/_help", parsedDocument.getUnresolvedHelpDefinitionUrl());
         assertEquals("Wrong blanketApprover workgroup", "TestWorkgroup", parsedDocument.getBlanketApproveWorkgroup().getGroupName());
         assertEquals("Wrong blanketApprove policy", null, parsedDocument.getBlanketApprovePolicy());
         assertEquals("Wrong DEFAULT_APPROVE policy value", Boolean.FALSE, parsedDocument.getDefaultApprovePolicy().getPolicyValue());
@@ -223,7 +228,7 @@ public class DocumentTypeTest extends KEWTestCase {
 
     	// the parent document type should not be in the cache yet
     	String parentIdKey = DocumentTypeServiceImpl.DOCUMENT_TYPE_ID_CACHE_PREFIX+child.getDocTypeParentId();
-    	assertNull("Entry for parent should not have found in the id cache.", KEWServiceLocator.getCacheAdministrator().getFromCache(parentIdKey));
+    	assertNull("Entry for parent should not have been found in the id cache.", KEWServiceLocator.getCacheAdministrator().getFromCache(parentIdKey));
 
     	DocumentType parent = child.getParentDocType();
     	// the act of fetching the parent from the child should result in the parent being cached
@@ -251,7 +256,7 @@ public class DocumentTypeTest extends KEWTestCase {
     	childEdit.setBlanketApproveWorkgroup(workflowAdmin);
     	childEdit.setDefaultExceptionWorkgroup(workflowAdmin);
     	childEdit.setDescription("desc");
-    	childEdit.setDocHandlerUrl("url");
+    	childEdit.setUnresolvedDocHandlerUrl("url");
     	childEdit.setLabel("lable");
     	childEdit.setPolicies(new ArrayList());
     	childEdit.setRoutingVersion("1");

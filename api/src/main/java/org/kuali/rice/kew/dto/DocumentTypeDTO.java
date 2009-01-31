@@ -31,7 +31,10 @@ public class DocumentTypeDTO implements Serializable {
     private boolean docTypeActiveInd;
     private boolean docTypeActiveInherited;
     private String docTypeDescription;
+    // this value is the resolved and potentially inherited value
     private String docTypeHandlerUrl;
+    // this value is the resolved and potentially inherited value
+    private String helpDefinitionUrl;
     private Long docTypeId;
     private String docTypeLabel;
     private String name;
@@ -154,6 +157,14 @@ public class DocumentTypeDTO implements Serializable {
 
     public void setPostProcessorName(String postProcessorName) {
         this.postProcessorName = postProcessorName;
+    }
+
+    public String getHelpDefinitionUrl() {
+        return this.helpDefinitionUrl;
+    }
+
+    public void setHelpDefinitionUrl(String helpDefinitionUrl) {
+        this.helpDefinitionUrl = helpDefinitionUrl;
     }
 
     public String getDocTypeLabel() {

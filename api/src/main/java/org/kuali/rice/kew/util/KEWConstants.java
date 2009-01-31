@@ -24,6 +24,9 @@ public class KEWConstants {
     public static final String RULE_NAME_NODE_STATE_KEY = "__RULE_NAME__";
 
     public static final String DEFAULT_DOCUMENT_TYPE_LABEL = "Undefined";
+    
+    public static final String DOCUMENT_TYPE_INHERITED_VALUE_INDICATOR = "(Inherited from Parent)";
+    public static final String DOCUMENT_TYPE_SYSTEM_DEFAULT_INDICATOR = "(System Default)";
 
     public static final String KEW_MESSAGING_ENTITY = "KEW";
 

@@ -128,6 +128,7 @@ public class NotificationServiceTest extends KEWTestCase {
 		// first test that the notification from addresses are configured correctly
 		DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName("NotificationTest");
 		assertNull("Wrong notification from address, should be null.", documentType.getNotificationFromAddress());
+        assertNull("Wrong actual notification from address, should be null.", documentType.getActualNotificationFromAddress());
 
 		// test the parent document type
 		documentType = KEWServiceLocator.getDocumentTypeService().findByName("NotificationFromAddressParent");

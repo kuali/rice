@@ -19,6 +19,7 @@ package org.kuali.rice.kew.routing.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -26,6 +27,7 @@ import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.kew.doctype.SecuritySession;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -55,6 +57,9 @@ public class ClientAppDocHandlerRedirectAction extends WorkflowAction {
             	return mapping.findForward("NotAuthorized");
             }
             docHandler = routeHeader.getDocumentType().getDocHandlerUrl();
+            if (StringUtils.isBlank(docHandler)) {
+                throw new WorkflowRuntimeException("Cannot find document handler url for document id " + routeHeader.getRouteHeaderId());
+            }
             if (docHandler.indexOf("?") == -1) {
                 docHandler += "?";
             } else {
@@ -65,6 +70,9 @@ public class ClientAppDocHandlerRedirectAction extends WorkflowAction {
             DocumentTypeService documentTypeService = (DocumentTypeService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE);
             DocumentType documentType = documentTypeService.findByName(docHandlerForm.getDocTypeName());
             docHandler = documentType.getDocHandlerUrl();
+            if (StringUtils.isBlank(docHandler)) {
+                throw new WorkflowRuntimeException("Cannot find document handler url for document type '" + documentType.getName() + "'");
+            }
             if (docHandler.indexOf("?") == -1) {
                 docHandler += "?";
             } else {

@@ -61,35 +61,6 @@ public class MockDocumentTypeServiceImpl implements DocumentTypeService {
 		throw new UnsupportedOperationException("not yet implemented");
 	}
 
-	public DocumentTypeDTO getDocumentTypeVOById(Long documentTypeId) {
-        DocumentType docType = findById(documentTypeId);
-        DocumentTypeDTO docTypeVO = new DocumentTypeDTO();
-        docTypeVO.setDocTypeParentId(docType.getDocTypeParentId());
-        docTypeVO.setDocTypeDescription(docType.getDescription());
-        docTypeVO.setDocTypeHandlerUrl(docType.getDocHandlerUrl());
-        docTypeVO.setDocTypeId(docType.getDocumentTypeId());
-        docTypeVO.setDocTypeLabel(docType.getLabel());
-        docTypeVO.setName(docType.getName());
-        docTypeVO.setDocTypeVersion(docType.getVersion());
-        if (docType.getCurrentInd().booleanValue()) {
-            docTypeVO.setDocTypeCurrentInd(KEWConstants.ACTIVE_CD);
-        } else {
-            docTypeVO.setDocTypeCurrentInd(KEWConstants.INACTIVE_CD);
-        }
-        docTypeVO.setPostProcessorName(docType.getPostProcessorName());
-        docTypeVO.setDocTypeJndiFactoryClass(null);
-        docTypeVO.setDocTypeActiveInd(docType.getActive().booleanValue());
-
-        if (docType.getParentDocType() != null) {
-            docTypeVO.setDocTypeActiveInherited(true);
-        } else {
-            docTypeVO.setDocTypeActiveInherited(false);
-        }
-
-        docTypeVO.setDocTypeDefaultApprovePolicy(docType.getDefaultApprovePolicy().getPolicyValue().booleanValue());
-        return docTypeVO;
-    }
-
     public Integer getMaxVersionNumber(String name){
         return new Integer(0);
     }

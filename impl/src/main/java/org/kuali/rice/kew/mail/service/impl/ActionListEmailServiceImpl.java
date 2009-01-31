@@ -348,19 +348,46 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
         "{7}\n\n\n"
     );
 
+    /**
+     * 0 = actionItem.getRouteHeaderId()
+     * 1 = actionItem.getRouteHeader().getInitiatorUser().getDisplayName()
+     * 2 = actionItem.getRouteHeader().getDocumentType().getName()
+     * 3 = actionItem.getDocTitle()
+     * 4 = getActionListUrl()
+     * 5 = getPreferencesUrl()
+     * 6 = getHelpLink(documentType)
+     */
+    private static final MessageFormat DEFAULT_IMMEDIATE_REMINDER_NO_DOC_HANDLER = new MessageFormat(
+        "Your Action List has an eDoc(electronic document) that needs your attention: \n\n" +
+        "Document ID:\t{0,number,#}\n" +
+        "Initiator:\t\t{1}\n" +
+        "Type:\t\tAdd/Modify {2}\n" +
+        "Title:\t\t{3}\n" +
+        "\n\n" +
+        "To respond to this eDoc you may use your Action List: \n" +
+        "\tGo to {4}, and then take actions related to Document ID: {0,number,#}. \n" +
+        "\n\n\n" +
+        "To change how these email notifications are sent(daily, weekly or none): \n" +
+        "\tGo to {5}\n" +
+        "\n\n\n" +
+        "{6}\n\n\n"
+    );
+
 	public String buildImmediateReminderBody(Person person,
 			ActionItem actionItem, DocumentType documentType) {
 		String docHandlerUrl = actionItem.getRouteHeader().getDocumentType()
 				.getDocHandlerUrl();
-		if (docHandlerUrl.indexOf("?") == -1) {
-			docHandlerUrl += "?";
-		} else {
-			docHandlerUrl += "&";
+		if (StringUtils.isNotBlank(docHandlerUrl)) {
+    		if (docHandlerUrl.indexOf("?") == -1) {
+    			docHandlerUrl += "?";
+    		} else {
+    			docHandlerUrl += "&";
+    		}
+    		docHandlerUrl += KEWConstants.ROUTEHEADER_ID_PARAMETER + "="
+    				+ actionItem.getRouteHeaderId();
+    		docHandlerUrl += "&" + KEWConstants.COMMAND_PARAMETER + "="
+    				+ KEWConstants.ACTIONLIST_COMMAND;
 		}
-		docHandlerUrl += KEWConstants.ROUTEHEADER_ID_PARAMETER + "="
-				+ actionItem.getRouteHeaderId();
-		docHandlerUrl += "&" + KEWConstants.COMMAND_PARAMETER + "="
-				+ KEWConstants.ACTIONLIST_COMMAND;
 		StringBuffer sf = new StringBuffer();
 
 		/*sf
@@ -405,20 +432,35 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
         }
         String initiatorUser = (person == null ? "" : person.getName());
 
-        Object[] args = {
-            actionItem.getRouteHeaderId(),
-            initiatorUser,
-            actionItem.getRouteHeader().getDocumentType().getName(),
-            actionItem.getDocTitle(),
-            docHandlerUrl,
-            getActionListUrl(),
-            getPreferencesUrl(),
-            getHelpLink(documentType)
-        };
+        if (StringUtils.isNotBlank(docHandlerUrl)) {
+            Object[] args = { actionItem.getRouteHeaderId(), 
+                    initiatorUser,
+                    actionItem.getRouteHeader().getDocumentType().getName(),
+                    actionItem.getDocTitle(), 
+                    docHandlerUrl,
+                    getActionListUrl(), 
+                    getPreferencesUrl(),
+                    getHelpLink(documentType) 
+                    };
 
-        messageFormat.format(args, sf, new FieldPosition(0));
+            messageFormat.format(args, sf, new FieldPosition(0));
 
-        LOG.debug("default immediate reminder: " + DEFAULT_IMMEDIATE_REMINDER.format(args));
+            LOG.debug("default immediate reminder: " + DEFAULT_IMMEDIATE_REMINDER.format(args));
+        } else {
+            Object[] args = { actionItem.getRouteHeaderId(), 
+                    initiatorUser,
+                    actionItem.getRouteHeader().getDocumentType().getName(),
+                    actionItem.getDocTitle(), 
+                    docHandlerUrl,
+                    getActionListUrl(), 
+                    getPreferencesUrl(),
+                    getHelpLink(documentType) 
+                    };
+
+            messageFormat.format(args, sf, new FieldPosition(0));
+
+            LOG.debug("default immediate reminder: " + DEFAULT_IMMEDIATE_REMINDER_NO_DOC_HANDLER.format(args));
+        }
         LOG.debug("immediate reminder: " + sf);
 
 		// for debugging purposes on the immediate reminder only

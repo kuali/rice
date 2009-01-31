@@ -85,6 +85,7 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
     @Test public void testLoadDocWithNoDocHandler() throws Exception {
         testDoc("NoDocHandler", null);
         DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName("DocumentTypeXmlParserTestDoc1");
+        assertTrue("Doc type unresolved doc handler should be empty.", StringUtils.isBlank(documentType.getUnresolvedDocHandlerUrl()));
         assertTrue("Doc type doc handler should be empty.", StringUtils.isBlank(documentType.getDocHandlerUrl()));
     }
 
@@ -273,7 +274,7 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
     	
     	DocumentType documentType = (DocumentType)documentTypes.get(0);
     	assertEquals("Document type has incorrect name", "DocumentTypeXmlParserTestDoc_DocTypeWithNoLabel", documentType.getName());
-    	assertEquals("Document type has incorrect label", "Undefined", documentType.getLabel());
+    	assertEquals("Document type has incorrect label", KEWConstants.DEFAULT_DOCUMENT_TYPE_LABEL, documentType.getLabel());
     	
     	// now test a DocumentType ingestion with no label for a DocumentType that has a previous version
     	// in this case we use TestDocumentType3 which should have been ingested from DefaultTestData.xml

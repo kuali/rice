@@ -22,6 +22,14 @@
         </start>
       </routeNodes>
       <policies>
+        <policy>
+          <name>LOOK_FUTURE</name>
+          <value>false</value>
+        </policy>
+        <policy>
+          <name>look_future</name>
+          <value>false</value>
+        </policy>
       </policies>
     </documentType>
   </documentTypes>

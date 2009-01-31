@@ -727,17 +727,19 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
      */
     public String getDocumentLabelByTypeName(String documentTypeName) {
         String label = null;
-        try {
-            DocumentTypeDTO documentType = getWorkflowInfoService().getDocType(documentTypeName);
-            if (documentType != null) {
-                label = documentType.getDocTypeLabel();
+        if (StringUtils.isNotBlank(documentTypeName)) {
+            try {
+                DocumentTypeDTO documentType = getWorkflowInfoService().getDocType(documentTypeName);
+                if (documentType != null) {
+                    label = documentType.getDocTypeLabel();
+                }
+            } catch (WorkflowException e) {
+                // stop blowing up when workflow doc does not exist
+                LOG.error("Caught Workflow Exception trying to get document type '" + documentTypeName + "'", e);
+                return documentTypeName;
             }
-            return label;
-        } catch (WorkflowException e) {
-            // stop blowing up when workflow doc does not exist
-            LOG.error( "Caught Workflow Exception trying to get document type '" + documentTypeName + "'", e);
-            return documentTypeName;
         }
+        return label;
     }
 
     /**

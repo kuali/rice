@@ -124,8 +124,12 @@ public class DocumentType extends KewPersistableBusinessObjectBase
 	private Long previousVersionId;
     @Column(name="DOC_HDR_ID")
 	private Long routeHeaderId;
+
+    @Column(name="HELP_DEF_URL")
+    private String unresolvedHelpDefinitionUrl;
+
     @Column(name="DOC_HDLR_URL")
-	private String docHandlerUrl;
+    private String unresolvedDocHandlerUrl;
     @Column(name="POST_PRCSR")
 	private String postProcessorName;
     @Column(name="GRP_ID")
@@ -138,7 +142,7 @@ public class DocumentType extends KewPersistableBusinessObjectBase
 	@Column(name="RPT_GRP_ID")
 	private String reportingWorkgroupId;
     @Column(name="SVC_NMSPC")
-	private String serviceNamespace;
+	private String actualServiceNamespace;
 
 
     /* these two fields are for the web tier lookupable
@@ -179,7 +183,7 @@ public class DocumentType extends KewPersistableBusinessObjectBase
 
     /* Workflow 2.2 Fields */
     @Column(name="NOTIFY_ADDR")
-	private String notificationFromAddress;
+    private String actualNotificationFromAddress;
     @Lob
 	@Basic(fetch=FetchType.LAZY)
 	@Column(name="SEC_XML")
@@ -196,6 +200,7 @@ public class DocumentType extends KewPersistableBusinessObjectBase
         documentTypeAttributes = new ArrayList<DocumentTypeAttribute>();
         policies = new ArrayList<DocumentTypePolicy>();
         version = new Integer(0);
+        label = null;
     }
 
     public void populateDataDictionaryEditableFields(DocumentType dataDictionaryEditedType) {
@@ -493,15 +498,75 @@ public class DocumentType extends KewPersistableBusinessObjectBase
         this.description = description;
     }
 
+    /**
+     * This method gets the document handler url from this object or from a parent document type and resolves any 
+     * potential variables that may be in use
+     */
     public String getDocHandlerUrl() {
-    	if (StringUtils.isBlank(docHandlerUrl) && getParentDocType() != null) {
-    		return getParentDocType().getDocHandlerUrl();
-    	}
-        return resolveDocHandlerUrl(docHandlerUrl);
+        return resolveDocHandlerUrl(getUnresolvedInheritedDocHandlerUrl(false));
+    }
+    
+    /**
+     * This method retrieves the unresolved document handler URL either from this object or from a parent document type 
+     * object. If the forDisplayPurposes value is true the value returned will be invalid for system use.
+     * 
+     * This method will first call the {@link #getUnresolvedDocHandlerUrl()} method to check for a value on this object. 
+     * If none is found a parent document type must exist because the document handler URL is required and is used. The 
+     * system will use inheritance to find the document handler url from a document type somewhere in the hierarchy.
+     * 
+     * @param forDisplayPurposes - if true then the string returned will have a label explaining where the value came from
+     * @return the unresolved document handler URL value or a displayable value with sourcing information
+     */
+    protected String getUnresolvedInheritedDocHandlerUrl(boolean forDisplayPurposes) {
+        if (ObjectUtils.isNotNull(getUnresolvedDocHandlerUrl())) {
+            // this object has a direct value set, so return it
+            return getUnresolvedDocHandlerUrl();
+        }
+        // check for a parent document to see if the doc handler url can be inherited
+        DocumentType docType = getParentDocType();
+        if (ObjectUtils.isNotNull(docType)) {
+            String parentValue = docType.getUnresolvedDocHandlerUrl();
+            if (ObjectUtils.isNotNull(parentValue)) {
+                // found a parent value set on the immediate parent object so return it
+                if (forDisplayPurposes) {
+                    parentValue += " " + KEWConstants.DOCUMENT_TYPE_INHERITED_VALUE_INDICATOR;
+                }
+                return parentValue;
+            }
+            // no valid value exists on the immediate parent, so check the hierarchy
+            return docType.getUnresolvedInheritedDocHandlerUrl(forDisplayPurposes);
+        }
+        return null;
     }
 
+    /**
+     * Returns the same value as the {@link #getUnresolvedInheritedDocHandlerUrl(boolean)} method but will also have label
+     * information about whether the value returned came from this object or the parent document type associated with this object
+     */
+    public String getDisplayableUnresolvedDocHandlerUrl() {
+        return getUnresolvedInheritedDocHandlerUrl(true);
+    }
+
+    /**
+     * EMPTY METHOD. Use {@link #setUnresolvedDocHandlerUrl(String)} instead.
+     * @deprecated
+     */
+    public void setDisplayableUnresolvedDocHandlerUrl(String displayableUnresolvedDocHandlerUrl) {
+        // do nothing
+    }
+
+    /**
+     * @return the unresolvedDocHandlerUrl
+     */
     public String getUnresolvedDocHandlerUrl() {
-    	return docHandlerUrl;
+        return this.unresolvedDocHandlerUrl;
+    }
+
+    /**
+     * @param unresolvedDocHandlerUrl the unresolvedDocHandlerUrl to set
+     */
+    public void setUnresolvedDocHandlerUrl(String unresolvedDocHandlerUrl) {
+        this.unresolvedDocHandlerUrl = unresolvedDocHandlerUrl;
     }
 
     /**
@@ -515,14 +580,51 @@ public class DocumentType extends KewPersistableBusinessObjectBase
     	return Utilities.substituteConfigParameters(docHandlerUrl);
     }
 
+    /**
+     * Use {@link #setDocHandlerUrl(String)} to add a document handler url to this object.
+     * @deprecated
+     */
     public void setDocHandlerUrl(java.lang.String docHandlerUrl) {
-        this.docHandlerUrl = docHandlerUrl;
+        setUnresolvedDocHandlerUrl(docHandlerUrl);
+    }
+
+    /**
+     * @return the unresolvedHelpDefinitionUrl
+     */
+    public String getUnresolvedHelpDefinitionUrl() {
+        return this.unresolvedHelpDefinitionUrl;
+    }
+
+    /**
+     * @param unresolvedHelpDefinitionUrl the unresolvedHelpDefinitionUrl to set
+     */
+    public void setUnresolvedHelpDefinitionUrl(String unresolvedHelpDefinitionUrl) {
+        this.unresolvedHelpDefinitionUrl = unresolvedHelpDefinitionUrl;
+    }
+
+    /**
+     * This method gets the help definition url from this object and resolves any 
+     * potential variables that may be in use
+     */
+    public String getHelpDefinitionUrl() {
+        return resolveHelpDefinitionUrl(getUnresolvedHelpDefinitionUrl());
+    }
+    
+    /**
+     * If the help definition URL has variables in it that need to be replaced, this will look up the values
+     * for those variables and replace them.
+     */
+    protected String resolveHelpDefinitionUrl(String helpDefinitionUrl) {
+        if (StringUtils.isBlank(helpDefinitionUrl)) {
+            return "";
+        }
+        return Utilities.substituteConfigParameters(helpDefinitionUrl);
     }
 
     public java.lang.String getLabel() {
         return label;
     }
-
+    
     public void setLabel(java.lang.String label) {
         this.label = label;
     }
@@ -535,12 +637,83 @@ public class DocumentType extends KewPersistableBusinessObjectBase
         this.name = name;
     }
 
+    public PostProcessor getPostProcessor() {
+        String pname = getPostProcessorName();
+        if (StringUtils.isBlank(pname)) {
+            if (getParentDocType() != null) {
+                return getParentDocType().getPostProcessor();
+            } else {
+                return new DefaultPostProcessor();
+            }
+        }
+
+        ObjectDefinition objDef = getObjectDefinition(pname);
+        Object postProcessor = GlobalResourceLoader.getObject(objDef);
+        if (postProcessor == null) {
+            throw new WorkflowRuntimeException("Could not locate PostProcessor in this JVM or at service namespace " + getServiceNamespace() + ": " + pname);
+        }
+        if (postProcessor instanceof PostProcessorRemote) {
+            postProcessor = new PostProcessorRemoteAdapter((PostProcessorRemote)postProcessor);
+        }
+
+        return (PostProcessor)postProcessor;
+    }
+    
+    /**
+     * This method gets the post processor class value. If the forDisplayPurposes value is true 
+     * the value will be invalid for system use.
+     * 
+     * This method will first call the {@link #getPostProcessorName()} method to check the value on this object. 
+     * If none is found the system checks for a parent document type.  If a valid parent type exists for this document type 
+     * then the system will use inheritance from that parent document type as long as at least one document type in the 
+     * hierarchy has a value set.  If no value is set on any parent document type or if no parent document type exists the 
+     * system will return null.
+     * 
+     * @param forDisplayPurposes - if true then the string returned will have a label explaining where the value came from
+     * @return the post processor class value or a displayable value with sourcing information
+     */
+    protected String getInheritedPostProcessorName(boolean forDisplayPurposes) {
+        if (ObjectUtils.isNotNull(getPostProcessorName())) {
+            // this object has a post processor class so return it
+            return getPostProcessorName();
+        }
+        if (ObjectUtils.isNotNull(getParentDocType())) {
+            // direct parent document type exists
+            String parentValue = getParentDocType().getPostProcessorName();
+            if (ObjectUtils.isNotNull(parentValue)) {
+                // found a post processor class set on the immediate parent object so return it
+                if (forDisplayPurposes) {
+                    parentValue += " " + KEWConstants.DOCUMENT_TYPE_INHERITED_VALUE_INDICATOR;
+                }
+                return parentValue;
+            }
+            // did not find a valid value on the immediate parent, so use hierarchy
+            return getParentDocType().getInheritedPostProcessorName(forDisplayPurposes);
+        }
+        return null;
+    }
+
     public java.lang.String getPostProcessorName() {
         return postProcessorName;
     }
 
     public void setPostProcessorName(java.lang.String postProcessorName) {
         this.postProcessorName = postProcessorName;
+    }
+
+    /**
+     * 
+     */
+    public String getDisplayablePostProcessorName() {
+        return getInheritedPostProcessorName(true);
+    }
+
+    /**
+     * EMPTY METHOD. Use {@link #setPostProcessorName(String)} instead.
+     * @deprecated
+     */
+    public void setDisplayablePostProcessorName(String displayablePostProcessorName) {
+        // do nothing
     }
 
     public java.lang.Long getPreviousVersionId() {
@@ -618,30 +791,26 @@ public class DocumentType extends KewPersistableBusinessObjectBase
     }
 
     public KimGroup getSuperUserWorkgroup() {
-	KimGroup superUserWorkgroup = getSuperUserWorkgroupNoInheritence();
-	if (superUserWorkgroup == null && getParentDocType() != null) {
-	    return getParentDocType().getSuperUserWorkgroup();
-	}
-	return superUserWorkgroup;
+        KimGroup superUserWorkgroup = getSuperUserWorkgroupNoInheritence();
+        if (superUserWorkgroup == null && getParentDocType() != null) {
+            return getParentDocType().getSuperUserWorkgroup();
+        }
+        return superUserWorkgroup;
     }
 
     public KimGroup getSuperUserWorkgroupNoInheritence() {
-	if (workgroupId == null) {
-	    return null;
-	}
-	return getIdentityManagementService().getGroup(this.workgroupId);
+        if (workgroupId == null) {
+            return null;
+        }
+        return getIdentityManagementService().getGroup(this.workgroupId);
     }
 
-    public void setSuperUserWorkgroupNoInheritence(KimGroup suWorkgroup)
-    {
-		if (suWorkgroup == null)
-		{
-		    this.workgroupId = null;
-		}
-		else
-		{
-		    this.workgroupId = suWorkgroup.getGroupId();
-		}
+    public void setSuperUserWorkgroupNoInheritence(KimGroup suWorkgroup) {
+        if (suWorkgroup == null) {
+            this.workgroupId = null;
+        } else {
+            this.workgroupId = suWorkgroup.getGroupId();
+        }
     }
 
     /**
@@ -709,6 +878,20 @@ public class DocumentType extends KewPersistableBusinessObjectBase
     		return getParentDocType() != null && getParentDocType().isBlanketApproveGroupDefined();
     	}
     	return true;
+    }
+
+    /**
+     * @return the reportingWorkgroupId
+     */
+    public String getReportingWorkgroupId() {
+        return this.reportingWorkgroupId;
+    }
+
+    /**
+     * @param reportingWorkgroupId the reportingWorkgroupId to set
+     */
+    public void setReportingWorkgroupId(String reportingWorkgroupId) {
+        this.reportingWorkgroupId = reportingWorkgroupId;
     }
 
     public KimGroup getReportingWorkgroup() {
@@ -846,28 +1029,6 @@ public class DocumentType extends KewPersistableBusinessObjectBase
     	return (CustomNoteAttribute)GlobalResourceLoader.getObject(objDef);
     }
 
-    public PostProcessor getPostProcessor()	{
-        String pname = getPostProcessorName();
-        if (StringUtils.isBlank(pname)) {
-        	if (getParentDocType() != null) {
-        		return getParentDocType().getPostProcessor();
-        	} else {
-        		return new DefaultPostProcessor();
-        	}
-        }
-
-    	ObjectDefinition objDef = getObjectDefinition(pname);
-    	Object postProcessor = GlobalResourceLoader.getObject(objDef);
-        if (postProcessor == null) {
-        	throw new WorkflowRuntimeException("Could not locate PostProcessor in this JVM or at service namespace " + getServiceNamespace() + ": " + pname);
-        }
-    	if (postProcessor instanceof PostProcessorRemote) {
-            postProcessor = new PostProcessorRemoteAdapter((PostProcessorRemote)postProcessor);
-        }
-
-    	return (PostProcessor)postProcessor;
-    }
-
     public ObjectDefinition getObjectDefinition(String objectName) {
     	return new ObjectDefinition(objectName, getServiceNamespace());
     }
@@ -896,7 +1057,7 @@ public class DocumentType extends KewPersistableBusinessObjectBase
     }
 
 	public boolean isDocTypeActive() {
-        if (!active.booleanValue()) {
+        if (!getActive().booleanValue()) {
             return false;
         }
         if (getParentDocType() != null) {
@@ -1002,18 +1163,83 @@ public class DocumentType extends KewPersistableBusinessObjectBase
     public void setRoutingVersion(String routingVersion) {
         this.routingVersion = routingVersion;
     }
+    
+    /**
+     * @return the actualNotificationFromAddress
+     */
+    public String getActualNotificationFromAddress() {
+        return this.actualNotificationFromAddress;
+    }
+
+    /**
+     * @param actualNotificationFromAddress the actualNotificationFromAddress to set
+     */
+    public void setActualNotificationFromAddress(String actualNotificationFromAddress) {
+        this.actualNotificationFromAddress = actualNotificationFromAddress;
+    }
+    
+    /**
+     * Returns the same value as the {@link #getNotificationFromAddress()} method but will also have label information if 
+     * the value is inherited from a parent document type
+     */
+    public String getDisplayableNotificationFromAddress() {
+        return getNotificationFromAddress(true);
+    }
+
+    /**
+     * EMPTY METHOD. Use {@link #setActualNotificationFromAddress(String)} instead.
+     * @deprecated
+     */
+    public void setDisplayableNotificationFromAddress(String displayableNotificationFromAddress) {
+        // do nothing
+    }
 
     public String getNotificationFromAddress() {
-    	if (notificationFromAddress == null &&  getParentDocType() != null) {
-            return getParentDocType().getNotificationFromAddress();
+        return getNotificationFromAddress(false);
+    }
+
+    /**
+     * This method gets the notification from address value. If the forDisplayPurposes value is true 
+     * the notification from address value will be invalid for system use
+     * 
+     * This method will first call the {@link #getActualNotificationFromAddress()} method to check the value on this object. 
+     * If none is found the system checks for a parent document type.  If a valid parent type exists for this document type 
+     * then the system will use inheritance from that parent document type as long as at least one document type in the 
+     * hierarchy has a value set.  If no value is set on any parent document type or if no parent document type exists the 
+     * system will return null
+     * 
+     * @param forDisplayPurposes - if true then the string returned will have a label explaining where the value came from
+     * @return the notification from address value or a displayable value with sourcing information
+     */
+    protected String getNotificationFromAddress(boolean forDisplayPurposes) {
+        if (ObjectUtils.isNotNull(getActualNotificationFromAddress())) {
+            // this object has an address so return it
+            return getActualNotificationFromAddress();
         }
-		return notificationFromAddress;
+        if (ObjectUtils.isNotNull(getParentDocType())) {
+            // direct parent document type exists
+            String parentNotificationFromAddress = getParentDocType().getActualNotificationFromAddress();
+            if (ObjectUtils.isNotNull(parentNotificationFromAddress)) {
+                // found an address set on the immediate parent object so return it
+                if (forDisplayPurposes) {
+                    parentNotificationFromAddress += " " + KEWConstants.DOCUMENT_TYPE_INHERITED_VALUE_INDICATOR;
+                }
+                return parentNotificationFromAddress;
+            }
+            // did not find a valid address on the immediate parent to use hierarchy
+            return getParentDocType().getNotificationFromAddress(forDisplayPurposes);
+        }
+        return null;
 	}
 
+    /**
+	 * Use {@link #setActualNotificationFromAddress(String)} instead
+	 * @deprecated
+	 */
 	public void setNotificationFromAddress(String notificationFromAddress) {
-		this.notificationFromAddress = notificationFromAddress;
+	    setActualNotificationFromAddress(notificationFromAddress);
 	}
-
+	
 	public boolean isParentOf(DocumentType documentType) {
         // this is a depth-first search which works for our needs
         for (Iterator iterator = getChildrenDocTypes().iterator(); iterator.hasNext();) {
@@ -1063,7 +1289,8 @@ public class DocumentType extends KewPersistableBusinessObjectBase
                           + ", currentInd=" + currentInd
                           + ", description=" + description
                           + ", routeHeaderId=" + routeHeaderId
-                          + ", docHandlerUrl=" + docHandlerUrl
+                          + ", unresolvedDocHandlerUrl=" + unresolvedDocHandlerUrl
+                          + ", unresolvedHelpDefinitionUrl=" + unresolvedHelpDefinitionUrl
                           + ", postProcessorName=" + postProcessorName
                           + ", workgroupId=" + workgroupId
                           + ", blanketApproveWorkgroupId=" + blanketApproveWorkgroupId
@@ -1077,10 +1304,24 @@ public class DocumentType extends KewPersistableBusinessObjectBase
                           + ", documentTypeAttributes=" + documentTypeAttributes
                           + ", processes=" + processes
                           + ", routingVersion=" + routingVersion
-                          + ", notificationFromAddress=" + notificationFromAddress
+                          + ", actualNotificationFromAddress=" + actualNotificationFromAddress
+                          + ", actualServiceNamespace=" + actualServiceNamespace
                           + "]";
     }
 
+    /**
+     * @return the actualServiceNamespace
+     */
+    public String getActualServiceNamespace() {
+        return this.actualServiceNamespace;
+    }
+
+    /**
+     * @param actualServiceNamespace the actualServiceNamespace to set
+     */
+    public void setActualServiceNamespace(String actualServiceNamespace) {
+        this.actualServiceNamespace = actualServiceNamespace;
+    }
 
     /**
      * Returns the service namespace for this DocumentType which can be specified on the document type itself,
@@ -1090,31 +1331,71 @@ public class DocumentType extends KewPersistableBusinessObjectBase
      * be the one to do more elaborate checking
      */
 	public String getServiceNamespace() {
-		if (this.serviceNamespace != null) {
-			return serviceNamespace;
-		}
-		String returnVal = null;
-		if (getParentDocType() != null) {
-			returnVal = getParentDocType().getServiceNamespace();
-		}
-		if (returnVal == null) {
-//			returnVal = "KEW";
-			returnVal = ConfigContext.getCurrentContextConfig().getServiceNamespace();
-		}
-		return returnVal;
+	    return getServiceNamespace(false);
 	}
 
 	/**
-	 * Returns the actual specified service namespace for this document type which could be null.
-	 */
-	public String getActualServiceNamespace() {
-		return serviceNamespace;
-	}
+     * This method gets the string for the service namespace value. If the forDisplayPurposes value is true 
+     * the service namespace value will be invalid for system use.
+     * 
+     * This method will first call the {@link #getActualServiceNamespace()} method to check for a value on this object. If 
+     * none is found a parent document type is used.  If a valid parent type exists for this document type then the system 
+     * will use inheritance from that parent document type as long as at least one document type in the hierarchy has a 
+     * value set.  If no value is set on any parent document type or if no parent document type exists for this object the 
+     * system default is used: {@link ConfigContext#getCurrentContextConfig()#getServiceNamespace()}
+     * 
+     * @param forDisplayPurposes - if true then the string returned will have a label explaining where the value came from
+     * @return the service namespace value or a displayable value with sourcing information
+     */
+    protected String getServiceNamespace(boolean forDisplayPurposes) {
+        if (ObjectUtils.isNotNull(getActualServiceNamespace())) {
+            // this object has a service namespace set, so return it
+            return getActualServiceNamespace();
+        }
+        // this object has no service namespace... check for a parent document type
+        if (ObjectUtils.isNotNull(getParentDocType())) {
+            // direct parent document type exists
+            String parentValue = getParentDocType().getActualServiceNamespace();
+            if (ObjectUtils.isNotNull(parentValue)) {
+                // found a parent value set on the immediate parent object so return it
+                if (forDisplayPurposes) {
+                    parentValue += " " + KEWConstants.DOCUMENT_TYPE_INHERITED_VALUE_INDICATOR;
+                }
+                return parentValue;
+            }
+            // no valid service namespace on direct parent, so use hierarchy to find correct value
+            return getParentDocType().getServiceNamespace(forDisplayPurposes);
+        }
+        String defaultValue = ConfigContext.getCurrentContextConfig().getServiceNamespace();
+        if ( forDisplayPurposes && ObjectUtils.isNotNull(defaultValue)) {
+            defaultValue += " " + KEWConstants.DOCUMENT_TYPE_SYSTEM_DEFAULT_INDICATOR;
+        }
+        return defaultValue;
+    }
 
-	public void setServiceNamespace(String ServiceNamespace) {
-		this.serviceNamespace = ServiceNamespace;
-	}
+    /**
+     * Use {@link #setActualServiceNamespace(String)} instead.
+     * @deprecated
+     */
+    public void setServiceNamespace(String serviceNamespace) {
+        setActualServiceNamespace(serviceNamespace);
+    }
 
+    /**
+     * Returns the same value as the {@link #getServiceNamespace()} method but will also have label information about 
+     * where the service namespace came from (ie: inherited from the parent document type)
+     */
+    public String getDisplayableServiceNamespace() {
+        return getServiceNamespace(true);
+    }
+
+    /**
+     * EMPTY METHOD. Use {@link #setServiceNamespace(String)} to set a namespace on this object
+     * @deprecated
+     */
+    public void setDisplayableServiceNamespace(String displayableServiceNamespace) {
+        // do nothing
+    }
 
     /**
      * Gets the name of the custom email stylesheet to use to render email (if any has been set, null otherwise)

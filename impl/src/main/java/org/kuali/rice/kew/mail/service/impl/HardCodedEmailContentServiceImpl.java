@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.actionitem.ActionItem;
@@ -55,13 +56,15 @@ public class HardCodedEmailContentServiceImpl extends BaseEmailContentServiceImp
 
     public EmailContent generateImmediateReminder(Person person, ActionItem actionItem, DocumentType documentType) {
         String docHandlerUrl = actionItem.getRouteHeader().getDocumentType().getDocHandlerUrl();
-        if (docHandlerUrl.indexOf("?") == -1) {
-            docHandlerUrl += "?";
-        } else {
-            docHandlerUrl += "&";
+        if (StringUtils.isNotBlank(docHandlerUrl)) {
+            if (docHandlerUrl.indexOf("?") == -1) {
+                docHandlerUrl += "?";
+            } else {
+                docHandlerUrl += "&";
+            }
+            docHandlerUrl += KEWConstants.ROUTEHEADER_ID_PARAMETER + "=" + actionItem.getRouteHeaderId();
+            docHandlerUrl += "&" + KEWConstants.COMMAND_PARAMETER + "=" + KEWConstants.ACTIONLIST_COMMAND;
         }
-        docHandlerUrl += KEWConstants.ROUTEHEADER_ID_PARAMETER + "=" + actionItem.getRouteHeaderId();
-        docHandlerUrl += "&" + KEWConstants.COMMAND_PARAMETER + "=" + KEWConstants.ACTIONLIST_COMMAND;
         StringBuffer emailBody = new StringBuffer();
 
         emailBody.append("Your Action List has an eDoc(electronic document) that needs your attention: \n\n");
@@ -78,10 +81,16 @@ public class HardCodedEmailContentServiceImpl extends BaseEmailContentServiceImp
         emailBody.append("Type:\t\t" + "Add/Modify " + actionItem.getRouteHeader().getDocumentType().getName() + "\n");
         emailBody.append("Title:\t\t" + actionItem.getDocTitle() + "\n");
         emailBody.append("\n\n");
-        emailBody.append("To respond to this eDoc: \n");
-        emailBody.append("\tGo to " + docHandlerUrl + "\n\n");
-        emailBody.append("\tOr you may access the eDoc from your Action List: \n");
-        emailBody.append("\tGo to " + getActionListUrl() + ", and then click on the numeric Document ID: " + actionItem.getRouteHeaderId() + " in the first column of the List. \n");
+        if (StringUtils.isNotBlank(docHandlerUrl)) {
+            emailBody.append("To respond to this eDoc: \n");
+            emailBody.append("\tGo to " + docHandlerUrl + "\n\n");
+            emailBody.append("\tOr you may access the eDoc from your Action List: \n");
+            emailBody.append("\tGo to " + getActionListUrl() + ", and then click on the numeric Document ID: " + actionItem.getRouteHeaderId() + " in the first column of the List. \n");
+        }
+        else {
+            emailBody.append("To respond to this eDoc go to your Action List: \n");
+            emailBody.append("\tGo to " + getActionListUrl() + ", and then take actions related to Document ID: " + actionItem.getRouteHeaderId() + ". \n");
+        }
         emailBody.append("\n\n\n");
         emailBody.append("To change how these email notifications are sent(daily, weekly or none): \n");
         emailBody.append("\tGo to " + getPreferencesUrl() + "\n");

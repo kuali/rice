@@ -24,7 +24,6 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigurationException;
-import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -39,7 +38,6 @@ import org.kuali.rice.kns.document.MaintenanceDocumentBase;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
 import org.kuali.rice.kns.exception.DocumentInitiationAuthorizationException;
-import org.kuali.rice.kns.exception.InactiveDocumentTypeAuthorizationException;
 import org.kuali.rice.kns.exception.UnknownDocumentTypeException;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.rule.event.ApproveDocumentEvent;
@@ -64,7 +62,6 @@ import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.Timer;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
-import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
 import org.kuali.rice.kns.workflow.service.WorkflowDocumentService;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.transaction.annotation.Transactional;
@@ -417,18 +414,6 @@ public class DocumentServiceImpl implements DocumentService {
 
         // get the current user
         Person currentUser = GlobalVariables.getUserSession().getPerson();
-
-        // document must be maint doc or finanancial doc
-        KualiWorkflowInfo workflowInfo = KNSServiceLocator.getWorkflowInfoService();
-        DocumentTypeDTO documentType = workflowInfo.getDocType(documentTypeName);
-        if ( (ObjectUtils.isNotNull(documentType)) && (!documentType.isDocTypeActiveInd()) ) {
-            // TODO delyea: should this be what's checked or should we check KIM?
-            throw new InactiveDocumentTypeAuthorizationException("initiate", documentTypeName);
-        }
-//        DocumentType documentType = KNSServiceLocator.getDocumentTypeService().getPotentialDocumentTypeByName(documentTypeName);
-//        if ( (ObjectUtils.isNotNull(documentType)) && (!documentType.isDocumentTypeActiveIndicator()) ) {
-//            throw new InactiveDocumentTypeAuthorizationException("initiate", documentTypeName);
-//        }
 
         // get the authorization
         DocumentAuthorizer documentAuthorizer = getDocumentHelperService().getDocumentAuthorizer(documentTypeName);

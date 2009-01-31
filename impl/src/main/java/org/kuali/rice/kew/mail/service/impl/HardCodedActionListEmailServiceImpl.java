@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -169,15 +170,17 @@ public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceI
 			ActionItem actionItem, DocumentType documentType) {
 		String docHandlerUrl = actionItem.getRouteHeader().getDocumentType()
 				.getDocHandlerUrl();
-		if (docHandlerUrl.indexOf("?") == -1) {
-			docHandlerUrl += "?";
-		} else {
-			docHandlerUrl += "&";
+		if (StringUtils.isNotBlank(docHandlerUrl)) {
+    		if (docHandlerUrl.indexOf("?") == -1) {
+    			docHandlerUrl += "?";
+    		} else {
+    			docHandlerUrl += "&";
+    		}
+    		docHandlerUrl += KEWConstants.ROUTEHEADER_ID_PARAMETER + "="
+    				+ actionItem.getRouteHeaderId();
+    		docHandlerUrl += "&" + KEWConstants.COMMAND_PARAMETER + "="
+    				+ KEWConstants.ACTIONLIST_COMMAND;
 		}
-		docHandlerUrl += KEWConstants.ROUTEHEADER_ID_PARAMETER + "="
-				+ actionItem.getRouteHeaderId();
-		docHandlerUrl += "&" + KEWConstants.COMMAND_PARAMETER + "="
-				+ KEWConstants.ACTIONLIST_COMMAND;
 		StringBuffer sf = new StringBuffer();
 
 		sf.append("Your Action List has an eDoc(electronic document) that needs your attention: \n\n");
@@ -196,16 +199,19 @@ public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceI
 				+ "\n");
 		sf.append("Title:\t\t" + actionItem.getDocTitle() + "\n");
 		sf.append("\n\n");
-		sf.append("To respond to this eDoc: \n");
-		sf.append("\tGo to " + docHandlerUrl + "\n\n");
-		sf.append("\tOr you may access the eDoc from your Action List: \n");
-		sf.append("\tGo to " + getActionListUrl()
-				+ ", and then click on the numeric Document ID: "
-				+ actionItem.getRouteHeaderId()
-				+ " in the first column of the List. \n");
+        if (StringUtils.isNotBlank(docHandlerUrl)) {
+            sf.append("To respond to this eDoc: \n");
+            sf.append("\tGo to " + docHandlerUrl + "\n\n");
+            sf.append("\tOr you may access the eDoc from your Action List: \n");
+            sf.append("\tGo to " + getActionListUrl() + ", and then click on the numeric Document ID: " + actionItem.getRouteHeaderId() + " in the first column of the List. \n");
+        }
+        else {
+            sf.append("To respond to this eDoc go to your Action List: \n");
+            sf.append("\tGo to " + getActionListUrl() + ", and then take actions related to Document ID: " + actionItem.getRouteHeaderId() + ". \n");
+        }
+
 		sf.append("\n\n\n");
-		sf
-				.append("To change how these email notifications are sent(daily, weekly or none): \n");
+		sf.append("To change how these email notifications are sent(daily, weekly or none): \n");
 		sf.append("\tGo to " + getPreferencesUrl() + "\n");
 		sf.append("\n\n\n");
 		sf.append(getHelpLink(documentType) + "\n\n\n");

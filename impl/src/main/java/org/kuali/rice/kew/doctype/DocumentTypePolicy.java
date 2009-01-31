@@ -55,9 +55,9 @@ public class DocumentTypePolicy extends KewPersistableBusinessObjectBase {
     @Transient
     private Boolean inheritedFlag;
 
-    @ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="DOC_TYP_ID",updatable=false,insertable=false)
-	private DocumentType documentType;
+//    @ManyToOne(fetch=FetchType.EAGER)
+//	@JoinColumn(name="DOC_TYP_ID",updatable=false,insertable=false)
+//	private DocumentType documentType;
 
     public DocumentTypePolicy() {
     }
@@ -148,13 +148,13 @@ public class DocumentTypePolicy extends KewPersistableBusinessObjectBase {
         return clone;
     }
 
-    public DocumentType getDocumentType() {
-        return documentType;
-    }
-
-    public void setDocumentType(DocumentType documentType) {
-        this.documentType = documentType;
-    }
+//    public DocumentType getDocumentType() {
+//        return documentType;
+//    }
+//
+//    public void setDocumentType(DocumentType documentType) {
+//        this.documentType = documentType;
+//    }
 
     /**
      * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()

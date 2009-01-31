@@ -114,12 +114,12 @@ public class DocumentTypeXmlExporter implements XmlExporter, XmlConstants {
         }
         if (!StringUtils.isBlank(documentType.getUnresolvedDocHandlerUrl())) {
             renderer.renderTextElement(docTypeElement, DOC_HANDLER, documentType.getUnresolvedDocHandlerUrl());
-        } else {
-        	// TODO doc handler should really be optional
-        	renderer.renderTextElement(docTypeElement, DOC_HANDLER, "none");
         }
-        if (!StringUtils.isBlank(documentType.getNotificationFromAddress())) {
-        	renderer.renderTextElement(docTypeElement, NOTIFICATION_FROM_ADDRESS, documentType.getNotificationFromAddress());
+        if (!StringUtils.isBlank(documentType.getUnresolvedHelpDefinitionUrl())) {
+            renderer.renderTextElement(docTypeElement, HELP_DEFINITION_URL, documentType.getUnresolvedHelpDefinitionUrl());
+        }
+        if (!StringUtils.isBlank(documentType.getActualNotificationFromAddress())) {
+        	renderer.renderTextElement(docTypeElement, NOTIFICATION_FROM_ADDRESS, documentType.getActualNotificationFromAddress());
         }
         renderer.renderBooleanElement(docTypeElement, ACTIVE, documentType.getActive(), true);
         exportPolicies(docTypeElement, documentType.getPolicies());

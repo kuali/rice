@@ -554,14 +554,11 @@ public class BusinessObjectAuthorizationServiceImpl implements
 		return canCreate;
 	}
 	
-	public boolean canMaintain(BusinessObject businessObject, Person user, String docTypeName){
-		DocumentPresentationController documentPresentationController = getDocumentHelperService().getDocumentPresentationController(docTypeName);
-	    boolean canMaintain = ((MaintenanceDocumentPresentationController) documentPresentationController).canCreate(businessObject.getClass());
-	    if(canMaintain){
-			DocumentAuthorizer documentAuthorizer = getDocumentHelperService().getDocumentAuthorizer(docTypeName);
-	    	canMaintain = ((MaintenanceDocumentAuthorizer) documentAuthorizer).canMaintain(businessObject, user);
-	    }
-		return canMaintain;
+	public boolean canMaintain(BusinessObject businessObject, Person user,
+			String docTypeName) {
+		return ((MaintenanceDocumentAuthorizer) getDocumentHelperService()
+				.getDocumentAuthorizer(docTypeName)).canMaintain(
+				businessObject, user);
 	}
 
 	protected <T extends BusinessObject> Map<String, String> getFieldPermissionDetails(

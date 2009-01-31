@@ -18,9 +18,13 @@ package org.kuali.rice.kew.routelog.web;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
+import org.kuali.rice.kns.web.ui.ExtraButton;
 
 
 /**
@@ -135,5 +139,22 @@ public class RouteLogForm extends KualiForm {
 	}
 	public void setShowNotes(boolean showNotes) {
 		this.showNotes = showNotes;
+	}
+	public String getHeaderMenuBar() {
+		Properties parameters = new Properties();
+        parameters.put("showFuture", isShowFuture());
+        parameters.put("showNotes", isShowNotes());
+		if (getRouteHeaderId() != null) {
+			parameters.put("routeHeaderId", getRouteHeaderId());
+		}
+		if (getDocId() != null) {
+			parameters.put("docId", getDocId());
+		}
+		if (getReturnUrlLocation() != null) {
+			parameters.put("backUrl", getReturnUrlLocation());
+		}
+        String url = UrlFactory.parameterizeUrl("RouteLog.do", parameters);
+        url = "<div class=\"lookupcreatenew\" title=\"Refresh\"><a href=\"" + url + "\"><img src=\"../kr/images/tinybutton-refresh.gif\" alt=\"refresh\"></a></div>";
+        return url;
 	}
 }

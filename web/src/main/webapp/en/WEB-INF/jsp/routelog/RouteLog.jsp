@@ -1,9 +1,7 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 <kul:page headerTitle="Route Log" transactionalDocument="false"
-	showDocumentInfo="false" htmlFormAction="RouteLog" docTitle="Route Log">
-
-
+	showDocumentInfo="false" htmlFormAction="RouteLog" docTitle="Route Log" headerMenuBar="${KualiForm.headerMenuBar}">
 
 	<kul:tabTop
 		tabTitle="ID: ${routeHeader.routeHeaderId}"

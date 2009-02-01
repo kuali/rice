@@ -33,8 +33,9 @@ import org.kuali.rice.kns.util.KNSConstants;
 
 public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase
 		implements MaintenanceDocumentAuthorizer {
-//    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MaintenanceDocumentAuthorizerBase.class);
-	
+	// private static final org.apache.log4j.Logger LOG =
+	// org.apache.log4j.Logger.getLogger(MaintenanceDocumentAuthorizerBase.class);
+
 	private static MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
 
 	@SuppressWarnings("unchecked")
@@ -45,50 +46,45 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase
 						boClass));
 		permissionDetails.put(KNSConstants.MAINTENANCE_ACTN,
 				KNSConstants.MAINTENANCE_NEW_ACTION);
-		// check if permissions exist at all for this document and action
-		// if not, then there are no restrictions and this action is allowed
-		if ( !permissionExistsByTemplate(KNSConstants.KNS_NAMESPACE,
+		return !permissionExistsByTemplate(KNSConstants.KNS_NAMESPACE,
 				KimConstants.PermissionTemplateNames.CREATE_MAINTAIN_RECORDS,
-				permissionDetails) ) {
-			return true;
-		}
-		return getIdentityManagementService()
-				.isAuthorizedByTemplateName(
-						user.getPrincipalId(),
-						KNSConstants.KNS_NAMESPACE,
-						KimConstants.PermissionTemplateNames.CREATE_MAINTAIN_RECORDS,
-						permissionDetails, new AttributeSet());
-		// FIXME: should not need to pass in an empty AttributeSet
+				permissionDetails)
+				|| getIdentityManagementService()
+						.isAuthorizedByTemplateName(
+								user.getPrincipalId(),
+								KNSConstants.KNS_NAMESPACE,
+								KimConstants.PermissionTemplateNames.CREATE_MAINTAIN_RECORDS,
+								permissionDetails, new AttributeSet());
 	}
 
 	@SuppressWarnings("unchecked")
 	public final boolean canMaintain(BusinessObject businessObject, Person user) {
-		Map<String, String> permissionDetails = new HashMap<String, String>( 2 );
+		Map<String, String> permissionDetails = new HashMap<String, String>(2);
 		permissionDetails.put(KimAttributes.DOCUMENT_TYPE_NAME,
 				getMaintenanceDocumentDictionaryService().getDocumentTypeName(
 						businessObject.getClass()));
 		permissionDetails.put(KNSConstants.MAINTENANCE_ACTN,
 				KNSConstants.MAINTENANCE_EDIT_ACTION);
-		// check if permissions exist at all for this document and action
-		// if not, then there are no restrictions and this action is allowed
-		if ( !permissionExistsByTemplate(KNSConstants.KNS_NAMESPACE,
+		return !permissionExistsByTemplate(KNSConstants.KNS_NAMESPACE,
 				KimConstants.PermissionTemplateNames.CREATE_MAINTAIN_RECORDS,
-				permissionDetails) ) {
-			return true;
-		}
-		Map<String,String> additionalQualifiers = new HashMap<String,String>();
-		addBusinessObjectPrimaryKeyAttributes( businessObject, additionalQualifiers );
-		return isAuthorizedByTemplate(
-				businessObject,
-				KNSConstants.KNS_NAMESPACE,
-				KimConstants.PermissionTemplateNames.CREATE_MAINTAIN_RECORDS,
-				user.getPrincipalId(), permissionDetails, additionalQualifiers);
+				permissionDetails)
+				|| isAuthorizedByTemplate(
+						businessObject,
+						KNSConstants.KNS_NAMESPACE,
+						KimConstants.PermissionTemplateNames.CREATE_MAINTAIN_RECORDS,
+						user.getPrincipalId(), permissionDetails, null);
 	}
-	
+
 	public final boolean canCreateOrMaintain(
 			MaintenanceDocument maintenanceDocument, Person user) {
-		return canCreate( maintenanceDocument.getNewMaintainableObject().getBoClass(), user )
-				|| canMaintain( maintenanceDocument.getNewMaintainableObject().getBusinessObject(), user );
+		return !permissionExistsByTemplate(maintenanceDocument,
+				KNSConstants.KNS_NAMESPACE,
+				KimConstants.PermissionTemplateNames.CREATE_MAINTAIN_RECORDS)
+				|| isAuthorizedByTemplate(
+						maintenanceDocument,
+						KNSConstants.KNS_NAMESPACE,
+						KimConstants.PermissionTemplateNames.CREATE_MAINTAIN_RECORDS,
+						user.getPrincipalId());
 	}
 
 	public Set<String> getSecurePotentiallyHiddenSectionIds() {
@@ -109,9 +105,6 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase
 							.getNamespaceAndComponentSimpleName(((MaintenanceDocument) businessObject)
 									.getNewMaintainableObject()
 									.getBusinessObject().getClass()));
-			addBusinessObjectPrimaryKeyAttributes( ((MaintenanceDocument) businessObject)
-					.getNewMaintainableObject()
-					.getBusinessObject(), attributes );
 		}
 	}
 
@@ -133,7 +126,8 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase
 
 	protected final MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
 		if (maintenanceDocumentDictionaryService == null) {
-			maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
+			maintenanceDocumentDictionaryService = KNSServiceLocator
+					.getMaintenanceDocumentDictionaryService();
 		}
 		return maintenanceDocumentDictionaryService;
 	}

@@ -4,7 +4,7 @@
 <c:set var="docRolePrncplAttributes" value="${DataDictionary.KimDocumentRoleMember.attributes}" />
 <kul:subtab lookedUpCollectionName="role" width="${tableWidth}" subTabTitle="Roles" noShowHideButton="true">      
     <table cellpadding=0 cellspacing=0 summary="">
-       	<c:if test="${not inquiry}">	
+        <c:if test="${not inquiry and not readOnly}">	          	
           	<tr>
           		<th>&nbsp;</th> 
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRoleAttributes.roleId}" noColon="true" /></div></th>
@@ -103,7 +103,7 @@
 					<td>
 						<div align=center>&nbsp;
 			        	     <c:choose>
-				        	       <c:when test="${role.edit}">
+				        	       <c:when test="${role.edit or readOnly}">
 				        	          <img class='nobord' src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete2.gif' styleClass='tinybutton'/>
 				        	       </c:when>
 				        	       <c:otherwise>

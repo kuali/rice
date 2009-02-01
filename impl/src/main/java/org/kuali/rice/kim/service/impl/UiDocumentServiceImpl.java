@@ -40,17 +40,14 @@ import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
 import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
 import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
-import org.kuali.rice.kim.bo.role.KimResponsibility;
 import org.kuali.rice.kim.bo.role.KimRole;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
-import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
 import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
-import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
@@ -80,6 +77,7 @@ import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
+import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.TextControlDefinition;
 import org.kuali.rice.kns.service.BusinessObjectService;
@@ -304,7 +302,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	        	docRole.setRoleId(role.getRoleId());
 	        	docRole.setKimRoleType(role.getKimRoleType());
 	        	docRole.setRoleName(role.getRoleName());
-	        	docRole.setRolePrncpls(populateDocRolePrncpl(role.getMembers(), identityManagementPersonDocument.getPrincipalId()));
+	        	docRole.setRolePrncpls(populateDocRolePrncpl(role.getMembers(), identityManagementPersonDocument.getPrincipalId(), getAttributeDefinitionsForRole(docRole)));
 	        	docRole.refreshReferenceObject("assignedResponsibilities");
 	        	docRoles.add(docRole);
 	        	roleIds.add(role.getRoleId());
@@ -312,13 +310,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         }
         
 		for (PersonDocumentRole role : docRoles) {
-		    	String serviceName = role.getKimRoleType().getKimTypeServiceName();
-		    	if (StringUtils.isBlank(serviceName)) {
-		    		serviceName = "kimTypeService";
-		    	}
-
-	        KimTypeService kimTypeService = (KimTypeServiceBase)KIMServiceLocator.getService(serviceName);
-			role.setDefinitions(kimTypeService.getAttributeDefinitions(role.getKimTypeId()));
+			role.setDefinitions(getAttributeDefinitionsForRole(role));
         	// when post again, it will need this during populate
             role.setNewRolePrncpl(new KimDocumentRoleMember());
             for (String key : role.getDefinitions().keySet()) {
@@ -335,6 +327,17 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         identityManagementPersonDocument.setRoles(docRoles);
 	}
 		
+	private AttributeDefinitionMap getAttributeDefinitionsForRole(PersonDocumentRole role) {
+    	String serviceName = role.getKimRoleType().getKimTypeServiceName();
+    	if (StringUtils.isBlank(serviceName)) {
+    		serviceName = "kimTypeService";
+    	}
+
+	    KimTypeService kimTypeService = (KimTypeServiceBase)KIMServiceLocator.getService(serviceName);
+		return kimTypeService.getAttributeDefinitions(role.getKimTypeId());
+		
+	}
+	
 	private void loadRoleRstAction(PersonDocumentRole role) {
 		for (KimDocumentRoleMember roleMbr : role.getRolePrncpls()) {
 			List<RoleResponsibilityActionImpl> actions = getRoleRspActions(roleMbr.getRoleId(), roleMbr.getRoleMemberId());
@@ -381,7 +384,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return (List<RoleResponsibilityActionImpl>)getBusinessObjectService().findMatching(RoleResponsibilityActionImpl.class, criteria);
 	}
 
-    private List<KimDocumentRoleMember> populateDocRolePrncpl(List <RoleMemberImpl> roleMembers, String principalId) {
+    private List<KimDocumentRoleMember> populateDocRolePrncpl(List <RoleMemberImpl> roleMembers, String principalId, AttributeDefinitionMap definitions) {
 		List <KimDocumentRoleMember> docRoleMembers = new ArrayList <KimDocumentRoleMember>();
     	for (RoleMemberImpl rolePrincipal : roleMembers) {
     		if (rolePrincipal.getMemberTypeCode().equals(KimRoleImpl.PRINCIPAL_MEMBER_TYPE) && rolePrincipal.getMemberId().equals(principalId)) {
@@ -392,7 +395,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         		docRolePrncpl.setRoleId(rolePrincipal.getRoleId());
         		docRolePrncpl.setActiveFromDate(rolePrincipal.getActiveFromDate());
         		docRolePrncpl.setActiveToDate(rolePrincipal.getActiveToDate());
-         		docRolePrncpl.setQualifiers(populateDocRoleQualifier(rolePrincipal.getAttributes()));
+         		docRolePrncpl.setQualifiers(populateDocRoleQualifier(rolePrincipal.getAttributes(), definitions));
          		docRolePrncpl.setEdit(true);
         		docRoleMembers.add(docRolePrncpl);
     		 }
@@ -403,18 +406,39 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     // UI layout for rolequalifier is a little different from kimroleattribute set up.
     // each principal may have member with same role multiple times with different qualifier, but the role
     // only displayed once, and the qualifier displayed multiple times.
-    private List<KimDocumentRoleQualifier> populateDocRoleQualifier(List <RoleMemberAttributeDataImpl> qualifiers) {
+    private List<KimDocumentRoleQualifier> populateDocRoleQualifier(List <RoleMemberAttributeDataImpl> qualifiers, AttributeDefinitionMap definitions) {
 		List <KimDocumentRoleQualifier> docRoleQualifiers = new ArrayList <KimDocumentRoleQualifier>();
-		for (RoleMemberAttributeDataImpl qualifier : qualifiers) {
-    		KimDocumentRoleQualifier docRoleQualifier = new KimDocumentRoleQualifier();
-    		docRoleQualifier.setAttrDataId(qualifier.getAttributeDataId());
-    		docRoleQualifier.setAttrVal(qualifier.getAttributeValue());
-    		docRoleQualifier.setKimAttrDefnId(qualifier.getKimAttributeId());
-    		docRoleQualifier.setKimAttribute(qualifier.getKimAttribute());
-    		docRoleQualifier.setKimTypId(qualifier.getKimTypeId());
-    		docRoleQualifier.setTargetPrimaryKey(qualifier.getTargetPrimaryKey());
-    		docRoleQualifier.setEdit(true);
-    		docRoleQualifiers.add(docRoleQualifier);
+		for (String key : definitions.keySet()) {
+			AttributeDefinition definition = definitions.get(key);
+			String attrDefId=null;
+			if (definition instanceof KimDataDictionaryAttributeDefinition) {
+				attrDefId = ((KimDataDictionaryAttributeDefinition)definition).getKimAttrDefnId();
+			} else {
+				attrDefId = ((KimNonDataDictionaryAttributeDefinition)definition).getKimAttrDefnId();				
+			}
+			boolean qualifierFound = false;
+			for (RoleMemberAttributeDataImpl qualifier : qualifiers) {
+				if (attrDefId.equals(qualifier.getKimAttributeId())) {
+		    		KimDocumentRoleQualifier docRoleQualifier = new KimDocumentRoleQualifier();
+		    		docRoleQualifier.setAttrDataId(qualifier.getAttributeDataId());
+		    		docRoleQualifier.setAttrVal(qualifier.getAttributeValue());
+		    		docRoleQualifier.setKimAttrDefnId(qualifier.getKimAttributeId());
+		    		docRoleQualifier.setKimAttribute(qualifier.getKimAttribute());
+		    		docRoleQualifier.setKimTypId(qualifier.getKimTypeId());
+		    		docRoleQualifier.setTargetPrimaryKey(qualifier.getTargetPrimaryKey());
+		    		docRoleQualifier.setEdit(true);
+		    		docRoleQualifiers.add(docRoleQualifier);
+		    		qualifierFound = true;
+		    		break;
+				}
+			}
+			if (!qualifierFound) {
+	    		KimDocumentRoleQualifier docRoleQualifier = new KimDocumentRoleQualifier();
+	    		docRoleQualifier.setAttrVal("");
+	    		docRoleQualifier.setKimAttrDefnId(attrDefId);
+	    		docRoleQualifier.refreshReferenceObject("kimAttribute");    		
+	    		docRoleQualifiers.add(docRoleQualifier);				
+			}
 		}
     	return docRoleQualifiers;
     }
@@ -827,19 +851,21 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					}
 					List<RoleMemberAttributeDataImpl> attributes = new ArrayList<RoleMemberAttributeDataImpl>();
 					for (KimDocumentRoleQualifier qualifier : principal.getQualifiers()) {
-						RoleMemberAttributeDataImpl attribute = new RoleMemberAttributeDataImpl();
-						attribute.setAttributeDataId(qualifier.getAttrDataId());
-						attribute.setAttributeValue(qualifier.getAttrVal());
-						attribute.setKimAttributeId(qualifier.getKimAttrDefnId());
-						attribute.setTargetPrimaryKey(qualifier.getTargetPrimaryKey());
-						attribute.setKimTypeId(qualifier.getKimTypId());
-						for (RoleMemberAttributeDataImpl origAttribute : origAttributes) {
-							if (origAttribute.getAttributeDataId().equals(qualifier.getAttrDataId())) {
-								attribute.setVersionNumber(origAttribute.getVersionNumber());
+						if (StringUtils.isNotBlank(qualifier.getAttrVal())) {
+							RoleMemberAttributeDataImpl attribute = new RoleMemberAttributeDataImpl();
+							attribute.setAttributeDataId(qualifier.getAttrDataId());
+							attribute.setAttributeValue(qualifier.getAttrVal());
+							attribute.setKimAttributeId(qualifier.getKimAttrDefnId());
+							attribute.setTargetPrimaryKey(qualifier.getTargetPrimaryKey());
+							attribute.setKimTypeId(qualifier.getKimTypId());
+							for (RoleMemberAttributeDataImpl origAttribute : origAttributes) {
+								if (origAttribute.getAttributeDataId().equals(qualifier.getAttrDataId())) {
+									attribute.setVersionNumber(origAttribute.getVersionNumber());
+								}
 							}
+		
+							attributes.add(attribute);
 						}
-	
-						attributes.add(attribute);
 					}
 					rolePrincipalImpl.setAttributes(attributes);
 					rolePrincipals.add(rolePrincipalImpl);

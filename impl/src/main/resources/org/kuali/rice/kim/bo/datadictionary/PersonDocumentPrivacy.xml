@@ -28,7 +28,7 @@
     <property name="name" value="suppressName" />
     <property name="label" value="Suppress Name" />
     <property name="shortLabel" value="Suppress Name" />
-    <property name="required" value="true" />
+    <property name="required" value="false" />
     <property name="summary" value="Suppress Name" />
     <property name="description" value="Suppress Name" />
   </bean>
@@ -38,7 +38,7 @@
     <property name="name" value="suppressAddress" />
     <property name="label" value="Suppress Address" />
     <property name="shortLabel" value="Suppress Address" />
-    <property name="required" value="true" />
+    <property name="required" value="false" />
     <property name="summary" value="Suppress Address" />
     <property name="description" value="Suppress Address" />
   </bean>
@@ -48,7 +48,7 @@
     <property name="name" value="suppressEmail" />
     <property name="label" value="Suppress Email" />
     <property name="shortLabel" value="Suppress Email" />
-    <property name="required" value="true" />
+    <property name="required" value="false" />
     <property name="summary" value="Suppress Email" />
     <property name="description" value="Suppress Email" />
   </bean>
@@ -58,7 +58,7 @@
     <property name="name" value="suppressPhone" />
     <property name="label" value="Suppress Phone" />
     <property name="shortLabel" value="Suppress Phone" />
-    <property name="required" value="true" />
+    <property name="required" value="false" />
     <property name="summary" value="Suppress Phone" />
     <property name="description" value="Suppress Phone" />
   </bean>
@@ -67,7 +67,7 @@
     <property name="name" value="suppressPersonal" />
     <property name="label" value="Suppress Personal" />
     <property name="shortLabel" value="Suppress Personal" />
-    <property name="required" value="true" />
+    <property name="required" value="false" />
     <property name="summary" value="Suppress Personal" />
     <property name="description" value="Suppress Personal" />
   </bean>

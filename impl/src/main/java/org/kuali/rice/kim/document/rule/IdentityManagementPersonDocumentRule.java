@@ -24,15 +24,17 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.reference.AffiliationType;
+import org.kuali.rice.kim.bo.reference.impl.AffiliationTypeImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
+import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
+import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAffiliation;
 import org.kuali.rice.kim.bo.ui.PersonDocumentBoDefaultBase;
 import org.kuali.rice.kim.bo.ui.PersonDocumentEmploymentInfo;
 import org.kuali.rice.kim.bo.ui.PersonDocumentGroup;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
-import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
-import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.document.authorization.IdentityManagementPersonDocumentAuthorizer;
 import org.kuali.rice.kim.rule.event.ui.AddGroupEvent;
@@ -46,7 +48,6 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.rules.TransactionalDocumentRuleBase;
 import org.kuali.rice.kns.service.BusinessObjectService;
@@ -93,6 +94,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
         valid &= checkMultipleDefault (personDoc.getPhones(), "phones");
         valid &= checkMultipleDefault (personDoc.getEmails(), "emails");
         valid &= checkPrimaryEmploymentInfo (personDoc.getAffiliations());
+        valid &= checkAffiliationTypeChange (personDoc.getAffiliations());
         // kimtypeservice.validateAttributes is not working yet.
         valid &= validateRoleQualifier (personDoc.getRoles());
         if (StringUtils.isNotBlank(personDoc.getPrincipalName())) { 
@@ -151,6 +153,23 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 	     		}
     		}
      		i++;
+    	}
+    	return valid;
+    }
+    
+    private boolean checkAffiliationTypeChange (List <PersonDocumentAffiliation> affiliations) {
+    	boolean valid = true;
+    	int i = 0;
+    	for (PersonDocumentAffiliation affiliation : affiliations) {
+    		if (!affiliation.getAffiliationTypeCode().equals(affiliation.getAffiliationType().getAffiliationTypeCode())) {
+    			AffiliationTypeImpl prevAffiliationType = affiliation.getAffiliationType();
+    			affiliation.refreshReferenceObject("affiliationType");
+    			if (!affiliation.getAffiliationType().isEmploymentAffiliationType() && prevAffiliationType.isEmploymentAffiliationType() && !affiliation.getEmpInfos().isEmpty()) {
+		     		GlobalVariables.getErrorMap().putError("affiliations[" + i + "].affiliationTypeCode",RiceKeyConstants.ERROR_NOT_EMPLOYMENT_AFFILIATION_TYPE,new String[] {prevAffiliationType.getAffiliationTypeName(), affiliation.getAffiliationType().getAffiliationTypeName()});
+		     		valid = false;
+	    		}
+    		}
+        	i++;
     	}
     	return valid;
     }

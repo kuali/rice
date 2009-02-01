@@ -23,7 +23,7 @@
  			 <kul:htmlAttributeHeaderCell literalLabel="Actions"/>
            </c:if>   			
 		</tr>                		
-		<c:if test="${not inquiry}">			              					
+		<c:if test="${not inquiry and not readOnly}">			              					
 			<tr>
 				<th class="infoline">
 					<c:out value="Add:" />
@@ -82,26 +82,22 @@
 						<th rowspan="${rows}"  class="infoline">
 							<c:out value="${status1.index+1}" />
 						</th>
-			        	<c:forEach var="qualifier" items="${rolePrncpl.qualifiers}" varStatus="status2">			        			    
-				        	<c:forEach var="attrDefn" items="${role.definitions}" varStatus="status">
+				        <c:forEach var="attrDefn" items="${role.definitions}" varStatus="status">
+			        	    <c:forEach var="qualifier" items="${rolePrncpl.qualifiers}" varStatus="status2">			        			    
 				        		<c:if test="${attrDefn.value.name == qualifier.kimAttribute.attributeName}">
 					        		<c:set var="attr" value="${attrDefn.value}" />
 					        		<c:set var="fieldName" value="${attr.name}" />
 					        		<c:set var="attrEntry" value="${role.attributeEntry[fieldName]}" />
-				        		</c:if>    
-				        	</c:forEach>
 				            <td align="left" valign="middle">
 				                <div align="center"> 
-				                	<kul:htmlControlAttribute property="document.roles[${roleIdx}].rolePrncpls[${status1.index}].qualifiers[${status2.index}].attrVal"  attributeEntry="${attrEntry}" />
-	     		   <%-- 
-	     		   TODO: code (probably) does not pull the remote property name properly
-	     		   TODO: need real multiple lookup/conversion parameters test from attributedefinitions
-	     		   --%>
+				                	<kul:htmlControlAttribute property="document.roles[${roleIdx}].rolePrncpls[${status1.index}].qualifiers[${status.index}].attrVal"  attributeEntry="${attrEntry}" />
 						      		   <c:if test="${!empty attr.lookupBoClass}">
 						      		       <kim:roleQualifierLookup role="${role}" pathPrefix="document.roles[${roleIdx}].rolePrncpls[${status1.index}]" attr="${attr}" />
 						         	   </c:if>
 								</div>
 							</td>
+				        		</c:if>    
+				        	</c:forEach>
 						</c:forEach>									
 						<td>
 							<div align="center">
@@ -117,7 +113,7 @@
 								<td class="infoline">
 								<div align=center>
 				        	     <c:choose>
-				        	       <c:when test="${rolePrncpl.edit}">
+				        	       <c:when test="${rolePrncpl.edit or readOnly}">
 				        	          <img class='nobord' src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete2.gif' styleClass='tinybutton'/>
 				        	       </c:when>
 				        	       <c:otherwise>

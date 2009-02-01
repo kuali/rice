@@ -168,7 +168,7 @@
     <property name="name" value="active" />
     <property name="label" value="Active" />
     <property name="shortLabel" value="Active" />
-    <property name="required" value="true" />
+    <property name="required" value="false" />
     <property name="summary" value="Active" />
     <property name="description" value="Active" />
   </bean>
@@ -178,7 +178,7 @@
     <property name="name" value="dflt" />
     <property name="label" value="Default" />
     <property name="shortLabel" value="Default" />
-    <property name="required" value="true" />
+    <property name="required" value="false" />
     <property name="summary" value="Default" />
     <property name="description" value="Default" />
   </bean>

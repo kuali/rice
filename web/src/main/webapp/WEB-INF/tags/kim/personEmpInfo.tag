@@ -2,7 +2,7 @@
 
 <%@ attribute name="afflnIdx" required="true" %>
 <c:set var="docEmploymentInfoAttributes" value="${DataDictionary.PersonDocumentEmploymentInfo.attributes}" />
-<kul:subtab lookedUpCollectionName="empInfo" width="${tableWidth}" subTabTitle="Employment Informations">      
+<kul:subtab lookedUpCollectionName="empInfo" width="${tableWidth}" subTabTitle="Employment Information">      
 	<table cellpadding=0 cellspacing=0 summary="">
        	<tr>
             <th width="5%" rowspan=20 style=border-style:none>&nbsp;</th>
@@ -18,7 +18,7 @@
 	              	<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
 	        </c:if>
         </tr>     
-      	<c:if test="${not inquiry}">	          	
+      	<c:if test="${not inquiry and not readOnly}">	          	
              <tr>
 				<th class="infoline">
 					<c:out value="Add:" />
@@ -100,7 +100,7 @@
 						<td>
 							<div align=center>&nbsp;
 				        	     <c:choose>
-				        	       	<c:when test="${empInfo.edit}">
+				        	       	<c:when test="${empInfo.edit  or readOnly}">
 				        	          <img class='nobord' src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete2.gif' styleClass='tinybutton'/>
 				        	       	</c:when>
 				        	       	<c:otherwise>

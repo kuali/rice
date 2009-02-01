@@ -15,7 +15,7 @@
               	<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
           	</c:if>
          </tr>     
-         <c:if test="${not inquiry}">	          	
+         <c:if test="${not inquiry and not readOnly}">	          	
              <tr>
 				<th class="infoline">
 					<c:out value="Add:" />
@@ -92,7 +92,7 @@
 					<td>
 						<div align=center>&nbsp;
 			        	     <c:choose>
-			        	       <c:when test="${phone.edit}">
+			        	       <c:when test="${phone.edit  or readOnly}">
 			        	          <img class='nobord' src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete2.gif' styleClass='tinybutton'/>
 			        	       </c:when>
 			        	       <c:otherwise>

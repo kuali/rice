@@ -24,6 +24,7 @@
 	showTabButtons="true"
 	auditCount="0">
 
+	<c:set var="readOnly" value="${KualiForm.document.documentHeader.workflowDocument.routeHeader.docRouteStatus == 'F' }" scope="request" /> 
  	<kul:hiddenDocumentFields />
 	<kul:documentOverview editingMode="${KualiForm.editingMode}" />
 	<kim:personOverview />

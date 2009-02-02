@@ -106,7 +106,7 @@ public class PrimitiveAttributeDefinition extends DataDictionaryDefinitionBase {
             String targetPath = targetClassName + "." + targetName;
             
             // Just a temp hack to ignore null Person objects
-            if ((sourcePath != null && !StringUtils.contains(sourcePath, "Person")) && (targetPath != null && !StringUtils.contains(targetPath, "Person"))) {
+            if ((sourcePath != null && !StringUtils.contains(sourcePath, ".principalId")) && (targetPath != null && !StringUtils.contains(targetPath, ".principalId"))) {
             	throw new AttributeValidationException("source attribute '" + sourcePath + "' (" + sourceClass + ") and target attribute '" + targetPath + "' (" + targetClass + ") are of differing types (" + "" + ")");
             }
         }

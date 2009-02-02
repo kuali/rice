@@ -121,7 +121,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     	return new ArrayList<WorkflowServiceError>();
     }
 
-    protected SearchAttributeCriteriaComponent getSearchableAttributeByFieldName(String name) {
+    public SearchAttributeCriteriaComponent getSearchableAttributeByFieldName(String name) {
         if (StringUtils.isBlank(name)) {
             throw new IllegalArgumentException("Attempted to find Searchable Attribute with blank Field name '" + name + "'");
         }
@@ -134,7 +134,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         return null;
     }
 
-    protected void addErrorMessageToList(List<WorkflowServiceError> errors, String message) {
+    public void addErrorMessageToList(List<WorkflowServiceError> errors, String message) {
         errors.add(new WorkflowServiceErrorImpl(message,"general.message",message));
     }
 
@@ -196,7 +196,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         return searchableAttribute.validateUserSearchInputs(searchAttributesParameterMap, documentSearchContext);
     }
 
-    protected QueryComponent getSearchableAttributeSql(List<SearchAttributeCriteriaComponent> searchableAttributes, String whereClausePredicatePrefix) {
+    public QueryComponent getSearchableAttributeSql(List<SearchAttributeCriteriaComponent> searchableAttributes, String whereClausePredicatePrefix) {
         StringBuffer fromSql = new StringBuffer();
         StringBuffer whereSql = new StringBuffer();
 
@@ -249,7 +249,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         return qc;
     }
 
-    protected QueryComponent generateSearchableAttributeSql(SearchAttributeCriteriaComponent criteriaComponent,String whereSqlStarter,int tableIndex) {
+    public QueryComponent generateSearchableAttributeSql(SearchAttributeCriteriaComponent criteriaComponent,String whereSqlStarter,int tableIndex) {
         String tableIdentifier = "EXT" + tableIndex;
         String queryTableColumnName = tableIdentifier + ".VAL";
         QueryComponent joinSqlComponent = getSearchableAttributeJoinSql(criteriaComponent.getSearchableAttributeValue(), tableIdentifier, whereSqlStarter, criteriaComponent.getSavedKey());
@@ -261,7 +261,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         return new QueryComponent("",fromSql.toString(),whereSql.toString());
     }
 
-    protected QueryComponent generateSearchableAttributeRangeSql(String searchAttributeKeyName, List<SearchAttributeCriteriaComponent> criteriaComponents,String whereSqlStarter,int tableIndex) {
+    public QueryComponent generateSearchableAttributeRangeSql(String searchAttributeKeyName, List<SearchAttributeCriteriaComponent> criteriaComponents,String whereSqlStarter,int tableIndex) {
         StringBuffer fromSql = new StringBuffer();
         StringBuffer whereSql = new StringBuffer();
     	boolean joinAlreadyPerformed = false;
@@ -286,7 +286,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         return new QueryComponent("",fromSql.toString(),whereSql.toString());
     }
 
-    protected StringBuilder generateSearchableAttributeDefaultWhereSql(SearchAttributeCriteriaComponent criteriaComponent,String queryTableColumnName) {
+    public StringBuilder generateSearchableAttributeDefaultWhereSql(SearchAttributeCriteriaComponent criteriaComponent,String queryTableColumnName) {
         StringBuilder whereSql = new StringBuilder();
         String initialClauseStarter = "and";
 //        whereSql.append(" " + initialClauseStarter + " ");
@@ -393,17 +393,17 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         return whereSql.append(whereSqlTemp);
     }
 
-    private QueryComponent getSearchableAttributeJoinSql(SearchableAttributeValue attributeValue,String tableIdentifier,String whereSqlStarter,String attributeTableKeyColumnName) {
+    public QueryComponent getSearchableAttributeJoinSql(SearchableAttributeValue attributeValue,String tableIdentifier,String whereSqlStarter,String attributeTableKeyColumnName) {
     	return new QueryComponent("",generateSearchableAttributeFromSql(attributeValue, tableIdentifier).toString(),generateSearchableAttributeWhereClauseJoin(whereSqlStarter, tableIdentifier, attributeTableKeyColumnName).toString());
     }
 
-    private StringBuffer generateSearchableAttributeWhereClauseJoin(String whereSqlStarter,String tableIdentifier,String attributeTableKeyColumnName) {
+    public StringBuffer generateSearchableAttributeWhereClauseJoin(String whereSqlStarter,String tableIdentifier,String attributeTableKeyColumnName) {
     	StringBuffer whereSql = new StringBuffer(constructWhereClauseElement(whereSqlStarter, "DOC_HDR.DOC_HDR_ID", "=", tableIdentifier + ".DOC_HDR_ID", null, null));
     	whereSql.append(constructWhereClauseElement(" and ", tableIdentifier + ".KEY_CD", "=", attributeTableKeyColumnName, "'", "'"));
         return whereSql;
     }
 
-    private StringBuffer generateSearchableAttributeFromSql(SearchableAttributeValue attributeValue,String tableIdentifier) {
+    public StringBuffer generateSearchableAttributeFromSql(SearchableAttributeValue attributeValue,String tableIdentifier) {
         StringBuffer fromSql = new StringBuffer();
         String tableName = attributeValue.getAttributeTableName();
         if (StringUtils.isBlank(tableName)) {
@@ -415,7 +415,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         return fromSql;
     }
 
-    private StringBuffer constructWhereClauseDateElement(String clauseStarter,String queryTableColumnName,boolean inclusive,boolean valueIsLowerBound,String dateValueToSearch) {
+    public StringBuffer constructWhereClauseDateElement(String clauseStarter,String queryTableColumnName,boolean inclusive,boolean valueIsLowerBound,String dateValueToSearch) {
     	StringBuffer sqlOperand = new StringBuffer(getSqlOperand(true, inclusive, valueIsLowerBound, false));
     	String timeValueToSearch = null;
     	if (valueIsLowerBound) {
@@ -426,7 +426,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     	return new StringBuffer().append(constructWhereClauseElement(clauseStarter, queryTableColumnName, sqlOperand.toString(), DocSearchUtils.getDateSQL(DocSearchUtils.getSqlFormattedDate(dateValueToSearch.trim()), timeValueToSearch.trim()), "", ""));
     }
 
-    private StringBuffer constructWhereClauseElement(String clauseStarter,String queryTableColumnName,String operand,String valueToSearch,String valuePrefix,String valueSuffix) {
+    public StringBuffer constructWhereClauseElement(String clauseStarter,String queryTableColumnName,String operand,String valueToSearch,String valuePrefix,String valueSuffix) {
     	StringBuffer whereSql = new StringBuffer();
     	valuePrefix = (valuePrefix != null) ? valuePrefix : "";
     	valueSuffix = (valueSuffix != null) ? valueSuffix : "";
@@ -438,7 +438,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 	 * For the following we first check for a ranged search because a ranged search
 	 * does not allow for wildcards
 	 */
-    private String getSqlOperand(boolean rangeSearch, boolean inclusive, boolean valueIsLowerBound, boolean usingWildcards) {
+    public String getSqlOperand(boolean rangeSearch, boolean inclusive, boolean valueIsLowerBound, boolean usingWildcards) {
     	StringBuffer sqlOperand = new StringBuffer("=");
     	if (rangeSearch) {
     		if (valueIsLowerBound) {
@@ -539,7 +539,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
      * perhaps we should move this to the web layer (and perhaps enhance the searchable attributes
      * portion of the DocSearchDTO data structure?)
      */
-    private void handleMultipleDocumentRows(DocSearchDTO existingRow, DocSearchDTO newRow) {
+    public void handleMultipleDocumentRows(DocSearchDTO existingRow, DocSearchDTO newRow) {
 
     	for (KeyValueSort newData : newRow.getSearchableAttributes()) {
     		String newRowValue = newData.getValue();
@@ -667,7 +667,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         }
     }
 
-    protected String getDocSearchSQL() {
+    public String getDocSearchSQL() {
     	String sqlPrefix = "Select * from (";
     	String sqlSuffix = ") FINAL_SEARCH order by FINAL_SEARCH.DOC_HDR_ID desc";
     	boolean possibleSearchableAttributesExist = false;
@@ -768,7 +768,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
      *             {@link #generateFinalSQL(QueryComponent, String, String)} is now used instead.
      */
     @Deprecated
-    protected String generateFinalSQL(QueryComponent searchSQL,String docHeaderTableAlias, String standardSqlPrefix, String standardSqlSuffix) {
+    public String generateFinalSQL(QueryComponent searchSQL,String docHeaderTableAlias, String standardSqlPrefix, String standardSqlSuffix) {
     	StringBuffer finalSql = new StringBuffer();
     	List<SearchableAttributeValue> searchableAttributeValues = DocSearchUtils.getSearchableAttributeValueObjectTypes();
     	List<String> tableAliasComponentNames = new ArrayList<String>(searchableAttributeValues.size());
@@ -796,7 +796,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
      *             method.
      */
     @Deprecated
-    protected QueryComponent generateSqlForSearchableAttributeValue(SearchableAttributeValue attributeValue, List tableAliasComponentNames, String docHeaderTableAlias) {
+    public QueryComponent generateSqlForSearchableAttributeValue(SearchableAttributeValue attributeValue, List tableAliasComponentNames, String docHeaderTableAlias) {
     	StringBuffer selectSql = new StringBuffer();
     	StringBuffer fromSql = new StringBuffer();
     	String currentAttributeTableAlias = "SA_" + attributeValue.getAttributeDataType().toUpperCase();
@@ -812,7 +812,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     	return new QueryComponent(selectSql.toString(),fromSql.toString(),"");
     }
 
-    protected String getRouteHeaderIdSql(String routeHeaderId, String whereClausePredicatePrefix) {
+    public String getRouteHeaderIdSql(String routeHeaderId, String whereClausePredicatePrefix) {
         if ((routeHeaderId == null) || "".equals(routeHeaderId.trim())) {
             return "";
         } else {
@@ -821,7 +821,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         }
     }
 
-    protected String getInitiatorSql(String initiator, String whereClausePredicatePrefix) {
+    public String getInitiatorSql(String initiator, String whereClausePredicatePrefix) {
         if ((initiator == null) || "".equals(initiator.trim())) {
             return "";
         }
@@ -829,7 +829,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 		return new StringBuffer(whereClausePredicatePrefix + " DOC_HDR.INITR_PRNCPL_ID = '").append(userWorkflowId).append("'").toString();
     }
 
-    protected String getDocTitleSql(String docTitle, String whereClausePredicatePrefix) {
+    public String getDocTitleSql(String docTitle, String whereClausePredicatePrefix) {
         if (StringUtils.isBlank(docTitle)) {
             return "";
         } else {
@@ -846,7 +846,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
     // special methods that return the sql needed to complete the search
     // or nothing if the field was not filled in
-    protected String getAppDocIdSql(String appDocId, String whereClausePredicatePrefix) {
+    public String getAppDocIdSql(String appDocId, String whereClausePredicatePrefix) {
         if ((appDocId == null) || "".equals(appDocId.trim())) {
             return "";
         } else {
@@ -859,23 +859,23 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         }
     }
 
-    protected String getDateCreatedSql(String fromDateCreated, String toDateCreated, String whereClausePredicatePrefix) {
+    public String getDateCreatedSql(String fromDateCreated, String toDateCreated, String whereClausePredicatePrefix) {
         return establishDateString(fromDateCreated, toDateCreated, CREATE_DATE_FIELD_STRING, whereClausePredicatePrefix);
     }
 
-    protected String getDateApprovedSql(String fromDateApproved, String toDateApproved, String whereClausePredicatePrefix) {
+    public String getDateApprovedSql(String fromDateApproved, String toDateApproved, String whereClausePredicatePrefix) {
         return establishDateString(fromDateApproved, toDateApproved, APPROVE_DATE_FIELD_STRING, whereClausePredicatePrefix);
     }
 
-    protected String getDateFinalizedSql(String fromDateFinalized, String toDateFinalized, String whereClausePredicatePrefix) {
+    public String getDateFinalizedSql(String fromDateFinalized, String toDateFinalized, String whereClausePredicatePrefix) {
         return establishDateString(fromDateFinalized, toDateFinalized, FINALIZATION_DATE_FIELD_STRING, whereClausePredicatePrefix);
     }
 
-    protected String getDateLastModifiedSql(String fromDateLastModified, String toDateLastModified, String whereClausePredicatePrefix) {
+    public String getDateLastModifiedSql(String fromDateLastModified, String toDateLastModified, String whereClausePredicatePrefix) {
         return establishDateString(fromDateLastModified, toDateLastModified, LAST_STATUS_UPDATE_DATE, whereClausePredicatePrefix);
     }
 
-    protected String getViewerSql(String viewer, String whereClausePredicatePrefix) {
+    public String getViewerSql(String viewer, String whereClausePredicatePrefix) {
     	String returnSql = "";
         if ((viewer != null) && (!"".equals(viewer.trim()))) {
             Person person = KIMServiceLocator.getPersonService().getPersonByPrincipalName(viewer.trim());
@@ -885,7 +885,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         return returnSql;
     }
 
-    protected String getWorkgroupViewerSql(String namespace, String workgroupName, String whereClausePredicatePrefix) {
+    public String getWorkgroupViewerSql(String namespace, String workgroupName, String whereClausePredicatePrefix) {
         String sql = "";
         if (!Utilities.isEmpty(workgroupName)) {
             KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroupByName(namespace, workgroupName);
@@ -894,7 +894,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         return sql;
     }
 
-    protected String getApproverSql(String approver, String whereClausePredicatePrefix) {
+    public String getApproverSql(String approver, String whereClausePredicatePrefix) {
     	String returnSql = "";
         if ((approver != null) && (!"".equals(approver.trim()))) {
             String userWorkflowId = KIMServiceLocator.getPersonService().getPersonByPrincipalName(approver.trim()).getPrincipalId();
@@ -903,7 +903,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         return returnSql;
     }
 
-    protected String getDocTypeFullNameWhereSql(String docTypeFullName, String whereClausePredicatePrefix) {
+    public String getDocTypeFullNameWhereSql(String docTypeFullName, String whereClausePredicatePrefix) {
     	StringBuffer returnSql = new StringBuffer("");
         if ((docTypeFullName != null) && (!"".equals(docTypeFullName.trim()))) {
             DocumentTypeService docSrv = (DocumentTypeService) KEWServiceLocator.getDocumentTypeService();
@@ -913,7 +913,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         return returnSql.toString();
     }
 
-    protected String getDocTypeFullNameWhereSql(DocumentType docType, String whereClausePredicatePrefix) {
+    public String getDocTypeFullNameWhereSql(DocumentType docType, String whereClausePredicatePrefix) {
     	StringBuffer returnSql = new StringBuffer("");
         if (docType != null) {
         	returnSql.append(whereClausePredicatePrefix).append("(");
@@ -927,24 +927,24 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         return returnSql.toString();
     }
 
-    private void addChildDocumentTypes(StringBuffer whereSql, Collection<DocumentType> childDocumentTypes) {
+    public void addChildDocumentTypes(StringBuffer whereSql, Collection<DocumentType> childDocumentTypes) {
         for (DocumentType child : childDocumentTypes) {
             addDocumentTypeNameToSearchOn(whereSql, child.getName());
             addChildDocumentTypes(whereSql, child.getChildrenDocTypes());
         }
     }
 
-    protected void addExtraDocumentTypesToSearch(StringBuffer whereSql,DocumentType docType) {}
+    public void addExtraDocumentTypesToSearch(StringBuffer whereSql,DocumentType docType) {}
 
-    protected void addDocumentTypeNameToSearchOn(StringBuffer whereSql,String documentTypeName) {
+    public void addDocumentTypeNameToSearchOn(StringBuffer whereSql,String documentTypeName) {
     	this.addDocumentTypeNameToSearchOn(whereSql, documentTypeName, " or ");
     }
 
-    private void addDocumentTypeNameToSearchOn(StringBuffer whereSql,String documentTypeName, String clause) {
+    public void addDocumentTypeNameToSearchOn(StringBuffer whereSql,String documentTypeName, String clause) {
     	whereSql.append(clause).append(" DOC1.DOC_TYP_NM = '" + documentTypeName + "'");
     }
 
-    protected String getDocRouteNodeSql(String documentTypeFullName, String docRouteLevel, String docRouteLevelLogic, String whereClausePredicatePrefix) {
+    public String getDocRouteNodeSql(String documentTypeFullName, String docRouteLevel, String docRouteLevelLogic, String whereClausePredicatePrefix) {
         // -1 is the default 'blank' choice from the route node drop down a number is used because the ojb RouteNode object is used to
         // render the node choices on the form.
     	String returnSql = "";
@@ -987,7 +987,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         return returnSql;
     }
 
-    protected String getDocRouteStatusSql(String docRouteStatus, String whereClausePredicatePrefix) {
+    public String getDocRouteStatusSql(String docRouteStatus, String whereClausePredicatePrefix) {
         if ((docRouteStatus == null) || "".equals(docRouteStatus.trim())) {
             return whereClausePredicatePrefix + "DOC_HDR.DOC_HDR_STAT_CD != '" + KEWConstants.ROUTE_HEADER_INITIATED_CD + "'";
         } else {
@@ -1004,7 +1004,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
      * represent criteria anyway.  Note however, that it is legal for the label to be the empty string.
      * At some point we will probably need to do some more work to untangle this mess
      */
-    private void filterOutNonQueryAttributes() {
+    public void filterOutNonQueryAttributes() {
         List<SearchAttributeCriteriaComponent> newAttributes = new ArrayList<SearchAttributeCriteriaComponent>();
         for (SearchAttributeCriteriaComponent component : criteria.getSearchableAttributes()) {
             if (component != null) {
@@ -1016,11 +1016,11 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         criteria.setSearchableAttributes(newAttributes);
     }
 
-    private String getGeneratedPredicatePrefix(int whereClauseSize) {
+    public String getGeneratedPredicatePrefix(int whereClauseSize) {
     	return (whereClauseSize > 0) ? " and " : " where ";
     }
 
-    protected String establishDateString(String fromDate, String toDate, String columnDbName, String whereStatementClause) {
+    public String establishDateString(String fromDate, String toDate, String columnDbName, String whereStatementClause) {
     	StringBuffer dateSqlString = new StringBuffer(whereStatementClause).append(" " + columnDbName + " ");
         if (fromDate != null && DocSearchUtils.getSqlFormattedDate(fromDate) != null && toDate != null && DocSearchUtils.getSqlFormattedDate(toDate) != null) {
             return dateSqlString.append(" >= " + DocSearchUtils.getDateSQL(DocSearchUtils.getSqlFormattedDate(fromDate.trim()), null) + " and " + columnDbName + " <= " + DocSearchUtils.getDateSQL(DocSearchUtils.getSqlFormattedDate(toDate.trim()), "23:59:59")).toString();

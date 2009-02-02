@@ -21,6 +21,9 @@ import java.util.List;
 
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
+import org.kuali.rice.kim.bo.role.KimRole;
+import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -38,7 +41,6 @@ import org.kuali.rice.kim.util.KimConstants;
 public class PrincipalDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServiceBase {
 	
 	private static IdentityManagementService identityManagementService;
-	private List<String> roleGroupIds = Collections.unmodifiableList( new ArrayList<String>(0) );
 	
 	/**
 	 * 
@@ -56,51 +58,24 @@ public class PrincipalDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServi
 	@Override
 	public boolean performMatch(AttributeSet inputAttributeSet, AttributeSet storedAttributeSet) {
 		return true;
-//		// check that the principal ID is not null
-//		String principalId = inputAttributeSet.get( "principalId" );
-//		if ( StringUtils.isBlank( principalId )  ) {
-//			return false;
-//		}
-//		// check that the principal exists and is active
-//		KimPrincipal principal = getIdentityManagementService().getPrincipal( principalId );
-//		if ( principal == null || !principal.isActive() ) {
-//			return false;
-//		}
-//		// check that the entity is active
-//		KimEntity entity = getIdentityManagementService().getEntity( principal.getEntityId() );
-//		if ( entity == null || !entity.isActive() ) {
-//			return false;
-//		}
-//		return true;
-	}
-	
-	/**
-	 * This is an application role type.  Always returns true.
-	 * 
-	 * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#isApplicationRoleType()
-	 */
-	@Override
-	public boolean isApplicationRoleType() {
-		return true;
 	}
 
 	/**
 	 * Since this is potentially the entire set of users, just check the qualification for the user we are interested in and return it.
 	 * 
-	 * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#getPrincipalIdsFromApplicationRole(java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#getRoleMembersFromApplicationRole(String, String, AttributeSet)
 	 */
 	@Override
-	public List<String> getPrincipalIdsFromApplicationRole(String namespaceCode, String roleName,
-			AttributeSet qualification) {
-		ArrayList<String> tempIdList = new ArrayList<String>();
+    public List<RoleMembershipInfo> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, AttributeSet qualification) {
+		ArrayList<RoleMembershipInfo> tempIdList = new ArrayList<RoleMembershipInfo>();
 		if ( qualification == null ) {
 			return tempIdList;
 		}
 		qualification = translateInputAttributeSet(qualification);
 		// check that the principal ID is not null
-		String principalId = qualification.get( KIMPropertyConstants.Person.PRINCIPAL_ID );
+		String principalId = qualification.get( KimAttributes.PRINCIPAL_ID );
 		if ( hasApplicationRole(principalId, null, namespaceCode, roleName, qualification)) {
-	        tempIdList.add( principalId );
+	        tempIdList.add( new RoleMembershipInfo(null/*roleId*/, null, principalId, KimRole.PRINCIPAL_MEMBER_TYPE, null) );
 		}
 		return tempIdList;
 	}
@@ -120,15 +95,6 @@ public class PrincipalDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServi
         return true;
 	}
 	
-	/**
-	 * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#getGroupIdsFromApplicationRole(java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
-	 */
-	@Override
-	public List<String> getGroupIdsFromApplicationRole(String namespaceCode, String roleName,
-			AttributeSet qualification) {
-		return roleGroupIds;
-	}
-    
 	protected IdentityManagementService getIdentityManagementService() {
 		if ( identityManagementService == null ) {
 			identityManagementService = KIMServiceLocator.getIdentityManagementService();

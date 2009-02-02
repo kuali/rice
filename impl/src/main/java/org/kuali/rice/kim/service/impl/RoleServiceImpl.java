@@ -455,24 +455,13 @@ public class RoleServiceImpl implements RoleService {
     		// check if an application role
     		if ( roleTypeService != null && roleTypeService.isApplicationRoleType() ) {
     			KimRoleImpl role = roles.get( roleId );
-        		// for each application role, get the list of principals and groups which are in that role given the qualification (per the role type service)
-    			List<String> rolePrincipalIds = roleTypeService.getPrincipalIdsFromApplicationRole( role.getNamespaceCode(), role.getRoleName(), qualification );
-    			if ( !rolePrincipalIds.isEmpty() ) {
-    				matchingRoleIds.add(roleId);
-    				for ( String rolePrincipalId : rolePrincipalIds ) {
-    					RoleMembershipInfo mi = new RoleMembershipInfo( roleId, "*", rolePrincipalId, KimRole.PRINCIPAL_MEMBER_TYPE, null ); // CHECK ME: is this correct?  How do we tell what the true "qualifier" is for an application role?
-    					results.add( mi );
-    				}
+                // for each application role, get the list of principals and groups which are in that role given the qualification (per the role type service)
+    			List<RoleMembershipInfo> roleMembers = roleTypeService.getRoleMembersFromApplicationRole(role.getNamespaceCode(), role.getRoleName(), qualification);
+    			for ( RoleMembershipInfo rm : roleMembers ) {
+    			    rm.setRoleId(roleId);
+    			    rm.setRoleMemberId("*");
     			}
-    			// get the groups
-    			List<String> roleGroupIds = roleTypeService.getGroupIdsFromApplicationRole( role.getNamespaceCode(), role.getRoleName(), qualification );
-    			if ( !roleGroupIds.isEmpty() ) {
-    				matchingRoleIds.add(roleId);
-    				for ( String roleGroupId : roleGroupIds ) {
-    					RoleMembershipInfo mi = new RoleMembershipInfo( roleId, "*", roleGroupId, KimRole.GROUP_MEMBER_TYPE, null ); // CHECK ME: is this correct?  How do we tell what the true "qualifier" is for an application role?
-    					results.add( mi );
-    				}
-    			}
+    			results.addAll(roleMembers);
     		}
     	}    	
     	

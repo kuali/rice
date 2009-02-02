@@ -24,6 +24,8 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
+import org.kuali.rice.kim.bo.role.KimRole;
+import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
 
@@ -39,19 +41,21 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends
 	private static final String FYI_REQUEST_RECIPIENT_ROLE_NAME = "FYI Request Recipient";
 	protected WorkflowInfo workflowInfo = new WorkflowInfo();
 
+	/**
+	 * @see org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase#getRoleMembersFromApplicationRole(java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 */
 	@Override
-	public List<String> getPrincipalIdsFromApplicationRole(
-			String namespaceCode, String roleName, AttributeSet qualification) {
-		List<String> principalIds = new ArrayList<String>();
+    public List<RoleMembershipInfo> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, AttributeSet qualification) {
+		List<RoleMembershipInfo> members = new ArrayList<RoleMembershipInfo>();
 		if ( qualification != null ) {
+		    String principalId = qualification.get(KimAttributes.PRINCIPAL_ID);
 			if (qualification.containsKey(KimAttributes.PRINCIPAL_ID)
-					&& hasApplicationRole(qualification
-							.get(KimAttributes.PRINCIPAL_ID), null, namespaceCode,
+					&& hasApplicationRole(principalId, null, namespaceCode,
 							roleName, qualification)) {
-				principalIds.add(qualification.get(KimAttributes.PRINCIPAL_ID));
+                members.add( new RoleMembershipInfo(null/*roleId*/, null, principalId, KimRole.PRINCIPAL_MEMBER_TYPE, null) );
 			}
 		}
-		return principalIds;
+		return members;
 	}
 
 	@SuppressWarnings("unchecked")

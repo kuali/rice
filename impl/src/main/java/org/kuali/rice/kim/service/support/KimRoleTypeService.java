@@ -75,17 +75,8 @@ public interface KimRoleTypeService extends KimTypeService {
      * 
      * @see #isApplicationRoleType()
      */
-    List<String> getPrincipalIdsFromApplicationRole( String namespaceCode, String roleName, AttributeSet qualification );
+    List<RoleMembershipInfo> getRoleMembersFromApplicationRole( String namespaceCode, String roleName, AttributeSet qualification );
 
-    /**
-     * Returns a list of group IDs corresponding to the given application role.  These group IDs 
-     * would be returned from the implementing application.
-     * 
-     * @see #isApplicationRoleType()
-     * @see #getPrincipalIdsFromApplicationRole(String, String, AttributeSet)
-     */
-    List<String> getGroupIdsFromApplicationRole( String namespaceCode, String roleName, AttributeSet qualification );
-    
     /**
      * This method can be used to check if the given principal has this application role.  It is designed to be used in case
      * there is a more efficient way to check for whether a principal is in a role rather than retrieving all the

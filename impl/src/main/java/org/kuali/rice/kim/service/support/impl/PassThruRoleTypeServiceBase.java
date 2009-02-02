@@ -55,14 +55,10 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
         return result;
     }
 
-    public List<String> getGroupIdsFromApplicationRole(String namespaceCode, String roleName, AttributeSet qualification) {
-        return null;
+    public List<RoleMembershipInfo> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, AttributeSet qualification) {
+        return new ArrayList<RoleMembershipInfo>(0);
     }
-
-    public List<String> getPrincipalIdsFromApplicationRole(String namespaceCode, String roleName, AttributeSet qualification) {
-        return null;
-    }
-
+    
     public boolean hasApplicationRole(String principalId, List<String> groupIds, String namespaceCode, String roleName, AttributeSet qualification) {
         return false;
     }

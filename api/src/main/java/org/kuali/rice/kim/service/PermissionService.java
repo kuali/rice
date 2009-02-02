@@ -213,10 +213,6 @@ public interface PermissionService {
      */
     List<KimPermissionInfo> lookupPermissions(AttributeSet searchCriteria);
  
-    List<AttributeSet> getRoleQualifiersByPermissionName( String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification );
-
-    List<AttributeSet> getRoleQualifiersByTemplateName( String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification );
-
 	public List<KimPermission> lookupPermissions(Map<String, String> searchCriteria);
 
 }

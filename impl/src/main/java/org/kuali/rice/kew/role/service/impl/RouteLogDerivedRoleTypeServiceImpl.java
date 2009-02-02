@@ -22,6 +22,8 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
+import org.kuali.rice.kim.bo.role.KimRole;
+import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
 
@@ -51,30 +53,35 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
 	 *		i.e. initiators, people who have taken action, people with a pending action request, 
 	 *		or people who will receive an action request for the document in question get the KR-WKFLW Initiator or Reviewer Role 
 	 * 
-	 * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#getPrincipalIdsFromApplicationRole(java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#getRoleMembersFromApplicationRole(String, String, AttributeSet)
 	 */
 	@Override
-	public List<String> getPrincipalIdsFromApplicationRole(
-			String namespaceCode, String roleName, AttributeSet qualification) {
+    public List<RoleMembershipInfo> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, AttributeSet qualification) {
 		validateRequiredAttributesAgainstReceived(requiredAttributes, qualification, QUALIFICATION_RECEIVED_ATTIBUTES_NAME);
 		
 		String documentNumber = qualification.get(KimAttributes.DOCUMENT_NUMBER);
-		List<String> principalIds = new ArrayList<String>();
+		List<RoleMembershipInfo> members = new ArrayList<RoleMembershipInfo>();
 		if (StringUtils.isNotBlank(documentNumber)) {
 			Long documentNumberLong = Long.parseLong(documentNumber);
 			try{
-				if (INITIATOR_ROLE_NAME.equals(roleName))
-					principalIds.add(workflowInfo.getDocumentInitiatorPrincipalId(documentNumberLong));
-				else if(INITIATOR_OR_REVIEWER_ROLE_NAME.equals(roleName)){
-					principalIds.addAll(workflowInfo.getPrincipalIdsInRouteLog(documentNumberLong, true));
-				} else if(ROUTER_ROLE_NAME.equals(roleName))
-					principalIds.add(workflowInfo.getDocumentRoutedByPrincipalId(documentNumberLong));
+				if (INITIATOR_ROLE_NAME.equals(roleName)) {
+				    String principalId = workflowInfo.getDocumentInitiatorPrincipalId(documentNumberLong);
+                    members.add( new RoleMembershipInfo(null/*roleId*/, null, principalId, KimRole.PRINCIPAL_MEMBER_TYPE, null) );
+				} else if(INITIATOR_OR_REVIEWER_ROLE_NAME.equals(roleName)) {
+				    List<String> ids = workflowInfo.getPrincipalIdsInRouteLog(documentNumberLong, true);
+				    for ( String id : ids ) {
+				        members.add( new RoleMembershipInfo(null/*roleId*/, null, id, KimRole.PRINCIPAL_MEMBER_TYPE, null) );
+				    }
+				} else if(ROUTER_ROLE_NAME.equals(roleName)) {
+				    String principalId = workflowInfo.getDocumentRoutedByPrincipalId(documentNumberLong);
+                    members.add( new RoleMembershipInfo(null/*roleId*/, null, principalId, KimRole.PRINCIPAL_MEMBER_TYPE, null) );
+				}
 			} catch(WorkflowException wex){
 				throw new RuntimeException(
 				"Error in getting principal Ids in route log for document number: "+documentNumber+" :"+wex.getLocalizedMessage(),wex);
 			}
 		}
-		return principalIds;
+		return members;
 	}
 
 	/***

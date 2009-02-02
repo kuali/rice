@@ -17,6 +17,7 @@ import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.role.KimResponsibility;
+import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.AuthenticationService;
@@ -452,14 +453,6 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     	return getPermissionService().getAuthorizedPermissionsByTemplateName(principalId, namespaceCode, permissionTemplateName, permissionDetails, qualification);
     }
     
-    public List<AttributeSet> getRoleQualifiersByPermissionName( String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
-    	return getPermissionService().getRoleQualifiersByPermissionName(principalId, namespaceCode, permissionName, permissionDetails, qualification);
-    }
-
-    public List<AttributeSet> getRoleQualifiersByTemplateName( String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification ) {
-    	return getPermissionService().getRoleQualifiersByTemplateName(principalId, namespaceCode, permissionTemplateName, permissionDetails, qualification);
-    }
-    
     public boolean isPermissionDefinedForTemplateName(String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails) {
     	StringBuffer key = new StringBuffer();
     	key.append( namespaceCode ).append( '-' ).append( permissionTemplateName ).append( '/' );
@@ -476,8 +469,22 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
         return result; 
     }
     
-    // GROUP SERVICE
     
+	public List<PermissionAssigneeInfo> getPermissionAssignees(String namespaceCode,
+			String permissionName, AttributeSet permissionDetails, AttributeSet qualification) {
+		return this.permissionService.getPermissionAssignees( namespaceCode, permissionName,
+				permissionDetails, qualification );
+	}
+
+	public List<PermissionAssigneeInfo> getPermissionAssigneesForTemplateName(String namespaceCode,
+			String permissionTemplateName, AttributeSet permissionDetails,
+			AttributeSet qualification) {
+		return this.permissionService.getPermissionAssigneesForTemplateName( namespaceCode,
+				permissionTemplateName, permissionDetails, qualification );
+	}    
+    
+    // GROUP SERVICE
+
 	public boolean isMemberOfGroup(String principalId, String groupId) {
     	Boolean isMember = getIsMemberOfGroupCache(principalId, groupId);
 		if (isMember != null) {
@@ -815,7 +822,14 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		StringBuffer sb = new StringBuffer();
 		sb.append(  '\n' );
 		sb.append( "Is AuthZ for " ).append( checkType ).append( ": " ).append( namespaceCode ).append( "/" ).append( permissionName ).append( '\n' );
-		sb.append( "             Principal:  " ).append( principalId ).append( '\n' );
+		sb.append( "             Principal:  " ).append( principalId );
+		if ( principalId != null ) {
+			KimPrincipal principal = getPrincipal( principalId );
+			if ( principal != null ) {
+				sb.append( " (" ).append( principal.getPrincipalName() ).append( ')' );
+			}
+		}
+		sb.append( '\n' );
 		sb.append( "             Details:\n" );
 		if ( permissionDetails != null ) {
 			sb.append( permissionDetails.formattedDump( 25 ) );
@@ -835,7 +849,13 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		StringBuffer sb = new StringBuffer();
 		sb.append(  '\n' );
 		sb.append( "Has Perm for " ).append( checkType ).append( ": " ).append( namespaceCode ).append( "/" ).append( permissionName ).append( '\n' );
-		sb.append( "             Principal:  " ).append( principalId ).append( '\n' );
+		sb.append( "             Principal:  " ).append( principalId );
+		if ( principalId != null ) {
+			KimPrincipal principal = getPrincipal( principalId );
+			if ( principal != null ) {
+				sb.append( " (" ).append( principal.getPrincipalName() ).append( ')' );
+			}
+		}
 		sb.append( "             Details:\n" );
 		if ( permissionDetails != null ) {
 			sb.append( permissionDetails.formattedDump( 25 ) );

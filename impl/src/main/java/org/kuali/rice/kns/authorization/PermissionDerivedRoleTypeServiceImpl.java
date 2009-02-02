@@ -19,10 +19,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.role.KimRole;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
+import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.PermissionService;
+import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
 
 /**
@@ -33,7 +35,7 @@ import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
  */
 public class PermissionDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServiceBase {
 
-	private static PermissionService permissionService;
+	private static IdentityManagementService identityManagementService;
 	private String permissionTemplateNamespace;
 	private String permissionTemplateName;
 	/**
@@ -60,26 +62,9 @@ public class PermissionDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServ
 	public void setPermissionTemplateName(String permissionTemplateName) {
 		this.permissionTemplateName = permissionTemplateName;
 	}
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#getGroupIdsFromApplicationRole(java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
-	 */
-	@Override
-	public List<String> getGroupIdsFromApplicationRole(String namespaceCode,
-			String roleName, AttributeSet qualification) {
-		List<PermissionAssigneeInfo> permissionAssignees = getPermissionAssignees(qualification);
-		List<String> groupIds = new ArrayList<String>();
-		for (PermissionAssigneeInfo permissionAssigneeInfo : permissionAssignees) {
-			if (StringUtils.isNotBlank(permissionAssigneeInfo.getGroupId())) {
-				groupIds.add(permissionAssigneeInfo.getGroupId());
-			}
-		}
-		return groupIds;
-	}
 	
 	protected List<PermissionAssigneeInfo> getPermissionAssignees(AttributeSet qualification) {
-		return getPermissionService().getPermissionAssigneesForTemplateName(permissionTemplateNamespace, permissionTemplateName, qualification, qualification);
+		return getIdentityManagementService().getPermissionAssigneesForTemplateName(permissionTemplateNamespace, permissionTemplateName, qualification, qualification);
 	}
 
 	/**
@@ -88,16 +73,17 @@ public class PermissionDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServ
 	 * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#getPrincipalIdsFromApplicationRole(java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
 	 */
 	@Override
-	public List<String> getPrincipalIdsFromApplicationRole(String namespaceCode,
-			String roleName, AttributeSet qualification) {
+    public List<RoleMembershipInfo> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, AttributeSet qualification) {
 		List<PermissionAssigneeInfo> permissionAssignees = getPermissionAssignees(qualification);
-		List<String> principalIds = new ArrayList<String>();
+		List<RoleMembershipInfo> members = new ArrayList<RoleMembershipInfo>();
 		for (PermissionAssigneeInfo permissionAssigneeInfo : permissionAssignees) {
 			if (StringUtils.isNotBlank(permissionAssigneeInfo.getPrincipalId())) {
-				principalIds.add(permissionAssigneeInfo.getPrincipalId());
+			    members.add( new RoleMembershipInfo( null/*roleId*/, null, permissionAssigneeInfo.getPrincipalId(), KimRole.PRINCIPAL_MEMBER_TYPE, null));
+			} else if (StringUtils.isNotBlank(permissionAssigneeInfo.getGroupId())) {
+                members.add( new RoleMembershipInfo( null/*roleId*/, null, permissionAssigneeInfo.getGroupId(), KimRole.GROUP_MEMBER_TYPE, null));
 			}
 		}
-		return principalIds;
+		return members;
 	}
 	
     /***
@@ -106,17 +92,18 @@ public class PermissionDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServ
     @Override
     public boolean hasApplicationRole(
             String principalId, List<String> groupIds, String namespaceCode, String roleName, AttributeSet qualification){
-    	return getPermissionService().isAuthorizedByTemplateName(principalId,permissionTemplateNamespace, permissionTemplateName, qualification, qualification);    
+        // FIXME: dangerous - data changes could cause an infinite loop - should add thread-local to trap state and abort
+    	return getIdentityManagementService().isAuthorizedByTemplateName(principalId,permissionTemplateNamespace, permissionTemplateName, qualification, qualification);    
 	}
     
     /**
      * @return the documentService
      */
-    protected PermissionService getPermissionService(){
-        if (permissionService == null ) {
-        	permissionService = KIMServiceLocator.getPermissionService();
+    protected IdentityManagementService getIdentityManagementService(){
+        if (identityManagementService == null ) {
+        	identityManagementService = KIMServiceLocator.getIdentityManagementService();
         }
-        return permissionService;
+        return identityManagementService;
     }
 	
 }

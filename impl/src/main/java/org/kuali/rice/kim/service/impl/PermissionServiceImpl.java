@@ -430,20 +430,6 @@ public class PermissionServiceImpl implements PermissionService {
     	throw new UnsupportedOperationException();
     }
 
-    public List<AttributeSet> getRoleQualifiersByPermissionName( String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
-    	List<KimPermissionImpl> impls = getPermissionImplsByName( namespaceCode, permissionName );    	
-    	List<KimPermissionInfo> applicablePermissions = getMatchingPermissions( impls, permissionDetails );    	
-    	List<String> roleIds = permissionDao.getRoleIdsForPermissions(applicablePermissions);
-    	return getRoleService().getRoleQualifiersForPrincipal(principalId, roleIds, qualification);    	
-    }
-
-    public List<AttributeSet> getRoleQualifiersByTemplateName( String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification ) {
-    	List<KimPermissionImpl> impls = getPermissionImplsByTemplateName( namespaceCode, permissionTemplateName );    	
-    	List<KimPermissionInfo> applicablePermissions = getMatchingPermissions( impls, permissionDetails );    	
-    	List<String> roleIds = permissionDao.getRoleIdsForPermissions(applicablePermissions);
-    	return getRoleService().getRoleQualifiersForPrincipal(principalId, roleIds, qualification);
-    }
-
 	protected List<KimPermissionImpl> getPermissionsFromCache( String key ) {
     	List<KimPermissionImpl> permissions = null; 
     	MaxAgeSoftReference<List<KimPermissionImpl>> cacheRef = permissionCache.get( key );

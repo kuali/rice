@@ -18,6 +18,7 @@ package org.kuali.rice.kim.service.support.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 /**
@@ -29,20 +30,11 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 public class KimDerivedRoleTypeServiceBase extends KimRoleTypeServiceBase {
 
 	/**
-	 * @see org.kuali.rice.kim.service.support.KimRoleTypeService#getPrincipalIdsFromApplicationRole(String, String, AttributeSet)
-	 */
-	public List<String> getPrincipalIdsFromApplicationRole(String namespaceCode, String roleName,
-			AttributeSet qualification) {
-		return new ArrayList<String>();
-	}
-
-	/**
-	 * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#getGroupIdsFromApplicationRole(java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#getRoleMembersFromApplicationRole(java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
 	 */
 	@Override
-	public List<String> getGroupIdsFromApplicationRole(String namespaceCode,
-			String roleName, AttributeSet qualification) {
-		return new ArrayList<String>();
+	public List<RoleMembershipInfo> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, AttributeSet qualification) {
+        return new ArrayList<RoleMembershipInfo>();
 	}
 
 	/**

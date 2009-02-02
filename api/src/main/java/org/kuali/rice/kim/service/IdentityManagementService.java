@@ -10,6 +10,7 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.role.KimResponsibility;
+import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
@@ -99,15 +100,16 @@ public interface IdentityManagementService {
 
     /**
      * Returns the matching permission objects for a principal.
-     * 
-     * @see PermissionService#getAuthorizedPermissions(String, String, AttributeSet, AttributeSet)
      */
     List<? extends KimPermission> getAuthorizedPermissions( String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification );
     List<? extends KimPermission> getAuthorizedPermissionsByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification);
 
-    List<AttributeSet> getRoleQualifiersByPermissionName( String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification );
-    List<AttributeSet> getRoleQualifiersByTemplateName( String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification );
-
+    List<PermissionAssigneeInfo> getPermissionAssignees(String namespaceCode,
+			String permissionName, AttributeSet permissionDetails,
+			AttributeSet qualification);
+    List<PermissionAssigneeInfo> getPermissionAssigneesForTemplateName(String namespaceCode,
+			String permissionTemplateName, AttributeSet permissionDetails,
+			AttributeSet qualification);
     // ----------------------
     // Responsibility Methods
     // ----------------------

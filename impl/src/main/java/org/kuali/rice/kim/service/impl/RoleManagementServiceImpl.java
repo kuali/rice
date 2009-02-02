@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.core.util.MaxSizeMap;
 import org.kuali.rice.core.util.RiceDebugUtils;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.role.KimRole;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
@@ -423,12 +424,20 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		StringBuffer sb = new StringBuffer();
 		sb.append(  '\n' );
 		sb.append( "Has Role     : " ).append( roleIds ).append( '\n' );
-		if ( roleIds.size() == 1 ) {
-			KimRoleInfo role = getRole( roleIds.get(0));
-			sb.append( "        Name : " ).append( role.getNamespaceCode() ).append( '/').append( role.getRoleName() ).append( '\n' );
+		for ( String roleId : roleIds ) {
+			KimRoleInfo role = getRole( roleId );
+			sb.append( "        Name : " ).append( role.getNamespaceCode() ).append( '/').append( role.getRoleName() );
+			sb.append( " (" ).append( roleId ).append( ')' );
+			sb.append( '\n' );
 		}
-		//.append( namespaceCode ).append( "/" ).append( permissionName ).append( '\n' );
-		sb.append( "   Principal : " ).append( principalId ).append( '\n' );
+		sb.append( "   Principal : " ).append( principalId );
+		if ( principalId != null ) {
+			KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal( principalId );
+			if ( principal != null ) {
+				sb.append( " (" ).append( principal.getPrincipalName() ).append( ')' );
+			}
+		}
+		sb.append( '\n' );
 		sb.append( "     Details :\n" );
 		if ( roleQualifiers != null ) {
 			sb.append( roleQualifiers.formattedDump( 15 ) );

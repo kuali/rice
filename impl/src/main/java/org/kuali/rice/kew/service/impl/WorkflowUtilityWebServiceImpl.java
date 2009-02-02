@@ -930,7 +930,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         }
         Collection rulesFound = KEWServiceLocator.getRuleService().search(ruleReportCriteria.getDocumentTypeName(),ruleReportCriteria.getRuleTemplateName(),
                 ruleReportCriteria.getRuleDescription(), ruleReportCriteria.getResponsibleGroupId(),
-                ruleReportCriteria.getResponsiblePrincipalId(),ruleReportCriteria.getResponsibleRoleName(),
+                ruleReportCriteria.getResponsiblePrincipalId(),
                 ruleReportCriteria.isConsiderWorkgroupMembership(),ruleReportCriteria.isIncludeDelegations(),
                 ruleReportCriteria.isActiveIndicator(),extensionValues,actionRequestCodes);
         RuleDTO[] returnableRules = new RuleDTO[rulesFound.size()];
@@ -990,7 +990,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         }
     	return header.getRoutedByUserWorkflowId();
     }
-    	
+
     /**
 	 *
 	 * @see org.kuali.rice.kew.service.WorkflowUtility#getSearchableAttributeDateTimeValuesByKey(java.lang.Long, java.lang.String)

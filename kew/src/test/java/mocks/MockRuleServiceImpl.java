@@ -63,10 +63,10 @@ public class MockRuleServiceImpl implements RuleService {
     public Long routeRuleWithDelegate(Long routeHeaderId, RuleBaseValues parentRule, RuleBaseValues delegateRule, KimPrincipal principal, String annotation, boolean blanketApprove) throws Exception {
         return null;
     }
-    public List search(String docTypeName, Long ruleId, Long ruleTemplateId, String ruleDescription, String workgroupId, String principalId, String roleName, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective) {
+    public List search(String docTypeName, Long ruleId, Long ruleTemplateId, String ruleDescription, String workgroupId, String principalId, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective) {
         return null;
     }
-    public List search(String docTypeName, String ruleTemplateName, String ruleDescription, String groupId, String principalId, String roleName, Boolean workgroupMember, Boolean delegateRule, Boolean activeInd, Map extensionValues, Collection<String> actionRequestCodes) {
+    public List search(String docTypeName, String ruleTemplateName, String ruleDescription, String groupId, String principalId, Boolean workgroupMember, Boolean delegateRule, Boolean activeInd, Map extensionValues, Collection<String> actionRequestCodes) {
         return null;
     }
     public void notifyCacheOfRuleChange(RuleBaseValues rule, DocumentType documentType) {
@@ -128,7 +128,7 @@ public class MockRuleServiceImpl implements RuleService {
         return (RuleBaseValues) rules.get(ruleBaseValuesId);
     }
 
-    public List search(String docTypeName, Long ruleTemplateId, Long workgroupId, String workflowId, String roleName, Boolean delegateRule, Boolean activeInd, Map extensionValues) {
+    public List search(String docTypeName, Long ruleTemplateId, Long workgroupId, String workflowId, Boolean delegateRule, Boolean activeInd, Map extensionValues) {
         throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");
     }
 
@@ -163,7 +163,7 @@ public class MockRuleServiceImpl implements RuleService {
     public void makeCurrent(Long routeHeaderId) {
         throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");
     }
-    
+
     public void makeCurrent(RuleBaseValues rule) {
         throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");
     }

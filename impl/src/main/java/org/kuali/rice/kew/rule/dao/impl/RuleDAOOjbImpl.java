@@ -126,7 +126,7 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 
 	public Criteria generateFromToDateCriteria(Date date) {
 		Criteria crit = new Criteria();
-		
+
 		Criteria fromCrit = new Criteria();
 		Criteria fromNullCrit = new Criteria();
 		fromNullCrit.addIsNull("fromDate");
@@ -134,7 +134,7 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 		fromLessOrEqualCrit.addLessOrEqualThan("fromDate", new Timestamp(date.getTime()));
 		fromCrit.addOrCriteria(fromNullCrit);
 		fromCrit.addOrCriteria(fromLessOrEqualCrit);
-		
+
 		Criteria toCrit = new Criteria();
 		Criteria toNullCrit = new Criteria();
 		toNullCrit.addIsNull("toDate");
@@ -142,13 +142,13 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 		toGreaterOrEqualCrit.addGreaterOrEqualThan("toDate", new Timestamp(date.getTime()));
 		toCrit.addOrCriteria(toNullCrit);
 		toCrit.addOrCriteria(toGreaterOrEqualCrit);
-		
+
 		crit.addAndCriteria(fromCrit);
 		crit.addAndCriteria(toCrit);
-		
+
 		return crit;
 	}
-	
+
 	public List fetchAllRules(boolean currentRules) {
 		Criteria crit = new Criteria();
 		crit.addEqualTo("currentInd", new Boolean(currentRules));
@@ -258,7 +258,7 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 		return null;
 	}
 
-	public List search(String docTypeName, Long ruleId, Long ruleTemplateId, String ruleDescription, String workgroupId, String principalId, String roleName, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective) {
+	public List search(String docTypeName, Long ruleId, Long ruleTemplateId, String ruleDescription, String workgroupId, String principalId, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective) {
         Criteria crit = getSearchCriteria(docTypeName, ruleTemplateId, ruleDescription, delegateRule, activeInd, extensionValues);
         if (ruleId != null) {
             crit.addEqualTo("ruleBaseValuesId", ruleId);
@@ -270,85 +270,78 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
         Boolean searchUser = Boolean.FALSE;
         Boolean searchUserInWorkgroups = Boolean.FALSE;
         if (!Utilities.isEmpty(workflowIdDirective)) {
-            if ("workgroup".equals(workflowIdDirective)) {
+            if ("group".equals(workflowIdDirective)) {
                 searchUserInWorkgroups = Boolean.TRUE;
-            } else if ("both".equals(workflowIdDirective)) {
+            } else if ("".equals(workflowIdDirective)) {
                 searchUser = Boolean.TRUE;
                 searchUserInWorkgroups = Boolean.TRUE;
             } else {
                 searchUser = Boolean.TRUE;
             }
         }
-        if (!Utilities.isEmpty(principalId) && searchUserInWorkgroups) 
+        if (!Utilities.isEmpty(principalId) && searchUserInWorkgroups)
         {
             KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
-            
-            if (principal == null) 
+
+            if (principal == null)
             {
             	throw new RiceRuntimeException("Failed to locate user for the given workflow id: " + principalId);
             }
             workgroupIds = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
         }
-        crit.addIn("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(workgroupIds, principalId, roleName, searchUser, searchUserInWorkgroups));
+        crit.addIn("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(workgroupIds, principalId, searchUser, searchUserInWorkgroups));
 
 		return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleBaseValues.class, crit, true));
 	}
 
-    public List search(String docTypeName, Long ruleTemplateId, String ruleDescription, Collection<String> workgroupIds, String workflowId, String roleName, Boolean delegateRule, Boolean activeInd, Map extensionValues, Collection actionRequestCodes) {
+    public List search(String docTypeName, Long ruleTemplateId, String ruleDescription, Collection<String> workgroupIds, String workflowId, Boolean delegateRule, Boolean activeInd, Map extensionValues, Collection actionRequestCodes) {
         Criteria crit = getSearchCriteria(docTypeName, ruleTemplateId, ruleDescription, delegateRule, activeInd, extensionValues);
-        crit.addIn("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(workgroupIds, workflowId, roleName, actionRequestCodes, (workflowId != null), ((workgroupIds != null) && !workgroupIds.isEmpty())));
+        crit.addIn("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(workgroupIds, workflowId, actionRequestCodes, (workflowId != null), ((workgroupIds != null) && !workgroupIds.isEmpty())));
         return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleBaseValues.class, crit, true));
     }
 
-    private ReportQueryByCriteria getResponsibilitySubQuery(List<String> workgroupIds, String workflowId, String roleName, Boolean searchUser, Boolean searchUserInWorkgroups) {
+    private ReportQueryByCriteria getResponsibilitySubQuery(List<String> workgroupIds, String workflowId, Boolean searchUser, Boolean searchUserInWorkgroups) {
         Collection<String> workgroupIdStrings = new ArrayList<String>();
         for (String workgroupId : workgroupIds) {
             workgroupIdStrings.add(workgroupId);
         }
-        return getResponsibilitySubQuery(workgroupIdStrings,workflowId,roleName,new ArrayList<String>(), searchUser, searchUserInWorkgroups);
+        return getResponsibilitySubQuery(workgroupIdStrings,workflowId,new ArrayList<String>(), searchUser, searchUserInWorkgroups);
     }
-    private ReportQueryByCriteria getResponsibilitySubQuery(Collection<String> workgroupIds, String workflowId, String roleName, Collection actionRequestCodes, Boolean searchUser, Boolean searchUserInWorkgroups) {
+    private ReportQueryByCriteria getResponsibilitySubQuery(Collection<String> workgroupIds, String workflowId, Collection actionRequestCodes, Boolean searchUser, Boolean searchUserInWorkgroups) {
         Criteria responsibilityCrit = new Criteria();
         if ( (actionRequestCodes != null) && (!actionRequestCodes.isEmpty()) ) {
             responsibilityCrit.addIn("actionRequestedCd", actionRequestCodes);
         }
 
         Criteria ruleResponsibilityNameCrit = null;
-        if (!Utilities.isEmpty(roleName)) {
-            // role name exists... nothing else matters
-            ruleResponsibilityNameCrit = new Criteria();
-            ruleResponsibilityNameCrit.addLike("ruleResponsibilityName", workflowId);
-            ruleResponsibilityNameCrit.addEqualTo("ruleResponsibilityType", KEWConstants.RULE_RESPONSIBILITY_ROLE_ID);
-        } else {
-            if (!Utilities.isEmpty(workflowId)) {
-                // workflow user id exists
-                if (searchUser != null && searchUser) {
-                    // searching user wishes to search for rules specific to user
-                    ruleResponsibilityNameCrit = new Criteria();
-                    ruleResponsibilityNameCrit.addLike("ruleResponsibilityName", workflowId);
-                    ruleResponsibilityNameCrit.addEqualTo("ruleResponsibilityType", KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
-                }
-                if ( (searchUserInWorkgroups != null && searchUserInWorkgroups) && (workgroupIds != null) && (!workgroupIds.isEmpty()) ) {
-                    // at least one workgroup id exists and user wishes to search on workgroups
-                    if (ruleResponsibilityNameCrit == null) {
-                        ruleResponsibilityNameCrit = new Criteria();
-                    }
-                    Criteria workgroupCrit = new Criteria();
-                    workgroupCrit.addIn("ruleResponsibilityName", workgroupIds);
-                    workgroupCrit.addEqualTo("ruleResponsibilityType", KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
-                    ruleResponsibilityNameCrit.addOrCriteria(workgroupCrit);
-                }
-            } else if ( (workgroupIds != null) && (workgroupIds.size() == 1) ) {
-                // no user and one workgroup id
+        if (!Utilities.isEmpty(workflowId)) {
+            // workflow user id exists
+            if (searchUser != null && searchUser) {
+                // searching user wishes to search for rules specific to user
                 ruleResponsibilityNameCrit = new Criteria();
-                ruleResponsibilityNameCrit.addLike("ruleResponsibilityName", workgroupIds.iterator().next());
-                ruleResponsibilityNameCrit.addEqualTo("ruleResponsibilityType", KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
-            } else if ( (workgroupIds != null) && (workgroupIds.size() > 1) ) {
-                // no user and more than one workgroup id
-                ruleResponsibilityNameCrit = new Criteria();
-                ruleResponsibilityNameCrit.addIn("ruleResponsibilityName", workgroupIds);
-                ruleResponsibilityNameCrit.addEqualTo("ruleResponsibilityType", KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
+                ruleResponsibilityNameCrit.addLike("ruleResponsibilityName", workflowId);
+                ruleResponsibilityNameCrit.addEqualTo("ruleResponsibilityType", KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
             }
+            if ( (searchUserInWorkgroups != null && searchUserInWorkgroups) && (workgroupIds != null) && (!workgroupIds.isEmpty()) ) {
+                // at least one workgroup id exists and user wishes to search on workgroups
+                if (ruleResponsibilityNameCrit == null) {
+                    ruleResponsibilityNameCrit = new Criteria();
+                }
+                Criteria workgroupCrit = new Criteria();
+                workgroupCrit.addIn("ruleResponsibilityName", workgroupIds);
+                workgroupCrit.addEqualTo("ruleResponsibilityType", KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
+                ruleResponsibilityNameCrit.addOrCriteria(workgroupCrit);
+            }
+        } else if ( (workgroupIds != null) && (workgroupIds.size() == 1) ) {
+            // no user and one workgroup id
+            ruleResponsibilityNameCrit = new Criteria();
+            ruleResponsibilityNameCrit.addLike("ruleResponsibilityName", workgroupIds.iterator().next());
+            ruleResponsibilityNameCrit.addEqualTo("ruleResponsibilityType", KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
+        } else if ( (workgroupIds != null) && (workgroupIds.size() > 1) ) {
+            // no user and more than one workgroup id
+            ruleResponsibilityNameCrit = new Criteria();
+            ruleResponsibilityNameCrit.addIn("ruleResponsibilityName", workgroupIds);
+            ruleResponsibilityNameCrit.addEqualTo("ruleResponsibilityType", KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
         }
         if (ruleResponsibilityNameCrit != null) {
             responsibilityCrit.addAndCriteria(ruleResponsibilityNameCrit);

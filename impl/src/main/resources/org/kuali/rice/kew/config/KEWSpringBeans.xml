@@ -148,7 +148,7 @@
 			<ref bean="enBranchDAO"/>
 		</property>
 	</bean>
-	
+
 	<!--  ResponsibilityIdService -->
 	<bean id="enResponsibilityIdService" class="org.kuali.rice.kew.responsibility.service.impl.ResponsibilityIdServiceImpl" lazy-init="true">
 		<property name="responsibilityIdDAO" ref="enResponsibilityIdDAO" />
@@ -160,7 +160,7 @@
 			<ref bean="enActionRequestDAO" />
 		</property>
 	</bean>
-	
+
 	<!--  RuleAttributeService -->
 	<bean id="enRuleAttributeService" class="org.kuali.rice.kew.rule.service.impl.RuleAttributeServiceImpl" lazy-init="true">
 		<property name="ruleAttributeDAO">
@@ -186,7 +186,7 @@
 			<ref bean="enRuleDelegationDAO" />
 		</property>
 	</bean>
-	
+
 	<!--  RuleDelegationService -->
 	<bean id="enRuleDelegationService" class="org.kuali.rice.kew.rule.service.impl.RuleDelegationServiceImpl" lazy-init="true">
 		<property name="ruleDelegationDAO">
@@ -213,7 +213,7 @@
 			<ref bean="enSearchableAttributeDAO" />
 		</property>
 	</bean>
-	
+
 
   <!--  EDL Extract Service -->
   <bean id="enExtractService" class="org.kuali.rice.kew.edl.extract.ExtractServiceImpl">
@@ -269,7 +269,7 @@
             <ref bean="enUserOptionsDAO" />
 		</property>
 	</bean>
-  
+
 
 	<!--  ActionTakenService -->
 	<bean id="enActionTakenService" class="org.kuali.rice.kew.actiontaken.service.impl.ActionTakenServiceImpl" lazy-init="true">
@@ -277,7 +277,7 @@
 			<ref bean="enActionTakenDAO" />
 		</property>
 	</bean>
-	
+
 	<!--  RoleService -->
 	<bean id="enRoleService" class="org.kuali.rice.kew.role.service.impl.RoleServiceImpl"  lazy-init="true"/>
 
@@ -286,6 +286,14 @@
     <bean id="edlLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
 	  <property name="lookupableHelperService">
   		<ref bean="edlLookupHelperService" />
+	  </property>
+    </bean>
+
+    <bean id="ruleBaseValuesLookupHelperService" class="org.kuali.rice.kew.lookupable.RuleBaseValuesLookupableHelperServiceImpl" scope="prototype"/>
+
+    <bean id="ruleBaseValuesLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
+	  <property name="lookupableHelperService">
+  		<ref bean="ruleBaseValuesLookupHelperService" />
 	  </property>
     </bean>
 
@@ -372,7 +380,7 @@
         <property name="helpDAO" ref="enHelpDAO" />
     </bean>
 
-    
+
     <!-- <bean id="enEncryptionService" class="org.kuali.rice.core.service.impl.DESEncryptionService" lazy-init="true"/> -->
 	<bean id="enEncryptionService" class="org.kuali.rice.core.service.impl.DemonstrationGradeEncryptionServiceImpl" lazy-init="true">
 		<property name="secretKey">
@@ -747,7 +755,7 @@
     <constructor-arg value="rice.kew"/>
     <constructor-arg ref="enWorkflowDataSource"/>
   </bean>
-  
+
   <bean id="kewEntityManager" class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
   	<property name="entityManagerFactory" ref="kewEntityManagerFactory"/>
   </bean>
@@ -836,5 +844,5 @@
 	       </bean>
 		</property>
   </bean>
-  
+
 </beans>

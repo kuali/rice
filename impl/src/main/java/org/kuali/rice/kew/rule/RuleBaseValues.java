@@ -53,6 +53,8 @@ import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kns.util.TypedArrayList;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
@@ -141,7 +143,15 @@ public class RuleBaseValues extends KewPersistableBusinessObjectBase {
     private List<GroupRuleResponsibility> groupResponsibilities;
     @Transient
     private Map<String, String> fieldValues;
-    
+    @Transient
+    private String groupReviewerName;
+    @Transient
+    private String groupReviewerNamespace;
+    @Transient
+    private String personReviewer;
+    @Transient
+    private String personReviewerType;
+
     public RuleBaseValues() {
         responsibilities = new ArrayList<RuleResponsibility>();
         ruleExtensions = new ArrayList<RuleExtension>();
@@ -523,7 +533,7 @@ public class RuleBaseValues extends KewPersistableBusinessObjectBase {
     public void setIgnorePrevious(Boolean ignorePrevious) {
         this.ignorePrevious = ignorePrevious;
     }
-    
+
     public boolean isActive(Date date) {
     	boolean isAfterFromDate = getFromDate() == null || date.after(getFromDate());
     	boolean isBeforeToDate = getToDate() == null || date.before(getToDate());
@@ -645,7 +655,7 @@ public class RuleBaseValues extends KewPersistableBusinessObjectBase {
     public void setName(String name) {
         this.name = name;
     }
-    
+
 	public List<PersonRuleResponsibility> getPersonResponsibilities() {
 		return this.personResponsibilities;
 	}
@@ -653,7 +663,7 @@ public class RuleBaseValues extends KewPersistableBusinessObjectBase {
 	public void setPersonResponsibilities(List<PersonRuleResponsibility> personResponsibilities) {
 		this.personResponsibilities = personResponsibilities;
 	}
-	
+
 	public List<GroupRuleResponsibility> getGroupResponsibilities() {
 		return this.groupResponsibilities;
 	}
@@ -661,8 +671,8 @@ public class RuleBaseValues extends KewPersistableBusinessObjectBase {
 	public void setGroupResponsibilities(List<GroupRuleResponsibility> groupResponsibilities) {
 		this.groupResponsibilities = groupResponsibilities;
 	}
-	
-	
+
+
 
 	/**
 	 * @return the fieldValues
@@ -697,4 +707,43 @@ public class RuleBaseValues extends KewPersistableBusinessObjectBase {
 		return mapper;
 	}
 
+    public String getGroupReviewerName() {
+        return this.groupReviewerName;
+    }
+
+    public String getGroupReviewerNamespace() {
+        return this.groupReviewerNamespace;
+    }
+
+    public String getPersonReviewer() {
+        return this.personReviewer;
+    }
+
+    public void setGroupReviewerName(String groupReviewerName) {
+        this.groupReviewerName = groupReviewerName;
+    }
+
+    public void setGroupReviewerNamespace(String groupReviewerNamespace) {
+        this.groupReviewerNamespace = groupReviewerNamespace;
+    }
+
+    public void setPersonReviewer(String personReviewer) {
+        this.personReviewer = personReviewer;
+    }
+
+    public KimGroupImpl getKimGroupImpl() {
+        return new KimGroupImpl();
+    }
+
+    public PersonImpl getPersonImpl() {
+        return new PersonImpl();
+    }
+
+    public String getPersonReviewerType() {
+        return this.personReviewerType;
+    }
+
+    public void setPersonReviewerType(String personReviewerType) {
+        this.personReviewerType = personReviewerType;
+    }
 }

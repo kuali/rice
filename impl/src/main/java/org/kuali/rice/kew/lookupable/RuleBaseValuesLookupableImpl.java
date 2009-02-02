@@ -495,7 +495,7 @@ public class RuleBaseValuesLookupableImpl implements /*WorkflowLookupable,*/ Exp
 			throw new WorkflowServiceErrorException("RuleBaseValues validation errors", errors);
 		}
 
-		Iterator rules = getRuleService().search(docTypeSearchName, ruleId, ruleTemplateId, ruleDescription, workgroupId, workflowId, roleNameParam, isDelegateRule, isActive, attributes, userDirectiveParam).iterator();
+		Iterator rules = getRuleService().search(docTypeSearchName, ruleId, ruleTemplateId, ruleDescription, workgroupId, workflowId, isDelegateRule, isActive, attributes, userDirectiveParam).iterator();
 		List displayList = new ArrayList();
 
 		while (rules.hasNext()) {

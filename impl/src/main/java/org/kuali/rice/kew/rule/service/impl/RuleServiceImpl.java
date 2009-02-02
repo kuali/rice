@@ -326,7 +326,7 @@ public class RuleServiceImpl implements RuleService {
      */
     public void makeCurrent(RuleBaseValues rule) {
         PerformanceLogger performanceLogger = new PerformanceLogger();
-        
+
         boolean isGenerateRuleArs = true;
         String generateRuleArs = Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_GENERATE_ACTION_REQESTS_IND);
         if (!StringUtils.isBlank(generateRuleArs)) {
@@ -346,7 +346,7 @@ public class RuleServiceImpl implements RuleService {
         } catch (Exception e) {
         	LOG.error("Parse Exception", e);
         }
-        
+
         rulesToSave.put(rule.getRuleBaseValuesId(), rule);
         if (rule.getPreviousVersionId() != null) {
         	RuleBaseValues oldRule = findRuleBaseValuesById(rule.getPreviousVersionId());
@@ -378,7 +378,7 @@ public class RuleServiceImpl implements RuleService {
         performanceLogger.log("Time to make current");
     }
 
-    
+
     private void queueRuleCache(Long ruleId){
 //      PersistedMessage ruleCache = new PersistedMessage();
 //      ruleCache.setQueuePriority(KEWConstants.ROUTE_QUEUE_RULE_CACHE_PRIORITY);
@@ -901,12 +901,12 @@ public class RuleServiceImpl implements RuleService {
     }
 
     public List search(String docTypeName, Long ruleId, Long ruleTemplateId, String ruleDescription, String groupId, String principalId,
-            String roleName, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective) {
-        return getRuleDAO().search(docTypeName, ruleId, ruleTemplateId, ruleDescription, groupId, principalId, roleName, delegateRule,
+            Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective) {
+        return getRuleDAO().search(docTypeName, ruleId, ruleTemplateId, ruleDescription, groupId, principalId, delegateRule,
                 activeInd, extensionValues, workflowIdDirective);
     }
 
-    public List search(String docTypeName, String ruleTemplateName, String ruleDescription, String groupId, String principalId, String roleName,
+    public List search(String docTypeName, String ruleTemplateName, String ruleDescription, String groupId, String principalId,
             Boolean workgroupMember, Boolean delegateRule, Boolean activeInd, Map extensionValues, Collection<String> actionRequestCodes) {
 
         if ( (StringUtils.isEmpty(docTypeName)) &&
@@ -914,7 +914,6 @@ public class RuleServiceImpl implements RuleService {
                 (StringUtils.isEmpty(ruleDescription)) &&
                 (StringUtils.isEmpty(groupId)) &&
                 (StringUtils.isEmpty(principalId)) &&
-                (StringUtils.isEmpty(roleName)) &&
                 (extensionValues.isEmpty()) &&
                 (actionRequestCodes.isEmpty()) ) {
             // all fields are empty
@@ -950,7 +949,7 @@ public class RuleServiceImpl implements RuleService {
         }
 
         return getRuleDAO().search(docTypeName, ruleTemplateId, ruleDescription, workgroupIds, principalId,
-                roleName, delegateRule,activeInd, extensionValues, actionRequestCodes);
+                delegateRule,activeInd, extensionValues, actionRequestCodes);
     }
 
     public void delete(Long ruleBaseValuesId) {
@@ -1556,7 +1555,7 @@ public class RuleServiceImpl implements RuleService {
         }
         return rule;
     }
-    
+
     private static class RuleVersion {
         public RuleBaseValues rule;
         public RuleBaseValues parent;

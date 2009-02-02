@@ -32,7 +32,7 @@ public class CustomDocumentSearchGenerator extends StandardDocumentSearchGenerat
 	 * @see org.kuali.rice.kew.docsearch.StandardDocumentSearchGenerator#addExtraDocumentTypesToSearch(java.lang.StringBuffer, org.kuali.rice.kew.doctype.DocumentType)
 	 */
 	@Override
-	protected void addExtraDocumentTypesToSearch(StringBuffer whereSql, DocumentType docType) {
+	public void addExtraDocumentTypesToSearch(StringBuffer whereSql, DocumentType docType) {
 		if ("SearchDocType_DefaultCustomProcessor_2".equals(docType.getName())) {
 			addDocumentTypeNameToSearchOn(whereSql, "SearchDocType_DefaultCustomProcessor");
 		} else if ("SearchDocType_DefaultCustomProcessor".equals(docType.getName())) {

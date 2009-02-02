@@ -46,7 +46,7 @@
 <c:choose>
   <c:when test="${readOnly}">
     <input type="hidden" id='<c:out value="${userIdFieldName}"/>' name='<c:out value="${userIdFieldName}"/>' value='<c:out value="${userId}"/>' />
-	<kul:inquiry boClassName="org.kuali.rice.kim.bo.impl.PersonImpl" keyValues="principalId=${universalId}" render="true"><c:out value="${userId}" /></kul:inquiry>&nbsp;
+	<kul:inquiry boClassName="org.kuali.rice.kim.bo.Person" keyValues="principalId=${universalId}" render="true"><c:out value="${userId}" /></kul:inquiry>&nbsp;
   </c:when>
   <c:otherwise>
     ${kfunc:registerEditableProperty(KualiForm, userIdFieldName)}
@@ -57,7 +57,7 @@
     size='${DataDictionary.PersonImpl.attributes.principalName.control.size}' 
     maxlength='${DataDictionary.PersonImpl.attributes.principalName.maxLength}' style="${textStyle}"
     onBlur="loadUserInfo( '${userIdFieldName}', '${universalIdFieldName}', '${userNameFieldName}' );${onblur}" />
-    <kul:lookup boClassName="org.kuali.rice.kim.bo.impl.PersonImpl" 
+    <kul:lookup boClassName="org.kuali.rice.kim.bo.Person" 
           fieldConversions="${fieldConversions}" 
           lookupParameters="${lookupParameters}" 
           fieldLabel="${label}" 

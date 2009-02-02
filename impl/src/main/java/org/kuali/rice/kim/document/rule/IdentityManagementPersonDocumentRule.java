@@ -161,7 +161,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	boolean valid = true;
     	int i = 0;
     	for (PersonDocumentAffiliation affiliation : affiliations) {
-    		if (!affiliation.getAffiliationTypeCode().equals(affiliation.getAffiliationType().getAffiliationTypeCode())) {
+    		if (affiliation.getAffiliationType() != null && !affiliation.getAffiliationTypeCode().equals(affiliation.getAffiliationType().getAffiliationTypeCode())) {
     			AffiliationTypeImpl prevAffiliationType = affiliation.getAffiliationType();
     			affiliation.refreshReferenceObject("affiliationType");
     			if (!affiliation.getAffiliationType().isEmploymentAffiliationType() && prevAffiliationType.isEmploymentAffiliationType() && !affiliation.getEmpInfos().isEmpty()) {

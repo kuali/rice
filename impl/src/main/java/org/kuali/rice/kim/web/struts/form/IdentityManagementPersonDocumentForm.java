@@ -52,6 +52,12 @@ public class IdentityManagementPersonDocumentForm extends KualiTransactionalDocu
         super();
         //this.registerEditableProperty("methodToCall.approve.x");
         this.setDocument(new IdentityManagementPersonDocument());
+        this.setNewAffln(new PersonDocumentAffiliation());
+        this.setNewAddress(new PersonDocumentAddress());
+        this.setNewEmpInfo(new PersonDocumentEmploymentInfo());
+        this.setNewName(new PersonDocumentName());
+        this.setNewPhone(new PersonDocumentPhone());
+        this.setNewEmail(new PersonDocumentEmail());
     }
 
     /*

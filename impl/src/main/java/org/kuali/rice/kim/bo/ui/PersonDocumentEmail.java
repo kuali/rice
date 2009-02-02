@@ -53,6 +53,10 @@ public class PersonDocumentEmail extends PersonDocumentBoDefaultBase{
 	@ManyToOne(targetEntity=EmailTypeImpl.class, fetch = FetchType.EAGER, cascade = {})
 	@JoinColumn(name = "EMAIL_TYP_CD", insertable = false, updatable = false)
 	protected EmailType emailType;
+	
+	public PersonDocumentEmail() {
+		this.active = true;
+	}
 
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.EntityEmail#getEmailAddress()

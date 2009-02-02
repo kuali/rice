@@ -53,6 +53,8 @@ public class PersonDocumentAffiliation extends PersonDocumentBoDefaultBase {
 
 	public PersonDocumentAffiliation() {
 		empInfos = new ArrayList<PersonDocumentEmploymentInfo>();
+		setNewEmpInfo(new PersonDocumentEmploymentInfo());
+		this.active = true;
 	}
 
 	/**

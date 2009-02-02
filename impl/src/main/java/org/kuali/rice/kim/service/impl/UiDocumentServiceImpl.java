@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.entity.EntityAddress;
 import org.kuali.rice.kim.bo.entity.EntityEmail;
@@ -146,12 +147,17 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		List <RoleMemberImpl>  rolePrincipals = populateRoles(identityManagementPersonDocument);
 		List <BusinessObject> bos = new ArrayList<BusinessObject>();
 		List <RoleResponsibilityActionImpl> roleRspActions = populateRoleRspActions(identityManagementPersonDocument);
+		List <RoleMemberAttributeDataImpl> blankRoleMemberAttrs = getBlankRoleMemberAttrs(rolePrincipals);
 		bos.add(kimEntity);
 		bos.add(kimEntity.getPrivacyPreferences());
 		bos.addAll(groupPrincipals);
 		bos.addAll(rolePrincipals);
 		bos.addAll(roleRspActions);
+		// boservice.save(bos) does not handle deleteawarelist 
 		getBusinessObjectService().save(bos);
+		if (!blankRoleMemberAttrs.isEmpty()) {
+			getBusinessObjectService().delete(blankRoleMemberAttrs);
+		}
 
 	}
 
@@ -595,6 +601,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	
 	private void setupAffiliation(IdentityManagementPersonDocument identityManagementPersonDocument, KimEntityImpl kimEntity,List<EntityAffiliationImpl> origAffiliations, List<EntityEmploymentInformationImpl> origEmpInfos) {
 		List<EntityAffiliationImpl> entityAffiliations = new ArrayList<EntityAffiliationImpl>();
+		// employment informations
+		List<EntityEmploymentInformationImpl> entityEmploymentInformations = new ArrayList<EntityEmploymentInformationImpl>();
 		for (PersonDocumentAffiliation affiliation : identityManagementPersonDocument.getAffiliations()) {
 			EntityAffiliationImpl entityAffiliation = new EntityAffiliationImpl();
 			entityAffiliation.setAffiliationTypeCode(affiliation
@@ -612,8 +620,6 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			}
 			entityAffiliations.add(entityAffiliation);
 
-			// employment informations
-			List<EntityEmploymentInformationImpl> entityEmploymentInformations = new ArrayList<EntityEmploymentInformationImpl>();
 			for (PersonDocumentEmploymentInfo empInfo : affiliation
 					.getEmpInfos()) {
 				EntityEmploymentInformationImpl entityEmpInfo = new EntityEmploymentInformationImpl();
@@ -642,10 +648,9 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				}
 				entityEmploymentInformations.add(entityEmpInfo);
 			}
-			kimEntity
-					.setEmploymentInformation(entityEmploymentInformations);
 
 		}
+		kimEntity.setEmploymentInformation(entityEmploymentInformations);
 		kimEntity.setAffiliations(entityAffiliations);
 	}
 	
@@ -658,6 +663,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			entityPhone.setEntityPhoneId(phone.getEntityPhoneId());
 			entityPhone.setEntityTypeCode(entityType.getEntityTypeCode());
 			entityPhone.setPhoneNumber(phone.getPhoneNumber());
+			entityPhone.setCountryCode(phone.getCountryCode());
 			entityPhone.setExtension(phone.getExtension());
 			entityPhone.setExtensionNumber(phone.getExtensionNumber());
 			entityPhone.setActive(phone.isActive());
@@ -681,6 +687,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			docPhone.setPhoneTypeCode(phone.getPhoneTypeCode());
 			docPhone.setEntityTypeCode(phone.getEntityTypeCode());
 			docPhone.setPhoneNumber(phone.getPhoneNumber());
+			docPhone.setCountryCode(phone.getCountryCode());
 			docPhone.setExtensionNumber(phone.getExtensionNumber());
 			docPhone.setActive(phone.isActive());
 			docPhone.setDflt(phone.isDefault());
@@ -851,7 +858,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					}
 					List<RoleMemberAttributeDataImpl> attributes = new ArrayList<RoleMemberAttributeDataImpl>();
 					for (KimDocumentRoleQualifier qualifier : principal.getQualifiers()) {
-						if (StringUtils.isNotBlank(qualifier.getAttrVal())) {
+						//if (StringUtils.isNotBlank(qualifier.getAttrVal())) {
 							RoleMemberAttributeDataImpl attribute = new RoleMemberAttributeDataImpl();
 							attribute.setAttributeDataId(qualifier.getAttrDataId());
 							attribute.setAttributeValue(qualifier.getAttrVal());
@@ -863,9 +870,10 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 									attribute.setVersionNumber(origAttribute.getVersionNumber());
 								}
 							}
-		
-							attributes.add(attribute);
-						}
+							if (attribute.getVersionNumber() != null || StringUtils.isNotBlank(qualifier.getAttrVal())) {
+								attributes.add(attribute);
+							}	
+						//}
 					}
 					rolePrincipalImpl.setAttributes(attributes);
 					rolePrincipals.add(rolePrincipalImpl);
@@ -877,6 +885,30 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	}
 
 	
+	private List <RoleMemberAttributeDataImpl> getBlankRoleMemberAttrs(List <RoleMemberImpl> rolePrncpls) {
+
+		List <RoleMemberAttributeDataImpl>  blankRoleMemberAttrs = new ArrayList<RoleMemberAttributeDataImpl>();
+		for (RoleMemberImpl roleMbr : rolePrncpls) {
+			List <RoleMemberAttributeDataImpl>  roleMemberAttrs = new ArrayList<RoleMemberAttributeDataImpl>();
+			if (CollectionUtils.isNotEmpty(roleMbr.getAttributes())) {
+				for (RoleMemberAttributeDataImpl attr : roleMbr.getAttributes()) {
+					if (StringUtils.isBlank(attr.getAttributeValue())) {
+						roleMemberAttrs.add(attr);					
+					}
+				}
+				if (!roleMemberAttrs.isEmpty()) {
+					roleMbr.getAttributes().removeAll(roleMemberAttrs);
+					blankRoleMemberAttrs.addAll(roleMemberAttrs);
+				}
+				
+			}
+		}
+
+		
+		return blankRoleMemberAttrs;
+
+	}
+
 	private List <RoleResponsibilityActionImpl> populateRoleRspActions(IdentityManagementPersonDocument identityManagementPersonDocument) {
 		List<KimRoleImpl> origRoles = getRolesForPrincipal(identityManagementPersonDocument.getPrincipalId());
 

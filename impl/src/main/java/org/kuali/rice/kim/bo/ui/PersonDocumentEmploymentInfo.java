@@ -80,6 +80,10 @@ public class PersonDocumentEmploymentInfo extends KimDocumentBoBase {
 	
 	protected PersonDocumentAffiliation affiliation;
 	
+	public PersonDocumentEmploymentInfo() {
+		this.active = true;
+	}
+
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.EntityEmploymentInformation#getBaseSalaryAmount()
 	 */

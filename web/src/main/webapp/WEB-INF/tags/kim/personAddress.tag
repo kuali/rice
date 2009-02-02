@@ -86,7 +86,7 @@
 					<c:out value="${status.index+1}" />
 				</th>
                 <td align="left" valign="middle">
-                	<div align="center"> <kul:htmlControlAttribute property="document.addrs[${status.index}].addressTypeCode"  attributeEntry="${docAddressAttributes.addressTypeCode}"  />
+                	<div align="center"> <kul:htmlControlAttribute property="document.addrs[${status.index}].addressTypeCode"  attributeEntry="${docAddressAttributes.addressTypeCode}" readOnlyAlternateDisplay="${address.addressType.addressTypeName}"  />
 					</div>
 				</td>
                 <td>

@@ -39,7 +39,7 @@
 			      		   TODO: code (probably) does not pull the remote property name properly
 			      		   TODO: code does not handle multiple lookup/conversion parameters 
 			      		   --%>
-			       		   <c:if test="${!empty attr.lookupBoClass}">
+			       		   <c:if test="${!empty attr.lookupBoClass and not readOnly}">
 			       		       <kim:roleQualifierLookup role="${role}" pathPrefix="document.roles[${roleIdx}].newRolePrncpl" attr="${attr}" />
 			          	   </c:if>
 			          	   
@@ -91,7 +91,7 @@
 				            <td align="left" valign="middle">
 				                <div align="center"> 
 				                	<kul:htmlControlAttribute property="document.roles[${roleIdx}].rolePrncpls[${status1.index}].qualifiers[${status.index}].attrVal"  attributeEntry="${attrEntry}" />
-						      		   <c:if test="${!empty attr.lookupBoClass}">
+						      		   <c:if test="${!empty attr.lookupBoClass  and not readOnly}">
 						      		       <kim:roleQualifierLookup role="${role}" pathPrefix="document.roles[${roleIdx}].rolePrncpls[${status1.index}]" attr="${attr}" />
 						         	   </c:if>
 								</div>

@@ -84,6 +84,7 @@ public class IdentityManagementPersonDocument extends TransactionalDocumentBase 
 		groups = new ArrayList<PersonDocumentGroup>();
 		roles = new ArrayList<PersonDocumentRole>();
 		privacy = new PersonDocumentPrivacy();
+		this.active = true;
 		// privacy.setDocumentNumber(documentNumber);
 	}
 
@@ -158,15 +159,6 @@ public class IdentityManagementPersonDocument extends TransactionalDocumentBase 
 	public void setActive(boolean active) {
 		this.active = active;
 	}
-
-	// public List<DocEmploymentInfo> getEmploymentInformations() {
-	// return this.employmentInformations;
-	// }
-	//
-	// public void setEmploymentInformations(
-	// List<DocEmploymentInfo> employmentInformations) {
-	// this.employmentInformations = employmentInformations;
-	// }
 
 	public List<PersonDocumentCitizenship> getCitizenships() {
 		return this.citizenships;
@@ -259,6 +251,12 @@ public class IdentityManagementPersonDocument extends TransactionalDocumentBase 
 		managedLists.add(empInfos);
 		managedLists.add(getAffiliations());
 		managedLists.add(getCitizenships());
+		managedLists.add(getPhones());
+		managedLists.add(getAddrs());
+		managedLists.add(getEmails());
+		managedLists.add(getNames());
+		managedLists.add(getGroups());
+		managedLists.add(getRoles());
 		return managedLists;
 	}
 

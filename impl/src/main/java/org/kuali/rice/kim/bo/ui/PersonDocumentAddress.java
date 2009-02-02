@@ -77,6 +77,9 @@ public class PersonDocumentAddress extends PersonDocumentBoDefaultBase {
 	// protected State state;
 	// protected PostalCode postalCode;
 	// protected Country country;
+	public PersonDocumentAddress() {
+		this.active = true;
+	}
 
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.EntityAddress#getAddressTypeCode()

@@ -48,7 +48,7 @@
        </c:if>     
         	<c:forEach var="affln" items="${KualiForm.document.affiliations}" varStatus="status">
         	    <c:set var="rowSpan" value="1"/>
-        		<c:if test="${affln.affiliationType.employmentAffiliationType}" >
+        		<c:if test="${affln.affiliationType.employmentAffiliationType or fn:length(affln.empInfos) > 0}" >
         	    	<c:set var="rowSpan" value="2"/>
         		</c:if>
         	
@@ -57,7 +57,7 @@
 						<c:out value="${status.index+1}" />
 					</th>
 	                <td align="left" valign="middle">
-	                <div align="center"><kul:htmlControlAttribute property="document.affiliations[${status.index}].affiliationTypeCode" attributeEntry="${docAffiliationAttributes.affiliationTypeCode}"/></div>
+	                <div align="center"><kul:htmlControlAttribute property="document.affiliations[${status.index}].affiliationTypeCode" attributeEntry="${docAffiliationAttributes.affiliationTypeCode}"  readOnlyAlternateDisplay="${affln.affiliationType.affiliationTypeName}"/></div>
 	                </td>
 	                <td>     
 	                <div align="center">           	
@@ -90,7 +90,7 @@
 	                </td>
 	            </c:if>    
 	            </tr>
-	            <c:if test="${affln.affiliationType.employmentAffiliationType}" >
+	            <c:if test="${affln.affiliationType.employmentAffiliationType  or fn:length(affln.empInfos) > 0}" >
 	            <tr>
 	              <td colspan=5 style="padding:0px;">
 		        	<kim:personEmpInfo afflnIdx="${status.index}" />

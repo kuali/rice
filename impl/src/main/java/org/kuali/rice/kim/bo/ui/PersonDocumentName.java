@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
@@ -67,6 +68,10 @@ public class PersonDocumentName extends PersonDocumentBoDefaultBase {
 	@ManyToOne(targetEntity=EntityNameTypeImpl.class, fetch = FetchType.EAGER, cascade = {})
 	@JoinColumn(name = "NM_TYP_CD", insertable = false, updatable = false)
 	protected EntityNameType entityNameType;
+
+	public PersonDocumentName() {
+		this.active = true;
+	}
 
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.EntityName#getEntityNameId()

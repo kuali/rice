@@ -24,7 +24,6 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.reference.AffiliationType;
 import org.kuali.rice.kim.bo.reference.impl.AffiliationTypeImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
@@ -54,6 +53,7 @@ import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 
 /**
@@ -95,6 +95,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
         valid &= checkMultipleDefault (personDoc.getEmails(), "emails");
         valid &= checkPrimaryEmploymentInfo (personDoc.getAffiliations());
         valid &= checkAffiliationTypeChange (personDoc.getAffiliations());
+        valid &= checkUniqueAffiliationTypePerCampus(personDoc.getAffiliations());
         // kimtypeservice.validateAttributes is not working yet.
         valid &= validateRoleQualifier (personDoc.getRoles());
         if (StringUtils.isNotBlank(personDoc.getPrincipalName())) { 
@@ -162,13 +163,30 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	int i = 0;
     	for (PersonDocumentAffiliation affiliation : affiliations) {
     		if (affiliation.getAffiliationType() != null && !affiliation.getAffiliationTypeCode().equals(affiliation.getAffiliationType().getAffiliationTypeCode())) {
-    			AffiliationTypeImpl prevAffiliationType = affiliation.getAffiliationType();
-    			affiliation.refreshReferenceObject("affiliationType");
-    			if (!affiliation.getAffiliationType().isEmploymentAffiliationType() && prevAffiliationType.isEmploymentAffiliationType() && !affiliation.getEmpInfos().isEmpty()) {
-		     		GlobalVariables.getErrorMap().putError("affiliations[" + i + "].affiliationTypeCode",RiceKeyConstants.ERROR_NOT_EMPLOYMENT_AFFILIATION_TYPE,new String[] {prevAffiliationType.getAffiliationTypeName(), affiliation.getAffiliationType().getAffiliationTypeName()});
+    			PersonDocumentAffiliation copiedAffiliation = (PersonDocumentAffiliation)ObjectUtils.deepCopy(affiliation);
+    			copiedAffiliation.refreshReferenceObject("affiliationType");
+    			if (!copiedAffiliation.getAffiliationType().isEmploymentAffiliationType() && affiliation.getAffiliationType().isEmploymentAffiliationType() && !copiedAffiliation.getEmpInfos().isEmpty()) {
+		     		GlobalVariables.getErrorMap().putError("affiliations[" + i + "].affiliationTypeCode",RiceKeyConstants.ERROR_NOT_EMPLOYMENT_AFFILIATION_TYPE,new String[] {affiliation.getAffiliationType().getAffiliationTypeName(), copiedAffiliation.getAffiliationType().getAffiliationTypeName()});
 		     		valid = false;
 	    		}
     		}
+        	i++;
+    	}
+    	return valid;
+    }
+    
+    private boolean checkUniqueAffiliationTypePerCampus (List <PersonDocumentAffiliation> affiliations) {
+    	boolean valid = true;
+    	int i = 0;
+    	for (PersonDocumentAffiliation affiliation : affiliations) {
+    		int j = 0;
+        	for (PersonDocumentAffiliation affiliation1 : affiliations) {
+	    		if (j > i && affiliation.getAffiliationTypeCode() .equals(affiliation1.getAffiliationTypeCode()) && affiliation.getCampusCode().equals(affiliation1.getCampusCode())) {
+			     		GlobalVariables.getErrorMap().putError("affiliations[" + j + "].affiliationTypeCode",RiceKeyConstants.ERROR_NOT_UNIQUE_AFFILIATION_TYPE_PER_CAMPUE, affiliation.getAffiliationType().getAffiliationTypeName());
+			     		valid = false;	    		
+	    		}
+	    		j++;
+        	}
         	i++;
     	}
     	return valid;
@@ -236,9 +254,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 	
     private boolean validateRoleQualifier( List<PersonDocumentRole> roles ) {
 
-    	//boolean valid = true;
 		AttributeSet validationErrors = new AttributeSet();
-		// TODO : "kimTypeService.validateAttributes(attributes)" is not working yet 
         GlobalVariables.getErrorMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
         int i = 0;
     	for(PersonDocumentRole role : roles ) {
@@ -249,10 +265,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 	        KimTypeService kimTypeService = (KimTypeServiceBase)KIMServiceLocator.getService(serviceName);
 	        int j = 0;
         	for ( KimDocumentRoleMember rolePrincipal : role.getRolePrncpls() ) {
-        		// TODO: cache the attribute definitions for a given role type
-        		// PROBLEM: this role qualifiers map does not have any keys with which to link to the attributes
         		AttributeSet localErrors = kimTypeService.validateAttributes( convertQualifiersToMap( rolePrincipal.getQualifiers() ) );
-        		// TODO: prefix all these errors with the proper prefix for their path on the document
 		        validationErrors.putAll( convertErrors("roles["+i+"].rolePrncpls["+j+"]",convertQualifiersToAttrIdxMap(rolePrincipal.getQualifiers()),localErrors) );
 		        j++;
 	        }

@@ -63,6 +63,9 @@ public class PersonDocumentPhone extends PersonDocumentBoDefaultBase {
 
 	// Waiting until we pull in from KFS
 	// protected Country country;
+	public PersonDocumentPhone() {
+		this.active = true;
+	}
 	
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.EntityPhone#getCountryCode()

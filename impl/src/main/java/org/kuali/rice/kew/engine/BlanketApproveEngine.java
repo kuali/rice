@@ -48,6 +48,7 @@ import org.kuali.rice.kew.util.Utilities;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class BlanketApproveEngine extends StandardWorkflowEngine {
+	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BlanketApproveEngine.class);
 
     // private Set nodeNames;
     // private ActionTakenValue actionTaken;
@@ -99,7 +100,9 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
         RouteContext context = RouteContext.getCurrentRouteContext();
         try {
             KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
-            LOG.info("Processing document for Blanket Approval: " + documentId + " : " + nodeInstanceId);
+            if ( LOG.isInfoEnabled() ) {
+            	LOG.info("Processing document for Blanket Approval: " + documentId + " : " + nodeInstanceId);
+            }
             DocumentRouteHeaderValue document = getRouteHeaderService().getRouteHeader(documentId);
             if (!document.isRoutable()) {
                 LOG.debug("Document not routable so returning with doing no action");

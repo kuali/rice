@@ -62,7 +62,7 @@ import org.kuali.rice.kns.util.KNSConstants;
  */
 public class StandardWorkflowEngine implements WorkflowEngine {
 
-	protected final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(getClass());
+	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(StandardWorkflowEngine.class);
 
 	protected RouteHelper helper = new RouteHelper();
 	private boolean runPostProcessorLogic = true;
@@ -89,10 +89,16 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 		boolean success = true;
 		RouteContext context = RouteContext.createNewRouteContext();
 		try {
-			LOG.debug("Aquiring lock on document " + documentId);
+			if ( LOG.isDebugEnabled() ) {
+				LOG.debug("Aquiring lock on document " + documentId);
+			}
 			KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
-			LOG.debug("Aquired lock on document " + documentId);
-			LOG.info("Processing document: " + documentId + " : " + nodeInstanceId);
+			if ( LOG.isDebugEnabled() ) {
+				LOG.debug("Aquired lock on document " + documentId);
+			}
+			if ( LOG.isInfoEnabled() ) {
+				LOG.info("Processing document: " + documentId + " : " + nodeInstanceId);
+			}
 			DocumentRouteHeaderValue document = null;
 			try {
 	            document = notifyPostProcessorBeforeProcess(documentId, nodeInstanceId);
@@ -135,7 +141,9 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 				throw new RouteManagerException(e, context);
 			}
 		} finally {
-			LOG.info((success ? "Successfully processed" : "Failed to process") + " document: " + documentId + " : " + nodeInstanceId);
+			if ( LOG.isInfoEnabled() ) {
+				LOG.info((success ? "Successfully processed" : "Failed to process") + " document: " + documentId + " : " + nodeInstanceId);
+			}
 			try {
 	            notifyPostProcessorAfterProcess(documentId, nodeInstanceId, success);
             } catch (Exception e) {
@@ -149,7 +157,9 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 
 	protected ProcessContext processNodeInstance(RouteContext context, RouteHelper helper) throws Exception {
 		RouteNodeInstance nodeInstance = context.getNodeInstance();
-		LOG.debug("Processing node instance: " + nodeInstance.getRouteNode().getRouteNodeName());
+		if ( LOG.isDebugEnabled() ) {
+			LOG.debug("Processing node instance: " + nodeInstance.getRouteNode().getRouteNodeName());
+		}
 		if (checkAssertions(context)) {
 			// returning an empty context causes the outer loop to terminate
 			return new ProcessContext();
@@ -161,7 +171,9 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 		// if this nodeInstance already has next node instance we don't need to
 		// go to the TE
 		if (processResult.isComplete()) {
-			LOG.debug("Routing node has completed: " + nodeInstance.getRouteNode().getRouteNodeName());
+			if ( LOG.isDebugEnabled() ) {
+				LOG.debug("Routing node has completed: " + nodeInstance.getRouteNode().getRouteNodeName());
+			}
 
 			context.getEngineState().getCompleteNodeInstances().add(nodeInstance.getRouteNodeInstanceId());
 			List nextNodeCandidates = invokeTransition(context, context.getNodeInstance(), processResult, transitionEngine);
@@ -226,7 +238,9 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 	 */
 	private boolean checkAssertions(RouteContext context) throws Exception {
 		if (context.getNodeInstance().isComplete()) {
-			LOG.debug("The node has already been completed: " + context.getNodeInstance().getRouteNode().getRouteNodeName());
+			if ( LOG.isDebugEnabled() ) {
+				LOG.debug("The node has already been completed: " + context.getNodeInstance().getRouteNode().getRouteNodeName());
+			}
 			return true;
 		}
 		if (isRunawayProcessDetected(context.getEngineState())) {
@@ -365,7 +379,9 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 		}
 		// TODO is the logic for going processed still going to be valid?
 		if (!document.isProcessed() && (!moreNodes || !activeApproveRequests)) {
-			LOG.debug("No more nodes for this document " + document.getRouteHeaderId());
+			if ( LOG.isDebugEnabled() ) {
+				LOG.debug("No more nodes for this document " + document.getRouteHeaderId());
+			}
 			// TODO perhaps the policies could also be factored out?
 			checkDefaultApprovalPolicy(document);
 			LOG.debug("Marking document approved");

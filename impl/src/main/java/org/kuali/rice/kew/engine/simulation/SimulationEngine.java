@@ -70,6 +70,8 @@ import org.kuali.rice.kim.bo.group.KimGroup;
  */
 public class SimulationEngine extends StandardWorkflowEngine {
 
+	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SimulationEngine.class);
+	
 	private SimulationCriteria criteria;
     private SimulationResults results = new SimulationResults();
     private RouteHelper helper = new RouteHelper();

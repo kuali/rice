@@ -254,7 +254,7 @@
 								boClassName="${field.multipleValueLookupClassName}" lookedUpBODisplayName="${field.multipleValueLookupClassLabel}" lookedUpCollectionName="${field.multipleValueLookedUpCollectionName}" >
 							<table style="width: ${width}; text-align: left; margin-left: auto; margin-right: auto;" class="datatable" cellpadding="0" cellspacing="0" align="center">
 								<%--<c:out value="numberOfColumns is ${numberOfColumns}, field.numberOfColumnsForCollection is ${field.numberOfColumnsForCollection}<br/>" escapeXml="false" />--%>
-								<kul:containerRowDisplay rows="${field.containerRows}" numberOfColumns="${isMaintenance ? numberOfColumns : field.numberOfColumnsForCollection}" depth="${depth + 1}" />
+								<kul:containerRowDisplay rows="${field.containerRows}" numberOfColumns="${isMaintenance ? numberOfColumns : field.numberOfColumnsForCollection}" depth="${depth + 1}" rowsReadOnly="${rowsReadOnly}"/>
 							</table>
 						</kul:subtab>
 					</td>

@@ -47,6 +47,7 @@ import org.kuali.rice.kew.engine.StandardWorkflowEngine;
 import org.kuali.rice.kew.engine.node.NoOpNode;
 import org.kuali.rice.kew.engine.node.NodeJotter;
 import org.kuali.rice.kew.engine.node.Process;
+import org.kuali.rice.kew.engine.node.RequestsNode;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.DocumentSimulatedRouteException;
@@ -91,6 +92,8 @@ public class SimulationEngine extends StandardWorkflowEngine {
     		}
     		context.setActivationContext(activationContext);
     		context.setEngineState(new EngineState());
+    		// JHK 2/2/09: suppress policy errors when running a simulation for the purposes of display on the route log
+    		RequestsNode.setSupressPolicyErrors(context);
     		DocumentRouteHeaderValue document = createSimulationDocument(documentId, criteria, context);
     		if ( (criteria.isDocumentSimulation()) && ( (document.isProcessed()) || (document.isFinal()) ) ) {
     			results.setDocument(document);
@@ -102,7 +105,9 @@ public class SimulationEngine extends StandardWorkflowEngine {
     		MDC.put("docID", documentId);
     		PerformanceLogger perfLog = new PerformanceLogger(documentId);
     		try {
-    			LOG.info("Processing document for Simulation: " + documentId);
+    		    if ( LOG.isInfoEnabled() ) {
+    		        LOG.info("Processing document for Simulation: " + documentId);
+    		    }
     			List activeNodeInstances = getRouteNodeService().getActiveNodeInstances(document);
     			List nodeInstancesToProcess = determineNodeInstancesToProcess(activeNodeInstances, criteria.getDestinationNodeName());
 
@@ -404,7 +409,9 @@ public class SimulationEngine extends StandardWorkflowEngine {
     	if (!criteria.getNodeNames().isEmpty()) {
     		for (Iterator iterator = criteria.getNodeNames().iterator(); iterator.hasNext(); ) {
 				String nodeName = (String) iterator.next();
-				LOG.debug("Installing simulation starting node '"+nodeName+"'");
+				if ( LOG.isDebugEnabled() ) {
+				    LOG.debug("Installing simulation starting node '"+nodeName+"'");
+				}
 	    		List nodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(document.getDocumentType(), true);
 	    		boolean foundNode = false;
 	    		for (Iterator iterator2 = nodes.iterator(); iterator2.hasNext(); ) {

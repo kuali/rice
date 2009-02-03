@@ -15,11 +15,7 @@
  */
 package org.kuali.rice.kim.lookup;
 
-import java.util.Properties;
-
 import org.kuali.rice.kns.lookup.KualiLookupableImpl;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.UrlFactory;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -29,6 +25,8 @@ import org.kuali.rice.kns.util.UrlFactory;
  */
 public class PersonLookupableImpl extends KualiLookupableImpl {
 
+	private static final long serialVersionUID = 1707861010746829601L;
+
 	@Override
 	public String getCreateNewUrl() {
         String url = "../kim/identityManagementPersonDocument.do?methodToCall=docHandler&command=initiate&docTypeName=IdentityManagementPersonDocument";
@@ -36,5 +34,15 @@ public class PersonLookupableImpl extends KualiLookupableImpl {
         return "<a href=\"" + url + "\"><img src=\"images/tinybutton-createnew.gif\" alt=\"create new\" width=\"70\" height=\"15\"/></a>";
 
 	}
+	
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.lookup.KualiLookupableImpl#getTitle()
+	 */
+//	@Override
+//	public String getTitle() {
+//		return ((PersonLookupableHelperServiceImpl)getLookupableHelperService()).getTitle();
+//	}
 
 }

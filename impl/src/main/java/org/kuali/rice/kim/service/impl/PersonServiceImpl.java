@@ -16,6 +16,8 @@
 package org.kuali.rice.kim.service.impl;
 
 import java.lang.ref.SoftReference;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +25,6 @@ import java.util.Map;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.resourceloader.ContextClassLoaderBinder;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimEntity;
@@ -31,11 +32,13 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.dao.PersonDao;
 import org.kuali.rice.kim.service.IdentityManagementService;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
+import org.kuali.rice.kns.lookup.CollectionIncomplete;
+import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
@@ -46,6 +49,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
+
+import sun.security.action.GetLongAction;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -230,7 +235,46 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 	 * @see org.kuali.rice.kim.service.PersonService#findPeople(java.util.Map, boolean)
 	 */
 	public List<PersonImpl> findPeople(Map<String, String> criteria, boolean unbounded) {
-		List<PersonImpl> people = personDao.findPeople(criteria, unbounded); 
+		List<PersonImpl> people = null;
+		String roleName = criteria.get( "lookupRoleName" );
+		String namespaceCode = criteria.get( "lookupRoleNamespaceCode" );
+		criteria.remove("lookupRoleName");
+		criteria.remove("lookupRoleNamespaceCode");
+		if ( StringUtils.isNotBlank(namespaceCode) && StringUtils.isNotBlank(roleName) ) {
+			if ( LOG.isDebugEnabled() ) {
+				LOG.debug("Performing Person search including role filter: " + namespaceCode + "/" + roleName );
+			}
+			if ( criteria.size() > 2 ) { // i.e., person criteria are specified
+				if ( LOG.isDebugEnabled() ) {
+					LOG.debug( "Person criteria also specified, running that search first" );
+				}
+				// run the person lookup first
+				people = personDao.findPeople(criteria, false); // get all, since may need to be filtered
+				// TODO - now check if these people have the given role
+			} else { // only role criteria specified
+				if ( LOG.isDebugEnabled() ) {
+					LOG.debug( "No Person criteria specified - only using role service." );
+				}
+				// run the role criteria to get the principals with the role
+				Collection<String> principalIds = KIMServiceLocator.getRoleManagementService().getRoleMemberPrincipalIds(namespaceCode, roleName, null);
+				int searchResultsLimit = LookupUtils.getSearchResultsLimit(PersonImpl.class);
+				if ( !unbounded && principalIds.size() > searchResultsLimit ) {
+					int actualResultSize = people.size();
+					// trim the list down before converting to people
+					principalIds = new ArrayList<String>(principalIds).subList(0, searchResultsLimit); // yes, this is a little wasteful
+					people = getPeople(principalIds); // convert the results to people
+					return new CollectionIncomplete<PersonImpl>( people.subList(0, searchResultsLimit), new Long(actualResultSize) );
+				} else {
+					people = getPeople(principalIds); // convert the results to people
+					return people;
+				}
+			}
+		} else {
+			if ( LOG.isDebugEnabled() ) {
+				LOG.debug( "No Role criteria specified, running person lookup as normal." );
+			}
+			people = personDao.findPeople(criteria, unbounded);
+		}
 		// QUESTION: Do we want to do this?
 		for ( PersonImpl p : people ) {
 			// check whether the item is in the cache first - otherwise would add
@@ -242,6 +286,14 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 		return people;
 	}
 
+	protected List<PersonImpl> getPeople( Collection<String> principalIds ) {
+		List<PersonImpl> people = new ArrayList<PersonImpl>( principalIds.size() );
+		for ( String principalId : principalIds ) {
+			people.add( getPerson(principalId) );
+		}
+		return people;
+	}
+	
 	/**
 	 * @see org.kuali.rice.kim.service.PersonService#getPersonByExternalIdentifier(java.lang.String, java.lang.String)
 	 */

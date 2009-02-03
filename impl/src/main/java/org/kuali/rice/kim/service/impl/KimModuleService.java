@@ -80,10 +80,19 @@ public class KimModuleService extends ModuleServiceBase {
 	/***
 	 * @see org.kuali.rice.kns.service.ModuleService#getExternalizableBusinessObjectsListForLookup(java.lang.Class, java.util.Map, boolean)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends ExternalizableBusinessObject> List<T> getExternalizableBusinessObjectsListForLookup(
 			Class<T> externalizableBusinessObjectClass, Map<String, Object> fieldValues, boolean unbounded) {
-		return getExternalizableBusinessObjectsList(externalizableBusinessObjectClass, fieldValues);
+		// for Person objects (which are not real PersistableBOs) pull them through the person service
+		if ( Person.class.isAssignableFrom( externalizableBusinessObjectClass ) ) {
+			return (List)personService.findPeople( (Map)fieldValues, unbounded );
+		} else if ( Role.class.isAssignableFrom( externalizableBusinessObjectClass ) ) {
+			// FIXME: needs to send unbounded flag
+			return (List)kimRoleService.getRolesSearchResults((Map)fieldValues );
+		}
+		// otherwise, use the default implementation
+		return super.getExternalizableBusinessObjectsListForLookup(externalizableBusinessObjectClass, fieldValues, unbounded);
 	}
 	
 	/**

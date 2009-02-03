@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.ListIterator;
 
 
-public class CollectionIncomplete implements List {
-    private List list;
+public class CollectionIncomplete<T> implements List<T> {
+    private List<T> list;
     private Long actualSizeIfTruncated;
 
 
@@ -31,9 +31,9 @@ public class CollectionIncomplete implements List {
      * @param collection
      * @param actualSizeIfTruncated
      */
-    public CollectionIncomplete(Collection collection, Long actualSizeIfTruncated) {
+    public CollectionIncomplete(Collection<T> collection, Long actualSizeIfTruncated) {
         super();
-        this.list = new ArrayList(collection);
+        this.list = new ArrayList<T>(collection);
         this.actualSizeIfTruncated = actualSizeIfTruncated;
     }
 
@@ -41,7 +41,7 @@ public class CollectionIncomplete implements List {
      * @param arg0
      * @param arg1
      */
-    public void add(int arg0, Object arg1) {
+    public void add(int arg0, T arg1) {
         list.add(arg0, arg1);
     }
 
@@ -49,7 +49,7 @@ public class CollectionIncomplete implements List {
      * @param arg0
      * @return
      */
-    public boolean add(Object arg0) {
+    public boolean add(T arg0) {
         return list.add(arg0);
     }
 
@@ -58,7 +58,7 @@ public class CollectionIncomplete implements List {
      * @param arg1
      * @return
      */
-    public boolean addAll(int arg0, Collection arg1) {
+    public boolean addAll(int arg0, Collection<? extends T> arg1) {
         return list.addAll(arg0, arg1);
     }
 
@@ -66,7 +66,7 @@ public class CollectionIncomplete implements List {
      * @param arg0
      * @return
      */
-    public boolean addAll(Collection arg0) {
+    public boolean addAll(Collection<? extends T> arg0) {
         return list.addAll(arg0);
     }
 
@@ -89,7 +89,7 @@ public class CollectionIncomplete implements List {
      * @param arg0
      * @return
      */
-    public boolean containsAll(Collection arg0) {
+    public boolean containsAll(Collection<?> arg0) {
         return list.containsAll(arg0);
     }
 
@@ -106,7 +106,7 @@ public class CollectionIncomplete implements List {
      * @param arg0
      * @return
      */
-    public Object get(int arg0) {
+    public T get(int arg0) {
         return list.get(arg0);
     }
 
@@ -137,7 +137,7 @@ public class CollectionIncomplete implements List {
     /**
      * @return
      */
-    public Iterator iterator() {
+    public Iterator<T> iterator() {
         return list.iterator();
     }
 
@@ -152,7 +152,7 @@ public class CollectionIncomplete implements List {
     /**
      * @return
      */
-    public ListIterator listIterator() {
+    public ListIterator<T> listIterator() {
         return list.listIterator();
     }
 
@@ -168,7 +168,7 @@ public class CollectionIncomplete implements List {
      * @param arg0
      * @return
      */
-    public Object remove(int arg0) {
+    public T remove(int arg0) {
         return list.remove(arg0);
     }
 
@@ -184,7 +184,7 @@ public class CollectionIncomplete implements List {
      * @param arg0
      * @return
      */
-    public boolean removeAll(Collection arg0) {
+    public boolean removeAll(Collection<?> arg0) {
         return list.removeAll(arg0);
     }
 
@@ -192,7 +192,7 @@ public class CollectionIncomplete implements List {
      * @param arg0
      * @return
      */
-    public boolean retainAll(Collection arg0) {
+    public boolean retainAll(Collection<?> arg0) {
         return list.retainAll(arg0);
     }
 
@@ -201,7 +201,7 @@ public class CollectionIncomplete implements List {
      * @param arg1
      * @return
      */
-    public Object set(int arg0, Object arg1) {
+    public T set(int arg0, T arg1) {
         return list.set(arg0, arg1);
     }
 
@@ -217,7 +217,7 @@ public class CollectionIncomplete implements List {
      * @param arg1
      * @return
      */
-    public List subList(int arg0, int arg1) {
+    public List<T> subList(int arg0, int arg1) {
         return list.subList(arg0, arg1);
     }
 
@@ -232,7 +232,7 @@ public class CollectionIncomplete implements List {
      * @param arg0
      * @return
      */
-    public Object[] toArray(Object[] arg0) {
+    public <T> T[] toArray(T[] arg0) {
         return list.toArray(arg0);
     }
 

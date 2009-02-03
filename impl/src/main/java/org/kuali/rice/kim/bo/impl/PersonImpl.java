@@ -50,6 +50,9 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	
 	protected static PersonService<Person> personService;
 	protected static IdentityManagementService identityManagementService;
+
+	private String lookupRoleNamespaceCode;
+	private String lookupRoleName;
 	
 	// principal data
 	protected String principalId;
@@ -459,6 +462,34 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 
 	public void setActive(boolean active) {
 		this.active = active;
+	}
+
+	/**
+	 * @return the lookupRoleNamespaceCode
+	 */
+	public String getLookupRoleNamespaceCode() {
+		return this.lookupRoleNamespaceCode;
+	}
+
+	/**
+	 * @param lookupRoleNamespaceCode the lookupRoleNamespaceCode to set
+	 */
+	public void setLookupRoleNamespaceCode(String lookupRoleNamespaceCode) {
+		this.lookupRoleNamespaceCode = lookupRoleNamespaceCode;
+	}
+
+	/**
+	 * @return the lookupRoleName
+	 */
+	public String getLookupRoleName() {
+		return this.lookupRoleName;
+	}
+
+	/**
+	 * @param lookupRoleName the lookupRoleName to set
+	 */
+	public void setLookupRoleName(String lookupRoleName) {
+		this.lookupRoleName = lookupRoleName;
 	}
 	
 }

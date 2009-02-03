@@ -29,6 +29,8 @@
         <ref bean="PersonImpl-employeeTypeCode" />
         <ref bean="PersonImpl-employeeId" />
         <ref bean="PersonImpl-active" />
+        <ref bean="PersonImpl-lookupRoleName" />
+        <ref bean="PersonImpl-lookupRoleNamespaceCode" />
       </list>
     </property>
   </bean>
@@ -192,6 +194,26 @@
     <property name="name" value="active" />
   </bean>
 
+  <bean id="PersonImpl-lookupRoleName" parent="AttributeDefinition"
+        p:name="lookupRoleName"
+        p:forceUppercase="false"
+        p:label="Role Name"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="40" />
+    </property>
+  </bean>
+  <bean id="PersonImpl-lookupRoleNamespaceCode" parent="AttributeDefinition"
+        p:name="lookupRoleNamespaceCode"
+        p:forceUppercase="false"
+        p:label="Role Namespace Code"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="40" />
+    </property>
+  </bean>
 
   <bean id="PersonImpl-inquiryDefinition" parent="PersonImpl-inquiryDefinition-parentBean" />
 
@@ -258,6 +280,8 @@
         <bean parent="FieldDefinition" p:attributeName="employeeStatusCode" />
         <bean parent="FieldDefinition" p:attributeName="employeeTypeCode" />
         <bean parent="FieldDefinition" p:attributeName="active" />
+        <bean parent="FieldDefinition" p:attributeName="lookupRoleNamespaceCode" />
+        <bean parent="FieldDefinition" p:attributeName="lookupRoleName" />
       </list>
     </property>
     <property name="resultFields" >

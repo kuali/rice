@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.lookup;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +26,8 @@ import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -33,6 +36,8 @@ import org.kuali.rice.kns.util.KNSConstants;
  *
  */
 public class PersonLookupableHelperServiceImpl  extends KualiLookupableHelperServiceImpl {
+	
+	private static final long serialVersionUID = 1971744785776844579L;
 	
 	@Override
 	public List<? extends BusinessObject> getSearchResults(
@@ -82,5 +87,59 @@ public class PersonLookupableHelperServiceImpl  extends KualiLookupableHelperSer
 	    return inqUrl;
 	}
 	
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getRows()
+	 */
+	@Override
+	public List<Row> getRows() {
+		// TODO jonathan - THIS METHOD NEEDS JAVADOCS
+		List<Row> rows = super.getRows();
+		Iterator<Row> i = rows.iterator();
+		String roleName = null;
+		String namespaceCode = null;
+		while ( i.hasNext() ) {
+			Row row = i.next();
+			Field field = row.getField(0);
+			String propertyName = field.getPropertyName();
+			if ( propertyName.equals("lookupRoleName") ) {
+				Object val = getParameters().get( propertyName );
+				String propVal = null;
+				if ( val != null ) {
+					propVal = (val instanceof String)?(String)val:((String[])val)[0];
+				}
+				if ( StringUtils.isBlank( propVal ) ) {
+					i.remove();
+				} else {
+					field.setReadOnly(true);
+					roleName = propVal;
+				}
+			} else if ( propertyName.equals("lookupRoleNamespaceCode") ) {
+				Object val = getParameters().get( propertyName );
+				String propVal = null;
+				if ( val != null ) {
+					propVal = (val instanceof String)?(String)val:((String[])val)[0];
+				}
+				if ( StringUtils.isBlank( propVal ) ) {
+					i.remove();
+				} else {
+					field.setReadOnly(true);
+					namespaceCode = propVal;
+				}				
+			}
+		}
+		if ( roleName != null && namespaceCode != null ) {
+			title = namespaceCode + " " + roleName + " Lookup";
+		}
+		return rows;
+	}
 	
+	private String title = null;
+	public String getTitle() {
+		if ( title == null ) {
+			return getBusinessObjectDictionaryService().getLookupTitle(getBusinessObjectClass());
+		}
+		return title;
+	}
 }

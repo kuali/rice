@@ -26,4 +26,7 @@ public interface MaintenanceDocumentRestrictions extends
 	public void addReadOnlySectionId(String sectionId);
 
 	public Set<String> getReadOnlySectionIds();
+	
+	public boolean isReadOnlySectionId(String sectionId);
+	
 }

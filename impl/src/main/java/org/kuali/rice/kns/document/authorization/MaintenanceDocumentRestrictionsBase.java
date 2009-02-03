@@ -87,4 +87,11 @@ public class MaintenanceDocumentRestrictionsBase extends
 	public boolean hasRestriction(String fieldName) {
 		return super.hasRestriction(fieldName) || isReadOnlyField(fieldName);
 	}
+	
+	/**
+	 * @see org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions#isReadOnlySectionId(java.lang.String)
+	 */
+	public boolean isReadOnlySectionId(String sectionId) {
+		return readOnlySectionIds.contains(sectionId);
+	}
 }

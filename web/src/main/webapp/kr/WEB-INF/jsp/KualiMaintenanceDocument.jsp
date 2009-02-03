@@ -93,7 +93,7 @@
 	  <kul:tab tabTitle="${section.sectionTitle}" defaultOpen="true" tabErrorKey="${section.errorKey}" highlightTab="${tabHighlight}" extraButtonSource="${section.extraButtonSource}" hidden="${section.hidden}" > 
 	    <div class="tab-container" align="center" <c:if test="${section.hidden}">style="display:none;"</c:if> >
 	      <table width="100%" cellpadding="0" cellspacing="0" class="datatable">
-		     <kul:rowDisplay rows="${section.rows}" numberOfColumns="${section.numberOfColumns}" sessionDocument="${sessionDocument}" />
+		     <kul:rowDisplay rows="${section.rows}" numberOfColumns="${section.numberOfColumns}" sessionDocument="${sessionDocument}" rowsReadOnly="${section.readOnly}"/>
 		  </table>   
         </div>
 	  </kul:tab>

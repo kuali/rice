@@ -43,6 +43,7 @@ public class ResponsibilityActionInfo implements ResponsibilityAction, Serializa
 	protected String roleId;
 	protected String actionTypeCode;
 	protected String actionPolicyCode;
+	protected String actionGroupingCode = "";
 	protected boolean ignorePrevious;
 	protected Integer priorityNumber;
 	protected AttributeSet qualifier;
@@ -210,6 +211,14 @@ public class ResponsibilityActionInfo implements ResponsibilityAction, Serializa
 	        + " )";
 	
 	    return retValue;
+	}
+
+	public String getActionGroupingCode() {
+		return this.actionGroupingCode;
+	}
+
+	public void setActionGroupingCode(String actionGroupingCode) {
+		this.actionGroupingCode = actionGroupingCode;
 	}
 	
 	

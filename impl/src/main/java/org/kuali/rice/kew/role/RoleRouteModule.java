@@ -183,22 +183,25 @@ public class RoleRouteModule implements RouteModule {
 	
 	
 	
-	class ResponsibilitySet {
+	private static class ResponsibilitySet {
 		private String actionRequestCode;
 		private String approvePolicy;
 		private Integer priorityNumber;
+		private String actionGroupingCode;
 		private List<ResponsibilityActionInfo> responsibilities = new ArrayList<ResponsibilityActionInfo>();
 
 		public ResponsibilitySet(ResponsibilityActionInfo responsibility) {
 			this.actionRequestCode = responsibility.getActionTypeCode();
 			this.approvePolicy = responsibility.getActionPolicyCode();
 			this.priorityNumber = responsibility.getPriorityNumber();
+			this.actionGroupingCode = responsibility.getActionGroupingCode();
 		}
 		
 		public boolean matches(ResponsibilityActionInfo responsibility) {
 			return responsibility.getActionTypeCode().equals(actionRequestCode) &&
 				responsibility.getActionPolicyCode().equals(approvePolicy) && 
-				responsibility.getPriorityNumber().equals( priorityNumber );
+				responsibility.getPriorityNumber().equals( priorityNumber ) &&
+				responsibility.getActionGroupingCode().equals( actionGroupingCode );
 		}
 
 		public String getActionRequestCode() {
@@ -215,6 +218,10 @@ public class RoleRouteModule implements RouteModule {
 
 		public List<ResponsibilityActionInfo> getResponsibilities() {
 			return this.responsibilities;
+		}
+
+		public String getActionGroupingCode() {
+			return this.actionGroupingCode;
 		}		
 		
 	}

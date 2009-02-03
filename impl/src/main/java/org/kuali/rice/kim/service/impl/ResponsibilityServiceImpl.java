@@ -221,6 +221,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     		rai.setActionPolicyCode( action.getActionPolicyCode() );
     		rai.setPriorityNumber(action.getPriorityNumber() == null ? DEFAULT_PRIORITY_NUMBER : action.getPriorityNumber());
     		rai.setIgnorePrevious( action.isIgnorePrevious() );
+    		rai.setActionGroupingCode( action.getRoleMemberId() );
     		results.add( rai );
     	}
     	return results;

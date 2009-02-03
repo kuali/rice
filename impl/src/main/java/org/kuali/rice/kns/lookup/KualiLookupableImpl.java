@@ -163,7 +163,7 @@ public class KualiLookupableImpl implements Lookupable {
      * @see org.kuali.rice.kns.lookup.Lookupable#getTitle()
      */
     public String getTitle() {
-        return getBusinessObjectDictionaryService().getLookupTitle(getBusinessObjectClass());
+        return getLookupableHelperService().getTitle();
     }
 
     /**

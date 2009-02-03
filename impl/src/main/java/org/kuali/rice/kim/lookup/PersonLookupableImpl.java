@@ -34,15 +34,5 @@ public class PersonLookupableImpl extends KualiLookupableImpl {
         return "<a href=\"" + url + "\"><img src=\"images/tinybutton-createnew.gif\" alt=\"create new\" width=\"70\" height=\"15\"/></a>";
 
 	}
-	
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kns.lookup.KualiLookupableImpl#getTitle()
-	 */
-//	@Override
-//	public String getTitle() {
-//		return ((PersonLookupableHelperServiceImpl)getLookupableHelperService()).getTitle();
-//	}
 
 }

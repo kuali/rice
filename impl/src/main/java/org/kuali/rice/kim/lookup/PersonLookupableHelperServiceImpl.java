@@ -88,13 +88,14 @@ public class PersonLookupableHelperServiceImpl  extends KualiLookupableHelperSer
 	}
 	
 	/**
-	 * This overridden method ...
+	 * Checks for the special role lookup parameters and removes/marks read-only the fields in the search criteria.
+	 * If present, this method also has a side-effect of updating the title with the role name.
 	 * 
 	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getRows()
 	 */
 	@Override
 	public List<Row> getRows() {
-		// TODO jonathan - THIS METHOD NEEDS JAVADOCS
+		title.remove(); 
 		List<Row> rows = super.getRows();
 		Iterator<Row> i = rows.iterator();
 		String roleName = null;
@@ -130,16 +131,16 @@ public class PersonLookupableHelperServiceImpl  extends KualiLookupableHelperSer
 			}
 		}
 		if ( roleName != null && namespaceCode != null ) {
-			title = namespaceCode + " " + roleName + " Lookup";
+			title.set( namespaceCode + " " + roleName + " Lookup" );
 		}
 		return rows;
 	}
 	
-	private String title = null;
+	private ThreadLocal<String> title = new ThreadLocal<String>();
 	public String getTitle() {
-		if ( title == null ) {
-			return getBusinessObjectDictionaryService().getLookupTitle(getBusinessObjectClass());
+		if ( title.get() == null ) {
+			return super.getTitle();
 		}
-		return title;
+		return title.get();
 	}
 }

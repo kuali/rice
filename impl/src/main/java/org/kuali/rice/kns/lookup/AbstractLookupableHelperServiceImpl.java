@@ -27,14 +27,11 @@ import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.service.EncryptionService;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.authorization.FieldRestriction;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
-import org.kuali.rice.kns.datadictionary.AttributeSecurity;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
@@ -1160,5 +1157,12 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
      */
     public boolean isResultReturnable(BusinessObject object) {
         return true;
+    }
+    
+    /**
+     * @see org.kuali.rice.kns.lookup.LookupableHelperService#getTitle()
+     */
+    public String getTitle() {
+    	return getBusinessObjectDictionaryService().getLookupTitle(getBusinessObjectClass());
     }
 }

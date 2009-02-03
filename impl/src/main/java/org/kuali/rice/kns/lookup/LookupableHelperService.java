@@ -275,4 +275,9 @@ public interface LookupableHelperService extends Serializable{
      * @return
      */
     public boolean isResultReturnable(BusinessObject object);
+    
+    /**
+     * @return String displayed as title for the lookup
+     */
+    public String getTitle();
 }

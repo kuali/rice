@@ -335,5 +335,23 @@
                 <principalName>user2</principalName>
             </members>
         </group>
+        <group>
+            <name>Group X</name>
+            <namespace>KR-WKFLW</namespace>
+            <description>Group X</description>
+            <active>true</active>
+            <members>
+                <principalName>user3</principalName>
+            </members>
+        </group>
+        <group>
+            <name>Group Z</name>
+            <namespace>KR-WKFLW</namespace>
+            <description>Group Z</description>
+            <active>true</active>
+            <members>
+                <principalName>user3</principalName>
+            </members>
+        </group>
     </groups>
 </data>

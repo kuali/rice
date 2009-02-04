@@ -378,6 +378,14 @@
 				    
 				</c:when>
 
+				<c:when test="${field.fieldType eq field.HIDDEN}">
+					<c:if test="${isLookup}">
+						<%-- only render the hidden field if this is part of a lookup criteria set --%>
+						${kfunc:registerEditableProperty(KualiForm, field.propertyName)}																
+						<input type="hidden" name='${field.propertyName}' value='<c:out value="${fieldValue}"/>' />
+					</c:if>
+				</c:when>
+				
 				<c:when test="${field.fieldType eq field.TEXT_AREA}">
 
 					<kul:fieldDefaultLabel isLookup="${isLookup}" isRequired="${field.fieldRequired}" 

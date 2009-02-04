@@ -149,11 +149,11 @@ request.setAttribute("test", incident);
 					<td align="left">
 						<div>
 							<input type="image" name="submit"
-								src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_complete.gif"
-								class="globalbuttons" title="return" alt="return">
+								src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_submit.gif"
+								class="globalbuttons" title="submit" alt="Submit Incident">
 							<input type="image" name="cancel" value="true"
-								src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_cancel.gif"
-								class="globalbuttons" title="cancel" alt="cancel">
+								src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_close.gif"
+								class="globalbuttons" title="close" alt="Close Without Submitting Incident">
 						</div>
 					</td>
 				</tr>

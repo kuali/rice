@@ -37,7 +37,7 @@ import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocumentBase;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
-import org.kuali.rice.kns.exception.DocumentInitiationAuthorizationException;
+import org.kuali.rice.kns.exception.DocumentAuthorizationException;
 import org.kuali.rice.kns.exception.UnknownDocumentTypeException;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.rule.event.ApproveDocumentEvent;
@@ -421,7 +421,7 @@ public class DocumentServiceImpl implements DocumentService {
         // make sure this person is authorized to initiate
         LOG.debug("calling canInitiate from getNewDocument()");
         if (!documentPresentationController.canInitiate(documentTypeName) || !documentAuthorizer.canInitiate(documentTypeName, currentUser)) {
-        	throw new DocumentInitiationAuthorizationException(new String[] {currentUser.getPrincipalName(),documentTypeName});        	
+        	throw new DocumentAuthorizationException(currentUser.getPrincipalName(), "initiate", "N/A");        	
         }
 
         // initiate new workflow entry, get the workflow doc

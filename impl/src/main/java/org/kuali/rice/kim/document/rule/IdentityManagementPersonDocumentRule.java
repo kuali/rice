@@ -21,10 +21,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.reference.impl.AffiliationTypeImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
@@ -47,6 +47,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
+import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.rules.TransactionalDocumentRuleBase;
 import org.kuali.rice.kns.service.BusinessObjectService;
@@ -117,7 +118,21 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     
     
     
-    private boolean checkMultipleDefault (List <? extends PersonDocumentBoDefaultBase> boList, String listName) {
+    @Override
+	protected boolean processCustomRouteDocumentBusinessRules(Document document) {
+		super.processCustomRouteDocumentBusinessRules(document);
+        IdentityManagementPersonDocument personDoc = (IdentityManagementPersonDocument)document;
+        boolean valid = true;
+        GlobalVariables.getErrorMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
+        valid &= validateRoleQualifierRequired( personDoc.getRoles() );
+        GlobalVariables.getErrorMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
+
+        return valid;
+	}
+
+
+
+	private boolean checkMultipleDefault (List <? extends PersonDocumentBoDefaultBase> boList, String listName) {
     	boolean valid = true;
     	boolean isDefaultSet = false;
     	int i = 0;
@@ -285,6 +300,35 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     		return false;
     	}
     }
+
+    private boolean validateRoleQualifierRequired( List<PersonDocumentRole> roles ) {
+
+    	boolean valid = true;
+		int i = 0;
+		for (PersonDocumentRole role : roles) {
+			if (!role.getDefinitions().isEmpty()
+					&& CollectionUtils.isEmpty(role.getRolePrncpls())) {
+				boolean roleQualifierRequired = false;
+				for (String key : role.getDefinitions().keySet()) {
+					AttributeDefinition definition = role.getDefinitions().get(
+							key);
+					if (definition.isRequired()) {
+						roleQualifierRequired = true;
+						break;
+					}
+				}
+				if (roleQualifierRequired) {
+					valid = false;
+					GlobalVariables.getErrorMap().putError("roles[" + i + "]",
+							RiceKeyConstants.ERROR_ROLE_QUALIFIER_REQUIRED,
+							new String[] {role.getRoleName(),role.getRoleId()});
+				}
+			}
+		}
+		i++;
+		return valid;
+	}
+    
 
     private boolean validActiveDatesForRole (List<PersonDocumentRole> roles ) {
     	boolean valid = true;

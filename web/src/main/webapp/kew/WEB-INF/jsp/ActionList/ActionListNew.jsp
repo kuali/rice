@@ -65,26 +65,36 @@
 	<%-- Since we are using the external paging and sorting features of the display tag now, if a new sortable column is added, remember to add it to the
        ActionItemComparator in the ActionListAction as well --%>
 	<div class="headerarea-small" id="headerarea-small">
-	<h1><c:out value="Action List" />
-	</h1>
-	<div align="right">
-	  <br/>
+	<div style="float:left"><h1><c:out value="Action List" /></h1></div><br />
+    <div style="clear:both">
+	<div style="float:right">
+	  <div style="float:left; width:75px">
 	  <a
          href='<c:out value="../en/Preferences.do?returnMapping=viewActionList" />'  title="preferences"><img
          src="../kr/images/tinybutton-preferences.gif" class="tinybutton" alt="preferences" title="preferences"
          border="0" /></a>
+      </div>
+      <div style="float:left; width:52px">
 	  <a
          href='<c:out value="ActionList.do?methodToCall=start" />'  title="refresh"><img
          src="../kr/images/tinybutton-refresh.gif" class="tinybutton" alt="refresh" title="refresh"
          border="0" /></a>
+       </div>
+       <div style="float:left; width:39px">
 	   <a
          href='<c:out value="ActionListFilter.do?methodToCall=start" />'  title="filter"><img
          src="../kr/images/tinybutton-filter.gif" class="tinybutton" alt="filter" title="filter"
          border="0" /></a>
+        </div>
 
          <c:if test="${helpDeskActionList != null}">
+         	<!--<p> Testing is this shows up on the screen </p> -->
+            <div style="float:left">
 			<html-el:text property="helpDeskActionListUserName" size="12" />&nbsp;
-            <html-el:image src="../kr/images/tinybutton-hlpdesk.gif" property="methodToCall.helpDeskActionListLogin" border="0"/>
+            </div>
+            <div style="float:left">
+            <html-el:image src="../kr/images/tinybutton-hlpdesk.gif" property="methodToCall.helpDeskActionListLogin"/>
+            </div>
 			<c:if test="${kewUserSession.helpDeskActionListPerson != null}">
 				<a href="
 					<c:url value="ActionList.do">
@@ -92,6 +102,7 @@
 					</c:url>">Clear <c:out value="${kewUserSession.helpDeskActionListPerson.name}"/>'s List</a>
 			</c:if>&nbsp;&nbsp;
 		</c:if>
+    </div>
     </div>
 	</div>
 

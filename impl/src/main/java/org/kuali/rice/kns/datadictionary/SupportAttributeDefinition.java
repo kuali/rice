@@ -16,6 +16,7 @@
 package org.kuali.rice.kns.datadictionary;
 
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
+import org.kuali.rice.kns.util.ExternalizableBusinessObjectUtils;
 
 /**
     Support attributes define additional attributes that can be used to generate
@@ -58,7 +59,8 @@ public class SupportAttributeDefinition extends PrimitiveAttributeDefinition {
         if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, getSourceName())) {
             throw new AttributeValidationException("unable to find attribute '" + getSourceName() + "' in relationship class '" + rootBusinessObjectClass + "' (" + "" + ")");
         }
-        if (!DataDictionary.isPropertyOf(otherBusinessObjectClass, getTargetName())) {
+        if (!DataDictionary.isPropertyOf(otherBusinessObjectClass, getTargetName())
+        		&& !ExternalizableBusinessObjectUtils.isExternalizableBusinessObjectInterface( otherBusinessObjectClass )) {
             throw new AttributeValidationException("unable to find attribute '" + getTargetName() + "' in related class '" + otherBusinessObjectClass.getName() + "' (" + "" + ")");
         }
     }

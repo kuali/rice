@@ -24,20 +24,18 @@
        		    <c:set var="searchStr" value="${attrDefn.value.name}" />
         		   <c:forEach items="${attr.lookupReturnPropertyConversions}" var="lookupReturn" varStatus="lookupIdx">
         		    <c:if test="${lookupReturn.key == searchStr}">
-        		    <%--  <c:if test="${searchStr == 'parameterName'}" >
-        		    	<c:set var="searchStr" value="campusName" />
-        		      </c:if> --%>
-        		   <%-- TODO : replace searstr with fielname for testing --%> 
-      		          <c:set var="fieldConversion" value="${fieldConversion},${searchStr}:${pathPrefix}.qualifiers[${defidx.index}].attrVal"/>
-        		    
+      		           <c:set var="fieldConversion" value="${fieldConversion},${searchStr}:${pathPrefix}.qualifiers[${defidx.index}].attrVal"/>        		    
+        			</c:if>    
+        		    <c:if test="${lookupReturn.key != searchStr and lookupReturn.value == searchStr}">
+      		           <c:set var="fieldConversion" value="${fieldConversion},${lookupReturn.key}:${pathPrefix}.qualifiers[${defidx.index}].attrVal"/>        		    
         			</c:if>    
         		   </c:forEach>
-        		   
+     
         		   <c:forEach items="${attr.lookupInputPropertyConversions}" var="lookupInput" varStatus="lookupIdx">
         		    <c:if test="${lookupInput.key == searchStr}">
         		   <%-- TODO : replace searstr with fielname for testing --%> 
 
-      		          <c:set var="params" value="${params},${pathPrefix}.qualifiers[${defidx.index}].attrVal:${searchStr}"/>
+      		          <c:set var="params" value="${params},${pathPrefix}.qualifiers[${defidx.index}].attrVal:${lookupInput.value}"/>
         		    
         			</c:if>    
         		   </c:forEach>

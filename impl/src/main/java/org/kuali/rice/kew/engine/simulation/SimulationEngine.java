@@ -46,12 +46,15 @@ import org.kuali.rice.kew.engine.RouteHelper;
 import org.kuali.rice.kew.engine.StandardWorkflowEngine;
 import org.kuali.rice.kew.engine.node.NoOpNode;
 import org.kuali.rice.kew.engine.node.NodeJotter;
+import org.kuali.rice.kew.engine.node.NodeType;
 import org.kuali.rice.kew.engine.node.Process;
 import org.kuali.rice.kew.engine.node.RequestsNode;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
+import org.kuali.rice.kew.engine.node.SimpleNode;
 import org.kuali.rice.kew.exception.DocumentSimulatedRouteException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
+import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -448,10 +451,15 @@ public class SimulationEngine extends StandardWorkflowEngine {
 			}
     	} else {
     	    // can we assume we want to use all the nodes?
-            List nodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(document.getDocumentType(), true);
-            for (Iterator iterator2 = nodes.iterator(); iterator2.hasNext(); ) {
-                RouteNode node = (RouteNode) iterator2.next();
-                simulationNodes.add(node);
+            List<RouteNode> nodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(document.getDocumentType(), true);
+            for ( RouteNode node : nodes ) {
+                try {
+	                if ( NodeType.fromNode( node ) instanceof SimpleNode ) {
+	                    simulationNodes.add(node);
+	                }
+                } catch (ResourceUnavailableException ex) {
+					LOG.warn( "Unable to determine node type in simulator: " + ex.getMessage() );
+				}
             }
     	}
     	// hook all of the simulation nodes together

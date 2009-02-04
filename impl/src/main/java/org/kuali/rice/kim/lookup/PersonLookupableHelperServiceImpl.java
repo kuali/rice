@@ -114,6 +114,7 @@ public class PersonLookupableHelperServiceImpl  extends KualiLookupableHelperSer
 					i.remove();
 				} else {
 					field.setReadOnly(true);
+					field.setDefaultValue( propVal );
 					roleName = propVal;
 				}
 			} else if ( propertyName.equals("lookupRoleNamespaceCode") ) {
@@ -126,6 +127,7 @@ public class PersonLookupableHelperServiceImpl  extends KualiLookupableHelperSer
 					i.remove();
 				} else {
 					field.setReadOnly(true);
+					field.setDefaultValue( propVal );
 					namespaceCode = propVal;
 				}				
 			}

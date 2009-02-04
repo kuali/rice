@@ -38,6 +38,8 @@ request.setAttribute("test", incident);
 	<c:set var="exceptionMessage" value="${parameters.exceptionMessage}" />
 	<c:set var="displayMessage"   value="${parameters.displayMessage}" />
 	<c:set var="stackTrace"       value="${parameters.stackTrace}" />
+	<c:set var="exceptionHideIncidentReport" value="${parameters.exceptionHideIncidentReport}" />
+
 </c:if>
 <c:if test="${empty documentId}">
 	<c:set var="documentId"
@@ -76,9 +78,15 @@ request.setAttribute("test", incident);
        value="<%=request.getParameter(KualiExceptionIncident.STACK_TRACE)%>" />
 </c:if>
 
+<c:set var="docTitle" value="Incident Report" />
+
+<c:if test="${exceptionHideIncidentReport eq true}">
+	<c:set var="docTitle" value="Error" />
+</c:if>
+
 <kul:page showDocumentInfo="false"
 	headerTitle="Incident Report"
-	docTitle="Incident Report"
+	docTitle="${docTitle}"
 	transactionalDocument="false"
 	htmlFormAction="kualiExceptionIncidentReport"
 	defaultMethodToCall="notify"
@@ -92,14 +100,19 @@ request.setAttribute("test", incident);
   <html:hidden property="exceptionMessage" write="false" value="${exceptionMessage}" />
   <html:hidden property="displayMessage"   write="false" value="${displayMessage}" />
   <html:hidden property="stackTrace"       write="false" value="${stackTrace}" />
+  <html:hidden property="exceptionHideIncidentReport" write="false" value="${exceptionHideIncidentReport}" />
+
+<c:if test="${exceptionHideIncidentReport eq false}">
   <div align="center">
     <font color="blue" size="3">Please use the Incident Report form below to report the problems</font>
   </div>
   <br/>
+</c:if>
 	<div class="topblurb">
 		<div align="center">
 			<table cellpadding="10" cellspacing="0" border="0" class="container2">
-				<tr>
+			  <c:if test="${exceptionHideIncidentReport eq false}">	
+				 <tr>
 					<td colspan="2" class="infoline">
 						<div align="left">
 							<font color="blue">This information will be forwarded to
@@ -107,7 +120,7 @@ request.setAttribute("test", incident);
 								when the problem occurred</font>
 						</div>
 					</td>
-				</tr>
+				 </tr>
 				<tr>
 					<td>
 						<div align="left" valign="top">
@@ -120,6 +133,7 @@ request.setAttribute("test", incident);
 						</div>
 					</td>
 				</tr>
+               </c:if>
 				<tr>
 					<td>
 						<div align="left" valign="top">
@@ -132,6 +146,7 @@ request.setAttribute("test", incident);
 						</div>
 					</td>
 				</tr>
+			  <c:if test="${exceptionHideIncidentReport eq false}">		
 				<tr>
 					<td valign="top" align="left">
 						<div align="left">
@@ -142,15 +157,18 @@ request.setAttribute("test", incident);
 						<textarea name='description' rows='5' cols='100' maxlength='1000'></textarea>
 					</td>
 				</tr>
+			  </c:if>
 				<tr>
 					<td>
 						&nbsp;
 					</td>
 					<td align="left">
 						<div>
-							<input type="image" name="submit"
+							<c:if test="${exceptionHideIncidentReport eq false}">	
+								<input type="image" name="submit"
 								src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_submit.gif"
 								class="globalbuttons" title="submit" alt="Submit Incident">
+							</c:if>
 							<input type="image" name="cancel" value="true"
 								src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_close.gif"
 								class="globalbuttons" title="close" alt="Close Without Submitting Incident">
@@ -161,7 +179,7 @@ request.setAttribute("test", incident);
 		</div>
 	</div>
 	<br />
-	<c:if test="${!KualiConfigurationService.isProductionEnvironment}">
+	<c:if test="${exceptionHideIncidentReport eq false && !KualiConfigurationService.isProductionEnvironment}">
 		<table>
 			<tr>
 				<td>

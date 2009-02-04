@@ -31,6 +31,11 @@ public interface KualiExceptionIncident {
      * <p>Value is exceptionReportSubject
      */
      public static final String EXCEPTION_REPORT_SUBJECT="exceptionReportSubject";
+     
+     /**
+      * Boolean value for incident report display
+      */
+     public static final String EXCEPTION_HIDE_INCIDENT_REPORT = "exceptionHideIncidentReport";
     /**
      * The error report message
      * <p>Value is exceptionReportMessage

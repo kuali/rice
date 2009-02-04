@@ -23,9 +23,11 @@ package org.kuali.rice.kns.exception;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
+
 public class KualiException extends RuntimeException {
 
     private static final long serialVersionUID = 2395877766757834813L;
+    private boolean hideIncidentReport = false;
     
     /**
      * This constructs an instance of java.lang.RuntimeException
@@ -34,6 +36,17 @@ public class KualiException extends RuntimeException {
      */
     public KualiException(String message) {
         super(message);
+    }
+    
+    /**
+     * This constructs an instance of java.lang.RuntimeException
+     * 
+     * @param message
+     * @param hideIncidentReport
+     */
+    public KualiException(String message, boolean hideIncidentReport){
+    	super(message);
+    	this.hideIncidentReport = hideIncidentReport;
     }
 
     /**
@@ -54,4 +67,22 @@ public class KualiException extends RuntimeException {
     public KualiException(Throwable t) {
         super(t);
     }
+
+	/**
+	 * @param hideIncidentReport the hideIncidentReport to set
+	 */
+	public void setHideIncidentReport(boolean hideIncidentReport) {
+		this.hideIncidentReport = hideIncidentReport;
+	}
+
+	/**
+	 * @return the hideIncidentReport
+	 */
+	public boolean isHideIncidentReport() {
+		return this.hideIncidentReport;
+	}
+	
+	
+    
+    
 }

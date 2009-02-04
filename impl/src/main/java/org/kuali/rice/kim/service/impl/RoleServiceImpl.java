@@ -17,6 +17,7 @@ package org.kuali.rice.kim.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -595,6 +596,17 @@ public class RoleServiceImpl implements RoleService {
     	return principalHasRole( principalId, roleIds, qualification, true );
     }
 
+    public List<String> getPrincipalIdSubListWithRole( List<String> principalIds, String roleNamespaceCode, String roleName, AttributeSet qualification ) {
+    	List<String> subList = new ArrayList<String>();
+    	KimRoleImpl role = getRoleImplByName( roleNamespaceCode, roleName );
+    	for ( String principalId : principalIds ) {
+    		if ( principalHasRole( principalId, Collections.singletonList( role.getRoleId() ), qualification ) ) {
+    			subList.add( principalId );
+    		}
+    	}
+    	return subList;
+    }
+    
 //    protected Map<String,List<RoleMembershipInfo>> getRoleIdToMembershipMap( List<RoleMemberImpl> roleMembers, AttributeSet qualifications, Map<String,KimRoleTypeService> roleTypeServices, List<RoleMembershipInfo> finalResults, List<String> matchingRoleIds, boolean includeNullServiceMembers, boolean failFast ) {
 //    	Map<String,List<RoleMembershipInfo>> roleIdToMembershipMap = new HashMap<String,List<RoleMembershipInfo>>();
 //    	for ( RoleMemberImpl rm : roleMembers ) {

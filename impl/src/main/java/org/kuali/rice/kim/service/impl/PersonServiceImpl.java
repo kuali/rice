@@ -251,6 +251,8 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 				// run the person lookup first
 				people = personDao.findPeople(criteria, false); // get all, since may need to be filtered
 				// TODO - now check if these people have the given role
+				// get role ID
+				// get sublist of principals that have the given roles
 			} else { // only role criteria specified
 				if ( LOG.isDebugEnabled() ) {
 					LOG.debug( "No Person criteria specified - only using role service." );

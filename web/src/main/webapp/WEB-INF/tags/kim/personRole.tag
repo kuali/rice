@@ -7,9 +7,9 @@
         <c:if test="${not inquiry and not readOnly}">	          	
           	<tr>
           		<th>&nbsp;</th> 
-          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRoleAttributes.roleId}" noColon="true" /></div></th>
-          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRoleAttributes.kimTypeId}" noColon="true" /></div></th>
+          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRoleAttributes.namespaceCode}" noColon="true" /></div></th>
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRoleAttributes.roleName}" noColon="true" /></div></th>
+          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRoleAttributes.kimTypeId}" noColon="true" /></div></th>
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRolePrncplAttributes.activeFromDate}" noColon="true" /></div></th>
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRolePrncplAttributes.activeToDate}" noColon="true" /></div></th>
            	<c:if test="${not inquiry}">	
@@ -22,20 +22,21 @@
 					<c:out value="Add:" />
 				</th>
 
+				<td>${KualiForm.newRole.namespaceCode}&nbsp;</td>
                 <td align="left" valign="middle" class="infoline">
                 <div align="center">
-                	<kul:htmlControlAttribute property="newRole.roleId" attributeEntry="${docRoleAttributes.roleId}" disabled="true"/>
+                	<kul:htmlControlAttribute property="newRole.roleName" attributeEntry="${docRoleAttributes.roleId}" disabled="true"/>
                 	<kul:lookup boClassName="org.kuali.rice.kim.bo.role.impl.KimRoleImpl" fieldConversions="roleId:newRole.roleId,kimTypeId:newRole.kimTypeId,roleName:newRole.roleName,namespaceCode:newRole.namespaceCode,kimRoleType.name:newRole.kimRoleType.name,kimRoleType.kimTypeServiceName:newRole.kimRoleType.kimTypeServiceName" anchor="${tabKey}" />
 					
 					<html:hidden property="newRole.roleName" />
+					<html:hidden property="newRole.roleId" />
 					<html:hidden property="newRole.namespaceCode" />
 					<html:hidden property="newRole.kimTypeId" />
 					<html:hidden property="newRole.kimRoleType.name" />
 					<html:hidden property="newRole.kimRoleType.kimTypeServiceName" />
 	            </div>
 				</td>
-				<td>&nbsp;</td>
-				<td>${KualiForm.newRole.roleName}&nbsp;</td>
+				<td>${KualiForm.newRole.kimRoleType.kimTypeServiceName}</td>
 	                <td align="left" valign="middle">
 	                	<div align="center"> <kul:htmlControlAttribute property="newRole.newRolePrncpl.activeFromDate"  attributeEntry="${docRolePrncplAttributes.activeFromDate}"  datePicker="true"/>
 					</div>
@@ -57,9 +58,9 @@
         	<%-- add header label for each 'role' to see if it is less confusion for user --%>
           	<tr>
           		<th>&nbsp;</th> 
-          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRoleAttributes.roleId}" noColon="true" /></div></th>
-          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRoleAttributes.kimTypeId}" noColon="true" /></div></th>
+          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRoleAttributes.namespaceCode}" noColon="true" /></div></th>
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRoleAttributes.roleName}" noColon="true" /></div></th>
+          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRoleAttributes.kimTypeId}" noColon="true" /></div></th>
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRolePrncplAttributes.activeFromDate}" noColon="true" /></div></th>
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRolePrncplAttributes.activeToDate}" noColon="true" /></div></th>
 	           	<c:if test="${not inquiry}">	
@@ -76,15 +77,15 @@
 					<c:out value="${status.index+1}" />
 				</th>
                 <td align="left" valign="middle">
-                	<div align="center"> <kul:htmlControlAttribute property="document.roles[${status.index}].roleId"  attributeEntry="${docRoleAttributes.roleId}" readOnly="true"  />
+                	<div align="center"> <kul:htmlControlAttribute property="document.roles[${status.index}].namespaceCode"  attributeEntry="${docRoleAttributes.roleName}" readOnly="true"  />
+				</div>
+				</td>
+                <td align="left" valign="middle">
+                	<div align="center"> <kul:htmlControlAttribute property="document.roles[${status.index}].roleName"  attributeEntry="${docRoleAttributes.roleId}" readOnly="true"  />
 				</div>
 				</td>
                 <td align="left" valign="middle">
                 	<div align="center"> <kul:htmlControlAttribute property="document.roles[${status.index}].kimRoleType.name"  attributeEntry="${docRoleAttributes.kimGroupType.name}" readOnly="true"  />
-				</div>
-				</td>
-                <td align="left" valign="middle">
-                	<div align="center"> <kul:htmlControlAttribute property="document.roles[${status.index}].roleName"  attributeEntry="${docRoleAttributes.roleName}" readOnly="true"  />
 				</div>
 				</td>
                 <td align="left" valign="middle">

@@ -321,7 +321,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 					valid = false;
 					GlobalVariables.getErrorMap().putError("roles[" + i + "]",
 							RiceKeyConstants.ERROR_ROLE_QUALIFIER_REQUIRED,
-							new String[] {role.getRoleName(),role.getRoleId()});
+							new String[] {role.getNamespaceCode(), role.getRoleName()});
 				}
 			}
 		}

@@ -1,4 +1,5 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
+<%@page import="java.net.URL"%>
 <%
 String context = (String)request.getAttribute("basePath") + "/";
 //	String context = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath()+ "/";
@@ -6,7 +7,7 @@ String context = (String)request.getAttribute("basePath") + "/";
 <c:if test="${ documentTypeStruct.shouldDisplay }" >
 <c:set var="documentType" value="${documentTypeStruct.documentType}" />
 	<c:if test="${documentType.currentInd == true && documentType.active == true}">
-		  
+
  			 <div class="tab-container" align=center>
           	 <table width="100%" border=0 cellpadding=0 cellspacing=0
 			class="datatable">
@@ -19,7 +20,7 @@ String context = (String)request.getAttribute("basePath") + "/";
 							</c:url>">
 							<c:out value="${documentType.label}" />
 						</a>&nbsp;
-				</kul:htmlAttributeHeaderCell>				
+				</kul:htmlAttributeHeaderCell>
 				</tr>
 			</c:if>
 
@@ -32,20 +33,24 @@ String context = (String)request.getAttribute("basePath") + "/";
 					<tr nowrap>
 						<kul:htmlAttributeHeaderCell  scope="col" align="left">
 									<c:out value="${routeLevel.routeNodeName}" />&nbsp;
-						</kul:htmlAttributeHeaderCell>		
-						<td class="datacell">	<a href="<c:url value="${context}Rule.do">
+						</kul:htmlAttributeHeaderCell>
+						<td class="datacell">
+                             <a href="<c:url value="${context}Rule.do">
 										<c:param name="methodToCall" value="createNew" />
 										<c:param name="ruleCreationValues.ruleTemplateId" value="${routeLevel.ruleTemplate.ruleTemplateId}"/>
 										<c:param name="ruleCreationValues.ruleTemplateName" value="${routeLevel.ruleTemplate.name}"/>
 										<c:param name="ruleCreationValues.docTypeName" value="${documentType.name}"/>
 									</c:url>" target=_blank>Add Rule</a>
 							&nbsp;
-							<a href="<c:url value="${context}Lookup.do">
-										<c:param name="lookupableImplServiceName" value="RuleBaseValuesLookupableImplService"/>s
-										<c:param name="ruleTemplate.ruleTemplateId" value="${routeLevel.ruleTemplate.ruleTemplateId}"/>
-										<c:param name="ruleTemplateName" value="${routeLevel.ruleTemplate.name}"/>
-										<c:param name="docTypeFullName" value="${documentType.name}"/>
-									</c:url>" target=_blank>Search</a>
+                             <a href="<c:url value="../kr/lookup.do">
+                                      <c:param name="businessObjectClassName" value="org.kuali.rice.kew.rule.RuleBaseValues"/>
+                                      <c:param name="returnLocation" value="${ConfigProperties.application.url}/portal.do"/>
+                                      <c:param name="hideReturnLink" value="true"/>
+                                      <c:param name="methodToCall" value="start"/>
+                                      <c:param name="docFormKey" value="88888888"/>
+                                      <c:param name="docTypeName" value="${documentType.name}"/>
+                                      <c:param name="ruleTemplate.name" value="${routeLevel.ruleTemplate.name}"/>
+                                    </c:url>" target=_blank>Search</a>
 							<c:if test="${routeLevel.ruleTemplate.delegationTemplate != null}">
 								&nbsp;
 							<a href="<c:url value="${context}RuleQuickLinks.do">
@@ -83,6 +88,6 @@ String context = (String)request.getAttribute("basePath") + "/";
 			</tr>
 		</c:if>
 		</div>
-  </table>  
+  </table>
 	</c:if>
 </c:if>

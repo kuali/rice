@@ -15,23 +15,20 @@
  */
 package org.kuali.rice.kew.lookupable;
 
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.rule.OddSearchAttribute;
 import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleExtension;
-import org.kuali.rice.kew.rule.RuleExtensionValue;
-import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.rule.WorkflowAttribute;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
@@ -44,19 +41,30 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.group.KimGroup;
-import org.kuali.rice.kim.bo.role.KimRole;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.exception.ValidationException;
+import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
+import org.kuali.rice.kns.web.comparator.CellComparatorHelper;
+import org.kuali.rice.kns.web.format.BooleanFormatter;
+import org.kuali.rice.kns.web.format.CollectionFormatter;
+import org.kuali.rice.kns.web.format.DateFormatter;
+import org.kuali.rice.kns.web.format.Formatter;
+import org.kuali.rice.kns.web.struts.form.LookupForm;
+import org.kuali.rice.kns.web.ui.Column;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.KeyLabelPair;
+import org.kuali.rice.kns.web.ui.ResultRow;
 import org.kuali.rice.kns.web.ui.Row;
-import org.kuali.rice.kns.web.ui.Column;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in.
@@ -92,6 +100,8 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
 
     private static final String BACK_LOCATION = "backLocation";
     private static final String DOC_FORM_KEY = "docFormKey";
+    private static final String INVALID_WORKGROUP_ERROR = "The Group Reviewer Namespace and Name combination is not valid";
+    private static final String INVALID_PERSON_ERROR = "The Person Reviewer is not valid";
 
     public List<Row> getRows() {
         List<Row> superRows = super.getRows();
@@ -243,12 +253,14 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
                 }
                 group = getIdentityManagementService().getGroupByName(groupNamespaceParam, groupNameParam.trim());
                 if (group == null) {
-                    errors.add(new WorkflowServiceErrorImpl("Document Type Invalid", "routetemplate.ruleservice.workgroup.invalid"));
+                    String attributeLabel = getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), GROUP_REVIEWER_NAME_PROPERTY_NAME) + ":" + getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME);
+                    GlobalVariables.getErrorMap().putError(GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME, RiceKeyConstants.ERROR_CUSTOM, INVALID_WORKGROUP_ERROR);
                 } else {
                     workgroupId = group.getGroupId();
                 }
             }
         }
+
         Map attributes = null;
         MyColumns myColumns = new MyColumns();
         if (ruleTemplateNameParam != null && !ruleTemplateNameParam.trim().equals("") || ruleTemplateIdParam != null && !"".equals(ruleTemplateIdParam) && !"null".equals(ruleTemplateIdParam)) {
@@ -273,25 +285,25 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
                     ((GenericXMLRuleAttribute) attribute).setRuleAttribute(ruleAttribute);
                 }
                 attribute.setRequired(false);
-                List searchRows = null;
+                List<Row> searchRows = null;
                 if (attribute instanceof OddSearchAttribute) {
-                    errors.addAll(((OddSearchAttribute) attribute).validateSearchData(fieldValues));
+                    for (WorkflowServiceErrorImpl wsei : (List<WorkflowServiceErrorImpl>)((OddSearchAttribute)attribute).validateSearchData(fieldValues)) {
+                        GlobalVariables.getErrorMap().putError(wsei.getMessage(), RiceKeyConstants.ERROR_CUSTOM, wsei.getArg1());
+                    }
                     searchRows = ((OddSearchAttribute) attribute).getSearchRows();
                 } else {
-                    errors.addAll(attribute.validateRuleData(fieldValues));
+                    for (WorkflowServiceErrorImpl wsei : (List<WorkflowServiceErrorImpl>)attribute.validateRuleData(fieldValues)) {
+                        GlobalVariables.getErrorMap().putError(wsei.getMessage(), RiceKeyConstants.ERROR_CUSTOM, wsei.getArg1());
+                    }
                     searchRows = attribute.getRuleRows();
                 }
-                for (Iterator iterator = searchRows.iterator(); iterator.hasNext();) {
-                    Row row = (Row) iterator.next();
-                    for (Iterator iterator2 = row.getFields().iterator(); iterator2.hasNext();) {
-                        Field field = (Field) iterator2.next();
+                for (Row row : searchRows) {
+                    for (Field field : row.getFields()) {
                         if (fieldValues.get(field.getPropertyName()) != null) {
                             String attributeParam = (String) fieldValues.get(field.getPropertyName());
                             if (!attributeParam.equals("")) {
                                 if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
                                     attributes.put(field.getPropertyName(), attributeParam.trim());
-                                //} else if (!Utilities.isEmpty(field.getDefaultLookupableName())) {
-                                //  attributes.put(field.getDefaultLookupableName(), attributeParam.trim());
                                 } else {
                                     attributes.put(field.getPropertyName(), attributeParam.trim());
                                 }
@@ -300,8 +312,6 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
                         if (field.getFieldType().equals(Field.TEXT) || field.getFieldType().equals(Field.DROPDOWN) || field.getFieldType().equals(Field.DROPDOWN_REFRESH) || field.getFieldType().equals(Field.RADIO)) {
                             if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
                                 myColumns.getColumns().add(new KeyLabelPair(field.getPropertyName(), ruleTemplateAttribute.getRuleTemplateAttributeId()+""));
-                            //} else if (!Utilities.isEmpty(field.getDefaultLookupableName())) {
-                            //  myColumns.getColumns().add(new KeyLabelPair(field.getDefaultLookupableName(), ruleTemplateAttribute.getRuleTemplateAttributeId()+""));
                             } else {
                                 myColumns.getColumns().add(new KeyLabelPair(field.getPropertyName(), ruleTemplateAttribute.getRuleTemplateAttributeId()+""));
                             }
@@ -311,26 +321,13 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
             }
         }
 
-        if (networkIdParam != null && !"".equals(networkIdParam.trim())) {
-            Person person = KIMServiceLocator.getPersonService().getPersonByPrincipalName(networkIdParam.trim());
-            if (person == null) {
-                errors.add(new WorkflowServiceErrorImpl("User Invalid", "routetemplate.ruleservice.user.invalid"));
-            } else {
-                workflowId = person.getPrincipalId();
-            }
-        }
-        //if (roleNameParam != null && !"".equals(roleNameParam)) {
-        //    roleNameParam = roleNameParam.replace('*', '%');
-        //    roleNameParam = "%" + roleNameParam.trim() + "%";
-        //}
-
         if (!Utilities.isEmpty(ruleDescription)) {
             ruleDescription = ruleDescription.replace('*', '%');
             ruleDescription = "%" + ruleDescription.trim() + "%";
         }
 
         if (!errors.isEmpty()) {
-            throw new WorkflowServiceErrorException("RuleBaseValues validation errors", errors);
+            throw new ValidationException("errors in search criteria");
         }
 
         Iterator rules = getRuleService().search(docTypeSearchName, ruleId, ruleTemplateId, ruleDescription, workgroupId, workflowId, isDelegateRule, isActive, attributes, userDirectiveParam).iterator();
@@ -355,6 +352,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
                         newPair.setLabel(KEWConstants.HTML_NON_BREAKING_SPACE);
                     }
                     myNewColumns.getColumns().add(newPair);
+                    record.getFieldValues().put((String)newPair.key, newPair.label);
                 }
                 record.setMyColumns(myNewColumns);
             }
@@ -396,6 +394,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
         // make sure that if we have either groupName or Namespace, that both are filled in
         String groupName = (String)fieldValues.get(GROUP_REVIEWER_NAME_PROPERTY_NAME);
         String groupNamespace = (String)fieldValues.get(GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME);
+        String personId = (String)fieldValues.get(PERSON_REVIEWER_PROPERTY_NAME);
 
         if (Utilities.isEmpty(groupName) && !Utilities.isEmpty(groupNamespace)) {
             String attributeLabel = getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), GROUP_REVIEWER_NAME_PROPERTY_NAME);
@@ -407,8 +406,177 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
             GlobalVariables.getErrorMap().putError(GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME, RiceKeyConstants.ERROR_REQUIRED, attributeLabel);
         }
 
+        if  (!Utilities.isEmpty(groupName) && !Utilities.isEmpty(groupNamespace)) {
+            KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroupByName(groupNamespace, groupName);
+            if (group == null) {
+                String attributeLabel =  getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME) + ":" + getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), GROUP_REVIEWER_NAME_PROPERTY_NAME);
+                GlobalVariables.getErrorMap().putError(GROUP_REVIEWER_NAME_PROPERTY_NAME, RiceKeyConstants.ERROR_CUSTOM, INVALID_WORKGROUP_ERROR);
+            }
+        }
+
+        if  (!Utilities.isEmpty(personId)) {
+            Person person = KIMServiceLocator.getPersonService().getPerson(personId);
+            if (person == null) {
+                String attributeLabel = getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), PERSON_REVIEWER_PROPERTY_NAME) + ":" + getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), PERSON_REVIEWER_PROPERTY_NAME);
+                GlobalVariables.getErrorMap().putError(PERSON_REVIEWER_PROPERTY_NAME, RiceKeyConstants.ERROR_CUSTOM, INVALID_PERSON_ERROR);
+            }
+        }
         if (!GlobalVariables.getErrorMap().isEmpty()) {
             throw new ValidationException("errors in search criteria");
         }
     }
+
+    @Override
+    public Collection performLookup(LookupForm lookupForm,
+            Collection resultTable, boolean bounded) {
+        // TODO jjhanso - THIS METHOD NEEDS JAVADOCS
+        //return super.performLookup(lookupForm, resultTable, bounded);
+        setBackLocation((String) lookupForm.getFieldsForLookup().get(KNSConstants.BACK_LOCATION));
+        setDocFormKey((String) lookupForm.getFieldsForLookup().get(KNSConstants.DOC_FORM_KEY));
+        Collection displayList;
+
+        // call search method to get results
+        if (bounded) {
+            displayList = getSearchResults(lookupForm.getFieldsForLookup());
+        }
+        else {
+            displayList = getSearchResultsUnbounded(lookupForm.getFieldsForLookup());
+        }
+
+        HashMap<String,Class> propertyTypes = new HashMap<String, Class>();
+
+        boolean hasReturnableRow = false;
+
+        List returnKeys = getReturnKeys();
+        List pkNames = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(getBusinessObjectClass());
+        Person user = GlobalVariables.getUserSession().getPerson();
+
+        // iterate through result list and wrap rows with return url and action urls
+        for (Iterator iter = displayList.iterator(); iter.hasNext();) {
+            BusinessObject element = (BusinessObject) iter.next();
+            if(element instanceof PersistableBusinessObject){
+                lookupForm.setLookupObjectId(((PersistableBusinessObject)element).getObjectId());
+            }
+
+            BusinessObjectRestrictions businessObjectRestrictions = getBusinessObjectAuthorizationService().getLookupResultRestrictions(element, user);
+
+            HtmlData returnUrl = getReturnUrl(element, lookupForm, returnKeys, businessObjectRestrictions);
+
+            String actionUrls = getActionUrls(element, pkNames, businessObjectRestrictions);
+            //Fix for JIRA - KFSMI-2417
+            if("".equals(actionUrls)){
+                actionUrls = ACTION_URLS_EMPTY;
+            }
+
+            List<Column> columns = getColumns();
+            for (Iterator iterator = columns.iterator(); iterator.hasNext();) {
+
+                Column col = (Column) iterator.next();
+                Formatter formatter = col.getFormatter();
+
+                // pick off result column from result list, do formatting
+                String propValue = KNSConstants.EMPTY_STRING;
+                Object prop = null;
+                boolean skipPropTypeCheck = false;
+                //try to get value elsewhere
+                if (element instanceof RuleBaseValues) {
+                    prop = ((RuleBaseValues)element).getFieldValues().get(col.getPropertyName());
+                    skipPropTypeCheck = true;
+                }
+                if (prop == null) {
+                    prop = ObjectUtils.getPropertyValue(element, col.getPropertyName());
+                }
+
+                // set comparator and formatter based on property type
+                Class propClass = propertyTypes.get(col.getPropertyName());
+                if ( propClass == null && !skipPropTypeCheck) {
+                    try {
+                        propClass = ObjectUtils.getPropertyType( element, col.getPropertyName(), getPersistenceStructureService() );
+                        propertyTypes.put( col.getPropertyName(), propClass );
+                    } catch (Exception e) {
+                        throw new RuntimeException("Cannot access PropertyType for property " + "'" + col.getPropertyName() + "' " + " on an instance of '" + element.getClass().getName() + "'.", e);
+                    }
+                }
+
+                // formatters
+                if (prop != null) {
+                    // for Booleans, always use BooleanFormatter
+                    if (prop instanceof Boolean) {
+                        formatter = new BooleanFormatter();
+                    }
+
+                    // for Dates, always use DateFormatter
+                    if (prop instanceof Date) {
+                        formatter = new DateFormatter();
+                    }
+
+                    // for collection, use the list formatter if a formatter hasn't been defined yet
+                    if (prop instanceof Collection && formatter == null) {
+                    formatter = new CollectionFormatter();
+                    }
+
+                    if (formatter != null) {
+                        propValue = (String) formatter.format(prop);
+                    }
+                    else {
+                        propValue = prop.toString();
+                    }
+                }
+
+                // comparator
+                col.setComparator(CellComparatorHelper.getAppropriateComparatorForPropertyClass(propClass));
+                col.setValueComparator(CellComparatorHelper.getAppropriateValueComparatorForPropertyClass(propClass));
+
+                propValue = maskValueIfNecessary(element.getClass(), col.getPropertyName(), propValue, businessObjectRestrictions);
+
+                col.setPropertyValue(propValue);
+
+                if (StringUtils.isNotBlank(propValue)) {
+                    col.setColumnAnchor(getInquiryUrl(element, col.getPropertyName()));
+
+                }
+            }
+
+            ResultRow row = new ResultRow(columns, returnUrl.constructCompleteHtmlTag(), actionUrls);
+            row.setRowId(returnUrl.getName());
+            row.setReturnUrlHtmlData(returnUrl);
+            // because of concerns of the BO being cached in session on the ResultRow,
+            // let's only attach it when needed (currently in the case of export)
+            if (getBusinessObjectDictionaryService().isExportable(getBusinessObjectClass())) {
+                row.setBusinessObject(element);
+            }
+            if(element instanceof PersistableBusinessObject){
+                row.setObjectId((((PersistableBusinessObject)element).getObjectId()));
+            }
+
+
+            boolean rowReturnable = isResultReturnable(element);
+            row.setRowReturnable(rowReturnable);
+            if (rowReturnable) {
+                hasReturnableRow = true;
+            }
+            resultTable.add(row);
+        }
+
+        lookupForm.setHasReturnableRow(hasReturnableRow);
+
+        return displayList;
+    }
+
+    @Override
+    public List<Column> getColumns() {
+        List<Column> columns = super.getColumns();
+        for (Row row : rows) {
+            for (Field field : row.getFields()) {
+                Column newColumn = new Column();
+                newColumn.setColumnTitle(field.getFieldLabel());
+                newColumn.setMaxLength(field.getMaxLength());
+                newColumn.setPropertyName(field.getPropertyName());
+                columns.add(newColumn);
+            }
+        }
+        return columns;
+    }
+
+
 }

@@ -499,9 +499,11 @@ public class DocumentServiceImpl implements DocumentService {
 
         KualiWorkflowDocument workflowDocument = null;
 
-            LOG.info("Retrieving doc id: " + documentHeaderId + " from workflow service.");
-            workflowDocument = getWorkflowDocumentService().createWorkflowDocument(Long.valueOf(documentHeaderId), GlobalVariables.getUserSession().getPerson());
-            GlobalVariables.getUserSession().setWorkflowDocument(workflowDocument);
+        if ( LOG.isInfoEnabled() ) {
+        	LOG.info("Retrieving doc id: " + documentHeaderId + " from workflow service.");
+        }
+        workflowDocument = getWorkflowDocumentService().createWorkflowDocument(Long.valueOf(documentHeaderId), GlobalVariables.getUserSession().getPerson());
+        GlobalVariables.getUserSession().setWorkflowDocument(workflowDocument);
 
         Class documentClass = getDocumentClassByTypeName(workflowDocument.getDocumentType());
 
@@ -521,10 +523,12 @@ public class DocumentServiceImpl implements DocumentService {
 
         KualiWorkflowDocument workflowDocument = null;
 
+        if ( LOG.isInfoEnabled() ) {
             LOG.info("Retrieving doc id: " + documentHeaderId + " from workflow service.");
+        }
             
         Person person = getPersonService().getPersonByPrincipalName(KNSConstants.SYSTEM_USER);
-            workflowDocument = workflowDocumentService.createWorkflowDocument(Long.valueOf(documentHeaderId), person);
+        workflowDocument = workflowDocumentService.createWorkflowDocument(Long.valueOf(documentHeaderId), person);
 
         Class documentClass = getDocumentClassByTypeName(workflowDocument.getDocumentType());
 
@@ -618,14 +622,18 @@ public class DocumentServiceImpl implements DocumentService {
             LOG.error("document passed to validateAndPersist was null");
             throw new IllegalArgumentException("invalid (null) document");
         }
-        LOG.info("validating and preparing to persist document " + document.getDocumentNumber());
+        if ( LOG.isInfoEnabled() ) {
+        	LOG.info("validating and preparing to persist document " + document.getDocumentNumber());
+        }
         
         document.validateBusinessRules(event);
         document.prepareForSave(event);
 
         // save the document
         try {
-            LOG.info("storing document " + document.getDocumentNumber());
+        	if ( LOG.isInfoEnabled() ) {
+        		LOG.info("storing document " + document.getDocumentNumber());
+        	}
             getDocumentDao().save(document);
         }
         catch (OptimisticLockingFailureException e) {

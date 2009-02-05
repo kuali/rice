@@ -44,6 +44,7 @@ import org.kuali.rice.kew.engine.ProcessContext;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.RouteHelper;
 import org.kuali.rice.kew.engine.StandardWorkflowEngine;
+import org.kuali.rice.kew.engine.node.InitialNode;
 import org.kuali.rice.kew.engine.node.NoOpNode;
 import org.kuali.rice.kew.engine.node.NodeJotter;
 import org.kuali.rice.kew.engine.node.NodeType;
@@ -454,7 +455,8 @@ public class SimulationEngine extends StandardWorkflowEngine {
             List<RouteNode> nodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(document.getDocumentType(), true);
             for ( RouteNode node : nodes ) {
                 try {
-	                if ( NodeType.fromNode( node ) instanceof SimpleNode ) {
+	                if ( NodeType.fromNode( node ).isTypeOf( SimpleNode.class ) 
+	                		&& !NodeType.fromNode( node ).isTypeOf( NoOpNode.class ) ) {
 	                    simulationNodes.add(node);
 	                }
                 } catch (ResourceUnavailableException ex) {
@@ -462,12 +464,15 @@ public class SimulationEngine extends StandardWorkflowEngine {
 				}
             }
     	}
+    	// pull any next node instances out of the initial node instance
+    	initialNodeInstance.clearNextNodeInstances();
     	// hook all of the simulation nodes together
     	RouteNodeInstance currentNodeInstance = initialNodeInstance;
     	for (Iterator iterator = simulationNodes.iterator(); iterator.hasNext(); ) {
 			RouteNode simulationNode = (RouteNode) iterator.next();
 			RouteNodeInstance nodeInstance = helper.getNodeFactory().createRouteNodeInstance(document.getRouteHeaderId(), simulationNode);
 			nodeInstance.setBranch(initialNodeInstance.getBranch());
+			nodeInstance.setActive(true);
 			currentNodeInstance.addNextNodeInstance(nodeInstance);
 			saveNode(context, currentNodeInstance);
 			currentNodeInstance = nodeInstance;

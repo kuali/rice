@@ -48,7 +48,6 @@ public class Note extends PersistableBusinessObjectBase {
 	private String remoteObjectIdentifier;
     @Column(name="AUTH_PRNCPL_ID")
 	private String authorUniversalIdentifier;
-    //@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="POST_TS")
 	private Timestamp notePostedTimestamp;
     @Column(name="NTE_TYP_CD")

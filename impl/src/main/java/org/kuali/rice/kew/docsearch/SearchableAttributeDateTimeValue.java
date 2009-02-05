@@ -75,7 +75,6 @@ public class SearchableAttributeDateTimeValue implements WorkflowPersistable, Se
 	private Long searchableAttributeValueId;
     @Column(name="KEY_CD")
 	private String searchableAttributeKey;
-    //@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="VAL")
 	private Timestamp searchableAttributeValue;
     @Transient

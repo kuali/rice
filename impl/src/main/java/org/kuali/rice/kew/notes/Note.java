@@ -69,7 +69,6 @@ public class Note implements WorkflowPersistable {
 	private Long routeHeaderId;
     @Column(name="AUTH_PRNCPL_ID")
 	private String noteAuthorWorkflowId;
-    //@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="CRT_DT")
 	private Timestamp noteCreateDate;
     @Column(name="TXT")

@@ -28,7 +28,6 @@ import javax.persistence.Version;
 
 import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.util.OrmUtils;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 /**
@@ -55,10 +54,8 @@ public class PersistedMessage implements Serializable {
 	private Integer queuePriority;
 	@Column(name="STAT_CD")
 	private String queueStatus;
-	//@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="DT")
 	private Timestamp queueDate;
-	//@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="EXP_DT")
 	private Timestamp expirationDate;
 	@Column(name="RTRY_CNT")

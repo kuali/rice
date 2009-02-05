@@ -35,7 +35,6 @@ import javax.persistence.Transient;
 
 import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.util.OrmUtils;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.ksb.messaging.AsynchronousCallback;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
@@ -61,7 +60,6 @@ public class BAMTargetEntry implements Serializable {
 	private String methodName;
 	@Column(name="THRD_NM")
 	private String threadName;
-	//@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="CALL_DT")
 	private Timestamp callDate;
 	@Column(name="SVC_URL")

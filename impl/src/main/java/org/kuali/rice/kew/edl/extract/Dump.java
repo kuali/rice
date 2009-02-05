@@ -59,10 +59,8 @@ public class Dump {
 	private String docTypeName;
 	@Column(name="DOC_HDR_STAT_CD")
 	private String docRouteStatusCode;
-	//@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="DOC_HDR_MDFN_DT")
 	private Timestamp docModificationDate;
-	//@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="DOC_HDR_CRTE_DT")
 	private Timestamp docCreationDate;
 	@Column(name="DOC_HDR_TTL")

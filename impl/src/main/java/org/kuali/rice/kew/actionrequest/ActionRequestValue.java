@@ -32,7 +32,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -128,7 +127,6 @@ public class ActionRequestValue implements WorkflowPersistable {
 	private Long actionTakenId;
     @Column(name="DOC_VER_NBR")
     private Integer docVersion = new Integer(1);
-    //@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="CRTE_DT")
 	private java.sql.Timestamp createDate;
     @Column(name="RSP_DESC_TXT")

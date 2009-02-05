@@ -15,24 +15,22 @@
  */
 package org.kuali.rice.ken.bo;
 
-import javax.persistence.OneToMany;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Version;
-import javax.persistence.FetchType;
-import javax.persistence.Basic;
-import javax.persistence.Lob;
-import javax.persistence.TemporalType;
-import javax.persistence.Temporal;
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.CascadeType;
-import javax.persistence.Table;
-import javax.persistence.Entity;
-
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Version;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -51,13 +49,10 @@ public class Notification implements Lockable {
 	private Long id;
     @Column(name="DELIV_TYP", nullable=false)
 	private String deliveryType;
-    //@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="CRTE_DTTM", nullable=false)
 	private Timestamp creationDateTime;
-    //@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="SND_DTTM", nullable=true)
 	private Timestamp sendDateTime;
-    //@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="AUTO_RMV_DTTM", nullable=true)
 	private Timestamp autoRemoveDateTime;
     @Column(name="TTL", nullable=true)
@@ -68,7 +63,6 @@ public class Notification implements Lockable {
 	private String content;
     @Column(name="PROCESSING_FLAG", nullable=false)
 	private String processingFlag;
-    //@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="LOCKD_DTTM", nullable=true)
 	private Timestamp lockedDate;
     /**

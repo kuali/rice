@@ -34,6 +34,7 @@ import org.kuali.rice.kim.dao.PersonDao;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
+import org.kuali.rice.kim.service.RoleManagementService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
@@ -50,6 +51,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
 import sun.security.action.GetLongAction;
 
 /**
@@ -62,10 +64,11 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 
 	private static Logger LOG = Logger.getLogger( PersonServiceImpl.class );
 	
-	protected IdentityManagementService identityManagementService;	
-	protected PersonDao<PersonImpl> personDao;
-	protected BusinessObjectMetaDataService businessObjectMetaDataService;
-	protected MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
+	private IdentityManagementService identityManagementService;	
+	private RoleManagementService roleManagementService;
+	private PersonDao<PersonImpl> personDao;
+	private BusinessObjectMetaDataService businessObjectMetaDataService;
+	private MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
 
 	// Max age defined in seconds
 	protected int personCacheMaxSize = 200;
@@ -244,31 +247,34 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 			if ( LOG.isDebugEnabled() ) {
 				LOG.debug("Performing Person search including role filter: " + namespaceCode + "/" + roleName );
 			}
-			if ( criteria.size() > 2 ) { // i.e., person criteria are specified
+			if ( !criteria.isEmpty() ) { // i.e., person criteria are specified
 				if ( LOG.isDebugEnabled() ) {
 					LOG.debug( "Person criteria also specified, running that search first" );
 				}
 				// run the person lookup first
 				people = personDao.findPeople(criteria, false); // get all, since may need to be filtered
 				// TODO - now check if these people have the given role
-				// get role ID
+				// build a principal list
+				List<String> principalIds = peopleToPrincipalIds( people );
 				// get sublist of principals that have the given roles
+				principalIds = getRoleManagementService().getPrincipalIdSubListWithRole(principalIds, namespaceCode, roleName, null);
+				// re-convert into people objects
+				people = getPeople(principalIds);
 			} else { // only role criteria specified
 				if ( LOG.isDebugEnabled() ) {
 					LOG.debug( "No Person criteria specified - only using role service." );
 				}
 				// run the role criteria to get the principals with the role
-				Collection<String> principalIds = KIMServiceLocator.getRoleManagementService().getRoleMemberPrincipalIds(namespaceCode, roleName, null);
+				Collection<String> principalIds = getRoleManagementService().getRoleMemberPrincipalIds(namespaceCode, roleName, null);
 				int searchResultsLimit = LookupUtils.getSearchResultsLimit(PersonImpl.class);
 				if ( !unbounded && principalIds.size() > searchResultsLimit ) {
 					int actualResultSize = people.size();
 					// trim the list down before converting to people
 					principalIds = new ArrayList<String>(principalIds).subList(0, searchResultsLimit); // yes, this is a little wasteful
 					people = getPeople(principalIds); // convert the results to people
-					return new CollectionIncomplete<PersonImpl>( people.subList(0, searchResultsLimit), new Long(actualResultSize) );
+					people = new CollectionIncomplete<PersonImpl>( people.subList(0, searchResultsLimit), new Long(actualResultSize) );
 				} else {
 					people = getPeople(principalIds); // convert the results to people
-					return people;
 				}
 			}
 		} else {
@@ -276,14 +282,6 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 				LOG.debug( "No Role criteria specified, running person lookup as normal." );
 			}
 			people = personDao.findPeople(criteria, unbounded);
-		}
-		// QUESTION: Do we want to do this?
-		for ( PersonImpl p : people ) {
-			// check whether the item is in the cache first - otherwise would add
-			// to cache on every lookup
-			if ( getPersonImplFromPrincipalIdCache( p.getPrincipalId() ) == null ) {
-				addPersonImplToCache( p );
-			}
 		}
 		return people;
 	}
@@ -294,6 +292,16 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 			people.add( getPerson(principalId) );
 		}
 		return people;
+	}
+	
+	protected List<String> peopleToPrincipalIds( List<? extends Person> people ) {
+		List<String> principalIds = new ArrayList<String>();
+		
+		for ( Person person : people ) {
+			principalIds.add( person.getPrincipalId() );
+		}
+		
+		return principalIds;
 	}
 	
 	/**
@@ -439,7 +447,7 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
                             String sourcePrimitivePropertyName = rel.getParentAttributeForChildAttribute(KIMPropertyConstants.Person.PRINCIPAL_ID);
                             resolvedPrincipalIdPropertyName.append(sourcePrimitivePropertyName);
                         	// get the principal - for translation of the principalName to principalId
-                        	KimPrincipal principal = identityManagementService.getPrincipalByPrincipalName( fieldValues.get( propertyName ) );
+                        	KimPrincipal principal = getIdentityManagementService().getPrincipalByPrincipalName( fieldValues.get( propertyName ) );
                             if (principal != null ) {
                                 processedFieldValues.put(resolvedPrincipalIdPropertyName.toString(), principal.getPrincipalId());
                             } else {
@@ -494,7 +502,7 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
                                 String relatedPrincipalIdPropertyName = fieldPrefix + "." + parentAttribute;
                                 String currRelatedPersonPrincipalId = processedFieldValues.get(relatedPrincipalIdPropertyName);
                                 if ( StringUtils.isBlank( currRelatedPersonPrincipalId ) ) {
-                                	KimPrincipal principal = identityManagementService.getPrincipalByPrincipalName( principalName );
+                                	KimPrincipal principal = getIdentityManagementService().getPrincipalByPrincipalName( principalName );
                                 	if ( principal != null ) {
                                 		processedFieldValues.put(relatedPrincipalIdPropertyName, principal.getPrincipalId());
                                 	} else {
@@ -521,12 +529,23 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 	// OTHER METHODS
 
 	protected IdentityManagementService getIdentityManagementService() {
-		return this.identityManagementService;
+		if ( identityManagementService == null ) {
+			identityManagementService = KIMServiceLocator.getIdentityManagementService();
+		}
+		return identityManagementService;
 	}
 
 	public void setIdentityManagementService(IdentityManagementService identityManagementService) {
 		this.identityManagementService = identityManagementService;
 	}
+	
+	protected RoleManagementService getRoleManagementService() {
+		if ( roleManagementService == null ) {
+			roleManagementService = KIMServiceLocator.getRoleManagementService();
+		}
+		return roleManagementService;
+	}
+
 
 	public Class<? extends Person> getPersonImplementationClass() {
 		return personDao.getPersonImplementationClass();

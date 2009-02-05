@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kim.service;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -91,18 +90,20 @@ public interface RoleService {
 	 * 
 	 * @return list of member principal ids
 	 */
-    public Collection<String> getRoleMemberPrincipalIds(String namespaceCode, String roleName, AttributeSet qualification);
+    Collection<String> getRoleMemberPrincipalIds(String namespaceCode, String roleName, AttributeSet qualification);
 
     boolean principalHasRole( String principalId, List<String> roleIds, AttributeSet qualification );
+    
+    List<String> getPrincipalIdSubListWithRole( List<String> principalIds, String roleNamespaceCode, String roleName, AttributeSet qualification );
     
     // --------------------
     // Persistence Methods
     // --------------------
     
-    public void assignPrincipalToRole(String principalId, String namespaceCode, String roleName, AttributeSet qualifications);
-    public void assignGroupToRole(String groupId, String namespaceCode, String roleName, AttributeSet qualifications);
-    public void removePrincipalFromRole(String principalId, String namespaceCode, String roleName, AttributeSet qualifications);
-    public void removeGroupFromRole(String groupId, String namespaceCode, String roleName, AttributeSet qualifications);
+    void assignPrincipalToRole(String principalId, String namespaceCode, String roleName, AttributeSet qualifications);
+    void assignGroupToRole(String groupId, String namespaceCode, String roleName, AttributeSet qualifications);
+    void removePrincipalFromRole(String principalId, String namespaceCode, String roleName, AttributeSet qualifications);
+    void removeGroupFromRole(String groupId, String namespaceCode, String roleName, AttributeSet qualifications);
 	/**
 	 * 
 	 * This method get search results for role lookup
@@ -110,5 +111,5 @@ public interface RoleService {
 	 * @param fieldValues
 	 * @return
 	 */
-	public List<? extends KimRole> getRolesSearchResults(java.util.Map<String,String> fieldValues);
+	List<? extends KimRole> getRolesSearchResults(java.util.Map<String,String> fieldValues);
 }

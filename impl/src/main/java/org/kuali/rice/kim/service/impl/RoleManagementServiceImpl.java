@@ -288,6 +288,23 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
     	return hasRole;
 	}
 
+	/**
+	 * This delegate method ...
+	 * 
+	 * @param principalIds
+	 * @param roleNamespaceCode
+	 * @param roleName
+	 * @param qualification
+	 * @return
+	 * @see org.kuali.rice.kim.service.RoleService#getPrincipalIdSubListWithRole(java.util.List, java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 */
+	public List<String> getPrincipalIdSubListWithRole(
+			List<String> principalIds, String roleNamespaceCode,
+			String roleName, AttributeSet qualification) {
+		return getRoleService().getPrincipalIdSubListWithRole(principalIds,
+				roleNamespaceCode, roleName, qualification);
+	}
+
 	
 
 	// Helper methods

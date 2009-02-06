@@ -1,5 +1,6 @@
 package org.kuali.rice.kew.user;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Person;
@@ -59,7 +60,7 @@ public class UserUtils {
 	}
 	
 	private static String contructTransposedName(Person person) {
-		return person.getLastName() + ", " + person.getFirstName();
+		return person.getLastName() + (StringUtils.isNotBlank(person.getFirstName())?", " + person.getFirstName():"");
 	}
 
 	public static String getDisplayableEmailAddress(UserSession userSession, KimPrincipal principal) {

@@ -166,8 +166,13 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		} else {
 			firstName = "";
 			middleName = "";
-			lastName = "";
-			name = "";
+			if ( entityTypeCode.equals( "SYSTEM" ) ) {
+				name = principal.getPrincipalName().toUpperCase();
+				lastName = principal.getPrincipalName().toUpperCase();
+			} else {
+				name = "";
+				lastName = "";
+			}
 		}
 	}
 	

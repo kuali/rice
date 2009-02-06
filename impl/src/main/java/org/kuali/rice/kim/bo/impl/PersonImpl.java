@@ -129,7 +129,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		if ( entity == null ) {
 			entity = getIdentityManagementService().getEntity( principal.getEntityId() );
 		}
-		populateEntityInfo( entity, personEntityTypeCode );
+		populateEntityInfo( entity, principal, personEntityTypeCode );
 	}
 
 	
@@ -140,10 +140,10 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		active = principal.isActive();
 	}
 	
-	protected void populateEntityInfo( KimEntity entity, String personEntityTypeCode ) {
+	protected void populateEntityInfo( KimEntity entity, KimPrincipal principal, String personEntityTypeCode ) {
 		EntityEntityType entityEntityType = entity.getEntityType( personEntityTypeCode );  
 		entityTypeCode = personEntityTypeCode;
-		populateNameInfo( entity );
+		populateNameInfo( personEntityTypeCode, entity, principal );
 		populateAddressInfo( entityEntityType );
 		populateEmailInfo( entityEntityType );
 		populatePhoneInfo( entityEntityType );
@@ -152,13 +152,17 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		populateExternalIdentifiers( entity );
 	}
 	
-	protected void populateNameInfo( KimEntity entity ) {
+	protected void populateNameInfo( String entityTypeCode, KimEntity entity, KimPrincipal principal ) {
 		EntityName entityName = entity.getDefaultName();
 		if ( entityName != null ) {
 			firstName = unNullify( entityName.getFirstName() );
 			middleName = unNullify( entityName.getMiddleName() );
 			lastName = unNullify( entityName.getLastName() );
-			name = unNullify( entityName.getFormattedName() );
+			if ( entityTypeCode.equals( "SYSTEM" ) ) {
+				name = principal.getPrincipalName().toUpperCase();
+			} else {
+				name = unNullify( entityName.getFormattedName() );
+			}
 		} else {
 			firstName = "";
 			middleName = "";

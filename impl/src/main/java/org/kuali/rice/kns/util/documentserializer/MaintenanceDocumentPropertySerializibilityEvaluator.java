@@ -44,6 +44,8 @@ public class MaintenanceDocumentPropertySerializibilityEvaluator
         	dictionary.getMaintenanceDocumentEntryForBusinessObjectClass(businessObject.getClass());
         serializableProperties = new PropertySerializerTrie();
         populateSerializableProperties(maintenanceDocumentEntry.getMaintainableSections());
+        serializableProperties.addSerializablePropertyName("boNotes", true);
+        serializableProperties.addSerializablePropertyName("boNotes.attachments", true);
     }
     
     private void populateSerializableProperties(List<MaintainableSectionDefinition> maintainableSectionDefinitions){

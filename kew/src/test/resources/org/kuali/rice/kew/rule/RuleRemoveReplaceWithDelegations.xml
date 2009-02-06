@@ -4,8 +4,8 @@
     <rule>
             <name>RuleWithDelegations1</name>
       <documentType>TestDocumentType</documentType>
-      <toDate>2009-05-30T09:00:00</toDate>
-            <fromDate>2002-05-30T09:00:00</fromDate>		
+      <toDate>09:00 AM 05/30/2009</toDate>
+            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>RuleRouting2</ruleTemplate>
       <description>Rule Routing</description>
       <ignorePrevious>false</ignorePrevious>
@@ -29,8 +29,8 @@
                     <delegations>
                       <rule>
                         <documentType>TestDocumentType</documentType>
-                        <toDate>2009-05-30T09:00:00</toDate>
-            <fromDate>2002-05-30T09:00:00</fromDate>		
+                        <toDate>09:00 AM 05/30/2009</toDate>
+            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>SimpleTemplate</ruleTemplate>
                         <description>RuleWithDelegations1PrimaryDelegation</description>
                         <ignorePrevious>false</ignorePrevious>
@@ -43,8 +43,8 @@
                       </rule>
                       <rule>
                         <documentType>TestDocumentType</documentType>
-                        <toDate>2009-05-30T09:00:00</toDate>
-            <fromDate>2002-05-30T09:00:00</fromDate>		
+                        <toDate>09:00 AM 05/30/2009</toDate>
+            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>SimpleTemplate</ruleTemplate>
                         <description>RuleWithDelegations1SecondaryDelegation</description>
                         <ignorePrevious>false</ignorePrevious>

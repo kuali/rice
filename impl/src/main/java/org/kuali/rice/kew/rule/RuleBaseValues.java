@@ -507,7 +507,7 @@ public class RuleBaseValues extends KewPersistableBusinessObjectBase {
 
     public void setFromDateString(String fromDateString) {
         try {
-            this.fromDate = new Timestamp(RiceConstants.getDefaultDateFormat().parse(fromDateString).getTime());
+            this.fromDate = new Timestamp(RiceConstants.getDefaultDateAndTimeFormat().parse(fromDateString).getTime());
         } catch (Exception e) {
         }
     }
@@ -521,7 +521,7 @@ public class RuleBaseValues extends KewPersistableBusinessObjectBase {
 
     public void setToDateString(String toDateString) {
         try {
-            this.toDate = new Timestamp(RiceConstants.getDefaultDateFormat().parse(toDateString).getTime());
+            this.toDate = new Timestamp(RiceConstants.getDefaultDateAndTimeFormat().parse(toDateString).getTime());
         } catch (Exception e) {
         }
     }

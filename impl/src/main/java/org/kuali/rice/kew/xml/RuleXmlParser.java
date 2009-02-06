@@ -174,10 +174,11 @@ public class RuleXmlParser implements XmlConstants {
             throw new RuntimeException("Rule delegations cannot be named!");
         }
 
+        setDefaultRuleValues(rule);
         rule.setName(name);
         rule.setToDateString(toDatestr) ;
         rule.setFromDateString(fromDatestr);
-        setDefaultRuleValues(rule);
+
         rule.setDelegateRule(new Boolean(ruleDelegation != null));
         String description = element.getChildText(DESCRIPTION, RULE_NAMESPACE);
         String ignorePreviousValue = element.getChildText(IGNORE_PREVIOUS, RULE_NAMESPACE);
@@ -258,7 +259,7 @@ public class RuleXmlParser implements XmlConstants {
         rule.setIgnorePrevious(ignorePrevious);
         rule.setResponsibilities(parseResponsibilities(responsibilitiesElement, rule, ruleDelegation));
         rule.setRuleExtensions(parseRuleExtensions(ruleExtensionsElement, rule));
-        
+
         return rule;
     }
 
@@ -313,7 +314,7 @@ public class RuleXmlParser implements XmlConstants {
         rule.setCurrentInd(Boolean.TRUE);
         rule.setFromDate(new Timestamp(System.currentTimeMillis()));
         rule.setTemplateRuleInd(Boolean.FALSE);
-        rule.setVersionNbr(new Integer(0));        
+        rule.setVersionNbr(new Integer(0));
         try {
             rule.setDeactivationDate(new Timestamp(new SimpleDateFormat("MM/dd/yyyy").parse("01/01/2100").getTime()));
             rule.setToDate(new Timestamp(new SimpleDateFormat("MM/dd/yyyy").parse("01/01/2100").getTime()));

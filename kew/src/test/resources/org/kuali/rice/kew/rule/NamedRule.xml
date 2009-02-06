@@ -7,11 +7,13 @@
             <documentType>TestDocumentType</documentType>
             <!--toDate>Shubhangi</toDate>
 			<fromDate>Timble</fromDate-->
-			<toDate>2100-10-10 00:00:00</toDate>
-            <fromDate>2009-01-22 15:04:55</fromDate>			
+			<!-- <toDate>2100-10-10 00:00:00</toDate>
+            <fromDate>2009-01-22 15:04:55</fromDate>-->
+            <toDate>00:00 AM 01/01/2100</toDate>
+            <fromDate>03:04 PM 01/22/2009</fromDate>
             <ruleTemplate>TestRuleTemplate</ruleTemplate>
             <description>A named rule</description>
-            <ignorePrevious>false</ignorePrevious>            
+            <ignorePrevious>false</ignorePrevious>
             <ruleExtensions>
                 <ruleExtension>
             		<attribute>TestRuleAttribute</attribute>

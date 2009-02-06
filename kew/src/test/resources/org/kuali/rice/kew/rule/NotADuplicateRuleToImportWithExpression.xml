@@ -20,8 +20,8 @@
   <rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
         <rule>
             <documentType>TestDocumentType</documentType>
-            <toDate>2009-05-30T09:00:00</toDate>
-            <fromDate>2002-05-30T09:00:00</fromDate>
+            <toDate>09:00 AM 05/30/2009</toDate>
+            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>TestRuleTemplate</ruleTemplate>
             <description>NotADuplicateTestRule</description>
             <expression type="testType">test
@@ -58,8 +58,8 @@
        so it should NOT be considered a duplicate -->
     <rule>
       <documentType>TestDocumentType</documentType>
-      <toDate>2009-05-30T09:00:00</toDate>
-            <fromDate>2002-05-30T09:00:00</fromDate>
+      <toDate>09:00 AM 05/30/2009</toDate>
+            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>TestRuleTemplate2</ruleTemplate>
       <description>NotADuplicateTestRule2</description>
       <expression type="testType">test
@@ -96,8 +96,8 @@
          so it should NOT be considered a duplicate -->
     <rule>
       <documentType>TestDocumentType</documentType>
-      <toDate>2009-05-30T09:00:00</toDate>
-            <fromDate>2002-05-30T09:00:00</fromDate>
+      <toDate>09:00 AM 05/30/2009</toDate>
+            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>TestRuleTemplate</ruleTemplate>
       <description>NotADuplicateTestRule3</description>
       <expression type="testType">test
@@ -134,8 +134,8 @@
          so it should NOT be considered a duplicate -->
     <rule>
       <documentType>TestDocumentType</documentType>
-      <toDate>2009-05-30T09:00:00</toDate>
-            <fromDate>2002-05-30T09:00:00</fromDate>
+      <toDate>09:00 AM 05/30/2009</toDate>
+            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>TestRuleTemplate</ruleTemplate>
       <description>NotADuplicateTestRule4</description>
       <expression type="testType">test
@@ -172,8 +172,8 @@
          so it should NOT be considered a duplicate -->
     <rule>
       <documentType>TestDocumentType</documentType>
-      <toDate>2009-05-30T09:00:00</toDate>
-            <fromDate>2002-05-30T09:00:00</fromDate>
+      <toDate>09:00 AM 05/30/2009</toDate>
+            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>TestRuleTemplate</ruleTemplate>
       <description>NotADuplicateTestRule5</description>
       <expression type="testType">test

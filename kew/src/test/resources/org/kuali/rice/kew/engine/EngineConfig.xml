@@ -570,8 +570,8 @@
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>
 			<documentType>SeqDocType</documentType>
-			<toDate>2009-05-30T09:00:00</toDate>
-            <fromDate>2002-05-30T09:00:00</fromDate>		
+			<toDate>09:00 AM 05/30/2009</toDate>
+            <fromDate>09:00 AM 05/30/2002</fromDate>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>Sequential Node Test Rule 1</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -585,8 +585,8 @@
 		</rule>
 		<rule>
 			<documentType>SeqDocType</documentType>
-			<toDate>2009-05-30T09:00:00</toDate>
-            <fromDate>2002-05-30T09:00:00</fromDate>		
+			<toDate>09:00 AM 05/30/2009</toDate>
+            <fromDate>09:00 AM 05/30/2002</fromDate>
 			<ruleTemplate>Ack1Template</ruleTemplate>
 			<description>Sequential Node Ack Rule 1</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -600,8 +600,8 @@
 		</rule>
 		<rule>
 			<documentType>SeqDocType</documentType>
-			<toDate>2009-05-30T09:00:00</toDate>
-            <fromDate>2002-05-30T09:00:00</fromDate>		
+			<toDate>09:00 AM 05/30/2009</toDate>
+            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>Ack2Template</ruleTemplate>
 			<description>Sequential Node Ack Rule 2</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -615,8 +615,8 @@
 		</rule>
 		<rule>
 			<documentType>ParallelDocType</documentType>
-			<toDate>2009-05-30T09:00:00</toDate>
-            <fromDate>2002-05-30T09:00:00</fromDate>		
+			<toDate>09:00 AM 05/30/2009</toDate>
+            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>Parallel Node Test Rule 1</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -630,8 +630,8 @@
 		</rule>
 		<rule>
 			<documentType>ParallelDocType</documentType>
-			<toDate>2009-05-30T09:00:00</toDate>
-            <fromDate>2002-05-30T09:00:00</fromDate>		
+			<toDate>09:00 AM 05/30/2009</toDate>
+            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>Ack1Template</ruleTemplate>
 			<description>Parallel Node Ack Rule 1</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -645,8 +645,8 @@
 		</rule>
 		<rule>
 			<documentType>ParallelDocType</documentType>
-			<toDate>2009-05-30T09:00:00</toDate>
-            <fromDate>2002-05-30T09:00:00</fromDate>		
+			<toDate>09:00 AM 05/30/2009</toDate>
+            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>WorkflowDocument2Template</ruleTemplate>
 			<description>Parallel Node Test Rule 2</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -660,8 +660,9 @@
 		</rule>
 		<rule>
 			<documentType>ParallelDocType</documentType>
-			<toDate>2009-05-30T09:00:00</toDate>
-            <fromDate>2002-05-30T09:00:00</fromDate>		<ruleTemplate>WorkflowDocument3Template</ruleTemplate>
+			<toDate>09:00 AM 05/30/2009</toDate>
+            <fromDate>09:00 AM 05/30/2002</fromDate>
+            <ruleTemplate>WorkflowDocument3Template</ruleTemplate>
 			<description>Parallel Node Test Rule 3</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
@@ -674,8 +675,8 @@
 		</rule>
 		<rule>
 			<documentType>ParallelDocType</documentType>
-			<toDate>2009-05-30T09:00:00</toDate>
-            <fromDate>2002-05-30T09:00:00</fromDate>		
+			<toDate>09:00 AM 05/30/2009</toDate>
+            <fromDate>09:00 AM 05/30/2002</fromDate>
 			<ruleTemplate>WorkflowDocumentFinalTemplate</ruleTemplate>
 			<description>Parallel Node Test Rule Final</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -689,8 +690,8 @@
 		</rule>
 		<rule>
 			<documentType>ParallelEmptyDocType</documentType>
-			<toDate>2009-05-30T09:00:00</toDate>
-            <fromDate>2002-05-30T09:00:00</fromDate>		
+			<toDate>09:00 AM 05/30/2009</toDate>
+            <fromDate>09:00 AM 05/30/2002</fromDate>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>Parallel Empty Node Test Rule 1</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -704,8 +705,8 @@
 		</rule>
 		<rule>
 			<documentType>ParallelEmptyDocType</documentType>
-			<toDate>2009-05-30T09:00:00</toDate>
-            <fromDate>2002-05-30T09:00:00</fromDate>		
+			<toDate>09:00 AM 05/30/2009</toDate>
+            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>WorkflowDocumentFinalTemplate</ruleTemplate>
 			<description>Parallel Empty Node Test Rule Final</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -745,8 +746,8 @@
 		</rule>-->
 		<rule>
 			<documentType>DynDocType</documentType>
-			<toDate>2009-05-30T09:00:00</toDate>
-            <fromDate>2002-05-30T09:00:00</fromDate>		
+			<toDate>09:00 AM 05/30/2009</toDate>
+            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>First</ruleTemplate>
 			<description>First</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -760,8 +761,8 @@
 		</rule>
 		<rule>
 			<documentType>DynDocType</documentType>
-			<toDate>2009-05-30T09:00:00</toDate>
-            <fromDate>2002-05-30T09:00:00</fromDate>		
+			<toDate>09:00 AM 05/30/2009</toDate>
+            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>SubRequests</ruleTemplate>
 			<description>SubRequests</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -776,8 +777,8 @@
 		</rule>
 		<rule>
 			<documentType>DynDocType</documentType>
-			<toDate>2009-05-30T09:00:00</toDate>
-            <fromDate>2002-05-30T09:00:00</fromDate>		
+			<toDate>09:00 AM 05/30/2009</toDate>
+            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>Last</ruleTemplate>
 			<description>Last</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -792,8 +793,8 @@
 		<!-- for ChartOrgDynamicNodeTest -->
 		<rule>
 			<documentType>DynDocType</documentType>
-			<toDate>2009-05-30T09:00:00</toDate>
-            <fromDate>2002-05-30T09:00:00</fromDate>		
+			<toDate>09:00 AM 05/30/2009</toDate>
+            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>OrgRouting</ruleTemplate>
 			<description>OrgRouting BL-CHEM</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -823,8 +824,8 @@
 		</rule>
 		<rule>
 			<documentType>DynDocType</documentType>
-			<toDate>2009-05-30T09:00:00</toDate>
-            <fromDate>2002-05-30T09:00:00</fromDate>		
+			<toDate>09:00 AM 05/30/2009</toDate>
+            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>OrgRouting</ruleTemplate>
 			<description>OrgRouting BL-ARSC</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -854,8 +855,8 @@
 		</rule>
 		<rule>
 			<documentType>DynDocType</documentType>
-			<toDate>2009-05-30T09:00:00</toDate>
-            <fromDate>2002-05-30T09:00:00</fromDate>		
+			<toDate>09:00 AM 05/30/2009</toDate>
+            <fromDate>09:00 AM 05/30/2002</fromDate>
 			<ruleTemplate>OrgRouting</ruleTemplate>
 			<description>OrgRouting BL-BL</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -885,8 +886,8 @@
 		</rule>
 		<rule>
 			<documentType>DynDocType</documentType>
-			<toDate>2009-05-30T09:00:00</toDate>
-            <fromDate>2002-05-30T09:00:00</fromDate>		
+			<toDate>09:00 AM 05/30/2009</toDate>
+            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>OrgRouting</ruleTemplate>
 			<description>OrgRouting IN-MED</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -916,8 +917,8 @@
 		</rule>
 		<rule>
 			<documentType>DynDocType</documentType>
-			<toDate>2009-05-30T09:00:00</toDate>
-            <fromDate>2002-05-30T09:00:00</fromDate>		
+			<toDate>09:00 AM 05/30/2009</toDate>
+            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>OrgRouting</ruleTemplate>
 			<description>OrgRouting IN-IN</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -947,8 +948,8 @@
 		</rule>
 		<rule>
 			<documentType>DynDocType</documentType>
-			<toDate>2009-05-30T09:00:00</toDate>
-            <fromDate>2002-05-30T09:00:00</fromDate>		
+			<toDate>09:00 AM 05/30/2009</toDate>
+            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>OrgRouting</ruleTemplate>
 			<description>OrgRouting IU-UNIV</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -978,8 +979,8 @@
 		</rule>
 		<rule>
 			<documentType>DynDocType</documentType>
-			<toDate>2009-05-30T09:00:00</toDate>
-            <fromDate>2002-05-30T09:00:00</fromDate>		
+			<toDate>09:00 AM 05/30/2009</toDate>
+            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>OrgRouting</ruleTemplate>
 			<description>OrgRouting KO-KO</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -1027,8 +1028,8 @@
 		<!--  sub process rules -->
 		<rule>
 			<documentType>SubProcessDocType</documentType>
-			<toDate>2009-05-30T09:00:00</toDate>
-            <fromDate>2002-05-30T09:00:00</fromDate>		
+			<toDate>09:00 AM 05/30/2009</toDate>
+            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>Acknowledge</ruleTemplate>
 			<description>Acknowledge Rule 1</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -1042,8 +1043,8 @@
 		</rule>
 		<rule>
 			<documentType>SubProcessDocType</documentType>
-			<toDate>2009-05-30T09:00:00</toDate>
-            <fromDate>2002-05-30T09:00:00</fromDate>		
+			<toDate>09:00 AM 05/30/2009</toDate>
+            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>Approve</ruleTemplate>
 			<description>Approve Rule 1</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -1057,8 +1058,8 @@
 		</rule>
 		<rule>
 			<documentType>SubProcessDocType</documentType>
-			<toDate>2009-05-30T09:00:00</toDate>
-            <fromDate>2002-05-30T09:00:00</fromDate>		
+			<toDate>09:00 AM 05/30/2009</toDate>
+            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>Final</ruleTemplate>
 			<description>Final Rule 1</description>
 			<ignorePrevious>false</ignorePrevious>

@@ -147,8 +147,8 @@
     <rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
         <rule>
             <documentType>AddDelegationTest_DocType</documentType>
-            <toDate>2009-05-30T09:00:00</toDate>
-            <fromDate>2002-05-30T09:00:00</fromDate>		
+            <toDate>09:00 AM 05/30/2009</toDate>
+            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>AddDelegationTest_RuleTemplate</ruleTemplate>
             <description>RouteLevel1_Rule</description>
             <ignorePrevious>false</ignorePrevious>

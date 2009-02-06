@@ -424,8 +424,8 @@
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>
 			<documentType>TestDocumentType</documentType>
-			<toDate>2100-01-10 00:00:00</toDate>
-            <fromDate>2009-01-28 15:04:55</fromDate>
+			<toDate>00:00 AM 01/10/2100</toDate>
+            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>TestRuleTemplate</ruleTemplate>
 			<description>TestRule1</description>
 			<ignorePrevious>false</ignorePrevious>

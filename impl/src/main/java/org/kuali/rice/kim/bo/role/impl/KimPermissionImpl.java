@@ -64,7 +64,7 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 
 	@OneToMany(targetEntity=KimPermissionRequiredAttributeImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
 	@JoinColumn(name="PERM_ID", insertable=false, updatable=false)
-	protected List<KimPermissionRequiredAttributeImpl> requiredRoleQualifierAttributes;
+	protected List<KimPermissionRequiredAttributeImpl> requiredRoleQualifierAttributes = new TypedArrayList(KimPermissionRequiredAttributeImpl.class);
 	
 	protected String templateId;
 	protected KimPermissionTemplateImpl template;

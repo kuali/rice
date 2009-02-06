@@ -60,11 +60,11 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 
 	@OneToMany(targetEntity=ResponsibilityAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
 	@JoinColumn(name="RSP_ID", insertable=false, updatable=false)
-	protected List<ResponsibilityAttributeDataImpl> detailObjects;
+	protected List<ResponsibilityAttributeDataImpl> detailObjects = new TypedArrayList(ResponsibilityAttributeDataImpl.class);
 
 	@OneToMany(targetEntity=KimResponsibilityRequiredAttributeImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
 	@JoinColumn(name="RSP_ID", insertable=false, updatable=false)
-	protected List<KimResponsibilityRequiredAttributeImpl> requiredRoleQualifierAttributes;
+	protected List<KimResponsibilityRequiredAttributeImpl> requiredRoleQualifierAttributes = new TypedArrayList(KimResponsibilityRequiredAttributeImpl.class);
 	
 	
 	protected String templateId;

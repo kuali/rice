@@ -94,4 +94,9 @@ public class KimPermissionInfo extends PermissionDetailsInfo implements KimPermi
 		}
 		return StringUtils.equals( getPermissionId(), ((KimPermissionInfo)obj).getPermissionId() );
 	}
+	
+	public String getNameToDisplay(){
+		return (StringUtils.isBlank(getName()) && getTemplate()!=null)?getTemplate().getName():getName();
+	}
+
 }

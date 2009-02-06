@@ -42,10 +42,8 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionServletWrapper;
 import org.apache.struts.upload.MultipartRequestHandler;
 import org.apache.struts.upload.MultipartRequestWrapper;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.datadictionary.DataDictionary;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
-import org.kuali.rice.kns.datadictionary.mask.MaskFormatter;
 import org.kuali.rice.kns.datadictionary.mask.MaskFormatterLiteral;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
@@ -66,8 +64,8 @@ import org.kuali.rice.kns.web.struts.pojo.PojoFormBase;
 public class WebUtils {
     private static final Logger LOG = Logger.getLogger(WebUtils.class);
 
-    public static final String IMAGE_COORDINATE_CLICKED_X_EXTENSION = ".x";
-    public static final String IMAGE_COORDINATE_CLICKED_Y_EXTENSION = ".y";
+    private static final String IMAGE_COORDINATE_CLICKED_X_EXTENSION = ".x";
+    private static final String IMAGE_COORDINATE_CLICKED_Y_EXTENSION = ".y";
     
     /**
      * Checks for methodToCall parameter, and picks off the value using set dot notation. Handles the problem of image submits.
@@ -103,7 +101,7 @@ public class WebUtils {
 
                 // check if the parameter name is a specifying the methodToCall
                 if (parameterName.startsWith(KNSConstants.DISPATCH_REQUEST_PARAMETER) 
-                		&& parameterName.endsWith(IMAGE_COORDINATE_CLICKED_X_EXTENSION)) {
+                		&& endsWithCoordinates(parameterName)) {
                 	if (form instanceof ActionForm && !((KualiForm) form).shouldMethodToCallParameterBeUsed(parameterName, request.getParameter(parameterName), request)) {
             			throw new RuntimeException("Cannot verify that the methodToCall should be " + parameterName);
             		}
@@ -116,7 +114,7 @@ public class WebUtils {
                     // KULRICE-1218: Check if the parameter's values match (not just the name)
                     for (String value : request.getParameterValues(parameterName)) {
                         if (value.startsWith(KNSConstants.DISPATCH_REQUEST_PARAMETER) 
-                        		&& value.endsWith(IMAGE_COORDINATE_CLICKED_X_EXTENSION)) {
+                        		&& endsWithCoordinates(value)) {
                         	if (form instanceof ActionForm && !((KualiForm) form).shouldMethodToCallParameterBeUsed(parameterName, value, request)) {
                         		throw new RuntimeException("Cannot verify that the methodToCall should be " + value);
                         	}
@@ -428,11 +426,24 @@ public class WebUtils {
     	if (LOG.isDebugEnabled()) {
     		LOG.debug("editableProperties: "+editableProperties);
     	}
+    	
     	boolean returnVal =  editableProperties.contains(propertyName) ||
-    			(propertyName.lastIndexOf(WebUtils.IMAGE_COORDINATE_CLICKED_X_EXTENSION)==-1?false:
+    			(getIndexOfCoordinateExtension(propertyName)==-1?false:
     				editableProperties.contains(
-    						propertyName.substring(0, propertyName.lastIndexOf(WebUtils.IMAGE_COORDINATE_CLICKED_X_EXTENSION))));
+    						propertyName.substring(0, getIndexOfCoordinateExtension(propertyName))));
     	return returnVal;
+    }
+    
+    public static boolean endsWithCoordinates(String parameter){
+    	return parameter.endsWith(WebUtils.IMAGE_COORDINATE_CLICKED_X_EXTENSION) ||
+    			parameter.endsWith(WebUtils.IMAGE_COORDINATE_CLICKED_Y_EXTENSION);
+    }
+
+    public static int getIndexOfCoordinateExtension(String parameter){
+		int indexOfCoordinateExtension = parameter.lastIndexOf(WebUtils.IMAGE_COORDINATE_CLICKED_X_EXTENSION);
+		if(indexOfCoordinateExtension==-1)
+			indexOfCoordinateExtension = parameter.lastIndexOf(WebUtils.IMAGE_COORDINATE_CLICKED_Y_EXTENSION);
+		return indexOfCoordinateExtension;
     }
     
     public static String getDisplayMaskValue(String literal, Object formObject, String propertyName){

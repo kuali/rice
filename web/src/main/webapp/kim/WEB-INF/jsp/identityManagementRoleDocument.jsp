@@ -26,7 +26,12 @@
 
  	<kul:hiddenDocumentFields />
 	<kul:documentOverview editingMode="${KualiForm.editingMode}" />
-		
+	<kim:roleOverview />
+	<kim:rolePermissions />
+	<kim:roleResponsibilities />
+	<kim:roleAssignees />
+	<kim:roleDelegations />
+	
 	<kul:panelFooter />
 	<kul:documentControls transactionalDocument="false" />
 

@@ -53,7 +53,6 @@
    <bean id="KimRoleImpl-roleId" parent="KimRoleImpl-roleId-parentBean" />
   <bean id="KimRoleImpl-roleId-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="roleId"
-        p:forceUppercase="true"
         p:label="Role ID"
         p:shortLabel="Role ID"
         p:maxLength="10"
@@ -66,7 +65,6 @@
   <bean id="KimRoleImpl-kimTypeId" parent="KimRoleImpl-kimTypeId-parentBean" />
   <bean id="KimRoleImpl-kimTypeId-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="kimTypeId"
-        p:forceUppercase="true"
         p:label="Role Type"
         p:shortLabel="Role Type"
         p:maxLength="40"
@@ -79,7 +77,6 @@
   <bean id="KimRoleImpl-roleName" parent="KimRoleImpl-roleName-parentBean" />
   <bean id="KimRoleImpl-roleName-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="roleName"
-        p:forceUppercase="true"
         p:label="Role Name"
         p:shortLabel="Role Name"
         p:maxLength="40"
@@ -93,7 +90,6 @@
   <bean id="KimRoleImpl-namespaceCode" parent="KimRoleImpl-namespaceCode-parentBean" />
   <bean id="KimRoleImpl-namespaceCode-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="namespaceCode"
-        p:forceUppercase="true"
         p:label="Role Namespace"
         p:shortLabel="Role Namespace"
         p:maxLength="40"

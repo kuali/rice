@@ -24,7 +24,10 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
+import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.bo.options.MemberTypeValuesFinder;
+import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
@@ -124,12 +127,12 @@ public class KimDocumentRoleMember  extends KimDocumentBoBase {
 
 	//TODO: remove this and find a better way to do this. Should be done by next week with role doc task
 	public String getMemberType(){
-		if("P".equals(getMemberTypeCode())){
-			return "Principal";
-		} else if("G".equals(getMemberTypeCode())){
-			return "Group";
-		} else if("R".equals(getMemberTypeCode())){
-			return "Role";
+		if(MemberTypeValuesFinder.MEMBER_TYPE_PRINCIPAL_CODE.equals(getMemberTypeCode())){
+			return MemberTypeValuesFinder.MEMBER_TYPE_PRINCIPAL;
+		} else if(MemberTypeValuesFinder.MEMBER_TYPE_GROUP_CODE.equals(getMemberTypeCode())){
+			return MemberTypeValuesFinder.MEMBER_TYPE_GROUP;
+		} else if(MemberTypeValuesFinder.MEMBER_TYPE_ROLE_CODE.equals(getMemberTypeCode())){
+			return MemberTypeValuesFinder.MEMBER_TYPE_ROLE;
 		}
 		return "";
 	}
@@ -170,5 +173,5 @@ public class KimDocumentRoleMember  extends KimDocumentBoBase {
 			List<KimDocumentRoleResponsibilityAction> roleRspActions) {
 		this.roleRspActions = roleRspActions;
 	}
-
+	
 }

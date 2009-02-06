@@ -665,6 +665,8 @@ public class RiceKeyConstants {
     public static final String ERROR_EMPTY_ENTRY = "error.empty.entry";
     public static final String ERROR_EXIST_PRINCIPAL_NAME = "error.exist.principalName";
     public static final String ERROR_ASSIGN_ROLE = "error.assign.role";
+    public static final String ERROR_ASSIGN_PERMISSION = "error.assign.perimssion";
+    public static final String ERROR_ASSIGN_RESPONSIBILITY = "error.assign.responsibility";
     public static final String ERROR_POPULATE_GROUP = "error.populate.group";
     public static final String ERROR_ACTIVE_TO_DATE_BEFORE_FROM_DATE = "error.active.todate.before.fromdate";
     public static final String ERROR_NOT_EMPLOYMENT_AFFILIATION_TYPE = "error.not.employment.affilationType";

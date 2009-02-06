@@ -15,9 +15,8 @@
  */
 package org.kuali.rice.kim.rule.event.ui;
 
-import org.kuali.rice.kim.bo.ui.PersonDocumentGroup;
-import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
-import org.kuali.rice.kim.rule.ui.AddGroupRule;
+import org.kuali.rice.kim.bo.ui.KimDocumentRolePermission;
+import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.rule.ui.AddPermissionRule;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.rule.BusinessRule;
@@ -31,31 +30,37 @@ import org.kuali.rice.kns.util.ObjectUtils;
  *
  */
 public class AddPermissionEvent extends KualiDocumentEventBase {
-	private PersonDocumentGroup group;
+	private KimDocumentRolePermission permission;
 
-	public AddPermissionEvent(String errorPathPrefix, IdentityManagementPersonDocument document) {
+	public AddPermissionEvent(String errorPathPrefix, IdentityManagementRoleDocument document) {
         super("adding Permission document " + getDocumentId(document), errorPathPrefix, document);
     }
 
-    public AddPermissionEvent(String errorPathPrefix, Document document, PersonDocumentGroup group) {
-        this(errorPathPrefix, (IdentityManagementPersonDocument) document);
-        this.group = (PersonDocumentGroup) ObjectUtils.deepCopy(group);
+    public AddPermissionEvent(String errorPathPrefix, Document document, KimDocumentRolePermission permission) {
+        this(errorPathPrefix, (IdentityManagementRoleDocument) document);
+        this.permission = (KimDocumentRolePermission) ObjectUtils.deepCopy(permission);
     }
 
     public Class getRuleInterfaceClass() {
-        return AddGroupRule.class;
+        return AddPermissionRule.class;
     }
 
     public boolean invokeRuleMethod(BusinessRule rule) {
         return ((AddPermissionRule) rule).processAddPermission(this);
     }
 
-	public PersonDocumentGroup getGroup() {
-		return this.group;
+	/**
+	 * @return the permission
+	 */
+	public KimDocumentRolePermission getPermission() {
+		return this.permission;
 	}
 
-	public void setGroup(PersonDocumentGroup group) {
-		this.group = group;
+	/**
+	 * @param permission the permission to set
+	 */
+	public void setPermission(KimDocumentRolePermission permission) {
+		this.permission = permission;
 	}
 
 }

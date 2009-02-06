@@ -4,30 +4,30 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-  <bean id="DocRolePrncpl" parent="DocRolePrncpl-parentBean" />
+  <bean id="DocRoleMember" parent="DocRoleMember-parentBean" />
 
-  <bean id="DocRolePrncpl-parentBean" abstract="true" parent="BusinessObjectEntry"
+  <bean id="DocRoleMember-parentBean" abstract="true" parent="BusinessObjectEntry"
         p:businessObjectClass="org.kuali.rice.kim.bo.ui.KimDocumentRoleMember"
         p:titleAttribute="roleMemberId"
         p:objectLabel="Names"
-        p:inquiryDefinition-ref="DocRolePrncpl-inquiryDefinition"
-        p:lookupDefinition-ref="DocRolePrncpl-lookupDefinition" >
+        p:inquiryDefinition-ref="DocRoleMember-inquiryDefinition"
+        p:lookupDefinition-ref="DocRoleMember-lookupDefinition" >
     <property name="attributes" >
       <list>
-        <ref bean="DocRolePrncpl-roleMemberId" />
-        <ref bean="DocRolePrncpl-memberId" />
+        <ref bean="DocRoleMember-roleMemberId" />
+        <ref bean="DocRoleMember-memberId" />
         <!-- TODO: create entry for this  -->
-        <ref bean="DocRolePrncpl-memberTypeCode" />
-        <ref bean="DocRolePrncpl-memberName" />
-        <ref bean="DocRolePrncpl-activeFromDate" />
-        <ref bean="DocRolePrncpl-activeToDate" />
+        <ref bean="DocRoleMember-memberTypeCode" />
+        <ref bean="DocRoleMember-memberName" />
+        <ref bean="DocRoleMember-activeFromDate" />
+        <ref bean="DocRoleMember-activeToDate" />
       </list>
     </property>
     
   </bean>
  
-   <bean id="DocRolePrncpl-roleMemberId" parent="DocRolePrncpl-roleMemberId-parentBean" />
-  <bean id="DocRolePrncpl-roleMemberId-parentBean" parent="AttributeDefinition" abstract="true"
+   <bean id="DocRoleMember-roleMemberId" parent="DocRoleMember-roleMemberId-parentBean" />
+  <bean id="DocRoleMember-roleMemberId-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="roleMemberId"
         p:forceUppercase="true"
         p:label="Member Id"
@@ -39,8 +39,8 @@
     </property>
   </bean>
   
-  <bean id="DocRolePrncpl-memberId" parent="DocRolePrncpl-memberId-parentBean" />
-  <bean id="DocRolePrncpl-memberId-parentBean" parent="AttributeDefinition" abstract="true"
+  <bean id="DocRoleMember-memberId" parent="DocRoleMember-memberId-parentBean" />
+  <bean id="DocRoleMember-memberId-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="memberId"
         p:forceUppercase="true"
         p:label="Member Id"
@@ -52,8 +52,8 @@
     </property>
   </bean>
     
-  <bean id="DocRolePrncpl-memberTypeCode" parent="DocRolePrncpl-memberTypeCode-parentBean" />
-  <bean id="DocRolePrncpl-memberTypeCode-parentBean" parent="AttributeDefinition" abstract="true"
+  <bean id="DocRoleMember-memberTypeCode" parent="DocRoleMember-memberTypeCode-parentBean" />
+  <bean id="DocRoleMember-memberTypeCode-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="memberTypeCode"
         p:forceUppercase="true"
         p:label="Member Type Code"
@@ -65,8 +65,8 @@
     </property>
   </bean>
 
-  <bean id="DocRolePrncpl-memberName" parent="DocRolePrncpl-memberName-parentBean" />
-  <bean id="DocRolePrncpl-memberName-parentBean" parent="AttributeDefinition" abstract="true"
+  <bean id="DocRoleMember-memberName" parent="DocRoleMember-memberName-parentBean" />
+  <bean id="DocRoleMember-memberName-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="memberName"
         p:forceUppercase="true"
         p:label="Member Name"
@@ -78,8 +78,8 @@
     </property>
   </bean>
             
-  <bean id="DocRolePrncpl-activeFromDate" parent="DocRolePrncpl-activeFromDate-parentBean" />
-  <bean id="DocRolePrncpl-activeFromDate-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
+  <bean id="DocRoleMember-activeFromDate" parent="DocRoleMember-activeFromDate-parentBean" />
+  <bean id="DocRoleMember-activeFromDate-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
     <property name="name" value="activeFromDate" />
     <property name="label" value="Active From Date" />
     <property name="shortLabel" value="Active From Dt" />
@@ -88,8 +88,8 @@
     <property name="description" value="Start Date" />
   </bean>
 
-  <bean id="DocRolePrncpl-activeToDate" parent="DocRolePrncpl-activeToDate-parentBean" />
-  <bean id="DocRolePrncpl-activeToDate-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
+  <bean id="DocRoleMember-activeToDate" parent="DocRoleMember-activeToDate-parentBean" />
+  <bean id="DocRoleMember-activeToDate-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
     <property name="name" value="activeToDate" />
     <property name="label" value="Active To Date" />
     <property name="shortLabel" value="Active To Dt" />
@@ -101,9 +101,9 @@
 
 
   
-  <bean id="DocRolePrncpl-inquiryDefinition" parent="DocRolePrncpl-inquiryDefinition-parentBean" />
+  <bean id="DocRoleMember-inquiryDefinition" parent="DocRoleMember-inquiryDefinition-parentBean" />
 
-  <bean id="DocRolePrncpl-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition"
+  <bean id="DocRoleMember-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition"
         p:title="Person Group Inquiry" >
     <property name="inquirySections" >
       <list>
@@ -123,9 +123,9 @@
     </property>
   </bean>
 
-  <bean id="DocRolePrncpl-lookupDefinition" parent="DocRolePrncpl-lookupDefinition-parentBean" />
+  <bean id="DocRoleMember-lookupDefinition" parent="DocRoleMember-lookupDefinition-parentBean" />
 
-  <bean id="DocRolePrncpl-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition"
+  <bean id="DocRoleMember-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition"
         p:title="Role Member Lookup" 
         p:instructions="Lookup a Role Member" >
     <property name="defaultSort" >

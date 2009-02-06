@@ -9,7 +9,7 @@
 	    <form-bean name="TravelDocumentForm2" type="edu.sampleu.travel.web.form.TravelDocumentForm2" />
 	    -->
 	    <form-bean name="IdentityManagementPersonDocumentForm" type="org.kuali.rice.kim.web.struts.form.IdentityManagementPersonDocumentForm" />
-	    	    <form-bean name="IdentityManagementRoleDocumentForm" type="org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm" />
+		<form-bean name="IdentityManagementRoleDocumentForm" type="org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm" />
     </form-beans>
 
     <global-exceptions />

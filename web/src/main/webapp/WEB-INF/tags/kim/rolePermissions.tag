@@ -1,6 +1,6 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
-<c:set var="permissionAttributes" value="${DataDictionary.KimPermissionImpl.attributes}" />
+<c:set var="permissionAttributes" value="${DataDictionary.PermissionImpl.attributes}" />
 <c:set var="readOnly" value="${empty KualiForm.editingMode['fullEntry']}" />
 
 <kul:tab tabTitle="Permissions" defaultOpen="true">
@@ -10,6 +10,35 @@
     </h3>
     
     <table cellpadding=0 cellspacing=0 summary="">
+          <c:if test="${not inquiry}">	
+          	
+             <tr>
+				<td align="center">
+	                <div align="center">
+	                	<br/>
+						<strong><c:out value="Add Permission: (select)" /></strong>
+	                	<kul:lookup boClassName="org.kuali.rice.kim.bo.impl.PermissionImpl" fieldConversions=
+	                	"template.name:permission.kimPermission.template.name,permissionId:permission.permissionId,name:permission.kimPermission.name,namespaceCode:permission.kimPermission.namespaceCode" anchor="${tabKey}" />
+						<html:hidden property="permission.permissionId" />
+						<html:hidden property="permission.kimPermission.name" />
+						<html:hidden property="permission.kimPermission.namespaceCode" />
+						${KualiForm.permission.kimPermission.namespaceCode}  ${KualiForm.permission.kimPermission.nameToDisplay}&nbsp;
+	                	<br/>
+	                	<br/>
+		            </div>
+				</td>
+			</tr>
+			<tr>                                
+                <td class="infoline">
+					<div align="center">
+						<html:image property="methodToCall.addPermission.anchor${tabKey}"
+							src="${ConfigProperties.kr.externalizable.images.url}tinybutton-add1.gif" styleClass="tinybutton"/>
+					</div>
+                </td>
+	       </tr>         
+     </c:if>       
+	</table>
+	<table>
         	<tr>
         		<th><div align="left">&nbsp</div></th> 
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${permissionAttributes.namespaceCode}" noColon="true" /></div></th>
@@ -20,33 +49,6 @@
             		<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
 				</c:if>	
         	</tr>     
-<!--         <c:if test="${not inquiry}">	
-			<tr>
-				<th class="infoline">
-					<c:out value="Add:" />
-				</th>
-	
-	            <td align="left" valign="middle" class="infoline" colspan=3>
-					<div align="center">
-	              		<kul:htmlControlAttribute property="newRole.roleId" attributeEntry="${permissionAttributes.roleId}" disabled="true"/>
-		              	<kul:lookup boClassName="org.kuali.rice.kim.bo.role.impl.KimRoleImpl" fieldConversions="roleId:newRole.roleId,kimTypeId:newRole.kimTypeId,roleName:newRole.roleName,namespaceCode:newRole.namespaceCode,kimRoleType.name:newRole.kimRoleType.name,kimRoleType.kimTypeServiceName:newRole.kimRoleType.kimTypeServiceName" anchor="${tabKey}" />
-						${KualiForm.newRole.roleName}
-						<html:hidden property="newRole.roleName" />
-						<html:hidden property="newRole.namespaceCode" />
-						<html:hidden property="newRole.kimTypeId" />
-						<html:hidden property="newRole.kimRoleType.name" />
-						<html:hidden property="newRole.kimRoleType.kimTypeServiceName" />
-					</div>
-				</td>
-	            <td class="infoline">
-					<div align=center>
-						<html:image property="methodToCall.addRole.anchor${tabKey}"
-						src='${ConfigProperties.kr.externalizable.images.url}tinybutton-add1.gif' styleClass="tinybutton"/>
-					</div>
-	            </td>
-			</tr>         
-		</c:if>       
- -->
       	<c:forEach var="permission" items="${KualiForm.document.permissions}" varStatus="status">
             <tr>
 				<th rowspan="1" class="infoline">
@@ -57,7 +59,7 @@
 					</div>
 				</td>
 	            <td align="left" valign="middle">
-	               	<div align="left"> <kul:htmlControlAttribute property="document.permissions[${status.index}].kimPermission.name"  attributeEntry="${permissionAttributes.name}" readOnly="true"  />
+	               	<div align="left"> <kul:htmlControlAttribute property="document.permissions[${status.index}].kimPermission.nameToDisplay"  attributeEntry="${permissionAttributes.name}" readOnly="true"  />
 					</div>
 				</td>
 	            <td align="left" valign="middle">
@@ -68,23 +70,21 @@
 	               	<div align="left"> <kul:htmlControlAttribute property="document.permissions[${status.index}].kimPermission.requiredRoleQualifierAttributesToDisplay"  attributeEntry="${permissionAttributes.requiredRoleQualifierAttributesToDisplay}" readOnly="true"  />
 					</div>
 				</td>
-<!-- 	
-				<c:if test="${not inquiry}">	
-					<td>
-						<div align=center>&nbsp;
-							<c:choose>
-								<c:when test="${role.edit}">
-									<img class='nobord' src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete2.gif' styleClass='tinybutton'/>
-								</c:when>
-								<c:otherwise>
-									<html:image property='methodToCall.deleteRole.line${status.index}.anchor${currentTabIndex}'
-										src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete1.gif' styleClass='tinybutton'/>
-								</c:otherwise>
-							</c:choose>  
-						</div>
-					</td>
-				</c:if>     
- -->
+			<c:if test="${not inquiry}">	
+				<td>
+					<div align=center>&nbsp;
+						<c:choose>
+							<c:when test="${role.edit}">
+	        	          		<img class='nobord' src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete2.gif' styleClass='tinybutton'/>
+							</c:when>
+	        	       		<c:otherwise>
+	        	        		<html:image property='methodToCall.deletePermission.line${status.index}.anchor${currentTabIndex}'
+								src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete1.gif' styleClass='tinybutton'/>
+		        	       	</c:otherwise>
+	        	     	</c:choose>  
+					</div>
+				</td>
+			</c:if>    
 			</tr>
 		</c:forEach>        
 	</table>

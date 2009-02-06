@@ -31,11 +31,11 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  */
 @MappedSuperclass
 public class KimDocumentBoBase  extends PersistableBusinessObjectBase {
-    @Column(name="DOC_HDR_ID")
+    @Column(name="FDOC_NBR")
     protected String documentNumber;
 	@Type(type="yes_no")
 	@Column(name="ACTV_IND")
-    protected boolean active;
+    protected boolean active = true;
 	@Type(type="yes_no")
 	@Column(name="EDIT_FLAG")
     protected boolean edit;

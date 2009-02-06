@@ -18,6 +18,7 @@ package org.kuali.rice.kim.bo.ui;
 import java.util.LinkedHashMap;
 
 import org.kuali.rice.kew.util.CodeTranslator;
+import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 
 /**
@@ -33,9 +34,28 @@ public class KimDocumentRoleResponsibilityAction extends KimDocumentBoBase {
 	protected String actionTypeCode;
 	protected String actionPolicyCode;
 	protected Integer priorityNumber;
-	
+	protected boolean ignorePrevious;
+	protected KimResponsibilityImpl kimResponsibility;
 	protected RoleResponsibilityImpl roleResponsibility;
 	
+	/*{
+		roleResponsibility = new RoleResponsibilityImpl();
+		roleResponsibility.setKimResponsibility(new KimResponsibilityImpl());
+		roleResponsibility.getKimResponsibility().setTemplate(new KimResponsibilityTemplateImpl());
+	}*/
+	
+	/**
+	 * @return the kimResponsibility
+	 */
+	public KimResponsibilityImpl getKimResponsibility() {
+		return this.kimResponsibility;
+	}
+	/**
+	 * @param kimResponsibility the kimResponsibility to set
+	 */
+	public void setKimResponsibility(KimResponsibilityImpl kimResponsibility) {
+		this.kimResponsibility = kimResponsibility;
+	}
 	public String getRoleResponsibilityActionId() {
 		return this.roleResponsibilityActionId;
 	}
@@ -86,12 +106,6 @@ public class KimDocumentRoleResponsibilityAction extends KimDocumentBoBase {
 	public void setRoleMemberId(String roleMemberId) {
 		this.roleMemberId = roleMemberId;
 	}
-	public RoleResponsibilityImpl getRoleResponsibility() {
-		return this.roleResponsibility;
-	}
-	public void setRoleResponsibility(RoleResponsibilityImpl roleResponsibility) {
-		this.roleResponsibility = roleResponsibility;
-	}
 	
 	/**
 	 * 
@@ -111,6 +125,31 @@ public class KimDocumentRoleResponsibilityAction extends KimDocumentBoBase {
 	 */
 	public String getActionTypeDescription() {
 		return (String)CodeTranslator.arLabels.get(this.actionTypeCode);
+	}
+	/**
+	 * @return the roleResponsibility
+	 */
+	public RoleResponsibilityImpl getRoleResponsibility() {
+		return this.roleResponsibility;
+	}
+	/**
+	 * @param roleResponsibility the roleResponsibility to set
+	 */
+	public void setRoleResponsibility(RoleResponsibilityImpl roleResponsibility) {
+		this.roleResponsibility = roleResponsibility;
+	}
+
+	/**
+	 * @return the ignorePrevious
+	 */
+	public boolean isIgnorePrevious() {
+		return this.ignorePrevious;
+	}
+	/**
+	 * @param ignorePrevious the ignorePrevious to set
+	 */
+	public void setIgnorePrevious(boolean ignorePrevious) {
+		this.ignorePrevious = ignorePrevious;
 	}
 
 }

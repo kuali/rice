@@ -18,11 +18,15 @@ package org.kuali.rice.kim.lookup;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
+import org.kuali.rice.kim.bo.impl.ResponsibilityImpl;
+import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityRequiredAttributeImpl;
 import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.role.impl.ResponsibilityAttributeDataImpl;
-import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
+import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.RoleService;
+import org.kuali.rice.kim.service.support.KimTypeInternalService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.HtmlData;
@@ -55,7 +59,7 @@ public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {
 		if(NAME.equals(attributeName) || NAMESPACE_CODE.equals(attributeName)){
 			List<String> primaryKeys = new ArrayList<String>();
 			primaryKeys.add(RESPONSIBILITY_ID);
-			return getInquiryUrlForPrimaryKeys(KimResponsibilityImpl.class, businessObject, primaryKeys, null);
+			return getInquiryUrlForPrimaryKeys(ResponsibilityImpl.class, businessObject, primaryKeys, null);
         } else if(DETAIL_OBJECTS.equals(attributeName)){
         	return getAttributesInquiryUrl(businessObject, DETAIL_OBJECTS);
         } else if(REQUIRED_ROLE_QUALIFIER_ATTRIBUTES.equals(attributeName)){
@@ -95,17 +99,21 @@ public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {
     }
 
     protected HtmlData getAssignedRoleInquiryUrl(BusinessObject businessObject){
-    	KimResponsibilityImpl responsibility = (KimResponsibilityImpl)businessObject;
-    	List<RoleResponsibilityImpl> assignedToRoles = responsibility.getAssignedToRoles();
+    	ResponsibilityImpl responsibility = (ResponsibilityImpl)businessObject;
+    	List<KimRoleImpl> assignedToRoles = responsibility.getAssignedToRoles();
     	List<AnchorHtmlData> htmlData = new ArrayList<AnchorHtmlData>();
 		List<String> primaryKeys = new ArrayList<String>();
 		primaryKeys.add(ROLE_ID);
 		if(assignedToRoles!=null && !assignedToRoles.isEmpty()){
-			for(RoleResponsibilityImpl roleResponsibilityImpl: assignedToRoles){
-        		htmlData.add(getInquiryUrlForPrimaryKeys(KimRoleImpl.class, roleResponsibilityImpl.getKimRole(), primaryKeys, 
-        				roleResponsibilityImpl.getKimRole().getKimRoleType().getName()+KimConstants.NAME_VALUE_SEPARATOR+
-        				roleResponsibilityImpl.getKimRole().getNamespaceCode()+KimConstants.NAME_VALUE_SEPARATOR+
-        				roleResponsibilityImpl.getKimRole().getRoleName()));
+			RoleService roleService = KIMServiceLocator.getRoleService();
+			KimTypeInternalService kimTypeInternalService = KIMServiceLocator.getTypeInternalService();
+			KimRoleInfo roleInfo;
+			KimTypeImpl kimType;
+			for(KimRoleImpl roleImpl: assignedToRoles){
+				htmlData.add(getInquiryUrlForPrimaryKeys(KimRoleImpl.class, roleImpl, primaryKeys, 
+        				roleImpl.getKimRoleType().getName()+KimConstants.NAME_VALUE_SEPARATOR+
+        				roleImpl.getNamespaceCode()+KimConstants.NAME_VALUE_SEPARATOR+
+        				roleImpl.getRoleName()));
         	}
 		}
     	return new MultipleAnchorHtmlData(htmlData);

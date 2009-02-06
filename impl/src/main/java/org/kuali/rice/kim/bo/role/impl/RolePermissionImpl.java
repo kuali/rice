@@ -49,10 +49,6 @@ public class RolePermissionImpl extends PersistableBusinessObjectBase implements
 	@Column(name="ACTV_IND")
 	protected boolean active;
 
-	@OneToOne(targetEntity=KimRoleImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
-	@JoinColumn(name = "ROLE_ID", insertable = false, updatable = false)
-	protected KimRoleImpl kimRole;
-	
 	@OneToOne(targetEntity=KimPermissionImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
 	@JoinColumn(name = "PERM_ID", insertable = false, updatable = false)
 	protected KimPermissionImpl kimPermission;
@@ -114,24 +110,10 @@ public class RolePermissionImpl extends PersistableBusinessObjectBase implements
 	}
 
 	/**
-	 * @return the kimRole
-	 */
-	public KimRoleImpl getKimRole() {
-		return this.kimRole;
-	}
-
-	/**
 	 * @param kimPermission the kimPermission to set
 	 */
 	public void setKimPermission(KimPermissionImpl kimPermission) {
 		this.kimPermission = kimPermission;
-	}
-
-	/**
-	 * @param kimRole the kimRole to set
-	 */
-	public void setKimRole(KimRoleImpl kimRole) {
-		this.kimRole = kimRole;
 	}
 
 }

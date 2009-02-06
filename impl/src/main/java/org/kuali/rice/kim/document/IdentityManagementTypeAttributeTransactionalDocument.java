@@ -25,8 +25,9 @@ import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
-import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
@@ -38,12 +39,15 @@ import org.kuali.rice.kns.util.TypedArrayList;
  */
 public class IdentityManagementTypeAttributeTransactionalDocument extends IdentityManagementKimDocument {
 
-	protected KimTypeImpl kimType;
+	private transient KimTypeService kimTypeService;
+	protected static final String DEFAULT_KIM_SERVICE_NAME = "kimTypeService";
+	protected KimTypeImpl kimType = new KimTypeImpl();
 	protected List<? extends KimAttributes> attributes;
 	protected List<KimDocumentRoleMember> members = new TypedArrayList(KimDocumentRoleMember.class);
 	
-	transient AttributeDefinitionMap definitions;
-	transient Map<String,Object> attributeEntry;
+	private transient SequenceAccessorService sequenceAccessorService;
+	private transient AttributeDefinitionMap definitions;
+	private transient Map<String,Object> attributeEntry;
 	
 	/**
 	 * @return the attributes
@@ -81,7 +85,7 @@ public class IdentityManagementTypeAttributeTransactionalDocument extends Identi
 	public void setMembers(List<KimDocumentRoleMember> members) {
 		this.members = members;
 	}
-	
+
 	public Map<String,Object> getAttributeEntry() {
 		if(attributeEntry==null || attributeEntry.isEmpty())
 			attributeEntry = KIMServiceLocator.getUiDocumentService().getAttributeEntries(getDefinitions());
@@ -101,18 +105,33 @@ public class IdentityManagementTypeAttributeTransactionalDocument extends Identi
 	
 	public AttributeDefinitionMap getDefinitions() {
 		if (definitions == null || definitions.isEmpty()) {
-			String serviceName = this.getKimType().getKimTypeServiceName();
-			if (StringUtils.isBlank(serviceName)) {
-				serviceName = "kimTypeService";				
-			}
-	        KimTypeService kimTypeService = (KimTypeServiceBase)KIMServiceLocator.getService(serviceName);
-			setDefinitions(kimTypeService.getAttributeDefinitions(getKimType().getKimTypeId()));
+	        KimTypeService kimTypeService = getKimTypeService(getKimType());
+	        if(kimTypeService!=null)
+				setDefinitions(kimTypeService.getAttributeDefinitions(getKimType().getKimTypeId()));
 		}
 		return this.definitions;
 	}
 
 	public void setDefinitions(AttributeDefinitionMap definitions) {
 		this.definitions = definitions;
+	}
+
+	protected KimTypeService getKimTypeService(KimTypeImpl kimType){
+		if(this.kimTypeService==null){
+	    	String serviceName = kimType.getKimTypeServiceName();
+	    	if (StringUtils.isBlank(serviceName)) {
+	    		serviceName = DEFAULT_KIM_SERVICE_NAME;
+	    	}
+	    	this.kimTypeService = (KimTypeService)KIMServiceLocator.getService(serviceName);
+		}
+		return this.kimTypeService;
+	}
+
+	protected SequenceAccessorService getSequenceAccessorService(){
+		if(this.sequenceAccessorService==null){
+	    	this.sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
+		}
+		return this.sequenceAccessorService;
 	}
 
 }

@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -29,6 +30,7 @@ import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.dao.KimRoleDao;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
@@ -41,6 +43,8 @@ import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.util.BeanPropertyComparator;
+import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.KeyLabelPair;
 import org.kuali.rice.kns.web.ui.Row;
@@ -62,6 +66,29 @@ public class RoleLookupableHelperServiceImpl   extends KualiLookupableHelperServ
 	private String typeId;
 	private AttributeDefinitionMap attrDefinitions;
 	
+    @Override
+    public List<HtmlData> getCustomActionUrls(BusinessObject bo, List pkNames) {
+    	KimRoleImpl roleImpl = (KimRoleImpl) bo;
+        List<HtmlData> anchorHtmlDataList = new ArrayList<HtmlData>();
+    	anchorHtmlDataList.add(getEditRoleUrl(roleImpl));	
+    	return anchorHtmlDataList;
+    }
+    
+    protected HtmlData getEditRoleUrl(KimRoleImpl roleImpl) {
+        Properties parameters = new Properties();
+        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.DOC_HANDLER_METHOD);
+        parameters.put(KNSConstants.PARAMETER_COMMAND, "initiate");
+        parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, "IdentityManagementRoleDocument");
+        parameters.put(KimConstants.PrimaryKeyConstants.ROLE_ID, roleImpl.getRoleId());
+        String href = UrlFactory.parameterizeUrl("../kim/identityManagementRoleDocument.do", parameters);
+        
+        AnchorHtmlData anchorHtmlData = new AnchorHtmlData(href, 
+        		KNSConstants.DOC_HANDLER_METHOD, KNSConstants.MAINTENANCE_EDIT_ACTION);
+        anchorHtmlData.setTarget("blank");
+        return anchorHtmlData;
+    }
+
+    
     @Override
     public List<? extends BusinessObject> getSearchResults(java.util.Map<String,String> fieldValues) {
 //    	String principalName = fieldValues.get("principalName");
@@ -312,7 +339,7 @@ public class RoleLookupableHelperServiceImpl   extends KualiLookupableHelperServ
 		    if (idx2 < 0) {
 		    	idx2 = href.length();
 		    }
-		    ((AnchorHtmlData)inqUrl).setHref("../kim/identityManagementRoleDocument.do?command=initiate&docTypeName=IdentityManagementRoleDocument"+href.substring(idx1, idx2));
+		    ((AnchorHtmlData)inqUrl).setHref("../kim/identityManagementRoleDocument.do?methodToCall=inquiry&command=initiate&docTypeName=IdentityManagementRoleDocument"+href.substring(idx1, idx2));
 	    }
 	    return inqUrl;
 	}

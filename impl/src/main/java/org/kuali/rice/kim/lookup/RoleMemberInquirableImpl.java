@@ -57,7 +57,7 @@ public class RoleMemberInquirableImpl extends KualiInquirableImpl {
     }
 
     protected AnchorHtmlData getInquiryUrlForPrimaryKeys(
-    		Class clazz, BusinessObject businessObject, List<String> primaryKeys, String displayText){
+    		Class clazz, Object businessObject, List<String> primaryKeys, String displayText){
     	if(businessObject==null)
     		return new AnchorHtmlData(KNSConstants.EMPTY_STRING, KNSConstants.EMPTY_STRING);
 

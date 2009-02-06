@@ -71,7 +71,7 @@
         p:maxLength="40"
         p:required="false" >
     <property name="control" >
-      <bean parent="TextControlDefinition" p:size="10" />
+      <bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.rice.kim.bo.options.DelegationTypeValuesFinder"/>
     </property>
   </bean>
   
@@ -106,8 +106,6 @@
   <bean id="KimDelegationImpl-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition"
         p:title="Delegation Lookup" 
         p:instructions="Lookup a Delegation " >
-    <property name="lookupableID" value="roleLookupable" />
-        
     <property name="defaultSort" >
       <bean parent="SortDefinition">
         <property name="attributeNames" >

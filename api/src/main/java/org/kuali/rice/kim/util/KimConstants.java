@@ -100,4 +100,14 @@ public class KimConstants {
 	//Kim services constants for API
 	public static final String KIM_IDENTITY_MANAGEMENT_SERVICE = "kimIdentityManagementService";
 	public static final String KIM_PERSON_SERVICE = "personService";
+	public static final String DEFAULT_KIM_TYPE_SERVICE = "kimTypeService";
+	
+	public static class PrimaryKeyConstants{
+		public static final String ROLE_ID = "roleId";
+		public static final String KIM_TYPE_ID = "kimTypeId";
+		public static final String RESPONSIBILITY_ID = "responsibilityId";
+		public static final String PERMISSION_ID = "permissionId";
+		public static final String DELEGATION_ID = "delegationId";
+	}
+	
 }

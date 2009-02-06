@@ -349,8 +349,8 @@ public class KualiForm extends PojoFormBase {
     	if (shouldPropertyBePopulatedInForm(methodToCallParameterName, request)) {
     		return true;
     	}
-    	if (methodToCallParameterName != null && methodToCallParameterName.endsWith(WebUtils.IMAGE_COORDINATE_CLICKED_X_EXTENSION)) {
-    		methodToCallParameterName = methodToCallParameterName.substring(0, methodToCallParameterName.lastIndexOf(WebUtils.IMAGE_COORDINATE_CLICKED_X_EXTENSION));
+    	if (methodToCallParameterName != null && WebUtils.endsWithCoordinates(methodToCallParameterName)) {
+    		methodToCallParameterName = methodToCallParameterName.substring(0, WebUtils.getIndexOfCoordinateExtension(methodToCallParameterName));
         	if (shouldPropertyBePopulatedInForm(methodToCallParameterName, request)) {
         		return true;
         	}
@@ -359,8 +359,8 @@ public class KualiForm extends PojoFormBase {
     		if (shouldPropertyBePopulatedInForm(methodToCallParameterValue, request)) {
     			return true;
     		}
-    		if (methodToCallParameterValue != null && methodToCallParameterValue.endsWith(WebUtils.IMAGE_COORDINATE_CLICKED_X_EXTENSION)) {
-    			methodToCallParameterValue = methodToCallParameterValue.substring(0, methodToCallParameterValue.lastIndexOf(WebUtils.IMAGE_COORDINATE_CLICKED_X_EXTENSION));
+    		if (methodToCallParameterValue != null && WebUtils.endsWithCoordinates(methodToCallParameterName)) {
+    			methodToCallParameterValue = methodToCallParameterValue.substring(0, WebUtils.getIndexOfCoordinateExtension(methodToCallParameterName));
     			if (shouldPropertyBePopulatedInForm(methodToCallParameterValue, request)) {
         			return true;
         		}

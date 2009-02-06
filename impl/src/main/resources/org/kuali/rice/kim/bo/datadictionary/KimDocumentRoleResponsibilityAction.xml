@@ -40,6 +40,7 @@
 				<ref bean="DocRoleResponsibilityAction-actionTypeCode" />
 				<ref bean="DocRoleResponsibilityAction-actionPolicyCode" />
 				<ref bean="DocRoleResponsibilityAction-priorityNumber" />
+				<ref bean="DocRoleResponsibilityAction-ignorePrevious" />
 			</list>
 		</property>
 	</bean>
@@ -89,9 +90,6 @@
 		<property name="label" value="Role Member Id" />
 		<property name="shortLabel" value="Role Member Id" />
 		<property name="maxLength" value="40" />
-		<property name="validationPattern" >
-			<bean parent="AlphaNumericValidationPattern" />
-		</property>
 		<property name="control" >
 			<bean parent="TextControlDefinition"
 				p:size="10" />
@@ -138,6 +136,17 @@
 		<property name="description" value="Priority Number" />
 	</bean>
 
+	<bean id="DocRoleResponsibilityAction-ignorePrevious" parent="DocRoleResponsibilityAction-ignorePrevious-parentBean" />
+	<bean id="DocRoleResponsibilityAction-ignorePrevious-parentBean" abstract="true" parent="AttributeReferenceDummy-genericBoolean">
+    	<property name="name" value="ignorePrevious" />
+	    <property name="label" value="Force Action" />
+	    <property name="shortLabel" value="Force Action" />
+    	<property name="required" value="true" />
+	    <property name="summary" value="Require Redundant Action" />
+    	<property name="description" value="Require Redundant Action" />
+	</bean>
+
+
 	<bean id="DocRoleResponsibilityAction-actionPolicyCode" parent="DocRoleResponsibilityAction-actionPolicyCode-parentBean" />
 	<bean id="DocRoleResponsibilityAction-actionPolicyCode-parentBean" abstract="true" parent="AttributeDefinition" >
 		<property name="name" value="actionPolicyCode" />
@@ -179,6 +188,8 @@
 								p:attributeName="actionTypeCode" />
 							<bean parent="FieldDefinition"
 								p:attributeName="actionPolicyCode" />
+							<bean parent="FieldDefinition"
+								p:attributeName="ignorePrevious" />
 						</list>
 					</property>
 				</bean>
@@ -204,6 +215,8 @@
 					p:attributeName="actionTypeCode" />
 				<bean parent="FieldDefinition"
 					p:attributeName="actionPolicyCode" />
+				<bean parent="FieldDefinition"
+					p:attributeName="ignorePrevious" />
 			</list>
 		</property>
 		<property name="resultFields" >
@@ -219,6 +232,8 @@
 					p:attributeName="actionTypeCode" />
 				<bean parent="FieldDefinition"
 					p:attributeName="actionPolicyCode" />
+				<bean parent="FieldDefinition"
+					p:attributeName="ignorePrevious" />
 			</list>
 		</property>
 	</bean>

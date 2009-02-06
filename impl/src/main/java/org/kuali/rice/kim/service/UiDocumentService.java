@@ -62,4 +62,11 @@ public interface UiDocumentService {
 	 */
 	public void loadRoleDoc(IdentityManagementRoleDocument identityManagementRoleDocument, KimRole kimRole);
 	
+	/**
+	 * 
+	 * This method ...
+	 * 
+	 * @param identityManagementRoleDocument
+	 */
+	public void saveRole(IdentityManagementRoleDocument identityManagementRoleDocument);
 }

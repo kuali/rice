@@ -15,14 +15,14 @@
  */
 package org.kuali.rice.kim.lookup;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
@@ -47,52 +47,28 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
     protected final String ASSIGNED_TO_GROUP_NAME = "assignedToGroupNameForLookup";
     protected final String ASSIGNED_TO_NAMESPACE_FOR_LOOKUP = "assignedToRoleNamespaceForLookup";
     protected final String ASSIGNED_TO_ROLE_NAME = "assignedToRoleNameForLookup";
-    protected final String ATTRIBUTE_DETAIL_VALUE = "attributeDetailValue";
-    protected final String ASSIGNED_TO_ROLE_NAMESPACE_CODE = "assignedToRoles.kimRole.namespaceCode";
-    protected final String ASSIGNED_TO_ROLE_ROLE_NAME = "assignedToRoles.kimRole.roleName";
-    protected final String ASSIGNED_TO_ROLE_MEMBER_ID = "assignedToRoles.kimRole.members.memberId";
+    protected final String ATTRIBUTE_VALUE = "attributeValue";
+    protected final String ASSIGNED_TO_ROLE_NAMESPACE_CODE = "namespaceCode";
+    protected final String ASSIGNED_TO_ROLE_ROLE_NAME = "roleName";
+    protected final String ASSIGNED_TO_ROLE_MEMBER_ID = "members.memberId";
     protected final String DETAIL_OBJECTS_ATTRIBUTE_VALUE = "detailObjects.attributeValue";
     
     @Override
     public List<? extends BusinessObject> getSearchResults(Map<String,String> fieldValues) {
-    	Map<String, String> searchCriteria = buildSearchCriteria(fieldValues);
+    	Map<String, String> searchCriteria = buildRoleSearchCriteria(fieldValues);
     	if(searchCriteria == null)
-    		return null;
-        return getMemberSearchResults(searchCriteria);
+    		return new ArrayList();
+        return getMemberSearchResults(fieldValues);
     }
 
     protected abstract List<? extends BusinessObject> getMemberSearchResults(Map<String, String> searchCriteria);
     
     protected Map<String, String> buildSearchCriteria(Map<String, String> fieldValues){
-    	String assignedToPrincipalName = fieldValues.get(ASSIGNED_TO_PRINCIPAL_NAME);
-        KimPrincipal principal = null;
-        if(StringUtils.isNotEmpty(assignedToPrincipalName)){
-        	principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(assignedToPrincipalName);
-        	if(principal==null)
-        		return null;
-        }
-        String assignedToGroupNamespaceCode = fieldValues.get(ASSIGNED_TO_GROUP_NAMESPACE_CODE);
-        String assignedToGroupName = fieldValues.get(ASSIGNED_TO_GROUP_NAME);
-        List<KimGroupImpl> groupImpls = null;
-        if(StringUtils.isNotEmpty(assignedToGroupNamespaceCode) && StringUtils.isEmpty(assignedToGroupName) ||
-        		StringUtils.isEmpty(assignedToGroupNamespaceCode) && StringUtils.isNotEmpty(assignedToGroupName) ||
-        		StringUtils.isNotEmpty(assignedToGroupNamespaceCode) && StringUtils.isNotEmpty(assignedToGroupName)){
-        	Map<String, String> groupSearchCriteria = new HashMap<String, String>();
-        	groupSearchCriteria.put(NAMESPACE_CODE, getQueryString(assignedToGroupNamespaceCode));
-        	groupSearchCriteria.put(GROUP_NAME, getQueryString(assignedToGroupName));
-        	groupImpls = 
-        		(List<KimGroupImpl>)KNSServiceLocator.getLookupService().findCollectionBySearchUnbounded(KimGroupImpl.class, groupSearchCriteria);
-        	if(groupImpls==null || groupImpls.size()==0)
-        		return null;
-        }
-
         String templateNamespaceCode = fieldValues.get(TEMPLATE_NAMESPACE_CODE);
         String templateName = fieldValues.get(TEMPLATE_NAME);
         String namespaceCode = fieldValues.get(NAMESPACE_CODE);
         String name = fieldValues.get(NAME);
-        String assignedToRoleNamespaceCode = fieldValues.get(ASSIGNED_TO_NAMESPACE_FOR_LOOKUP);
-        String assignedToRoleName = fieldValues.get(ASSIGNED_TO_ROLE_NAME);
-        String attributeDetailValue = fieldValues.get(ATTRIBUTE_DETAIL_VALUE);
+        String attributeDetailValue = fieldValues.get(ATTRIBUTE_VALUE);
 
     	Map<String,String> searchCriteria = new HashMap<String, String>();
     	if(StringUtils.isNotEmpty(templateNamespaceCode))
@@ -103,24 +79,9 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
         	searchCriteria.put(NAMESPACE_CODE, PERCENT+namespaceCode+PERCENT);
         if(StringUtils.isNotEmpty(name))
         	searchCriteria.put(NAME, PERCENT+name+PERCENT);
-        if(StringUtils.isNotEmpty(assignedToRoleNamespaceCode))
-        	searchCriteria.put(ASSIGNED_TO_ROLE_NAMESPACE_CODE, PERCENT+assignedToRoleNamespaceCode+PERCENT);
-        if(StringUtils.isNotEmpty(assignedToRoleName))
-        	searchCriteria.put(ASSIGNED_TO_ROLE_ROLE_NAME, PERCENT+assignedToRoleName+PERCENT);
         if(StringUtils.isNotEmpty(attributeDetailValue))
         	searchCriteria.put(DETAIL_OBJECTS_ATTRIBUTE_VALUE, PERCENT+attributeDetailValue+PERCENT);
-        
-        if(principal!=null)
-        	searchCriteria.put(ASSIGNED_TO_ROLE_MEMBER_ID, principal.getPrincipalId());
-        if(groupImpls!=null){
-        	StringBuffer groupQueryString = new StringBuffer();
-        	for(KimGroupImpl group: groupImpls){
-        		groupQueryString.append(group.getGroupId()+KimConstants.OR_OPERATOR);
-        	}
-            if(groupQueryString.toString().endsWith(KimConstants.OR_OPERATOR))
-            	groupQueryString.delete(groupQueryString.length()-KimConstants.OR_OPERATOR.length(), groupQueryString.length());
-        	searchCriteria.put(ASSIGNED_TO_ROLE_MEMBER_ID, groupQueryString.toString());
-        }
+
         return searchCriteria;
     }
     
@@ -153,6 +114,69 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
             		"a combination of template namespace and template name, or a namespace must be supplied");
         }
         */
+    }
+
+    protected Map<String, String> buildRoleSearchCriteria(Map<String, String> fieldValues){
+    	String assignedToPrincipalName = fieldValues.get(ASSIGNED_TO_PRINCIPAL_NAME);
+    	Map<String, String> searchCriteria;
+    	List<KimPrincipalImpl> principals = null;
+        if(StringUtils.isNotEmpty(assignedToPrincipalName)){
+        	searchCriteria = new HashMap<String, String>();
+        	searchCriteria.put("principalName", PERCENT+assignedToPrincipalName+PERCENT);
+        	principals = 
+        		(List<KimPrincipalImpl>)KNSServiceLocator.getLookupService().findCollectionBySearchUnbounded(KimPrincipalImpl.class, searchCriteria);
+        	if(principals==null || principals.isEmpty())
+        		return null;
+        }
+        String assignedToGroupNamespaceCode = fieldValues.get(ASSIGNED_TO_GROUP_NAMESPACE_CODE);
+        String assignedToGroupName = fieldValues.get(ASSIGNED_TO_GROUP_NAME);
+        List<KimGroupImpl> groupImpls = null;
+        if(StringUtils.isNotEmpty(assignedToGroupNamespaceCode) && StringUtils.isEmpty(assignedToGroupName) ||
+        		StringUtils.isEmpty(assignedToGroupNamespaceCode) && StringUtils.isNotEmpty(assignedToGroupName) ||
+        		StringUtils.isNotEmpty(assignedToGroupNamespaceCode) && StringUtils.isNotEmpty(assignedToGroupName)){
+        	searchCriteria = new HashMap<String, String>();
+        	searchCriteria.put(NAMESPACE_CODE, getQueryString(assignedToGroupNamespaceCode));
+        	searchCriteria.put(GROUP_NAME, getQueryString(assignedToGroupName));
+        	groupImpls = 
+        		(List<KimGroupImpl>)KNSServiceLocator.getLookupService().findCollectionBySearchUnbounded(KimGroupImpl.class, searchCriteria);
+        	if(groupImpls==null || groupImpls.size()==0)
+        		return null;
+        }
+
+        String assignedToRoleNamespaceCode = fieldValues.get(ASSIGNED_TO_NAMESPACE_FOR_LOOKUP);
+        String assignedToRoleName = fieldValues.get(ASSIGNED_TO_ROLE_NAME);
+
+    	searchCriteria = new HashMap<String, String>();
+        if(StringUtils.isNotEmpty(assignedToRoleNamespaceCode))
+        	searchCriteria.put(ASSIGNED_TO_ROLE_NAMESPACE_CODE, PERCENT+assignedToRoleNamespaceCode+PERCENT);
+        if(StringUtils.isNotEmpty(assignedToRoleName))
+        	searchCriteria.put(ASSIGNED_TO_ROLE_ROLE_NAME, PERCENT+assignedToRoleName+PERCENT);
+
+    	StringBuffer memberQueryString = null;
+        if(principals!=null){
+        	memberQueryString = new StringBuffer();
+        	for(KimPrincipalImpl principal: principals){
+        		memberQueryString.append(principal.getPrincipalId()+KimConstants.OR_OPERATOR);
+        	}
+            if(memberQueryString.toString().endsWith(KimConstants.OR_OPERATOR))
+            	memberQueryString.delete(memberQueryString.length()-KimConstants.OR_OPERATOR.length(), memberQueryString.length());
+        }
+        if(groupImpls!=null){
+        	if(memberQueryString==null)
+        		memberQueryString = new StringBuffer();
+        	else if(StringUtils.isNotEmpty(memberQueryString.toString()))
+        		memberQueryString.append(KimConstants.OR_OPERATOR);
+        	for(KimGroupImpl group: groupImpls){
+        		memberQueryString.append(group.getGroupId()+KimConstants.OR_OPERATOR);
+        	}
+            if(memberQueryString.toString().endsWith(KimConstants.OR_OPERATOR))
+            	memberQueryString.delete(memberQueryString.length()-KimConstants.OR_OPERATOR.length(), memberQueryString.length());
+        	searchCriteria.put(ASSIGNED_TO_ROLE_MEMBER_ID, memberQueryString.toString());
+        }
+        if(memberQueryString!=null && StringUtils.isNotEmpty(memberQueryString.toString()))
+        	searchCriteria.put(ASSIGNED_TO_ROLE_MEMBER_ID, memberQueryString.toString());
+
+        return searchCriteria;
     }
 
 }

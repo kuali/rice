@@ -18,11 +18,15 @@ package org.kuali.rice.kim.web.struts.form;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts.action.ActionMapping;
-import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
-import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
-import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
+import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.bo.impl.PersonImpl;
+import org.kuali.rice.kim.bo.options.MemberTypeValuesFinder;
+import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
-import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
+import org.kuali.rice.kim.bo.ui.KimDocumentRolePermission;
+import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
+import org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibility;
+import org.kuali.rice.kim.bo.ui.RoleDocumentDelegation;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kns.web.struts.form.KualiTransactionalDocumentFormBase;
 
@@ -33,11 +37,18 @@ import org.kuali.rice.kns.web.struts.form.KualiTransactionalDocumentFormBase;
  *
  */
 public class IdentityManagementRoleDocumentForm extends KualiTransactionalDocumentFormBase {
-
+	{
+		requiredNonEditableProperties.add("methodToCall");
+	}
+	
 	private KimDocumentRoleMember member;
-	private KimPermissionImpl permission;
-	private KimResponsibilityImpl responsibility;
-	private KimDelegationImpl delegation; 
+	{
+		member = new KimDocumentRoleMember();
+		member.getQualifiers().add(new KimDocumentRoleQualifier());
+	}
+	private KimDocumentRolePermission permission;
+	private KimDocumentRoleResponsibility responsibility;
+	private RoleDocumentDelegation delegation; 
 
     
     public IdentityManagementRoleDocumentForm() {
@@ -64,21 +75,21 @@ public class IdentityManagementRoleDocumentForm extends KualiTransactionalDocume
 		super.populate(request);
 	}
 
-	public IdentityManagementPersonDocument getPersonDocument() {
-        return (IdentityManagementPersonDocument) this.getDocument();
+	public IdentityManagementRoleDocument getRoleDocument() {
+        return (IdentityManagementRoleDocument) this.getDocument();
     }
 
 	/**
 	 * @return the delegation
 	 */
-	public KimDelegationImpl getDelegation() {
+	public RoleDocumentDelegation getDelegation() {
 		return this.delegation;
 	}
 
 	/**
 	 * @param delegation the delegation to set
 	 */
-	public void setDelegation(KimDelegationImpl delegation) {
+	public void setDelegation(RoleDocumentDelegation delegation) {
 		this.delegation = delegation;
 	}
 
@@ -99,30 +110,55 @@ public class IdentityManagementRoleDocumentForm extends KualiTransactionalDocume
 	/**
 	 * @return the permission
 	 */
-	public KimPermissionImpl getPermission() {
+	public KimDocumentRolePermission getPermission() {
 		return this.permission;
 	}
 
 	/**
 	 * @param permission the permission to set
 	 */
-	public void setPermission(KimPermissionImpl permission) {
+	public void setPermission(KimDocumentRolePermission permission) {
 		this.permission = permission;
 	}
 
 	/**
 	 * @return the responsibility
 	 */
-	public KimResponsibilityImpl getResponsibility() {
+	public KimDocumentRoleResponsibility getResponsibility() {
 		return this.responsibility;
 	}
 
 	/**
 	 * @param responsibility the responsibility to set
 	 */
-	public void setResponsibility(KimResponsibilityImpl responsibility) {
+	public void setResponsibility(KimDocumentRoleResponsibility responsibility) {
 		this.responsibility = responsibility;
 	}
 
+	public String getMemberFieldConversions(){
+		if(member==null)
+			return "";
+		String memberTypeCode = member.getMemberTypeCode();
+		if(MemberTypeValuesFinder.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode))
+			return "principalId:member.memberId,principalName:member.memberName";
+		else if(MemberTypeValuesFinder.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode))
+			return "roleId:member.memberId,roleName:member.memberName";
+		else if(MemberTypeValuesFinder.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode))
+			return "groupId:member.memberId,groupName:member.memberName";
+		return "";
+	}
+	
+	public String getMemberBusinessObjectName(){
+		if(member==null)
+			return "";
+		String memberTypeCode = member.getMemberTypeCode();
+		if(MemberTypeValuesFinder.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode))
+			return PersonImpl.class.getName();
+		else if(MemberTypeValuesFinder.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode))
+			return KimRoleImpl.class.getName();
+		else if(MemberTypeValuesFinder.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode))
+			return KimGroupImpl.class.getName();
+		return "";
+	}
 
 }

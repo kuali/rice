@@ -46,7 +46,7 @@
 	<bean id="KimTypeImpl-kimTypeId-parentBean" abstract="true" parent="AttributeDefinition" >
 		<property name="name" value="kimTypeId" />
 		<property name="forceUppercase" value="false" />
-		<property name="label" value="Kim Typ Id" />
+		<property name="label" value="Kim Type Id" />
 		<property name="shortLabel" value="Kim Typ Id" />
 		<property name="maxLength" value="40" />
 		<property name="validationPattern" >
@@ -82,7 +82,7 @@
 	<bean id="KimTypeImpl-kimTypeServiceName-parentBean" abstract="true" parent="AttributeDefinition" >
 		<property name="name" value="kimTypeServiceName" />
 		<property name="forceUppercase" value="false" />
-		<property name="label" value="Srvc Nm" />
+		<property name="label" value="Service Name" />
 		<property name="shortLabel" value="Srvc Nm" />
 		<property name="maxLength" value="200" />
 		<property name="validationPattern" >
@@ -99,7 +99,7 @@
 	<bean id="KimTypeImpl-active" parent="KimTypeImpl-active-parentBean" />
 	<bean id="KimTypeImpl-active-parentBean" abstract="true" parent="AttributeReferenceDummy-genericBoolean" >
 		<property name="name" value="active" />
-		<property name="label" value="Actv Ind" />
+		<property name="label" value="Active Indicator" />
 		<property name="shortLabel" value="Actv Ind" />
 		<property name="summary" value="Actv Ind" />
 		<property name="description" value="Actv Ind" />
@@ -109,7 +109,7 @@
 	<bean id="KimTypeImpl-namespaceCode-parentBean" abstract="true" parent="AttributeDefinition" >
 		<property name="name" value="namespaceCode" />
 		<property name="forceUppercase" value="false" />
-		<property name="label" value="Nmspc Cd" />
+		<property name="label" value="Namespace Code" />
 		<property name="shortLabel" value="Nmspc Cd" />
 		<property name="maxLength" value="40" />
 		<property name="validationPattern" >
@@ -130,11 +130,11 @@
 	<!-- Business Object Inquiry Definition -->
 	<bean id="KimTypeImpl-inquiryDefinition" parent="KimTypeImpl-inquiryDefinition-parentBean" />
 	<bean id="KimTypeImpl-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
-		<property name="title" value="Kim Typ Id" />
+		<property name="title" value="Kim Type" />
 		<property name="inquirySections" >
 			<list>
 				<bean parent="InquirySectionDefinition">
-					<property name="title" value="Kim Typ Id" />
+					<property name="title" value="Kim Type" />
 					<property name="numberOfColumns" value="1" />
 					<property name="inquiryFields" >
 						<list>
@@ -160,6 +160,7 @@
 	<bean id="KimTypeImpl-lookupDefinition" parent="KimTypeImpl-lookupDefinition-parentBean" />
 	<bean id="KimTypeImpl-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
 		<property name="title" value="Kim Type Lookup" />
+	    <property name="lookupableID" value="kimTypeLookupableHelperServiceImpl" />
 		<property name="instructions" value="Look up a Kim Type" />
 		<property name="lookupFields" >
 			<list>

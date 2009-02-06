@@ -28,8 +28,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
-import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.KimResponsibility;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
@@ -62,30 +60,17 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 
 	@OneToMany(targetEntity=ResponsibilityAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
 	@JoinColumn(name="RSP_ID", insertable=false, updatable=false)
-	protected List<ResponsibilityAttributeDataImpl> detailObjects = new TypedArrayList(ResponsibilityAttributeDataImpl.class);
-
-	@OneToMany(targetEntity=RolePermissionImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
-	@JoinColumn(name="RSP_ID", insertable=false, updatable=false)
-	protected List<RoleResponsibilityImpl> assignedToRoles = new TypedArrayList(RoleResponsibilityImpl.class);
+	protected List<ResponsibilityAttributeDataImpl> detailObjects;
 
 	@OneToMany(targetEntity=KimResponsibilityRequiredAttributeImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
 	@JoinColumn(name="RSP_ID", insertable=false, updatable=false)
-	protected List<KimResponsibilityRequiredAttributeImpl> requiredRoleQualifierAttributes = new TypedArrayList(KimResponsibilityRequiredAttributeImpl.class);
+	protected List<KimResponsibilityRequiredAttributeImpl> requiredRoleQualifierAttributes;
 	
 	
 	protected String templateId;
 	protected KimResponsibilityTemplateImpl template;
-
-	protected KimRoleImpl assignedToRole;
-	protected KimGroupImpl assignedToGroup;
-	protected KimPrincipalImpl assignedToPrincipal;
 	
-	protected String assignedToRoleNamespaceForLookup;
-	protected String assignedToRoleNameForLookup;
-	protected String assignedToPrincipalNameForLookup;
-	protected String assignedToGroupNamespaceForLookup;
-	protected String assignedToGroupNameForLookup;
-	protected String attributeValue;
+	protected List<RoleResponsibilityImpl> roleResponsibilities = new TypedArrayList(RoleResponsibilityImpl.class);
 	
 	/**
 	 * @see org.kuali.rice.kns.bo.Inactivateable#isActive()
@@ -219,151 +204,22 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 			List<KimResponsibilityRequiredAttributeImpl> requiredRoleQualifierAttributes) {
 		this.requiredRoleQualifierAttributes = requiredRoleQualifierAttributes;
 	}
-	
+
 	/**
-	 * @return the attributeValue
+	 * @return the roleResponsibilities
 	 */
-	public String getAttributeValue() {
-		return this.attributeValue;
+	public List<RoleResponsibilityImpl> getRoleResponsibilities() {
+		return this.roleResponsibilities;
 	}
 
 	/**
-	 * @param attributeValue the attributeValue to set
+	 * @param roleResponsibilities the roleResponsibilities to set
 	 */
-	public void setAttributeValue(String attributeValue) {
-		this.attributeValue = attributeValue;
+	public void setRoleResponsibilities(
+			List<RoleResponsibilityImpl> roleResponsibilities) {
+		this.roleResponsibilities = roleResponsibilities;
 	}
 
-
-	/**
-	 * @return the assignedToGroup
-	 */
-	public KimGroupImpl getAssignedToGroup() {
-		return this.assignedToGroup;
-	}
-
-	/**
-	 * @param assignedToGroup the assignedToGroup to set
-	 */
-	public void setAssignedToGroup(KimGroupImpl assignedToGroup) {
-		this.assignedToGroup = assignedToGroup;
-	}
-
-	/**
-	 * @return the assignedToPrincipal
-	 */
-	public KimPrincipalImpl getAssignedToPrincipal() {
-		return this.assignedToPrincipal;
-	}
-
-	/**
-	 * @param assignedToPrincipal the assignedToPrincipal to set
-	 */
-	public void setAssignedToPrincipal(KimPrincipalImpl assignedToPrincipal) {
-		this.assignedToPrincipal = assignedToPrincipal;
-	}
-
-	/**
-	 * @return the assignedToRole
-	 */
-	public KimRoleImpl getAssignedToRole() {
-		return this.assignedToRole;
-	}
-
-	/**
-	 * @param assignedToRole the assignedToRole to set
-	 */
-	public void setAssignedToRole(KimRoleImpl assignedToRole) {
-		this.assignedToRole = assignedToRole;
-	}
-
-	/**
-	 * @return the assignedToRoles
-	 */
-	public List<RoleResponsibilityImpl> getAssignedToRoles() {
-		return this.assignedToRoles;
-	}
-
-	/**
-	 * @param assignedToRoles the assignedToRoles to set
-	 */
-	public void setAssignedToRoles(List<RoleResponsibilityImpl> assignedToRoles) {
-		this.assignedToRoles = assignedToRoles;
-	}
-
-
-	/**
-	 * @return the assignedToGroupNameForLookup
-	 */
-	public String getAssignedToGroupNameForLookup() {
-		return this.assignedToGroupNameForLookup;
-	}
-
-	/**
-	 * @param assignedToGroupNameForLookup the assignedToGroupNameForLookup to set
-	 */
-	public void setAssignedToGroupNameForLookup(String assignedToGroupNameForLookup) {
-		this.assignedToGroupNameForLookup = assignedToGroupNameForLookup;
-	}
-
-	/**
-	 * @return the assignedToGroupNamespaceForLookup
-	 */
-	public String getAssignedToGroupNamespaceForLookup() {
-		return this.assignedToGroupNamespaceForLookup;
-	}
-
-	/**
-	 * @param assignedToGroupNamespaceForLookup the assignedToGroupNamespaceForLookup to set
-	 */
-	public void setAssignedToGroupNamespaceForLookup(
-			String assignedToGroupNamespaceForLookup) {
-		this.assignedToGroupNamespaceForLookup = assignedToGroupNamespaceForLookup;
-	}
-
-	/**
-	 * @return the assignedToPrincipalNameForLookup
-	 */
-	public String getAssignedToPrincipalNameForLookup() {
-		return this.assignedToPrincipalNameForLookup;
-	}
-
-	/**
-	 * @param assignedToPrincipalNameForLookup the assignedToPrincipalNameForLookup to set
-	 */
-	public void setAssignedToPrincipalNameForLookup(
-			String assignedToPrincipalNameForLookup) {
-		this.assignedToPrincipalNameForLookup = assignedToPrincipalNameForLookup;
-	}
-
-	/**
-	 * @return the assignedToRoleNameForLookup
-	 */
-	public String getAssignedToRoleNameForLookup() {
-		return this.assignedToRoleNameForLookup;
-	}
-
-	/**
-	 * @param assignedToRoleNameForLookup the assignedToRoleNameForLookup to set
-	 */
-	public void setAssignedToRoleNameForLookup(String assignedToRoleNameForLookup) {
-		this.assignedToRoleNameForLookup = assignedToRoleNameForLookup;
-	}
-
-	/**
-	 * @return the assignedToRoleNamespaceForLookup
-	 */
-	public String getAssignedToRoleNamespaceForLookup() {
-		return this.assignedToRoleNamespaceForLookup;
-	}
-
-	/**
-	 * @param assignedToRoleNamespaceForLookup the assignedToRoleNamespaceForLookup to set
-	 */
-	public void setAssignedToRoleNamespaceForLookup(
-			String assignedToRoleNamespaceForLookup) {
-		this.assignedToRoleNamespaceForLookup = assignedToRoleNamespaceForLookup;
-	}
 
 	public String getDetailObjectsValues(){
 		StringBuffer detailObjectsToDisplay = new StringBuffer();
@@ -375,7 +231,7 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 
 		return detailObjectsToDisplay.toString();
 	}
-	
+
 	public String getDetailObjectsToDisplay() {
 		StringBuffer detailObjectsToDisplay = new StringBuffer();
 		for(ResponsibilityAttributeDataImpl responsibilityAttributeData: detailObjects){
@@ -389,9 +245,9 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 
 	public String getAttributeDetailToDisplay(ResponsibilityAttributeDataImpl responsibilityAttributeData){
 		return responsibilityAttributeData.getKimAttribute().getAttributeName()+KimConstants.NAME_VALUE_SEPARATOR+
-		responsibilityAttributeData.getAttributeValue()+KimConstants.COMMA_SEPARATOR;
+				responsibilityAttributeData.getAttributeValue()+KimConstants.COMMA_SEPARATOR;
 	}
-
+	
 	public String getRequiredRoleQualifierAttributesToDisplay() {
 		StringBuffer requiredRoleQualifierAttributesToDisplay = new StringBuffer();
 		for(KimResponsibilityRequiredAttributeImpl responsibilityRequiredAttribute: requiredRoleQualifierAttributes){
@@ -404,7 +260,7 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 	}
 
 	//TODO: remove this and find a better way to do this. Should be done by next week with role doc task
-    protected String getKimAttributeLabelFromDD(String attributeName){
+	protected String getKimAttributeLabelFromDD(String attributeName){
     	return KNSServiceLocator.getDataDictionaryService().getAttributeLabel(KimAttributes.class, attributeName);
     }
 
@@ -414,25 +270,8 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 		return StringUtils.isEmpty(value)?value:value+KimConstants.COMMA_SEPARATOR;
 	}
 
-	/**
-	 * @return the assignedToRoles
-	 */
-	public String getAssignedToRolesToDisplay() {
-		StringBuffer assignedToRolesToDisplay = new StringBuffer();
-		for(RoleResponsibilityImpl roleResponsibilityImpl: assignedToRoles){
-			assignedToRolesToDisplay.append(getRoleDetailsToDisplay(roleResponsibilityImpl));
-		}
-        if(assignedToRolesToDisplay.toString().endsWith(KimConstants.COMMA_SEPARATOR))
-        	assignedToRolesToDisplay.delete(
-        			assignedToRolesToDisplay.length()-KimConstants.COMMA_SEPARATOR.length(), assignedToRolesToDisplay.length());
-
-		return assignedToRolesToDisplay.toString();
-	}
-
-	public String getRoleDetailsToDisplay(RoleResponsibilityImpl roleResponsibilityImpl){
-		return roleResponsibilityImpl.getKimRole().getKimRoleType().getName()+KimConstants.NAME_VALUE_SEPARATOR+
-		roleResponsibilityImpl.getKimRole().getNamespaceCode()+KimConstants.NAME_VALUE_SEPARATOR+
-		roleResponsibilityImpl.getKimRole().getRoleName()+KimConstants.COMMA_SEPARATOR;
+	public String getNameToDisplay(){
+		return (StringUtils.isBlank(getName()) && getTemplate()!=null)?getTemplate().getName():getName();
 	}
 
 }

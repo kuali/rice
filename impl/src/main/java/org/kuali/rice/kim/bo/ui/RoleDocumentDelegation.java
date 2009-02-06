@@ -15,25 +15,18 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.kuali.rice.kim.bo.role.KimDelegation;
-import org.kuali.rice.kim.bo.role.KimRole;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
@@ -44,7 +37,7 @@ import org.kuali.rice.kns.util.TypedArrayList;
  */
 @Entity
 @Table(name="KRIM_PND_DLGN_MT")
-public class RoleDocumentDelegation extends PersistableBusinessObjectBase {
+public class RoleDocumentDelegation extends KimDocumentBoBase {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -55,15 +48,16 @@ public class RoleDocumentDelegation extends PersistableBusinessObjectBase {
 	@Column(name="ROLE_ID")
 	protected String roleId;
 
-	@Column(name="ACTV_IND")
-	protected boolean active;
-
 	@Column(name="KIM_TYP_ID")
 	protected String kimTypeId;
 
 	@Column(name="DLGN_TYP_CD")
 	protected String delegationTypeCode;
 
+	private List<RoleDocumentDelegationMember> members;
+	
+	private RoleDocumentDelegationMember member = new RoleDocumentDelegationMember();
+	
 	protected List<KimDocumentRoleQualifier> qualifiers = new TypedArrayList(KimDocumentRoleQualifier.class);
 	
 	@ManyToOne(targetEntity=KimTypeImpl.class,fetch=FetchType.LAZY)
@@ -150,5 +144,33 @@ public class RoleDocumentDelegation extends PersistableBusinessObjectBase {
 	public int getNumberOfQualifiers(){
 		return qualifiers==null?0:qualifiers.size();
 	}
-	
+
+	/**
+	 * @return the members
+	 */
+	public List<RoleDocumentDelegationMember> getMembers() {
+		return this.members;
+	}
+
+	/**
+	 * @param members the members to set
+	 */
+	public void setMembers(List<RoleDocumentDelegationMember> members) {
+		this.members = members;
+	}
+
+	/**
+	 * @return the member
+	 */
+	public RoleDocumentDelegationMember getMember() {
+		return this.member;
+	}
+
+	/**
+	 * @param member the member to set
+	 */
+	public void setMember(RoleDocumentDelegationMember member) {
+		this.member = member;
+	}
+
 }

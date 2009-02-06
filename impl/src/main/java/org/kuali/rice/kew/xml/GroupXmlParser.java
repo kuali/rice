@@ -101,7 +101,7 @@ public class GroupXmlParser implements XmlConstants {
             GroupInfo foundGroup = groupService.getGroupInfoByName(groupInfo.getNamespaceCode(), groupInfo.getGroupName());
 
             if (foundGroup == null) {
-                LOG.error("Group named '" + groupInfo.getGroupName() + "' not found, creating new group named '" + groupInfo.getGroupName() + "'");
+                LOG.info("Group named '" + groupInfo.getGroupName() + "' not found, creating new group named '" + groupInfo.getGroupName() + "'");
                 try {
                     GroupInfo newGroupInfo =  groupService.createGroup(groupInfo);
 
@@ -111,7 +111,7 @@ public class GroupXmlParser implements XmlConstants {
                     throw new RuntimeException("Error creating group.", e);
                 }
             } else {
-                LOG.error("Group named '" + groupInfo.getGroupName() + "' found, creating a new version");
+                LOG.info("Group named '" + groupInfo.getGroupName() + "' found, creating a new version");
                 try {
                     groupInfo.setGroupId(foundGroup.getGroupId());
                     groupService.updateGroup(foundGroup.getGroupId(), groupInfo);

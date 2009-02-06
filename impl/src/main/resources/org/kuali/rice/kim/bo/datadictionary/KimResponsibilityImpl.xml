@@ -1,0 +1,158 @@
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+  <bean id="KimResponsibilityImpl" parent="KimResponsibilityImpl-parentBean" />
+
+  <bean id="KimResponsibilityImpl-parentBean" abstract="true" parent="BusinessObjectEntry"
+        p:businessObjectClass="org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl"
+        p:titleAttribute="responsibilityId"
+        p:objectLabel="Responsibility"
+        p:inquiryDefinition-ref="KimResponsibilityImpl-inquiryDefinition">
+    <property name="attributes" >
+      <list>
+        <ref bean="KimResponsibilityImpl-template.namespaceCode" />
+        <ref bean="KimResponsibilityImpl-template.name" />
+        <ref bean="KimResponsibilityImpl-namespaceCode" />
+        <ref bean="KimResponsibilityImpl-name" />
+        <ref bean="KimResponsibilityImpl-detailObjects" />
+        <ref bean="KimResponsibilityImpl-requiredRoleQualifierAttributes" />
+        <ref bean="KimResponsibilityImpl-templateId" />
+        <ref bean="KimResponsibilityImpl-detailObjectsToDisplay" />
+        <ref bean="KimResponsibilityImpl-requiredRoleQualifierAttributesToDisplay" />
+      </list>
+    </property>
+	<property name="relationships" >
+      <list>
+        <bean parent="RelationshipDefinition">
+          <property name="objectAttributeName" value="template" />
+          <property name="primitiveAttributes" >
+            <list>
+              <bean parent="PrimitiveAttributeDefinition"
+                    p:sourceName="templateId"
+                    p:targetName="responsibilityTemplateId" />
+            </list>
+          </property>
+          <property name="supportAttributes" >
+            <list>
+              <bean parent="SupportAttributeDefinition"
+                    p:sourceName="template.namespaceCode"
+                    p:targetName="namespaceCode" />
+              <bean parent="SupportAttributeDefinition"
+                    p:sourceName="template.name"
+                    p:targetName="name" />
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="KimResponsibilityImpl-template.namespaceCode" parent="KimResponsibilityImpl-template.namespaceCode-parentBean" />
+  <bean id="KimResponsibilityImpl-template.namespaceCode-parentBean" parent="Parameter-parameterNamespaceCode" abstract="true"
+        p:name="template.namespaceCode"
+        p:label="Template Namespace Code"
+        p:shortLabel="Template Namespace Code" >
+  </bean>
+    
+  <bean id="KimResponsibilityImpl-templateId" parent="KimResponsibilityImpl-templateId-parentBean" />
+  <bean id="KimResponsibilityImpl-templateId-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="templateId"
+        p:label="Template Id"
+        p:shortLabel="Template Id"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="40" />
+    </property>
+  </bean>
+    
+  <bean id="KimResponsibilityImpl-template.name" parent="KimResponsibilityImpl-template.name-parentBean" />
+  <bean id="KimResponsibilityImpl-template.name-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="template.name"
+        p:label="Template Name"
+        p:shortLabel="Template Name"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="40" />
+    </property>
+  </bean>
+  
+  
+  <bean id="KimResponsibilityImpl-namespaceCode" parent="KimResponsibilityImpl-namespaceCode-parentBean" />
+  <bean id="KimResponsibilityImpl-namespaceCode-parentBean" parent="Parameter-parameterNamespaceCode" abstract="true"
+        p:name="namespaceCode"
+        p:label="Responsibility Namespace"
+        p:shortLabel="Responsibility Namespace">
+  </bean>
+  
+  <bean id="KimResponsibilityImpl-name" parent="KimResponsibilityImpl-name-parentBean" />
+  <bean id="KimResponsibilityImpl-name-parentBean" abstract="true" parent="KimTypeImpl-name"        p:name="name"
+        p:label="Responsibility Name"
+        p:shortLabel="Responsibility Name">
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="40" />
+    </property>
+  </bean>
+
+  <bean id="KimResponsibilityImpl-detailObjects" parent="KimResponsibilityImpl-detailObjects-parentBean" />
+  <bean id="KimResponsibilityImpl-detailObjects-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="detailObjects"
+        p:label="Responsibility Detail Values"
+        p:shortLabel="Detail Values"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="40" />
+    </property>
+  </bean>
+
+  <bean id="KimResponsibilityImpl-requiredRoleQualifierAttributes" parent="KimResponsibilityImpl-requiredRoleQualifierAttributes-parentBean" />
+  <bean id="KimResponsibilityImpl-requiredRoleQualifierAttributes-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="requiredRoleQualifierAttributes"
+        p:label="Required Role Qualifier Attributes"
+        p:shortLabel="Required Attributes"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="40" />
+    </property>
+  </bean>
+
+  <bean id="KimResponsibilityImpl-detailObjectsToDisplay" parent="KimResponsibilityImpl-detailObjects" 
+        p:name="detailObjectsToDisplay">
+  </bean>
+
+  <bean id="KimResponsibilityImpl-requiredRoleQualifierAttributesToDisplay" parent="KimResponsibilityImpl-requiredRoleQualifierAttributes"
+  	p:name="requiredRoleQualifierAttributesToDisplay">
+  </bean>
+
+  <bean id="KimResponsibilityImpl-inquiryDefinition" parent="KimResponsibilityImpl-inquiryDefinition-parentBean" />
+  <bean id="KimResponsibilityImpl-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition"
+        p:title="Responsibility Inquiry" >
+    <property name="inquirySections" >
+      <list>
+        <bean parent="InquirySectionDefinition"
+              p:title="Responsibility Attributes"
+              p:numberOfColumns="1" >
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="FieldDefinition" p:attributeName="template.namespaceCode" />
+              <bean parent="FieldDefinition" p:attributeName="template.name" />
+        	  <bean parent="FieldDefinition" p:attributeName="namespaceCode" />
+        	  <bean parent="FieldDefinition" p:attributeName="name" />
+	       	  <bean parent="FieldDefinition" p:attributeName="detailObjectsToDisplay" />
+	       	  <bean parent="FieldDefinition" p:attributeName="requiredRoleQualifierAttributesToDisplay" />
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+    <property name="inquirableClass" value="org.kuali.rice.kim.lookup.ResponsibilityInquirableImpl" />
+  </bean>
+
+</beans>

@@ -64,14 +64,18 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 
 	public void removeService(ServiceInfo serviceInfo) {
 		QName serviceName = serviceInfo.getQname();
-		LOG.info("Removing service '" + serviceName + "'...");
+		if ( LOG.isInfoEnabled() ) {
+			LOG.info("Removing service '" + serviceName + "'...");
+		}
 		List<RemotedServiceHolder> clientProxies = this.getClients().get(serviceName);
 		// these could be null in the case that they were removed by another
 		// thread (the thread pool) prior to entry into this method
 		if (clientProxies != null) {
 			boolean removed = removeServiceFromCollection(serviceInfo, clientProxies);
 			if (!removed) {
-				LOG.info("There was no client proxy removed for the given service: " + serviceName);
+				if ( LOG.isInfoEnabled() ) {
+					LOG.info("There was no client proxy removed for the given service: " + serviceName);
+				}
 			}
 			if (clientProxies.isEmpty()) {
 				List<RemotedServiceHolder> removedList = this.getClients().remove(serviceName);
@@ -121,7 +125,9 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 	 * loader.
 	 */
 	public Object getService(QName serviceName) {
-		LOG.debug("ResourceLoader " + getName() + " fetching service " + serviceName);
+		if ( LOG.isDebugEnabled() ) {
+			LOG.debug("ResourceLoader " + getName() + " fetching service " + serviceName);
+		}
 
 		//go to our remotely deployed services first
 		RemotedServiceRegistry remoteRegistry = KSBServiceLocator.getServiceDeployer();
@@ -144,7 +150,9 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 		    return getService(serviceName);
 		}
 		if (service != null) {
-			LOG.debug("Located a remote proxy to service " + serviceName);
+			if ( LOG.isDebugEnabled() ) {
+				LOG.debug("Located a remote proxy to service " + serviceName);
+			}
 		}
 		return service;
 	}
@@ -173,14 +181,18 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 	public List<RemotedServiceHolder> getAllServices(QName qName) {
 		List<RemotedServiceHolder> clientProxies = this.getClients().get(qName);
 		if (clientProxies == null) {
-			LOG.debug("Client proxies are null, Re-aquiring services.  Service Namespace " + ConfigContext.getCurrentContextConfig().getServiceNamespace());
+			if ( LOG.isDebugEnabled() ) {
+				LOG.debug("Client proxies are null, Re-aquiring services.  Service Namespace " + ConfigContext.getCurrentContextConfig().getServiceNamespace());
+			}
 			run();
 			clientProxies = this.getClients().get(qName);
 			if (clientProxies == null || clientProxies.size() == 0) {
-				Map<QName, List<RemotedServiceHolder>> x = this.getClients();
-				if (x != null) {
-					for (QName b : x.keySet()) {
-						System.out.println(b.getNamespaceURI() + " " + b.getLocalPart());
+				if ( LOG.isDebugEnabled() ) {
+					Map<QName, List<RemotedServiceHolder>> x = this.getClients();
+					if (x != null) {
+						for (QName b : x.keySet()) {
+							System.out.println(b.getNamespaceURI() + " " + b.getLocalPart());
+						}
 					}
 				}
 				throw new RiceRuntimeException("No remote services available for client access when attempting to lookup '" + qName + "'");
@@ -209,23 +221,25 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 		}
 
 		synchronized (getClients()) {
-		if (new RoutingTableDiffCalculator().calculateClientSideUpdate(this.getClients(), servicesOnBus)) {
-			LOG.debug("Located new services on the bus, numServices=" + servicesOnBus.size());
-			Map<QName, List<RemotedServiceHolder>> updatedRemoteServicesMap = new HashMap<QName, List<RemotedServiceHolder>>();
-			for (Iterator<ServiceInfo> iter = servicesOnBus.iterator(); iter.hasNext();) {
-				ServiceInfo entry = iter.next();
-				if (entry.getAlive()) {
-					try {
-						registerClient(entry, updatedRemoteServicesMap);
-					} catch (Exception e) {
-						LOG.error("Unable to register client " + entry, e);
+			if (new RoutingTableDiffCalculator().calculateClientSideUpdate(this.getClients(), servicesOnBus)) {
+				if ( LOG.isDebugEnabled() ) {
+					LOG.debug("Located new services on the bus, numServices=" + servicesOnBus.size());
+				}
+				Map<QName, List<RemotedServiceHolder>> updatedRemoteServicesMap = new HashMap<QName, List<RemotedServiceHolder>>();
+				for (Iterator<ServiceInfo> iter = servicesOnBus.iterator(); iter.hasNext();) {
+					ServiceInfo entry = iter.next();
+					if (entry.getAlive()) {
+						try {
+							registerClient(entry, updatedRemoteServicesMap);
+						} catch (Exception e) {
+							LOG.error("Unable to register client " + entry, e);
+						}
 					}
 				}
+				this.setClients(updatedRemoteServicesMap);
+			} else {
+				LOG.debug("No new services on the bus.");
 			}
-			this.setClients(updatedRemoteServicesMap);
-		} else {
-			LOG.debug("No new services on the bus.");
-		}
 		}
 	}
 
@@ -251,9 +265,11 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 		    Matcher myMatcher = myPattern.matcher(serviceInfo.getEndpointUrl());
 		    String alternateEndpoint = myMatcher.replaceFirst(alternateEndpointLocation
 			    .getEndpointHostReplacementValue());
-		    LOG.info("Found an alternate url host value ("
-			    + alternateEndpointLocation.getEndpointHostReplacementValue() + ") for endpoint: "
-			    + serviceInfo.getEndpointUrl() + " -> instead using: " + alternateEndpoint);
+		    if ( LOG.isInfoEnabled() ) {
+		    	LOG.info("Found an alternate url host value ("
+					    + alternateEndpointLocation.getEndpointHostReplacementValue() + ") for endpoint: "
+					    + serviceInfo.getEndpointUrl() + " -> instead using: " + alternateEndpoint);
+		    }
 		    serviceInfo.setEndpointAlternateUrl(alternateEndpoint);
 		    break;
 		}
@@ -264,8 +280,10 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 	if (alternateEndpoints != null) {
 	    for (AlternateEndpoint alternateEndpoint : alternateEndpoints) {
 		if (Pattern.matches(alternateEndpoint.getEndpointUrlPattern(), serviceInfo.getEndpointUrl())) {
-		    LOG.info("Found an alternate url for endpoint: " + serviceInfo.getEndpointUrl() + " -> instead using: "
-			    + alternateEndpoint.getActualEndpoint());
+			if ( LOG.isInfoEnabled() ) {
+				LOG.info("Found an alternate url for endpoint: " + serviceInfo.getEndpointUrl() + " -> instead using: "
+					    + alternateEndpoint.getActualEndpoint());
+			}
 		    serviceInfo.setEndpointAlternateUrl(alternateEndpoint.getActualEndpoint());
 		    break;
 		}

@@ -47,6 +47,7 @@ import org.kuali.rice.kew.xml.export.DocumentTypeXmlExporter;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.util.ObjectUtils;
 
 
 public class DocumentTypeTest extends KEWTestCase {
@@ -473,7 +474,8 @@ public class DocumentTypeTest extends KEWTestCase {
     	Callback[] callbacks = new Callback[num];
     	for (int i = 0; i < num; i++) {
     		callbacks[i] = new Callback();
-}    	threads[0] = new Thread(new LoadXml("ParentWithChildrenDocTypeConfiguration.xml", callbacks[0]));
+    	}
+    	threads[0] = new Thread(new LoadXml("ParentWithChildrenDocTypeConfiguration.xml", callbacks[0]));
     	threads[1] = new Thread(new LoadXml("DocTypeIngestTestConfig1.xml", callbacks[1]));
     	threads[2] = new Thread(new LoadXml("DocumentTypeAttributeFetchTest.xml", callbacks[2]));
     	threads[3] = new Thread(new LoadXml("ChildDocType1.xml", callbacks[3]));
@@ -501,6 +503,13 @@ public class DocumentTypeTest extends KEWTestCase {
     	verifyDocumentTypeLinking();
 
     }
+    
+    @Test public void testSameFileChildParentIngestion() throws Exception {
+        loadXmlFile("ChildParentTestConfig1.xml");
+        verifyDocumentTypeLinking();
+        loadXmlFile("ChildParentTestConfig2.xml");
+        verifyDocumentTypeLinking();
+    }
 
     @Test
     public void testPostProcessor() throws Exception {
@@ -527,9 +536,19 @@ public class DocumentTypeTest extends KEWTestCase {
     	List<DocumentType> leafs = new ArrayList<DocumentType>();
     	for (Iterator iterator = documentTypes.iterator(); iterator.hasNext();) {
 			DocumentType documentType = (DocumentType) iterator.next();
-			List children = service.getChildDocumentTypes(documentType);
+			// check that all document types with parents are current
+			if (ObjectUtils.isNotNull(documentType.getParentDocType())) {
+			    assertEquals("Parent of document type '" + documentType.getName() + "' should be Current", Boolean.TRUE, documentType.getParentDocType().getCurrentInd());
+			}
+			List children = service.getChildDocumentTypes(documentType.getDocumentTypeId());
 			if (children.isEmpty()) {
 				leafs.add(documentType);
+			} else {
+	            // check that all child document types are current
+			    for (Iterator iterator2 = children.iterator(); iterator2.hasNext();) {
+                    DocumentType childDocType = (DocumentType) iterator2.next();
+                    assertEquals("Any child document type should be Current", Boolean.TRUE, childDocType.getCurrentInd());
+                }
 			}
 		}
     	Set<Long> rootDocIds = new HashSet<Long>();
@@ -543,7 +562,7 @@ public class DocumentTypeTest extends KEWTestCase {
     	// we should have the same number of roots as we did from the original roots query
     	assertEquals("Should have the same number of roots", numRoots, rootDocIds.size());
     }
-
+    
     protected void verifyHierarchy(DocumentType docType, Set<Long> rootDocIds) {
     	assertTrue("DocumentType " + docType.getName() + " should be current.", docType.getCurrentInd().booleanValue());
     	if (docType.getParentDocType() == null) {

@@ -376,7 +376,7 @@ public class DocumentType extends KewPersistableBusinessObjectBase
 
     public Collection getChildrenDocTypes() {
     	if (this.childrenDocTypes == null) {
-    		this.childrenDocTypes = KEWServiceLocator.getDocumentTypeService().getChildDocumentTypes(this);
+    		this.childrenDocTypes = KEWServiceLocator.getDocumentTypeService().getChildDocumentTypes(getDocumentTypeId());
     	}
         return childrenDocTypes;
     }
@@ -518,7 +518,7 @@ public class DocumentType extends KewPersistableBusinessObjectBase
      * @return the unresolved document handler URL value or a displayable value with sourcing information
      */
     protected String getUnresolvedInheritedDocHandlerUrl(boolean forDisplayPurposes) {
-        if (ObjectUtils.isNotNull(getUnresolvedDocHandlerUrl())) {
+        if (StringUtils.isNotBlank(getUnresolvedDocHandlerUrl())) {
             // this object has a direct value set, so return it
             return getUnresolvedDocHandlerUrl();
         }
@@ -526,7 +526,7 @@ public class DocumentType extends KewPersistableBusinessObjectBase
         DocumentType docType = getParentDocType();
         if (ObjectUtils.isNotNull(docType)) {
             String parentValue = docType.getUnresolvedDocHandlerUrl();
-            if (ObjectUtils.isNotNull(parentValue)) {
+            if (StringUtils.isNotBlank(parentValue)) {
                 // found a parent value set on the immediate parent object so return it
                 if (forDisplayPurposes) {
                     parentValue += " " + KEWConstants.DOCUMENT_TYPE_INHERITED_VALUE_INDICATOR;
@@ -673,14 +673,14 @@ public class DocumentType extends KewPersistableBusinessObjectBase
      * @return the post processor class value or a displayable value with sourcing information
      */
     protected String getInheritedPostProcessorName(boolean forDisplayPurposes) {
-        if (ObjectUtils.isNotNull(getPostProcessorName())) {
+        if (StringUtils.isNotBlank(getPostProcessorName())) {
             // this object has a post processor class so return it
             return getPostProcessorName();
         }
         if (ObjectUtils.isNotNull(getParentDocType())) {
             // direct parent document type exists
             String parentValue = getParentDocType().getPostProcessorName();
-            if (ObjectUtils.isNotNull(parentValue)) {
+            if (StringUtils.isNotBlank(parentValue)) {
                 // found a post processor class set on the immediate parent object so return it
                 if (forDisplayPurposes) {
                     parentValue += " " + KEWConstants.DOCUMENT_TYPE_INHERITED_VALUE_INDICATOR;
@@ -1212,14 +1212,14 @@ public class DocumentType extends KewPersistableBusinessObjectBase
      * @return the notification from address value or a displayable value with sourcing information
      */
     protected String getNotificationFromAddress(boolean forDisplayPurposes) {
-        if (ObjectUtils.isNotNull(getActualNotificationFromAddress())) {
+        if (StringUtils.isNotBlank(getActualNotificationFromAddress())) {
             // this object has an address so return it
             return getActualNotificationFromAddress();
         }
         if (ObjectUtils.isNotNull(getParentDocType())) {
             // direct parent document type exists
             String parentNotificationFromAddress = getParentDocType().getActualNotificationFromAddress();
-            if (ObjectUtils.isNotNull(parentNotificationFromAddress)) {
+            if (StringUtils.isNotBlank(parentNotificationFromAddress)) {
                 // found an address set on the immediate parent object so return it
                 if (forDisplayPurposes) {
                     parentNotificationFromAddress += " " + KEWConstants.DOCUMENT_TYPE_INHERITED_VALUE_INDICATOR;
@@ -1348,7 +1348,7 @@ public class DocumentType extends KewPersistableBusinessObjectBase
      * @return the service namespace value or a displayable value with sourcing information
      */
     protected String getServiceNamespace(boolean forDisplayPurposes) {
-        if (ObjectUtils.isNotNull(getActualServiceNamespace())) {
+        if (StringUtils.isNotBlank(getActualServiceNamespace())) {
             // this object has a service namespace set, so return it
             return getActualServiceNamespace();
         }
@@ -1356,7 +1356,7 @@ public class DocumentType extends KewPersistableBusinessObjectBase
         if (ObjectUtils.isNotNull(getParentDocType())) {
             // direct parent document type exists
             String parentValue = getParentDocType().getActualServiceNamespace();
-            if (ObjectUtils.isNotNull(parentValue)) {
+            if (StringUtils.isNotBlank(parentValue)) {
                 // found a parent value set on the immediate parent object so return it
                 if (forDisplayPurposes) {
                     parentValue += " " + KEWConstants.DOCUMENT_TYPE_INHERITED_VALUE_INDICATOR;
@@ -1367,7 +1367,7 @@ public class DocumentType extends KewPersistableBusinessObjectBase
             return getParentDocType().getServiceNamespace(forDisplayPurposes);
         }
         String defaultValue = ConfigContext.getCurrentContextConfig().getServiceNamespace();
-        if ( forDisplayPurposes && ObjectUtils.isNotNull(defaultValue)) {
+        if ( forDisplayPurposes && StringUtils.isNotBlank(defaultValue)) {
             defaultValue += " " + KEWConstants.DOCUMENT_TYPE_SYSTEM_DEFAULT_INDICATOR;
         }
         return defaultValue;

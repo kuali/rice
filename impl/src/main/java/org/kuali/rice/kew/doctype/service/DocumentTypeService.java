@@ -37,6 +37,6 @@ public interface DocumentTypeService extends DocumentTypeQueryService, XmlExport
     public void save(DocumentType documentType); 
     public List findAllCurrentRootDocuments();
     public List findAllCurrent();
-    public List getChildDocumentTypes(DocumentType documentType);
+    public List getChildDocumentTypes(Long documentTypeId);
     public void clearCacheForAttributeUpdate(RuleAttribute ruleAttribute);
 }

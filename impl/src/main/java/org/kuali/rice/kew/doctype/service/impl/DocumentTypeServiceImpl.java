@@ -36,6 +36,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.xml.DocumentTypeXmlParser;
 import org.kuali.rice.kew.xml.export.DocumentTypeXmlExporter;
+import org.kuali.rice.kns.util.ObjectUtils;
 
 
 /**
@@ -189,16 +190,15 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     		DocumentType oldDocumentType = findByName(documentType.getName());
     		// reset the children on the oldDocumentType
     		//oldDocumentType.resetChildren();
+    		Long existingDocTypeId = null;
     		if (oldDocumentType != null) {
-        		Long existingDocTypeId = oldDocumentType.getDocumentTypeId();
+        		existingDocTypeId = oldDocumentType.getDocumentTypeId();
         		if (existingDocTypeId.longValue() > 0) {
-                    // set up the previous current doc type on the new doc type
-                    documentType.setPreviousVersionId(existingDocTypeId);
         		    // set version number on the new doc type using the max version from the database
         		    Integer maxVersionNumber = documentTypeDAO.getMaxVersionNumber(documentType.getName());
         			documentType.setVersion((maxVersionNumber != null) ? new Integer(maxVersionNumber.intValue() + 1) : new Integer(0));
         			oldDocumentType.setCurrentInd(Boolean.FALSE);
-        			LOG.debug("Saving old document type Id " + oldDocumentType.getDocumentTypeId() + " name " + oldDocumentType.getName());
+        			LOG.warn("Saving old document type Id " + oldDocumentType.getDocumentTypeId() + " name '" + oldDocumentType.getName() + "' (current = " + oldDocumentType.getCurrentInd() + ")");
         			save(oldDocumentType, false);
         		}
     		}
@@ -208,15 +208,20 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     		    LOG.error(errorMsg);
     		    throw new RuntimeException(errorMsg);
     		}
-    		documentType.setCurrentInd(Boolean.TRUE);
-
+            // set up the previous current doc type on the new doc type
+            documentType.setPreviousVersionId(existingDocTypeId);
+            documentType.setCurrentInd(Boolean.TRUE);
     		save(documentType, false);
+            LOG.warn("Saved current document type Id " + documentType.getDocumentTypeId() + " name '" + documentType.getName() + "' (current = " + documentType.getCurrentInd() + ")");
     		//attach the children to this new parent.  cloning the children would probably be a better way to go here...
-    		if (documentType.getPreviousVersion() != null) {
-    			for (Iterator iterator = oldDocumentType.getChildrenDocTypes().iterator(); iterator.hasNext();) {
+    		if (ObjectUtils.isNotNull(existingDocTypeId)) {
+    		    // documentType.getPreviousVersion() should not be null at this point
+                for (Iterator iterator = getChildDocumentTypes(existingDocTypeId).iterator(); iterator.hasNext();) {
+//    			for (Iterator iterator = oldDocumentType.getChildrenDocTypes().iterator(); iterator.hasNext();) {
     				DocumentType child = (DocumentType) iterator.next();
     				child.setDocTypeParentId(documentType.getDocumentTypeId());
     				save(child, false);
+    	            LOG.warn("Saved child document type Id " + child.getDocumentTypeId() + " name '" + child.getName() + "' (parent = " + child.getDocTypeParentId() + ", current = " + child.getCurrentInd() + ")");
     			}
     		}
     		// initiate a save of this document type's parent document type, this will force a
@@ -227,6 +232,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     		if (documentType.getDocTypeParentId() != null) {
     			DocumentType parent = getDocumentTypeDAO().findByDocId(documentType.getDocTypeParentId());
     			save(parent, false);
+                LOG.warn("Saved parent document type Id " + parent.getDocumentTypeId() + " name '" + parent.getName() + "' (current = " + parent.getCurrentInd() + ")");
     		}
 
     		// finally, flush the cache and notify the rule cache of the DocumentType change
@@ -316,12 +322,12 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
         return exporter.export(dataSet);
     }
 
-    public List getChildDocumentTypes(DocumentType documentType) {
+    public List getChildDocumentTypes(Long documentTypeId) {
     	List childDocumentTypes = new ArrayList();
-    	List childIds = getDocumentTypeDAO().getChildDocumentTypeIds(documentType.getDocumentTypeId());
+    	List childIds = getDocumentTypeDAO().getChildDocumentTypeIds(documentTypeId);
     	for (Iterator iter = childIds.iterator(); iter.hasNext();) {
-			Long documentTypeId = (Long) iter.next();
-			childDocumentTypes.add(findById(documentTypeId));
+			Long childDocumentTypeId = (Long) iter.next();
+			childDocumentTypes.add(findById(childDocumentTypeId));
 		}
     	return childDocumentTypes;
     }

@@ -29,7 +29,6 @@ import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.postprocessor.PostProcessor;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
-import org.kuali.rice.kew.util.KEWConstants;
 
 
 public class MockDocumentTypeServiceImpl implements DocumentTypeService {
@@ -133,7 +132,7 @@ public class MockDocumentTypeServiceImpl implements DocumentTypeService {
     public List findAllCurrent() {
         return null;
     }
-	public List getChildDocumentTypes(DocumentType documentType) {
+	public List getChildDocumentTypes(Long documentTypeId) {
 		return null;
 	}
 	public DocumentType findByNameIgnoreCache(Long documentTypeId) {

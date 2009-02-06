@@ -112,7 +112,7 @@ public class DocumentTypeXmlExporter implements XmlExporter, XmlConstants {
         		renderer.renderTextElement(docTypeElement, DEFAULT_EXCEPTION_WORKGROUP_NAME, exceptionWorkgroup.getNamespaceCode().trim() + ":" + exceptionWorkgroup.getGroupName().trim());
         	}
         }
-        if (!StringUtils.isBlank(documentType.getUnresolvedDocHandlerUrl())) {
+        if (StringUtils.isNotBlank(documentType.getUnresolvedDocHandlerUrl())) {
             renderer.renderTextElement(docTypeElement, DOC_HANDLER, documentType.getUnresolvedDocHandlerUrl());
         }
         if (!StringUtils.isBlank(documentType.getUnresolvedHelpDefinitionUrl())) {

@@ -40,7 +40,6 @@ import org.apache.struts.upload.FormFile;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.exception.InvalidWorkgroupException;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.group.KimGroup;
@@ -57,6 +56,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.DataDictionary;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.document.Document;
+import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase;
 import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
@@ -1203,10 +1203,13 @@ public class KualiDocumentActionBase extends KualiAction {
 
             // associate note with object now
             noteParent.addNote(tmpNote);
-
+            
             // persist the note if the document is already saved the getObjectId check is to get around a bug with certain documents where
             // "saved" doesn't really persist, if you notice any problems with missing notes check this line
-            if (!documentHeader.getWorkflowDocument().stateIsInitiated()&&StringUtils.isNotEmpty(noteParent.getObjectId())) {
+            //maintenance document BO note should only be saved into table when document is in the PROCESSED workflow status
+            if (!documentHeader.getWorkflowDocument().stateIsInitiated()&&StringUtils.isNotEmpty(noteParent.getObjectId())
+            	&& !(document instanceof MaintenanceDocument && KNSConstants.NoteTypeEnum.BUSINESS_OBJECT_NOTE_TYPE.getCode().equals(tmpNote.getNoteTypeCode()))
+            ) {
                 getNoteService().save(tmpNote);
             }
             // adding the attachment after refresh gets called, since the attachment record doesn't get persisted
@@ -1216,7 +1219,9 @@ public class KualiDocumentActionBase extends KualiAction {
                 tmpNote.addAttachment(attachment);
                 // save again for attachment, note this is because sometimes the attachment is added first to the above then ojb tries to save
                 //without the PK on the attachment I think it is safer then trying to get the sequence manually
-                if (!documentHeader.getWorkflowDocument().stateIsInitiated()&&StringUtils.isNotEmpty(noteParent.getObjectId())) {
+                if (!documentHeader.getWorkflowDocument().stateIsInitiated()&&StringUtils.isNotEmpty(noteParent.getObjectId())
+                	&& !(document instanceof MaintenanceDocument && KNSConstants.NoteTypeEnum.BUSINESS_OBJECT_NOTE_TYPE.getCode().equals(tmpNote.getNoteTypeCode())) 
+                ) {
                     getNoteService().save(tmpNote);
                 }
             }

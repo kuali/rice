@@ -30,6 +30,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
@@ -123,6 +124,9 @@ public class SimulationEngine extends StandardWorkflowEngine {
     			ProcessContext processContext = new ProcessContext(true, nodeInstancesToProcess);
     			while (! nodeInstancesToProcess.isEmpty()) {
     				RouteNodeInstance nodeInstance = (RouteNodeInstance)nodeInstancesToProcess.remove(0);
+    				if ( !nodeInstance.isActive() ) {
+    					continue;
+    				}
     				NodeJotter.jotNodeInstance(context.getDocument(), nodeInstance);
     				context.setNodeInstance(nodeInstance);
     				processContext = processNodeInstance(context, helper);
@@ -472,12 +476,30 @@ public class SimulationEngine extends StandardWorkflowEngine {
 			RouteNode simulationNode = (RouteNode) iterator.next();
 			RouteNodeInstance nodeInstance = helper.getNodeFactory().createRouteNodeInstance(document.getRouteHeaderId(), simulationNode);
 			nodeInstance.setBranch(initialNodeInstance.getBranch());
-			nodeInstance.setActive(true);
+			// only activate the node for simulation if there isn't already a true action request generated
+			if ( !nodeHasExistingActionRequest( context, simulationNode ) ) {
+			    nodeInstance.setActive(true);
+			}
 			currentNodeInstance.addNextNodeInstance(nodeInstance);
 			saveNode(context, currentNodeInstance);
 			currentNodeInstance = nodeInstance;
 		}
     	installSimulationTerminationNode(context, document.getDocumentType(), currentNodeInstance);
+    }
+    
+    private boolean nodeHasExistingActionRequest( RouteContext context, RouteNode routeNode ) {
+        for ( ActionRequestValue ar : context.getDocument().getActionRequests() ) {
+            try {
+                if ( StringUtils.equals( routeNode.getRouteNodeName(), ar.getNodeInstance().getRouteNode().getRouteNodeName() )
+                        || NodeType.fromNode(routeNode).isTypeOf(NodeType.START) ) {
+                    return true;
+                }
+            } catch ( ResourceUnavailableException ex ) {
+                // do nothing
+                LOG.error( "Unable to load node type of the current route node: " + routeNode.getRouteNodeName() + " node type: " + routeNode.getNodeType() );
+            }
+        }
+        return false;
     }
 
     private void installSimulationTerminationNode(RouteContext context, DocumentType documentType, RouteNodeInstance lastNodeInstance) {

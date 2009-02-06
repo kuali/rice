@@ -579,27 +579,30 @@ public class BusinessObjectAuthorizationServiceImpl implements
 		String namespaceCode = null;
 		String componentName = null;
 		String propertyName = null;
-		if (attributeName.contains(".")) {
-			try {
-				permissionDetails = KimCommonUtils
-						.getNamespaceAndComponentSimpleName(PropertyUtils
-								.getPropertyType(businessObject, attributeName
-										.substring(0, attributeName
-												.lastIndexOf("."))));
-			} catch (Exception e) {
-				throw new RuntimeException(
-						"Unable to discover nested business object class: "
-								+ businessObject.getClass() + " : "
-								+ attributeName, e);
-			}
-			permissionDetails.put(KimAttributes.PROPERTY_NAME, attributeName
-					.substring(attributeName.indexOf(".") + 1));
-		} else {
+		// JHK: commenting out for KFSMI-2398 - permission checks need to be done at the level specified
+		// that is, if the parent object specifies the security, that object should be used for the 
+		// component
+//		if (attributeName.contains(".")) {
+//			try {
+//				permissionDetails = KimCommonUtils
+//						.getNamespaceAndComponentSimpleName(PropertyUtils
+//								.getPropertyType(businessObject, attributeName
+//										.substring(0, attributeName
+//												.lastIndexOf("."))));
+//			} catch (Exception e) {
+//				throw new RuntimeException(
+//						"Unable to discover nested business object class: "
+//								+ businessObject.getClass() + " : "
+//								+ attributeName, e);
+//			}
+//			permissionDetails.put(KimAttributes.PROPERTY_NAME, attributeName
+//					.substring(attributeName.indexOf(".") + 1));
+//		} else {
 			permissionDetails = KimCommonUtils
 					.getNamespaceAndComponentSimpleName(businessObject
 							.getClass());
 			permissionDetails.put(KimAttributes.PROPERTY_NAME, attributeName);
-		}
+//		}
 		return permissionDetails;
 	}
 	

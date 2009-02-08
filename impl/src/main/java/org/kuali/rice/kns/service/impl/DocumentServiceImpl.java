@@ -28,6 +28,7 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
+import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.bo.AdHocRouteRecipient;
 import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.bo.Note;
@@ -349,27 +350,35 @@ public class DocumentServiceImpl implements DocumentService {
      * @see org.kuali.rice.kns.service.DocumentService#documentExists(java.lang.String)
      */
     public boolean documentExists(String documentHeaderId) {
-        boolean exists = false;
-        
-
         // validate parameters
         if (StringUtils.isBlank(documentHeaderId)) {
             throw new IllegalArgumentException("invalid (blank) documentHeaderId");
         }
-        if (GlobalVariables.getUserSession() == null) {
-            throw new IllegalStateException("GlobalVariables must be populated with a valid UserSession before a document can be fetched");
-        }
-
-        // look for workflowDocumentHeader, since that supposedly won't break the transaction
-        if (!getWorkflowDocumentService().workflowDocumentExists(documentHeaderId)) {
-            exists = false;
-        }
-        else {
-            // look for docHeaderId, since that fails without breaking the transaction
-            return getDocumentHeaderService().getDocumentHeaderById(documentHeaderId) != null;
-        }
-
-        return exists;
+                
+    	boolean internalUserSession = false;
+    	try {
+	    	// KFSMI-2543 - allowed method to run without a user session so it can be used
+    		// by workflow processes
+	        if (GlobalVariables.getUserSession() == null) {
+	        	internalUserSession = true;
+	        	GlobalVariables.setUserSession(new UserSession(KNSConstants.SYSTEM_USER));
+	        	GlobalVariables.clear();
+	        }
+	
+	        // look for workflowDocumentHeader, since that supposedly won't break the transaction
+	        if (getWorkflowDocumentService().workflowDocumentExists(documentHeaderId)) {
+	            // look for docHeaderId, since that fails without breaking the transaction
+	            return getDocumentHeaderService().getDocumentHeaderById(documentHeaderId) != null;
+	        }
+	
+	        return false;
+    	} finally {
+    		// if a user session was established for this call, clear it our
+    		if ( internalUserSession ) {
+    			GlobalVariables.clear();
+    			GlobalVariables.setUserSession(null);
+    		}
+    	}
     }
 
     /**
@@ -493,23 +502,36 @@ public class DocumentServiceImpl implements DocumentService {
         if (documentHeaderId == null) {
             throw new IllegalArgumentException("invalid (null) documentHeaderId");
         }
-        if (GlobalVariables.getUserSession() == null) {
-            throw new IllegalStateException("GlobalVariables must be populated with a valid UserSession before a document can be fetched");
-        }
+    	boolean internalUserSession = false;
+    	try {
+	    	// KFSMI-2543 - allowed method to run without a user session so it can be used
+    		// by workflow processes
+	        if (GlobalVariables.getUserSession() == null) {
+	        	internalUserSession = true;
+	        	GlobalVariables.setUserSession(new UserSession(KNSConstants.SYSTEM_USER));
+	        	GlobalVariables.clear();
+	        }
 
-        KualiWorkflowDocument workflowDocument = null;
-
-        if ( LOG.isInfoEnabled() ) {
-        	LOG.info("Retrieving doc id: " + documentHeaderId + " from workflow service.");
-        }
-        workflowDocument = getWorkflowDocumentService().createWorkflowDocument(Long.valueOf(documentHeaderId), GlobalVariables.getUserSession().getPerson());
-        GlobalVariables.getUserSession().setWorkflowDocument(workflowDocument);
-
-        Class documentClass = getDocumentClassByTypeName(workflowDocument.getDocumentType());
-
-        // retrieve the Document
-        Document document = getDocumentDao().findByDocumentHeaderId(documentClass, documentHeaderId);
-        return postProcessDocument(documentHeaderId, workflowDocument, document);
+	        KualiWorkflowDocument workflowDocument = null;
+	
+	        if ( LOG.isInfoEnabled() ) {
+	        	LOG.info("Retrieving doc id: " + documentHeaderId + " from workflow service.");
+	        }
+	        workflowDocument = getWorkflowDocumentService().createWorkflowDocument(Long.valueOf(documentHeaderId), GlobalVariables.getUserSession().getPerson());
+	        GlobalVariables.getUserSession().setWorkflowDocument(workflowDocument);
+	
+	        Class documentClass = getDocumentClassByTypeName(workflowDocument.getDocumentType());
+	
+	        // retrieve the Document
+	        Document document = getDocumentDao().findByDocumentHeaderId(documentClass, documentHeaderId);
+	        return postProcessDocument(documentHeaderId, workflowDocument, document);
+    	} finally {
+    		// if a user session was established for this call, clear it out
+    		if ( internalUserSession ) {
+    			GlobalVariables.clear();
+    			GlobalVariables.setUserSession(null);
+    		}
+    	}
     }
     
 	/**
@@ -570,12 +592,7 @@ public class DocumentServiceImpl implements DocumentService {
      * 
      * @see org.kuali.rice.kns.service.DocumentService#getDocumentsByListOfDocumentHeaderIds(java.lang.Class, java.util.List)
      */
-    public List getDocumentsByListOfDocumentHeaderIds(Class clazz, List documentHeaderIds) throws WorkflowException {
-        // validate user session
-        if (GlobalVariables.getUserSession() == null) {
-            throw new IllegalStateException("GlobalVariables must be populated with a valid UserSession before a document can be fetched");
-        }
-
+    public List getDocumentsByListOfDocumentHeaderIds(Class clazz, List documentHeaderIds) throws WorkflowException {   	
         // make sure that the supplied class is of the document type
         if (!Document.class.isAssignableFrom(clazz)) {
             throw new IllegalArgumentException("invalid (non-document) class of " + clazz.getName());
@@ -592,22 +609,38 @@ public class DocumentServiceImpl implements DocumentService {
                 throw new IllegalArgumentException("invalid (blank) documentHeaderId at list index " + index);
             }
         }
-
-        // retrieve all documents that match the document header ids
-        List rawDocuments = getDocumentDao().findByDocumentHeaderIds(clazz, documentHeaderIds);
-
-        // post-process them
-        List documents = new ArrayList();
-        for (Iterator i = rawDocuments.iterator(); i.hasNext();) {
-            Document document = (Document) i.next();
-
-            KualiWorkflowDocument workflowDocument = getWorkflowDocumentService().createWorkflowDocument(Long.valueOf(document.getDocumentNumber()), GlobalVariables.getUserSession().getPerson());
-
-            document = postProcessDocument(document.getDocumentNumber(), workflowDocument, document);
-            documents.add(document);
-        }
-
-        return documents;
+        
+    	boolean internalUserSession = false;
+    	try {
+	    	// KFSMI-2543 - allowed method to run without a user session so it can be used
+    		// by workflow processes
+	        if (GlobalVariables.getUserSession() == null) {
+	        	internalUserSession = true;
+	        	GlobalVariables.setUserSession(new UserSession(KNSConstants.SYSTEM_USER));
+	        	GlobalVariables.clear();
+	        }
+	
+	        // retrieve all documents that match the document header ids
+	        List rawDocuments = getDocumentDao().findByDocumentHeaderIds(clazz, documentHeaderIds);
+	
+	        // post-process them
+	        List documents = new ArrayList();
+	        for (Iterator i = rawDocuments.iterator(); i.hasNext();) {
+	            Document document = (Document) i.next();
+	
+	            KualiWorkflowDocument workflowDocument = getWorkflowDocumentService().createWorkflowDocument(Long.valueOf(document.getDocumentNumber()), GlobalVariables.getUserSession().getPerson());
+	
+	            document = postProcessDocument(document.getDocumentNumber(), workflowDocument, document);
+	            documents.add(document);
+	        }
+	        return documents;
+    	} finally {
+    		// if a user session was established for this call, clear it our
+    		if ( internalUserSession ) {
+    			GlobalVariables.clear();
+    			GlobalVariables.setUserSession(null);
+    		}
+    	}
     }
 
     /* Helper Methods */

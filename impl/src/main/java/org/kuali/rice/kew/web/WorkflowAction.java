@@ -71,46 +71,9 @@ public abstract class WorkflowAction extends DispatchAction {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(WorkflowAction.class);
 
-	/**
-	 * Checks if the user who made the request has a UserSession established
-	 * 
-	 * @param request
-	 *            the HTTPServletRequest object passed in
-	 * @return true if the user session has been established, false otherwise
-	 */
-	private boolean isUserSessionEstablished(HttpServletRequest request) {
-		return (request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY) != null);
-	}
-	
-	private String getKualiSessionId(HttpServletRequest request, HttpServletResponse response) {
-		String kualiSessionId = null;
-		Cookie[] cookies = (Cookie[]) request.getCookies();
-		for (int i = 0; i < cookies.length; i++) {
-			Cookie cookie = cookies[i];
-			if (KNSConstants.KUALI_SESSION_ID.equals(cookie.getName()))
-				kualiSessionId = cookie.getValue();
-		}
-		return kualiSessionId;
-	}
-
-
 	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
         checkAuthorization(form, "");
-        // Add KNS user session information since some KEW code will call into KNS
-//        GlobalVariables.clear();
-        if ( !isUserSessionEstablished(request)) {
-			GlobalVariables.setUserSession(new org.kuali.rice.kns.UserSession(getUserSession(request).getPrincipalName()));
-	        request.getSession().setAttribute(KNSConstants.USER_SESSION_KEY, GlobalVariables.getUserSession());
-			String kualiSessionId = this.getKualiSessionId(request, response);
-			if (kualiSessionId == null) {
-				kualiSessionId = new Guid().toString();
-				response.addCookie(new Cookie(KNSConstants.KUALI_SESSION_ID, kualiSessionId));
-			}
-			GlobalVariables.getUserSession().setKualiSessionId(kualiSessionId);
-        } else {
-			GlobalVariables.setUserSession((org.kuali.rice.kns.UserSession)request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY));
-        }
 	    try {
 			request.setAttribute("Constants", new JSTLConstants(KEWConstants.class));
 			ActionMessages messages = null;

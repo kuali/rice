@@ -192,8 +192,6 @@ public class KNSServiceLocator<T extends Object> {
 	return (KualiModuleService) getService(KUALI_MODULE_SERVICE);
     }
 
-    public static final String KIM_GROUP_SERVICE = "kimGroupService";
-
     public static final String WORKFLOW_DOCUMENT_SERVICE = "workflowDocumentService";
 
     public static WorkflowDocumentService getWorkflowDocumentService() {

@@ -125,27 +125,23 @@
 	<c:set var="authorUniversalIdentifier" value = "${note.authorUniversalIdentifier}" />
 	<c:if test="${kfunc:canViewNoteAttachment(KualiForm.document, attachmentTypeCode)}" >
       <tr>
-          <html:hidden property="${propPrefix}boNote[${status.index}].versionNumber" />
-          <html:hidden property="${propPrefix}boNote[${status.index}].remoteObjectIdentifier" />
-          <html:hidden property="${propPrefix}boNote[${status.index}].noteIdentifier" />
-          <html:hidden property="${propPrefix}boNote[${status.index}].noteTypeCode" />
             <kul:htmlAttributeHeaderCell literalLabel="${status.index + 1}" scope="row"/>
             <td class="datacell center">
-            <html:hidden write="true" property="${propPrefix}boNote[${status.index}].notePostedTimestamp" />
+			<bean:write name="KualiForm" property="${propPrefix}boNote[${status.index}].notePostedTimestamp"/>
             &nbsp;</td>
 
                         <td class="datacell center"><%--<html:hidden write="true" property="${propPrefix}boNote[${status.index}].authorUniversal.name" />--%></td>
 
 <%-- NEED TO ADD THIS TOPIC FIELD TO DATABASE --%>
                         <c:if test="${displayTopicFieldInNotes eq true}">
-                          <td class="datacell center"><html:hidden write="true" property="${propPrefix}boNote[${status.index}].noteTopicText"/></td>
+                          <td class="datacell center">
+                          <bean:write name="KualiForm" property="${propPrefix}boNote[${status.index}].noteTopicText"/></td>
                         </c:if>
 
-                        <td class="datacell center"><html:hidden write="true" property="${propPrefix}boNote[${status.index}].noteText"/></td>
+                        <td class="datacell center"><bean:write name="KualiForm" property="${propPrefix}boNote[${status.index}].noteText"/></td>
 
             <%-- use caution if you rename either of these two variables.  It seems that the properties are not read in sequentially
                  but instead in some other arbitrary way (sorted alphabetically?) and therefore you may end up with a reference to a null authorUniversal object --%>
-                        <html:hidden property="${propPrefix}boNote[${status.index}].authorUniversalIdentifier" />
                         <%--<html:hidden property="${propPrefix}boNote[${status.index}].authorUniversal.principalId" />--%>
 
 <%-- won't work until I add attachment logic to action --%>
@@ -153,22 +149,15 @@
                             <c:choose>
                                 <c:when test="${(!empty note.attachment) and (note.attachment.complete)}">
                                   <td class="datacell center">
-                                    <html:hidden property="${propPrefix}boNote[${status.index}].attachment.noteIdentifier"/>
-
-                                    <html:hidden property="${propPrefix}boNote[${status.index}].attachment.attachmentFileSize"/>
-                                    <html:hidden property="${propPrefix}boNote[${status.index}].attachment.attachmentIdentifier"/>
-                                    <html:hidden property="${propPrefix}boNote[${status.index}].attachment.versionNumber"/>
-                                    <html:hidden property="${propPrefix}boNote[${status.index}].attachment.objectId"/>
-                                    <html:hidden property="${propPrefix}boNote[${status.index}].attachment.attachmentTypeCode"/>
-
+                                    
                                     <c:if test="${allowsNoteAttachments eq true}">
                                       <html:image property="methodToCall.downloadBOAttachment.attachment[${status.index}]" src="${ConfigProperties.kr.externalizable.images.url}clip.gif" title="download attachment" alt="download attachment" style="padding:5px" onclick="excludeSubmitRestriction=true"/>
-                                      <html:hidden write="true" property="${propPrefix}boNote[${status.index}].attachment.attachmentFileName" />
+                                      <bean:write name="KualiForm" property="${propPrefix}boNote[${status.index}].attachment.attachmentFileName"/>
                                       &nbsp;
                                       &nbsp;
                                       <span style="white-space: nowrap">
                                         <kul:fileSize byteSize="${note.attachment.attachmentFileSize}">
-                                            (<c:out value="${fileSize} ${fileSizeUnits}" />, <html:hidden write="true" property="${propPrefix}boNote[${status.index}].attachment.attachmentMimeTypeCode" />)
+                                            (<c:out value="${fileSize} ${fileSizeUnits}" />,  <bean:write name="KualiForm" property="${propPrefix}boNote[${status.index}].attachment.attachmentMimeTypeCode"/>)
                                         </kul:fileSize>
                                       </span>
                                     </c:if>

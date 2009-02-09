@@ -172,6 +172,8 @@ public class ExceptionIncident implements KualiExceptionIncident {
         if(exception instanceof KualiException ){
         	boolean hideIncidentReport = ((KualiException) exception).isHideIncidentReport();
         	map.put(EXCEPTION_HIDE_INCIDENT_REPORT, String.valueOf(hideIncidentReport));
+        }else{
+        	map.put(EXCEPTION_HIDE_INCIDENT_REPORT, String.valueOf(false));
         }
 
         if (LOG.isTraceEnabled()) {

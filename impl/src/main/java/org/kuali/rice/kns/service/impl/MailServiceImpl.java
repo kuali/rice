@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kns.service.impl;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -39,31 +41,22 @@ public class MailServiceImpl implements MailService {
         super();
     }
 
-    private String[] setConverter(Set s) {
-        String[] out = new String[s.size()];
-
-        int x = 0;
-        for (Iterator iter = s.iterator(); iter.hasNext();) {
-            String element = (String) iter.next();
-            out[x] = element;
-            x++;
-        }
-        return out;
-    }
-
     public void sendMessage(MailMessage message) throws InvalidAddressException {
         LOG.debug("sendMessage() started");
 
         // Send email
         SimpleMailMessage smm = new SimpleMailMessage();
-        smm.setTo(setConverter(message.getToAddresses()));
-        smm.setBcc(setConverter(message.getBccAddresses()));
-        smm.setCc(setConverter(message.getCcAddresses()));
+        smm.setTo( (String[])message.getToAddresses().toArray(new String[message.getToAddresses().size()]) );
+        smm.setBcc( (String[])message.getBccAddresses().toArray(new String[message.getBccAddresses().size()]) );
+        smm.setCc( (String[])message.getCcAddresses().toArray(new String[message.getCcAddresses().size()]) );
         smm.setSubject(message.getSubject());
         smm.setText(message.getMessage());
         smm.setFrom(message.getFromAddress());
 
         try {
+        	if ( LOG.isDebugEnabled() ) {
+        		LOG.debug( "About to send message: " + smm.toString() );
+        	}
             mailSender.send(smm);
         }
         catch (MailException e) {

@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.kns.lookup;
 
-import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -35,22 +32,6 @@ import org.kuali.rice.kns.util.KNSConstants;
  */
 public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperServiceImpl {
 
-    /**
-     * Hides the edit/copy links when not valid for the current user.
-     *
-     * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getCustomActionUrls(org.kuali.rice.kns.bo.BusinessObject, java.lang.List)
-     */
-    @Override
-    public List<HtmlData> getCustomActionUrls(BusinessObject businessObject, List pkNames) {
-        return super.getCustomActionUrls(businessObject, pkNames);
-    	//Parameter parm = (Parameter)businessObject;
-        
-        //if ( KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(GlobalVariables.getUserSession().getPerson().getPrincipalId(), org.kuali.rice.kim.util.KimConstants.TEMP_GROUP_NAMESPACE, parm.getParameterWorkgroupName() ) ) {
-        //    return super.getCustomActionUrls(businessObject, pkNames);
-        //} else {
-        //    return super.getEmptyActionUrls();
-        //}
-    }
     @Override
     protected boolean allowsMaintenanceEditAction(BusinessObject businessObject) {
         boolean allowsEdit = false;

@@ -390,7 +390,8 @@ public class KualiRequestProcessor extends RequestProcessor {
 				documentNumber = request.getParameter(KNSConstants.DOC_NUM);
 			}
 
-			if (KNSConstants.SESSION_SCOPE.equalsIgnoreCase(documentWebScope)) {
+			if (KNSConstants.SESSION_SCOPE.equalsIgnoreCase(documentWebScope) ||
+					(form instanceof KualiDocumentFormBase && WebUtils.isDocumentSession(((KualiDocumentFormBase) form).getDocument(), (KualiDocumentFormBase) form))) {
 
 				if (userSession.retrieveObject(docFormKey) != null) {
 					LOG.debug("getDecomentForm KualiDocumentFormBase from session");

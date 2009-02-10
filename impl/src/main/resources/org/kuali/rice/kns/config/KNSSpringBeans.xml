@@ -582,7 +582,13 @@
 			<ref bean="kualiModuleService" />
 		</property>
 	</bean>
-
+<!--
+	<bean id="parameterService" class="org.kuali.rice.kns.service.impl.ParameterServiceImpl">
+		<property name="dataDictionaryService" ref="dataDictionaryService" />
+		<property name="kualiModuleService" ref="kualiModuleService" />
+		<property name="businessObjectService" ref="businessObjectService" />
+	</bean>
+-->
     <bean id="parameterLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" parent="kualiLookupable">
         <property name="lookupableHelperService">
             <bean class="org.kuali.rice.kns.lookup.ParameterLookupableHelperServiceImpl"

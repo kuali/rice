@@ -30,6 +30,7 @@ import javax.persistence.Table;
 
 import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 
 
@@ -59,9 +60,9 @@ public class RuleDelegation extends KewPersistableBusinessObjectBase {
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
 	@JoinColumn(name="DLGN_RULE_BASE_VAL_ID")
 	private RuleBaseValues delegationRuleBaseValues;
-    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="RULE_RSP_ID")
-	private RuleResponsibility ruleResponsibility;
+//    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+//	@JoinColumn(name="RULE_RSP_ID")
+//	private RuleResponsibility ruleResponsibility;
     
     public RuleDelegation() {
     }
@@ -103,12 +104,21 @@ public class RuleDelegation extends KewPersistableBusinessObjectBase {
     public void setRuleDelegationId(Long ruleDelegationId) {
         this.ruleDelegationId = ruleDelegationId;
     }
+    
+    /**
+     * Returns the most recent RuleResponsibility for the responsibility
+     * id on this RuleDelegation.
+     */
     public RuleResponsibility getRuleResponsibility() {
-        return ruleResponsibility;
+    	return KEWServiceLocator.getRuleService().findRuleResponsibility(getResponsibilityId());
     }
-    public void setRuleResponsibility(RuleResponsibility ruleResponsibility) {
-        this.ruleResponsibility = ruleResponsibility;
-    }
+    
+//    public RuleResponsibility getRuleResponsibility() {
+//        return ruleResponsibility;
+//    }
+//    public void setRuleResponsibility(RuleResponsibility ruleResponsibility) {
+//        this.ruleResponsibility = ruleResponsibility;
+//    }
     public Long getResponsibilityId() {
         return responsibilityId;
     }

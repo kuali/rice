@@ -75,6 +75,15 @@ public class KEWConstants {
     public static final String DELEGATION_NONE = null;
     public static final String DELEGATION_PRIMARY = "P";
     public static final String DELEGATION_SECONDARY = "S";
+    
+    public static final String DELEGATION_PRIMARY_LABEL = "PRIMARY";
+    public static final String DELEGATION_SECONDARY_LABEL = "SECONDARY";
+    
+    public static final Map<String, String> DELEGATION_TYPES = new HashMap<String, String>();
+    static {
+    	DELEGATION_TYPES.put(DELEGATION_PRIMARY, DELEGATION_PRIMARY_LABEL);
+    	DELEGATION_TYPES.put(DELEGATION_SECONDARY, DELEGATION_SECONDARY_LABEL);
+    }
 
     public static final String FLEX_RM_NAME = "FRM";
     public static final String DOC_HANDLER_REDIRECT_PAGE = "DocHandler.do";

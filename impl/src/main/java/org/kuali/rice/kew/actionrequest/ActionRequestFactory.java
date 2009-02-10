@@ -65,7 +65,7 @@ public class ActionRequestFactory {
 	private static IdentityHelperService identityHelperService;
 	private static IdentityManagementService identityManagementService;
 	private static ActionRequestService actionRequestService;
-
+	
 	private DocumentRouteHeaderValue document;
 	private RouteNodeInstance routeNode;
 	private List<ActionRequestValue> requestGraphs = new ArrayList<ActionRequestValue>();
@@ -319,10 +319,10 @@ public class ActionRequestFactory {
     /**
      * Generates an ActionRequest graph for the given KIM Responsibilities.  This graph includes any associated delegations.
      */
-    public ActionRequestValue addRoleResponsibilityRequest(List<ResponsibilityActionInfo> responsibilities, String approvePolicy) {
+    public void addRoleResponsibilityRequest(List<ResponsibilityActionInfo> responsibilities, String approvePolicy) {
     	if (responsibilities == null || responsibilities.isEmpty()) {
     		LOG.warn("Didn't create action requests for action request description because no responsibilities were defined.");
-    		return null;
+    		return;
     	}
     	// it's assumed the that all in the list have the same action type code, priority number, etc.
     	String actionTypeCode = responsibilities.get(0).getActionTypeCode();
@@ -335,16 +335,17 @@ public class ActionRequestFactory {
     	StringBuffer parentAnnotation = null;
     	if ( responsibilities.size() > 1 ) {
 	    	requestGraph = createActionRequest(
-	    	        actionTypeCode,
-	    	        priority,
-	    	        roleRecipient,
-	    	        "", // description
-	    	        KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID,
-	    	        ignorePrevious,
-	    	        approvePolicy,
+	    	        actionTypeCode, 
+	    	        priority, 
+	    	        roleRecipient, 
+	    	        "", // description 
+	    	        KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, 
+	    	        ignorePrevious, 
+	    	        approvePolicy, 
 	    	        null, // ruleId
 	    	        null );// annotation
-	    	parentAnnotation = new StringBuffer();
+	    	requestGraphs.add(requestGraph);
+	    	parentAnnotation = new StringBuffer(); 
     	}
     	StringBuffer annotation = new StringBuffer();
     	for (ResponsibilityActionInfo responsibility : responsibilities) {
@@ -357,7 +358,7 @@ public class ActionRequestFactory {
     		annotation.append( role.getNamespaceCode() ).append( ' ' ).append( role.getRoleName() ).append( ' ' );
     		AttributeSet qualifier = responsibility.getQualifier();
     		if ( qualifier != null ) {
-	    		for ( String key : qualifier.keySet() ) {
+	    		for ( String key : qualifier.keySet() ) {	    		    
 //	        		annotation.append( '\n' );
 //	        		annotation.append( key ).append( '=' ).append( qualifier.get(key) );
 	        		annotation.append( qualifier.get( key ) ).append( ' ' );
@@ -371,13 +372,13 @@ public class ActionRequestFactory {
 				throw new RiceRuntimeException("Failed to identify a group or principal on the given ResponsibilityResolutionInfo:" + responsibility);
 			}
 			ActionRequestValue request = createActionRequest(
-			        responsibility.getActionTypeCode(),
-			        responsibility.getPriorityNumber(),
-			        roleRecipient,
+			        responsibility.getActionTypeCode(), 
+			        responsibility.getPriorityNumber(), 
+			        roleRecipient, 
 			        responsibility.getResponsibilityName(), // description
-			        new Long(responsibility.getResponsibilityId()),
-			        responsibility.isIgnorePrevious(),
-			        approvePolicy,
+			        new Long(responsibility.getResponsibilityId()), 
+			        responsibility.isIgnorePrevious(), 
+			        approvePolicy, 
 			        null, // ruleId
 			        annotation.toString());
 			// if there is only a single request, don't create the nesting structure
@@ -387,29 +388,21 @@ public class ActionRequestFactory {
 				requestGraph.getChildrenRequests().add(request);
 				parentAnnotation.append( annotation ).append( " -- " );
 			} else {
-				// the request graph == null. so the next call fails on relate to root.
-				//TODO: Not sure what to do about this
+				requestGraphs.add(request);
 				generateRoleResponsibilityDelegationRequests(responsibility, request);
-				requestGraph = request;
 			}
 	    }
     	if ( responsibilities.size() > 1 ) {
 	    	requestGraph.setAnnotation( parentAnnotation.toString() );
     	}
-    	requestGraphs.add(requestGraph);
-    	return requestGraph;
     }
 
     private void generateRoleResponsibilityDelegationRequests(ResponsibilityActionInfo responsibility, ActionRequestValue parentRequest) {
     	List<DelegateInfo> delegates = responsibility.getDelegates();
     	for (DelegateInfo delegate : delegates) {
     		Recipient recipient = null;
-    		/*
-    		 * Changed to reflect the code in RoleServiceImple::addDelegateInformation
-    		 */
     		boolean isPrincipal = delegate.getMemberTypeCode().equals(KimRole.PRINCIPAL_MEMBER_TYPE);
-    		boolean isGroup = delegate.getMemberTypeCode().equals(KimRole.GROUP_MEMBER_TYPE);
-
+            boolean isGroup = delegate.getMemberTypeCode().equals(KimRole.GROUP_MEMBER_TYPE);
     		if (isPrincipal) {
     			recipient = new KimPrincipalRecipient(delegate.getMemberId());
     		} else if (isGroup) {
@@ -474,11 +467,9 @@ public class ActionRequestFactory {
     }
 
     public ActionRequestValue addDelegationRequest(ActionRequestValue parentRequest, Recipient recipient, Long responsibilityId, Boolean ignorePrevious, String delegationType, String description, Long ruleId) {
-    	/* TODO: This if statement was breaking delegate routing.  How will it affect other routing by removing it?
     	if (! relatedToRoot(parentRequest)) {
     		throw new WorkflowRuntimeException("The parent request is not related to any request managed by this factory");
     	}
-    	*/
     	ActionRequestValue delegationRequest = createActionRequest(parentRequest.getActionRequested(), parentRequest.getPriority(), recipient, description, responsibilityId, ignorePrevious, null, ruleId, null);
     	delegationRequest.setDelegationType(delegationType);
     	parentRequest.getChildrenRequests().add(delegationRequest);

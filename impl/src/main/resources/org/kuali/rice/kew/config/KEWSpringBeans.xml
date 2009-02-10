@@ -727,6 +727,7 @@
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleBaseValues.xml</value>
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/PersonRuleResponsibility.xml</value>
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/GroupRuleResponsibility.xml</value>
+			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleDelegation.xml</value>
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/EDocLiteAssociation.xml</value>
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/EDocLiteDefinition.xml</value>
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/EDocLiteStyle.xml</value>
@@ -735,6 +736,7 @@
               	<value>classpath:org/kuali/rice/kew/bo/datadictionary/DocumentRouteHeaderValue.xml</value>
                 <value>classpath:org/kuali/rice/kew/document/datadictionary/DocumentTypeMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/kew/document/datadictionary/RoutingRuleMaintenanceDocument.xml</value>
+                <value>classpath:org/kuali/rice/kew/document/datadictionary/DelegationRoutingRuleMaintenanceDocument.xml</value>
             </list>
 		</property>
         <property name="packagePrefixes">

@@ -393,7 +393,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 			delegation.setDelegateRuleId(null);
 			delegation.setVersionNumber(null);
 			delegation.setRuleDelegationId(null);
-			delegation.setRuleResponsibility(this);
+			//delegation.setRuleResponsibility(this);
 			delegation.setResponsibilityId(null);
 
 			RuleBaseValues rule = delegation.getDelegationRuleBaseValues();

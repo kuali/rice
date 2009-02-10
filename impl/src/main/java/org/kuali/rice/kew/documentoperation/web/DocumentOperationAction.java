@@ -69,13 +69,11 @@ import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.web.WorkflowAction;
+import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.web.struts.action.KualiAction;
-import org.kuali.rice.kns.web.struts.action.KualiLookupAction;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
 
@@ -84,7 +82,7 @@ import org.kuali.rice.ksb.messaging.service.KSBXMLService;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class DocumentOperationAction extends KualiAction {
+public class DocumentOperationAction extends KewKualiAction {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentOperationAction.class);
 	private static final String DEFAULT_LOG_MSG = "Admin change via document operation";
 
@@ -787,14 +785,6 @@ public class DocumentOperationAction extends KualiAction {
 			throw new WorkflowRuntimeException(e);
 		}
 	}
-
-	@Override 
-	protected String getReturnLocation(HttpServletRequest request, ActionMapping mapping) 
-    {
-    	String mappingPath = mapping.getPath();
-    	String basePath = getBasePath(request);
-        return basePath + KEWConstants.WEBAPP_DIRECTORY + mappingPath + ".do";
-    }
 
 	public ActionForward queueActionInvocation(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		try {

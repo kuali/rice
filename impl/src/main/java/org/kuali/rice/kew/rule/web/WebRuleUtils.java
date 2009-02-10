@@ -19,10 +19,18 @@ package org.kuali.rice.kew.rule.web;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang.ArrayUtils;
+import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.RuleResponsibility;
+import org.kuali.rice.kew.rule.bo.RuleTemplate;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kns.document.MaintenanceDocument;
 
 
 /**
@@ -32,6 +40,10 @@ import org.kuali.rice.kew.rule.RuleResponsibility;
  */
 public class WebRuleUtils {
 
+	private static final String RULE_TEMPLATE_ID_PARAM = "ruleCreationValues.ruleTemplateId";
+	private static final String RULE_TEMPLATE_NAME_PARAM = "ruleCreationValues.ruleTemplateName";
+	private static final String DOCUMENT_TYPE_NAME_PARAM = "ruleCreationValues.docTypeName";
+	
 	/**
 	 * Copies the existing rule onto the current document.  This is used within the web-based rule GUI to make a
 	 * copy of a rule on the existing document.  Essentially, this method makes a copy of the rule and all
@@ -114,4 +126,52 @@ public class WebRuleUtils {
     	return newRule;
     }
 
+    public static void validateRuleTemplateAndDocumentType(RuleBaseValues oldRule, RuleBaseValues newRule, Map<String, String[]> parameters) {
+		String[] ruleTemplateIds = parameters.get(RULE_TEMPLATE_ID_PARAM);
+		String[] ruleTemplateNames = parameters.get(RULE_TEMPLATE_NAME_PARAM);
+		String[] documentTypeNames = parameters.get(DOCUMENT_TYPE_NAME_PARAM);
+		if (ArrayUtils.isEmpty(ruleTemplateIds) && ArrayUtils.isEmpty(ruleTemplateNames)) {
+			throw new RiceRuntimeException("Rule document must be initiated with a valid rule template id or rule template name.");
+		}
+		if (ArrayUtils.isEmpty(documentTypeNames)) {
+			throw new RiceRuntimeException("Rule document must be initiated with a valid document type name.");
+		}
+		RuleTemplate ruleTemplate = null;
+		if (!ArrayUtils.isEmpty(ruleTemplateIds)) {
+			String ruleTemplateId = ruleTemplateIds[0];
+			ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateId(new Long(ruleTemplateId));
+			if (ruleTemplate == null) {
+				throw new RiceRuntimeException("Failed to load rule template with id '" + ruleTemplateId + "'");
+			}
+		}
+		if (ruleTemplate == null) {
+			String ruleTemplateName = ruleTemplateNames[0];
+			ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(ruleTemplateName);
+			if (ruleTemplate == null) {
+				throw new RiceRuntimeException("Failed to load rule template with name '" + ruleTemplateName + "'");
+			}
+		}
+		String documentTypeName = documentTypeNames[0];
+		DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
+		if (documentType == null) {
+			throw new RiceRuntimeException("Failed to locate document type with name '" + documentTypeName + "'");
+		}
+		
+		// it appears that there is always an old maintainable, even in the case of a new document creation,
+		// if we don't initialize both the old and new versions we get errors during meshSections
+		initializeRuleAfterNew(oldRule, ruleTemplate, documentTypeName);
+		initializeRuleAfterNew(newRule, ruleTemplate, documentTypeName);
+	}
+    
+	private static void initializeRuleAfterNew(RuleBaseValues rule, RuleTemplate ruleTemplate, String documentTypeName) {
+		rule.setRuleTemplate(ruleTemplate);
+		rule.setRuleTemplateId(ruleTemplate.getRuleTemplateId());
+		rule.setDocTypeName(documentTypeName);
+	}
+
+	public static void establishDefaultRuleValues(RuleBaseValues rule) {
+		rule.setActiveInd(true);
+	}
+    
+    
 }

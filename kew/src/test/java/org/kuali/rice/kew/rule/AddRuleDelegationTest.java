@@ -357,7 +357,7 @@ public class AddRuleDelegationTest extends KEWTestCase {
 		// delegate rule and the delegat responsibility
 		RuleDelegation ruleDelegation = ruleForm.getRuleDelegation();
 		ruleDelegation.setDelegationRuleBaseValues(delegateRule);
-		ruleDelegation.setRuleResponsibility(delegateResponsibility);
+		//ruleDelegation.setRuleResponsibility(delegateResponsibility);
 
 		// if the delegateRule itself has a previous version, then iterate
 		// through the rules associated with the delegate responsibility and

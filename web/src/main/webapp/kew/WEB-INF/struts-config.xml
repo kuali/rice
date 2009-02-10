@@ -10,17 +10,13 @@
         <form-bean name="KualiExceptionIncidentForm" type="org.kuali.rice.kns.web.struts.form.KualiExceptionIncidentForm" />
     	<!-- End required KNS forms -->
 	    <form-bean name="RuleForm" type="org.kuali.rice.kew.rule.web.RuleForm" />
+	    <form-bean name="DelegateRuleForm" type="org.kuali.rice.kew.rule.web.DelegateRuleForm" />
 	    <form-bean name="ActionListFormNew" type="org.kuali.rice.kew.actionlist.web.ActionListForm" />
 	    <form-bean name="ActionListFilterFormNew" type="org.kuali.rice.kew.actionlist.web.ActionListFilterForm" />
 	    <form-bean name="DocumentOperationForm" type="org.kuali.rice.kew.documentoperation.web.DocumentOperationForm" />
     </form-beans>
 
     <global-exceptions>
-       	<!-- Begin required KNS exceptions
-        <exception type="org.kuali.rice.kns.exception.UnknownDocumentIdException" key="error.document.noLongerExistsInKuali" path="/kr/WEB-INF/jsp/Exception.jsp" />
-        <exception type="org.kuali.rice.kns.exception.FileUploadLimitExceededException" key="error.document.attachmentMaximumFileSizeExceeded" path="/kr/WEB-INF/jsp/Exception.jsp" />
-        <exception type="java.lang.Throwable" handler="org.kuali.rice.kns.web.struts.pojo.StrutsExceptionIncidentHandler" key="na"/>
-       	End required KNS exceptions -->
        	<exception type="org.kuali.rice.kns.exception.KualiException" handler="org.kuali.rice.kns.web.struts.pojo.StrutsExceptionIncidentHandler" key="na"/>
     </global-exceptions>
 
@@ -64,11 +60,6 @@
             <forward name="basic" path="/../kr/WEB-INF/jsp/TextArea.jsp"/>
         </action>
        	<!-- End required KNS mappings -->
-		<action path="/Rule" name="RuleForm" input="/WEB-INF/jsp/rule/RuleInit.jsp" type="org.kuali.rice.kew.rule.web.RuleAction"
-			scope="session" parameter="methodToCall" validate="true" attribute="KualiForm">
-			<forward name="basic" path="/WEB-INF/jsp/rule/RuleInit.jsp" />
-			<forward name="init" path="/WEB-INF/jsp/rule/RuleInit.jsp" />
-		</action>
 
       <action path="/ActionList" scope="request" validate="false" parameter="methodToCall"
         type="org.kuali.rice.kew.actionlist.web.ActionListAction" name="ActionListFormNew"
@@ -98,6 +89,14 @@
 	      <forward name="requiredStateError" path="/WEB-INF/jsp/documentoperation/DocumentOperationSummary.jsp"/>
           <forward name="finalStateError" path="/WEB-INF/jsp/documentoperation/DocumentOperationSummary.jsp"/>
       </action>
+      
+      <action path="/DelegateRule" name="DelegateRuleForm" input="/WEB-INF/jsp/rule/DelegateRuleInit.jsp" type="org.kuali.rice.kew.rule.web.DelegateRuleAction"
+			scope="session" parameter="methodToCall" validate="true" attribute="KualiForm">
+			<forward name="basic" path="/WEB-INF/jsp/rule/DelegateRuleInit.jsp" />
+			<forward name="init" path="/WEB-INF/jsp/rule/DelegateRuleInit.jsp" />
+	  </action>
+      
+      
     </action-mappings>
 
 

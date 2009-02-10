@@ -580,7 +580,7 @@ public class Rule2Action extends WorkflowAction {
                 if (responsibility.isShowDelegations()) {
                     for (Iterator iterator1 = responsibility.getDelegationRules().iterator(); iterator1.hasNext();) {
                         RuleDelegation delegation = (RuleDelegation) iterator1.next();
-                        delegation.setRuleResponsibility(responsibility);
+                        //delegation.setRuleResponsibility(responsibility);
                         ((WebRuleBaseValues) delegation.getDelegationRuleBaseValues()).materialize();
                         for (Iterator iterator2 = delegation.getDelegationRuleBaseValues().getResponsibilities().iterator(); iterator2.hasNext();) {
                             RuleResponsibility responsibilityDelegate = (RuleResponsibility) iterator2.next();

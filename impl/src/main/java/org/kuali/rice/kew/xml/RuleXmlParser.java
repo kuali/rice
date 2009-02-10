@@ -432,7 +432,7 @@ public class RuleXmlParser implements XmlConstants {
         }
         RuleDelegation ruleDelegation = new RuleDelegation();
         ruleDelegation.setDelegationType(delegationType);
-        ruleDelegation.setRuleResponsibility(responsibility);
+        //ruleDelegation.setRuleResponsibility(responsibility);
         ruleDelegation.setDelegationRuleBaseValues(parseAndUpdateRule(element, ruleDelegation));
         return ruleDelegation;
     }

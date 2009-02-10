@@ -555,11 +555,12 @@
     <reference-descriptor class-ref="org.kuali.rice.kew.rule.RuleBaseValues" name="delegationRuleBaseValues" auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="delegateRuleId" />
     </reference-descriptor>
-
+<!-- 
     <reference-descriptor class-ref="org.kuali.rice.kew.rule.RuleResponsibility" name="ruleResponsibility"
     	auto-delete="false" auto-retrieve="true" auto-update="false">
     	<foreignkey field-ref="ruleResponsibilityId" />
     </reference-descriptor>
+     -->
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kew.rule.RuleResponsibility" table="KREW_RULE_RSP_T">

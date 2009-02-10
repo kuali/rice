@@ -446,7 +446,7 @@ public class DelegateRule2Action extends WorkflowAction {
 
         RuleDelegation ruleDelegation = ruleForm.getRuleDelegation();
         ruleDelegation.setDelegationRuleBaseValues(delegateRule);
-        ruleDelegation.setRuleResponsibility(delegateResponsibility);
+        //ruleDelegation.setRuleResponsibility(delegateResponsibility);
 
         if (delegateRule.getPreviousVersionId() != null) {
             for (Iterator iter = delegateResponsibility.getDelegationRules().iterator(); iter.hasNext();) {

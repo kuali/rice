@@ -28,5 +28,6 @@
 <%@ taglib uri="/kr/WEB-INF/tlds/kuali-func.tld" prefix="kfunc"%>
 <%@ taglib tagdir="/WEB-INF/tags/kr" prefix="kul"%>
 <%@ taglib tagdir="/WEB-INF/tags/kim" prefix="kim"%>
+<%@ taglib tagdir="/WEB-INF/tags/kew" prefix="kew"%>
 <%@ taglib tagdir="/WEB-INF/tags/kr/dd" prefix="dd"%>
 

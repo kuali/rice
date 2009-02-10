@@ -572,7 +572,7 @@ public class RoleServiceImpl implements RoleService {
 //				KimDelegationImpl delegation = delegations.get( di.getDelegationId() );
 				// get the principals and groups for this delegation
 				// purge any entries that do not match per the type service
-				if ( delegationTypeService != null || delegationTypeService.doesDelegationQualifierMatchQualification( qualification, di.getQualifier() )) {
+				if ( delegationTypeService != null && delegationTypeService.doesDelegationQualifierMatchQualification( qualification, di.getQualifier() )) {
 					// check if a role type which needs to be resolved
 					if ( di.getMemberTypeCode().equals( KimRole.ROLE_MEMBER_TYPE )) {
             			// loop over delegation roles and extract the role IDs where the qualifications match

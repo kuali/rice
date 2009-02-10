@@ -38,6 +38,7 @@ import org.kuali.rice.kew.rule.WorkflowAttribute;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
+import org.kuali.rice.kew.rule.web.WebRuleUtils;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -61,11 +62,7 @@ import org.kuali.rice.kns.web.ui.Section;
 public class RoutingRuleMaintainable extends KualiMaintainableImpl {
 
     private static final long serialVersionUID = -5920808902137192662L;
-
-	private static final String RULE_TEMPLATE_ID_PARAM = "ruleCreationValues.ruleTemplateId";
-	private static final String RULE_TEMPLATE_NAME_PARAM = "ruleCreationValues.ruleTemplateName";
-	private static final String DOCUMENT_TYPE_NAME_PARAM = "ruleCreationValues.docTypeName";
-
+    
 	private static final String RULE_ATTRIBUTES_SECTION_ID = "RuleAttributes";
 	private static final String ID_SEPARATOR = ":";
 
@@ -147,80 +144,27 @@ public class RoutingRuleMaintainable extends KualiMaintainableImpl {
 	}
 	
 	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#processAfterNew(org.kuali.rice.kns.document.MaintenanceDocument, java.util.Map)
+	 * On creation of a new rule document, we must validate that a rule template and document type are set. 
 	 */
 	@Override
 	public void processAfterNew(MaintenanceDocument document,
 			Map<String, String[]> parameters) {
-		validateRuleTemplateAndDocumentType(document, parameters);
-		establishDefaultValues(document);
+		WebRuleUtils.validateRuleTemplateAndDocumentType(getOldRule(document), getNewRule(document), parameters);
+		WebRuleUtils.establishDefaultRuleValues(getNewRule(document));
+		getNewRule(document).setRouteHeaderId(new Long(document.getDocumentHeader().getDocumentNumber()));
 	}
 	
 	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#isGenerateDefaultValues()
+	 * This is a hack to get around the fact that when a document is first created, this value is
+ 	 * true which causes issues if you want to be able to initialize fields on  the document using
+ 	 * request parameters.  See SectionBridge.toSection for the "if" block where it populates
+ 	 * Field.propertyValue to see why this causes problems
 	 */
 	@Override
-	public boolean isGenerateDefaultValues() {
-		// This is a hack to get around the fact that when a document is first created, this value is
-		// true which causes issues if you want to be able to initialize fields on  the document using
-		// request parameters.  See SectionBridge.toSection for the "if" block where it populates
-		// Field.propertyValue to see why this causes problems
+	public boolean isGenerateDefaultValues() {		
 		return false;
 	}
-	
-	protected void establishDefaultValues(MaintenanceDocument document) {
-		RuleBaseValues rule = getNewRule(document);
-		rule.setActiveInd(true);
-		rule.setRouteHeaderId(new Long(document.getDocumentHeader().getDocumentNumber()));
-	}
-	
-	protected void validateRuleTemplateAndDocumentType(MaintenanceDocument document, Map<String, String[]> parameters) {
-		String[] ruleTemplateIds = parameters.get(RULE_TEMPLATE_ID_PARAM);
-		String[] ruleTemplateNames = parameters.get(RULE_TEMPLATE_NAME_PARAM);
-		String[] documentTypeNames = parameters.get(DOCUMENT_TYPE_NAME_PARAM);
-		if (ArrayUtils.isEmpty(ruleTemplateIds) && ArrayUtils.isEmpty(ruleTemplateNames)) {
-			throw new RiceRuntimeException("Rule document must be initiated with a valid rule template id or rule template name.");
-		}
-		if (ArrayUtils.isEmpty(documentTypeNames)) {
-			throw new RiceRuntimeException("Rule document must be initiated with a valid document type name.");
-		}
-		RuleTemplate ruleTemplate = null;
-		if (!ArrayUtils.isEmpty(ruleTemplateIds)) {
-			String ruleTemplateId = ruleTemplateIds[0];
-			ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateId(new Long(ruleTemplateId));
-			if (ruleTemplate == null) {
-				throw new RiceRuntimeException("Failed to load rule template with id '" + ruleTemplateId + "'");
-			}
-		}
-		if (ruleTemplate == null) {
-			String ruleTemplateName = ruleTemplateNames[0];
-			ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(ruleTemplateName);
-			if (ruleTemplate == null) {
-				throw new RiceRuntimeException("Failed to load rule template with name '" + ruleTemplateName + "'");
-			}
-		}
-		String documentTypeName = documentTypeNames[0];
-		DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
-		if (documentType == null) {
-			throw new RiceRuntimeException("Failed to locate document type with name '" + documentTypeName + "'");
-		}
-		
-		// it appears that there is always an old maintainable, even in the case of a new document creation,
-		// if we don't initialize both the old and new versions we get errors during meshSections
-		initializeRuleAfterNew(getOldRule(document), ruleTemplate, documentTypeName);
-		initializeRuleAfterNew(getNewRule(document), ruleTemplate, documentTypeName);
-	}
-	
-	protected void initializeRuleAfterNew(RuleBaseValues rule, RuleTemplate ruleTemplate, String documentTypeName) {
-		rule.setRuleTemplate(ruleTemplate);
-		rule.setRuleTemplateId(ruleTemplate.getRuleTemplateId());
-		rule.setDocTypeName(documentTypeName);
-	}
-	
+			
     /**
      * This is a complete override which does not call into
      * {@link KualiMaintainableImpl}. This method calls
@@ -362,8 +306,30 @@ public class RoutingRuleMaintainable extends KualiMaintainableImpl {
 	
     @Override
     public void processAfterCopy(MaintenanceDocument document, Map<String, String[]> parameters) {
-    	// TODO implement this for copy, will likely be similar to processAfterEdit
+    	populateForCopyOrEdit(document);
+    	clearKeysForCopy(document);
+    	getNewRule(document).setRouteHeaderId(new Long(document.getDocumentHeader().getDocumentNumber()));
         super.processAfterCopy(document, parameters);
+    }
+    
+    protected void clearKeysForCopy(MaintenanceDocument document) {
+    	RuleBaseValues rule = getNewRule(document);
+    	rule.setRuleBaseValuesId(null);
+    	rule.setPreviousVersionId(null);
+    	rule.setPreviousVersion(null);
+    	for (PersonRuleResponsibility responsibility : rule.getPersonResponsibilities()) {
+    		clearResponsibilityKeys(responsibility);
+    	}
+    	for (GroupRuleResponsibility responsibility : rule.getGroupResponsibilities()) {
+    		clearResponsibilityKeys(responsibility);
+    	}
+    	// TODO - add roles
+    }
+    
+    private void clearResponsibilityKeys(RuleResponsibility responsibility) {
+		responsibility.setResponsibilityId(null);
+		responsibility.setRuleResponsibilityKey(null);
+		responsibility.setRuleBaseValuesId(null);
     }
 
 	@Override
@@ -372,19 +338,20 @@ public class RoutingRuleMaintainable extends KualiMaintainableImpl {
 		if (!getOldRule(document).getCurrentInd()) {
 			throw new RiceRuntimeException("Cannot edit a non-current version of a rule.");
 		}
-		populateForEdit(document);
+		populateForCopyOrEdit(document);
+		getNewRule(document).setRouteHeaderId(new Long(document.getDocumentHeader().getDocumentNumber()));
 		super.processAfterEdit(document, parameters);
 	}
 
-	protected void populateForEdit(MaintenanceDocument document) {
+	protected void populateForCopyOrEdit(MaintenanceDocument document) {
 		RuleBaseValues oldRule = getOldRule(document);
 		RuleBaseValues newRule = getNewRule(document);
-		
-		// let's establish the previous version relationship
-		newRule.setPreviousVersionId(oldRule.getRuleBaseValuesId());
-		
 		populateRuleMaintenanceFields(oldRule);
 		populateRuleMaintenanceFields(newRule);
+	}
+	
+	protected void establishPreviousVersion(RuleBaseValues oldRule, RuleBaseValues newRule) {
+		newRule.setPreviousVersionId(oldRule.getRuleBaseValuesId());
 	}
 	
 	/**

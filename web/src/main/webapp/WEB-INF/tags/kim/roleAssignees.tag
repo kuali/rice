@@ -153,7 +153,7 @@ function changeMemberTypeCode(){
 	        <c:if test="${fn:length(member.roleRspActions) > 0}">	
     			    <tr>
 	              <td colspan="7" style="padding:0px;">
-	              	<kim:responsibilityActions roleIdx="${status.index}" mbrIdx="0" />
+	              	<kim:responsibilityActions mbrIdx="${statusMember.index}" />
 		          </td>
 		        </tr>
 			</c:if>	 

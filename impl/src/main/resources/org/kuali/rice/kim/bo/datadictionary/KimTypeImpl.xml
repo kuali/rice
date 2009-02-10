@@ -106,19 +106,11 @@
 	</bean>
 
 	<bean id="KimTypeImpl-namespaceCode" parent="KimTypeImpl-namespaceCode-parentBean" />
-	<bean id="KimTypeImpl-namespaceCode-parentBean" abstract="true" parent="AttributeDefinition" >
+	<bean id="KimTypeImpl-namespaceCode-parentBean" abstract="true" parent="Parameter-parameterNamespaceCode" >
 		<property name="name" value="namespaceCode" />
 		<property name="forceUppercase" value="false" />
 		<property name="label" value="Namespace Code" />
 		<property name="shortLabel" value="Nmspc Cd" />
-		<property name="maxLength" value="40" />
-		<property name="validationPattern" >
-			<bean parent="AlphaNumericValidationPattern" />
-		</property>
-		<property name="control" >
-			<bean parent="TextControlDefinition"
-				p:size="10" />
-		</property>
 		<property name="summary" value="Nmspc Cd" />
 		<property name="description" value="Nmspc Cd" />
 	</bean>

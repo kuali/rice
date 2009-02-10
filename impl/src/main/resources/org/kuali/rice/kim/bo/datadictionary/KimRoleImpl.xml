@@ -88,15 +88,12 @@
   
   
   <bean id="KimRoleImpl-namespaceCode" parent="KimRoleImpl-namespaceCode-parentBean" />
-  <bean id="KimRoleImpl-namespaceCode-parentBean" parent="AttributeDefinition" abstract="true"
+  <bean id="KimRoleImpl-namespaceCode-parentBean" parent="KimTypeImpl-namespaceCode" abstract="true"
         p:name="namespaceCode"
         p:label="Role Namespace"
         p:shortLabel="Role Namespace"
-        p:maxLength="40"
-        p:required="false" >
-    <property name="control" >
-      <bean parent="TextControlDefinition" p:size="10" />
-    </property>
+        p:required="false" 
+        p:maxLength="100">
   </bean>
 
   <bean id="KimRoleImpl-active" parent="KimRoleImpl-active-parentBean" />

@@ -223,7 +223,7 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 		KimDocumentRoleMember member = new KimDocumentRoleMember();
 		for(String key : getDefinitions().keySet()) {
         	KimDocumentRoleQualifier qualifier = new KimDocumentRoleQualifier();
-        	setAttrDefnIdForQualifier(qualifier, getDefinitions().get(key));
+        	qualifier.setKimAttrDefnId(getKimAttributeDefnId(getDefinitions().get(key)));
         	member.getQualifiers().add(qualifier);
         }
        	setupMemberRspActions(member);
@@ -270,17 +270,14 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
     	}        	
     }
     
-    private void setAttrDefnIdForQualifier(KimDocumentRoleQualifier qualifier,AttributeDefinition definition) {
+    public String getKimAttributeDefnId(AttributeDefinition definition){
     	if (definition instanceof KimDataDictionaryAttributeDefinition) {
-    		qualifier.setKimAttrDefnId(((KimDataDictionaryAttributeDefinition)definition).getKimAttrDefnId());
-    		//qualifier.refreshReferenceObject("kimAttribute");
+    		return ((KimDataDictionaryAttributeDefinition)definition).getKimAttrDefnId();
     	} else {
-    		qualifier.setKimAttrDefnId(((KimNonDataDictionaryAttributeDefinition)definition).getKimAttrDefnId());
-    		//qualifier.refreshReferenceObject("kimAttribute");
-
+    		return ((KimNonDataDictionaryAttributeDefinition)definition).getKimAttrDefnId();
     	}
     }
-
+    
     private void setAttrDefnIdForDelMemberQualifier(RoleDocumentDelegationMemberQualifier qualifier,AttributeDefinition definition) {
     	if (definition instanceof KimDataDictionaryAttributeDefinition) {
     		qualifier.setKimAttrDefnId(((KimDataDictionaryAttributeDefinition)definition).getKimAttrDefnId());

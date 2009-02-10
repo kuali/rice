@@ -13,6 +13,7 @@
          	<kul:htmlAttributeHeaderCell attributeEntry="${docRoleRspActionAttributes.actionPolicyCode}"  align="center" />
          	<kul:htmlAttributeHeaderCell attributeEntry="${docRoleRspActionAttributes.ignorePrevious}"  align="center" />
        	</tr>
+       	<c:set var="roleRspAction" value="${KualiForm.document.responsibilities[responsibilityIdx].roleRspAction }" />
       	<tr>	
 			<td>
 				<div align="center">

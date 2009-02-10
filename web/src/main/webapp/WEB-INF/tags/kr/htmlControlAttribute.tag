@@ -145,8 +145,10 @@
          <c:if test="${empty extraReadOnlyProperty}">
          <c:choose>
 			<c:when test="${sessionDocument}">
-		      <bean:write name="KualiForm" property="${property}"/>
-              ${readOnlyAlternateDisplay}
+				<c:if test="${empty readOnlyAlternateDisplay}">
+					<bean:write name="KualiForm" property="${property}"/>
+				</c:if>
+              	${readOnlyAlternateDisplay}
 			</c:when>
 			<c:otherwise>
               <html:hidden write="${empty readOnlyAlternateDisplay ? 'true' : 'false'}" property="${property}" style="${textStyle}" />

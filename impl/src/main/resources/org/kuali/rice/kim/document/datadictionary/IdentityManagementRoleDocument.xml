@@ -71,16 +71,10 @@
   </bean>
 
   <bean id="IdentityManagementRoleDocument-roleNamespace" parent="IdentityManagementRoleDocument-roleNamespace-parentBean" />
-  <bean id="IdentityManagementRoleDocument-roleNamespace-parentBean" parent="AttributeDefinition" abstract="true"
+  <bean id="IdentityManagementRoleDocument-roleNamespace-parentBean" parent="KimRoleImpl-namespaceCode" abstract="true"
         p:name="roleNamespace"
-        p:forceUppercase="true"
         p:label="Role Namespace"
-        p:shortLabel="Namespace"
-        p:maxLength="40"
-        p:required="false" >
-    <property name="control" >
-      <bean parent="TextControlDefinition" p:size="20" />
-    </property>
+        p:shortLabel="Role Namespace">
   </bean>
 
   <bean id="IdentityManagementRoleDocument-roleName" parent="IdentityManagementRoleDocument-roleName-parentBean" />

@@ -1,5 +1,4 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
-<%@ attribute name="roleIdx" required="true" %>
 <%@ attribute name="mbrIdx" required="true" %>
 <c:set var="roleMember" value="${KualiForm.document.members[mbrIdx]}"/>
 <c:set var="docRoleRspActionAttributes" value="${DataDictionary.KimDocumentRoleResponsibilityAction.attributes}" />

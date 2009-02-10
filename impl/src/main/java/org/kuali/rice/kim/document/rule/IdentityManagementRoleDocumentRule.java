@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
@@ -94,29 +95,40 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 
     @Override
     protected boolean processCustomSaveDocumentBusinessRules(Document document) {
-        if (!(document instanceof IdentityManagementRoleDocument)) {
+        if (!(document instanceof IdentityManagementRoleDocument))
             return false;
-        }
 
         IdentityManagementRoleDocument roleDoc = (IdentityManagementRoleDocument)document;
+
         boolean valid = true;
-
         GlobalVariables.getErrorMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
-
-        //KNSServiceLocator.getDictionaryValidationService().validateDocument(document);
+        valid &= validDuplicateRoleName(roleDoc);
         getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(document, getMaxDictionaryValidationDepth(), true, false);
         valid &= validateRoleQualifier(roleDoc.getMembers(), roleDoc.getKimType());
-        
         valid &= validRoleMemberActiveDates(roleDoc.getMembers());
-
-        // all failed at this point.
-//        valid &= checkUnassignableRoles(roleDoc);
-//        valid &= checkUnpopulatableGroups(roleDoc);
-        validRoleResponsibilitiesActions(roleDoc.getResponsibilities());
-        validRoleMembersResponsibilityActions(roleDoc.getMembers());
+        valid &= validRoleResponsibilitiesActions(roleDoc.getResponsibilities());
+        valid &= validRoleMembersResponsibilityActions(roleDoc.getMembers());
         GlobalVariables.getErrorMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
 
         return valid;
+    }
+    
+    private boolean validDuplicateRoleName(IdentityManagementRoleDocument roleDoc){
+    	Map<String, String> criteria = new HashMap<String, String>();
+    	criteria.put("roleName", roleDoc.getRoleName());
+    	criteria.put("namespaceCode", roleDoc.getRoleNamespace());
+    	List<KimRoleImpl> roleImpls = (List<KimRoleImpl>)getBusinessObjectService().findMatching(KimRoleImpl.class, criteria);
+    	boolean rulePassed = true;
+    	if(roleImpls!=null && roleImpls.size()>0){
+    		if(roleImpls.size()==1 && roleImpls.get(0).getRoleId().equals(roleDoc.getRoleId()))
+    			rulePassed = true;
+    		else{
+	    		GlobalVariables.getErrorMap().putError("roleName", 
+	    				RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Role Name"});
+	    		rulePassed = false;
+    		}
+    	}
+    	return rulePassed;
     }
     
     private boolean validRoleMemberActiveDates(List<KimDocumentRoleMember> roleMembers) {
@@ -318,6 +330,17 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 			responsibilityService = KIMServiceLocator.getResponsibilityService();
 		}
 		return responsibilityService;
+	}
+
+
+	/**
+	 * @return the businessObjectService
+	 */
+	public BusinessObjectService getBusinessObjectService() {
+		if(businessObjectService == null){
+			businessObjectService = KNSServiceLocator.getBusinessObjectService();
+		}
+		return businessObjectService;
 	}
 
 }

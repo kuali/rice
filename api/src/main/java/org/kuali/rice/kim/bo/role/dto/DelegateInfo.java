@@ -32,6 +32,12 @@ public class DelegateInfo implements Serializable {
 	protected String memberTypeCode;
 	protected AttributeSet qualifier;
 		
+	/**
+	 * 
+	 */
+	public DelegateInfo() {
+	}
+	
 	public DelegateInfo(String delegationId, String delegationTypeCode, String memberId,
 			String memberTypeCode, AttributeSet qualifier) {
 		this.delegationId = delegationId;

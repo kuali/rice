@@ -17,10 +17,12 @@ package org.kuali.rice.kim.bo.role.dto;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -35,7 +37,6 @@ public class RoleMembershipInfo implements Serializable {
 	protected String memberId;
 	protected String memberTypeCode;
 	protected AttributeSet qualifier;
-	protected List<String> delegationIds = new ArrayList<String>();
 	protected List<DelegateInfo> delegates = new ArrayList<DelegateInfo>();
 	
 	public RoleMembershipInfo(String roleId, String roleMemberId, String memberId, String memberTypeCode,
@@ -65,16 +66,6 @@ public class RoleMembershipInfo implements Serializable {
 	}
 	public void setDelegates(List<DelegateInfo> delegates) {
 		this.delegates = delegates;
-	}
-
-
-	public List<String> getDelegationIds() {
-		return this.delegationIds;
-	}
-
-
-	public void setDelegationIds(List<String> delegationIds) {
-		this.delegationIds = delegationIds;
 	}
 
 	public String getRoleMemberId() {

@@ -420,7 +420,4 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 		return QueryFactory.newReportQuery(RoleMemberImpl.class, crit);
 
     }
-
-    
-
 }

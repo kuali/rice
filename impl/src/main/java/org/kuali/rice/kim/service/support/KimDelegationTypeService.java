@@ -17,7 +17,7 @@ package org.kuali.rice.kim.service.support;
 
 import java.util.List;
 
-import org.kuali.rice.kim.bo.role.dto.KimDelegationMemberInfo;
+import org.kuali.rice.kim.bo.role.dto.DelegateInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 /**
@@ -50,7 +50,7 @@ public interface KimDelegationTypeService extends KimTypeService {
 
     /** Same as {@link #doesDelegationQualifierMatchQualification(AttributeSet, AttributeSet)} except that it takes a list of qualifiers to check.
      */
-    List<KimDelegationMemberInfo> doDelegationQualifiersMatchQualification( AttributeSet qualification, List<KimDelegationMemberInfo> delegationMemberList );
+    List<DelegateInfo> doDelegationQualifiersMatchQualification( AttributeSet qualification, List<DelegateInfo> delegationMemberList );
 
     /**
      * Convert a set of attributes that need to be converted.  For example,

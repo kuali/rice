@@ -18,7 +18,7 @@ package org.kuali.rice.kim.service.support.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.kim.bo.role.dto.KimDelegationMemberInfo;
+import org.kuali.rice.kim.bo.role.dto.DelegateInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.KimRoleTypeService;
 
@@ -42,10 +42,10 @@ public class KimDelegationTypeServiceBase extends KimTypeServiceBase {
 	/**
 	 * @see org.kuali.rice.kim.service.support.KimRoleTypeService#doRoleQualifiersMatchQualification(AttributeSet, List)
 	 */
-	public List<KimDelegationMemberInfo> doDelegationQualifiersMatchQualification(AttributeSet qualification, List<KimDelegationMemberInfo> delegationMemberList) {
+	public List<DelegateInfo> doDelegationQualifiersMatchQualification(AttributeSet qualification, List<DelegateInfo> delegationMemberList) {
 		AttributeSet translatedQualification = translateInputAttributeSet(qualification);
-		List<KimDelegationMemberInfo> matchingMemberships = new ArrayList<KimDelegationMemberInfo>();
-		for ( KimDelegationMemberInfo dmi : delegationMemberList ) {
+		List<DelegateInfo> matchingMemberships = new ArrayList<DelegateInfo>();
+		for ( DelegateInfo dmi : delegationMemberList ) {
 			if ( performMatch( translatedQualification, dmi.getQualifier() ) ) {
 				matchingMemberships.add( dmi );
 			}

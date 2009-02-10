@@ -178,7 +178,6 @@
 				<c:when test="${isFieldReadOnly && not isFieldAContainer and field.fieldType ne field.FILE}">
 					<c:choose>
 						<c:when test= "${isInquiry || isLookup}">
-					  		<input type="hidden" name="${field.propertyName}" value='<c:out value="${fieldValue}"/>' />
 				  		</c:when>
 				  		<c:otherwise>
 							<c:if test="${not fn:contains(field.propertyName, Constants.MAINTENANCE_OLD_MAINTAINABLE)}">

@@ -92,6 +92,7 @@ public class RiceKeyConstants {
     public static final String ERROR_DOCUMENT_AUTHORIZATION_RESTRICTED_FIELD_CHANGED = "error.document.maintenance.authorization.restrictedFieldChanged";
     public static final String ERROR_DOCUMENT_MAINTENANCE_PARTIALLY_FILLED_OUT_REF_FKEYS = "error.document.maintenance.partiallyFilledOutReferenceForeignKeys";
     public static final String ERROR_DOCUMENT_MAINTENANCE_FORMATTING_ERROR = "error.document.maintenance.formattingError";
+    public static final String ERROR_DOCUMENT_INVALID_VALUE = "error.document.invalid.value";
 
     // Person errors
     public static final String ERROR_DOCUMENT_KUALIUSERMAINT_UNIQUE_EMPLID = "error.document.PersonMaintenance.UniqueEmplId";

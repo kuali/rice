@@ -144,14 +144,10 @@ public class KNSConstants extends JSTLConstants {
     public static final String CALLING_METHOD = "caller";
     public static final String CONFIRMATION_QUESTION = "confirmationQuestion";
     public static final String CONFIGURATION_SERVICE_DATA_FILE_NAME = "configurationServiceData.xml";
-//    public static final String CONSOLIDATED_SUBACCOUNT = "*ALL*";
     public static final String CONVERSION_FIELDS_PARAMETER = "conversionFields";
     public static final String FIELDS_CONVERSION_PARAMETER = "fieldConversions";
     public static final String LOOKUP_READ_ONLY_FIELDS = "readOnlyFields";
     public static final String LOOKUP_AUTO_SEARCH = "autoSearch";
-//    public static final String COST_SHARE = "CS";
-//    public static final String CREDIT_AMOUNT_PROPERTY_NAME = "newSourceLineCredit";
-//    public static final String DEBIT_AMOUNT_PROPERTY_NAME = "newSourceLineDebit";
 //    public static final String DEFAULT_RETURN_LOCATION = "lookup.do";
     public static final String DELETE_LINE_METHOD = "deleteLine";
     public static final String TOGGLE_INACTIVE_METHOD = "toggleInactiveRecordDisplay";
@@ -167,9 +163,6 @@ public class KNSConstants extends JSTLConstants {
 //    public static final String DOCUMENT_HEADER_ID = "documentHeaderId";
     public static final String DOCUMENT_HEADER_PROPERTY_NAME = "documentHeader";
     public static final String DOCUMENT_SAVE_BEFORE_CLOSE_QUESTION = "DocSaveBeforeClose";
-//    public static final String EMPLOYEE_ACTIVE_STATUS = "A";
-//    public static final String EXISTING_SOURCE_ACCT_LINE_PROPERTY_NAME = "sourceAccountingLine";
-//    public static final String EXISTING_TARGET_ACCT_LINE_PROPERTY_NAME = "targetAccountingLine";
     public static final String EXTRA_BUTTON_SOURCE = "extraButtonSource";
     public static final String EXTRA_BUTTON_PARAMS = "extraButtonParams";
     public static final String NEW_AD_HOC_ROUTE_PERSON_PROPERTY_NAME = "newAdHocRoutePerson";

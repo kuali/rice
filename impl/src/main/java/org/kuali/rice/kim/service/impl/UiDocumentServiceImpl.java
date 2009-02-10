@@ -467,6 +467,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		for (EntityNameImpl name : names) {
 			PersonDocumentName docName = new PersonDocumentName();
 			docName.setNameTypeCode(name.getNameTypeCode());
+			docName.setEntityNameType(name.getEntityNameType());
 			docName.setFirstName(name.getFirstName());
 			docName.setLastName(name.getLastName());
 			docName.setMiddleName(name.getMiddleName());
@@ -698,6 +699,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		for (EntityPhone phone : entityPhones) {
 			PersonDocumentPhone docPhone = new PersonDocumentPhone();
 			docPhone.setPhoneTypeCode(phone.getPhoneTypeCode());
+			docPhone.setPhoneType(((EntityPhoneImpl)phone).getPhoneType());
 			docPhone.setEntityTypeCode(phone.getEntityTypeCode());
 			docPhone.setPhoneNumber(phone.getPhoneNumber());
 			docPhone.setCountryCode(phone.getCountryCode());
@@ -743,6 +745,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			//docEmail.setEntityId(email.getEntityId());
 			docEmail.setEntityTypeCode(email.getEntityTypeCode());
 			docEmail.setEmailTypeCode(email.getEmailTypeCode());
+			docEmail.setEmailType(((EntityEmailImpl)email).getEmailType());
 			docEmail.setEmailAddress(email.getEmailAddress());
 			docEmail.setActive(email.isActive());
 			docEmail.setDflt(email.isDefault());
@@ -790,6 +793,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			PersonDocumentAddress docAddress = new PersonDocumentAddress();
 			docAddress.setEntityTypeCode(address.getEntityTypeCode());
 			docAddress.setAddressTypeCode(address.getAddressTypeCode());
+			docAddress.setAddressType(((EntityAddressImpl)address).getAddressType());
 			docAddress.setLine1(address.getLine1());
 			docAddress.setLine2(address.getLine2());
 			docAddress.setLine3(address.getLine3());

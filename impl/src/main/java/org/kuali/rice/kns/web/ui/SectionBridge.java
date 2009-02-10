@@ -123,9 +123,12 @@ public class SectionBridge {
 
         applyInquirySectionAuthorizations(section, auths);
         
+        section.setRows(reArrangeRows(section.getRows(), section.getNumberOfColumns()));
+        
         return section;
     }
-
+    
+   
     private static final void applyInquirySectionAuthorizations(Section section, InquiryRestrictions inquiryRestrictions) {
     	applyInquiryRowsAuthorizations(section.getRows(), inquiryRestrictions);
     }
@@ -142,6 +145,7 @@ public class SectionBridge {
     protected static final void applyInquiryFieldAuthorizations(Field field, InquiryRestrictions inquiryRestrictions) {
     	if (Field.CONTAINER.equals(field.getFieldType())) {
     		applyInquiryRowsAuthorizations(field.getContainerRows(), inquiryRestrictions);
+    		field.setContainerRows(reArrangeRows(field.getContainerRows(), field.getNumberOfColumnsForCollection()));
     	}
     	else if (!Field.IMAGE_SUBMIT.equals(field.getFieldType())) {
     		FieldRestriction fieldRestriction = inquiryRestrictions.getFieldRestriction(field.getPropertyName());
@@ -159,6 +163,23 @@ public class SectionBridge {
     		}
        	}
     }
+    
+    //This method is used to remove hidden fields (To fix JIRA KFSMI-2449)
+    private static final List<Row> reArrangeRows(List<Row> rows, int numberOfColumns){
+    	List<Field> fields = new ArrayList();
+    	for (Row row : rows) {
+    		List<Field> rowFields = row.getFields();
+    		for (Field field : rowFields) {
+    			if(!Field.HIDDEN.equals(field.getFieldType()) && !Field.BLANK_SPACE.equals(field.getFieldType())){
+    				fields.add(field);
+    			}
+    		}
+    	}
+    	
+    	return FieldUtils.wrapFields(fields, numberOfColumns);
+    	
+    }
+
     
     /**
      * This method creates a Section for a MaintenanceDocument.

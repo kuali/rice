@@ -40,9 +40,10 @@ import org.kuali.rice.kns.document.MaintenanceDocument;
  */
 public class WebRuleUtils {
 
-	private static final String RULE_TEMPLATE_ID_PARAM = "ruleCreationValues.ruleTemplateId";
-	private static final String RULE_TEMPLATE_NAME_PARAM = "ruleCreationValues.ruleTemplateName";
-	private static final String DOCUMENT_TYPE_NAME_PARAM = "ruleCreationValues.docTypeName";
+	public static final String RULE_TEMPLATE_ID_PARAM = "ruleCreationValues.ruleTemplateId";
+	public static final String RULE_TEMPLATE_NAME_PARAM = "ruleCreationValues.ruleTemplateName";
+	public static final String DOCUMENT_TYPE_NAME_PARAM = "ruleCreationValues.docTypeName";
+	public static final String RESPONSIBILITY_ID_PARAM = "ruleCreationValues.responsibilityId";
 	
 	/**
 	 * Copies the existing rule onto the current document.  This is used within the web-based rule GUI to make a
@@ -167,6 +168,23 @@ public class WebRuleUtils {
 		rule.setRuleTemplate(ruleTemplate);
 		rule.setRuleTemplateId(ruleTemplate.getRuleTemplateId());
 		rule.setDocTypeName(documentTypeName);
+	}
+	
+	public static void validateRuleAndResponsibility(RuleDelegation oldRuleDelegation, RuleDelegation newRuleDelegation, Map<String, String[]> parameters) {
+		String[] responsibilityIds = parameters.get(RESPONSIBILITY_ID_PARAM);
+		if (ArrayUtils.isEmpty(responsibilityIds)) {
+			throw new RiceRuntimeException("Delegation rule document must be initiated with a valid responsibility ID to delegate from.");
+		}
+		if (!ArrayUtils.isEmpty(responsibilityIds)) {
+			Long responsibilityId = new Long(responsibilityIds[0]);
+			RuleResponsibility ruleResponsibility = KEWServiceLocator.getRuleService().findRuleResponsibility(responsibilityId);
+			if (ruleResponsibility == null) {
+				throw new RiceRuntimeException("Failed to locate a rule responsibility for responsibility ID " + responsibilityId);
+			}
+			oldRuleDelegation.setResponsibilityId(responsibilityId);
+			newRuleDelegation.setResponsibilityId(responsibilityId);
+		}
+		
 	}
 
 	public static void establishDefaultRuleValues(RuleBaseValues rule) {

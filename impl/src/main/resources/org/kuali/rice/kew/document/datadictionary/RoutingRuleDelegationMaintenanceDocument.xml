@@ -4,33 +4,33 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-  <bean id="DelegationRoutingRuleMaintenanceDocument" parent="DelegationRoutingRuleMaintenanceDocument-parentBean" />
+  <bean id="RoutingRuleDelegationMaintenanceDocument" parent="RoutingRuleDelegationMaintenanceDocument-parentBean" />
 
-  <bean id="DelegationRoutingRuleMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
+  <bean id="RoutingRuleDelegationMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
     <property name="businessObjectClass" value="org.kuali.rice.kew.rule.RuleDelegation" />
-    <property name="maintainableClass" value="org.kuali.rice.kew.document.DelegationRoutingRuleMaintainable" />
+    <property name="maintainableClass" value="org.kuali.rice.kew.document.RoutingRuleDelegationMaintainable" />
     <property name="maintainableSections" >
       <list>
-        <ref bean="DelegationRoutingRuleMaintenanceDocument-ParentRule" />
-        <!-- <ref bean="DelegationRoutingRuleMaintenanceDocument-Rule" />
-        <ref bean="DelegationRoutingRuleMaintenanceDocument-RuleAttributes" /> -->
+        <ref bean="RoutingRuleDelegationMaintenanceDocument-ParentRule" />
+        <!-- <ref bean="RoutingRuleDelegationMaintenanceDocument-Rule" />
+        <ref bean="RoutingRuleDelegationMaintenanceDocument-RuleAttributes" /> -->
         <!-- 
-        <ref bean="DelegationRoutingRuleMaintenanceDocument-PersonResponsibilities" />
-        <ref bean="DelegationRoutingRuleMaintenanceDocument-GroupResponsibilities" />
+        <ref bean="RoutingRuleDelegationMaintenanceDocument-PersonResponsibilities" />
+        <ref bean="RoutingRuleDelegationMaintenanceDocument-GroupResponsibilities" />
         -->
       </list>
     </property>
     <property name="allowsNewOrCopy" value="true" />
-    <!-- TODO create DelegationRoutingRuleMaintenanceDocument -->
-    <property name="documentTypeName" value="RoutingRuleMaintenanceDocument" />
+    <!-- TODO create RoutingRuleDelegationMaintenanceDocument -->
+    <property name="documentTypeName" value="RoutingRuleDelegationMaintenanceDocument" />
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase" />    
   </bean>
 
   <!-- Maintenance Section Definitions -->
 
-  <bean id="DelegationRoutingRuleMaintenanceDocument-ParentRule" parent="DelegationRoutingRuleMaintenanceDocument-ParentRule-parentBean" />
+  <bean id="RoutingRuleDelegationMaintenanceDocument-ParentRule" parent="RoutingRuleDelegationMaintenanceDocument-ParentRule-parentBean" />
 
-  <bean id="DelegationRoutingRuleMaintenanceDocument-ParentRule-parentBean" abstract="true" parent="MaintainableSectionDefinition">
+  <bean id="RoutingRuleDelegationMaintenanceDocument-ParentRule-parentBean" abstract="true" parent="MaintainableSectionDefinition">
     <property name="id" value="ParentRule" />
     <property name="title" value="Parent Rule" />
     <property name="maintainableItems" >
@@ -43,9 +43,9 @@
   </bean>
 
 <!-- 
-  <bean id="DelegationRoutingRuleMaintenanceDocument-Rule" parent="DelegationRoutingRuleMaintenanceDocument-Rule-parentBean" />
+  <bean id="RoutingRuleDelegationMaintenanceDocument-Rule" parent="RoutingRuleDelegationMaintenanceDocument-Rule-parentBean" />
 
-  <bean id="DelegationRoutingRuleMaintenanceDocument-Rule-parentBean" abstract="true" parent="MaintainableSectionDefinition">
+  <bean id="RoutingRuleDelegationMaintenanceDocument-Rule-parentBean" abstract="true" parent="MaintainableSectionDefinition">
     <property name="id" value="Rule" />
     <property name="title" value="Rule" />
     <property name="maintainableItems" >
@@ -79,18 +79,18 @@
   </bean>
    -->
    
-  <bean id="DelegationRoutingRuleMaintenanceDocument-RuleAttributes" parent="DelegationRoutingRuleMaintenanceDocument-RuleAttributes-parentBean" />
+  <bean id="RoutingRuleDelegationMaintenanceDocument-RuleAttributes" parent="RoutingRuleDelegationMaintenanceDocument-RuleAttributes-parentBean" />
 
-  <bean id="DelegationRoutingRuleMaintenanceDocument-RuleAttributes-parentBean" abstract="true" parent="MaintainableSectionDefinition">
+  <bean id="RoutingRuleDelegationMaintenanceDocument-RuleAttributes-parentBean" abstract="true" parent="MaintainableSectionDefinition">
     <property name="id" value="RuleAttributes" />
     <property name="title" value="Rule Attributes" />
-    <!-- Maintainable Items generated based on Rule Template, see DelegationRoutingRuleMaintainable -->
+    <!-- Maintainable Items generated based on Rule Template, see RoutingRuleDelegationMaintainable -->
   </bean>
   
   <!-- 
-  <bean id="DelegationRoutingRuleMaintenanceDocument-PersonResponsibilities" parent="DelegationRoutingRuleMaintenanceDocument-PersonResponsibilities-parentBean" />
+  <bean id="RoutingRuleDelegationMaintenanceDocument-PersonResponsibilities" parent="RoutingRuleDelegationMaintenanceDocument-PersonResponsibilities-parentBean" />
 
-  <bean id="DelegationRoutingRuleMaintenanceDocument-PersonResponsibilities-parentBean" abstract="true" parent="MaintainableSectionDefinition">
+  <bean id="RoutingRuleDelegationMaintenanceDocument-PersonResponsibilities-parentBean" abstract="true" parent="MaintainableSectionDefinition">
     <property name="id" value="Persons" />
     <property name="title" value="Persons" />
     <property name="maintainableItems" >
@@ -123,9 +123,9 @@
     </property>
   </bean>
 
-  <bean id="DelegationRoutingRuleMaintenanceDocument-GroupResponsibilities" parent="DelegationRoutingRuleMaintenanceDocument-GroupResponsibilities-parentBean" />
+  <bean id="RoutingRuleDelegationMaintenanceDocument-GroupResponsibilities" parent="RoutingRuleDelegationMaintenanceDocument-GroupResponsibilities-parentBean" />
 
-  <bean id="DelegationRoutingRuleMaintenanceDocument-GroupResponsibilities-parentBean" abstract="true" parent="MaintainableSectionDefinition">
+  <bean id="RoutingRuleDelegationMaintenanceDocument-GroupResponsibilities-parentBean" abstract="true" parent="MaintainableSectionDefinition">
     <property name="id" value="Groups" />
     <property name="title" value="Groups" />
     <property name="maintainableItems" >

@@ -17,15 +17,9 @@ package org.kuali.rice.kew.document;
 
 import java.util.Map;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.kuali.rice.core.exception.RiceRuntimeException;
-import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
-import org.kuali.rice.kew.rule.RuleResponsibility;
-import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.rule.web.WebRuleUtils;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
 
@@ -36,9 +30,7 @@ import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class DelegationRoutingRuleMaintainable extends KualiMaintainableImpl {
-
-	private static final String RESPONSIBILITY_ID_PARAM = "ruleCreationValues.responsibilityId";
+public class RoutingRuleDelegationMaintainable extends KualiMaintainableImpl {
 	
 	/**
 	 * On creation of a new rule document, we must validate that a rule template and document type are set. 
@@ -47,29 +39,12 @@ public class DelegationRoutingRuleMaintainable extends KualiMaintainableImpl {
 	public void processAfterNew(MaintenanceDocument document,
 			Map<String, String[]> parameters) {
 		initializeBusinessObjects(document);
+		WebRuleUtils.validateRuleAndResponsibility(getOldRuleDelegation(document), getNewRuleDelegation(document), parameters);
 		WebRuleUtils.validateRuleTemplateAndDocumentType(getOldRule(document), getNewRule(document), parameters);
-		validateRuleAndResponsibility(document, parameters);
 		WebRuleUtils.establishDefaultRuleValues(getNewRule(document));
 		getNewRule(document).setRouteHeaderId(new Long(document.getDocumentHeader().getDocumentNumber()));
 	}
-	
-	private void validateRuleAndResponsibility(MaintenanceDocument document, Map<String, String[]> parameters) {
-		String[] responsibilityIds = parameters.get(RESPONSIBILITY_ID_PARAM);
-		if (ArrayUtils.isEmpty(responsibilityIds)) {
-			throw new RiceRuntimeException("Delegation rule document must be initiated with a valid responsibility ID to delegate from.");
-		}
-		if (!ArrayUtils.isEmpty(responsibilityIds)) {
-			Long responsibilityId = new Long(responsibilityIds[0]);
-			RuleResponsibility ruleResponsibility = KEWServiceLocator.getRuleService().findRuleResponsibility(responsibilityId);
-			if (ruleResponsibility == null) {
-				throw new RiceRuntimeException("Failed to locate a rule responsibility for responsibility ID " + responsibilityId);
-			}
-			getOldRuleDelegation(document).setResponsibilityId(responsibilityId);
-			getNewRuleDelegation(document).setResponsibilityId(responsibilityId);
-		}
 		
-	}
-	
 	/**
 	 * Creates the initial structure of the new business object so that it can be properly
 	 * populated with non-null object references.

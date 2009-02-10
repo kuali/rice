@@ -736,7 +736,7 @@
               	<value>classpath:org/kuali/rice/kew/bo/datadictionary/DocumentRouteHeaderValue.xml</value>
                 <value>classpath:org/kuali/rice/kew/document/datadictionary/DocumentTypeMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/kew/document/datadictionary/RoutingRuleMaintenanceDocument.xml</value>
-                <value>classpath:org/kuali/rice/kew/document/datadictionary/DelegationRoutingRuleMaintenanceDocument.xml</value>
+                <value>classpath:org/kuali/rice/kew/document/datadictionary/RoutingRuleDelegationMaintenanceDocument.xml</value>
             </list>
 		</property>
         <property name="packagePrefixes">

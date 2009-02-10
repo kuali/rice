@@ -23,7 +23,6 @@
 	
   <div id="globalbuttons" class="globalbuttons">
     <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_continue.gif" styleClass="globalbuttons" property="methodToCall.createDelegateRule" title="create delegate rule" alt="create delegate rule"/>
-    <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_close.gif" styleClass="globalbuttons" property="methodToCall.close" title="close" alt="close"/>
   </div>	
 </kul:page>	
 

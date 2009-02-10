@@ -46,7 +46,6 @@ import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.kim.bo.options.MemberTypeValuesFinder;
 import org.kuali.rice.kim.bo.role.KimRole;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
-import org.kuali.rice.kim.bo.role.impl.KimDelegationAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl;
@@ -1188,21 +1187,6 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return pndMemberRoleQualifiers;
 	}
 
-	private List<KimDocumentRoleQualifier> loadDelegationQualifiers(List<KimDelegationAttributeDataImpl> attributeDataList){
-		List<KimDocumentRoleQualifier> pndDelegationQualifiers = new ArrayList<KimDocumentRoleQualifier>();
-		KimDocumentRoleQualifier pndDelegationQualifier = new KimDocumentRoleQualifier();
-		for(KimDelegationAttributeDataImpl delegationQualifier: attributeDataList){
-			pndDelegationQualifier = new KimDocumentRoleQualifier();
-			pndDelegationQualifier.setAttrDataId(delegationQualifier.getAttributeDataId());
-			pndDelegationQualifier.setAttrVal(delegationQualifier.getAttributeValue());
-			pndDelegationQualifier.setTargetPrimaryKey(delegationQualifier.getTargetPrimaryKey());
-			pndDelegationQualifier.setKimTypId(delegationQualifier.getKimTypeId());
-			pndDelegationQualifier.setKimAttrDefnId(delegationQualifier.getKimAttributeId());
-			pndDelegationQualifiers.add(pndDelegationQualifier);
-		}
-		return pndDelegationQualifiers;
-	}
-
 	private List<KimDelegationImpl> getRoleDelegations(String roleId){
 		if(roleId==null)
 			return new ArrayList<KimDelegationImpl>();
@@ -1222,7 +1206,6 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			documentDelegation.setKimType(del.getKimType());
 			documentDelegation.setKimTypeId(del.getKimTypeId());
 			documentDelegation.setMembers(loadDelegationMembers(del.getMembers()));
-			documentDelegation.setQualifiers(loadDelegationQualifiers(del.getAttributes()));
 			documentDelegation.setRoleId(del.getRoleId());
 			delList.add(documentDelegation);
 		}

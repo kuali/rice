@@ -15,7 +15,8 @@
  */
 package org.kuali.rice.kim.bo.role;
 
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import java.util.List;
+
 import org.kuali.rice.kns.bo.Inactivateable;
 
 /**
@@ -30,5 +31,5 @@ public interface KimDelegation extends Inactivateable {
 	String getRoleId();
 	String getKimTypeId();
 	String getDelegationTypeCode();
-	AttributeSet getQualifier();
+	List<? extends KimDelegationMember> getMembers();
 }

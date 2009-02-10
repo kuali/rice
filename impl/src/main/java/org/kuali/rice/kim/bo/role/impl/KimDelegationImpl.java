@@ -67,10 +67,6 @@ public class KimDelegationImpl extends PersistableBusinessObjectBase implements 
 	@JoinColumn(name="DLGN_ID", insertable=false, updatable=false)
 	protected List<KimDelegationMemberImpl> members;
 
-	@OneToMany(targetEntity=KimDelegationAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
-	@JoinColumn(name="DLGN_ID", insertable=false, updatable=false)
-	protected List<KimDelegationAttributeDataImpl> attributes;
-	
 	@ManyToOne(targetEntity=KimTypeImpl.class,fetch=FetchType.LAZY)
 	@JoinColumn(name="KIM_TYP_ID", insertable=false, updatable=false)
 	protected KimTypeImpl kimType; 
@@ -130,18 +126,6 @@ public class KimDelegationImpl extends PersistableBusinessObjectBase implements 
 		this.delegationTypeCode = delegationTypeCode;
 	}
 
-	public AttributeSet getQualifier() {
-		AttributeSet attribs = new AttributeSet();
-		
-		if ( attributes == null ) {
-			return attribs;
-		}
-		for ( KimDelegationAttributeDataImpl attr : attributes ) {
-			attribs.put( attr.getKimAttribute().getAttributeName(), attr.getAttributeValue() );
-		}
-		return attribs;
-	}
-
 	public String getDelegationId() {
 		return this.delegationId;
 	}
@@ -172,14 +156,6 @@ public class KimDelegationImpl extends PersistableBusinessObjectBase implements 
 		}
 		return roleMembers;
 	}
-	
-	public List<KimDelegationAttributeDataImpl> getAttributes() {
-		return this.attributes;
-	}
-
-	public void setAttributes(List<KimDelegationAttributeDataImpl> attributes) {
-		this.attributes = attributes;
-	}
 
 	public List<KimDelegationMemberImpl> getMembers() {
 		return this.members;
@@ -188,19 +164,5 @@ public class KimDelegationImpl extends PersistableBusinessObjectBase implements 
 	public void setMembers(List<KimDelegationMemberImpl> members) {
 		this.members = members;
 	}
-	
-	
-//	public KimRoleInfo toSimpleInfo() {
-//		KimRoleInfo dto = new KimRoleInfo();
-//		
-//		dto.setRoleId( getRoleId() );
-//		dto.setRoleName( getRoleName() );
-//		dto.setNamespaceCode( getNamespaceCode() );
-//		dto.setRoleDescription( getRoleDescription() );
-//		dto.setKimTypeId( getKimTypeId() );
-//		dto.setActive( isActive() );
-//		
-//		return dto;
-//	}
 	
 }

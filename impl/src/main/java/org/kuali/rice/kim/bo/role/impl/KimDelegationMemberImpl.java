@@ -29,6 +29,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.impl.KimAbstractMemberImpl;
+import org.kuali.rice.kim.bo.role.KimDelegationMember;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 /**
@@ -39,8 +40,10 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
  */
 @Entity
 @Table(name="KRIM_DLGN_MBR_T")
-public class KimDelegationMemberImpl extends KimAbstractMemberImpl {
+public class KimDelegationMemberImpl extends KimAbstractMemberImpl implements KimDelegationMember {
 
+	private static final long serialVersionUID = 6278392972043721961L;
+	
 	@Id
 	@Column(name="DLGN_MBR_ID")
 	protected String delegationMemberId;

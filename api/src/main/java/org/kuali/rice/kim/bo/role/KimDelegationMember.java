@@ -13,17 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.bo.role.impl;
-
-import javax.persistence.Entity;
-import javax.persistence.Table;
-
-import org.kuali.rice.kim.bo.types.impl.KimAttributeDataImpl;
+package org.kuali.rice.kim.bo.role;
 
 /**
+ * This is a description of what this class does - jonathan don't forget to fill this in. 
+ * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ *
  */
-@Entity
-@Table(name="KRIM_ROLE_MBR_ATTR_DATA_T")
-public class KimDelegationAttributeDataImpl extends KimAttributeDataImpl {
+public interface KimDelegationMember {
+
+	String getDelegationMemberId();
+	String getDelegationId();
+	String getMemberId();
+	String getMemberTypeCode();
+	
 }

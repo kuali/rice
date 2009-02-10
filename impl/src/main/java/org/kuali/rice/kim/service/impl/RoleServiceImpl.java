@@ -828,7 +828,7 @@ public class RoleServiceImpl implements RoleService {
     			// NOTE: this compare is slightly different then the member enumeration
     			// since the requested qualifier is always being used rather than
     			// the role qualifier for the member (which is not available)
-        		if ( roleTypeService == null || roleTypeService.doesRoleQualifierMatchQualification( qualification, delegation.getQualifier() ) ) {
+        		if ( roleTypeService == null || roleTypeService.doesRoleQualifierMatchQualification( qualification, dmi.getQualifier() ) ) {
     				// role service matches this qualifier
         			// now try the delegation service
         			KimDelegationTypeService delegationTypeService = getDelegationTypeService( dmi.getDelegationId());

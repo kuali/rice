@@ -856,6 +856,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 				sb.append( " (" ).append( principal.getPrincipalName() ).append( ')' );
 			}
 		}
+		sb.append(  '\n' );
 		sb.append( "             Details:\n" );
 		if ( permissionDetails != null ) {
 			sb.append( permissionDetails.formattedDump( 25 ) );

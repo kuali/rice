@@ -27,7 +27,7 @@ import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 import org.kuali.rice.ken.core.SpringNotificationServiceLocator;
 import org.kuali.rice.kew.batch.KEWXmlDataLoaderLifecycle;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.test.KEWTestCase.ClearCacheLifecycle;
+import org.kuali.rice.kew.*;//test.KEWTestCase.ClearCacheLifecycle;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.ClearDatabaseLifecycle;

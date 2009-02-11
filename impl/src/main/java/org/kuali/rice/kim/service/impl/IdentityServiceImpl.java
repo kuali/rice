@@ -7,19 +7,28 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.entity.EntityAffiliation;
 import org.kuali.rice.kim.bo.entity.EntityEntityType;
+import org.kuali.rice.kim.bo.entity.EntityExternalIdentifier;
 import org.kuali.rice.kim.bo.entity.EntityName;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.NamePrincipalName;
-import org.kuali.rice.kim.bo.entity.dto.EntityNameInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityAddressInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityAffiliationInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityEmailInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityEmploymentInformationInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityExternalIdentifierInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityNameInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityEntityTypeDefaultInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityPhoneInfo;
 import org.kuali.rice.kim.bo.entity.dto.NamePrincipalNameInfo;
 import org.kuali.rice.kim.bo.entity.impl.EntityNameImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kim.service.IdentityService;
+import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
@@ -85,121 +94,55 @@ public class IdentityServiceImpl implements IdentityService {
 	/**
 	 * @see org.kuali.rice.kim.service.IdentityService#lookupEntityDefaultInfo(java.util.Map, int)
 	 */
+	@SuppressWarnings("unchecked")
 	public List<? extends KimEntityDefaultInfo> lookupEntityDefaultInfo(
-			Map<String,String> searchCriteria, int maxResults) {
-		throw new UnsupportedOperationException();
-		// return null;
+			Map<String,String> searchCriteria, boolean unbounded) {
+		Collection<KimEntityImpl> baseResults = null; 
+		if ( unbounded ) {
+			baseResults = KNSServiceLocator.getLookupService().findCollectionBySearchUnbounded( KimEntityImpl.class, searchCriteria );
+		} else {
+			baseResults = KNSServiceLocator.getLookupService().findCollectionBySearch( KimEntityImpl.class, searchCriteria );
+		}
+		List<KimEntityDefaultInfo> results = new ArrayList<KimEntityDefaultInfo>( baseResults.size() );
+		for ( KimEntityImpl entity : baseResults ) {
+			results.add( convertEntityImplToDefaultInfo( entity ) );
+		}
+		if ( baseResults instanceof CollectionIncomplete ) {
+			results = new CollectionIncomplete<KimEntityDefaultInfo>( results, ((CollectionIncomplete<KimEntityDefaultInfo>)results).getActualSizeIfTruncated() ); 
+		}		
+		return results;
 	}
 	
 	protected KimEntityDefaultInfo convertEntityImplToDefaultInfo( KimEntity entity ) {
 		KimEntityDefaultInfo info = new KimEntityDefaultInfo();
 		info.setEntityId( entity.getEntityId() );
-		info.setEntityTypes( new ArrayList<KimEntityEntityTypeDefaultInfo>( entity.getEntityTypes().size() ) );
+		info.setDefaultName( new KimEntityNameInfo( entity.getDefaultName() ) );
+		ArrayList<KimEntityEntityTypeDefaultInfo> entityTypesInfo = new ArrayList<KimEntityEntityTypeDefaultInfo>( entity.getEntityTypes().size() );
+		info.setEntityTypes( entityTypesInfo );
 		for ( EntityEntityType entityEntityType : entity.getEntityTypes() ) {
 			KimEntityEntityTypeDefaultInfo typeInfo = new KimEntityEntityTypeDefaultInfo();
-//			populateAddressInfo( typeInfo, entityEntityType );
-//			populateEmailInfo( typeInfo, entityEntityType );
-//			populatePhoneInfo( typeInfo, entityEntityType );
-			info.getEntityTypes().add( typeInfo );
+			typeInfo.setDefaultAddress( new KimEntityAddressInfo( entityEntityType.getDefaultAddress() ) );
+			typeInfo.setDefaultEmailAddress( new KimEntityEmailInfo( entityEntityType.getDefaultEmailAddress() ) );
+			typeInfo.setDefaultPhoneNumber( new KimEntityPhoneInfo( entityEntityType.getDefaultPhoneNumber() ) );
+			entityTypesInfo.add( typeInfo );
 		}
-		populateNameInfo( info, entity );
-//		populateAffiliationInfo( info, entity );
-//		populateEmploymentInfo( info, entity );
-//		populateExternalIdentifiers( info, entity );
+		
+		ArrayList<KimEntityAffiliationInfo> affInfo = new ArrayList<KimEntityAffiliationInfo>( entity.getAffiliations().size() );
+		info.setAffiliations( affInfo );
+		for ( EntityAffiliation aff : entity.getAffiliations() ) {
+			affInfo.add( new KimEntityAffiliationInfo( aff ) );
+			if ( aff.isActive() && aff.isDefault() ) {
+				info.setDefaultAffiliation( affInfo.get( affInfo.size() - 1 ) );
+			}
+		}
+		info.setPrimaryEmployment( new KimEntityEmploymentInformationInfo( entity.getPrimaryEmployment() ) );
+		ArrayList<KimEntityExternalIdentifierInfo> idInfo = new ArrayList<KimEntityExternalIdentifierInfo>( entity.getExternalIdentifiers().size() );
+		info.setExternalIdentifiers( idInfo );
+		for ( EntityExternalIdentifier id : entity.getExternalIdentifiers() ) {
+			idInfo.add( new KimEntityExternalIdentifierInfo( id ) );
+		}
 		return info;
 	}
-	
-	protected void populateNameInfo( KimEntityDefaultInfo info, KimEntity entity ) {
-		EntityName entityName = entity.getDefaultName();
-		EntityNameInfo nameInfo = new EntityNameInfo( entityName );
-		info.setDefaultName( nameInfo );
-	}
-	
-//	protected void populateAddressInfo( EntityEntityType entityEntityType ) {
-//		EntityAddress defaultAddress = entityEntityType.getDefaultAddress();
-//		if ( defaultAddress != null ) {			
-//			addressLine1 = unNullify( defaultAddress.getLine1() );
-//			addressLine2 = unNullify( defaultAddress.getLine2() );
-//			addressLine3 = unNullify( defaultAddress.getLine3() );
-//			addressCityName = unNullify( defaultAddress.getCityName() );
-//			addressStateCode = unNullify( defaultAddress.getStateCode() );
-//			addressPostalCode = unNullify( defaultAddress.getPostalCode() );
-//			addressCountryCode = unNullify( defaultAddress.getCountryCode() );
-//		} else {
-//			addressLine1 = "";
-//			addressLine2 = "";
-//			addressLine3 = "";
-//			addressCityName = "";
-//			addressStateCode = "";
-//			addressPostalCode = "";
-//			addressCountryCode = "";
-//		}
-//	}
-//	
-//	protected void populateEmailInfo( EntityEntityType entityEntityType ) {
-//		EntityEmail entityEmail = entityEntityType.getDefaultEmailAddress();
-//		if ( entityEmail != null ) {
-//			emailAddress = unNullify( entityEmail.getEmailAddress() );
-//		} else {
-//			emailAddress = "";
-//		}
-//	}
-//	
-//	protected void populatePhoneInfo( EntityEntityType entityEntityType ) {
-//		EntityPhone entityPhone = entityEntityType.getDefaultPhoneNumber();
-//		if ( entityPhone != null ) {
-//			phoneNumber = unNullify( entityPhone.getFormattedPhoneNumber() );
-//		} else {
-//			phoneNumber = "";
-//		}
-//	}
-//	
-//	protected void populateAffiliationInfo( KimEntity entity ) {
-//		affiliations = entity.getAffiliations();
-//		EntityAffiliation defaultAffiliation = entity.getDefaultAffiliation();
-//		if ( defaultAffiliation != null  ) {
-//			campusCode = unNullify( defaultAffiliation.getCampusCode() );
-//		} else {
-//			campusCode = "";
-//		}
-//	}
-//	
-//	protected void populateEmploymentInfo( KimEntity entity ) {
-//		EntityEmploymentInformation employmentInformation = entity.getPrimaryEmployment();
-//		if ( employmentInformation != null ) {
-//			employeeStatusCode = unNullify( employmentInformation.getEmployeeStatusCode() );
-//			employeeTypeCode = unNullify( employmentInformation.getEmployeeTypeCode() );
-//			primaryDepartmentCode = unNullify( employmentInformation.getPrimaryDepartmentCode() );
-//			employeeId = unNullify( employmentInformation.getEmployeeId() );
-//			if ( employmentInformation.getBaseSalaryAmount() != null ) {
-//				baseSalaryAmount = employmentInformation.getBaseSalaryAmount();
-//			} else {
-//				baseSalaryAmount = KualiDecimal.ZERO;
-//			}
-//		} else {
-//			employeeStatusCode = "";
-//			employeeTypeCode = "";
-//			primaryDepartmentCode = "";
-//			employeeId = "";
-//			baseSalaryAmount = KualiDecimal.ZERO;
-//		}
-//	}
-//	
-//	protected void populateExternalIdentifiers( KimEntity entity ) {
-//		List<? extends EntityExternalIdentifier> externalIds = entity.getExternalIdentifiers();
-//		externalIdentifiers = new HashMap<String,String>( externalIds.size() );
-//		for ( EntityExternalIdentifier eei : externalIds ) {
-//			externalIdentifiers.put( eei.getExternalIdentifierTypeCode(), eei.getExternalId() );
-//		}
-//	}
-//	
-//	/** So users of this class don't need to program around nulls. */
-//	private String unNullify( String str ) {
-//		if ( str == null ) {
-//			return "";
-//		}
-//		return str;
-//	}
 	
 	/**
 	 * @see org.kuali.rice.kim.service.IdentityService#getPrincipal(java.lang.String)

@@ -49,7 +49,7 @@ public interface IdentityManagementService {
 	KimEntityDefaultInfo getEntityDefaultInfo( String entityId );
 	KimEntityDefaultInfo getEntityDefaultInfoByPrincipalId( String principalId );
 	KimEntityDefaultInfo getEntityDefaultInfoByPrincipalName( String principalName );
-	List<? extends KimEntityDefaultInfo> lookupEntityDefaultInfo( Map<String,String> searchCriteria, int maxResults );
+	List<? extends KimEntityDefaultInfo> lookupEntityDefaultInfo( Map<String,String> searchCriteria, boolean unbounded );
 
 	// *******************************
 	// GroupService

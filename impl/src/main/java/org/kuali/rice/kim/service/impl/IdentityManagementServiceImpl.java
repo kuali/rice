@@ -153,7 +153,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	}
 
 	public List<KimEntity> lookupEntitys(Map<String,String> searchCriteria) {
-		return identityService.lookupEntitys( searchCriteria );
+		return getIdentityService().lookupEntitys( searchCriteria );
 	}
 	
 	protected GroupInfo getGroupByIdCache( String groupId ) {
@@ -730,8 +730,8 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
      * @see org.kuali.rice.kim.service.IdentityManagementService#lookupEntityDefaultInfo(java.util.Map, int)
      */
     public List<? extends KimEntityDefaultInfo> lookupEntityDefaultInfo(
-    		Map<String, String> searchCriteria, int maxResults) {
-    	return getIdentityService().lookupEntityDefaultInfo(searchCriteria, maxResults);
+    		Map<String, String> searchCriteria, boolean unbounded) {
+    	return getIdentityService().lookupEntityDefaultInfo(searchCriteria, unbounded);
     }
     
     

@@ -37,7 +37,7 @@ public interface IdentityService {
 	KimEntityDefaultInfo getEntityDefaultInfo( String entityId );
 	KimEntityDefaultInfo getEntityDefaultInfoByPrincipalId( String principalId );
 	KimEntityDefaultInfo getEntityDefaultInfoByPrincipalName( String principalName );
-	List<? extends KimEntityDefaultInfo> lookupEntityDefaultInfo( Map<String,String> searchCriteria, int maxResults );
+	List<? extends KimEntityDefaultInfo> lookupEntityDefaultInfo( Map<String,String> searchCriteria, boolean unbounded );
 	
     Map<String, NamePrincipalName> getDefaultNamesForPrincipalIds(List<String> principalIds);
     
@@ -55,7 +55,4 @@ public interface IdentityService {
 	/** Find entity IDs based on the given criteria. */
 	List<String> lookupEntityIds(Map<String,String> searchCriteria);
     
-    // Do we need APIs here to pull the extended Entity information that we don't need to load always?
-    // like addresses, external identifiers, citizenship?
-
 }

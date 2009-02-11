@@ -22,7 +22,7 @@ import org.kuali.rice.kim.bo.entity.EntityName;
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class EntityNameInfo implements EntityName, Serializable {
+public class KimEntityNameInfo extends KimDefaultableInfo implements EntityName, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -33,28 +33,28 @@ public class EntityNameInfo implements EntityName, Serializable {
 	protected String lastName = "";
 	protected String title = "";
 	protected String suffix = "";
-	protected boolean active = true;
-	protected boolean dflt = true;
 
 	/**
 	 * 
 	 */
-	public EntityNameInfo() {
+	public KimEntityNameInfo() {
 	}
 	
 	/**
 	 * 
 	 */
-	public EntityNameInfo( EntityName name ) {
-		entityNameId = name.getEntityNameId();
-		nameTypeCode = name.getNameTypeCode();
-		firstName = name.getFirstName();
-		middleName = name.getMiddleName();
-		lastName = name.getLastName();
-		title = name.getTitle();
-		suffix = name.getSuffix();
-		active = name.isActive();
-		dflt = name.isDefault();
+	public KimEntityNameInfo( EntityName name ) {
+		if ( name != null ) {
+			entityNameId = name.getEntityNameId();
+			nameTypeCode = name.getNameTypeCode();
+			firstName = name.getFirstName();
+			middleName = name.getMiddleName();
+			lastName = name.getLastName();
+			title = name.getTitle();
+			suffix = name.getSuffix();
+			active = name.isActive();
+			dflt = name.isDefault();
+		}
 	}
 	
 	/**
@@ -141,30 +141,6 @@ public class EntityNameInfo implements EntityName, Serializable {
 
 	public void setEntityNameId(String entityNameId) {
 		this.entityNameId = unNullify( entityNameId );
-	}
-
-	public boolean isActive() {
-		return this.active;
-	}
-
-	public void setActive(boolean active) {
-		this.active = active;
-	}
-
-	public boolean isDefault() {
-		return this.dflt;
-	}
-
-	public void setDefault(boolean dflt) {
-		this.dflt = dflt;
-	}
-
-	/** So users of this class don't need to program around nulls. */
-	private String unNullify( String str ) {
-		if ( str == null ) {
-			return "";
-		}
-		return str;
 	}
 	
 }

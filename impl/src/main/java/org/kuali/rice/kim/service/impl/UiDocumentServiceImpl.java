@@ -233,7 +233,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	 * @see org.kuali.rice.kim.service.UiDocumentService#loadEntityToPersonDoc(org.kuali.rice.kim.document.IdentityManagementPersonDocument, org.kuali.rice.kim.bo.entity.impl.KimEntityImpl)
 	 */
 	public void loadEntityToPersonDoc(IdentityManagementPersonDocument identityManagementPersonDocument, String principalId) {
-        KimPrincipal principal = getIdentityService().getPrincipal(principalId);
+        KimPrincipalImpl principal = (KimPrincipalImpl)getIdentityService().getPrincipal(principalId);
         identityManagementPersonDocument.setPrincipalId(principal.getPrincipalId());
         identityManagementPersonDocument.setPrincipalName(principal.getPrincipalName());
         identityManagementPersonDocument.setPassword(principal.getPassword());

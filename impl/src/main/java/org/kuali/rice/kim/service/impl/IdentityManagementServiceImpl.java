@@ -677,6 +677,13 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     	addPrincipalToCache(principal);
     	return principal;
     }
+    
+    /**
+     * @see org.kuali.rice.kim.service.IdentityManagementService#getPrincipalByPrincipalNameAndPassword(java.lang.String, java.lang.String)
+     */
+    public KimPrincipal getPrincipalByPrincipalNameAndPassword(String principalName, String password) {
+    	return getIdentityService().getPrincipalByPrincipalNameAndPassword( principalName, password );
+    }
 	
 	public KimEntity getEntity(String entityId) {
 		KimEntity entity = getEntityByIdCache(entityId);

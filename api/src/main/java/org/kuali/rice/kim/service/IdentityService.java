@@ -7,6 +7,7 @@ import org.kuali.rice.kim.bo.entity.EntityName;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.NamePrincipalName;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 
 public interface IdentityService {
 	
@@ -21,17 +22,24 @@ public interface IdentityService {
 	// KIM INTERNAL METHODS
 	
 	/** Get a KimPrincipal object based on it's unique principal ID */
-	public KimPrincipal getPrincipal(String principalId);
+	KimPrincipal getPrincipal(String principalId);
 	
 	/** Get a KimPrincipal object based on the principalName. */
-	public KimPrincipal getPrincipalByPrincipalName(String principalName);
+	KimPrincipal getPrincipalByPrincipalName(String principalName);
 
+	KimPrincipal getPrincipalByPrincipalNameAndPassword(String principalName, String password);
+	
 	/** Find entity objects based on the given criteria. */
-	public List<KimEntity> lookupEntitys(Map<String,String> searchCriteria);
+	List<KimEntity> lookupEntitys(Map<String,String> searchCriteria);
     
-    public Map<String, NamePrincipalName> getDefaultNamesForPrincipalIds(List<String> principalIds);
+	KimEntityDefaultInfo getEntityDefaultInfo( String entityId );
+	KimEntityDefaultInfo getEntityDefaultInfoByPrincipalId( String principalId );
+	KimEntityDefaultInfo getEntityDefaultInfoByPrincipalName( String principalName );
+	List<? extends KimEntityDefaultInfo> lookupEntityDefaultInfo( Map<String,String> searchCriteria, int maxResults );
+	
+    Map<String, NamePrincipalName> getDefaultNamesForPrincipalIds(List<String> principalIds);
     
-    public Map<String, EntityName> getDefaultNamesForEntityIds(List<String> entityIds);
+    Map<String, EntityName> getDefaultNamesForEntityIds(List<String> entityIds);
 
 	/** Return the entity ID for the given principal */
 	String getEntityIdByPrincipalId( String principalId );
@@ -43,7 +51,7 @@ public interface IdentityService {
 	String getPrincipalIdByPrincipalName( String principalName );
 
 	/** Find entity IDs based on the given criteria. */
-	public List<String> lookupEntityIds(Map<String,String> searchCriteria);
+	List<String> lookupEntityIds(Map<String,String> searchCriteria);
     
     // Do we need APIs here to pull the extended Entity information that we don't need to load always?
     // like addresses, external identifiers, citizenship?

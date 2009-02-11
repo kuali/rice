@@ -22,6 +22,5 @@ public interface KimPrincipal {
 	public String getPrincipalId();
 	public String getPrincipalName();
 	public String getEntityId();
-	public String getPassword();
 	public boolean isActive();
 }

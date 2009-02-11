@@ -28,16 +28,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.kuali.rice.kim.bo.entity.EntityAffiliation;
-import org.kuali.rice.kim.bo.entity.EntityBioDemographics;
-import org.kuali.rice.kim.bo.entity.EntityCitizenship;
-import org.kuali.rice.kim.bo.entity.EntityEmploymentInformation;
-import org.kuali.rice.kim.bo.entity.EntityEntityType;
-import org.kuali.rice.kim.bo.entity.EntityExternalIdentifier;
-import org.kuali.rice.kim.bo.entity.EntityPrivacyPreferences;
-import org.kuali.rice.kim.bo.entity.EntityName;
 import org.kuali.rice.kim.bo.entity.KimEntity;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kns.util.TypedArrayList;
 
 /**

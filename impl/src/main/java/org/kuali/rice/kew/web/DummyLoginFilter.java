@@ -17,8 +17,6 @@
 package org.kuali.rice.kew.web;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -65,10 +63,8 @@ public class DummyLoginFilter implements Filter {
                 if (user != null) {
                 	// Very simple password checking. Nothing hashed or encrypted. This is strictly for demonstration purposes only.
                     if (auth.authenticationServiceValidatesPassword()) {
-                    	Map<String,String> criteria = new HashMap<String,String>( 1 );
-        				criteria.put("principalName", user);
-        				KimPrincipal principal = auth.getPrincipalByPrincipalName( user );
-        				if (principal == null || password == null || !password.equals(principal.getPassword())) {
+        				KimPrincipal principal = auth.getPrincipalByPrincipalNameAndPassword( user, password );
+        				if (principal == null ) {
         					request.setAttribute("invalidPassword", Boolean.TRUE);
         					request.getRequestDispatcher(loginPath).forward(request, response);
                         	return;

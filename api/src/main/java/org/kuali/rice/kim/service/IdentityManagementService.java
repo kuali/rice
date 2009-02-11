@@ -40,6 +40,7 @@ public interface IdentityManagementService {
 
 	KimPrincipal getPrincipal(String principalId);
 	KimPrincipal getPrincipalByPrincipalName(String principalName);
+	KimPrincipal getPrincipalByPrincipalNameAndPassword(String principalName, String password);
 
 	List<KimEntity> lookupEntitys(Map<String,String> searchCriteria);
 	

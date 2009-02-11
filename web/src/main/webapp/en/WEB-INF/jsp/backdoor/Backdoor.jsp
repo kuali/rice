@@ -60,10 +60,10 @@
 		<td><a href="RuleQuickLinks.do" target="<c:out value="${BackdoorForm.targetName}" />">Rule QuickLinks</a></td>
 	</tr>
 	<tr>
-		<td><a href="../kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.edl.bo.EDocLiteAssociation&docFormKey=88888888&returnLocation=../en/Portal.do&hideReturnLink=true" target="<c:out value="${BackdoorForm.targetName}" />">eDoc Lites</a></td>	
+		<td><a href="../kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.edl.bo.EDocLiteAssociation&docFormKey=88888888&returnLocation=../en/Portal.do&hideReturnLink=true" target="<c:out value="${BackdoorForm.targetName}" />">eDoc Lites</a></td>
 	</tr>
 	<tr>
-	  <td><a href="../kew/Rule.do?methodToCall=docHandler&command=initiate&docTypeName=RoutingRuleDocument" target="<c:out value="${BackdoorForm.targetName}"/>">Create Rule <b>NEW</b></a></td>
+      <td><a href="../kew/Rule.do?command=initiate" target="<c:out value="${BackdoorForm.targetName}"/>">Create Rule <b>NEW</b></a></td>
 	</tr>
 </table>
 

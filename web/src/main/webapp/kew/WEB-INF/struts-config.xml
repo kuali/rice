@@ -74,7 +74,7 @@
       <action path="/ActionListFilter" scope="request" validate="false" name="ActionListFilterFormNew"
         input="/WEB-INF/jsp/ActionList/ActionListFilter.jsp"
         type="org.kuali.rice.kew.actionlist.web.ActionListFilterAction" parameter="methodToCall">
-        <forward name="basic" path="/WEB-INF/jsp/ActionList/ActionListFilter.jsp"/> 
+        <forward name="basic" path="/WEB-INF/jsp/ActionList/ActionListFilter.jsp"/>
         <forward name="viewFilter" path="/WEB-INF/jsp/ActionList/ActionListFilter.jsp" />
         <forward name="viewActionList" path="/ActionList.do?methodToCall=start" redirect="true" />
         <forward name="requiredStateError" path="/WEB-INF/jsp/ActionList/ActionListFilter.jsp"/>
@@ -89,14 +89,20 @@
 	      <forward name="requiredStateError" path="/WEB-INF/jsp/documentoperation/DocumentOperationSummary.jsp"/>
           <forward name="finalStateError" path="/WEB-INF/jsp/documentoperation/DocumentOperationSummary.jsp"/>
       </action>
-      
+
       <action path="/DelegateRule" name="DelegateRuleForm" input="/WEB-INF/jsp/rule/DelegateRuleInit.jsp" type="org.kuali.rice.kew.rule.web.DelegateRuleAction"
 			scope="session" parameter="methodToCall" validate="true" attribute="KualiForm">
 			<forward name="basic" path="/WEB-INF/jsp/rule/DelegateRuleInit.jsp" />
 			<forward name="init" path="/WEB-INF/jsp/rule/DelegateRuleInit.jsp" />
 	  </action>
-      
-      
+
+	  <action path="/Rule" name="RuleForm" input="/WEB-INF/jsp/rule/RuleInit.jsp" type="org.kuali.rice.kew.rule.web.RuleAction"
+			scope="session" parameter="methodToCall" validate="true" attribute="KualiForm">
+			<forward name="basic" path="/WEB-INF/jsp/rule/RuleInit.jsp" />
+			<forward name="init" path="/WEB-INF/jsp/rule/RuleInit.jsp" />
+	  </action>
+
+
     </action-mappings>
 
 

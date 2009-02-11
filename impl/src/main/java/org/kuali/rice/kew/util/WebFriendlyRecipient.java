@@ -55,12 +55,10 @@ public class WebFriendlyRecipient implements Recipient{
      }
 
 	/**
-	 * This overridden method ...
 	 *
 	 * @see org.kuali.rice.kew.actionrequest.Recipient#getDisplayName()
 	 */
 	public String getDisplayName() {
-
 		return this.displayName;
 	}
 

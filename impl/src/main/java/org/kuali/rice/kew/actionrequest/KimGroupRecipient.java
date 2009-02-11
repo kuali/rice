@@ -19,7 +19,7 @@ import org.kuali.rice.kim.bo.group.KimGroup;
 
 /**
  * Represents an ActionRequest recipient who is a KimGroup
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
@@ -27,29 +27,25 @@ public class KimGroupRecipient implements Recipient {
 
 	private static final long serialVersionUID = 1L;
 	private KimGroup group;
-	
+
 	public KimGroupRecipient(String groupId) {
 		this(ActionRequestFactory.getIdentityManagementService().getGroup(groupId));
 	}
-		
+
 	public KimGroupRecipient(KimGroup group) {
 		if (group == null) {
 			throw new IllegalArgumentException("Attempted to create a KimGroupRecipient with a null KimGroup!");
 		}
 		this.group = group;
 	}
-	
-	public String getDisplayName() {
-		return getGroup().getGroupName();
-	}
-	
+
 	public KimGroup getGroup() {
 		return this.group;
 	}
-	
+
 	public String getGroupId() {
 		return getGroup().getGroupId();
 	}
-	
+
 
 }

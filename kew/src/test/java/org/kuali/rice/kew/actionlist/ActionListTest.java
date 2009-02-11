@@ -173,7 +173,7 @@ public class ActionListTest extends KEWTestCase {
     	String ewestfalPrincipalId = getPrincipalIdForName("ewestfal");
     	String jitruePrincipalId = getPrincipalIdForName("jitrue");
     	String user1PrincipalId = getPrincipalIdForName("user1");
-    	
+
     	KimGroup NonSIT = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "NonSIT");
 
     	ActionListFilter noFilter = new ActionListFilter();
@@ -403,7 +403,7 @@ public class ActionListTest extends KEWTestCase {
             } else if (user3.equals(((WebFriendlyRecipient)recipient).getRecipientId())) {
                 foundUser3 = true;
             } else {
-                fail("Found invalid recipient in list with display name '" + recipient.getDisplayName() + "'");
+                fail("Found invalid recipient in list with display name '" + ((WebFriendlyRecipient)recipient).getDisplayName() + "'");
             }
         }
     	assertTrue("Should have found user " + user1, foundUser1);

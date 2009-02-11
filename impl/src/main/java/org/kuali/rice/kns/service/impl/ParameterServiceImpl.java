@@ -40,8 +40,8 @@ import org.kuali.rice.kns.service.ParameterEvaluator;
 import org.kuali.rice.kns.service.ParameterService;
 import org.kuali.rice.kns.service.ParameterConstants.COMPONENT;
 import org.kuali.rice.kns.service.ParameterConstants.NAMESPACE;
-import org.kuali.rice.kns.util.KNSUtils;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.KNSUtils;
 
 /**
  * See ParameterService. The componentClass must be the business object, document, or step class that the parameter is associated
@@ -255,33 +255,34 @@ public class ParameterServiceImpl implements ParameterService {
     public void clearCache() {
         parameterCache.set(null);
     }
-
+ 
     public String getNamespace(Class documentOrStepClass) {
-        if (documentOrStepClass != null) {
-            if (documentOrStepClass.isAnnotationPresent(NAMESPACE.class)) {
-                return ((NAMESPACE) documentOrStepClass.getAnnotation(NAMESPACE.class)).namespace();
-            }
-            ModuleService moduleService = kualiModuleService.getResponsibleModuleService(documentOrStepClass);
-            if (moduleService != null) {
-                return moduleService.getModuleConfiguration().getNamespaceCode();
-            }
-            if (documentOrStepClass.getName().startsWith("org.kuali.rice.kns")) {
-                return ParameterConstants.NERVOUS_SYSTEM_NAMESPACE;
-            }
-            if (documentOrStepClass.getName().startsWith("org.kuali.rice.kew")) {
-                return "KR-WKFLW";
-            }
-            if (documentOrStepClass.getName().startsWith("org.kuali.rice.kim")) {
-                return "KR-IDM";
-            }
-            throw new IllegalArgumentException("The getNamespace method of ParameterUtils requires documentOrStepClass with a package prefix of org.kuali.rice.kns, org.kuali.kfs, or org.kuali.module");
+        if (documentOrStepClass == null) {
+            throw new IllegalArgumentException("The getNamespace method of ParameterServiceImpl requires non-null documentOrStepClass");
         }
-        else {
-            throw new IllegalArgumentException("The getNamespace method of ParameterUtils requires non-null documentOrStepClass");
+        if (documentOrStepClass.isAnnotationPresent(NAMESPACE.class)) {
+            return ((NAMESPACE) documentOrStepClass.getAnnotation(NAMESPACE.class)).namespace();
         }
+        ModuleService moduleService = kualiModuleService.getResponsibleModuleService(documentOrStepClass);
+        if (moduleService != null) {
+            return moduleService.getModuleConfiguration().getNamespaceCode();
+        }
+        if (documentOrStepClass.getName().startsWith("org.kuali.rice.kns")) {
+            return ParameterConstants.NERVOUS_SYSTEM_NAMESPACE;
+        }
+        if (documentOrStepClass.getName().startsWith("org.kuali.rice.kew")) {
+            return "KR-WKFLW";
+        }
+        if (documentOrStepClass.getName().startsWith("org.kuali.rice.kim")) {
+            return "KR-IDM";
+        }
+        throw new IllegalArgumentException("Unable to determine the namespace for documentOrStepClass " + documentOrStepClass.getName() );
     }
 
     public String getDetailType(Class documentOrStepClass) {
+        if (documentOrStepClass == null) {
+            throw new IllegalArgumentException("The getDetailType method of ParameterServiceImpl requires non-null documentOrStepClass");
+        }
         if (documentOrStepClass.isAnnotationPresent(COMPONENT.class)) {
             return ((COMPONENT) documentOrStepClass.getAnnotation(COMPONENT.class)).component();
         }
@@ -291,10 +292,13 @@ public class ParameterServiceImpl implements ParameterService {
         else if (BusinessObject.class.isAssignableFrom(documentOrStepClass) ) {
             return documentOrStepClass.getSimpleName();
         }
-        throw new IllegalArgumentException("The getDetailType method of ParameterServiceImpl requires a TransactionalDocument or BusinessObject class.");
+        throw new IllegalArgumentException("The getDetailType method of ParameterServiceImpl requires a TransactionalDocument or BusinessObject class.  Was:" + documentOrStepClass.getName());
     }
 
     protected String getDetailTypeName(Class documentOrStepClass) {
+        if (documentOrStepClass == null) {
+            throw new IllegalArgumentException("The getDetailTypeName method of ParameterServiceImpl requires non-null documentOrStepClass");
+        }
         if (documentOrStepClass.isAnnotationPresent(COMPONENT.class)) {
             BusinessObjectEntry boe = dataDictionaryService.getDataDictionary().getBusinessObjectEntry(documentOrStepClass.getName());
             if (boe != null) {
@@ -316,7 +320,7 @@ public class ParameterServiceImpl implements ParameterService {
                 return KNSUtils.getBusinessTitleForClass(documentOrStepClass);
             }
         }
-        throw new IllegalArgumentException("The getDetailTypeName method of ParameterServiceImpl requires TransactionalDocument, BusinessObject, or Step class");
+        throw new IllegalArgumentException("The getDetailTypeName method of ParameterServiceImpl requires TransactionalDocument, BusinessObject, or Step class. Was: " + documentOrStepClass.getName() );
     }
 
     protected ParameterEvaluatorImpl getParameterEvaluator(Parameter parameter) {
@@ -361,7 +365,7 @@ public class ParameterServiceImpl implements ParameterService {
         }
         parameter = getParameter(getNamespace(componentClass), getDetailType(componentClass), parameterName);
         if (parameter == null) {
-            throw new IllegalArgumentException("The getParameter method of ParameterServiceImpl requires a componentClass and parameterName that correspond to an existing parameter");
+            throw new IllegalArgumentException("The getParameter method of ParameterServiceImpl requires a componentClass and parameterName that correspond to an existing parameter.  Was passed: " + componentClass.getName() + "/" + parameterName);
         }
         parameterCache.get().put(key, parameter);
         return parameter;
@@ -386,7 +390,7 @@ public class ParameterServiceImpl implements ParameterService {
 
     private Parameter getParameter(String namespaceCode, String detailTypeCode, String parameterName) {
         if (StringUtils.isBlank(namespaceCode) || StringUtils.isBlank(detailTypeCode) || StringUtils.isBlank(parameterName)) {
-            throw new IllegalArgumentException("The getParameter method of KualiConfigurationServiceImpl requires a non-blank namespaceCode, parameterDetailTypeCode, and parameterName");
+            throw new IllegalArgumentException("The getParameter method of KualiConfigurationServiceImpl requires a non-blank namespaceCode, parameterDetailTypeCode, and parameterName: " + namespaceCode + " / " + detailTypeCode + " / " + parameterName);
         }
         Parameter param = getParameterWithoutExceptions(namespaceCode, detailTypeCode, parameterName);
         if (param == null) {

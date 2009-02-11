@@ -13,6 +13,7 @@ import org.kuali.rice.core.util.MaxSizeMap;
 import org.kuali.rice.core.util.RiceDebugUtils;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.role.KimPermission;
@@ -685,6 +686,55 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     	return getIdentityService().getPrincipalByPrincipalNameAndPassword( principalName, password );
     }
 	
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kim.service.IdentityManagementService#getEntityByPrincipalId(java.lang.String)
+     */
+    public KimEntity getEntityByPrincipalId(String principalId) {
+    	return getIdentityService().getEntityByPrincipalId(principalId);
+    }
+    
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kim.service.IdentityManagementService#getEntityDefaultInfo(java.lang.String)
+     */
+    public KimEntityDefaultInfo getEntityDefaultInfo(String entityId) {
+    	return getIdentityService().getEntityDefaultInfo(entityId);
+    }
+    
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kim.service.IdentityManagementService#getEntityDefaultInfoByPrincipalId(java.lang.String)
+     */
+    public KimEntityDefaultInfo getEntityDefaultInfoByPrincipalId(
+    		String principalId) {
+    	return getIdentityService().getEntityDefaultInfoByPrincipalId(principalId);
+    }
+    
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kim.service.IdentityManagementService#getEntityDefaultInfoByPrincipalName(java.lang.String)
+     */
+    public KimEntityDefaultInfo getEntityDefaultInfoByPrincipalName(
+    		String principalName) {
+    	return getIdentityService().getEntityDefaultInfoByPrincipalName(principalName);
+    }
+    
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kim.service.IdentityManagementService#lookupEntityDefaultInfo(java.util.Map, int)
+     */
+    public List<? extends KimEntityDefaultInfo> lookupEntityDefaultInfo(
+    		Map<String, String> searchCriteria, int maxResults) {
+    	return getIdentityService().lookupEntityDefaultInfo(searchCriteria, maxResults);
+    }
+    
+    
 	public KimEntity getEntity(String entityId) {
 		KimEntity entity = getEntityByIdCache(entityId);
 		if (entity != null) {

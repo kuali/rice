@@ -7,14 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kim.bo.entity.EntityAddress;
-import org.kuali.rice.kim.bo.entity.EntityAffiliation;
-import org.kuali.rice.kim.bo.entity.EntityEmail;
-import org.kuali.rice.kim.bo.entity.EntityEmploymentInformation;
 import org.kuali.rice.kim.bo.entity.EntityEntityType;
-import org.kuali.rice.kim.bo.entity.EntityExternalIdentifier;
 import org.kuali.rice.kim.bo.entity.EntityName;
-import org.kuali.rice.kim.bo.entity.EntityPhone;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.NamePrincipalName;
@@ -25,11 +19,9 @@ import org.kuali.rice.kim.bo.entity.dto.NamePrincipalNameInfo;
 import org.kuali.rice.kim.bo.entity.impl.EntityNameImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
-import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
 import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.KualiDecimal;
 
 /**
  * Base implementation of the identity (entity) service.  This version assumes the KimEntity
@@ -56,16 +48,22 @@ public class IdentityServiceImpl implements IdentityService {
 	 * @see org.kuali.rice.kim.service.IdentityService#getEntityDefaultInfoByPrincipalId(java.lang.String)
 	 */
 	public KimEntityDefaultInfo getEntityDefaultInfoByPrincipalId(String principalId) {
-		throw new UnsupportedOperationException();
-		// return null;
+		KimEntity entity = getEntityByPrincipalName(principalId);
+		if ( entity == null ) {
+			return null;
+		}
+		return convertEntityImplToDefaultInfo(entity);
 	}
 	
 	/**
 	 * @see org.kuali.rice.kim.service.IdentityService#getEntityDefaultInfoByPrincipalName(java.lang.String)
 	 */
 	public KimEntityDefaultInfo getEntityDefaultInfoByPrincipalName(String principalName) {
-		throw new UnsupportedOperationException();
-		// return null;
+		KimEntity entity = getEntityByPrincipalName(principalName);
+		if ( entity == null ) {
+			return null;
+		}
+		return convertEntityImplToDefaultInfo(entity);
 	}
 	
 	/**
@@ -262,9 +260,19 @@ public class IdentityServiceImpl implements IdentityService {
 		if ( StringUtils.isBlank( principalName ) ) {
 			return null;
 		}
-        return getEntityByKeyValue("principalName", principalName);
+        return getEntityByKeyValue("principals.principalName", principalName);
 	}
 
+	/**
+	 * @see org.kuali.rice.kim.service.IdentityService#getEntityByPrincipalId(java.lang.String)
+	 */
+	public KimEntity getEntityByPrincipalId(String principalId) {
+		if ( StringUtils.isBlank( principalId ) ) {
+			return null;
+		}
+        return getEntityByKeyValue("principals.principalId", principalId);
+	}
+	
 	/**
 	 * @see org.kuali.rice.kim.service.IdentityService#getEntityIdByPrincipalId(java.lang.String)
 	 */
@@ -356,7 +364,7 @@ public class IdentityServiceImpl implements IdentityService {
 		Map<String,String> criteria = new HashMap<String,String>();
         criteria.put(key, value);
         Collection<KimEntity> entities = (Collection<KimEntity>)getBusinessObjectService().findMatching(KimEntityImpl.class, criteria);
-        if (!entities.isEmpty() && entities.size() == 1) {
+        if (entities.size() >= 1) {
         	return entities.iterator().next();
         }
 		return null;

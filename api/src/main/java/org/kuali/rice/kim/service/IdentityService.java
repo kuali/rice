@@ -16,6 +16,8 @@ public interface IdentityService {
 	
 	/** Get an entity object based on the principal name */
 	KimEntity getEntityByPrincipalName(String principalName);
+	
+	KimEntity getEntityByPrincipalId(String principalId);
 
 	// EXTENDED CLIENT API
     

@@ -16,8 +16,8 @@ if (args.length != 1) {
 
 def rootDirectory = new File(args[0])
 
-// traverseDirectory(rootDirectory)
-processXmlFile(new File('C:\\java\\projects\\kfs\\work\\src\\org\\kuali\\kfs\\module\\cam\\document\\datadictionary\\AssetFabricationMaintenanceDocument.xml'))
+traverseDirectory(rootDirectory)
+// processXmlFile(new File('C:\\java\\projects\\kfs\\work\\src\\org\\kuali\\kfs\\module\\cam\\document\\datadictionary\\AssetFabricationMaintenanceDocument.xml'))
 
 def traverseDirectory(file) {
 	def files = file.listFiles()
@@ -62,25 +62,25 @@ def processXmlFile(file) {
 		</xsl:template>
 	</xsl:stylesheet>
 	'''.trim()
-
+	
 	def fileName = file.getCanonicalPath()
 	def transformedFileName = fileName + '.tmp'
-	// def transformedOutputStream = new FileOutputStream(transformedFileName)
+	def transformedOutputStream = new FileOutputStream(transformedFileName)
 	
 	def factory = TransformerFactory.newInstance()
 	def transformer = factory.newTransformer(new StreamSource(new StringReader(xslt)))
-	transformer.transform(new StreamSource(new FileReader(file)), new StreamResult(System.out))
-	// transformedOutputStream.close()
+	transformer.transform(new StreamSource(new FileReader(file)), new StreamResult(transformedOutputStream))
+	transformedOutputStream.close()
 	
-	// def transformedInputStream = new FileInputStream(transformedFileName)
+	def transformedInputStream = new FileInputStream(transformedFileName)
 	
-	/*def fileOutputStream = new FileOutputStream(new File(fileName), false)
+	def fileOutputStream = new FileOutputStream(new File(fileName), false)
 	while (transformedInputStream.available() > 0) {
 		fileOutputStream.write(transformedInputStream.read())
 	}
 	transformedInputStream.close()
 
-	new File(transformedFileName).delete()*/
+	new File(transformedFileName).delete()
 }
 
 

@@ -234,6 +234,8 @@ public class WebRuleUtils {
 	public static List<Row> getRuleTemplateRows(RuleBaseValues rule) {
 		List<Row> rows = new ArrayList<Row>();
 		RuleTemplate ruleTemplate = rule.getRuleTemplate();
+		// refetch rule template from service becaues after persistence in KNS, it comes back without any rule template attributes
+		ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateId(ruleTemplate.getRuleTemplateId());
 		if (ruleTemplate != null) {
 
 			List<RuleTemplateAttribute> ruleTemplateAttributes = ruleTemplate.getActiveRuleTemplateAttributes();

@@ -19,14 +19,12 @@ package org.kuali.rice.kew.rule;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.kuali.rice.core.jpa.annotations.Sequence;
@@ -268,7 +266,17 @@ public class RuleResponsibility extends KewPersistableBusinessObjectBase {
 //        }
 //        return (RuleDelegation) getDelegationRules().get(index);
 //    }
-
+    
+    // convenience methods for the web-tier
+    
+    public String getActionRequestedDisplayValue() {
+    	return KEWConstants.ACTION_REQUEST_CODES.get(getActionRequestedCd());
+    }
+    
+    public String getRuleResponsibilityTypeDisplayValue() {
+    	return KEWConstants.RULE_RESPONSIBILITY_TYPES.get(getRuleResponsibilityType());
+    }
+    
     public boolean equals(Object o) {
         if (o == null) return false;
         if (!(o instanceof RuleResponsibility)) return false;

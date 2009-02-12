@@ -6,7 +6,7 @@
       <parent>RiceDocument</parent>
       <description>Routing Rule Delegation</description>
       <label>Routing Rule Delegation</label>
-      <postProcessorName>org.kuali.rice.kns.workflow.KualiPostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
     </documentType>
   </documentTypes>
 </data>

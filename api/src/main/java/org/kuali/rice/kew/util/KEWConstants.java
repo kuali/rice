@@ -491,6 +491,17 @@ public class KEWConstants {
     public static final String RULE_RESPONSIBILITY_WORKFLOW_ID = "F";
     public static final String RULE_RESPONSIBILITY_GROUP_ID = "G";
     public static final String RULE_RESPONSIBILITY_ROLE_ID = "R";
+    
+    public static final String RULE_RESPONSIBILITY_WORKFLOW_ID_LABEL = "PERSON";
+	public static final String RULE_RESPONSIBILITY_GROUP_ID_LABEL = "GROUP";
+	public static final String RULE_RESPONSIBILITY_ROLE_ID_LABEL = "ROLE";
+    
+    public static final Map<String, String> RULE_RESPONSIBILITY_TYPES = new HashMap<String, String>();
+    static {
+    	RULE_RESPONSIBILITY_TYPES.put(RULE_RESPONSIBILITY_WORKFLOW_ID, RULE_RESPONSIBILITY_WORKFLOW_ID_LABEL);
+    	RULE_RESPONSIBILITY_TYPES.put(RULE_RESPONSIBILITY_GROUP_ID, RULE_RESPONSIBILITY_GROUP_ID_LABEL);
+    	RULE_RESPONSIBILITY_TYPES.put(RULE_RESPONSIBILITY_ROLE_ID, RULE_RESPONSIBILITY_ROLE_ID_LABEL);
+    }
 
     public static final String DEFAULT_RULE_DOCUMENT_NAME = "RuleDocument";
 

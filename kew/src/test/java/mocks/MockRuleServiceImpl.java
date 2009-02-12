@@ -167,6 +167,10 @@ public class MockRuleServiceImpl implements RuleService {
     public void makeCurrent(RuleBaseValues rule) {
         throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");
     }
+    
+    public void makeCurrent(RuleDelegation ruleDelegation) {
+        throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");
+    }
 
     public List findRuleBaseValuesByResponsibilityReviewer(String reviewerName, String type) {
         List rules = new ArrayList();

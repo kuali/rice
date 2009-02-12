@@ -21,41 +21,27 @@
     <property name="objectLabel" value="Delegation Rule" />
     <property name="attributes" >
       <list>
+        <ref bean="RuleDelegation-parentRule-ruleBaseValuesId"/>
+        <ref bean="RuleDelegation-parentRule-description"/>
+        <ref bean="RuleDelegation-parentResponsibility-ruleResponsibilityName"/>
+        <ref bean="RuleDelegation-parentResponsibility-ruleResponsibilityType"/>
+        <ref bean="RuleDelegation-parentResponsibility-actionRequest"/>
         <ref bean="RuleDelegation-responsibilityId"/>
-        <ref bean="RuleDelegation-delegationType"/>
-        
-        
-        <!-- 
-        <ref bean="RuleDelegation-ruleBaseValuesId"/>
-        <ref bean="RuleDelegation-name" />
+        <ref bean="RuleDelegation-delegationType"/>        
+        <ref bean="RuleDelegation-name" />        
         <ref bean="RuleDelegation-documentTypeName"/>
-        <ref bean="RuleDelegation-ruleTemplateId"/>
         <ref bean="RuleDelegation-ruleTemplateName"/>
         <ref bean="RuleDelegation-description"/>
         <ref bean="RuleDelegation-fromDate"/>
         <ref bean="RuleDelegation-toDate"/>
         <ref bean="RuleDelegation-ignorePrevious"/>
         <ref bean="RuleDelegation-active"/>
-        <ref bean="RuleDelegation-groupReviewerName"/>
-        <ref bean="RuleDelegation-groupReviewerNamespace"/>
-        <ref bean="RuleDelegation-personReviewer"/>
-        <ref bean="RuleDelegation-personReviewerType"/>
-        <ref bean="RuleDelegation-delegateRule"/>
-        -->
       </list>
     </property>
     <!-- 
     <property name="relationships" >
       <list>
-        <bean parent="RelationshipDefinition">
-          <property name="objectAttributeName" value="parentRule" />
-          <property name="primitiveAttributes" >
-            <list>
-              <bean parent="PrimitiveAttributeDefinition"
-                    p:sourceName="delegateRuleId"
-                    p:targetName="ruleBaseValuesId" />
-            </list>
-          </property>
+        
         <bean parent="RelationshipDefinition">
           <property name="objectAttributeName" value="delegationRuleBaseValues" />
           <property name="primitiveAttributes" >
@@ -71,77 +57,99 @@
             <list>
               <bean parent="SupportAttributeDefinition"
                     p:identifier="true"
-                    p:sourceName="ruleTemplate.name"
+                    p:sourceName="delegationRuleBaseValues.ruleTemplate.name"
                     p:targetName="name" />
-            </list>
-          </property>
-        </bean>
-
-        <bean parent="RelationshipDefinition">
-          <property name="objectAttributeName" value="kimGroupImpl" />
-          <property name="primitiveAttributes" >
-            <list>
-              <bean parent="PrimitiveAttributeDefinition"
-                    p:sourceName="groupReviewerName"
-                    p:targetName="groupName" />
-              <bean parent="PrimitiveAttributeDefinition"
-                    p:sourceName="groupReviewerName"
-                    p:targetName="groupName" />
-            </list>
-          </property>
-          <property name="supportAttributes" >
-            <list>
               <bean parent="SupportAttributeDefinition"
                     p:identifier="true"
-                    p:sourceName="groupReviewerNamespace"
-                    p:targetName="namespaceCode" />
+                    p:sourceName="delegationRuleBaseValues.description"
+                    p:targetName="description" />
             </list>
           </property>
         </bean>
-
-		<bean parent="RelationshipDefinition">
-          <property name="objectAttributeName" value="personImpl" />
-          <property name="primitiveAttributes" >
-            <list>
-              <bean parent="PrimitiveAttributeDefinition"
-                    p:sourceName="personReviewer"
-                    p:targetName="principalName" />
-            </list>
-          </property>
-          <property name="supportAttributes" >
-            <list>
-              <bean parent="SupportAttributeDefinition"
-                    p:identifier="true"
-                    p:sourceName="personReviewer"
-                    p:targetName="principalName" />
-            </list>
-          </property>
-        </bean>
-
-        <bean parent="RelationshipDefinition">
-          <property name="objectAttributeName" value="documentType"/>
-          <property name="primitiveAttributes" >
-            <list>
-              <bean parent="PrimitiveAttributeDefinition"
-                    p:sourceName="docTypeName"
-                    p:targetName="name" />
-            </list>
-          </property>
-          <property name="supportAttributes" >
-            <list>
-              <bean parent="SupportAttributeDefinition"
-                    p:identifier="true"
-                    p:sourceName="docTypeName"
-                    p:targetName="name" />
-            </list>
-          </property>
-        </bean>
-        
 
       </list>
     </property>
-            -->
-    
+    -->
+  </bean>
+
+  <bean id="RuleDelegation-parentRule-ruleBaseValuesId" parent="RuleDelegation-parentRule-ruleBaseValuesId-parentBean" />
+
+  <bean id="RuleDelegation-parentRule-ruleBaseValuesId-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="shortLabel" value="Rule Id" />
+    <property name="maxLength" value="30" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="30" />
+    </property>
+    <property name="name" value="ruleResponsibility.ruleBaseValues.ruleBaseValuesId" />
+    <property name="label" value="Rule Id" />
+  </bean>
+  
+  <bean id="RuleDelegation-parentRule-description" parent="RuleDelegation-parentRule-description-parentBean" />
+
+  <bean id="RuleDelegation-parentRule-description-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="shortLabel" value="Description" />
+    <property name="maxLength" value="30" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="30" />
+    </property>
+    <property name="name" value="ruleResponsibility.ruleBaseValues.description" />
+    <property name="label" value="Description" />
+  </bean>
+
+  <bean id="RuleDelegation-parentResponsibility-ruleResponsibilityName" parent="RuleDelegation-parentResponsibility-ruleResponsibilityName-parentBean" />
+
+  <bean id="RuleDelegation-parentResponsibility-ruleResponsibilityName-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="shortLabel" value="Reviewer" />
+    <property name="maxLength" value="30" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="30" />
+    </property>
+    <property name="name" value="ruleResponsibility.ruleResponsibilityName" />
+    <property name="label" value="Reviewer" />
+  </bean>
+
+  <bean id="RuleDelegation-parentResponsibility-ruleResponsibilityType" parent="RuleDelegation-parentResponsibility-ruleResponsibilityType-parentBean" />
+
+  <bean id="RuleDelegation-parentResponsibility-ruleResponsibilityType-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="shortLabel" value="Type" />
+    <property name="maxLength" value="30" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="30" />
+    </property>
+    <property name="name" value="ruleResponsibility.ruleResponsibilityTypeDisplayValue" />
+    <property name="label" value="Type" />
+  </bean>
+
+  <bean id="RuleDelegation-parentResponsibility-actionRequest" parent="RuleDelegation-parentResponsibility-actionRequest-parentBean" />
+
+  <bean id="RuleDelegation-parentResponsibility-actionRequest-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="shortLabel" value="Action Request" />
+    <property name="maxLength" value="30" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="30" />
+    </property>
+    <property name="name" value="ruleResponsibility.actionRequestedDisplayValue" />
+    <property name="label" value="Action Request" />
   </bean>
 
   <bean id="RuleDelegation-responsibilityId" parent="RuleDelegation-responsibilityId-parentBean" />
@@ -177,262 +185,53 @@
     <property name="label" value="Delegation Type" />
   </bean>
 
-  <!-- Attribute Definitions
-
-  <bean id="RuleDelegation-ruleBaseValuesId" parent="RuleDelegation-ruleBaseValuesId-parentBean" />
-
-  <bean id="RuleDelegation-ruleBaseValuesId-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="shortLabel" value="Id" />
-    <property name="maxLength" value="30" />
-    <property name="validationPattern" >
-      <bean parent="AnyCharacterValidationPattern" />
-    </property>
-    <property name="control" >
-      <bean parent="TextControlDefinition"
-            p:size="30" />
-    </property>
-    <property name="name" value="ruleBaseValuesId" />
-    <property name="label" value="Rule Id" />
-  </bean>
-
   <bean id="RuleDelegation-name" parent="RuleDelegation-name-parentBean" />
 
-  <bean id="RuleDelegation-name-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="shortLabel" value="Id" />
-    <property name="maxLength" value="256" />
-    <property name="validationPattern" >
-      <bean parent="AnyCharacterValidationPattern" />
-    </property>
-    <property name="control" >
-      <bean parent="TextControlDefinition"
-            p:size="30" />
-    </property>
-    <property name="name" value="name" />
-    <property name="label" value="Name" />
-  </bean>
-
-  <bean id="RuleDelegation-ruleTemplateId" parent="RuleDelegation-ruleTemplateId-parentBean" />
-
-  <bean id="RuleDelegation-ruleTemplateId-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="shortLabel" value="Rule Template Id" />
-    <property name="maxLength" value="30" />
-    <property name="validationPattern" >
-      <bean parent="AnyCharacterValidationPattern" />
-    </property>
-    <property name="control" >
-      <bean parent="TextControlDefinition"
-            p:size="30" />
-    </property>
-    <property name="name" value="ruleTemplateId" />
-    <property name="label" value="Rule Template Id" />
+  <bean id="RuleDelegation-name-parentBean" abstract="true" parent="RuleBaseValues-name">
+    <property name="name" value="delegationRuleBaseValues.name" />
   </bean>
 
   <bean id="RuleDelegation-ruleTemplateName" parent="RuleDelegation-ruleTemplateName-parentBean" />
 
-  <bean id="RuleDelegation-ruleTemplateName-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="shortLabel" value="Rule Template" />
-    <property name="maxLength" value="256" />
-    <property name="validationPattern" >
-      <bean parent="AnyCharacterValidationPattern" />
-    </property>
-    <property name="control" >
-      <bean parent="LookupReadonlyControlDefinition"
-    		p:size="30" />
-    </property>
-    <property name="name" value="ruleTemplate.name" />
-    <property name="label" value="Rule Template" />
-  </bean>
-
-  <bean id="RuleDelegation-groupReviewerName" parent="RuleDelegation-groupReviewerName-parentBean" />
-
-  <bean id="RuleDelegation-groupReviewerName-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="shortLabel" value="Group Reviewer" />
-    <property name="maxLength" value="80" />
-    <property name="validationPattern" >
-      <bean parent="AnyCharacterValidationPattern" />
-    </property>
-    <property name="control" >
-      <bean parent="TextControlDefinition"
-            p:size="30" />
-    </property>
-    <property name="name" value="groupReviewerName" />
-    <property name="label" value="Group Reviewer Name" />
-  </bean>
-
-  <bean id="RuleDelegation-groupReviewerNamespace" parent="RuleDelegation-groupReviewerNamespace-parentBean" />
-
-  <bean id="RuleDelegation-groupReviewerNamespace-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="shortLabel" value="Group Reviewer Namespace" />
-    <property name="maxLength" value="40" />
-    <property name="validationPattern" >
-      <bean parent="AnyCharacterValidationPattern" />
-    </property>
-    <property name="control" >
-      <bean parent="TextControlDefinition"
-            p:size="30" />
-    </property>
-    <property name="name" value="groupReviewerNamespace" />
-    <property name="label" value="Group Reviewer Namespace" />
-  </bean>
-
-  <bean id="RuleDelegation-personReviewer" parent="RuleDelegation-personReviewer-parentBean" />
-
-  <bean id="RuleDelegation-personReviewer-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="shortLabel" value="Person Reviewer" />
-    <property name="maxLength" value="80" />
-    <property name="validationPattern" >
-      <bean parent="AnyCharacterValidationPattern" />
-    </property>
-    <property name="control" >
-      <bean parent="TextControlDefinition"
-            p:size="30" />
-    </property>
-    <property name="name" value="personReviewer" />
-    <property name="label" value="Person Reviewer" />
-  </bean>
-
-  <bean id="RuleDelegation-personReviewerType" parent="RuleDelegation-personReviewerType-parentBean" />
-
-  <bean id="RuleDelegation-personReviewerType-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="shortLabel" value="Person Reviewer Type" />
-    <property name="maxLength" value="6" />
-    <property name="validationPattern" >
-      <bean parent="AnyCharacterValidationPattern" />
-    </property>
-    <property name="control" >
-      <bean parent="RadioControlDefinition"
-        p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.IndicatorPersonSearchTypeValuesFinder"
-        p:includeKeyInLabel="true"/>
-    </property>
-    <property name="name" value="personReviewerType" />
-    <property name="label" value="Person Reviewer on Rule is" />
-  </bean>
-
-  <bean id="RuleDelegation-delegateRule" parent="RuleDelegation-delegateRule-parentBean" />
-
-  <bean id="RuleDelegation-delegateRule-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="shortLabel" value="Person Reviewer Type" />
-    <property name="maxLength" value="1" />
-    <property name="validationPattern" >
-      <bean parent="AnyCharacterValidationPattern" />
-    </property>
-    <property name="control" >
-      <bean parent="RadioControlDefinition"
-        p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.DelegateRuleValuesFinder"
-        p:includeKeyInLabel="true"/>
-    </property>
-    <property name="name" value="delegateRule" />
-    <property name="label" value="Delegate Rule" />
-    <property name="formatterClass" value="org.kuali.rice.kns.web.format.BooleanFormatter" />
+  <bean id="RuleDelegation-ruleTemplateName-parentBean" abstract="true" parent="RuleBaseValues-ruleTemplateName">
+    <property name="name" value="delegationRuleBaseValues.ruleTemplate.name" />
   </bean>
 
   <bean id="RuleDelegation-documentTypeName" parent="RuleDelegation-documentTypeName-parentBean" />
 
-  <bean id="RuleDelegation-documentTypeName-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="shortLabel" value="Document Type" />
-    <property name="maxLength" value="256" />
-    <property name="validationPattern" >
-      <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
-    </property>
-    <property name="control" >
-      <bean parent="TextControlDefinition"
-            p:size="30" />
-    </property>
-    <property name="name" value="docTypeName" />
-    <property name="label" value="Document Type" />
+  <bean id="RuleDelegation-documentTypeName-parentBean" abstract="true" parent="RuleBaseValues-documentTypeName">
+    <property name="name" value="delegationRuleBaseValues.docTypeName" />
   </bean>
 
   <bean id="RuleDelegation-description" parent="RuleDelegation-description-parentBean" />
 
-  <bean id="RuleDelegation-description-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="name" value="description" />
-    <property name="forceUppercase" value="false" />
-    <property name="label" value="Description" />
-    <property name="shortLabel" value="Description" />
-    <property name="maxLength" value="2000" />
-    <property name="validationPattern" >
-      <bean parent="AnyCharacterValidationPattern"
-            p:allowWhitespace="true" />
-    </property>
-    <property name="control" >
-      <bean parent="TextareaControlDefinition"
-            p:rows="3"
-            p:cols="60" />
-    </property>
+  <bean id="RuleDelegation-description-parentBean" abstract="true" parent="RuleBaseValues-description">
+    <property name="name" value="delegationRuleBaseValues.description" />
   </bean>
 
   <bean id="RuleDelegation-fromDate" parent="RuleDelegation-fromDate-parentBean" />
 
-  <bean id="RuleDelegation-fromDate-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="name" value="fromDate" />
-    <property name="forceUppercase" value="false" />
-    <property name="label" value="From Date" />
-    <property name="shortLabel" value="From Date" />
-    <property name="maxLength" value="30" />
-    <property name="validationPattern" >
-      <bean parent="DateValidationPattern"/>
-    </property>
-    <property name="control" >
-      <bean parent="TextControlDefinition"
-      	p:size="30"
-      	p:datePicker="true"/>
-    </property>
+  <bean id="RuleDelegation-fromDate-parentBean" abstract="true" parent="RuleBaseValues-fromDate">
+    <property name="name" value="delegationRuleBaseValues.fromDate" />
   </bean>
 
   <bean id="RuleDelegation-toDate" parent="RuleDelegation-toDate-parentBean" />
 
-  <bean id="RuleDelegation-toDate-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="name" value="toDate" />
-    <property name="forceUppercase" value="false" />
-    <property name="label" value="To Date" />
-    <property name="shortLabel" value="To Date" />
-    <property name="maxLength" value="30" />
-    <property name="validationPattern" >
-      <bean parent="DateValidationPattern"/>
-    </property>
-    <property name="control" >
-      <bean parent="TextControlDefinition"
-      	p:size="30"
-      	p:datePicker="true"/>
-    </property>
+  <bean id="RuleDelegation-toDate-parentBean" abstract="true" parent="RuleBaseValues-toDate">
+    <property name="name" value="delegationRuleBaseValues.toDate" />
   </bean>
-
+ 
   <bean id="RuleDelegation-active" parent="RuleDelegation-active-parentBean"/>
 
-  <bean id="RuleDelegation-active-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="name" value="activeInd" />
-    <property name="forceUppercase" value="false" />
-    <property name="label" value="Active" />
-    <property name="shortLabel" value="Active" />
-    <property name="maxLength" value="1" />
-    <property name="validationPattern" >
-      <bean parent="AnyCharacterValidationPattern" />
-    </property>
-    <property name="control" >
-      <bean parent="CheckboxControlDefinition" />
-    </property>
-    <property name="formatterClass" value="org.kuali.rice.kns.web.format.BooleanFormatter" />
+  <bean id="RuleDelegation-active-parentBean" abstract="true" parent="RuleBaseValues-active">
+    <property name="name" value="delegationRuleBaseValues.activeInd" />
   </bean>
 
   <bean id="RuleDelegation-ignorePrevious" parent="RuleDelegation-ignorePrevious-parentBean"/>
 
-  <bean id="RuleDelegation-ignorePrevious-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="name" value="ignorePrevious" />
-    <property name="forceUppercase" value="false" />
-    <property name="label" value="Ignore Previous" />
-    <property name="shortLabel" value="Ignore Previous" />
-    <property name="maxLength" value="1" />
-    <property name="validationPattern" >
-      <bean parent="AnyCharacterValidationPattern" />
-    </property>
-    <property name="control" >
-      <bean parent="CheckboxControlDefinition" />
-    </property>
-    <property name="formatterClass" value="org.kuali.rice.kns.web.format.BooleanFormatter" />
+  <bean id="RuleDelegation-ignorePrevious-parentBean" abstract="true" parent="RuleBaseValues-ignorePrevious">
+    <property name="name" value="delegationRuleBaseValues.ignorePrevious" />
   </bean>
-
--->
-
 
   <!-- Business Object Inquiry Definition
 

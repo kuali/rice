@@ -11,43 +11,60 @@
     <property name="maintainableClass" value="org.kuali.rice.kew.document.RoutingRuleDelegationMaintainable" />
     <property name="maintainableSections" >
       <list>
-        <ref bean="RoutingRuleDelegationMaintenanceDocument-ParentRule" />
-        <!-- <ref bean="RoutingRuleDelegationMaintenanceDocument-Rule" />
-        <ref bean="RoutingRuleDelegationMaintenanceDocument-RuleAttributes" /> -->
-        <!-- 
+        <ref bean="RoutingRuleDelegationMaintenanceDocument-DelegationDetails" />
+        <ref bean="RoutingRuleDelegationMaintenanceDocument-Rule" />
+        <ref bean="RoutingRuleDelegationMaintenanceDocument-RuleAttributes" />
         <ref bean="RoutingRuleDelegationMaintenanceDocument-PersonResponsibilities" />
         <ref bean="RoutingRuleDelegationMaintenanceDocument-GroupResponsibilities" />
-        -->
       </list>
     </property>
     <property name="allowsNewOrCopy" value="true" />
-    <!-- TODO create RoutingRuleDelegationMaintenanceDocument -->
     <property name="documentTypeName" value="RoutingRuleDelegationMaintenanceDocument" />
-    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase" />    
+    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase" />  
+    <property name="lockingKeys">
+      <list>
+        <value>delegationRuleBaseValues.ruleBaseValuesId</value>
+      </list>
+    </property>  
   </bean>
 
   <!-- Maintenance Section Definitions -->
 
-  <bean id="RoutingRuleDelegationMaintenanceDocument-ParentRule" parent="RoutingRuleDelegationMaintenanceDocument-ParentRule-parentBean" />
+  <bean id="RoutingRuleDelegationMaintenanceDocument-DelegationDetails" parent="RoutingRuleDelegationMaintenanceDocument-DelegationDetails-parentBean" />
 
-  <bean id="RoutingRuleDelegationMaintenanceDocument-ParentRule-parentBean" abstract="true" parent="MaintainableSectionDefinition">
-    <property name="id" value="ParentRule" />
-    <property name="title" value="Parent Rule" />
+  <bean id="RoutingRuleDelegationMaintenanceDocument-DelegationDetails-parentBean" abstract="true" parent="MaintainableSectionDefinition">
+    <property name="id" value="DelegationDetails" />
+    <property name="title" value="Delegation Details" />
     <property name="maintainableItems" >
       <list>
+        <bean parent="MaintainableSubSectionHeaderDefinition"
+              p:name="Parent Rule" />
+        <bean parent="MaintainableFieldDefinition"
+              p:name="ruleResponsibility.ruleBaseValues.ruleBaseValuesId"
+              p:unconditionallyReadOnly="true"/>
         <bean parent="MaintainableFieldDefinition"
               p:name="ruleResponsibility.ruleBaseValues.description"
               p:unconditionallyReadOnly="true"/>
+        <bean parent="MaintainableSubSectionHeaderDefinition"
+              p:name="Parent Rule Responsibility" />
+        <bean parent="MaintainableFieldDefinition"
+              p:name="ruleResponsibility.ruleResponsibilityName"
+              p:unconditionallyReadOnly="true"/>
+		<bean parent="MaintainableFieldDefinition"
+              p:name="ruleResponsibility.ruleResponsibilityTypeDisplayValue"
+              p:unconditionallyReadOnly="true"/>
+		<bean parent="MaintainableFieldDefinition"
+              p:name="ruleResponsibility.actionRequestedDisplayValue"
+              p:unconditionallyReadOnly="true"/>		        
       </list>
     </property>
   </bean>
-
-<!-- 
+ 
   <bean id="RoutingRuleDelegationMaintenanceDocument-Rule" parent="RoutingRuleDelegationMaintenanceDocument-Rule-parentBean" />
 
   <bean id="RoutingRuleDelegationMaintenanceDocument-Rule-parentBean" abstract="true" parent="MaintainableSectionDefinition">
     <property name="id" value="Rule" />
-    <property name="title" value="Rule" />
+    <property name="title" value="Delegate Rule" />
     <property name="maintainableItems" >
       <list>
         <bean parent="MaintainableFieldDefinition"
@@ -57,37 +74,45 @@
               p:name="delegationRuleBaseValues.ruleTemplate.name"
               p:unconditionallyReadOnly="true"/>
         <bean parent="MaintainableFieldDefinition"
+              p:name="delegationType"
+              p:required="true" />
+        <bean parent="MaintainableFieldDefinition"
               p:name="delegationRuleBaseValues.name"
-              p:required="false" />
+              p:required="false"
+              p:noLookup="true"/>
         <bean parent="MaintainableFieldDefinition"
               p:name="delegationRuleBaseValues.description"
-              p:required="true" />
+              p:required="true"
+              p:noLookup="true"/>
         <bean parent="MaintainableFieldDefinition"
               p:name="delegationRuleBaseValues.fromDate"
-              p:required="false" />
+              p:required="false"
+              p:noLookup="true"/>
         <bean parent="MaintainableFieldDefinition"
               p:name="delegationRuleBaseValues.toDate"
-              p:required="false" />
+              p:required="false"
+              p:noLookup="true"/>
         <bean parent="MaintainableFieldDefinition"
               p:name="delegationRuleBaseValues.ignorePrevious"
-              p:required="true" />
+              p:required="true"
+              p:noLookup="true"/>
         <bean parent="MaintainableFieldDefinition"
               p:name="delegationRuleBaseValues.activeInd"
-              p:required="true" />
+              p:required="true"
+              p:noLookup="true"/>
       </list>
     </property>
   </bean>
-   -->
+   
    
   <bean id="RoutingRuleDelegationMaintenanceDocument-RuleAttributes" parent="RoutingRuleDelegationMaintenanceDocument-RuleAttributes-parentBean" />
 
   <bean id="RoutingRuleDelegationMaintenanceDocument-RuleAttributes-parentBean" abstract="true" parent="MaintainableSectionDefinition">
     <property name="id" value="RuleAttributes" />
-    <property name="title" value="Rule Attributes" />
-    <!-- Maintainable Items generated based on Rule Template, see RoutingRuleDelegationMaintainable -->
+    <property name="title" value="Delegate Rule Attributes" />
+    <!-- Maintainable Items generated based on Delegation Rule Template, see RoutingRuleDelegationMaintainable -->
   </bean>
   
-  <!-- 
   <bean id="RoutingRuleDelegationMaintenanceDocument-PersonResponsibilities" parent="RoutingRuleDelegationMaintenanceDocument-PersonResponsibilities-parentBean" />
 
   <bean id="RoutingRuleDelegationMaintenanceDocument-PersonResponsibilities-parentBean" abstract="true" parent="MaintainableSectionDefinition">
@@ -96,7 +121,7 @@
     <property name="maintainableItems" >
       <list>
     	<bean parent="MaintainableCollectionDefinition">
-          <property name="name" value="personResponsibilities" />
+          <property name="name" value="delegationRuleBaseValues.personResponsibilities" />
           <property name="businessObjectClass" value="org.kuali.rice.kew.rule.PersonRuleResponsibility" />
           <property name="summaryTitle" value="Person" />
           <property name="alwaysAllowCollectionDeletion" value="true"/>
@@ -104,18 +129,12 @@
             <list>
               <bean parent="MaintainableFieldDefinition"
                     p:name="principalName" />
-              <bean parent="MaintainableFieldDefinition"
-                    p:name="actionRequestedCd" />
             </list>
           </property>
           <property name="maintainableFields" >
             <list>
               <bean parent="MaintainableFieldDefinition"
                     p:name="principalName" />
-              <bean parent="MaintainableFieldDefinition"
-                    p:name="actionRequestedCd" />
-              <bean parent="MaintainableFieldDefinition"
-                    p:name="priority" />
             </list>
           </property>
         </bean>
@@ -131,7 +150,7 @@
     <property name="maintainableItems" >
       <list>
         <bean parent="MaintainableCollectionDefinition">
-          <property name="name" value="groupResponsibilities" />
+          <property name="name" value="delegationRuleBaseValues.groupResponsibilities" />
           <property name="businessObjectClass" value="org.kuali.rice.kew.rule.GroupRuleResponsibility" />
           <property name="summaryTitle" value="Group" />
           <property name="alwaysAllowCollectionDeletion" value="true"/>
@@ -141,8 +160,6 @@
                     p:name="namespaceCode" />
               <bean parent="MaintainableFieldDefinition"
                     p:name="name" />      
-              <bean parent="MaintainableFieldDefinition"
-                    p:name="actionRequestedCd" />
             </list>
           </property>
           <property name="maintainableFields" >
@@ -151,10 +168,6 @@
                     p:name="namespaceCode" />
               <bean parent="MaintainableFieldDefinition"
                     p:name="name" />      
-              <bean parent="MaintainableFieldDefinition"
-                    p:name="actionRequestedCd" />
-              <bean parent="MaintainableFieldDefinition"
-                    p:name="priority" />
             </list>
           </property>
         </bean>
@@ -162,8 +175,5 @@
       </list>
     </property>
   </bean>
-  
-  -->
-
   
 </beans>

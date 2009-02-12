@@ -40,10 +40,6 @@ import org.kuali.rice.kns.web.struts.form.KualiForm;
 public class DelegateRuleForm extends KualiForm {
 
 	private static final long serialVersionUID = 5412969516727713859L;
-	
-	private static final String PERSON_TYPE = "person";
-	private static final String GROUP_TYPE = "group";
-	private static final String ROLE_TYPE = "role";
 
 	private Long parentRuleId;
 	private Long parentResponsibilityId;
@@ -144,14 +140,14 @@ public class DelegateRuleForm extends KualiForm {
 				if (KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID.equals(responsibility.getRuleResponsibilityType())) {
 					KimPrincipal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(responsibility.getRuleResponsibilityName());
 					reviewers.add(principal.getPrincipalName());
-					responsibilityTypes.add(PERSON_TYPE);
+					responsibilityTypes.add(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID_LABEL);
 				} else if (KEWConstants.RULE_RESPONSIBILITY_GROUP_ID.equals(responsibility.getRuleResponsibilityType())) {
 					KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(responsibility.getRuleResponsibilityName());
 					reviewers.add(group.getNamespaceCode() + " " + group.getGroupName());
-					responsibilityTypes.add(GROUP_TYPE);
+					responsibilityTypes.add(KEWConstants.RULE_RESPONSIBILITY_GROUP_ID_LABEL);
 				} else if (KEWConstants.RULE_RESPONSIBILITY_ROLE_ID.equals(responsibility.getRuleResponsibilityType())) {
 					reviewers.add(responsibility.getResolvedRoleName());
-					responsibilityTypes.add(ROLE_TYPE);
+					responsibilityTypes.add(KEWConstants.RULE_RESPONSIBILITY_ROLE_ID_LABEL);
 				} else {
 					throw new RiceRuntimeException("Encountered a responsibility with an invalid type, type value was " + responsibility.getRuleResponsibilityType());
 				}

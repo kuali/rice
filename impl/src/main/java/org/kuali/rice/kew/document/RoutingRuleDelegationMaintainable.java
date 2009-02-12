@@ -15,13 +15,20 @@
  */
 package org.kuali.rice.kew.document;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.web.WebRuleUtils;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kns.document.MaintenanceDocument;
+import org.kuali.rice.kns.document.MaintenanceLock;
 import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
+import org.kuali.rice.kns.maintenance.Maintainable;
+import org.kuali.rice.kns.web.ui.Section;
 
 /**
  * This class is the maintainable implementation for Routing Rules 
@@ -31,6 +38,17 @@ import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
  *
  */
 public class RoutingRuleDelegationMaintainable extends KualiMaintainableImpl {
+	
+	/**
+	 * Override the getSections method on this maintainable so that the Section Containing the various Rule Attributes
+	 * can be dynamically generated based on the RuleTemplate which is selected.
+	 */
+	@Override
+	public List getSections(MaintenanceDocument document, Maintainable oldMaintainable) {
+		List<Section> sections = super.getSections(document, oldMaintainable);
+		return WebRuleUtils.customizeRuleAttributeSection(getThisRule(), sections);
+		
+	}
 	
 	/**
 	 * On creation of a new rule document, we must validate that a rule template and document type are set. 
@@ -69,6 +87,50 @@ public class RoutingRuleDelegationMaintainable extends KualiMaintainableImpl {
 	@Override
 	public boolean isGenerateDefaultValues() {		
 		return false;
+	}
+	
+	/**
+     * A complete override of the implementation for saving a Rule
+     */
+    @Override
+    public void saveBusinessObject() {
+    	WebRuleUtils.clearKeysForSave(getThisRuleDelegation());
+    	WebRuleUtils.translateResponsibilitiesForSave(getThisRule());
+    	WebRuleUtils.translateFieldValuesForSave(getThisRule());
+    	WebRuleUtils.processRuleForDelegationSave(getThisRuleDelegation());
+    	KEWServiceLocator.getRuleService().makeCurrent(getThisRuleDelegation());
+    }
+    
+	@Override
+	public void processAfterEdit(MaintenanceDocument document,
+			Map<String, String[]> parameters) {
+		if (!getOldRule(document).getCurrentInd()) {
+			throw new RiceRuntimeException("Cannot edit a non-current version of a rule.");
+		}
+		WebRuleUtils.populateForCopyOrEdit(getOldRule(document), getNewRule(document));
+		getNewRule(document).setRouteHeaderId(new Long(document.getDocumentHeader().getDocumentNumber()));
+		super.processAfterEdit(document, parameters);
+	}
+
+    
+	@Override
+	public List<MaintenanceLock> generateMaintenanceLocks() {
+		if (getThisRule().getRuleBaseValuesId() == null) {
+			return Collections.emptyList();
+		}
+		return super.generateMaintenanceLocks();
+	}
+    
+    @Override
+	public String getDocumentTitle(MaintenanceDocument document) {
+		StringBuffer title = new StringBuffer();
+        RuleBaseValues rule = getThisRule();
+        if (rule.getPreviousVersionId() != null) {
+            title.append("Editing Rule Delegation '").append(rule.getDescription()).append("'");
+        } else {
+            title.append("Adding Rule Delegation '").append(rule.getDescription()).append("'");
+        }
+        return title.toString();	
 	}
 	
 	protected RuleDelegation getNewRuleDelegation(MaintenanceDocument document) {

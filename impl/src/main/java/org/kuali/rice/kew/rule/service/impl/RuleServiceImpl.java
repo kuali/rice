@@ -325,6 +325,14 @@ public class RuleServiceImpl implements RuleService {
      * this method can be much less complicated than the previous 2!
      */
     public void makeCurrent(RuleBaseValues rule) {
+    	makeCurrent(null, rule);
+    }
+    
+    public void makeCurrent(RuleDelegation ruleDelegation) {
+    	makeCurrent(ruleDelegation, ruleDelegation.getDelegationRuleBaseValues());
+    }
+    
+    protected void makeCurrent(RuleDelegation ruleDelegation, RuleBaseValues rule) {
         PerformanceLogger performanceLogger = new PerformanceLogger();
 
         boolean isGenerateRuleArs = true;
@@ -367,6 +375,10 @@ public class RuleServiceImpl implements RuleService {
             getRuleDAO().save(ruleToSave);
             performanceLogger.log("Saved rule: " + ruleToSave.getRuleBaseValuesId());
             installNotification(ruleToSave, notifyMap);
+        }
+        if (ruleDelegation != null) {
+        	ruleDelegation.setDelegateRuleId(rule.getRuleBaseValuesId());
+        	getRuleDelegationService().save(ruleDelegation);
         }
         LOG.info("Notifying rule cache of "+notifyMap.size()+" cache changes.");
         for (Iterator iterator = notifyMap.values().iterator(); iterator.hasNext();) {

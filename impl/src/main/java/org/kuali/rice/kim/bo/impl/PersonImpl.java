@@ -32,6 +32,7 @@ import org.kuali.rice.kim.bo.entity.KimEntityPhone;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityEntityTypeDefaultInfo;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
@@ -105,7 +106,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		this( getIdentityManagementService().getPrincipal(principalId), personEntityTypeCode );
 	}
 	
-	public PersonImpl( PersonCacheImpl p ) {
+	public PersonImpl( KimEntityDefaultInfoCacheImpl p ) {
 		entityId = p.getEntityId();
 		principalId = p.getPrincipalId();
 		principalName = p.getPrincipalName();

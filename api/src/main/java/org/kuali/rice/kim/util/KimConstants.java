@@ -103,6 +103,8 @@ public class KimConstants {
 	public static final String DEFAULT_KIM_TYPE_SERVICE = "kimTypeService";
 	
 	public static class PrimaryKeyConstants{
+		public static final String ENTITY_ID = "entityId";
+		public static final String PRINCIPAL_ID = "principalId";
 		public static final String ROLE_ID = "roleId";
 		public static final String KIM_TYPE_ID = "kimTypeId";
 		public static final String RESPONSIBILITY_ID = "responsibilityId";

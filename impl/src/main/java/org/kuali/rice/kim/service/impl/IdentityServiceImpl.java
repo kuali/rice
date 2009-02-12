@@ -101,18 +101,18 @@ public class IdentityServiceImpl implements IdentityService {
 	@SuppressWarnings("unchecked")
 	public List<? extends KimEntityDefaultInfo> lookupEntityDefaultInfo(
 			Map<String,String> searchCriteria, boolean unbounded) {
-		Collection<KimEntityImpl> baseResults = null; 
+		Collection baseResults = null; 
 		if ( unbounded ) {
 			baseResults = KNSServiceLocator.getLookupService().findCollectionBySearchUnbounded( KimEntityImpl.class, searchCriteria );
 		} else {
 			baseResults = KNSServiceLocator.getLookupService().findCollectionBySearch( KimEntityImpl.class, searchCriteria );
 		}
 		List<KimEntityDefaultInfo> results = new ArrayList<KimEntityDefaultInfo>( baseResults.size() );
-		for ( KimEntityImpl entity : baseResults ) {
+		for ( KimEntityImpl entity : (Collection<KimEntityImpl>)baseResults ) {
 			results.add( convertEntityImplToDefaultInfo( entity ) );
 		}
 		if ( baseResults instanceof CollectionIncomplete ) {
-			results = new CollectionIncomplete<KimEntityDefaultInfo>( results, ((CollectionIncomplete<KimEntityDefaultInfo>)results).getActualSizeIfTruncated() ); 
+			results = new CollectionIncomplete<KimEntityDefaultInfo>( results, ((CollectionIncomplete<KimEntityDefaultInfo>)baseResults).getActualSizeIfTruncated() ); 
 		}		
 		return results;
 	}

@@ -30,7 +30,7 @@ import javax.persistence.JoinColumns;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.kuali.rice.kim.bo.impl.PersonCacheImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl;
 
 
 
@@ -44,7 +44,7 @@ public class JpaToDdl {
 
 	public static void main( String[] args ) {
 		
-		Class<? extends PersistableBusinessObjectBase> clazz = PersonCacheImpl.class;
+		Class<? extends PersistableBusinessObjectBase> clazz = KimEntityDefaultInfoCacheImpl.class;
 
 		
 		StringBuffer sb = new StringBuffer( 1000 );

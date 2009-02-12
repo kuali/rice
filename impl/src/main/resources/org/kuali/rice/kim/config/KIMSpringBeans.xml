@@ -289,10 +289,15 @@
   </bean>
 
   <bean id="personService" class="org.kuali.rice.kim.service.impl.PersonServiceImpl"
-  	p:identityManagementService-ref="kimIdentityManagementService"
-    p:personDao-ref="kimPersonDao"
     p:personCacheMaxSize="3000"
-    p:personCacheMaxAge="3600" />
+    p:personCacheMaxAgeSeconds="3600">
+	<property name="personEntityTypeCodes">
+	  <list>
+	    <value>PERSON</value>
+	    <value>SYSTEM</value>
+	  </list>
+	</property>
+  </bean>
 
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
@@ -339,23 +344,6 @@
       <bean parent="kimService"
         p:service-ref="kimResponsibilityService"
         p:localServiceName="kimResponsibilityService" />
-    </property>
-  </bean>
-
-  <bean id="kimPersonDao" class="org.kuali.rice.kim.dao.proxy.PersonDaoProxy">
-    <property name="daoJpa">
-        <bean class="org.kuali.rice.kim.dao.impl.PersonDaoJpa" />
-    </property>
-    <property name="daoOjb">
-        <bean class="org.kuali.rice.kim.dao.impl.PersonDaoOjb" parent="platformAwareDao"
-		  	p:personImplementationClass="org.kuali.rice.kim.bo.impl.PersonImpl">
-          <property name="personEntityTypeCodes">
-            <list>
-              <value>PERSON</value>
-              <value>SYSTEM</value>
-            </list>
-          </property>
-        </bean>
     </property>
   </bean>
 

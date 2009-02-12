@@ -174,7 +174,7 @@ public class PersonServiceImplTest extends RiceTestCase {
 	public void testConvertPersonPropertiesToEntityProperties() {
 		HashMap<String,String> criteria = new HashMap<String,String>();
 		criteria.put( "firstName", "System User" );
-		Map<String,String> entityCriteria = personService.getPersonDao().convertPersonPropertiesToEntityProperties( criteria );
+		Map<String,String> entityCriteria = personService.convertPersonPropertiesToEntityProperties( criteria );
 		assertEquals( "number of criteria is not correct", 7, entityCriteria.size() );
 		assertNotNull( "criteria must filter for active entities", entityCriteria.get( "active" ) );
 		assertNotNull( "criteria must filter for entities with active principals", entityCriteria.get( "principals.active" ) );

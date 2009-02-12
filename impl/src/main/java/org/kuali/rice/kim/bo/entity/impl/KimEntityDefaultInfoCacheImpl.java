@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.bo.impl;
+package org.kuali.rice.kim.bo.entity.impl;
 
 import java.sql.Timestamp;
 import java.util.LinkedHashMap;
@@ -39,8 +39,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  */
 @Entity
 @Table(name="KRIM_PRSN_CACHE_T")
-
-public class PersonCacheImpl extends PersistableBusinessObjectBase {
+public class KimEntityDefaultInfoCacheImpl extends PersistableBusinessObjectBase {
 
 	@Transient
 	protected Long versionNumber; // prevent JPA from attempting to persist the version number attribute
@@ -81,10 +80,10 @@ public class PersonCacheImpl extends PersistableBusinessObjectBase {
 	/**
 	 * 
 	 */
-	public PersonCacheImpl() {
+	public KimEntityDefaultInfoCacheImpl() {
 	}
 	
-	public PersonCacheImpl( Person p ) {
+	public KimEntityDefaultInfoCacheImpl( Person p ) {
 		entityId = p.getEntityId();
 		principalId = p.getPrincipalId();
 		principalName = p.getPrincipalName();

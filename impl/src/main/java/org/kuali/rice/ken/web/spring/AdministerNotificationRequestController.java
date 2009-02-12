@@ -38,8 +38,8 @@ import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 import org.springframework.validation.BindException;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.ServletRequestBindingException;
@@ -208,11 +208,11 @@ public class AdministerNotificationRequestController extends MultiActionControll
                     List<NotificationChannelReviewer> reviewers = notification.getChannel().getReviewers();
                     String user = null;
                     for (NotificationChannelReviewer reviewer: reviewers) {
-                        if (KimGroupImpl.PRINCIPAL_MEMBER_TYPE.equals(reviewer.getReviewerType())) {
+                        if (KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.equals(reviewer.getReviewerType())) {
                             if (reviewer.getReviewerId().equals(request.getRemoteUser())) {
                                 user = request.getRemoteUser();
                             }
-                        } else if (KimGroupImpl.GROUP_MEMBER_TYPE.equals(reviewer.getReviewerType())) {
+                        } else if (KimGroupMemberTypes.GROUP_MEMBER_TYPE.equals(reviewer.getReviewerType())) {
                             // if it's a group
                             String[] members = recipientService.getGroupMembers(reviewer.getReviewerId());
                             for (String member: members) {

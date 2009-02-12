@@ -21,9 +21,9 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.kuali.rice.ken.service.NotificationRecipientService;
 import org.kuali.rice.kim.bo.group.KimGroup;
-import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 
 /**
  * NotificationRecipientService implementation
@@ -76,11 +76,11 @@ public class NotificationRecipientServiceKimImpl implements NotificationRecipien
      {
          boolean b = false;
 
-         if( recipientType.equals(KimGroupImpl.GROUP_MEMBER_TYPE))
+         if( recipientType.equals(KimGroupMemberTypes.GROUP_MEMBER_TYPE))
          {
              b = isGroupRecipientValid( recipientId );
          }
-         else if( recipientType.equals(KimGroupImpl.PRINCIPAL_MEMBER_TYPE) )
+         else if( recipientType.equals(KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE) )
          {
              b = isUserRecipientValid( recipientId );
          }

@@ -17,6 +17,7 @@ import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.service.GroupService;
+import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
@@ -159,7 +160,7 @@ public class GroupServiceImpl implements GroupService {
 		}
 		Map<String,String> criteria = new HashMap<String,String>( 3 );
 		criteria.put("members.memberId", principalId);
-		criteria.put("members.memberTypeCode", KimGroupImpl.PRINCIPAL_MEMBER_TYPE);
+		criteria.put("members.memberTypeCode", KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
 		//criteria.put("active", "Y");
 		if ( StringUtils.isNotEmpty( namespaceCode ) ) {
 			criteria.put("namespaceCode", namespaceCode);
@@ -328,7 +329,7 @@ public class GroupServiceImpl implements GroupService {
 		}
 		Map<String,String> criteria = new HashMap<String,String>();
 		criteria.put("members.memberId", groupId);
-		criteria.put("members.memberTypeCode", KimGroupImpl.GROUP_MEMBER_TYPE);
+		criteria.put("members.memberTypeCode", KimGroupMemberTypes.GROUP_MEMBER_TYPE);
 		criteria.put("active", "Y");
 		return (List<KimGroupImpl>)getBusinessObjectService().findMatching(KimGroupImpl.class, criteria);
 	}
@@ -439,7 +440,7 @@ public class GroupServiceImpl implements GroupService {
 		}
 		Map<String,String> criteria = new HashMap<String,String>();
 		criteria.put("members.memberId", principalId);
-		criteria.put("members.memberTypeCode", KimGroupImpl.PRINCIPAL_MEMBER_TYPE);
+		criteria.put("members.memberTypeCode", KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
 		criteria.put("groupId", groupId);
 		criteria.put("active", "Y");
 		return getBusinessObjectService().countMatching(KimGroupImpl.class, criteria) != 0;
@@ -539,7 +540,7 @@ public class GroupServiceImpl implements GroupService {
     public boolean addPrincipalToGroup(String principalId, String groupId) {
         GroupMemberImpl groupMember = new GroupMemberImpl();
         groupMember.setGroupId(groupId);
-        groupMember.setMemberTypeCode( KimGroupImpl.PRINCIPAL_MEMBER_TYPE );
+        groupMember.setMemberTypeCode( KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE );
         groupMember.setMemberId(principalId);
 
         this.getBusinessObjectService().save(groupMember);
@@ -555,7 +556,7 @@ public class GroupServiceImpl implements GroupService {
         Map<String,String> criteria = new HashMap<String,String>();
         criteria.put("groupId", groupId);
         criteria.put("memberId", principalId);
-        criteria.put("memberTypeCode", KimGroupImpl.PRINCIPAL_MEMBER_TYPE);
+        criteria.put("memberTypeCode", KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
         Collection<GroupMemberImpl> groupMemberList = getBusinessObjectService().findMatching(GroupMemberImpl.class, criteria);
 
         if(groupMemberList.size() == 1) {
@@ -581,7 +582,7 @@ public class GroupServiceImpl implements GroupService {
 
         GroupMemberImpl groupMember = new GroupMemberImpl();
         groupMember.setGroupId(parentId);
-        groupMember.setMemberTypeCode( KimGroupImpl.GROUP_MEMBER_TYPE );
+        groupMember.setMemberTypeCode( KimGroupMemberTypes.GROUP_MEMBER_TYPE );
         groupMember.setMemberId(childId);
 
         getBusinessObjectService().save(groupMember);
@@ -597,7 +598,7 @@ public class GroupServiceImpl implements GroupService {
         Map<String,String> criteria = new HashMap<String,String>();
         criteria.put("groupId", parentId);
         criteria.put("memberId", childId);
-        criteria.put("memberTypeCode", KimGroupImpl.GROUP_MEMBER_TYPE);
+        criteria.put("memberTypeCode", KimGroupMemberTypes.GROUP_MEMBER_TYPE);
         Collection<GroupMemberImpl> groupGroupList = getBusinessObjectService().findMatching(GroupMemberImpl.class, criteria);
 
         if(groupGroupList.size() == 1) {

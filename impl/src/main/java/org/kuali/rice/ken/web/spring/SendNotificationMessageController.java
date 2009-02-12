@@ -49,7 +49,7 @@ import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.ken.util.Util;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.rule.GenericAttributeContent;
-import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 import org.springframework.web.servlet.ModelAndView;
 
 
@@ -250,11 +250,11 @@ public class SendNotificationMessageController extends BaseSendNotificationContr
             for (NotificationChannelReviewer reviewer: reviewers) {
                 String prefix;
                 int index;
-                if (KimGroupImpl.PRINCIPAL_MEMBER_TYPE.equals(reviewer.getReviewerType())) {
+                if (KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.equals(reviewer.getReviewerType())) {
                     prefix = "user";
                     index = ui;
                     ui++;
-                } else if (KimGroupImpl.GROUP_MEMBER_TYPE.equals(reviewer.getReviewerType())) {
+                } else if (KimGroupMemberTypes.GROUP_MEMBER_TYPE.equals(reviewer.getReviewerType())) {
                     prefix = "group";
                     index = gi;
                     gi++;
@@ -461,7 +461,7 @@ public class SendNotificationMessageController extends BaseSendNotificationContr
 	    for (String userRecipientId : userRecipients) {
 	        if (isUserRecipientValid(userRecipientId, errors)) {
     	        NotificationRecipient recipient = new NotificationRecipient();
-    	        recipient.setRecipientType(KimGroupImpl.PRINCIPAL_MEMBER_TYPE);
+    	        recipient.setRecipientType(KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
     	        recipient.setRecipientId(userRecipientId);
     	        notification.addRecipient(recipient);
 	        }

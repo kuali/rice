@@ -42,7 +42,6 @@ import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
 import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
-import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.kim.bo.options.MemberTypeValuesFinder;
 import org.kuali.rice.kim.bo.role.KimRole;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
@@ -86,6 +85,7 @@ import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
@@ -291,7 +291,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					List<String> groupIds = new ArrayList<String>();
 					groupIds.add(group.getGroupId());
 					for (GroupMembershipInfo groupMember : getGroupService().getGroupMembers(groupIds)) {
-						if (groupMember.getMemberId().equals(identityManagementPersonDocument.getPrincipalId()) && groupMember.getMemberTypeCode().equals(KimGroupImpl.PRINCIPAL_MEMBER_TYPE)) {
+						if (groupMember.getMemberId().equals(identityManagementPersonDocument.getPrincipalId()) && groupMember.getMemberTypeCode().equals(KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE)) {
 							docGroup.setGroupMemberId(groupMember.getGroupMemberId());
 							docGroup.setActiveFromDate(groupMember.getActiveFromDate());
 							docGroup.setActiveToDate(groupMember.getActiveToDate());
@@ -821,11 +821,11 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			groupPrincipalImpl.setGroupMemberId(group.getGroupMemberId());
 			// TODO : principalId is not ready here yet ?
 			groupPrincipalImpl.setMemberId(identityManagementPersonDocument.getPrincipalId());
-			groupPrincipalImpl.setMemberTypeCode(KimGroupImpl.PRINCIPAL_MEMBER_TYPE);
+			groupPrincipalImpl.setMemberTypeCode(KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
 			List<String> groupIds = new ArrayList<String>();
 			groupIds.add(group.getGroupId());
 			for (GroupMembershipInfo groupMember : getGroupService().getGroupMembers(groupIds)) {
-				if (groupMember.getMemberId().equals(identityManagementPersonDocument.getPrincipalId()) && groupMember.getMemberTypeCode().equals(KimGroupImpl.PRINCIPAL_MEMBER_TYPE)) {
+				if (groupMember.getMemberId().equals(identityManagementPersonDocument.getPrincipalId()) && groupMember.getMemberTypeCode().equals(KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE)) {
 					groupPrincipalImpl.setVersionNumber(groupMember.getVersionNumber());
 				}
 			}

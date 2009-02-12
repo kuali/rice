@@ -112,4 +112,25 @@ public class KimConstants {
 		public static final String DELEGATION_ID = "delegationId";
 	}
 	
+	/**
+	 * 
+	 * KimGroupS can contain other KimGroupS and KimPrincipalS. 
+	 * Use these constants to flags their members with the appropriate member 
+	 * type code.
+	 * 
+	 * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+	 */
+	public static class KimGroupMemberTypes {
+		
+		/**
+		 * For group members that are themselves groups
+		 */
+		public static final String GROUP_MEMBER_TYPE = "G";
+		
+		/**
+		 * For group members that are principals
+		 */
+		public static final String PRINCIPAL_MEMBER_TYPE = "P";
+	}
+	
 }

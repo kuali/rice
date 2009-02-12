@@ -22,8 +22,8 @@ import org.kuali.rice.ken.test.NotificationTestCaseBase;
 import org.kuali.rice.ken.test.TestConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.group.KimGroup;
-import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 
 /**
  * This is a description of what this class does - chb don't forget to fill this in.
@@ -71,12 +71,12 @@ public class NotificationRecipientServiceKimImplTest extends NotificationTestCas
     @Test
     public final void testIsRecipientValid()
     {
-        assertTrue( nrski.isRecipientValid( TestConstants.VALID_KIM_PRINCIPAL_NAME, KimGroupImpl.PRINCIPAL_MEMBER_TYPE));
-        assertFalse( nrski.isRecipientValid( "BoogalooShrimp44", KimGroupImpl.PRINCIPAL_MEMBER_TYPE));
+        assertTrue( nrski.isRecipientValid( TestConstants.VALID_KIM_PRINCIPAL_NAME, KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE));
+        assertFalse( nrski.isRecipientValid( "BoogalooShrimp44", KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE));
 
         KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroupByName(Utilities.parseGroupNamespaceCode(TestConstants.VALID_KIM_GROUP_NAME_1), Utilities.parseGroupName(TestConstants.VALID_KIM_GROUP_NAME_1));
-        assertTrue( nrski.isRecipientValid( group.getGroupId(), KimGroupImpl.GROUP_MEMBER_TYPE));
-        assertFalse( nrski.isRecipientValid( "FooSchnickens99", KimGroupImpl.GROUP_MEMBER_TYPE));
+        assertTrue( nrski.isRecipientValid( group.getGroupId(), KimGroupMemberTypes.GROUP_MEMBER_TYPE));
+        assertFalse( nrski.isRecipientValid( "FooSchnickens99", KimGroupMemberTypes.GROUP_MEMBER_TYPE));
     }
 
     /**

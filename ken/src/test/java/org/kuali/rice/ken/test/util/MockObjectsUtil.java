@@ -27,7 +27,7 @@ import org.kuali.rice.ken.bo.NotificationProducer;
 import org.kuali.rice.ken.bo.NotificationRecipient;
 import org.kuali.rice.ken.bo.NotificationSender;
 import org.kuali.rice.ken.util.NotificationConstants;
-import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 
 /**
  * This class helps to provide common mock objects for testing and also helper methods to build instances of objects.
@@ -168,7 +168,7 @@ public class MockObjectsUtil {
      * @return NotificationRecipient
      */
     public static final NotificationRecipient getTestRecipient1() {
-        return buildTestNotificationRecipient("ag266", KimGroupImpl.PRINCIPAL_MEMBER_TYPE);
+        return buildTestNotificationRecipient("ag266", KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
     }
 
     /**
@@ -176,7 +176,7 @@ public class MockObjectsUtil {
      * @return NotificationRecipient
      */
     public static final NotificationRecipient getTestRecipient2() {
-	 return buildTestNotificationRecipient("Notification Team", KimGroupImpl.GROUP_MEMBER_TYPE);
+	 return buildTestNotificationRecipient("Notification Team", KimGroupMemberTypes.GROUP_MEMBER_TYPE);
     }
 
     /**

@@ -21,7 +21,7 @@ import org.kuali.rice.ken.bo.NotificationChannel;
 import org.kuali.rice.ken.bo.NotificationChannelReviewer;
 import org.kuali.rice.ken.test.util.MockObjectsUtil;
 import org.kuali.rice.ken.util.NotificationConstants;
-import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 
 /**
  * This class tests basic persistence for the {@link NotificationChannelReviewer} business object.
@@ -30,7 +30,7 @@ import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
  */
 public class NotificationChannelReviewerDaoTest extends BusinessObjectPersistenceTestCaseBase {
     private NotificationChannel mockChannel1 = MockObjectsUtil.getTestChannel1();
-    private NotificationChannelReviewer mockReviewer = MockObjectsUtil.buildTestNotificationChannelReviewer(KimGroupImpl.PRINCIPAL_MEMBER_TYPE, "aReviewer");
+    private NotificationChannelReviewer mockReviewer = MockObjectsUtil.buildTestNotificationChannelReviewer(KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE, "aReviewer");
 
     /**
      * @see org.kuali.rice.ken.dao.BusinessObjectPersistenceTestCaseBase#setup()
@@ -107,7 +107,7 @@ public class NotificationChannelReviewerDaoTest extends BusinessObjectPersistenc
         NotificationChannelReviewer reviewer = (NotificationChannelReviewer) businessObjectDao.findByUniqueKey(NotificationChannelReviewer.class, criteria);
 
         reviewer.setReviewerId("updatedReviewerId");
-        reviewer.setReviewerType(KimGroupImpl.GROUP_MEMBER_TYPE);
+        reviewer.setReviewerType(KimGroupMemberTypes.GROUP_MEMBER_TYPE);
 
         try {
             businessObjectDao.save(reviewer);
@@ -126,7 +126,7 @@ public class NotificationChannelReviewerDaoTest extends BusinessObjectPersistenc
 
         boolean success = reviewer != null;
         success &= reviewer.getReviewerId().equals("updatedReviewerId");
-        success &= reviewer.getReviewerType().equals(KimGroupImpl.GROUP_MEMBER_TYPE);
+        success &= reviewer.getReviewerType().equals(KimGroupMemberTypes.GROUP_MEMBER_TYPE);
 
         return success;
     }

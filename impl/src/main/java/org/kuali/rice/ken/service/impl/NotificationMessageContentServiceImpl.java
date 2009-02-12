@@ -55,8 +55,8 @@ import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.ken.util.Util;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.group.KimGroup;
-import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -195,11 +195,11 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
                 // NOTE: assumes validation has occurred; does not check validity of element name
                 if (NotificationConstants.RECIPIENT_TYPES.GROUP.equalsIgnoreCase(node.getLocalName())) {
                     //recipient.setRecipientType(NotificationConstants.RECIPIENT_TYPES.GROUP);
-                    recipient.setRecipientType(KimGroupImpl.GROUP_MEMBER_TYPE);
+                    recipient.setRecipientType(KimGroupMemberTypes.GROUP_MEMBER_TYPE);
                     recipient.setRecipientId(KIMServiceLocator.getIdentityManagementService().getGroupByName(Utilities.parseGroupNamespaceCode(node.getTextContent()), Utilities.parseGroupName(node.getTextContent())).getGroupId());
                 } else if (NotificationConstants.RECIPIENT_TYPES.USER.equalsIgnoreCase(node.getLocalName())){
                     //recipient.setRecipientType(NotificationConstants.RECIPIENT_TYPES.USER);
-                    recipient.setRecipientType(KimGroupImpl.PRINCIPAL_MEMBER_TYPE);
+                    recipient.setRecipientType(KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
                     recipient.setRecipientId(node.getTextContent());
                 } else {
                     throw new InvalidXMLException("Invalid 'recipientType' value: '" + node.getLocalName() +
@@ -424,7 +424,7 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
 
 	    NotificationRecipient recipient = new NotificationRecipient();
 	    recipient.setRecipientId(userRecipientId);
-	    recipient.setRecipientType(KimGroupImpl.PRINCIPAL_MEMBER_TYPE);
+	    recipient.setRecipientType(KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
 
 	    clone.getRecipients().add(recipient);
 	}
@@ -504,7 +504,7 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
             NodeList recipientTypes = (NodeList) xpath.evaluate("//notification/recipients/recipient/recipientType", root, XPathConstants.NODESET);
 
             for (int i = 0; i < recipientIds.getLength(); i++) {
-            	if(KimGroupImpl.PRINCIPAL_MEMBER_TYPE.equalsIgnoreCase(recipientTypes.item(i).getTextContent().trim())) {
+            	if(KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.equalsIgnoreCase(recipientTypes.item(i).getTextContent().trim())) {
             	    userRecipients.add(recipientIds.item(i).getTextContent().trim());
             	} else {
             	    //String groupName = recipientIds.item(i).getTextContent().trim();
@@ -538,14 +538,14 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
 
             for (String userRecipientId: userRecipients) {
                 NotificationRecipient recipient = new NotificationRecipient();
-                recipient.setRecipientType(KimGroupImpl.PRINCIPAL_MEMBER_TYPE);
+                recipient.setRecipientType(KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
                 recipient.setRecipientId(userRecipientId);
                 notification.addRecipient(recipient);
             }
 
             for (String workgroupRecipientId: workgroupRecipients) {
                 NotificationRecipient recipient = new NotificationRecipient();
-                recipient.setRecipientType(KimGroupImpl.GROUP_MEMBER_TYPE);
+                recipient.setRecipientType(KimGroupMemberTypes.GROUP_MEMBER_TYPE);
                 recipient.setRecipientId(workgroupRecipientId);
                 notification.addRecipient(recipient);
             }

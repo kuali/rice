@@ -22,7 +22,7 @@ import org.kuali.rice.ken.bo.NotificationChannelReviewer;
 import org.kuali.rice.ken.bo.NotificationProducer;
 import org.kuali.rice.ken.test.util.MockObjectsUtil;
 import org.kuali.rice.ken.util.NotificationConstants;
-import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
 
@@ -170,7 +170,7 @@ public class NotificationChannelDaoTest extends BusinessObjectPersistenceTestCas
             channel2.setDescription(updatedDescriptions[1]);
             channel2.setSubscribable(updatedSubscribables[1]);
             NotificationChannelReviewer reviewer = MockObjectsUtil.buildTestNotificationChannelReviewer(
-                    KimGroupImpl.PRINCIPAL_MEMBER_TYPE, "aReviewer");
+                    KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE, "aReviewer");
             reviewer.setChannel(channel2);
             channel2.getReviewers().add(reviewer);
 

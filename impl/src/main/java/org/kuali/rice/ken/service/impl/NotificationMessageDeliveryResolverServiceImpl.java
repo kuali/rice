@@ -36,7 +36,7 @@ import org.kuali.rice.ken.service.NotificationService;
 import org.kuali.rice.ken.service.ProcessingResult;
 import org.kuali.rice.ken.service.UserPreferenceService;
 import org.kuali.rice.ken.util.NotificationConstants;
-import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import edu.emory.mathcs.backport.java.util.concurrent.ExecutorService;
@@ -101,7 +101,7 @@ public class NotificationMessageDeliveryResolverServiceImpl extends ConcurrentJo
         // process the list that came in with the notification request
            for (int i = 0; i < notification.getRecipients().size(); i++) {
                NotificationRecipient recipient = notification.getRecipient(i);
-               if (KimGroupImpl.GROUP_MEMBER_TYPE.equals(recipient.getRecipientType())) {
+               if (KimGroupMemberTypes.GROUP_MEMBER_TYPE.equals(recipient.getRecipientType())) {
                    // resolve group's users
                    String[] groupMembers = notificationRecipientService.getGroupMembers(recipient.getRecipientId());
                    for(int j = 0; j < groupMembers.length; j++) {
@@ -116,7 +116,7 @@ public class NotificationMessageDeliveryResolverServiceImpl extends ConcurrentJo
            Iterator<NotificationRecipientList> i = notification.getChannel().getRecipientLists().iterator();
            while (i.hasNext()) {
                NotificationRecipientList listRecipient  = i.next();
-               if (KimGroupImpl.GROUP_MEMBER_TYPE.equals(listRecipient.getRecipientType())) {
+               if (KimGroupMemberTypes.GROUP_MEMBER_TYPE.equals(listRecipient.getRecipientType())) {
                    // resolve group's users
                    String[] groupMembers = notificationRecipientService.getGroupMembers(listRecipient.getRecipientId());
                    for (int j = 0; j < groupMembers.length; j++) {

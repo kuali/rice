@@ -33,6 +33,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.util.TypedArrayList;
 
@@ -45,9 +46,6 @@ import org.kuali.rice.kns.util.TypedArrayList;
 @Entity
 @Table(name="KRIM_GRP_T")
 public class KimGroupImpl extends PersistableBusinessObjectBase implements KimGroup {
-
-	public static final String GROUP_MEMBER_TYPE = "G";
-	public static final String PRINCIPAL_MEMBER_TYPE = "P";
 
 	private static final long serialVersionUID = 1L;
 
@@ -140,7 +138,7 @@ public class KimGroupImpl extends PersistableBusinessObjectBase implements KimGr
 		List<String> groupMembers = new ArrayList<String>();
 		if (getMembers() != null) {
     		for ( GroupMemberImpl groupMemberImpl : getMembers() ) {
-    			if ( groupMemberImpl.getMemberTypeCode().equals ( GROUP_MEMBER_TYPE )
+    			if ( groupMemberImpl.getMemberTypeCode().equals ( KimGroupMemberTypes.GROUP_MEMBER_TYPE )
     					&& groupMemberImpl.isActive() ) {
     				groupMembers.add( groupMemberImpl.getMemberId() );
     			}
@@ -153,7 +151,7 @@ public class KimGroupImpl extends PersistableBusinessObjectBase implements KimGr
 		List<String> groupMembers = new ArrayList<String>();
 		if (getMembers() != null) {
     		for ( GroupMemberImpl groupMemberImpl : getMembers() ) {
-    			if ( groupMemberImpl.getMemberTypeCode().equals ( PRINCIPAL_MEMBER_TYPE )
+    			if ( groupMemberImpl.getMemberTypeCode().equals ( KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE )
     					&& groupMemberImpl.isActive() ) {
     				groupMembers.add( groupMemberImpl.getMemberId() );
     			}

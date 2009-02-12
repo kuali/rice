@@ -1,108 +1,83 @@
-<beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:p="http://www.springframework.org/schema/p"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?><beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-  <bean id="RoutingRuleMaintenanceDocument" parent="RoutingRuleMaintenanceDocument-parentBean" />
+  <bean id="RoutingRuleMaintenanceDocument" parent="RoutingRuleMaintenanceDocument-parentBean"/>
 
   <bean id="RoutingRuleMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.kew.rule.RuleBaseValues" />
-    <property name="maintainableClass" value="org.kuali.rice.kew.document.RoutingRuleMaintainable" />
-    <property name="maintainableSections" >
+    <property name="businessObjectClass" value="org.kuali.rice.kew.rule.RuleBaseValues"/>
+    <property name="maintainableClass" value="org.kuali.rice.kew.document.RoutingRuleMaintainable"/>
+    <property name="maintainableSections">
       <list>
-        <ref bean="RoutingRuleMaintenanceDocument-Rule" />
-        <ref bean="RoutingRuleMaintenanceDocument-RuleAttributes" />
-        <ref bean="RoutingRuleMaintenanceDocument-PersonResponsibilities" />
-        <ref bean="RoutingRuleMaintenanceDocument-GroupResponsibilities" />
+        <ref bean="RoutingRuleMaintenanceDocument-Rule"/>
+        <ref bean="RoutingRuleMaintenanceDocument-RuleAttributes"/>
+        <ref bean="RoutingRuleMaintenanceDocument-PersonResponsibilities"/>
+        <ref bean="RoutingRuleMaintenanceDocument-GroupResponsibilities"/>
       </list>
     </property>
-    <property name="allowsNewOrCopy" value="true" />
-    <property name="documentTypeName" value="RoutingRuleDocument" />
-    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase" />
-    <property name="lockingKeys" >
+    <property name="allowsNewOrCopy" value="true"/>
+    <property name="documentTypeName" value="RoutingRuleDocument"/>
+    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
+    <property name="lockingKeys">
       <list>
         <value>previousVersionId</value>
       </list>
     </property>
 
-    <property name="businessRulesClass" value="org.kuali.rice.kew.document.RoutingRuleMaintainableBusRule" />
+    <property name="businessRulesClass" value="org.kuali.rice.kew.document.RoutingRuleMaintainableBusRule"/>
 
   </bean>
 
   <!-- Maintenance Section Definitions -->
 
-  <bean id="RoutingRuleMaintenanceDocument-Rule" parent="RoutingRuleMaintenanceDocument-Rule-parentBean" />
+  <bean id="RoutingRuleMaintenanceDocument-Rule" parent="RoutingRuleMaintenanceDocument-Rule-parentBean"/>
 
   <bean id="RoutingRuleMaintenanceDocument-Rule-parentBean" abstract="true" parent="MaintainableSectionDefinition">
-    <property name="id" value="Rule" />
-    <property name="title" value="Rule" />
-    <property name="maintainableItems" >
+    <property name="id" value="Rule"/>
+    <property name="title" value="Rule"/>
+    <property name="maintainableItems">
       <list>
-        <bean parent="MaintainableFieldDefinition"
-              p:name="docTypeName"
-              p:unconditionallyReadOnly="true"/>
-        <bean parent="MaintainableFieldDefinition"
-              p:name="ruleTemplate.name"
-              p:unconditionallyReadOnly="true"/>
-        <bean parent="MaintainableFieldDefinition"
-              p:name="name"
-              p:required="true" />
-        <bean parent="MaintainableFieldDefinition"
-              p:name="description"
-              p:required="true" />
-        <bean parent="MaintainableFieldDefinition"
-              p:name="fromDate"
-              p:required="false" />
-        <bean parent="MaintainableFieldDefinition"
-              p:name="toDate"
-              p:required="false" />
-        <bean parent="MaintainableFieldDefinition"
-              p:name="ignorePrevious"
-              p:required="true" />
-        <bean parent="MaintainableFieldDefinition"
-              p:name="activeInd"
-              p:required="true" />
+        <bean parent="MaintainableFieldDefinition" p:name="docTypeName" p:unconditionallyReadOnly="true"/>
+        <bean parent="MaintainableFieldDefinition" p:name="ruleTemplate.name" p:unconditionallyReadOnly="true"/>
+        <bean parent="MaintainableFieldDefinition" p:name="name" p:required="true"/>
+        <bean parent="MaintainableFieldDefinition" p:name="description" p:required="true"/>
+        <bean parent="MaintainableFieldDefinition" p:name="fromDate" p:required="false"/>
+        <bean parent="MaintainableFieldDefinition" p:name="toDate" p:required="false"/>
+        <bean parent="MaintainableFieldDefinition" p:name="ignorePrevious" p:required="true"/>
+        <bean parent="MaintainableFieldDefinition" p:name="activeInd" p:required="true"/>
       </list>
     </property>
   </bean>
 
-  <bean id="RoutingRuleMaintenanceDocument-RuleAttributes" parent="RoutingRuleMaintenanceDocument-RuleAttributes-parentBean" />
+  <bean id="RoutingRuleMaintenanceDocument-RuleAttributes" parent="RoutingRuleMaintenanceDocument-RuleAttributes-parentBean"/>
 
   <bean id="RoutingRuleMaintenanceDocument-RuleAttributes-parentBean" abstract="true" parent="MaintainableSectionDefinition">
-    <property name="id" value="RuleAttributes" />
-    <property name="title" value="Rule Attributes" />
+    <property name="id" value="RuleAttributes"/>
+    <property name="title" value="Rule Attributes"/>
     <!-- Maintainable Items generated based on Rule Template, see RoutingRuleMaintainable -->
   </bean>
 
-  <bean id="RoutingRuleMaintenanceDocument-PersonResponsibilities" parent="RoutingRuleMaintenanceDocument-PersonResponsibilities-parentBean" />
+  <bean id="RoutingRuleMaintenanceDocument-PersonResponsibilities" parent="RoutingRuleMaintenanceDocument-PersonResponsibilities-parentBean"/>
 
   <bean id="RoutingRuleMaintenanceDocument-PersonResponsibilities-parentBean" abstract="true" parent="MaintainableSectionDefinition">
-    <property name="id" value="Persons" />
-    <property name="title" value="Persons" />
-    <property name="maintainableItems" >
+    <property name="id" value="Persons"/>
+    <property name="title" value="Persons"/>
+    <property name="maintainableItems">
       <list>
     	<bean parent="MaintainableCollectionDefinition">
-          <property name="name" value="personResponsibilities" />
-          <property name="businessObjectClass" value="org.kuali.rice.kew.rule.PersonRuleResponsibility" />
-          <property name="summaryTitle" value="Person" />
+          <property name="name" value="personResponsibilities"/>
+          <property name="businessObjectClass" value="org.kuali.rice.kew.rule.PersonRuleResponsibility"/>
+          <property name="summaryTitle" value="Person"/>
           <property name="alwaysAllowCollectionDeletion" value="true"/>
-          <property name="summaryFields" >
+          <property name="summaryFields">
             <list>
-              <bean parent="MaintainableFieldDefinition"
-                    p:name="principalName" />
-              <bean parent="MaintainableFieldDefinition"
-                    p:name="actionRequestedCd" />
+              <bean parent="MaintainableFieldDefinition" p:name="principalName"/>
+              <bean parent="MaintainableFieldDefinition" p:name="actionRequestedCd"/>
             </list>
           </property>
-          <property name="maintainableFields" >
+          <property name="maintainableFields">
             <list>
-              <bean parent="MaintainableFieldDefinition"
-                    p:name="principalName" />
-              <bean parent="MaintainableFieldDefinition"
-                    p:name="actionRequestedCd" />
-              <bean parent="MaintainableFieldDefinition"
-                    p:name="priority" />
+              <bean parent="MaintainableFieldDefinition" p:name="principalName"/>
+              <bean parent="MaintainableFieldDefinition" p:name="actionRequestedCd"/>
+              <bean parent="MaintainableFieldDefinition" p:name="priority"/>
             </list>
           </property>
         </bean>
@@ -110,38 +85,31 @@
     </property>
   </bean>
 
-  <bean id="RoutingRuleMaintenanceDocument-GroupResponsibilities" parent="RoutingRuleMaintenanceDocument-GroupResponsibilities-parentBean" />
+  <bean id="RoutingRuleMaintenanceDocument-GroupResponsibilities" parent="RoutingRuleMaintenanceDocument-GroupResponsibilities-parentBean"/>
 
   <bean id="RoutingRuleMaintenanceDocument-GroupResponsibilities-parentBean" abstract="true" parent="MaintainableSectionDefinition">
-    <property name="id" value="Groups" />
-    <property name="title" value="Groups" />
-    <property name="maintainableItems" >
+    <property name="id" value="Groups"/>
+    <property name="title" value="Groups"/>
+    <property name="maintainableItems">
       <list>
         <bean parent="MaintainableCollectionDefinition">
-          <property name="name" value="groupResponsibilities" />
-          <property name="businessObjectClass" value="org.kuali.rice.kew.rule.GroupRuleResponsibility" />
-          <property name="summaryTitle" value="Group" />
+          <property name="name" value="groupResponsibilities"/>
+          <property name="businessObjectClass" value="org.kuali.rice.kew.rule.GroupRuleResponsibility"/>
+          <property name="summaryTitle" value="Group"/>
           <property name="alwaysAllowCollectionDeletion" value="true"/>
-          <property name="summaryFields" >
+          <property name="summaryFields">
             <list>
-              <bean parent="MaintainableFieldDefinition"
-                    p:name="namespaceCode" />
-              <bean parent="MaintainableFieldDefinition"
-                    p:name="name" />
-              <bean parent="MaintainableFieldDefinition"
-                    p:name="actionRequestedCd" />
+              <bean parent="MaintainableFieldDefinition" p:name="namespaceCode"/>
+              <bean parent="MaintainableFieldDefinition" p:name="name"/>
+              <bean parent="MaintainableFieldDefinition" p:name="actionRequestedCd"/>
             </list>
           </property>
-          <property name="maintainableFields" >
+          <property name="maintainableFields">
             <list>
-              <bean parent="MaintainableFieldDefinition"
-                    p:name="namespaceCode" />
-              <bean parent="MaintainableFieldDefinition"
-                    p:name="name" />
-              <bean parent="MaintainableFieldDefinition"
-                    p:name="actionRequestedCd" />
-              <bean parent="MaintainableFieldDefinition"
-                    p:name="priority" />
+              <bean parent="MaintainableFieldDefinition" p:name="namespaceCode"/>
+              <bean parent="MaintainableFieldDefinition" p:name="name"/>
+              <bean parent="MaintainableFieldDefinition" p:name="actionRequestedCd"/>
+              <bean parent="MaintainableFieldDefinition" p:name="priority"/>
             </list>
           </property>
         </bean>

@@ -1,40 +1,36 @@
-<beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:p="http://www.springframework.org/schema/p"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?><beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-  <bean id="TravelRequest" parent="TravelRequest-parentBean" />
+  <bean id="TravelRequest" parent="TravelRequest-parentBean"/>
 
   <bean id="TravelRequest-parentBean" abstract="true" parent="TransactionalDocumentEntry">
-    <property name="shortLabel" value="TRDoc2" />
-    <property name="summary" value="&amp;nbsp;" />
-    <property name="documentTypeName" value="TravelRequest" />
-    <property name="documentClass" value="edu.sampleu.travel.document.TravelDocument2" />
-    <property name="businessRulesClass" value="edu.sampleu.travel.document.rule.TravelDocumentRule" />
-    <property name="documentAuthorizerClass" value="edu.sampleu.travel.document.authorizer.TravelDocumentAuthorizer" />
-    <property name="documentPresentationControllerClass" value="edu.sampleu.travel.document.authorizer.TravelDocumentPresentationController" />
-    <property name="authorizations" >
+    <property name="shortLabel" value="TRDoc2"/>
+    <property name="summary" value="&amp;nbsp;"/>
+    <property name="documentTypeName" value="TravelRequest"/>
+    <property name="documentClass" value="edu.sampleu.travel.document.TravelDocument2"/>
+    <property name="businessRulesClass" value="edu.sampleu.travel.document.rule.TravelDocumentRule"/>
+    <property name="documentAuthorizerClass" value="edu.sampleu.travel.document.authorizer.TravelDocumentAuthorizer"/>
+    <property name="documentPresentationControllerClass" value="edu.sampleu.travel.document.authorizer.TravelDocumentPresentationController"/>
+    <property name="authorizations">
       <list>
         <bean parent="AuthorizationDefinition">
-          <property name="authorizedGroups" >
+          <property name="authorizedGroups">
             <set>
               <value>WorkflowAdmin</value>
             </set>
           </property>
-          <property name="action" value="initiate" />
+          <property name="action" value="initiate"/>
         </bean>
       </list>
     </property>
-    <property name="label" value="Travel Doc 2" />
-    <property name="description" value="Doing it right" />
-    <property name="attributes" >
+    <property name="label" value="Travel Doc 2"/>
+    <property name="description" value="Doing it right"/>
+    <property name="attributes">
       <list>
-        <ref bean="TravelRequest-traveler" />
-        <ref bean="TravelRequest-origin" />
-        <ref bean="TravelRequest-destination" />
-        <ref bean="TravelRequest-requestType" />
-        <ref bean="TravelRequest-accountType" />
+        <ref bean="TravelRequest-traveler"/>
+        <ref bean="TravelRequest-origin"/>
+        <ref bean="TravelRequest-destination"/>
+        <ref bean="TravelRequest-requestType"/>
+        <ref bean="TravelRequest-accountType"/>
       </list>
     </property>
   </bean>
@@ -42,96 +38,85 @@
 <!-- Attribute Definitions -->
 
 
-  <bean id="TravelRequest-traveler" parent="TravelRequest-traveler-parentBean" />
+  <bean id="TravelRequest-traveler" parent="TravelRequest-traveler-parentBean"/>
 
   <bean id="TravelRequest-traveler-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="forceUppercase" value="false" />
-    <property name="shortLabel" value="Traveler Name" />
-    <property name="maxLength" value="30" />
-    <property name="validationPattern" >
-      <bean parent="AnyCharacterValidationPattern" />
+    <property name="forceUppercase" value="false"/>
+    <property name="shortLabel" value="Traveler Name"/>
+    <property name="maxLength" value="30"/>
+    <property name="validationPattern">
+      <bean parent="AnyCharacterValidationPattern"/>
     </property>
-    <property name="required" value="true" />
-    <property name="control" >
-      <bean parent="TextControlDefinition"
-            p:size="30" />
+    <property name="required" value="true"/>
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="30"/>
     </property>
-    <property name="summary" value="Traveler Name" />
-    <property name="name" value="traveler" />
-    <property name="label" value="Traveler Name" />
-    <property name="description" value="Traveler Name" />
+    <property name="summary" value="Traveler Name"/>
+    <property name="name" value="traveler"/>
+    <property name="label" value="Traveler Name"/>
+    <property name="description" value="Traveler Name"/>
   </bean>
-  <bean id="TravelRequest-origin" parent="TravelRequest-origin-parentBean" />
+  <bean id="TravelRequest-origin" parent="TravelRequest-origin-parentBean"/>
 
   <bean id="TravelRequest-origin-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="forceUppercase" value="false" />
-    <property name="shortLabel" value="Traveler Origin" />
-    <property name="maxLength" value="60" />
-    <property name="validationPattern" >
-      <bean parent="AnyCharacterValidationPattern" />
+    <property name="forceUppercase" value="false"/>
+    <property name="shortLabel" value="Traveler Origin"/>
+    <property name="maxLength" value="60"/>
+    <property name="validationPattern">
+      <bean parent="AnyCharacterValidationPattern"/>
     </property>
-    <property name="required" value="true" />
-    <property name="control" >
-      <bean parent="TextControlDefinition"
-            p:size="60" />
+    <property name="required" value="true"/>
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="60"/>
     </property>
-    <property name="summary" value="Traveler Origin" />
-    <property name="name" value="origin" />
-    <property name="label" value="Traveler Origin" />
-    <property name="description" value="Traveler Origin" />
+    <property name="summary" value="Traveler Origin"/>
+    <property name="name" value="origin"/>
+    <property name="label" value="Traveler Origin"/>
+    <property name="description" value="Traveler Origin"/>
   </bean>
-  <bean id="TravelRequest-destination" parent="TravelRequest-destination-parentBean" />
+  <bean id="TravelRequest-destination" parent="TravelRequest-destination-parentBean"/>
 
   <bean id="TravelRequest-destination-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="forceUppercase" value="false" />
-    <property name="shortLabel" value="Traveler Destination" />
-    <property name="maxLength" value="60" />
-    <property name="validationPattern" >
-      <bean parent="AnyCharacterValidationPattern" />
+    <property name="forceUppercase" value="false"/>
+    <property name="shortLabel" value="Traveler Destination"/>
+    <property name="maxLength" value="60"/>
+    <property name="validationPattern">
+      <bean parent="AnyCharacterValidationPattern"/>
     </property>
-    <property name="required" value="true" />
-    <property name="control" >
-      <bean parent="TextControlDefinition"
-            p:size="60" />
+    <property name="required" value="true"/>
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="60"/>
     </property>
-    <property name="summary" value="Traveler Destination" />
-    <property name="name" value="destination" />
-    <property name="label" value="Traveler Destination" />
-    <property name="description" value="Traveler Destination" />
+    <property name="summary" value="Traveler Destination"/>
+    <property name="name" value="destination"/>
+    <property name="label" value="Traveler Destination"/>
+    <property name="description" value="Traveler Destination"/>
   </bean>
-  <bean id="TravelRequest-requestType" parent="TravelRequest-requestType-parentBean" />
+  <bean id="TravelRequest-requestType" parent="TravelRequest-requestType-parentBean"/>
 
   <bean id="TravelRequest-requestType-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="forceUppercase" value="false" />
-    <property name="shortLabel" value="Travel Request Type" />
-    <property name="maxLength" value="40" />
-    <property name="validationPattern" >
-      <bean parent="AlphaNumericValidationPattern"
-            p:allowWhitespace="true" />
+    <property name="forceUppercase" value="false"/>
+    <property name="shortLabel" value="Travel Request Type"/>
+    <property name="maxLength" value="40"/>
+    <property name="validationPattern">
+      <bean parent="AlphaNumericValidationPattern" p:allowWhitespace="true"/>
     </property>
-    <property name="required" value="true" />
-    <property name="control" >
-      <bean parent="SelectControlDefinition"
-            p:valuesFinderClass="edu.sampleu.travel.document.keyvalue.TravelRequestType"
-            p:includeKeyInLabel="false" />
+    <property name="required" value="true"/>
+    <property name="control">
+      <bean parent="SelectControlDefinition" p:valuesFinderClass="edu.sampleu.travel.document.keyvalue.TravelRequestType" p:includeKeyInLabel="false"/>
     </property>
-    <property name="summary" value="&amp;nbsp;" />
-    <property name="name" value="requestType" />
-    <property name="label" value="Travel Request Type" />
-    <property name="description" value="Travel Request Type" />
+    <property name="summary" value="&amp;nbsp;"/>
+    <property name="name" value="requestType"/>
+    <property name="label" value="Travel Request Type"/>
+    <property name="description" value="Travel Request Type"/>
   </bean>
-  <bean id="TravelRequest-accountType" parent="TravelRequest-accountType-parentBean" />
+  <bean id="TravelRequest-accountType" parent="TravelRequest-accountType-parentBean"/>
 
   <bean id="TravelRequest-accountType-parentBean" abstract="true" parent="TravelAccountType-accountTypeCode">
-    <property name="control" >
-      <bean parent="SelectControlDefinition"
-            p:businessObjectClass="edu.sampleu.travel.bo.TravelAccountType"
-            p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
-            p:includeKeyInLabel="true"
-            p:keyAttribute="accountTypeCode"
-            p:labelAttribute="name" />
+    <property name="control">
+      <bean parent="SelectControlDefinition" p:businessObjectClass="edu.sampleu.travel.bo.TravelAccountType" p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.PersistableBusinessObjectValuesFinder" p:includeKeyInLabel="true" p:keyAttribute="accountTypeCode" p:labelAttribute="name"/>
     </property>
-    <property name="name" value="accountType" />
-    <property name="required" value="false" />
+    <property name="name" value="accountType"/>
+    <property name="required" value="false"/>
   </bean>
 </beans>

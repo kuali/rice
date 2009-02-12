@@ -1,76 +1,60 @@
-<beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:p="http://www.springframework.org/schema/p"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?><beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-  <bean id="KualiCampusMaintenanceDocument" parent="KualiCampusMaintenanceDocument-parentBean" />
+  <bean id="KualiCampusMaintenanceDocument" parent="KualiCampusMaintenanceDocument-parentBean"/>
 
   <bean id="KualiCampusMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.kns.bo.Campus" />
-    <property name="maintainableClass" value="org.kuali.rice.kns.maintenance.KualiMaintainableImpl" />
-    <property name="maintainableSections" >
+    <property name="businessObjectClass" value="org.kuali.rice.kns.bo.Campus"/>
+    <property name="maintainableClass" value="org.kuali.rice.kns.maintenance.KualiMaintainableImpl"/>
+    <property name="maintainableSections">
       <list>
-        <ref bean="KualiCampusMaintenanceDocument-EditCampus" />
+        <ref bean="KualiCampusMaintenanceDocument-EditCampus"/>
       </list>
     </property>
-    <property name="lockingKeys" >
+    <property name="lockingKeys">
       <list>
         <value>campusCode</value>
       </list>
     </property>
-    <property name="shortLabel" value="Campus" />
-    <property name="summary" value="Campus maintenance document" />
-    <property name="helpDefinition" >
-      <bean parent="HelpDefinition"
-            p:parameterNamespace="KR-NS"
-            p:parameterName="CAMPUS"
-            p:parameterDetailType="Campus" />
+    <property name="shortLabel" value="Campus"/>
+    <property name="summary" value="Campus maintenance document"/>
+    <property name="helpDefinition">
+      <bean parent="HelpDefinition" p:parameterNamespace="KR-NS" p:parameterName="CAMPUS" p:parameterDetailType="Campus"/>
     </property>
-    <property name="documentTypeName" value="CampusMaintenanceDocument" />
-    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase" />
-    <property name="documentTypeCode" value="CMPS" />
-    <property name="authorizations" >
+    <property name="documentTypeName" value="CampusMaintenanceDocument"/>
+    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
+    <property name="documentTypeCode" value="CMPS"/>
+    <property name="authorizations">
       <list>
         <bean parent="AuthorizationDefinition">
-          <property name="authorizedGroups" >
+          <property name="authorizedGroups">
             <set>
               <value>kualiUniversalGroup</value>
             </set>
           </property>
-          <property name="action" value="initiate" />
+          <property name="action" value="initiate"/>
         </bean>
       </list>
     </property>
-    <property name="label" value="Campus" />
-    <property name="description" value="Document used to create or update Campus objects" />
+    <property name="label" value="Campus"/>
+    <property name="description" value="Document used to create or update Campus objects"/>
   </bean>
 
 <!-- Maintenance Section Definitions -->
 
 
-  <bean id="KualiCampusMaintenanceDocument-EditCampus" parent="KualiCampusMaintenanceDocument-EditCampus-parentBean" />
+  <bean id="KualiCampusMaintenanceDocument-EditCampus" parent="KualiCampusMaintenanceDocument-EditCampus-parentBean"/>
 
   <bean id="KualiCampusMaintenanceDocument-EditCampus-parentBean" abstract="true" parent="MaintainableSectionDefinition">
-    <property name="maintainableItems" >
+    <property name="maintainableItems">
       <list>
-        <bean parent="MaintainableFieldDefinition"
-              p:required="true"
-              p:name="campusCode" />
-        <bean parent="MaintainableFieldDefinition"
-              p:required="true"
-              p:name="campusName" />
-        <bean parent="MaintainableFieldDefinition"
-              p:required="true"
-              p:name="campusShortName" />
-        <bean parent="MaintainableFieldDefinition"
-              p:required="true"
-              p:name="campusTypeCode" />
-        <bean parent="MaintainableFieldDefinition"
-              p:name="versionNumber" />
+        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="campusCode"/>
+        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="campusName"/>
+        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="campusShortName"/>
+        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="campusTypeCode"/>
+        <bean parent="MaintainableFieldDefinition" p:name="versionNumber"/>
       </list>
     </property>
-    <property name="id" value="Edit Campus" />
-    <property name="title" value="Edit Campus" />
+    <property name="id" value="Edit Campus"/>
+    <property name="title" value="Edit Campus"/>
   </bean>
 </beans>

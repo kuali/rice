@@ -1,37 +1,33 @@
-<beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:p="http://www.springframework.org/schema/p"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?><beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-  <bean id="DocumentTypeMaintenanceDocument" parent="DocumentTypeMaintenanceDocument-parentBean" />
+  <bean id="DocumentTypeMaintenanceDocument" parent="DocumentTypeMaintenanceDocument-parentBean"/>
 
   <bean id="DocumentTypeMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.kew.doctype.bo.DocumentType" />
-    <property name="maintainableClass" value="org.kuali.rice.kew.document.DocumentTypeMaintainable" />
-    <property name="maintainableSections" >
+    <property name="businessObjectClass" value="org.kuali.rice.kew.doctype.bo.DocumentType"/>
+    <property name="maintainableClass" value="org.kuali.rice.kew.document.DocumentTypeMaintainable"/>
+    <property name="maintainableSections">
       <list>
-        <ref bean="DocumentTypeMaintenanceDocument-EditDocumentType" />
+        <ref bean="DocumentTypeMaintenanceDocument-EditDocumentType"/>
       </list>
     </property>
-    <property name="allowsNewOrCopy" value="true" />
-    <property name="lockingKeys" >
+    <property name="allowsNewOrCopy" value="true"/>
+    <property name="lockingKeys">
       <list>
         <value>name</value>
       </list>
     </property>
-    <property name="documentTypeName" value="DocumentTypeDocument" />
-    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase" />
+    <property name="documentTypeName" value="DocumentTypeDocument"/>
+    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
   </bean>
 
 <!-- Maintenance Section Definitions -->
 
-  <bean id="DocumentTypeMaintenanceDocument-EditDocumentType" parent="DocumentTypeMaintenanceDocument-EditDocumentType-parentBean" />
+  <bean id="DocumentTypeMaintenanceDocument-EditDocumentType" parent="DocumentTypeMaintenanceDocument-EditDocumentType-parentBean"/>
 
   <bean id="DocumentTypeMaintenanceDocument-EditDocumentType-parentBean" abstract="true" parent="MaintainableSectionDefinition">
-    <property name="id" value="Edit Document Type" />
-    <property name="title" value="Edit Document Type" />
-    <property name="maintainableItems" >
+    <property name="id" value="Edit Document Type"/>
+    <property name="title" value="Edit Document Type"/>
+    <property name="maintainableItems">
       <list>
 <!--
         <bean parent="MaintainableFieldDefinition"
@@ -41,36 +37,23 @@
               p:name="docTypeParentId"
               p:required="false" />
 -->
-        <bean parent="MaintainableFieldDefinition"
-              p:name="parentDocType.name"
-              p:required="false" />
-        <bean parent="MaintainableFieldDefinition"
-              p:name="name"
-              p:required="true" />
-        <bean parent="MaintainableFieldDefinition"
-              p:name="label"
-              p:required="false" />
-        <bean parent="MaintainableFieldDefinition"
-              p:name="description"
-              p:required="false" />
-        <bean parent="MaintainableFieldDefinition"
-              p:name="unresolvedDocHandlerUrl" /> <!-- need business rule to check parent inheritance -->
-        <bean parent="MaintainableFieldDefinition"
-              p:name="unresolvedHelpDefinitionUrl" />
-        <bean parent="MaintainableFieldDefinition"
-              p:name="actualNotificationFromAddress" />
-        <bean parent="MaintainableFieldDefinition"
-              p:name="active"
-              p:defaultValue="true" />
+        <bean parent="MaintainableFieldDefinition" p:name="parentDocType.name" p:required="false"/>
+        <bean parent="MaintainableFieldDefinition" p:name="name" p:required="true"/>
+        <bean parent="MaintainableFieldDefinition" p:name="label" p:required="false"/>
+        <bean parent="MaintainableFieldDefinition" p:name="description" p:required="false"/>
+        <bean parent="MaintainableFieldDefinition" p:name="unresolvedDocHandlerUrl"/> <!-- need business rule to check parent inheritance -->
+        <bean parent="MaintainableFieldDefinition" p:name="unresolvedHelpDefinitionUrl"/>
+        <bean parent="MaintainableFieldDefinition" p:name="actualNotificationFromAddress"/>
+        <bean parent="MaintainableFieldDefinition" p:name="active" p:defaultValue="true"/>
       </list>
     </property>
   </bean>
 
-  <bean id="DocumentTypeMaintenanceDocument-EditDocumentTypePolicies" parent="DocumentTypeMaintenanceDocument-EditDocumentTypePolicies-parentBean" />
+  <bean id="DocumentTypeMaintenanceDocument-EditDocumentTypePolicies" parent="DocumentTypeMaintenanceDocument-EditDocumentTypePolicies-parentBean"/>
 
   <bean id="DocumentTypeMaintenanceDocument-EditDocumentTypePolicies-parentBean" abstract="true" parent="MaintainableSectionDefinition">
-    <property name="id" value="Edit Document Type Policies" />
-    <property name="title" value="Edit Document Type Policies" />
+    <property name="id" value="Edit Document Type Policies"/>
+    <property name="title" value="Edit Document Type Policies"/>
   </bean>
 
 </beans>

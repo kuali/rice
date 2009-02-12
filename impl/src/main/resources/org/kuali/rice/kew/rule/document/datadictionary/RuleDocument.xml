@@ -1,31 +1,27 @@
-<beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:p="http://www.springframework.org/schema/p"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?><beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-  <bean id="RuleDocument" parent="RuleDocument-parentBean" />
+  <bean id="RuleDocument" parent="RuleDocument-parentBean"/>
 
   <bean id="RuleDocument-parentBean" abstract="true" parent="TransactionalDocumentEntry">
-    <property name="label" value="Routing Rule" />
-    <property name="shortLabel" value="Routing Rule" />
-    <property name="summary" value="Routing Rule Summary;" />
+    <property name="label" value="Routing Rule"/>
+    <property name="shortLabel" value="Routing Rule"/>
+    <property name="summary" value="Routing Rule Summary;"/>
     <property name="description" value="The Routing Rule document is used to create rules which drive the routing process for various documents."/>
-    <property name="documentTypeName" value="RoutingRuleDocument" />
-    <property name="documentClass" value="org.kuali.rice.kew.rule.document.RuleDocument" />
+    <property name="documentTypeName" value="RoutingRuleDocument"/>
+    <property name="documentClass" value="org.kuali.rice.kew.rule.document.RuleDocument"/>
     <!-- <property name="businessRulesClass" value="org.kuali.kfs.sys.document.validation.impl.AccountingRuleEngineRuleBase" /> -->
-    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.TransactionalDocumentAuthorizerBase" />
-    <property name="allowsCopy" value="true" />
+    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.TransactionalDocumentAuthorizerBase"/>
+    <property name="allowsCopy" value="true"/>
     <!-- 
     <property name="workflowProperties" >
       <ref bean="RuleDocument-workflowProperties" />
     </property>-->
     
-    <property name="authorizations" >
+    <property name="authorizations">
       <list>
         <bean parent="AuthorizationDefinition">
-          <property name="action" value="initiate" />
-          <property name="authorizedGroups" >
+          <property name="action" value="initiate"/>
+          <property name="authorizedGroups">
             <set>
               <value>WorkflowAdmin</value>
             </set>

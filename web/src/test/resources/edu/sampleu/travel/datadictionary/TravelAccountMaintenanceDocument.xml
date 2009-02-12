@@ -1,76 +1,62 @@
-<beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:p="http://www.springframework.org/schema/p"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?><beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-  <bean id="TravelAccountMaintenanceDocument" parent="TravelAccountMaintenanceDocument-parentBean" />
+  <bean id="TravelAccountMaintenanceDocument" parent="TravelAccountMaintenanceDocument-parentBean"/>
 
   <bean id="TravelAccountMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
-    <property name="businessObjectClass" value="edu.sampleu.travel.bo.TravelAccount" />
-    <property name="maintainableClass" value="org.kuali.rice.kns.maintenance.KualiMaintainableImpl" />
-    <property name="maintainableSections" >
+    <property name="businessObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
+    <property name="maintainableClass" value="org.kuali.rice.kns.maintenance.KualiMaintainableImpl"/>
+    <property name="maintainableSections">
       <list>
-        <ref bean="TravelAccountMaintenanceDocument-EditTravelAccount" />
+        <ref bean="TravelAccountMaintenanceDocument-EditTravelAccount"/>
       </list>
     </property>
-    <property name="defaultExistenceChecks" >
+    <property name="defaultExistenceChecks">
       <list>
-        <bean parent="ReferenceDefinition"
-              p:attributeName="extension.accountType"
-              p:attributeToHighlightOnFail="extension.accountTypeCode" />
+        <bean parent="ReferenceDefinition" p:attributeName="extension.accountType" p:attributeToHighlightOnFail="extension.accountTypeCode"/>
       </list>
     </property>
-    <property name="lockingKeys" >
+    <property name="lockingKeys">
       <list>
         <value>number</value>
       </list>
     </property>
-    <property name="shortLabel" value="TravelAccountDocument" />
-    <property name="summary" value="Travel Account Maintenance document" />
-    <property name="documentTypeName" value="TravelAccountMaintenanceDocument" />
-    <property name="businessRulesClass" value="edu.sampleu.travel.bo.TravelAccountRules" />
-    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase" />
-    <property name="documentTypeCode" value="TRAV" />
-    <property name="authorizations" >
+    <property name="shortLabel" value="TravelAccountDocument"/>
+    <property name="summary" value="Travel Account Maintenance document"/>
+    <property name="documentTypeName" value="TravelAccountMaintenanceDocument"/>
+    <property name="businessRulesClass" value="edu.sampleu.travel.bo.TravelAccountRules"/>
+    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
+    <property name="documentTypeCode" value="TRAV"/>
+    <property name="authorizations">
       <list>
         <bean parent="AuthorizationDefinition">
-          <property name="authorizedGroups" >
+          <property name="authorizedGroups">
             <set>
               <value>WorkflowAdmin</value>
             </set>
           </property>
-          <property name="action" value="initiate" />
+          <property name="action" value="initiate"/>
         </bean>
       </list>
     </property>
-    <property name="label" value="Travel Account Maintenance Document" />
-    <property name="description" value="Document used to create or update Travel Accounts" />
+    <property name="label" value="Travel Account Maintenance Document"/>
+    <property name="description" value="Document used to create or update Travel Accounts"/>
   </bean>
 
 <!-- Maintenance Section Definitions -->
 
 
-  <bean id="TravelAccountMaintenanceDocument-EditTravelAccount" parent="TravelAccountMaintenanceDocument-EditTravelAccount-parentBean" />
+  <bean id="TravelAccountMaintenanceDocument-EditTravelAccount" parent="TravelAccountMaintenanceDocument-EditTravelAccount-parentBean"/>
 
   <bean id="TravelAccountMaintenanceDocument-EditTravelAccount-parentBean" abstract="true" parent="MaintainableSectionDefinition">
-    <property name="maintainableItems" >
+    <property name="maintainableItems">
       <list>
-        <bean parent="MaintainableFieldDefinition"
-              p:required="true"
-              p:name="number" />
-        <bean parent="MaintainableFieldDefinition"
-              p:required="true"
-              p:name="name" />
-        <bean parent="MaintainableFieldDefinition"
-              p:required="true"
-              p:name="foId" />
-        <bean parent="MaintainableFieldDefinition"
-              p:required="true"
-              p:name="extension.accountTypeCode" />
+        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="number"/>
+        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="name"/>
+        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="foId"/>
+        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="extension.accountTypeCode"/>
       </list>
     </property>
-    <property name="id" value="Edit Travel Account " />
-    <property name="title" value="Edit Travel Account " />
+    <property name="id" value="Edit Travel Account "/>
+    <property name="title" value="Edit Travel Account "/>
   </bean>
 </beans>

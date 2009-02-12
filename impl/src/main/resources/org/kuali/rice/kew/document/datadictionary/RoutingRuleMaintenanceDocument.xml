@@ -25,7 +25,9 @@
         <value>previousVersionId</value>
       </list>
     </property>
-    
+
+    <property name="businessRulesClass" value="org.kuali.rice.kew.document.RoutingRuleMaintainableBusRule" />
+
   </bean>
 
   <!-- Maintenance Section Definitions -->
@@ -45,7 +47,7 @@
               p:unconditionallyReadOnly="true"/>
         <bean parent="MaintainableFieldDefinition"
               p:name="name"
-              p:required="false" />
+              p:required="true" />
         <bean parent="MaintainableFieldDefinition"
               p:name="description"
               p:required="true" />
@@ -64,7 +66,7 @@
       </list>
     </property>
   </bean>
-  
+
   <bean id="RoutingRuleMaintenanceDocument-RuleAttributes" parent="RoutingRuleMaintenanceDocument-RuleAttributes-parentBean" />
 
   <bean id="RoutingRuleMaintenanceDocument-RuleAttributes-parentBean" abstract="true" parent="MaintainableSectionDefinition">
@@ -72,7 +74,7 @@
     <property name="title" value="Rule Attributes" />
     <!-- Maintainable Items generated based on Rule Template, see RoutingRuleMaintainable -->
   </bean>
-  
+
   <bean id="RoutingRuleMaintenanceDocument-PersonResponsibilities" parent="RoutingRuleMaintenanceDocument-PersonResponsibilities-parentBean" />
 
   <bean id="RoutingRuleMaintenanceDocument-PersonResponsibilities-parentBean" abstract="true" parent="MaintainableSectionDefinition">
@@ -125,7 +127,7 @@
               <bean parent="MaintainableFieldDefinition"
                     p:name="namespaceCode" />
               <bean parent="MaintainableFieldDefinition"
-                    p:name="name" />      
+                    p:name="name" />
               <bean parent="MaintainableFieldDefinition"
                     p:name="actionRequestedCd" />
             </list>
@@ -135,7 +137,7 @@
               <bean parent="MaintainableFieldDefinition"
                     p:name="namespaceCode" />
               <bean parent="MaintainableFieldDefinition"
-                    p:name="name" />      
+                    p:name="name" />
               <bean parent="MaintainableFieldDefinition"
                     p:name="actionRequestedCd" />
               <bean parent="MaintainableFieldDefinition"
@@ -143,10 +145,10 @@
             </list>
           </property>
         </bean>
-        
+
       </list>
     </property>
   </bean>
 
-  
+
 </beans>

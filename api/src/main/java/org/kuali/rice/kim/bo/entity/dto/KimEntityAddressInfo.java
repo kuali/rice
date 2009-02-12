@@ -55,6 +55,8 @@ public class KimEntityAddressInfo extends KimDefaultableInfo implements EntityAd
 			line1 = unNullify( addr.getLine1() );
 			line2 = unNullify( addr.getLine2() );
 			line3 = unNullify( addr.getLine3() );
+			dflt = addr.isDefault();
+			active = addr.isActive();
 		}
 	}
 	

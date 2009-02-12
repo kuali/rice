@@ -21,6 +21,7 @@ import java.util.List;
 
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.KimRole;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
@@ -88,7 +89,7 @@ public class PrincipalDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServi
             return false;
         }
         // check that the entity is active
-        KimEntity entity = getIdentityManagementService().getEntity( principal.getEntityId() );
+        KimEntityDefaultInfo entity = getIdentityManagementService().getEntityDefaultInfo( principal.getEntityId() );
         if ( entity == null || !entity.isActive() ) {
             return false;
         }

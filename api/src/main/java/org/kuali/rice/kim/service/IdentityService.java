@@ -8,16 +8,17 @@ import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.NamePrincipalName;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityPrivacyPreferencesInfo;
 
 public interface IdentityService {
 	
 	/** Get an entity object from the main entity ID */ 
-	KimEntity getEntity( String entityId );
+//	KimEntity getEntity( String entityId );
 	
 	/** Get an entity object based on the principal name */
-	KimEntity getEntityByPrincipalName(String principalName);
+//	KimEntity getEntityByPrincipalName(String principalName);
 	
-	KimEntity getEntityByPrincipalId(String principalId);
+//	KimEntity getEntityByPrincipalId(String principalId);
 
 	// EXTENDED CLIENT API
     
@@ -32,12 +33,15 @@ public interface IdentityService {
 	KimPrincipal getPrincipalByPrincipalNameAndPassword(String principalName, String password);
 	
 	/** Find entity objects based on the given criteria. */
-	List<KimEntity> lookupEntitys(Map<String,String> searchCriteria);
+//	List<KimEntity> lookupEntitys(Map<String,String> searchCriteria);
     
 	KimEntityDefaultInfo getEntityDefaultInfo( String entityId );
 	KimEntityDefaultInfo getEntityDefaultInfoByPrincipalId( String principalId );
 	KimEntityDefaultInfo getEntityDefaultInfoByPrincipalName( String principalName );
 	List<? extends KimEntityDefaultInfo> lookupEntityDefaultInfo( Map<String,String> searchCriteria, boolean unbounded );
+	int getMatchingEntityCount( Map<String,String> searchCriteria );
+	
+	KimEntityPrivacyPreferencesInfo getEntityPrivacyPreferences( String entityId );
 	
     Map<String, NamePrincipalName> getDefaultNamesForPrincipalIds(List<String> principalIds);
     

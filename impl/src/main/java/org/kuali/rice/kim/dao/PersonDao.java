@@ -19,8 +19,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -42,7 +42,7 @@ public interface PersonDao<T extends Person> {
 	
 	Map<String,String> convertPersonPropertiesToEntityProperties( Map<String,String> criteria );
 	
-	T convertEntityToPerson( KimEntity entity, KimPrincipal principal );
+	T convertEntityToPerson( KimEntityDefaultInfo entity, KimPrincipal principal );
 	
 	void savePersonToCache( Person p );
 	T getPersonFromCache( String principalId );

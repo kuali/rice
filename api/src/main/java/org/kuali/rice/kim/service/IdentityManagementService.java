@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityPrivacyPreferencesInfo;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.role.KimResponsibility;
@@ -36,20 +37,22 @@ public interface IdentityManagementService {
 	// IdentityService
 	// *******************************
 	
-	KimEntity getEntityByPrincipalId(String principalId);
-    KimEntity getEntityByPrincipalName(String principalName);
-	KimEntity getEntity(String entityId);
+//	KimEntity getEntityByPrincipalId(String principalId);
+//    KimEntity getEntityByPrincipalName(String principalName);
+//	KimEntity getEntity(String entityId);
 
 	KimPrincipal getPrincipal(String principalId);
 	KimPrincipal getPrincipalByPrincipalName(String principalName);
 	KimPrincipal getPrincipalByPrincipalNameAndPassword(String principalName, String password);
 
-	List<KimEntity> lookupEntitys(Map<String,String> searchCriteria);
+//	List<KimEntity> lookupEntitys(Map<String,String> searchCriteria);
 
 	KimEntityDefaultInfo getEntityDefaultInfo( String entityId );
 	KimEntityDefaultInfo getEntityDefaultInfoByPrincipalId( String principalId );
 	KimEntityDefaultInfo getEntityDefaultInfoByPrincipalName( String principalName );
 	List<? extends KimEntityDefaultInfo> lookupEntityDefaultInfo( Map<String,String> searchCriteria, boolean unbounded );
+	int getMatchingEntityCount( Map<String,String> searchCriteria );
+	KimEntityPrivacyPreferencesInfo getEntityPrivacyPreferences(String entityId);
 
 	// *******************************
 	// GroupService

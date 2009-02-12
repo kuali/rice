@@ -55,6 +55,7 @@ public class KimEntityEmploymentInformationInfo extends KimInactivatableInfo imp
 			primaryDepartmentCode = unNullify( eei.getPrimaryDepartmentCode() );
 			baseSalaryAmount = eei.getBaseSalaryAmount();
 			primary = eei.isPrimary();
+			active = eei.isActive();
 		}
 	}
 	

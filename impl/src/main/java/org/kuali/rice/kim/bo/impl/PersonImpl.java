@@ -26,12 +26,12 @@ import org.kuali.rice.kim.bo.entity.EntityAddress;
 import org.kuali.rice.kim.bo.entity.EntityAffiliation;
 import org.kuali.rice.kim.bo.entity.EntityEmail;
 import org.kuali.rice.kim.bo.entity.EntityEmploymentInformation;
-import org.kuali.rice.kim.bo.entity.EntityEntityType;
 import org.kuali.rice.kim.bo.entity.EntityExternalIdentifier;
 import org.kuali.rice.kim.bo.entity.EntityName;
 import org.kuali.rice.kim.bo.entity.EntityPhone;
-import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityEntityTypeDefaultInfo;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
@@ -97,7 +97,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		this( principal, null, personEntityTypeCode );
 	}
 
-	public PersonImpl( KimPrincipal principal, KimEntity entity, String personEntityTypeCode ) {
+	public PersonImpl( KimPrincipal principal, KimEntityDefaultInfo entity, String personEntityTypeCode ) {
 		setPrincipal( principal, entity, personEntityTypeCode );
 	}
 	
@@ -124,10 +124,10 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	/**
 	 * Sets the principal object and populates the person object from that. 
 	 */
-	public void setPrincipal(KimPrincipal principal, KimEntity entity, String personEntityTypeCode) {
+	public void setPrincipal(KimPrincipal principal, KimEntityDefaultInfo entity, String personEntityTypeCode) {
 		populatePrincipalInfo( principal );
 		if ( entity == null ) {
-			entity = getIdentityManagementService().getEntity( principal.getEntityId() );
+			entity = getIdentityManagementService().getEntityDefaultInfo( principal.getEntityId() );
 		}
 		populateEntityInfo( entity, principal, personEntityTypeCode );
 	}
@@ -140,8 +140,8 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		active = principal.isActive();
 	}
 	
-	protected void populateEntityInfo( KimEntity entity, KimPrincipal principal, String personEntityTypeCode ) {
-		EntityEntityType entityEntityType = entity.getEntityType( personEntityTypeCode );  
+	protected void populateEntityInfo( KimEntityDefaultInfo entity, KimPrincipal principal, String personEntityTypeCode ) {
+		KimEntityEntityTypeDefaultInfo entityEntityType = entity.getEntityType( personEntityTypeCode );  
 		entityTypeCode = personEntityTypeCode;
 		populateNameInfo( personEntityTypeCode, entity, principal );
 		populateAddressInfo( entityEntityType );
@@ -152,7 +152,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		populateExternalIdentifiers( entity );
 	}
 	
-	protected void populateNameInfo( String entityTypeCode, KimEntity entity, KimPrincipal principal ) {
+	protected void populateNameInfo( String entityTypeCode, KimEntityDefaultInfo entity, KimPrincipal principal ) {
 		EntityName entityName = entity.getDefaultName();
 		if ( entityName != null ) {
 			firstName = unNullify( entityName.getFirstName() );
@@ -176,7 +176,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		}
 	}
 	
-	protected void populateAddressInfo( EntityEntityType entityEntityType ) {
+	protected void populateAddressInfo( KimEntityEntityTypeDefaultInfo entityEntityType ) {
 		EntityAddress defaultAddress = entityEntityType.getDefaultAddress();
 		if ( defaultAddress != null ) {			
 			addressLine1 = unNullify( defaultAddress.getLine1() );
@@ -197,7 +197,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		}
 	}
 	
-	protected void populateEmailInfo( EntityEntityType entityEntityType ) {
+	protected void populateEmailInfo( KimEntityEntityTypeDefaultInfo entityEntityType ) {
 		EntityEmail entityEmail = entityEntityType.getDefaultEmailAddress();
 		if ( entityEmail != null ) {
 			emailAddress = unNullify( entityEmail.getEmailAddress() );
@@ -206,7 +206,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		}
 	}
 	
-	protected void populatePhoneInfo( EntityEntityType entityEntityType ) {
+	protected void populatePhoneInfo( KimEntityEntityTypeDefaultInfo entityEntityType ) {
 		EntityPhone entityPhone = entityEntityType.getDefaultPhoneNumber();
 		if ( entityPhone != null ) {
 			phoneNumber = unNullify( entityPhone.getFormattedPhoneNumber() );
@@ -215,7 +215,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		}
 	}
 	
-	protected void populateAffiliationInfo( KimEntity entity ) {
+	protected void populateAffiliationInfo( KimEntityDefaultInfo entity ) {
 		affiliations = entity.getAffiliations();
 		EntityAffiliation defaultAffiliation = entity.getDefaultAffiliation();
 		if ( defaultAffiliation != null  ) {
@@ -225,7 +225,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		}
 	}
 	
-	protected void populateEmploymentInfo( KimEntity entity ) {
+	protected void populateEmploymentInfo( KimEntityDefaultInfo entity ) {
 		EntityEmploymentInformation employmentInformation = entity.getPrimaryEmployment();
 		if ( employmentInformation != null ) {
 			employeeStatusCode = unNullify( employmentInformation.getEmployeeStatusCode() );
@@ -246,7 +246,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		}
 	}
 	
-	protected void populateExternalIdentifiers( KimEntity entity ) {
+	protected void populateExternalIdentifiers( KimEntityDefaultInfo entity ) {
 		List<? extends EntityExternalIdentifier> externalIds = entity.getExternalIdentifiers();
 		externalIdentifiers = new HashMap<String,String>( externalIds.size() );
 		for ( EntityExternalIdentifier eei : externalIds ) {

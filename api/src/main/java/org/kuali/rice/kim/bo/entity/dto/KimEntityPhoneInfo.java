@@ -49,6 +49,8 @@ public class KimEntityPhoneInfo extends KimDefaultableInfo implements EntityPhon
 			phoneNumber = unNullify( phone.getPhoneNumber() );
 			extensionNumber = unNullify( phone.getExtensionNumber() );
 			countryCode = unNullify( phone.getCountryCode() );
+			dflt = phone.isDefault();
+			active = phone.isActive();
 		}
 	}
 	

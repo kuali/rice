@@ -41,7 +41,6 @@ import org.kuali.rice.kim.bo.entity.impl.EntityPrivacyPreferencesImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
-import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAddress;
@@ -54,6 +53,7 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentPrivacy;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.impl.IdentityServiceImpl;
 import org.kuali.rice.kim.service.impl.UiDocumentServiceImpl;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
@@ -130,7 +130,7 @@ public class UiDocumentServiceImplTest extends RiceTestCase {
 	public void testSaveToEntity() {
 		IdentityManagementPersonDocument personDoc = initPersonDoc();
 		uiDocumentService.saveEntityPerson(personDoc);
-		KimEntityImpl entity = (KimEntityImpl)KIMServiceLocator.getIdentityService().getEntity(personDoc.getEntityId());
+		KimEntityImpl entity = ((IdentityServiceImpl)KIMServiceLocator.getIdentityService()).getEntityImpl(personDoc.getEntityId());
         EntityEntityTypeImpl entityType = entity.getEntityTypes().get(0);
         personDoc.getExternalIdentifiers();
 		assertAddressTrue((PersonDocumentAddress)personDoc.getAddrs().get(0), (EntityAddressImpl)entityType.getAddresses().get(0));
@@ -156,7 +156,7 @@ public class UiDocumentServiceImplTest extends RiceTestCase {
 	
 	@Test
 	public void testLoadToPersonDocument() {
-		KimEntityImpl entity = (KimEntityImpl)KIMServiceLocator.getIdentityService().getEntity("ent123");
+		KimEntityImpl entity = ((IdentityServiceImpl)KIMServiceLocator.getIdentityService()).getEntityImpl("ent123");
 		IdentityManagementPersonDocument personDoc = new IdentityManagementPersonDocument();
 		uiDocumentService.loadEntityToPersonDoc(personDoc, "ent123");
         EntityEntityTypeImpl entityType = entity.getEntityTypes().get(0);

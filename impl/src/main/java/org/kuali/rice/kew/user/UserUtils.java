@@ -5,7 +5,6 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.EntityPrivacyPreferences;
-import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -21,7 +20,7 @@ public class UserUtils {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(UserUtils.class);
 
-	private static PersonService personService;
+	private static PersonService<Person> personService;
 	private static IdentityManagementService identityManagementService;
 	
 	private static final String RESTRICTED_DATA_MASK = "xxxxxx";
@@ -72,8 +71,7 @@ public class UserUtils {
 	}
 	
 	public static boolean isEntityNameRestricted(String entityId) {
-		KimEntity entity = getIdentityManagementService().getEntity(entityId);
-		EntityPrivacyPreferences privacy = entity.getPrivacyPreferences();
+		EntityPrivacyPreferences privacy = getIdentityManagementService().getEntityPrivacyPreferences( entityId );
 		if ( ObjectUtils.isNotNull(privacy) ) {
 			return privacy.isSuppressName();
 		}
@@ -81,8 +79,7 @@ public class UserUtils {
 	}
 
 	public static boolean isEntityEmailRestricted(String entityId) {
-		KimEntity entity = getIdentityManagementService().getEntity(entityId);
-		EntityPrivacyPreferences privacy = entity.getPrivacyPreferences();
+		EntityPrivacyPreferences privacy = getIdentityManagementService().getEntityPrivacyPreferences( entityId );
 		if (ObjectUtils.isNotNull(privacy) ) {
 			return privacy.isSuppressEmail();
 		}
@@ -92,7 +89,7 @@ public class UserUtils {
 	/**
 	 * @return the personService
 	 */
-	public static PersonService getPersonService() {
+	public static PersonService<Person> getPersonService() {
 		if ( personService == null ) {
 			personService = KIMServiceLocator.getPersonService();
 		}

@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
-import java.io.Serializable;
 import java.util.List;
 
 import org.kuali.rice.kim.bo.entity.EntityAffiliation;
@@ -30,7 +29,7 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class KimEntityDefaultInfo implements Serializable {
+public class KimEntityDefaultInfo extends KimInactivatableInfo {
 
 	protected String entityId;
 	protected EntityName defaultName;
@@ -83,4 +82,20 @@ public class KimEntityDefaultInfo implements Serializable {
 	public void setExternalIdentifiers(List<? extends EntityExternalIdentifier> externalIdentifiers) {
 		this.externalIdentifiers = externalIdentifiers;
 	}
+	public List<? extends KimPrincipal> getPrincipals() {
+		return this.principals;
+	}
+	public void setPrincipals(List<? extends KimPrincipal> principals) {
+		this.principals = principals;
+	}
+	
+	public KimEntityEntityTypeDefaultInfo getEntityType(String entityTypeCode) {
+		for ( KimEntityEntityTypeDefaultInfo entType : entityTypes ) {
+			if ( entType.getEntityTypeCode().equals( entityTypeCode ) ) {
+				return entType;
+			}
+		}
+		return null;
+	}
+	
 }

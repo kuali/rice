@@ -27,7 +27,7 @@ import org.kuali.rice.kim.bo.entity.EntityPhone;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class KimEntityEntityTypeDefaultInfo implements Serializable {
+public class KimEntityEntityTypeDefaultInfo extends KimInfoBase implements Serializable {
 	protected String entityTypeCode;
 	protected EntityAddress defaultAddress;
 	protected EntityPhone defaultPhoneNumber;

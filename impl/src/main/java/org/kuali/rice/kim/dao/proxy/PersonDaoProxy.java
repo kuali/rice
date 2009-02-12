@@ -22,6 +22,7 @@ import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.dao.PersonDao;
 import org.springframework.beans.factory.InitializingBean;
@@ -60,7 +61,7 @@ public class PersonDaoProxy<T extends PersonImpl> implements PersonDao<T>, Initi
 	 * 
 	 * @see org.kuali.rice.kim.dao.PersonDao#convertEntityToPerson(org.kuali.rice.kim.bo.entity.KimEntity, org.kuali.rice.kim.bo.entity.KimPrincipal)
 	 */
-	public T convertEntityToPerson(KimEntity entity, KimPrincipal principal) {
+	public T convertEntityToPerson(KimEntityDefaultInfo entity, KimPrincipal principal) {
 		return actualDao.convertEntityToPerson(entity, principal);
 	}
 

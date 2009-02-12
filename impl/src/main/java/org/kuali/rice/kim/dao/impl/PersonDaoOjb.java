@@ -17,26 +17,22 @@ package org.kuali.rice.kim.dao.impl;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.entity.EntityEntityType;
-import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityEntityTypeDefaultInfo;
 import org.kuali.rice.kim.bo.impl.PersonCacheImpl;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.dao.PersonDao;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.LookupService;
-import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.springframework.orm.ObjectRetrievalFailureException;
 
@@ -111,12 +107,12 @@ public class PersonDaoOjb<T extends PersonImpl> extends PlatformAwareDaoBaseOjb 
 		personCachePropertyNames.add( KIMPropertyConstants.Person.PRIMARY_DEPARTMENT_CODE );
 	}
 
-	public T convertEntityToPerson( KimEntity entity, KimPrincipal principal ) {
+	public T convertEntityToPerson( KimEntityDefaultInfo entity, KimPrincipal principal ) {
 		try {
 			T person = (T)getPersonImplementationClass().newInstance();
 			// get the EntityEntityType for the EntityType corresponding to a Person
 			for ( String entityTypeCode : personEntityTypeCodes ) {
-				EntityEntityType entType = entity.getEntityType( entityTypeCode );
+				KimEntityEntityTypeDefaultInfo entType = entity.getEntityType( entityTypeCode );
 				// if no "person" entity type present for the given principal, skip to the next type in the list
 				if ( entType == null ) {
 					continue;
@@ -144,11 +140,9 @@ public class PersonDaoOjb<T extends PersonImpl> extends PlatformAwareDaoBaseOjb 
 
 		List<T> people = new ArrayList<T>(); 
 
-		
-		LookupService lookupService = KNSServiceLocator.getLookupService();
-		Collection<KimEntity> entities = lookupService.findCollectionBySearchHelper(KimEntityImpl.class, entityCriteria, unbounded);
+		List<? extends KimEntityDefaultInfo> entities = KIMServiceLocator.getIdentityManagementService().lookupEntityDefaultInfo( criteria, unbounded );
 
-		for ( KimEntity e : entities ) {
+		for ( KimEntityDefaultInfo e : entities ) {
 			// get to get all principals for the entity as well
 			for ( KimPrincipal p : e.getPrincipals() ) {
 				people.add( convertEntityToPerson( e, p ) );

@@ -117,7 +117,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	public void saveEntityPerson(
 			IdentityManagementPersonDocument identityManagementPersonDocument) {
 		KimEntityImpl kimEntity = new KimEntityImpl();
-		KimEntityImpl origEntity = (KimEntityImpl)getIdentityService().getEntity(identityManagementPersonDocument.getEntityId());
+		KimEntityImpl origEntity = ((IdentityServiceImpl)getIdentityService()).getEntityImpl(identityManagementPersonDocument.getEntityId());
 		if (origEntity == null) {
 			origEntity = new KimEntityImpl();
 			kimEntity.setActive(true);
@@ -230,15 +230,15 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 	/**
 	 * 
-	 * @see org.kuali.rice.kim.service.UiDocumentService#loadEntityToPersonDoc(org.kuali.rice.kim.document.IdentityManagementPersonDocument, org.kuali.rice.kim.bo.entity.impl.KimEntityImpl)
+	 * @see org.kuali.rice.kim.service.UiDocumentService#loadEntityToPersonDoc(IdentityManagementPersonDocument, String)
 	 */
 	public void loadEntityToPersonDoc(IdentityManagementPersonDocument identityManagementPersonDocument, String principalId) {
-        KimPrincipalImpl principal = (KimPrincipalImpl)getIdentityService().getPrincipal(principalId);
+        KimPrincipalImpl principal = ((IdentityServiceImpl)getIdentityService()).getPrincipalImpl(principalId);
         identityManagementPersonDocument.setPrincipalId(principal.getPrincipalId());
         identityManagementPersonDocument.setPrincipalName(principal.getPrincipalName());
         identityManagementPersonDocument.setPassword(principal.getPassword());
         identityManagementPersonDocument.setActive(principal.isActive());
-		KimEntityImpl kimEntity = (KimEntityImpl)getIdentityService().getEntity(principal.getEntityId());
+		KimEntityImpl kimEntity = ((IdentityServiceImpl)getIdentityService()).getEntityImpl(principal.getEntityId());
 		identityManagementPersonDocument.setEntityId(kimEntity.getEntityId());
 		//identityManagementPersonDocument.setActive(kimEntity.isActive());
 		identityManagementPersonDocument.setAffiliations(loadAffiliations(kimEntity.getAffiliations(),kimEntity.getEmploymentInformation()));

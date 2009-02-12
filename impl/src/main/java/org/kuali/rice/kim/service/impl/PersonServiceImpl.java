@@ -29,6 +29,7 @@ import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.dao.PersonDao;
 import org.kuali.rice.kim.service.IdentityManagementService;
@@ -92,12 +93,12 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 		if ( person != null ) {
 			return person;
 		}
-		KimEntity entity = null;
+		KimEntityDefaultInfo entity = null;
 		// get the corresponding principal
 		KimPrincipal principal = identityManagementService.getPrincipal( principalId );
 		// get the entity
 		if ( principal != null ) {
-			entity = identityManagementService.getEntity( principal.getEntityId() );
+			entity = identityManagementService.getEntityDefaultInfo( principal.getEntityId() );
 		} else { // attempt to load from the cache and create the Person object
 			person = personDao.getPersonFromCache( principalId );
 		}
@@ -191,12 +192,12 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 		if ( person != null ) {
 			return person;
 		}
-		KimEntity entity = null;
+		KimEntityDefaultInfo entity = null;
 		// get the corresponding principal
 		KimPrincipal principal = identityManagementService.getPrincipalByPrincipalName( principalName );
 		// get the entity
 		if ( principal != null ) {
-			entity = identityManagementService.getEntity( principal.getEntityId() );
+			entity = identityManagementService.getEntityDefaultInfo( principal.getEntityId() );
 		}
 		// convert the principal and entity to a Person
 		if ( entity != null ) {

@@ -29,7 +29,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.EntityEntityType;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.IdentityService;
+import org.kuali.rice.kim.service.impl.IdentityServiceImpl;
 import org.kuali.rice.test.RiceTestCase;
 import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
 import org.kuali.rice.test.web.HtmlUnitUtil;
@@ -42,7 +42,7 @@ import org.kuali.rice.test.web.HtmlUnitUtil;
  */
 public class IdentityServiceImplTest extends RiceTestCase {
 
-	private IdentityService identityService;
+	private IdentityServiceImpl identityService;
 
 	private String contextName = "/knstest";
 
@@ -92,7 +92,7 @@ public class IdentityServiceImplTest extends RiceTestCase {
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
-		identityService = (IdentityService) GlobalResourceLoader.getService(new QName("KIM", "kimIdentityService"));
+		identityService = (IdentityServiceImpl) GlobalResourceLoader.getService(new QName("KIM", "kimIdentityService"));
 	}
 
 	@After
@@ -114,7 +114,7 @@ public class IdentityServiceImplTest extends RiceTestCase {
 	
 	@Test
 	public void testGetContainedAttributes() {
-		KimEntity entity = identityService.getEntity( "3776" );
+		KimEntity entity = identityService.getEntityImpl( "3776" );
 		assertNotNull( "Entity Must not be null", entity );
 		EntityEntityType eet = entity.getEntityType( "PERSON" );
 		assertNotNull( "PERSON EntityEntityType Must not be null", eet );

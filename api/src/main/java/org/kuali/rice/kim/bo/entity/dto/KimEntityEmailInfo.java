@@ -45,6 +45,8 @@ public class KimEntityEmailInfo extends KimDefaultableInfo implements EntityEmai
 			entityTypeCode = unNullify( email.getEntityTypeCode() );
 			emailTypeCode = unNullify( email.getEmailTypeCode() );
 			emailAddress = unNullify( email.getEmailAddress() );
+			dflt = email.isDefault();
+			active = email.isActive();
 		}
 	}
 	

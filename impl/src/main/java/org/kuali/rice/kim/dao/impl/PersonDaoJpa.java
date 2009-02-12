@@ -21,6 +21,7 @@ import java.util.Map;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.dao.PersonDao;
 
@@ -37,7 +38,7 @@ public class PersonDaoJpa<T extends PersonImpl> implements PersonDao<T> {
 	 * 
 	 * @see org.kuali.rice.kim.dao.PersonDao#convertEntityToPerson(org.kuali.rice.kim.bo.entity.KimEntity, org.kuali.rice.kim.bo.entity.KimPrincipal)
 	 */
-	public T convertEntityToPerson(KimEntity entity, KimPrincipal principal) {
+	public T convertEntityToPerson(KimEntityDefaultInfo entity, KimPrincipal principal) {
 		throw new UnsupportedOperationException( "method not implemented" );
 	}
 

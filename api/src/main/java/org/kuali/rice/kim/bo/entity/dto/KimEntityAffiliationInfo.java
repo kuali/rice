@@ -42,6 +42,8 @@ public class KimEntityAffiliationInfo extends KimDefaultableInfo implements Enti
 			entityAffiliationId = unNullify( aff.getEntityAffiliationId() );
 			affiliationTypeCode = unNullify( aff.getAffiliationTypeCode() );
 			campusCode = unNullify( aff.getCampusCode() );
+			dflt = aff.isDefault();
+			active = aff.isActive();
 		}
 	}
 	/**

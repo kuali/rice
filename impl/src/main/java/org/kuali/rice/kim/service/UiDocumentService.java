@@ -17,7 +17,6 @@ package org.kuali.rice.kim.service;
 
 import java.util.Map;
 
-import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.role.KimRole;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
@@ -58,7 +57,7 @@ public interface UiDocumentService {
 	 * 
 	 * This method loads a role document
 	 * 
-	 * @param identityManagementPersonDocument
+	 * @param identityManagementRoleDocument
 	 */
 	public void loadRoleDoc(IdentityManagementRoleDocument identityManagementRoleDocument, KimRole kimRole);
 	

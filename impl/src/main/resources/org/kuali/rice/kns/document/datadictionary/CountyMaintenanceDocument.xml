@@ -22,10 +22,10 @@
         <value>stateCode</value>
       </list>
     </property>
-    <property name="label" value="County"/>
-    <property name="shortLabel" value="County"/>
-    <property name="summary" value="County maintenance document"/>
-    <property name="description" value="Document used to create or update County objects"/>
+    
+    
+    
+    
     <!--  <property name="helpDefinition" >
       <bean parent="HelpDefinition"
             p:parameterNamespace="KR-NS"

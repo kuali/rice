@@ -20,8 +20,8 @@
         <value>number</value>
       </list>
     </property>
-    <property name="shortLabel" value="AccountDocument"/>
-    <property name="summary" value="Account Maintenance document"/>
+    
+    
     <property name="documentTypeName" value="AccountMaintenanceDocument"/>
     <property name="businessRulesClass" value="org.kuali.rice.kns.test.document.AccountRules"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
@@ -38,8 +38,8 @@
         </bean>
       </list>
     </property>
-    <property name="label" value="Account Maintenance Document"/>
-    <property name="description" value="Document used to create or update Accounts"/>
+    
+    
   </bean>
 
 <!-- Maintenance Section Definitions -->

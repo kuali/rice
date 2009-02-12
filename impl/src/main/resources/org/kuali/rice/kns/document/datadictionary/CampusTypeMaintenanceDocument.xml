@@ -15,11 +15,9 @@
         <value>campusTypeCode</value>
       </list>
     </property>
-    <property name="shortLabel" value="Campus Type"/>
-    <property name="summary" value="Campus Type Maintenance Document"/>
-    <property name="helpDefinition">
-      <bean parent="HelpDefinition" p:parameterNamespace="KR-NS" p:parameterName="CAMPUS_TYPE_CODE" p:parameterDetailType="CampusType"/>
-    </property>
+    
+    
+    
     <property name="documentTypeName" value="CampusTypeMaintenanceDocument"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
     <property name="documentTypeCode" value="CTYP"/>
@@ -35,8 +33,8 @@
         </bean>
       </list>
     </property>
-    <property name="label" value="Campus Type"/>
-    <property name="description" value="Maintenance document which allows you to create new Campus Types, or modify existing Campus Types."/>
+    
+    
   </bean>
 
 <!-- Maintenance Section Definitions -->

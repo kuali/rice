@@ -15,13 +15,11 @@
         <value>postalCountryCode</value>
       </list>
     </property>
-    <property name="label" value="Country"/>
-    <property name="shortLabel" value="Country"/>
-    <property name="summary" value="Country maintenance document"/>
-    <property name="description" value="Document used to create or update Country objects"/>
-    <property name="helpDefinition">
-      <bean parent="HelpDefinition" p:parameterNamespace="KR-NS" p:parameterName="COUNTRY" p:parameterDetailType="Country"/>
-    </property>
+    
+    
+    
+    
+    
     <property name="documentTypeName" value="CountryMaintenanceDocument"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
     <property name="documentTypeCode" value="CTRY"/>

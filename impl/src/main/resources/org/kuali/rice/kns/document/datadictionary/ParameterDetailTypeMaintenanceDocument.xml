@@ -21,11 +21,9 @@
         <value>parameterDetailTypeCode</value>
       </list>
     </property>
-    <property name="shortLabel" value="Parm Dtl Type Maint. Doc."/>
-    <property name="summary" value="Parameter Detail Type Maintenance Document"/>
-    <property name="helpDefinition">
-      <bean parent="HelpDefinition" p:parameterNamespace="KR-NS" p:parameterName="NERVOUS_SYSTEM_HELP_PARAMETER_DETAIL_TYPE" p:parameterDetailType="N/A"/>
-    </property>
+    
+    
+    
     <property name="documentTypeName" value="ParameterDetailTypeMaintenanceDocument"/>
     <property name="businessRulesClass" value="org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
@@ -45,8 +43,8 @@
         </bean>
       </list>
     </property>
-    <property name="label" value="Parameter Detail Type Maintenance Document"/>
-    <property name="description" value="This document can be used to create or update parameter detail types."/>
+    
+    
   </bean>
 
 <!-- Maintenance Section Definitions -->

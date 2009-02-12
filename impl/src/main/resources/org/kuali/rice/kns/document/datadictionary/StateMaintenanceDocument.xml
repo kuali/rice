@@ -21,13 +21,11 @@
         <value>postalStateCode</value>
       </list>
     </property>
-    <property name="label" value="State"/>
-    <property name="shortLabel" value="State"/>
-    <property name="summary" value="State maintenance document"/>
-    <property name="description" value="Document used to create or update State objects"/>
-    <property name="helpDefinition">
-      <bean parent="HelpDefinition" p:parameterNamespace="KR-NS" p:parameterName="STATE" p:parameterDetailType="State"/>
-    </property>
+    
+    
+    
+    
+    
     <property name="documentTypeName" value="StateMaintenanceDocument"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
     <property name="documentTypeCode" value="STAT"/>

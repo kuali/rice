@@ -3,8 +3,8 @@
   <bean id="AccountRequest" parent="AccountRequest-parentBean"/>
 
   <bean id="AccountRequest-parentBean" abstract="true" parent="TransactionalDocumentEntry">
-    <property name="shortLabel" value="ARQDoc"/>
-    <property name="summary" value="&amp;nbsp;"/>
+    
+    
     <property name="documentTypeName" value="AccountRequest"/>
     <property name="documentClass" value="org.kuali.rice.kns.test.document.AccountRequestDocument"/>
     <property name="businessRulesClass" value="org.kuali.rice.kns.test.document.AccountRequestDocumentRule"/>
@@ -22,8 +22,8 @@
         </bean>
       </list>
     </property>
-    <property name="label" value="Account Request"/>
-    <property name="description" value="Doing it right"/>
+    
+    
     <property name="attributes">
       <list>
         <ref bean="AccountRequest-requester"/>

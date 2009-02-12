@@ -15,8 +15,8 @@
         <value>userName</value>
       </list>
     </property>
-    <property name="shortLabel" value="TravelFiscalOfficerDocument"/>
-    <property name="summary" value="Travel Fiscal Officer Maintenance document"/>
+    
+    
     <property name="documentTypeName" value="FiscalOfficerMaintenanceDocument"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
     <property name="documentTypeCode" value="TRFO"/>
@@ -32,8 +32,8 @@
         </bean>
       </list>
     </property>
-    <property name="label" value="Travel Fiscal Officer Maintenance Document"/>
-    <property name="description" value="Document used to create or update Travel Fiscal Officer"/>
+    
+    
   </bean>
 
 <!-- Maintenance Section Definitions -->

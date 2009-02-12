@@ -15,8 +15,8 @@
         <value>userName</value>
       </list>
     </property>
-    <property name="shortLabel" value="AccountManagerMaintenanceDocument"/>
-    <property name="summary" value="Account Manager Maintenance Document"/>
+    
+    
     <property name="documentTypeName" value="AccountManagerMaintenanceDocument"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
     <property name="documentTypeCode" value="AMMD"/>
@@ -32,8 +32,8 @@
         </bean>
       </list>
     </property>
-    <property name="label" value="Account Manager Maintenance Document"/>
-    <property name="description" value="Document used to create or update Account Manager"/>
+    
+    
   </bean>
 
 <!-- Maintenance Section Definitions -->

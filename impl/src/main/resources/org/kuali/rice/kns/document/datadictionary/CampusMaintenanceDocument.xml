@@ -15,11 +15,9 @@
         <value>campusCode</value>
       </list>
     </property>
-    <property name="shortLabel" value="Campus"/>
-    <property name="summary" value="Campus maintenance document"/>
-    <property name="helpDefinition">
-      <bean parent="HelpDefinition" p:parameterNamespace="KR-NS" p:parameterName="CAMPUS" p:parameterDetailType="Campus"/>
-    </property>
+    
+    
+    
     <property name="documentTypeName" value="CampusMaintenanceDocument"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
     <property name="documentTypeCode" value="CMPS"/>
@@ -35,8 +33,8 @@
         </bean>
       </list>
     </property>
-    <property name="label" value="Campus"/>
-    <property name="description" value="Document used to create or update Campus objects"/>
+    
+    
   </bean>
 
 <!-- Maintenance Section Definitions -->

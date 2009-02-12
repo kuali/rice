@@ -3,10 +3,10 @@
   <bean id="IdentityManagementRoleDocument" parent="IdentityManagementRoleDocument-parentBean"/>
 
   <bean id="IdentityManagementRoleDocument-parentBean" abstract="true" parent="TransactionalDocumentEntry">
-    <property name="label" value="Role Document"/>
-    <property name="shortLabel" value="Role Doc"/>
-    <property name="summary" value="&amp;nbsp;"/>
-    <property name="description" value="KIM entity role document"/>
+    
+    
+    
+    
     <property name="sessionDocument" value="true"/>
     <property name="documentTypeName" value="IdentityManagementRoleDocument"/>
     <property name="documentClass" value="org.kuali.rice.kim.document.IdentityManagementRoleDocument"/>

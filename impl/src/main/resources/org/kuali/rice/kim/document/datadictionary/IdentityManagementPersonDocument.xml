@@ -3,10 +3,10 @@
   <bean id="IdentityManagementPersonDocument" parent="IdentityManagementPersonDocument-parentBean"/>
 
   <bean id="IdentityManagementPersonDocument-parentBean" abstract="true" parent="TransactionalDocumentEntry">
-    <property name="label" value="Person Document"/>
-    <property name="shortLabel" value="Person Doc"/>
-    <property name="summary" value="&amp;nbsp;"/>
-    <property name="description" value="KIM entity person document"/>
+    
+    
+    
+    
     <property name="documentTypeName" value="IdentityManagementPersonDocument"/>
     <property name="documentClass" value="org.kuali.rice.kim.document.IdentityManagementPersonDocument"/>
     <property name="businessRulesClass" value="org.kuali.rice.kim.document.rule.IdentityManagementPersonDocumentRule"/> 

@@ -51,20 +51,13 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
 
     protected String documentTypeName;
 
-//    protected String label;
-//    protected String shortLabel;
-
-//    protected HelpDefinition helpDefinition;
-
     protected boolean allowsNoteDelete = false;
     protected boolean allowsNoteAttachments = true;
     protected Class<? extends KeyValuesFinder> attachmentTypesValuesFinderClass;
     protected boolean displayTopicFieldInNotes = false;
     protected boolean usePessimisticLocking = false;
     protected boolean useWorkflowPessimisticLocking = false;
-    
-//    protected String summary;
-//    protected String description;
+
     protected List<String> webScriptFiles = new ArrayList<String>( 3 );
 
     protected Class<? extends DocumentAuthorizer> documentAuthorizerClass;
@@ -209,31 +202,6 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     public String toString() {
         return "DocumentEntry for documentType " + documentTypeName;
     }
-
-//    /**
-//     * Accessor method for contained <code>{@link HelpDefinition}</code>
-//     * 
-//     * @return HelpDefinition
-//     */
-//    public HelpDefinition getHelpDefinition() {
-//        return helpDefinition;
-//    }
-//
-//    /**
-//            The help element provides the keys to obtain a
-//            help description from the database.
-//
-//            On document JSP pages, a help icon may be rendered.  If this tag is specified, then
-//            the filename of this page will be located in the value of the parameter specified by the namespace, detail type, and name.
-//
-//            The value of the parameter is relative to the value of the "externalizable.help.url" property in KualiConfigurationService (see KualiHelpAction).
-//            parameterNamespace: namespace of the parameter that has the path to the help page
-//            parameterName: name of the parameter that has the path to the help page
-//            parameterDetailType: detail type of the parameter that has the path to the help page
-//     */
-//    public void setHelpDefinition(HelpDefinition helpDefinition) {
-//        this.helpDefinition = helpDefinition;
-//    }
 
     /**
             The allowsNoteDelete element contains a true or false value.
@@ -512,62 +480,6 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
 			Class<? extends DocumentPresentationController> documentPresentationControllerClass) {
 		this.documentPresentationControllerClass = documentPresentationControllerClass;
 	}
-    
-//    /**
-//     * @return the displayed label for this document.  Usually a properly formatted version of the documentTypeName.
-//     */
-//    public String getLabel() {
-//        return label;
-//    }
-//
-//    /**
-//     * The displayed label for this document.  Usually a properly formatted version of the documentTypeName.
-//     */
-//    public void setLabel(String label) {
-//        if (StringUtils.isBlank(label)) {
-//            throw new IllegalArgumentException("invalid (blank) label");
-//        }
-//        this.label = label;
-//    }
-//
-//    /**
-//     * @return the shortLabel, or the label if no shortLabel has been set
-//     */
-//    public String getShortLabel() {
-//        return (shortLabel != null) ? shortLabel : label;
-//    }
-//
-//    /**
-//     * A shorter version of the label for this document.
-//     */
-//    public void setShortLabel(String shortLabel) {
-//        if (StringUtils.isBlank(shortLabel)) {
-//            throw new IllegalArgumentException("invalid (blank) shortLabel");
-//        }
-//        this.shortLabel = shortLabel;
-//    }
-//
-//    public String getSummary() {
-//        return summary;
-//    }
-//
-//    /**
-//     * A summary of this document's purpose.
-//     */
-//    public void setSummary(String summary) {
-//        this.summary = summary;
-//    }
-//
-//    public String getDescription() {
-//        return description;
-//    }
-//
-//    /**
-//     * A detailed description of this document's functionality.
-//     */
-//    public void setDescription(String description) {
-//        this.description = description;
-//    }
 
     /**
      * @deprecated This was removed as of Rice 1.0.
@@ -575,40 +487,4 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     public void setDocumentTypeCode(String documentTypeCode) {
         // DO NOTHING
     }
-
-    /**
-     * @deprecated This was moved to the KEW Document Type object for Rice 1.0.
-     */
-    public void setLabel(String label) {
-        // DO NOTHING
-    }
-
-    /**
-     * @deprecated This was removed for Rice 1.0.
-     */
-    public void setShortLabel(String shortLabel) {
-        // DO NOTHING
-    }
-
-    /**
-     * @deprecated This was removed for Rice 1.0.
-     */
-    public void setSummary(String summary) {
-        // DO NOTHING
-    }
-
-    /**
-     * @deprecated This was moved to the KEW Document Type object for Rice 1.0.
-     */
-    public void setDescription(String description) {
-        // DO NOTHING
-    }
-
-    /**
-     * @deprecated This was moved to the KEW Document Type object for Rice 1.0.
-     */
-    public void setHelpDefinition(HelpDefinition helpDefinition) {
-        // DO NOTHING
-    }
-
 }

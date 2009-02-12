@@ -3,10 +3,10 @@
   <bean id="RuleDocument" parent="RuleDocument-parentBean"/>
 
   <bean id="RuleDocument-parentBean" abstract="true" parent="TransactionalDocumentEntry">
-    <property name="label" value="Routing Rule"/>
-    <property name="shortLabel" value="Routing Rule"/>
-    <property name="summary" value="Routing Rule Summary;"/>
-    <property name="description" value="The Routing Rule document is used to create rules which drive the routing process for various documents."/>
+    
+    
+    
+    
     <property name="documentTypeName" value="RoutingRuleDocument"/>
     <property name="documentClass" value="org.kuali.rice.kew.rule.document.RuleDocument"/>
     <!-- <property name="businessRulesClass" value="org.kuali.kfs.sys.document.validation.impl.AccountingRuleEngineRuleBase" /> -->

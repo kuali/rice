@@ -4,7 +4,7 @@
 <c:set var="roleQualifierAttributes" value="${DataDictionary.KimDocumentRoleQualifier.attributes}" />
 <c:set var="readOnly" value="${empty KualiForm.editingMode['fullEntry']}" />
 
-<kul:tab tabTitle="Delegations" defaultOpen="true">
+<kul:tab tabTitle="Delegations" defaultOpen="true" tabErrorKey="document.deleg*">
 	<div class="tab-container" align="center">
     <h3>
     	<span class="subhead-left">Delegations</span>

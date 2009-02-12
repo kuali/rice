@@ -3,7 +3,7 @@
 <c:set var="responsibilityAttributes" value="${DataDictionary.ResponsibilityImpl.attributes}" />
 <c:set var="readOnly" value="${empty KualiForm.editingMode['fullEntry']}" />
 
-<kul:tab tabTitle="Responsibilities" defaultOpen="true">
+<kul:tab tabTitle="Responsibilities" defaultOpen="true" tabErrorKey="document.resp*">
 	<div class="tab-container" align="center">
     <h3>
     	<span class="subhead-left">Responsibilities</span>

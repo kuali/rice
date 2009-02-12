@@ -57,15 +57,13 @@ import org.kuali.rice.kns.rules.TransactionalDocumentRuleBase;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.ErrorMap;
+import org.kuali.rice.kns.util.ErrorMessage;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 
 /**
- * This is a description of what this class does - shyu don't forget to fill this in. 
- * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- *
  */
 public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRuleBase implements AddPermissionRule, AddResponsibilityRule, AddMemberRule, AddDelegationRule, AddDelegationMemberRule {
 
@@ -92,7 +90,6 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
         return identityService;
     }
 
-
     @Override
     protected boolean processCustomSaveDocumentBusinessRules(Document document) {
         if (!(document instanceof IdentityManagementRoleDocument))
@@ -106,8 +103,8 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
         getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(document, getMaxDictionaryValidationDepth(), true, false);
         valid &= validateRoleQualifier(roleDoc.getMembers(), roleDoc.getKimType());
         valid &= validRoleMemberActiveDates(roleDoc.getMembers());
-        valid &= validRoleResponsibilitiesActions(roleDoc.getResponsibilities());
-        valid &= validRoleMembersResponsibilityActions(roleDoc.getMembers());
+        //valid &= validRoleResponsibilitiesActions(roleDoc.getResponsibilities());
+        //valid &= validRoleMembersResponsibilityActions(roleDoc.getMembers());
         GlobalVariables.getErrorMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
 
         return valid;
@@ -123,7 +120,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     		if(roleImpls.size()==1 && roleImpls.get(0).getRoleId().equals(roleDoc.getRoleId()))
     			rulePassed = true;
     		else{
-	    		GlobalVariables.getErrorMap().putError("roleName", 
+	    		GlobalVariables.getErrorMap().putError("document.roleName", 
 	    				RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Role Name"});
 	    		rulePassed = false;
     		}
@@ -135,7 +132,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     	boolean valid = true;
 		int i = 0;
     	for(KimDocumentRoleMember roleMember: roleMembers) {
-   			valid &= validateActiveDate("members["+i+"].activeToDate", roleMember.getActiveFromDate(), roleMember.getActiveToDate());
+   			valid &= validateActiveDate("document.members["+i+"].activeToDate", roleMember.getActiveFromDate(), roleMember.getActiveToDate());
     		i++;
     	}
     	return valid;
@@ -146,7 +143,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
         boolean rulePassed = true;
     	for(KimDocumentRoleResponsibility roleResponsibility: roleResponsibilities){
     		if(!getResponsibilityService().areActionsAtAssignmentLevelById(roleResponsibility.getResponsibilityId()))
-    			validateRoleResponsibilityAction("responsibilities["+i+"].roleRspAction[0]", roleResponsibility.getRoleRspActions().get(0));
+    			validateRoleResponsibilityAction("document.responsibilities["+i+"].roleRspAction[0]", roleResponsibility.getRoleRspActions().get(0));
         	i++;
     	}
     	return rulePassed;
@@ -160,7 +157,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     		j = 0;
     		if(roleMember.getRoleRspActions()!=null && !roleMember.getRoleRspActions().isEmpty()){
 	    		for(KimDocumentRoleResponsibilityAction roleRspAction: roleMember.getRoleRspActions()){
-	    			validateRoleResponsibilityAction("members["+i+"].roleRspAction["+j+"]", roleRspAction);
+	    			validateRoleResponsibilityAction("document.members["+i+"].roleRspAction["+j+"]", roleRspAction);
 		        	j++;
 	    		}
     		}
@@ -190,32 +187,52 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     }
     
     private boolean validateRoleQualifier(List<KimDocumentRoleMember> roleMembers, KimTypeImpl kimType){
-        ErrorMap errorMap = GlobalVariables.getErrorMap();
 		AttributeSet validationErrors = new AttributeSet();
 
+		int memberCounter = 0;
+		int attributeCounter = 0;
+		AttributeSet errorsTemp;
+		AttributeSet attributeSetToValidate;
+		KimAttributeImpl attribute;
     	for(KimDocumentRoleMember roleMember: roleMembers) {
 	        KimTypeService kimTypeService = (KimTypeServiceBase)KIMServiceLocator.getService(kimType.getKimTypeServiceName());
-	        AttributeSet attributes = new AttributeSet();
 	        for(KimDocumentRoleQualifier roleQualifier: roleMember.getQualifiers()) {
-	        	Map<String, String> attr = new HashMap<String, String>();
-	        	KimAttributeImpl attribute = roleQualifier.getKimAttribute();
+	        	attributeSetToValidate = new AttributeSet();
+	        	attribute = roleQualifier.getKimAttribute();
 	        	if(attribute==null){
 	        		Map<String, String> criteria = new HashMap<String, String>();
 	        		criteria.put("kimAttributeId", roleQualifier.getKimAttrDefnId());
 	        		attribute = (KimAttributeImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimAttributeImpl.class, criteria);
 	        	}
-	        	attr.put(attribute.getAttributeName(), roleQualifier.getAttrVal());
-	        	attributes.putAll(attr);
+	        	attributeSetToValidate.put(attribute.getAttributeName(), roleQualifier.getAttrVal());
+		        errorsTemp = kimTypeService.validateAttributes(attributeSetToValidate);
+		        updateGlobalVariablesErrorKeys(
+		        		"document.members["+memberCounter+"].qualifiers["+attributeCounter+"]", 
+		        		attributeSetToValidate, errorsTemp);
+		        validationErrors.putAll(errorsTemp);
+	        	attributeCounter++;
 	        }
-	        validationErrors.putAll(kimTypeService.validateAttributes(attributes));
+	        memberCounter++;
+	        attributeCounter = 0;
     	}
-    	if (validationErrors.isEmpty()) {
-    		return true;
-    	} else {
-    		return false;
-    	}
+    	return validationErrors.isEmpty();
     }
 
+    private void updateGlobalVariablesErrorKeys(String errorPath, AttributeSet attributes, AttributeSet validationErrors){
+    	List<ErrorMessage> attributeErrors;
+    	String errorKey;
+    	for(String attributeName: attributes.keySet()){
+    		errorKey = GlobalVariables.getErrorMap().getKeyPath(attributeName, true);
+    		attributeErrors = (List<ErrorMessage>)GlobalVariables.getErrorMap().get(errorKey);
+    		if(attributeErrors!=null){
+    			for(ErrorMessage errorMessage: attributeErrors){
+    				GlobalVariables.getErrorMap().putErrorWithoutFullErrorPath(errorPath+".attrVal", errorMessage.getErrorKey(), errorMessage.getMessageParameters());
+    			}
+				GlobalVariables.getErrorMap().remove(errorKey);
+    		}
+    	}
+    }
+    
 	private boolean validateActiveDate(String errorPath, Timestamp activeFromDate, Timestamp activeToDate) {
 		// TODO : do not have detail bus rule yet, so just check this for now.
 		boolean valid = true;

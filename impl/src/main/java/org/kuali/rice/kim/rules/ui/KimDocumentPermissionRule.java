@@ -72,11 +72,13 @@ public class KimDocumentPermissionRule extends DocumentRuleBase implements AddPe
             rulePassed = false;
             GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Permission"});
         } else {
-		    for (KimDocumentRolePermission permission: document.getPermissions()) {
+		    int i = 0;
+        	for (KimDocumentRolePermission permission: document.getPermissions()) {
 		    	if (permission.getPermissionId().equals(newPermission.getPermissionId())) {
 		            rulePassed = false;
-		            GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Permission"});
+		            GlobalVariables.getErrorMap().putError("document.permissions["+i+"].permissionId", RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Permission"});
 		    	}
+		    	i++;
 		    }
         }
 		return rulePassed;

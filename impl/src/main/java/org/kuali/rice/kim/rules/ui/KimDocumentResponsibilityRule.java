@@ -38,7 +38,7 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
  */
 public class KimDocumentResponsibilityRule extends DocumentRuleBase implements AddResponsibilityRule {
 
-	private static final String ERROR_PATH = "responsibility.responsibilityId";
+	private static final String ERROR_PATH = "document.responsibility.responsibilityId";
 
 	public boolean processAddResponsibility(AddResponsibilityEvent addResponsibilityEvent) {
 		KimDocumentRoleResponsibility newResponsibility = addResponsibilityEvent.getResponsibility();
@@ -73,11 +73,13 @@ public class KimDocumentResponsibilityRule extends DocumentRuleBase implements A
             rulePassed = false;
             GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Responsibility"});
         } else {
+        	int i = 0;
 		    for (KimDocumentRoleResponsibility responsibility: document.getResponsibilities()) {
 		    	if (responsibility.getResponsibilityId().equals(newResponsibility.getResponsibilityId())) {
 		            rulePassed = false;
-		            GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Responsibility"});
+		            GlobalVariables.getErrorMap().putError("document.responsibilities["+i+"].responsibilityId", RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Responsibility"});
 		    	}
+		    	i++;
 		    }
         }
 		return rulePassed;

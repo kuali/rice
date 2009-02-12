@@ -23,22 +23,22 @@
        		</td>
 			<td>
 				<div align="center">
-	            	<kul:htmlControlAttribute property="document.responsibilities[${responsibilityIdx}].roleRspAction.actionTypeCode"  attributeEntry="${docRoleRspActionAttributes.actionTypeCode}" readOnlyAlternateDisplay="${roleRspAction.actionTypeDescription}"/>
+	            	<kul:htmlControlAttribute property="document.responsibilities[${responsibilityIdx}].roleRspActions[0].actionTypeCode"  attributeEntry="${docRoleRspActionAttributes.actionTypeCode}" readOnlyAlternateDisplay="${roleRspAction.actionTypeDescription}"/>
 	            </div>
        		</td>
        		<td>
         		<div align="center">
-	            	<kul:htmlControlAttribute property="document.responsibilities[${responsibilityIdx}].roleRspAction.priorityNumber"  attributeEntry="${docRoleRspActionAttributes.priorityNumber}" />
+	            	<kul:htmlControlAttribute property="document.responsibilities[${responsibilityIdx}].roleRspActions[0].priorityNumber"  attributeEntry="${docRoleRspActionAttributes.priorityNumber}" />
         		</div>
        		</td>
        		<td>
         		<div align="center">
-	            	<kul:htmlControlAttribute property="document.responsibilities[${responsibilityIdx}].roleRspAction.actionPolicyCode"  attributeEntry="${docRoleRspActionAttributes.actionPolicyCode}" readOnlyAlternateDisplay="${roleRspAction.actionPolicyDescription}"/>
+	            	<kul:htmlControlAttribute property="document.responsibilities[${responsibilityIdx}].roleRspActions[0].actionPolicyCode"  attributeEntry="${docRoleRspActionAttributes.actionPolicyCode}" readOnlyAlternateDisplay="${roleRspAction.actionPolicyDescription}"/>
         		</div>
        		</td>
        		<td>
         		<div align="center">
-	            	<kul:htmlControlAttribute property="document.responsibilities[${responsibilityIdx}].roleRspAction.ignorePrevious"  attributeEntry="${docRoleRspActionAttributes.ignorePrevious}" />
+	            	<kul:htmlControlAttribute property="document.responsibilities[${responsibilityIdx}].roleRspActions[0].ignorePrevious"  attributeEntry="${docRoleRspActionAttributes.ignorePrevious}" />
         		</div>
        		</td>
 	    </tr>

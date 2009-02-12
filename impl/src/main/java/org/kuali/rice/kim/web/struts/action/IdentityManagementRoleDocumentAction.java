@@ -86,7 +86,7 @@ public class IdentityManagementRoleDocumentAction extends KualiTransactionalDocu
 	        roleDocumentForm.getRoleDocument().setRoleTypeId(kimType.getKimTypeId());
 	        roleDocumentForm.getRoleDocument().setRoleTypeName(kimType.getName());
 	        roleDocumentForm.setMember(roleDocumentForm.getRoleDocument().getBlankMember());
-        }
+	    }
         String roleId = request.getParameter(KimConstants.PrimaryKeyConstants.ROLE_ID);
         if (StringUtils.isNotBlank(commandParam) && commandParam.equals(KEWConstants.INITIATE_COMMAND) 
 				&& StringUtils.isNotBlank(roleId)) {
@@ -234,15 +234,6 @@ public class IdentityManagementRoleDocumentAction extends KualiTransactionalDocu
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
         IdentityManagementRoleDocument roleDoc = roleDocumentForm.getRoleDocument();
 		return super.save(mapping, form, request, response);
-	}
-
-	private String getKimTypeServiceName (KimTypeImpl kimType) {
-    	String serviceName = kimType.getKimTypeServiceName();
-    	if (StringUtils.isBlank(serviceName)) {
-    		serviceName = KimConstants.DEFAULT_KIM_TYPE_SERVICE;
-    	}
-    	return serviceName;
-
 	}
 
     public IdentityService getIdentityService() {

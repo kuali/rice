@@ -24,22 +24,12 @@ import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
 
 /**
- * This is a description of what this class does - bhargavp don't forget to fill this in. 
- * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperServiceImpl {
 
     /**
-     * Overrides the base implementation to add in new parameters to the return url
-     * <ul>
-     * <li>{@link KFSConstants.DISPATCH_REQUEST_PARAMETER}</li>
-     * <li>{@link KFSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE}</li>
-     * <li>{@link KFSConstants.OVERRIDE_KEYS}</li>
-     * </ul>
-     * {@link KFSConstants.DISPATCH_REQUEST_PARAMETER}
-     *
      * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getReturnUrl(org.kuali.rice.kns.bo.BusinessObject, java.util.Map,
      *      java.lang.String)
      */

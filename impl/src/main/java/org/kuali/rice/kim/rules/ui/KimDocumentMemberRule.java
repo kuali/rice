@@ -40,7 +40,7 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
  */
 public class KimDocumentMemberRule extends DocumentRuleBase implements AddMemberRule {
 
-	private static final String ERROR_PATH = "member.memberId";
+	private static final String ERROR_PATH = "document.member.memberId";
 
 	public boolean processAddMember(AddMemberEvent addMemberEvent){
 		KimDocumentRoleMember newMember = addMemberEvent.getMember();
@@ -59,7 +59,7 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
 	    for (KimDocumentRoleMember member: document.getMembers()){
 	    	if (member.getMemberId().equals(newMember.getMemberId())){
 	            rulePassed = false;
-	            GlobalVariables.getErrorMap().putError("members["+i+"].memberId", RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Member"});
+	            GlobalVariables.getErrorMap().putError("document.members["+i+"].memberId", RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Member"});
 	    	}
 	    	i++;
 	    }

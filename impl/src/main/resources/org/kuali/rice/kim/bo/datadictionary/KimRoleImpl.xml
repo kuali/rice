@@ -93,7 +93,7 @@
         p:label="Role Namespace"
         p:shortLabel="Role Namespace"
         p:required="false" 
-        p:maxLength="100">
+        p:maxLength="40">
   </bean>
 
   <bean id="KimRoleImpl-active" parent="KimRoleImpl-active-parentBean" />

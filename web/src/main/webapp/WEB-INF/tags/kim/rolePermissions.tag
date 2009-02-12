@@ -3,7 +3,7 @@
 <c:set var="permissionAttributes" value="${DataDictionary.PermissionImpl.attributes}" />
 <c:set var="readOnly" value="${empty KualiForm.editingMode['fullEntry']}" />
 
-<kul:tab tabTitle="Permissions" defaultOpen="true">
+<kul:tab tabTitle="Permissions" defaultOpen="true" tabErrorKey="document.perm*">
 	<div class="tab-container" align="center">
     <h3>
     	<span class="subhead-left">Permissions</span>

@@ -4,7 +4,7 @@
 <c:set var="roleTypeAttributes" value="${DataDictionary.KimTypeImpl.attributes}" />
 <c:set var="readOnly" value="${empty KualiForm.editingMode['fullEntry']}" />
 
-	<kul:tab tabTitle="Overview" defaultOpen="true" transparentBackground="${inquiry}" tabErrorKey="document.perm*,document.resp*,document.assign*,document.active,document.delegations*">
+	<kul:tab tabTitle="Overview" defaultOpen="true" transparentBackground="${inquiry}" tabErrorKey="document.role*,document.active">
 
 	<div class="tab-container" align="center">
     	<h3>

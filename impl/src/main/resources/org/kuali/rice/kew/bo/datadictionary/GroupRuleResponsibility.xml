@@ -17,6 +17,29 @@
         <ref bean="GroupRuleResponsibility-priority" />
       </list>
     </property>
+
+    <property name="relationships" >
+      <list>
+		<bean parent="RelationshipDefinition">
+          <property name="objectAttributeName" value="kimGroupImpl" />
+          <property name="primitiveAttributes" >
+            <list>
+              <bean parent="PrimitiveAttributeDefinition"
+                    p:sourceName="name"
+                    p:targetName="groupName" />
+            </list>
+          </property>
+          <property name="supportAttributes" >
+            <list>
+              <bean parent="SupportAttributeDefinition"
+                    p:identifier="true"
+                    p:sourceName="namespaceCode"
+                    p:targetName="namespaceCode" />
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
   </bean>
 
   <!-- Attribute Definitions -->
@@ -68,7 +91,7 @@
     <property name="name" value="actionRequestedCd" />
     <property name="label" value="Action Request" />
   </bean>
-  
+
   <bean id="GroupRuleResponsibility-priority" parent="GroupRuleResponsibility-priority-parentBean" />
 
   <bean id="GroupRuleResponsibility-priority-parentBean" abstract="true" parent="AttributeDefinition">
@@ -84,5 +107,5 @@
     <property name="name" value="priority" />
     <property name="label" value="Priority" />
   </bean>
-  
+
 </beans>

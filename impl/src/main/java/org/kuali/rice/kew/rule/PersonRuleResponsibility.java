@@ -15,23 +15,29 @@
  */
 package org.kuali.rice.kew.rule;
 
+import org.kuali.rice.kim.bo.impl.PersonImpl;
+
 
 /**
- * This is a description of what this class does - ewestfal don't forget to fill this in. 
- * 
+ * This is a description of what this class does - ewestfal don't forget to fill this in.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class PersonRuleResponsibility extends RuleResponsibility {
-
+    protected PersonImpl personImpl;
 	private String principalName;
-	
+
 	public String getPrincipalName() {
 		return principalName;
 	}
 
 	public void setPrincipalName(String principalName) {
 		this.principalName = principalName;
+	}
+
+	public PersonImpl getPersonImpl() {
+	    return this.personImpl;
 	}
 
 }

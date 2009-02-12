@@ -26,7 +26,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.util.XmlHelper;
-import org.kuali.rice.kew.web.UserLoginFilter;
+import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Person;
 import org.w3c.dom.Document;
 
@@ -86,7 +86,7 @@ public class EDLControllerChain {
 		EDLContext edlContext = new EDLContext();
 		edlContext.setEdlControllerChain(this);
 		edlContext.setEdocLiteAssociation(edlController.getEdocLiteAssociation());
-		edlContext.setUserSession(UserLoginFilter.getUserSession(requestParser.getRequest()));
+		edlContext.setUserSession(UserSession.getAuthenticatedUser());
 		edlContext.setTransformer(transformer);
 		edlContext.setRequestParser(requestParser);
 		return edlContext;

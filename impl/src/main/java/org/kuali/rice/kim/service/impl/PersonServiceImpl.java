@@ -147,7 +147,7 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 		KimPrincipal principal = getIdentityManagementService().getPrincipal( principalId );
 		// get the entity
 		if ( principal != null ) {
-			entity = getIdentityManagementService().getEntityDefaultInfoByPrincipalId( principal.getEntityId() );
+			entity = getIdentityManagementService().getEntityDefaultInfo( principal.getEntityId() );
 		}
 		// convert the principal and entity to a Person
 		// skip if the person was created from the DB cache

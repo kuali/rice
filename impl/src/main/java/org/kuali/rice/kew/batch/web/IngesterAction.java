@@ -40,14 +40,12 @@ import org.kuali.rice.kew.batch.XmlDocCollection;
 import org.kuali.rice.kew.batch.ZipXmlDocCollection;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.web.UserLoginFilter;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.exception.AuthorizationException;
-import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 
 
@@ -140,7 +138,7 @@ public class IngesterAction extends Action {
                 List<XmlDocCollection> c = new ArrayList<XmlDocCollection>(1);
                 c.add(compositeCollection);
                 try {
-                    Collection failed = KEWServiceLocator.getXmlIngesterService().ingest(c, UserLoginFilter.getUserSession(request).getPrincipal().getPrincipalId());
+                    Collection failed = KEWServiceLocator.getXmlIngesterService().ingest(c, UserSession.getAuthenticatedUser().getPrincipal().getPrincipalId());
                     boolean txFailed = failed.size() > 0;
                     if (txFailed) {
                         messages.add("Ingestion failed");

@@ -863,7 +863,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     	if ( cachedValue == null ) {
     		return null;
     	}
-    	return convertCacheToEntityDefaultInfo( cachedValue );
+    	return cachedValue.convertCacheToEntityDefaultInfo();
     }
 
     protected KimEntityDefaultInfo getEntityDefaultInfoFromPersistentCacheByPrincipalId( String principalId ) {
@@ -873,7 +873,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     	if ( cachedValue == null ) {
     		return null;
     	}
-    	return convertCacheToEntityDefaultInfo( cachedValue );
+    	return cachedValue.convertCacheToEntityDefaultInfo();
     }
 
     @SuppressWarnings("unchecked")
@@ -884,65 +884,9 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     	if ( entities.isEmpty()  ) {
     		return null;
     	}
-    	return convertCacheToEntityDefaultInfo( entities.iterator().next() );
+    	return entities.iterator().next().convertCacheToEntityDefaultInfo();
     }
     
-    protected KimEntityDefaultInfo convertCacheToEntityDefaultInfo( KimEntityDefaultInfoCacheImpl entity ) {
-		KimEntityDefaultInfo info = new KimEntityDefaultInfo();
-		
-		// entity info
-		info.setEntityId( entity.getEntityId() );
-		info.setActive( entity.isActive() );
-
-		// principal info
-		KimPrincipalInfo principalInfo = new KimPrincipalInfo();
-		principalInfo.setEntityId(entity.getEntityId() );
-		principalInfo.setPrincipalId(entity.getPrincipalId());
-		principalInfo.setPrincipalName(entity.getPrincipalName());
-		principalInfo.setActive(entity.isActive());
-		info.setPrincipals( new ArrayList<KimPrincipalInfo>( 1 ) );
-		((ArrayList<KimPrincipalInfo>)info.getPrincipals()).add(principalInfo);
-
-		// name info
-		KimEntityNameInfo nameInfo = new KimEntityNameInfo();
-		nameInfo.setFirstName( entity.getFirstName() );
-		nameInfo.setLastName( entity.getLastName() );
-		nameInfo.setMiddleName( entity.getMiddleName() );
-		info.setDefaultName(nameInfo);
-
-		// entity type information
-		ArrayList<KimEntityEntityTypeDefaultInfo> entityTypesInfo = new ArrayList<KimEntityEntityTypeDefaultInfo>( 1 );
-		info.setEntityTypes( entityTypesInfo );
-		KimEntityEntityTypeDefaultInfo entityTypeInfo = new KimEntityEntityTypeDefaultInfo();
-		entityTypeInfo.setEntityTypeCode( entity.getEntityTypeCode() );
-		entityTypeInfo.setDefaultAddress( new KimEntityAddressInfo() );
-		entityTypeInfo.setDefaultEmailAddress( new KimEntityEmailInfo() );
-//		((KimEntityEmailInfo)entityTypeInfo.getDefaultEmailAddress()).setEmailAddress(entity.get)
-		entityTypeInfo.setDefaultPhoneNumber( new KimEntityPhoneInfo() );
-		entityTypesInfo.add(entityTypeInfo);
-		info.setEntityTypes(entityTypesInfo);
-
-		// affiliations
-		ArrayList<KimEntityAffiliationInfo> affInfo = new ArrayList<KimEntityAffiliationInfo>( 1 );
-		info.setAffiliations( affInfo );
-		KimEntityAffiliationInfo aff = new KimEntityAffiliationInfo();
-		aff.setCampusCode(entity.getCampusCode());
-		aff.setDefault(true);
-		info.setDefaultAffiliation(aff);
-		info.setAffiliations(affInfo);
-
-		// employment information
-		KimEntityEmploymentInformationInfo empInfo = new KimEntityEmploymentInformationInfo();
-		empInfo.setEmployeeId( entity.getEmployeeId() );
-		empInfo.setPrimary(true);
-		empInfo.setPrimaryDepartmentCode(entity.getPrimaryDepartmentCode());
-		info.setPrimaryEmployment( empInfo );
-		
-		// external identifiers
-		info.setExternalIdentifiers( new ArrayList<KimEntityExternalIdentifierInfo>(0) );
-		return info;
-    	
-    }
     
 	// OTHER METHODS
 	

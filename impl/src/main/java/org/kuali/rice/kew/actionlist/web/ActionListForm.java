@@ -21,13 +21,10 @@ import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.actionlist.ActionToTake;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.web.UserLoginFilter;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -351,7 +348,7 @@ public class ActionListForm extends KualiForm {
 
 	@Override
 	public void populate(HttpServletRequest request) {
-		UserSession userSession = UserLoginFilter.getUserSession(request);
+		UserSession userSession = UserSession.getAuthenticatedUser();
         setHeaderButtons(getHeaderButtons());
 
         // take the UserSession from the HttpSession and add it to the request

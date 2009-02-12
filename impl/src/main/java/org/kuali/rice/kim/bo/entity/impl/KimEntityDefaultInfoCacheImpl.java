@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.bo.entity.impl;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
@@ -28,7 +29,16 @@ import javax.persistence.Transient;
 
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.PersistenceBrokerException;
-import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityAddressInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityAffiliationInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityEmailInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityEmploymentInformationInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityEntityTypeDefaultInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityExternalIdentifierInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityNameInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityPhoneInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
@@ -40,6 +50,8 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 @Entity
 @Table(name="KRIM_PRSN_CACHE_T")
 public class KimEntityDefaultInfoCacheImpl extends PersistableBusinessObjectBase {
+
+	private static final long serialVersionUID = 1L;
 
 	@Transient
 	protected Long versionNumber; // prevent JPA from attempting to persist the version number attribute
@@ -83,19 +95,78 @@ public class KimEntityDefaultInfoCacheImpl extends PersistableBusinessObjectBase
 	public KimEntityDefaultInfoCacheImpl() {
 	}
 	
-	public KimEntityDefaultInfoCacheImpl( Person p ) {
-		entityId = p.getEntityId();
-		principalId = p.getPrincipalId();
-		principalName = p.getPrincipalName();
-		entityTypeCode = p.getEntityTypeCode();
-		firstName = p.getFirstName();
-		middleName = p.getMiddleName();
-		lastName = p.getLastName();
-		name = p.getName();
-		campusCode = p.getCampusCode();
-		primaryDepartmentCode = p.getPrimaryDepartmentCode();
-		employeeId = p.getEmployeeId();
+	public KimEntityDefaultInfoCacheImpl( KimEntityDefaultInfo entity ) {
+		entityId = entity.getEntityId();
+		principalId = entity.getPrincipals().get(0).getPrincipalId();
+		principalName = entity.getPrincipals().get(0).getPrincipalName();
+		entityTypeCode = entity.getEntityTypes().get(0).getEntityTypeCode();
+		firstName = entity.getDefaultName().getFirstName();
+		middleName = entity.getDefaultName().getMiddleName();
+		lastName = entity.getDefaultName().getLastName();
+		name = entity.getDefaultName().getFormattedName();
+		campusCode = entity.getDefaultAffiliation().getCampusCode();
+		primaryDepartmentCode = entity.getPrimaryEmployment().getPrimaryDepartmentCode();
+		employeeId = entity.getPrimaryEmployment().getEmployeeId();
 	}
+
+    @SuppressWarnings("unchecked")
+	public KimEntityDefaultInfo convertCacheToEntityDefaultInfo() {
+		KimEntityDefaultInfo info = new KimEntityDefaultInfo();
+		
+		// entity info
+		info.setEntityId( this.getEntityId() );
+		info.setActive( this.isActive() );
+
+		// principal info
+		KimPrincipalInfo principalInfo = new KimPrincipalInfo();
+		principalInfo.setEntityId(this.getEntityId() );
+		principalInfo.setPrincipalId(this.getPrincipalId());
+		principalInfo.setPrincipalName(this.getPrincipalName());
+		principalInfo.setActive(this.isActive());
+		info.setPrincipals( new ArrayList<KimPrincipalInfo>( 1 ) );
+		((ArrayList<KimPrincipalInfo>)info.getPrincipals()).add(principalInfo);
+
+		// name info
+		KimEntityNameInfo nameInfo = new KimEntityNameInfo();
+		nameInfo.setFirstName( this.getFirstName() );
+		nameInfo.setLastName( this.getLastName() );
+		nameInfo.setMiddleName( this.getMiddleName() );
+		info.setDefaultName(nameInfo);
+
+		// entity type information
+		ArrayList<KimEntityEntityTypeDefaultInfo> entityTypesInfo = new ArrayList<KimEntityEntityTypeDefaultInfo>( 1 );
+		info.setEntityTypes( entityTypesInfo );
+		KimEntityEntityTypeDefaultInfo entityTypeInfo = new KimEntityEntityTypeDefaultInfo();
+		entityTypeInfo.setEntityTypeCode( this.getEntityTypeCode() );
+		entityTypeInfo.setDefaultAddress( new KimEntityAddressInfo() );
+		entityTypeInfo.setDefaultEmailAddress( new KimEntityEmailInfo() );
+//		((KimEntityEmailInfo)entityTypeInfo.getDefaultEmailAddress()).setEmailAddress(entity.get)
+		entityTypeInfo.setDefaultPhoneNumber( new KimEntityPhoneInfo() );
+		entityTypesInfo.add(entityTypeInfo);
+		info.setEntityTypes(entityTypesInfo);
+
+		// affiliations
+		ArrayList<KimEntityAffiliationInfo> affInfo = new ArrayList<KimEntityAffiliationInfo>( 1 );
+		info.setAffiliations( affInfo );
+		KimEntityAffiliationInfo aff = new KimEntityAffiliationInfo();
+		aff.setCampusCode(this.getCampusCode());
+		aff.setDefault(true);
+		info.setDefaultAffiliation(aff);
+		info.setAffiliations(affInfo);
+
+		// employment information
+		KimEntityEmploymentInformationInfo empInfo = new KimEntityEmploymentInformationInfo();
+		empInfo.setEmployeeId( this.getEmployeeId() );
+		empInfo.setPrimary(true);
+		empInfo.setPrimaryDepartmentCode(this.getPrimaryDepartmentCode());
+		info.setPrimaryEmployment( empInfo );
+		
+		// external identifiers
+		info.setExternalIdentifiers( new ArrayList<KimEntityExternalIdentifierInfo>(0) );
+		return info;
+    	
+    }
+	
 	
 	/**
 	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()

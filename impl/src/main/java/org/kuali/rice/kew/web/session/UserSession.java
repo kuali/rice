@@ -30,7 +30,6 @@ import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.UserUtils;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
@@ -85,7 +84,7 @@ public class UserSession implements Serializable {
     }
 
 	public UserSession (String actualPrincipalId) {
-		init(this.getIdentityService().getPrincipal(actualPrincipalId));
+		init(getIdentityService().getPrincipal(actualPrincipalId));
     }
 
 	private void init(KimPrincipal actualPrincipal) {
@@ -94,8 +93,11 @@ public class UserSession implements Serializable {
 		}
 		this.actualPrincipal = actualPrincipal;
 		actualPerson = getPersonService().getPerson(actualPrincipal.getPrincipalId());
+		if ( actualPerson == null ) {
+			throw new RuntimeException( "Unable to create person object from the given principal ID: " + actualPrincipal.getPrincipalId() );
+		}
 		establishPreferencesForPrincipal(actualPrincipal);
-		List<? extends KimGroup> groups = KIMServiceLocator.getIdentityManagementService().getGroupsForPrincipal(actualPrincipal.getPrincipalId());
+		List<? extends KimGroup> groups = getIdentityService().getGroupsForPrincipal(actualPrincipal.getPrincipalId());
 		for (KimGroup group : groups) {
 			actualPrincipalGroups.put(group.getGroupId(), group);
 		}

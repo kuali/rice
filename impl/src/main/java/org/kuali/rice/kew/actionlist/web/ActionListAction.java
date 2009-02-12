@@ -60,7 +60,6 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.WebFriendlyRecipient;
-import org.kuali.rice.kew.web.UserLoginFilter;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.exception.AuthorizationException;
@@ -76,7 +75,7 @@ import org.kuali.rice.kns.web.ui.ExtraButton;
  */
 public class ActionListAction extends KualiAction {
 
-    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ActionListActionOld.class);
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ActionListAction.class);
 
     private static String ACTION_LIST_KEY = "actionList";
     private static String ACTION_LIST_PAGE_KEY = "actionListPage";
@@ -660,7 +659,7 @@ public class ActionListAction extends KualiAction {
     }
 
 	private UserSession getUserSession(HttpServletRequest request){
-		return UserLoginFilter.getUserSession(request);
+		return UserSession.getAuthenticatedUser();
 	}
 
     private class ActionItemComparator implements Comparator {

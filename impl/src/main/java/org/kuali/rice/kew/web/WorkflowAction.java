@@ -180,7 +180,7 @@ public abstract class WorkflowAction extends DispatchAction {
 	}
 
 	public static UserSession getUserSession(HttpServletRequest request) {
-		return UserLoginFilter.getUserSession(request);
+		return UserSession.getAuthenticatedUser();
 	}
 
 	public boolean isEmpty(String propertyValue) {

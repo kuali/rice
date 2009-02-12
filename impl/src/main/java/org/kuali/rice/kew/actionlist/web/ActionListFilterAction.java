@@ -41,7 +41,6 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kew.web.KeyValue;
-import org.kuali.rice.kew.web.UserLoginFilter;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -186,7 +185,7 @@ public class ActionListFilterAction extends KualiAction {
     }
 
 	private UserSession getUserSession(HttpServletRequest request){
-		return UserLoginFilter.getUserSession(request);
+		return UserSession.getAuthenticatedUser();
 	}
 
 }

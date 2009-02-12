@@ -51,7 +51,10 @@ public class DummyLoginFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         if (request instanceof HttpServletRequest) {
             HttpServletRequest hsreq = (HttpServletRequest) request;
-            UserSession session = UserSession.getAuthenticatedUser();
+            UserSession session = null;
+            if (UserLoginFilter.isUserSessionEstablished(hsreq)) {
+            	session = UserLoginFilter.getUserSession(hsreq);	
+            }
             if (session == null) {
             	IdentityManagementService auth = (IdentityManagementService) GlobalResourceLoader.getService(new QName("KIM", "kimIdentityManagementService"));
            		request.setAttribute("showPasswordField", auth.authenticationServiceValidatesPassword());

@@ -250,6 +250,8 @@
     p:responsibilityCacheMaxSize="3000"
     p:responsibilityCacheMaxAgeSeconds="300" />
 
+  <bean id="kimIdentityCacheService" class="org.kuali.rice.kim.service.impl.IdentityCacheServiceImpl" />
+
   <bean id="kimRoleDao" class="org.kuali.rice.kim.dao.impl.KimRoleDaoOjb" parent="platformAwareDao" />
   <bean id="kimGroupDao" class="org.kuali.rice.kim.dao.impl.KimGroupDaoOjb" parent="platformAwareDao" />
   <bean id="kimPermissionDao" class="org.kuali.rice.kim.dao.impl.KimPermissionDaoOjb" parent="platformAwareDao" />

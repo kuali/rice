@@ -19,6 +19,7 @@ public final class KIMServiceLocator {
 
     public static final String KIM_IDENTITY_MANAGEMENT_SERVICE = "kimIdentityManagementService";
 	public static final String KIM_IDENTITY_SERVICE = "kimIdentityService";
+	public static final String KIM_IDENTITY_CACHE_SERVICE = "kimIdentityCacheService";
 	public static final String KIM_GROUP_SERVICE = "kimGroupService";
 	public static final String KIM_ROLE_SERVICE = "kimRoleService";
 	public static final String KIM_PERSON_SERVICE = "personService";
@@ -48,6 +49,10 @@ public final class KIMServiceLocator {
 
     public static IdentityService getIdentityService() {
     	return (IdentityService)getService(KIM_IDENTITY_SERVICE);
+    }
+
+    public static IdentityCacheService getIdentityCacheService() {
+    	return (IdentityCacheService)getService(KIM_IDENTITY_CACHE_SERVICE);
     }
 
     public static GroupService getGroupService() {

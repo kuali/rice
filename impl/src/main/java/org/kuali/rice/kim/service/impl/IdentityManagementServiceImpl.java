@@ -14,24 +14,9 @@ import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.core.util.MaxSizeMap;
 import org.kuali.rice.core.util.RiceDebugUtils;
 import org.kuali.rice.kim.bo.entity.KimEntity;
-import org.kuali.rice.kim.bo.entity.KimEntityAddress;
-import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
-import org.kuali.rice.kim.bo.entity.KimEntityEmail;
-import org.kuali.rice.kim.bo.entity.KimEntityEntityType;
-import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
-import org.kuali.rice.kim.bo.entity.KimEntityPhone;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityAddressInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityAffiliationInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityEmailInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityEmploymentInformationInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityEntityTypeDefaultInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityExternalIdentifierInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityNameInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityPhoneInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityPrivacyPreferencesInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
@@ -42,6 +27,7 @@ import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.AuthenticationService;
 import org.kuali.rice.kim.service.GroupService;
+import org.kuali.rice.kim.service.IdentityCacheService;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -50,12 +36,7 @@ import org.kuali.rice.kim.service.ResponsibilityService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionTemplate;
 
 public class IdentityManagementServiceImpl implements IdentityManagementService, InitializingBean {
 	private static final Logger LOG = Logger.getLogger( IdentityManagementServiceImpl.class );
@@ -64,8 +45,8 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	private PermissionService permissionService; 
 	private ResponsibilityService responsibilityService;  
 	private IdentityService identityService;
+	private IdentityCacheService identityCacheService;
 	private GroupService groupService;
-	private BusinessObjectService businessObjectService;
 	
 	
 	// Max age defined in seconds
@@ -324,42 +305,9 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 				entityDefaultInfoCache.put( "principalId="+p.getPrincipalId(), new MaxAgeSoftReference<KimEntityDefaultInfo>( entityPrincipalCacheMaxAgeSeconds, entity ) );
 				entityDefaultInfoCache.put( "principalName="+p.getPrincipalName(), new MaxAgeSoftReference<KimEntityDefaultInfo>( entityPrincipalCacheMaxAgeSeconds, entity ) );
 			}
-//			KSBServiceLocator.getThreadPool().execute( new SaveEntityDefaultInfoToCacheRunnable( entity ) );
 		}
 	}
 	
-	// store the person to the database cache
-
-	// but do this an alternate thread to prevent transaction issues since this service is non-transactional
-
-
-	private class SaveEntityDefaultInfoToCacheRunnable implements Runnable {
-		private KimEntityDefaultInfo entity;
-		/**
-		 * 
-		 */
-		public SaveEntityDefaultInfoToCacheRunnable( KimEntityDefaultInfo entity ) {
-			this.entity = entity;
-		}
-		
-		/**
-		 * @see java.lang.Runnable#run()
-		 */
-		public void run() {
-			try {
-				PlatformTransactionManager transactionManager = KNSServiceLocator.getTransactionManager();
-				TransactionTemplate template = new TransactionTemplate(transactionManager);
-				template.execute(new TransactionCallback() {
-					public Object doInTransaction(TransactionStatus status) {
-//						getBusinessObjectService().save( new KimEntityDefaultInfoCacheImpl( entity ) );
-						return null;
-					}
-				});
-			} catch (Throwable t) {
-				LOG.error("Failed to load transaction manager.", t);
-			}
-		}
-	}
 
 	protected void addPrincipalToCache( KimPrincipal principal ) {
 		if ( principal != null ) {
@@ -795,9 +743,11 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     	KimEntityDefaultInfo entity = getEntityDefaultInfoFromCache( entityId );
     	if ( entity == null ) {
     		entity = getIdentityService().getEntityDefaultInfo(entityId);
-//	    	if ( entity == null ) {
-//	    		entity = getEntityDefaultInfoFromPersistentCache( entityId );
-//	    	}
+	    	if ( entity == null ) {
+	    		entity = getIdentityCacheService().getEntityDefaultInfoFromPersistentCache( entityId );
+	    	} else {
+				getIdentityCacheService().saveDefaultInfoToCache(entity);
+	    	}
     		addEntityDefaultInfoToCache( entity );
     	}
     	return entity;
@@ -813,9 +763,11 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     	KimEntityDefaultInfo entity = getEntityDefaultInfoFromCacheByPrincipalId( principalId );
     	if ( entity == null ) {
 	    	entity = getIdentityService().getEntityDefaultInfoByPrincipalId(principalId);
-//	    	if ( entity == null ) {
-//	    		entity = getEntityDefaultInfoFromPersistentCacheByPrincipalId( principalId );
-//	    	}
+	    	if ( entity == null ) {
+	    		entity = getIdentityCacheService().getEntityDefaultInfoFromPersistentCacheByPrincipalId( principalId );
+	    	} else {
+				getIdentityCacheService().saveDefaultInfoToCache(entity);
+	    	}
 			addEntityDefaultInfoToCache( entity );
     	}
     	return entity;
@@ -831,9 +783,11 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     	KimEntityDefaultInfo entity = getEntityDefaultInfoFromCacheByPrincipalName( principalName );
     	if ( entity == null ) {
 	    	entity = getIdentityService().getEntityDefaultInfoByPrincipalName(principalName);
-//	    	if ( entity == null ) {
-//	    		entity = getEntityDefaultInfoFromPersistentCacheByPrincipalName( principalName );
-//	    	}
+	    	if ( entity == null ) {
+	    		entity = getIdentityCacheService().getEntityDefaultInfoFromPersistentCacheByPrincipalName( principalName );
+	    	} else {
+				getIdentityCacheService().saveDefaultInfoToCache(entity);
+	    	}
 			addEntityDefaultInfoToCache( entity );
     	}
     	return entity;
@@ -855,38 +809,6 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     public int getMatchingEntityCount(Map<String,String> searchCriteria) {
     	return getIdentityService().getMatchingEntityCount( searchCriteria );
     }
-
-    protected KimEntityDefaultInfo getEntityDefaultInfoFromPersistentCache( String entityId ) {
-    	Map<String,String> criteria = new HashMap<String, String>(1);
-    	criteria.put(KimConstants.PrimaryKeyConstants.ENTITY_ID, entityId);
-    	KimEntityDefaultInfoCacheImpl cachedValue = (KimEntityDefaultInfoCacheImpl)getBusinessObjectService().findByPrimaryKey(KimEntityDefaultInfoCacheImpl.class, criteria);
-    	if ( cachedValue == null ) {
-    		return null;
-    	}
-    	return cachedValue.convertCacheToEntityDefaultInfo();
-    }
-
-    protected KimEntityDefaultInfo getEntityDefaultInfoFromPersistentCacheByPrincipalId( String principalId ) {
-    	Map<String,String> criteria = new HashMap<String, String>(1);
-    	criteria.put("principals.principalId", principalId);
-    	KimEntityDefaultInfoCacheImpl cachedValue = (KimEntityDefaultInfoCacheImpl)getBusinessObjectService().findByPrimaryKey(KimEntityDefaultInfoCacheImpl.class, criteria);
-    	if ( cachedValue == null ) {
-    		return null;
-    	}
-    	return cachedValue.convertCacheToEntityDefaultInfo();
-    }
-
-    @SuppressWarnings("unchecked")
-	protected KimEntityDefaultInfo getEntityDefaultInfoFromPersistentCacheByPrincipalName( String principalName ) {
-    	Map<String,String> criteria = new HashMap<String, String>(1);
-    	criteria.put("principals.principalName", principalName);
-    	Collection<KimEntityDefaultInfoCacheImpl> entities = getBusinessObjectService().findMatching(KimEntityDefaultInfoCacheImpl.class, criteria);
-    	if ( entities.isEmpty()  ) {
-    		return null;
-    	}
-    	return entities.iterator().next().convertCacheToEntityDefaultInfo();
-    }
-    
     
 	// OTHER METHODS
 	
@@ -898,6 +820,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		}
 		return authenticationService;
 	}
+
 	public IdentityService getIdentityService() {
 		if ( identityService == null ) {
 			identityService = KIMServiceLocator.getIdentityService();
@@ -905,6 +828,13 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		return identityService;
 	}
 
+	public IdentityCacheService getIdentityCacheService() {
+		if ( identityCacheService == null ) {
+			identityCacheService = KIMServiceLocator.getIdentityCacheService();
+		}
+		return identityCacheService;
+	}
+	
 	public GroupService getGroupService() {
 		if ( groupService == null ) {
 			groupService = KIMServiceLocator.getGroupService();
@@ -924,16 +854,6 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 			responsibilityService = KIMServiceLocator.getResponsibilityService();
 		}
 		return responsibilityService;
-	}
-
-	/**
-	 * @return the businessObjectService
-	 */
-	public BusinessObjectService getBusinessObjectService() {
-		if ( businessObjectService == null ) {
-			businessObjectService = KNSServiceLocator.getBusinessObjectService();
-		}
-		return businessObjectService;
 	}
 	
     // ----------------------

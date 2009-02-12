@@ -18,7 +18,7 @@ package org.kuali.rice.kim.bo.entity.impl;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
-import org.kuali.rice.kim.bo.entity.DefaultableEntityTypeData;
+import org.kuali.rice.kim.bo.entity.KimDefaultableEntityTypeData;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -28,7 +28,7 @@ import org.kuali.rice.kim.bo.entity.DefaultableEntityTypeData;
  */
 @MappedSuperclass
 public abstract class DefaultableEntityTypeDataBase extends DefaultableEntityDataBase
-		implements DefaultableEntityTypeData {
+		implements KimDefaultableEntityTypeData {
 
 	private static final long serialVersionUID = 1L;
 

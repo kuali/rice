@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
-import org.kuali.rice.kim.bo.entity.EntityExternalIdentifier;
+import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class KimEntityExternalIdentifierInfo extends KimInfoBase implements EntityExternalIdentifier {
+public class KimEntityExternalIdentifierInfo extends KimInfoBase implements KimEntityExternalIdentifier {
 
 	private static final long serialVersionUID = 1L;
 
@@ -37,7 +37,7 @@ public class KimEntityExternalIdentifierInfo extends KimInfoBase implements Enti
 	/**
 	 * 
 	 */
-	public KimEntityExternalIdentifierInfo( EntityExternalIdentifier eid ) {
+	public KimEntityExternalIdentifierInfo( KimEntityExternalIdentifier eid ) {
 		if ( eid != null ) {
 			entityExternalIdentifierId = unNullify( eid.getEntityExternalIdentifierId() );
 			externalIdentifierTypeCode = unNullify( eid.getExternalIdentifierTypeCode() );
@@ -45,21 +45,21 @@ public class KimEntityExternalIdentifierInfo extends KimInfoBase implements Enti
 		}
 	}
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityExternalIdentifier#getEntityExternalIdentifierId()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier#getEntityExternalIdentifierId()
 	 */
 	public String getEntityExternalIdentifierId() {
 		return entityExternalIdentifierId;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityExternalIdentifier#getExternalId()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier#getExternalId()
 	 */
 	public String getExternalId() {
 		return externalId;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityExternalIdentifier#getExternalIdentifierTypeCode()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier#getExternalIdentifierTypeCode()
 	 */
 	public String getExternalIdentifierTypeCode() {
 		return externalIdentifierTypeCode;

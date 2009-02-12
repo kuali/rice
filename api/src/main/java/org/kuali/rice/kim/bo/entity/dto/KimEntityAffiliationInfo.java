@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
-import org.kuali.rice.kim.bo.entity.EntityAffiliation;
+import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class KimEntityAffiliationInfo extends KimDefaultableInfo implements EntityAffiliation {
+public class KimEntityAffiliationInfo extends KimDefaultableInfo implements KimEntityAffiliation {
 
 	private static final long serialVersionUID = 1L;
 
@@ -37,7 +37,7 @@ public class KimEntityAffiliationInfo extends KimDefaultableInfo implements Enti
 	/**
 	 * 
 	 */
-	public KimEntityAffiliationInfo( EntityAffiliation aff ) {
+	public KimEntityAffiliationInfo( KimEntityAffiliation aff ) {
 		if ( aff != null ) {
 			entityAffiliationId = unNullify( aff.getEntityAffiliationId() );
 			affiliationTypeCode = unNullify( aff.getAffiliationTypeCode() );
@@ -47,21 +47,21 @@ public class KimEntityAffiliationInfo extends KimDefaultableInfo implements Enti
 		}
 	}
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityAffiliation#getAffiliationTypeCode()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityAffiliation#getAffiliationTypeCode()
 	 */
 	public String getAffiliationTypeCode() {
 		return affiliationTypeCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityAffiliation#getCampusCode()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityAffiliation#getCampusCode()
 	 */
 	public String getCampusCode() {
 		return campusCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityAffiliation#getEntityAffiliationId()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityAffiliation#getEntityAffiliationId()
 	 */
 	public String getEntityAffiliationId() {
 		return entityAffiliationId;

@@ -15,16 +15,17 @@
  */
 package org.kuali.rice.kim.bo.entity;
 
-import org.kuali.rice.kns.bo.DefaultableInactivateable;
-
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public interface DefaultableEntityTypeData extends DefaultableInactivateable {
+public interface KimEntityExternalIdentifier {
 
-	String getEntityTypeCode();
-
+	String getEntityExternalIdentifierId();
+	
+	String getExternalIdentifierTypeCode();
+	
+	String getExternalId();
 }

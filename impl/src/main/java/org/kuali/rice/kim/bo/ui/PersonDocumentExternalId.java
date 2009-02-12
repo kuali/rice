@@ -52,35 +52,35 @@ public class PersonDocumentExternalId extends KimDocumentBoBase{
 	protected ExternalIdentifierType externalIdentifierType;
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityExternalIdentifier#getEntityExternalIdentifierId()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier#getEntityExternalIdentifierId()
 	 */
 	public String getEntityExternalIdentifierId() {
 		return entityExternalIdentifierId;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityExternalIdentifier#getExternalId()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier#getExternalId()
 	 */
 	public String getExternalId() {
 		return externalId;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityExternalIdentifier#getExternalIdentifierTypeCode()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier#getExternalIdentifierTypeCode()
 	 */
 	public String getExternalIdentifierTypeCode() {
 		return externalIdentifierTypeCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityExternalIdentifier#setExternalId(java.lang.String)
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier#setExternalId(java.lang.String)
 	 */
 	public void setExternalId(String externalId) {
 		this.externalId = externalId;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityExternalIdentifier#setExternalIdentifierTypeCode(java.lang.String)
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier#setExternalIdentifierTypeCode(java.lang.String)
 	 */
 	public void setExternalIdentifierTypeCode(String externalIdentifierTypeCode) {
 		this.externalIdentifierTypeCode = externalIdentifierTypeCode;

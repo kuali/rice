@@ -74,49 +74,49 @@ public class PersonDocumentName extends PersonDocumentBoDefaultBase {
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityName#getEntityNameId()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getEntityNameId()
 	 */
 	public String getEntityNameId() {
 		return entityNameId;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityName#getFirstName()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getFirstName()
 	 */
 	public String getFirstName() {
 		return firstName;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityName#getLastName()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getLastName()
 	 */
 	public String getLastName() {
 		return lastName;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityName#getMiddleName()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getMiddleName()
 	 */
 	public String getMiddleName() {
 		return middleName;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityName#getNameTypeCode()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getNameTypeCode()
 	 */
 	public String getNameTypeCode() {
 		return nameTypeCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityName#getSuffix()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getSuffix()
 	 */
 	public String getSuffix() {
 		return suffix;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityName#getTitle()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getTitle()
 	 */
 	public String getTitle() {
 		return title;
@@ -149,7 +149,7 @@ public class PersonDocumentName extends PersonDocumentBoDefaultBase {
 	/**
 	 * This default implementation formats the name as LAST, FIRST MIDDLE.
 	 * 
-	 * @see org.kuali.rice.kim.bo.entity.EntityName#getFormattedName()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getFormattedName()
 	 */
 	public String getFormattedName() {
 		return getLastName() + ", " + getFirstName() + " " + getMiddleName();

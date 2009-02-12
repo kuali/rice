@@ -17,10 +17,10 @@ package org.kuali.rice.kim.bo.entity.dto;
 
 import java.util.List;
 
-import org.kuali.rice.kim.bo.entity.EntityAffiliation;
-import org.kuali.rice.kim.bo.entity.EntityEmploymentInformation;
-import org.kuali.rice.kim.bo.entity.EntityExternalIdentifier;
-import org.kuali.rice.kim.bo.entity.EntityName;
+import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
+import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
+import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
+import org.kuali.rice.kim.bo.entity.KimEntityName;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
 /**
@@ -32,13 +32,13 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
 public class KimEntityDefaultInfo extends KimInactivatableInfo {
 
 	protected String entityId;
-	protected EntityName defaultName;
+	protected KimEntityName defaultName;
 	protected List<? extends KimPrincipal> principals;
 	protected List<KimEntityEntityTypeDefaultInfo> entityTypes;
-	protected List<? extends EntityAffiliation> affiliations;
-	protected EntityAffiliation defaultAffiliation;
-	protected EntityEmploymentInformation primaryEmployment;
-	protected List<? extends EntityExternalIdentifier> externalIdentifiers;
+	protected List<? extends KimEntityAffiliation> affiliations;
+	protected KimEntityAffiliation defaultAffiliation;
+	protected KimEntityEmploymentInformation primaryEmployment;
+	protected List<? extends KimEntityExternalIdentifier> externalIdentifiers;
 	
 	public String getEntityId() {
 		return this.entityId;
@@ -46,10 +46,10 @@ public class KimEntityDefaultInfo extends KimInactivatableInfo {
 	public void setEntityId(String entityId) {
 		this.entityId = entityId;
 	}
-	public EntityName getDefaultName() {
+	public KimEntityName getDefaultName() {
 		return this.defaultName;
 	}
-	public void setDefaultName(EntityName defaultName) {
+	public void setDefaultName(KimEntityName defaultName) {
 		this.defaultName = defaultName;
 	}
 	public List<KimEntityEntityTypeDefaultInfo> getEntityTypes() {
@@ -58,28 +58,28 @@ public class KimEntityDefaultInfo extends KimInactivatableInfo {
 	public void setEntityTypes(List<KimEntityEntityTypeDefaultInfo> entityTypes) {
 		this.entityTypes = entityTypes;
 	}
-	public List<? extends EntityAffiliation> getAffiliations() {
+	public List<? extends KimEntityAffiliation> getAffiliations() {
 		return this.affiliations;
 	}
-	public void setAffiliations(List<? extends EntityAffiliation> affiliations) {
+	public void setAffiliations(List<? extends KimEntityAffiliation> affiliations) {
 		this.affiliations = affiliations;
 	}
-	public EntityAffiliation getDefaultAffiliation() {
+	public KimEntityAffiliation getDefaultAffiliation() {
 		return this.defaultAffiliation;
 	}
-	public void setDefaultAffiliation(EntityAffiliation defaultAffiliation) {
+	public void setDefaultAffiliation(KimEntityAffiliation defaultAffiliation) {
 		this.defaultAffiliation = defaultAffiliation;
 	}
-	public EntityEmploymentInformation getPrimaryEmployment() {
+	public KimEntityEmploymentInformation getPrimaryEmployment() {
 		return this.primaryEmployment;
 	}
-	public void setPrimaryEmployment(EntityEmploymentInformation primaryEmployment) {
+	public void setPrimaryEmployment(KimEntityEmploymentInformation primaryEmployment) {
 		this.primaryEmployment = primaryEmployment;
 	}
-	public List<? extends EntityExternalIdentifier> getExternalIdentifiers() {
+	public List<? extends KimEntityExternalIdentifier> getExternalIdentifiers() {
 		return this.externalIdentifiers;
 	}
-	public void setExternalIdentifiers(List<? extends EntityExternalIdentifier> externalIdentifiers) {
+	public void setExternalIdentifiers(List<? extends KimEntityExternalIdentifier> externalIdentifiers) {
 		this.externalIdentifiers = externalIdentifiers;
 	}
 	public List<? extends KimPrincipal> getPrincipals() {

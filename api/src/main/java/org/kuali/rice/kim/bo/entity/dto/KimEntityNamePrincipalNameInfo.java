@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
-import org.kuali.rice.kim.bo.entity.EntityName;
-import org.kuali.rice.kim.bo.entity.NamePrincipalName;
+import org.kuali.rice.kim.bo.entity.KimEntityName;
+import org.kuali.rice.kim.bo.entity.KimEntityNamePrincipalName;
 
 /**
  * DTO to be used for caching default EntityNames with the PrincipalId
@@ -24,21 +24,21 @@ import org.kuali.rice.kim.bo.entity.NamePrincipalName;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class NamePrincipalNameInfo implements NamePrincipalName {
+public class KimEntityNamePrincipalNameInfo implements KimEntityNamePrincipalName {
 
-	protected EntityName defaultEntityName;
+	protected KimEntityName defaultEntityName;
 	protected String principalName;
 	
 	/**
 	 * @return the defaultEntityName
 	 */
-	public EntityName getDefaultEntityName() {
+	public KimEntityName getDefaultEntityName() {
 		return this.defaultEntityName;
 	}
 	/**
 	 * @param defaultEntityName the defaultEntityName to set
 	 */
-	public void setDefaultEntityName(EntityName defaultEntityName) {
+	public void setDefaultEntityName(KimEntityName defaultEntityName) {
 		this.defaultEntityName = defaultEntityName;
 	}
 	/**

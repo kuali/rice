@@ -26,7 +26,7 @@ import org.kuali.rice.core.config.spring.ConfigFactoryBean;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.entity.EntityEntityType;
+import org.kuali.rice.kim.bo.entity.KimEntityEntityType;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.impl.IdentityServiceImpl;
@@ -116,7 +116,7 @@ public class IdentityServiceImplTest extends RiceTestCase {
 	public void testGetContainedAttributes() {
 		KimEntity entity = identityService.getEntityImpl( "3776" );
 		assertNotNull( "Entity Must not be null", entity );
-		EntityEntityType eet = entity.getEntityType( "PERSON" );
+		KimEntityEntityType eet = entity.getEntityType( "PERSON" );
 		assertNotNull( "PERSON EntityEntityType Must not be null", eet );
 		assertEquals( "there should be 1 email address", 1, eet.getEmailAddresses().size() );
 		assertEquals( "email address does not match", "KGLTEST-L@INDIANA.EDU", eet.getDefaultEmailAddress().getEmailAddress() );

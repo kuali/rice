@@ -58,35 +58,35 @@ public class PersonDocumentAffiliation extends PersonDocumentBoDefaultBase {
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityAffiliation#getAffiliationTypeCode()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityAffiliation#getAffiliationTypeCode()
 	 */
 	public String getAffiliationTypeCode() {
 		return affiliationTypeCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityAffiliation#getCampusCode()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityAffiliation#getCampusCode()
 	 */
 	public String getCampusCode() {
 		return campusCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityAffiliation#getEntityAffiliationId()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityAffiliation#getEntityAffiliationId()
 	 */
 	public String getEntityAffiliationId() {
 		return entityAffiliationId;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityAffiliation#setAffiliationTypeCode(java.lang.String)
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityAffiliation#setAffiliationTypeCode(java.lang.String)
 	 */
 	public void setAffiliationTypeCode(String affiliationTypeCode) {
 		this.affiliationTypeCode = affiliationTypeCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityAffiliation#setCampusCode(java.lang.String)
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityAffiliation#setCampusCode(java.lang.String)
 	 */
 	public void setCampusCode(String campusCode) {
 		this.campusCode = campusCode;

@@ -22,13 +22,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.entity.EntityAddress;
-import org.kuali.rice.kim.bo.entity.EntityAffiliation;
-import org.kuali.rice.kim.bo.entity.EntityEmail;
-import org.kuali.rice.kim.bo.entity.EntityEmploymentInformation;
-import org.kuali.rice.kim.bo.entity.EntityExternalIdentifier;
-import org.kuali.rice.kim.bo.entity.EntityName;
-import org.kuali.rice.kim.bo.entity.EntityPhone;
+import org.kuali.rice.kim.bo.entity.KimEntityAddress;
+import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
+import org.kuali.rice.kim.bo.entity.KimEntityEmail;
+import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
+import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
+import org.kuali.rice.kim.bo.entity.KimEntityName;
+import org.kuali.rice.kim.bo.entity.KimEntityPhone;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityEntityTypeDefaultInfo;
@@ -77,7 +77,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	// phone data
 	protected String phoneNumber = "";
 	// affiliation data
-	protected List<? extends EntityAffiliation> affiliations;
+	protected List<? extends KimEntityAffiliation> affiliations;
 	
 	protected String campusCode = "";
 	// external identifier data
@@ -117,7 +117,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		campusCode = p.getCampusCode();
 		primaryDepartmentCode = p.getPrimaryDepartmentCode();
 		employeeId = p.getEmployeeId();
-		affiliations = new ArrayList<EntityAffiliation>( 0 );
+		affiliations = new ArrayList<KimEntityAffiliation>( 0 );
 		externalIdentifiers = new HashMap<String,String>( 0 );
 	}
 
@@ -153,7 +153,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	}
 	
 	protected void populateNameInfo( String entityTypeCode, KimEntityDefaultInfo entity, KimPrincipal principal ) {
-		EntityName entityName = entity.getDefaultName();
+		KimEntityName entityName = entity.getDefaultName();
 		if ( entityName != null ) {
 			firstName = unNullify( entityName.getFirstName() );
 			middleName = unNullify( entityName.getMiddleName() );
@@ -177,7 +177,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	}
 	
 	protected void populateAddressInfo( KimEntityEntityTypeDefaultInfo entityEntityType ) {
-		EntityAddress defaultAddress = entityEntityType.getDefaultAddress();
+		KimEntityAddress defaultAddress = entityEntityType.getDefaultAddress();
 		if ( defaultAddress != null ) {			
 			addressLine1 = unNullify( defaultAddress.getLine1() );
 			addressLine2 = unNullify( defaultAddress.getLine2() );
@@ -198,7 +198,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	}
 	
 	protected void populateEmailInfo( KimEntityEntityTypeDefaultInfo entityEntityType ) {
-		EntityEmail entityEmail = entityEntityType.getDefaultEmailAddress();
+		KimEntityEmail entityEmail = entityEntityType.getDefaultEmailAddress();
 		if ( entityEmail != null ) {
 			emailAddress = unNullify( entityEmail.getEmailAddress() );
 		} else {
@@ -207,7 +207,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	}
 	
 	protected void populatePhoneInfo( KimEntityEntityTypeDefaultInfo entityEntityType ) {
-		EntityPhone entityPhone = entityEntityType.getDefaultPhoneNumber();
+		KimEntityPhone entityPhone = entityEntityType.getDefaultPhoneNumber();
 		if ( entityPhone != null ) {
 			phoneNumber = unNullify( entityPhone.getFormattedPhoneNumber() );
 		} else {
@@ -217,7 +217,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	
 	protected void populateAffiliationInfo( KimEntityDefaultInfo entity ) {
 		affiliations = entity.getAffiliations();
-		EntityAffiliation defaultAffiliation = entity.getDefaultAffiliation();
+		KimEntityAffiliation defaultAffiliation = entity.getDefaultAffiliation();
 		if ( defaultAffiliation != null  ) {
 			campusCode = unNullify( defaultAffiliation.getCampusCode() );
 		} else {
@@ -226,7 +226,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	}
 	
 	protected void populateEmploymentInfo( KimEntityDefaultInfo entity ) {
-		EntityEmploymentInformation employmentInformation = entity.getPrimaryEmployment();
+		KimEntityEmploymentInformation employmentInformation = entity.getPrimaryEmployment();
 		if ( employmentInformation != null ) {
 			employeeStatusCode = unNullify( employmentInformation.getEmployeeStatusCode() );
 			employeeTypeCode = unNullify( employmentInformation.getEmployeeTypeCode() );
@@ -247,9 +247,9 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	}
 	
 	protected void populateExternalIdentifiers( KimEntityDefaultInfo entity ) {
-		List<? extends EntityExternalIdentifier> externalIds = entity.getExternalIdentifiers();
+		List<? extends KimEntityExternalIdentifier> externalIds = entity.getExternalIdentifiers();
 		externalIdentifiers = new HashMap<String,String>( externalIds.size() );
-		for ( EntityExternalIdentifier eei : externalIds ) {
+		for ( KimEntityExternalIdentifier eei : externalIds ) {
 			externalIdentifiers.put( eei.getExternalIdentifierTypeCode(), eei.getExternalId() );
 		}
 	}
@@ -327,7 +327,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		return emailAddress;
 	}
 	
-	public List<? extends EntityAffiliation> getAffiliations() {
+	public List<? extends KimEntityAffiliation> getAffiliations() {
 		return affiliations;
 	}
 	
@@ -346,7 +346,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		if ( affiliationTypeCode == null ) {
 			return campusCodes;
 		}
-		for ( EntityAffiliation a : getAffiliations() ) {
+		for ( KimEntityAffiliation a : getAffiliations() ) {
 			if ( a.getAffiliationTypeCode().equals(affiliationTypeCode)  ) {
 				campusCodes.add( a.getCampusCode() );
 			}

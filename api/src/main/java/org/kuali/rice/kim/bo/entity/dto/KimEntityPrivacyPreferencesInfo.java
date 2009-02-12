@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
-import org.kuali.rice.kim.bo.entity.EntityPrivacyPreferences;
+import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
 
 /**
  * This is a description of what this class does - nathanieljohnson don't forget to fill this in. 
@@ -23,7 +23,7 @@ import org.kuali.rice.kim.bo.entity.EntityPrivacyPreferences;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class KimEntityPrivacyPreferencesInfo extends KimInfoBase implements EntityPrivacyPreferences {
+public class KimEntityPrivacyPreferencesInfo extends KimInfoBase implements KimEntityPrivacyPreferences {
 
 	private static final long serialVersionUID = 1L;
 
@@ -42,7 +42,7 @@ public class KimEntityPrivacyPreferencesInfo extends KimInfoBase implements Enti
 	/**
 	 * 
 	 */
-	public KimEntityPrivacyPreferencesInfo( EntityPrivacyPreferences prefs ) {
+	public KimEntityPrivacyPreferencesInfo( KimEntityPrivacyPreferences prefs ) {
 		if ( prefs != null ) {
 			suppressName = prefs.isSuppressName();
 			suppressEmail = prefs.isSuppressEmail();
@@ -53,35 +53,35 @@ public class KimEntityPrivacyPreferencesInfo extends KimInfoBase implements Enti
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityPrivacyPreferences#isSuppressAddress()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences#isSuppressAddress()
 	 */
 	public boolean isSuppressAddress() {
 		return suppressAddress;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityPrivacyPreferences#isSuppressEmail()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences#isSuppressEmail()
 	 */
 	public boolean isSuppressEmail() {
 		return suppressEmail;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityPrivacyPreferences#isSuppressName()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences#isSuppressName()
 	 */
 	public boolean isSuppressName() {
 		return suppressName;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityPrivacyPreferences#isSuppressPersonal()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences#isSuppressPersonal()
 	 */
 	public boolean isSuppressPersonal() {
 		return suppressPersonal;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityPrivacyPreferences#isSuppressPhone()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences#isSuppressPhone()
 	 */
 	public boolean isSuppressPhone() {
 		return suppressPhone;

@@ -23,9 +23,9 @@ import java.util.Map;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kim.bo.entity.EntityAddress;
-import org.kuali.rice.kim.bo.entity.EntityEmail;
-import org.kuali.rice.kim.bo.entity.EntityPhone;
+import org.kuali.rice.kim.bo.entity.KimEntityAddress;
+import org.kuali.rice.kim.bo.entity.KimEntityEmail;
+import org.kuali.rice.kim.bo.entity.KimEntityPhone;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.impl.EntityAddressImpl;
 import org.kuali.rice.kim.bo.entity.impl.EntityAffiliationImpl;
@@ -668,8 +668,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		kimEntity.setAffiliations(entityAffiliations);
 	}
 	
-	private void setupPhone(IdentityManagementPersonDocument identityManagementPersonDocument, EntityEntityTypeImpl entityType, List<EntityPhone> origPhones) {
-		List<EntityPhone> entityPhones = new ArrayList<EntityPhone>();
+	private void setupPhone(IdentityManagementPersonDocument identityManagementPersonDocument, EntityEntityTypeImpl entityType, List<KimEntityPhone> origPhones) {
+		List<KimEntityPhone> entityPhones = new ArrayList<KimEntityPhone>();
 		for (PersonDocumentPhone phone : identityManagementPersonDocument.getPhones()) {
 			EntityPhoneImpl entityPhone = new EntityPhoneImpl();
 			entityPhone.setPhoneTypeCode(phone.getPhoneTypeCode());
@@ -682,7 +682,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			entityPhone.setExtensionNumber(phone.getExtensionNumber());
 			entityPhone.setActive(phone.isActive());
 			entityPhone.setDefault(phone.isDflt());
-			for (EntityPhone origPhone : origPhones) {
+			for (KimEntityPhone origPhone : origPhones) {
 				if (origPhone.getEntityPhoneId().equals(entityPhone.getEntityPhoneId())) {
 					entityPhone.setVersionNumber(((EntityPhoneImpl)origPhone).getVersionNumber());
 				}
@@ -694,9 +694,9 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 	}
 
-	private List<PersonDocumentPhone> loadPhones(List<EntityPhone> entityPhones) {
+	private List<PersonDocumentPhone> loadPhones(List<KimEntityPhone> entityPhones) {
 		List<PersonDocumentPhone> docPhones = new ArrayList<PersonDocumentPhone>();
-		for (EntityPhone phone : entityPhones) {
+		for (KimEntityPhone phone : entityPhones) {
 			PersonDocumentPhone docPhone = new PersonDocumentPhone();
 			docPhone.setPhoneTypeCode(phone.getPhoneTypeCode());
 			docPhone.setPhoneType(((EntityPhoneImpl)phone).getPhoneType());
@@ -716,8 +716,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 	private void setupEmail(
 			IdentityManagementPersonDocument identityManagementPersonDocument,
-			EntityEntityTypeImpl entityType, List<EntityEmail> origEmails) {
-		List<EntityEmail> entityEmails = new ArrayList<EntityEmail>();
+			EntityEntityTypeImpl entityType, List<KimEntityEmail> origEmails) {
+		List<KimEntityEmail> entityEmails = new ArrayList<KimEntityEmail>();
 		for (PersonDocumentEmail email : identityManagementPersonDocument
 				.getEmails()) {
 			EntityEmailImpl entityEmail = new EntityEmailImpl();
@@ -729,7 +729,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			entityEmail.setActive(email.isActive());
 			entityEmail.setDefault(email.isDflt());
 			entityEmail.setEntityEmailId(email.getEntityEmailId());
-			for (EntityEmail origEmail : origEmails) {
+			for (KimEntityEmail origEmail : origEmails) {
 				if (origEmail.getEntityEmailId().equals(entityEmail.getEntityEmailId())) {
 					entityEmail.setVersionNumber(((EntityEmailImpl)origEmail).getVersionNumber());
 				}
@@ -738,9 +738,9 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		}
 		entityType.setEmailAddresses(entityEmails);
 	}
-	private List<PersonDocumentEmail> loadEmails(List<EntityEmail> entityEmais) {
+	private List<PersonDocumentEmail> loadEmails(List<KimEntityEmail> entityEmais) {
 		List<PersonDocumentEmail> emails = new ArrayList<PersonDocumentEmail>();
-		for (EntityEmail email : entityEmais) {
+		for (KimEntityEmail email : entityEmais) {
 			PersonDocumentEmail docEmail = new PersonDocumentEmail();
 			//docEmail.setEntityId(email.getEntityId());
 			docEmail.setEntityTypeCode(email.getEntityTypeCode());
@@ -758,8 +758,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	
 	private void setupAddress(
 			IdentityManagementPersonDocument identityManagementPersonDocument,
-			EntityEntityTypeImpl entityType, List<EntityAddress> origAddresses) {
-		List<EntityAddress> entityAddresses = new ArrayList<EntityAddress>();
+			EntityEntityTypeImpl entityType, List<KimEntityAddress> origAddresses) {
+		List<KimEntityAddress> entityAddresses = new ArrayList<KimEntityAddress>();
 		for (PersonDocumentAddress address : identityManagementPersonDocument
 				.getAddrs()) {
 			EntityAddressImpl entityAddress = new EntityAddressImpl();
@@ -777,7 +777,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			entityAddress.setActive(address.isActive());
 			entityAddress.setDefault(address.isDflt());
 			entityAddress.setEntityAddressId(address.getEntityAddressId());
-			for (EntityAddress origAddress : origAddresses) {
+			for (KimEntityAddress origAddress : origAddresses) {
 				if (origAddress.getEntityAddressId().equals(entityAddress.getEntityAddressId())) {
 					entityAddress.setVersionNumber(((EntityAddressImpl)origAddress).getVersionNumber());
 				}
@@ -787,9 +787,9 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		entityType.setAddresses(entityAddresses);
 	}
 	
-	private  List<PersonDocumentAddress> loadAddresses(List<EntityAddress> entityAddresses) {
+	private  List<PersonDocumentAddress> loadAddresses(List<KimEntityAddress> entityAddresses) {
 		List<PersonDocumentAddress> docAddresses = new ArrayList<PersonDocumentAddress>();
-		for (EntityAddress address : entityAddresses) {
+		for (KimEntityAddress address : entityAddresses) {
 			PersonDocumentAddress docAddress = new PersonDocumentAddress();
 			docAddress.setEntityTypeCode(address.getEntityTypeCode());
 			docAddress.setAddressTypeCode(address.getAddressTypeCode());

@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kim.bo.entity.EntityAffiliation;
-import org.kuali.rice.kim.bo.entity.EntityBioDemographics;
+import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
+import org.kuali.rice.kim.bo.entity.KimEntityBioDemographics;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAddress;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAffiliation;
 import org.kuali.rice.kim.bo.ui.PersonDocumentCitizenship;
@@ -54,7 +54,7 @@ public class IdentityManagementPersonDocument extends TransactionalDocumentBase 
 	protected String univId = "";
 	// affiliation data
 	protected List<PersonDocumentAffiliation> affiliations;
-	protected EntityAffiliation defaultAffiliation;
+	protected KimEntityAffiliation defaultAffiliation;
 
 	protected String campusCode = "";
 	// external identifier data
@@ -120,11 +120,11 @@ public class IdentityManagementPersonDocument extends TransactionalDocumentBase 
 		this.affiliations = affiliations;
 	}
 
-	public EntityAffiliation getDefaultAffiliation() {
+	public KimEntityAffiliation getDefaultAffiliation() {
 		return this.defaultAffiliation;
 	}
 
-	public void setDefaultAffiliation(EntityAffiliation defaultAffiliation) {
+	public void setDefaultAffiliation(KimEntityAffiliation defaultAffiliation) {
 		this.defaultAffiliation = defaultAffiliation;
 	}
 

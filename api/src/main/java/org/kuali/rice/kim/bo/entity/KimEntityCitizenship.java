@@ -17,15 +17,17 @@ package org.kuali.rice.kim.bo.entity;
 
 import java.util.Date;
 
-/**
- * This is a description of what this class does - jonathan don't forget to fill this in. 
- * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- *
- */
-public interface EntityBioDemographics {
+import org.kuali.rice.kns.bo.Inactivateable;
 
-	Date getBirthDate();
-	String getEthnicityCode();
-	String getGenderCode();
+/**
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ */
+public interface KimEntityCitizenship extends Inactivateable {
+
+	String getEntityCitizenshipId();
+
+	String getCitizenshipStatusCode();
+	Date getStartDate();
+	Date getEndDate();
+		
 }

@@ -17,9 +17,9 @@ package org.kuali.rice.kim.bo.entity.dto;
 
 import java.io.Serializable;
 
-import org.kuali.rice.kim.bo.entity.EntityAddress;
-import org.kuali.rice.kim.bo.entity.EntityEmail;
-import org.kuali.rice.kim.bo.entity.EntityPhone;
+import org.kuali.rice.kim.bo.entity.KimEntityAddress;
+import org.kuali.rice.kim.bo.entity.KimEntityEmail;
+import org.kuali.rice.kim.bo.entity.KimEntityPhone;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -29,9 +29,9 @@ import org.kuali.rice.kim.bo.entity.EntityPhone;
  */
 public class KimEntityEntityTypeDefaultInfo extends KimInfoBase implements Serializable {
 	protected String entityTypeCode;
-	protected EntityAddress defaultAddress;
-	protected EntityPhone defaultPhoneNumber;
-	protected EntityEmail defaultEmailAddress;
+	protected KimEntityAddress defaultAddress;
+	protected KimEntityPhone defaultPhoneNumber;
+	protected KimEntityEmail defaultEmailAddress;
 	
 	public String getEntityTypeCode() {
 		return this.entityTypeCode;
@@ -39,22 +39,22 @@ public class KimEntityEntityTypeDefaultInfo extends KimInfoBase implements Seria
 	public void setEntityTypeCode(String entityTypeCode) {
 		this.entityTypeCode = entityTypeCode;
 	}
-	public EntityAddress getDefaultAddress() {
+	public KimEntityAddress getDefaultAddress() {
 		return this.defaultAddress;
 	}
-	public void setDefaultAddress(EntityAddress defaultAddress) {
+	public void setDefaultAddress(KimEntityAddress defaultAddress) {
 		this.defaultAddress = defaultAddress;
 	}
-	public EntityPhone getDefaultPhoneNumber() {
+	public KimEntityPhone getDefaultPhoneNumber() {
 		return this.defaultPhoneNumber;
 	}
-	public void setDefaultPhoneNumber(EntityPhone defaultPhoneNumber) {
+	public void setDefaultPhoneNumber(KimEntityPhone defaultPhoneNumber) {
 		this.defaultPhoneNumber = defaultPhoneNumber;
 	}
-	public EntityEmail getDefaultEmailAddress() {
+	public KimEntityEmail getDefaultEmailAddress() {
 		return this.defaultEmailAddress;
 	}
-	public void setDefaultEmailAddress(EntityEmail defaultEmailAddress) {
+	public void setDefaultEmailAddress(KimEntityEmail defaultEmailAddress) {
 		this.defaultEmailAddress = defaultEmailAddress;
 	}
 }

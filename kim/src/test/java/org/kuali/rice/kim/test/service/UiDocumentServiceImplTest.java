@@ -29,7 +29,7 @@ import org.kuali.rice.core.config.spring.ConfigFactoryBean;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.entity.EntityEmploymentInformation;
+import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
 import org.kuali.rice.kim.bo.entity.impl.EntityAddressImpl;
 import org.kuali.rice.kim.bo.entity.impl.EntityAffiliationImpl;
 import org.kuali.rice.kim.bo.entity.impl.EntityEmailImpl;
@@ -411,7 +411,7 @@ public class UiDocumentServiceImplTest extends RiceTestCase {
 		assertEquals(docAffln.getEntityAffiliationId(), entityAffln.getEntityAffiliationId());
 	}
 
-	private void assertEmpInfoTrue(PersonDocumentEmploymentInfo docEmpInfo, EntityEmploymentInformation entityEmpInfo) {
+	private void assertEmpInfoTrue(PersonDocumentEmploymentInfo docEmpInfo, KimEntityEmploymentInformation entityEmpInfo) {
 		assertEquals(docEmpInfo.getEmployeeId(), entityEmpInfo.getEmployeeId());
 		assertEquals(docEmpInfo.getEmployeeTypeCode(), entityEmpInfo.getEmployeeTypeCode());
 		assertEquals(docEmpInfo.getEmployeeStatusCode(), entityEmpInfo.getEmployeeStatusCode());

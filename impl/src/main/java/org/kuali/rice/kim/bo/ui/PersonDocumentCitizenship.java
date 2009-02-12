@@ -60,49 +60,49 @@ public class PersonDocumentCitizenship extends KimDocumentBoBase {
 
 	
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityCitizenship#getCitizenshipStatusCode()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityCitizenship#getCitizenshipStatusCode()
 	 */
 	public String getCitizenshipStatusCode() {
 		return citizenshipStatusCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityCitizenship#getEndDate()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityCitizenship#getEndDate()
 	 */
 	public Date getEndDate() {
 		return endDate;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityCitizenship#getEntityCitizenshipId()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityCitizenship#getEntityCitizenshipId()
 	 */
 	public String getEntityCitizenshipId() {
 		return entityCitizenshipId;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityCitizenship#getStartDate()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityCitizenship#getStartDate()
 	 */
 	public Date getStartDate() {
 		return startDate;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityCitizenship#setCitizenshipStatusCode(java.lang.String)
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityCitizenship#setCitizenshipStatusCode(java.lang.String)
 	 */
 	public void setCitizenshipStatusCode(String citizenshipStatusCode) {
 		this.citizenshipStatusCode = citizenshipStatusCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityCitizenship#setEndDate(java.util.Date)
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityCitizenship#setEndDate(java.util.Date)
 	 */
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityCitizenship#startDate(java.util.Date)
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityCitizenship#startDate(java.util.Date)
 	 */
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;

@@ -15,20 +15,23 @@
  */
 package org.kuali.rice.kim.bo.entity;
 
-import org.kuali.rice.kns.bo.DefaultableInactivateable;
-
-
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public interface EntityAffiliation extends DefaultableInactivateable {
-
-	String getEntityAffiliationId();
-
-	String getAffiliationTypeCode();
-	String getCampusCode();
-		
+public interface KimEntityAddress extends KimDefaultableEntityTypeData {
+	
+	String getEntityAddressId();
+	
+	String getAddressTypeCode();
+	
+	String getLine1();
+	String getLine2();
+	String getLine3();
+	String getCityName();
+	String getStateCode();
+	String getPostalCode();
+	String getCountryCode();
 }

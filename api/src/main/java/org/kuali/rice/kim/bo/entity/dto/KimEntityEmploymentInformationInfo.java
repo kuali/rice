@@ -15,13 +15,13 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
-import org.kuali.rice.kim.bo.entity.EntityEmploymentInformation;
+import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
 import org.kuali.rice.kns.util.KualiDecimal;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class KimEntityEmploymentInformationInfo extends KimInactivatableInfo implements EntityEmploymentInformation {
+public class KimEntityEmploymentInformationInfo extends KimInactivatableInfo implements KimEntityEmploymentInformation {
 
 	private static final long serialVersionUID = 1L;
 
@@ -44,7 +44,7 @@ public class KimEntityEmploymentInformationInfo extends KimInactivatableInfo imp
 	/**
 	 * 
 	 */
-	public KimEntityEmploymentInformationInfo( EntityEmploymentInformation eei ) {
+	public KimEntityEmploymentInformationInfo( KimEntityEmploymentInformation eei ) {
 		if ( eei != null ) {
 			entityEmploymentId = unNullify( eei.getEntityEmploymentId() );
 			employeeId = unNullify( eei.getEmployeeId() );
@@ -60,42 +60,42 @@ public class KimEntityEmploymentInformationInfo extends KimInactivatableInfo imp
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityEmploymentInformation#getBaseSalaryAmount()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#getBaseSalaryAmount()
 	 */
 	public KualiDecimal getBaseSalaryAmount() {
 		return baseSalaryAmount;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityEmploymentInformation#getEmployeeStatusCode()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#getEmployeeStatusCode()
 	 */
 	public String getEmployeeStatusCode() {
 		return employeeStatusCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityEmploymentInformation#getEmployeeTypeCode()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#getEmployeeTypeCode()
 	 */
 	public String getEmployeeTypeCode() {
 		return employeeTypeCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityEmploymentInformation#getEntityAffiliationId()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#getEntityAffiliationId()
 	 */
 	public String getEntityAffiliationId() {
 		return entityAffiliationId;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityEmploymentInformation#getEntityEmploymentId()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#getEntityEmploymentId()
 	 */
 	public String getEntityEmploymentId() {
 		return entityEmploymentId;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityEmploymentInformation#isPrimary()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#isPrimary()
 	 */
 	public boolean isPrimary() {
 		return primary;

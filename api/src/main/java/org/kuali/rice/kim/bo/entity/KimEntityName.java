@@ -23,7 +23,7 @@ import org.kuali.rice.kns.bo.DefaultableInactivateable;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public interface EntityName extends DefaultableInactivateable {
+public interface KimEntityName extends DefaultableInactivateable {
 	
 	String getEntityNameId();
 	

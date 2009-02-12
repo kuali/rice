@@ -4,7 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.entity.EntityPrivacyPreferences;
+import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -71,7 +71,7 @@ public class UserUtils {
 	}
 	
 	public static boolean isEntityNameRestricted(String entityId) {
-		EntityPrivacyPreferences privacy = getIdentityManagementService().getEntityPrivacyPreferences( entityId );
+		KimEntityPrivacyPreferences privacy = getIdentityManagementService().getEntityPrivacyPreferences( entityId );
 		if ( ObjectUtils.isNotNull(privacy) ) {
 			return privacy.isSuppressName();
 		}
@@ -79,7 +79,7 @@ public class UserUtils {
 	}
 
 	public static boolean isEntityEmailRestricted(String entityId) {
-		EntityPrivacyPreferences privacy = getIdentityManagementService().getEntityPrivacyPreferences( entityId );
+		KimEntityPrivacyPreferences privacy = getIdentityManagementService().getEntityPrivacyPreferences( entityId );
 		if (ObjectUtils.isNotNull(privacy) ) {
 			return privacy.isSuppressEmail();
 		}

@@ -17,12 +17,12 @@ package org.kuali.rice.kim.bo.entity.dto;
 
 import java.io.Serializable;
 
-import org.kuali.rice.kim.bo.entity.EntityName;
+import org.kuali.rice.kim.bo.entity.KimEntityName;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class KimEntityNameInfo extends KimDefaultableInfo implements EntityName, Serializable {
+public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityName, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -43,7 +43,7 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements EntityName,
 	/**
 	 * 
 	 */
-	public KimEntityNameInfo( EntityName name ) {
+	public KimEntityNameInfo( KimEntityName name ) {
 		if ( name != null ) {
 			entityNameId = name.getEntityNameId();
 			nameTypeCode = name.getNameTypeCode();
@@ -58,49 +58,49 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements EntityName,
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityName#getEntityNameId()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getEntityNameId()
 	 */
 	public String getEntityNameId() {
 		return entityNameId;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityName#getFirstName()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getFirstName()
 	 */
 	public String getFirstName() {
 		return firstName;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityName#getLastName()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getLastName()
 	 */
 	public String getLastName() {
 		return lastName;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityName#getMiddleName()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getMiddleName()
 	 */
 	public String getMiddleName() {
 		return middleName;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityName#getNameTypeCode()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getNameTypeCode()
 	 */
 	public String getNameTypeCode() {
 		return nameTypeCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityName#getSuffix()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getSuffix()
 	 */
 	public String getSuffix() {
 		return suffix;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityName#getTitle()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getTitle()
 	 */
 	public String getTitle() {
 		return title;
@@ -133,7 +133,7 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements EntityName,
 	/**
 	 * This default implementation formats the name as LAST, FIRST MIDDLE.
 	 * 
-	 * @see org.kuali.rice.kim.bo.entity.EntityName#getFormattedName()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getFormattedName()
 	 */
 	public String getFormattedName() {
 		return getLastName() + ", " + getFirstName() + (getMiddleName()==null?"":" " + getMiddleName());

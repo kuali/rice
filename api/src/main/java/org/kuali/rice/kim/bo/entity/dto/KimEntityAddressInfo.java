@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
-import org.kuali.rice.kim.bo.entity.EntityAddress;
+import org.kuali.rice.kim.bo.entity.KimEntityAddress;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class KimEntityAddressInfo extends KimDefaultableInfo implements EntityAddress {
+public class KimEntityAddressInfo extends KimDefaultableInfo implements KimEntityAddress {
 
 	private static final long serialVersionUID = 1L;
 
@@ -43,7 +43,7 @@ public class KimEntityAddressInfo extends KimDefaultableInfo implements EntityAd
 	/**
 	 * 
 	 */
-	public KimEntityAddressInfo( EntityAddress addr ) {
+	public KimEntityAddressInfo( KimEntityAddress addr ) {
 		if ( addr != null ) {
 			entityAddressId = unNullify( addr.getEntityAddressId() );
 			entityTypeCode = unNullify( addr.getEntityTypeCode() );
@@ -61,49 +61,49 @@ public class KimEntityAddressInfo extends KimDefaultableInfo implements EntityAd
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityAddress#getAddressTypeCode()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getAddressTypeCode()
 	 */
 	public String getAddressTypeCode() {
 		return addressTypeCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityAddress#getCityName()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getCityName()
 	 */
 	public String getCityName() {
 		return cityName;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityAddress#getCountryCode()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getCountryCode()
 	 */
 	public String getCountryCode() {
 		return countryCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityAddress#getEntityAddressId()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getEntityAddressId()
 	 */
 	public String getEntityAddressId() {
 		return entityAddressId;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityAddress#getLine1()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getLine1()
 	 */
 	public String getLine1() {
 		return line1;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityAddress#getLine2()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getLine2()
 	 */
 	public String getLine2() {
 		return line2;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityAddress#getLine3()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getLine3()
 	 */
 	public String getLine3() {
 		return line3;
@@ -112,14 +112,14 @@ public class KimEntityAddressInfo extends KimDefaultableInfo implements EntityAd
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kim.bo.entity.EntityAddress#getPostalCode()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getPostalCode()
 	 */
 	public String getPostalCode() {
 		return postalCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityAddress#getStateCode()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getStateCode()
 	 */
 	public String getStateCode() {
 		return stateCode;

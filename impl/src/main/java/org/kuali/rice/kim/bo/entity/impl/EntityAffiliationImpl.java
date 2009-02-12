@@ -25,7 +25,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.kuali.rice.kim.bo.entity.EntityAffiliation;
+import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
 import org.kuali.rice.kim.bo.reference.AffiliationType;
 import org.kuali.rice.kim.bo.reference.impl.AffiliationTypeImpl;
 
@@ -34,7 +34,7 @@ import org.kuali.rice.kim.bo.reference.impl.AffiliationTypeImpl;
  */
 @Entity
 @Table(name = "KRIM_ENTITY_AFLTN_T")
-public class EntityAffiliationImpl extends DefaultableEntityDataBase implements EntityAffiliation {
+public class EntityAffiliationImpl extends DefaultableEntityDataBase implements KimEntityAffiliation {
 
 	private static final long serialVersionUID = 1L;
 
@@ -59,35 +59,35 @@ public class EntityAffiliationImpl extends DefaultableEntityDataBase implements 
 	// protected Campus campus;
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityAffiliation#getAffiliationTypeCode()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityAffiliation#getAffiliationTypeCode()
 	 */
 	public String getAffiliationTypeCode() {
 		return affiliationTypeCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityAffiliation#getCampusCode()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityAffiliation#getCampusCode()
 	 */
 	public String getCampusCode() {
 		return campusCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityAffiliation#getEntityAffiliationId()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityAffiliation#getEntityAffiliationId()
 	 */
 	public String getEntityAffiliationId() {
 		return entityAffiliationId;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityAffiliation#setAffiliationTypeCode(java.lang.String)
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityAffiliation#setAffiliationTypeCode(java.lang.String)
 	 */
 	public void setAffiliationTypeCode(String affiliationTypeCode) {
 		this.affiliationTypeCode = affiliationTypeCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityAffiliation#setCampusCode(java.lang.String)
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityAffiliation#setCampusCode(java.lang.String)
 	 */
 	public void setCampusCode(String campusCode) {
 		this.campusCode = campusCode;

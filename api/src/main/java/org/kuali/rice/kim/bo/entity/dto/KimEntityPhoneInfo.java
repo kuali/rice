@@ -16,12 +16,12 @@
 package org.kuali.rice.kim.bo.entity.dto;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kim.bo.entity.EntityPhone;
+import org.kuali.rice.kim.bo.entity.KimEntityPhone;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class KimEntityPhoneInfo extends KimDefaultableInfo implements EntityPhone {
+public class KimEntityPhoneInfo extends KimDefaultableInfo implements KimEntityPhone {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -41,7 +41,7 @@ public class KimEntityPhoneInfo extends KimDefaultableInfo implements EntityPhon
 	/**
 	 * 
 	 */
-	public KimEntityPhoneInfo( EntityPhone phone ) {
+	public KimEntityPhoneInfo( KimEntityPhone phone ) {
 		if ( phone != null ) {
 			entityPhoneId = unNullify( phone.getEntityPhoneId() );
 			entityTypeCode = unNullify( phone.getEntityTypeCode() );
@@ -55,35 +55,35 @@ public class KimEntityPhoneInfo extends KimDefaultableInfo implements EntityPhon
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityPhone#getCountryCode()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getCountryCode()
 	 */
 	public String getCountryCode() {
 		return countryCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityPhone#getEntityPhoneId()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getEntityPhoneId()
 	 */
 	public String getEntityPhoneId() {
 		return entityPhoneId;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityPhone#getExtensionNumber()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getExtensionNumber()
 	 */
 	public String getExtensionNumber() {
 		return extensionNumber;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityPhone#getPhoneNumber()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getPhoneNumber()
 	 */
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityPhone#getPhoneTypeCode()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getPhoneTypeCode()
 	 */
 	public String getPhoneTypeCode() {
 		return phoneTypeCode;
@@ -106,7 +106,7 @@ public class KimEntityPhoneInfo extends KimDefaultableInfo implements EntityPhon
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.DefaultableEntityTypeData#getEntityTypeCode()
+	 * @see org.kuali.rice.kim.bo.entity.KimDefaultableEntityTypeData#getEntityTypeCode()
 	 */
 	public String getEntityTypeCode() {
 		return entityTypeCode;

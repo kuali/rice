@@ -21,11 +21,15 @@ package org.kuali.rice.kim.bo.entity;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public interface EntityPrivacyPreferences {
+public interface KimEntityPhone extends KimDefaultableEntityTypeData {
 
-	boolean isSuppressName();
-	boolean isSuppressAddress();
-	boolean isSuppressEmail();
-	boolean isSuppressPhone();
-	boolean isSuppressPersonal();
+	String getEntityPhoneId();
+
+	String getPhoneTypeCode();
+	String getPhoneNumber();
+	String getExtensionNumber();
+	String getCountryCode();
+	
+	String getFormattedPhoneNumber();
+	
 }

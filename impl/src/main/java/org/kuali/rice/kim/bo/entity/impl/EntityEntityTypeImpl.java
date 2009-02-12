@@ -28,10 +28,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.kuali.rice.kim.bo.entity.EntityAddress;
-import org.kuali.rice.kim.bo.entity.EntityEmail;
-import org.kuali.rice.kim.bo.entity.EntityEntityType;
-import org.kuali.rice.kim.bo.entity.EntityPhone;
+import org.kuali.rice.kim.bo.entity.KimEntityAddress;
+import org.kuali.rice.kim.bo.entity.KimEntityEmail;
+import org.kuali.rice.kim.bo.entity.KimEntityEntityType;
+import org.kuali.rice.kim.bo.entity.KimEntityPhone;
 import org.kuali.rice.kim.bo.reference.EntityType;
 import org.kuali.rice.kim.bo.reference.impl.EntityTypeImpl;
 import org.kuali.rice.kns.util.TypedArrayList;
@@ -41,7 +41,7 @@ import org.kuali.rice.kns.util.TypedArrayList;
  */
 @Entity
 @Table(name = "KRIM_ENTITY_ENT_TYP_T")
-public class EntityEntityTypeImpl extends InactivatableEntityDataBase implements EntityEntityType {
+public class EntityEntityTypeImpl extends InactivatableEntityDataBase implements KimEntityEntityType {
 
 	private static final long serialVersionUID = 1L;
 
@@ -59,46 +59,46 @@ public class EntityEntityTypeImpl extends InactivatableEntityDataBase implements
 	
 	@OneToMany(targetEntity = EntityEmailImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
-	protected List<EntityEmail> emailAddresses = new TypedArrayList(EntityEmailImpl.class);
+	protected List<KimEntityEmail> emailAddresses = new TypedArrayList(EntityEmailImpl.class);
 	
 	@OneToMany(targetEntity = EntityPhoneImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
-	protected List<EntityPhone> phoneNumbers = new TypedArrayList(EntityPhoneImpl.class);
+	protected List<KimEntityPhone> phoneNumbers = new TypedArrayList(EntityPhoneImpl.class);
 	
 	@OneToMany(targetEntity = EntityAddressImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
-	protected List<EntityAddress> addresses = new TypedArrayList(EntityAddressImpl.class);
+	protected List<KimEntityAddress> addresses = new TypedArrayList(EntityAddressImpl.class);
 	
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityEntityType#getAddresses()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEntityType#getAddresses()
 	 */
-	public List<EntityAddress> getAddresses() {
+	public List<KimEntityAddress> getAddresses() {
 		return addresses;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityEntityType#getEmailAddresses()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEntityType#getEmailAddresses()
 	 */
-	public List<EntityEmail> getEmailAddresses() {
+	public List<KimEntityEmail> getEmailAddresses() {
 		return emailAddresses;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityEntityType#getPhoneNumbers()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEntityType#getPhoneNumbers()
 	 */
-	public List<EntityPhone> getPhoneNumbers() {
+	public List<KimEntityPhone> getPhoneNumbers() {
 		return phoneNumbers;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityEntityType#getEntityType()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEntityType#getEntityType()
 	 */
 	public EntityType getEntityType() {
 		return entityType;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityEntityType#getEntityTypeCode()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEntityType#getEntityTypeCode()
 	 */
 	public String getEntityTypeCode() {
 		return entityTypeCode;
@@ -133,40 +133,40 @@ public class EntityEntityTypeImpl extends InactivatableEntityDataBase implements
 		this.entityTypeCode = entityTypeCode;
 	}
 
-	public void setEmailAddresses(List<EntityEmail> entityEmailAddresses) {
+	public void setEmailAddresses(List<KimEntityEmail> entityEmailAddresses) {
 		this.emailAddresses = entityEmailAddresses;
 	}
 
-	public void setPhoneNumbers(List<EntityPhone> entityPhoneNumbers) {
+	public void setPhoneNumbers(List<KimEntityPhone> entityPhoneNumbers) {
 		this.phoneNumbers = entityPhoneNumbers;
 	}
 
-	public void setAddresses(List<EntityAddress> entityAddresses) {
+	public void setAddresses(List<KimEntityAddress> entityAddresses) {
 		this.addresses = entityAddresses;
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityEntityType#getDefaultAddress()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEntityType#getDefaultAddress()
 	 */
-	public EntityAddress getDefaultAddress() {
-		return (EntityAddress)getDefaultItem( addresses );
+	public KimEntityAddress getDefaultAddress() {
+		return (KimEntityAddress)getDefaultItem( addresses );
 	}
 	
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kim.bo.entity.EntityEntityType#getDefaultEmailAddress()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEntityType#getDefaultEmailAddress()
 	 */
-	public EntityEmail getDefaultEmailAddress() {
-		return (EntityEmail)getDefaultItem( emailAddresses );
+	public KimEntityEmail getDefaultEmailAddress() {
+		return (KimEntityEmail)getDefaultItem( emailAddresses );
 	}
 	
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kim.bo.entity.EntityEntityType#getDefaultPhoneNumber()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEntityType#getDefaultPhoneNumber()
 	 */
-	public EntityPhone getDefaultPhoneNumber() {
-		return (EntityPhone)getDefaultItem( phoneNumbers );
+	public KimEntityPhone getDefaultPhoneNumber() {
+		return (KimEntityPhone)getDefaultItem( phoneNumbers );
 	}
 }

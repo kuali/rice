@@ -3,10 +3,10 @@ package org.kuali.rice.kim.service;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kim.bo.entity.EntityName;
+import org.kuali.rice.kim.bo.entity.KimEntityName;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.entity.NamePrincipalName;
+import org.kuali.rice.kim.bo.entity.KimEntityNamePrincipalName;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityPrivacyPreferencesInfo;
 
@@ -43,9 +43,9 @@ public interface IdentityService {
 	
 	KimEntityPrivacyPreferencesInfo getEntityPrivacyPreferences( String entityId );
 	
-    Map<String, NamePrincipalName> getDefaultNamesForPrincipalIds(List<String> principalIds);
+    Map<String, KimEntityNamePrincipalName> getDefaultNamesForPrincipalIds(List<String> principalIds);
     
-    Map<String, EntityName> getDefaultNamesForEntityIds(List<String> entityIds);
+    Map<String, KimEntityName> getDefaultNamesForEntityIds(List<String> entityIds);
 
 	/** Return the entity ID for the given principal */
 	String getEntityIdByPrincipalId( String principalId );

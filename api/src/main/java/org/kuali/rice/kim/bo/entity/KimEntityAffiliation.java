@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.kim.bo.entity;
 
-import org.kuali.rice.kns.bo.Inactivateable;
-import org.kuali.rice.kns.util.KualiDecimal;
+import org.kuali.rice.kns.bo.DefaultableInactivateable;
+
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -24,17 +24,11 @@ import org.kuali.rice.kns.util.KualiDecimal;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public interface EntityEmploymentInformation extends Inactivateable {
+public interface KimEntityAffiliation extends DefaultableInactivateable {
 
-	String getEntityEmploymentId();
-	
 	String getEntityAffiliationId();
-	String getEmployeeStatusCode();
-	String getEmployeeTypeCode();
-	String getPrimaryDepartmentCode();
-	String getEmployeeId();
-	String getEmploymentRecordId();
-	KualiDecimal getBaseSalaryAmount();
-	boolean isPrimary();
 
+	String getAffiliationTypeCode();
+	String getCampusCode();
+		
 }

@@ -7,14 +7,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kim.bo.entity.EntityAffiliation;
-import org.kuali.rice.kim.bo.entity.EntityEntityType;
-import org.kuali.rice.kim.bo.entity.EntityExternalIdentifier;
-import org.kuali.rice.kim.bo.entity.EntityName;
-import org.kuali.rice.kim.bo.entity.EntityPrivacyPreferences;
+import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
+import org.kuali.rice.kim.bo.entity.KimEntityEntityType;
+import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
+import org.kuali.rice.kim.bo.entity.KimEntityName;
+import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.entity.NamePrincipalName;
+import org.kuali.rice.kim.bo.entity.KimEntityNamePrincipalName;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityAddressInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityAffiliationInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
@@ -26,7 +26,7 @@ import org.kuali.rice.kim.bo.entity.dto.KimEntityNameInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityPhoneInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityPrivacyPreferencesInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
-import org.kuali.rice.kim.bo.entity.dto.NamePrincipalNameInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
 import org.kuali.rice.kim.bo.entity.impl.EntityNameImpl;
 import org.kuali.rice.kim.bo.entity.impl.EntityPrivacyPreferencesImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
@@ -136,7 +136,7 @@ public class IdentityServiceImpl implements IdentityService {
 		info.setDefaultName( new KimEntityNameInfo( entity.getDefaultName() ) );
 		ArrayList<KimEntityEntityTypeDefaultInfo> entityTypesInfo = new ArrayList<KimEntityEntityTypeDefaultInfo>( entity.getEntityTypes().size() );
 		info.setEntityTypes( entityTypesInfo );
-		for ( EntityEntityType entityEntityType : entity.getEntityTypes() ) {
+		for ( KimEntityEntityType entityEntityType : entity.getEntityTypes() ) {
 			KimEntityEntityTypeDefaultInfo typeInfo = new KimEntityEntityTypeDefaultInfo();
 			typeInfo.setEntityTypeCode( entityEntityType.getEntityTypeCode() );
 			typeInfo.setDefaultAddress( new KimEntityAddressInfo( entityEntityType.getDefaultAddress() ) );
@@ -147,7 +147,7 @@ public class IdentityServiceImpl implements IdentityService {
 		
 		ArrayList<KimEntityAffiliationInfo> affInfo = new ArrayList<KimEntityAffiliationInfo>( entity.getAffiliations().size() );
 		info.setAffiliations( affInfo );
-		for ( EntityAffiliation aff : entity.getAffiliations() ) {
+		for ( KimEntityAffiliation aff : entity.getAffiliations() ) {
 			affInfo.add( new KimEntityAffiliationInfo( aff ) );
 			if ( aff.isActive() && aff.isDefault() ) {
 				info.setDefaultAffiliation( affInfo.get( affInfo.size() - 1 ) );
@@ -156,7 +156,7 @@ public class IdentityServiceImpl implements IdentityService {
 		info.setPrimaryEmployment( new KimEntityEmploymentInformationInfo( entity.getPrimaryEmployment() ) );
 		ArrayList<KimEntityExternalIdentifierInfo> idInfo = new ArrayList<KimEntityExternalIdentifierInfo>( entity.getExternalIdentifiers().size() );
 		info.setExternalIdentifiers( idInfo );
-		for ( EntityExternalIdentifier id : entity.getExternalIdentifiers() ) {
+		for ( KimEntityExternalIdentifier id : entity.getExternalIdentifiers() ) {
 			idInfo.add( new KimEntityExternalIdentifierInfo( id ) );
 		}
 		return info;
@@ -168,7 +168,7 @@ public class IdentityServiceImpl implements IdentityService {
 	public KimEntityPrivacyPreferencesInfo getEntityPrivacyPreferences(String entityId) {
 		Map<String,String> criteria = new HashMap<String,String>(1);
         criteria.put("entityId", entityId);
-		return new KimEntityPrivacyPreferencesInfo( (EntityPrivacyPreferences)getBusinessObjectService().findByPrimaryKey(EntityPrivacyPreferencesImpl.class, criteria) );
+		return new KimEntityPrivacyPreferencesInfo( (KimEntityPrivacyPreferences)getBusinessObjectService().findByPrimaryKey(EntityPrivacyPreferencesImpl.class, criteria) );
 	}
 
 	/**
@@ -280,16 +280,16 @@ public class IdentityServiceImpl implements IdentityService {
 	/**
 	 * @see org.kuali.rice.kim.service.IdentityService#getDefaultNamesForEntityIds(java.util.List)
 	 */
-	public Map<String, EntityName> getDefaultNamesForEntityIds(List<String> entityIds) {
+	public Map<String, KimEntityName> getDefaultNamesForEntityIds(List<String> entityIds) {
 		// TODO - Use a DAO
-		Map<String, EntityName> result = new HashMap<String, EntityName>(entityIds.size());
+		Map<String, KimEntityName> result = new HashMap<String, KimEntityName>(entityIds.size());
 		
 		for(String s : entityIds) {
 			Map<String,String> criteria = new HashMap<String,String>();
 			criteria.put("entityId", s);
 			criteria.put("dflt", "Y");
 			
-			EntityName name = (EntityNameImpl) getBusinessObjectService().findByPrimaryKey(EntityNameImpl.class, criteria);
+			KimEntityName name = (EntityNameImpl) getBusinessObjectService().findByPrimaryKey(EntityNameImpl.class, criteria);
 			
 			result.put(s, new KimEntityNameInfo( name ) );
 		}
@@ -300,13 +300,13 @@ public class IdentityServiceImpl implements IdentityService {
 	/**
 	 * @see org.kuali.rice.kim.service.IdentityService#getDefaultNamesForPrincipalIds(java.util.List)
 	 */
-	public Map<String, NamePrincipalName> getDefaultNamesForPrincipalIds(List<String> principalIds) {
+	public Map<String, KimEntityNamePrincipalName> getDefaultNamesForPrincipalIds(List<String> principalIds) {
 		// TODO - use a dao?
 		// TODO - what if principal not found, NullPointerException
-		Map<String, NamePrincipalName> result = new HashMap<String, NamePrincipalName>(principalIds.size());
+		Map<String, KimEntityNamePrincipalName> result = new HashMap<String, KimEntityNamePrincipalName>(principalIds.size());
 		
 		for(String s : principalIds) {
-			NamePrincipalNameInfo namePrincipal = new NamePrincipalNameInfo();
+			KimEntityNamePrincipalNameInfo namePrincipal = new KimEntityNamePrincipalNameInfo();
 			
 			Map<String,String> criteria = new HashMap<String,String>();
 			criteria.put("principalId", s);
@@ -317,7 +317,7 @@ public class IdentityServiceImpl implements IdentityService {
 			criteria.clear();
 			criteria.put("entityId", principal.getEntityId());
 			criteria.put("dflt", "Y");
-			EntityName name = (EntityNameImpl) getBusinessObjectService().findByPrimaryKey(EntityNameImpl.class, criteria);
+			KimEntityName name = (EntityNameImpl) getBusinessObjectService().findByPrimaryKey(EntityNameImpl.class, criteria);
 			
 			namePrincipal.setDefaultEntityName(name);
 			

@@ -82,49 +82,49 @@ public class PersonDocumentAddress extends PersonDocumentBoDefaultBase {
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityAddress#getAddressTypeCode()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getAddressTypeCode()
 	 */
 	public String getAddressTypeCode() {
 		return addressTypeCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityAddress#getCityName()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getCityName()
 	 */
 	public String getCityName() {
 		return cityName;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityAddress#getCountryCode()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getCountryCode()
 	 */
 	public String getCountryCode() {
 		return countryCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityAddress#getEntityAddressId()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getEntityAddressId()
 	 */
 	public String getEntityAddressId() {
 		return entityAddressId;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityAddress#getLine1()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getLine1()
 	 */
 	public String getLine1() {
 		return line1;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityAddress#getLine2()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getLine2()
 	 */
 	public String getLine2() {
 		return line2;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityAddress#getLine3()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getLine3()
 	 */
 	public String getLine3() {
 		return line3;
@@ -133,84 +133,84 @@ public class PersonDocumentAddress extends PersonDocumentBoDefaultBase {
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kim.bo.entity.EntityAddress#getPostalCode()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getPostalCode()
 	 */
 	public String getPostalCode() {
 		return postalCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityAddress#getStateCode()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getStateCode()
 	 */
 	public String getStateCode() {
 		return stateCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityAddress#setAddressTypeCode(java.lang.String)
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#setAddressTypeCode(java.lang.String)
 	 */
 	public void setAddressTypeCode(String addressTypeCode) {
 		this.addressTypeCode = addressTypeCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityAddress#setCityName(java.lang.String)
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#setCityName(java.lang.String)
 	 */
 	public void setCityName(String cityName) {
 		this.cityName = cityName;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityAddress#setCountryCode(java.lang.String)
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#setCountryCode(java.lang.String)
 	 */
 	public void setCountryCode(String countryCode) {
 		this.countryCode = countryCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityAddress#setLine1(java.lang.String)
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#setLine1(java.lang.String)
 	 */
 	public void setLine1(String line1) {
 		this.line1 = line1;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityAddress#setLine2(java.lang.String)
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#setLine2(java.lang.String)
 	 */
 	public void setLine2(String line2) {
 		this.line2 = line2;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityAddress#setLine3(java.lang.String)
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#setLine3(java.lang.String)
 	 */
 	public void setLine3(String line3) {
 		this.line3 = line3;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityAddress#setPostalCode(java.lang.String)
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#setPostalCode(java.lang.String)
 	 */
 	public void setPostalCode(String postalCode) {
 		this.postalCode = postalCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityAddress#setStateCode(java.lang.String)
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#setStateCode(java.lang.String)
 	 */
 	public void setStateCode(String stateCode) {
 		this.stateCode = stateCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.DefaultableEntityTypeData#getEntityTypeCode()
+	 * @see org.kuali.rice.kim.bo.entity.KimDefaultableEntityTypeData#getEntityTypeCode()
 	 */
 	public String getEntityTypeCode() {
 		return entityTypeCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.DefaultableEntityTypeData#setEntityTypeCode(java.lang.String)
+	 * @see org.kuali.rice.kim.bo.entity.KimDefaultableEntityTypeData#setEntityTypeCode(java.lang.String)
 	 */
 	public void setEntityTypeCode(String entityTypeCode) {
 		this.entityTypeCode = entityTypeCode;

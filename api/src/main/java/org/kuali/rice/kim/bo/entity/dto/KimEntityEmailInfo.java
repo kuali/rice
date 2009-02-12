@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
-import org.kuali.rice.kim.bo.entity.EntityEmail;
+import org.kuali.rice.kim.bo.entity.KimEntityEmail;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class KimEntityEmailInfo extends KimDefaultableInfo implements EntityEmail {
+public class KimEntityEmailInfo extends KimDefaultableInfo implements KimEntityEmail {
 
 	private static final long serialVersionUID = 1L;
 
@@ -39,7 +39,7 @@ public class KimEntityEmailInfo extends KimDefaultableInfo implements EntityEmai
 	/**
 	 * 
 	 */
-	public KimEntityEmailInfo( EntityEmail email ) {
+	public KimEntityEmailInfo( KimEntityEmail email ) {
 		if ( email != null ) {
 			entityEmailId = unNullify( email.getEntityEmailId() );
 			entityTypeCode = unNullify( email.getEntityTypeCode() );
@@ -51,21 +51,21 @@ public class KimEntityEmailInfo extends KimDefaultableInfo implements EntityEmai
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityEmail#getEmailAddress()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmail#getEmailAddress()
 	 */
 	public String getEmailAddress() {
 		return emailAddress;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityEmail#getEmailTypeCode()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmail#getEmailTypeCode()
 	 */
 	public String getEmailTypeCode() {
 		return emailTypeCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityEmail#getEntityEmailId()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmail#getEntityEmailId()
 	 */
 	public String getEntityEmailId() {
 		return entityEmailId;
@@ -80,7 +80,7 @@ public class KimEntityEmailInfo extends KimDefaultableInfo implements EntityEmai
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.DefaultableEntityTypeData#getEntityTypeCode()
+	 * @see org.kuali.rice.kim.bo.entity.KimDefaultableEntityTypeData#getEntityTypeCode()
 	 */
 	public String getEntityTypeCode() {
 		return entityTypeCode;

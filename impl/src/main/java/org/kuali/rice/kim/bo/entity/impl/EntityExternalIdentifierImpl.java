@@ -25,7 +25,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.kuali.rice.kim.bo.entity.EntityExternalIdentifier;
+import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
 import org.kuali.rice.kim.bo.reference.ExternalIdentifierType;
 
 /**
@@ -33,7 +33,7 @@ import org.kuali.rice.kim.bo.reference.ExternalIdentifierType;
  */
 @Entity
 @Table(name = "KRIM_ENTITY_EXT_ID_T")
-public class EntityExternalIdentifierImpl extends EntityDataBase implements EntityExternalIdentifier {
+public class EntityExternalIdentifierImpl extends EntityDataBase implements KimEntityExternalIdentifier {
 
 	private static final long serialVersionUID = 1L;
 
@@ -55,35 +55,35 @@ public class EntityExternalIdentifierImpl extends EntityDataBase implements Enti
 	protected ExternalIdentifierType externalIdentifierType;
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityExternalIdentifier#getEntityExternalIdentifierId()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier#getEntityExternalIdentifierId()
 	 */
 	public String getEntityExternalIdentifierId() {
 		return entityExternalIdentifierId;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityExternalIdentifier#getExternalId()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier#getExternalId()
 	 */
 	public String getExternalId() {
 		return externalId;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityExternalIdentifier#getExternalIdentifierTypeCode()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier#getExternalIdentifierTypeCode()
 	 */
 	public String getExternalIdentifierTypeCode() {
 		return externalIdentifierTypeCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityExternalIdentifier#setExternalId(java.lang.String)
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier#setExternalId(java.lang.String)
 	 */
 	public void setExternalId(String externalId) {
 		this.externalId = externalId;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityExternalIdentifier#setExternalIdentifierTypeCode(java.lang.String)
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier#setExternalIdentifierTypeCode(java.lang.String)
 	 */
 	public void setExternalIdentifierTypeCode(String externalIdentifierTypeCode) {
 		this.externalIdentifierTypeCode = externalIdentifierTypeCode;

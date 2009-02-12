@@ -68,77 +68,77 @@ public class PersonDocumentPhone extends PersonDocumentBoDefaultBase {
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityPhone#getCountryCode()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getCountryCode()
 	 */
 	public String getCountryCode() {
 		return countryCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityPhone#getEntityPhoneId()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getEntityPhoneId()
 	 */
 	public String getEntityPhoneId() {
 		return entityPhoneId;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityPhone#getExtensionNumber()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getExtensionNumber()
 	 */
 	public String getExtensionNumber() {
 		return extensionNumber;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityPhone#getPhoneNumber()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getPhoneNumber()
 	 */
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityPhone#getPhoneTypeCode()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getPhoneTypeCode()
 	 */
 	public String getPhoneTypeCode() {
 		return phoneTypeCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityPhone#setCountryCode(java.lang.String)
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#setCountryCode(java.lang.String)
 	 */
 	public void setCountryCode(String countryCode) {
 		this.countryCode = countryCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityPhone#setExtensionNumber(java.lang.String)
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#setExtensionNumber(java.lang.String)
 	 */
 	public void setExtensionNumber(String extensionNumber) {
 		this.extensionNumber = extensionNumber;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityPhone#setPhoneNumber(java.lang.String)
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#setPhoneNumber(java.lang.String)
 	 */
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityPhone#setPhoneTypeCode(java.lang.String)
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#setPhoneTypeCode(java.lang.String)
 	 */
 	public void setPhoneTypeCode(String phoneTypeCode) {
 		this.phoneTypeCode = phoneTypeCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.DefaultableEntityTypeData#getEntityTypeCode()
+	 * @see org.kuali.rice.kim.bo.entity.KimDefaultableEntityTypeData#getEntityTypeCode()
 	 */
 	public String getEntityTypeCode() {
 		return entityTypeCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.DefaultableEntityTypeData#setEntityTypeCode(java.lang.String)
+	 * @see org.kuali.rice.kim.bo.entity.KimDefaultableEntityTypeData#setEntityTypeCode(java.lang.String)
 	 */
 	public void setEntityTypeCode(String entityTypeCode) {
 		this.entityTypeCode = entityTypeCode;

@@ -25,7 +25,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.kuali.rice.kim.bo.entity.EntityEmail;
+import org.kuali.rice.kim.bo.entity.KimEntityEmail;
 import org.kuali.rice.kim.bo.reference.EmailType;
 import org.kuali.rice.kim.bo.reference.impl.EmailTypeImpl;
 
@@ -34,7 +34,7 @@ import org.kuali.rice.kim.bo.reference.impl.EmailTypeImpl;
  */
 @Entity
 @Table(name = "KRIM_ENTITY_EMAIL_T")
-public class EntityEmailImpl extends DefaultableEntityDataBase implements EntityEmail {
+public class EntityEmailImpl extends DefaultableEntityDataBase implements KimEntityEmail {
 
 	private static final long serialVersionUID = 1L;
 
@@ -59,49 +59,49 @@ public class EntityEmailImpl extends DefaultableEntityDataBase implements Entity
 	protected EmailType emailType;
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityEmail#getEmailAddress()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmail#getEmailAddress()
 	 */
 	public String getEmailAddress() {
 		return emailAddress;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityEmail#getEmailTypeCode()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmail#getEmailTypeCode()
 	 */
 	public String getEmailTypeCode() {
 		return emailTypeCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityEmail#getEntityEmailId()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmail#getEntityEmailId()
 	 */
 	public String getEntityEmailId() {
 		return entityEmailId;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityEmail#setEmailAddress(java.lang.String)
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmail#setEmailAddress(java.lang.String)
 	 */
 	public void setEmailAddress(String emailAddress) {
 		this.emailAddress = emailAddress;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityEmail#setEmailTypeCode(java.lang.String)
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmail#setEmailTypeCode(java.lang.String)
 	 */
 	public void setEmailTypeCode(String emailTypeCode) {
 		this.emailTypeCode = emailTypeCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.DefaultableEntityTypeData#getEntityTypeCode()
+	 * @see org.kuali.rice.kim.bo.entity.KimDefaultableEntityTypeData#getEntityTypeCode()
 	 */
 	public String getEntityTypeCode() {
 		return entityTypeCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.DefaultableEntityTypeData#setEntityTypeCode(java.lang.String)
+	 * @see org.kuali.rice.kim.bo.entity.KimDefaultableEntityTypeData#setEntityTypeCode(java.lang.String)
 	 */
 	public void setEntityTypeCode(String entityTypeCode) {
 		this.entityTypeCode = entityTypeCode;

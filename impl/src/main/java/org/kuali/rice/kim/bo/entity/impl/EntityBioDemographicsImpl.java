@@ -23,14 +23,14 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.kuali.rice.kim.bo.entity.EntityBioDemographics;
+import org.kuali.rice.kim.bo.entity.KimEntityBioDemographics;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
 @Table(name = "KRIM_ENTITY_BIO_T")
-public class EntityBioDemographicsImpl extends EntityDataBase implements EntityBioDemographics {
+public class EntityBioDemographicsImpl extends EntityDataBase implements KimEntityBioDemographics {
 
 	private static final long serialVersionUID = 1L;
 
@@ -48,21 +48,21 @@ public class EntityBioDemographicsImpl extends EntityDataBase implements EntityB
 	protected String genderCode;
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityBioDemographics#getBirthDate()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityBioDemographics#getBirthDate()
 	 */
 	public Date getBirthDate() {
 		return birthDate;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityBioDemographics#getEthnicityCode()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityBioDemographics#getEthnicityCode()
 	 */
 	public String getEthnicityCode() {
 		return ethnicityCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityBioDemographics#getGenderCode()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityBioDemographics#getGenderCode()
 	 */
 	public String getGenderCode() {
 		return genderCode;

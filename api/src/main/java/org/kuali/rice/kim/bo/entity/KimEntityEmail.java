@@ -21,11 +21,11 @@ package org.kuali.rice.kim.bo.entity;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public interface EntityExternalIdentifier {
+public interface KimEntityEmail extends KimDefaultableEntityTypeData {
 
-	String getEntityExternalIdentifierId();
+	String getEntityEmailId();
 	
-	String getExternalIdentifierTypeCode();
+	String getEmailTypeCode();
 	
-	String getExternalId();
+	String getEmailAddress();
 }

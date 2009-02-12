@@ -30,11 +30,11 @@ public interface KimEntity extends Inactivateable {
 	
 	String getEntityId();
 	
-	List<? extends EntityEntityType> getEntityTypes();
+	List<? extends KimEntityEntityType> getEntityTypes();
 	List<? extends KimPrincipal> getPrincipals();
 	
-	List<? extends EntityExternalIdentifier> getExternalIdentifiers();
-	List<? extends EntityAffiliation> getAffiliations();
+	List<? extends KimEntityExternalIdentifier> getExternalIdentifiers();
+	List<? extends KimEntityAffiliation> getAffiliations();
 
 	/**
 	 * Return the list of EntityName objects associated with this EntityType.
@@ -42,7 +42,7 @@ public interface KimEntity extends Inactivateable {
 	 * The returned list will never be null, the implementation will generate an
 	 * empty list as needed.
 	 */
-	List<? extends EntityName> getNames();
+	List<? extends KimEntityName> getNames();
 	
 	
 	/**
@@ -52,7 +52,7 @@ public interface KimEntity extends Inactivateable {
 	 * This method shall not return null.
 	 * 
 	 */
-	List<? extends EntityEmploymentInformation> getEmploymentInformation();
+	List<? extends KimEntityEmploymentInformation> getEmploymentInformation();
 
 	/**
 	 * Returns the privacy preferences object for this Entity.
@@ -61,7 +61,7 @@ public interface KimEntity extends Inactivateable {
 	 * This method shall not return null.
 	 * 
 	 */
-	EntityPrivacyPreferences getPrivacyPreferences();
+	KimEntityPrivacyPreferences getPrivacyPreferences();
 	
 	/**
 	 * Returns the demographic information for this Entity.
@@ -70,24 +70,24 @@ public interface KimEntity extends Inactivateable {
 	 * This method shall not return null.
 	 * 
 	 */
-	EntityBioDemographics getBioDemographics();
+	KimEntityBioDemographics getBioDemographics();
 	
-	List<? extends EntityCitizenship> getCitizenships();
+	List<? extends KimEntityCitizenship> getCitizenships();
 	
 	/**
 	 * Returns the EntityEntityType object corresponding to the given code or null if this
 	 * entity does not have data for that type.
 	 */
-	EntityEntityType getEntityType( String entityTypeCode );
+	KimEntityEntityType getEntityType( String entityTypeCode );
 	
-	EntityEmploymentInformation getPrimaryEmployment();
-	EntityAffiliation getDefaultAffiliation();
-	EntityExternalIdentifier getEntityExternalIdentifier( String externalIdentifierTypeCode );
+	KimEntityEmploymentInformation getPrimaryEmployment();
+	KimEntityAffiliation getDefaultAffiliation();
+	KimEntityExternalIdentifier getEntityExternalIdentifier( String externalIdentifierTypeCode );
 	
 	/** Returns the default name record for the entity.  If no default is defined, then
 	 * it returns the first one found.  If none are defined, it returns null.
 	 */
-	EntityName getDefaultName();
+	KimEntityName getDefaultName();
 
 	
 }

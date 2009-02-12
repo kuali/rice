@@ -26,7 +26,7 @@ import org.kuali.rice.kns.bo.Inactivateable;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public interface EntityEntityType extends Inactivateable {
+public interface KimEntityEntityType extends Inactivateable {
 
 	String getEntityTypeCode();
 	
@@ -38,7 +38,7 @@ public interface EntityEntityType extends Inactivateable {
 	 * The returned list will never be null, the implementation will generate an
 	 * empty list as needed.
 	 */
-	List<EntityAddress> getAddresses();
+	List<KimEntityAddress> getAddresses();
 
 	/**
 	 * Return the list of EntityEmail objects associated with this EntityType.
@@ -46,7 +46,7 @@ public interface EntityEntityType extends Inactivateable {
 	 * The returned list will never be null, the implementation will generate an
 	 * empty list as needed.
 	 */
-	List<EntityEmail> getEmailAddresses();
+	List<KimEntityEmail> getEmailAddresses();
 	
 	/**
 	 * Return the list of EntityPhone objects associated with this EntityType.
@@ -54,20 +54,20 @@ public interface EntityEntityType extends Inactivateable {
 	 * The returned list will never be null, the implementation will generate an
 	 * empty list as needed.
 	 */
-	List<EntityPhone> getPhoneNumbers();
+	List<KimEntityPhone> getPhoneNumbers();
 	
 	/** Returns the default address record for the entity.  If no default is defined, then
 	 * it returns the first one found.  If none are defined, it returns null.
 	 */
-	EntityAddress getDefaultAddress();
+	KimEntityAddress getDefaultAddress();
 
 	/** Returns the default email record for the entity.  If no default is defined, then
 	 * it returns the first one found.  If none are defined, it returns null.
 	 */
-	EntityEmail getDefaultEmailAddress();
+	KimEntityEmail getDefaultEmailAddress();
 
 	/** Returns the default phone record for the entity.  If no default is defined, then
 	 * it returns the first one found.  If none are defined, it returns null.
 	 */
-	EntityPhone getDefaultPhoneNumber();
+	KimEntityPhone getDefaultPhoneNumber();
 }

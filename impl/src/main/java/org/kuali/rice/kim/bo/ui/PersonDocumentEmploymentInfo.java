@@ -85,77 +85,77 @@ public class PersonDocumentEmploymentInfo extends KimDocumentBoBase {
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityEmploymentInformation#getBaseSalaryAmount()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#getBaseSalaryAmount()
 	 */
 	public KualiDecimal getBaseSalaryAmount() {
 		return baseSalaryAmount;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityEmploymentInformation#getEmployeeStatusCode()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#getEmployeeStatusCode()
 	 */
 	public String getEmployeeStatusCode() {
 		return employeeStatusCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityEmploymentInformation#getEmployeeTypeCode()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#getEmployeeTypeCode()
 	 */
 	public String getEmployeeTypeCode() {
 		return employeeTypeCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityEmploymentInformation#getEntityAffiliationId()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#getEntityAffiliationId()
 	 */
 	public String getEntityAffiliationId() {
 		return entityAffiliationId;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityEmploymentInformation#getEntityEmploymentId()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#getEntityEmploymentId()
 	 */
 	public String getEntityEmploymentId() {
 		return entityEmploymentId;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityEmploymentInformation#isPrimary()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#isPrimary()
 	 */
 	public boolean isPrimary() {
 		return primary;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityEmploymentInformation#setAffiliationId(java.lang.String)
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#setAffiliationId(java.lang.String)
 	 */
 	public void setEntityAffiliationId(String entityAffiliationId) {
 		this.entityAffiliationId = entityAffiliationId;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityEmploymentInformation#setBaseSalaryAmount(java.math.BigDecimal)
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#setBaseSalaryAmount(java.math.BigDecimal)
 	 */
 	public void setBaseSalaryAmount(KualiDecimal baseSalaryAmount) {
 		this.baseSalaryAmount = baseSalaryAmount;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityEmploymentInformation#setEmployeeStatusCode(java.lang.String)
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#setEmployeeStatusCode(java.lang.String)
 	 */
 	public void setEmployeeStatusCode(String employeeStatusCode) {
 		this.employeeStatusCode = employeeStatusCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityEmploymentInformation#setEmployeeTypeCode(java.lang.String)
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#setEmployeeTypeCode(java.lang.String)
 	 */
 	public void setEmployeeTypeCode(String employeeTypeCode) {
 		this.employeeTypeCode = employeeTypeCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityEmploymentInformation#setPrimary(boolean)
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#setPrimary(boolean)
 	 */
 	public void setPrimary(boolean primary) {
 		this.primary = primary;

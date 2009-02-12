@@ -21,17 +21,11 @@ package org.kuali.rice.kim.bo.entity;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public interface EntityAddress extends DefaultableEntityTypeData {
-	
-	String getEntityAddressId();
-	
-	String getAddressTypeCode();
-	
-	String getLine1();
-	String getLine2();
-	String getLine3();
-	String getCityName();
-	String getStateCode();
-	String getPostalCode();
-	String getCountryCode();
+public interface KimEntityPrivacyPreferences {
+
+	boolean isSuppressName();
+	boolean isSuppressAddress();
+	boolean isSuppressEmail();
+	boolean isSuppressPhone();
+	boolean isSuppressPersonal();
 }

@@ -55,70 +55,70 @@ public class PersonDocumentPrivacy extends KimDocumentBoBase {
 	protected boolean suppressPersonal;
 	
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityPrivacyPreferences#isSuppressAddress()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences#isSuppressAddress()
 	 */
 	public boolean isSuppressAddress() {
 		return suppressAddress;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityPrivacyPreferences#isSuppressEmail()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences#isSuppressEmail()
 	 */
 	public boolean isSuppressEmail() {
 		return suppressEmail;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityPrivacyPreferences#isSuppressName()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences#isSuppressName()
 	 */
 	public boolean isSuppressName() {
 		return suppressName;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityPrivacyPreferences#isSuppressPersonal()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences#isSuppressPersonal()
 	 */
 	public boolean isSuppressPersonal() {
 		return suppressPersonal;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityPrivacyPreferences#isSuppressPhone()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences#isSuppressPhone()
 	 */
 	public boolean isSuppressPhone() {
 		return suppressPhone;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityPrivacyPreferences#setSuppressAddress(boolean)
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences#setSuppressAddress(boolean)
 	 */
 	public void setSuppressAddress(boolean suppressAddress) {
 		this.suppressAddress = suppressAddress;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityPrivacyPreferences#setSuppressEmail(boolean)
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences#setSuppressEmail(boolean)
 	 */
 	public void setSuppressEmail(boolean suppressEmail) {
 		this.suppressEmail = suppressEmail;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityPrivacyPreferences#setSuppressName(boolean)
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences#setSuppressName(boolean)
 	 */
 	public void setSuppressName(boolean suppressName) {
 		this.suppressName = suppressName;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityPrivacyPreferences#setSuppressPersonal(boolean)
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences#setSuppressPersonal(boolean)
 	 */
 	public void setSuppressPersonal(boolean suppressPersonal) {
 		this.suppressPersonal = suppressPersonal;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.EntityPrivacyPreferences#setSuppressPhone(boolean)
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences#setSuppressPhone(boolean)
 	 */
 	public void setSuppressPhone(boolean suppressPhone) {
 		this.suppressPhone = suppressPhone;

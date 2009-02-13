@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.kuali.rice.kew.document.RoutingRuleDelegationMaintainable;
 import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.web.KewKualiAction;
@@ -47,7 +46,7 @@ public class DelegateRuleAction extends KewKualiAction {
 	public ActionForward createDelegateRule(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		DelegateRuleForm form = (DelegateRuleForm) actionForm;
 		if (!validateCreateDelegateRule(form)) {
-			return mapping.findForward("basic");
+			return mapping.findForward(getDefaultMapping());
 		}
 		return new ActionForward(generateMaintenanceUrl(request, form), true);
 	}

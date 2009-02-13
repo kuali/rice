@@ -22,7 +22,6 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.removereplace.web.RemoveReplaceForm;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -44,7 +43,7 @@ public class RuleAction extends KewKualiAction {
     public ActionForward createRule(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
         RuleForm form = (RuleForm) actionForm;
         if (!validateCreateRule(form)) {
-            return mapping.findForward("basic");
+            return mapping.findForward(getDefaultMapping());
         }
         return new ActionForward(generateMaintenanceUrl(request, form), true);
     }
@@ -52,7 +51,7 @@ public class RuleAction extends KewKualiAction {
     public ActionForward clearInitFields(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
         RuleForm form = (RuleForm) actionForm;
         form.clearSearchableAttributeProperties();
-        return mapping.findForward("basic");
+        return mapping.findForward(getDefaultMapping());
     }
 
     public ActionForward cancel(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {

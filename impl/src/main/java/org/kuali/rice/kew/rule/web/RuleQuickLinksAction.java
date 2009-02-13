@@ -37,6 +37,7 @@ import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.web.WorkflowAction;
+import org.kuali.rice.kns.util.KNSConstants;
 
 
 /**
@@ -73,16 +74,12 @@ public class RuleQuickLinksAction extends WorkflowAction {
         List rules = getRuleService().search(docTypeName, null, ruleTemplateId, "", null, null, Boolean.FALSE, Boolean.TRUE, new HashMap(), null);
         if (rules.size() == 1) {
             RuleBaseValues rule = (RuleBaseValues)rules.get(0);
-            RuleTemplate ruleTemplate = getRuleTemplateService().findByRuleTemplateId(ruleTemplateId);
-            String url = "DelegateRule.do?methodToCall=start" +
-        		"&parentRule.getDocTypeName=" + docTypeName +
-        		"&ruleCreationValues.ruleTemplateId=" + ruleTemplate.getDelegationTemplateId() +
-        		"&ruleCreationValues.ruleTemplateName=" + ruleTemplate.getDelegationTemplate().getName() +
-        		"&ruleCreationValues.ruleId=" + rule.getRuleBaseValuesId();
+            String url = "../kew/DelegateRule.do?methodToCall=start" +
+            	"&parentRuleId=" + rule.getRuleBaseValuesId(); 
             return new ActionForward(url, true);
         }
         makeLookupPathParam(mapping, request);
-        return new ActionForward("Lookup.do?"+stripMethodToCall(request.getQueryString()), true);
+        return new ActionForward("../kr/lookup.do?methodToCall=start&"+ stripMethodToCall(request.getQueryString()), true);
     }
 
 	private List getDocumentTypeDataStructure(List rootDocuments) {

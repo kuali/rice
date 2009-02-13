@@ -16,7 +16,10 @@
 package org.kuali.rice.kew.web;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.web.struts.action.KualiAction;
@@ -27,7 +30,9 @@ import org.kuali.rice.kns.web.struts.action.KualiAction;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class KewKualiAction extends KualiAction {
+public abstract class KewKualiAction extends KualiAction {
+	
+	public static final String DEFAULT_MAPPING = "basic";
 	
 	@Override 
 	protected String getReturnLocation(HttpServletRequest request, ActionMapping mapping) 
@@ -36,5 +41,20 @@ public class KewKualiAction extends KualiAction {
     	String basePath = getBasePath(request);
         return basePath + KEWConstants.WEBAPP_DIRECTORY + mappingPath + ".do";
     }
+
+	@Override
+	protected ActionForward defaultDispatch(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		return start(mapping, form, request, response);
+	}
+	
+	public ActionForward start(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		return mapping.findForward(getDefaultMapping());
+	}
+	
+	protected String getDefaultMapping() {
+		return DEFAULT_MAPPING;
+	}
 	
 }

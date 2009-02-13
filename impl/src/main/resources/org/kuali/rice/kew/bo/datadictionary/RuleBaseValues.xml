@@ -42,12 +42,17 @@
               p:name="personResponsibilities"
               p:label="Persons"
               p:shortLabel="Persons"
-              p:elementLabel="Persons" />
+              p:elementLabel="Person" />
         <bean parent="CollectionDefinition"
               p:name="groupResponsibilities"
               p:label="Groups"
               p:shortLabel="Groups"
-              p:elementLabel="Groups" />
+              p:elementLabel="Group" />
+        <bean parent="CollectionDefinition"
+              p:name="roleResponsibilities"
+              p:label="Roles"
+              p:shortLabel="Roles"
+              p:elementLabel="Role" />
 
       </list>
     </property>
@@ -465,6 +470,23 @@
         <bean parent="InquirySectionDefinition">
           <property name="title" value="Role Responsibilities"/>
           <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="InquiryCollectionDefinition">
+                <property name="attributeName" value="roleResponsibilities" />
+                <property name="businessObjectClass" value="org.kuali.rice.kew.rule.RoleRuleResponsibility" />
+                <property name="numberOfColumns" value="1" />
+                <property name="inquiryFields" >
+                  <list>
+                    <bean parent="FieldDefinition" p:attributeName="approvePolicy" />
+                    <bean parent="FieldDefinition" p:attributeName="roleName" />
+                    <bean parent="FieldDefinition" p:attributeName="actionRequestedCd" />
+                    <bean parent="FieldDefinition" p:attributeName="priority" />
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
         </bean>
       </list>
     </property>

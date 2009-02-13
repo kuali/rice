@@ -484,6 +484,7 @@ public class WebRuleUtils {
 			} else if (responsibility.getRuleResponsibilityType().equals(KEWConstants.RULE_RESPONSIBILITY_ROLE_ID)) {
 				RoleRuleResponsibility roleResponsibility = new RoleRuleResponsibility();
 				copyResponsibility(responsibility, roleResponsibility);
+				rule.getRoleResponsibilities().add(roleResponsibility);
 			} else {
 				throw new RiceRuntimeException("Original responsibility with id '" + responsibility.getRuleResponsibilityKey() + "' contained a bad type code of '" + responsibility.getRuleResponsibilityType());
 			}

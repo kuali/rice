@@ -16,7 +16,6 @@
 package org.kuali.rice.kew.document;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +30,7 @@ import org.kuali.rice.kew.rule.WorkflowAttribute;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
+import org.kuali.rice.kew.rule.web.WebRuleUtils;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -48,7 +48,10 @@ import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
  */
 public class RoutingRuleMaintainableBusRule extends MaintenanceDocumentRuleBase {
 
-	private static final String ID_SEPARATOR = ":";
+	// Name of the section in the xml file.
+	private static final String PERSON_RESP_SECTION = "personResponsibilities";
+	// Name of the section in the xml file.
+	private static final String GROUP_RESP_SECTION = "groupResponsibilities";
 
 	/**
 	 * This overridden method ...
@@ -87,19 +90,19 @@ public class RoutingRuleMaintainableBusRule extends MaintenanceDocumentRuleBase 
 
 		boolean isValid = true;
 
-		if("personResponsibilities".equals(collectionName)){
+		if(PERSON_RESP_SECTION.equals(collectionName)){
 			PersonRuleResponsibility pr = (PersonRuleResponsibility)line;
 			String name = pr.getPrincipalName();
 
 			if(!personExists(name)){
 				isValid &= false;
-				this.putFieldError("personResponsibilities", "error.document.personResponsibilities.principleDoesNotExist");
+				this.putFieldError(PERSON_RESP_SECTION, "error.document.personResponsibilities.principleDoesNotExist");
 			}
-		}else if("groupResponsibilities".equals(collectionName)){
+		}else if(GROUP_RESP_SECTION.equals(collectionName)){
 			GroupRuleResponsibility gr = (GroupRuleResponsibility)line;
 			if(!groupExists(gr.getNamespaceCode(), gr.getName())){
 				isValid &= false;
-				this.putFieldError("groupResponsibilities", "error.document.personResponsibilities.groupDoesNotExist");
+				this.putFieldError(GROUP_RESP_SECTION, "error.document.personResponsibilities.groupDoesNotExist");
 			}
 		}
 
@@ -153,9 +156,12 @@ public class RoutingRuleMaintainableBusRule extends MaintenanceDocumentRuleBase 
         	this.putFieldError("description", "routetemplate.ruleservice.description.required");
         	isValid &= false;
         }
-        // one of these has a value
-        if(ruleBaseValues.getToDate() != null || ruleBaseValues.getFromDate() != null){
-        	if (ruleBaseValues.getToDate() == null || ruleBaseValues.getToDate().before(ruleBaseValues.getFromDate())) {
+
+        /*
+         * Logic: If both from and to dates exist, make sure toDate is after fromDate
+         */
+        if(ruleBaseValues.getToDate() != null && ruleBaseValues.getFromDate() != null){
+        	if (ruleBaseValues.getToDate().before(ruleBaseValues.getFromDate())) {
     			this.putFieldError("toDate", "error.document.maintainableItems.toDate");
     			isValid &= false;
             }
@@ -173,7 +179,7 @@ public class RoutingRuleMaintainableBusRule extends MaintenanceDocumentRuleBase 
 
 		// This doesn't map directly to a single field. It's either the person or the group tab
         if (ruleBaseValues.getResponsibilities().isEmpty()) {
-        	this.putFieldError("A responsibility is required", "routetemplate.ruleservice.responsibility.required");
+        	this.putFieldError("Responsibilities", "error.document.responsibility.required");
         	isValid &= false;
         } else {
             for (Iterator<RuleResponsibility> iter = ruleBaseValues.getResponsibilities().iterator(); iter.hasNext();) {
@@ -234,7 +240,7 @@ public class RoutingRuleMaintainableBusRule extends MaintenanceDocumentRuleBase 
 				((GenericXMLRuleAttribute) workflowAttribute).setRuleAttribute(ruleAttribute);
 			}
 
-			Map<String, String> parameterMap = getFieldMapForRuleTemplateAttribute(rule, ruleTemplateAttribute);
+			Map<String, String> parameterMap = WebRuleUtils.getFieldMapForRuleTemplateAttribute(rule, ruleTemplateAttribute);
 
 			// validate rule data populates the rule extension values for us
 			List<WorkflowServiceErrorImpl> attValidationErrors = null;
@@ -256,21 +262,5 @@ public class RoutingRuleMaintainableBusRule extends MaintenanceDocumentRuleBase 
 		return isValid;
 
 	}
-
-	/**
-     * Based on original logic implemented in Rule system.  Essentially constructs a Map of field values related
-     * to the given RuleTemplateAttribute.
-     */
-    protected Map<String, String> getFieldMapForRuleTemplateAttribute(RuleBaseValues rule, RuleTemplateAttribute ruleTemplateAttribute) {
-    	Map<String, String> fieldMap = new HashMap<String, String>();
-    	for (String fieldKey : rule.getFieldValues().keySet()) {
-    		String ruleTemplateAttributeId = fieldKey.substring(0, fieldKey.indexOf(ID_SEPARATOR));
-    		String fieldName = fieldKey.substring(fieldKey.indexOf(ID_SEPARATOR) + 1);
-    		if (ruleTemplateAttribute.getRuleTemplateAttributeId().toString().equals(ruleTemplateAttributeId)) {
-    			fieldMap.put(fieldName, rule.getFieldValues().get(fieldKey));
-    		}
-    	}
-    	return fieldMap;
-    }
 
 }

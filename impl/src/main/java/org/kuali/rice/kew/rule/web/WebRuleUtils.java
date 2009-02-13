@@ -506,6 +506,7 @@ public class WebRuleUtils {
     	rule.setRuleBaseValuesId(null);
     	rule.setPreviousVersionId(null);
     	rule.setPreviousVersion(null);
+    	rule.setName(null);
     	for (PersonRuleResponsibility responsibility : rule.getPersonResponsibilities()) {
     		clearResponsibilityKeys(responsibility);
     	}

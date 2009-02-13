@@ -84,9 +84,6 @@
               <bean parent="PrimitiveAttributeDefinition"
                     p:sourceName="groupReviewerName"
                     p:targetName="groupName" />
-              <bean parent="PrimitiveAttributeDefinition"
-                    p:sourceName="groupReviewerName"
-                    p:targetName="groupName" />
             </list>
           </property>
           <property name="supportAttributes" >
@@ -127,14 +124,14 @@
                     p:targetName="name" />
             </list>
           </property>
-          <property name="supportAttributes" >
+          <!-- <property name="supportAttributes" >
             <list>
               <bean parent="SupportAttributeDefinition"
                     p:identifier="true"
                     p:sourceName="docTypeName"
                     p:targetName="name" />
             </list>
-          </property>
+          </property>-->
         </bean>
 
       </list>
@@ -411,7 +408,7 @@
           <property name="title" value="Rule" />
           <property name="numberOfColumns" value="1" />
           <property name="inquiryFields" >
-            <list>            
+            <list>
               <bean parent="FieldDefinition" p:attributeName="docTypeName" />
               <bean parent="FieldDefinition" p:attributeName="ruleTemplate.name" />
               <bean parent="FieldDefinition" p:attributeName="description" />
@@ -523,8 +520,8 @@
               p:attributeName="ruleBaseValuesId"/>
         <bean parent="FieldDefinition"
               p:attributeName="activeInd"/>
-        <bean parent="FieldDefinition"
-              p:attributeName="delegateRule"/>
+        <!-- <bean parent="FieldDefinition"
+              p:attributeName="delegateRule"/>-->
       </list>
     </property>
     <property name="resultFields" >

@@ -16,10 +16,6 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 <kul:tabTop tabTitle="Create New Rule" defaultOpen="true">
-    <c:set var="ruleAttributes" value="${DataDictionary.RuleBaseValues.attributes}" />
-<%--    <c:set var="docTypeAttributes" value="${DataDictionary.DocumentType.attributes}" />
-    <c:set var="ruleTemplateAttributes" value="${DataDictionary.RuleTemlplate.attributes}" />
---%>
     <div class="tab-container" align=center >
       <h3>Create New Rule</h3>
       <table cellpadding="0" cellspacing="0" class="datatable" summary="Parent Rule Section">
@@ -39,4 +35,5 @@
       </tr>
       </table>
     </div>
+
 </kul:tabTop>

@@ -1,12 +1,12 @@
 <%--
  Copyright 2009 The Kuali Foundation.
- 
+
  Licensed under the Educational Community License, Version 1.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
- 
+
  http://www.opensource.org/licenses/ecl1.php
- 
+
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,8 +17,6 @@
 
 <kul:tabTop tabTitle="Choose Parent Rule" defaultOpen="true">
 
-	<c:set var="ruleAttributes" value="${DataDictionary.RuleBaseValues.attributes}" />
-	
     <div class="tab-container" align=center >
         <h3>Select Parent Rule</h3>
 	    <table cellpadding=0 class="datatable" summary="Parent Rule Section">
@@ -59,7 +57,7 @@
 			</c:forEach>
 	    </table>
     </div>
-    
+
     </c:if>
 
 

@@ -297,6 +297,14 @@
 	  </property>
     </bean>
 
+    <bean id="ruleDelegationLookupHelperService" class="org.kuali.rice.kew.lookupable.RuleDelegationLookupableHelperServiceImpl" scope="prototype"/>
+
+    <bean id="ruleDelegationLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
+	  <property name="lookupableHelperService">
+  		<ref bean="ruleDelegationLookupHelperService" />
+	  </property>
+    </bean>
+    
     <bean id="docTypeLookupHelperService" class="org.kuali.rice.kew.doctype.DocumentTypeLookupableHelperServiceImpl" scope="prototype"/>
 
     <bean id="docTypeLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">

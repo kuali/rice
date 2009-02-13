@@ -66,6 +66,7 @@ public class WebRuleUtils {
 	
 	private static final String ID_SEPARATOR = ":";
 	private static final String RULE_ATTRIBUTES_SECTION_ID = "RuleAttributes";
+	private static final String RULE_ATTRIBUTES_SECTION_TITLE = "Rule Attributes";
 	
 	/**
 	 * Copies the existing rule onto the current document.  This is used within the web-based rule GUI to make a
@@ -217,7 +218,9 @@ public class WebRuleUtils {
 		List<Section> finalSections = new ArrayList<Section>();
 		finalSections = new ArrayList<Section>();
 		for (Section section : sections) {
-			if (section.getSectionId().equals(RULE_ATTRIBUTES_SECTION_ID)) {
+			// unfortunately, in the case of an inquiry the sectionId will always be null so we have to check section title
+			if (section.getSectionTitle().equals(RULE_ATTRIBUTES_SECTION_TITLE) || 
+					(section.getSectionId() != null && section.getSectionId().equals(RULE_ATTRIBUTES_SECTION_ID))) {
 				List<Row> ruleTemplateRows = getRuleTemplateRows(rule);
 				if (!ruleTemplateRows.isEmpty()) {
 					section.setRows(ruleTemplateRows);

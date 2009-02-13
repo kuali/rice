@@ -152,10 +152,6 @@ public class RoutingRuleMaintainableBusRule extends MaintenanceDocumentRuleBase 
             	isValid &= false;
         	}
         }
-        if (ruleBaseValues.getDescription() == null || ruleBaseValues.getDescription().equals("")) {
-        	this.putFieldError("description", "routetemplate.ruleservice.description.required");
-        	isValid &= false;
-        }
 
         /*
          * Logic: If both from and to dates exist, make sure toDate is after fromDate

@@ -471,12 +471,7 @@ public class BusinessObjectAuthorizationServiceImpl implements
 			MaintenanceDocument maintenanceDocument,
 			BusinessObject businessObject, String propertyPrefix, Person user) {
 		for (MaintainableItemDefinition maintainableItemDefinition : itemDefinitions) {
-			if ((maintainableItemDefinition instanceof MaintainableFieldDefinition)
-					&& ((MaintainableFieldDefinition) maintainableItemDefinition)
-							.isUnconditionallyReadOnly()) {
-				restrictions.addReadOnlyField(propertyPrefix + maintainableItemDefinition
-						.getName());
-			} else if (maintainableItemDefinition instanceof MaintainableCollectionDefinition) {
+			if (maintainableItemDefinition instanceof MaintainableCollectionDefinition) {
 				try {
 					MaintainableCollectionDefinition maintainableCollectionDefinition = (MaintainableCollectionDefinition) maintainableItemDefinition;
 					

@@ -1167,7 +1167,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 				}
 			}
 			try {
-				ObjectUtils.setObjectProperty(businessObject, fieldName, defaultValue);
+				ObjectUtils.setObjectProperty(businessObject, fieldDefinition.getName(), defaultValue);
 			} catch (Exception e) {
 				// throw an exception, because we don't want users to be able to see the restricted value
 				LOG.error("Unable to clear maintenance document values for field name: " + fieldName + " default value: " + defaultValue, e);

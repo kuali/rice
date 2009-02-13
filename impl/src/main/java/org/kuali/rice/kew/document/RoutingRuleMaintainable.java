@@ -92,30 +92,8 @@ public class RoutingRuleMaintainable extends KualiMaintainableImpl {
 
     @Override
     public void processAfterCopy(MaintenanceDocument document, Map<String, String[]> parameters) {
-    	WebRuleUtils.populateForCopyOrEdit(getOldRule(document), getNewRule(document));
-    	clearKeysForCopy(document);
-    	getNewRule(document).setRouteHeaderId(new Long(document.getDocumentHeader().getDocumentNumber()));
+    	WebRuleUtils.processRuleForCopy(document.getDocumentNumber(), getOldRule(document), getNewRule(document));
         super.processAfterCopy(document, parameters);
-    }
-
-    protected void clearKeysForCopy(MaintenanceDocument document) {
-    	RuleBaseValues rule = getNewRule(document);
-    	rule.setRuleBaseValuesId(null);
-    	rule.setPreviousVersionId(null);
-    	rule.setPreviousVersion(null);
-    	for (PersonRuleResponsibility responsibility : rule.getPersonResponsibilities()) {
-    		clearResponsibilityKeys(responsibility);
-    	}
-    	for (GroupRuleResponsibility responsibility : rule.getGroupResponsibilities()) {
-    		clearResponsibilityKeys(responsibility);
-    	}
-    	// TODO - add roles
-    }
-
-    private void clearResponsibilityKeys(RuleResponsibility responsibility) {
-		responsibility.setResponsibilityId(null);
-		responsibility.setRuleResponsibilityKey(null);
-		responsibility.setRuleBaseValuesId(null);
     }
 
 	@Override

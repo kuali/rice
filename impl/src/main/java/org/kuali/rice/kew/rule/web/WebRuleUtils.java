@@ -495,4 +495,30 @@ public class WebRuleUtils {
 		// since we've loaded the extensions, let's clear the originals so that they don't get serialized to the maint doc XML
 		rule.getRuleExtensions().clear();
 	}
+	
+	public static void processRuleForCopy(String documentNumber, RuleBaseValues oldRule, RuleBaseValues newRule) {
+		WebRuleUtils.populateForCopyOrEdit(oldRule, newRule);
+		clearKeysForCopy(newRule);
+		newRule.setRouteHeaderId(new Long(documentNumber));
+	}
+	
+	public static void clearKeysForCopy(RuleBaseValues rule) {    	
+    	rule.setRuleBaseValuesId(null);
+    	rule.setPreviousVersionId(null);
+    	rule.setPreviousVersion(null);
+    	for (PersonRuleResponsibility responsibility : rule.getPersonResponsibilities()) {
+    		clearResponsibilityKeys(responsibility);
+    	}
+    	for (GroupRuleResponsibility responsibility : rule.getGroupResponsibilities()) {
+    		clearResponsibilityKeys(responsibility);
+    	}
+    	// TODO - add roles
+    }
+
+    private static void clearResponsibilityKeys(RuleResponsibility responsibility) {
+		responsibility.setResponsibilityId(null);
+		responsibility.setRuleResponsibilityKey(null);
+		responsibility.setRuleBaseValuesId(null);
+    }
+    
 }

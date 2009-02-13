@@ -101,6 +101,12 @@ public class RoutingRuleDelegationMaintainable extends KualiMaintainableImpl {
     	KEWServiceLocator.getRuleService().makeCurrent(getThisRuleDelegation());
     }
     
+    @Override
+    public void processAfterCopy(MaintenanceDocument document, Map<String, String[]> parameters) {
+    	WebRuleUtils.processRuleForCopy(document.getDocumentNumber(), getOldRule(document), getNewRule(document));
+        super.processAfterCopy(document, parameters);
+    }
+    
 	@Override
 	public void processAfterEdit(MaintenanceDocument document,
 			Map<String, String[]> parameters) {

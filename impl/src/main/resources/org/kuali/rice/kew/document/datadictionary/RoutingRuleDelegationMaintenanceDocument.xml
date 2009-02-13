@@ -12,6 +12,7 @@
         <ref bean="RoutingRuleDelegationMaintenanceDocument-RuleAttributes"/>
         <ref bean="RoutingRuleDelegationMaintenanceDocument-PersonResponsibilities"/>
         <ref bean="RoutingRuleDelegationMaintenanceDocument-GroupResponsibilities"/>
+        <ref bean="RoutingRuleDelegationMaintenanceDocument-RoleResponsibilities"/>
       </list>
     </property>
     <property name="allowsNewOrCopy" value="true"/>
@@ -129,5 +130,35 @@
       </list>
     </property>
   </bean>
+  
+  <bean id="RoutingRuleDelegationMaintenanceDocument-RoleResponsibilities" parent="RoutingRuleDelegationMaintenanceDocument-RoleResponsibilities-parentBean"/>
+
+  <bean id="RoutingRuleDelegationMaintenanceDocument-RoleResponsibilities-parentBean" abstract="true" parent="MaintainableSectionDefinition">
+    <property name="id" value="RolesMaintenance"/>
+    <property name="title" value="Roles"/>
+    <property name="maintainableItems">
+      <list>
+        <bean parent="MaintainableCollectionDefinition">
+          <property name="name" value="delegationRuleBaseValues.roleResponsibilities"/>
+          <property name="businessObjectClass" value="org.kuali.rice.kew.rule.RoleRuleResponsibility"/>
+          <property name="summaryTitle" value="Role"/>
+          <property name="alwaysAllowCollectionDeletion" value="true"/>
+          <property name="summaryFields">
+            <list>
+              <bean parent="MaintainableFieldDefinition" p:name="roleName"/>
+            </list>
+          </property>
+          <property name="maintainableFields">
+            <list>
+              <bean parent="MaintainableFieldDefinition" p:name="approvePolicy" p:required="true"/>
+              <bean parent="MaintainableFieldDefinition" p:name="roleName" p:required="true"/>
+            </list>
+          </property>
+        </bean>
+
+      </list>
+    </property>
+  </bean>
+  
   
 </beans>

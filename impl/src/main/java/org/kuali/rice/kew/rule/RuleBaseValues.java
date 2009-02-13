@@ -142,6 +142,8 @@ public class RuleBaseValues extends KewPersistableBusinessObjectBase {
     @Transient
     private List<GroupRuleResponsibility> groupResponsibilities;
     @Transient
+    private List<RoleRuleResponsibility> roleResponsibilities;
+    @Transient
     private Map<String, String> fieldValues;
     @Transient
     private String groupReviewerName;
@@ -157,6 +159,7 @@ public class RuleBaseValues extends KewPersistableBusinessObjectBase {
         ruleExtensions = new ArrayList<RuleExtension>();
         personResponsibilities = new TypedArrayList(PersonRuleResponsibility.class);
         groupResponsibilities = new TypedArrayList(GroupRuleResponsibility.class);
+        roleResponsibilities = new TypedArrayList(RoleRuleResponsibility.class);
         fieldValues = new HashMap<String, String>();
     }
 
@@ -672,7 +675,13 @@ public class RuleBaseValues extends KewPersistableBusinessObjectBase {
 		this.groupResponsibilities = groupResponsibilities;
 	}
 
+	public List<RoleRuleResponsibility> getRoleResponsibilities() {
+		return this.roleResponsibilities;
+	}
 
+	public void setRoleResponsibilities(List<RoleRuleResponsibility> roleResponsibilities) {
+		this.roleResponsibilities = roleResponsibilities;
+	}
 
 	/**
 	 * @return the fieldValues

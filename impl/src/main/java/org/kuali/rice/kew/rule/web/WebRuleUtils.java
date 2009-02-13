@@ -31,6 +31,7 @@ import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.rule.GroupRuleResponsibility;
 import org.kuali.rice.kew.rule.PersonRuleResponsibility;
+import org.kuali.rice.kew.rule.RoleRuleResponsibility;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.RuleExtension;
@@ -45,8 +46,6 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
-import org.kuali.rice.kns.document.MaintenanceDocument;
-import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kns.web.ui.Section;
@@ -67,6 +66,7 @@ public class WebRuleUtils {
 	private static final String ID_SEPARATOR = ":";
 	private static final String RULE_ATTRIBUTES_SECTION_ID = "RuleAttributes";
 	private static final String RULE_ATTRIBUTES_SECTION_TITLE = "Rule Attributes";
+	private static final String ROLES_MAINTENANCE_SECTION_ID = "RolesMaintenance";
 	
 	/**
 	 * Copies the existing rule onto the current document.  This is used within the web-based rule GUI to make a
@@ -214,16 +214,20 @@ public class WebRuleUtils {
 		rule.setActiveInd(true);
 	}
     
-	public static List customizeRuleAttributeSection(RuleBaseValues rule, List<Section> sections) {
+	public static List customizeSections(RuleBaseValues rule, List<Section> sections) {
 		List<Section> finalSections = new ArrayList<Section>();
 		finalSections = new ArrayList<Section>();
 		for (Section section : sections) {
 			// unfortunately, in the case of an inquiry the sectionId will always be null so we have to check section title
 			if (section.getSectionTitle().equals(RULE_ATTRIBUTES_SECTION_TITLE) || 
-					(section.getSectionId() != null && section.getSectionId().equals(RULE_ATTRIBUTES_SECTION_ID))) {
+					RULE_ATTRIBUTES_SECTION_ID.equals(section.getSectionId())) {
 				List<Row> ruleTemplateRows = getRuleTemplateRows(rule);
 				if (!ruleTemplateRows.isEmpty()) {
 					section.setRows(ruleTemplateRows);
+					finalSections.add(section);
+				}
+			} else if (ROLES_MAINTENANCE_SECTION_ID.equals(section.getSectionId())) {
+				if (hasRoles(rule)) {
 					finalSections.add(section);
 				}
 			} else {
@@ -254,21 +258,17 @@ public class WebRuleUtils {
 					((GenericXMLRuleAttribute) workflowAttribute).setRuleAttribute(ruleAttribute);
 				}
 				
-				// TODO move this validation else where
-				//workflowAttribute.validateRuleData(getFieldMap(ruleTemplateAttribute.getRuleTemplateAttributeId()+""));
-				
 				List<Row> attributeRows = transformAndPopulateAttributeRows(workflowAttribute.getRuleRows(), ruleTemplateAttribute, rule);
 				rows.addAll(attributeRows);
-				
-				// TODO move this "role" code else where
-				// if (workflowAttribute instanceof RoleAttribute) {
-				//	RoleAttribute roleAttribute = (RoleAttribute) workflowAttribute;
-				//	getRoles().addAll(roleAttribute.getRoleNames());
-				//}
 				
 			}
 		}
 		return rows;
+	}
+	
+	private static boolean hasRoles(RuleBaseValues rule) {
+		RuleTemplate ruleTemplate = rule.getRuleTemplate();
+		return !ruleTemplate.getRoles().isEmpty();
 	}
 	
 	/**
@@ -342,7 +342,19 @@ public class WebRuleUtils {
 			ruleResponsibility.setApprovePolicy(KEWConstants.APPROVE_POLICY_FIRST_APPROVE);
 			rule.getResponsibilities().add(ruleResponsibility);
 		}
-		// TODO add role responsibilities
+		for (RoleRuleResponsibility responsibility : rule.getRoleResponsibilities()) {
+			RuleResponsibility ruleResponsibility = new RuleResponsibility();
+			ruleResponsibility.setActionRequestedCd(responsibility.getActionRequestedCd());
+			ruleResponsibility.setPriority(responsibility.getPriority());
+			ruleResponsibility.setResponsibilityId(responsibility.getResponsibilityId());
+			if (ruleResponsibility.getResponsibilityId() == null) {
+				ruleResponsibility.setResponsibilityId(KEWServiceLocator.getResponsibilityIdService().getNewResponsibilityId());
+			}
+			ruleResponsibility.setRuleResponsibilityName(responsibility.getRoleName());
+			ruleResponsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_ROLE_ID);
+			ruleResponsibility.setApprovePolicy(responsibility.getApprovePolicy());
+			rule.getResponsibilities().add(ruleResponsibility);
+		}
 	}
     
     public static void translateFieldValuesForSave(RuleBaseValues rule) {
@@ -367,21 +379,21 @@ public class WebRuleUtils {
 			// validate rule data populates the rule extension values for us
 			List attValidationErrors = workflowAttribute.validateRuleData(parameterMap);
 
-			// TODO hook validation of rule data into PreRules
-			// if (attValidationErrors != null && !attValidationErrors.isEmpty()) {
-			// errorList.addAll(attValidationErrors);
-			// } else {
+			// because validation should be handled by business rules now, if we encounter a validation error at this point in
+			// time, let's throw an exception
+			if (attValidationErrors != null && !attValidationErrors.isEmpty()) {
+				throw new RiceRuntimeException("Encountered attribute validation errors when attempting to save the Rule!");
+			}
 			
-				List ruleExtensionValues = workflowAttribute.getRuleExtensionValues();
-				if (ruleExtensionValues != null && !ruleExtensionValues.isEmpty()) {
-					RuleExtension ruleExtension = new RuleExtension();
-					ruleExtension.setRuleTemplateAttributeId(ruleTemplateAttribute.getRuleTemplateAttributeId());
+			List ruleExtensionValues = workflowAttribute.getRuleExtensionValues();
+			if (ruleExtensionValues != null && !ruleExtensionValues.isEmpty()) {
+				RuleExtension ruleExtension = new RuleExtension();
+				ruleExtension.setRuleTemplateAttributeId(ruleTemplateAttribute.getRuleTemplateAttributeId());
 
-					ruleExtension.setExtensionValues(ruleExtensionValues);
-					extensions.add(ruleExtension);
-				}
+				ruleExtension.setExtensionValues(ruleExtensionValues);
+				extensions.add(ruleExtension);
+			}
 				
-			//}
 		}
 		rule.setRuleExtensions(extensions);
 
@@ -470,7 +482,8 @@ public class WebRuleUtils {
 				groupResponsibility.setName(group.getGroupName());
 				rule.getGroupResponsibilities().add(groupResponsibility);
 			} else if (responsibility.getRuleResponsibilityType().equals(KEWConstants.RULE_RESPONSIBILITY_ROLE_ID)) {
-				// TODO add roles!
+				RoleRuleResponsibility roleResponsibility = new RoleRuleResponsibility();
+				copyResponsibility(responsibility, roleResponsibility);
 			} else {
 				throw new RiceRuntimeException("Original responsibility with id '" + responsibility.getRuleResponsibilityKey() + "' contained a bad type code of '" + responsibility.getRuleResponsibilityType());
 			}
@@ -516,7 +529,9 @@ public class WebRuleUtils {
     	for (GroupRuleResponsibility responsibility : rule.getGroupResponsibilities()) {
     		clearResponsibilityKeys(responsibility);
     	}
-    	// TODO - add roles
+    	for (RoleRuleResponsibility responsibility : rule.getRoleResponsibilities()) {
+    		clearResponsibilityKeys(responsibility);
+    	}
     }
 
     private static void clearResponsibilityKeys(RuleResponsibility responsibility) {

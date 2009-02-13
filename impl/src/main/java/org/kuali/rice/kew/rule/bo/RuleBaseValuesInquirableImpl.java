@@ -50,7 +50,7 @@ public class RuleBaseValuesInquirableImpl extends KualiInquirableImpl {
 	 */
 	public List getSections(BusinessObject bo) {
 		List<Section> sections = super.getSections(bo);
-		return WebRuleUtils.customizeRuleAttributeSection((RuleBaseValues)bo, sections);
+		return WebRuleUtils.customizeSections((RuleBaseValues)bo, sections);
 	}
 
 }

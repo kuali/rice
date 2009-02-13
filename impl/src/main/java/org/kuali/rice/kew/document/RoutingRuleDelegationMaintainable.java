@@ -46,7 +46,7 @@ public class RoutingRuleDelegationMaintainable extends KualiMaintainableImpl {
 	@Override
 	public List getSections(MaintenanceDocument document, Maintainable oldMaintainable) {
 		List<Section> sections = super.getSections(document, oldMaintainable);
-		return WebRuleUtils.customizeRuleAttributeSection(getThisRule(), sections);
+		return WebRuleUtils.customizeSections(getThisRule(), sections);
 		
 	}
 	

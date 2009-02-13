@@ -43,7 +43,10 @@ import org.hibernate.annotations.FetchMode;
 import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
+import org.kuali.rice.kew.rule.Role;
+import org.kuali.rice.kew.rule.RoleAttribute;
 import org.kuali.rice.kew.rule.RuleTemplateOption;
+import org.kuali.rice.kew.rule.WorkflowAttribute;
 import org.kuali.rice.kew.util.KEWConstants;
 
 
@@ -402,6 +405,27 @@ public class RuleTemplate  extends KewPersistableBusinessObjectBase implements W
 
     public RuleTemplateOption getDefaultActionRequestValue() {
         return getRuleTemplateOption(KEWConstants.ACTION_REQUEST_DEFAULT_CD);
+    }
+    
+    /**
+     * Returns a List of Roles from all RoleAttributes attached to this template.
+     */
+    public List<Role> getRoles() {
+    	List<Role> roles = new ArrayList<Role>();
+    	List ruleTemplateAttributes = getActiveRuleTemplateAttributes();
+		Collections.sort(ruleTemplateAttributes);
+		for (Iterator iter = ruleTemplateAttributes.iterator(); iter.hasNext();) {
+			RuleTemplateAttribute ruleTemplateAttribute = (RuleTemplateAttribute) iter.next();
+			if (!ruleTemplateAttribute.isWorkflowAttribute()) {
+				continue;
+			}
+			WorkflowAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
+			if (workflowAttribute instanceof RoleAttribute) {
+				RoleAttribute roleAttribute = (RoleAttribute) workflowAttribute;
+				roles.addAll(roleAttribute.getRoleNames());
+			}
+		}
+		return roles;
     }
     
     public String toString() {

@@ -11,6 +11,7 @@
         <ref bean="RoutingRuleMaintenanceDocument-RuleAttributes"/>
         <ref bean="RoutingRuleMaintenanceDocument-PersonResponsibilities"/>
         <ref bean="RoutingRuleMaintenanceDocument-GroupResponsibilities"/>
+        <ref bean="RoutingRuleMaintenanceDocument-RoleResponsibilities"/>
       </list>
     </property>
     <property name="allowsNewOrCopy" value="true"/>
@@ -58,7 +59,7 @@
   <bean id="RoutingRuleMaintenanceDocument-PersonResponsibilities" parent="RoutingRuleMaintenanceDocument-PersonResponsibilities-parentBean"/>
 
   <bean id="RoutingRuleMaintenanceDocument-PersonResponsibilities-parentBean" abstract="true" parent="MaintainableSectionDefinition">
-    <property name="id" value="Persons"/>
+    <property name="id" value="PersonsMaintenance"/>
     <property name="title" value="Persons"/>
     <property name="maintainableItems">
       <list>
@@ -75,9 +76,9 @@
           </property>
           <property name="maintainableFields">
             <list>
-              <bean parent="MaintainableFieldDefinition" p:name="principalName"/>
-              <bean parent="MaintainableFieldDefinition" p:name="actionRequestedCd"/>
-              <bean parent="MaintainableFieldDefinition" p:name="priority"/>
+              <bean parent="MaintainableFieldDefinition" p:name="principalName" p:required="true"/>
+              <bean parent="MaintainableFieldDefinition" p:name="actionRequestedCd" p:required="true"/>
+              <bean parent="MaintainableFieldDefinition" p:name="priority" p:required="true"/>
             </list>
           </property>
         </bean>
@@ -88,7 +89,7 @@
   <bean id="RoutingRuleMaintenanceDocument-GroupResponsibilities" parent="RoutingRuleMaintenanceDocument-GroupResponsibilities-parentBean"/>
 
   <bean id="RoutingRuleMaintenanceDocument-GroupResponsibilities-parentBean" abstract="true" parent="MaintainableSectionDefinition">
-    <property name="id" value="Groups"/>
+    <property name="id" value="GroupsMaintenance"/>
     <property name="title" value="Groups"/>
     <property name="maintainableItems">
       <list>
@@ -106,10 +107,10 @@
           </property>
           <property name="maintainableFields">
             <list>
-              <bean parent="MaintainableFieldDefinition" p:name="namespaceCode"/>
-              <bean parent="MaintainableFieldDefinition" p:name="name"/>
-              <bean parent="MaintainableFieldDefinition" p:name="actionRequestedCd"/>
-              <bean parent="MaintainableFieldDefinition" p:name="priority"/>
+              <bean parent="MaintainableFieldDefinition" p:name="namespaceCode" p:required="true"/>
+              <bean parent="MaintainableFieldDefinition" p:name="name" p:required="true"/>
+              <bean parent="MaintainableFieldDefinition" p:name="actionRequestedCd" p:required="true"/>
+              <bean parent="MaintainableFieldDefinition" p:name="priority" p:required="true"/>
             </list>
           </property>
         </bean>
@@ -117,6 +118,37 @@
       </list>
     </property>
   </bean>
+  
+  <bean id="RoutingRuleMaintenanceDocument-RoleResponsibilities" parent="RoutingRuleMaintenanceDocument-RoleResponsibilities-parentBean"/>
 
+  <bean id="RoutingRuleMaintenanceDocument-RoleResponsibilities-parentBean" abstract="true" parent="MaintainableSectionDefinition">
+    <property name="id" value="RolesMaintenance"/>
+    <property name="title" value="Roles"/>
+    <property name="maintainableItems">
+      <list>
+        <bean parent="MaintainableCollectionDefinition">
+          <property name="name" value="roleResponsibilities"/>
+          <property name="businessObjectClass" value="org.kuali.rice.kew.rule.RoleRuleResponsibility"/>
+          <property name="summaryTitle" value="Role"/>
+          <property name="alwaysAllowCollectionDeletion" value="true"/>
+          <property name="summaryFields">
+            <list>
+              <bean parent="MaintainableFieldDefinition" p:name="roleName"/>
+              <bean parent="MaintainableFieldDefinition" p:name="actionRequestedCd"/>
+            </list>
+          </property>
+          <property name="maintainableFields">
+            <list>
+              <bean parent="MaintainableFieldDefinition" p:name="approvePolicy" p:required="true"/>
+              <bean parent="MaintainableFieldDefinition" p:name="roleName" p:required="true"/>
+              <bean parent="MaintainableFieldDefinition" p:name="actionRequestedCd" p:required="true"/>
+              <bean parent="MaintainableFieldDefinition" p:name="priority" p:required="true"/>
+            </list>
+          </property>
+        </bean>
+
+      </list>
+    </property>
+  </bean>
 
 </beans>

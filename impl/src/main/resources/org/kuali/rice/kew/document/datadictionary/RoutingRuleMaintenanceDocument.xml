@@ -37,7 +37,7 @@
       <list>
         <bean parent="MaintainableFieldDefinition" p:name="docTypeName" p:unconditionallyReadOnly="true"/>
         <bean parent="MaintainableFieldDefinition" p:name="ruleTemplate.name" p:unconditionallyReadOnly="true"/>
-        <bean parent="MaintainableFieldDefinition" p:name="name" p:required="true"/>
+        <bean parent="MaintainableFieldDefinition" p:name="name" p:required="false"/>
         <bean parent="MaintainableFieldDefinition" p:name="description" p:required="true"/>
         <bean parent="MaintainableFieldDefinition" p:name="fromDate" p:required="false"/>
         <bean parent="MaintainableFieldDefinition" p:name="toDate" p:required="false"/>

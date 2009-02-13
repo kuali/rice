@@ -430,6 +430,14 @@ public class WebRuleUtils {
     public static void populateForCopyOrEdit(RuleBaseValues oldRule, RuleBaseValues newRule) {
 		populateRuleMaintenanceFields(oldRule);
 		populateRuleMaintenanceFields(newRule);
+		// in the case of copy, our fields which are marked read only are cleared, this includes the rule template
+		// name and the document type name but we don't want these cleared
+		if (newRule.getRuleTemplate().getName() == null) {
+			newRule.getRuleTemplate().setName(oldRule.getRuleTemplate().getName());
+		}
+		if (newRule.getDocTypeName() == null) {
+			newRule.setDocTypeName(oldRule.getDocTypeName());
+		}
 	}
     
     /**

@@ -159,7 +159,7 @@
     <property name="name" value="baseSalaryAmount" />
     <property name="label" value="Base Salary Amount" />
     <property name="shortLabel" value="Base Salary" />
-    <property name="required" value="false" />
+    <property name="required" value="true" />
     <property name="summary" value="Base Salary" />
     <property name="description" value="Base Salary" />
   </bean>

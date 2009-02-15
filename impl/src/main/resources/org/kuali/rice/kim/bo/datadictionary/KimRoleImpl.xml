@@ -128,6 +128,7 @@
         </bean>
       </list>
     </property>
+    <property name="inquirableClass" value="org.kuali.rice.kim.lookup.RoleInquirableImpl" />
   </bean>
 
   <bean id="KimRoleImpl-lookupDefinition" parent="KimRoleImpl-lookupDefinition-parentBean" />
@@ -149,7 +150,6 @@
     </property>
     <property name="lookupFields" >
       <list>
-        <bean parent="FieldDefinition" p:attributeName="roleId" />
         <bean parent="FieldDefinition" p:attributeName="roleName" />
         <bean parent="FieldDefinition" p:attributeName="kimTypeId" />
         <bean parent="FieldDefinition" p:attributeName="namespaceCode" />
@@ -157,9 +157,7 @@
     </property>
     <property name="resultFields" >
       <list>
-        <bean parent="FieldDefinition" p:attributeName="roleId" />
         <bean parent="FieldDefinition" p:attributeName="roleName" />
-        <bean parent="FieldDefinition" p:attributeName="kimTypeId" />
         <bean parent="FieldDefinition" p:attributeName="namespaceCode" />
         <bean parent="FieldDefinition" p:attributeName="kimRoleType.name" />
       </list>

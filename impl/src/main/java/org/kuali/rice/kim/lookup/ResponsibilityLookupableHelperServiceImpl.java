@@ -102,13 +102,13 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 	
 	private List<ResponsibilityImpl> searchResponsibilities(Map<String, String> responsibilitySearchCriteria){
 		return getResponsibilitiesSearchResultsCopy((List<KimResponsibilityImpl>)
-					KNSServiceLocator.getLookupService().findCollectionBySearchUnbounded(
-							KimResponsibilityImpl.class, responsibilitySearchCriteria));	
+					KNSServiceLocator.getLookupService().findCollectionBySearchHelper(
+							KimResponsibilityImpl.class, responsibilitySearchCriteria, false));	
 	}
 	
 	private List<KimRoleImpl> searchRoles(Map<String, String> roleSearchCriteria){
-		return (List<KimRoleImpl>)KNSServiceLocator.getLookupService().findCollectionBySearchUnbounded(
-					KimRoleImpl.class, roleSearchCriteria);
+		return (List<KimRoleImpl>)KNSServiceLocator.getLookupService().findCollectionBySearchHelper(
+					KimRoleImpl.class, roleSearchCriteria, false);
 	}
 	
 	private List<ResponsibilityImpl> getResponsibilitiesWithRoleSearchCriteria(Map<String, String> roleSearchCriteria){

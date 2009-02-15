@@ -102,13 +102,13 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 	
 	private List<PermissionImpl> searchPermissions(Map<String, String> permissionSearchCriteria){
 		return getPermissionsSearchResultsCopy((List<KimPermissionImpl>)
-					KNSServiceLocator.getLookupService().findCollectionBySearchUnbounded(
-							KimPermissionImpl.class, permissionSearchCriteria));	
+					KNSServiceLocator.getLookupService().findCollectionBySearchHelper(
+							KimPermissionImpl.class, permissionSearchCriteria, false));	
 	}
 	
 	private List<KimRoleImpl> searchRoles(Map<String, String> roleSearchCriteria){
-		return (List<KimRoleImpl>)KNSServiceLocator.getLookupService().findCollectionBySearchUnbounded(
-					KimRoleImpl.class, roleSearchCriteria);
+		return (List<KimRoleImpl>)KNSServiceLocator.getLookupService().findCollectionBySearchHelper(
+					KimRoleImpl.class, roleSearchCriteria, false);
 	}
 	
 	private List<PermissionImpl> getPermissionsWithRoleSearchCriteria(Map<String, String> roleSearchCriteria){

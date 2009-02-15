@@ -2,7 +2,11 @@
 
 <c:set var="delegationAttributes" value="${DataDictionary.KimDelegationImpl.attributes}" />
 <c:set var="roleQualifierAttributes" value="${DataDictionary.KimDocumentRoleQualifier.attributes}" />
-<c:set var="readOnly" value="${empty KualiForm.editingMode['fullEntry']}" />
+<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
+
+<c:if test="${readOnly}">
+	<c:set var="inquiry" value="${readOnly}"/>
+</c:if>
 
 <kul:tab tabTitle="Delegations" defaultOpen="true" tabErrorKey="document.deleg*">
 	<div class="tab-container" align="center">

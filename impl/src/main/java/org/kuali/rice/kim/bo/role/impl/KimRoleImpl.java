@@ -36,6 +36,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.kuali.rice.kim.bo.role.KimRole;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.util.TypedArrayList;
 
@@ -221,4 +222,18 @@ public class KimRoleImpl extends PersistableBusinessObjectBase implements KimRol
 		this.members = members;
 	}
 	
+	/**
+	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringBuilder(java.util.LinkedHashMap)
+	 */
+	@Override
+    public String toStringBuilder(LinkedHashMap mapper) {
+        if(getKimRoleType() != null){
+        	return getKimRoleType().getName()+KimConstants.NAME_VALUE_SEPARATOR+
+        				getNamespaceCode()+KimConstants.NAME_VALUE_SEPARATOR+
+        				getRoleName()+KimConstants.COMMA_SEPARATOR;
+        }
+        else {
+            return super.toStringBuilder(mapper);
+        }
+    }
 }

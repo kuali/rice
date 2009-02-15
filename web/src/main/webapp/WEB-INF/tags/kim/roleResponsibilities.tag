@@ -1,7 +1,11 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 <c:set var="responsibilityAttributes" value="${DataDictionary.ResponsibilityImpl.attributes}" />
-<c:set var="readOnly" value="${empty KualiForm.editingMode['fullEntry']}" />
+<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
+
+<c:if test="${readOnly}">
+	<c:set var="inquiry" value="${readOnly}"/>
+</c:if>
 
 <kul:tab tabTitle="Responsibilities" defaultOpen="true" tabErrorKey="document.resp*">
 	<div class="tab-container" align="center">

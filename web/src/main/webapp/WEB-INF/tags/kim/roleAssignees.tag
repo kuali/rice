@@ -6,7 +6,11 @@
 <c:set var="roleQualifierAttributes" value="${DataDictionary.KimDocumentRoleQualifier.attributes}" />
 <c:set var="kimAttributes" value="${DataDictionary.KimAttributeImpl.attributes}" />
 
-<c:set var="readOnly" value="${empty KualiForm.editingMode['fullEntry']}" />
+<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
+
+<c:if test="${readOnly}">
+	<c:set var="inquiry" value="${readOnly}"/>
+</c:if>
 
 <script language="javaScript">
 function changeMemberTypeCode(){

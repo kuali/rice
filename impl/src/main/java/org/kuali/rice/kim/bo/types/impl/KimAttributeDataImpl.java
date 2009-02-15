@@ -26,6 +26,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
 import org.kuali.rice.kim.bo.types.KimAttributeData;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
@@ -118,5 +119,18 @@ public class KimAttributeDataImpl extends PersistableBusinessObjectBase implemen
 		m.put( "attributeValue", attributeValue );
 		return m;
 	}
-	
+
+	/**
+	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringBuilder(java.util.LinkedHashMap)
+	 */
+	@Override
+    public String toStringBuilder(LinkedHashMap mapper) {
+        if(getKimAttribute() != null){
+        	return getKimAttribute().getAttributeName() + KimConstants.NAME_VALUE_SEPARATOR + getAttributeValue();
+        }
+        else {
+            return super.toStringBuilder(mapper);
+        }
+    }
+
 }

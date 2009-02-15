@@ -75,6 +75,7 @@
 				<value>classpath:org/kuali/rice/kim/bo/datadictionary/PermissionImpl.xml</value>
 				<value>classpath:org/kuali/rice/kim/bo/datadictionary/KimDelegationImpl.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimAttributeImpl.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/PermissionAttributeDataImpl.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimResponsibilityRequiredAttributeImpl.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimResponsibilityAttributeDataImpl.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimPermissionRequiredAttributeImpl.xml</value>

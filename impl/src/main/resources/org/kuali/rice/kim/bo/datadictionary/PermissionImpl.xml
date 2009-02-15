@@ -25,39 +25,28 @@
         <ref bean="PermissionImpl-assignedToPrincipalNameForLookup" />
         <ref bean="PermissionImpl-assignedToGroupNamespaceForLookup" />
         <ref bean="PermissionImpl-assignedToGroupNameForLookup" />
-        <ref bean="PermissionImpl-detailObjects" />
-        <ref bean="PermissionImpl-requiredRoleQualifierAttributes" />
-        <ref bean="PermissionImpl-assignedToRoles" />
-        <ref bean="PermissionImpl-detailObjectsValues" />
-        <ref bean="PermissionImpl-detailObjectsToDisplay" />
-        <ref bean="PermissionImpl-requiredRoleQualifierAttributesToDisplay" />
-        <ref bean="PermissionImpl-assignedToRolesToDisplay" />
         <ref bean="PermissionImpl-templateId" />
         <ref bean="PermissionImpl-attributeValue" />
       </list>
     </property>
-	<property name="relationships" >
+	<property name="collections" >
       <list>
-        <bean parent="RelationshipDefinition">
-          <property name="objectAttributeName" value="template" />
-          <property name="primitiveAttributes" >
-            <list>
-              <bean parent="PrimitiveAttributeDefinition"
-                    p:sourceName="templateId"
-                    p:targetName="permissionTemplateId" />
-            </list>
-          </property>
-          <property name="supportAttributes" >
-            <list>
-              <bean parent="SupportAttributeDefinition"
-                    p:sourceName="template.namespaceCode"
-                    p:targetName="namespaceCode" />
-              <bean parent="SupportAttributeDefinition"
-                    p:sourceName="template.name"
-                    p:targetName="name" />
-            </list>
-          </property>
-        </bean>
+        <bean parent="CollectionDefinition"
+              p:name="detailObjects"
+              p:label="Permission Detail Values"
+              p:shortLabel="Detail Values"
+              p:elementLabel="Detail Values" />
+        <bean parent="CollectionDefinition"
+              p:name="requiredRoleQualifierAttributes"
+              p:label="Required Role Qualifier Attributes"
+              p:shortLabel="Required Role Qualifiers"
+              p:elementLabel="Required Role Qualifiers" />
+        <bean parent="CollectionDefinition"
+              p:name="assignedToRoles"
+              p:label="Assigned Roles"
+              p:shortLabel="Assigned Roles"
+              p:elementLabel="Assigned Roles" />
+
       </list>
     </property>
   </bean>
@@ -162,58 +151,6 @@
     </property>
   </bean>
 
-  <bean id="PermissionImpl-detailObjects" parent="PermissionImpl-detailObjects-parentBean" />
-  <bean id="PermissionImpl-detailObjects-parentBean" parent="AttributeDefinition" abstract="true"
-        p:name="detailObjects"
-        p:label="Permission Detail Values"
-        p:shortLabel="Detail Values"
-        p:maxLength="40"
-        p:required="false" >
-    <property name="control" >
-      <bean parent="TextControlDefinition" p:size="40" />
-    </property>
-  </bean>
-
-  <bean id="PermissionImpl-detailObjectsValues" parent="PermissionImpl-detailObjects" 
-        p:name="detailObjectsValues">
-  </bean>
-
-  <bean id="PermissionImpl-detailObjectsToDisplay" parent="PermissionImpl-detailObjects" 
-        p:name="detailObjectsToDisplay">
-  </bean>
-  
-  <bean id="PermissionImpl-requiredRoleQualifierAttributes" parent="PermissionImpl-requiredRoleQualifierAttributes-parentBean" />
-  <bean id="PermissionImpl-requiredRoleQualifierAttributes-parentBean" parent="AttributeDefinition" abstract="true"
-        p:name="requiredRoleQualifierAttributes"
-        p:label="Required Role Qualifier Attributes"
-        p:shortLabel="Required Attributes"
-        p:maxLength="40"
-        p:required="false" >
-    <property name="control" >
-      <bean parent="TextControlDefinition" p:size="40" />
-    </property>
-  </bean>
-
-  <bean id="PermissionImpl-requiredRoleQualifierAttributesToDisplay" parent="PermissionImpl-requiredRoleQualifierAttributes"
-  	p:name="requiredRoleQualifierAttributesToDisplay">
-  </bean>
-
-  <bean id="PermissionImpl-assignedToRoles" parent="PermissionImpl-assignedToRoles-parentBean" />  
-  <bean id="PermissionImpl-assignedToRoles-parentBean" parent="AttributeDefinition" abstract="true"
-        p:name="assignedToRoles"
-        p:label="Assigned Roles"
-        p:shortLabel="Assigned Roles"
-        p:maxLength="40"
-        p:required="false" >
-    <property name="control" >
-      <bean parent="TextControlDefinition" p:size="40" />
-    </property>
-  </bean>
-  
-  <bean id="PermissionImpl-assignedToRolesToDisplay" parent="PermissionImpl-assignedToRoles"
-  	p:name="assignedToRolesToDisplay">
-  </bean>
-  
   <bean id="PermissionImpl-inquiryDefinition" parent="PermissionImpl-inquiryDefinition-parentBean" />
   <bean id="PermissionImpl-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition"
         p:title="Permission Inquiry" >
@@ -224,16 +161,73 @@
               p:numberOfColumns="1" >
           <property name="inquiryFields" >
             <list>
-              <bean parent="FieldDefinition" p:attributeName="template.namespaceCode" />
-              <bean parent="FieldDefinition" p:attributeName="template.name" />
-        	  <bean parent="FieldDefinition" p:attributeName="namespaceCode" />
-        	  <bean parent="FieldDefinition" p:attributeName="name" />
-	       	  <bean parent="FieldDefinition" p:attributeName="detailObjectsToDisplay" />
-	       	  <bean parent="FieldDefinition" p:attributeName="requiredRoleQualifierAttributesToDisplay" />
-	          <bean parent="FieldDefinition" p:attributeName="assignedToRolesToDisplay" />
-            </list>
+				<bean parent="FieldDefinition" p:attributeName="template.namespaceCode" />
+				<bean parent="FieldDefinition" p:attributeName="template.name" />
+				<bean parent="FieldDefinition" p:attributeName="namespaceCode" />
+				<bean parent="FieldDefinition" p:attributeName="name" />
+			</list>
           </property>
         </bean>
+        <bean parent="InquirySectionDefinition">
+          <property name="title" value="Permission Detail Values" />
+          <property name="inquiryFields" >
+            <list>
+				<bean parent="InquiryCollectionDefinition">
+	                <property name="attributeName" value="detailObjects" />
+	                <property name="businessObjectClass" value="org.kuali.rice.kim.bo.role.impl.PermissionAttributeDataImpl" />
+	                <property name="numberOfColumns" value="2" />
+	                <property name="inquiryFields" >
+						<list>
+		                    <bean parent="FieldDefinition"
+		                          p:attributeName="kimAttribute.attributeName" />
+		                    <bean parent="FieldDefinition"
+		                          p:attributeName="attributeValue" />
+		                </list>
+		            </property>
+		        </bean>
+			</list>
+		  </property>
+		</bean>
+        <bean parent="InquirySectionDefinition">
+          <property name="title" value="Required Role Qualifier Attributes" />
+          <property name="inquiryFields" >
+            <list>
+				<bean parent="InquiryCollectionDefinition">
+	                <property name="attributeName" value="requiredRoleQualifierAttributes" />
+	                <property name="businessObjectClass" value="org.kuali.rice.kim.bo.role.impl.KimPermissionRequiredAttributeImpl" />
+	                <property name="numberOfColumns" value="1" />
+	                <property name="inquiryFields" >
+						<list>
+		                    <bean parent="FieldDefinition"
+		                          p:attributeName="kimAttribute.attributeName" />
+		                </list>
+		            </property>
+		        </bean>
+			</list>
+		  </property>
+		</bean>
+        <bean parent="InquirySectionDefinition">
+          <property name="title" value="Assigned Roles" />
+          <property name="inquiryFields" >
+            <list>
+				<bean parent="InquiryCollectionDefinition">
+	                <property name="attributeName" value="assignedToRoles" />
+	                <property name="businessObjectClass" value="org.kuali.rice.kim.bo.role.impl.KimRoleImpl" />
+	                <property name="numberOfColumns" value="3" />
+	                <property name="inquiryFields" >
+						<list>
+		                    <bean parent="FieldDefinition"
+		                          p:attributeName="namespaceCode" />
+		                    <bean parent="FieldDefinition"
+		                          p:attributeName="roleName" />
+		                    <bean parent="FieldDefinition"
+		                          p:attributeName="kimRoleType.name" />
+		                </list>
+		            </property>
+		        </bean>
+			</list>
+		  </property>
+		</bean>
       </list>
     </property>
     <property name="inquirableClass" value="org.kuali.rice.kim.lookup.PermissionInquirableImpl" />
@@ -276,7 +270,6 @@
        	  <bean parent="FieldDefinition" p:attributeName="nameToDisplay" />
        	  <bean parent="FieldDefinition" p:attributeName="detailObjects" />
        	  <bean parent="FieldDefinition" p:attributeName="requiredRoleQualifierAttributes" />
-          <bean parent="FieldDefinition" p:attributeName="assignedToRoles" />
       </list>
     </property>
   </bean>

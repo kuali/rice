@@ -17,9 +17,11 @@ package org.kuali.rice.kim.bo.role.impl;
 
 import java.util.LinkedHashMap;
 
+import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -89,4 +91,20 @@ public class KimResponsibilityRequiredAttributeImpl extends PersistableBusinessO
 		this.kimAttribute = kimAttribute;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringBuilder(java.util.LinkedHashMap)
+	 */
+	@Override
+    public String toStringBuilder(LinkedHashMap mapper) {
+        if(getKimAttribute() != null){
+        	return getKimAttributeLabelFromDD(getKimAttribute().getAttributeName());
+        }
+        else {
+            return super.toStringBuilder(mapper);
+        }
+    }
+
+	protected String getKimAttributeLabelFromDD(String attributeName){
+    	return KNSServiceLocator.getDataDictionaryService().getAttributeLabel(KimAttributes.class, attributeName);
+    }
 }

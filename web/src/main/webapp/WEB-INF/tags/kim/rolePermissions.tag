@@ -1,7 +1,11 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 <c:set var="permissionAttributes" value="${DataDictionary.PermissionImpl.attributes}" />
-<c:set var="readOnly" value="${empty KualiForm.editingMode['fullEntry']}" />
+<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
+
+<c:if test="${readOnly}">
+	<c:set var="inquiry" value="${readOnly}"/>
+</c:if>
 
 <kul:tab tabTitle="Permissions" defaultOpen="true" tabErrorKey="document.perm*">
 	<div class="tab-container" align="center">

@@ -41,6 +41,7 @@ import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
+import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
@@ -73,6 +74,7 @@ public class KualiInquirableImpl implements Inquirable {
     private DataDictionaryService dataDictionaryService;
     private EncryptionService encryptionService;
     private KualiConfigurationService kualiConfigurationService;
+	private static BusinessObjectService businessObjectService;
 
     private Class businessObjectClass;
 
@@ -473,5 +475,44 @@ public class KualiInquirableImpl implements Inquirable {
 		this.businessObjectMetaDataService = businessObjectMetaDataService;
 	}
 
+	public BusinessObjectService getBusinessObjectService() {
+		if (businessObjectService == null ) {
+			businessObjectService = KNSServiceLocator.getBusinessObjectService();
+		}
+		return businessObjectService;
+	}
+
+    protected AnchorHtmlData getInquiryUrlForPrimaryKeys(
+    		Class clazz, Object businessObject, List<String> primaryKeys, String displayText){
+    	if(businessObject==null)
+    		return new AnchorHtmlData(KNSConstants.EMPTY_STRING, KNSConstants.EMPTY_STRING);
+
+        Properties parameters = new Properties();
+        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.START_METHOD);
+        parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, clazz.getName());
+        
+        String titleAttributeValue;
+        Map<String, String> fieldList = new HashMap<String, String>();
+        for(String primaryKey: primaryKeys){
+        	titleAttributeValue = (String)ObjectUtils.getPropertyValue(businessObject, primaryKey);
+            parameters.put(primaryKey, titleAttributeValue);
+            fieldList.put(primaryKey, titleAttributeValue);
+        }
+        if(StringUtils.isEmpty(displayText))
+        	return getHyperLink(clazz, fieldList, UrlFactory.parameterizeUrl(KNSConstants.INQUIRY_ACTION, parameters));
+        else
+        	return getHyperLink(clazz, fieldList, UrlFactory.parameterizeUrl(KNSConstants.INQUIRY_ACTION, parameters), displayText);
+    }
+
+
+    protected AnchorHtmlData getHyperLink(Class inquiryClass, Map<String,String> fieldList, String inquiryUrl, String displayText){
+    	AnchorHtmlData a = new AnchorHtmlData(inquiryUrl, KNSConstants.EMPTY_STRING, displayText);
+    	a.setTitle(AnchorHtmlData.getTitleText(
+                getKualiConfigurationService().getPropertyString(
+                        INQUIRY_TITLE_PREFIX) + " " + 
+                        getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(inquiryClass.getName()).getObjectLabel()+
+                        " ", inquiryClass, fieldList));
+    	return a;
+    }
 
 }

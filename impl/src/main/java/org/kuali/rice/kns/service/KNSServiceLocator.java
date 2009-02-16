@@ -125,6 +125,12 @@ public class KNSServiceLocator<T extends Object> {
     public static final EncryptionService getEncryptionService() {
 	return (EncryptionService) getService(ENCRYPTION_SERVICE);
     }
+    
+	public static final String EXCEPTION_INCIDENT_REPORT_SERVICE = "knsExceptionIncidentService";
+    public static final KualiExceptionIncidentService getKualiExceptionIncidentService() {
+    	return (KualiExceptionIncidentService) getService(EXCEPTION_INCIDENT_REPORT_SERVICE);
+    }
+
 
     public static final String MAIL_SERVICE = "mailService";
 

@@ -918,13 +918,13 @@
 	  </property>
 	</bean>
 
-    <bean id="campusRoleTypeService" class="org.kuali.rice.kns.service.impl.CampusRoleTypeServiceImpl"/>
+    <bean id="campusRoleService" class="org.kuali.rice.kns.service.impl.CampusRoleTypeServiceImpl"/>
 	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
 	  <property name="serviceDefinition">
 	    <bean parent="knsService"
-	      p:service-ref="campusRoleTypeService"
-	      p:localServiceName="campusRoleTypeService" />
+	      p:service-ref="campusRoleService"
+	      p:localServiceName="campusRoleService" />
 	  </property>
 	</bean>
 

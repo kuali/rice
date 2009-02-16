@@ -47,17 +47,6 @@ public class KualiExceptionHandlerAction extends KualiAction {
 			.getLogger(KualiExceptionHandlerAction.class);
 
 	/**
-	 * This is the property key and must be specified in the configuration for
-	 * incident reporting service. The reporting service is located by the
-	 * KNSServiceLocator.
-	 * <p>
-	 * Note: If not specified, no action is taken and no exception thrown.
-	 * <p>
-	 * Value of this is
-	 * KualiExceptionHandlerAction.EXCEPTION_INCIDENT_REPORT_SERVICE
-	 */
-
-	/**
 	 * This overridden method dispatches action to be taken based on
 	 * "methodToCall" parameter. The exception is processed when there is no
 	 * "methodToCall" specified.
@@ -70,44 +59,7 @@ public class KualiExceptionHandlerAction extends KualiAction {
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-
-		if (LOG.isDebugEnabled()) {
-			String lm = String.format("ENTRY %s%n%s", form.getClass()
-					.getSimpleName(), request.getRequestURI());
-			LOG.debug(lm);
-		}
-
-		String methodToCall = WebUtils.parseMethodToCall(form, request);
-
-		ActionForward forward;
-		if (methodToCall == null) {
-			// Process the exception
-			forward = executeException(mapping, form, request, response);
-		} else {
-			String next = (String) request.getAttribute(FORWARD_NEXT);
-			// Enable Extended TextArea implementation by checking the
-			// methodToCall, "notify"
-			if (next == null
-					&& !methodToCall
-							.equalsIgnoreCase(KualiAction.FORWARD_TEXT_AREA_UPDATE)
-					&& !methodToCall
-							.equalsIgnoreCase(KualiAction.POST_TEXT_AREA_TO_PARENT)) {
-				// Process the exception
-				forward = executeException(mapping, form, request, response);
-			} else {
-				// Delegate to parent
-				request.setAttribute(FORWARD_NEXT, FORWARD_NEXT);
-				forward = super.execute(mapping, form, request, response);
-			}
-		}
-
-		if (LOG.isDebugEnabled()) {
-			String lm = String.format("EXIT %s", (forward == null) ? "null"
-					: forward.getPath());
-			LOG.debug(lm);
-		}
-
-		return forward;
+		return executeException(mapping, form, request, response);
 	}
 
 	/**
@@ -224,6 +176,6 @@ public class KualiExceptionHandlerAction extends KualiAction {
 		// Set full exception properties in Http Request and forward to JSP
 		request.setAttribute(KualiExceptionHandlerAction.class
 				.getName(), ei.toProperties());
-		return mapping.findForward(FORWARD_NEXT);
+		return mapping.findForward(RiceConstants.MAPPING_BASIC);
 	}
 }

@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
@@ -87,9 +88,13 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
         Criteria crit = new Criteria(); //getSearchCriteria(docTypeName, ruleTemplateId, ruleDescription, delegationType, activeInd, extensionValues);
 
         crit.addEqualTo("delegationType", delegationType);
-        //crit.addEqualTo("responsibilityId", parentResponsibilityId);
+        if (StringUtils.isNotBlank(parentRuleBaseVaueId) && StringUtils.isNumeric(parentRuleBaseVaueId)) {
+            crit.addIn("responsibilityId", this.getRuleResponsibilitySubQuery(new Long(parentRuleBaseVaueId)));
+        }
 
-        //implement parentRuleBaseValueId subquery here
+        if (StringUtils.isNotBlank(parentResponsibilityId) && StringUtils.isNumeric(parentResponsibilityId)) {
+            crit.addEqualTo("responsibilityId", parentResponsibilityId);
+        }
 
         crit.addIn("delegateRuleId", getRuleBaseValuesSubQuery(docTypeName, ruleId,
                                                                ruleTemplateId, ruleDescription, workgroupId,
@@ -110,9 +115,13 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
             Map extensionValues, Collection actionRequestCodes) {
         Criteria crit = new Criteria();
         crit.addEqualTo("delegationType", delegationType);
-        //crit.addEqualTo("responsibilityId", parentResponsibilityId);
+        if (StringUtils.isNotBlank(parentRuleBaseVaueId) && StringUtils.isNumeric(parentRuleBaseVaueId)) {
+            crit.addIn("responsibilityId", this.getRuleResponsibilitySubQuery(new Long(parentRuleBaseVaueId)));
+        }
 
-        //implement parentRuleBaseValueId subquery here
+        if (StringUtils.isNotBlank(parentResponsibilityId) && StringUtils.isNumeric(parentResponsibilityId)) {
+            crit.addEqualTo("responsibilityId", parentResponsibilityId);
+        }
 
         crit.addIn("delegateRuleId", getRuleBaseValuesSubQuery(docTypeName, ruleTemplateId,
                                                                ruleDescription, workgroupIds,
@@ -193,6 +202,15 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
         query.setAttributes(new String[] { "ruleBaseValuesId" });
         return query;
         //return (List<RuleDelegation>) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleDelegation.class, crit, true));
+    }
+
+    private ReportQueryByCriteria getRuleResponsibilitySubQuery(Long ruleBaseValuesId) {
+        Criteria crit = new Criteria();
+        crit.addEqualTo("ruleBaseValuesId", ruleBaseValuesId);
+        ReportQueryByCriteria query = QueryFactory.newReportQuery(RuleResponsibility.class, crit);
+        query.setAttributes(new String[] { "responsibilityId" });
+        return query;
+        //return getResponsibilitySubQuery(workgroupIdStrings,workflowId,new ArrayList<String>(), searchUser, searchUserInWorkgroups);
     }
 
     private ReportQueryByCriteria getResponsibilitySubQuery(List<String> workgroupIds, String workflowId, Boolean searchUser, Boolean searchUserInWorkgroups) {

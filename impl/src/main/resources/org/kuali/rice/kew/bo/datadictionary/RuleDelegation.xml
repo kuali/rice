@@ -428,7 +428,10 @@
               p:attributeName="delegationRuleBaseValues.personReviewerType"/>
         <bean parent="FieldDefinition"
         	  p:noLookup="true"
-              p:attributeName="delegationRuleBaseValues.activeInd"/>
+        	  p:attributeName="delegationRuleBaseValues.activeInd"/>
+        <bean parent="FieldDefinition"
+              p:noLookup="true"
+              p:attributeName="delegationRuleBaseValues.ruleBaseValuesId" />	     
         <bean parent="FieldDefinition"
               p:attributeName="delegationType"/>
       </list>
@@ -436,15 +439,18 @@
     <property name="resultFields" >
       <list>
         <bean parent="FieldDefinition"
+              p:attributeName="ruleResponsibility.ruleBaseValues.ruleBaseValuesId"/>
+        <bean parent="FieldDefinition"
               p:attributeName="delegationRuleBaseValues.name" />
         <bean parent="FieldDefinition"
               p:attributeName="delegationRuleBaseValues.ruleBaseValuesId" />
         <bean parent="FieldDefinition"
               p:attributeName="delegationRuleBaseValues.ruleTemplate.name" />
         <bean parent="FieldDefinition"
-              p:noDirectInquiry="true"
+              p:noInquiry="true"
               p:attributeName="delegationRuleBaseValues.activeInd" />
         <bean parent="FieldDefinition"
+              p:noInquiry="true"
               p:attributeName="delegationRuleBaseValues.docTypeName"/>
         <bean parent="FieldDefinition"
               p:attributeName="delegationType"/>

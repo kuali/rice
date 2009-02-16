@@ -32,7 +32,8 @@
 	<kim:roleAssignees />
 	<kim:roleDelegations />
 	
+	<kul:routeLog />
+	<kul:adHocRecipients />
 	<kul:panelFooter />
 	<kul:documentControls transactionalDocument="false" />
-
 </kul:documentPage>

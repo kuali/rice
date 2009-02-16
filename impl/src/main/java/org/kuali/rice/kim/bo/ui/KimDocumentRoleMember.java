@@ -101,6 +101,14 @@ public class KimDocumentRoleMember  extends KimDocumentBoBase {
 		this.roleId = roleId;
 	}
 
+	public KimDocumentRoleQualifier getQualifier(String kimAttributeDefnId) {
+		for(KimDocumentRoleQualifier qualifier:qualifiers){
+			if(qualifier.getKimAttrDefnId().equals(kimAttributeDefnId))
+				return qualifier;
+		}
+		return null;
+	}
+
 	public List<KimDocumentRoleQualifier> getQualifiers() {
 		return this.qualifiers;
 	}

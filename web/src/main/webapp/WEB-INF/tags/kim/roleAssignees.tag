@@ -76,12 +76,11 @@ function changeMemberTypeCode(){
                 	<kul:htmlControlAttribute property="member.activeToDate" attributeEntry="${roleMemberAttributes.activeToDate}" datePicker="true" />
                 </div>
                 </td>
-                <c:set var="numberOfQualifiers2" value="${ KualiForm.member.numberOfQualifiers}"/>
 				<c:forEach var="qualifier" items="${KualiForm.document.kimType.attributeDefinitions}" varStatus="statusQualifier">
 					<c:set var="fieldName" value="${qualifier.kimAttribute.attributeName}" />
         			<c:set var="attrEntry" value="${KualiForm.document.attributeEntry[fieldName]}" />
 		            <td align="left" valign="middle">
-		               	<div align="center"> <kul:htmlControlAttribute property="member.qualifiers[${statusQualifier.index}].attrVal"  attributeEntry="${attrEntry}" readOnly="${inquiry}"  />
+		               	<div align="center"> <kul:htmlControlAttribute property="member.qualifier(${qualifier.kimAttributeId}).attrVal"  attributeEntry="${attrEntry}" readOnly="${inquiry}"  />
 						</div>
 					</td>
 		        </c:forEach>
@@ -119,24 +118,14 @@ function changeMemberTypeCode(){
 	               	<div align="center"> <kul:htmlControlAttribute property="document.members[${statusMember.index}].activeToDate"  attributeEntry="${roleMemberAttributes.activeToDate}" readOnly="${inquiry}"  datePicker="true" />
 					</div>
 				</td>
-				<c:set var="numberOfQualifiers" value="${KualiForm.document.members[statusMember.index].numberOfQualifiers}" />
+				<c:set var="numberOfColumns" value="${KualiForm.member.numberOfQualifiers+4}"/>
 				<c:forEach var="qualifier" items="${KualiForm.document.kimType.attributeDefinitions}" varStatus="statusQualifier">
 					<c:set var="fieldName" value="${qualifier.kimAttribute.attributeName}" />
         			<c:set var="attrEntry" value="${KualiForm.document.attributeEntry[fieldName]}" />
-        			<c:choose>
-        				<c:when test="${numberOfQualifiers>statusQualifier.index}">
-				            <td align="left" valign="middle">
-				               	<div align="center"> <kul:htmlControlAttribute property="document.members[${statusMember.index}].qualifiers[${statusQualifier.index}].attrVal"  attributeEntry="${attrEntry}" readOnly="${inquiry}"  />
-								</div>
-							</td>
-						</c:when>
-        				<c:otherwise>
-				            <td align="left" valign="middle">
-				               	<div align="center">
-								</div>
-							</td>
-						</c:otherwise>
-					</c:choose>
+		            <td align="left" valign="middle">
+		               	<div align="center"> <kul:htmlControlAttribute property="document.members[${statusMember.index}].qualifier(${qualifier.kimAttributeId}).attrVal"  attributeEntry="${attrEntry}" readOnly="${inquiry}"  />
+						</div>
+					</td>
 		        </c:forEach>
 			<c:if test="${not inquiry}">	
 				<td>
@@ -156,7 +145,7 @@ function changeMemberTypeCode(){
 			</tr>
 	        <c:if test="${fn:length(member.roleRspActions) > 0}">	
     			    <tr>
-	              <td colspan="7" style="padding:0px;">
+	              <td colspan="${numberOfColumns}" style="padding:0px;">
 	              	<kim:responsibilityActions mbrIdx="${statusMember.index}" />
 		          </td>
 		        </tr>

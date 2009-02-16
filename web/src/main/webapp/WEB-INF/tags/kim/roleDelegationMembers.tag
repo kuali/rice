@@ -74,7 +74,7 @@ function changeDelegationTypeCode(){
         			<c:choose>
         				<c:when test="${numberOfQualifiers>statusQualifier.index}">
 				            <td align="left" valign="middle">
-				               	<div align="left"> <kul:htmlControlAttribute property="delegation.member.qualifiers[${statusQualifier.index}].attrVal"  attributeEntry="${attrEntry}" readOnly="${inquiry}"  />
+				               	<div align="left"> <kul:htmlControlAttribute property="delegation.member.qualifier[${qualifier.kimAttributeId}].attrVal"  attributeEntry="${attrEntry}" readOnly="${inquiry}"  />
 								</div>
 							</td>
 						</c:when>
@@ -117,7 +117,7 @@ function changeDelegationTypeCode(){
         			<c:choose>
         				<c:when test="${numberOfQualifiers>statusQualifier.index}">
 				            <td align="left" valign="middle">
-				               	<div align="left"> <kul:htmlControlAttribute property="document.delegation.members[${statusMember.index}].qualifiers[${statusQualifier.index}].attrVal"  attributeEntry="${attrEntry}" readOnly="${inquiry}"  />
+				               	<div align="left"> <kul:htmlControlAttribute property="document.delegation.members[${statusMember.index}].qualifier[${qualifier.kimAttributeId}].attrVal"  attributeEntry="${attrEntry}" readOnly="${inquiry}"  />
 								</div>
 							</td>
 						</c:when>

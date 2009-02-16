@@ -27,6 +27,8 @@
         <ref bean="PermissionImpl-assignedToGroupNameForLookup" />
         <ref bean="PermissionImpl-templateId" />
         <ref bean="PermissionImpl-attributeValue" />
+        <ref bean="PermissionImpl-detailObjects" />
+        <ref bean="PermissionImpl-requiredRoleQualifierAttributes" />
       </list>
     </property>
 	<property name="collections" >
@@ -150,6 +152,30 @@
       <bean parent="TextControlDefinition" p:size="40" />
     </property>
   </bean>
+
+  <bean id="PermissionImpl-detailObjects" parent="PermissionImpl-detailObjects-parentBean" />
+  <bean id="PermissionImpl-detailObjects-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="detailObjectsValues"
+        p:label="Permission Detail Values"
+        p:shortLabel="Detail Values"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="40" />
+    </property>
+  </bean>
+
+  <bean id="PermissionImpl-requiredRoleQualifierAttributes" parent="PermissionImpl-requiredRoleQualifierAttributes-parentBean" />
+  <bean id="PermissionImpl-requiredRoleQualifierAttributes-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="requiredRoleQualifierAttributesToDisplay"
+        p:label="Required Role Qualifier Attributes"
+        p:shortLabel="Required Attributes"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="40" />
+    </property>
+  </bean>          
 
   <bean id="PermissionImpl-inquiryDefinition" parent="PermissionImpl-inquiryDefinition-parentBean" />
   <bean id="PermissionImpl-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition"

@@ -48,7 +48,7 @@
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${responsibilityAttributes.namespaceCode}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${responsibilityAttributes.name}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${responsibilityAttributes.detailObjectsValues}" noColon="true" /></div></th>
-        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${responsibilityAttributes.requiredRoleQualifierAttributes}" noColon="true" /></div></th>
+        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${responsibilityAttributes.requiredRoleQualifierAttributesToDisplay}" noColon="true" /></div></th>
 				<c:if test="${not inquiry}">	
             		<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
 				</c:if>	

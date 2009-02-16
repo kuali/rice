@@ -1193,6 +1193,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					pndMemberRoleQualifier.setTargetPrimaryKey(memberRoleQualifier.getTargetPrimaryKey());
 					pndMemberRoleQualifier.setKimTypId(memberRoleQualifier.getKimTypeId());
 					pndMemberRoleQualifier.setKimAttrDefnId(memberRoleQualifier.getKimAttributeId());
+					pndMemberRoleQualifier.setKimAttribute(memberRoleQualifier.getKimAttribute());
 					pndMemberRoleQualifiers.add(pndMemberRoleQualifier);
 					attributePresent = true;
 				}		

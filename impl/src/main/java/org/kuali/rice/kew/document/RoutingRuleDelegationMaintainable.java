@@ -31,14 +31,14 @@ import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.web.ui.Section;
 
 /**
- * This class is the maintainable implementation for Routing Rules 
- * in KEW (represented by the {@link RuleBaseValues} business object). 
- * 
+ * This class is the maintainable implementation for Routing Rules
+ * in KEW (represented by the {@link RuleBaseValues} business object).
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class RoutingRuleDelegationMaintainable extends KualiMaintainableImpl {
-	
+
 	/**
 	 * Override the getSections method on this maintainable so that the Section Containing the various Rule Attributes
 	 * can be dynamically generated based on the RuleTemplate which is selected.
@@ -47,11 +47,11 @@ public class RoutingRuleDelegationMaintainable extends KualiMaintainableImpl {
 	public List getSections(MaintenanceDocument document, Maintainable oldMaintainable) {
 		List<Section> sections = super.getSections(document, oldMaintainable);
 		return WebRuleUtils.customizeSections(getThisRule(), sections);
-		
+
 	}
-	
+
 	/**
-	 * On creation of a new rule document, we must validate that a rule template and document type are set. 
+	 * On creation of a new rule document, we must validate that a rule template and document type are set.
 	 */
 	@Override
 	public void processAfterNew(MaintenanceDocument document,
@@ -62,7 +62,7 @@ public class RoutingRuleDelegationMaintainable extends KualiMaintainableImpl {
 		WebRuleUtils.establishDefaultRuleValues(getNewRule(document));
 		getNewRule(document).setRouteHeaderId(new Long(document.getDocumentHeader().getDocumentNumber()));
 	}
-		
+
 	/**
 	 * Creates the initial structure of the new business object so that it can be properly
 	 * populated with non-null object references.
@@ -77,7 +77,7 @@ public class RoutingRuleDelegationMaintainable extends KualiMaintainableImpl {
 			newRuleDelegation.setDelegationRuleBaseValues(new RuleBaseValues());
 		}
 	}
-	
+
 	/**
 	 * This is a hack to get around the fact that when a document is first created, this value is
  	 * true which causes issues if you want to be able to initialize fields on  the document using
@@ -85,10 +85,10 @@ public class RoutingRuleDelegationMaintainable extends KualiMaintainableImpl {
  	 * Field.propertyValue to see why this causes problems
 	 */
 	@Override
-	public boolean isGenerateDefaultValues() {		
+	public boolean isGenerateDefaultValues() {
 		return false;
 	}
-	
+
 	/**
      * A complete override of the implementation for saving a Rule
      */
@@ -100,13 +100,13 @@ public class RoutingRuleDelegationMaintainable extends KualiMaintainableImpl {
     	WebRuleUtils.processRuleForDelegationSave(getThisRuleDelegation());
     	KEWServiceLocator.getRuleService().makeCurrent(getThisRuleDelegation());
     }
-    
+
     @Override
     public void processAfterCopy(MaintenanceDocument document, Map<String, String[]> parameters) {
     	WebRuleUtils.processRuleForCopy(document.getDocumentNumber(), getOldRule(document), getNewRule(document));
         super.processAfterCopy(document, parameters);
     }
-    
+
 	@Override
 	public void processAfterEdit(MaintenanceDocument document,
 			Map<String, String[]> parameters) {
@@ -118,7 +118,7 @@ public class RoutingRuleDelegationMaintainable extends KualiMaintainableImpl {
 		super.processAfterEdit(document, parameters);
 	}
 
-    
+
 	@Override
 	public List<MaintenanceLock> generateMaintenanceLocks() {
 		if (getThisRule().getRuleBaseValuesId() == null) {
@@ -126,7 +126,7 @@ public class RoutingRuleDelegationMaintainable extends KualiMaintainableImpl {
 		}
 		return super.generateMaintenanceLocks();
 	}
-    
+
     @Override
 	public String getDocumentTitle(MaintenanceDocument document) {
 		StringBuffer title = new StringBuffer();
@@ -136,13 +136,13 @@ public class RoutingRuleDelegationMaintainable extends KualiMaintainableImpl {
         } else {
             title.append("Adding Rule Delegation '").append(rule.getDescription()).append("'");
         }
-        return title.toString();	
+        return title.toString();
 	}
-	
+
 	protected RuleDelegation getNewRuleDelegation(MaintenanceDocument document) {
 		return (RuleDelegation)document.getNewMaintainableObject().getBusinessObject();
 	}
-	
+
 	protected RuleDelegation getOldRuleDelegation(MaintenanceDocument document) {
 		return (RuleDelegation)document.getOldMaintainableObject().getBusinessObject();
 	}
@@ -162,9 +162,18 @@ public class RoutingRuleDelegationMaintainable extends KualiMaintainableImpl {
 	protected RuleBaseValues getThisRule() {
 		return getThisRuleDelegation().getDelegationRuleBaseValues();
 	}
-	
-	
 
-	
-	
+	/**
+	 * This overridden method ...
+	 *
+	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#prepareForSave()
+	 */
+	@Override
+	public void prepareForSave() {
+		super.prepareForSave();
+		WebRuleUtils.translateResponsibilitiesForSave(getThisRule());
+	}
+
+
+
 }

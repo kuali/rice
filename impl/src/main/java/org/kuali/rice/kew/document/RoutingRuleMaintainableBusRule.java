@@ -64,12 +64,16 @@ public class RoutingRuleMaintainableBusRule extends MaintenanceDocumentRuleBase 
 
 		boolean isValid = true;
 
-		RuleBaseValues ruleBaseValues = getNewRule(document);
+		RuleBaseValues ruleBaseValues = getRuleBaseValues(document);
 
 		isValid &= this.populateErrorMap(ruleBaseValues);
 
 
 		return isValid;
+	}
+
+	protected RuleBaseValues getRuleBaseValues(MaintenanceDocument document){
+		return (RuleBaseValues)document.getNewMaintainableObject().getBusinessObject();
 	}
 
 	protected void populateErrorMap(Map<String,String> errorMap){
@@ -90,23 +94,30 @@ public class RoutingRuleMaintainableBusRule extends MaintenanceDocumentRuleBase 
 
 		boolean isValid = true;
 
-		if(PERSON_RESP_SECTION.equals(collectionName)){
+		if(getPersonSectionName().equals(collectionName)){
 			PersonRuleResponsibility pr = (PersonRuleResponsibility)line;
 			String name = pr.getPrincipalName();
 
 			if(!personExists(name)){
 				isValid &= false;
-				this.putFieldError(PERSON_RESP_SECTION, "error.document.personResponsibilities.principleDoesNotExist");
+				this.putFieldError(getPersonSectionName(), "error.document.personResponsibilities.principleDoesNotExist");
 			}
-		}else if(GROUP_RESP_SECTION.equals(collectionName)){
+		}else if(getGroupSectionName().equals(collectionName)){
 			GroupRuleResponsibility gr = (GroupRuleResponsibility)line;
 			if(!groupExists(gr.getNamespaceCode(), gr.getName())){
 				isValid &= false;
-				this.putFieldError(GROUP_RESP_SECTION, "error.document.personResponsibilities.groupDoesNotExist");
+				this.putFieldError(getGroupSectionName(), "error.document.personResponsibilities.groupDoesNotExist");
 			}
 		}
 
 		return isValid;
+	}
+
+	protected String getPersonSectionName(){
+		return PERSON_RESP_SECTION;
+	}
+	protected String getGroupSectionName(){
+		return GROUP_RESP_SECTION;
 	}
 
 	protected boolean personExists(String principalName){
@@ -116,7 +127,7 @@ public class RoutingRuleMaintainableBusRule extends MaintenanceDocumentRuleBase 
 			bRet = true;
 		}catch(Exception ex){
 			bRet = false;
-			ex.printStackTrace();
+			//ex.printStackTrace();
 		}
 
 		return bRet;
@@ -129,7 +140,7 @@ public class RoutingRuleMaintainableBusRule extends MaintenanceDocumentRuleBase 
 			bRet = true;
 		}catch(Exception ex){
 			bRet = false;
-			ex.printStackTrace();
+			//ex.printStackTrace();
 		}
 		return bRet;
 	}
@@ -209,12 +220,7 @@ public class RoutingRuleMaintainableBusRule extends MaintenanceDocumentRuleBase 
 	protected DocumentTypeService getDocumentTypeService() {
         return (DocumentTypeService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE);
     }
-	/**
-	 * Returns the new RuleBaseValues business object.
-	 */
-	protected RuleBaseValues getNewRule(MaintenanceDocument document) {
-		return (RuleBaseValues)document.getNewMaintainableObject().getBusinessObject();
-	}
+
 
 	protected boolean setRuleAttributeErrors(RuleBaseValues rule){
 
@@ -245,7 +251,7 @@ public class RoutingRuleMaintainableBusRule extends MaintenanceDocumentRuleBase 
 			}catch(Exception ex){
 				isValid = false;
 				this.putFieldError("RuleAttributes", "routetemplate.xmlattribute.required.error");
-				ex.printStackTrace();
+				//ex.printStackTrace();
 			}
 			// TODO hook validation of rule data into PreRules
 			 if (attValidationErrors != null && !attValidationErrors.isEmpty()) {

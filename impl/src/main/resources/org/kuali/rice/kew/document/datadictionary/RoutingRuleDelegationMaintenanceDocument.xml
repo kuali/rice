@@ -17,12 +17,13 @@
     </property>
     <property name="allowsNewOrCopy" value="true"/>
     <property name="documentTypeName" value="RoutingRuleDelegationMaintenanceDocument"/>
-    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>  
+    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
     <property name="lockingKeys">
       <list>
         <value>delegationRuleBaseValues.ruleBaseValuesId</value>
       </list>
-    </property>  
+    </property>
+    <property name="businessRulesClass" value="org.kuali.rice.kew.document.RoutingRuleDelegationMaintainableBusRule"/>
   </bean>
 
   <!-- Maintenance Section Definitions -->
@@ -40,11 +41,11 @@
         <bean parent="MaintainableSubSectionHeaderDefinition" p:name="Parent Rule Responsibility"/>
         <bean parent="MaintainableFieldDefinition" p:name="ruleResponsibility.ruleResponsibilityName" p:unconditionallyReadOnly="true"/>
 		<bean parent="MaintainableFieldDefinition" p:name="ruleResponsibility.ruleResponsibilityTypeDisplayValue" p:unconditionallyReadOnly="true"/>
-		<bean parent="MaintainableFieldDefinition" p:name="ruleResponsibility.actionRequestedDisplayValue" p:unconditionallyReadOnly="true"/>		        
+		<bean parent="MaintainableFieldDefinition" p:name="ruleResponsibility.actionRequestedDisplayValue" p:unconditionallyReadOnly="true"/>
       </list>
     </property>
   </bean>
- 
+
   <bean id="RoutingRuleDelegationMaintenanceDocument-Rule" parent="RoutingRuleDelegationMaintenanceDocument-Rule-parentBean"/>
 
   <bean id="RoutingRuleDelegationMaintenanceDocument-Rule-parentBean" abstract="true" parent="MaintainableSectionDefinition">
@@ -64,8 +65,8 @@
       </list>
     </property>
   </bean>
-   
-   
+
+
   <bean id="RoutingRuleDelegationMaintenanceDocument-RuleAttributes" parent="RoutingRuleDelegationMaintenanceDocument-RuleAttributes-parentBean"/>
 
   <bean id="RoutingRuleDelegationMaintenanceDocument-RuleAttributes-parentBean" abstract="true" parent="MaintainableSectionDefinition">
@@ -73,7 +74,7 @@
     <property name="title" value="Delegate Rule Attributes"/>
     <!-- Maintainable Items generated based on Delegation Rule Template, see RoutingRuleDelegationMaintainable -->
   </bean>
-  
+
   <bean id="RoutingRuleDelegationMaintenanceDocument-PersonResponsibilities" parent="RoutingRuleDelegationMaintenanceDocument-PersonResponsibilities-parentBean"/>
 
   <bean id="RoutingRuleDelegationMaintenanceDocument-PersonResponsibilities-parentBean" abstract="true" parent="MaintainableSectionDefinition">
@@ -116,21 +117,21 @@
           <property name="summaryFields">
             <list>
               <bean parent="MaintainableFieldDefinition" p:name="namespaceCode"/>
-              <bean parent="MaintainableFieldDefinition" p:name="name"/>      
+              <bean parent="MaintainableFieldDefinition" p:name="name"/>
             </list>
           </property>
           <property name="maintainableFields">
             <list>
               <bean parent="MaintainableFieldDefinition" p:name="namespaceCode"/>
-              <bean parent="MaintainableFieldDefinition" p:name="name"/>      
+              <bean parent="MaintainableFieldDefinition" p:name="name"/>
             </list>
           </property>
         </bean>
-        
+
       </list>
     </property>
   </bean>
-  
+
   <bean id="RoutingRuleDelegationMaintenanceDocument-RoleResponsibilities" parent="RoutingRuleDelegationMaintenanceDocument-RoleResponsibilities-parentBean"/>
 
   <bean id="RoutingRuleDelegationMaintenanceDocument-RoleResponsibilities-parentBean" abstract="true" parent="MaintainableSectionDefinition">
@@ -159,6 +160,6 @@
       </list>
     </property>
   </bean>
-  
-  
+
+
 </beans>

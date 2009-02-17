@@ -28,18 +28,11 @@
 		<forward name="close" path="/index.html" redirect="true" />
 		<forward name="portal" path="/index.html" redirect="true" />
 		<forward name="route_report" path="/WEB-INF/jsp/RoutingReportForward.jsp" />
-        <forward name="exceptionIncidentHandler" path="/kualiExceptionIncidentReport.do" />
+        <forward name="exceptionIncidentHandler" path="/kr/kualiExceptionIncidentReport.do" />
 		<!-- End required KNS forwards -->
 	</global-forwards>
 
 	<action-mappings>
-		<!-- Rice Pass-through Actions : These delegate to the Rice (kr) struts module -->
-        <action path="/kualiExceptionIncidentReport"
-                type="org.kuali.rice.kns.web.struts.action.KualiExceptionHandlerAction">
-            <forward name="basic" path="/kr/kualiExceptionIncidentReport.do" />
-        </action>        
-		<!-- End Rice Pass-through Actions -->
-
 		<!--  Required KNS Action Mappings -->
 		<action path="/portal" name="KualiForm"
 			type="org.kuali.rice.kns.web.struts.action.KualiSimpleAction">

@@ -28,6 +28,7 @@
 		<forward name="close" path="/index.html" redirect="true" />
 		<forward name="portal" path="/index.html" redirect="true" />
 		<forward name="route_report" path="/WEB-INF/jsp/RoutingReportForward.jsp" />
+        <forward name="exceptionIncidentHandler" path="/kualiExceptionIncidentReport.do" />
 		<!-- End required KNS forwards -->
 	</global-forwards>
 

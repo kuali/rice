@@ -96,17 +96,29 @@ public class KimEntityDefaultInfoCacheImpl extends PersistableBusinessObjectBase
 	}
 	
 	public KimEntityDefaultInfoCacheImpl( KimEntityDefaultInfo entity ) {
-		entityId = entity.getEntityId();
-		principalId = entity.getPrincipals().get(0).getPrincipalId();
-		principalName = entity.getPrincipals().get(0).getPrincipalName();
-		entityTypeCode = entity.getEntityTypes().get(0).getEntityTypeCode();
-		firstName = entity.getDefaultName().getFirstName();
-		middleName = entity.getDefaultName().getMiddleName();
-		lastName = entity.getDefaultName().getLastName();
-		name = entity.getDefaultName().getFormattedName();
-		campusCode = entity.getDefaultAffiliation().getCampusCode();
-		primaryDepartmentCode = entity.getPrimaryEmployment().getPrimaryDepartmentCode();
-		employeeId = entity.getPrimaryEmployment().getEmployeeId();
+		if ( entity != null ) {
+			entityId = entity.getEntityId();
+			if ( entity.getPrincipals() != null && !entity.getPrincipals().isEmpty() ) {
+				principalId = entity.getPrincipals().get(0).getPrincipalId();
+				principalName = entity.getPrincipals().get(0).getPrincipalName();
+			}
+			if ( entity.getEntityTypes() != null && !entity.getEntityTypes().isEmpty() ) {
+				entityTypeCode = entity.getEntityTypes().get(0).getEntityTypeCode();
+			}
+			if ( entity.getDefaultName() != null ) {
+				firstName = entity.getDefaultName().getFirstName();
+				middleName = entity.getDefaultName().getMiddleName();
+				lastName = entity.getDefaultName().getLastName();
+				name = entity.getDefaultName().getFormattedName();
+			}
+			if ( entity.getDefaultAffiliation() != null ) {
+				campusCode = entity.getDefaultAffiliation().getCampusCode();
+			}
+			if ( entity.getPrimaryEmployment() != null ) {
+				primaryDepartmentCode = entity.getPrimaryEmployment().getPrimaryDepartmentCode();
+				employeeId = entity.getPrimaryEmployment().getEmployeeId();
+			}
+		}
 	}
 
     @SuppressWarnings("unchecked")

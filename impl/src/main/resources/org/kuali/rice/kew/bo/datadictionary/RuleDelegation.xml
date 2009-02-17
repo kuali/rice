@@ -9,11 +9,11 @@
   <bean id="RuleDelegation-parentBean" abstract="true" parent="BusinessObjectEntry">
     <property name="businessObjectClass" value="org.kuali.rice.kew.rule.RuleDelegation" />
     <property name="exporterClass" value="org.kuali.rice.kew.export.DataExporter" />
-    <!--
+
     <property name="inquiryDefinition" >
       <ref bean="RuleDelegation-inquiryDefinition" />
     </property>
-    -->
+
     <property name="lookupDefinition" >
       <ref bean="RuleDelegation-lookupDefinition" />
     </property>
@@ -390,8 +390,104 @@
       </list>
     </property>
   </bean>
+  -->
+ <!-- Business Object Inquiry Definition -->
 
--->
+  <bean id="RuleDelegation-inquiryDefinition" parent="RuleDelegation-inquiryDefinition-parentBean" />
+
+  <bean id="RuleDelegation-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
+    <property name="inquirableClass" value="org.kuali.rice.kew.rule.bo.RuleDelegationInquirableImpl"/>
+    <property name="inquirySections">
+      <list>
+     	<bean parent="InquirySectionDefinition">
+          <property name="title" value="Delegation Rule" />
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="FieldDefinition" p:attributeName="ruleDelegationId" />
+              <bean parent="FieldDefinition" p:attributeName="ruleResponsibility.ruleBaseValues.ruleBaseValuesId" />
+              <bean parent="FieldDefinition" p:attributeName="responsibilityId"/>
+              <bean parent="FieldDefinition" p:attributeName="delegationRuleBaseValues.docTypeName" p:noInquiry="true" />
+              <bean parent="FieldDefinition" p:attributeName="delegationRuleBaseValues.ruleTemplate.name" />
+              <bean parent="FieldDefinition" p:attributeName="delegationRuleBaseValues.description" p:noInquiry="true" />
+              <bean parent="FieldDefinition" p:attributeName="delegationRuleBaseValues.fromDate" p:noInquiry="true" />
+              <bean parent="FieldDefinition" p:attributeName="delegationRuleBaseValues.toDate" p:noInquiry="true" />
+              <bean parent="FieldDefinition" p:attributeName="delegationRuleBaseValues.ignorePrevious" p:noInquiry="true" />
+              <bean parent="FieldDefinition" p:attributeName="delegationRuleBaseValues.activeInd" p:noInquiry="true" />
+              <bean parent="FieldDefinition" p:attributeName="delegationType" />
+            </list>
+          </property>
+        </bean>
+        <bean parent="InquirySectionDefinition">
+          <property name="title" value="Rule Attributes" />
+          <property name="numberOfColumns" value="1" />
+        </bean>
+        <bean parent="InquirySectionDefinition">
+          <property name="title" value="Person Responsibilities"/>
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="InquiryCollectionDefinition">
+                <property name="attributeName" value="delegationRuleBaseValues.personResponsibilities" />
+                <property name="businessObjectClass" value="org.kuali.rice.kew.rule.PersonRuleResponsibility" />
+                <property name="numberOfColumns" value="1" />
+                <property name="inquiryFields" >
+                  <list>
+                    <bean parent="FieldDefinition" p:attributeName="principalName" />
+                    <bean parent="FieldDefinition" p:attributeName="actionRequestedCd" />
+                    <bean parent="FieldDefinition" p:attributeName="priority" />
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+        <bean parent="InquirySectionDefinition">
+          <property name="title" value="Group Responsibilities"/>
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="InquiryCollectionDefinition">
+                <property name="attributeName" value="delegationRuleBaseValues.groupResponsibilities" />
+                <property name="businessObjectClass" value="org.kuali.rice.kew.rule.GroupRuleResponsibility" />
+                <property name="numberOfColumns" value="1" />
+                <property name="inquiryFields" >
+                  <list>
+                    <bean parent="FieldDefinition" p:attributeName="namespaceCode" />
+                    <bean parent="FieldDefinition" p:attributeName="name" />
+                    <bean parent="FieldDefinition" p:attributeName="actionRequestedCd" />
+                    <bean parent="FieldDefinition" p:attributeName="priority" />
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+        <bean parent="InquirySectionDefinition">
+          <property name="title" value="Role Responsibilities"/>
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="InquiryCollectionDefinition">
+                <property name="attributeName" value="delegationRuleBaseValues.roleResponsibilities" />
+                <property name="businessObjectClass" value="org.kuali.rice.kew.rule.RoleRuleResponsibility" />
+                <property name="numberOfColumns" value="1" />
+                <property name="inquiryFields" >
+                  <list>
+                    <bean parent="FieldDefinition" p:attributeName="approvePolicy" />
+                    <bean parent="FieldDefinition" p:attributeName="roleName" />
+                    <bean parent="FieldDefinition" p:attributeName="actionRequestedCd" />
+                    <bean parent="FieldDefinition" p:attributeName="priority" />
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
 
   <!-- Business Object Lookup Definition -->
 
@@ -431,7 +527,7 @@
         	  p:attributeName="delegationRuleBaseValues.activeInd"/>
         <bean parent="FieldDefinition"
               p:noLookup="true"
-              p:attributeName="delegationRuleBaseValues.ruleBaseValuesId" />	     
+              p:attributeName="delegationRuleBaseValues.ruleBaseValuesId" />
         <bean parent="FieldDefinition"
               p:attributeName="delegationType"/>
       </list>
@@ -439,11 +535,11 @@
     <property name="resultFields" >
       <list>
         <bean parent="FieldDefinition"
+              p:attributeName="ruleDelegationId"/>
+        <bean parent="FieldDefinition"
               p:attributeName="ruleResponsibility.ruleBaseValues.ruleBaseValuesId"/>
         <bean parent="FieldDefinition"
               p:attributeName="delegationRuleBaseValues.name" />
-        <bean parent="FieldDefinition"
-              p:attributeName="delegationRuleBaseValues.ruleBaseValuesId" />
         <bean parent="FieldDefinition"
               p:attributeName="delegationRuleBaseValues.ruleTemplate.name" />
         <bean parent="FieldDefinition"

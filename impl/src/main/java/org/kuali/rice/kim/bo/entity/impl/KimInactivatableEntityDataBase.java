@@ -28,7 +28,7 @@ import org.kuali.rice.kns.bo.Inactivateable;
  *
  */
 @MappedSuperclass
-public abstract class InactivatableEntityDataBase extends EntityDataBase implements Inactivateable {
+public abstract class KimInactivatableEntityDataBase extends KimEntityDataBase implements Inactivateable {
 
 	private static final long serialVersionUID = 1L;
 	

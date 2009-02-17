@@ -28,9 +28,9 @@ import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.util.XmlHelper;
-import org.kuali.rice.kim.bo.entity.impl.EntityEmailImpl;
-import org.kuali.rice.kim.bo.entity.impl.EntityEntityTypeImpl;
-import org.kuali.rice.kim.bo.entity.impl.EntityNameImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityEmailImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityEntityTypeImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -94,14 +94,14 @@ public class UserXmlParser implements XmlConstants {
 		entity.setActive(true);
 		entity.setEntityId("" + entityId);
 		
-		EntityEntityTypeImpl entityType = new EntityEntityTypeImpl();
+		KimEntityEntityTypeImpl entityType = new KimEntityEntityTypeImpl();
 		entity.getEntityTypes().add(entityType);
 		entityType.setEntityTypeCode("PERSON");
 		entityType.setEntityId(entity.getEntityId());
 		entityType.setActive(true);
 		
 		Long entityNameId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ENTITY_NM_ID_S");
-		EntityNameImpl name = new EntityNameImpl();
+		KimEntityNameImpl name = new KimEntityNameImpl();
 		name.setActive(true);
 		name.setEntityNameId("" + entityNameId);
 		name.setEntityId(entity.getEntityId());
@@ -118,7 +118,7 @@ public class UserXmlParser implements XmlConstants {
 		String emailAddress = userElement.getChildTextTrim(EMAIL_ELEMENT, NAMESPACE);
 		if (!StringUtils.isBlank(emailAddress)) {
 			Long emailId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ENTITY_EMAIL_ID_S");
-			EntityEmailImpl email = new EntityEmailImpl();
+			KimEntityEmailImpl email = new KimEntityEmailImpl();
 			email.setActive(true);
 			email.setEntityEmailId("" + emailId);
 			email.setEntityTypeCode("PERSON");

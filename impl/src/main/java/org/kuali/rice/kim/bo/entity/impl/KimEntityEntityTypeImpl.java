@@ -41,7 +41,7 @@ import org.kuali.rice.kns.util.TypedArrayList;
  */
 @Entity
 @Table(name = "KRIM_ENTITY_ENT_TYP_T")
-public class EntityEntityTypeImpl extends InactivatableEntityDataBase implements KimEntityEntityType {
+public class KimEntityEntityTypeImpl extends KimInactivatableEntityDataBase implements KimEntityEntityType {
 
 	private static final long serialVersionUID = 1L;
 
@@ -57,17 +57,17 @@ public class EntityEntityTypeImpl extends InactivatableEntityDataBase implements
 	@JoinColumn(name = "ENT_TYP_CD", insertable = false, updatable = false)
 	protected EntityType entityType;
 	
-	@OneToMany(targetEntity = EntityEmailImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@OneToMany(targetEntity = KimEntityEmailImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
-	protected List<KimEntityEmail> emailAddresses = new TypedArrayList(EntityEmailImpl.class);
+	protected List<KimEntityEmail> emailAddresses = new TypedArrayList(KimEntityEmailImpl.class);
 	
-	@OneToMany(targetEntity = EntityPhoneImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@OneToMany(targetEntity = KimEntityPhoneImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
-	protected List<KimEntityPhone> phoneNumbers = new TypedArrayList(EntityPhoneImpl.class);
+	protected List<KimEntityPhone> phoneNumbers = new TypedArrayList(KimEntityPhoneImpl.class);
 	
-	@OneToMany(targetEntity = EntityAddressImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@OneToMany(targetEntity = KimEntityAddressImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
-	protected List<KimEntityAddress> addresses = new TypedArrayList(EntityAddressImpl.class);
+	protected List<KimEntityAddress> addresses = new TypedArrayList(KimEntityAddressImpl.class);
 	
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityEntityType#getAddresses()

@@ -35,7 +35,7 @@ import org.kuali.rice.kim.bo.reference.impl.CitizenshipStatusImpl;
  */
 @Entity
 @Table(name = "KRIM_ENTITY_CTZNSHP_T")
-public class EntityCitizenshipImpl extends InactivatableEntityDataBase implements KimEntityCitizenship {
+public class KimEntityCitizenshipImpl extends KimInactivatableEntityDataBase implements KimEntityCitizenship {
 
 	private static final long serialVersionUID = 1L;
 

@@ -27,15 +27,15 @@ import org.kuali.rice.kim.bo.entity.KimEntityAddress;
 import org.kuali.rice.kim.bo.entity.KimEntityEmail;
 import org.kuali.rice.kim.bo.entity.KimEntityPhone;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.entity.impl.EntityAddressImpl;
-import org.kuali.rice.kim.bo.entity.impl.EntityAffiliationImpl;
-import org.kuali.rice.kim.bo.entity.impl.EntityEmailImpl;
-import org.kuali.rice.kim.bo.entity.impl.EntityEmploymentInformationImpl;
-import org.kuali.rice.kim.bo.entity.impl.EntityEntityTypeImpl;
-import org.kuali.rice.kim.bo.entity.impl.EntityExternalIdentifierImpl;
-import org.kuali.rice.kim.bo.entity.impl.EntityNameImpl;
-import org.kuali.rice.kim.bo.entity.impl.EntityPhoneImpl;
-import org.kuali.rice.kim.bo.entity.impl.EntityPrivacyPreferencesImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityAddressImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityAffiliationImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityEmailImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityEmploymentInformationImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityEntityTypeImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityExternalIdentifierImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityPhoneImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityPrivacyPreferencesImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kim.bo.group.KimGroup;
@@ -136,14 +136,14 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		setupAffiliation(identityManagementPersonDocument, kimEntity, origEntity.getAffiliations(), origEntity.getEmploymentInformation());
 		setupName(identityManagementPersonDocument, kimEntity, origEntity.getNames());
 		// entitytype
-		List<EntityEntityTypeImpl> entityTypes = new ArrayList<EntityEntityTypeImpl>();
-		EntityEntityTypeImpl entityType = new EntityEntityTypeImpl();
+		List<KimEntityEntityTypeImpl> entityTypes = new ArrayList<KimEntityEntityTypeImpl>();
+		KimEntityEntityTypeImpl entityType = new KimEntityEntityTypeImpl();
 		entityType.setEntityId(identityManagementPersonDocument.getEntityId());
 		entityType.setEntityTypeCode(KimConstants.EntityTypes.PERSON);
 		entityType.setActive(true);
 		entityTypes.add(entityType);
-		EntityEntityTypeImpl origEntityType = new EntityEntityTypeImpl();
-		for (EntityEntityTypeImpl type : origEntity.getEntityTypes()) {
+		KimEntityEntityTypeImpl origEntityType = new KimEntityEntityTypeImpl();
+		for (KimEntityEntityTypeImpl type : origEntity.getEntityTypes()) {
 			// should check entity.entitytypeid, but it's not persist in persondoc yet
 			if (type.getEntityTypeCode().equals(entityType.getEntityTypeCode())) {
 				origEntityType = type;
@@ -243,14 +243,14 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		//identityManagementPersonDocument.setActive(kimEntity.isActive());
 		identityManagementPersonDocument.setAffiliations(loadAffiliations(kimEntity.getAffiliations(),kimEntity.getEmploymentInformation()));
 		identityManagementPersonDocument.setNames(loadNames(kimEntity.getNames()));
-		EntityEntityTypeImpl entityType = null;
-		for (EntityEntityTypeImpl type : kimEntity.getEntityTypes()) {
+		KimEntityEntityTypeImpl entityType = null;
+		for (KimEntityEntityTypeImpl type : kimEntity.getEntityTypes()) {
 			if (type.getEntityTypeCode().equals(KimConstants.EntityTypes.PERSON)) {
 				entityType = type;
 			}
 		}
 
-		for (EntityExternalIdentifierImpl extId : kimEntity.getExternalIdentifiers()){
+		for (KimEntityExternalIdentifierImpl extId : kimEntity.getExternalIdentifiers()){
 			if (extId.getExternalIdentifierTypeCode().equals(KimConstants.PersonExternalIdentifierTypes.TAX)) {
 				identityManagementPersonDocument.setTaxId(extId.getExternalId());				
 			}
@@ -462,9 +462,9 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     	return docRoleQualifiers;
     }
 
-	private List<PersonDocumentName> loadNames(List <EntityNameImpl> names) {
+	private List<PersonDocumentName> loadNames(List <KimEntityNameImpl> names) {
 		List<PersonDocumentName> docNames = new ArrayList<PersonDocumentName>();
-		for (EntityNameImpl name : names) {
+		for (KimEntityNameImpl name : names) {
 			PersonDocumentName docName = new PersonDocumentName();
 			docName.setNameTypeCode(name.getNameTypeCode());
 			docName.setEntityNameType(name.getEntityNameType());
@@ -482,9 +482,9 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return docNames;
 	}
 	
-	private List<PersonDocumentAffiliation> loadAffiliations(List <EntityAffiliationImpl> affiliations, List<EntityEmploymentInformationImpl> empInfos) {
+	private List<PersonDocumentAffiliation> loadAffiliations(List <KimEntityAffiliationImpl> affiliations, List<KimEntityEmploymentInformationImpl> empInfos) {
 		List<PersonDocumentAffiliation> docAffiliations = new ArrayList<PersonDocumentAffiliation>();
-		for (EntityAffiliationImpl affiliation : affiliations) {
+		for (KimEntityAffiliationImpl affiliation : affiliations) {
 			PersonDocumentAffiliation docAffiliation = new PersonDocumentAffiliation();
 			docAffiliation.setAffiliationTypeCode(affiliation.getAffiliationTypeCode());
 			docAffiliation.setCampusCode(affiliation.getCampusCode());
@@ -498,7 +498,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			docAffiliation.setEdit(true);
 			// employment informations
 			List<PersonDocumentEmploymentInfo> docEmploymentInformations = new ArrayList<PersonDocumentEmploymentInfo>();
-			for (EntityEmploymentInformationImpl empInfo : empInfos) {
+			for (KimEntityEmploymentInformationImpl empInfo : empInfos) {
 				if (docAffiliation.getEntityAffiliationId().equals(empInfo.getEntityAffiliationId())) {
 				PersonDocumentEmploymentInfo docEmpInfo = new PersonDocumentEmploymentInfo();
 				docEmpInfo.setEntityEmploymentId(empInfo
@@ -547,13 +547,13 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 	}
 	
-	private void setupExtId(IdentityManagementPersonDocument identityManagementPersonDocument, KimEntityImpl kimEntity, List<EntityExternalIdentifierImpl> origExtIds) {
-		List<EntityExternalIdentifierImpl> extIds = new ArrayList<EntityExternalIdentifierImpl>();
-		EntityExternalIdentifierImpl extId = new EntityExternalIdentifierImpl();
+	private void setupExtId(IdentityManagementPersonDocument identityManagementPersonDocument, KimEntityImpl kimEntity, List<KimEntityExternalIdentifierImpl> origExtIds) {
+		List<KimEntityExternalIdentifierImpl> extIds = new ArrayList<KimEntityExternalIdentifierImpl>();
+		KimEntityExternalIdentifierImpl extId = new KimEntityExternalIdentifierImpl();
 		extId.setEntityId(identityManagementPersonDocument.getEntityId());
 		extId.setExternalId(identityManagementPersonDocument.getTaxId());
 		extId.setExternalIdentifierTypeCode(KimConstants.PersonExternalIdentifierTypes.TAX);
-		for (EntityExternalIdentifierImpl origExtId : origExtIds) {
+		for (KimEntityExternalIdentifierImpl origExtId : origExtIds) {
 			if (origExtId.getExternalIdentifierTypeCode().equals(extId.getExternalIdentifierTypeCode())) {
 				extId.setVersionNumber(origExtId.getVersionNumber());
 			}
@@ -563,8 +563,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 	}
 	
-	private void setupPrivacy(IdentityManagementPersonDocument identityManagementPersonDocument, KimEntityImpl kimEntity, EntityPrivacyPreferencesImpl origPrivacy) {
-		EntityPrivacyPreferencesImpl privacyPreferences = new EntityPrivacyPreferencesImpl();
+	private void setupPrivacy(IdentityManagementPersonDocument identityManagementPersonDocument, KimEntityImpl kimEntity, KimEntityPrivacyPreferencesImpl origPrivacy) {
+		KimEntityPrivacyPreferencesImpl privacyPreferences = new KimEntityPrivacyPreferencesImpl();
 		privacyPreferences.setEntityId(identityManagementPersonDocument.getEntityId());
 		privacyPreferences.setSuppressAddress(identityManagementPersonDocument.getPrivacy().isSuppressAddress());
 		privacyPreferences.setSuppressEmail(identityManagementPersonDocument.getPrivacy().isSuppressEmail());
@@ -577,7 +577,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		}
 		kimEntity.setPrivacyPreferences(privacyPreferences);
 	}
-	private PersonDocumentPrivacy loadPrivacyReferences(EntityPrivacyPreferencesImpl privacyPreferences) {
+	private PersonDocumentPrivacy loadPrivacyReferences(KimEntityPrivacyPreferencesImpl privacyPreferences) {
 		PersonDocumentPrivacy docPrivacy = new PersonDocumentPrivacy();
 		docPrivacy.setSuppressAddress(privacyPreferences.isSuppressAddress());
 		docPrivacy.setSuppressEmail(privacyPreferences.isSuppressEmail());
@@ -588,10 +588,10 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return docPrivacy;
 	}
 	
-	private void setupName(IdentityManagementPersonDocument identityManagementPersonDocument, KimEntityImpl kimEntity, List<EntityNameImpl> origNames) {
-		List<EntityNameImpl> entityNames = new ArrayList<EntityNameImpl>();
+	private void setupName(IdentityManagementPersonDocument identityManagementPersonDocument, KimEntityImpl kimEntity, List<KimEntityNameImpl> origNames) {
+		List<KimEntityNameImpl> entityNames = new ArrayList<KimEntityNameImpl>();
 		for (PersonDocumentName name : identityManagementPersonDocument.getNames()) {
-			EntityNameImpl entityName = new EntityNameImpl();
+			KimEntityNameImpl entityName = new KimEntityNameImpl();
 			entityName.setNameTypeCode(name.getNameTypeCode());
 			entityName.setFirstName(name.getFirstName());
 			entityName.setLastName(name.getLastName());
@@ -601,7 +601,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			entityName.setActive(name.isActive());
 			entityName.setDefault(name.isDflt());
 			entityName.setEntityNameId(name.getEntityNameId());
-			for (EntityNameImpl origName : origNames) {
+			for (KimEntityNameImpl origName : origNames) {
 				if (origName.getEntityNameId().equals(entityName.getEntityNameId())) {
 					entityName.setVersionNumber(origName.getVersionNumber());
 				}
@@ -613,12 +613,12 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 	}
 	
-	private void setupAffiliation(IdentityManagementPersonDocument identityManagementPersonDocument, KimEntityImpl kimEntity,List<EntityAffiliationImpl> origAffiliations, List<EntityEmploymentInformationImpl> origEmpInfos) {
-		List<EntityAffiliationImpl> entityAffiliations = new ArrayList<EntityAffiliationImpl>();
+	private void setupAffiliation(IdentityManagementPersonDocument identityManagementPersonDocument, KimEntityImpl kimEntity,List<KimEntityAffiliationImpl> origAffiliations, List<KimEntityEmploymentInformationImpl> origEmpInfos) {
+		List<KimEntityAffiliationImpl> entityAffiliations = new ArrayList<KimEntityAffiliationImpl>();
 		// employment informations
-		List<EntityEmploymentInformationImpl> entityEmploymentInformations = new ArrayList<EntityEmploymentInformationImpl>();
+		List<KimEntityEmploymentInformationImpl> entityEmploymentInformations = new ArrayList<KimEntityEmploymentInformationImpl>();
 		for (PersonDocumentAffiliation affiliation : identityManagementPersonDocument.getAffiliations()) {
-			EntityAffiliationImpl entityAffiliation = new EntityAffiliationImpl();
+			KimEntityAffiliationImpl entityAffiliation = new KimEntityAffiliationImpl();
 			entityAffiliation.setAffiliationTypeCode(affiliation
 					.getAffiliationTypeCode());
 			entityAffiliation.setCampusCode(affiliation.getCampusCode());
@@ -627,7 +627,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			entityAffiliation.setEntityAffiliationId(affiliation
 					.getEntityAffiliationId());
 			// EntityAffiliationImpl does not define empinfos as collection
-			for (EntityAffiliationImpl origAffiliation : origAffiliations) {
+			for (KimEntityAffiliationImpl origAffiliation : origAffiliations) {
 				if (origAffiliation.getEntityAffiliationId().equals(entityAffiliation.getEntityAffiliationId())) {
 					entityAffiliation.setVersionNumber(origAffiliation.getVersionNumber());
 				}
@@ -636,7 +636,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 			for (PersonDocumentEmploymentInfo empInfo : affiliation
 					.getEmpInfos()) {
-				EntityEmploymentInformationImpl entityEmpInfo = new EntityEmploymentInformationImpl();
+				KimEntityEmploymentInformationImpl entityEmpInfo = new KimEntityEmploymentInformationImpl();
 				entityEmpInfo.setEntityEmploymentId(empInfo
 						.getEntityEmploymentId());
 				entityEmpInfo.setEmployeeId(empInfo.getEmployeeId());
@@ -655,7 +655,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				entityEmpInfo.setEntityId(identityManagementPersonDocument.getEntityId());
 				entityEmpInfo.setEntityAffiliationId(empInfo
 						.getEntityAffiliationId());
-				for (EntityEmploymentInformationImpl origEmpInfo : origEmpInfos) {
+				for (KimEntityEmploymentInformationImpl origEmpInfo : origEmpInfos) {
 					if (origEmpInfo.getEntityEmploymentId().equals(entityEmpInfo.getEntityEmploymentId())) {
 						entityEmpInfo.setVersionNumber(origEmpInfo.getVersionNumber());
 					}
@@ -668,10 +668,10 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		kimEntity.setAffiliations(entityAffiliations);
 	}
 	
-	private void setupPhone(IdentityManagementPersonDocument identityManagementPersonDocument, EntityEntityTypeImpl entityType, List<KimEntityPhone> origPhones) {
+	private void setupPhone(IdentityManagementPersonDocument identityManagementPersonDocument, KimEntityEntityTypeImpl entityType, List<KimEntityPhone> origPhones) {
 		List<KimEntityPhone> entityPhones = new ArrayList<KimEntityPhone>();
 		for (PersonDocumentPhone phone : identityManagementPersonDocument.getPhones()) {
-			EntityPhoneImpl entityPhone = new EntityPhoneImpl();
+			KimEntityPhoneImpl entityPhone = new KimEntityPhoneImpl();
 			entityPhone.setPhoneTypeCode(phone.getPhoneTypeCode());
 			entityPhone.setEntityId(identityManagementPersonDocument.getEntityId());
 			entityPhone.setEntityPhoneId(phone.getEntityPhoneId());
@@ -684,7 +684,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			entityPhone.setDefault(phone.isDflt());
 			for (KimEntityPhone origPhone : origPhones) {
 				if (origPhone.getEntityPhoneId().equals(entityPhone.getEntityPhoneId())) {
-					entityPhone.setVersionNumber(((EntityPhoneImpl)origPhone).getVersionNumber());
+					entityPhone.setVersionNumber(((KimEntityPhoneImpl)origPhone).getVersionNumber());
 				}
 			}
 			entityPhone.setEntityPhoneId(phone.getEntityPhoneId());
@@ -699,7 +699,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		for (KimEntityPhone phone : entityPhones) {
 			PersonDocumentPhone docPhone = new PersonDocumentPhone();
 			docPhone.setPhoneTypeCode(phone.getPhoneTypeCode());
-			docPhone.setPhoneType(((EntityPhoneImpl)phone).getPhoneType());
+			docPhone.setPhoneType(((KimEntityPhoneImpl)phone).getPhoneType());
 			docPhone.setEntityTypeCode(phone.getEntityTypeCode());
 			docPhone.setPhoneNumber(phone.getPhoneNumber());
 			docPhone.setCountryCode(phone.getCountryCode());
@@ -716,11 +716,11 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 	private void setupEmail(
 			IdentityManagementPersonDocument identityManagementPersonDocument,
-			EntityEntityTypeImpl entityType, List<KimEntityEmail> origEmails) {
+			KimEntityEntityTypeImpl entityType, List<KimEntityEmail> origEmails) {
 		List<KimEntityEmail> entityEmails = new ArrayList<KimEntityEmail>();
 		for (PersonDocumentEmail email : identityManagementPersonDocument
 				.getEmails()) {
-			EntityEmailImpl entityEmail = new EntityEmailImpl();
+			KimEntityEmailImpl entityEmail = new KimEntityEmailImpl();
 			entityEmail.setEntityId(identityManagementPersonDocument
 					.getEntityId());
 			entityEmail.setEntityTypeCode(entityType.getEntityTypeCode());
@@ -731,7 +731,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			entityEmail.setEntityEmailId(email.getEntityEmailId());
 			for (KimEntityEmail origEmail : origEmails) {
 				if (origEmail.getEntityEmailId().equals(entityEmail.getEntityEmailId())) {
-					entityEmail.setVersionNumber(((EntityEmailImpl)origEmail).getVersionNumber());
+					entityEmail.setVersionNumber(((KimEntityEmailImpl)origEmail).getVersionNumber());
 				}
 			}
 			entityEmails.add(entityEmail);
@@ -745,7 +745,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			//docEmail.setEntityId(email.getEntityId());
 			docEmail.setEntityTypeCode(email.getEntityTypeCode());
 			docEmail.setEmailTypeCode(email.getEmailTypeCode());
-			docEmail.setEmailType(((EntityEmailImpl)email).getEmailType());
+			docEmail.setEmailType(((KimEntityEmailImpl)email).getEmailType());
 			docEmail.setEmailAddress(email.getEmailAddress());
 			docEmail.setActive(email.isActive());
 			docEmail.setDflt(email.isDefault());
@@ -758,11 +758,11 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	
 	private void setupAddress(
 			IdentityManagementPersonDocument identityManagementPersonDocument,
-			EntityEntityTypeImpl entityType, List<KimEntityAddress> origAddresses) {
+			KimEntityEntityTypeImpl entityType, List<KimEntityAddress> origAddresses) {
 		List<KimEntityAddress> entityAddresses = new ArrayList<KimEntityAddress>();
 		for (PersonDocumentAddress address : identityManagementPersonDocument
 				.getAddrs()) {
-			EntityAddressImpl entityAddress = new EntityAddressImpl();
+			KimEntityAddressImpl entityAddress = new KimEntityAddressImpl();
 			entityAddress.setEntityId(identityManagementPersonDocument
 					.getEntityId());
 			entityAddress.setEntityTypeCode(entityType.getEntityTypeCode());
@@ -779,7 +779,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			entityAddress.setEntityAddressId(address.getEntityAddressId());
 			for (KimEntityAddress origAddress : origAddresses) {
 				if (origAddress.getEntityAddressId().equals(entityAddress.getEntityAddressId())) {
-					entityAddress.setVersionNumber(((EntityAddressImpl)origAddress).getVersionNumber());
+					entityAddress.setVersionNumber(((KimEntityAddressImpl)origAddress).getVersionNumber());
 				}
 			}
 			entityAddresses.add(entityAddress);
@@ -793,7 +793,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			PersonDocumentAddress docAddress = new PersonDocumentAddress();
 			docAddress.setEntityTypeCode(address.getEntityTypeCode());
 			docAddress.setAddressTypeCode(address.getAddressTypeCode());
-			docAddress.setAddressType(((EntityAddressImpl)address).getAddressType());
+			docAddress.setAddressType(((KimEntityAddressImpl)address).getAddressType());
 			docAddress.setLine1(address.getLine1());
 			docAddress.setLine2(address.getLine2());
 			docAddress.setLine3(address.getLine3());

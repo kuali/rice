@@ -27,8 +27,8 @@ import org.kuali.rice.kim.bo.entity.dto.KimEntityPhoneInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityPrivacyPreferencesInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
-import org.kuali.rice.kim.bo.entity.impl.EntityNameImpl;
-import org.kuali.rice.kim.bo.entity.impl.EntityPrivacyPreferencesImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityPrivacyPreferencesImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kim.service.IdentityService;
@@ -168,7 +168,7 @@ public class IdentityServiceImpl implements IdentityService {
 	public KimEntityPrivacyPreferencesInfo getEntityPrivacyPreferences(String entityId) {
 		Map<String,String> criteria = new HashMap<String,String>(1);
         criteria.put("entityId", entityId);
-		return new KimEntityPrivacyPreferencesInfo( (KimEntityPrivacyPreferences)getBusinessObjectService().findByPrimaryKey(EntityPrivacyPreferencesImpl.class, criteria) );
+		return new KimEntityPrivacyPreferencesInfo( (KimEntityPrivacyPreferences)getBusinessObjectService().findByPrimaryKey(KimEntityPrivacyPreferencesImpl.class, criteria) );
 	}
 
 	/**
@@ -289,7 +289,7 @@ public class IdentityServiceImpl implements IdentityService {
 			criteria.put("entityId", s);
 			criteria.put("dflt", "Y");
 			
-			KimEntityName name = (EntityNameImpl) getBusinessObjectService().findByPrimaryKey(EntityNameImpl.class, criteria);
+			KimEntityName name = (KimEntityNameImpl) getBusinessObjectService().findByPrimaryKey(KimEntityNameImpl.class, criteria);
 			
 			result.put(s, new KimEntityNameInfo( name ) );
 		}
@@ -317,7 +317,7 @@ public class IdentityServiceImpl implements IdentityService {
 			criteria.clear();
 			criteria.put("entityId", principal.getEntityId());
 			criteria.put("dflt", "Y");
-			KimEntityName name = (EntityNameImpl) getBusinessObjectService().findByPrimaryKey(EntityNameImpl.class, criteria);
+			KimEntityName name = (KimEntityNameImpl) getBusinessObjectService().findByPrimaryKey(KimEntityNameImpl.class, criteria);
 			
 			namePrincipal.setDefaultEntityName(name);
 			

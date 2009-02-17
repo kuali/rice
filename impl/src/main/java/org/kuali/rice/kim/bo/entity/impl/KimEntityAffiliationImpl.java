@@ -34,7 +34,7 @@ import org.kuali.rice.kim.bo.reference.impl.AffiliationTypeImpl;
  */
 @Entity
 @Table(name = "KRIM_ENTITY_AFLTN_T")
-public class EntityAffiliationImpl extends DefaultableEntityDataBase implements KimEntityAffiliation {
+public class KimEntityAffiliationImpl extends KimDefaultableEntityDataBase implements KimEntityAffiliation {
 
 	private static final long serialVersionUID = 1L;
 

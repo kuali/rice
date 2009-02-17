@@ -33,7 +33,7 @@ import org.kuali.rice.kim.bo.reference.ExternalIdentifierType;
  */
 @Entity
 @Table(name = "KRIM_ENTITY_EXT_ID_T")
-public class EntityExternalIdentifierImpl extends EntityDataBase implements KimEntityExternalIdentifier {
+public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implements KimEntityExternalIdentifier {
 
 	private static final long serialVersionUID = 1L;
 
@@ -50,7 +50,7 @@ public class EntityExternalIdentifierImpl extends EntityDataBase implements KimE
 	@Column(name = "EXT_ID")
 	protected String externalId;
 	
-	@ManyToOne(targetEntity=EntityEntityTypeImpl.class, fetch = FetchType.EAGER, cascade = {})
+	@ManyToOne(targetEntity=KimEntityEntityTypeImpl.class, fetch = FetchType.EAGER, cascade = {})
 	@JoinColumn(name = "EXT_ID_TYP_CD", insertable = false, updatable = false)
 	protected ExternalIdentifierType externalIdentifierType;
 

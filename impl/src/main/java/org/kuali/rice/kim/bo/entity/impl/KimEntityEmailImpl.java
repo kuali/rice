@@ -34,7 +34,7 @@ import org.kuali.rice.kim.bo.reference.impl.EmailTypeImpl;
  */
 @Entity
 @Table(name = "KRIM_ENTITY_EMAIL_T")
-public class EntityEmailImpl extends DefaultableEntityDataBase implements KimEntityEmail {
+public class KimEntityEmailImpl extends KimDefaultableEntityDataBase implements KimEntityEmail {
 
 	private static final long serialVersionUID = 1L;
 

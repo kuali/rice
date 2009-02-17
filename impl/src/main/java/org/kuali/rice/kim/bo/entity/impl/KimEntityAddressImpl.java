@@ -34,7 +34,7 @@ import org.kuali.rice.kim.bo.reference.impl.AddressTypeImpl;
  */
 @Entity
 @Table(name = "KRIM_ENTITY_ADDR_T")
-public class EntityAddressImpl extends DefaultableEntityDataBase implements KimEntityAddress {
+public class KimEntityAddressImpl extends KimDefaultableEntityDataBase implements KimEntityAddress {
 
 	private static final long serialVersionUID = 1L;
 

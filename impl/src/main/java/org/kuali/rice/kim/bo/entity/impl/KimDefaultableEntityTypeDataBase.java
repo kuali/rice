@@ -27,7 +27,7 @@ import org.kuali.rice.kim.bo.entity.KimDefaultableEntityTypeData;
  *
  */
 @MappedSuperclass
-public abstract class DefaultableEntityTypeDataBase extends DefaultableEntityDataBase
+public abstract class KimDefaultableEntityTypeDataBase extends KimDefaultableEntityDataBase
 		implements KimDefaultableEntityTypeData {
 
 	private static final long serialVersionUID = 1L;

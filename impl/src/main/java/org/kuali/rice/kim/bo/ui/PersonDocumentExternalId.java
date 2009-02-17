@@ -19,13 +19,9 @@ import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.kuali.rice.kim.bo.entity.impl.EntityEntityTypeImpl;
 import org.kuali.rice.kim.bo.reference.ExternalIdentifierType;
 
 /**
@@ -37,6 +33,9 @@ import org.kuali.rice.kim.bo.reference.ExternalIdentifierType;
 @Entity
 @Table(name = "KRIM_PND_EXT_ID_MT")
 public class PersonDocumentExternalId extends KimDocumentBoBase{
+	
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@Column(name = "ENTITY_EXT_ID_ID")
 	protected String entityExternalIdentifierId;
@@ -47,8 +46,6 @@ public class PersonDocumentExternalId extends KimDocumentBoBase{
 	@Column(name = "EXT_ID")
 	protected String externalId;
 	
-	@ManyToOne(targetEntity=EntityEntityTypeImpl.class, fetch = FetchType.EAGER, cascade = {})
-	@JoinColumn(name = "EXT_ID_TYP_CD", insertable = false, updatable = false)
 	protected ExternalIdentifierType externalIdentifierType;
 
 	/**
@@ -89,6 +86,7 @@ public class PersonDocumentExternalId extends KimDocumentBoBase{
 	/**
 	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	protected LinkedHashMap toStringMapper() {
 		LinkedHashMap m = new LinkedHashMap();

@@ -38,7 +38,7 @@ import org.kuali.rice.kns.util.KualiDecimal;
  */
 @Entity
 @Table(name = "KRIM_ENTITY_EMP_INFO_T")
-public class EntityEmploymentInformationImpl extends InactivatableEntityDataBase implements KimEntityEmploymentInformation {
+public class KimEntityEmploymentInformationImpl extends KimInactivatableEntityDataBase implements KimEntityEmploymentInformation {
 
 	private static final long serialVersionUID = 1L;
 
@@ -82,9 +82,9 @@ public class EntityEmploymentInformationImpl extends InactivatableEntityDataBase
 	@JoinColumn(name = "EMP_STAT_CD", insertable = false, updatable = false)
 	protected EmploymentStatusImpl employmentStatus;
 	
-	@ManyToOne(targetEntity=EntityAffiliationImpl.class, fetch = FetchType.EAGER, cascade = {})
+	@ManyToOne(targetEntity=KimEntityAffiliationImpl.class, fetch = FetchType.EAGER, cascade = {})
 	@JoinColumn(name = "ENTITY_AFLTN_ID", insertable = false, updatable = false)
-	protected EntityAffiliationImpl affiliation;
+	protected KimEntityAffiliationImpl affiliation;
 	
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#getBaseSalaryAmount()
@@ -217,11 +217,11 @@ public class EntityEmploymentInformationImpl extends InactivatableEntityDataBase
 		this.employmentRecordId = employmentRecordId;
 	}
 
-	public EntityAffiliationImpl getAffiliation() {
+	public KimEntityAffiliationImpl getAffiliation() {
 		return this.affiliation;
 	}
 
-	public void setAffiliation(EntityAffiliationImpl affiliation) {
+	public void setAffiliation(KimEntityAffiliationImpl affiliation) {
 		this.affiliation = affiliation;
 	}
 

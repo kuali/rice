@@ -34,7 +34,7 @@ import org.kuali.rice.kim.bo.reference.impl.EntityNameTypeImpl;
  */
 @Entity
 @Table(name = "KRIM_ENTITY_NM_T")
-public class EntityNameImpl extends DefaultableEntityDataBase implements KimEntityName {
+public class KimEntityNameImpl extends KimDefaultableEntityDataBase implements KimEntityName {
 
 	private static final long serialVersionUID = 1L;
 

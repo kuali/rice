@@ -30,14 +30,14 @@ import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
-import org.kuali.rice.kim.bo.entity.impl.EntityAddressImpl;
-import org.kuali.rice.kim.bo.entity.impl.EntityAffiliationImpl;
-import org.kuali.rice.kim.bo.entity.impl.EntityEmailImpl;
-import org.kuali.rice.kim.bo.entity.impl.EntityEntityTypeImpl;
-import org.kuali.rice.kim.bo.entity.impl.EntityExternalIdentifierImpl;
-import org.kuali.rice.kim.bo.entity.impl.EntityNameImpl;
-import org.kuali.rice.kim.bo.entity.impl.EntityPhoneImpl;
-import org.kuali.rice.kim.bo.entity.impl.EntityPrivacyPreferencesImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityAddressImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityAffiliationImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityEmailImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityEntityTypeImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityExternalIdentifierImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityPhoneImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityPrivacyPreferencesImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
@@ -131,12 +131,12 @@ public class UiDocumentServiceImplTest extends RiceTestCase {
 		IdentityManagementPersonDocument personDoc = initPersonDoc();
 		uiDocumentService.saveEntityPerson(personDoc);
 		KimEntityImpl entity = ((IdentityServiceImpl)KIMServiceLocator.getIdentityService()).getEntityImpl(personDoc.getEntityId());
-        EntityEntityTypeImpl entityType = entity.getEntityTypes().get(0);
+        KimEntityEntityTypeImpl entityType = entity.getEntityTypes().get(0);
         personDoc.getExternalIdentifiers();
-		assertAddressTrue((PersonDocumentAddress)personDoc.getAddrs().get(0), (EntityAddressImpl)entityType.getAddresses().get(0));
-		assertPhoneTrue((PersonDocumentPhone)personDoc.getPhones().get(0), (EntityPhoneImpl)entityType.getPhoneNumbers().get(0));
-		assertEmailTrue((PersonDocumentEmail)personDoc.getEmails().get(0), (EntityEmailImpl)entityType.getEmailAddresses().get(0));
-		assertNameTrue((PersonDocumentName)personDoc.getNames().get(0), (EntityNameImpl)entity.getNames().get(0));
+		assertAddressTrue((PersonDocumentAddress)personDoc.getAddrs().get(0), (KimEntityAddressImpl)entityType.getAddresses().get(0));
+		assertPhoneTrue((PersonDocumentPhone)personDoc.getPhones().get(0), (KimEntityPhoneImpl)entityType.getPhoneNumbers().get(0));
+		assertEmailTrue((PersonDocumentEmail)personDoc.getEmails().get(0), (KimEntityEmailImpl)entityType.getEmailAddresses().get(0));
+		assertNameTrue((PersonDocumentName)personDoc.getNames().get(0), (KimEntityNameImpl)entity.getNames().get(0));
 		assertPrincipalTrue(personDoc, entity.getPrincipals().get(0));
 		assertExtIdTrue(personDoc, entity.getExternalIdentifiers());
 		
@@ -159,12 +159,12 @@ public class UiDocumentServiceImplTest extends RiceTestCase {
 		KimEntityImpl entity = ((IdentityServiceImpl)KIMServiceLocator.getIdentityService()).getEntityImpl("ent123");
 		IdentityManagementPersonDocument personDoc = new IdentityManagementPersonDocument();
 		uiDocumentService.loadEntityToPersonDoc(personDoc, "ent123");
-        EntityEntityTypeImpl entityType = entity.getEntityTypes().get(0);
+        KimEntityEntityTypeImpl entityType = entity.getEntityTypes().get(0);
         personDoc.getExternalIdentifiers();
-		assertAddressTrue((PersonDocumentAddress)personDoc.getAddrs().get(0), (EntityAddressImpl)entityType.getAddresses().get(0));
-		assertPhoneTrue((PersonDocumentPhone)personDoc.getPhones().get(0), (EntityPhoneImpl)entityType.getPhoneNumbers().get(0));
-		assertEmailTrue((PersonDocumentEmail)personDoc.getEmails().get(0), (EntityEmailImpl)entityType.getEmailAddresses().get(0));
-		assertNameTrue((PersonDocumentName)personDoc.getNames().get(0), (EntityNameImpl)entity.getNames().get(0));
+		assertAddressTrue((PersonDocumentAddress)personDoc.getAddrs().get(0), (KimEntityAddressImpl)entityType.getAddresses().get(0));
+		assertPhoneTrue((PersonDocumentPhone)personDoc.getPhones().get(0), (KimEntityPhoneImpl)entityType.getPhoneNumbers().get(0));
+		assertEmailTrue((PersonDocumentEmail)personDoc.getEmails().get(0), (KimEntityEmailImpl)entityType.getEmailAddresses().get(0));
+		assertNameTrue((PersonDocumentName)personDoc.getNames().get(0), (KimEntityNameImpl)entity.getNames().get(0));
 		//assertPrincipalTrue(personDoc, entity.getPrincipals().get(0));
 		assertExtIdTrue(personDoc, entity.getExternalIdentifiers());
 		assertAffiliationTrue(personDoc.getAffiliations().get(0), entity.getAffiliations().get(0));
@@ -297,7 +297,7 @@ public class UiDocumentServiceImplTest extends RiceTestCase {
 
 	}
 
-	private PersonDocumentPrivacy initPrivacyReferences(EntityPrivacyPreferencesImpl privacyPreferences) {
+	private PersonDocumentPrivacy initPrivacyReferences(KimEntityPrivacyPreferencesImpl privacyPreferences) {
 		PersonDocumentPrivacy docPrivacy = new PersonDocumentPrivacy();
 		docPrivacy.setSuppressAddress(true);
 		docPrivacy.setSuppressEmail(false);
@@ -354,8 +354,8 @@ public class UiDocumentServiceImplTest extends RiceTestCase {
 
 // assert section
 	
-	private void assertExtIdTrue(IdentityManagementPersonDocument personDoc, List<EntityExternalIdentifierImpl> extIds) {
-		for (EntityExternalIdentifierImpl extId : extIds) {
+	private void assertExtIdTrue(IdentityManagementPersonDocument personDoc, List<KimEntityExternalIdentifierImpl> extIds) {
+		for (KimEntityExternalIdentifierImpl extId : extIds) {
 			if (extId.getExternalIdentifierTypeCode().equals("TAX")) {
 				assertEquals(personDoc.getTaxId(), extId.getExternalId());
 				
@@ -373,7 +373,7 @@ public class UiDocumentServiceImplTest extends RiceTestCase {
 		assertEquals(personDoc.getPrincipalName(), principal.getPrincipalName());
 	}
 
-	private void assertAddressTrue(PersonDocumentAddress docAddress, EntityAddressImpl entityAddress) {
+	private void assertAddressTrue(PersonDocumentAddress docAddress, KimEntityAddressImpl entityAddress) {
 		assertEquals(docAddress.getAddressTypeCode(), entityAddress.getAddressTypeCode());
 		assertEquals(docAddress.getCountryCode(), entityAddress.getCountryCode());
 		assertEquals(docAddress.getLine1(), entityAddress.getLine1());
@@ -382,13 +382,13 @@ public class UiDocumentServiceImplTest extends RiceTestCase {
 		assertEquals(docAddress.getStateCode(), entityAddress.getStateCode());
 	}
 
-	private void assertEmailTrue(PersonDocumentEmail docEmail, EntityEmailImpl entityEmail) {
+	private void assertEmailTrue(PersonDocumentEmail docEmail, KimEntityEmailImpl entityEmail) {
 		assertEquals(docEmail.getEntityEmailId(), entityEmail.getEntityEmailId());
 		assertEquals(docEmail.getEmailAddress(), entityEmail.getEmailAddress());
 		assertEquals(docEmail.getEmailTypeCode(), entityEmail.getEmailTypeCode());
 	}
 
-	private void assertPhoneTrue(PersonDocumentPhone docPhone, EntityPhoneImpl entityPhone) {
+	private void assertPhoneTrue(PersonDocumentPhone docPhone, KimEntityPhoneImpl entityPhone) {
 		assertEquals(docPhone.getEntityPhoneId(), entityPhone.getEntityPhoneId());
 		assertEquals(docPhone.getCountryCode(), entityPhone.getCountryCode());
 		assertEquals(docPhone.getPhoneNumber(), entityPhone.getPhoneNumber());
@@ -396,7 +396,7 @@ public class UiDocumentServiceImplTest extends RiceTestCase {
 		assertEquals(docPhone.getPhoneTypeCode(), entityPhone.getPhoneTypeCode());
 	}
 
-	private void assertNameTrue(PersonDocumentName docName, EntityNameImpl entityName) {
+	private void assertNameTrue(PersonDocumentName docName, KimEntityNameImpl entityName) {
 		assertEquals(docName.getEntityNameId(), entityName.getEntityNameId());
 		assertEquals(docName.getFirstName(), entityName.getFirstName());
 		assertEquals(docName.getLastName(), entityName.getLastName());
@@ -405,7 +405,7 @@ public class UiDocumentServiceImplTest extends RiceTestCase {
 		assertEquals(docName.getTitle(), entityName.getTitle());
 	}
 	
-	private void assertAffiliationTrue(PersonDocumentAffiliation docAffln, EntityAffiliationImpl entityAffln) {
+	private void assertAffiliationTrue(PersonDocumentAffiliation docAffln, KimEntityAffiliationImpl entityAffln) {
 		assertEquals(docAffln.getAffiliationTypeCode(), entityAffln.getAffiliationTypeCode());
 		assertEquals(docAffln.getCampusCode(), entityAffln.getCampusCode());
 		assertEquals(docAffln.getEntityAffiliationId(), entityAffln.getEntityAffiliationId());

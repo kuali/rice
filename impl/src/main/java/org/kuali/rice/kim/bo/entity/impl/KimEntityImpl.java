@@ -41,7 +41,7 @@ import org.kuali.rice.kns.util.TypedArrayList;
 @SuppressWarnings("unchecked")
 @Entity
 @Table(name = "KRIM_ENTITY_T")
-public class KimEntityImpl extends InactivatableEntityDataBase implements KimEntity {
+public class KimEntityImpl extends KimInactivatableEntityDataBase implements KimEntity {
 
 	private static final long serialVersionUID = 1L;
 
@@ -49,41 +49,41 @@ public class KimEntityImpl extends InactivatableEntityDataBase implements KimEnt
 	@Column(name = "ENTITY_ID")
 	protected String entityId;
 
-	@OneToMany(targetEntity = EntityNameImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@OneToMany(targetEntity = KimEntityNameImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
-	protected List<EntityNameImpl> names = new TypedArrayList(EntityNameImpl.class);
+	protected List<KimEntityNameImpl> names = new TypedArrayList(KimEntityNameImpl.class);
 		
-	@OneToMany(targetEntity = EntityEntityTypeImpl.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+	@OneToMany(targetEntity = KimEntityEntityTypeImpl.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	@JoinColumn(name = "ENTITY_ID", insertable = true, updatable = true)
-	protected List<EntityEntityTypeImpl> entityTypes = new TypedArrayList(EntityEntityTypeImpl.class);
+	protected List<KimEntityEntityTypeImpl> entityTypes = new TypedArrayList(KimEntityEntityTypeImpl.class);
 
 	@OneToMany(targetEntity = KimPrincipalImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
 	@JoinColumn(name = "ENTITY_ID", insertable = true, updatable = true)
 	protected List<KimPrincipalImpl> principals = new TypedArrayList(KimPrincipalImpl.class);
 
-	@OneToMany(targetEntity=EntityExternalIdentifierImpl.class,fetch=FetchType.LAZY,cascade={CascadeType.ALL})
+	@OneToMany(targetEntity=KimEntityExternalIdentifierImpl.class,fetch=FetchType.LAZY,cascade={CascadeType.ALL})
 	@JoinColumn(name="ENTITY_ID", insertable=true, updatable=true)
-	protected List<EntityExternalIdentifierImpl> externalIdentifiers = new TypedArrayList(EntityExternalIdentifierImpl.class);
+	protected List<KimEntityExternalIdentifierImpl> externalIdentifiers = new TypedArrayList(KimEntityExternalIdentifierImpl.class);
 
-	@OneToMany(targetEntity=EntityAffiliationImpl.class,fetch=FetchType.LAZY,cascade={CascadeType.ALL})
+	@OneToMany(targetEntity=KimEntityAffiliationImpl.class,fetch=FetchType.LAZY,cascade={CascadeType.ALL})
 	@JoinColumn(name="ENTITY_ID", insertable=true, updatable=true)
-	protected List<EntityAffiliationImpl> affiliations = new TypedArrayList(EntityAffiliationImpl.class);
+	protected List<KimEntityAffiliationImpl> affiliations = new TypedArrayList(KimEntityAffiliationImpl.class);
 
-	@OneToMany(targetEntity=EntityEmploymentInformationImpl.class,fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+	@OneToMany(targetEntity=KimEntityEmploymentInformationImpl.class,fetch=FetchType.LAZY, cascade={CascadeType.ALL})
 	@JoinColumn(name="ENTITY_ID", insertable=true, updatable=true)
-	protected List<EntityEmploymentInformationImpl> employmentInformation = new TypedArrayList(EntityEmploymentInformationImpl.class);
+	protected List<KimEntityEmploymentInformationImpl> employmentInformation = new TypedArrayList(KimEntityEmploymentInformationImpl.class);
 
-	@OneToOne(targetEntity=EntityPrivacyPreferencesImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@OneToOne(targetEntity=KimEntityPrivacyPreferencesImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
 	@JoinColumn(name = "ENTITY_ID", insertable = true, updatable = true)
-	protected EntityPrivacyPreferencesImpl privacyPreferences;
+	protected KimEntityPrivacyPreferencesImpl privacyPreferences;
 
-	@OneToOne(targetEntity=EntityBioDemographicsImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@OneToOne(targetEntity=KimEntityBioDemographicsImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
 	@JoinColumn(name = "ENTITY_ID", insertable = true, updatable = true)
-	protected EntityBioDemographicsImpl bioDemographics;
+	protected KimEntityBioDemographicsImpl bioDemographics;
 	
-	@OneToMany(targetEntity = EntityCitizenshipImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@OneToMany(targetEntity = KimEntityCitizenshipImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
-	protected List<EntityCitizenshipImpl> citizenships = new TypedArrayList(EntityCitizenshipImpl.class);
+	protected List<KimEntityCitizenshipImpl> citizenships = new TypedArrayList(KimEntityCitizenshipImpl.class);
 
 	/**
 	 * @return the entityId
@@ -103,7 +103,7 @@ public class KimEntityImpl extends InactivatableEntityDataBase implements KimEnt
 	/**
 	 * @return the entityTypes
 	 */
-	public List<EntityEntityTypeImpl> getEntityTypes() {
+	public List<KimEntityEntityTypeImpl> getEntityTypes() {
 		return this.entityTypes;
 	}
 
@@ -111,7 +111,7 @@ public class KimEntityImpl extends InactivatableEntityDataBase implements KimEnt
 	 * @param entityTypes
 	 *            the entityTypes to set
 	 */
-	public void setEntityTypes(List<EntityEntityTypeImpl> entityTypes) {
+	public void setEntityTypes(List<KimEntityEntityTypeImpl> entityTypes) {
 		this.entityTypes = entityTypes;
 	}
 
@@ -130,7 +130,7 @@ public class KimEntityImpl extends InactivatableEntityDataBase implements KimEnt
 	/**
 	 * @return the externalIdentifiers
 	 */
-	public List<EntityExternalIdentifierImpl> getExternalIdentifiers() {
+	public List<KimEntityExternalIdentifierImpl> getExternalIdentifiers() {
 		return this.externalIdentifiers;
 	}
 
@@ -138,14 +138,14 @@ public class KimEntityImpl extends InactivatableEntityDataBase implements KimEnt
 	 * @param externalIdentifiers
 	 *            the externalIdentifiers to set
 	 */
-	public void setExternalIdentifiers(List<EntityExternalIdentifierImpl> externalIdentifiers) {
+	public void setExternalIdentifiers(List<KimEntityExternalIdentifierImpl> externalIdentifiers) {
 		this.externalIdentifiers = externalIdentifiers;
 	}
 
 	/**
 	 * @return the privacyPreferences
 	 */
-	public EntityPrivacyPreferencesImpl getPrivacyPreferences() {
+	public KimEntityPrivacyPreferencesImpl getPrivacyPreferences() {
 		return this.privacyPreferences;
 	}
 
@@ -153,14 +153,14 @@ public class KimEntityImpl extends InactivatableEntityDataBase implements KimEnt
 	 * @param privacyPreferences
 	 *            the privacyPreferences to set
 	 */
-	public void setPrivacyPreferences(EntityPrivacyPreferencesImpl privacyPreferences) {
+	public void setPrivacyPreferences(KimEntityPrivacyPreferencesImpl privacyPreferences) {
 		this.privacyPreferences = privacyPreferences;
 	}
 
 	/**
 	 * @return the bioDemographics
 	 */
-	public EntityBioDemographicsImpl getBioDemographics() {
+	public KimEntityBioDemographicsImpl getBioDemographics() {
 		return this.bioDemographics;
 	}
 
@@ -168,14 +168,14 @@ public class KimEntityImpl extends InactivatableEntityDataBase implements KimEnt
 	 * @param bioDemographics
 	 *            the bioDemographics to set
 	 */
-	public void setBioDemographics(EntityBioDemographicsImpl bioDemographics) {
+	public void setBioDemographics(KimEntityBioDemographicsImpl bioDemographics) {
 		this.bioDemographics = bioDemographics;
 	}
 
 	/**
 	 * @return the affiliations
 	 */
-	public List<EntityAffiliationImpl> getAffiliations() {
+	public List<KimEntityAffiliationImpl> getAffiliations() {
 		return this.affiliations;
 	}
 
@@ -183,14 +183,14 @@ public class KimEntityImpl extends InactivatableEntityDataBase implements KimEnt
 	 * @param affiliations
 	 *            the affiliations to set
 	 */
-	public void setAffiliations(List<EntityAffiliationImpl> affiliations) {
+	public void setAffiliations(List<KimEntityAffiliationImpl> affiliations) {
 		this.affiliations = affiliations;
 	}
 
 	/**
 	 * @return the employmentInformation
 	 */
-	public List<EntityEmploymentInformationImpl> getEmploymentInformation() {
+	public List<KimEntityEmploymentInformationImpl> getEmploymentInformation() {
 		return this.employmentInformation;
 	}
 
@@ -198,7 +198,7 @@ public class KimEntityImpl extends InactivatableEntityDataBase implements KimEnt
 	 * @param employmentInformation
 	 *            the employmentInformation to set
 	 */
-	public void setEmploymentInformation(List<EntityEmploymentInformationImpl> employmentInformation) {
+	public void setEmploymentInformation(List<KimEntityEmploymentInformationImpl> employmentInformation) {
 		this.employmentInformation = employmentInformation;
 	}
 
@@ -213,8 +213,8 @@ public class KimEntityImpl extends InactivatableEntityDataBase implements KimEnt
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntity#getEntityType(java.lang.String)
 	 */
-	public EntityEntityTypeImpl getEntityType(String entityTypeCode) {
-		for ( EntityEntityTypeImpl entType : entityTypes ) {
+	public KimEntityEntityTypeImpl getEntityType(String entityTypeCode) {
+		for ( KimEntityEntityTypeImpl entType : entityTypes ) {
 			if ( entType.getEntityTypeCode().equals( entityTypeCode ) ) {
 				return entType;
 			}
@@ -227,8 +227,8 @@ public class KimEntityImpl extends InactivatableEntityDataBase implements KimEnt
 	 * 
 	 * @see org.kuali.rice.kim.bo.entity.KimEntity#getDefaultAffiliation()
 	 */
-	public EntityAffiliationImpl getDefaultAffiliation() {
-		return (EntityAffiliationImpl)getDefaultItem( affiliations );
+	public KimEntityAffiliationImpl getDefaultAffiliation() {
+		return (KimEntityAffiliationImpl)getDefaultItem( affiliations );
 	}
 	
 	/**
@@ -236,8 +236,8 @@ public class KimEntityImpl extends InactivatableEntityDataBase implements KimEnt
 	 * 
 	 * @see org.kuali.rice.kim.bo.entity.KimEntity#getEntityExternalIdentifier(java.lang.String)
 	 */
-	public EntityExternalIdentifierImpl getEntityExternalIdentifier(String externalIdentifierTypeCode) {
-		for ( EntityExternalIdentifierImpl id : externalIdentifiers ) {
+	public KimEntityExternalIdentifierImpl getEntityExternalIdentifier(String externalIdentifierTypeCode) {
+		for ( KimEntityExternalIdentifierImpl id : externalIdentifiers ) {
 			if ( id.getExternalIdentifierTypeCode().equals(  externalIdentifierTypeCode  ) ) {
 				return id;
 			}
@@ -250,8 +250,8 @@ public class KimEntityImpl extends InactivatableEntityDataBase implements KimEnt
 	 * 
 	 * @see org.kuali.rice.kim.bo.entity.KimEntity#getPrimaryEmployment()
 	 */
-	public EntityEmploymentInformationImpl getPrimaryEmployment() {
-		for ( EntityEmploymentInformationImpl emp : employmentInformation ) {
+	public KimEntityEmploymentInformationImpl getPrimaryEmployment() {
+		for ( KimEntityEmploymentInformationImpl emp : employmentInformation ) {
 			if ( emp.isActive() && emp.isPrimary() ) {
 				return emp;
 			}
@@ -259,11 +259,11 @@ public class KimEntityImpl extends InactivatableEntityDataBase implements KimEnt
 		return null;
 	}
 
-	public List<EntityNameImpl> getNames() {
+	public List<KimEntityNameImpl> getNames() {
 		return this.names;
 	}
 
-	public void setNames(List<EntityNameImpl> names) {
+	public void setNames(List<KimEntityNameImpl> names) {
 		this.names = names;
 	}	
 	
@@ -272,21 +272,21 @@ public class KimEntityImpl extends InactivatableEntityDataBase implements KimEnt
 	 * 
 	 * @see org.kuali.rice.kim.bo.entity.KimEntity#getDefaultName()
 	 */
-	public EntityNameImpl getDefaultName() {
-		return (EntityNameImpl)getDefaultItem( names );
+	public KimEntityNameImpl getDefaultName() {
+		return (KimEntityNameImpl)getDefaultItem( names );
 	}
 
 	/**
 	 * @return the citizenships
 	 */
-	public List<EntityCitizenshipImpl> getCitizenships() {
+	public List<KimEntityCitizenshipImpl> getCitizenships() {
 		return this.citizenships;
 	}
 
 	/**
 	 * @param citizenships the citizenships to set
 	 */
-	public void setCitizenships(List<EntityCitizenshipImpl> citizenships) {
+	public void setCitizenships(List<KimEntityCitizenshipImpl> citizenships) {
 		this.citizenships = citizenships;
 	}
 

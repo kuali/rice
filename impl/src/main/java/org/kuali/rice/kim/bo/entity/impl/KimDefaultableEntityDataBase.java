@@ -15,12 +15,11 @@
  */
 package org.kuali.rice.kim.bo.entity.impl;
 
-import java.util.List;
-
+import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
-import org.kuali.rice.kns.bo.DefaultableInactivateable;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.hibernate.annotations.Type;
+import org.kuali.rice.kns.bo.Defaultable;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -29,22 +28,25 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  *
  */
 @MappedSuperclass
-public abstract class EntityDataBase extends PersistableBusinessObjectBase {
+public abstract class KimDefaultableEntityDataBase extends
+		KimInactivatableEntityDataBase implements Defaultable {
 
+    @Type(type="yes_no")
+	@Column(name="DFLT_IND")
+	protected boolean dflt;
 
-	protected DefaultableInactivateable getDefaultItem( List<? extends DefaultableInactivateable> list ) {
-		// find the default entry
-		for ( DefaultableInactivateable item : list ) {
-			if ( item.isDefault() && item.isActive() ) {
-				return item;
-			}
-		}
-		// if no default, return the first
-		if ( list.size() > 0 ) {
-			return list.get( 0 );
-		}
-		// if neither, return null
-		return null;		
+	/**
+	 * @return the dflt
+	 */
+	public boolean isDefault() {
+		return this.dflt;
 	}
-	
+
+	/**
+	 * @param dflt the dflt to set
+	 */
+	public void setDefault(boolean dflt) {
+		this.dflt = dflt;
+	}
+
 }

@@ -35,7 +35,7 @@ import org.kuali.rice.kim.bo.reference.impl.PhoneTypeImpl;
  */
 @Entity
 @Table(name = "KRIM_ENTITY_PHONE_T")
-public class EntityPhoneImpl extends DefaultableEntityDataBase implements KimEntityPhone {
+public class KimEntityPhoneImpl extends KimDefaultableEntityDataBase implements KimEntityPhone {
 	
 	private static final long serialVersionUID = 1L;
 

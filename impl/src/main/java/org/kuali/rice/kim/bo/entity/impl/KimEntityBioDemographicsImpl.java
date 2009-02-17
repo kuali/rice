@@ -30,7 +30,7 @@ import org.kuali.rice.kim.bo.entity.KimEntityBioDemographics;
  */
 @Entity
 @Table(name = "KRIM_ENTITY_BIO_T")
-public class EntityBioDemographicsImpl extends EntityDataBase implements KimEntityBioDemographics {
+public class KimEntityBioDemographicsImpl extends KimEntityDataBase implements KimEntityBioDemographics {
 
 	private static final long serialVersionUID = 1L;
 

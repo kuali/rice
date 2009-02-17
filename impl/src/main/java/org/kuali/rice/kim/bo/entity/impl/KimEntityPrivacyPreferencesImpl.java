@@ -33,7 +33,7 @@ import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
  */
 @Entity
 @Table(name = "KRIM_ENTITY_PRIV_PREF_T")
-public class EntityPrivacyPreferencesImpl extends EntityDataBase implements KimEntityPrivacyPreferences {
+public class KimEntityPrivacyPreferencesImpl extends KimEntityDataBase implements KimEntityPrivacyPreferences {
 
 	private static final long serialVersionUID = 1L;
 

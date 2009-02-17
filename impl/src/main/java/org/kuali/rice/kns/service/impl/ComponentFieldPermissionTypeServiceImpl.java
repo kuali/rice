@@ -23,6 +23,7 @@ import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
+import org.kuali.rice.kim.util.KimCommonUtils;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -46,6 +47,7 @@ public class ComponentFieldPermissionTypeServiceImpl extends KimPermissionTypeSe
 	protected List<KimPermissionInfo> performPermissionMatches(AttributeSet requestedDetails,
 			List<KimPermissionInfo> permissionsList) {
 		List<KimPermissionInfo> propertyMatches = new ArrayList<KimPermissionInfo>();
+		List<KimPermissionInfo> prefixPropertyMatches = new ArrayList<KimPermissionInfo>();
 		List<KimPermissionInfo> blankPropertyMatches = new ArrayList<KimPermissionInfo>();
 		String propertyName = requestedDetails.get(KimAttributes.PROPERTY_NAME);
 		String componentName = requestedDetails.get(KimAttributes.COMPONENT_NAME);
@@ -56,11 +58,15 @@ public class ComponentFieldPermissionTypeServiceImpl extends KimPermissionTypeSe
 					blankPropertyMatches.add( kpi );
 				} else if ( StringUtils.equals( propertyName, permPropertyName ) ) {
 					propertyMatches.add( kpi );
+				} else if ( KimCommonUtils.doesPropertyNameMatch(propertyName, permPropertyName) ) {
+					prefixPropertyMatches.add( kpi );
 				}
 			}
 		}
 		if ( !propertyMatches.isEmpty() ) {
 			return propertyMatches;
+		} else if ( !prefixPropertyMatches.isEmpty() ) {
+			return prefixPropertyMatches;
 		} else {
 			return blankPropertyMatches;
 		}

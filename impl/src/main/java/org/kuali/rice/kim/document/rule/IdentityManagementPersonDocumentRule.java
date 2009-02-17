@@ -125,11 +125,12 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
         boolean valid = true;
         GlobalVariables.getErrorMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
         valid &= validateRoleQualifierRequired( personDoc.getRoles() );
+        valid &= validateAffiliationAndName( personDoc );
+        valid &= checkAffiliationEithOneEMpInfo (personDoc.getAffiliations());
         GlobalVariables.getErrorMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
 
         return valid;
 	}
-
 
 
 	private boolean checkMultipleDefault (List <? extends PersonDocumentBoDefaultBase> boList, String listName) {
@@ -146,6 +147,9 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
      			}
      		}
      		i++;
+    	}
+    	if (!boList.isEmpty() && !isDefaultSet) {
+				GlobalVariables.getErrorMap().putError(listName+"[0].dflt",RiceKeyConstants.ERROR_NO_DEFAULT_SELETION);    		
     	}
     	return valid;
     }
@@ -204,6 +208,35 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
         	}
         	i++;
     	}
+    	return valid;
+    }
+    
+    private boolean checkAffiliationEithOneEMpInfo (List <PersonDocumentAffiliation> affiliations) {
+    	boolean valid = true;
+    	int i = 0;
+    	for (PersonDocumentAffiliation affiliation : affiliations) {
+	    		if (affiliation.getAffiliationType() .isEmploymentAffiliationType() && affiliation.getEmpInfos().isEmpty()) {
+			     		GlobalVariables.getErrorMap().putError("affiliations[" + i + "].affiliationTypeCode",RiceKeyConstants.ERROR_ONE_ITEM_REQUIRED, "Employment Information");
+			     		valid = false;	    		
+	    		}
+        	i++;
+    	}
+    	return valid;
+    }
+    
+    /*
+     * Verify at least one affiliation and one default name
+     */
+    private boolean validateAffiliationAndName(IdentityManagementPersonDocument personDoc) {
+    	boolean valid = true;
+    	if (personDoc.getAffiliations().isEmpty()) {
+     		GlobalVariables.getErrorMap().putError("affiliations[0]",RiceKeyConstants.ERROR_ONE_ITEM_REQUIRED, "affiliation");
+     		valid = false;
+    	}	
+    	if (personDoc.getNames().isEmpty()) {
+     		GlobalVariables.getErrorMap().putError("names[0]",RiceKeyConstants.ERROR_ONE_ITEM_REQUIRED, "name");
+     		valid = false;
+    	}	
     	return valid;
     }
     

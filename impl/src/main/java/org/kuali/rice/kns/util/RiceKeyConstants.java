@@ -138,6 +138,7 @@ public class RiceKeyConstants {
 
     // kim person document 
     public static final String ERROR_MULTIPLE_DEFAULT_SELETION = "error.multiple.default.selection";
+    public static final String ERROR_NO_DEFAULT_SELETION = "error.no.default.selection";
     public static final String ERROR_MULTIPLE_PRIMARY_EMPLOYMENT = "error.multiple.primary.employment";
     public static final String ERROR_DUPLICATE_ENTRY = "error.duplicate.entry";
     public static final String ERROR_EMPTY_ENTRY = "error.empty.entry";
@@ -151,7 +152,8 @@ public class RiceKeyConstants {
     public static final String ERROR_NOT_UNIQUE_AFFILIATION_TYPE_PER_CAMPUE = "error.not.unique.affilationType.per.campus";
     public static final String ERROR_ROLE_QUALIFIER_REQUIRED = "error.role.qualifier.required";
     public static final String MESSAGE_SEND_AD_HOC_REQUESTS_SUCCESSFUL = "message.sendAdHocRequests.successful";
-    
+    public static final String ERROR_ONE_ITEM_REQUIRED = "error.one.item.required";
+
     //parameter document
     public static final String AUTHORIZATION_ERROR_PARAMETER = "error.authorization.parameter";
 }

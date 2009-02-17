@@ -31,7 +31,7 @@
         p:label="Campus Code"
         p:shortLabel="Campus Code"
         p:maxLength="2"
-        p:required="false" >
+        p:required="true" >
     <property name="validationPattern" >
       <bean parent="AlphaNumericValidationPattern" />
     </property>

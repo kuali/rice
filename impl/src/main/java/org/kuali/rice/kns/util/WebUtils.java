@@ -42,9 +42,12 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionServletWrapper;
 import org.apache.struts.upload.MultipartRequestHandler;
 import org.apache.struts.upload.MultipartRequestWrapper;
+import org.kuali.rice.kns.datadictionary.AttributeDefinition;
+import org.kuali.rice.kns.datadictionary.AttributeSecurity;
 import org.kuali.rice.kns.datadictionary.DataDictionary;
+import org.kuali.rice.kns.datadictionary.DataDictionaryEntryBase;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
-import org.kuali.rice.kns.datadictionary.mask.MaskFormatterLiteral;
+import org.kuali.rice.kns.datadictionary.mask.MaskFormatter;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.exception.FileUploadLimitExceededException;
@@ -446,12 +449,24 @@ public class WebUtils {
 		return indexOfCoordinateExtension;
     }
     
-    public static String getDisplayMaskValue(String literal, Object formObject, String propertyName){
+    public static String getDisplayMaskValue(String className, String fieldName, Object formObject, String propertyName){
+    	String displayMaskValue = null;
     	Object propertyValue = ObjectUtils.getPropertyValue(formObject, propertyName);
     	
-    	MaskFormatterLiteral maskFormatter = new MaskFormatterLiteral();
-    	maskFormatter.setLiteral(literal);
-        String displayMaskValue = maskFormatter.maskValue(propertyValue);
+    	DataDictionaryEntryBase entry = (DataDictionaryEntryBase) KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDictionaryObjectEntry(className);
+    	AttributeDefinition a = entry.getAttributeDefinition(fieldName);
+    	
+    	AttributeSecurity attributeSecurity = a.getAttributeSecurity();
+    	
+    	if(attributeSecurity != null && attributeSecurity.isMask()){
+    		MaskFormatter maskFormatter = attributeSecurity.getMaskFormatter();
+    		displayMaskValue =  maskFormatter.maskValue(propertyValue);
+    		
+    	}else if(attributeSecurity != null && attributeSecurity.isPartialMask()){
+    		MaskFormatter maskFormatter = attributeSecurity.getPartialMaskFormatter();
+    		displayMaskValue =  maskFormatter.maskValue(propertyValue);
+    	}
+        
     	return displayMaskValue;
     }
     

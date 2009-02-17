@@ -52,16 +52,17 @@
 	<c:set var="className" value ="${attributeEntry.fullClassName}" /> 
 	<c:set var="fieldName" value ="${attributeEntry.name}" />
 	<c:set var="readOnly" value="${kfunc:canFullyUnmaskField(className, fieldName)? 'false' : 'true'}" />
-	<c:set var="literal" value="${attributeEntry.attributeSecurityMaskLiteral}" /> 
-	<c:set var="displayMaskValue" value="${kfunc:getDisplayMaskValue(literal, KualiForm, property)}" />
+	<c:set var="displayMask" value="${kfunc:canFullyUnmaskField(className, fieldName)? 'false' : 'true'}" />
+	<c:set var="displayMaskValue" value="${kfunc:getDisplayMaskValue(className, fieldName, KualiForm, property)}" />
 </c:if>
+
  
 <c:if test="${!empty attributeEntry.attributeSecurityPartialMask && attributeEntry.attributeSecurityPartialMask == true  }">
 	<c:set var="className" value ="${attributeEntry.fullClassName}" /> 
 	<c:set var="fieldName" value ="${attributeEntry.name}" />
 	<c:set var="readOnly" value="${kfunc:canPartiallyUnmaskField(attributeEntry.fullClassName, attributeEntry.name) ? 'false' : 'true'}"/>
-	<c:set var="literal" value="${attributeEntry.attributeSecurityMaskLiteral}" /> 
-	<c:set var="displayMaskValue" value="${kfunc:getDisplayMaskValue(literal, KualiForm, property)}" />
+    <c:set var="displayMask" value="${kfunc:canFullyUnmaskField(className, fieldName)? 'false' : 'true'}" />
+	<c:set var="displayMaskValue" value="${kfunc:getDisplayMaskValue(className, fieldName, KualiForm, property)}" />
 </c:if>
 
 
@@ -127,6 +128,9 @@
             <html:hidden write="false" property="${property}" style="${textStyle}"/>
             ${displayMaskValue}
          </c:when>
+		<c:when test="${displayMask}" >
+			${displayMaskValue}
+		</c:when>
          <c:otherwise>
          <logic:empty name="KualiForm" property="${property}">
          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -145,10 +149,10 @@
          <c:if test="${empty extraReadOnlyProperty}">
          <c:choose>
 			<c:when test="${sessionDocument}">
-				<c:if test="${empty readOnlyAlternateDisplay}">
-					<bean:write name="KualiForm" property="${property}"/>
-				</c:if>
-              	${readOnlyAlternateDisplay}
+			   <c:if test="${empty readOnlyAlternateDisplay}">
+		           <bean:write name="KualiForm" property="${property}"/>
+               </c:if>
+              ${readOnlyAlternateDisplay}
 			</c:when>
 			<c:otherwise>
               <html:hidden write="${empty readOnlyAlternateDisplay ? 'true' : 'false'}" property="${property}" style="${textStyle}" />

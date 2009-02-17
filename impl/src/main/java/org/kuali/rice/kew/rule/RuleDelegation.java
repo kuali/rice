@@ -110,6 +110,9 @@ public class RuleDelegation extends KewPersistableBusinessObjectBase {
      * id on this RuleDelegation.
      */
     public RuleResponsibility getRuleResponsibility() {
+    	if ( getResponsibilityId() == null ) {
+    		return null;
+    	}
     	return KEWServiceLocator.getRuleService().findRuleResponsibility(getResponsibilityId());
     }
     

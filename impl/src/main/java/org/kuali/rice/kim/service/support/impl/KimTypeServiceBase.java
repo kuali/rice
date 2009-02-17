@@ -104,11 +104,8 @@ public class KimTypeServiceBase implements KimTypeService {
 	 * 
 	 */
 	protected boolean performMatch(AttributeSet inputAttributeSet, AttributeSet storedAttributeSet) {
-		if ( storedAttributeSet == null && inputAttributeSet == null ) {
+		if ( storedAttributeSet == null || inputAttributeSet == null ) {
 			return true;
-		} else if ( (storedAttributeSet == null && inputAttributeSet != null) 
-				|| (inputAttributeSet == null && storedAttributeSet != null) ) {
-			return false;
 		}
 		for ( Map.Entry<String, String> entry : storedAttributeSet.entrySet() ) {
 			if (inputAttributeSet.containsKey(entry.getKey()) && !StringUtils.equals(inputAttributeSet.get(entry.getKey()), entry.getValue()) ) {

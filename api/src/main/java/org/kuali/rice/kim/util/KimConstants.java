@@ -26,8 +26,7 @@ public class KimConstants {
 	public static final String NAMESPACE_CODE = "KR-IDM";
 	public static final String KIM_TYPE_DEFAULT_NAMESPACE = "KUALI";
 	public static final String KIM_TYPE_DEFAULT_NAME = "Default";
-	public static final String KIM_GROUP_DEFAULT_NAMESPACE_CODE = "KFS";
-	public static final String KIM_GROUP_KFS_NAMESPACE_CODE = "KFS";
+	public static final String KIM_GROUP_DEFAULT_NAMESPACE_CODE = "KUALI";
 	public static final String KIM_GROUP_WORKFLOW_NAMESPACE_CODE = "KR-WKFLW";
 
 	public class EntityTypes {

@@ -127,11 +127,6 @@
 		<html-el:hidden property="methodToCall" value="" />
 		<table width="100%" border="0" cellspacing="0" cellpadding="0">
 			<tr>
-				<td width="20" height="30">&nbsp;</td>
-				<td><jsp:include page="../WorkflowMessages.jsp" flush="true" /></td>
-				<td width="20">&nbsp;</td>
-			</tr>
-			<tr>
 				<td></td>
 				<td>
 				<table width="100%" border="0" cellspacing="0" cellpadding="0">

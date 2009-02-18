@@ -88,7 +88,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
     private static final String PERSON_REVIEWER_PROPERTY_NAME = "personReviewer";
     private static final String ROLE_REVIEWER_PROPERTY_NAME = "roleReviewer";
     private static final String PERSON_REVIEWER_TYPE_PROPERTY_NAME = "personReviewerType";
-    private static final String DOC_TYP_NAME_PROPERTY_NAME = "docTypeName";
+    private static final String DOC_TYP_NAME_PROPERTY_NAME = "documentType.name";
     private static final String RULE_DESC_PROPERTY_NAME = "description";
 
     private static final String DOC_TYP_LOOKUPABLE = "DocumentTypeLookupableImplService";

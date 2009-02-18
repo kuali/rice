@@ -90,7 +90,7 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
     private static final String GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME = "delegationRuleBaseValues.groupReviewerNamespace";
     private static final String PERSON_REVIEWER_PROPERTY_NAME = "delegationRuleBaseValues.personReviewer";
     private static final String PERSON_REVIEWER_TYPE_PROPERTY_NAME = "delegationRuleBaseValues.personReviewerType";
-    private static final String DOC_TYP_NAME_PROPERTY_NAME = "delegationRuleBaseValues.docTypeName";
+    private static final String DOC_TYP_NAME_PROPERTY_NAME = "delegationRuleBaseValues.documentType.name";
     private static final String RULE_DESC_PROPERTY_NAME = "delegationRuleBaseValues.description";
 
     private static final String DOC_TYP_LOOKUPABLE = "DocumentTypeLookupableImplService";

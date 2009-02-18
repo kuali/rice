@@ -33,6 +33,8 @@
         <ref bean="RuleDelegation-name" />
         <ref bean="RuleDelegation-rulesBaseValueId" />
         <ref bean="RuleDelegation-documentTypeName"/>
+        <ref bean="RuleDelegation-documentTypeId"/>
+        <ref bean="RuleDelegation-delegationDocumentTypeName"/>
         <ref bean="RuleDelegation-ruleTemplateName"/>
         <ref bean="RuleDelegation-description"/>
         <ref bean="RuleDelegation-groupReviewerName"/>
@@ -60,11 +62,19 @@
           </property>
         </bean>
         <bean parent="RelationshipDefinition">
-          <property name="objectAttributeName" value="delegationRuleBaseValues.documentType"/>
+          <property name="objectAttributeName" value="documentType"/>
           <property name="primitiveAttributes" >
             <list>
               <bean parent="PrimitiveAttributeDefinition"
-                    p:sourceName="delegationRuleBaseValues.docTypeName"
+                    p:sourceName="delegationRuleBaseValues.documentType.documentTypeId"
+                    p:targetName="documentTypeId" />
+            </list>
+          </property>
+          <property name="supportAttributes" >
+            <list>
+              <bean parent="SupportAttributeDefinition"
+                    p:identifier="true"
+                    p:sourceName="delegationRuleBaseValues.documentType.name"
                     p:targetName="name" />
             </list>
           </property>
@@ -115,31 +125,6 @@
             </list>
           </property>
         </bean>
-        <!--
-        <bean parent="RelationshipDefinition">
-          <property name="objectAttributeName" value="delegationRuleBaseValues" />
-          <property name="primitiveAttributes" >
-            <list>
-              <bean parent="PrimitiveAttributeDefinition"
-                    p:sourceName="delegateRuleId"
-                    p:targetName="ruleBaseValuesId" />
-            </list>
-          </property>
-
-          <property name="supportAttributes" >
-            <list>
-              <bean parent="SupportAttributeDefinition"
-                    p:identifier="true"
-                    p:sourceName="delegationRuleBaseValues.ruleTemplate.name"
-                    p:targetName="ruleTemplate.name" />
-              <bean parent="SupportAttributeDefinition"
-                    p:identifier="true"
-                    p:sourceName="delegationRuleBaseValues.description"
-                    p:targetName="description" />
-            </list>
-          </property>
-        </bean>
-		-->
       </list>
     </property>
 
@@ -288,6 +273,39 @@
     </property>
     <property name="name" value="delegationType" />
     <property name="label" value="Delegation Type" />
+    <property name="formatterClass" value="org.kuali.rice.kns.web.format.DelegationTypeFormatter" />
+  </bean>
+
+  <bean id="RuleDelegation-documentTypeName" parent="RuleDelegation-documentTypeName-parentBean" />
+
+  <bean id="RuleDelegation-documentTypeName-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="shortLabel" value="Document Type" />
+    <property name="maxLength" value="256" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="30" />
+    </property>
+    <property name="name" value="delegationRuleBaseValues.documentType.name" />
+    <property name="label" value="Document Type" />
+  </bean>
+
+  <bean id="RuleDelegation-documentTypeId" parent="RuleDelegation-documentTypeId-parentBean" />
+
+  <bean id="RuleDelegation-documentTypeId-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="shortLabel" value="Document Type Id" />
+    <property name="maxLength" value="256" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="30" />
+    </property>
+    <property name="name" value="delegationRuleBaseValues.documentType.documentTypeId" />
+    <property name="label" value="Document Type Id" />
   </bean>
 
   <bean id="RuleDelegation-name" parent="RuleDelegation-name-parentBean" />
@@ -302,9 +320,9 @@
     <property name="name" value="delegationRuleBaseValues.ruleTemplate.name" />
   </bean>
 
-  <bean id="RuleDelegation-documentTypeName" parent="RuleDelegation-documentTypeName-parentBean" />
+  <bean id="RuleDelegation-delegationDocumentTypeName" parent="RuleDelegation-delegationDocumentTypeName-parentBean" />
 
-  <bean id="RuleDelegation-documentTypeName-parentBean" abstract="true" parent="RuleBaseValues-documentTypeName">
+  <bean id="RuleDelegation-delegationDocumentTypeName-parentBean" abstract="true" parent="RuleBaseValues-documentTypeName">
     <property name="name" value="delegationRuleBaseValues.docTypeName" />
   </bean>
 
@@ -407,8 +425,8 @@
               <bean parent="FieldDefinition" p:attributeName="ruleDelegationId" />
               <bean parent="FieldDefinition" p:attributeName="ruleResponsibility.ruleBaseValues.ruleBaseValuesId" />
               <bean parent="FieldDefinition" p:attributeName="responsibilityId"/>
-              <bean parent="FieldDefinition" p:attributeName="delegationRuleBaseValues.docTypeName" p:noInquiry="true" />
-              <bean parent="FieldDefinition" p:attributeName="delegationRuleBaseValues.ruleTemplate.name" />
+              <bean parent="FieldDefinition" p:attributeName="delegationRuleBaseValues.documentType.name" />
+              <bean parent="FieldDefinition" p:attributeName="delegationRuleBaseValues.ruleTemplate.name" p:noInquiry="false" />
               <bean parent="FieldDefinition" p:attributeName="delegationRuleBaseValues.description" p:noInquiry="true" />
               <bean parent="FieldDefinition" p:attributeName="delegationRuleBaseValues.fromDate" p:noInquiry="true" />
               <bean parent="FieldDefinition" p:attributeName="delegationRuleBaseValues.toDate" p:noInquiry="true" />
@@ -503,21 +521,27 @@
     <property name="lookupFields" >
       <list>
         <bean parent="FieldDefinition"
+              p:noDirectInquiry="true"
               p:attributeName="ruleResponsibility.ruleBaseValues.ruleBaseValuesId"/>
         <bean parent="FieldDefinition"
               p:attributeName="responsibilityId"/>
         <bean parent="FieldDefinition"
-              p:attributeName="delegationRuleBaseValues.docTypeName"/>
+              p:noDirectInquiry="true"
+              p:attributeName="delegationRuleBaseValues.documentType.name"/>
         <bean parent="FieldDefinition"
+              p:noDirectInquiry="true"
               p:attributeName="delegationRuleBaseValues.ruleTemplate.name"/>
         <bean parent="FieldDefinition"
               p:noLookup="true"
               p:attributeName="delegationRuleBaseValues.description"/>
         <bean parent="FieldDefinition"
+              p:noDirectInquiry="true"
               p:attributeName="delegationRuleBaseValues.groupReviewerNamespace"/>
         <bean parent="FieldDefinition"
+              p:noDirectInquiry="true"
               p:attributeName="delegationRuleBaseValues.groupReviewerName"/>
 		<bean parent="FieldDefinition"
+		      p:noDirectInquiry="true"
               p:attributeName="delegationRuleBaseValues.personReviewer"/>
         <bean parent="FieldDefinition"
               p:noLookup="true"
@@ -546,8 +570,7 @@
               p:noInquiry="true"
               p:attributeName="delegationRuleBaseValues.activeInd" />
         <bean parent="FieldDefinition"
-              p:noInquiry="true"
-              p:attributeName="delegationRuleBaseValues.docTypeName"/>
+              p:attributeName="delegationRuleBaseValues.documentType.name"/>
         <bean parent="FieldDefinition"
               p:attributeName="delegationType"/>
       </list>

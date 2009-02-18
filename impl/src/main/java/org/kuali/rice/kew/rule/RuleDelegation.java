@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,16 +27,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 
 
 /**
  * A model bean representing the delegation of a rule from a responsibility to
- * another rule.  Specifies the delegation type which can be either 
+ * another rule.  Specifies the delegation type which can be either
  * {@link KEWConstants#DELEGATION_PRIMARY} or {@link KEWConstants#DELEGATION_SECONDARY}.
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -45,7 +47,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 @Table(name="KREW_DLGN_RSP_T")
 @Sequence(name="KREW_RTE_TMPL_S", property="ruleDelegationId")
 public class RuleDelegation extends KewPersistableBusinessObjectBase {
-    
+
 	private static final long serialVersionUID = 7989203310473741293L;
 	@Id
 	@Column(name="DLGN_RULE_ID")
@@ -56,14 +58,14 @@ public class RuleDelegation extends KewPersistableBusinessObjectBase {
 	private Long delegateRuleId;
     @Column(name="DLGN_TYP")
     private String delegationType = KEWConstants.DELEGATION_PRIMARY;
-    
+
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
 	@JoinColumn(name="DLGN_RULE_BASE_VAL_ID")
 	private RuleBaseValues delegationRuleBaseValues;
 //    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
 //	@JoinColumn(name="RULE_RSP_ID")
 //	private RuleResponsibility ruleResponsibility;
-    
+
     public RuleDelegation() {
     }
 
@@ -104,7 +106,7 @@ public class RuleDelegation extends KewPersistableBusinessObjectBase {
     public void setRuleDelegationId(Long ruleDelegationId) {
         this.ruleDelegationId = ruleDelegationId;
     }
-    
+
     /**
      * Returns the most recent RuleResponsibility for the responsibility
      * id on this RuleDelegation.
@@ -115,13 +117,11 @@ public class RuleDelegation extends KewPersistableBusinessObjectBase {
     	}
     	return KEWServiceLocator.getRuleService().findRuleResponsibility(getResponsibilityId());
     }
-    
-//    public RuleResponsibility getRuleResponsibility() {
-//        return ruleResponsibility;
-//    }
-//    public void setRuleResponsibility(RuleResponsibility ruleResponsibility) {
-//        this.ruleResponsibility = ruleResponsibility;
-//    }
+
+    public DocumentType getDocumentType() {
+        return this.getDelegationRuleBaseValues().getDocumentType();
+    }
+
     public Long getResponsibilityId() {
         return responsibilityId;
     }
@@ -138,7 +138,6 @@ public class RuleDelegation extends KewPersistableBusinessObjectBase {
 		map.put("delegationType", delegationType);
 		return map;
 	}
-    
-    
+
 }
 

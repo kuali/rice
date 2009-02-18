@@ -35,7 +35,7 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentEmploymentInfo;
 import org.kuali.rice.kim.bo.ui.PersonDocumentGroup;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
-import org.kuali.rice.kim.document.authorization.IdentityManagementPersonDocumentAuthorizer;
+import org.kuali.rice.kim.document.authorization.IdentityManagementKimDocumentAuthorizer;
 import org.kuali.rice.kim.rule.event.ui.AddGroupEvent;
 import org.kuali.rice.kim.rule.event.ui.AddRoleEvent;
 import org.kuali.rice.kim.rule.ui.AddGroupRule;
@@ -69,7 +69,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 	
 	private AddGroupRule addGroupRule;
 	private AddRoleRule  addRoleRule;
-	private IdentityManagementPersonDocumentAuthorizer authorizer;
+	private IdentityManagementKimDocumentAuthorizer authorizer;
 	private BusinessObjectService businessObjectService;
 	private IdentityService identityService;
 	private Class<? extends AddGroupRule> addGroupRuleClass = PersonDocumentGroupRule.class;
@@ -453,9 +453,9 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 
 
 
-	public IdentityManagementPersonDocumentAuthorizer getAuthorizer(IdentityManagementPersonDocument document) {
+	public IdentityManagementKimDocumentAuthorizer getAuthorizer(IdentityManagementPersonDocument document) {
 		if ( authorizer == null ) {
-			authorizer = (IdentityManagementPersonDocumentAuthorizer)KNSServiceLocator.getDocumentHelperService().getDocumentAuthorizer(document);
+			authorizer = (IdentityManagementKimDocumentAuthorizer)KNSServiceLocator.getDocumentHelperService().getDocumentAuthorizer(document);
 		}
 		return authorizer;
 	}

@@ -11,8 +11,7 @@
     <property name="documentTypeName" value="IdentityManagementRoleDocument"/>
     <property name="documentClass" value="org.kuali.rice.kim.document.IdentityManagementRoleDocument"/>
     <property name="businessRulesClass" value="org.kuali.rice.kim.document.rule.IdentityManagementRoleDocumentRule"/> 
-    <property name="documentPresentationControllerClass" value="org.kuali.rice.kim.document.authorization.IdentityManagementRoleDocumentPresentationController"/> 
-    <property name="documentAuthorizerClass" value="org.kuali.rice.kim.document.authorization.IdentityManagementRoleDocumentAuthorizer"/>
+    <property name="documentAuthorizerClass" value="org.kuali.rice.kim.document.authorization.IdentityManagementKimDocumentAuthorizer"/>
     <!-- <property name="documentTypeCode" value="IMPN" /> -->
     <property name="allowsCopy" value="true"/>
     <property name="attributes">

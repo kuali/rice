@@ -446,16 +446,6 @@
     </property>
   </bean>
 
-  <bean id="entityPermissionTypeService" class="org.kuali.rice.kim.service.impl.EntityPermissionTypeServiceImpl" />
-  <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
-    <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-    <property name="serviceDefinition">
-      <bean parent="kimService"
-        p:service-ref="entityPermissionTypeService"
-        p:localServiceName="entityPermissionTypeService" />
-    </property>
-  </bean>
-
   <bean id="groupPermissionTypeService" class="org.kuali.rice.kns.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
     	<property name="exactMatchStringAttributeName" value="groupName" />
     	<property name="namespaceRequiredOnStoredAttributeSet" value="true" />

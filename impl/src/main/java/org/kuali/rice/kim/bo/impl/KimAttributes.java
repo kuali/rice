@@ -50,7 +50,6 @@ public class KimAttributes extends TransientBusinessObjectBase {
 	public static final String ACTION_REQUEST_CD = "actionRequestCd";
 	public static final String ROUTE_STATUS_CODE = "routeStatusCode";
 	public static final String ROUTE_NODE_NAME = "routeNodeName";
-	public static final String ENTITY_TYPE_CODE = "entityTypeCode";
 	public static final String ROLE_NAME = "roleName";
 	public static final String PERMISSION_NAME = "permissionName";
 	public static final String RESPONSIBILITY_NAME = "responsibilityName";
@@ -77,7 +76,6 @@ public class KimAttributes extends TransientBusinessObjectBase {
 	protected String actionRequestCd;
 	protected String routeStatusCode;
 	protected String routeNodeName;
-	protected String entityTypeCode;
 	protected String roleName;
 	protected String permissionName;
 	protected String responsibilityName;
@@ -311,21 +309,6 @@ public class KimAttributes extends TransientBusinessObjectBase {
 	 */
 	public void setRouteNodeName(String routeNodeName) {
 		this.routeNodeName = routeNodeName;
-	}
-
-	/**
-	 * @return the entityTypeCode
-	 */
-	public String getEntityTypeCode() {
-		return this.entityTypeCode;
-	}
-
-	/**
-	 * @param entityTypeCode
-	 *            the entityTypeCode to set
-	 */
-	public void setEntityTypeCode(String entityTypeCode) {
-		this.entityTypeCode = entityTypeCode;
 	}
 
 	/**

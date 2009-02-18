@@ -27,7 +27,6 @@
         <ref bean="KimAttributes-actionRequestCd" />
         <ref bean="KimAttributes-routeStatusCode" />
         <ref bean="KimAttributes-routeNodeName" />
-        <ref bean="KimAttributes-entityTypeCode" />
         <ref bean="KimAttributes-roleName" />
         <ref bean="KimAttributes-permissionName" />
         <ref bean="KimAttributes-responsibilityName" />
@@ -253,20 +252,6 @@
     </property>
   </bean>
     
-  <!-- TODO: Should be converted to use EntityEntityTypeImpl.xml once created -->
-  <bean id="KimAttributes-entityTypeCode" parent="KimAttributes-entityTypeCode-parentBean" />
-  <bean id="KimAttributes-entityTypeCode-parentBean" parent="AttributeDefinition" abstract="true"
-        p:name="entityTypeCode"
-        p:forceUppercase="true"
-        p:label="Entity Type Code"
-        p:shortLabel="Entity Type Code"
-        p:maxLength="40"
-        p:required="false" >
-    <property name="control" >
-      <bean parent="TextControlDefinition" p:size="20" />
-    </property>
-  </bean>
-          
   <!-- Should be converted to use KimPermissionImpl.xml once created -->
   <bean id="KimAttributes-permissionName" parent="KimAttributes-permissionName-parentBean" />
   <bean id="KimAttributes-permissionName-parentBean" parent="KimPermissionImpl-name" abstract="true"

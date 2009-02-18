@@ -237,7 +237,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
                     document.setFieldsClearedOnCopy(true);
 
                     // mark so that blank required fields will be populated with default values
-                    maintainable.setGenerateBlankRequiredValues(true);
+                    maintainable.setGenerateBlankRequiredValues(maintenanceForm.getDocTypeName());
                 }
             }
             else if (KNSConstants.MAINTENANCE_EDIT_ACTION.equals(maintenanceAction)) {
@@ -289,7 +289,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 
         // for new maintainble need to pick up default values
         if (KNSConstants.MAINTENANCE_NEW_ACTION.equals(maintenanceAction)) {
-            document.getNewMaintainableObject().setGenerateDefaultValues(true);
+            document.getNewMaintainableObject().setGenerateDefaultValues(maintenanceForm.getDocTypeName());
             document.getNewMaintainableObject().processAfterNew( document, request.getParameterMap() );
         }
 

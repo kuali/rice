@@ -17,7 +17,6 @@ package org.kuali.rice.kns.maintenance;
 
 import java.beans.PropertyDescriptor;
 import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,7 +35,6 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
 import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
-import org.kuali.rice.kns.datadictionary.InquirySectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
@@ -44,7 +42,6 @@ import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.MaintenanceLock;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions;
-import org.kuali.rice.kns.inquiry.InquiryRestrictions;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.lookup.valueFinder.ValueFinder;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
@@ -62,7 +59,8 @@ import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.MaintenanceUtils;
 import org.kuali.rice.kns.util.ObjectUtils;
-import org.kuali.rice.kns.web.format.FormatException;
+import org.kuali.rice.kns.web.format.Formatter;
+import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Section;
 import org.kuali.rice.kns.web.ui.SectionBridge;
 
@@ -78,8 +76,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     protected PersistableBusinessObject businessObject;
     protected Class boClass;
     protected String maintenanceAction;
-    protected boolean generateDefaultValues;
-    protected boolean generateBlankRequiredValues;
+   
     
     protected Map<String,PersistableBusinessObject> newCollectionLines = new HashMap<String,PersistableBusinessObject>();
     protected Map<String, Boolean> inactiveRecordDisplay = new HashMap<String, Boolean>();
@@ -300,11 +297,10 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
                 		}
                 	}
                 	
-                	Section section = SectionBridge.toSection(maintSectionDef, getBusinessObject(), this, oldMaintainable, getMaintenanceAction(), isGenerateDefaultValues(), isGenerateBlankRequiredValues(), displayedFieldNames);
+                	Section section = SectionBridge.toSection(maintSectionDef, getBusinessObject(), this, oldMaintainable, getMaintenanceAction(), displayedFieldNames);
                 	if(maintenanceRestrictions.isReadOnlySectionId(maintSectionDef.getId())){
                 		section.setReadOnly(true);
                 	}
-                	setGenerateDefaultValues(false);
                 
                 	// add to section list
                 	sections.add(section);
@@ -640,31 +636,102 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 
 
     /**
-     * @return Returns the generateDefaultValues.
+     * 
+     * @see org.kuali.rice.kns.maintenance.Maintainable#setGenerateDefaultValues()
      */
-    public boolean isGenerateDefaultValues() {
-        return generateDefaultValues;
+    public void setGenerateDefaultValues(String docTypeName) {
+     List<MaintainableSectionDefinition> sectionDefinitions = getMaintenanceDocumentDictionaryService().getMaintainableSections(docTypeName);
+
+     try {
+         // iterate through section definitions
+         for (Iterator iter = sectionDefinitions.iterator(); iter.hasNext();) {
+             
+             MaintainableSectionDefinition maintSectionDef = (MaintainableSectionDefinition) iter.next();
+             Collection maintItems = maintSectionDef.getMaintainableItems();
+             for (Iterator iterator = maintItems.iterator(); iterator.hasNext();) {
+                 MaintainableItemDefinition item = (MaintainableItemDefinition) iterator.next();
+
+                 if (item instanceof MaintainableFieldDefinition) {
+                     MaintainableFieldDefinition maintainableFieldDefinition = (MaintainableFieldDefinition) item;
+                     if (maintainableFieldDefinition.isRequired() && maintainableFieldDefinition.isUnconditionallyReadOnly() ) {
+                    	
+                         Object defaultValue = maintainableFieldDefinition.getDefaultValue();
+                         if (defaultValue != null) {
+                             if (defaultValue.toString().equals("true")) {
+                                 defaultValue = "Yes";
+                             }
+                             else if (defaultValue.toString().equals("false")) {
+                                 defaultValue = "No";
+                             }
+                         }
+
+                         Class defaultValueFinderClass = maintainableFieldDefinition.getDefaultValueFinderClass();
+                         if (defaultValueFinderClass != null) {
+                        	 defaultValue = ((ValueFinder) defaultValueFinderClass.newInstance()).getValue();
+                            
+                         }
+                         if (defaultValue != null) {
+                        	 ObjectUtils.setObjectProperty(this.getBusinessObject(), item.getName(), defaultValue.getClass(), defaultValue);
+                         }
+                     }
+                 }
+             }   
+         }
+     } catch(Exception e){
+    	 LOG.error("Unable to set default value " + e.getMessage(), e);
+    	 throw new RuntimeException("Unable to create instance of object class" + e.getMessage(), e);
+     }
+     
+
     }
 
-    /**
-     * @param generateDefaultValues The generateDefaultValues to set.
-     */
-    public void setGenerateDefaultValues(boolean generateDefaultValues) {
-        this.generateDefaultValues = generateDefaultValues;
-    }
 
     /**
-     * @return Returns the generateDefaultValues.
+     * 
+     * @see org.kuali.rice.kns.maintenance.Maintainable#setGenerateBlankRequiredValues()
      */
-    public boolean isGenerateBlankRequiredValues() {
-        return generateBlankRequiredValues;
-    }
+    public void setGenerateBlankRequiredValues(String docTypeName) {
+    	
+    	 List<Section> sections = new ArrayList<Section>();
+         
+         List<MaintainableSectionDefinition> sectionDefinitions = getMaintenanceDocumentDictionaryService().getMaintainableSections(docTypeName);
 
-    /**
-     * @param generateDefaultValues The generateDefaultValues to set.
-     */
-    public void setGenerateBlankRequiredValues(boolean generateBlankRequiredValues) {
-        this.generateBlankRequiredValues = generateBlankRequiredValues;
+         try {
+             // iterate through section definitions
+             for (Iterator iter = sectionDefinitions.iterator(); iter.hasNext();) {
+                 
+                 MaintainableSectionDefinition maintSectionDef = (MaintainableSectionDefinition) iter.next();
+                 Collection maintItems = maintSectionDef.getMaintainableItems();
+                 for (Iterator iterator = maintItems.iterator(); iterator.hasNext();) {
+                     MaintainableItemDefinition item = (MaintainableItemDefinition) iterator.next();
+
+                     if (item instanceof MaintainableFieldDefinition) {
+                         MaintainableFieldDefinition maintainableFieldDefinition = (MaintainableFieldDefinition) item;
+                         if (maintainableFieldDefinition.isRequired() && maintainableFieldDefinition.isUnconditionallyReadOnly() ) {
+                        	
+                        	 if (ObjectUtils.getPropertyValue(this.getBusinessObject(), item.getName()) != null) {
+                        		 Class defaultValueFinderClass = maintainableFieldDefinition.getDefaultValueFinderClass();
+                        		 if (defaultValueFinderClass != null) { 
+                        			ObjectUtils.setObjectProperty(this.getBusinessObject(), item.getName(), String.class, ((ValueFinder) defaultValueFinderClass.newInstance()).getValue());
+                        		 
+                        		 }
+                        	 }
+                         }
+                     }
+                 }   
+             }
+             
+         } catch (InstantiationException e) {
+             LOG.error("Unable to create instance of object class" + e.getMessage());
+             throw new RuntimeException("Unable to create instance of object class" + e.getMessage());
+         } catch (IllegalAccessException e) {
+             LOG.error("Unable to create instance of object class" + e.getMessage());
+             throw new RuntimeException("Unable to create instance of object class" + e.getMessage());
+         } catch (Exception e){
+        	 throw new RuntimeException("Unable to create instance of object class" + e.getMessage());
+         }
+
+       
     }
 
 

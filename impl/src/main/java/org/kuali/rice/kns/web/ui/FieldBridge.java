@@ -267,7 +267,7 @@ public class FieldBridge {
      * @throws InstantiationException
      * @throws IllegalAccessException
      */
-    public static final Field toField(MaintainableItemDefinition id, MaintainableSectionDefinition sd, BusinessObject o, Maintainable m, Section s, boolean autoFillDefaultValues, boolean autoFillBlankRequiredValues, List<String> displayedFieldNames) throws InstantiationException, IllegalAccessException {
+    public static final Field toField(MaintainableItemDefinition id, MaintainableSectionDefinition sd, BusinessObject o, Maintainable m, Section s, List<String> displayedFieldNames) throws InstantiationException, IllegalAccessException {
         Field field = new Field();
 
         // if FieldDefiniton, simply add a Field UI object
@@ -282,7 +282,7 @@ public class FieldBridge {
 
             // set default value
             //TODO St. Ailish says review this. A question was raised on 11-16-2006 Tuscon meeting as to why this is done here and not in the formatter.
-            if (autoFillDefaultValues) {
+            /*if (autoFillDefaultValues) {
                 Object defaultValue = maintainableFieldDefinition.getDefaultValue();
                 if (defaultValue != null) {
                     if (defaultValue.toString().equals("true")) {
@@ -312,7 +312,7 @@ public class FieldBridge {
                     }
                 }
             }
-
+			*/
             field.setFieldLevelHelpEnabled(isMaintenanceFieldLevelHelpEnabled(m, maintainableFieldDefinition));
             field.setFieldLevelHelpDisabled(isMaintenanceFieldLevelHelpDisabled(m, maintainableFieldDefinition));
         }

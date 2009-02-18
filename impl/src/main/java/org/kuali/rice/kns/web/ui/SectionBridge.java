@@ -195,8 +195,9 @@ public class SectionBridge {
      * @throws InstantiationException
      * @throws IllegalAccessException
      */
-    public static final Section toSection(MaintainableSectionDefinition sd, BusinessObject o, Maintainable maintainable, Maintainable oldMaintainable, String maintenanceAction, boolean autoFillDefaultValues, boolean autoFillBlankRequiredValues, List<String> displayedFieldNames) throws InstantiationException, IllegalAccessException {
-        Section section = new Section();
+    public static final Section toSection(MaintainableSectionDefinition sd, BusinessObject o, Maintainable maintainable, Maintainable oldMaintainable, String maintenanceAction,  List<String> displayedFieldNames) throws InstantiationException, IllegalAccessException {
+    	
+    	Section section = new Section();
 
         section.setSectionId( sd.getId() );
         section.setSectionTitle(sd.getTitle());
@@ -210,7 +211,7 @@ public class SectionBridge {
 
         for (Iterator iterator = maintItems.iterator(); iterator.hasNext();) {
             MaintainableItemDefinition item = (MaintainableItemDefinition) iterator.next();
-            Field field = FieldBridge.toField(item, sd, o, maintainable, section, autoFillDefaultValues, autoFillBlankRequiredValues, displayedFieldNames);
+            Field field = FieldBridge.toField(item, sd, o, maintainable, section, displayedFieldNames);
             boolean skipAdd = false;
 
             // if CollectionDefiniton, then have a many section
@@ -232,7 +233,8 @@ public class SectionBridge {
         }
 
         // populate field values from business object
-        if (o != null && !autoFillDefaultValues) {
+        //if (o != null && !autoFillDefaultValues) {
+        if (o != null) {
             sectionFields = FieldUtils.populateFieldsFromBusinessObject(sectionFields, o);
 
             /* if maintenance action is copy, clear out secure fields */

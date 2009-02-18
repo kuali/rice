@@ -33,16 +33,16 @@ import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.web.ui.Section;
 
 /**
- * This class is the maintainable implementation for Routing Rules
- * in KEW (represented by the {@link RuleBaseValues} business object).
- *
+ * This class is the maintainable implementation for Routing Rules 
+ * in KEW (represented by the {@link RuleBaseValues} business object). 
+ * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class RoutingRuleMaintainable extends KualiMaintainableImpl {
 
     private static final long serialVersionUID = -5920808902137192662L;
-
+    
 	private static final String RULE_ATTRIBUTES_SECTION_ID = "RuleAttributes";
 	private static final String ID_SEPARATOR = ":";
 
@@ -56,9 +56,9 @@ public class RoutingRuleMaintainable extends KualiMaintainableImpl {
 		return WebRuleUtils.customizeSections(getThisRule(), sections);
 
 	}
-
+	
 	/**
-	 * On creation of a new rule document, we must validate that a rule template and document type are set.
+	 * On creation of a new rule document, we must validate that a rule template and document type are set. 
 	 */
 	@Override
 	public void processAfterNew(MaintenanceDocument document,
@@ -67,7 +67,7 @@ public class RoutingRuleMaintainable extends KualiMaintainableImpl {
 		WebRuleUtils.establishDefaultRuleValues(getNewRule(document));
 		getNewRule(document).setRouteHeaderId(new Long(document.getDocumentHeader().getDocumentNumber()));
 	}
-
+	
 	/**
 	 * This is a hack to get around the fact that when a document is first created, this value is
  	 * true which causes issues if you want to be able to initialize fields on  the document using
@@ -75,10 +75,10 @@ public class RoutingRuleMaintainable extends KualiMaintainableImpl {
  	 * Field.propertyValue to see why this causes problems
 	 */
 	@Override
-	public boolean isGenerateDefaultValues() {
-		return false;
+	public void setGenerateBlankRequiredValues(String docTypeName) {		
+		
 	}
-
+			
     /**
      * A complete override of the implementation for saving a Rule
      */
@@ -89,13 +89,13 @@ public class RoutingRuleMaintainable extends KualiMaintainableImpl {
     	WebRuleUtils.translateFieldValuesForSave(getThisRule());
     	KEWServiceLocator.getRuleService().makeCurrent(getThisRule());
     }
-
+    
     @Override
     public void processAfterCopy(MaintenanceDocument document, Map<String, String[]> parameters) {
     	WebRuleUtils.processRuleForCopy(document.getDocumentNumber(), getOldRule(document), getNewRule(document));
         super.processAfterCopy(document, parameters);
     }
-
+    
 	@Override
 	public void processAfterEdit(MaintenanceDocument document,
 			Map<String, String[]> parameters) {
@@ -113,14 +113,14 @@ public class RoutingRuleMaintainable extends KualiMaintainableImpl {
 	protected RuleBaseValues getNewRule(MaintenanceDocument document) {
 		return (RuleBaseValues)document.getNewMaintainableObject().getBusinessObject();
 	}
-
+	
 	/**
 	 * Returns the old RuleBaseValues business object.
 	 */
 	protected RuleBaseValues getOldRule(MaintenanceDocument document) {
 		return (RuleBaseValues)document.getOldMaintainableObject().getBusinessObject();
 	}
-
+	
 	/**
 	 * Returns the RuleBaseValues business object associated with this Maintainable.
 	 */
@@ -130,12 +130,12 @@ public class RoutingRuleMaintainable extends KualiMaintainableImpl {
 
 	/**
 	 * Overridden implementation of maintenance locks.  The default locking for Routing Rules
-	 * is based on previous version (can't route more than one rule based off the same
+	 * is based on previous version (can't route more than one rule based off the same 
 	 * previous verison).  However, for the first version of a rule, the previous version id
 	 * will be null.
-	 *
+	 * 
 	 * So for a new Route Rule maintenance document we don't want any locks generated.
-	 *
+	 * 
 	 * TODO can we just let the locking key be the primary key? (ruleBaseValuesId)
 	 */
 	@Override

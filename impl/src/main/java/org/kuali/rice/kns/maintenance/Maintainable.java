@@ -110,34 +110,20 @@ public interface Maintainable extends java.io.Serializable, SelectiveReferenceRe
     public String getMaintenanceAction();
 
     /**
-     * Indicates to maintainable whether or not to set default values.
-     * 
-     * @param generateDefault
+     * Set default values.
+     * @param docTypeName
+     *
      */
-    public void setGenerateDefaultValues(boolean generateDefault);
+    public void setGenerateDefaultValues(String docTypeName);
+
 
     /**
+     * Set default values for blank required fields.
+     * @param docTypeName
      * 
-     * Indicates whether default values are set on this maintainable.
-     * 
-     * @return
      */
-    public boolean isGenerateDefaultValues();
+    public void setGenerateBlankRequiredValues(String docTypeName);
 
-    /**
-     * Indicates to maintainable whether or not to set default values for blank required fields.
-     * 
-     * @param generateBlankRequiredValues
-     */
-    public void setGenerateBlankRequiredValues(boolean generateBlankRequiredValues);
-
-    /**
-     * 
-     * Indicates whether default values should be generated for blank required fields on this maintainable.
-     * 
-     * @return
-     */
-    public boolean isGenerateBlankRequiredValues();
 
     public Class getBoClass();
 

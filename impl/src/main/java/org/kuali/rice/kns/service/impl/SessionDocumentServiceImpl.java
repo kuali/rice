@@ -116,7 +116,7 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
     				if (documentForm instanceof KualiMaintenanceForm) {
 						KualiMaintenanceForm maintenanceForm = (KualiMaintenanceForm) documentForm;
 						MaintenanceDocument document = (MaintenanceDocument) maintenanceForm.getDocument();
-						document.getNewMaintainableObject().setGenerateDefaultValues(false);
+						//document.getNewMaintainableObject().setGenerateDefaultValues(false);
     			
     				}
     			}

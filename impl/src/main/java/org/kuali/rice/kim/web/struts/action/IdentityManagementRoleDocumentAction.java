@@ -86,6 +86,7 @@ public class IdentityManagementRoleDocumentAction extends KualiTransactionalDocu
 	        roleDocumentForm.getRoleDocument().setRoleTypeId(kimType.getKimTypeId());
 	        roleDocumentForm.getRoleDocument().setRoleTypeName(kimType.getName());
 	        roleDocumentForm.setMember(roleDocumentForm.getRoleDocument().getBlankMember());
+	        roleDocumentForm.setDelegationMember(roleDocumentForm.getRoleDocument().getBlankDelegationMember());
 	    }
         String roleId = request.getParameter(KimConstants.PrimaryKeyConstants.ROLE_ID);
         if (StringUtils.isNotBlank(commandParam) && commandParam.equals(KEWConstants.INITIATE_COMMAND) 
@@ -93,6 +94,7 @@ public class IdentityManagementRoleDocumentAction extends KualiTransactionalDocu
 	        KimRole role = KIMServiceLocator.getRoleService().getRole(roleId);
 			KIMServiceLocator.getUiDocumentService().loadRoleDoc(roleDoc, role);
 			roleDocumentForm.setMember(roleDocumentForm.getRoleDocument().getBlankMember());
+			roleDocumentForm.setDelegationMember(roleDocumentForm.getRoleDocument().getBlankDelegationMember());
 		} 
         if (StringUtils.isNotBlank(commandParam) && commandParam.equals(CHANGE_MEMBER_TYPE_CODE_METHOD_TO_CALL)){
 	        roleDocumentForm.getMember().setMemberName("");
@@ -191,39 +193,22 @@ public class IdentityManagementRoleDocumentAction extends KualiTransactionalDocu
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
-    public ActionForward addDelegation(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
-        RoleDocumentDelegation newDelegation = roleDocumentForm.getDelegation();
-        if (KNSServiceLocator.getKualiRuleService().applyRules(new AddDelegationEvent("",roleDocumentForm.getRoleDocument(), newDelegation))) {
-        	newDelegation.setDocumentNumber(roleDocumentForm.getDocument().getDocumentNumber());
-	        roleDocumentForm.getRoleDocument().addDelegation(newDelegation);
-	        roleDocumentForm.setDelegation(new RoleDocumentDelegation());
-        }
-        return mapping.findForward(RiceConstants.MAPPING_BASIC);
-    }
-    
-    public ActionForward deleteDelegation(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
-        roleDocumentForm.getRoleDocument().getDelegations().remove(getLineToDelete(request));
-        return mapping.findForward(RiceConstants.MAPPING_BASIC);
-    }
-
     public ActionForward addDelegationMember(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
-        RoleDocumentDelegationMember newDelegationMember = roleDocumentForm.getDelegation().getMember();
+        RoleDocumentDelegationMember newDelegationMember = roleDocumentForm.getDelegationMember();
         if (KNSServiceLocator.getKualiRuleService().applyRules(
         		new AddDelegationMemberEvent("", roleDocumentForm.getRoleDocument(), newDelegationMember))) {
         	newDelegationMember.setDocumentNumber(roleDocumentForm.getDocument().getDocumentNumber());
-        	RoleDocumentDelegation delegation = roleDocumentForm.getRoleDocument().getDelegations().get(getSelectedLine(request));
-        	delegation.getMembers().add(newDelegationMember);
-	        roleDocumentForm.getDelegation().setMember(new RoleDocumentDelegationMember());
+        	roleDocumentForm.getRoleDocument().addDelegationMember(newDelegationMember);
+	        roleDocumentForm.setDelegationMember(roleDocumentForm.getRoleDocument().getBlankDelegationMember());
         }
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
     
     public ActionForward deleteDelegationMember(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
-        roleDocumentForm.getRoleDocument().getMembers().remove(getLineToDelete(request));
+        roleDocumentForm.getRoleDocument().getDelegationMembers().remove(getLineToDelete(request));
+        roleDocumentForm.setDelegationMember(roleDocumentForm.getRoleDocument().getBlankDelegationMember());
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 

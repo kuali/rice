@@ -82,7 +82,7 @@
         p:maxLength="40"
         p:required="false" >
     <property name="control" >
-      <bean parent="TextControlDefinition" p:size="10" />
+      <bean parent="TextControlDefinition" p:size="40" />
     </property>
   </bean>
   
@@ -103,8 +103,12 @@
 
   <bean id="KimRoleImpl-kimRoleType.name-parentBean" abstract="true" parent="KimTypeImpl-name">
     <property name="name" value="kimRoleType.name" />
-    <property name="label" value="Type" />
-    <property name="shortLabel" value="Type" />
+    <property name="label" value="Type To Check" />
+    <property name="shortLabel" value="Type to check check " />
+		<property name="control" >
+			<bean parent="TextControlDefinition"
+				p:size="100" />
+		</property>
   </bean>
   
   
@@ -150,16 +154,16 @@
     </property>
     <property name="lookupFields" >
       <list>
-        <bean parent="FieldDefinition" p:attributeName="roleName" />
         <bean parent="FieldDefinition" p:attributeName="kimTypeId" />
         <bean parent="FieldDefinition" p:attributeName="namespaceCode" />
+        <bean parent="FieldDefinition" p:attributeName="roleName" />
       </list>
     </property>
     <property name="resultFields" >
       <list>
-        <bean parent="FieldDefinition" p:attributeName="roleName" />
-        <bean parent="FieldDefinition" p:attributeName="namespaceCode" />
         <bean parent="FieldDefinition" p:attributeName="kimRoleType.name" />
+        <bean parent="FieldDefinition" p:attributeName="namespaceCode" />
+        <bean parent="FieldDefinition" p:attributeName="roleName" />
       </list>
     </property>
   </bean>

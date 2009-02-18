@@ -23,6 +23,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
@@ -49,7 +51,7 @@ public class RoleDocumentDelegationMember extends KimDocumentBoBase {
 	protected String memberId;
 
 	@Column(name="MBR_TYP_CD")
-	protected String memberTypeCode;
+	protected String memberTypeCode = KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE;
 	
 	@Column(name="MBR_NM")
 	protected String memberName;
@@ -60,6 +62,21 @@ public class RoleDocumentDelegationMember extends KimDocumentBoBase {
 	@Column(name="ACTV_TO_DT")
 	protected Timestamp activeToDate;
 	
+	protected String delegationTypeCode;
+	
+	/**
+	 * @return the delegationTypeCode
+	 */
+	public String getDelegationTypeCode() {
+		return this.delegationTypeCode;
+	}
+
+	/**
+	 * @param delegationTypeCode the delegationTypeCode to set
+	 */
+	public void setDelegationTypeCode(String delegationTypeCode) {
+		this.delegationTypeCode = delegationTypeCode;
+	}
 
 	public String getDelegationId() {
 		return this.delegationId;
@@ -74,6 +91,14 @@ public class RoleDocumentDelegationMember extends KimDocumentBoBase {
 	 */
 	public List<RoleDocumentDelegationMemberQualifier> getQualifiers() {
 		return this.qualifiers;
+	}
+
+	public RoleDocumentDelegationMemberQualifier getQualifier(String kimAttributeDefnId) {
+		for(RoleDocumentDelegationMemberQualifier qualifier:qualifiers){
+			if(qualifier.getKimAttrDefnId().equals(kimAttributeDefnId))
+				return qualifier;
+		}
+		return null;
 	}
 
 	/**
@@ -169,6 +194,15 @@ public class RoleDocumentDelegationMember extends KimDocumentBoBase {
 	 */
 	public void setMemberTypeCode(String memberTypeCode) {
 		this.memberTypeCode = memberTypeCode;
+	}
+
+
+	public boolean isDelegationPrimary(){
+		return KEWConstants.DELEGATION_PRIMARY.equals(getDelegationTypeCode());
+	}
+
+	public boolean isDelegationSecondary(){
+		return KEWConstants.DELEGATION_SECONDARY.equals(getDelegationTypeCode());
 	}
 
 }

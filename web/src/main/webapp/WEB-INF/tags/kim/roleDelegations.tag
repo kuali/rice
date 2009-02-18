@@ -1,14 +1,24 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
-<c:set var="delegationAttributes" value="${DataDictionary.KimDelegationImpl.attributes}" />
-<c:set var="roleQualifierAttributes" value="${DataDictionary.KimDocumentRoleQualifier.attributes}" />
+<script language="JavaScript" src="scripts/en-common.js"></script>
+
+<c:set var="delegationMemberAttributes" value="${DataDictionary.RoleDocumentDelegationMember.attributes}" />
+<c:set var="roleDocumentDelegationMemberQualifier" value="${DataDictionary.RoleDocumentDelegationMemberQualifier.attributes}" />
+<c:set var="kimAttributes" value="${DataDictionary.KimAttributeImpl.attributes}" />
+
 <c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
 
 <c:if test="${readOnly}">
 	<c:set var="inquiry" value="${readOnly}"/>
 </c:if>
 
-<kul:tab tabTitle="Delegations" defaultOpen="true" tabErrorKey="document.deleg*">
+<script language="javaScript">
+function changeDelegationMemberTypeCode(){
+	document.getElementsByTagName("command").value="changeDelegationTypeCode";
+	javaScript:document.forms[0].submit();
+}
+</script>
+<kul:tab tabTitle="Assignees" defaultOpen="true" tabErrorKey="document.delegationMember*">
 	<div class="tab-container" align="center">
     <h3>
     	<span class="subhead-left">Delegations</span>
@@ -17,56 +27,128 @@
     <table cellpadding=0 cellspacing=0 summary="">
         	<tr>
         		<th><div align="left">&nbsp</div></th> 
-        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${delegationAttributes.kimTypeId}" noColon="true" /></div></th>
-        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${delegationAttributes.active}" noColon="true" /></div></th>
-        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${delegationAttributes.delegationTypeCode}" noColon="true" /></div></th>
+        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${delegationMemberAttributes.memberTypeCode}" noColon="true" /></div></th>
+        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${delegationMemberAttributes.memberName}" noColon="true" /></div></th>
+        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${delegationMemberAttributes.activeFromDate}" noColon="true" /></div></th>
+        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${delegationMemberAttributes.activeToDate}" noColon="true" /></div></th>
 				<c:forEach var="attrDefn" items="${KualiForm.document.kimType.attributeDefinitions}" varStatus="status">
         			<c:set var="fieldName" value="${attrDefn.kimAttribute.attributeName}" />
         			<c:set var="attrEntry" value="${KualiForm.document.attributeEntry[fieldName]}" />
          		    <kul:htmlAttributeHeaderCell attributeEntry="${attrEntry}" useShortLabel="false" />
 		        </c:forEach>
+        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${delegationMemberAttributes.delegationTypeCode}" noColon="true" /></div></th>
 				<c:if test="${not inquiry}">	
             		<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
 				</c:if>	
         	</tr>     
-      	<c:forEach var="delegation" items="${KualiForm.document.delegations}" varStatus="statusDelegation">
-            <tr>
-				<th rowspan="1" class="infoline">
-					<c:out value="${statusDelegation.index+1}" />
+          <c:if test="${not inquiry}">	
+             <tr>
+				<th class="infoline">
+					<c:out value="Add:" />
 				</th>
-	            <td align="left" valign="middle">
-	               	<div align="left"> <kul:htmlControlAttribute property="document.delegations[${statusDelegation.index}].kimTypeId"  attributeEntry="${delegationAttributes.kimTypeId}" readOnly="true"  />
-					</div>
+                <td align="left" valign="middle" class="infoline">
+                <div align="center">
+                	<input type="hidden" name="command"/>
+                	<kul:htmlControlAttribute property="delegationMember.memberTypeCode" 
+                	attributeEntry="${delegationMemberAttributes.memberTypeCode}" 
+                	onchange="changeDelegationMemberTypeCode()" />
+					<NOSCRIPT>
+   						<html:submit value="select" alt="press this button to refresh the page after changing the delegation type." />
+					</NOSCRIPT>                
+	            </div>
+            	<c:set var="bo" value="${KualiForm.delegationMemberBusinessObjectName}"/>
+            	<c:set var="fc" value="${KualiForm.delegationMemberFieldConversions}"/>
 				</td>
-	            <td align="left" valign="middle">
-	               	<div align="left"> <kul:htmlControlAttribute property="document.delegations[${statusDelegation.index}].active"  attributeEntry="${delegationAttributes.activeToDate}" readOnly="true"  />
-					</div>
+                <td class="infoline">   
+                <div align="center">
+					<kul:htmlControlAttribute property="delegationMember.memberName" attributeEntry="${delegationMemberAttributes.memberName}" readOnly="true" />
+	               	<kul:lookup boClassName="${bo}" fieldConversions="${fc}" anchor="${tabKey}" />
+					<html:hidden property="delegationMember.memberId" />
+				</div>
 				</td>
-	            <td align="left" valign="middle">
-	               	<div align="left"> <kul:htmlControlAttribute property="document.delegations[${statusDelegation.index}].delegationTypeCode"  attributeEntry="${delegationAttributes.delegationTypeCode}" readOnly="true"  />
-					</div>
-				</td>
-				
+                <td align="left" valign="middle" class="infoline">
+                <div align="center">
+                	<kul:htmlControlAttribute property="delegationMember.activeFromDate" attributeEntry="${delegationMemberAttributes.activeFromDate}" datePicker="true" />
+                </div>
+                </td>
+                <td align="left" valign="middle" class="infoline">
+                <div align="center">
+                	<kul:htmlControlAttribute property="delegationMember.activeToDate" attributeEntry="${delegationMemberAttributes.activeToDate}" datePicker="true" />
+                </div>
+                </td>
 				<c:forEach var="qualifier" items="${KualiForm.document.kimType.attributeDefinitions}" varStatus="statusQualifier">
 					<c:set var="fieldName" value="${qualifier.kimAttribute.attributeName}" />
-					<c:set var="sizeq" value="${KualiForm.document.delegations[statusDelegation.index].numberOfQualifiers}" />
         			<c:set var="attrEntry" value="${KualiForm.document.attributeEntry[fieldName]}" />
-        			<c:choose>
-        				<c:when test="${KualiForm.document.delegations[statusDelegation.index].numberOfQualifiers>statusQualifier.index}">
-				            <td align="left" valign="middle">
-				               	<div align="left"> <kul:htmlControlAttribute property="document.delegations[${statusDelegation.index}].qualifiers[${statusQualifier.index}].attrVal"  attributeEntry="${attrEntry}" readOnly="true"  />
-								</div>
-							</td>
-						</c:when>
-        				<c:otherwise>
-				            <td align="left" valign="middle">
-				               	<div align="left">
-								</div>
-							</td>
-						</c:otherwise>
-					</c:choose>
+		            <td align="left" valign="middle">
+		               	<div align="center"> <kul:htmlControlAttribute property="delegationMember.qualifier(${qualifier.kimAttributeId}).attrVal"  attributeEntry="${attrEntry}" readOnly="${inquiry}"  />
+						</div>
+					</td>
 		        </c:forEach>
+                <td align="left" valign="middle" class="infoline">
+	                <div align="center">
+	                	<input type="hidden" name="command"/>
+	                	<kul:htmlControlAttribute property="delegationMember.delegationTypeCode" 
+	                	attributeEntry="${delegationMemberAttributes.delegationTypeCode}" />
+		            </div>
+				</td>
+                <td class="infoline">
+					<div align=center>
+						<html:image property="methodToCall.addDelegationMember.anchor${tabKey}"
+						src='${ConfigProperties.kr.externalizable.images.url}tinybutton-add1.gif' styleClass="tinybutton"/>
+					</div>
+                </td>
+    	   </tr>         
+		</c:if>
 
+      	<c:forEach var="member" items="${KualiForm.document.delegationMembers}" varStatus="statusMember">
+            <tr>
+				<th rowspan="1" class="infoline" valign="top">
+					<c:out value="${statusMember.index+1}" />
+				</th>
+	            <td align="left" valign="middle">
+	               	<div align="center"> <kul:htmlControlAttribute property="document.delegationMembers[${statusMember.index}].memberTypeCode"  attributeEntry="${delegationMemberAttributes.memberTypeCode}" disabled="true" readOnly="false" />
+					</div>
+				</td>
+	            <td align="left" valign="middle">
+	               	<div align="center"> <kul:htmlControlAttribute property="document.delegationMembers[${statusMember.index}].memberName"  attributeEntry="${delegationMemberAttributes.memberName}" readOnly="true"  />
+					</div>
+				</td>
+	            <td align="left" valign="middle">
+	               	<div align="center"> <kul:htmlControlAttribute property="document.delegationMembers[${statusMember.index}].activeFromDate"  attributeEntry="${delegationMemberAttributes.activeFromDate}" readOnly="${inquiry}"  datePicker="true" />
+					</div>
+				</td>
+	            <td align="left" valign="middle">
+	               	<div align="center"> <kul:htmlControlAttribute property="document.delegationMembers[${statusMember.index}].activeToDate"  attributeEntry="${delegationMemberAttributes.activeToDate}" readOnly="${inquiry}"  datePicker="true" />
+					</div>
+				</td>
+				<c:set var="numberOfColumns" value="${KualiForm.member.numberOfQualifiers+4}"/>
+				<c:forEach var="qualifier" items="${KualiForm.document.kimType.attributeDefinitions}" varStatus="statusQualifier">
+					<c:set var="fieldName" value="${qualifier.kimAttribute.attributeName}" />
+        			<c:set var="attrEntry" value="${KualiForm.document.attributeEntry[fieldName]}" />
+		            <td align="left" valign="middle">
+		               	<div align="center"> <kul:htmlControlAttribute property="document.delegationMembers[${statusMember.index}].qualifier(${qualifier.kimAttributeId}).attrVal"  attributeEntry="${attrEntry}" readOnly="${inquiry}"  />
+						</div>
+					</td>
+		        </c:forEach>
+	            <td align="left" valign="middle">
+	               	<div align="center"> <kul:htmlControlAttribute property="document.delegationMembers[${statusMember.index}].delegationTypeCode"  attributeEntry="${delegationMemberAttributes.delegationTypeCode}" readOnly="${inquiry}"/>
+					</div>
+				</td>
+			<c:if test="${not inquiry}">	
+				<td>
+					<div align=center>&nbsp;
+						<c:choose>
+							<c:when test="${role.edit}">
+	        	          		<img class='nobord' src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete2.gif' styleClass='tinybutton'/>
+							</c:when>
+	        	       		<c:otherwise>
+	        	        		<html:image property='methodToCall.deleteDelegationMember.line${statusMember.index}.anchor${currentTabIndex}'
+								src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete1.gif' styleClass='tinybutton'/>
+		        	       	</c:otherwise>
+	        	     	</c:choose>  
+					</div>
+				</td>
+			</c:if>    
 			</tr>
 		</c:forEach>        
 	</table>

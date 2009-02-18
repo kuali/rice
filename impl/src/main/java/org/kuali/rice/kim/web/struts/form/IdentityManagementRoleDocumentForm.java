@@ -26,7 +26,8 @@ import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRolePermission;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibility;
-import org.kuali.rice.kim.bo.ui.RoleDocumentDelegation;
+import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
+import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kns.web.struts.form.KualiTransactionalDocumentFormBase;
 
@@ -48,10 +49,27 @@ public class IdentityManagementRoleDocumentForm extends KualiTransactionalDocume
 	}
 	private KimDocumentRolePermission permission;
 	private KimDocumentRoleResponsibility responsibility;
-	private RoleDocumentDelegation delegation; 
-
+	private RoleDocumentDelegationMember delegationMember;
+	{
+		delegationMember = new RoleDocumentDelegationMember();
+		delegationMember.getQualifiers().add(new RoleDocumentDelegationMemberQualifier());
+	}
     
-    public IdentityManagementRoleDocumentForm() {
+    /**
+	 * @return the delegationMember
+	 */
+	public RoleDocumentDelegationMember getDelegationMember() {
+		return this.delegationMember;
+	}
+
+	/**
+	 * @param delegationMember the delegationMember to set
+	 */
+	public void setDelegationMember(RoleDocumentDelegationMember delegationMember) {
+		this.delegationMember = delegationMember;
+	}
+
+	public IdentityManagementRoleDocumentForm() {
         super();
         this.setDocument(new IdentityManagementRoleDocument());
     }
@@ -78,20 +96,6 @@ public class IdentityManagementRoleDocumentForm extends KualiTransactionalDocume
 	public IdentityManagementRoleDocument getRoleDocument() {
         return (IdentityManagementRoleDocument) this.getDocument();
     }
-
-	/**
-	 * @return the delegation
-	 */
-	public RoleDocumentDelegation getDelegation() {
-		return this.delegation;
-	}
-
-	/**
-	 * @param delegation the delegation to set
-	 */
-	public void setDelegation(RoleDocumentDelegation delegation) {
-		this.delegation = delegation;
-	}
 
 	/**
 	 * @return the member
@@ -138,7 +142,35 @@ public class IdentityManagementRoleDocumentForm extends KualiTransactionalDocume
 	public String getMemberFieldConversions(){
 		if(member==null)
 			return "";
-		String memberTypeCode = member.getMemberTypeCode();
+		return getMemberFieldConversions(member.getMemberTypeCode());
+	}
+
+	public String getMemberBusinessObjectName(){
+		if(member==null)
+			return "";
+		return getMemberBusinessObjectName(member.getMemberTypeCode());
+	}
+
+	public String getDelegationMemberFieldConversions(){
+		if(getDelegationMember()==null)
+			return "";
+		String memberTypeCode = getDelegationMember().getMemberTypeCode();
+		if(MemberTypeValuesFinder.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode))
+			return "principalId:delegationMember.memberId,principalName:delegationMember.memberName";
+		else if(MemberTypeValuesFinder.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode))
+			return "roleId:delegationMember.memberId,roleName:delegationMember.memberName";
+		else if(MemberTypeValuesFinder.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode))
+			return "groupId:delegationMember.memberId,groupName:delegationMember.memberName";
+		return "";
+	}
+
+	public String getDelegationMemberBusinessObjectName(){
+		if(getDelegationMember()==null)
+			return "";
+		return getMemberBusinessObjectName(getDelegationMember().getMemberTypeCode());
+	}
+
+	private String getMemberFieldConversions(String memberTypeCode){
 		if(MemberTypeValuesFinder.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode))
 			return "principalId:member.memberId,principalName:member.memberName";
 		else if(MemberTypeValuesFinder.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode))
@@ -147,11 +179,8 @@ public class IdentityManagementRoleDocumentForm extends KualiTransactionalDocume
 			return "groupId:member.memberId,groupName:member.memberName";
 		return "";
 	}
-	
-	public String getMemberBusinessObjectName(){
-		if(member==null)
-			return "";
-		String memberTypeCode = member.getMemberTypeCode();
+
+	private String getMemberBusinessObjectName(String memberTypeCode){
 		if(MemberTypeValuesFinder.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode))
 			return PersonImpl.class.getName();
 		else if(MemberTypeValuesFinder.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode))

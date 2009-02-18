@@ -61,7 +61,7 @@ function changeMemberTypeCode(){
 				</td>
                 <td class="infoline">   
                 <div align="center">             	
-					<kul:htmlControlAttribute property="member.memberName" attributeEntry="${roleMemberAttributes.memberName}" />
+					<kul:htmlControlAttribute property="member.memberName" attributeEntry="${roleMemberAttributes.memberName}" readOnly="true" />
 	               	<kul:lookup boClassName="${bo}" fieldConversions="${fc}" anchor="${tabKey}" />
 					<html:hidden property="member.memberId" />
 				</div>

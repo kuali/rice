@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.ModuleService;
@@ -113,4 +114,14 @@ public class KimCommonUtils {
 	public static boolean isAttributeSetEntryEquals( AttributeSet map1, AttributeSet map2, String key ) {
 		return StringUtils.equals( map1.get( key ), map2.get( key ) );
 	}
+	
+	public static final String DEFAULT_KIM_SERVICE_NAME = "kimTypeService";
+	
+	public static String getKimTypeServiceName(String kimTypeServiceName){
+    	if (StringUtils.isBlank(kimTypeServiceName)) {
+    		kimTypeServiceName = DEFAULT_KIM_SERVICE_NAME;
+    	}
+    	return kimTypeServiceName;
+	}
+
 }

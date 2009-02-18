@@ -54,7 +54,7 @@
 		</property>
 		<property name="control" >
 			<bean parent="TextControlDefinition"
-				p:size="10" />
+				p:size="40" />
 		</property>
 		<property name="summary" value="Kim Typ Id" />
 		<property name="description" value="Kim Typ Id" />
@@ -64,7 +64,7 @@
 	<bean id="KimTypeImpl-name-parentBean" abstract="true" parent="AttributeDefinition" >
 		<property name="name" value="name" />
 		<property name="forceUppercase" value="false" />
-		<property name="label" value="Type Name" />
+		<property name="label" value="Type Name Original" />
 		<property name="shortLabel" value="Type Name" />
 		<property name="maxLength" value="100" />
 		<property name="validationPattern" >
@@ -72,7 +72,7 @@
 		</property>
 		<property name="control" >
 			<bean parent="TextControlDefinition"
-				p:size="10" />
+				p:size="40" />
 		</property>
 		<property name="summary" value="Nm" />
 		<property name="description" value="Nm" />
@@ -90,7 +90,7 @@
 		</property>
 		<property name="control" >
 			<bean parent="TextControlDefinition"
-				p:size="10" />
+				p:size="40" />
 		</property>
 		<property name="summary" value="Srvc Nm" />
 		<property name="description" value="Srvc Nm" />

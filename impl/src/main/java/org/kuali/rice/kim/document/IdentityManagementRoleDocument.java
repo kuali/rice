@@ -18,6 +18,7 @@ package org.kuali.rice.kim.document;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRolePermission;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
@@ -55,7 +56,8 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 	
 	protected List<KimDocumentRolePermission> permissions = new TypedArrayList(KimDocumentRolePermission.class);
 	protected List<KimDocumentRoleResponsibility> responsibilities = new TypedArrayList(KimDocumentRoleResponsibility.class);
-	protected List<RoleDocumentDelegation> delegations = new TypedArrayList(RoleDocumentDelegation.class); 
+	private List<RoleDocumentDelegationMember> delegationMembers = new TypedArrayList(RoleDocumentDelegationMember.class);
+	private List<RoleDocumentDelegation> delegations = new TypedArrayList(RoleDocumentDelegation.class);
 	
 	transient private ResponsibilityService responsibilityService;
 	
@@ -147,17 +149,18 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 	}
 
 	/**
-	 * @return the delegations
+	 * @return the delegationMembers
 	 */
-	public List<RoleDocumentDelegation> getDelegations() {
-		return this.delegations;
+	public List<RoleDocumentDelegationMember> getDelegationMembers() {
+		return this.delegationMembers;
 	}
 
 	/**
-	 * @param delegations the delegations to set
+	 * @param delegationMembers the delegationMembers to set
 	 */
-	public void setDelegations(List<RoleDocumentDelegation> delegations) {
-		this.delegations = delegations;
+	public void setDelegationMembers(
+			List<RoleDocumentDelegationMember> delegationMembers) {
+		this.delegationMembers = delegationMembers;
 	}
 
 	/**
@@ -203,9 +206,8 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 		return roleRspAction;
 	}
 	
-	public void addDelegation(RoleDocumentDelegation newDelegation){
-		newDelegation.setMember(getBlankDelegationMember());
-		getDelegations().add(newDelegation);
+	public void addDelegationMember(RoleDocumentDelegationMember newDelegationMember){
+		getDelegationMembers().add(newDelegationMember);
 	}
 			
 	/**
@@ -221,8 +223,9 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 	 */
 	public KimDocumentRoleMember getBlankMember() {
 		KimDocumentRoleMember member = new KimDocumentRoleMember();
+		KimDocumentRoleQualifier qualifier;
 		for(String key : getDefinitions().keySet()) {
-        	KimDocumentRoleQualifier qualifier = new KimDocumentRoleQualifier();
+        	qualifier = new KimDocumentRoleQualifier();
         	qualifier.setKimAttrDefnId(getKimAttributeDefnId(getDefinitions().get(key)));
         	member.getQualifiers().add(qualifier);
         }
@@ -235,8 +238,9 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 	 */
 	public RoleDocumentDelegationMember getBlankDelegationMember() {
 		RoleDocumentDelegationMember member = new RoleDocumentDelegationMember();
+		RoleDocumentDelegationMemberQualifier qualifier;
 		for(String key : getDefinitions().keySet()) {
-			RoleDocumentDelegationMemberQualifier qualifier = new RoleDocumentDelegationMemberQualifier();
+			qualifier = new RoleDocumentDelegationMemberQualifier();
 			setAttrDefnIdForDelMemberQualifier(qualifier, getDefinitions().get(key));
         	member.getQualifiers().add(qualifier);
         }
@@ -360,13 +364,64 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 				}
 			}
 		}
-		if(getDelegations()!=null){
+		if(getDelegationMembers()!=null){
+			for(RoleDocumentDelegationMember delegationMember: getDelegationMembers()){
+				delegationMember.setDocumentNumber(getDocumentNumber());
+				addDelegationMemberToDelegation(delegationMember);
+			}
 			for(RoleDocumentDelegation delegation: getDelegations()){
-				if(StringUtils.isBlank(delegation.getRoleId())) delegation.setRoleId(roleId);
+				delegation.setDocumentNumber(getDocumentNumber());
+				delegation.setKimTypeId(getKimType().getKimTypeId());
+				delegation.setRoleId(roleId);
 			}
 		}
 	}
 
+	private void addDelegationMemberToDelegation(RoleDocumentDelegationMember delegationMember){
+		RoleDocumentDelegation delegation;
+		if(KEWConstants.DELEGATION_PRIMARY.equals(delegationMember.getDelegationTypeCode())){
+			delegation = getPrimaryDelegation();
+		} else{
+			delegation = getSecondaryDelegation();
+		}
+		delegationMember.setDelegationId(delegation.getDelegationId());
+		delegation.getMembers().add(delegationMember);
+	}
+
+	private RoleDocumentDelegation getPrimaryDelegation(){
+		RoleDocumentDelegation primaryDelegation = null;
+		for(RoleDocumentDelegation delegation: getDelegations()){
+			if(delegation.isDelegationPrimary())
+				primaryDelegation = delegation;
+		}
+		if(primaryDelegation==null){
+			primaryDelegation = new RoleDocumentDelegation();
+			primaryDelegation.setDelegationId(getDelegationId());
+			primaryDelegation.setDelegationTypeCode(KEWConstants.DELEGATION_PRIMARY);
+			getDelegations().add(primaryDelegation);
+		}
+		return primaryDelegation;
+	}
+
+	private String getDelegationId(){
+		return getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_DLGN_ID_S").toString();
+	}
+	
+	private RoleDocumentDelegation getSecondaryDelegation(){
+		RoleDocumentDelegation secondaryDelegation = null;
+		for(RoleDocumentDelegation delegation: getDelegations()){
+			if(delegation.isDelegationSecondary())
+				secondaryDelegation = delegation;
+		}
+		if(secondaryDelegation==null){
+			secondaryDelegation = new RoleDocumentDelegation();
+			secondaryDelegation.setDelegationId(getDelegationId());
+			secondaryDelegation.setDelegationTypeCode(KEWConstants.DELEGATION_SECONDARY);
+			getDelegations().add(secondaryDelegation);
+		}
+		return secondaryDelegation;
+	}
+	
     public ResponsibilityService getResponsibilityService() {
     	if ( responsibilityService == null ) {
     		responsibilityService = KIMServiceLocator.getResponsibilityService();
@@ -386,6 +441,20 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 	 */
 	public void setEditing(boolean editing) {
 		this.editing = editing;
+	}
+
+	/**
+	 * @return the delegations
+	 */
+	public List<RoleDocumentDelegation> getDelegations() {
+		return this.delegations;
+	}
+
+	/**
+	 * @param delegations the delegations to set
+	 */
+	public void setDelegations(List<RoleDocumentDelegation> delegations) {
+		this.delegations = delegations;
 	}
 
 }

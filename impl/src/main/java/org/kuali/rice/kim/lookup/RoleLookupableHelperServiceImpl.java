@@ -30,6 +30,7 @@ import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.dao.KimRoleDao;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
+import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
@@ -147,10 +148,7 @@ public class RoleLookupableHelperServiceImpl   extends KualiLookupableHelperServ
 					KimTypeImpl kimType = (KimTypeImpl)getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, pkMap);
 					// TODO what if servicename is null.  also check other places that have similar issue
 					// use default_service ?
-					String serviceName = kimType.getKimTypeServiceName();
-					if (serviceName == null) {
-						serviceName = "kimTypeService";
-					}
+					String serviceName = KimCommonUtils.getKimTypeServiceName(kimType.getKimTypeServiceName());
 			        KimTypeService kimTypeService = (KimTypeService)KIMServiceLocator.getService(serviceName);
 			        AttributeDefinitionMap definitions = kimTypeService.getAttributeDefinitions(kimType.getKimTypeId());
 			        setAttrDefinitions(definitions);
@@ -258,6 +256,8 @@ public class RoleLookupableHelperServiceImpl   extends KualiLookupableHelperServ
 					typeField.setPropertyName("kimTypeId");
 					typeField.setFieldValidValues(getRoleTypeOptions());
 					typeField.setFieldType(Field.DROPDOWN_REFRESH);
+					typeField.setMaxLength(100);
+					typeField.setSize(40);
 					fields.add(typeField);
 					// fields.add(new Field("Type", "", Field.DROPDOWN_REFRESH,
 					// false, "kimTypeId", "", getGroupTypeOptions(), null));

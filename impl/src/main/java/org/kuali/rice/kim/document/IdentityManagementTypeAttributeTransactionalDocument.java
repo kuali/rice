@@ -25,6 +25,7 @@ import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
+import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.SequenceAccessorService;
@@ -40,7 +41,6 @@ import org.kuali.rice.kns.util.TypedArrayList;
 public class IdentityManagementTypeAttributeTransactionalDocument extends IdentityManagementKimDocument {
 
 	private transient KimTypeService kimTypeService;
-	protected static final String DEFAULT_KIM_SERVICE_NAME = "kimTypeService";
 	protected KimTypeImpl kimType = new KimTypeImpl();
 	protected List<? extends KimAttributes> attributes;
 	protected List<KimDocumentRoleMember> members = new TypedArrayList(KimDocumentRoleMember.class);
@@ -118,10 +118,7 @@ public class IdentityManagementTypeAttributeTransactionalDocument extends Identi
 
 	protected KimTypeService getKimTypeService(KimTypeImpl kimType){
 		if(this.kimTypeService==null){
-	    	String serviceName = kimType.getKimTypeServiceName();
-	    	if (StringUtils.isBlank(serviceName)) {
-	    		serviceName = DEFAULT_KIM_SERVICE_NAME;
-	    	}
+	    	String serviceName = KimCommonUtils.getKimTypeServiceName(kimType.getKimTypeServiceName());
 	    	this.kimTypeService = (KimTypeService)KIMServiceLocator.getService(serviceName);
 		}
 		return this.kimTypeService;

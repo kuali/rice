@@ -33,8 +33,8 @@ import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
  *
  */
 @Entity
-@Table(name="KRIM_PND_ROLE_MBR_ATTR_DATA_MT")
-public class RoleDocumentDelegationMemberQualifier extends KimDocumentBoBase{
+@Table(name="KRIM_PND_DLGN_MBR_ATTR_DATA_T")
+public class RoleDocumentDelegationMemberQualifier extends KimDocumentBoBase {
 	@Id 
 	@Column(name="ATTR_DATA_ID")
 	private String attrDataId; 

@@ -28,6 +28,7 @@ import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.kim.bo.options.MemberTypeValuesFinder;
 import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
@@ -49,7 +50,7 @@ public class KimDocumentRoleMember  extends KimDocumentBoBase {
 	
 	//TODO: remove the default
 	@Column(name="MBR_TYP_CD")
-	protected String memberTypeCode = "P";
+	protected String memberTypeCode = KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE;
 	@Column(name="MBR_NM")
 	protected String memberName;
 	protected List <KimDocumentRoleQualifier> qualifiers = new TypedArrayList(KimDocumentRoleQualifier.class);

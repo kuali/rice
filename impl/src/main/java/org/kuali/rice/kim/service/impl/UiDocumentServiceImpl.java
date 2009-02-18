@@ -33,10 +33,10 @@ import org.kuali.rice.kim.bo.entity.impl.KimEntityEmailImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityEmploymentInformationImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityEntityTypeImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityExternalIdentifierImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityPhoneImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityPrivacyPreferencesImpl;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
@@ -73,6 +73,7 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentPrivacy;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegation;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
+import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.service.GroupService;
@@ -1267,6 +1268,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return pndMemberRoleQualifiers;
 	}
 
+
 	/**
 	 * @see org.kuali.rice.kim.service.UiDocumentService#saveEntityPerson(IdentityManagementPersonDocument)
 	 */
@@ -1279,6 +1281,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		List<RolePermissionImpl> origRolePermissions = new ArrayList<RolePermissionImpl>();
 		List<RoleResponsibilityImpl> origRoleResponsibilities = new ArrayList<RoleResponsibilityImpl>();
 		List<RoleMemberImpl> origRoleMembers = new ArrayList<RoleMemberImpl>();
+		List<KimDelegationImpl> origRoleDelegations = new ArrayList<KimDelegationImpl>();
 		if (origRole == null) {
 			origRole = new KimRoleImpl();
 			kimRole.setActive(true);
@@ -1293,6 +1296,9 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					RoleResponsibilityImpl.class, criteria);
 			origRoleMembers = (List<RoleMemberImpl>)getBusinessObjectService().findMatching(
 					RoleMemberImpl.class, criteria);
+			origRoleDelegations = (List<KimDelegationImpl>)getBusinessObjectService().findMatching(
+					KimDelegationImpl.class, criteria);
+
 		}
 
 		kimRole.setRoleId(identityManagementRoleDocument.getRoleId());
@@ -1319,7 +1325,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		bos.addAll(getRoleResponsibilitiesActions(identityManagementRoleDocument));
 		bos.addAll(getRoleMembers(identityManagementRoleDocument, origRoleMembers));
 		bos.addAll(getRoleMemberResponsibilityActions(identityManagementRoleDocument));
-		//bos.addAll(getRoleDelegations(identityManagementRoleDocument));
+		bos.addAll(getRoleDelegations(identityManagementRoleDocument, origRoleDelegations));
 
 		getBusinessObjectService().save(bos);
 		
@@ -1505,16 +1511,76 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return roleMemberAttributeDataList;
 	}
 	
-	private List<KimDelegationImpl> getRoleDelegations(IdentityManagementRoleDocument identityManagementRoleDocument){
+	private List<KimDelegationImpl> getRoleDelegations(IdentityManagementRoleDocument identityManagementRoleDocument, List<KimDelegationImpl> origDelegations){
 		List<KimDelegationImpl> kimDelegations = new ArrayList<KimDelegationImpl>();
 		KimDelegationImpl kimDelegation;
+		KimDelegationImpl origDelegationImplTemp = null;
+		List<KimDelegationMemberImpl> origMembers = new ArrayList<KimDelegationMemberImpl>();
 		for(RoleDocumentDelegation roleDocumentDelegation: identityManagementRoleDocument.getDelegations()){
 			kimDelegation = new KimDelegationImpl();
 			copyProperties(kimDelegation, roleDocumentDelegation);
 			kimDelegation.setRoleId(identityManagementRoleDocument.getRoleId());
+			for(KimDelegationImpl origDelegationImpl: origDelegations){
+				if(origDelegationImpl.getDelegationId().equals(kimDelegation.getDelegationId())){
+					kimDelegation.setVersionNumber(origDelegationImpl.getVersionNumber());
+					origDelegationImplTemp = origDelegationImpl; 
+				}
+			}
+			origMembers = (origDelegationImplTemp==null || origDelegationImplTemp.getMembers()==null)?
+								new ArrayList<KimDelegationMemberImpl>():origDelegationImplTemp.getMembers();
+			kimDelegation.setMembers(getDelegationMembers(roleDocumentDelegation.getMembers(), origMembers));
+
 			kimDelegations.add(kimDelegation);
 		}
 		return kimDelegations;
+	}
+
+	private List<KimDelegationMemberImpl> getDelegationMembers(List<RoleDocumentDelegationMember> delegationMembers,
+			List<KimDelegationMemberImpl> origDelegationMembers){
+		List<KimDelegationMemberImpl> delegationsMembersList = new ArrayList<KimDelegationMemberImpl>();
+		KimDelegationMemberImpl delegationMemberImpl;
+		KimDelegationMemberImpl origDelegationMemberImplTemp = null;
+		List<KimDelegationMemberAttributeDataImpl> origAttributes;
+		for(RoleDocumentDelegationMember delegationMember: delegationMembers){
+			delegationMemberImpl = new KimDelegationMemberImpl();
+			copyProperties(delegationMemberImpl, delegationMember);
+			for(KimDelegationMemberImpl origDelegationMember: origDelegationMembers){
+				if(origDelegationMember.getDelegationMemberId().equals(delegationMemberImpl.getDelegationMemberId())){
+					delegationMemberImpl.setVersionNumber(origDelegationMember.getVersionNumber());
+					origDelegationMemberImplTemp = origDelegationMember;
+				}
+			}
+			origAttributes = (origDelegationMemberImplTemp==null || origDelegationMemberImplTemp.getAttributes()==null)?
+					new ArrayList<KimDelegationMemberAttributeDataImpl>():origDelegationMemberImplTemp.getAttributes();
+			delegationMemberImpl.setAttributes(getDelegationMemberAttributeData(delegationMember.getQualifiers(), origAttributes));
+
+			delegationsMembersList.add(delegationMemberImpl);
+		}
+		return delegationsMembersList;
+	}
+
+	private List<KimDelegationMemberAttributeDataImpl> getDelegationMemberAttributeData(
+			List<RoleDocumentDelegationMemberQualifier> qualifiers,
+			List<KimDelegationMemberAttributeDataImpl> origAttributes){
+		List<KimDelegationMemberAttributeDataImpl> roleMemberAttributeDataList = new ArrayList<KimDelegationMemberAttributeDataImpl>();
+		KimDelegationMemberAttributeDataImpl roleMemberAttributeData;
+		for(RoleDocumentDelegationMemberQualifier memberRoleQualifier: qualifiers){
+			if(StringUtils.isNotBlank(memberRoleQualifier.getAttrVal())){
+				roleMemberAttributeData = new KimDelegationMemberAttributeDataImpl();
+				roleMemberAttributeData.setAttributeDataId(memberRoleQualifier.getAttrDataId());
+				roleMemberAttributeData.setAttributeValue(memberRoleQualifier.getAttrVal());
+				roleMemberAttributeData.setTargetPrimaryKey(memberRoleQualifier.getTargetPrimaryKey());
+				roleMemberAttributeData.setKimTypeId(memberRoleQualifier.getKimTypId());
+				roleMemberAttributeData.setKimAttributeId(memberRoleQualifier.getKimAttrDefnId());
+				for(KimDelegationMemberAttributeDataImpl origAttribute: origAttributes){
+					if(origAttribute.getAttributeDataId().equals(memberRoleQualifier.getAttrDataId())){
+						roleMemberAttributeData.setVersionNumber(origAttribute.getVersionNumber());
+					}
+				}
+				roleMemberAttributeDataList.add(roleMemberAttributeData);
+			}
+		}
+		return roleMemberAttributeDataList;
 	}
 
 }

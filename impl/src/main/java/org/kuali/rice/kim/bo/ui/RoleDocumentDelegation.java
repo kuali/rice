@@ -26,6 +26,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kns.util.TypedArrayList;
 
@@ -54,7 +55,7 @@ public class RoleDocumentDelegation extends KimDocumentBoBase {
 	@Column(name="DLGN_TYP_CD")
 	protected String delegationTypeCode;
 
-	private List<RoleDocumentDelegationMember> members;
+	private List<RoleDocumentDelegationMember> members = new TypedArrayList(RoleDocumentDelegationMember.class);
 	
 	private RoleDocumentDelegationMember member = new RoleDocumentDelegationMember();
 	
@@ -171,6 +172,14 @@ public class RoleDocumentDelegation extends KimDocumentBoBase {
 	 */
 	public void setMember(RoleDocumentDelegationMember member) {
 		this.member = member;
+	}
+
+	public boolean isDelegationPrimary(){
+		return KEWConstants.DELEGATION_PRIMARY.equals(getDelegationTypeCode());
+	}
+
+	public boolean isDelegationSecondary(){
+		return KEWConstants.DELEGATION_SECONDARY.equals(getDelegationTypeCode());
 	}
 
 }

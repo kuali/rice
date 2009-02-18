@@ -206,6 +206,20 @@ table.grid
 	border-right-color: #999999;
 }
 
+.datatable-center
+{
+	/* center it */
+	margin-right: auto;
+	margin-left: auto;
+	
+	border-top-width: 1px;
+	border-top-style: solid;
+	border-top-color: #999999;
+	border-right-color: #999999;
+	border-right-style: solid;
+	border-right-width: 1px;
+}
+
 .datatable-100
 {
 	width: 100%;

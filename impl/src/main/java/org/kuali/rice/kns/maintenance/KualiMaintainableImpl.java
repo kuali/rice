@@ -641,6 +641,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
      */
     public void setGenerateDefaultValues(String docTypeName) {
      List<MaintainableSectionDefinition> sectionDefinitions = getMaintenanceDocumentDictionaryService().getMaintainableSections(docTypeName);
+     Map defaultValues = new HashMap();
 
      try {
          // iterate through section definitions
@@ -653,36 +654,34 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 
                  if (item instanceof MaintainableFieldDefinition) {
                      MaintainableFieldDefinition maintainableFieldDefinition = (MaintainableFieldDefinition) item;
-                     if (maintainableFieldDefinition.isRequired() && maintainableFieldDefinition.isUnconditionallyReadOnly() ) {
-                    	
-                         Object defaultValue = maintainableFieldDefinition.getDefaultValue();
-                         if (defaultValue != null) {
-                             if (defaultValue.toString().equals("true")) {
-                                 defaultValue = "Yes";
-                             }
-                             else if (defaultValue.toString().equals("false")) {
-                                 defaultValue = "No";
-                             }
+                     
+                     String defaultValue = maintainableFieldDefinition.getDefaultValue();
+                     if (defaultValue != null) {
+                    	 if (defaultValue.equals("true")) {
+                    		 defaultValue = "Yes";
                          }
+                         else if (defaultValue.equals("false")) {
+                              defaultValue = "No";
+                             }
+                      }
 
-                         Class defaultValueFinderClass = maintainableFieldDefinition.getDefaultValueFinderClass();
-                         if (defaultValueFinderClass != null) {
-                        	 defaultValue = ((ValueFinder) defaultValueFinderClass.newInstance()).getValue();
+                      Class defaultValueFinderClass = maintainableFieldDefinition.getDefaultValueFinderClass();
+                      if (defaultValueFinderClass != null) {
+                    	  defaultValue = ((ValueFinder) defaultValueFinderClass.newInstance()).getValue();
                             
-                         }
-                         if (defaultValue != null) {
-                        	 ObjectUtils.setObjectProperty(this.getBusinessObject(), item.getName(), defaultValue.getClass(), defaultValue);
-                         }
-                     }
-                 }
+                      }
+                      if (defaultValue != null) {
+                    	  defaultValues.put(item.getName(), defaultValue);
+                      }
+                  }
              }   
          }
+         Map cachedValues = FieldUtils.populateBusinessObjectFromMap(getBusinessObject(), defaultValues);
      } catch(Exception e){
     	 LOG.error("Unable to set default value " + e.getMessage(), e);
-    	 throw new RuntimeException("Unable to create instance of object class" + e.getMessage(), e);
+    	 throw new RuntimeException("Unable to set default value" + e.getMessage(), e);
      }
-     
-
+    
     }
 
 
@@ -693,6 +692,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     public void setGenerateBlankRequiredValues(String docTypeName) {
     	
     	 List<Section> sections = new ArrayList<Section>();
+    	 Map defaultValues = new HashMap();
          
          List<MaintainableSectionDefinition> sectionDefinitions = getMaintenanceDocumentDictionaryService().getMaintainableSections(docTypeName);
 
@@ -709,26 +709,24 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
                          MaintainableFieldDefinition maintainableFieldDefinition = (MaintainableFieldDefinition) item;
                          if (maintainableFieldDefinition.isRequired() && maintainableFieldDefinition.isUnconditionallyReadOnly() ) {
                         	
-                        	 if (ObjectUtils.getPropertyValue(this.getBusinessObject(), item.getName()) != null) {
+                        	 if (ObjectUtils.getPropertyValue(this.getBusinessObject(), item.getName()) == null) {
                         		 Class defaultValueFinderClass = maintainableFieldDefinition.getDefaultValueFinderClass();
-                        		 if (defaultValueFinderClass != null) { 
-                        			ObjectUtils.setObjectProperty(this.getBusinessObject(), item.getName(), String.class, ((ValueFinder) defaultValueFinderClass.newInstance()).getValue());
-                        		 
-                        		 }
+                        		 if (defaultValueFinderClass != null) {
+                        			 String defaultValue = ((ValueFinder) defaultValueFinderClass.newInstance()).getValue();
+                               	  	 if (defaultValue != null) {
+                               	  		 defaultValues.put(item.getName(), defaultValue);
+                               	  	 }    
+                                 }
+                                 
                         	 }
                          }
                      }
                  }   
              }
-             
-         } catch (InstantiationException e) {
-             LOG.error("Unable to create instance of object class" + e.getMessage());
-             throw new RuntimeException("Unable to create instance of object class" + e.getMessage());
-         } catch (IllegalAccessException e) {
-             LOG.error("Unable to create instance of object class" + e.getMessage());
-             throw new RuntimeException("Unable to create instance of object class" + e.getMessage());
-         } catch (Exception e){
-        	 throw new RuntimeException("Unable to create instance of object class" + e.getMessage());
+             Map cachedValues = FieldUtils.populateBusinessObjectFromMap(getBusinessObject(), defaultValues);
+         } catch(Exception e){
+        	 LOG.error("Unable to set blank required value " + e.getMessage(), e);
+        	 throw new RuntimeException("Unable to set blank required value" + e.getMessage(), e);
          }
 
        

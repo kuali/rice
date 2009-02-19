@@ -83,7 +83,7 @@ public interface RoleService {
      * The return object will have each membership relationship along with the delegations
      * 
      */
-    Collection<RoleMembershipInfo> getRoleMembers( List<String> roleIds, AttributeSet qualification );
+    List<RoleMembershipInfo> getRoleMembers( List<String> roleIds, AttributeSet qualification );
 
     /**
 	 * This method gets all the members, then traverses down into members of type role and group to obtain the nested principal ids
@@ -107,9 +107,6 @@ public interface RoleService {
 	/**
 	 * 
 	 * This method get search results for role lookup
-	 * 
-	 * @param fieldValues
-	 * @return
 	 */
 	List<? extends KimRole> getRolesSearchResults(java.util.Map<String,String> fieldValues);
 }

@@ -48,7 +48,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	
 	protected MaxSizeMap<String,MaxAgeSoftReference<KimRoleInfo>> roleByIdCache;
 	protected MaxSizeMap<String,MaxAgeSoftReference<KimRoleInfo>> roleByNameCache;
-	protected MaxSizeMap<String,MaxAgeSoftReference<Collection<RoleMembershipInfo>>> roleMembersWithDelegationCache;
+	protected MaxSizeMap<String,MaxAgeSoftReference<List<RoleMembershipInfo>>> roleMembersWithDelegationCache;
 	protected MaxSizeMap<String,MaxAgeSoftReference<List<AttributeSet>>> roleQualifiersForPrincipalCache;
 	protected MaxSizeMap<String,MaxAgeSoftReference<Boolean>> principalHasRoleCache;
 	protected MaxSizeMap<String,MaxAgeSoftReference<Collection<String>>> memberPrincipalIdsCache;
@@ -56,7 +56,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	public void afterPropertiesSet() throws Exception {
 		roleByIdCache = new MaxSizeMap<String,MaxAgeSoftReference<KimRoleInfo>>( roleCacheMaxSize );
 		roleByNameCache = new MaxSizeMap<String,MaxAgeSoftReference<KimRoleInfo>>( roleCacheMaxSize );
-		roleMembersWithDelegationCache = new MaxSizeMap<String,MaxAgeSoftReference<Collection<RoleMembershipInfo>>>( roleCacheMaxSize );
+		roleMembersWithDelegationCache = new MaxSizeMap<String,MaxAgeSoftReference<List<RoleMembershipInfo>>>( roleCacheMaxSize );
 		roleQualifiersForPrincipalCache = new MaxSizeMap<String,MaxAgeSoftReference<List<AttributeSet>>>( roleCacheMaxSize );
 		principalHasRoleCache = new MaxSizeMap<String,MaxAgeSoftReference<Boolean>>( roleCacheMaxSize );
 		memberPrincipalIdsCache = new MaxSizeMap<String,MaxAgeSoftReference<Collection<String>>>(roleCacheMaxSize );
@@ -89,8 +89,8 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		return null;
 	}
 	
-	protected Collection<RoleMembershipInfo> getRoleMembersWithDelegationCache( String key ) {
-		MaxAgeSoftReference<Collection<RoleMembershipInfo>> roleMembersRef = roleMembersWithDelegationCache.get( key );
+	protected List<RoleMembershipInfo> getRoleMembersWithDelegationCache( String key ) {
+		MaxAgeSoftReference<List<RoleMembershipInfo>> roleMembersRef = roleMembersWithDelegationCache.get( key );
 		if ( roleMembersRef != null ) {
 			return roleMembersRef.get();
 		}
@@ -120,9 +120,9 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		}
 	}
 
-	protected void addRoleMembersWithDelegationToCache( String key, Collection<RoleMembershipInfo> members ) {
+	protected void addRoleMembersWithDelegationToCache( String key, List<RoleMembershipInfo> members ) {
 		if ( members != null ) {
-			roleMembersWithDelegationCache.put( key, new MaxAgeSoftReference<Collection<RoleMembershipInfo>>( roleCacheMaxAgeSeconds, members ) );
+			roleMembersWithDelegationCache.put( key, new MaxAgeSoftReference<List<RoleMembershipInfo>>( roleCacheMaxAgeSeconds, members ) );
 		}
 	}
 
@@ -211,13 +211,13 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		}
 	}
 
-	public Collection<RoleMembershipInfo> getRoleMembers(List<String> roleIds, AttributeSet qualification) {
+	public List<RoleMembershipInfo> getRoleMembers(List<String> roleIds, AttributeSet qualification) {
 		StringBuffer cacheKey = new StringBuffer();
 		addIdsToKey( cacheKey, roleIds );
 		cacheKey.append(  '/' );
 		addAttributesToKey( cacheKey, qualification );
 		String key = cacheKey.toString();
-		Collection<RoleMembershipInfo> members = getRoleMembersWithDelegationCache(key);
+		List<RoleMembershipInfo> members = getRoleMembersWithDelegationCache(key);
 		if (members != null) {
 			return members;
 		}
@@ -291,11 +291,6 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	/**
 	 * This delegate method ...
 	 * 
-	 * @param principalIds
-	 * @param roleNamespaceCode
-	 * @param roleName
-	 * @param qualification
-	 * @return
 	 * @see org.kuali.rice.kim.service.RoleService#getPrincipalIdSubListWithRole(java.util.List, java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
 	 */
 	public List<String> getPrincipalIdSubListWithRole(

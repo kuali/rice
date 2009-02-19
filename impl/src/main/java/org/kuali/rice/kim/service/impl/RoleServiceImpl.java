@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.kim.bo.role.KimRole;
 import org.kuali.rice.kim.bo.role.dto.DelegateInfo;
@@ -59,7 +60,7 @@ import org.kuali.rice.kns.service.SequenceAccessorService;
  */
 public class RoleServiceImpl implements RoleService {
 
-//	private static final Logger LOG = Logger.getLogger( RoleServiceImpl.class );
+	private static final Logger LOG = Logger.getLogger( RoleServiceImpl.class );
 	
 	protected static final String ROLE_MEMBER_SEQUENCE = "KRIM_ROLE_MBR_ID_S";
 	protected static final String ROLE_MEMBER_DATA_SEQUENCE = "KRIM_ATTR_DATA_ID_S";
@@ -321,7 +322,7 @@ public class RoleServiceImpl implements RoleService {
     /**
      * @see org.kuali.rice.kim.service.RoleService#getRoleMembers(java.util.List, org.kuali.rice.kim.bo.types.dto.AttributeSet)
      */
-    public Collection<RoleMembershipInfo> getRoleMembers(List<String> roleIds, AttributeSet qualification) {
+    public List<RoleMembershipInfo> getRoleMembers(List<String> roleIds, AttributeSet qualification) {
     	return getRoleMembers(roleIds, qualification, true);
     }	
     
@@ -355,7 +356,7 @@ public class RoleServiceImpl implements RoleService {
 	/**
      * @see org.kuali.rice.kim.service.RoleService#getRoleMembers(java.util.List, org.kuali.rice.kim.bo.types.dto.AttributeSet)
      */
-    protected Collection<RoleMembershipInfo> getRoleMembers(List<String> roleIds, AttributeSet qualification, boolean followDelegations ) {
+    protected List<RoleMembershipInfo> getRoleMembers(List<String> roleIds, AttributeSet qualification, boolean followDelegations ) {
     	List<RoleMembershipInfo> results = new ArrayList<RoleMembershipInfo>();
     	Set<String> allRoleIds = new HashSet<String>();
     	// get all implying roles (this also filters to active roles only)
@@ -471,6 +472,30 @@ public class RoleServiceImpl implements RoleService {
 	    			
 	    	matchDelegationsToRoleMembers( results, delegations.values() );
 	    	resolveDelegationMembers( results, qualification );
+    	}
+    	
+    	// sort the results if a single role type service can be identified for
+    	// all the matching role members
+    	
+    	// if a single role: easy case
+    	if ( matchingRoleIds.size() == 1 ) {
+    		results = getRoleTypeService( matchingRoleIds.iterator().next() ).sortRoleMembers( results );
+    	} else if ( matchingRoleIds.size() > 1 ) {
+    		// if more than one, check if there is only a single role type service
+        	String prevServiceName = null;
+        	boolean multipleServices = false;
+    		for ( String roleId : matchingRoleIds ) {
+    			String serviceName = getRoleImpl( roleId ).getKimRoleType().getKimTypeServiceName();
+    			if ( prevServiceName != null && !StringUtils.equals( prevServiceName, serviceName ) ) {
+    				multipleServices = true;
+    			}
+				prevServiceName = serviceName;
+    		}
+    		if ( !multipleServices ) {
+    			results = getRoleTypeService( matchingRoleIds.iterator().next() ).sortRoleMembers( results );
+    		} else {
+    			LOG.warn( "Did not sort role members - multiple role type services found.  Role Ids: " + matchingRoleIds );
+    		}
     	}
     	
     	return results;

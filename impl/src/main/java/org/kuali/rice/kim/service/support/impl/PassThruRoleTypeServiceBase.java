@@ -43,18 +43,6 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
         return true;
     }
 
-    public List<AttributeSet> getAllImpliedQualifications(AttributeSet qualification) {
-        List<AttributeSet> result = new ArrayList<AttributeSet>(1);
-        result.add(qualification);
-        return result;
-    }
-
-    public List<AttributeSet> getAllImplyingQualifications(AttributeSet qualification) {
-        List<AttributeSet> result = new ArrayList<AttributeSet>(1);
-        result.add(qualification);
-        return result;
-    }
-
     public List<RoleMembershipInfo> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, AttributeSet qualification) {
         return new ArrayList<RoleMembershipInfo>(0);
     }
@@ -97,6 +85,10 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
 
     public AttributeSet validateAttributes(AttributeSet attributes) {
         return null;
+    }
+    
+    public List<RoleMembershipInfo> sortRoleMembers(List<RoleMembershipInfo> roleMembers) {
+        return roleMembers;
     }
 
 }

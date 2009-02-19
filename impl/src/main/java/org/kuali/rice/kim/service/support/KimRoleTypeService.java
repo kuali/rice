@@ -86,29 +86,19 @@ public interface KimRoleTypeService extends KimTypeService {
      * principalId or the groupIds parameters are blank/empty, that parameter should be ignored.
      * 
      * @see #isApplicationRoleType()
-     * @see #getPrincipalIdsFromApplicationRole(String, String, AttributeSet)
-     * @see #getGroupIdsFromApplicationRole(String, String, AttributeSet)
+     * @see #getRoleMembersFromApplicationRole(String, String, AttributeSet)
      */
     boolean hasApplicationRole( String principalId, List<String> groupIds, String namespaceCode, String roleName, AttributeSet qualification );
-    
-    /**
-     * This method would return all qualifications that the given qualification implies. (down)
-     */
-    List<AttributeSet> getAllImpliedQualifications( AttributeSet qualification );
 
     /**
-     * This method would return all qualifications that imply this qualification. (up)
-     * 
-     * The contents of the passed in attribute set should not be modified as they may be used in future calls by
-     * the role service.
-     * 
-     * TODO: 
-     * Allowing?
-     * Allowed?
-     * Granting?
+     * For roles where the order of members returned may be meaningful,
+     * this method provides a hook to sort the results before they
+     * are returned from getRoleMembers on the RoleService.
+     *
+     * This method may alter the passed in list directly and return it rather than
+     * allocating a new list.
      */
-    List<AttributeSet> getAllImplyingQualifications( AttributeSet qualification );
-    // TODO: need list versions of the implyed/ing methods?
+    List<RoleMembershipInfo> sortRoleMembers( List<RoleMembershipInfo> roleMembers );
     
     /**
      * Convert a set of attributes that need to be converted.  For example,

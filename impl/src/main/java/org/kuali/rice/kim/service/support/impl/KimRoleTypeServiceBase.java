@@ -71,8 +71,8 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 	}
 
 	/**
-	 * This simple initial implementation just calls the {@link #getPrincipalIdsFromApplicationRole(String, String, AttributeSet)} and 
-	 * {@link #getGroupIdsFromApplicationRole(String, String, AttributeSet)} methods and checks their results.
+	 * This simple initial implementation just calls  
+	 * {@link #getRoleMembersFromApplicationRole(String, String, AttributeSet)} and checks the results.
 	 * 
 	 * @see org.kuali.rice.kim.service.support.KimRoleTypeService#hasApplicationRole(java.lang.String, java.util.List, java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
 	 */
@@ -109,28 +109,6 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 	}
 		
 	/**
-	 * Simple implementation, simply returns the passed in qualification in a single-element list.
-	 * 
-	 * @see org.kuali.rice.kim.service.support.KimRoleTypeService#getAllImpliedQualifications(AttributeSet)
-	 */
-	public List<AttributeSet> getAllImpliedQualifications(
-			AttributeSet qualification) {
-		ArrayList<AttributeSet> impliedQualifications = new ArrayList<AttributeSet>( 1 );
-		impliedQualifications.add(qualification);
-		return impliedQualifications;
-	}
-	
-	/**
-	 * Simple implementation, simply returns the passed in qualification in a single-element list.
-	 * 
-	 * @see org.kuali.rice.kim.service.support.KimRoleTypeService#getAllImplyingQualifications(AttributeSet)
-	 */
-	public List<AttributeSet> getAllImplyingQualifications(
-			AttributeSet qualification) {
-		ArrayList<AttributeSet> implyingQualifications = new ArrayList<AttributeSet>( 1 );
-		implyingQualifications.add(qualification);
-		return implyingQualifications;
-	}
 	/**
 	 * No conversion performed.  Simply returns the passed in Map.
 	 * 
@@ -144,9 +122,18 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 	/**
 	 * This base implementation simply returns the passed in AttributeSet.
 	 * 
-	 * @see org.kuali.rice.kim.service.support.KimRoleTypeService#convertQualificationForMemberRoles(org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 * @see org.kuali.rice.kim.service.support.KimRoleTypeService#convertQualificationForMemberRoles(String, String, String, String, AttributeSet)
 	 */
 	public AttributeSet convertQualificationForMemberRoles(String namespaceCode, String roleName, String memberRoleNamespaceCode, String memberRoleName, AttributeSet qualification) {
 		return qualification;
+	}
+	
+	/**
+	 * Base implementation: no sorting.  Just returns the input list.
+	 * 
+	 * @see org.kuali.rice.kim.service.support.KimRoleTypeService#sortRoleMembers(java.util.List)
+	 */
+	public List<RoleMembershipInfo> sortRoleMembers(List<RoleMembershipInfo> roleMembers) {
+		return roleMembers;
 	}
 }

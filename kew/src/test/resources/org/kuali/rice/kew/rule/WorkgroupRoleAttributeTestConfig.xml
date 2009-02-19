@@ -55,8 +55,6 @@
   <rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
     <rule>
       <documentType>WorkgroupRoleAttributeDocument</documentType>
-      <toDate>09:00 AM 05/30/2009</toDate>
-      <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>WorkgroupRoleTemplate</ruleTemplate>
       <description>WorkgroupRoleAttribute Rule</description>
       <ignorePrevious>true</ignorePrevious>

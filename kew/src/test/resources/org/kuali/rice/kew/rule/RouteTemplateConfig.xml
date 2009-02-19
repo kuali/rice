@@ -187,8 +187,6 @@
 		<rule>
             <name>RuleDocRuleRouting</name>
 			<documentType>RiceDocument.RuleDocument</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
 			<ruleTemplate>RuleRouting</ruleTemplate>
 			<description>Rule Routing</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -206,7 +204,7 @@
 			</ruleExtensions>
 			<responsibilities>
 				<responsibility>
-					<user>rkirkend</user>
+					<principalName>rkirkend</principalName>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>
@@ -214,14 +212,12 @@
 		</rule>
 		<rule>
 			<documentType>RiceDocument.child1</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>DocumentTypeRouting</ruleTemplate>
 			<description>DocumentTypeRouting</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
 				<responsibility>
-					<user>rkirkend</user>
+					<principalName>rkirkend</principalName>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>
@@ -229,14 +225,12 @@
 		</rule>
 		<rule>
 			<documentType>RiceDocument.child1child</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>DocumentTypeRouting</ruleTemplate>
 			<description>DocumentTypeRouting</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
 				<responsibility>
-					<user>user1</user>
+					<principalName>user1</principalName>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>
@@ -244,14 +238,12 @@
 		</rule>
 		<rule>
 			<documentType>RiceDocument.child2</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>DocumentTypeRouting</ruleTemplate>
 			<description>DocumentTypeRouting</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
 				<responsibility>
-					<user>user2</user>
+					<principalName>user2</principalName>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>
@@ -259,14 +251,12 @@
 		</rule>
 		<rule>
 			<documentType>RiceDocument.child3</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>DocumentTypeRouting</ruleTemplate>
 			<description>DocumentTypeRouting</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
 				<responsibility>
-					<user>user3</user>
+					<principalName>user3</principalName>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>
@@ -275,14 +265,12 @@
 		<rule>
             <name>DTR-NotRelated</name>
 			<documentType>NotRelated</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>DocumentTypeRouting</ruleTemplate>
 			<description>DocumentTypeRouting</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
 				<responsibility>
-					<user>ewestfal</user>
+					<principalName>ewestfal</principalName>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>

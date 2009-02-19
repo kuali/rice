@@ -77,11 +77,13 @@ import org.kuali.rice.kew.validation.ValidationResults;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kew.workgroup.GroupId;
 import org.kuali.rice.kew.xml.RuleXmlParser;
+import org.kuali.rice.kew.xml.XmlConstants;
 import org.kuali.rice.kew.xml.export.RuleXmlExporter;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.util.Guid;
 import org.kuali.rice.kns.util.KNSConstants;
 
 
@@ -324,21 +326,24 @@ public class RuleServiceImpl implements RuleService {
      * Maintenance document.  Because of the changes in the data model and the front end here,
      * this method can be much less complicated than the previous 2!
      */
-    public void makeCurrent(RuleBaseValues rule) {
-    	makeCurrent(null, rule);
+    public void makeCurrent(RuleBaseValues rule, boolean isRetroactiveUpdatePermitted) {
+    	makeCurrent(null, rule, isRetroactiveUpdatePermitted);
     }
     
-    public void makeCurrent(RuleDelegation ruleDelegation) {
-    	makeCurrent(ruleDelegation, ruleDelegation.getDelegationRuleBaseValues());
+    public void makeCurrent(RuleDelegation ruleDelegation, boolean isRetroactiveUpdatePermitted) {
+    	makeCurrent(ruleDelegation, ruleDelegation.getDelegationRuleBaseValues(), isRetroactiveUpdatePermitted);
     }
     
-    protected void makeCurrent(RuleDelegation ruleDelegation, RuleBaseValues rule) {
+    protected void makeCurrent(RuleDelegation ruleDelegation, RuleBaseValues rule, boolean isRetroactiveUpdatePermitted) {
         PerformanceLogger performanceLogger = new PerformanceLogger();
 
-        boolean isGenerateRuleArs = true;
-        String generateRuleArs = Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_GENERATE_ACTION_REQESTS_IND);
-        if (!StringUtils.isBlank(generateRuleArs)) {
-            isGenerateRuleArs = KEWConstants.YES_RULE_CHANGE_AR_GENERATION_VALUE.equalsIgnoreCase(generateRuleArs);
+        boolean isGenerateRuleArs = false;
+        if (isRetroactiveUpdatePermitted) {
+        	isGenerateRuleArs = true;
+        	String generateRuleArs = Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_GENERATE_ACTION_REQESTS_IND);
+        	if (!StringUtils.isBlank(generateRuleArs)) {
+        		isGenerateRuleArs = KEWConstants.YES_RULE_CHANGE_AR_GENERATION_VALUE.equalsIgnoreCase(generateRuleArs);
+        	}
         }
         Set<Long> responsibilityIds = new HashSet<Long>();
 
@@ -346,14 +351,12 @@ public class RuleServiceImpl implements RuleService {
         performanceLogger.log("Preparing rule: " + rule.getDescription());
 
         Map<Long, RuleBaseValues> rulesToSave = new HashMap<Long, RuleBaseValues>();
+        generateRuleNameIfNeeded(rule);
+        assignResponsibilityIds(rule);
         rule.setCurrentInd(Boolean.TRUE);
         Timestamp date = new Timestamp(System.currentTimeMillis());
         rule.setActivationDate(date);
-        try {
-        	rule.setDeactivationDate(new Timestamp(RiceConstants.getDefaultDateFormat().parse("01/01/2100").getTime()));
-        } catch (Exception e) {
-        	LOG.error("Parse Exception", e);
-        }
+        rule.setDeactivationDate(null);
 
         rulesToSave.put(rule.getRuleBaseValuesId(), rule);
         if (rule.getPreviousVersionId() != null) {
@@ -975,11 +978,7 @@ public class RuleServiceImpl implements RuleService {
     public RuleResponsibility findRuleResponsibility(Long responsibilityId) {
         return getRuleDAO().findRuleResponsibility(responsibilityId);
     }
-
-    public void saveDeactivationDate(RuleBaseValues rule) {
-        getRuleDAO().saveDeactivationDate(rule);
-    }
-
+    
     public List fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateName, String documentType, boolean ignoreCache) {
         PerformanceLogger performanceLogger = new PerformanceLogger();
         Boolean cachingRules = new Boolean(Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, USING_RULE_CACHE_IND));
@@ -1247,7 +1246,7 @@ public class RuleServiceImpl implements RuleService {
     }
 
     public Element export(ExportDataSet dataSet) {
-        RuleXmlExporter exporter = new RuleXmlExporter();
+        RuleXmlExporter exporter = new RuleXmlExporter(XmlConstants.RULE_NAMESPACE);
         return exporter.export(dataSet);
     }
 
@@ -1615,5 +1614,84 @@ public class RuleServiceImpl implements RuleService {
             return null;
         }
     }
-
+    
+    public Long getDuplicateRuleId(RuleBaseValues rule) {
+    	
+    	// TODO: this method is extremely slow, if we could implement a more optimized query here, that would help tremendously
+    	
+    	List responsibilities = rule.getResponsibilities();
+    	List extensions = rule.getRuleExtensions();
+    	String docTypeName = rule.getDocTypeName();
+    	String ruleTemplateName = rule.getRuleTemplateName();
+        List rules = fetchAllCurrentRulesForTemplateDocCombination(rule.getRuleTemplateName(), rule.getDocTypeName(), false);
+        Iterator it = rules.iterator();
+        while (it.hasNext()) {
+            RuleBaseValues r = (RuleBaseValues) it.next();
+            if (Utilities.equals(rule.getActiveInd(), r.getActiveInd()) &&
+        	Utilities.equals(docTypeName, r.getDocTypeName()) &&
+                    Utilities.equals(ruleTemplateName, r.getRuleTemplateName()) &&
+                    Utilities.equals(rule.getRuleExpressionDef(), r.getRuleExpressionDef()) &&
+                    Utilities.collectionsEquivalent(responsibilities, r.getResponsibilities()) &&
+                    Utilities.collectionsEquivalent(extensions, r.getRuleExtensions())) {
+                // we have a duplicate
+                return r.getRuleBaseValuesId();
+            }
+        }
+        return null;
+    }
+        
+    private void generateRuleNameIfNeeded(RuleBaseValues rule) {
+        if (StringUtils.isBlank(rule.getName())) {
+        	rule.setName(new Guid().toString());
+        }
+    }
+    
+    private void assignResponsibilityIds(RuleBaseValues rule) {
+    	for (RuleResponsibility responsibility : rule.getResponsibilities()) {
+    		if (responsibility.getResponsibilityId() == null) {
+    			responsibility.setResponsibilityId(KEWServiceLocator.getResponsibilityIdService().getNewResponsibilityId());
+    		}
+    	}
+    }
+    
+    public RuleBaseValues saveRule(RuleBaseValues rule, boolean isRetroactiveUpdatePermitted) {
+    	rule.setPreviousVersionId(rule.getRuleBaseValuesId());
+		rule.setPreviousVersion(null);
+		rule.setRuleBaseValuesId(null);
+		makeCurrent(rule, isRetroactiveUpdatePermitted);
+		return rule;
+    }
+    
+    public List<RuleBaseValues> saveRules(List<RuleBaseValues> rulesToSave, boolean isRetroactiveUpdatePermitted) {
+    	List<RuleBaseValues> savedRules = new ArrayList<RuleBaseValues>();
+    	for (RuleBaseValues rule : rulesToSave) {
+    		rule = saveRule(rule, isRetroactiveUpdatePermitted);
+    		savedRules.add(rule);
+    	}
+    	return savedRules;
+    }
+    
+    public RuleDelegation saveRuleDelegation(RuleDelegation ruleDelegation, boolean isRetroactiveUpdatePermitted) {
+    	RuleBaseValues rule = ruleDelegation.getDelegationRuleBaseValues();
+		rule.setPreviousVersionId(rule.getRuleBaseValuesId());
+		rule.setPreviousVersion(null);
+		rule.setRuleBaseValuesId(null);
+		ruleDelegation.setRuleDelegationId(null);
+		makeCurrent(ruleDelegation, isRetroactiveUpdatePermitted);
+		return ruleDelegation;
+    }
+    
+    public List<RuleDelegation> saveRuleDelegations(List<RuleDelegation> ruleDelegationsToSave, boolean isRetroactiveUpdatePermitted) {
+    	List<RuleDelegation> savedRuleDelegations = new ArrayList<RuleDelegation>();
+    	for (RuleDelegation ruleDelegation : ruleDelegationsToSave) {
+    		ruleDelegation = saveRuleDelegation(ruleDelegation, isRetroactiveUpdatePermitted);
+    		savedRuleDelegations.add(ruleDelegation);
+    	}
+    	return savedRuleDelegations;
+    }
+    
+    public Long findResponsibilityIdForRule(String ruleName, String ruleResponsibilityName, String ruleResponsibilityType) {
+    	return getRuleDAO().findResponsibilityIdForRule(ruleName, ruleResponsibilityName, ruleResponsibilityType);
+    }
+    
 }

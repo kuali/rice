@@ -28,7 +28,6 @@ import org.kuali.rice.kew.rule.RuleResponsibility;
 public interface RuleDAO {
 
     public void save(RuleBaseValues ruleBaseValues);
-    public void saveDeactivationDate(RuleBaseValues ruleBaseValues);
     public void delete(Long ruleBaseValuesId);
     public RuleBaseValues findRuleBaseValuesByName(String name);
     public RuleBaseValues findRuleBaseValuesById(Long ruleBaseValuesId);
@@ -41,11 +40,11 @@ public interface RuleDAO {
     public List findByRouteHeaderId(Long routeHeaderId);
     public List findRuleBaseValuesByResponsibilityReviewer(String reviewerName, String type);
     public List findRuleBaseValuesByResponsibilityReviewerTemplateDoc(String ruleTemplateName, String documentType, String reviewerName, String type);
-    public List findResponsibilitiesByDelegationRuleId(Long delegationRuleId);
     public List findByPreviousVersionId(Long previousVersionId);
     public void clearCache();
     public void retrieveAllReferences(RuleBaseValues rule);
     public RuleBaseValues findDefaultRuleByRuleTemplateId(Long ruleTemplateId);
     public RuleBaseValues getParentRule(Long ruleBaseValuesId);
     public List findOldDelegations(RuleBaseValues oldRule, RuleBaseValues newRule);
+    public Long findResponsibilityIdForRule(String ruleName, String ruleResponsibilityName, String ruleResponsibilityType);
 }

@@ -38,8 +38,6 @@
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>
 			<documentType>RiceDocument.child1child1child</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>DocumentTypeRouting</ruleTemplate>
 			<description>DocumentTypeRoutingchild1child1child</description>
 			<ignorePrevious>false</ignorePrevious>

@@ -28,6 +28,7 @@ import java.util.Vector;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang.StringUtils;
 import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -313,32 +314,13 @@ public class RuleTemplateXmlParser implements XmlConstants {
             // these are non-nullable fields, so default them if they were not set in the defaults section
             ruleDefaults.setIgnorePrevious(Boolean.valueOf(BooleanUtils.isTrue(ignorePrevious)));
             ruleDefaults.setActiveInd(Boolean.valueOf(BooleanUtils.isTrue(active)));
-    
-            // set dates
-            long farInTheFutureTime = -1;
-            try {
-                farInTheFutureTime = RiceConstants.getDefaultDateFormat().parse(FAR_IN_THE_FUTURE).getTime();
-            } catch (ParseException e) {
-                assert(false) : "This should never happen - fix the hardcoded date"; // or put it in a static initializer
-                LOG.error("Error parsing default future date: " + FAR_IN_THE_FUTURE, e);
-            }
-    
-            // if the future date is legit, set it
-            ruleDefaults.setDeactivationDate(new Timestamp(farInTheFutureTime));
+        
             if (ruleDefaults.getActivationDate() == null) {
                 ruleDefaults.setActivationDate(new Timestamp(System.currentTimeMillis()));
             }
     
-            if (Utilities.isEmpty(fromDate)) {
-                ruleDefaults.setFromDate(new Timestamp(System.currentTimeMillis()));
-            } else {
-                ruleDefaults.setFromDateString(fromDate);
-            }
-            if (Utilities.isEmpty(toDate)) {
-                ruleDefaults.setToDate(new Timestamp(farInTheFutureTime));
-            } else {
-                ruleDefaults.setToDateString(toDate);
-            }
+            ruleDefaults.setFromDate(formatDate("fromDate",fromDate));
+            ruleDefaults.setToDate(formatDate("toDate", toDate));
             
             // ok, if this is a "Delegate Template", then we need to set this other RuleDelegation object which contains
             // some delegation-related info
@@ -518,4 +500,16 @@ public class RuleTemplateXmlParser implements XmlConstants {
         templateAttribute.setDisplayOrder(new Integer(templateAttributeCounter++));
         return templateAttribute;
     }
+    
+    public Timestamp formatDate(String dateLabel, String dateString) throws InvalidXmlException {
+    	if (StringUtils.isBlank(dateString)) {
+    		return null;
+    	}
+    	try {
+    		return new Timestamp(RiceConstants.getDefaultDateAndTimeFormat().parse(dateString).getTime());
+    	} catch (ParseException e) {
+    		throw new InvalidXmlException(dateLabel + " is not in the proper format.  Should have been: " + RiceConstants.DEFAULT_DATE_FORMAT_PATTERN);
+    	}
+    }
+
 }

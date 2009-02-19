@@ -87,7 +87,7 @@ public class RoutingRuleMaintainable extends KualiMaintainableImpl {
     	WebRuleUtils.clearKeysForSave(getThisRule());
     	WebRuleUtils.translateResponsibilitiesForSave(getThisRule());
     	WebRuleUtils.translateFieldValuesForSave(getThisRule());
-    	KEWServiceLocator.getRuleService().makeCurrent(getThisRule());
+    	KEWServiceLocator.getRuleService().makeCurrent(getThisRule(), true);
     }
     
     @Override

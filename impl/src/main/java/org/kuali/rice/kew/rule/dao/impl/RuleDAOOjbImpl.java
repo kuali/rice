@@ -66,35 +66,6 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 		this.getPersistenceBrokerTemplate().store(ruleBaseValues);
 	}
 
-	public void saveDeactivationDate(final RuleBaseValues ruleBaseValues) {
-
-		final String sql = "update krew_rule_t set ACTVN_DT = ?, DACTVN_DT = ? where rule_id = ?";
-		this.getPersistenceBrokerTemplate().execute(new PersistenceBrokerCallback() {
-			public Object doInPersistenceBroker(PersistenceBroker pb) {
-				PreparedStatement ps = null;
-				try {
-					ps = pb.serviceConnectionManager().getConnection().prepareStatement(sql);
-					ps.setTimestamp(1, ruleBaseValues.getActivationDate());
-					ps.setTimestamp(2, ruleBaseValues.getDeactivationDate());
-					ps.setLong(3, ruleBaseValues.getRuleBaseValuesId().longValue());
-					ps.executeUpdate();
-				} catch (Exception e) {
-					throw new WorkflowRuntimeException("error saving deactivation date", e);
-				} finally {
-					if (ps != null) {
-						try {
-							ps.close();
-						} catch (Exception e) {
-							LOG.error("error closing preparedstatement", e);
-						}
-					}
-				}
-				return null;
-			}
-		});
-
-	}
-
 	public List fetchAllCurrentRulesForTemplateDocCombination(Long ruleTemplateId, List documentTypes) {
 		Criteria crit = new Criteria();
 		crit.addIn("docTypeName", documentTypes);
@@ -159,17 +130,6 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 		query.addOrderByDescending("activationDate");
 
 		return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(query);
-	}
-
-	public List findResponsibilitiesByDelegationRuleId(Long delegationRuleId) {
-		Criteria crit = new Criteria();
-		crit.addEqualTo("currentInd", new Boolean(true));
-		crit.addEqualTo("templateRuleInd", new Boolean(false));
-
-		Criteria criteriaDelegationId = new Criteria();
-		criteriaDelegationId.addEqualTo("responsibilities.delegateRuleId", delegationRuleId);
-		crit.addAndCriteria(criteriaDelegationId);
-		return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleBaseValues.class, crit));
 	}
 
 	public void delete(Long ruleBaseValuesId) {
@@ -513,6 +473,22 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 				return oldDelegations;
 			}
 		});
+	}
+	
+	public Long findResponsibilityIdForRule(String ruleName, String ruleResponsibilityName, String ruleResponsibilityType) {
+		Criteria crit = new Criteria();
+		crit.addEqualTo("ruleResponsibilityName", ruleResponsibilityName);
+		crit.addEqualTo("ruleResponsibilityType", ruleResponsibilityType);
+		crit.addEqualTo("ruleBaseValues.currentInd", Boolean.TRUE);
+		crit.addEqualTo("ruleBaseValues.name", ruleName);
+		List responsibilities = (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleResponsibility.class, crit));
+		if (responsibilities != null) {
+			for (Iterator iter = responsibilities.iterator(); iter.hasNext();) {
+				RuleResponsibility responsibility = (RuleResponsibility) iter.next();
+				return responsibility.getResponsibilityId();
+			}
+		}
+		return null;
 	}
 
 }

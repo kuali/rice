@@ -70,22 +70,6 @@ public class RuleDAOJpaImpl implements RuleDAO {
 		}
 	}
 
-	public void saveDeactivationDate(final RuleBaseValues ruleBaseValues) {
-
-		final String sql = "update krew_rule_t set ACTVN_DT = ?, DACTVN_DT = ? where rule_id = ?";
-		try{
-			Query q = entityManager.createNativeQuery(sql);
-			q.setParameter(1, ruleBaseValues.getActivationDate());
-			q.setParameter(2, ruleBaseValues.getDeactivationDate());
-			q.setParameter(3, ruleBaseValues.getRuleBaseValuesId().longValue());
-			entityManager.flush();
-			q.executeUpdate();
-			entityManager.flush();
-		} catch (Exception e) {
-			throw new WorkflowRuntimeException("error saving deactivation date", e);
-		}
-	}
-
 	public List fetchAllCurrentRulesForTemplateDocCombination(Long ruleTemplateId, List documentTypes) {
 		Criteria crit = new Criteria(RuleBaseValues.class.getName());
 		crit.in("docTypeName", documentTypes);
@@ -149,17 +133,6 @@ public class RuleDAOJpaImpl implements RuleDAO {
 		QueryByCriteria query = new QueryByCriteria(entityManager, crit);
 
 		return (List) query.toQuery().getResultList();
-	}
-
-	public List findResponsibilitiesByDelegationRuleId(Long delegationRuleId) {
-		Criteria crit = new Criteria(RuleBaseValues.class.getName());
-		crit.eq("currentInd", new Boolean(true));
-		crit.eq("templateRuleInd", new Boolean(false));
-
-		Criteria criteriaDelegationId = new Criteria(RuleBaseValues.class.getName());
-		criteriaDelegationId.eq("responsibilities.delegateRuleId", delegationRuleId);
-		crit.and(criteriaDelegationId);
-		return (List) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
 	}
 
 	public void delete(Long ruleBaseValuesId) {
@@ -485,6 +458,22 @@ public class RuleDAOJpaImpl implements RuleDAO {
 		}
 		return oldDelegations;
 
+	}
+	
+	public Long findResponsibilityIdForRule(String ruleName, String ruleResponsibilityName, String ruleResponsibilityType) {
+		Criteria crit = new Criteria(RuleResponsibility.class.getName());
+		crit.eq("ruleResponsibilityName", ruleResponsibilityName);
+		crit.eq("ruleResponsibilityType", ruleResponsibilityType);
+		crit.eq("ruleBaseValues.currentInd", Boolean.TRUE);
+		crit.eq("ruleBaseValues.name", ruleName);
+		Collection responsibilities = new QueryByCriteria(entityManager, crit).toQuery().getResultList();
+		if (responsibilities != null) {
+			for (Iterator iter = responsibilities.iterator(); iter.hasNext();) {
+				RuleResponsibility responsibility = (RuleResponsibility) iter.next();
+				return responsibility.getResponsibilityId();
+			}
+		}
+		return null;
 	}
 
     public EntityManager getEntityManager() {

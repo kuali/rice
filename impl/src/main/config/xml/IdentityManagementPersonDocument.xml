@@ -103,7 +103,7 @@
        <ignorePrevious>true</ignorePrevious>
       <responsibilities>
         <responsibility>
-          <user>admin</user>
+          <principalName>admin</principalName>
           <actionRequested>A</actionRequested>
           <priority>1</priority>
         </responsibility>
@@ -130,7 +130,7 @@
       </ruleExtensions>
       <responsibilities>
                 <responsibility>
-                  <user>admin</user>
+                  <principalName>admin</principalName>
                 </responsibility>
        </responsibilities>
     </rule>

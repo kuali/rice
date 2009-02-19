@@ -17,7 +17,9 @@ package org.kuali.rice.kew.xml;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -29,9 +31,10 @@ import org.jdom.Namespace;
 import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityEmailImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityEmploymentInformationImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityEntityTypeImpl;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.xml.sax.SAXException;
@@ -55,6 +58,7 @@ public class UserXmlParser implements XmlConstants {
     private static final String USER_ELEMENT = "user";
     private static final String WORKFLOW_ID_ELEMENT = "workflowId";
     private static final String AUTHENTICATION_ID_ELEMENT = "authenticationId";
+    private static final String EMPL_ID_ELEMENT = "emplId";
     private static final String EMAIL_ELEMENT = "emailAddress";
     private static final String GIVEN_NAME_ELEMENT = "givenName";
     private static final String LAST_NAME_ELEMENT = "lastName";    
@@ -88,11 +92,30 @@ public class UserXmlParser implements XmlConstants {
     	
     	String firstName = userElement.getChildTextTrim(GIVEN_NAME_ELEMENT, NAMESPACE);
         String lastName = userElement.getChildTextTrim(LAST_NAME_ELEMENT, NAMESPACE);
+        String emplId = userElement.getChildTextTrim(EMPL_ID_ELEMENT, NAMESPACE);
     	
-    	Long entityId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ENTITY_ID_S");
+        Long entityId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ENTITY_ID_S");
+        
+        // if they define an empl id, let's set that up
+        KimEntityEmploymentInformationImpl emplInfo = null;
+        if (!StringUtils.isBlank(emplId)) {
+        	emplInfo = new KimEntityEmploymentInformationImpl();
+        	emplInfo.setActive(true);
+        	emplInfo.setEmployeeId(emplId);
+        	emplInfo.setPrimary(true);
+        	emplInfo.setEntityId("" + entityId);
+        	emplInfo.setEntityEmploymentId(emplId);
+        }
+        
+    	
 		KimEntityImpl entity = new KimEntityImpl();
 		entity.setActive(true);
 		entity.setEntityId("" + entityId);
+		List<KimEntityEmploymentInformationImpl> emplInfos = new ArrayList<KimEntityEmploymentInformationImpl>();
+		if (emplInfo != null) {
+			emplInfos.add(emplInfo);
+		}
+		entity.setEmploymentInformation(emplInfos);
 		
 		KimEntityEntityTypeImpl entityType = new KimEntityEntityTypeImpl();
 		entity.getEntityTypes().add(entityType);

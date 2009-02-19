@@ -70,8 +70,6 @@
         <rule>
             <name>KRABizRule1</name>
             <documentType>KRAMetaRuleTest</documentType>
-            <toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <description>KRABizRule1 mandatory description</description>
             <expression type="BSF:groovy">
                 import org.kuali.rice.kew.rule.*
@@ -93,8 +91,6 @@
         <rule>
             <name>KRABizRule2</name>
             <documentType>KRAMetaRuleTest</documentType>
-            <toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>KRABizRule</ruleTemplate>
             <description>KRABizRule2 mandatory description</description>
             <ruleExtensions>
@@ -116,8 +112,6 @@
         <!-- this will succeed because the extension value DOES match -->
         <rule>
             <name>KRABizRule3</name>
-            <toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <documentType>KRAMetaRuleTest</documentType>
             <ruleTemplate>KRABizRule</ruleTemplate>
             <description>KRABizRule3 mandatory description</description>
@@ -137,8 +131,6 @@
         <rule>
             <name>KRABizRule4</name>
             <documentType>KRAMetaRuleTest</documentType>
-            <toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <description>KRABizRule4 mandatory description</description>
             <expression type="BSF:groovy">
                 import org.kuali.rice.kew.rule.*
@@ -174,8 +166,6 @@
         <rule>
             <name>KRAMetaRule</name>
             <documentType>KRAMetaRuleTest</documentType>
-            <toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <description>KRAMetaRule mandatory description</description>
             <!-- this groovy expression should be equivalent to the former KRAMetaRule expresssion:
               KRABizRule1: true;

@@ -11,7 +11,7 @@
 		</ruleTemplate>
 	</ruleTemplates>
 	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
- 		<documentType>
+		<documentType>
 			<name>NotificationTest</name>
 			<label>Notification Test</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
@@ -29,7 +29,7 @@
 				<routePath>
 					<start name="Initial" nextNode="WorkflowDocument" />
 					<requests name="WorkflowDocument" nextNode="WorkflowDocument2" />
-					<requests name="WorkflowDocument2"/>
+					<requests name="WorkflowDocument2" />
 				</routePath>
 			</routePaths>
 			<routeNodes>
@@ -48,7 +48,7 @@
 		</documentType>
 
 		<!-- DocumentTypes for testing the notificationFromAddress -->
-		 <documentType>
+		<documentType>
 			<name>NotificationFromAddressParent</name>
 			<label>Doc Type From Address Notification Test</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
@@ -58,14 +58,14 @@
 			<docHandler>none</docHandler>
 			<notificationFromAddress>fakey@mcfakey.com</notificationFromAddress>
 			<policies>
-					<policy>
+				<policy>
 					<name>DEFAULT_APPROVE</name>
 					<value>false</value>
 				</policy>
 			</policies>
 			<routePaths>
 				<routePath>
-					<start name="Initial"/>
+					<start name="Initial" />
 				</routePath>
 			</routePaths>
 			<routeNodes>
@@ -98,6 +98,7 @@
 	</documentTypes>
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>
+			<name>NotificationTest-Rule1</name>
 			<documentType>NotificationTest</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>WorkflowDocumentTemplate Rule 1</description>
@@ -107,44 +108,6 @@
 					<user>bmcgough</user>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
-					<delegations>
-				        <rule>
-				        	<documentType>NotificationTest</documentType>
-				        	<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
-          					<description>Notification Test Primary Delegation</description>
-          					<ignorePrevious>false</ignorePrevious>
-          					<responsibilities>
-            					<responsibility>
-              						<user>rkirkend</user>
-				            	</responsibility>
-          					</responsibilities>
-          					<delegationType>P</delegationType>
-				        </rule>
-        				<rule>
-				        	<documentType>NotificationTest</documentType>
-				        	<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
-          					<description>Notification Test Secondary Delegation</description>
-          					<ignorePrevious>false</ignorePrevious>
-          					<responsibilities>
-            					<responsibility>
-              						<user>ewestfal</user>
-				            	</responsibility>
-          					</responsibilities>
-          					<delegationType>S</delegationType>
-				        </rule>
-				        <rule>
-				        	<documentType>NotificationTest</documentType>
-				        	<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
-          					<description>Notification Test Secondary Delegation</description>
-          					<ignorePrevious>false</ignorePrevious>
-          					<responsibilities>
-            					<responsibility>
-              						<user>jitrue</user>
-				            	</responsibility>
-          					</responsibilities>
-          					<delegationType>S</delegationType>
-				        </rule>
-					</delegations>
 				</responsibility>
 				<responsibility>
 					<user>jhopf</user>
@@ -169,4 +132,61 @@
 			</responsibilities>
 		</rule>
 	</rules>
+	<ruleDelegations xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
+		<ruleDelegation>
+			<parentResponsibility>
+				<parentRuleName>NotificationTest-Rule1</parentRuleName>
+				<principalName>bmcgough</principalName>
+			</parentResponsibility>
+			<delegationType>P</delegationType>
+			<rule>
+				<documentType>NotificationTest</documentType>
+				<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+				<description>Notification Test Primary Delegation</description>
+				<ignorePrevious>false</ignorePrevious>
+				<responsibilities>
+					<responsibility>
+						<user>rkirkend</user>
+					</responsibility>
+				</responsibilities>
+			</rule>
+		</ruleDelegation>
+		<ruleDelegation>
+			<parentResponsibility>
+				<parentRuleName>NotificationTest-Rule1</parentRuleName>
+				<principalName>bmcgough</principalName>
+			</parentResponsibility>
+			<delegationType>S</delegationType>
+			<rule>
+				<documentType>NotificationTest</documentType>
+				<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+				<description>Notification Test Secondary Delegation</description>
+				<ignorePrevious>false</ignorePrevious>
+				<responsibilities>
+					<responsibility>
+						<user>ewestfal</user>
+					</responsibility>
+				</responsibilities>
+			</rule>
+		</ruleDelegation>
+		<ruleDelegation>
+			<parentResponsibility>
+				<parentRuleName>NotificationTest-Rule1</parentRuleName>
+				<principalName>bmcgough</principalName>
+			</parentResponsibility>
+			<delegationType>S</delegationType>
+			<rule>
+				<documentType>NotificationTest</documentType>
+				<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+				<description>Notification Test Secondary Delegation</description>
+				<ignorePrevious>false</ignorePrevious>
+				<responsibilities>
+					<responsibility>
+						<user>jitrue</user>
+					</responsibility>
+				</responsibilities>
+			</rule>
+		</ruleDelegation>
+	</ruleDelegations>
+
 </data>

@@ -306,8 +306,6 @@
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>
 			<documentType>SimulationTestDocumenType_IgnorePrevious</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>SimulationTestDocumenType_IgnorePrevious and WorkflowDocumentTemplate Rule 2</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -321,8 +319,6 @@
 		</rule>
 		<rule>
 			<documentType>SimulationTestDocumenType_IgnorePrevious</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>WorkflowDocument2Template</ruleTemplate>
 			<description>SimulationTestDocumenType_IgnorePrevious and WorkflowDocument2Template Rule 1</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -336,8 +332,6 @@
 		</rule>
 		<rule>
 			<documentType>SimulationTestDocumenType_IgnorePrevious</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>WorkflowDocument3Template</ruleTemplate>
 			<description>SimulationTestDocumenType_IgnorePrevious and WorkflowDocument3Template Rule 1</description>
 			<ignorePrevious>true</ignorePrevious>
@@ -351,8 +345,6 @@
 		</rule>
 		<rule>
 			<documentType>SimulationTestDocumenType_IgnorePrevious</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>WorkflowDocument4Template</ruleTemplate>
 			<description>SimulationTestDocumenType_IgnorePrevious and WorkflowDocument4Template Rule 1</description>
 			<ignorePrevious>true</ignorePrevious>
@@ -366,8 +358,6 @@
 		</rule>
 		<rule>
 			<documentType>SimulationTestDocumenType_IgnorePrevious</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>WorkflowDocument4Template</ruleTemplate>
 			<description>SimulationTestDocumenType_IgnorePrevious and WorkflowDocument4Template Rule 1</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -381,8 +371,6 @@
 		</rule>
 		<rule>
 			<documentType>DocumentWithSpecialRouteNodes</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>WorkflowDocumentTemplate Rule 1</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -396,8 +384,6 @@
 		</rule>
 		<rule>
 			<documentType>DocumentWithSpecialRouteNodes</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>WorkflowDocumentTemplate Rule 2</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -411,8 +397,6 @@
 		</rule>
 		<rule>
 			<documentType>DocumentWithSpecialRouteNodes</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>WorkflowDocument2Template</ruleTemplate>
 			<description>WorkflowDocument2Template Rule 1</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -426,8 +410,6 @@
 		</rule>
 		<rule>
 			<documentType>SeqDocType</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>WorkflowDocumentTemplate Rule 1</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -441,8 +423,6 @@
 		</rule>
 		<rule>
 			<documentType>SeqDocType</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>WorkflowDocumentTemplate Rule 2</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -456,8 +436,6 @@
 		</rule>
 		<rule>
 			<documentType>SeqDocType</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>WorkflowDocument2Template</ruleTemplate>
 			<description>WorkflowDocument2Template Rule 1</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -471,8 +449,6 @@
 		</rule>
 		<rule>
 			<documentType>SeqDocType</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>Ack1Template</ruleTemplate>
 			<description>Ack1Template Rule 1</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -486,8 +462,6 @@
 		</rule>
 		<rule>
 			<documentType>SeqDocType</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>Ack2Template</ruleTemplate>
 			<description>Ack2Template Rule 1</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -501,8 +475,6 @@
 		</rule>
 		<rule>
 			<documentType>SeqLastApproverDocType</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>WorkflowDocumentTemplate Last Approver Rule 1</description>
 			<ignorePrevious>true</ignorePrevious>
@@ -517,8 +489,6 @@
 
 		<rule>
 			<documentType>SeqLastApproverDocType</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>WorkflowDocument2Template</ruleTemplate>
 			<description>WorkflowDocument2Template Last Approver Rule 1</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -532,8 +502,6 @@
 		</rule>
 		<rule>
 			<documentType>RuleTestDocType</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>WorkflowDocumentTemplate Rule for Rule Test</description>
 			<ignorePrevious>true</ignorePrevious>
@@ -547,8 +515,6 @@
 		</rule>
 		<rule>
 			<documentType>RuleTestDocType</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>WorkflowDocument2Template</ruleTemplate>
 			<description>WorkflowDocument2Template Rule for Rule Test</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -567,8 +533,6 @@
 		</rule>
 	    <rule>
 	      <documentType>RuleTestDocType</documentType>
-	      <toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>WorkflowDocument3Template</ruleTemplate>
 	      <description>WorkflowDocument3Template Rule for Rule Test (Workgroup)</description>
 	      <ignorePrevious>true</ignorePrevious>

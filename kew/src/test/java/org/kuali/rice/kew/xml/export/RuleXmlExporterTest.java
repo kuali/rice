@@ -19,6 +19,7 @@ package org.kuali.rice.kew.xml.export;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -64,9 +65,12 @@ public class RuleXmlExporterTest extends XmlExporterTestCase {
         // export all existing rules and their dependencies (document types, rule templates, rule attributes)
         List oldRules = KEWServiceLocator.getRuleService().fetchAllRules(true);
         assertAllRulesHaveUniqueNames(oldRules);
+        List oldRuleDelegations = KEWServiceLocator.getRuleDelegationService().findAllCurrentRuleDelegations();
+        assertAllRuleDelegationsHaveUniqueNames(oldRuleDelegations);
 
         ExportDataSet dataSet = new ExportDataSet();
         dataSet.getRules().addAll(oldRules);
+        dataSet.getRuleDelegations().addAll(oldRuleDelegations);
         dataSet.getDocumentTypes().addAll(KEWServiceLocator.getDocumentTypeService().findAllCurrent());
         dataSet.getRuleTemplates().addAll(KEWServiceLocator.getRuleTemplateService().findAll());
         dataSet.getRuleAttributes().addAll(KEWServiceLocator.getRuleAttributeService().findAll());
@@ -76,6 +80,8 @@ public class RuleXmlExporterTest extends XmlExporterTestCase {
         // now clear the tables
         ClearDatabaseLifecycle clearLifeCycle = new ClearDatabaseLifecycle();
         clearLifeCycle.getTablesToClear().add("KREW_RULE_T");
+        clearLifeCycle.getTablesToClear().add("KREW_RULE_RSP_T");
+        clearLifeCycle.getTablesToClear().add("KREW_DLGN_RSP_T");
         clearLifeCycle.getTablesToClear().add("KREW_RULE_ATTR_T");
         clearLifeCycle.getTablesToClear().add("KREW_RULE_TMPL_T");
         clearLifeCycle.getTablesToClear().add("KREW_DOC_TYP_T");
@@ -99,6 +105,9 @@ public class RuleXmlExporterTest extends XmlExporterTestCase {
             }
             assertTrue("Could not locate the new rule for description " + oldRule.getDescription(), foundRule);
         }
+        
+        List newRuleDelegations = KEWServiceLocator.getRuleDelegationService().findAllCurrentRuleDelegations();
+        assertDelegations(oldRuleDelegations, newRuleDelegations);
     }
 
     private void assertRuleExport(RuleBaseValues oldRule, RuleBaseValues newRule) {
@@ -111,12 +120,24 @@ public class RuleXmlExporterTest extends XmlExporterTestCase {
         assertEquals(oldRule.getDelegateRule(), newRule.getDelegateRule());
         assertEquals(oldRule.getDescription(), newRule.getDescription());
         assertEquals(oldRule.getDocTypeName(), newRule.getDocTypeName());
-        assertEquals(DateUtils.round(oldRule.getFromDate(), Calendar.DATE), DateUtils.round(newRule.getFromDate(), Calendar.DATE));
+        
+        if (oldRule.getFromDate() == null) {
+        	assertNull(newRule.getFromDate());
+        } else {
+        	assertEquals(DateUtils.round(oldRule.getFromDate(), Calendar.DATE), DateUtils.round(newRule.getFromDate(), Calendar.DATE));
+        }
+        if (oldRule.getToDate() == null) {
+        	assertNull(newRule.getToDate());
+        } else {
+        	assertEquals(DateUtils.round(oldRule.getToDate(), Calendar.DATE), DateUtils.round(newRule.getToDate(), Calendar.DATE));
+        }
+        assertEquals(oldRule.getFromDateString(),newRule.getFromDateString() );
+        assertEquals(oldRule.getToDateString(),newRule.getToDateString() );
+        
         assertEquals(oldRule.getIgnorePrevious(), newRule.getIgnorePrevious());
         assertEquals(oldRule.getPreviousVersionId(), newRule.getPreviousVersionId());
         assertEquals(oldRule.getRouteHeaderId(), newRule.getRouteHeaderId());
-        assertEquals(oldRule.getToDateString(),newRule.getToDateString() );
-        assertEquals(oldRule.getFromDateString(),newRule.getFromDateString() );
+        
         if (oldRule.getRuleTemplate() == null) {
             assertNull(newRule.getRuleTemplate());
         } else {
@@ -128,7 +149,7 @@ public class RuleXmlExporterTest extends XmlExporterTestCase {
             assertEquals(oldRule.getRuleExpressionDef().getExpression(), newRule.getRuleExpressionDef().getExpression());
             assertEquals(oldRule.getRuleExpressionDef().getType(), newRule.getRuleExpressionDef().getType());
         }
-        assertEquals(DateUtils.round(oldRule.getToDate(), Calendar.DATE), DateUtils.round(newRule.getToDate(), Calendar.DATE));
+        
         assertEquals(oldRule.getVersionNbr(), newRule.getVersionNbr());
 
         assertRuleExtensions(oldRule.getRuleExtensions(), newRule.getRuleExtensions());
@@ -186,7 +207,6 @@ public class RuleXmlExporterTest extends XmlExporterTestCase {
                     assertEquals(oldResp.getRole(), newResp.getRole());
                     assertEquals(oldResp.getRuleResponsibilityType(), newResp.getRuleResponsibilityType());
                     assertEquals(oldResp.getPriority(), newResp.getPriority());
-                    assertDelegations(oldResp.getDelegationRules(), newResp.getDelegationRules());
                     foundResp = true;
                     break;
                 }
@@ -202,8 +222,9 @@ public class RuleXmlExporterTest extends XmlExporterTestCase {
             boolean foundDelegation = false;
             for (Iterator iterator2 = newDelegations.iterator(); iterator2.hasNext();) {
                 RuleDelegation newDelegation = (RuleDelegation) iterator2.next();
-                if (oldDelegation.getDelegationRuleBaseValues().getDescription().equals(newDelegation.getDelegationRuleBaseValues().getDescription())) {
+                if (oldDelegation.getDelegationRuleBaseValues().getName().equals(newDelegation.getDelegationRuleBaseValues().getName())) {
                     assertEquals(oldDelegation.getDelegationType(), newDelegation.getDelegationType());
+                    assertFalse(oldDelegation.getResponsibilityId().equals(newDelegation.getResponsibilityId()));
                     assertRuleExport(oldDelegation.getDelegationRuleBaseValues(), newDelegation.getDelegationRuleBaseValues());
                     foundDelegation = true;
                     break;
@@ -222,6 +243,14 @@ public class RuleXmlExporterTest extends XmlExporterTestCase {
 					ruleDescriptions.contains(rule.getDescription()));
 			ruleDescriptions.add(rule.getDescription());
 		}
+    }
+    
+    private void assertAllRuleDelegationsHaveUniqueNames(List<RuleDelegation> ruleDelegations) throws Exception {
+    	List<RuleBaseValues> rules = new ArrayList<RuleBaseValues>();
+    	for (RuleDelegation ruleDelegation : ruleDelegations) {
+    		rules.add(ruleDelegation.getDelegationRuleBaseValues());
+    	}
+    	assertAllRulesHaveUniqueNames(rules);
     }
 
 }

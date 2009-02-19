@@ -508,25 +508,11 @@ public class RuleBaseValues extends KewPersistableBusinessObjectBase {
         return null;
     }
 
-    public void setFromDateString(String fromDateString) {
-        try {
-            this.fromDate = new Timestamp(RiceConstants.getDefaultDateAndTimeFormat().parse(fromDateString).getTime());
-        } catch (Exception e) {
-        }
-    }
-
     public String getToDateString() {
         if (this.toDate != null) {
             return RiceConstants.getDefaultDateFormat().format(this.toDate);
         }
         return null;
-    }
-
-    public void setToDateString(String toDateString) {
-        try {
-            this.toDate = new Timestamp(RiceConstants.getDefaultDateAndTimeFormat().parse(toDateString).getTime());
-        } catch (Exception e) {
-        }
     }
 
     public Boolean getIgnorePrevious() {

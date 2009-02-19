@@ -53,8 +53,9 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
     public void save(RuleDelegation ruleDelegation) {
     	this.getPersistenceBrokerTemplate().store(ruleDelegation);
     }
-    public List findAllRuleDelegations(){
+    public List findAllCurrentRuleDelegations(){
         Criteria crit = new Criteria();
+        crit.addEqualTo("delegationRuleBaseValues.currentInd", true);
         return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleDelegation.class, crit));
     }
 

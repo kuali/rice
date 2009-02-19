@@ -27,7 +27,7 @@ public interface RuleDelegationDAO {
 
     public List findByDelegateRuleId(Long ruleId);
     public void save(RuleDelegation ruleDelegation);
-    public List findAllRuleDelegations();
+    public List findAllCurrentRuleDelegations();
     public void delete(Long ruleDelegationId);
     public RuleDelegation findByRuleDelegationId(Long ruleDelegationId);
     public List<RuleDelegation> findByResponsibilityIdWithCurrentRule(Long responsibiliytId);

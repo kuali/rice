@@ -164,11 +164,11 @@ public class MockRuleServiceImpl implements RuleService {
         throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");
     }
 
-    public void makeCurrent(RuleBaseValues rule) {
+    public void makeCurrent(RuleBaseValues rule, boolean isRetroactiveUpdatePermitted) {
         throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");
     }
     
-    public void makeCurrent(RuleDelegation ruleDelegation) {
+    public void makeCurrent(RuleDelegation ruleDelegation, boolean isRetroactiveUpdatePermitted) {
         throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");
     }
 
@@ -232,6 +232,30 @@ public class MockRuleServiceImpl implements RuleService {
 	public List findRuleBaseValuesByResponsibilityReviewerTemplateDoc(String ruleTemplateName, String documentType, String reviewerName, String type) {
 	    throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");
 	}
+	public Long getDuplicateRuleId(RuleBaseValues rule) {
+		throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");
+	}
+	public Long findResponsibilityIdForRule(String ruleName,
+			String ruleResponsibilityName, String ruleResponsibilityType) {
+		throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");
+	}
+	public RuleBaseValues saveRule(RuleBaseValues rule,
+			boolean isRetroactiveUpdatePermitted) {
+		throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");
+	}
+	public RuleDelegation saveRuleDelegation(RuleDelegation ruleDelegation,
+			boolean isRetroactiveUpdatePermitted) {
+		throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");
+	}
+	public List<RuleDelegation> saveRuleDelegations(
+			List<RuleDelegation> ruleDelegationsToSave, boolean isRetroactiveUpdatePermitted) {
+		throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");
+	}
+	public List<RuleBaseValues> saveRules(List<RuleBaseValues> rulesToSave, boolean isRetroactiveUpdatePermitted) {
+		throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");
+	}
+	
+	
 
 
 }

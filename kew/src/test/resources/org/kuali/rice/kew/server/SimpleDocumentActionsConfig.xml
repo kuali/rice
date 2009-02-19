@@ -79,8 +79,6 @@
       <rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
     <rule>
       <documentType>servicesTestRequest</documentType>
-      <toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>testApproveTemplate</ruleTemplate>
       <description>Test Approve</description>
       <ignorePrevious>true</ignorePrevious>
@@ -94,8 +92,6 @@
     </rule>
     <rule>
       <documentType>servicesTestRequest</documentType>
-      <toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>testAcknowledgeTemplate</ruleTemplate>
       <description>Test Acknowledge</description>
       <ignorePrevious>true</ignorePrevious>
@@ -109,8 +105,6 @@
     </rule>
     <rule>
       <documentType>servicesTestRequest</documentType>
-      <toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>testFYITemplate</ruleTemplate>
       <description>Test FYI</description>
       <ignorePrevious>true</ignorePrevious>

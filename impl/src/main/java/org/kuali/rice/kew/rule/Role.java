@@ -44,7 +44,7 @@ public class Role implements java.io.Serializable {
     public Role(Class attributeClass, String roleName, String roleLabel) {
         this.label = roleLabel;
         this.baseName = roleName;
-        this.name = attributeClass.getName() + "!" + roleName;
+        this.name = constructRoleValue(attributeClass.getName(), roleName);
     }
     
     public String getLabel() {
@@ -64,5 +64,9 @@ public class Role implements java.io.Serializable {
     }
     public String getBaseName() {
         return baseName;
+    }
+    
+    public static String constructRoleValue(String attributeClassName, String roleName) {
+    	return attributeClassName + "!" + roleName;
     }
 }

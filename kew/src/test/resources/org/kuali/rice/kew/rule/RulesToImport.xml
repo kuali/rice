@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
-		<routeGroup>true</routeGroup>
 		<rule>
 			<documentType>TestDocumentType</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
 			<ruleTemplate>TestRuleTemplate</ruleTemplate>
 			<description>TestRule1</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -20,8 +17,6 @@
 
 		<rule>
 			<documentType>TestDocumentType</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>TestRuleTemplate</ruleTemplate>
 			<description>TestRule2</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -36,8 +31,6 @@
 
 		<rule>
 			<documentType>TestDocumentType</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>TestRuleTemplate</ruleTemplate>
 			<description>TestRule3</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -53,8 +46,6 @@
         <rule>
             <name>ANamedRuleToImport</name>
             <documentType>TestDocumentType</documentType>
-            <toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <description>ANamedRuleToImport</description>
             <ignorePrevious>false</ignorePrevious>
             <responsibilities>

@@ -215,8 +215,6 @@
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>
 			<documentType>SecurityDocument</documentType>
-			<toDate>00:00 AM 01/10/2010</toDate>
-            <fromDate>03:04 PM 01/28/2009</fromDate>
             <ruleTemplate>MatchAllTemplate</ruleTemplate>
 			<description>Search attribute rule test</description>
 			<ignorePrevious>true</ignorePrevious>

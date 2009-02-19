@@ -91,8 +91,6 @@
         <rule>
             <name>KRABizRule2</name>
             <documentType>KRAMetaRuleTest</documentType>
-            <toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>KRABizRule</ruleTemplate>
             <description>KRABizRule2 mandatory description</description>
             <ruleExtensions>
@@ -115,8 +113,6 @@
         <rule>
             <name>KRABizRule3</name>
             <documentType>KRAMetaRuleTest</documentType>
-            <toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>KRABizRule</ruleTemplate>
             <description>KRABizRule3 mandatory description</description>
             <ruleExtensions>

@@ -366,6 +366,7 @@
                 <value>enRuleTemplateService</value>
                 <value>enDocumentTypeService</value>
                 <value>enRuleService</value>
+                <value>enRuleDelegationService</value>
                 <value>enHelpService</value>
                 <value>enEDocLiteService</value>
                 <value>enStyleService</value>
@@ -451,6 +452,7 @@
         <value>enDocumentTypeService</value>
         <value>enRuleTemplateService</value>
         <value>enRuleService</value>
+        <value>enRuleDelegationService</value>
         <value>enHelpService</value>
         <value>enStyleService</value>
       </list>

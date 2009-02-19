@@ -5,8 +5,6 @@
         <rule>
             <name>ANamedRule</name>
             <documentType>TestDocumentType</documentType>
-            <toDate>00:00 AM 01/10/2100</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <description>A named rule with previously defined template removed, but extensions defined</description>
             <ignorePrevious>false</ignorePrevious>
             <ruleExtensions>

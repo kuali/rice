@@ -107,9 +107,12 @@ public interface XmlConstants {
     public static final String IGNORE_PREVIOUS = "ignorePrevious";
     public static final String RESPONSIBILITIES = "responsibilities";
     public static final String RESPONSIBILITY = "responsibility";
+    public static final String RESPONSIBILITY_ID = "responsibilityId";
     public static final String ACTION_REQUESTED = "actionRequested";
     public static final String USER = "user";
     public static final String ROLE = "role";
+    public static final String ROLE_NAME = "roleName";
+    public static final String ATTRIBUTE_CLASS_NAME = "attributeClassName";
     public static final String APPROVE_POLICY = "approvePolicy";
     public static final String PRIORITY = "priority";
     public static final String DELEGATIONS = "delegations";
@@ -118,6 +121,10 @@ public interface XmlConstants {
     public static final String RULE_EXTENSION = "ruleExtension";
     public static final String RULE_EXTENSION_VALUES = "ruleExtensionValues";
     public static final String RULE_EXTENSION_VALUE = "ruleExtensionValue";
+    public static final String RULE_DELEGATIONS = "ruleDelegations";
+    public static final String RULE_DELEGATION = "ruleDelegation";
+    public static final String PARENT_RESPONSIBILITY = "parentResponsibility";
+    public static final String PARENT_RULE_NAME = "parentRuleName";
 
     // workgroups, most of the elements are not known to the core and are dictated by the institutional plugin
     public static final String GROUPS = "groups";

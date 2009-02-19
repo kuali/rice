@@ -3,9 +3,7 @@
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>
 			<documentType>KualiMaintenanceDocument</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <ruleTemplate>KualiOrgReviewTemplate</ruleTemplate>
+			<ruleTemplate>KualiOrgReviewTemplate</ruleTemplate>
 			<description>org rule</description>
 			<ignorePrevious>false</ignorePrevious>
 			<ruleExtensions>
@@ -34,9 +32,7 @@
 		</rule>
 		<rule>
 			<documentType>KualiFinancialDocument</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <ruleTemplate>KualiOrgReviewTemplate</ruleTemplate>
+			<ruleTemplate>KualiOrgReviewTemplate</ruleTemplate>
 			<description>base org rule for kuali docs</description>
 			<ignorePrevious>false</ignorePrevious>
 			<ruleExtensions>
@@ -64,10 +60,9 @@
 			</responsibilities>
 		</rule>
 		<rule>
+			<name>KualiFinancialDocument-Rule1</name>
 			<documentType>KualiFinancialDocument</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <ruleTemplate>KualiAccountTemplate</ruleTemplate>
+			<ruleTemplate>KualiAccountTemplate</ruleTemplate>
 			<description>main account rule</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
@@ -76,46 +71,12 @@
 					<approvePolicy>F</approvePolicy>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
-					<delegations>
-						<rule>
-							<documentType>KualiFinancialDocument</documentType>
-							<toDate>09:00 AM 05/30/2009</toDate>
-            				<fromDate>09:00 AM 05/30/2002</fromDate>
-            				<ruleTemplate>KualiAccountTemplate</ruleTemplate>
-							<description>primary delegation</description>
-							<ignorePrevious>false</ignorePrevious>
-							<responsibilities>
-								<responsibility>
-									<role>FISCAL-OFFICER-PRIMARY-DELEGATE</role>
-									<approvePolicy>F</approvePolicy>
-								</responsibility>
-							</responsibilities>
-							<delegationType>P</delegationType>
-						</rule>
-						<rule>
-							<documentType>KualiFinancialDocument</documentType>
-							<toDate>09:00 AM 05/30/2009</toDate>
-            				<fromDate>09:00 AM 05/30/2002</fromDate>
-            				<ruleTemplate>KualiAccountTemplate</ruleTemplate>
-							<description>secondary delegate</description>
-							<ignorePrevious>false</ignorePrevious>
-							<responsibilities>
-								<responsibility>
-									<role>FISCAL-OFFICER-SECONDARY-DELEGATE</role>
-									<approvePolicy>F</approvePolicy>
-								</responsibility>
-							</responsibilities>
-							<delegationType>S</delegationType>
-						</rule>
-					</delegations>
 				</responsibility>
 			</responsibilities>
 		</rule>
 		<rule>
 			<documentType>KualiAccountMaintenanceDocument</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <ruleTemplate>KualiChartTemplate</ruleTemplate>
+			<ruleTemplate>KualiChartTemplate</ruleTemplate>
 			<description>test rule on account doc</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
@@ -133,21 +94,59 @@
 				</responsibility>
 			</responsibilities>
 		</rule>
-        <rule>
-            <name>ANamedRule</name>
-            <documentType>TestDocumentType</documentType>
-            <toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <description>A named rule</description>
-            <expression type="someType">some expression</expression>
-            <ignorePrevious>false</ignorePrevious>
-            <responsibilities>
-                <responsibility>
-                    <user>user1</user>
-                    <actionRequested>A</actionRequested>
-                    <priority>1</priority>
-                </responsibility>
-            </responsibilities>
-        </rule>
+		<rule>
+			<name>ANamedRule</name>
+			<documentType>TestDocumentType</documentType>
+			<description>A named rule</description>
+			<expression type="someType">some expression</expression>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>user1</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
 	</rules>
+	<ruleDelegations xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
+		<ruleDelegation>
+			<parentResponsibility>
+				<parentRuleName>KualiFinancialDocument-Rule1</parentRuleName>
+				<role>FISCAL-OFFICER</role>
+			</parentResponsibility>
+			<delegationType>P</delegationType>
+			<rule>
+				<documentType>KualiFinancialDocument</documentType>
+				<ruleTemplate>KualiAccountTemplate</ruleTemplate>
+				<description>primary delegation</description>
+				<ignorePrevious>false</ignorePrevious>
+				<responsibilities>
+					<responsibility>
+						<role>FISCAL-OFFICER-PRIMARY-DELEGATE</role>
+						<approvePolicy>F</approvePolicy>
+					</responsibility>
+				</responsibilities>
+			</rule>
+		</ruleDelegation>
+		<ruleDelegation>
+			<parentResponsibility>
+				<parentRuleName>KualiFinancialDocument-Rule1</parentRuleName>
+				<role>FISCAL-OFFICER</role>
+			</parentResponsibility>
+			<delegationType>S</delegationType>
+			<rule>
+				<documentType>KualiFinancialDocument</documentType>
+				<ruleTemplate>KualiAccountTemplate</ruleTemplate>
+				<description>secondary delegate</description>
+				<ignorePrevious>false</ignorePrevious>
+				<responsibilities>
+					<responsibility>
+						<role>FISCAL-OFFICER-SECONDARY-DELEGATE</role>
+						<approvePolicy>F</approvePolicy>
+					</responsibility>
+				</responsibilities>
+			</rule>
+		</ruleDelegation>
+	</ruleDelegations>
 </data>

@@ -19,16 +19,18 @@ package org.kuali.rice.kew.xml.export;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
+import org.jdom.Namespace;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.RuleExtension;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
 import org.kuali.rice.kew.xml.XmlConstants;
 import org.kuali.rice.kew.xml.XmlRenderer;
+import org.kuali.rice.kim.bo.group.KimGroup;
 
 
 /**
@@ -42,8 +44,12 @@ public class RuleXmlExporter implements XmlExporter, XmlConstants {
 
     protected final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(getClass());
 
-    private XmlRenderer renderer = new XmlRenderer(RULE_NAMESPACE);
+    private XmlRenderer renderer;
 
+    public RuleXmlExporter(Namespace namespace) {
+    	this.renderer = new XmlRenderer(namespace);
+    }
+    
     public Element export(ExportDataSet dataSet) {
         if (!dataSet.getRules().isEmpty()) {
             Element rootElement = renderer.renderElement(null, RULES);
@@ -51,7 +57,7 @@ public class RuleXmlExporter implements XmlExporter, XmlConstants {
             for (Iterator iterator = dataSet.getRules().iterator(); iterator.hasNext();) {
                 RuleBaseValues rule = (RuleBaseValues) iterator.next();
                 if (!rule.getDelegateRule().booleanValue()) {
-                    exportRule(rootElement, rule, null);
+                    exportRule(rootElement, rule);
                 } else {
                     LOG.info("Not exporting a top-level delegate rule that was in the result set: " + rule.getRuleBaseValuesId());
                 }
@@ -61,22 +67,22 @@ public class RuleXmlExporter implements XmlExporter, XmlConstants {
         return null;
     }
 
-    private void exportRule(Element parent, RuleBaseValues rule, RuleDelegation delegation) {
+    public void exportRule(Element parent, RuleBaseValues rule) {
         Element ruleElement = renderer.renderElement(parent, RULE);
         if (rule.getName() != null) {
             renderer.renderTextElement(ruleElement, NAME, rule.getName());
         }
         renderer.renderTextElement(ruleElement, DOCUMENT_TYPE, rule.getDocTypeName());
-        if(rule.getToDateString()!=null){
-            renderer.renderTextElement(ruleElement, TO_DATE, rule.getToDateString());
-        }
-        if(rule.getFromDateString()!=null){
-            renderer.renderTextElement(ruleElement, FROM_DATE, rule.getFromDateString());
-        }
         if (rule.getRuleTemplateName() != null) {
             renderer.renderTextElement(ruleElement, RULE_TEMPLATE, rule.getRuleTemplateName());
         }
         renderer.renderTextElement(ruleElement, DESCRIPTION, rule.getDescription());
+        if(rule.getFromDateString() != null){
+            renderer.renderTextElement(ruleElement, FROM_DATE, rule.getFromDateString());
+        }
+        if(rule.getToDateString() != null){
+            renderer.renderTextElement(ruleElement, TO_DATE, rule.getToDateString());
+        }
         if (rule.getRuleExpressionDef() != null) {
             Element expressionElement = renderer.renderTextElement(ruleElement, EXPRESSION, rule.getRuleExpressionDef().getExpression());
             if (rule.getRuleExpressionDef().getType() != null) {
@@ -85,10 +91,7 @@ public class RuleXmlExporter implements XmlExporter, XmlConstants {
         }
         renderer.renderBooleanElement(ruleElement, IGNORE_PREVIOUS, rule.getIgnorePrevious(), false);
         exportRuleExtensions(ruleElement, rule.getRuleExtensions());
-        exportResponsibilities(ruleElement, rule.getResponsibilities(), delegation);
-        if (delegation != null) {
-            renderer.renderTextElement(ruleElement, DELEGATION_TYPE, delegation.getDelegationType());
-        }
+        exportResponsibilities(ruleElement, rule.getResponsibilities());
 
     }
 
@@ -118,35 +121,29 @@ public class RuleXmlExporter implements XmlExporter, XmlConstants {
         }
     }
 
-    private void exportResponsibilities(Element parent, List responsibilities, RuleDelegation delegation) {
+    private void exportResponsibilities(Element parent, List responsibilities) {
         if (!responsibilities.isEmpty()) {
             Element responsibilitiesElement = renderer.renderElement(parent, RESPONSIBILITIES);
             for (Iterator iterator = responsibilities.iterator(); iterator.hasNext();) {
                 RuleResponsibility ruleResponsibility = (RuleResponsibility) iterator.next();
                 Element respElement = renderer.renderElement(responsibilitiesElement, RESPONSIBILITY);
+                renderer.renderTextElement(respElement, RESPONSIBILITY_ID, "" + ruleResponsibility.getResponsibilityId());
                 if (ruleResponsibility.isUsingWorkflowUser()) {
-				    renderer.renderTextElement(respElement, USER, ruleResponsibility.getPrincipal().getPrincipalId());
+				    renderer.renderTextElement(respElement, PRINCIPAL_NAME, ruleResponsibility.getPrincipal().getPrincipalName());
 				} else if (ruleResponsibility.isUsingGroup()) {
-				    renderer.renderTextElement(respElement, WORKGROUP, ruleResponsibility.getGroup().getNamespaceCode().trim() + ":" + ruleResponsibility.getGroup().getGroupName().trim());
+					KimGroup group = ruleResponsibility.getGroup();
+				    Element groupElement = renderer.renderTextElement(respElement, GROUP_NAME, group.getGroupName());
+				    groupElement.setAttribute(NAMESPACE, group.getNamespaceCode());
 				} else if (ruleResponsibility.isUsingRole()) {
 				    renderer.renderTextElement(respElement, ROLE, ruleResponsibility.getRuleResponsibilityName());
 				    renderer.renderTextElement(respElement, APPROVE_POLICY, ruleResponsibility.getApprovePolicy());
 				}
-                if (delegation == null) {
-                    renderer.renderTextElement(respElement, ACTION_REQUESTED, ruleResponsibility.getActionRequestedCd());
-                    renderer.renderTextElement(respElement, PRIORITY, ruleResponsibility.getPriority().toString());
-                    exportDelegations(respElement, ruleResponsibility.getDelegationRules());
+                if (!StringUtils.isBlank(ruleResponsibility.getActionRequestedCd())) {
+                	renderer.renderTextElement(respElement, ACTION_REQUESTED, ruleResponsibility.getActionRequestedCd());
                 }
-            }
-        }
-    }
-
-    private void exportDelegations(Element parent, List ruleDelegations) {
-        if (!ruleDelegations.isEmpty()) {
-            Element delegationsElement = renderer.renderElement(parent, DELEGATIONS);
-            for (Iterator iterator = ruleDelegations.iterator(); iterator.hasNext();) {
-                RuleDelegation delegation = (RuleDelegation) iterator.next();
-                exportRule(delegationsElement, delegation.getDelegationRuleBaseValues(), delegation);
+                if (ruleResponsibility.getPriority() != null) {
+                	renderer.renderTextElement(respElement, PRIORITY, ruleResponsibility.getPriority().toString());
+                }
             }
         }
     }

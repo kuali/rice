@@ -24,6 +24,7 @@ import org.kuali.rice.kew.edl.bo.EDocLiteAssociation;
 import org.kuali.rice.kew.edl.bo.EDocLiteStyle;
 import org.kuali.rice.kew.help.HelpEntry;
 import org.kuali.rice.kew.rule.RuleBaseValues;
+import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kim.bo.group.KimGroup;
@@ -41,6 +42,7 @@ public class ExportDataSet {
     private List<RuleAttribute> ruleAttributes = new ArrayList<RuleAttribute>();
     private List<RuleTemplate> ruleTemplates = new ArrayList<RuleTemplate>();
     private List<RuleBaseValues> rules = new ArrayList<RuleBaseValues>();
+    private List<RuleDelegation> ruleDelegations = new ArrayList<RuleDelegation>();
     private List<HelpEntry> help = new ArrayList<HelpEntry>();
     private List<EDocLiteAssociation> edocLites = new ArrayList<EDocLiteAssociation>();
     private List<EDocLiteStyle> styles = new ArrayList<EDocLiteStyle>();
@@ -71,6 +73,9 @@ public class ExportDataSet {
 	}
 	public void setGroups(List<KimGroup> groups) {
 		this.groups = groups;
+	}
+	public List<RuleDelegation> getRuleDelegations() {
+		return this.ruleDelegations;
 	}
 
 }

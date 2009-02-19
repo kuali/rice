@@ -447,7 +447,7 @@
             </ruleExtensions>
             <responsibilities>
                 <responsibility>
-                    <user>user4</user>
+                    <principalName>user4</principalName>
                     <actionRequested>A</actionRequested>
                 </responsibility>
             </responsibilities>

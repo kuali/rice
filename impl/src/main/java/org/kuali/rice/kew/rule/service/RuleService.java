@@ -68,13 +68,12 @@ public interface RuleService extends XmlLoader, XmlExporter {
     public List fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateName, String documentType, Timestamp effectiveDate);
     public List findByRouteHeaderId(Long routeHeaderId);
     public void makeCurrent(Long routeHeaderId);
-    public void makeCurrent(RuleBaseValues rule);
-    public void makeCurrent(RuleDelegation ruleDelegation);
+    public void makeCurrent(RuleBaseValues rule, boolean isRetroactiveUpdatePermitted);
+    public void makeCurrent(RuleDelegation ruleDelegation, boolean isRetroactiveUpdatePermitted);
     public List findRuleBaseValuesByResponsibilityReviewer(String reviewerName, String type);
     public List findRuleBaseValuesByResponsibilityReviewerTemplateDoc(String ruleTemplateName, String documentType, String reviewerName, String type);
     public Long isLockedForRouting(Long currentRuleBaseValuesId);
     public List fetchAllRules(boolean currentRules);
-    public void saveDeactivationDate(RuleBaseValues rule);
     public RuleBaseValues findDefaultRuleByRuleTemplateId(Long ruleTemplateId);
     public void notifyCacheOfRuleChange(RuleBaseValues rule, DocumentType documentType);
     public RuleBaseValues getParentRule(Long ruleBaseValuesId);
@@ -114,4 +113,20 @@ public interface RuleService extends XmlLoader, XmlExporter {
      */
     public void removeRuleInvolvement(Id entityToBeRemoved, List<Long> ruleIds, Long documentId) throws WorkflowException;
 
+    /**
+     * Checks if the Rule with the given value is a duplicate of an existing rule in the system.
+     * 
+     * @return the id of the duplicate rule if one exists, null otherwise
+     */
+    public Long getDuplicateRuleId(RuleBaseValues rule);
+        
+    public RuleBaseValues saveRule(RuleBaseValues rule, boolean isRetroactiveUpdatePermitted);
+    
+    public List<RuleBaseValues> saveRules(List<RuleBaseValues> rulesToSave, boolean isRetroactiveUpdatePermitted);
+    
+    public RuleDelegation saveRuleDelegation(RuleDelegation ruleDelegation, boolean isRetroactiveUpdatePermitted);
+    
+    public List<RuleDelegation> saveRuleDelegations(List<RuleDelegation> ruleDelegationsToSave, boolean isRetroactiveUpdatePermitted);
+    
+    public Long findResponsibilityIdForRule(String ruleName, String ruleResponsibilityName, String ruleResponsibilityType);
 }

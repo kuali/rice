@@ -147,7 +147,7 @@
 			<active>false</active>
 			<routePaths>
 				<routePath>
-					<start name="AdHoc"/>
+					<start name="AdHoc" />
 				</routePath>
 			</routePaths>
 			<routeNodes>
@@ -180,7 +180,7 @@
 			<routePaths>
 				<routePath>
 					<start name="AdHoc" nextNode="WorkflowDocument" />
-					<requests name="WorkflowDocument"/>
+					<requests name="WorkflowDocument" />
 				</routePath>
 			</routePaths>
 			<routeNodes>
@@ -346,7 +346,7 @@
 			<active>true</active>
 			<routePaths>
 				<routePath>
-					<start name="AdHoc" nextNode="Approval"/>
+					<start name="AdHoc" nextNode="Approval" />
 					<requests name="Approval" />
 				</routePath>
 			</routePaths>
@@ -461,7 +461,7 @@
 					<activationType>P</activationType>
 					<ruleTemplate>WorkflowDocument2Template</ruleTemplate>
 					<mandatoryRoute>true</mandatoryRoute>
-          <finalApproval>true</finalApproval>
+					<finalApproval>true</finalApproval>
 				</requests>
 				<requests name="Acknowledge1">
 					<activationType>P</activationType>
@@ -725,9 +725,9 @@
 
 		<!--  end preapproval test document type -->
 
-        <!-- variables test document type -->
+		<!-- variables test document type -->
 
-        <documentType>
+		<documentType>
 			<name>VariablesTest</name>
 			<description>VariablesTest</description>
 			<label>VariablesTest</label>
@@ -739,64 +739,64 @@
 			<active>true</active>
 			<routePaths>
 				<routePath>
-				    <start name="AdHoc" nextNode="setStartedVar" />
-					<simple name="setStartedVar" nextNode="setCopiedVar"/>
-					<simple name="setCopiedVar" nextNode="PreApprovalTestOne"/>
-					<requests name="PreApprovalTestOne" nextNode="setEndedVar"/>
-					<simple name="setEndedVar" nextNode="setGoogleVar"/>
-					<simple name="setGoogleVar" nextNode="setXPathVar"/>
-					<simple name="setXPathVar" nextNode="resetStartedVar"/>
-                    <simple name="resetStartedVar" nextNode="logNode"/>
-					<simple name="logNode" nextNode="logNode2"/>
-					<simple name="logNode2"/>
+					<start name="AdHoc" nextNode="setStartedVar" />
+					<simple name="setStartedVar" nextNode="setCopiedVar" />
+					<simple name="setCopiedVar" nextNode="PreApprovalTestOne" />
+					<requests name="PreApprovalTestOne" nextNode="setEndedVar" />
+					<simple name="setEndedVar" nextNode="setGoogleVar" />
+					<simple name="setGoogleVar" nextNode="setXPathVar" />
+					<simple name="setXPathVar" nextNode="resetStartedVar" />
+					<simple name="resetStartedVar" nextNode="logNode" />
+					<simple name="logNode" nextNode="logNode2" />
+					<simple name="logNode2" />
 				</routePath>
 			</routePaths>
 			<routeNodes>
-			    <start name="AdHoc">
+				<start name="AdHoc">
 					<activationType>P</activationType>
 				</start>
 				<simple name="setStartedVar">
-				  <type>org.kuali.rice.kew.engine.node.var.SetVarNode</type>
-				  <name>started</name>
-				  <value>startedVariableValue</value>
+					<type>org.kuali.rice.kew.engine.node.var.SetVarNode</type>
+					<name>started</name>
+					<value>startedVariableValue</value>
 				</simple>
 				<simple name="setCopiedVar">
-				  <type>org.kuali.rice.kew.engine.node.var.SetVarNode</type>
-				  <name>copiedVar</name>
-				  <value>var:started</value>
+					<type>org.kuali.rice.kew.engine.node.var.SetVarNode</type>
+					<name>copiedVar</name>
+					<value>var:started</value>
 				</simple>
 				<requests name="PreApprovalTestOne">
 					<activationType>S</activationType>
 					<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 				</requests>
 				<simple name="setEndedVar">
-				    <type>org.kuali.rice.kew.engine.node.var.SetVarNode</type>
-				    <name>ended</name>
+					<type>org.kuali.rice.kew.engine.node.var.SetVarNode</type>
+					<name>ended</name>
 					<value>endedVariableValue</value>
 				</simple>
 				<simple name="setGoogleVar">
-				    <type>org.kuali.rice.kew.engine.node.var.SetVarNode</type>
-				    <name>google</name>
+					<type>org.kuali.rice.kew.engine.node.var.SetVarNode</type>
+					<name>google</name>
 					<value>url:http://google.com</value>
 				</simple>
 				<simple name="setXPathVar">
-				    <type>org.kuali.rice.kew.engine.node.var.SetVarNode</type>
-				    <name>xpath</name>
+					<type>org.kuali.rice.kew.engine.node.var.SetVarNode</type>
+					<name>xpath</name>
 					<value>xpath:concat(local-name(//documentContent),$ended)</value>
 				</simple>
-                <simple name="resetStartedVar">
-                  <type>org.kuali.rice.kew.engine.node.var.SetVarNode</type>
-                  <name>started</name>
-                  <value>aNewStartedVariableValue</value>
-                </simple>
+				<simple name="resetStartedVar">
+					<type>org.kuali.rice.kew.engine.node.var.SetVarNode</type>
+					<name>started</name>
+					<value>aNewStartedVariableValue</value>
+				</simple>
 				<simple name="logNode">
-				    <type>org.kuali.rice.kew.engine.node.LogNode</type>
+					<type>org.kuali.rice.kew.engine.node.LogNode</type>
 					<message>var:xpath</message>
 				</simple>
 				<simple name="logNode2">
-				    <type>org.kuali.rice.kew.engine.node.LogNode</type>
-				    <level>ErRoR</level>
-				    <log>Custom.Logger.Name</log>
+					<type>org.kuali.rice.kew.engine.node.LogNode</type>
+					<level>ErRoR</level>
+					<log>Custom.Logger.Name</log>
 					<message>THAT'S ALL FOLKS</message>
 				</simple>
 			</routeNodes>
@@ -804,7 +804,7 @@
 
 		<!-- end variables test document type -->
 
-        <!--  initiator role test document type -->
+		<!--  initiator role test document type -->
 
 		<documentType>
 			<name>InitiatorRoleApprovalTest</name>
@@ -939,9 +939,7 @@
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>
 			<documentType>SuperUserActionInvalidPostProcessor</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <ruleTemplate>WorkflowDocument2Template</ruleTemplate>
+			<ruleTemplate>WorkflowDocument2Template</ruleTemplate>
 			<description>WorkflowDocument2Template and SuperUserActionInvalidPostProcessor Rule 1</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -954,9 +952,7 @@
 		</rule>
 		<rule>
 			<documentType>SuperUserActionInvalidPostProcessor</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <ruleTemplate>WorkflowDocument2Template</ruleTemplate>
+			<ruleTemplate>WorkflowDocument2Template</ruleTemplate>
 			<description>WorkflowDocument2Template and SuperUserActionInvalidPostProcessor Rule 2</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -969,9 +965,7 @@
 		</rule>
 		<rule>
 			<documentType>SuperUserApproveActionRequestApproveTest</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>WorkflowDocumentTemplate Rule 1</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -984,9 +978,7 @@
 		</rule>
 		<rule>
 			<documentType>BlanketApproveTest</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>WorkflowDocumentTemplate Rule 3</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -999,9 +991,7 @@
 		</rule>
 		<rule>
 			<documentType>BlanketApproveTest</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>WorkflowDocumentTemplate Rule 2</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -1014,9 +1004,7 @@
 		</rule>
 		<rule>
 			<documentType>BlanketApproveTest</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <ruleTemplate>WorkflowDocument2Template</ruleTemplate>
+			<ruleTemplate>WorkflowDocument2Template</ruleTemplate>
 			<description>WorkflowDocument2Template Rule 1</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -1029,9 +1017,7 @@
 		</rule>
 		<rule>
 			<documentType>BlanketApproveTest</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <ruleTemplate>WorkflowDocument3Template</ruleTemplate>
+			<ruleTemplate>WorkflowDocument3Template</ruleTemplate>
 			<description>WorkflowDocument3Template Rule 1</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -1044,9 +1030,7 @@
 		</rule>
 		<rule>
 			<documentType>BlanketApproveTest</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <ruleTemplate>WorkflowDocument4Template</ruleTemplate>
+			<ruleTemplate>WorkflowDocument4Template</ruleTemplate>
 			<description>WorkflowDocument4Template Rule 1</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -1059,9 +1043,7 @@
 		</rule>
 		<rule>
 			<documentType>BlanketApproveTest</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <ruleTemplate>WorkflowDocumentFinalTemplate</ruleTemplate>
+			<ruleTemplate>WorkflowDocumentFinalTemplate</ruleTemplate>
 			<description>WorkflowDocumentFinalTemplate Rule 1</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -1074,9 +1056,7 @@
 		</rule>
 		<rule>
 			<documentType>BlanketApproveTest</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <ruleTemplate>Ack1Template</ruleTemplate>
+			<ruleTemplate>Ack1Template</ruleTemplate>
 			<description>Ack1Template Rule 1</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -1089,9 +1069,7 @@
 		</rule>
 		<rule>
 			<documentType>BlanketApproveTest</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <ruleTemplate>Ack2Template</ruleTemplate>
+			<ruleTemplate>Ack2Template</ruleTemplate>
 			<description>Ack2Template Rule 1</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -1105,9 +1083,7 @@
 
 		<rule>
 			<documentType>NotificationTest</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <ruleTemplate>NotifyFirstTemplate</ruleTemplate>
+			<ruleTemplate>NotifyFirstTemplate</ruleTemplate>
 			<description>Notify First Rule 1</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -1124,10 +1100,9 @@
 			</responsibilities>
 		</rule>
 		<rule>
+			<name>NotificationTest-Rule1</name>
 			<documentType>NotificationTest</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <ruleTemplate>NotifyLeftBranchTemplate</ruleTemplate>
+			<ruleTemplate>NotifyLeftBranchTemplate</ruleTemplate>
 			<description>Notify Left Branch Rule 1</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -1135,48 +1110,16 @@
 					<user>rkirkend</user>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
-					<delegations>
-						<rule>
-							<documentType>NotificationTest</documentType>
-							<toDate>09:00 AM 05/30/2009</toDate>
-            				<fromDate>09:00 AM 05/30/2002</fromDate>
-            				<ruleTemplate>NotifyLeftBranchTemplate</ruleTemplate>
-							<description>Notify left Branch Prim Del</description>
-							<ignorePrevious>false</ignorePrevious>
-							<responsibilities>
-								<responsibility>
-									<user>temay</user>
-								</responsibility>
-								<responsibility>
-								    <workgroup>KR-WKFLW:NonSIT</workgroup>
-								</responsibility>
-							</responsibilities>
-							<delegationType>P</delegationType>
-						</rule>
-						<rule>
-							<documentType>NotificationTest</documentType>
-							<toDate>09:00 AM 05/30/2009</toDate>
-		            <fromDate>09:00 AM 05/30/2002</fromDate>
-		            <ruleTemplate>NotifyLeftBranchTemplate</ruleTemplate>
-									<description>Notify Left Branch Sec Del</description>
-							<ignorePrevious>true</ignorePrevious>
-							<responsibilities>
-								<responsibility>
-									<user>pmckown</user>
-								</responsibility>
-							</responsibilities>
-							<delegationType>S</delegationType>
-						</rule>
-					</delegations>
 				</responsibility>
 			</responsibilities>
 		</rule>
 		<rule>
+			<name>NotificationTest-Rule2</name>
 			<documentType>NotificationTest</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <ruleTemplate>NotifyRightBranchTemplate</ruleTemplate>
+			<ruleTemplate>NotifyRightBranchTemplate</ruleTemplate>
 			<description>Notify Right Branch Rule 1</description>
+			<fromDate>05/30/2002</fromDate>
+			<toDate>05/30/2209</toDate>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
 				<responsibility>
@@ -1184,32 +1127,15 @@
 					<approvePolicy>F</approvePolicy>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
-					<delegations>
-						<rule>
-							<documentType>NotificationTest</documentType>
-							<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <ruleTemplate>NotifyRightBranchTemplate</ruleTemplate>
-							<description>Notify Right Delegation</description>
-							<ignorePrevious>true</ignorePrevious>
-							<responsibilities>
-								<responsibility>
-									<role>org.kuali.rice.kew.actions.BANotificationRoleAttribute!NotifyDelegate</role>
-									<approvePolicy>F</approvePolicy>
-								</responsibility>
-							</responsibilities>
-							<delegationType>S</delegationType>
-						</rule>
-					</delegations>
 				</responsibility>
 			</responsibilities>
 		</rule>
 		<rule>
 			<documentType>NotificationTest</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <ruleTemplate>NotifyFinalTemplate</ruleTemplate>
+			<ruleTemplate>NotifyFinalTemplate</ruleTemplate>
 			<description>Notify Final Rule 1</description>
+			<fromDate>05/30/2002</fromDate>
+			<toDate>05/30/2209</toDate>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
 				<responsibility>
@@ -1232,9 +1158,7 @@
 		<!--  SAE Rules -->
 		<rule>
 			<documentType>SaveActionEventTest</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>WorkflowDocumentTemplate SaveAction Rule 1</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -1247,9 +1171,7 @@
 		</rule>
 		<rule>
 			<documentType>SaveActionEventTest</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>WorkflowDocumentTemplate SaveAction Rule 2</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -1264,14 +1186,12 @@
 		<!--  workgroup authority rules -->
 		<rule>
 			<documentType>TakeWorkgroupAuthorityDoc</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <ruleTemplate>WorkgroupByDocument</ruleTemplate>
+			<ruleTemplate>WorkgroupByDocument</ruleTemplate>
 			<description>TakeWorkgroupAuthorityDoc route to TestWorkgroup</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
 				<responsibility>
-				    <workgroup>KR-WKFLW:TestWorkgroup</workgroup>
+					<workgroup>KR-WKFLW:TestWorkgroup</workgroup>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>
@@ -1281,9 +1201,7 @@
 		<!-- begin AdhocRouteTest rules -->
 		<rule>
 			<documentType>AdhocRouteTest</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>required AdhocRouteTest</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
@@ -1299,9 +1217,7 @@
 		<!--  pre approval test rules -->
 		<rule>
 			<documentType>PreApprovalTest</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>required PreApprovalTest1</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
@@ -1314,9 +1230,7 @@
 		</rule>
 		<rule>
 			<documentType>PreApprovalTest</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>required PreApprovalTest2</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
@@ -1329,9 +1243,7 @@
 		</rule>
 		<rule>
 			<documentType>PreApprovalTest</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>required PreApprovalTest3</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
@@ -1344,9 +1256,7 @@
 		</rule>
 		<rule>
 			<documentType>PreApprovalTest</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>required PreApprovalTest4</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
@@ -1359,12 +1269,10 @@
 		</rule>
 		<!--  end preapproval test rules	-->
 
-<!-- variables test rules -->
-<rule>
+		<!-- variables test rules -->
+		<rule>
 			<documentType>VariablesTest</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>required VariablesTest1</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
@@ -1377,8 +1285,6 @@
 		</rule>
 		<rule>
 			<documentType>VariablesTest</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>required VariablesTest2</description>
 			<ignorePrevious>false</ignorePrevious>
@@ -1392,9 +1298,7 @@
 		</rule>
 		<rule>
 			<documentType>VariablesTest</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>required VariablesTest3</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
@@ -1407,9 +1311,7 @@
 		</rule>
 		<rule>
 			<documentType>VariablesTest</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>required VariablesTest4</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
@@ -1424,9 +1326,7 @@
 		<!--  initiator role test rules -->
 		<rule>
 			<documentType>InitiatorRoleApprovalTest</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>required InitiatorRoleApprovalTest1</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -1439,9 +1339,7 @@
 		</rule>
 		<rule>
 			<documentType>InitiatorRoleApprovalTest</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>required InitiatorRoleApprovalTest2</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
@@ -1454,9 +1352,7 @@
 		</rule>
 		<rule>
 			<documentType>InitiatorRoleApprovalTest</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>required InitiatorRoleApprovalTest3</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
@@ -1469,9 +1365,7 @@
 		</rule>
 		<rule>
 			<documentType>InitiatorRoleApprovalTest</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>required InitiatorRoleApprovalTest4</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
@@ -1487,9 +1381,7 @@
 		<!-- rules for testing blanket approval past a role -->
 		<rule>
 			<documentType>BlanketApproveThroughRoleAndWorkgroupTest</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <ruleTemplate>BANotificationRoleTemplate</ruleTemplate>
+			<ruleTemplate>BANotificationRoleTemplate</ruleTemplate>
 			<description>BA Notification Rule 1</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -1503,9 +1395,7 @@
 		</rule>
 		<rule>
 			<documentType>BlanketApproveThroughRoleAndWorkgroupTest</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <ruleTemplate>BANotificationRoleTemplate</ruleTemplate>
+			<ruleTemplate>BANotificationRoleTemplate</ruleTemplate>
 			<description>BA Notification Rule 2</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -1519,9 +1409,7 @@
 		</rule>
 		<rule>
 			<documentType>BlanketApproveThroughRoleAndWorkgroupTest</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>BA Notification Workgroup Rule 1</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -1534,9 +1422,7 @@
 		</rule>
 		<rule>
 			<documentType>BlanketApproveThroughRoleAndWorkgroupTest</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <ruleTemplate>WorkflowDocument2Template</ruleTemplate>
+			<ruleTemplate>WorkflowDocument2Template</ruleTemplate>
 			<description>BA Notification Workgroup Rule 2</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
@@ -1551,9 +1437,7 @@
 		<!-- su approve exception case rules -->
 		<rule>
 			<documentType>SUApproveDocument</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>SUApproveDocument rule</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
@@ -1566,9 +1450,7 @@
 		</rule>
 		<rule>
 			<documentType>SUApproveDocument</documentType>
-			<toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
-            <ruleTemplate>WorkflowDocument3Template</ruleTemplate>
+			<ruleTemplate>WorkflowDocument3Template</ruleTemplate>
 			<description>SUApproveDocument rule WorkflowDocument3Template</description>
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
@@ -1581,4 +1463,68 @@
 		</rule>
 		<!-- end su approve exception case rules -->
 	</rules>
+
+	<ruleDelegations xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
+		<ruleDelegation>
+			<parentResponsibility>
+				<parentRuleName>NotificationTest-Rule1</parentRuleName>
+				<principalName>rkirkend</principalName>
+			</parentResponsibility>
+			<delegationType>P</delegationType>
+			<rule>
+				<documentType>NotificationTest</documentType>
+				<ruleTemplate>NotifyLeftBranchTemplate</ruleTemplate>
+				<description>Notify left Branch Prim Del</description>
+				<ignorePrevious>false</ignorePrevious>
+				<responsibilities>
+					<responsibility>
+						<user>temay</user>
+					</responsibility>
+					<responsibility>
+						<workgroup>KR-WKFLW:NonSIT</workgroup>
+					</responsibility>
+				</responsibilities>
+			</rule>
+		</ruleDelegation>
+
+		<ruleDelegation>
+			<parentResponsibility>
+				<parentRuleName>NotificationTest-Rule1</parentRuleName>
+				<principalName>rkirkend</principalName>
+			</parentResponsibility>
+			<delegationType>S</delegationType>
+			<rule>
+				<documentType>NotificationTest</documentType>
+				<ruleTemplate>NotifyLeftBranchTemplate</ruleTemplate>
+				<description>Notify Left Branch Sec Del</description>
+				<ignorePrevious>true</ignorePrevious>
+				<responsibilities>
+					<responsibility>
+						<user>pmckown</user>
+					</responsibility>
+				</responsibilities>
+			</rule>
+		</ruleDelegation>
+
+		<ruleDelegation>
+			<parentResponsibility>
+				<parentRuleName>NotificationTest-Rule2</parentRuleName>
+				<role>org.kuali.rice.kew.actions.BANotificationRoleAttribute!Notify</role>
+			</parentResponsibility>
+			<delegationType>S</delegationType>
+			<rule>
+				<documentType>NotificationTest</documentType>
+				<ruleTemplate>NotifyRightBranchTemplate</ruleTemplate>
+				<description>Notify Right Delegation</description>
+				<ignorePrevious>true</ignorePrevious>
+				<responsibilities>
+					<responsibility>
+						<role>org.kuali.rice.kew.actions.BANotificationRoleAttribute!NotifyDelegate</role>
+						<approvePolicy>F</approvePolicy>
+					</responsibility>
+				</responsibilities>
+			</rule>
+		</ruleDelegation>
+	</ruleDelegations>
+
 </data>

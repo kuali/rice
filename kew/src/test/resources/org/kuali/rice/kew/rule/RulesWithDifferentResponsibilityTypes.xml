@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
+		<rule>
+			<name>RespTypeTest1</name>
+			<documentType>TestDocumentType</documentType>
+			<ruleTemplate>TestRuleTemplate</ruleTemplate>
+			<description>TestRule1</description>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<principalName>user1</principalName>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<name>RespTypeTest2</name>
+			<documentType>TestDocumentType</documentType>
+			<ruleTemplate>TestRuleTemplate</ruleTemplate>
+			<description>TestRule1</description>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<principalId>1001</principalId>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<name>RespTypeTest3</name>
+			<documentType>TestDocumentType</documentType>
+			<ruleTemplate>TestRuleTemplate</ruleTemplate>
+			<description>TestRule1</description>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<groupName namespace="KR-WKFLW">TestWorkgroup</groupName>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<name>RespTypeTest4</name>
+			<documentType>TestDocumentType</documentType>
+			<ruleTemplate>TestRuleTemplate</ruleTemplate>
+			<description>TestRule1</description>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<groupId>1</groupId>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<name>RespTypeTest5</name>
+			<documentType>TestDocumentType</documentType>
+			<ruleTemplate>TestRuleTemplate</ruleTemplate>
+			<description>TestRule1</description>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<role>org.kuali.rice.kew.rule.TestRuleAttribute!TEST</role>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<name>RespTypeTest6</name>
+			<documentType>TestDocumentType</documentType>
+			<ruleTemplate>TestRuleTemplate</ruleTemplate>
+			<description>TestRule1</description>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<roleName attributeClassName="org.kuali.rice.kew.rule.TestRuleAttribute">TEST</roleName>
+				</responsibility>
+			</responsibilities>
+		</rule>
+	</rules>
+</data>

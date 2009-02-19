@@ -1089,7 +1089,7 @@
             -->
             <responsibilities>
                 <responsibility>
-                    <user>admin</user>
+                    <principalName>admin</principalName>
                     <actionRequested>A</actionRequested>
                     <priority>1</priority>
                 </responsibility>
@@ -1102,111 +1102,12 @@
             <ignorePrevious>false</ignorePrevious>
             <responsibilities>
                 <responsibility>
-                    <workgroup>WorkflowAdmin</workgroup>
+                    <groupName namespace="KR-WKFLW">WorkflowAdmin</groupName>
                     <actionRequested>A</actionRequested>
                     <priority>1</priority>
                 </responsibility>
             </responsibilities>
         </rule>
-
-	<rule>
-       <name>KIMNamespaceKualiIdentityManagersGroupApproval</name>
-       <documentType>KIMNamespaceMaintenanceDocument</documentType>
-       <description>This rule requires an approval from the KIM Kuali Identity Managers workgroup.</description>
-       <ignorePrevious>true</ignorePrevious>
-       <responsibilities>
-	       <responsibility>
-	          <workgroup>Kuali Identity Managers</workgroup>
-	       </responsibility>
-       </responsibilities>
-    </rule>
-
-
-    <rule>
-       <name>KIMEntityKualiIdentityManagersGroupApproval</name>
-       <documentType>KIMEntityMaintenanceDocument</documentType>
-       <description>This rule requires an approval from the KIM Kuali Identity Managers workgroup.</description>
-       <ignorePrevious>true</ignorePrevious>
-       <responsibilities>
-	       <responsibility>
-	          <workgroup>Kuali Identity Managers</workgroup>
-	       </responsibility>
-       </responsibilities>
-    </rule>
-
-    <rule>
-       <name>KIMPrincipalKualiIdentityManagersGroupApproval</name>
-       <documentType>KIMPrincipalMaintenanceDocument</documentType>
-       <description>This rule requires an approval from the KIM Kuali Identity Managers workgroup.</description>
-       <ignorePrevious>true</ignorePrevious>
-       <responsibilities>
-	       <responsibility>
-	          <workgroup>Kuali Identity Managers</workgroup>
-	       </responsibility>
-       </responsibilities>
-    </rule>
-
-
-    <rule>
-       <name>KIMEntityTypeKualiIdentityManagersGroupApproval</name>
-       <documentType>KIMEntityTypeMaintenanceDocument</documentType>
-       <description>This rule requires an approval from the KIM Kuali Identity Managers workgroup.</description>
-       <ignorePrevious>true</ignorePrevious>
-       <responsibilities>
-	       <responsibility>
-	          <workgroup>Kuali Identity Managers</workgroup>
-	       </responsibility>
-       </responsibilities>
-    </rule>
-
-
-    <rule>
-       <name>KIMGroupTypeKualiIdentityManagersGroupApproval</name>
-       <documentType>KIMGroupTypeMaintenanceDocument</documentType>
-       <description>This rule requires an approval from the KIM Kuali Identity Managers workgroup.</description>
-       <ignorePrevious>true</ignorePrevious>
-       <responsibilities>
-	       <responsibility>
-	          <workgroup>Kuali Identity Managers</workgroup>
-	       </responsibility>
-       </responsibilities>
-    </rule>
-
-    <rule>
-       <name>KIMRoleKualiIdentityManagersGroupApproval</name>
-       <documentType>KIMRoleMaintenanceDocument</documentType>
-       <description>This rule requires an approval from the KIM Kuali Identity Managers workgroup.</description>
-       <ignorePrevious>true</ignorePrevious>
-       <responsibilities>
-	       <responsibility>
-	          <workgroup>Kuali Identity Managers</workgroup>
-	       </responsibility>
-       </responsibilities>
-    </rule>
-
-    <rule>
-       <name>KIMAttributeTypeKualiIdentityManagersGroupApproval</name>
-       <documentType>KIMAttributeTypeMaintenanceDocument</documentType>
-       <description>This rule requires an approval from the KIM Kuali Administrators workgroup.</description>
-       <ignorePrevious>true</ignorePrevious>
-       <responsibilities>
-	       <responsibility>
-	          <workgroup>Kuali Administrators</workgroup>
-	       </responsibility>
-       </responsibilities>
-    </rule>
-
-    <rule>
-       <name>KIMGroupKualiIdentityManagersGroupApproval</name>
-       <documentType>KIMGroupMaintenanceDocument</documentType>
-       <description>This rule requires an approval from the KIM Kuali Identity Managers workgroup.</description>
-       <ignorePrevious>true</ignorePrevious>
-       <responsibilities>
-	       <responsibility>
-	          <workgroup>Kuali Identity Managers</workgroup>
-	       </responsibility>
-       </responsibilities>
-    </rule>
 
         <rule>
           <documentType>SendNotificationRequest</documentType>
@@ -1231,12 +1132,4 @@
 
     </rules>
 
-    <helpEntries xmlns="ns:workflow/Help" xsi:schemaLocation="ns:workflow/Help resource:Help">
-    </helpEntries>
-
-    <styles xmlns="ns:workflow/Style" xsi:schemaLocation="ns:workflow/Style resource:Style">
-    </styles>
-
-    <edoclite xmlns="ns:workflow/EDocLite" xsi:schemaLocation="ns:workflow/EDocLite resource:EDocLite">
-    </edoclite>
 </data>

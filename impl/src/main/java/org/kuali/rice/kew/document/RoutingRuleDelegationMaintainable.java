@@ -98,7 +98,7 @@ public class RoutingRuleDelegationMaintainable extends KualiMaintainableImpl {
     	WebRuleUtils.translateResponsibilitiesForSave(getThisRule());
     	WebRuleUtils.translateFieldValuesForSave(getThisRule());
     	WebRuleUtils.processRuleForDelegationSave(getThisRuleDelegation());
-    	KEWServiceLocator.getRuleService().makeCurrent(getThisRuleDelegation());
+    	KEWServiceLocator.getRuleService().makeCurrent(getThisRuleDelegation(), true);
     }
     
     @Override

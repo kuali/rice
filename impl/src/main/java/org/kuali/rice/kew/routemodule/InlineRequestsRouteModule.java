@@ -141,8 +141,7 @@ public class InlineRequestsRouteModule extends FlexRMAdapter {
 
         for (Object o: root.getChildren("responsibility", XmlConstants.RULE_NAMESPACE)) {
             Element e = (Element) o;
-            RuleResponsibility responsibility = parser.parseResponsibility(e, fakeRule, null);
-            System.err.println("Responsibility id: " + responsibility.getResponsibilityId());
+            RuleResponsibility responsibility = parser.parseResponsibility(e, fakeRule);
             responsibility.setResponsibilityId(KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID);
             responsibilities.add(responsibility);
         }

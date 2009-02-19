@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kew.rule.RuleDelegation;
+import org.kuali.rice.kew.xml.XmlLoader;
+import org.kuali.rice.kew.xml.export.XmlExporter;
 
 /**
  * A service providing data access for {@link RuleDelegation}s.
@@ -29,12 +31,12 @@ import org.kuali.rice.kew.rule.RuleDelegation;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public interface RuleDelegationService {
+public interface RuleDelegationService extends XmlLoader, XmlExporter {
 
     public List findByDelegateRuleId(Long ruleId);
     public void save(RuleDelegation ruleDelegation);
     public void delete(Long ruleDelegationId);
-    public List findAllRuleDelegations();
+    public List findAllCurrentRuleDelegations();
     public RuleDelegation findByRuleDelegationId(Long ruleDelegationId);
     public List<RuleDelegation> search(String parentRuleBaseVaueId, String parentResponsibilityId,  String docTypeName, Long ruleId, Long ruleTemplateId, String ruleDescription, String groupId, String principalId, String delegationType, Boolean activeInd, Map extensionValues, String workflowIdDirective);
     public List<RuleDelegation> search(String parentRuleBaseVaueId, String parentResponsibilityId,  String docTypeName, String ruleTemplateName, String ruleDescription, String groupId, String principalId, Boolean workgroupMember, String delegationType, Boolean activeInd, Map extensionValues, Collection<String> actionRequestCodes);

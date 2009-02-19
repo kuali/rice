@@ -16,6 +16,7 @@
  */
 package org.kuali.rice.kew.rule.service.impl;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -23,13 +24,18 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.jdom.Element;
+import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
+import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
+import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
-import org.kuali.rice.kew.rule.dao.RuleDAO;
 import org.kuali.rice.kew.rule.dao.RuleDelegationDAO;
 import org.kuali.rice.kew.rule.service.RuleDelegationService;
 import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.xml.RuleXmlParser;
+import org.kuali.rice.kew.xml.export.RuleDelegationXmlExporter;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -40,6 +46,11 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  */
 public class RuleDelegationServiceImpl implements RuleDelegationService {
 
+	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
+			.getLogger(RuleDelegationServiceImpl.class);
+	
+	private static final String XML_PARSE_ERROR = "general.error.parsexml";
+	
     private RuleDelegationDAO dao;
 
     public List findByDelegateRuleId(Long ruleId) {
@@ -54,8 +65,8 @@ public class RuleDelegationServiceImpl implements RuleDelegationService {
     public void setRuleDelegationDAO(RuleDelegationDAO dao) {
         this.dao = dao;
     }
-    public List findAllRuleDelegations(){
-        return dao.findAllRuleDelegations();
+    public List findAllCurrentRuleDelegations(){
+        return dao.findAllCurrentRuleDelegations();
     }
     public void delete(Long ruleDelegationId){
         dao.delete(ruleDelegationId);
@@ -120,8 +131,25 @@ public class RuleDelegationServiceImpl implements RuleDelegationService {
         return dao.search(parentRuleBaseVaueId, parentResponsibilityId, docTypeName, ruleTemplateId, ruleDescription, workgroupIds, principalId,
                 delegationType,activeInd, extensionValues, actionRequestCodes);
     }
+    
+    public void loadXml(InputStream inputStream, String principalId) {
+    	RuleXmlParser parser = new RuleXmlParser();
+        try {
+            parser.parseRuleDelegations(inputStream);
+        } catch (Exception e) { //any other exception
+            LOG.error("Error loading xml file", e);
+            WorkflowServiceErrorException wsee = new WorkflowServiceErrorException("Error loading xml file", new WorkflowServiceErrorImpl("Error loading xml file", XML_PARSE_ERROR));
+            wsee.initCause(e);
+            throw wsee;
+        }
+	}
 
-    private IdentityManagementService getIdentityManagementService() {
+	public Element export(ExportDataSet dataSet) {
+		RuleDelegationXmlExporter exporter = new RuleDelegationXmlExporter();
+		return exporter.export(dataSet);
+	}
+
+	private IdentityManagementService getIdentityManagementService() {
         return (IdentityManagementService)KIMServiceLocator.getIdentityManagementService();
     }
 

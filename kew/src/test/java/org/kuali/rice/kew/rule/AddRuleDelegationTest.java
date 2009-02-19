@@ -97,307 +97,122 @@ public class AddRuleDelegationTest extends KEWTestCase {
 
 		KimPrincipal principal2 = KEWServiceLocator.getIdentityHelperService().getPrincipal(new NetworkIdDTO(DELEGATE_USER));
 
-		/**
-		 * Route the delegate rule
-		 */
-
-		Rule2Form ruleForm = routeNewDelegateRule(originalRule, rt, originalRuleResponsibilityKey, principal2);
-
-		// verify doc is ENROUTE still
-		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), ruleForm.getDocId());
-		assertTrue("Document should be enroute: " + document.getStatusDisplayValue(), document.stateIsEnroute());
-		assertTrue(document.isApprovalRequested());
-
-		// after rule with delegate is routed, verify the integrity of the original rule
-
+		// save the new rule delegation
+		saveNewRuleDelegation(originalRule, rt, originalResp, principal2);
+	
+		// check the original rule, it should be the same (i.e. not be re-versioned as KEW used to do pre 1.0 when a delegate was added)
 		originalRule = KEWServiceLocator.getRuleService().findRuleBaseValuesById(originalRule.getRuleBaseValuesId());
 		assertTrue("Original rule should be current.", originalRule.getCurrentInd());
-		List responsibilities = originalRule.getResponsibilities();
-		assertEquals("Should have 1 responsibility", 1, responsibilities.size());
-		originalResp = (RuleResponsibility)responsibilities.get(0);
-		assertEquals("Original rule should have no delegations.", 0, originalResp.getDelegationRules().size());
+		List<RuleResponsibility> responsibilities = originalRule.getResponsibilities();
+		originalResp = responsibilities.get(0);
+		assertEquals("Original rule should have 1 delegation now.", 1, originalResp.getDelegationRules().size());
 
-		// verify the integrity of the enroute rule
-
-		List newRules = KEWServiceLocator.getRuleService().findByRouteHeaderId(document.getRouteHeaderId());
-		assertEquals("There should be 2 new rules, one parent and one delegate.", 2, newRules.size());
-		RuleBaseValues newParent = null;
-		RuleBaseValues newDelegate = null;
-		for (Iterator iterator = newRules.iterator(); iterator.hasNext();) {
-			RuleBaseValues newRule = (RuleBaseValues) iterator.next();
-			if (newRule.getDelegateRule()) {
-				newDelegate = newRule;
-			} else {
-				newParent = newRule;
-			}
-		}
-		assertNotNull(newParent);
-		assertNotNull(newDelegate);
-
-		// check the parent rule
-		assertFalse("New parent rule should NOT be current.", newParent.getCurrentInd());
-		assertEquals("New parent rule should have original as previous version.", originalRule.getRuleBaseValuesId(), newParent.getPreviousVersionId());
-		responsibilities = newParent.getResponsibilities();
-		assertEquals("Should have 1 responsibility", 1, responsibilities.size());
-		originalResp = (RuleResponsibility)responsibilities.get(0);
-		//        assertEquals("New parent should have 1 delegation.", 1, originalResp.getDelegationRules().size());
-		//        RuleBaseValues theDelegation = originalResp.getDelegationRule(0).getDelegationRuleBaseValues();
-		//        assertEquals("Delegation rule id should be id of new delegation", newDelegate.getRuleBaseValuesId(), theDelegation.getRuleBaseValuesId());
-
-		// check delegate rule
-		assertFalse("New delegate should NOT be current.", newDelegate.getCurrentInd());
-		assertNull("New delegate should have no previous version.", newDelegate.getPreviousVersionId());
+		List<RuleDelegation> newRuleDelegations = KEWServiceLocator.getRuleDelegationService().findByResponsibilityId(originalResp.getResponsibilityId());
+		assertEquals("Should be 1 delegation", 1, newRuleDelegations.size());
+		
+		RuleDelegation newRuleDelegation = newRuleDelegations.get(0);
+		assertEquals("Incorrect responsibility id", originalResp.getResponsibilityId(), newRuleDelegation.getResponsibilityId());
+		assertNotNull("Name should not be null", newRuleDelegation.getDelegationRuleBaseValues().getName());
+		assertTrue("delegate rule should be current", newRuleDelegation.getDelegationRuleBaseValues().getCurrentInd());
+		assertTrue("delegate rule should be flagged as a delegate", newRuleDelegation.getDelegationRuleBaseValues().getDelegateRule());
+		assertEquals("Should have 1 responsibility", 1, newRuleDelegation.getDelegationRuleBaseValues().getResponsibilities().size());
+		assertEquals("Incorrect responsibility name", principal2.getPrincipalId(), newRuleDelegation.getDelegationRuleBaseValues().getResponsibilities().get(0).getRuleResponsibilityName());
+		assertEquals("Incorrect responsibility type", KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID, newRuleDelegation.getDelegationRuleBaseValues().getResponsibilities().get(0).getRuleResponsibilityType());
+		assertEquals("Incorrect delegation type", KEWConstants.DELEGATION_PRIMARY, newRuleDelegation.getDelegationType());
+		
 
 		/**
-		 * Push the docuument through to FINAL so the PostProcessor will run
+		 * Let's add another delegate rule.
 		 */
 
-		document.approve("");
-		document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), ruleForm.getDocId());
-		assertTrue("Document should be final: " + document.getStatusDisplayValue(), document.stateIsFinal());
-
-		originalRule = KEWServiceLocator.getRuleService().findRuleBaseValuesById(originalRule.getRuleBaseValuesId());
-		assertFalse("Original rule should be NON current.", originalRule.getCurrentInd());
-		responsibilities = originalRule.getResponsibilities();
-		originalResp = (RuleResponsibility)responsibilities.get(0);
-		assertEquals("Original rule should have no delegations.", 0, originalResp.getDelegationRules().size());
-
-		// after going FINAL, verify the integrity of the new delegation rule
-
-		newRules = KEWServiceLocator.getRuleService().findByRouteHeaderId(document.getRouteHeaderId());
-		assertEquals("There should be 2 new rules, one parent and one delegate.", 2, newRules.size());
-		newParent = null;
-		newDelegate = null;
-		for (Iterator iterator = newRules.iterator(); iterator.hasNext();) {
-			RuleBaseValues newRule = (RuleBaseValues) iterator.next();
-			if (newRule.getDelegateRule()) {
-				newDelegate = newRule;
-			} else {
-				newParent = newRule;
-			}
-		}
-		assertNotNull(newParent);
-		assertNotNull(newDelegate);
-
-		// check parent rule
-		assertTrue("New parent rule should be current.", newParent.getCurrentInd());
-		assertEquals("New parent rule should have original as previous version.", originalRule.getRuleBaseValuesId(), newParent.getPreviousVersionId());
-		responsibilities = newParent.getResponsibilities();
-		assertEquals("Should have 1 responsibility", 1, responsibilities.size());
-		originalResp = (RuleResponsibility)responsibilities.get(0);
-		assertEquals("New parent should have 1 delegation.", 1, originalResp.getDelegationRules().size());
-		RuleBaseValues theDelegation = originalResp.getDelegationRule(0).getDelegationRuleBaseValues();
-		assertEquals("Delegation rule id should be id of new delegation", newDelegate.getRuleBaseValuesId(), theDelegation.getRuleBaseValuesId());
-
-		// check delegate rule
-		assertTrue("New delegate should be current.", newDelegate.getCurrentInd());
-		assertNull("New delegate should have no previous version.", newDelegate.getPreviousVersionId());
-		RuleBaseValues newDelegateParent = KEWServiceLocator.getRuleService().getParentRule(newDelegate.getRuleBaseValuesId());
-		assertEquals("New delegate's parent should be the same as the new parent.", newParent.getRuleBaseValuesId(), newDelegateParent.getRuleBaseValuesId());
-
-		/**
-		 * Let's add another delegate rule.  This is where we had the production problem where Rule Delegations were not getting pulled forward successfully.
-		 */
-
-		originalRule = newParent;
-		originalResps = originalRule.getResponsibilities();
-		assertEquals(1, originalResps.size());
-		originalResp = originalResps.get(0);
-		originalRuleResponsibilityKey = originalResp.getRuleResponsibilityKey();
 		KimPrincipal delegatePrincipal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(DELEGATE_USER2);
 
-		Rule2Form ruleForm2 = routeNewDelegateRule(originalRule, rt, originalRuleResponsibilityKey, delegatePrincipal);
-
-		// verify doc is ENROUTE still
-
-		document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), ruleForm2.getDocId());
-		assertTrue("Document should be enroute: " + document.getStatusDisplayValue(), document.stateIsEnroute());
-		assertTrue(document.isApprovalRequested());
-
-		originalRule = KEWServiceLocator.getRuleService().findRuleBaseValuesById(originalRule.getRuleBaseValuesId());
-		assertTrue("rule should be current.", originalRule.getCurrentInd());
-
-		responsibilities = originalRule.getResponsibilities();
-		originalResp = (RuleResponsibility)responsibilities.get(0);
-		assertEquals("Rule should have one delegation.", 1, originalResp.getDelegationRules().size());
-
-		RuleDelegation ruleDelegation = originalResp.getDelegationRule(0);
-		RuleBaseValues originalDelegationRule = ruleDelegation.getDelegationRuleBaseValues();
-		assertTrue("Original delegation rule should be current.", originalDelegationRule.getCurrentInd());
-
-		// pull out the enroute ones
-
-
-
-		// Finally approve it, let's check the end result
-
-		document.approve("");
-		document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), ruleForm2.getDocId());
-		assertTrue("Document should be final: " + document.getStatusDisplayValue(), document.stateIsFinal());
-
-		newRules = KEWServiceLocator.getRuleService().findByRouteHeaderId(document.getRouteHeaderId());
-		assertEquals("There should be 2 new rules, one parent and one delegate.", 2, newRules.size());
-		newParent = null;
-		newDelegate = null;
-		for (Iterator iterator = newRules.iterator(); iterator.hasNext();) {
-			RuleBaseValues newRule = (RuleBaseValues) iterator.next();
-			if (newRule.getDelegateRule()) {
-				newDelegate = newRule;
+		// let's save the new rule delegation
+		saveNewRuleDelegation(originalRule, rt, originalResp, delegatePrincipal);
+		
+		List<RuleDelegation> ruleDelegations = KEWServiceLocator.getRuleDelegationService().findByResponsibilityId(originalResp.getResponsibilityId());
+		assertEquals("There should be 2 delegation rules", 2, ruleDelegations.size());
+		boolean foundFirstDelegateRule = false;
+		for (RuleDelegation ruleDelegation : ruleDelegations) {
+			if (ruleDelegation.getRuleDelegationId().equals(newRuleDelegation.getRuleDelegationId())) {
+				foundFirstDelegateRule = true;
+				assertEquals("Rule Version should not have changed.", ruleDelegation.getVersionNumber(), newRuleDelegation.getVersionNumber());
 			} else {
-				newParent = newRule;
+				// this should be our new rule delegation
+				assertEquals("Incorrect responsibility id", originalResp.getResponsibilityId(), ruleDelegation.getResponsibilityId());
+				assertNotNull("Name should not be null", ruleDelegation.getDelegationRuleBaseValues().getName());
+				assertTrue("delegate rule should be current", ruleDelegation.getDelegationRuleBaseValues().getCurrentInd());
+				assertTrue("delegate rule should be flagged as a delegate", ruleDelegation.getDelegationRuleBaseValues().getDelegateRule());
+				assertEquals("Should have 1 responsibility", 1, ruleDelegation.getDelegationRuleBaseValues().getResponsibilities().size());
+				assertEquals("Incorrect responsibility name", delegatePrincipal.getPrincipalId(), ruleDelegation.getDelegationRuleBaseValues().getResponsibilities().get(0).getRuleResponsibilityName());
+				assertEquals("Incorrect responsibility type", KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID, ruleDelegation.getDelegationRuleBaseValues().getResponsibilities().get(0).getRuleResponsibilityType());
 			}
 		}
-		assertNotNull(newParent);
-		assertNotNull(newDelegate);
+		assertTrue("Failed to find the first delegate rule", foundFirstDelegateRule);
 
-		assertTrue("New parent should be current.", newParent.getCurrentInd());
-		responsibilities = newParent.getResponsibilities();
-		originalResp = (RuleResponsibility)responsibilities.get(0);
-		assertEquals("Rule should have two delegations.", 2, originalResp.getDelegationRules().size());
-		for (Iterator iterator = originalResp.getDelegationRules().iterator(); iterator.hasNext();) {
-			ruleDelegation = (RuleDelegation) iterator.next();
-			assertTrue("New rule delegation should be current.", ruleDelegation.getDelegationRuleBaseValues().getCurrentInd());
+		/**
+		 *  now let's try editing our first delegate rule
+		 */
+		
+		Long newRuleDelegationId = newRuleDelegation.getRuleDelegationId();
+		// change the delegation type to secondary
+		newRuleDelegation.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
+		saveNewVersion(newRuleDelegation);
+		Long newRuleDelegationId2 = newRuleDelegation.getRuleDelegationId();
+		
+		// let's check the original and verify that its been re-versioned
+		newRuleDelegation = KEWServiceLocator.getRuleDelegationService().findByRuleDelegationId(newRuleDelegationId);
+		assertNotNull(newRuleDelegation);
+		assertFalse("Rule delegation should no longer be current.", newRuleDelegation.getDelegationRuleBaseValues().getCurrentInd());
+		
+		// there should still be 2 rule delegations, however one of them has been reversioned
+		ruleDelegations = KEWServiceLocator.getRuleDelegationService().findByResponsibilityId(originalResp.getResponsibilityId());
+		assertEquals("There should be 2 delegation rules", 2, ruleDelegations.size());
+		boolean foundReversionedDelegateRule = false;
+		for (RuleDelegation ruleDelegation : ruleDelegations) {
+			if (ruleDelegation.getRuleDelegationId().equals(newRuleDelegationId2)) {
+				// this is our reversioned rule
+				foundReversionedDelegateRule = true;
+				assertEquals("Previous version relationship should be set up now", newRuleDelegation.getDelegationRuleBaseValues().getRuleBaseValuesId(), ruleDelegation.getDelegationRuleBaseValues().getPreviousVersionId());
+				assertEquals("Rule Version should have been incremented.", new Long(newRuleDelegation.getVersionNumber().longValue() + 1), ruleDelegation.getVersionNumber());
+			}
 		}
-
+		assertTrue("Failed to find the reversioned delegate rule", foundReversionedDelegateRule);
 	}
 
-	private Rule2Form routeNewDelegateRule(RuleBaseValues originalRule, RuleTemplate rt, Long originalRuleResponsibilityKey, KimPrincipal delegatePrincipal) throws Exception {
-
-		final String A_WF_ADMIN_USERNAME = "ewestfal";
-
-		Rule2Form ruleForm = new Rule2Form();
-		ruleForm.setParentRule(new WebRuleBaseValues(originalRule));
-		ruleForm.getRuleCreationValues().setCreating(true);
-		ruleForm.getRuleCreationValues().setRuleId(originalRule.getRuleBaseValuesId());
-		ruleForm.getRuleCreationValues().setManualDelegationTemplate(false);
-		ruleForm.getRuleCreationValues().setRuleTemplateId(rt.getRuleTemplateId());
-		ruleForm.getRuleCreationValues().setRuleTemplateName(rt.getName());
-		ruleForm.getRuleCreationValues().setRuleResponsibilityKey(originalRuleResponsibilityKey);
-
-		WebRuleBaseValues rule = new WebRuleBaseValues();
-
-		{
-			RuleBaseValues defaultRule = KEWServiceLocator.getRuleService().findDefaultRuleByRuleTemplateId(originalRule.getRuleTemplate().getDelegationTemplateId());
-			if (defaultRule != null) {
-				List ruleDelegations = KEWServiceLocator.getRuleDelegationService().findByDelegateRuleId(defaultRule.getRuleBaseValuesId());
-				defaultRule.setActivationDate(null);
-				defaultRule.setCurrentInd(null);
-				defaultRule.setDeactivationDate(null);
-				defaultRule.setDocTypeName(null);
-				defaultRule.setVersionNumber(null);
-				defaultRule.setRuleBaseValuesId(null);
-				defaultRule.setTemplateRuleInd(Boolean.FALSE);
-				defaultRule.setVersionNbr(null);
-				rule.load(defaultRule);
-
-				if (ruleDelegations != null && !ruleDelegations.isEmpty()) {
-					RuleDelegation defaultDelegation = (RuleDelegation) ruleDelegations.get(0);
-					ruleForm.getRuleDelegation().setDelegationType(defaultDelegation.getDelegationType());
-				}
-			}
-
-			rule.setDocTypeName(ruleForm.getParentRule().getDocTypeName());
-			rule.setRuleTemplateId(ruleForm.getParentRule().getRuleTemplate().getDelegationTemplateId());
-			rule.setRuleTemplateName(ruleForm.getParentRule().getRuleTemplate().getDelegateTemplateName());
-			// have to set the ruletemplate object explicitly...the struts action must do this itself somewhere...
-			rule.setRuleTemplate(KEWServiceLocator.getRuleTemplateService().findByRuleTemplateId(rule.getRuleTemplateId()));
-			rule.setDelegateRule(Boolean.TRUE);
-			rule.loadFieldsWithDefaultValues();
-			rule.createNewRuleResponsibility();
-
-			ruleForm.getRuleDelegation().setDelegationRuleBaseValues(rule);
-			ruleForm.getMyRules().addRule(rule);
-
-			//createFlexDoc(request, ruleForm, ruleForm.getMyRules().getRules());
-
-			if (ruleForm.getWorkflowDocument() == null) {
-				String ruleDocTypeName = KEWServiceLocator.getRuleService().getRuleDocmentTypeName(ruleForm.getMyRules().getRules());
-				WorkflowDocument workflowDocument = new WorkflowDocument(new NetworkIdDTO(A_WF_ADMIN_USERNAME), ruleDocTypeName);
-				// adhoc it to rkirkend so it will stop before going final
-				workflowDocument.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "", getPrincipalIdForName("rkirkend"), "", true);
-				ruleForm.setWorkflowDocument(workflowDocument);
-				ruleForm.setDocId(ruleForm.getWorkflowDocument().getRouteHeaderId());
-				ruleForm.establishVisibleActionRequestCds();
-			}
-
-			ruleForm.getShowHide().append().append();
-			ruleForm.setEditingDelegate(true);
-			rule.establishRequiredState();
+	private void saveNewRuleDelegation(RuleBaseValues parentRule, RuleTemplate delegationTemplate, RuleResponsibility parentResponsibility, KimPrincipal delegatePrincipal) {
+		RuleDelegation ruleDelegation = new RuleDelegation();
+		ruleDelegation.setResponsibilityId(parentResponsibility.getResponsibilityId());
+		ruleDelegation.setDelegationType(KEWConstants.DELEGATION_PRIMARY);
+		RuleBaseValues rule = new RuleBaseValues();
+		ruleDelegation.setDelegationRuleBaseValues(rule);
+		rule.setDelegateRule(true);
+		rule.setActiveInd(true);
+		rule.setCurrentInd(true);
+		rule.setDocTypeName(parentRule.getDocTypeName());
+		rule.setRuleTemplateId(delegationTemplate.getDelegationTemplateId());
+		rule.setRuleTemplate(delegationTemplate);
+		rule.setDescription("Description of this delegate rule");
+		rule.setIgnorePrevious(true);
+		RuleResponsibility delegationResponsibility = new RuleResponsibility();
+		rule.getResponsibilities().add(delegationResponsibility);
+		delegationResponsibility.setRuleBaseValues(rule);
+		delegationResponsibility.setRuleResponsibilityName(delegatePrincipal.getPrincipalId());
+		delegationResponsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
+		KEWServiceLocator.getRuleService().saveRuleDelegation(ruleDelegation, true);
+	}
+	
+	private void saveNewVersion(RuleDelegation ruleDelegation) {
+		// clear out the keys
+		ruleDelegation.setRuleDelegationId(null);
+		ruleDelegation.setDelegateRuleId(null);
+		for (RuleResponsibility ruleResponsibility : ruleDelegation.getDelegationRuleBaseValues().getResponsibilities()) {
+			ruleResponsibility.setRuleBaseValuesId(null);
+			ruleResponsibility.setRuleBaseValues(null);
+			ruleResponsibility.setResponsibilityId(null);
+			ruleResponsibility.setRuleResponsibilityKey(null);
 		}
-		// ---
-
-		// ok, "update the form"
-		ruleForm.getRuleCreationValues().setCreating(false);
-
-		MyRules2 rules = ruleForm.getMyRules();
-
-		WebRuleBaseValues delegateRule = rules.getRule(0);
-		delegateRule.setDescription("A delegate rule");
-		WebRuleResponsibility resp = (WebRuleResponsibility) delegateRule.getResponsibility(0);
-		resp.setNumberOfDelegations(0);
-		resp.setShowDelegations(false);
-		resp.setDelegationRulesMaterialized(false);
-		resp.setHasDelegateRuleTemplate(false);
-		resp.setReviewer(delegatePrincipal.getPrincipalName());
-		resp.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
-		resp.setRuleResponsibilityName(delegatePrincipal.getPrincipalId()); // This is taken as a WorkflowId (not NetworkId, etc.)
-
-		delegateRule.setCurrentInd(Boolean.FALSE);
-
-		// get the parent rule of the delegation-rule being submitted
-		RuleBaseValues parentRule = KEWServiceLocator.getRuleService().findRuleBaseValuesById(ruleForm.getParentRule().getRuleBaseValuesId());
-		// new delegation rule
-		//        if (delegateRule.getPreviousVersionId() == null) {
-
-		Long previousVersionId = parentRule.getRuleBaseValuesId();
-
-		RuleResponsibility delegateResponsibility = parentRule.getResponsibility(ruleForm.getRuleCreationValues().getRuleResponsibilityKey());
-
-		// get the RuleDelegation being submitted and connect the
-		// delegate rule and the delegat responsibility
-		RuleDelegation ruleDelegation = ruleForm.getRuleDelegation();
-		ruleDelegation.setDelegationRuleBaseValues(delegateRule);
-		//ruleDelegation.setRuleResponsibility(delegateResponsibility);
-
-		// if the delegateRule itself has a previous version, then iterate
-		// through the rules associated with the delegate responsibility and
-		// make sure that the previous, delegate rule version is no longer
-		// associated with the responsibility
-		if (delegateRule.getPreviousVersionId() != null) {
-			for (Iterator iter = delegateResponsibility.getDelegationRules().iterator(); iter.hasNext();) {
-				RuleDelegation delegation = (RuleDelegation) iter.next();
-				if (delegation.getDelegateRuleId().longValue() == delegateRule.getPreviousVersionId().longValue()) {
-					iter.remove();
-					break;
-				}
-			}
-		}
-
-		// add the new rule delegation to the responsibility
-		delegateResponsibility.getDelegationRules().add(ruleDelegation);
-
-		// make a copy of the parent rule, which will be the new version
-		// of the parent rule, that contains this new delegation
-		// XXX
-		parentRule = (RuleBaseValues) parentRule.copy(false);
-		parentRule.setPreviousVersionId(previousVersionId);
-		//        }
-
-		/*
-		 * RuleBaseValues parentRule = getRuleService().findRuleBaseValuesById(ruleForm.getParentRule().getRuleBaseValuesId()); Long previousVersionId = parentRule.getRuleBaseValuesId(); RuleResponsibility delegateResponsibility = parentRule.getResponsibility(ruleForm.getRuleCreationValues().getRuleResponsibilityKey()); RuleDelegation ruleDelegation = ruleForm.getRuleDelegation(); ruleDelegation.setDelegationRuleBaseValues(delegateRule); ruleDelegation.setRuleResponsibility(delegateResponsibility); // replace the existing delegation in the parent rule boolean foundDelegation = false; int delIndex = 0; for (Iterator iterator = delegateResponsibility.getDelegationRules().iterator(); iterator.hasNext();) { RuleDelegation delegation = (RuleDelegation) iterator.next(); if (delegation.getDelegateRuleId().equals(delegateRule.getPreviousVersionId())) { iterator.remove(); foundDelegation = true; break; } delIndex++; } if (foundDelegation) {
-		 * delegateResponsibility.getDelegationRules().add(delIndex, ruleDelegation); } else { delegateResponsibility.getDelegationRules().add(ruleDelegation); } parentRule = (RuleBaseValues) parentRule.copy(false); parentRule.setPreviousVersionId(previousVersionId);
-		 */
-
-		// null out the responsibility keys for the delegate rule
-		for (Iterator iterator = delegateRule.getResponsibilities().iterator(); iterator.hasNext();) {
-			RuleResponsibility responsibility = (RuleResponsibility) iterator.next();
-			responsibility.setRuleResponsibilityKey(null);
-		}
-
-		KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(A_WF_ADMIN_USERNAME);
-		KEWServiceLocator.getRuleService().routeRuleWithDelegate(ruleForm.getDocId(), parentRule, delegateRule, principal, ruleForm.getAnnotation(), false);
-
-		return ruleForm;
+		KEWServiceLocator.getRuleService().saveRuleDelegation(ruleDelegation, true);
 	}
 
 }

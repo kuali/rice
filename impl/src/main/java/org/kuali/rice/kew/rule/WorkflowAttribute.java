@@ -99,7 +99,7 @@ public interface WorkflowAttribute extends Serializable {
      * A single Row may contain more than one actual Field instance, but Fields beyond the first one
      * are there to provide context for the display and evaluation of the first one.
      * 
-     * The getRuleRows method returns a list of rows that contain Fields describing the UI-level presentation of a single RuleExtensionValue for the creation of a rule.
+     * <p>The getRuleRows method returns a list of rows that contain Fields describing the UI-level presentation of a single RuleExtensionValue for the creation of a rule.
      * A single row may contain more than one actual Field object, but Fields beyond the first one are there to provide context for the display and evaluation of the first one.
      * For example, a secondary field may be a lookupable or a searchable valid values object. An individual field consists of a field label, a field help url, a field type,
      * whether a lookupable is associated with this field, a property name, a property value, valid values, the name of the lookupable, and the default lookupable name for this field.
@@ -120,6 +120,10 @@ public interface WorkflowAttribute extends Serializable {
      * of rows for this label to span for this attribute. If a group label is present, it will display on the rule creation jsp and group together the individual rows for this
      * attribute. The total rows number will rowspan the group label across the rows of this attribute.
      * NOTE: the group label and number of rows to span must be specified on each row object for the display to work correctly.
+     * 
+     * <p>Additionally, it is very important that the List of Row objects is reconstructed every time getRuleRows is called.  This is because the code which processes
+     * these Rows will set the propertyValue directly on the Field objects contained within.  Essentially, this means the Rows and Fields should not be constructed once inside of
+     * the attribute and cached statically, but instead be recreated each time this method is called.
      */
     public List<Row> getRuleRows();
 
@@ -127,9 +131,13 @@ public interface WorkflowAttribute extends Serializable {
      * RoutingDataRows contain Rows describing the UI-level presentation of the ruleData fields
      * used to determine where a given document would be routed according to the associated rule.
      * 
-     * The getRoutingDataRows method returns a list of rows that contain Fields describing the UI-level presentation of a single RuleExtensionValue for the routing report feature.
+     * <p>The getRoutingDataRows method returns a list of rows that contain Fields describing the UI-level presentation of a single RuleExtensionValue for the routing report feature.
      * These rows are used to determine where an eDoc would route if these values were entered. They are constructed the same way rule rows are described above and a lot of times
      * are identical.
+     * 
+     * <p>Additionally, it is very important that the List of Row objects is reconstructed every time getRoutingDataRows is called.  This is because the code which processes
+     * these Rows will set the propertyValue directly on the Field objects contained within.  Essentially, this means the Rows and Fields should not be constructed once inside of
+     * the attribute and cached statically, but instead be recreated each time this method is called.
      */
     public List<Row> getRoutingDataRows();
 
@@ -203,13 +211,4 @@ public interface WorkflowAttribute extends Serializable {
      */
     public boolean isRequired();
     
-    /**
-     * Indicates to workflow Attribute that the flexreport is being done by the document type
-     * and not the route template
-     * 
-     * This method is used to retrieve whether or not this method is required. It will return true if the ruleExtensionValues are required and false otherwise.
-     * 
-     * @param inDocTypeReport
-     */
-//    public void setDoctypeReporting(boolean inDocTypeReport);
 }

@@ -20,7 +20,7 @@
       </ruleExtensions>
       <responsibilities>
         <responsibility>
-          <workgroup>OAA_BL-BUS</workgroup>
+          <groupName namespace="KR-WKFLW">OAA_BL-BUS</groupName>
           <actionRequested>A</actionRequested>
           <priority>1</priority>
         </responsibility>
@@ -45,7 +45,7 @@
       </ruleExtensions>
       <responsibilities>
         <responsibility>
-          <workgroup>OAA_BL-EDUC</workgroup>
+          <groupName namespace="KR-WKFLW">OAA_BL-EDUC</groupName>
           <actionRequested>A</actionRequested>
           <priority>1</priority>
         </responsibility>
@@ -58,7 +58,7 @@
       <ignorePrevious>true</ignorePrevious>
       <responsibilities>
         <responsibility>
-          <workgroup>ViceProvostForAcademicAffairs</workgroup>
+          <groupName namespace="KR-WKFLW">ViceProvostForAcademicAffairs</groupName>
           <actionRequested>A</actionRequested>
           <priority>1</priority>
         </responsibility>
@@ -85,12 +85,12 @@
       <ignorePrevious>false</ignorePrevious>
       <responsibilities>
         <responsibility>
-          <workgroup>OfficeOfAffirmativeAction</workgroup>
+          <groupName namespace="KR-WKFLW">OfficeOfAffirmativeAction</groupName>
           <actionRequested>A</actionRequested>
           <priority>1</priority>
         </responsibility>
         <responsibility>
-          <workgroup>OfficeOfAffirmativeActionSecond</workgroup>
+          <groupName namespace="KR-WKFLW">OfficeOfAffirmativeActionSecond</groupName>
           <actionRequested>A</actionRequested>
           <priority>2</priority>
         </responsibility>
@@ -115,7 +115,7 @@
       </ruleExtensions>
       <responsibilities>
         <responsibility>
-          <workgroup>OAA_BL-EDUC</workgroup>
+          <groupName namespace="KR-WKFLW">OAA_BL-EDUC</groupName>
           <actionRequested>K</actionRequested>
           <priority>1</priority>
         </responsibility>
@@ -140,7 +140,7 @@
       </ruleExtensions>
       <responsibilities>
         <responsibility>
-          <workgroup>OAA_BL-COAS</workgroup>
+          <groupName namespace="KR-WKFLW">OAA_BL-COAS</groupName>
           <actionRequested>K</actionRequested>
           <priority>1</priority>
         </responsibility>
@@ -165,7 +165,7 @@
       </ruleExtensions>
       <responsibilities>
         <responsibility>
-          <workgroup>OAA_BL-BUS</workgroup>
+          <groupName namespace="KR-WKFLW">OAA_BL-BUS</groupName>
           <actionRequested>K</actionRequested>
           <priority>1</priority>
         </responsibility>
@@ -190,7 +190,7 @@
       </ruleExtensions>
       <responsibilities>
         <responsibility>
-          <workgroup>OAA_BL-COAS</workgroup>
+          <groupName namespace="KR-WKFLW">OAA_BL-COAS</groupName>
           <actionRequested>A</actionRequested>
           <priority>1</priority>
         </responsibility>
@@ -215,7 +215,7 @@
       </ruleExtensions>
       <responsibilities>
         <responsibility>
-          <workgroup>OAA_BL-PSY</workgroup>
+          <groupName namespace="KR-WKFLW">OAA_BL-PSY</groupName>
           <actionRequested>K</actionRequested>
           <priority>1</priority>
         </responsibility>
@@ -240,7 +240,7 @@
       </ruleExtensions>
       <responsibilities>
         <responsibility>
-          <workgroup>OAA_BL-PSY</workgroup>
+          <groupName namespace="KR-WKFLW">OAA_BL-PSY</groupName>
           <actionRequested>A</actionRequested>
           <priority>1</priority>
         </responsibility>

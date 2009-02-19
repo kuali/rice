@@ -162,7 +162,7 @@
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
 				<responsibility>
-					<workgroup>KR-WKFLW:TestWorkgroup</workgroup>
+					<groupName namespace="KR-WKFLW">TestWorkgroup</groupName>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>
@@ -175,7 +175,7 @@
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
 				<responsibility>
-					<workgroup>KR-WKFLW:WorkflowAdmin</workgroup>
+					<groupName namespace="KR-WKFLW">WorkflowAdmin</groupName>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>
@@ -190,7 +190,7 @@
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
 				<responsibility>
-					<user>rkirkend</user>
+					<principalName>rkirkend</principalName>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>
@@ -203,7 +203,7 @@
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
 				<responsibility>
-					<user>user1</user>
+					<principalName>user1</principalName>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>
@@ -216,7 +216,7 @@
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
 				<responsibility>
-					<workgroup>KR-WKFLW:TestWorkgroup</workgroup>
+					<groupName namespace="KR-WKFLW">TestWorkgroup</groupName>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>

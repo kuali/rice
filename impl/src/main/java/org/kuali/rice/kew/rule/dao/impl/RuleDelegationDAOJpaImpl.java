@@ -49,8 +49,9 @@ public class RuleDelegationDAOJpaImpl implements RuleDelegationDAO {
     		OrmUtils.merge(entityManager, ruleDelegation);
     	}
     }
-    public List findAllRuleDelegations(){
+    public List findAllCurrentRuleDelegations(){
         Criteria crit = new Criteria(RuleDelegation.class.getName());
+        crit.eq("delegationRuleBaseValues.currentInd", true);
         return (List) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
     }
 

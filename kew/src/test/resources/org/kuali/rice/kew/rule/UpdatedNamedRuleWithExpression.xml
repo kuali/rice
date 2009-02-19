@@ -5,8 +5,6 @@
         <rule>
             <name>ANamedRule</name>
             <documentType>TestDocumentType</documentType>
-            <toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>TestRuleTemplate</ruleTemplate>
             <description>A named rule with an updated description, rule extension values, and responsibilities</description>
             <expression type="someType">some expression THAT WAS UPDATED</expression>

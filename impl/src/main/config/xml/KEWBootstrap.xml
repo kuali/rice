@@ -275,7 +275,7 @@
             -->
             <responsibilities>
                 <responsibility>
-                    <user>admin</user>
+                    <principalName>admin</principalName>
                     <actionRequested>A</actionRequested>
                     <priority>1</priority>
                 </responsibility>

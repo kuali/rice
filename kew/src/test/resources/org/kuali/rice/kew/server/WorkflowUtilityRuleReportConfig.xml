@@ -78,8 +78,6 @@
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 	    <rule>
 	      <documentType>OrgReviewTestDocType</documentType>
-	      <toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>OrgReviewTemplate</ruleTemplate>
 	      <description>OrgReviewTemplate Rule for Rule Test UA-FMOP (Fake)</description>
 	      <ignorePrevious>true</ignorePrevious>
@@ -109,8 +107,6 @@
 	    </rule>
 	    <rule>
 	      <documentType>OrgReviewTestDocType</documentType>
-	      <toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>OrgReviewTemplate</ruleTemplate>
 	      <description>OrgReviewTemplate Rule for Rule Test UA-VPIT (Fake)</description>
 	      <ignorePrevious>true</ignorePrevious>
@@ -140,8 +136,6 @@
 	    </rule>
 	    <rule>
 	      <documentType>OrgReviewTestDocType</documentType>
-	      <toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>OrgReviewTemplate</ruleTemplate>
 	      <description>OrgReviewTemplate Rule for Rule Test BA-FMOP(Fake)</description>
 	      <ignorePrevious>true</ignorePrevious>
@@ -171,8 +165,6 @@
 	    </rule>
 	    <rule>
 	      <documentType>OrgReviewTestDocType</documentType>
-	      <toDate>09:00 AM 05/30/2009</toDate>
-            <fromDate>09:00 AM 05/30/2002</fromDate>
             <ruleTemplate>OrgReviewTemplate</ruleTemplate>
 	      <description>OrgReviewTemplate Rule 2 for Rule Test BA-FMOP(Fake)</description>
 	      <ignorePrevious>true</ignorePrevious>

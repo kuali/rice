@@ -87,9 +87,9 @@
                     </c:if>
                     <kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
                 </tr>
+				<html:hidden property="newNote.noteTypeCode" value="${noteType.code}"/>
 				<c:if test="${ ((not empty attachmentTypesValuesFinderClass) and (allowsNoteAttachments eq true)) || kfunc:canAddNoteAttachment(KualiForm.document)}" >
                   <tr>
-                    <html:hidden property="newNote.noteTypeCode" value="${noteType.code}"/>
                       <kul:htmlAttributeHeaderCell literalLabel="add:" scope="row"/>
                       <td class="infoline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                       <td class="infoline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>

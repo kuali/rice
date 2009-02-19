@@ -1078,10 +1078,17 @@ public class KualiDocumentActionBase extends KualiAction {
             //make sure attachment is setup with backwards reference to note (rather then doing this we could also just call the attachment service (with a new method that took in the note)
             attachment.setNote(note);
 
+            // since we're downloading a file, all of the editable properties from the previous request will continue to be editable.
+            KualiDocumentFormBase documentForm = (KualiDocumentFormBase) form;
+            Set<String> editableProperties = documentForm.getEditablePropertiesFromPreviousRequest();
+            for (String editableProperty : editableProperties) {
+                documentForm.registerEditableProperty(editableProperty);
+            }
+            
             WebUtils.saveMimeInputStreamAsFile(response, attachment.getAttachmentMimeTypeCode(), attachment.getAttachmentContents(), attachment.getAttachmentFileName(), attachment.getAttachmentFileSize().intValue());
             return null;
         }
-
+        
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 

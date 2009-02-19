@@ -201,9 +201,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
         String networkIdParam = (String) fieldValues.get(PERSON_REVIEWER_PROPERTY_NAME);
         String userDirectiveParam = (String) fieldValues.get(PERSON_REVIEWER_TYPE_PROPERTY_NAME);
         String activeParam = (String) fieldValues.get(ACTIVE_IND_PROPERTY_NAME);
-        String delegateRuleParam = (String) fieldValues.get(DELEGATE_RULE_PROPERTY_NAME);
         String ruleIdParam = (String) fieldValues.get(RULE_ID_PROPERTY_NAME);
-        String delegationWizard = (String) fieldValues.get(KEWConstants.DELEGATION_WIZARD);
         String ruleDescription = (String) fieldValues.get(RULE_DESC_PROPERTY_NAME);
 
         String docTypeSearchName = null;
@@ -214,13 +212,6 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
         Boolean isActive = null;
         Long ruleId = null;
 
-        //if (!delegateRuleParam.equals("")) {
-        //    if (delegateRuleParam.equals("Y")) {
-        //        isDelegateRule = new Boolean(true);
-        //    } else {
-        //        isDelegateRule = new Boolean(false);
-        //    }
-        //}
 
         if (ruleIdParam != null && !"".equals(ruleIdParam.trim())) {
             try {

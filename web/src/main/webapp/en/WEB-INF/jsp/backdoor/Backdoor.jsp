@@ -48,7 +48,10 @@
 		<td><a href="DocumentSearch.do" target="<c:out value="${BackdoorForm.targetName}" />">Document Search</a></td>
 	</tr>
 	<tr>
-		<td><a href="../kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.rule.RuleBaseValues&docFormKey=88888888&returnLocation=http://localhost:8080/kr-dev/portal.do&hideReturnLink=true" target="<c:out value="${BackdoorForm.targetName}" />">Routing Rules</a></td>
+		<td><a href="../kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.rule.RuleBaseValues&docFormKey=88888888&returnLocation=../en/Portal.do&hideReturnLink=true&showMaintenanceLinks=true" target="<c:out value="${BackdoorForm.targetName}" />">Routing Rules</a></td>
+	</tr>
+	<tr>
+		<td><a href="../kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.rule.RuleDelegation&docFormKey=88888888&returnLocation=../en/Portal.do&hideReturnLink=true&showMaintenanceLinks=true" target="<c:out value="${BackdoorForm.targetName}" />">Routing Rule Delegations</a></td>
 	</tr>
 	<tr>
 		<td><a href="RoutingReport.do" target="<c:out value="${BackdoorForm.targetName}" />">Routing Report</a></td>
@@ -61,9 +64,6 @@
 	</tr>
 	<tr>
 		<td><a href="../kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.edl.bo.EDocLiteAssociation&docFormKey=88888888&returnLocation=../en/Portal.do&hideReturnLink=true" target="<c:out value="${BackdoorForm.targetName}" />">eDoc Lites</a></td>
-	</tr>
-	<tr>
-      <td><a href="../kew/Rule.do?command=initiate" target="<c:out value="${BackdoorForm.targetName}"/>">Create Rule <b>NEW</b></a></td>
 	</tr>
 </table>
 

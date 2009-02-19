@@ -641,3 +641,11 @@ RENAME SEQ_DOCUMENT_TYPE_ATTRIBUTE TO KREW_DOC_TYP_ATTR_S
 
 RENAME SEQ_ROUTE_QUEUE TO KRSB_MSG_QUE_S
 /
+
+-- update the doc handler for the rule maintenance document
+
+UPDATE KREW_DOC_TYP_T SET DOC_HDLR_URL='${kr.url}/maintenance.do?methodToCall=docHandler' WHERE DOC_TYP_NM='RoutingRuleDocument'
+/
+
+UPDATE KREW_DOC_TYP_T SET DOC_HDLR_URL='${kr.url}/maintenance.do?methodToCall=docHandler' WHERE DOC_TYP_NM='RoutingRuleDelegationMaintenanceDocument'
+/

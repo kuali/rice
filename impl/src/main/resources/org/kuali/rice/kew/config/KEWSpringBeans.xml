@@ -289,17 +289,17 @@
 	  </property>
     </bean>
 
-    <bean id="ruleBaseValuesLookupHelperService" class="org.kuali.rice.kew.lookupable.RuleBaseValuesLookupableHelperServiceImpl" scope="prototype"/>
+    <bean id="ruleBaseValuesLookupHelperService" class="org.kuali.rice.kew.rule.bo.RuleBaseValuesLookupableHelperServiceImpl" scope="prototype"/>
 
-    <bean id="ruleBaseValuesLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
+    <bean id="ruleBaseValuesLookupable" class="org.kuali.rice.kew.rule.bo.RuleBaseValuesLookupableImpl" scope="prototype">
 	  <property name="lookupableHelperService">
   		<ref bean="ruleBaseValuesLookupHelperService" />
 	  </property>
     </bean>
 
-    <bean id="ruleDelegationLookupHelperService" class="org.kuali.rice.kew.lookupable.RuleDelegationLookupableHelperServiceImpl" scope="prototype"/>
+    <bean id="ruleDelegationLookupHelperService" class="org.kuali.rice.kew.rule.bo.RuleDelegationLookupableHelperServiceImpl" scope="prototype"/>
 
-    <bean id="ruleDelegationLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
+    <bean id="ruleDelegationLookupable" class="org.kuali.rice.kew.rule.bo.RuleDelegationLookupableImpl" scope="prototype">
 	  <property name="lookupableHelperService">
   		<ref bean="ruleDelegationLookupHelperService" />
 	  </property>

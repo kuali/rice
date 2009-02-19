@@ -7,6 +7,7 @@
       <description>Routing Rule Delegation</description>
       <label>Routing Rule Delegation</label>
       <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
     </documentType>
   </documentTypes>
 </data>

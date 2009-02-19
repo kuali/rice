@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.lookupable;
+package org.kuali.rice.kew.rule.bo;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -27,13 +27,12 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
+import org.kuali.rice.kew.lookupable.MyColumns;
 import org.kuali.rice.kew.rule.OddSearchAttribute;
 import org.kuali.rice.kew.rule.RuleBaseValues;
+import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.WorkflowAttribute;
-import org.kuali.rice.kew.rule.bo.RuleAttribute;
-import org.kuali.rice.kew.rule.bo.RuleTemplate;
-import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
-import org.kuali.rice.kew.rule.service.RuleService;
+import org.kuali.rice.kew.rule.service.RuleDelegationService;
 import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -72,31 +71,29 @@ import org.kuali.rice.kns.web.ui.Row;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHelperServiceImpl {
+public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHelperServiceImpl {
     private List<Row> rows = new ArrayList<Row>();
     //private List<Column> columns = establishColumns();
     //private Long previousRuleTemplateId;
-
-    private static final String RULE_TEMPLATE_PROPERTY_NAME = "ruleTemplate.name";
-    private static final String RULE_ID_PROPERTY_NAME = "ruleBaseValuesId";
-    private static final String RULE_TEMPLATE_ID_PROPERTY_NAME = "ruleBaseValuesId";
-    private static final String ACTIVE_IND_PROPERTY_NAME = "activeInd";
-    private static final String DELEGATE_RULE_PROPERTY_NAME = "delegateRule";
-    private static final String GROUP_REVIEWER_PROPERTY_NAME = "groupReviewer";
-    private static final String GROUP_REVIEWER_NAME_PROPERTY_NAME = "groupReviewerName";
-    private static final String GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME = "groupReviewerNamespace";
-    private static final String PERSON_REVIEWER_PROPERTY_NAME = "personReviewer";
-    private static final String ROLE_REVIEWER_PROPERTY_NAME = "roleReviewer";
-    private static final String PERSON_REVIEWER_TYPE_PROPERTY_NAME = "personReviewerType";
-    private static final String DOC_TYP_NAME_PROPERTY_NAME = "documentType.name";
-    private static final String RULE_DESC_PROPERTY_NAME = "description";
+    private static final String PARENT_RESPONSIBILITY_ID_PROPERTY_NAME = "responsibilityId";
+    private static final String PARENT_RULE_ID_PROPERTY_NAME = "ruleResponsibility.ruleBaseValues.ruleBaseValuesId";
+    private static final String RULE_TEMPLATE_PROPERTY_NAME = "delegationRuleBaseValues.ruleTemplate.name";
+    private static final String RULE_ID_PROPERTY_NAME = "delegationRuleBaseValues.ruleBaseValuesId";
+    private static final String RULE_TEMPLATE_ID_PROPERTY_NAME = "delegationRuleBaseValues.ruleBaseValuesId";
+    private static final String ACTIVE_IND_PROPERTY_NAME = "delegationRuleBaseValues.activeInd";
+    private static final String DELEGATION_PROPERTY_NAME = "delegationType";
+    private static final String GROUP_REVIEWER_PROPERTY_NAME = "delegationRuleBaseValues.groupReviewer";
+    private static final String GROUP_REVIEWER_NAME_PROPERTY_NAME = "delegationRuleBaseValues.groupReviewerName";
+    private static final String GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME = "delegationRuleBaseValues.groupReviewerNamespace";
+    private static final String PERSON_REVIEWER_PROPERTY_NAME = "delegationRuleBaseValues.personReviewer";
+    private static final String PERSON_REVIEWER_TYPE_PROPERTY_NAME = "delegationRuleBaseValues.personReviewerType";
+    private static final String DOC_TYP_NAME_PROPERTY_NAME = "delegationRuleBaseValues.documentType.name";
+    private static final String RULE_DESC_PROPERTY_NAME = "delegationRuleBaseValues.description";
 
     private static final String DOC_TYP_LOOKUPABLE = "DocumentTypeLookupableImplService";
     private static final String RULE_TEMPLATE_LOOKUPABLE = "RuleTemplateLookupableImplService";
     private static final String WORKGROUP_LOOKUPABLE = "WorkGroupLookupableImplService";
     private static final String PERSON_LOOKUPABLE = "UserLookupableImplService";
-
-    private static final String WORKGROUP_ID_PROPERTY_NAME = "workgroupId";
 
     private static final String BACK_LOCATION = "backLocation";
     private static final String DOC_FORM_KEY = "docFormKey";
@@ -192,6 +189,8 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
     public List<? extends BusinessObject> getSearchResults(Map<String, String> fieldValues) {
         List errors = new ArrayList();
 
+        String parentRuleBaseValueId = (String) fieldValues.get(PARENT_RULE_ID_PROPERTY_NAME);
+        String parentResponsibilityId = (String) fieldValues.get(PARENT_RESPONSIBILITY_ID_PROPERTY_NAME);
         String docTypeNameParam = (String) fieldValues.get(DOC_TYP_NAME_PROPERTY_NAME);
         String ruleTemplateIdParam = (String) fieldValues.get(RULE_TEMPLATE_ID_PROPERTY_NAME);
         String ruleTemplateNameParam = (String) fieldValues.get(RULE_TEMPLATE_PROPERTY_NAME);
@@ -201,7 +200,9 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
         String networkIdParam = (String) fieldValues.get(PERSON_REVIEWER_PROPERTY_NAME);
         String userDirectiveParam = (String) fieldValues.get(PERSON_REVIEWER_TYPE_PROPERTY_NAME);
         String activeParam = (String) fieldValues.get(ACTIVE_IND_PROPERTY_NAME);
+        String delegationParam = (String) fieldValues.get(DELEGATION_PROPERTY_NAME);
         String ruleIdParam = (String) fieldValues.get(RULE_ID_PROPERTY_NAME);
+        String delegationWizard = (String) fieldValues.get(KEWConstants.DELEGATION_WIZARD);
         String ruleDescription = (String) fieldValues.get(RULE_DESC_PROPERTY_NAME);
 
         String docTypeSearchName = null;
@@ -211,7 +212,6 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
         Boolean isDelegateRule = null;
         Boolean isActive = null;
         Long ruleId = null;
-
 
         if (ruleIdParam != null && !"".equals(ruleIdParam.trim())) {
             try {
@@ -321,11 +321,12 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
             throw new ValidationException("errors in search criteria");
         }
 
-        Iterator rules = getRuleService().search(docTypeSearchName, ruleId, ruleTemplateId, ruleDescription, workgroupId, workflowId, isDelegateRule, isActive, attributes, userDirectiveParam).iterator();
-        List displayList = new ArrayList();
+        Iterator<RuleDelegation> rules = getRuleDelegationService().search(parentRuleBaseValueId, parentResponsibilityId, docTypeSearchName, ruleId, ruleTemplateId, ruleDescription, workgroupId, workflowId, delegationParam, isActive, attributes, userDirectiveParam).iterator();
+        List<RuleDelegation> displayList = new ArrayList<RuleDelegation>();
 
         while (rules.hasNext()) {
-            RuleBaseValues record = (RuleBaseValues) rules.next();
+            RuleDelegation ruleDelegation = (RuleDelegation) rules.next();
+            RuleBaseValues record = ruleDelegation.getDelegationRuleBaseValues();
 
             if (Utilities.isEmpty(record.getDescription())) {
                 record.setDescription(KEWConstants.HTML_NON_BREAKING_SPACE);
@@ -359,7 +360,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
 
             record.setDestinationUrl(destinationUrl);
 
-            displayList.add(record);
+            displayList.add(ruleDelegation);
         }
         return displayList;
 
@@ -374,8 +375,8 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
     private RuleTemplateService getRuleTemplateService() {
         return (RuleTemplateService) KEWServiceLocator.getService(KEWServiceLocator.RULE_TEMPLATE_SERVICE);
     }
-    private RuleService getRuleService() {
-        return (RuleService) KEWServiceLocator.getService(KEWServiceLocator.RULE_SERVICE);
+    private RuleDelegationService getRuleDelegationService() {
+        return (RuleDelegationService) KEWServiceLocator.getService(KEWServiceLocator.RULE_DELEGATION_SERVICE);
     }
 
     @Override
@@ -470,8 +471,8 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
                 Object prop = null;
                 boolean skipPropTypeCheck = false;
                 //try to get value elsewhere
-                if (element instanceof RuleBaseValues) {
-                    prop = ((RuleBaseValues)element).getFieldValues().get(col.getPropertyName());
+                if (element instanceof RuleDelegation) {
+                    prop = ((RuleDelegation)element).getDelegationRuleBaseValues().getFieldValues().get(col.getPropertyName());
                     skipPropTypeCheck = true;
                 }
                 if (prop == null) {
@@ -572,9 +573,9 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
     @Override
     public List<HtmlData> getCustomActionUrls(BusinessObject businessObject,
             List pkNames) {
-        RuleBaseValues ruleBaseValues = (RuleBaseValues)businessObject;
+        RuleDelegation ruleDelegation = (RuleDelegation)businessObject;
         List<HtmlData> htmlDataList = new ArrayList<HtmlData>();
-        if (StringUtils.isNotBlank(ruleBaseValues.getRuleTemplateName()) && StringUtils.isNotBlank(getMaintenanceDocumentTypeName()) && allowsMaintenanceEditAction(businessObject)) {
+        if (StringUtils.isNotBlank(ruleDelegation.getDelegationRuleBaseValues().getRuleTemplateName()) && StringUtils.isNotBlank(getMaintenanceDocumentTypeName()) && allowsMaintenanceEditAction(businessObject)) {
             htmlDataList.add(getUrlData(businessObject, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL, pkNames));
         }
         if (allowsMaintenanceNewOrCopyAction()) {

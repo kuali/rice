@@ -58,7 +58,7 @@ public class LookupForm extends KualiForm {
     private String referencesToRefresh;
     private boolean searchUsingOnlyPrimaryKeyValues;
     private String primaryKeyFieldLabels;
-    private boolean showMaintenanceLinks;
+    private boolean showMaintenanceLinks = false;
     private String docNum;
     private String htmlDataType;
     private String lookupObjectId;
@@ -290,12 +290,11 @@ public class LookupForm extends KualiForm {
             setLookupable(localLookupable);
             setFieldsForLookup(fieldValues);
 
-            // only show maintenance links if the lookup was called from the portal (or index.html for the generated applications)
-            if (StringUtils.contains(backLocation, KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY) + "/" + KNSConstants.MAPPING_PORTAL) || StringUtils.contains(backLocation, KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY) + "/index.html")) {
-                showMaintenanceLinks = true;
-            }
-            else {
-                showMaintenanceLinks = false;
+            // if showMaintenanceLinks is not already true, only show maintenance links if the lookup was called from the portal (or index.html for the generated applications)
+            if (!isShowMaintenanceLinks()) {
+            	if (StringUtils.contains(backLocation, KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY) + "/" + KNSConstants.MAPPING_PORTAL) || StringUtils.contains(backLocation, KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY) + "/index.html")) {
+            		showMaintenanceLinks = true;
+            	}
             }
         }
         catch (ClassNotFoundException e) {

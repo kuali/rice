@@ -49,6 +49,7 @@
 	<html-el:hidden name="KualiForm" property="referencesToRefresh" />
 	<html-el:hidden name="KualiForm" property="hasReturnableRow" />
 	<html-el:hidden name="KualiForm" property="docNum" />
+	<html-el:hidden name="KualiForm" property="showMaintenanceLinks" />
 
 	<c:forEach items="${KualiForm.extraButtons}" varStatus="status">
 		<html-el:hidden name="KualiForm" property="extraButtons[${status.index}].extraButtonSource" />

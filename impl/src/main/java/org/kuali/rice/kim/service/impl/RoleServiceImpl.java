@@ -479,7 +479,10 @@ public class RoleServiceImpl implements RoleService {
     	
     	// if a single role: easy case
     	if ( matchingRoleIds.size() == 1 ) {
-    		results = getRoleTypeService( matchingRoleIds.iterator().next() ).sortRoleMembers( results );
+    		KimRoleTypeService kimRoleTypeService = getRoleTypeService( matchingRoleIds.iterator().next() );
+    		if ( kimRoleTypeService != null ) {
+    			results = kimRoleTypeService.sortRoleMembers( results );
+    		}
     	} else if ( matchingRoleIds.size() > 1 ) {
     		// if more than one, check if there is only a single role type service
         	String prevServiceName = null;
@@ -488,11 +491,15 @@ public class RoleServiceImpl implements RoleService {
     			String serviceName = getRoleImpl( roleId ).getKimRoleType().getKimTypeServiceName();
     			if ( prevServiceName != null && !StringUtils.equals( prevServiceName, serviceName ) ) {
     				multipleServices = true;
+    				break;
     			}
 				prevServiceName = serviceName;
     		}
     		if ( !multipleServices ) {
-    			results = getRoleTypeService( matchingRoleIds.iterator().next() ).sortRoleMembers( results );
+        		KimRoleTypeService kimRoleTypeService = getRoleTypeService( matchingRoleIds.iterator().next() );
+        		if ( kimRoleTypeService != null ) {
+        			results = kimRoleTypeService.sortRoleMembers( results );
+        		}
     		} else {
     			LOG.warn( "Did not sort role members - multiple role type services found.  Role Ids: " + matchingRoleIds );
     		}

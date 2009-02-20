@@ -25,7 +25,7 @@
     <property name="documentTypeName" value="TravelAccountMaintenanceDocument"/>
     <property name="businessRulesClass" value="edu.sampleu.travel.bo.TravelAccountRules"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
-    <property name="documentTypeCode" value="TRAV"/>
+    
     <property name="authorizations">
       <list>
         <bean parent="AuthorizationDefinition">

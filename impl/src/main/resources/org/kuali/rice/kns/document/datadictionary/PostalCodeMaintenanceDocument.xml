@@ -30,7 +30,7 @@
     
     <property name="documentTypeName" value="PostalCodeMaintenanceDocument"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
-    <property name="documentTypeCode" value="ZIPC"/>
+    
     <property name="workflowProperties">
       <ref bean="PostalCodeMaintenanceDocument-workflowProperties"/>
     </property>

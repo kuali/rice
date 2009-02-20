@@ -25,7 +25,7 @@
     <property name="documentTypeName" value="AccountMaintenanceDocument"/>
     <property name="businessRulesClass" value="org.kuali.rice.kns.test.document.AccountRules"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
-    <property name="documentTypeCode" value="AMD"/>
+    
     <property name="authorizations">
       <list>
         <bean parent="AuthorizationDefinition">

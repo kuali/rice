@@ -22,7 +22,7 @@
     
     <property name="documentTypeName" value="CountryMaintenanceDocument"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
-    <property name="documentTypeCode" value="CTRY"/>
+    
     <property name="workflowProperties">
       <ref bean="CountryMaintenanceDocument-workflowProperties"/>
     </property>

@@ -19,7 +19,7 @@
     
     <property name="documentTypeName" value="FiscalOfficerMaintenanceDocument"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
-    <property name="documentTypeCode" value="TRFO"/>
+    
     <property name="authorizations">
       <list>
         <bean parent="AuthorizationDefinition">

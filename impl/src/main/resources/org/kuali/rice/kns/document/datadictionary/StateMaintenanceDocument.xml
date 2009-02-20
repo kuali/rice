@@ -28,7 +28,7 @@
     
     <property name="documentTypeName" value="StateMaintenanceDocument"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
-    <property name="documentTypeCode" value="STAT"/>
+    
     <property name="workflowProperties">
       <ref bean="StateMaintenanceDocument-workflowProperties"/>
     </property>

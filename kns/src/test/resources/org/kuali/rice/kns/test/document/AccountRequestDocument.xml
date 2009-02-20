@@ -9,7 +9,7 @@
     <property name="documentClass" value="org.kuali.rice.kns.test.document.AccountRequestDocument"/>
     <property name="businessRulesClass" value="org.kuali.rice.kns.test.document.AccountRequestDocumentRule"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.test.document.AccountRequestDocumentAuthorizer"/>
-    <property name="documentTypeCode" value="ARQ"/>
+    
     <property name="authorizations">
       <list>
         <bean parent="AuthorizationDefinition">

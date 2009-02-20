@@ -9,6 +9,7 @@
         <form-bean name="KualiForm" type="org.kuali.rice.kns.web.struts.form.KualiForm" />
     	<!-- End required KNS forms -->
 	    <form-bean name="RuleForm" type="org.kuali.rice.kew.rule.web.RuleForm" />
+	    <form-bean name="RuleQuickLinksForm" type="org.kuali.rice.kew.rule.web.RuleQuickLinksForm" />
 	    <form-bean name="DelegateRuleForm" type="org.kuali.rice.kew.rule.web.DelegateRuleForm" />
 	    <form-bean name="ActionListFormNew" type="org.kuali.rice.kew.actionlist.web.ActionListForm" />
 	    <form-bean name="ActionListFilterFormNew" type="org.kuali.rice.kew.actionlist.web.ActionListFilterForm" />
@@ -88,7 +89,12 @@
 			<forward name="init" path="/WEB-INF/jsp/rule/RuleInit.jsp" />
 	  </action>
 
-
+	  <action path="/RuleQuickLinks" name="RuleQuickLinksForm" input="/WEB-INF/jsp/rule/RuleQuickLinks.jsp" type="org.kuali.rice.kew.rule.web.RuleQuickLinksAction"
+	        scope="request" parameter="methodToCall" validate="false" attribute="KualiForm">
+      	<forward name="basic" path="/WEB-INF/jsp/rule/RuleQuickLinks.jsp" />
+	    <forward name="requiredStateError" path="/WEB-INF/jsp/rule/RuleQuickLinks.jsp"/>
+        <forward name="finalStateError" path="/WEB-INF/jsp/rule/RuleQuickLinks.jsp"/>
+      </action>
     </action-mappings>
 
 

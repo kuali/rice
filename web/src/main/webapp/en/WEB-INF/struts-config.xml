@@ -17,11 +17,10 @@
       <form-bean name="FeedbackForm" type="org.kuali.rice.kew.feedback.web.FeedbackForm"/>
       <form-bean name="StatsForm" type="org.kuali.rice.kew.stats.web.StatsForm" />
       <form-bean name="QuickLinksForm" type="org.kuali.rice.kew.quicklinks.web.QuickLinksForm"/>
-      <form-bean name="RuleQuickLinkForm" type="org.kuali.rice.kew.rule.web.RuleQuickLinksForm" />
       <form-bean name="NoteForm" type="org.kuali.rice.kew.notes.web.NoteForm" />
       <form-bean name="HelpForm" type="org.kuali.rice.kew.help.web.HelpForm" />
       <form-bean name="IngesterForm" type="org.kuali.rice.kew.batch.web.IngesterForm" />
-      
+
       <!-- Removing Remove/replace functionality for now, as per Application Roadmap committee, will revisit in 1.1
       <form-bean name="RemoveReplaceForm" type="org.kuali.rice.kew.removereplace.web.RemoveReplaceForm"/>
       -->
@@ -46,12 +45,16 @@
     <!--  ========== action mapping definitions ============================= -->
     <action-mappings>
 
+      <!--
       <action path="/RuleQuickLinks" scope="request" type="org.kuali.rice.kew.rule.web.RuleQuickLinksAction"
       	attribute="KualiForm" parameter="methodToCall" name="RuleQuickLinkForm">
       	<forward name="basic" path="/WEB-INF/jsp/rules/RuleQuickLinks.jsp" />
 	    <forward name="requiredStateError" path="/WEB-INF/jsp/rules/RuleQuickLinks.jsp"/>
         <forward name="finalStateError" path="/WEB-INF/jsp/rules/RuleQuickLinks.jsp"/>
       </action>
+      -->
+      <action path="/RuleQuickLinks" scope="request" validate="false" type="org.apache.struts.actions.ForwardAction"
+     		parameter="/kew/RuleQuickLinks.do"/>
 
       <action path="/DocumentSearch" name="DocumentSearchForm" scope="request" validate="false" input="/WEB-INF/jsp/docsearch/DocumentSearch.jsp" type="org.kuali.rice.kew.docsearch.web.DocumentSearchAction" parameter="methodToCall">
         <forward name="success" path="/WEB-INF/jsp/docsearch/DocumentSearch.jsp"/>
@@ -73,7 +76,7 @@
      		parameter="/kew/ActionList.do"/>
      <action path="/ActionListFilter" scope="request" validate="false" type="org.apache.struts.actions.ForwardAction"
      		parameter="/kew/ActionListFilter.do"/>
-     		
+
 
       <action path="/ActionListOld" scope="request" validate="false" parameter="methodToCall"
         type="org.kuali.rice.kew.actionlist.web.ActionListActionOld" name="ActionListForm"

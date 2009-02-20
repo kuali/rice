@@ -35,6 +35,8 @@
 <%@ attribute name="hidden" required="false" %>
 <%@ attribute name="useRiceAuditMode" required="false" %>
 <%@ attribute name="midTabClassReplacement" required="false" %>
+<%@ attribute name="boClassName" required="false" %>
+<%@ attribute name="keyValues" required="false" %>
 
 <c:set var="currentTabIndex" value="${KualiForm.currentTabIndex}" scope="request"/>
 <c:set var="topLevelTabIndex" value="${KualiForm.currentTabIndex}" scope="request"/>
@@ -111,7 +113,16 @@
 
               <img src="${leftTabImage}" alt="" width="12" height="29" align="absmiddle" />
               <c:if test="${not empty leftSideHtmlProperty and not empty leftSideHtmlAttribute}"><kul:htmlControlAttribute property="${leftSideHtmlProperty}" attributeEntry="${leftSideHtmlAttribute}" disabled="${leftSideHtmlDisabled}" /></c:if>
-              <a name="${tabKey}" ></a> <h2><c:out value="${tabTitle}" /></h2>
+              <a name="${tabKey}" ></a>
+              <c:choose>
+                <c:when test="${not empty boClassName && not empty keyValues}">
+                  <h2><kul:inquiry keyValues="${keyValues}" boClassName="${boClassName}" render="true"><c:out value="${tabTitle}" /></kul:inquiry></h2>
+                </c:when>
+                <c:otherwise>
+                  <h2><c:out value="${tabTitle}" /></h2>
+                </c:otherwise>
+              </c:choose>
+              <%--<h2><c:out value="${tabTitle}" /></h2>--%>
               <c:if test="${highlightTab}">
                 &nbsp;<img src="${ConfigProperties.kr.externalizable.images.url}asterisk_orange.png" alt="changed"/>
               </c:if>

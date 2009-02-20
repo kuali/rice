@@ -24,20 +24,21 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
+import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.web.WorkflowAction;
-import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kew.web.KewKualiAction;
+import org.kuali.rice.kns.web.struts.form.KualiForm;
 
 
 /**
@@ -45,10 +46,11 @@ import org.kuali.rice.kns.util.KNSConstants;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class RuleQuickLinksAction extends WorkflowAction {
+public class RuleQuickLinksAction extends KewKualiAction {
 
     public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	makeLookupPathParam(mapping, request);
+    	establishRequiredState(request, form);
         return mapping.findForward("basic");
     }
 
@@ -69,13 +71,13 @@ public class RuleQuickLinksAction extends WorkflowAction {
     }
 
     public ActionForward addDelegationRule(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Long ruleTemplateId = new Long(request.getParameter("ruleTemplate.ruleTemplateId"));
-        String docTypeName = request.getParameter("docTypeFullName");
+        Long ruleTemplateId = new Long(request.getParameter("delegationRuleBaseValues.ruleTemplate.ruleTemplateId"));
+        String docTypeName = request.getParameter("delegationRuleBaseValues.documentType.name");
         List rules = getRuleService().search(docTypeName, null, ruleTemplateId, "", null, null, Boolean.FALSE, Boolean.TRUE, new HashMap(), null);
         if (rules.size() == 1) {
             RuleBaseValues rule = (RuleBaseValues)rules.get(0);
             String url = "../kew/DelegateRule.do?methodToCall=start" +
-            	"&parentRuleId=" + rule.getRuleBaseValuesId(); 
+            	"&parentRuleId=" + rule.getRuleBaseValuesId();
             return new ActionForward(url, true);
         }
         makeLookupPathParam(mapping, request);
@@ -172,7 +174,5 @@ public class RuleQuickLinksAction extends WorkflowAction {
     private RuleTemplateService getRuleTemplateService() {
     	return KEWServiceLocator.getRuleTemplateService();
     }
-
-
 
 }

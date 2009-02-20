@@ -40,14 +40,18 @@ def processXmlFile(file) {
 			xmlns:spring="http://www.springframework.org/schema/beans"
 			xmlns:fn="http://www.w3.org/2005/04/xpath-functions"
 			xmlns:p="http://www.springframework.org/schema/p">
-	    <xsl:template match="/spring:beans/spring:bean[@parent = 'MaintenanceDocumentEntry' or @parent = 'TransactionalDocumentEntry' or @parent = 'AccountingDocumentEntry']/spring:property[@name='label' or @name='shortLabel' or @name='helpDefinition' or @name='summary' or @name='description']"></xsl:template>
+	    <xsl:template match="/spring:beans/spring:bean[@parent = 'MaintenanceDocumentEntry' or @parent = 'TransactionalDocumentEntry' or @parent = 'AccountingDocumentEntry']/spring:property[@name='label' or @name='shortLabel' or @name='helpDefinition' or @name='summary' or @name='description' or @name='documentTypeCode']"></xsl:template>
 	    <xsl:template match="/spring:beans/spring:bean[@parent = 'MaintenanceDocumentEntry' or @parent = 'TransactionalDocumentEntry' or @parent = 'AccountingDocumentEntry']/@p:label"></xsl:template>
 	    <xsl:template match="/spring:beans/spring:bean[@parent = 'MaintenanceDocumentEntry' or @parent = 'TransactionalDocumentEntry' or @parent = 'AccountingDocumentEntry']/@p:shortLabel"></xsl:template>
 	    <xsl:template match="/spring:beans/spring:bean[@parent = 'MaintenanceDocumentEntry' or @parent = 'TransactionalDocumentEntry' or @parent = 'AccountingDocumentEntry']/@p:helpDefinition"></xsl:template>
 	    <xsl:template match="/spring:beans/spring:bean[@parent = 'MaintenanceDocumentEntry' or @parent = 'TransactionalDocumentEntry' or @parent = 'AccountingDocumentEntry']/@p:summary"></xsl:template>
 	    <xsl:template match="/spring:beans/spring:bean[@parent = 'MaintenanceDocumentEntry' or @parent = 'TransactionalDocumentEntry' or @parent = 'AccountingDocumentEntry']/@p:description"></xsl:template>
+	    <xsl:template match="/spring:beans/spring:bean[@parent = 'MaintenanceDocumentEntry' or @parent = 'TransactionalDocumentEntry' or @parent = 'AccountingDocumentEntry']/@p:documentTypeCode"></xsl:template>
+	    <xsl:template match="//spring:bean[@parent = 'MaintainableFieldDefinition']/spring:property[@name='displayMask' or @name='displayEditMode']"></xsl:template>
+	    <xsl:template match="//spring:bean[@parent = 'MaintainableFieldDefinition']/@p:displayMask"></xsl:template>
+	    <xsl:template match="//spring:bean[@parent = 'MaintainableFieldDefinition']/@p:displayEditMode"></xsl:template>
 	    <xsl:template match="@*">
-	    	<xsl:if test="not( namespace-uri(.) = 'http://www.springframework.org/schema/p' and (local-name(.) = 'label' or local-name(.) = 'shortLabel' or local-name(.) = 'helpDefinition' or local-name(.) = 'summary' or local-name(.) = 'description') and local-name(..) = 'bean' and substring(../@name, (string-length(../@name) - string-length('Document')) + 1) = 'Document')">
+	    	<xsl:if test="not( namespace-uri(.) = 'http://www.springframework.org/schema/p' and (local-name(.) = 'documentTypeCode' or local-name(.) = 'label' or local-name(.) = 'shortLabel' or local-name(.) = 'helpDefinition' or local-name(.) = 'summary' or local-name(.) = 'description') and local-name(..) = 'bean' and substring(../@name, (string-length(../@name) - string-length('Document')) + 1) = 'Document')">
 		    	<xsl:copy>
 					<xsl:apply-templates select="@*|node()"/>
 				</xsl:copy>

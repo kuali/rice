@@ -480,11 +480,4 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
 			Class<? extends DocumentPresentationController> documentPresentationControllerClass) {
 		this.documentPresentationControllerClass = documentPresentationControllerClass;
 	}
-
-    /**
-     * @deprecated This was removed as of Rice 1.0.
-     */
-    public void setDocumentTypeCode(String documentTypeCode) {
-        // DO NOTHING
-    }
 }

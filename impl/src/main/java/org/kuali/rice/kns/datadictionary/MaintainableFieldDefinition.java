@@ -66,9 +66,6 @@ public class MaintainableFieldDefinition extends MaintainableItemDefinition impl
     protected String template;
     protected Class<? extends ValueFinder> defaultValueFinderClass;
 
-    protected String displayEditMode;
-    protected Mask displayMask;
-
     protected String webUILeaveFieldFunction = "";
     protected String webUILeaveFieldCallbackFunction = "";
     
@@ -129,54 +126,7 @@ required is true if the field must contain a non-null value
 	public void setUnconditionallyReadOnly(boolean unconditionallyReadOnly) {
 		this.unconditionallyReadOnly = unconditionallyReadOnly;
 	}
-	
-	/**
-     * Gets the displayEditMode attribute.
-     * 
-     * @return Returns the displayEditMode.
-     */
-    public String getDisplayEditMode() {
-        return displayEditMode;
-    }
 
-
-    /**
-     * The document authorizer classes have a method getEditMode, which is a map of edit mode to
-                        value mappings.  Depending on the context, the value of the mapping may be relevant, and the logic determining
-                        whether the value is relevant is often implemented in the JSP/tag layer.
-
-                        Fields on a document (particularily maintenance documents) may be associated with
-                        an edit mode.  If the edit mode is mapped to a relevant value, then the all fields associated with the edit mode
-                        will be rendered unhidden.
-
-                        The displayEditMode element is used to specify the edit mode that will be associated with the field.
-                        If the document authorizer returns a map with this edit mode mapped to a proper value, then the field will be unhidden to the user.
-                    
-     */
-    public void setDisplayEditMode(String displayEditMode) {
-        this.displayEditMode = displayEditMode;
-    }
-
-
-    /**
-     * Gets the displayMask attribute.
-     * 
-     * @return Returns the displayMask.
-     */
-    public Mask getDisplayMask() {
-        return displayMask;
-    }
-
-
-    /**
-     * The displayMask element specifies the type of masking to
-                    be used to hide the value from un-authorized users.
-                    There are three types of masking.
-     */
-    public void setDisplayMask(Mask displayMask) {
-        this.displayMask = displayMask;
-    }
-    
     /**
      * Gets the overrideFieldConversions attribute. 
      * @return Returns the overrideFieldConversions.
@@ -230,16 +180,6 @@ required is true if the field must contain a non-null value
 
         if (defaultValueFinderClass != null && defaultValue != null) {
             throw new AttributeValidationException("Both defaultValue and defaultValueFinderClass can not be specified on attribute " + getName() + " in rootBusinessObjectClass " + rootBusinessObjectClass.getName());
-        }
-
-        if (StringUtils.isNotBlank(displayEditMode) && displayMask == null) {
-            throw new AttributeValidationException("property '" + getName() + "' has a display edit mode defined but not a valid display mask '" + "' (" + "" + ")");
-        }
-
-        if (displayMask != null) {
-            if (getDisplayMask().getMaskFormatter() == null && getDisplayMask().getMaskFormatterClass() == null) {
-                throw new AttributeValidationException("No mask formatter or formatter class specified for secure attribute " + getName() + "' (" + "" + ")");
-            }
         }
    }
 

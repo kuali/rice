@@ -532,6 +532,39 @@
 					</td>
 
 				</c:when>
+<%--enable when ready on backend
+				<c:when test="${field.fieldType eq field.MULTISELECT}">
+
+					<kul:fieldDefaultLabel isLookup="${isLookup}" isRequired="${field.fieldRequired}" 
+						isReadOnly="${isFieldReadOnly}" cellWidth="${dataCellWidth}%" 
+						fieldName="${field.propertyName}" fieldType="${field.fieldType}" fieldLabel="${field.fieldLabel}" />
+						
+					<td class="grid" width="${dataCellWidth}%">
+						
+						<c:choose>
+							
+							<c:when test="${isFieldReadOnly}">
+                                                          <kul:fieldShowReadOnly field="${field}" addHighlighting="${addHighlighting}" />
+							</c:when>
+										
+							<c:otherwise>
+								${kfunc:registerEditableProperty(KualiForm, field.propertyName)}
+								<select multiple="${true}" id='${field.propertyName}' name='${field.propertyName}' style="${textStyle}" ${onblurcall}>
+									<c:if test="${!field.hasBlankValidValue}">
+										<option value=""></option>
+									</c:if>
+									<kul:fieldSelectValues field="${field}"/>
+								</select>
+							</c:otherwise>
+
+						</c:choose>							
+							
+						<kul:fieldShowIcons isReadOnly="${isFieldReadOnly}" field="${field}" addHighlighting="${addHighlighting}" />
+	                        
+					</td>
+						 
+				</c:when>
+ --%>
 
 				<c:when test="${field.fieldType eq field.RADIO}">
 

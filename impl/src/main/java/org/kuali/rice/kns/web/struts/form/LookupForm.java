@@ -62,7 +62,9 @@ public class LookupForm extends KualiForm {
     private String docNum;
     private String htmlDataType;
     private String lookupObjectId;
-
+	private boolean lookupCriteriaEnabled = true;
+    private boolean supplementalActionsEnabled = true;
+    
     /**
      * @see org.kuali.rice.kns.web.struts.form.KualiForm#addRequiredNonEditableProperties()
      */
@@ -611,5 +613,33 @@ public class LookupForm extends KualiForm {
 	 */
 	public void setLookupObjectId(String lookupObjectId) {
 		this.lookupObjectId = lookupObjectId;
+	}
+
+	/**
+	 * @return the lookupCriteriaEnabled
+	 */
+	public boolean isLookupCriteriaEnabled() {
+		return this.lookupCriteriaEnabled;
+	}
+
+	/**
+	 * @param lookupCriteriaEnabled the lookupCriteriaEnabled to set
+	 */
+	public void setLookupCriteriaEnabled(boolean lookupCriteriaEnabled) {
+		this.lookupCriteriaEnabled = lookupCriteriaEnabled;
+	}
+
+	/**
+	 * @return the supplementalActionsEnabled
+	 */
+	public boolean isSupplementalActionsEnabled() {
+		return this.supplementalActionsEnabled;
+	}
+
+	/**
+	 * @param supplementalActionsEnabled the supplementalActionsEnabled to set
+	 */
+	public void setSupplementalActionsEnabled(boolean supplementalActionsEnabled) {
+		this.supplementalActionsEnabled = supplementalActionsEnabled;
 	}
 }

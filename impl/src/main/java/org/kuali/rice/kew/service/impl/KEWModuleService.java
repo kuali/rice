@@ -18,7 +18,7 @@ package org.kuali.rice.kew.service.impl;
 import org.kuali.rice.kns.service.impl.ModuleServiceBase;
 
 /**
- * The ModuleService for the KSB 
+ * The ModuleService for KEW 
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *

@@ -20,6 +20,9 @@
 <c:if test="${KualiForm.suppressActions!=true}">
     <c:set var="headerMenu" value="${KualiForm.lookupable.createNewUrl}   ${KualiForm.lookupable.htmlMenuBar}" />
 </c:if>
+<c:if test="${KualiForm.supplementalActionsEnabled==true}">
+    <c:set var="headerMenu" value="${KualiForm.lookupable.supplementalMenuBar}" />
+</c:if>
 <kul:page lookup="true" showDocumentInfo="false"
 	headerMenuBar="${headerMenu}"
 	headerTitle="Lookup" docTitle="" transactionalDocument="false"
@@ -30,10 +33,12 @@
     var kualiElements = kualiForm.elements;
   </SCRIPT>
 
-	<div class="headerarea-small" id="headerarea-small">
-	<h1><c:out value="${KualiForm.lookupable.title}" /><kul:help
-		resourceKey="lookupHelpText" altText="lookup help" /></h1>
-	</div>
+	<c:if test="${KualiForm.supplementalActionsEnabled==true}">
+		<div class="headerarea-small" id="headerarea-small">
+			<h1><c:out value="${KualiForm.lookupable.title}" /><kul:help
+				resourceKey="lookupHelpText" altText="lookup help" /></h1>
+		</div>
+	</c:if>
 	<kul:enterKey methodToCall="search" />
 
 	<html-el:hidden name="KualiForm" property="backLocation" />
@@ -60,6 +65,7 @@
 	<kul:messages/>
 
 	<table width="100%">
+	  <c:if test="${KualiForm.lookupCriteriaEnabled}">
 		<tr>
 			<td width="1%"><img src="${ConfigProperties.kr.externalizable.images.url}pixel_clear.gif" alt="" width="20"
 				height="20"></td>
@@ -109,6 +115,7 @@
 					</c:if>
 					</td>
 				</tr>
+			  </c:if>
 			</table>
 			</div>
 
@@ -174,14 +181,14 @@
 										<c:set var="numberOfColumnAnchors" value="${column.numberOfColumnAnchors}" />
 										<logic:iterate id="columnAnchor" name="column" property="columnAnchors" indexId="ctr">
 										<a href="<c:out value="${columnAnchor.href}"/>" target="blank" title="${columnAnchor.title}"><c:out
-											value="${fn:substring(columnAnchor.displayText, 0, column.maxLength)}"
+											value="${fn:substring(columnAnchor.displayText, 0, column.maxLength)}" escapeXml="${column.escapeXMLValue}"
 											/><c:if test="${column.maxLength gt 0 && fn:length(columnAnchor.displayText) gt column.maxLength}">...</c:if></a>
 											<c:if test="${ctr lt numberOfColumnAnchors-1}">,</c:if>
 										</logic:iterate>
 									</c:when>
 									<c:otherwise>
 										<a href="<c:out value="${column.columnAnchor.href}"/>" target="blank" title="${column.columnAnchor.title}"><c:out
-											value="${fn:substring(column.propertyValue, 0, column.maxLength)}"
+											value="${fn:substring(column.propertyValue, 0, column.maxLength)}" escapeXml="${column.escapeXMLValue}"
 											/><c:if test="${column.maxLength gt 0 && fn:length(column.propertyValue) gt column.maxLength}">...</c:if></a>
 			                        </c:otherwise>
 			                     </c:choose>

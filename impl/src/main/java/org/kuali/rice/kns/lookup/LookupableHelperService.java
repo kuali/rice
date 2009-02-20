@@ -277,6 +277,24 @@ public interface LookupableHelperService extends Serializable{
     public boolean isResultReturnable(BusinessObject object);
     
     /**
+     * 
+     * This method allows for overriding the clear behavior
+     *
+     */
+    public void performClear(LookupForm lookupForm);
+    
+    public boolean shouldDisplayHeaderNonMaintActions();
+    
+    public boolean shouldDisplayLookupCriteria();
+
+	/**
+	 * This method gets the supplemental lookup menu if any
+	 * 
+	 * @return supplemental menu bar
+	 */
+	public String getSupplementalMenuBar();
+    
+    /**
      * @return String displayed as title for the lookup
      */
     public String getTitle();

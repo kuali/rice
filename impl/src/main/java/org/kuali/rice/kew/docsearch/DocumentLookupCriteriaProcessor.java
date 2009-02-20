@@ -17,7 +17,7 @@ package org.kuali.rice.kew.docsearch;
 
 import java.util.List;
 
-import org.kuali.rice.kns.bo.PersistableBusinessObject;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kns.web.ui.Row;
 
 /**
@@ -27,5 +27,7 @@ import org.kuali.rice.kns.web.ui.Row;
  *
  */
 public interface DocumentLookupCriteriaProcessor {
-	public List<Row>getRows(PersistableBusinessObject documentLookupClass, List<Row> defaultRows);
+	public List<Row>getRows(DocumentType documentType, List<Row> defaultRows);
+	public boolean shouldDisplayHeaderNonMaintActions();
+	public boolean shouldDisplayLookupCriteria();
 }

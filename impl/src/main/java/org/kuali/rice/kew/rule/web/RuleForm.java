@@ -17,7 +17,6 @@ package org.kuali.rice.kew.rule.web;
 
 import java.util.ArrayList;
 
-import org.kuali.rice.kew.docsearch.DocumentSearchRow;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 
 /**

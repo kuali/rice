@@ -27,6 +27,7 @@ import java.util.Map;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
+import org.kuali.rice.kew.docsearch.DocumentLookupCriteriaBuilder;
 import org.kuali.rice.kew.docsearch.DocumentLookupCriteriaProcessor;
 import org.kuali.rice.kew.docsearch.DocumentLookupCriteriaProcessorKEWAdapter;
 import org.kuali.rice.kew.docsearch.DocumentSearchResult;
@@ -46,6 +47,7 @@ import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.service.DateTimeService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.web.comparator.CellComparatorHelper;
 import org.kuali.rice.kns.web.format.BooleanFormatter;
 import org.kuali.rice.kns.web.format.CollectionFormatter;
@@ -63,7 +65,7 @@ import org.kuali.rice.kns.web.ui.Row;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class DocumentRouteHeaderValueLookupableHelperServiceImpl extends
+public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends
 KualiLookupableHelperServiceImpl {
 
 	private static final long serialVersionUID = -5162419674659967408L;
@@ -112,7 +114,8 @@ KualiLookupableHelperServiceImpl {
     	
 
     	Map<String,String> fieldsForLookup = lookupForm.getFieldsForLookup();
-    	DocSearchCriteriaDTO criteria = constructCriteria(fieldsForLookup);
+    	DocSearchCriteriaDTO criteria = DocumentLookupCriteriaBuilder.populateCriteria(fieldsForLookup);
+    	
     	
     	//TODO: move this into actual adapter as well
     	Collection displayList=null;
@@ -165,20 +168,36 @@ KualiLookupableHelperServiceImpl {
         	HtmlData returnUrl = new AnchorHtmlData();
         	String actionUrls = "";
 
-//TODO: convert columns either here or in the getColumns method
 //ADDED (3)
-            List<? extends Column> columns = components.getColumns();//getColumns();
+            List<? extends Column> origColumns = components.getColumns();//getColumns();
+            List<Column> newColumns = new ArrayList<Column>();
             List<KeyValueSort> keyValues = docSearchResult.getResultContainers();
-            for (int i = 0; i < columns.size(); i++) {
+            for (int i = 0; i < origColumns.size(); i++) {
 
 //            for (Iterator iterator = columns.iterator(); iterator.hasNext();) {
 
 //                Column col = (Column) iterator.next();
 //ADDED 3
-            	  Column col = (Column) columns.get(i);
+            	  Column col = (Column) origColumns.get(i);
             	  KeyValueSort keyValue = keyValues.get(i);
 //Set values from keyvalue on column
             	  col.setPropertyValue(keyValue.getUserDisplayValue());
+            	  
+            	  String propertyName = col.getPropertyName();
+				if(StringUtils.isEmpty(col.getColumnTitle())) {
+            		  String labelMessageKey;
+            		  if(StringUtils.equals(propertyName,KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG)) {
+            			  //TODO: find a better place for this
+            			  labelMessageKey = "Route Log";
+            		  } else {
+            			  //TODO: change this to an enum (or another dd property)
+            			  propertyName=(StringUtils.equals(propertyName,"docTypeLabel"))?"docTypeFullName":propertyName;
+            			  propertyName=(StringUtils.equals(propertyName,"docRouteStatusCodeDesc"))?"docRouteStatus":propertyName;
+            			  propertyName=(StringUtils.equals(propertyName,"documentTitle"))?"docTitle":propertyName;
+            			  labelMessageKey = getDataDictionaryService().getAttributeLabel(DocSearchCriteriaDTO.class,propertyName);
+            		  }
+            		  col.setColumnTitle(labelMessageKey);
+            	  }
             	  
             	Formatter formatter = col.getFormatter();
 
@@ -189,7 +208,7 @@ KualiLookupableHelperServiceImpl {
                 Object prop=col.getPropertyValue();
                 
                 // set comparator and formatter based on property type
-                Class propClass = propertyTypes.get(col.getPropertyName());
+                Class propClass = propertyTypes.get(propertyName);
                 if ( propClass == null ) {
                     try {
 //                    	propClass = ObjectUtils.getPropertyType( element, col.getPropertyName(), getPersistenceStructureService() );
@@ -240,29 +259,38 @@ KualiLookupableHelperServiceImpl {
                 	if(StringUtils.isNotEmpty(keyValue.getValue()) && StringUtils.equals("routeHeaderId", keyValue.getkey())) {
                 		anchor.setHref("../en/"+StringUtils.getNestedString(keyValue.getValue(), "<a href=\"", "docId=")+"docId="+keyValue.getUserDisplayValue());
                         col.setMaxLength(100); //for now force this
+                	} else if(StringUtils.isNotEmpty(keyValue.getvalue()) && StringUtils.equals(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG, keyValue.getkey())) {
+                		anchor.setHref("../en/"+StringUtils.getNestedString(keyValue.getValue(), "<a href=\"", "\"><img "));
+                        col.setMaxLength(100); //for now force this
+                        keyValue.setvalue(keyValue.getUserDisplayValue());
+                        col.setEscapeXMLValue(false);
                 	}
                 	
                 	col.setColumnAnchor(anchor);
+                	
                 }
-            }
+                Column newCol = (Column)ObjectUtils.deepCopy(col);
+                newColumns.add(newCol);
+            }    
 
-            ResultRow row = new ResultRow((List<Column>)columns, returnUrl.constructCompleteHtmlTag(), actionUrls);
+            ResultRow row = new ResultRow(newColumns, returnUrl.constructCompleteHtmlTag(), actionUrls);
             row.setRowId(returnUrl.getName());
-        	// because of concerns of the BO being cached in session on the ResultRow,
-        	// let's only attach it when needed (currently in the case of export)
+            // because of concerns of the BO being cached in session on the ResultRow,
+            // let's only attach it when needed (currently in the case of export)
             if (getBusinessObjectDictionaryService().isExportable(getBusinessObjectClass())) {
-//            	row.setBusinessObject(element);
+            	//            	row.setBusinessObject(element);
             }
 
-//            boolean rowReturnable = isResultReturnable(element);
-//ADDED
+            //            boolean rowReturnable = isResultReturnable(element);
+            //ADDED
             boolean rowReturnable = true;
             row.setRowReturnable(rowReturnable);
             if (rowReturnable) {
-                hasReturnableRow = true;
+            	hasReturnableRow = true;
             }
             resultTable.add(row);
         }
+        
 
         lookupForm.setHasReturnableRow(hasReturnableRow);
 
@@ -271,42 +299,7 @@ KualiLookupableHelperServiceImpl {
 	}
 
 
-	/**
-	 * This method ...
-	 * 
-	 * @param lookupForm
-	 * @return
-	 */
-	private DocSearchCriteriaDTO constructCriteria(Map<String,String> fieldsForLookup) {
-		//TODO: move this into adapter
-    	DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
-    	Map<String,String> fieldsToSet = new HashMap<String,String>();
-		for (String formKey : fieldsForLookup.keySet()) {
-			if(!(formKey.equalsIgnoreCase(KNSConstants.BACK_LOCATION) ||
-			   formKey.equalsIgnoreCase(KNSConstants.DOC_FORM_KEY)) && StringUtils.isNotEmpty(fieldsForLookup.get(formKey))) {
-				fieldsToSet.put(formKey, fieldsForLookup.get(formKey));
-			}
-		}
-		//if we use DocSearchCriteriaDTO as object we shouldn't need this conversion stuff
-    	for (String fieldToSet : fieldsToSet.keySet()) {
-			//need translation code here for certain fields
-    		String valueToSet = fieldsToSet.get(fieldToSet);
-			try {
-				//TODO: temporary work around until is a criteria
-				if(fieldToSet.equals("documentType.name")) {
-					fieldToSet = "docTypeFullName";
-				}
-				PropertyUtils.setNestedProperty(criteria, fieldToSet, valueToSet);
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				e.printStackTrace();
-			} catch (NoSuchMethodException e) {
-				e.printStackTrace();
-			}
-		}
-		return criteria;
-	}
+
 
 
 	/**
@@ -357,30 +350,36 @@ KualiLookupableHelperServiceImpl {
 		}
 		//clear out
 		super.getRows().clear();
-		//###END LOOKUP ROW CODE TODO: do something with lookupRows or delete above code
-		
 		
         processor = new DocumentLookupCriteriaProcessorKEWAdapter();
-        
-        
 
-		//TODO: get this from parameters (or bo?)
+
 		DocumentType docType = null;
-		if(processor != null) {
-			//TODO: same Doc type
-//			if(docType==oldDocType) {
-			((DocumentLookupCriteriaProcessorKEWAdapter)processor).setCriteriaProcessor(new StandardDocumentSearchCriteriaProcessor());
-//			} else {
-				
-//			}
-		} else {
-			//TODO: same Doc type
-			if(docType==null) {
-				((DocumentLookupCriteriaProcessorKEWAdapter)processor).setCriteriaProcessor(new StandardDocumentSearchCriteriaProcessor());
-			}// else {
-				
-//			}
+		//TODO: fix this, lookup is not returning a string
+		String docTypeName = null;
+		if(this.getParameters().get("docTypeFullName")!=null) {
+			docTypeName = ((String[])this.getParameters().get("docTypeFullName"))[0];
 		}
+		if(StringUtils.isNotEmpty(docTypeName)) {
+			docType = getValidDocumentType((String)docTypeName);
+		}
+
+		DocumentLookupCriteriaProcessorKEWAdapter documentLookupCriteriaProcessorKEWAdapter = (DocumentLookupCriteriaProcessorKEWAdapter)processor;
+		if(processor != null && documentLookupCriteriaProcessorKEWAdapter.getCriteriaProcessor()!=null) {
+			if(docType==null) {
+				documentLookupCriteriaProcessorKEWAdapter.setCriteriaProcessor(new StandardDocumentSearchCriteriaProcessor());
+			} else if(!StringUtils.equals(docTypeName, documentLookupCriteriaProcessorKEWAdapter.getCriteriaProcessor().getDocSearchCriteriaDTO().getDocTypeFullName())){
+				documentLookupCriteriaProcessorKEWAdapter.setCriteriaProcessor(docType.getDocumentSearchCriteriaProcessor());
+			}
+		} else {
+			if(docType==null) {
+				documentLookupCriteriaProcessorKEWAdapter.setCriteriaProcessor(new StandardDocumentSearchCriteriaProcessor());
+			} else {
+				documentLookupCriteriaProcessorKEWAdapter.setCriteriaProcessor(docType.getDocumentSearchCriteriaProcessor());
+			}
+		}
+		//TODO: This should probably be moved into spring injection since it's a constant
+		documentLookupCriteriaProcessorKEWAdapter.setDataDictionaryService(getDataDictionaryService());
 		
 		//call get rows
 		List<Row> rows = processor.getRows(docType,lookupRows);
@@ -388,11 +387,6 @@ KualiLookupableHelperServiceImpl {
 
 		//are we in basic or detailed, are we in super.
 		//TODO: ctk Add this code back in when KNS impacting changes are worked back
-		
-
-		
-		
-		
 	}
 
 
@@ -411,14 +405,13 @@ KualiLookupableHelperServiceImpl {
 			}
 		}
 		//TODO: also check if standard here (maybe from object if use criteria)
-		if(this.processor==null) {
+		String docTypeName = fieldsToClear.get("documentTypeFullName");
+		if(StringUtils.isEmpty(docTypeName)) {
 			super.performClear(lookupForm);
 		} else {
-			DocSearchCriteriaDTO docCriteria = constructCriteria(fieldsToClear);
-			if(StringUtils.isNotEmpty("documentType.name")) {
-				//TODO: move these strings to constants (probably after moving this to criteria
-				getValidDocumentType(fieldsToClear.get("documentType.name")).getDocumentSearchGenerator().clearSearch(docCriteria);;		
-			}
+			DocSearchCriteriaDTO docCriteria = DocumentLookupCriteriaBuilder.populateCriteria(fieldsToClear);
+			getValidDocumentType(docTypeName).getDocumentSearchGenerator().clearSearch(docCriteria);
+			//TODO: method to update values on rows from criteria object (i.e. reverse of lookupform.populate)
 		}
 	}
 	/**
@@ -435,4 +428,71 @@ KualiLookupableHelperServiceImpl {
         }
         return documentType;
     }
+
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getSupplementalMenuBar()
+	 */
+	@Override
+	public String getSupplementalMenuBar() {
+		Boolean detailed = false;
+		if(this.getParameters().get("isAdvancedSearch")!=null) {
+			detailed = new Boolean(((String[])this.getParameters().get("isAdvancedSearch"))[0]);
+		}
+		String suppMenuBar = "";
+		//TODO: replace server info with parameter
+		if(detailed) {
+			suppMenuBar = "<a href=\"http://localhost:8080/kr-dev/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&docFormKey=88888888&returnLocation=http://localhost:8080/kr-dev/portal.do&hideReturnLink=true&isAdvancedSearch=false\">basic</a>";
+		} else {
+			suppMenuBar = "<a href=\"http://localhost:8080/kr-dev/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&docFormKey=88888888&returnLocation=http://localhost:8080/kr-dev/portal.do&hideReturnLink=true&isAdvancedSearch=true\">detailed</a>";	
+		}
+		Boolean superSearch = false;
+		if(this.getParameters().get("isSuperSearch")!=null) {
+			superSearch = new Boolean(((String[])this.getParameters().get("isSuperSearch"))[0]); 
+		}
+		if(superSearch) {
+			suppMenuBar = suppMenuBar + "&nbsp" + "<a href=\"http://localhost:8080/kr-dev/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&docFormKey=88888888&returnLocation=http://localhost:8080/kr-dev/portal.do&hideReturnLink=true&isSuperSearch=false\">super</a>";
+		} else {
+			suppMenuBar = suppMenuBar + "&nbsp" + "<a href=\"http://localhost:8080/kr-dev/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&docFormKey=88888888&returnLocation=http://localhost:8080/kr-dev/portal.do&hideReturnLink=true&isSuperSearch=true\">non-super</a>";
+		}
+		return suppMenuBar;
+	}
+
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#shouldDisplayHeaderNonMaintActions()
+	 */
+	@Override
+	public boolean shouldDisplayHeaderNonMaintActions() {
+		return this.processor.shouldDisplayHeaderNonMaintActions();
+	}
+
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#shouldDisplayLookupCriteria()
+	 */
+	@Override
+	public boolean shouldDisplayLookupCriteria() {
+		return this.processor.shouldDisplayLookupCriteria();
+	}
+
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#checkForAdditionalFields(java.util.Map)
+	 */
+	@Override
+	public boolean checkForAdditionalFields(Map fieldValues) {
+		// TODO chris - THIS METHOD NEEDS JAVADOCS
+		return super.checkForAdditionalFields(fieldValues);
+	}
+    
+    
 }

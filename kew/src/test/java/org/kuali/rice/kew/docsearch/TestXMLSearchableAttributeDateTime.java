@@ -21,14 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kew.docsearch.SearchableAttribute;
-import org.kuali.rice.kew.docsearch.SearchableAttributeDateTimeValue;
-import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
-//import org.kuali.rice.kns.web.ui.Field;
-//import org.kuali.rice.kns.web.ui.Row;
-import org.kuali.rice.kew.docsearch.DocumentSearchColumn;
-import org.kuali.rice.kew.docsearch.DocumentSearchField;
 import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
 
 
 public class TestXMLSearchableAttributeDateTime implements SearchableAttribute {
@@ -52,14 +47,14 @@ public class TestXMLSearchableAttributeDateTime implements SearchableAttribute {
 		return savs;
 	}
 
-	public List<DocumentSearchRow> getSearchingRows(DocumentSearchContext documentSearchContext) {
+	public List<Row> getSearchingRows(DocumentSearchContext documentSearchContext) {
 		List fields = new ArrayList();
-		DocumentSearchField myField = new DocumentSearchField("title", "", "", SEARCH_STORAGE_KEY, "", null, "");
+		Field myField = new Field(SEARCH_STORAGE_KEY,"title");
 		myField.setColumnVisible(true);
 		myField.setFieldDataType((new SearchableAttributeDateTimeValue()).getAttributeDataType());
 		fields.add(myField);
-		DocumentSearchRow row = new DocumentSearchRow(fields);
-		List<DocumentSearchRow> rows = new ArrayList<DocumentSearchRow>();
+		Row row = new Row(fields);
+		List<Row> rows = new ArrayList<Row>();
 		rows.add(row);
 		return rows;
 	}

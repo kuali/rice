@@ -40,6 +40,7 @@ public class Column implements java.io.Serializable {
     private HtmlData columnAnchor;
     private Formatter formatter;
     private Comparator comparator;
+    private boolean escapeXMLValue=true;
     
     /**
      * A comparator used to compare the propertyValue values
@@ -54,7 +55,12 @@ public class Column implements java.io.Serializable {
     
     public Column() {
     }
-
+    
+    public Column(String columnTitle, String propertyName) {
+        this.columnTitle = columnTitle;
+        this.propertyName = propertyName;
+    }
+    
     public Column(String columnTitle, String sortable, String propertyName) {
         this.columnTitle = columnTitle;
         this.sortable = sortable;
@@ -239,4 +245,18 @@ public class Column implements java.io.Serializable {
     public void setMaxLength(int maxColumnLength) {
         this.maxLength = maxColumnLength;
     }
+
+	/**
+	 * @return the escapeXMLValue
+	 */
+	public boolean isEscapeXMLValue() {
+		return this.escapeXMLValue;
+	}
+
+	/**
+	 * @param escapeXMLValue the escapeXMLValue to set
+	 */
+	public void setEscapeXMLValue(boolean escapeXMLValue) {
+		this.escapeXMLValue = escapeXMLValue;
+	}
 }

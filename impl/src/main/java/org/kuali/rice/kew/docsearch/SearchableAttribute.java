@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
+import org.kuali.rice.kns.web.ui.Row;
 
 
 /**
@@ -57,7 +58,7 @@ public interface SearchableAttribute extends Serializable {
     public String getSearchContent(DocumentSearchContext documentSearchContext);
 
     /**
-     * this will return the loaded data objects for storage in workflow’s database to be related to the document the
+     * this will return the loaded data objects for storage in workflowï¿½s database to be related to the document the
      * attributes xml content was loaded with
      *
      * @return
@@ -69,7 +70,7 @@ public interface SearchableAttribute extends Serializable {
      *
      * @return
      */
-    public List<DocumentSearchRow> getSearchingRows(DocumentSearchContext documentSearchContext);
+    public List<Row> getSearchingRows(DocumentSearchContext documentSearchContext);
 
     /**
      * this will return a list of error objects if the user has made an input error

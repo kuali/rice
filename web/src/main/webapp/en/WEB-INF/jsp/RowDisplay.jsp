@@ -85,7 +85,30 @@
 														</c:choose>
 													</c:forEach>
 												</select>
-										</c:when>										
+										</c:when>
+										<c:when test="${field.fieldType==field.MULTIBOX}" >
+            								<table>
+              									<tr>
+                									<td>
+                  										<c:forEach items="${field.fieldValidValues}" var="box" varStatus="status">
+                    									<html-el:multibox property="propertyField[${fieldIndex}].values" value="${box.key}"/>&nbsp;<c:out value="${box.label}" />
+                    									<c:choose>
+                      									<c:when test="${((status.count) % 3) == 0}">
+                          							</td>
+                        						</tr>
+                        						<tr>
+                          						<td>
+                      					</c:when>
+                      						<c:otherwise>
+                          							</td>
+                          							<td>
+                      								</c:otherwise>
+                    								</c:choose>
+			      									</c:forEach>
+			    									</td>
+		      									</tr>
+		    								</table>
+		  								</c:when>										
 										<c:when test="${field.fieldType==field.RADIO}" >
 												<c:forEach items="${field.fieldValidValues}" var="radio">
 													<c:choose>

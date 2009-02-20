@@ -62,6 +62,7 @@ import org.kuali.rice.kns.web.format.Formatter;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
 import org.kuali.rice.kns.web.struts.form.MultipleValueLookupForm;
 import org.kuali.rice.kns.web.ui.Column;
+import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.ResultRow;
 import org.kuali.rice.kns.web.ui.Row;
 
@@ -1158,6 +1159,49 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     public boolean isResultReturnable(BusinessObject object) {
         return true;
     }
+    
+    /**
+     * 
+     * This method does the logic for the clear action.
+     * 
+     * @see org.kuali.rice.kns.lookup.LookupableHelperService#performClear()
+     */
+    public void performClear(LookupForm lookupForm) {
+        for (Iterator iter = this.getRows().iterator(); iter.hasNext();) {
+            Row row = (Row) iter.next();
+            for (Iterator iterator = row.getFields().iterator(); iterator.hasNext();) {
+                Field field = (Field) iterator.next();
+                if (!field.getFieldType().equals(Field.RADIO)) {
+                    field.setPropertyValue(field.getDefaultValue());
+                }
+            }
+        }
+    }
+
+	/**
+	 * 
+	 * @see org.kuali.rice.kns.lookup.LookupableHelperService#shouldDisplayHeaderNonMaintActions()
+	 */
+	public boolean shouldDisplayHeaderNonMaintActions() {
+		return true;
+	}
+
+	/**
+	 * 
+	 * @see org.kuali.rice.kns.lookup.LookupableHelperService#shouldDisplayLookupCriteria()
+	 */
+	public boolean shouldDisplayLookupCriteria() {
+		return true;
+	}
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.lookup.LookupableHelperService#getSupplementalMenuBar()
+	 */
+	public String getSupplementalMenuBar() {
+		return new String();
+	}
     
     /**
      * @see org.kuali.rice.kns.lookup.LookupableHelperService#getTitle()

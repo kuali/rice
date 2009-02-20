@@ -34,10 +34,8 @@ import org.junit.Test;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
 import org.kuali.rice.kew.docsearch.DocumentSearchContext;
-import org.kuali.rice.kew.docsearch.DocumentSearchField;
 import org.kuali.rice.kew.docsearch.DocumentSearchResult;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
-import org.kuali.rice.kew.docsearch.DocumentSearchRow;
 import org.kuali.rice.kew.docsearch.DocumentSearchTestBase;
 import org.kuali.rice.kew.docsearch.SearchableAttributeDateTimeValue;
 import org.kuali.rice.kew.docsearch.SearchableAttributeFloatValue;
@@ -64,6 +62,8 @@ import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.web.KeyValueSort;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 
@@ -1075,8 +1075,8 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         //we really just want this to load without exploding
         List searchRows = getAttribute("BlankDropDownSearchAttribute").getSearchingRows(context);
         assertEquals("Invalid number of search rows", 1, searchRows.size());
-        DocumentSearchRow row = (DocumentSearchRow) searchRows.get(0);
-        DocumentSearchField field = row.getField(0);
+        Row row = (Row) searchRows.get(0);
+        Field field = row.getField(0);
         assertEquals("Should be 5 valid values", 5, field.getFieldValidValues().size());
 
         assertEquals("Default value is not correct", "AMST", field.getPropertyValue());

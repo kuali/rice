@@ -17,17 +17,13 @@ package org.kuali.rice.kew.docsearch;
 
 import org.junit.Ignore;
 import org.kuali.rice.core.exception.RiceRuntimeException;
-import org.kuali.rice.kew.docsearch.DocSearchUtils;
-import org.kuali.rice.kew.docsearch.SearchAttributeCriteriaComponent;
-import org.kuali.rice.kew.docsearch.SearchableAttribute;
 import org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-//import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kew.docsearch.DocumentSearchField;
-//import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
 
 
 /**
@@ -64,34 +60,34 @@ public class DocumentSearchTestBase extends KEWTestCase {
         String formKey = (isLowerBoundValue == null) ? key : ((isLowerBoundValue != null && isLowerBoundValue.booleanValue()) ? SearchableAttribute.RANGE_LOWER_BOUND_PROPERTY_PREFIX + key : SearchableAttribute.RANGE_UPPER_BOUND_PROPERTY_PREFIX + key);
         String savedKey = key;
         SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(formKey,value,savedKey);
-        DocumentSearchField field = getFieldByFormKey(docType, formKey);
+        Field field = getFieldByFormKey(docType, formKey);
         if (field != null) {
             sacc.setSearchableAttributeValue(DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getFieldDataType()));
             sacc.setRangeSearch(field.isMemberOfRange());
-            sacc.setAllowWildcards(field.isAllowingWildcards());
-            sacc.setAutoWildcardBeginning(field.isAutoWildcardAtBeginning());
-            sacc.setAutoWildcardEnd(field.isAutoWildcardAtEnding());
-            sacc.setCaseSensitive(field.isCaseSensitive());
+//            sacc.setAllowWildcards(field.isAllowingWildcards());
+//            sacc.setAutoWildcardBeginning(field.isAutoWildcardAtBeginning());
+//            sacc.setAutoWildcardEnd(field.isAutoWildcardAtEnding());
+//            sacc.setCaseSensitive(field.isCaseSensitive());
             sacc.setSearchInclusive(field.isInclusive());
-            sacc.setSearchable(field.isSearchable());
-            sacc.setCanHoldMultipleValues(DocumentSearchField.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));
+            sacc.setSearchable(field.isIndexedForSearch());
+            sacc.setCanHoldMultipleValues(Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));
         }
         return sacc;
     }
 
-    private DocumentSearchField getFieldByFormKey(DocumentType docType, String formKey) {
+    private Field getFieldByFormKey(DocumentType docType, String formKey) {
         if (docType == null) {
             return null;
         }
         for (SearchableAttribute searchableAttribute : docType.getSearchableAttributes()) {
-            for (DocumentSearchRow row : searchableAttribute.getSearchingRows(DocSearchUtils.getDocumentSearchContext("", docType.getName(), ""))) {
+            for (Row row : searchableAttribute.getSearchingRows(DocSearchUtils.getDocumentSearchContext("", docType.getName(), ""))) {
                 for (org.kuali.rice.kns.web.ui.Field field : row.getFields()) {
-                    if (field instanceof DocumentSearchField) {
+                    if (field instanceof Field) {
                         if (field.getPropertyName().equals(formKey)) {
-                            return (DocumentSearchField)field;
+                            return (Field)field;
                         }
                     } else {
-                        throw new RiceRuntimeException("Fields must be of type org.kuali.rice.kew.docsearch.DocumentSearchField");
+                        throw new RiceRuntimeException("Fields must be of type org.kuali.rice.kns.Field");
                     }
                 }
             }

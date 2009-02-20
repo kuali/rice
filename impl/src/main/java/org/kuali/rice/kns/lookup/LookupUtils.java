@@ -771,7 +771,7 @@ public class LookupUtils {
     }
 
     /**
-     * Removes fields idenfied in the data dictionary as hidden from the lookup field values.
+     * Removes fields identified in the data dictionary as hidden from the lookup field values.
      * (This will remove Universal User ID and Person name from search requests when a user ID is entered.)
      *
      * @param fieldValues

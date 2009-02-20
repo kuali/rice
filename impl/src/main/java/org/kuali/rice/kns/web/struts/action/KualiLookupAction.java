@@ -107,15 +107,43 @@ public class KualiLookupAction extends KualiAction {
             }
         }
     }
+
+    /**
+	 * This method hides the criteria if set in parameter or lookupable
+	 * 
+	 * @param form
+	 */
+	private void setCriteriaEnabled(ActionForm form) {
+		 LookupForm lookupForm = (LookupForm) form;
+		 if(lookupForm.isLookupCriteriaEnabled()) {
+			 //only overide if it's enabled, if disabled don't call lookupable
+		 }
+	}
+	/**
+	 * This method hides actions that are not related to the maintenance (as opposed to supressActionsIfNeeded)
+	 * 
+	 * @param form
+	 */
+	private void suppressNonMaintActionsIfNeeded(ActionForm form) {
+		LookupForm lookupForm = (LookupForm) form;
+		if(lookupForm.isSupplementalActionsEnabled()) {
+			 //only overide if it's enabled, if disabled don't call lookupable
+//			lookupForm.getLookupable().
+			((LookupForm)form).setSuppressActions( false );
+		}
+	}
     
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         request.setAttribute(KNSConstants.PARAM_MAINTENANCE_VIEW_MODE, KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_LOOKUP);
         supressActionsIfNeeded(form);
+        suppressNonMaintActionsIfNeeded(form);
+        setCriteriaEnabled(form);
         return super.execute(mapping, form, request, response);
     }
 
-    /**
+
+	/**
      * Entry point to lookups, forwards to jsp for search render.
      */
     public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -248,15 +276,7 @@ public class KualiLookupAction extends KualiAction {
             throw new RuntimeException("Lookupable is null.");
         }
 
-        for (Iterator iter = kualiLookupable.getRows().iterator(); iter.hasNext();) {
-            Row row = (Row) iter.next();
-            for (Iterator iterator = row.getFields().iterator(); iterator.hasNext();) {
-                Field field = (Field) iterator.next();
-                if (!field.getFieldType().equals(Field.RADIO)) {
-                    field.setPropertyValue(field.getDefaultValue());
-                }
-            }
-        }
+        kualiLookupable.performClear(lookupForm);
 
 
         return mapping.findForward(RiceConstants.MAPPING_BASIC);

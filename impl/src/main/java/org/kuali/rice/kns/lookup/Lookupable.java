@@ -70,6 +70,11 @@ public interface Lookupable extends Serializable {
     public String getHtmlMenuBar();
 
     /**
+     * @return the html to be displayed as a supplemental menu bar
+     */
+    public String getSupplementalMenuBar();
+    
+    /**
      * @return List of Row objects used to render the search area
      */
     public List getRows();
@@ -210,4 +215,25 @@ public interface Lookupable extends Serializable {
      * @return
      */
     public List getDefaultSortColumns();
+ 
+    /**
+     * 
+     * This method allows for customization of the lookup clear
+     *
+     */
+    public void performClear(LookupForm lookupForm);
+    
+    /**
+     * 
+     * This method checks whether the header non maint actions should be shown
+     *
+     */
+    public boolean shouldDisplayHeaderNonMaintActions();
+    
+    /**
+     * 
+     * This method checks whether the criteria should be shown
+     *
+     */
+    public boolean shouldDisplayLookupCriteria();
 }

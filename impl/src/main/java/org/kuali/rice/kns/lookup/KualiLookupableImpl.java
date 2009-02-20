@@ -151,6 +151,13 @@ public class KualiLookupableImpl implements Lookupable {
     public String getHtmlMenuBar() {
         return getBusinessObjectDictionaryService().getLookupMenuBar(getBusinessObjectClass());
     }
+    
+	/**
+	 * @see org.kuali.rice.kns.lookup.Lookupable#getSupplementalMenuBar()
+	 */
+	public String getSupplementalMenuBar() {
+		return getLookupableHelperService().getSupplementalMenuBar();
+	}
 
     /**
      * @see org.kuali.rice.kns.lookup.Lookupable#getRows()
@@ -313,4 +320,33 @@ public class KualiLookupableImpl implements Lookupable {
     public String getPrimaryKeyFieldLabels() {
         return getLookupableHelperService().getPrimaryKeyFieldLabels();
     }
+
+	/**
+	 * calls the lookup helper service to do "clear" behaviors
+	 * 
+	 * @see org.kuali.rice.kns.lookup.Lookupable#performClear()
+	 */
+	public void performClear(LookupForm lookupForm) {
+		 getLookupableHelperService().performClear(lookupForm);
+	}
+
+	/**
+	 * calls the lookup helper service to check if non maintenance actions should be displayed
+	 * 
+	 * @see org.kuali.rice.kns.lookup.Lookupable#shouldDisplayHeaderNonMaintActions()
+	 */
+	public boolean shouldDisplayHeaderNonMaintActions() {
+		return getLookupableHelperService().shouldDisplayHeaderNonMaintActions();
+	}
+
+	/**
+	 * calls the lookup helper service to check if criteria should be displayed
+	 *  
+	 * @see org.kuali.rice.kns.lookup.Lookupable#shouldDisplayLookupCriteria()
+	 */
+	public boolean shouldDisplayLookupCriteria() {
+		return getLookupableHelperService().shouldDisplayLookupCriteria();
+	}
+
+
 }

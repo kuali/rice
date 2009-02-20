@@ -16,11 +16,15 @@
 package org.kuali.rice.kns.web.ui;
 
 import java.sql.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.docsearch.SearchableAttribute;
+import org.kuali.rice.kew.engine.node.KeyValuePair;
 import org.kuali.rice.kns.datadictionary.mask.Mask;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -39,6 +43,8 @@ public class Field implements java.io.Serializable {
     public static final String HIDDEN = "hidden";
     public static final String TEXT = "text";
     public static final String DROPDOWN = "dropdown";
+    public static final String MULTIBOX = "multibox";
+    public static final String MULTISELECT = "multiselect";
     public static final String RADIO = "radio";
     public static final String QUICKFINDER = "quickFinder";
     public static final String LOOKUP_RESULT_ONLY = "lookupresultonly";
@@ -64,12 +70,57 @@ public class Field implements java.io.Serializable {
     public static final String BLANK_SPACE = "blankSpace";
     public static final String BUTTON = "button";
     public static final String LINK = "link";
+    
+    //#START MOVED FROM DOC SEARCH RELATED
+    public static final String DATEPICKER = "datePicker";
+    
+    public static final Set<String> SEARCH_RESULT_DISPLAYABLE_FIELD_TYPES;
+    public static final Set<String> MULTI_VALUE_FIELD_TYPES = new HashSet<String>();
+    static {
+    	SEARCH_RESULT_DISPLAYABLE_FIELD_TYPES = new HashSet<String>();
+    	SEARCH_RESULT_DISPLAYABLE_FIELD_TYPES.add(HIDDEN);
+    	SEARCH_RESULT_DISPLAYABLE_FIELD_TYPES.add(TEXT);
+    	SEARCH_RESULT_DISPLAYABLE_FIELD_TYPES.add(DROPDOWN);
+    	SEARCH_RESULT_DISPLAYABLE_FIELD_TYPES.add(RADIO);
+    	SEARCH_RESULT_DISPLAYABLE_FIELD_TYPES.add(DROPDOWN_REFRESH);
+    	SEARCH_RESULT_DISPLAYABLE_FIELD_TYPES.add(MULTIBOX);
+    	SEARCH_RESULT_DISPLAYABLE_FIELD_TYPES.add(MULTISELECT);
 
+    	MULTI_VALUE_FIELD_TYPES.add(MULTIBOX);
+    	MULTI_VALUE_FIELD_TYPES.add(MULTISELECT);
+    }
+    
+    private boolean isIndexedForSearch = true;
+    
+    // following values used in ranged searches
+    private String mainFieldLabel;  // the fieldLabel holds things like "From" and "Ending" and this field holds things like "Total Amount"
+    private Boolean rangeFieldInclusive;
+    private String savablePropertyName = null;
+    private boolean memberOfRange = false;
+    //FIXME: can this go away?  only seems to be used on column
+    private Map<String, String> displayParameters;
+
+    //FIXME: these next two are iffy, need to reevaluate whether really used by doc search
+    // below boolean used by criteria processor to hide field without removing classic 'field type' variable
+    private boolean hidden = false;
+
+    // this field is currently a hack to allow us to indicate whether or not the column of data associated
+    // with a particular field will be visible in the result set of a search or not
+    private boolean isColumnVisible = true;
+    
+    //FIXME: this one definitely seems iffy, could be confused with regular fieldType, is there another better name or can this go away?
+    private String fieldDataType = SearchableAttribute.DEFAULT_SEARCHABLE_ATTRIBUTE_TYPE_NAME;
+    
+    //used by multibox/select etc
+    private String[] propertyValues;
+    
+    //#END DOC SEARCH RELATED
+    
     private String fieldType;
 
     private String fieldLabel;
     private String fieldHelpUrl;
-    private String propertyName;
+    private String propertyName; 
     private String propertyValue;
 
     private List<KeyLabelPair> fieldValidValues;
@@ -1404,4 +1455,91 @@ public class Field implements java.io.Serializable {
 	        return true;
 	    }
 	}
+	
+	//#BEGIN DOC SEARCH RELATED
+    public boolean isIndexedForSearch() {
+        return this.isIndexedForSearch;
+    }
+
+    public void setIndexedForSearch(boolean indexedForSearch) {
+        this.isIndexedForSearch = indexedForSearch;
+    }
+
+    public String getMainFieldLabel() {
+        return this.mainFieldLabel;
+    }
+
+    public Boolean getRangeFieldInclusive() {
+        return this.rangeFieldInclusive;
+    }
+
+    public String getSavablePropertyName() {
+        return this.savablePropertyName;
+    }
+
+    public boolean isMemberOfRange() {
+        return this.memberOfRange;
+    }
+
+    public void setMainFieldLabel(String mainFieldLabel) {
+        this.mainFieldLabel = mainFieldLabel;
+    }
+
+    public void setRangeFieldInclusive(Boolean rangeFieldInclusive) {
+        this.rangeFieldInclusive = rangeFieldInclusive;
+    }
+
+    public void setSavablePropertyName(String savablePropertyName) {
+        this.savablePropertyName = savablePropertyName;
+    }
+
+    public void setMemberOfRange(boolean memberOfRange) {
+        this.memberOfRange = memberOfRange;
+    }
+    
+    public boolean isInclusive() {
+        return (rangeFieldInclusive==null)?true:rangeFieldInclusive;
+    }
+    
+    public String getFieldDataType() {
+        return this.fieldDataType;
+    }
+    
+    public void setFieldDataType(String fieldDataType) {
+        this.fieldDataType = fieldDataType;
+    }
+    
+    public boolean isHidden() {
+        return this.hidden;
+    }
+
+    public boolean isColumnVisible() {
+        return this.isColumnVisible;
+    }
+
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
+    }
+
+    public void setColumnVisible(boolean isColumnVisible) {
+        this.isColumnVisible = isColumnVisible;
+    }
+
+    public String[] getPropertyValues() {
+        return this.propertyValues;
+    }
+    
+    public void setPropertyValues(String[] propertyValues) {
+        this.propertyValues = propertyValues;
+    }
+    
+    public Map<String, String> getDisplayParameters() {
+        return this.displayParameters;
+    }
+
+    public void setDisplayParameters(Map<String, String> displayParameters) {
+        this.displayParameters = displayParameters;
+    }
+    
+    //#END DOC SEARCH RELATED
 }

@@ -32,6 +32,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWPropertyConstants;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.web.ui.Column;
 
 
 /**
@@ -61,26 +62,26 @@ public class CustomDocumentSearchResultProcessorTest extends DocumentSearchTestB
         DocumentSearchXMLResultProcessorImpl docSearchResult = new DocumentSearchXMLResultProcessorImpl();
         docSearchResult.setRuleAttribute(ruleAttribute);
 
-        List<DocumentSearchColumn> columns = docSearchResult.getCustomDisplayColumns();
+        List<Column> columns = docSearchResult.getCustomDisplayColumns();
     	for (Iterator iter = columns.iterator(); iter.hasNext();) {
-    	    DocumentSearchColumn column = (DocumentSearchColumn) iter.next();
-			if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_TYPE_LABEL.equals(column.getKey())) {
+    	    Column column = (Column) iter.next();
+			if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_TYPE_LABEL.equals(column.getPropertyName())) {
 				assertEquals("Attribute xml is not populating column 'sortable' value correctly", "true", column.getSortable());
 				assertEquals("Attribute xml is not populating column 'title' value correctly", "", column.getColumnTitle());
-			} else if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_TITLE.equals(column.getKey())) {
+			} else if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_TITLE.equals(column.getPropertyName())) {
 				assertEquals("Attribute xml is not populating column 'sortable' value correctly", "false", column.getSortable());
 				assertEquals("Attribute xml is not populating column 'title' value correctly", null, column.getColumnTitle());
-			} else if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR.equals(column.getKey())) {
+			} else if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR.equals(column.getPropertyName())) {
 				assertEquals("Attribute xml is not populating column 'sortable' value correctly", null, column.getSortable());
 				assertEquals("Attribute xml is not populating column 'title' value correctly", "Initiator Dude", column.getColumnTitle());
-			} else if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_STATUS_DESC.equals(column.getKey())) {
+			} else if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_STATUS_DESC.equals(column.getPropertyName())) {
 				assertEquals("Attribute xml is not populating column 'sortable' value correctly", null, column.getSortable());
 				assertEquals("Attribute xml is not populating column 'title' value correctly", null, column.getColumnTitle());
-			} else if (TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY.equals(column.getKey())) {
+			} else if (TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY.equals(column.getPropertyName())) {
 				assertEquals("Attribute xml is not populating column 'sortable' value correctly", "false", column.getSortable());
 				assertEquals("Attribute xml is not populating column 'title' value correctly", null, column.getColumnTitle());
 			} else {
-				fail("Key value of custom column should never be anything except already checked values but is '" + column.getKey() + "'");
+				fail("Key value of custom column should never be anything except already checked values but is '" + column.getPropertyName() + "'");
 			}
 		}
 
@@ -99,14 +100,14 @@ public class CustomDocumentSearchResultProcessorTest extends DocumentSearchTestB
         return docSearchService.getList(person.getPrincipalId(), criteria);
     }
 
-    private void parseList(List<DocumentSearchColumn> columns, List<String> columnsRequired, List<String> columnsNotAllowed) {
+    private void parseList(List<Column> columns, List<String> columnsRequired, List<String> columnsNotAllowed) {
     	// check to see if column should be excluded but is not
 		for (Iterator iterator = columnsNotAllowed.iterator(); iterator.hasNext();) {
 			String disallowedColumnKey = (String) iterator.next();
 	        for (Iterator iter = columns.iterator(); iter.hasNext();) {
-	            DocumentSearchColumn currentColumn = (DocumentSearchColumn) iter.next();
-				if (disallowedColumnKey.equals(currentColumn.getKey())) {
-					fail("The column with key '" + currentColumn.getKey() + "' should not be in the list of columns to be displayed but was");
+	            Column currentColumn = (Column) iter.next();
+				if (disallowedColumnKey.equals(currentColumn.getPropertyName())) {
+					fail("The column with key '" + currentColumn.getPropertyName() + "' should not be in the list of columns to be displayed but was");
 				}
 	        }
 		}
@@ -114,8 +115,8 @@ public class CustomDocumentSearchResultProcessorTest extends DocumentSearchTestB
 		// check to see if column should be in list but is not
 		for (int i = 0; i < columnsRequired.size(); i++) {
 			String requiredColumnKey = columnsRequired.get(i);
-			DocumentSearchColumn testColumn = columns.get(i);
-			if (!(requiredColumnKey.equals(testColumn.getKey()))) {
+			Column testColumn = columns.get(i);
+			if (!(requiredColumnKey.equals(testColumn.getPropertyName()))) {
 				fail("The column with key '" + requiredColumnKey + "' should be in the list of columns to be displayed (at location " + i + ") but was not");
 			}
 		}

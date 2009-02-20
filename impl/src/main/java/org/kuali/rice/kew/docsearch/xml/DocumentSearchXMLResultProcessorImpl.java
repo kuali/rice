@@ -19,7 +19,6 @@ package org.kuali.rice.kew.docsearch.xml;
 import java.io.BufferedReader;
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -27,10 +26,10 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 
-import org.kuali.rice.kew.docsearch.DocumentSearchColumn;
 import org.kuali.rice.kew.docsearch.StandardDocumentSearchResultProcessor;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
+import org.kuali.rice.kns.web.ui.Column;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -46,15 +45,15 @@ public class DocumentSearchXMLResultProcessorImpl extends StandardDocumentSearch
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentSearchXMLResultProcessorImpl.class);
 
 	private RuleAttribute ruleAttribute;
-	private List<DocumentSearchColumn> customDisplayColumns = new ArrayList<DocumentSearchColumn>();
+	private List<Column> customDisplayColumns = new ArrayList<Column>();
 
 	public void setRuleAttribute(RuleAttribute ruleAttribute) {
 		this.ruleAttribute = ruleAttribute;
 	}
 
 	@Override
-	public List<DocumentSearchColumn> getCustomDisplayColumns() {
-		List<DocumentSearchColumn> displayColumns = new ArrayList<DocumentSearchColumn>();
+	public List<Column> getCustomDisplayColumns() {
+		List<Column> displayColumns = new ArrayList<Column>();
 		if (customDisplayColumns.isEmpty()) {
 			XPath xpath = XPathHelper.newXPath();
 			String xPathExpression = "//searchResultConfig/column";
@@ -69,7 +68,7 @@ public class DocumentSearchXMLResultProcessorImpl extends StandardDocumentSearch
 	    				String key = (fieldAttributes.getNamedItem("name") != null) ? fieldAttributes.getNamedItem("name").getNodeValue().trim() : null;
 	    				String title = (fieldAttributes.getNamedItem("title") != null) ? fieldAttributes.getNamedItem("title").getNodeValue().trim() : null;
 	    				String sortable = (fieldAttributes.getNamedItem("sortable") != null) ? fieldAttributes.getNamedItem("sortable").getNodeValue().trim() : null;
-	    				DocumentSearchColumn currentColumn = new DocumentSearchColumn(title,sortable,"","",key,new HashMap<String,String>());
+	    				Column currentColumn = new Column(title,sortable,key);
 	    				displayColumns.add(currentColumn);
 	    			}
 	    			customDisplayColumns = displayColumns;

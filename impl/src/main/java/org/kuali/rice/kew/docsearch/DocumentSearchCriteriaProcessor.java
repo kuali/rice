@@ -17,6 +17,8 @@ package org.kuali.rice.kew.docsearch;
 
 import java.util.List;
 
+import org.kuali.rice.kns.web.ui.Row;
+
 
 /**
  * This interface is used to define pre document search screen display processes for
@@ -62,9 +64,9 @@ public interface DocumentSearchCriteriaProcessor {
 
     public Boolean isBasicSearchCriteriaDisplayed();
 
-    public List<DocumentSearchRow> processSearchableAttributeRowsForBasicSearch(List<DocumentSearchRow> searchableAttributeRows);
+    public List<Row> processSearchableAttributeRowsForBasicSearch(List<Row> searchableAttributeRows);
 
-    public List<DocumentSearchRow> processSearchableAttributeRowsForAdvancedSearch(List<DocumentSearchRow> searchableAttributeRows);
+    public List<Row> processSearchableAttributeRowsForAdvancedSearch(List<Row> searchableAttributeRows);
 
 	public StandardDocSearchCriteriaManager getBasicSearchManager();
 

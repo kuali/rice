@@ -16,10 +16,11 @@
  */
 package org.kuali.rice.kew.docsearch;
 
-import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -27,7 +28,10 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.bo.BusinessObjectBase;
 import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
 
 
 /**
@@ -35,7 +39,7 @@ import org.kuali.rice.kns.web.ui.Field;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class DocSearchCriteriaDTO implements Serializable {
+public class DocSearchCriteriaDTO extends BusinessObjectBase implements BusinessObject {
 
     private static final long serialVersionUID = -5738747438282249790L;
 
@@ -69,9 +73,10 @@ public class DocSearchCriteriaDTO implements Serializable {
     private String toDateLastModified; // the end range for last modified
     private String toDateApproved; // the end range for approved
     private String toDateFinalized; // the end range for finalized
-
+    private java.sql.Timestamp dateCreated; //fake date for DD
+    
     // criteria processing
-    private List<DocumentSearchRow> searchableAttributeRows = new ArrayList<DocumentSearchRow>();
+    private List<Row> searchableAttributeRows = new ArrayList<Row>();
 
     // searchable attribute properties
     private List<SearchAttributeCriteriaComponent> searchableAttributes = new ArrayList<SearchAttributeCriteriaComponent>();
@@ -501,31 +506,31 @@ public class DocSearchCriteriaDTO implements Serializable {
         return searchableAttributes;
     }
 
-    public void setSearchableAttributeRows(List<DocumentSearchRow> searchableAttributeRows) {
+    public void setSearchableAttributeRows(List<Row> searchableAttributeRows) {
         this.searchableAttributeRows = searchableAttributeRows;
     }
 
-    public List<DocumentSearchRow> getSearchableAttributeRows() {
+    public List<Row> getSearchableAttributeRows() {
         return searchableAttributeRows;
     }
 
-    public List<DocumentSearchRow> getProcessedSearchableAttributeRows() {
+    public List<Row> getProcessedSearchableAttributeRows() {
         return searchableAttributeRows;
     }
 
-    public void addSearchableAttributeRow(DocumentSearchRow row) {
+    public void addSearchableAttributeRow(Row row) {
         searchableAttributeRows.add(row);
     }
 
-    public DocumentSearchRow getSearchableAttributeRow(int index) {
+    public Row getSearchableAttributeRow(int index) {
         while (getSearchableAttributeRows().size() <= index) {
-            DocumentSearchRow row = new DocumentSearchRow(new ArrayList<Field>());
+            Row row = new Row(new ArrayList<Field>());
             getSearchableAttributeRows().add(row);
         }
-        return (DocumentSearchRow) getSearchableAttributeRows().get(index);
+        return (Row) getSearchableAttributeRows().get(index);
     }
 
-    public void setSearchableAttributeRow(int index, DocumentSearchRow row) {
+    public void setSearchableAttributeRow(int index, Row row) {
         searchableAttributeRows.set(index, row);
     }
 
@@ -552,5 +557,41 @@ public class DocSearchCriteriaDTO implements Serializable {
     public void setWorkgroupViewerNamespace(String workgroupViewerNamespace) {
         this.workgroupViewerNamespace = workgroupViewerNamespace;
     }
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
+	 */
+	@Override
+	protected LinkedHashMap toStringMapper() {
+		// TODO chris - THIS METHOD NEEDS JAVADOCS
+		return null;
+	}
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.bo.BusinessObject#refresh()
+	 */
+	public void refresh() {
+		// TODO chris - THIS METHOD NEEDS JAVADOCS
+		
+	}
+
+	/**
+	 * @return the dateCreated
+	 */
+	public java.sql.Timestamp getDateCreated() {
+		return this.dateCreated;
+	}
+
+	/**
+	 * @param dateCreated the dateCreated to set
+	 */
+	public void setDateCreated(java.sql.Timestamp dateCreated) {
+		this.dateCreated = dateCreated;
+	}
+
 
 }

@@ -23,6 +23,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
+
 
 /**
  * This is the standard document search criteria processor implementation.
@@ -159,15 +162,15 @@ public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCr
     	containersByKey.put(container.getFieldKey(), container);
     }
 
-    private List<DocumentSearchRow> processSearchableAttributeRows(List<DocumentSearchRow> searchableAttributeRows, List<String> hiddenFieldKeys) {
+    private List<Row> processSearchableAttributeRows(List<Row> searchableAttributeRows, List<String> hiddenFieldKeys) {
         Set<String> hiddenKeys = generateHiddenFieldKeySet(hiddenFieldKeys);
         if (hiddenKeys.isEmpty()) {
             return searchableAttributeRows;
         }
         for (Iterator iterator = searchableAttributeRows.iterator(); iterator.hasNext();) {
-            DocumentSearchRow row = (DocumentSearchRow) iterator.next();
+            Row row = (Row) iterator.next();
             for (Iterator iterator2 = row.getFields().iterator(); iterator2.hasNext();) {
-                DocumentSearchField field = (DocumentSearchField) iterator2.next();
+                Field field = (Field) iterator2.next();
                 // set hidden field to true if hiddenKeys is not empty and if hiddenKeys contains either the field's propertyName value or savablePropertyName value
                 field.setHidden( (!hiddenKeys.isEmpty()) && ((hiddenKeys.contains(field.getPropertyName())) || (hiddenKeys.contains(field.getSavablePropertyName()))) );
             }
@@ -180,7 +183,7 @@ public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCr
      *
      */
 
-    public List<DocumentSearchRow> processSearchableAttributeRowsForBasicSearch(List<DocumentSearchRow> searchableAttributeRows) {
+    public List<Row> processSearchableAttributeRowsForBasicSearch(List<Row> searchableAttributeRows) {
         return processSearchableAttributeRows(searchableAttributeRows, getBasicSearchHiddenFieldKeys());
     }
 
@@ -295,7 +298,7 @@ public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCr
      *
      */
 
-    public List<DocumentSearchRow> processSearchableAttributeRowsForAdvancedSearch(List<DocumentSearchRow> searchableAttributeRows) {
+    public List<Row> processSearchableAttributeRowsForAdvancedSearch(List<Row> searchableAttributeRows) {
         return processSearchableAttributeRows(searchableAttributeRows, getAdvancedSearchHiddenFieldKeys());
     }
 

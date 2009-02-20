@@ -19,8 +19,7 @@ package org.kuali.rice.kew.docsearch;
 import java.util.ArrayList;
 import java.util.List;
 
-//import org.kuali.rice.kns.web.ui.Column;
-import org.kuali.rice.kew.docsearch.DocumentSearchColumn;
+import org.kuali.rice.kns.web.ui.Column;
 
 
 /**
@@ -29,10 +28,10 @@ import org.kuali.rice.kew.docsearch.DocumentSearchColumn;
  */
 public class DocumentSearchResultComponents {
 
-	protected List<DocumentSearchColumn> columns;
+	protected List<Column> columns;
 	protected List<DocumentSearchResult> searchResults = new ArrayList<DocumentSearchResult>(); // list of DocumentSearchResult objects
 
-	public DocumentSearchResultComponents(List<DocumentSearchColumn> columns, List<DocumentSearchResult> searchResults) {
+	public DocumentSearchResultComponents(List<Column> columns, List<DocumentSearchResult> searchResults) {
 		super();
 		this.columns = columns;
 		this.searchResults = searchResults;
@@ -41,7 +40,7 @@ public class DocumentSearchResultComponents {
 	/**
 	 * @return the columns
 	 */
-	public List<DocumentSearchColumn> getColumns() {
+	public List<Column> getColumns() {
 		return columns;
 	}
 

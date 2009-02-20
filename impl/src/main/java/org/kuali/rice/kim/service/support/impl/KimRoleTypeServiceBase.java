@@ -90,6 +90,9 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 		if ( StringUtils.isNotBlank( principalId ) ) {
 		    List<RoleMembershipInfo> members = getRoleMembersFromApplicationRole(namespaceCode, roleName, qualification);
 		    for ( RoleMembershipInfo rm : members ) {
+		    	if ( StringUtils.isBlank( rm.getMemberId() ) ) {
+		    		continue;
+		    	}
 		        if ( rm.getMemberTypeCode().equals( KimRole.PRINCIPAL_MEMBER_TYPE ) ) {
 		            if ( rm.getMemberId().equals( principalId ) ) {
 		                return true;

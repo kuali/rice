@@ -21,7 +21,7 @@
     <c:set var="headerMenu" value="${KualiForm.lookupable.createNewUrl}   ${KualiForm.lookupable.htmlMenuBar}" />
 </c:if>
 <c:if test="${KualiForm.supplementalActionsEnabled==true}">
-    <c:set var="headerMenu" value="${KualiForm.lookupable.supplementalMenuBar}" />
+    <c:set var="headerMenu" value="${headerMenu} ${KualiForm.lookupable.supplementalMenuBar}" />
 </c:if>
 <kul:page lookup="true" showDocumentInfo="false"
 	headerMenuBar="${headerMenu}"

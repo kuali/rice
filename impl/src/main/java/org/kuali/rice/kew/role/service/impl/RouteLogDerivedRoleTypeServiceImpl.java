@@ -70,7 +70,9 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
 				} else if(INITIATOR_OR_REVIEWER_ROLE_NAME.equals(roleName)) {
 				    List<String> ids = workflowInfo.getPrincipalIdsInRouteLog(documentNumberLong, true);
 				    for ( String id : ids ) {
-				        members.add( new RoleMembershipInfo(null/*roleId*/, null, id, KimRole.PRINCIPAL_MEMBER_TYPE, null) );
+				    	if ( StringUtils.isNotBlank(id) ) {
+				    		members.add( new RoleMembershipInfo(null/*roleId*/, null, id, KimRole.PRINCIPAL_MEMBER_TYPE, null) );
+				    	}
 				    }
 				} else if(ROUTER_ROLE_NAME.equals(roleName)) {
 				    String principalId = workflowInfo.getDocumentRoutedByPrincipalId(documentNumberLong);

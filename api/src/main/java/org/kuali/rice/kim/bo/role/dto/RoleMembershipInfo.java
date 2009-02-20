@@ -31,6 +31,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
  *
  */
 public class RoleMembershipInfo implements Serializable {
+	private static final long serialVersionUID = 1L;
 	protected String roleId;
 	protected String roleMemberId;
 	protected String embeddedRoleId; // ID of the role from which the group or principal was derived
@@ -43,7 +44,13 @@ public class RoleMembershipInfo implements Serializable {
 			AttributeSet qualifier) {
 		super();
 		this.roleId = roleId;
+		if ( memberId == null ) {
+			throw new IllegalArgumentException( "memberId may not be null" );
+		}
 		this.memberId = memberId;
+		if ( memberTypeCode == null ) {
+			throw new IllegalArgumentException( "memberTypeCode may not be null" );
+		}
 		this.memberTypeCode = memberTypeCode;
 		this.roleMemberId = roleMemberId;
 		this.qualifier = qualifier;

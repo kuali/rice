@@ -348,6 +348,10 @@ public class RoleServiceImpl implements RoleService {
 		Collection<RoleMembershipInfo> nestedRoleMembers = getRoleMembers( roleIdList, qualification, false );
 		// add the roles  whose members matched to the list for delegation checks later
 		for ( RoleMembershipInfo rmi : nestedRoleMembers ) {
+			// use the member ID of the parent role (needed for responsibility joining)
+			rmi.setRoleMemberId( rm.getRoleMemberId() );
+			// store the role ID, so we know where this member actually came from
+			rmi.setRoleId( rm.getRoleId() );
 			rmi.setEmbeddedRoleId( rm.getMemberId() );
 		}
 		return nestedRoleMembers;

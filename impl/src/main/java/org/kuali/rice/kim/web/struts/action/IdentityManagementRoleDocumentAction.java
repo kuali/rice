@@ -70,14 +70,9 @@ public class IdentityManagementRoleDocumentAction extends KualiTransactionalDocu
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
         String methodToCall = findMethodToCall(form, request);
 		ActionForward forward;
-		if(KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY.equals(methodToCall)) 
-        	forward = mapping.findForward(KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY);
-        else
-        	forward = super.execute(mapping, form, request, response);
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
         IdentityManagementRoleDocument roleDoc = (IdentityManagementRoleDocument)roleDocumentForm.getDocument();
-        String commandParam = request.getParameter(KNSConstants.PARAMETER_COMMAND);
-        String kimTypeId = request.getParameter(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID);
+		String kimTypeId = request.getParameter(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID);
         if(KNSConstants.DOC_HANDLER_METHOD.equals(methodToCall) && kimTypeId!=null){
 	        Map<String, String> criteria = new HashMap<String, String>();
 	        criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID, kimTypeId);
@@ -87,7 +82,13 @@ public class IdentityManagementRoleDocumentAction extends KualiTransactionalDocu
 	        roleDocumentForm.getRoleDocument().setRoleTypeName(kimType.getName());
 	        roleDocumentForm.setMember(roleDocumentForm.getRoleDocument().getBlankMember());
 	        roleDocumentForm.setDelegationMember(roleDocumentForm.getRoleDocument().getBlankDelegationMember());
+	        roleDocumentForm.setDocTypeName((roleDoc.getKimTypeService(kimType)).getWorkflowDocumentTypeName());
 	    }
+		if(KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY.equals(methodToCall)) 
+        	forward = mapping.findForward(KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY);
+        else
+        	forward = super.execute(mapping, form, request, response);
+        String commandParam = request.getParameter(KNSConstants.PARAMETER_COMMAND);
         String roleId = request.getParameter(KimConstants.PrimaryKeyConstants.ROLE_ID);
         if (StringUtils.isNotBlank(commandParam) && commandParam.equals(KEWConstants.INITIATE_COMMAND) 
 				&& StringUtils.isNotBlank(roleId)) {

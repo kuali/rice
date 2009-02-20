@@ -31,9 +31,7 @@ import org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibility;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibilityAction;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
-import org.kuali.rice.kim.document.IdentityManagementKimDocument;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
-import org.kuali.rice.kim.document.authorization.IdentityManagementKimDocumentAuthorizer;
 import org.kuali.rice.kim.rule.event.ui.AddDelegationEvent;
 import org.kuali.rice.kim.rule.event.ui.AddDelegationMemberEvent;
 import org.kuali.rice.kim.rule.event.ui.AddMemberEvent;
@@ -83,7 +81,6 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 	private Class<? extends AddDelegationRule> addDelegationRuleClass = RoleDocumentDelegationRule.class;
 	private Class<? extends AddDelegationMemberRule> addDelegationMemberRuleClass = RoleDocumentDelegationMemberRule.class;
 
-	private IdentityManagementKimDocumentAuthorizer authorizer;
 	private IdentityService identityService; 
 	
     public IdentityService getIdentityService() {
@@ -387,13 +384,6 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     public boolean processAddDelegationMember(AddDelegationMemberEvent addDelegationMemberEvent) {
         return new RoleDocumentDelegationMemberRule().processAddDelegationMember(addDelegationMemberEvent);    
     }
-
-	public IdentityManagementKimDocumentAuthorizer getAuthorizer(IdentityManagementKimDocument document) {
-		if ( authorizer == null ) {
-			//authorizer = (IdentityManagementPersonDocumentAuthorizer)KEWServiceLocator.getDocumentTypeService().getDocumentAuthorizer(document);
-		}
-		return authorizer;
-	}
 
 	public ResponsibilityService getResponsibilityService() {
 		if(responsibilityService == null){

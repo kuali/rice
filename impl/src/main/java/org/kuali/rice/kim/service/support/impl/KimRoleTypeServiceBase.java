@@ -32,6 +32,12 @@ import org.kuali.rice.kim.service.support.KimRoleTypeService;
  */
 public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRoleTypeService {
 
+	public static final String ROLE_DOCUMENT_TYPE_NAME = "IdentityManagementRoleDocument";
+	
+	public String getWorkflowDocumentTypeName() {
+		return ROLE_DOCUMENT_TYPE_NAME;
+	}
+
 	/**
 	 * Performs a simple check that the qualifier on the role matches the qualification.
 	 * Extra qualification attributes are ignored.

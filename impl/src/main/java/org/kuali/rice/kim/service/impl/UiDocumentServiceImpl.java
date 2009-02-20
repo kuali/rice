@@ -573,7 +573,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		privacyPreferences.setSuppressPhone(identityManagementPersonDocument.getPrivacy().isSuppressPhone());
 		privacyPreferences
 				.setSuppressPersonal(identityManagementPersonDocument.getPrivacy().isSuppressPersonal());
-		if (origPrivacy != null) {
+		if (ObjectUtils.isNotNull(origPrivacy)) {
 			privacyPreferences.setVersionNumber(origPrivacy.getVersionNumber());
 		}
 		kimEntity.setPrivacyPreferences(privacyPreferences);
@@ -1282,7 +1282,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		List<RoleResponsibilityImpl> origRoleResponsibilities = new ArrayList<RoleResponsibilityImpl>();
 		List<RoleMemberImpl> origRoleMembers = new ArrayList<RoleMemberImpl>();
 		List<KimDelegationImpl> origRoleDelegations = new ArrayList<KimDelegationImpl>();
-		if (origRole == null) {
+		if (ObjectUtils.isNull(origRole)) {
 			origRole = new KimRoleImpl();
 			kimRole.setActive(true);
 		} else {			
@@ -1316,7 +1316,6 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		setMembers(identityManagementRoleDocument, kimRole);
 		setDelegations(identityManagementRoleDocument, kimRole);*/
 		List<BusinessObject> bos = new ArrayList<BusinessObject>();
-		List<PersistableBusinessObject> bosToDelete = new ArrayList<PersistableBusinessObject>();
 		bos.add(kimRole);
 		List<RolePermissionImpl> newRolePermissions = getRolePermissions(identityManagementRoleDocument, origRolePermissions);
 		bos.addAll(newRolePermissions);
@@ -1328,17 +1327,6 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		bos.addAll(getRoleDelegations(identityManagementRoleDocument, origRoleDelegations));
 
 		getBusinessObjectService().save(bos);
-		
-
-		bosToDelete.addAll(getRolePermissionsToDelete(newRolePermissions, origRolePermissions));
-		bosToDelete.addAll(getRoleResponsibilitiesToDelete(newRoleResponsibilities, origRoleResponsibilities));
-		//bosToDelete.addAll(getRoleResponsibilitiesActions(identityManagementRoleDocument));
-		//bosToDelete.addAll(getRoleMembers(identityManagementRoleDocument, origRoleMembers));
-		//bosToDelete.addAll(getRoleMemberResponsibilityActions(identityManagementRoleDocument));
-		//bos.addAll(getRoleDelegations(identityManagementRoleDocument));
-
-		for(PersistableBusinessObject boToDelete: bosToDelete)
-			getBusinessObjectService().delete(boToDelete);
 	}
 
 	private List<RolePermissionImpl> getRolePermissions(
@@ -1358,21 +1346,6 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return rolePermissions;
 	}
 	
-	private List<RolePermissionImpl> getRolePermissionsToDelete(
-			List<RolePermissionImpl> newRolePermissions, List<RolePermissionImpl> origRolePermissions){
-		List<RolePermissionImpl> deletedRolePermissions = new ArrayList<RolePermissionImpl>();
-		boolean rolePermissionPresentInNew = false;
-		for(RolePermissionImpl origRolePermission: origRolePermissions){
-			for(RolePermissionImpl newRolePermission: newRolePermissions){
-				if(origRolePermission.getRolePermissionId().equals(newRolePermission.getRolePermissionId()))
-					rolePermissionPresentInNew = true;
-			}
-			if(!rolePermissionPresentInNew)
-				deletedRolePermissions.add(origRolePermission);
-		}
-		return deletedRolePermissions;
-	}
-	
 	private List<RoleResponsibilityImpl> getRoleResponsibilities(
 			IdentityManagementRoleDocument identityManagementRoleDocument, List<RoleResponsibilityImpl> origRoleResponsibilities){
 		List<RoleResponsibilityImpl> roleResponsibilities = new ArrayList<RoleResponsibilityImpl>();
@@ -1390,21 +1363,6 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return roleResponsibilities;
 	}
 
-	private List<RoleResponsibilityImpl> getRoleResponsibilitiesToDelete(
-			List<RoleResponsibilityImpl> newRoleResponsibilities, List<RoleResponsibilityImpl> origRoleResponsibilities){
-		List<RoleResponsibilityImpl> deletedRoleResponsibilities = new ArrayList<RoleResponsibilityImpl>();
-		boolean roleResponsibilityPresentInNew = false;
-		for(RoleResponsibilityImpl origRoleResponsibility: origRoleResponsibilities){
-			for(RoleResponsibilityImpl newRoleResponsibility: newRoleResponsibilities){
-				if(origRoleResponsibility.getRoleResponsibilityId().equals(newRoleResponsibility.getRoleResponsibilityId()))
-					roleResponsibilityPresentInNew = true;
-			}
-			if(!roleResponsibilityPresentInNew)
-				deletedRoleResponsibilities.add(origRoleResponsibility);
-		}
-		return deletedRoleResponsibilities;
-	}
-	
 	private List <RoleResponsibilityActionImpl> getRoleResponsibilitiesActions(
 			IdentityManagementRoleDocument identityManagementRoleDocument){
 		List <RoleResponsibilityActionImpl>  roleRspActions = new ArrayList<RoleResponsibilityActionImpl>();

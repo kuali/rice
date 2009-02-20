@@ -44,11 +44,10 @@ public class ParameterNamespaceValuesFinder extends KeyValuesBase {
 
         // create a new list (code, descriptive-name)
         List<KeyLabelPair> labels = new ArrayList<KeyLabelPair>( bos.size() );
-
+        labels.add(new KeyLabelPair("", ""));
         for ( ParameterNamespace bo : bos ) {
             labels.add( new KeyLabelPair(bo.getParameterNamespaceCode(), bo.getCodeAndDescription() ) );
         }
-
         return labels;
     }
 }

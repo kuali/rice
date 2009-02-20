@@ -46,8 +46,8 @@
 	<bean id="KimTypeImpl-kimTypeId-parentBean" abstract="true" parent="AttributeDefinition" >
 		<property name="name" value="kimTypeId" />
 		<property name="forceUppercase" value="false" />
-		<property name="label" value="Kim Type Id" />
-		<property name="shortLabel" value="Kim Typ Id" />
+		<property name="label" value="Type Identifier" />
+		<property name="shortLabel" value="Type Identifier" />
 		<property name="maxLength" value="40" />
 		<property name="validationPattern" >
 			<bean parent="AlphaNumericValidationPattern" />
@@ -64,7 +64,7 @@
 	<bean id="KimTypeImpl-name-parentBean" abstract="true" parent="AttributeDefinition" >
 		<property name="name" value="name" />
 		<property name="forceUppercase" value="false" />
-		<property name="label" value="Type Name Original" />
+		<property name="label" value="Type Name" />
 		<property name="shortLabel" value="Type Name" />
 		<property name="maxLength" value="100" />
 		<property name="validationPattern" >
@@ -157,31 +157,27 @@
 		<property name="lookupFields" >
 			<list>
 				<bean parent="FieldDefinition"
-					p:attributeName="kimTypeId" 
-					p:forceInquiry="true" />
+					p:attributeName="namespaceCode" />
 				<bean parent="FieldDefinition"
 					p:attributeName="name" />
 				<bean parent="FieldDefinition"
-					p:attributeName="kimTypeServiceName" />
+					p:attributeName="kimTypeId" 
+					p:forceInquiry="true" />
 				<bean parent="FieldDefinition"
 					p:attributeName="active" />
-				<bean parent="FieldDefinition"
-					p:attributeName="namespaceCode" />
 			</list>
 		</property>
 		<property name="resultFields" >
 			<list>
 				<bean parent="FieldDefinition"
-					p:attributeName="kimTypeId" 
-					p:forceInquiry="true" />
+					p:attributeName="namespaceCode" />
 				<bean parent="FieldDefinition"
 					p:attributeName="name" />
 				<bean parent="FieldDefinition"
-					p:attributeName="kimTypeServiceName" />
+					p:attributeName="kimTypeId" 
+					p:forceInquiry="true" />
 				<bean parent="FieldDefinition"
 					p:attributeName="active" />
-				<bean parent="FieldDefinition"
-					p:attributeName="namespaceCode" />
 			</list>
 		</property>
 	</bean>

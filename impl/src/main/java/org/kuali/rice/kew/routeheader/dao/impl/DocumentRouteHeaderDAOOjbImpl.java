@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.ojb.broker.OptimisticLockException;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.accesslayer.LookupException;
 import org.apache.ojb.broker.query.Criteria;
@@ -35,6 +36,7 @@ import org.apache.ojb.broker.query.ReportQueryByCriteria;
 import org.kuali.rice.core.database.platform.Platform;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.core.util.RiceDebugUtils;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
@@ -47,6 +49,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.springframework.dao.CannotAcquireLockException;
 import org.springmodules.orm.ojb.OjbFactoryUtils;
+import org.springmodules.orm.ojb.OjbOperationException;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
@@ -56,9 +59,29 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentRouteHeaderDAOOjbImpl.class);
 
     public void saveRouteHeader(DocumentRouteHeaderValue routeHeader) {
-        this.getPersistenceBrokerTemplate().store(routeHeader);
-        routeHeader.getDocumentContent().setRouteHeaderId(routeHeader.getRouteHeaderId());
-        this.getPersistenceBrokerTemplate().store(routeHeader.getDocumentContent());
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug( "About to Save the route Header: " + routeHeader.getRouteHeaderId() + " / version=" + routeHeader.getVersionNumber() );
+            DocumentRouteHeaderValue currHeader = findRouteHeader(routeHeader.getRouteHeaderId());
+            if ( currHeader != null ) {
+                LOG.debug( "Current Header Version: " + currHeader.getVersionNumber() );
+//                for ( SearchableAttributeValue s : currHeader.get() ) {
+//                    LOG.debug( "SA: " + s.getSearchableAttributeValueId() + " / version=" + s.get )
+//                }
+            } else {
+                LOG.debug( "Current Header: null" );
+            }
+            LOG.debug( RiceDebugUtils.getTruncatedStackTrace(false).toString() );
+        }
+        try {
+            this.getPersistenceBrokerTemplate().store(routeHeader);
+            routeHeader.getDocumentContent().setRouteHeaderId(routeHeader.getRouteHeaderId());
+            this.getPersistenceBrokerTemplate().store(routeHeader.getDocumentContent());
+        } catch ( OjbOperationException ex ) {
+            if ( ex.getCause() instanceof OptimisticLockException ) {
+                LOG.error( "Optimistic Locking Exception saving document header or content. Offending object: " + ((OptimisticLockException)ex.getCause()).getSourceObject() );
+                throw ex;
+            }
+        }
     }
 
     public DocumentRouteHeaderValueContent getContent(Long routeHeaderId) {

@@ -175,6 +175,10 @@ public class IdentityServiceImpl implements IdentityService {
 	 * @see org.kuali.rice.kim.service.IdentityService#getPrincipal(java.lang.String)
 	 */
 	public KimPrincipal getPrincipal(String principalId) {
+		KimPrincipal principal = getPrincipalImpl( principalId );
+		if ( principal == null ) {
+			return null;
+		}
 		return new KimPrincipalInfo( getPrincipalImpl( principalId ) );
 	}
 	

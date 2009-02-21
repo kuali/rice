@@ -724,8 +724,8 @@ public class WorkflowUtilityTest extends KEWTestCase {
         this.ruleExceptionTest(info, ruleReportCriteria, "Sending in empty RuleReportCriteriaDTO should throw Exception");
 
         ruleReportCriteria = new RuleReportCriteriaDTO();
-        ruleReportCriteria.setResponsiblePrincipalId(getPrincipalIdForName("hobo_man"));
-        this.ruleExceptionTest(info, ruleReportCriteria, "Sending in an invalid User Network ID should throw Exception");
+        ruleReportCriteria.setResponsiblePrincipalId("-1234598765");
+        this.ruleExceptionTest(info, ruleReportCriteria, "Sending in an invalid principal ID should throw Exception");
 
         ruleReportCriteria = new RuleReportCriteriaDTO();
         ruleReportCriteria.setResponsibleGroupId("-1234567");

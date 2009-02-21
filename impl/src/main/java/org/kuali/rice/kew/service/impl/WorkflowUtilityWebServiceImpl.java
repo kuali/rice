@@ -928,6 +928,10 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         if ( (ruleReportCriteria.getActionRequestCodes() != null) && (ruleReportCriteria.getActionRequestCodes().length != 0) ) {
             actionRequestCodes = Arrays.asList(ruleReportCriteria.getActionRequestCodes());
         }
+        // load the principal so that we know it's valid
+        if (!StringUtils.isBlank(ruleReportCriteria.getResponsiblePrincipalId())) {
+        	KEWServiceLocator.getIdentityHelperService().getPrincipal(ruleReportCriteria.getResponsiblePrincipalId());
+        }
         Collection rulesFound = KEWServiceLocator.getRuleService().search(ruleReportCriteria.getDocumentTypeName(),ruleReportCriteria.getRuleTemplateName(),
                 ruleReportCriteria.getRuleDescription(), ruleReportCriteria.getResponsibleGroupId(),
                 ruleReportCriteria.getResponsiblePrincipalId(),

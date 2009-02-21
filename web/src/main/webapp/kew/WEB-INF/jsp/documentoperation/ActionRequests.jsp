@@ -15,7 +15,7 @@
 	   <c:otherwise>
 	 	<logic-el:iterate id="actionRequest" name="DocumentOperationForm" property="routeHeader.actionRequests" indexId="ctr">
 	      <html-el:hidden property="routeHeader.docActionRequest[${ctr}].actionRequestId" />  
-	      <html-el:hidden property="routeHeader.docActionRequest[${ctr}].jrfVerNbr" />  
+	      <html-el:hidden property="routeHeader.docActionRequest[${ctr}].versionNumber" />  
 	 	  <tr>
 		    <td width="33%" class="headercell3-b-l" align=right><b> Action Request ID: </b><c:out value="${actionRequest.actionRequestId}" /> </td>
 		    <td width="66%" class="headercell3-b-l">

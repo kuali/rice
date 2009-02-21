@@ -1,7 +1,7 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp" %>
 
 <html-el:hidden property="routeHeader.routeHeaderId" />
-<html-el:hidden property="routeHeader.jrfVerNbr" />
+<html-el:hidden property="routeHeader.versionNumber" />
 <html-el:hidden property="lookupableImplServiceName" />
 <tr>
   <td><img src="images/pixel_clear.gif" alt="" width="20" height="20"></td>

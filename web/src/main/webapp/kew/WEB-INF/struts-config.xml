@@ -95,6 +95,65 @@
 	    <forward name="requiredStateError" path="/WEB-INF/jsp/rule/RuleQuickLinks.jsp"/>
         <forward name="finalStateError" path="/WEB-INF/jsp/rule/RuleQuickLinks.jsp"/>
       </action>
+      
+      <!-- Mappings to handling forwarding over to the "en" module for the screens that haven't been moved over yet -->
+      
+      <action path="/SuperUser" scope="request" validate="false"
+            type="org.kuali.rice.kns.web.struts.action.ForwardWithQueryParametersAction"
+     		parameter="/en/SuperUser.do"/>
+     		
+      <action path="/Preferences" scope="request" validate="false"
+            type="org.kuali.rice.kns.web.struts.action.ForwardWithQueryParametersAction"
+     		parameter="/en/Preferences.do"/>
+      
+      <action path="/Backdoor" scope="request" validate="false"
+            type="org.kuali.rice.kns.web.struts.action.ForwardWithQueryParametersAction"
+     		parameter="/en/Backdoor.do"/>
+      
+      <action path="/Portal" scope="request" validate="false"
+            type="org.kuali.rice.kns.web.struts.action.ForwardWithQueryParametersAction"
+     		parameter="/en/Portal.do"/>
+
+      <action path="/Administration" scope="request" validate="false"
+            type="org.kuali.rice.kns.web.struts.action.ForwardWithQueryParametersAction"
+     		parameter="/en/Administration.do"/>
+
+      <action path="/Stats" scope="request" validate="false"
+            type="org.kuali.rice.kns.web.struts.action.ForwardWithQueryParametersAction"
+     		parameter="/en/Stats.do"/>
+
+      <action path="/RouteLog" scope="request" validate="false"
+            type="org.kuali.rice.kns.web.struts.action.ForwardWithQueryParametersAction"
+     		parameter="/en/RouteLog.do"/>
+
+      <action path="/DocHandler" scope="request" validate="false"
+            type="org.kuali.rice.kns.web.struts.action.ForwardWithQueryParametersAction"
+     		parameter="/en/DocHandler.do"/>
+
+      <action path="/RoutingReport" scope="request" validate="false"
+            type="org.kuali.rice.kns.web.struts.action.ForwardWithQueryParametersAction"
+     		parameter="/en/RoutingReport.do"/>
+
+      <action path="/Feedback" scope="request" validate="false"
+            type="org.kuali.rice.kns.web.struts.action.ForwardWithQueryParametersAction"
+     		parameter="/en/Feedback.do"/>
+     		
+      <action path="/QuickLinks" scope="request" validate="false"
+            type="org.kuali.rice.kns.web.struts.action.ForwardWithQueryParametersAction"
+     		parameter="/en/QuickLinks.do"/>
+
+      <action path="/Note" scope="request" validate="false"
+            type="org.kuali.rice.kns.web.struts.action.ForwardWithQueryParametersAction"
+     		parameter="/en/Note.do"/>
+
+      <action path="/Help" scope="request" validate="false"
+            type="org.kuali.rice.kns.web.struts.action.ForwardWithQueryParametersAction"
+     		parameter="/en/Help.do"/>
+
+      <action path="/Ingester" scope="request" validate="false"
+            type="org.kuali.rice.kns.web.struts.action.ForwardWithQueryParametersAction"
+     		parameter="/en/Ingester.do"/>
+      
     </action-mappings>
 
 

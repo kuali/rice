@@ -1,8 +1,6 @@
 package org.kuali.rice.kim.service.impl;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -17,8 +15,6 @@ import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityPrivacyPreferencesInfo;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.role.KimResponsibility;
@@ -27,15 +23,14 @@ import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.AuthenticationService;
 import org.kuali.rice.kim.service.GroupService;
+import org.kuali.rice.kim.service.GroupUpdateService;
 import org.kuali.rice.kim.service.IdentityCacheService;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.IdentityService;
+import org.kuali.rice.kim.service.IdentityUpdateService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.service.ResponsibilityService;
-import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.springframework.beans.factory.InitializingBean;
 
 public class IdentityManagementServiceImpl implements IdentityManagementService, InitializingBean {
@@ -47,6 +42,8 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	private IdentityService identityService;
 	private IdentityCacheService identityCacheService;
 	private GroupService groupService;
+	private GroupUpdateService groupUpdateService;
+	private IdentityUpdateService identityUpdateService;
 	
 	
 	// Max age defined in seconds
@@ -66,7 +63,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	protected MaxSizeMap<String,MaxAgeSoftReference<GroupInfo>> groupByIdCache;
 	protected MaxSizeMap<String,MaxAgeSoftReference<GroupInfo>> groupByNameCache;
 	protected MaxSizeMap<String,MaxAgeSoftReference<List<String>>> groupIdsForPrincipalCache;
-	protected MaxSizeMap<String,MaxAgeSoftReference<List<? extends KimGroup>>> groupsForPrincipalCache;
+	protected MaxSizeMap<String,MaxAgeSoftReference<List<? extends GroupInfo>>> groupsForPrincipalCache;
 	protected MaxSizeMap<String,MaxAgeSoftReference<Boolean>> isMemberOfGroupCache;
 	protected MaxSizeMap<String,MaxAgeSoftReference<Boolean>> isGroupMemberOfGroupCache;
 	protected MaxSizeMap<String,MaxAgeSoftReference<List<String>>> groupMemberPrincipalIdsCache;
@@ -84,7 +81,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		groupByIdCache = new MaxSizeMap<String,MaxAgeSoftReference<GroupInfo>>( groupCacheMaxSize );
 		groupByNameCache = new MaxSizeMap<String,MaxAgeSoftReference<GroupInfo>>( groupCacheMaxSize );
 		groupIdsForPrincipalCache = new MaxSizeMap<String,MaxAgeSoftReference<List<String>>>( groupCacheMaxSize );
-		groupsForPrincipalCache = new MaxSizeMap<String,MaxAgeSoftReference<List<? extends KimGroup>>>( groupCacheMaxSize );
+		groupsForPrincipalCache = new MaxSizeMap<String,MaxAgeSoftReference<List<? extends GroupInfo>>>( groupCacheMaxSize );
 		isMemberOfGroupCache = new MaxSizeMap<String,MaxAgeSoftReference<Boolean>>( groupCacheMaxSize );
 		groupMemberPrincipalIdsCache = new MaxSizeMap<String,MaxAgeSoftReference<List<String>>>( groupCacheMaxSize );
 		hasPermissionCache = new MaxSizeMap<String,MaxAgeSoftReference<Boolean>>( permissionCacheMaxSize );
@@ -224,8 +221,8 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		return null;
 	}
 	
-	protected List<? extends KimGroup> getGroupsForPrincipalCache( String principalId ) {
-		MaxAgeSoftReference<List<? extends KimGroup>> groupsRef = groupsForPrincipalCache.get( principalId );
+	protected List<? extends GroupInfo> getGroupsForPrincipalCache( String principalId ) {
+		MaxAgeSoftReference<List<? extends GroupInfo>> groupsRef = groupsForPrincipalCache.get( principalId );
 		if ( groupsRef != null ) {
 			return groupsRef.get();
 		}
@@ -329,11 +326,11 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		}
 	}
 
-	protected void addGroupsForPrincipalToCache( String principalId, List<? extends KimGroup> groups ) {
+	protected void addGroupsForPrincipalToCache( String principalId, List<? extends GroupInfo> groups ) {
 		if ( groups != null ) {
-			groupsForPrincipalCache.put( principalId, new MaxAgeSoftReference<List<? extends KimGroup>>( groupCacheMaxAgeSeconds, groups ) );
+			groupsForPrincipalCache.put( principalId, new MaxAgeSoftReference<List<? extends GroupInfo>>( groupCacheMaxAgeSeconds, groups ) );
 			List<String> groupIds = new ArrayList<String>( groups.size() );
-			for ( KimGroup group : groups ) {
+			for ( GroupInfo group : groups ) {
 				groupIds.add( group.getGroupId() );
 			}
 			addGroupIdsForPrincipalToCache( principalId, groupIds );
@@ -555,7 +552,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	}
 
 	public boolean isMemberOfGroup(String principalId, String namespaceCode, String groupName) {
-		KimGroup group = getGroupByName(namespaceCode, groupName);
+		GroupInfo group = getGroupByName(namespaceCode, groupName);
 		if ( group == null ) {
 			return false;
 		}
@@ -605,8 +602,8 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		return getGroupService().getGroupIdsForPrincipalByNamespace(principalId, namespaceCode );
 	}
 
-    public List<? extends KimGroup> getGroupsForPrincipal(String principalId) {
-    	List<? extends KimGroup> groups = getGroupsForPrincipalCache(principalId);
+    public List<? extends GroupInfo> getGroupsForPrincipal(String principalId) {
+    	List<? extends GroupInfo> groups = getGroupsForPrincipalCache(principalId);
 		if (groups != null) {
 			return groups;
 		}
@@ -615,8 +612,8 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     	return groups;    	
 	}
 
-    public List<? extends KimGroup> getGroupsForPrincipal(String principalId, String namespaceCode ) {
-    	List<? extends KimGroup> groups = getGroupsForPrincipalCache(principalId + "-" + namespaceCode);
+    public List<? extends GroupInfo> getGroupsForPrincipal(String principalId, String namespaceCode ) {
+    	List<? extends GroupInfo> groups = getGroupsForPrincipalCache(principalId + "-" + namespaceCode);
 		if (groups != null) {
 			return groups;
 		}
@@ -684,29 +681,64 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     
     public boolean addGroupToGroup(String childId, String parentId) {
     	clearGroupCachesForPrincipalAndGroup(null, parentId);
-        return getGroupService().addGroupToGroup(childId, parentId);
+        return getGroupUpdateService().addGroupToGroup(childId, parentId);
     }
 
     public boolean addPrincipalToGroup(String principalId, String groupId) {
     	clearGroupCachesForPrincipalAndGroup(principalId, groupId);
-        return getGroupService().addPrincipalToGroup(principalId, groupId);
+        return getGroupUpdateService().addPrincipalToGroup(principalId, groupId);
     }
 
     public boolean removeGroupFromGroup(String childId, String parentId) {
     	clearGroupCachesForPrincipalAndGroup(null, parentId);
-        return getGroupService().removeGroupFromGroup(childId, parentId);
+        return getGroupUpdateService().removeGroupFromGroup(childId, parentId);
     }
 
     public boolean removePrincipalFromGroup(String principalId, String groupId) {
     	clearGroupCachesForPrincipalAndGroup(principalId, groupId);
-        return getGroupService().removePrincipalFromGroup(principalId, groupId);
+        return getGroupUpdateService().removePrincipalFromGroup(principalId, groupId);
     }
+    
+    /**
+	 * This delegate method ...
+	 * 
+	 * @param groupInfo
+	 * @return
+	 * @see org.kuali.rice.kim.service.GroupUpdateService#createGroup(org.kuali.rice.kim.bo.group.dto.GroupInfo)
+	 */
+	public GroupInfo createGroup(GroupInfo groupInfo) {
+    	clearGroupCachesForPrincipalAndGroup(null,groupInfo.getGroupId());
+		return getGroupUpdateService().createGroup(groupInfo);
+	}
 
+	/**
+	 * This delegate method ...
+	 * 
+	 * @param groupId
+	 * @see org.kuali.rice.kim.service.GroupUpdateService#removeAllGroupMembers(java.lang.String)
+	 */
+	public void removeAllGroupMembers(String groupId) {
+    	clearGroupCachesForPrincipalAndGroup(null, groupId);
+		getGroupUpdateService().removeAllGroupMembers(groupId);
+	}
+
+	/**
+	 * This delegate method ...
+	 * 
+	 * @param groupId
+	 * @param groupInfo
+	 * @return
+	 * @see org.kuali.rice.kim.service.GroupUpdateService#updateGroup(java.lang.String, org.kuali.rice.kim.bo.group.dto.GroupInfo)
+	 */
+	public GroupInfo updateGroup(String groupId, GroupInfo groupInfo) {
+    	clearGroupCachesForPrincipalAndGroup(null, groupId);
+		return getGroupUpdateService().updateGroup(groupId, groupInfo);
+	}
 
     
     // IDENTITY SERVICE
-    
-    public KimPrincipal getPrincipal(String principalId) {
+
+	public KimPrincipal getPrincipal(String principalId) {
     	KimPrincipal principal = getPrincipalByIdCache(principalId);
 		if (principal != null) {
 			return principal;
@@ -986,5 +1018,25 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		}
 		LOG.debug( sb.append( RiceDebugUtils.getTruncatedStackTrace(true) ).toString() );
     }
+
+	/**
+	 * @return the groupUpdateService
+	 */
+	public GroupUpdateService getGroupUpdateService() {
+		if ( groupUpdateService == null ) {
+			groupUpdateService = KIMServiceLocator.getGroupUpdateService();
+		}
+		return groupUpdateService;
+	}
+
+	/**
+	 * @return the identityUpdateService
+	 */
+	public IdentityUpdateService getIdentityUpdateService() {
+		if ( identityUpdateService == null ) {
+			identityUpdateService = KIMServiceLocator.getIdentityUpdateService();
+		}
+		return identityUpdateService;
+	}
  	
 }

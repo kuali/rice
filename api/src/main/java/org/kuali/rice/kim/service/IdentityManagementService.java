@@ -5,11 +5,10 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityPrivacyPreferencesInfo;
-import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.role.KimResponsibility;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
@@ -58,15 +57,15 @@ public interface IdentityManagementService {
 	// GroupService
 	// *******************************
 
-	KimGroup getGroup(String groupId);
-    KimGroup getGroupByName(String namespaceCode, String groupName);   
+	GroupInfo getGroup(String groupId);
+    GroupInfo getGroupByName(String namespaceCode, String groupName);   
     List<String> getParentGroupIds(String groupId);
     List<String> getDirectParentGroupIds(String groupId);
 
     List<String> getGroupIdsForPrincipal(String principalId);
     List<String> getGroupIdsForPrincipal(String principalId, String namespaceCode );
-    List<? extends KimGroup> getGroupsForPrincipal(String principalId);
-    List<? extends KimGroup> getGroupsForPrincipal(String principalId, String namespaceCode );
+    List<? extends GroupInfo> getGroupsForPrincipal(String principalId);
+    List<? extends GroupInfo> getGroupsForPrincipal(String principalId, String namespaceCode );
     List<String> getMemberGroupIds(String groupId);
     List<String> getDirectMemberGroupIds(String groupId);
 
@@ -80,7 +79,10 @@ public interface IdentityManagementService {
     boolean removeGroupFromGroup(String childId, String parentId);  
     boolean addPrincipalToGroup(String principalId, String groupId);   
     boolean removePrincipalFromGroup(String principalId, String groupId);
-	
+    GroupInfo createGroup(GroupInfo groupInfo);
+    void removeAllGroupMembers(String groupId);
+    GroupInfo updateGroup(String groupId, GroupInfo groupInfo);
+    
 	// *******************************
 	// AuthenticationService
 	// *******************************

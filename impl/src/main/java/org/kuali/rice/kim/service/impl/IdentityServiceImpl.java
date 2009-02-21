@@ -32,6 +32,7 @@ import org.kuali.rice.kim.bo.entity.impl.KimEntityPrivacyPreferencesImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kim.service.IdentityService;
+import org.kuali.rice.kim.service.IdentityUpdateService;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -42,7 +43,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class IdentityServiceImpl implements IdentityService {
+public class IdentityServiceImpl implements IdentityService, IdentityUpdateService {
 
 	private BusinessObjectService businessObjectService;
 

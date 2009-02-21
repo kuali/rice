@@ -324,6 +324,16 @@
     </property>
   </bean>
 
+  <alias alias="kimGroupUpdateService" name="kimGroupService" />
+  <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+    <property name="serviceDefinition">
+      <bean parent="kimService"
+        p:service-ref="kimGroupUpdateService"
+        p:localServiceName="kimGroupUpdateService" />
+    </property>
+  </bean>
+
   <bean id="kimPermissionService" class="org.kuali.rice.kim.service.impl.PermissionServiceImpl"
     p:permissionDao-ref="kimPermissionDao"
   />

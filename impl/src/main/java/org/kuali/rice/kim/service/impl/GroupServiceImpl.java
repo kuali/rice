@@ -14,14 +14,14 @@ import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
 import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
 import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
 import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.service.GroupService;
+import org.kuali.rice.kim.service.GroupUpdateService;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
-public class GroupServiceImpl implements GroupService {
+public class GroupServiceImpl implements GroupService, GroupUpdateService {
 
 	protected BusinessObjectService businessObjectService;
 
@@ -595,7 +595,7 @@ public class GroupServiceImpl implements GroupService {
      */
     @SuppressWarnings("unchecked")
     public boolean removeGroupFromGroup(String childId, String parentId) {
-        Map<String,String> criteria = new HashMap<String,String>();
+        Map<String,String> criteria = new HashMap<String,String>(3);
         criteria.put("groupId", parentId);
         criteria.put("memberId", childId);
         criteria.put("memberTypeCode", KimGroupMemberTypes.GROUP_MEMBER_TYPE);
@@ -608,6 +608,18 @@ public class GroupServiceImpl implements GroupService {
         }
 
         return false;
+    }
+    
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kim.service.GroupUpdateService#removeAllGroupMembers(java.lang.String)
+     */
+    public void removeAllGroupMembers(String groupId) {
+    	// TODO jonathan - THIS METHOD NEEDS JAVADOCS
+        Map<String,String> criteria = new HashMap<String,String>(1);
+        criteria.put("groupId", groupId);
+        getBusinessObjectService().deleteMatching(GroupMemberImpl.class, criteria);
     }
 
     protected GroupInfo toGroupInfo(KimGroupImpl kimGroup) {

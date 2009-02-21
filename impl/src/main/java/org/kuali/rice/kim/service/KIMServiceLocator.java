@@ -18,20 +18,30 @@ public final class KIMServiceLocator {
 	private static final Logger LOG = Logger.getLogger(KIMServiceLocator.class);
 
     public static final String KIM_IDENTITY_MANAGEMENT_SERVICE = "kimIdentityManagementService";
-	public static final String KIM_IDENTITY_SERVICE = "kimIdentityService";
-	public static final String KIM_IDENTITY_CACHE_SERVICE = "kimIdentityCacheService";
-	public static final String KIM_GROUP_SERVICE = "kimGroupService";
-	public static final String KIM_ROLE_SERVICE = "kimRoleService";
+    public static final String KIM_ROLE_MANAGEMENT_SERVICE = "kimRoleManagementService";
 	public static final String KIM_PERSON_SERVICE = "personService";
-	public static final String KIM_AUTHENTICATION_SERVICE = "kimAuthenticationService";
+	
+    public static final String KIM_IDENTITY_SERVICE = "kimIdentityService";
+    public static final String KIM_IDENTITY_UPDATE_SERVICE = "kimIdentityUpdateService";
+	public static final String KIM_IDENTITY_CACHE_SERVICE = "kimIdentityCacheService";
+
+	public static final String KIM_GROUP_SERVICE = "kimGroupService";
+	public static final String KIM_GROUP_UPDATE_SERVICE = "kimGroupUpdateService";
+	
+	public static final String KIM_ROLE_SERVICE = "kimRoleService";
+	public static final String KIM_ROLE_UPDATE_SERVICE = "kimRoleUpdateService";
+
 	public static final String KIM_PERMISSION_SERVICE = "kimPermissionService";
+	public static final String KIM_PERMISSION_UPDATE_SERVICE = "kimPermissionUpdateService";
+
 	public static final String KIM_RESPONSIBILITY_SERVICE = "kimResponsibilityService";
-	public static final String KIM_ROLE_MANAGEMENT_SERVICE = "kimRoleManagementService";
+	public static final String KIM_RESPONSIBILITY_UPDATE_SERVICE = "kimResponsibilityUpdateService";
+
+	public static final String KIM_AUTHENTICATION_SERVICE = "kimAuthenticationService";
 	public static final String KIM_TYPE_INTERNAL_SERVICE = "kimTypeInternalService";
+	public static final String KIM_UI_DOCUMENT_SERVICE = "kimUiDocumentService";
 
-	// The temporary workflow shim (v2)
-	public static final String KIM_USER_SERVICE = "kimUserService";
-
+	
 	public static Object getService(String serviceName) {
 		return getBean(serviceName);
 	}
@@ -51,12 +61,20 @@ public final class KIMServiceLocator {
     	return (IdentityService)getService(KIM_IDENTITY_SERVICE);
     }
 
+    public static IdentityUpdateService getIdentityUpdateService() {
+    	return (IdentityUpdateService)getService(KIM_IDENTITY_UPDATE_SERVICE);
+    }
+    
     public static IdentityCacheService getIdentityCacheService() {
     	return (IdentityCacheService)getService(KIM_IDENTITY_CACHE_SERVICE);
     }
 
     public static GroupService getGroupService() {
     	return (GroupService)getService(KIM_GROUP_SERVICE);
+    }
+
+    public static GroupUpdateService getGroupUpdateService() {
+    	return (GroupUpdateService)getService(KIM_GROUP_UPDATE_SERVICE);
     }
 
     public static RoleService getRoleService() {
@@ -84,7 +102,7 @@ public final class KIMServiceLocator {
     }
 
     public static UiDocumentService getUiDocumentService() {
-    	return (UiDocumentService)getService("kimUiDocumentService");
+    	return (UiDocumentService)getService(KIM_UI_DOCUMENT_SERVICE);
     }
 
     @SuppressWarnings("unchecked")

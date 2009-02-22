@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kim.util;
 
+import java.util.Set;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
@@ -41,24 +43,21 @@ public class KimCommonUtils {
 		return kualiModuleService;
 	}
 
-	/**
-	 * 
-	 * This method traverses the document type hierarchy
-	 * 
-	 */
-	public static boolean isParentDocument(DocumentType currentDocType,
-			String documentTypeName) {
-		if (currentDocType != null) {
-			if (documentTypeName.equalsIgnoreCase(currentDocType.getName())) {
-				return true;
-			} else if (currentDocType.getDocTypeParentId() != null
-					&& !currentDocType.getDocumentTypeId().equals(
-							currentDocType.getDocTypeParentId())) {
-				return isParentDocument(currentDocType.getParentDocType(),
-						documentTypeName);
+	public static String getClosestParentDocumentTypeName(
+			DocumentType documentType,
+			Set<String> potentialParentDocumentTypeNames) {
+		if (potentialParentDocumentTypeNames.contains(documentType.getName())) {
+			return documentType.getName();
+		} else {
+			if ((documentType.getDocTypeParentId() == null)
+					|| documentType.getDocTypeParentId().equals(
+							documentType.getDocumentTypeId())) {
+				return null;
+			} else {
+				return getClosestParentDocumentTypeName(documentType
+						.getParentDocType(), potentialParentDocumentTypeNames);
 			}
 		}
-		return false;
 	}
 
 	public static boolean doesPropertyNameMatch(

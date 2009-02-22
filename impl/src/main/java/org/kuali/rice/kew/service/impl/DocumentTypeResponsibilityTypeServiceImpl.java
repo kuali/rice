@@ -19,15 +19,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.impl.KimResponsibilityTypeServiceBase;
+import org.kuali.rice.kim.util.KimCommonUtils;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -70,7 +69,7 @@ public class DocumentTypeResponsibilityTypeServiceImpl extends
 					.addAll(potentialDocumentTypeMatches.get(requestedDetails
 							.get(KimAttributes.DOCUMENT_TYPE_NAME)));
 		} else {
-			String closestParentDocumentTypeName = getClosestParentDocumentTypeName(
+			String closestParentDocumentTypeName = KimCommonUtils.getClosestParentDocumentTypeName(
 					getDocumentTypeService().findByName(
 							requestedDetails
 									.get(KimAttributes.DOCUMENT_TYPE_NAME)),
@@ -81,23 +80,6 @@ public class DocumentTypeResponsibilityTypeServiceImpl extends
 			}
 		}
 		return matchingResponsibilities;
-	}
-
-	protected String getClosestParentDocumentTypeName(
-			DocumentType documentType,
-			Set<String> potentialParentDocumentTypeNames) {
-		if (potentialParentDocumentTypeNames.contains(documentType.getName())) {
-			return documentType.getName();
-		} else {
-			if ((documentType.getDocTypeParentId() == null)
-					|| documentType.getDocTypeParentId().equals(
-							documentType.getDocumentTypeId())) {
-				return null;
-			} else {
-				return getClosestParentDocumentTypeName(documentType
-						.getParentDocType(), potentialParentDocumentTypeNames);
-			}
-		}
 	}
 
 	public DocumentTypeService getDocumentTypeService() {

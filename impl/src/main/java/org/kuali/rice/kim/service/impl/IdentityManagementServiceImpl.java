@@ -1019,22 +1019,30 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		LOG.debug( sb.append( RiceDebugUtils.getTruncatedStackTrace(true) ).toString() );
     }
 
-	/**
-	 * @return the groupUpdateService
-	 */
 	public GroupUpdateService getGroupUpdateService() {
-		if ( groupUpdateService == null ) {
-			groupUpdateService = KIMServiceLocator.getGroupUpdateService();
+		try {
+			if ( groupUpdateService == null ) {
+				groupUpdateService = KIMServiceLocator.getGroupUpdateService();
+				if ( groupUpdateService == null ) {
+					throw new UnsupportedOperationException( "null returned for GroupUpdateService, unable to update group data");
+				}
+			}
+		} catch ( Exception ex ) {
+			throw new UnsupportedOperationException( "unable to obtain a GroupUpdateService, unable to update group data", ex);
 		}
 		return groupUpdateService;
 	}
 
-	/**
-	 * @return the identityUpdateService
-	 */
 	public IdentityUpdateService getIdentityUpdateService() {
-		if ( identityUpdateService == null ) {
-			identityUpdateService = KIMServiceLocator.getIdentityUpdateService();
+		try {
+			if ( identityUpdateService == null ) {
+				identityUpdateService = KIMServiceLocator.getIdentityUpdateService();
+				if ( identityUpdateService == null ) {
+					throw new UnsupportedOperationException( "null returned for IdentityUpdateService, unable to update identity data");
+				}
+			}
+		} catch ( Exception ex ) {
+			throw new UnsupportedOperationException( "unable to obtain an IdentityUpdateService, unable to update identity data", ex);
 		}
 		return identityUpdateService;
 	}

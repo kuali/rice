@@ -25,9 +25,9 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
  */
 public interface RoleUpdateService {
    
-    void assignPrincipalToRole(String principalId, String namespaceCode, String roleName, AttributeSet qualifications);
-    void assignGroupToRole(String groupId, String namespaceCode, String roleName, AttributeSet qualifications);
-    void removePrincipalFromRole(String principalId, String namespaceCode, String roleName, AttributeSet qualifications);
-    void removeGroupFromRole(String groupId, String namespaceCode, String roleName, AttributeSet qualifications);
+    void assignPrincipalToRole(String principalId, String namespaceCode, String roleName, AttributeSet qualifications) throws UnsupportedOperationException;
+    void assignGroupToRole(String groupId, String namespaceCode, String roleName, AttributeSet qualifications) throws UnsupportedOperationException;
+    void removePrincipalFromRole(String principalId, String namespaceCode, String roleName, AttributeSet qualifications) throws UnsupportedOperationException;
+    void removeGroupFromRole(String groupId, String namespaceCode, String roleName, AttributeSet qualifications) throws UnsupportedOperationException;
 
 }

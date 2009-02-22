@@ -25,17 +25,17 @@ import org.kuali.rice.kim.bo.group.dto.GroupInfo;
  */
 public interface GroupUpdateService {
 
-	GroupInfo createGroup(GroupInfo groupInfo);
+	GroupInfo createGroup(GroupInfo groupInfo) throws UnsupportedOperationException;
 
-    GroupInfo updateGroup(String groupId, GroupInfo groupInfo);
+    GroupInfo updateGroup(String groupId, GroupInfo groupInfo) throws UnsupportedOperationException;
 
-    boolean addGroupToGroup(String childId, String parentId);
+    boolean addGroupToGroup(String childId, String parentId) throws UnsupportedOperationException;
     
-    boolean removeGroupFromGroup(String childId, String parentId);
+    boolean removeGroupFromGroup(String childId, String parentId) throws UnsupportedOperationException;
     
-    boolean addPrincipalToGroup(String principalId, String groupId);
+    boolean addPrincipalToGroup(String principalId, String groupId) throws UnsupportedOperationException;
     
-    boolean removePrincipalFromGroup(String principalId, String groupId);
+    boolean removePrincipalFromGroup(String principalId, String groupId) throws UnsupportedOperationException;
     
-    void removeAllGroupMembers( String groupId );
+    void removeAllGroupMembers( String groupId ) throws UnsupportedOperationException;
 }

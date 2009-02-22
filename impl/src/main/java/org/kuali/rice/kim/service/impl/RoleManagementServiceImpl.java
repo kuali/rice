@@ -435,8 +435,15 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	}
 
 	public RoleUpdateService getRoleUpdateService() {
-		if ( roleUpdateService == null ) {
-			roleUpdateService = KIMServiceLocator.getRoleUpdateService();
+		try {
+			if ( roleUpdateService == null ) {
+				roleUpdateService = KIMServiceLocator.getRoleUpdateService();
+				if ( roleUpdateService == null ) {
+					throw new UnsupportedOperationException( "null returned for RoleUpdateService, unable to update role data");
+				}
+			}
+		} catch ( Exception ex ) {
+			throw new UnsupportedOperationException( "unable to obtain a RoleUpdateService, unable to update role data", ex);
 		}
 		return roleUpdateService;
 	}

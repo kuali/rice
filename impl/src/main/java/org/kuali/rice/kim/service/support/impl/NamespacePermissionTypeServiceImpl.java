@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.service.impl;
+package org.kuali.rice.kim.service.support.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,6 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)

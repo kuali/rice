@@ -348,7 +348,7 @@
 
 
 
-  <bean id="activePrincipalRoleTypeService" class="org.kuali.rice.kim.service.impl.PrincipalDerivedRoleTypeServiceImpl" />
+  <bean id="activePrincipalRoleTypeService" class="org.kuali.rice.kim.service.support.impl.PrincipalDerivedRoleTypeServiceImpl" />
 
   <bean id="documentEditorRoleTypeService" class="org.kuali.rice.kns.authorization.PermissionDerivedRoleTypeServiceImpl">
 	<property name="permissionTemplateNamespace" value="KR-NS" />

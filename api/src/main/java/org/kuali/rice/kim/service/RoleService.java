@@ -54,8 +54,19 @@ public interface RoleService {
 	 */
 	String getRoleIdByName( String namespaceCode, String roleName );
     
+	/**
+	 * Checks whether the role with the given role ID is active.
+	 * 
+	 * @param roleId
+	 * @return
+	 */
     boolean isRoleActive( String roleId );
 
+    /**
+     * Returns a list of role qualifiers that the given principal has without taking into consideration
+     * that the principal may be a member via an assigned group or role.  Use in situations where
+     * you are only interested in the qualifiers that are directly assigned to the principal.
+     */
     List<AttributeSet> getRoleQualifiersForPrincipal( String principalId, List<String> roleIds, AttributeSet qualification );
 
     /**
@@ -70,6 +81,11 @@ public interface RoleService {
      * is via a group or role, that group or role's qualifier on the given role is returned.
      */
 	List<AttributeSet> getRoleQualifiersForPrincipalIncludingNested( String principalId, String namespaceCode, String roleName, AttributeSet qualification );
+
+    /**
+     * Returns a list of role qualifiers that the given principal.  If the principal's membership
+     * is via a group or role, that group or role's qualifier on the given role is returned.
+     */
 	List<AttributeSet> getRoleQualifiersForPrincipalIncludingNested( String principalId, List<String> roleIds, AttributeSet qualification );
 
     // --------------------
@@ -92,19 +108,18 @@ public interface RoleService {
 	 */
     Collection<String> getRoleMemberPrincipalIds(String namespaceCode, String roleName, AttributeSet qualification);
 
+    /**
+     * Returns whether the given principal has any of the passed role IDs with the given qualification.
+     */
     boolean principalHasRole( String principalId, List<String> roleIds, AttributeSet qualification );
     
+    /**
+     * Returns the subset of the given principal ID list which has the given role and qualification.
+     * This is designed to be used by lookups of people by their roles.
+     */
     List<String> getPrincipalIdSubListWithRole( List<String> principalIds, String roleNamespaceCode, String roleName, AttributeSet qualification );
-    
-    // --------------------
-    // Persistence Methods
-    // --------------------
-    
-    void assignPrincipalToRole(String principalId, String namespaceCode, String roleName, AttributeSet qualifications);
-    void assignGroupToRole(String groupId, String namespaceCode, String roleName, AttributeSet qualifications);
-    void removePrincipalFromRole(String principalId, String namespaceCode, String roleName, AttributeSet qualifications);
-    void removeGroupFromRole(String groupId, String namespaceCode, String roleName, AttributeSet qualifications);
-	/**
+
+    /**
 	 * 
 	 * This method get search results for role lookup
 	 */

@@ -46,6 +46,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.IdentityManagementService;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kim.util.KimConstants;
 
@@ -114,12 +115,12 @@ public class WorkflowDocument implements java.io.Serializable {
         } else if (userId instanceof WorkflowIdDTO) {
             return ((WorkflowIdDTO)userId).getWorkflowId();
         } else if (userId instanceof NetworkIdDTO) {
-            IdentityManagementService identityManagementService = (IdentityManagementService)GlobalResourceLoader.getService(KimConstants.KIM_IDENTITY_MANAGEMENT_SERVICE);
+            IdentityManagementService identityManagementService = (IdentityManagementService)GlobalResourceLoader.getService(KIMServiceLocator.KIM_IDENTITY_MANAGEMENT_SERVICE);
             String principalName = ((NetworkIdDTO)userId).getNetworkId();
             KimPrincipal principal = identityManagementService.getPrincipalByPrincipalName(principalName);
             return principal.getPrincipalId();
         } else if (userId instanceof EmplIdDTO) {
-            PersonService personService = (PersonService)GlobalResourceLoader.getService(KimConstants.KIM_PERSON_SERVICE);
+            PersonService personService = (PersonService)GlobalResourceLoader.getService(KIMServiceLocator.KIM_PERSON_SERVICE);
             String employeeId = ((EmplIdDTO)userId).getEmplId();
             Person person = personService.getPersonByEmployeeId(employeeId);
             if (person == null) {

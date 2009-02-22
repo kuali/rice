@@ -33,13 +33,15 @@ import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.dao.KimResponsibilityDao;
-import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.ResponsibilityService;
+import org.kuali.rice.kim.service.ResponsibilityUpdateService;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.support.KimResponsibilityTypeService;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -47,12 +49,11 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class ResponsibilityServiceImpl implements ResponsibilityService {
+public class ResponsibilityServiceImpl implements ResponsibilityService, ResponsibilityUpdateService {
 	private static final String DEFAULT_RESPONSIBILITY_TYPE_SERVICE = "defaultResponsibilityTypeService";
 	private static final Logger LOG = Logger.getLogger( ResponsibilityServiceImpl.class );
 	private static final Integer DEFAULT_PRIORITY_NUMBER = new Integer(1);
 	private BusinessObjectService businessObjectService;
-	private GroupService groupService;
 	private RoleService roleService;
 	private KimResponsibilityDao responsibilityDao;   
 	private KimResponsibilityTypeService responsibilityTypeService;
@@ -89,16 +90,16 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     		return null;
     	}
     	HashMap<String,Object> pk = new HashMap<String,Object>( 1 );
-    	pk.put( "responsibilityId", responsibilityId );
+    	pk.put( KimConstants.PrimaryKeyConstants.RESPONSIBILITY_ID, responsibilityId );
     	return (KimResponsibilityImpl)getBusinessObjectService().findByPrimaryKey( KimResponsibilityImpl.class, pk );
     }
     
     @SuppressWarnings("unchecked")
 	protected List<KimResponsibilityImpl> getResponsibilityImplsByName( String namespaceCode, String responsibilityName ) {
     	HashMap<String,Object> pk = new HashMap<String,Object>( 3 );
-    	pk.put( "namespaceCode", namespaceCode );
-    	pk.put( "name", responsibilityName );
-		pk.put("active", "Y");
+    	pk.put( KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode );
+    	pk.put( KimConstants.UniqueKeyConstants.RESPONSIBILITY_NAME, responsibilityName );
+		pk.put( KNSPropertyConstants.ACTIVE, "Y");
     	return (List<KimResponsibilityImpl>)getBusinessObjectService().findMatching( KimResponsibilityImpl.class, pk );
     }
 
@@ -108,7 +109,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     	pk.put( "template.namespaceCode", namespaceCode );
     	pk.put( "template.name", responsibilityTemplateName );
 		pk.put( "template.active", "Y");
-		pk.put( "active", "Y");
+		pk.put( KNSPropertyConstants.ACTIVE, "Y");
     	return (List<KimResponsibilityImpl>)getBusinessObjectService().findMatching( KimResponsibilityImpl.class, pk );
     }
     
@@ -302,7 +303,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     		return false;
     	}
     	String actionDetailsAtRoleMemberLevel = details.get( KimAttributes.ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL );
-    	return StringUtils.equalsIgnoreCase(actionDetailsAtRoleMemberLevel, "true");
+    	return Boolean.valueOf(actionDetailsAtRoleMemberLevel);
     }
 
     /**
@@ -314,7 +315,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     		return false;
     	}
     	String actionDetailsAtRoleMemberLevel = details.get( KimAttributes.ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL );
-    	return StringUtils.equalsIgnoreCase(actionDetailsAtRoleMemberLevel, "true");
+    	return Boolean.valueOf(actionDetailsAtRoleMemberLevel);
     }
 
     /**
@@ -337,15 +338,6 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 			businessObjectService = KNSServiceLocator.getBusinessObjectService();
 		}
 		return businessObjectService;
-	}
-
-    
-	protected GroupService getGroupService() {
-		if ( groupService == null ) {
-			groupService = KIMServiceLocator.getGroupService();		
-		}
-
-		return groupService;
 	}
 
 	protected RoleService getRoleService() {

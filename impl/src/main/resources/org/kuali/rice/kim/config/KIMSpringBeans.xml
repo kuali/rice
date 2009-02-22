@@ -147,31 +147,7 @@
         <property name="jcdAlias" value="kimDataSource" />
         <property name="dbPlatform" ref="dbPlatform" />
     </bean>
-<!--
-	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator" lazy-init="true">
-		<property name="interceptorNames">
-			<list>
-				<idref local="matchAllTxInterceptor" />
-			</list>
-		</property>
-		<property name="beanNames">
-			<list>
-        <!-   these too?>
-				<idref local="personService" />
-				<idref local="kimWorkgroupService" />
-				<idref local="kimUserService" />
-				<idref local="kimAuthenticationService" />
-				<idref local="kimIdentityService" />
-				<idref local="kimRoleService" />
-				<idref local="kimIdentityManagementService" />
-				<idref local="kimGroupService" />
-				<idref local="kimPermissionService" />
-				<idref local="kimResponsibilityService" />
 
-			</list>
-		</property>
-	</bean>
--->
     <bean id="kimSoapService" class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition" abstract="true">
        <property name="serviceNameSpaceURI" value="KIM"/>
        <property name="priority" value="3" />
@@ -201,21 +177,6 @@
   <tx:annotation-driven transaction-manager="transactionManager"/>
 
   <bean id="NoResultExceptionInterceptor" class="org.kuali.rice.core.jpa.spring.NoResultExceptionInterceptor" />
-
-  <!--
-  <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
-    <property name="interceptorNames">
-      <list>
-        <idref local="NoResultExceptionInterceptor" />
-      </list>
-    </property>
-    <property name="beanNames">
-      <list>
-        <idref local="..."/>
-      </list>
-    </property>
-  </bean>
-  -->
 
   <!-- END JPA CONFIGURATION -->
 
@@ -253,6 +214,16 @@
     p:responsibilityCacheMaxSize="3000"
     p:responsibilityCacheMaxAgeSeconds="300" />
 
+<!-- this service is intended to be run locally, should not be exported
+  <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+    <property name="serviceDefinition">
+      <bean parent="kimService"
+      	p:service-ref="kimIdentityManagementService"
+      	p:localServiceName="kimIdentityManagementService" />
+    </property>
+  </bean>
+ -->
   <bean id="kimIdentityCacheService" class="org.kuali.rice.kim.service.impl.IdentityCacheServiceImpl" />
 
   <bean id="kimRoleDao" class="org.kuali.rice.kim.dao.impl.KimRoleDaoOjb" parent="platformAwareDao" />
@@ -262,7 +233,7 @@
   <bean id="kimRoleManagementService" class="org.kuali.rice.kim.service.impl.RoleManagementServiceImpl"
     p:roleCacheMaxSize="3000"
     p:roleCacheMaxAgeSeconds="3600" />
-
+<!-- this service is intended to be run locally, should not be exported
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
     <property name="serviceDefinition">
@@ -271,7 +242,7 @@
         p:localServiceName="kimRoleManagementService" />
     </property>
   </bean>
-
+ -->
   <bean id="kimRoleService" class="org.kuali.rice.kim.service.impl.RoleServiceImpl"
   	p:roleDao-ref="kimRoleDao" />
 
@@ -284,12 +255,14 @@
     </property>
   </bean>
 
+  <alias alias="kimRoleUpdateService" name="kimRoleService" /> 
+
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
     <property name="serviceDefinition">
       <bean parent="kimService"
-      	p:service-ref="kimIdentityManagementService"
-      	p:localServiceName="kimIdentityManagementService" />
+        p:service-ref="kimRoleUpdateService"
+        p:localServiceName="kimRoleUpdateService" />
     </property>
   </bean>
 
@@ -304,6 +277,7 @@
 	</property>
   </bean>
 
+<!-- this service is intended to be run locally, should not be exported except for non-Rice applications
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
     <property name="serviceDefinition">
@@ -312,7 +286,7 @@
       	p:localServiceName="personService" />
     </property>
   </bean>
-
+-->
   <bean id="kimGroupService" class="org.kuali.rice.kim.service.impl.GroupServiceImpl"/>
 
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">

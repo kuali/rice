@@ -32,6 +32,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.RoleManagementService;
 import org.kuali.rice.kim.service.RoleService;
+import org.kuali.rice.kim.service.RoleUpdateService;
 import org.springframework.beans.factory.InitializingBean;
 
 /**
@@ -40,7 +41,8 @@ import org.springframework.beans.factory.InitializingBean;
 public class RoleManagementServiceImpl implements RoleManagementService, InitializingBean {
 	private static final Logger LOG = Logger.getLogger( RoleManagementServiceImpl.class );
 	
-	protected RoleService roleService;
+	private RoleService roleService;
+	private RoleUpdateService roleUpdateService;
 	
 	// Max age defined in seconds
 	protected int roleCacheMaxSize = 200;
@@ -145,10 +147,14 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		}
 		return null;
 	}
+	
 	protected void addRoleMemberPrincipalIdsToCache(String key, Collection<String> principalIds) {
 		memberPrincipalIdsCache.put(key, new MaxAgeSoftReference<Collection<String>>(roleCacheMaxAgeSeconds, principalIds ));
 	}
 	
+	/**
+	 * @see org.kuali.rice.kim.service.RoleService#getRoleMemberPrincipalIds(java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 */
 	public Collection<String> getRoleMemberPrincipalIds(String namespaceCode, String roleName, AttributeSet qualification) {
 		StringBuffer cacheKey = new StringBuffer();
 		cacheKey.append( namespaceCode ).append( '/' ).append( roleName );
@@ -163,6 +169,9 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		return principalIds;
 	}
 
+	/**
+	 * @see org.kuali.rice.kim.service.RoleService#getRole(java.lang.String)
+	 */
 	public KimRoleInfo getRole(String roleId) {
 		KimRoleInfo role = getRoleByIdCache(roleId);
 		if (role != null) {
@@ -173,6 +182,9 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
     	return role;
 	}
 
+	/**
+	 * @see org.kuali.rice.kim.service.RoleService#getRoleByName(java.lang.String, java.lang.String)
+	 */
 	public KimRoleInfo getRoleByName(String namespaceCode, String roleName) {
 		KimRoleInfo role = getRoleByNameCache(namespaceCode + "-" + roleName);
 		if (role != null) {
@@ -183,6 +195,9 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
     	return role;
 	}
 
+	/**
+	 * @see org.kuali.rice.kim.service.RoleService#getRoleIdByName(java.lang.String, java.lang.String)
+	 */
 	public String getRoleIdByName(String namespaceCode, String roleName) {
 		KimRoleInfo role = getRoleByName( namespaceCode, roleName );
 		if ( role == null ) {
@@ -211,6 +226,9 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		}
 	}
 
+	/**
+	 * @see org.kuali.rice.kim.service.RoleService#getRoleMembers(java.util.List, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 */
 	public List<RoleMembershipInfo> getRoleMembers(List<String> roleIds, AttributeSet qualification) {
 		StringBuffer cacheKey = new StringBuffer();
 		addIdsToKey( cacheKey, roleIds );
@@ -226,6 +244,9 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
     	return members;
     }
 
+	/**
+	 * @see org.kuali.rice.kim.service.RoleService#getRoleQualifiersForPrincipal(java.lang.String, java.util.List, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 */
 	public List<AttributeSet> getRoleQualifiersForPrincipal(String principalId, List<String> roleIds, AttributeSet qualification) {		
 		StringBuffer cacheKey = new StringBuffer( principalId );
 		cacheKey.append( '/' );
@@ -242,6 +263,9 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
     	return qualifiers;
 	}
 
+	/**
+	 * @see org.kuali.rice.kim.service.RoleService#getRoleQualifiersForPrincipal(java.lang.String, java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 */
 	public List<AttributeSet> getRoleQualifiersForPrincipal(String principalId, String namespaceCode, String roleName, AttributeSet qualification) {
 		StringBuffer cacheKey = new StringBuffer( principalId );
 		cacheKey.append( '/' );
@@ -289,8 +313,6 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	}
 
 	/**
-	 * This delegate method ...
-	 * 
 	 * @see org.kuali.rice.kim.service.RoleService#getPrincipalIdSubListWithRole(java.util.List, java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
 	 */
 	public List<String> getPrincipalIdSubListWithRole(
@@ -359,8 +381,6 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	}
 	
 	/**
-	 * This overridden method ...
-	 * 
 	 * @see org.kuali.rice.kim.service.RoleService#getRoleQualifiersForPrincipalIncludingNested(java.lang.String, java.util.List, org.kuali.rice.kim.bo.types.dto.AttributeSet)
 	 */
 	public List<AttributeSet> getRoleQualifiersForPrincipalIncludingNested(
@@ -369,8 +389,6 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	}
 	
 	/**
-	 * This overridden method ...
-	 * 
 	 * @see org.kuali.rice.kim.service.RoleService#getRoleQualifiersForPrincipalIncludingNested(java.lang.String, java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
 	 */
 	public List<AttributeSet> getRoleQualifiersForPrincipalIncludingNested(
@@ -381,7 +399,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	
 	public void assignGroupToRole(String groupId, String namespaceCode, String roleName,
 			AttributeSet qualifications) {
-		getRoleService().assignGroupToRole( groupId, namespaceCode, roleName, qualifications );
+		getRoleUpdateService().assignGroupToRole( groupId, namespaceCode, roleName, qualifications );
 		KimRoleInfo role = getRoleByName( namespaceCode, roleName );
 		removeCacheEntries( role.getRoleId(), null );
 	}
@@ -389,13 +407,13 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	public void assignPrincipalToRole(String principalId, String namespaceCode, String roleName,
 			AttributeSet qualifications) {
 		KimRoleInfo role = getRoleByName( namespaceCode, roleName );
-		getRoleService().assignPrincipalToRole( principalId, namespaceCode, roleName, qualifications );
+		getRoleUpdateService().assignPrincipalToRole( principalId, namespaceCode, roleName, qualifications );
 		removeCacheEntries( role.getRoleId(), principalId );
 	}
 
 	public void removeGroupFromRole(String groupId, String namespaceCode, String roleName,
 			AttributeSet qualifications) {
-		getRoleService().removeGroupFromRole( groupId, namespaceCode, roleName, qualifications );
+		getRoleUpdateService().removeGroupFromRole( groupId, namespaceCode, roleName, qualifications );
 		KimRoleInfo role = getRoleByName( namespaceCode, roleName );
 		removeCacheEntries( role.getRoleId(), null );
 	}
@@ -403,7 +421,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	public void removePrincipalFromRole(String principalId, String namespaceCode, String roleName,
 			AttributeSet qualifications) {
 		KimRoleInfo role = getRoleByName( namespaceCode, roleName );
-		getRoleService().removePrincipalFromRole( principalId, namespaceCode, roleName, qualifications );
+		getRoleUpdateService().removePrincipalFromRole( principalId, namespaceCode, roleName, qualifications );
 		removeCacheEntries( role.getRoleId(), principalId );
 	}
 
@@ -414,6 +432,13 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 			roleService = KIMServiceLocator.getRoleService();
 		}
 		return roleService;
+	}
+
+	public RoleUpdateService getRoleUpdateService() {
+		if ( roleUpdateService == null ) {
+			roleUpdateService = KIMServiceLocator.getRoleUpdateService();
+		}
+		return roleUpdateService;
 	}
 	
 	public void setRoleCacheMaxSize(int roleCacheMaxSize) {

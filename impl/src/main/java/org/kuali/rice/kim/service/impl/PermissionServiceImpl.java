@@ -33,13 +33,15 @@ import org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.dao.KimPermissionDao;
-import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PermissionService;
+import org.kuali.rice.kim.service.PermissionUpdateService;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.support.KimPermissionTypeService;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -47,12 +49,11 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class PermissionServiceImpl implements PermissionService {
+public class PermissionServiceImpl implements PermissionService, PermissionUpdateService {
 	private static final String DEFAULT_PERMISSION_TYPE_SERVICE = "defaultPermissionTypeService";
 //	private static final Logger LOG = Logger.getLogger( PermissionServiceImpl.class );
 	
 	private BusinessObjectService businessObjectService;
-	private GroupService groupService;
 	private RoleService roleService;
 	private KimPermissionDao permissionDao;
     private KimPermissionTypeService defaultPermissionTypeService;
@@ -450,7 +451,7 @@ public class PermissionServiceImpl implements PermissionService {
     	List<KimPermissionImpl> permissions = getPermissionsFromCache( permissionId );
     	if ( permissions == null ) {
 	    	HashMap<String,Object> pk = new HashMap<String,Object>( 1 );
-	    	pk.put( "permissionId", permissionId );
+	    	pk.put( KimConstants.PrimaryKeyConstants.PERMISSION_ID, permissionId );
 	    	permissions = new ArrayList<KimPermissionImpl>( 1 );
 	    	permissions.add( (KimPermissionImpl)getBusinessObjectService().findByPrimaryKey( KimPermissionImpl.class, pk ) );
 	    	addPermissionsToCache( permissionId, permissions );
@@ -465,7 +466,7 @@ public class PermissionServiceImpl implements PermissionService {
 	    	HashMap<String,Object> pk = new HashMap<String,Object>( 3 );
 	    	pk.put( "template.namespaceCode", namespaceCode );
 	    	pk.put( "template.name", permissionTemplateName );
-			pk.put( "active", "Y" );
+			pk.put( KNSPropertyConstants.ACTIVE, "Y" );
 	    	permissions = (List<KimPermissionImpl>)getBusinessObjectService().findMatching( KimPermissionImpl.class, pk );
 	    	addPermissionsToCache( namespaceCode+"-TEMPLATE-"+permissionTemplateName, permissions );
     	}
@@ -477,9 +478,9 @@ public class PermissionServiceImpl implements PermissionService {
     	List<KimPermissionImpl> permissions = getPermissionsFromCache( namespaceCode+"-"+permissionName );
     	if ( permissions == null ) {
 	    	HashMap<String,Object> pk = new HashMap<String,Object>( 3 );
-	    	pk.put( "namespaceCode", namespaceCode );
-	    	pk.put( "name", permissionName );
-			pk.put( "active", "Y" );
+	    	pk.put( KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode );
+	    	pk.put( KimConstants.UniqueKeyConstants.PERMISSION_NAME, permissionName );
+			pk.put( KNSPropertyConstants.ACTIVE, "Y" );
 	    	permissions = (List<KimPermissionImpl>)getBusinessObjectService().findMatching( KimPermissionImpl.class, pk );
 	    	addPermissionsToCache( namespaceCode+"-"+permissionName, permissions );
     	}
@@ -504,16 +505,7 @@ public class PermissionServiceImpl implements PermissionService {
 		}
 		return businessObjectService;
 	}
-
-    
-	protected GroupService getGroupService() {
-		if ( groupService == null ) {
-			groupService = KIMServiceLocator.getGroupService();		
-		}
-
-		return groupService;
-	}
-
+   
 	protected RoleService getRoleService() {
 		if ( roleService == null ) {
 			roleService = KIMServiceLocator.getRoleManagementService();		

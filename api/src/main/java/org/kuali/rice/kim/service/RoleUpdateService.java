@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.service;
 
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -22,6 +23,11 @@ package org.kuali.rice.kim.service;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public interface IdentityUpdateService {
+public interface RoleUpdateService {
+   
+    void assignPrincipalToRole(String principalId, String namespaceCode, String roleName, AttributeSet qualifications);
+    void assignGroupToRole(String groupId, String namespaceCode, String roleName, AttributeSet qualifications);
+    void removePrincipalFromRole(String principalId, String namespaceCode, String roleName, AttributeSet qualifications);
+    void removeGroupFromRole(String groupId, String namespaceCode, String roleName, AttributeSet qualifications);
 
 }

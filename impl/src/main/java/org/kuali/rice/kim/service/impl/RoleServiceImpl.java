@@ -45,12 +45,14 @@ import org.kuali.rice.kim.dao.KimRoleDao;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.RoleService;
+import org.kuali.rice.kim.service.RoleUpdateService;
 import org.kuali.rice.kim.service.support.KimDelegationTypeService;
 import org.kuali.rice.kim.service.support.KimRoleTypeService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.SequenceAccessorService;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -58,7 +60,7 @@ import org.kuali.rice.kns.service.SequenceAccessorService;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class RoleServiceImpl implements RoleService {
+public class RoleServiceImpl implements RoleService, RoleUpdateService {
 
 	private static final Logger LOG = Logger.getLogger( RoleServiceImpl.class );
 	
@@ -91,9 +93,19 @@ public class RoleServiceImpl implements RoleService {
     	}
     	return cachedResult;
     }
-    
-    protected void addRoleImplToCache( String roleId, KimRoleImpl role ) {
-    	roleCache.put( roleId, new MaxAgeSoftReference<KimRoleImpl>( CACHE_MAX_AGE_SECONDS, role ) );
+
+	protected KimRoleImpl getRoleFromCache( String namespaceCode, String roleName ) {
+    	KimRoleImpl cachedResult = null; 
+    	MaxAgeSoftReference<KimRoleImpl> cacheRef = roleCache.get( namespaceCode + "-" + roleName );
+    	if ( cacheRef != null ) {
+    		cachedResult = cacheRef.get();
+    	}
+    	return cachedResult;
+    }
+	
+    protected void addRoleImplToCache( KimRoleImpl role ) {
+    	roleCache.put( role.getRoleId(), new MaxAgeSoftReference<KimRoleImpl>( CACHE_MAX_AGE_SECONDS, role ) );
+    	roleCache.put( role.getNamespaceCode() + "-" + role.getRoleName(), new MaxAgeSoftReference<KimRoleImpl>( CACHE_MAX_AGE_SECONDS, role ) );
     }
     
 
@@ -136,7 +148,7 @@ public class RoleServiceImpl implements RoleService {
 		AttributeSet criteria = new AttributeSet();
 		criteria.put(KimConstants.PrimaryKeyConstants.ROLE_ID, roleId);
 		KimRoleImpl result = (KimRoleImpl)getBusinessObjectService().findByPrimaryKey(KimRoleImpl.class, criteria);
-		addRoleImplToCache( roleId, result );
+		addRoleImplToCache( result );
 		return result;
 	}
 
@@ -179,11 +191,19 @@ public class RoleServiceImpl implements RoleService {
 				|| StringUtils.isBlank( roleName ) ) {
 			return null;
 		}
+		// check for a non-null result in the cache, return it if found
+		KimRoleImpl cachedResult = getRoleFromCache( namespaceCode, roleName );
+		if ( cachedResult != null ) {
+			return cachedResult;
+		}		
 		AttributeSet criteria = new AttributeSet();
-		criteria.put("namespaceCode", namespaceCode);
-		criteria.put("roleName", roleName);
-		criteria.put("active", "Y");
-		return (KimRoleImpl)getBusinessObjectService().findByPrimaryKey(KimRoleImpl.class, criteria);		
+		criteria.put(KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode);
+		criteria.put(KimConstants.UniqueKeyConstants.ROLE_NAME, roleName);
+		criteria.put(KNSPropertyConstants.ACTIVE, "Y");
+		// while this is not actually the primary key - there will be at most one row with these criteria
+		KimRoleImpl result = (KimRoleImpl)getBusinessObjectService().findByPrimaryKey(KimRoleImpl.class, criteria);
+		addRoleImplToCache( result );
+		return result;
 	}
 	
 	protected Map<String,KimRoleImpl> getRoleImplMap(Collection<String> roleIds) {
@@ -201,7 +221,12 @@ public class RoleServiceImpl implements RoleService {
    	
 	@SuppressWarnings("unchecked")
 	public List<KimRoleInfo> lookupRoles(Map<String, String> searchCriteria) {
-		return (List<KimRoleInfo>) getBusinessObjectService().findMatching(KimRoleImpl.class, searchCriteria);
+		Collection<KimRoleImpl> results = getBusinessObjectService().findMatching(KimRoleImpl.class, searchCriteria);
+		ArrayList<KimRoleInfo> infoResults = new ArrayList<KimRoleInfo>( results.size() );
+		for ( KimRoleImpl role : results ) {
+			infoResults.add( role.toSimpleInfo() );
+		}
+		return infoResults;
 	}
 	
 	public boolean isRoleActive( String roleId ) {
@@ -210,9 +235,11 @@ public class RoleServiceImpl implements RoleService {
 	}
 
 	public List<AttributeSet> getRoleQualifiersForPrincipalIncludingNested( String principalId, String namespaceCode, String roleName, AttributeSet qualification ) {
-		List<String> roleIds = new ArrayList<String>(1);
-		roleIds.add(getRoleIdByName(namespaceCode, roleName));
-		return getRoleQualifiersForPrincipalIncludingNested(principalId, roleIds, qualification);
+		String roleId = getRoleIdByName(namespaceCode, roleName);
+		if ( roleId == null ) {
+			return new ArrayList<AttributeSet>(0);
+		}
+		return getRoleQualifiersForPrincipalIncludingNested(principalId, Collections.singletonList(roleId), qualification);
 	}
 	
 	
@@ -275,7 +302,6 @@ public class RoleServiceImpl implements RoleService {
 	public List<AttributeSet> getRoleQualifiersForPrincipal( String principalId, List<String> roleIds, AttributeSet qualification ) {
 		List<AttributeSet> results = new ArrayList<AttributeSet>();
 		
-    	Map<String,KimRoleImpl> roles = getRoleImplMap(roleIds);
     	// TODO: ? get groups for principal and get those as well?
     	// this implementation may be incomplete, as groups and sub-roles are not considered
     	List<RoleMemberImpl> rms = roleDao.getRoleMembersForRoleIdsWithFilters(roleIds, principalId, null);
@@ -642,6 +668,9 @@ public class RoleServiceImpl implements RoleService {
     	return principalHasRole( principalId, roleIds, qualification, true );
     }
 
+    /**
+     * @see org.kuali.rice.kim.service.RoleService#getPrincipalIdSubListWithRole(java.util.List, java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+     */
     public List<String> getPrincipalIdSubListWithRole( List<String> principalIds, String roleNamespaceCode, String roleName, AttributeSet qualification ) {
     	List<String> subList = new ArrayList<String>();
     	KimRoleImpl role = getRoleImplByName( roleNamespaceCode, roleName );

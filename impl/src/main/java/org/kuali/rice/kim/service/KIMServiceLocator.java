@@ -81,6 +81,10 @@ public final class KIMServiceLocator {
     	return (RoleService)getService(KIM_ROLE_SERVICE);
     }
 
+    public static RoleUpdateService getRoleUpdateService() {
+    	return (RoleUpdateService)getService(KIM_ROLE_UPDATE_SERVICE);
+    }
+    
     public static RoleManagementService getRoleManagementService() {
     	return (RoleManagementService)getService(KIM_ROLE_MANAGEMENT_SERVICE);
     }
@@ -89,10 +93,18 @@ public final class KIMServiceLocator {
     	return (PermissionService)getService(KIM_PERMISSION_SERVICE);
     }
 
+    public static PermissionUpdateService getPermissionUpdateService() {
+    	return (PermissionUpdateService)getService(KIM_PERMISSION_UPDATE_SERVICE);
+    }
+    
     public static ResponsibilityService getResponsibilityService() {
     	return (ResponsibilityService)getService(KIM_RESPONSIBILITY_SERVICE);
     }
 
+    public static ResponsibilityUpdateService getResponsibilityUpdateService() {
+    	return (ResponsibilityUpdateService)getService(KIM_RESPONSIBILITY_UPDATE_SERVICE);
+    }
+    
     public static KimTypeInternalService getTypeInternalService() {
         return (KimTypeInternalService)getService(KIM_TYPE_INTERNAL_SERVICE);
     }
@@ -106,7 +118,7 @@ public final class KIMServiceLocator {
     }
 
     @SuppressWarnings("unchecked")
-	public static PersonService<Person> getPersonService() {
-    	return (PersonService<Person>)getService(KIM_PERSON_SERVICE);
+	public static PersonService getPersonService() {
+    	return (PersonService)getService(KIM_PERSON_SERVICE);
     }
 }

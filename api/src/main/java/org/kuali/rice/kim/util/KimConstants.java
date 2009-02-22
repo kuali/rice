@@ -96,12 +96,7 @@ public class KimConstants {
 	public static final String COMMA_SEPARATOR = ", ";
 	public static final String OR_OPERATOR = "|";
 
-	//Kim services constants for API
-	public static final String KIM_IDENTITY_MANAGEMENT_SERVICE = "kimIdentityManagementService";
-	public static final String KIM_PERSON_SERVICE = "personService";
-	public static final String DEFAULT_KIM_TYPE_SERVICE = "kimTypeService";
-	
-	public static class PrimaryKeyConstants{
+	public static class PrimaryKeyConstants {
 		public static final String ENTITY_ID = "entityId";
 		public static final String PRINCIPAL_ID = "principalId";
 		public static final String ROLE_ID = "roleId";
@@ -109,6 +104,21 @@ public class KimConstants {
 		public static final String RESPONSIBILITY_ID = "responsibilityId";
 		public static final String PERMISSION_ID = "permissionId";
 		public static final String DELEGATION_ID = "delegationId";
+		public static final String RESPONSIBILITY_TEMPLATE_ID = "responsibilityTemplateId";
+		public static final String PERMISSION_TEMPLATE_ID = "permissionTemplateId";
+		public static final String ROLE_MEMBER_ID = "roleMemberId";
+		public static final String ROLE_RESPONSIBILITY_ID = "roleResponsibilityId";
+		public static final String ROLE_RESPONSIBILITY_ACTION_ID = "roleResponsibilityActionId";
+	}
+	
+	public static class UniqueKeyConstants {
+		public static final String NAMESPACE_CODE = "namespaceCode";
+		public static final String GROUP_NAME = "groupName";
+		public static final String ROLE_NAME = "roleName";
+		public static final String PERMISSION_NAME = "name";
+		public static final String RESPONSIBILITY_NAME = "name";
+		public static final String PERMISSION_TEMPLATE_NAME = "name";
+		public static final String RESPONSIBILITY_TEMPLATE_NAME = "name";
 	}
 	
 	/**

@@ -22,6 +22,6 @@ package org.kuali.rice.kim.service;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public interface IdentityUpdateService {
+public interface PermissionUpdateService {
 
 }

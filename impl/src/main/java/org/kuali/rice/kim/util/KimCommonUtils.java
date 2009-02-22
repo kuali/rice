@@ -59,6 +59,10 @@ public class KimCommonUtils {
 			}
 		}
 	}
+	
+	public static boolean storedValueNotSpecifiedOrInputValueMatches(AttributeSet storedValues, AttributeSet inputValues, String attributeName) {
+		return !storedValues.containsKey(attributeName) || inputValues.get(attributeName).equals(storedValues.get(attributeName));
+	}
 
 	public static boolean doesPropertyNameMatch(
 			String requestedDetailsPropertyName,

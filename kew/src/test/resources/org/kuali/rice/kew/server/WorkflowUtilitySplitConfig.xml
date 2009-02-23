@@ -4,6 +4,7 @@
 		<documentType>
 			<name>UserInRouteLog_Split</name>
 			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<docHandler>none</docHandler>
 			<routePaths>
 				<routePath>
 					<start name="Start" nextNode="BeforeSplit" />

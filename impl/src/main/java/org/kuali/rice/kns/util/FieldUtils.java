@@ -67,18 +67,18 @@ import org.kuali.rice.kns.web.ui.Section;
  */
 public class FieldUtils {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(FieldUtils.class);
-    private static DataDictionaryService dictionaryService = KNSServiceLocator.getDataDictionaryService();
-    private static BusinessObjectMetaDataService businessObjectMetaDataService = KNSServiceLocator.getBusinessObjectMetaDataService();
-    private static BusinessObjectDictionaryService businessObjectDictionaryService = KNSServiceLocator.getBusinessObjectDictionaryService();
-    private static KualiModuleService kualiModuleService = KNSServiceLocator.getKualiModuleService();
+    private static DataDictionaryService dataDictionaryService = null;
+    private static BusinessObjectMetaDataService businessObjectMetaDataService = null;
+    private static BusinessObjectDictionaryService businessObjectDictionaryService = null;
+    private static KualiModuleService kualiModuleService = null;
 
     public static void setInquiryURL(Field field, BusinessObject bo, String propertyName) {
         HtmlData inquiryHref = new AnchorHtmlData(KNSConstants.EMPTY_STRING, KNSConstants.EMPTY_STRING);
 
-        Boolean b = businessObjectDictionaryService.noInquiryFieldInquiry(bo.getClass(), propertyName);
+        Boolean b = getBusinessObjectDictionaryService().noInquiryFieldInquiry(bo.getClass(), propertyName);
         if (b == null || !b.booleanValue()) {
-            Class<Inquirable> inquirableClass = businessObjectDictionaryService.getInquirableClass(bo.getClass());
-            Boolean b2 = businessObjectDictionaryService.forceLookupResultFieldInquiry(bo.getClass(), propertyName);
+            Class<Inquirable> inquirableClass = getBusinessObjectDictionaryService().getInquirableClass(bo.getClass());
+            Boolean b2 = getBusinessObjectDictionaryService().forceLookupResultFieldInquiry(bo.getClass(), propertyName);
             Inquirable inq = null;
             try {
                 if ( inquirableClass != null ) {
@@ -112,10 +112,10 @@ public class FieldUtils {
     public static Field getPropertyField(Class businessObjectClass, String attributeName, boolean translateCheckboxes) {
         Field field = new Field();
         field.setPropertyName(attributeName);
-        field.setFieldLabel(dictionaryService.getAttributeLabel(businessObjectClass, attributeName));
+        field.setFieldLabel(getDataDictionaryService().getAttributeLabel(businessObjectClass, attributeName));
 
         // get control type for ui, depending on type set other field properties
-        ControlDefinition control = dictionaryService.getAttributeControlDefinition(businessObjectClass, attributeName);
+        ControlDefinition control = getDataDictionaryService().getAttributeControlDefinition(businessObjectClass, attributeName);
         String fieldType = Field.TEXT;
 
         if (control != null) {
@@ -293,19 +293,19 @@ public class FieldUtils {
 
         field.setFieldType(fieldType);
 
-        Boolean fieldRequired = businessObjectDictionaryService.getLookupAttributeRequired(businessObjectClass, attributeName);
+        Boolean fieldRequired = getBusinessObjectDictionaryService().getLookupAttributeRequired(businessObjectClass, attributeName);
         if (fieldRequired != null) {
             field.setFieldRequired(fieldRequired.booleanValue());
         }
 
-        Integer maxLength = dictionaryService.getAttributeMaxLength(businessObjectClass, attributeName);
+        Integer maxLength = getDataDictionaryService().getAttributeMaxLength(businessObjectClass, attributeName);
         if (maxLength != null) {
             field.setMaxLength(maxLength.intValue());
         }
 
         Boolean upperCase = null;
         try {
-            upperCase = dictionaryService.getAttributeForceUppercase(businessObjectClass, attributeName);
+            upperCase = getDataDictionaryService().getAttributeForceUppercase(businessObjectClass, attributeName);
         }
         catch (UnknownBusinessClassAttributeException t) {
             boolean catchme = true;
@@ -315,7 +315,7 @@ public class FieldUtils {
             field.setUpperCase(upperCase.booleanValue());
         }
 
-        Class formatterClass = dictionaryService.getAttributeFormatter(businessObjectClass, attributeName);
+        Class formatterClass = getDataDictionaryService().getAttributeFormatter(businessObjectClass, attributeName);
         if (formatterClass != null) {
             try {
                 field.setFormatter((Formatter) formatterClass.newInstance());
@@ -333,7 +333,7 @@ public class FieldUtils {
         // set Field help properties
         field.setBusinessObjectClassName(businessObjectClass.getName());
         field.setFieldHelpName(attributeName);
-        field.setFieldHelpSummary(dictionaryService.getAttributeSummary(businessObjectClass, attributeName));
+        field.setFieldHelpSummary(getDataDictionaryService().getAttributeSummary(businessObjectClass, attributeName));
 
         return field;
     }
@@ -1080,7 +1080,7 @@ public class FieldUtils {
 
             BusinessObject newBusinessObjectInstance;
             if (ExternalizableBusinessObjectUtils.isExternalizableBusinessObjectInterface(businessObjectClass)) {
-            	ModuleService moduleService = kualiModuleService.getResponsibleModuleService(businessObjectClass);
+            	ModuleService moduleService = getKualiModuleService().getResponsibleModuleService(businessObjectClass);
             	newBusinessObjectInstance = (BusinessObject) moduleService.createNewObjectFromExternalizableClass(businessObjectClass);
             }
             else {
@@ -1095,13 +1095,13 @@ public class FieldUtils {
             fields.add(field);
 
             // set default value
-            String defaultValue = businessObjectMetaDataService.getLookupFieldDefaultValue(businessObjectClass, attributeName);
+            String defaultValue = getBusinessObjectMetaDataService().getLookupFieldDefaultValue(businessObjectClass, attributeName);
             if (defaultValue != null) {
                 field.setPropertyValue(defaultValue);
                 field.setDefaultValue(defaultValue);
             }
 
-            Class defaultValueFinderClass = businessObjectMetaDataService.getLookupFieldDefaultValueFinderClass(businessObjectClass, attributeName);
+            Class defaultValueFinderClass = getBusinessObjectMetaDataService().getLookupFieldDefaultValueFinderClass(businessObjectClass, attributeName);
             if (defaultValueFinderClass != null) {
                 field.setPropertyValue(((ValueFinder) defaultValueFinderClass.newInstance()).getValue());
                 field.setDefaultValue(((ValueFinder) defaultValueFinderClass.newInstance()).getValue());
@@ -1154,7 +1154,7 @@ public class FieldUtils {
     static final public void modifyFieldToSupportMultipleValueLookups(Field field, String parents, MaintainableCollectionDefinition definition) {
         field.setMultipleValueLookedUpCollectionName(parents + definition.getName());
         field.setMultipleValueLookupClassName(definition.getSourceClassName().getName());
-        field.setMultipleValueLookupClassLabel(dictionaryService.getDataDictionary().getBusinessObjectEntry(definition.getSourceClassName().getName()).getObjectLabel());
+        field.setMultipleValueLookupClassLabel(getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(definition.getSourceClassName().getName()).getObjectLabel());
     }
 
     /**
@@ -1177,5 +1177,33 @@ public class FieldUtils {
      */
     public static String scrubWhitespace(String s) {
         return s.replaceAll("(\\s)(\\s+)", " ");
+    }
+    
+    private static DataDictionaryService getDataDictionaryService() {
+    	if (dataDictionaryService == null) {
+    		dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+    	}
+    	return dataDictionaryService;
+    }
+    
+    private static BusinessObjectMetaDataService getBusinessObjectMetaDataService() {
+    	if (businessObjectMetaDataService == null) {
+    		businessObjectMetaDataService = KNSServiceLocator.getBusinessObjectMetaDataService();
+    	}
+    	return businessObjectMetaDataService;
+    }
+    
+    private static BusinessObjectDictionaryService getBusinessObjectDictionaryService() {
+    	if (businessObjectDictionaryService == null) {
+    		businessObjectDictionaryService = KNSServiceLocator.getBusinessObjectDictionaryService();
+    	}
+    	return businessObjectDictionaryService;
+    }
+    
+    private static KualiModuleService getKualiModuleService() {
+    	if (kualiModuleService == null) {
+    		kualiModuleService = KNSServiceLocator.getKualiModuleService();
+    	}
+    	return kualiModuleService;
     }
 }

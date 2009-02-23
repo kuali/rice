@@ -36,7 +36,8 @@ public class KEWModuleService extends ModuleServiceBase {
 	protected DocumentTypeService docTypeService = null;
 
 	/**
-	 * This overridden method ...
+	 * These are the "primary" keys for the DocTypeService. We are considering both
+	 * name and documentTypeId to be unique.
 	 *
 	 * @see org.kuali.rice.kns.service.impl.ModuleServiceBase#listPrimaryKeyFieldNames(java.lang.Class)
 	 */
@@ -52,7 +53,8 @@ public class KEWModuleService extends ModuleServiceBase {
 	}
 
 	/**
-	 * This overridden method ...
+	 * This overridden method calls the DocumentTypeService instead of the underlying
+	 * KNS service.  Allows you to search on name and docTypeId
 	 *
 	 * @see org.kuali.rice.kns.service.impl.ModuleServiceBase#getExternalizableBusinessObject(java.lang.Class, java.util.Map)
 	 */
@@ -75,37 +77,9 @@ public class KEWModuleService extends ModuleServiceBase {
 	}
 
 	/**
-	 * This overridden method ...
-	 *
-	 * @see org.kuali.rice.kns.service.impl.ModuleServiceBase#getExternalizableBusinessObjectsList(java.lang.Class, java.util.Map)
-	 */
-	@Override
-	public <T extends ExternalizableBusinessObject> List<T> getExternalizableBusinessObjectsList(
-			Class<T> externalizableBusinessObjectClass,
-			Map<String, Object> fieldValues) {
-		// TODO Garey - THIS METHOD NEEDS JAVADOCS
-		return super.getExternalizableBusinessObjectsList(
-				externalizableBusinessObjectClass, fieldValues);
-	}
-
-	/**
-	 * This overridden method ...
-	 *
-	 * @see org.kuali.rice.kns.service.impl.ModuleServiceBase#getExternalizableBusinessObjectsListForLookup(java.lang.Class, java.util.Map, boolean)
-	 */
-	@Override
-	public <T extends ExternalizableBusinessObject> List<T> getExternalizableBusinessObjectsListForLookup(
-			Class<T> externalizableBusinessObjectClass,
-			Map<String, Object> fieldValues, boolean unbounded) {
-		// TODO Garey - THIS METHOD NEEDS JAVADOCS
-		return super.getExternalizableBusinessObjectsListForLookup(
-				externalizableBusinessObjectClass, fieldValues, unbounded);
-	}
-
-	/**
 	 * @return the docTypeService
 	 */
-	public DocumentTypeService getDocumentTypeService() {
+	protected DocumentTypeService getDocumentTypeService() {
 		if(this.docTypeService == null){
 			// the default
 			this.docTypeService = KEWServiceLocator.getDocumentTypeService();

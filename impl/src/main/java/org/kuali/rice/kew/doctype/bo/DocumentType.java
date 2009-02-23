@@ -79,7 +79,7 @@ import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.web.format.FormatException;
-
+import org.kuali.rice.kns.bo.Inactivateable;
 
 /**
  * Model bean mapped to ojb representing a document type.  Provides component lookup behavior that
@@ -97,7 +97,7 @@ import org.kuali.rice.kns.web.format.FormatException;
             "WHERE drhv.initiatorWorkflowId = :initiatorWorkflowId AND drhv.documentTypeId = dt.documentTypeId AND dt.active = 1 AND dt.currentInd = 1 " +
             "ORDER BY UPPER(dt.label)")
 })
-public class DocumentType extends KewPersistableBusinessObjectBase
+public class DocumentType extends KewPersistableBusinessObjectBase implements Inactivateable
 {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentType.class);
 
@@ -499,21 +499,21 @@ public class DocumentType extends KewPersistableBusinessObjectBase
     }
 
     /**
-     * This method gets the document handler url from this object or from a parent document type and resolves any 
+     * This method gets the document handler url from this object or from a parent document type and resolves any
      * potential variables that may be in use
      */
     public String getDocHandlerUrl() {
         return resolveDocHandlerUrl(getUnresolvedInheritedDocHandlerUrl(false));
     }
-    
+
     /**
-     * This method retrieves the unresolved document handler URL either from this object or from a parent document type 
+     * This method retrieves the unresolved document handler URL either from this object or from a parent document type
      * object. If the forDisplayPurposes value is true the value returned will be invalid for system use.
-     * 
-     * This method will first call the {@link #getUnresolvedDocHandlerUrl()} method to check for a value on this object. 
-     * If none is found a parent document type must exist because the document handler URL is required and is used. The 
+     *
+     * This method will first call the {@link #getUnresolvedDocHandlerUrl()} method to check for a value on this object.
+     * If none is found a parent document type must exist because the document handler URL is required and is used. The
      * system will use inheritance to find the document handler url from a document type somewhere in the hierarchy.
-     * 
+     *
      * @param forDisplayPurposes - if true then the string returned will have a label explaining where the value came from
      * @return the unresolved document handler URL value or a displayable value with sourcing information
      */
@@ -603,13 +603,13 @@ public class DocumentType extends KewPersistableBusinessObjectBase
     }
 
     /**
-     * This method gets the help definition url from this object and resolves any 
+     * This method gets the help definition url from this object and resolves any
      * potential variables that may be in use
      */
     public String getHelpDefinitionUrl() {
         return resolveHelpDefinitionUrl(getUnresolvedHelpDefinitionUrl());
     }
-    
+
     /**
      * If the help definition URL has variables in it that need to be replaced, this will look up the values
      * for those variables and replace them.
@@ -624,7 +624,7 @@ public class DocumentType extends KewPersistableBusinessObjectBase
     public java.lang.String getLabel() {
         return label;
     }
-    
+
     public void setLabel(java.lang.String label) {
         this.label = label;
     }
@@ -658,17 +658,17 @@ public class DocumentType extends KewPersistableBusinessObjectBase
 
         return (PostProcessor)postProcessor;
     }
-    
+
     /**
-     * This method gets the post processor class value. If the forDisplayPurposes value is true 
+     * This method gets the post processor class value. If the forDisplayPurposes value is true
      * the value will be invalid for system use.
-     * 
-     * This method will first call the {@link #getPostProcessorName()} method to check the value on this object. 
-     * If none is found the system checks for a parent document type.  If a valid parent type exists for this document type 
-     * then the system will use inheritance from that parent document type as long as at least one document type in the 
-     * hierarchy has a value set.  If no value is set on any parent document type or if no parent document type exists the 
+     *
+     * This method will first call the {@link #getPostProcessorName()} method to check the value on this object.
+     * If none is found the system checks for a parent document type.  If a valid parent type exists for this document type
+     * then the system will use inheritance from that parent document type as long as at least one document type in the
+     * hierarchy has a value set.  If no value is set on any parent document type or if no parent document type exists the
      * system will return null.
-     * 
+     *
      * @param forDisplayPurposes - if true then the string returned will have a label explaining where the value came from
      * @return the post processor class value or a displayable value with sourcing information
      */
@@ -702,7 +702,7 @@ public class DocumentType extends KewPersistableBusinessObjectBase
     }
 
     /**
-     * 
+     *
      */
     public String getDisplayablePostProcessorName() {
         return getInheritedPostProcessorName(true);
@@ -1163,7 +1163,7 @@ public class DocumentType extends KewPersistableBusinessObjectBase
     public void setRoutingVersion(String routingVersion) {
         this.routingVersion = routingVersion;
     }
-    
+
     /**
      * @return the actualNotificationFromAddress
      */
@@ -1177,9 +1177,9 @@ public class DocumentType extends KewPersistableBusinessObjectBase
     public void setActualNotificationFromAddress(String actualNotificationFromAddress) {
         this.actualNotificationFromAddress = actualNotificationFromAddress;
     }
-    
+
     /**
-     * Returns the same value as the {@link #getNotificationFromAddress()} method but will also have label information if 
+     * Returns the same value as the {@link #getNotificationFromAddress()} method but will also have label information if
      * the value is inherited from a parent document type
      */
     public String getDisplayableNotificationFromAddress() {
@@ -1199,15 +1199,15 @@ public class DocumentType extends KewPersistableBusinessObjectBase
     }
 
     /**
-     * This method gets the notification from address value. If the forDisplayPurposes value is true 
+     * This method gets the notification from address value. If the forDisplayPurposes value is true
      * the notification from address value will be invalid for system use
-     * 
-     * This method will first call the {@link #getActualNotificationFromAddress()} method to check the value on this object. 
-     * If none is found the system checks for a parent document type.  If a valid parent type exists for this document type 
-     * then the system will use inheritance from that parent document type as long as at least one document type in the 
-     * hierarchy has a value set.  If no value is set on any parent document type or if no parent document type exists the 
+     *
+     * This method will first call the {@link #getActualNotificationFromAddress()} method to check the value on this object.
+     * If none is found the system checks for a parent document type.  If a valid parent type exists for this document type
+     * then the system will use inheritance from that parent document type as long as at least one document type in the
+     * hierarchy has a value set.  If no value is set on any parent document type or if no parent document type exists the
      * system will return null
-     * 
+     *
      * @param forDisplayPurposes - if true then the string returned will have a label explaining where the value came from
      * @return the notification from address value or a displayable value with sourcing information
      */
@@ -1239,7 +1239,7 @@ public class DocumentType extends KewPersistableBusinessObjectBase
 	public void setNotificationFromAddress(String notificationFromAddress) {
 	    setActualNotificationFromAddress(notificationFromAddress);
 	}
-	
+
 	public boolean isParentOf(DocumentType documentType) {
         // this is a depth-first search which works for our needs
         for (Iterator iterator = getChildrenDocTypes().iterator(); iterator.hasNext();) {
@@ -1335,15 +1335,15 @@ public class DocumentType extends KewPersistableBusinessObjectBase
 	}
 
 	/**
-     * This method gets the string for the service namespace value. If the forDisplayPurposes value is true 
+     * This method gets the string for the service namespace value. If the forDisplayPurposes value is true
      * the service namespace value will be invalid for system use.
-     * 
-     * This method will first call the {@link #getActualServiceNamespace()} method to check for a value on this object. If 
-     * none is found a parent document type is used.  If a valid parent type exists for this document type then the system 
-     * will use inheritance from that parent document type as long as at least one document type in the hierarchy has a 
-     * value set.  If no value is set on any parent document type or if no parent document type exists for this object the 
+     *
+     * This method will first call the {@link #getActualServiceNamespace()} method to check for a value on this object. If
+     * none is found a parent document type is used.  If a valid parent type exists for this document type then the system
+     * will use inheritance from that parent document type as long as at least one document type in the hierarchy has a
+     * value set.  If no value is set on any parent document type or if no parent document type exists for this object the
      * system default is used: {@link ConfigContext#getCurrentContextConfig()#getServiceNamespace()}
-     * 
+     *
      * @param forDisplayPurposes - if true then the string returned will have a label explaining where the value came from
      * @return the service namespace value or a displayable value with sourcing information
      */
@@ -1382,7 +1382,7 @@ public class DocumentType extends KewPersistableBusinessObjectBase
     }
 
     /**
-     * Returns the same value as the {@link #getServiceNamespace()} method but will also have label information about 
+     * Returns the same value as the {@link #getServiceNamespace()} method but will also have label information about
      * where the service namespace came from (ie: inherited from the parent document type)
      */
     public String getDisplayableServiceNamespace() {
@@ -1458,4 +1458,29 @@ public class DocumentType extends KewPersistableBusinessObjectBase
     private IdentityManagementService getIdentityManagementService() {
     	return KIMServiceLocator.getIdentityManagementService();
     }
+
+	/**
+	 * In order to make this object Inactivateable. Not sure if I
+	 * should remove the getActive method.
+	 *
+	 * @see org.kuali.rice.kns.bo.Inactivateable#isActive()
+	 */
+	public boolean isActive() {
+		boolean bRet = false;
+
+		if(active != null){
+			bRet = active.booleanValue();
+		}
+
+		return bRet;
+	}
+
+	/**
+	 * This overridden method ...
+	 *
+	 * @see org.kuali.rice.kns.bo.Inactivateable#setActive(boolean)
+	 */
+	public void setActive(boolean active) {
+		active = new Boolean(active);
+	}
 }

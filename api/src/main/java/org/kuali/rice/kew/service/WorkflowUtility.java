@@ -62,6 +62,7 @@ public interface WorkflowUtility {
     public ActionTakenDTO[] getActionsTaken(Long documentId) throws WorkflowException;
     public WorkflowAttributeValidationErrorDTO[] validateWorkflowAttributeDefinitionVO(WorkflowAttributeDefinitionDTO definition) throws WorkflowException;
     public boolean isUserInRouteLog(Long documentId, String principalId, boolean lookFuture) throws WorkflowException;
+    public boolean isUserInRouteLog(Long documentId, String principalId, boolean lookFuture, boolean flattenNodes) throws WorkflowException;
     public void reResolveRole(String documentTypeName, String roleName, String qualifiedRoleNameLabel) throws WorkflowException;
     public void reResolveRoleByDocumentId(Long documentId, String roleName, String qualifiedRoleNameLabel) throws WorkflowException;
     public DocumentDetailDTO routingReport(ReportCriteriaDTO reportCriteria) throws WorkflowException;

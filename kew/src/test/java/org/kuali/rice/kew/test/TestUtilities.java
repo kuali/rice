@@ -306,6 +306,14 @@ public class TestUtilities {
             Assert.fail("Outstanding approvals are incorrect");
         }
     }
+    
+    public static WorkflowDocument switchByPrincipalName(String principalName, WorkflowDocument document) throws WorkflowException {
+    	return switchPrincipalId(KEWServiceLocator.getIdentityHelperService().getIdForPrincipalName(principalName), document);
+    }
+    
+    public static WorkflowDocument switchPrincipalId(String principalId, WorkflowDocument document) throws WorkflowException {
+    	return new WorkflowDocument(principalId, document.getRouteHeaderId());
+    }
 
     public static void logActionRequests(Long docId) {
         List<ActionRequestValue> actionRequests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(docId);

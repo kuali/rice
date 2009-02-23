@@ -41,15 +41,19 @@ public class SimulationCriteria {
     // fields related to document type simulation
     private String documentTypeName;
     private String xmlContent;
-    private List nodeNames = new ArrayList();
-    private List ruleTemplateNames = new ArrayList();
+    private List<String> nodeNames = new ArrayList<String>();
+    private List<String> ruleTemplateNames = new ArrayList<String>();
 
     // fields related to both simulation types
-    private Boolean activateRequests = null;
+    private Boolean activateRequests;
     private Person routingUser;
-    private List actionsToTake = new ArrayList();
+    private List<SimulationActionToTake> actionsToTake = new ArrayList<SimulationActionToTake>();
+    private boolean flattenNodes;
 
-    public SimulationCriteria() {}
+    public SimulationCriteria() {
+    	this.activateRequests = null;
+    	this.flattenNodes = false;
+    }
 
     public SimulationCriteria(Long documentId) {
     	this.documentId = documentId;
@@ -59,7 +63,7 @@ public class SimulationCriteria {
     	this.documentTypeName = documentTypeName;
     }
 
-    public Boolean getActivateRequests() {
+    public Boolean isActivateRequests() {
         return this.activateRequests;
     }
 
@@ -99,11 +103,11 @@ public class SimulationCriteria {
 		this.documentTypeName = documentTypeName;
 	}
 
-	public List getRuleTemplateNames() {
+	public List<String> getRuleTemplateNames() {
 		return ruleTemplateNames;
 	}
 
-	public void setRuleTemplateNames(List ruleTemplateNames) {
+	public void setRuleTemplateNames(List<String> ruleTemplateNames) {
 		this.ruleTemplateNames = ruleTemplateNames;
 	}
 
@@ -115,11 +119,11 @@ public class SimulationCriteria {
 		this.xmlContent = xmlContent;
 	}
 
-	public List getNodeNames() {
+	public List<String> getNodeNames() {
 		return nodeNames;
 	}
 
-	public void setNodeNames(List nodeNames) {
+	public void setNodeNames(List<String> nodeNames) {
 		this.nodeNames = nodeNames;
 	}
 
@@ -131,11 +135,11 @@ public class SimulationCriteria {
 		return !Utilities.isEmpty(documentTypeName);
 	}
 
-	public List getActionsToTake() {
+	public List<SimulationActionToTake> getActionsToTake() {
 		return actionsToTake;
 	}
 
-	public void setActionsToTake(List actionsToTake) {
+	public void setActionsToTake(List<SimulationActionToTake> actionsToTake) {
 		this.actionsToTake = actionsToTake;
 	}
 
@@ -145,6 +149,14 @@ public class SimulationCriteria {
 
 	public void setRoutingUser(Person routingUser) {
 		this.routingUser = routingUser;
+	}
+
+	public boolean isFlattenNodes() {
+		return this.flattenNodes;
+	}
+
+	public void setFlattenNodes(boolean flattenNodes) {
+		this.flattenNodes = flattenNodes;
 	}
 
 }

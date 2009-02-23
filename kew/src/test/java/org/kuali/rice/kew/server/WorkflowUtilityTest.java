@@ -19,6 +19,7 @@ package org.kuali.rice.kew.server;
 
 import java.rmi.RemoteException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -44,6 +45,10 @@ import org.kuali.rice.kew.dto.RuleDTO;
 import org.kuali.rice.kew.dto.RuleExtensionDTO;
 import org.kuali.rice.kew.dto.RuleReportCriteriaDTO;
 import org.kuali.rice.kew.dto.RuleResponsibilityDTO;
+import org.kuali.rice.kew.engine.RouteContext;
+import org.kuali.rice.kew.engine.RouteHelper;
+import org.kuali.rice.kew.engine.node.SimpleSplitNode;
+import org.kuali.rice.kew.engine.node.SplitResult;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
@@ -186,8 +191,106 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), true));
         assertFalse("User should NOT be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("pmckown"), false));
         assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("pmckown"), true));
+    }
+    
+    @Test
+    public void testIsUserInRouteLogWithSplits() throws Exception {
+    	loadXmlFile("WorkflowUtilitySplitConfig.xml");
+    	
+    	// initialize the split node to both branches
+    	TestSplitNode.setLeftBranch(true);
+    	TestSplitNode.setRightBranch(true);
+    	
+    	WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("admin"), "UserInRouteLog_Split");
+        document.routeDocument("");
+        
+        // document should be in ewestfal action list
+        document = TestUtilities.switchByPrincipalName("ewestfal", document);
+        assertTrue("should have approve", document.isApprovalRequested());
+        TestUtilities.assertAtNode(document, "BeforeSplit");
+        
+        // now let's run some simulations
+        assertTrue("should be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("ewestfal"), true));
+        assertTrue("should be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), true));
+        assertTrue("should be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), true));
+        assertTrue("should be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("jhopf"), true));
+        assertTrue("should be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("natjohns"), true));
+        assertFalse("should NOT be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("user1"), true));
+        
+        // now let's activate only the left branch and make sure the split is properly executed
+        TestSplitNode.setRightBranch(false);
+        assertTrue("should be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), true));
+        assertTrue("should be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), true));
+        assertFalse("should NOT be in route log because right branch is not active", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("jhopf"), true));
+        assertTrue("should be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("natjohns"), true));
+        
+        // now let's do a flattened evaluation, it should hit both branches
+        assertTrue("should be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), true, true));
+        assertTrue("should be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), true, true));
+        assertTrue("should be in route log because we've flattened nodes", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("jhopf"), true, true));
+        assertTrue("should be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("natjohns"), true, true));
+        
+        // now let's switch to the right branch
+        TestSplitNode.setRightBranch(true);
+        TestSplitNode.setLeftBranch(false);
+        
+        assertFalse("should NOT be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), true));
+        assertFalse("should NOT be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), true));
+        assertTrue("should be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("jhopf"), true));
+        assertTrue("should be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("natjohns"), true));
 
+        // now let's switch back to the left branch and approve it
+        TestSplitNode.setLeftBranch(true);
+        TestSplitNode.setRightBranch(false);
+        
+        // now let's approve it so that we're inside the right branch of the split
+        document.approve("");
+        // shoudl be at SplitLeft1 node
+        TestUtilities.assertAtNode(document, "SplitLeft1");
+        
+        document = TestUtilities.switchByPrincipalName("rkirkend", document);
+        assertTrue("should have an approve request", document.isApprovalRequested());
+        
+        // now let's run the simulation so we can test running from inside a split branch
+        assertTrue("should be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), true));
+        assertTrue("should be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), true));
+        assertFalse("should NOT be in route log because right branch is not active", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("jhopf"), true));
+        assertTrue("should be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("natjohns"), true));
+    }
+    
+    public static class TestSplitNode extends SimpleSplitNode {
 
+    	private static boolean leftBranch = true;
+    	private static boolean rightBranch = true;
+    	
+		@Override
+		public SplitResult process(RouteContext routeContext,
+				RouteHelper routeHelper) throws Exception {
+			return new SplitResult(getBranchNames());
+		}
+		
+		public List<String> getBranchNames() {
+			List<String> branchNames = new ArrayList<String>();
+			if (isLeftBranch()) {
+				branchNames.add("Left");
+			}
+			if (isRightBranch()) {
+				branchNames.add("Right");
+			}
+			return branchNames;
+		}
+		public static void setLeftBranch(boolean leftBranch) {
+			TestSplitNode.leftBranch = leftBranch;
+		}
+		public static boolean isLeftBranch() {
+			return TestSplitNode.leftBranch;
+		}
+		public static void setRightBranch(boolean rightBranch) {
+			TestSplitNode.rightBranch = rightBranch;
+		}		
+		public static boolean isRightBranch() {
+			return TestSplitNode.rightBranch;
+		}  	
     }
 
     public abstract interface ReportCriteriaGenerator { public abstract ReportCriteriaDTO buildCriteria(WorkflowDocument workflowDoc) throws Exception; public boolean isCriteriaRouteHeaderBased();}

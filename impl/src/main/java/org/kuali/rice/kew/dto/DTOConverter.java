@@ -1042,6 +1042,7 @@ public class DTOConverter {
         criteria.setDocumentTypeName(criteriaVO.getDocumentTypeName());
         criteria.setXmlContent(criteriaVO.getXmlContent());
         criteria.setActivateRequests(criteriaVO.getActivateRequests());
+        criteria.setFlattenNodes(criteriaVO.isFlattenNodes());
         if (criteriaVO.getRoutingPrincipalId() != null) {
         	KimPrincipal kPrinc = KEWServiceLocator.getIdentityHelperService().getPrincipal(criteriaVO.getRoutingPrincipalId());
             Person user = KIMServiceLocator.getPersonService().getPerson(kPrinc.getPrincipalId());

@@ -264,6 +264,27 @@ public class WorkflowInfo implements java.io.Serializable {
             throw handleException(e);
         }
     }
+    
+    /**
+     * Returns whether the user is in the document's route log (whether an action request has been, or may be,
+     * generated for the user).  The flattenNodes boolean instructs the underlying Simulation Engine to perform
+     * a "flattened" evaluation or not and only takes effect if lookFuture is true.  When doing a "flattened"
+     * evaluation, all branches will be followed regardless of split and join logic built into the document type.
+     * 
+     * @param routeHeaderId the id of the document to analyze
+     * @param userId the id of the user to check
+     * @param lookFuture whether to evaluate potential future requests
+     * @return whether the user is in the document's route log
+     * @throws WorkflowException if an error occurs determining whether the user is in the document's route log
+     * @see WorkflowUtility#isUserInRouteLog(Long, String, boolean)
+     */
+    public boolean isUserAuthenticatedByRouteLog(Long routeHeaderId, String principalId, boolean lookFuture, boolean flattenNodes) throws WorkflowException {
+        try {
+            return getWorkflowUtility().isUserInRouteLog(routeHeaderId, principalId, lookFuture, flattenNodes);
+        } catch (Exception e) {
+            throw handleException(e);
+        }
+    }
 
     /**
      * Returns whether the specified user is the final approver for the document

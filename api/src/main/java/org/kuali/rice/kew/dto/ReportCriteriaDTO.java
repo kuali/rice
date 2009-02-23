@@ -38,6 +38,7 @@ public class ReportCriteriaDTO implements Serializable {
     private String[] nodeNames;
     private ReportActionToTakeDTO[] actionsToTake;
     private Boolean activateRequests = null;
+    private boolean flattenNodes = false;
 
 	public ReportCriteriaDTO() {}
 	
@@ -137,6 +138,14 @@ public class ReportCriteriaDTO implements Serializable {
 
 	public void setRoutingPrincipalId(String routingPrincipalId) {
 		this.routingPrincipalId = routingPrincipalId;
+	}
+
+	public boolean isFlattenNodes() {
+		return this.flattenNodes;
+	}
+
+	public void setFlattenNodes(boolean flattenNodes) {
+		this.flattenNodes = flattenNodes;
 	}
 	
 }

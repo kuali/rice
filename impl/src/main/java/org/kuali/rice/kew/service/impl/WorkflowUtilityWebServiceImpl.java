@@ -416,6 +416,10 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
     }
 
     public boolean isUserInRouteLog(Long routeHeaderId, String principalId, boolean lookFuture) throws WorkflowException {
+    	return isUserInRouteLog(routeHeaderId, principalId, lookFuture, false);
+    }
+    
+    public boolean isUserInRouteLog(Long routeHeaderId, String principalId, boolean lookFuture, boolean flattenNodes) throws WorkflowException {
         if (routeHeaderId == null) {
             LOG.error("null routeHeaderId passed in.");
             throw new RuntimeException("null routeHeaderId passed in.");
@@ -455,6 +459,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         SimulationCriteria criteria = new SimulationCriteria(routeHeaderId);
         criteria.setDestinationNodeName(null); // process entire document to conclusion
         criteria.getDestinationRecipients().add(new KimPrincipalRecipient(principal));
+        criteria.setFlattenNodes(flattenNodes);
 
         try {
         	SimulationResults results = simulationEngine.runSimulation(criteria);

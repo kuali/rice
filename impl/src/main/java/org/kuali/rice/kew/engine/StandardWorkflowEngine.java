@@ -663,7 +663,6 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 		RouteNodeInstance nodeInstance = helper.getNodeFactory().createRouteNodeInstance(document.getRouteHeaderId(), process.getInitialRouteNode());
 		nodeInstance.setActive(true);
 		helper.getNodeFactory().createBranch(KEWConstants.PRIMARY_BRANCH_NAME, null, nodeInstance);
-		// TODO we may (probably) need only one of these initial node instances
 		document.getInitialRouteNodeInstances().add(nodeInstance);
 		saveNode(context, nodeInstance);
 	}

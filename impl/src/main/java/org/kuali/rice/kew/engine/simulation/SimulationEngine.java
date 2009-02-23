@@ -30,7 +30,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
@@ -45,7 +44,7 @@ import org.kuali.rice.kew.engine.ProcessContext;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.RouteHelper;
 import org.kuali.rice.kew.engine.StandardWorkflowEngine;
-import org.kuali.rice.kew.engine.node.InitialNode;
+import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.NoOpNode;
 import org.kuali.rice.kew.engine.node.NodeJotter;
 import org.kuali.rice.kew.engine.node.NodeType;
@@ -92,14 +91,14 @@ public class SimulationEngine extends StandardWorkflowEngine {
     	RouteContext context = RouteContext.createNewRouteContext();
     	try {
     		ActivationContext activationContext = new ActivationContext(ActivationContext.CONTEXT_IS_SIMULATION);
-    		if (criteria.getActivateRequests() == null) {
+    		if (criteria.isActivateRequests() == null) {
     		    activationContext.setActivateRequests(!criteria.getActionsToTake().isEmpty());
     		} else {
-    		    activationContext.setActivateRequests(criteria.getActivateRequests().booleanValue());
+    		    activationContext.setActivateRequests(criteria.isActivateRequests().booleanValue());
     		}
     		context.setActivationContext(activationContext);
     		context.setEngineState(new EngineState());
-    		// JHK 2/2/09: suppress policy errors when running a simulation for the purposes of display on the route log
+    		// suppress policy errors when running a simulation for the purposes of display on the route log
     		RequestsNode.setSupressPolicyErrors(context);
     		DocumentRouteHeaderValue document = createSimulationDocument(documentId, criteria, context);
     		if ( (criteria.isDocumentSimulation()) && ( (document.isProcessed()) || (document.isFinal()) ) ) {
@@ -115,8 +114,8 @@ public class SimulationEngine extends StandardWorkflowEngine {
     		    if ( LOG.isInfoEnabled() ) {
     		        LOG.info("Processing document for Simulation: " + documentId);
     		    }
-    			List activeNodeInstances = getRouteNodeService().getActiveNodeInstances(document);
-    			List nodeInstancesToProcess = determineNodeInstancesToProcess(activeNodeInstances, criteria.getDestinationNodeName());
+    			List<RouteNodeInstance> activeNodeInstances = getRouteNodeService().getActiveNodeInstances(document);
+    			List<RouteNodeInstance> nodeInstancesToProcess = determineNodeInstancesToProcess(activeNodeInstances, criteria.getDestinationNodeName());
 
     			context.setDocument(document);
     			// TODO set document content
@@ -167,16 +166,15 @@ public class SimulationEngine extends StandardWorkflowEngine {
      * This method is written in such a way that it should be impossible for there to be an infinate loop, even if
      * there is extensive looping in the node graph.
      */
-    private List determineNodeInstancesToProcess(List activeNodeInstances, String nodeName) throws InvalidActionTakenException {
+    private List<RouteNodeInstance> determineNodeInstancesToProcess(List<RouteNodeInstance> activeNodeInstances, String nodeName) throws InvalidActionTakenException {
         if (Utilities.isEmpty(nodeName)) {
             return activeNodeInstances;
         }
-        List nodeInstancesToProcess = new ArrayList();
-        for (Iterator iterator = activeNodeInstances.iterator(); iterator.hasNext();) {
-            RouteNodeInstance nodeInstance = (RouteNodeInstance) iterator.next();
+        List<RouteNodeInstance> nodeInstancesToProcess = new ArrayList<RouteNodeInstance>();
+        for (RouteNodeInstance nodeInstance : activeNodeInstances) {
             if (nodeName.equals(nodeInstance.getName())) {
                 // one of active node instances is node instance to stop at
-                return new ArrayList();
+                return new ArrayList<RouteNodeInstance>();
             } else {
                 if (isNodeNameInPath(nodeName, nodeInstance)) {
                     nodeInstancesToProcess.add(nodeInstance);
@@ -252,8 +250,7 @@ public class SimulationEngine extends StandardWorkflowEngine {
     private List generateActionsToTakeForNode(String nodeName, DocumentRouteHeaderValue routeHeader, SimulationCriteria criteria, List pendingActionRequests) {
         List actions = new ArrayList();
         if ( (criteria.getActionsToTake() != null) && (!criteria.getActionsToTake().isEmpty()) ) {
-            for (Iterator iter = criteria.getActionsToTake().iterator(); iter.hasNext();) {
-                SimulationActionToTake simAction = (SimulationActionToTake) iter.next();
+            for (SimulationActionToTake simAction : criteria.getActionsToTake()) {
                 if (nodeName.equals(simAction.getNodeName())) {
                     actions.add(createDummyActionTaken(routeHeader, simAction.getUser(), simAction.getActionToPerform(), findDelegatorForActionRequests(pendingActionRequests)));
                 }
@@ -272,41 +269,6 @@ public class SimulationEngine extends StandardWorkflowEngine {
         }
         return requests;
     }
-
-    /*private void simulateDocumentType(SimulationCriteria criteria) throws Exception {
-    	DocumentType documentType = SpringServiceLocator.getDocumentTypeService().findByName(criteria.getDocumentTypeName());
-    	if (documentType == null) {
-    		throw new DocumentTypeNotFoundException("Could not locate document type for the given name '" + criteria.getDocumentTypeName() + "'");
-    	}
-    	if (criteria.getRuleTemplateNames().isEmpty()) {
-    		throw new IllegalArgumentException("Must specify at least one rule template name to report against.");
-    	}
-    	List nodes = findRouteNodesForTemplate(documentType, criteria.getRuleTemplateNames());
-    	RouteContext context = RouteContext.getCurrentRouteContext();
-    	try {
-    		context.setSimulation(true);
-        	context.setEngineState(new EngineState());
-        	context.setDocument(createSimulationDocument(criteria.getDocumentId(), criteria));
-        	context.setDocumentContent(new StandardDocumentContent(criteria.getXmlContent(), context));
-        	context.setDoNotSendApproveNotificationEmails(true);
-        	results.setDocument(context.getDocument());
-        	Branch simulationBranch = null;
-    		for (Iterator iterator = nodes.iterator(); iterator.hasNext(); ) {
-    			RouteNode node = (RouteNode) iterator.next();
-    			context.setNodeInstance(createSimulationNodeInstance(context, node));
-    			// for simulation, we'll have one branch
-    			if (simulationBranch == null) {
-    				simulationBranch = createSimulationBranch(context);
-    			}
-    			context.getNodeInstance().setBranch(simulationBranch);
-    			RouteModule routeModule = SpringServiceLocator.getRouteModuleService().findRouteModule(node);
-    			results.getSimulatedActionRequests().addAll(initializeActionRequests(context, routeModule.findActionRequests(context)));
-    		}
-    	} finally {
-    		RouteContext.clearCurrentRouteContext();
-    	}
-
-    }*/
 
     private void validateCriteria(SimulationCriteria criteria) {
     	if (criteria.getDocumentId() == null && Utilities.isEmpty(criteria.getDocumentTypeName())) {
@@ -331,8 +293,6 @@ public class SimulationEngine extends StandardWorkflowEngine {
             if (!Utilities.isEmpty(criteria.getXmlContent())) {
                 document.setDocContent(criteria.getXmlContent());
             }
-
-//    		document = getRouteHeaderService().getRouteHeader(documentId);
     	} else if (criteria.isDocumentTypeSimulation()) {
         	DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(criteria.getDocumentTypeName());
         	if (documentType == null) {
@@ -414,18 +374,15 @@ public class SimulationEngine extends StandardWorkflowEngine {
      */
     private void installSimulationNodeInstances(RouteContext context, SimulationCriteria criteria) {
     	DocumentRouteHeaderValue document = context.getDocument();
-    	RouteNodeInstance initialNodeInstance = (RouteNodeInstance)document.getInitialRouteNodeInstance(0);
-    	List simulationNodes = new ArrayList();
+    	List<RouteNode> simulationNodes = new ArrayList<RouteNode>();
     	if (!criteria.getNodeNames().isEmpty()) {
-    		for (Iterator iterator = criteria.getNodeNames().iterator(); iterator.hasNext(); ) {
-				String nodeName = (String) iterator.next();
+    		for (String nodeName : criteria.getNodeNames()) {
 				if ( LOG.isDebugEnabled() ) {
 				    LOG.debug("Installing simulation starting node '"+nodeName+"'");
 				}
-	    		List nodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(document.getDocumentType(), true);
+	    		List<RouteNode> nodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(document.getDocumentType(), true);
 	    		boolean foundNode = false;
-	    		for (Iterator iterator2 = nodes.iterator(); iterator2.hasNext(); ) {
-					RouteNode node = (RouteNode) iterator2.next();
+	    		for (RouteNode node : nodes) {
 					if (node.getRouteNodeName().equals(nodeName)) {
 						simulationNodes.add(node);
 						foundNode = true;
@@ -437,12 +394,10 @@ public class SimulationEngine extends StandardWorkflowEngine {
 	    		}
     		}
     	} else if (!criteria.getRuleTemplateNames().isEmpty()) {
-    		List nodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(document.getDocumentType(), true);
-    		for (Iterator iterator = criteria.getRuleTemplateNames().iterator(); iterator.hasNext(); ) {
-				String ruleTemplateName = (String) iterator.next();
+    		List<RouteNode> nodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(document.getDocumentType(), true);
+    		for (String ruleTemplateName : criteria.getRuleTemplateNames()) {
 				boolean foundNode = false;
-				for (Iterator iterator2 = nodes.iterator(); iterator2.hasNext(); ) {
-					RouteNode node = (RouteNode) iterator2.next();
+				for (RouteNode node : nodes) {
 					String routeMethodName = node.getRouteMethodName();
 					if (node.isFlexRM() && ruleTemplateName.equals(routeMethodName)) {
 						simulationNodes.add(node);
@@ -454,8 +409,8 @@ public class SimulationEngine extends StandardWorkflowEngine {
 	    			throw new IllegalArgumentException("Could not find node on the document type with the given rule template name '"+ruleTemplateName+"'");
 	    		}
 			}
-    	} else {
-    	    // can we assume we want to use all the nodes?
+    	} else if (criteria.isFlattenNodes()) {
+    		// if they want to flatten the nodes, we will essentially process all simple nodes that are defined on the DocumentType
             List<RouteNode> nodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(document.getDocumentType(), true);
             for ( RouteNode node : nodes ) {
                 try {
@@ -467,39 +422,31 @@ public class SimulationEngine extends StandardWorkflowEngine {
 					LOG.warn( "Unable to determine node type in simulator: " + ex.getMessage() );
 				}
             }
+    	} else {
+    	    // in this case, we want to let the document proceed from it's current active node
+    		return;
     	}
-    	// pull any next node instances out of the initial node instance
-    	initialNodeInstance.clearNextNodeInstances();
+    	
     	// hook all of the simulation nodes together
-    	RouteNodeInstance currentNodeInstance = initialNodeInstance;
-    	for (Iterator iterator = simulationNodes.iterator(); iterator.hasNext(); ) {
-			RouteNode simulationNode = (RouteNode) iterator.next();
+    	Branch defaultBranch = document.getInitialRouteNodeInstances().get(0).getBranch();
+    	// clear out the initial route node instances, we are going to build a new node path based on what we want to simulate
+    	document.getInitialRouteNodeInstances().clear();
+
+    	RouteNodeInstance currentNodeInstance = null;//initialNodeInstance;
+    	for (RouteNode simulationNode : simulationNodes) {
 			RouteNodeInstance nodeInstance = helper.getNodeFactory().createRouteNodeInstance(document.getRouteHeaderId(), simulationNode);
-			nodeInstance.setBranch(initialNodeInstance.getBranch());
-			// only activate the node for simulation if there isn't already a true action request generated
-			if ( !nodeHasExistingActionRequest( context, simulationNode ) ) {
-			    nodeInstance.setActive(true);
+			nodeInstance.setBranch(defaultBranch);
+			if (currentNodeInstance == null) {
+				document.getInitialRouteNodeInstances().add(nodeInstance);
+				nodeInstance.setActive(true);
+				saveNode(context, nodeInstance);
+			} else {
+				currentNodeInstance.addNextNodeInstance(nodeInstance);
+				saveNode(context, currentNodeInstance);
 			}
-			currentNodeInstance.addNextNodeInstance(nodeInstance);
-			saveNode(context, currentNodeInstance);
 			currentNodeInstance = nodeInstance;
 		}
     	installSimulationTerminationNode(context, document.getDocumentType(), currentNodeInstance);
-    }
-    
-    private boolean nodeHasExistingActionRequest( RouteContext context, RouteNode routeNode ) {
-        for ( ActionRequestValue ar : context.getDocument().getActionRequests() ) {
-            try {
-                if ( StringUtils.equals( routeNode.getRouteNodeName(), ar.getNodeInstance().getRouteNode().getRouteNodeName() )
-                        || NodeType.fromNode(routeNode).isTypeOf(NodeType.START) ) {
-                    return true;
-                }
-            } catch ( ResourceUnavailableException ex ) {
-                // do nothing
-                LOG.error( "Unable to load node type of the current route node: " + routeNode.getRouteNodeName() + " node type: " + routeNode.getNodeType() );
-            }
-        }
-        return false;
     }
 
     private void installSimulationTerminationNode(RouteContext context, DocumentType documentType, RouteNodeInstance lastNodeInstance) {
@@ -514,7 +461,7 @@ public class SimulationEngine extends StandardWorkflowEngine {
     	saveNode(context, lastNodeInstance);
     }
 
-    // below is fairly a copy of RouteDocumentAction... but actions have to be faked for now
+    // below is pretty much a copy of RouteDocumentAction... but actions have to be faked for now
     private void simulateDocumentRoute(ActionTakenValue actionTaken, DocumentRouteHeaderValue document, Person user, RouteContext routeContext) throws InvalidActionTakenException {
         if (document.isRouted()) {
             throw new WorkflowRuntimeException("Document can not simulate a route if it has already been routed");
@@ -594,6 +541,10 @@ public class SimulationEngine extends StandardWorkflowEngine {
     protected void saveNode(RouteContext context, RouteNodeInstance nodeInstance) {
 		// we shold be in simulation mode here
 
+    	if (nodeInstance.getRouteNodeInstanceId() == null) {
+    		nodeInstance.setRouteNodeInstanceId(context.getEngineState().getNextSimulationId());
+    	}
+    	
     	// if we are in simulation mode, lets go ahead and assign some id
     	// values to our beans
     	for (Iterator iterator = nodeInstance.getNextNodeInstances().iterator(); iterator.hasNext();) {
@@ -609,131 +560,5 @@ public class SimulationEngine extends StandardWorkflowEngine {
     		nodeInstance.getBranch().setBranchId(context.getEngineState().getNextSimulationId());
     	}
     }
-
-    /*private Branch createSimulationBranch(RouteContext context) {
-    	Branch branch = helper.getNodeFactory().createBranch("SIMULATION", null, context.getNodeInstance());
-    	branch.setBranchId(context.getEngineState().getNextSimulationId());
-    	return branch;
-    }
-
-    private RouteNodeInstance createSimulationNodeInstance(RouteContext context, RouteNode node) {
-    	RouteNodeInstance nodeInstance = helper.getNodeFactory().createRouteNodeInstance(context.getDocument().getRouteHeaderId(), node);
-    	nodeInstance.setRouteNodeInstanceId(context.getEngineState().getNextSimulationId());
-    	return nodeInstance;
-    }
-
-    private List findRouteNodesForTemplate(DocumentType documentType, List ruleTemplateNames) {
-    	List routeNodes = new ArrayList();
-    	List flattenedRouteNodes = SpringServiceLocator.getRouteNodeService().getFlattenedNodes(documentType, true);
-    	for (Iterator iterator = ruleTemplateNames.iterator(); iterator.hasNext(); ) {
-			String ruleTemplateName = (String) iterator.next();
-			boolean foundNode = false;
-			for (Iterator iterator2 = flattenedRouteNodes.iterator(); iterator2.hasNext(); ) {
-				RouteNode node = (RouteNode) iterator2.next();
-				if (node.isFlexRM() && ruleTemplateName.equals(node.getRouteMethodName())) {
-					routeNodes.add(node);
-					foundNode = true;
-					break;
-				}
-			}
-			if (!foundNode) {
-				throw new IllegalArgumentException("Could not locate route node with rule template '"+ruleTemplateName+"' on Document Type '"+documentType.getName());
-			}
-		}
-    	return routeNodes;
-    }
-
-    private List initializeActionRequests(RouteContext context, List actionRequests) {
-    	if (actionRequests == null) {
-    		return new ArrayList();
-    	}
-    	for (Iterator iterator = actionRequests.iterator(); iterator.hasNext(); ) {
-			ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();
-			SpringServiceLocator.getActionRequestService().initializeActionRequestGraph(actionRequest, context.getDocument(), context.getNodeInstance());
-		}
-    	return actionRequests;
-    }*/
-
-    /**
-     * ByteArrayOutputStream implementation that doesnÕt synchronize methods and
-     * doesnÕt copy the data on toByteArray().
-     */
-//    public class FastByteArrayOutputStream extends OutputStream {
-//        /**
-//         * Buffer and size
-//         */
-//        protected byte[] buf = null;
-//
-//        protected int size = 0;
-//
-//        /**
-//         * Constructs a stream with buffer capacity size 5K
-//         */
-//        public FastByteArrayOutputStream() {
-//            this(5 * 1024);
-//        }
-//
-//        /**
-//         * Constructs a stream with the given initial size
-//         */
-//        public FastByteArrayOutputStream(int initSize) {
-//            this.size = 0;
-//            this.buf = new byte[initSize];
-//        }
-//
-//        /**
-//         * Ensures that we have a large enough buffer for the given size.
-//         */
-//        private void verifyBufferSize(int sz) {
-//            if (sz > buf.length) {
-//                byte[] old = buf;
-//                buf = new byte[Math.max(sz, 2 * buf.length)];
-//                System.arraycopy(old, 0, buf, 0, old.length);
-//                old = null;
-//            }
-//        }
-//
-//        public int getSize() {
-//            return size;
-//        }
-//
-//        /**
-//         * Returns the byte array containing the written data. Note that this
-//         * array will almost always be larger than the amount of data actually
-//         * written.
-//         */
-//        public byte[] getByteArray() {
-//            return buf;
-//        }
-//
-//        public final void write(byte b[]) {
-//            verifyBufferSize(size + b.length);
-//            System.arraycopy(b, 0, buf, size, b.length);
-//            size += b.length;
-//        }
-//
-//        public final void write(byte b[], int off, int len) {
-//            verifyBufferSize(size + len);
-//            System.arraycopy(b, off, buf, size, len);
-//            size += len;
-//        }
-//
-//        public final void write(int b) {
-//            verifyBufferSize(size + 1);
-//            buf[size++] = (byte) b;
-//        }
-//
-//        public void reset() {
-//            size = 0;
-//        }
-//
-//        /**
-//         * Returns a ByteArrayInputStream for reading back the written data
-//         */
-//        public InputStream getInputStream() {
-//            return new FastByteArrayInputStream(buf, size);
-//        }
-//
-//    }
 
 }

@@ -185,13 +185,18 @@ public class ObjectUtils {
             throw new RuntimeException("Cannot instantiate " + businessObjectClass.getName(), e);
         }
 
-        for (String name : template.keySet()) {
-            String sourcePropertyName = template.get(name);
-            setObjectProperty(obj, name, easyGetPropertyType(source, sourcePropertyName), getPropertyValue(source, sourcePropertyName));
-        }
+        createHybridBusinessObject(obj, source, template);
 
         return obj;
     }
+    
+    public static void createHybridBusinessObject(BusinessObject businessObject, BusinessObject source, Map<String, String> template) throws FormatException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+        for (String name : template.keySet()) {
+            String sourcePropertyName = template.get(name);
+            setObjectProperty(businessObject, name, easyGetPropertyType(source, sourcePropertyName), getPropertyValue(source, sourcePropertyName));
+        }
+    }
+
 
     /**
      * This method simply uses PojoPropertyUtilsBean logic to get the Class of a Class property.

@@ -51,6 +51,7 @@ import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
+import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -469,8 +470,22 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
                 if(needsBlank) {
                     templatedBo = (PersistableBusinessObject) collectionClass.newInstance();                    
                 } else {
-                    templatedBo = (PersistableBusinessObject) ObjectUtils.createHybridBusinessObject(collectionClass, nextBo, template);
-                
+                    //templatedBo = (PersistableBusinessObject) ObjectUtils.createHybridBusinessObject(collectionClass, nextBo, template);
+                	try {
+                		ModuleService moduleService = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService(collectionClass);
+                		if (moduleService != null && moduleService.isExternalizable(collectionClass))
+                			templatedBo = (PersistableBusinessObject)moduleService.createNewObjectFromExternalizableClass(collectionClass);
+                		else
+                			templatedBo = (PersistableBusinessObject) collectionClass.newInstance();
+                    }
+                    catch (Exception e) {
+                        throw new RuntimeException("Cannot instantiate " + collectionClass.getName(), e);
+                    }
+                    // first set the default values specified in the DD
+                	setNewCollectionLineDefaultValues(collectionName, templatedBo);
+                	 // then set the values from the multiple value lookup result
+                	ObjectUtils.createHybridBusinessObject(templatedBo, nextBo, template);
+                	
                     prepareBusinessObjectForAdditionFromMultipleValueLookup(collectionName, templatedBo);
                 }
                     templatedBo.setNewCollectionRecord(true);
@@ -827,30 +842,11 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
         newCollectionLines.put( collectionName, addLine );            
         //}
         // set its values to the defaults
-        PropertyDescriptor[] descriptors = PropertyUtils.getPropertyDescriptors( addLine );
-        for (int i = 0; i < descriptors.length; ++i) {
-            PropertyDescriptor propertyDescriptor = descriptors[i];
-
-            String fieldName = propertyDescriptor.getName();
-            Class propertyType = propertyDescriptor.getPropertyType();
-            String value = getMaintenanceDocumentDictionaryService().getCollectionFieldDefaultValue(docTypeName, collectionName, fieldName);
-            if (value != null) {
-                try {                   
-                    ObjectUtils.setObjectProperty( addLine, fieldName, propertyType, value);
-                } catch ( Exception ex ) {
-                    LOG.error( "Unable to set default property of collection object: "
-                            + "\nobject: " 
-                            + addLine 
-                            + "\nfieldName=" + fieldName 
-                            + "\npropertyType=" + propertyType 
-                            + "\nvalue=" + value, ex );
-                }
-            }
-
-        }
+        setNewCollectionLineDefaultValues(collectionName, addLine);
         return addLine;
     }
     
+   
     /**
      * 
      * @see org.kuali.rice.kns.maintenance.Maintainable#populateNewCollectionLines(java.util.Map)
@@ -1109,6 +1105,31 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
             }
         }
         return references;
+    }
+    
+    protected void setNewCollectionLineDefaultValues(String collectionName, PersistableBusinessObject addLine) {
+        PropertyDescriptor[] descriptors = PropertyUtils.getPropertyDescriptors( addLine );
+        for (int i = 0; i < descriptors.length; ++i) {
+            PropertyDescriptor propertyDescriptor = descriptors[i];
+
+            String fieldName = propertyDescriptor.getName();
+            Class propertyType = propertyDescriptor.getPropertyType();
+            String value = getMaintenanceDocumentDictionaryService().getCollectionFieldDefaultValue(docTypeName, collectionName, fieldName);
+
+            if (value != null) {
+                try {                   
+                    ObjectUtils.setObjectProperty( addLine, fieldName, propertyType, value);
+                } catch ( Exception ex ) {
+                    LOG.error( "Unable to set default property of collection object: "
+                            + "\nobject: " 
+                            + addLine 
+                            + "\nfieldName=" + fieldName 
+                            + "\npropertyType=" + propertyType 
+                            + "\nvalue=" + value, ex );
+                }
+            }
+
+        }
     }
 
 	public void handleRouteStatusChange(DocumentHeader documentHeader) {

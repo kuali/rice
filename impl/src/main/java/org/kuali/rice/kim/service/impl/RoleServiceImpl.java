@@ -487,6 +487,9 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     			KimRoleImpl role = roles.get( roleId );
                 // for each application role, get the list of principals and groups which are in that role given the qualification (per the role type service)
     			List<RoleMembershipInfo> roleMembers = roleTypeService.getRoleMembersFromApplicationRole(role.getNamespaceCode(), role.getRoleName(), qualification);
+    			if ( !roleMembers.isEmpty()  ) {
+    				matchingRoleIds.add( roleId );
+    			}
     			for ( RoleMembershipInfo rm : roleMembers ) {
     			    rm.setRoleId(roleId);
     			    rm.setRoleMemberId("*");

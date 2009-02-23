@@ -32,6 +32,7 @@ import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.IdentityManagementService;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 /**
  * A login filter which forwards to a login page that allows for the desired
@@ -56,7 +57,7 @@ public class DummyLoginFilter implements Filter {
             	session = UserLoginFilter.getUserSession(hsreq);	
             }
             if (session == null) {
-            	IdentityManagementService auth = (IdentityManagementService) GlobalResourceLoader.getService(new QName("KIM", "kimIdentityManagementService"));
+            	IdentityManagementService auth = KIMServiceLocator.getIdentityManagementService();
            		request.setAttribute("showPasswordField", auth.authenticationServiceValidatesPassword());
                 final String user = request.getParameter("__login_user");
                 final String password = request.getParameter("__login_pw");

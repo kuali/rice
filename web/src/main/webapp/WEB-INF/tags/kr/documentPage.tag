@@ -36,7 +36,7 @@
 
 <!--  pass documentTypeName into htmlControlAttribute -->
 <c:if test="${KualiForm.document.sessionDocument || sessionDocument}">
-<% request.setAttribute("sessionDoc", true); %>
+<% request.setAttribute("sessionDoc", Boolean.TRUE); %>
 </c:if>
 
 <c:if test="${not empty SESSION_TIMEOUT_WARNING_MILLISECONDS}">

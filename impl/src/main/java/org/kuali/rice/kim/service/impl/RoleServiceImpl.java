@@ -509,33 +509,34 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	
     	// sort the results if a single role type service can be identified for
     	// all the matching role members
-    	
-    	// if a single role: easy case
-    	if ( matchingRoleIds.size() == 1 ) {
-    		KimRoleTypeService kimRoleTypeService = getRoleTypeService( matchingRoleIds.iterator().next() );
-    		if ( kimRoleTypeService != null ) {
-    			results = kimRoleTypeService.sortRoleMembers( results );
-    		}
-    	} else if ( matchingRoleIds.size() > 1 ) {
-    		// if more than one, check if there is only a single role type service
-        	String prevServiceName = null;
-        	boolean multipleServices = false;
-    		for ( String roleId : matchingRoleIds ) {
-    			String serviceName = getRoleImpl( roleId ).getKimRoleType().getKimTypeServiceName();
-    			if ( prevServiceName != null && !StringUtils.equals( prevServiceName, serviceName ) ) {
-    				multipleServices = true;
-    				break;
-    			}
-				prevServiceName = serviceName;
-    		}
-    		if ( !multipleServices ) {
+    	if ( results.size() > 1 ) {
+        	// if a single role: easy case
+        	if ( matchingRoleIds.size() == 1 ) {
         		KimRoleTypeService kimRoleTypeService = getRoleTypeService( matchingRoleIds.iterator().next() );
         		if ( kimRoleTypeService != null ) {
         			results = kimRoleTypeService.sortRoleMembers( results );
         		}
-    		} else {
-    			LOG.warn( "Did not sort role members - multiple role type services found.  Role Ids: " + matchingRoleIds );
-    		}
+        	} else if ( matchingRoleIds.size() > 1 ) {
+        		// if more than one, check if there is only a single role type service
+            	String prevServiceName = null;
+            	boolean multipleServices = false;
+        		for ( String roleId : matchingRoleIds ) {
+        			String serviceName = getRoleImpl( roleId ).getKimRoleType().getKimTypeServiceName();
+        			if ( prevServiceName != null && !StringUtils.equals( prevServiceName, serviceName ) ) {
+        				multipleServices = true;
+        				break;
+        			}
+    				prevServiceName = serviceName;
+        		}
+        		if ( !multipleServices ) {
+            		KimRoleTypeService kimRoleTypeService = getRoleTypeService( matchingRoleIds.iterator().next() );
+            		if ( kimRoleTypeService != null ) {
+            			results = kimRoleTypeService.sortRoleMembers( results );
+            		}
+        		} else {
+        			LOG.warn( "Did not sort role members - multiple role type services found.  Role Ids: " + matchingRoleIds );
+        		}
+        	}
     	}
     	
     	return results;
@@ -637,9 +638,10 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 //				KimDelegationImpl delegation = delegations.get( di.getDelegationId() );
 				// get the principals and groups for this delegation
 				// purge any entries that do not match per the type service
-				if ( delegationTypeService != null && delegationTypeService.doesDelegationQualifierMatchQualification( qualification, di.getQualifier() )) {
+				if ( delegationTypeService == null || delegationTypeService.doesDelegationQualifierMatchQualification( qualification, di.getQualifier() )) {
 					// check if a role type which needs to be resolved
 					if ( di.getMemberTypeCode().equals( KimRole.ROLE_MEMBER_TYPE )) {
+					    i.remove();
             			// loop over delegation roles and extract the role IDs where the qualifications match
         				ArrayList<String> roleIdTempList = new ArrayList<String>( 1 );
         				roleIdTempList.add( di.getMemberId() );

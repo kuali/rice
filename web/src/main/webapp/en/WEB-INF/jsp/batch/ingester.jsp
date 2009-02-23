@@ -29,7 +29,6 @@
 </c:if>
 
 </div>
-
 <div>
 <br><br>
 

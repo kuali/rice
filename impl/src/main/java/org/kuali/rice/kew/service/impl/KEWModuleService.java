@@ -15,15 +15,109 @@
  */
 package org.kuali.rice.kew.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.kuali.rice.kew.doctype.bo.DocumentTypeEBO;
+import org.kuali.rice.kew.doctype.service.DocumentTypeService;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 import org.kuali.rice.kns.service.impl.ModuleServiceBase;
 
 /**
- * The ModuleService for KEW 
- * 
+ * The ModuleService for KEW
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class KEWModuleService extends ModuleServiceBase {
-	
+
+	protected DocumentTypeService docTypeService = null;
+
+	/**
+	 * This overridden method ...
+	 *
+	 * @see org.kuali.rice.kns.service.impl.ModuleServiceBase#listPrimaryKeyFieldNames(java.lang.Class)
+	 */
+	@Override
+	public List listPrimaryKeyFieldNames(Class businessObjectInterfaceClass) {
+		if ( DocumentTypeEBO.class.isAssignableFrom( businessObjectInterfaceClass ) ) {
+			List<String> pkFields = new ArrayList<String>( 1 );
+			pkFields.add( "name" );
+			pkFields.add( "documentTypeId" );
+			return pkFields;
+		}
+		return super.listPrimaryKeyFieldNames(businessObjectInterfaceClass);
+	}
+
+	/**
+	 * This overridden method ...
+	 *
+	 * @see org.kuali.rice.kns.service.impl.ModuleServiceBase#getExternalizableBusinessObject(java.lang.Class, java.util.Map)
+	 */
+	@Override
+	public <T extends ExternalizableBusinessObject> T getExternalizableBusinessObject(
+			Class<T> businessObjectClass, Map<String, Object> fieldValues) {
+		if(DocumentTypeEBO.class.isAssignableFrom(businessObjectClass)){
+			if ( fieldValues.containsKey( "name" ) ) {
+				return (T)getDocumentTypeService().findByName((String)fieldValues.get( "name" ) );
+			}else if( fieldValues.containsKey( "documentTypeId" ) ){
+				return (T)getDocumentTypeService().findById((Long)fieldValues.get( "documentTypeId" ));
+			}else if (fieldValues.containsKey( "id" ) ) {
+				return (T)getDocumentTypeService().findById((Long)fieldValues.get( "id" ));
+			}
+
+		}
+
+		// otherwise, use the default implementation
+		return super.getExternalizableBusinessObject(businessObjectClass, fieldValues);
+	}
+
+	/**
+	 * This overridden method ...
+	 *
+	 * @see org.kuali.rice.kns.service.impl.ModuleServiceBase#getExternalizableBusinessObjectsList(java.lang.Class, java.util.Map)
+	 */
+	@Override
+	public <T extends ExternalizableBusinessObject> List<T> getExternalizableBusinessObjectsList(
+			Class<T> externalizableBusinessObjectClass,
+			Map<String, Object> fieldValues) {
+		// TODO Garey - THIS METHOD NEEDS JAVADOCS
+		return super.getExternalizableBusinessObjectsList(
+				externalizableBusinessObjectClass, fieldValues);
+	}
+
+	/**
+	 * This overridden method ...
+	 *
+	 * @see org.kuali.rice.kns.service.impl.ModuleServiceBase#getExternalizableBusinessObjectsListForLookup(java.lang.Class, java.util.Map, boolean)
+	 */
+	@Override
+	public <T extends ExternalizableBusinessObject> List<T> getExternalizableBusinessObjectsListForLookup(
+			Class<T> externalizableBusinessObjectClass,
+			Map<String, Object> fieldValues, boolean unbounded) {
+		// TODO Garey - THIS METHOD NEEDS JAVADOCS
+		return super.getExternalizableBusinessObjectsListForLookup(
+				externalizableBusinessObjectClass, fieldValues, unbounded);
+	}
+
+	/**
+	 * @return the docTypeService
+	 */
+	public DocumentTypeService getDocumentTypeService() {
+		if(this.docTypeService == null){
+			// the default
+			this.docTypeService = KEWServiceLocator.getDocumentTypeService();
+		}
+		return this.docTypeService;
+	}
+
+	/**
+	 * @param docTypeService the docTypeService to set
+	 */
+	public void setDocumentTypeService(DocumentTypeService docTypeService) {
+		this.docTypeService = docTypeService;
+	}
 }
 

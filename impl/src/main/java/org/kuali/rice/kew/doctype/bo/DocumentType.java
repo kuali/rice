@@ -97,7 +97,7 @@ import org.kuali.rice.kns.bo.Inactivateable;
             "WHERE drhv.initiatorWorkflowId = :initiatorWorkflowId AND drhv.documentTypeId = dt.documentTypeId AND dt.active = 1 AND dt.currentInd = 1 " +
             "ORDER BY UPPER(dt.label)")
 })
-public class DocumentType extends KewPersistableBusinessObjectBase implements Inactivateable
+public class DocumentType extends KewPersistableBusinessObjectBase implements Inactivateable, DocumentTypeEBO
 {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentType.class);
 
@@ -381,6 +381,11 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
         return childrenDocTypes;
     }
 
+    /**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kew.doctype.bo.DocumentTypeEBO#getDocTypeParentId()
+	 */
     public java.lang.Long getDocTypeParentId() {
         return docTypeParentId;
     }
@@ -490,6 +495,11 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
         this.currentInd = currentInd;
     }
 
+    /**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kew.doctype.bo.DocumentTypeEBO#getDescription()
+	 */
     public java.lang.String getDescription() {
         return description;
     }
@@ -603,9 +613,10 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
     }
 
     /**
-     * This method gets the help definition url from this object and resolves any
-     * potential variables that may be in use
-     */
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kew.doctype.bo.DocumentTypeEBO#getHelpDefinitionUrl()
+	 */
     public String getHelpDefinitionUrl() {
         return resolveHelpDefinitionUrl(getUnresolvedHelpDefinitionUrl());
     }
@@ -621,6 +632,11 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
         return Utilities.substituteConfigParameters(helpDefinitionUrl);
     }
 
+    /**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kew.doctype.bo.DocumentTypeEBO#getLabel()
+	 */
     public java.lang.String getLabel() {
         return label;
     }
@@ -629,6 +645,11 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
         this.label = label;
     }
 
+    /**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kew.doctype.bo.DocumentTypeEBO#getName()
+	 */
     public java.lang.String getName() {
         return name;
     }
@@ -740,6 +761,11 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
         this.version = version;
     }
 
+    /**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kew.doctype.bo.DocumentTypeEBO#getDocumentTypeId()
+	 */
     public java.lang.Long getDocumentTypeId() {
         return documentTypeId;
     }
@@ -1324,12 +1350,10 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
     }
 
     /**
-     * Returns the service namespace for this DocumentType which can be specified on the document type itself,
-     * inherited from the parent, or defaults to the configured service namespace of the application.
-     *
-     * chb:12Nov2008: seems like the accessor should return the field and the auxiliary method "getActualFoo" should
-     * be the one to do more elaborate checking
-     */
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kew.doctype.bo.DocumentTypeEBO#getServiceNamespace()
+	 */
 	public String getServiceNamespace() {
 	    return getServiceNamespace(false);
 	}
@@ -1460,10 +1484,9 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
     }
 
 	/**
-	 * In order to make this object Inactivateable. Not sure if I
-	 * should remove the getActive method.
-	 *
-	 * @see org.kuali.rice.kns.bo.Inactivateable#isActive()
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kew.doctype.bo.DocumentTypeEBO#isActive()
 	 */
 	public boolean isActive() {
 		boolean bRet = false;

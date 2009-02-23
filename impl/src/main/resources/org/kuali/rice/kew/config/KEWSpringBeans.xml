@@ -304,7 +304,7 @@
   		<ref bean="ruleDelegationLookupHelperService" />
 	  </property>
     </bean>
-    
+
     <bean id="docTypeLookupHelperService" class="org.kuali.rice.kew.doctype.DocumentTypeLookupableHelperServiceImpl" scope="prototype"/>
 
     <bean id="docTypeLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
@@ -761,7 +761,13 @@
         <property name="packagePrefixes">
             <list>
                 <value>org.kuali.rice.kew.</value>
+                <value>org.kuali.rice.kew.doctype.bo</value>
             </list>
+        </property>
+        <property name="externalizableBusinessObjectImplementations">
+            <map>
+	           <entry key="org.kuali.rice.kew.doctype.bo.DocumentTypeEBO" value="org.kuali.rice.kew.doctype.bo.DocumentType" />
+            </map>
         </property>
 	</bean>
 

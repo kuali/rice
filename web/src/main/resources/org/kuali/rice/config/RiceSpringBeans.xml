@@ -9,6 +9,11 @@
 		<property name="userTransaction" ref="jtaUserTransaction" />
 		<property name="rootConfig" ref="config" />
         <property name="environment" value="${environment}"/>
+            <property name="additionalSpringFiles">
+                <list>
+                    <value>${rice.additionalSpringFiles}</value>
+                </list>
+            </property>
 		<property name="ksbConfigurer">
 				<bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
 					<property name="serviceServletUrl" value="${serviceServletUrl}" />

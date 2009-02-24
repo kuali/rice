@@ -54,6 +54,8 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.ContextRefreshedEvent;
 
+import edu.emory.mathcs.backport.java.util.Arrays;
+
 /**
  * Used to configure common Rice configuration properties.
  *
@@ -579,8 +581,19 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
 	/**
 	 * @param additionalSpringFiles the additionalSpringFiles to set
 	 */
+	@SuppressWarnings("unchecked")
 	public void setAdditionalSpringFiles(List<String> additionalSpringFiles) {
-		this.additionalSpringFiles = additionalSpringFiles;
+		// check to see if we have a single string with comma separated values
+		if (null != additionalSpringFiles && 
+				additionalSpringFiles.size() == 1 &&
+				additionalSpringFiles.get(0).contains(",")) {
+			
+			String commaSeparatedFiles = additionalSpringFiles.get(0);
+			this.additionalSpringFiles = new ArrayList<String>(Arrays.asList(commaSeparatedFiles.split(",")));
+			
+		} else {
+			this.additionalSpringFiles = additionalSpringFiles;
+		}
 	}	
 
 }

@@ -5,6 +5,9 @@
     <param name="app.code">kr</param>
     <param name="app.context.name">${app.code}-${environment}</param>
 
+    <!-- A comma separated list of additional spring files for the RiceConfigurer -->
+    <param name="rice.additionalSpringFiles"></param>
+
     <!-- App specific parameters -->
     <param name="externalizable.help.url">/${app.context.name}/kr/static/help/</param>
     <param name="externalizable.images.url">/${app.context.name}/kr/static/images/</param>

@@ -97,6 +97,10 @@ public interface KimRoleTypeService extends KimTypeService {
      *
      * This method may alter the passed in list directly and return it rather than
      * allocating a new list.
+     * 
+     * This is also the place where the roleSortingCode property on the RoleMembershipInfo objects can be
+     * populated in preparation for routing if not all members of this role should be group as separate
+     * units for routing.
      */
     List<RoleMembershipInfo> sortRoleMembers( List<RoleMembershipInfo> roleMembers );
     

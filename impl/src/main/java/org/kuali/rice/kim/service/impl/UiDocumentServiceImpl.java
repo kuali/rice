@@ -1525,6 +1525,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return delegationsMembersList;
 	}
 
+	//TODO: implement logic same as role members - do not insert qualifiers with blank values 
 	private List<KimDelegationMemberAttributeDataImpl> getDelegationMemberAttributeData(
 			List<RoleDocumentDelegationMemberQualifier> qualifiers,
 			List<KimDelegationMemberAttributeDataImpl> origAttributes){

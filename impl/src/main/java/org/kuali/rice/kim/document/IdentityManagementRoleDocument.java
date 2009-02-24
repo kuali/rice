@@ -372,6 +372,11 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 			for(RoleDocumentDelegation delegation: getDelegations()){
 				delegation.setDocumentNumber(getDocumentNumber());
 				delegation.setKimTypeId(getKimType().getKimTypeId());
+				for(RoleDocumentDelegationMember member: delegation.getMembers()){
+					for(RoleDocumentDelegationMemberQualifier qualifier: member.getQualifiers()){
+						qualifier.setKimTypId(getKimType().getKimTypeId());
+					}
+				}
 				delegation.setRoleId(roleId);
 			}
 		}

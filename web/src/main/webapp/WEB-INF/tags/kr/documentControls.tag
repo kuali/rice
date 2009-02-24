@@ -26,7 +26,6 @@
 
 <c:set var="documentTypeName" value="${KualiForm.docTypeName}" />
 <c:set var="documentEntry" value="${DataDictionary[documentTypeName]}" />
-<c:set var="sessionDocument" value="${documentEntry.sessionDocument}" />
         <c:set var="saveButtonValue" value="save" />
         <c:if test="${not empty saveButtonOverride}"><c:set var="saveButtonValue" value="${saveButtonOverride}" /></c:if>
 		

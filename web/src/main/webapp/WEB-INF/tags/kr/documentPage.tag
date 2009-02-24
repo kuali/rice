@@ -35,6 +35,7 @@
 <c:set var="additionalScriptFiles" value="${KualiForm.additionalScriptFiles}" />
 
 <!--  pass documentTypeName into htmlControlAttribute -->
+<!-- Do not remove session check here. Since it used by other pages (not MD or TD) -->
 <c:if test="${KualiForm.document.sessionDocument || sessionDocument}">
 <% request.setAttribute("sessionDoc", Boolean.TRUE); %>
 </c:if>
@@ -47,7 +48,7 @@
 	</script>
 </c:if>
 
-<kul:page docTitle="${documentEntry.label}" transactionalDocument="${documentEntry.transactionalDocument}" sessionDocument="${documentEntry.sessionDocument}"
+<kul:page docTitle="${documentEntry.label}" transactionalDocument="${documentEntry.transactionalDocument}"
   headerMenuBar="${headerMenuBar}" showDocumentInfo="${showDocumentInfo}" headerTitle="${headerTitle}" 
   htmlFormAction="${htmlFormAction}" renderMultipart="${renderMultipart}" showTabButtons="${showTabButtons}" 
   extraTopButtons="${extraTopButtons}" headerDispatch="${headerDispatch}" headerTabActive="${headerTabActive}" 

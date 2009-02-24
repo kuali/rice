@@ -46,7 +46,7 @@
         if present"%>
 <%@ attribute name="forceRequired" required="false" %>
 <%@ attribute name="kimTypeName" required="false" %>
-
+<!-- Do not remove session check in this tag file since it is used by other type of files (not MD or TD) -->
 <c:set var="sessionDocument" value="${requestScope['sessionDoc']}" />
 <c:if test="${!empty attributeEntry.attributeSecurityMask && attributeEntry.attributeSecurityMask == true  }">
 	<c:set var="className" value ="${attributeEntry.fullClassName}" /> 

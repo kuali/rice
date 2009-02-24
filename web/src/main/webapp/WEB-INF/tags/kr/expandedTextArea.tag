@@ -25,9 +25,7 @@
 <c:if test="${empty formKey}">
   <c:set var="formKey" value="88888888" />
 </c:if>
-<c:if test="${empty sessionDocument}">
-  <c:set var="sessionDocument" value="request" />
-</c:if>
+
 
   <c:choose>
     <c:when test="${disabled}">
@@ -38,7 +36,7 @@
     <c:otherwise>
        <html:image property="methodToCall.updateTextArea.((#${textAreaFieldName}:${action}:${textAreaLabel}#))"
                    src='${ConfigProperties.kr.externalizable.images.url}pencil_add.png'
-                   onclick="javascript: textAreaPop('${textAreaFieldName}','${action}','${textAreaLabel}',${formKey},'${sessionDocument}');return false"
+                   onclick="javascript: textAreaPop('${textAreaFieldName}','${action}','${textAreaLabel}',${formKey});return false"
                    styleClass="tinybutton"
                    title="${title}"
                    alt="Expanded Text Area"/>

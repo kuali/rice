@@ -409,22 +409,11 @@
 					</logic:present>
 	</c:otherwise>
 </c:choose>
-												<c:if test="${transactionalDocument || maintenanceDocument}">
-	<c:choose>
-														<c:when
-															test="${KualiForm.document.sessionDocument || sessionDocument}">
-			<html:hidden property="documentWebScope" value="session"/>	
-															<html:hidden property="formKey"
-																value="${KualiForm.formKey}" />
-															<html:hidden property="docFormKey"
-																value="${KualiForm.formKey}" />
-															<html:hidden property="docNum"
-																value="${KualiForm.document.documentNumber}" />
-		</c:when>
-		<c:otherwise>
-			<html:hidden property="documentWebScope" value="request"/>	
-		</c:otherwise>
-	</c:choose>
+<c:if test="${transactionalDocument || maintenanceDocument}">
+    <html:hidden property="documentWebScope" value="session"/>	
+	<html:hidden property="formKey" value="${KualiForm.formKey}" />
+	<html:hidden property="docFormKey" value="${KualiForm.formKey}" />
+    <html:hidden property="docNum" value="${KualiForm.document.documentNumber}" />
 </c:if>
 
 </html:form>

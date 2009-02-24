@@ -182,12 +182,11 @@ function resizeTheRouteLogFrame() {
 function textAreaPop(textAreaName,
                      htmlFormAction,
                      textAreaLabel,
-                     docFormKey,
-                     sessionDocument) {
+                     docFormKey) {
   var documentWebScope
-  if (sessionDocument == "true") {
-      documentWebScope="session"
-  }
+
+  documentWebScope="session"
+
   url=window.location.href
   pathname=window.location.pathname
   idx1=url.indexOf(pathname);

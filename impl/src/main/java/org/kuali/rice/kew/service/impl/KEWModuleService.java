@@ -23,7 +23,10 @@ import org.kuali.rice.kew.doctype.bo.DocumentTypeEBO;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
+import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.impl.ModuleServiceBase;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
 
 /**
  * The ModuleService for KEW
@@ -42,7 +45,7 @@ public class KEWModuleService extends ModuleServiceBase {
 	 * @see org.kuali.rice.kns.service.impl.ModuleServiceBase#listPrimaryKeyFieldNames(java.lang.Class)
 	 */
 	@Override
-	public List listPrimaryKeyFieldNames(Class businessObjectInterfaceClass) {
+	public List<String> listPrimaryKeyFieldNames(Class businessObjectInterfaceClass) {
 		if ( DocumentTypeEBO.class.isAssignableFrom( businessObjectInterfaceClass ) ) {
 			List<String> pkFields = new ArrayList<String>( 1 );
 			pkFields.add( "name" );
@@ -74,6 +77,27 @@ public class KEWModuleService extends ModuleServiceBase {
 
 		// otherwise, use the default implementation
 		return super.getExternalizableBusinessObject(businessObjectClass, fieldValues);
+	}
+
+	/**
+	 * This overridden method returns the BusinessObjectEntry for a DocumentType
+	 *
+	 * Not sure if we need this method. The default might work just fine.
+	 *
+	 * @see org.kuali.rice.kns.service.impl.ModuleServiceBase#getExternalizableBusinessObjectDictionaryEntry(java.lang.Class)
+	 */
+	@Override
+	public BusinessObjectEntry getExternalizableBusinessObjectDictionaryEntry(
+			Class businessObjectInterfaceClass) {
+
+		if(DocumentTypeEBO.class.isAssignableFrom(businessObjectInterfaceClass)){
+			return
+				KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(DocumentType.class.getCanonicalName());
+		}
+
+		// the default
+		return super
+				.getExternalizableBusinessObjectDictionaryEntry(businessObjectInterfaceClass);
 	}
 
 	/**

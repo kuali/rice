@@ -79,13 +79,6 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 	}
 
 	/**
-	 * @return the roleId
-	 */
-	public String getRoleId() {
-		return this.roleId;
-	}
-
-	/**
 	 * @param roleId the roleId to set
 	 */
 	public void setRoleId(String roleId) {
@@ -304,6 +297,13 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 		}
 	}
 
+	public String getRoleId(){
+		if(StringUtils.isBlank(this.roleId)){
+			this.roleId = getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_ID_S").toString();
+		}
+		return roleId;
+	}
+	
 	@Override
 	public void prepareForSave(){
 		String roleId;

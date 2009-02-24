@@ -20,10 +20,10 @@
 				<td align="center">
 	                <div align="center">
 	                	<br/>
-						<strong><c:out value="Add Permission: (select)" /></strong>
+						<strong><c:out value="Add Permission ID:" /></strong>
+						<kul:htmlControlAttribute property="permission.permissionId" attributeEntry="${permissionAttributes.permissionId}"/>
 	                	<kul:lookup boClassName="org.kuali.rice.kim.bo.impl.PermissionImpl" fieldConversions=
 	                	"template.name:permission.kimPermission.template.name,permissionId:permission.permissionId,name:permission.kimPermission.name,namespaceCode:permission.kimPermission.namespaceCode" anchor="${tabKey}" />
-						<html:hidden property="permission.permissionId" />
 						<html:hidden property="permission.kimPermission.name" />
 						<html:hidden property="permission.kimPermission.namespaceCode" />
 						${KualiForm.permission.kimPermission.namespaceCode}  ${KualiForm.permission.kimPermission.nameToDisplay}&nbsp;
@@ -46,6 +46,7 @@
         	<tr>
         		<th><div align="left">&nbsp</div></th> 
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${permissionAttributes.namespaceCode}" noColon="true" /></div></th>
+        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${permissionAttributes.permissionId}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${permissionAttributes.name}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${permissionAttributes.detailObjectsValues}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${permissionAttributes.requiredRoleQualifierAttributesToDisplay}" noColon="true" /></div></th>
@@ -60,6 +61,10 @@
 				</th>
 	            <td align="left" valign="middle">
 	               	<div align="left"> <kul:htmlControlAttribute property="document.permissions[${status.index}].kimPermission.namespaceCode"  attributeEntry="${permissionAttributes.namespaceCode}" readOnly="true"  />
+					</div>
+				</td>
+	            <td align="left" valign="middle">
+	               	<div align="left"> <kul:htmlControlAttribute property="document.permissions[${status.index}].kimPermission.permissionId"  attributeEntry="${permissionAttributes.permissionId}" readOnly="true"  />
 					</div>
 				</td>
 	            <td align="left" valign="middle">
@@ -78,7 +83,7 @@
 				<td>
 					<div align=center>&nbsp;
 						<c:choose>
-							<c:when test="${role.edit}">
+							<c:when test="${permission.edit}">
 	        	          		<img class='nobord' src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete2.gif' styleClass='tinybutton'/>
 							</c:when>
 	        	       		<c:otherwise>

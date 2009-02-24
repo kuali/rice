@@ -20,10 +20,10 @@
 				<td align="center">
 	                <div align="center">
 	                	<br/>
-						<strong><c:out value="Add Responsibility: (select)" /></strong>
+						<strong><c:out value="Add Responsibility ID:" /></strong>
+						<kul:htmlControlAttribute property="responsibility.responsibilityId" attributeEntry="${responsibilityAttributes.responsibilityId}"/>
 	                	<kul:lookup boClassName="org.kuali.rice.kim.bo.impl.ResponsibilityImpl" fieldConversions=
 	                	"template.name:responsibility.kimResponsibility.template.name,responsibilityId:responsibility.responsibilityId,name:responsibility.kimResponsibility.name,namespaceCode:responsibility.kimResponsibility.namespaceCode" anchor="${tabKey}" />
-						<html:hidden property="responsibility.responsibilityId" />
 						<html:hidden property="responsibility.kimResponsibility.name" />
 						<html:hidden property="responsibility.kimResponsibility.namespaceCode" />
 						${KualiForm.responsibility.kimResponsibility.namespaceCode}  ${KualiForm.responsibility.kimResponsibility.nameToDisplay}&nbsp;
@@ -46,6 +46,7 @@
         	<tr>
         		<th><div align="left">&nbsp</div></th> 
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${responsibilityAttributes.namespaceCode}" noColon="true" /></div></th>
+        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${responsibilityAttributes.responsibilityId}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${responsibilityAttributes.name}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${responsibilityAttributes.detailObjectsValues}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${responsibilityAttributes.requiredRoleQualifierAttributesToDisplay}" noColon="true" /></div></th>
@@ -67,6 +68,10 @@
 					</div>
 				</td>
 	            <td align="left" valign="middle">
+	               	<div align="left"> <kul:htmlControlAttribute property="document.responsibilities[${status.index}].kimResponsibility.responsibilityId"  attributeEntry="${responsibilityAttributes.responsibilityId}" readOnly="true"  />
+					</div>
+				</td>
+	            <td align="left" valign="middle">
 	               	<div align="left"> <kul:htmlControlAttribute property="document.responsibilities[${status.index}].kimResponsibility.nameToDisplay"  attributeEntry="${responsibilityAttributes.name}" readOnly="true"  />
 					</div>
 				</td>
@@ -82,7 +87,7 @@
 				<td>
 					<div align=center>&nbsp;
 						<c:choose>
-							<c:when test="${role.edit}">
+							<c:when test="${responsibility.edit}">
 	        	          		<img class='nobord' src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete2.gif' styleClass='tinybutton'/>
 							</c:when>
 	        	       		<c:otherwise>

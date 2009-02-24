@@ -88,14 +88,6 @@ public class RoleDocumentDelegation extends KimDocumentBoBase {
 		this.roleId = roleId;
 	}
 
-	public boolean isActive() {
-		return this.active;
-	}
-
-	public void setActive(boolean active) {
-		this.active = active;
-	}
-
 	public String getKimTypeId() {
 		return this.kimTypeId;
 	}

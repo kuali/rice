@@ -16,10 +16,12 @@
 package org.kuali.rice.kew.rule.bo;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
+import org.kuali.rice.kns.web.comparator.KeyLabelComparator;
 import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
 /**
@@ -31,9 +33,11 @@ public class DelegationTypeValuesFinder extends KeyValuesBase {
 
 	private static final List<KeyLabelPair> delegationTypes = new ArrayList<KeyLabelPair>();
 	static {
+		delegationTypes.add(new KeyLabelPair("", ""));
 		for (String delegationType : KEWConstants.DELEGATION_TYPES.keySet()) {
 			delegationTypes.add(new KeyLabelPair(delegationType, KEWConstants.DELEGATION_TYPES.get(delegationType)));
 		}
+		Collections.sort(delegationTypes, new KeyLabelComparator());
 	}
 	
 	public List<KeyLabelPair> getKeyValues() {

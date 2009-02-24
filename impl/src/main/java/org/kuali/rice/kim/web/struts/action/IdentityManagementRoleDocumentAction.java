@@ -27,17 +27,19 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
+import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.bo.options.MemberTypeValuesFinder;
 import org.kuali.rice.kim.bo.role.KimRole;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
+import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRolePermission;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibility;
-import org.kuali.rice.kim.bo.ui.RoleDocumentDelegation;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
-import org.kuali.rice.kim.rule.event.ui.AddDelegationEvent;
 import org.kuali.rice.kim.rule.event.ui.AddDelegationMemberEvent;
 import org.kuali.rice.kim.rule.event.ui.AddMemberEvent;
 import org.kuali.rice.kim.rule.event.ui.AddPermissionEvent;
@@ -48,8 +50,12 @@ import org.kuali.rice.kim.service.ResponsibilityService;
 import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm;
+import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.web.struts.action.KualiTransactionalDocumentActionBase;
 
 /**
@@ -71,29 +77,36 @@ public class IdentityManagementRoleDocumentAction extends KualiTransactionalDocu
         String methodToCall = findMethodToCall(form, request);
 		ActionForward forward;
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
-        IdentityManagementRoleDocument roleDoc = (IdentityManagementRoleDocument)roleDocumentForm.getDocument();
 		String kimTypeId = request.getParameter(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID);
+		KimTypeImpl kimType = null;
         if(KNSConstants.DOC_HANDLER_METHOD.equals(methodToCall) && kimTypeId!=null){
 	        Map<String, String> criteria = new HashMap<String, String>();
 	        criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID, kimTypeId);
-	        KimTypeImpl kimType = (KimTypeImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, criteria);
-	        roleDocumentForm.getRoleDocument().setKimType(kimType);
-	        roleDocumentForm.getRoleDocument().setRoleTypeId(kimType.getKimTypeId());
-	        roleDocumentForm.getRoleDocument().setRoleTypeName(kimType.getName());
-	        roleDocumentForm.setMember(roleDocumentForm.getRoleDocument().getBlankMember());
-	        roleDocumentForm.setDelegationMember(roleDocumentForm.getRoleDocument().getBlankDelegationMember());
-	        roleDocumentForm.setDocTypeName((roleDoc.getKimTypeService(kimType)).getWorkflowDocumentTypeName());
+	        kimType = (KimTypeImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, criteria);
+	        if(kimType == null)
+	        	throw new IllegalArgumentException("Kim type could not be found for kim type id: "+kimTypeId);
+	        roleDocumentForm.setDocTypeName((roleDocumentForm.getRoleDocument().getKimTypeService(kimType)).getWorkflowDocumentTypeName());
 	    }
 		if(KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY.equals(methodToCall)) 
         	forward = mapping.findForward(KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY);
-        else
+        else {
         	forward = super.execute(mapping, form, request, response);
-        String commandParam = request.getParameter(KNSConstants.PARAMETER_COMMAND);
+			if(KNSConstants.DOC_HANDLER_METHOD.equals(methodToCall) && kimTypeId!=null){
+		        roleDocumentForm.getRoleDocument().setKimType(kimType);
+		        roleDocumentForm.getRoleDocument().setRoleTypeId(kimType.getKimTypeId());
+		        roleDocumentForm.getRoleDocument().setRoleTypeName(kimType.getName());
+		        roleDocumentForm.getRoleDocument().getRoleId();
+		        roleDocumentForm.setMember(roleDocumentForm.getRoleDocument().getBlankMember());
+		        roleDocumentForm.setDelegationMember(roleDocumentForm.getRoleDocument().getBlankDelegationMember());
+			}
+	        roleDocumentForm.setCanAssignRole(validAssignRole(roleDocumentForm.getRoleDocument()));
+        }
+		String commandParam = request.getParameter(KNSConstants.PARAMETER_COMMAND);
         String roleId = request.getParameter(KimConstants.PrimaryKeyConstants.ROLE_ID);
         if (StringUtils.isNotBlank(commandParam) && commandParam.equals(KEWConstants.INITIATE_COMMAND) 
 				&& StringUtils.isNotBlank(roleId)) {
 	        KimRole role = KIMServiceLocator.getRoleService().getRole(roleId);
-			KIMServiceLocator.getUiDocumentService().loadRoleDoc(roleDoc, role);
+			KIMServiceLocator.getUiDocumentService().loadRoleDoc(roleDocumentForm.getRoleDocument(), role);
 			roleDocumentForm.setMember(roleDocumentForm.getRoleDocument().getBlankMember());
 			roleDocumentForm.setDelegationMember(roleDocumentForm.getRoleDocument().getBlankDelegationMember());
 		} 
@@ -103,6 +116,19 @@ public class IdentityManagementRoleDocumentAction extends KualiTransactionalDocu
 		return forward;
     }
     
+	private boolean validAssignRole(IdentityManagementRoleDocument document){
+        boolean rulePassed = true;
+		if (!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
+				document, 
+				KimConstants.NAMESPACE_CODE, 
+				KimConstants.PermissionTemplateNames.ASSIGN_ROLE, 
+				GlobalVariables.getUserSession().getPrincipalId(), 
+				null, null)){
+            rulePassed = false;
+		}
+		return rulePassed;
+	}
+
     /**
      * 
      * This overridden method is to add 'kim/" to the return path
@@ -134,11 +160,14 @@ public class IdentityManagementRoleDocumentAction extends KualiTransactionalDocu
     public ActionForward addResponsibility(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
         KimDocumentRoleResponsibility newResponsibility = roleDocumentForm.getResponsibility();
-        if (KNSServiceLocator.getKualiRuleService().applyRules(new AddResponsibilityEvent("",roleDocumentForm.getRoleDocument(), newResponsibility))) {
+        if(newResponsibility!=null && StringUtils.isNotBlank(newResponsibility.getResponsibilityId())){
         	Map<String, String> criteria = new HashMap<String, String>();
         	criteria.put(KimConstants.PrimaryKeyConstants.RESPONSIBILITY_ID, newResponsibility.getResponsibilityId());
         	KimResponsibilityImpl responsibilityImpl = (KimResponsibilityImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimResponsibilityImpl.class, criteria);
         	newResponsibility.setKimResponsibility(responsibilityImpl);
+        }
+
+        if (KNSServiceLocator.getKualiRuleService().applyRules(new AddResponsibilityEvent("",roleDocumentForm.getRoleDocument(), newResponsibility))) {
         	newResponsibility.setDocumentNumber(roleDocumentForm.getDocument().getDocumentNumber());
 	        roleDocumentForm.getRoleDocument().addResponsibility(newResponsibility);
 	        roleDocumentForm.setResponsibility(new KimDocumentRoleResponsibility());
@@ -157,11 +186,13 @@ public class IdentityManagementRoleDocumentAction extends KualiTransactionalDocu
     public ActionForward addPermission(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
         KimDocumentRolePermission newPermission = roleDocumentForm.getPermission();
+        if(newPermission!=null && StringUtils.isNotBlank(newPermission.getPermissionId())){
+	    	Map<String, String> criteria = new HashMap<String, String>();
+	    	criteria.put(KimConstants.PrimaryKeyConstants.PERMISSION_ID, newPermission.getPermissionId());
+	    	KimPermissionImpl kimPermissionImpl = (KimPermissionImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimPermissionImpl.class, criteria);
+	    	newPermission.setKimPermission(kimPermissionImpl);
+        }
         if (KNSServiceLocator.getKualiRuleService().applyRules(new AddPermissionEvent("", roleDocumentForm.getRoleDocument(), newPermission))) {
-        	Map<String, String> criteria = new HashMap<String, String>();
-        	criteria.put(KimConstants.PrimaryKeyConstants.PERMISSION_ID, newPermission.getPermissionId());
-        	KimPermissionImpl permissionImpl = (KimPermissionImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimPermissionImpl.class, criteria);
-        	newPermission.setKimPermission(permissionImpl);
         	newPermission.setDocumentNumber(roleDocumentForm.getDocument().getDocumentNumber());
         	newPermission.setRoleId(roleDocumentForm.getRoleDocument().getRoleId());
 	        roleDocumentForm.getRoleDocument().getPermissions().add(newPermission);
@@ -173,12 +204,47 @@ public class IdentityManagementRoleDocumentAction extends KualiTransactionalDocu
     public ActionForward addMember(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
         KimDocumentRoleMember newMember = roleDocumentForm.getMember();
-        if (KNSServiceLocator.getKualiRuleService().applyRules(new AddMemberEvent("", roleDocumentForm.getRoleDocument(), newMember))) {
+        if(checkKimDocumentRoleMember(newMember) && 
+        		KNSServiceLocator.getKualiRuleService().applyRules(new AddMemberEvent("", roleDocumentForm.getRoleDocument(), newMember))){
         	newMember.setDocumentNumber(roleDocumentForm.getDocument().getDocumentNumber());
         	roleDocumentForm.getRoleDocument().addMember(newMember);
 	        roleDocumentForm.setMember(roleDocumentForm.getRoleDocument().getBlankMember());
         }
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    }
+
+    private boolean checkKimDocumentRoleMember(KimDocumentRoleMember newMember){
+        if(StringUtils.isBlank(newMember.getMemberTypeCode()) || StringUtils.isBlank(newMember.getMemberId())){
+        	GlobalVariables.getErrorMap().putError("document.member.memberId", RiceKeyConstants.ERROR_EMPTY_ENTRY, 
+        			new String[] {"Member Type Code and Member ID"});
+        	return false;
+		}
+    	PersistableBusinessObject object = getMember(newMember.getMemberTypeCode(), newMember.getMemberId());
+        if(object==null){
+        	GlobalVariables.getErrorMap().putError("document.member.memberId", RiceKeyConstants.ERROR_MEMBERID_MEMBERTYPE_MISMATCH, 
+        			new String[] {newMember.getMemberId()});
+        	return false;
+		}
+        newMember.setMemberName(getMemberName(newMember.getMemberTypeCode(), object));
+        return true;
+    }
+
+    private PersistableBusinessObject getMember(String memberTypeCode, String memberId){
+        Class roleMemberTypeClass = null;
+        String roleMemberIdName = "";
+    	if(MemberTypeValuesFinder.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
+        	roleMemberTypeClass = KimPrincipalImpl.class;
+        	roleMemberIdName = "principalId";
+        } else if(MemberTypeValuesFinder.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
+        	roleMemberTypeClass = KimGroupImpl.class;
+        	roleMemberIdName = "groupId";
+        } else if(MemberTypeValuesFinder.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
+        	roleMemberTypeClass = KimRoleImpl.class;
+        	roleMemberIdName = "roleId";
+        }
+        Map<String, String> criteria = new HashMap<String, String>();
+        criteria.put(roleMemberIdName, memberId);
+        return KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(roleMemberTypeClass, criteria);
     }
     
     public ActionForward deleteMember(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -194,10 +260,38 @@ public class IdentityManagementRoleDocumentAction extends KualiTransactionalDocu
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
+    private boolean checkDelegationMember(RoleDocumentDelegationMember newMember){
+        if(StringUtils.isBlank(newMember.getMemberTypeCode()) || StringUtils.isBlank(newMember.getMemberId())){
+        	GlobalVariables.getErrorMap().putError("document.delegationMember.memberId", RiceKeyConstants.ERROR_EMPTY_ENTRY, 
+        			new String[] {"Member Type Code and Member ID"});
+        	return false;
+		}
+    	BusinessObject object = getMember(newMember.getMemberTypeCode(), newMember.getMemberId());
+        if(object==null){
+        	GlobalVariables.getErrorMap().putError("document.delegationMember.memberId", RiceKeyConstants.ERROR_MEMBERID_MEMBERTYPE_MISMATCH, 
+        			new String[] {newMember.getMemberId()});
+        	return false;
+		}
+        newMember.setMemberName(getMemberName(newMember.getMemberTypeCode(), object));
+        return true;
+    }
+
+    public String getMemberName(String memberTypeCode, BusinessObject object){
+    	String roleMemberName = "";
+        if(MemberTypeValuesFinder.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
+        	roleMemberName = ((KimPrincipalImpl)object).getPrincipalName();
+        } else if(MemberTypeValuesFinder.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
+        	roleMemberName = ((KimGroupImpl)object).getGroupName();
+        } else if(MemberTypeValuesFinder.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
+        	roleMemberName = ((KimRoleImpl)object).getRoleName();
+        }
+        return roleMemberName;
+    }
+    
     public ActionForward addDelegationMember(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
         RoleDocumentDelegationMember newDelegationMember = roleDocumentForm.getDelegationMember();
-        if (KNSServiceLocator.getKualiRuleService().applyRules(
+        if (checkDelegationMember(newDelegationMember) && KNSServiceLocator.getKualiRuleService().applyRules(
         		new AddDelegationMemberEvent("", roleDocumentForm.getRoleDocument(), newDelegationMember))) {
         	newDelegationMember.setDocumentNumber(roleDocumentForm.getDocument().getDocumentNumber());
         	roleDocumentForm.getRoleDocument().addDelegationMember(newDelegationMember);

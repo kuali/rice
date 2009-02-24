@@ -15,6 +15,7 @@
 --%>
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
+<c:set var="inquiry" value="false" scope="request" /> 
 
 <kul:documentPage
 	showDocumentInfo="false"

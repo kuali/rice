@@ -17,6 +17,8 @@ package org.kuali.rice.kim.bo.ui;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -24,10 +26,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
-import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.kim.bo.options.MemberTypeValuesFinder;
-import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.util.TypedArrayList;
 
@@ -54,11 +53,6 @@ public class KimDocumentRoleMember  extends KimDocumentBoBase {
 	@Column(name="MBR_NM")
 	protected String memberName;
 	protected List <KimDocumentRoleQualifier> qualifiers = new TypedArrayList(KimDocumentRoleQualifier.class);
-	
-	@Column(name="ACTV_FRM_DT")
-	protected Timestamp activeFromDate;
-	@Column(name="ACTV_TO_DT")
-	protected Timestamp activeToDate;
 
 	@Transient
 	private List<KimDocumentRoleResponsibilityAction> roleRspActions;
@@ -118,22 +112,6 @@ public class KimDocumentRoleMember  extends KimDocumentBoBase {
 		this.qualifiers = qualifiers;
 	}
 
-	public Timestamp getActiveFromDate() {
-		return this.activeFromDate;
-	}
-
-	public void setActiveFromDate(Timestamp activeFromDate) {
-		this.activeFromDate = activeFromDate;
-	}
-
-	public Timestamp getActiveToDate() {
-		return this.activeToDate;
-	}
-
-	public void setActiveToDate(Timestamp activeToDate) {
-		this.activeToDate = activeToDate;
-	}
-
 	//TODO: remove this and find a better way to do this. Should be done by next week with role doc task
 	public String getMemberType(){
 		if(MemberTypeValuesFinder.MEMBER_TYPE_PRINCIPAL_CODE.equals(getMemberTypeCode())){
@@ -182,5 +160,6 @@ public class KimDocumentRoleMember  extends KimDocumentBoBase {
 			List<KimDocumentRoleResponsibilityAction> roleRspActions) {
 		this.roleRspActions = roleRspActions;
 	}
-	
+
+
 }

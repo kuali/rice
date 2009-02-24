@@ -15,13 +15,22 @@
  */
 package org.kuali.rice.kim.rules.ui;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
+import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.bo.options.MemberTypeValuesFinder;
+import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegation;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.rule.event.ui.AddDelegationMemberEvent;
 import org.kuali.rice.kim.rule.ui.AddDelegationMemberRule;
+import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.rules.DocumentRuleBase;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 
@@ -33,13 +42,12 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
  */
 public class RoleDocumentDelegationMemberRule extends DocumentRuleBase implements AddDelegationMemberRule {
 
-	private static final String ERROR_PATH = "member.memberId";
+	public static final String ERROR_PATH = "document.delegationMember.memberId";
 
 	public boolean processAddDelegationMember(AddDelegationMemberEvent addDelegationMemberEvent){
 		RoleDocumentDelegationMember newMember = addDelegationMemberEvent.getDelegationMember();
 		IdentityManagementRoleDocument document = (IdentityManagementRoleDocument)addDelegationMemberEvent.getDocument();
 	    boolean rulePassed = true;
-
         if (newMember == null || StringUtils.isBlank(newMember.getMemberId())){
             GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Delegation Member"});
             return false;

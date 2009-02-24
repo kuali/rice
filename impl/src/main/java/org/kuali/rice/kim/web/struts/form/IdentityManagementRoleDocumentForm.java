@@ -22,6 +22,7 @@ import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.bo.options.MemberTypeValuesFinder;
 import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
+import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRolePermission;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
@@ -42,6 +43,8 @@ public class IdentityManagementRoleDocumentForm extends KualiTransactionalDocume
 		requiredNonEditableProperties.add("methodToCall");
 	}
 	
+	private boolean canAssignRole;
+	private KimTypeImpl kimType;
 	private KimDocumentRoleMember member;
 	{
 		member = new KimDocumentRoleMember();
@@ -188,6 +191,34 @@ public class IdentityManagementRoleDocumentForm extends KualiTransactionalDocume
 		else if(MemberTypeValuesFinder.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode))
 			return KimGroupImpl.class.getName();
 		return "";
+	}
+
+	/**
+	 * @return the kimType
+	 */
+	public KimTypeImpl getKimType() {
+		return this.kimType;
+	}
+
+	/**
+	 * @param kimType the kimType to set
+	 */
+	public void setKimType(KimTypeImpl kimType) {
+		this.kimType = kimType;
+	}
+
+	/**
+	 * @return the canAssignRole
+	 */
+	public boolean isCanAssignRole() {
+		return this.canAssignRole;
+	}
+
+	/**
+	 * @param canAssignRole the canAssignRole to set
+	 */
+	public void setCanAssignRole(boolean canAssignRole) {
+		this.canAssignRole = canAssignRole;
 	}
 
 }

@@ -57,11 +57,6 @@ public class RoleDocumentDelegationMember extends KimDocumentBoBase {
 	protected String memberName;
 	protected List <RoleDocumentDelegationMemberQualifier> qualifiers = new TypedArrayList(RoleDocumentDelegationMemberQualifier.class);
 	
-	@Column(name="ACTV_FRM_DT")
-	protected Timestamp activeFromDate;
-	@Column(name="ACTV_TO_DT")
-	protected Timestamp activeToDate;
-	
 	protected String delegationTypeCode;
 	
 	/**
@@ -110,34 +105,6 @@ public class RoleDocumentDelegationMember extends KimDocumentBoBase {
 
 	public int getNumberOfQualifiers(){
 		return qualifiers==null?0:qualifiers.size();
-	}
-
-	/**
-	 * @return the activeFromDate
-	 */
-	public Timestamp getActiveFromDate() {
-		return this.activeFromDate;
-	}
-
-	/**
-	 * @param activeFromDate the activeFromDate to set
-	 */
-	public void setActiveFromDate(Timestamp activeFromDate) {
-		this.activeFromDate = activeFromDate;
-	}
-
-	/**
-	 * @return the activeToDate
-	 */
-	public Timestamp getActiveToDate() {
-		return this.activeToDate;
-	}
-
-	/**
-	 * @param activeToDate the activeToDate to set
-	 */
-	public void setActiveToDate(Timestamp activeToDate) {
-		this.activeToDate = activeToDate;
 	}
 
 	/**

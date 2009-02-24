@@ -17,11 +17,11 @@ package org.kuali.rice.kim.util;
 
 import java.util.Set;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.ModuleService;
@@ -125,6 +125,14 @@ public class KimCommonUtils {
     		kimTypeServiceName = DEFAULT_KIM_SERVICE_NAME;
     	}
     	return kimTypeServiceName;
+	}
+
+	public static void copyProperties(Object targetToCopyTo, Object sourceToCopyFrom){
+		try{
+			PropertyUtils.copyProperties(targetToCopyTo, sourceToCopyFrom);
+		} catch(Exception ex){
+			throw new RuntimeException("Failed to copy from source object: "+sourceToCopyFrom.getClass()+" to target object: "+targetToCopyTo);
+		}
 	}
 
 }

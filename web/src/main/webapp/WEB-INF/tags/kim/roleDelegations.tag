@@ -7,9 +7,9 @@
 <c:set var="kimAttributes" value="${DataDictionary.KimAttributeImpl.attributes}" />
 
 <c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
-
-<c:if test="${readOnly}">
-	<c:set var="inquiry" value="${readOnly}"/>
+<c:set var="canAssignRole" value="${KualiForm.canAssignRole}" />
+<c:if test="${!canAssignRole}">
+	<c:set var="readOnly" value="${!canAssignRole}"/>
 </c:if>
 
 <script language="javaScript">
@@ -28,6 +28,7 @@ function changeDelegationMemberTypeCode(){
         	<tr>
         		<th><div align="left">&nbsp</div></th> 
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${delegationMemberAttributes.memberTypeCode}" noColon="true" /></div></th>
+        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${delegationMemberAttributes.memberId}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${delegationMemberAttributes.memberName}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${delegationMemberAttributes.activeFromDate}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${delegationMemberAttributes.activeToDate}" noColon="true" /></div></th>
@@ -51,7 +52,7 @@ function changeDelegationMemberTypeCode(){
                 	<input type="hidden" name="command"/>
                 	<kul:htmlControlAttribute property="delegationMember.memberTypeCode" 
                 	attributeEntry="${delegationMemberAttributes.memberTypeCode}" 
-                	onchange="changeDelegationMemberTypeCode()" />
+                	onchange="changeDelegationMemberTypeCode()" disabled="${readOnly}" />
 					<NOSCRIPT>
    						<html:submit value="select" alt="press this button to refresh the page after changing the delegation type." />
 					</NOSCRIPT>                
@@ -61,26 +62,30 @@ function changeDelegationMemberTypeCode(){
 				</td>
                 <td class="infoline">   
                 <div align="center">
-					<kul:htmlControlAttribute property="delegationMember.memberName" attributeEntry="${delegationMemberAttributes.memberName}" readOnly="true" />
+					<kul:htmlControlAttribute property="delegationMember.memberId" attributeEntry="${delegationMemberAttributes.memberId}" readOnly="${readOnly}" />
 	               	<kul:lookup boClassName="${bo}" fieldConversions="${fc}" anchor="${tabKey}" />
-					<html:hidden property="delegationMember.memberId" />
+				</div>
+				</td>
+				<td class="infoline">   
+                <div align="center">
+					<kul:htmlControlAttribute property="delegationMember.memberName" attributeEntry="${delegationMemberAttributes.memberName}" readOnly="true" />
 				</div>
 				</td>
                 <td align="left" valign="middle" class="infoline">
                 <div align="center">
-                	<kul:htmlControlAttribute property="delegationMember.activeFromDate" attributeEntry="${delegationMemberAttributes.activeFromDate}" datePicker="true" />
+                	<kul:htmlControlAttribute property="delegationMember.activeFromDate" attributeEntry="${delegationMemberAttributes.activeFromDate}" datePicker="true" readOnly="${readOnly}" />
                 </div>
                 </td>
                 <td align="left" valign="middle" class="infoline">
                 <div align="center">
-                	<kul:htmlControlAttribute property="delegationMember.activeToDate" attributeEntry="${delegationMemberAttributes.activeToDate}" datePicker="true" />
+                	<kul:htmlControlAttribute property="delegationMember.activeToDate" attributeEntry="${delegationMemberAttributes.activeToDate}" datePicker="true" readOnly="${readOnly}" />
                 </div>
                 </td>
 				<c:forEach var="qualifier" items="${KualiForm.document.kimType.attributeDefinitions}" varStatus="statusQualifier">
 					<c:set var="fieldName" value="${qualifier.kimAttribute.attributeName}" />
         			<c:set var="attrEntry" value="${KualiForm.document.attributeEntry[fieldName]}" />
 		            <td align="left" valign="middle">
-		               	<div align="center"> <kul:htmlControlAttribute property="delegationMember.qualifier(${qualifier.kimAttributeId}).attrVal"  attributeEntry="${attrEntry}" readOnly="${inquiry}"  />
+		               	<div align="center"> <kul:htmlControlAttribute property="delegationMember.qualifier(${qualifier.kimAttributeId}).attrVal"  attributeEntry="${attrEntry}" readOnly="${readOnly}" />
 						</div>
 					</td>
 		        </c:forEach>
@@ -88,13 +93,21 @@ function changeDelegationMemberTypeCode(){
 	                <div align="center">
 	                	<input type="hidden" name="command"/>
 	                	<kul:htmlControlAttribute property="delegationMember.delegationTypeCode" 
-	                	attributeEntry="${delegationMemberAttributes.delegationTypeCode}" />
+	                	attributeEntry="${delegationMemberAttributes.delegationTypeCode}" disabled="${readOnly}" />
 		            </div>
 				</td>
                 <td class="infoline">
 					<div align=center>
-						<html:image property="methodToCall.addDelegationMember.anchor${tabKey}"
-						src='${ConfigProperties.kr.externalizable.images.url}tinybutton-add1.gif' styleClass="tinybutton"/>
+						<c:choose>
+				        <c:when test="${!readOnly}">
+							<html:image property="methodToCall.addDelegationMember.anchor${tabKey}"
+							src='${ConfigProperties.kr.externalizable.images.url}tinybutton-add1.gif' styleClass="tinybutton"/>
+						</c:when>
+						<c:otherwise>
+							<html:image property="methodToCall.addDelegationMember.anchor${tabKey}"
+							src='${ConfigProperties.kr.externalizable.images.url}tinybutton-add1.gif' styleClass="tinybutton" disabled="true" />
+						</c:otherwise>
+						</c:choose>
 					</div>
                 </td>
     	   </tr>         
@@ -106,19 +119,23 @@ function changeDelegationMemberTypeCode(){
 					<c:out value="${statusMember.index+1}" />
 				</th>
 	            <td align="left" valign="middle">
-	               	<div align="center"> <kul:htmlControlAttribute property="document.delegationMembers[${statusMember.index}].memberTypeCode"  attributeEntry="${delegationMemberAttributes.memberTypeCode}" disabled="true" readOnly="false" />
+	               	<div align="center"> <kul:htmlControlAttribute property="document.delegationMembers[${statusMember.index}].memberTypeCode"  attributeEntry="${delegationMemberAttributes.memberTypeCode}" disabled="true" readOnly="${readOnly}" />
 					</div>
 				</td>
 	            <td align="left" valign="middle">
-	               	<div align="center"> <kul:htmlControlAttribute property="document.delegationMembers[${statusMember.index}].memberName"  attributeEntry="${delegationMemberAttributes.memberName}" readOnly="true"  />
+	               	<div align="center"> <kul:htmlControlAttribute property="document.delegationMembers[${statusMember.index}].memberId"  attributeEntry="${delegationMemberAttributes.memberId}" readOnly="${readOnly}" />
 					</div>
 				</td>
 	            <td align="left" valign="middle">
-	               	<div align="center"> <kul:htmlControlAttribute property="document.delegationMembers[${statusMember.index}].activeFromDate"  attributeEntry="${delegationMemberAttributes.activeFromDate}" readOnly="${inquiry}"  datePicker="true" />
+	               	<div align="center"> <kul:htmlControlAttribute property="document.delegationMembers[${statusMember.index}].memberName"  attributeEntry="${delegationMemberAttributes.memberName}" readOnly="${readOnly}" />
 					</div>
 				</td>
 	            <td align="left" valign="middle">
-	               	<div align="center"> <kul:htmlControlAttribute property="document.delegationMembers[${statusMember.index}].activeToDate"  attributeEntry="${delegationMemberAttributes.activeToDate}" readOnly="${inquiry}"  datePicker="true" />
+	               	<div align="center"> <kul:htmlControlAttribute property="document.delegationMembers[${statusMember.index}].activeFromDate"  attributeEntry="${delegationMemberAttributes.activeFromDate}" readOnly="${readOnly}" datePicker="true" />
+					</div>
+				</td>
+	            <td align="left" valign="middle">
+	               	<div align="center"> <kul:htmlControlAttribute property="document.delegationMembers[${statusMember.index}].activeToDate"  attributeEntry="${delegationMemberAttributes.activeToDate}" readOnly="${readOnly}"  datePicker="true" />
 					</div>
 				</td>
 				<c:set var="numberOfColumns" value="${KualiForm.member.numberOfQualifiers+4}"/>
@@ -126,19 +143,19 @@ function changeDelegationMemberTypeCode(){
 					<c:set var="fieldName" value="${qualifier.kimAttribute.attributeName}" />
         			<c:set var="attrEntry" value="${KualiForm.document.attributeEntry[fieldName]}" />
 		            <td align="left" valign="middle">
-		               	<div align="center"> <kul:htmlControlAttribute property="document.delegationMembers[${statusMember.index}].qualifier(${qualifier.kimAttributeId}).attrVal"  attributeEntry="${attrEntry}" readOnly="${inquiry}"  />
+		               	<div align="center"> <kul:htmlControlAttribute property="document.delegationMembers[${statusMember.index}].qualifier(${qualifier.kimAttributeId}).attrVal"  attributeEntry="${attrEntry}" readOnly="${readOnly}"  />
 						</div>
 					</td>
 		        </c:forEach>
 	            <td align="left" valign="middle">
-	               	<div align="center"> <kul:htmlControlAttribute property="document.delegationMembers[${statusMember.index}].delegationTypeCode"  attributeEntry="${delegationMemberAttributes.delegationTypeCode}" readOnly="${inquiry}"/>
+	               	<div align="center"> <kul:htmlControlAttribute property="document.delegationMembers[${statusMember.index}].delegationTypeCode"  attributeEntry="${delegationMemberAttributes.delegationTypeCode}" readOnly="${readOnly}"/>
 					</div>
 				</td>
 			<c:if test="${not inquiry}">	
 				<td>
 					<div align=center>&nbsp;
 						<c:choose>
-							<c:when test="${role.edit}">
+							<c:when test="${member.edit or readOnly}">
 	        	          		<img class='nobord' src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete2.gif' styleClass='tinybutton'/>
 							</c:when>
 	        	       		<c:otherwise>

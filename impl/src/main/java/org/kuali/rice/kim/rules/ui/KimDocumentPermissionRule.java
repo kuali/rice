@@ -42,7 +42,7 @@ public class KimDocumentPermissionRule extends DocumentRuleBase implements AddPe
 	
 	public boolean processAddPermission(AddPermissionEvent addPermissionEvent) {
 		KimDocumentRolePermission newPermission = addPermissionEvent.getPermission();
-		if(newPermission==null){
+		if(newPermission==null || StringUtils.isEmpty(newPermission.getPermissionId())){
 			GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Permission"});
 			return false;
 		}
@@ -60,7 +60,7 @@ public class KimDocumentPermissionRule extends DocumentRuleBase implements AddPe
 		if (!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
 				document, 
 				KimConstants.NAMESPACE_CODE, 
-				KimConstants.PermissionTemplateNames.ASSIGN_ROLE, 
+				KimConstants.PermissionTemplateNames.GRANT_PERMISSION, 
 				GlobalVariables.getUserSession().getPerson().getPrincipalId(), 
 				permissionDetails, null)) {
             GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_ASSIGN_PERMISSION, 

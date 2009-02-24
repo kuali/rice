@@ -20,14 +20,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.kuali.rice.kim.bo.impl.PermissionImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimRoleTypeService;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.bo.ParameterNamespace;
+import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
 

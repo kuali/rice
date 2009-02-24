@@ -18,6 +18,7 @@
         <ref bean="PermissionImpl-template.namespaceCode" />
         <ref bean="PermissionImpl-template.name" />
         <ref bean="PermissionImpl-namespaceCode" />
+        <ref bean="PermissionImpl-permissionId" />
         <ref bean="PermissionImpl-name" />
         <ref bean="PermissionImpl-nameToDisplay" />
         <ref bean="PermissionImpl-assignedToRoleNamespaceForLookup" />
@@ -93,6 +94,18 @@
         p:name="namespaceCode"
         p:label="Permission Namespace"
         p:shortLabel="Permission Namespace">
+  </bean>
+
+  <bean id="PermissionImpl-permissionId" parent="PermissionImpl-permissionId-parentBean" />
+  <bean id="PermissionImpl-permissionId-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="permissionId"
+        p:label="Permission ID"
+        p:shortLabel="Permission ID"
+        p:maxLength="10"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="10" />
+    </property>
   </bean>
   
   <bean id="PermissionImpl-name" parent="PermissionImpl-name-parentBean" />

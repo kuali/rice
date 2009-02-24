@@ -51,8 +51,6 @@ import org.kuali.rice.kns.util.ObjectUtils;
  */
 public class PermissionInquirableImpl extends RoleMemberInquirableImpl {
 
-	protected final String KIM_PERMISSION_REQUIRED_ATTRIBUTE_ID = "kimPermissionRequiredAttributeId";
-	protected final String PERMISSION_ID = "permissionId";
 	transient private static PermissionService permissionService;
 
 	
@@ -69,7 +67,7 @@ public class PermissionInquirableImpl extends RoleMemberInquirableImpl {
     	 */
 		if(NAME.equals(attributeName) || NAME_TO_DISPLAY.equals(attributeName)){
 			List<String> primaryKeys = new ArrayList<String>();
-			primaryKeys.add(PERMISSION_ID);
+			primaryKeys.add(KimConstants.PrimaryKeyConstants.PERMISSION_ID);
 			return getInquiryUrlForPrimaryKeys(PermissionImpl.class, businessObject, primaryKeys, null);
 		} else if(NAMESPACE_CODE.equals(attributeName) || TEMPLATE_NAMESPACE_CODE.equals(attributeName)){
 			List<String> primaryKeys = new ArrayList<String>();
@@ -93,7 +91,7 @@ public class PermissionInquirableImpl extends RoleMemberInquirableImpl {
     		(List<KimPermissionRequiredAttributeImpl>)ObjectUtils.getPropertyValue(businessObject, attributeName);
     	List<AnchorHtmlData> htmlData = new ArrayList<AnchorHtmlData>();
 		List<String> primaryKeys = new ArrayList<String>();
-		primaryKeys.add(KIM_PERMISSION_REQUIRED_ATTRIBUTE_ID);
+		primaryKeys.add(KimConstants.PrimaryKeyConstants.KIM_PERMISSION_REQUIRED_ATTR_ID);
     	for(KimPermissionRequiredAttributeImpl requiredAttributeDataImpl: requiredAttributeData){
     		htmlData.add(getInquiryUrlForPrimaryKeys(KimPermissionRequiredAttributeImpl.class, requiredAttributeDataImpl, primaryKeys, 
     		getKimAttributeLabelFromDD(requiredAttributeDataImpl.getKimAttribute().getAttributeName())));

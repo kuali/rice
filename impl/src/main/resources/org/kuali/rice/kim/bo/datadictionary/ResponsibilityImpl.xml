@@ -18,6 +18,7 @@
         <ref bean="ResponsibilityImpl-template.namespaceCode" />
         <ref bean="ResponsibilityImpl-template.name" />
         <ref bean="ResponsibilityImpl-namespaceCode" />
+        <ref bean="ResponsibilityImpl-responsibilityId" />
         <ref bean="ResponsibilityImpl-name" />
         <ref bean="ResponsibilityImpl-nameToDisplay" />
         <ref bean="ResponsibilityImpl-assignedToRoleNamespaceForLookup" />
@@ -93,6 +94,18 @@
         p:name="namespaceCode"
         p:label="Responsibility Namespace"
         p:shortLabel="Responsibility Namespace">
+  </bean>
+  
+  <bean id="ResponsibilityImpl-responsibilityId" parent="ResponsibilityImpl-responsibilityId-parentBean" />
+  <bean id="ResponsibilityImpl-responsibilityId-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="responsibilityId"
+        p:label="Responsibility ID"
+        p:shortLabel="Responsibility ID"
+        p:maxLength="10"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="10" />
+    </property>
   </bean>
   
   <bean id="ResponsibilityImpl-name" parent="ResponsibilityImpl-name-parentBean" />

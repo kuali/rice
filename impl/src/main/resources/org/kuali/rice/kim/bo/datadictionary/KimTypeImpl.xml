@@ -146,6 +146,7 @@
 				</bean>
 			</list>
 		</property>
+	    <property name="inquirableClass" value="org.kuali.rice.kim.lookup.KimTypeInquirableImpl" />
 	</bean>
 
 	<!-- Business Object Lookup Definition -->
@@ -164,6 +165,7 @@
 					p:attributeName="kimTypeId" 
 					p:forceInquiry="true" />
 				<bean parent="FieldDefinition"
+					p:defaultValue="Y"
 					p:attributeName="active" />
 			</list>
 		</property>

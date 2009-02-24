@@ -15,12 +15,16 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
 import org.hibernate.annotations.Type;
+import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
@@ -30,7 +34,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  *
  */
 @MappedSuperclass
-public class KimDocumentBoBase  extends PersistableBusinessObjectBase {
+public class KimDocumentBoBase  extends PersistableBusinessObjectBase implements Inactivateable {
     @Column(name="FDOC_NBR")
     protected String documentNumber;
 	@Type(type="yes_no")
@@ -39,6 +43,12 @@ public class KimDocumentBoBase  extends PersistableBusinessObjectBase {
 	@Type(type="yes_no")
 	@Column(name="EDIT_FLAG")
     protected boolean edit;
+
+	
+	@Column(name="ACTV_FRM_DT")
+	protected Timestamp activeFromDate;
+	@Column(name="ACTV_TO_DT")
+	protected Timestamp activeToDate;
 
 	/**
 	 * This overridden method ...
@@ -61,7 +71,10 @@ public class KimDocumentBoBase  extends PersistableBusinessObjectBase {
 	}
 
 	public boolean isActive() {
-		return this.active;
+		Date currentTime = Calendar.getInstance().getTime();
+		return this.active && 
+		(activeFromDate==null || activeFromDate.before(currentTime) || activeFromDate.equals(currentTime)) && 
+		(activeToDate==null || activeToDate.after(currentTime) || activeToDate.equals(currentTime));
 	}
 
 	public void setActive(boolean active) {
@@ -75,5 +88,22 @@ public class KimDocumentBoBase  extends PersistableBusinessObjectBase {
 	public void setEdit(boolean edit) {
 		this.edit = edit;
 	}
+
+	public Timestamp getActiveFromDate() {
+		return this.activeFromDate;
+	}
+
+	public void setActiveFromDate(Timestamp activeFromDate) {
+		this.activeFromDate = activeFromDate;
+	}
+
+	public Timestamp getActiveToDate() {
+		return this.activeToDate;
+	}
+
+	public void setActiveToDate(Timestamp activeToDate) {
+		this.activeToDate = activeToDate;
+	}
+
 
 }

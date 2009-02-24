@@ -22,7 +22,6 @@ import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
 import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
 /**
- * This is a description of what this class does - shyu don't forget to fill this in. 
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *

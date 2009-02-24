@@ -157,7 +157,7 @@
 								<display:column class="infocell" property="returnUrl" media="html" title="Return Value"/>
 							</c:if>
 						</c:if>
-						<c:if test="${KualiForm.suppressActions!=true && !KualiForm.multipleValues && KualiForm.showMaintenanceLinks}">
+						<c:if test="${row.actionUrls!='' && KualiForm.suppressActions!=true && !KualiForm.multipleValues && KualiForm.showMaintenanceLinks}">
 							<display:column class="infocell" property="actionUrls"
 								title="Actions" media="html" />
 						</c:if>

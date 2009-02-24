@@ -906,6 +906,8 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
         			if ( delegationTypeService != null && !delegationTypeService.doesDelegationQualifierMatchQualification(qualification, dmi.getQualifier())) {
         				continue; // no match - skip to next record
         			}
+        			// all tests passed, return true
+        			return true;
     			} else {
     				continue; // no match - skip to next record
     			}

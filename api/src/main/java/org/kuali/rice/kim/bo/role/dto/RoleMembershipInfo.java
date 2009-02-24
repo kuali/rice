@@ -17,9 +17,7 @@ package org.kuali.rice.kim.bo.role.dto;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
@@ -37,6 +35,7 @@ public class RoleMembershipInfo implements Serializable {
 	protected String embeddedRoleId; // ID of the role from which the group or principal was derived
 	protected String memberId;
 	protected String memberTypeCode;
+	protected String roleSortingCode; // value which can be used to sort the role members into a meaningful order
 	protected AttributeSet qualifier;
 	protected List<DelegateInfo> delegates = new ArrayList<DelegateInfo>();
 	
@@ -122,6 +121,20 @@ public class RoleMembershipInfo implements Serializable {
     			.append( "roleId", this.roleId )
     			.append( "qualifier", this.qualifier ).toString();
     }
+
+	/**
+	 * @return the roleSortingCode
+	 */
+	public String getRoleSortingCode() {
+		return this.roleSortingCode;
+	}
+
+	/**
+	 * @param roleSortingCode the roleSortingCode to set
+	 */
+	public void setRoleSortingCode(String roleSortingCode) {
+		this.roleSortingCode = roleSortingCode;
+	}
 	
 	
 }

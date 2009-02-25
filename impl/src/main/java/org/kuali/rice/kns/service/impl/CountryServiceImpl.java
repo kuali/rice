@@ -26,8 +26,7 @@ import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.bo.Country;
 import org.kuali.rice.kns.service.CountryService;
-//import org.kuali.kfs.sys.service.ParameterService;
-//import org.kuali.kfs.sys.service.impl.ParameterConstants.FINANCIAL_SYSTEM_ALL;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.service.KualiModuleService;
 
@@ -35,8 +34,6 @@ public class CountryServiceImpl implements CountryService {
     private static Logger LOG = Logger.getLogger(CountryServiceImpl.class);
 
     private KualiModuleService kualiModuleService;
-    //TODO: 
-    //private ParameterService parameterService;
 
     /**
      * @see org.kuali.kfs.sys.service.CountryService#getByPrimaryId(java.lang.String)
@@ -70,8 +67,8 @@ public class CountryServiceImpl implements CountryService {
      * @see org.kuali.kfs.sys.service.CountryService#getDefaultCountry()
      */
     public Country getDefaultCountry() {
-    	//TODO: use parameterService after it moved to rice
-        String postalCountryCode = "US"; //parameterService.getParameterValue(FINANCIAL_SYSTEM_ALL.class, KNSConstants.CoreApcParms.DEFAULT_COUNTRY);
+        String postalCountryCode = KNSServiceLocator.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE,
+	        	KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.DEFAULT_COUNTRY);
         return this.getByPrimaryId(postalCountryCode);
     }
     
@@ -106,12 +103,4 @@ public class CountryServiceImpl implements CountryService {
         this.kualiModuleService = kualiModuleService;
     }
     
-    /**
-     * Sets the parameterService attribute value.
-     * 
-     * @param parameterService The parameterService to set.
-     */
-   // public void setParameterService(ParameterService parameterService) {
-   //     this.parameterService = parameterService;
-   // }
 }

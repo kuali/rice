@@ -483,6 +483,7 @@ public class KNSConstants extends JSTLConstants {
 //        public static final String PURGE_PENDING_ATTACHMENTS_STEP_MAX_AGE = "purgePendingAttachmentsStepMaxAge";
 
         public static final String ENABLE_DIRECT_INQUIRIES_IND = "ENABLE_DIRECT_INQUIRIES_IND";
+        public static final String DEFAULT_COUNTRY = "DEFAULT_COUNTRY";
     }
 
     public static class Maintenance {

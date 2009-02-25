@@ -152,7 +152,7 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 		// convert the principal and entity to a Person
 		// skip if the person was created from the DB cache
 		if ( person == null && entity != null ) {
-			person = (PersonImpl)convertEntityToPerson( entity, principal );
+			person = convertEntityToPerson( entity, principal );
 			addPersonImplToCache( person );
 		}
 		return person;

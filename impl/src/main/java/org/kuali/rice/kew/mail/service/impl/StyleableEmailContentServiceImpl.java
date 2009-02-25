@@ -368,16 +368,17 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
             } catch (Exception e) {
                 LOG.error("Error when checking for custom email body and subject.", e);
             }
-
+            Person person = actionItem.getPerson();
+            DocumentRouteHeaderValue header = actionItem.getRouteHeader();
             // keep adding stuff until we have all the xml we need to formulate the message :/
             addObjectXML(doc, actionItem, root, "actionItem");
-            addObjectXML(doc, actionItem.getPerson(), root, "actionItemPerson");
-            addTextElement(doc, root, "actionItemPrincipalId", actionItem.getPerson().getPrincipalId());
-            addTextElement(doc, root, "actionItemPrincipalName", actionItem.getPerson().getPrincipalName());
-            addObjectXML(doc, actionItem.getRouteHeader(), root, "doc");
-            addObjectXML(doc, actionItem.getRouteHeader().getInitiatorPrincipal(), root, "docInitiator");
-            addTextElement(doc, root, "docInitiatorDisplayName", actionItem.getRouteHeader().getInitiatorDisplayName());
-            addObjectXML(doc, actionItem.getRouteHeader().getDocumentType(), root, "documentType");
+            addObjectXML(doc, person, root, "actionItemPerson");
+            addTextElement(doc, root, "actionItemPrincipalId", person.getPrincipalId());
+            addTextElement(doc, root, "actionItemPrincipalName", person.getPrincipalName());
+            addObjectXML(doc, header, root, "doc");
+            addObjectXML(doc, header.getInitiatorPrincipal(), root, "docInitiator");
+            addTextElement(doc, root, "docInitiatorDisplayName", header.getInitiatorDisplayName());
+            addObjectXML(doc, header.getDocumentType(), root, "documentType");
 
             node.appendChild(root);
         } catch (Exception e) {

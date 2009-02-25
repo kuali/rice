@@ -55,6 +55,7 @@ import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.ContextRefreshedEvent;
 
 import edu.emory.mathcs.backport.java.util.Arrays;
+import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * Used to configure common Rice configuration properties.
@@ -579,20 +580,27 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
 	}
 
 	/**
-	 * @param additionalSpringFiles the additionalSpringFiles to set
+	 * @param additionalSpringFiles the additionalSpringFiles to set.  list members can be 
+	 * filenames, or comma separated lists of filenames.
 	 */
 	@SuppressWarnings("unchecked")
 	public void setAdditionalSpringFiles(List<String> additionalSpringFiles) {
 		// check to see if we have a single string with comma separated values
 		if (null != additionalSpringFiles && 
-				additionalSpringFiles.size() == 1 &&
-				additionalSpringFiles.get(0).contains(",")) {
+				additionalSpringFiles.size() >= 1) {
 			
-			String commaSeparatedFiles = additionalSpringFiles.get(0);
-			this.additionalSpringFiles = new ArrayList<String>(Arrays.asList(commaSeparatedFiles.split(",")));
+			// we'll shove these into a new list, so we can expand comma separated entries
+			this.additionalSpringFiles = new ArrayList<String>();
 			
+			for (String fileName : additionalSpringFiles) {
+				if (fileName.contains(",")) { // if it's comma separated
+					this.additionalSpringFiles.addAll(new ArrayList<String>(Arrays.asList(fileName.split(","))));
+				} else { // plain old filename
+					this.additionalSpringFiles.add(fileName);
+				}
+			}
 		} else {
-			this.additionalSpringFiles = additionalSpringFiles;
+			this.additionalSpringFiles = Collections.emptyList();
 		}
 	}	
 

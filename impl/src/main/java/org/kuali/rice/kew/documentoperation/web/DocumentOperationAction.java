@@ -753,16 +753,6 @@ public class DocumentOperationAction extends KewKualiAction {
 		}
 	}
 	
-	/**
-	 * chb: 12Jan2009
-	 * This needs to be fleshed out after permissions are built
-	 */
-	//TODO
-	@Override
-	public void checkAuthorization(ActionForm form, String methodToCall) throws AuthorizationException
-	{
-	}
-
 	public ActionForward moveDocument(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		try {
 			DocumentOperationForm docForm = (DocumentOperationForm) form;

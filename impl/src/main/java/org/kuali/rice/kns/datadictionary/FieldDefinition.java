@@ -1,12 +1,12 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,13 +23,13 @@ import org.kuali.rice.kns.lookup.valueFinder.ValueFinder;
 
 /**
  * Contains field-related information for DataDictionary entries.  Used by lookups and inquiries.
- * 
+ *
  * Note: the setters do copious amounts of validation, to facilitate generating errors during the parsing process.
- * 
- * 
+ *
+ *
  */
 public class FieldDefinition extends DataDictionaryDefinitionBase implements FieldDefinitionI {
- 
+
     protected String attributeName;
     protected boolean required = false;
     protected boolean forceInquiry = false;
@@ -46,6 +46,18 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
     protected String displayEditMode;
     protected Mask displayMask;
 
+    /*
+     *  If the ControlDefinition.isHidden == true then a corresponding LookupDefinition would
+     *  automatically be removed from the search criteria.  In some cases you might want the
+     *  hidden field to be used as a search criteria.  For example, in PersonImpl.xml a client
+     *  might want to have the campus code hidden and preset to Bloomington.  So when the search
+     *  is run, only people from the bloomington campus are returned.
+     *
+     *   So, if you want to have a hidden search criteria, set this variable to true. Defaults to
+     *   false.
+     */
+    protected boolean hidden = false;
+
 
     public FieldDefinition() {
     }
@@ -60,7 +72,7 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
 
     /**
      * Sets attributeName to the given value.
-     * 
+     *
      * @param attributeName
      * @throws IllegalArgumentException if the given attributeName is blank
      */
@@ -134,7 +146,7 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
     {
         return noDirectInquiry;
     }
-    
+
     /**
      * noInquiry = true means that the displayed field will never be made inquirable.
      */
@@ -144,7 +156,7 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
 
     /**
      * @param noInquiry If true, the displayed field will not have a direct
-	 *     inquiry facility 
+	 *     inquiry facility
      */
     public void setNoDirectInquiry(boolean noDirectInquiry) {
         this.noDirectInquiry = noDirectInquiry;
@@ -206,11 +218,11 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
 
     /**
      * Directly validate simple fields.
-     * 
+     *
      * @see org.kuali.rice.kns.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Object)
      */
     public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
-        
+
         if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, getAttributeName())) {
             throw new AttributeValidationException("unable to find attribute '" + attributeName + "' in rootBusinessObjectClass '" + rootBusinessObjectClass.getName() + "' (" + "" + ")");
         }
@@ -277,14 +289,14 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
     }
 
 
-    
+
     public boolean isReadOnlyAfterAdd() {
         return false;
     }
 
 
     /**
-     * Gets the maxLength attribute. 
+     * Gets the maxLength attribute.
      * @return Returns the maxLength.
      */
     public Integer getMaxLength() {
@@ -312,4 +324,19 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
         }
         this.defaultValueFinderClass = defaultValueFinderClass;
     }
+
+    /**
+	 * @return the hidden
+	 */
+	public boolean isHidden() {
+		return this.hidden;
+	}
+
+	/**
+	 * @param hidden the hidden to set
+	 */
+	public void setHidden(boolean hidden) {
+		this.hidden = hidden;
+	}
+
 }

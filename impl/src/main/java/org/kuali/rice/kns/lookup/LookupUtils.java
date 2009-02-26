@@ -31,6 +31,8 @@ import org.apache.ojb.broker.query.Criteria;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
+import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
+import org.kuali.rice.kns.datadictionary.FieldDefinition;
 import org.kuali.rice.kns.datadictionary.RelationshipDefinition;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.dbplatform.KualiDBPlatform;
@@ -201,13 +203,13 @@ public class LookupUtils {
         	criteria.setSearchLimit(limit);
 		}
     }
-    
+
     /**
      * This method parses and returns the lookup result set limit, checking first for the limit
      * for the BO being looked up, and then the global application limit if there isn't a limit
      * specific to this BO.
      *
-     * @param businessObjectClass BO class to search on / get limit for.  If the passed in type is not of type 
+     * @param businessObjectClass BO class to search on / get limit for.  If the passed in type is not of type
      * {@link BusinessObject}, then the application-wide default limit is used.
      * @return result set limit (or null if there isn't one)
      */
@@ -223,7 +225,7 @@ public class LookupUtils {
     }
 
     /**
-     * 
+     *
      */
     private static Integer getApplicationSearchResultsLimit() {
         String limitString = KNSServiceLocator.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.LOOKUP_RESULTS_LIMIT);
@@ -401,16 +403,16 @@ public class LookupUtils {
         return field;
     }
 
-    
+
     /**
      * Sets whether a field should have direct inquiries enabled.  The direct inquiry is the functionality on a page such that if the primary key for
      * a quickfinder is filled in and the direct inquiry button is pressed, then a new window will popup showing an inquiry page without going through
-     * the lookup first. 
-     * 
+     * the lookup first.
+     *
      * For this method to work properly, it must be called after setFieldQuickfinder
      * //TODO: chb: that should not be the case -- the relationship object the two rely upon should be established outside of the lookup/quickfinder code
-     *  
-     * 
+     *
+     *
      * @param field
      */
     private static void setFieldDirectInquiry(Field field) {
@@ -443,15 +445,15 @@ public class LookupUtils {
             field.setFieldDirectInquiryEnabled(false);
         }
     }
-    
+
     /**
-     *  
+     *
      * @param field
      * @return the altered Field object
      */
-    public static Field setFieldDirectInquiry(BusinessObject businessObject, String attributeName, Field field) 
+    public static Field setFieldDirectInquiry(BusinessObject businessObject, String attributeName, Field field)
     {
-		if (businessObject == null) 
+		if (businessObject == null)
 		{
             return field;
         }
@@ -461,14 +463,14 @@ public class LookupUtils {
         if (noDirectInquiry != null && noDirectInquiry.booleanValue() || noDirectInquiry == null) {
             return field;
         }
-        
+
         setFieldDirectInquiry(field);
-        
+
         return field;
     }
-    
+
     private static Map<Class,Map<String,Map>> referencesForForeignKey = new HashMap<Class, Map<String,Map>>();
-    
+
     public static Map getPrimitiveReference(BusinessObject businessObject, String attributeName) {
         Map chosenReferenceByKeySize = new HashMap();
         Map chosenReferenceByFieldName = new HashMap();
@@ -775,19 +777,47 @@ public class LookupUtils {
      * (This will remove Universal User ID and Person name from search requests when a user ID is entered.)
      *
      * @param fieldValues
+     *
+     * datadictionaryservice.getdatadictionary.getbusinessobject(busObjectClassName).hasLookupDefinition
+     * entry.getlookupDefinition.getlookupdef
      */
     public static void removeHiddenCriteriaFields( Class businessObjectClass, Map fieldValues ) {
+
+    	BusinessObjectEntry boe = dataDictionaryService.getDataDictionary().getBusinessObjectEntry(businessObjectClass.getName());
+    	Map<String, Boolean> searchCriteria = new HashMap<String, Boolean>();
+
+
+    	/*
+    	 * This is to check if we should pass the lookupDefinition (search criteria) through.
+    	 */
+    	if(boe.hasLookupDefinition()){
+    		List<FieldDefinition> fieldDefs = boe.getLookupDefinition().getLookupFields();
+    		for(FieldDefinition field : fieldDefs){
+    			searchCriteria.put(field.getAttributeName(), new Boolean(field.isHidden()));
+    		}
+    	}
+
         List<String> lookupFieldAttributeList = businessObjectMetaDataService.getLookupableFieldNames(businessObjectClass);
         if (lookupFieldAttributeList != null) {
             for (Iterator iter = lookupFieldAttributeList.iterator(); iter.hasNext();) {
                 String attributeName = (String) iter.next();
                 if (fieldValues.containsKey(attributeName)) {
                     ControlDefinition controlDef = dataDictionaryService.getAttributeControlDefinition(businessObjectClass, attributeName);
-                    if (controlDef != null && controlDef.isHidden() ) {
+                    if (controlDef != null && controlDef.isHidden() && !isPassthrough(searchCriteria, attributeName)) {
                         fieldValues.remove(attributeName);
                     }
                 }
             }
         }
+    }
+
+    private static boolean isPassthrough(Map<String, Boolean> searchCriteria, String attributeName){
+    	boolean bRet = false;
+    	if(searchCriteria.containsKey(attributeName)){
+    		if(searchCriteria.get(attributeName).booleanValue()){
+    			bRet = true;
+    		}
+    	}
+    	return bRet;
     }
 }

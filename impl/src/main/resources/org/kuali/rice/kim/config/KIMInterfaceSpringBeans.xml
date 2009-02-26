@@ -32,9 +32,9 @@
     p:groupCacheMaxSize="3000"
     p:groupCacheMaxAgeSeconds="3600"
     p:permissionCacheMaxSize="3000"
-    p:permissionCacheMaxAgeSeconds="300"
+    p:permissionCacheMaxAgeSeconds="30"
     p:responsibilityCacheMaxSize="3000"
-    p:responsibilityCacheMaxAgeSeconds="300" />
+    p:responsibilityCacheMaxAgeSeconds="30" />
 
 <!-- this service is intended to be run locally, should not be exported
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">

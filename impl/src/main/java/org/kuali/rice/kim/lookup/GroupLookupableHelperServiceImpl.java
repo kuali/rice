@@ -17,38 +17,56 @@ package org.kuali.rice.kim.lookup;
 
 import static java.util.Collections.sort;
 
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.bo.ui.KimAttributeDataComparator;
-import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
 import org.kuali.rice.kim.dao.KimGroupDao;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
-import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
+import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
+import org.kuali.rice.kns.lookup.keyvalues.IndicatorValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
+import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.kns.web.comparator.CellComparatorHelper;
+import org.kuali.rice.kns.web.format.BooleanFormatter;
+import org.kuali.rice.kns.web.format.CollectionFormatter;
+import org.kuali.rice.kns.web.format.DateFormatter;
 import org.kuali.rice.kns.web.format.Formatter;
+import org.kuali.rice.kns.web.struts.form.LookupForm;
 import org.kuali.rice.kns.web.ui.Column;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.KeyLabelPair;
+import org.kuali.rice.kns.web.ui.ResultRow;
 import org.kuali.rice.kns.web.ui.Row;
 
+import edu.emory.mathcs.backport.java.util.Collections;
+
 /**
- * This is a description of what this class does - shyu don't forget to fill this in. 
- * 
+ * This is a description of what this class does - shyu don't forget to fill this in.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
@@ -56,19 +74,19 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
 
 	// need this so kimtypeId value can be retained in 'rows'
 	// 1st pass populate the grprows
-	// 2nd pass for jsp, no populate, so return the existing one. 
+	// 2nd pass for jsp, no populate, so return the existing one.
+    private static String KIM_TYPE_ID_PROPERTY_NAME = "kimTypeId";
 	private List<Row> grpRows = new ArrayList<Row>();
 	private List<Row> attrRows = new ArrayList<Row>();
-	private KimGroupDao groupDao; 
+	private KimGroupDao groupDao;
 	private String typeId;
 	private AttributeDefinitionMap attrDefinitions;
-	
+	private Map<String, String> groupTypeValuesCache = new HashMap<String, String>();
+	private static List<KeyLabelPair> groupTypeCache = null;
+
     @Override
     public List<? extends BusinessObject> getSearchResults(java.util.Map<String,String> fieldValues) {
-//    	String principalName = fieldValues.get("principalName");
-//    	fieldValues.put("principalName","");
     	List<KimGroupImpl> groups = groupDao.getGroups(fieldValues);
-        //List<KimGroupImpl> baseLookup = (List<KimGroupImpl>)super.getSearchResults(fieldValues);
 
         for (KimGroupImpl group : groups) {
         	if (!group.getGroupAttributes().isEmpty()) {
@@ -79,6 +97,20 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
         return groups;
     }
 
+    @Override
+    public boolean checkForAdditionalFields(Map fieldValues) {
+        List<Row> attributeRows = setupAttributeRows(new HashMap());
+        if (attributeRows.isEmpty()) {
+            setAttrRows(attributeRows);
+        } else if (CollectionUtils.isEmpty(getAttrRows())) {
+            setAttrRows(attributeRows);
+        }
+        if (getAttrRows().size() > 0) {
+            return true;
+        }
+        return false;
+    }
+
 	@Override
 	public List<Row> getRows() {
 		List<Row> attributeRows = new ArrayList<Row>();
@@ -87,16 +119,14 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
 			List<Row> returnRows = new ArrayList<Row>();
 			for (Row row : rows) {
 				Field field = (Field) row.getFields().get(0);
-				if (field.getPropertyName().equals("kimTypeId")) {
+				if (field.getPropertyName().equals(KIM_TYPE_ID_PROPERTY_NAME)) {
 					List<Field> fields = new ArrayList<Field>();
 					Field typeField = new Field();
 					typeField.setFieldLabel("Type");
-					typeField.setPropertyName("kimTypeId");
+					typeField.setPropertyName(KIM_TYPE_ID_PROPERTY_NAME);
 					typeField.setFieldValidValues(getGroupTypeOptions());
 					typeField.setFieldType(Field.DROPDOWN_REFRESH);
 					fields.add(typeField);
-					// fields.add(new Field("Type", "", Field.DROPDOWN_REFRESH,
-					// false, "kimTypeId", "", getGroupTypeOptions(), null));
 					returnRows.add(new Row(fields));
 
 				} else {
@@ -111,18 +141,13 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
 			typeField.setFieldType(Field.TEXT);
 			typeField.setMaxLength(40);
 			typeField.setSize(20);
+			typeField.setQuickFinderClassNameImpl("org.kuali.rice.kim.bo.Person");
+			typeField.setFieldConversions( "principalName:principalName" );
+			typeField.setLookupParameters( "principalName:principalName" );
 			fields.add(typeField);
 			returnRows.add(new Row(fields));
 
 			setGrpRows(returnRows);
-			setAttrRows(setupAttributeRows());
-		} else {			 
-			attributeRows = setupAttributeRows();
-			if (attributeRows.isEmpty()) {
-				setAttrRows(attributeRows);				
-			} else if (CollectionUtils.isEmpty(getAttrRows())) {
-				setAttrRows(attributeRows);				
-			}
 		}
 		if (getAttrRows().isEmpty()) {
 			setAttrDefinitions(new AttributeDefinitionMap());
@@ -133,79 +158,202 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
 			fullRows.addAll(getAttrRows());
 			return fullRows;
 		}
-		
+
 	}
 
-	
+
 	@Override
 	public List<Column> getColumns() {
 		List<Column> columns =  super.getColumns();
-		int i = 0;
-		// TODO : only add attributes columns if attributes is specified ?
-		for ( AttributeDefinition attrDefn : attrDefinitions.values()) {
-	        Column column = new Column();
-	        column.setPropertyName("groupAttributes["+i+"].attributeValue");
-	        String columnTitle = attrDefn.getLabel();
-	        column.setColumnTitle(columnTitle);
-	        column.setMaxLength(attrDefn.getMaxLength());		
-	        Class<? extends Formatter> formatterClass = attrDefn.getFormatterClass();
-	        if (formatterClass != null) {
-	            try {
-	                column.setFormatter((Formatter) formatterClass.newInstance());
-	            }
-	            catch (InstantiationException e) {
-	                LOG.error("Unable to get new instance of formatter class: " + formatterClass.getName());
-	                throw new RuntimeException("Unable to get new instance of formatter class: " + formatterClass.getName());
-	            }
-	            catch (IllegalAccessException e) {
-	                LOG.error("Unable to get new instance of formatter class: " + formatterClass.getName());
-	                throw new RuntimeException("Unable to get new instance of formatter class: " + formatterClass.getName());
-	            }
-	        }
-	        i++;
-	        columns.add(column);
-		}
-		return columns;
+        for (Row row : attrRows) {
+            for (Field field : row.getFields()) {
+                Column newColumn = new Column();
+                newColumn.setColumnTitle(field.getFieldLabel());
+                newColumn.setMaxLength(field.getMaxLength());
+                newColumn.setPropertyName(field.getPropertyName());
+                newColumn.setFormatter((Formatter) field.getFormatter());
+                columns.add(newColumn);
+            }
+        }
+        return columns;
 	}
-	
-	private static List<KeyLabelPair>  groupTypeCache = null;
+
+    public Collection performLookup(LookupForm lookupForm, Collection resultTable, boolean bounded) {
+        setBackLocation((String) lookupForm.getFieldsForLookup().get(KNSConstants.BACK_LOCATION));
+        setDocFormKey((String) lookupForm.getFieldsForLookup().get(KNSConstants.DOC_FORM_KEY));
+        Collection displayList;
+
+        // call search method to get results
+        if (bounded) {
+            displayList = getSearchResults(lookupForm.getFieldsForLookup());
+        }
+        else {
+            displayList = getSearchResultsUnbounded(lookupForm.getFieldsForLookup());
+        }
+
+        HashMap<String,Class> propertyTypes = new HashMap<String, Class>();
+
+        boolean hasReturnableRow = false;
+
+        List returnKeys = getReturnKeys();
+        List pkNames = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(getBusinessObjectClass());
+        Person user = GlobalVariables.getUserSession().getPerson();
+
+        // iterate through result list and wrap rows with return url and action urls
+        for (Iterator iter = displayList.iterator(); iter.hasNext();) {
+            BusinessObject element = (BusinessObject) iter.next();
+            if(element instanceof PersistableBusinessObject){
+                lookupForm.setLookupObjectId(((PersistableBusinessObject)element).getObjectId());
+            }
+
+            BusinessObjectRestrictions businessObjectRestrictions = getBusinessObjectAuthorizationService().getLookupResultRestrictions(element, user);
+
+            HtmlData returnUrl = getReturnUrl(element, lookupForm, returnKeys, businessObjectRestrictions);
+
+            String actionUrls = getActionUrls(element, pkNames, businessObjectRestrictions);
+            //Fix for JIRA - KFSMI-2417
+            if("".equals(actionUrls)){
+                actionUrls = ACTION_URLS_EMPTY;
+            }
+
+            List<Column> columns = getColumns();
+            for (Iterator iterator = columns.iterator(); iterator.hasNext();) {
+
+                Column col = (Column) iterator.next();
+                Formatter formatter = col.getFormatter();
+
+                // pick off result column from result list, do formatting
+                String propValue = KNSConstants.EMPTY_STRING;
+                Object prop = null;
+                boolean skipPropTypeCheck = false;
+                if (col.getPropertyName().matches("\\w+\\.\\d+$")) {
+                    String id = col.getPropertyName().substring(col.getPropertyName().lastIndexOf('.') + 1); //.split("\\d+$"))[1];
+                    prop = ((KimGroupImpl)element).getGroupAttributeById(id);
+                }
+                if (prop == null) {
+                    prop = ObjectUtils.getPropertyValue(element, col.getPropertyName());
+                } else {
+                    skipPropTypeCheck = true;
+                }
+
+                // set comparator and formatter based on property type
+                Class propClass = propertyTypes.get(col.getPropertyName());
+                if ( propClass == null /*&& !skipPropTypeCheck*/) {
+                    try {
+                        propClass = ObjectUtils.getPropertyType( element, col.getPropertyName(), getPersistenceStructureService() );
+                        propertyTypes.put( col.getPropertyName(), propClass );
+                    } catch (Exception e) {
+                        throw new RuntimeException("Cannot access PropertyType for property " + "'" + col.getPropertyName() + "' " + " on an instance of '" + element.getClass().getName() + "'.", e);
+                    }
+                }
+
+                // formatters
+                if (prop != null) {
+                    // for Booleans, always use BooleanFormatter
+                    if (prop instanceof Boolean) {
+                        formatter = new BooleanFormatter();
+                    }
+
+                    // for Dates, always use DateFormatter
+                    if (prop instanceof Date) {
+                        formatter = new DateFormatter();
+                    }
+
+                    // for collection, use the list formatter if a formatter hasn't been defined yet
+                    if (prop instanceof Collection && formatter == null) {
+                    formatter = new CollectionFormatter();
+                    }
+
+                    if (formatter != null) {
+                        propValue = (String) formatter.format(prop);
+                    }
+                    else {
+                        propValue = prop.toString();
+                        if (col.getPropertyName().equals(KIM_TYPE_ID_PROPERTY_NAME)) {
+                            propValue = groupTypeValuesCache.get(prop.toString());
+                        }
+                    }
+                }
+
+                // comparator
+                col.setComparator(CellComparatorHelper.getAppropriateComparatorForPropertyClass(propClass));
+                col.setValueComparator(CellComparatorHelper.getAppropriateValueComparatorForPropertyClass(propClass));
+
+                propValue = maskValueIfNecessary(element.getClass(), col.getPropertyName(), propValue, businessObjectRestrictions);
+
+                col.setPropertyValue(propValue);
+
+                if (StringUtils.isNotBlank(propValue)) {
+                    col.setColumnAnchor(getInquiryUrl(element, col.getPropertyName()));
+
+                }
+            }
+
+            ResultRow row = new ResultRow(columns, returnUrl.constructCompleteHtmlTag(), actionUrls);
+            row.setRowId(returnUrl.getName());
+            row.setReturnUrlHtmlData(returnUrl);
+            // because of concerns of the BO being cached in session on the ResultRow,
+            // let's only attach it when needed (currently in the case of export)
+            if (getBusinessObjectDictionaryService().isExportable(getBusinessObjectClass())) {
+                row.setBusinessObject(element);
+            }
+            if(element instanceof PersistableBusinessObject){
+                row.setObjectId((((PersistableBusinessObject)element).getObjectId()));
+            }
+
+
+            boolean rowReturnable = isResultReturnable(element);
+            row.setRowReturnable(rowReturnable);
+            if (rowReturnable) {
+                hasReturnableRow = true;
+            }
+            resultTable.add(row);
+        }
+
+        lookupForm.setHasReturnableRow(hasReturnableRow);
+
+        return displayList;
+    }
 
 	@SuppressWarnings("unchecked")
 	private List<KeyLabelPair> getGroupTypeOptions() {
 		if ( groupTypeCache == null ) {
 			List<KeyLabelPair> options = new ArrayList<KeyLabelPair>();
+			groupTypeValuesCache = new HashMap<String, String>();
 			options.add(new KeyLabelPair("", ""));
-			//TODO : this is not efficient
-			List<KimTypeImpl> kimTypes = (List<KimTypeImpl>)getBusinessObjectService().findAll(KimTypeImpl.class);
+
 			List<KimGroupImpl> kimGroups = (List<KimGroupImpl>)getBusinessObjectService().findAll(KimGroupImpl.class);
-	        List<String> typeIds = new ArrayList<String>();
 	        // get the distinct list of type IDs from all groups in the system
 	        for (KimGroupImpl group : kimGroups) {
-	        	if (!typeIds.contains(group.getKimTypeId())) {
-	        		typeIds.add(group.getKimTypeId());
-	        	}
+	            KimTypeImpl kimType = KIMServiceLocator.getTypeInternalService().getKimType(group.getKimTypeId());
+	            if (kimType != null) {
+	                if (groupTypeValuesCache.get(kimType.getKimTypeId()) == null) {
+	                    String value = kimType.getNamespaceCode().trim() + KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR + kimType.getName().trim();
+	                    options.add(new KeyLabelPair(kimType.getKimTypeId(), value));
+	                    groupTypeValuesCache.put(kimType.getKimTypeId(), value);
+	                }
+	            }
 	        }
-	        // from that, get the types and names for the drop-down list
-			for (KimTypeImpl kimType : kimTypes) {
-				if (typeIds.contains(kimType.getKimTypeId())) {
-					options.add(new KeyLabelPair(kimType.getKimTypeId(), kimType.getName()));
-				}
-			}
+	        Collections.sort(options, new Comparator<KeyLabelPair>() {
+	           public int compare(KeyLabelPair k1, KeyLabelPair k2) {
+	               return k1.getLabel().compareTo(k2.getLabel());
+	           }
+	        });
 			groupTypeCache = options;
 		}
 		return groupTypeCache;
 	}
 
-	private List<Row> setupAttributeRows() {
+	private List<Row> setupAttributeRows(Map fieldValues) {
 		List<Row> returnRows = new ArrayList<Row>();
 		for (Row row : getGrpRows()) {
 			Field field = (Field) row.getFields().get(0);
-			if (field.getPropertyName().equals("kimTypeId") && StringUtils.isNotBlank(field.getPropertyValue())) {
-				if (StringUtils.isBlank(getTypeId()) || !getTypeId().equals(field.getPropertyValue())) {
+			if (field.getPropertyName().equals(KIM_TYPE_ID_PROPERTY_NAME) && StringUtils.isNotBlank(field.getPropertyValue())) {
+				if (!StringUtils.isBlank(getTypeId()) || !getTypeId().equals(field.getPropertyValue())) {
 					setTypeId(field.getPropertyValue());
 					setAttrRows(new ArrayList<Row>());
 					Map<String,Object> pkMap = new HashMap<String,Object>();
-					pkMap.put("kimTypeId", field.getPropertyValue());
+					pkMap.put(KIM_TYPE_ID_PROPERTY_NAME, field.getPropertyValue());
 					KimTypeImpl kimType = (KimTypeImpl)getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, pkMap);
 					// TODO what if servicename is null.  also check other places that have similar issue
 					// use default_service ?
@@ -219,11 +367,11 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
 		            for (AttributeDefinition definition  : definitions.values()) {
 				        List<Field> fields = new ArrayList<Field>();
 						Field typeField = new Field();
-						//String attrDefnId = mapEntry.getKey().substring(mapEntry.getKey().indexOf("."), mapEntry.getKey().length());
-//						String attrDefnId = definition.getId();
+
 						String attrDefnId = getAttrDefnId(definition);
 						typeField.setFieldLabel(definition.getLabel());
 						typeField.setPropertyName(definition.getName()+"."+attrDefnId);
+						typeField.setPropertyValue(fieldValues.get(typeField.getPropertyName()));
 						if (definition.getControl().isSelect()) {
 					        try {
 					            KeyValuesFinder finder = (KeyValuesFinder) definition.getControl().getValuesFinderClass().newInstance();
@@ -236,10 +384,39 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
 					        catch (IllegalAccessException e) {
 					            throw new RuntimeException(e.getMessage());
 					        }
-						} else {
+						} else if (definition.getControl().isText()){
 							typeField.setMaxLength(definition.getMaxLength());
-							typeField.setSize(definition.getControl().getSize());
-							typeField.setFieldType(Field.TEXT);
+							if (definition.getControl().getSize() != null) {
+							    typeField.setSize(definition.getControl().getSize());
+							}
+						    typeField.setFieldType(Field.TEXT);
+						} else if (definition.getControl().isRadio()) {
+						    try {
+                                KeyValuesFinder finder = (KeyValuesFinder) definition.getControl().getValuesFinderClass().newInstance();
+                                typeField.setFieldValidValues(finder.getKeyValues());
+                                typeField.setFieldType(Field.RADIO);
+                            }
+                            catch (InstantiationException e) {
+                                throw new RuntimeException(e.getMessage());
+                            }
+                            catch (IllegalAccessException e) {
+                                throw new RuntimeException(e.getMessage());
+                            }
+						} else if (definition.getControl().isCheckbox()) {
+						    KeyValuesFinder finder = (KeyValuesFinder)new IndicatorValuesFinder();
+                            typeField.setFieldValidValues(finder.getKeyValues());
+                            typeField.setFieldType(Field.RADIO);
+						    //typeField.setFieldType(Field.CHECKBOX);
+						} else if (definition.getControl().isHidden()) {
+						    typeField.setFieldType(Field.HIDDEN);
+						} else if (definition.getControl().isLookupReadonly()) {
+						    typeField.setFieldType(Field.LOOKUP_READONLY);
+						} else if (definition.getControl().isTextarea()) {
+						    typeField.setMaxLength(definition.getMaxLength());
+                            if (definition.getControl().getSize() != null) {
+                                typeField.setSize(definition.getControl().getSize());
+                            }
+                            typeField.setFieldType(Field.TEXT_AREA);
 						}
 						fields.add(typeField);
 						returnRows.add(new Row(fields));
@@ -247,14 +424,14 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
 				} else {
 					return getAttrRows();
 				}
-			} else if (field.getPropertyName().equals("kimTypeId") && StringUtils.isBlank(field.getPropertyValue())) {
+			} else if (field.getPropertyName().equals(KIM_TYPE_ID_PROPERTY_NAME) && StringUtils.isBlank(field.getPropertyValue())) {
 				setTypeId("");
 			}
 		}
 		return returnRows;
 
 	}
-	
+
     private String getAttrDefnId(AttributeDefinition definition) {
     	if (definition instanceof KimDataDictionaryAttributeDefinition) {
     		return ((KimDataDictionaryAttributeDefinition)definition).getKimAttrDefnId();
@@ -304,5 +481,9 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
 		this.typeId = typeId;
 	}
 
-
+    @Override
+    public void performClear(LookupForm lookupForm) {
+        super.performClear(lookupForm);
+        this.attrRows = new ArrayList<Row>();
+    }
 }

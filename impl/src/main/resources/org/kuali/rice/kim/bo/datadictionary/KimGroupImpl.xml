@@ -11,15 +11,14 @@
         p:titleAttribute="groupId"
         p:objectLabel="Names"
         p:inquiryDefinition-ref="KimGroupImpl-inquiryDefinition"
-        p:lookupDefinition-ref="KimGroupImpl-lookupDefinition" >        
-        
+        p:lookupDefinition-ref="KimGroupImpl-lookupDefinition" >
+
     <property name="attributes" >
       <list>
         <ref bean="KimGroupImpl-groupId" />
         <ref bean="KimGroupImpl-kimTypeId" />
         <ref bean="KimGroupImpl-groupName" />
         <ref bean="KimGroupImpl-namespaceCode" />
-       <!--   <ref bean="KimGroupImpl-principalName" /> -->
       </list>
     </property>
     <property name="collections" >
@@ -32,21 +31,22 @@
               p:description="Assigned Principals" />
       </list>
     </property>
+
   </bean>
- 
-   <bean id="KimGroupImpl-groupId" parent="KimGroupImpl-groupId-parentBean" />
+
+  <bean id="KimGroupImpl-groupId" parent="KimGroupImpl-groupId-parentBean" />
   <bean id="KimGroupImpl-groupId-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="groupId"
         p:forceUppercase="true"
-        p:label="Group"
-        p:shortLabel="Group"
+        p:label="Group Id"
+        p:shortLabel="Group Id"
         p:maxLength="10"
         p:required="false" >
     <property name="control" >
       <bean parent="TextControlDefinition" p:size="10" />
     </property>
   </bean>
-  
+
   <bean id="KimGroupImpl-kimTypeId" parent="KimGroupImpl-kimTypeId-parentBean" />
   <bean id="KimGroupImpl-kimTypeId-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="kimTypeId"
@@ -59,7 +59,7 @@
       <bean parent="TextControlDefinition" p:size="10" />
     </property>
   </bean>
-    
+
   <bean id="KimGroupImpl-groupName" parent="KimGroupImpl-groupName-parentBean" />
   <bean id="KimGroupImpl-groupName-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="groupName"
@@ -72,10 +72,10 @@
       <bean parent="TextControlDefinition" p:size="10" />
     </property>
   </bean>
-<!--  
+<!--
   <bean id="KimGroupImpl-principalName" parent="KimGroupImpl-principalName-parentBean" />
   <bean id="KimGroupImpl-principalName-parentBean" parent="AttributeDefinition" abstract="true"
-        p:name="principalName"
+        p:name="members.groupMemberId"
         p:forceUppercase="true"
         p:label="Principal Name"
         p:shortLabel="Principal Name"
@@ -85,7 +85,7 @@
       <bean parent="TextControlDefinition" p:size="10" />
     </property>
   </bean>
-  -->
+-->
   <bean id="KimGroupImpl-namespaceCode" parent="KimGroupImpl-namespaceCode-parentBean" />
   <bean id="KimGroupImpl-namespaceCode-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="namespaceCode"
@@ -98,7 +98,7 @@
       <bean parent="TextControlDefinition" p:size="10" />
     </property>
   </bean>
-  
+
   <bean id="KimGroupImpl-inquiryDefinition" parent="KimGroupImpl-inquiryDefinition-parentBean" />
 
   <bean id="KimGroupImpl-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
@@ -146,10 +146,10 @@
   <bean id="KimGroupImpl-lookupDefinition" parent="KimGroupImpl-lookupDefinition-parentBean" />
 
   <bean id="KimGroupImpl-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition"
-        p:title="Group Lookup" 
+        p:title="Group Lookup"
         p:instructions="Lookup a Group" >
     <property name="lookupableID" value="groupLookupable" />
-        
+
     <property name="defaultSort" >
       <bean parent="SortDefinition">
         <property name="attributeNames" >
@@ -166,7 +166,10 @@
         <bean parent="FieldDefinition" p:attributeName="groupName" />
         <bean parent="FieldDefinition" p:attributeName="kimTypeId" />
         <bean parent="FieldDefinition" p:attributeName="namespaceCode" />
-       <!-- <bean parent="FieldDefinition" p:attributeName="principalName" /> -->
+        <!--
+             Note that kimTypeId and PrincipalName fields
+             are overwritten/created in GroupLookupableHelperServiceImpl
+        -->
       </list>
     </property>
     <property name="resultFields" >

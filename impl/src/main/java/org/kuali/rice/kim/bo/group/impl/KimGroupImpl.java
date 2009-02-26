@@ -33,6 +33,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.util.TypedArrayList;
@@ -160,6 +162,7 @@ public class KimGroupImpl extends PersistableBusinessObjectBase implements KimGr
 		return groupMembers;
 	}
 
+
 	public String getKimTypeId() {
 		return this.kimTypeId;
 	}
@@ -196,6 +199,15 @@ public class KimGroupImpl extends PersistableBusinessObjectBase implements KimGr
 
 	public List<GroupAttributeDataImpl> getGroupAttributes() {
 		return this.groupAttributes;
+	}
+
+	public GroupAttributeDataImpl getGroupAttributeById(String attributeId) {
+	    for (GroupAttributeDataImpl gad : getGroupAttributes()) {
+	        if (gad.getKimAttributeId().equals(attributeId.trim())) {
+	            return gad;
+	        }
+	    }
+	    return null;
 	}
 
 	public void setGroupAttributes(List<GroupAttributeDataImpl> groupAttributes) {

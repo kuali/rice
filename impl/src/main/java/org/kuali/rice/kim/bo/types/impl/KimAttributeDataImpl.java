@@ -30,8 +30,8 @@ import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
- * This is a description of what this class does - kellerj don't forget to fill this in. 
- * 
+ * This is a description of what this class does - kellerj don't forget to fill this in.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
@@ -41,27 +41,27 @@ public class KimAttributeDataImpl extends PersistableBusinessObjectBase implemen
 	@Id
 	@Column(name="ATTR_DATA_ID")
 	protected String attributeDataId;
-	
+
 	@Column(name="TARGET_PRIMARY_KEY")
 	protected String targetPrimaryKey;
-	
+
 	@Column(name="KIM_TYP_ID")
 	protected String kimTypeId;
 
 	@Column(name="KIM_ATTR_DEFN_ID")
 	protected String kimAttributeId;
-	
+
 	@Column(name="ATTR_VAL")
-	protected String attributeValue;	
+	protected String attributeValue;
 
 	@ManyToOne(targetEntity=KimAttributeImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
 	@JoinColumn(name = "KIM_ATTR_DEFN_ID", insertable = false, updatable = false)
 	protected KimAttributeImpl kimAttribute;
-	
+
 	@ManyToOne(targetEntity=KimTypeImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
 	@JoinColumn(name = "KIM_TYP_ID", insertable = false, updatable = false)
 	protected KimTypeImpl kimType;
-	
+
 	public String getAttributeDataId() {
 		return this.attributeDataId;
 	}
@@ -126,7 +126,7 @@ public class KimAttributeDataImpl extends PersistableBusinessObjectBase implemen
 	@Override
     public String toStringBuilder(LinkedHashMap mapper) {
         if(getKimAttribute() != null){
-        	return getKimAttribute().getAttributeName() + KimConstants.NAME_VALUE_SEPARATOR + getAttributeValue();
+        	return getAttributeValue();
         }
         else {
             return super.toStringBuilder(mapper);

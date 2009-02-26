@@ -51,8 +51,8 @@ import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
 /**
- * This is a description of what this class does - jonathan don't forget to fill this in. 
- * 
+ * This is a description of what this class does - jonathan don't forget to fill this in.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
@@ -61,7 +61,7 @@ public class KimTypeServiceBase implements KimTypeService {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KimTypeServiceBase.class);
 
 	protected List<String> acceptedAttributeNames = new ArrayList<String>();
-	
+
 	protected List<KimAttributesTranslator> kimAttributesTranslators = new ArrayList<KimAttributesTranslator>();
 	protected BusinessObjectService businessObjectService;
 	protected DictionaryValidationService dictionaryValidationService;
@@ -91,7 +91,7 @@ public class KimTypeServiceBase implements KimTypeService {
 
 	/**
 	 * Returns null, to indicate that there is no custom workflow document needed for this type.
-	 * 
+	 *
 	 * @see org.kuali.rice.kim.service.support.KimTypeService#getWorkflowDocumentTypeName()
 	 */
 	public String getWorkflowDocumentTypeName() {
@@ -99,9 +99,9 @@ public class KimTypeServiceBase implements KimTypeService {
 	}
 
 	/**
-	 * 
+	 *
 	 * This method matches input attribute set entries and standard attribute set entries using literal string match.
-	 * 
+	 *
 	 */
 	protected boolean performMatch(AttributeSet inputAttributeSet, AttributeSet storedAttributeSet) {
 		if ( storedAttributeSet == null || inputAttributeSet == null ) {
@@ -134,9 +134,9 @@ public class KimTypeServiceBase implements KimTypeService {
 		}
 		return translatedQualification;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * This method ...
 	 */
 	public boolean performMatches(AttributeSet inputAttributeSet, List<AttributeSet> storedAttributeSets){
@@ -148,12 +148,12 @@ public class KimTypeServiceBase implements KimTypeService {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * This is the default implementation.  It calls into the service for each attribute to
 	 * validate it there.  No combination validation is done.  That should be done
 	 * by overriding this method.
-	 * 
+	 *
 	 * @see org.kuali.rice.kim.service.support.KimTypeService#validateAttributes(AttributeSet)
 	 */
 	public AttributeSet validateAttributes(AttributeSet attributes) {
@@ -171,9 +171,9 @@ public class KimTypeServiceBase implements KimTypeService {
 				if ( attributeImpl.getComponentName() == null) {
 					attributeErrors = validateNonDataDictionaryAttribute(attributeName, attributes.get( attributeName ), true);
 				} else {
-					// create an object of the proper type per the component 
+					// create an object of the proper type per the component
 		            Object componentObject = Class.forName( attributeImpl.getComponentName() ).newInstance();
-		            // get the bean utils descriptor for accessing the attribute on that object 
+		            // get the bean utils descriptor for accessing the attribute on that object
 					PropertyDescriptor propertyDescriptor = PropertyUtils.getPropertyDescriptor(componentObject, attributeImpl.getAttributeName());
 					if ( propertyDescriptor != null ) {
 						// set the value on the object so that it can be checked
@@ -186,7 +186,7 @@ public class KimTypeServiceBase implements KimTypeService {
 			} catch (Exception e) {
 				LOG.error("Unable to validate attribute: " + attributeName, e);
 			}
-			
+
 			if ( attributeErrors != null ) {
 				for ( String err : attributeErrors ) {
 					validationErrors.put(attributeName, err);
@@ -195,7 +195,7 @@ public class KimTypeServiceBase implements KimTypeService {
 		}
 		return validationErrors;
 	}
-	
+
 	protected List<String> validateDataDictionaryAttribute(String entryName, Object object, PropertyDescriptor propertyDescriptor, boolean validateRequired) {
 		getDictionaryValidationService().validatePrimitiveFromDescriptor(entryName, object, propertyDescriptor, "", validateRequired);
 
@@ -228,12 +228,12 @@ public class KimTypeServiceBase implements KimTypeService {
 	protected List<String> validateNonDataDictionaryAttribute(String attributeName, String attributeValue, boolean validateRequired) {
 		return new ArrayList<String>();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	protected List<KeyLabelPair> getDataDictionaryAttributeValues(KimAttributeImpl attributeImpl) {
 		AttributeDefinition definition = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(attributeImpl.getComponentName()).getAttributeDefinition(attributeImpl.getAttributeName());
 		List<KeyLabelPair> pairs = new ArrayList<KeyLabelPair>();
-		Class<? extends KeyValuesFinder> keyValuesFinderName = (Class<? extends KeyValuesFinder>)definition.getControl().getValuesFinderClass();		
+		Class<? extends KeyValuesFinder> keyValuesFinderName = (Class<? extends KeyValuesFinder>)definition.getControl().getValuesFinderClass();
 		try {
 			KeyValuesFinder finder = keyValuesFinderName.newInstance();
 			pairs = finder.getKeyValues();
@@ -242,11 +242,11 @@ public class KimTypeServiceBase implements KimTypeService {
 		}
 		return pairs;
 	}
-	 
+
 	protected List<KeyLabelPair> getNonDataDictionaryAttributeValues(String attributeName) {
 		return new ArrayList<KeyLabelPair>();
 	}
-	
+
 	// FIXME: the attributeName is not guaranteed to be unique!
 	public List<KeyLabelPair> getAttributeValidValues(String attributeName) {
 		Map<String,String> criteria = new HashMap<String,String>();
@@ -254,23 +254,23 @@ public class KimTypeServiceBase implements KimTypeService {
         KimAttributeImpl attributeImpl = (KimAttributeImpl) getBusinessObjectService().findByPrimaryKey(KimAttributeImpl.class, criteria);
         return attributeImpl.getComponentName() == null ? getNonDataDictionaryAttributeValues(attributeName) : getDataDictionaryAttributeValues(attributeImpl);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	protected AttributeDefinition getDataDictionaryAttributeDefinition(KimTypeAttributeImpl typeAttribute) {
 		KimDataDictionaryAttributeDefinition definition = new KimDataDictionaryAttributeDefinition();
 		String componentClassName = typeAttribute.getKimAttribute().getComponentName();
 		String attributeName = typeAttribute.getKimAttribute().getAttributeName();
 		AttributeDefinition baseDefinition = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(componentClassName).getAttributeDefinition(attributeName);
-		
+
 		// copy all the base attributes
 		definition.setName( baseDefinition.getName() );
 		definition.setLabel( baseDefinition.getLabel() );
 		definition.setShortLabel( baseDefinition.getShortLabel() );
 		definition.setMaxLength( baseDefinition.getMaxLength() );
 		definition.setRequired( baseDefinition.isRequired() );
-		
+
 		if (baseDefinition.getFormatterClass() != null) {
-			definition.setFormatterClass(Formatter.findFormatter(baseDefinition.getFormatterClass()));
+			definition.setFormatterClass(baseDefinition.getFormatterClass());
 		}
 		ControlDefinition control = copy(baseDefinition.getControl());
 //		if (control.getValuesFinderClass() != null) {
@@ -280,7 +280,7 @@ public class KimTypeServiceBase implements KimTypeService {
 		definition.setSortCode(typeAttribute.getSortCode());
 		definition.setKimAttrDefnId(typeAttribute.getKimAttributeId());
 		definition.setApplicationUrl(typeAttribute.getKimAttribute().getApplicationUrl());
-		
+
 		Map<String, String> lookupInputPropertyConversionsMap = new HashMap<String, String>();
 		Map<String, String> lookupReturnPropertyConversionsMap = new HashMap<String, String>();
 		try {
@@ -317,7 +317,7 @@ public class KimTypeServiceBase implements KimTypeService {
 		}
 		return definition;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private <T> T copy(final T original) {
 		if ( original == null ) {
@@ -336,13 +336,13 @@ public class KimTypeServiceBase implements KimTypeService {
     				}
 	    		}
 	    		copyClass = copyClass.getSuperclass();
-	    	} while (copyClass != null && !(copyClass.equals(Object.class)));		
+	    	} while (copyClass != null && !(copyClass.equals(Object.class)));
 		} catch (Exception e) {
 			LOG.error("Unable to copy " + original, e);
 		}
 		return copy;
 	}
-	
+
 	protected AttributeDefinition getNonDataDictionaryAttributeDefinition(KimTypeAttributeImpl typeAttribute) {
 		KimNonDataDictionaryAttributeDefinition definition = new KimNonDataDictionaryAttributeDefinition();
 		definition.setName(typeAttribute.getKimAttribute().getAttributeName());
@@ -351,9 +351,9 @@ public class KimTypeServiceBase implements KimTypeService {
 		definition.setKimAttrDefnId(typeAttribute.getKimAttributeId());
 		return definition;
 	}
-	
+
 	private Map<String,AttributeDefinitionMap> attributeDefinitionCache = new HashMap<String,AttributeDefinitionMap>();
-	
+
 	public AttributeDefinitionMap getAttributeDefinitions(String kimTypeId) {
 		AttributeDefinitionMap definitions = attributeDefinitionCache.get( kimTypeId );
 		if ( definitions == null ) {
@@ -377,7 +377,7 @@ public class KimTypeServiceBase implements KimTypeService {
 		}
 		return definitions;
 	}
-	
+
 	/**
 	 * @see org.kuali.rice.kim.service.support.KimTypeService#getAcceptedAttributeNames()
 	 */
@@ -388,7 +388,7 @@ public class KimTypeServiceBase implements KimTypeService {
 	public void setAcceptedAttributeNames(List<String> acceptedQualificationAttributeNames) {
 		this.acceptedAttributeNames = acceptedQualificationAttributeNames;
 	}
-	
+
 	public void addAcceptedAttributeName( String acceptedAttributeName ) {
 		acceptedAttributeNames.add( acceptedAttributeName );
 	}
@@ -403,8 +403,8 @@ public class KimTypeServiceBase implements KimTypeService {
 			}
 		}
 		return true;
-	}	
-	
+	}
+
 	/**
 	 * @return the kimAttributesTranslators
 	 */
@@ -419,11 +419,11 @@ public class KimTypeServiceBase implements KimTypeService {
 			List<KimAttributesTranslator> kimAttributesTranslators) {
 		this.kimAttributesTranslators = kimAttributesTranslators;
 	}
-	
+
 	public void addAttributeTranslator( KimAttributesTranslator attributesTranslator ) {
 		kimAttributesTranslators.add( attributesTranslator );
 	}
-	
+
 	protected final String COMMA_SEPARATOR = ", ";
 	protected final String QUALIFICATION_RECEIVED_ATTIBUTES_NAME = "qualification";
 	protected final String ROLE_QUALIFIERS_RECEIVED_ATTIBUTES_NAME = "role qualifiers";
@@ -443,10 +443,10 @@ public class KimTypeServiceBase implements KimTypeService {
         	for(String missingAttribute: missingAttributes){
         		errorMessage += missingAttribute + COMMA_SEPARATOR;
         	}
-        	errorMessage = errorMessage.substring(0, 
+        	errorMessage = errorMessage.substring(0,
         			errorMessage.length()-COMMA_SEPARATOR.length()) + " not found in "+receivedAttributesName+" .";
             throw new RuntimeException(errorMessage);
         }*/
 	}
-	
+
 }

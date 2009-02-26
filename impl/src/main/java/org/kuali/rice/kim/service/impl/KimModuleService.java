@@ -28,19 +28,19 @@ import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 import org.kuali.rice.kns.service.impl.ModuleServiceBase;
 
 /**
- * This is a description of what this class does - kellerj don't forget to fill this in. 
- * 
+ * This is a description of what this class does - kellerj don't forget to fill this in.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class KimModuleService extends ModuleServiceBase {
 
-	private PersonService<Person> personService; 
-	private RoleService kimRoleService; 
-	
+	private PersonService<Person> personService;
+	private RoleService kimRoleService;
+
 	/**
 	 * This overridden method ...
-	 * 
+	 *
 	 * @see org.kuali.rice.kns.service.impl.ModuleServiceBase#getExternalizableBusinessObject(java.lang.Class, java.util.Map)
 	 */
 	@SuppressWarnings("unchecked")
@@ -48,7 +48,7 @@ public class KimModuleService extends ModuleServiceBase {
 	public <T extends ExternalizableBusinessObject> T getExternalizableBusinessObject(Class<T> businessObjectClass, Map<String, Object> fieldValues) {
 		if ( Person.class.isAssignableFrom( businessObjectClass ) ) {
 			if ( fieldValues.containsKey( "principalId" ) ) {
-				return (T) personService.getPerson( (String)fieldValues.get( "principalId" ) );
+				return (T) getPersonService().getPerson( (String)fieldValues.get( "principalId" ) );
 			} else if ( fieldValues.containsKey( "principalName" ) ) {
 				return (T) personService.getPersonByPrincipalName( (String)fieldValues.get( "principalName" ) );
 			}
@@ -59,10 +59,10 @@ public class KimModuleService extends ModuleServiceBase {
 		// otherwise, use the default implementation
 		return super.getExternalizableBusinessObject( businessObjectClass, fieldValues );
 	}
-	
+
 	/**
 	 * This overridden method ...
-	 * 
+	 *
 	 * @see org.kuali.rice.kns.service.impl.ModuleServiceBase#getExternalizableBusinessObjectsList(java.lang.Class, java.util.Map)
 	 */
 	@SuppressWarnings("unchecked")
@@ -71,9 +71,9 @@ public class KimModuleService extends ModuleServiceBase {
 			Class<T> externalizableBusinessObjectClass, Map<String, Object> fieldValues) {
 		// for Person objects (which are not real PersistableBOs) pull them through the person service
 		if ( Person.class.isAssignableFrom( externalizableBusinessObjectClass ) ) {
-			return (List)personService.findPeople( (Map)fieldValues );
+			return (List)getPersonService().findPeople( (Map)fieldValues );
 		} else if ( Role.class.isAssignableFrom( externalizableBusinessObjectClass ) ) {
-			return (List)kimRoleService.getRolesSearchResults((Map)fieldValues );
+			return (List)getKimRoleService().getRolesSearchResults((Map)fieldValues );
 		}
 		// otherwise, use the default implementation
 		return super.getExternalizableBusinessObjectsList( externalizableBusinessObjectClass, fieldValues );
@@ -88,18 +88,18 @@ public class KimModuleService extends ModuleServiceBase {
 			Class<T> externalizableBusinessObjectClass, Map<String, Object> fieldValues, boolean unbounded) {
 		// for Person objects (which are not real PersistableBOs) pull them through the person service
 		if ( Person.class.isAssignableFrom( externalizableBusinessObjectClass ) ) {
-			return (List)personService.findPeople( (Map)fieldValues, unbounded );
+			return (List)getPersonService().findPeople( (Map)fieldValues, unbounded );
 		} else if ( Role.class.isAssignableFrom( externalizableBusinessObjectClass ) ) {
 			// FIXME: needs to send unbounded flag
-			return (List)kimRoleService.getRolesSearchResults((Map)fieldValues );
+			return (List)getKimRoleService().getRolesSearchResults((Map)fieldValues );
 		}
 		// otherwise, use the default implementation
 		return super.getExternalizableBusinessObjectsListForLookup(externalizableBusinessObjectClass, fieldValues, unbounded);
 	}
-	
+
 	/**
 	 * This overridden method ...
-	 * 
+	 *
 	 * @see org.kuali.rice.kns.service.impl.ModuleServiceBase#listPrimaryKeyFieldNames(java.lang.Class)
 	 */
 	@SuppressWarnings("unchecked")
@@ -114,11 +114,11 @@ public class KimModuleService extends ModuleServiceBase {
 			List<String> pkFields = new ArrayList<String>( 1 );
 			pkFields.add( "roleId" );
 			return pkFields;
-		} 
+		}
 		// otherwise, use the default implementation
 		return super.listPrimaryKeyFieldNames( businessObjectInterfaceClass );
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public PersonService<Person> getPersonService() {
 		if ( personService == null ) {

@@ -112,5 +112,11 @@
     <param name="session.document.cache.size">100</param>
 
     <param name="classpath.resource.prefix">/WEB-INF/classes/</param>
-
+    
+    <!-- what mode should KIM be run in? 
+        local - use the master data source
+        embedded - run locally, but may have separate data source from rest of application
+        remote - do not install services locally, access over KSB
+     -->
+    <param name="kim.mode">local</param>
 </config>

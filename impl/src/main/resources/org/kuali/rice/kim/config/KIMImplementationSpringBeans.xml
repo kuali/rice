@@ -26,7 +26,7 @@
                            http://www.springframework.org/schema/aop
                            http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 
-	<import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
+    <bean id="kimDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean" lazy-init="true"/>
 
 	<bean id="kimOjbConfigurer" class="org.kuali.rice.core.ojb.BaseOjbConfigurer">
 		<property name="jcdAliases">
@@ -102,46 +102,9 @@
         p:moduleConfiguration-ref="kimModuleConfiguration"
         p:kualiModuleService-ref="kualiModuleService" />
 
-	<bean id="kimDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean" lazy-init="true"/>
-
-	<bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate" lazy-init="true">
-		<property name="transactionManager">
-			<ref bean="transactionManager" />
-		</property>
-	</bean>
-
-	<!-- Proxy for rollback on all exceptions -->
-	<bean id="matchAllWithPropReqCheckedException" class="org.springframework.transaction.interceptor.MatchAlwaysTransactionAttributeSource"
-		lazy-init="true">
-		<property name="transactionAttribute">
-			<value>PROPAGATION_REQUIRED,-Exception</value>
-		</property>
-	</bean>
-
-	<bean id="matchAllWithPropReq" class="org.springframework.transaction.interceptor.MatchAlwaysTransactionAttributeSource" lazy-init="true">
-		<property name="transactionAttribute">
-			<value>PROPAGATION_REQUIRED</value>
-		</property>
-	</bean>
-
-	<bean id="matchAllTxInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor" lazy-init="true">
-		<property name="transactionManager">
-			<ref bean="transactionManager" />
-		</property>
-		<property name="transactionAttributeSource">
-			<ref bean="matchAllWithPropReq" />
-		</property>
-	</bean>
 
 
-    <bean id="dbPlatformFactory" class="org.kuali.rice.kns.dbplatform.ConfigurableKualiDBPlatformFactory">
-        <property name="ojbPlatform" value="${datasource.ojb.platform}" />
-        <property name="dataSource" ref="kimDataSource" />
-    </bean>
-
-    <bean id="dbPlatform" factory-bean="dbPlatformFactory" factory-method="getPlatform" />
-
-    <bean id="platformAwareDao" abstract="true" class="org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb">
+    <bean id="kimPlatformAwareDao" abstract="true" class="org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb">
         <property name="jcdAlias" value="kimDataSource" />
         <property name="dbPlatform" ref="dbPlatform" />
     </bean>
@@ -170,11 +133,6 @@
   <bean id="kimEntityManager" class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
   	<property name="entityManagerFactory" ref="kimEntityManagerFactory"/>
   </bean>
-  
-  <!-- Used for @Transactional so you don't have to wire services up in here -->
-  <tx:annotation-driven transaction-manager="transactionManager"/>
-
-  <bean id="NoResultExceptionInterceptor" class="org.kuali.rice.core.jpa.spring.NoResultExceptionInterceptor" />
 
   <!-- END JPA CONFIGURATION -->
 
@@ -204,9 +162,9 @@
 
   <bean id="kimIdentityCacheService" class="org.kuali.rice.kim.service.impl.IdentityCacheServiceImpl" />
 
-  <bean id="kimRoleDao" class="org.kuali.rice.kim.dao.impl.KimRoleDaoOjb" parent="platformAwareDao" />
-  <bean id="kimGroupDao" class="org.kuali.rice.kim.dao.impl.KimGroupDaoOjb" parent="platformAwareDao" />
-  <bean id="kimPermissionDao" class="org.kuali.rice.kim.dao.impl.KimPermissionDaoOjb" parent="platformAwareDao" />
+  <bean id="kimRoleDao" class="org.kuali.rice.kim.dao.impl.KimRoleDaoOjb" parent="kimPlatformAwareDao" />
+  <bean id="kimGroupDao" class="org.kuali.rice.kim.dao.impl.KimGroupDaoOjb" parent="kimPlatformAwareDao" />
+  <bean id="kimPermissionDao" class="org.kuali.rice.kim.dao.impl.KimPermissionDaoOjb" parent="kimPlatformAwareDao" />
 
   <bean id="kimRoleService" class="org.kuali.rice.kim.service.impl.RoleServiceImpl"
   	p:roleDao-ref="kimRoleDao" />
@@ -265,7 +223,7 @@
     </property>
   </bean>
 
-  <bean id="kimResponsibilityDao" class="org.kuali.rice.kim.dao.impl.KimResponsibilityDaoOjb" parent="platformAwareDao"/>
+  <bean id="kimResponsibilityDao" class="org.kuali.rice.kim.dao.impl.KimResponsibilityDaoOjb" parent="kimPlatformAwareDao"/>
 
   <bean id="kimResponsibilityService" class="org.kuali.rice.kim.service.impl.ResponsibilityServiceImpl"
   	p:responsibilityDao-ref="kimResponsibilityDao"
@@ -285,7 +243,7 @@
     <property name="entityManager" ref="kimEntityManager"/>
   </bean>
   
-  <bean id="kimTypeDao" class="org.kuali.rice.kim.dao.impl.KimTypeDaoOjb" parent="platformAwareDao" />
+  <bean id="kimTypeDao" class="org.kuali.rice.kim.dao.impl.KimTypeDaoOjb" parent="kimPlatformAwareDao" />
 
   <bean id="kimTypeInternalService" class="org.kuali.rice.kim.service.support.impl.KimTypeInternalServiceImpl"
     p:kimTypeDao-ref="kimTypeDao" />

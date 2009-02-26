@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.config;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -35,6 +36,31 @@ public class KIMConfigurer extends ModuleConfigurer {
 	private static final String KIM_INTERFACE_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kim/config/KIMInterfaceSpringBeans.xml";
 	private static final String KIM_IMPL_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kim/config/KIMImplementationSpringBeans.xml";
 	
+	public static final String LOCAL_RUN_MODE = "local";
+	public static final String EMBEDDED_RUN_MODE = "embedded";
+	public static final String REMOTE_RUN_MODE = "remote";
+	protected static final List<String> VALID_RUN_MODES = new ArrayList<String>();
+	static {
+		VALID_RUN_MODES.add( LOCAL_RUN_MODE );
+		VALID_RUN_MODES.add( EMBEDDED_RUN_MODE );
+		VALID_RUN_MODES.add( REMOTE_RUN_MODE );
+	}
+	
+	
+	private String runMode = LOCAL_RUN_MODE;
+	
+	public String getRunMode() {
+		return this.runMode;
+	}
+
+	public void setRunMode(String runMode) {
+		runMode = runMode.trim();
+		if ( !VALID_RUN_MODES.contains( runMode ) ) {
+			throw new IllegalArgumentException( "Invalid run mode for the " + this.getClass().getSimpleName() + ": " + runMode + " - Valid Values are: " + VALID_RUN_MODES );
+		}
+		this.runMode = runMode;
+	}
+
 	/**
 	 * This overridden method handles setting up the KIM specific configuration.
 	 * 
@@ -55,7 +81,10 @@ public class KIMConfigurer extends ModuleConfigurer {
 
 	@Override
 	public String getSpringFileLocations() {
-		return KIM_INTERFACE_SPRING_BEANS_PATH+","+KIM_IMPL_SPRING_BEANS_PATH;
+		if ( runMode.equals( LOCAL_RUN_MODE ) || runMode.equals( EMBEDDED_RUN_MODE ) ) {
+			return KIM_INTERFACE_SPRING_BEANS_PATH+","+KIM_IMPL_SPRING_BEANS_PATH;
+		}
+		return KIM_INTERFACE_SPRING_BEANS_PATH;
 	}
 	
 	/**

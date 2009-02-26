@@ -395,7 +395,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 				LOG.warn("Could not locate action item for the given action item id [" + invocation.getActionItemId() + "], not taking mass action on it.");
 				continue;
 			}
-			KEWServiceLocator.getActionListService().deleteActionItem(actionItem);
+//			KEWServiceLocator.getActionListService().deleteActionItem(actionItem);
 			ActionInvocationService actionInvocService = MessageServiceNames.getActionInvocationProcessorService(actionItem.getRouteHeader());
 			actionInvocService.invokeAction(principalId, actionItem.getRouteHeaderId(), invocation);
 //			ActionInvocationProcessor.queueActionInvocation(user, actionItem.getRouteHeaderId(), invocation);

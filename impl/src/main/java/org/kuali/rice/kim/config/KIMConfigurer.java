@@ -32,7 +32,8 @@ import org.kuali.rice.core.lifecycle.Lifecycle;
  */
 public class KIMConfigurer extends ModuleConfigurer {
 	private static final Logger LOG = Logger.getLogger(KIMConfigurer.class);
-	private static final String KIM_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kim/config/KIMSpringBeans.xml";
+	private static final String KIM_INTERFACE_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kim/config/KIMInterfaceSpringBeans.xml";
+	private static final String KIM_IMPL_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kim/config/KIMImplementationSpringBeans.xml";
 	
 	/**
 	 * This overridden method handles setting up the KIM specific configuration.
@@ -41,7 +42,9 @@ public class KIMConfigurer extends ModuleConfigurer {
 	 */
 	@Override
 	public Config loadConfig(Config parentConfig) throws Exception {
-	    	LOG.info("Starting configuration of KIM for service namespace " + parentConfig.getServiceNamespace());
+		if ( LOG.isInfoEnabled() ) {
+			LOG.info("Starting configuration of KIM for service namespace " + parentConfig.getServiceNamespace());
+		}
 		
 		Config currentConfig = ConfigContext.getCurrentContextConfig();
 		
@@ -51,8 +54,8 @@ public class KIMConfigurer extends ModuleConfigurer {
 	}
 
 	@Override
-	public String getSpringFileLocations(){
-		return KIM_SPRING_BEANS_PATH;
+	public String getSpringFileLocations() {
+		return KIM_INTERFACE_SPRING_BEANS_PATH+","+KIM_IMPL_SPRING_BEANS_PATH;
 	}
 	
 	/**

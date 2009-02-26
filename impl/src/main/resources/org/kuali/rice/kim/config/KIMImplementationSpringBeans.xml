@@ -68,7 +68,6 @@
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimGroupImpl.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimRoleImpl.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimTypeImpl.xml</value>
-                <value>classpath:org/kuali/rice/kim/document/datadictionary/IdentityManagementPersonDocument.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimResponsibilityTemplateImpl.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimPermissionTemplateImpl.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimResponsibilityImpl.xml</value>
@@ -82,6 +81,7 @@
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimResponsibilityAttributeDataImpl.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimPermissionRequiredAttributeImpl.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimPermissionAttributeDataImpl.xml</value>
+                <value>classpath:org/kuali/rice/kim/document/datadictionary/IdentityManagementPersonDocument.xml</value>
                 <value>classpath:org/kuali/rice/kim/document/datadictionary/IdentityManagementRoleDocument.xml</value>
             </list>
 		</property>
@@ -100,8 +100,6 @@
 
 	<bean id="kimModule" class="org.kuali.rice.kim.service.impl.KimModuleService"
         p:moduleConfiguration-ref="kimModuleConfiguration"
-        p:personService-ref="personService"
-        p:kimRoleService-ref="kimRoleService"
         p:kualiModuleService-ref="kualiModuleService" />
 
 	<bean id="kimDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean" lazy-init="true"/>
@@ -204,45 +202,12 @@
     </property>
   </bean>
 
-  <bean id="kimIdentityManagementService" class="org.kuali.rice.kim.service.impl.IdentityManagementServiceImpl"
-    p:entityPrincipalCacheMaxSize="3000"
-    p:entityPrincipalCacheMaxAgeSeconds="3600"
-    p:groupCacheMaxSize="3000"
-    p:groupCacheMaxAgeSeconds="3600"
-    p:permissionCacheMaxSize="3000"
-    p:permissionCacheMaxAgeSeconds="300"
-    p:responsibilityCacheMaxSize="3000"
-    p:responsibilityCacheMaxAgeSeconds="300" />
-
-<!-- this service is intended to be run locally, should not be exported
-  <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
-	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-    <property name="serviceDefinition">
-      <bean parent="kimService"
-      	p:service-ref="kimIdentityManagementService"
-      	p:localServiceName="kimIdentityManagementService" />
-    </property>
-  </bean>
- -->
   <bean id="kimIdentityCacheService" class="org.kuali.rice.kim.service.impl.IdentityCacheServiceImpl" />
 
   <bean id="kimRoleDao" class="org.kuali.rice.kim.dao.impl.KimRoleDaoOjb" parent="platformAwareDao" />
   <bean id="kimGroupDao" class="org.kuali.rice.kim.dao.impl.KimGroupDaoOjb" parent="platformAwareDao" />
   <bean id="kimPermissionDao" class="org.kuali.rice.kim.dao.impl.KimPermissionDaoOjb" parent="platformAwareDao" />
 
-  <bean id="kimRoleManagementService" class="org.kuali.rice.kim.service.impl.RoleManagementServiceImpl"
-    p:roleCacheMaxSize="3000"
-    p:roleCacheMaxAgeSeconds="3600" />
-<!-- this service is intended to be run locally, should not be exported
-  <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
-	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-    <property name="serviceDefinition">
-      <bean parent="kimService"
-        p:service-ref="kimRoleManagementService"
-        p:localServiceName="kimRoleManagementService" />
-    </property>
-  </bean>
- -->
   <bean id="kimRoleService" class="org.kuali.rice.kim.service.impl.RoleServiceImpl"
   	p:roleDao-ref="kimRoleDao" />
 
@@ -266,27 +231,6 @@
     </property>
   </bean>
 
-  <bean id="personService" class="org.kuali.rice.kim.service.impl.PersonServiceImpl"
-    p:personCacheMaxSize="3000"
-    p:personCacheMaxAgeSeconds="3600">
-	<property name="personEntityTypeCodes">
-	  <list>
-	    <value>PERSON</value>
-	    <value>SYSTEM</value>
-	  </list>
-	</property>
-  </bean>
-
-<!-- this service is intended to be run locally, should not be exported except for non-Rice applications
-  <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
-	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-    <property name="serviceDefinition">
-      <bean parent="kimService"
-      	p:service-ref="personService"
-      	p:localServiceName="personService" />
-    </property>
-  </bean>
--->
   <bean id="kimGroupService" class="org.kuali.rice.kim.service.impl.GroupServiceImpl"/>
 
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">

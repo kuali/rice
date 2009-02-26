@@ -21,6 +21,7 @@ import java.util.Map;
 
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.Role;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
@@ -34,8 +35,8 @@ import org.kuali.rice.kns.service.impl.ModuleServiceBase;
  */
 public class KimModuleService extends ModuleServiceBase {
 
-	protected PersonService<Person> personService; 
-	protected RoleService kimRoleService; 
+	private PersonService<Person> personService; 
+	private RoleService kimRoleService; 
 	
 	/**
 	 * This overridden method ...
@@ -51,8 +52,9 @@ public class KimModuleService extends ModuleServiceBase {
 			} else if ( fieldValues.containsKey( "principalName" ) ) {
 				return (T) personService.getPersonByPrincipalName( (String)fieldValues.get( "principalName" ) );
 			}
+			// otherwise, fall through since critieria is not known
 		} else if ( Role.class.isAssignableFrom( businessObjectClass ) ) {
-			
+			System.out.println( "UNHANDLED EBO CALL in KimModuleService.getExternalizableBusinessObject() for Role");
 		}
 		// otherwise, use the default implementation
 		return super.getExternalizableBusinessObject( businessObjectClass, fieldValues );
@@ -117,34 +119,19 @@ public class KimModuleService extends ModuleServiceBase {
 		return super.listPrimaryKeyFieldNames( businessObjectInterfaceClass );
 	}
 	
-//	/**
-//	 * This overridden method ...
-//	 * 
-//	 * @see org.kuali.rice.kns.service.impl.ModuleServiceBase#getExternalizableBusinessObjectInquiryUrl(java.lang.Class, java.util.Properties)
-//	 */
-//	@Override
-//	public String getExternalizableBusinessObjectInquiryUrl(Class inquiryBusinessObjectClass,
-//			Properties parameters) {
-//		if ( Person.class.isAssignableFrom( inquiryBusinessObjectClass ) ) {
-//			return "";
-//		}
-//		return super.getExternalizableBusinessObjectInquiryUrl( inquiryBusinessObjectClass, parameters );
-//	}
-	
+	@SuppressWarnings("unchecked")
 	public PersonService<Person> getPersonService() {
-		return this.personService;
-	}
-
-	public void setPersonService(PersonService<Person> personService) {
-		this.personService = personService;
+		if ( personService == null ) {
+			personService = KIMServiceLocator.getPersonService();
+		}
+		return personService;
 	}
 
 	public RoleService getKimRoleService() {
-		return this.kimRoleService;
-	}
-
-	public void setKimRoleService(RoleService kimRoleService) {
-		this.kimRoleService = kimRoleService;
+		if ( kimRoleService == null ) {
+			kimRoleService = KIMServiceLocator.getRoleManagementService();
+		}
+		return kimRoleService;
 	}
 }
 

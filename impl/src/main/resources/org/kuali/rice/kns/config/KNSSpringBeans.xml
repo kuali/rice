@@ -219,6 +219,8 @@
 	</bean>
 
 	<bean id="kualiConfigurationService" class="org.kuali.rice.kns.service.impl.KualiConfigurationServiceImpl" />
+	
+	<bean id="riceApplicationConfigurationService" class="org.kuali.rice.kns.service.impl.RiceApplicationConfigurationServiceImpl" />
 
 	<bean id="kualiModuleService" class="org.kuali.rice.kns.service.impl.KualiModuleServiceImpl" />
 

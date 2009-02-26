@@ -50,7 +50,7 @@ public class KimModuleService extends ModuleServiceBase {
 			if ( fieldValues.containsKey( "principalId" ) ) {
 				return (T) getPersonService().getPerson( (String)fieldValues.get( "principalId" ) );
 			} else if ( fieldValues.containsKey( "principalName" ) ) {
-				return (T) personService.getPersonByPrincipalName( (String)fieldValues.get( "principalName" ) );
+				return (T) getPersonService().getPersonByPrincipalName( (String)fieldValues.get( "principalName" ) );
 			}
 			// otherwise, fall through since critieria is not known
 		} else if ( Role.class.isAssignableFrom( businessObjectClass ) ) {

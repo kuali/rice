@@ -121,7 +121,16 @@
 			   </c:if>   
 
   <c:forEach var="note" items="${notesBo}" varStatus="status">
-	<c:set var="attachmentTypeCode" value ="${note.attachment.attachmentTypeCode}" />
+	<%-- Check if a note with an attachment file or not. If yes, get the attachmentTypeCode. If not, set attachmentTypeCode to noteWithoutAttachmentIndicator.
+         The indicator is used by DocumentTypeAndAttachmentTypePermissionTypeService (fix for JIRA: KFSMI-2849)  --%>
+	<c:choose>
+		<c:when test="${(!empty note.attachment)}">
+			<c:set var="attachmentTypeCode" value ="${note.attachment.attachmentTypeCode}" />
+		</c:when>
+		<c:otherwise>
+			<c:set var="attachmentTypeCode" value="${Constants.NOTE_WITHOUT_ATTACHMENT_INDICATOR}" />
+		</c:otherwise>
+	</c:choose>
 	<c:set var="authorUniversalIdentifier" value = "${note.authorUniversalIdentifier}" />
 	<c:if test="${kfunc:canViewNoteAttachment(KualiForm.document, attachmentTypeCode)}" >
       <tr>
@@ -162,11 +171,11 @@
                                       </span>
                                     </c:if>
                                   </td>
-
                                   <c:if test="${(not empty attachmentTypesValuesFinderClass) and (allowsNoteAttachments eq true)}">
                                      <td class="datacell center">
                                      &nbsp;
-                                       <c:set var="attachmentTypeFinderMap" value="${KualiForm.validOptionsMap[finderClass]}"  />
+									 <c:set var="mapKey" value = "getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}" />
+									 <c:set var="attachmentTypeFinderMap" value="${KualiForm.actionFormUtilMap[mapKey]}"  />
                                        <c:forEach items="${attachmentTypeFinderMap}" var="type">
                                          <c:if test="${type.key eq note.attachment.attachmentTypeCode}">${type.label}</c:if>
                                        </c:forEach>

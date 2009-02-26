@@ -22,6 +22,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -37,12 +38,17 @@ public class DocumentTypeAndAttachmentTypePermissionTypeService extends
 				.performPermissionMatches(requestedDetails, permissionsList);
 		List<KimPermissionInfo> returnPermissions = new ArrayList<KimPermissionInfo>();
 		for (KimPermissionInfo kimPermissionInfo : matchingPermissions) {
-			if (!kimPermissionInfo.getDetails().containsKey(
-					KimAttributes.ATTACHMENT_TYPE_CODE)
-					|| kimPermissionInfo.getDetails().get(KimAttributes.ATTACHMENT_TYPE_CODE)
-						.equals(requestedDetails.get(KimAttributes.ATTACHMENT_TYPE_CODE))) 		
-			{
+			//If a note without an attachment, byPass attachment type code check. (Fix for KFSMI-2849)
+			if(KNSConstants.NOTE_WITHOUT_ATTACHMENT_INDICATOR.equals(requestedDetails.get(KimAttributes.ATTACHMENT_TYPE_CODE))){
 				returnPermissions.add(kimPermissionInfo);
+			}else{
+				if (!kimPermissionInfo.getDetails().containsKey(
+						KimAttributes.ATTACHMENT_TYPE_CODE)
+						|| kimPermissionInfo.getDetails().get(KimAttributes.ATTACHMENT_TYPE_CODE)
+							.equals(requestedDetails.get(KimAttributes.ATTACHMENT_TYPE_CODE))) 		
+				{
+					returnPermissions.add(kimPermissionInfo);
+				}
 			}
 		}
 		return returnPermissions;

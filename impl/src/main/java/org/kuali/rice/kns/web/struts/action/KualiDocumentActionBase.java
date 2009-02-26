@@ -1130,14 +1130,30 @@ public class KualiDocumentActionBase extends KualiAction {
         Document document = kualiDocumentFormBase.getDocument();
         Note newNote = kualiDocumentFormBase.getNewNote();
         String attachmentTypeCode = null;
-
-        if(newNote.getAttachment() != null){
-        	attachmentTypeCode = newNote.getAttachment().getAttachmentTypeCode();
+        
+        FormFile attachmentFile = kualiDocumentFormBase.getAttachmentFile();
+        if (attachmentFile == null) {
+            GlobalVariables.getErrorMap().putError(
+                    String.format("%s.%s",
+                            KNSConstants.NEW_DOCUMENT_NOTE_PROPERTY_NAME,
+                            KNSConstants.NOTE_ATTACHMENT_FILE_PROPERTY_NAME),
+                    RiceKeyConstants.ERROR_UPLOADFILE_NULL);
+            // This line was removed in order to continue to validates other
+            // return mapping.findForward(RiceConstants.MAPPING_BASIC);
         }
-
+        
+        
+        //Check if a note with an attachment file or not. If yes, get the attachmentTypeCode. If not, set attachmentTypeCode to noteWithoutAttachmentIndicator.
+        //The indicator is used by DocumentTypeAndAttachmentTypePermissionTypeService (fix for JIRA: KFSMI-2849)
+        if(attachmentFile!= null && !StringUtils.isBlank(attachmentFile.getFileName())){
+        	if(newNote.getAttachment() != null){
+            	attachmentTypeCode = newNote.getAttachment().getAttachmentTypeCode();
+            }
+        }else{
+        	attachmentTypeCode = KNSConstants.NOTE_WITHOUT_ATTACHMENT_INDICATOR;
+        }
+        
         // check authorization for adding notes
-        //DocumentActionFlags flags = getDocumentActionFlags(document);
-        //if (!kualiDocumentFormBase.getDocumentActions().containsKey(KNSConstants.KUALI_ACTION_CAN_ADD_NOTE_ATTACHMENT)) {
         DocumentAuthorizer documentAuthorizer = getDocumentHelperService().getDocumentAuthorizer(document);
         if(!documentAuthorizer.canAddNoteAttachment(document, attachmentTypeCode, GlobalVariables.getUserSession().getPerson())){
           throw buildAuthorizationException("annotate", document);
@@ -1147,19 +1163,9 @@ public class KualiDocumentActionBase extends KualiAction {
 
 
         // create the attachment first, so that failure-to-create-attachment can be treated as a validation failure
-        FormFile attachmentFile = kualiDocumentFormBase.getAttachmentFile();
-        if (attachmentFile == null) {
-            GlobalVariables.getErrorMap().putError(
-                    String.format("%s.%s",
-                            KNSConstants.NEW_DOCUMENT_NOTE_PROPERTY_NAME,
-                            KNSConstants.NOTE_ATTACHMENT_FILE_PROPERTY_NAME),
-                    RiceKeyConstants.ERROR_UPLOADFILE_NULL);
-            // This line was removed in order to continue to validates other
-//            return mapping.findForward(RiceConstants.MAPPING_BASIC);
-        }
-
+       
         Attachment attachment = null;
-        if (!StringUtils.isBlank(attachmentFile.getFileName())) {
+        if (attachmentFile != null && !StringUtils.isBlank(attachmentFile.getFileName())) {
             if (attachmentFile.getFileSize() == 0) {
                 GlobalVariables.getErrorMap().putError(
                         String.format("%s.%s",

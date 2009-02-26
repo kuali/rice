@@ -17,11 +17,14 @@ package org.kuali.rice.kew.actionlist;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.actions.asyncservices.ActionInvocation;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.preferences.service.impl.PreferencesServiceImpl;
@@ -233,5 +236,40 @@ public class OutboxTest extends KEWTestCase {
         prefs = KEWServiceLocator.getPreferencesService().getPreferences(natjohnsPrincipalId);
         assertFalse("The user's pref should be outbox off", prefs.isUsingOutbox());
     }
+    
+    @Test
+    public void testTakeMassActions() throws Exception {
+    	final String rkirkendPrincipalId = getPrincipalIdForName("rkirkend");
+    	List<String> recipients = new ArrayList<String>();
+        recipients.add(rkirkendPrincipalId);
+        TestRuleAttribute.setRecipientPrincipalIds("TestRole", "qualRole", recipients);
+        turnOnOutboxForUser(rkirkendPrincipalId);
 
+    	WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("quickstart"), "TestDocumentType");
+        document.routeDocument("");
+        
+        document = new WorkflowDocument(rkirkendPrincipalId, document.getRouteHeaderId());
+        assertTrue("approve should be requested", document.isApprovalRequested());
+     
+        document = new WorkflowDocument(getPrincipalIdForName("user1"), "OutboxTestDocumentType");
+        document.routeDocument("");
+        
+        document = new WorkflowDocument(rkirkendPrincipalId, document.getRouteHeaderId());
+        assertTrue("approve should be requested", document.isApprovalRequested());
+        
+        List actionList = new ArrayList(KEWServiceLocator.getActionListService().getActionList(rkirkendPrincipalId, new ActionListFilter()));	
+    	List invocations = new ArrayList();
+        ActionToTake actionToTake = new ActionToTake();
+        ActionItem actionItem = new ActionItem();
+          
+        for (Iterator iterator = actionList.iterator(); iterator.hasNext();) {
+    			ActionItem actinItem = (ActionItem) iterator.next();
+    			actionToTake.setActionItemId(actinItem.getActionItemId());
+    			actionToTake.setActionTakenCd(actinItem.getActionRequestCd());
+    			invocations.add(new ActionInvocation(actinItem.getActionItemId(), actionToTake.getActionTakenCd()));
+    	}
+        KEWServiceLocator.getWorkflowDocumentService().takeMassActions(rkirkendPrincipalId, invocations);
+        assertEquals("Wrong number of outbox items found for rkirkendPrincipalId", 2, KEWServiceLocator.getActionListService().getOutbox(rkirkendPrincipalId, new ActionListFilter()).size());
+          
+    }
 }

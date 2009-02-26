@@ -48,8 +48,7 @@
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${permissionAttributes.namespaceCode}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${permissionAttributes.permissionId}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${permissionAttributes.name}" noColon="true" /></div></th>
-        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${permissionAttributes.detailObjectsValues}" noColon="true" /></div></th>
-        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${permissionAttributes.requiredRoleQualifierAttributesToDisplay}" noColon="true" /></div></th>
+        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${permissionAttributes.detailObjectsToDisplay}" noColon="true" /></div></th>
 				<c:if test="${not inquiry}">	
             		<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
 				</c:if>	
@@ -72,11 +71,7 @@
 					</div>
 				</td>
 	            <td align="left" valign="middle">
-	               	<div align="left"> <kul:htmlControlAttribute property="document.permissions[${status.index}].kimPermission.detailObjectsValues"  attributeEntry="${permissionAttributes.detailObjectsToDisplay}" readOnly="true"  />
-					</div>
-				</td>
-	            <td align="left" valign="middle">
-	               	<div align="left"> <kul:htmlControlAttribute property="document.permissions[${status.index}].kimPermission.requiredRoleQualifierAttributesToDisplay"  attributeEntry="${permissionAttributes.requiredRoleQualifierAttributesToDisplay}" readOnly="true"  />
+	               	<div align="left"> <kul:htmlControlAttribute property="document.permissions[${status.index}].kimPermission.detailObjectsToDisplay"  attributeEntry="${permissionAttributes.detailObjectsToDisplay}" readOnly="true"  />
 					</div>
 				</td>
 			<c:if test="${not inquiry}">	

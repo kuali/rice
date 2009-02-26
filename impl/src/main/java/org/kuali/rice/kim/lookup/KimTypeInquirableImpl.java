@@ -16,32 +16,13 @@
 package org.kuali.rice.kim.lookup;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.apache.commons.beanutils.PropertyUtils;
-import org.kuali.rice.kim.bo.impl.PermissionImpl;
-import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
-import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
-import org.kuali.rice.kim.bo.role.impl.KimPermissionRequiredAttributeImpl;
-import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
-import org.kuali.rice.kim.bo.role.impl.PermissionAttributeDataImpl;
-import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
-import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.PermissionService;
-import org.kuali.rice.kim.service.RoleService;
-import org.kuali.rice.kim.service.support.KimTypeInternalService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.bo.ParameterNamespace;
 import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
 import org.kuali.rice.kns.lookup.HtmlData;
-import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
-import org.kuali.rice.kns.lookup.HtmlData.MultipleAnchorHtmlData;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
  * This is a description of what this class does - bhargavp don't forget to fill this in. 
@@ -58,7 +39,7 @@ public class KimTypeInquirableImpl extends KualiInquirableImpl {
 		if(KIM_TYPE_NAME.equals(attributeName)){
 			List<String> primaryKeys = new ArrayList<String>();
 			primaryKeys.add(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID);
-			return getInquiryUrlForPrimaryKeys(PermissionImpl.class, businessObject, primaryKeys, null);
+			return getInquiryUrlForPrimaryKeys(KimTypeImpl.class, businessObject, primaryKeys, null);
 		}
         return super.getInquiryUrl(businessObject, attributeName, forceInquiry);
     }

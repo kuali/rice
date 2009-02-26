@@ -21,8 +21,7 @@
         <ref bean="KimResponsibilityImpl-detailObjects" />
         <ref bean="KimResponsibilityImpl-requiredRoleQualifierAttributes" />
         <ref bean="KimResponsibilityImpl-templateId" />
-        <ref bean="KimResponsibilityImpl-detailObjectsToDisplay" />
-        <ref bean="KimResponsibilityImpl-requiredRoleQualifierAttributesToDisplay" />
+        <ref bean="KimResponsibilityImpl-detailObjectsValues" />
       </list>
     </property>
 	<property name="relationships" >
@@ -123,12 +122,8 @@
     </property>
   </bean>
 
-  <bean id="KimResponsibilityImpl-detailObjectsToDisplay" parent="KimResponsibilityImpl-detailObjects" 
-        p:name="detailObjectsToDisplay">
-  </bean>
-
-  <bean id="KimResponsibilityImpl-requiredRoleQualifierAttributesToDisplay" parent="KimResponsibilityImpl-requiredRoleQualifierAttributes"
-  	p:name="requiredRoleQualifierAttributesToDisplay">
+  <bean id="KimResponsibilityImpl-detailObjectsValues" parent="KimResponsibilityImpl-detailObjects" 
+        p:name="detailObjectsValues">
   </bean>
 
   <bean id="KimResponsibilityImpl-inquiryDefinition" parent="KimResponsibilityImpl-inquiryDefinition-parentBean" />
@@ -145,8 +140,7 @@
               <bean parent="FieldDefinition" p:attributeName="template.name" />
         	  <bean parent="FieldDefinition" p:attributeName="namespaceCode" />
         	  <bean parent="FieldDefinition" p:attributeName="name" />
-	       	  <bean parent="FieldDefinition" p:attributeName="detailObjectsToDisplay" />
-	       	  <bean parent="FieldDefinition" p:attributeName="requiredRoleQualifierAttributesToDisplay" />
+	       	  <bean parent="FieldDefinition" p:attributeName="detailObjectsValues" />
             </list>
           </property>
         </bean>

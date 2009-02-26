@@ -30,8 +30,8 @@
   <bean id="DocRoleMember-roleMemberId-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="roleMemberId"
         p:forceUppercase="true"
-        p:label="Member Id"
-        p:shortLabel="Member Id"
+        p:label="Role Member Identifier"
+        p:shortLabel="Role Member Identifier"
         p:maxLength="40"
         p:required="false" >
     <property name="control" >
@@ -43,8 +43,8 @@
   <bean id="DocRoleMember-memberId-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="memberId"
         p:forceUppercase="true"
-        p:label="Member Id"
-        p:shortLabel="Member Id"
+        p:label="Member Identifier"
+        p:shortLabel="Member Identifier"
         p:maxLength="40"
         p:required="true" >
     <property name="control" >

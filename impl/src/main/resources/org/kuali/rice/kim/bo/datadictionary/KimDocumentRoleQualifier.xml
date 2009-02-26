@@ -49,7 +49,7 @@
 	<bean id="DocRoleQualifier-attrDataId-parentBean" abstract="true" parent="AttributeDefinition" >
 		<property name="name" value="attrDataId" />
 		<property name="forceUppercase" value="false" />
-		<property name="label" value="Attr Data Id" />
+		<property name="label" value="Attribute Data Identifier" />
 		<property name="shortLabel" value="Attr Data Id" />
 		<property name="maxLength" value="40" />
 		<property name="validationPattern" >
@@ -85,7 +85,7 @@
 	<bean id="DocRoleQualifier-kimTypId-parentBean" abstract="true" parent="AttributeDefinition" >
 		<property name="name" value="kimTypId" />
 		<property name="forceUppercase" value="false" />
-		<property name="label" value="Kim Typ Id" />
+		<property name="label" value="Kim Type Identifier" />
 		<property name="shortLabel" value="Kim Typ Id" />
 		<property name="maxLength" value="40" />
 		<property name="validationPattern" >
@@ -103,7 +103,7 @@
 	<bean id="DocRoleQualifier-kimAttrDefnId-parentBean" abstract="true" parent="AttributeDefinition" >
 		<property name="name" value="kimAttrDefnId" />
 		<property name="forceUppercase" value="false" />
-		<property name="label" value="Kim Attr Defn Id" />
+		<property name="label" value="Kim Attribute Definition Identifier" />
 		<property name="shortLabel" value="Kim Attr Defn Id" />
 		<property name="maxLength" value="40" />
 		<property name="validationPattern" >
@@ -138,11 +138,11 @@
 	<!-- Business Object Inquiry Definition -->
 	<bean id="DocRoleQualifier-inquiryDefinition" parent="DocRoleQualifier-inquiryDefinition-parentBean" />
 	<bean id="DocRoleQualifier-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
-		<property name="title" value="Attr Data Id" />
+		<property name="title" value="Attribute Data Identifier" />
 		<property name="inquirySections" >
 			<list>
 				<bean parent="InquirySectionDefinition">
-					<property name="title" value="Attr Data Id" />
+					<property name="title" value="Attribute Data Identifier" />
 					<property name="numberOfColumns" value="1" />
 					<property name="inquiryFields" >
 						<list>

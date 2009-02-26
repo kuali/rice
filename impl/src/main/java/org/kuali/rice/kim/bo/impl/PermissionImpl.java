@@ -17,6 +17,8 @@ package org.kuali.rice.kim.bo.impl;
 
 import java.util.List;
 
+import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
+import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.util.KimConstants;
@@ -33,9 +35,12 @@ public class PermissionImpl extends KimPermissionImpl {
 	
 	protected String assignedToRoleNamespaceForLookup;
 	protected String assignedToRoleNameForLookup;
+	protected KimRoleImpl assignedToRole;
 	protected String assignedToPrincipalNameForLookup;
+	protected KimPrincipalImpl assignedToPrincipal;
 	protected String assignedToGroupNamespaceForLookup;
 	protected String assignedToGroupNameForLookup;
+	protected KimGroupImpl assignedToGroup;
 	protected String attributeValue;
 	
 	/**
@@ -54,9 +59,7 @@ public class PermissionImpl extends KimPermissionImpl {
 	}
 
 	public String getRoleDetailsToDisplay(KimRoleImpl roleImpl){
-		return roleImpl.getKimRoleType().getName()+KimConstants.NAME_VALUE_SEPARATOR+
-				roleImpl.getNamespaceCode()+KimConstants.NAME_VALUE_SEPARATOR+
-				roleImpl.getRoleName()+KimConstants.COMMA_SEPARATOR;
+		return roleImpl.getNamespaceCode()+" "+roleImpl.getRoleName()+KimConstants.COMMA_SEPARATOR;
 	}
 	
 	/**
@@ -158,6 +161,48 @@ public class PermissionImpl extends KimPermissionImpl {
 	 */
 	public void setAssignedToRoles(List<KimRoleImpl> assignedToRoles) {
 		this.assignedToRoles = assignedToRoles;
+	}
+
+	/**
+	 * @return the assignedToGroup
+	 */
+	public KimGroupImpl getAssignedToGroup() {
+		return this.assignedToGroup;
+	}
+
+	/**
+	 * @param assignedToGroup the assignedToGroup to set
+	 */
+	public void setAssignedToGroup(KimGroupImpl assignedToGroup) {
+		this.assignedToGroup = assignedToGroup;
+	}
+
+	/**
+	 * @return the assignedToPrincipal
+	 */
+	public KimPrincipalImpl getAssignedToPrincipal() {
+		return this.assignedToPrincipal;
+	}
+
+	/**
+	 * @param assignedToPrincipal the assignedToPrincipal to set
+	 */
+	public void setAssignedToPrincipal(KimPrincipalImpl assignedToPrincipal) {
+		this.assignedToPrincipal = assignedToPrincipal;
+	}
+
+	/**
+	 * @return the assignedToRole
+	 */
+	public KimRoleImpl getAssignedToRole() {
+		return this.assignedToRole;
+	}
+
+	/**
+	 * @param assignedToRole the assignedToRole to set
+	 */
+	public void setAssignedToRole(KimRoleImpl assignedToRole) {
+		this.assignedToRole = assignedToRole;
 	}
 
 }

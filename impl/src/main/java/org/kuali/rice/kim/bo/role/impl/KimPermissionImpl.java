@@ -34,6 +34,7 @@ import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.TypedArrayList;
 
@@ -227,6 +228,12 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 		return detailObjectsToDisplay.toString();
 	}
 
+	public String getNameToDisplay(){
+		return (StringUtils.isBlank(getName()) && getTemplate()!=null)?getTemplate().getName():getName();
+	}
+	
+
+
 	public String getDetailObjectsToDisplay() {
 		StringBuffer detailObjectsToDisplay = new StringBuffer();
 		for(PermissionAttributeDataImpl permissionAttributeData: detailObjects){
@@ -239,7 +246,7 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 	}
 
 	public String getAttributeDetailToDisplay(PermissionAttributeDataImpl permissionAttributeData){
-		return permissionAttributeData.getKimAttribute().getAttributeName()+KimConstants.NAME_VALUE_SEPARATOR+
+		return getKimAttributeLabelFromDD(permissionAttributeData.getKimAttribute().getAttributeName())+KimConstants.NAME_VALUE_SEPARATOR+
 				permissionAttributeData.getAttributeValue()+KimConstants.COMMA_SEPARATOR;
 	}
 	
@@ -256,8 +263,16 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 
 	//TODO: remove this and find a better way to do this. Should be done by next week with role doc task
 	protected String getKimAttributeLabelFromDD(String attributeName){
-    	return KNSServiceLocator.getDataDictionaryService().getAttributeLabel(KimAttributes.class, attributeName);
+    	return getDataDictionaryService().getAttributeLabel(KimAttributes.class, attributeName);
     }
+
+	transient private DataDictionaryService dataDictionaryService;
+	public DataDictionaryService getDataDictionaryService() {
+		if(dataDictionaryService == null){
+			dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+		}
+		return dataDictionaryService;
+	}
 
 	//TODO: remove this and find a better way to do this. Should be done by next week with role doc task
 	public String getRequiredRoleQualifierAttributeToDisplay(KimPermissionRequiredAttributeImpl permissionRequiredAttribute){
@@ -265,7 +280,4 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 		return StringUtils.isEmpty(value)?value:value+KimConstants.COMMA_SEPARATOR;
 	}
 
-	public String getNameToDisplay(){
-		return (StringUtils.isBlank(getName()) && getTemplate()!=null)?getTemplate().getName():getName();
-	}
 }

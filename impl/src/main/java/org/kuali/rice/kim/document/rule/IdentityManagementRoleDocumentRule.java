@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
@@ -68,6 +67,9 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
  */
 public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRuleBase implements AddPermissionRule, AddResponsibilityRule, AddMemberRule, AddDelegationRule, AddDelegationMemberRule {
 
+    public static final int PRIORITY_NUMBER_MIN_VALUE = 1;
+    public static final int PRIORITY_NUMBER_MAX_VALUE = 11;
+
 	private AddResponsibilityRule addResponsibilityRule;
 	private AddPermissionRule  addPermissionRule;
 	private AddMemberRule  addMemberRule;
@@ -105,8 +107,8 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
         valid &= validRoleMemberActiveDates(roleDoc.getMembers());
         valid &= validateDelegationMemberRoleQualifier(roleDoc.getDelegationMembers(), roleDoc.getKimType());
         valid &= validDelegationMemberActiveDates(roleDoc.getDelegationMembers());
-        //valid &= validRoleResponsibilitiesActions(roleDoc.getResponsibilities());
-        //valid &= validRoleMembersResponsibilityActions(roleDoc.getMembers());
+        valid &= validRoleResponsibilitiesActions(roleDoc.getResponsibilities());
+        valid &= validRoleMembersResponsibilityActions(roleDoc.getMembers());
         GlobalVariables.getErrorMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
 
         return valid;
@@ -156,7 +158,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
         boolean rulePassed = true;
     	for(KimDocumentRoleResponsibility roleResponsibility: roleResponsibilities){
     		if(!getResponsibilityService().areActionsAtAssignmentLevelById(roleResponsibility.getResponsibilityId()))
-    			validateRoleResponsibilityAction("document.responsibilities["+i+"].roleRspAction[0]", roleResponsibility.getRoleRspActions().get(0));
+    			validateRoleResponsibilityAction("document.responsibilities["+i+"].roleRspActions[0].priorityNumber", roleResponsibility.getRoleRspActions().get(0));
         	i++;
     	}
     	return rulePassed;
@@ -170,7 +172,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     		j = 0;
     		if(roleMember.getRoleRspActions()!=null && !roleMember.getRoleRspActions().isEmpty()){
 	    		for(KimDocumentRoleResponsibilityAction roleRspAction: roleMember.getRoleRspActions()){
-	    			validateRoleResponsibilityAction("document.members["+i+"].roleRspAction["+j+"]", roleRspAction);
+	    			validateRoleResponsibilityAction("document.members["+i+"].roleRspActions["+j+"].priorityNumber", roleRspAction);
 		        	j++;
 	    		}
     		}
@@ -181,7 +183,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 
     private boolean validateRoleResponsibilityAction(String errorPath, KimDocumentRoleResponsibilityAction roleRspAction){
     	boolean rulePassed = true;
-    	if(StringUtils.isBlank(roleRspAction.getActionPolicyCode())){
+    	/*if(StringUtils.isBlank(roleRspAction.getActionPolicyCode())){
     		GlobalVariables.getErrorMap().putError(errorPath, 
     				RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Action Policy Code"});
     		rulePassed = false;
@@ -195,15 +197,18 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     		GlobalVariables.getErrorMap().putError(errorPath, 
     				RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Action Type Code"});
     		rulePassed = false;
+    	}*/
+    	if(roleRspAction.getPriorityNumber()!=null && 
+    			(roleRspAction.getPriorityNumber()<PRIORITY_NUMBER_MIN_VALUE 
+    					|| roleRspAction.getPriorityNumber()>PRIORITY_NUMBER_MAX_VALUE)){
+    		GlobalVariables.getErrorMap().putError(errorPath, 
+   				RiceKeyConstants.ERROR_PRIORITY_NUMBER_RANGE, new String[] {PRIORITY_NUMBER_MIN_VALUE+"", PRIORITY_NUMBER_MAX_VALUE+""});
+    		rulePassed = false;
     	}
+
     	return rulePassed;
     }
 
-    private KimTypeService getKimTypeService(KimTypeImpl kimType){
-        return (KimTypeServiceBase)KIMServiceLocator.getService(
-        		KimCommonUtils.getKimTypeServiceName(kimType.getKimTypeServiceName()));
-    }
-    
     private boolean validateRoleQualifier(List<KimDocumentRoleMember> roleMembers, KimTypeImpl kimType){
 		AttributeSet validationErrors = new AttributeSet();
 
@@ -212,7 +217,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 		AttributeSet errorsTemp;
 		AttributeSet attributeSetToValidate;
 		KimAttributeImpl attribute;
-        KimTypeService kimTypeService = getKimTypeService(kimType);
+        KimTypeService kimTypeService = KimCommonUtils.getKimTypeService(kimType);
 		for(KimDocumentRoleMember roleMember: roleMembers) {
 	        for(KimDocumentRoleQualifier roleQualifier: roleMember.getQualifiers()) {
 	        	attributeSetToValidate = new AttributeSet();
@@ -244,7 +249,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 		AttributeSet errorsTemp;
 		AttributeSet attributeSetToValidate;
 		KimAttributeImpl attribute;
-        KimTypeService kimTypeService = getKimTypeService(kimType);
+        KimTypeService kimTypeService = KimCommonUtils.getKimTypeService(kimType);
 		for(RoleDocumentDelegationMember delegationMember: delegationMembers) {
 	        for(RoleDocumentDelegationMemberQualifier delegationMemberQualifier: delegationMember.getQualifiers()) {
 	        	attributeSetToValidate = new AttributeSet();

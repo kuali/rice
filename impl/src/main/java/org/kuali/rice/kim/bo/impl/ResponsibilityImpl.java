@@ -18,11 +18,12 @@ package org.kuali.rice.kim.bo.impl;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kim.bo.role.impl.KimResponsibilityRequiredAttributeImpl;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
+import org.kuali.rice.kim.bo.role.impl.KimResponsibilityRequiredAttributeImpl;
 import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.role.impl.ResponsibilityAttributeDataImpl;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.TypedArrayList;
 
@@ -58,9 +59,7 @@ public class ResponsibilityImpl extends KimResponsibilityImpl {
 	}
 
 	public String getRoleDetailsToDisplay(KimRoleImpl roleImpl){
-		return roleImpl.getKimRoleType().getName()+KimConstants.NAME_VALUE_SEPARATOR+
-				roleImpl.getNamespaceCode()+KimConstants.NAME_VALUE_SEPARATOR+
-				roleImpl.getRoleName()+KimConstants.COMMA_SEPARATOR;
+		return roleImpl.getNamespaceCode()+" "+roleImpl.getRoleName()+KimConstants.COMMA_SEPARATOR;
 	}
 	
 	/**
@@ -163,5 +162,5 @@ public class ResponsibilityImpl extends KimResponsibilityImpl {
 	public void setAssignedToRoles(List<KimRoleImpl> assignedToRoles) {
 		this.assignedToRoles = assignedToRoles;
 	}
-	
+
 }

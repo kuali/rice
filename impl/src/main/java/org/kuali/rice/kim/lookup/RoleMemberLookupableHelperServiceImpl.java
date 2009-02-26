@@ -42,11 +42,11 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
     protected final String NAMESPACE_CODE = "namespaceCode";
     protected final String NAME = "name";
     protected final String GROUP_NAME = "groupName";
-    protected final String ASSIGNED_TO_PRINCIPAL_NAME = "assignedToPrincipalNameForLookup";
+    protected final String ASSIGNED_TO_PRINCIPAL_NAME = "assignedToPrincipal.principalName";
     protected final String ASSIGNED_TO_GROUP_NAMESPACE_CODE = "assignedToGroupNamespaceForLookup";
-    protected final String ASSIGNED_TO_GROUP_NAME = "assignedToGroupNameForLookup";
+    protected final String ASSIGNED_TO_GROUP_NAME = "assignedToGroup.groupName";
     protected final String ASSIGNED_TO_NAMESPACE_FOR_LOOKUP = "assignedToRoleNamespaceForLookup";
-    protected final String ASSIGNED_TO_ROLE_NAME = "assignedToRoleNameForLookup";
+    protected final String ASSIGNED_TO_ROLE_NAME = "assignedToRole.roleName";
     protected final String ATTRIBUTE_VALUE = "attributeValue";
     protected final String ASSIGNED_TO_ROLE_NAMESPACE_CODE = "namespaceCode";
     protected final String ASSIGNED_TO_ROLE_ROLE_NAME = "roleName";

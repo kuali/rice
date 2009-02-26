@@ -22,6 +22,11 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.support.KimRoleTypeService;
+import org.kuali.rice.kim.service.support.KimTypeService;
+import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.ModuleService;
@@ -125,6 +130,11 @@ public class KimCommonUtils {
     		kimTypeServiceName = DEFAULT_KIM_SERVICE_NAME;
     	}
     	return kimTypeServiceName;
+	}
+
+	public static final KimTypeService getKimTypeService(KimTypeImpl kimTypeImpl){
+		String serviceName = KimCommonUtils.getKimTypeServiceName(kimTypeImpl.getKimTypeServiceName());
+		return (KimTypeService)KIMServiceLocator.getService(serviceName);
 	}
 
 	public static void copyProperties(Object targetToCopyTo, Object sourceToCopyFrom){

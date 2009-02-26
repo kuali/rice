@@ -18,11 +18,13 @@ package org.kuali.rice.kim.lookup;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.kim.bo.impl.PermissionImpl;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.ParameterNamespace;
 import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
 import org.kuali.rice.kns.lookup.HtmlData;
+import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
@@ -46,7 +48,11 @@ public class RoleInquirableImpl extends KualiInquirableImpl {
 		if(ROLE_NAME.equals(attributeName)){
 			List<String> primaryKeys = new ArrayList<String>();
 			primaryKeys.add(ROLE_ID);
-			return getInquiryUrlForPrimaryKeys(PermissionImpl.class, businessObject, primaryKeys, null);
+		    //((AnchorHtmlData)inqUrl).setHref("../kim/identityManagementRoleDocument.do?methodToCall=inquiry&command=initiate&docTypeName=IdentityManagementRoleDocument"+href.substring(idx1, idx2));
+		    String href = (getInquiryUrlForPrimaryKeys(KimRoleImpl.class, businessObject, primaryKeys, null)).getHref();
+		    AnchorHtmlData htmlData = new AnchorHtmlData();
+		    htmlData.setHref(RoleLookupableHelperServiceImpl.getCustomRoleInquiryHref(href));
+			return htmlData;
 		} else if(NAMESPACE_CODE.equals(attributeName)){
 			List<String> primaryKeys = new ArrayList<String>();
 			primaryKeys.add("code");

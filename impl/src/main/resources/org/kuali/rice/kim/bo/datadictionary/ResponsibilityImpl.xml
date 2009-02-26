@@ -28,8 +28,10 @@
         <ref bean="ResponsibilityImpl-assignedToGroupNameForLookup" />
         <ref bean="ResponsibilityImpl-templateId" />
         <ref bean="ResponsibilityImpl-attributeValue" />
-        <ref bean="ResponsibilityImpl-detailObjects" />
         <ref bean="ResponsibilityImpl-requiredRoleQualifierAttributes" />
+        <ref bean="ResponsibilityImpl-detailObjectsValues" />
+        <ref bean="ResponsibilityImpl-detailObjectsToDisplay" />
+        <ref bean="ResponsibilityImpl-assignedToRolesToDisplay" />
       </list>
     </property>
 	<property name="collections" >
@@ -64,8 +66,8 @@
   <bean id="ResponsibilityImpl-templateId" parent="ResponsibilityImpl-templateId-parentBean" />
   <bean id="ResponsibilityImpl-templateId-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="templateId"
-        p:label="Template Id"
-        p:shortLabel="Template Id"
+        p:label="Template Identifier"
+        p:shortLabel="Template Identifier"
         p:maxLength="40"
         p:required="false" >
     <property name="control" >
@@ -99,8 +101,8 @@
   <bean id="ResponsibilityImpl-responsibilityId" parent="ResponsibilityImpl-responsibilityId-parentBean" />
   <bean id="ResponsibilityImpl-responsibilityId-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="responsibilityId"
-        p:label="Responsibility ID"
-        p:shortLabel="Responsibility ID"
+        p:label="Responsibility Identifier"
+        p:shortLabel="Responsibility Identifier"
         p:maxLength="10"
         p:required="false" >
     <property name="control" >
@@ -187,6 +189,34 @@
         p:name="requiredRoleQualifierAttributesToDisplay"
         p:label="Required Role Qualifier Attributes"
         p:shortLabel="Required Attributes"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="40" />
+    </property>
+  </bean>
+
+  <bean id="ResponsibilityImpl-detailObjectsValues" parent="ResponsibilityImpl-detailObjectsValues-parentBean" />
+  <bean id="ResponsibilityImpl-detailObjectsValues-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="detailObjectsValues"
+        p:label="Permission Detail Values"
+        p:shortLabel="Detail Values"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="40" />
+    </property>
+  </bean>
+
+  <bean id="ResponsibilityImpl-detailObjectsToDisplay" parent="ResponsibilityImpl-detailObjectsValues" 
+        p:name="detailObjectsToDisplay">
+  </bean>
+  
+  <bean id="ResponsibilityImpl-assignedToRolesToDisplay" parent="ResponsibilityImpl-assignedToRolesToDisplay-parentBean" />
+  <bean id="ResponsibilityImpl-assignedToRolesToDisplay-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="assignedToRolesToDisplay"
+        p:label="Granted to Roles"
+        p:shortLabel="Granted to Roles"
         p:maxLength="40"
         p:required="false" >
     <property name="control" >
@@ -310,8 +340,8 @@
           <bean parent="FieldDefinition" p:attributeName="template.name" />
        	  <bean parent="FieldDefinition" p:attributeName="namespaceCode" />
        	  <bean parent="FieldDefinition" p:attributeName="nameToDisplay" />        	  
-       	  <bean parent="FieldDefinition" p:attributeName="detailObjects" />
-       	  <bean parent="FieldDefinition" p:attributeName="requiredRoleQualifierAttributesToDisplay" />
+       	  <bean parent="FieldDefinition" p:attributeName="detailObjectsToDisplay" />
+       	  <bean parent="FieldDefinition" p:attributeName="assignedToRolesToDisplay" />
       </list>
     </property>
   </bean>

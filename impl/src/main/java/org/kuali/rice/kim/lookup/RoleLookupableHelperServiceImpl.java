@@ -28,7 +28,6 @@ import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.dao.KimRoleDao;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
@@ -56,7 +55,7 @@ import org.kuali.rice.kns.web.ui.Row;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class RoleLookupableHelperServiceImpl   extends KualiLookupableHelperServiceImpl {
+public class RoleLookupableHelperServiceImpl extends KualiLookupableHelperServiceImpl {
 
 	// need this so kimtypeId value can be retained in 'rows'
 	// 1st pass populate the grprows
@@ -76,20 +75,21 @@ public class RoleLookupableHelperServiceImpl   extends KualiLookupableHelperServ
     }
     
     protected HtmlData getEditRoleUrl(KimRoleImpl roleImpl) {
-        Properties parameters = new Properties();
-        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.DOC_HANDLER_METHOD);
-        parameters.put(KNSConstants.PARAMETER_COMMAND, "initiate");
-        parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, "IdentityManagementRoleDocument");
-        parameters.put(KimConstants.PrimaryKeyConstants.ROLE_ID, roleImpl.getRoleId());
-        String href = UrlFactory.parameterizeUrl("../kim/identityManagementRoleDocument.do", parameters);
-        
+    	String href = "";
+    	if(!KimTypeLookupableHelperServiceImpl.hasDerivedRoleTypeService(roleImpl.getKimRoleType())){
+	        Properties parameters = new Properties();
+	        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.DOC_HANDLER_METHOD);
+	        parameters.put(KNSConstants.PARAMETER_COMMAND, "initiate");
+	        parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, "IdentityManagementRoleDocument");
+	        parameters.put(KimConstants.PrimaryKeyConstants.ROLE_ID, roleImpl.getRoleId());
+	        href = UrlFactory.parameterizeUrl("../kim/identityManagementRoleDocument.do", parameters);
+    	}        
         AnchorHtmlData anchorHtmlData = new AnchorHtmlData(href, 
         		KNSConstants.DOC_HANDLER_METHOD, KNSConstants.MAINTENANCE_EDIT_ACTION);
         anchorHtmlData.setTarget("blank");
         return anchorHtmlData;
     }
 
-    
     @Override
     public List<? extends BusinessObject> getSearchResults(java.util.Map<String,String> fieldValues) {
 //    	String principalName = fieldValues.get("principalName");
@@ -148,8 +148,7 @@ public class RoleLookupableHelperServiceImpl   extends KualiLookupableHelperServ
 					KimTypeImpl kimType = (KimTypeImpl)getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, pkMap);
 					// TODO what if servicename is null.  also check other places that have similar issue
 					// use default_service ?
-					String serviceName = KimCommonUtils.getKimTypeServiceName(kimType.getKimTypeServiceName());
-			        KimTypeService kimTypeService = (KimTypeService)KIMServiceLocator.getService(serviceName);
+			        KimTypeService kimTypeService = KimCommonUtils.getKimTypeService(kimType);
 			        AttributeDefinitionMap definitions = kimTypeService.getAttributeDefinitions(kimType.getKimTypeId());
 			        setAttrDefinitions(definitions);
 		            for ( AttributeDefinition definition : definitions.values()) {
@@ -331,17 +330,21 @@ public class RoleLookupableHelperServiceImpl   extends KualiLookupableHelperServ
 	 */
 	@Override
 	public HtmlData getInquiryUrl(BusinessObject bo, String propertyName) {
-		HtmlData inqUrl = super.getInquiryUrl(bo, propertyName);
-	    String href = ((AnchorHtmlData)inqUrl).getHref();
+		AnchorHtmlData inquiryHtmlData = (AnchorHtmlData)super.getInquiryUrl(bo, propertyName);
+	    inquiryHtmlData.setHref(getCustomRoleInquiryHref(inquiryHtmlData.getHref()));
+		return inquiryHtmlData;
+	}
+
+	static String getCustomRoleInquiryHref(String href){
 	    if (StringUtils.isNotBlank(href) && href.indexOf("&roleId=")!=-1) {
 		    int idx1 = href.indexOf("&roleId=");
 		    int idx2 = href.indexOf("&", idx1+1);
 		    if (idx2 < 0) {
 		    	idx2 = href.length();
 		    }
-		    ((AnchorHtmlData)inqUrl).setHref("../kim/identityManagementRoleDocument.do?methodToCall=inquiry&command=initiate&docTypeName=IdentityManagementRoleDocument"+href.substring(idx1, idx2));
+		    return ("../kim/identityManagementRoleDocument.do?methodToCall=inquiry&command=initiate&docTypeName=IdentityManagementRoleDocument"+href.substring(idx1, idx2));
 	    }
-	    return inqUrl;
+	    return "";
 	}
 
 }

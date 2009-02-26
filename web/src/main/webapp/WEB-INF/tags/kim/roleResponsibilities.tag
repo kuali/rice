@@ -49,7 +49,6 @@
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${responsibilityAttributes.responsibilityId}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${responsibilityAttributes.name}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${responsibilityAttributes.detailObjectsValues}" noColon="true" /></div></th>
-        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${responsibilityAttributes.requiredRoleQualifierAttributesToDisplay}" noColon="true" /></div></th>
 				<c:if test="${not inquiry}">	
             		<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
 				</c:if>	
@@ -77,10 +76,6 @@
 				</td>
 	            <td align="left" valign="middle">
 	               	<div align="left"> <kul:htmlControlAttribute property="document.responsibilities[${status.index}].kimResponsibility.detailObjectsValues"  attributeEntry="${responsibilityAttributes.detailObjectsToDisplay}" readOnly="true"  />
-					</div>
-				</td>
-	            <td align="left" valign="middle">
-	               	<div align="left"> <kul:htmlControlAttribute property="document.responsibilities[${status.index}].kimResponsibility.requiredRoleQualifierAttributesToDisplay"  attributeEntry="${responsibilityAttributes.requiredRoleQualifierAttributesToDisplay}" readOnly="true"  />
 					</div>
 				</td>
 			<c:if test="${not inquiry}">	

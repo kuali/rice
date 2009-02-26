@@ -39,7 +39,6 @@ import org.kuali.rice.kns.bo.ParameterNamespace;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.lookup.HtmlData.MultipleAnchorHtmlData;
-import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.ObjectUtils;
 
@@ -125,13 +124,15 @@ public class PermissionInquirableImpl extends RoleMemberInquirableImpl {
 			KimTypeInternalService kimTypeInternalService = KIMServiceLocator.getTypeInternalService();
 			KimRoleInfo roleInfo;
 			KimTypeImpl kimType;
+			AnchorHtmlData inquiryHtmlData;
 			for(KimRoleImpl roleImpl: assignedToRoles){
 				roleInfo = roleService.getRole(roleImpl.getRoleId());
 				kimType = kimTypeInternalService.getKimType(roleInfo.getKimTypeId());
-        		htmlData.add(getInquiryUrlForPrimaryKeys(KimRoleImpl.class, roleInfo, primaryKeys, 
-        				kimType.getName()+KimConstants.NAME_VALUE_SEPARATOR+
-        				roleInfo.getNamespaceCode()+KimConstants.NAME_VALUE_SEPARATOR+
-        				roleInfo.getRoleName()));
+				inquiryHtmlData = getInquiryUrlForPrimaryKeys(KimRoleImpl.class, roleInfo, primaryKeys, 
+        				roleInfo.getNamespaceCode()+" "+
+        				roleInfo.getRoleName());
+				inquiryHtmlData.setHref(RoleLookupableHelperServiceImpl.getCustomRoleInquiryHref(inquiryHtmlData.getHref()));
+        		htmlData.add(inquiryHtmlData);
         	}
 		}
     	return new MultipleAnchorHtmlData(htmlData);

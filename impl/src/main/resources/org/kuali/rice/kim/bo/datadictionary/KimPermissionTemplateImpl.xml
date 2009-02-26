@@ -92,7 +92,6 @@
   <bean id="KimPermissionTemplateImpl-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition"
         p:title="Permission Template Lookup" 
         p:instructions="Lookup a Permission Template" >
-    <property name="lookupableID" value="permissionLookupable" />
     <property name="defaultSort" >
       <bean parent="SortDefinition">
         <property name="attributeNames" >

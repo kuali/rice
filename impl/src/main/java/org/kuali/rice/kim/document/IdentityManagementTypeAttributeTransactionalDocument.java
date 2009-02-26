@@ -118,8 +118,7 @@ public class IdentityManagementTypeAttributeTransactionalDocument extends Identi
 
 	public KimTypeService getKimTypeService(KimTypeImpl kimType){
 		if(this.kimTypeService==null){
-	    	String serviceName = KimCommonUtils.getKimTypeServiceName(kimType.getKimTypeServiceName());
-	    	this.kimTypeService = (KimTypeService)KIMServiceLocator.getService(serviceName);
+	    	this.kimTypeService = KimCommonUtils.getKimTypeService(kimType);
 		}
 		return this.kimTypeService;
 	}

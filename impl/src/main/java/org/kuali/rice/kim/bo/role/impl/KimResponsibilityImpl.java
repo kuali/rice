@@ -34,6 +34,7 @@ import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.TypedArrayList;
 
@@ -244,7 +245,8 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 	}
 
 	public String getAttributeDetailToDisplay(ResponsibilityAttributeDataImpl responsibilityAttributeData){
-		return responsibilityAttributeData.getKimAttribute().getAttributeName()+KimConstants.NAME_VALUE_SEPARATOR+
+		return getKimAttributeLabelFromDD(responsibilityAttributeData.getKimAttribute().getAttributeName())+
+				KimConstants.NAME_VALUE_SEPARATOR+
 				responsibilityAttributeData.getAttributeValue()+KimConstants.COMMA_SEPARATOR;
 	}
 	
@@ -261,9 +263,17 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 
 	//TODO: remove this and find a better way to do this. Should be done by next week with role doc task
 	protected String getKimAttributeLabelFromDD(String attributeName){
-    	return KNSServiceLocator.getDataDictionaryService().getAttributeLabel(KimAttributes.class, attributeName);
+    	return getDataDictionaryService().getAttributeLabel(KimAttributes.class, attributeName);
     }
 
+	transient private DataDictionaryService dataDictionaryService;
+	public DataDictionaryService getDataDictionaryService() {
+		if(dataDictionaryService == null){
+			dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+		}
+		return dataDictionaryService;
+	}
+	
 	//TODO: remove this and find a better way to do this. Should be done by next week with role doc task
 	public String getRequiredRoleQualifierAttributeToDisplay(KimResponsibilityRequiredAttributeImpl responsibilityRequiredAttribute){
 		String value = getKimAttributeLabelFromDD(responsibilityRequiredAttribute.getKimAttribute().getAttributeName());

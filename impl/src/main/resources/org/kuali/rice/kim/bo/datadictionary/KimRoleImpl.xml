@@ -53,8 +53,8 @@
    <bean id="KimRoleImpl-roleId" parent="KimRoleImpl-roleId-parentBean" />
   <bean id="KimRoleImpl-roleId-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="roleId"
-        p:label="Role ID"
-        p:shortLabel="Role ID"
+        p:label="Role Identifier"
+        p:shortLabel="Role Identifier"
         p:maxLength="10"
         p:required="false" >
     <property name="control" >
@@ -103,8 +103,8 @@
 
   <bean id="KimRoleImpl-kimRoleType.name-parentBean" abstract="true" parent="KimTypeImpl-name">
     <property name="name" value="kimRoleType.name" />
-    <property name="label" value="Type To Check" />
-    <property name="shortLabel" value="Type to check check " />
+    <property name="label" value="Type" />
+    <property name="shortLabel" value="Type" />
 		<property name="control" >
 			<bean parent="TextControlDefinition"
 				p:size="100" />

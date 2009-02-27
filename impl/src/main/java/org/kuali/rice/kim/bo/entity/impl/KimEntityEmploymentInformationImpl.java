@@ -84,7 +84,7 @@ public class KimEntityEmploymentInformationImpl extends KimInactivatableEntityDa
 	
 	@ManyToOne(targetEntity=KimEntityAffiliationImpl.class, fetch = FetchType.EAGER, cascade = {})
 	@JoinColumn(name = "ENTITY_AFLTN_ID", insertable = false, updatable = false)
-	protected KimEntityAffiliationImpl affiliation;
+	protected KimEntityAffiliationImpl affiliation = new KimEntityAffiliationImpl();
 	
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#getBaseSalaryAmount()

@@ -13,12 +13,12 @@
 		<typedef resource="org/apache/maven/artifact/ant/antlib.xml" uri="urn:maven-artifact-ant" classpathref="maven-ant-tasks.classpath" />
 		<artifact:pom id="maven.project" file="pom.xml" />
 		<echo>The Kuali Rice version is ${maven.project.version}</echo>
-		<echo>${maven.project.dependencies}</echo>
+        <echo>${maven.project.dependencyManagement.dependencies}</echo>
 		<property name="dist.build.dir" value="target/ant-build"/>
 		<property name="dist.server.dir" value="${dist.build.dir}/dist-server"/>
 		<property name="dist.server.lib.dir" value="${dist.server.dir}/WEB-INF/lib"/>
-		<property name="webapp.src.dir" value="server/src/main/webapp"/>
-		<property name="server.config.src.dir" value="server/src/main/config"/>
+		<property name="webapp.src.dir" value="web/src/main/webapp"/>
+		<property name="server.config.src.dir" value="web/src/main/config"/>
 		<property name="dist.binary.dir" value="${dist.build.dir}/dist-binary/rice-${maven.project.version}-bin"/>
 		<property name="dist.binary.lib.dir" value="${dist.binary.dir}/lib"/>
 		<property name="dist.binary.webcontent.dir" value="${dist.binary.dir}/webcontent"/>
@@ -125,7 +125,7 @@
 			<pom refid="maven.project" />
 		</artifact:install>
 		<artifact:dependencies filesetId="server.lib.fileset" versionsId="dependency.versions" useScope="runtime">
-			<dependency groupId="org.kuali.rice" artifactId="rice-server" version="${maven.project.version}">
+			<dependency groupId="org.kuali.rice" artifactId="rice-impl" version="${maven.project.version}">
 				<exclusion groupId="org.kuali.rice" artifactId="rice-testharness" />
 				<exclusion groupId="junit" artifactId="junit" />
 				<exclusion groupId="htmlunit" artifactId="htmlunit" />
@@ -160,7 +160,11 @@
 			<fileset dir="${dist.server.dir}"/>
 		</jar>
 	</target>
-	
+
+    <target name="maven-install-server-war" depends="dist-server" description="Builds, packages, and installs the Rice Server war file into the local maven repository">
+        <maven goals="install:install-file" options="-DgroupId=org.kuali.rice -DartifactId=rice-server -Dversion=${maven.project.version} -Dpackaging=war -Dfile=target/rice-${maven.project.version}-server.war"/>
+    </target>
+
 	<target name="dist-binary" depends="install-rice-jars" description="Creates Kuali Rice binary packages.">
 		<artifact:install file="pom.xml">
 			<pom refid="maven.project" />

@@ -16,8 +16,10 @@
 package org.kuali.rice.kim.bo.group.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -27,16 +29,19 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
@@ -75,6 +80,13 @@ public class KimGroupImpl extends PersistableBusinessObjectBase implements KimGr
 	@OneToMany(targetEntity=GroupAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
 	@JoinColumn(name="TARGET_PRIMARY_KEY", insertable=false, updatable=false)
 	protected List<GroupAttributeDataImpl> groupAttributes = new TypedArrayList(GroupAttributeDataImpl.class);
+
+	@Transient
+	private List<PersonImpl> memberPersons = new TypedArrayList(PersonImpl.class);
+	@Transient
+	private List<KimGroupImpl> memberGroups = new TypedArrayList(KimGroupImpl.class);
+	@Transient
+	private KimTypeImpl kimTypeImpl;
 
 	/**
 	 * This overridden method ...
@@ -162,6 +174,29 @@ public class KimGroupImpl extends PersistableBusinessObjectBase implements KimGr
 		return groupMembers;
 	}
 
+    public void setMemberPersonsAndGroups() {
+        List<PersonImpl> personMembers = new ArrayList<PersonImpl>();
+        List<KimGroupImpl> groupMembers = new ArrayList<KimGroupImpl>();
+        if (getMembers() != null) {
+            for ( GroupMemberImpl groupMemberImpl : getMembers() ) {
+                if ( groupMemberImpl.getMemberTypeCode().equals ( KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE )
+                        && groupMemberImpl.isActive() ) {
+                    personMembers.add((PersonImpl)KIMServiceLocator.getPersonService().getPerson(groupMemberImpl.getMemberId()));
+                } else if (groupMemberImpl.getMemberTypeCode().equals ( KimGroupMemberTypes.GROUP_MEMBER_TYPE )
+                        && groupMemberImpl.isActive() ) {
+                    Map<String,String> criteria = new HashMap<String,String>();
+                    criteria.put("groupId", groupMemberImpl.getMemberId());
+                    groupMembers.add((KimGroupImpl) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimGroupImpl.class, criteria));
+                }
+            }
+        }
+        setMemberPersons(personMembers);
+        setMemberGroups(groupMembers);
+    }
+
+    public void setMemberPersons(List<PersonImpl> memberPersons) {
+        this.memberPersons = memberPersons;
+    }
 
 	public String getKimTypeId() {
 		return this.kimTypeId;
@@ -217,4 +252,23 @@ public class KimGroupImpl extends PersistableBusinessObjectBase implements KimGr
 	public void setMembers(List<GroupMemberImpl> members) {
 		this.members = members;
 	}
+    public List<PersonImpl> getMemberPersons() {
+        return this.memberPersons;
+    }
+
+    public List<KimGroupImpl> getMemberGroups() {
+        return this.memberGroups;
+    }
+
+    public void setMemberGroups(List<KimGroupImpl> memberGroups) {
+        this.memberGroups = memberGroups;
+    }
+
+    public KimTypeImpl getKimTypeImpl() {
+        return KIMServiceLocator.getTypeInternalService().getKimType(this.kimTypeId);
+    }
+
+    public void setKimTypeImpl(KimTypeImpl kimTypeImpl) {
+        this.kimTypeImpl = kimTypeImpl;
+    }
 }

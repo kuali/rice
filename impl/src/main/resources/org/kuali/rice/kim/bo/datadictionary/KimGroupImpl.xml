@@ -9,16 +9,18 @@
   <bean id="KimGroupImpl-parentBean" abstract="true" parent="BusinessObjectEntry"
         p:businessObjectClass="org.kuali.rice.kim.bo.group.impl.KimGroupImpl"
         p:titleAttribute="groupId"
-        p:objectLabel="Names"
+        p:objectLabel="Group"
         p:inquiryDefinition-ref="KimGroupImpl-inquiryDefinition"
         p:lookupDefinition-ref="KimGroupImpl-lookupDefinition" >
 
     <property name="attributes" >
       <list>
         <ref bean="KimGroupImpl-groupId" />
-        <ref bean="KimGroupImpl-kimTypeId" />
         <ref bean="KimGroupImpl-groupName" />
         <ref bean="KimGroupImpl-namespaceCode" />
+        <ref bean="KimGroupImpl-kimTypeId" />
+        <ref bean="KimGroupImpl-kimTypeName" />
+        <ref bean="KimGroupImpl-kimTypeNamespaceCode" />
       </list>
     </property>
     <property name="collections" >
@@ -29,9 +31,46 @@
               p:shortLabel="Assigned Principals"
               p:summary="Assigned Principals"
               p:description="Assigned Principals" />
+        <bean parent="CollectionDefinition"
+              p:name="memberPersons"
+              p:label="Assigned Principals"
+              p:shortLabel="Assigned Principals"
+              p:summary="Assigned Principals"
+              p:description="Assigned Principals" />
+        <bean parent="CollectionDefinition"
+              p:name="memberGroups"
+              p:label="Assigned Groups"
+              p:shortLabel="Assigned Groups"
+              p:summary="Assigned Groups"
+              p:description="Assigned Groups" />
       </list>
     </property>
-
+    <property name="relationships" >
+      <list>
+        <bean parent="RelationshipDefinition">
+          <property name="objectAttributeName" value="kimTypeImpl"/>
+          <property name="primitiveAttributes" >
+            <list>
+              <bean parent="PrimitiveAttributeDefinition"
+                    p:sourceName="kimTypeId"
+                    p:targetName="kimTypeId" />
+            </list>
+          </property>
+          <property name="supportAttributes" >
+            <list>
+              <bean parent="SupportAttributeDefinition"
+                    p:identifier="true"
+                    p:sourceName="kimTypeImpl.name"
+                    p:targetName="name" />
+              <bean parent="SupportAttributeDefinition"
+                    p:identifier="true"
+                    p:sourceName="kimTypeImpl.namespaceCode"
+                    p:targetName="namespaceCode" />
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
   </bean>
 
   <bean id="KimGroupImpl-groupId" parent="KimGroupImpl-groupId-parentBean" />
@@ -58,6 +97,18 @@
     <property name="control" >
       <bean parent="TextControlDefinition" p:size="10" />
     </property>
+  </bean>
+
+  <bean id="KimGroupImpl-kimTypeName" parent="KimGroupImpl-kimTypeName-parentBean" />
+  <bean id="KimGroupImpl-kimTypeName-parentBean" abstract="true" parent="KimTypeImpl-name">
+    <property name="name" value="kimTypeImpl.name" />
+    <property name="label" value="Group Type Name" />
+  </bean>
+
+  <bean id="KimGroupImpl-kimTypeNamespaceCode" parent="KimGroupImpl-kimTypeNamespaceCode-parentBean" />
+  <bean id="KimGroupImpl-kimTypeNamespaceCode-parentBean" abstract="true" parent="KimTypeImpl-namespaceCode">
+    <property name="name" value="kimTypeImpl.namespaceCode" />
+    <property name="label" value="Group Type Name Space" />
   </bean>
 
   <bean id="KimGroupImpl-groupName" parent="KimGroupImpl-groupName-parentBean" />
@@ -103,6 +154,7 @@
 
   <bean id="KimGroupImpl-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
     <property name="title" value="Group" />
+    <property name="inquirableClass" value="org.kuali.rice.kim.inquiry.GroupInquirable"/>
     <property name="inquirySections" >
       <list>
         <bean parent="InquirySectionDefinition"
@@ -111,27 +163,37 @@
           <property name="inquiryFields" >
             <list>
               <bean parent="FieldDefinition" p:attributeName="groupId" />
+              <bean parent="FieldDefinition" p:attributeName="namespaceCode" />
               <bean parent="FieldDefinition" p:attributeName="groupName" />
-              <bean parent="FieldDefinition" p:attributeName="kimTypeId" />
-        	  <bean parent="FieldDefinition" p:attributeName="namespaceCode" />
+              <!-- <bean parent="FieldDefinition" p:attributeName="kimTypeId" />-->
+              <bean parent="FieldDefinition" p:attributeName="kimTypeImpl.namespaceCode" p:noInquiry="true" />
+		      <bean parent="FieldDefinition" p:attributeName="kimTypeImpl.name" />
             </list>
           </property>
         </bean>
-
-
-        <bean parent="InquirySectionDefinition">
-          <property name="title" value="Assigned Principals" />
+		<bean parent="InquirySectionDefinition">
+          <property name="title" value="Assigned Groups"/>
           <property name="numberOfColumns" value="1" />
           <property name="inquiryFields" >
             <list>
               <bean parent="InquiryCollectionDefinition">
-                <property name="attributeName" value="members" />
-                <property name="businessObjectClass" value="org.kuali.rice.kim.bo.group.impl.GroupMemberImpl" />
+                <property name="attributeName" value="memberGroups" />
+                <property name="businessObjectClass" value="org.kuali.rice.kim.bo.group.impl.KimGroupImpl" />
                 <property name="numberOfColumns" value="1" />
                 <property name="inquiryFields" >
                   <list>
-                    <bean parent="FieldDefinition"
-                          p:attributeName="memberId" />
+                      <bean parent="FieldDefinition" p:attributeName="groupId" />
+				      <bean parent="FieldDefinition" p:attributeName="namespaceCode" />
+				      <bean parent="FieldDefinition" p:attributeName="groupName" />
+				      <!-- <bean parent="FieldDefinition" p:attributeName="kimTypeId" />-->
+				      <bean parent="FieldDefinition" p:attributeName="kimTypeImpl.namespaceCode" p:noInquiry="true" />
+				      <bean parent="FieldDefinition" p:attributeName="kimTypeImpl.name" />
+                  </list>
+                </property>
+                <property name="summaryFields" >
+                  <list>
+                      <bean parent="FieldDefinition" p:attributeName="namespaceCode" />
+				      <bean parent="FieldDefinition" p:attributeName="groupName" />
                   </list>
                 </property>
               </bean>
@@ -139,6 +201,34 @@
           </property>
         </bean>
 
+        <bean parent="InquirySectionDefinition">
+          <property name="title" value="Assigned Principals"/>
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="InquiryCollectionDefinition">
+                <property name="attributeName" value="memberPersons" />
+                <property name="businessObjectClass" value="org.kuali.rice.kim.bo.impl.PersonImpl" />
+                <property name="numberOfColumns" value="1" />
+                <property name="inquiryFields" >
+                  <list>
+                      <bean parent="FieldDefinition" p:attributeName="principalName" />
+                      <bean parent="FieldDefinition" p:attributeName="name" />
+		              <bean parent="FieldDefinition" p:attributeName="firstName" />
+		              <bean parent="FieldDefinition" p:attributeName="middleName" />
+		              <bean parent="FieldDefinition" p:attributeName="lastName" />
+		              <bean parent="FieldDefinition" p:attributeName="principalId" />
+                  </list>
+                </property>
+                <property name="summaryFields" >
+                  <list>
+                      <bean parent="FieldDefinition" p:attributeName="principalName" />
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
       </list>
     </property>
   </bean>
@@ -175,9 +265,9 @@
     <property name="resultFields" >
       <list>
         <bean parent="FieldDefinition" p:attributeName="groupId" />
-        <bean parent="FieldDefinition" p:attributeName="groupName" />
-        <bean parent="FieldDefinition" p:attributeName="kimTypeId" />
         <bean parent="FieldDefinition" p:attributeName="namespaceCode" />
+        <bean parent="FieldDefinition" p:attributeName="groupName" />
+        <bean parent="FieldDefinition" p:attributeName="kimTypeImpl.name" />
       <!--  <bean parent="FieldDefinition" p:attributeName="principalName" /> -->
       </list>
     </property>

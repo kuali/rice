@@ -456,6 +456,11 @@
                     <bean parent="FieldDefinition" p:attributeName="priority" />
                   </list>
                 </property>
+                <property name="summaryFields" >
+                  <list>
+                    <bean parent="FieldDefinition" p:attributeName="principalName" />
+                  </list>
+                </property>
               </bean>
             </list>
           </property>
@@ -477,6 +482,12 @@
                     <bean parent="FieldDefinition" p:attributeName="priority" />
                   </list>
                 </property>
+                <property name="summaryFields" >
+                  <list>
+                    <bean parent="FieldDefinition" p:attributeName="namespaceCode" />
+                    <bean parent="FieldDefinition" p:attributeName="name" />
+                  </list>
+                </property>
               </bean>
             </list>
           </property>
@@ -496,6 +507,11 @@
                     <bean parent="FieldDefinition" p:attributeName="roleName" />
                     <bean parent="FieldDefinition" p:attributeName="actionRequestedCd" />
                     <bean parent="FieldDefinition" p:attributeName="priority" />
+                  </list>
+                </property>
+                <property name="summaryFields" >
+                  <list>
+                    <bean parent="FieldDefinition" p:attributeName="roleName" />
                   </list>
                 </property>
               </bean>

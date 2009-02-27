@@ -1,0 +1,52 @@
+/*
+ * Copyright 2007 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl1.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.kuali.rice.kim.inquiry;
+
+import java.util.Map;
+
+import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.service.GroupService;
+import org.kuali.rice.kim.service.IdentityManagementService;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.PersonService;
+import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
+import org.kuali.rice.kns.util.KNSConstants;
+
+/**
+ * This is a description of what this class does - kellerj don't forget to fill this in.
+ *
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ *
+ */
+public class GroupInquirable extends KualiInquirableImpl {
+
+	/**
+	 * This overridden method ...
+	 *
+	 * @see org.kuali.rice.kns.inquiry.KualiInquirableImpl#getBusinessObject(java.util.Map)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public BusinessObject getBusinessObject(Map fieldValues) {
+	    BusinessObject bo = super.getBusinessObject(fieldValues);
+	    ((KimGroupImpl)bo).setMemberPersonsAndGroups();
+	    return bo;
+	}
+
+}

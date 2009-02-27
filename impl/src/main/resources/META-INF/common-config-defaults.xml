@@ -125,4 +125,16 @@
         remote - do not install services locally, access over KSB
      -->
     <param name="kim.mode">local</param>
+    <param name="kim.cache.entity.max.size">3000</param>
+    <param name="kim.cache.entity.max.age.seconds">3600</param>
+    <param name="kim.cache.group.max.size">3000</param>
+    <param name="kim.cache.group.max.age.seconds">3600</param>
+    <param name="kim.cache.role.max.size">3000</param>
+    <param name="kim.cache.role.max.age.seconds">300</param>
+    <param name="kim.cache.permission.max.size">3000</param>
+    <param name="kim.cache.permission.max.age.seconds">30</param>
+    <param name="kim.cache.responsibility.max.size">3000</param>
+    <param name="kim.cache.responsibility.max.age.seconds">30</param>
+    <param name="kim.cache.person.max.size">3000</param>
+    <param name="kim.cache.person.max.age.seconds">3600</param>
 </config>

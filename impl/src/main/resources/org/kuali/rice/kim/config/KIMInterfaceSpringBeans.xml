@@ -27,14 +27,14 @@
                            http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 
   <bean id="kimIdentityManagementService" class="org.kuali.rice.kim.service.impl.IdentityManagementServiceImpl"
-    p:entityPrincipalCacheMaxSize="3000"
-    p:entityPrincipalCacheMaxAgeSeconds="3600"
-    p:groupCacheMaxSize="3000"
-    p:groupCacheMaxAgeSeconds="3600"
-    p:permissionCacheMaxSize="3000"
-    p:permissionCacheMaxAgeSeconds="30"
-    p:responsibilityCacheMaxSize="3000"
-    p:responsibilityCacheMaxAgeSeconds="30" />
+    p:entityPrincipalCacheMaxSize="${kim.cache.entity.max.size}"
+    p:entityPrincipalCacheMaxAgeSeconds="${kim.cache.entity.max.age.seconds}"
+    p:groupCacheMaxSize="${kim.cache.group.max.size}"
+    p:groupCacheMaxAgeSeconds="${kim.cache.group.max.age.seconds}"
+    p:permissionCacheMaxSize="${kim.cache.permission.max.size}"
+    p:permissionCacheMaxAgeSeconds="${kim.cache.permission.max.age.seconds}"
+    p:responsibilityCacheMaxSize="${kim.cache.responsibility.max.size}"
+    p:responsibilityCacheMaxAgeSeconds="${kim.cache.responsibility.max.age.seconds}" />
 
 <!-- this service is intended to be run locally, should not be exported
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
@@ -48,8 +48,8 @@
  -->
 
   <bean id="kimRoleManagementService" class="org.kuali.rice.kim.service.impl.RoleManagementServiceImpl"
-    p:roleCacheMaxSize="3000"
-    p:roleCacheMaxAgeSeconds="3600" />
+    p:roleCacheMaxSize="${kim.cache.role.max.size}"
+    p:roleCacheMaxAgeSeconds="${kim.cache.role.max.age.seconds}" />
 <!-- this service is intended to be run locally, should not be exported
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
   <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
@@ -62,14 +62,14 @@
  -->
 
   <bean id="personService" class="org.kuali.rice.kim.service.impl.PersonServiceImpl"
-    p:personCacheMaxSize="3000"
-    p:personCacheMaxAgeSeconds="3600">
-  <property name="personEntityTypeCodes">
-    <list>
-      <value>PERSON</value>
-      <value>SYSTEM</value>
-    </list>
-  </property>
+    p:personCacheMaxSize="${kim.cache.person.max.size}"
+    p:personCacheMaxAgeSeconds="${kim.cache.person.max.age.seconds}">
+    <property name="personEntityTypeCodes">
+      <list>
+        <value>PERSON</value>
+        <value>SYSTEM</value>
+      </list>
+    </property>
   </bean>
 
 <!-- this service is intended to be run locally, should not be exported except for non-Rice applications

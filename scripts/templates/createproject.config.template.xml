@@ -7,7 +7,7 @@
 	<param name="externalizable.images.url">/${app.context.name}/kr/static/images/</param>
 	<param name="kr.externalizable.images.url">/${app.context.name}/kr/static/images/</param>
 	<param name="travel.externalizable.images.url">/${app.context.name}/static/images/</param>
-	<param name="kr.url">/${app.context.name}/kr</param>
+	<param name="kr.url">http://localhost:8080/${app.context.name}/kr</param>
 	<param name="attachments.pending.directory">${java.io.tmpdir}</param>
 	<param name="attachments.directory">${java.io.tmpdir}</param>
 

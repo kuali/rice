@@ -12,11 +12,12 @@
 	<!-- App specific parameters -->
 	<param name="app.code">kr</param>
 	<param name="app.context.name">${app.code}-${environment}</param>
+	<param name="application.url">http://localhost:8080/${app.context.name}</param>
 	<param name="externalizable.help.url">/${app.context.name}/kr/static/help/</param>
 	<param name="externalizable.images.url">/${app.context.name}/kr/static/images/</param>
 	<param name="kr.externalizable.images.url">/${app.context.name}/kr/static/images/</param>
 	<param name="travel.externalizable.images.url">/${app.context.name}/kr/static/images/</param>
-	<param name="kr.url">/${app.context.name}/kr</param>
+	<param name="kr.url">${application.url}/kr</param>
 
 	<!-- Misc parameters -->
 	<param name="institution">rice</param>
@@ -31,7 +32,6 @@
 	<param name="log4j.reload.minutes">5</param>
 	<param name="log4j.settings.path">classpath:log4j.properties</param>
 
-	<param name="application.url">http://localhost:8080/${app.context.name}</param>
 	<param name="workflow.url">${application.url}/en</param>
 	<param name="serviceServletUrl">http://${host.ip}:8080/${app.context.name}/remoting/</param>
 

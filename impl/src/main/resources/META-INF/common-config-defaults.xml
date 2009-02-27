@@ -1,9 +1,15 @@
 <config>
+    <!--
+      NOTE: The application.url parameter needs to be set by the client
+        this should be set to something similar to:
+        <param name="application.url">http://site.edu/${app.context.name}</param>
+     -->
     <!--  NOTE: This environment parameter must be defined early -->
     <param name="environment" override="false">dev</param>
 
     <param name="app.code">kr</param>
     <param name="app.context.name">${app.code}-${environment}</param>
+    <param name="application.url"><!-- enter base application url here--></param>
 
     <!-- A comma separated list of additional spring files for the RiceConfigurer -->
     <param name="rice.additionalSpringFiles"></param>
@@ -13,7 +19,7 @@
     <param name="externalizable.images.url">/${app.context.name}/kr/static/images/</param>
     <param name="kr.externalizable.images.url">/${app.context.name}/kr/static/images/</param>
     <param name="travel.externalizable.images.url">/${app.context.name}/kr/static/images/</param>
-    <param name="kr.url">/kr</param>
+    <param name="kr.url">${application.url}/kr</param>
 
     <!-- by default non-tests are not in "dev.mode" -->
     <param name="dev.mode">false</param>
@@ -112,8 +118,8 @@
     <param name="session.document.cache.size">100</param>
 
     <param name="classpath.resource.prefix">/WEB-INF/classes/</param>
-    
-    <!-- what mode should KIM be run in? 
+
+    <!-- what mode should KIM be run in?
         local - use the master data source
         embedded - run locally, but may have separate data source from rest of application
         remote - do not install services locally, access over KSB

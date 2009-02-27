@@ -213,7 +213,7 @@ public class IteratedRequestActivationNode implements SimpleNode {
         // this will sort higher priority requests to the front
         // blocking requests are higher priority, so all blocking requests will be
         // activated before non-blocking requests
-        Collections.sort(requests, new Utilities().new PrioritySorter());
+        Collections.sort(requests, new Utilities.PrioritySorter());
         LOG.info("Pending Root Requests " + requests.size());
         String activationType = nodeInstance.getRouteNode().getActivationType();
         boolean isParallel = KEWConstants.ROUTE_LEVEL_PARALLEL.equals(activationType);

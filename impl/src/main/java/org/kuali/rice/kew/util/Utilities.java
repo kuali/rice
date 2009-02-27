@@ -184,10 +184,8 @@ public class Utilities {
      *
      *	Consider moving out of this class if this bugs
      */
-    public class PrioritySorter implements Comparator {
-        public int compare(Object arg0, Object arg1) {
-            ActionRequestValue ar1 = (ActionRequestValue) arg0;
-            ActionRequestValue ar2 = (ActionRequestValue) arg1;
+    public static class PrioritySorter implements Comparator<ActionRequestValue> {
+        public int compare(ActionRequestValue ar1, ActionRequestValue ar2) {
             int value = ar1.getPriority().compareTo(ar2.getPriority());
             if (value == 0) {
                 value = ActionRequestValue.compareActionCode(ar1.getActionRequested(), ar2.getActionRequested());
@@ -208,16 +206,13 @@ public class Utilities {
      *
      *	Consider moving out of this class if this bugs
      */
-    public class RouteLogActionRequestSorter implements Comparator {
-        public int compare(Object arg0, Object arg1) {
-            ActionRequestValue ar1 = (ActionRequestValue) arg0;
-            ActionRequestValue ar2 = (ActionRequestValue) arg1;
-
+    public static class RouteLogActionRequestSorter extends PrioritySorter implements Comparator<ActionRequestValue> {
+        public int compare(ActionRequestValue ar1, ActionRequestValue ar2) {
             if (! ar1.getChildrenRequests().isEmpty()) {
-                Collections.sort(ar1.getChildrenRequests(), new RouteLogActionRequestSorter());
+                Collections.sort(ar1.getChildrenRequests(), this);
             }
             if (! ar2.getChildrenRequests().isEmpty()) {
-                Collections.sort(ar2.getChildrenRequests(), new RouteLogActionRequestSorter());
+                Collections.sort(ar2.getChildrenRequests(), this);
             }
 
             int routeLevelCompareVal = ar1.getRouteLevel().compareTo(ar2.getRouteLevel());
@@ -231,7 +226,7 @@ public class Utilities {
                 return 1;
             }
 
-            return new Utilities().new PrioritySorter().compare(arg0, arg1);
+            return super.compare(ar1, ar2);
         }
     }
 

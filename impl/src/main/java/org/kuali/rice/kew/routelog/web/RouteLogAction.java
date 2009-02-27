@@ -74,7 +74,7 @@ public class RouteLogAction extends WorkflowAction {
 
         for (Iterator iter = routeHeader.getActionsTaken().iterator(); iter.hasNext();) {
             ActionTakenValue actionTaken = (ActionTakenValue) iter.next();
-            Collections.sort((List) actionTaken.getActionRequests(), new Utilities().new RouteLogActionRequestSorter());
+            Collections.sort((List) actionTaken.getActionRequests(), new Utilities.RouteLogActionRequestSorter());
         }
 
         populateRouteLogFormActionRequests(rlForm, routeHeader);
@@ -96,7 +96,7 @@ public class RouteLogAction extends WorkflowAction {
 
     public void populateRouteLogFormActionRequests(RouteLogForm rlForm, DocumentRouteHeaderValue routeHeader) {
         List rootRequests = getActionRequestService().getRootRequests(routeHeader.getActionRequests());
-        Collections.sort(rootRequests, new Utilities().new RouteLogActionRequestSorter());
+        Collections.sort(rootRequests, new Utilities.RouteLogActionRequestSorter());
         int arCount = 0;
         for (Iterator iterator = rootRequests.iterator(); iterator.hasNext();) {
             ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();
@@ -119,7 +119,7 @@ public class RouteLogAction extends WorkflowAction {
         SimulationResults simResults = simEngine.runSimulation(new SimulationCriteria(document.getRouteHeaderId()));
         // should now be sorted list
         List rootRequests = getActionRequestService().getRootRequests(simResults.getSimulatedActionRequests());
-        Collections.sort(rootRequests, new Utilities().new RouteLogActionRequestSorter());
+        Collections.sort(rootRequests, new Utilities.RouteLogActionRequestSorter());
         int arCount = 0;
         for (Iterator iterator = rootRequests.iterator(); iterator.hasNext();) {
             ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();

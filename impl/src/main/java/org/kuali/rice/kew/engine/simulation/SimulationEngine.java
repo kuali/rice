@@ -141,7 +141,7 @@ public class SimulationEngine extends StandardWorkflowEngine {
     				}
     			}
     			List simulatedActionRequests = context.getEngineState().getGeneratedRequests();
-    			Collections.sort(simulatedActionRequests, new Utilities().new RouteLogActionRequestSorter());
+    			Collections.sort(simulatedActionRequests, new Utilities.RouteLogActionRequestSorter());
     			results.setSimulatedActionRequests(simulatedActionRequests);
     			results.setSimulatedActionsTaken(context.getActivationContext().getSimulatedActionsTaken());
             } catch (InvalidActionTakenException e) {

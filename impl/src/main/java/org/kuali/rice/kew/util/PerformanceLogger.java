@@ -46,17 +46,19 @@ public class PerformanceLogger {
     }
 
     public void log(String message, boolean terminalPoint) {
-        long endTime = System.currentTimeMillis();
-        long totalTime = endTime - startTime;
-        String logMessage = "Time: "+totalTime+" ms, ";
-        if (routeHeaderId != null) {
-            logMessage+="docId="+routeHeaderId+", ";
-        }
-        logMessage += message;
-        if (terminalPoint) {
-            logMessage += "\n";
-        }
-        LOG.info(logMessage);
+    	if ( LOG.isInfoEnabled() ) {
+	        long endTime = System.currentTimeMillis();
+	        long totalTime = endTime - startTime;
+	        String logMessage = "Time: "+totalTime+" ms, ";
+	        if (routeHeaderId != null) {
+	            logMessage+="docId="+routeHeaderId+", ";
+	        }
+	        logMessage += message;
+	        if (terminalPoint) {
+	            logMessage += "\n";
+	        }
+	        LOG.info(logMessage);
+    	}
     }
     
 }

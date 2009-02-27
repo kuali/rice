@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.MDC;
+import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.RouteHelper;
@@ -42,7 +43,7 @@ import org.kuali.rice.kew.util.Utilities;
  */
 public class RequestActivationNode implements SimpleNode {
 
-    protected final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(getClass());
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger( RequestActivationNode.class );
     private static long generatedRequestPriority = 0;
 
     public SimpleResult process(RouteContext routeContext, RouteHelper routeHelper) throws Exception {
@@ -89,8 +90,8 @@ public class RequestActivationNode implements SimpleNode {
     public boolean activateRequests(RouteContext context, DocumentRouteHeaderValue document, RouteNodeInstance nodeInstance) throws WorkflowException {
         MDC.put("docID", document.getRouteHeaderId());
         PerformanceLogger performanceLogger = new PerformanceLogger(document.getRouteHeaderId());
-        List generatedActionItems = new ArrayList();
-        List requests = new ArrayList();
+        List<ActionItem> generatedActionItems = new ArrayList<ActionItem>();
+        List<ActionRequestValue> requests = new ArrayList<ActionRequestValue>();
         if (context.isSimulation()) {
         	for (ActionRequestValue ar : context.getDocument().getActionRequests()) {
         		// logic check below duplicates behavior of the ActionRequestService.findPendingRootRequestsByDocIdAtRouteNode(routeHeaderId, routeNodeInstanceId) method
@@ -105,16 +106,29 @@ public class RequestActivationNode implements SimpleNode {
         } else {
             requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocIdAtRouteNode(document.getRouteHeaderId(), nodeInstance.getRouteNodeInstanceId());
         }
-        Collections.sort(requests, new Utilities().new PrioritySorter());
-        LOG.debug("Pending Root Requests " + requests.size());
+        if ( LOG.isDebugEnabled() ) {
+        	LOG.debug("Pending Root Requests " + requests.size());
+        }
+        boolean activatedApproveRequest = activateRequestsCustom( context, requests, generatedActionItems, document, nodeInstance );
+        // now let's send notifications, since this code needs to be able to activate each request individually, we need
+        // to collection all action items and then notify after all have been generated
+        if (!context.isSimulation()) {
+            KEWServiceLocator.getNotificationService().notify(generatedActionItems);
+        }
+        performanceLogger.log("Time to activate requests.");
+        return activatedApproveRequest;
+    }
+
+    protected boolean activateRequestsCustom( RouteContext context, List<ActionRequestValue> requests, List<ActionItem> generatedActionItems, 
+    		DocumentRouteHeaderValue document, RouteNodeInstance nodeInstance) throws WorkflowException {
+        Collections.sort(requests, new Utilities.PrioritySorter());
         String activationType = nodeInstance.getRouteNode().getActivationType();
         boolean isParallel = KEWConstants.ROUTE_LEVEL_PARALLEL.equals(activationType);
         boolean activatedApproveRequest = false;
-        for (Iterator iter = requests.iterator(); iter.hasNext();) {
+        for (ActionRequestValue request : requests ) {
             if (activatedApproveRequest && !isParallel && (!context.isSimulation() || !context.getActivationContext().isActivateRequests() )) {
                 break;
             }
-            ActionRequestValue request = (ActionRequestValue) iter.next();
             if (request.getParentActionRequest() != null || request.getNodeInstance() == null) {
                 // 1. disregard request if it's not a top-level request
                 // 2. disregard request if it's a "future" request and hasn't been attached to a node instance yet
@@ -125,19 +139,15 @@ public class RequestActivationNode implements SimpleNode {
                 continue;
             }
             logProcessingMessage(request);   
-            LOG.debug("Activating request.");
+            if ( LOG.isDebugEnabled() ) {
+            	LOG.debug("Activating request: " + request);
+            }
             activatedApproveRequest = activateRequest(context, request, nodeInstance, generatedActionItems) || activatedApproveRequest;
         }
-        // now let's send notifications, since this code needs to be able to activate each request individually, we need
-        // to collection all action items and then notify after all have been generated
-        if (!context.isSimulation()) {
-            KEWServiceLocator.getNotificationService().notify(generatedActionItems);
-        }
-        performanceLogger.log("Time to activate requests.");
         return activatedApproveRequest;
     }
-
-    private boolean activateRequest(RouteContext context, ActionRequestValue actionRequest, RouteNodeInstance nodeInstance, List generatedActionItems) {
+    
+    protected boolean activateRequest(RouteContext context, ActionRequestValue actionRequest, RouteNodeInstance nodeInstance, List generatedActionItems) {
         if (actionRequest.isRoleRequest()) {
             List actionRequests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocIdAtRouteNode(actionRequest.getRouteHeaderId(), nodeInstance.getRouteNodeInstanceId());
             for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
@@ -167,7 +177,7 @@ public class RequestActivationNode implements SimpleNode {
         }
     }
 
-    private void logProcessingMessage(ActionRequestValue request) {
+    protected void logProcessingMessage(ActionRequestValue request) {
         if (LOG.isDebugEnabled()) {
                 RouteNodeInstance nodeInstance = request.getNodeInstance();
             StringBuffer buffer = new StringBuffer();

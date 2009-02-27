@@ -561,7 +561,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 	 */
 	private void saveMessages(HttpServletRequest request) {
 		if (!GlobalVariables.getMessageList().isEmpty()) {
-			request.setAttribute(KNSConstants.GLOBAL_MESSAGES, GlobalVariables.getMessageList());
+			request.setAttribute(KNSConstants.GLOBAL_MESSAGES, GlobalVariables.getMessageList().toActionMessages());
 		}
 	}
 

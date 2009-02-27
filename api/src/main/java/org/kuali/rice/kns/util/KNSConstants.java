@@ -507,4 +507,6 @@ public class KNSConstants extends JSTLConstants {
 
     public static final String TAB_STATES = "tabStates";
     
+    public static final String GLOBAL_VARIABLES_MESSAGES_LIST_ACTION_MESSAGES = "GlobalVariablesMessagesList";
+    
 }

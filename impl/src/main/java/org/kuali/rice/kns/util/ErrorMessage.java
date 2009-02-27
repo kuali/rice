@@ -44,7 +44,7 @@ public class ErrorMessage implements Serializable {
      * @param errorKey
      * @param messageParameters
      */
-    public ErrorMessage(String errorKey, String[] messageParameters) {
+    public ErrorMessage(String errorKey, String... messageParameters) {
         if (StringUtils.isBlank(errorKey)) {
             throw new IllegalArgumentException("invalid (blank) errorKey");
         }

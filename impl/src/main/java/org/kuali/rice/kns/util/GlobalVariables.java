@@ -33,7 +33,7 @@ public class GlobalVariables {
     private static ThreadLocal<String> hideSessionFromTestsMessage = new ThreadLocal<String>();
     private static ThreadLocal<ErrorMap> errorMaps = new ThreadLocal<ErrorMap>();
     // todo: generic collections
-    private static ThreadLocal<ArrayList<String>> messageLists = new ThreadLocal<ArrayList<String>>();
+    private static ThreadLocal<MessageList> messageLists = new ThreadLocal<MessageList>();
     private static ThreadLocal<HashMap> auditErrorMaps = new ThreadLocal<HashMap>();
     private static ThreadLocal<KualiForm> kualiForms = new ThreadLocal<KualiForm>();
     private static ThreadLocal<Map<String,Object>> requestCaches = new ThreadLocal<Map<String,Object>>();
@@ -88,7 +88,7 @@ public class GlobalVariables {
     /**
      * @return ArrayList containing messages.
      */
-    public static ArrayList<String> getMessageList() {
+    public static MessageList getMessageList() {
         return messageLists.get();
     }
 
@@ -97,7 +97,7 @@ public class GlobalVariables {
      *
      * @param messageList
      */
-    public static void setMessageList(ArrayList<String> messageList) {
+    public static void setMessageList(MessageList messageList) {
         messageLists.set(messageList);
     }
 
@@ -148,7 +148,7 @@ public class GlobalVariables {
     public static void clear() {
         errorMaps.set(new ErrorMap());
         auditErrorMaps.set(new HashMap());
-        messageLists.set(new ArrayList<String>());
+        messageLists.set(new MessageList());
         requestCaches.set(new HashMap<String,Object>() );
         kualiForms.set(null);
     }

@@ -103,7 +103,7 @@ public class RoleNode extends RequestsNode {
         String activationType = nodeInstance.getRouteNode().getActivationType();
         boolean isParallel = KEWConstants.ROUTE_LEVEL_PARALLEL.equals(activationType);
         boolean requestActivated = false;
-        String annotationToActivate = null;
+        String groupToActivate = null;
         for (ActionRequestValue request : requests ) {
             if (requestActivated && !isParallel && (!context.isSimulation() || !context.getActivationContext().isActivateRequests() )) {
                 break;
@@ -114,10 +114,10 @@ public class RoleNode extends RequestsNode {
                 continue; 
             }
             if ( request.isApproveOrCompleteRequest() ) {
-            	if ( annotationToActivate == null ) {
-            		annotationToActivate = request.getAnnotation();
+            	if ( groupToActivate == null ) {
+            		groupToActivate = request.getResponsibilityDesc();
             	}
-            	if ( StringUtils.equals( annotationToActivate, request.getAnnotation() ) ) {
+            	if ( StringUtils.equals( groupToActivate, request.getResponsibilityDesc() ) ) {
                     if (request.isActive()) {
                         requestActivated = requestActivated || request.isApproveOrCompleteRequest();
                         continue;

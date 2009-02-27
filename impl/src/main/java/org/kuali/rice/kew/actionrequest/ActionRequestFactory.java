@@ -375,7 +375,7 @@ public class ActionRequestFactory {
 			        responsibility.getActionTypeCode(), 
 			        responsibility.getPriorityNumber(), 
 			        roleRecipient, 
-			        responsibility.getResponsibilityName(), // description
+			        responsibility.getActionGroupingCode(), // description
 			        new Long(responsibility.getResponsibilityId()), 
 			        responsibility.isIgnorePrevious(), 
 			        approvePolicy, 

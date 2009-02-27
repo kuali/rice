@@ -49,6 +49,8 @@ public interface ActionListService {
     public void saveActionItem(ActionItem actionItem);
 
     public void deleteActionItem(ActionItem actionItem);
+    
+    public void deleteActionItem(ActionItem actionItem, boolean forceIntoOutbox);
 
     public void deleteByRouteHeaderId(Long routeHeaderId);
 
@@ -107,4 +109,5 @@ public interface ActionListService {
     public Collection<ActionItem> getOutbox(String principalId, ActionListFilter filter);
     public void removeOutboxItems(String principalId, List<Long> outboxItems);
     public void saveOutboxItem(ActionItem actionItem);
+    public void saveOutboxItem(ActionItem actionItem, boolean forceIntoOutbox);
 }

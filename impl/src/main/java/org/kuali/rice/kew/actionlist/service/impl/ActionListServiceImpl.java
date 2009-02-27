@@ -94,6 +94,10 @@ public class ActionListServiceImpl implements ActionListService {
     }
 
     public void deleteActionItem(ActionItem actionItem) {
+    	deleteActionItem(actionItem, false);
+    }
+    
+    public void deleteActionItem(ActionItem actionItem, boolean forceIntoOutbox) {
         try {
             KEWServiceLocator.getUserOptionsService().saveRefreshUserOption(actionItem.getPrincipalId());
         } catch (Exception e) {
@@ -104,7 +108,7 @@ public class ActionListServiceImpl implements ActionListService {
         List<ActionItem> l = new ArrayList<ActionItem>(1);
         l.add(actionItem);
         KEWServiceLocator.getNotificationService().removeNotification(l);
-        this.saveOutboxItem(actionItem);
+        this.saveOutboxItem(actionItem, forceIntoOutbox);
     }
 
     public void deleteByRouteHeaderId(Long routeHeaderId) {
@@ -405,13 +409,17 @@ public class ActionListServiceImpl implements ActionListService {
         this.getActionListDAO().removeOutboxItems(principalId, outboxItems);
     }
 
+    public void saveOutboxItem(ActionItem actionItem) {
+    	saveOutboxItem(actionItem, false);
+    }
+    
     /**
      *
      * save the ouboxitem unless the document is saved or the user already has the item in their outbox.
      *
      * @see org.kuali.rice.kew.actionlist.service.ActionListService#saveOutboxItem(org.kuali.rice.kew.actionitem.OutboxItemActionListExtension)
      */
-    public void saveOutboxItem(ActionItem actionItem) {
+    public void saveOutboxItem(ActionItem actionItem, boolean forceIntoOutbox) {
             if (KEWServiceLocator.getPreferencesService().getPreferences(actionItem.getPrincipalId()).isUsingOutbox()
                     && ConfigContext.getCurrentContextConfig().getOutBoxOn()
                     && getActionListDAO().getOutboxByDocumentIdUserId(actionItem.getRouteHeaderId(), actionItem.getPrincipalId()) == null
@@ -421,7 +429,7 @@ public class ActionListServiceImpl implements ActionListService {
                         actionItem.getActionRequestId());
                 ActionTakenValue actionTaken = actionRequest.getActionTaken();
                 // if an action was taken...
-                if (actionTaken != null && actionTaken.getPrincipalId().equals(actionItem.getPrincipalId())) {
+                if (forceIntoOutbox || (actionTaken != null && actionTaken.getPrincipalId().equals(actionItem.getPrincipalId()))) {
                     this.getActionListDAO().saveOutboxItem(new OutboxItemActionListExtension(actionItem));
                 }
             }

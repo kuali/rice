@@ -41,7 +41,7 @@ public class KSBResourceLoaderFactoryTest extends TestCase {
 		config.parseConfig();
 		ConfigContext.init(config);
 		
-		ResourceLoader rl = KSBResourceLoaderFactory.createRootKSBRemoteResourceLoader(new ArrayList<ServiceHolder>());
+		ResourceLoader rl = KSBResourceLoaderFactory.createRootKSBRemoteResourceLoader();
 		assertNotNull(rl.getResourceLoader(KSBResourceLoaderFactory.getRemoteResourceLoaderName()));
 	}
 	
@@ -54,7 +54,7 @@ public class KSBResourceLoaderFactoryTest extends TestCase {
 		
 		boolean errorThrown = false;
 		try {
-			KSBResourceLoaderFactory.createRootKSBRemoteResourceLoader(new ArrayList<ServiceHolder>());
+			KSBResourceLoaderFactory.createRootKSBRemoteResourceLoader();
 			fail("should have thrown configuration exception with no service namespace present");
 		} catch (ConfigurationException ce) {
 			errorThrown = true;

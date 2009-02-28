@@ -59,6 +59,7 @@ public class KSBConstants extends JSTLConstants {
     public static final String USE_QUARTZ_DATABASE = "useQuartzDatabase";
     public static final String KSB_ALTERNATE_ENDPOINTS = "ksb.alternateEndpoints";
     public static final String KSB_ALTERNATE_ENDPOINT_LOCATIONS = "ksb.alternateEndpointLocations";
+    public static final String LOAD_KNS_MODULE_CONFIGURATION = "rice.ksb.loadKNSModuleConfiguration";
 
     // custom http header keys
     public static final String DIGITAL_SIGNATURE_HEADER = "KEW_DIGITAL_SIGNATURE";

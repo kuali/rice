@@ -56,24 +56,21 @@
 		<property name="transactionManager" ref="jotm" />
 		<property name="userTransaction" ref="jotm" />
 		<property name="rootConfig" ref="config" />
-		<property name="knsConfigurer">
+		<property name="additionalSpringFiles">
+		  <list>
+		    <value>classpath:KSBTestServiceOverrides.xml</value>
+		  </list>
+		</property>
+		<!-- <property name="knsConfigurer">
 	        <bean class="org.kuali.rice.kns.config.KNSConfigurer"/>
 		</property>
 		<property name="kimConfigurer">
 	        <bean class="org.kuali.rice.kim.config.KIMConfigurer" />
-		</property>
+		</property> -->
 		<property name="ksbConfigurer">
 			<bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
 				<property name="serviceServletUrl" value="http://localhost:${ksb.testharness.port}/en-test/remoting/" />
 				<property name="nonTransactionalMessageDataSource" ref="nonTransactionalDataSource" />
-				<property name="overrideServices">
-					<list>
-						<bean class="org.kuali.rice.ksb.messaging.config.ServiceHolder">
-							<property name="localServiceName" value="exceptionMessagingService" />
-							<property name="service" ref="testExceptionHandlerService" />
-						</bean>
-					</list>
-				</property>
 				<property name="services">
 					<list>
 						<bean class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition">
@@ -196,20 +193,7 @@
 			<ref bean="matchAllWithPropReq" />
 		</property>
 	</bean>
-	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator" lazy-init="true">
-		<property name="interceptorNames">
-			<list>
-				<idref local="matchAllTxInterceptor" />
-			</list>
-		</property>
-		<property name="beanNames">
-			<list>
-				<idref local="testExceptionHandlerService" />
-			</list>
-		</property>
-	</bean>
 
-	<bean id="testExceptionHandlerService" class="org.kuali.rice.ksb.messaging.exceptionhandling.TestExceptionHandlerServiceImpl" />
 	<bean id="testJavaSecurityManagementService" class="org.kuali.rice.ksb.security.admin.MockJavaSecurityManagementServiceImpl" />
 
 </beans>

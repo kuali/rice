@@ -28,7 +28,6 @@ import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
-import org.kuali.rice.test.data.PerSuiteUnitTestData;
 import org.mortbay.jetty.webapp.WebAppClassLoader;
 
 public class TestUtilities {
@@ -49,7 +48,11 @@ public class TestUtilities {
 
     public static void waitForExceptionRouting(long milliseconds) {
     	try {
-    		getExceptionThreader().join(milliseconds);
+    		Thread thread = getExceptionThreader();
+    		if (thread == null) {
+    			throw new IllegalStateException("No exception thread was established, likely message is not being processed for exception routing.");
+    		}
+    		thread.join(milliseconds);
     	} catch (InterruptedException e) {
     		Assert.fail("This thread was interuppted while waiting for exception routing.");
     	}

@@ -62,8 +62,6 @@ public class KSBConfigurer extends ModuleConfigurer {
 
 	private static final Logger LOG = Logger.getLogger(KSBConfigurer.class);
 
-	private List<ServiceHolder> overrideServices;
-
 	private List<ServiceDefinition> services = new ArrayList<ServiceDefinition>();
 	
     private List<AlternateEndpointLocation> alternateEndpointLocations = new ArrayList<AlternateEndpointLocation>();
@@ -126,12 +124,16 @@ public class KSBConfigurer extends ModuleConfigurer {
             files += "classpath:org/kuali/rice/ksb/config/KSBOJBSpringBeans.xml";
         }
         
+        if ("true".equals(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.LOAD_KNS_MODULE_CONFIGURATION))) {
+        	files += SpringLoader.SPRING_SEPARATOR_CHARACTER + "classpath:org/kuali/rice/ksb/config/KSBModuleConfigurationSpringBeans.xml";
+        }
+        
         return files;
 	}
 	
 	@Override
 	public ResourceLoader getResourceLoaderToRegister() throws Exception{
-		ResourceLoader ksbRemoteResourceLoader = KSBResourceLoaderFactory.createRootKSBRemoteResourceLoader(getOverrideServices());
+		ResourceLoader ksbRemoteResourceLoader = KSBResourceLoaderFactory.createRootKSBRemoteResourceLoader();
 		ksbRemoteResourceLoader.start();
 		return ksbRemoteResourceLoader;
 	}
@@ -407,14 +409,6 @@ public class KSBConfigurer extends ModuleConfigurer {
 
 	public void setRegistryDataSourceJndiName(String registryDataSourceJndiName) {
 		this.registryDataSourceJndiName = registryDataSourceJndiName;
-	}
-
-	public List<ServiceHolder> getOverrideServices() {
-		return this.overrideServices;
-	}
-
-	public void setOverrideServices(List<ServiceHolder> overrideServices) {
-		this.overrideServices = overrideServices;
 	}
 
 	public Scheduler getExceptionMessagingScheduler() {

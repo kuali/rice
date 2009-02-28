@@ -24,6 +24,16 @@ import org.kuali.rice.kns.service.impl.ModuleServiceBase;
  *
  */
 public class KSBModuleService extends ModuleServiceBase {
+
+	/**
+	 * This constructs a ...
+	 * 
+	 */
+	public KSBModuleService() {
+		// TODO ewestfal - THIS CONSTRUCTOR NEEDS A JAVADOC
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	
 }
 

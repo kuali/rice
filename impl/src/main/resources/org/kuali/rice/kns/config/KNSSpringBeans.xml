@@ -190,7 +190,6 @@
 				<value>classpath:org/kuali/rice/kns/document/datadictionary/CountyMaintenanceDocument.xml</value>
 				<value>classpath:org/kuali/rice/kns/document/datadictionary/StateMaintenanceDocument.xml</value>
 				<value>classpath:org/kuali/rice/kns/document/datadictionary/PostalCodeMaintenanceDocument.xml</value>
-			    <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimGroupImpl.xml</value>
 			</list>
 		</property>
 	</bean>
@@ -354,8 +353,6 @@
 			<ref bean="persistenceStructureService" />
 		</property>
 	</bean>
-
-	<bean id="kimGroupService" class="org.kuali.rice.kns.web.RiceGroupServiceImpl"/>
 
 	<bean id="workflowDocumentService" class="org.kuali.rice.kns.workflow.service.impl.WorkflowDocumentServiceImpl">
 		<property name="workflowInfoService">

@@ -216,13 +216,17 @@
   </bean>
     
   <bean id="KimAttributes-documentTypeName" parent="KimAttributes-documentTypeName-parentBean" />
-  <bean id="KimAttributes-documentTypeName-parentBean" parent="DocumentType-name" abstract="true"
+  <bean id="KimAttributes-documentTypeName-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="documentTypeName"
         p:forceUppercase="false"
         p:label="Document Type Name"
         p:shortLabel="Document Type Name"
+        p:maxLength="255"
         p:required="true" >
-  </bean>
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="50" />
+    </property>    
+  </bean>  
   
   <!-- Should be converted to use KEW once it's converted to use the KNS -->    
   <bean id="KimAttributes-routeStatusCode" parent="KimAttributes-routeStatusCode-parentBean" />

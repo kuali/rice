@@ -39,7 +39,7 @@ import org.kuali.rice.ksb.test.KSBTestCase;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class TestSOAPService extends KSBTestCase {
+public class SOAPServiceTest extends KSBTestCase {
 
 	private static final String ENDPOINT_URL = "http://localhost:9913/TestClient1/remoting/secure/soap-echoServiceSecure";
 	private static final String WSDL_URL1 = "http://localhost:9913/TestClient1/remoting/soap-echoService?wsdl";

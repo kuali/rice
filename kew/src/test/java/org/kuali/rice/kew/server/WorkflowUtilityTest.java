@@ -621,7 +621,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertEquals("Should be 2 action requests.", 2, actionRequests.size());
 
         // Now set up the app constant that checks ignore previous properly and try a new document
-        parameter = new Parameter(KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND, "true", "A");
+        parameter = new Parameter(KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND, "Y", "A");
         parameter.setParameterNamespaceCode(KEWConstants.KEW_NAMESPACE);
         parameter.setParameterTypeCode("CONFG");
         parameter.setParameterDetailTypeCode(KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE);
@@ -630,7 +630,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
 
         parameter = KNSServiceLocator.getKualiConfigurationService().getParameterWithoutExceptions(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
         assertNotNull("Parameter should not be null.", parameter);
-        assertEquals("Parameter should be true.", "true", parameter.getParameterValue());
+        assertEquals("Parameter should be Y.", "Y", parameter.getParameterValue());
 
 
         document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), SeqSetup.LAST_APPROVER_DOCUMENT_TYPE_NAME);
@@ -660,6 +660,10 @@ public class WorkflowUtilityTest extends KEWTestCase {
         document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
         document.approve("");
 
+        TestUtilities.assertAtNode(document, SeqSetup.WORKFLOW_DOCUMENT_2_NODE);
+        List<ActionRequestValue> requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocId(document.getRouteHeaderId());
+        assertEquals("We should have 2 requests here.", 2, requests.size());
+        
         // now, there are requests to pmckown and ewestfal here, the request to ewestfal is ingorePrevious=false and since ewestfal
         // routed the document, this request should be auto-approved.  However, it's priority is 2 so it is activated after the
         // request to pmckown which is the situation we are testing

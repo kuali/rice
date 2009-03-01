@@ -18,6 +18,7 @@ package org.kuali.rice.kcb.service.impl;
 import java.util.Collection;
 
 import org.junit.Test;
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kcb.bo.RecipientDelivererConfig;
 import org.kuali.rice.kcb.service.GlobalKCBServiceLocator;
 import org.kuali.rice.kcb.service.RecipientPreferenceService;
@@ -70,7 +71,7 @@ public class RecipientDelivererConfigTest extends KCBTestCase {
     @Test
     public void testDuplicateCreate() throws Exception {
         // duplicate channel/deliverer entry
-        new AssertThrows(DataIntegrityViolationException.class) {
+        new AssertThrows(RiceRuntimeException.class) {
             public void test() throws Exception {
                 prefsvc.saveRecipientDelivererConfig("user1", "mock", new String[] { "channel1" });
             }

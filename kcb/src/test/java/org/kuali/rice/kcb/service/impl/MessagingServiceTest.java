@@ -16,7 +16,6 @@
 package org.kuali.rice.kcb.service.impl;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 

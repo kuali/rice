@@ -19,6 +19,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kcb.bo.RecipientDelivererConfig;
 import org.kuali.rice.kcb.bo.RecipientPreference;
 import org.kuali.rice.kcb.deliverer.MessageDeliverer;
@@ -132,6 +133,16 @@ public class RecipientPreferenceServiceImpl extends BusinessObjectServiceImpl im
             config.setRecipientId(recipientId);
             config.setDelivererName(delivererName);
             config.setChannel(channel);
+            
+            // first, verify that we aren't trying to insert a duplicate
+            Collection<RecipientDelivererConfig> deliverers = getDeliverersForRecipientAndChannel(recipientId, channel);
+            if (deliverers != null) {
+            	for (RecipientDelivererConfig deliverer : deliverers) {
+            		if (deliverer.getDelivererName().equals(delivererName)) {
+            			throw new RiceRuntimeException("Attempting to save a duplicate Recipient Deliverer Config.");
+            		}
+            	}
+            }
             dao.save(config);
         }
     }

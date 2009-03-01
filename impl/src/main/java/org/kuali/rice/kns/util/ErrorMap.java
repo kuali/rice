@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -37,7 +38,7 @@ import org.apache.commons.lang.StringUtils;
 public class ErrorMap implements Map, Serializable {
     private static final long serialVersionUID = -2328635367656516150L;
     private List errorPath = new ArrayList();
-    private Map messages = new HashMap();
+    private Map<String, TypedArrayList> messages = new LinkedHashMap<String, TypedArrayList>();
 
     /**
      * Adds an error to the map under the given propertyName and adds an array of message parameters. This will fully prepend the
@@ -372,7 +373,7 @@ public class ErrorMap implements Map, Serializable {
                 simplePatterns.add(s);
             }
         }
-        for (Iterator keys = messages.keySet().iterator(); keys.hasNext();) {
+        for (Iterator<String> keys = messages.keySet().iterator(); keys.hasNext();) {
             String key = (String) keys.next();
             if (simplePatterns.contains(key)) {
                 return true;

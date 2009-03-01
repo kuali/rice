@@ -16,6 +16,11 @@
         <property name="transactionManager" ref="jotm" />
         <property name="userTransaction" ref="jotm" />
         <property name="rootConfig" ref="config" />
+        <property name="additionalSpringFiles">
+			<list>
+				<value>classpath:org/kuali/rice/kcb/config/KCBSpringBeans-test.xml</value>
+			</list>
+		</property>
         <property name="ksbConfigurer" >
 	        <bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
 	            <property name="serviceServletUrl" value="${serviceServletUrl}" />

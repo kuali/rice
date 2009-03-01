@@ -40,7 +40,7 @@ public class EmailServiceTest extends KCBTestCase {
 
     @Test
     @UnitTestData(sqlStatements = {
-        @UnitTestSql("insert into KREN_MSG_T (MSG_ID, DELIV_TYP, CRTE_DTTM, TTL, CHNl, PRODCR, CNTNT, CNTNT_TYP, URL, RECIP_ID, VER_NBR) values (1, 'fyi', systimestamp, 'a title', 'channel1', 'a producer', 'some content', 'a content type', 'url', 'user1', 0)"),
+        @UnitTestSql("insert into KREN_MSG_T (MSG_ID, DELIV_TYP, CRTE_DTTM, TTL, CHNl, PRODCR, CNTNT, CNTNT_TYP, URL, RECIP_ID, VER_NBR) values (1, 'fyi', {d '2009-01-01'}, 'a title', 'channel1', 'a producer', 'some content', 'a content type', 'url', 'user1', 0)"),
         @UnitTestSql("insert into KREN_MSG_DELIV_T (MSG_DELIV_ID, MSG_ID, TYP_NM, SYS_ID, STAT_CD, LOCKD_DTTM, VER_NBR) values (1, 1, 'email', 'fake system id', 'fakestatus', NULL, 0)")
     })
     public void testSendNotificationEmail() throws Exception {

@@ -52,7 +52,7 @@ public class ReleaseWorkgroupAuthority extends ActionTakenEvent {
      * @param annotation
      * @param workgroup
      */
-    public ReleaseWorkgroupAuthority(DocumentRouteHeaderValue routeHeader, KimPrincipal principal, String annotation, String groupid) {
+    public ReleaseWorkgroupAuthority(DocumentRouteHeaderValue routeHeader, KimPrincipal principal, String annotation, String groupId) {
         super(KEWConstants.ACTION_TAKEN_RELEASE_WORKGROUP_AUTHORITY_CD, routeHeader, principal, annotation);
         this.groupId = groupId;
     }

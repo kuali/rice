@@ -928,4 +928,5 @@ public class KEWConstants {
     
     // special user used when no other user is available
     public static final String SYSTEM_USER = "kr";
+    public static final String ENABLE_KEN_NOTIFICATION = "rice.kew.enableKENNotification";
 }

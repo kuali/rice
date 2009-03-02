@@ -39,8 +39,10 @@ public class KCBNotificationService extends DefaultNotificationService {
     protected void sendNotification(ActionItem actionItem) {
         super.sendNotification(actionItem);
 
+        String enableKENNotificationValue = ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.ENABLE_KEN_NOTIFICATION);
+        boolean enableKENNotification = Boolean.parseBoolean(enableKENNotificationValue);
         // we only send per-user messages to KCB
-        if (!KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD.equals(actionItem.getRecipientTypeCode()))
+        if (!enableKENNotification && !KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD.equals(actionItem.getRecipientTypeCode()))
             return;
 
 

@@ -39,6 +39,7 @@ import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.test.SQLDataLoader;
 
 import edu.emory.mathcs.backport.java.util.Arrays;
 
@@ -62,6 +63,8 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
     @Override
     protected void loadTestData() throws Exception {
         loadXmlFile("SearchSecurityConfig.xml");
+    	//SQLDataLoader loader = new SQLDataLoader("org/kuali/rice/kew/test/KimTestData.sql", "/");
+    	//loader.runSql();
     }
 
     private Person loginUser(String networkId) {
@@ -133,7 +136,7 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
         assertEquals("No rows should have been filtered due to security", 0, criteria.getSecurityFilteredRows());
     }
 
-    @Test public void testFiltering_Initiator() throws Exception {
+    @Test public void testFiltering_Initiator() throws Exception {    	
         String documentType = "SecurityDoc_InitiatorOnly";
         Person initiator = loginUser(STANDARD_USER_NETWORK_ID);
         WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO(initiator.getPrincipalName()), documentType);

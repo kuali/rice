@@ -361,7 +361,7 @@ public class ActionListForm extends KualiForm {
         if (userSession.getHelpDeskActionListPrincipal() != null) {
         	setHelpDeskActionListUserName(userSession.getHelpDeskActionListPrincipal().getPrincipalName());
         }
-        boolean isHelpDeskAuthorized = KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.KEW_NAMESPACE,	KEWConstants.PermissionTemplateNames.VIEW_OTHER_ACTION_LIST, new AttributeSet(), new AttributeSet()); 
+        boolean isHelpDeskAuthorized = KIMServiceLocator.getIdentityManagementService().isAuthorized(principalId, KEWConstants.KEW_NAMESPACE,	KEWConstants.PermissionNames.VIEW_OTHER_ACTION_LIST, new AttributeSet(), new AttributeSet()); 
         if (isHelpDeskAuthorized) {
             request.setAttribute("helpDeskActionList", "true");
         }

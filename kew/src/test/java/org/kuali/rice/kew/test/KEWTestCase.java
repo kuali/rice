@@ -228,6 +228,7 @@ public abstract class KEWTestCase extends RiceTestCase {
 		tablesToClear.add("KRSB_.*");
 		tablesToClear.add("KRIM_.*");
 		tablesToClear.add("KRNS_.*");
+		tablesToClear.add("KREN_.*");
 		return tablesToClear;
 	}
 

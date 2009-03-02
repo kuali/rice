@@ -42,7 +42,7 @@ public class KCBNotificationService extends DefaultNotificationService {
         String enableKENNotificationValue = ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.ENABLE_KEN_NOTIFICATION);
         boolean enableKENNotification = Boolean.parseBoolean(enableKENNotificationValue);
         // we only send per-user messages to KCB
-        if (!enableKENNotification && !KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD.equals(actionItem.getRecipientTypeCode()))
+        if (!enableKENNotification || !KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD.equals(actionItem.getRecipientTypeCode()))
             return;
 
 
@@ -73,7 +73,11 @@ public class KCBNotificationService extends DefaultNotificationService {
 
     @Override
     public void removeNotification(List<ActionItem> actionItems) {
-
+    	String enableKENNotificationValue = ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.ENABLE_KEN_NOTIFICATION);
+        boolean enableKENNotification = Boolean.parseBoolean(enableKENNotificationValue);
+        if (!enableKENNotification) {
+        	return;
+        }
         MessagingService ms = (MessagingService) GlobalResourceLoader.getService(new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), KCBServiceNames.KCB_MESSAGING));
 
         for (ActionItem actionItem: actionItems) {

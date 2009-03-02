@@ -99,7 +99,7 @@
     <param name="initialDelaySecs">10</param>
 
     <param name="ken.system.user">NotSys</param>
-    <param name="rice.kew.enableKENNotification">false</param>
+    <param name="rice.kew.enableKENNotification">true</param>
 
     <!-- Configuration for Exception Incident handling and reporting -->
     <param name="kr.incident.mailing.list"></param>

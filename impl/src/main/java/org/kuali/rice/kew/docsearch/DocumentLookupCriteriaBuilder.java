@@ -113,7 +113,7 @@ public class DocumentLookupCriteriaBuilder  {
 						}
 					}
 				}
-				for (Iterator iterator = propertyFields.values().iterator(); iterator.hasNext();) {
+				for (Iterator iterator = propertyFields.keySet().iterator(); iterator.hasNext();) {
 					String propertyField = (String) iterator.next();
 					SearchAttributeCriteriaComponent sacc = (SearchAttributeCriteriaComponent) criteriaComponentsByFormKey.get(propertyField);
 					if (sacc != null) {
@@ -132,7 +132,7 @@ public class DocumentLookupCriteriaBuilder  {
 									//                                    sacc.setValues(Arrays.asList(propertyField.getValues()));
 								}
 							} else {
-								sacc.setValue(propertyField);
+								sacc.setValue(propertyFields.get(propertyField));
 							}
 							criteria.addSearchableAttribute(sacc);
 						}

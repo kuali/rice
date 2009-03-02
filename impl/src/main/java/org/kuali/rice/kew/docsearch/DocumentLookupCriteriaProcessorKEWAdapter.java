@@ -58,11 +58,16 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 	/**
 	 * @see org.kuali.rice.kew.docsearch.DocumentLookupCriteriaProcessor#getRows(org.kuali.rice.kns.bo.PersistableBusinessObject)
 	 */
-	public List<Row> getRows(DocumentType documentType, List<Row> knsRows) {
+	public List<Row> getRows(DocumentType documentType, List<Row> knsRows, boolean detailed) {
 		List<Row> rows = new ArrayList<Row>();
 		
 		List<Row> searchAttRows = new ArrayList<Row>();
-		List<List<StandardDocSearchCriteriaFieldContainer>> preSearchAttFields = criteriaProcessor.getBasicSearchManager().getColumnsPreSearchAttributes();
+		List<List<StandardDocSearchCriteriaFieldContainer>> preSearchAttFields; 
+			if(!detailed) {
+				 preSearchAttFields = criteriaProcessor.getBasicSearchManager().getColumnsPreSearchAttributes();
+			} else {
+				 preSearchAttFields = criteriaProcessor.getAdvancedSearchManager().getColumnsPreSearchAttributes();
+			}
 		List<Row> preSearchAttRows = standardNonSearchAttRows(documentType,preSearchAttFields);
 		
 		rows.addAll(preSearchAttRows);
@@ -76,7 +81,12 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 	}
 		
 		//post atts
-		List<List<StandardDocSearchCriteriaFieldContainer>> postSearchAttFields = criteriaProcessor.getBasicSearchManager().getColumnsPostSearchAttributes();
+		List<List<StandardDocSearchCriteriaFieldContainer>> postSearchAttFields;
+		if(!detailed) {
+			postSearchAttFields = criteriaProcessor.getBasicSearchManager().getColumnsPostSearchAttributes();
+		} else {
+			postSearchAttFields = criteriaProcessor.getAdvancedSearchManager().getColumnsPostSearchAttributes();
+		}
 		List<Row> postSearchAttRows = standardNonSearchAttRows(documentType,postSearchAttFields);
 		rows.addAll(postSearchAttRows);
 		
@@ -155,6 +165,13 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 			//TODO: this needs more translation like above also setup a DocumentSearchContext
 			DocumentSearchContext documentSearchContext = DocSearchUtils.getDocumentSearchContext("", documentType.getName(), "");
 			customSearchAttRows.addAll(searchableAttribute.getSearchingRows(documentSearchContext));
+		}
+		for (Row row : customSearchAttRows) {
+			List<Field> fields = row.getFields();
+			for (Field field : fields) {
+				//force the max length for now
+				field.setMaxLength(100);
+			}
 		}
 		return customSearchAttRows;
 	}

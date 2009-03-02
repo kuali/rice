@@ -451,9 +451,17 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     public String getSuperUserSearch() {
         return superUserSearch;
     }
+    
+    public boolean isSuperUserSearch() {
+    	return "YES".equalsIgnoreCase(superUserSearch)?true:false;
+    }
 
     public void setSuperUserSearch(String superUserSearch) {
         this.superUserSearch = superUserSearch;
+    }
+    
+    public void setSuperUserSearch(boolean superUserSearch) {
+        this.superUserSearch = superUserSearch?"YES":"NO";
     }
 
     public boolean isOverThreshold() {

@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kew.bo.lookup;
 
-import java.lang.reflect.InvocationTargetException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,8 +22,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
-import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocumentLookupCriteriaBuilder;
@@ -45,9 +44,11 @@ import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.service.DateTimeService;
+import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.web.comparator.CellComparatorHelper;
 import org.kuali.rice.kns.web.format.BooleanFormatter;
 import org.kuali.rice.kns.web.format.CollectionFormatter;
@@ -71,7 +72,6 @@ KualiLookupableHelperServiceImpl {
 	private static final long serialVersionUID = -5162419674659967408L;
 	DateTimeService dateTimeService;
 	DocumentLookupCriteriaProcessor processor;
-	
 	
 	/**
 	 * This overridden method ...
@@ -116,10 +116,26 @@ KualiLookupableHelperServiceImpl {
     	Map<String,String> fieldsForLookup = lookupForm.getFieldsForLookup();
     	DocSearchCriteriaDTO criteria = DocumentLookupCriteriaBuilder.populateCriteria(fieldsForLookup);
     	
-    	
-    	//TODO: move this into actual adapter as well
+		boolean superSearch=false;
+		if(this.getParameters().get("superSearch")!=null) {
+			superSearch = new Boolean(((String[])this.getParameters().get("superSearch"))[0]); 
+		}
+    	//TODO: should this be in the builder...populateCriteria?
+		if(superSearch) {
+			criteria.setSuperUserSearch("YES");
+		}
+		
     	Collection displayList=null;
     	DocumentSearchResultComponents components = KEWServiceLocator.getDocumentSearchService().getList(GlobalVariables.getUserSession().getPrincipalId(), criteria);
+    	//FIXME: for now just set the create date back from the criteria, however eventually we shold convert all
+    	for (Row row : this.getRows()) {
+			for (Field field : row.getFields()) {
+				if(StringUtils.equals(field.getPropertyName(),"fromDateCreated")) {
+					field.setPropertyValue(criteria.getFromDateCreated());
+				}
+			}
+		}
+    	
     	List<DocumentSearchResult> result = components.getSearchResults();
 //    	for (DocumentSearchResult documentSearchResult : result) {
 			displayList = result;//.getResultContainers();	
@@ -257,7 +273,11 @@ KualiLookupableHelperServiceImpl {
                 	AnchorHtmlData anchor = new AnchorHtmlData(KNSConstants.EMPTY_STRING, KNSConstants.EMPTY_STRING);
                 	//TODO: change to grab URL from config variable
                 	if(StringUtils.isNotEmpty(keyValue.getValue()) && StringUtils.equals("routeHeaderId", keyValue.getkey())) {
-                		anchor.setHref("../en/"+StringUtils.getNestedString(keyValue.getValue(), "<a href=\"", "docId=")+"docId="+keyValue.getUserDisplayValue());
+                		if(!criteria.isSuperUserSearch()) {
+                			anchor.setHref("../en/"+StringUtils.getNestedString(keyValue.getValue(), "<a href=\"", "docId=")+"docId="+keyValue.getUserDisplayValue());
+                		} else {
+                			anchor.setHref("../en/"+StringUtils.getNestedString(keyValue.getValue(), "<a href=\"", "routeHeaderId=")+"routeHeaderId="+keyValue.getUserDisplayValue());
+                		}
                         col.setMaxLength(100); //for now force this
                 	} else if(StringUtils.isNotEmpty(keyValue.getvalue()) && StringUtils.equals(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG, keyValue.getkey())) {
                 		anchor.setHref("../en/"+StringUtils.getNestedString(keyValue.getValue(), "<a href=\"", "\"><img "));
@@ -381,12 +401,15 @@ KualiLookupableHelperServiceImpl {
 		//TODO: This should probably be moved into spring injection since it's a constant
 		documentLookupCriteriaProcessorKEWAdapter.setDataDictionaryService(getDataDictionaryService());
 		
+		boolean detailed=false;
+		if(this.getParameters().get("isAdvancedSearch")!=null) {
+			detailed = new Boolean(((String[])this.getParameters().get("isAdvancedSearch"))[0]);
+		}
+		
 		//call get rows
-		List<Row> rows = processor.getRows(docType,lookupRows);
+		List<Row> rows = processor.getRows(docType,lookupRows, detailed);
 		super.getRows().addAll(rows);
 
-		//are we in basic or detailed, are we in super.
-		//TODO: ctk Add this code back in when KNS impacting changes are worked back
 	}
 
 
@@ -398,21 +421,36 @@ KualiLookupableHelperServiceImpl {
 	@Override
 	public void performClear(LookupForm lookupForm) {
 		Map<String,String> fieldsToClear = new HashMap<String,String>();
-		
+		List<Field> critFields = new ArrayList<Field>();
+
 		for (Row row : this.getRows()) {
 			for (Field field : row.getFields()) {
-				fieldsToClear.put(field.getPropertyName(), field.getPropertyValue());	
+				fieldsToClear.put(field.getPropertyName(), field.getPropertyValue());
+				critFields.add(new Field(field.getPropertyName(),field.getFieldLabel()));
 			}
 		}
 		//TODO: also check if standard here (maybe from object if use criteria)
-		String docTypeName = fieldsToClear.get("documentTypeFullName");
+		String docTypeName = fieldsToClear.get("docTypeFullName");
 		if(StringUtils.isEmpty(docTypeName)) {
 			super.performClear(lookupForm);
 		} else {
 			DocSearchCriteriaDTO docCriteria = DocumentLookupCriteriaBuilder.populateCriteria(fieldsToClear);
-			getValidDocumentType(docTypeName).getDocumentSearchGenerator().clearSearch(docCriteria);
-			//TODO: method to update values on rows from criteria object (i.e. reverse of lookupform.populate)
+			docCriteria = getValidDocumentType(docTypeName).getDocumentSearchGenerator().clearSearch(docCriteria);
+
+			FieldUtils.populateFieldsFromBusinessObject(critFields, docCriteria);
+			
+			for (Row row : this.getRows()) {
+				for (Field field : row.getFields()) {
+					for (Field critField : critFields) {
+						if(StringUtils.equals(critField.getPropertyName(),field.getPropertyName())) {
+							field.setPropertyValue(critField.getPropertyValue());
+						}
+					}
+				}
+			}
 		}
+		
+		
 	}
 	/**
 	 * 
@@ -437,29 +475,69 @@ KualiLookupableHelperServiceImpl {
 	 */
 	@Override
 	public String getSupplementalMenuBar() {
-		Boolean detailed = false;
+		boolean detailed=false;
 		if(this.getParameters().get("isAdvancedSearch")!=null) {
 			detailed = new Boolean(((String[])this.getParameters().get("isAdvancedSearch"))[0]);
 		}
+		
 		String suppMenuBar = "";
 		//TODO: replace server info with parameter
 		if(detailed) {
-			suppMenuBar = "<a href=\"http://localhost:8080/kr-dev/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&docFormKey=88888888&returnLocation=http://localhost:8080/kr-dev/portal.do&hideReturnLink=true&isAdvancedSearch=false\">basic</a>";
+			suppMenuBar = "<a href=\""+getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY)+"/kr/"+KNSConstants.LOOKUP_ACTION+"?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&docFormKey=88888888&returnLocation=http://localhost:8080/kr-dev/portal.do&hideReturnLink=true&isAdvancedSearch=false\">basic</a>";
 		} else {
-			suppMenuBar = "<a href=\"http://localhost:8080/kr-dev/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&docFormKey=88888888&returnLocation=http://localhost:8080/kr-dev/portal.do&hideReturnLink=true&isAdvancedSearch=true\">detailed</a>";	
+			suppMenuBar = "<a href=\""+getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY)+"/kr/"+KNSConstants.LOOKUP_ACTION+"?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&docFormKey=88888888&returnLocation=http://localhost:8080/kr-dev/portal.do&hideReturnLink=true&isAdvancedSearch=true\">detailed</a>";	
 		}
-		Boolean superSearch = false;
-		if(this.getParameters().get("isSuperSearch")!=null) {
-			superSearch = new Boolean(((String[])this.getParameters().get("isSuperSearch"))[0]); 
+		
+		boolean superSearch=false;
+		if(this.getParameters().get("superSearch")!=null) {
+			superSearch = new Boolean(((String[])this.getParameters().get("superSearch"))[0]); 
 		}
 		if(superSearch) {
-			suppMenuBar = suppMenuBar + "&nbsp" + "<a href=\"http://localhost:8080/kr-dev/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&docFormKey=88888888&returnLocation=http://localhost:8080/kr-dev/portal.do&hideReturnLink=true&isSuperSearch=false\">super</a>";
+			suppMenuBar = suppMenuBar + "&nbsp" + "<a href=\""+getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY)+"/kr/"+KNSConstants.LOOKUP_ACTION+"?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&docFormKey=88888888&returnLocation=http://localhost:8080/kr-dev/portal.do&hideReturnLink=true&superSearch=false\">non-super</a>";
 		} else {
-			suppMenuBar = suppMenuBar + "&nbsp" + "<a href=\"http://localhost:8080/kr-dev/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&docFormKey=88888888&returnLocation=http://localhost:8080/kr-dev/portal.do&hideReturnLink=true&isSuperSearch=true\">non-super</a>";
+			suppMenuBar = suppMenuBar + "&nbsp" + "<a href=\""+getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY)+"/kr/"+KNSConstants.LOOKUP_ACTION+"?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&docFormKey=88888888&returnLocation=http://localhost:8080/kr-dev/portal.do&hideReturnLink=true&superSearch=true\">super</a>";
 		}
+        Properties parameters = new Properties();
+        parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, this.getBusinessObjectClass().getName());
+        this.getParameters().keySet();
+        for (Object parameter : this.getParameters().keySet()) {
+			parameters.put(parameter, this.getParameters().get(parameter));
+		}
+
+		UrlFactory.parameterizeUrl(KNSConstants.LOOKUP_ACTION, parameters);
 		return suppMenuBar;
 	}
 
+//    /**
+//     * This method is called by performLookup method to generate supplemental action urls.
+//     * It calls the method getCustomActionUrls to get html data, calls getMaintenanceUrl to get the actual html tag,
+//     * and returns a formatted/concatenated string of action urls.
+//     *
+//     * @see org.kuali.core.lookup.LookupableHelperService#getActionUrls(org.kuali.core.bo.BusinessObject)
+//     */
+//    public String getSupplementalActionUrls(List<HtmlData> htmlDataList) {
+//        StringBuffer actions = new StringBuffer();
+//
+//        for(HtmlData htmlData: htmlDataList){
+//        	actions.append(getMaintenanceUrl(businessObject, htmlData, pkNames, businessObjectRestrictions));
+//            if(htmlData.getChildUrlDataList()!=null){
+//            	if(htmlData.getChildUrlDataList().size()>0){
+//                    actions.append(ACTION_URLS_CHILDREN_STARTER);
+//            		for(HtmlData childURLData: htmlData.getChildUrlDataList()){
+//	                	actions.append(getMaintenanceUrl(businessObject, childURLData, pkNames, businessObjectRestrictions));
+//	                    actions.append(ACTION_URLS_CHILDREN_SEPARATOR);
+//	            	}
+//            		if(actions.toString().endsWith(ACTION_URLS_CHILDREN_SEPARATOR))
+//            			actions.delete(actions.length()-ACTION_URLS_CHILDREN_SEPARATOR.length(), actions.length());
+//                    actions.append(ACTION_URLS_CHILDREN_END);
+//            	}
+//            }
+//        	actions.append(ACTION_URLS_SEPARATOR);
+//        }
+//        if(actions.toString().endsWith(ACTION_URLS_SEPARATOR))
+//        	actions.delete(actions.length()-ACTION_URLS_SEPARATOR.length(), actions.length());
+//        return actions.toString();
+//    }
 
 	/**
 	 * This overridden method ...

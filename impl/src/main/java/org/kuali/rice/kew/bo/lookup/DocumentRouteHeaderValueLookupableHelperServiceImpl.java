@@ -383,7 +383,7 @@ KualiLookupableHelperServiceImpl {
 		}
 		
 		//call get rows
-		List<Row> rows = processor.getRows(docType,lookupRows);
+		List<Row> rows = processor.getRows(docType,lookupRows,false);
 		super.getRows().addAll(rows);
 
 		//are we in basic or detailed, are we in super.

@@ -670,7 +670,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * in a terminal state, the request will be attached to the terminal node.
      */
     public void adHocRouteDocumentToPrincipal(String actionRequested, String nodeName, String annotation, String principalId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
-    	adHocRouteDocumentToPrincipal(actionRequested, null, annotation, principalId, responsibilityDesc, ignorePreviousActions, null);
+    	adHocRouteDocumentToPrincipal(actionRequested, nodeName, annotation, principalId, responsibilityDesc, ignorePreviousActions, null);
     }
 
     /**
@@ -700,7 +700,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * in a terminal state, the request will be attached to the terminal node.
      */
     public void adHocRouteDocumentToGroup(String actionRequested, String nodeName, String annotation, String groupId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
-    	adHocRouteDocumentToGroup(actionRequested, null, annotation, groupId, responsibilityDesc, ignorePreviousActions, null);
+    	adHocRouteDocumentToGroup(actionRequested, nodeName, annotation, groupId, responsibilityDesc, ignorePreviousActions, null);
     }
 
     /**

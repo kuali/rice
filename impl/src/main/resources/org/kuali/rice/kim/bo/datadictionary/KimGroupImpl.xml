@@ -123,31 +123,14 @@
       <bean parent="TextControlDefinition" p:size="10" />
     </property>
   </bean>
-<!--
-  <bean id="KimGroupImpl-principalName" parent="KimGroupImpl-principalName-parentBean" />
-  <bean id="KimGroupImpl-principalName-parentBean" parent="AttributeDefinition" abstract="true"
-        p:name="members.groupMemberId"
-        p:forceUppercase="true"
-        p:label="Principal Name"
-        p:shortLabel="Principal Name"
-        p:maxLength="40"
-        p:required="false" >
-    <property name="control" >
-      <bean parent="TextControlDefinition" p:size="10" />
-    </property>
-  </bean>
--->
+
   <bean id="KimGroupImpl-namespaceCode" parent="KimGroupImpl-namespaceCode-parentBean" />
-  <bean id="KimGroupImpl-namespaceCode-parentBean" parent="AttributeDefinition" abstract="true"
+  <bean id="KimGroupImpl-namespaceCode-parentBean" parent="KimTypeImpl-namespaceCode" abstract="true"
         p:name="namespaceCode"
-        p:forceUppercase="true"
-        p:label="Name Space"
-        p:shortLabel="Name Space"
-        p:maxLength="40"
-        p:required="false" >
-    <property name="control" >
-      <bean parent="TextControlDefinition" p:size="10" />
-    </property>
+        p:label="Group Namespace"
+        p:shortLabel="Group Namespace"
+        p:required="false"
+        p:maxLength="40">
   </bean>
 
   <bean id="KimGroupImpl-inquiryDefinition" parent="KimGroupImpl-inquiryDefinition-parentBean" />
@@ -185,7 +168,6 @@
                       <bean parent="FieldDefinition" p:attributeName="groupId" />
 				      <bean parent="FieldDefinition" p:attributeName="namespaceCode" />
 				      <bean parent="FieldDefinition" p:attributeName="groupName" />
-				      <!-- <bean parent="FieldDefinition" p:attributeName="kimTypeId" />-->
 				      <bean parent="FieldDefinition" p:attributeName="kimTypeImpl.namespaceCode" p:noInquiry="true" />
 				      <bean parent="FieldDefinition" p:attributeName="kimTypeImpl.name" />
                   </list>
@@ -253,9 +235,9 @@
     <property name="lookupFields" >
       <list>
         <bean parent="FieldDefinition" p:attributeName="groupId" />
+        <bean parent="FieldDefinition" p:attributeName="namespaceCode" />
         <bean parent="FieldDefinition" p:attributeName="groupName" />
         <bean parent="FieldDefinition" p:attributeName="kimTypeId" />
-        <bean parent="FieldDefinition" p:attributeName="namespaceCode" />
         <!--
              Note that kimTypeId and PrincipalName fields
              are overwritten/created in GroupLookupableHelperServiceImpl

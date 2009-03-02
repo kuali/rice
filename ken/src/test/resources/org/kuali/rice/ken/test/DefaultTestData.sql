@@ -1,5 +1,3 @@
--- alter session set NLS_TIMESTAMP_FORMAT='YYYY-MM-DD HH24:MI:SS.FF1';
-
 -- bootstrap defines the notification system user, with id 1...we need to clear this out
 DELETE FROM KREN_PRODCR_T ;
 
@@ -227,7 +225,7 @@ INSERT INTO KREN_NTFCTN_T
 (NTFCTN_ID, DELIV_TYP, CRTE_DTTM, SND_DTTM, AUTO_RMV_DTTM, PRIO_ID , CNTNT,
 CNTNT_TYP_ID , CHNL_ID , PRODCR_ID, PROCESSING_FLAG, LOCKD_DTTM )
 VALUES
-(3, 'FYI', {d '2005-12-31'}, {d '2005-12-31'},'2006-12-30 19:00:00.0', 1,
+(3, 'FYI', {d '2005-12-31'}, {d '2005-12-31'},{d '2006-12-30'}, 1,
 '<content xmlns="ns:notification/ContentEvent" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:notification/ContentEvent resource:notification/ContentEvent"><message>CCC presents The Strokes at Cornell</message><!-- an event that it happening on campus --><event><summary>CCC presents The Strokes at Cornell</summary><description>blah blah blah</description><location>Barton Hall</location><startDateTime>2006-01-01T00:00:00</startDateTime><stopDateTime>2007-01-01T00:00:00</stopDateTime></event></content>',
 2, 101, 103, 'UNRESOLVED', NULL);
 

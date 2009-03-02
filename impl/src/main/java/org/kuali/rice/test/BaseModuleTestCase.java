@@ -15,10 +15,7 @@
  */
 package org.kuali.rice.test;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 
 /**
  * Base module test case that allows overriding of the test harness spring beans

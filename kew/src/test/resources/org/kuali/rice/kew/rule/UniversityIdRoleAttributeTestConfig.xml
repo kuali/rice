@@ -6,6 +6,7 @@
 			<description>UniversityIdRoleAttributeTest</description>
 			<label>UniversityIdRoleAttributeTest</label>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<docHandler>none</docHandler>
 			<routePaths>
 				<routePath>
 					<start name="AdHoc" nextNode="UniversityId" />

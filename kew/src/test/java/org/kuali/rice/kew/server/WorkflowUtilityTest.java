@@ -1093,7 +1093,8 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertEquals("Rule did not have ignore previous set to true",Boolean.TRUE,ruleVO.getIgnorePrevious());
         assertEquals("Number of Rule Responsibilities Returned Should be 1",1,ruleVO.getRuleResponsibilities().length);
         responsibilityVO = ruleVO.getRuleResponsibilities()[0];
-        assertEquals("Rule workgroup name is incorrect",RuleTestOrgReviewSetup.RULE_TEST_WORKGROUP,ruleTestGroup2.getGroupName());
+        ruleTestGroup2 = KIMServiceLocator.getIdentityManagementService().getGroup(responsibilityVO.getGroupId());
+        assertEquals("Rule workgroup name is incorrect",RuleTestOrgReviewSetup.RULE_TEST_WORKGROUP, ruleTestGroup2.getGroupName());
         assertEquals("Rule priority is incorrect",Integer.valueOf(1),responsibilityVO.getPriority());
         assertEquals("Rule action request is incorrect",KEWConstants.ACTION_REQUEST_APPROVE_REQ,responsibilityVO.getActionRequestedCd());
     }

@@ -683,7 +683,7 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
      * Convenience method that returns the branch of the first (and presumably only?) initial node
      * @return the branch of the first (and presumably only?) initial node
      */
-    private Branch getRootBranch() {
+    public Branch getRootBranch() {
         // FIXME: assuming there is always a single initial route node instance
         return ((RouteNodeInstance) getInitialRouteNodeInstance(0)).getBranch();
     }

@@ -341,10 +341,10 @@
         <property name="emailContentGenerator" ref="enEmailContentService"/>
     </bean>
 
-<!--
 	<bean id="enNotificationService" class="org.kuali.rice.kew.notification.service.impl.KCBNotificationService"  lazy-init="true"/>
--->
-    <bean id="enNotificationService" class="org.kuali.rice.kew.notification.service.impl.DefaultNotificationService"  lazy-init="true"/>
+
+    <!-- <bean id="enNotificationService" class="org.kuali.rice.kew.notification.service.impl.DefaultNotificationService"  lazy-init="true"/>  -->
+    
 
 	<!-- db platform -->
 	<bean id="enDbPlatform" class="org.kuali.rice.core.config.BeanHolder">

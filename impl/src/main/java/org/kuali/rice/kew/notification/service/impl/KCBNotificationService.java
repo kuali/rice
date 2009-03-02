@@ -44,8 +44,12 @@ public class KCBNotificationService extends DefaultNotificationService {
             return;
 
 
-        // send it off to KCB
+        // send it off to KCB if available
         MessagingService ms = (MessagingService) GlobalResourceLoader.getService(new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), KCBServiceNames.KCB_MESSAGING));
+        if (ms == null) {
+        	LOG.info("Could not locate KCB MessagingService.  Message will not be forwarded to the KCB.");
+        	return;
+        }
         MessageDTO mvo = new MessageDTO();
         mvo.setChannel("KEW");
         mvo.setContent("i'm a kew notification");

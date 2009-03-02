@@ -93,6 +93,8 @@ public class FutureRequestsTest extends KEWTestCase {
         assertTrue(futRequestStateMan.isClearFutureRequestState());
         assertFalse(futRequestStateMan.isDoNotReceiveFutureRequests());
 
+        // reload the route header
+        routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getRouteHeaderId());
         int deactivatedCount = 0;
         for (BranchState state : routeHeader.getRootBranchState()) {
             if (state.getKey().contains(FutureRequestDocumentStateManager.FUTURE_REQUESTS_VAR_KEY)) {

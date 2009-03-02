@@ -30,6 +30,7 @@ import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.EmplId;
 import org.kuali.rice.kew.user.UserId;
 import org.kuali.rice.kew.user.WorkflowUserId;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.workgroup.GroupId;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.WorkflowGroupId;
@@ -195,6 +196,10 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 	public Recipient getGroupRecipient(String groupId) {
 		KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
 		return new KimGroupRecipient(group);
+	}
+	
+	public KimPrincipal getSystemPrincipal() {
+		return getPrincipalByPrincipalName(KEWConstants.SYSTEM_USER);
 	}
 
 }

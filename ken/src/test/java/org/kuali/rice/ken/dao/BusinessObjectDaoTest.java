@@ -21,13 +21,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 import org.junit.Test;
 import org.kuali.rice.ken.bo.NotificationProducer;
 import org.kuali.rice.ken.test.TestConstants;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.jdbc.UncategorizedSQLException;
+import org.springframework.dao.DataAccessException;
 
 /**
  * This class tests the various methods offered up by the BusinessObjectDao.
@@ -264,20 +262,7 @@ public class BusinessObjectDaoTest extends BusinessObjectDaoTestCaseBase {
             businessObjectDao.save(notificationProducers);
             
             fail("No exception was thrown; expected constraint violation");
-        } catch (UncategorizedSQLException e) {
-            // this exception is thrown in the case of Mckoi
-            exceptionDescription = e.toString();
-            assertNotNull(exceptionDescription);
-            assertEquals(
-                    "org.springframework.jdbc.UncategorizedSQLException: OJB operation; uncategorized SQLException for SQL []; SQL state [null]; error code [1]; Immediate unique constraint violation (NOTIFICATION_PRODUCERS_UK1) Columns = ( NAME ) Table = ( UNITTEST.NOTIFICATION_PRODUCERS ); nested exception is com.mckoi.database.jdbc.MSQLException: Immediate unique constraint violation (NOTIFICATION_PRODUCERS_UK1) Columns = ( NAME ) Table = ( UNITTEST.NOTIFICATION_PRODUCERS )",
-                    exceptionDescription);
-        } catch (DataIntegrityViolationException dve) {
-            // this exception is thrown in Oracle
-            exceptionDescription = dve.toString();
-            assertNotNull(exceptionDescription);
-            String pattern1 = "(?s).*" + Pattern.quote("org.springframework.dao.DataIntegrityViolationException: OJB operation; SQL []; ORA-00001: unique constraint (") + "(\\w+\\.)?" + Pattern.quote("NOTIFICATION_PRODUCERS_UK1) violated") + ".*";
-            String pattern2 = "(?s).*" + Pattern.quote("; nested exception is java.sql.SQLException: ORA-00001: unique constraint (") + "(\\w+\\.)?" + Pattern.quote("NOTIFICATION_PRODUCERS_UK1) violated") + ".*";
-            assertTrue(exceptionDescription.matches(pattern1) && exceptionDescription.matches(pattern2));
+        } catch (DataAccessException e) {
         }
 
     }

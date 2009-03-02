@@ -26,7 +26,6 @@ import org.kuali.rice.kew.batch.KEWXmlDataLoaderLifecycle;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
-import org.kuali.rice.test.ClearDatabaseLifecycle;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
 import org.kuali.rice.test.lifecycles.SQLDataLoaderLifecycle;
@@ -139,10 +138,7 @@ public abstract class NotificationTestCaseBase extends BaselineTestCase {
     @Override
     protected List<Lifecycle> getPerTestLifecycles() {
         List<Lifecycle> lifecycles = super.getPerTestLifecycles();
-        lifecycles.add(new ClearDatabaseLifecycle(getTablesToClear(), getTablesNotToClear()));
-
         lifecycles.add(new ClearCacheLifecycle());
-
         lifecycles.addAll(getNotificationPerTestLifecycles());
         return lifecycles;
     }

@@ -62,6 +62,7 @@ public class UserXmlParser implements XmlConstants {
     private static final String EMAIL_ELEMENT = "emailAddress";
     private static final String GIVEN_NAME_ELEMENT = "givenName";
     private static final String LAST_NAME_ELEMENT = "lastName";    
+    private static final String TYPE_ELEMENT = "type";
     
     public void parseUsers(InputStream input) throws IOException, InvalidXmlException {
         try {
@@ -93,6 +94,10 @@ public class UserXmlParser implements XmlConstants {
     	String firstName = userElement.getChildTextTrim(GIVEN_NAME_ELEMENT, NAMESPACE);
         String lastName = userElement.getChildTextTrim(LAST_NAME_ELEMENT, NAMESPACE);
         String emplId = userElement.getChildTextTrim(EMPL_ID_ELEMENT, NAMESPACE);
+        String entityTypeCode = userElement.getChildTextTrim(TYPE_ELEMENT, NAMESPACE);
+        if (StringUtils.isBlank(entityTypeCode)) {
+        	entityTypeCode = "PERSON";
+        }
     	
         Long entityId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ENTITY_ID_S");
         
@@ -119,22 +124,24 @@ public class UserXmlParser implements XmlConstants {
 		
 		KimEntityEntityTypeImpl entityType = new KimEntityEntityTypeImpl();
 		entity.getEntityTypes().add(entityType);
-		entityType.setEntityTypeCode("PERSON");
+		entityType.setEntityTypeCode(entityTypeCode);
 		entityType.setEntityId(entity.getEntityId());
 		entityType.setActive(true);
 		
-		Long entityNameId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ENTITY_NM_ID_S");
-		KimEntityNameImpl name = new KimEntityNameImpl();
-		name.setActive(true);
-		name.setEntityNameId("" + entityNameId);
-		name.setEntityId(entity.getEntityId());
-		name.setNameTypeCode("PREFERRED");
-		name.setFirstName(firstName);
-		name.setMiddleName("");
-		name.setLastName(lastName);
-		name.setDefault(true);
-		
-		entity.getNames().add(name);
+		if (!StringUtils.isBlank(firstName) || !StringUtils.isBlank(lastName)) {
+			Long entityNameId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ENTITY_NM_ID_S");
+			KimEntityNameImpl name = new KimEntityNameImpl();
+			name.setActive(true);
+			name.setEntityNameId("" + entityNameId);
+			name.setEntityId(entity.getEntityId());
+			name.setNameTypeCode("PREFERRED");
+			name.setFirstName(firstName);
+			name.setMiddleName("");
+			name.setLastName(lastName);
+			name.setDefault(true);
+			
+			entity.getNames().add(name);
+		}
 		
 		KNSServiceLocator.getBusinessObjectService().save(entity);
 		

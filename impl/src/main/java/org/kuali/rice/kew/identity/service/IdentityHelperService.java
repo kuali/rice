@@ -87,6 +87,13 @@ public interface IdentityHelperService {
 	public Recipient getPrincipalRecipient(String principalId);
 
 	/**
+	 * Returns the principal for the "system user".  This is a user
+	 * that can be used in the cases where an actual user cannot be
+	 * determined.
+	 */
+	public KimPrincipal getSystemPrincipal();
+	
+	/**
 	 * @deprecated
 	 */
 	public String getGroupId(GroupId groupId);

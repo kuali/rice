@@ -260,6 +260,12 @@
 			<lastName>Min</lastName>
 
 		</user>
+		
+		<user>
+			<workflowId>kr</workflowId>
+			<authenticationId>kr</authenticationId>
+			<type>SYSTEM</type>
+		</user>
 	</users>
 	<groups xmlns="ns:workflow/Group" xsi:schemaLocation="ns:workflow/Group resource:Group">
 		<group>

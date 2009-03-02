@@ -302,7 +302,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         FutureRequestDocumentStateManager futureRequestStateMngr = null;
 
         if (actionRequestToActivate.isGroupRequest()) {
-            futureRequestStateMngr = new FutureRequestDocumentStateManager(actionRequestToActivate.getRouteHeader(), actionRequestToActivate.getGroup().getGroupId());
+            futureRequestStateMngr = new FutureRequestDocumentStateManager(actionRequestToActivate.getRouteHeader(), actionRequestToActivate.getGroup());
         } else if (actionRequestToActivate.isUserRequest()) {
             futureRequestStateMngr = new FutureRequestDocumentStateManager(actionRequestToActivate.getRouteHeader(), actionRequestToActivate.getPrincipalId());
         } else {

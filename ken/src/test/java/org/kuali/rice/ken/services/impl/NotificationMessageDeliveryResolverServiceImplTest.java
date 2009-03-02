@@ -19,10 +19,8 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import org.apache.ojb.broker.query.Criteria;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.dao.GenericDao;
-import org.kuali.rice.kcb.bo.Message;
 import org.kuali.rice.kcb.service.GlobalKCBServiceLocator;
 import org.kuali.rice.kcb.service.MessageService;
 import org.kuali.rice.ken.bo.Notification;
@@ -37,6 +35,7 @@ import org.kuali.rice.ken.test.NotificationTestCaseBase;
 import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.test.data.PerTestUnitTestData;
 import org.kuali.rice.test.data.UnitTestData;
+import org.kuali.rice.test.data.UnitTestSql;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import edu.emory.mathcs.backport.java.util.concurrent.ExecutorService;
@@ -48,14 +47,19 @@ import edu.emory.mathcs.backport.java.util.concurrent.Executors;
  */
 // deadlocks are detected during clear database lifecycle (even when select for update is commented out...)
 // Make sure KCB has some deliverers configured for the test users, so message deliveries get created and the messages aren't removed
-@PerTestUnitTestData({
-    @UnitTestData("insert into KREN_RECIP_DELIV_T (RECIP_DELIV_ID, RECIP_ID, CHNL, NM, VER_NBR) values (1, 'TestUser6', 'KEW', 'mock', 0)"),
-    @UnitTestData("insert into KREN_RECIP_DELIV_T (RECIP_DELIV_ID, RECIP_ID, CHNL, NM, VER_NBR) values (2, 'TestUser1', 'KEW', 'mock', 0)"),
-    @UnitTestData("insert into KREN_RECIP_DELIV_T (RECIP_DELIV_ID, RECIP_ID, CHNL, NM, VER_NBR) values (3, 'TestUser2', 'KEW', 'mock', 0)"),
-    @UnitTestData("insert into KREN_RECIP_DELIV_T (RECIP_DELIV_ID, RECIP_ID, CHNL, NM, VER_NBR) values (4, 'quickstart', 'KEW', 'mock', 0)"),
-    @UnitTestData("insert into KREN_RECIP_DELIV_T (RECIP_DELIV_ID, RECIP_ID, CHNL, NM, VER_NBR) values (5, 'TestUser5', 'KEW', 'mock', 0)"),
-    @UnitTestData("insert into KREN_RECIP_DELIV_T (RECIP_DELIV_ID, RECIP_ID, CHNL, NM, VER_NBR) values (6, 'TestUser4', 'KEW', 'mock', 0)")
-})
+@PerTestUnitTestData(
+		@UnitTestData(
+				order = { UnitTestData.Type.SQL_STATEMENTS },
+				sqlStatements = {
+						@UnitTestSql("insert into KREN_RECIP_DELIV_T (RECIP_DELIV_ID, RECIP_ID, CHNL, NM, VER_NBR) values (1, 'TestUser6', 'KEW', 'mock', 0)"),
+						@UnitTestSql("insert into KREN_RECIP_DELIV_T (RECIP_DELIV_ID, RECIP_ID, CHNL, NM, VER_NBR) values (2, 'TestUser1', 'KEW', 'mock', 0)"),
+						@UnitTestSql("insert into KREN_RECIP_DELIV_T (RECIP_DELIV_ID, RECIP_ID, CHNL, NM, VER_NBR) values (3, 'TestUser2', 'KEW', 'mock', 0)"),
+						@UnitTestSql("insert into KREN_RECIP_DELIV_T (RECIP_DELIV_ID, RECIP_ID, CHNL, NM, VER_NBR) values (4, 'quickstart', 'KEW', 'mock', 0)"),
+						@UnitTestSql("insert into KREN_RECIP_DELIV_T (RECIP_DELIV_ID, RECIP_ID, CHNL, NM, VER_NBR) values (5, 'TestUser5', 'KEW', 'mock', 0)"),
+						@UnitTestSql("insert into KREN_RECIP_DELIV_T (RECIP_DELIV_ID, RECIP_ID, CHNL, NM, VER_NBR) values (6, 'TestUser4', 'KEW', 'mock', 0)")
+				}
+		)
+)
 public class NotificationMessageDeliveryResolverServiceImplTest extends NotificationTestCaseBase {
     // NOTE: this value is HIGHLY dependent on the test data, make sure that it reflects the results
     // expected from the test data
@@ -116,23 +120,13 @@ public class NotificationMessageDeliveryResolverServiceImplTest extends Notifica
     public void testResolveNotificationMessageDeliveries() throws Exception {
         NotificationMessageDeliveryResolverService nSvc = getResolverService();
 
-        long start = System.currentTimeMillis();
         ProcessingResult result = nSvc.resolveNotificationMessageDeliveries();
 
         Thread.sleep(20000);
 
-        for (Object message: result.getSuccesses()) {
-            LOG.info("Message before: " + message);
-        }
-
         assertEquals(EXPECTED_SUCCESSES, result.getSuccesses().size());
 
-        Collection<NotificationMessageDelivery> ds = services.getNotificationMessageDeliveryService().getNotificationMessageDeliveries();
-
         MessageService ms = (MessageService) GlobalKCBServiceLocator.getInstance().getMessageService();
-        for (Message m: ms.getAllMessages()) {
-            LOG.info("Message after: " + m);
-        }
         assertEquals(result.getSuccesses().size(), ms.getAllMessages().size());
 
         assertProcessResults();

@@ -925,4 +925,7 @@ public class KEWConstants {
         public static final String VIEW_OTHER_ACTION_LIST = "View Other Action List";
         public static final String UNRESTRICTED_DOCUMENT_SEARCH = "Unrestricted Document Search";
     }
+    
+    // special user used when no other user is available
+    public static final String SYSTEM_USER = "kr";
 }

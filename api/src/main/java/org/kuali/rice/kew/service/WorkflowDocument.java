@@ -1492,7 +1492,7 @@ public class WorkflowDocument implements java.io.Serializable {
 
     /**
      * Tell workflow that the current document is constructed as will not receive any future requests routed to them
-     * disregarding any ignore previous flags set on action requests.  Uses the setVariable method behind the seens so
+     * disregarding any ignore previous flags set on action requests.  Uses the setVariable method behind the scenes so
      * an action needs taken on the document to set this state on the document.
      *
      * @throws WorkflowException

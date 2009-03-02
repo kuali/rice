@@ -959,7 +959,12 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
     public DocumentSearchResultDTO performDocumentSearch(String principalId, DocumentSearchCriteriaDTO criteriaVO) throws WorkflowException {
         DocSearchCriteriaDTO criteria = DTOConverter.convertDocumentSearchCriteriaDTO(criteriaVO);
         criteria.setOverridingUserSession(true);
-        KEWServiceLocator.getIdentityHelperService().validatePrincipalId(principalId);
+        if (principalId != null) {
+        	KEWServiceLocator.getIdentityHelperService().validatePrincipalId(principalId);
+        } else {
+        	// if the principal is null then we need to use the system "kr" user for execution of the search
+        	principalId = KEWServiceLocator.getIdentityHelperService().getSystemPrincipal().getPrincipalId();
+        }
         DocumentSearchResultComponents components = KEWServiceLocator.getDocumentSearchService().getListRestrictedByCriteria(principalId, criteria);
         DocumentSearchResultDTO resultVO = DTOConverter.convertDocumentSearchResultComponents(components);
         resultVO.setOverThreshold(criteria.isOverThreshold());

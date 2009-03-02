@@ -89,10 +89,10 @@ public class FutureRequestDocumentStateManager {
     	for (BranchState state : document.getRootBranchState()) {
     	    if (state.getKey().contains(FUTURE_REQUESTS_VAR_KEY)) {
     		String values[] = state.getKey().split(",");
-    		state.setKey(DEACTIVATED_REQUESTS_VARY_KEY + "," + values[0] + "," + new Date().toString());
+    		state.setKey(DEACTIVATED_REQUESTS_VARY_KEY + "," + values[1] + "," + new Date().toString());
     	    }
     	}
-    	KEWServiceLocator.getRouteHeaderService().saveRouteHeader(document);
+    	KEWServiceLocator.getRouteNodeService().save(document.getRootBranch());
     }
 
     protected boolean isStateForUser(BranchState state, String principalId)

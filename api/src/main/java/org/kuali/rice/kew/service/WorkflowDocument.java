@@ -1175,7 +1175,7 @@ public class WorkflowDocument implements java.io.Serializable {
     public void releaseGroupAuthority(String annotation, String groupId) throws WorkflowException {
         try {
             createDocumentIfNeccessary();
-            routeHeader = getWorkflowDocumentActions().takeGroupAuthority(principalId, getRouteHeader(), groupId, annotation);
+            routeHeader = getWorkflowDocumentActions().releaseGroupAuthority(principalId, getRouteHeader(), groupId, annotation);
             documentContentDirty = true;
         } catch (Exception e) {
             throw handleException(e);

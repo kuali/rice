@@ -525,4 +525,19 @@ public class WebUtils {
     	return canDeleteNoteAttachment;
     }
     
+    public static void reuseErrorMapFromPreviousRequest(KualiDocumentFormBase kualiDocumentFormBase) {
+    	if (kualiDocumentFormBase.getErrorMapFromPreviousRequest() == null) {
+    		throw new RuntimeException("Error map from previous request is null!");
+    	}
+    	ErrorMap errorMapFromGlobalVariables = GlobalVariables.getErrorMap();
+    	if (kualiDocumentFormBase.getErrorMapFromPreviousRequest() == errorMapFromGlobalVariables) {
+    		// if we've switched them already, then return early and do nothing
+    		return;
+    	}
+    	if (!errorMapFromGlobalVariables.isEmpty()) {
+    		throw new RuntimeException("Cannot replace error map because it is not empty");
+    	}
+    	GlobalVariables.setErrorMap(kualiDocumentFormBase.getErrorMapFromPreviousRequest());
+    	GlobalVariables.getErrorMap().clearErrorPath();
+    }
 }

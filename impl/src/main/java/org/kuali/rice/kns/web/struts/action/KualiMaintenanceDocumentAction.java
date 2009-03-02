@@ -65,6 +65,7 @@ import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.format.Formatter;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
@@ -471,6 +472,10 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
      */
     @Override
     public ActionForward refresh(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	if (form instanceof KualiDocumentFormBase) {
+			WebUtils.reuseErrorMapFromPreviousRequest((KualiDocumentFormBase) form);
+		}
+    	
         KualiMaintenanceForm maintenanceForm = (KualiMaintenanceForm) form;
         refreshAdHocRoutingWorkgroupLookups(request, maintenanceForm);
         MaintenanceDocument document = (MaintenanceDocument) maintenanceForm.getDocument();

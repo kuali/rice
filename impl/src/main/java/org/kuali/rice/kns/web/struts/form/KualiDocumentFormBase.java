@@ -39,6 +39,7 @@ import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.ErrorMap;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -87,7 +88,13 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
     private String formKey;
     private String docNum;
 
-    /***
+    
+    /**
+     * Stores the error map from previous requests, so that we can continue to display error messages displayed during a previous request
+     */
+    private ErrorMap errorMapFromPreviousRequest;
+    
+	/***
      * @see org.kuali.rice.kns.web.struts.form.KualiForm#addRequiredNonEditableProperties()
      */
     @Override
@@ -756,6 +763,18 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 				methodToCallParameterValue, request);
 	}
 	
-	
+    /**
+	 * @return the errorMapFromPreviousRequest
+	 */
+	public ErrorMap getErrorMapFromPreviousRequest() {
+		return this.errorMapFromPreviousRequest;
+	}
+
+	/**
+	 * @param errorMapFromPreviousRequest the errorMapFromPreviousRequest to set
+	 */
+	public void setErrorMapFromPreviousRequest(ErrorMap errorMapFromPreviousRequest) {
+		this.errorMapFromPreviousRequest = errorMapFromPreviousRequest;
+	}
 }
 

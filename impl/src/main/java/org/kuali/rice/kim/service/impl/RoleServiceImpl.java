@@ -809,7 +809,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
                             qualification );
                     ArrayList<String> roleIdTempList = new ArrayList<String>( 1 );
                     roleIdTempList.add( rr.getMemberId() );
-    				if ( principalHasRole( principalId, roleIdTempList, nestedRoleQualification, false ) ) {
+    				if ( principalHasRole( principalId, roleIdTempList, nestedRoleQualification, true ) ) {
     					return true;
     				}
     			}
@@ -818,7 +818,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 				ArrayList<String> roleIdTempList = new ArrayList<String>( 1 );
 				roleIdTempList.add( rr.getMemberId() );
 				// no role type service, so can't convert qualification - just pass as is
-				if ( principalHasRole( principalId, roleIdTempList, qualification, false ) ) {
+				if ( principalHasRole( principalId, roleIdTempList, qualification, true ) ) {
 					return true;
 				}
     		}

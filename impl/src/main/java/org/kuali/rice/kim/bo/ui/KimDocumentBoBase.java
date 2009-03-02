@@ -71,10 +71,8 @@ public class KimDocumentBoBase  extends PersistableBusinessObjectBase implements
 	}
 
 	public boolean isActive() {
-		Date currentTime = Calendar.getInstance().getTime();
-		return this.active && 
-		(activeFromDate==null || activeFromDate.before(currentTime) || activeFromDate.equals(currentTime)) && 
-		(activeToDate==null || activeToDate.after(currentTime) || activeToDate.equals(currentTime));
+		long now = System.currentTimeMillis();		
+		return (activeFromDate == null || now > activeFromDate.getTime()) && (activeToDate == null || now < activeToDate.getTime());
 	}
 
 	public void setActive(boolean active) {

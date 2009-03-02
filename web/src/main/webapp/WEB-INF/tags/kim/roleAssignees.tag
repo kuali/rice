@@ -52,7 +52,7 @@ function changeMemberTypeCode(){
                 	<input type="hidden" name="command"/>
                 	<kul:htmlControlAttribute property="member.memberTypeCode" 
                 	attributeEntry="${roleMemberAttributes.memberTypeCode}" 
-                	onchange="changeMemberTypeCode()" disabled="${readOnly}" />
+                	onchange="changeMemberTypeCode()" disabled="${inquiry}" readOnly="false" />
 					<NOSCRIPT>
    						<html:submit value="select" alt="press this button to refresh the page after changing the delegation type." />
 					</NOSCRIPT>                
@@ -118,7 +118,7 @@ function changeMemberTypeCode(){
 					<c:out value="${statusMember.index+1}" />
 				</th>
 	            <td align="left" valign="middle">
-	               	<div align="center"> <kul:htmlControlAttribute property="document.members[${statusMember.index}].memberTypeCode"  attributeEntry="${roleMemberAttributes.memberTypeCode}" disabled="true" readOnly="${readOnly}" />
+	               	<div align="center"> <kul:htmlControlAttribute property="document.members[${statusMember.index}].memberTypeCode"  attributeEntry="${roleMemberAttributes.memberTypeCode}" disabled="true" readOnly="false" />
 					</div>
 				</td>
 	            <td align="left" valign="middle">

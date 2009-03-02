@@ -17,6 +17,7 @@ package org.kuali.rice.kim.bo.impl;
 
 import java.util.List;
 
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
@@ -37,7 +38,7 @@ public class PermissionImpl extends KimPermissionImpl {
 	protected String assignedToRoleNameForLookup;
 	protected KimRoleImpl assignedToRole;
 	protected String assignedToPrincipalNameForLookup;
-	protected KimPrincipalImpl assignedToPrincipal;
+	protected Person assignedToPrincipal;
 	protected String assignedToGroupNamespaceForLookup;
 	protected String assignedToGroupNameForLookup;
 	protected KimGroupImpl assignedToGroup;
@@ -180,14 +181,14 @@ public class PermissionImpl extends KimPermissionImpl {
 	/**
 	 * @return the assignedToPrincipal
 	 */
-	public KimPrincipalImpl getAssignedToPrincipal() {
+	public Person getAssignedToPrincipal() {
 		return this.assignedToPrincipal;
 	}
 
 	/**
 	 * @param assignedToPrincipal the assignedToPrincipal to set
 	 */
-	public void setAssignedToPrincipal(KimPrincipalImpl assignedToPrincipal) {
+	public void setAssignedToPrincipal(Person assignedToPrincipal) {
 		this.assignedToPrincipal = assignedToPrincipal;
 	}
 

@@ -350,6 +350,9 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 					roleMemberId = getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_MBR_ID_S").toString();
 					member.setRoleMemberId(roleMemberId);
 				}
+				for(KimDocumentRoleQualifier qualifier: member.getQualifiers()){
+					qualifier.setKimTypId(getKimType().getKimTypeId());
+				}
 				for(KimDocumentRoleResponsibilityAction roleRespAction: member.getRoleRspActions()){
 					if(StringUtils.isBlank(roleRespAction.getRoleResponsibilityActionId())){
 						roleResponsibilityActionId = getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_RSP_ACTN_ID_S").toString();

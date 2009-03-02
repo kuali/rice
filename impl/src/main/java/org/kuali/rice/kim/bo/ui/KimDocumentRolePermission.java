@@ -76,14 +76,6 @@ public class KimDocumentRolePermission extends KimDocumentBoBase {
 		return m;
 	}
 
-	public boolean isActive() {
-		return this.active;
-	}
-
-	public void setActive(boolean active) {
-		this.active = active;
-	}
-
 	public void setRolePermissionId(String rolePermissionId) {
 		this.rolePermissionId = rolePermissionId;
 	}

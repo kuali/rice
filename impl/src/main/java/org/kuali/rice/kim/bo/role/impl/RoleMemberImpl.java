@@ -45,6 +45,8 @@ public class RoleMemberImpl extends KimAbstractMemberImpl {
 	
 	protected List<RoleMemberAttributeDataImpl> attributes;
 	
+	protected List <RoleResponsibilityActionImpl> roleRspActions;
+	
 	public String getRoleMemberId() {
 		return this.roleMemberId;
 	}
@@ -91,4 +93,18 @@ public class RoleMemberImpl extends KimAbstractMemberImpl {
 	public boolean hasQualifier() {
 		return !getAttributes().isEmpty();
 	}
+	
+	/**
+	 * @return the roleRspActions
+	 */
+	public List<RoleResponsibilityActionImpl> getRoleRspActions() {
+		return this.roleRspActions;
+	}
+	/**
+	 * @param roleRspActions the roleRspActions to set
+	 */
+	public void setRoleRspActions(List<RoleResponsibilityActionImpl> roleRspActions) {
+		this.roleRspActions = roleRspActions;
+	}
+
 }

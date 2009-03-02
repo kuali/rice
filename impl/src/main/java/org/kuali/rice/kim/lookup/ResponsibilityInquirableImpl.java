@@ -127,11 +127,15 @@ public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {
 			KimTypeInternalService kimTypeInternalService = KIMServiceLocator.getTypeInternalService();
 			KimRoleInfo roleInfo;
 			KimTypeImpl kimType;
+			AnchorHtmlData inquiryHtmlData;
 			for(KimRoleImpl roleImpl: assignedToRoles){
-				htmlData.add(getInquiryUrlForPrimaryKeys(KimRoleImpl.class, roleImpl, primaryKeys, 
-        				roleImpl.getKimRoleType().getName()+KimConstants.NAME_VALUE_SEPARATOR+
-        				roleImpl.getNamespaceCode()+KimConstants.NAME_VALUE_SEPARATOR+
-        				roleImpl.getRoleName()));
+				roleInfo = roleService.getRole(roleImpl.getRoleId());
+				kimType = kimTypeInternalService.getKimType(roleInfo.getKimTypeId());
+				inquiryHtmlData = getInquiryUrlForPrimaryKeys(KimRoleImpl.class, roleInfo, primaryKeys, 
+        				roleInfo.getNamespaceCode()+" "+
+        				roleInfo.getRoleName());
+				inquiryHtmlData.setHref(RoleLookupableHelperServiceImpl.getCustomRoleInquiryHref(inquiryHtmlData.getHref()));
+        		htmlData.add(inquiryHtmlData);
         	}
 		}
     	return new MultipleAnchorHtmlData(htmlData);

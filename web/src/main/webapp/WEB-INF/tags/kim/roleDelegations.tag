@@ -119,7 +119,7 @@ function changeDelegationMemberTypeCode(){
 					<c:out value="${statusMember.index+1}" />
 				</th>
 	            <td align="left" valign="middle">
-	               	<div align="center"> <kul:htmlControlAttribute property="document.delegationMembers[${statusMember.index}].memberTypeCode"  attributeEntry="${delegationMemberAttributes.memberTypeCode}" disabled="true" readOnly="${readOnly}" />
+	               	<div align="center"> <kul:htmlControlAttribute property="document.delegationMembers[${statusMember.index}].memberTypeCode"  attributeEntry="${delegationMemberAttributes.memberTypeCode}" disabled="true" readOnly="false" />
 					</div>
 				</td>
 	            <td align="left" valign="middle">
@@ -148,7 +148,7 @@ function changeDelegationMemberTypeCode(){
 					</td>
 		        </c:forEach>
 	            <td align="left" valign="middle">
-	               	<div align="center"> <kul:htmlControlAttribute property="document.delegationMembers[${statusMember.index}].delegationTypeCode"  attributeEntry="${delegationMemberAttributes.delegationTypeCode}" readOnly="${readOnly}"/>
+	               	<div align="center"> <kul:htmlControlAttribute property="document.delegationMembers[${statusMember.index}].delegationTypeCode"  attributeEntry="${delegationMemberAttributes.delegationTypeCode}" disabled="${readOnly}" readOnly="false" />
 					</div>
 				</td>
 			<c:if test="${not inquiry}">	

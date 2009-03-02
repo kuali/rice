@@ -59,7 +59,7 @@
           <property name="primitiveAttributes" >
             <list>
               <bean parent="PrimitiveAttributeDefinition"
-                    p:sourceName="templateId"
+                    p:sourceName="template.permissionTemplateId"
                     p:targetName="permissionTemplateId" />
             </list>
           </property>
@@ -135,7 +135,7 @@
     
   <bean id="PermissionImpl-templateId" parent="PermissionImpl-templateId-parentBean" />
   <bean id="PermissionImpl-templateId-parentBean" parent="AttributeDefinition" abstract="true"
-        p:name="templateId"
+        p:name="template.permissionTemplateId"
         p:label="Template Identifier"
         p:shortLabel="Template Identifier"
         p:maxLength="40"
@@ -427,7 +427,7 @@
           <bean parent="FieldDefinition" p:attributeName="attributeValue" />
           <bean parent="FieldDefinition" p:attributeName="assignedToRole.roleId" />
           <bean parent="FieldDefinition" p:attributeName="assignedToPrincipal.principalId" />
-          <bean parent="FieldDefinition" p:attributeName="templateId" />
+          <bean parent="FieldDefinition" p:attributeName="template.permissionTemplateId" />
           <bean parent="FieldDefinition" p:attributeName="assignedToGroup.groupId" />
       </list>
     </property>

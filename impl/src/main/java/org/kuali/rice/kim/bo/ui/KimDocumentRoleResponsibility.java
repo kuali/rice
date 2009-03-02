@@ -66,14 +66,6 @@ public class KimDocumentRoleResponsibility extends KimDocumentBoBase {
 		return m;
 	}
 
-	public boolean isActive() {
-		return this.active;
-	}
-
-	public void setActive(boolean active) {
-		this.active = active;
-	}
-
 	public void setRoleResponsibilityId(String roleResponsibilityId) {
 		this.roleResponsibilityId = roleResponsibilityId;
 	}

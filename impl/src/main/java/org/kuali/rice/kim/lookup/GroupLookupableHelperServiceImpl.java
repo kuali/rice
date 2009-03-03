@@ -35,8 +35,11 @@ import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.bo.ui.KimAttributeDataComparator;
 import org.kuali.rice.kim.dao.KimGroupDao;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.support.KimGroupTypeService;
+import org.kuali.rice.kim.service.support.KimRoleTypeService;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
+import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
@@ -79,7 +82,7 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
 	private List<Row> grpRows = new ArrayList<Row>();
 	private List<Row> attrRows = new ArrayList<Row>();
 	private KimGroupDao groupDao;
-	private String typeId;
+	private String typeId = "";
 	private AttributeDefinitionMap attrDefinitions;
 	private Map<String, String> groupTypeValuesCache = new HashMap<String, String>();
 	private static List<KeyLabelPair> groupTypeCache = null;
@@ -99,7 +102,7 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
 
     @Override
     public boolean checkForAdditionalFields(Map fieldValues) {
-        List<Row> attributeRows = setupAttributeRows(new HashMap());
+        List<Row> attributeRows = setupAttributeRows(fieldValues);
         if (attributeRows.isEmpty()) {
             setAttrRows(attributeRows);
         } else if (CollectionUtils.isEmpty(getAttrRows())) {
@@ -110,6 +113,7 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
         }
         return false;
     }
+
 
 	@Override
 	public List<Row> getRows() {
@@ -322,23 +326,21 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
 			groupTypeValuesCache = new HashMap<String, String>();
 			options.add(new KeyLabelPair("", ""));
 
-			List<KimGroupImpl> kimGroups = (List<KimGroupImpl>)getBusinessObjectService().findAll(KimGroupImpl.class);
-	        // get the distinct list of type IDs from all groups in the system
-	        for (KimGroupImpl group : kimGroups) {
-	            KimTypeImpl kimType = KIMServiceLocator.getTypeInternalService().getKimType(group.getKimTypeId());
-	            if (kimType != null) {
-	                if (groupTypeValuesCache.get(kimType.getKimTypeId()) == null) {
-	                    String value = kimType.getNamespaceCode().trim() + KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR + kimType.getName().trim();
-	                    options.add(new KeyLabelPair(kimType.getKimTypeId(), value));
-	                    groupTypeValuesCache.put(kimType.getKimTypeId(), value);
-	                }
-	            }
+			//List<KimGroupImpl> kimGroups = (List<KimGroupImpl>)getBusinessObjectService().findAll(KimGroupImpl.class);
+			List<KimTypeImpl> kimGroupTypes = (List<KimTypeImpl>)getBusinessObjectService().findAll(KimTypeImpl.class);
+			// get the distinct list of type IDs from all groups in the system
+	        for (KimTypeImpl kimType : kimGroupTypes) {
+                if (hasGroupTypeService(kimType) && groupTypeValuesCache.get(kimType.getKimTypeId()) == null) {
+                    String value = kimType.getNamespaceCode().trim() + KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR + kimType.getName().trim();
+                    options.add(new KeyLabelPair(kimType.getKimTypeId(), value));
+                    groupTypeValuesCache.put(kimType.getKimTypeId(), value);
+                }
 	        }
-	        Collections.sort(options, new Comparator<KeyLabelPair>() {
-	           public int compare(KeyLabelPair k1, KeyLabelPair k2) {
-	               return k1.getLabel().compareTo(k2.getLabel());
-	           }
-	        });
+	        //Collections.sort(options, new Comparator<KeyLabelPair>() {
+	        //   public int compare(KeyLabelPair k1, KeyLabelPair k2) {
+	        //       return k1.getLabel().compareTo(k2.getLabel());
+	        //   }
+	        //});
 			groupTypeCache = options;
 		}
 		return groupTypeCache;
@@ -429,7 +431,6 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
 			}
 		}
 		return returnRows;
-
 	}
 
     private String getAttrDefnId(AttributeDefinition definition) {
@@ -439,6 +440,24 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
     		return ((KimNonDataDictionaryAttributeDefinition)definition).getKimAttrDefnId();
 
     	}
+    }
+/*
+    protected List<? extends BusinessObject> getSearchResultsHelper(Map<String, String> fieldValues, boolean unbounded) {
+        List<KimTypeImpl> searchResults = (List<KimTypeImpl>)super.getSearchResultsHelper(fieldValues, unbounded);
+        List<KimTypeImpl> filteredSearchResults = new ArrayList<KimTypeImpl>();
+        for(KimTypeImpl kimTypeImpl: searchResults){
+            if(hasRoleTypeService(kimTypeImpl))
+                filteredSearchResults.add(kimTypeImpl);
+        }
+        return filteredSearchResults;
+    }
+*/
+    static boolean hasGroupTypeService(KimTypeImpl kimTypeImpl){
+        return hasGroupTypeService(KimCommonUtils.getKimTypeService(kimTypeImpl));
+    }
+
+    static boolean hasGroupTypeService(KimTypeService kimTypeService){
+        return kimTypeService instanceof KimGroupTypeService;
     }
 
 	public List<Row> getGrpRows() {

@@ -18,11 +18,15 @@ package org.kuali.rice.core.config;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.event.RiceConfigEvent;
 import org.kuali.rice.core.lifecycle.BaseCompositeLifecycle;
+import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
+import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 import org.springframework.beans.factory.InitializingBean;
 
 public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements Configurer, InitializingBean {
@@ -37,10 +41,14 @@ public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements
 	protected final List<String> VALID_RUN_MODES = new ArrayList<String>();
 	
 	private String runMode = LOCAL_RUN_MODE;	
-    protected String moduleName = "!!!UNSET!!!";	
+    private String moduleName = "!!!UNSET!!!";	
 	protected String webModuleConfigName = "";
 	protected String webModuleConfigurationFiles = "";
+	protected String webModuleBaseUrl = "";
 	protected boolean webInterface = false;
+    protected boolean testMode;
+    protected String springFileLocations = "";
+    protected String resourceLoaderName;
 	
 	/**
 	 * 
@@ -52,6 +60,15 @@ public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements
 	}
 	
 	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.core.lifecycle.BaseCompositeLifecycle#loadLifecycles()
+	 */
+	@Override
+	protected List<Lifecycle> loadLifecycles() throws Exception {
+		return new ArrayList<Lifecycle>(0);
+	}
+	/**
 	 * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
 	 */
 	public void afterPropertiesSet() throws Exception {
@@ -62,11 +79,16 @@ public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements
 			if ( StringUtils.isBlank( webModuleConfigName ) ) {
 				setWebModuleConfigName( "config/" + getModuleName().toLowerCase() );
 			}
-			if ( StringUtils.isBlank( webModuleConfigurationFiles ) ) {
-				setWebModuleConfigurationFiles( "/" + getModuleName().toLowerCase() + "/WEB-INF/struts-config.xml" );
-			}
+//			if ( StringUtils.isBlank( webModuleConfigurationFiles ) ) {
+//				setWebModuleConfigurationFiles( "/" + getModuleName().toLowerCase() + "/WEB-INF/struts-config.xml" );
+//			}
+		}
+		if ( StringUtils.isEmpty( getSpringFileLocations() ) ) {
+			setSpringFileLocations( getDefaultSpringBeansPath(getDefaultConfigPackagePath() ) );
 		}
 	}
+	
+	
 	
 	public String getRunMode() {
 		return this.runMode;
@@ -81,15 +103,60 @@ public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements
 	}
 
 	
-	public abstract Config loadConfig(Config parentConfig) throws Exception;
+	public Config loadConfig(Config parentConfig) throws Exception {
+    	if ( LOG.isInfoEnabled() ) {
+    		LOG.info("Starting configuration of " + getModuleName() + " for service namespace " + parentConfig.getServiceNamespace());
+    	}
+		Config config = parentConfig;
+        if (Boolean.valueOf(config.getProperty("rice." + getModuleName().toLowerCase() + ".testMode"))) {
+            testMode = true;
+        }		
+		configureWebConfiguration(config);
+		return config;
+	}
 
+	protected void configureWebConfiguration( Config config ) throws Exception {
+		if ( StringUtils.isBlank( getWebModuleConfigurationFiles() ) ) {
+			if ( StringUtils.isBlank( config.getProperty( "rice." + getModuleName().toLowerCase() + ".struts.config.files" ) ) ) {
+				setWebModuleConfigurationFiles( "/" + getModuleName().toLowerCase() + "/WEB-INF/struts-config.xml" );
+			} else {
+				setWebModuleConfigurationFiles( config.getProperty( "rice." + getModuleName().toLowerCase() + ".struts.config.files" ) );
+			}
+		}
+		config.getProperties().put( "rice." + getModuleName().toLowerCase() + ".struts.config.files", getWebModuleConfigurationFiles() );
+		if ( StringUtils.isBlank( getWebModuleBaseUrl() ) ) {
+			if ( StringUtils.isBlank( config.getProperty( getModuleName().toLowerCase() + ".url" ) ) ) {
+				setWebModuleBaseUrl( config.getProperty( "application.url" ) + "/" + getModuleName().toLowerCase() );
+			} else {
+				setWebModuleBaseUrl( config.getProperty( getModuleName().toLowerCase() + ".url" ) );
+			}
+		}
+		config.getProperties().put( getModuleName().toLowerCase() + ".url", getWebModuleBaseUrl() );
+	}
+	
 	/**
 	 * 
 	 * This method returns a comma separated string of spring file locations for this module.
 	 * 
 	 * @throws Exception
 	 */
-	public abstract String getSpringFileLocations() throws Exception;
+	public String getSpringFileLocations() throws Exception {
+		return springFileLocations;
+	}
+	
+    /* helper methods for constructors */
+    protected String getDefaultConfigPackagePath() {
+    	return "org/kuali/rice/" + getModuleName().toLowerCase() + "/config/";
+    }
+    protected String getDefaultSpringBeansPath(String configPackagePath) {
+        return configPackagePath + getModuleName().toUpperCase() + "SpringBeans.xml"; 
+    }
+    public String getDefaultResourceLoaderName() {
+        return getModuleName().toUpperCase() + "_SPRING_RESOURCE_LOADER";        
+    }
+    public QName getDefaultResourceLoaderQName() {
+        return new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), getDefaultResourceLoaderName());
+    }
 	
 	/**
 	 * 
@@ -100,6 +167,26 @@ public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements
 	public ResourceLoader getResourceLoaderToRegister() throws Exception{
 		return null;
 	}
+	
+    /**
+     * Template method for creation of the module resource loader.  Subclasses should override
+     * and return an appropriate resource loader for the module.  If 'null' is returned, no
+     * resource loader is added to the lifecycles by default.  The caller {@link #loadLifecycles()}
+     * implementation will add the ResourceLoader to the GlobalResourceLoader, so that it is not
+     * necessary to do so in the subclass.
+     * @return a resource loader for the module, or null
+     */
+    /**
+     * Constructs a SpringResourceLoader from the appropriate Spring context resource and with the configured
+     * resource loader name (and current context config service namespace)
+     * @see org.kuali.rice.core.config.BaseModuleConfigurer#createResourceLoader()
+     */
+    protected ResourceLoader createResourceLoader() throws Exception {
+        String context = getSpringFileLocations();
+        ResourceLoader resourceLoader = new SpringResourceLoader(new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), resourceLoaderName), context);
+        return resourceLoader;
+    }
+
 	
 	public void onEvent(RiceConfigEvent event) throws Exception {
 		if ( LOG.isInfoEnabled() ) {
@@ -137,6 +224,41 @@ public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements
 
 	protected void setHasWebInterface(boolean webInterface) {
 		this.webInterface = webInterface;
+	}
+
+	/**
+	 * @return the testMode
+	 */
+	public boolean isTestMode() {
+		return this.testMode;
+	}
+
+	/**
+	 * @param testMode the testMode to set
+	 */
+	public void setTestMode(boolean testMode) {
+		this.testMode = testMode;
+	}
+
+	/**
+	 * @param springFileLocations the springFileLocations to set
+	 */
+	public void setSpringFileLocations(String springFileLocations) {
+		this.springFileLocations = springFileLocations;
+	}
+
+	/**
+	 * @return the webModuleBaseUrl
+	 */
+	public String getWebModuleBaseUrl() {
+		return this.webModuleBaseUrl;
+	}
+
+	/**
+	 * @param webModuleBaseUrl the webModuleBaseUrl to set
+	 */
+	public void setWebModuleBaseUrl(String webModuleBaseUrl) {
+		this.webModuleBaseUrl = webModuleBaseUrl;
 	}
 
 }

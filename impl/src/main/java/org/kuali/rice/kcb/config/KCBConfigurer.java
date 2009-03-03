@@ -15,7 +15,12 @@
  */
 package org.kuali.rice.kcb.config;
 
-import org.kuali.rice.core.config.SpringModuleConfigurer;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.kuali.rice.core.config.ModuleConfigurer;
+import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.core.ojb.BaseOjbConfigurer;
 
 /**
  * This class handles the Spring based KCB configuration that is part of the Rice Configurer that must 
@@ -23,14 +28,30 @@ import org.kuali.rice.core.config.SpringModuleConfigurer;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class KCBConfigurer extends SpringModuleConfigurer {
+public class KCBConfigurer extends ModuleConfigurer {
     private static final String MODULE_NAME = "kcb";
  
     /**
      * Constructs a KCBConfigurer
      */
     public KCBConfigurer() {
-        super(MODULE_NAME);
+        super();
+        setModuleName(MODULE_NAME);
         LOG.info("KCBConfigurer constructed");
     }
+    
+	/**
+     * Registers an OjbConfigurer and ResourceLoader for the module, adding it first to the GlobalResourceLoader.
+     * @see org.kuali.rice.core.lifecycle.BaseCompositeLifecycle#loadLifecycles()
+     */
+    @Override
+    protected List<Lifecycle> loadLifecycles() throws Exception {
+    	if ( LOG.isInfoEnabled() ) {
+    		LOG.info("Loading " + getModuleName() + " module lifecycles");
+    	}
+        List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
+        lifecycles.add(new BaseOjbConfigurer(getModuleName()));
+        return lifecycles;
+    }
+
 }

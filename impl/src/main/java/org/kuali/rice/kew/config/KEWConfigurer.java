@@ -145,10 +145,9 @@ public class KEWConfigurer extends ModuleConfigurer {
 		return new ThinClientLifecycle();
 	}
 
+	@Override
 	public Config loadConfig(Config parentConfig) throws Exception {
-		if ( LOG.isDebugEnabled() ) {
-		    LOG.info("Starting configuration of KEW for service namespace " + getServiceNamespace(parentConfig));
-		}
+		parentConfig = super.loadConfig(parentConfig);
 		Config currentConfig = parseConfig(parentConfig);
 		configureClientProtocol(currentConfig);
 		configureDataSource(currentConfig);

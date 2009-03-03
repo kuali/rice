@@ -47,7 +47,11 @@ import org.kuali.rice.ken.config.KENConfigurer;
 import org.kuali.rice.kew.config.KEWConfigurer;
 import org.kuali.rice.kim.config.KIMConfigurer;
 import org.kuali.rice.kns.config.KNSConfigurer;
+import org.kuali.rice.kns.web.servlet.dwr.GlobalResourceDelegatingSpringCreator;
 import org.kuali.rice.ksb.messaging.config.KSBConfigurer;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationEvent;
@@ -64,7 +68,7 @@ import edu.emory.mathcs.backport.java.util.Collections;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer, InitializingBean, DisposableBean, ApplicationListener {
+public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer, InitializingBean, DisposableBean, ApplicationListener, BeanFactoryAware {
 
 	private static final Logger LOG = Logger.getLogger(RiceConfigurer.class);
 
@@ -87,6 +91,7 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
 	private Properties properties;
 	private List<String> configLocations = new ArrayList<String>();
 	private List<String> additionalSpringFiles = new ArrayList<String>();
+	private BeanFactory beanFactory;
 
 	private KSBConfigurer ksbConfigurer;
 	private KNSConfigurer knsConfigurer;
@@ -204,6 +209,7 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
 	 * @see org.kuali.rice.core.lifecycle.BaseCompositeLifecycle#loadLifecycles()
 	 */
 	protected List<Lifecycle> loadLifecycles() throws Exception {
+		 GlobalResourceDelegatingSpringCreator.APPLICATION_BEAN_FACTORY = beanFactory;
 		 List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
 		 for (ModuleConfigurer module : this.modules) {
 			 lifecycles.add(module);
@@ -608,4 +614,8 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
 		}
 	}	
 
+	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+		this.beanFactory = beanFactory;
+	}
+	
 }

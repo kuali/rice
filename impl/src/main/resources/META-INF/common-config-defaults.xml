@@ -20,6 +20,9 @@
     <param name="kr.externalizable.images.url" override="false">/${app.context.name}/kr/static/images/</param>
     <param name="travel.externalizable.images.url" override="false">/${app.context.name}/kr/static/images/</param>
     <param name="kr.url" override="false">${application.url}/kr</param>
+    <param name="ksb.url" override="false">${application.url}/ksb</param>
+    <param name="kim.url" override="false">${application.url}/kim</param>
+    <param name="kew.url" override="false">${application.url}/kew</param>
 
     <!-- by default non-tests are not in "dev.mode" -->
     <param name="dev.mode" override="false">false</param>

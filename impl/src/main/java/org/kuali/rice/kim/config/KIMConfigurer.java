@@ -15,13 +15,7 @@
  */
 package org.kuali.rice.kim.config;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import org.kuali.rice.core.config.Config;
-import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ModuleConfigurer;
-import org.kuali.rice.core.lifecycle.Lifecycle;
 
 /**
  * This class handles the Spring based KIM configuration that is part of the Rice Configurer that must 
@@ -42,24 +36,6 @@ public class KIMConfigurer extends ModuleConfigurer {
 		setModuleName( "KIM" );
 		setHasWebInterface( true );
 	}
-	
-	/**
-	 * This overridden method handles setting up the KIM specific configuration.
-	 * 
-	 * @see org.kuali.rice.core.config.ModuleConfigurer#loadConfig(org.kuali.rice.core.config.Config)
-	 */
-	@Override
-	public Config loadConfig(Config parentConfig) throws Exception {
-		if ( LOG.isInfoEnabled() ) {
-			LOG.info("Starting configuration of KIM for service namespace " + parentConfig.getServiceNamespace());
-		}
-		
-		Config currentConfig = ConfigContext.getCurrentContextConfig();
-		
-		// ANY NEW CONFIG ELEMENTS NEED TO BE ADDED HERE
-
-		return currentConfig;
-	}
 
 	@Override
 	public String getSpringFileLocations() {
@@ -68,17 +44,5 @@ public class KIMConfigurer extends ModuleConfigurer {
 		}
 		return KIM_INTERFACE_SPRING_BEANS_PATH;
 	}
-	
-	/**
-	 * @see org.kuali.rice.core.lifecycle.BaseCompositeLifecycle#loadLifecycles()
-	 * 
-	 * TODO - DO I NEED THIS?
-	 */
-	@Override
-	protected List<Lifecycle> loadLifecycles() throws Exception {
-		List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
-		//lifecycles.add(new KIMOjbConfigurer());
-		//lifecycles.add(KIMResourceLoaderFactory.createRootKIMResourceLoader());
-		return lifecycles;
-	}
+
 }

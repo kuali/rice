@@ -18,7 +18,6 @@ package org.kuali.rice.kns.config;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ModuleConfigurer;
 import org.kuali.rice.core.config.event.AfterStartEvent;
 import org.kuali.rice.core.config.event.RiceConfigEvent;
@@ -27,12 +26,8 @@ import org.kuali.rice.core.resourceloader.RiceResourceLoaderFactory;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.PersistenceService;
-import org.kuali.rice.kns.web.servlet.dwr.GlobalResourceDelegatingSpringCreator;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.BeanFactoryAware;
 
-public class KNSConfigurer extends ModuleConfigurer implements BeanFactoryAware {
+public class KNSConfigurer extends ModuleConfigurer {
 
 	private List<String> databaseRepositoryFilePaths;
 
@@ -41,33 +36,25 @@ public class KNSConfigurer extends ModuleConfigurer implements BeanFactoryAware 
 	private boolean loadDataDictionary = true;
 	private boolean validateDataDictionary = false;
 	
-	private BeanFactory beanFactory;
-
 	private static final String KNS_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kns/config/KNSSpringBeans.xml";
 	
 	public KNSConfigurer() {
 	    super();
 	    setModuleName( "KR" );
 	    setHasWebInterface(true);
-	    // KNS only runs in a local mode
-	    VALID_RUN_MODES.remove( EMBEDDED_RUN_MODE );
+	    // KNS never runs in a remote mode
 	    VALID_RUN_MODES.remove( REMOTE_RUN_MODE );
     }
 	
 	@Override
-	public Config loadConfig(Config parentConfig) throws Exception {
-		return null;
-	}
-
-	@Override
 	public String getSpringFileLocations(){
+		// TODO: check the run mode and include only the appropriate spring bean files
 		return KNS_SPRING_BEANS_PATH;
 	}
 	
 	@Override
 	protected List<Lifecycle> loadLifecycles() throws Exception {
 		List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
-		GlobalResourceDelegatingSpringCreator.APPLICATION_BEAN_FACTORY = beanFactory;
 		//lifecycles.add(new OJBConfigurer());
 		//lifecycles.add(KNSResourceLoaderFactory.createRootKNSResourceLoader());
 		if (isLoadDataDictionary()) {
@@ -151,10 +138,6 @@ public class KNSConfigurer extends ModuleConfigurer implements BeanFactoryAware 
 	 */
 	public void setLoadDataDictionary(boolean loadDataDictionary) {
 		this.loadDataDictionary = loadDataDictionary;
-	}
-
-	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
-		this.beanFactory = beanFactory;
 	}
 
 	/**

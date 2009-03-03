@@ -26,7 +26,6 @@ import org.apache.commons.httpclient.contrib.ssl.EasySSLProtocolSocketFactory;
 import org.apache.commons.httpclient.protocol.Protocol;
 import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ConfigurationException;
@@ -104,10 +103,7 @@ public class KSBConfigurer extends ModuleConfigurer {
     }
 	
 	public Config loadConfig(Config parentConfig) throws Exception {
-		if ( LOG.isInfoEnabled() ) {
-		    LOG.info("Starting configuration of KSB for service namespace " + getServiceNamespace(parentConfig));
-		}
-		Config currentConfig = ConfigContext.getCurrentContextConfig();
+		Config currentConfig = super.loadConfig(parentConfig);
 		configureDataSource(currentConfig);
 		configureBus(currentConfig);
 		configureKeystore(currentConfig);

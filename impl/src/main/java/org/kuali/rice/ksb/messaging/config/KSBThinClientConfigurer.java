@@ -19,11 +19,8 @@ package org.kuali.rice.ksb.messaging.config;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ModuleConfigurer;
 import org.kuali.rice.core.lifecycle.Lifecycle;
-import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
 
 
 /**
@@ -49,10 +46,6 @@ public class KSBThinClientConfigurer extends ModuleConfigurer {
         setHasWebInterface(false);
     }
 	
-	public Config loadConfig(Config parentConfig) throws Exception {
-	    return parentConfig;
-	}
-
 	@Override
 	public String getSpringFileLocations(){
 		return "classpath:org/kuali/rice/ksb/config/KSBThinClientSpringBeans.xml";

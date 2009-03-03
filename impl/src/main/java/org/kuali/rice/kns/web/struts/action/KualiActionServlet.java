@@ -136,7 +136,10 @@ public class KualiActionServlet extends ActionServlet {
                 // in "embedded" or "remote" modes, the UIs are hosted on a central server
                 if ( module.hasWebInterface() && module.getRunMode().equals( ModuleConfigurer.LOCAL_RUN_MODE ) ) {
                 	if ( LOG.isInfoEnabled() ) {
-                		LOG.info( "Configuring Web Content for Module: " + module.getModuleName() + " / " + module.getWebModuleConfigName() + " / " + module.getWebModuleConfigurationFiles() );
+                		LOG.info( "Configuring Web Content for Module: " + module.getModuleName() 
+                				+ " / " + module.getWebModuleConfigName() 
+                				+ " / " + module.getWebModuleConfigurationFiles()
+                				+ " / Base URL: " + module.getWebModuleBaseUrl() );
                 	}
                     if ( !initParameters.containsKey( module.getWebModuleConfigName() ) ) {
                         initParameters.put( module.getWebModuleConfigName(), module.getWebModuleConfigurationFiles() );

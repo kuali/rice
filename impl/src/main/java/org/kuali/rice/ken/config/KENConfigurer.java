@@ -15,15 +15,34 @@
  */
 package org.kuali.rice.ken.config;
 
-import org.kuali.rice.core.config.SpringModuleConfigurer;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.kuali.rice.core.config.ModuleConfigurer;
+import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.core.ojb.BaseOjbConfigurer;
 
 /**
  * The KEN Configurer
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class KENConfigurer extends SpringModuleConfigurer {
+public class KENConfigurer extends ModuleConfigurer {
     public KENConfigurer() {
-        super("ken");
+        super();
+        setModuleName( "KEN" );
     }
-    
+	/**
+     * Registers an OjbConfigurer and ResourceLoader for the module, adding it first to the GlobalResourceLoader.
+     * @see org.kuali.rice.core.lifecycle.BaseCompositeLifecycle#loadLifecycles()
+     */
+    @Override
+    protected List<Lifecycle> loadLifecycles() throws Exception {
+    	if ( LOG.isInfoEnabled() ) {
+    		LOG.info("Loading " + getModuleName() + " module lifecycles");
+    	}
+        List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
+        lifecycles.add(new BaseOjbConfigurer(getModuleName()));
+        return lifecycles;
+    }
+
 }

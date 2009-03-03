@@ -60,8 +60,6 @@ import org.springframework.transaction.PlatformTransactionManager;
  */
 public class KSBConfigurer extends ModuleConfigurer {
 
-	private static final Logger LOG = Logger.getLogger(KSBConfigurer.class);
-
 	private List<ServiceDefinition> services = new ArrayList<ServiceDefinition>();
 	
     private List<AlternateEndpointLocation> alternateEndpointLocations = new ArrayList<AlternateEndpointLocation>();
@@ -98,8 +96,17 @@ public class KSBConfigurer extends ModuleConfigurer {
 
 	private boolean isStarted = false;
 
+	public KSBConfigurer() {
+        super();
+        setModuleName( "KSB" );
+        setHasWebInterface(true);
+        VALID_RUN_MODES.remove( REMOTE_RUN_MODE );
+    }
+	
 	public Config loadConfig(Config parentConfig) throws Exception {
-		LOG.info("Starting configuration of KSB for service namespace " + getServiceNamespace(parentConfig));
+		if ( LOG.isInfoEnabled() ) {
+		    LOG.info("Starting configuration of KSB for service namespace " + getServiceNamespace(parentConfig));
+		}
 		Config currentConfig = ConfigContext.getCurrentContextConfig();
 		configureDataSource(currentConfig);
 		configureBus(currentConfig);

@@ -33,36 +33,38 @@
 		<property name="userTransaction" ref="jtaUserTransaction" />
 		<property name="rootConfig" ref="config" />
         <property name="environment" value="${environment}"/>
-            <property name="additionalSpringFiles">
-                <list>
-                    <value>${rice.additionalSpringFiles}</value>
-                </list>
-            </property>
 		<property name="ksbConfigurer">
-				<bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
-					<property name="serviceServletUrl" value="${serviceServletUrl}" />
-				</bean>
+			<bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer"
+				  p:serviceServletUrl="${serviceServletUrl}"
+                  p:runMode="${ksb.mode}"
+                  p:webModuleConfigurationFiles="${rice.ksb.struts.config.files}" />
 		</property>
 		<property name="knsConfigurer">
-	        <bean class="org.kuali.rice.kns.config.KNSConfigurer">
-	            <property name="loadDataDictionary" value="true" />
-	            <property name="validateDataDictionary" value="true" />
-	        </bean>
+	        <bean class="org.kuali.rice.kns.config.KNSConfigurer"
+                  p:loadDataDictionary="true"
+                  p:validateDataDictionary="true" 
+                  p:webModuleConfigurationFiles="${rice.kns.struts.config.files}"/>
 		</property>
 		<property name="kimConfigurer">
 	        <bean class="org.kuali.rice.kim.config.KIMConfigurer" 
-                  p:runMode="${kim.mode}" />
+                  p:runMode="${kim.mode}"
+                  p:webModuleConfigurationFiles="${rice.kim.struts.config.files}" />
 		</property>
 		<property name="kcbConfigurer">
-                <bean class="org.kuali.rice.kcb.config.KCBConfigurer"/>
+            <bean class="org.kuali.rice.kcb.config.KCBConfigurer" />
         </property>
 		<property name="kewConfigurer">
-				<bean class="org.kuali.rice.kew.config.KEWConfigurer">
-					<property name="clientProtocol" value="local" />
-				</bean>
+			<bean class="org.kuali.rice.kew.config.KEWConfigurer"
+                p:runMode="${kew.mode}" 
+                p:webModuleConfigurationFiles="${rice.kew.struts.config.files}" />
 		</property>
 		<property name="kenConfigurer">
         	<bean class="org.kuali.rice.ken.config.KENConfigurer" />
 		</property>
+        <property name="additionalSpringFiles">
+            <list>
+                <value>${rice.additionalSpringFiles}</value>
+            </list>
+        </property>
 	</bean>
 </beans>

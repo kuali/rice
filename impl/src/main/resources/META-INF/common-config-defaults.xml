@@ -1,57 +1,55 @@
 <config>
+    <!--  NOTE: This environment parameter must be defined early -->
+    <param name="environment" override="false">dev</param>
+    <param name="app.code" override="false">kr</param>
+    <param name="app.context.name" override="false">${app.code}-${environment}</param>
+
     <!--
       NOTE: The application.url parameter needs to be set by the client
         this should be set to something similar to:
-        <param name="application.url">http://site.edu/${app.context.name}</param>
+        <param name="application.url" override="false">http://site.edu/${app.context.name}</param>
      -->
-    <!--  NOTE: This environment parameter must be defined early -->
-    <param name="environment" override="false">dev</param>
-
-    <param name="app.code">kr</param>
-    <param name="app.context.name">${app.code}-${environment}</param>
-    <param name="application.url"><!-- enter base application url here--></param>
+    <param name="application.url" override="false">http://localhost:8080/${app.context.name}</param>
 
     <!-- A comma separated list of additional spring files for the RiceConfigurer -->
-    <param name="rice.additionalSpringFiles"></param>
+    <param name="rice.additionalSpringFiles" override="false"></param>
 
     <!-- App specific parameters -->
-    <param name="externalizable.help.url">/${app.context.name}/kr/static/help/</param>
-    <param name="externalizable.images.url">/${app.context.name}/kr/static/images/</param>
-    <param name="kr.externalizable.images.url">/${app.context.name}/kr/static/images/</param>
-    <param name="travel.externalizable.images.url">/${app.context.name}/kr/static/images/</param>
-    <param name="kr.url">${application.url}/kr</param>
+    <param name="externalizable.help.url" override="false">/${app.context.name}/kr/static/help/</param>
+    <param name="externalizable.images.url" override="false">/${app.context.name}/kr/static/images/</param>
+    <param name="kr.externalizable.images.url" override="false">/${app.context.name}/kr/static/images/</param>
+    <param name="travel.externalizable.images.url" override="false">/${app.context.name}/kr/static/images/</param>
+    <param name="kr.url" override="false">${application.url}/kr</param>
 
     <!-- by default non-tests are not in "dev.mode" -->
-    <param name="dev.mode">false</param>
+    <param name="dev.mode" override="false">false</param>
     <!-- by default bam is not enabled -->
-    <param name="bam.enabled">false</param>
+    <param name="bam.enabled" override="false">false</param>
 	<param name="rice.ksb.loadKNSModuleConfiguration">true</param>
 
-	<!-- <param name="ksb.org.quartz.scheduler.instanceId">AUTO</param>
-    <param name="ksb.org.quartz.scheduler.instanceName">KSBScheduler</param>
-    <param name="ksb.org.quartz.jobStore.isClustered">true</param>
-    <param name="ksb.org.quartz.jobStore.tablePrefix">KRSB_QRTZ_</param>
+	<!-- <param name="ksb.org.quartz.scheduler.instanceId" override="false">AUTO</param>
+    <param name="ksb.org.quartz.scheduler.instanceName" override="false">KSBScheduler</param>
+    <param name="ksb.org.quartz.jobStore.isClustered" override="false">true</param>
+    <param name="ksb.org.quartz.jobStore.tablePrefix" override="false">KRSB_QRTZ_</param>
 	-->
 
     <!-- TODO: doc this param -->
-    <param name="production.environment.code">PRD</param>
+    <param name="production.environment.code" override="false">PRD</param>
      <!-- I think this is workflow related; everywhere it was specified as 'iu' so I'll just keep that for now -->
-    <param name="institution">iu</param>
+    <param name="institution" override="false">iu</param>
     <!-- TODO: doc these params -->
-    <param name="security.directory">/usr/local/rice/</param>
-    <param name="settings.directory">/usr/local/rice/</param>
-    <param name="memory.monitor.threshold">.85</param>
+    <param name="security.directory" override="false">/usr/local/rice/</param>
+    <param name="settings.directory" override="false">/usr/local/rice/</param>
+    <param name="memory.monitor.threshold" override="false">.85</param>
     <!-- TODO: ksn related? -->
-    <param name="maintain.users.locally">true</param>
-    <param name="mail.relay.server">mail.relay.server</param>
-    <param name="mailing.list.batch">mailing.list.batch</param>
-    <param name="kfsLocator.useAppContext">true</param>
+    <param name="mail.relay.server" override="false">mail.relay.server</param>
+    <param name="mailing.list.batch" override="false">mailing.list.batch</param>
 
-    <param name="javascript.files">kr/scripts/core.js,kr/scripts/dhtml.js,kr/scripts/my_common.js,kr/scripts/jscalendar-1.0/calendar.js,kr/scripts/jscalendar-1.0/lang/calendar-en.js,kr/scripts/jscalendar-1.0/calendar-setup.js,dwr/engine.js,dwr/util.js,dwr/interface/PersonService.js,kr/scripts/objectInfo.js</param>
-    <param name="css.files">kr/css/kuali.css,kr/scripts/jscalendar-1.0/calendar-win2k-1.css</param>
+    <param name="javascript.files" override="false">kr/scripts/core.js,kr/scripts/dhtml.js,kr/scripts/my_common.js,kr/scripts/jscalendar-1.0/calendar.js,kr/scripts/jscalendar-1.0/lang/calendar-en.js,kr/scripts/jscalendar-1.0/calendar-setup.js,dwr/engine.js,dwr/util.js,dwr/interface/PersonService.js,kr/scripts/objectInfo.js</param>
+    <param name="css.files" override="false">kr/css/kuali.css,kr/scripts/jscalendar-1.0/calendar-win2k-1.css</param>
 
-    <param name="message.delivery">async</param>
-    <param name="message.persistence">true</param>
+    <param name="message.delivery" override="false">async</param>
+    <param name="message.persistence" override="false">true</param>
 
     <!--
         DATASOURCE RELATED PROPERTIES
@@ -60,83 +58,96 @@
 
 	<!-- below used by atomikos data sources -->
     <!-- below are dbcp properties used for non-JTA datasources needed by KSB in some instances -->
-    <param name="datasource.pool.maxActive">50</param>
-    <param name="datasource.minIdle">7</param>
-    <param name="datasource.accessToUnderlyingConnectionAllowed">true</param>
-    <param name="datasource.initialSize">7</param>
+    <param name="datasource.pool.maxActive" override="false">50</param>
+    <param name="datasource.minIdle" override="false">7</param>
+    <param name="datasource.accessToUnderlyingConnectionAllowed" override="false">true</param>
+    <param name="datasource.initialSize" override="false">7</param>
 
     <!-- NOT NEEDED B/C THEY ARE DEFAULTED BY WORK DONE IN KULRICE-1067
-  	<param name="datasource.pool.size">5</param>
-    <param name="datasource.pool.maxWait">30000</param>
-    <param name="datasource.ojb.platform">Oracle9i</param>
-    <param name="datasource.platform">org.kuali.rice.core.database.platform.OraclePlatform</param>
-    <param name="datasource.driver.name">oracle.jdbc.driver.OracleDriver</param>
-    <param name="datasource.pool.validationQuery">select 1 from dual</param>
+  	<param name="datasource.pool.size" override="false">5</param>
+    <param name="datasource.pool.maxWait" override="false">30000</param>
+    <param name="datasource.ojb.platform" override="false">Oracle9i</param>
+    <param name="datasource.platform" override="false">org.kuali.<param name="rice.core.database.platform.OraclePlatform</param>
+    <param name="datasource.driver.name" override="false">oracle.jdbc.driver.OracleDriver</param>
+    <param name="datasource.pool.validationQuery" override="false">select 1 from dual</param>
     -->
 
-    <param name="transaction.timeout">30000</param>
-    <param name="encryption.key">7IC64w6ksLU</param>
+    <param name="transaction.timeout" override="false">30000</param>
+    <param name="encryption.key" override="false">7IC64w6ksLU</param>
 
-    <param name="mail.transport.protocol">smtp</param>
-    <param name="mail.debug">false</param>
-    <param name="mail.smtp.host">localhost</param>
+    <param name="mail.transport.protocol" override="false">smtp</param>
+    <param name="mail.debug" override="false">false</param>
+    <param name="mail.smtp.host" override="false">localhost</param>
 
-    <param name="edl.config.loc">classpath:META-INF/EDLConfig.xml</param>
+    <param name="edl.config.loc" override="false">classpath:META-INF/EDLConfig.xml</param>
 
     <!-- KEW XML-related filesystem locations -->
     <!-- These should be overridden, but the defaults are here so they do not have to
          be specified everywhere when they are not used -->
-    <param name="data.xml.root.location">${java.io.tmpdir}/${environment}/kew/xml</param>
-    <param name="data.xml.pending.location">${data.xml.root.location}pending</param>
-    <param name="data.xml.loaded.location">${data.xml.root.location}loaded</param>
-    <param name="data.xml.problem.location">${data.xml.root.location}problem</param>
+    <param name="data.xml.root.location" override="false">${java.io.tmpdir}/${environment}/kew/xml</param>
+    <param name="data.xml.pending.location" override="false">${data.xml.root.location}pending</param>
+    <param name="data.xml.loaded.location" override="false">${data.xml.root.location}loaded</param>
+    <param name="data.xml.problem.location" override="false">${data.xml.root.location}problem</param>
 
     <!-- TODO: doc this param -->
-    <param name="attachments.pending.directory">${java.io.tmpdir}/${environment}/attachments</param>
+    <param name="attachments.pending.directory" override="false">${java.io.tmpdir}/${environment}/attachments</param>
 
-    <param name="attachment.dir.location">${java.io.tmpdir}/${environment}/attachments</param>
-    <param name="data.xml.pollIntervalSecs">30</param>
-    <param name="initialDelaySecs">10</param>
+    <param name="attachment.dir.location" override="false">${java.io.tmpdir}/${environment}/attachments</param>
+    <param name="data.xml.pollIntervalSecs" override="false">30</param>
+    <param name="initialDelaySecs" override="false">10</param>
 
-    <param name="ken.system.user">NotSys</param>
-    <param name="rice.kew.enableKENNotification">true</param>
+    <param name="ken.system.user" override="false">NotSys</param>
+    <param name="rice.kew.enableKENNotification" override="false">true</param>
 
     <!-- Configuration for Exception Incident handling and reporting -->
-    <param name="kr.incident.mailing.list"></param>
-    <param name="KualiExceptionHandlerAction.EXCEPTION_INCIDENT_REPORT_SERVICE">knsExceptionIncidentService</param>
+    <param name="kr.incident.mailing.list" override="false"></param>
+    <param name="KualiExceptionHandlerAction.EXCEPTION_INCIDENT_REPORT_SERVICE" override="false">knsExceptionIncidentService</param>
       <!-- property place holders for knsExceptionIncidentService bean defined in KNSSpringBean.xml -->
-      <param name="MailMessage.from">admin@kuali.org</param>
+      <param name="MailMessage.from" override="false">admin@kuali.org</param>
       <!-- Id of bean of type java.util.List for adding Kuali exception types -->
-      <param name="KualiExceptionIncidentServiceImpl.additionalExceptionNameList"></param>
+      <param name="KualiExceptionIncidentServiceImpl.additionalExceptionNameList" override="false"></param>
       <!-- Email of report receivers separated by KNSConstants.FIELD_CONVERSION_SEPARATOR ',' -->
-      <param name="KualiExceptionIncidentServiceImpl.REPORT_MAIL_LIST"></param>
+      <param name="KualiExceptionIncidentServiceImpl.REPORT_MAIL_LIST" override="false"></param>
       <!-- End of property place holders -->
     <!-- End of Exception Incident handling and reporting -->
 
-    <param name="log4j.reload.minutes">5</param>
-    <param name="log4j.settings.path">classpath:log4j.properties</param>
+    <param name="log4j.reload.minutes" override="false">5</param>
+    <param name="log4j.settings.path" override="false">classpath:log4j.properties</param>
 
     <!-- Configuration for Session Document Cache Size -->
-    <param name="session.document.cache.size">100</param>
+    <param name="session.document.cache.size" override="false">100</param>
 
-    <param name="classpath.resource.prefix">/WEB-INF/classes/</param>
+    <param name="classpath.resource.prefix" override="false">/WEB-INF/classes/</param>
 
+    <param name="kim.cache.entity.max.size" override="false">3000</param>
+    <param name="kim.cache.entity.max.age.seconds" override="false">3600</param>
+    <param name="kim.cache.group.max.size" override="false">3000</param>
+    <param name="kim.cache.group.max.age.seconds" override="false">3600</param>
+    <param name="kim.cache.role.max.size" override="false">3000</param>
+    <param name="kim.cache.role.max.age.seconds" override="false">300</param>
+    <param name="kim.cache.permission.max.size" override="false">3000</param>
+    <param name="kim.cache.permission.max.age.seconds" override="false">30</param>
+    <param name="kim.cache.responsibility.max.size" override="false">3000</param>
+    <param name="kim.cache.responsibility.max.age.seconds" override="false">30</param>
+    <param name="kim.cache.person.max.size" override="false">3000</param>
+    <param name="kim.cache.person.max.age.seconds" override="false">3600</param>
+    
     <!-- what mode should KIM be run in?
         local - use the master data source
         embedded - run locally, but may have separate data source from rest of application
         remote - do not install services locally, access over KSB
      -->
-    <param name="kim.mode">local</param>
-    <param name="kim.cache.entity.max.size">3000</param>
-    <param name="kim.cache.entity.max.age.seconds">3600</param>
-    <param name="kim.cache.group.max.size">3000</param>
-    <param name="kim.cache.group.max.age.seconds">3600</param>
-    <param name="kim.cache.role.max.size">3000</param>
-    <param name="kim.cache.role.max.age.seconds">300</param>
-    <param name="kim.cache.permission.max.size">3000</param>
-    <param name="kim.cache.permission.max.age.seconds">30</param>
-    <param name="kim.cache.responsibility.max.size">3000</param>
-    <param name="kim.cache.responsibility.max.age.seconds">30</param>
-    <param name="kim.cache.person.max.size">3000</param>
-    <param name="kim.cache.person.max.age.seconds">3600</param>
+    <param name="kim.mode" override="false">local</param>
+    <param name="kew.mode" override="false">local</param>
+    <param name="ksb.mode" override="false">local</param>
+
+    <!--  the files that define the struts context for the rice KNS struts module -->
+    <param name="rice.kns.struts.config.files" override="false">/kr/WEB-INF/struts-config.xml</param>
+    <!--  the files that define the struts context for the kew struts module -->
+    <param name="rice.kew.struts.config.files" override="false">/kew/WEB-INF/struts-config.xml</param>
+    <!--  the files that define the struts context for the ksb struts module -->
+    <param name="rice.ksb.struts.config.files" override="false">/ksb/WEB-INF/struts-config.xml</param>
+    <!--  the files that define the struts context for the kim struts module -->
+    <param name="rice.kim.struts.config.files" override="false">/kim/WEB-INF/struts-config.xml</param>
+    
 </config>

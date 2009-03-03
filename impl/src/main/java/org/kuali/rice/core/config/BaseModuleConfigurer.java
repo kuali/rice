@@ -18,7 +18,6 @@ package org.kuali.rice.core.config;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.ojb.BaseOjbConfigurer;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
@@ -29,12 +28,7 @@ import org.kuali.rice.core.resourceloader.ResourceLoader;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class BaseModuleConfigurer extends ModuleConfigurer {
-    /**
-     * Protected logger for use by subclasses
-     */
-    protected final Logger LOG = Logger.getLogger(getClass());
 
-    protected String moduleName = "UNSET";
     protected boolean testMode;
     protected String springFileLocations = "";
 
@@ -49,7 +43,8 @@ public class BaseModuleConfigurer extends ModuleConfigurer {
      * @param moduleName the module name
      */
     public BaseModuleConfigurer(String moduleName) {
-        this.moduleName = moduleName;
+        super();
+        setModuleName( moduleName );
     }
 
     /**
@@ -65,13 +60,6 @@ public class BaseModuleConfigurer extends ModuleConfigurer {
      */
     public void setTestMode(boolean testMode) {
         this.testMode = testMode;
-    }
-
-    /**
-     * @return the module name
-     */
-    public String getModuleName() {
-        return this.moduleName;
     }
 
     /**
@@ -93,10 +81,6 @@ public class BaseModuleConfigurer extends ModuleConfigurer {
 
 	public void setSpringFileLocations(String springFileLocations) {
 		this.springFileLocations = springFileLocations;
-	}
-
-	public void setModuleName(String moduleName) {
-		this.moduleName = moduleName;
 	}
 
 	/**

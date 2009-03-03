@@ -41,6 +41,7 @@ import org.kuali.rice.core.resourceloader.RiceResourceLoaderFactory;
 import org.kuali.rice.core.resourceloader.RootResourceLoaderLifecycle;
 import org.kuali.rice.core.resourceloader.SpringLoader;
 import org.kuali.rice.core.security.credentials.CredentialsSourceFactory;
+import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kcb.config.KCBConfigurer;
 import org.kuali.rice.ken.config.KENConfigurer;
 import org.kuali.rice.kew.config.KEWConfigurer;
@@ -173,7 +174,6 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
 	 * 1) Creates a spring application context, using the spring files from the modules. 
 	 * 2) Wraps the context in a ResourceLoader and adds it to GRL. 
 	 * 
-	 * @return
 	 * @throws Exception
 	 */
 	public ResourceLoader loadSpringContext() throws Exception {
@@ -237,7 +237,9 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
 
 	@SuppressWarnings("unchecked")
 	protected void initializeConfiguration() throws Exception {
-		LOG.info("Starting Rice configuration for service namespace " + this.serviceNamespace);
+		if ( LOG.isInfoEnabled() ) {
+			LOG.info("Starting Rice configuration for service namespace " + this.serviceNamespace);
+		}
 		Config currentConfig = parseConfig();
 		configureEnvironment(currentConfig);
 		configureServiceNamespace(currentConfig);
@@ -271,6 +273,8 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
 		} else if (this.properties != null) {
 		    this.rootConfig.getProperties().putAll(this.properties);
 		}
+		// add the RiceConfigurer into the root ConfigContext for access later by the application
+		this.rootConfig.getObjects().put( RiceConstants.RICE_CONFIGURER_CONFIG_NAME, this );
 		return this.rootConfig;
 	}
 	

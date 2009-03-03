@@ -60,8 +60,6 @@ import org.kuali.rice.kew.util.KEWConstants;
  */
 public class KEWConfigurer extends ModuleConfigurer {
 
-	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KEWConfigurer.class);
-
 	public static final String KEW_DATASOURCE_OBJ = "org.kuali.workflow.datasource";
 	public static final String KEW_DATASOURCE_JNDI = "org.kuali.workflow.datasource.jndi.location";
     private static final String ADDITIONAL_SPRING_FILES_PARAM = "kew.additionalSpringFiles";
@@ -70,6 +68,14 @@ public class KEWConfigurer extends ModuleConfigurer {
 
 	private DataSource dataSource;
 	private String dataSourceJndiName;
+	/**
+	 * 
+	 */
+	public KEWConfigurer() {
+		super();
+		setModuleName( "KEW" );
+		setHasWebInterface( true );
+	}
 	
 	@Override
 	public String getSpringFileLocations(){
@@ -112,9 +118,9 @@ public class KEWConfigurer extends ModuleConfigurer {
 	@Override
 	protected List<Lifecycle> loadLifecycles() throws Exception {
 		List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
-		if (KEWConstants.WEBSERVICE_CLIENT_PROTOCOL.equals(ConfigContext.getCurrentContextConfig().getClientProtocol())) {
+		if ( getRunMode().equals( REMOTE_RUN_MODE ) ) {
 			lifecycles.add(createThinClientLifecycle());
-		} else {
+		} else { // local or embedded
 			if (isStandaloneServer()) {
 				lifecycles.add(new Log4jLifeCycle());
 			}
@@ -124,7 +130,7 @@ public class KEWConfigurer extends ModuleConfigurer {
 	}
 
 	protected boolean isStandaloneServer() {
-		return new Boolean(ConfigContext.getCurrentContextConfig().getProperty("kew.standalone.server")).booleanValue();
+	    return getRunMode().equals( LOCAL_RUN_MODE );
 	}
 
 	/**
@@ -140,7 +146,9 @@ public class KEWConfigurer extends ModuleConfigurer {
 	}
 
 	public Config loadConfig(Config parentConfig) throws Exception {
-		LOG.info("Starting configuration of KEW for service namespace " + getServiceNamespace(parentConfig));
+		if ( LOG.isDebugEnabled() ) {
+		    LOG.info("Starting configuration of KEW for service namespace " + getServiceNamespace(parentConfig));
+		}
 		Config currentConfig = parseConfig(parentConfig);
 		configureClientProtocol(currentConfig);
 		configureDataSource(currentConfig);
@@ -181,8 +189,13 @@ public class KEWConfigurer extends ModuleConfigurer {
 	protected void configureClientProtocol(Config config) {
 		if (StringUtils.isBlank(clientProtocol)) {
 			clientProtocol = config.getClientProtocol();
-			if (clientProtocol == null) {
-				clientProtocol = KEWConstants.WEBSERVICE_CLIENT_PROTOCOL;
+			if (StringUtils.isBlank(clientProtocol)) {
+			    // if not explcitly set, set the protocol based on the run mode
+			    if ( getRunMode().equals( REMOTE_RUN_MODE ) ) {
+			        clientProtocol = KEWConstants.WEBSERVICE_CLIENT_PROTOCOL;
+			    } else {
+			        clientProtocol = KEWConstants.LOCAL_CLIENT_PROTOCOL;
+			    }
 			}
 		}
 		// from a client, LOCAL protocol is equivalent to EMBEDDED

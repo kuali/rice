@@ -41,10 +41,14 @@ import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
  */
 public class KSBThinClientConfigurer extends ModuleConfigurer {
 
-	private static final Logger LOG = Logger.getLogger(KSBThinClientConfigurer.class);
-
 	private boolean isStarted = false;
 
+	public KSBThinClientConfigurer() {
+        super();
+        setModuleName( "KSB" );
+        setHasWebInterface(false);
+    }
+	
 	public Config loadConfig(Config parentConfig) throws Exception {
 	    return parentConfig;
 	}

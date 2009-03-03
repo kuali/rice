@@ -39,6 +39,8 @@ public class RiceConstants {
     public static final String ROOT_RESOURCE_LOADER_CONTAINER_NAME = "RootResourceLoaderContainer";
     public static final String DEFAULT_ROOT_RESOURCE_LOADER_NAME = "RootResourceLoader";
 
+    public static final String RICE_CONFIGURER_CONFIG_NAME = "riceConfigurer";
+    
     // Default struts mapping forward key
     public static final String MAPPING_BASIC = "basic";
 

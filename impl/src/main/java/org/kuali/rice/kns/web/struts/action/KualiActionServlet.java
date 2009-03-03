@@ -17,7 +17,12 @@ package org.kuali.rice.kns.web.struts.action;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
 import org.apache.commons.beanutils.ConvertUtils;
@@ -31,9 +36,16 @@ import org.apache.commons.beanutils.converters.FloatConverter;
 import org.apache.commons.beanutils.converters.IntegerConverter;
 import org.apache.commons.beanutils.converters.LongConverter;
 import org.apache.commons.beanutils.converters.ShortConverter;
+import org.apache.commons.collections.iterators.IteratorEnumeration;
+import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionServlet;
+import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.config.ModuleConfigurer;
+import org.kuali.rice.core.config.RiceConfigurer;
+import org.kuali.rice.core.util.RiceConstants;
 
 public class KualiActionServlet extends ActionServlet {
+    private static final Logger LOG = Logger.getLogger(KualiActionServlet.class);
 
     /**
      * <p>Initialize other global characteristics of the controller servlet.</p>
@@ -77,4 +89,81 @@ public class KualiActionServlet extends ActionServlet {
 
     }
     
+    KualiActionServletConfig serverConfigOverride = null;
+    
+    @Override
+    public ServletConfig getServletConfig() {
+        if ( serverConfigOverride == null ) {
+            ServletConfig config = super.getServletConfig();
+            
+            if ( config == null ) {
+                return null;
+            } else {
+                serverConfigOverride = new KualiActionServletConfig(config);
+            }
+        }
+        return serverConfigOverride;
+    }
+
+    /**
+     * A custom ServletConfig implementation which dynamically includes web content based on the installed modules in the RiceConfigurer object.
+     *   Accomplishes this by implementing custom
+     * {@link #getInitParameter(String)} and {@link #getInitParameterNames()} methods.
+     */
+    private class KualiActionServletConfig implements ServletConfig {
+
+        private ServletConfig wrapped;
+        private Map<String,String> initParameters = new HashMap<String, String>();
+        
+        @SuppressWarnings("deprecation")
+        public KualiActionServletConfig(ServletConfig wrapped) {
+            this.wrapped = wrapped;
+            // copy out all the init parameters so they can be augmented
+            Enumeration<String> initParameterNames = wrapped.getInitParameterNames();
+            while ( initParameterNames.hasMoreElements() ) {
+                String paramName = initParameterNames.nextElement();
+                initParameters.put( paramName, wrapped.getInitParameter(paramName) );
+            }
+            // loop over the installed modules, adding their struts configuration to the servlet
+            // if they have a web interface
+            RiceConfigurer rice = (RiceConfigurer)ConfigContext.getRootConfig().getObject( RiceConstants.RICE_CONFIGURER_CONFIG_NAME );
+            if ( LOG.isInfoEnabled() ) {
+            	LOG.info( "Configuring init parameters of the KualiActionServlet from RiceConfigurer: " + rice );
+            }
+            for ( ModuleConfigurer module : rice.getModules() ) {
+                // only install the web configuration if the module has web content
+                // and it is running in a "local" mode
+                // in "embedded" or "remote" modes, the UIs are hosted on a central server
+                if ( module.hasWebInterface() && module.getRunMode().equals( ModuleConfigurer.LOCAL_RUN_MODE ) ) {
+                	if ( LOG.isInfoEnabled() ) {
+                		LOG.info( "Configuring Web Content for Module: " + module.getModuleName() + " / " + module.getWebModuleConfigName() + " / " + module.getWebModuleConfigurationFiles() );
+                	}
+                    if ( !initParameters.containsKey( module.getWebModuleConfigName() ) ) {
+                        initParameters.put( module.getWebModuleConfigName(), module.getWebModuleConfigurationFiles() );
+                        // hack for EN web content
+                        if ( module.getModuleName().equals( "KEW" ) ) {
+                            initParameters.put( module.getWebModuleConfigName().replace("kew", "en"), module.getWebModuleConfigurationFiles().replace("kew", "en") );
+                        }
+                    }
+                }
+            }
+        }
+        
+        public String getInitParameter(String name) {
+            return initParameters.get(name);
+        }
+        
+        @SuppressWarnings("unchecked")
+		public Enumeration<String> getInitParameterNames() {
+            return new IteratorEnumeration( initParameters.keySet().iterator() );
+        }
+        
+        public ServletContext getServletContext() {
+            return wrapped.getServletContext();
+        }
+        public String getServletName() {
+            return wrapped.getServletName();
+        }
+    }
+
 }

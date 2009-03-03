@@ -34,9 +34,6 @@ import org.springframework.beans.factory.BeanFactoryAware;
 
 public class KNSConfigurer extends ModuleConfigurer implements BeanFactoryAware {
 
-	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
-			.getLogger(KNSConfigurer.class);
-	
 	private List<String> databaseRepositoryFilePaths;
 
 	private List<String> dataDictionaryPackages;
@@ -47,6 +44,15 @@ public class KNSConfigurer extends ModuleConfigurer implements BeanFactoryAware 
 	private BeanFactory beanFactory;
 
 	private static final String KNS_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kns/config/KNSSpringBeans.xml";
+	
+	public KNSConfigurer() {
+	    super();
+	    setModuleName( "KR" );
+	    setHasWebInterface(true);
+	    // KNS only runs in a local mode
+	    VALID_RUN_MODES.remove( EMBEDDED_RUN_MODE );
+	    VALID_RUN_MODES.remove( REMOTE_RUN_MODE );
+    }
 	
 	@Override
 	public Config loadConfig(Config parentConfig) throws Exception {

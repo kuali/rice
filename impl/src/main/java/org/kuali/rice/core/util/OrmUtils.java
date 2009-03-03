@@ -132,13 +132,12 @@ public class OrmUtils {
     }
     
     public static boolean isJpaEnabled() {
-    	return "true".equalsIgnoreCase(ConfigContext.getCurrentContextConfig().getProperty(RiceConstants.RICE_JPA_ENABLED));
+    	return Boolean.valueOf( ConfigContext.getCurrentContextConfig().getProperty(RiceConstants.RICE_JPA_ENABLED) );
     }
 	
     public static boolean isJpaEnabled(String prefix) {
         Config config = ConfigContext.getCurrentContextConfig();
-        
-        return "true".equalsIgnoreCase(config.getProperty(RiceConstants.RICE_JPA_ENABLED)) || "true".equalsIgnoreCase(config.getProperty(prefix + RiceConstants.JPA_ENABLED_SUFFIX));
+        return Boolean.valueOf( config.getProperty(RiceConstants.RICE_JPA_ENABLED) ) || Boolean.valueOf( config.getProperty(prefix + RiceConstants.JPA_ENABLED_SUFFIX) );
     }
     
     private static Field getPrivateField(Class clazz, String fieldName) throws NoSuchFieldException {

@@ -83,9 +83,6 @@ public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements
 //				setWebModuleConfigurationFiles( "/" + getModuleName().toLowerCase() + "/WEB-INF/struts-config.xml" );
 //			}
 		}
-		if ( StringUtils.isEmpty( getSpringFileLocations() ) ) {
-			setSpringFileLocations( getDefaultSpringBeansPath(getDefaultConfigPackagePath() ) );
-		}
 	}
 	
 	
@@ -132,6 +129,9 @@ public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements
 			}
 		}
 		config.getProperties().put( getModuleName().toLowerCase() + ".url", getWebModuleBaseUrl() );
+		if ( StringUtils.isEmpty( getSpringFileLocations() ) ) {
+			setSpringFileLocations( getDefaultSpringBeansPath(getDefaultConfigPackagePath() ) );
+		}
 	}
 	
 	/**

@@ -134,7 +134,7 @@ public class KualiActionServlet extends ActionServlet {
                 // only install the web configuration if the module has web content
                 // and it is running in a "local" mode
                 // in "embedded" or "remote" modes, the UIs are hosted on a central server
-                if ( module.hasWebInterface() && module.getRunMode().equals( ModuleConfigurer.LOCAL_RUN_MODE ) ) {
+                if ( module.shouldRenderWebInterface() ) {
                 	if ( LOG.isInfoEnabled() ) {
                 		LOG.info( "Configuring Web Content for Module: " + module.getModuleName() 
                 				+ " / " + module.getWebModuleConfigName() 

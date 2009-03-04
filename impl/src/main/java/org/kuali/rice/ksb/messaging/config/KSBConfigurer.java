@@ -127,11 +127,21 @@ public class KSBConfigurer extends ModuleConfigurer {
             files += "classpath:org/kuali/rice/ksb/config/KSBOJBSpringBeans.xml";
         }
         
-        if ("true".equals(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.LOAD_KNS_MODULE_CONFIGURATION))) {
+        if (Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.LOAD_KNS_MODULE_CONFIGURATION))) {
         	files += SpringLoader.SPRING_SEPARATOR_CHARACTER + "classpath:org/kuali/rice/ksb/config/KSBModuleConfigurationSpringBeans.xml";
         }
         
         return files;
+	}
+	
+	/**
+	 * Returns true - KSB UI should always be included.
+	 * 
+	 * @see org.kuali.rice.core.config.ModuleConfigurer#shouldRenderWebInterface()
+	 */
+	@Override
+	public boolean shouldRenderWebInterface() {
+		return true;
 	}
 	
 	@Override

@@ -52,6 +52,26 @@ public class KNSConfigurer extends ModuleConfigurer {
 		return KNS_SPRING_BEANS_PATH;
 	}
 	
+   /**
+     * Returns true - KNS UI should always be included.
+     * 
+     * @see org.kuali.rice.core.config.ModuleConfigurer#shouldRenderWebInterface()
+     */
+    @Override
+    public boolean shouldRenderWebInterface() {
+        return true;
+    }
+
+    /**
+     * Returns true - KNS UI should always be included.
+     * 
+     * @see org.kuali.rice.core.config.ModuleConfigurer#hasWebInterface()
+     */
+    @Override
+    public boolean hasWebInterface() {
+        return true;
+    }
+	
 	@Override
 	protected List<Lifecycle> loadLifecycles() throws Exception {
 		List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();

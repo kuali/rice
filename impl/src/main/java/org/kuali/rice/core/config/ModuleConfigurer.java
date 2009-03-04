@@ -227,6 +227,17 @@ public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements
 	}
 
 	/**
+	 * This base implementation returns true when the module has a web interface and the
+	 * runMode is "local".
+	 * 
+	 * Subclasses can override this method if there are different requirements for inclusion
+	 * of the web UI for the module.
+	 */
+	public boolean shouldRenderWebInterface() {
+		return hasWebInterface() &&	getRunMode().equals( ModuleConfigurer.LOCAL_RUN_MODE );
+	}
+	
+	/**
 	 * @return the testMode
 	 */
 	public boolean isTestMode() {

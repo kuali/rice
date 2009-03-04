@@ -16,15 +16,15 @@
 package org.kuali.rice.kns.datadictionary.control;
 
 /**
- * This is a description of what this class does - chris don't forget to fill this in. 
+ * A control definition for Multiselect
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class MultiselectControlDefinition extends SelectControlDefinition {
+public class MultiselectControlDefinition extends MultivalueControlDefinitionBase {
 
     /**
-     * @see org.kuali.rice.kns.datadictionary.control.ControlDefinition#isRadio()
+     * @see org.kuali.rice.kns.datadictionary.control.ControlDefinition#isMultiSelect()
      */
     public boolean isMultiSelect() {
         return true;

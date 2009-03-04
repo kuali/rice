@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Kuali Rice" default="dist-all" xmlns:artifact="urn:maven-artifact-ant">
 	
-	<target name="echo-properties" depends="init">
+	<target name="echo-properties" depends="init" description="print build environment properties to console">
 	   <echoproperties/>
 	</target>
 
@@ -83,7 +83,7 @@
 		<fail if="notestreports" message="Failed to locate junit test reports!"/>
 	</target>
 	
-	<target name="update-eclipse-classpath" depends="init">
+	<target name="update-eclipse-classpath" depends="init" description="Updates Eclipse classpath">
 	    <maven goals="install eclipse:eclipse" options="-DdownloadSources=true -DskipTests=true"/>
 		<antcall target="merge-module-classpaths"/>
     </target>
@@ -160,7 +160,7 @@
 			<fileset dir="${dist.server.dir}"/>
 		</jar>
 	</target>
-
+	
     <target name="maven-install-server-war" depends="dist-server" description="Builds, packages, and installs the Rice Server war file into the local maven repository">
         <maven goals="install:install-file" options="-DgroupId=org.kuali.rice -DartifactId=rice-server -Dversion=${maven.project.version} -Dpackaging=war -Dfile=target/rice-${maven.project.version}-server.war"/>
     </target>
@@ -211,7 +211,20 @@
 			<fileset dir="${dist.binary.dir}"/>
 		</tar>
 	</target>
-	
+
+	<!-- chb: 04March2009: added for test server script do-daily-updates.sh on wsa123 -->
+	<target name="dist-ant" unless="maven.build">
+        <ant dir="${application.deploy.directory}/${application.java.project}" target="dist" />
+        <copy file="${application.deploy.directory}/${application.java.project}/${application}-${build.environment}.war" tofile="${application.deploy.directory}/${application}-${build.environment}.war" overwrite="true" />
+    </target>
+
+    <target name="dist-maven" if="maven.build">
+       <maven goals="package" />
+       <copy file="${application.deploy.directory}/${application.java.project}/target/${maven.war.filename}" tofile="${application.deploy.directory}/${application}-${build.environment}.war" overwrite="true" verbose="true" />
+    </target>
+
+    <target name="dist-war" depends="dist-ant,dist-maven" />
+
 	<target name="dist-src" depends="init" description="Creates Kuali Rice binary packages.">
 		<copy todir="${dist.src.dir}">
 			<fileset dir=".">
@@ -259,7 +272,7 @@
 		<copy file="scripts/templates/sample-app-config.template.xml" tofile="${sample-app-config}"/>
 	</target>
 	
-	<target name="prepare-unit-test-environment" depends="init">
+	<target name="prepare-unit-test-environment" depends="init" description="Generate common-test-config.xml">
 		<property name="common-test-config" value="${user.home}/kuali/test2/${rice.environment}/common-test-config.xml"/>
 		<available property="common-test-config.exists" file="${common-test-config}"/>
 		<fail if="common-test-config.exists" message="The file ${common-test-config} already exists!  You must delete it first if you want it to be recreated."/>

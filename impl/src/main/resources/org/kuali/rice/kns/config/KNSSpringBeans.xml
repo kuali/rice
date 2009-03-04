@@ -219,8 +219,6 @@
 
 	<bean id="kualiConfigurationService" class="org.kuali.rice.kns.service.impl.KualiConfigurationServiceImpl" />
 	
-	<bean id="riceApplicationConfigurationService" class="org.kuali.rice.kns.service.impl.RiceApplicationConfigurationServiceImpl" />
-
 	<bean id="kualiModuleService" class="org.kuali.rice.kns.service.impl.KualiModuleServiceImpl" />
 
 	<bean id="mailService" class="org.kuali.rice.kns.service.impl.MailServiceImpl">
@@ -1078,6 +1076,17 @@
 	      p:localServiceName="documentTypeAndExistingRecordsOnlyPermissionTypeService" />
 	  </property>
 	</bean>
+	
+	<bean id="riceApplicationConfigurationService" class="org.kuali.rice.kns.service.impl.RiceApplicationConfigurationServiceImpl" />
+	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+	  <property name="serviceDefinition">
+	    <bean parent="knsService"
+	      p:service-ref="riceApplicationConfigurationService"
+	      p:localServiceName="riceApplicationConfigurationService" />
+	  </property>
+	</bean>
+	
 
 	<bean id="businessObjectAuthorizationService" class="org.kuali.rice.kns.service.impl.BusinessObjectAuthorizationServiceImpl"/>
 </beans>

@@ -139,7 +139,7 @@
 	<class-descriptor class="org.kuali.rice.kns.bo.ParameterNamespace" table="KRNS_NMSPC_T">
 		<field-descriptor name="code" column="NMSPC_CD" jdbc-type="VARCHAR" primarykey="true" />
 		<field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
-	
+	    <field-descriptor name="applicationNamespaceCode" column="APPL_NMSPC_CD" jdbc-type="VARCHAR" />
 		<field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />

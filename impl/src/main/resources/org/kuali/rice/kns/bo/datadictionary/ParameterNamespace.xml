@@ -20,6 +20,7 @@
         <ref bean="ParameterNamespace-code" />
         <ref bean="ParameterNamespace-name" />
         <ref bean="ParameterNamespace-codeAndDescription" />
+        <ref bean="ParameterNamespace-applicationNamespaceCode" />
         <ref bean="ParameterNamespace-active" />
         <ref bean="ParameterNamespace-objectId" />
         <ref bean="ParameterNamespace-versionNumber" />
@@ -90,6 +91,25 @@
     <property name="label" value="Parameter Namespace" />
     <property name="description" value="The name of the namespace." />
   </bean>
+  <bean id="ParameterNamespace-applicationNamespaceCode" parent="ParameterNamespace-applicationNamespaceCode-parentBean" />
+
+  <bean id="ParameterNamespace-applicationNamespaceCode-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Appl Nmspc" />
+    <property name="maxLength" value="20" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="required" value="false" />
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="10" />
+    </property>
+    <property name="summary" value="The code of the application namespace." />
+    <property name="name" value="applicationNamespaceCode" />
+    <property name="label" value="Application Namespace Code" />
+    <property name="description" value="The code of the application namespace." />
+  </bean>
   <bean id="ParameterNamespace-active" parent="ParameterNamespace-active-parentBean" />
 
   <bean id="ParameterNamespace-active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">
@@ -121,6 +141,8 @@
               <bean parent="FieldDefinition"
                     p:attributeName="name"
                     p:noInquiry="true" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="applicationNamespaceCode" />
               <bean parent="FieldDefinition"
                     p:attributeName="active" />
             </list>
@@ -156,6 +178,8 @@
         <bean parent="FieldDefinition"
               p:attributeName="name" />
         <bean parent="FieldDefinition"
+              p:attributeName="applicationNamespaceCode" />
+        <bean parent="FieldDefinition"
               p:attributeName="active"
               p:defaultValue="Y" />
       </list>
@@ -167,6 +191,8 @@
               p:forceInquiry="true" />
         <bean parent="FieldDefinition"
               p:attributeName="name" />
+        <bean parent="FieldDefinition"
+              p:attributeName="applicationNamespaceCode" />
         <bean parent="FieldDefinition"
               p:attributeName="active" />
       </list>

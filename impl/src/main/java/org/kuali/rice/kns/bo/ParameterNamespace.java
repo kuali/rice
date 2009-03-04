@@ -10,7 +10,7 @@ import javax.persistence.Table;
 @Table(name="KRNS_NMSPC_T")
 @AttributeOverrides({@AttributeOverride(name="code", column=@Column(name="NMSPC_CD")), @AttributeOverride(name="name", column=@Column(name="NM"))})
 public class ParameterNamespace extends KualiCodeBase {
-	
+	private String applicationNamespaceCode;
 	public String getParameterNamespaceCode() {
 		return code;
 	}
@@ -26,6 +26,22 @@ public class ParameterNamespace extends KualiCodeBase {
 	public void setParameterNamespaceName(String parameterNamespaceName) {
 		name = parameterNamespaceName;
 	}
+
+	/**
+	 * @return the applicationNamespaceCode
+	 */
+	public String getApplicationNamespaceCode() {
+		return this.applicationNamespaceCode;
+	}
+
+	/**
+	 * @param applicationNamespaceCode the applicationNamespaceCode to set
+	 */
+	public void setApplicationNamespaceCode(String applicationNamespaceCode) {
+		this.applicationNamespaceCode = applicationNamespaceCode;
+	}
+	
+	
 
 }
 

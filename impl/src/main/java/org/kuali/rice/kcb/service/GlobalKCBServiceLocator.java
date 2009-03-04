@@ -38,7 +38,7 @@ public class GlobalKCBServiceLocator {
      * @param beanFactory the beanFactory from which to construct the KCBServiceLocator
      */
     public static synchronized void init(BeanFactory beanFactory) {
-        LOG.error("INITIALIZING", new Exception());
+//        LOG.error("INITIALIZING", new Exception());
         if (locator != null) {
             throw new IllegalStateException("GlobalNotificationServiceLocator already initialized");
         }

@@ -325,8 +325,8 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
 			List<KeyLabelPair> options = new ArrayList<KeyLabelPair>();
 			groupTypeValuesCache = new HashMap<String, String>();
 			options.add(new KeyLabelPair("", ""));
+			options.add(new KeyLabelPair("1", "Default"));
 
-			//List<KimGroupImpl> kimGroups = (List<KimGroupImpl>)getBusinessObjectService().findAll(KimGroupImpl.class);
 			List<KimTypeImpl> kimGroupTypes = (List<KimTypeImpl>)getBusinessObjectService().findAll(KimTypeImpl.class);
 			// get the distinct list of type IDs from all groups in the system
 	        for (KimTypeImpl kimType : kimGroupTypes) {
@@ -336,11 +336,11 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
                     groupTypeValuesCache.put(kimType.getKimTypeId(), value);
                 }
 	        }
-	        //Collections.sort(options, new Comparator<KeyLabelPair>() {
-	        //   public int compare(KeyLabelPair k1, KeyLabelPair k2) {
-	        //       return k1.getLabel().compareTo(k2.getLabel());
-	        //   }
-	        //});
+	        Collections.sort(options, new Comparator<KeyLabelPair>() {
+	           public int compare(KeyLabelPair k1, KeyLabelPair k2) {
+	               return k1.getLabel().compareTo(k2.getLabel());
+	           }
+	        });
 			groupTypeCache = options;
 		}
 		return groupTypeCache;
@@ -441,17 +441,7 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
 
     	}
     }
-/*
-    protected List<? extends BusinessObject> getSearchResultsHelper(Map<String, String> fieldValues, boolean unbounded) {
-        List<KimTypeImpl> searchResults = (List<KimTypeImpl>)super.getSearchResultsHelper(fieldValues, unbounded);
-        List<KimTypeImpl> filteredSearchResults = new ArrayList<KimTypeImpl>();
-        for(KimTypeImpl kimTypeImpl: searchResults){
-            if(hasRoleTypeService(kimTypeImpl))
-                filteredSearchResults.add(kimTypeImpl);
-        }
-        return filteredSearchResults;
-    }
-*/
+
     static boolean hasGroupTypeService(KimTypeImpl kimTypeImpl){
         return hasGroupTypeService(KimCommonUtils.getKimTypeService(kimTypeImpl));
     }

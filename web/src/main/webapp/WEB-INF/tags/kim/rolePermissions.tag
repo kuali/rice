@@ -26,7 +26,7 @@
 	                	"template.name:permission.kimPermission.template.name,permissionId:permission.permissionId,name:permission.kimPermission.name,namespaceCode:permission.kimPermission.namespaceCode" anchor="${tabKey}" />
 						<html:hidden property="permission.kimPermission.name" />
 						<html:hidden property="permission.kimPermission.namespaceCode" />
-						${KualiForm.permission.kimPermission.namespaceCode}  ${KualiForm.permission.kimPermission.nameToDisplay}&nbsp;
+						${KualiForm.permission.kimPermission.namespaceCode}&nbsp;&nbsp;${KualiForm.permission.kimPermission.nameToDisplay}&nbsp;
 	                	<br/>
 	                	<br/>
 		            </div>

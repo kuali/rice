@@ -26,7 +26,7 @@
 	                	"template.name:responsibility.kimResponsibility.template.name,responsibilityId:responsibility.responsibilityId,name:responsibility.kimResponsibility.name,namespaceCode:responsibility.kimResponsibility.namespaceCode" anchor="${tabKey}" />
 						<html:hidden property="responsibility.kimResponsibility.name" />
 						<html:hidden property="responsibility.kimResponsibility.namespaceCode" />
-						${KualiForm.responsibility.kimResponsibility.namespaceCode}  ${KualiForm.responsibility.kimResponsibility.nameToDisplay}&nbsp;
+						${KualiForm.responsibility.kimResponsibility.namespaceCode}&nbsp;&nbsp;${KualiForm.responsibility.kimResponsibility.nameToDisplay}&nbsp;
 	                	<br/>
 	                	<br/>
 		            </div>

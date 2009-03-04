@@ -52,7 +52,7 @@ function changeMemberTypeCode(){
                 	<input type="hidden" name="command"/>
                 	<kul:htmlControlAttribute property="member.memberTypeCode" 
                 	attributeEntry="${roleMemberAttributes.memberTypeCode}" 
-                	onchange="changeMemberTypeCode()" disabled="${inquiry}" readOnly="false" />
+                	onchange="changeMemberTypeCode()" disabled="${readOnly}" />
 					<NOSCRIPT>
    						<html:submit value="select" alt="press this button to refresh the page after changing the delegation type." />
 					</NOSCRIPT>                

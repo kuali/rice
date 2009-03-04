@@ -50,7 +50,7 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 	protected String roleTypeName;
 	protected String roleNamespace;
 	protected String roleName;
-	protected boolean active;
+	protected boolean active = true;
 
 	protected boolean editing;
 	

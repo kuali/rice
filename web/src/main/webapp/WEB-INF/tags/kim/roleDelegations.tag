@@ -18,7 +18,7 @@ function changeDelegationMemberTypeCode(){
 	javaScript:document.forms[0].submit();
 }
 </script>
-<kul:tab tabTitle="Assignees" defaultOpen="true" tabErrorKey="document.delegationMember*">
+<kul:tab tabTitle="Delegations" defaultOpen="true" tabErrorKey="document.delegationMember*">
 	<div class="tab-container" align="center">
     <h3>
     	<span class="subhead-left">Delegations</span>
@@ -63,7 +63,9 @@ function changeDelegationMemberTypeCode(){
                 <td class="infoline">   
                 <div align="center">
 					<kul:htmlControlAttribute property="delegationMember.memberId" attributeEntry="${delegationMemberAttributes.memberId}" readOnly="${readOnly}" />
-	               	<kul:lookup boClassName="${bo}" fieldConversions="${fc}" anchor="${tabKey}" />
+					<c:if test="${!readOnly}" >
+		               	<kul:lookup boClassName="${bo}" fieldConversions="${fc}" anchor="${tabKey}" />
+		            </c:if>
 				</div>
 				</td>
 				<td class="infoline">   

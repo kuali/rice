@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
@@ -52,6 +53,7 @@ import org.kuali.rice.kim.service.ResponsibilityService;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
 import org.kuali.rice.kim.util.KimCommonUtils;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.rules.TransactionalDocumentRuleBase;
 import org.kuali.rice.kns.service.BusinessObjectService;
@@ -101,6 +103,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 
         boolean valid = true;
         GlobalVariables.getErrorMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
+        valid &= validAssignRole(roleDoc);
         valid &= validDuplicateRoleName(roleDoc);
         getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(document, getMaxDictionaryValidationDepth(), true, false);
         valid &= validateRoleQualifier(roleDoc.getMembers(), roleDoc.getKimType());
@@ -114,6 +117,25 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
         return valid;
     }
     
+	private boolean validAssignRole(IdentityManagementRoleDocument document){
+        boolean rulePassed = true;
+        Map<String,String> additionalPermissionDetails = new HashMap<String,String>();
+        additionalPermissionDetails.put(KimAttributes.NAMESPACE_CODE, document.getRoleNamespace());
+        additionalPermissionDetails.put(KimAttributes.ROLE_NAME, document.getRoleName());
+		if((document.getMembers()!=null && document.getMembers().size()>0) ||
+				(document.getDelegationMembers()!=null && document.getDelegationMembers().size()>0)){
+			if(!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
+					document, KimConstants.NAMESPACE_CODE, KimConstants.PermissionTemplateNames.ASSIGN_ROLE, 
+					GlobalVariables.getUserSession().getPrincipalId(), additionalPermissionDetails, null)){
+	    		GlobalVariables.getErrorMap().putError("document.roleName", 
+	    				RiceKeyConstants.ERROR_ASSIGN_ROLE, 
+	    				new String[] {document.getRoleNamespace(), document.getRoleName()});
+	            rulePassed = false;
+			}
+		}
+		return rulePassed;
+	}
+
     private boolean validDuplicateRoleName(IdentityManagementRoleDocument roleDoc){
     	Map<String, String> criteria = new HashMap<String, String>();
     	criteria.put("roleName", roleDoc.getRoleName());

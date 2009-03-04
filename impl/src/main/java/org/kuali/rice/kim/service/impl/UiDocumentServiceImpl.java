@@ -55,6 +55,7 @@ import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
+import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRolePermission;
@@ -1265,6 +1266,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		List<RoleDocumentDelegationMemberQualifier> pndMemberRoleQualifiers = new ArrayList<RoleDocumentDelegationMemberQualifier>();
 		RoleDocumentDelegationMemberQualifier pndMemberRoleQualifier;
 		for(KimDelegationMemberAttributeDataImpl memberRoleQualifier: attributeDataList){
+			System.out.println("instanceOf: "+(memberRoleQualifier.getKimAttribute() instanceof KimAttributeImpl));
+			System.out.println("AssignableFrom:" +KimAttributeImpl.class.isAssignableFrom(memberRoleQualifier.getKimAttribute().getClass()));
 			pndMemberRoleQualifier = new RoleDocumentDelegationMemberQualifier();
 			pndMemberRoleQualifier.setAttrDataId(memberRoleQualifier.getAttributeDataId());
 			pndMemberRoleQualifier.setAttrVal(memberRoleQualifier.getAttributeValue());

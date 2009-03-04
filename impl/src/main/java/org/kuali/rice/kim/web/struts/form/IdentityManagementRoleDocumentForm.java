@@ -43,7 +43,7 @@ public class IdentityManagementRoleDocumentForm extends KualiTransactionalDocume
 		requiredNonEditableProperties.add("methodToCall");
 	}
 	
-	private boolean canAssignRole;
+	private boolean canAssignRole = true;
 	private KimTypeImpl kimType;
 	private KimDocumentRoleMember member;
 	{

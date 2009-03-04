@@ -29,6 +29,7 @@ import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.options.MemberTypeValuesFinder;
 import org.kuali.rice.kim.bo.role.KimRole;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
@@ -99,12 +100,13 @@ public class IdentityManagementRoleDocumentAction extends KualiTransactionalDocu
 		        roleDocumentForm.setMember(roleDocumentForm.getRoleDocument().getBlankMember());
 		        roleDocumentForm.setDelegationMember(roleDocumentForm.getRoleDocument().getBlankDelegationMember());
 			}
-	        roleDocumentForm.setCanAssignRole(validAssignRole(roleDocumentForm.getRoleDocument()));
         }
 		String commandParam = request.getParameter(KNSConstants.PARAMETER_COMMAND);
         String roleId = request.getParameter(KimConstants.PrimaryKeyConstants.ROLE_ID);
         if (StringUtils.isNotBlank(commandParam) && commandParam.equals(KEWConstants.INITIATE_COMMAND) 
 				&& StringUtils.isNotBlank(roleId)) {
+        	if(!KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY.equals(methodToCall))
+        		roleDocumentForm.setCanAssignRole(validAssignRole(roleDocumentForm.getRoleDocument()));
 	        KimRole role = KIMServiceLocator.getRoleService().getRole(roleId);
 			KIMServiceLocator.getUiDocumentService().loadRoleDoc(roleDocumentForm.getRoleDocument(), role);
 			roleDocumentForm.setMember(roleDocumentForm.getRoleDocument().getBlankMember());
@@ -118,12 +120,15 @@ public class IdentityManagementRoleDocumentAction extends KualiTransactionalDocu
     
 	private boolean validAssignRole(IdentityManagementRoleDocument document){
         boolean rulePassed = true;
+        Map<String,String> additionalPermissionDetails = new HashMap<String,String>();
+        additionalPermissionDetails.put(KimAttributes.NAMESPACE_CODE, document.getRoleNamespace());
+        additionalPermissionDetails.put(KimAttributes.ROLE_NAME, document.getRoleName());
 		if (!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
 				document, 
 				KimConstants.NAMESPACE_CODE, 
 				KimConstants.PermissionTemplateNames.ASSIGN_ROLE, 
 				GlobalVariables.getUserSession().getPrincipalId(), 
-				null, null)){
+				additionalPermissionDetails, null)){
             rulePassed = false;
 		}
 		return rulePassed;

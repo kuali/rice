@@ -27,6 +27,9 @@
         <ref bean="ResponsibilityImpl-assignedToGroupNamespaceForLookup" />
         <ref bean="ResponsibilityImpl-assignedToGroupNameForLookup" />
         <ref bean="ResponsibilityImpl-templateId" />
+        <ref bean="ResponsibilityImpl-roleId" />
+        <ref bean="ResponsibilityImpl-principalId" />
+        <ref bean="ResponsibilityImpl-groupId" />
         <ref bean="ResponsibilityImpl-attributeValue" />
         <ref bean="ResponsibilityImpl-requiredRoleQualifierAttributes" />
         <ref bean="ResponsibilityImpl-detailObjectsValues" />
@@ -54,6 +57,78 @@
 
       </list>
     </property>
+    <property name="relationships" >
+      <list>
+        <bean parent="RelationshipDefinition">
+          <property name="objectAttributeName" value="template" />
+          <property name="primitiveAttributes" >
+            <list>
+              <bean parent="PrimitiveAttributeDefinition"
+                    p:sourceName="template.responsibilityTemplateId"
+                    p:targetName="responsibilityTemplateId" />
+            </list>
+          </property>
+          <property name="supportAttributes" >
+            <list>
+              <bean parent="SupportAttributeDefinition"
+                    p:sourceName="template.name"
+                    p:targetName="name" />
+            </list>
+          </property>
+        </bean>
+        <bean parent="RelationshipDefinition">
+          <property name="objectAttributeName" value="assignedToRole" />
+          <property name="primitiveAttributes" >
+            <list>
+              <bean parent="PrimitiveAttributeDefinition"
+                    p:sourceName="assignedToRole.roleId"
+                    p:targetName="roleId" />
+            </list>
+          </property>
+          <property name="supportAttributes" >
+            <list>
+              <bean parent="SupportAttributeDefinition"
+                    p:sourceName="assignedToRole.roleName"
+                    p:targetName="roleName" />
+            </list>
+          </property>
+        </bean>
+        <bean parent="RelationshipDefinition">
+          <property name="objectAttributeName" value="assignedToPrincipal" />
+          <property name="primitiveAttributes" >
+            <list>
+              <bean parent="PrimitiveAttributeDefinition"
+                    p:sourceName="assignedToPrincipal.principalId"
+                    p:targetName="principalId" />
+            </list>
+          </property>
+          <property name="supportAttributes" >
+            <list>
+              <bean parent="SupportAttributeDefinition"
+                    p:sourceName="assignedToPrincipal.principalName"
+                    p:targetName="principalName" />
+            </list>
+          </property>
+		</bean>
+        <bean parent="RelationshipDefinition">
+          <property name="objectAttributeName" value="assignedToGroup" />
+          <property name="primitiveAttributes" >
+            <list>
+              <bean parent="PrimitiveAttributeDefinition"
+                    p:sourceName="assignedToGroup.groupId"
+                    p:targetName="groupId" />
+            </list>
+          </property>
+          <property name="supportAttributes" >
+            <list>
+              <bean parent="SupportAttributeDefinition"
+                    p:sourceName="assignedToGroup.groupName"
+                    p:targetName="groupName" />
+            </list>
+          </property>
+		</bean>
+	</list>
+	</property>
   </bean>
 
   <bean id="ResponsibilityImpl-template.namespaceCode" parent="ResponsibilityImpl-template.namespaceCode-parentBean" />
@@ -65,16 +140,53 @@
     
   <bean id="ResponsibilityImpl-templateId" parent="ResponsibilityImpl-templateId-parentBean" />
   <bean id="ResponsibilityImpl-templateId-parentBean" parent="AttributeDefinition" abstract="true"
-        p:name="templateId"
+        p:name="template.responsibilityTemplateId"
         p:label="Template Identifier"
         p:shortLabel="Template Identifier"
         p:maxLength="40"
         p:required="false" >
     <property name="control" >
-      <bean parent="TextControlDefinition" p:size="40" />
+      <bean parent="HiddenControlDefinition" />
     </property>
   </bean>
     
+
+  <bean id="ResponsibilityImpl-roleId" parent="ResponsibilityImpl-roleId-parentBean" />
+  <bean id="ResponsibilityImpl-roleId-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="assignedToRole.roleId"
+        p:label="Role Identifier"
+        p:shortLabel="Role Identifier"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="HiddenControlDefinition" />
+    </property>
+  </bean>
+
+  <bean id="ResponsibilityImpl-principalId" parent="ResponsibilityImpl-principalId-parentBean" />
+  <bean id="ResponsibilityImpl-principalId-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="assignedToPrincipal.principalId"
+        p:label="Principal Identifier"
+        p:shortLabel="Principal Identifier"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="HiddenControlDefinition" />
+    </property>
+  </bean>
+
+  <bean id="ResponsibilityImpl-groupId" parent="ResponsibilityImpl-groupId-parentBean" />
+  <bean id="ResponsibilityImpl-groupId-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="assignedToGroup.groupId"
+        p:label="Group Identifier"
+        p:shortLabel="Group Identifier"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="HiddenControlDefinition" />
+    </property>
+  </bean>
+  
   <bean id="ResponsibilityImpl-attributeValue" parent="ResponsibilityImpl-attributeValue-parentBean" />
   <bean id="ResponsibilityImpl-attributeValue-parentBean" parent="KimResponsibilityAttributeDataImpl-attributeValue" abstract="true"/>
   
@@ -133,12 +245,12 @@
 
   <bean id="ResponsibilityImpl-assignedToRoleNameForLookup" parent="ResponsibilityImpl-assignedToRoleNameForLookup-parentBean" />
   <bean id="ResponsibilityImpl-assignedToRoleNameForLookup-parentBean" parent="KimRoleImpl-roleName" abstract="true" 
-	  	p:name="assignedToRoleNameForLookup">
+	  	p:name="assignedToRole.roleName">
   </bean>
 
   <bean id="ResponsibilityImpl-assignedToPrincipalNameForLookup" parent="ResponsibilityImpl-assignedToPrincipalNameForLookup-parentBean" />
   <bean id="ResponsibilityImpl-assignedToPrincipalNameForLookup-parentBean" parent="AttributeDefinition" abstract="true"
-        p:name="assignedToPrincipalNameForLookup"
+        p:name="assignedToPrincipal.principalName"
         p:label="Principal Name"
         p:shortLabel="Principal Name"
         p:maxLength="40"
@@ -162,7 +274,7 @@
 
   <bean id="ResponsibilityImpl-assignedToGroupNameForLookup" parent="ResponsibilityImpl-assignedToGroupNameForLookup-parentBean" />
   <bean id="ResponsibilityImpl-assignedToGroupNameForLookup-parentBean" parent="AttributeDefinition" abstract="true"
-        p:name="assignedToGroupNameForLookup"
+        p:name="assignedToGroup.groupName"
         p:label="Group Name"
         p:shortLabel="Group Name"
         p:maxLength="40"
@@ -199,7 +311,7 @@
   <bean id="ResponsibilityImpl-detailObjectsValues" parent="ResponsibilityImpl-detailObjectsValues-parentBean" />
   <bean id="ResponsibilityImpl-detailObjectsValues-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="detailObjectsValues"
-        p:label="Permission Detail Values"
+        p:label="Responsibility Detail Values"
         p:shortLabel="Detail Values"
         p:maxLength="40"
         p:required="false" >
@@ -326,12 +438,17 @@
           <bean parent="FieldDefinition" p:attributeName="template.namespaceCode" p:noLookup="true" />
           <bean parent="FieldDefinition" p:attributeName="template.name" p:noLookup="true" />
        	  <bean parent="FieldDefinition" p:attributeName="namespaceCode" />
-       	  <bean parent="FieldDefinition" p:attributeName="name" />
+       	  <bean parent="FieldDefinition" p:attributeName="name" p:forceLookup="true" />
           <bean parent="FieldDefinition" p:attributeName="assignedToRoleNamespaceForLookup" />
-          <bean parent="FieldDefinition" p:attributeName="assignedToRoleNameForLookup" />
-          <bean parent="FieldDefinition" p:attributeName="assignedToPrincipalNameForLookup" />
+          <bean parent="FieldDefinition" p:attributeName="assignedToRole.roleName" p:forceLookup="true" />
+          <bean parent="FieldDefinition" p:attributeName="assignedToPrincipal.principalName" p:forceLookup="true" />
           <bean parent="FieldDefinition" p:attributeName="assignedToGroupNamespaceForLookup" />
-          <bean parent="FieldDefinition" p:attributeName="assignedToGroupNameForLookup" />
+          <bean parent="FieldDefinition" p:attributeName="assignedToGroup.groupName" p:forceLookup="true" />
+          <bean parent="FieldDefinition" p:attributeName="attributeValue" />
+          <bean parent="FieldDefinition" p:attributeName="assignedToRole.roleId" />
+          <bean parent="FieldDefinition" p:attributeName="assignedToPrincipal.principalId" />
+          <bean parent="FieldDefinition" p:attributeName="template.responsibilityTemplateId" />
+          <bean parent="FieldDefinition" p:attributeName="assignedToGroup.groupId" />
       </list>
     </property>
     <property name="resultFields" >

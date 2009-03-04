@@ -24,7 +24,6 @@ import java.util.Properties;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.service.support.KimRoleTypeService;
 import org.kuali.rice.kim.service.support.KimTypeService;
-import org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -75,7 +74,8 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
 	}
 
 	static boolean hasRoleTypeService(KimTypeService kimTypeService){
-		return kimTypeService instanceof KimRoleTypeService;
+		if(kimTypeService==null) return false;
+		return KimRoleTypeService.class.isAssignableFrom(kimTypeService.getClass());
 	}
 
 	static boolean hasDerivedRoleTypeService(KimTypeImpl kimTypeImpl){

@@ -416,7 +416,7 @@
     <property name="lookupFields" >
       <list>
           <bean parent="FieldDefinition" p:attributeName="template.namespaceCode" p:noLookup="true" />
-          <bean parent="FieldDefinition" p:attributeName="template.name" p:forceLookup="true" />
+          <bean parent="FieldDefinition" p:attributeName="template.name" p:noLookup="true" />
        	  <bean parent="FieldDefinition" p:attributeName="namespaceCode" />
        	  <bean parent="FieldDefinition" p:attributeName="name" p:forceLookup="true" />
           <bean parent="FieldDefinition" p:attributeName="assignedToRoleNamespaceForLookup" />

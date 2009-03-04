@@ -18,6 +18,8 @@ package org.kuali.rice.kim.bo.impl;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityRequiredAttributeImpl;
 import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
@@ -38,9 +40,12 @@ public class ResponsibilityImpl extends KimResponsibilityImpl {
 	
 	protected String assignedToRoleNamespaceForLookup;
 	protected String assignedToRoleNameForLookup;
+	protected KimRoleImpl assignedToRole;
 	protected String assignedToPrincipalNameForLookup;
+	protected Person assignedToPrincipal;
 	protected String assignedToGroupNamespaceForLookup;
 	protected String assignedToGroupNameForLookup;
+	protected KimGroupImpl assignedToGroup;
 	protected String attributeValue;
 	
 	/**
@@ -161,6 +166,48 @@ public class ResponsibilityImpl extends KimResponsibilityImpl {
 	 */
 	public void setAssignedToRoles(List<KimRoleImpl> assignedToRoles) {
 		this.assignedToRoles = assignedToRoles;
+	}
+
+	/**
+	 * @return the assignedToGroup
+	 */
+	public KimGroupImpl getAssignedToGroup() {
+		return this.assignedToGroup;
+	}
+
+	/**
+	 * @param assignedToGroup the assignedToGroup to set
+	 */
+	public void setAssignedToGroup(KimGroupImpl assignedToGroup) {
+		this.assignedToGroup = assignedToGroup;
+	}
+
+	/**
+	 * @return the assignedToPrincipal
+	 */
+	public Person getAssignedToPrincipal() {
+		return this.assignedToPrincipal;
+	}
+
+	/**
+	 * @param assignedToPrincipal the assignedToPrincipal to set
+	 */
+	public void setAssignedToPrincipal(Person assignedToPrincipal) {
+		this.assignedToPrincipal = assignedToPrincipal;
+	}
+
+	/**
+	 * @return the assignedToRole
+	 */
+	public KimRoleImpl getAssignedToRole() {
+		return this.assignedToRole;
+	}
+
+	/**
+	 * @param assignedToRole the assignedToRole to set
+	 */
+	public void setAssignedToRole(KimRoleImpl assignedToRole) {
+		this.assignedToRole = assignedToRole;
 	}
 
 }

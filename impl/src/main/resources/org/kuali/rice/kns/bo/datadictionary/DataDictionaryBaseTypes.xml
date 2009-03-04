@@ -160,6 +160,9 @@
 	<bean id="SelectControlDefinition"
 		class="org.kuali.rice.kns.datadictionary.control.SelectControlDefinition"
 		abstract="true" />
+	<bean id="MultiselectControlDefinition"
+		class="org.kuali.rice.kns.datadictionary.control.MultiselectControlDefinition"
+		abstract="true" />
 	<bean id="MaintainableSectionDefinition"
 		class="org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition"
 		abstract="true" />

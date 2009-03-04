@@ -87,6 +87,13 @@ public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase
     public boolean isSelect() {
         return false;
     }
+    
+    /**
+     * @see org.kuali.rice.kns.datadictionary.control.ControlDefinition#isSelect()
+     */
+    public boolean isMultiselect() {
+        return false;
+    }
 
     /**
      *
@@ -315,7 +322,7 @@ public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase
      * @see org.kuali.rice.kns.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Object)
      */
     public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
-        if (!isCheckbox() && !isHidden() && !isRadio() && !isSelect() && !isApcSelect() && !isText() && !isTextarea() && !isCurrency() && !isKualiUser() && !isLookupHidden() && !isLookupReadonly() && !isWorkflowWorkgroup() && !isFile()&& !isButton() && !isLink()) {
+        if (!isCheckbox() && !isHidden() && !isRadio() && !isSelect() && !isMultiselect() && !isApcSelect() && !isText() && !isTextarea() && !isCurrency() && !isKualiUser() && !isLookupHidden() && !isLookupReadonly() && !isWorkflowWorkgroup() && !isFile()&& !isButton() && !isLink()) {
             throw new CompletionException("error validating " + rootBusinessObjectClass.getName() + " control: unknown control type in control definition (" + "" + ")");
         }
     }

@@ -169,8 +169,10 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 		for (Row row : customSearchAttRows) {
 			List<Field> fields = row.getFields();
 			for (Field field : fields) {
-				//force the max length for now
-				field.setMaxLength(100);
+				//force the max length for now if not set
+				if(field.getMaxLength()==0) {
+					field.setMaxLength(100);
+				}
 			}
 		}
 		return customSearchAttRows;

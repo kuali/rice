@@ -48,19 +48,19 @@ public class DocumentLookupCriteriaBuilder  {
 	 * @param lookupForm
 	 * @return
 	 */
-	public static DocSearchCriteriaDTO populateCriteria(Map<String,String> fieldsForLookup) {
+	public static DocSearchCriteriaDTO populateCriteria(Map<String,String[]> fieldsForLookup) {
     	DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
-    	Map<String,String> fieldsToSet = new HashMap<String,String>();
+    	Map<String,String[]> fieldsToSet = new HashMap<String,String[]>();
 		for (String formKey : fieldsForLookup.keySet()) {
 			if(!(formKey.equalsIgnoreCase(KNSConstants.BACK_LOCATION) ||
-			   formKey.equalsIgnoreCase(KNSConstants.DOC_FORM_KEY)) && StringUtils.isNotEmpty(fieldsForLookup.get(formKey))) {
+			   formKey.equalsIgnoreCase(KNSConstants.DOC_FORM_KEY)) && fieldsForLookup.get(formKey).length!=0) {
 				fieldsToSet.put(formKey, fieldsForLookup.get(formKey));
 			}
 		}
 		//if we use DocSearchCriteriaDTO as object we shouldn't need this conversion stuff
     	for (String fieldToSet : fieldsToSet.keySet()) {
 			//need translation code here for certain fields
-    		String valueToSet = fieldsToSet.get(fieldToSet);
+    		String valueToSet = fieldsToSet.get(fieldToSet)[0];
 			try {
 				PropertyUtils.setNestedProperty(criteria, fieldToSet, valueToSet);
 			} catch (IllegalAccessException e) {
@@ -68,7 +68,8 @@ public class DocumentLookupCriteriaBuilder  {
 			} catch (InvocationTargetException e) {
 				e.printStackTrace();
 			} catch (NoSuchMethodException e) {
-				e.printStackTrace();
+				//ignore this
+				//				e.printStackTrace();
 			}
 		}
     	if(StringUtils.isNotEmpty(criteria.getDocTypeFullName())) {
@@ -84,7 +85,7 @@ public class DocumentLookupCriteriaBuilder  {
 	 * @param criteria
 	 * @param propertyFields
 	 */
-	public static void addSearchableAttributesToCriteria(DocSearchCriteriaDTO criteria, Map<String,String> propertyFields) {
+	public static void addSearchableAttributesToCriteria(DocSearchCriteriaDTO criteria, Map<String,String[]> propertyFields) {
 		if (criteria != null) {
 			DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName(criteria.getDocTypeFullName());
 			if (docType == null) {
@@ -100,7 +101,7 @@ public class DocumentLookupCriteriaBuilder  {
 							if (field instanceof Field) {
 								Field dsField = (Field)field;
 								SearchableAttributeValue searchableAttributeValue = DocSearchUtils.getSearchableAttributeValueByDataTypeString(dsField.getFieldDataType());
-								SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(dsField.getPropertyName(), null, dsField.getSavablePropertyName(), searchableAttributeValue);
+								SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(dsField.getPropertyName(), null, dsField.getPropertyName(), searchableAttributeValue);
 								sacc.setRangeSearch(dsField.isMemberOfRange());
 								sacc.setSearchInclusive(dsField.isInclusive());
 								sacc.setLookupableFieldType(dsField.getFieldType());
@@ -128,11 +129,11 @@ public class DocumentLookupCriteriaBuilder  {
 								if (propertyField == null) {
 									sacc.setValues(new ArrayList<String>());
 								} else {
-									//TODO: chris, this can't work and will need to be changed
-									//                                    sacc.setValues(Arrays.asList(propertyField.getValues()));
+
+									sacc.setValues(Arrays.asList(propertyFields.get(propertyField)));
 								}
 							} else {
-								sacc.setValue(propertyFields.get(propertyField));
+								sacc.setValue(propertyFields.get(propertyField)[0]);
 							}
 							criteria.addSearchableAttribute(sacc);
 						}

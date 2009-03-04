@@ -150,6 +150,22 @@ public class AttributesMapBuilder {
                 controlMap.set("includeKeyInLabel", control.getIncludeKeyInLabel().toString());
             }
         }
+        else if (control.isMultiselect()) {
+            controlMap.set("multiselect", "true");
+            controlMap.set("valuesFinder", control.getValuesFinderClass().getName());
+            if (control.getBusinessObjectClass() != null) {
+                controlMap.set("businessObject", control.getBusinessObjectClass().getName());
+            }
+            if (StringUtils.isNotEmpty(control.getKeyAttribute())) {
+                controlMap.set("keyAttribute", control.getKeyAttribute());
+            }
+            if (StringUtils.isNotEmpty(control.getLabelAttribute())) {
+                controlMap.set("labelAttribute", control.getLabelAttribute());
+            }
+            if (control.getIncludeKeyInLabel() != null) {
+                controlMap.set("includeKeyInLabel", control.getIncludeKeyInLabel().toString());
+            }
+        }
         else if (control.isText()) {
             controlMap.set("text", "true");
             controlMap.set("size", control.getSize().toString());

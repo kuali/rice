@@ -262,10 +262,8 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
 				boolean isColumnVisible = true;
                 boolean hasXPathExpression = false;
 				Field myField = new Field(fieldAttributes.getNamedItem("name").getNodeValue(), fieldAttributes.getNamedItem("title").getNodeValue());
-                //TODO: Chris setting savable property name manually (delete this if savable property name is not needed(
-				myField.setSavablePropertyName(fieldAttributes.getNamedItem("name").getNodeValue());
-				
-                String quickfinderService = null;
+
+				String quickfinderService = null;
 				// range search details
 				Field rangeLowerBoundField = null;
 				Field rangeUpperBoundField = null;
@@ -445,7 +443,6 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
         rangeBoundField.setMainFieldLabel(mainField.getFieldLabel());
 		rangeBoundField.setFieldValidValues(mainField.getFieldValidValues());
 		rangeBoundField.setPropertyName(propertyPrefix + mainField.getPropertyName());
-		rangeBoundField.setSavablePropertyName(mainField.getPropertyName());
 		rangeBoundField.setQuickFinderClassNameImpl(mainField.getQuickFinderClassNameImpl());
 		//rangeBoundField.setDefaultLookupableName(mainField.getDefaultLookupableName());
 		rangeFields.add(rangeBoundField);

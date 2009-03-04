@@ -95,7 +95,7 @@ public class StandardDocumentSearchResultProcessor implements
 					if (field instanceof Field) {
 						Field dsField = (Field) field;
 //FIXME: Chris - either get rid of this
-//						if ((dsField.getSavablePropertyName().equals(dsColumn
+//						if ((dsField.getPropertyName().equals(dsColumn
 //								.getPropertyName()))
 //								&& (dsColumn.getDisplayParameters().isEmpty())) {
 //
@@ -274,9 +274,9 @@ public class StandardDocumentSearchResultProcessor implements
 		for (Field field : fields) {
 			if (field instanceof Field) {
 				Field dsField = (Field) field;
-				if ((dsField.getSavablePropertyName() == null)
+				if ((dsField.getPropertyName() == null)
 						|| (!alreadyProcessedFieldKeys.contains(dsField
-								.getSavablePropertyName()))) {
+								.getPropertyName()))) {
 					if (dsField.isColumnVisible()) {
 						if (Field.SEARCH_RESULT_DISPLAYABLE_FIELD_TYPES
 								.contains(dsField.getFieldType())) {
@@ -286,12 +286,12 @@ public class StandardDocumentSearchResultProcessor implements
 							}
 							this.addSearchableAttributeColumnUsingKey(columns,
 									dsField.getDisplayParameters(), dsField
-											.getSavablePropertyName(),
+											.getPropertyName(),
 									resultFieldLabel, Boolean.TRUE,
 									Boolean.TRUE);
-							if (dsField.getSavablePropertyName() != null) {
+							if (dsField.getPropertyName() != null) {
 								alreadyProcessedFieldKeys.add(dsField
-										.getSavablePropertyName());
+										.getPropertyName());
 							}
 						}
 					}
@@ -371,7 +371,7 @@ public class StandardDocumentSearchResultProcessor implements
 						Field dsField = (Field) field;
 						if (field instanceof Field) {
 							if (searchAttributeName.equals(dsField
-									.getSavablePropertyName())) {
+									.getPropertyName())) {
 								returnFields.add(field);
 							}
 						} else {

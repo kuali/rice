@@ -95,7 +95,6 @@ public class Field implements java.io.Serializable {
     // following values used in ranged searches
     private String mainFieldLabel;  // the fieldLabel holds things like "From" and "Ending" and this field holds things like "Total Amount"
     private Boolean rangeFieldInclusive;
-    private String savablePropertyName = null;
     private boolean memberOfRange = false;
     //FIXME: can this go away?  only seems to be used on column
     private Map<String, String> displayParameters;
@@ -455,6 +454,13 @@ public class Field implements java.io.Serializable {
         return DROPDOWN_APC;
     }
 
+    /**
+     * @return Returns DROPDOWN_APC
+     */
+    public String getMULTISELECT() {
+        return MULTISELECT;
+    }
+    
     /**
      *
      * @return Returns KUALIUSER
@@ -1473,10 +1479,6 @@ public class Field implements java.io.Serializable {
         return this.rangeFieldInclusive;
     }
 
-    public String getSavablePropertyName() {
-        return this.savablePropertyName;
-    }
-
     public boolean isMemberOfRange() {
         return this.memberOfRange;
     }
@@ -1487,10 +1489,6 @@ public class Field implements java.io.Serializable {
 
     public void setRangeFieldInclusive(Boolean rangeFieldInclusive) {
         this.rangeFieldInclusive = rangeFieldInclusive;
-    }
-
-    public void setSavablePropertyName(String savablePropertyName) {
-        this.savablePropertyName = savablePropertyName;
     }
 
     public void setMemberOfRange(boolean memberOfRange) {

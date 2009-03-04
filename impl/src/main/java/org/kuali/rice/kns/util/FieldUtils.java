@@ -128,7 +128,10 @@ public class FieldUtils {
                     fieldType = Field.DROPDOWN;
                 }
             }
-
+            
+            if (control.isMultiselect()) {
+                fieldType = Field.MULTISELECT;
+            }
 
             if (control.isApcSelect()) {
                 fieldType = Field.DROPDOWN_APC;
@@ -236,7 +239,7 @@ public class FieldUtils {
             }
 
             // for dropdown and radio, get instance of specified KeyValuesFinder and set field values
-            if (Field.DROPDOWN.equals(fieldType) || Field.RADIO.equals(fieldType) || Field.DROPDOWN_SCRIPT.equals(fieldType) || Field.DROPDOWN_APC.equals(fieldType)) {
+            if (Field.DROPDOWN.equals(fieldType) || Field.RADIO.equals(fieldType) || Field.DROPDOWN_SCRIPT.equals(fieldType) || Field.DROPDOWN_APC.equals(fieldType) || Field.MULTISELECT.equals(fieldType)) {
                 Class keyFinderClassName = control.getValuesFinderClass();
 
                 if (keyFinderClassName != null) {

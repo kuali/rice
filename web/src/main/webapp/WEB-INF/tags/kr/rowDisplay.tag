@@ -532,7 +532,7 @@
 					</td>
 
 				</c:when>
-<%--enable when ready on backend
+
 				<c:when test="${field.fieldType eq field.MULTISELECT}">
 
 					<kul:fieldDefaultLabel isLookup="${isLookup}" isRequired="${field.fieldRequired}" 
@@ -550,9 +550,9 @@
 							<c:otherwise>
 								${kfunc:registerEditableProperty(KualiForm, field.propertyName)}
 								<select multiple="${true}" id='${field.propertyName}' name='${field.propertyName}' style="${textStyle}" ${onblurcall}>
-									<c:if test="${!field.hasBlankValidValue}">
+									<%--<c:if test="${!field.hasBlankValidValue}">
 										<option value=""></option>
-									</c:if>
+									</c:if> --%>
 									<kul:fieldSelectValues field="${field}"/>
 								</select>
 							</c:otherwise>
@@ -564,7 +564,7 @@
 					</td>
 						 
 				</c:when>
- --%>
+
 
 				<c:when test="${field.fieldType eq field.RADIO}">
 

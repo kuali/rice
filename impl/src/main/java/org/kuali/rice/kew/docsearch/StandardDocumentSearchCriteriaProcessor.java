@@ -172,7 +172,7 @@ public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCr
             for (Iterator iterator2 = row.getFields().iterator(); iterator2.hasNext();) {
                 Field field = (Field) iterator2.next();
                 // set hidden field to true if hiddenKeys is not empty and if hiddenKeys contains either the field's propertyName value or savablePropertyName value
-                field.setHidden( (!hiddenKeys.isEmpty()) && ((hiddenKeys.contains(field.getPropertyName())) || (hiddenKeys.contains(field.getSavablePropertyName()))) );
+                field.setHidden( (!hiddenKeys.isEmpty()) && ((hiddenKeys.contains(field.getPropertyName())) || (hiddenKeys.contains(field.getPropertyName()))) );
             }
         }
         return searchableAttributeRows;

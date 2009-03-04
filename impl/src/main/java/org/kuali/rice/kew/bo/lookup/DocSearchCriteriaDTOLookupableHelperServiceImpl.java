@@ -112,9 +112,10 @@ KualiLookupableHelperServiceImpl {
 		
 		//TODO: KNS updates to make this not require code from the parent
     	
-
-    	Map<String,String> fieldsForLookup = lookupForm.getFieldsForLookup();
-    	DocSearchCriteriaDTO criteria = DocumentLookupCriteriaBuilder.populateCriteria(fieldsForLookup);
+		
+    	Map<String,String[]> parameters = this.getParameters();
+    	
+    	DocSearchCriteriaDTO criteria = DocumentLookupCriteriaBuilder.populateCriteria(parameters);
     	
 		boolean superSearch=false;
 		if(this.getParameters().get("superSearch")!=null) {
@@ -420,17 +421,24 @@ KualiLookupableHelperServiceImpl {
 	 */
 	@Override
 	public void performClear(LookupForm lookupForm) {
-		Map<String,String> fieldsToClear = new HashMap<String,String>();
+		Map<String,String[]> fieldsToClear = new HashMap<String,String[]>();
 		List<Field> critFields = new ArrayList<Field>();
 
 		for (Row row : this.getRows()) {
 			for (Field field : row.getFields()) {
-				fieldsToClear.put(field.getPropertyName(), field.getPropertyValue());
+				String[] propertyValue = {};
+				if(!Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType())) {
+					propertyValue = new String[]{field.getPropertyValue()};
+				} else {
+					propertyValue = field.getPropertyValues();
+				}
+				
+				fieldsToClear.put(field.getPropertyName(), propertyValue);
 				critFields.add(new Field(field.getPropertyName(),field.getFieldLabel()));
 			}
 		}
 		//TODO: also check if standard here (maybe from object if use criteria)
-		String docTypeName = fieldsToClear.get("docTypeFullName");
+		String docTypeName = fieldsToClear.get("docTypeFullName")[0];
 		if(StringUtils.isEmpty(docTypeName)) {
 			super.performClear(lookupForm);
 		} else {

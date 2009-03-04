@@ -351,7 +351,7 @@ public class DocSearchUtils {
                         if (field instanceof Field) {
                             Field dsField = (Field)field;
                             SearchableAttributeValue searchableAttributeValue = DocSearchUtils.getSearchableAttributeValueByDataTypeString(dsField.getFieldDataType());
-                            SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(dsField.getPropertyName(), null, dsField.getSavablePropertyName(), searchableAttributeValue);
+                            SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(dsField.getPropertyName(), null, dsField.getPropertyName(), searchableAttributeValue);
                             sacc.setRangeSearch(dsField.isMemberOfRange());
                             sacc.setSearchInclusive(dsField.isInclusive());
                             sacc.setSearchable(dsField.isIndexedForSearch());
@@ -525,7 +525,7 @@ public class DocSearchUtils {
                             if (field instanceof Field) {
                                 Field dsField = (Field)field;
                                 SearchableAttributeValue searchableAttributeValue = DocSearchUtils.getSearchableAttributeValueByDataTypeString(dsField.getFieldDataType());
-                                SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(dsField.getPropertyName(), null, dsField.getSavablePropertyName(), searchableAttributeValue);
+                                SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(dsField.getPropertyName(), null, dsField.getPropertyName(), searchableAttributeValue);
                                 sacc.setRangeSearch(dsField.isMemberOfRange());
                                 sacc.setSearchInclusive(dsField.isInclusive());
                                 sacc.setLookupableFieldType(dsField.getFieldType());

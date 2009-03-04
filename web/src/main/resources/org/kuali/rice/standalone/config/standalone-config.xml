@@ -30,6 +30,7 @@
     <param name="plugin.registry.enabled">true</param>
     <param name="kew.mode">local</param>
     <param name="kim.mode">local</param>
+    <param name="ksb.mode">local</param>
     <param name="embedded.server">true</param>
     <param name="xml.pipeline.lifecycle.enabled">true</param>
     <param name="email.reminder.lifecycle.enabled">true</param>

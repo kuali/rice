@@ -13,6 +13,7 @@
       <param name="application.url" override="false">${application.http.scheme}://${application.host}:${http.port}/${app.context.name}</param>
      -->
     <param name="application.url" override="false">${application.http.scheme}://${application.host}:${http.port}/${app.context.name}</param>
+    <param name="serviceServletUrl" override="false">${application.url}/remoting/</param>
 
     <!-- A comma separated list of additional spring files for the RiceConfigurer -->
     <param name="rice.additionalSpringFiles" override="false"></param>
@@ -155,5 +156,6 @@
     <param name="rice.ksb.struts.config.files" override="false">/ksb/WEB-INF/struts-config.xml</param>
     <!--  the files that define the struts context for the kim struts module -->
     <param name="rice.kim.struts.config.files" override="false">/kim/WEB-INF/struts-config.xml</param>
+
     
 </config>

@@ -10,10 +10,19 @@
     <!--
       NOTE: The application.url parameter needs to be set by the client
         this should be set to something similar to:
-      <param name="application.url" override="false">${application.http.scheme}://${application.host}:${http.port}/${app.context.name}</param>
+	    <param name="appserver.url" override="false">${application.http.scheme}://${application.host}:${http.port}</param>
+	    <param name="application.url" override="false">${appserver.url}/${app.context.name}</param>
      -->
-    <param name="application.url" override="false">${application.http.scheme}://${application.host}:${http.port}/${app.context.name}</param>
+    <param name="appserver.url" override="false">${application.http.scheme}://${application.host}:${http.port}</param>
+    <param name="application.url" override="false">${appserver.url}/${app.context.name}</param>
     <param name="serviceServletUrl" override="false">${application.url}/remoting/</param>
+    
+    <param name="cas.context.name" override="false">cas</param>
+    <param name="cas.url" override="false">${appserver.url}/${cas.context.name}</param>
+    <param name="cas.login.url" override="false">${cas.url}/login</param>
+    <param name="cas.validate.url" override="false">${cas.url}/serviceValidate</param>
+    <param name="cas.require.https" override="false">false</param>
+    <param name="cas.validate.password" override="false">false</param>
 
     <!-- A comma separated list of additional spring files for the RiceConfigurer -->
     <param name="rice.additionalSpringFiles" override="false"></param>

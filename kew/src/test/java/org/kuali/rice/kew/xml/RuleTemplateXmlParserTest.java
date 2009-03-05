@@ -259,7 +259,7 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         assertEquals("01/01/2100", ruleDefaults.getToDateString());
         assertNotNull(ruleDefaults.getActivationDate());
         assertTrue(new Date(System.currentTimeMillis() - 10000).before(ruleDefaults.getActivationDate()) && new Date(System.currentTimeMillis() + 100).after(ruleDefaults.getActivationDate()));
-        assertNotNull(ruleDefaults.getDeactivationDate());
+        assertNull(ruleDefaults.getDeactivationDate());
     }
         
     /**
@@ -306,13 +306,13 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         assertEquals("a rule based on (updated) RuleTemplate_Valid_Some_Defaults", ruleDefaults.getDescription());
         assertFalse(ruleDefaults.getIgnorePrevious());
         assertFalse(ruleDefaults.getActiveInd());
-        // from and activation date defaults to current time
-        assertNotNull(ruleDefaults.getFromDate());
+        // activation date defaults to current time
+        assertNull(ruleDefaults.getFromDate());
         assertTrue(new Date(System.currentTimeMillis() - 10000).before(ruleDefaults.getFromDate()) && new Date(System.currentTimeMillis() + 100).after(ruleDefaults.getFromDate()));
         assertNotNull(ruleDefaults.getActivationDate());
         assertTrue(new Date(System.currentTimeMillis() - 10000).before(ruleDefaults.getActivationDate()) && new Date(System.currentTimeMillis() + 100).after(ruleDefaults.getActivationDate()));
-        assertNotNull(ruleDefaults.getToDateString());
-        assertNotNull(ruleDefaults.getDeactivationDate());
+        assertNull(ruleDefaults.getToDateString());
+        assertNull(ruleDefaults.getDeactivationDate());
     }
 
     /**
@@ -371,13 +371,13 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         assertEquals("a description", ruleDefaults.getDescription());
         assertFalse(ruleDefaults.getIgnorePrevious());
         assertFalse(ruleDefaults.getActiveInd());
-        // from and activation date defaults to current time
-        assertNotNull(ruleDefaults.getFromDate());
+        // activation date defaults to current time
+        assertNull(ruleDefaults.getFromDate());
         assertTrue(new Date(System.currentTimeMillis() - 10000).before(ruleDefaults.getFromDate()) && new Date(System.currentTimeMillis() + 100).after(ruleDefaults.getFromDate()));
         assertNotNull(ruleDefaults.getActivationDate());
         assertTrue(new Date(System.currentTimeMillis() - 10000).before(ruleDefaults.getActivationDate()) && new Date(System.currentTimeMillis() + 100).after(ruleDefaults.getActivationDate()));
-        assertNotNull(ruleDefaults.getToDateString());
-        assertNotNull(ruleDefaults.getDeactivationDate());
+        assertNull(ruleDefaults.getToDateString());
+        assertNull(ruleDefaults.getDeactivationDate());
     }
 
     /**

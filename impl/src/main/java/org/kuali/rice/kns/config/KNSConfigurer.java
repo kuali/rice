@@ -15,23 +15,14 @@
  */
 package org.kuali.rice.kns.config;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import org.kuali.rice.core.config.ModuleConfigurer;
 import org.kuali.rice.core.config.event.AfterStartEvent;
 import org.kuali.rice.core.config.event.RiceConfigEvent;
-import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.RiceResourceLoaderFactory;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.PersistenceService;
 
 public class KNSConfigurer extends ModuleConfigurer {
-
-	private List<String> databaseRepositoryFilePaths;
-
-	private List<String> dataDictionaryPackages;
 
 	private boolean loadDataDictionary = true;
 	private boolean validateDataDictionary = false;
@@ -71,41 +62,6 @@ public class KNSConfigurer extends ModuleConfigurer {
     public boolean hasWebInterface() {
         return true;
     }
-	
-	@Override
-	protected List<Lifecycle> loadLifecycles() throws Exception {
-		List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
-		//lifecycles.add(new OJBConfigurer());
-		//lifecycles.add(KNSResourceLoaderFactory.createRootKNSResourceLoader());
-		if (isLoadDataDictionary()) {
-			lifecycles.add(new Lifecycle() {
-				boolean started = false;
-
-				public boolean isStarted() {
-					return this.started;
-				}
-
-				public void start() throws Exception {
-					if (getDatabaseRepositoryFilePaths() != null) {
-						for (String repositoryFilePath : getDatabaseRepositoryFilePaths()) {
-					    	PersistenceService persistenceService = KNSServiceLocator.getPersistenceServiceOjb();
-					    	if ( persistenceService == null ) {
-					    		persistenceService = (PersistenceService)RiceResourceLoaderFactory.getSpringResourceLoader().getContext().getBean( KNSServiceLocator.PERSISTENCE_SERVICE_OJB  );
-					    	}
-					    	persistenceService.loadRepositoryDescriptor( repositoryFilePath );
-						}
-					}
-					
-					this.started = true;
-				}
-
-				public void stop() throws Exception {
-					this.started = false;
-				}
-			});
-		}
-		return lifecycles;
-	}
 
 	/**
      * Used to "poke" the Data Dictionary again after the Spring Context is initialized.  This is to
@@ -129,22 +85,6 @@ public class KNSConfigurer extends ModuleConfigurer {
     		}
     	}
     }
-	
-	public List<String> getDatabaseRepositoryFilePaths() {
-		return databaseRepositoryFilePaths;
-	}
-
-	public void setDatabaseRepositoryFilePaths(List<String> databaseRepositoryFilePaths) {
-		this.databaseRepositoryFilePaths = databaseRepositoryFilePaths;
-	}
-
-	public List<String> getDataDictionaryPackages() {
-		return dataDictionaryPackages;
-	}
-
-	public void setDataDictionaryPackages(List<String> dataDictionaryPackages) {
-		this.dataDictionaryPackages = dataDictionaryPackages;
-	}
 
 	/**
 	 * @return the loadDataDictionary

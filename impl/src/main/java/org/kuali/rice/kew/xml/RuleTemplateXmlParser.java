@@ -66,10 +66,6 @@ public class RuleTemplateXmlParser implements XmlConstants {
     private static final boolean DEFAULT_ATTRIBUTE_ACTIVE = true;
 
     /**
-     * Default date used for deactivation and 'to' of the default rule. "Far in the future"
-     */
-    private static final String FAR_IN_THE_FUTURE = "01/01/2100";
-    /**
      * A dummy document type used in the default rule
      */
     private static final String DUMMY_DOCUMENT_TYPE = "dummyDocumentType";
@@ -506,7 +502,7 @@ public class RuleTemplateXmlParser implements XmlConstants {
     		return null;
     	}
     	try {
-    		return new Timestamp(RiceConstants.getDefaultDateAndTimeFormat().parse(dateString).getTime());
+    		return new Timestamp(RiceConstants.getDefaultDateFormat().parse(dateString).getTime());
     	} catch (ParseException e) {
     		throw new InvalidXmlException(dateLabel + " is not in the proper format.  Should have been: " + RiceConstants.DEFAULT_DATE_FORMAT_PATTERN);
     	}

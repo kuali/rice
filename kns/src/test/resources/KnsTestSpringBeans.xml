@@ -46,6 +46,25 @@
         <property name="accessToUnderlyingConnectionAllowed" value="${datasource.accessToUnderlyingConnectionAllowed}"/>
     </bean>
 
+	<bean id="testModule" class="org.kuali.rice.kns.service.impl.ModuleServiceBase">
+  		<property name="moduleConfiguration">
+  			<bean id="testModuleConfiguration" class="org.kuali.rice.kns.bo.ModuleConfiguration">
+				<property name="namespaceCode" value="TEST" />
+				<property name="initializeDataDictionary" value="true"/>
+				<property name="dataDictionaryPackages">
+					<list>
+						<value>org/kuali/rice/kns/test/document</value>
+					</list>
+				</property>
+				<property name="databaseRepositoryFilePaths">
+					<list>
+						<value>OJB-repository-kns-test.xml</value>
+					</list>
+				</property>
+			</bean>
+    	</property>
+	</bean>
+
 	<bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer">
 		<property name="dataSource" ref="knsDataSource" />
 		<property name="nonTransactionalDataSource" ref="knsNonTransactionalDataSource" />
@@ -65,18 +84,7 @@
                 <bean class="org.kuali.rice.kcb.config.KCBConfigurer"/>
         </property>
 		<property name="knsConfigurer">
-				<bean class="org.kuali.rice.kns.config.KNSConfigurer">
-					<property name="dataDictionaryPackages">
-						<list>
-							<value>org/kuali/rice/kns/test/document</value>
- 						</list>
-					</property>
-					<property name="databaseRepositoryFilePaths">
-						<list>
-							<value>OJB-repository-kns-test.xml</value>
-						</list>
-					</property>
-				</bean>
+				<bean class="org.kuali.rice.kns.config.KNSConfigurer"/>
 		</property>
 		<property name="kewConfigurer">
 				<bean class="org.kuali.rice.kew.config.KEWConfigurer">
@@ -87,5 +95,7 @@
         	<bean class="org.kuali.rice.ken.config.KENConfigurer" />
 		</property>
 	</bean>
+	
+
 
 </beans>

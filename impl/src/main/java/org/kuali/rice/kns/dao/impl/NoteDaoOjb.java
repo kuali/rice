@@ -91,6 +91,12 @@ public class NoteDaoOjb extends PlatformAwareDaoBaseOjb implements NoteDao {
 
         return new ArrayList(notes);
     }
+    
+    public Note getNoteByNoteId(Long noteId) {
+        Criteria crit = new Criteria();
+        crit.addEqualTo("noteIdentifier", noteId);
+        return (Note) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(Note.class, crit));          
+    }
 
     /**
      * This method defines the default sort for notes

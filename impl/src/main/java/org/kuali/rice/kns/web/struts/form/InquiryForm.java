@@ -99,23 +99,25 @@ public class InquiryForm extends KualiForm {
         if (request.getParameter(KNSConstants.DOC_FORM_KEY) != null) {
             setFormKey(request.getParameter(KNSConstants.DOC_FORM_KEY));
         }
+        //if the action is download attachment then skip the following populate logic
+        if(!KNSConstants.DOWNLOAD_BO_ATTACHMENT_METHOD.equals(getMethodToCall())){		
+        	inquirable = getInquirable(getBusinessObjectClassName());
 
-        inquirable = getInquirable(getBusinessObjectClassName());
+        	// the following variable is true if the method to call is not start, meaning that we already called start
+        	boolean passedFromPreviousInquiry = !KNSConstants.START_METHOD.equals(getMethodToCall()) && !KNSConstants.CONTINUE_WITH_INQUIRY_METHOD_TO_CALL.equals(getMethodToCall());
 
-        // the following variable is true if the method to call is not start, meaning that we already called start
-        boolean passedFromPreviousInquiry = !KNSConstants.START_METHOD.equals(getMethodToCall()) && !KNSConstants.CONTINUE_WITH_INQUIRY_METHOD_TO_CALL.equals(getMethodToCall());
-
-        // There is no requirement that an inquiry screen must display the primary key values.  However, when clicking on hide/show (without javascript) and
-        // hide/show inactive, the PK values are needed to allow the server to properly render results after the user clicks on a hide/show button that results
-        // in server processing.  This line will populate the form with the PK values so that they may be used in subsequent requests.  Note that encrypted
-        // values will remain encrypted in this map.
-        this.inquiryPrimaryKeys = new HashMap<String, String>();
-        this.inquiryDecryptedPrimaryKeys = new HashMap<String, String>();
+        	// There is no requirement that an inquiry screen must display the primary key values.  However, when clicking on hide/show (without javascript) and
+        	// hide/show inactive, the PK values are needed to allow the server to properly render results after the user clicks on a hide/show button that results
+        	// in server processing.  This line will populate the form with the PK values so that they may be used in subsequent requests.  Note that encrypted
+        	// values will remain encrypted in this map.
+        	this.inquiryPrimaryKeys = new HashMap<String, String>();
+        	this.inquiryDecryptedPrimaryKeys = new HashMap<String, String>();
         
-        populatePKFieldValues(request, getBusinessObjectClassName(), passedFromPreviousInquiry);
+        	populatePKFieldValues(request, getBusinessObjectClassName(), passedFromPreviousInquiry);
 
-        populateInactiveRecordsInIntoInquirable(inquirable, request);
-        populateExportCapabilities(request, getBusinessObjectClassName());
+        	populateInactiveRecordsInIntoInquirable(inquirable, request);
+        	populateExportCapabilities(request, getBusinessObjectClassName());
+        }
     }
 
     protected Inquirable getInquirable(String boClassName) {

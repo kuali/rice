@@ -29,6 +29,8 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.kns.bo.Attachment;
 import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
+import org.kuali.rice.kns.dao.AttachmentDao;
+import org.kuali.rice.kns.dao.NoteDao;
 import org.kuali.rice.kns.service.AttachmentService;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.util.Guid;
@@ -43,6 +45,15 @@ public class AttachmentServiceImpl implements AttachmentService {
     private static Logger LOG = Logger.getLogger(AttachmentServiceImpl.class);
 
     private KualiConfigurationService kualiConfigurationService;
+    private AttachmentDao attachmentDao;
+    /**
+     * Retrieves an Attachment by note identifier.
+     * 
+     * @see org.kuali.rice.kns.service.AttachmentService#getAttachmentByNoteId(java.lang.Long)
+     */
+    public Attachment getAttachmentByNoteId(Long noteId) {
+		return attachmentDao.getAttachmentByNoteId(noteId);
+	}
 
     /**
      * @see org.kuali.rice.kns.service.DocumentAttachmentService#createAttachment(java.lang.String, java.lang.String, int,
@@ -220,6 +231,23 @@ public class AttachmentServiceImpl implements AttachmentService {
             }
         }
         
+    }
+    
+    // needed for Spring injection
+    /**
+     * Sets the data access object
+     * 
+     * @param d
+     */
+    public void setAttachmentDao(AttachmentDao d) {
+        this.attachmentDao = d;
+    }
+
+    /**
+     * Retrieves a data access object
+     */
+    public AttachmentDao getAttachmentDao() {
+        return attachmentDao;
     }
 
     /**

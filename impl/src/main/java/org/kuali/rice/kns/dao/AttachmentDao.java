@@ -15,9 +15,7 @@
  */
 package org.kuali.rice.kns.dao;
 
-import java.util.ArrayList;
-
-import org.kuali.rice.kns.bo.Note;
+import org.kuali.rice.kns.bo.Attachment;
 
 
 /**
@@ -25,35 +23,13 @@ import org.kuali.rice.kns.bo.Note;
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public interface NoteDao {
-    /**
-     * Saves a note to the DB.
-     * 
-     * @param line
-     */
-    void save(Note note);
-
-    /**
-     * Deletes a note from the DB.
-     * 
-     * @param line
-     */
-    void deleteNote(Note note);
-
-    /**
-     * Retrieves a list of notes (by class type) associated with a given object.
-     * 
-     * @param clazz
-     * @param id
-     * @return
-     */
-    public ArrayList findByremoteObjectId(String id);
+public interface AttachmentDao {
     
     /**
-     * Retrieve note by a given noteIdentifier
+     * Retrieve attachment by a given noteIdentifier
      * 
      * @param noteId
      * @return
      */
-    public Note getNoteByNoteId(Long noteId);
+    public Attachment getAttachmentByNoteId(Long noteId);
 }

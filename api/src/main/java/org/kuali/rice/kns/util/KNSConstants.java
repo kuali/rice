@@ -367,6 +367,10 @@ public class KNSConstants extends JSTLConstants {
     public static final String DISAPPROVE_METHOD = "disapprove";
     public static final String FYI_METHOD = "fyi";
     public static final String ACKNOWLEDGE_METHOD = "acknowledge";
+    
+    public static final String DOWNLOAD_BO_ATTACHMENT_METHOD ="downloadBOAttachment";
+    public static final String NOTE_IDENTIFIER = "noteIdentifier";
+    
     // specialized method 'delete' used only for PessimisticLocks currently
     public static final String DELETE_METHOD = "delete";
     public static final String START_METHOD = "start";

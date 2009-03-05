@@ -92,6 +92,15 @@ public class NoteServiceImpl implements NoteService {
 
         return noteDao.findByremoteObjectId(remoteObjectId);
     }
+    
+    /**
+     * Retrieves a Note by note identifier.
+     * 
+     * @see org.kuali.rice.kns.service.NoteService#getNoteByNoteId(java.lang.Long)
+     */
+    public Note getNoteByNoteId(Long noteId) {
+		return noteDao.getNoteByNoteId(noteId);
+	}
 
     /**
      * Deletes a Note from the DB.

@@ -38,6 +38,10 @@ public class NoteDaoProxy implements NoteDao {
 	public void deleteNote(Note note) throws DataAccessException {
 		getDao(Note.class).deleteNote(note);
 	}
+	
+    public Note getNoteByNoteId(Long noteId){
+    	return getDao(Note.class).getNoteByNoteId(noteId);
+    }
 
 	public ArrayList findByremoteObjectId(String remoteObjectId) {
 		return getDao(Note.class).findByremoteObjectId(remoteObjectId);

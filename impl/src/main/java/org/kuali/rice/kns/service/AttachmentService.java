@@ -72,4 +72,6 @@ public interface AttachmentService {
      *  methods return time in this format.  If a pending attachment was modified before this time, then it will be deleted (unless an error occurs)
      */
     public void deletePendingAttachmentsModifiedBefore(long modificationTime);
+    
+    public Attachment getAttachmentByNoteId(Long noteId);
 }

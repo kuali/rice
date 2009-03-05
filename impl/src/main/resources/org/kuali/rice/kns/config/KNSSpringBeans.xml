@@ -380,6 +380,9 @@
 		<property name="kualiConfigurationService">
 			<ref bean="kualiConfigurationService" />
 		</property>
+		<property name="attachmentDao">
+			<ref bean="attachmentDao" />
+		</property>
 	</bean>
 
 	<bean id="persistenceStructureServiceJpa" class="org.kuali.rice.kns.service.impl.PersistenceStructureServiceJpaImpl" />
@@ -786,6 +789,17 @@
 	</bean>
 
   <bean id="noteDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.NoteDaoOjb" />
+  
+  <bean id="attachmentDao" class="org.kuali.rice.kns.dao.proxy.AttachmentDaoProxy">
+    <property name="attachmentDaoJpa" ref="attachmentDaoJpa" />
+    <property name="attachmentDaoOjb" ref="attachmentDaoOjb" />
+  </bean>
+
+  <bean id="attachmentDaoJpa" class="org.kuali.rice.kns.dao.impl.AttachmentDaoJpa">
+		<property name="entityManager" ref="knsEntityManager"/>
+  </bean>
+
+  <bean id="attachmentDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.AttachmentDaoOjb" />
 
   <bean id="businessObjectDao" class="org.kuali.rice.kns.dao.proxy.BusinessObjectDaoProxy">
     <property name="businessObjectDaoJpa" ref="businessObjectDaoJpa" />

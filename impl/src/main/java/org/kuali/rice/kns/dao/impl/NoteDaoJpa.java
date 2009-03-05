@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.kns.bo.Attachment;
+import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.dao.NoteDao;
 import org.springframework.dao.DataAccessException;
@@ -76,6 +77,12 @@ public class NoteDaoJpa implements NoteDao {
 		criteria.orderBy("notePostedTimestamp", true);
 		return new ArrayList(new QueryByCriteria(entityManager, criteria).toQuery().getResultList());
 	}
+	
+	 public Note getNoteByNoteId(Long noteId) {
+		 Criteria criteria = new Criteria(Note.class.getName());
+		 criteria.eq("noteIdentifier", noteId);
+	     return (Note) new org.kuali.rice.core.jpa.criteria.QueryByCriteria(entityManager, criteria).toQuery().getSingleResult();          
+	    }
 
     /**
      * @return the entityManager

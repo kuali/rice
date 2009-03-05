@@ -565,7 +565,6 @@
 						 
 				</c:when>
 
-
 				<c:when test="${field.fieldType eq field.RADIO}">
 
 					<kul:fieldDefaultLabel isLookup="${isLookup}" isRequired="${field.fieldRequired}"
@@ -851,9 +850,10 @@
 							fieldName="${field.propertyName}" fieldType="${field.fieldType}"
 							fieldLabel="${field.fieldLabel}" />
 						<td class="grid" width="${dataCellWidth}%">
-						<html:link href="${field.propertyValue}" target="${field.target}" styleClass="${field.styleClass}">${field.hrefText}
-
+						<c:if test="${not empty field.propertyValue }" >
+								<html:link href="${field.propertyValue}" target="${field.target}" styleClass="${field.styleClass}">${field.hrefText} 
 								</html:link>
+						</c:if>
 						</td>
 					</c:when>
 					<c:otherwise>

@@ -18,6 +18,7 @@ package org.kuali.rice.kns.web.struts.action;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,23 +33,31 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.bo.Attachment;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Exporter;
+import org.kuali.rice.kns.bo.Note;
+import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.ModuleService;
+import org.kuali.rice.kns.service.NoteService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
+import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.struts.form.InquiryForm;
+import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 
 /**
  * This class handles actions for inquiries of business objects.
  */
 public class KualiInquiryAction extends KualiAction {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiInquiryAction.class);
+    private NoteService noteService;
 
     @Override
     protected void checkAuthorization(ActionForm form, String methodToCall) throws AuthorizationException {
@@ -56,12 +65,14 @@ public class KualiInquiryAction extends KualiAction {
             super.checkAuthorization(form, methodToCall);
         } else {
             try {
-                Class businessObjectClass = Class.forName(((InquiryForm) form).getBusinessObjectClassName());
-                if (!KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(GlobalVariables.getUserSession().getPrincipalId(), KNSConstants.KNS_NAMESPACE, KimConstants.PermissionTemplateNames.INQUIRE_INTO_RECORDS, KimCommonUtils.getNamespaceAndComponentSimpleName(businessObjectClass), null)) {
-                    throw new AuthorizationException(GlobalVariables.getUserSession().getPerson().getPrincipalName(), 
+            	if(!KNSConstants.DOWNLOAD_BO_ATTACHMENT_METHOD.equals(methodToCall)){	
+            		Class businessObjectClass = Class.forName(((InquiryForm) form).getBusinessObjectClassName());
+            		if (!KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(GlobalVariables.getUserSession().getPrincipalId(), KNSConstants.KNS_NAMESPACE, KimConstants.PermissionTemplateNames.INQUIRE_INTO_RECORDS, KimCommonUtils.getNamespaceAndComponentSimpleName(businessObjectClass), null)) {
+            			throw new AuthorizationException(GlobalVariables.getUserSession().getPerson().getPrincipalName(), 
                     		"inquire",
                     		businessObjectClass.getSimpleName());
-                }
+            		}
+            	}
             }
             catch (ClassNotFoundException e) {
             	LOG.warn("Unable to load BusinessObject class: " + ((InquiryForm) form).getBusinessObjectClassName(), e);
@@ -114,6 +125,33 @@ public class KualiInquiryAction extends KualiAction {
 		}
 
 		return continueWithInquiry(mapping, form, request, response);
+    }
+    
+    /**
+     * Downloads the selected attachment to the user's browser
+     *
+     * @param mapping
+     * @param form
+     * @param request
+     * @param response
+     * @return ActionForward
+     * @throws Exception
+     */
+    public ActionForward downloadBOAttachment(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Long noteIdentifier = Long.valueOf(request.getParameter(KNSConstants.NOTE_IDENTIFIER));
+
+        Note note = this.getNoteService().getNoteByNoteId(noteIdentifier);
+        if(note != null){
+        	Attachment attachment = note.getAttachment();
+        	if(attachment != null){
+        		//make sure attachment is setup with backwards reference to note (rather then doing this we could also just call the attachment service (with a new method that took in the note)
+        		attachment.setNote(note);
+        		WebUtils.saveMimeInputStreamAsFile(response, attachment.getAttachmentMimeTypeCode(), attachment.getAttachmentContents(), attachment.getAttachmentFileName(), attachment.getAttachmentFileSize().intValue());
+        	}
+        	return null;
+        }
+        
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
     
     public ActionForward continueWithInquiry(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -257,4 +295,11 @@ public class KualiInquiryAction extends KualiAction {
         kualiInquirable.addAdditionalSections(sections, bo);
         request.setAttribute(KNSConstants.INQUIRABLE_ATTRIBUTE_NAME, kualiInquirable);
     }
+    
+    protected NoteService getNoteService() {
+		if ( noteService == null ) {
+			noteService = KNSServiceLocator.getNoteService();
+		}
+		return this.noteService;
+	}
 }

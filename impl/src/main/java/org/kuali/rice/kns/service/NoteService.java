@@ -41,6 +41,14 @@ public interface NoteService {
     public ArrayList<Note> getByRemoteObjectId(String remoteObjectId);
 
     /**
+     * Retrieves the notes for a note identifier
+     *
+     * @param noteId
+     * @return A Note
+     */
+    public Note getNoteByNoteId(Long noteId);
+    
+    /**
      *
      * This method saves a list of notes
      * @param noteValues

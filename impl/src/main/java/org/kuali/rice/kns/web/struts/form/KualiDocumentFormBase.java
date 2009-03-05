@@ -36,6 +36,7 @@ import org.kuali.rice.kns.bo.AdHocRoutePerson;
 import org.kuali.rice.kns.bo.AdHocRouteRecipient;
 import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.kns.bo.Note;
+import org.kuali.rice.kns.datadictionary.DataDictionary;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -47,6 +48,7 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.util.spring.AutoPopulatingList;
+import org.kuali.rice.kns.web.derviedvaluesetter.DerivedValuesSetter;
 import org.kuali.rice.kns.web.format.NoOpStringFormatter;
 import org.kuali.rice.kns.web.format.TimestampAMPMFormatter;
 import org.kuali.rice.kns.web.ui.HeaderField;
@@ -775,6 +777,27 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 	 */
 	public void setErrorMapFromPreviousRequest(ErrorMap errorMapFromPreviousRequest) {
 		this.errorMapFromPreviousRequest = errorMapFromPreviousRequest;
+	}
+	
+	@Override
+	protected void setDerivedValuesOnForm(HttpServletRequest request) {
+		super.setDerivedValuesOnForm(request);
+
+		String docTypeName = getDocTypeName();
+		if (StringUtils.isNotBlank(docTypeName)) {
+			DataDictionary dataDictionary = KNSServiceLocator.getDataDictionaryService().getDataDictionary();
+			Class<? extends DerivedValuesSetter> derivedValuesSetterClass = dataDictionary.getDocumentEntry(docTypeName).getDerivedValuesSetterClass();
+			if (derivedValuesSetterClass != null) {
+				try {
+					DerivedValuesSetter derivedValuesSetter = derivedValuesSetterClass.newInstance();
+					derivedValuesSetter.setDerivedValues(this, request);
+				}
+				catch (Exception e) {
+					LOG.error("Unable to instantiate class " + derivedValuesSetterClass.getName(), e);
+					throw new RuntimeException("Unable to instantiate class " + derivedValuesSetterClass.getName(), e);
+				}
+			}
+		}
 	}
 }
 

@@ -32,6 +32,7 @@ import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.rule.BusinessRule;
 import org.kuali.rice.kns.rule.PreRulesCheck;
+import org.kuali.rice.kns.web.derviedvaluesetter.DerivedValuesSetter;
 
 /**
  * A single Document entry in the DataDictionary, which contains information relating to the display, validation, and general
@@ -48,7 +49,7 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     protected Class<? extends Document> documentClass;
     protected Class<? extends BusinessRule> businessRulesClass;
     protected Class<? extends PreRulesCheck> preRulesCheckClass;
-
+    protected Class<? extends DerivedValuesSetter> derivedValuesSetterClass;
     protected String documentTypeName;
 
     protected boolean allowsNoteDelete = false;
@@ -479,5 +480,20 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
 	public void setDocumentPresentationControllerClass(
 			Class<? extends DocumentPresentationController> documentPresentationControllerClass) {
 		this.documentPresentationControllerClass = documentPresentationControllerClass;
+	}
+
+	/**
+	 * @return the derivedValuesSetter
+	 */
+	public Class<? extends DerivedValuesSetter> getDerivedValuesSetterClass() {
+		return this.derivedValuesSetterClass;
+	}
+
+	/**
+	 * @param derivedValuesSetter the derivedValuesSetter to set
+	 */
+	public void setDerivedValuesSetterClass(
+			Class<? extends DerivedValuesSetter> derivedValuesSetter) {
+		this.derivedValuesSetterClass = derivedValuesSetter;
 	}
 }

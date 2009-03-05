@@ -125,8 +125,9 @@ public class DocumentTypeXmlExporter implements XmlExporter, XmlConstants {
         exportPolicies(docTypeElement, documentType.getPolicies());
       exportAttributes(docTypeElement, documentType.getDocumentTypeAttributes());
       exportSecurity(docTypeElement, documentType.getDocumentTypeSecurityXml());
-
-        renderer.renderTextElement(docTypeElement, ROUTING_VERSION, documentType.getRoutingVersion());
+      	if (!StringUtils.isBlank(documentType.getRoutingVersion())) {
+      		renderer.renderTextElement(docTypeElement, ROUTING_VERSION, documentType.getRoutingVersion());
+      	}
         exportRouteData(docTypeElement, documentType, flattenedNodes, hasDefaultExceptionWorkgroup);
     }
 

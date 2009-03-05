@@ -49,3 +49,14 @@ INSERT INTO KRNS_NMSPC_T(NMSPC_CD, OBJ_ID, VER_NBR, NM, ACTV_IND, APPL_NMSPC_CD)
 
 alter table KREW_DOC_TYP_T modify RTE_VER_NBR NULL
 /
+
+-- KFSMI-2892 - missing ver_nbr defaults
+
+alter table KRIM_DLGN_MBR_T modify (ver_nbr NUMBER(8,0) default 1)
+/
+alter table KRIM_DLGN_T modify (ver_nbr NUMBER(8,0) default 1)
+/
+alter table KRIM_GRP_MBR_T modify (ver_nbr NUMBER(8,0) default 1)
+/
+alter table KRIM_ROLE_MBR_T modify (ver_nbr NUMBER(8,0) default 1)
+/

@@ -120,6 +120,9 @@ public abstract class NotificationTestCaseBase extends BaselineTestCase {
             }
         });
 
+        // load the default SQL
+        lifecycles.add(new SQLDataLoaderLifecycle("classpath:org/kuali/rice/ken/test/DefaultTestData.sql", ";"));
+        
         // load the KEW bootstrap
         lifecycles.add(new KEWXmlDataLoaderLifecycle("file:" + getBaseDir() + "/../impl/src/main/config/xml/KEWBootstrap.xml"));
         lifecycles.add(new KEWXmlDataLoaderLifecycle("file:" + getBaseDir() + "/../impl/src/main/config/bootstrap/widgets.xml"));
@@ -130,7 +133,7 @@ public abstract class NotificationTestCaseBase extends BaselineTestCase {
         // load the KEN test data
         // some test data has to be loaded via SQL because we do not have XML loaders for it yet
         lifecycles.add(new KEWXmlDataLoaderLifecycle("classpath:org/kuali/rice/ken/test/DefaultTestData.xml"));
-        lifecycles.add(new SQLDataLoaderLifecycle("classpath:org/kuali/rice/ken/test/DefaultTestData.sql", ";"));
+        
 
         return lifecycles;
 

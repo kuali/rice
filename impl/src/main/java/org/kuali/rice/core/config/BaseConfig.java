@@ -262,6 +262,10 @@ public abstract class BaseConfig implements Config {
     public String getProperty(String key) {
         return getProperties().getProperty(key);
     }
+    
+    public boolean getBooleanProperty(String key, boolean defaultValue) {
+    	return RiceUtilities.getBooleanValueForString(getProperty(key), defaultValue);
+    }
 
     public Map<String, Object> getObjects() {
         return this.objects;

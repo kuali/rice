@@ -33,6 +33,7 @@ public class RiceConstants {
     public static final String JPA_ENABLED_SUFFIX = ".jpa.enabled";
     
     public static final String SERVICES_TO_CACHE = "rice.resourceloader.servicesToCache";
+    public static final String RICE_LOGGING_CONFIGURE = "rice.logging.configure";
 
     public static final String SPRING_TRANSACTION_MANAGER = "SPRING_TRANSACTION_MANAGER";
 

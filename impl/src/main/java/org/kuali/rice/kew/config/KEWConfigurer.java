@@ -121,9 +121,6 @@ public class KEWConfigurer extends ModuleConfigurer {
 		if ( getRunMode().equals( REMOTE_RUN_MODE ) ) {
 			lifecycles.add(createThinClientLifecycle());
 		} else { // local or embedded
-			if (isStandaloneServer()) {
-				lifecycles.add(new Log4jLifeCycle());
-			}
 			lifecycles.add(createEmbeddedLifeCycle());
 		}
 		return lifecycles;

@@ -171,6 +171,9 @@ public interface Config {
 	public Properties getProperties();
 
 	public String getProperty(String key);
+	
+	public boolean getBooleanProperty(String key, boolean defaultValue);
+	
 	public Map<String, String> getPropertiesWithPrefix(String prefix, boolean stripPrefix);
 	
 	public Map<String, Object> getObjects();

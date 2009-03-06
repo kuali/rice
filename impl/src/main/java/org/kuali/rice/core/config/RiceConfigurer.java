@@ -32,6 +32,7 @@ import org.kuali.rice.core.config.event.AfterStopEvent;
 import org.kuali.rice.core.config.event.BeforeStartEvent;
 import org.kuali.rice.core.config.event.BeforeStopEvent;
 import org.kuali.rice.core.config.event.RiceConfigEvent;
+import org.kuali.rice.core.config.logging.Log4jLifeCycle;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.lifecycle.BaseCompositeLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
@@ -211,10 +212,17 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
 	protected List<Lifecycle> loadLifecycles() throws Exception {
 		 GlobalResourceDelegatingSpringCreator.APPLICATION_BEAN_FACTORY = beanFactory;
 		 List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
+		 if (isConfigureLogging()) {
+			 lifecycles.add(new Log4jLifeCycle());
+		 }
 		 for (ModuleConfigurer module : this.modules) {
 			 lifecycles.add(module);
 		 }
 		 return lifecycles;
+	}
+	
+	protected boolean isConfigureLogging() {
+		return ConfigContext.getCurrentContextConfig().getBooleanProperty(RiceConstants.RICE_LOGGING_CONFIGURE, false);
 	}
 	
 	/***

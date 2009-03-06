@@ -127,6 +127,7 @@
       <!-- End of property place holders -->
     <!-- End of Exception Incident handling and reporting -->
 
+    <param name="rice.logging.configure" override="false">false</param>
     <param name="log4j.reload.minutes" override="false">5</param>
     <param name="log4j.settings.path" override="false">classpath:log4j.properties</param>
 

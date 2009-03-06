@@ -9,7 +9,7 @@
 <config>
 
     <param name="transaction.timeout">3600</param>
-
+	<param name="rice.logging.configure">true</param>
 
     <!-- KSB -->
 

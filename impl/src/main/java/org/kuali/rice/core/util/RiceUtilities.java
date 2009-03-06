@@ -24,6 +24,7 @@ import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.FileSystemResource;
@@ -35,6 +36,20 @@ import org.springframework.core.io.Resource;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RiceUtilities {
+	
+	private static final String[] TRUE_VALUES = new String[] { "true", "yes", "t", "y" };
+	
+	public static boolean getBooleanValueForString(String value, boolean defaultValue) {
+		if (!StringUtils.isBlank(value)) {
+			for (String trueValue : TRUE_VALUES) {
+				if (value.equalsIgnoreCase(trueValue)) {
+					return true;
+				}
+			}
+			return false;
+		}
+		return defaultValue;
+	}
 	
     public static String collectStackTrace(Throwable t) {
         StringWriter sw = new StringWriter();

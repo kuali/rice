@@ -17,6 +17,7 @@ package org.kuali.rice.kns.datadictionary.validation.charlevel;
 
 import org.kuali.rice.kns.datadictionary.exporter.ExportMap;
 import org.kuali.rice.kns.datadictionary.validation.CharacterLevelValidationPattern;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * Pattern for matching any printable character
@@ -69,4 +70,12 @@ public class AnyCharacterValidationPattern extends CharacterLevelValidationPatte
             exportMap.set("allowWhitespace", "true");
         }
     }
+    
+	@Override
+	protected String getValidationErrorMessageKeyOptions() {
+		if (getAllowWhitespace()) {
+			return ".allowWhitespace";
+		}
+		return KNSConstants.EMPTY_STRING;
+	}
 }

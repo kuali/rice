@@ -114,4 +114,17 @@ abstract public class ValidationPattern implements Serializable {
      * @return ExportMap describing the subclass instance
      */
     abstract public ExportMap buildExportMap(String exportKey);
+    
+    abstract public String getValidationErrorMessageKey();
+    
+    public String[] getValidationErrorMessageParameters(String attributeLabel) {
+        return new String[] {attributeLabel};
+    }
+    
+    /**
+     * This method throws an exception if it is not configured properly
+     * 
+     */
+    public void completeValidation() {
+    }
 }

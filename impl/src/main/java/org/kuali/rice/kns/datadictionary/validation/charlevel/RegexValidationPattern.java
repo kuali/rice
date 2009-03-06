@@ -35,6 +35,7 @@ public class RegexValidationPattern extends CharacterLevelValidationPattern {
      */
     private String pattern;
 
+    private String validationErrorMessageKey;
     /**
      * This exports a representation of this instance by an ExportMap.
      * 
@@ -122,4 +123,30 @@ public class RegexValidationPattern extends CharacterLevelValidationPattern {
         this.pattern = pattern;
     }
 
+	/**
+	 * @return the validationErrorMessageKey
+	 */
+    @Override
+	public String getValidationErrorMessageKey() {
+		return this.validationErrorMessageKey;
+	}
+
+	/**
+	 * @param validationErrorMessageKey a message key from the application's message resource bundle signifying the error message
+	 * to display if some validation does not match this pattern
+	 */
+	public void setValidationErrorMessageKey(String validationErrorMessageKey) {
+		this.validationErrorMessageKey = validationErrorMessageKey;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.datadictionary.validation.ValidationPattern#completeValidation()
+	 */
+	@Override
+	public void completeValidation() {
+		super.completeValidation();
+		if (StringUtils.isBlank(validationErrorMessageKey)) {
+			throw new RuntimeException("Regex Validation Patterns must have a validation error message key defined");
+		}
+	}
 }

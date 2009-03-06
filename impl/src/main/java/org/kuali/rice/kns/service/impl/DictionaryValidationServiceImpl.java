@@ -261,12 +261,9 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateAttributeFormat
      */
     public void validateAttributeFormat(String objectClassName, String attributeName, String attributeValue, String errorKey) {
-        String longAttributeLabel = getDataDictionaryService().getAttributeLabel(objectClassName, attributeName);
-        String shortAttributeLabel = getDataDictionaryService().getAttributeShortLabel(objectClassName, attributeName);
-        String errorLabel = longAttributeLabel + " (" + shortAttributeLabel + ")";
+        String errorLabel = getDataDictionaryService().getAttributeErrorLabel(objectClassName, attributeName);
 
         LOG.debug("(bo, attributeName, attributeValue) = (" + objectClassName + "," + attributeName + "," + attributeValue + ")");
-
 
         if (StringUtils.isNotBlank(attributeValue)) {
             Integer maxLength = getDataDictionaryService().getAttributeMaxLength(objectClassName, attributeName);
@@ -297,7 +294,9 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                         }
                     }
                     if (isError) {
-                        GlobalVariables.getErrorMap().putError(errorKey, RiceKeyConstants.ERROR_INVALID_FORMAT, new String[] { errorLabel, attributeValue });
+                    	String errorMessageKey = getDataDictionaryService().getAttributeValidatingErrorMessageKey(objectClassName, attributeName);
+                    	String[] errorMessageParameters = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(objectClassName, attributeName);
+                        GlobalVariables.getErrorMap().putError(errorKey, errorMessageKey, errorMessageParameters);
                     }
                     return;
                 }

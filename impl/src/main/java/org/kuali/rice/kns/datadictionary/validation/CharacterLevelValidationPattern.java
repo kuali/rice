@@ -18,6 +18,7 @@ package org.kuali.rice.kns.datadictionary.validation;
 import java.util.regex.Pattern;
 
 import org.kuali.rice.kns.datadictionary.exporter.ExportMap;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * Abstraction of the regular expressions used to validate attribute values.
@@ -124,4 +125,37 @@ abstract public class CharacterLevelValidationPattern extends ValidationPattern 
      * @param exportMap
      */
     abstract public void extendExportMap(ExportMap exportMap);
+
+	@Override
+	public String[] getValidationErrorMessageParameters(String attributeLabel) {
+		if (getMaxLength() != -1) {
+			return new String[] {attributeLabel, String.valueOf(getMaxLength())};
+		}
+		if (getExactLength() != -1) {
+			return new String[] {attributeLabel, String.valueOf(getExactLength())};
+		}
+		return new String[] {attributeLabel};
+	}
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.datadictionary.validation.ValidationPattern#getValidationErrorMessageKey()
+	 */
+	@Override
+	public String getValidationErrorMessageKey() {
+		StringBuilder buf = new StringBuilder();
+		buf.append("error.format.").append(getClass().getName()).append(getValidationErrorMessageKeyOptions());
+		if (getMaxLength() != -1) {
+			buf.append(".maxLength");
+		}
+		if (getExactLength() != -1) {
+			buf.append(".exactLength");
+		}	
+		return buf.toString();
+	}
+	
+	protected String getValidationErrorMessageKeyOptions() {
+		return KNSConstants.EMPTY_STRING;
+	}
 }

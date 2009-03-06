@@ -17,6 +17,7 @@ package org.kuali.rice.kns.datadictionary.validation.charlevel;
 
 import org.kuali.rice.kns.datadictionary.exporter.ExportMap;
 import org.kuali.rice.kns.datadictionary.validation.CharacterLevelValidationPattern;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * Pattern for matching alphanumeric characters
@@ -89,4 +90,18 @@ public class AlphaNumericValidationPattern extends CharacterLevelValidationPatte
             exportMap.set("allowUnderscore", "true");
         }
     }
+
+	@Override
+	protected String getValidationErrorMessageKeyOptions() {
+		if (allowWhitespace && allowUnderscore) {
+			return ".allowWhitespace.allowUnderscore";
+		}
+		if (allowWhitespace) {
+			return ".allowWhitespace";
+		}
+		if (allowUnderscore) {
+			return ".allowUnderscore";
+		}
+		return KNSConstants.EMPTY_STRING;
+	}
 }

@@ -391,7 +391,6 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
      */
     public void completeValidation(Class rootObjectClass, Class otherObjectClass) {
         try {
-        
             if (!DataDictionary.isPropertyOf(rootObjectClass, getName())) {
                 throw new AttributeValidationException("property '" + getName() + "' is not a property of class '" + rootObjectClass.getName() + "' (" + "" + ")");
             }
@@ -404,6 +403,10 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
     
             if(attributeSecurity != null){
             	attributeSecurity.completeValidation(rootObjectClass, otherObjectClass);
+            }
+            
+            if (validationPattern != null) {
+            	validationPattern.completeValidation();
             }
         } catch ( RuntimeException ex ) {
             LogFactory.getLog(getClass()).error("Unable to validate attribute " + rootObjectClass + "." + getName() + ": " + ex.getMessage(), ex );

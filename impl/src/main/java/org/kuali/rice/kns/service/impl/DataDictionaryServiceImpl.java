@@ -43,6 +43,7 @@ import org.kuali.rice.kns.datadictionary.PrimitiveAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.RelationshipDefinition;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.datadictionary.exporter.DataDictionaryMap;
+import org.kuali.rice.kns.datadictionary.validation.ValidationPattern;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.exception.UnknownBusinessClassAttributeException;
 import org.kuali.rice.kns.exception.UnknownDocumentTypeException;
@@ -673,6 +674,35 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     }
 
     /**
+	 * @see org.kuali.rice.kns.service.DataDictionaryService#getAttributeValidatingErrorMessageKey(java.lang.String, java.lang.String)
+	 */
+	public String getAttributeValidatingErrorMessageKey(String entryName, String attributeName) {
+        AttributeDefinition attributeDefinition = getAttributeDefinition(entryName, attributeName);
+        if (attributeDefinition != null) {
+        	if (attributeDefinition.hasValidationPattern()) {
+        		ValidationPattern validationPattern = attributeDefinition.getValidationPattern();
+        		return validationPattern.getValidationErrorMessageKey();
+        	}
+        }
+        return null;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.service.DataDictionaryService#getAttributeValidatingErrorMessageParameters(java.lang.String, java.lang.String)
+	 */
+	public String[] getAttributeValidatingErrorMessageParameters(String entryName, String attributeName) {
+		AttributeDefinition attributeDefinition = getAttributeDefinition(entryName, attributeName);
+        if (attributeDefinition != null) {
+        	if (attributeDefinition.hasValidationPattern()) {
+        		ValidationPattern validationPattern = attributeDefinition.getValidationPattern();
+        		String attributeLabel = getAttributeErrorLabel(entryName, attributeName);
+        		return validationPattern.getValidationErrorMessageParameters(attributeLabel);
+        	}
+        }
+        return null;
+	}
+
+	/**
      * @see org.kuali.rice.kns.service.DataDictionaryService#getCollectionDescription(java.lang.String, java.lang.String)
      */
     public String getCollectionDescription(Class businessObjectClass, String collectionName) {

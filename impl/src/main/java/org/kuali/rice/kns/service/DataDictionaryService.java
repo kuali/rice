@@ -247,6 +247,10 @@ public interface DataDictionaryService {
      */
     public String getAttributeDescription(String entryName, String attributeName);
 
+    public String getAttributeValidatingErrorMessageKey(String entryName, String attributeName);
+    
+    public String[] getAttributeValidatingErrorMessageParameters(String entryName, String attributeName);
+    
     /**
      * indicates whether or not the named attribute is required
      */

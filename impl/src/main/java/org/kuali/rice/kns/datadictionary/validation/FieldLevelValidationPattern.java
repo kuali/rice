@@ -69,4 +69,16 @@ abstract public class FieldLevelValidationPattern extends ValidationPattern {
 
         return exportMap;
     }
+    
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.datadictionary.validation.ValidationPattern#getValidationErrorMessageKey()
+	 */
+	@Override
+	public String getValidationErrorMessageKey() {
+		StringBuilder buf = new StringBuilder();
+		buf.append("error.format.").append(getClass().getName());
+		return buf.toString();
+	}
 }

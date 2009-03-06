@@ -71,9 +71,19 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
     	if(kimTypeImpl!=null && !((KimRoleTypeService)KimCommonUtils.getKimTypeService(kimTypeImpl)).isApplicationRoleType()){
 	    	parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.DOC_HANDLER_METHOD);
 	    	parameters.put(KNSConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
-	    	parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, KimConstants.KimUIConstants.KIM_DOCUMENT_TYPE_NAMES_MAP.get(lookupForm.getFormKey()));
+	    	//TODO: clean this up.
+	    	String docTypeName = "";
+	    	String docTypeAction = "";
+	    	if(KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_SHORT_KEY.equals(lookupForm.getFormKey())){
+	    		docTypeName = KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_TYPE_NAME;
+	    		docTypeAction = KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_ACTION;
+	    	} else{
+	    		docTypeName = KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_TYPE_NAME;
+	    		docTypeAction = KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_ACTION;
+	    	}
+	    	parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, docTypeName);
 	    	href = UrlFactory.parameterizeUrl(
-	    			KimCommonUtils.getKimBasePath()+KimConstants.KimUIConstants.KIM_DOCUMENTS_ACTION_MAP.get(lookupForm.getFormKey()), parameters);
+	    			KimCommonUtils.getKimBasePath()+docTypeAction, parameters);
     	}
         return href;
     }
@@ -87,12 +97,11 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
     }
 
     static boolean hasGroupTypeService(KimTypeService kimTypeService){
-        return kimTypeService instanceof KimGroupTypeService;
+        return (kimTypeService==null) || (kimTypeService instanceof KimGroupTypeService);
     }
 
 	static boolean hasRoleTypeService(KimTypeService kimTypeService){
-		if(kimTypeService==null) return false;
-		return KimRoleTypeService.class.isAssignableFrom(kimTypeService.getClass());
+		return (kimTypeService==null) || (kimTypeService instanceof KimRoleTypeService);
 	}
 
 	static boolean hasDerivedRoleTypeService(KimTypeImpl kimTypeImpl){

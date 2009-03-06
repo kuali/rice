@@ -23,6 +23,7 @@ import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.lang.StringUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -164,19 +165,21 @@ public class GroupXmlParser implements XmlConstants {
             String typeName = typeElement.getChildText(NAME, GROUP_NAMESPACE);
             KimTypeImpl kimTypeImpl = KIMServiceLocator.getTypeInternalService().getKimTypeByName(typeNamespace, typeName);
             if (kimTypeImpl != null) {
-                groupInfo.setKimTypeId(kimTypeImpl.getKimTypeId());
+            	typeId = kimTypeImpl.getKimTypeId();
                 kimTypeAttributes = kimTypeImpl.getAttributeDefinitions();
-                typeId = kimTypeImpl.getKimTypeId();
             } else  {
                 throw new InvalidXmlException("Invalid type name and namespace specified.");
             }
         } else { //set to default type
             KimTypeImpl kimTypeDefault = KIMServiceLocator.getTypeInternalService().getKimTypeByName(KimConstants.KIM_TYPE_DEFAULT_NAMESPACE, KimConstants.KIM_TYPE_DEFAULT_NAME);
             if (kimTypeDefault != null) {
-                groupInfo.setKimTypeId(kimTypeDefault.getKimTypeId());
+            	typeId = kimTypeDefault.getKimTypeId();
                 kimTypeAttributes = kimTypeDefault.getAttributeDefinitions();
+            } else {
+            	throw new RuntimeException("Failed to locate the 'Default' group type!  Please ensure that it's in your database.");
             }
         }
+        groupInfo.setKimTypeId(typeId);
 
         //Active Indicator
         groupInfo.setActive(DEFAULT_ACTIVE_VALUE);

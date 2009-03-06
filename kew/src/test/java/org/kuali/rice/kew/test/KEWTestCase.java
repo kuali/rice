@@ -29,6 +29,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
 import org.kuali.rice.test.RiceTestCase;
 import org.kuali.rice.test.SQLDataLoader;
+import org.kuali.rice.test.TestHarnessServiceLocator;
 import org.kuali.rice.test.lifecycles.TransactionalLifecycle;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -60,15 +61,10 @@ public abstract class KEWTestCase extends RiceTestCase {
      * Initiates loading of test data within a transaction.
      */
 	protected void loadTestDataInternal() throws Exception {
-		getTransactionTemplate().execute(new TransactionCallbackWithoutResult() {
-			public void doInTransactionWithoutResult(final TransactionStatus status) {
-				try {
-					setUpTransactionInternal();
-				} catch (Exception e) {
-					throw new WrappedTransactionRuntimeException(e);
-				}
-			}
-		});
+		// This code used to start a transaction but there were issues with the SQLDataLoader transaction not having
+		// visibility to the transaction that loads XML for ingestion which was causing problems when trying to reference
+		// data from DefaultTestData.sql from data being imported in XML, so the transaction wrapper was removed here
+		setUpTransactionInternal();
 	}
 
 	protected void setUpTransactionInternal() throws Exception {
@@ -107,15 +103,6 @@ public abstract class KEWTestCase extends RiceTestCase {
 
 	protected TransactionTemplate getTransactionTemplate() {
 		return TestUtilities.getTransactionTemplate();
-	}
-
-	private class WrappedTransactionRuntimeException extends RuntimeException {
-
-		private static final long serialVersionUID = 3097909333572509600L;
-
-		public WrappedTransactionRuntimeException(Exception e) {
-			super(e);
-		}
 	}
 
 	/**

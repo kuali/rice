@@ -20,9 +20,7 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -136,7 +134,7 @@ public class DocumentTypeXmlParser implements XmlConstants {
     	Map<String,List<String>> pendingChildNames = new HashMap<String,List<String>>();
     	// A stack containing Iterators over the various lists of unprocessed nodes; this allows for faster parent-child resolution
     	// without having to use recursion.
-        Deque<Iterator<DocTypeNode>> docInitStack = new ArrayDeque<Iterator<DocTypeNode>>();
+        List<Iterator<DocTypeNode>> docInitStack = new ArrayList<Iterator<DocTypeNode>>();
         // The first List of document types.
         List<DocTypeNode> initialList = new ArrayList<DocTypeNode>();
     	// The current size of the stack.
@@ -212,14 +210,14 @@ public class DocumentTypeXmlParser implements XmlConstants {
         			// If there are any pending children, push the old Iterator onto the stack and process the new Iterator on the next
         			// iteration of the loop.
         			stackLen++;
-        			docInitStack.addFirst(currentIter);
+        			docInitStack.add(currentIter);
         			currentIter = childrenToProcess.iterator();
         		}
         	}
         	else {
         		// If the current Iterator has reached its end, discard it and pop the next one (if any) from the stack.
         		stackLen--;
-        		currentIter = ((stackLen >= 0) ? docInitStack.removeFirst() : null);
+        		currentIter = ((stackLen >= 0) ? docInitStack.remove(stackLen) : null);
          	}
         }
         

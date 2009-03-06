@@ -20,7 +20,9 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -47,6 +49,7 @@ import org.kuali.rice.kew.engine.node.Process;
 import org.kuali.rice.kew.engine.node.RoleNode;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeConfigParam;
+import org.kuali.rice.kew.exception.InvalidParentDocTypeException;
 import org.kuali.rice.kew.exception.InvalidWorkgroupException;
 import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -105,24 +108,149 @@ public class DocumentTypeXmlParser implements XmlConstants {
     public List parseDocumentTypes(InputStream input) throws SAXException, IOException, ParserConfigurationException, XPathExpressionException, WorkflowException, TransformerException {
         Document routeDocument=XmlHelper.trimXml(input);
         Map documentTypesByName = new HashMap();
+/*
         for (Iterator iterator = parseStandardDocumentTypes(routeDocument).iterator(); iterator.hasNext();) {
             DocumentType type = (DocumentType) iterator.next();
             documentTypesByName.put(type.getName(), type);
         }
+
         for (Iterator iterator = parseRoutingDocumentTypes(routeDocument).iterator(); iterator.hasNext();) {
+*/
+        for (Iterator iterator = parseAllDocumentTypes(routeDocument).iterator(); iterator.hasNext();) {
             DocumentType type = (DocumentType) iterator.next();
             documentTypesByName.put(type.getName(), type);
         }
         return new ArrayList(documentTypesByName.values());
     }
 
-    private List parseRoutingDocumentTypes(Document routeDocument) throws SAXException, IOException, ParserConfigurationException, XPathExpressionException, WorkflowException, TransformerException {
+    /**
+     * Parses all document types, both standard and routing.
+     * 
+     * @param routeDocument The DOM document to parse.
+     * @return A list containing the desired document types.
+     */
+    private List<DocumentType> parseAllDocumentTypes(Document routeDocument) throws SAXException, IOException, ParserConfigurationException, XPathExpressionException, WorkflowException, TransformerException {
+    	// A mapping from the names of uninitialized parent doc types to the child nodes that depend on the parent doc.
+    	Map<String,List<DocTypeNode>> pendingChildDocs = new HashMap<String,List<DocTypeNode>>();
+    	// A mapping from the names of uninitialized parent doc types to the names of the dependent children.
+    	Map<String,List<String>> pendingChildNames = new HashMap<String,List<String>>();
+    	// A stack containing Iterators over the various lists of unprocessed nodes; this allows for faster parent-child resolution
+    	// without having to use recursion.
+        Deque<Iterator<DocTypeNode>> docInitStack = new ArrayDeque<Iterator<DocTypeNode>>();
+        // The first List of document types.
+        List<DocTypeNode> initialList = new ArrayList<DocTypeNode>();
+    	// The current size of the stack.
+    	int stackLen = 0;
+    	// The current Iterator instance.
+    	Iterator<DocTypeNode> currentIter = null;
+        // The current document type node.
+        DocTypeNode currDocNode = null;
+
+        List<DocumentType> docTypeBeans = new ArrayList<DocumentType>();
+                
+        // Acquire the "standard" and "routing" document types.
+        NodeList initialNodes = null;
+        String[] xpExpressions = {"/data/documentTypes/documentType","/data/documentTypes/documentTypeRouting"};
+        for (int i = 0; i < xpExpressions.length; i++) {
+        	boolean docIsStandard = (i == 0);
+        	int listLen = 0;
+            xpath = XPathHelper.newXPath();
+            initialNodes = (NodeList) xpath.evaluate(xpExpressions[i], routeDocument, XPathConstants.NODESET);
+            // Take each NodeList's nodes and insert them into a List implementation.
+            listLen = initialNodes.getLength();
+            for (int j = 0; j < listLen; j++) {
+            	initialList.add(new DocTypeNode(initialNodes.item(j), docIsStandard));
+            }
+        }
+
+        // Setup the Iterator instance to start with.
+        currentIter = initialList.iterator();
+        
+        // Keep looping until all Iterators are complete or an uncaught exception is thrown.
+        while (stackLen >= 0) {
+        	// Determine the action to take based on whether there are remaining nodes in the present iterator.
+        	if (currentIter.hasNext()) {
+        		// If the current iterator still has more nodes, process the next one.
+        		String newParentName = null;
+        		currDocNode = currentIter.next();
+        		// Initialize the document, and catch any child initialization problems.
+        		try {
+        			// Take appropriate action based on whether the document is a standard one or a routing one.
+        			DocumentType docType =  ((currDocNode.isStandard) ? parseStandardDocumentTypes(routeDocument, currDocNode.docNode) :
+        				parseRoutingDocumentTypes(routeDocument, currDocNode.docNode));
+        			// Insert into appropriate position in the final list, based on the doc type's location in the XML file's list.
+      				docTypeBeans.add(docType);
+            		// Store the document's name for reference.
+            		newParentName = docType.getName();
+        		}
+        		catch (InvalidParentDocTypeException exc) {
+        			// If the parent document has not been processed yet, then store the child document.
+            		List<DocTypeNode> tempList = null;
+            		List<String> tempStrList = null;
+            		String parentName = exc.getParentName();
+            		String childName = exc.getChildName();
+            		if (parentName == null || childName == null) { // Make sure the parent & child documents' names are defined.
+            			throw exc;
+            		}
+            		tempList = pendingChildDocs.get(parentName);
+            		tempStrList = pendingChildNames.get(parentName);
+            		if (tempList == null) { // Initialize a new child document list if necessary.
+            			tempList = new ArrayList<DocTypeNode>();
+            			tempStrList = new ArrayList<String>();
+            			pendingChildDocs.put(parentName, tempList);
+            			pendingChildNames.put(parentName, tempStrList);
+            		}
+        			tempList.add(currDocNode);
+        			tempStrList.add(childName);
+        		}
+        		
+            	// Check for any delayed child documents that are dependent on the current document.
+        		List<DocTypeNode> childrenToProcess = pendingChildDocs.remove(newParentName);
+        		pendingChildNames.remove(newParentName);
+        		if (childrenToProcess != null) {
+        			LOG.info("'" + newParentName + "' has children that were delayed; now processing them...");
+        			// If there are any pending children, push the old Iterator onto the stack and process the new Iterator on the next
+        			// iteration of the loop.
+        			stackLen++;
+        			docInitStack.addFirst(currentIter);
+        			currentIter = childrenToProcess.iterator();
+        		}
+        	}
+        	else {
+        		// If the current Iterator has reached its end, discard it and pop the next one (if any) from the stack.
+        		stackLen--;
+        		currentIter = ((stackLen >= 0) ? docInitStack.removeFirst() : null);
+         	}
+        }
+        
+        // Throw an error if there are still any uninitialized child documents.
+        if (pendingChildDocs.size() > 0) {
+        	StringBuilder errMsg = new StringBuilder("Invalid parent document types: ");
+        	// Construct the error message.
+        	for (Iterator<String> unknownParents = pendingChildNames.keySet().iterator(); unknownParents.hasNext();) {
+        		String currParent = unknownParents.next();
+        		errMsg.append("Invalid parent doc type '").append(currParent).append("' is needed by child doc types ");
+        		for (Iterator<String> failedChildren = pendingChildNames.get(currParent).iterator(); failedChildren.hasNext();) {
+        			String currChild = failedChildren.next();
+        			errMsg.append('\'').append(currChild).append((failedChildren.hasNext()) ? "', " : "'; ");
+        		}
+        	}
+        	// Throw the exception.
+        	throw new InvalidParentDocTypeException(null, null, errMsg.toString());
+        }
+        
+    	return docTypeBeans;
+    }
+    
+    private DocumentType parseRoutingDocumentTypes(Document routeDocument, Node documentTypeRoutingNode) throws SAXException, IOException, ParserConfigurationException, XPathExpressionException, WorkflowException, TransformerException {
+/*
         List documentTypeBeans = new ArrayList();
 //        Document routeDocument=XmlHelper.trimXml(input);
         xpath = XPathHelper.newXPath();
         NodeList documentTypeRoutingNodes = (NodeList) xpath.evaluate("/data/documentTypes/documentTypeRouting", routeDocument, XPathConstants.NODESET);
         for (int i = 0; i < documentTypeRoutingNodes.getLength(); i++) {
             Node documentTypeRoutingNode = documentTypeRoutingNodes.item(i);
+*/
             String documentTypeName = getDocumentTypeNameFromNode(documentTypeRoutingNode);
 //            // export the document type that exists in the database
 //            DocumentType docTypeFromDatabase = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
@@ -147,9 +275,12 @@ public class DocumentTypeXmlParser implements XmlConstants {
              */
             LOG.debug("Saving document type " + newDocumentType.getName());
             routeDocumentType(newDocumentType);
+/*
             documentTypeBeans.add(newDocumentType);
         }
         return documentTypeBeans;
+*/
+        return newDocumentType;
     }
     
     public DocumentType generateNewDocumentTypeFromExisting(String documentTypeName) throws SAXException, IOException, ParserConfigurationException, XPathExpressionException, InvalidWorkgroupException, WorkflowException {
@@ -207,14 +338,20 @@ public class DocumentTypeXmlParser implements XmlConstants {
         return documentType;
     }
 
-    private List parseStandardDocumentTypes(Document routeDocument) throws SAXException, IOException, ParserConfigurationException, XPathExpressionException, WorkflowException, TransformerException {
+    private DocumentType parseStandardDocumentTypes(Document routeDocument, Node documentTypeNode) throws SAXException, IOException, ParserConfigurationException, XPathExpressionException, WorkflowException, TransformerException {
+/*      
         List documentTypeBeans = new ArrayList();
-
+     	
 //    	Document routeDocument=XmlHelper.trimXml(input);
         xpath = XPathHelper.newXPath();
         NodeList documentTypeNodes = (NodeList) xpath.evaluate("/data/documentTypes/documentType", routeDocument, XPathConstants.NODESET);
+        
+
         for (int i = 0; i < documentTypeNodes.getLength(); i++) {
-            DocumentType documentType = getFullDocumentType(documentTypeNodes.item(i));
+       		DocumentType documentType = getFullDocumentType(documentTypeNodes.item(i));
+*/
+            DocumentType documentType = getFullDocumentType(documentTypeNode);
+ 
 //            DocumentType documentType = getDocumentType(documentTypeNodes.item(i));
 //            NodeList policiesList = (NodeList) xpath.evaluate("./policies", documentTypeNodes.item(i), XPathConstants.NODESET);
 //            if (policiesList.getLength() > 1) {
@@ -251,15 +388,20 @@ public class DocumentTypeXmlParser implements XmlConstants {
 //                 throw new InvalidXmlException(e);
 //               }
 //            }
-
-            parseStructure(documentTypeNodes.item(i), routeDocument, documentType, new RoutePathContext());
-
-            LOG.debug("Saving document type " + documentType.getName());
-            routeDocumentType(documentType);
-            documentTypeBeans.add(documentType);
+/*
+       		parseStructure(documentTypeNodes.item(i), routeDocument, documentType, new RoutePathContext());
+*/     		
+            parseStructure(documentTypeNode, routeDocument, documentType, new RoutePathContext());
+       		
+        	LOG.debug("Saving document type " + documentType.getName());
+        	routeDocumentType(documentType);
+/*
+        	documentTypeBeans.add(documentType);
         }
 
         return documentTypeBeans;
+*/
+        return documentType;
     }
 
     private void routeDocumentType(DocumentType documentType) {
@@ -427,7 +569,11 @@ public class DocumentTypeXmlParser implements XmlConstants {
             }
             DocumentType parentDocumentType = KEWServiceLocator.getDocumentTypeService().findByName(parentDocumentTypeName);
             if (parentDocumentType == null) {
-                throw new InvalidXmlException("Invalid parent document type: '" + parentDocumentTypeName + "'");
+                //throw new InvalidXmlException("Invalid parent document type: '" + parentDocumentTypeName + "'");
+            	LOG.info("Parent document type '" + parentDocumentTypeName +
+            			"' could not be found; attempting to delay processing of '" + documentTypeName + "'...");
+            	throw new InvalidParentDocTypeException(parentDocumentTypeName, documentTypeName,
+            			"Invalid parent document type: '" + parentDocumentTypeName + "'");
             }
             documentType.setDocTypeParentId(parentDocumentType.getDocumentTypeId());
         }
@@ -1049,4 +1195,26 @@ public class DocumentTypeXmlParser implements XmlConstants {
     	return KIMServiceLocator.getIdentityManagementService();
     }
 
+    /**
+     * This is a helper class for indicating if an unprocessed document type node is "standard" or "routing."
+     * 
+     * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+     */
+    private class DocTypeNode {
+    	/** The Node that needs to be converted into a doc type. */
+    	public final Node docNode;
+    	/** A flag for indicating the document's type; true indicates "standard," false indicates "routing." */
+    	public final boolean isStandard;
+    	
+    	/**
+    	 * Constructs a DocTypeNode instance containing the specified Node and flag.
+    	 * 
+    	 * @param newNode The unprocessed document type.
+    	 * @param newFlag An indicator of what type of document this is (true for "standard," false for "routing").
+    	 */
+    	public DocTypeNode(Node newNode, boolean newFlag) {
+    		docNode = newNode;
+    		isStandard = newFlag;
+    	}
+    }
 }

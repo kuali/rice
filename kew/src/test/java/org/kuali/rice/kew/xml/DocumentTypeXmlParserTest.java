@@ -19,6 +19,7 @@
 package org.kuali.rice.kew.xml;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -310,4 +311,54 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
         assertEquals("Expected Route Node Name is incorrect", "Second", ((RouteNode)routeNodes.get(1)).getRouteNodeName());
     }
 
+    /**
+     * Checks if a child document can be processed when it precedes its parent.
+     * 
+     * @throws Exception
+     */
+    @Test public void testLoadDocWithOneChildPrecedingParent() throws Exception {
+    	List<?> docTypeList;
+    	// Test a case where there is a single child document preceding its parent.
+    	docTypeList = testDoc("ChildParentTestConfig1_Reordered", null);
+    	assertEquals("There should be 5 document types.", 5, docTypeList.size());
+    }
+    
+    /**
+     * Checks if a child routing document can be processed when it precedes its parent.
+     * 
+     * @throws Exception
+     */
+    @Test public void testRouteDocWithOneChildPrecedingParent() throws Exception {
+    	List<?> docTypeList;
+    	this.loadXmlFile("ChildParentTestConfig1_Reordered.xml");
+    	// Test a case where there is a single router child document preceding its parent.
+    	docTypeList = testDoc("ChildParentTestConfig1_Routing", null);
+    	assertEquals("There should be 5 document types.", 5, docTypeList.size());
+    }
+    
+    /**
+     * Checks if the child-parent resolution works with a larger inheritance tree.
+     * 
+     * @throws Exception
+     */
+    @Test public void testLoadDocWithLargerChildPrecedenceInheritanceTree() throws Exception {
+    	List<?> docTypeList;
+    	// Test a case where there are multiple inheritance tree layers to resolve.
+    	docTypeList = testDoc("ChildParentTestConfig1_Reordered2", null);
+    	assertEquals("There should be 10 document types.", 10, docTypeList.size());
+    }
+    
+    /**
+     * Checks if the child-parent resolution works with a larger inheritance tree and a mix of standard & routing documents.
+     * 
+     * @throws Exception
+     */
+    @Test public void testRouteDocWithLargerChildPrecedenceInheritanceTree() throws Exception {
+    	List<?> docTypeList;
+    	this.loadXmlFile("ChildParentTestConfig1_Routing2_Prep.xml");
+    	// Test a case where there are multiple inheritance tree layers to resolve.
+    	docTypeList = testDoc("ChildParentTestConfig1_Routing2", null);
+    	assertEquals("There should be 10 document types.", 10, docTypeList.size());
+    }
+    
 }

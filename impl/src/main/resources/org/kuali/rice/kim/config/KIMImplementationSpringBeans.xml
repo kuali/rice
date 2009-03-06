@@ -296,7 +296,7 @@
     </property>
   </bean>
 
-    <bean id="groupLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" parent="kualiLookupable" scope="prototype">
+    <bean id="groupLookupable" class="org.kuali.rice.kim.lookup.GroupLookupableImpl" parent="kualiLookupable" scope="prototype">
         <property name="lookupableHelperService">
             <bean class="org.kuali.rice.kim.lookup.GroupLookupableHelperServiceImpl"
                 parent="lookupableHelperService"

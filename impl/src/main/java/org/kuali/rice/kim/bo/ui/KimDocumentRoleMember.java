@@ -112,18 +112,6 @@ public class KimDocumentRoleMember  extends KimDocumentBoBase {
 		this.qualifiers = qualifiers;
 	}
 
-	//TODO: remove this and find a better way to do this. Should be done by next week with role doc task
-	public String getMemberType(){
-		if(MemberTypeValuesFinder.MEMBER_TYPE_PRINCIPAL_CODE.equals(getMemberTypeCode())){
-			return MemberTypeValuesFinder.MEMBER_TYPE_PRINCIPAL;
-		} else if(MemberTypeValuesFinder.MEMBER_TYPE_GROUP_CODE.equals(getMemberTypeCode())){
-			return MemberTypeValuesFinder.MEMBER_TYPE_GROUP;
-		} else if(MemberTypeValuesFinder.MEMBER_TYPE_ROLE_CODE.equals(getMemberTypeCode())){
-			return MemberTypeValuesFinder.MEMBER_TYPE_ROLE;
-		}
-		return "";
-	}
-	
 	/**
 	 * @return the memberTypeCode
 	 */

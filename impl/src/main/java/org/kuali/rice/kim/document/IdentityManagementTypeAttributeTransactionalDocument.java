@@ -27,6 +27,9 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.datadictionary.AttributeDefinition;
+import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
+import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.kuali.rice.kns.util.TypedArrayList;
@@ -43,7 +46,6 @@ public class IdentityManagementTypeAttributeTransactionalDocument extends Identi
 	private transient KimTypeService kimTypeService;
 	protected KimTypeImpl kimType = new KimTypeImpl();
 	protected List<? extends KimAttributes> attributes;
-	protected List<KimDocumentRoleMember> members = new TypedArrayList(KimDocumentRoleMember.class);
 	
 	private transient SequenceAccessorService sequenceAccessorService;
 	private transient AttributeDefinitionMap definitions;
@@ -73,18 +75,6 @@ public class IdentityManagementTypeAttributeTransactionalDocument extends Identi
 	public void setKimType(KimTypeImpl kimType) {
 		this.kimType = kimType;
 	}
-	/**
-	 * @return the members
-	 */
-	public List<KimDocumentRoleMember> getMembers() {
-		return this.members;
-	}
-	/**
-	 * @param members the members to set
-	 */
-	public void setMembers(List<KimDocumentRoleMember> members) {
-		this.members = members;
-	}
 
 	public Map<String,Object> getAttributeEntry() {
 		if(attributeEntry==null || attributeEntry.isEmpty())
@@ -93,13 +83,13 @@ public class IdentityManagementTypeAttributeTransactionalDocument extends Identi
 	}
 
 	public String getCommaDelimitedAttributesLabels(String commaDelimitedAttributesNamesList){
-		String[] names = StringUtils.splitByWholeSeparator(commaDelimitedAttributesNamesList, KimConstants.COMMA_SEPARATOR);
+		String[] names = StringUtils.splitByWholeSeparator(commaDelimitedAttributesNamesList, KimConstants.KimUIConstants.COMMA_SEPARATOR);
 		StringBuffer commaDelimitedAttributesLabels = new StringBuffer();
 		for(String name: names){
-			commaDelimitedAttributesLabels.append(getAttributeEntry().get(name.trim())+KimConstants.COMMA_SEPARATOR);
+			commaDelimitedAttributesLabels.append(getAttributeEntry().get(name.trim())+KimConstants.KimUIConstants.COMMA_SEPARATOR);
 		}
-        if(commaDelimitedAttributesLabels.toString().endsWith(KimConstants.COMMA_SEPARATOR))
-        	commaDelimitedAttributesLabels.delete(commaDelimitedAttributesLabels.length()-KimConstants.COMMA_SEPARATOR.length(), commaDelimitedAttributesLabels.length());
+        if(commaDelimitedAttributesLabels.toString().endsWith(KimConstants.KimUIConstants.COMMA_SEPARATOR))
+        	commaDelimitedAttributesLabels.delete(commaDelimitedAttributesLabels.length()-KimConstants.KimUIConstants.COMMA_SEPARATOR.length(), commaDelimitedAttributesLabels.length());
         return commaDelimitedAttributesLabels.toString();
 	}
 	
@@ -129,5 +119,14 @@ public class IdentityManagementTypeAttributeTransactionalDocument extends Identi
 		}
 		return this.sequenceAccessorService;
 	}
+
+    public String getKimAttributeDefnId(AttributeDefinition definition){
+    	if (definition instanceof KimDataDictionaryAttributeDefinition) {
+    		return ((KimDataDictionaryAttributeDefinition)definition).getKimAttrDefnId();
+    	} else {
+    		return ((KimNonDataDictionaryAttributeDefinition)definition).getKimAttrDefnId();
+    	}
+    }
+    
 
 }

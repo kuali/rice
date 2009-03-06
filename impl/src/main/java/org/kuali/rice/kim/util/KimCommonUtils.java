@@ -145,4 +145,12 @@ public class KimCommonUtils {
 		}
 	}
 
+	public static String getKimBasePath(){
+		String kimBaseUrl = KNSServiceLocator.getKualiConfigurationService().getPropertyString(KimConstants.KimUIConstants.KIM_URL_KEY);
+		if (!kimBaseUrl.endsWith("/")) {
+			kimBaseUrl = kimBaseUrl + "/";
+		}
+		return kimBaseUrl;
+	}
+
 }

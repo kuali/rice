@@ -19,13 +19,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.options.MemberTypeValuesFinder;
-import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
-import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
-import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
-import org.kuali.rice.kim.rule.event.ui.AddMemberEvent;
-import org.kuali.rice.kim.rule.ui.AddMemberRule;
+import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
+import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
+import org.kuali.rice.kim.rule.event.ui.AddGroupMemberEvent;
+import org.kuali.rice.kim.rule.ui.AddGroupMemberRule;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.rules.DocumentRuleBase;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -38,13 +38,13 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class KimDocumentMemberRule extends DocumentRuleBase implements AddMemberRule {
+public class GroupDocumentMemberRule extends DocumentRuleBase implements AddGroupMemberRule {
 
 	private static final String ERROR_PATH = "document.member.memberId";
 
-	public boolean processAddMember(AddMemberEvent addMemberEvent){
-		KimDocumentRoleMember newMember = addMemberEvent.getMember();
-		IdentityManagementRoleDocument document = (IdentityManagementRoleDocument)addMemberEvent.getDocument();
+	public boolean processAddGroupMember(AddGroupMemberEvent addGroupMemberEvent){
+		GroupDocumentMember newMember = addGroupMemberEvent.getMember();
+		IdentityManagementGroupDocument document = (IdentityManagementGroupDocument)addGroupMemberEvent.getDocument();
 	    boolean rulePassed = true;
 
         if (newMember == null || StringUtils.isBlank(newMember.getMemberId())){
@@ -52,11 +52,11 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
             return false;
         }
 	    if(MemberTypeValuesFinder.MEMBER_TYPE_ROLE_CODE.equals(newMember.getMemberTypeCode())){
-	    	if(!validAssignRole(newMember, document))
+	    	if(!validAssignGroup(newMember, document))
 	    		return false;
 	    }
 	    int i = 0;
-	    for (KimDocumentRoleMember member: document.getMembers()){
+	    for (GroupDocumentMember member: document.getMembers()){
 	    	if (member.getMemberId().equals(newMember.getMemberId())){
 	            rulePassed = false;
 	            GlobalVariables.getErrorMap().putError("document.members["+i+"].memberId", RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Member"});
@@ -66,22 +66,22 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
 		return rulePassed;
 	} 
 
-	private boolean validAssignRole(KimDocumentRoleMember roleMember, IdentityManagementRoleDocument document){
+	private boolean validAssignGroup(GroupDocumentMember groupMember, IdentityManagementGroupDocument document){
         boolean rulePassed = true;
-		Map<String,String> roleDetails = new HashMap<String,String>();
+		Map<String,String> groupDetails = new HashMap<String,String>();
     	Map<String, String> criteria = new HashMap<String, String>();
-    	criteria.put("roleId", roleMember.getMemberId());
-    	KimRoleImpl roleImpl = (KimRoleImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimRoleImpl.class, criteria);
-		roleDetails.put(KimAttributes.NAMESPACE_CODE, roleImpl.getNamespaceCode());
-		roleDetails.put(KimAttributes.ROLE_NAME, roleImpl.getRoleName());
+    	criteria.put("groupId", groupMember.getMemberId());
+    	KimGroupImpl groupImpl = (KimGroupImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimGroupImpl.class, criteria);
+		groupDetails.put(KimAttributes.NAMESPACE_CODE, groupImpl.getNamespaceCode());
+		groupDetails.put(KimAttributes.ROLE_NAME, groupImpl.getGroupName());
 		if (!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
 				document, 
 				KimConstants.NAMESPACE_CODE, 
-				KimConstants.PermissionTemplateNames.ASSIGN_ROLE, 
+				KimConstants.PermissionTemplateNames.ASSIGN_GROUP, 
 				GlobalVariables.getUserSession().getPerson().getPrincipalId(), 
-				roleDetails, null)){
+				groupDetails, null)){
             GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_ASSIGN_RESPONSIBILITY, 
-            		new String[] {roleImpl.getNamespaceCode(), roleImpl.getRoleName()});
+            		new String[] {groupImpl.getNamespaceCode(), groupImpl.getGroupName()});
             rulePassed = false;
 		}
 		return rulePassed;

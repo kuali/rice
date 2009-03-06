@@ -137,7 +137,7 @@ function changeMemberTypeCode(){
 	               	<div align="center"> <kul:htmlControlAttribute property="document.members[${statusMember.index}].activeToDate"  attributeEntry="${roleMemberAttributes.activeToDate}" readOnly="${readOnly}" datePicker="true" />
 					</div>
 				</td>
-				<c:set var="numberOfColumns" value="${KualiForm.member.numberOfQualifiers+5}"/>
+				<c:set var="numberOfColumns" value="${KualiForm.member.numberOfQualifiers+6}"/>
 				<c:forEach var="qualifier" items="${KualiForm.document.kimType.attributeDefinitions}" varStatus="statusQualifier">
 					<c:set var="fieldName" value="${qualifier.kimAttribute.attributeName}" />
         			<c:set var="attrEntry" value="${KualiForm.document.attributeEntry[fieldName]}" />

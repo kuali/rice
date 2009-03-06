@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.kim.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in.
  *
@@ -79,6 +82,7 @@ public class KimConstants {
     	public static final String MODIFY_ENTITY = "Modify Entity";
     	public static final String POPULATE_GROUP = "Populate Group";
     	public static final String ASSIGN_ROLE = "Assign Role";
+    	public static final String ASSIGN_GROUP = "Assign Group";
     	public static final String GRANT_PERMISSION = "Grant Permission";
     	public static final String GRANT_RESPONSIBILITY = "Grant Responsibility";
 
@@ -97,10 +101,34 @@ public class KimConstants {
 		public static final String ADMIN_PESSIMISTIC_LOCKING = "Administer Pessimistic Locking";
 	}
 
-	public static final String NAME_VALUE_SEPARATOR = " : ";
-	public static final String COMMA_SEPARATOR = ", ";
-	public static final String OR_OPERATOR = "|";
-
+	public static class KimUIConstants {
+		public static final String NAME_VALUE_SEPARATOR = " : ";
+		public static final String COMMA_SEPARATOR = ", ";
+		public static final String OR_OPERATOR = "|";
+		public static final String KIM_URL_KEY = "kim.url";
+		public static final String KIM_ROLE_DOCUMENT_TYPE_NAME = "IdentityManagementRoleDocument";
+		public static final String KIM_GROUP_DOCUMENT_TYPE_NAME = "IdentityManagementGroupDocument";
+		public static final String KIM_PERSON_DOCUMENT_TYPE_NAME = "IdentityManagementPersonDocument";
+		public static final String KIM_ROLE_DOCUMENT_SHORT_KEY = "IMRD";
+		public static final String KIM_GROUP_DOCUMENT_SHORT_KEY = "IMGD";
+		public static final String KIM_PERSON_DOCUMENT_SHORT_KEY = "IMPD";
+		public static final String KIM_ROLE_DOCUMENT_ACTION = "identityManagementRoleDocument.do";
+		public static final String KIM_PERSON_DOCUMENT_ACTION = "identityManagementPersonDocument.do";
+		public static final String KIM_GROUP_DOCUMENT_ACTION = "identityManagementGroupDocument.do";
+		public static final Map<String, String> KIM_DOCUMENTS_ACTION_MAP = new HashMap<String, String>();
+		static {
+			KIM_DOCUMENTS_ACTION_MAP.put(KIM_ROLE_DOCUMENT_SHORT_KEY, KIM_ROLE_DOCUMENT_ACTION);
+			KIM_DOCUMENTS_ACTION_MAP.put(KIM_GROUP_DOCUMENT_SHORT_KEY, KIM_GROUP_DOCUMENT_ACTION);
+			KIM_DOCUMENTS_ACTION_MAP.put(KIM_PERSON_DOCUMENT_SHORT_KEY, KIM_PERSON_DOCUMENT_ACTION);
+		}
+		public static final Map<String, String> KIM_DOCUMENT_TYPE_NAMES_MAP = new HashMap<String, String>();
+		static {
+			KIM_DOCUMENTS_ACTION_MAP.put(KIM_ROLE_DOCUMENT_SHORT_KEY, KIM_ROLE_DOCUMENT_TYPE_NAME);
+			KIM_DOCUMENTS_ACTION_MAP.put(KIM_GROUP_DOCUMENT_SHORT_KEY, KIM_GROUP_DOCUMENT_TYPE_NAME);
+			KIM_DOCUMENTS_ACTION_MAP.put(KIM_PERSON_DOCUMENT_SHORT_KEY, KIM_PERSON_DOCUMENT_TYPE_NAME);
+		}
+	}
+	
 	public static class PrimaryKeyConstants {
 		public static final String ENTITY_ID = "entityId";
 		public static final String PRINCIPAL_ID = "principalId";

@@ -837,8 +837,8 @@ public class KualiDocumentActionBase extends KualiAction {
         KualiDocumentFormBase docForm = (KualiDocumentFormBase) form;
 
         // only want to prompt them to save if they already can save
-        if (docForm.getDocumentActions().containsKey(KNSConstants.KUALI_ACTION_CAN_SAVE)) {
-            Object question = request.getParameter(KNSConstants.QUESTION_INST_ATTRIBUTE_NAME);
+        if (canSave(docForm)) {
+            Object question = getQuestion(request);
             // logic for close question
             if (question == null) {
                 // ask question if not already asked
@@ -857,6 +857,15 @@ public class KualiDocumentActionBase extends KualiAction {
         return returnToSender(mapping, docForm);
     }
 
+    protected boolean canSave(ActionForm form){
+    	KualiDocumentFormBase docForm = (KualiDocumentFormBase) form;
+    	return docForm.getDocumentActions().containsKey(KNSConstants.KUALI_ACTION_CAN_SAVE);
+    }
+    
+    protected Object getQuestion(HttpServletRequest request){
+    	return request.getParameter(KNSConstants.QUESTION_INST_ATTRIBUTE_NAME);
+    }
+            
     /**
      * call the document service to clear the fyis
      *

@@ -228,9 +228,9 @@ public class KimRoleImpl extends PersistableBusinessObjectBase implements KimRol
 	@Override
     public String toStringBuilder(LinkedHashMap mapper) {
         if(getKimRoleType() != null){
-        	return getKimRoleType().getName()+KimConstants.NAME_VALUE_SEPARATOR+
-        				getNamespaceCode()+KimConstants.NAME_VALUE_SEPARATOR+
-        				getRoleName()+KimConstants.COMMA_SEPARATOR;
+        	return getKimRoleType().getName()+KimConstants.KimUIConstants.NAME_VALUE_SEPARATOR+
+        				getNamespaceCode()+KimConstants.KimUIConstants.NAME_VALUE_SEPARATOR+
+        				getRoleName()+KimConstants.KimUIConstants.COMMA_SEPARATOR;
         }
         else {
             return super.toStringBuilder(mapper);

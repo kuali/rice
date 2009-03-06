@@ -37,6 +37,7 @@ import org.kuali.rice.kim.service.ResponsibilityService;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.support.KimTypeInternalService;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kim.web.struts.action.IdentityManagementRoleDocumentAction;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.ParameterNamespace;
 import org.kuali.rice.kns.lookup.HtmlData;
@@ -110,7 +111,7 @@ public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {
 		primaryKeys.add(ATTRIBUTE_DATA_ID);
     	for(ResponsibilityAttributeDataImpl responsibilityAttributeDataImpl: responsibilityAttributeData){
     		htmlData.add(getInquiryUrlForPrimaryKeys(ResponsibilityAttributeDataImpl.class, responsibilityAttributeDataImpl, primaryKeys, 
-    			getKimAttributeLabelFromDD(responsibilityAttributeDataImpl.getKimAttribute().getAttributeName())+KimConstants.NAME_VALUE_SEPARATOR+
+    			getKimAttributeLabelFromDD(responsibilityAttributeDataImpl.getKimAttribute().getAttributeName())+KimConstants.KimUIConstants.NAME_VALUE_SEPARATOR+
     			responsibilityAttributeDataImpl.getAttributeValue()));
     	}
     	return new MultipleAnchorHtmlData(htmlData);

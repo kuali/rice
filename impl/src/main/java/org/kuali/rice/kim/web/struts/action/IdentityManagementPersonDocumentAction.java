@@ -45,19 +45,16 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.rule.event.ui.AddGroupEvent;
 import org.kuali.rice.kim.rule.event.ui.AddRoleEvent;
-import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.ResponsibilityService;
-import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementPersonDocumentForm;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.web.struts.action.KualiTransactionalDocumentActionBase;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -65,32 +62,7 @@ import org.kuali.rice.kns.web.struts.action.KualiTransactionalDocumentActionBase
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class IdentityManagementPersonDocumentAction extends KualiTransactionalDocumentActionBase {
-
-	protected IdentityService identityService;
-	protected ResponsibilityService responsibilityService;
-	protected UiDocumentService uiDocumentService;
-	
-    public IdentityService getIdentityService() {
-    	if ( identityService == null ) {
-    		identityService = KIMServiceLocator.getIdentityService();
-    	}
-		return identityService;
-	}
-
-    public ResponsibilityService getResponsibilityService() {
-    	if ( responsibilityService == null ) {
-    		responsibilityService = KIMServiceLocator.getResponsibilityService();
-    	}
-		return responsibilityService;
-	}
-
-	public UiDocumentService getUiDocumentService() {
-		if ( uiDocumentService == null ) {
-			uiDocumentService = KIMServiceLocator.getUiDocumentService();
-		}
-		return uiDocumentService;
-	}
+public class IdentityManagementPersonDocumentAction extends IdentityManagementDocumentActionBase {
 
 	@Override
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -132,34 +104,11 @@ public class IdentityManagementPersonDocumentAction extends KualiTransactionalDo
 		return forward;
     }
     
-    /**
-     * 
-     * This overridden method is to add 'kim/" to the return path
-     * 
-     * @see org.kuali.rice.kns.web.struts.action.KualiAction#performLookup(org.apache.struts.action.ActionMapping, org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
-     */
-	@Override
-	public ActionForward performLookup(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		ActionForward forward =  super.performLookup(mapping, form, request, response);
-		String path = forward.getPath();
-		// don't need context so can't call getbasepath()
-		String basePath = request.getScheme() + "://" + request.getServerName();
-		// EBO does not have base path for lookup in rice
-		// rice  has 'kr.url' as '/${env}/kr' while kfs is full base path
-		// the returnlocalurl may have 'http' so, it should start from the beginning
-		// this is kind of hack
-//		if (path.indexOf(request.getScheme()) != 0 && path.indexOf("lookup.do") > 0) {
-//			if (request.getServerPort() == 443) {
-//				path = request.getScheme() + "://" + request.getServerName()+path;
-//			} else {
-//				path = request.getScheme() + "://" + request.getServerName()+ ":" + request.getServerPort()+path;
-//			}
-//		}
-		path = path.replace("identityManagementPersonDocument.do", "kim/identityManagementPersonDocument.do");
-		forward.setPath(path);
-		return forward;
+	/***
+	 * @see org.kuali.rice.kim.web.struts.action.IdentityManagementDocumentActionBase#getActionName()
+	 */
+	public String getActionName(){
+		return KimConstants.KimUIConstants.KIM_PERSON_DOCUMENT_ACTION;
 	}
 
 	public ActionForward addAffln(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {

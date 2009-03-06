@@ -156,21 +156,21 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
         if(principals!=null){
         	memberQueryString = new StringBuffer();
         	for(KimPrincipalImpl principal: principals){
-        		memberQueryString.append(principal.getPrincipalId()+KimConstants.OR_OPERATOR);
+        		memberQueryString.append(principal.getPrincipalId()+KimConstants.KimUIConstants.OR_OPERATOR);
         	}
-            if(memberQueryString.toString().endsWith(KimConstants.OR_OPERATOR))
-            	memberQueryString.delete(memberQueryString.length()-KimConstants.OR_OPERATOR.length(), memberQueryString.length());
+            if(memberQueryString.toString().endsWith(KimConstants.KimUIConstants.OR_OPERATOR))
+            	memberQueryString.delete(memberQueryString.length()-KimConstants.KimUIConstants.OR_OPERATOR.length(), memberQueryString.length());
         }
         if(groupImpls!=null){
         	if(memberQueryString==null)
         		memberQueryString = new StringBuffer();
         	else if(StringUtils.isNotEmpty(memberQueryString.toString()))
-        		memberQueryString.append(KimConstants.OR_OPERATOR);
+        		memberQueryString.append(KimConstants.KimUIConstants.OR_OPERATOR);
         	for(KimGroupImpl group: groupImpls){
-        		memberQueryString.append(group.getGroupId()+KimConstants.OR_OPERATOR);
+        		memberQueryString.append(group.getGroupId()+KimConstants.KimUIConstants.OR_OPERATOR);
         	}
-            if(memberQueryString.toString().endsWith(KimConstants.OR_OPERATOR))
-            	memberQueryString.delete(memberQueryString.length()-KimConstants.OR_OPERATOR.length(), memberQueryString.length());
+            if(memberQueryString.toString().endsWith(KimConstants.KimUIConstants.OR_OPERATOR))
+            	memberQueryString.delete(memberQueryString.length()-KimConstants.KimUIConstants.OR_OPERATOR.length(), memberQueryString.length());
         	searchCriteria.put(ASSIGNED_TO_ROLE_MEMBER_ID, memberQueryString.toString());
         }
         if(memberQueryString!=null && StringUtils.isNotEmpty(memberQueryString.toString()))

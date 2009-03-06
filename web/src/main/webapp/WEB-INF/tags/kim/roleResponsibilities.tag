@@ -49,6 +49,7 @@
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${responsibilityAttributes.responsibilityId}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${responsibilityAttributes.name}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${responsibilityAttributes.detailObjectsValues}" noColon="true" /></div></th>
+        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${responsibilityAttributes.active}" noColon="true" /></div></th>
 				<c:if test="${not inquiry}">	
             		<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
 				</c:if>	
@@ -78,6 +79,20 @@
 	               	<div align="left"> <kul:htmlControlAttribute property="document.responsibilities[${status.index}].kimResponsibility.detailObjectsValues"  attributeEntry="${responsibilityAttributes.detailObjectsToDisplay}" readOnly="true"  />
 					</div>
 				</td>
+				<c:choose>
+					<c:when test="${responsibility.edit && !readOnly}">
+			            <td align="center" valign="middle">
+			               	<div align="center"> <kul:htmlControlAttribute property="document.responsibilities[${status.index}].active"  attributeEntry="${responsibilityAttributes.active}" />
+							</div>
+						</td>
+					</c:when>
+       	       		<c:otherwise>
+			            <td align="center" valign="middle">
+			               	<div align="center"> <kul:htmlControlAttribute property="document.responsibilities[${status.index}].active"  attributeEntry="${responsibilityAttributes.active}" readOnly="true"  />
+							</div>
+						</td>
+        	       	</c:otherwise>
+       	     	</c:choose>  
 			<c:if test="${not inquiry}">	
 				<td>
 					<div align=center>&nbsp;

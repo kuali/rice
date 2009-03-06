@@ -35,6 +35,7 @@
         <ref bean="ResponsibilityImpl-detailObjectsValues" />
         <ref bean="ResponsibilityImpl-detailObjectsToDisplay" />
         <ref bean="ResponsibilityImpl-assignedToRolesToDisplay" />
+        <ref bean="ResponsibilityImpl-active" />
       </list>
     </property>
 	<property name="collections" >
@@ -335,7 +336,17 @@
       <bean parent="TextControlDefinition" p:size="40" />
     </property>
   </bean>
-  
+
+  <bean id="ResponsibilityImpl-active" parent="ResponsibilityImpl-active-parentBean"/>
+  <bean id="ResponsibilityImpl-active-parentBean" abstract="true" parent="AttributeReferenceDummy-genericBoolean">
+    <property name="name" value="active"/>
+    <property name="label" value="Active"/>
+    <property name="shortLabel" value="Active"/>
+    <property name="required" value="true"/>
+    <property name="summary" value="Active"/>
+    <property name="description" value="Active"/>
+  </bean>
+    
   <bean id="ResponsibilityImpl-inquiryDefinition" parent="ResponsibilityImpl-inquiryDefinition-parentBean" />
   <bean id="ResponsibilityImpl-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition"
         p:title="Responsibility Inquiry" >

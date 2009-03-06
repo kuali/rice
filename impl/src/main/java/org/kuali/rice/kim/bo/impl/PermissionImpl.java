@@ -52,15 +52,15 @@ public class PermissionImpl extends KimPermissionImpl {
 		for(KimRoleImpl roleImpl: assignedToRoles){
 			assignedToRolesToDisplay.append(getRoleDetailsToDisplay(roleImpl));
 		}
-        if(assignedToRolesToDisplay.toString().endsWith(KimConstants.COMMA_SEPARATOR))
+        if(assignedToRolesToDisplay.toString().endsWith(KimConstants.KimUIConstants.COMMA_SEPARATOR))
         	assignedToRolesToDisplay.delete(
-        			assignedToRolesToDisplay.length()-KimConstants.COMMA_SEPARATOR.length(), assignedToRolesToDisplay.length());
+        			assignedToRolesToDisplay.length()-KimConstants.KimUIConstants.COMMA_SEPARATOR.length(), assignedToRolesToDisplay.length());
 
 		return assignedToRolesToDisplay.toString();
 	}
 
 	public String getRoleDetailsToDisplay(KimRoleImpl roleImpl){
-		return roleImpl.getNamespaceCode()+" "+roleImpl.getRoleName()+KimConstants.COMMA_SEPARATOR;
+		return roleImpl.getNamespaceCode()+" "+roleImpl.getRoleName()+KimConstants.KimUIConstants.COMMA_SEPARATOR;
 	}
 	
 	/**

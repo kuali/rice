@@ -330,7 +330,7 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
 			List<KimTypeImpl> kimGroupTypes = (List<KimTypeImpl>)getBusinessObjectService().findAll(KimTypeImpl.class);
 			// get the distinct list of type IDs from all groups in the system
 	        for (KimTypeImpl kimType : kimGroupTypes) {
-                if (hasGroupTypeService(kimType) && groupTypeValuesCache.get(kimType.getKimTypeId()) == null) {
+                if (KimTypeLookupableHelperServiceImpl.hasGroupTypeService(kimType) && groupTypeValuesCache.get(kimType.getKimTypeId()) == null) {
                     String value = kimType.getNamespaceCode().trim() + KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR + kimType.getName().trim();
                     options.add(new KeyLabelPair(kimType.getKimTypeId(), value));
                     groupTypeValuesCache.put(kimType.getKimTypeId(), value);
@@ -440,14 +440,6 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
     		return ((KimNonDataDictionaryAttributeDefinition)definition).getKimAttrDefnId();
 
     	}
-    }
-
-    static boolean hasGroupTypeService(KimTypeImpl kimTypeImpl){
-        return hasGroupTypeService(KimCommonUtils.getKimTypeService(kimTypeImpl));
-    }
-
-    static boolean hasGroupTypeService(KimTypeService kimTypeService){
-        return kimTypeService instanceof KimGroupTypeService;
     }
 
 	public List<Row> getGrpRows() {

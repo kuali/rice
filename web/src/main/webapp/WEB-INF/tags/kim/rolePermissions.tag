@@ -49,6 +49,7 @@
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${permissionAttributes.permissionId}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${permissionAttributes.name}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${permissionAttributes.detailObjectsToDisplay}" noColon="true" /></div></th>
+        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${permissionAttributes.active}" noColon="true" /></div></th>
 				<c:if test="${not inquiry}">	
             		<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
 				</c:if>	
@@ -74,6 +75,20 @@
 	               	<div align="left"> <kul:htmlControlAttribute property="document.permissions[${status.index}].kimPermission.detailObjectsToDisplay"  attributeEntry="${permissionAttributes.detailObjectsToDisplay}" readOnly="true"  />
 					</div>
 				</td>
+				<c:choose>
+					<c:when test="${permission.edit && !readOnly}">
+			            <td align="center" valign="middle">
+			               	<div align="center"> <kul:htmlControlAttribute property="document.permissions[${status.index}].active"  attributeEntry="${permissionAttributes.active}" />
+							</div>
+						</td>
+					</c:when>
+       	       		<c:otherwise>
+			            <td align="center" valign="middle">
+			               	<div align="center"> <kul:htmlControlAttribute property="document.permissions[${status.index}].active"  attributeEntry="${permissionAttributes.active}" readOnly="true"  />
+							</div>
+						</td>
+        	       	</c:otherwise>
+       	     	</c:choose>  
 			<c:if test="${not inquiry}">	
 				<td>
 					<div align=center>&nbsp;

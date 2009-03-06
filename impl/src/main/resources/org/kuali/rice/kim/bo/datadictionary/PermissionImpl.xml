@@ -35,6 +35,7 @@
         <ref bean="PermissionImpl-detailObjectsValues" />
         <ref bean="PermissionImpl-detailObjectsToDisplay" />
         <ref bean="PermissionImpl-assignedToRolesToDisplay" />
+        <ref bean="PermissionImpl-active" />
       </list>
     </property>
 	<property name="collections" >
@@ -314,6 +315,16 @@
     <property name="control" >
       <bean parent="TextControlDefinition" p:size="40" />
     </property>
+  </bean>
+
+  <bean id="PermissionImpl-active" parent="PermissionImpl-active-parentBean"/>
+  <bean id="PermissionImpl-active-parentBean" abstract="true" parent="AttributeReferenceDummy-genericBoolean">
+    <property name="name" value="active"/>
+    <property name="label" value="Active"/>
+    <property name="shortLabel" value="Active"/>
+    <property name="required" value="true"/>
+    <property name="summary" value="Active"/>
+    <property name="description" value="Active"/>
   </bean>
 
   <bean id="PermissionImpl-inquiryDefinition" parent="PermissionImpl-inquiryDefinition-parentBean" />

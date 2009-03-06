@@ -45,10 +45,7 @@ import org.kuali.rice.kim.rule.event.ui.AddDelegationMemberEvent;
 import org.kuali.rice.kim.rule.event.ui.AddMemberEvent;
 import org.kuali.rice.kim.rule.event.ui.AddPermissionEvent;
 import org.kuali.rice.kim.rule.event.ui.AddResponsibilityEvent;
-import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.ResponsibilityService;
-import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -57,19 +54,14 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.RiceKeyConstants;
-import org.kuali.rice.kns.web.struts.action.KualiTransactionalDocumentActionBase;
 
 /**
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class IdentityManagementRoleDocumentAction extends KualiTransactionalDocumentActionBase {
+public class IdentityManagementRoleDocumentAction extends IdentityManagementDocumentActionBase {
 
-
-	protected IdentityService identityService;
-	protected ResponsibilityService responsibilityService;
-	protected UiDocumentService uiDocumentService;
 	public static final String CHANGE_MEMBER_TYPE_CODE_METHOD_TO_CALL = "changeMemberTypeCode"; 
 	
     @Override
@@ -105,19 +97,26 @@ public class IdentityManagementRoleDocumentAction extends KualiTransactionalDocu
         String roleId = request.getParameter(KimConstants.PrimaryKeyConstants.ROLE_ID);
         if (StringUtils.isNotBlank(commandParam) && commandParam.equals(KEWConstants.INITIATE_COMMAND) 
 				&& StringUtils.isNotBlank(roleId)) {
-        	if(!KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY.equals(methodToCall))
-        		roleDocumentForm.setCanAssignRole(validAssignRole(roleDocumentForm.getRoleDocument()));
 	        KimRole role = KIMServiceLocator.getRoleService().getRole(roleId);
 			KIMServiceLocator.getUiDocumentService().loadRoleDoc(roleDocumentForm.getRoleDocument(), role);
 			roleDocumentForm.setMember(roleDocumentForm.getRoleDocument().getBlankMember());
 			roleDocumentForm.setDelegationMember(roleDocumentForm.getRoleDocument().getBlankDelegationMember());
-		} 
+        	if(!KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY.equals(methodToCall))
+        		roleDocumentForm.setCanAssignRole(validAssignRole(roleDocumentForm.getRoleDocument()));
+        } 
         if (StringUtils.isNotBlank(commandParam) && commandParam.equals(CHANGE_MEMBER_TYPE_CODE_METHOD_TO_CALL)){
 	        roleDocumentForm.getMember().setMemberName("");
 		}
 		return forward;
     }
     
+	/***
+	 * @see org.kuali.rice.kim.web.struts.action.IdentityManagementDocumentActionBase#getActionName()
+	 */
+	public String getActionName(){
+		return KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_ACTION;
+	}
+
 	private boolean validAssignRole(IdentityManagementRoleDocument document){
         boolean rulePassed = true;
         Map<String,String> additionalPermissionDetails = new HashMap<String,String>();
@@ -132,34 +131,6 @@ public class IdentityManagementRoleDocumentAction extends KualiTransactionalDocu
             rulePassed = false;
 		}
 		return rulePassed;
-	}
-
-    /**
-     * 
-     * This overridden method is to add 'kim/" to the return path
-     * 
-     * @see org.kuali.rice.kns.web.struts.action.KualiAction#performLookup(org.apache.struts.action.ActionMapping, org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
-     */
-	@Override
-	public ActionForward performLookup(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		ActionForward forward =  super.performLookup(mapping, form, request, response);
-		String path = forward.getPath();
-		// EBO does not have base path for lookup in rice
-		// rice  has 'kr.url' as '/${env}/kr' while kfs is full base path
-		// the returnlocalurl may have 'http' so, it should start from the beginning
-		// this is kind of hack
-		if (path.indexOf(request.getScheme()) != 0 && path.indexOf("lookup.do") > 0) {
-			if (request.getServerPort() == 443) {
-				path = request.getScheme() + "://" + request.getServerName()+path;
-			} else {
-				path = request.getScheme() + "://" + request.getServerName()+ ":" + request.getServerPort()+path;
-			}
-		}
-		path = path.replace("identityManagementRoleDocument.do", "kim/identityManagementRoleDocument.do");
-		forward.setPath(path);
-		return forward;
 	}
 
     public ActionForward addResponsibility(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -319,27 +290,6 @@ public class IdentityManagementRoleDocumentAction extends KualiTransactionalDocu
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
         IdentityManagementRoleDocument roleDoc = roleDocumentForm.getRoleDocument();
 		return super.save(mapping, form, request, response);
-	}
-
-    public IdentityService getIdentityService() {
-    	if ( identityService == null ) {
-    		identityService = KIMServiceLocator.getIdentityService();
-    	}
-		return identityService;
-	}
-
-    public ResponsibilityService getResponsibilityService() {
-    	if ( responsibilityService == null ) {
-    		responsibilityService = KIMServiceLocator.getResponsibilityService();
-    	}
-		return responsibilityService;
-	}
-
-	public UiDocumentService getUiDocumentService() {
-		if ( uiDocumentService == null ) {
-			uiDocumentService = KIMServiceLocator.getUiDocumentService();
-		}
-		return uiDocumentService;
 	}
 
 }

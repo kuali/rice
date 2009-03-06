@@ -21,7 +21,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.service.support.KimGroupTypeService;
 import org.kuali.rice.kim.service.support.KimRoleTypeService;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimCommonUtils;
@@ -41,10 +43,18 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
 	protected List<? extends BusinessObject> getSearchResultsHelper(Map<String, String> fieldValues, boolean unbounded) {
 		List<KimTypeImpl> searchResults = (List<KimTypeImpl>)super.getSearchResultsHelper(fieldValues, unbounded);
 		List<KimTypeImpl> filteredSearchResults = new ArrayList<KimTypeImpl>();
-		for(KimTypeImpl kimTypeImpl: searchResults){
-			if(hasRoleTypeService(kimTypeImpl))
-				filteredSearchResults.add(kimTypeImpl);
-		}
+		if(KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_SHORT_KEY.equals(fieldValues.get(KNSConstants.DOC_FORM_KEY)))
+			for(KimTypeImpl kimTypeImpl: searchResults){
+				if(hasRoleTypeService(kimTypeImpl))
+					filteredSearchResults.add(kimTypeImpl);
+			}
+		
+		if(KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_SHORT_KEY.equals(fieldValues.get(KNSConstants.DOC_FORM_KEY)))
+			for(KimTypeImpl kimTypeImpl: searchResults){
+				if(hasGroupTypeService(kimTypeImpl))
+					filteredSearchResults.add(kimTypeImpl);
+			}
+
 		return filteredSearchResults;
 	}
 	
@@ -54,17 +64,16 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
      */
     @Override
     protected String getReturnHref(Properties parameters, LookupForm lookupForm, List returnKeys) {
-    	//conversionFields=kimTypeId:document.kimType.kimTypeId,name:document.kimType.name&
-
     	Map<String, String> criteria = new HashMap<String, String>();
     	criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID, parameters.getProperty(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID));
     	KimTypeImpl kimTypeImpl = (KimTypeImpl)getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, criteria);
     	String href = "";
     	if(kimTypeImpl!=null && !((KimRoleTypeService)KimCommonUtils.getKimTypeService(kimTypeImpl)).isApplicationRoleType()){
 	    	parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.DOC_HANDLER_METHOD);
-	    	parameters.put(KNSConstants.PARAMETER_COMMAND, "initiate");
-	    	parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, "IdentityManagementRoleDocument");
-	    	href = UrlFactory.parameterizeUrl("../kim/identityManagementRoleDocument.do", parameters);
+	    	parameters.put(KNSConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
+	    	parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, KimConstants.KimUIConstants.KIM_DOCUMENT_TYPE_NAMES_MAP.get(lookupForm.getFormKey()));
+	    	href = UrlFactory.parameterizeUrl(
+	    			KimCommonUtils.getKimBasePath()+KimConstants.KimUIConstants.KIM_DOCUMENTS_ACTION_MAP.get(lookupForm.getFormKey()), parameters);
     	}
         return href;
     }
@@ -72,6 +81,14 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
 	static boolean hasRoleTypeService(KimTypeImpl kimTypeImpl){
 		return hasRoleTypeService(KimCommonUtils.getKimTypeService(kimTypeImpl));
 	}
+
+    static boolean hasGroupTypeService(KimTypeImpl kimTypeImpl){
+        return hasGroupTypeService(KimCommonUtils.getKimTypeService(kimTypeImpl));
+    }
+
+    static boolean hasGroupTypeService(KimTypeService kimTypeService){
+        return kimTypeService instanceof KimGroupTypeService;
+    }
 
 	static boolean hasRoleTypeService(KimTypeService kimTypeService){
 		if(kimTypeService==null) return false;

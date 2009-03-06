@@ -225,10 +225,10 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 	public String getDetailObjectsValues(){
 		StringBuffer detailObjectsToDisplay = new StringBuffer();
 		for(ResponsibilityAttributeDataImpl responsibilityAttributeData: detailObjects){
-			detailObjectsToDisplay.append(responsibilityAttributeData.getAttributeValue()+KimConstants.COMMA_SEPARATOR);
+			detailObjectsToDisplay.append(responsibilityAttributeData.getAttributeValue()+KimConstants.KimUIConstants.COMMA_SEPARATOR);
 		}
-        if(detailObjectsToDisplay.toString().endsWith(KimConstants.COMMA_SEPARATOR))
-        	detailObjectsToDisplay.delete(detailObjectsToDisplay.length()-KimConstants.COMMA_SEPARATOR.length(), detailObjectsToDisplay.length());
+        if(detailObjectsToDisplay.toString().endsWith(KimConstants.KimUIConstants.COMMA_SEPARATOR))
+        	detailObjectsToDisplay.delete(detailObjectsToDisplay.length()-KimConstants.KimUIConstants.COMMA_SEPARATOR.length(), detailObjectsToDisplay.length());
 
 		return detailObjectsToDisplay.toString();
 	}
@@ -238,16 +238,16 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 		for(ResponsibilityAttributeDataImpl responsibilityAttributeData: detailObjects){
 			detailObjectsToDisplay.append(getAttributeDetailToDisplay(responsibilityAttributeData));
 		}
-        if(detailObjectsToDisplay.toString().endsWith(KimConstants.COMMA_SEPARATOR))
-        	detailObjectsToDisplay.delete(detailObjectsToDisplay.length()-KimConstants.COMMA_SEPARATOR.length(), detailObjectsToDisplay.length());
+        if(detailObjectsToDisplay.toString().endsWith(KimConstants.KimUIConstants.COMMA_SEPARATOR))
+        	detailObjectsToDisplay.delete(detailObjectsToDisplay.length()-KimConstants.KimUIConstants.COMMA_SEPARATOR.length(), detailObjectsToDisplay.length());
 
 		return detailObjectsToDisplay.toString();
 	}
 
 	public String getAttributeDetailToDisplay(ResponsibilityAttributeDataImpl responsibilityAttributeData){
 		return getKimAttributeLabelFromDD(responsibilityAttributeData.getKimAttribute().getAttributeName())+
-				KimConstants.NAME_VALUE_SEPARATOR+
-				responsibilityAttributeData.getAttributeValue()+KimConstants.COMMA_SEPARATOR;
+				KimConstants.KimUIConstants.NAME_VALUE_SEPARATOR+
+				responsibilityAttributeData.getAttributeValue()+KimConstants.KimUIConstants.COMMA_SEPARATOR;
 	}
 	
 	public String getRequiredRoleQualifierAttributesToDisplay() {
@@ -255,8 +255,8 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 		for(KimResponsibilityRequiredAttributeImpl responsibilityRequiredAttribute: requiredRoleQualifierAttributes){
 			requiredRoleQualifierAttributesToDisplay.append(getRequiredRoleQualifierAttributeToDisplay(responsibilityRequiredAttribute));
 		}
-        if(requiredRoleQualifierAttributesToDisplay.toString().endsWith(KimConstants.COMMA_SEPARATOR))
-        	requiredRoleQualifierAttributesToDisplay.delete(requiredRoleQualifierAttributesToDisplay.length()-KimConstants.COMMA_SEPARATOR.length(), requiredRoleQualifierAttributesToDisplay.length());
+        if(requiredRoleQualifierAttributesToDisplay.toString().endsWith(KimConstants.KimUIConstants.COMMA_SEPARATOR))
+        	requiredRoleQualifierAttributesToDisplay.delete(requiredRoleQualifierAttributesToDisplay.length()-KimConstants.KimUIConstants.COMMA_SEPARATOR.length(), requiredRoleQualifierAttributesToDisplay.length());
 
 		return requiredRoleQualifierAttributesToDisplay.toString();
 	}
@@ -277,7 +277,7 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 	//TODO: remove this and find a better way to do this. Should be done by next week with role doc task
 	public String getRequiredRoleQualifierAttributeToDisplay(KimResponsibilityRequiredAttributeImpl responsibilityRequiredAttribute){
 		String value = getKimAttributeLabelFromDD(responsibilityRequiredAttribute.getKimAttribute().getAttributeName());
-		return StringUtils.isEmpty(value)?value:value+KimConstants.COMMA_SEPARATOR;
+		return StringUtils.isEmpty(value)?value:value+KimConstants.KimUIConstants.COMMA_SEPARATOR;
 	}
 
 	public String getNameToDisplay(){

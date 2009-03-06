@@ -129,4 +129,9 @@ public class KimDocumentRoleResponsibility extends KimDocumentBoBase {
 		this.roleRspActions = roleRspActions;
 	}
 
+	@Override
+	public boolean isActive() {
+		return this.active;
+	}
+
 }

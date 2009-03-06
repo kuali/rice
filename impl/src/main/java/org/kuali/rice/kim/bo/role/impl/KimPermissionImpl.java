@@ -220,10 +220,10 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 	public String getDetailObjectsValues(){
 		StringBuffer detailObjectsToDisplay = new StringBuffer();
 		for(PermissionAttributeDataImpl permissionAttributeData: detailObjects){
-			detailObjectsToDisplay.append(permissionAttributeData.getAttributeValue()+KimConstants.COMMA_SEPARATOR);
+			detailObjectsToDisplay.append(permissionAttributeData.getAttributeValue()+KimConstants.KimUIConstants.COMMA_SEPARATOR);
 		}
-        if(detailObjectsToDisplay.toString().endsWith(KimConstants.COMMA_SEPARATOR))
-        	detailObjectsToDisplay.delete(detailObjectsToDisplay.length()-KimConstants.COMMA_SEPARATOR.length(), detailObjectsToDisplay.length());
+        if(detailObjectsToDisplay.toString().endsWith(KimConstants.KimUIConstants.COMMA_SEPARATOR))
+        	detailObjectsToDisplay.delete(detailObjectsToDisplay.length()-KimConstants.KimUIConstants.COMMA_SEPARATOR.length(), detailObjectsToDisplay.length());
 
 		return detailObjectsToDisplay.toString();
 	}
@@ -239,15 +239,15 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 		for(PermissionAttributeDataImpl permissionAttributeData: detailObjects){
 			detailObjectsToDisplay.append(getAttributeDetailToDisplay(permissionAttributeData));
 		}
-        if(detailObjectsToDisplay.toString().endsWith(KimConstants.COMMA_SEPARATOR))
-        	detailObjectsToDisplay.delete(detailObjectsToDisplay.length()-KimConstants.COMMA_SEPARATOR.length(), detailObjectsToDisplay.length());
+        if(detailObjectsToDisplay.toString().endsWith(KimConstants.KimUIConstants.COMMA_SEPARATOR))
+        	detailObjectsToDisplay.delete(detailObjectsToDisplay.length()-KimConstants.KimUIConstants.COMMA_SEPARATOR.length(), detailObjectsToDisplay.length());
 
 		return detailObjectsToDisplay.toString();
 	}
 
 	public String getAttributeDetailToDisplay(PermissionAttributeDataImpl permissionAttributeData){
-		return getKimAttributeLabelFromDD(permissionAttributeData.getKimAttribute().getAttributeName())+KimConstants.NAME_VALUE_SEPARATOR+
-				permissionAttributeData.getAttributeValue()+KimConstants.COMMA_SEPARATOR;
+		return getKimAttributeLabelFromDD(permissionAttributeData.getKimAttribute().getAttributeName())+KimConstants.KimUIConstants.NAME_VALUE_SEPARATOR+
+				permissionAttributeData.getAttributeValue()+KimConstants.KimUIConstants.COMMA_SEPARATOR;
 	}
 	
 	public String getRequiredRoleQualifierAttributesToDisplay() {
@@ -255,8 +255,8 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 		for(KimPermissionRequiredAttributeImpl permissionRequiredAttribute: requiredRoleQualifierAttributes){
 			requiredRoleQualifierAttributesToDisplay.append(getRequiredRoleQualifierAttributeToDisplay(permissionRequiredAttribute));
 		}
-        if(requiredRoleQualifierAttributesToDisplay.toString().endsWith(KimConstants.COMMA_SEPARATOR))
-        	requiredRoleQualifierAttributesToDisplay.delete(requiredRoleQualifierAttributesToDisplay.length()-KimConstants.COMMA_SEPARATOR.length(), requiredRoleQualifierAttributesToDisplay.length());
+        if(requiredRoleQualifierAttributesToDisplay.toString().endsWith(KimConstants.KimUIConstants.COMMA_SEPARATOR))
+        	requiredRoleQualifierAttributesToDisplay.delete(requiredRoleQualifierAttributesToDisplay.length()-KimConstants.KimUIConstants.COMMA_SEPARATOR.length(), requiredRoleQualifierAttributesToDisplay.length());
 
 		return requiredRoleQualifierAttributesToDisplay.toString();
 	}
@@ -277,7 +277,7 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 	//TODO: remove this and find a better way to do this. Should be done by next week with role doc task
 	public String getRequiredRoleQualifierAttributeToDisplay(KimPermissionRequiredAttributeImpl permissionRequiredAttribute){
 		String value = getKimAttributeLabelFromDD(permissionRequiredAttribute.getKimAttribute().getAttributeName());
-		return StringUtils.isEmpty(value)?value:value+KimConstants.COMMA_SEPARATOR;
+		return StringUtils.isEmpty(value)?value:value+KimConstants.KimUIConstants.COMMA_SEPARATOR;
 	}
 
 }

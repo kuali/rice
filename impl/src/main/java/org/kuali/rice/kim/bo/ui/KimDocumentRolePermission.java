@@ -23,8 +23,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
-import org.kuali.rice.kns.bo.Inactivateable;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -94,5 +92,9 @@ public class KimDocumentRolePermission extends KimDocumentBoBase {
 		this.kimPermission = kimPermission;
 	}
 
+	@Override
+	public boolean isActive() {
+		return this.active;
+	}
 
 }

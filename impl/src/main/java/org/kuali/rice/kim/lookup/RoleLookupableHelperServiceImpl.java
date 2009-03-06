@@ -24,6 +24,7 @@ import java.util.Properties;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
@@ -31,6 +32,7 @@ import org.kuali.rice.kim.dao.KimRoleDao;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kim.web.struts.action.IdentityManagementRoleDocumentAction;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
@@ -336,15 +338,25 @@ public class RoleLookupableHelperServiceImpl extends KualiLookupableHelperServic
 	}
 
 	static String getCustomRoleInquiryHref(String href){
-	    if (StringUtils.isNotBlank(href) && href.indexOf("&roleId=")!=-1) {
-		    int idx1 = href.indexOf("&roleId=");
+		String kimBaseUrl = KNSServiceLocator.getKualiConfigurationService().getPropertyString(KimConstants.KimUIConstants.KIM_URL_KEY);
+		if (!kimBaseUrl.endsWith("/")) {
+			kimBaseUrl = kimBaseUrl + "/";
+		}
+        Properties parameters = new Properties();
+        String hrefPart = "";
+		if (StringUtils.isNotBlank(href) && href.indexOf("&roleId=")!=-1) {
+			int idx1 = href.indexOf("&roleId=");
 		    int idx2 = href.indexOf("&", idx1+1);
 		    if (idx2 < 0) {
 		    	idx2 = href.length();
 		    }
-		    return ("../kim/identityManagementRoleDocument.do?methodToCall=inquiry&command=initiate&docTypeName=IdentityManagementRoleDocument"+href.substring(idx1, idx2));
+	        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY);
+	        parameters.put(KEWConstants.COMMAND_PARAMETER, KEWConstants.INITIATE_COMMAND);
+	        parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_TYPE_NAME);
+	        hrefPart = href.substring(idx1, idx2);
 	    }
-	    return "";
+		return UrlFactory.parameterizeUrl(
+	    		kimBaseUrl+KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_ACTION, parameters)+hrefPart;
 	}
 
 }

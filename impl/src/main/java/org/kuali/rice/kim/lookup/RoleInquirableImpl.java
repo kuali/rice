@@ -18,8 +18,8 @@ package org.kuali.rice.kim.lookup;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
+import org.kuali.rice.kim.web.struts.action.IdentityManagementRoleDocumentAction;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.ParameterNamespace;
 import org.kuali.rice.kns.inquiry.KualiInquirableImpl;

@@ -34,6 +34,7 @@ import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.support.KimTypeInternalService;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kim.web.struts.action.IdentityManagementRoleDocumentAction;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.ParameterNamespace;
 import org.kuali.rice.kns.lookup.HtmlData;
@@ -107,7 +108,7 @@ public class PermissionInquirableImpl extends RoleMemberInquirableImpl {
     	for(PermissionAttributeDataImpl permissionAttributeDataImpl: permissionAttributeData){
     		htmlData.add(getInquiryUrlForPrimaryKeys(PermissionAttributeDataImpl.class, permissionAttributeDataImpl, primaryKeys, 
     			getKimAttributeLabelFromDD(permissionAttributeDataImpl.getKimAttribute().getAttributeName())+
-    			KimConstants.NAME_VALUE_SEPARATOR+
+    			KimConstants.KimUIConstants.NAME_VALUE_SEPARATOR+
     			permissionAttributeDataImpl.getAttributeValue()));
     	}
     	return new MultipleAnchorHtmlData(htmlData);
@@ -121,13 +122,10 @@ public class PermissionInquirableImpl extends RoleMemberInquirableImpl {
 		primaryKeys.add(ROLE_ID);
 		if(assignedToRoles!=null && !assignedToRoles.isEmpty()){
 			RoleService roleService = KIMServiceLocator.getRoleService();
-			KimTypeInternalService kimTypeInternalService = KIMServiceLocator.getTypeInternalService();
 			KimRoleInfo roleInfo;
-			KimTypeImpl kimType;
 			AnchorHtmlData inquiryHtmlData;
 			for(KimRoleImpl roleImpl: assignedToRoles){
 				roleInfo = roleService.getRole(roleImpl.getRoleId());
-				kimType = kimTypeInternalService.getKimType(roleInfo.getKimTypeId());
 				inquiryHtmlData = getInquiryUrlForPrimaryKeys(KimRoleImpl.class, roleInfo, primaryKeys, 
         				roleInfo.getNamespaceCode()+" "+
         				roleInfo.getRoleName());

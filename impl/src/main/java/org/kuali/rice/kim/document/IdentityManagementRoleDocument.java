@@ -56,6 +56,7 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 	
 	protected List<KimDocumentRolePermission> permissions = new TypedArrayList(KimDocumentRolePermission.class);
 	protected List<KimDocumentRoleResponsibility> responsibilities = new TypedArrayList(KimDocumentRoleResponsibility.class);
+	protected List<KimDocumentRoleMember> members = new TypedArrayList(KimDocumentRoleMember.class);
 	private List<RoleDocumentDelegationMember> delegationMembers = new TypedArrayList(RoleDocumentDelegationMember.class);
 	private List<RoleDocumentDelegation> delegations = new TypedArrayList(RoleDocumentDelegation.class);
 	
@@ -185,6 +186,19 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 		this.responsibilities = responsibilities;
 	}
 
+	/**
+	 * @return the members
+	 */
+	public List<KimDocumentRoleMember> getMembers() {
+		return this.members;
+	}
+	/**
+	 * @param members the members to set
+	 */
+	public void setMembers(List<KimDocumentRoleMember> members) {
+		this.members = members;
+	}
+
 	public void addResponsibility(KimDocumentRoleResponsibility roleResponsibility){
 		if(!getResponsibilityService().areActionsAtAssignmentLevelById(roleResponsibility.getResponsibilityId())) {
 			roleResponsibility.getRoleRspActions().add(getNewRespAction(roleResponsibility));
@@ -202,7 +216,7 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 	public void addDelegationMember(RoleDocumentDelegationMember newDelegationMember){
 		getDelegationMembers().add(newDelegationMember);
 	}
-			
+
 	/**
 	 * @param members the members to set
 	 */
@@ -265,14 +279,6 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
     	if (getResponsibilityService().areActionsAtAssignmentLevelById(roleResp.getResponsibilityId())) {
     		member.getRoleRspActions().add(getNewRespAction(roleResp));
     	}        	
-    }
-    
-    public String getKimAttributeDefnId(AttributeDefinition definition){
-    	if (definition instanceof KimDataDictionaryAttributeDefinition) {
-    		return ((KimDataDictionaryAttributeDefinition)definition).getKimAttrDefnId();
-    	} else {
-    		return ((KimNonDataDictionaryAttributeDefinition)definition).getKimAttrDefnId();
-    	}
     }
     
     private void setAttrDefnIdForDelMemberQualifier(RoleDocumentDelegationMemberQualifier qualifier,AttributeDefinition definition) {

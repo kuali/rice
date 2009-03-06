@@ -42,14 +42,10 @@ public class RiceServiceInjectedObject implements BeanNameAware {
     @RiceService(name="enActionListService")
     public ActionListService als;
     
-    /**
-     * Set by {@link #setActionListEmailService()} annotation
-     */
+    @RiceService(name="enActionListEmailService")
     public ActionListEmailService ales;
     
-    /**
-     * Set by {@link #getActionRequestService()} annotation
-     */
+    @RiceService(name="enActionRequestService")
     public ActionRequestService ars;
     
     @RiceService(name="enApplicationConstantsService")
@@ -61,8 +57,6 @@ public class RiceServiceInjectedObject implements BeanNameAware {
         this.ales = ales;
     }
 
-
-    @RiceService(name="enActionRequestService")
     public ActionRequestService getActionRequestService() {
         return ars;
     }
@@ -70,8 +64,6 @@ public class RiceServiceInjectedObject implements BeanNameAware {
     public void setActionRequestService(ActionRequestService ars) {
         this.ars = ars;
     }
-    
-
     
     public void setWireMeInSpring(Object o) {
         this.wireMeInSpring = o;

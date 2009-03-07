@@ -116,4 +116,27 @@ public class FixedPointValidationPattern extends FieldLevelValidationPattern {
 
         return exportMap;
     }
+
+	/**
+	 * @see org.kuali.rice.kns.datadictionary.validation.FieldLevelValidationPattern#getValidationErrorMessageKey()
+	 */
+	@Override
+	public String getValidationErrorMessageKey() {
+		StringBuilder buf = new StringBuilder();
+		buf.append("error.format.").append(getClass().getName());
+		if (allowNegative) {
+			buf.append(".allowNegative");
+		}
+		return buf.toString();
+	}
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.datadictionary.validation.ValidationPattern#getValidationErrorMessageParameters(java.lang.String)
+	 */
+	@Override
+	public String[] getValidationErrorMessageParameters(String attributeLabel) {
+		return new String[] {attributeLabel, String.valueOf(precision), String.valueOf(scale)};
+	}
 }

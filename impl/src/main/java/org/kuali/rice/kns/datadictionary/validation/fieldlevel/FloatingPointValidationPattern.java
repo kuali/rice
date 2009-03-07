@@ -76,4 +76,17 @@ public class FloatingPointValidationPattern extends FieldLevelValidationPattern 
 
         return exportMap;
     }
+    
+	/**
+	 * @see org.kuali.rice.kns.datadictionary.validation.FieldLevelValidationPattern#getValidationErrorMessageKey()
+	 */
+	@Override
+	public String getValidationErrorMessageKey() {
+		StringBuilder buf = new StringBuilder();
+		buf.append("error.format.").append(getClass().getName());
+		if (allowNegative) {
+			buf.append(".allowNegative");
+		}
+		return buf.toString();
+	}
 }

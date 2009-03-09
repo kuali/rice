@@ -61,5 +61,5 @@ public interface DocumentSearchService {
 
     public DocumentSearchGenerator getStandardDocumentSearchGenerator();
     public DocumentSearchResultProcessor getStandardDocumentSearchResultProcessor();
-
+    public void validateDocumentSearchCriteria(DocumentSearchGenerator docSearchGenerator,DocSearchCriteriaDTO criteria);
 }

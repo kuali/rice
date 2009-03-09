@@ -241,8 +241,6 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
                 }
             }
         }
-        
-        setDerivedValuesOnForm(request);
     }
 
     private void populateAttachmentPropertyForBO(MaintenanceDocumentBase maintenanceDocument) {

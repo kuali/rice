@@ -780,7 +780,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 	}
 	
 	@Override
-	protected void setDerivedValuesOnForm(HttpServletRequest request) {
+	public void setDerivedValuesOnForm(HttpServletRequest request) {
 		super.setDerivedValuesOnForm(request);
 
 		String docTypeName = getDocTypeName();
@@ -788,14 +788,15 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 			DataDictionary dataDictionary = KNSServiceLocator.getDataDictionaryService().getDataDictionary();
 			Class<? extends DerivedValuesSetter> derivedValuesSetterClass = dataDictionary.getDocumentEntry(docTypeName).getDerivedValuesSetterClass();
 			if (derivedValuesSetterClass != null) {
+				DerivedValuesSetter derivedValuesSetter = null;
 				try {
-					DerivedValuesSetter derivedValuesSetter = derivedValuesSetterClass.newInstance();
-					derivedValuesSetter.setDerivedValues(this, request);
+					derivedValuesSetter = derivedValuesSetterClass.newInstance();
 				}
 				catch (Exception e) {
 					LOG.error("Unable to instantiate class " + derivedValuesSetterClass.getName(), e);
 					throw new RuntimeException("Unable to instantiate class " + derivedValuesSetterClass.getName(), e);
 				}
+				derivedValuesSetter.setDerivedValues(this, request);
 			}
 		}
 	}

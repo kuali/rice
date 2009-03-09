@@ -108,8 +108,6 @@ public class KualiForm extends PojoFormBase {
         if (actionFormUtilMap instanceof ActionFormUtilMap) {
             ((ActionFormUtilMap) actionFormUtilMap).setCacheValueFinderResults(true);
         }
-        
-        setDerivedValuesOnForm(request);
     }
         
     private static Boolean ENABLE_FIELD_LEVEL_HELP_IND = null;
@@ -393,6 +391,6 @@ public class KualiForm extends PojoFormBase {
 		this.nextMethodToCallIsRefresh = nextMethodToCallIsRefresh;
 	}
 	
-	protected void setDerivedValuesOnForm(HttpServletRequest request) {
+	public void setDerivedValuesOnForm(HttpServletRequest request) {
 	}
 }

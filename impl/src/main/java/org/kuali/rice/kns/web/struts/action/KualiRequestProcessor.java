@@ -230,6 +230,10 @@ public class KualiRequestProcessor extends RequestProcessor {
 		((PojoForm) form).populate(request);
 		request.setAttribute("UnconvertedValues", ((PojoForm) form).getUnconvertedValues().keySet());
 		request.setAttribute("UnconvertedHash", ((PojoForm) form).getUnconvertedValues());
+		
+        if (form instanceof KualiForm) {
+        	((KualiForm) form).setDerivedValuesOnForm(request);
+        }
 	}
 
 	/**

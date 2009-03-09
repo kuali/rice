@@ -58,6 +58,8 @@ public class UserXmlParser implements XmlConstants {
     private static final String USER_ELEMENT = "user";
     private static final String WORKFLOW_ID_ELEMENT = "workflowId";
     private static final String AUTHENTICATION_ID_ELEMENT = "authenticationId";
+    private static final String PRINCIPAL_ID_ELEMENT = "principalId";
+    private static final String PRINCIPAL_NAME_ELEMENT = "principalName";
     private static final String EMPL_ID_ELEMENT = "emplId";
     private static final String EMAIL_ELEMENT = "emailAddress";
     private static final String GIVEN_NAME_ELEMENT = "givenName";
@@ -164,7 +166,13 @@ public class UserXmlParser implements XmlConstants {
     
     protected KimPrincipalImpl constructPrincipal(Element userElement, String entityId) {
     	String principalId = userElement.getChildTextTrim(WORKFLOW_ID_ELEMENT, NAMESPACE);
+    	if (principalId == null) {
+    		principalId = userElement.getChildTextTrim(PRINCIPAL_ID_ELEMENT, NAMESPACE);
+    	}
     	String principalName = userElement.getChildTextTrim(AUTHENTICATION_ID_ELEMENT, NAMESPACE);
+    	if (principalName == null) {
+    		principalName = userElement.getChildTextTrim(PRINCIPAL_NAME_ELEMENT, NAMESPACE);
+    	}
     	
 		KimPrincipalImpl principal = new KimPrincipalImpl();
 		principal.setActive(true);

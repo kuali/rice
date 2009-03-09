@@ -104,8 +104,10 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     }
 	
     protected void addRoleImplToCache( KimRoleImpl role ) {
-    	roleCache.put( role.getRoleId(), new MaxAgeSoftReference<KimRoleImpl>( CACHE_MAX_AGE_SECONDS, role ) );
-    	roleCache.put( role.getNamespaceCode() + "-" + role.getRoleName(), new MaxAgeSoftReference<KimRoleImpl>( CACHE_MAX_AGE_SECONDS, role ) );
+    	if (role != null) {
+    		roleCache.put( role.getRoleId(), new MaxAgeSoftReference<KimRoleImpl>( CACHE_MAX_AGE_SECONDS, role ) );
+    		roleCache.put( role.getNamespaceCode() + "-" + role.getRoleName(), new MaxAgeSoftReference<KimRoleImpl>( CACHE_MAX_AGE_SECONDS, role ) );
+    	}
     }
     
 

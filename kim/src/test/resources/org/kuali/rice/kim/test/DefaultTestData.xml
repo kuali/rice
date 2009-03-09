@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Default test data for KEW unit tests -->
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+	<users xmlns="ns:workflow/User" xsi:schemaLocation="ns:workflow/User resource:User">
+		<user>
+			<principalId>p1</principalId>
+			<emplId>p1emplId</emplId>
+			<principalName>principal1</principalName>
+			<givenName>Principal</givenName>
+			<lastName>One</lastName>
+		</user>
+		<user>
+			<principalId>p2</principalId>
+			<emplId>p2emplId</emplId>
+			<principalName>principal2</principalName>
+			<givenName>Principal</givenName>
+			<lastName>Two</lastName>
+		</user>
+		<user>
+			<principalId>p3</principalId>
+			<emplId>p3emplId</emplId>
+			<principalName>principal3</principalName>
+			<givenName>Principal</givenName>
+			<lastName>Three</lastName>
+		</user>		
+		<user>
+			<principalId>kr</principalId>
+			<principalName>kr</principalName>
+			<type>SYSTEM</type>
+		</user>
+	</users>
+	<groups xmlns="ns:workflow/Group" xsi:schemaLocation="ns:workflow/Group resource:Group">
+		<group>
+		    <id>g1</id>
+			<name>GroupOne</name>
+			<namespace>KUALI</namespace>
+			<description>Group One</description>
+			<members>
+				<principalName>principal2</principalName>
+				<principalName>kr</principalName>
+			</members>
+		</group>
+	</groups>
+</data>

@@ -19,23 +19,21 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.xml.namespace.QName;
-
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.kuali.rice.core.config.spring.ConfigFactoryBean;
-import org.kuali.rice.core.lifecycle.Lifecycle;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.role.KimPermissionTemplate;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionDetailsInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
+import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
+import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
+import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
+import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.service.RoleService;
-import org.kuali.rice.test.RiceTestCase;
-import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
-import org.kuali.rice.test.web.HtmlUnitUtil;
+import org.kuali.rice.kim.test.KIMTestCase;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -43,91 +41,195 @@ import org.kuali.rice.test.web.HtmlUnitUtil;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class AuthorizationServiceImplTest extends RiceTestCase {
+public class AuthorizationServiceImplTest extends KIMTestCase {
 
 	private PermissionService permissionService;
 	private RoleService roleService;
 
-	private String contextName = "/knstest";
+	private String principal1Id = "p1";
+	private String principal2Id = "p2";
+	private String principal3Id = "p3";
+	
+	private String group1Id = "g1";
+	
+	private String role1Id = "r1";
+	private String role1NamespaceCode = "AUTH_SVC_TEST1";
+	private String role1Description = "Role 1 Description";
+	private String role1Name = "RoleOne";
+	
+	private String role2Id = "r2";
+	private String role2NamespaceCode = "AUTH_SVC_TEST2";
+	private String role2Description = "Role 2 Description";
+	private String role2Name = "RoleTwo";
+	
+	private String permission1Name = "perm1";
+	private String permission1NamespaceCode = "KR-NS";
+	private String permission1Id = "p1";
+	
+	private String permission2Name = "perm2";
+	private String permission2NamespaceCode = "KR-NS";
+	private String permission2Id = "p2";
 
-	private String relativeWebappRoot = "/../web/src/main/webapp";
+	private String permission3Name = "perm3";
+	private String permission3NamespaceCode = "KR-NS";
+	private String permission3Id = "p3";
 
-	private String testConfigFilename = "classpath:META-INF/kim-test-config.xml";
-
-	@Override
-	protected List<Lifecycle> getSuiteLifecycles() {
-		List<Lifecycle> lifecycles = super.getSuiteLifecycles();
-		lifecycles.add(new Lifecycle() {
-			boolean started = false;
-
-			public boolean isStarted() {
-				return this.started;
-			}
-
-			public void start() throws Exception {
-				System.setProperty(KEWConstants.BOOTSTRAP_SPRING_FILE, "SampleAppBeans-test.xml");
-				ConfigFactoryBean.CONFIG_OVERRIDE_LOCATION = testConfigFilename;
-				//new SQLDataLoaderLifecycle(sqlFilename, sqlDelimiter).start();
-				new JettyServerLifecycle(HtmlUnitUtil.getPort(), contextName, relativeWebappRoot).start();
-				//new KEWXmlDataLoaderLifecycle(xmlFilename).start();
-				System.getProperties().remove(KEWConstants.BOOTSTRAP_SPRING_FILE);
-				this.started = true;
-			}
-
-			public void stop() throws Exception {
-				this.started = false;
-			}
-
-		});
-		return lifecycles;
-	}
-
-	@Override
-	protected String getModuleName() {
-		return "kim";
-	}
-
-	@Override
-	protected List<Lifecycle> getDefaultSuiteLifecycles() {
-		List<Lifecycle> lifecycles = getInitialLifecycles();
-		return lifecycles;
-	}
-
+	
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
-		permissionService = (PermissionService)GlobalResourceLoader.getService(new QName("KIM", "kimPermissionService"));
-		roleService = (RoleService)GlobalResourceLoader.getService(new QName("KIM", "kimRoleService"));
-	}
+		permissionService = KIMServiceLocator.getPermissionService();
+		roleService = KIMServiceLocator.getRoleService();
+		
+		// set up Role "r1" with principal p1
+		KimRoleImpl role1 = new KimRoleImpl();
+		role1.setRoleId(role1Id);
+		role1.setActive(true);
+		role1.setKimTypeId(getDefaultKimType().getKimTypeId());
+		role1.setNamespaceCode(role1NamespaceCode);
+		role1.setRoleDescription(role1Description);
+		role1.setRoleName(role1Name);
+		List<RoleMemberImpl> members1 = new ArrayList<RoleMemberImpl>();
+		role1.setMembers(members1);
+		RoleMemberImpl p1Member = new RoleMemberImpl();
+		p1Member.setMemberId(principal1Id);
+		p1Member.setMemberTypeCode("P");
+		p1Member.setRoleId(role1Id);
+		p1Member.setRoleMemberId(getNewRoleMemberId());
+		members1.add(p1Member);
+		KNSServiceLocator.getBusinessObjectService().save(role1);
+		
+		// set up Role "r2" with principal p3, group g1 and role r1
+		KimRoleImpl role2 = new KimRoleImpl();
+		role2.setRoleId(role2Id);
+		role2.setActive(true);
+		role2.setKimTypeId(getDefaultKimType().getKimTypeId());
+		role2.setNamespaceCode(role2NamespaceCode);
+		role2.setRoleDescription(role2Description);
+		role2.setRoleName(role2Name);
+		List<RoleMemberImpl> members2 = new ArrayList<RoleMemberImpl>();
+		role2.setMembers(members2);
+		RoleMemberImpl p3Member = new RoleMemberImpl();
+		p3Member.setMemberId(principal3Id);
+		p3Member.setMemberTypeCode("P");
+		p3Member.setRoleId(role2Id);
+		p3Member.setRoleMemberId(getNewRoleMemberId());
+		members2.add(p3Member);
+		RoleMemberImpl g1Member = new RoleMemberImpl();
+		g1Member.setMemberId(group1Id);
+		g1Member.setMemberTypeCode("G");
+		g1Member.setRoleId(role2Id);
+		g1Member.setRoleMemberId(getNewRoleMemberId());
+		members2.add(g1Member);
+		RoleMemberImpl r1Member = new RoleMemberImpl();
+		r1Member.setMemberId(role1Id);
+		r1Member.setMemberTypeCode("R");
+		r1Member.setRoleId(role2Id);
+		r1Member.setRoleMemberId(getNewRoleMemberId());
+		members2.add(r1Member);
+		KNSServiceLocator.getBusinessObjectService().save(role2);
+		
+		// setup permissions
+		
+		KimPermissionTemplate defaultTemplate = getDefaultPermissionTemplate();
+		
+		KimPermissionImpl permission1 = new KimPermissionImpl();
+		permission1.setActive(true);
+		permission1.setDescription("permission1");
+		permission1.setName(permission1Name);
+		permission1.setNamespaceCode(permission1NamespaceCode);
+		permission1.setPermissionId(permission1Id);
+		permission1.setTemplateId(defaultTemplate.getPermissionTemplateId());
+		KNSServiceLocator.getBusinessObjectService().save(permission1);
+		
+		KimPermissionImpl permission2 = new KimPermissionImpl();
+		permission2.setActive(true);
+		permission2.setDescription("permission2");
+		permission2.setName(permission2Name);
+		permission2.setNamespaceCode(permission2NamespaceCode);
+		permission2.setPermissionId(permission2Id);
+		permission2.setTemplateId(defaultTemplate.getPermissionTemplateId());
+		KNSServiceLocator.getBusinessObjectService().save(permission2);
+		
+		KimPermissionImpl permission3 = new KimPermissionImpl();
+		permission3.setActive(true);
+		permission3.setDescription("permission3");
+		permission3.setName(permission3Name);
+		permission3.setNamespaceCode(permission3NamespaceCode);
+		permission3.setPermissionId(permission3Id);
+		permission3.setTemplateId(defaultTemplate.getPermissionTemplateId());
+		KNSServiceLocator.getBusinessObjectService().save(permission3);
 
-	@After
-	public void tearDown() throws Exception {}
+		// assign permissions to roles
+		// p1 -> r1
+		// p2 -> r1
+		// p3 -> r2
+		
+		RolePermissionImpl role1Perm1 = new RolePermissionImpl();
+		role1Perm1.setActive(true);
+		role1Perm1.setRoleId(role1Id);
+		role1Perm1.setPermissionId(permission1Id);
+		role1Perm1.setRolePermissionId(getNewRolePermissionId());
+		KNSServiceLocator.getBusinessObjectService().save(role1Perm1);
+		
+		RolePermissionImpl role1Perm2 = new RolePermissionImpl();
+		role1Perm2.setActive(true);
+		role1Perm2.setRoleId(role1Id);
+		role1Perm2.setPermissionId(permission2Id);
+		role1Perm2.setRolePermissionId(getNewRolePermissionId());
+		KNSServiceLocator.getBusinessObjectService().save(role1Perm2);
+		
+		RolePermissionImpl role2Perm3 = new RolePermissionImpl();
+		role2Perm3.setActive(true);
+		role2Perm3.setRoleId(role2Id);
+		role2Perm3.setPermissionId(permission3Id);
+		role2Perm3.setRolePermissionId(getNewRolePermissionId());
+		KNSServiceLocator.getBusinessObjectService().save(role2Perm3);
+	}
 
 	@Test
 	public void testRoleMembership() {
-		KimRoleInfo role = roleService.getRole( "r2" );
+		KimRoleInfo role = roleService.getRole( role2Id );
 		assertNotNull( "r2 must exist", role );
 		ArrayList<String> roleList = new ArrayList<String>( 1 );
-		roleList.add( "r2" );
-		Collection<RoleMembershipInfo> principalIds = roleService.getRoleMembers( roleList, null );
-		System.out.println( "r2: " + principalIds );
-		assertNotNull( "returned list may not be null", principalIds );
-		assertFalse( "list must not be empty", principalIds.isEmpty() );
-		assertTrue( "p3 must belong to role", principalIds.contains("p3") );
-		assertTrue( "p2 must belong to role (assigned via group)", principalIds.contains("p2") );
-		//assertEquals("list must be unique (no duplicates)", new HashSet<RoleMembershipInfo>( principalIds ).size(), principalIds.size() );
-		assertTrue( "p1 must belong to r2 (via r1)", principalIds.contains("p1") );
+		roleList.add( role2Id );
 		
-		role = roleService.getRole( "r1" );
+		Collection memberPrincipalIds = roleService.getRoleMemberPrincipalIds(role2NamespaceCode, role2Name, null);
+		assertNotNull(memberPrincipalIds);
+		assertEquals("RoleTwo should have 4 principal ids", 4, memberPrincipalIds.size());
+		assertTrue( "p3 must belong to role", memberPrincipalIds.contains(principal3Id) );
+		assertTrue( "p2 must belong to role (assigned via group)", memberPrincipalIds.contains(principal2Id) );
+		assertTrue( "p1 must belong to r2 (via r1)", memberPrincipalIds.contains(principal1Id) );
+		
+		Collection<RoleMembershipInfo> members = roleService.getRoleMembers( roleList, null );
+		assertNotNull( "returned list may not be null", members );
+		assertFalse( "list must not be empty", members.isEmpty() );
+		assertEquals("Returned list must have 3 members.", 3, members.size());
+		boolean foundP3 = false;
+		boolean foundG1 = false;
+		boolean foundR1 = false;
+		for (RoleMembershipInfo member : members) {
+			if (member.getMemberId().equals(principal3Id) && member.getMemberTypeCode().equals("P")) {
+				foundP3 = true;
+			} else if (member.getMemberId().equals(group1Id) && member.getMemberTypeCode().equals("G")) {
+				foundG1 = true;
+			} else if (member.getMemberId().equals(principal1Id) && member.getMemberTypeCode().equals("P")) {
+				foundR1 = true;
+				assertEquals("Should have r1 embedded role id.", role1Id, member.getEmbeddedRoleId());
+			}
+		}
+		assertTrue("Failed to find p3 principal member", foundP3);
+		assertTrue("Failed to find g1 group member", foundG1);
+		assertTrue("Failed to find r1 role member", foundR1);
+		
+		role = roleService.getRole( role1Id );
 		assertNotNull( "r1 must exist", role );
 		roleList.clear();
-		roleList.add( "r1" );
-		principalIds = roleService.getRoleMembers( roleList, null );
-		assertNotNull( "returned list may not be null", principalIds );
-		System.out.println( "r1: " + principalIds );
-		assertTrue( "p1 must belong to r1 (directly)", principalIds.contains("p1") );
-		assertFalse( "p3 must not belong to r1 (higher role)", principalIds.contains("p3") );
-		assertFalse( "p2 must not belong to r1 (higher role)", principalIds.contains("p2") );
+		roleList.add( role1Id );
+		members = roleService.getRoleMembers( roleList, null );
+		assertNotNull( "returned list may not be null", members );
+		assertEquals("Should have 1 member", 1, members.size());
+		assertEquals("Only member should be p1.", principal1Id, members.iterator().next().getMemberId());
 	}
 	
 //	@Test
@@ -147,22 +249,22 @@ public class AuthorizationServiceImplTest extends RiceTestCase {
 	@Test
 	public void testHasPermission() {
 		
-		assertTrue( "p1 must have perm1 (via r1)", permissionService.hasPermission( "KR-NS", "p1", "perm1", null ) );		
-		assertTrue( "p1 must have perm2 (via r1)", permissionService.hasPermission( "KR-NS", "p1", "perm2", null ) );
-		assertTrue( "p1 must have perm3 (via r2)", permissionService.hasPermission( "KR-NS", "p1", "perm3", null ) );
-		assertTrue( "p3 must have perm3 (via r2)", permissionService.hasPermission( "KR-NS", "p3", "perm3", null ) );
-		assertFalse( "p3 must not have perm1", permissionService.hasPermission( "KR-NS", "p3", "perm1", null ) );
-		assertFalse( "p3 must not have perm2", permissionService.hasPermission( "KR-NS", "p3", "perm2", null ) );
+		assertTrue( "p1 must have perm1 (via r1)", permissionService.hasPermission( "p1", "KR-NS", "perm1", null ) );		
+		assertTrue( "p1 must have perm2 (via r1)", permissionService.hasPermission( "p1", "KR-NS", "perm2", null ) );
+		assertTrue( "p1 must have perm3 (via r2)", permissionService.hasPermission( "p1", "KR-NS", "perm3", null ) );
+		assertTrue( "p3 must have perm3 (via r2)", permissionService.hasPermission( "p3", "KR-NS", "perm3", null ) );
+		assertFalse( "p3 must not have perm1", permissionService.hasPermission( "p3", "KR-NS", "perm1", null ) );
+		assertFalse( "p3 must not have perm2", permissionService.hasPermission( "p3", "KR-NS", "perm2", null ) );
 	}
 	
-	protected boolean hasPermission( List<PermissionDetailsInfo> perms, String permissionId ) {
-		for ( PermissionDetailsInfo perm : perms ) {
-			if ( perm.getPermissionId().equals( permissionId ) ) {
-				return true;
-			}
-		}
-		return false;
-	}
+//	protected boolean hasPermission( List<PermissionDetailsInfo> perms, String permissionId ) {
+//		for ( PermissionDetailsInfo perm : perms ) {
+//			if ( perm.getPermissionId().equals( permissionId ) ) {
+//				return true;
+//			}
+//		}
+//		return false;
+//	}
 	// test that only active roles/permissions are used
 	// test that only roles attached to active groups are returned
 	// check that implied/implying lists are correct

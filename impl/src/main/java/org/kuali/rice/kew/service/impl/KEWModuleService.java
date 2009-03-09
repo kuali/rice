@@ -68,9 +68,15 @@ public class KEWModuleService extends ModuleServiceBase {
 			if ( fieldValues.containsKey( "name" ) ) {
 				return (T)getDocumentTypeService().findByName((String)fieldValues.get( "name" ) );
 			}else if( fieldValues.containsKey( "documentTypeId" ) ){
-				return (T)getDocumentTypeService().findById((Long)fieldValues.get( "documentTypeId" ));
+				Object obj = fieldValues.get("documentTypeId");
+				if(obj instanceof String){
+					return (T)getDocumentTypeService().findById((Long)fieldValues.get( Long.valueOf(obj.toString()) ));
+				}else if(obj instanceof Long){
+					return (T)getDocumentTypeService().findById((Long)fieldValues.get( "documentTypeId" ));
+				}
 			}else if (fieldValues.containsKey( "id" ) ) {
-				return (T)getDocumentTypeService().findById((Long)fieldValues.get( "id" ));
+				// assume it's a string and convert it to a long.
+				return (T)getDocumentTypeService().findById(Long.valueOf(fieldValues.get( "id" ).toString()));
 			}
 
 		}

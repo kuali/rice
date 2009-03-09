@@ -34,7 +34,6 @@ public class EmbeddedLifeCycle extends BaseCompositeLifecycle {
     @Override
     protected List<Lifecycle> loadLifecycles() throws Exception {
     	List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
-    	lifecycles.add(new WebApplicationGlobalResourceLifecycle());
     	if (ConfigContext.getCurrentContextConfig().getXmlPipelineLifeCycleEnabled()) {
             lifecycles.add(new XmlPipelineLifeCycle());
     	}

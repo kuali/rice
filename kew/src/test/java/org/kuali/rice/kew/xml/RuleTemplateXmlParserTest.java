@@ -308,7 +308,6 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         assertFalse(ruleDefaults.getActiveInd());
         // activation date defaults to current time
         assertNull(ruleDefaults.getFromDate());
-        assertTrue(new Date(System.currentTimeMillis() - 10000).before(ruleDefaults.getFromDate()) && new Date(System.currentTimeMillis() + 100).after(ruleDefaults.getFromDate()));
         assertNotNull(ruleDefaults.getActivationDate());
         assertTrue(new Date(System.currentTimeMillis() - 10000).before(ruleDefaults.getActivationDate()) && new Date(System.currentTimeMillis() + 100).after(ruleDefaults.getActivationDate()));
         assertNull(ruleDefaults.getToDateString());
@@ -373,7 +372,6 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         assertFalse(ruleDefaults.getActiveInd());
         // activation date defaults to current time
         assertNull(ruleDefaults.getFromDate());
-        assertTrue(new Date(System.currentTimeMillis() - 10000).before(ruleDefaults.getFromDate()) && new Date(System.currentTimeMillis() + 100).after(ruleDefaults.getFromDate()));
         assertNotNull(ruleDefaults.getActivationDate());
         assertTrue(new Date(System.currentTimeMillis() - 10000).before(ruleDefaults.getActivationDate()) && new Date(System.currentTimeMillis() + 100).after(ruleDefaults.getActivationDate()));
         assertNull(ruleDefaults.getToDateString());

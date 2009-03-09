@@ -16,6 +16,8 @@
 package org.kuali.rice.kew.bo.lookup;
 
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -29,14 +31,17 @@ import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocumentLookupCriteriaBuilder;
 import org.kuali.rice.kew.docsearch.DocumentLookupCriteriaProcessor;
 import org.kuali.rice.kew.docsearch.DocumentLookupCriteriaProcessorKEWAdapter;
+import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
 import org.kuali.rice.kew.docsearch.DocumentSearchResult;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
 import org.kuali.rice.kew.docsearch.StandardDocumentSearchCriteriaProcessor;
+import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.KEWPropertyConstants;
+import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.KeyValueSort;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -48,6 +53,7 @@ import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.web.comparator.CellComparatorHelper;
 import org.kuali.rice.kns.web.format.BooleanFormatter;
@@ -70,6 +76,8 @@ public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends
 KualiLookupableHelperServiceImpl {
 
 	private static final long serialVersionUID = -5162419674659967408L;
+	private static final String TO_DATE_CREATED = "toDateCreated";
+	private static final String FROM_DATE_CREATED = "fromDateCreated";
 	DateTimeService dateTimeService;
 	DocumentLookupCriteriaProcessor processor;
 	
@@ -579,6 +587,32 @@ KualiLookupableHelperServiceImpl {
 		// TODO chris - THIS METHOD NEEDS JAVADOCS
 		return super.checkForAdditionalFields(fieldValues);
 	}
+	
+	@Override
+    public void validateSearchParameters(Map fieldValues) {
+        super.validateSearchParameters(fieldValues);
+        String toDateCreated = (String)fieldValues.get(TO_DATE_CREATED);
+        String fromDateCreated = (String)fieldValues.get(FROM_DATE_CREATED);
+        Date toDate;
+        Date fromDate;
+        DocumentSearchService docSeaSer = KEWServiceLocator.getDocumentSearchService();
+        Map<String,String[]> parameters = this.getParameters();
+        DocumentSearchGenerator docSeaGen = KEWServiceLocator.getDocumentSearchService().getStandardDocumentSearchGenerator();
+    	DocSearchCriteriaDTO criteria = DocumentLookupCriteriaBuilder.populateCriteria(parameters);
+        if (!Utilities.isEmpty(toDateCreated) && !Utilities.isEmpty(fromDateCreated)) {
+            try{
+            	toDate = (Date)new SimpleDateFormat("MM/dd/yyyy").parse(toDateCreated);
+            	fromDate = (Date)new SimpleDateFormat("MM/dd/yyyy").parse(fromDateCreated);
+                if(toDate.before(fromDate)){
+                     GlobalVariables.getErrorMap().putError(TO_DATE_CREATED, RiceKeyConstants.ERROR_ACTIVE_TO_DATE_BEFORE_FROM_DATE, toDateCreated);
+                }
+              } catch(ParseException e){
+              	System.out.println("ParseException: " + e);
+              }
+         }
+        docSeaSer.validateDocumentSearchCriteria(docSeaGen, criteria);
+    }
+
     
     
 }

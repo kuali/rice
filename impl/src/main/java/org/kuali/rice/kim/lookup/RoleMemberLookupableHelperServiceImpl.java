@@ -29,8 +29,6 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
-import com.sun.tools.doclets.internal.toolkit.resources.doclets_zh_CN;
-
 /**
  * This is a description of what this class does - bhargavp don't forget to fill this in. 
  * 

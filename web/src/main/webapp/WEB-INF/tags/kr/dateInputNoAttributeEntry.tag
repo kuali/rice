@@ -24,9 +24,7 @@
         if present"%>
 
 <kul:checkErrors keyMatch="${property}"/>
-<c:if test="${hasErrors==true}">
-  <c:set var="textStyle" value="border-color: #F00;"/>
-</c:if>
+
 <c:choose>
 	<c:when test="${!empty accessibilityHint}">
 		<html:text property="${property}" styleId="${property}" size="${size}" maxlength="${maxLength}" style="${textStyle}" alt="${accessibilityHint}" title="${accessibilityHint}" />
@@ -35,6 +33,9 @@
 		<html:text property="${property}" styleId="${property}" size="${size}" maxlength="${maxLength}" style="${textStyle}"/>
 	</c:otherwise>
 </c:choose>
+<c:if test="${hasErrors==true}">
+  <kul:fieldShowErrorIcon />
+</c:if>
 <img src="${ConfigProperties.kr.externalizable.images.url}cal.gif" id="${property}_datepicker" style="cursor: pointer;" alt="Date selector" title="Date selector" onmouseover="this.style.background='#F00';" onmouseout="this.style.background='#FFF';" />    
 <script type="text/javascript">
 	Calendar.setup(
@@ -45,3 +46,4 @@
     }
     );
 </script>
+

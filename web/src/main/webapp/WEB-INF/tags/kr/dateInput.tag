@@ -30,16 +30,17 @@
 
 
 <kul:checkErrors keyMatch="${property}"/>
-<c:if test="${hasErrors==true}">
-  <c:set var="textStyle" value="border-color: red"/>
-</c:if>
+
 
 <c:if test="${attributeEntry.control.text != true}">
   <font color="red">The given attributeEntry does not specify a text control</font>
 </c:if>
 <c:if test="${attributeEntry.control.text == true}">
     <html:text property="${property}" styleId="${property}" title="${accessibleTitle}" size="${attributeEntry.control.size}" maxlength="${attributeEntry.maxLength}" style="${textStyle}"/>
-    <img src="${ConfigProperties.kr.externalizable.images.url}cal.gif" id="${property}_datepicker" style="cursor: pointer;" alt="Date selector" title="Date selector" onmouseover="this.style.background='red';" onmouseout="this.style.background='';" />    
+    <c:if test="${hasErrors==true}">
+  		<kul:fieldShowErrorIcon />
+	</c:if>
+	<img src="${ConfigProperties.kr.externalizable.images.url}cal.gif" id="${property}_datepicker" style="cursor: pointer;" alt="Date selector" title="Date selector" onmouseover="this.style.background='red';" onmouseout="this.style.background='';" />    
     <script type="text/javascript">
       Calendar.setup(
       {
@@ -49,4 +50,5 @@
       }
       );
     </script>
+  
 </c:if>

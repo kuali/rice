@@ -135,12 +135,6 @@
 				####################################################### --%>
 			<kul:checkErrors keyMatch="${field.propertyName}" />
 
-			<c:if test="${hasErrors eq true}">
-				<c:set var="textStyle" value="border-color: red" />
-				<c:if test="${field.fieldType eq field.DROPDOWN || field.fieldType eq field.DROPDOWN_APC || field.fieldType eq field.DROPDOWN_REFRESH || field.fieldType eq field.DROPDOWN_SCRIPT}">
-					<c:set var="textStyle" value="background-color: red"/>
-				</c:if>
-			</c:if>
 
 			<%--
 				#######################################################
@@ -868,7 +862,13 @@
 			</c:when>
 
 			</c:choose>
-
+		 <%-- Render error icon at the end of the field --%>
+  		<c:if test="${hasErrors}">
+			<img src="${ConfigProperties.kr.externalizable.images.url}errormark.gif"
+				 id="${field.propertyName}_error"
+				 title="Error"
+				 alt="Error" />
+  		</c:if> 
 		</c:forEach>
 
 	</tr>

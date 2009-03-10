@@ -38,10 +38,7 @@
 <%@ attribute name="highlight" required="false"
               description="boolean indicating if this field is rendered as highlighted (to indicate old/new value change)" %> 
 
-<%-- set the border color when has errors --%>
-<c:if test="${hasErrors}">
-  <c:set var="textStyle" value="border-color: red" />
-</c:if>
+
 <%-- if the universal user ID field is a key field on this document, lock-down the user ID field --%>
 <c:choose>
   <c:when test="${readOnly}">
@@ -57,6 +54,9 @@
     size='${DataDictionary.PersonImpl.attributes.principalName.control.size}' 
     maxlength='${DataDictionary.PersonImpl.attributes.principalName.maxLength}' style="${textStyle}"
     onBlur="loadUserInfo( '${userIdFieldName}', '${universalIdFieldName}', '${userNameFieldName}' );${onblur}" />
+    <c:if test="${hasErrors}">
+  	 <kul:fieldShowErrorIcon />
+	</c:if>
     <kul:lookup boClassName="org.kuali.rice.kim.bo.Person" 
           fieldConversions="${fieldConversions}" 
           lookupParameters="${lookupParameters}" 

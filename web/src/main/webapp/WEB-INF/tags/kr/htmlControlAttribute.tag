@@ -76,18 +76,7 @@
 </c:if>
 
 <kul:checkErrors keyMatch="${property}" auditMatch="${property}"/>
-<c:choose>
-  <%-- border color not supported for select controls, so make background highlighted instead --%>
-  <c:when test="${hasErrors==true && !attributeEntry.control.select}">
-    <c:set var="textStyle" value="border-color: red"/>
-  </c:when>
-  <c:when test="${hasErrors==true && attributeEntry.control.select}">
-    <c:set var="textStyle" value="background-color:#FFD5D5"/>
-  </c:when>
-  <c:when test="${readOnly && !hasErrors}">
-    <c:set var="textStyle" value="border-color: black"/>
-  </c:when>
-</c:choose>
+
 
 <c:set var="disableField" value="false" />
 <c:if test="${disabled}">
@@ -173,21 +162,6 @@
                            size="${attributeEntry.control.size}" maxlength="${attributeEntry.maxLength}"
                            onblur="${onblur}" onchange="${onchange}" styleId="${property}" disabled="${disableField}"
                            styleClass="${styleClass}"/>
-
-            <c:if test="${datePicker==true}">
-                <img src="${ConfigProperties.kr.externalizable.images.url}cal.gif" id="${property}_datepicker" style="cursor: pointer;"
-                     title="Date selector" alt="Date selector"
-                     onmouseover="this.style.backgroundColor='red';" onmouseout="this.style.backgroundColor='transparent';" />
-                <script type="text/javascript">
-                  Calendar.setup(
-                          {
-                            inputField : "${property}", // ID of the input field
-                            ifFormat : "%m/%d/%Y", // the date format
-                            button : "${property}_datepicker" // ID of the button
-                          }
-                  );
-               </script>
-            </c:if>
     </c:when>
 
     <%-- textarea --%>
@@ -203,7 +177,7 @@
                   field.value = field.value.substr(0, maxlen); 
                 } 
               }; 
-            </script> 
+            </script>
     </c:when> 
 
     <%-- select --%>
@@ -276,4 +250,23 @@
                            styleClass="${styleClass}" />
     </c:when>
   </c:choose>
+  <!-- error icon -->
+  <c:if test="${hasErrors}">
+	 		<kul:fieldShowErrorIcon />
+  </c:if>
+  <!-- datePicker icon -->			
+  	<c:if test="${attributeEntry.control.text == true && datePicker==true}">
+        <img src="${ConfigProperties.kr.externalizable.images.url}cal.gif" id="${property}_datepicker" style="cursor: pointer;"
+             title="Date selector" alt="Date selector"
+             onmouseover="this.style.backgroundColor='red';" onmouseout="this.style.backgroundColor='transparent';" />
+             <script type="text/javascript">
+             	Calendar.setup(
+                          {
+                            inputField : "${property}", // ID of the input field
+                            ifFormat : "%m/%d/%Y", // the date format
+                            button : "${property}_datepicker" // ID of the button
+                          }
+                  );
+              </script>
+    </c:if>
 </c:if>

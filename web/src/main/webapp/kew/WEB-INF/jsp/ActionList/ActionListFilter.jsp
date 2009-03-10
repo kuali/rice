@@ -118,7 +118,7 @@ function setMethodToCallAndSubmit(methodToCallValue) {
 			&nbsp;<bean-el:message key="actionList.ActionListFilter.filter.label.exclude"/><html-el:checkbox property="filter.excludeActionRequestCd"/></td>
 	</tr>
 	<tr>
-		<th><div align="right"><span class="thnormal"><bean-el:message key="actionList.ActionListFilter.filter.label.actionRequestWorkgroup"/>: <bean-el:message key="general.help.actionRequestWorkgroup"/></span></div></th>
+		<th><div align="right"><span class="thnormal"><bean-el:message key="actionList.ActionListFilter.filter.label.actionRequestGroup"/>: <bean-el:message key="general.help.actionRequestWorkgroup"/></span></div></th>
 		<td class="datacell">
 		    <html-el:select name="ActionListFilterFormNew" property="filter.groupId">
               <html-el:optionsCollection property="userWorkgroups" label="value" value="key" filter="false"/>

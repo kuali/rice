@@ -86,6 +86,15 @@
          src="../kr/images/tinybutton-filter.gif" class="tinybutton" alt="filter" title="filter"
          border="0" /></a>
         </div>
+       
+		<c:if test="${kewUserSession.actionListFilter != null && kewUserSession.actionListFilter.filterOn}">
+		<div style="float:left; width:39px">
+	   <a
+         href='<c:out value="ActionList.do?methodToCall=clearFilter" />'  title="clearFilter"><img
+         src="../en/images/tinybutton-clearfields.gif" class="tinybutton" alt="clearFilter" title="clearFilter"
+         border="0" /></a>
+        </div>	
+		</c:if>
 
          <c:if test="${helpDeskActionList != null}">
          	<!--<p> Testing is this shows up on the screen </p> -->
@@ -163,8 +172,16 @@
                         </div>
                         </td>
 					</tr>
-				</table>
-
+					</table>
+			<c:if
+				test="${kewUserSession.actionListFilter.filterLegend != null && kewUserSession.actionListFilter.filterLegend != ''}">
+				<tr><td colspan="3">&nbsp;</td></tr>
+			  		<tr>
+				 	<td></td>
+					<td><strong><c:out
+					value="${kewUserSession.actionListFilter.filterLegend}" /></strong></td>
+					<td></td>
+			 </c:if>
                 </td>
                 <td></td>
 			</tr>
@@ -218,6 +235,9 @@
 						</c:choose>
 					</display-el:column>
 
+
+
+  
 					<c:if test="${preferences.showDocType == Constants.PREFERENCES_YES_VAL}">
 						<display-el:column property="docLabel" sortable="true"
 							title="${typeLabel}" />

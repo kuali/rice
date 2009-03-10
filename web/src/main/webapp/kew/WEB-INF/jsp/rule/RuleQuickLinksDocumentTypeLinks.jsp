@@ -106,15 +106,12 @@
                         </c:if>
                         <%-- TODO: update to link directly to inquiry --%>
                         <c:if test="${respCount == 1}">
-		                  	<a href="<c:url value="${ConfigProperties.kr.url}/${Constants.LOOKUP_ACTION}">
-	                        <c:param name="methodToCall" value="search" />
+		                  	<a href="<c:url value="${ConfigProperties.kr.url}/${Constants.INQUIRY_ACTION}">
+	                        <c:param name="methodToCall" value="start" />
 	                        <c:param name="businessObjectClassName" value="org.kuali.rice.kim.bo.impl.ResponsibilityImpl"/>
 	                        <c:param name="returnLocation" value="${ConfigProperties.application.url}/portal.do"/>
-	                        <c:param name="hideReturnLink" value="true"/>
 	                        <c:param name="docFormKey" value="88888888"/>
-	                        <c:param name="template.namespaceCode" value="${Constants.KUALI_RICE_WORKFLOW_NAMESPACE}"/>
-	                        <c:param name="template.name" value="Review"/>
-	                        <c:param name="detailCriteria" value="documentTypeName=${documentType.name},routeNodeName=${routeLevel.routeNodeName}"/>
+	                        <c:param name="responsibilityId" value="${routeLevel.responsibilities[0].responsibilityId}"/>
 	                      </c:url>" target="_blank">View Responsibility</a>
                         </c:if>
 					  </td>	            
@@ -191,7 +188,29 @@
                     <c:out value="${routeLevel.routeNodeName}" />&nbsp;
                   </kul:htmlAttributeHeaderCell>
                   <td class="datacell" width="60%">
-                  	&nbsp;
+	                  	<c:set var="respCount" value="${routeLevel.responsibilityCount}" />
+	                  	<c:if test="${respCount > 1}">
+		                  	<a href="<c:url value="${ConfigProperties.kr.url}/${Constants.LOOKUP_ACTION}">
+	                        <c:param name="methodToCall" value="search" />
+	                        <c:param name="businessObjectClassName" value="org.kuali.rice.kim.bo.impl.ResponsibilityImpl"/>
+	                        <c:param name="returnLocation" value="${ConfigProperties.application.url}/portal.do"/>
+	                        <c:param name="hideReturnLink" value="true"/>
+	                        <c:param name="docFormKey" value="88888888"/>
+	                        <c:param name="template.namespaceCode" value="${Constants.KUALI_RICE_WORKFLOW_NAMESPACE}"/>
+	                        <c:param name="template.name" value="Review"/>
+	                        <c:param name="detailCriteria" value="documentTypeName=${documentType.name},routeNodeName=${routeLevel.routeNodeName}"/>
+	                      </c:url>" target="_blank">View Responsibilities (${respCount})</a>
+                        </c:if>
+                        <%-- TODO: update to link directly to inquiry --%>
+                        <c:if test="${respCount == 1}">
+		                  	<a href="<c:url value="${ConfigProperties.kr.url}/${Constants.INQUIRY_ACTION}">
+	                        <c:param name="methodToCall" value="start" />
+	                        <c:param name="businessObjectClassName" value="org.kuali.rice.kim.bo.impl.ResponsibilityImpl"/>
+	                        <c:param name="returnLocation" value="${ConfigProperties.application.url}/portal.do"/>
+	                        <c:param name="docFormKey" value="88888888"/>
+	                        <c:param name="responsibilityId" value="${routeLevel.responsibilities[0].responsibilityId}"/>
+	                      </c:url>" target="_blank">View Responsibility</a>
+                        </c:if>
 				  </td>	            
 				</tr>  
               </c:if>

@@ -42,6 +42,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
+import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 
@@ -255,15 +256,28 @@ public class RuleQuickLinksAction extends KewKualiAction {
 			return this.baseNode.toString();
 		}
 		
+		private List<? extends KimResponsibilityInfo> responsibilities = null;
+		
+		public List<? extends KimResponsibilityInfo> getResponsibilities() {
+			if ( responsibilities == null ) {
+				Map<String,String> searchCriteria = new HashMap<String,String>();
+				searchCriteria.put("template.namespaceCode", KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE);
+				searchCriteria.put("template.name", "Review");
+				searchCriteria.put("detailCriteria",
+						KimAttributes.DOCUMENT_TYPE_NAME+"="+getDocumentType().getName()
+						+ ","
+						+ KimAttributes.ROUTE_NODE_NAME+"="+getRouteNodeName() );
+				responsibilities = KIMServiceLocator.getResponsibilityService().lookupResponsibilityInfo(searchCriteria, true);
+			}
+			return responsibilities;
+		}
+		
 		public int getResponsibilityCount() {
-			Map<String,String> searchCriteria = new HashMap<String,String>();
-			searchCriteria.put("template.namespaceCode", KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE);
-			searchCriteria.put("template.name", "Review");
-			searchCriteria.put("detailCriteria",
-					KimAttributes.DOCUMENT_TYPE_NAME+"="+getDocumentType().getName()
-					+ ","
-					+ KimAttributes.ROUTE_NODE_NAME+"="+getRouteNodeName() );
-			return KIMServiceLocator.getResponsibilityService().lookupResponsibilityInfo(searchCriteria, true).size();
+			return getResponsibilities().size();
+		}
+		
+		public boolean isHasResponsibility() {
+			return !getResponsibilities().isEmpty();
 		}
     }
     

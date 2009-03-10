@@ -17,16 +17,11 @@ package org.kuali.rice.kim.bo.impl;
 
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
-import org.kuali.rice.kim.bo.role.impl.KimResponsibilityRequiredAttributeImpl;
 import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
-import org.kuali.rice.kim.bo.role.impl.ResponsibilityAttributeDataImpl;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
@@ -47,6 +42,7 @@ public class ResponsibilityImpl extends KimResponsibilityImpl {
 	protected String assignedToGroupNameForLookup;
 	protected KimGroupImpl assignedToGroup;
 	protected String attributeValue;
+	protected String detailCriteria;
 	
 	/**
 	 * @return the assignedToRoles
@@ -208,6 +204,20 @@ public class ResponsibilityImpl extends KimResponsibilityImpl {
 	 */
 	public void setAssignedToRole(KimRoleImpl assignedToRole) {
 		this.assignedToRole = assignedToRole;
+	}
+
+	/**
+	 * @return the detailCriteria
+	 */
+	public String getDetailCriteria() {
+		return this.detailCriteria;
+	}
+
+	/**
+	 * @param detailCriteria the detailCriteria to set
+	 */
+	public void setDetailCriteria(String detailCriteria) {
+		this.detailCriteria = detailCriteria;
 	}
 
 }

@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.kuali.rice.kim.bo.impl.ResponsibilityImpl;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
@@ -39,6 +41,10 @@ import org.kuali.rice.kns.service.LookupService;
  */
 public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupableHelperServiceImpl {
 
+	private static final Logger LOG = Logger.getLogger( ResponsibilityLookupableHelperServiceImpl.class );
+	
+	private static final long serialVersionUID = -2882500971924192124L;
+	
 	private RoleService roleService;
 	private LookupService lookupService;
 
@@ -103,12 +109,12 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 	private List<ResponsibilityImpl> searchResponsibilities(Map<String, String> responsibilitySearchCriteria){
 		return getResponsibilitiesSearchResultsCopy((List<KimResponsibilityImpl>)
 					KNSServiceLocator.getLookupService().findCollectionBySearchHelper(
-							KimResponsibilityImpl.class, responsibilitySearchCriteria, false));	
+							KimResponsibilityImpl.class, responsibilitySearchCriteria, true));	
 	}
 	
 	private List<KimRoleImpl> searchRoles(Map<String, String> roleSearchCriteria){
 		return (List<KimRoleImpl>)KNSServiceLocator.getLookupService().findCollectionBySearchHelper(
-					KimRoleImpl.class, roleSearchCriteria, false);
+					KimRoleImpl.class, roleSearchCriteria, true);
 	}
 	
 	private List<ResponsibilityImpl> getResponsibilitiesWithRoleSearchCriteria(Map<String, String> roleSearchCriteria){
@@ -146,11 +152,26 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 	}
 	
 	private List<ResponsibilityImpl> getResponsibilitiesWithResponsibilitySearchCriteria(Map<String, String> responsibilitySearchCriteria){
-		List<ResponsibilityImpl> responsibilities = searchResponsibilities(responsibilitySearchCriteria);
-		for(ResponsibilityImpl responsibility: responsibilities){
-			populateAssignedToRoles(responsibility);
+		String detailCriteriaStr = responsibilitySearchCriteria.get( "detailCriteria" );
+		AttributeSet detailCriteria = parseDetailCriteria(detailCriteriaStr);
+		if ( LOG.isDebugEnabled() ) {
+			LOG.debug("Detail Criteria: " + detailCriteriaStr);
+			LOG.debug("Parsed Detail Criteria: " + detailCriteria);
 		}
-		return responsibilities;
+		List<ResponsibilityImpl> responsibilities = searchResponsibilities(responsibilitySearchCriteria);
+		List<ResponsibilityImpl> filteredResponsibilities = new ArrayList<ResponsibilityImpl>(); 
+		for(ResponsibilityImpl responsibility: responsibilities){
+			if ( detailCriteria.isEmpty() ) {
+				filteredResponsibilities.add(responsibility);
+				populateAssignedToRoles(responsibility);
+			} else {
+				if ( isMapSubset( responsibility.getDetails(), detailCriteria ) ) {
+					filteredResponsibilities.add(responsibility);
+					populateAssignedToRoles(responsibility);
+				}
+			}
+		}
+		return filteredResponsibilities;
 	}
 	
 	private List<ResponsibilityImpl> getResponsibilitiesSearchResultsCopy(List<KimResponsibilityImpl> responsibilitySearchResults){

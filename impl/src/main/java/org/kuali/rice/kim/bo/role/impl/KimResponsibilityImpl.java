@@ -146,23 +146,28 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 		return this.detailObjects;
 	}
 
-	public void setDetailObjectss(List<ResponsibilityAttributeDataImpl> detailObjects) {
+	public void setDetailObjects(List<ResponsibilityAttributeDataImpl> detailObjects) {
 		this.detailObjects = detailObjects;
+		detailsAsAttributeSet = null;
 	}
 	
 	public boolean hasDetails() {
 		return !detailObjects.isEmpty();
 	}
 	
+	protected AttributeSet detailsAsAttributeSet = null;
+	
 	/**
 	 * @see org.kuali.rice.kim.bo.role.ResponsibilityDetails#getDetails()
 	 */
 	public AttributeSet getDetails() {
-		AttributeSet map = new AttributeSet();
-		for (ResponsibilityAttributeDataImpl data : detailObjects) {
-			map.put(data.getKimAttribute().getAttributeName(), data.getAttributeValue());
+		if ( detailsAsAttributeSet == null ) {
+			detailsAsAttributeSet = new AttributeSet();
+			for (ResponsibilityAttributeDataImpl data : detailObjects) {
+				detailsAsAttributeSet.put(data.getKimAttribute().getAttributeName(), data.getAttributeValue());
+			}
 		}
-		return map;
+		return detailsAsAttributeSet;
 	}
 
 	public KimResponsibilityTemplateImpl getTemplate() {
@@ -191,10 +196,6 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 
 	public void setResponsibilityId(String responsibilityId) {
 		this.responsibilityId = responsibilityId;
-	}
-
-	public void setDetailObjects(List<ResponsibilityAttributeDataImpl> detailObjects) {
-		this.detailObjects = detailObjects;
 	}
 
 	public List<KimResponsibilityRequiredAttributeImpl> getRequiredRoleQualifierAttributes() {

@@ -365,7 +365,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         KimResponsibilityImpl responsibility = new KimResponsibilityImpl();
         responsibility.setActive(true);
         responsibility.setDescription("resp1");
-        responsibility.setDetailObjectss(detailObjects);
+        responsibility.setDetailObjects(detailObjects);
         responsibility.setName("VoluntaryReview");
         responsibility.setNamespaceCode(namespace);
         responsibility.setResponsibilityId(responsibilityId);
@@ -478,7 +478,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         KimResponsibilityImpl responsibility = new KimResponsibilityImpl();
         responsibility.setActive(true);
         responsibility.setDescription("resp2");
-        responsibility.setDetailObjectss(detailObjects);
+        responsibility.setDetailObjects(detailObjects);
         responsibility.setName("VoluntaryReview");
         responsibility.setNamespaceCode(namespace);
         responsibility.setResponsibilityId(responsibilityId);

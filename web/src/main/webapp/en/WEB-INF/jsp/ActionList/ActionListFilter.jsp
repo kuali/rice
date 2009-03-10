@@ -112,7 +112,7 @@
 			&nbsp;<bean-el:message key="actionList.ActionListFilter.filter.label.exclude"/><html-el:checkbox property="filter.excludeActionRequestCd"/></td>
 	</tr>
 	<tr>
-		<td class="thnormal"><bean-el:message key="actionList.ActionListFilter.filter.label.actionRequestWorkgroup"/> <bean-el:message key="general.help.actionRequestWorkgroup"/></td>
+		<td class="thnormal"><bean-el:message key="actionList.ActionListFilter.filter.label.actionRequestGroup"/> <bean-el:message key="general.help.actionRequestWorkgroup"/></td>
 		<td class="datacell">
 		    <html-el:select name="ActionListFilterForm" property="filter.groupId">
               <html-el:optionsCollection property="userWorkgroups" label="value" value="key" filter="false"/>

@@ -862,13 +862,6 @@
 			</c:when>
 
 			</c:choose>
-		 <%-- Render error icon at the end of the field --%>
-  		<c:if test="${hasErrors}">
-			<img src="${ConfigProperties.kr.externalizable.images.url}errormark.gif"
-				 id="${field.propertyName}_error"
-				 title="Error"
-				 alt="Error" />
-  		</c:if> 
 		</c:forEach>
 
 	</tr>

@@ -162,24 +162,9 @@
 			</c:if>
 
 			<c:choose>
-
 				<c:when test="${isFieldSecure and field.fieldType ne field.FILE}">
 					<input type="hidden" name="${field.propertyName}"
 						value='<c:out value="${field.encryptedValue}"/>' />
-
-				</c:when>
-
-				<c:when test="${isFieldReadOnly && not isFieldAContainer and field.fieldType ne field.FILE}">
-					<c:choose>
-						<c:when test= "${isInquiry || isLookup}">
-				  		</c:when>
-				  		<c:otherwise>
-							<c:if test="${not fn:contains(field.propertyName, Constants.MAINTENANCE_OLD_MAINTAINABLE)}">
-								<input type="hidden" name="${field.propertyName}"
-									   value='<c:out value="${fieldValue}"/>' />
-							</c:if>
-						</c:otherwise>
-				  	 </c:choose>
 				</c:when>
 
 			</c:choose>

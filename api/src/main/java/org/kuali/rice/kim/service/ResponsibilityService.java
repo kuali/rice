@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
@@ -70,4 +71,9 @@ public interface ResponsibilityService {
      * to any member assigned to the responsibility.) 
      */
    	boolean areActionsAtAssignmentLevel( KimResponsibilityInfo responsibility );
+   	
+   	/**
+   	 * Lookup responsibility objects.
+   	 */
+   	List<? extends KimResponsibilityInfo> lookupResponsibilityInfo( Map<String,String> searchCriteria, boolean unbounded );
 }

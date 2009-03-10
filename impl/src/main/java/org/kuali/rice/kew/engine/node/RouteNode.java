@@ -45,6 +45,7 @@ import org.hibernate.annotations.FetchMode;
 import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -52,7 +53,6 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * Represents the prototype definition of a node in the route path of {@link DocumentType}.
@@ -290,6 +290,15 @@ public class RouteNode implements Serializable {
 
     public boolean isFlexRM() {
         return routeMethodCode != null && routeMethodCode.equals(KEWConstants.ROUTE_LEVEL_FLEX_RM);
+    }
+    
+    public boolean isRoleNode() {
+    	try {
+    		return nodeType != null && NodeType.fromNode(this).isTypeOf(NodeType.ROLE);
+    	} catch( ResourceUnavailableException ex ) {
+    		System.err.println( "isRoleNode(): Unable to determine node type: " + ex.getMessage() );
+    		return false;
+    	}
     }
 
     public Boolean getFinalApprovalInd() {

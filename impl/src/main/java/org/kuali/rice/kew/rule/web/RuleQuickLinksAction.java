@@ -20,25 +20,30 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
-import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
+import org.kuali.rice.kew.engine.node.BranchPrototype;
 import org.kuali.rice.kew.engine.node.RouteNode;
+import org.kuali.rice.kew.engine.node.RouteNodeConfigParam;
 import org.kuali.rice.kew.rule.RuleBaseValues;
+import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.web.KewKualiAction;
-import org.kuali.rice.kns.web.struts.form.KualiForm;
+import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 
 /**
@@ -54,16 +59,20 @@ public class RuleQuickLinksAction extends KewKualiAction {
         return mapping.findForward("basic");
     }
 
-    public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
+    @SuppressWarnings("unchecked")
+	public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
         RuleQuickLinksForm qlForm = (RuleQuickLinksForm) form;
-        List documentTypes;
+        List<DocumentType> documentTypes;
         if (qlForm.getRootDocTypeName() != null) {
-        	documentTypes = new ArrayList();
+        	documentTypes = new ArrayList<DocumentType>();
             DocumentType docType = getDocumentTypeService().findByName(qlForm.getRootDocTypeName());
             documentTypes.add(docType);
             request.setAttribute("renderOpened", Boolean.TRUE);
         } else {
         	documentTypes = getDocumentTypeService().findAllCurrentRootDocuments();
+        	if ( documentTypes.size() == 1 ) {
+                request.setAttribute("renderOpened", Boolean.TRUE);
+        	}
         }
         qlForm.setDocumentTypeQuickLinksStructures(getDocumentTypeDataStructure(documentTypes));
 
@@ -111,11 +120,11 @@ public class RuleQuickLinksAction extends KewKualiAction {
 
         private DocumentTypeQuickLinksStructure(DocumentType documentType) {
              this.documentType = documentType;
-             List tempFlattendNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(documentType, true);
-            for (Iterator iter = tempFlattendNodes.iterator(); iter.hasNext();) {
+             List tempFlattenedNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(documentType, true);
+            for (Iterator iter = tempFlattenedNodes.iterator(); iter.hasNext();) {
 				RouteNode routeNode = (RouteNode) iter.next();
-				if (routeNode.isFlexRM()) {
-					flattenedNodes.add(routeNode);
+				if (routeNode.isFlexRM() || routeNode.isRoleNode() ) {
+					flattenedNodes.add(new RouteNodeForDisplay( routeNode ));
 				}
 			}
             for (Iterator iter = documentType.getChildrenDocTypes().iterator(); iter.hasNext();) {
@@ -141,19 +150,123 @@ public class RuleQuickLinksAction extends KewKualiAction {
         public void setFlattenedNodes(List<RouteNode> flattenedNodes) {
             this.flattenedNodes = flattenedNodes;
         }
-        public boolean isShouldDisplay () {
-            if (flattenedNodes.isEmpty()) {
-        	for (DocumentTypeQuickLinksStructure docType : childrenDocumentTypes) {
-        	    if (docType.isShouldDisplay()) {
-        		return true;
-        	    }
-        	}
-        	return false;
-            }
-            return true;
-        }
+        public boolean isShouldDisplay() {
+			if (flattenedNodes.isEmpty()) {
+				for (DocumentTypeQuickLinksStructure docType : childrenDocumentTypes) {
+					if (docType.isShouldDisplay()) {
+						return true;
+					}
+				}
+				return false;
+			}
+			return true;
+		}
     }
 
+    public static class RouteNodeForDisplay extends RouteNode {
+    	private RouteNode baseNode;
+    	
+		public RouteNodeForDisplay( RouteNode baseNode ) {
+			this.baseNode = baseNode;
+		}
+
+		public boolean equals(Object obj) {
+			return this.baseNode.equals(obj);
+		}
+
+		public String getActivationType() {
+			return this.baseNode.getActivationType();
+		}
+
+		public BranchPrototype getBranch() {
+			return this.baseNode.getBranch();
+		}
+
+		public List<RouteNodeConfigParam> getConfigParams() {
+			return this.baseNode.getConfigParams();
+		}
+
+		public String getContentFragment() {
+			return this.baseNode.getContentFragment();
+		}
+
+		public DocumentType getDocumentType() {
+			return this.baseNode.getDocumentType();
+		}
+
+		public Long getDocumentTypeId() {
+			return this.baseNode.getDocumentTypeId();
+		}
+		public KimGroup getExceptionWorkgroup() {
+			return this.baseNode.getExceptionWorkgroup();
+		}
+		public String getExceptionWorkgroupId() {
+			return this.baseNode.getExceptionWorkgroupId();
+		}
+		public String getExceptionWorkgroupName() {
+			return this.baseNode.getExceptionWorkgroupName();
+		}
+		public Boolean getFinalApprovalInd() {
+			return this.baseNode.getFinalApprovalInd();
+		}
+		public Integer getLockVerNbr() {
+			return this.baseNode.getLockVerNbr();
+		}
+		public Boolean getMandatoryRouteInd() {
+			return this.baseNode.getMandatoryRouteInd();
+		}
+		public List<RouteNode> getNextNodes() {
+			return this.baseNode.getNextNodes();
+		}
+		public String getNodeType() {
+			return this.baseNode.getNodeType();
+		}
+		public List<RouteNode> getPreviousNodes() {
+			return this.baseNode.getPreviousNodes();
+		}
+		public String getRouteMethodCode() {
+			return this.baseNode.getRouteMethodCode();
+		}
+		public String getRouteMethodName() {
+			return this.baseNode.getRouteMethodName();
+		}
+		public Long getRouteNodeId() {
+			return this.baseNode.getRouteNodeId();
+		}
+		public String getRouteNodeName() {
+			return this.baseNode.getRouteNodeName();
+		}
+		public RuleTemplate getRuleTemplate() {
+			return this.baseNode.getRuleTemplate();
+		}
+		public int hashCode() {
+			return this.baseNode.hashCode();
+		}
+		public boolean isExceptionGroupDefined() {
+			return this.baseNode.isExceptionGroupDefined();
+		}
+		public boolean isFlexRM() {
+			return this.baseNode.isFlexRM();
+		}
+		public boolean isRoleNode() {
+			return this.baseNode.isRoleNode();
+		}
+		public String toString() {
+			return this.baseNode.toString();
+		}
+		
+		public int getResponsibilityCount() {
+			Map<String,String> searchCriteria = new HashMap<String,String>();
+			searchCriteria.put("template.namespaceCode", KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE);
+			searchCriteria.put("template.name", "Review");
+			searchCriteria.put("detailCriteria",
+					KimAttributes.DOCUMENT_TYPE_NAME+"="+getDocumentType().getName()
+					+ ","
+					+ KimAttributes.ROUTE_NODE_NAME+"="+getRouteNodeName() );
+			return KIMServiceLocator.getResponsibilityService().lookupResponsibilityInfo(searchCriteria, true).size();
+		}
+    }
+    
     private void makeLookupPathParam(ActionMapping mapping, HttpServletRequest request) {
     	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + mapping.getModuleConfig().getPrefix();
     	request.setAttribute("basePath", basePath);

@@ -4,15 +4,15 @@
 <kul:page headerTitle="Rule QuickLinks" transactionalDocument="false"
 	showDocumentInfo="false" htmlFormAction="RuleQuickLinks" docTitle="Rule QuickLinks">
 
+		<c:if test="${!empty KualiForm.documentTypeQuickLinksStructures}">			
         	<c:forEach var="documentTypeStruct" items="${KualiForm.documentTypeQuickLinksStructures}" varStatus="docStatus">
             <c:if test="${documentTypeStruct.shouldDisplay}">
         	  <c:set var="documentType" value="${documentTypeStruct.documentType}" />
-
               <c:choose>
                 <c:when test="${docStatus.count == 1}">
                   <kul:tabTop
                     tabTitle="${documentType.label}"
-                    defaultOpen="false"
+                    defaultOpen="${renderOpened}"
                     boClassName="org.kuali.rice.kew.doctype.bo.DocumentType"
                     keyValues="documentTypeId=${documentType.documentTypeId}">
                       <div class="tab-container" style="width:auto;">
@@ -38,6 +38,10 @@
               </c:choose>
         	</c:if>
         	</c:forEach>
-            <kul:panelFooter />
+           	<kul:panelFooter />
+         </c:if>	
+		<c:if test="${empty KualiForm.documentTypeQuickLinksStructures}">
+			No Documents Match			
+		</c:if>
 
 </kul:page>

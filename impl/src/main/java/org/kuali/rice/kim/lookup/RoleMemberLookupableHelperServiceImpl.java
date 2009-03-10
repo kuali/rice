@@ -29,6 +29,8 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
+import com.sun.tools.doclets.internal.toolkit.resources.doclets_zh_CN;
+
 /**
  * This is a description of what this class does - bhargavp don't forget to fill this in. 
  * 
@@ -59,7 +61,20 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
     public List<? extends BusinessObject> getSearchResults(Map<String,String> fieldValues) {
     	Map<String, String> searchCriteria = buildRoleSearchCriteria(fieldValues);
     	if(searchCriteria == null)
-    		return new ArrayList();
+    		return new ArrayList<BusinessObject>();
+        return getMemberSearchResults(fieldValues);
+    }
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl#getSearchResultsUnbounded(java.util.Map)
+     */
+    @Override
+    public List<? extends BusinessObject> getSearchResultsUnbounded(
+    		Map<String, String> fieldValues) {
+    	Map<String, String> searchCriteria = buildRoleSearchCriteria(fieldValues);
+    	if(searchCriteria == null)
+    		return new ArrayList<BusinessObject>();
         return getMemberSearchResults(fieldValues);
     }
 
@@ -106,6 +121,7 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
      * @param fieldValues the values of the query
      * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#validateSearchParameters(java.util.Map)
      */
+    @SuppressWarnings("unchecked")
     @Override
     public void validateSearchParameters(Map fieldValues) {
         super.validateSearchParameters(fieldValues);
@@ -205,7 +221,13 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
 
 	/** Converts a special criteria string that is in the form key=value,key2=value2 into a map */
 	protected AttributeSet parseDetailCriteria( String detailCritiera ) {
+	    if ( StringUtils.isBlank(detailCritiera) ) {
+	        return new AttributeSet(0);
+	    }
 		String[] keyValuePairs = StringUtils.split(detailCritiera, ',');
+		if ( keyValuePairs == null || keyValuePairs.length == 0 ) {
+		    return new AttributeSet(0);
+		}
 		AttributeSet parsedDetails = new AttributeSet( keyValuePairs.length );
 		for ( String keyValueStr : keyValuePairs ) {
 			String[] keyValue = StringUtils.split(keyValueStr, '=');

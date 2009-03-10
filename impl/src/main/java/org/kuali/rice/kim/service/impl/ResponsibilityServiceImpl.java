@@ -25,6 +25,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.RiceDebugUtils;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
+import org.kuali.rice.kim.bo.impl.ResponsibilityImpl;
 import org.kuali.rice.kim.bo.role.KimRole;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
@@ -39,6 +40,8 @@ import org.kuali.rice.kim.service.ResponsibilityUpdateService;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.support.KimResponsibilityTypeService;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.lookup.CollectionIncomplete;
+import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
@@ -327,6 +330,29 @@ public class ResponsibilityServiceImpl implements ResponsibilityService, Respons
     		return false;
     	}
     	return areActionsAtAssignmentLevel(responsibility);
+    }
+    
+    @SuppressWarnings("unchecked")
+	public List<? extends KimResponsibilityInfo> lookupResponsibilityInfo( Map<String,String> searchCriteria, boolean unbounded ) {
+		Collection baseResults = null; 
+		Lookupable responsibilityLookupable = KNSServiceLocator.getLookupable(
+				KNSServiceLocator.getBusinessObjectDictionaryService().getLookupableID(ResponsibilityImpl.class)
+				);
+		responsibilityLookupable.setBusinessObjectClass(ResponsibilityImpl.class);
+		if ( unbounded ) {
+			baseResults = responsibilityLookupable.getSearchResultsUnbounded( searchCriteria );
+		} else {
+			baseResults = responsibilityLookupable.getSearchResults(searchCriteria);
+		}
+		List<KimResponsibilityInfo> results = new ArrayList<KimResponsibilityInfo>( baseResults.size() );
+		for ( ResponsibilityImpl resp : (Collection<ResponsibilityImpl>)baseResults ) {
+			results.add( resp.toSimpleInfo() );
+		}
+		if ( baseResults instanceof CollectionIncomplete ) {
+			results = new CollectionIncomplete<KimResponsibilityInfo>( results, ((CollectionIncomplete<KimResponsibilityInfo>)baseResults).getActualSizeIfTruncated() ); 
+		}		
+		return results;
+    	
     }
     
     // --------------------

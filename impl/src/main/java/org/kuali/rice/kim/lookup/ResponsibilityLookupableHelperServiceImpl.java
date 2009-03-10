@@ -22,12 +22,15 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.kim.bo.impl.ResponsibilityImpl;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.config.KIMConfigurer;
 import org.kuali.rice.kim.service.RoleService;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.LookupService;
@@ -142,22 +145,36 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 	}
 
 	private void populateAssignedToRoles(ResponsibilityImpl responsibility){
-		AttributeSet criteria;
-		for(RoleResponsibilityImpl roleResponsibility: responsibility.getRoleResponsibilities()){
-			criteria = new AttributeSet();
-			criteria.put("roleId", roleResponsibility.getRoleId());
-			responsibility.getAssignedToRoles().add((KimRoleImpl)getBusinessObjectService().findByPrimaryKey(KimRoleImpl.class, criteria));
+		AttributeSet criteria = new AttributeSet();
+		if ( responsibility.getAssignedToRoles().isEmpty() ) {
+			for(RoleResponsibilityImpl roleResponsibility: responsibility.getRoleResponsibilities()){
+				criteria.put(KimConstants.PrimaryKeyConstants.ROLE_ID, roleResponsibility.getRoleId());
+				responsibility.getAssignedToRoles().add((KimRoleImpl)getBusinessObjectService().findByPrimaryKey(KimRoleImpl.class, criteria));
+			}
 		}
 	}
 	
+	/* Since most queries will only be on the template namespace and name, cache the results for 30 seconds
+	 * so that queries against the details, which are done in memory, do not require repeated database trips.
+	 */
+    private Map<Map<String,String>,MaxAgeSoftReference<List<ResponsibilityImpl>>> respResultCache = new HashMap<Map<String,String>, MaxAgeSoftReference<List<ResponsibilityImpl>>>(); 
+	private static final long RESP_CACHE_EXPIRE_SECONDS = 30L;
+	
 	private List<ResponsibilityImpl> getResponsibilitiesWithResponsibilitySearchCriteria(Map<String, String> responsibilitySearchCriteria){
-		String detailCriteriaStr = responsibilitySearchCriteria.get( "detailCriteria" );
+		String detailCriteriaStr = responsibilitySearchCriteria.get( DETAIL_CRITERIA );
 		AttributeSet detailCriteria = parseDetailCriteria(detailCriteriaStr);
-		if ( LOG.isDebugEnabled() ) {
-			LOG.debug("Detail Criteria: " + detailCriteriaStr);
-			LOG.debug("Parsed Detail Criteria: " + detailCriteria);
+//		if ( LOG.isDebugEnabled() ) {
+//			LOG.debug("Detail Criteria: " + detailCriteriaStr);
+//			LOG.debug("Parsed Detail Criteria: " + detailCriteria);
+//		}
+		MaxAgeSoftReference<List<ResponsibilityImpl>> cachedResult = respResultCache.get(responsibilitySearchCriteria);
+		List<ResponsibilityImpl> responsibilities = null;
+		if ( cachedResult == null || cachedResult.get() == null ) {
+			responsibilities = searchResponsibilities(responsibilitySearchCriteria);
+			respResultCache.put(responsibilitySearchCriteria, new MaxAgeSoftReference<List<ResponsibilityImpl>>( RESP_CACHE_EXPIRE_SECONDS, responsibilities ) ); 
+		} else {
+			responsibilities = cachedResult.get();
 		}
-		List<ResponsibilityImpl> responsibilities = searchResponsibilities(responsibilitySearchCriteria);
 		List<ResponsibilityImpl> filteredResponsibilities = new ArrayList<ResponsibilityImpl>(); 
 		for(ResponsibilityImpl responsibility: responsibilities){
 			if ( detailCriteria.isEmpty() ) {

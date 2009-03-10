@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kim.bo.impl.ResponsibilityImpl;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
@@ -182,8 +181,7 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 			try{
 				PropertyUtils.copyProperties(responsibilityCopy, responsibilityImpl);
 			} catch(Exception ex){
-				//TODO: remove this
-				ex.printStackTrace();
+				LOG.error( "Unable to copy properties from KimResponsibilityImpl to ResponsibilityImpl.", ex );
 			}
 			responsibilitySearchResultsCopy.add(responsibilityCopy);
 		}

@@ -230,13 +230,14 @@
        <copy file="${application.deploy.directory}/${application.java.project}/target/${maven.war.filename}" tofile="${application.deploy.directory}/${application}-${build.environment}.war" overwrite="true" verbose="true" />
     </target>
 	
-	<target name="dist-external" depends="init"><!-- depends="init-properties" -->
+	<target name="dist-external"><!-- depends="init-properties" -->
 		<!-- property file="/home/j2eemgr/kuali/generated-build.properties"/ -->
 		<property name="deploy.working.directory" value="/opt/ears/stg/kr"/>
-		<echo file="${log4j.file}" message="${log4j}" />
-			<echo file="${security.file}" message="${security}"  />
-			<zip destfile="${deploy.working.directory}/settings.zip" basedir="${basedir}" includes="${log4j.file}" />
-			<zip destfile="${deploy.working.directory}/security.zip" basedir="${basedir}" includes="${security.file}" />
+			<!-- echo file="${log4j.file}" message="${log4j}" />
+			<echo file="${security.file}" message="${security}"  -->
+			<echo message="This is deploy.working.directory: ${deploy.working.directory}" />
+			<zip destfile="${deploy.working.directory}/settings.zip" update="true" basedir="${basedir}"/> <!-- includes="${log4j.file}" -->
+			<zip destfile="${deploy.working.directory}/security.zip" update="true" basedir="${basedir}"/> <!-- includes="${security.file}" -->
 			<zip destfile="${deploy.working.directory}/skel.zip" basedir="${basedir}" />
 	</target>
 	

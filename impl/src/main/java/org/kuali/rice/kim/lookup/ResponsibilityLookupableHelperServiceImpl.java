@@ -105,12 +105,14 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 		return matchedResponsibilities;
 	}
 	
+	@SuppressWarnings("unchecked")
 	private List<ResponsibilityImpl> searchResponsibilities(Map<String, String> responsibilitySearchCriteria){
 		return getResponsibilitiesSearchResultsCopy((List<KimResponsibilityImpl>)
 					getLookupService().findCollectionBySearchHelper(
 							KimResponsibilityImpl.class, responsibilitySearchCriteria, true));	
 	}
 	
+	@SuppressWarnings("unchecked")
 	private List<KimRoleImpl> searchRoles(Map<String, String> roleSearchCriteria){
 		return (List<KimRoleImpl>)getLookupService().findCollectionBySearchHelper(
 					KimRoleImpl.class, roleSearchCriteria, true);
@@ -154,7 +156,7 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 	/* Since most queries will only be on the template namespace and name, cache the results for 30 seconds
 	 * so that queries against the details, which are done in memory, do not require repeated database trips.
 	 */
-    private Map<Map<String,String>,MaxAgeSoftReference<List<ResponsibilityImpl>>> respResultCache = new HashMap<Map<String,String>, MaxAgeSoftReference<List<ResponsibilityImpl>>>(); 
+    private static final Map<Map<String,String>,MaxAgeSoftReference<List<ResponsibilityImpl>>> respResultCache = new HashMap<Map<String,String>, MaxAgeSoftReference<List<ResponsibilityImpl>>>(); 
 	private static final long RESP_CACHE_EXPIRE_SECONDS = 30L;
 	
 	private List<ResponsibilityImpl> getResponsibilitiesWithResponsibilitySearchCriteria(Map<String, String> responsibilitySearchCriteria){
@@ -189,13 +191,13 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 	
 	private List<ResponsibilityImpl> getResponsibilitiesSearchResultsCopy(List<KimResponsibilityImpl> responsibilitySearchResults){
 		List<ResponsibilityImpl> responsibilitySearchResultsCopy = new ArrayList<ResponsibilityImpl>();
-		ResponsibilityImpl responsibilityCopy;
 		for(KimResponsibilityImpl responsibilityImpl: responsibilitySearchResults){
-			responsibilityCopy = new ResponsibilityImpl();
+			ResponsibilityImpl responsibilityCopy = new ResponsibilityImpl();
 			try{
 				PropertyUtils.copyProperties(responsibilityCopy, responsibilityImpl);
 			} catch(Exception ex){
-				LOG.error( "Unable to copy properties from KimResponsibilityImpl to ResponsibilityImpl.", ex );
+				LOG.error( "Unable to copy properties from KimResponsibilityImpl to ResponsibilityImpl, skipping.", ex );
+				continue;
 			}
 			responsibilitySearchResultsCopy.add(responsibilityCopy);
 		}

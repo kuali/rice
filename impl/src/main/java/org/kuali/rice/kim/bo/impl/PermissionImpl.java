@@ -43,6 +43,7 @@ public class PermissionImpl extends KimPermissionImpl {
 	protected String assignedToGroupNameForLookup;
 	protected KimGroupImpl assignedToGroup;
 	protected String attributeValue;
+	protected String detailCriteria;
 	
 	/**
 	 * @return the assignedToRoles
@@ -204,6 +205,14 @@ public class PermissionImpl extends KimPermissionImpl {
 	 */
 	public void setAssignedToRole(KimRoleImpl assignedToRole) {
 		this.assignedToRole = assignedToRole;
+	}
+
+	public String getDetailCriteria() {
+		return this.detailCriteria;
+	}
+
+	public void setDetailCriteria(String detailCriteria) {
+		this.detailCriteria = detailCriteria;
 	}
 
 }

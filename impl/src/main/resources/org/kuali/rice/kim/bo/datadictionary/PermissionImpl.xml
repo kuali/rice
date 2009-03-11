@@ -35,6 +35,7 @@
         <ref bean="PermissionImpl-detailObjectsValues" />
         <ref bean="PermissionImpl-detailObjectsToDisplay" />
         <ref bean="PermissionImpl-assignedToRolesToDisplay" />
+        <ref bean="PermissionImpl-detailCriteria" />
         <ref bean="PermissionImpl-active" />
       </list>
     </property>
@@ -301,6 +302,18 @@
     </property>
   </bean>
 
+  <bean id="PermissionImpl-detailCriteria" parent="PermissionImpl-detailCriteria-parentBean" />
+  <bean id="PermissionImpl-detailCriteria-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="detailCriteria"
+        p:label="Permission Detail Criteria"
+        p:shortLabel="Detail Criteria"
+        p:maxLength="200"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="40" />
+    </property>
+  </bean>
+
   <bean id="PermissionImpl-detailObjectsToDisplay" parent="PermissionImpl-detailObjectsValues" 
         p:name="detailObjectsToDisplay">
   </bean>
@@ -436,6 +449,7 @@
           <bean parent="FieldDefinition" p:attributeName="assignedToGroupNamespaceForLookup" />
           <bean parent="FieldDefinition" p:attributeName="assignedToGroup.groupName" p:forceLookup="true" />
           <bean parent="FieldDefinition" p:attributeName="attributeValue" />
+          <bean parent="FieldDefinition" p:attributeName="detailCriteria" />
           <bean parent="FieldDefinition" p:attributeName="assignedToRole.roleId" />
           <bean parent="FieldDefinition" p:attributeName="assignedToPrincipal.principalId" />
           <bean parent="FieldDefinition" p:attributeName="template.permissionTemplateId" />

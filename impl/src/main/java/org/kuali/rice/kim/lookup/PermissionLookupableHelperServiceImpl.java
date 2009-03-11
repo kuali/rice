@@ -21,12 +21,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.kim.bo.impl.PermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.LookupService;
@@ -39,8 +40,9 @@ import org.kuali.rice.kns.service.LookupService;
  */
 public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableHelperServiceImpl {
 
-	private RoleService roleService;
-	private LookupService lookupService;
+	private static final Logger LOG = Logger.getLogger( PermissionLookupableHelperServiceImpl.class );
+	
+	private static LookupService lookupService;
 	
 	/**
 	 * @see org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl#getSearchResults(java.util.Map)
@@ -100,15 +102,17 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 		return matchedPermissions;
 	}
 	
+	@SuppressWarnings("unchecked")
 	private List<PermissionImpl> searchPermissions(Map<String, String> permissionSearchCriteria){
 		return getPermissionsSearchResultsCopy((List<KimPermissionImpl>)
-					KNSServiceLocator.getLookupService().findCollectionBySearchHelper(
-							KimPermissionImpl.class, permissionSearchCriteria, false));	
+					getLookupService().findCollectionBySearchHelper(
+							KimPermissionImpl.class, permissionSearchCriteria, true));	
 	}
 	
+	@SuppressWarnings("unchecked")
 	private List<KimRoleImpl> searchRoles(Map<String, String> roleSearchCriteria){
-		return (List<KimRoleImpl>)KNSServiceLocator.getLookupService().findCollectionBySearchHelper(
-					KimRoleImpl.class, roleSearchCriteria, false);
+		return (List<KimRoleImpl>)getLookupService().findCollectionBySearchHelper(
+					KimRoleImpl.class, roleSearchCriteria, true);
 	}
 	
 	private List<PermissionImpl> getPermissionsWithRoleSearchCriteria(Map<String, String> roleSearchCriteria){
@@ -145,57 +149,62 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 		}
 	}
 	
+	/* Since most queries will only be on the template namespace and name, cache the results for 30 seconds
+	 * so that queries against the details, which are done in memory, do not require repeated database trips.
+	 */
+    private static final Map<Map<String,String>,MaxAgeSoftReference<List<PermissionImpl>>> permResultCache = new HashMap<Map<String,String>, MaxAgeSoftReference<List<PermissionImpl>>>(); 
+	private static final long PERM_CACHE_EXPIRE_SECONDS = 30L;
+	
 	private List<PermissionImpl> getPermissionsWithPermissionSearchCriteria(Map<String, String> permissionSearchCriteria){
-		List<PermissionImpl> permissions = searchPermissions(permissionSearchCriteria);
-		for(PermissionImpl permission: permissions){
-			populateAssignedToRoles(permission);
+		String detailCriteriaStr = permissionSearchCriteria.get( DETAIL_CRITERIA );
+		AttributeSet detailCriteria = parseDetailCriteria(detailCriteriaStr);
+
+		MaxAgeSoftReference<List<PermissionImpl>> cachedResult = permResultCache.get(permissionSearchCriteria);
+		List<PermissionImpl> permissions = null;
+		if ( cachedResult == null || cachedResult.get() == null ) {
+			permissions = searchPermissions(permissionSearchCriteria);
+			permResultCache.put(permissionSearchCriteria, new MaxAgeSoftReference<List<PermissionImpl>>( PERM_CACHE_EXPIRE_SECONDS, permissions ) ); 
+		} else {
+			permissions = cachedResult.get();
 		}
-		return permissions;
+		List<PermissionImpl> filteredPermissions = new ArrayList<PermissionImpl>(); 
+		for(PermissionImpl perm: permissions){
+			if ( detailCriteria.isEmpty() ) {
+				filteredPermissions.add(perm);
+				populateAssignedToRoles(perm);
+			} else {
+				if ( isMapSubset( perm.getDetails(), detailCriteria ) ) {
+					filteredPermissions.add(perm);
+					populateAssignedToRoles(perm);
+				}
+			}
+		}
+		return filteredPermissions;
 	}
 	
 	private List<PermissionImpl> getPermissionsSearchResultsCopy(List<KimPermissionImpl> permissionSearchResults){
 		List<PermissionImpl> permissionSearchResultsCopy = new ArrayList<PermissionImpl>();
-		PermissionImpl permissionCopy;
 		for(KimPermissionImpl permissionImpl: permissionSearchResults){
-			permissionCopy = new PermissionImpl();
+			PermissionImpl permissionCopy = new PermissionImpl();
 			try{
 				PropertyUtils.copyProperties(permissionCopy, permissionImpl);
 			} catch(Exception ex){
-				//TODO: remove this
-				ex.printStackTrace();
+				LOG.error( "Unable to copy properties from KimPermissionImpl to PermissionImpl, skipping.", ex );
+				continue;
 			}
 			permissionSearchResultsCopy.add(permissionCopy);
 		}
 		return permissionSearchResultsCopy;
 	}
 	
-
 	/**
 	 * @return the lookupService
 	 */
 	public LookupService getLookupService() {
-		return this.lookupService;
-	}
-
-	/**
-	 * @param lookupService the lookupService to set
-	 */
-	public void setLookupService(LookupService lookupService) {
-		this.lookupService = lookupService;
-	}
-
-	/**
-	 * @return the roleService
-	 */
-	public RoleService getRoleService() {
-		return this.roleService;
-	}
-
-	/**
-	 * @param roleService the roleService to set
-	 */
-	public void setRoleService(RoleService roleService) {
-		this.roleService = roleService;
+		if ( lookupService == null ) {
+			lookupService = KNSServiceLocator.getLookupService();
+		}
+		return lookupService;
 	}
 
 

@@ -17,6 +17,7 @@ package org.kuali.rice.kim.lookup;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,7 @@ import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.dao.KimRoleDao;
+import org.kuali.rice.kim.service.support.KimRoleTypeService;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
@@ -81,10 +83,10 @@ public class RoleLookupableHelperServiceImpl extends KualiLookupableHelperServic
     	if(!KimTypeLookupableHelperServiceImpl.hasDerivedRoleTypeService(roleImpl.getKimRoleType())){
 	        Properties parameters = new Properties();
 	        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.DOC_HANDLER_METHOD);
-	        parameters.put(KNSConstants.PARAMETER_COMMAND, "initiate");
-	        parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, "IdentityManagementRoleDocument");
+	        parameters.put(KNSConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
+	        parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_TYPE_NAME);
 	        parameters.put(KimConstants.PrimaryKeyConstants.ROLE_ID, roleImpl.getRoleId());
-	        href = UrlFactory.parameterizeUrl("../kim/identityManagementRoleDocument.do", parameters);
+	        href = UrlFactory.parameterizeUrl(KimCommonUtils.getKimBasePath()+KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_ACTION, parameters);
     	}        
         AnchorHtmlData anchorHtmlData = new AnchorHtmlData(href, 
         		KNSConstants.DOC_HANDLER_METHOD, KNSConstants.MAINTENANCE_EDIT_ACTION);
@@ -98,7 +100,7 @@ public class RoleLookupableHelperServiceImpl extends KualiLookupableHelperServic
 //    	fieldValues.put("principalName","");
         String kimTypeId = null;
         for (Map.Entry<String,String> entry : fieldValues.entrySet()) {
-        	if (entry.getKey().equals("kimTypeId")) {
+        	if (entry.getKey().equals(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID)) {
         		kimTypeId=entry.getValue();
         		break;
         	}
@@ -109,31 +111,25 @@ public class RoleLookupableHelperServiceImpl extends KualiLookupableHelperServic
         return baseLookup;
     }
 
-	private static List<KeyLabelPair>  roleTypeCache = null;
-
-
 	@SuppressWarnings("unchecked")
 	private List<KeyLabelPair> getRoleTypeOptions() {
-		if ( roleTypeCache == null ) {
-			List<KeyLabelPair> options = new ArrayList<KeyLabelPair>();
-			options.add(new KeyLabelPair("", ""));
-			//TODO : this is not efficient
-			List<KimTypeImpl> kimTypes = (List<KimTypeImpl>)getBusinessObjectService().findAll(KimTypeImpl.class);
-			List<KimRoleImpl> kimRoles = (List<KimRoleImpl>)getBusinessObjectService().findAll(KimRoleImpl.class);
-	        List<String> typeIds = new ArrayList<String>();
-	        for (KimRoleImpl role : kimRoles) {
-	        	if (!typeIds.contains(role.getKimTypeId())) {
-	        		typeIds.add(role.getKimTypeId());
-	        	}
-	        }
-			for (KimTypeImpl kimType : kimTypes) {
-				if (typeIds.contains(kimType.getKimTypeId())) {
-					options.add(new KeyLabelPair(kimType.getKimTypeId(), kimType.getName()));
-				}
-			}
-			roleTypeCache = options;
-		}
-		return roleTypeCache;
+		List<KeyLabelPair> options = new ArrayList<KeyLabelPair>();
+		options.add(new KeyLabelPair("", ""));
+
+		List<KimTypeImpl> kimGroupTypes = (List<KimTypeImpl>)getBusinessObjectService().findAll(KimTypeImpl.class);
+		// get the distinct list of type IDs from all roles in the system
+        for (KimTypeImpl kimType : kimGroupTypes) {
+            if (KimTypeLookupableHelperServiceImpl.hasRoleTypeService(kimType)) {
+                String value = kimType.getNamespaceCode().trim() + KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR + kimType.getName().trim();
+                options.add(new KeyLabelPair(kimType.getKimTypeId(), value));
+            }
+        }
+        Collections.sort(options, new Comparator<KeyLabelPair>() {
+           public int compare(KeyLabelPair k1, KeyLabelPair k2) {
+               return k1.getLabel().compareTo(k2.getLabel());
+           }
+        });
+		return options;
 	}
 
 	private List<Row> setupAttributeRows() {
@@ -333,30 +329,38 @@ public class RoleLookupableHelperServiceImpl extends KualiLookupableHelperServic
 	@Override
 	public HtmlData getInquiryUrl(BusinessObject bo, String propertyName) {
 		AnchorHtmlData inquiryHtmlData = (AnchorHtmlData)super.getInquiryUrl(bo, propertyName);
-	    inquiryHtmlData.setHref(getCustomRoleInquiryHref(inquiryHtmlData.getHref()));
+	    inquiryHtmlData.setHref(getCustomRoleInquiryHref(getBackLocation(), inquiryHtmlData.getHref()));
 		return inquiryHtmlData;
 	}
 
 	static String getCustomRoleInquiryHref(String href){
-		String kimBaseUrl = KNSServiceLocator.getKualiConfigurationService().getPropertyString(KimConstants.KimUIConstants.KIM_URL_KEY);
-		if (!kimBaseUrl.endsWith("/")) {
-			kimBaseUrl = kimBaseUrl + "/";
-		}
+		return getCustomRoleInquiryHref("", href);
+	}
+	
+	static String getCustomRoleInquiryHref(String backLocation, String href){
         Properties parameters = new Properties();
         String hrefPart = "";
-		if (StringUtils.isNotBlank(href) && href.indexOf("&roleId=")!=-1) {
-			int idx1 = href.indexOf("&roleId=");
+    	String docTypeName = "";
+    	String docTypeAction = "";
+    	if(StringUtils.isBlank(backLocation) || backLocation.contains(KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_ACTION)){
+    		docTypeName = KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_TYPE_NAME;
+    		docTypeAction = KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_ACTION;
+    	} else{
+    		docTypeName = KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_TYPE_NAME;
+    		docTypeAction = KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_ACTION;
+    	}
+		if (StringUtils.isNotBlank(href) && href.indexOf("&"+KimConstants.PrimaryKeyConstants.ROLE_ID+"=")!=-1) {
+			int idx1 = href.indexOf("&"+KimConstants.PrimaryKeyConstants.ROLE_ID+"=");
 		    int idx2 = href.indexOf("&", idx1+1);
 		    if (idx2 < 0) {
 		    	idx2 = href.length();
 		    }
 	        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY);
 	        parameters.put(KEWConstants.COMMAND_PARAMETER, KEWConstants.INITIATE_COMMAND);
-	        parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_TYPE_NAME);
+	        parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, docTypeName);
 	        hrefPart = href.substring(idx1, idx2);
 	    }
-		return UrlFactory.parameterizeUrl(
-	    		kimBaseUrl+KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_ACTION, parameters)+hrefPart;
+		return UrlFactory.parameterizeUrl(KimCommonUtils.getKimBasePath()+docTypeAction, parameters)+hrefPart;
 	}
 
-}
+} 

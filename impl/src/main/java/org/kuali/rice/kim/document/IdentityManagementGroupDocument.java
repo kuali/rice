@@ -20,7 +20,9 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.bo.ui.GroupDocumentQualifier;
-import org.kuali.rice.kim.service.ResponsibilityService;
+import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
@@ -105,7 +107,7 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 	public void handleRouteStatusChange() {
 		super.handleRouteStatusChange();
 		if (getDocumentHeader().getWorkflowDocument().stateIsFinal()) {
-			//KIMServiceLocator.getUiDocumentService().saveGroup(this);
+			KIMServiceLocator.getUiDocumentService().saveGroup(this);
 		}
 	}
 	
@@ -228,6 +230,22 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 	 */
 	public void setQualifiers(List<GroupDocumentQualifier> qualifiers) {
 		this.qualifiers = qualifiers;
+	}
+
+	public String getWorkflowDocumentTypeName(){
+		String workflowDocumentTypeName = getKimTypeService(kimType).getWorkflowDocumentTypeName();
+		if(StringUtils.isBlank(workflowDocumentTypeName)){
+			workflowDocumentTypeName = KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_TYPE_NAME;
+		}
+		return workflowDocumentTypeName;
+	}
+
+	public GroupDocumentQualifier getQualifier(String kimAttributeDefnId) {
+		for(GroupDocumentQualifier qualifier: qualifiers){
+			if(qualifier.getKimAttributeId().equals(kimAttributeDefnId))
+				return qualifier;
+		}
+		return null;
 	}
 
 }

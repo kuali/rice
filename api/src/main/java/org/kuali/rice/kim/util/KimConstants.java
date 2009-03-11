@@ -82,7 +82,6 @@ public class KimConstants {
     	public static final String MODIFY_ENTITY = "Modify Entity";
     	public static final String POPULATE_GROUP = "Populate Group";
     	public static final String ASSIGN_ROLE = "Assign Role";
-    	public static final String ASSIGN_GROUP = "Assign Group";
     	public static final String GRANT_PERMISSION = "Grant Permission";
     	public static final String GRANT_RESPONSIBILITY = "Grant Responsibility";
 
@@ -105,7 +104,10 @@ public class KimConstants {
 		public static final String NAME_VALUE_SEPARATOR = " : ";
 		public static final String COMMA_SEPARATOR = ", ";
 		public static final String OR_OPERATOR = "|";
+		public static final String URL_SEPARATOR = "/";
+		public static final String PARAMETERIZED_URL_SEPARATOR = "%2F";
 		public static final String KIM_URL_KEY = "kim.url";
+		public static final String KIM_APPLICATION = "kim";
 		public static final String KIM_ROLE_DOCUMENT_TYPE_NAME = "IdentityManagementRoleDocument";
 		public static final String KIM_GROUP_DOCUMENT_TYPE_NAME = "IdentityManagementGroupDocument";
 		public static final String KIM_PERSON_DOCUMENT_TYPE_NAME = "IdentityManagementPersonDocument";
@@ -133,6 +135,7 @@ public class KimConstants {
 		public static final String ENTITY_ID = "entityId";
 		public static final String PRINCIPAL_ID = "principalId";
 		public static final String ROLE_ID = "roleId";
+		public static final String GROUP_ID = "groupId";
 		public static final String KIM_TYPE_ID = "kimTypeId";
 		public static final String RESPONSIBILITY_ID = "responsibilityId";
 		public static final String PERMISSION_ID = "permissionId";

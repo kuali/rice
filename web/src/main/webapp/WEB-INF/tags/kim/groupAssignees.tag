@@ -2,8 +2,8 @@
 
 <script language="JavaScript" src="scripts/en-common.js"></script>
 
-<c:set var="groupMemberAttributes" value="${DataDictionary.KimDocumentGroupMember.attributes}" />
-<c:set var="groupQualifierAttributes" value="${DataDictionary.KimDocumentGroupQualifier.attributes}" />
+<c:set var="groupMemberAttributes" value="${DataDictionary.GroupDocumentMember.attributes}" />
+<c:set var="groupQualifierAttributes" value="${DataDictionary.GroupDocumentQualifier.attributes}" />
 
 <c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
 <c:set var="canAssignGroup" value="${KualiForm.canAssignGroup}" />
@@ -31,11 +31,6 @@ function changeMemberTypeCode(){
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${groupMemberAttributes.memberName}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${groupMemberAttributes.activeFromDate}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${groupMemberAttributes.activeToDate}" noColon="true" /></div></th>
-				<c:forEach var="attrDefn" items="${KualiForm.document.kimType.attributeDefinitions}" varStatus="status">
-        			<c:set var="fieldName" value="${attrDefn.kimAttribute.attributeName}" />
-        			<c:set var="attrEntry" value="${KualiForm.document.attributeEntry[fieldName]}" />
-         		    <kul:htmlAttributeHeaderCell attributeEntry="${attrEntry}" useShortLabel="false" />
-		        </c:forEach>
 				<c:if test="${not inquiry}">	
             		<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
 				</c:if>	
@@ -123,7 +118,6 @@ function changeMemberTypeCode(){
 	               	<div align="center"> <kul:htmlControlAttribute property="document.members[${statusMember.index}].activeToDate"  attributeEntry="${groupMemberAttributes.activeToDate}" readOnly="${readOnly}" datePicker="true" />
 					</div>
 				</td>
-			<c:if test="${not inquiry}">	
 				<td>
 					<div align=center>&nbsp;
 						<c:choose>
@@ -137,7 +131,6 @@ function changeMemberTypeCode(){
 	        	     	</c:choose>  
 					</div>
 				</td>
-			</c:if>    
 			</tr>
 		</c:forEach>        
 	</table>

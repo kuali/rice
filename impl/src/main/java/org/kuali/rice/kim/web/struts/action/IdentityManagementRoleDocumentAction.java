@@ -78,7 +78,9 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
 	        kimType = (KimTypeImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, criteria);
 	        if(kimType == null)
 	        	throw new IllegalArgumentException("Kim type could not be found for kim type id: "+kimTypeId);
-	        roleDocumentForm.setDocTypeName((roleDocumentForm.getRoleDocument().getKimTypeService(kimType)).getWorkflowDocumentTypeName());
+	        roleDocumentForm.setKimType(kimType);
+	        roleDocumentForm.getRoleDocument().setKimType(kimType);
+	        roleDocumentForm.setDocTypeName(roleDocumentForm.getRoleDocument().getWorkflowDocumentTypeName());
 	    }
 		if(KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY.equals(methodToCall)) 
         	forward = mapping.findForward(KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY);

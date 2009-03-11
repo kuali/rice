@@ -29,6 +29,7 @@ import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.ResponsibilityService;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
@@ -48,8 +49,8 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 	protected String roleId;
 	protected String roleTypeId;
 	protected String roleTypeName;
-	protected String roleNamespace;
-	protected String roleName;
+	protected String roleNamespace = "";
+	protected String roleName = "";
 	protected boolean active = true;
 
 	protected boolean editing;
@@ -469,6 +470,14 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 	 */
 	public void setDelegations(List<RoleDocumentDelegation> delegations) {
 		this.delegations = delegations;
+	}
+
+	public String getWorkflowDocumentTypeName(){
+		String workflowDocumentTypeName = getKimTypeService(kimType).getWorkflowDocumentTypeName();
+		if(StringUtils.isBlank(workflowDocumentTypeName)){
+			workflowDocumentTypeName = KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_TYPE_NAME;
+		}
+		return workflowDocumentTypeName;
 	}
 
 }

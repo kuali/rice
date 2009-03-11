@@ -48,7 +48,7 @@ public class IdentityManagementGroupDocumentForm extends KualiTransactionalDocum
     
 	public IdentityManagementGroupDocumentForm() {
         super();
-        this.setDocument(new IdentityManagementRoleDocument());
+        this.setDocument(new IdentityManagementGroupDocument());
     }
 
     /*

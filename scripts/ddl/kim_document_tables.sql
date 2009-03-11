@@ -322,15 +322,15 @@ CREATE TABLE KRIM_PND_DLGN_MBR_ATTR_DATA_T (
 CREATE TABLE KRIM_GRP_DOCUMENT_T
 (
     FDOC_NBR          VARCHAR2(14) 		NOT NULL,
-    grp_id            VARCHAR2(40) 		NOT NULL,
-    obj_id            VARCHAR2(36) 		DEFAULT SYS_GUID() NOT NULL,
-    ver_nbr           NUMBER(8,0)  		DEFAULT 1 NOT NULL,
-    kim_typ_id 	  	  VARCHAR2(40) 	 	NOT NULL,
-    grp_nmspc         VARCHAR2(100)  	NOT NULL,
-    grp_nm       	  VARCHAR2(400),
-    grp_desc       	  VARCHAR2(400),
-    actv_ind          VARCHAR2(1) 		DEFAULT 'Y',
-    CONSTRAINT krim_role_document_tp1 PRIMARY KEY ( FDOC_NBR )
+    GRP_ID            VARCHAR2(40) 		NOT NULL,
+    OBJ_ID            VARCHAR2(36) 		DEFAULT SYS_GUID() NOT NULL,
+    VER_NBR           NUMBER(8,0)  		DEFAULT 1 NOT NULL,
+    KIM_TYP_ID 	  	  VARCHAR2(40) 	 	NOT NULL,
+    GRP_NMSPC         VARCHAR2(100)  	NOT NULL,
+    GRP_NM       	  VARCHAR2(400),
+    GRP_DESC       	  VARCHAR2(400),
+    ACTV_IND          VARCHAR2(1) 		DEFAULT 'Y',
+    CONSTRAINT krim_grp_document_tp1 PRIMARY KEY ( FDOC_NBR )
 )
 /
 
@@ -341,16 +341,16 @@ CREATE TABLE KRIM_PND_GRP_MBR_T (
     VER_NBR     	NUMBER(8,0)  DEFAULT 1 NOT NULL,
     GRP_ID      	VARCHAR2(40) NOT NULL,
     MBR_ID   		VARCHAR2(40),
+    MBR_NM			VARCHAR2(40),
     MBR_TYP_CD		VARCHAR2(40) NOT NULL,
     ACTV_FRM_DT  	DATE NULL,
     ACTV_TO_DT  	DATE NULL,
     PRIMARY KEY(GRP_MBR_ID,FDOC_NBR)
 )
 /
-             
 
 CREATE TABLE KRIM_PND_GRP_ATTR_DATA_T ( 
-    FDOC_NBR          VARCHAR2(14)  NOT NULL,
+    FDOC_NBR          	VARCHAR2(14)  NOT NULL,
     ATTR_DATA_ID      	VARCHAR2(40) NOT NULL,
     OBJ_ID            	VARCHAR2(36) NOT NULL,
     VER_NBR           	NUMBER(8,0) DEFAULT 1 NOT NULL,

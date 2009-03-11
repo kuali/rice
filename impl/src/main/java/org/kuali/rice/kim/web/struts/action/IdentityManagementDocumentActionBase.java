@@ -55,8 +55,7 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
 		ActionForward forward =  super.performLookup(mapping, form, request, response);
 		String path = forward.getPath();
 		//Making the hack look cleaner!
-		path = path.replace(getActionName(), "kim/"+getActionName());
-		forward.setPath(path);
+		forward.setPath(KimCommonUtils.getPathWithKimContext(path, getActionName()));
 		return forward;
 	}
 
@@ -85,7 +84,8 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
 
 	@Override
     protected String getReturnLocation(HttpServletRequest request, ActionMapping mapping){
-    	return getBasePath(request);
+    	String returnLocation = super.getReturnLocation(request, mapping);
+    	return KimCommonUtils.getPathWithKimContext(returnLocation, getActionName());
     }
 
 	@Override

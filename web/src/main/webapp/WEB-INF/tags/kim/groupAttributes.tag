@@ -20,7 +20,6 @@
     
     <table cellpadding=0 cellspacing=0 summary="">
         	<tr>
-        		<th><div align="left">&nbsp</div></th> 
 				<c:forEach var="attrDefn" items="${KualiForm.document.kimType.attributeDefinitions}" varStatus="status">
         			<c:set var="fieldName" value="${attrDefn.kimAttribute.attributeName}" />
         			<c:set var="attrEntry" value="${KualiForm.document.attributeEntry[fieldName]}" />
@@ -32,7 +31,7 @@
 					<c:set var="fieldName" value="${qualifier.kimAttribute.attributeName}" />
         			<c:set var="attrEntry" value="${KualiForm.document.attributeEntry[fieldName]}" />
 		            <td align="left" valign="middle">
-		               	<div align="center"> <kul:htmlControlAttribute property="document.qualifier(${qualifier.kimAttributeId}).attrVal"  attributeEntry="${attrEntry}" readOnly="${readOnly}" />
+		               	<div align="center"> <kul:htmlControlAttribute property="document.qualifier(${qualifier.kimAttributeId}).attributeValue"  attributeEntry="${attrEntry}" readOnly="${readOnly}" />
 						</div>
 					</td>
 		        </c:forEach>

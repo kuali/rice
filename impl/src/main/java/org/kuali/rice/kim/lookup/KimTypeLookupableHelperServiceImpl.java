@@ -26,6 +26,7 @@ import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.service.support.KimGroupTypeService;
 import org.kuali.rice.kim.service.support.KimRoleTypeService;
 import org.kuali.rice.kim.service.support.KimTypeService;
+import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -68,47 +69,50 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
     	criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID, parameters.getProperty(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID));
     	KimTypeImpl kimTypeImpl = (KimTypeImpl)getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, criteria);
     	String href = "";
-    	if(kimTypeImpl!=null && !((KimRoleTypeService)KimCommonUtils.getKimTypeService(kimTypeImpl)).isApplicationRoleType()){
+    	//TODO: clean this up.
+    	boolean showReturnHref = true;
+    	String docTypeName = "";
+    	String docTypeAction = "";
+    	if(KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_SHORT_KEY.equals(lookupForm.getFormKey())){
+    		docTypeName = KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_TYPE_NAME;
+    		docTypeAction = KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_ACTION;
+    		showReturnHref = kimTypeImpl!=null && 
+    			(KimConstants.KIM_TYPE_DEFAULT_NAME.equals(kimTypeImpl.getName()) || 
+    			!((KimRoleTypeService)KimCommonUtils.getKimTypeService(kimTypeImpl)).isApplicationRoleType());
+    	} else{
+    		docTypeName = KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_TYPE_NAME;
+    		docTypeAction = KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_ACTION;
+    		showReturnHref = kimTypeImpl!=null;
+    	}
+    	if(showReturnHref){
 	    	parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.DOC_HANDLER_METHOD);
 	    	parameters.put(KNSConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
-	    	//TODO: clean this up.
-	    	String docTypeName = "";
-	    	String docTypeAction = "";
-	    	if(KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_SHORT_KEY.equals(lookupForm.getFormKey())){
-	    		docTypeName = KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_TYPE_NAME;
-	    		docTypeAction = KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_ACTION;
-	    	} else{
-	    		docTypeName = KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_TYPE_NAME;
-	    		docTypeAction = KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_ACTION;
-	    	}
 	    	parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, docTypeName);
-	    	href = UrlFactory.parameterizeUrl(
-	    			KimCommonUtils.getKimBasePath()+docTypeAction, parameters);
+	    	href = UrlFactory.parameterizeUrl(KimCommonUtils.getKimBasePath()+docTypeAction, parameters);
     	}
         return href;
     }
 
 	static boolean hasRoleTypeService(KimTypeImpl kimTypeImpl){
-		return hasRoleTypeService(KimCommonUtils.getKimTypeService(kimTypeImpl));
+		return (kimTypeImpl.getKimTypeServiceName()==null) || 
+					(KimCommonUtils.getKimTypeService(kimTypeImpl) instanceof KimRoleTypeService);
 	}
 
+	static boolean hasRoleTypeService(KimTypeImpl kimTypeImpl, KimTypeService kimTypeService){
+		return (kimTypeImpl.getKimTypeServiceName()==null) || 
+					(kimTypeService instanceof KimRoleTypeService);
+	}
+	
     static boolean hasGroupTypeService(KimTypeImpl kimTypeImpl){
-        return hasGroupTypeService(KimCommonUtils.getKimTypeService(kimTypeImpl));
+		return (kimTypeImpl.getKimTypeServiceName()==null) || 
+					(KimCommonUtils.getKimTypeService(kimTypeImpl) instanceof KimGroupTypeService);
     }
-
-    static boolean hasGroupTypeService(KimTypeService kimTypeService){
-        return (kimTypeService==null) || (kimTypeService instanceof KimGroupTypeService);
-    }
-
-	static boolean hasRoleTypeService(KimTypeService kimTypeService){
-		return (kimTypeService==null) || (kimTypeService instanceof KimRoleTypeService);
-	}
 
 	static boolean hasDerivedRoleTypeService(KimTypeImpl kimTypeImpl){
 		boolean hasDerivedRoleTypeService = false;
 		KimTypeService kimTypeService = KimCommonUtils.getKimTypeService(kimTypeImpl);
-		if(hasRoleTypeService(kimTypeService))
-			hasDerivedRoleTypeService = ((KimRoleTypeService)kimTypeService).isApplicationRoleType();
+		if(hasRoleTypeService(kimTypeImpl, kimTypeService))
+			hasDerivedRoleTypeService = (kimTypeImpl.getKimTypeServiceName()==null || ((KimRoleTypeService)kimTypeService).isApplicationRoleType());
 		return hasDerivedRoleTypeService;
 	}
 

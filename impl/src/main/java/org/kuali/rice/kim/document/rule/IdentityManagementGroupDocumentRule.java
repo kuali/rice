@@ -90,7 +90,7 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
         additionalPermissionDetails.put(KimAttributes.GROUP_NAME, document.getGroupName());
 		if(document.getMembers()!=null && document.getMembers().size()>0){
 			if(!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
-					document, KimConstants.NAMESPACE_CODE, KimConstants.PermissionTemplateNames.ASSIGN_GROUP, 
+					document, KimConstants.NAMESPACE_CODE, KimConstants.PermissionTemplateNames.POPULATE_GROUP, 
 					GlobalVariables.getUserSession().getPrincipalId(), additionalPermissionDetails, null)){
 	    		GlobalVariables.getErrorMap().putError("document.groupName", 
 	    				RiceKeyConstants.ERROR_ASSIGN_GROUP, 

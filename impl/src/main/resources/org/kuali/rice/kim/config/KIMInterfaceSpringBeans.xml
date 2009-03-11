@@ -49,9 +49,11 @@
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentGroup.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentRole.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimDocumentRoleMember.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/GroupDocumentMember.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/RoleDocumentDelegationMember.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimDocumentRoleResponsibilityAction.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimDocumentRoleQualifier.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/GroupDocumentQualifier.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/RoleDocumentDelegationMemberQualifier.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentPrivacy.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimGroupImpl.xml</value>
@@ -60,10 +62,10 @@
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimResponsibilityTemplateImpl.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimPermissionTemplateImpl.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimResponsibilityImpl.xml</value>
-        <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimPermissionImpl.xml</value>
-        <value>classpath:org/kuali/rice/kim/bo/datadictionary/ResponsibilityImpl.xml</value>
-        <value>classpath:org/kuali/rice/kim/bo/datadictionary/PermissionImpl.xml</value>
-        <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimDelegationImpl.xml</value>
+		        <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimPermissionImpl.xml</value>
+		        <value>classpath:org/kuali/rice/kim/bo/datadictionary/ResponsibilityImpl.xml</value>
+		        <value>classpath:org/kuali/rice/kim/bo/datadictionary/PermissionImpl.xml</value>
+		        <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimDelegationImpl.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimAttributeImpl.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/PermissionAttributeDataImpl.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimResponsibilityRequiredAttributeImpl.xml</value>
@@ -72,6 +74,7 @@
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimPermissionAttributeDataImpl.xml</value>
                 <value>classpath:org/kuali/rice/kim/document/datadictionary/IdentityManagementPersonDocument.xml</value>
                 <value>classpath:org/kuali/rice/kim/document/datadictionary/IdentityManagementRoleDocument.xml</value>
+                <value>classpath:org/kuali/rice/kim/document/datadictionary/IdentityManagementGroupDocument.xml</value>
             </list>
     </property>
         <property name="packagePrefixes">

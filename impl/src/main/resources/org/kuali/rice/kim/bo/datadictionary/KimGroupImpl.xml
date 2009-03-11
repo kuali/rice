@@ -21,6 +21,7 @@
         <ref bean="KimGroupImpl-kimTypeId" />
         <ref bean="KimGroupImpl-kimTypeName" />
         <ref bean="KimGroupImpl-kimTypeNamespaceCode" />
+        <ref bean="KimGroupImpl-active" />
       </list>
     </property>
     <property name="collections" >
@@ -132,6 +133,9 @@
         p:required="false"
         p:maxLength="40">
   </bean>
+
+  <bean id="KimGroupImpl-active" parent="KimGroupImpl-active-parentBean" />
+  <bean id="KimGroupImpl-active-parentBean" parent="KimTypeImpl-active" abstract="true" p:label="Active?"/>
 
   <bean id="KimGroupImpl-inquiryDefinition" parent="KimGroupImpl-inquiryDefinition-parentBean" />
 

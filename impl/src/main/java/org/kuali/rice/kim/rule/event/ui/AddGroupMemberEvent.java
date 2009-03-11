@@ -16,7 +16,7 @@
 package org.kuali.rice.kim.rule.event.ui;
 
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
-import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
+import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.rule.ui.AddGroupMemberRule;
 import org.kuali.rice.kim.rule.ui.AddMemberRule;
 import org.kuali.rice.kns.document.Document;
@@ -33,17 +33,17 @@ import org.kuali.rice.kns.util.ObjectUtils;
 public class AddGroupMemberEvent extends KualiDocumentEventBase {
 	private GroupDocumentMember member;
 
-	public AddGroupMemberEvent(String errorPathPrefix, IdentityManagementRoleDocument document) {
+	public AddGroupMemberEvent(String errorPathPrefix, IdentityManagementGroupDocument document) {
         super("Adding Group Member Document " + getDocumentId(document), errorPathPrefix, document);
     }
 
     public AddGroupMemberEvent(String errorPathPrefix, Document document, GroupDocumentMember member) {
-        this(errorPathPrefix, (IdentityManagementRoleDocument) document);
+        this(errorPathPrefix, (IdentityManagementGroupDocument) document);
         this.member = (GroupDocumentMember) ObjectUtils.deepCopy(member);
     }
 
     public Class getRuleInterfaceClass() {
-        return AddMemberRule.class;
+        return AddGroupMemberRule.class;
     }
 
     public boolean invokeRuleMethod(BusinessRule rule) {

@@ -24,9 +24,7 @@ import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.support.KimRoleTypeService;
 import org.kuali.rice.kim.service.support.KimTypeService;
-import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.ModuleService;
@@ -147,10 +145,18 @@ public class KimCommonUtils {
 
 	public static String getKimBasePath(){
 		String kimBaseUrl = KNSServiceLocator.getKualiConfigurationService().getPropertyString(KimConstants.KimUIConstants.KIM_URL_KEY);
-		if (!kimBaseUrl.endsWith("/")) {
-			kimBaseUrl = kimBaseUrl + "/";
+		if (!kimBaseUrl.endsWith(KimConstants.KimUIConstants.URL_SEPARATOR)) {
+			kimBaseUrl = kimBaseUrl + KimConstants.KimUIConstants.URL_SEPARATOR;
 		}
 		return kimBaseUrl;
 	}
 
+	public static String getPathWithKimContext(String path, String kimActionName){
+		String kimContext = KimConstants.KimUIConstants.KIM_APPLICATION+KimConstants.KimUIConstants.URL_SEPARATOR;
+		String kimContextParameterized = KimConstants.KimUIConstants.KIM_APPLICATION+KimConstants.KimUIConstants.PARAMETERIZED_URL_SEPARATOR;
+    	if(path.indexOf(kimActionName)!=-1 && path.indexOf(kimContext+kimActionName)==-1
+    			&& path.indexOf(kimContextParameterized+kimActionName)==-1)
+    		path = path.replace(kimActionName, kimContext+kimActionName);
+    	return path;
+	}
 }

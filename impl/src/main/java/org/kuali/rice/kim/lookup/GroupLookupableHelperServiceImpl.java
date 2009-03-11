@@ -25,9 +25,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
@@ -35,11 +37,10 @@ import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.bo.ui.KimAttributeDataComparator;
 import org.kuali.rice.kim.dao.KimGroupDao;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.support.KimGroupTypeService;
-import org.kuali.rice.kim.service.support.KimRoleTypeService;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimCommonUtils;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
@@ -48,11 +49,13 @@ import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
+import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.lookup.keyvalues.IndicatorValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.web.comparator.CellComparatorHelper;
 import org.kuali.rice.kns.web.format.BooleanFormatter;
 import org.kuali.rice.kns.web.format.CollectionFormatter;
@@ -85,7 +88,6 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
 	private String typeId = "";
 	private AttributeDefinitionMap attrDefinitions;
 	private Map<String, String> groupTypeValuesCache = new HashMap<String, String>();
-	private static List<KeyLabelPair> groupTypeCache = null;
 
     @Override
     public List<? extends BusinessObject> getSearchResults(java.util.Map<String,String> fieldValues) {
@@ -321,29 +323,23 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
 
 	@SuppressWarnings("unchecked")
 	private List<KeyLabelPair> getGroupTypeOptions() {
-		if ( groupTypeCache == null ) {
-			List<KeyLabelPair> options = new ArrayList<KeyLabelPair>();
-			groupTypeValuesCache = new HashMap<String, String>();
-			options.add(new KeyLabelPair("", ""));
-			options.add(new KeyLabelPair("1", "Default"));
+		List<KeyLabelPair> options = new ArrayList<KeyLabelPair>();
+		options.add(new KeyLabelPair("", ""));
 
-			List<KimTypeImpl> kimGroupTypes = (List<KimTypeImpl>)getBusinessObjectService().findAll(KimTypeImpl.class);
-			// get the distinct list of type IDs from all groups in the system
-	        for (KimTypeImpl kimType : kimGroupTypes) {
-                if (KimTypeLookupableHelperServiceImpl.hasGroupTypeService(kimType) && groupTypeValuesCache.get(kimType.getKimTypeId()) == null) {
-                    String value = kimType.getNamespaceCode().trim() + KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR + kimType.getName().trim();
-                    options.add(new KeyLabelPair(kimType.getKimTypeId(), value));
-                    groupTypeValuesCache.put(kimType.getKimTypeId(), value);
-                }
-	        }
-	        Collections.sort(options, new Comparator<KeyLabelPair>() {
-	           public int compare(KeyLabelPair k1, KeyLabelPair k2) {
-	               return k1.getLabel().compareTo(k2.getLabel());
-	           }
-	        });
-			groupTypeCache = options;
-		}
-		return groupTypeCache;
+		List<KimTypeImpl> kimGroupTypes = (List<KimTypeImpl>)getBusinessObjectService().findAll(KimTypeImpl.class);
+		// get the distinct list of type IDs from all groups in the system
+        for (KimTypeImpl kimType : kimGroupTypes) {
+            if (KimTypeLookupableHelperServiceImpl.hasGroupTypeService(kimType) && groupTypeValuesCache.get(kimType.getKimTypeId()) == null) {
+                String value = kimType.getNamespaceCode().trim() + KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR + kimType.getName().trim();
+                options.add(new KeyLabelPair(kimType.getKimTypeId(), value));
+            }
+        }
+        Collections.sort(options, new Comparator<KeyLabelPair>() {
+           public int compare(KeyLabelPair k1, KeyLabelPair k2) {
+               return k1.getLabel().compareTo(k2.getLabel());
+           }
+        });
+		return options;
 	}
 
 	private List<Row> setupAttributeRows(Map fieldValues) {
@@ -487,4 +483,33 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
         super.performClear(lookupForm);
         this.attrRows = new ArrayList<Row>();
     }
+    
+	/**
+	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getInquiryUrl(org.kuali.rice.kns.bo.BusinessObject, java.lang.String)
+	 */
+	@Override
+	public HtmlData getInquiryUrl(BusinessObject bo, String propertyName) {
+		AnchorHtmlData inquiryHtmlData = (AnchorHtmlData)super.getInquiryUrl(bo, propertyName);
+	    inquiryHtmlData.setHref(getCustomGroupInquiryHref(inquiryHtmlData.getHref()));
+		return inquiryHtmlData;
+	}
+
+	static String getCustomGroupInquiryHref(String href){
+        Properties parameters = new Properties();
+        String hrefPart = "";
+		if (StringUtils.isNotBlank(href) && href.indexOf("&"+KimConstants.PrimaryKeyConstants.GROUP_ID+"=")!=-1) {
+			int idx1 = href.indexOf("&"+KimConstants.PrimaryKeyConstants.GROUP_ID+"=");
+		    int idx2 = href.indexOf("&", idx1+1);
+		    if (idx2 < 0) {
+		    	idx2 = href.length();
+		    }
+	        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY);
+	        parameters.put(KEWConstants.COMMAND_PARAMETER, KEWConstants.INITIATE_COMMAND);
+	        parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_TYPE_NAME);
+	        hrefPart = href.substring(idx1, idx2);
+	    }
+		return UrlFactory.parameterizeUrl(KimCommonUtils.getKimBasePath()+
+				KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_ACTION, parameters)+hrefPart;
+	}
+
 }

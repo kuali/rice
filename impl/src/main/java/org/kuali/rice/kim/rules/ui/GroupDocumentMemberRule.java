@@ -23,7 +23,9 @@ import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.options.MemberTypeValuesFinder;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
+import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
+import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.rule.event.ui.AddGroupMemberEvent;
 import org.kuali.rice.kim.rule.ui.AddGroupMemberRule;
 import org.kuali.rice.kim.util.KimConstants;
@@ -51,10 +53,9 @@ public class GroupDocumentMemberRule extends DocumentRuleBase implements AddGrou
             GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Member"});
             return false;
         }
-	    if(MemberTypeValuesFinder.MEMBER_TYPE_ROLE_CODE.equals(newMember.getMemberTypeCode())){
-	    	if(!validAssignGroup(newMember, document))
-	    		return false;
-	    }
+    	if(!validAssignGroup(newMember, document))
+    		return false;
+
 	    int i = 0;
 	    for (GroupDocumentMember member: document.getMembers()){
 	    	if (member.getMemberId().equals(newMember.getMemberId())){
@@ -68,21 +69,20 @@ public class GroupDocumentMemberRule extends DocumentRuleBase implements AddGrou
 
 	private boolean validAssignGroup(GroupDocumentMember groupMember, IdentityManagementGroupDocument document){
         boolean rulePassed = true;
-		Map<String,String> groupDetails = new HashMap<String,String>();
-    	Map<String, String> criteria = new HashMap<String, String>();
-    	criteria.put("groupId", groupMember.getMemberId());
-    	KimGroupImpl groupImpl = (KimGroupImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimGroupImpl.class, criteria);
-		groupDetails.put(KimAttributes.NAMESPACE_CODE, groupImpl.getNamespaceCode());
-		groupDetails.put(KimAttributes.ROLE_NAME, groupImpl.getGroupName());
-		if (!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
-				document, 
-				KimConstants.NAMESPACE_CODE, 
-				KimConstants.PermissionTemplateNames.ASSIGN_GROUP, 
-				GlobalVariables.getUserSession().getPerson().getPrincipalId(), 
-				groupDetails, null)){
-            GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_ASSIGN_RESPONSIBILITY, 
-            		new String[] {groupImpl.getNamespaceCode(), groupImpl.getGroupName()});
-            rulePassed = false;
+		if(StringUtils.isNotEmpty(document.getGroupNamespace())){
+			Map<String,String> roleDetails = new HashMap<String,String>();
+			roleDetails.put(KimAttributes.NAMESPACE_CODE, document.getGroupNamespace());
+			roleDetails.put(KimAttributes.GROUP_NAME, document.getGroupName());
+			if (!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
+					document, 
+					KimConstants.NAMESPACE_CODE, 
+					KimConstants.PermissionTemplateNames.POPULATE_GROUP, 
+					GlobalVariables.getUserSession().getPerson().getPrincipalId(), 
+					roleDetails, null)){
+	            GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_ASSIGN_GROUP, 
+	            		new String[] {document.getGroupNamespace(), document.getGroupName()});
+	            rulePassed = false;
+			}
 		}
 		return rulePassed;
 	}

@@ -32,6 +32,7 @@ import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.options.MemberTypeValuesFinder;
+import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
@@ -69,7 +70,9 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
 	        kimType = (KimTypeImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, criteria);
 	        if(kimType == null)
 	        	throw new IllegalArgumentException("Kim type could not be found for kim type id: "+kimTypeId);
-	        groupDocumentForm.setDocTypeName((groupDocumentForm.getGroupDocument().getKimTypeService(kimType)).getWorkflowDocumentTypeName());
+	        groupDocumentForm.setKimType(kimType);
+	        groupDocumentForm.getGroupDocument().setKimType(kimType);
+	        groupDocumentForm.setDocTypeName(groupDocumentForm.getGroupDocument().getWorkflowDocumentTypeName());
 	    }
 		if(KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY.equals(methodToCall)) 
         	forward = mapping.findForward(KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY);
@@ -84,7 +87,7 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
 			}
         }
 		String commandParam = request.getParameter(KNSConstants.PARAMETER_COMMAND);
-        String groupId = request.getParameter(KimConstants.PrimaryKeyConstants.ROLE_ID);
+        String groupId = request.getParameter(KimConstants.PrimaryKeyConstants.GROUP_ID);
         if (StringUtils.isNotBlank(commandParam) && commandParam.equals(KEWConstants.INITIATE_COMMAND) 
 				&& StringUtils.isNotBlank(groupId)) {
 	        KimGroup group = KIMServiceLocator.getGroupService().getGroupInfo(groupId);
@@ -103,7 +106,7 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
 	 * @see org.kuali.rice.kim.web.struts.action.IdentityManagementDocumentActionBase#getActionName()
 	 */
 	public String getActionName(){
-		return KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_ACTION;
+		return KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_ACTION;
 	}
 
 	private boolean validAssignGroup(IdentityManagementGroupDocument document){
@@ -114,7 +117,7 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
 		if (!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
 				document, 
 				KimConstants.NAMESPACE_CODE, 
-				KimConstants.PermissionTemplateNames.ASSIGN_GROUP, 
+				KimConstants.PermissionTemplateNames.POPULATE_GROUP, 
 				GlobalVariables.getUserSession().getPrincipalId(), 
 				additionalPermissionDetails, null)){
             rulePassed = false;
@@ -160,8 +163,8 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
         	groupMemberTypeClass = KimGroupImpl.class;
         	groupMemberIdName = "groupId";
         } else if(MemberTypeValuesFinder.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
-        	groupMemberTypeClass = KimGroupImpl.class;
-        	groupMemberIdName = "groupId";
+        	groupMemberTypeClass = KimRoleImpl.class;
+        	groupMemberIdName = "roleId";
         }
         Map<String, String> criteria = new HashMap<String, String>();
         criteria.put(groupMemberIdName, memberId);
@@ -182,7 +185,7 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
         } else if(MemberTypeValuesFinder.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
         	groupMemberName = ((KimGroupImpl)object).getGroupName();
         } else if(MemberTypeValuesFinder.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
-        	groupMemberName = ((KimGroupImpl)object).getGroupName();
+        	groupMemberName = ((KimRoleImpl)object).getRoleName();
         }
         return groupMemberName;
     }

@@ -51,10 +51,9 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
             GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Member"});
             return false;
         }
-	    if(MemberTypeValuesFinder.MEMBER_TYPE_ROLE_CODE.equals(newMember.getMemberTypeCode())){
-	    	if(!validAssignRole(newMember, document))
-	    		return false;
-	    }
+    	if(!validAssignRole(newMember, document))
+    		return false;
+
 	    int i = 0;
 	    for (KimDocumentRoleMember member: document.getMembers()){
 	    	if (member.getMemberId().equals(newMember.getMemberId())){
@@ -68,21 +67,20 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
 
 	private boolean validAssignRole(KimDocumentRoleMember roleMember, IdentityManagementRoleDocument document){
         boolean rulePassed = true;
-		Map<String,String> roleDetails = new HashMap<String,String>();
-    	Map<String, String> criteria = new HashMap<String, String>();
-    	criteria.put("roleId", roleMember.getMemberId());
-    	KimRoleImpl roleImpl = (KimRoleImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimRoleImpl.class, criteria);
-		roleDetails.put(KimAttributes.NAMESPACE_CODE, roleImpl.getNamespaceCode());
-		roleDetails.put(KimAttributes.ROLE_NAME, roleImpl.getRoleName());
-		if (!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
-				document, 
-				KimConstants.NAMESPACE_CODE, 
-				KimConstants.PermissionTemplateNames.ASSIGN_ROLE, 
-				GlobalVariables.getUserSession().getPerson().getPrincipalId(), 
-				roleDetails, null)){
-            GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_ASSIGN_RESPONSIBILITY, 
-            		new String[] {roleImpl.getNamespaceCode(), roleImpl.getRoleName()});
-            rulePassed = false;
+		if(StringUtils.isNotEmpty(document.getRoleNamespace())){
+			Map<String,String> roleDetails = new HashMap<String,String>();
+			roleDetails.put(KimAttributes.NAMESPACE_CODE, document.getRoleNamespace());
+			roleDetails.put(KimAttributes.ROLE_NAME, document.getRoleName());
+			if (!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
+					document, 
+					KimConstants.NAMESPACE_CODE, 
+					KimConstants.PermissionTemplateNames.ASSIGN_ROLE, 
+					GlobalVariables.getUserSession().getPerson().getPrincipalId(), 
+					roleDetails, null)){
+	            GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_ASSIGN_ROLE, 
+	            		new String[] {document.getRoleNamespace(), document.getRoleName()});
+	            rulePassed = false;
+			}
 		}
 		return rulePassed;
 	}

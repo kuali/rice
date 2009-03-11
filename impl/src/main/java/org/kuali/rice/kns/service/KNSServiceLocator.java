@@ -295,12 +295,6 @@ public class KNSServiceLocator<T extends Object> {
 	return (Lookupable) getService(KUALI_LOOKUPABLE);
     }
 
-    public static final String GL_LOOKUPABLE = "glLookupable";
-
-    public static Lookupable getGLLookupable() {
-	return (Lookupable) getService(GL_LOOKUPABLE);
-    }
-
     public static Lookupable getLookupable(String lookupableName) {
 	return (Lookupable) getService(lookupableName);
     }

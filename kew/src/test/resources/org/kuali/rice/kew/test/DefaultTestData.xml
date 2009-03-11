@@ -369,6 +369,60 @@
 	</ruleTemplates>
 	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
 		<documentType>
+	      <name>KualiDocument</name>
+	      <description>KualiDocument</description>
+	      <label>KualiDocument</label>
+	      <postProcessorName>none</postProcessorName>
+	      <policies>
+	        <policy>
+	          <name>DEFAULT_APPROVE</name>
+	          <value>true</value>
+	        </policy>
+	        <policy>
+	          <name>LOOK_FUTURE</name>
+	          <value>true</value>
+	        </policy>
+	  </policies>
+	      <routePaths>
+	        <routePath>
+	          <start name="PreRoute" />
+	        </routePath>
+	      </routePaths>
+	      <routeNodes>
+	        <start name="PreRoute">
+	          <activationType>S</activationType>
+	          <mandatoryRoute>false</mandatoryRoute>
+	          <finalApproval>false</finalApproval>
+	        </start>
+	      </routeNodes>
+	    </documentType>
+	    <documentType>
+	      <name>RiceDocument</name>
+	      <parent>KualiDocument</parent>
+	      <description>Parent Document Type for all Rice Documents</description>
+	      <label>Rice Document</label>
+	    </documentType>
+        <documentType>
+            <name>DocumentTypeDocument</name>
+            <parent>RiceDocument</parent>
+            <description>Workflow Maintenance Document Type Document</description>
+            <label>Workflow Maintenance Document Type Document</label>
+            <postProcessorName>org.kuali.rice.kew.doctype.DocumentTypePostProcessor</postProcessorName>
+            <docHandler>${workflow.url}/DocumentType.do?methodToCall=docHandler</docHandler>
+            <active>true</active>
+            <policies />
+            <routePaths>
+                <routePath>
+                    <start name="placeholder" />
+                </routePath>
+            </routePaths>
+            <routeNodes>
+                <start name="placeholder">
+                    <activationType>S</activationType>
+                </start>
+            </routeNodes>
+        </documentType>
+		<documentType>
 			<name>TestDocumentType</name>
 			<!-- <description>TestDocumentType</description> -->
 			<label>TestDocumentType</label>

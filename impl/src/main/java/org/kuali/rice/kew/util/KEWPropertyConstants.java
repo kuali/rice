@@ -74,4 +74,6 @@ public class KEWPropertyConstants extends JSTLConstants {
         DOC_SEARCH_RESULT_PROPERTY_NAME_SET.add(DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG);
     }
 
+    // Constants used by DocumentTypeBusinessRules
+    public static final String ERROR_DOCTYPEBUSINESSRULES_NO_DOC_HANDLER_URL = "error.DocumentTypeBusinessRules.noDocumentHandlerUrl";
 }

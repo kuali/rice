@@ -212,10 +212,17 @@
 		</tar>
 	</target>
 
-	<!-- chb: 04March2009: added for test server script do-daily-updates.sh on wsa123 -->
+	<!-- chb: 04March2009: added for test server script do-daily-updates.sh on wsa123 
+			11March2009: application.deploy.directory created in generated-build.properties by shared-functions.ksetprops (relevant code below)
+			# kexec "echo \"application.deploy.directory=$DEPLOY_BASE_DIRECTORY/$environment/$JAVA_APPLICATION_CODE\" >> $ANT_PROPERTIES_FILE" 
+			$DEPLOY_BASE_DIRECTORY is defined in shared-settings as "/opt/ears"
+			$environment is usually a three-letter sequence ('stg' for example)
+			$JAVA_APPLICATION_CODE is 'kr' for rice
+			${application.java.project} is 'rice' -->
+	
 	<target name="dist-ant" unless="maven.build">
         <ant dir="${application.deploy.directory}/${application.java.project}" target="dist" />
-        <copy file="${application.deploy.directory}/${application.java.project}/${application}-${build.environment}.war" tofile="${application.deploy.directory}/${application}-${build.environment}.war" overwrite="true" />
+        <copy file="${application.deploy.directory}/${application.java.project}/target/rice-0.9.4-SNAPSHOT-server.war" tofile="${application.deploy.directory}/${application}-${build.environment}.war" overwrite="true" />
     </target>
 
     <target name="dist-maven" if="maven.build">
@@ -223,12 +230,12 @@
        <copy file="${application.deploy.directory}/${application.java.project}/target/${maven.war.filename}" tofile="${application.deploy.directory}/${application}-${build.environment}.war" overwrite="true" verbose="true" />
     </target>
 	
-	<target name="dist-external"><!-- depends="init-properties" -->
+	<target name="dist-external" depends="init"><!-- depends="init-properties" -->
 			<echo file="${log4j.file}" message="${log4j}" />
 			<echo file="${security.file}" message="${security}"  />
 			<zip destfile="${deploy.working.directory}/settings.zip" basedir="${basedir}" includes="${log4j.file}" />
 			<zip destfile="${deploy.working.directory}/security.zip" basedir="${basedir}" includes="${security.file}" />
-			<zip destfile="${deploy.working.directory}/skel.zip" basedir="${build.work.directory}" />
+			<zip destfile="${deploy.working.directory}/skel.zip" basedir="${basedir}" />
 	</target>
 	
     <target name="dist-war" depends="dist-ant,dist-maven" />

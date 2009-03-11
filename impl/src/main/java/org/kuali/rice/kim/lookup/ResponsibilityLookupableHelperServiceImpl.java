@@ -28,8 +28,6 @@ import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kim.config.KIMConfigurer;
-import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -47,8 +45,7 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 	
 	private static final long serialVersionUID = -2882500971924192124L;
 	
-	private RoleService roleService;
-	private LookupService lookupService;
+	private static LookupService lookupService;
 
 	/**
 	 * @see org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl#getSearchResults(java.util.Map)
@@ -110,12 +107,12 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 	
 	private List<ResponsibilityImpl> searchResponsibilities(Map<String, String> responsibilitySearchCriteria){
 		return getResponsibilitiesSearchResultsCopy((List<KimResponsibilityImpl>)
-					KNSServiceLocator.getLookupService().findCollectionBySearchHelper(
+					getLookupService().findCollectionBySearchHelper(
 							KimResponsibilityImpl.class, responsibilitySearchCriteria, true));	
 	}
 	
 	private List<KimRoleImpl> searchRoles(Map<String, String> roleSearchCriteria){
-		return (List<KimRoleImpl>)KNSServiceLocator.getLookupService().findCollectionBySearchHelper(
+		return (List<KimRoleImpl>)getLookupService().findCollectionBySearchHelper(
 					KimRoleImpl.class, roleSearchCriteria, true);
 	}
 	
@@ -210,29 +207,10 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 	 * @return the lookupService
 	 */
 	public LookupService getLookupService() {
-		return this.lookupService;
+		if ( lookupService == null ) {
+			lookupService = KNSServiceLocator.getLookupService();
+		}
+		return lookupService;
 	}
-
-	/**
-	 * @param lookupService the lookupService to set
-	 */
-	public void setLookupService(LookupService lookupService) {
-		this.lookupService = lookupService;
-	}
-
-	/**
-	 * @return the roleService
-	 */
-	public RoleService getRoleService() {
-		return this.roleService;
-	}
-
-	/**
-	 * @param roleService the roleService to set
-	 */
-	public void setRoleService(RoleService roleService) {
-		this.roleService = roleService;
-	}
-
  
 }

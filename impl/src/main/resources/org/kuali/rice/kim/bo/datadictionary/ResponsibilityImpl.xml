@@ -330,7 +330,7 @@
         p:maxLength="200"
         p:required="false" >
     <property name="control" >
-      <bean parent="HiddenControlDefinition" />
+      <bean parent="TextControlDefinition" p:size="40" />
     </property>
   </bean>
 

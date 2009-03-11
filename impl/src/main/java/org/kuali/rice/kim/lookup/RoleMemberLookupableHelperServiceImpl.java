@@ -17,6 +17,7 @@ package org.kuali.rice.kim.lookup;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +29,8 @@ import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
 
 /**
  * This is a description of what this class does - bhargavp don't forget to fill this in. 
@@ -38,7 +41,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupableHelperServiceImpl {
 
 	protected static final String DETAIL_CRITERIA = "detailCriteria";
-	protected static final String PERCENT = "%";
+	protected static final String WILDCARD = "*";
     protected static final String TEMPLATE_NAMESPACE_CODE = "template.namespaceCode";
     protected static final String TEMPLATE_NAME = "template.name";
     protected static final String NAMESPACE_CODE = "namespaceCode";
@@ -88,15 +91,15 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
 
     	Map<String,String> searchCriteria = new HashMap<String, String>();
     	if(StringUtils.isNotEmpty(templateNamespaceCode))
-        	searchCriteria.put(TEMPLATE_NAMESPACE_CODE, PERCENT+templateNamespaceCode+PERCENT);
+        	searchCriteria.put(TEMPLATE_NAMESPACE_CODE, WILDCARD+templateNamespaceCode+WILDCARD);
         if(StringUtils.isNotEmpty(templateName))
-        	searchCriteria.put(TEMPLATE_NAME, PERCENT+templateName+PERCENT);
+        	searchCriteria.put(TEMPLATE_NAME, WILDCARD+templateName+WILDCARD);
         if(StringUtils.isNotEmpty(namespaceCode))
-        	searchCriteria.put(NAMESPACE_CODE, PERCENT+namespaceCode+PERCENT);
+        	searchCriteria.put(NAMESPACE_CODE, WILDCARD+namespaceCode+WILDCARD);
         if(StringUtils.isNotEmpty(name))
-        	searchCriteria.put(NAME, PERCENT+name+PERCENT);
+        	searchCriteria.put(NAME, WILDCARD+name+WILDCARD);
         if(StringUtils.isNotEmpty(attributeDetailValue))
-        	searchCriteria.put(DETAIL_OBJECTS_ATTRIBUTE_VALUE, PERCENT+attributeDetailValue+PERCENT);
+        	searchCriteria.put(DETAIL_OBJECTS_ATTRIBUTE_VALUE, WILDCARD+attributeDetailValue+WILDCARD);
         if ( StringUtils.isNotBlank( detailCriteria ) ) {
         	searchCriteria.put(DETAIL_CRITERIA, detailCriteria);
         }
@@ -106,9 +109,9 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
     
     protected String getQueryString(String parameter){
     	if(StringUtils.isEmpty(parameter))
-    		return PERCENT;
+    		return WILDCARD;
     	else
-    		return PERCENT+parameter+PERCENT;
+    		return WILDCARD+parameter+WILDCARD;
     }
     
     /**
@@ -142,7 +145,7 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
     	List<KimPrincipalImpl> principals = null;
         if(StringUtils.isNotEmpty(assignedToPrincipalName)){
         	searchCriteria = new HashMap<String, String>();
-        	searchCriteria.put("principalName", PERCENT+assignedToPrincipalName+PERCENT);
+        	searchCriteria.put("principalName", WILDCARD+assignedToPrincipalName+WILDCARD);
         	principals = 
         		(List<KimPrincipalImpl>)KNSServiceLocator.getLookupService().findCollectionBySearchUnbounded(KimPrincipalImpl.class, searchCriteria);
         	if(principals==null || principals.isEmpty())
@@ -168,9 +171,9 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
 
     	searchCriteria = new HashMap<String, String>();
         if(StringUtils.isNotEmpty(assignedToRoleNamespaceCode))
-        	searchCriteria.put(ASSIGNED_TO_ROLE_NAMESPACE_CODE, PERCENT+assignedToRoleNamespaceCode+PERCENT);
+        	searchCriteria.put(ASSIGNED_TO_ROLE_NAMESPACE_CODE, WILDCARD+assignedToRoleNamespaceCode+WILDCARD);
         if(StringUtils.isNotEmpty(assignedToRoleName))
-        	searchCriteria.put(ASSIGNED_TO_ROLE_ROLE_NAME, PERCENT+assignedToRoleName+PERCENT);
+        	searchCriteria.put(ASSIGNED_TO_ROLE_ROLE_NAME, WILDCARD+assignedToRoleName+WILDCARD);
 
     	StringBuffer memberQueryString = null;
         if(principals!=null){
@@ -236,5 +239,35 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
 		return parsedDetails;
 	}
 	
+	
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getRows()
+	 */
+	@Override
+	public List<Row> getRows() {
+		List<Row> rows = super.getRows();
+		Iterator<Row> i = rows.iterator();
+		while ( i.hasNext() ) {
+			Row row = i.next();
+			Field field = row.getField(0);
+			String propertyName = field.getPropertyName();
+			if ( propertyName.equals(DETAIL_CRITERIA) ) {
+				Object val = getParameters().get( propertyName );
+				String propVal = null;
+				if ( val != null ) {
+					propVal = (val instanceof String)?(String)val:((String[])val)[0];
+				}
+				if ( StringUtils.isBlank( propVal ) ) {
+					i.remove();
+				} else {
+					field.setReadOnly(true);
+//					field.setDefaultValue( propVal );
+				}
+			}
+		}
+		return rows;
+	}
     
 }

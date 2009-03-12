@@ -593,16 +593,16 @@ KualiLookupableHelperServiceImpl {
         super.validateSearchParameters(fieldValues);
         String toDateCreated = (String)fieldValues.get(TO_DATE_CREATED);
         String fromDateCreated = (String)fieldValues.get(FROM_DATE_CREATED);
-        Date toDate;
-        Date fromDate;
+        java.util.Date toDate;
+        java.util.Date fromDate;
         DocumentSearchService docSeaSer = KEWServiceLocator.getDocumentSearchService();
         Map<String,String[]> parameters = this.getParameters();
         DocumentSearchGenerator docSeaGen = KEWServiceLocator.getDocumentSearchService().getStandardDocumentSearchGenerator();
     	DocSearchCriteriaDTO criteria = DocumentLookupCriteriaBuilder.populateCriteria(parameters);
         if (!Utilities.isEmpty(toDateCreated) && !Utilities.isEmpty(fromDateCreated)) {
             try{
-            	toDate = (Date)new SimpleDateFormat("MM/dd/yyyy").parse(toDateCreated);
-            	fromDate = (Date)new SimpleDateFormat("MM/dd/yyyy").parse(fromDateCreated);
+            	toDate = new SimpleDateFormat("MM/dd/yyyy").parse(toDateCreated);
+            	fromDate = new SimpleDateFormat("MM/dd/yyyy").parse(fromDateCreated);
                 if(toDate.before(fromDate)){
                      GlobalVariables.getErrorMap().putError(TO_DATE_CREATED, RiceKeyConstants.ERROR_ACTIVE_TO_DATE_BEFORE_FROM_DATE, toDateCreated);
                 }

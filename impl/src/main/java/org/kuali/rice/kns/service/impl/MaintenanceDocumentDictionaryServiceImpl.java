@@ -566,6 +566,15 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
                     String attributeLabel = dataDictionaryService.getAttributeLabel(businessObject.getClass(), fieldName);
                     String shortLabel = dataDictionaryService.getAttributeShortLabel(businessObject.getClass(), fieldName);
                     GlobalVariables.getErrorMap().putError(fieldName, RiceKeyConstants.ERROR_REQUIRED, attributeLabel + " (" + shortLabel + ")" );
+                } else if ( fieldName.endsWith(".principalName") ) {
+                    String personProperty = ObjectUtils.getNestedAttributePrefix(fieldName); 
+                    if ( StringUtils.isNotBlank(personProperty) ) {
+                        if ( StringUtils.isBlank( (String)ObjectUtils.getNestedValue(businessObject, personProperty+".entityId") ) ) {
+                            String attributeLabel = dataDictionaryService.getAttributeLabel(businessObject.getClass(), fieldName);
+                            String shortLabel = dataDictionaryService.getAttributeShortLabel(businessObject.getClass(), fieldName);
+                            GlobalVariables.getErrorMap().putError(fieldName, RiceKeyConstants.ERROR_REQUIRED, attributeLabel + " (" + shortLabel + ")" );
+                        }
+                    }
                 }
             } catch( Exception ex ) {
                 LOG.error( "unable to read property during doc required field checks", ex );

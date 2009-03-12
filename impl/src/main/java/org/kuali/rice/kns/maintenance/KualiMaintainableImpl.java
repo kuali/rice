@@ -182,7 +182,8 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     /**
      * @see org.kuali.rice.kns.maintenance.Maintainable#populateBusinessObject(java.util.Map)
      */
-    public Map populateBusinessObject(Map fieldValues, MaintenanceDocument maintenanceDocument) {
+    @SuppressWarnings("unchecked")
+	public Map populateBusinessObject(Map fieldValues, MaintenanceDocument maintenanceDocument) {
         fieldValues = decryptEncryptedData(fieldValues, maintenanceDocument);
         Map newFieldValues = null;
         newFieldValues = getPersonService().resolvePrincipalNamesToPrincipalIds(getBusinessObject(), fieldValues);

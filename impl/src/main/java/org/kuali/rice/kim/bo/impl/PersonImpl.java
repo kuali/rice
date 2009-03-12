@@ -501,5 +501,19 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	public void setLookupRoleName(String lookupRoleName) {
 		this.lookupRoleName = lookupRoleName;
 	}
+
+	/**
+	 * @param principalName the principalName to set
+	 */
+	public void setPrincipalName(String principalName) {
+		this.principalName = principalName;
+	}
+
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
 	
 }

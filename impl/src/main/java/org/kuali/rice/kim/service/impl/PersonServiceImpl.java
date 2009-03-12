@@ -526,6 +526,14 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
                 || !StringUtils.equals(sourcePrincipalId, currentPerson.getPrincipalId() ) // principal ID mismatch
                 || currentPerson.getEntityId() == null ) { // syntheticially created Person object
             Person person = getPerson( sourcePrincipalId );
+            // if a synthetically created person object is present, leave it - required for property derivation and the UI layer for
+            // setting the principal name
+            if ( person == null ) {
+                if ( currentPerson != null && currentPerson.getEntityId() == null ) {
+                    return currentPerson;
+                }
+            }
+            // if both are null, create an empty object for property derivation
             if ( person == null && currentPerson == null ) {
             	try {
             		return new PersonImpl();
@@ -648,11 +656,19 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
                             String sourcePrimitivePropertyName = rel.getParentAttributeForChildAttribute(KIMPropertyConstants.Person.PRINCIPAL_ID);
                             resolvedPrincipalIdPropertyName.append(sourcePrimitivePropertyName);
                         	// get the principal - for translation of the principalName to principalId
-                        	KimPrincipal principal = getIdentityManagementService().getPrincipalByPrincipalName( fieldValues.get( propertyName ) );
+                            String principalName = fieldValues.get( propertyName );
+                        	KimPrincipal principal = getIdentityManagementService().getPrincipalByPrincipalName( principalName );
                             if (principal != null ) {
                                 processedFieldValues.put(resolvedPrincipalIdPropertyName.toString(), principal.getPrincipalId());
                             } else {
                                 processedFieldValues.put(resolvedPrincipalIdPropertyName.toString(), null);
+                                try {
+                                    ObjectUtils.setObjectProperty(targetBusinessObject, resolvedPrincipalIdPropertyName.toString(), null );
+                                    ObjectUtils.setObjectProperty(targetBusinessObject, propName, null );
+                                    ObjectUtils.setObjectProperty(targetBusinessObject, propName + ".principalName", principalName );
+                                } catch ( Exception ex ) {
+                                    LOG.error( "Unable to blank out the person object after finding that the person with the given principalName does not exist.", ex );
+                                }
                             }
                         } else {
                         	LOG.error( "Missing relationship for " + propName + " on " + targetBusinessObjectClass.getName() );

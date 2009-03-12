@@ -31,8 +31,6 @@ import org.apache.ojb.broker.query.Criteria;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
-import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
-import org.kuali.rice.kns.datadictionary.FieldDefinition;
 import org.kuali.rice.kns.datadictionary.RelationshipDefinition;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.dbplatform.KualiDBPlatform;
@@ -777,47 +775,19 @@ public class LookupUtils {
      * (This will remove Universal User ID and Person name from search requests when a user ID is entered.)
      *
      * @param fieldValues
-     *
-     * datadictionaryservice.getdatadictionary.getbusinessobject(busObjectClassName).hasLookupDefinition
-     * entry.getlookupDefinition.getlookupdef
      */
     public static void removeHiddenCriteriaFields( Class businessObjectClass, Map fieldValues ) {
-
-    	BusinessObjectEntry boe = dataDictionaryService.getDataDictionary().getBusinessObjectEntry(businessObjectClass.getName());
-    	Map<String, Boolean> searchCriteria = new HashMap<String, Boolean>();
-
-
-    	/*
-    	 * This is to check if we should pass the lookupDefinition (search criteria) through.
-    	 */
-    	if(boe.hasLookupDefinition()){
-    		List<FieldDefinition> fieldDefs = boe.getLookupDefinition().getLookupFields();
-    		for(FieldDefinition field : fieldDefs){
-    			searchCriteria.put(field.getAttributeName(), new Boolean(field.isHidden()));
-    		}
-    	}
-
         List<String> lookupFieldAttributeList = businessObjectMetaDataService.getLookupableFieldNames(businessObjectClass);
         if (lookupFieldAttributeList != null) {
             for (Iterator iter = lookupFieldAttributeList.iterator(); iter.hasNext();) {
                 String attributeName = (String) iter.next();
                 if (fieldValues.containsKey(attributeName)) {
                     ControlDefinition controlDef = dataDictionaryService.getAttributeControlDefinition(businessObjectClass, attributeName);
-                    if (controlDef != null && controlDef.isHidden() && !isPassthrough(searchCriteria, attributeName)) {
+                    if (controlDef != null && controlDef.isHidden() ) {
                         fieldValues.remove(attributeName);
                     }
                 }
             }
         }
-    }
-
-    private static boolean isPassthrough(Map<String, Boolean> searchCriteria, String attributeName){
-    	boolean bRet = false;
-    	if(searchCriteria.containsKey(attributeName)){
-    		if(searchCriteria.get(attributeName).booleanValue()){
-    			bRet = true;
-    		}
-    	}
-    	return bRet;
     }
 }

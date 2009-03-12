@@ -46,18 +46,6 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
     protected String displayEditMode;
     protected Mask displayMask;
 
-    /*
-     *  If the ControlDefinition.isHidden == true then a corresponding LookupDefinition would
-     *  automatically be removed from the search criteria.  In some cases you might want the
-     *  hidden field to be used as a search criteria.  For example, in PersonImpl.xml a client
-     *  might want to have the campus code hidden and preset to Bloomington.  So when the search
-     *  is run, only people from the bloomington campus are returned.
-     *
-     *   So, if you want to have a hidden search criteria, set this variable to true. Defaults to
-     *   false.
-     */
-    protected boolean hidden = false;
-
 
     public FieldDefinition() {
     }
@@ -160,7 +148,8 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
      */
     public void setNoDirectInquiry(boolean noDirectInquiry) {
         this.noDirectInquiry = noDirectInquiry;
-    }
+    }
+
     /**
      * @return Returns the noLookup.
      */
@@ -324,19 +313,4 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
         }
         this.defaultValueFinderClass = defaultValueFinderClass;
     }
-
-    /**
-	 * @return the hidden
-	 */
-	public boolean isHidden() {
-		return this.hidden;
-	}
-
-	/**
-	 * @param hidden the hidden to set
-	 */
-	public void setHidden(boolean hidden) {
-		this.hidden = hidden;
-	}
-
 }

@@ -23,7 +23,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.kim.bo.role.KimPermissionTemplate;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
-import org.kuali.rice.kim.bo.role.dto.PermissionDetailsInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;

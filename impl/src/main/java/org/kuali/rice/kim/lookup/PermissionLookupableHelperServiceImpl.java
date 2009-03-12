@@ -156,7 +156,7 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 	private static final long PERM_CACHE_EXPIRE_SECONDS = 30L;
 	
 	private List<PermissionImpl> getPermissionsWithPermissionSearchCriteria(Map<String, String> permissionSearchCriteria){
-		String detailCriteriaStr = permissionSearchCriteria.get( DETAIL_CRITERIA );
+		String detailCriteriaStr = permissionSearchCriteria.remove( DETAIL_CRITERIA );
 		AttributeSet detailCriteria = parseDetailCriteria(detailCriteriaStr);
 
 		MaxAgeSoftReference<List<PermissionImpl>> cachedResult = permResultCache.get(permissionSearchCriteria);

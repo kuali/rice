@@ -19,9 +19,7 @@ package org.kuali.rice.kew.rule.web;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.rule.web.RuleQuickLinksAction.DocumentTypeQuickLinksStructure;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 
 /**
@@ -35,8 +33,7 @@ public class RuleQuickLinksForm extends KualiForm {
 
     private static final long serialVersionUID = 3632283509506923869L;
     private String rootDocTypeName;
-    private List rootDocuments;
-    private List documentTypeQuickLinksStructures = new ArrayList();
+    private List<DocumentTypeQuickLinksStructure> documentTypeQuickLinksStructures = new ArrayList<DocumentTypeQuickLinksStructure>();
     
     public String getRootDocTypeName() {
         return rootDocTypeName;
@@ -44,14 +41,11 @@ public class RuleQuickLinksForm extends KualiForm {
     public void setRootDocTypeName(String rootDocTypeName) {
         this.rootDocTypeName = rootDocTypeName;
     }
-    public List getRootDocuments() {
-        return rootDocuments;
-    }
-    public List getDocumentTypeQuickLinksStructures() {
+    public List<DocumentTypeQuickLinksStructure> getDocumentTypeQuickLinksStructures() {
         return this.documentTypeQuickLinksStructures;
     }
 	public void setDocumentTypeQuickLinksStructures(
-			List documentTypeQuickLinksStructures) {
+			List<DocumentTypeQuickLinksStructure> documentTypeQuickLinksStructures) {
 		this.documentTypeQuickLinksStructures = documentTypeQuickLinksStructures;
 	}
     

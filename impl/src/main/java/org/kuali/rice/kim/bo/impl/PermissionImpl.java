@@ -17,8 +17,8 @@ package org.kuali.rice.kim.bo.impl;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
@@ -42,6 +42,7 @@ public class PermissionImpl extends KimPermissionImpl {
 	protected String assignedToGroupNamespaceForLookup;
 	protected String assignedToGroupNameForLookup;
 	protected KimGroupImpl assignedToGroup;
+	protected String attributeName;
 	protected String attributeValue;
 	protected String detailCriteria;
 	
@@ -53,11 +54,7 @@ public class PermissionImpl extends KimPermissionImpl {
 		for(KimRoleImpl roleImpl: assignedToRoles){
 			assignedToRolesToDisplay.append(getRoleDetailsToDisplay(roleImpl));
 		}
-        if(assignedToRolesToDisplay.toString().endsWith(KimConstants.KimUIConstants.COMMA_SEPARATOR))
-        	assignedToRolesToDisplay.delete(
-        			assignedToRolesToDisplay.length()-KimConstants.KimUIConstants.COMMA_SEPARATOR.length(), assignedToRolesToDisplay.length());
-
-		return assignedToRolesToDisplay.toString();
+		return StringUtils.chomp( assignedToRolesToDisplay.toString(), KimConstants.KimUIConstants.COMMA_SEPARATOR);
 	}
 
 	public String getRoleDetailsToDisplay(KimRoleImpl roleImpl){
@@ -213,6 +210,20 @@ public class PermissionImpl extends KimPermissionImpl {
 
 	public void setDetailCriteria(String detailCriteria) {
 		this.detailCriteria = detailCriteria;
+	}
+
+	/**
+	 * @return the attributeName
+	 */
+	public String getAttributeName() {
+		return this.attributeName;
+	}
+
+	/**
+	 * @param attributeName the attributeName to set
+	 */
+	public void setAttributeName(String attributeName) {
+		this.attributeName = attributeName;
 	}
 
 }

@@ -160,12 +160,8 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 	private static final long RESP_CACHE_EXPIRE_SECONDS = 30L;
 	
 	private List<ResponsibilityImpl> getResponsibilitiesWithResponsibilitySearchCriteria(Map<String, String> responsibilitySearchCriteria){
-		String detailCriteriaStr = responsibilitySearchCriteria.get( DETAIL_CRITERIA );
+		String detailCriteriaStr = responsibilitySearchCriteria.remove( DETAIL_CRITERIA );
 		AttributeSet detailCriteria = parseDetailCriteria(detailCriteriaStr);
-//		if ( LOG.isDebugEnabled() ) {
-//			LOG.debug("Detail Criteria: " + detailCriteriaStr);
-//			LOG.debug("Parsed Detail Criteria: " + detailCriteria);
-//		}
 		MaxAgeSoftReference<List<ResponsibilityImpl>> cachedResult = respResultCache.get(responsibilitySearchCriteria);
 		List<ResponsibilityImpl> responsibilities = null;
 		if ( cachedResult == null || cachedResult.get() == null ) {

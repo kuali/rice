@@ -72,11 +72,17 @@ public class RuleQuickLinksAction extends KewKualiAction {
             request.setAttribute("renderOpened", Boolean.TRUE);
         } else {
         	documentTypes = getDocumentTypeService().findAllCurrentRootDocuments();
-        	if ( documentTypes.size() == 1 ) {
-                request.setAttribute("renderOpened", Boolean.TRUE);
-        	}
         }
         qlForm.setDocumentTypeQuickLinksStructures(getDocumentTypeDataStructure(documentTypes));
+    	int shouldDisplayCount = 0;
+        for ( DocumentTypeQuickLinksStructure dt : qlForm.getDocumentTypeQuickLinksStructures() ) {
+        	if ( dt.isShouldDisplay() ) {
+        		shouldDisplayCount++;
+        	}
+        }
+    	if ( shouldDisplayCount == 1 ) {
+            request.setAttribute("renderOpened", Boolean.TRUE);
+    	}
 
         return null;
     }
@@ -124,17 +130,15 @@ public class RuleQuickLinksAction extends KewKualiAction {
         private DocumentTypeQuickLinksStructure(DocumentType documentType) {
 			this.documentType = documentType;
 			if ( documentType != null ) {
-				List tempFlattenedNodes = KEWServiceLocator.getRouteNodeService()
+				List<RouteNode> tempFlattenedNodes = KEWServiceLocator.getRouteNodeService()
 						.getFlattenedNodes( documentType, true );
-				for ( Iterator iter = tempFlattenedNodes.iterator(); iter.hasNext(); ) {
-					RouteNode routeNode = (RouteNode)iter.next();
+				for ( RouteNode routeNode : tempFlattenedNodes ) {
 					if ( routeNode.isFlexRM() || routeNode.isRoleNode() ) {
 						flattenedNodes.add( new RouteNodeForDisplay( routeNode ) );
 					}
 				}
-				for ( Iterator iter = documentType.getChildrenDocTypes().iterator(); iter.hasNext(); ) {
-					childrenDocumentTypes.add( new DocumentTypeQuickLinksStructure(
-							(DocumentType)iter.next() ) );
+				for ( Iterator<DocumentType> iter = documentType.getChildrenDocTypes().iterator(); iter.hasNext(); ) {
+					childrenDocumentTypes.add( new DocumentTypeQuickLinksStructure( iter.next() ) );
 				}
 			}
 		}
@@ -171,11 +175,15 @@ public class RuleQuickLinksAction extends KewKualiAction {
 
 		public List<KimPermissionInfo> getPermissions() {
 			if ( permissions == null ) {
+//				Logger sqlLogger = Logger.getLogger(SqlGeneratorSuffixableImpl.class);
+//				sqlLogger.setLevel( Level.DEBUG );
 				Map<String,String> searchCriteria = new HashMap<String,String>();
+				searchCriteria.put("attributeName", "documentTypeName" );
 				searchCriteria.put("detailCriteria",
 						KimAttributes.DOCUMENT_TYPE_NAME+"="+getDocumentType().getName()
 						);
 				permissions = KIMServiceLocator.getPermissionService().lookupPermissions( searchCriteria, false );
+//				sqlLogger.setLevel( Level.INFO );
 			}
 			return permissions;
 		}
@@ -190,7 +198,8 @@ public class RuleQuickLinksAction extends KewKualiAction {
     }
 
     public static class RouteNodeForDisplay extends RouteNode {
-    	private RouteNode baseNode;
+    	private static final long serialVersionUID = 1L;
+		private RouteNode baseNode;
     	
 		public RouteNodeForDisplay( RouteNode baseNode ) {
 			this.baseNode = baseNode;

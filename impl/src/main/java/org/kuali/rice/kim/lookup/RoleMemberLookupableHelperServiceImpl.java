@@ -24,6 +24,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -42,21 +43,23 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
 
 	protected static final String DETAIL_CRITERIA = "detailCriteria";
 	protected static final String WILDCARD = "*";
-    protected static final String TEMPLATE_NAMESPACE_CODE = "template.namespaceCode";
+    protected static final String TEMPLATE_NAMESPACE_CODE = "template." + KimConstants.UniqueKeyConstants.NAMESPACE_CODE;
     protected static final String TEMPLATE_NAME = "template.name";
-    protected static final String NAMESPACE_CODE = "namespaceCode";
+    protected static final String NAMESPACE_CODE = KimConstants.UniqueKeyConstants.NAMESPACE_CODE;
     protected static final String NAME = "name";
-    protected static final String GROUP_NAME = "groupName";
+    protected static final String GROUP_NAME = KimConstants.UniqueKeyConstants.GROUP_NAME;
     protected static final String ASSIGNED_TO_PRINCIPAL_NAME = "assignedToPrincipal.principalName";
     protected static final String ASSIGNED_TO_GROUP_NAMESPACE_CODE = "assignedToGroupNamespaceForLookup";
-    protected static final String ASSIGNED_TO_GROUP_NAME = "assignedToGroup.groupName";
+    protected static final String ASSIGNED_TO_GROUP_NAME = "assignedToGroup." + KimConstants.UniqueKeyConstants.GROUP_NAME;
     protected static final String ASSIGNED_TO_NAMESPACE_FOR_LOOKUP = "assignedToRoleNamespaceForLookup";
-    protected static final String ASSIGNED_TO_ROLE_NAME = "assignedToRole.roleName";
+    protected static final String ASSIGNED_TO_ROLE_NAME = "assignedToRole." + KimConstants.UniqueKeyConstants.ROLE_NAME;
+    protected static final String ATTRIBUTE_NAME = "attributeName";
     protected static final String ATTRIBUTE_VALUE = "attributeValue";
-    protected static final String ASSIGNED_TO_ROLE_NAMESPACE_CODE = "namespaceCode";
-    protected static final String ASSIGNED_TO_ROLE_ROLE_NAME = "roleName";
+    protected static final String ASSIGNED_TO_ROLE_NAMESPACE_CODE = KimConstants.UniqueKeyConstants.NAMESPACE_CODE;
+    protected static final String ASSIGNED_TO_ROLE_ROLE_NAME = KimConstants.UniqueKeyConstants.ROLE_NAME;
     protected static final String ASSIGNED_TO_ROLE_MEMBER_ID = "members.memberId";
     protected static final String DETAIL_OBJECTS_ATTRIBUTE_VALUE = "detailObjects.attributeValue";
+    protected static final String DETAIL_OBJECTS_ATTRIBUTE_NAME = "detailObjects.kimAttribute.attributeName";
     
     @Override
     public List<? extends BusinessObject> getSearchResults(Map<String,String> fieldValues) {
@@ -87,19 +90,28 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
         String namespaceCode = fieldValues.get(NAMESPACE_CODE);
         String name = fieldValues.get(NAME);
         String attributeDetailValue = fieldValues.get(ATTRIBUTE_VALUE);
+        String attributeDetailName = fieldValues.get(ATTRIBUTE_NAME);
         String detailCriteria = fieldValues.get( DETAIL_CRITERIA );
 
     	Map<String,String> searchCriteria = new HashMap<String, String>();
-    	if(StringUtils.isNotEmpty(templateNamespaceCode))
-        	searchCriteria.put(TEMPLATE_NAMESPACE_CODE, WILDCARD+templateNamespaceCode+WILDCARD);
-        if(StringUtils.isNotEmpty(templateName))
+    	if(StringUtils.isNotEmpty(templateNamespaceCode)) {
+    		searchCriteria.put(TEMPLATE_NAMESPACE_CODE, WILDCARD+templateNamespaceCode+WILDCARD);
+    	}
+        if(StringUtils.isNotEmpty(templateName)) {
         	searchCriteria.put(TEMPLATE_NAME, WILDCARD+templateName+WILDCARD);
-        if(StringUtils.isNotEmpty(namespaceCode))
+        }
+        if(StringUtils.isNotEmpty(namespaceCode)) {
         	searchCriteria.put(NAMESPACE_CODE, WILDCARD+namespaceCode+WILDCARD);
-        if(StringUtils.isNotEmpty(name))
+        }
+        if(StringUtils.isNotEmpty(name)) {
         	searchCriteria.put(NAME, WILDCARD+name+WILDCARD);
-        if(StringUtils.isNotEmpty(attributeDetailValue))
+        }
+        if(StringUtils.isNotEmpty(attributeDetailValue)) {
         	searchCriteria.put(DETAIL_OBJECTS_ATTRIBUTE_VALUE, WILDCARD+attributeDetailValue+WILDCARD);
+        }
+        if(StringUtils.isNotEmpty(attributeDetailName)) {
+        	searchCriteria.put(DETAIL_OBJECTS_ATTRIBUTE_NAME, WILDCARD+attributeDetailName+WILDCARD);
+        }
         if ( StringUtils.isNotBlank( detailCriteria ) ) {
         	searchCriteria.put(DETAIL_CRITERIA, detailCriteria);
         }
@@ -263,6 +275,7 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
 					i.remove();
 				} else {
 					field.setReadOnly(true);
+					// leaving this in would prevent the "clear" button from resetting this value
 //					field.setDefaultValue( propVal );
 				}
 			}

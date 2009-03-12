@@ -137,7 +137,10 @@
 		<table width="100%" border="0" cellspacing="0" cellpadding="0">
 			<tr>
 				<td></td>
-				<td>
+				<td><kul:errors errorTitle="Errors found in retrieving ActionList:" />
+				<kul:messages/></td>
+			</tr>
+			<tr>
 				<table width="100%" border="0" cellspacing="0" cellpadding="0">
 					<tr>
 						<td>

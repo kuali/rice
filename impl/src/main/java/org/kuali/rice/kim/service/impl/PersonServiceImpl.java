@@ -663,6 +663,10 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
                             } else {
                                 processedFieldValues.put(resolvedPrincipalIdPropertyName.toString(), null);
                                 try {
+                                    // if the principalName is bad, then we need to clear out the Person object
+                                    // and base principalId property
+                                    // so that their values are no longer accidentally used or re-populate
+                                    // the object
                                     ObjectUtils.setObjectProperty(targetBusinessObject, resolvedPrincipalIdPropertyName.toString(), null );
                                     ObjectUtils.setObjectProperty(targetBusinessObject, propName, null );
                                     ObjectUtils.setObjectProperty(targetBusinessObject, propName + ".principalName", principalName );

@@ -567,6 +567,12 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
                     String shortLabel = dataDictionaryService.getAttributeShortLabel(businessObject.getClass(), fieldName);
                     GlobalVariables.getErrorMap().putError(fieldName, RiceKeyConstants.ERROR_REQUIRED, attributeLabel + " (" + shortLabel + ")" );
                 } else if ( fieldName.endsWith(".principalName") ) {
+                    // special handling to catch when the principalName is not really a valid user
+                    // pull the Person object and test the entity ID.  If that's null, then this
+                    // is just a shell user instance and does not represent a true user
+                    // the main principalId property on the main object would be null at this point
+                    // but it is also unconditionally read only and not tested - checking that would
+                    // require checking the relationships and be more complex than we want to get here
                     String personProperty = ObjectUtils.getNestedAttributePrefix(fieldName); 
                     if ( StringUtils.isNotBlank(personProperty) ) {
                         if ( StringUtils.isBlank( (String)ObjectUtils.getNestedValue(businessObject, personProperty+".entityId") ) ) {

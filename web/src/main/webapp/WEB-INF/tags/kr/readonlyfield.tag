@@ -18,6 +18,8 @@
 <%@ attribute name="field" required="true" type="org.kuali.rice.kns.web.ui.Field"%>
 <%@ attribute name="addHighlighting" required="false"
               description="boolean indicating if this field should be highlighted (to indicate old/new change)" %>
+<%@ attribute name="isLookup" required="false"
+              description="boolean indicating if this is a Lookup Screen" %>
 
 <c:set var="result">
     <c:choose>
@@ -46,13 +48,19 @@
       </c:when>
       <c:when test="${field.fieldType==field.TEXT_AREA}">
       	<pre><c:out value="${KualiForm.unconvertedValues[field.propertyName]}" default="${field.propertyValue}" /></pre>
-      	<input type="hidden" name="${field.propertyName}"
+
+      	<c:if test="${isLookup}">
+      		<input type="hidden" name="${field.propertyName}"
 						value='<c:out value="${field.propertyValue}"/>' />
+		</c:if>
       </c:when>
       <c:otherwise>
         <c:out value="${KualiForm.unconvertedValues[field.propertyName]}" default="${field.propertyValue}" />
-        <input type="hidden" name="${field.propertyName}"
+
+		<c:if test="${isLookup}">
+      		<input type="hidden" name="${field.propertyName}"
 						value='<c:out value="${field.propertyValue}"/>' />
+		</c:if>
       </c:otherwise>
     </c:choose>
 </c:set>

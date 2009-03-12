@@ -29,6 +29,9 @@ import org.displaytag.util.LookupUtil;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.authorization.FieldRestriction;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
+import org.kuali.rice.kns.datadictionary.FieldDefinition;
+import org.kuali.rice.kns.datadictionary.LookupFieldDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
 import org.kuali.rice.kns.datadictionary.control.ApcSelectControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.ButtonControlDefinition;
@@ -99,13 +102,13 @@ public class FieldUtils {
 
         field.setInquiryURL(inquiryHref);
     }
-    
+
 
     /**
      * Builds up a Field object based on the propertyName and business object class.
      *
      * See KULRICE-2480 for info on translateCheckboxes flag
-     * 
+     *
      * @param propertyName
      * @return Field
      */
@@ -128,7 +131,7 @@ public class FieldUtils {
                     fieldType = Field.DROPDOWN;
                 }
             }
-            
+
             if (control.isMultiselect()) {
                 fieldType = Field.MULTISELECT;
             }
@@ -164,7 +167,7 @@ public class FieldUtils {
             if (control.isFile()) {
                 fieldType = Field.FILE;
             }
-            
+
             if (control.isTextarea()) {
                 fieldType = Field.TEXT_AREA;
             }
@@ -180,11 +183,11 @@ public class FieldUtils {
             if (control.isCurrency()) {
                 fieldType = Field.CURRENCY;
             }
-            
+
             if(control.isButton()){
             	fieldType = Field.BUTTON;
             }
-            
+
             if(control.isLink()){
             	fieldType = Field.LINK;
             }
@@ -273,17 +276,17 @@ public class FieldUtils {
             }
 
             if (Field.CHECKBOX.equals(fieldType) && translateCheckboxes) {
-                fieldType = Field.RADIO; 
+                fieldType = Field.RADIO;
                 field.setFieldValidValues((new IndicatorValuesFinder()).getKeyValues());
             }
-            
+
             // for button control
             if (Field.BUTTON.equals(fieldType)) {
             	ButtonControlDefinition buttonControl = (ButtonControlDefinition) control;
                 field.setImageSrc(buttonControl.getImageSrc());
                 field.setStyleClass(buttonControl.getStyleClass());
             }
-            
+
             // for link control
             if (Field.LINK.equals(fieldType)) {
             	LinkControlDefinition linkControl = (LinkControlDefinition) control;
@@ -291,7 +294,7 @@ public class FieldUtils {
                 field.setTarget(linkControl.getTarget());
                 field.setHrefText(linkControl.getHrefText());
             }
-            
+
         }
 
         field.setFieldType(fieldType);
@@ -721,9 +724,9 @@ public class FieldUtils {
 
                     // append the conversionFrom string, prefixed by document.newMaintainable
                     newInquiryParameters.append(KNSConstants.MAINTENANCE_NEW_MAINTAINABLE).append(conversionFrom);
-                    
+
                     newInquiryParameters.append(KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR).append(conversionTo);
-                    
+
                     if (l < parameters.length - 1) {
                         newInquiryParameters.append(KNSConstants.FIELD_CONVERSIONS_SEPARATOR);
                     }
@@ -731,7 +734,7 @@ public class FieldUtils {
 
                 field.setInquiryParameters(newInquiryParameters.toString());
             }
-            
+
             if (Field.KUALIUSER.equals(field.getFieldType())) {
                 // prefix the personNameAttributeName
             	int suffixIndex = field.getPropertyName().indexOf( field.getUserIdAttributeName() );
@@ -802,7 +805,7 @@ public class FieldUtils {
             // if the field is restricted somehow
             if (auths.hasRestriction(fieldName)) {
                 fieldAuth = auths.getFieldRestriction(fieldName);
-                
+
                 if (KNSConstants.MAINTENANCE_EDIT_ACTION.equals(maintenanceAction) || KNSConstants.MAINTENANCE_NEWWITHEXISTING_ACTION.equals(maintenanceAction)) {
                 	// if there's existing data on the page that we're not going to clear out, then we will mask it out
                 	if(fieldAuth.isPartiallyMasked()){
@@ -822,7 +825,7 @@ public class FieldUtils {
 	                	populateSecureField(field, field.getPropertyValue());
 	                }
                 }
-                
+
                 if (Field.isInputField(field.getFieldType()) || field.getFieldType().equalsIgnoreCase(Field.CHECKBOX)) {
                 	// if its an editable field, allow decreasing availability to readonly or hidden
                     // only touch the field if the restricted type is hidden or readonly
@@ -837,7 +840,7 @@ public class FieldUtils {
                         }
                     }
                 }
-                
+
                 if(Field.BUTTON.equalsIgnoreCase(field.getFieldType()) && fieldAuth.isHidden()){
                 	field.setFieldType(Field.HIDDEN);
                 }
@@ -847,7 +850,7 @@ public class FieldUtils {
                 if (field.isReadOnly() && fieldAuth.isHidden()) {
                     field.setFieldType(Field.HIDDEN);
                 }
-                
+
             }
             // special check for old maintainable - need to ensure that fields hidden on the
             // "new" side are also hidden on the old side
@@ -865,9 +868,9 @@ public class FieldUtils {
                     field.setDisplayMaskValue(displayMaskValue);
                     field.setPropertyValue(displayMaskValue);
                     populateSecureField(field, field.getPropertyValue());
-                    	
+
                }
-                    
+
                if(fieldAuth.isMasked()){
                     field.setSecure(true);
                     MaskFormatter maskFormatter = fieldAuth.getMaskFormatter();
@@ -1015,14 +1018,14 @@ public class FieldUtils {
                 // add old fields for edit
                 if (KNSConstants.MAINTENANCE_EDIT_ACTION.equals(maintenanceAction) || KNSConstants.MAINTENANCE_COPY_ACTION.equals(maintenanceAction)) {
                     Field oldMaintField = (Field) oldFields.get(k);
-                    
+
                     // compare values for change, and set new maintainable fields for highlighting
                     // no point in highlighting the hidden fields, since they won't be rendered anyways
                     if (!StringUtils.equalsIgnoreCase(newMaintField.getPropertyValue(), oldMaintField.getPropertyValue())
                             && !Field.HIDDEN.equals(newMaintField.getFieldType())) {
                         newMaintField.setHighlightField(true);
                     }
-                    
+
                     oldMaintField = FieldUtils.fixFieldForForm(oldMaintField, keyFieldNames, KNSConstants.MAINTENANCE_OLD_MAINTAINABLE, maintenanceAction, true, auths);
                     oldFieldsToMerge.add(oldMaintField);
                 }
@@ -1045,11 +1048,11 @@ public class FieldUtils {
 
     /**
      * Determines whether field level help is enabled for the field corresponding to the businessObjectClass and attribute name
-     * 
+     *
      * If this value is true, then the field level help will be enabled.
      * If false, then whether a field is enabled is determined by the value returned by {@link #isLookupFieldLevelHelpDisabled(Class, String)} and the system-wide
      * parameter setting.  Note that if a field is read-only, that may cause field-level help to not be rendered.
-     * 
+     *
      * @param businessObjectClass the looked up class
      * @param attributeName the attribute for the field
      * @return true if field level help is enabled, false if the value of this method should NOT be used to determine whether this method's return value
@@ -1058,14 +1061,14 @@ public class FieldUtils {
     protected static boolean isLookupFieldLevelHelpEnabled(Class businessObjectClass, String attributeName) {
         return false;
     }
-    
+
     /**
      * Determines whether field level help is disabled for the field corresponding to the businessObjectClass and attribute name
-     * 
+     *
      * If this value is true and {@link #isLookupFieldLevelHelpEnabled(Class, String)} returns false,
      * then the field level help will not be rendered.  If both this and {@link #isLookupFieldLevelHelpEnabled(Class, String)} return false, then the system-wide
      * setting will determine whether field level help is enabled.  Note that if a field is read-only, that may cause field-level help to not be rendered.
-     * 
+     *
      * @param businessObjectClass the looked up class
      * @param attributeName the attribute for the field
      * @return true if field level help is disabled, false if the value of this method should NOT be used to determine whether this method's return value
@@ -1074,9 +1077,30 @@ public class FieldUtils {
     protected static boolean isLookupFieldLevelHelpDisabled(Class businessObjectClass, String attributeName) {
         return false;
     }
-    
+
     public static List createAndPopulateFieldsForLookup(List<String> lookupFieldAttributeList, List<String> readOnlyFieldsList, Class businessObjectClass) throws InstantiationException, IllegalAccessException {
         List<Field> fields = new ArrayList<Field>();
+        BusinessObjectEntry boe = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(businessObjectClass.getName());
+
+        Map<String, Boolean> isHiddenMap = new HashMap<String, Boolean>();
+        Map<String, Boolean> isReadOnlyMap = new HashMap<String, Boolean>();
+
+        /*
+    	 * This is used to check if the FieldDefinition is a LookupFieldDefinition.
+    	 * If it is, then check if it is hidden or read only.  This allows us to
+    	 * set lookups as hidden/readonly outside the controlDefinition.
+    	 */
+    	if(boe.hasLookupDefinition()){
+    		List<FieldDefinition> fieldDefs = boe.getLookupDefinition().getLookupFields();
+    		for(FieldDefinition field : fieldDefs){
+    			if(field instanceof LookupFieldDefinition){
+    				LookupFieldDefinition lField = (LookupFieldDefinition)field;
+    				isReadOnlyMap.put(field.getAttributeName(), new Boolean(lField.isReadOnly()));
+    				isHiddenMap.put(field.getAttributeName(), new Boolean(lField.isHidden()));
+    			}
+    		}
+    	}
+
         for( String attributeName : lookupFieldAttributeList )
         {
             Field field = FieldUtils.getPropertyField(businessObjectClass, attributeName, true);
@@ -1092,7 +1116,7 @@ public class FieldUtils {
             //quickFinder is synonymous with a field-based Lookup
             field = LookupUtils.setFieldQuickfinder(newBusinessObjectInstance, attributeName, field, lookupFieldAttributeList);
             field = LookupUtils.setFieldDirectInquiry(newBusinessObjectInstance, attributeName, field);
-            
+
             // overwrite maxLength to allow for wildcards and ranges in the select
             field.setMaxLength(100);
             fields.add(field);
@@ -1105,14 +1129,22 @@ public class FieldUtils {
             }
 
             Class defaultValueFinderClass = getBusinessObjectMetaDataService().getLookupFieldDefaultValueFinderClass(businessObjectClass, attributeName);
+            //getBusinessObjectMetaDataService().getLookupFieldDefaultValue(businessObjectClass, attributeName)
             if (defaultValueFinderClass != null) {
                 field.setPropertyValue(((ValueFinder) defaultValueFinderClass.newInstance()).getValue());
                 field.setDefaultValue(((ValueFinder) defaultValueFinderClass.newInstance()).getValue());
             }
-            if (readOnlyFieldsList != null && readOnlyFieldsList.contains(field.getPropertyName())) {
+            if ( (readOnlyFieldsList != null && readOnlyFieldsList.contains(field.getPropertyName()))
+            		|| ( isReadOnlyMap.containsKey(field.getPropertyName()) && isReadOnlyMap.get(field.getPropertyName()).booleanValue())
+            	) {
                 field.setReadOnly(true);
             }
-            
+
+            if( isHiddenMap.containsKey(field.getPropertyName()) && isHiddenMap.get(field.getPropertyName()).booleanValue()){
+            	field.setFieldType(Field.HIDDEN);
+            	field.setHidden(true);
+            }
+
             field.setFieldLevelHelpEnabled(isLookupFieldLevelHelpEnabled(businessObjectClass, attributeName));
             field.setFieldLevelHelpDisabled(isLookupFieldLevelHelpDisabled(businessObjectClass, attributeName));
         }
@@ -1181,28 +1213,28 @@ public class FieldUtils {
     public static String scrubWhitespace(String s) {
         return s.replaceAll("(\\s)(\\s+)", " ");
     }
-    
+
     private static DataDictionaryService getDataDictionaryService() {
     	if (dataDictionaryService == null) {
     		dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
     	}
     	return dataDictionaryService;
     }
-    
+
     private static BusinessObjectMetaDataService getBusinessObjectMetaDataService() {
     	if (businessObjectMetaDataService == null) {
     		businessObjectMetaDataService = KNSServiceLocator.getBusinessObjectMetaDataService();
     	}
     	return businessObjectMetaDataService;
     }
-    
+
     private static BusinessObjectDictionaryService getBusinessObjectDictionaryService() {
     	if (businessObjectDictionaryService == null) {
     		businessObjectDictionaryService = KNSServiceLocator.getBusinessObjectDictionaryService();
     	}
     	return businessObjectDictionaryService;
     }
-    
+
     private static KualiModuleService getKualiModuleService() {
     	if (kualiModuleService == null) {
     		kualiModuleService = KNSServiceLocator.getKualiModuleService();

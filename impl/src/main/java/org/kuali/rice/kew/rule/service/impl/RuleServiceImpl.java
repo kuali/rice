@@ -329,11 +329,11 @@ public class RuleServiceImpl implements RuleService {
     public void makeCurrent(RuleBaseValues rule, boolean isRetroactiveUpdatePermitted) {
     	makeCurrent(null, rule, isRetroactiveUpdatePermitted);
     }
-    
+
     public void makeCurrent(RuleDelegation ruleDelegation, boolean isRetroactiveUpdatePermitted) {
     	makeCurrent(ruleDelegation, ruleDelegation.getDelegationRuleBaseValues(), isRetroactiveUpdatePermitted);
     }
-    
+
     protected void makeCurrent(RuleDelegation ruleDelegation, RuleBaseValues rule, boolean isRetroactiveUpdatePermitted) {
         PerformanceLogger performanceLogger = new PerformanceLogger();
 
@@ -978,7 +978,7 @@ public class RuleServiceImpl implements RuleService {
     public RuleResponsibility findRuleResponsibility(Long responsibilityId) {
         return getRuleDAO().findRuleResponsibility(responsibilityId);
     }
-    
+
     public List fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateName, String documentType, boolean ignoreCache) {
         PerformanceLogger performanceLogger = new PerformanceLogger();
         Boolean cachingRules = new Boolean(Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, USING_RULE_CACHE_IND));
@@ -1254,7 +1254,7 @@ public class RuleServiceImpl implements RuleService {
         KimPrincipal principal = null;
         KimGroup workgroupToRemove = null;
         if (entityToBeRemoved instanceof UserId) {
-            principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(((UserId) entityToBeRemoved).getId());
+            principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(((UserId) entityToBeRemoved));
         } else if (entityToBeRemoved instanceof GroupId) {
         	workgroupToRemove = KEWServiceLocator.getIdentityHelperService().getGroup((GroupId)entityToBeRemoved);
         } else {
@@ -1329,7 +1329,7 @@ public class RuleServiceImpl implements RuleService {
         KimPrincipal principalToBeReplaced = null;
         KimGroup workgroupToReplace = null;
         if (entityToBeReplaced instanceof UserId) {
-        	principalToBeReplaced = KEWServiceLocator.getIdentityHelperService().getPrincipal(((UserId) entityToBeReplaced).getId());
+        	principalToBeReplaced = KEWServiceLocator.getIdentityHelperService().getPrincipal(((UserId) entityToBeReplaced));
         } else if (entityToBeReplaced instanceof GroupId) {
             workgroupToReplace = KEWServiceLocator.getIdentityHelperService().getGroup((GroupId)entityToBeReplaced);
         } else {
@@ -1614,11 +1614,11 @@ public class RuleServiceImpl implements RuleService {
             return null;
         }
     }
-    
+
     public Long getDuplicateRuleId(RuleBaseValues rule) {
-    	
+
     	// TODO: this method is extremely slow, if we could implement a more optimized query here, that would help tremendously
-    	
+
     	List responsibilities = rule.getResponsibilities();
     	List extensions = rule.getRuleExtensions();
     	String docTypeName = rule.getDocTypeName();
@@ -1639,13 +1639,13 @@ public class RuleServiceImpl implements RuleService {
         }
         return null;
     }
-        
+
     private void generateRuleNameIfNeeded(RuleBaseValues rule) {
         if (StringUtils.isBlank(rule.getName())) {
         	rule.setName(new Guid().toString());
         }
     }
-    
+
     private void assignResponsibilityIds(RuleBaseValues rule) {
     	for (RuleResponsibility responsibility : rule.getResponsibilities()) {
     		if (responsibility.getResponsibilityId() == null) {
@@ -1653,7 +1653,7 @@ public class RuleServiceImpl implements RuleService {
     		}
     	}
     }
-    
+
     public RuleBaseValues saveRule(RuleBaseValues rule, boolean isRetroactiveUpdatePermitted) {
     	rule.setPreviousVersionId(rule.getRuleBaseValuesId());
 		rule.setPreviousVersion(null);
@@ -1661,7 +1661,7 @@ public class RuleServiceImpl implements RuleService {
 		makeCurrent(rule, isRetroactiveUpdatePermitted);
 		return rule;
     }
-    
+
     public List<RuleBaseValues> saveRules(List<RuleBaseValues> rulesToSave, boolean isRetroactiveUpdatePermitted) {
     	List<RuleBaseValues> savedRules = new ArrayList<RuleBaseValues>();
     	for (RuleBaseValues rule : rulesToSave) {
@@ -1670,7 +1670,7 @@ public class RuleServiceImpl implements RuleService {
     	}
     	return savedRules;
     }
-    
+
     public RuleDelegation saveRuleDelegation(RuleDelegation ruleDelegation, boolean isRetroactiveUpdatePermitted) {
     	RuleBaseValues rule = ruleDelegation.getDelegationRuleBaseValues();
 		rule.setPreviousVersionId(rule.getRuleBaseValuesId());
@@ -1680,7 +1680,7 @@ public class RuleServiceImpl implements RuleService {
 		makeCurrent(ruleDelegation, isRetroactiveUpdatePermitted);
 		return ruleDelegation;
     }
-    
+
     public List<RuleDelegation> saveRuleDelegations(List<RuleDelegation> ruleDelegationsToSave, boolean isRetroactiveUpdatePermitted) {
     	List<RuleDelegation> savedRuleDelegations = new ArrayList<RuleDelegation>();
     	for (RuleDelegation ruleDelegation : ruleDelegationsToSave) {
@@ -1689,9 +1689,9 @@ public class RuleServiceImpl implements RuleService {
     	}
     	return savedRuleDelegations;
     }
-    
+
     public Long findResponsibilityIdForRule(String ruleName, String ruleResponsibilityName, String ruleResponsibilityType) {
     	return getRuleDAO().findResponsibilityIdForRule(ruleName, ruleResponsibilityName, ruleResponsibilityType);
     }
-    
+
 }

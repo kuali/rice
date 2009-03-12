@@ -29,6 +29,29 @@
                         <c:param name="documentTypeId" value="${documentType.documentTypeId}"/>
                         <c:param name="name" value="${documentType.name}"/>
                       </c:url>" target="_blank">Edit Document Type</a>
+                    <br />
+                    <c:if test="${documentTypeStruct.hasRelatedPermissions}">
+	                  	<c:set var="permCount" value="${documentTypeStruct.relatedPermissionCount}" />
+	                  	<c:if test="${permCount > 1}">
+		                  	<a href="<c:url value="${ConfigProperties.kr.url}/${Constants.LOOKUP_ACTION}">
+	                        <c:param name="methodToCall" value="search" />
+	                        <c:param name="businessObjectClassName" value="org.kuali.rice.kim.bo.impl.PermissionImpl"/>
+	                        <c:param name="returnLocation" value="${ConfigProperties.application.url}/portal.do"/>
+	                        <c:param name="hideReturnLink" value="true"/>
+	                        <c:param name="docFormKey" value="88888888"/>
+	                        <c:param name="detailCriteria" value="documentTypeName=${documentType.name}"/>
+	                      </c:url>" target="_blank">View Permissions (${permCount})</a>
+	                    </c:if>
+	                    <c:if test="${permCount == 1}">
+		                  	<a href="<c:url value="${ConfigProperties.kr.url}/${Constants.INQUIRY_ACTION}">
+	                        <c:param name="methodToCall" value="start" />
+	                        <c:param name="businessObjectClassName" value="org.kuali.rice.kim.bo.impl.PermissionImpl"/>
+	                        <c:param name="returnLocation" value="${ConfigProperties.application.url}/portal.do"/>
+	                        <c:param name="docFormKey" value="88888888"/>
+	                        <c:param name="permissionId" value="${documentTypeStruct.permissions[0].permissionId}"/>
+	                      </c:url>" target="_blank">View Permission</a>
+	                    </c:if>
+                    </c:if>
                 </td>
               </tr>
             </tbody>

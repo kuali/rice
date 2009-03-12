@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
@@ -209,5 +210,5 @@ public interface PermissionService {
      * 
      * If the searchCriteria parameter is null or empty, an empty list will be returned.
      */
-    List<KimPermissionInfo> lookupPermissions(AttributeSet searchCriteria);
+    List<KimPermissionInfo> lookupPermissions(Map<String,String> searchCriteria, boolean unbounded);
 }

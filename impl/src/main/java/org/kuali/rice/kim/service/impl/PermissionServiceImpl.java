@@ -23,7 +23,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
-import org.kuali.rice.kim.bo.role.KimPermission;
+import org.kuali.rice.kim.bo.impl.PermissionImpl;
 import org.kuali.rice.kim.bo.role.KimRole;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
@@ -39,6 +39,8 @@ import org.kuali.rice.kim.service.PermissionUpdateService;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.support.KimPermissionTypeService;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.lookup.CollectionIncomplete;
+import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
@@ -423,14 +425,6 @@ public class PermissionServiceImpl implements PermissionService, PermissionUpdat
     	return results;
     }
     
-    /**
-     * @see org.kuali.rice.kim.service.PermissionService#lookupPermissions(AttributeSet)
-     */
-    public List<KimPermissionInfo> lookupPermissions(AttributeSet searchCriteria) {
-    	//return (List<KimPermission>)getBusinessObjectService().findMatching( KimPermissionImpl.class, searchCriteria );
-    	throw new UnsupportedOperationException();
-    }
-
 	protected List<KimPermissionImpl> getPermissionsFromCache( String key ) {
     	List<KimPermissionImpl> permissions = null; 
     	MaxAgeSoftReference<List<KimPermissionImpl>> cacheRef = permissionCache.get( key );
@@ -522,13 +516,26 @@ public class PermissionServiceImpl implements PermissionService, PermissionUpdat
 		this.permissionDao = permissionDao;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.service.IdentityService#lookupEntitys(java.util.Map)
-	 */
 	@SuppressWarnings("unchecked")
-	public List<KimPermission> lookupPermissions(Map<String, String> searchCriteria){
-		return new ArrayList(
-				KNSServiceLocator.getLookupService().findCollectionBySearchUnbounded(KimPermissionImpl.class, searchCriteria));
+	public List<KimPermissionInfo> lookupPermissions(Map<String, String> searchCriteria, boolean unbounded ){
+		Collection baseResults = null; 
+		Lookupable permissionLookupable = KNSServiceLocator.getLookupable(
+				KNSServiceLocator.getBusinessObjectDictionaryService().getLookupableID(PermissionImpl.class)
+				);
+		permissionLookupable.setBusinessObjectClass(PermissionImpl.class);
+		if ( unbounded ) {
+			baseResults = permissionLookupable.getSearchResultsUnbounded( searchCriteria );
+		} else {
+			baseResults = permissionLookupable.getSearchResults(searchCriteria);
+		}
+		List<KimPermissionInfo> results = new ArrayList<KimPermissionInfo>( baseResults.size() );
+		for ( PermissionImpl resp : (Collection<PermissionImpl>)baseResults ) {
+			results.add( resp.toSimpleInfo() );
+		}
+		if ( baseResults instanceof CollectionIncomplete ) {
+			results = new CollectionIncomplete<KimPermissionInfo>( results, ((CollectionIncomplete<KimPermissionInfo>)baseResults).getActualSizeIfTruncated() ); 
+		}		
+		return results;
 	}
 
 }

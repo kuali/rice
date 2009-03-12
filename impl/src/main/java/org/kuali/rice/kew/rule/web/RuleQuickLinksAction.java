@@ -42,6 +42,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
+import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -118,20 +119,25 @@ public class RuleQuickLinksAction extends KewKualiAction {
         private DocumentType documentType;
         private List<RouteNode> flattenedNodes = new ArrayList<RouteNode>();
         private List<DocumentTypeQuickLinksStructure> childrenDocumentTypes = new ArrayList<DocumentTypeQuickLinksStructure>();
-
+        private List<KimPermissionInfo> permissions = null;
+        
         private DocumentTypeQuickLinksStructure(DocumentType documentType) {
-             this.documentType = documentType;
-             List tempFlattenedNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(documentType, true);
-            for (Iterator iter = tempFlattenedNodes.iterator(); iter.hasNext();) {
-				RouteNode routeNode = (RouteNode) iter.next();
-				if (routeNode.isFlexRM() || routeNode.isRoleNode() ) {
-					flattenedNodes.add(new RouteNodeForDisplay( routeNode ));
+			this.documentType = documentType;
+			if ( documentType != null ) {
+				List tempFlattenedNodes = KEWServiceLocator.getRouteNodeService()
+						.getFlattenedNodes( documentType, true );
+				for ( Iterator iter = tempFlattenedNodes.iterator(); iter.hasNext(); ) {
+					RouteNode routeNode = (RouteNode)iter.next();
+					if ( routeNode.isFlexRM() || routeNode.isRoleNode() ) {
+						flattenedNodes.add( new RouteNodeForDisplay( routeNode ) );
+					}
+				}
+				for ( Iterator iter = documentType.getChildrenDocTypes().iterator(); iter.hasNext(); ) {
+					childrenDocumentTypes.add( new DocumentTypeQuickLinksStructure(
+							(DocumentType)iter.next() ) );
 				}
 			}
-            for (Iterator iter = documentType.getChildrenDocTypes().iterator(); iter.hasNext();) {
-                childrenDocumentTypes.add(new DocumentTypeQuickLinksStructure((DocumentType) iter.next()));
-            }
-        }
+		}
 
         public List getChildrenDocumentTypes() {
             return childrenDocumentTypes;
@@ -161,6 +167,25 @@ public class RuleQuickLinksAction extends KewKualiAction {
 				return false;
 			}
 			return true;
+		}
+
+		public List<KimPermissionInfo> getPermissions() {
+			if ( permissions == null ) {
+				Map<String,String> searchCriteria = new HashMap<String,String>();
+				searchCriteria.put("detailCriteria",
+						KimAttributes.DOCUMENT_TYPE_NAME+"="+getDocumentType().getName()
+						);
+				permissions = KIMServiceLocator.getPermissionService().lookupPermissions( searchCriteria, false );
+			}
+			return permissions;
+		}
+		
+		public boolean isHasRelatedPermissions() {
+			return !getPermissions().isEmpty();
+		}
+		
+		public int getRelatedPermissionCount() {
+			return getPermissions().size();
 		}
     }
 

@@ -138,30 +138,11 @@
 		<artifact:install file="pom.xml">
 			<pom refid="maven.project" />
 		</artifact:install>
-		<artifact:dependencies filesetId="server.lib.fileset" versionsId="dependency.versions" useScope="runtime">
-			<dependency groupId="org.kuali.rice" artifactId="rice-impl" version="${maven.project.version}">
-				<exclusion groupId="org.kuali.rice" artifactId="rice-testharness" />
-				<exclusion groupId="junit" artifactId="junit" />
-				<exclusion groupId="htmlunit" artifactId="htmlunit" />
-				<exclusion groupId="xapool" artifactId="xapool" />
-				<exclusion groupId="jotm" artifactId="jotm" />
-				<exclusion groupId="com.oracle" artifactId="ojdbc14" />
-				<exclusion groupId="org.mortbay.jetty" artifactId="jetty" />
-				<exclusion groupId="javax.servlet" artifactId="servlet-api" />
-				<exclusion groupId="tomcat" artifactId="jasper-compiler" />
-				<exclusion groupId="tomcat" artifactId="jasper-runtime" />
-				<exclusion groupId="tomcat" artifactId="jasper-compiler-jdt" />
-			</dependency>
-		</artifact:dependencies>
 	</target>
 	
 	<target name="dist-server" depends="prepare-lib" description="Builds and packages the Rice server distribution">
-		<copy todir="${dist.server.lib.dir}" flatten="true">
-			<fileset refid="server.lib.fileset" />
-		</copy>
+		<unzip src="web/target/rice-web-${maven.project.version}.war" dest="${dist.server.dir}"/>
 		<copy todir="${dist.server.dir}">
-            <!-- Don't include the pieces from the sample app -->
-			<fileset dir="${webapp.src.dir}" excludes="*,WEB-INF/struts-config.xml"/>
 			<fileset dir="${server.config.src.dir}"/>
 		</copy>
 		<!-- change the environment code appropriately -->

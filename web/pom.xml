@@ -1,22 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <name>Kuali Rice Web</name>
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>org.kuali.rice</groupId>
-    <artifactId>rice</artifactId>
-    <version>0.9.4-SNAPSHOT</version>
-  </parent>
-  <artifactId>rice-web</artifactId>
-  <packaging>war</packaging>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<name>Kuali Rice Web</name>
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.kuali.rice</groupId>
+		<artifactId>rice</artifactId>
+		<version>0.9.4-SNAPSHOT</version>
+	</parent>
+	<artifactId>rice-web</artifactId>
+	<packaging>war</packaging>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.kuali.rice</groupId>
-      <artifactId>rice-impl</artifactId>
-      <version>0.9.4-SNAPSHOT</version>
-    </dependency>
-  </dependencies>
+	<dependencies>
+		<dependency>
+			<groupId>org.kuali.rice</groupId>
+			<artifactId>rice-impl</artifactId>
+			<version>0.9.4-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+				    <!-- exclude the sample app files and the jars that we don't want to include -->
+					<warSourceExcludes>*, WEB-INF/struts-config.xml, **/ojdbc14*.jar, **/mysql*.jar, **/junit*.jar, **/htmlunit*.jar, **/xapool*.jar, **/jotm*.jar, **/jetty*.jar, **/jasper*.jar</warSourceExcludes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>

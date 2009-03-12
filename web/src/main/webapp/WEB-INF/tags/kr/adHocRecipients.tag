@@ -118,7 +118,7 @@
             </tr>
         </kul:displayIfErrors>
           <tr>
-                <td colspan=4 class="tab-subhead">Ad Hoc Workgroup Requests:</td>
+                <td colspan=4 class="tab-subhead">Ad Hoc Group Requests:</td>
               </tr>
             <tr>
                   <kul:htmlAttributeHeaderCell

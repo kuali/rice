@@ -32,6 +32,8 @@ public class Section implements java.io.Serializable {
     boolean hidden = false;
     boolean readOnly = false;
 
+    boolean defaultOpen = true;
+    
     Class sectionClass;
     List<Row> rows;
     List<String> containedCollectionNames = new ArrayList();
@@ -242,5 +244,19 @@ public class Section implements java.io.Serializable {
 	 */
 	public void setReadOnly(boolean readOnly) {
 		this.readOnly = readOnly;
+	}
+
+	/**
+	 * @return whether the section should be open by default when rendered
+	 */
+	public boolean isDefaultOpen() {
+		return this.defaultOpen;
+	}
+
+	/**
+	 * @param defaultOpen the defaultOpen to set
+	 */
+	public void setDefaultOpen(boolean defaultOpen) {
+		this.defaultOpen = defaultOpen;
 	}
 }

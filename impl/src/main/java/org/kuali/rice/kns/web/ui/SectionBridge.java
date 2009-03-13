@@ -85,6 +85,8 @@ public class SectionBridge {
         section.setSectionId( sd.getId() );
         section.setSectionTitle(sd.getTitle());
         section.setRows(new ArrayList());
+        section.setDefaultOpen(sd.isDefaultOpen());
+        
         if (sd.getNumberOfColumns() != null) {
             section.setNumberOfColumns(sd.getNumberOfColumns());
         }
@@ -203,6 +205,7 @@ public class SectionBridge {
         section.setSectionTitle(sd.getTitle());
         section.setSectionClass(o.getClass());
         section.setHidden( sd.isHidden() );
+        section.setDefaultOpen(sd.isDefaultOpen());
 
         // iterate through section maint items and contruct Field UI objects
         Collection maintItems = sd.getMaintainableItems();

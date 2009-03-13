@@ -59,7 +59,7 @@
 		  <%-- call helper tag to look ahead through fields for old to new changes, and highlight tab if so --%>
           <kul:checkTabHighlight rows="${section.rows}" addHighlighting="false" />
 		  
-		  <kul:tab tabTitle="${section.sectionTitle}" defaultOpen="true" tabErrorKey="${section.errorKey}" highlightTab="${tabHighlight}" transparentBackground="${firstTab}" extraButtonSource="${section.extraButtonSource}"> 
+		  <kul:tab tabTitle="${section.sectionTitle}" defaultOpen="${section.defaultOpen}" tabErrorKey="${section.errorKey}" highlightTab="${tabHighlight}" transparentBackground="${firstTab}" extraButtonSource="${section.extraButtonSource}"> 
 		    <div class="tab-container" align="center">
 		      <table width="100%" cellpadding=0 cellspacing=0 class="datatable">
 			     <kul:rowDisplay rows="${section.rows}" numberOfColumns="${section.numberOfColumns}" />

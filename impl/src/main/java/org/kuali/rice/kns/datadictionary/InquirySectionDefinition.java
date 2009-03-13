@@ -47,7 +47,8 @@ public class InquirySectionDefinition extends DataDictionaryDefinitionBase {
     protected Map inquiryCollections;
     
     protected Integer numberOfColumns = 1;
-
+    protected boolean defaultOpen = true;
+    
     public InquirySectionDefinition() {}
 
 
@@ -198,5 +199,21 @@ public class InquirySectionDefinition extends DataDictionaryDefinitionBase {
         }
         this.inquiryFields = inquiryFields;
     }
+
+
+	/**
+	 * @return the defaultOpen
+	 */
+	public boolean isDefaultOpen() {
+		return this.defaultOpen;
+	}
+
+
+	/**
+	 * @param defaultOpen the defaultOpen to set
+	 */
+	public void setDefaultOpen(boolean defaultOpen) {
+		this.defaultOpen = defaultOpen;
+	}
 
 }

@@ -41,6 +41,8 @@ public class MaintainableSectionDefinition extends DataDictionaryDefinitionBase 
     
     protected boolean hidden = false;
     
+    protected boolean defaultOpen = true;
+    
     public MaintainableSectionDefinition() {}
 
     /**
@@ -158,4 +160,18 @@ public class MaintainableSectionDefinition extends DataDictionaryDefinitionBase 
         
         this.maintainableItems = maintainableItems;
     }
+
+	/**
+	 * @return the defaultOpen
+	 */
+	public boolean isDefaultOpen() {
+		return this.defaultOpen;
+	}
+
+	/**
+	 * @param defaultOpen the defaultOpen to set
+	 */
+	public void setDefaultOpen(boolean defaultOpen) {
+		this.defaultOpen = defaultOpen;
+	}
 }

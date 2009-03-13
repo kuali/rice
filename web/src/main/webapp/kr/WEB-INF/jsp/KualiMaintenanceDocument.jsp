@@ -73,7 +73,7 @@
 	  <%-- call helper tag to look ahead through fields for old to new changes, and highlight tab if so --%>
       <kul:checkTabHighlight rows="${section.rows}" addHighlighting="${isMaintenance && (Constants.MAINTENANCE_EDIT_ACTION eq KualiForm.maintenanceAction)}" />
 
-	  <kul:tab tabTitle="${section.sectionTitle}" defaultOpen="true" tabErrorKey="${section.errorKey}" highlightTab="${tabHighlight}" extraButtonSource="${section.extraButtonSource}" hidden="${section.hidden}" > 
+	  <kul:tab tabTitle="${section.sectionTitle}" defaultOpen="${section.defaultOpen}" tabErrorKey="${section.errorKey}" highlightTab="${tabHighlight}" extraButtonSource="${section.extraButtonSource}" hidden="${section.hidden}" > 
 	    <div class="tab-container" align="center" <c:if test="${section.hidden}">style="display:none;"</c:if> >
 	      <table width="100%" cellpadding="0" cellspacing="0" class="datatable">
 		     <kul:rowDisplay rows="${section.rows}" numberOfColumns="${section.numberOfColumns}" rowsReadOnly="${section.readOnly}"/>

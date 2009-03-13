@@ -204,8 +204,19 @@ KualiLookupableHelperServiceImpl {
 //                Column col = (Column) iterator.next();
 //ADDED 3
             	  Column col = (Column) origColumns.get(i);
-            	  KeyValueSort keyValue = keyValues.get(i);
-//Set values from keyvalue on column
+            	  KeyValueSort keyValue = null;
+            	  for (KeyValueSort keyValueFromList : keyValues) {
+            		  if(StringUtils.equals(col.getPropertyName(), keyValueFromList.getkey())) {
+            			  keyValue = keyValueFromList;
+            			  break;
+            		  }
+            	  }
+            	  if(keyValue==null) {
+            		  keyValue = new KeyValueSort();
+            		  System.out.println("column: "+col.getPropertyName()+"has an empty KeyValue, this should never happen");
+            	  }
+            	  
+            	  //Set values from keyvalue on column
             	  col.setPropertyValue(keyValue.getUserDisplayValue());
             	  
             	  String propertyName = col.getPropertyName();
@@ -363,6 +374,17 @@ KualiLookupableHelperServiceImpl {
 	 */
 	@Override
 	protected void setRows() {
+		super.setRows();
+		this.getRows().clear();
+	}
+
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#setRows()
+	 */
+	protected void setRows(Map fieldValues) {
 		// TODO chris - this method should call the criteria processor adapter which will
 		//call the criteria processor (either standard or custom) and massage the data into the proper format
 		//this is called by setbo in super(which is called by form) so should be called when the page needs refreshing
@@ -384,10 +406,12 @@ KualiLookupableHelperServiceImpl {
 
 
 		DocumentType docType = null;
-		//TODO: fix this, lookup is not returning a string
 		String docTypeName = null;
 		if(this.getParameters().get("docTypeFullName")!=null) {
 			docTypeName = ((String[])this.getParameters().get("docTypeFullName"))[0];
+		} 
+		else if(fieldValues.get("docTypeFullName")!=null) {
+			docTypeName = (String)fieldValues.get("docTypeFullName");
 		}
 		if(StringUtils.isNotEmpty(docTypeName)) {
 			docType = getValidDocumentType((String)docTypeName);
@@ -459,7 +483,12 @@ KualiLookupableHelperServiceImpl {
 				for (Field field : row.getFields()) {
 					for (Field critField : critFields) {
 						if(StringUtils.equals(critField.getPropertyName(),field.getPropertyName())) {
-							field.setPropertyValue(critField.getPropertyValue());
+							if(!Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType())) {
+								field.setPropertyValue(critField.getPropertyValue());
+							} else {
+								//contains multivalue
+								field.setPropertyValues(critField.getPropertyValues());
+							}
 						}
 					}
 				}
@@ -497,7 +526,6 @@ KualiLookupableHelperServiceImpl {
 		}
 		
 		String suppMenuBar = "";
-		//TODO: replace server info with parameter
 		if(detailed) {
 			suppMenuBar = "<a href=\""+getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY)+"/kr/"+KNSConstants.LOOKUP_ACTION+"?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&docFormKey=88888888&returnLocation=http://localhost:8080/kr-dev/portal.do&hideReturnLink=true&isAdvancedSearch=false\">basic</a>";
 		} else {
@@ -585,7 +613,9 @@ KualiLookupableHelperServiceImpl {
 	@Override
 	public boolean checkForAdditionalFields(Map fieldValues) {
 		// TODO chris - THIS METHOD NEEDS JAVADOCS
-		return super.checkForAdditionalFields(fieldValues);
+//		return super.checkForAdditionalFields(fieldValues);
+		setRows(fieldValues);
+		return true;
 	}
 	
 	@Override

@@ -213,21 +213,26 @@ public class KualiLookupAction extends KualiAction {
         Map values = lookupForm.getFields();
 
         for (Iterator iter = kualiLookupable.getRows().iterator(); iter.hasNext();) {
-            Row row = (Row) iter.next();
+        	Row row = (Row) iter.next();
 
-            for (Iterator iterator = row.getFields().iterator(); iterator.hasNext();) {
-                Field field = (Field) iterator.next();
+        	for (Iterator iterator = row.getFields().iterator(); iterator.hasNext();) {
+        		Field field = (Field) iterator.next();
 
-                if (field.getPropertyName() != null && !field.getPropertyName().equals("")) {
-                    if (request.getParameter(field.getPropertyName()) != null) {
-                        field.setPropertyValue(request.getParameter(field.getPropertyName()));
-                    }
-                    else if (values.get(field.getPropertyName()) != null) {
-                        field.setPropertyValue(values.get(field.getPropertyName()));
-                    }
-                }
-                fieldValues.put(field.getPropertyName(), field.getPropertyValue());
-            }
+        		if (field.getPropertyName() != null && !field.getPropertyName().equals("")) {
+        			if (request.getParameter(field.getPropertyName()) != null) {
+        				if(!Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType())) {
+        					field.setPropertyValue(request.getParameter(field.getPropertyName()));
+        				} else {
+        					//multi value, set to values
+        					field.setPropertyValues(request.getParameterValues(field.getPropertyName()));
+        				}
+        			}
+        		}
+        		else if (values.get(field.getPropertyName()) != null) {
+        			field.setPropertyValue(values.get(field.getPropertyName()));
+        		}
+        		fieldValues.put(field.getPropertyName(), field.getPropertyValue());
+        	}
         }
         fieldValues.put("docFormKey", lookupForm.getFormKey());
         fieldValues.put("backLocation", lookupForm.getBackLocation());
@@ -240,7 +245,14 @@ public class KualiLookupAction extends KualiAction {
                     Field field = (Field) iterator.next();
                     if (field.getPropertyName() != null && !field.getPropertyName().equals("")) {
                         if (request.getParameter(field.getPropertyName()) != null) {
-                            field.setPropertyValue(request.getParameter(field.getPropertyName()));
+//                            field.setPropertyValue(request.getParameter(field.getPropertyName()));
+            				if(!Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType())) {
+            					field.setPropertyValue(request.getParameter(field.getPropertyName()));
+            				} else {
+            					//multi value, set to values
+            					field.setPropertyValues(request.getParameterValues(field.getPropertyName()));
+            				}
+                            //FIXME: any reason this is inside this "if" instead of the outer one, like above - this seems inconsistent
                             fieldValues.put(field.getPropertyName(), request.getParameter(field.getPropertyName()));
                         }
                         else if (values.get(field.getPropertyName()) != null) {

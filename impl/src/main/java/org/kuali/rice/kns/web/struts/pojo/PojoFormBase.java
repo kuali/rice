@@ -533,6 +533,10 @@ public class PojoFormBase extends ActionForm implements PojoForm {
     	return request.getParameter(parameterName);
     }
     
+    protected String[] getParameterValues(HttpServletRequest request, String parameterName){
+    	return request.getParameterValues(parameterName);
+    }
+    
     public Set<String> getRequiredNonEditableProperties(){
     	return requiredNonEditableProperties;
     }

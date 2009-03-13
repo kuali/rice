@@ -24,9 +24,9 @@ package org.kuali.rice.kns.datadictionary.control;
 public class MultiselectControlDefinition extends MultivalueControlDefinitionBase {
 
     /**
-     * @see org.kuali.rice.kns.datadictionary.control.ControlDefinition#isMultiSelect()
+     * @see org.kuali.rice.kns.datadictionary.control.ControlDefinition#isMultiselect()
      */
-    public boolean isMultiSelect() {
+    public boolean isMultiselect() {
         return true;
     }
 

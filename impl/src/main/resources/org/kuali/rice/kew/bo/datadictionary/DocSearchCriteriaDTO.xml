@@ -69,13 +69,24 @@ http://rice.kuali.org/dd http://rice.kuali.org/dd/dd.xsd">
       <list>
       	<ref bean="DocSearchCriteriaDTO-docTypeFullName"/>
         <ref bean="DocSearchCriteriaDTO-routeHeaderId"/>
+        <ref bean="DocSearchCriteriaDTO-appDocId"/>
 <!--         <ref bean="DocSearchCriteriaDTO-documentTypeId" />  -->
 	    <ref bean="DocSearchCriteriaDTO-initiator"/>
+	    <ref bean="DocSearchCriteriaDTO-approver"/>
+	    <ref bean="DocSearchCriteriaDTO-viewer"/>
+	    <ref bean="DocSearchCriteriaDTO-workgroupViewerName"/>
         <ref bean="DocSearchCriteriaDTO-fromDateCreated"/>
         <ref bean="DocSearchCriteriaDTO-toDateCreated"/>
+        <ref bean="DocSearchCriteriaDTO-fromDateLastModified"/>
+        <ref bean="DocSearchCriteriaDTO-toDateLastModified"/>
+        <ref bean="DocSearchCriteriaDTO-fromDateFinalized"/>
+        <ref bean="DocSearchCriteriaDTO-toDateFinalized"/>
+        <ref bean="DocSearchCriteriaDTO-fromDateApproved"/>
+        <ref bean="DocSearchCriteriaDTO-toDateApproved"/>
         <ref bean="DocSearchCriteriaDTO-namedSearch"/>
 		<ref bean="DocSearchCriteriaDTO-docTitle"/>
 		<ref bean="DocSearchCriteriaDTO-docRouteStatus"/>
+		<ref bean="DocSearchCriteriaDTO-docRouteNodeId"/>
 		<ref bean="DocSearchCriteriaDTO-dateCreated"/>
       </list>
     </property>
@@ -97,6 +108,22 @@ http://rice.kuali.org/dd http://rice.kuali.org/dd/dd.xsd">
     </property>
     <property name="name" value="routeHeaderId" />
     <property name="label" value="Document/Notification Id" />
+  </bean>
+  
+    <bean id="DocSearchCriteriaDTO-appDocId" parent="DocSearchCriteriaDTO-appDocId-parentBean" />
+
+  <bean id="DocSearchCriteriaDTO-appDocId-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="shortLabel" value="Id" />
+    <property name="maxLength" value="30" />
+    <property name="validationPattern" >
+      <bean parent="NumericValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="30" />
+    </property>
+    <property name="name" value="appDocId" />
+    <property name="label" value="Application Document/Notification Id" />
   </bean>
 <!-- 
  <bean id="DocSearchCriteriaDTO-documentTypeId" parent="DocSearchCriteriaDTO-documentTypeId-parentBean" />
@@ -166,6 +193,54 @@ http://rice.kuali.org/dd http://rice.kuali.org/dd/dd.xsd">
     <property name="label" value="Date Created" />
     <property name="shortLabel" value="Date Created" />
   </bean>
+
+  <bean id="DocSearchCriteriaDTO-fromDateLastModified" parent="DocSearchCriteriaDTO-fromDateLastModified-parentBean" /> 
+  
+  <bean id="DocSearchCriteriaDTO-fromDateLastModified-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
+    <property name="name" value="fromDateLastModified" />
+    <property name="label" value="Date Modified From" />
+    <property name="shortLabel" value="Date Modified" />
+  </bean>
+
+  <bean id="DocSearchCriteriaDTO-toDateLastModified" parent="DocSearchCriteriaDTO-toDateLastModified-parentBean" /> 
+  
+  <bean id="DocSearchCriteriaDTO-toDateLastModified-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
+    <property name="name" value="toDateLastModified" />
+    <property name="label" value="Date Modified To" />
+    <property name="shortLabel" value="Date Modified To" />
+  </bean>
+  
+    <bean id="DocSearchCriteriaDTO-fromDateFinalized" parent="DocSearchCriteriaDTO-fromDateFinalized-parentBean" /> 
+  
+  <bean id="DocSearchCriteriaDTO-fromDateFinalized-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
+    <property name="name" value="fromDateFinalized" />
+    <property name="label" value="Date Finalized From" />
+    <property name="shortLabel" value="Date Finalized" />
+  </bean>
+
+  <bean id="DocSearchCriteriaDTO-toDateFinalized" parent="DocSearchCriteriaDTO-toDateFinalized-parentBean" /> 
+  
+  <bean id="DocSearchCriteriaDTO-toDateFinalized-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
+    <property name="name" value="toDateFinalized" />
+    <property name="label" value="Date Finalized To" />
+    <property name="shortLabel" value="Date Finalized To" />
+  </bean>
+  
+      <bean id="DocSearchCriteriaDTO-fromDateApproved" parent="DocSearchCriteriaDTO-fromDateApproved-parentBean" /> 
+  
+  <bean id="DocSearchCriteriaDTO-fromDateApproved-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
+    <property name="name" value="fromDateApproved" />
+    <property name="label" value="Date Approved From" />
+    <property name="shortLabel" value="Date Approved" />
+  </bean>
+
+  <bean id="DocSearchCriteriaDTO-toDateApproved" parent="DocSearchCriteriaDTO-toDateApproved-parentBean" /> 
+  
+  <bean id="DocSearchCriteriaDTO-toDateApproved-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
+    <property name="name" value="toDateApproved" />
+    <property name="label" value="Date Approved To" />
+    <property name="shortLabel" value="Date Approved To" />
+  </bean>
   
   <!-- 
   <bean id="DocSearchCriteriaDTO-initiatorWorkflowIdentifier" parent="DocSearchCriteriaDTO-initiatorWorkflowIdentifier-parentBean" />
@@ -180,13 +255,67 @@ http://rice.kuali.org/dd http://rice.kuali.org/dd/dd.xsd">
     <property name="displayLabelAttribute" value="DocSearchCriteriaDTO-FiscalOfficerUser.principalName" />
   </bean>
    -->
-
+	<!--  both of the following need to be id's -->
   <bean id="DocSearchCriteriaDTO-initiator" parent="DocSearchCriteriaDTO-initiator-parentBean" />
 
   <bean id="DocSearchCriteriaDTO-initiator-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="name" value="initiator" />
     <property name="label" value="Initiator Network Id" />
     <property name="shortLabel" value="InitNetId" />
+    
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="30" />
+    </property>
+  </bean>
+
+	
+  <bean id="DocSearchCriteriaDTO-approver" parent="DocSearchCriteriaDTO-approver-parentBean" />
+
+  <bean id="DocSearchCriteriaDTO-approver-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="approver" />
+    <property name="label" value="Approver Network Id" />
+    <property name="shortLabel" value="InitNetId" />
+    
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="30" />
+    </property>
+  </bean>
+  
+    <bean id="DocSearchCriteriaDTO-viewer" parent="DocSearchCriteriaDTO-viewer-parentBean" />
+
+  <bean id="DocSearchCriteriaDTO-viewer-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="viewer" />
+    <property name="label" value="Viewer Network Id" />
+    <property name="shortLabel" value="ViewNetId" />
+    
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="30" />
+    </property>
+  </bean>
+
+
+    <bean id="DocSearchCriteriaDTO-workgroupViewerName" parent="DocSearchCriteriaDTO-workgroupViewerName-parentBean" />
+
+  <bean id="DocSearchCriteriaDTO-workgroupViewerName-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="workgroupViewerName" />
+    <property name="label" value="Workgroup Viewer Network Id" />
+    <property name="shortLabel" value="WorkViewNetId" />
+    
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="30" />
+    </property>
+  </bean>
+   
+          <bean id="DocSearchCriteriaDTO-docRouteNodeId" parent="DocSearchCriteriaDTO-docRouteNodeId-parentBean" />
+
+  <bean id="DocSearchCriteriaDTO-docRouteNodeId-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="docRouteNodeId" />
+    <property name="label" value="Document Route Node" />
+    <property name="shortLabel" value="DocRouteNodeId" />
     
     <property name="control" >
       <bean parent="TextControlDefinition"

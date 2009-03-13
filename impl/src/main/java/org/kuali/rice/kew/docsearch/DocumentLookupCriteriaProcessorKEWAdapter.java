@@ -20,11 +20,9 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.KeyLabelPair;
 import org.kuali.rice.kns.web.ui.Row;
 
 /**
@@ -132,7 +130,18 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 //						field.setLookupParameters("name:docTypeFullName");
 					}
 					field.setFieldType(fieldType);
-					//TODO: don't set if empty
+					//TODO: special processing for some field types
+					if(StringUtils.equals(StandardSearchCriteriaField.DROPDOWN,fieldType)||
+					   StringUtils.equals(StandardSearchCriteriaField.DROPDOWN_HIDE_EMPTY, fieldType)){
+						if(StringUtils.equals(StandardSearchCriteriaField.DROPDOWN_HIDE_EMPTY,fieldType)) {
+							field.setFieldType(Field.DROPDOWN);
+							//TODO: anything special here?
+						}
+						//TODO: replace with real list
+						field.setFieldValidValues(new ArrayList<KeyLabelPair>());
+					}
+					
+					
 					if(StringUtils.isEmpty(field.getFieldLabel())) {
 						String labelMessageKey = dataDictionaryService.getAttributeLabel(DocSearchCriteriaDTO.class,propertyName);
 						field.setFieldLabel(labelMessageKey);

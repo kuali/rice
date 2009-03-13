@@ -528,7 +528,7 @@
 
 							<c:otherwise>
 								${kfunc:registerEditableProperty(KualiForm, field.propertyName)}
-								<select multiple="${true}" id='${field.propertyName}' name='${field.propertyName}' style="${textStyle}" ${onblurcall}>
+								<select multiple="${true}" id='${field.propertyName}' name='${field.propertyName}' size="${field.maxLength}" style="${textStyle}" ${onblurcall}>
 									<%--<c:if test="${!field.hasBlankValidValue}">
 										<option value=""></option>
 									</c:if> --%>

@@ -35,7 +35,7 @@ import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 
 /**
- * This is a description of what this class does - chris don't forget to fill this in. 
+ * Helper class Used for building a Document Search criteria for the lookup
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
@@ -43,23 +43,21 @@ import org.kuali.rice.kns.web.ui.Row;
 public class DocumentLookupCriteriaBuilder  {
 	
 	/**
-	 * This method ...
+	 * This method populates the criteria given a map of fields from the lookup
 	 * 
 	 * @param lookupForm
-	 * @return
+	 * @return constructed criteria
 	 */
 	public static DocSearchCriteriaDTO populateCriteria(Map<String,String[]> fieldsForLookup) {
     	DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
     	Map<String,String[]> fieldsToSet = new HashMap<String,String[]>();
 		for (String formKey : fieldsForLookup.keySet()) {
 			if(!(formKey.equalsIgnoreCase(KNSConstants.BACK_LOCATION) ||
-			   formKey.equalsIgnoreCase(KNSConstants.DOC_FORM_KEY)) && fieldsForLookup.get(formKey).length!=0) {
+			   formKey.equalsIgnoreCase(KNSConstants.DOC_FORM_KEY)) && fieldsForLookup.get(formKey)!=null && fieldsForLookup.get(formKey).length!=0) {
 				fieldsToSet.put(formKey, fieldsForLookup.get(formKey));
 			}
 		}
-		//if we use DocSearchCriteriaDTO as object we shouldn't need this conversion stuff
-    	for (String fieldToSet : fieldsToSet.keySet()) {
-			//need translation code here for certain fields
+    	for (String fieldToSet : fieldsToSet.keySet()) {	
     		String valueToSet = fieldsToSet.get(fieldToSet)[0];
 			try {
 				PropertyUtils.setNestedProperty(criteria, fieldToSet, valueToSet);
@@ -123,17 +121,19 @@ public class DocumentLookupCriteriaBuilder  {
 							//                            LOG.error("addSearchableAttributesToCriteria() " + errorMsg);
 							throw new RuntimeException(errorMsg);
 						}
+							String[] values = propertyFields.get(propertyField);
 							if (Field.MULTI_VALUE_FIELD_TYPES.contains(sacc.getLookupableFieldType())) {
 								// set the multivalue lookup indicator
 								sacc.setCanHoldMultipleValues(true);
 								if (propertyField == null) {
 									sacc.setValues(new ArrayList<String>());
 								} else {
-
-									sacc.setValues(Arrays.asList(propertyFields.get(propertyField)));
+									if(values!=null) {
+										sacc.setValues(Arrays.asList(values));
+									}
 								}
 							} else {
-								sacc.setValue(propertyFields.get(propertyField)[0]);
+								sacc.setValue(values[0]);
 							}
 							criteria.addSearchableAttribute(sacc);
 						}

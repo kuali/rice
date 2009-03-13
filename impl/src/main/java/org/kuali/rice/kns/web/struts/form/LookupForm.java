@@ -247,7 +247,12 @@ public class LookupForm extends KualiForm {
 
                     // override values with request
                     if (getParameter(request, field.getPropertyName()) != null) {
-                        field.setPropertyValue(getParameter(request, field.getPropertyName()).trim());
+                    	if(!Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType())) {
+                    		field.setPropertyValue(getParameter(request, field.getPropertyName()).trim());
+                    	} else {
+                    		//multi value, set to values
+                    		field.setPropertyValues(getParameterValues(request, field.getPropertyName()));
+                    	}
                     }
 
                     // force uppercase if necessary
@@ -270,7 +275,12 @@ public class LookupForm extends KualiForm {
 
                         // override values with request
                         if (getParameter(request, field.getPropertyName()) != null) {
-                            field.setPropertyValue(getParameter(request, field.getPropertyName()).trim());
+                        	if(!Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType())) {
+                        		field.setPropertyValue(getParameter(request, field.getPropertyName()).trim());
+                        	} else {
+                        		//multi value, set to values
+                        		field.setPropertyValues(getParameterValues(request, field.getPropertyName()));
+                        	}
                         }
                         fieldValues.put(field.getPropertyName(), field.getPropertyValue());
                     }

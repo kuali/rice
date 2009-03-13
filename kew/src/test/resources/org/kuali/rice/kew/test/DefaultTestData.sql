@@ -44,7 +44,7 @@ INSERT INTO KRIM_TYP_T(KIM_TYP_ID, OBJ_ID, VER_NBR, NM, SRVC_NM, ACTV_IND, NMSPC
   VALUES('45', '5B6013B3AD131A9CE0404F8189D87094', 1, 'Derived Role: Permission', 'documentEditorRoleTypeService', 'Y', 'KR-NS')
 ;
 INSERT INTO KRIM_TYP_T(KIM_TYP_ID, OBJ_ID, VER_NBR, NM, SRVC_NM, ACTV_IND, NMSPC_CD)
-  VALUES('54', sys_guid(), 1, 'Document Type (Responsibility)', 'documentTypeResponsibilityTypeService', 'Y', 'KR-KEW')
+  VALUES('54', sys_guid(), 1, 'Document Type (Responsibility)', 'documentTypeResponsibilityTypeService', 'Y', 'KR-WKFLW')
 ;
 
 insert into KRIM_ATTR_DEFN_T (KIM_ATTR_DEFN_ID, OBJ_ID, VER_NBR, NM, LBL, SRVC_NM, ACTV_IND, NMSPC_CD, CMPNT_NM, APPL_URL) VALUES('13', '5ADF18B6D4947954E0404F8189D85002', 1, 'documentTypeName', Null, Null, 'Y', 'KR-WKFLW', 'org.kuali.rice.kim.bo.impl.KimAttributes', Null)
@@ -167,4 +167,7 @@ INSERT INTO KRIM_RSP_T(RSP_ID, OBJ_ID, RSP_TMPL_ID, nm, DESC_TXT, nmspc_cd, ACTV
 ;
 INSERT INTO KRIM_ROLE_RSP_T(ROLE_RSP_ID, OBJ_ID, VER_NBR, ROLE_ID, RSP_ID, ACTV_IND)
   VALUES('1080', '5DF45238F5528846E0404F8189D840B8', 1, '63', '93', 'Y')
+;
+INSERT INTO KRIM_RSP_ATTR_DATA_T (ATTR_DATA_ID, OBJ_ID, VER_NBR, TARGET_PRIMARY_KEY, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ATTR_VAL)
+  VALUES('334', '5D8B0E3E634E96A3E0404F8189D8468D', 1, '93', '54', '13', 'RiceDocument')
 ;

@@ -94,7 +94,6 @@
                 <value>org.kuali.rice.kns.</value>
             </list>
         </property>
-        <!--
         <property name="externalizableBusinessObjectImplementations">
             <map>
 	           <entry key="org.kuali.rice.kns.bo.Country" value="org.kuali.rice.kns.bo.CountryImpl" />
@@ -103,7 +102,6 @@
 			   <entry key="org.kuali.rice.kns.bo.County" value="org.kuali.rice.kns.bo.CountyImpl" />
             </map>
         </property>
-        -->
 	</bean>
 
 	<bean id="knsServerModuleConfiguration" parent="knsServerModuleConfiguration-parentBean"/>

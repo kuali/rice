@@ -89,13 +89,11 @@
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimGroupImpl.xml</value>
             </list>
 		</property>
-		<!--
         <property name="packagePrefixes">
             <list>
                 <value>org.kuali.rice.kns.</value>
             </list>
         </property>
-        -->
         <!--
         <property name="externalizableBusinessObjectImplementations">
             <map>
@@ -142,13 +140,11 @@
                 <value>classpath:org/kuali/rice/kns/document/datadictionary/StateMaintenanceDocument.xml</value>
             </list>
 		</property>
-		<!--
         <property name="packagePrefixes">
             <list>
                 <value>org.kuali.rice.kns.</value>
             </list>
         </property>
-        -->
         <property name="externalizableBusinessObjectImplementations">
             <map>
 	           <entry key="org.kuali.rice.kns.bo.Country" value="org.kuali.rice.kns.bo.CountryImpl" />

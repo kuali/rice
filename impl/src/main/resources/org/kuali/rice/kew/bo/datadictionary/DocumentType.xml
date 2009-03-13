@@ -94,7 +94,7 @@
       <bean parent="NumericValidationPattern" />
     </property>
     <property name="control" >
-      <bean parent="TextControlDefinition" />
+      <bean parent="TextControlDefinition" p:size="10" />
     </property>
     <property name="name" value="documentTypeId" />
     <property name="label" value="Id" />
@@ -436,6 +436,7 @@
   <bean id="DocumentType-inquiryDefinition" parent="DocumentType-inquiryDefinition-parentBean" />
 
   <bean id="DocumentType-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
+    <property name="title" value="Document Type Inquiry" />
     <property name="inquirySections">
       <list>
      	<bean parent="InquirySectionDefinition">

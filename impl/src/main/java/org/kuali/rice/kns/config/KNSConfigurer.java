@@ -15,20 +15,32 @@
  */
 package org.kuali.rice.kns.config;
 
+import javax.sql.DataSource;
+
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.config.ModuleConfigurer;
 import org.kuali.rice.core.config.event.AfterStartEvent;
 import org.kuali.rice.core.config.event.RiceConfigEvent;
 import org.kuali.rice.core.resourceloader.RiceResourceLoaderFactory;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.ksb.util.KSBConstants;
 
 public class KNSConfigurer extends ModuleConfigurer {
 
 	private boolean loadDataDictionary = true;
 	private boolean validateDataDictionary = false;
-	
+
+	private DataSource applicationDataSource;
+	private DataSource serverDataSource;
+	private String applicationDataSourceJndiName;
+    private String serverDataSourceJndiName;
+
 	private static final String KNS_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kns/config/KNSSpringBeans.xml";
-	
+
 	public KNSConfigurer() {
 	    super();
 	    setModuleName( "KR" );
@@ -36,16 +48,22 @@ public class KNSConfigurer extends ModuleConfigurer {
 	    // KNS never runs in a remote mode
 	    VALID_RUN_MODES.remove( REMOTE_RUN_MODE );
     }
-	
+
+    public Config loadConfig(Config parentConfig) throws Exception {
+        Config currentConfig = super.loadConfig(parentConfig);
+        configureDataSource(currentConfig);
+        return currentConfig;
+    }
+
 	@Override
 	public String getSpringFileLocations(){
 		// TODO: check the run mode and include only the appropriate spring bean files
 		return KNS_SPRING_BEANS_PATH;
 	}
-	
+
    /**
      * Returns true - KNS UI should always be included.
-     * 
+     *
      * @see org.kuali.rice.core.config.ModuleConfigurer#shouldRenderWebInterface()
      */
     @Override
@@ -55,7 +73,7 @@ public class KNSConfigurer extends ModuleConfigurer {
 
     /**
      * Returns true - KNS UI should always be included.
-     * 
+     *
      * @see org.kuali.rice.core.config.ModuleConfigurer#hasWebInterface()
      */
     @Override
@@ -77,13 +95,34 @@ public class KNSConfigurer extends ModuleConfigurer {
     				dds = (DataDictionaryService)RiceResourceLoaderFactory.getSpringResourceLoader().getContext().getBean( KNSServiceLocator.DATA_DICTIONARY_SERVICE );
     			}
     			dds.getDataDictionary().parseDataDictionaryConfigurationFiles(false);
-    			
+
     			if ( isValidateDataDictionary() ) {
                     LOG.info("KNS Configurer - Validating DD");
     				dds.getDataDictionary().validateDD();
     			}
     		}
     	}
+    }
+
+
+    protected void configureDataSource(Config config) {
+        if (getApplicationDataSource() != null && getServerDataSource() == null) {
+            throw new ConfigurationException("An application data source was defined but a server data source was not defined.  Both must be specified.");
+        }
+        if (getApplicationDataSource() == null && getServerDataSource() != null) {
+            throw new ConfigurationException("A server data source was defined but an application data source was not defined.  Both must be specified.");
+        }
+
+        if (getApplicationDataSource() != null) {
+            config.getObjects().put(KNSConstants.KNS_APPLICATION_DATASOURCE, getApplicationDataSource());
+        } else if (!StringUtils.isBlank(getApplicationDataSourceJndiName())) {
+            config.getProperties().put(KNSConstants.KNS_APPLICATION_DATASOURCE_JNDI, getApplicationDataSourceJndiName());
+        }
+        if (getServerDataSource() != null) {
+            config.getObjects().put(KNSConstants.KNS_SERVER_DATASOURCE, getServerDataSource());
+        } else if (!StringUtils.isBlank(getServerDataSourceJndiName())) {
+            config.getProperties().put(KNSConstants.KNS_SERVER_DATASOURCE_JNDI, getServerDataSourceJndiName());
+        }
     }
 
 	/**
@@ -113,4 +152,37 @@ public class KNSConfigurer extends ModuleConfigurer {
 	public void setValidateDataDictionary(boolean validateDataDictionary) {
 		this.validateDataDictionary = validateDataDictionary;
 	}
+
+    public DataSource getApplicationDataSource() {
+        return this.applicationDataSource;
+    }
+
+    public DataSource getServerDataSource() {
+        return this.serverDataSource;
+    }
+
+    public void setApplicationDataSource(DataSource applicationDataSource) {
+        this.applicationDataSource = applicationDataSource;
+    }
+
+    public void setServerDataSource(DataSource serverDataSource) {
+        this.serverDataSource = serverDataSource;
+    }
+
+    public String getApplicationDataSourceJndiName() {
+        return this.applicationDataSourceJndiName;
+    }
+
+    public String getServerDataSourceJndiName() {
+        return this.serverDataSourceJndiName;
+    }
+
+    public void setApplicationDataSourceJndiName(
+            String applicationDataSourceJndiName) {
+        this.applicationDataSourceJndiName = applicationDataSourceJndiName;
+    }
+
+    public void setServerDataSourceJndiName(String serverDataSourceJndiName) {
+        this.serverDataSourceJndiName = serverDataSourceJndiName;
+    }
 }

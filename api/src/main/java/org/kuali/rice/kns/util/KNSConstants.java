@@ -37,7 +37,7 @@ public class KNSConstants extends JSTLConstants {
     public static final String KUALI_RICE_SYSTEM_NAMESPACE = "KR-SYS";
     public static final String KUALI_RICE_WORKFLOW_NAMESPACE = "KR-WKFLW";
     public static final String KUALI_RICE_SERVICE_BUS_NAMESPACE = "KR-BUS";
-    
+
     public static final String KUALI_ACTION_CAN_EDIT = "canEdit";
     public static final String KUALI_ACTION_CAN_ANNOTATE = "canAnnotate";
 	public static final String KUALI_ACTION_CAN_CLOSE = "canClose";
@@ -56,7 +56,7 @@ public class KNSConstants extends JSTLConstants {
     public static final String KUALI_ACTION_CAN_CREATE = "canCreate";
     public static final String KUALI_ACTION_CAN_SEND_ADHOC_REQUESTS = "canSendAdHocRequests";
     public static final String KUALI_DEFAULT_TRUE_VALUE = "true";
-    
+
     public static class DetailTypes {
         public static final String NA_PARM_DETAIL_TYPE = "N/A";
         public static final String ALL_DETAIL_TYPE = "All";
@@ -95,7 +95,7 @@ public class KNSConstants extends JSTLConstants {
     public static final String UPLOADED_FILE_REQUEST_ATTRIBUTE_KEY = "org.kuali.rice.kns.util.WebUtils.uploadedFiles";
 
     public static final String NOTE_WORKFLOW_NOTIFICATION_REQUEST_LABEL = "READ NOTES";
-    
+
     public static final String SEND_NOTE_WORKFLOW_NOTIFICATION_ACTIONS_PARM_NM = "SEND_NOTE_WORKFLOW_NOTIFICATION_ACTIONS";
     public static final String ATTACHMENT_MAX_FILE_SIZE_PARM_NM = "MAX_FILE_SIZE_ATTACHMENT";
     public static final String DOCUMENT_HTTP_SESSION_KEY = "documentHttpSessionKey";
@@ -181,6 +181,12 @@ public class KNSConstants extends JSTLConstants {
 //    public static final String STAND_IN_BUSINESS_OBJECT_FOR_ATTRIBUTES = "AttributeReferenceDummy";
     public static final String OVERRIDE_KEYS = "overrideKeys";
 
+    public static final String KNS_APPLICATION_DATASOURCE = "knsApplication.datasource";
+    public static final String KNS_SERVER_DATASOURCE = "knsServer.datasource";
+    public static final String KNS_APPLICATION_DATASOURCE_JNDI = "knsApplication.datasource.jndi.location";
+    public static final String KNS_SERVER_DATASOURCE_JNDI = "knsServer.datasource.jndi.location";
+
+
     // **************** Begin Note & Attachments defines
     /**
      * Property name for new document - Value is "newNote"
@@ -198,7 +204,7 @@ public class KNSConstants extends JSTLConstants {
      * Property name for note attachment - Value is "attachmentFile"
      */
     public static final String NOTE_ATTACHMENT_FILE_PROPERTY_NAME = "attachmentFile";
-    
+
     public static final String NOTE_WITHOUT_ATTACHMENT_INDICATOR ="noteWithoutAttachment";
     /**
      * Property name for enabling attachments to note, overriding the defaults defined by the document template - Value is
@@ -367,10 +373,10 @@ public class KNSConstants extends JSTLConstants {
     public static final String DISAPPROVE_METHOD = "disapprove";
     public static final String FYI_METHOD = "fyi";
     public static final String ACKNOWLEDGE_METHOD = "acknowledge";
-    
+
     public static final String DOWNLOAD_BO_ATTACHMENT_METHOD ="downloadBOAttachment";
     public static final String NOTE_IDENTIFIER = "noteIdentifier";
-    
+
     // specialized method 'delete' used only for PessimisticLocks currently
     public static final String DELETE_METHOD = "delete";
     public static final String START_METHOD = "start";
@@ -510,7 +516,7 @@ public class KNSConstants extends JSTLConstants {
     }
 
     public static final String TAB_STATES = "tabStates";
-    
+
     public static final String GLOBAL_VARIABLES_MESSAGES_LIST_ACTION_MESSAGES = "GlobalVariablesMessagesList";
-    
+
 }

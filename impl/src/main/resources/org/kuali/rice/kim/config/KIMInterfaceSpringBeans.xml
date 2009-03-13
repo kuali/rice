@@ -26,13 +26,30 @@
                            http://www.springframework.org/schema/aop
                            http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 
+  <!-- In the case of the data source name, we want to check if
+      the kimDataSource spring bean exists, if it does, we
+      return "kimDataSource", otherwise return null -->
+  <bean id="kimDataSourceNameIfExists" class="org.kuali.rice.kns.util.spring.IfExistsFactoryBean">
+    <property name="beanName" value="kimDataSource"/>
+    <property name="customReturnValue" value="kimDataSource"/>
+  </bean>
+
+  <!-- In the case of the entity manager, we want to check if
+     the "kimEntityManager" bean exists.  If it does, we
+     return that spring bean, otherwise return null -->
+  <bean id="kimEntityManagerIfExists" class="org.kuali.rice.kns.util.spring.IfExistsFactoryBean">
+    <property name="beanName" value="kimEntityManager"/>
+  </bean>
+
   <bean id="kimModuleConfiguration" parent="kimModuleConfiguration-parentBean"/>
 
   <bean id="kimModuleConfiguration-parentBean" class="org.kuali.rice.kns.bo.ModuleConfiguration" abstract="true">
     <property name="namespaceCode" value="KR-IDM" />
+    <property name="dataSourceName" ref="kimDataSourceNameIfExists" />
+    <property name="entityManager" ref="kimEntityManagerIfExists" />
     <property name="initializeDataDictionary" value="true"/>
     <property name="dataDictionaryService" ref="dataDictionaryService" />
-      <property name="persistenceService" ref="persistenceServiceOjb" />
+    <property name="persistenceService" ref="persistenceServiceOjb" />
     <property name="dataDictionaryPackages">
       <list>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonImpl.xml</value>

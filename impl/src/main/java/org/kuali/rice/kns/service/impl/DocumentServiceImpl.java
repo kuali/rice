@@ -1,12 +1,12 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -77,23 +77,23 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class DocumentServiceImpl implements DocumentService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentServiceImpl.class);
-    
+
     private DateTimeService dateTimeService;
-    
+
     private NoteService noteService;
-    
+
     protected WorkflowDocumentService workflowDocumentService;
-    
+
     protected BusinessObjectService businessObjectService;
-    
+
     protected DocumentDao documentDao;
-    
+
     private DataDictionaryService dataDictionaryService;
-    
+
     private DocumentHeaderService documentHeaderService;
 
     private PersonService personService;
-    
+
     private DocumentHelperService documentHelperService;
 
     /**
@@ -102,7 +102,7 @@ public class DocumentServiceImpl implements DocumentService {
     public Document saveDocument(Document document) throws WorkflowException, ValidationException {
 	return saveDocument(document, SaveDocumentEvent.class);
     }
-    
+
     public Document saveDocument(Document document, Class kualiDocumentEventClass) throws WorkflowException, ValidationException {
         checkForNulls(document);
         if (kualiDocumentEventClass == null) {
@@ -128,7 +128,7 @@ public class DocumentServiceImpl implements DocumentService {
 	String potentialErrorMessage = "Found error trying to generate Kuali Document Event using event class '" + eventClass.getName() + "' for document " + document.getDocumentNumber();
 	try {
 	    Constructor usableConstructor = null;
-	    List<Object> paramList = null; 
+	    List<Object> paramList = null;
 	    for (Constructor currentConstructor : eventClass.getConstructors()) {
 		paramList = new ArrayList<Object>();
 		for (Class parameterClass : currentConstructor.getParameterTypes()) {
@@ -162,7 +162,7 @@ public class DocumentServiceImpl implements DocumentService {
 	    throw new ConfigurationException(potentialErrorMessage, e);
 	}
     }
-    
+
     /**
      * @see org.kuali.rice.kns.service.DocumentService#routeDocument(org.kuali.rice.kns.document.Document, java.lang.String, java.util.List)
      */
@@ -243,12 +243,12 @@ public class DocumentServiceImpl implements DocumentService {
 
         Note note = createNoteFromDocument(document,annotation);
         addNoteToDocument(document, note);
-        
+
         //SAVE THE NOTE
         //Note: This save logic is replicated here and in KualiDocumentAction, when to save (based on doc state) should be moved
         //      into a doc service method
         getNoteService().save(note);
-        
+
         prepareWorkflowDocument(document);
         getWorkflowDocumentService().disapprove(document.getDocumentHeader().getWorkflowDocument(), annotation);
         GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
@@ -354,7 +354,7 @@ public class DocumentServiceImpl implements DocumentService {
         if (StringUtils.isBlank(documentHeaderId)) {
             throw new IllegalArgumentException("invalid (blank) documentHeaderId");
         }
-                
+
     	boolean internalUserSession = false;
     	try {
 	    	// KFSMI-2543 - allowed method to run without a user session so it can be used
@@ -364,13 +364,13 @@ public class DocumentServiceImpl implements DocumentService {
 	        	GlobalVariables.setUserSession(new UserSession(KNSConstants.SYSTEM_USER));
 	        	GlobalVariables.clear();
 	        }
-	
+
 	        // look for workflowDocumentHeader, since that supposedly won't break the transaction
 	        if (getWorkflowDocumentService().workflowDocumentExists(documentHeaderId)) {
 	            // look for docHeaderId, since that fails without breaking the transaction
 	            return getDocumentHeaderService().getDocumentHeaderById(documentHeaderId) != null;
 	        }
-	
+
 	        return false;
     	} finally {
     		// if a user session was established for this call, clear it our
@@ -383,7 +383,7 @@ public class DocumentServiceImpl implements DocumentService {
 
     /**
      * Creates a new document by class.
-     * 
+     *
      * @see org.kuali.rice.kns.service.DocumentService#getNewDocument(java.lang.Class)
      */
     public Document getNewDocument(Class documentClass) throws WorkflowException {
@@ -404,7 +404,7 @@ public class DocumentServiceImpl implements DocumentService {
 
     /**
      * Creates a new document by document type name.
-     * 
+     *
      * @see org.kuali.rice.kns.service.DocumentService#getNewDocument(java.lang.String)
      */
     public Document getNewDocument(String documentTypeName) throws WorkflowException {
@@ -430,7 +430,7 @@ public class DocumentServiceImpl implements DocumentService {
         // make sure this person is authorized to initiate
         LOG.debug("calling canInitiate from getNewDocument()");
         if (!documentPresentationController.canInitiate(documentTypeName) || !documentAuthorizer.canInitiate(documentTypeName, currentUser)) {
-        	throw new DocumentAuthorizationException(currentUser.getPrincipalName(), "initiate", "N/A");        	
+        	throw new DocumentAuthorizationException(currentUser.getPrincipalName(), "initiate", documentTypeName);
         }
 
         // initiate new workflow entry, get the workflow doc
@@ -489,11 +489,11 @@ public class DocumentServiceImpl implements DocumentService {
         t0.log();
         return document;
     }
-    
+
     /**
      * This is temporary until workflow 2.0 and reads from a table to get documents whose status has changed to A (approved - no
      * outstanding approval actions requested)
-     * 
+     *
      * @param documentHeaderId
      * @throws WorkflowException
      * @return Document
@@ -513,15 +513,15 @@ public class DocumentServiceImpl implements DocumentService {
 	        }
 
 	        KualiWorkflowDocument workflowDocument = null;
-	
+
 	        if ( LOG.isInfoEnabled() ) {
 	        	LOG.info("Retrieving doc id: " + documentHeaderId + " from workflow service.");
 	        }
 	        workflowDocument = getWorkflowDocumentService().createWorkflowDocument(Long.valueOf(documentHeaderId), GlobalVariables.getUserSession().getPerson());
 	        GlobalVariables.getUserSession().setWorkflowDocument(workflowDocument);
-	
+
 	        Class documentClass = getDocumentClassByTypeName(workflowDocument.getDocumentType());
-	
+
 	        // retrieve the Document
 	        Document document = getDocumentDao().findByDocumentHeaderId(documentClass, documentHeaderId);
 	        return postProcessDocument(documentHeaderId, workflowDocument, document);
@@ -533,7 +533,7 @@ public class DocumentServiceImpl implements DocumentService {
     		}
     	}
     }
-    
+
 	/**
 	 * @see org.kuali.rice.kns.service.DocumentService#getByDocumentHeaderIdSessionless(java.lang.String)
 	 */
@@ -548,7 +548,7 @@ public class DocumentServiceImpl implements DocumentService {
         if ( LOG.isInfoEnabled() ) {
             LOG.info("Retrieving doc id: " + documentHeaderId + " from workflow service.");
         }
-            
+
         Person person = getPersonService().getPersonByPrincipalName(KNSConstants.SYSTEM_USER);
         workflowDocument = workflowDocumentService.createWorkflowDocument(Long.valueOf(documentHeaderId), person);
 
@@ -573,7 +573,7 @@ public class DocumentServiceImpl implements DocumentService {
 
     /**
      * Performs required post-processing for every document from the documentDao
-     * 
+     *
      * @param documentHeaderId
      * @param workflowDocument
      * @param document
@@ -589,10 +589,10 @@ public class DocumentServiceImpl implements DocumentService {
 
     /**
      * The default implementation - this retrieves all documents by a list of documentHeader for a given class.
-     * 
+     *
      * @see org.kuali.rice.kns.service.DocumentService#getDocumentsByListOfDocumentHeaderIds(java.lang.Class, java.util.List)
      */
-    public List getDocumentsByListOfDocumentHeaderIds(Class clazz, List documentHeaderIds) throws WorkflowException {   	
+    public List getDocumentsByListOfDocumentHeaderIds(Class clazz, List documentHeaderIds) throws WorkflowException {
         // make sure that the supplied class is of the document type
         if (!Document.class.isAssignableFrom(clazz)) {
             throw new IllegalArgumentException("invalid (non-document) class of " + clazz.getName());
@@ -609,7 +609,7 @@ public class DocumentServiceImpl implements DocumentService {
                 throw new IllegalArgumentException("invalid (blank) documentHeaderId at list index " + index);
             }
         }
-        
+
     	boolean internalUserSession = false;
     	try {
 	    	// KFSMI-2543 - allowed method to run without a user session so it can be used
@@ -619,17 +619,17 @@ public class DocumentServiceImpl implements DocumentService {
 	        	GlobalVariables.setUserSession(new UserSession(KNSConstants.SYSTEM_USER));
 	        	GlobalVariables.clear();
 	        }
-	
+
 	        // retrieve all documents that match the document header ids
 	        List rawDocuments = getDocumentDao().findByDocumentHeaderIds(clazz, documentHeaderIds);
-	
+
 	        // post-process them
 	        List documents = new ArrayList();
 	        for (Iterator i = rawDocuments.iterator(); i.hasNext();) {
 	            Document document = (Document) i.next();
-	
+
 	            KualiWorkflowDocument workflowDocument = getWorkflowDocumentService().createWorkflowDocument(Long.valueOf(document.getDocumentNumber()), GlobalVariables.getUserSession().getPerson());
-	
+
 	            document = postProcessDocument(document.getDocumentNumber(), workflowDocument, document);
 	            documents.add(document);
 	        }
@@ -647,7 +647,7 @@ public class DocumentServiceImpl implements DocumentService {
 
     /**
      * Validates and persists a document.
-     * 
+     *
      * @see org.kuali.rice.kns.service.DocumentService#validateAndPersistDocument(org.kuali.rice.kns.document.Document, java.lang.String)
      */
     public void validateAndPersistDocument(Document document, KualiDocumentEvent event) throws WorkflowException, ValidationException {
@@ -658,7 +658,7 @@ public class DocumentServiceImpl implements DocumentService {
         if ( LOG.isInfoEnabled() ) {
         	LOG.info("validating and preparing to persist document " + document.getDocumentNumber());
         }
-        
+
         document.validateBusinessRules(event);
         document.prepareForSave(event);
 
@@ -673,23 +673,23 @@ public class DocumentServiceImpl implements DocumentService {
             LOG.error("exception encountered on store of document " + e.getMessage());
             throw e;
         }
-        
+
         document.postProcessSave(event);
 
 
     }
 
-    
+
     /**
      * Sets the title and app document id in the flex document
-     * 
+     *
      * @param document
      * @throws WorkflowException
      */
     public void prepareWorkflowDocument(Document document) throws WorkflowException {
         // populate document content so searchable attributes will be indexed properly
         document.populateDocumentForRouting();
-        
+
         // make sure we push the document title into the workflowDocument
         populateDocumentTitle(document);
 
@@ -700,7 +700,7 @@ public class DocumentServiceImpl implements DocumentService {
     /**
      * This method will grab the generated document title from the document and add it to the workflowDocument so that it gets pushed into
      * workflow when routed.
-     * 
+     *
      * @param document
      * @throws WorkflowException
      */
@@ -714,7 +714,7 @@ public class DocumentServiceImpl implements DocumentService {
     /**
      * This method will grab the organization document number from the document and add it to the workflowDocument so that it gets pushed
      * into workflow when routed.
-     * 
+     *
      * @param document
      */
     private void populateApplicationDocumentId(Document document) {
@@ -732,14 +732,14 @@ public class DocumentServiceImpl implements DocumentService {
         checkForNulls(document);
         getDocumentDao().save(document);
     }
-    
+
     /**
-     * 
+     *
      * @see org.kuali.rice.kns.service.DocumentService#createNoteFromDocument(org.kuali.rice.kns.document.Document, java.lang.String)
      */
     public Note createNoteFromDocument(Document document, String text) throws Exception {
         Note note = new Note();
-        
+
         note.setNotePostedTimestamp(getDateTimeService().getCurrentTimestamp());
         note.setVersionNumber(new Long(1));
         note.setNoteText(text);
@@ -748,14 +748,14 @@ public class DocumentServiceImpl implements DocumentService {
         } else {
             note.setNoteTypeCode(KNSConstants.NoteTypeEnum.DOCUMENT_HEADER_NOTE_TYPE.getCode());
         }
-        
+
         PersistableBusinessObject bo = null;
         String propertyName = getNoteService().extractNoteProperty(note);
         bo = (PersistableBusinessObject)ObjectUtils.getPropertyValue(document, propertyName);
-        return (bo==null)?null:getNoteService().createNote(note,bo);    
+        return (bo==null)?null:getNoteService().createNote(note,bo);
     }
-    
-    
+
+
     /**
      * @see org.kuali.rice.kns.service.DocumentService#addNoteToDocument(org.kuali.rice.kns.document.Document, org.kuali.rice.kns.bo.Note)
      */
@@ -763,7 +763,7 @@ public class DocumentServiceImpl implements DocumentService {
         PersistableBusinessObject parent = getNoteParent(document,note);
         return parent.addNote(note);
     }
-    
+
     public PersistableBusinessObject getNoteParent(Document document, Note newNote) {
         //get the property name to set (this assumes this is a document type note)
         String propertyName = getNoteService().extractNoteProperty(newNote);
@@ -774,7 +774,7 @@ public class DocumentServiceImpl implements DocumentService {
 
     /**
 	 * This overridden method ...
-	 * 
+	 *
 	 * @see org.kuali.rice.kns.service.DocumentService#sendAdHocRequests(org.kuali.rice.kns.document.Document, java.util.List)
 	 */
 	public void sendAdHocRequests(Document document, String annotation, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException{
@@ -796,7 +796,7 @@ public class DocumentServiceImpl implements DocumentService {
 
     /**
      * spring injected date time service
-     * 
+     *
      * @param dateTimeService
      */
     public synchronized void setDateTimeService(DateTimeService dateTimeService) {
@@ -832,14 +832,14 @@ public class DocumentServiceImpl implements DocumentService {
 
     /**
      * Sets the maintenanceDocumentService attribute value.
-     * 
+     *
      * @param maintenanceDocumentService The maintenanceDocumentService to set.
      * @deprecated nothing uses this field
      */
     public final void setMaintenanceDocumentService(MaintenanceDocumentService maintenanceDocumentService) {
         // nothing uses this field...
     }
-    
+
     /**
      * Sets the noteService attribute value.
      * @param noteService The noteService to set.
@@ -867,7 +867,7 @@ public class DocumentServiceImpl implements DocumentService {
     public synchronized void setBusinessObjectService(BusinessObjectService businessObjectService) {
         this.businessObjectService = businessObjectService;
     }
-    
+
     /**
      * Gets the {@link BusinessObjectService}, lazily initializing if necessary
      * @return the {@link BusinessObjectService}
@@ -918,10 +918,10 @@ public class DocumentServiceImpl implements DocumentService {
         }
         return documentDao;
     }
-    
+
     /**
      * Sets the dataDictionaryService attribute value.
-     * 
+     *
      * @param dataDictionaryService
      */
     public synchronized void setDataDictionaryService(DataDictionaryService dataDictionaryService) {

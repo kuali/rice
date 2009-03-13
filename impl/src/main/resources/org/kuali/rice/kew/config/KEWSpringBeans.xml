@@ -344,7 +344,7 @@
 	<bean id="enNotificationService" class="org.kuali.rice.kew.notification.service.impl.KCBNotificationService"  lazy-init="true"/>
 
     <!-- <bean id="enNotificationService" class="org.kuali.rice.kew.notification.service.impl.DefaultNotificationService"  lazy-init="true"/>  -->
-    
+
 
 	<!-- db platform -->
 	<bean id="enDbPlatform" class="org.kuali.rice.core.config.BeanHolder">
@@ -733,6 +733,8 @@
 
   <bean id="kewModuleConfiguration" class="org.kuali.rice.kns.bo.ModuleConfiguration">
 		<property name="namespaceCode" value="KR-WKFLW" />
+		<property name="dataSourceName" value="enWorkflowDataSource"/>
+		<property name="entityManager" ref="kewEntityManager" />
 		<property name="initializeDataDictionary" value="true"/>
 		<property name="dataDictionaryService" ref="dataDictionaryService" />
  	    <property name="persistenceService" ref="persistenceServiceOjb" />

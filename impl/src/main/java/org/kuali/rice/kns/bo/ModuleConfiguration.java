@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
+
 import org.kuali.rice.kns.datadictionary.spring.DataDictionaryLocationConfigurer;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -28,18 +30,18 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 /**
- * This is a description of what this class does - bhargavp don't forget to fill this in. 
- * 
+ * This is a description of what this class does - bhargavp don't forget to fill this in.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class ModuleConfiguration implements InitializingBean, ApplicationContextAware {
 
 	//protected static Logger LOG = Logger.getLogger(ModuleConfiguration.class);
-	
+
 	protected String namespaceCode;
 	protected ApplicationContext applicationContext;
-	
+
 	protected List<String> packagePrefixes;
 
 	protected List<String> databaseRepositoryFilePaths;
@@ -51,15 +53,21 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 	protected List<String> jobNames;
 
 	protected List<String> triggerNames;
-	
+
+	//optional
+	protected String dataSourceName;
+
+	//optional
+	protected EntityManager entityManager;
+
 	protected Map<Class, Class> externalizableBusinessObjectImplementations;
-	
+
 	protected boolean initializeDataDictionary;
-	
+
 	protected PersistenceService persistenceService;
-	
+
 	protected DataDictionaryService dataDictionaryService;
-	
+
 	public ModuleConfiguration() {
 		databaseRepositoryFilePaths = new ArrayList<String>();
 		dataDictionaryPackages = new ArrayList<String>();
@@ -67,7 +75,7 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 		jobNames = new ArrayList<String>();
 		triggerNames = new ArrayList<String>();
 	}
-	
+
 	/**
 	 * @return the databaseRepositoryFilePaths
 	 */
@@ -115,19 +123,19 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 	public List<String> getPackagePrefixes(){
 		return this.packagePrefixes;
 	}
-	
+
 	public void setPackagePrefixes(List<String> packagePrefixes){
 		this.packagePrefixes = packagePrefixes;
 	}
-	
+
 	public void setInitializeDataDictionary(boolean initializeDataDictionary){
 		this.initializeDataDictionary = initializeDataDictionary;
 	}
-	
+
 	public List<String> getScriptConfigurationFilePaths(){
 		return this.scriptConfigurationFilePaths;
 	}
-	
+
 	/**
 	 * @return the jobNames
 	 */
@@ -171,7 +179,7 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 			List<String> scriptConfigurationFilePaths) {
 		this.scriptConfigurationFilePaths = scriptConfigurationFilePaths;
 	}
-	
+
 	public void afterPropertiesSet() throws Exception {
 		if (isInitializeDataDictionary() && getDataDictionaryPackages() != null && !getDataDictionaryPackages().isEmpty() ) {
 			if ( getDataDictionaryService() == null ) {
@@ -243,5 +251,21 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 	public void setPersistenceService(PersistenceService persistenceService) {
 		this.persistenceService = persistenceService;
 	}
-	
+
+    public String getDataSourceName() {
+        return this.dataSourceName;
+    }
+
+    public void setDataSourceName(String dataSourceName) {
+        this.dataSourceName = dataSourceName;
+    }
+
+    public EntityManager getEntityManager() {
+        return this.entityManager;
+    }
+
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
 }

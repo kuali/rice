@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+		<documentType>
+			<name>TestWithMostParams1</name>
+			<parent>TestParent01</parent>
+			<description>A test of doc type parameters.</description>
+			<label>TestWithMostParams1</label>
+			<postProcessorName>mocks.MockPostProcessor</postProcessorName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<blanketApprovePolicy>any</blanketApprovePolicy>
+			<reportingWorkgroupName>KR-WKFLW:TestWorkgroup</reportingWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<docHandler>_blank</docHandler>
+			<helpDefinitionURL>_blank</helpDefinitionURL>
+			<notificationFromAddress>_blank</notificationFromAddress>
+			<emailStylesheet>_blank</emailStylesheet>
+			<serviceNamespace>TestCl1</serviceNamespace>
+			<active>false</active>
+			<policies>
+				<policy>
+					<name>DEFAULT_APPROVE</name>
+					<value>false</value>
+				</policy>
+				<policy>
+					<name>LOOK_FUTURE</name>
+					<value>true</value>
+				</policy>
+			</policies>
+			<attributes>
+				<attribute>
+					<name>SchoolSearchAttribute</name>
+				</attribute>
+			</attributes>
+			<routePaths>
+				<routePath>
+					<start name="AdHoc" nextNode="RuleTemplate3" />
+					<requests name="RuleTemplate3" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="AdHoc">
+					<activationType>P</activationType>
+				</start>
+				<requests name="RuleTemplate3">
+					<activationType>S</activationType>
+					<ruleTemplate>RuleTemplate3</ruleTemplate>
+				</requests>
+			</routeNodes>
+			<security>
+				<initiator>true</initiator>
+			</security>
+		</documentType>
+		<documentType>
+			<name>TestParent01</name>
+			<label>TestParent01</label>
+		</documentType>
+	</documentTypes>
+	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
+		<ruleAttribute>
+			<name>SchoolSearchAttribute</name>
+			<className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<label>SchoolSearchAttribute</label>
+			<description>SchoolSearchAttribute</description>
+			<type>SearchableXmlAttribute</type>
+			<searchingConfig>
+				<fieldDef name="school" title="School">
+					<display>
+						<type>select</type>
+						<values title="None"></values>
+					</display>
+					<fieldEvaluation>
+						<xpathexpression>normalize-space(substring-after(//department, ' '))</xpathexpression>
+					</fieldEvaluation>
+				</fieldDef>
+			</searchingConfig>
+		</ruleAttribute>
+	</ruleAttributes>
+</data>

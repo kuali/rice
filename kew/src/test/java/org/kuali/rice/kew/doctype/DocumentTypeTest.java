@@ -25,6 +25,7 @@ import java.util.Set;
 import mocks.MockPostProcessor;
 
 import org.apache.log4j.Logger;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -528,6 +529,50 @@ public class DocumentTypeTest extends KEWTestCase {
     	assertEquals("Incorrect PostProcessor", DefaultPostProcessor.class, ppTestChild3.getPostProcessor().getClass());
     }
 
+    /**
+     * Tests to ensure that a given document type has its fields updated when the a second XML doc type with the same name is ingested.
+     * 
+     * NOTE: This unit test is still incomplete.
+     * 
+     * @throws Exception
+     */
+    @Ignore("delyea: complete at a later date")
+    @Test public void testUpdateOfDocTypeFields() throws Exception {
+    	//Collection<DocumentTypePolicy> docPolicies = docType.getPolicies();
+    	//List<DocumentTypeAttribute> docAttributes = docType.getDocumentTypeAttributes();
+    	//List firstRouteNode = KEWServiceLocator.getRouteNodeService().getInitialNodeInstances(docType.getDocumentTypeId());
+    	// The expected field values from the test XML files.
+    	String[][] expectedValues = { {"TestWithMostParams1", "TestParent01", "A test of doc type parameters.", "TestWithMostParams1",
+    			"mocks.MockPostProcessor", "KR-WKFLW:TestWorkgroup", null, "any", "KR-WKFLW:TestWorkgroup",
+    			"KR-WKFLW:TestWorkgroup", "_blank", "_blank", "_blank", "_blank", "TestCl1", "false"},
+    								{"TestWithMostParams1", "AnotherParent", "Another test of most parameters.",
+    			"AntoherTestWithMostParams", "org.kuali.rice.kew.postprocessor.DefaultPostProcessor", "KR-WKFLW:WorkflowAdmin",
+    			"KR-WKFLW:WorkflowAdmin", null, "KR-WKFLW:WorkflowAdmin", "KR-WKFLW:WorkflowAdmin", "_nothing", "_nothing",
+    			"_nothing", "_nothing", "KEW", "true"}
+    	};
+    	// Ingest each document type, and test the properties of each one.
+    	for (int i = 0; i < expectedValues.length; i++) {
+    		// Load the document type and store its data.
+    		loadXmlFile("DocTypeWithMostParams" + (i+1) + ".xml");
+    		DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName("TestWithMostParams1");
+    		KimGroup baWorkgroup = docType.getBlanketApproveWorkgroup();
+    		KimGroup rpWorkgroup = docType.getReportingWorkgroup();
+    		KimGroup deWorkgroup = docType.getDefaultExceptionWorkgroup();
+        	String[] actualValues = {docType.getName(), docType.getParentDocType().getName(), docType.getDescription(),
+        			docType.getLabel(), docType.getPostProcessorName(), docType.getSuperUserWorkgroupNoInheritence().getGroupName(),
+        	    	((baWorkgroup != null) ? baWorkgroup.getGroupName() : null), docType.getBlanketApprovePolicy(),
+        	    	((rpWorkgroup != null) ? rpWorkgroup.getGroupName() :null), ((deWorkgroup != null) ? deWorkgroup.getGroupName() :null),
+        	    	docType.getUnresolvedDocHandlerUrl(), docType.getUnresolvedHelpDefinitionUrl(),
+        	    	docType.getNotificationFromAddress(), docType.getCustomEmailStylesheet(),
+        	    	docType.getServiceNamespace(), docType.getActive().toString()  			
+        	};
+        	// Compare the expected field values with the actual ones.
+    		for (int j = 0; j < expectedValues[i].length; j++) {
+    			assertEquals("The document does not have the expected parameter value.", expectedValues[i][j], actualValues[j]);
+    		}
+    	}
+    }
+    
     protected void verifyDocumentTypeLinking() throws Exception {
     	DocumentTypeService service = KEWServiceLocator.getDocumentTypeService();
     	List rootDocs = service.findAllCurrentRootDocuments();

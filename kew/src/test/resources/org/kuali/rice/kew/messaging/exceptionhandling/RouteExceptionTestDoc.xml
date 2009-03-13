@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+	<ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
+		<ruleTemplate allowOverwrite="true">
+			<name>RuleTemplate1</name>
+			<description>RuleTemplate1</description>
+		</ruleTemplate>
+		<ruleTemplate allowOverwrite="true">
+			<name>RuleTemplate2</name>
+			<description>RuleTemplate1</description>
+		</ruleTemplate>
+	</ruleTemplates>
+	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+		<documentType>
+			<name>TestFinalApproverDocumentType</name>
+			<description>TestDocumentType</description>
+			<label>TestDocumentType</label>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<docHandler>_blank</docHandler>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<policies>
+				<policy>
+					<name>DEFAULT_APPROVE</name>
+					<value>false</value>
+				</policy>
+			</policies>
+			<routePaths>
+				<routePath>
+					<start name="AdHoc" nextNode="RuleTemplate1" />
+					<requests name="RuleTemplate1" nextNode="RuleTemplate2" />
+					<requests name="RuleTemplate2" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="AdHoc">
+					<activationType>P</activationType>
+				</start>
+				<requests name="RuleTemplate1">
+					<activationType>S</activationType>
+					<ruleTemplate>RuleTemplate1</ruleTemplate>
+					<finalApproval>true</finalApproval><!-- this should cause an exception when RuleTemplate2 approve requests get activated -->
+				</requests>
+				<requests name="RuleTemplate2">
+					<activationType>S</activationType>
+					<ruleTemplate>RuleTemplate2</ruleTemplate>
+				</requests>
+			</routeNodes>
+		</documentType>
+	</documentTypes>
+	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
+		<rule>
+			<documentType>TestFinalApproverDocumentType</documentType>
+			<ruleTemplate>RuleTemplate1</ruleTemplate>
+			<description>RuleTemplate1</description>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>rkirkend</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>TestFinalApproverDocumentType</documentType>
+			<ruleTemplate>RuleTemplate2</ruleTemplate>
+			<description>RuleTemplate2</description>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>user2</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+	</rules>
+</data>

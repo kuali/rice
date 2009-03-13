@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+		<documentType>
+			<name>TestWithMostParams1</name>
+			<parent>AnotherParent</parent>
+			<description>Another test of most parameters.</description>
+			<label>AntoherTestWithMostParams</label>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
+			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
+			<reportingWorkgroupName>KR-WKFLW:WorkflowAdmin</reportingWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
+			<docHandler>_nothing</docHandler>
+			<helpDefinitionURL>_nothing</helpDefinitionURL>
+			<notificationFromAddress>_nothing</notificationFromAddress>
+			<emailStylesheet>_nothing</emailStylesheet>
+			<serviceNamespace>KEW</serviceNamespace>
+			<active>true</active>
+			<policies>
+				<policy>
+					<name>DEFAULT_APPROVE</name>
+					<value>true</value>
+				</policy>
+				<policy>
+					<name>LOOK_FUTURE</name>
+					<value>false</value>
+				</policy>
+			</policies>
+			<attributes>
+				<attribute>
+					<name>AnotherSchoolSearchAttribute</name>
+				</attribute>
+			</attributes>
+			<routePaths>
+				<routePath>
+					<start name="Start" nextNode="AlwaysRouteRuleTemplateNoME" />
+					<requests name="AlwaysRouteRuleTemplateNoME" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="Start">
+					<activationType>S</activationType>
+				</start>
+				<requests name="AlwaysRouteRuleTemplateNoME">
+					<activationType>P</activationType>
+					<ruleTemplate>AlwaysRouteRuleTemplateNoME</ruleTemplate>
+				</requests>
+			</routeNodes>
+			<security>
+				<initiator>false</initiator>
+			</security>
+		</documentType>
+		<documentType>
+			<name>AnotherParent</name>
+			<label>AnotherParent</label>
+		</documentType>
+	</documentTypes>
+		<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
+		<ruleAttribute>
+			<name>AnotherSchoolSearchAttribute</name>
+			<className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<label>SchoolSearchAttribute</label>
+			<description>SchoolSearchAttribute</description>
+			<type>SearchableXmlAttribute</type>
+			<searchingConfig>
+				<fieldDef name="school" title="School">
+					<display>
+						<type>select</type>
+						<values title="None"></values>
+					</display>
+					<fieldEvaluation>
+						<xpathexpression>normalize-space(substring-after(//department, ' '))</xpathexpression>
+					</fieldEvaluation>
+				</fieldDef>
+			</searchingConfig>
+		</ruleAttribute>
+	</ruleAttributes>
+</data>

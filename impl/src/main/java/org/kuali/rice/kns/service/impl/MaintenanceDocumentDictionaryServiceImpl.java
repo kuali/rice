@@ -577,8 +577,7 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
                     if ( StringUtils.isNotBlank(personProperty) ) {
                         if ( StringUtils.isBlank( (String)ObjectUtils.getNestedValue(businessObject, personProperty+".entityId") ) ) {
                             String attributeLabel = dataDictionaryService.getAttributeLabel(businessObject.getClass(), fieldName);
-                            String shortLabel = dataDictionaryService.getAttributeShortLabel(businessObject.getClass(), fieldName);
-                            GlobalVariables.getErrorMap().putError(fieldName, RiceKeyConstants.ERROR_REQUIRED, attributeLabel + " (" + shortLabel + ")" );
+                            GlobalVariables.getErrorMap().putError(fieldName, RiceKeyConstants.ERROR_EXISTENCE, attributeLabel );
                         }
                     }
                 }

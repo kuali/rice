@@ -39,6 +39,7 @@ import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
@@ -179,6 +180,7 @@ public class RuleQuickLinksAction extends KewKualiAction {
 //				sqlLogger.setLevel( Level.DEBUG );
 				Map<String,String> searchCriteria = new HashMap<String,String>();
 				searchCriteria.put("attributeName", "documentTypeName" );
+				searchCriteria.put("active", "Y");
 				searchCriteria.put("detailCriteria",
 						KimAttributes.DOCUMENT_TYPE_NAME+"="+getDocumentType().getName()
 						);
@@ -296,7 +298,8 @@ public class RuleQuickLinksAction extends KewKualiAction {
 			if ( responsibilities == null ) {
 				Map<String,String> searchCriteria = new HashMap<String,String>();
 				searchCriteria.put("template.namespaceCode", KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE);
-				searchCriteria.put("template.name", "Review");
+				searchCriteria.put("template.name", KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME);
+				searchCriteria.put("active", "Y");
 				searchCriteria.put("detailCriteria",
 						KimAttributes.DOCUMENT_TYPE_NAME+"="+getDocumentType().getName()
 						+ ","
@@ -330,10 +333,6 @@ public class RuleQuickLinksAction extends KewKualiAction {
 
     private RuleService getRuleService() {
     	return KEWServiceLocator.getRuleService();
-    }
-
-    private RuleTemplateService getRuleTemplateService() {
-    	return KEWServiceLocator.getRuleTemplateService();
     }
 
 }

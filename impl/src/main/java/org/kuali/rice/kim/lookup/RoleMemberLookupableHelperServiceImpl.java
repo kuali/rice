@@ -24,12 +24,12 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 
@@ -92,6 +92,7 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
         String attributeDetailValue = fieldValues.get(ATTRIBUTE_VALUE);
         String attributeDetailName = fieldValues.get(ATTRIBUTE_NAME);
         String detailCriteria = fieldValues.get( DETAIL_CRITERIA );
+        String active = fieldValues.get( KNSPropertyConstants.ACTIVE );
 
     	Map<String,String> searchCriteria = new HashMap<String, String>();
     	if(StringUtils.isNotEmpty(templateNamespaceCode)) {
@@ -114,6 +115,9 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
         }
         if ( StringUtils.isNotBlank( detailCriteria ) ) {
         	searchCriteria.put(DETAIL_CRITERIA, detailCriteria);
+        }
+        if ( StringUtils.isNotBlank( active ) ) {
+        	searchCriteria.put(KNSPropertyConstants.ACTIVE, active);
         }
 
         return searchCriteria;
@@ -151,7 +155,8 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
         */
     }
 
-    protected Map<String, String> buildRoleSearchCriteria(Map<String, String> fieldValues){
+    @SuppressWarnings("unchecked")
+	protected Map<String, String> buildRoleSearchCriteria(Map<String, String> fieldValues){
     	String assignedToPrincipalName = fieldValues.get(ASSIGNED_TO_PRINCIPAL_NAME);
     	Map<String, String> searchCriteria;
     	List<KimPrincipalImpl> principals = null;

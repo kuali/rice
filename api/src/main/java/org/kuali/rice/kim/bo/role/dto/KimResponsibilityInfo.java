@@ -18,6 +18,7 @@ package org.kuali.rice.kim.bo.role.dto;
 import java.io.Serializable;
 
 import org.kuali.rice.kim.bo.role.KimResponsibility;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -57,4 +58,15 @@ public class KimResponsibilityInfo extends ResponsibilityDetailsInfo implements 
 	public void setNamespaceCode(String namespaceCode) {
 		this.namespaceCode = namespaceCode;
 	}
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString() {
+		return new ToStringBuilder( this )
+				.append( "responsibilityId", this.responsibilityId )
+				.append( "namespaceCode", this.namespaceCode )
+				.append( "details", this.details )
+				.toString();
+	}
+	
 }

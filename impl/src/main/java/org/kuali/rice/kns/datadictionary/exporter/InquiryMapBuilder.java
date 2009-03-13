@@ -42,18 +42,22 @@ public class InquiryMapBuilder {
      *         inquiryDefinition
      */
     public ExportMap buildInquiryMap(BusinessObjectEntry entry) {
-        ExportMap inquiryMap = null;
-
-        if (entry.hasInquiryDefinition()) {
-            InquiryDefinition inquiryDefinition = entry.getInquiryDefinition();
-            inquiryMap = new ExportMap("inquiry");
-
-            inquiryMap.set("title", inquiryDefinition.getTitle());
-
-            inquiryMap.set(buildInquiryFieldsMap(inquiryDefinition));
-        }
-
-        return inquiryMap;
+    	try {
+	        ExportMap inquiryMap = null;
+	
+	        if (entry.hasInquiryDefinition()) {
+	            InquiryDefinition inquiryDefinition = entry.getInquiryDefinition();
+	            inquiryMap = new ExportMap("inquiry");
+	
+	            inquiryMap.set("title", inquiryDefinition.getTitle());
+	
+	            inquiryMap.set(buildInquiryFieldsMap(inquiryDefinition));
+	        }
+	
+	        return inquiryMap;
+    	} catch ( Exception ex ) {
+    		throw new RuntimeException( "Unable to build inquiry Map for " + entry, ex );
+    	}
     }
 
     private ExportMap buildInquiryFieldsMap(InquiryDefinition inquiryDefinition) {

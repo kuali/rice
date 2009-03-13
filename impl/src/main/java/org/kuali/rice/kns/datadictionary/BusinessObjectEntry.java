@@ -218,7 +218,7 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
      * Directly validate simple fields, call completeValidation on Definition fields.
      */
     public void completeValidation() {
-        
+        try {
     	//KFSMI-1340 - Object label should never be blank
         if (StringUtils.isBlank(getObjectLabel())) {
             throw new AttributeValidationException("Object label cannot be blank for class " + businessObjectClass.getName());
@@ -238,6 +238,12 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
             for (InactivationBlockingDefinition inactivationBlockingDefinition : inactivationBlockingDefinitions) {
                 inactivationBlockingDefinition.completeValidation(businessObjectClass, null);
             }
+        }
+        } catch ( DataDictionaryException ex ) {
+        	// just rethrow
+        	throw ex;
+        } catch ( Exception ex ) {
+        	throw new DataDictionaryException( "Exception validating " + this);
         }
     }
 

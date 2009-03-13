@@ -86,7 +86,7 @@ public class ExportMap {
             throw new IllegalArgumentException("invalid (null) key");
         }
         if (value == null) {
-            throw new IllegalArgumentException("invalid (null) value");
+            throw new IllegalArgumentException("invalid (null) value - key=" + key);
         }
 
         exportData.set(key, value);

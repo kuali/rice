@@ -28,7 +28,7 @@
 	<a title="<c:out value="${field.inquiryURL.title}"/>" href="<c:out value="${field.inquiryURL.href}"/>" target="blank">
 </c:if>
 
-<kul:readonlyfield addHighlighting="${addHighlighting}" field="${field}"/>
+<kul:readonlyfield addHighlighting="${addHighlighting}" field="${field}" isLookup="${isLookup}" />
 
 <c:if test="${not (empty field.inquiryURL.href || empty field.propertyValue)}">
   </a>

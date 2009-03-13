@@ -44,6 +44,7 @@ import org.displaytag.properties.SortOrderEnum;
 import org.displaytag.util.LookupUtil;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.util.JSTLConstants;
+import org.kuali.rice.ken.service.KENServiceConstants;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
@@ -53,16 +54,22 @@ import org.kuali.rice.kew.actionlist.PaginatedActionList;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actions.ActionSet;
 import org.kuali.rice.kew.actions.asyncservices.ActionInvocation;
+import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtension;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
+import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.exception.AuthorizationException;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.web.struts.action.KualiAction;
 import org.kuali.rice.kns.web.ui.ExtraButton;
 
@@ -81,6 +88,14 @@ public class ActionListAction extends KualiAction {
     private static String ACTION_LIST_PAGE_KEY = "actionListPage";
     private static String ACTION_LIST_USER_KEY = "actionList.user";
     private static String REQUERY_ACTION_LIST_KEY = "requeryActionList";
+    private static String ROUTEHEADERID = "routeHeaderId";
+    private static String ACTIONITEM_ROUTEHEADERID_INVALID = "actionitem.routeheaderid.invalid";
+    private static String ACTIONREQUESTCD = "actionRequestCd";
+    private static String DOCTITLE = "docTitle";
+    private static String ACTIONITEM_DOCTITLENAME_EMPTY = "actionitem.doctitlename.empty";
+    private static String  ACTIONITEM_ACTIONREQUESTCD_INVALID = "actionitem.actionrequestcd.invalid";
+    
+
 
 	public ActionForward execute(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	ActionListForm frm = (ActionListForm)actionForm;
@@ -365,6 +380,7 @@ public class ActionListAction extends KualiAction {
     private void initializeActionList(List actionList, Preferences preferences, ActionErrors errors) throws WorkflowException {
     	List actionItemProblemIds = new ArrayList();
     	int index = 0;
+    	generateActionItemErrors(actionList);
     	for (Iterator iterator = actionList.iterator(); iterator.hasNext();) {
     		ActionItemActionListExtension actionItem = (ActionItemActionListExtension)iterator.next();
     		if (actionItem.getRouteHeaderId() == null) {
@@ -429,6 +445,7 @@ public class ActionListAction extends KualiAction {
     	SortOrderEnum sortOrder = parseSortOrder(sortDirection);
     	int startIndex = (page.intValue() - 1) * pageSize;
     	int endIndex = startIndex + pageSize;
+    	generateActionItemErrors(actionList);
     	for (int index = startIndex; index < endIndex && index < actionList.size(); index++) {
     		ActionItemActionListExtension actionItem = (ActionItemActionListExtension)actionList.get(index);
     		// evaluate custom action list component for mass actions
@@ -511,17 +528,33 @@ public class ActionListAction extends KualiAction {
     	if (defaultActions.size() > 1) {
     		form.setDefaultActions(defaultActions);
     	}
-
+    	
     	generateActionItemErrors(errors, "actionlist.badCustomActionListItems", customActionListProblemIds);
     	return new PaginatedActionList(currentPage, actionList.size(), page.intValue(), pageSize, "actionList", sortCriterion, sortOrder);
     }
-
+    
     private void generateActionItemErrors(ActionErrors errors, String errorKey, List documentIds) {
     	if (!documentIds.isEmpty()) {
     		String documentIdsString = StringUtils.join(documentIds.iterator(), ", ");
     		errors.add(Globals.ERROR_KEY, new ActionMessage(errorKey, documentIdsString));
     	}
     }
+    private void generateActionItemErrors(List actionList) {
+    	for (Iterator iterator = actionList.iterator(); iterator.hasNext();) {
+    		ActionItemActionListExtension actionItem = (ActionItemActionListExtension)iterator.next();
+    		if (KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getRouteHeaderId()) == null) { 
+    			GlobalVariables.getErrorMap().putError(ROUTEHEADERID, ACTIONITEM_ROUTEHEADERID_INVALID,actionItem.getActionItemId()+"");
+    		}
+    		if(!KEWConstants.ACTION_REQUEST_CODES.containsKey(actionItem.getActionRequestCd())) {
+    			GlobalVariables.getErrorMap().putError(ACTIONREQUESTCD,ACTIONITEM_ACTIONREQUESTCD_INVALID,actionItem.getActionItemId()+"");
+    		}
+    		if (actionItem.getDocTitle() == null) {
+    			GlobalVariables.getErrorMap().putError(DOCTITLE, ACTIONITEM_DOCTITLENAME_EMPTY,actionItem.getActionItemId()+"");
+    			continue;
+    		}
+     	}
+    }
+    
 
     public ActionForward takeMassActions(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         ActionListForm actionListForm = (ActionListForm) form;

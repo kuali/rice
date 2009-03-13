@@ -135,11 +135,12 @@
 	<html-el:form action="ActionList">
 		<html-el:hidden property="methodToCall" value="" />
 		<table width="100%" border="0" cellspacing="0" cellpadding="0">
-			<tr>
+					<tr>
 				<td></td>
-				<td><kul:errors errorTitle="Errors found in retrieving ActionList:" />
+				<td><kul:errors errorTitle="Error loading action list : "/> <br/>
 				<kul:messages/></td>
 			</tr>
+
 			<tr>
 				<table width="100%" border="0" cellspacing="0" cellpadding="0">
 					<tr>
@@ -178,14 +179,13 @@
 					</table>
 			<c:if
 				test="${kewUserSession.actionListFilter.filterLegend != null && kewUserSession.actionListFilter.filterLegend != ''}">
-				<tr><td colspan="3">&nbsp;</td></tr>
-			  		<tr>
+				<br><tr>
 				 	<td></td>
 					<td><strong><c:out
 					value="${kewUserSession.actionListFilter.filterLegend}" /></strong></td>
 					<td></td>
 			 </c:if>
-                </td>
+                <td></td>
                 <td></td>
 			</tr>
             <tr>
@@ -242,6 +242,7 @@
 
   
 					<c:if test="${preferences.showDocType == Constants.PREFERENCES_YES_VAL}">
+					
 						<display-el:column property="docLabel" sortable="true"
 							title="${typeLabel}" />
 					</c:if>

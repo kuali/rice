@@ -532,7 +532,7 @@
 									<%--<c:if test="${!field.hasBlankValidValue}">
 										<option value=""></option>
 									</c:if> --%>
-									<kul:fieldSelectValues field="${field}"/>
+									<kul:fieldMultiSelectValues field="${field}"/>
 								</select>
 							</c:otherwise>
 

@@ -18,6 +18,12 @@
 <%@ attribute name="field" required="true" type="org.kuali.rice.kns.web.ui.Field"%>
 
 <c:forEach items="${field.fieldValidValues}" var="select">
-    <option ${field.propertyValue eq select.key ? 'selected="selected"' : ''}
+	<c:set var="propertySelected" value="${false}"/>
+	<c:forEach items="${field.propertyValues}" var="propertyValue">
+		<c:if test="${propertyValue eq select.key}">
+			<c:set var="propertySelected" value="${true}"/>
+		</c:if>
+    </c:forEach>
+    <option ${propertySelected ? 'selected="selected"' : ''}
             value='<c:out value="${select.key}"/>'><c:out value="${select.label}" /></option>
 </c:forEach>

@@ -157,6 +157,7 @@
 	</users>
 	<groups xmlns="ns:workflow/Group" xsi:schemaLocation="ns:workflow/Group resource:Group">
 		<group>
+		    <id>2</id>
 			<name>WorkflowAdmin</name>
 			<namespace>KR-WKFLW</namespace>
 			<description>WorkflowAdmin</description>
@@ -333,6 +334,7 @@
 		</documentType>
 		<documentType>
 			<name>AccountRequest</name>
+			<parent>RiceDocument</parent>
 			<description>Request Account Information</description>
 			<label>Account Request</label>
 			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
@@ -353,6 +355,7 @@
 		</documentType>
 		<documentType>
 			<name>AccountManagerMaintenanceDocument</name>
+			<parent>RiceDocument</parent>
 			<description>Create a New Travel Fiscal Officer</description>
 			<label>Travel Fiscal Officer</label>
 			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
@@ -373,6 +376,7 @@
 		</documentType>
 		<documentType>
 			<name>AccountMaintenanceDocument</name>
+			<parent>RiceDocument</parent>
 			<description>Create a New Account</description>
 			<label>Account Maintenance</label>
 			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>

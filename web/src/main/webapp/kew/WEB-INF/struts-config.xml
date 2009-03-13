@@ -14,6 +14,7 @@
 	    <form-bean name="ActionListFormNew" type="org.kuali.rice.kew.actionlist.web.ActionListForm" />
 	    <form-bean name="ActionListFilterFormNew" type="org.kuali.rice.kew.actionlist.web.ActionListFilterForm" />
 	    <form-bean name="DocumentOperationForm" type="org.kuali.rice.kew.documentoperation.web.DocumentOperationForm" />
+        <form-bean name="DocumentConfigurationViewForm" type="org.kuali.rice.kew.rule.web.DocumentConfigurationViewForm" />
     </form-beans>
 
 	<global-exceptions>
@@ -94,6 +95,13 @@
       	<forward name="basic" path="/WEB-INF/jsp/rule/RuleQuickLinks.jsp" />
 	    <forward name="requiredStateError" path="/WEB-INF/jsp/rule/RuleQuickLinks.jsp"/>
         <forward name="finalStateError" path="/WEB-INF/jsp/rule/RuleQuickLinks.jsp"/>
+      </action>
+
+      <action path="/DocumentConfigurationView" name="DocumentConfigurationViewForm" input="/WEB-INF/jsp/rule/DocumentConfigurationView.jsp" type="org.kuali.rice.kew.rule.web.DocumentConfigurationViewAction"
+          scope="request" parameter="methodToCall" validate="false" attribute="KualiForm">
+        <forward name="basic" path="/WEB-INF/jsp/rule/DocumentConfigurationView.jsp" />
+        <forward name="requiredStateError" path="/WEB-INF/jsp/rule/DocumentConfigurationView.jsp"/>
+        <forward name="finalStateError" path="/WEB-INF/jsp/rule/DocumentConfigurationView.jsp"/>
       </action>
       
       <!-- Mappings to handling forwarding over to the "en" module for the screens that haven't been moved over yet -->

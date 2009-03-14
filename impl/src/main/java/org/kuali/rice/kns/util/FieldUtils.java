@@ -31,7 +31,6 @@ import org.kuali.rice.kns.authorization.FieldRestriction;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.FieldDefinition;
-import org.kuali.rice.kns.datadictionary.LookupFieldDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
 import org.kuali.rice.kns.datadictionary.control.ApcSelectControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.ButtonControlDefinition;
@@ -1086,18 +1085,14 @@ public class FieldUtils {
         Map<String, Boolean> isReadOnlyMap = new HashMap<String, Boolean>();
 
         /*
-    	 * This is used to check if the FieldDefinition is a LookupFieldDefinition.
-    	 * If it is, then check if it is hidden or read only.  This allows us to
-    	 * set lookups as hidden/readonly outside the controlDefinition.
+    	 * Check if any field is hidden or read only.  This allows us to
+    	 * set lookup criteria as hidden/readonly outside the controlDefinition.
     	 */
     	if(boe.hasLookupDefinition()){
     		List<FieldDefinition> fieldDefs = boe.getLookupDefinition().getLookupFields();
     		for(FieldDefinition field : fieldDefs){
-    			if(field instanceof LookupFieldDefinition){
-    				LookupFieldDefinition lField = (LookupFieldDefinition)field;
-    				isReadOnlyMap.put(field.getAttributeName(), new Boolean(lField.isReadOnly()));
-    				isHiddenMap.put(field.getAttributeName(), new Boolean(lField.isHidden()));
-    			}
+				isReadOnlyMap.put(field.getAttributeName(), Boolean.valueOf(field.isReadOnly()));
+				isHiddenMap.put(field.getAttributeName(), Boolean.valueOf(field.isHidden()));
     		}
     	}
 

@@ -18,9 +18,11 @@ package org.kuali.rice.kew.rule.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.web.KewKualiAction;
 
 /**
@@ -34,7 +36,17 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
     public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 //    	makeLookupPathParam(mapping, request);
 //    	establishRequiredState(request, form);
+    	populateForm( (DocumentConfigurationViewForm)form );
         return mapping.findForward("basic");
+    }
+    
+    protected void populateForm( DocumentConfigurationViewForm form ) {
+    	if ( StringUtils.isNotEmpty( form.getDocumentTypeName() ) ) {
+    		form.setDocumentType( KEWServiceLocator.getDocumentTypeService().findByName( form.getDocumentTypeName() ) ); 
+    	}
+//    	if ( form.getDocumentType() != null ) {
+//    		form.setParentDocumentType( form.getDocumentType().getC
+//    	}
     }
 
 }

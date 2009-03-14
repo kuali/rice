@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kew.rule.web;
 
+import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 
 /**
@@ -26,6 +27,7 @@ import org.kuali.rice.kns.web.struts.form.KualiForm;
 public class DocumentConfigurationViewForm extends KualiForm {
 
 	protected String documentTypeName;
+	protected DocumentType documentType; 
 
 	public String getDocumentTypeName() {
 		return this.documentTypeName;
@@ -33,5 +35,13 @@ public class DocumentConfigurationViewForm extends KualiForm {
 
 	public void setDocumentTypeName(String documentTypeName) {
 		this.documentTypeName = documentTypeName;
+	}
+
+	public DocumentType getDocumentType() {
+		return this.documentType;
+	}
+
+	public void setDocumentType(DocumentType documentType) {
+		this.documentType = documentType;
 	}
 }

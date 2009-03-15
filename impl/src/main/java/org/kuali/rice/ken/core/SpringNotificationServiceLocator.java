@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.ken.core;
 
-import java.util.Properties;
-
 import org.kuali.rice.core.dao.GenericDao;
 import org.kuali.rice.ken.service.KENAPIService;
 import org.kuali.rice.ken.service.NotificationAuthorizationService;
@@ -155,13 +153,6 @@ public class SpringNotificationServiceLocator implements NotificationServiceLoca
      */
     public NotificationChannelService getNotificationChannelService() {
         return (NotificationChannelService) beanFactory.getBean(NOTIFICATION_CHANNEL_SERVICE);
-    }
-
-    /**
-     * @see org.kuali.rice.ken.core.NotificationServiceLocator#getNotificationConfiguration()
-     */
-    public Properties getNotificationConfiguration() {
-        return (Properties) beanFactory.getBean(NOTIFICATION_CONFIG);
     }
 
     /**

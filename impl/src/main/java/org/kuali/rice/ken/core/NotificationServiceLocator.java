@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.ken.core;
 
-import java.util.Properties;
-
 import org.kuali.rice.core.dao.GenericDao;
 import org.kuali.rice.ken.service.KENAPIService;
 import org.kuali.rice.ken.service.NotificationAuthorizationService;
@@ -114,12 +112,6 @@ public interface NotificationServiceLocator {
      * @return NotificationChannelService
      */
     public NotificationChannelService getNotificationChannelService();
-
-    /**
-     * Returns the Notification system configuration properties
-     * @return the Notification system configuration properties
-     */
-    public Properties getNotificationConfiguration();
     
     /**
      * Returns the Quartz scheduler used by the Notification system

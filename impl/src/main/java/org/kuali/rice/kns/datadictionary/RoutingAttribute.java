@@ -23,5 +23,13 @@ package org.kuali.rice.kns.datadictionary;
  *
  */
 public class RoutingAttribute extends WorkflowAttributeMetadata {
+	private String qualificationAttributeName;
 
+	public String getQualificationAttributeName() {
+		return this.qualificationAttributeName;
+	}
+
+	public void setQualificationAttributeName(String qualificationAttributeName) {
+		this.qualificationAttributeName = qualificationAttributeName;
+	}
 }

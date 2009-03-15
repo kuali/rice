@@ -35,20 +35,6 @@
 		<mkdir dir="${dist.build.dir}"/>
 	</target>
 
-	<!-- chb: 11March2009: 
-		these properties are not set by the kfs-scripts (or if they are, they are not carried over into maven)
- 		so we set them here. Blech. 
-  	 -->
-	<target name="init-kfs-scm">
-        <!-- property name="application.deploy.directory" value=""/>
-		<property name="application.java.project" value=""/>
-		<property name="maven.war.filename" value="" />
-		<property name="application" value=""/>
-		<property name="build.environment" value=""/> 
-		<property name="deploy.working.directory" value="/opt/ears/stg/kr"/>
-		<property name="" value=""/ -->
-	</target>
-	
 	<target name="clean" description="Cleans the temporary build files." depends="init">
 		<delete dir="${dist.build.dir}"/>
 		<delete dir="target" includes="rice-${maven.project.version}-*"/>
@@ -131,7 +117,8 @@
 	</target>
 
 	<target name="install-rice-jars" depends="init">
-		<maven goals="install" options="-Dmaven.test.skip=true" />
+		<echo message="${env.PATH}"/>
+		<maven goals="install" options="-e -Dmaven.test.skip=true" />
 	</target>
 
 	<target name="prepare-lib" depends="install-rice-jars">
@@ -207,30 +194,6 @@
 		</tar>
 	</target>
 
-	<!-- chb: 04March2009: added for test server script do-daily-updates.sh on wsa123 
-			11March2009: application.deploy.directory created in generated-build.properties by shared-functions.ksetprops (relevant code below)
-			# kexec "echo \"application.deploy.directory=$DEPLOY_BASE_DIRECTORY/$environment/$JAVA_APPLICATION_CODE\" >> $ANT_PROPERTIES_FILE" 
-			$DEPLOY_BASE_DIRECTORY is defined in shared-settings as "/opt/ears"
-			$environment is usually a three-letter sequence ('stg' for example)
-			$JAVA_APPLICATION_CODE is 'kr' for rice
-			${application.java.project} is 'rice' -->
-	
-	<target name="dist-external" depends="init-kfs-scm"><!-- depends="init-properties" -->
-		<!-- property file="/home/j2eemgr/kuali/generated-build.properties"/ -->
-			<!-- echo file="${log4j.file}" message="${log4j}" />
-			<echo file="${security.file}" message="${security}"  -->
-			<echo message="This is deploy.working.directory: ${deploy.working.directory}" />
-			<zip destfile="${deploy.working.directory}/settings.zip" update="true" basedir="${basedir}"/> <!-- includes="${log4j.file}" -->
-			<zip destfile="${deploy.working.directory}/security.zip" update="true" basedir="${basedir}"/> <!-- includes="${security.file}" -->
-			<zip destfile="${deploy.working.directory}/skel.zip" basedir="${basedir}" />
-	</target>
-	
-    <target name="dist-war" depends="init-kfs-scm">
-		<maven goals="package" />
-       <copy file="${application.deploy.directory}/${application.java.project}/target/${maven.war.filename}" tofile="${application.deploy.directory}/${application}-${build.environment}.war" overwrite="true" verbose="true" />
-    	<copy file="${application.deploy.directory}/${application}-${build.environment}.war" tofile="${staging_dir}${server}/farm/${target}"/>
-	</target>
-
 	<target name="dist-src" depends="init" description="Creates Kuali Rice binary packages.">
 		<copy todir="${dist.src.dir}">
 			<fileset dir=".">
@@ -292,9 +255,10 @@
 		<sequential>
 			<java classname="org.codehaus.classworlds.Launcher" dir="." fork="true" failonerror="@{failonerror}">
 				<jvmarg line="-Xmx512m -XX:MaxPermSize=128m"/>
+				<env key="PATH" path="${env.PATH}:/usr/local/java/bin"/>
 				<arg line="@{options} @{goals}" />
 				<sysproperty key="classworlds.conf" value="${maven.home.directory}/bin/m2.conf" />
-				<sysproperty key="maven.home" value="${maven.home.directory}" />
+				<sysproperty key="maven.home" value="${maven.home.directory}" />	
 				<classpath>
 					<fileset dir="${maven.home.directory}/boot">
 						<include name="classworlds-*.jar" />

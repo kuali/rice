@@ -25,10 +25,8 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.ken.exception.ErrorList;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
-import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.util.KimConstants;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
 /**

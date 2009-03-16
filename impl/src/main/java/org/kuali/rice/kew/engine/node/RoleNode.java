@@ -123,16 +123,21 @@ public class RoleNode extends RequestsNode {
 		DocumentType docType = document.getDocumentType();
 		while ( docType != null ) {
 			searchCriteria.put("detailCriteria", getDetailCriteriaString( document.getDocumentType().getName(), node.getRouteNodeName() ) );
-			List<? extends KimResponsibilityInfo> responsibilities = KIMServiceLocator.getResponsibilityService().lookupResponsibilityInfo( searchCriteria, false );
-			// once we find a responsibility, stop, since this overrides any parent 
-			// responsibilities for this node
-			if ( !responsibilities.isEmpty() ) {
-				// if any has required=true - return true
-				for ( KimResponsibilityInfo resp : responsibilities ) {
-					if ( Boolean.parseBoolean( resp.getDetails().get( KimAttributes.REQUIRED ) ) ) {
-						return resp;
+			try {
+				List<? extends KimResponsibilityInfo> responsibilities = KIMServiceLocator.getResponsibilityService().lookupResponsibilityInfo( searchCriteria, false );
+				// once we find a responsibility, stop, since this overrides any parent 
+				// responsibilities for this node
+				if ( !responsibilities.isEmpty() ) {
+					// if any has required=true - return true
+					for ( KimResponsibilityInfo resp : responsibilities ) {
+						if ( Boolean.parseBoolean( resp.getDetails().get( KimAttributes.REQUIRED ) ) ) {
+							return resp;
+						}
 					}
+					return null;
 				}
+			} catch ( Exception ex ) {
+				LOG.error( "Problem looking up responsibilities to check mandatory route.  Criteria: " +searchCriteria, ex );
 				return null;
 			}
 		}

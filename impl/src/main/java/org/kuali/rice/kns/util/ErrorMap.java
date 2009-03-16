@@ -68,6 +68,19 @@ public class ErrorMap implements Map, Serializable {
     }
 
     /**
+     * Adds an error related to a particular section identified by its section ID.  For maintenance documents, the section ID is identified
+     * by calling {@link org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition#getId()} 
+     * 
+     * @param sectionId
+     * @param errorKey
+     * @param errorParameters
+     * @return
+     */
+    public TypedArrayList putErrorForSectionId(String sectionId, String errorKey, String... errorParameters) {
+    	return putErrorWithoutFullErrorPath(sectionId, errorKey, errorParameters);
+    }
+    
+    /**
      * adds an error to the map under the given propertyName and adds an array of message parameters.
      * 
      * @param propertyName name of the property to add error under

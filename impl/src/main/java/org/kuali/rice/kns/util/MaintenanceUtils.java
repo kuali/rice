@@ -215,6 +215,8 @@ public class MaintenanceUtils {
         addRowsToErrorKeySet(section.getRows(), fieldPropertyNames);
 
         StringBuilder buf = new StringBuilder();
+        buf.append(section.getSectionId()).append(",");
+        
         Iterator<String> nameIter = fieldPropertyNames.iterator();
         while (nameIter.hasNext()) {
             buf.append(nameIter.next());

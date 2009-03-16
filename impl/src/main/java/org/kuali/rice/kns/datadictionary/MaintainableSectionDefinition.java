@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
     The maintainableSection element defines one section of the
@@ -59,8 +60,8 @@ public class MaintainableSectionDefinition extends DataDictionaryDefinitionBase 
      */
     @Override
     public String getId() {
-        if ( id == null ) {
-            id = title;
+        if (StringUtils.isBlank(id)) {
+        	return title;
         }
         return id;
     }
@@ -94,6 +95,14 @@ public class MaintainableSectionDefinition extends DataDictionaryDefinitionBase 
      * @see org.kuali.rice.kns.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Object)
      */
     public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
+    	if (StringUtils.contains(title, ",") && StringUtils.isBlank(id)) {
+    		throw new DataDictionaryException("The title for maintainable section \"" + title + "\" for class " + rootBusinessObjectClass.getName() +
+    				" contains a comma.  In this case, the id property must be defined and it may not contain a comma");
+    	}
+    	if (StringUtils.contains(id, ",")) {
+    		throw new DataDictionaryException("The id for maintainable section \"" + id + "\" for class " + rootBusinessObjectClass.getName() +
+    				" contains a comma, which is not allowed.");
+    	}
         for ( MaintainableItemDefinition maintainableItem : maintainableItems ) {
             maintainableItem.completeValidation(rootBusinessObjectClass, null);
         }

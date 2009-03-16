@@ -129,6 +129,9 @@ KualiLookupableHelperServiceImpl {
 		if(this.getParameters().get("superUserSearch")!=null) {
 			superSearch = new Boolean(((String[])this.getParameters().get("superUserSearch"))[0]); 
 		}
+		if(superSearch) {
+			criteria.setSuperUserSearch("YES");
+		}
 		
     	Collection displayList=null;
     	DocumentSearchResultComponents components = KEWServiceLocator.getDocumentSearchService().getList(GlobalVariables.getUserSession().getPrincipalId(), criteria);

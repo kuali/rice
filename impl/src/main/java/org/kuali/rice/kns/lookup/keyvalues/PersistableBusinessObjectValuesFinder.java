@@ -42,6 +42,7 @@ public class PersistableBusinessObjectValuesFinder extends KeyValuesBase {
     private String keyAttributeName;
     private String labelAttributeName;
     private boolean includeKeyInDescription = false;
+    private boolean includeBlankRow = false;
 
     /**
      * Build the list of KeyLabelPairs using the key (keyAttributeName) and
@@ -56,7 +57,8 @@ public class PersistableBusinessObjectValuesFinder extends KeyValuesBase {
     	try {
     	    KeyValuesService boService = KNSServiceLocator.getKeyValuesService();
             Collection objects = boService.findAll(businessObjectClass);
-
+            if(includeBlankRow)
+            	labels.add(new KeyLabelPair("", ""));
             for (Object object : objects) {
             	Object key = PropertyUtils.getProperty(object, keyAttributeName);
             	String label = (String)PropertyUtils.getProperty(object, labelAttributeName);
@@ -137,5 +139,19 @@ public class PersistableBusinessObjectValuesFinder extends KeyValuesBase {
     public void setLabelAttributeName(String labelAttributeName) {
         this.labelAttributeName = labelAttributeName;
     }
+
+	/**
+	 * @return the includeBlankRow
+	 */
+	public boolean isIncludeBlankRow() {
+		return this.includeBlankRow;
+	}
+
+	/**
+	 * @param includeBlankRow the includeBlankRow to set
+	 */
+	public void setIncludeBlankRow(boolean includeBlankRow) {
+		this.includeBlankRow = includeBlankRow;
+	}
 
 }

@@ -37,6 +37,7 @@ public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase
     protected Class<? extends BusinessObject> businessObjectClass;
     protected String keyAttribute;
     protected String labelAttribute;
+    protected Boolean includeBlankRow;
     protected Boolean includeKeyInLabel;
     protected Integer size;
     protected Integer rows;
@@ -208,6 +209,20 @@ public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase
         }
 
         this.businessObjectClass = businessObjectClass;
+    }
+
+    /**
+     * @return the includeBlankRow
+     */
+    public Boolean getIncludeBlankRow() {
+        return this.includeBlankRow;
+    }
+
+    /**
+     * @return the includeBlankRow
+     */
+    public void setIncludeBlankRow(Boolean includeBlankRow) {
+        this.includeBlankRow = includeBlankRow;
     }
 
     /**

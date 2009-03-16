@@ -2,10 +2,11 @@
 <%@ attribute name="mbrIdx" required="true" %>
 <c:set var="roleMember" value="${KualiForm.document.members[mbrIdx]}"/>
 <c:set var="docRoleRspActionAttributes" value="${DataDictionary.KimDocumentRoleResponsibilityAction.attributes}" />
-<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
 
-<c:if test="${readOnly}">
-	<c:set var="inquiry" value="${readOnly}"/>
+<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
+<c:set var="canAssignRole" value="${KualiForm.canAssignRole}" />
+<c:if test="${!canAssignRole}">
+	<c:set var="readOnly" value="${!canAssignRole}"/>
 </c:if>
 
 <kul:subtab lookedUpCollectionName="roleRspActions" noShowHideButton="true" width="${tableWidth}" subTabTitle="Responsibility Actions">      

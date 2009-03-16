@@ -301,6 +301,7 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
                                         businessObjectClass String
                                         keyAttribute        String
                                         labelAttribute      String
+                                        includeBlankRow		boolean String
                                         includeKeyInLabel   boolean String
 
                     apcSelect           apcSelect           boolean String

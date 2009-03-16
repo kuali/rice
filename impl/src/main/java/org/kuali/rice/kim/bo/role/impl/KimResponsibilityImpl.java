@@ -281,8 +281,4 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 		return StringUtils.isEmpty(value)?value:value+KimConstants.KimUIConstants.COMMA_SEPARATOR;
 	}
 
-	public String getNameToDisplay(){
-		return (StringUtils.isBlank(getName()) && getTemplate()!=null)?getTemplate().getName():getName();
-	}
-
 }

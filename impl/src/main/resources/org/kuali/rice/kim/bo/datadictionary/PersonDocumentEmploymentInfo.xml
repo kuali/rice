@@ -52,11 +52,12 @@
         p:label="Employee Type"
         p:shortLabel="Employee Type"
         p:maxLength="40"
-        p:required="false" >
+        p:required="true" >
     <property name="control" >
       <bean parent="SelectControlDefinition"
             p:businessObjectClass="org.kuali.rice.kim.bo.reference.impl.EmploymentTypeImpl"
             p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
+            p:includeBlankRow="true"
             p:includeKeyInLabel="false"
             p:keyAttribute="code"
             p:labelAttribute="name" />
@@ -70,11 +71,12 @@
         p:label="Employee Status"
         p:shortLabel="Employee Status"
         p:maxLength="40"
-        p:required="false" >
+        p:required="true" >
     <property name="control" >
       <bean parent="SelectControlDefinition"
             p:businessObjectClass="org.kuali.rice.kim.bo.reference.impl.EmploymentStatusImpl"
             p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
+            p:includeBlankRow="true"
             p:includeKeyInLabel="false"
             p:keyAttribute="code"
             p:labelAttribute="name" />

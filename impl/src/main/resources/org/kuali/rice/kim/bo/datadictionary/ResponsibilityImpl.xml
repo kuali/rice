@@ -20,7 +20,6 @@
         <ref bean="ResponsibilityImpl-namespaceCode" />
         <ref bean="ResponsibilityImpl-responsibilityId" />
         <ref bean="ResponsibilityImpl-name" />
-        <ref bean="ResponsibilityImpl-nameToDisplay" />
         <ref bean="ResponsibilityImpl-assignedToRoleNamespaceForLookup" />
         <ref bean="ResponsibilityImpl-assignedToRoleNameForLookup" />
         <ref bean="ResponsibilityImpl-assignedToPrincipalNameForLookup" />
@@ -232,10 +231,6 @@
     <property name="control" >
       <bean parent="TextControlDefinition" p:size="40" />
     </property>
-  </bean>
-
-  <bean id="ResponsibilityImpl-nameToDisplay" parent="ResponsibilityImpl-name" 
-  		p:name="nameToDisplay">
   </bean>
 
   <bean id="ResponsibilityImpl-assignedToRoleNamespaceForLookup" parent="ResponsibilityImpl-assignedToRoleNamespaceForLookup-parentBean" />
@@ -482,7 +477,7 @@
           <bean parent="FieldDefinition" p:attributeName="template.namespaceCode" />
           <bean parent="FieldDefinition" p:attributeName="template.name" />
        	  <bean parent="FieldDefinition" p:attributeName="namespaceCode" />
-       	  <bean parent="FieldDefinition" p:attributeName="nameToDisplay" />        	  
+       	  <bean parent="FieldDefinition" p:attributeName="name" />
        	  <bean parent="FieldDefinition" p:attributeName="detailObjectsToDisplay" />
        	  <bean parent="FieldDefinition" p:attributeName="assignedToRolesToDisplay" />
       </list>

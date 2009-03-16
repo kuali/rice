@@ -145,6 +145,8 @@ public interface ControlDefinition extends DataDictionaryDefinition {
      */
     public void setLabelAttribute(String labelAttribute);
 
+    public void setIncludeBlankRow(Boolean includeBlankRow);
+    
     /**
      * @param includeKeyInLabel whether to include the key with the label to be displayed or not.
      */
@@ -177,6 +179,8 @@ public interface ControlDefinition extends DataDictionaryDefinition {
      */
     public String getLabelAttribute();
 
+    public Boolean getIncludeBlankRow();
+    
     /**
      * Gets the flag that indicates if the labels the ValuesFinder class returns should include the key.
      *

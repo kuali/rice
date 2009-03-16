@@ -2,6 +2,8 @@
 
 <%@ attribute name="afflnIdx" required="true" %>
 <c:set var="docEmploymentInfoAttributes" value="${DataDictionary.PersonDocumentEmploymentInfo.attributes}" />
+<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
+
 <kul:subtab lookedUpCollectionName="empInfo" width="${tableWidth}" subTabTitle="Employment Information">      
 	<table cellpadding=0 cellspacing=0 summary="">
        	<tr>
@@ -25,33 +27,33 @@
 				</th>
                 <td align="left" valign="middle" class="infoline">
                 <div align="center">
-                	<kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].newEmpInfo.employeeId" attributeEntry="${docEmploymentInfoAttributes.employeeId}"/>
+                	<kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].newEmpInfo.employeeId" attributeEntry="${docEmploymentInfoAttributes.employeeId}" readOnly="${readOnly}" />
 	            	</div>
 				</td>
                 <td class="infoline">
                 <div align="center">
-                	<kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].newEmpInfo.primary" attributeEntry="${docEmploymentInfoAttributes.primary}" />
+                	<kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].newEmpInfo.primary" attributeEntry="${docEmploymentInfoAttributes.primary}" readOnly="${readOnly}" />
                 </div>
                 </td>                
                 <td align="left" valign="middle" class="infoline">
-                	<div align="center"><kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].newEmpInfo.employeeStatusCode" attributeEntry="${docEmploymentInfoAttributes.employeeStatusCode}"/>
+                	<div align="center"><kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].newEmpInfo.employeeStatusCode" attributeEntry="${docEmploymentInfoAttributes.employeeStatusCode}" readOnly="${readOnly}" />
                 </div>
                 </td>
                 <td align="left" valign="middle" class="infoline">
-                	<div align="center"><kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].newEmpInfo.employeeTypeCode" attributeEntry="${docEmploymentInfoAttributes.employeeTypeCode}" />
+                	<div align="center"><kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].newEmpInfo.employeeTypeCode" attributeEntry="${docEmploymentInfoAttributes.employeeTypeCode}" readOnly="${readOnly}" />
                 	</div>
                 </td>
                 <td align="left" valign="middle" class="infoline">
-                	<div align="center"><kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].newEmpInfo.baseSalaryAmount" attributeEntry="${docEmploymentInfoAttributes.baseSalaryAmount}"/>
+                	<div align="center"><kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].newEmpInfo.baseSalaryAmount" attributeEntry="${docEmploymentInfoAttributes.baseSalaryAmount}" readOnly="${readOnly}" />
                 	</div>
                 </td>
                 <td align="left" valign="middle" class="infoline">
-                	<div align="center"><kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].newEmpInfo.primaryDepartmentCode" attributeEntry="${docEmploymentInfoAttributes.primaryDepartmentCode}"/>
+                	<div align="center"><kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].newEmpInfo.primaryDepartmentCode" attributeEntry="${docEmploymentInfoAttributes.primaryDepartmentCode}" readOnly="${readOnly}" />
                 	</div>
                 </td>                
                 <td class="infoline">   
 	                <div align="center">             	
-	                  <kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].newEmpInfo.active" attributeEntry="${docEmploymentInfoAttributes.active}" />
+	                  <kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].newEmpInfo.active" attributeEntry="${docEmploymentInfoAttributes.active}" readOnly="${readOnly}" />
 					</div>
 				</td>                
                 <td class="infoline">
@@ -68,32 +70,32 @@
 					<c:out value="${status.index+1}" />
 				</th>
                 <td align="left" valign="middle">
-                	<div align="center"> <kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].empInfos[${status.index}].employeeId"  attributeEntry="${docEmploymentInfoAttributes.employeeId}"  />
+                	<div align="center"> <kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].empInfos[${status.index}].employeeId"  attributeEntry="${docEmploymentInfoAttributes.employeeId}" readOnly="${readOnly}" />
 				</div>
 				</td>
                 <td>
-                <div align="center"> <kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].empInfos[${status.index}].primary" attributeEntry="${docEmploymentInfoAttributes.primary}" />
+                <div align="center"> <kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].empInfos[${status.index}].primary" attributeEntry="${docEmploymentInfoAttributes.primary}" readOnly="${readOnly}" />
                 </div>
                 </td>	                 
 				<td align="left" valign="middle" class="infoline">
-                	<div align="center"><kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].empInfos[${status.index}].employeeStatusCode" attributeEntry="${docEmploymentInfoAttributes.employeeStatusCode}"  readOnlyAlternateDisplay="${empInfo.employmentStatus.employmentStatusName}"/>
+                	<div align="center"><kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].empInfos[${status.index}].employeeStatusCode" attributeEntry="${docEmploymentInfoAttributes.employeeStatusCode}"  readOnlyAlternateDisplay="${empInfo.employmentStatus.employmentStatusName}" readOnly="${readOnly}" />
                 	</div>
                 </td>
                 <td align="left" valign="middle" class="infoline">
-                	<div align="center"><kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].empInfos[${status.index}].employeeTypeCode" attributeEntry="${docEmploymentInfoAttributes.employeeTypeCode}" readOnlyAlternateDisplay="${empInfo.employmentType.employmentTypeName}"/>
+                	<div align="center"><kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].empInfos[${status.index}].employeeTypeCode" attributeEntry="${docEmploymentInfoAttributes.employeeTypeCode}" readOnlyAlternateDisplay="${empInfo.employmentType.employmentTypeName}" readOnly="${readOnly}" />
                 	</div>
                 </td>
                 <td align="left" valign="middle" class="infoline">
-                	<div align="center"><kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].empInfos[${status.index}].baseSalaryAmount" attributeEntry="${docEmploymentInfoAttributes.baseSalaryAmount}"/>
+                	<div align="center"><kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].empInfos[${status.index}].baseSalaryAmount" attributeEntry="${docEmploymentInfoAttributes.baseSalaryAmount}" readOnly="${readOnly}" />
                 	</div>
                 </td>
                 <td align="left" valign="middle" class="infoline">
-                	<div align="center"><kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].empInfos[${status.index}].primaryDepartmentCode" attributeEntry="${docEmploymentInfoAttributes.primaryDepartmentCode}"/>
+                	<div align="center"><kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].empInfos[${status.index}].primaryDepartmentCode" attributeEntry="${docEmploymentInfoAttributes.primaryDepartmentCode}" readOnly="${readOnly}" />
                 	</div>
                 </td>
                 <td>
 	                <div align="center">           	
-	                  <kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].empInfos[${status.index}].active" attributeEntry="${docEmploymentInfoAttributes.active}" />
+	                  <kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].empInfos[${status.index}].active" attributeEntry="${docEmploymentInfoAttributes.active}" readOnly="${readOnly}" />
 					</div>
 					</td>
            			<c:if test="${not inquiry}">						

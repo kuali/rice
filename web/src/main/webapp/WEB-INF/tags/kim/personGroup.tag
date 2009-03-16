@@ -1,6 +1,8 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 <c:set var="docGroupAttributes" value="${DataDictionary.PersonDocumentGroup.attributes}" />
+<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
+
 <kul:subtab lookedUpCollectionName="group" width="${tableWidth}" subTabTitle="Groups" noShowHideButton="true">      
    <table cellpadding=0 cellspacing=0 summary="">
      	<tr>
@@ -30,11 +32,11 @@
 				<html:hidden property="newGroup.groupType" />
 				<html:hidden property="newGroup.namespaceCode" />				
 	            <td align="left" valign="middle">
-	                <div align="center"> <kul:htmlControlAttribute property="newGroup.activeFromDate"  attributeEntry="${docGroupAttributes.activeFromDate}"  datePicker="true"/>
+	                <div align="center"> <kul:htmlControlAttribute property="newGroup.activeFromDate"  attributeEntry="${docGroupAttributes.activeFromDate}"  datePicker="true" readOnly="${readOnly}"/>
 					</div>
 				</td>
                 <td align="left" valign="middle">
-                	<div align="center"> <kul:htmlControlAttribute property="newGroup.activeToDate"  attributeEntry="${docGroupAttributes.activeToDate}"  datePicker="true"/>
+                	<div align="center"> <kul:htmlControlAttribute property="newGroup.activeToDate"  attributeEntry="${docGroupAttributes.activeToDate}"  datePicker="true" readOnly="${readOnly}"/>
 					</div>
 				</td>				                                
                 <td class="infoline">
@@ -63,10 +65,10 @@
 					</div>
 				</td>
                 <td align="left" valign="middle">
-                	<div align="center"> <kul:htmlControlAttribute property="document.groups[${status.index}].activeFromDate"  attributeEntry="${docGroupAttributes.activeFromDate}" datePicker="true"/>
+                	<div align="center"> <kul:htmlControlAttribute property="document.groups[${status.index}].activeFromDate"  attributeEntry="${docGroupAttributes.activeFromDate}" datePicker="true" readOnly="${readOnly}"/>
 					</div>
                 <td align="left" valign="middle">
-                	<div align="center"> <kul:htmlControlAttribute property="document.groups[${status.index}].activeToDate"  attributeEntry="${docGroupAttributes.activeToDate}" datePicker="true"/>
+                	<div align="center"> <kul:htmlControlAttribute property="document.groups[${status.index}].activeToDate"  attributeEntry="${docGroupAttributes.activeToDate}" datePicker="true" readOnly="${readOnly}"/>
 					</div>
 				</td>
            		<c:if test="${not inquiry}">						

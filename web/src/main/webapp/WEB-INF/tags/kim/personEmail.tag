@@ -1,6 +1,8 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 <c:set var="docEmailAttributes" value="${DataDictionary.PersonDocumentEmail.attributes}" />
+<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
+
 <kul:subtab lookedUpCollectionName="email" width="${tableWidth}" subTabTitle="Email Addresses" noShowHideButton="true">      
   	<table cellpadding=0 cellspacing=0 summary="">
      	<tr>
@@ -20,22 +22,22 @@
 				</th>
                 <td class="infoline">   
                 <div align="center">             	
-                  <kul:htmlControlAttribute property="newEmail.emailAddress" attributeEntry="${docEmailAttributes.emailAddress}" />
+                  <kul:htmlControlAttribute property="newEmail.emailAddress" attributeEntry="${docEmailAttributes.emailAddress}" readOnly="${readOnly}" />
 				</div>
 				</td>
                 <td align="left" valign="middle" class="infoline">
                 <div align="center">
-                	<kul:htmlControlAttribute property="newEmail.emailTypeCode" attributeEntry="${docEmailAttributes.emailTypeCode}"/>
+                	<kul:htmlControlAttribute property="newEmail.emailTypeCode" attributeEntry="${docEmailAttributes.emailTypeCode}" readOnly="${readOnly}" />
 	            </div>
 				</td>
                 <td class="infoline">   
                 <div align="center">             	
-                  <kul:htmlControlAttribute property="newEmail.dflt" attributeEntry="${docEmailAttributes.dflt}" />
+                  <kul:htmlControlAttribute property="newEmail.dflt" attributeEntry="${docEmailAttributes.dflt}" readOnly="${readOnly}" />
 				</div>
 				</td>
                 <td class="infoline">   
                 <div align="center">             	
-                  <kul:htmlControlAttribute property="newEmail.active" attributeEntry="${docEmailAttributes.active}" />
+                  <kul:htmlControlAttribute property="newEmail.active" attributeEntry="${docEmailAttributes.active}" readOnly="${readOnly}" />
 				</div>
 				</td>                                
                 <td class="infoline">
@@ -53,21 +55,21 @@
 				</th>
                 <td>     
 	                <div align="center">           	
-	                  <kul:htmlControlAttribute property="document.emails[${status.index}].emailAddress" attributeEntry="${docEmailAttributes.emailAddress}" />
+	                  <kul:htmlControlAttribute property="document.emails[${status.index}].emailAddress" attributeEntry="${docEmailAttributes.emailAddress}" readOnly="${readOnly}" />
 					</div>
 				</td>
                 <td align="left" valign="middle">
-                	<div align="center"> <kul:htmlControlAttribute property="document.emails[${status.index}].emailTypeCode"  attributeEntry="${docEmailAttributes.emailTypeCode}"  readOnlyAlternateDisplay="${email.emailType.name}" />
+                	<div align="center"> <kul:htmlControlAttribute property="document.emails[${status.index}].emailTypeCode"  attributeEntry="${docEmailAttributes.emailTypeCode}"  readOnlyAlternateDisplay="${email.emailType.name}" readOnly="${readOnly}" />
 					</div>
 				</td>
 				<td>
 	                <div align="center">           	
-	                  <kul:htmlControlAttribute property="document.emails[${status.index}].dflt" attributeEntry="${docEmailAttributes.dflt}" />
+	                  <kul:htmlControlAttribute property="document.emails[${status.index}].dflt" attributeEntry="${docEmailAttributes.dflt}" readOnly="${readOnly}" />
 					</div>
 				</td>
 				<td>
 	                <div align="center">           	
-	                  <kul:htmlControlAttribute property="document.emails[${status.index}].active" attributeEntry="${docEmailAttributes.active}" />
+	                  <kul:htmlControlAttribute property="document.emails[${status.index}].active" attributeEntry="${docEmailAttributes.active}" readOnly="${readOnly}" />
 					</div>
 				</td>
            		<c:if test="${not inquiry}">						

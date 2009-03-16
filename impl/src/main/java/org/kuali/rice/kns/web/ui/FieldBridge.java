@@ -188,6 +188,7 @@ public class FieldBridge {
             ((PersistableBusinessObjectValuesFinder) finder).setBusinessObjectClass(fieldControl.getBusinessObjectClass());
             ((PersistableBusinessObjectValuesFinder) finder).setKeyAttributeName(fieldControl.getKeyAttribute());
             ((PersistableBusinessObjectValuesFinder) finder).setLabelAttributeName(fieldControl.getLabelAttribute());
+            ((PersistableBusinessObjectValuesFinder) finder).setIncludeBlankRow(fieldControl.getIncludeBlankRow());
             ((PersistableBusinessObjectValuesFinder) finder).setIncludeKeyInDescription(fieldControl.getIncludeKeyInLabel());
         }
         List keyValues = finder.getKeyValues();

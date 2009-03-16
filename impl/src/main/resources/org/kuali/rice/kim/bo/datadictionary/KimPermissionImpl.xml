@@ -18,7 +18,6 @@
         <ref bean="KimPermissionImpl-template.name" />
         <ref bean="KimPermissionImpl-namespaceCode" />
         <ref bean="KimPermissionImpl-name" />
-        <ref bean="KimPermissionImpl-nameToDisplay" />
         <ref bean="KimPermissionImpl-detailObjects" />
         <ref bean="KimPermissionImpl-requiredRoleQualifierAttributes" />
         <ref bean="KimPermissionImpl-templateId" />
@@ -100,8 +99,6 @@
     </property>
   </bean>
 
-  <bean id="KimPermissionImpl-nameToDisplay" parent="KimPermissionImpl-name" p:name="nameToDisplay" />
-
   <bean id="KimPermissionImpl-detailObjects" parent="KimPermissionImpl-detailObjects-parentBean" />
   <bean id="KimPermissionImpl-detailObjects-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="detailObjects"
@@ -143,7 +140,7 @@
               <bean parent="FieldDefinition" p:attributeName="template.namespaceCode" />
               <bean parent="FieldDefinition" p:attributeName="template.name" />
         	  <bean parent="FieldDefinition" p:attributeName="namespaceCode" />
-        	  <bean parent="FieldDefinition" p:attributeName="nameToDisplay" />
+        	  <bean parent="FieldDefinition" p:attributeName="name" />
 	       	  <bean parent="FieldDefinition" p:attributeName="detailObjectsValues" />
             </list>
           </property>

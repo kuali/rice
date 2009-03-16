@@ -4,6 +4,7 @@
 <%@ attribute name="role" required="true" type="org.kuali.rice.kim.bo.ui.PersonDocumentRole" %>
 <c:set var="docRolePrncplAttributes" value="${DataDictionary.KimDocumentRoleMember.attributes}" />
 <c:set var="docRoleRspActionAttributes" value="${DataDictionary.KimDocumentRoleResponsibilityAction.attributes}" />
+<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
 
 <kul:subtab lookedUpCollectionName="roleQualifier" width="${tableWidth}" subTabTitle="Role Qualifier" useCurrentTabIndexAsKey="true">      
 	<table cellpadding="0" cellspacing="0" summary="">
@@ -34,7 +35,7 @@
 					<c:set var="attrEntry" value="${role.attributeEntry[fieldName]}" />
 			       	<td align="left" valign="middle">
 			       		<div align="center"> 
-			      		   <kul:htmlControlAttribute property="document.roles[${roleIdx}].newRolePrncpl.qualifiers[${status1.index}].attrVal"  attributeEntry="${attrEntry}" />
+			      		   <kul:htmlControlAttribute property="document.roles[${roleIdx}].newRolePrncpl.qualifiers[${status1.index}].attrVal"  attributeEntry="${attrEntry}" readOnly="${readOnly}" />
 			      		   <%-- 
 			      		   TODO: code (probably) does not pull the remote property name properly
 			      		   TODO: code does not handle multiple lookup/conversion parameters 
@@ -52,12 +53,12 @@
 				</c:forEach>	
 				<td>
 					<div align="center">
-			            <kul:htmlControlAttribute property="document.roles[${roleIdx}].newRolePrncpl.activeFromDate"  attributeEntry="${docRolePrncplAttributes.activeFromDate}" datePicker="true"/>
+			            <kul:htmlControlAttribute property="document.roles[${roleIdx}].newRolePrncpl.activeFromDate"  attributeEntry="${docRolePrncplAttributes.activeFromDate}" datePicker="true" readOnly="${readOnly}" />
 			  		</div>
 				</td>
 				<td>
 					<div align="center">
-					   <kul:htmlControlAttribute property="document.roles[${roleIdx}].newRolePrncpl.activeToDate"  attributeEntry="${docRolePrncplAttributes.activeToDate}" datePicker="true"/>
+					   <kul:htmlControlAttribute property="document.roles[${roleIdx}].newRolePrncpl.activeToDate"  attributeEntry="${docRolePrncplAttributes.activeToDate}" datePicker="true" readOnly="${readOnly}" />
 					</div>
 				</td>			        		
 			   	<td class="infoline">
@@ -90,7 +91,7 @@
 					        		<c:set var="attrEntry" value="${role.attributeEntry[fieldName]}" />
 				            <td align="left" valign="middle">
 				                <div align="center"> 
-				                	<kul:htmlControlAttribute property="document.roles[${roleIdx}].rolePrncpls[${status1.index}].qualifiers[${status.index}].attrVal"  attributeEntry="${attrEntry}" />
+				                	<kul:htmlControlAttribute property="document.roles[${roleIdx}].rolePrncpls[${status1.index}].qualifiers[${status.index}].attrVal"  attributeEntry="${attrEntry}" readOnly="${readOnly}" />
 						      		   <c:if test="${!empty attr.lookupBoClass  and not readOnly}">
 						      		       <kim:roleQualifierLookup role="${role}" pathPrefix="document.roles[${roleIdx}].rolePrncpls[${status1.index}]" attr="${attr}" />
 						         	   </c:if>
@@ -101,12 +102,12 @@
 						</c:forEach>									
 						<td>
 							<div align="center">
-				            <kul:htmlControlAttribute property="document.roles[${roleIdx}].rolePrncpls[${status1.index}].activeFromDate"  attributeEntry="${docRolePrncplAttributes.activeFromDate}" datePicker="true"/>
+				            <kul:htmlControlAttribute property="document.roles[${roleIdx}].rolePrncpls[${status1.index}].activeFromDate"  attributeEntry="${docRolePrncplAttributes.activeFromDate}" datePicker="true" readOnly="${readOnly}" />
 			        		</div>
 		        		</td>
 		        		<td>
 			        		<div align="center">
-				            <kul:htmlControlAttribute property="document.roles[${roleIdx}].rolePrncpls[${status1.index}].activeToDate"  attributeEntry="${docRolePrncplAttributes.activeToDate}" datePicker="true"/>
+				            <kul:htmlControlAttribute property="document.roles[${roleIdx}].rolePrncpls[${status1.index}].activeToDate"  attributeEntry="${docRolePrncplAttributes.activeToDate}" datePicker="true" readOnly="${readOnly}" />
 			        		</div>
 		        		</td>
            				<c:if test="${not inquiry}">									

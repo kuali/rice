@@ -1,6 +1,8 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 <c:set var="docPhoneAttributes" value="${DataDictionary.PersonDocumentPhone.attributes}" />
+<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
+
 <kul:subtab lookedUpCollectionName="phone" width="${tableWidth}" subTabTitle="Phone Numbers" noShowHideButton="true">      
   	<table cellpadding=0 cellspacing=0 summary="">
        	<tr>
@@ -23,31 +25,31 @@
 
                 <td align="left" valign="middle" class="infoline">
 	                <div align="center">
-	                	<kul:htmlControlAttribute property="newPhone.phoneTypeCode" attributeEntry="${docPhoneAttributes.phoneTypeCode}"/>
+	                	<kul:htmlControlAttribute property="newPhone.phoneTypeCode" attributeEntry="${docPhoneAttributes.phoneTypeCode}" readOnly="${readOnly}" />
 		            </div>
 				</td>
                 <td class="infoline">
 	                <div align="center">
-	                	<kul:htmlControlAttribute property="newPhone.phoneNumber" attributeEntry="${docPhoneAttributes.phoneNumber}" />
+	                	<kul:htmlControlAttribute property="newPhone.phoneNumber" attributeEntry="${docPhoneAttributes.phoneNumber}" readOnly="${readOnly}" />
 	                </div>
                 </td>
                 <td class="infoline">   
 	                <div align="center">             	
-	                  <kul:htmlControlAttribute property="newPhone.extensionNumber" attributeEntry="${docPhoneAttributes.extensionNumber}" />
+	                  <kul:htmlControlAttribute property="newPhone.extensionNumber" attributeEntry="${docPhoneAttributes.extensionNumber}" readOnly="${readOnly}" />
 					</div>
 				</td>
                 <td align="left" valign="middle" class="infoline">
-                	<div align="center"><kul:htmlControlAttribute property="newPhone.countryCode" attributeEntry="${docPhoneAttributes.countryCode}"/>
+                	<div align="center"><kul:htmlControlAttribute property="newPhone.countryCode" attributeEntry="${docPhoneAttributes.countryCode}" readOnly="${readOnly}" />
                 	</div>
                 </td>
                 <td class="infoline">   
 	                <div align="center">             	
-	                  <kul:htmlControlAttribute property="newPhone.dflt" attributeEntry="${docPhoneAttributes.dflt}" />
+	                  <kul:htmlControlAttribute property="newPhone.dflt" attributeEntry="${docPhoneAttributes.dflt}" readOnly="${readOnly}" />
 					</div>
 				</td>
                 <td class="infoline">   
 	                <div align="center">             	
-	                  <kul:htmlControlAttribute property="newPhone.active" attributeEntry="${docPhoneAttributes.active}" />
+	                  <kul:htmlControlAttribute property="newPhone.active" attributeEntry="${docPhoneAttributes.active}" readOnly="${readOnly}" />
 					</div>
 				</td>                                
                 <td class="infoline">
@@ -64,28 +66,28 @@
 					<c:out value="${status.index+1}" />
 				</th>
                 <td align="left" valign="middle">
-                	<div align="center"> <kul:htmlControlAttribute property="document.phones[${status.index}].phoneTypeCode"  attributeEntry="${docPhoneAttributes.phoneTypeCode}"  readOnlyAlternateDisplay="${phone.phoneType.phoneTypeName}" />
+                	<div align="center"> <kul:htmlControlAttribute property="document.phones[${status.index}].phoneTypeCode"  attributeEntry="${docPhoneAttributes.phoneTypeCode}"  readOnlyAlternateDisplay="${phone.phoneType.phoneTypeName}" readOnly="${readOnly}" />
 					</div>
 				</td>
                 <td>
-	                <div align="center"> <kul:htmlControlAttribute property="document.phones[${status.index}].phoneNumber" attributeEntry="${docPhoneAttributes.phoneNumber}" />
+	                <div align="center"> <kul:htmlControlAttribute property="document.phones[${status.index}].phoneNumber" attributeEntry="${docPhoneAttributes.phoneNumber}" readOnly="${readOnly}" />
 	                </div>
                 </td>
                 <td>     
 	                <div align="center">           	
-	                  <kul:htmlControlAttribute property="document.phones[${status.index}].extensionNumber" attributeEntry="${docPhoneAttributes.extensionNumber}" />
+	                  <kul:htmlControlAttribute property="document.phones[${status.index}].extensionNumber" attributeEntry="${docPhoneAttributes.extensionNumber}" readOnly="${readOnly}" />
 					</div>
 				</td>
 				<td align="left" valign="middle" class="infoline">
-                	<div align="center"><kul:htmlControlAttribute property="document.phones[${status.index}].countryCode" attributeEntry="${docPhoneAttributes.countryCode}"/>
+                	<div align="center"><kul:htmlControlAttribute property="document.phones[${status.index}].countryCode" attributeEntry="${docPhoneAttributes.countryCode}" readOnly="${readOnly}" />
                 	</div>
                 </td>
 				<td align="left" valign="middle" class="infoline">
-                	<div align="center"><kul:htmlControlAttribute property="document.phones[${status.index}].dflt" attributeEntry="${docPhoneAttributes.dflt}"/>
+                	<div align="center"><kul:htmlControlAttribute property="document.phones[${status.index}].dflt" attributeEntry="${docPhoneAttributes.dflt}" readOnly="${readOnly}" />
                 	</div>
                 </td>
 				<td align="left" valign="middle" class="infoline">
-                	<div align="center"><kul:htmlControlAttribute property="document.phones[${status.index}].active" attributeEntry="${docPhoneAttributes.active}"/>
+                	<div align="center"><kul:htmlControlAttribute property="document.phones[${status.index}].active" attributeEntry="${docPhoneAttributes.active}" readOnly="${readOnly}" />
                 	</div>
                 </td>
          		<c:if test="${not inquiry}">						

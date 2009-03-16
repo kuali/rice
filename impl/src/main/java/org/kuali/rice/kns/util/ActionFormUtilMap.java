@@ -133,6 +133,10 @@ public class ActionFormUtilMap extends HashMap {
     	return getOptionsMap(key, boClass, keyAttribute, labelAttribute, includeKeyInLabel, null);
     }
     
+    public Object getOptionsMap(Object key, Object boClass, Object keyAttribute, Object labelAttribute, Object includeBlankRow, Object includeKeyInLabel) {
+    	return getOptionsMap(key, boClass, keyAttribute, labelAttribute, includeBlankRow, includeKeyInLabel, null);
+    }
+    
     /*
      *
     */
@@ -151,7 +155,7 @@ public class ActionFormUtilMap extends HashMap {
      * @param kimTypeName the KIM Type to use in case of KimAttributeValuesFinder 
      * @return list of KeyValue pairs
      */
-    public Object getOptionsMap(Object key, Object boClass, Object keyAttribute, Object labelAttribute, Object includeKeyInLabel, String kimTypeName) {
+    public Object getOptionsMap(Object key, Object boClass, Object keyAttribute, Object labelAttribute, Object includeBlankRow, Object includeKeyInLabel, String kimTypeName) {
         List optionsList = new ArrayList();
 
         if (StringUtils.isBlank((String) key)) {
@@ -176,6 +180,7 @@ public class ActionFormUtilMap extends HashMap {
                 ((PersistableBusinessObjectValuesFinder) finder).setBusinessObjectClass(businessObjectClass);
                 ((PersistableBusinessObjectValuesFinder) finder).setKeyAttributeName((String)keyAttribute);
                 ((PersistableBusinessObjectValuesFinder) finder).setLabelAttributeName((String)labelAttribute);
+                ((PersistableBusinessObjectValuesFinder) finder).setIncludeBlankRow(Boolean.parseBoolean((String)includeBlankRow)); 
                 ((PersistableBusinessObjectValuesFinder) finder).setIncludeKeyInDescription(Boolean.parseBoolean((String)includeKeyInLabel));
             } else if (finder instanceof KimAttributeValuesFinder) {
             	if (kimTypeName == null) {

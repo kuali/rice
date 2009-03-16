@@ -140,7 +140,7 @@ function changeDelegationMemberTypeCode(){
 	               	<div align="center"> <kul:htmlControlAttribute property="document.delegationMembers[${statusMember.index}].activeToDate"  attributeEntry="${delegationMemberAttributes.activeToDate}" readOnly="${readOnly}"  datePicker="true" />
 					</div>
 				</td>
-				<c:set var="numberOfColumns" value="${KualiForm.member.numberOfQualifiers+4}"/>
+				<c:set var="numberOfColumns" value="${KualiForm.member.numberOfQualifiers+6}"/>
 				<c:forEach var="qualifier" items="${KualiForm.document.kimType.attributeDefinitions}" varStatus="statusQualifier">
 					<c:set var="fieldName" value="${qualifier.kimAttribute.attributeName}" />
         			<c:set var="attrEntry" value="${KualiForm.document.attributeEntry[fieldName]}" />

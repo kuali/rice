@@ -1,6 +1,7 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 <c:set var="personAttributes" value="${DataDictionary.IdentityManagementPersonDocument.attributes}" />
+<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
 
 <kul:tab tabTitle="Overview" defaultOpen="true" transparentBackground="${inquiry}" tabErrorKey="document.pr*,document.tax*,document.univ*,document.active,document.affiliations*">
 
@@ -18,19 +19,19 @@
 			 	</tr>
 				<tr>
          			<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${personAttributes.principalName}"  /></div></th>
-			 		<td><kul:htmlControlAttribute property="document.principalName" attributeEntry="${personAttributes.principalName}" /></td>
+			 		<td><kul:htmlControlAttribute property="document.principalName" attributeEntry="${personAttributes.principalName}" readOnly="${readOnly}" /></td>
          			<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${personAttributes.taxId}"  /></div></th>
-			 		<td><kul:htmlControlAttribute property="document.taxId" attributeEntry="${personAttributes.taxId}" /></td>
+			 		<td><kul:htmlControlAttribute property="document.taxId" attributeEntry="${personAttributes.taxId}" readOnly="${readOnly}" /></td>
 			 	</tr>
 			 	<tr>
-         			<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${personAttributes.password}"  /></div></th>
+         			<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${personAttributes.password}" /></div></th>
 			 		<td>
 				 		<c:if test="${not readOnly}">
 				 		    <html:password property="document.password" />
 				 		</c:if>
 			 		</td>
          			<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${personAttributes.active}"  /></div></th>
-			 		<td><kul:htmlControlAttribute property="document.active" attributeEntry="${personAttributes.active}" /></td>
+			 		<td><kul:htmlControlAttribute property="document.active" attributeEntry="${personAttributes.active}" readOnly="${readOnly}" /></td>
 			 	</tr>
 			</table> 
 		</kul:subtab>

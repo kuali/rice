@@ -146,6 +146,9 @@ public class AttributesMapBuilder {
             if (StringUtils.isNotEmpty(control.getLabelAttribute())) {
                 controlMap.set("labelAttribute", control.getLabelAttribute());
             }
+            if (control.getIncludeBlankRow() != null) {
+                controlMap.set("includeBlankRow", control.getIncludeBlankRow().toString());
+            }
             if (control.getIncludeKeyInLabel() != null) {
                 controlMap.set("includeKeyInLabel", control.getIncludeKeyInLabel().toString());
             }

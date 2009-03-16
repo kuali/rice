@@ -1,6 +1,7 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 <c:set var="docAffiliationAttributes" value="${DataDictionary.PersonDocumentAffiliation.attributes}" />
+<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
 <kul:subtab lookedUpCollectionName="affiliations" width="${tableWidth}" subTabTitle="Affiliations" noShowHideButton="true" >      
         <table cellpadding=0 cellspacing=0 summary="">
           	<tr>
@@ -20,22 +21,22 @@
 				</th>
 
                 <td align="left" valign="middle" class="infoline">
-                	<div align="center"><kul:htmlControlAttribute property="newAffln.affiliationTypeCode" attributeEntry="${docAffiliationAttributes.affiliationTypeCode}"/>
+                	<div align="center"><kul:htmlControlAttribute property="newAffln.affiliationTypeCode" attributeEntry="${docAffiliationAttributes.affiliationTypeCode}" disabled="${readOnly}"/>
                 </div>
                 </td>
                 <td class="infoline">   
                 <div align="center">             	
-                  <kul:htmlControlAttribute property="newAffln.campusCode" attributeEntry="${docAffiliationAttributes.campusCode}" />
+                  <kul:htmlControlAttribute property="newAffln.campusCode" attributeEntry="${docAffiliationAttributes.campusCode}" readOnly="${readOnly}" />
 				</div>
 				</td>
                 <td class="infoline">
                 <div align="center">
-                	<kul:htmlControlAttribute property="newAffln.dflt" attributeEntry="${docAffiliationAttributes.dflt}" /> 
+                	<kul:htmlControlAttribute property="newAffln.dflt" attributeEntry="${docAffiliationAttributes.dflt}" readOnly="${readOnly}" /> 
 				</div>
                 </td>
                 <td class="infoline">
                 <div align="center">
-                	<kul:htmlControlAttribute property="newAffln.active" attributeEntry="${docAffiliationAttributes.active}" />
+                	<kul:htmlControlAttribute property="newAffln.active" attributeEntry="${docAffiliationAttributes.active}" readOnly="${readOnly}" />
                 </div>
                 </td>
                 <td class="infoline">
@@ -57,20 +58,20 @@
 						<c:out value="${status.index+1}" />
 					</th>
 	                <td align="left" valign="middle">
-	                <div align="center"><kul:htmlControlAttribute property="document.affiliations[${status.index}].affiliationTypeCode" attributeEntry="${docAffiliationAttributes.affiliationTypeCode}"  readOnlyAlternateDisplay="${affln.affiliationType.affiliationTypeName}"/></div>
+	                <div align="center"><kul:htmlControlAttribute property="document.affiliations[${status.index}].affiliationTypeCode" attributeEntry="${docAffiliationAttributes.affiliationTypeCode}"  readOnlyAlternateDisplay="${affln.affiliationType.affiliationTypeName}" disabled="true" readOnly="false" /></div>
 	                </td>
 	                <td>     
 	                <div align="center">           	
-	                  <kul:htmlControlAttribute property="document.affiliations[${status.index}].campusCode" attributeEntry="${docAffiliationAttributes.campusCode}" />
+	                  <kul:htmlControlAttribute property="document.affiliations[${status.index}].campusCode" attributeEntry="${docAffiliationAttributes.campusCode}" readOnly="${readOnly}" />
 					</div>
 					</td>
 	                <td align="left" valign="middle">
 		                <div align="center">
-		                	<kul:htmlControlAttribute property="document.affiliations[${status.index}].dflt" attributeEntry="${docAffiliationAttributes.dflt}" /> 
+		                	<kul:htmlControlAttribute property="document.affiliations[${status.index}].dflt" attributeEntry="${docAffiliationAttributes.dflt}" readOnly="${readOnly}" /> 
 						</div>
                     </td>
 	                <td align="left" valign="middle">
-	                	<div align="center"> <kul:htmlControlAttribute property="document.affiliations[${status.index}].active"  attributeEntry="${docAffiliationAttributes.active}"  />
+	                	<div align="center"> <kul:htmlControlAttribute property="document.affiliations[${status.index}].active"  attributeEntry="${docAffiliationAttributes.active}" readOnly="${readOnly}" />
 					</div>
 					</td>
            <c:if test="${not inquiry}">	

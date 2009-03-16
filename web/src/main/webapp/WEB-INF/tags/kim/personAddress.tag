@@ -6,6 +6,8 @@
 
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 <c:set var="docAddressAttributes" value="${DataDictionary.PersonDocumentAddress.attributes}" />
+<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
+
 <kul:subtab lookedUpCollectionName="address" width="${tableWidth}" subTabTitle="Addresses" noShowHideButton="true">      
    	<table cellpadding=0 cellspacing=0 summary="">
        	<tr>
@@ -31,45 +33,45 @@
 				</th>
                 <td>
                 <div align="center">
-                	<kul:htmlControlAttribute property="newAddress.addressTypeCode" attributeEntry="${docAddressAttributes.addressTypeCode}"/>
+                	<kul:htmlControlAttribute property="newAddress.addressTypeCode" attributeEntry="${docAddressAttributes.addressTypeCode}" readOnly="${readOnly}" />
 	            	</div>
 				</td>
                 <td>
                 	<div align="center">
-                		<kul:htmlControlAttribute property="newAddress.line1" attributeEntry="${docAddressAttributes.line1}"/>
+                		<kul:htmlControlAttribute property="newAddress.line1" attributeEntry="${docAddressAttributes.line1}" readOnly="${readOnly}" />
                 	</div>
                 </td>
                 <td>   
 	                <div align="center">             	
-	                  <kul:htmlControlAttribute property="newAddress.line2" attributeEntry="${docAddressAttributes.line2}" />
+	                  <kul:htmlControlAttribute property="newAddress.line2" attributeEntry="${docAddressAttributes.line2}" readOnly="${readOnly}" />
 					</div>
 				</td>                
                 <td>
-                	<div align="center"><kul:htmlControlAttribute property="newAddress.line3" attributeEntry="${docAddressAttributes.line3}"/>
+                	<div align="center"><kul:htmlControlAttribute property="newAddress.line3" attributeEntry="${docAddressAttributes.line3}" readOnly="${readOnly}" />
                 </div>
                 </td>
                 <td>
-                	<div align="center"><kul:htmlControlAttribute property="newAddress.cityName" attributeEntry="${docAddressAttributes.cityName}"/>
+                	<div align="center"><kul:htmlControlAttribute property="newAddress.cityName" attributeEntry="${docAddressAttributes.cityName}" readOnly="${readOnly}" />
                 	</div>
                 </td>
                 <td>
-                	<div align="center"><kul:htmlControlAttribute property="newAddress.stateCode" attributeEntry="${docAddressAttributes.stateCode}" styleClass="fixed-size-200-select"/>
+                	<div align="center"><kul:htmlControlAttribute property="newAddress.stateCode" attributeEntry="${docAddressAttributes.stateCode}" styleClass="fixed-size-200-select" readOnly="${readOnly}" />
                 	</div>
                 </td>
                 <td>
-                	<div align="center"><kul:htmlControlAttribute property="newAddress.postalCode" attributeEntry="${docAddressAttributes.postalCode}"/>
+                	<div align="center"><kul:htmlControlAttribute property="newAddress.postalCode" attributeEntry="${docAddressAttributes.postalCode}" readOnly="${readOnly}" />
                 	</div>
                 </td>
                 <td>
-                	<div align="center"><kul:htmlControlAttribute property="newAddress.countryCode" attributeEntry="${docAddressAttributes.countryCode}" styleClass="fixed-size-200-select"/>
+                	<div align="center"><kul:htmlControlAttribute property="newAddress.countryCode" attributeEntry="${docAddressAttributes.countryCode}" styleClass="fixed-size-200-select" readOnly="${readOnly}" />
                 	</div>
                 </td>
                 <td>
-                	<div align="center"><kul:htmlControlAttribute property="newAddress.dflt" attributeEntry="${docAddressAttributes.dflt}"/>
+                	<div align="center"><kul:htmlControlAttribute property="newAddress.dflt" attributeEntry="${docAddressAttributes.dflt}" readOnly="${readOnly}" />
                 	</div>
                 </td>
                 <td>
-                	<div align="center"><kul:htmlControlAttribute property="newAddress.active" attributeEntry="${docAddressAttributes.active}"/>
+                	<div align="center"><kul:htmlControlAttribute property="newAddress.active" attributeEntry="${docAddressAttributes.active}" readOnly="${readOnly}" />
                 	</div>
                 </td>                                
                 <td>
@@ -86,44 +88,44 @@
 					<c:out value="${status.index+1}" />
 				</th>
                 <td align="left" valign="middle">
-                	<div align="center"> <kul:htmlControlAttribute property="document.addrs[${status.index}].addressTypeCode"  attributeEntry="${docAddressAttributes.addressTypeCode}" readOnlyAlternateDisplay="${address.addressType.addressTypeName}"  />
+                	<div align="center"> <kul:htmlControlAttribute property="document.addrs[${status.index}].addressTypeCode" attributeEntry="${docAddressAttributes.addressTypeCode}" readOnlyAlternateDisplay="${address.addressType.addressTypeName}" readOnly="${readOnly}" />
 					</div>
 				</td>
                 <td>
-	                <div align="center"> <kul:htmlControlAttribute property="document.addrs[${status.index}].line1" attributeEntry="${docAddressAttributes.line1}"/>
+	                <div align="center"> <kul:htmlControlAttribute property="document.addrs[${status.index}].line1" attributeEntry="${docAddressAttributes.line1}" readOnly="${readOnly}" />
 	                </div>
                 </td>
                 <td>     
 	                <div align="center">           	
-	                  <kul:htmlControlAttribute property="document.addrs[${status.index}].line2" attributeEntry="${docAddressAttributes.line2}" />
+	                  <kul:htmlControlAttribute property="document.addrs[${status.index}].line2" attributeEntry="${docAddressAttributes.line2}" readOnly="${readOnly}" />
 					</div>
 				</td>
 				<td>
-                	<div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].line3" attributeEntry="${docAddressAttributes.line3}"/>
+                	<div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].line3" attributeEntry="${docAddressAttributes.line3}" readOnly="${readOnly}" />
                 </div>
                 </td>
                 <td>
-                	<div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].cityName" attributeEntry="${docAddressAttributes.cityName}"/>
+                	<div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].cityName" attributeEntry="${docAddressAttributes.cityName}" readOnly="${readOnly}" />
                 	</div>
                 </td>
                 <td>
-                	<div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].stateCode" attributeEntry="${docAddressAttributes.stateCode}" styleClass="fixed-size-200-select"/>
+                	<div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].stateCode" attributeEntry="${docAddressAttributes.stateCode}" styleClass="fixed-size-200-select" readOnly="${readOnly}" />
                 </div>
                 </td>
                 <td>
-                	<div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].postalCode" attributeEntry="${docAddressAttributes.postalCode}"/>
+                	<div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].postalCode" attributeEntry="${docAddressAttributes.postalCode}" readOnly="${readOnly}" />
                 	</div>
                 </td>
                 <td>
-                	<div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].countryCode" attributeEntry="${docAddressAttributes.countryCode}" styleClass="fixed-size-200-select"/>
+                	<div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].countryCode" attributeEntry="${docAddressAttributes.countryCode}" styleClass="fixed-size-200-select" readOnly="${readOnly}" />
                 	</div>
                 </td>
                 <td>
-                	<div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].dflt" attributeEntry="${docAddressAttributes.dflt}"/>
+                	<div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].dflt" attributeEntry="${docAddressAttributes.dflt}" readOnly="${readOnly}" />
                 	</div>
                 </td>
                 <td>
-                	<div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].active" attributeEntry="${docAddressAttributes.active}"/>
+                	<div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].active" attributeEntry="${docAddressAttributes.active}" readOnly="${readOnly}" />
                 	</div>
                 </td>
            		<c:if test="${not inquiry}">						

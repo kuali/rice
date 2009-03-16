@@ -2,6 +2,7 @@
 
 <c:set var="docRoleAttributes" value="${DataDictionary.PersonDocumentRole.attributes}" />
 <c:set var="docRolePrncplAttributes" value="${DataDictionary.KimDocumentRoleMember.attributes}" />
+<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
 <kul:subtab lookedUpCollectionName="role" width="${tableWidth}" subTabTitle="Roles" noShowHideButton="true">      
     <table cellpadding=0 cellspacing=0 summary="">
         <c:if test="${not inquiry and not readOnly}">	          	
@@ -38,11 +39,11 @@
 				</td>
 				<td>${KualiForm.newRole.kimRoleType.kimTypeServiceName}</td>
 	                <td align="left" valign="middle">
-	                	<div align="center"> <kul:htmlControlAttribute property="newRole.newRolePrncpl.activeFromDate"  attributeEntry="${docRolePrncplAttributes.activeFromDate}"  datePicker="true"/>
+	                	<div align="center"> <kul:htmlControlAttribute property="newRole.newRolePrncpl.activeFromDate"  attributeEntry="${docRolePrncplAttributes.activeFromDate}"  datePicker="true" readOnly="${readOnly}" />
 					</div>
 					</td>
 	                <td align="left" valign="middle">
-	                	<div align="center"> <kul:htmlControlAttribute property="newRole.newRolePrncpl.activeToDate"  attributeEntry="${docRolePrncplAttributes.activeToDate}"  datePicker="true"/>
+	                	<div align="center"> <kul:htmlControlAttribute property="newRole.newRolePrncpl.activeToDate"  attributeEntry="${docRolePrncplAttributes.activeToDate}"  datePicker="true" readOnly="${readOnly}" />
 					</div>
 					</td>
 
@@ -77,7 +78,7 @@
 					<c:out value="${status.index+1}" />
 				</th>
                 <td align="left" valign="middle">
-                	<div align="center"> <kul:htmlControlAttribute property="document.roles[${status.index}].namespaceCode"  attributeEntry="${docRoleAttributes.roleName}" readOnly="true"  />
+                	<div align="center"> <kul:htmlControlAttribute property="document.roles[${status.index}].namespaceCode"  attributeEntry="${docRoleAttributes.roleName}" readOnly="true" />
 				</div>
 				</td>
                 <td align="left" valign="middle">
@@ -90,13 +91,13 @@
 				</td>
                 <td align="left" valign="middle">
                    	<c:if test="${fn:length(role.rolePrncpls) > 0}">
-                		<div align="center"> <kul:htmlControlAttribute property="document.roles[${status.index}].rolePrncpls[0].activeFromDate"  attributeEntry="${docRolePrncplAttributes.activeFromDate}"  datePicker="true" />
+                		<div align="center"> <kul:htmlControlAttribute property="document.roles[${status.index}].rolePrncpls[0].activeFromDate"  attributeEntry="${docRolePrncplAttributes.activeFromDate}"  datePicker="true" readOnly="${readOnly}" />
 						</div>
                 	</c:if>
 				</td>
                 <td align="left" valign="middle">
                    	<c:if test="${fn:length(role.rolePrncpls) > 0}">
-                		<div align="center"> <kul:htmlControlAttribute property="document.roles[${status.index}].rolePrncpls[0].activeToDate"  attributeEntry="${docRolePrncplAttributes.activeToDate}"  datePicker="true"  />
+                		<div align="center"> <kul:htmlControlAttribute property="document.roles[${status.index}].rolePrncpls[0].activeToDate"  attributeEntry="${docRolePrncplAttributes.activeToDate}"  datePicker="true" readOnly="${readOnly}" />
 						</div>
 					</c:if>
 				</td>

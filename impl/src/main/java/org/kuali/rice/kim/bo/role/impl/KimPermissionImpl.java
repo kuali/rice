@@ -228,12 +228,6 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 		return detailObjectsToDisplay.toString();
 	}
 
-	public String getNameToDisplay(){
-		return (StringUtils.isBlank(getName()) && getTemplate()!=null)?getTemplate().getName():getName();
-	}
-	
-
-
 	public String getDetailObjectsToDisplay() {
 		StringBuffer detailObjectsToDisplay = new StringBuffer();
 		for(PermissionAttributeDataImpl permissionAttributeData: detailObjects){

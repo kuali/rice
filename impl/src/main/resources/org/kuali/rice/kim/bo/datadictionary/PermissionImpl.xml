@@ -20,7 +20,6 @@
         <ref bean="PermissionImpl-namespaceCode" />
         <ref bean="PermissionImpl-permissionId" />
         <ref bean="PermissionImpl-name" />
-        <ref bean="PermissionImpl-nameToDisplay" />
         <ref bean="PermissionImpl-assignedToRoleNamespaceForLookup" />
         <ref bean="PermissionImpl-assignedToRoleNameForLookup" />
         <ref bean="PermissionImpl-roleId" />
@@ -228,10 +227,6 @@
     <property name="control" >
       <bean parent="TextControlDefinition" p:size="40" />
     </property>
-  </bean>
-
-  <bean id="PermissionImpl-nameToDisplay" parent="PermissionImpl-name" 
-  		p:name="nameToDisplay">
   </bean>
 
   <bean id="PermissionImpl-assignedToRoleNamespaceForLookup" parent="PermissionImpl-assignedToRoleNamespaceForLookup-parentBean" />
@@ -461,7 +456,7 @@
           <bean parent="FieldDefinition" p:attributeName="template.namespaceCode" />
           <bean parent="FieldDefinition" p:attributeName="template.name" />
        	  <bean parent="FieldDefinition" p:attributeName="namespaceCode" />
-       	  <bean parent="FieldDefinition" p:attributeName="nameToDisplay" />
+       	  <bean parent="FieldDefinition" p:attributeName="name" />
        	  <bean parent="FieldDefinition" p:attributeName="detailObjectsToDisplay" />
        	  <bean parent="FieldDefinition" p:attributeName="assignedToRolesToDisplay" />
       </list>

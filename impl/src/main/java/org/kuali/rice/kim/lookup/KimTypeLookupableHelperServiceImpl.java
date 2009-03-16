@@ -112,7 +112,7 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
 		boolean hasDerivedRoleTypeService = false;
 		KimTypeService kimTypeService = KimCommonUtils.getKimTypeService(kimTypeImpl);
 		if(hasRoleTypeService(kimTypeImpl, kimTypeService))
-			hasDerivedRoleTypeService = (kimTypeImpl.getKimTypeServiceName()==null || ((KimRoleTypeService)kimTypeService).isApplicationRoleType());
+			hasDerivedRoleTypeService = (kimTypeImpl.getKimTypeServiceName()!=null && ((KimRoleTypeService)kimTypeService).isApplicationRoleType());
 		return hasDerivedRoleTypeService;
 	}
 

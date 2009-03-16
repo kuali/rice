@@ -258,17 +258,19 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         HeaderField docNumber = new HeaderField(KNSConstants.DocumentFormHeaderFieldIds.DOCUMENT_NUMBER, "DataDictionary.DocumentHeader.attributes.documentNumber", workflowDocument != null? getDocument().getDocumentNumber() : null, null);
         HeaderField docStatus = new HeaderField(KNSConstants.DocumentFormHeaderFieldIds.DOCUMENT_WORKFLOW_STATUS, "DataDictionary.AttributeReferenceDummy.attributes.workflowDocumentStatus", workflowDocument != null? workflowDocument.getStatusDisplayValue() : null, null);
         String principalId = null;
+        String initiatorNetworkId = null;
     	if (workflowDocument != null) {
        		if (getInitiator() == null) {
     			LOG.warn("User Not Found while attempting to build inquiry link for document header fields");
     		} else {
     			principalId = getInitiator().getPrincipalId();
+    			initiatorNetworkId = getInitiator().getPrincipalName();
     		}
     	}
         String inquiryUrl = getPersonInquiryUrlLink(principalId, workflowDocument != null? workflowDocument.getInitiatorPrincipalId() : null);
 
         HeaderField docInitiator = new HeaderField(KNSConstants.DocumentFormHeaderFieldIds.DOCUMENT_INITIATOR, "DataDictionary.AttributeReferenceDummy.attributes.initiatorNetworkId", 
-        workflowDocument != null? workflowDocument.getInitiatorPrincipalId() : null, workflowDocument != null? inquiryUrl : null);
+        workflowDocument != null? initiatorNetworkId : null, workflowDocument != null? inquiryUrl : null);
         
         String createDateStr = null;
         if(workflowDocument != null && workflowDocument.getCreateDate() != null) {

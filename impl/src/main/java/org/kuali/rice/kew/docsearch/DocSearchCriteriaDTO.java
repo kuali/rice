@@ -586,19 +586,11 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     public String getSuperUserSearch() {
         return superUserSearch;
     }
-    
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kew.docsearch.DocumentSearchCriteriaEBO#isSuperUserSearch()
-	 */
-    public boolean isSuperUserSearch() {
-    	return "YES".equalsIgnoreCase(superUserSearch)?true:false;
-    }
 
     public void setSuperUserSearch(String superUserSearch) {
         this.superUserSearch = superUserSearch;
     }
+    
 
     /**
 	 * This overridden method ...

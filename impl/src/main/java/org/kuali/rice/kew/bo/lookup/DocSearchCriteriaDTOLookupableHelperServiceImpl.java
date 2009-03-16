@@ -124,14 +124,6 @@ KualiLookupableHelperServiceImpl {
     	Map<String,String[]> parameters = this.getParameters();
     	
     	DocSearchCriteriaDTO criteria = DocumentLookupCriteriaBuilder.populateCriteria(parameters);
-    	
-		boolean superSearch=false;
-		if(this.getParameters().get("superUserSearch")!=null) {
-			superSearch = new Boolean(((String[])this.getParameters().get("superUserSearch"))[0]); 
-		}
-		if(superSearch) {
-			criteria.setSuperUserSearch("YES");
-		}
 		
     	Collection displayList=null;
     	DocumentSearchResultComponents components = KEWServiceLocator.getDocumentSearchService().getList(GlobalVariables.getUserSession().getPrincipalId(), criteria);
@@ -292,7 +284,7 @@ KualiLookupableHelperServiceImpl {
                 	AnchorHtmlData anchor = new AnchorHtmlData(KNSConstants.EMPTY_STRING, KNSConstants.EMPTY_STRING);
                 	//TODO: change to grab URL from config variable
                 	if(StringUtils.isNotEmpty(keyValue.getValue()) && StringUtils.equals("routeHeaderId", keyValue.getkey())) {
-                		if(!criteria.isSuperUserSearch()) {
+                		if(!DocSearchCriteriaDTO.SUPER_USER_SEARCH_INDICATOR_STRING.equals(criteria.getSuperUserSearch())) {
                 			anchor.setHref("../en/"+StringUtils.getNestedString(keyValue.getValue(), "<a href=\"", "docId=")+"docId="+keyValue.getUserDisplayValue());
                 		} else {
                 			anchor.setHref("../en/"+StringUtils.getNestedString(keyValue.getValue(), "<a href=\"", "routeHeaderId=")+"routeHeaderId="+keyValue.getUserDisplayValue());
@@ -435,12 +427,12 @@ KualiLookupableHelperServiceImpl {
 		
 		boolean detailed=false;
 		if(this.getParameters().get("isAdvancedSearch")!=null) {
-			detailed = new Boolean(((String[])this.getParameters().get("isAdvancedSearch"))[0]);
+			detailed = DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING.equalsIgnoreCase(((String[])this.getParameters().get("isAdvancedSearch"))[0]);
 		}
 		
 		boolean superSearch=false;
 		if(this.getParameters().get("superUserSearch")!=null) {
-			superSearch = new Boolean(((String[])this.getParameters().get("superUserSearch"))[0]);
+			superSearch = DocSearchCriteriaDTO.SUPER_USER_SEARCH_INDICATOR_STRING.equalsIgnoreCase(((String[])this.getParameters().get("superUserSearch"))[0]);
 		}
 		
 		//call get rows
@@ -524,30 +516,28 @@ KualiLookupableHelperServiceImpl {
 	 */
 	@Override
 	public String getSupplementalMenuBar() {
-		boolean detailed=false;
+		String detailed="NO";
 		if(this.getParameters().get("isAdvancedSearch")!=null) {
-			String detailedString = ((String[])this.getParameters().get("isAdvancedSearch"))[0];
-			detailed = new Boolean(detailedString);
+			detailed = ((String[])this.getParameters().get("isAdvancedSearch"))[0];
 		}
 		
-		boolean superSearch=false;
+		String superSearch="NO";
 		if(this.getParameters().get("superUserSearch")!=null) {
-			String superSearchString = ((String[])this.getParameters().get("superUserSearch"))[0];
-			superSearch = new Boolean(superSearchString); 
+			superSearch = ((String[])this.getParameters().get("superUserSearch"))[0];
 		}
 		
 		String suppMenuBar = "";
-		if(detailed) {
-			suppMenuBar = "<a href=\""+getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY)+"/kr/"+KNSConstants.LOOKUP_ACTION+"?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&docFormKey=88888888&returnLocation=http://localhost:8080/kr-dev/portal.do&hideReturnLink=true&isAdvancedSearch=false"+"&superUserSearch="+superSearch+"\">basic</a>";
+		if(DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING.equalsIgnoreCase(detailed)) {
+			suppMenuBar = "<a href=\""+getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY)+"/kr/"+KNSConstants.LOOKUP_ACTION+"?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&docFormKey=88888888&returnLocation=http://localhost:8080/kr-dev/portal.do&hideReturnLink=true&isAdvancedSearch=NO"+"&superUserSearch="+superSearch+"\">basic</a>";
 		} else {
-			suppMenuBar = "<a href=\""+getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY)+"/kr/"+KNSConstants.LOOKUP_ACTION+"?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&docFormKey=88888888&returnLocation=http://localhost:8080/kr-dev/portal.do&hideReturnLink=true&isAdvancedSearch=true"+"&superUserSearch="+superSearch+"\">detailed</a>";	
+			suppMenuBar = "<a href=\""+getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY)+"/kr/"+KNSConstants.LOOKUP_ACTION+"?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&docFormKey=88888888&returnLocation=http://localhost:8080/kr-dev/portal.do&hideReturnLink=true&isAdvancedSearch=YES"+"&superUserSearch="+superSearch+"\">detailed</a>";	
 		}
 		
 
-		if(superSearch) {
-			suppMenuBar = suppMenuBar + "&nbsp" + "<a href=\""+getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY)+"/kr/"+KNSConstants.LOOKUP_ACTION+"?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&docFormKey=88888888&returnLocation=http://localhost:8080/kr-dev/portal.do&hideReturnLink=true&superUserSearch=false"+"&isAdvancedSearch="+detailed+"\">non-super</a>";
+		if(DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING.equalsIgnoreCase(superSearch)) {
+			suppMenuBar = suppMenuBar + "&nbsp" + "<a href=\""+getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY)+"/kr/"+KNSConstants.LOOKUP_ACTION+"?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&docFormKey=88888888&returnLocation=http://localhost:8080/kr-dev/portal.do&hideReturnLink=true&superUserSearch=NO"+"&isAdvancedSearch="+detailed+"\">non-super</a>";
 		} else {
-			suppMenuBar = suppMenuBar + "&nbsp" + "<a href=\""+getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY)+"/kr/"+KNSConstants.LOOKUP_ACTION+"?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&docFormKey=88888888&returnLocation=http://localhost:8080/kr-dev/portal.do&hideReturnLink=true&superUserSearch=true"+"&isAdvancedSearch="+detailed+"\">super</a>";
+			suppMenuBar = suppMenuBar + "&nbsp" + "<a href=\""+getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY)+"/kr/"+KNSConstants.LOOKUP_ACTION+"?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&docFormKey=88888888&returnLocation=http://localhost:8080/kr-dev/portal.do&hideReturnLink=true&superUserSearch=YES"+"&isAdvancedSearch="+detailed+"\">super</a>";
 		}
         Properties parameters = new Properties();
         parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, this.getBusinessObjectClass().getName());

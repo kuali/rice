@@ -26,7 +26,7 @@
 	                	"template.name:responsibility.kimResponsibility.template.name,responsibilityId:responsibility.responsibilityId,name:responsibility.kimResponsibility.name,namespaceCode:responsibility.kimResponsibility.namespaceCode" anchor="${tabKey}" />
 						<html:hidden property="responsibility.kimResponsibility.name" />
 						<html:hidden property="responsibility.kimResponsibility.namespaceCode" />
-						${KualiForm.responsibility.kimResponsibility.namespaceCode}&nbsp;&nbsp;${KualiForm.responsibility.kimResponsibility.nameToDisplay}&nbsp;
+						${KualiForm.responsibility.kimResponsibility.namespaceCode}&nbsp;&nbsp;${KualiForm.responsibility.kimResponsibility.name}&nbsp;
 	                	<br/>
 	                	<br/>
 		            </div>
@@ -72,7 +72,7 @@
 					</div>
 				</td>
 	            <td align="left" valign="middle">
-	               	<div align="left"> <kul:htmlControlAttribute property="document.responsibilities[${status.index}].kimResponsibility.nameToDisplay"  attributeEntry="${responsibilityAttributes.name}" readOnly="true"  />
+	               	<div align="left"> <kul:htmlControlAttribute property="document.responsibilities[${status.index}].kimResponsibility.name"  attributeEntry="${responsibilityAttributes.name}" readOnly="true"  />
 					</div>
 				</td>
 	            <td align="left" valign="middle">

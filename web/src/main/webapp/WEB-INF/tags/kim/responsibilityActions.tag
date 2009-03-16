@@ -24,7 +24,7 @@
 				<td>
 					<div align="center">
 					${roleRspAction.kimResponsibility.namespaceCode}
-					${roleRspAction.kimResponsibility.nameToDisplay}		            
+					${roleRspAction.kimResponsibility.name}		            
 					</div>
         		</td>
 				<td>

@@ -26,7 +26,7 @@
 	                	"template.name:permission.kimPermission.template.name,permissionId:permission.permissionId,name:permission.kimPermission.name,namespaceCode:permission.kimPermission.namespaceCode" anchor="${tabKey}" />
 						<html:hidden property="permission.kimPermission.name" />
 						<html:hidden property="permission.kimPermission.namespaceCode" />
-						${KualiForm.permission.kimPermission.namespaceCode}&nbsp;&nbsp;${KualiForm.permission.kimPermission.nameToDisplay}&nbsp;
+						${KualiForm.permission.kimPermission.namespaceCode}&nbsp;&nbsp;${KualiForm.permission.kimPermission.name}&nbsp;
 	                	<br/>
 	                	<br/>
 		            </div>
@@ -68,7 +68,7 @@
 					</div>
 				</td>
 	            <td align="left" valign="middle">
-	               	<div align="left"> <kul:htmlControlAttribute property="document.permissions[${status.index}].kimPermission.nameToDisplay"  attributeEntry="${permissionAttributes.name}" readOnly="true"  />
+	               	<div align="left"> <kul:htmlControlAttribute property="document.permissions[${status.index}].kimPermission.name"  attributeEntry="${permissionAttributes.name}" readOnly="true"  />
 					</div>
 				</td>
 	            <td align="left" valign="middle">

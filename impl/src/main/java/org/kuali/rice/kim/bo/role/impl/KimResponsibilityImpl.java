@@ -69,7 +69,7 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 	
 	
 	protected String templateId;
-	protected KimResponsibilityTemplateImpl template;
+	protected KimResponsibilityTemplateImpl template = new KimResponsibilityTemplateImpl();
 	
 	protected List<RoleResponsibilityImpl> roleResponsibilities = new TypedArrayList(RoleResponsibilityImpl.class);
 	

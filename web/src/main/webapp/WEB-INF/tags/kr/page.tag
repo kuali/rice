@@ -254,7 +254,7 @@
 					        		&nbsp;
 					        	</c:if>
 								<c:choose>
-									<c:when test="${lookupAware and (not lookup)}" >
+									<c:when test="${headerField.lookupAware and (not lookup)}" >
 										${headerField.nonLookupValue}
 									</c:when> 
 									<c:otherwise>

@@ -8,7 +8,7 @@
 
   <bean id="PersonImpl-parentBean" abstract="true" parent="BusinessObjectEntry"
         p:businessObjectClass="org.kuali.rice.kim.bo.impl.PersonImpl"
-        p:titleAttribute="principalName"
+        p:titleAttribute="principalId"
         p:objectLabel="Person"
         p:inquiryDefinition-ref="PersonImpl-inquiryDefinition"
         p:lookupDefinition-ref="PersonImpl-lookupDefinition" >

@@ -187,11 +187,10 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         populateHeaderFields(workflowDocument);
     }
     
-    private String getPersonInquiryUrlLink(String id, String linkBody) {
+    private String getPersonInquiryUrlLink(Person user, String linkBody) {
         StringBuffer urlBuffer = new StringBuffer();
         
-        if(StringUtils.isNotEmpty(id) && StringUtils.isNotEmpty(linkBody) ) {
-            Person user = new org.kuali.rice.kim.bo.impl.PersonImpl();
+        if(user != null && StringUtils.isNotEmpty(linkBody) ) {
             AnchorHtmlData inquiryHref = (AnchorHtmlData)KNSServiceLocator.getKualiInquirable().getInquiryUrl(user, KimAttributes.PRINCIPAL_ID, false);
             String inquiryUrlSection = inquiryHref.getHref();
             urlBuffer.append("<a href='");
@@ -259,15 +258,17 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         HeaderField docStatus = new HeaderField(KNSConstants.DocumentFormHeaderFieldIds.DOCUMENT_WORKFLOW_STATUS, "DataDictionary.AttributeReferenceDummy.attributes.workflowDocumentStatus", workflowDocument != null? workflowDocument.getStatusDisplayValue() : null, null);
         String principalId = null;
         String initiatorNetworkId = null;
+        Person user = null;
     	if (workflowDocument != null) {
        		if (getInitiator() == null) {
     			LOG.warn("User Not Found while attempting to build inquiry link for document header fields");
     		} else {
+    			user = getInitiator();
     			principalId = getInitiator().getPrincipalId();
     			initiatorNetworkId = getInitiator().getPrincipalName();
     		}
     	}
-        String inquiryUrl = getPersonInquiryUrlLink(principalId, workflowDocument != null? workflowDocument.getInitiatorPrincipalId() : null);
+        String inquiryUrl = getPersonInquiryUrlLink(user, workflowDocument != null? initiatorNetworkId:null);
 
         HeaderField docInitiator = new HeaderField(KNSConstants.DocumentFormHeaderFieldIds.DOCUMENT_INITIATOR, "DataDictionary.AttributeReferenceDummy.attributes.initiatorNetworkId", 
         workflowDocument != null? initiatorNetworkId : null, workflowDocument != null? inquiryUrl : null);

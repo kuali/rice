@@ -28,6 +28,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocSearchDTO;
 import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
+import org.kuali.rice.kew.docsearch.StandardDocumentSearchGenerator;
 import org.kuali.rice.kew.docsearch.dao.DocumentSearchDAO;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
@@ -95,7 +96,11 @@ public class DocumentSearchDAOJdbcImpl implements DocumentSearchDAO {
                             // TODO delyea - look at refactoring
                             final Statement searchAttributeStatement = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
                             try {
-                                return documentSearchGenerator.processResultSet(searchAttributeStatement, rs, criteria, principalId);
+                            	if(documentSearchGenerator.isProcessResultSet()){
+                            		return documentSearchGenerator.processResultSet(searchAttributeStatement, rs, criteria, principalId);
+                            	}else{
+                            		return new StandardDocumentSearchGenerator().processResultSet(searchAttributeStatement, rs, criteria, principalId);
+                            	}
                             } finally {
                                 try {
                                     searchAttributeStatement.close();

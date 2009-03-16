@@ -29,6 +29,7 @@ import org.apache.ojb.broker.accesslayer.LookupException;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocSearchDTO;
 import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
+import org.kuali.rice.kew.docsearch.StandardDocumentSearchGenerator;
 import org.kuali.rice.kew.docsearch.dao.DocumentSearchDAO;
 import org.kuali.rice.kew.doctype.service.DocumentSecurityService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -93,7 +94,13 @@ public class DocumentSearchDAOOjbImpl extends PersistenceBrokerDaoSupport implem
             perfLog.log("Time to execute doc search database query.", true);
             // TODO delyea - look at refactoring
             searchAttributeStatement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            docList = documentSearchGenerator.processResultSet(searchAttributeStatement, rs, criteria, principalId);
+
+            if(documentSearchGenerator.isProcessResultSet()){
+            	docList = documentSearchGenerator.processResultSet(searchAttributeStatement, rs, criteria, principalId);
+        	}else{
+        		docList = new StandardDocumentSearchGenerator().processResultSet(searchAttributeStatement, rs, criteria, principalId);
+        	}
+
         } catch (SQLException sqle) {
             String errorMsg = "SQLException: " + sqle.getMessage();
             LOG.error("getList() " + errorMsg, sqle);

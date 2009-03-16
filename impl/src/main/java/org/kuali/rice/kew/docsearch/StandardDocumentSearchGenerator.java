@@ -74,6 +74,8 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
     private boolean usingAtLeastOneSearchAttribute = false;
 
+    private boolean isProcessResultSet = true;
+
 	public StandardDocumentSearchGenerator() {
 		super();
 		this.searchableAttributes = new ArrayList<SearchableAttribute>();
@@ -1036,5 +1038,12 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
     public int getDocumentSearchResultSetLimit() {
         return DEFAULT_SEARCH_RESULT_CAP;
+    }
+
+    public boolean isProcessResultSet(){
+    	return this.isProcessResultSet;
+    }
+    public void setProcessResultSet(boolean isProcessResultSet){
+    	this.isProcessResultSet = isProcessResultSet;
     }
 }

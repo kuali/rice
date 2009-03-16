@@ -56,4 +56,14 @@ public interface DocumentSearchGenerator {
     public DocSearchCriteriaDTO clearSearch(DocSearchCriteriaDTO searchCriteria);
 
     public int getDocumentSearchResultSetLimit();
+
+    /**
+     *
+     * This method returns if processResultSet should be called.
+     *
+     * @return
+     */
+    public boolean isProcessResultSet();
+    public void setProcessResultSet(boolean isProcessResultSet);
+
 }

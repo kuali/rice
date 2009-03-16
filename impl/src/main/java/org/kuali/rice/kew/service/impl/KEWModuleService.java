@@ -15,18 +15,18 @@
  */
 package org.kuali.rice.kew.service.impl;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.kew.docsearch.DocumentSearchCriteriaEBO;
 import org.kuali.rice.kew.doctype.bo.DocumentTypeEBO;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
-import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.impl.ModuleServiceBase;
-import org.kuali.rice.kew.doctype.bo.DocumentType;
 
 /**
  * The ModuleService for KEW
@@ -51,6 +51,10 @@ public class KEWModuleService extends ModuleServiceBase {
 			pkFields.add( "name" );
 			pkFields.add( "documentTypeId" );
 			return pkFields;
+		}else if(DocumentSearchCriteriaEBO.class.isAssignableFrom( businessObjectInterfaceClass )){
+			List<String> pkFields = new ArrayList<String>( 1 );
+			pkFields.add( "routeHeaderId" );
+			return pkFields;
 		}
 		return super.listPrimaryKeyFieldNames(businessObjectInterfaceClass);
 	}
@@ -74,31 +78,15 @@ public class KEWModuleService extends ModuleServiceBase {
 				return (T)getDocumentTypeService().findById(Long.valueOf(fieldValues.get( "id" ).toString()));
 			}
 
+		}else if(DocumentSearchCriteriaEBO.class.isAssignableFrom( businessObjectClass )){
+			if ( fieldValues.containsKey( "routeHeaderId" ) ) {
+				return (T)createDocSearchCriteriaEBO(KEWServiceLocator.getRouteHeaderService().getRouteHeader(Long.valueOf(fieldValues.get( "routeHeaderId" ).toString())));
+			}
+
 		}
 
 		// otherwise, use the default implementation
 		return super.getExternalizableBusinessObject(businessObjectClass, fieldValues);
-	}
-
-	/**
-	 * This overridden method returns the BusinessObjectEntry for a DocumentType
-	 *
-	 * Not sure if we need this method. The default might work just fine.
-	 *
-	 * @see org.kuali.rice.kns.service.impl.ModuleServiceBase#getExternalizableBusinessObjectDictionaryEntry(java.lang.Class)
-	 */
-	@Override
-	public BusinessObjectEntry getExternalizableBusinessObjectDictionaryEntry(
-			Class businessObjectInterfaceClass) {
-
-		if(DocumentTypeEBO.class.isAssignableFrom(businessObjectInterfaceClass)){
-			return
-				KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(DocumentType.class.getCanonicalName());
-		}
-
-		// the default
-		return super
-				.getExternalizableBusinessObjectDictionaryEntry(businessObjectInterfaceClass);
 	}
 
 	/**
@@ -117,6 +105,52 @@ public class KEWModuleService extends ModuleServiceBase {
 	 */
 	public void setDocumentTypeService(DocumentTypeService docTypeService) {
 		this.docTypeService = docTypeService;
+	}
+
+	private DocumentSearchCriteriaEBO createDocSearchCriteriaEBO(final DocumentRouteHeaderValue routeHeaderValue){
+		return new DocumentSearchCriteriaEBO(){
+
+			public String getAppDocId() {
+				return routeHeaderValue.getAppDocId();
+			}
+
+			public Timestamp getDateCreated() {
+				return routeHeaderValue.getCreateDate();
+			}
+
+			public String getDocRouteStatus() {
+
+				return routeHeaderValue.getDocRouteStatus();
+			}
+
+			public String getDocTitle() {
+				return routeHeaderValue.getDocTitle();
+			}
+
+			public String getDocTypeFullName() {
+				return routeHeaderValue.getDocumentType().getName();
+			}
+
+			public String getInitiator() {
+				return routeHeaderValue.getInitiatorPrincipal().getPrincipalName();
+			}
+
+			public String getRouteHeaderId() {
+
+				return routeHeaderValue.getRouteHeaderId().toString();
+			}
+
+			public void prepareForWorkflow() {
+				// does nothing
+
+			}
+
+			public void refresh() {
+				// do nothing
+
+			}
+
+		};
 	}
 }
 

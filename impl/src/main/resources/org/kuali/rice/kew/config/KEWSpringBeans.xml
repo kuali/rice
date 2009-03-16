@@ -764,11 +764,13 @@
             <list>
                 <value>org.kuali.rice.kew.</value>
                 <value>org.kuali.rice.kew.doctype.bo</value>
+                <value>org.kuali.rice.kew.docsearch</value>
             </list>
         </property>
         <property name="externalizableBusinessObjectImplementations">
             <map>
 	           <entry key="org.kuali.rice.kew.doctype.bo.DocumentTypeEBO" value="org.kuali.rice.kew.doctype.bo.DocumentType" />
+	           <entry key="org.kuali.rice.kew.docsearch.DocumentSearchCriteriaEBO" value="org.kuali.rice.kew.dto.DocumentSearchCriteriaDTO" />
             </map>
         </property>
 	</bean>

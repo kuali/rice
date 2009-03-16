@@ -56,7 +56,7 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 	/**
 	 * @see org.kuali.rice.kew.docsearch.DocumentLookupCriteriaProcessor#getRows(org.kuali.rice.kns.bo.PersistableBusinessObject)
 	 */
-	public List<Row> getRows(DocumentType documentType, List<Row> knsRows, boolean detailed) {
+	public List<Row> getRows(DocumentType documentType, List<Row> knsRows, boolean detailed, boolean superSearch) {
 		List<Row> rows = new ArrayList<Row>();
 		
 		List<Row> searchAttRows = new ArrayList<Row>();
@@ -87,6 +87,22 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 		}
 		List<Row> postSearchAttRows = standardNonSearchAttRows(documentType,postSearchAttFields);
 		rows.addAll(postSearchAttRows);
+		//add hidden fields
+		Row hidrow = new Row();
+		hidrow.setHidden(true);
+		Field detailedField = new Field();
+		detailedField.setPropertyName("isAdvancedSearch");
+		detailedField.setPropertyValue(detailed?"YES":"NO");
+		detailedField.setFieldType(Field.HIDDEN);
+		Field superUserSearchField = new Field();
+		superUserSearchField.setPropertyName("superUserSearch");
+		superUserSearchField.setPropertyValue(superSearch?"YES":"NO");
+		superUserSearchField.setFieldType(Field.HIDDEN);
+		List<Field> hidFields = new ArrayList<Field>();
+		hidFields.add(detailedField);
+		hidFields.add(superUserSearchField);
+		hidrow.setFields(hidFields);
+		rows.add(hidrow);
 		
 		return rows;
 	}
@@ -157,7 +173,6 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 					row.setFields(knsFields);
 					customPreRows.add(row);
 				}
-
 			}
 		}
 		return customPreRows;
@@ -192,7 +207,6 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 	 * @see org.kuali.rice.kns.lookup.LookupableHelperService#shouldDisplayHeaderNonMaintActions()
 	 */
 	public boolean shouldDisplayHeaderNonMaintActions() {
-		//TODO: chris - should handle advanced too
 		return criteriaProcessor.isHeaderBarDisplayed();
 	}
 

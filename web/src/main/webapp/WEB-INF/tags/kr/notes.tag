@@ -139,8 +139,8 @@
 			<bean:write name="KualiForm" property="${propPrefix}boNote[${status.index}].notePostedTimestamp"/>
             &nbsp;</td>
 
-                        <td class="datacell center"><%--<html:hidden write="true" property="${propPrefix}boNote[${status.index}].authorUniversal.name" />--%></td>
-
+                        <td class="datacell center">
+                        <bean:write name="KualiForm" property="${propPrefix}boNote[${status.index}].authorUniversal.name"/>
 <%-- NEED TO ADD THIS TOPIC FIELD TO DATABASE --%>
                         <c:if test="${displayTopicFieldInNotes eq true}">
                           <td class="datacell center">

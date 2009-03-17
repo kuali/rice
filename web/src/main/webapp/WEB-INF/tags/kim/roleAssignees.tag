@@ -29,6 +29,7 @@ function changeMemberTypeCode(){
         		<th><div align="left">&nbsp</div></th> 
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${roleMemberAttributes.memberTypeCode}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${roleMemberAttributes.memberId}" noColon="true" /></div></th>
+        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${roleMemberAttributes.memberNamespaceCode}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${roleMemberAttributes.memberName}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${roleMemberAttributes.activeFromDate}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${roleMemberAttributes.activeToDate}" noColon="true" /></div></th>
@@ -66,6 +67,11 @@ function changeMemberTypeCode(){
 					<c:if test="${!readOnly}">
 		               	<kul:lookup boClassName="${bo}" fieldConversions="${fc}" anchor="${tabKey}" />
 	               	</c:if>
+				</div>
+				</td>
+                <td class="infoline">   
+                <div align="center">             	
+					<kul:htmlControlAttribute property="member.memberNamespaceCode" attributeEntry="${roleMemberAttributes.memberNamespaceCode}" readOnly="true" />
 				</div>
 				</td>
                 <td class="infoline">   

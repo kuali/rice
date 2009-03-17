@@ -15,8 +15,13 @@
  */
 package org.kuali.rice.kim.lookup;
 
+import java.util.Properties;
+
+import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.lookup.KualiLookupableImpl;
+import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.UrlFactory;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -28,11 +33,16 @@ public class RoleLookupableImpl extends KualiLookupableImpl {
 
 	@Override
 	public String getCreateNewUrl() {
-		//lookup.do?businessObjectClassName=org.kuali.kfs.module.cam.businessobject.AssetAcquisitionType&amp;conversionFields=acquisitionTypeCode%3AacquisitionTypeCode&amp;returnLocation=portal.do&amp;docFormKey=88888888"
-		String url = "lookup.do?businessObjectClassName=org.kuali.rice.kim.bo.types.impl.KimTypeImpl&returnLocation=portal.do&docFormKey="+KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_SHORT_KEY;
-		//String url = "../kim/identityManagementRoleDocument.do?methodToCall=docHandler&command=initiate&docTypeName=IdentityManagementRoleDocument";
-        //url = "kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kim.bo.types.impl.KimTypeImpl";
-        return "<a href=\"" + url + "\"><img src=\"images/tinybutton-createnew.gif\" alt=\"create new\" width=\"70\" height=\"15\"/></a>";
+		String url = "";
+		//if (getLookupableHelperService().allowsMaintenanceNewOrCopyAction()) {
+	        Properties parameters = new Properties();
+	        parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, KimTypeImpl.class.getName());
+	        parameters.put(KNSConstants.RETURN_LOCATION_PARAMETER, KNSConstants.PORTAL_ACTION);
+	        parameters.put(KNSConstants.DOC_FORM_KEY, KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_SHORT_KEY);
+	        url = getCreateNewUrl(UrlFactory.parameterizeUrl(KNSConstants.LOOKUP_ACTION, parameters));
+	        //String url = "lookup.do?businessObjectClassName=org.kuali.rice.kim.bo.types.impl.KimTypeImpl&returnLocation=portal.do&docFormKey="+KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_SHORT_KEY;
+		//}
+		return url;
 	}
 
 }

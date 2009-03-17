@@ -157,9 +157,9 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     private boolean checkPrimaryEmploymentInfo (List <PersonDocumentAffiliation> affiliations) {
     	boolean valid = true;
     	int i = 0;
+    	boolean isPrimarySet = false;
     	for (PersonDocumentAffiliation affiliation : affiliations) {
     		int j = 0;
-        	boolean isPrimarySet = false;
     		for (PersonDocumentEmploymentInfo empInfo : affiliation.getEmpInfos()) {
 	     		if (empInfo.isPrimary()) {
 	     			if (isPrimarySet) {
@@ -174,6 +174,8 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     		}
      		i++;
     	}
+    	if(!isPrimarySet)
+    		valid = false;
     	return valid;
     }
     

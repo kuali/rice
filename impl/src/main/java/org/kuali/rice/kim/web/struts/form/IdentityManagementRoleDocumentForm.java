@@ -161,9 +161,9 @@ public class IdentityManagementRoleDocumentForm extends KualiTransactionalDocume
 		if(MemberTypeValuesFinder.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode))
 			return "principalId:delegationMember.memberId,principalName:delegationMember.memberName";
 		else if(MemberTypeValuesFinder.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode))
-			return "roleId:delegationMember.memberId,roleName:delegationMember.memberName";
+			return "roleId:delegationMember.memberId,roleName:delegationMember.memberName,namespaceCode:delegationMember.memberNamespaceCode";
 		else if(MemberTypeValuesFinder.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode))
-			return "groupId:delegationMember.memberId,groupName:delegationMember.memberName";
+			return "groupId:delegationMember.memberId,groupName:delegationMember.memberName,namespaceCode:delegationMember.memberNamespaceCode";
 		return "";
 	}
 
@@ -177,9 +177,9 @@ public class IdentityManagementRoleDocumentForm extends KualiTransactionalDocume
 		if(MemberTypeValuesFinder.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode))
 			return "principalId:member.memberId,principalName:member.memberName";
 		else if(MemberTypeValuesFinder.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode))
-			return "roleId:member.memberId,roleName:member.memberName";
+			return "roleId:member.memberId,roleName:member.memberName,namespaceCode:member.memberNamespaceCode";
 		else if(MemberTypeValuesFinder.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode))
-			return "groupId:member.memberId,groupName:member.memberName";
+			return "groupId:member.memberId,groupName:member.memberName,namespaceCode:member.memberNamespaceCode";
 		return "";
 	}
 

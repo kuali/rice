@@ -16,14 +16,16 @@
 package org.kuali.rice.kns.service.impl;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.kuali.rice.kns.dao.BusinessObjectDao;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KeyValuesService;
+import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.spring.CacheNoCopy;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * This class provides collection retrievals to populate key value pairs of business objects.
@@ -39,6 +41,10 @@ public class KeyValuesServiceImpl implements KeyValuesService {
      * @see org.kuali.rice.kns.service.KeyValuesService#findAll(java.lang.Class)
      */
     public Collection findAll(Class clazz) {
+        ModuleService responsibleModuleService = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService(clazz);
+		if(responsibleModuleService!=null && responsibleModuleService.isExternalizable(clazz)){
+			return responsibleModuleService.getExternalizableBusinessObjectsList(clazz, new HashMap<String, Object>());
+		}
         if (containsActiveIndicator(clazz)) {
             return businessObjectDao.findAllActive(clazz);
         }

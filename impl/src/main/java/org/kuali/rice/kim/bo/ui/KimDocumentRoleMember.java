@@ -52,6 +52,9 @@ public class KimDocumentRoleMember  extends KimDocumentBoBase {
 	protected String memberTypeCode = KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE;
 	@Column(name="MBR_NM")
 	protected String memberName;
+	@Column(name="MBR_NMSPC")
+	protected String memberNamespaceCode;
+
 	protected List <KimDocumentRoleQualifier> qualifiers = new TypedArrayList(KimDocumentRoleQualifier.class);
 
 	@Transient
@@ -147,6 +150,20 @@ public class KimDocumentRoleMember  extends KimDocumentBoBase {
 	public void setRoleRspActions(
 			List<KimDocumentRoleResponsibilityAction> roleRspActions) {
 		this.roleRspActions = roleRspActions;
+	}
+
+	/**
+	 * @return the memberNamespaceCode
+	 */
+	public String getMemberNamespaceCode() {
+		return this.memberNamespaceCode;
+	}
+
+	/**
+	 * @param memberNamespaceCode the memberNamespaceCode to set
+	 */
+	public void setMemberNamespaceCode(String memberNamespaceCode) {
+		this.memberNamespaceCode = memberNamespaceCode;
 	}
 
 

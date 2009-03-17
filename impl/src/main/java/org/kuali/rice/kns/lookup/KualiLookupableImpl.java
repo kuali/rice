@@ -348,5 +348,8 @@ public class KualiLookupableImpl implements Lookupable {
 		return getLookupableHelperService().shouldDisplayLookupCriteria();
 	}
 
-
+	protected String getCreateNewUrl(String url){
+		return "<a href=\"" + url + "\"><img src=\"images/tinybutton-createnew.gif\" alt=\"create new\" width=\"70\" height=\"15\"/></a>";
+	}
+	
 }

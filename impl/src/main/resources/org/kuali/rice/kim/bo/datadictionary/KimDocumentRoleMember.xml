@@ -18,6 +18,7 @@
         <ref bean="DocRoleMember-memberId" />
         <!-- TODO: create entry for this  -->
         <ref bean="DocRoleMember-memberTypeCode" />
+        <ref bean="DocRoleMember-memberNamespaceCode" />
         <ref bean="DocRoleMember-memberName" />
         <ref bean="DocRoleMember-activeFromDate" />
         <ref bean="DocRoleMember-activeToDate" />
@@ -65,6 +66,11 @@
     </property>
   </bean>
 
+  <bean id="DocRoleMember-memberNamespaceCode" parent="DocRoleMember-memberNamespaceCode-parentBean" />
+  <bean id="DocRoleMember-memberNamespaceCode-parentBean" parent="KimAttributes-namespaceCode" abstract="true"
+        p:name="memberNamespaceCode"
+        p:label="Member Namespace Code" />
+  
   <bean id="DocRoleMember-memberName" parent="DocRoleMember-memberName-parentBean" />
   <bean id="DocRoleMember-memberName-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="memberName"

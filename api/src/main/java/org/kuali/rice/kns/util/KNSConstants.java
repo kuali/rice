@@ -247,6 +247,7 @@ public class KNSConstants extends JSTLConstants {
 
     public static final String INQUIRABLE_ATTRIBUTE_NAME = "kualiInquirable";
     public static final String INQUIRY_ACTION = "inquiry.do";
+    public static final String PORTAL_ACTION = "portal.do";
     public static final String DIRECT_INQUIRY_ACTION = "directInquiry.do";
     public static final String CONTINUE_WITH_INQUIRY_METHOD_TO_CALL = "continueWithInquiry";
 //    public static final String INQUIRY_IMPL_ATTRIBUTE_NAME = "inquirableImplServiceName";

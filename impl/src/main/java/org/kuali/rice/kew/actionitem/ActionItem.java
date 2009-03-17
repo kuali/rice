@@ -314,7 +314,7 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
     @Transient
     public String getActionRequestLabel() {
         String sRet = CodeTranslator.getActionRequestLabel(getActionRequestCd());
-        if(KEWConstants.ACTION_REQUEST_FYI_REQ.equals(getActionRequestCd())){
+        if(KEWConstants.ACTION_REQUEST_FYI_REQ.equals(getActionRequestCd()) && getRequestLabel() != null){
             sRet = getRequestLabel();
         }
         return sRet;

@@ -20,14 +20,14 @@ public final class KIMServiceLocator {
     public static final String KIM_IDENTITY_MANAGEMENT_SERVICE = "kimIdentityManagementService";
     public static final String KIM_ROLE_MANAGEMENT_SERVICE = "kimRoleManagementService";
 	public static final String KIM_PERSON_SERVICE = "personService";
-	
+
     public static final String KIM_IDENTITY_SERVICE = "kimIdentityService";
     public static final String KIM_IDENTITY_UPDATE_SERVICE = "kimIdentityUpdateService";
 	public static final String KIM_IDENTITY_CACHE_SERVICE = "kimIdentityCacheService";
 
 	public static final String KIM_GROUP_SERVICE = "kimGroupService";
 	public static final String KIM_GROUP_UPDATE_SERVICE = "kimGroupUpdateService";
-	
+
 	public static final String KIM_ROLE_SERVICE = "kimRoleService";
 	public static final String KIM_ROLE_UPDATE_SERVICE = "kimRoleUpdateService";
 
@@ -40,8 +40,8 @@ public final class KIMServiceLocator {
 	public static final String KIM_AUTHENTICATION_SERVICE = "kimAuthenticationService";
 	public static final String KIM_TYPE_INTERNAL_SERVICE = "kimTypeInternalService";
 	public static final String KIM_UI_DOCUMENT_SERVICE = "kimUiDocumentService";
+	public static final String GROUP_INTERNAL_SERVICE = "groupInternalService";
 
-	
 	public static Object getService(String serviceName) {
 		return getBean(serviceName);
 	}
@@ -64,7 +64,7 @@ public final class KIMServiceLocator {
     public static IdentityUpdateService getIdentityUpdateService() {
     	return (IdentityUpdateService)getService(KIM_IDENTITY_UPDATE_SERVICE);
     }
-    
+
     public static IdentityCacheService getIdentityCacheService() {
     	return (IdentityCacheService)getService(KIM_IDENTITY_CACHE_SERVICE);
     }
@@ -84,7 +84,7 @@ public final class KIMServiceLocator {
     public static RoleUpdateService getRoleUpdateService() {
     	return (RoleUpdateService)getService(KIM_ROLE_UPDATE_SERVICE);
     }
-    
+
     public static RoleManagementService getRoleManagementService() {
     	return (RoleManagementService)getService(KIM_ROLE_MANAGEMENT_SERVICE);
     }
@@ -96,7 +96,7 @@ public final class KIMServiceLocator {
     public static PermissionUpdateService getPermissionUpdateService() {
     	return (PermissionUpdateService)getService(KIM_PERMISSION_UPDATE_SERVICE);
     }
-    
+
     public static ResponsibilityService getResponsibilityService() {
     	return (ResponsibilityService)getService(KIM_RESPONSIBILITY_SERVICE);
     }
@@ -104,7 +104,7 @@ public final class KIMServiceLocator {
     public static ResponsibilityUpdateService getResponsibilityUpdateService() {
     	return (ResponsibilityUpdateService)getService(KIM_RESPONSIBILITY_UPDATE_SERVICE);
     }
-    
+
     public static KimTypeInternalService getTypeInternalService() {
         return (KimTypeInternalService)getService(KIM_TYPE_INTERNAL_SERVICE);
     }
@@ -120,5 +120,9 @@ public final class KIMServiceLocator {
     @SuppressWarnings("unchecked")
 	public static PersonService getPersonService() {
     	return (PersonService)getService(KIM_PERSON_SERVICE);
+    }
+
+    public static GroupInternalService getGroupInternalService() {
+        return (GroupInternalService)getService(GROUP_INTERNAL_SERVICE);
     }
 }

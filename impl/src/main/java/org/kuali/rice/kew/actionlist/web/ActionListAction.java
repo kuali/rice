@@ -94,7 +94,7 @@ public class ActionListAction extends KualiAction {
     private static String DOCTITLE = "docTitle";
     private static String ACTIONITEM_DOCTITLENAME_EMPTY = "actionitem.doctitlename.empty";
     private static String  ACTIONITEM_ACTIONREQUESTCD_INVALID = "actionitem.actionrequestcd.invalid";
-    
+
 
 
 	public ActionForward execute(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -242,9 +242,11 @@ public class ActionListAction extends KualiAction {
             } else if (actionListSrv.refreshActionList(getUserSession(request).getPerson().getPrincipalId())) {
                     actionList = new ArrayList(actionListSrv.getActionList(principalId, uSession.getActionListFilter()));
                     request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
-                } else {
+            } else {
+                if (!uSession.isUpdateActionList()) {
                 	freshActionList = false;
                 }
+            }
                 request.getSession().setAttribute(ACTION_LIST_KEY, actionList);
             }
             // reset the requery action list key
@@ -280,6 +282,7 @@ public class ActionListAction extends KualiAction {
             }
             PaginatedList currentPage = buildCurrentPage(actionList, form.getCurrentPage(), form.getCurrentSort(), form.getCurrentDir(), pageSize, preferences, errors, form);
             request.setAttribute(ACTION_LIST_PAGE_KEY, currentPage);
+            uSession.actionListUpdated();
             uSession.setCurrentPage(form.getCurrentPage());
             uSession.setSortCriteria(form.getSort());
             uSession.setSortOrder(form.getCurrentDir());
@@ -528,11 +531,11 @@ public class ActionListAction extends KualiAction {
     	if (defaultActions.size() > 1) {
     		form.setDefaultActions(defaultActions);
     	}
-    	
+
     	generateActionItemErrors(errors, "actionlist.badCustomActionListItems", customActionListProblemIds);
     	return new PaginatedActionList(currentPage, actionList.size(), page.intValue(), pageSize, "actionList", sortCriterion, sortOrder);
     }
-    
+
     private void generateActionItemErrors(ActionErrors errors, String errorKey, List documentIds) {
     	if (!documentIds.isEmpty()) {
     		String documentIdsString = StringUtils.join(documentIds.iterator(), ", ");
@@ -542,7 +545,7 @@ public class ActionListAction extends KualiAction {
     private void generateActionItemErrors(List actionList) {
     	for (Iterator iterator = actionList.iterator(); iterator.hasNext();) {
     		ActionItemActionListExtension actionItem = (ActionItemActionListExtension)iterator.next();
-    		if (KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getRouteHeaderId()) == null) { 
+    		if (KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getRouteHeaderId()) == null) {
     			GlobalVariables.getErrorMap().putError(ROUTEHEADERID, ACTIONITEM_ROUTEHEADERID_INVALID,actionItem.getActionItemId()+"");
     		}
     		if(!KEWConstants.ACTION_REQUEST_CODES.containsKey(actionItem.getActionRequestCd())) {
@@ -554,7 +557,7 @@ public class ActionListAction extends KualiAction {
     		}
      	}
     }
-    
+
 
     public ActionForward takeMassActions(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         ActionListForm actionListForm = (ActionListForm) form;

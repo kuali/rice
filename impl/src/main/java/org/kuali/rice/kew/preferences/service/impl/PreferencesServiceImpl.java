@@ -138,7 +138,7 @@ public class PreferencesServiceImpl implements PreferencesService {
 
     public void savePreferences(String principalId, Preferences preferences) {
     	// NOTE: this previously displayed the principalName.  Now it's just the id
-        LOG.debug("saving prerferences user " + principalId);
+        LOG.debug("saving preferences user " + principalId);
 
         validate(preferences);
         UserOptionsService optionSrv = getUserOptionService();

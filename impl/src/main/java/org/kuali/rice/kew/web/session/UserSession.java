@@ -50,7 +50,7 @@ public class UserSession implements Serializable {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
 			.getLogger(UserSession.class);
-	
+
     private static final long serialVersionUID = 1L;
 
     private static ThreadLocal currentUserSession = new ThreadLocal();
@@ -60,19 +60,20 @@ public class UserSession implements Serializable {
     private ActionListFilter actionListFilter;
     private Preferences preferences;
     private List authentications = new ArrayList();
-    
+
     private String sortOrder;
     private String sortCriteria;
     private int currentPage;
-    
+    private boolean updateActionList;
+
     private KimPrincipal actualPrincipal;
     private Person actualPerson;
     private Map<String, KimGroup> actualPrincipalGroups = new HashMap<String, KimGroup>();
-    
+
     private KimPrincipal backdoorPrincipal;
     private Person backdoorPerson;
     private Map<String, KimGroup> backdoorPrincipalGroups = new HashMap<String, KimGroup>();
-    
+
     private KimPrincipal helpDeskActionListPrincipal;
     private Person helpDeskActionListPerson;
 
@@ -169,15 +170,15 @@ public class UserSession implements Serializable {
     public void setActionListFilter(ActionListFilter actionListFilter) {
         this.actionListFilter = actionListFilter;
     }
-    
+
     public KimPrincipal getActualPrincipal() {
     	return actualPrincipal;
     }
-    
+
     public Person getActualPerson() {
     	return actualPerson;
     }
-    
+
 	public KimPrincipal getBackdoorPrincipal() {
 		return this.backdoorPrincipal;
 	}
@@ -197,11 +198,11 @@ public class UserSession implements Serializable {
 	public String getPrincipalId() {
     	return getPrincipal().getPrincipalId();
     }
-    
+
     public String getPrincipalName() {
     	return getPrincipal().getPrincipalName();
     }
-    
+
     public KimPrincipal getPrincipal() {
     	if (getBackdoorPrincipal() != null) {
     		return getBackdoorPrincipal();
@@ -210,7 +211,7 @@ public class UserSession implements Serializable {
     	}
     	throw new IllegalStateException("UserSession does not contain an established principal.");
     }
-    
+
     public Person getPerson() {
     	if (getBackdoorPerson() != null) {
     		return getBackdoorPerson();
@@ -242,30 +243,32 @@ public class UserSession implements Serializable {
         this.backdoorPerson = null;
         establishPreferencesForPrincipal(actualPrincipal);
     }
-    
+
     public void establishHelpDeskWithPrincipalName(String principalName) {
     	this.helpDeskActionListPrincipal = KEWServiceLocator.getIdentityHelperService().getPrincipalByPrincipalName(principalName);
     	this.helpDeskActionListPerson = KEWServiceLocator.getIdentityHelperService().getPersonByPrincipalName(principalName);
     }
-    
+
     public void clearHelpDesk() {
     	this.helpDeskActionListPrincipal = null;
     	this.helpDeskActionListPerson = null;
     }
-    
+
     public void refreshPreferences() {
     	establishPreferencesForPrincipal(getPrincipal());
+    	this.updateActionList = true;
+    	//this.preferences.setPreferencesUpdated(true);
     }
-    
+
     protected void establishPreferencesForPrincipal(KimPrincipal principal) {
-    	this.preferences = KEWServiceLocator.getPreferencesService().getPreferences(principal.getPrincipalId());
+        this.preferences = KEWServiceLocator.getPreferencesService().getPreferences(principal.getPrincipalId());
         if (this.preferences.isRequiresSave()) {
             LOG.info("Detected that user preferences require saving.");
             KEWServiceLocator.getPreferencesService().savePreferences(principal.getPrincipalId(), this.preferences);
             this.preferences = KEWServiceLocator.getPreferencesService().getPreferences(principal.getPrincipalId());
         }
     }
-    
+
     protected boolean isProductionEnvironment() {
     	return KEWConstants.PROD_DEPLOYMENT_CODE.equalsIgnoreCase(ConfigContext.getCurrentContextConfig().getEnvironment());
     }
@@ -343,7 +346,7 @@ public class UserSession implements Serializable {
     	}
 		return actualPrincipalGroups;
 	}
-    
+
 	public boolean isMemberOfGroupWithName(String namespace, String groupName) {
 		for (KimGroup group : getGroups().values()) {
 			if (StringUtils.equals(namespace, group.getNamespaceCode()) && StringUtils.equals(groupName, group.getGroupName())) {
@@ -352,7 +355,7 @@ public class UserSession implements Serializable {
 		}
 		return false;
 	}
-	
+
 	public boolean isMemberOfGroupWithId(String groupId) {
 		return getGroups().containsKey(groupId);
 	}
@@ -371,5 +374,13 @@ public class UserSession implements Serializable {
 		}
 		return personService;
 	}
-	
+
+    public boolean isUpdateActionList() {
+        return this.updateActionList;
+    }
+
+    public void actionListUpdated() {
+        this.updateActionList = false;
+    }
+
 }

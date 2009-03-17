@@ -99,6 +99,8 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     private boolean overridingUserSession = false;
     private boolean saveSearchForUser = false;
 
+    private boolean onlyDocTypeFilled = false;
+    
     public DocSearchCriteriaDTO() {
         super();
     }
@@ -781,6 +783,20 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
 	 */
 	public void setDateCreated(java.sql.Timestamp dateCreated) {
 		this.dateCreated = dateCreated;
+	}
+
+	/**
+	 * @return the onlyDocTypeFilled
+	 */
+	public boolean isOnlyDocTypeFilled() {
+		return this.onlyDocTypeFilled;
+	}
+
+	/**
+	 * @param onlyDocTypeFilled the onlyDocTypeFilled to set
+	 */
+	public void setOnlyDocTypeFilled(boolean onlyDocTypeFilled) {
+		this.onlyDocTypeFilled = onlyDocTypeFilled;
 	}
 
 

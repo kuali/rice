@@ -95,7 +95,7 @@ public class PostProcessorServiceImpl implements PostProcessorService {
         // are doing this here cause it's a heavy hitter, and we
         // want to avoid the user waiting for this during sync processing
         try {
-            LOG.debug(new StringBuffer("started handling route level change from ").append(levelChangeEvent.getOldRouteLevel()).append(" to ").append(levelChangeEvent.getNewRouteLevel()).append(" for document ").append(levelChangeEvent.getRouteHeaderId()));
+            LOG.debug(new StringBuffer("started handling route level change from ").append(levelChangeEvent.getOldNodeName()).append(" to ").append(levelChangeEvent.getNewNodeName()).append(" for document ").append(levelChangeEvent.getRouteHeaderId()));
             establishGlobalVariables();
             Document document = documentService.getByDocumentHeaderId(levelChangeEvent.getRouteHeaderId().toString());
             if (document == null) {
@@ -104,7 +104,7 @@ public class PostProcessorServiceImpl implements PostProcessorService {
             document.populateDocumentForRouting();
             document.handleRouteLevelChange(levelChangeEvent);
             document.getDocumentHeader().getWorkflowDocument().saveRoutingData();
-            LOG.debug(new StringBuffer("finished handling route level change from ").append(levelChangeEvent.getOldRouteLevel()).append(" to ").append(levelChangeEvent.getNewRouteLevel()).append(" for document ").append(levelChangeEvent.getRouteHeaderId()));
+            LOG.debug(new StringBuffer("finished handling route level change from ").append(levelChangeEvent.getOldNodeName()).append(" to ").append(levelChangeEvent.getNewNodeName()).append(" for document ").append(levelChangeEvent.getRouteHeaderId()));
         }
         catch (Exception e) {
             logAndRethrow("route level", e);

@@ -88,15 +88,15 @@ public class RoleNode extends RequestsNode {
 //				}
 			// for mandatory routes, requests must be generated
 			if ( requests.isEmpty() && !suppressPolicyErrors) {
-//				KimResponsibilityInfo resp = getFirstResponsibilityWithMandatoryRouteFlag( document, node );
-//				if ( resp != null ) {
-//					throw new RouteManagerException( "No requests generated for KIM Responsibility-based mandatory route.\n" +
-//							"Document Id:    " + document.getRouteHeaderId() + "\n" +
-//							"DocumentType:   " + document.getDocumentType().getName() + "\n" +
-//							"Route Node:     " + node.getRouteNodeName() + "\n" + 
-//							"Responsibility: " + resp,
-//							routeContext );
-//				}
+				KimResponsibilityInfo resp = getFirstResponsibilityWithMandatoryRouteFlag( document, node );
+				if ( resp != null ) {
+					throw new RouteManagerException( "No requests generated for KIM Responsibility-based mandatory route.\n" +
+							"Document Id:    " + document.getRouteHeaderId() + "\n" +
+							"DocumentType:   " + document.getDocumentType().getName() + "\n" +
+							"Route Node:     " + node.getRouteNodeName() + "\n" + 
+							"Responsibility: " + resp,
+							routeContext );
+				}
 			}
 			// determine if we have any approve requests for FinalApprover
 			// checks
@@ -140,6 +140,7 @@ public class RoleNode extends RequestsNode {
 				LOG.error( "Problem looking up responsibilities to check mandatory route.  Criteria: " +searchCriteria, ex );
 				return null;
 			}
+			docType = docType.getParentDocType();
 		}
 
 		return null;

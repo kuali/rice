@@ -58,6 +58,62 @@
 				&nbsp;<html-el:file styleClass="dataCell" name="IngesterForm" size="50" property="file[2]" />&nbsp;
 				</td>
 			</tr>
+			<tr>
+				<th class="grid" width="Infinity%" align="right">
+					<label>XML File:</label>
+				</th>
+				<td class="grid" width="Infinity%">
+				&nbsp;<html-el:file styleClass="dataCell" name="IngesterForm" size="50" property="file[3]" />&nbsp;
+				</td>
+			</tr>
+			<tr>
+				<th class="grid" width="Infinity%" align="right">
+					<label>XML File:</label>
+				</th>
+				<td class="grid" width="Infinity%">
+				&nbsp;<html-el:file styleClass="dataCell" name="IngesterForm" size="50" property="file[4]" />&nbsp;
+				</td>
+			</tr>
+			<tr>
+				<th class="grid" width="Infinity%" align="right">
+					<label>XML File:</label>
+				</th>
+				<td class="grid" width="Infinity%">
+				&nbsp;<html-el:file styleClass="dataCell" name="IngesterForm" size="50" property="file[5]" />&nbsp;
+				</td>
+			</tr>
+			<tr>
+				<th class="grid" width="Infinity%" align="right">
+					<label>XML File:</label>
+				</th>
+				<td class="grid" width="Infinity%">
+				&nbsp;<html-el:file styleClass="dataCell" name="IngesterForm" size="50" property="file[6]" />&nbsp;
+				</td>
+			</tr>
+			<tr>
+				<th class="grid" width="Infinity%" align="right">
+					<label>XML File:</label>
+				</th>
+				<td class="grid" width="Infinity%">
+				&nbsp;<html-el:file styleClass="dataCell" name="IngesterForm" size="50" property="file[7]" />&nbsp;
+				</td>
+			</tr>
+			<tr>
+				<th class="grid" width="Infinity%" align="right">
+					<label>XML File:</label>
+				</th>
+				<td class="grid" width="Infinity%">
+				&nbsp;<html-el:file styleClass="dataCell" name="IngesterForm" size="50" property="file[8]" />&nbsp;
+				</td>
+			</tr>
+			<tr>
+				<th class="grid" width="Infinity%" align="right">
+					<label>XML File:</label>
+				</th>
+				<td class="grid" width="Infinity%">
+				&nbsp;<html-el:file styleClass="dataCell" name="IngesterForm" size="50" property="file[9]" />&nbsp;
+				</td>
+			</tr>
 			<tr align="center">
 				<td class="infoline" height="30" colspan="2">
 				<div align="center"><html-el:image

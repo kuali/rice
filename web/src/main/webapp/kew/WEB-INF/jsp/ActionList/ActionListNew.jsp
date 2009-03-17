@@ -5,6 +5,7 @@
 <script language="JavaScript" src="../en/scripts/en-common.js"></script>
 <script language="JavaScript" src="../en/scripts/actionlist-common.js"></script>
 
+
 <%-- Setup column labels based on ApplicationsResources --%>
 <bean:define id="documentIdLabel">
 	<bean-el:message key="actionList.ActionList.results.label.documentId" />
@@ -62,6 +63,12 @@
 	headerMenuBar="${ActionListFormNew.menuBar}"
 	transactionalDocument="false" showDocumentInfo="false"
 	htmlFormAction="ActionList" docTitle="Action List">
+  <style type="text/css">
+  <!--
+    #row tr.odd { background-color: transparent; }
+    #row tr.even { background-color: transparent; }
+  -->
+  </style>
 	<%-- Since we are using the external paging and sorting features of the display tag now, if a new sortable column is added, remember to add it to the
        ActionItemComparator in the ActionListAction as well --%>
 	<div class="headerarea-small" id="headerarea-small">
@@ -86,14 +93,14 @@
          src="../kr/images/tinybutton-filter.gif" class="tinybutton" alt="filter" title="filter"
          border="0" /></a>
         </div>
-       
+
 		<c:if test="${kewUserSession.actionListFilter != null && kewUserSession.actionListFilter.filterOn}">
 		<div style="float:left; width:39px">
 	   <a
          href='<c:out value="ActionList.do?methodToCall=clearFilter" />'  title="clearFilter"><img
          src="../en/images/tinybutton-clearfields.gif" class="tinybutton" alt="clearFilter" title="clearFilter"
          border="0" /></a>
-        </div>	
+        </div>
 		</c:if>
 
          <c:if test="${helpDeskActionList != null}">
@@ -240,9 +247,9 @@
 
 
 
-  
+
 					<c:if test="${preferences.showDocType == Constants.PREFERENCES_YES_VAL}">
-					
+
 						<display-el:column property="docLabel" sortable="true"
 							title="${typeLabel}" />
 					</c:if>

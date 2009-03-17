@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<persistence 
-    version="1.0" 
-    xmlns="http://java.sun.com/xml/ns/persistence" 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+<persistence
+    version="1.0"
+    xmlns="http://java.sun.com/xml/ns/persistence"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
-  
+
   <persistence-unit name="kns-unit" transaction-type="JTA">
     <mapping-file>META-INF/kns-orm.xml</mapping-file>
     <class>org.kuali.rice.kim.bo.Person</class>
@@ -28,9 +28,9 @@
     <class>org.kuali.rice.kns.bo.EmployeeType</class>
     <class>org.kuali.rice.kns.bo.EmployeeStatus</class>
     <class>org.kuali.rice.kns.bo.Campus</class>
-    <class>org.kuali.rice.kns.bo.CampusType</class>
+    <class>org.kuali.rice.kns.bo.CampusTypeImpl</class>
     <class>org.kuali.core.bo.DocumentHeader</class>
-    <!-- 
+    <!--
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     -->
   </persistence-unit>

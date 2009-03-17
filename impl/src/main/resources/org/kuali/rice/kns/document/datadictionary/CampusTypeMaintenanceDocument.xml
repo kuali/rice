@@ -3,7 +3,7 @@
   <bean id="KualiCampusTypeMaintenanceDocument" parent="KualiCampusTypeMaintenanceDocument-parentBean"/>
 
   <bean id="KualiCampusTypeMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.kns.bo.CampusType"/>
+    <property name="businessObjectClass" value="org.kuali.rice.kns.bo.CampusTypeImpl"/>
     <property name="maintainableClass" value="org.kuali.rice.kns.maintenance.KualiMaintainableImpl"/>
     <property name="maintainableSections">
       <list>
@@ -15,12 +15,12 @@
         <value>campusTypeCode</value>
       </list>
     </property>
-    
-    
-    
+
+
+
     <property name="documentTypeName" value="CampusTypeMaintenanceDocument"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
-    
+
     <property name="authorizations">
       <list>
         <bean parent="AuthorizationDefinition">
@@ -33,8 +33,8 @@
         </bean>
       </list>
     </property>
-    
-    
+
+
   </bean>
 
 <!-- Maintenance Section Definitions -->

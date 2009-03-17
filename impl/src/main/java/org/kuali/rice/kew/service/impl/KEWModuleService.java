@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kew.docsearch.DocumentSearchCriteriaEBO;
+import org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO;
 import org.kuali.rice.kew.doctype.bo.DocumentTypeEBO;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -51,7 +51,7 @@ public class KEWModuleService extends ModuleServiceBase {
 			pkFields.add( "name" );
 			pkFields.add( "documentTypeId" );
 			return pkFields;
-		}else if(DocumentSearchCriteriaEBO.class.isAssignableFrom( businessObjectInterfaceClass )){
+		}else if(DocumentRouteHeaderEBO.class.isAssignableFrom( businessObjectInterfaceClass )){
 			List<String> pkFields = new ArrayList<String>( 1 );
 			pkFields.add( "routeHeaderId" );
 			return pkFields;
@@ -78,7 +78,7 @@ public class KEWModuleService extends ModuleServiceBase {
 				return (T)getDocumentTypeService().findById(Long.valueOf(fieldValues.get( "id" ).toString()));
 			}
 
-		}else if(DocumentSearchCriteriaEBO.class.isAssignableFrom( businessObjectClass )){
+		}else if(DocumentRouteHeaderEBO.class.isAssignableFrom( businessObjectClass )){
 			if ( fieldValues.containsKey( "routeHeaderId" ) ) {
 				return (T)createDocSearchCriteriaEBO(KEWServiceLocator.getRouteHeaderService().getRouteHeader(Long.valueOf(fieldValues.get( "routeHeaderId" ).toString())));
 			}
@@ -107,8 +107,8 @@ public class KEWModuleService extends ModuleServiceBase {
 		this.docTypeService = docTypeService;
 	}
 
-	private DocumentSearchCriteriaEBO createDocSearchCriteriaEBO(final DocumentRouteHeaderValue routeHeaderValue){
-		return new DocumentSearchCriteriaEBO(){
+	private DocumentRouteHeaderEBO createDocSearchCriteriaEBO(final DocumentRouteHeaderValue routeHeaderValue){
+		return new DocumentRouteHeaderEBO(){
 
 			public String getAppDocId() {
 				return routeHeaderValue.getAppDocId();

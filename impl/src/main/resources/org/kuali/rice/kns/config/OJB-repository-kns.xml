@@ -260,12 +260,12 @@
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 	    <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
 
-		<reference-descriptor name="campusType" class-ref="org.kuali.rice.kns.bo.CampusType" auto-retrieve="true" auto-update="none" auto-delete="none">
+		<reference-descriptor name="campusType" class-ref="org.kuali.rice.kns.bo.CampusTypeImpl" auto-retrieve="true" auto-update="none" auto-delete="none">
 			<foreignkey field-ref="campusTypeCode" />
 		</reference-descriptor>
 	</class-descriptor>
 
-	<class-descriptor class="org.kuali.rice.kns.bo.CampusType" table="KRNS_CMP_TYP_T">
+	<class-descriptor class="org.kuali.rice.kns.bo.CampusTypeImpl" table="KRNS_CMP_TYP_T">
 		<field-descriptor name="campusTypeCode" column="CAMPUS_TYP_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />

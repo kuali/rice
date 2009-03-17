@@ -33,7 +33,7 @@ import org.hibernate.annotations.Type;
  */
 @Entity
 @Table(name="KRNS_CAMPUS_T")
-public class Campus extends PersistableBusinessObjectBase implements Inactivateable {
+public class Campus extends PersistableBusinessObjectBase implements CampusEBO, Inactivateable {
 
     private static final long serialVersionUID = 787567094298971223L;
     @Id
@@ -61,11 +61,10 @@ public class Campus extends PersistableBusinessObjectBase implements Inactivatea
     }
 
     /**
-     * Gets the campusCode attribute.
-     * 
-     * @return Returns the campusCode
-     * 
-     */
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.bo.CampusEBO#getCampusCode()
+	 */
     public String getCampusCode() {
         return campusCode;
     }
@@ -81,11 +80,10 @@ public class Campus extends PersistableBusinessObjectBase implements Inactivatea
     }
 
     /**
-     * Gets the campusName attribute.
-     * 
-     * @return Returns the campusName
-     * 
-     */
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.bo.CampusEBO#getCampusName()
+	 */
     public String getCampusName() {
         return campusName;
     }
@@ -101,11 +99,10 @@ public class Campus extends PersistableBusinessObjectBase implements Inactivatea
     }
 
     /**
-     * Gets the campusShortName attribute.
-     * 
-     * @return Returns the campusShortName
-     * 
-     */
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.bo.CampusEBO#getCampusShortName()
+	 */
     public String getCampusShortName() {
         return campusShortName;
     }
@@ -121,11 +118,10 @@ public class Campus extends PersistableBusinessObjectBase implements Inactivatea
     }
 
     /**
-     * Gets the campusTypeCode attribute.
-     * 
-     * @return Returns the campusTypeCode
-     * 
-     */
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.bo.CampusEBO#getCampusTypeCode()
+	 */
     public String getCampusTypeCode() {
         return campusTypeCode;
     }
@@ -141,9 +137,10 @@ public class Campus extends PersistableBusinessObjectBase implements Inactivatea
     }
 
     /**
-     * Gets the campusType attribute. 
-     * @return Returns the campusType.
-     */
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.bo.CampusEBO#getCampusType()
+	 */
     public CampusType getCampusType() {
         return campusType;
     }
@@ -158,7 +155,9 @@ public class Campus extends PersistableBusinessObjectBase implements Inactivatea
     }
 
 	/**
-	 * @return the active
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.bo.CampusEBO#isActive()
 	 */
 	public boolean isActive() {
 		return this.active;

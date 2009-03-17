@@ -1,138 +1,84 @@
 /*
- * Copyright 2007 The Kuali Foundation.
- * 
+ * Copyright 2007 The Kuali Foundation
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.kuali.rice.kns.bo;
 
-import java.util.LinkedHashMap;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.Type;
-
-
 /**
- * 
+ * Interface for CampusType.
+ *
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ *
  */
-@Entity
-@Table(name="KRNS_CMP_TYP_T")
-public class CampusType extends PersistableBusinessObjectBase implements Inactivateable, CampusTypeEBO {
-
-	@Id
-	@Column(name="CAMPUS_TYP_CD")
-	private String campusTypeCode;
-	@Column(name="DOBJ_MAINT_CD_ACTV_IND")
-	private boolean dataObjectMaintenanceCodeActiveIndicator;
-	@Column(name="CMP_TYP_NM")
-	private String campusTypeName;
-	@Type(type="yes_no")
-	@Column(name="ACTV_IND")
-    protected boolean active;
-	
-	/**
-	 * Default constructor.
-	 */
-	public CampusType() {
-        dataObjectMaintenanceCodeActiveIndicator = true;
-	}
+public interface CampusType extends ExternalizableBusinessObject {
 
 	/**
-	 * This overridden method ...
-	 * 
+	 * Returns the campusTypeCode
+	 *
 	 * @see org.kuali.rice.kns.bo.CampusTypeEBO#getCampusTypeCode()
 	 */
-	public String getCampusTypeCode() { 
-		return campusTypeCode;
-	}
+	public String getCampusTypeCode();
 
 	/**
 	 * Sets the campusTypeCode attribute.
-	 * 
+	 *
 	 * @param campusTypeCode The campusTypeCode to set.
-	 * 
+	 *
 	 */
-	public void setCampusTypeCode(String campusTypeCode) {
-		this.campusTypeCode = campusTypeCode;
-	}
-
+	public void setCampusTypeCode(String campusTypeCode);
 
 	/**
-	 * This overridden method ...
-	 * 
+	 * returns dataObjectMaintenanceCodeActiveIndicator
+	 *
 	 * @see org.kuali.rice.kns.bo.CampusTypeEBO#getDataObjectMaintenanceCodeActiveIndicator()
 	 */
-	public boolean getDataObjectMaintenanceCodeActiveIndicator() { 
-		return dataObjectMaintenanceCodeActiveIndicator;
-	}
+	public boolean getDataObjectMaintenanceCodeActiveIndicator();
 
 	/**
 	 * Sets the dataObjectMaintenanceCodeActiveIndicator attribute.
-	 * 
+	 *
 	 * @param dataObjectMaintenanceCodeActiveIndicator The dataObjectMaintenanceCodeActiveIndicator to set.
-	 * 
+	 *
 	 */
-	public void setDataObjectMaintenanceCodeActiveIndicator(boolean dataObjectMaintenanceCodeActiveIndicator) {
-		this.dataObjectMaintenanceCodeActiveIndicator = dataObjectMaintenanceCodeActiveIndicator;
-	}
-
+	public void setDataObjectMaintenanceCodeActiveIndicator(
+			boolean dataObjectMaintenanceCodeActiveIndicator);
 
 	/**
-	 * This overridden method ...
-	 * 
+	 * returns campusName
+	 *
 	 * @see org.kuali.rice.kns.bo.CampusTypeEBO#getCampusTypeName()
 	 */
-	public String getCampusTypeName() { 
-		return campusTypeName;
-	}
+	public String getCampusTypeName();
 
 	/**
 	 * Sets the campusTypeName attribute.
-	 * 
+	 *
 	 * @param campusTypeName The campusTypeName to set.
-	 * 
+	 *
 	 */
-	public void setCampusTypeName(String campusTypeName) {
-		this.campusTypeName = campusTypeName;
-	}
+	public void setCampusTypeName(String campusTypeName);
 
 	/**
-	 * This overridden method ...
-	 * 
+	 * returns isActive
+	 *
 	 * @see org.kuali.rice.kns.bo.CampusTypeEBO#isActive()
 	 */
-	public boolean isActive() {
-		return this.active;
-	}
+	public boolean isActive();
 
 	/**
 	 * @param active the active to set
 	 */
-	public void setActive(boolean active) {
-		this.active = active;
-	}
+	public void setActive(boolean active);
 
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	protected LinkedHashMap toStringMapper() {
-	    LinkedHashMap m = new LinkedHashMap();	    
-        m.put("campusTypeCode", this.campusTypeCode);
-	    return m;
-    }
 }
-

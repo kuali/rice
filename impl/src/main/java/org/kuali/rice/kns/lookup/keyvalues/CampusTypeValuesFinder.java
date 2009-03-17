@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.kuali.rice.kns.bo.CampusType;
+import org.kuali.rice.kns.bo.CampusTypeImpl;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KeyValuesService;
 import org.kuali.rice.kns.web.ui.KeyLabelPair;
@@ -36,7 +37,7 @@ public class CampusTypeValuesFinder extends KeyValuesBase {
 
         // get a list of all CampusTypes
         KeyValuesService boService = KNSServiceLocator.getKeyValuesService();
-        List campusTypes = (List) boService.findAll(CampusType.class);
+        List campusTypes = (List) boService.findAll(CampusTypeImpl.class);
 
         // calling comparator.
         CampusTypeComparator campusTypeComparator = new CampusTypeComparator();

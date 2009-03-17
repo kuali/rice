@@ -59,8 +59,8 @@ public class ActionListForm extends KualiForm {
     private String primaryDelegateId;
     private List primaryDelegates;
     private Boolean hasCustomActions;
-    private String routeLogPopup;
-    private String documentPopup;
+    private Boolean routeLogPopup;
+    private Boolean documentPopup;
 
     // "sticky" parameters for paginated action list
     private Integer currentPage;
@@ -80,22 +80,6 @@ public class ActionListForm extends KualiForm {
     private boolean outBoxEmpty;
     private Boolean showOutbox;
     private List<ExtraButton> headerButtons = new ArrayList<ExtraButton>();
-
-    public String getRouteLogPopup() {
-	return routeLogPopup;
-    }
-
-    public void setRouteLogPopup(String routeLogPopup) {
-	this.routeLogPopup = routeLogPopup;
-    }
-
-    public String getDocumentPopup() {
-	return documentPopup;
-    }
-
-    public void setDocumentPopup(String documentPopup) {
-	this.documentPopup = documentPopup;
-    }
 
     public String getHelpDeskActionListUserName() {
 	return helpDeskActionListUserName;
@@ -361,27 +345,43 @@ public class ActionListForm extends KualiForm {
         if (userSession.getHelpDeskActionListPrincipal() != null) {
         	setHelpDeskActionListUserName(userSession.getHelpDeskActionListPrincipal().getPrincipalName());
         }
-        boolean isHelpDeskAuthorized = KIMServiceLocator.getIdentityManagementService().isAuthorized(principalId, KEWConstants.KEW_NAMESPACE,	KEWConstants.PermissionNames.VIEW_OTHER_ACTION_LIST, new AttributeSet(), new AttributeSet()); 
+        boolean isHelpDeskAuthorized = KIMServiceLocator.getIdentityManagementService().isAuthorized(principalId, KEWConstants.KEW_NAMESPACE,	KEWConstants.PermissionNames.VIEW_OTHER_ACTION_LIST, new AttributeSet(), new AttributeSet());
         if (isHelpDeskAuthorized) {
             request.setAttribute("helpDeskActionList", "true");
         }
-        String routeLogPopup = "false";
-        boolean routeLogPopupInd = Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_ROUTE_LOG_POPUP_IND);
-        if (routeLogPopupInd) {
-        	routeLogPopup = "true";
-        }
-        String documentPopup = "false";
-        boolean documentPopupInd = Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_ROUTE_LOG_POPUP_IND);
-        if (documentPopupInd) {
-            documentPopup = "true";
-        }
-        setRouteLogPopup(routeLogPopup.trim());
-        setDocumentPopup(documentPopup.trim());
+        //String routeLogPopup = "false";
+        //boolean routeLogPopupInd = Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_ROUTE_LOG_POPUP_IND);
+        //if (routeLogPopupInd) {
+        //	routeLogPopup = "true";
+        //}
+        //String documentPopup = "false";
+        //boolean documentPopupInd = Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_DOCUMENT_POPUP_IND);
+        //if (documentPopupInd) {
+        //    documentPopup = "true";
+        //}
+        setRouteLogPopup(new Boolean(Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_ROUTE_LOG_POPUP_IND)));
+        setDocumentPopup(new Boolean(Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_DOCUMENT_POPUP_IND)));
         request.setAttribute("noRefresh", new Boolean(ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.ACTION_LIST_NO_REFRESH)));
 		super.populate(request);
 	}
-	
-	
+
+    public Boolean getRouteLogPopup() {
+        return this.routeLogPopup;
+    }
+
+    public Boolean getDocumentPopup() {
+        return this.documentPopup;
+    }
+
+    public void setRouteLogPopup(Boolean routeLogPopup) {
+        this.routeLogPopup = routeLogPopup;
+    }
+
+    public void setDocumentPopup(Boolean documentPopup) {
+        this.documentPopup = documentPopup;
+    }
+
+
 
 
 }

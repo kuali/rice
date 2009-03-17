@@ -261,7 +261,7 @@
                                      <c:param name="docId" value="${result.routeHeaderId}"/>
                                          <c:param name="command" value="displayActionListView" />
                                              </c:url>"
-									<c:if test="${ActionListForm.documentPopup == Constants.ACTION_LIST_DOCUMENT_POPUP_VALUE}"> target="_blank" </c:if>
+									<c:if test="${ActionListFormNew.documentPopup}"> target="_blank" </c:if>
 									class="showvisit"> <c:out value="${result.routeHeaderId}" />
 								</a>
 							</c:when>
@@ -403,7 +403,7 @@
 					<display-el:column title="${routeLogLabel}" class="infocell">
 						<div align="center"><a
 							href="<c:url value="../en/RouteLog.do"><c:param name="routeHeaderId" value="${result.routeHeaderId}"/></c:url>"
-							<c:if test="${ActionListForm.routeLogPopup == Constants.ACTION_LIST_ROUTE_LOG_POPUP_VALUE}">target="_blank"</c:if>>
+							<c:if test="${ActionListFormNew.routeLogPopup}">target="_blank"</c:if>>
 						<img alt="Route Log for Document"
 							src="../en/images/my_route_log.gif" /> </a></div>
 					</display-el:column>

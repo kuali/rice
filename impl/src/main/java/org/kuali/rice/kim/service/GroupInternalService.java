@@ -15,6 +15,10 @@
  */
 package org.kuali.rice.kim.service;
 
+import java.util.List;
+
+import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+
 /**
  * This is a description of what this class does 
  * 
@@ -22,6 +26,14 @@ package org.kuali.rice.kim.service;
  *
  */
 public interface GroupInternalService {
+	/**
+	 * Save the KimGroupImpl, being careful to reset the action document
+	 * assignments based on any membership changes.
+	 * 
+	 * @param group
+	 */
+    public void saveWorkgroup(KimGroupImpl group);
+	
     /**
      * Updates ActionItems for workgroup members according to membership differences between the
      * twho workgroups.  Since the changeset of such an operation could potentially be quite large,
@@ -36,7 +48,8 @@ public interface GroupInternalService {
      * the user is, in fact, still a member of the workgroup at the time of the invocation of this method before
      * generating the action items.
      */
-    public void updateActionListForUserAddedToGroup(String principalId, String groupId);
+    public void updateActionItemsForWorkgroupChange(String groupId, 
+    		List<String> oldPrincipalIds, List<String> newPrincipalIds);
 
     /**
      * Updates the action list for a the given document for a user who was removed from a workgroup.  This will delete

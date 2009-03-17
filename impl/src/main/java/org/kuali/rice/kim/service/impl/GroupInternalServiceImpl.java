@@ -33,9 +33,12 @@ import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.workgroup.WorkgroupMembershipChangeProcessor;
+import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.kim.service.GroupInternalService;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.service.BusinessObjectService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
@@ -53,23 +56,34 @@ public class GroupInternalServiceImpl implements GroupInternalService {
     public ActionListService getActionListService() {
     	return (ActionListService) KEWServiceLocator.getActionListService();
     }
+    
+    public BusinessObjectService getBusinessObjectService() {
+    	return (BusinessObjectService) KNSServiceLocator.getBusinessObjectService();
+    }
 	
+    public void saveWorkgroup(KimGroupImpl group) {
+    	IdentityManagementService ims = KIMServiceLocator.getIdentityManagementService();
+    	List<String> oldIds = ims.getGroupMemberPrincipalIds(group.getGroupId());
+        getBusinessObjectService().save( group );
+        List<String> newIds = ims.getGroupMemberPrincipalIds(group.getGroupId());
+        updateActionItemsForWorkgroupChange(group.getGroupId(), oldIds, newIds);
+    }        
+    
     /**
 	 * This overridden method ...
 	 * 
 	 * @see org.kuali.rice.kim.service.GroupInternalService#updateActionItemsForWorkgroupChange(java.lang.String, java.lang.String)
 	 */
-    public void updateActionItemsForWorkgroupChange(String oldKimGroupId, String newKimGroupId)	{
+    public void updateActionItemsForWorkgroupChange(String groupId, 
+    		List<String> oldPrincipalIds, List<String> newPrincipalIds)	{
         IdentityManagementService ims = KIMServiceLocator.getIdentityManagementService();
-        List<String> oldPrincipalIds = ims.getGroupMemberPrincipalIds(oldKimGroupId);
-        List<String> newPrincipalIds = ims.getGroupMemberPrincipalIds(newKimGroupId);
         MembersDiff membersDiff = getMembersDiff(oldPrincipalIds, newPrincipalIds);
         for (String removedPrincipalId : membersDiff.getRemovedPrincipalIds()) {
             KSBXMLService workgroupMembershipChangeProcessor = (KSBXMLService) KSBServiceLocator.getMessageHelper()
             .getServiceAsynchronously(new QName(MessageServiceNames.WORKGROUP_MEMBERSHIP_CHANGE_SERVICE));
             try {
                 workgroupMembershipChangeProcessor.invoke(WorkgroupMembershipChangeProcessor
-                        .getMemberRemovedMessageContents(removedPrincipalId, newKimGroupId));
+                        .getMemberRemovedMessageContents(removedPrincipalId, groupId));
             } catch (Exception e) {
                 throw new WorkflowRuntimeException(e);
             }
@@ -79,7 +93,7 @@ public class GroupInternalServiceImpl implements GroupInternalService {
             .getServiceAsynchronously(new QName(MessageServiceNames.WORKGROUP_MEMBERSHIP_CHANGE_SERVICE));
             try {
                 workgroupMembershipChangeProcessor.invoke(WorkgroupMembershipChangeProcessor.getMemberAddedMessageContents(
-                        addedPrincipalId, oldKimGroupId));
+                        addedPrincipalId, groupId));
             } catch (Exception e) {
                 throw new WorkflowRuntimeException(e);
             }

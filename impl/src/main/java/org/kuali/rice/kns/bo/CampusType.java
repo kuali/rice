@@ -31,7 +31,7 @@ import org.hibernate.annotations.Type;
  */
 @Entity
 @Table(name="KRNS_CMP_TYP_T")
-public class CampusType extends PersistableBusinessObjectBase implements Inactivateable {
+public class CampusType extends PersistableBusinessObjectBase implements Inactivateable, CampusTypeEBO {
 
 	@Id
 	@Column(name="CAMPUS_TYP_CD")
@@ -52,10 +52,9 @@ public class CampusType extends PersistableBusinessObjectBase implements Inactiv
 	}
 
 	/**
-	 * Gets the campusTypeCode attribute.
+	 * This overridden method ...
 	 * 
-	 * @return Returns the campusTypeCode
-	 * 
+	 * @see org.kuali.rice.kns.bo.CampusTypeEBO#getCampusTypeCode()
 	 */
 	public String getCampusTypeCode() { 
 		return campusTypeCode;
@@ -73,10 +72,9 @@ public class CampusType extends PersistableBusinessObjectBase implements Inactiv
 
 
 	/**
-	 * Gets the dataObjectMaintenanceCodeActiveIndicator attribute.
+	 * This overridden method ...
 	 * 
-	 * @return Returns the dataObjectMaintenanceCodeActiveIndicator
-	 * 
+	 * @see org.kuali.rice.kns.bo.CampusTypeEBO#getDataObjectMaintenanceCodeActiveIndicator()
 	 */
 	public boolean getDataObjectMaintenanceCodeActiveIndicator() { 
 		return dataObjectMaintenanceCodeActiveIndicator;
@@ -94,10 +92,9 @@ public class CampusType extends PersistableBusinessObjectBase implements Inactiv
 
 
 	/**
-	 * Gets the campusTypeName attribute.
+	 * This overridden method ...
 	 * 
-	 * @return Returns the campusTypeName
-	 * 
+	 * @see org.kuali.rice.kns.bo.CampusTypeEBO#getCampusTypeName()
 	 */
 	public String getCampusTypeName() { 
 		return campusTypeName;
@@ -114,7 +111,9 @@ public class CampusType extends PersistableBusinessObjectBase implements Inactiv
 	}
 
 	/**
-	 * @return the active
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.bo.CampusTypeEBO#isActive()
 	 */
 	public boolean isActive() {
 		return this.active;

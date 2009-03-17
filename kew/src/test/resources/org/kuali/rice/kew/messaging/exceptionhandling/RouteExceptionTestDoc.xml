@@ -47,6 +47,58 @@
 				</requests>
 			</routeNodes>
 		</documentType>
+		<documentType>
+			<name>TestFinalApproverDocumentType_Child</name>
+			<parent>TestFinalApproverDocumentType</parent>
+			<description>TestDocumentType_Child</description>
+			<label>TestDocumentType_Child</label>
+		</documentType>
+		<documentType>
+			<name>TestFinalApproverDocumentType_GrandChild</name>
+			<parent>TestFinalApproverDocumentType_Child</parent>
+			<description>TestDocumentType_GrandChild</description>
+			<label>TestDocumentType_GrandChild</label>
+		</documentType>
+		<!-- Based on DocumentTypeDocument from DocumentType.xml -->
+		<documentType>
+			<name>DocumentTypeDocument_New</name>
+			<parent>RiceDocument</parent>
+			<description>New Workflow Maintenance Document Type Doc</description>
+			<label>New Workflow Maintenance Document Type Doc</label>
+			<!--
+			<postProcessorName>org.kuali.rice.kew.doctype.DocumentTypePostProcessor</postProcessorName>
+			<docHandler>${workflow.url}/DocumentType.do?methodToCall=docHandler</docHandler>-->
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
+			<docHandler>${workflow.url}/DocumentType.do?methodToCall=docHandler</docHandler>
+			<active>true</active>
+			<policies>
+				<policy>
+					<name>DEFAULT_APPROVE</name>
+					<value>false</value>
+				</policy>
+			</policies>
+			<routePaths>
+				<routePath>
+					<start name="AdHoc" nextNode="RuleTemplate1" />
+					<requests name="RuleTemplate1" nextNode="RuleTemplate2" />
+					<requests name="RuleTemplate2" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="AdHoc">
+					<activationType>P</activationType>
+				</start>
+				<requests name="RuleTemplate1">
+					<activationType>S</activationType>
+					<ruleTemplate>RuleTemplate1</ruleTemplate>
+					<finalApproval>true</finalApproval><!-- this should cause an exception when RuleTemplate2 approve requests get activated -->
+				</requests>
+				<requests name="RuleTemplate2">
+					<activationType>S</activationType>
+					<ruleTemplate>RuleTemplate2</ruleTemplate>
+				</requests>
+			</routeNodes>
+		</documentType>
 	</documentTypes>
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>
@@ -66,7 +118,33 @@
 			<documentType>TestFinalApproverDocumentType</documentType>
 			<ruleTemplate>RuleTemplate2</ruleTemplate>
 			<description>RuleTemplate2</description>
-			<ignorePrevious>false</ignorePrevious>
+			<ignorePrevious>true</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>user2</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>DocumentTypeDocument_New</documentType>
+			<ruleTemplate>RuleTemplate1</ruleTemplate>
+			<description>RuleTemplate1</description>
+			<ignorePrevious>true</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>rkirkend</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>DocumentTypeDocument_New</documentType>
+			<ruleTemplate>RuleTemplate2</ruleTemplate>
+			<description>RuleTemplate2</description>
+			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
 				<responsibility>
 					<user>user2</user>

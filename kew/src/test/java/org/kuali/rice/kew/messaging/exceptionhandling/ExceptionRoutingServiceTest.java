@@ -25,15 +25,6 @@ import org.kuali.rice.kew.test.TestUtilities;
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-/*
-@PerTestUnitTestData(
-		@UnitTestData(sqlStatements = {
-    		@UnitTestSql("INSERT INTO KRIM_RSP_T(RSP_ID, OBJ_ID, RSP_TMPL_ID, nm, DESC_TXT, nmspc_cd, ACTV_IND) VALUES('13', '5B4F09743F4DEF33ED404F8189D44F24', '2', null, null, 'KR-SYS', 'Y')"),
-    		@UnitTestSql("INSERT INTO KRIM_ROLE_RSP_T(ROLE_RSP_ID, OBJ_ID, VER_NBR, ROLE_ID, RSP_ID, ACTV_IND) VALUES('999', '5DF45238F5528FD6E0404F8189D840B8', 1, '63', '13', 'Y')"),
-    		@UnitTestSql("INSERT INTO KRIM_RSP_ATTR_DATA_T (ATTR_DATA_ID, OBJ_ID, VER_NBR, TARGET_PRIMARY_KEY, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ATTR_VAL) VALUES('11', '5D8B0E3E634E96A3E02F4F8189D8468D', 1, '13', '54', '13', 'TestFinalApproverDocumentType')"),
-    	})
-	)
-*/
 public class ExceptionRoutingServiceTest extends KEWTestCase {
 	
 	/**
@@ -43,6 +34,53 @@ public class ExceptionRoutingServiceTest extends KEWTestCase {
 	@Test public void testKimExceptionRouting() throws Exception {
 		loadXmlFile("RouteExceptionTestDoc.xml");
 		WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("admin"), "TestFinalApproverDocumentType");
+        document.setTitle("");
+        document.routeDocument("");
+        document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
+        try {
+            document.approve("");
+            fail("document should have thrown routing exception");
+        } catch (Exception e) {
+            //deal with single transaction issue in test.
+        	TestUtilities.getExceptionThreader().join();
+        	document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
+            assertTrue("Document should be in exception routing", document.stateIsException());
+        }
+	}
+	
+	/**
+	 * Checks to make sure that the KIM routing is working with hierarchical documents.
+	 * Based upon the test method org.kuali.rice.kew.doctype.DocumentTypeTest.testFinalApproverRouting()
+	 */
+	@Test public void testKimExceptionRoutingWithDocHierarchy() throws Exception {
+		loadXmlFile("RouteExceptionTestDoc.xml");
+		String[] docNames = {"TestFinalApproverDocumentType_Child", "TestFinalApproverDocumentType_GrandChild"};
+		// Test the child doc and then the grandchild doc.
+		for (int i = 0; i < docNames.length; i++) {
+			// Perform the same steps as in the previous unit test.
+			WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("admin"), docNames[i]);
+	        document.setTitle("");
+	        document.routeDocument("");
+	        document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
+	        try {
+	            document.approve("");
+	            fail("document should have thrown routing exception");
+	        } catch (Exception e) {
+	            //deal with single transaction issue in test.
+	        	TestUtilities.getExceptionThreader().join();
+	        	document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
+	            assertTrue("Document should be in exception routing", document.stateIsException());
+	        }
+		}
+	}
+	
+	/**
+	 * Checks to make sure that the KIM routing is working for a RiceDocument child.
+	 * Based upon the test method org.kuali.rice.kew.doctype.DocumentTypeTest.testFinalApproverRouting()
+	 */
+	@Test public void testKimExceptionRoutingWithRiceDocumentChild() throws Exception {
+		loadXmlFile("RouteExceptionTestDoc.xml");
+		WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("admin"), "DocumentTypeDocument_New");
         document.setTitle("");
         document.routeDocument("");
         document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());

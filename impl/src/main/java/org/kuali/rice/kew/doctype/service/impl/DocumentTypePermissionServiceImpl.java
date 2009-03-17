@@ -47,7 +47,7 @@ import org.kuali.rice.kns.util.KNSConstants;
  *
  */
 public class DocumentTypePermissionServiceImpl implements DocumentTypePermissionService {
-	
+	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentTypePermissionServiceImpl.class);
 	public boolean canBlanketApprove(String principalId, DocumentType documentType, String documentStatus, String initiatorPrincipalId) {
 		validatePrincipalId(principalId);
 		validateDocumentType(documentType);
@@ -164,6 +164,10 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 			AttributeSet permissionDetails = buildDocumentTypeDocumentStatusPermissionDetails(documentType, documentStatus);
 			AttributeSet roleQualifiers = buildRouteHeaderIdRoleDocumentTypeDocumentStatusQualifiers(documentType, documentStatus, routeHeaderId);
 			
+			if (LOG.isInfoEnabled()) {
+				LOG.info("Permission details values: " + permissionDetails.formattedDump(10));
+				LOG.info("Role qualifiers values: " + roleQualifiers.formattedDump(10));
+			}
 			if (useKimPermission(KEWConstants.KEW_NAMESPACE, KEWConstants.ROUTE_PERMISSION, permissionDetails)) {
 				return getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.KEW_NAMESPACE, KEWConstants.ROUTE_PERMISSION, permissionDetails, roleQualifiers);
 			}

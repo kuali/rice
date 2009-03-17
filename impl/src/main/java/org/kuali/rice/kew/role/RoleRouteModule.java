@@ -17,6 +17,7 @@ package org.kuali.rice.kew.role;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -89,6 +90,9 @@ public class RoleRouteModule implements RouteModule {
 			}		
 		}
 		actionRequests = new ArrayList<ActionRequestValue>(arFactory.getRequestGraphs());
+		for (ActionRequestValue arValue : actionRequests) {
+			arValue.setResolveResponsibility(false);
+		}
 		return actionRequests;
 	}
 

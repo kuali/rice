@@ -124,7 +124,7 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
     
     protected List<ActionRequestValue> generateKimExceptionRequests(RouteContext routeContext) throws Exception {
     	RoleRouteModule roleRouteModule = new RoleRouteModule();
-    	roleRouteModule.setNamespace(KNSConstants.KUALI_RICE_SYSTEM_NAMESPACE);
+    	roleRouteModule.setNamespace(KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE);
     	roleRouteModule.setResponsibilityTemplateName(KEWConstants.EXCEPTION_ROUTING_RESPONSIBILITY_TEMPLATE_NAME);
     	return roleRouteModule.findActionRequests(routeContext);
     }

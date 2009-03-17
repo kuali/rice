@@ -23,6 +23,7 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.role.RoleRouteModule;
 import org.kuali.rice.kew.routemodule.FlexRMAdapter;
 import org.kuali.rice.kew.routemodule.RouteModule;
 import org.kuali.rice.kew.routemodule.RouteModuleRemote;
@@ -52,6 +53,9 @@ public class RouteModuleServiceImpl implements RouteModuleService {
     }
 
     public RouteModule findRouteModule(ActionRequestValue actionRequest) throws ResourceUnavailableException {
+    	if (!actionRequest.getResolveResponsibility()) {
+    		return new RoleRouteModule();
+    	}
         if (actionRequest.getNodeInstance() == null) {
             return null;
         }

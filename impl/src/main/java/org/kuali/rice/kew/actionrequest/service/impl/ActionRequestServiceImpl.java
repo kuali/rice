@@ -268,32 +268,34 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     }
 
     private void processResponsibilityId(ActionRequestValue actionRequest) {
-        Long responsibilityId = actionRequest.getResponsibilityId();
-        try {
-            RouteModule routeModule = KEWServiceLocator.getRouteModuleService().findRouteModule(actionRequest);
-            if (responsibilityId != null && actionRequest.isRouteModuleRequest()) {
-            	if ( LOG.isDebugEnabled() ) {
-            		LOG.debug("Resolving responsibility id for action request id=" + actionRequest.getActionRequestId()
-                        + " and responsibility id=" + actionRequest.getResponsibilityId());
-            	}
-                ResponsibleParty responsibleParty = routeModule.resolveResponsibilityId(actionRequest.getResponsibilityId());
-                if (responsibleParty == null) {
-                    return;
-                }
-                if (responsibleParty.getPrincipalId() != null) {
-                    KimPrincipal user = KIMServiceLocator.getIdentityManagementService()
-                            .getPrincipal(responsibleParty.getPrincipalId());
-                    actionRequest.setPrincipalId(user.getPrincipalId());
-                } else if (responsibleParty.getGroupId() != null) {
-                	actionRequest.setGroupId(responsibleParty.getGroupId());
-                } else if (responsibleParty.getRoleName() != null) {
-                    actionRequest.setRoleName(responsibleParty.getRoleName());
-                }
-            }
-        } catch (Exception e) {
-            LOG.error("Exception thrown when trying to resolve responsibility id " + responsibilityId, e);
-            throw new RuntimeException(e);
-        }
+    	//if (actionRequest.getResolveResponsibility()) {
+	        Long responsibilityId = actionRequest.getResponsibilityId();
+	        try {
+	            RouteModule routeModule = KEWServiceLocator.getRouteModuleService().findRouteModule(actionRequest);
+	            if (responsibilityId != null && actionRequest.isRouteModuleRequest()) {
+	            	if ( LOG.isDebugEnabled() ) {
+	            		LOG.debug("Resolving responsibility id for action request id=" + actionRequest.getActionRequestId()
+	                        + " and responsibility id=" + actionRequest.getResponsibilityId());
+	            	}
+	                ResponsibleParty responsibleParty = routeModule.resolveResponsibilityId(actionRequest.getResponsibilityId());
+	                if (responsibleParty == null) {
+	                    return;
+	                }
+	                if (responsibleParty.getPrincipalId() != null) {
+	                    KimPrincipal user = KIMServiceLocator.getIdentityManagementService()
+	                            .getPrincipal(responsibleParty.getPrincipalId());
+	                    actionRequest.setPrincipalId(user.getPrincipalId());
+	                } else if (responsibleParty.getGroupId() != null) {
+	                	actionRequest.setGroupId(responsibleParty.getGroupId());
+	                } else if (responsibleParty.getRoleName() != null) {
+	                    actionRequest.setRoleName(responsibleParty.getRoleName());
+	                }
+	            }
+	        } catch (Exception e) {
+	            LOG.error("Exception thrown when trying to resolve responsibility id " + responsibilityId, e);
+	            throw new RuntimeException(e);
+	        }
+    	//}
     }
 
     private boolean deactivateOnActionAlreadyTaken(ActionRequestValue actionRequestToActivate,

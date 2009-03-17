@@ -188,6 +188,9 @@ public class ActionRequestValue implements WorkflowPersistable {
     @Column(name="RQST_LBL")
     private String requestLabel;
     
+    @Transient
+    private boolean resolveResponsibility = true;
+    
     public ActionRequestValue() {
         createDate = new Timestamp(System.currentTimeMillis());
     }
@@ -950,4 +953,19 @@ public class ActionRequestValue implements WorkflowPersistable {
     public String getGroupName() {
         return KIMServiceLocator.getIdentityManagementService().getGroup(this.groupId).getGroupName();
     }
+
+	/**
+	 * @return the resolveResponsibility
+	 */
+	public boolean getResolveResponsibility() {
+		return this.resolveResponsibility;
+	}
+
+	/**
+	 * @param resolveResponsibility the resolveResponsibility to set
+	 */
+	public void setResolveResponsibility(boolean resolveResponsibility) {
+		this.resolveResponsibility = resolveResponsibility;
+	}
+    
 }

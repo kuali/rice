@@ -100,6 +100,7 @@
 			   <entry key="org.kuali.rice.kns.bo.State" value="org.kuali.rice.kns.bo.StateImpl" />
 			   <entry key="org.kuali.rice.kns.bo.PostalCode" value="org.kuali.rice.kns.bo.PostalCodeImpl" />
 			   <entry key="org.kuali.rice.kns.bo.County" value="org.kuali.rice.kns.bo.CountyImpl" />
+			   <entry key="org.kuali.rice.kns.bo.CampusEBO" value="org.kuali.rice.kns.bo.Campus" />
 			   <entry key="org.kuali.rice.kns.bo.CampusTypeEBO" value="org.kuali.rice.kns.bo.CampusType" />
             </map>
         </property>
@@ -150,6 +151,8 @@
 			   <entry key="org.kuali.rice.kns.bo.State" value="org.kuali.rice.kns.bo.StateImpl" />
 			   <entry key="org.kuali.rice.kns.bo.PostalCode" value="org.kuali.rice.kns.bo.PostalCodeImpl" />
 			   <entry key="org.kuali.rice.kns.bo.County" value="org.kuali.rice.kns.bo.CountyImpl" />
+			   <entry key="org.kuali.rice.kns.bo.CampusEBO" value="org.kuali.rice.kns.bo.Campus" />			   
+			   <entry key="org.kuali.rice.kns.bo.CampusTypeEBO" value="org.kuali.rice.kns.bo.CampusType" />
             </map>
         </property>
 	</bean>

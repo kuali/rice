@@ -128,7 +128,11 @@ function changeMemberTypeCode(){
 					</div>
 				</td>
 	            <td align="left" valign="middle">
-	               	<div align="center"> <kul:htmlControlAttribute property="document.members[${statusMember.index}].memberId"  attributeEntry="${roleMemberAttributes.memberId}" readOnly="${readOnly}" />
+	               	<div align="center"> <kul:htmlControlAttribute property="document.members[${statusMember.index}].memberId"  attributeEntry="${roleMemberAttributes.memberId}" readOnly="true" />
+					</div>
+				</td>
+	            <td align="left" valign="middle">
+	               	<div align="center"> <kul:htmlControlAttribute property="document.members[${statusMember.index}].memberNamespaceCode"  attributeEntry="${roleMemberAttributes.memberNamespaceCode}" readOnly="true"  />
 					</div>
 				</td>
 	            <td align="left" valign="middle">

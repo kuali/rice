@@ -140,6 +140,7 @@ public class RiceKeyConstants {
     public static final String ERROR_MULTIPLE_DEFAULT_SELETION = "error.multiple.default.selection";
     public static final String ERROR_NO_DEFAULT_SELETION = "error.no.default.selection";
     public static final String ERROR_MULTIPLE_PRIMARY_EMPLOYMENT = "error.multiple.primary.employment";
+    public static final String ERROR_NO_PRIMARY_EMPLOYMENT = "error.no.primary.employment";
     public static final String ERROR_DUPLICATE_ENTRY = "error.duplicate.entry";
     public static final String ERROR_EMPTY_ENTRY = "error.empty.entry";
     public static final String ERROR_EXIST_PRINCIPAL_NAME = "error.exist.principalName";

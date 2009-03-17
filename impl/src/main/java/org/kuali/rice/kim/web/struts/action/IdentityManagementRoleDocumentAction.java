@@ -204,6 +204,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         	return false;
 		}
         newMember.setMemberName(getMemberName(newMember.getMemberTypeCode(), object));
+        newMember.setMemberNamespaceCode(getMemberNamespaceCode(newMember.getMemberTypeCode(), object));
         return true;
     }
 
@@ -264,6 +265,18 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         	roleMemberName = ((KimRoleImpl)object).getRoleName();
         }
         return roleMemberName;
+    }
+    
+    public String getMemberNamespaceCode(String memberTypeCode, BusinessObject object){
+    	String roleMemberNamespaceCode = "";
+        if(MemberTypeValuesFinder.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
+        	roleMemberNamespaceCode = "";
+        } else if(MemberTypeValuesFinder.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
+        	roleMemberNamespaceCode = ((KimGroupImpl)object).getNamespaceCode();
+        } else if(MemberTypeValuesFinder.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
+        	roleMemberNamespaceCode = ((KimRoleImpl)object).getNamespaceCode();
+        }
+        return roleMemberNamespaceCode;
     }
     
     public ActionForward addDelegationMember(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {

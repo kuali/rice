@@ -29,6 +29,7 @@ function changeDelegationMemberTypeCode(){
         		<th><div align="left">&nbsp</div></th> 
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${delegationMemberAttributes.memberTypeCode}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${delegationMemberAttributes.memberId}" noColon="true" /></div></th>
+        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${delegationMemberAttributes.memberNamespaceCode}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${delegationMemberAttributes.memberName}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${delegationMemberAttributes.activeFromDate}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${delegationMemberAttributes.activeToDate}" noColon="true" /></div></th>
@@ -66,6 +67,11 @@ function changeDelegationMemberTypeCode(){
 					<c:if test="${!readOnly}" >
 		               	<kul:lookup boClassName="${bo}" fieldConversions="${fc}" anchor="${tabKey}" />
 		            </c:if>
+				</div>
+				</td>
+				<td class="infoline">   
+                <div align="center">
+					<kul:htmlControlAttribute property="delegationMember.memberNamespaceCode" attributeEntry="${delegationMemberAttributes.memberNamespaceCode}" readOnly="true" />
 				</div>
 				</td>
 				<td class="infoline">   
@@ -125,11 +131,15 @@ function changeDelegationMemberTypeCode(){
 					</div>
 				</td>
 	            <td align="left" valign="middle">
-	               	<div align="center"> <kul:htmlControlAttribute property="document.delegationMembers[${statusMember.index}].memberId"  attributeEntry="${delegationMemberAttributes.memberId}" readOnly="${readOnly}" />
+	               	<div align="center"> <kul:htmlControlAttribute property="document.delegationMembers[${statusMember.index}].memberId"  attributeEntry="${delegationMemberAttributes.memberId}" readOnly="true" />
 					</div>
 				</td>
 	            <td align="left" valign="middle">
-	               	<div align="center"> <kul:htmlControlAttribute property="document.delegationMembers[${statusMember.index}].memberName"  attributeEntry="${delegationMemberAttributes.memberName}" readOnly="${readOnly}" />
+	               	<div align="center"> <kul:htmlControlAttribute property="document.delegationMembers[${statusMember.index}].memberNamespaceCode"  attributeEntry="${delegationMemberAttributes.memberNamespaceCode}" readOnly="true" />
+					</div>
+				</td>
+	            <td align="left" valign="middle">
+	               	<div align="center"> <kul:htmlControlAttribute property="document.delegationMembers[${statusMember.index}].memberName"  attributeEntry="${delegationMemberAttributes.memberName}" readOnly="true" />
 					</div>
 				</td>
 	            <td align="left" valign="middle">

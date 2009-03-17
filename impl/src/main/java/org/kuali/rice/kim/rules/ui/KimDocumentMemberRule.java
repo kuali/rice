@@ -56,7 +56,7 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
 
 	    int i = 0;
 	    for (KimDocumentRoleMember member: document.getMembers()){
-	    	if (member.getMemberId().equals(newMember.getMemberId())){
+	    	if (member.getMemberId().equals(newMember.getMemberId()) && member.getMemberTypeCode().equals(newMember.getMemberTypeCode())){
 	            rulePassed = false;
 	            GlobalVariables.getErrorMap().putError("document.members["+i+"].memberId", RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Member"});
 	    	}

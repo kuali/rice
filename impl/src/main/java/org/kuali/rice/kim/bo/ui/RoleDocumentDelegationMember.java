@@ -53,6 +53,8 @@ public class RoleDocumentDelegationMember extends KimDocumentBoBase {
 	@Column(name="MBR_TYP_CD")
 	protected String memberTypeCode = KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE;
 	
+	protected String memberNamespaceCode;
+	
 	@Column(name="MBR_NM")
 	protected String memberName;
 	protected List <RoleDocumentDelegationMemberQualifier> qualifiers = new TypedArrayList(RoleDocumentDelegationMemberQualifier.class);
@@ -170,6 +172,20 @@ public class RoleDocumentDelegationMember extends KimDocumentBoBase {
 
 	public boolean isDelegationSecondary(){
 		return KEWConstants.DELEGATION_SECONDARY.equals(getDelegationTypeCode());
+	}
+
+	/**
+	 * @return the memberNamespaceCode
+	 */
+	public String getMemberNamespaceCode() {
+		return this.memberNamespaceCode;
+	}
+
+	/**
+	 * @param memberNamespaceCode the memberNamespaceCode to set
+	 */
+	public void setMemberNamespaceCode(String memberNamespaceCode) {
+		this.memberNamespaceCode = memberNamespaceCode;
 	}
 
 }

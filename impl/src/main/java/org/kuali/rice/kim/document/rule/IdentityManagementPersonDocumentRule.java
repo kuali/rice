@@ -157,11 +157,14 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     private boolean checkPrimaryEmploymentInfo (List <PersonDocumentAffiliation> affiliations) {
     	boolean valid = true;
     	int i = 0;
+    	int firstAfflnCounter = -1;
     	boolean isPrimarySet = false;
     	for (PersonDocumentAffiliation affiliation : affiliations) {
     		int j = 0;
     		for (PersonDocumentEmploymentInfo empInfo : affiliation.getEmpInfos()) {
-	     		if (empInfo.isPrimary()) {
+     			if(firstAfflnCounter==-1)
+     				firstAfflnCounter = i;
+    			if (empInfo.isPrimary()) {
 	     			if (isPrimarySet) {
 	     				// primary per principal or primary per affiliation ?
 	     				GlobalVariables.getErrorMap().putError("affiliations[" + i + "].empInfos["+ j +"].primary",RiceKeyConstants.ERROR_MULTIPLE_PRIMARY_EMPLOYMENT);
@@ -174,8 +177,10 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     		}
      		i++;
     	}
-    	if(!isPrimarySet)
+    	if(!isPrimarySet && firstAfflnCounter!=-1){
+    		GlobalVariables.getErrorMap().putError("affiliations[" + firstAfflnCounter + "].empInfos[0].primary",RiceKeyConstants.ERROR_NO_PRIMARY_EMPLOYMENT);
     		valid = false;
+    	}
     	return valid;
     }
     

@@ -40,7 +40,8 @@ public interface GroupInternalService {
      * this method should schedule the changes to occur asynchronously to mitigate transaction
      * and concurent document modification issues.
      */
-    public void updateActionItemsForWorkgroupChange(String oldKimGroupId, String newKimGroupId);
+    public void updateActionItemsForWorkgroupChange( String groupId,
+    		List<String> oldPrincipalIds, List<String> newPrincipalIds);
 
     /**
      * Updates the action list for a the given document for a user who was added to a workgroup.  This method will generate
@@ -48,8 +49,7 @@ public interface GroupInternalService {
      * the user is, in fact, still a member of the workgroup at the time of the invocation of this method before
      * generating the action items.
      */
-    public void updateActionItemsForWorkgroupChange(String groupId, 
-    		List<String> oldPrincipalIds, List<String> newPrincipalIds);
+    public void updateActionListForUserAddedToGroup(String principalId, String groupId);
 
     /**
      * Updates the action list for a the given document for a user who was removed from a workgroup.  This will delete

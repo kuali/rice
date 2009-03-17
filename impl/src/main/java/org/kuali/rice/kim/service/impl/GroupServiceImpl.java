@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
 import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
@@ -17,6 +18,7 @@ import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.GroupUpdateService;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -491,7 +493,8 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
 		if ( group == null ) {
 			return;
 		}
-		getBusinessObjectService().save( group );
+
+		KIMServiceLocator.getGroupInternalService().saveWorkgroup(group);	    
 	}
 
 	protected void saveGroupAttributes(List<GroupAttributeDataImpl> groupAttributes) {

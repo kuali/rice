@@ -18,16 +18,16 @@
 	<tr>
 		<td>
             <c:forEach var="actionRequest" items="${SuperUserForm.actionRequests}">
-            	<c:if test="${! (actionRequest.workflowId == null && actionRequest.workgroupId == null)}">
+            	<c:if test="${! (actionRequest.principalId == null && actionRequest.groupId == null)}">
 					<table border="0" cellpadding="0" cellspacing="0" class="bord-r-t" width="100%">
 						<tr>
 							<td height="30" colspan="2" class="headercell1" align="center"><b><c:out value="${actionRequest.actionRequestedLabel}" /></b> Requested of
 								<c:choose>
 									<c:when test="${actionRequest.userRequest}">
-										<c:out value="${actionRequest.workflowUser.displayName}" />
+										<c:out value="${actionRequest.person.name}" />
 									</c:when>
 									<c:otherwise>
-										<c:out value="${actionRequest.workgroup.workgroupName}"/>
+										<c:out value="${actionRequest.groupName}"/>
 									</c:otherwise>
 								</c:choose>
 							</td>
@@ -87,7 +87,7 @@
 	                        <td height="30" colspan="2" class="headercell1" align="center">
 	                          <c:choose>
 	                            <c:when test="${actionRequest.recipientTypeCd == Constants.ACTION_REQUEST_USER_RECIPIENT_CD}" >
-	                              <c:set var="username" value="${actionRequest.workflowUser.authenticationUserId.authenticationId}" />
+	                              <c:set var="username" value="${actionRequest.principal.principalName}" />
 	                            </c:when>
 	                            <c:otherwise>
 	                              <c:set var="username" value="" />
@@ -96,25 +96,25 @@
 	                          <c:choose>
 	                          	<c:when test="${actionRequest.actionRequested == Constants.ACTION_REQUEST_ACKNOWLEDGE_REQ}">
 	                          	  <img src="images/buttonsmall_acknowledge.gif" onclick="processActionRequest('SuperUserForm', '<c:out value="${actionRequest.recipientTypeCd}"/>',
-	                               '<c:out value="${username}"/>', '<c:out value="${actionRequest.workgroupId}"/>', '<c:out value="${actionRequest.actionRequestId}"/>','acknowlege');" />
+	                               '<c:out value="${username}"/>', '<c:out value="${actionRequest.groupId}"/>', '<c:out value="${actionRequest.actionRequestId}"/>','acknowlege');" />
 	                          	</c:when>
 	                          	<c:when test="${actionRequest.actionRequested == Constants.ACTION_REQUEST_FYI_REQ}">
 	                          	  <img src="images/buttonsmall_fyi.gif" onclick="processActionRequest('SuperUserForm', '<c:out value="${actionRequest.recipientTypeCd}"/>',
-	                               '<c:out value="${username}"/>', '<c:out value="${actionRequest.workgroupId}"/>', '<c:out value="${actionRequest.actionRequestId}"/>','FYI');" />
-	                          		 
+	                               '<c:out value="${username}"/>', '<c:out value="${actionRequest.groupId}"/>', '<c:out value="${actionRequest.actionRequestId}"/>','FYI');" />
+
 	                          	</c:when>
 	                          	<c:when test="${actionRequest.actionRequested == Constants.ACTION_REQUEST_COMPLETE_REQ}">
 	                          	  <img src="images/buttonsmall_complete.gif" onclick="processActionRequest('SuperUserForm', '<c:out value="${actionRequest.recipientTypeCd}"/>',
-	                               '<c:out value="${username}"/>', '<c:out value="${actionRequest.workgroupId}"/>', '<c:out value="${actionRequest.actionRequestId}"/>','complete');" />
-	                          		 
+	                               '<c:out value="${username}"/>', '<c:out value="${actionRequest.groupId}"/>', '<c:out value="${actionRequest.actionRequestId}"/>','complete');" />
+
 	                          	</c:when>
 	                          	<c:when test="${actionRequest.actionRequested == Constants.ACTION_REQUEST_APPROVE_REQ}">
 	                          	  <img src="images/buttonsmall_approve.gif" onclick="processActionRequest('SuperUserForm', '<c:out value="${actionRequest.recipientTypeCd}"/>',
-	                               '<c:out value="${username}"/>', '<c:out value="${actionRequest.workgroupId}"/>', '<c:out value="${actionRequest.actionRequestId}"/>','approved');" />
-	                          		
+	                               '<c:out value="${username}"/>', '<c:out value="${actionRequest.groupId}"/>', '<c:out value="${actionRequest.actionRequestId}"/>','approved');" />
+
 	                          	</c:when>
 	                         </c:choose>
-	                        </td>    
+	                        </td>
 						</tr>
 					</table><br>
 				</c:if>

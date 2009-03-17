@@ -27,7 +27,7 @@
     <class>org.kuali.rice.kns.bo.SelectedObjectIds</class>
     <class>org.kuali.rice.kns.bo.EmployeeType</class>
     <class>org.kuali.rice.kns.bo.EmployeeStatus</class>
-    <class>org.kuali.rice.kns.bo.Campus</class>
+    <class>org.kuali.rice.kns.bo.CampusImpl</class>
     <class>org.kuali.rice.kns.bo.CampusType</class>
     <class>org.kuali.core.bo.DocumentHeader</class>
     <!-- 

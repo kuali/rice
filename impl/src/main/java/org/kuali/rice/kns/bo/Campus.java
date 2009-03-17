@@ -1,12 +1,12 @@
 /*
- * Copyright 2007 The Kuali Foundation.
- * 
+ * Copyright 2007 The Kuali Foundation
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,59 +15,56 @@
  */
 package org.kuali.rice.kns.bo;
 
-import java.util.LinkedHashMap;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.Type;
-
 /**
+ * Campus Externalizable Business Object 
  * 
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ *
  */
-@Entity
-@Table(name="KRNS_CAMPUS_T")
-public class Campus extends PersistableBusinessObjectBase implements CampusEBO, Inactivateable {
+public interface Campus extends ExternalizableBusinessObject {
 
-    private static final long serialVersionUID = 787567094298971223L;
-    @Id
-	@Column(name="CAMPUS_CD")
-	private String campusCode;
-    @Column(name="CAMPUS_NM")
-	private String campusName;
-    @Column(name="CAMPUS_SHRT_NM")
-	private String campusShortName;
-    @Column(name="CAMPUS_TYP_CD")
-	private String campusTypeCode;
-	@Type(type="yes_no")
-	@Column(name="ACTV_IND")
-    protected boolean active;
-
-    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="CAMPUS_TYP_CD", insertable=false, updatable=false)
-	private CampusType campusType;
-    
-    /**
-     * Default no-arg constructor.
-     */
-    public Campus() {
-
-    }
-
-    /**
-	 * This overridden method ...
+	/**
+	 * Gets the campusCode attribute.
 	 * 
-	 * @see org.kuali.rice.kns.bo.CampusEBO#getCampusCode()
+	 * @return Returns the campusCode
+	 * 
 	 */
-    public String getCampusCode() {
-        return campusCode;
-    }
+	public String getCampusCode();
+
+	/**
+	 * Gets the campusName attribute.
+	 * 
+	 * @return Returns the campusName
+	 * 
+	 */
+	public String getCampusName();
+
+	/**
+	 * Gets the campusShortName attribute.
+	 * 
+	 * @return Returns the campusShortName
+	 * 
+	 */
+	public String getCampusShortName();
+
+	/**
+	 * Gets the campusTypeCode attribute.
+	 * 
+	 * @return Returns the campusTypeCode
+	 * 
+	 */
+	public String getCampusTypeCode();
+
+	/**
+	 * Gets the campusType attribute. 
+	 * @return Returns the campusType.
+	 */
+	public CampusType getCampusType();
+
+	/**
+	 * @return the active
+	 */
+	public boolean isActive();
 
     /**
      * Sets the campusCode attribute.
@@ -75,18 +72,7 @@ public class Campus extends PersistableBusinessObjectBase implements CampusEBO, 
      * @param campusCode The campusCode to set.
      * 
      */
-    public void setCampusCode(String campusCode) {
-        this.campusCode = campusCode;
-    }
-
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kns.bo.CampusEBO#getCampusName()
-	 */
-    public String getCampusName() {
-        return campusName;
-    }
+    public void setCampusCode(String campusCode);
 
     /**
      * Sets the campusName attribute.
@@ -94,18 +80,7 @@ public class Campus extends PersistableBusinessObjectBase implements CampusEBO, 
      * @param campusName The campusName to set.
      * 
      */
-    public void setCampusName(String campusName) {
-        this.campusName = campusName;
-    }
-
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kns.bo.CampusEBO#getCampusShortName()
-	 */
-    public String getCampusShortName() {
-        return campusShortName;
-    }
+    public void setCampusName(String campusName);
 
     /**
      * Sets the campusShortName attribute.
@@ -113,18 +88,7 @@ public class Campus extends PersistableBusinessObjectBase implements CampusEBO, 
      * @param campusShortName The campusShortName to set.
      * 
      */
-    public void setCampusShortName(String campusShortName) {
-        this.campusShortName = campusShortName;
-    }
-
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kns.bo.CampusEBO#getCampusTypeCode()
-	 */
-    public String getCampusTypeCode() {
-        return campusTypeCode;
-    }
+    public void setCampusShortName(String campusShortName);
 
     /**
      * Sets the campusTypeCode attribute.
@@ -132,52 +96,17 @@ public class Campus extends PersistableBusinessObjectBase implements CampusEBO, 
      * @param campusTypeCode The campusTypeCode to set.
      * 
      */
-    public void setCampusTypeCode(String campusTypeCode) {
-        this.campusTypeCode = campusTypeCode;
-    }
-
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kns.bo.CampusEBO#getCampusType()
-	 */
-    public CampusType getCampusType() {
-        return campusType;
-    }
+    public void setCampusTypeCode(String campusTypeCode);
 
     /**
      * Sets the campusType attribute value.
      * @param campusType The campusType to set.
      * @deprecated
      */
-    public void setCampusType(CampusType campusType) {
-        this.campusType = campusType;
-    }
-
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kns.bo.CampusEBO#isActive()
-	 */
-	public boolean isActive() {
-		return this.active;
-	}
+    public void setCampusType(CampusType campusType);
 
 	/**
 	 * @param active the active to set
 	 */
-	public void setActive(boolean active) {
-		this.active = active;
-	}
-	
-    /**
-     * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-     */
-    protected LinkedHashMap toStringMapper() {
-        LinkedHashMap m = new LinkedHashMap();
-        m.put("campusCode", this.campusCode);
-        return m;
-    }
-
+	public void setActive(boolean active);
 }
-

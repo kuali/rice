@@ -251,7 +251,7 @@
 		<field-descriptor name="selectedObjectIds" column="SEL_OBJ_IDS" jdbc-type="CLOB" />
 	</class-descriptor>
 
-	<class-descriptor class="org.kuali.rice.kns.bo.Campus" table="KRNS_CAMPUS_T">
+	<class-descriptor class="org.kuali.rice.kns.bo.CampusImpl" table="KRNS_CAMPUS_T">
 		<field-descriptor name="campusCode" column="CAMPUS_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
 		<field-descriptor name="campusName" column="CAMPUS_NM" jdbc-type="VARCHAR" />
 		<field-descriptor name="campusShortName" column="CAMPUS_SHRT_NM" jdbc-type="VARCHAR" />

@@ -18,7 +18,7 @@ package org.kuali.rice.kns.bo;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 
 
-public interface Country extends ExternalizableBusinessObject{
+public interface Country extends ExternalizableBusinessObject {
 
     /**
      * @param postalCountryCode - The postalCountryCode to set

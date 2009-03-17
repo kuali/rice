@@ -37,7 +37,7 @@
     </property>
     <property name="control" >
       <bean parent="SelectControlDefinition"
-            p:businessObjectClass="org.kuali.rice.kns.bo.Campus"
+            p:businessObjectClass="org.kuali.rice.kns.bo.CampusImpl"
             p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.CampusValuesFinder"
             p:includeKeyInLabel="false"
             p:keyAttribute="campusCode"

@@ -100,8 +100,8 @@
 			   <entry key="org.kuali.rice.kns.bo.State" value="org.kuali.rice.kns.bo.StateImpl" />
 			   <entry key="org.kuali.rice.kns.bo.PostalCode" value="org.kuali.rice.kns.bo.PostalCodeImpl" />
 			   <entry key="org.kuali.rice.kns.bo.County" value="org.kuali.rice.kns.bo.CountyImpl" />
-			   <entry key="org.kuali.rice.kns.bo.CampusEBO" value="org.kuali.rice.kns.bo.Campus" />
-			   <entry key="org.kuali.rice.kns.bo.CampusTypeEBO" value="org.kuali.rice.kns.bo.CampusType" />
+			   <entry key="org.kuali.rice.kns.bo.Campus" value="org.kuali.rice.kns.bo.CampusImpl" />
+			   <entry key="org.kuali.rice.kns.bo.CampusType" value="org.kuali.rice.kns.bo.CampusTypeImpl" />
             </map>
         </property>
 	</bean>
@@ -151,8 +151,8 @@
 			   <entry key="org.kuali.rice.kns.bo.State" value="org.kuali.rice.kns.bo.StateImpl" />
 			   <entry key="org.kuali.rice.kns.bo.PostalCode" value="org.kuali.rice.kns.bo.PostalCodeImpl" />
 			   <entry key="org.kuali.rice.kns.bo.County" value="org.kuali.rice.kns.bo.CountyImpl" />
-			   <entry key="org.kuali.rice.kns.bo.CampusEBO" value="org.kuali.rice.kns.bo.Campus" />			   
-			   <entry key="org.kuali.rice.kns.bo.CampusTypeEBO" value="org.kuali.rice.kns.bo.CampusType" />
+			   <entry key="org.kuali.rice.kns.bo.Campus" value="org.kuali.rice.kns.bo.CampusImpl" />			   
+			   <entry key="org.kuali.rice.kns.bo.CampusType" value="org.kuali.rice.kns.bo.CampusTypeImpl" />
             </map>
         </property>
 	</bean>

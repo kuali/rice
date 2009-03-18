@@ -22,6 +22,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
@@ -220,7 +221,7 @@ public class KualiHelpAction extends KualiAction {
             DocumentTypeDTO docType = KNSServiceLocator.getWorkflowInfoService().getDocType(entry.getDocumentTypeName());
             label = docType.getDocTypeLabel();
             description = docType.getDocTypeDescription();
-            apcHelpUrl = docType.getHelpDefinitionUrl();
+            apcHelpUrl = ConfigContext.getCurrentContextConfig().getProperty("externalizable.help.url") + docType.getHelpDefinitionUrl();
         }
 
         if ( StringUtils.isNotBlank(apcHelpUrl) ) {

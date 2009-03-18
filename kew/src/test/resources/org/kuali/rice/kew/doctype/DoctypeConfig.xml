@@ -22,7 +22,7 @@
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<superUserWorkgroupName>${test.doctype.workgroup}</superUserWorkgroupName>
 			<docHandler>${test.base.url}/_blank</docHandler>
-            <helpDefinitionURL>${test.base.url}/_help</helpDefinitionURL>
+            <helpDefinitionURL>/_help</helpDefinitionURL>
 			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
 			<defaultExceptionWorkgroupName>${test.doctype.workgroup}</defaultExceptionWorkgroupName>
 			<policies>

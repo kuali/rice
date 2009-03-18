@@ -160,8 +160,8 @@ public class DocumentTypeTest extends KEWTestCase {
         //assertEquals("Wrong default exception workgroup", "TestWorkgroup", parsedDocument.getDefaultExceptionWorkgroup().getDisplayName());
         assertEquals("Wrong doc handler url", "http://someurl/path/_blank", parsedDocument.getDocHandlerUrl());
         assertEquals("Wrong unresolved doc handler url", "${test.base.url}/_blank", parsedDocument.getUnresolvedDocHandlerUrl());
-        assertEquals("Wrong help def url", "http://someurl/path/_help", parsedDocument.getHelpDefinitionUrl());
-        assertEquals("Wrong unresolved help def url", "${test.base.url}/_help", parsedDocument.getUnresolvedHelpDefinitionUrl());
+        assertEquals("Wrong help def url", "/_help", parsedDocument.getHelpDefinitionUrl());
+        assertEquals("Wrong unresolved help def url", "/_help", parsedDocument.getUnresolvedHelpDefinitionUrl());
         assertEquals("Wrong blanketApprover workgroup", "TestWorkgroup", parsedDocument.getBlanketApproveWorkgroup().getGroupName());
         assertEquals("Wrong blanketApprove policy", null, parsedDocument.getBlanketApprovePolicy());
         assertEquals("Wrong DEFAULT_APPROVE policy value", Boolean.FALSE, parsedDocument.getDefaultApprovePolicy().getPolicyValue());

@@ -613,8 +613,6 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
     }
 
     /**
-	 * This overridden method ...
-	 * 
 	 * @see org.kuali.rice.kew.doctype.bo.DocumentTypeEBO#getHelpDefinitionUrl()
 	 */
     public String getHelpDefinitionUrl() {

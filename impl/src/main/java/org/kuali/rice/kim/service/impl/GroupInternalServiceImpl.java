@@ -41,60 +41,36 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
  *
  */
 public class GroupInternalServiceImpl implements GroupInternalService {
-
-    
     public BusinessObjectService getBusinessObjectService() {
-    	return (BusinessObjectService) KNSServiceLocator.getBusinessObjectService();
+    	return KNSServiceLocator.getBusinessObjectService();
+    }
+    
+    public IdentityManagementService getIdentityManagementService() {
+    	return KIMServiceLocator.getIdentityManagementService();
     }
 	
     public void saveWorkgroup(KimGroupImpl group) {
-    	IdentityManagementService ims = KIMServiceLocator.getIdentityManagementService();
+    	IdentityManagementService ims = getIdentityManagementService();
     	List<String> oldIds = ims.getGroupMemberPrincipalIds(group.getGroupId());
         getBusinessObjectService().save( group );
         List<String> newIds = ims.getGroupMemberPrincipalIds(group.getGroupId());
-        updateActionItemsForWorkgroupChange(group.getGroupId(), oldIds, newIds);
+        updateForWorkgroupChange(group.getGroupId(), oldIds, newIds);
     }        
     
     public void updateForWorkgroupChange(String groupId, 
     		List<String> oldPrincipalIds, List<String> newPrincipalIds) {
-    	
-    }
-    
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kim.service.GroupInternalService#updateActionItemsForWorkgroupChange(java.lang.String, java.lang.String)
-	 */
-    public void updateActionItemsForWorkgroupChange(String groupId, 
-    		List<String> oldPrincipalIds, List<String> newPrincipalIds)	{
         MembersDiff membersDiff = getMembersDiff(oldPrincipalIds, newPrincipalIds);
         for (String removedPrincipalId : membersDiff.getRemovedPrincipalIds()) {
-            KSBXMLService workgroupMembershipChangeProcessor = (KSBXMLService) KSBServiceLocator.getMessageHelper()
-            .getServiceAsynchronously(new QName(MessageServiceNames.WORKGROUP_MEMBERSHIP_CHANGE_SERVICE));
-            try {
-                workgroupMembershipChangeProcessor.invoke(WorkgroupMembershipChangeProcessor
-                        .getMemberRemovedMessageContents(removedPrincipalId, groupId));
-            } catch (Exception e) {
-                throw new WorkflowRuntimeException(e);
-            }
+        	updateForUserRemovedFromGroup(removedPrincipalId, groupId);
         }
         for (String addedPrincipalId : membersDiff.getAddedPrincipalIds()) {
-            KSBXMLService workgroupMembershipChangeProcessor = (KSBXMLService) KSBServiceLocator.getMessageHelper()
-            .getServiceAsynchronously(new QName(MessageServiceNames.WORKGROUP_MEMBERSHIP_CHANGE_SERVICE));
-            try {
-                workgroupMembershipChangeProcessor.invoke(WorkgroupMembershipChangeProcessor.getMemberAddedMessageContents(
-                        addedPrincipalId, groupId));
-            } catch (Exception e) {
-                throw new WorkflowRuntimeException(e);
-            }
-
+        	updateForUserAddedToGroup(addedPrincipalId, groupId);
         }
     }
-
-
+    
     public void updateForUserAddedToGroup(String principalId, String groupId) {
         // first verify that the user is still a member of the workgroup
-    	if(KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(principalId, groupId))
+    	if(getIdentityManagementService().isMemberOfGroup(principalId, groupId))
     	{
             KSBXMLService workgroupMembershipChangeProcessor = (KSBXMLService) KSBServiceLocator.getMessageHelper()
             .getServiceAsynchronously(new QName(MessageServiceNames.WORKGROUP_MEMBERSHIP_CHANGE_SERVICE));
@@ -106,11 +82,10 @@ public class GroupInternalServiceImpl implements GroupInternalService {
             }
     	}
     }
-
     
     public void updateForUserRemovedFromGroup(String principalId, String groupId) {
         // first verify that the user is no longer a member of the workgroup
-    	if(!KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(principalId, groupId))
+    	if(!getIdentityManagementService().isMemberOfGroup(principalId, groupId))
     	{
             KSBXMLService workgroupMembershipChangeProcessor = (KSBXMLService) KSBServiceLocator.getMessageHelper()
             .getServiceAsynchronously(new QName(MessageServiceNames.WORKGROUP_MEMBERSHIP_CHANGE_SERVICE));

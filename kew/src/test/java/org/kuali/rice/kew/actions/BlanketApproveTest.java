@@ -39,6 +39,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 
 public class BlanketApproveTest extends KEWTestCase {
 
+	@Override
     protected void loadTestData() throws Exception {
         loadXmlFile("ActionsConfig.xml");
     }

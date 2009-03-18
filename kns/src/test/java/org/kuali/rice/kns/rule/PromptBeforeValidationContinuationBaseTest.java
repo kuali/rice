@@ -18,18 +18,18 @@ package org.kuali.rice.kns.rule;
 import org.junit.Test;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
-import org.kuali.rice.kns.rule.event.PreRulesCheckEvent;
-import org.kuali.rice.kns.rules.PreRulesContinuationBase;
-import org.kuali.rice.kns.rules.PreRulesContinuationBase.ContextSession;
+import org.kuali.rice.kns.rule.event.PromptBeforeValidationEvent;
+import org.kuali.rice.kns.rules.PromptBeforeValidationBase;
+import org.kuali.rice.kns.rules.PromptBeforeValidationBase.ContextSession;
 import org.kuali.test.KNSTestBase;
 import org.kuali.test.KNSWithTestSpringContext;
 
 @KNSWithTestSpringContext
-public class PreRulesContinuationTest extends KNSTestBase {
+public class PromptBeforeValidationContinuationBaseTest extends KNSTestBase {
 
-    private class TestPreRules extends PreRulesContinuationBase {
-
-        public boolean doRules(Document document) {
+    private class TestPreRules extends PromptBeforeValidationBase {
+    	@Override
+        public boolean doPrompts(Document document) {
             MaintenanceDocument maintenanceDocument = (MaintenanceDocument) document;
             return false;
         }
@@ -40,7 +40,7 @@ public class PreRulesContinuationTest extends KNSTestBase {
 
         TestPreRules preRules = new TestPreRules();
 
-        PreRulesCheckEvent event = new PreRulesCheckEvent("", "", null);
+        PromptBeforeValidationEvent event = new PromptBeforeValidationEvent("", "", null);
 
         ContextSession contextSession = preRules.new ContextSession("test", event);
 

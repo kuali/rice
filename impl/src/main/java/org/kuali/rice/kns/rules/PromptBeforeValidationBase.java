@@ -26,8 +26,8 @@ import org.apache.struts.action.ActionForm;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.question.ConfirmationQuestion;
-import org.kuali.rice.kns.rule.PreRulesCheck;
-import org.kuali.rice.kns.rule.event.PreRulesCheckEvent;
+import org.kuali.rice.kns.rule.PromptBeforeValidation;
+import org.kuali.rice.kns.rule.event.PromptBeforeValidationEvent;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 
@@ -43,13 +43,13 @@ import org.kuali.rice.kns.web.struts.form.KualiForm;
  * 
  * 
  */
-public abstract class PreRulesContinuationBase implements PreRulesCheck {
+public abstract class PromptBeforeValidationBase implements PromptBeforeValidation {
 
-    protected static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(PreRulesContinuationBase.class);
+    protected static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(PromptBeforeValidationBase.class);
 
     protected String question;
     protected String buttonClicked;
-    protected PreRulesCheckEvent event;
+    protected PromptBeforeValidationEvent event;
     protected KualiForm form;
 
     private class IsAskingException extends RuntimeException {
@@ -61,11 +61,17 @@ public abstract class PreRulesContinuationBase implements PreRulesCheck {
      * 
      * 
      */
+    /**
+     * This is a description of what this class does - wliang don't forget to fill this in. 
+     * 
+     * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+     *
+     */
     public class ContextSession {
         private final static String DELIMITER = ".";
-        PreRulesCheckEvent event;
+        PromptBeforeValidationEvent event;
 
-        public ContextSession(String context, PreRulesCheckEvent event) {
+        public ContextSession(String context, PromptBeforeValidationEvent event) {
             this.event = event;
 
             this.event.setQuestionContext(context);
@@ -75,16 +81,27 @@ public abstract class PreRulesContinuationBase implements PreRulesCheck {
 
         }
 
+        /**
+         * Whether a question with a given ID has already been asked
+         * 
+         * @param id the ID of the question, an arbitrary value, but must be consistent
+         * @return
+         */
         public boolean hasAsked(String id) {
             return StringUtils.contains(event.getQuestionContext(), id);
         }
 
+        /**
+         * Invoked to indicate that the user should be prompted a question
+         * 
+         * @param id the ID of the question, an arbitrary value, but must be consistent
+         * @param text the question text, to be displayed to the user
+         */
         public void askQuestion(String id, String text) {
             event.setQuestionId(id);
             event.setQuestionType(KNSConstants.CONFIRMATION_QUESTION);
             event.setQuestionText(text);
             event.setPerformQuestion(true);
-
         }
 
         public void setAttribute(String name, String value) {
@@ -121,23 +138,32 @@ public abstract class PreRulesContinuationBase implements PreRulesCheck {
 
     }
 
-    public abstract boolean doRules(Document document);
+    /**
+     * Implementations will override this method to do perform the actual prompting and/or logic
+     * 
+     * They are able to utilize the following methods:
+     * <li> {@link PromptBeforeValidationBase#abortRulesCheck()}
+     * <li> {@link PromptBeforeValidationBase#askOrAnalyzeYesNoQuestion(String, String)}
+     * <li> {@link #hasAsked(String)}
+     * 
+     * @param document
+     * @return
+     */
+    public abstract boolean doPrompts(Document document);
 
     private boolean isAborting;
 
     ContextSession session;
 
-    public PreRulesContinuationBase() {
+    public PromptBeforeValidationBase() {
     }
 
 
-    public boolean processPreRuleChecks(ActionForm form, HttpServletRequest request, PreRulesCheckEvent event) {
-
+    public boolean processPrompts(ActionForm form, HttpServletRequest request, PromptBeforeValidationEvent event) {
         question = request.getParameter(KNSConstants.QUESTION_INST_ATTRIBUTE_NAME);
         buttonClicked = request.getParameter(KNSConstants.QUESTION_CLICKED_BUTTON);
         this.event = event;
         this.form = (KualiForm) form;
-
 
         if (LOG.isDebugEnabled()) {
             LOG.debug("Question is: " + question);
@@ -150,7 +176,7 @@ public abstract class PreRulesContinuationBase implements PreRulesCheck {
         boolean result = false;
 
         try {
-            result = doRules(event.getDocument());
+            result = doPrompts(event.getDocument());
         }
         catch (IsAskingException e) {
             return false;
@@ -164,8 +190,8 @@ public abstract class PreRulesContinuationBase implements PreRulesCheck {
     }
 
     /**
-     * 
-     * This bounces the user back to the document as if they had never tried to routed it. (Business rules are not invoked.)
+     * This bounces the user back to the document as if they had never tried to routed it. (Business rules are not invoked
+     * and the action is not executed.)
      * 
      */
     public void abortRulesCheck() {
@@ -174,16 +200,17 @@ public abstract class PreRulesContinuationBase implements PreRulesCheck {
     }
 
     /**
-     * 
-     * This method poses a Y/N question to the user.
+     * This method poses a Y/N question to the user.  If the user has already answered the question, then it returns whether
+     * the answer to the question was yes or no
      * 
      * Code that invokes this method will behave a bit strangely, so you should try to keep it as simple as possible.
      * 
-     * @param id
-     * @param text
-     * @return
+     * @param id an ID for the question
+     * @param text the text of the question, to be displayed on the screen
+     * @return true if the user answered Yes, false if the user answers no
+     * @throws IsAskingException if the user needs to be prompted the question
      */
-    public boolean askOrAnalyzeYesNoQuestion(String id, String text) {
+    public boolean askOrAnalyzeYesNoQuestion(String id, String text) throws IsAskingException {
 
         if (LOG.isDebugEnabled()) {
             LOG.debug("Entering askOrAnalyzeYesNoQuestion(" + id + "," + text + ")");

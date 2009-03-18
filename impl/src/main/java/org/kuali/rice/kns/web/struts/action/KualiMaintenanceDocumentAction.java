@@ -472,11 +472,11 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
      */
     @Override
     public ActionForward refresh(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-    	if (form instanceof KualiDocumentFormBase) {
-			WebUtils.reuseErrorMapFromPreviousRequest((KualiDocumentFormBase) form);
-		}
-    	
         KualiMaintenanceForm maintenanceForm = (KualiMaintenanceForm) form;
+        
+        WebUtils.reuseErrorMapFromPreviousRequest(maintenanceForm);
+        maintenanceForm.setDerivedValuesOnForm(request);
+        
         refreshAdHocRoutingWorkgroupLookups(request, maintenanceForm);
         MaintenanceDocument document = (MaintenanceDocument) maintenanceForm.getDocument();
         

@@ -31,7 +31,7 @@ import org.kuali.rice.kns.datadictionary.mask.Mask;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.exception.UnknownDocumentTypeException;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
-import org.kuali.rice.kns.rule.PreRulesCheck;
+import org.kuali.rice.kns.rule.PromptBeforeValidation;
 import org.kuali.rice.kns.web.format.Formatter;
 
 
@@ -427,7 +427,7 @@ public interface DataDictionaryService {
      * @param document
      * @return preRulesCheckClass associated with the given document's type
      */
-    public Class<? extends PreRulesCheck> getPreRulesCheckClass(String docTypeName);
+    public Class<? extends PromptBeforeValidation> getPromptBeforeValidationClass(String docTypeName);
 
     public Map getDataDictionaryMap();
 

@@ -48,7 +48,7 @@ import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.exception.UnknownBusinessClassAttributeException;
 import org.kuali.rice.kns.exception.UnknownDocumentTypeException;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
-import org.kuali.rice.kns.rule.PreRulesCheck;
+import org.kuali.rice.kns.rule.PromptBeforeValidation;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
@@ -830,14 +830,14 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     }
 
     /**
-     * @see org.kuali.rice.kns.service.DataDictionaryService#getPreRulesCheckClass(java.lang.String)
+     * @see org.kuali.rice.kns.service.DataDictionaryService#getPromptBeforeValidationClass(java.lang.String)
      */
-    public Class<? extends PreRulesCheck> getPreRulesCheckClass(String docTypeName) {
+    public Class<? extends PromptBeforeValidation> getPromptBeforeValidationClass(String docTypeName) {
         Class preRulesCheckClass = null;
 
         DocumentEntry documentEntry = getDataDictionary().getDocumentEntry(docTypeName);
         if (documentEntry != null) {
-            preRulesCheckClass = documentEntry.getPreRulesCheckClass();
+            preRulesCheckClass = documentEntry.getPromptBeforeValidationClass();
         }
 
         return preRulesCheckClass;

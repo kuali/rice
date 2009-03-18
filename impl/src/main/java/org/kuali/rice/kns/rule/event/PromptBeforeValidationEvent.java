@@ -18,18 +18,17 @@ package org.kuali.rice.kns.rule.event;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.rule.BusinessRule;
-import org.kuali.rice.kns.rule.PreRulesCheck;
+import org.kuali.rice.kns.rule.PromptBeforeValidation;
 
 /**
  * Event for handling warnings/questions before rules are called.
  * 
  * 
  */
-public class PreRulesCheckEvent extends KualiDocumentEventBase {
-    private static final Logger LOG = Logger.getLogger(PreRulesCheckEvent.class);
+public class PromptBeforeValidationEvent extends KualiDocumentEventBase {
+    private static final Logger LOG = Logger.getLogger(PromptBeforeValidationEvent.class);
 
     boolean performQuestion;
-    boolean returnActionFoward;
     String actionForwardName;
     String questionId;
     String questionText;
@@ -43,7 +42,7 @@ public class PreRulesCheckEvent extends KualiDocumentEventBase {
      * @param errorPathPrefix
      * @param document
      */
-    public PreRulesCheckEvent(String description, String errorPathPrefix, Document document) {
+    public PromptBeforeValidationEvent(String description, String errorPathPrefix, Document document) {
 
         super(description, errorPathPrefix);
         this.document = document;
@@ -51,7 +50,6 @@ public class PreRulesCheckEvent extends KualiDocumentEventBase {
         LOG.debug(description);
 
         performQuestion = false;
-        returnActionFoward = false;
     }
 
 
@@ -154,25 +152,10 @@ public class PreRulesCheckEvent extends KualiDocumentEventBase {
     }
 
     /**
-     * @return Returns the returnActionFoward.
-     */
-    public boolean isReturnActionFoward() {
-        return returnActionFoward;
-    }
-
-    /**
-     * @param returnActionFoward The returnActionFoward to set.
-     */
-    public void setReturnActionFoward(boolean returnActionFoward) {
-        this.returnActionFoward = returnActionFoward;
-    }
-
-
-    /**
      * @see org.kuali.rice.kns.rule.event.KualiDocumentEvent#getRuleInterfaceClass()
      */
     public Class getRuleInterfaceClass() {
-        return PreRulesCheck.class;
+        return PromptBeforeValidation.class;
     }
 
 

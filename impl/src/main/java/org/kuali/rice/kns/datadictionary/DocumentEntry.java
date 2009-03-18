@@ -31,8 +31,9 @@ import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.rule.BusinessRule;
-import org.kuali.rice.kns.rule.PreRulesCheck;
+import org.kuali.rice.kns.rule.PromptBeforeValidation;
 import org.kuali.rice.kns.web.derviedvaluesetter.DerivedValuesSetter;
+import org.kuali.rice.kns.web.struts.action.KualiDocumentActionBase;
 
 /**
  * A single Document entry in the DataDictionary, which contains information relating to the display, validation, and general
@@ -48,7 +49,7 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
 	
     protected Class<? extends Document> documentClass;
     protected Class<? extends BusinessRule> businessRulesClass;
-    protected Class<? extends PreRulesCheck> preRulesCheckClass;
+    protected Class<? extends PromptBeforeValidation> promptBeforeValidationClass;
     protected Class<? extends DerivedValuesSetter> derivedValuesSetterClass;
     protected String documentTypeName;
 
@@ -133,17 +134,18 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     /**
      * @return Returns the preRulesCheckClass.
      */
-    public Class<? extends PreRulesCheck> getPreRulesCheckClass() {
-        return preRulesCheckClass;
+    public Class<? extends PromptBeforeValidation> getPromptBeforeValidationClass() {
+        return promptBeforeValidationClass;
     }
 
     /**
-            The preRulesCheckClass element is the full class name of the java
-            class which contains the pre-rules for a document.  The pre-rules
-            are run before the window is drawn and may change field values.
+     *  The promptBeforeValidationClass element is the full class name of the java
+     *  class which determines whether the user should be asked any questions prior to running validation.
+     *  
+     *   @see KualiDocumentActionBase#promptBeforeValidation(org.apache.struts.action.ActionMapping, org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, String)
      */
-    public void setPreRulesCheckClass(Class<? extends PreRulesCheck> preRulesCheckClass) {
-        this.preRulesCheckClass = preRulesCheckClass;
+    public void setPromptBeforeValidationClass(Class<? extends PromptBeforeValidation> preRulesCheckClass) {
+        this.promptBeforeValidationClass = preRulesCheckClass;
     }
 
     /**

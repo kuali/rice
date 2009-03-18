@@ -43,7 +43,7 @@ abstract public class KualiDocumentEventBase implements KualiDocumentEvent {
      */
     protected KualiDocumentEventBase(String description, String errorPathPrefix) {
 
-        if (!(this instanceof PreRulesCheckEvent)) {
+        if (!(this instanceof PromptBeforeValidationEvent)) {
             throw new Error("THIS CONSTRUCTOR SHOULD ONLY BE USED AT THE UI LAYER");
         }
 

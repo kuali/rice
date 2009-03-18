@@ -65,11 +65,11 @@ import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.exception.DocumentAuthorizationException;
 import org.kuali.rice.kns.exception.UnknownDocumentIdException;
 import org.kuali.rice.kns.question.ConfirmationQuestion;
-import org.kuali.rice.kns.rule.PreRulesCheck;
+import org.kuali.rice.kns.rule.PromptBeforeValidation;
 import org.kuali.rice.kns.rule.event.AddAdHocRoutePersonEvent;
 import org.kuali.rice.kns.rule.event.AddAdHocRouteWorkgroupEvent;
 import org.kuali.rice.kns.rule.event.AddNoteEvent;
-import org.kuali.rice.kns.rule.event.PreRulesCheckEvent;
+import org.kuali.rice.kns.rule.event.PromptBeforeValidationEvent;
 import org.kuali.rice.kns.rule.event.SendAdHocRequestsEvent;
 import org.kuali.rice.kns.service.AttachmentService;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
@@ -606,11 +606,13 @@ public class KualiDocumentActionBase extends KualiAction {
      */
     public ActionForward performRouteReport(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
-
-        ActionForward preRulesForward = preRulesCheck(mapping, form, request, response);
+        
+        kualiDocumentFormBase.setDerivedValuesOnForm(request);
+        ActionForward preRulesForward = promptBeforeValidation(mapping, form, request, response);
         if (preRulesForward != null) {
             return preRulesForward;
         }
+        
         Document document = kualiDocumentFormBase.getDocument();
         // check authorization for reloading document
         //DocumentActionFlags flags = getDocumentActionFlags(document);
@@ -671,7 +673,8 @@ public class KualiDocumentActionBase extends KualiAction {
     public ActionForward route(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
 
-        ActionForward preRulesForward = preRulesCheck(mapping, form, request, response);
+        kualiDocumentFormBase.setDerivedValuesOnForm(request);
+        ActionForward preRulesForward = promptBeforeValidation(mapping, form, request, response);
         if (preRulesForward != null) {
             return preRulesForward;
         }
@@ -697,11 +700,14 @@ public class KualiDocumentActionBase extends KualiAction {
      * @throws Exception
      */
     public ActionForward blanketApprove(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        ActionForward preRulesForward = preRulesCheck(mapping, form, request, response);
+    	KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
+    	
+    	kualiDocumentFormBase.setDerivedValuesOnForm(request);
+        ActionForward preRulesForward = promptBeforeValidation(mapping, form, request, response);
         if (preRulesForward != null) {
             return preRulesForward;
         }
-        KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
+        
         getDocumentService().blanketApproveDocument(kualiDocumentFormBase.getDocument(), kualiDocumentFormBase.getAnnotation(), combineAdHocRecipients(kualiDocumentFormBase));
         GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_ROUTE_APPROVED);
         kualiDocumentFormBase.setAnnotation("");
@@ -719,12 +725,14 @@ public class KualiDocumentActionBase extends KualiAction {
      * @throws Exception
      */
     public ActionForward approve(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        ActionForward preRulesForward = preRulesCheck(mapping, form, request, response);
+    	KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
+
+    	kualiDocumentFormBase.setDerivedValuesOnForm(request);
+    	ActionForward preRulesForward = promptBeforeValidation(mapping, form, request, response);
         if (preRulesForward != null) {
             return preRulesForward;
         }
-
-        KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
+        
         getDocumentService().approveDocument(kualiDocumentFormBase.getDocument(), kualiDocumentFormBase.getAnnotation(), combineAdHocRecipients(kualiDocumentFormBase));
         GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_ROUTE_APPROVED);
         kualiDocumentFormBase.setAnnotation("");
@@ -944,11 +952,11 @@ public class KualiDocumentActionBase extends KualiAction {
      */
     @Override
     public ActionForward refresh(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        if (form instanceof KualiDocumentFormBase) {
-			WebUtils.reuseErrorMapFromPreviousRequest((KualiDocumentFormBase) form);
-		}
+    	KualiDocumentFormBase kualiForm = (KualiDocumentFormBase) form;
+		WebUtils.reuseErrorMapFromPreviousRequest(kualiForm);
+		kualiForm.setDerivedValuesOnForm(request);
+		
         super.refresh(mapping, form, request, response);
-        KualiDocumentFormBase kualiForm = (KualiDocumentFormBase) form;
         refreshAdHocRoutingWorkgroupLookups(request, kualiForm);
 
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
@@ -1418,8 +1426,8 @@ public class KualiDocumentActionBase extends KualiAction {
 
 
     /**
-     * Makes calls to any pre rules classes specified for the document. If the rule class returns an actionforward, that forward
-     * will be returned, or null.
+     * Makes calls to the PromptBeforeValidation specified for the document. If the class returns an actionforward, that forward
+     * will be returned (thus controlling how execution occurs), or null.
      *
      * @param mapping
      * @param form
@@ -1428,13 +1436,13 @@ public class KualiDocumentActionBase extends KualiAction {
      * @return
      * @throws Exception
      */
-    public ActionForward preRulesCheck(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        return preRulesCheck(mapping, form, request, response, "route");
+    public ActionForward promptBeforeValidation(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        return promptBeforeValidation(mapping, form, request, response, "route");
     }
 
     /**
-     * Makes calls to any pre rules classes specified for the document. If the rule class returns an actionforward, that forward
-     * will be returned, or null.
+     * Makes calls to the PromptBeforeValidation specified for the document. If the class returns an actionforward, that forward
+     * will be returned (thus controlling how execution occurs), or null.
      *
      * @param mapping
      * @param form
@@ -1444,18 +1452,18 @@ public class KualiDocumentActionBase extends KualiAction {
      * @return
      * @throws Exception
      */
-    public ActionForward preRulesCheck(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response, String methodToCall) throws Exception {
+    public ActionForward promptBeforeValidation(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response, String methodToCall) throws Exception {
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
 
         /* callback to any pre rules check class */
-        Class<? extends PreRulesCheck> preRulesClass = getDataDictionaryService().getPreRulesCheckClass(kualiDocumentFormBase.getDocTypeName());
+        Class<? extends PromptBeforeValidation> promptBeforeValidationClass = getDataDictionaryService().getPromptBeforeValidationClass(kualiDocumentFormBase.getDocTypeName());
         if (LOG.isDebugEnabled()) {
-            LOG.debug("PreRulesCheckClass: " + preRulesClass);
+            LOG.debug("PromptBeforeValidationClass: " + promptBeforeValidationClass);
         }
-        if (preRulesClass != null) {
-            PreRulesCheck preRules = preRulesClass.newInstance();
-            PreRulesCheckEvent event = new PreRulesCheckEvent("Pre Maint route Check", "", kualiDocumentFormBase.getDocument());
-            boolean continueRoute = preRules.processPreRuleChecks(form, request, event);
+        if (promptBeforeValidationClass != null) {
+            PromptBeforeValidation promptBeforeValidation = promptBeforeValidationClass.newInstance();
+            PromptBeforeValidationEvent event = new PromptBeforeValidationEvent("Pre Maint route Check", "", kualiDocumentFormBase.getDocument());
+            boolean continueRoute = promptBeforeValidation.processPrompts(form, request, event);
             if (!continueRoute) {
                 if (event.isPerformQuestion()) {
                     return super.performQuestionWithoutInput(mapping, kualiDocumentFormBase, request, response, event.getQuestionId(), event.getQuestionText(), event.getQuestionType(), methodToCall, event.getQuestionContext());

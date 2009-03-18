@@ -18,7 +18,9 @@ package org.kuali.rice.kew.actionitem;
 
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -32,8 +34,12 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
+import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
+import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.ObjectUtils;
 
 
@@ -181,11 +187,6 @@ public class ActionItemServiceTest extends KEWTestCase {
 
         KimPrincipal ewestfal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("ewestfal");
 
-
-        assertNotNull(workgroup1);
-        GroupInfo oldWorkgroup1 = (GroupInfo)ObjectUtils.deepCopy(workgroup1);
-
-
         assertEquals("User should have 1 action item", 1, KEWServiceLocator.getActionListService().findByPrincipalId(ewestfal.getPrincipalId()).size());
         assertEquals("Workgroup should have 6 members.", 6, KIMServiceLocator.getGroupService().getMemberPrincipalIds(workgroup1.getGroupId()).size());
         KIMServiceLocator.getIdentityManagementService().removePrincipalFromGroup(ewestfal.getPrincipalId(), workgroup1.getGroupId());
@@ -196,6 +197,51 @@ public class ActionItemServiceTest extends KEWTestCase {
          KIMServiceLocator.getIdentityManagementService().addPrincipalToGroup(ewestfal.getPrincipalId(), workgroup1.getGroupId());
          assertEquals("Workgroup should have 6 members.", 6, KIMServiceLocator.getGroupService().getMemberPrincipalIds(workgroup1.getGroupId()).size());
          assertEquals("User should have 1 action item", 1, KEWServiceLocator.getActionListService().findByPrincipalId(ewestfal.getPrincipalId()).size());
+
+         KimGroupImpl workgroup1Impl = this.getGroupImpl(workgroup1.getGroupId());
+         KimPrincipal dewey = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("dewey");
+
+         GroupMemberImpl groupMember = new GroupMemberImpl();
+         groupMember.setGroupId(workgroup1Impl.getGroupId());
+         groupMember.setMemberTypeCode( KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE );
+         groupMember.setMemberId(dewey.getPrincipalId());
+
+         workgroup1Impl.getMembers().add(groupMember);
+
+         KIMServiceLocator.getGroupInternalService().saveWorkgroup(workgroup1Impl);
+
+         assertEquals("Workgroup should have 7 members.", 7, KIMServiceLocator.getGroupService().getMemberPrincipalIds(workgroup1.getGroupId()).size());
+         assertEquals("User should have 1 action item", 1, KEWServiceLocator.getActionListService().findByPrincipalId(dewey.getPrincipalId()).size());
+
+         // test nested
+         KimPrincipal user1 = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("user1");
+
+         document = new WorkflowDocument(new NetworkIdDTO("jhopf"), "ActionItemDocumentType");
+         document.setTitle("");
+
+         workgroup1 = KIMServiceLocator.getIdentityManagementService().getGroupByName("KR-WKFLW", "NestedWorgroup");
+         document.adHocRouteDocumentToGroup(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "",workgroup1.getGroupId(), "", true);
+         document.routeDocument("");
+
+         assertEquals("User should have 1 action item", 1, KEWServiceLocator.getActionListService().findByPrincipalId(user1.getPrincipalId()).size());
+         assertEquals("Workgroup should have 6 members.", 6, KIMServiceLocator.getGroupService().getMemberPrincipalIds(workgroup1.getGroupId()).size());
+
+         //get the subgroup so we can remove the member.
+         GroupInfo workgroupSub = KIMServiceLocator.getIdentityManagementService().getGroupByName("KR-WKFLW", "NonSIT");
+         KIMServiceLocator.getIdentityManagementService().removePrincipalFromGroup(user1.getPrincipalId(), workgroupSub.getGroupId());
+
+         assertEquals("Workgroup should have 5 members.", 5, KIMServiceLocator.getGroupService().getMemberPrincipalIds(workgroup1.getGroupId()).size());
+         assertEquals("User should have 0 action item", 0, KEWServiceLocator.getActionListService().findByPrincipalId(user1.getPrincipalId()).size());
+
+          KIMServiceLocator.getIdentityManagementService().addPrincipalToGroup(user1.getPrincipalId(), workgroupSub.getGroupId());
+          assertEquals("Workgroup should have 6 members.", 6, KIMServiceLocator.getGroupService().getMemberPrincipalIds(workgroup1.getGroupId()).size());
+          assertEquals("User should have 1 action item", 1, KEWServiceLocator.getActionListService().findByPrincipalId(user1.getPrincipalId()).size());
+
+
+          // test group change
+
+
+
 
 //        assertFalse("Should not have found an action item to ewestfal.", foundEwestfal);
 //
@@ -437,4 +483,13 @@ public class ActionItemServiceTest extends KEWTestCase {
     	return (BaseWorkgroupMember)BeanUtils.cloneBean(member);
     }
 */
+
+    protected KimGroupImpl getGroupImpl(String groupId) {
+		if ( groupId == null ) {
+			return null;
+		}
+		Map<String,String> criteria = new HashMap<String,String>();
+		criteria.put("groupId", groupId);
+		return (KimGroupImpl) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimGroupImpl.class, criteria);
+	}
 }

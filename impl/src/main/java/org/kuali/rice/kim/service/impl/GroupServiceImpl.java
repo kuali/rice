@@ -493,7 +493,7 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
 			return;
 		}
 
-		KIMServiceLocator.getGroupInternalService().saveWorkgroup(group);	    
+		KIMServiceLocator.getGroupInternalService().saveWorkgroup(group);
 	}
 
 	protected void saveGroupAttributes(List<GroupAttributeDataImpl> groupAttributes) {
@@ -546,6 +546,7 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
         groupMember.setMemberId(principalId);
 
         this.getBusinessObjectService().save(groupMember);
+        KIMServiceLocator.getGroupInternalService().updateForUserAddedToGroup(groupMember.getMemberId(), groupMember.getGroupId());
 
         return true;
     }
@@ -562,7 +563,9 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
         Collection<GroupMemberImpl> groupMemberList = getBusinessObjectService().findMatching(GroupMemberImpl.class, criteria);
 
         if(groupMemberList.size() == 1) {
-            getBusinessObjectService().delete(groupMemberList.iterator().next());
+        	GroupMemberImpl member = groupMemberList.iterator().next();
+            getBusinessObjectService().delete(member);
+            KIMServiceLocator.getGroupInternalService().updateForUserRemovedFromGroup(member.getMemberId(), member.getGroupId());
 
             return true;
         }
@@ -611,10 +614,10 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
 
         return false;
     }
-    
+
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.rice.kim.service.GroupUpdateService#removeAllGroupMembers(java.lang.String)
      */
     public void removeAllGroupMembers(String groupId) {

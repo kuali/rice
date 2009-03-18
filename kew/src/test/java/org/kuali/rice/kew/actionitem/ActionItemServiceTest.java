@@ -28,9 +28,13 @@ import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.util.ObjectUtils;
 
 
 public class ActionItemServiceTest extends KEWTestCase {
@@ -165,62 +169,34 @@ public class ActionItemServiceTest extends KEWTestCase {
      *
      * @throws Exception
      */
-    @Ignore
+
     @Test public void testUpdateActionItemsForNestedGroupChange() throws Exception {
 
-//        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "ActionItemDocumentType");
-//        document.setTitle("");
-//        GroupInfo grpInfo =new GroupInfo();
-//        grpInfo.setGroupName("AIWGNested2");
-//
-//        document.adHocRouteDocumentToGroup(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "",grpInfo, "", true);
-//        document.routeDocument("");
-//
-//        // remove a user from the AGWG1 workgroup
-//        WorkflowUser ewestfal = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("ewestfal"));
-//        BaseWorkgroup workgroup1 = (BaseWorkgroup)KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId("AIWG1"));
-//        assertNotNull(workgroup1);
-//        BaseWorkgroup oldWorkgroup1 = copy(workgroup1);
-//
-//        assertEquals("Workgroup should have 2 members.", 2, workgroup1.getWorkgroupMembers().size());
-//        for (Iterator iterator = workgroup1.getWorkgroupMembers().iterator(); iterator.hasNext();) {
-//			BaseWorkgroupMember member = (BaseWorkgroupMember) iterator.next();
-//			// remove ewestfal
-//			if (member.getWorkflowId().equals(ewestfal.getWorkflowId())) {
-//				iterator.remove();
-//			}
-//		}
-//        workgroup1.getMembers().clear();
-//        workgroup1.materializeMembers();
-//        assertEquals("Workgroup should have 1 members.", 1, workgroup1.getWorkgroupMembers().size());
-//        KEWServiceLocator.getWorkgroupService().save(workgroup1);
-//
-//        Workgroup workgroupNested2 = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId("AIWGNested2"));
-//        Collection actionItems = KEWServiceLocator.getActionListService().findByRouteHeaderId(document.getRouteHeaderId());
-//        assertEquals("Should be 6 action items.", 6, actionItems.size());
-//        boolean foundEwestfal = false;
-//        for (Iterator iterator = actionItems.iterator(); iterator.hasNext();) {
-//			ActionItem actionItem = (ActionItem) iterator.next();
-//			if (actionItem.getWorkflowId().equals(ewestfal.getWorkflowId())) {
-//				assertEquals("Action Item should be for the AIWGNested2 workgroup", actionItem.getGroupId(), workgroupNested2.getWorkflowGroupId().getGroupId());
-//				foundEwestfal = true;
-//			}
-//		}
-//        assertTrue("Should have found an action item to ewestfal.", foundEwestfal);
-//
-//        // now, let's update the action items for our workgroup change
-//        KEWServiceLocator.getActionListService().updateActionItemsForWorkgroupChange(oldWorkgroup1, workgroup1);
-//
-//        // there should no longer be a request to ewestfal
-//        actionItems = KEWServiceLocator.getActionListService().findByRouteHeaderId(document.getRouteHeaderId());
-//        assertEquals("Should be 5 action items.", 5, actionItems.size());
-//        foundEwestfal = false;
-//        for (Iterator iterator = actionItems.iterator(); iterator.hasNext();) {
-//			ActionItem actionItem = (ActionItem) iterator.next();
-//			if (actionItem.getWorkflowId().equals(ewestfal.getWorkflowId())) {
-//				foundEwestfal = true;
-//			}
-//		}
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "ActionItemDocumentType");
+        document.setTitle("");
+
+        GroupInfo workgroup1 = KIMServiceLocator.getIdentityManagementService().getGroupByName("KR-WKFLW", "WorkflowAdmin");
+        document.adHocRouteDocumentToGroup(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "",workgroup1.getGroupId(), "", true);
+        document.routeDocument("");
+
+        KimPrincipal ewestfal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("ewestfal");
+
+
+        assertNotNull(workgroup1);
+        GroupInfo oldWorkgroup1 = (GroupInfo)ObjectUtils.deepCopy(workgroup1);
+
+
+        assertEquals("User should have 1 action item", 1, KEWServiceLocator.getActionListService().findByPrincipalId(ewestfal.getPrincipalId()).size());
+        assertEquals("Workgroup should have 6 members.", 6, KIMServiceLocator.getGroupService().getMemberPrincipalIds(workgroup1.getGroupId()).size());
+        KIMServiceLocator.getIdentityManagementService().removePrincipalFromGroup(ewestfal.getPrincipalId(), workgroup1.getGroupId());
+
+        assertEquals("Workgroup should have 5 members.", 5, KIMServiceLocator.getGroupService().getMemberPrincipalIds(workgroup1.getGroupId()).size());
+        assertEquals("User should have 0 action item", 0, KEWServiceLocator.getActionListService().findByPrincipalId(ewestfal.getPrincipalId()).size());
+
+         KIMServiceLocator.getIdentityManagementService().addPrincipalToGroup(ewestfal.getPrincipalId(), workgroup1.getGroupId());
+         assertEquals("Workgroup should have 6 members.", 6, KIMServiceLocator.getGroupService().getMemberPrincipalIds(workgroup1.getGroupId()).size());
+         assertEquals("User should have 1 action item", 1, KEWServiceLocator.getActionListService().findByPrincipalId(ewestfal.getPrincipalId()).size());
+
 //        assertFalse("Should not have found an action item to ewestfal.", foundEwestfal);
 //
 //        // add user user1 to AIWGNested1
@@ -368,7 +344,7 @@ public class ActionItemServiceTest extends KEWTestCase {
         // ewestfal is a member of both Workgroups so verify that he has two action items
         String ewestfalPrincipalId = getPrincipalIdForName("ewestfal");
         String jitruePrincipalId = getPrincipalIdForName("jitrue");
-        
+
         Collection actionItems = KEWServiceLocator.getActionListService().findByWorkflowUserRouteHeaderId(ewestfalPrincipalId, document.getRouteHeaderId());
         assertEquals("Ewestfal should have two action items.", 2, actionItems.size());
 

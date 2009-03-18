@@ -899,7 +899,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     	String returnSql = "";
         if ((approver != null) && (!"".equals(approver.trim()))) {
             String userWorkflowId = KIMServiceLocator.getPersonService().getPersonByPrincipalName(approver.trim()).getPrincipalId();
-            returnSql = whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_ID = KREW_ACTN_TKN_T.DOC_HDR_ID and upper(KREW_ACTN_TKN_T.ACTN_CD) = '" + KEWConstants.ACTION_TAKEN_APPROVED_CD + "' and KREW_ACTN_TKN_T.PRNCPL_ID = '" + userWorkflowId + "'";
+            returnSql = whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_ID = KREW_ACTN_TKN_T.DOC_HDR_ID and upper(KREW_ACTN_TKN_T.ACTN_CD) in ('" + KEWConstants.ACTION_TAKEN_APPROVED_CD + "','" + KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD + "')" + " and KREW_ACTN_TKN_T.PRNCPL_ID = '" + userWorkflowId + "'";
         }
         return returnSql;
     }

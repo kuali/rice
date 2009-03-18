@@ -16,7 +16,9 @@
 package org.kuali.rice.kew.rule.web;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +32,8 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
+import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
+import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
 /**
@@ -59,24 +63,43 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
     // TODO: get route levels
     // TODO: find most-specific responsibility
     // TODO: find most-specific permission
+    // TODO: pull needed attribute names for display?
     
-    public void populateRelatedDocuments( DocumentConfigurationViewForm form ) {
+    @SuppressWarnings("unchecked")
+	public void populateRelatedDocuments( DocumentConfigurationViewForm form ) {
     	form.setParentDocumentType( form.getDocumentType().getParentDocType() );
     	form.setChildDocumentTypes( new ArrayList<DocumentType>( form.getDocumentType().getChildrenDocTypes() ) );
     }
     
 	public void populatePermissions( DocumentConfigurationViewForm form ) {
-		// TODO: iterate over hierarchy - pulling parent document permissions
-		Map<String,String> searchCriteria = new HashMap<String,String>();
-		searchCriteria.put("attributeName", "documentTypeName" );
-		searchCriteria.put("active", "Y");
-		searchCriteria.put("detailCriteria",
-				KimAttributes.DOCUMENT_TYPE_NAME+"="+form.getDocumentType().getName()
-				);
-		form.setPermissions( KIMServiceLocator.getPermissionService().lookupPermissions( searchCriteria, false ) );
+		
+		DocumentType docType = form.getDocumentType();
+		List<KimPermissionInfo> allPerms = new ArrayList<KimPermissionInfo>();
+		Map<String,List<KimRoleInfo>> permRoles = new HashMap<String, List<KimRoleInfo>>(); 
+		while ( docType != null) {
+			Map<String,String> searchCriteria = new HashMap<String,String>();
+			searchCriteria.put("attributeName", "documentTypeName" );
+			searchCriteria.put("active", "Y");
+			searchCriteria.put("detailCriteria",
+					KimAttributes.DOCUMENT_TYPE_NAME+"="+docType.getName()
+					);
+			List<KimPermissionInfo> perms = KIMServiceLocator.getPermissionService().lookupPermissions( searchCriteria, false );
+			for ( KimPermissionInfo perm : perms ) {
+				List<String> roleIds = KIMServiceLocator.getPermissionService().getRoleIdsForPermissions(Collections.singletonList(perm));
+				permRoles.put( perm.getPermissionId(), KIMServiceLocator.getRoleService().getRoles(roleIds) );
+			}
+			allPerms.addAll(perms);
+			docType = docType.getParentDocType();			
+		}
+		
+		form.setPermissions( allPerms );
+		form.setPermissionRoles( permRoles );
 	}
 
 	public void populateResponsibilities( DocumentConfigurationViewForm form ) {
+		// TODO: pull all the route levels
+		// TODO: pull all the responsibilities
+		// TODO: merge the data and attach to route levels
 //		Map<String,String> searchCriteria = new HashMap<String,String>();
 //		searchCriteria.put("attributeName", "documentTypeName" );
 //		searchCriteria.put("active", "Y");

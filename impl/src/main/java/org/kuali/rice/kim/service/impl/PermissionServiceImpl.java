@@ -347,7 +347,7 @@ public class PermissionServiceImpl implements PermissionService, PermissionUpdat
     	permissionToRoleCache.put( key, new MaxAgeSoftReference<List<String>>( CACHE_MAX_AGE_SECONDS, roleIds ) );
     }
  
-    protected List<String> getRoleIdsForPermission( String namespaceCode, String permissionName, AttributeSet permissionDetails) {
+    public List<String> getRoleIdsForPermission( String namespaceCode, String permissionName, AttributeSet permissionDetails) {
     	// get all the permission objects whose name match that requested
     	List<KimPermissionImpl> permissions = getPermissionImplsByName( namespaceCode, permissionName );
     	// now, filter the full list by the detail passed
@@ -369,6 +369,15 @@ public class PermissionServiceImpl implements PermissionService, PermissionUpdat
     	if ( roleIds == null ) {
     		roleIds = permissionDao.getRoleIdsForPermissions( applicablePermissions );
     		addRolesForPermissionsToCache( applicablePermissions, roleIds );
+    	}
+    	return roleIds;
+    }
+    
+    public List<String> getRoleIdsForPermissions( List<KimPermissionInfo> permissions ) {
+    	List<String> roleIds = getRolesForPermissionsFromCache( permissions );
+    	if ( roleIds == null ) {
+    		roleIds = permissionDao.getRoleIdsForPermissions( permissions );
+    		addRolesForPermissionsToCache( permissions, roleIds );
     	}
     	return roleIds;
     }

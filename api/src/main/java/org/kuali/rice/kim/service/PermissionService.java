@@ -211,4 +211,14 @@ public interface PermissionService {
      * If the searchCriteria parameter is null or empty, an empty list will be returned.
      */
     List<KimPermissionInfo> lookupPermissions(Map<String,String> searchCriteria, boolean unbounded);
+    
+    /**
+     * Get the role IDs for the given permission.
+     */
+    List<String> getRoleIdsForPermission( String namespaceCode, String permissionName, AttributeSet permissionDetails);
+    
+    /**
+     * Get the role IDs for the given list of permissions.
+     */
+    List<String> getRoleIdsForPermissions( List<KimPermissionInfo> permissions );
 }

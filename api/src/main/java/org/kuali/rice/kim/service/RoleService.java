@@ -40,6 +40,8 @@ public interface RoleService {
 	 * If the roleId is blank, this method returns <code>null</code>.
 	 */
 	KimRoleInfo getRole( String roleId );
+	
+	List<KimRoleInfo> getRoles( List<String> roleIds );
 
 	/** Get the KIM Role object with the unique combination of namespace, component,
 	 * and role name.

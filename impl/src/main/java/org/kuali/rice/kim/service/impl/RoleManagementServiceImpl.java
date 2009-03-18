@@ -205,7 +205,14 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		}
 		return role.getRoleId();
 	}
-	
+		
+	/**
+	 * @see org.kuali.rice.kim.service.RoleService#getRoles(java.util.List)
+	 */
+	public List<KimRoleInfo> getRoles(List<String> roleIds) {
+		return getRoleService().getRoles(roleIds);
+	}
+
 	protected void addIdsToKey( StringBuffer key, List<String> idList ) {
 		if ( idList == null || idList.isEmpty() ) {
 			key.append( "[null]" );

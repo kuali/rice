@@ -1,14 +1,18 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
-<c:set var="documentType" value="${KualiForm.documentType}" />
 <c:set var="documentTypeAttributes" value="${DataDictionary.DocumentType.attributes}" />
+<c:set var="permissionAttributes" value="${DataDictionary.PermissionImpl.attributes}" />
 
 <kul:page headerTitle="Document Configuration" transactionalDocument="false"
 	showDocumentInfo="false" htmlFormAction="DocumentConfigurationView" docTitle="Document Configuration">
 
+<%--
+ TODO: link to edit document type, link to view document type?
+--%>
 	<kul:tabTop
 	  tabTitle="Document Information"
 	  defaultOpen="true">
+        <c:set var="documentType" value="${KualiForm.documentType}" />
 	  	<div class="tab-container" style="width:auto;">
           <table class="datatable" cellspacing="0" cellpadding="0" align="center" style="text-align: left; margin-left: auto; margin-right: auto;">
             <tbody>
@@ -77,8 +81,70 @@
 	 	</div>
    	    <kul:tab tabTitle="Permissions" defaultOpen="true">
 			<div class="tab-container" style="width:auto;">
+			 <%-- TODO: need bar here for add links --%>
+	          <table class="datatable" cellspacing="0" cellpadding="0" align="center" style="text-align: left; margin-left: auto; margin-right: auto;">
+	            <tbody>
+	              <tr>
+	                <kul:htmlAttributeHeaderCell scope="col" align="left" 
+	                    attributeEntry="${permissionAttributes['template.name']}" />
+                    <kul:htmlAttributeHeaderCell scope="col" align="left" 
+                        attributeEntry="${permissionAttributes.name}" />
+                    <kul:htmlAttributeHeaderCell scope="col" align="left" 
+                        attributeEntry="${permissionAttributes.detailObjectsValues}" />
+                    <kul:htmlAttributeHeaderCell scope="col" align="left" 
+                        attributeEntry="${permissionAttributes.assignedToRolesToDisplay}" />
+	                <th>Inherited</th>
+	                <th>&nbsp;</th>
+	              </tr>
+	            
 				<c:forEach var="perm" items="${KualiForm.permissions}">
-					${perm}
+                  <tr>
+                    <td>
+                    	<%-- TODO: update this to use the proper url for an inquiry and not use the impl class --%>
+                        <kul:inquiry boClassName="org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl" keyValues="permissionTemplateId=${perm.template.permissionTemplateId}" render="true">
+                        <c:out value="${perm.template.name}" />
+                        (<c:out value="${perm.template.namespaceCode}" />)
+                        </kul:inquiry>
+                    </td>
+                    <td>
+                    	<%-- TODO: update this to use the proper url for a detailed inquiry and not use the impl class --%>
+                        <kul:inquiry boClassName="org.kuali.rice.kim.bo.role.impl.KimPermissionImpl" keyValues="permissionId=${perm.permissionId}" render="true">
+                        <c:if test="${empty perm.name}">
+                            <c:out value="${perm.template.name}" />
+                        </c:if>
+                        <c:out value="${perm.name}" />
+                        (<c:out value="${perm.namespaceCode}" />)
+                        </kul:inquiry>
+                    </td>
+                    <td>
+                    	<%-- TODO: skip output of the documentTypeName since known external to this? --%>
+                        <c:forEach var="dtl" items="${perm.details}" varStatus="status">
+                        	<c:if test="${status.index != 0}">,</c:if>
+                        	${dtl.value}
+                        </c:forEach>
+                    </td>
+                    <td>
+                    	<c:forEach var="role" items="${KualiForm.permissionRoles[perm.permissionId]}">
+                    		<kul:inquiry boClassName="org.kuali.rice.kim.bo.role.impl.KimRoleImpl" keyValues="roleId=${role.roleId}" render="true">
+                    		<c:out value="${role.namespaceCode} ${role.roleName}" />
+                    		</kul:inquiry>
+                    		<br />
+                    	</c:forEach>
+                    </td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${perm.details.documentTypeName == documentType.name}">
+                                No
+                            </c:when>
+                            <c:otherwise>
+                            	<a href="?documentTypeName=${perm.details.documentTypeName}"><c:out value="${perm.details.documentTypeName}" /></a>
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
+                    <td>
+                        Edit Permission
+                    </td>
+                  </tr>
 				</c:forEach>
 			</div> 	  
  	    </kul:tab>

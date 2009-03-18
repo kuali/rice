@@ -16,9 +16,11 @@
 package org.kuali.rice.kew.rule.web;
 
 import java.util.List;
+import java.util.Map;
 
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
+import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 
 /**
@@ -29,11 +31,28 @@ import org.kuali.rice.kns.web.struts.form.KualiForm;
  */
 public class DocumentConfigurationViewForm extends KualiForm {
 
+	private static final long serialVersionUID = -6251534168125209176L;
+	
 	protected String documentTypeName;
 	protected DocumentType documentType; 
 	protected DocumentType parentDocumentType; 
 	protected List<DocumentType> childDocumentTypes; 
-    private List<KimPermissionInfo> permissions = null;
+    protected List<KimPermissionInfo> permissions = null;
+    protected Map<String,List<KimRoleInfo>> permissionRoles;
+
+	/**
+	 * @return the permissionRoles
+	 */
+	public Map<String, List<KimRoleInfo>> getPermissionRoles() {
+		return this.permissionRoles;
+	}
+
+	/**
+	 * @param permissionRoles the permissionRoles to set
+	 */
+	public void setPermissionRoles(Map<String, List<KimRoleInfo>> permissionRoles) {
+		this.permissionRoles = permissionRoles;
+	}
 
 	public String getDocumentTypeName() {
 		return this.documentTypeName;

@@ -179,7 +179,6 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 	/**
 	 * @see org.kuali.rice.kim.service.RoleService#getRoleByName(java.lang.String, java.lang.String)
 	 */
-	@SuppressWarnings("unchecked")
 	public KimRoleInfo getRoleByName( String namespaceCode, String roleName ) {
 		KimRoleImpl role = getRoleImplByName( namespaceCode, roleName );
 		if ( role != null ) {
@@ -218,6 +217,15 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 		Map<String,KimRoleImpl> result = roleDao.getRoleImplMap(roleIds);
 		addRoleImplMapToCache( roleIds, result );
 		return result;
+	}
+	
+	public List<KimRoleInfo> getRoles(List<String> roleIds) {
+		Collection<KimRoleImpl> roles = getRoleImplMap(roleIds).values();
+		List<KimRoleInfo> roleInfos = new ArrayList<KimRoleInfo>( roles.size() );
+		for ( KimRoleImpl r : roles ) {
+			roleInfos.add( r.toSimpleInfo() );
+		}
+		return roleInfos;
 	}
 	
    	

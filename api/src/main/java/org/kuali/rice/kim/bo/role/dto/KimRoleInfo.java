@@ -18,6 +18,8 @@ package org.kuali.rice.kim.bo.role.dto;
 import java.io.Serializable;
 
 import org.kuali.rice.kim.bo.role.KimRole;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
 
 /**
@@ -70,6 +72,18 @@ public class KimRoleInfo implements KimRole, Serializable {
 	}
 	public void setNamespaceCode(String namespaceCode) {
 		this.namespaceCode = namespaceCode;
+	}
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+				.append("roleId", this.roleId)
+				.append("namespaceCode", this.namespaceCode)
+				.append("roleName", this.roleName)
+				.append("active", this.active)
+				.append("kimTypeId", this.kimTypeId)
+				.toString();
 	}
 	
 }

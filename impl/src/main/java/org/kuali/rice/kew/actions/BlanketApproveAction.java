@@ -139,6 +139,7 @@ public class BlanketApproveAction extends ActionTakenEvent {
 
             if (getRouteHeader().isStateInitiated() || getRouteHeader().isStateSaved()) {
                 markDocumentEnroute(getRouteHeader());
+                getRouteHeader().setRoutedByUserWorkflowId(getPrincipal().getPrincipalId());
             }
 
             LOG.debug("Record the blanket approval action");

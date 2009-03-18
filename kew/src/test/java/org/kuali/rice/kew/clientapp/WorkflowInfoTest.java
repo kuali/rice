@@ -16,6 +16,7 @@
 package org.kuali.rice.kew.clientapp;
 
 import org.junit.Test;
+import org.kuali.rice.kew.actions.BlanketApproveTest;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -24,6 +25,7 @@ import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
@@ -35,6 +37,12 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  */
 public class WorkflowInfoTest extends KEWTestCase {
 
+	@Override
+	protected void loadTestData() {
+		// need this configuration to create a BlanketApproveParallelTest
+		loadXmlFile(BlanketApproveTest.class, "ActionsConfig.xml");
+	}
+	
     /**
      * Tests the loading of a RouteHeaderVO using the WorkflowInfo.
      *
@@ -83,6 +91,22 @@ public class WorkflowInfoTest extends KEWTestCase {
 	document.cancel("");
 	status = info.getDocumentStatus(documentId);
 	assertEquals("Document should be CANCELED.", KEWConstants.ROUTE_HEADER_CANCEL_CD, status);
+    }
+    
+    /**
+     * test for issue KFSMI-2979
+     * This method verifies that workflowInfo.getDocumentRoutedByPrincipalId returns the blanket approver 
+     * for a document that was put onroute by that person (the blanket approver)
+     */
+    @Test
+    public void testBlanketApproverSubmitted() throws WorkflowException {
+    	Person blanketApprover = KIMServiceLocator.getPersonService().getPersonByPrincipalName("ewestfal");
+
+        WorkflowDocument document = new WorkflowDocument(blanketApprover.getPrincipalId(), "BlanketApproveParallelTest");
+        document.blanketApprove("");
+
+        String routedByPrincipalId = new WorkflowInfo().getDocumentRoutedByPrincipalId(document.getRouteHeaderId());
+        assertEquals("the blanket approver should be the routed by", blanketApprover.getPrincipalId(), routedByPrincipalId);
     }
 
 }

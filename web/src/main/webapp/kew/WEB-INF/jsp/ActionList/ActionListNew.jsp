@@ -131,7 +131,7 @@
          <c:if test="${helpDeskActionList != null}">
          	<!--<p> Testing is this shows up on the screen </p> -->
             <div style="float:left">
-			<html-el:text property="helpDeskActionListUserName" size="12" />&nbsp;
+			<html-el:text property="helpDeskActionListUserName" size="12" style="position: relative; top: -.35em;" />&nbsp;
             </div>
             <div style="float:left">
             <html-el:image src="../kr/images/tinybutton-hlpdesk.gif" property="methodToCall.helpDeskActionListLogin"/>

@@ -27,7 +27,7 @@ import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.workgroup.WorkgroupMembershipChangeProcessor;
 import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.kim.service.GroupInternalService;
-import org.kuali.rice.kim.service.IdentityManagementService;
+import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -35,8 +35,8 @@ import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 /**
- * This is a description of what this class does 
- * 
+ * This is a description of what this class does
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
@@ -44,20 +44,21 @@ public class GroupInternalServiceImpl implements GroupInternalService {
     public BusinessObjectService getBusinessObjectService() {
     	return KNSServiceLocator.getBusinessObjectService();
     }
-    
-    public IdentityManagementService getIdentityManagementService() {
-    	return KIMServiceLocator.getIdentityManagementService();
+
+
+    public GroupService getGroupService(){
+    	return KIMServiceLocator.getGroupService();
     }
-	
+
     public void saveWorkgroup(KimGroupImpl group) {
-    	IdentityManagementService ims = getIdentityManagementService();
-    	List<String> oldIds = ims.getGroupMemberPrincipalIds(group.getGroupId());
+    	GroupService ims = getGroupService();
+    	List<String> oldIds = ims.getMemberPrincipalIds(group.getGroupId());
         getBusinessObjectService().save( group );
-        List<String> newIds = ims.getGroupMemberPrincipalIds(group.getGroupId());
+        List<String> newIds = ims.getMemberPrincipalIds(group.getGroupId());
         updateForWorkgroupChange(group.getGroupId(), oldIds, newIds);
-    }        
-    
-    public void updateForWorkgroupChange(String groupId, 
+    }
+
+    public void updateForWorkgroupChange(String groupId,
     		List<String> oldPrincipalIds, List<String> newPrincipalIds) {
         MembersDiff membersDiff = getMembersDiff(oldPrincipalIds, newPrincipalIds);
         for (String removedPrincipalId : membersDiff.getRemovedPrincipalIds()) {
@@ -67,10 +68,10 @@ public class GroupInternalServiceImpl implements GroupInternalService {
         	updateForUserAddedToGroup(addedPrincipalId, groupId);
         }
     }
-    
+
     public void updateForUserAddedToGroup(String principalId, String groupId) {
         // first verify that the user is still a member of the workgroup
-    	if(getIdentityManagementService().isMemberOfGroup(principalId, groupId))
+    	if(getGroupService().isMemberOfGroup(principalId, groupId))
     	{
             KSBXMLService workgroupMembershipChangeProcessor = (KSBXMLService) KSBServiceLocator.getMessageHelper()
             .getServiceAsynchronously(new QName(MessageServiceNames.WORKGROUP_MEMBERSHIP_CHANGE_SERVICE));
@@ -82,10 +83,10 @@ public class GroupInternalServiceImpl implements GroupInternalService {
             }
     	}
     }
-    
+
     public void updateForUserRemovedFromGroup(String principalId, String groupId) {
         // first verify that the user is no longer a member of the workgroup
-    	if(!getIdentityManagementService().isMemberOfGroup(principalId, groupId))
+    	if(!getGroupService().isMemberOfGroup(principalId, groupId))
     	{
             KSBXMLService workgroupMembershipChangeProcessor = (KSBXMLService) KSBServiceLocator.getMessageHelper()
             .getServiceAsynchronously(new QName(MessageServiceNames.WORKGROUP_MEMBERSHIP_CHANGE_SERVICE));

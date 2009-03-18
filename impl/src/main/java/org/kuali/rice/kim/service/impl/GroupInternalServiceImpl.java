@@ -15,23 +15,15 @@
  */
 package org.kuali.rice.kim.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
 
 import org.apache.commons.collections.ListUtils;
-import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.actionlist.service.ActionListService;
-import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.workgroup.WorkgroupMembershipChangeProcessor;
 import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.kim.service.GroupInternalService;
@@ -49,13 +41,7 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
  *
  */
 public class GroupInternalServiceImpl implements GroupInternalService {
-    public ActionRequestService getActionRequestService() {
-        return (ActionRequestService) KEWServiceLocator.getActionRequestService();
-    }
-    
-    public ActionListService getActionListService() {
-    	return (ActionListService) KEWServiceLocator.getActionListService();
-    }
+
     
     public BusinessObjectService getBusinessObjectService() {
     	return (BusinessObjectService) KNSServiceLocator.getBusinessObjectService();
@@ -69,6 +55,11 @@ public class GroupInternalServiceImpl implements GroupInternalService {
         updateActionItemsForWorkgroupChange(group.getGroupId(), oldIds, newIds);
     }        
     
+    public void updateForWorkgroupChange(String groupId, 
+    		List<String> oldPrincipalIds, List<String> newPrincipalIds) {
+    	
+    }
+    
     /**
 	 * This overridden method ...
 	 * 
@@ -76,7 +67,6 @@ public class GroupInternalServiceImpl implements GroupInternalService {
 	 */
     public void updateActionItemsForWorkgroupChange(String groupId, 
     		List<String> oldPrincipalIds, List<String> newPrincipalIds)	{
-        IdentityManagementService ims = KIMServiceLocator.getIdentityManagementService();
         MembersDiff membersDiff = getMembersDiff(oldPrincipalIds, newPrincipalIds);
         for (String removedPrincipalId : membersDiff.getRemovedPrincipalIds()) {
             KSBXMLService workgroupMembershipChangeProcessor = (KSBXMLService) KSBServiceLocator.getMessageHelper()
@@ -102,47 +92,33 @@ public class GroupInternalServiceImpl implements GroupInternalService {
     }
 
 
-    /**
-     * Update the user's Action List to reflect their addition to the given Workgroup.
-     */
-    public void updateActionListForUserAddedToGroup(String principalId, String groupId) {
+    public void updateForUserAddedToGroup(String principalId, String groupId) {
         // first verify that the user is still a member of the workgroup
     	if(KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(principalId, groupId))
     	{
-    		List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
-    		List<String> allGroupsToCheck = KIMServiceLocator.getIdentityManagementService().getParentGroupIds(groupId);
-            allGroupsToCheck.add(0, groupId);
-            for (String groupToCheckId : allGroupsToCheck) {
-                actionRequests.addAll(getActionRequestService().findActivatedByGroup(groupToCheckId));
+            KSBXMLService workgroupMembershipChangeProcessor = (KSBXMLService) KSBServiceLocator.getMessageHelper()
+            .getServiceAsynchronously(new QName(MessageServiceNames.WORKGROUP_MEMBERSHIP_CHANGE_SERVICE));
+            try {
+                workgroupMembershipChangeProcessor.invoke(WorkgroupMembershipChangeProcessor
+                        .getMemberAddedMessageContents(principalId, groupId));
+            } catch (Exception e) {
+                throw new WorkflowRuntimeException(e);
             }
-            for (Iterator requestIt = actionRequests.iterator(); requestIt.hasNext();) {
-                ActionRequestValue request = (ActionRequestValue) requestIt.next();
-                ActionItem item = getActionListService().createActionItemForActionRequest(request);
-                item.setPrincipalId(principalId);
-                getActionListService().saveActionItem(item);
-            }
-        }
+    	}
     }
+
     
-    /**
-     * Update the user's Action List to reflect their removal from the given Workgroup.
-     */
-    public void updateActionListForUserRemovedFromGroup(String principalId, String groupId) {
+    public void updateForUserRemovedFromGroup(String principalId, String groupId) {
         // first verify that the user is no longer a member of the workgroup
     	if(!KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(principalId, groupId))
     	{
-    		List<String> allGroupsToCheck = KIMServiceLocator.getIdentityManagementService().getParentGroupIds(groupId);
-            allGroupsToCheck.add(0, groupId);
-            Collection<ActionItem> actionItems = getActionListService().findByPrincipalId(principalId);
-    		for (Iterator<ActionItem> itemIt = actionItems.iterator(); itemIt.hasNext();) {
-            	ActionItem item = itemIt.next();
-            	if (item.isWorkgroupItem()) {
-            		for (String groupIdToCheck : allGroupsToCheck) {
-            			if (item.getGroupId().equals(groupIdToCheck)) {
-            				getActionListService().deleteActionItem(item);
-            			}
-            		}
-            	}
+            KSBXMLService workgroupMembershipChangeProcessor = (KSBXMLService) KSBServiceLocator.getMessageHelper()
+            .getServiceAsynchronously(new QName(MessageServiceNames.WORKGROUP_MEMBERSHIP_CHANGE_SERVICE));
+            try {
+                workgroupMembershipChangeProcessor.invoke(WorkgroupMembershipChangeProcessor
+                        .getMemberRemovedMessageContents(principalId, groupId));
+            } catch (Exception e) {
+                throw new WorkflowRuntimeException(e);
             }
     	}
 

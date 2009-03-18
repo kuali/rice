@@ -15,7 +15,10 @@
  */
 package org.kuali.rice.kew.rule.web;
 
+import java.util.List;
+
 import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 
 /**
@@ -28,6 +31,9 @@ public class DocumentConfigurationViewForm extends KualiForm {
 
 	protected String documentTypeName;
 	protected DocumentType documentType; 
+	protected DocumentType parentDocumentType; 
+	protected List<DocumentType> childDocumentTypes; 
+    private List<KimPermissionInfo> permissions = null;
 
 	public String getDocumentTypeName() {
 		return this.documentTypeName;
@@ -44,4 +50,30 @@ public class DocumentConfigurationViewForm extends KualiForm {
 	public void setDocumentType(DocumentType documentType) {
 		this.documentType = documentType;
 	}
+
+	public List<KimPermissionInfo> getPermissions() {
+		return this.permissions;
+	}
+
+	public void setPermissions(List<KimPermissionInfo> permissions) {
+		this.permissions = permissions;
+	}
+
+	public DocumentType getParentDocumentType() {
+		return this.parentDocumentType;
+	}
+
+	public void setParentDocumentType(DocumentType parentDocumentType) {
+		this.parentDocumentType = parentDocumentType;
+	}
+
+	public List<DocumentType> getChildDocumentTypes() {
+		return this.childDocumentTypes;
+	}
+
+	public void setChildDocumentTypes(List<DocumentType> childDocumentTypes) {
+		this.childDocumentTypes = childDocumentTypes;
+	}
+	
+
 }

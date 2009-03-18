@@ -48,11 +48,14 @@
                 <kul:htmlAttributeHeaderCell scope="col" align="left" 
                 	attributeEntry="${documentTypeAttributes['parentDocType.name']}" />
                 <td>
-                	<c:if test="${!empty documentType.parentDocType.name}">
-	                	<a href="?documentTypeName=${documentType.parentDocType.name}">
+                	<c:if test="${!empty KualiForm.parentDocumentType.name}">
+	                	<a href="?documentTypeName=${KualiForm.parentDocumentType.name}">
 			                <kul:htmlControlAttribute attributeEntry="${documentTypeAttributes['parentDocType.name']}"
-			                	property="documentType.parentDocType.name"
+			                	property="parentDocumentType.name"
 			                	readOnly="true" />                
+	                		<c:if test="${fn:length( KualiForm.parentDocumentType.name ) <= 10}">
+				                (<c:out value="${KualiForm.parentDocumentType.label}" />)                
+	                		</c:if>
 		                </a>
 	                </c:if>
                 </td>
@@ -60,8 +63,12 @@
                 	Child Document Types
                 </th>
                 <td>
-                	<c:forEach var="childDocType" items="${documentType.childrenDocTypes}" varStatus="status">
-                		<a href="?documentTypeName=${childDocType.name}"><c:out value="${childDocType.name}" /></a><br />
+                	<c:forEach var="childDocType" items="${KualiForm.childDocumentTypes}" varStatus="status">
+                		<a href="?documentTypeName=${childDocType.name}"><c:out value="${childDocType.name}" />
+                		<c:if test="${fn:length( childDocType.name ) <= 10}">
+                			(<c:out value="${childDocType.label}" />)
+                		</c:if>
+                		</a><br />
                 	</c:forEach>
                 </td>
 			  </tr>
@@ -70,6 +77,9 @@
 	 	</div>
    	    <kul:tab tabTitle="Permissions" defaultOpen="true">
 			<div class="tab-container" style="width:auto;">
+				<c:forEach var="perm" items="${KualiForm.permissions}">
+					${perm}
+				</c:forEach>
 			</div> 	  
  	    </kul:tab>
  	    <kul:tab tabTitle="Workflow / Responsibilities" defaultOpen="true" >

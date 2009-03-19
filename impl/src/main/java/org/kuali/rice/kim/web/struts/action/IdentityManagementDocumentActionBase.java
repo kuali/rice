@@ -26,8 +26,6 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.ResponsibilityService;
 import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.util.KimCommonUtils;
-import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.web.struts.action.KualiTransactionalDocumentActionBase;
 
 /**

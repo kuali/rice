@@ -54,7 +54,9 @@ import org.kuali.rice.kim.web.struts.form.IdentityManagementPersonDocumentForm;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -100,7 +102,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 		        role.setAttributeEntry( getUiDocumentService().getAttributeEntries( role.getDefinitions() ) );
 			}
 		}
-
+		((KualiDocumentFormBase) form).setErrorMapFromPreviousRequest(GlobalVariables.getErrorMap());
 		return forward;
     }
     

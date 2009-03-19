@@ -54,16 +54,17 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.RiceKeyConstants;
+import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 
 /**
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class IdentityManagementRoleDocumentAction extends IdentityManagementDocumentActionBase {
 
-	public static final String CHANGE_MEMBER_TYPE_CODE_METHOD_TO_CALL = "changeMemberTypeCode"; 
-	
+	public static final String CHANGE_MEMBER_TYPE_CODE_METHOD_TO_CALL = "changeMemberTypeCode";
+
     @Override
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -82,7 +83,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
 	        roleDocumentForm.getRoleDocument().setKimType(kimType);
 	        roleDocumentForm.setDocTypeName(roleDocumentForm.getRoleDocument().getWorkflowDocumentTypeName());
 	    }
-		if(KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY.equals(methodToCall)) 
+		if(KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY.equals(methodToCall))
         	forward = mapping.findForward(KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY);
         else {
         	forward = super.execute(mapping, form, request, response);
@@ -97,7 +98,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         }
 		String commandParam = request.getParameter(KNSConstants.PARAMETER_COMMAND);
         String roleId = request.getParameter(KimConstants.PrimaryKeyConstants.ROLE_ID);
-        if (StringUtils.isNotBlank(commandParam) && commandParam.equals(KEWConstants.INITIATE_COMMAND) 
+        if (StringUtils.isNotBlank(commandParam) && commandParam.equals(KEWConstants.INITIATE_COMMAND)
 				&& StringUtils.isNotBlank(roleId)) {
 	        KimRole role = KIMServiceLocator.getRoleService().getRole(roleId);
 			KIMServiceLocator.getUiDocumentService().loadRoleDoc(roleDocumentForm.getRoleDocument(), role);
@@ -105,13 +106,14 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
 			roleDocumentForm.setDelegationMember(roleDocumentForm.getRoleDocument().getBlankDelegationMember());
         	if(!KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY.equals(methodToCall))
         		roleDocumentForm.setCanAssignRole(validAssignRole(roleDocumentForm.getRoleDocument()));
-        } 
+        }
         if (StringUtils.isNotBlank(commandParam) && commandParam.equals(CHANGE_MEMBER_TYPE_CODE_METHOD_TO_CALL)){
 	        roleDocumentForm.getMember().setMemberName("");
 		}
+		((KualiDocumentFormBase) form).setErrorMapFromPreviousRequest(GlobalVariables.getErrorMap());
 		return forward;
     }
-    
+
 	/***
 	 * @see org.kuali.rice.kim.web.struts.action.IdentityManagementDocumentActionBase#getActionName()
 	 */
@@ -125,10 +127,10 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         additionalPermissionDetails.put(KimAttributes.NAMESPACE_CODE, document.getRoleNamespace());
         additionalPermissionDetails.put(KimAttributes.ROLE_NAME, document.getRoleName());
 		if (!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
-				document, 
-				KimConstants.NAMESPACE_CODE, 
-				KimConstants.PermissionTemplateNames.ASSIGN_ROLE, 
-				GlobalVariables.getUserSession().getPrincipalId(), 
+				document,
+				KimConstants.NAMESPACE_CODE,
+				KimConstants.PermissionTemplateNames.ASSIGN_ROLE,
+				GlobalVariables.getUserSession().getPrincipalId(),
 				additionalPermissionDetails, null)){
             rulePassed = false;
 		}
@@ -153,7 +155,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         }
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
-    
+
     public ActionForward deleteResponsibility(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
         roleDocumentForm.getRoleDocument().getResponsibilities().remove(getLineToDelete(request));
@@ -178,11 +180,11 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         }
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
-    
+
     public ActionForward addMember(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
         KimDocumentRoleMember newMember = roleDocumentForm.getMember();
-        if(checkKimDocumentRoleMember(newMember) && 
+        if(checkKimDocumentRoleMember(newMember) &&
         		KNSServiceLocator.getKualiRuleService().applyRules(new AddMemberEvent("", roleDocumentForm.getRoleDocument(), newMember))){
         	newMember.setDocumentNumber(roleDocumentForm.getDocument().getDocumentNumber());
         	roleDocumentForm.getRoleDocument().addMember(newMember);
@@ -193,13 +195,13 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
 
     private boolean checkKimDocumentRoleMember(KimDocumentRoleMember newMember){
         if(StringUtils.isBlank(newMember.getMemberTypeCode()) || StringUtils.isBlank(newMember.getMemberId())){
-        	GlobalVariables.getErrorMap().putError("document.member.memberId", RiceKeyConstants.ERROR_EMPTY_ENTRY, 
+        	GlobalVariables.getErrorMap().putError("document.member.memberId", RiceKeyConstants.ERROR_EMPTY_ENTRY,
         			new String[] {"Member Type Code and Member ID"});
         	return false;
 		}
     	PersistableBusinessObject object = getMember(newMember.getMemberTypeCode(), newMember.getMemberId());
         if(object==null){
-        	GlobalVariables.getErrorMap().putError("document.member.memberId", RiceKeyConstants.ERROR_MEMBERID_MEMBERTYPE_MISMATCH, 
+        	GlobalVariables.getErrorMap().putError("document.member.memberId", RiceKeyConstants.ERROR_MEMBERID_MEMBERTYPE_MISMATCH,
         			new String[] {newMember.getMemberId()});
         	return false;
 		}
@@ -225,14 +227,14 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         criteria.put(roleMemberIdName, memberId);
         return KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(roleMemberTypeClass, criteria);
     }
-    
+
     public ActionForward deleteMember(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
         roleDocumentForm.getRoleDocument().getMembers().remove(getLineToDelete(request));
         roleDocumentForm.setMember(roleDocumentForm.getRoleDocument().getBlankMember());
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
-    
+
     public ActionForward deletePermission(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
         roleDocumentForm.getRoleDocument().getPermissions().remove(getLineToDelete(request));
@@ -241,13 +243,13 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
 
     private boolean checkDelegationMember(RoleDocumentDelegationMember newMember){
         if(StringUtils.isBlank(newMember.getMemberTypeCode()) || StringUtils.isBlank(newMember.getMemberId())){
-        	GlobalVariables.getErrorMap().putError("document.delegationMember.memberId", RiceKeyConstants.ERROR_EMPTY_ENTRY, 
+        	GlobalVariables.getErrorMap().putError("document.delegationMember.memberId", RiceKeyConstants.ERROR_EMPTY_ENTRY,
         			new String[] {"Member Type Code and Member ID"});
         	return false;
 		}
     	BusinessObject object = getMember(newMember.getMemberTypeCode(), newMember.getMemberId());
         if(object==null){
-        	GlobalVariables.getErrorMap().putError("document.delegationMember.memberId", RiceKeyConstants.ERROR_MEMBERID_MEMBERTYPE_MISMATCH, 
+        	GlobalVariables.getErrorMap().putError("document.delegationMember.memberId", RiceKeyConstants.ERROR_MEMBERID_MEMBERTYPE_MISMATCH,
         			new String[] {newMember.getMemberId()});
         	return false;
 		}
@@ -266,7 +268,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         }
         return roleMemberName;
     }
-    
+
     public String getMemberNamespaceCode(String memberTypeCode, BusinessObject object){
     	String roleMemberNamespaceCode = "";
         if(MemberTypeValuesFinder.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
@@ -278,7 +280,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         }
         return roleMemberNamespaceCode;
     }
-    
+
     public ActionForward addDelegationMember(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
         RoleDocumentDelegationMember newDelegationMember = roleDocumentForm.getDelegationMember();
@@ -290,7 +292,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         }
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
-    
+
     public ActionForward deleteDelegationMember(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
         roleDocumentForm.getRoleDocument().getDelegationMembers().remove(getLineToDelete(request));

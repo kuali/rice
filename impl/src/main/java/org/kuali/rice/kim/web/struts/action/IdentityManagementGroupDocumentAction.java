@@ -46,6 +46,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.RiceKeyConstants;
+import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 
 /**
  * 
@@ -99,6 +100,7 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
         if (StringUtils.isNotBlank(commandParam) && commandParam.equals(CHANGE_MEMBER_TYPE_CODE_METHOD_TO_CALL)){
 	        groupDocumentForm.getMember().setMemberName("");
 		}
+		((KualiDocumentFormBase) form).setErrorMapFromPreviousRequest(GlobalVariables.getErrorMap());
 		return forward;
     }
     

@@ -18,10 +18,10 @@
 <c:set var="inquiry" value="false" scope="request" /> 
 
 <kul:documentPage
-	showDocumentInfo="false"
+	showDocumentInfo="true"
 	htmlFormAction="identityManagementRoleDocument"
 	documentTypeName="IdentityManagementRoleDocument"
-	renderMultipart="false"
+	renderMultipart="true"
 	showTabButtons="true"
 	auditCount="0">
 

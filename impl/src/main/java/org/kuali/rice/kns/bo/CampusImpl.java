@@ -27,6 +27,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 /**
  * 
@@ -175,7 +176,7 @@ public class CampusImpl extends PersistableBusinessObjectBase implements Campus,
      */
     protected LinkedHashMap toStringMapper() {
         LinkedHashMap m = new LinkedHashMap();
-        m.put("campusCode", this.campusCode);
+        m.put(KNSPropertyConstants.CAMPUS_CODE, this.campusCode);
         return m;
     }
 

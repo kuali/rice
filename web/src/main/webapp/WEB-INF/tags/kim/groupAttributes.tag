@@ -12,7 +12,7 @@
 	<c:set var="readOnly" value="${!canAssignGroup}"/>
 </c:if>
 
-<kul:tab tabTitle="qualifiers" defaultOpen="true" tabErrorKey="document.qualifier*">
+<kul:tab tabTitle="Attributes" defaultOpen="true" tabErrorKey="document.qualifier*">
 	<div class="tab-container" align="center">
     <h3>
     	<span class="subhead-left">Attribute Data</span>

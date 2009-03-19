@@ -569,7 +569,8 @@
               p:noLookup="true"
               p:attributeName="delegationRuleBaseValues.ruleBaseValuesId" />
         <bean parent="FieldDefinition"
-              p:attributeName="delegationType"/>
+              p:attributeName="delegationType"
+              p:defaultValue="E"/>
       </list>
     </property>
     <property name="resultFields" >

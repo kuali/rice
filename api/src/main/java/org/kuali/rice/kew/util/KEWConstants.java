@@ -3,6 +3,7 @@ package org.kuali.rice.kew.util;
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -75,14 +76,21 @@ public class KEWConstants {
     public static final String DELEGATION_NONE = null;
     public static final String DELEGATION_PRIMARY = "P";
     public static final String DELEGATION_SECONDARY = "S";
+    /**
+     * This is a UI option, not valid data for a delgationType value.
+     */
+    public static final String DELEGATION_EITHER = "E";
     
     public static final String DELEGATION_PRIMARY_LABEL = "PRIMARY";
     public static final String DELEGATION_SECONDARY_LABEL = "SECONDARY";
+    public static final String DELEGATION_EITHER_LABEL = "EITHER";
     
-    public static final Map<String, String> DELEGATION_TYPES = new HashMap<String, String>();
+    // Linked hash amap to preseve order for iteration
+    public static final Map<String, String> DELEGATION_TYPES = new LinkedHashMap<String, String>();
     static {
     	DELEGATION_TYPES.put(DELEGATION_PRIMARY, DELEGATION_PRIMARY_LABEL);
     	DELEGATION_TYPES.put(DELEGATION_SECONDARY, DELEGATION_SECONDARY_LABEL);
+    	DELEGATION_TYPES.put(DELEGATION_EITHER, DELEGATION_EITHER_LABEL);
     }
 
     public static final String FLEX_RM_NAME = "FRM";
@@ -419,7 +427,6 @@ public class KEWConstants {
     public static final int ACTION_REQUEST_DEFAULT_PRIORITY = 1;
 
     /** Values for Rule template options   */
-    //public static final String RULE_INSTRUCTIONS_CD = "I";
     public static final String ACTION_REQUEST_DEFAULT_CD = "D";
 
 

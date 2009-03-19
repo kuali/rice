@@ -33,11 +33,9 @@ public class DelegationTypeValuesFinder extends KeyValuesBase {
 
 	private static final List<KeyLabelPair> delegationTypes = new ArrayList<KeyLabelPair>();
 	static {
-		delegationTypes.add(new KeyLabelPair("", ""));
 		for (String delegationType : KEWConstants.DELEGATION_TYPES.keySet()) {
 			delegationTypes.add(new KeyLabelPair(delegationType, KEWConstants.DELEGATION_TYPES.get(delegationType)));
 		}
-		Collections.sort(delegationTypes, new KeyLabelComparator());
 	}
 	
 	public List<KeyLabelPair> getKeyValues() {

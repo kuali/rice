@@ -88,7 +88,10 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
             Map extensionValues, String workflowIdDirective) {
         Criteria crit = new Criteria(); //getSearchCriteria(docTypeName, ruleTemplateId, ruleDescription, delegationType, activeInd, extensionValues);
 
-        crit.addEqualTo("delegationType", delegationType);
+        if (StringUtils.isNotBlank(delegationType) && !delegationType.equals(KEWConstants.DELEGATION_EITHER)) {
+        	crit.addEqualTo("delegationType", delegationType);
+        }
+        
         if (StringUtils.isNotBlank(parentRuleBaseVaueId) && StringUtils.isNumeric(parentRuleBaseVaueId)) {
             crit.addIn("responsibilityId", this.getRuleResponsibilitySubQuery(new Long(parentRuleBaseVaueId)));
         }
@@ -115,7 +118,11 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
             String workflowId, String delegationType, Boolean activeInd,
             Map extensionValues, Collection actionRequestCodes) {
         Criteria crit = new Criteria();
-        crit.addEqualTo("delegationType", delegationType);
+        
+        if (StringUtils.isNotBlank(delegationType) && !delegationType.equals(KEWConstants.DELEGATION_EITHER)) {
+        	crit.addEqualTo("delegationType", delegationType);
+        }
+        
         if (StringUtils.isNotBlank(parentRuleBaseVaueId) && StringUtils.isNumeric(parentRuleBaseVaueId)) {
             crit.addIn("responsibilityId", this.getRuleResponsibilitySubQuery(new Long(parentRuleBaseVaueId)));
         }
@@ -268,7 +275,7 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
     }
 
 
-    private Criteria getSearchCriteria(String docTypeName, Long ruleTemplateId, String ruleDescription, /*String delegationType,*/ Boolean activeInd, Map extensionValues) {
+    private Criteria getSearchCriteria(String docTypeName, Long ruleTemplateId, String ruleDescription, Boolean activeInd, Map extensionValues) {
         Criteria crit = new Criteria();
         crit.addEqualTo("currentInd", new Boolean(true));
         crit.addEqualTo("templateRuleInd", new Boolean(false));
@@ -284,9 +291,6 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
         if (ruleTemplateId != null) {
             crit.addEqualTo("ruleTemplateId", ruleTemplateId);
         }
-        //if (delegationType != null) {
-        //    crit.addEqualTo("delegateRule", delegationType);
-        //}
         if (extensionValues != null && !extensionValues.isEmpty()) {
             for (Iterator iter2 = extensionValues.entrySet().iterator(); iter2.hasNext();) {
                 Map.Entry entry = (Map.Entry) iter2.next();

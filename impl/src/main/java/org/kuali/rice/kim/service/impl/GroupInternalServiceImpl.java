@@ -35,7 +35,7 @@ import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 /**
- * This is a description of what this class does
+ * Concrete Implementation of {@link GroupInternalService}
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *

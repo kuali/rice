@@ -2,17 +2,21 @@
 
 <c:set var="documentTypeAttributes" value="${DataDictionary.DocumentType.attributes}" />
 <c:set var="permissionAttributes" value="${DataDictionary.PermissionImpl.attributes}" />
+<c:set var="documentType" value="${KualiForm.documentType}" />
+<c:set var="attributeLabels" value="${KualiForm.attributeLabels}" />
 
-<kul:page headerTitle="Document Configuration" transactionalDocument="false"
-	showDocumentInfo="false" htmlFormAction="DocumentConfigurationView" docTitle="Document Configuration">
-
+<kul:page headerTitle="Document Configuration - ${documentType.name}" transactionalDocument="false"
+	showDocumentInfo="false" htmlFormAction="DocumentConfigurationView" docTitle="Document Configuration - ${documentType.name}">
+    <c:if test="${empty documentType}">
+        Unknown Document Type - <c:out value="${KualiForm.documentTypeName}" />
+    </c:if>
 <%--
- TODO: link to edit document type, link to view document type?
+    TODO: use subhead in permissions section to separate perms inherited from each document?
 --%>
+    <c:if test="${!empty documentType}">
 	<kul:tabTop
 	  tabTitle="Document Information"
 	  defaultOpen="true">
-        <c:set var="documentType" value="${KualiForm.documentType}" />
 	  	<div class="tab-container" style="width:auto;">
           <table class="datatable" cellspacing="0" cellpadding="0" align="center" style="text-align: left; margin-left: auto; margin-right: auto;">
             <tbody>
@@ -20,9 +24,19 @@
                 <kul:htmlAttributeHeaderCell scope="col" align="left" 
                 	attributeEntry="${documentTypeAttributes.name}" />
                 <td>
-	                <kul:htmlControlAttribute attributeEntry="${documentTypeAttributes.name}"
-	                	property="documentType.name"
-	                	readOnly="true" />                
+                	<kul:inquiry boClassName="org.kuali.rice.kew.doctype.bo.DocumentType" 
+                	             keyValues="documentTypeId=${documentType.documentTypeId}" render="true">
+    	                <kul:htmlControlAttribute attributeEntry="${documentTypeAttributes.name}"
+    	                	property="documentType.name"
+    	                	readOnly="true" />         
+	                </kul:inquiry>
+	                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                	<a href="<c:url value="${ConfigProperties.kr.url}/${Constants.MAINTENANCE_ACTION}">
+                      <c:param name="methodToCall" value="edit" />
+                      <c:param name="businessObjectClassName" value="org.kuali.rice.kew.doctype.bo.DocumentType"/>
+                      <c:param name="documentTypeId" value="${documentType.documentTypeId}"/>
+                      <c:param name="name" value="${documentType.name}"/>
+                    </c:url>" target="_blank">Edit Document Type</a>       
                 </td>
                 <kul:htmlAttributeHeaderCell scope="col" align="left" 
                 	attributeEntry="${documentTypeAttributes.unresolvedDocHandlerUrl}" />
@@ -81,7 +95,7 @@
 	 	</div>
    	    <kul:tab tabTitle="Permissions" defaultOpen="true">
 			<div class="tab-container" style="width:auto;">
-			 <%-- TODO: need bar here for add links --%>
+			 <%-- TODO: need bar here for add links? --%>
 	          <table class="datatable" cellspacing="0" cellpadding="0" align="center" style="text-align: left; margin-left: auto; margin-right: auto;">
 	            <tbody>
 	              <tr>
@@ -94,17 +108,32 @@
                     <kul:htmlAttributeHeaderCell scope="col" align="left" 
                         attributeEntry="${permissionAttributes.assignedToRolesToDisplay}" />
 	                <th>Inherited</th>
-	                <th>&nbsp;</th>
+	                <th>
+                        <a href="<c:url value="${ConfigProperties.kr.url}/${Constants.MAINTENANCE_ACTION}">
+                        <c:param name="methodToCall" value="Constants.MAINTENANCE_NEWWITHEXISTING_ACTION" />
+                        <c:param name="businessObjectClassName" value="org.kuali.rice.kim.bo.role.impl.KimPermissionImpl"/>
+                        <c:param name="detailObjects[0].kimAttributeId" value="44"/>
+                        <c:param name="detailObjects[0].attributeValue" value="${documentType.name}"/>
+                      </c:url>" target="_blank">Add Permission</a>	                
+	                </th>
 	              </tr>
 	            
 				<c:forEach var="perm" items="${KualiForm.permissions}">
+			      <c:set var="strikeout" value="false" />
+			      <%-- need to figure out the current logic here
+				  <c:if test="${!empty KualiForm.seenTemplates[perm.template.name] && KualiForm.seenTemplates[perm.template.name] != perm.details.documentTypeName}">
+    			      <c:set var="strikeout" value="true" />
+				  </c:if>
+				  --%>
                   <tr>
                     <td>
                     	<%-- TODO: update this to use the proper url for an inquiry and not use the impl class --%>
+                    	<c:if test="${strikeout}"><del></c:if>
                         <kul:inquiry boClassName="org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl" keyValues="permissionTemplateId=${perm.template.permissionTemplateId}" render="true">
                         <c:out value="${perm.template.name}" />
                         (<c:out value="${perm.template.namespaceCode}" />)
                         </kul:inquiry>
+                    	<c:if test="${strikeout}"></del></c:if>
                     </td>
                     <td>
                     	<%-- TODO: update this to use the proper url for a detailed inquiry and not use the impl class --%>
@@ -117,10 +146,12 @@
                         </kul:inquiry>
                     </td>
                     <td>
-                    	<%-- TODO: skip output of the documentTypeName since known external to this? --%>
+                    	<%-- skip output of the documentTypeName since known external to this? --%>
                         <c:forEach var="dtl" items="${perm.details}" varStatus="status">
-                        	<c:if test="${status.index != 0}">,</c:if>
-                        	${dtl.value}
+                        	<c:if test="${dtl.key != 'documentTypeName'}">
+                            	<c:if test="${status.index != 0}"><br /></c:if>
+                            	<c:out value="${attributeLabels[dtl.key]} = ${dtl.value}" />
+                            </c:if>
                         </c:forEach>
                     </td>
                     <td>
@@ -142,9 +173,14 @@
                         </c:choose>
                     </td>
                     <td>
-                        Edit Permission
+                        <a href="<c:url value="${ConfigProperties.kr.url}/${Constants.MAINTENANCE_ACTION}">
+                        <c:param name="methodToCall" value="edit" />
+                        <c:param name="businessObjectClassName" value="org.kuali.rice.kim.bo.role.impl.KimPermissionImpl"/>
+                        <c:param name="permissionId" value="${perm.permissionId}"/>
+                      </c:url>" target="_blank">Edit Permission</a>
                     </td>
                   </tr>
+			      <c:set target="${KualiForm.seenTemplates}" property="${perm.template.name}" value="perm.details.documentTypeName" />
 				</c:forEach>
 			</div> 	  
  	    </kul:tab>
@@ -154,6 +190,7 @@
  	    </kul:tab>
  	  <kul:panelFooter />
 	  </kul:tabTop>
+	  </c:if>
 <%-- 
 Document Summary Information
 

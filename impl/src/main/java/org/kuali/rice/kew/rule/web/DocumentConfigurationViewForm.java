@@ -15,8 +15,10 @@
  */
 package org.kuali.rice.kew.rule.web;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
@@ -39,6 +41,8 @@ public class DocumentConfigurationViewForm extends KualiForm {
 	protected List<DocumentType> childDocumentTypes; 
     protected List<KimPermissionInfo> permissions = null;
     protected Map<String,List<KimRoleInfo>> permissionRoles;
+    protected Map<String,String> attributeLabels;
+    protected Map<String,String> seenTemplates = new HashMap<String,String>();
 
 	/**
 	 * @return the permissionRoles
@@ -93,6 +97,35 @@ public class DocumentConfigurationViewForm extends KualiForm {
 	public void setChildDocumentTypes(List<DocumentType> childDocumentTypes) {
 		this.childDocumentTypes = childDocumentTypes;
 	}
-	
+
+	/**
+	 * @return the attributeLabels
+	 */
+	public Map<String, String> getAttributeLabels() {
+		return this.attributeLabels;
+	}
+
+	/**
+	 * @param attributeLabels the attributeLabels to set
+	 */
+	public void setAttributeLabels(Map<String, String> attributeLabels) {
+		this.attributeLabels = attributeLabels;
+	}
+
+	/**
+	 * @return the seenTemplates
+	 */
+	public Map<String, String> getSeenTemplates() {
+		return this.seenTemplates;
+	}
+
+	/**
+	 * @param seenTemplates the seenTemplates to set
+	 */
+	public void setSeenTemplates(Map<String, String> seenTemplates) {
+		this.seenTemplates = seenTemplates;
+	}
+
+
 
 }

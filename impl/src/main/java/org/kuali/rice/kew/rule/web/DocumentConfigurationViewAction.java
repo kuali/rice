@@ -29,12 +29,18 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.PermissionService;
+import org.kuali.rice.kim.service.ResponsibilityService;
+import org.kuali.rice.kim.service.RoleManagementService;
+import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -44,6 +50,12 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  */
 public class DocumentConfigurationViewAction extends KewKualiAction {
 
+	private PermissionService permissionService;
+	private RoleManagementService roleService;
+	private ResponsibilityService responsibilityService;
+	private DocumentTypeService documentTypeService;
+	private DataDictionaryService dataDictionaryService;
+	
     public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	populateForm( (DocumentConfigurationViewForm)form );
         return mapping.findForward("basic");
@@ -51,9 +63,10 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
     
     protected void populateForm( DocumentConfigurationViewForm form ) {
     	if ( StringUtils.isNotEmpty( form.getDocumentTypeName() ) ) {
-    		form.setDocumentType( KEWServiceLocator.getDocumentTypeService().findByName( form.getDocumentTypeName() ) ); 
+    		form.setDocumentType( getDocumentTypeService().findByName( form.getDocumentTypeName() ) ); 
         	if ( form.getDocumentType() != null ) {
 	    		form.getDocumentType().getChildrenDocTypes();
+	    		form.setAttributeLabels( new HashMap<String, String>() );
 	    		populateRelatedDocuments( form );
 	    		populatePermissions( form );
 	    		populateResponsibilities( form );
@@ -62,8 +75,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
     }
     // TODO: get route levels
     // TODO: find most-specific responsibility
-    // TODO: find most-specific permission
-    // TODO: pull needed attribute names for display?
+    // TODO: override permissions
     
     @SuppressWarnings("unchecked")
 	public void populateRelatedDocuments( DocumentConfigurationViewForm form ) {
@@ -83,10 +95,13 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 			searchCriteria.put("detailCriteria",
 					KimAttributes.DOCUMENT_TYPE_NAME+"="+docType.getName()
 					);
-			List<KimPermissionInfo> perms = KIMServiceLocator.getPermissionService().lookupPermissions( searchCriteria, false );
+			List<KimPermissionInfo> perms = getPermissionService().lookupPermissions( searchCriteria, false );
 			for ( KimPermissionInfo perm : perms ) {
-				List<String> roleIds = KIMServiceLocator.getPermissionService().getRoleIdsForPermissions(Collections.singletonList(perm));
-				permRoles.put( perm.getPermissionId(), KIMServiceLocator.getRoleService().getRoles(roleIds) );
+				List<String> roleIds = getPermissionService().getRoleIdsForPermissions(Collections.singletonList(perm));
+				permRoles.put( perm.getPermissionId(), getRoleService().getRoles(roleIds) );
+				for ( String attributeName : perm.getDetails().keySet() ) {
+					addAttributeLabel(form, attributeName);
+				}
 			}
 			allPerms.addAll(perms);
 			docType = docType.getParentDocType();			
@@ -96,6 +111,13 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 		form.setPermissionRoles( permRoles );
 	}
 
+	protected void addAttributeLabel( DocumentConfigurationViewForm form, String attributeName ) {
+		if ( !form.getAttributeLabels().containsKey(attributeName) ) {
+			form.getAttributeLabels().put(attributeName, 
+					getDataDictionaryService().getAttributeLabel(KimAttributes.class, attributeName) );
+		}
+	}
+	
 	public void populateResponsibilities( DocumentConfigurationViewForm form ) {
 		// TODO: pull all the route levels
 		// TODO: pull all the responsibilities
@@ -107,6 +129,53 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 //				KimAttributes.DOCUMENT_TYPE_NAME+"="+form.getDocumentType().getName()
 //				);
 //		form.setPermissions( KIMServiceLocator.getPermissionService().lookupPermissions( searchCriteria, false ) );
+	}
+
+	/**
+	 * @return the permissionService
+	 */
+	public PermissionService getPermissionService() {
+		if ( permissionService == null ) {
+			permissionService = KIMServiceLocator.getPermissionService();
+		}
+		return permissionService;
+	}
+
+	/**
+	 * @return the roleService
+	 */
+	public RoleManagementService getRoleService() {
+		if ( roleService == null ) {
+			roleService = KIMServiceLocator.getRoleManagementService();
+		}
+		return roleService;
+	}
+
+	/**
+	 * @return the responsibilityService
+	 */
+	public ResponsibilityService getResponsibilityService() {
+		if ( responsibilityService == null ) {
+			responsibilityService = KIMServiceLocator.getResponsibilityService();
+		}
+		return responsibilityService;
+	}
+
+	/**
+	 * @return the documentTypeService
+	 */
+	public DocumentTypeService getDocumentTypeService() {
+		if ( documentTypeService == null ) {
+			documentTypeService = KEWServiceLocator.getDocumentTypeService();
+		}
+		return documentTypeService;
+	}
+
+	public DataDictionaryService getDataDictionaryService() {
+		if(dataDictionaryService == null){
+			dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+		}
+		return dataDictionaryService;
 	}
 	
 }

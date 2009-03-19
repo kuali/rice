@@ -419,7 +419,7 @@ public class KEWConstants {
     public static final int ACTION_REQUEST_DEFAULT_PRIORITY = 1;
 
     /** Values for Rule template options   */
-    public static final String RULE_INSTRUCTIONS_CD = "I";
+    //public static final String RULE_INSTRUCTIONS_CD = "I";
     public static final String ACTION_REQUEST_DEFAULT_CD = "D";
 
 

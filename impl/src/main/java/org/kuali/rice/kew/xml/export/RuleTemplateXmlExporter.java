@@ -89,9 +89,6 @@ public class RuleTemplateXmlExporter implements XmlExporter, XmlConstants {
             if (defaultDelegationValues != null) {
                 renderer.renderTextElement(defaultsElement, DELEGATION_TYPE, defaultDelegationValues.getDelegationType());
             }
-            RuleTemplateOption instructionsOption = ruleTemplate.getInstructions();
-            String instructionsValue = (instructionsOption == null ? "" : instructionsOption.getValue());
-            renderer.renderTextElement(defaultsElement, RULE_INSTRUCTIONS, instructionsValue);
             renderer.renderTextElement(defaultsElement, DESCRIPTION, defaultRuleValues.getDescription());
             if (defaultRuleValues.getFromDate() != null) {
             	renderer.renderDateElement(defaultsElement, FROM_DATE, defaultRuleValues.getFromDate());

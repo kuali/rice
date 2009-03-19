@@ -20,12 +20,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.core.exception.RiceRuntimeException;
-import org.kuali.rice.kew.rule.GroupRuleResponsibility;
-import org.kuali.rice.kew.rule.PersonRuleResponsibility;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleResponsibility;
+import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.rule.web.WebRuleUtils;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.util.KEWPropertyConstants;
+import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.MaintenanceLock;
 import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
@@ -41,7 +42,7 @@ import org.kuali.rice.kns.web.ui.Section;
  */
 public class RoutingRuleMaintainable extends KualiMaintainableImpl {
 
-    private static final long serialVersionUID = -5920808902137192662L;
+	private static final long serialVersionUID = -5920808902137192662L;
     
 	private static final String RULE_ATTRIBUTES_SECTION_ID = "RuleAttributes";
 	private static final String ID_SEPARATOR = ":";
@@ -169,4 +170,19 @@ public class RoutingRuleMaintainable extends KualiMaintainableImpl {
 		WebRuleUtils.translateResponsibilitiesForSave(getThisRule());
 	}
 
+    /**
+	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#setNewCollectionLineDefaultValues(java.lang.String, org.kuali.rice.kns.bo.PersistableBusinessObject)
+	 */
+	@Override
+	protected void setNewCollectionLineDefaultValues(String collectionName,
+			PersistableBusinessObject addLine) {
+		super.setNewCollectionLineDefaultValues(collectionName, addLine);
+		if (KEWPropertyConstants.RESP_SECTION_NAME_SET.contains(collectionName)) {
+			RuleTemplate ruleTemplate = getThisRule().getRuleTemplate();
+			if(ruleTemplate.getDefaultActionRequestValue() != null && ruleTemplate.getDefaultActionRequestValue().getValue() != null){
+				((RuleResponsibility) addLine).setActionRequestedCd(ruleTemplate.getDefaultActionRequestValue().getValue());
+	        }
+		}
+	}
+	
 }

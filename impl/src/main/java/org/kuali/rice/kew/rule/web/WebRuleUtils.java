@@ -16,6 +16,7 @@
  */
 package org.kuali.rice.kew.rule.web;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -41,6 +42,7 @@ import org.kuali.rice.kew.rule.WorkflowAttribute;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
+import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -212,6 +214,33 @@ public class WebRuleUtils {
 
 	public static void establishDefaultRuleValues(RuleBaseValues rule) {
 		rule.setActiveInd(true);
+		
+        RuleBaseValues defaultRule = ((RuleService) KEWServiceLocator.getService(KEWServiceLocator.RULE_SERVICE)).findDefaultRuleByRuleTemplateId(
+        		rule.getRuleTemplate().getDelegationTemplateId());
+        if (defaultRule != null) {
+            //List ruleDelegations = getRuleDelegationService().findByDelegateRuleId(defaultRule.getRuleBaseValuesId());
+            defaultRule.setActivationDate(null);
+            defaultRule.setCurrentInd(null);
+            defaultRule.setDeactivationDate(null);
+            defaultRule.setDocTypeName(null);
+            defaultRule.setVersionNumber(null);
+            defaultRule.setRuleBaseValuesId(null);
+            defaultRule.setTemplateRuleInd(Boolean.FALSE);
+            defaultRule.setVersionNbr(null);
+            try {
+				PropertyUtils.copyProperties(rule, defaultRule);
+			} catch (IllegalAccessException e) {
+				throw new RuntimeException(e);
+			} catch (InvocationTargetException e) {
+				throw new RuntimeException(e);
+			} catch (NoSuchMethodException e) {
+				throw new RuntimeException(e);
+			}
+            //if (ruleDelegations != null && !ruleDelegations.isEmpty()) {
+            //    RuleDelegation defaultDelegation = (RuleDelegation) ruleDelegations.get(0);
+            //    ruleForm.getRuleDelegation().setDelegationType(defaultDelegation.getDelegationType());
+            //}
+        }
 	}
     
 	public static List customizeSections(RuleBaseValues rule, List<Section> sections) {

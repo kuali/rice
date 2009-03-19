@@ -76,4 +76,18 @@ public class KEWPropertyConstants extends JSTLConstants {
 
     // Constants used by DocumentTypeBusinessRules
     public static final String ERROR_DOCTYPEBUSINESSRULES_NO_DOC_HANDLER_URL = "error.DocumentTypeBusinessRules.noDocumentHandlerUrl";
+    
+	// Name of the section in the xml file.
+	public static final String PERSON_RESP_SECTION = "personResponsibilities";
+	// Name of the section in the xml file.
+	public static final String GROUP_RESP_SECTION = "groupResponsibilities";
+	// Name of the section in the xml file.
+	public static final String ROLE_RESP_SECTION = "roleResponsibilities";
+	
+	public static final Set<String> RESP_SECTION_NAME_SET = new HashSet<String>();
+	static {
+		RESP_SECTION_NAME_SET.add(PERSON_RESP_SECTION);
+		RESP_SECTION_NAME_SET.add(GROUP_RESP_SECTION);
+		RESP_SECTION_NAME_SET.add(ROLE_RESP_SECTION);
+	}
 }

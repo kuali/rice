@@ -214,7 +214,6 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         // test the rule template options
         List<RuleTemplateOption> options = template.getRuleTemplateOptions();
         assertEquals(6, options.size());
-        assertOptionValue(template, KEWConstants.RULE_INSTRUCTIONS_CD, "This is the most custom instructions evar.");
         assertOptionValue(template, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "false");
         assertOptionValue(template, KEWConstants.ACTION_REQUEST_APPROVE_REQ, "true");
         assertOptionValue(template, KEWConstants.ACTION_REQUEST_COMPLETE_REQ, "false");
@@ -242,7 +241,6 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         // test the rule template options
         List<RuleTemplateOption> options = template.getRuleTemplateOptions();
         assertEquals(6, options.size());
-        assertOptionValue(template, KEWConstants.RULE_INSTRUCTIONS_CD, "fill out");
         assertOptionValue(template, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "false");
         assertOptionValue(template, KEWConstants.ACTION_REQUEST_APPROVE_REQ, "true");
         assertOptionValue(template, KEWConstants.ACTION_REQUEST_COMPLETE_REQ, "false");
@@ -273,7 +271,6 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         // test the rule template options
         List<RuleTemplateOption> options = template.getRuleTemplateOptions();
         assertEquals(6, options.size());
-        assertOptionValue(template, KEWConstants.RULE_INSTRUCTIONS_CD, "fill out");
         assertOptionValue(template, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "false");
         assertOptionValue(template, KEWConstants.ACTION_REQUEST_APPROVE_REQ, "true");
         assertOptionValue(template, KEWConstants.ACTION_REQUEST_COMPLETE_REQ, "false");
@@ -297,7 +294,6 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         // value
         options = template.getRuleTemplateOptions();
         assertEquals(2, options.size());
-        assertOptionValue(template, KEWConstants.RULE_INSTRUCTIONS_CD, "New instructions.");
         assertOptionValue(template, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "true");
 
         // test those set in the default/template rule
@@ -326,7 +322,6 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         // test the rule template options
         List<RuleTemplateOption> options = template.getRuleTemplateOptions();
         assertEquals(6, options.size());
-        assertOptionValue(template, KEWConstants.RULE_INSTRUCTIONS_CD, "fill out");
         assertOptionValue(template, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "false");
         assertOptionValue(template, KEWConstants.ACTION_REQUEST_APPROVE_REQ, "true");
         assertOptionValue(template, KEWConstants.ACTION_REQUEST_COMPLETE_REQ, "false");
@@ -362,7 +357,6 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         // test the rule template options; this one just has the instructions, nothing else
         List<RuleTemplateOption> options = template.getRuleTemplateOptions();
         assertEquals(1, options.size());
-        assertOptionValue(template, KEWConstants.RULE_INSTRUCTIONS_CD, "This is the most custom instructions evar.");
 
         // test those set in the default/template rule; everything default exception description which is specified
         RuleBaseValues ruleDefaults = KEWServiceLocator.getRuleService().findDefaultRuleByRuleTemplateId(template.getRuleTemplateId());

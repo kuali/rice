@@ -648,19 +648,6 @@ public class WebRuleBaseValues extends RuleBaseValues {
 		return actionRequestCodes;
 	}
 
-	public String getRuleInstructions() {
-		String instructions = null;
-		if (getRuleTemplateId() != null) {
-			RuleTemplate ruleTemplate = getRuleTemplateService().findByRuleTemplateId(getRuleTemplateId());
-			if (ruleTemplate != null) {
-				if (ruleTemplate.getInstructions() != null && ruleTemplate.getInstructions().getValue() != null) {
-					instructions = ruleTemplate.getInstructions().getValue();
-				}
-			}
-		}
-		return instructions;
-	}
-
 	public RuleDelegation getRuleDelegation() {
 		if (getDelegateRule().booleanValue()) {
 			List ruleDelegations = getRuleDelegationService().findByDelegateRuleId(getRuleBaseValuesId());

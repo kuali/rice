@@ -244,8 +244,6 @@ public class RuleTemplateXmlParser implements XmlConstants {
             updateOrDeleteRuleTemplateOption(updatedRuleTemplate, KEWConstants.ACTION_REQUEST_COMPLETE_REQ, supportsComplete);
         }
 
-        // always update the instructions RuleTemplateOption in either case
-        updateOrDeleteRuleTemplateOption(updatedRuleTemplate, KEWConstants.RULE_INSTRUCTIONS_CD, ruleInstructions);
     }
     
     /**

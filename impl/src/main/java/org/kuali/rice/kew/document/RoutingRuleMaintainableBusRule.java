@@ -34,6 +34,7 @@ import org.kuali.rice.kew.rule.web.WebRuleUtils;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.KEWPropertyConstants;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
@@ -47,11 +48,6 @@ import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
  *
  */
 public class RoutingRuleMaintainableBusRule extends MaintenanceDocumentRuleBase {
-
-	// Name of the section in the xml file.
-	private static final String PERSON_RESP_SECTION = "personResponsibilities";
-	// Name of the section in the xml file.
-	private static final String GROUP_RESP_SECTION = "groupResponsibilities";
 
 	/**
 	 * This overridden method ...
@@ -114,10 +110,10 @@ public class RoutingRuleMaintainableBusRule extends MaintenanceDocumentRuleBase 
 	}
 
 	protected String getPersonSectionName(){
-		return PERSON_RESP_SECTION;
+		return KEWPropertyConstants.PERSON_RESP_SECTION;
 	}
 	protected String getGroupSectionName(){
-		return GROUP_RESP_SECTION;
+		return KEWPropertyConstants.GROUP_RESP_SECTION;
 	}
 
 	protected boolean personExists(String principalName){

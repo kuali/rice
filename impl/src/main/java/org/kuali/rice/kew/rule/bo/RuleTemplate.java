@@ -69,7 +69,7 @@ public class RuleTemplate  extends KewPersistableBusinessObjectBase implements W
      * A list of default rule template option keys.
      */
     public static final String[] DEFAULT_OPTION_KEYS = {
-        KEWConstants.RULE_INSTRUCTIONS_CD,
+        //KEWConstants.RULE_INSTRUCTIONS_CD,
         KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ,
         KEWConstants.ACTION_REQUEST_APPROVE_REQ,
         KEWConstants.ACTION_REQUEST_COMPLETE_REQ,
@@ -340,14 +340,14 @@ public class RuleTemplate  extends KewPersistableBusinessObjectBase implements W
         }
         return null;
     }
-
+/*
     public void setInstructions(RuleTemplateOption instructions) {
         RuleTemplateOption option = getRuleTemplateOption(KEWConstants.RULE_INSTRUCTIONS_CD);
         option.setValue(instructions.getValue());
         option.setRuleTemplateOptionId(instructions.getRuleTemplateOptionId());
         option.setLockVerNbr(instructions.getLockVerNbr());
     }
-
+*/
     public void setAcknowledge(RuleTemplateOption acknowledge) {
         RuleTemplateOption option = getRuleTemplateOption(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
         option.setValue(acknowledge.getValue());
@@ -382,11 +382,11 @@ public class RuleTemplate  extends KewPersistableBusinessObjectBase implements W
         option.setRuleTemplateOptionId(defaultActionRequestValue.getRuleTemplateOptionId());
         option.setLockVerNbr(defaultActionRequestValue.getLockVerNbr());
     }
-
+/*
     public RuleTemplateOption getInstructions() {
         return getRuleTemplateOption(KEWConstants.RULE_INSTRUCTIONS_CD);
     }
-
+*/
     public RuleTemplateOption getAcknowledge() {
         return getRuleTemplateOption(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
     }

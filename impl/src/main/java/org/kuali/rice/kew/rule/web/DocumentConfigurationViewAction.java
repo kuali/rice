@@ -18,6 +18,7 @@ package org.kuali.rice.kew.rule.web;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,10 +31,13 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
+import org.kuali.rice.kew.engine.node.RouteNode;
+import org.kuali.rice.kew.engine.node.service.RouteNodeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
+import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PermissionService;
@@ -55,6 +59,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 	private ResponsibilityService responsibilityService;
 	private DocumentTypeService documentTypeService;
 	private DataDictionaryService dataDictionaryService;
+	private RouteNodeService routeNodeService;
 	
     public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	populateForm( (DocumentConfigurationViewForm)form );
@@ -73,9 +78,8 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
         	}
     	}
     }
-    // TODO: get route levels
     // TODO: find most-specific responsibility
-    // TODO: override permissions
+    // TODO: override permissions??
     
     @SuppressWarnings("unchecked")
 	public void populateRelatedDocuments( DocumentConfigurationViewForm form ) {
@@ -86,9 +90,10 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 	public void populatePermissions( DocumentConfigurationViewForm form ) {
 		
 		DocumentType docType = form.getDocumentType();
-		List<KimPermissionInfo> allPerms = new ArrayList<KimPermissionInfo>();
 		Map<String,List<KimRoleInfo>> permRoles = new HashMap<String, List<KimRoleInfo>>(); 
 		while ( docType != null) {
+			String documentTypeName = docType.getName();
+			form.addDocumentType(documentTypeName);
 			Map<String,String> searchCriteria = new HashMap<String,String>();
 			searchCriteria.put("attributeName", "documentTypeName" );
 			searchCriteria.put("active", "Y");
@@ -103,11 +108,10 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 					addAttributeLabel(form, attributeName);
 				}
 			}
-			allPerms.addAll(perms);
+			form.setPermissionsForDocumentType(documentTypeName, perms);
 			docType = docType.getParentDocType();			
 		}
 		
-		form.setPermissions( allPerms );
 		form.setPermissionRoles( permRoles );
 	}
 
@@ -119,16 +123,36 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 	}
 	
 	public void populateResponsibilities( DocumentConfigurationViewForm form ) {
-		// TODO: pull all the route levels
 		// TODO: pull all the responsibilities
 		// TODO: merge the data and attach to route levels
-//		Map<String,String> searchCriteria = new HashMap<String,String>();
-//		searchCriteria.put("attributeName", "documentTypeName" );
-//		searchCriteria.put("active", "Y");
-//		searchCriteria.put("detailCriteria",
-//				KimAttributes.DOCUMENT_TYPE_NAME+"="+form.getDocumentType().getName()
-//				);
-//		form.setPermissions( KIMServiceLocator.getPermissionService().lookupPermissions( searchCriteria, false ) );
+		// pull the route levels and store on form
+		List<RouteNode> routeNodes = getRouteNodeService().getFlattenedNodes(form.getDocumentType(), true);
+		// TODO: filter out all but Request nodes
+		
+		form.setRouteNodes( routeNodes );
+		// pull all the responsibilities and store into a map for use by the JSP
+		
+		// TODO: FILTER TO THE "Review" template only
+		// TODO: pull responsibility roles
+		Map<String,String> searchCriteria = new HashMap<String,String>();
+		searchCriteria.put("attributeName", "documentTypeName" );
+		searchCriteria.put("active", "Y");
+		searchCriteria.put("detailCriteria",
+				KimAttributes.DOCUMENT_TYPE_NAME+"="+form.getDocumentType().getName()
+				);		
+		List<? extends KimResponsibilityInfo> resps = getResponsibilityService().lookupResponsibilityInfo( searchCriteria, false );
+		
+		Map<String,List<KimResponsibilityInfo>> nodeToRespMap = new LinkedHashMap<String, List<KimResponsibilityInfo>>();
+		for ( KimResponsibilityInfo r : resps ) {
+			String routeNodeName = r.getDetails().get(KimAttributes.ROUTE_NODE_NAME); 
+			if ( StringUtils.isNotBlank(routeNodeName) ) {
+				if ( !nodeToRespMap.containsKey( routeNodeName ) ) {
+					nodeToRespMap.put(routeNodeName, new ArrayList<KimResponsibilityInfo>() );
+				}
+				nodeToRespMap.get(routeNodeName).add(r);
+			}
+		}
+		form.setResponsibilityMap( nodeToRespMap );
 	}
 
 	/**
@@ -176,6 +200,16 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 			dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
 		}
 		return dataDictionaryService;
+	}
+
+	/**
+	 * @return the routeNodeService
+	 */
+	public RouteNodeService getRouteNodeService() {
+		if ( routeNodeService == null ) {
+			routeNodeService = KEWServiceLocator.getRouteNodeService();
+		}
+		return routeNodeService;
 	}
 	
 }

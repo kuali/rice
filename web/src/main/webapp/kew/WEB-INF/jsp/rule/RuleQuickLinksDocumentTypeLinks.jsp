@@ -1,5 +1,5 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
-<%@page import="java.net.URL"%>
+
 <c:if test="${ documentTypeStruct.shouldDisplay }" >
     <c:set var="documentType" value="${documentTypeStruct.documentType}" />
     <c:if test="${documentType.currentInd == true && documentType.active == true}">
@@ -8,7 +8,7 @@
           <table class="datatable" cellspacing="0" cellpadding="0" align="center" style="text-align: left; margin-left: auto; margin-right: auto;">
             <tbody>
               <tr>
-                <td class="tab-subhead" width="75%">
+                <td class="tab-subhead" width="50%">
                   <h2>
                     <kul:inquiry keyValues="documentTypeId=${documentType.documentTypeId}" boClassName="org.kuali.rice.kew.doctype.bo.DocumentType" render="true">
                       <c:choose>
@@ -22,36 +22,19 @@
                     </kul:inquiry>
                   </h2>
                 </td>
-                <td class="tab-subhead" width="25%">
+                <td class="tab-subhead" width="50%">
                     <a href="<c:url value="${ConfigProperties.kr.url}/${Constants.MAINTENANCE_ACTION}">
                         <c:param name="methodToCall" value="edit" />
                         <c:param name="businessObjectClassName" value="org.kuali.rice.kew.doctype.bo.DocumentType"/>
                         <c:param name="documentTypeId" value="${documentType.documentTypeId}"/>
                         <c:param name="name" value="${documentType.name}"/>
                       </c:url>" target="_blank">Edit Document Type</a>
+                    &nbsp;&nbsp;&nbsp;
+                    <a href="<c:url value="DocumentConfigurationView.do">
+                        <c:param name="methodToCall" value="start" />
+                        <c:param name="documentTypeName" value="${documentType.name}"/>
+                      </c:url>" target="_blank">View Document Configuration</a>
                     <br />
-                    <c:if test="${documentTypeStruct.hasRelatedPermissions}">
-	                  	<c:set var="permCount" value="${documentTypeStruct.relatedPermissionCount}" />
-	                  	<c:if test="${permCount > 1}">
-		                  	<a href="<c:url value="${ConfigProperties.kr.url}/${Constants.LOOKUP_ACTION}">
-	                        <c:param name="methodToCall" value="search" />
-	                        <c:param name="businessObjectClassName" value="org.kuali.rice.kim.bo.impl.PermissionImpl"/>
-	                        <c:param name="returnLocation" value="${ConfigProperties.application.url}/portal.do"/>
-	                        <c:param name="hideReturnLink" value="true"/>
-	                        <c:param name="docFormKey" value="88888888"/>
-	                        <c:param name="detailCriteria" value="documentTypeName=${documentType.name}"/>
-	                      </c:url>" target="_blank">View Permissions (${permCount})</a>
-	                    </c:if>
-	                    <c:if test="${permCount == 1}">
-		                  	<a href="<c:url value="${ConfigProperties.kr.url}/${Constants.INQUIRY_ACTION}">
-	                        <c:param name="methodToCall" value="start" />
-	                        <c:param name="businessObjectClassName" value="org.kuali.rice.kim.bo.impl.PermissionImpl"/>
-	                        <c:param name="returnLocation" value="${ConfigProperties.application.url}/portal.do"/>
-	                        <c:param name="docFormKey" value="88888888"/>
-	                        <c:param name="permissionId" value="${documentTypeStruct.permissions[0].permissionId}"/>
-	                      </c:url>" target="_blank">View Permission</a>
-	                    </c:if>
-                    </c:if>
                 </td>
               </tr>
             </tbody>
@@ -63,10 +46,10 @@
                   routeLevel.routeMethodName != Constants.ADHOC_ROUTE_MODULE_NAME}">
                 <c:if test="${routeLevel.flexRM}">
 	                <tr nowrap="nowrap">
-	                  <kul:htmlAttributeHeaderCell width="40%"  scope="col" align="left">
+	                  <kul:htmlAttributeHeaderCell width="50%"  scope="col" align="left">
 	                    <c:out value="${routeLevel.routeNodeName}" />&nbsp;
 	                  </kul:htmlAttributeHeaderCell>
-	                  <td class="datacell" width="60%">
+	                  <td class="datacell" width="50%">
 	                    <a href="<c:url value="${ConfigProperties.kr.url}/${Constants.MAINTENANCE_ACTION}">
 	                        <c:param name="methodToCall" value="start" />
 	                        <c:param name="businessObjectClassName" value="org.kuali.rice.kew.rule.RuleBaseValues"/>
@@ -110,34 +93,9 @@
 	              </c:if>
 	              <c:if test="${!routeLevel.flexRM && routeLevel.roleNode}">
 	              	<tr nowrap="nowrap">	              	
-	                  <kul:htmlAttributeHeaderCell width="40%"  scope="col" align="left">
+	                  <kul:htmlAttributeHeaderCell width="50%"  scope="col" align="left" colspan="2">
 	                    <c:out value="${routeLevel.routeNodeName}" />&nbsp;
 	                  </kul:htmlAttributeHeaderCell>
-	                  <td class="datacell" width="60%">
-	                  	<c:set var="respCount" value="${routeLevel.responsibilityCount}" />
-	                  	<c:if test="${respCount > 1}">
-		                  	<a href="<c:url value="${ConfigProperties.kr.url}/${Constants.LOOKUP_ACTION}">
-	                        <c:param name="methodToCall" value="search" />
-	                        <c:param name="businessObjectClassName" value="org.kuali.rice.kim.bo.impl.ResponsibilityImpl"/>
-	                        <c:param name="returnLocation" value="${ConfigProperties.application.url}/portal.do"/>
-	                        <c:param name="hideReturnLink" value="true"/>
-	                        <c:param name="docFormKey" value="88888888"/>
-	                        <c:param name="template.namespaceCode" value="${Constants.KUALI_RICE_WORKFLOW_NAMESPACE}"/>
-	                        <c:param name="template.name" value="Review"/>
-	                        <c:param name="detailCriteria" value="documentTypeName=${documentType.name},routeNodeName=${routeLevel.routeNodeName}"/>
-	                      </c:url>" target="_blank">View Responsibilities (${respCount})</a>
-                        </c:if>
-                        <%-- TODO: update to link directly to inquiry --%>
-                        <c:if test="${respCount == 1}">
-		                  	<a href="<c:url value="${ConfigProperties.kr.url}/${Constants.INQUIRY_ACTION}">
-	                        <c:param name="methodToCall" value="start" />
-	                        <c:param name="businessObjectClassName" value="org.kuali.rice.kim.bo.impl.ResponsibilityImpl"/>
-	                        <c:param name="returnLocation" value="${ConfigProperties.application.url}/portal.do"/>
-	                        <c:param name="docFormKey" value="88888888"/>
-	                        <c:param name="responsibilityId" value="${routeLevel.responsibilities[0].responsibilityId}"/>
-	                      </c:url>" target="_blank">View Responsibility</a>
-                        </c:if>
-					  </td>	            
 					</tr>  
 	              </c:if>
               </c:if>
@@ -160,10 +118,10 @@
                 routeLevel.routeMethodName != Constants.ADHOC_ROUTE_MODULE_NAME}">
               <c:if test="${routeLevel.flexRM}">
                 <tr nowrap>
-                  <kul:htmlAttributeHeaderCell width="40%"  scope="col" align="left">
+                  <kul:htmlAttributeHeaderCell width="50%"  scope="col" align="left">
                     <c:out value="${routeLevel.routeNodeName}" />&nbsp;
                   </kul:htmlAttributeHeaderCell>
-                  <td class="datacell" width="60%">
+                  <td class="datacell" width="50%">
                     <a href="<c:url value="${ConfigProperties.kr.url}/${Constants.MAINTENANCE_ACTION}">
                         <c:param name="methodToCall" value="start" />
                         <c:param name="businessObjectClassName" value="org.kuali.rice.kew.rule.RuleBaseValues"/>
@@ -175,7 +133,7 @@
                         <c:param name="businessObjectClassName" value="org.kuali.rice.kew.rule.RuleBaseValues"/>
                         <c:param name="returnLocation" value="${ConfigProperties.application.url}/portal.do"/>
                         <c:param name="hideReturnLink" value="true"/>
-                        <c:param name="methodToCall" value="start"/>
+                        <c:param name="methodToCall" value="search"/>
                         <c:param name="docFormKey" value="88888888"/>
                         <c:param name="documentType.name" value="${documentType.name}"/>
                         <c:param name="ruleTemplate.name" value="${routeLevel.ruleTemplate.name}"/>
@@ -196,7 +154,7 @@
                           <c:param name="businessObjectClassName" value="org.kuali.rice.kew.rule.RuleDelegation"/>
                           <c:param name="returnLocation" value="${ConfigProperties.application.url}/portal.do"/>
                           <c:param name="hideReturnLink" value="true"/>
-                          <c:param name="methodToCall" value="start"/>
+                          <c:param name="methodToCall" value="search"/>
                           <c:param name="docFormKey" value="88888888"/>
                           <c:param name="delegationRuleBaseValues.documentType.name" value="${documentType.name}"/>
                           <c:param name="delegationRuleBaseValues.ruleTemplate.name" value="${routeLevel.ruleTemplate.name}"/>
@@ -207,34 +165,9 @@
               </c:if>
               <c:if test="${!routeLevel.flexRM && routeLevel.roleNode}">
               	<tr nowrap="nowrap">	              	
-                  <kul:htmlAttributeHeaderCell width="40%"  scope="col" align="left">
+                  <kul:htmlAttributeHeaderCell width="50%"  scope="col" align="left" colspan="2">
                     <c:out value="${routeLevel.routeNodeName}" />&nbsp;
                   </kul:htmlAttributeHeaderCell>
-                  <td class="datacell" width="60%">
-	                  	<c:set var="respCount" value="${routeLevel.responsibilityCount}" />
-	                  	<c:if test="${respCount > 1}">
-		                  	<a href="<c:url value="${ConfigProperties.kr.url}/${Constants.LOOKUP_ACTION}">
-	                        <c:param name="methodToCall" value="search" />
-	                        <c:param name="businessObjectClassName" value="org.kuali.rice.kim.bo.impl.ResponsibilityImpl"/>
-	                        <c:param name="returnLocation" value="${ConfigProperties.application.url}/portal.do"/>
-	                        <c:param name="hideReturnLink" value="true"/>
-	                        <c:param name="docFormKey" value="88888888"/>
-	                        <c:param name="template.namespaceCode" value="${Constants.KUALI_RICE_WORKFLOW_NAMESPACE}"/>
-	                        <c:param name="template.name" value="Review"/>
-	                        <c:param name="detailCriteria" value="documentTypeName=${documentType.name},routeNodeName=${routeLevel.routeNodeName}"/>
-	                      </c:url>" target="_blank">View Responsibilities (${respCount})</a>
-                        </c:if>
-                        <%-- TODO: update to link directly to inquiry --%>
-                        <c:if test="${respCount == 1}">
-		                  	<a href="<c:url value="${ConfigProperties.kr.url}/${Constants.INQUIRY_ACTION}">
-	                        <c:param name="methodToCall" value="start" />
-	                        <c:param name="businessObjectClassName" value="org.kuali.rice.kim.bo.impl.ResponsibilityImpl"/>
-	                        <c:param name="returnLocation" value="${ConfigProperties.application.url}/portal.do"/>
-	                        <c:param name="docFormKey" value="88888888"/>
-	                        <c:param name="responsibilityId" value="${routeLevel.responsibilities[0].responsibilityId}"/>
-	                      </c:url>" target="_blank">View Responsibility</a>
-                        </c:if>
-				  </td>	            
 				</tr>  
               </c:if>
               <c:if test="${! empty documentTypeStruct.childrenDocumentTypes}">

@@ -15,13 +15,16 @@
  */
 package org.kuali.rice.kew.rule.web;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
+import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 
@@ -39,10 +42,14 @@ public class DocumentConfigurationViewForm extends KualiForm {
 	protected DocumentType documentType; 
 	protected DocumentType parentDocumentType; 
 	protected List<DocumentType> childDocumentTypes; 
-    protected List<KimPermissionInfo> permissions = null;
-    protected Map<String,List<KimRoleInfo>> permissionRoles;
+//    protected List<KimPermissionInfo> permissions = null;
+    protected List<String> docTypeHierarchyList = new ArrayList<String>();
+    protected LinkedHashMap<String,List<KimPermissionInfo>> permissionsByDocumentType = new LinkedHashMap<String, List<KimPermissionInfo>>();
+    protected Map<String,List<KimRoleInfo>> permissionRoles = new HashMap<String, List<KimRoleInfo>>();
     protected Map<String,String> attributeLabels;
     protected Map<String,String> seenTemplates = new HashMap<String,String>();
+    protected List<RouteNode> routeNodes;
+    protected Map<String,List<KimResponsibilityInfo>> responsibilityMap;
 
 	/**
 	 * @return the permissionRoles
@@ -74,13 +81,13 @@ public class DocumentConfigurationViewForm extends KualiForm {
 		this.documentType = documentType;
 	}
 
-	public List<KimPermissionInfo> getPermissions() {
-		return this.permissions;
-	}
-
-	public void setPermissions(List<KimPermissionInfo> permissions) {
-		this.permissions = permissions;
-	}
+//	public List<KimPermissionInfo> getPermissions() {
+//		return this.permissions;
+//	}
+//
+//	public void setPermissions(List<KimPermissionInfo> permissions) {
+//		this.permissions = permissions;
+//	}
 
 	public DocumentType getParentDocumentType() {
 		return this.parentDocumentType;
@@ -126,6 +133,70 @@ public class DocumentConfigurationViewForm extends KualiForm {
 		this.seenTemplates = seenTemplates;
 	}
 
+	/**
+	 * @return the routeNodes
+	 */
+	public List<RouteNode> getRouteNodes() {
+		return this.routeNodes;
+	}
 
+	/**
+	 * @param routeNodes the routeNodes to set
+	 */
+	public void setRouteNodes(List<RouteNode> routeNodes) {
+		this.routeNodes = routeNodes;
+	}
+
+	/**
+	 * @return the responsibilityMap
+	 */
+	public Map<String, List<KimResponsibilityInfo>> getResponsibilityMap() {
+		return this.responsibilityMap;
+	}
+
+	/**
+	 * @param responsibilityMap the responsibilityMap to set
+	 */
+	public void setResponsibilityMap(
+			Map<String, List<KimResponsibilityInfo>> responsibilityMap) {
+		this.responsibilityMap = responsibilityMap;
+	}
+
+	/**
+	 * @return the docTypeHierarchyList
+	 */
+	public List<String> getDocTypeHierarchyList() {
+		return this.docTypeHierarchyList;
+	}
+
+	/**
+	 * @param docTypeHierarchyList the docTypeHierarchyList to set
+	 */
+	public void setDocTypeHierarchyList(List<String> docTypeHierarchyList) {
+		this.docTypeHierarchyList = docTypeHierarchyList;
+	}
+
+	/**
+	 * @return the permissionsByDocumentType
+	 */
+	public LinkedHashMap<String, List<KimPermissionInfo>> getPermissionsByDocumentType() {
+		return this.permissionsByDocumentType;
+	}
+
+	/**
+	 * @param permissionsByDocumentType the permissionsByDocumentType to set
+	 */
+	public void setPermissionsByDocumentType(
+			LinkedHashMap<String, List<KimPermissionInfo>> permissionsByDocumentType) {
+		this.permissionsByDocumentType = permissionsByDocumentType;
+	}
+
+	public void addDocumentType( String documentTypeName ) {
+		docTypeHierarchyList.add(documentTypeName);		
+	}
+	
+	public void setPermissionsForDocumentType( String documentTypeName, List<KimPermissionInfo> perms ) {
+		permissionsByDocumentType.put(documentTypeName, perms);
+	}
 
 }

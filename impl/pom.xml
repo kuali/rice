@@ -165,13 +165,13 @@
 		<dependency>
 			<groupId>tomcat</groupId>
 			<artifactId>jasper-runtime</artifactId>
-			<scope>compile</scope>
+			<scope>runtime</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>tomcat</groupId>
 			<artifactId>jasper-compiler-jdt</artifactId>
-			<scope>compile</scope>
+			<scope>runtime</scope>
 		</dependency>
 
 		<dependency>

@@ -391,13 +391,13 @@
                 <groupId>tomcat</groupId>
                 <artifactId>jasper-runtime</artifactId>
                 <version>${jasper-runtime.version}</version>
-                <scope>compile</scope>
+                <scope>runtime</scope>
             </dependency>
             <dependency>
                 <groupId>tomcat</groupId>
                 <artifactId>jasper-compiler-jdt</artifactId>
                 <version>${jasper-compiler-jdt.version}</version>
-                <scope>compile</scope>
+                <scope>runtime</scope>
             </dependency>
             <dependency>
                 <groupId>xalan</groupId>

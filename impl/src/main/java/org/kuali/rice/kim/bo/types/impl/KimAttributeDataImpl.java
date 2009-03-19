@@ -26,7 +26,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
 import org.kuali.rice.kim.bo.types.KimAttributeData;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
@@ -37,6 +36,8 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  */
 @MappedSuperclass
 public class KimAttributeDataImpl extends PersistableBusinessObjectBase implements KimAttributeData {
+
+	private static final long serialVersionUID = 2717672624042902701L;
 
 	@Id
 	@Column(name="ATTR_DATA_ID")
@@ -123,6 +124,7 @@ public class KimAttributeDataImpl extends PersistableBusinessObjectBase implemen
 	/**
 	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringBuilder(java.util.LinkedHashMap)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
     public String toStringBuilder(LinkedHashMap mapper) {
         if(getKimAttribute() != null){

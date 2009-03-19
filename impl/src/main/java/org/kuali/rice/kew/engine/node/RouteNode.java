@@ -358,4 +358,14 @@ public class RouteNode implements Serializable {
 	public void beforeInsert(){
 		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());		
 	}
+	
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "RouteNode[routeNodeName="+routeNodeName+", nodeType="+nodeType+", activationType="+activationType+"]";
+	}
 }

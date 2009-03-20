@@ -254,8 +254,10 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 					templateDocumentNumber,	buildHtmlLink(getDocumentHandlerUrl(templateDocumentNumber), templateDocumentNumber));
 		}
         //Document Number    	
-        HeaderField docNumber = new HeaderField(KNSConstants.DocumentFormHeaderFieldIds.DOCUMENT_NUMBER, "DataDictionary.DocumentHeader.attributes.documentNumber", workflowDocument != null? getDocument().getDocumentNumber() : null, null);
-        HeaderField docStatus = new HeaderField(KNSConstants.DocumentFormHeaderFieldIds.DOCUMENT_WORKFLOW_STATUS, "DataDictionary.AttributeReferenceDummy.attributes.workflowDocumentStatus", workflowDocument != null? workflowDocument.getStatusDisplayValue() : null, null);
+        HeaderField docNumber = new HeaderField("DataDictionary.DocumentHeader.attributes.documentNumber", workflowDocument != null? getDocument().getDocumentNumber() : null);
+        docNumber.setId(KNSConstants.DocumentFormHeaderFieldIds.DOCUMENT_NUMBER);
+        HeaderField docStatus = new HeaderField("DataDictionary.AttributeReferenceDummy.attributes.workflowDocumentStatus", workflowDocument != null? workflowDocument.getStatusDisplayValue() : null);
+        docStatus.setId(KNSConstants.DocumentFormHeaderFieldIds.DOCUMENT_WORKFLOW_STATUS);
         String principalId = null;
         String initiatorNetworkId = null;
         Person user = null;
@@ -278,8 +280,8 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
             createDateStr = KNSServiceLocator.getDateTimeService().toString(workflowDocument.getCreateDate(), "hh:mm a MM/dd/yyyy");
         }
         
-        HeaderField docCreateDate = new HeaderField(KNSConstants.DocumentFormHeaderFieldIds.DOCUMENT_CREATE_DATE, "DataDictionary.AttributeReferenceDummy.attributes.createDate", createDateStr, null);
-
+        HeaderField docCreateDate = new HeaderField("DataDictionary.AttributeReferenceDummy.attributes.createDate", createDateStr);
+        docCreateDate.setId(KNSConstants.DocumentFormHeaderFieldIds.DOCUMENT_CREATE_DATE);
         if (ObjectUtils.isNotNull(docTemplateNumber)) {
         	setNumColumns(3);
         }

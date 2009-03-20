@@ -126,7 +126,7 @@ public class KualiActionServlet extends ActionServlet {
             }
             // loop over the installed modules, adding their struts configuration to the servlet
             // if they have a web interface
-            RiceConfigurer rice = (RiceConfigurer)ConfigContext.getRootConfig().getObject( RiceConstants.RICE_CONFIGURER_CONFIG_NAME );
+            RiceConfigurer rice = (RiceConfigurer)ConfigContext.getCurrentContextConfig().getObject( RiceConstants.RICE_CONFIGURER_CONFIG_NAME );
             if ( LOG.isInfoEnabled() ) {
             	LOG.info( "Configuring init parameters of the KualiActionServlet from RiceConfigurer: " + rice );
             }

@@ -293,13 +293,15 @@ public class ResponsibilityServiceImpl implements ResponsibilityService, Respons
     }
 	
     protected List<String> getRoleIdsForResponsibilities( List<KimResponsibilityInfo> responsibilities, AttributeSet qualification ) {
+    	// CHECKME: is this right? - the role qualifiers are not being checked
     	return responsibilityDao.getRoleIdsForResponsibilities( responsibilities );    	
     }
 
-    protected List<String> getRoleIdsForResponsibility( KimResponsibilityInfo responsibility, AttributeSet qualification ) {
+    public List<String> getRoleIdsForResponsibility( KimResponsibilityInfo responsibility, AttributeSet qualification ) {
+    	// CHECKME: is this right? - the role qualifiers are not being checked
     	return responsibilityDao.getRoleIdsForResponsibility( responsibility );    	
     }
-    
+
     protected boolean areActionsAtAssignmentLevel( KimResponsibilityImpl responsibility ) {
     	AttributeSet details = responsibility.getDetails();
     	if ( details == null ) {

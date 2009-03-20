@@ -33,6 +33,7 @@ public class RuleQuickLinksForm extends KualiForm {
 
     private static final long serialVersionUID = 3632283509506923869L;
     private String rootDocTypeName;
+    protected boolean canInitiateDocumentTypeDocument = false;
     private List<DocumentTypeQuickLinksStructure> documentTypeQuickLinksStructures = new ArrayList<DocumentTypeQuickLinksStructure>();
     
     public String getRootDocTypeName() {
@@ -47,6 +48,13 @@ public class RuleQuickLinksForm extends KualiForm {
 	public void setDocumentTypeQuickLinksStructures(
 			List<DocumentTypeQuickLinksStructure> documentTypeQuickLinksStructures) {
 		this.documentTypeQuickLinksStructures = documentTypeQuickLinksStructures;
+	}
+	public boolean isCanInitiateDocumentTypeDocument() {
+		return this.canInitiateDocumentTypeDocument;
+	}
+	public void setCanInitiateDocumentTypeDocument(
+			boolean canInitiateDocumentTypeDocument) {
+		this.canInitiateDocumentTypeDocument = canInitiateDocumentTypeDocument;
 	}
     
 

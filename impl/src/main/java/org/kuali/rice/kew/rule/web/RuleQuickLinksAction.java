@@ -25,6 +25,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -37,7 +38,6 @@ import org.kuali.rice.kew.engine.node.RouteNodeConfigParam;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.rule.service.RuleService;
-import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KewKualiAction;
@@ -46,6 +46,10 @@ import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.service.DocumentHelperService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 
 
@@ -55,6 +59,11 @@ import org.kuali.rice.kns.util.KNSConstants;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RuleQuickLinksAction extends KewKualiAction {
+
+	private static final Logger LOG = Logger.getLogger(RuleQuickLinksAction.class);
+	
+	private MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
+	private DocumentHelperService documentHelperService;
 
     public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	makeLookupPathParam(mapping, request);
@@ -84,6 +93,15 @@ public class RuleQuickLinksAction extends KewKualiAction {
     	if ( shouldDisplayCount == 1 ) {
             request.setAttribute("renderOpened", Boolean.TRUE);
     	}
+        String documentTypeName = getMaintenanceDocumentDictionaryService().getDocumentTypeName(DocumentType.class);
+        try {
+            if ((documentTypeName != null) && getDocumentHelperService().getDocumentAuthorizer(documentTypeName).canInitiate(documentTypeName, GlobalVariables.getUserSession().getPerson())) {
+                qlForm.setCanInitiateDocumentTypeDocument( true );
+            }
+        } catch (Exception ex) {
+			// just skip - and don't display links
+        	LOG.error( "Unable to check initiation permission for "+ documentTypeName, ex );
+		}
 
         return null;
     }
@@ -334,5 +352,19 @@ public class RuleQuickLinksAction extends KewKualiAction {
     private RuleService getRuleService() {
     	return KEWServiceLocator.getRuleService();
     }
+    
+	public DocumentHelperService getDocumentHelperService() {
+		if(documentHelperService == null){
+			documentHelperService = KNSServiceLocator.getDocumentHelperService();
+		}
+		return documentHelperService;
+	}
+
+	public MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
+		if(maintenanceDocumentDictionaryService == null){
+			maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
+		}
+		return maintenanceDocumentDictionaryService;
+	}
 
 }

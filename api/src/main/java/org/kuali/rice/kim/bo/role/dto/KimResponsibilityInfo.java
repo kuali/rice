@@ -17,8 +17,9 @@ package org.kuali.rice.kim.bo.role.dto;
 
 import java.io.Serializable;
 
-import org.kuali.rice.kim.bo.role.KimResponsibility;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.kim.bo.role.KimResponsibility;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -28,6 +29,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  */
 public class KimResponsibilityInfo extends ResponsibilityDetailsInfo implements KimResponsibility, Serializable {
 
+	private static final long serialVersionUID = 7887896860986162310L;
 	protected String namespaceCode;
 	protected String name;
 	protected String description;
@@ -67,6 +69,13 @@ public class KimResponsibilityInfo extends ResponsibilityDetailsInfo implements 
 				.append( "namespaceCode", this.namespaceCode )
 				.append( "details", this.details )
 				.toString();
+	}
+
+	public boolean equals(Object object) {
+		if (!(object instanceof KimResponsibilityInfo)) {
+			return false;
+		}
+		return StringUtils.equals( responsibilityId, ((KimResponsibilityInfo)object).responsibilityId );
 	}
 	
 }

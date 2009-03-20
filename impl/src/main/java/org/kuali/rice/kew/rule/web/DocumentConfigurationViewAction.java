@@ -18,14 +18,17 @@ package org.kuali.rice.kew.rule.web;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -34,17 +37,23 @@ import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.service.ResponsibilityService;
 import org.kuali.rice.kim.service.RoleManagementService;
 import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.service.DocumentHelperService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
+import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -54,12 +63,16 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  */
 public class DocumentConfigurationViewAction extends KewKualiAction {
 
+	private static final Logger LOG = Logger.getLogger(DocumentConfigurationViewAction.class);
+	
 	private PermissionService permissionService;
 	private RoleManagementService roleService;
 	private ResponsibilityService responsibilityService;
 	private DocumentTypeService documentTypeService;
 	private DataDictionaryService dataDictionaryService;
 	private RouteNodeService routeNodeService;
+	private MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
+	private DocumentHelperService documentHelperService;
 	
     public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	populateForm( (DocumentConfigurationViewForm)form );
@@ -76,7 +89,18 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 	    		populatePermissions( form );
 	    		populateResponsibilities( form );
         	}
+            String documentTypeName = getMaintenanceDocumentDictionaryService().getDocumentTypeName(DocumentType.class);
+            try {
+	            if ((documentTypeName != null) && getDocumentHelperService().getDocumentAuthorizer(documentTypeName).canInitiate(documentTypeName, GlobalVariables.getUserSession().getPerson())) {
+	                form.setCanInitiateDocumentTypeDocument( true );
+	            }
+            } catch (Exception ex) {
+				// just skip - and don't display links
+            	LOG.error( "Unable to check initiation permission for "+ documentTypeName, ex );
+			}
+
     	}
+    	
     }
     // TODO: find most-specific responsibility
     // TODO: override permissions??
@@ -91,12 +115,12 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 		
 		DocumentType docType = form.getDocumentType();
 		Map<String,List<KimRoleInfo>> permRoles = new HashMap<String, List<KimRoleInfo>>(); 
+		Map<String,String> searchCriteria = new HashMap<String,String>();
+		searchCriteria.put("attributeName", "documentTypeName" );
+		searchCriteria.put("active", "Y");
+		// loop over the document hierarchy
 		while ( docType != null) {
 			String documentTypeName = docType.getName();
-			form.addDocumentType(documentTypeName);
-			Map<String,String> searchCriteria = new HashMap<String,String>();
-			searchCriteria.put("attributeName", "documentTypeName" );
-			searchCriteria.put("active", "Y");
 			searchCriteria.put("detailCriteria",
 					KimAttributes.DOCUMENT_TYPE_NAME+"="+docType.getName()
 					);
@@ -108,7 +132,11 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 					addAttributeLabel(form, attributeName);
 				}
 			}
-			form.setPermissionsForDocumentType(documentTypeName, perms);
+			// show the section if the current document or permissions exist
+			if ( perms.size() > 0 || documentTypeName.equals( form.getDocumentTypeName() ) ) {
+				form.setPermissionsForDocumentType(documentTypeName, perms);
+				form.addDocumentType(documentTypeName);
+			}
 			docType = docType.getParentDocType();			
 		}
 		
@@ -127,34 +155,97 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 		// TODO: merge the data and attach to route levels
 		// pull the route levels and store on form
 		List<RouteNode> routeNodes = getRouteNodeService().getFlattenedNodes(form.getDocumentType(), true);
-		// TODO: filter out all but Request nodes
 		
 		form.setRouteNodes( routeNodes );
 		// pull all the responsibilities and store into a map for use by the JSP
 		
-		// TODO: FILTER TO THE "Review" template only
-		// TODO: pull responsibility roles
+		// FILTER TO THE "Review" template only
+		// pull responsibility roles
 		Map<String,String> searchCriteria = new HashMap<String,String>();
-		searchCriteria.put("attributeName", "documentTypeName" );
+		searchCriteria.put("template.namespaceCode", KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE);
+		searchCriteria.put("template.name", KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME);
 		searchCriteria.put("active", "Y");
-		searchCriteria.put("detailCriteria",
-				KimAttributes.DOCUMENT_TYPE_NAME+"="+form.getDocumentType().getName()
-				);		
-		List<? extends KimResponsibilityInfo> resps = getResponsibilityService().lookupResponsibilityInfo( searchCriteria, false );
-		
-		Map<String,List<KimResponsibilityInfo>> nodeToRespMap = new LinkedHashMap<String, List<KimResponsibilityInfo>>();
-		for ( KimResponsibilityInfo r : resps ) {
-			String routeNodeName = r.getDetails().get(KimAttributes.ROUTE_NODE_NAME); 
-			if ( StringUtils.isNotBlank(routeNodeName) ) {
-				if ( !nodeToRespMap.containsKey( routeNodeName ) ) {
-					nodeToRespMap.put(routeNodeName, new ArrayList<KimResponsibilityInfo>() );
+		DocumentType docType = form.getDocumentType();
+		Set<KimResponsibilityInfo> responsibilities = new HashSet<KimResponsibilityInfo>();
+		Map<String,List<ResponsibilityForDisplay>> nodeToRespMap = new LinkedHashMap<String, List<ResponsibilityForDisplay>>();
+		while ( docType != null) {
+			// pull the responsibilities for this node
+			searchCriteria.put("detailCriteria",
+					KimAttributes.DOCUMENT_TYPE_NAME+"="+docType.getName()
+					);		
+			List<? extends KimResponsibilityInfo> resps = getResponsibilityService().lookupResponsibilityInfo( searchCriteria, false );
+			
+			for ( KimResponsibilityInfo r : resps ) {
+				String routeNodeName = r.getDetails().get(KimAttributes.ROUTE_NODE_NAME); 
+				if ( StringUtils.isNotBlank(routeNodeName) ) {
+					if ( !nodeToRespMap.containsKey( routeNodeName ) ) {
+						nodeToRespMap.put(routeNodeName, new ArrayList<ResponsibilityForDisplay>() );
+						nodeToRespMap.get(routeNodeName).add( new ResponsibilityForDisplay( r, false ) );
+					} else {
+						// check if the responsibility in the existing list is for the current document
+						// if so, OK to add.  Otherwise, a lower level document has overridden this
+						// responsibility (since we are walking up the hierarchy
+						if ( nodeToRespMap.get(routeNodeName).get(0).getDetails().get( KimAttributes.DOCUMENT_TYPE_NAME ).equals(docType.getName() ) ) {
+							nodeToRespMap.get(routeNodeName).add( new ResponsibilityForDisplay( r, false ) );
+						} else { // doc type name did not match, mark as overridden
+							nodeToRespMap.get(routeNodeName).add( new ResponsibilityForDisplay( r, true ) );
+						}
+					}
+					responsibilities.add(r);
 				}
-				nodeToRespMap.get(routeNodeName).add(r);
 			}
+			docType = docType.getParentDocType();			
 		}
 		form.setResponsibilityMap( nodeToRespMap );
+		
+		Map<String,List<KimRoleInfo>> respToRoleMap = new HashMap<String, List<KimRoleInfo>>();
+		for ( KimResponsibilityInfo responsibility : responsibilities ) {
+			List<String> roleIds = getResponsibilityService().getRoleIdsForResponsibility(responsibility, null);
+			respToRoleMap.put( responsibility.getResponsibilityId(), getRoleService().getRoles(roleIds) );
+		}
+		form.setResponsibilityRoles( respToRoleMap );
 	}
 
+	/**
+	 * Internal delegate class to wrap a responsibility and add an overridden flag.
+	 */
+	public static class ResponsibilityForDisplay {
+
+		private KimResponsibilityInfo resp;
+		private boolean overridden = false;
+		
+		public ResponsibilityForDisplay( KimResponsibilityInfo resp, boolean overridden ) {
+			this.resp = resp;
+			this.overridden = overridden;
+		}
+		
+		public boolean isOverridden() {
+			return this.overridden;
+		}
+
+		public void setOverridden(boolean overridden) {
+			this.overridden = overridden;
+		}
+
+		public AttributeSet getDetails() {
+			return this.resp.getDetails();
+		}
+
+		public String getName() {
+			return this.resp.getName();
+		}
+
+		public String getNamespaceCode() {
+			return this.resp.getNamespaceCode();
+		}
+
+		public String getResponsibilityId() {
+			return this.resp.getResponsibilityId();
+		}
+
+		
+	}
+	
 	/**
 	 * @return the permissionService
 	 */
@@ -202,14 +293,25 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 		return dataDictionaryService;
 	}
 
-	/**
-	 * @return the routeNodeService
-	 */
 	public RouteNodeService getRouteNodeService() {
 		if ( routeNodeService == null ) {
 			routeNodeService = KEWServiceLocator.getRouteNodeService();
 		}
 		return routeNodeService;
+	}
+
+	public DocumentHelperService getDocumentHelperService() {
+		if(documentHelperService == null){
+			documentHelperService = KNSServiceLocator.getDocumentHelperService();
+		}
+		return documentHelperService;
+	}
+
+	public MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
+		if(maintenanceDocumentDictionaryService == null){
+			maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
+		}
+		return maintenanceDocumentDictionaryService;
 	}
 	
 }

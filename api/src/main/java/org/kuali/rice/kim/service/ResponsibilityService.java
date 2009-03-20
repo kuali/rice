@@ -76,4 +76,9 @@ public interface ResponsibilityService {
    	 * Lookup responsibility objects.
    	 */
    	List<? extends KimResponsibilityInfo> lookupResponsibilityInfo( Map<String,String> searchCriteria, boolean unbounded );
+   	
+   	/**
+   	 * Get the role IDs associated with the given responsibility.
+   	 */
+   	List<String> getRoleIdsForResponsibility( KimResponsibilityInfo responsibility, AttributeSet qualification );
 }

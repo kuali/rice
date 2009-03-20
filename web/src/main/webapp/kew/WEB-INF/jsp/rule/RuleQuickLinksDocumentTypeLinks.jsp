@@ -23,6 +23,7 @@
                   </h2>
                 </td>
                 <td class="tab-subhead" width="50%">
+                    <c:if test="${KualiForm.canInitiateDocumentTypeDocument}">
                     <a href="<c:url value="${ConfigProperties.kr.url}/${Constants.MAINTENANCE_ACTION}">
                         <c:param name="methodToCall" value="edit" />
                         <c:param name="businessObjectClassName" value="org.kuali.rice.kew.doctype.bo.DocumentType"/>
@@ -30,6 +31,7 @@
                         <c:param name="name" value="${documentType.name}"/>
                       </c:url>" target="_blank">Edit Document Type</a>
                     &nbsp;&nbsp;&nbsp;
+                    </c:if>
                     <a href="<c:url value="DocumentConfigurationView.do">
                         <c:param name="methodToCall" value="start" />
                         <c:param name="documentTypeName" value="${documentType.name}"/>

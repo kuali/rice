@@ -33,6 +33,7 @@
     	                	property="documentType.name"
     	                	readOnly="true" />         
 	                </kul:inquiry>
+	                <c:if test="${KualiForm.canInitiateDocumentTypeDocument}">
 	                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 	<a href="<c:url value="${ConfigProperties.kr.url}/${Constants.MAINTENANCE_ACTION}">
                       <c:param name="methodToCall" value="edit" />
@@ -40,6 +41,7 @@
                       <c:param name="documentTypeId" value="${documentType.documentTypeId}"/>
                       <c:param name="name" value="${documentType.name}"/>
                     </c:url>" target="_blank">Edit Document Type</a>       
+                    </c:if>
                 </td>
                 <kul:htmlAttributeHeaderCell scope="col" align="left" 
                 	attributeEntry="${documentTypeAttributes.unresolvedDocHandlerUrl}" />
@@ -202,20 +204,18 @@
         	          <table class="datatable" cellspacing="0" cellpadding="0" align="center" style="text-align: left; margin-left: auto; margin-right: auto; padding-left: 5em;">
         	            <tbody>
         	              <tr>
-        	                <th>Required</th>
-        	                <th>Action Details at Role Member Level</th>
-                            <kul:htmlAttributeHeaderCell scope="col" align="left" 
-                                attributeEntry="${responsibilityAttributes.assignedToRolesToDisplay}" />
-        	                <th>Inherited</th>
+        	                <th style="width: 8em;">Required</th>
+        	                <th style="width: 11em;">Action Details at Role Member Level</th>
         	                <th>
+                               <kul:htmlAttributeLabel attributeEntry="${responsibilityAttributes.assignedToRolesToDisplay}" noColon="true" />
+                            </th>
+        	                <th style="width: 20em;">Inherited</th>
+        	                <th style="width: 12em;">
                                 <a href="<c:url value="${ConfigProperties.kr.url}/${Constants.MAINTENANCE_ACTION}">
                                 <c:param name="methodToCall" value="Constants.MAINTENANCE_NEWWITHEXISTING_ACTION" />
                                 <c:param name="businessObjectClassName" value="org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl"/>
                                 <c:param name="detailObjects[0].kimAttributeId" value="44"/>
                                 <c:param name="detailObjects[0].attributeValue" value="${documentType.name}"/>
-                                <%--
-                                    TODO: add route level pass to document
-                                --%>
                               </c:url>" target="_blank">Add Responsibility</a>	                
         	                </th>
         	              </tr>
@@ -236,14 +236,12 @@
                                 	</c:choose>
                                 </td>
                                 <td>
-                                <%--
                                 	<c:forEach var="role" items="${KualiForm.responsibilityRoles[resp.responsibilityId]}">
                                 		<kul:inquiry boClassName="org.kuali.rice.kim.bo.role.impl.KimRoleImpl" keyValues="roleId=${role.roleId}" render="true">
-                                		<c:out value="${role.namespaceCode} ${role.roleName}" />
+                                    		<c:out value="${role.namespaceCode} ${role.roleName}" />
                                 		</kul:inquiry>
                                 		<br />
                                 	</c:forEach>
-                                	--%>
                                 </td>
                                 <td>
                                     <c:choose>

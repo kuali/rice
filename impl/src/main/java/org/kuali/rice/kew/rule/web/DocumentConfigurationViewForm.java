@@ -23,8 +23,8 @@ import java.util.Map;
 
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.node.RouteNode;
+import org.kuali.rice.kew.rule.web.DocumentConfigurationViewAction.PermissionForDisplay;
 import org.kuali.rice.kew.rule.web.DocumentConfigurationViewAction.ResponsibilityForDisplay;
-import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 
@@ -44,7 +44,7 @@ public class DocumentConfigurationViewForm extends KualiForm {
 	protected List<DocumentType> childDocumentTypes; 
 //    protected List<KimPermissionInfo> permissions = null;
     protected List<String> docTypeHierarchyList = new ArrayList<String>();
-    protected LinkedHashMap<String,List<KimPermissionInfo>> permissionsByDocumentType = new LinkedHashMap<String, List<KimPermissionInfo>>();
+    protected LinkedHashMap<String,List<PermissionForDisplay>> permissionsByDocumentType = new LinkedHashMap<String, List<PermissionForDisplay>>();
     protected Map<String,List<KimRoleInfo>> permissionRoles = new HashMap<String, List<KimRoleInfo>>();
     protected Map<String,String> attributeLabels;
     protected Map<String,String> seenTemplates = new HashMap<String,String>();
@@ -134,12 +134,12 @@ public class DocumentConfigurationViewForm extends KualiForm {
 		this.docTypeHierarchyList = docTypeHierarchyList;
 	}
 
-	public LinkedHashMap<String, List<KimPermissionInfo>> getPermissionsByDocumentType() {
+	public LinkedHashMap<String, List<PermissionForDisplay>> getPermissionsByDocumentType() {
 		return this.permissionsByDocumentType;
 	}
 
 	public void setPermissionsByDocumentType(
-			LinkedHashMap<String, List<KimPermissionInfo>> permissionsByDocumentType) {
+			LinkedHashMap<String, List<PermissionForDisplay>> permissionsByDocumentType) {
 		this.permissionsByDocumentType = permissionsByDocumentType;
 	}
 
@@ -147,7 +147,7 @@ public class DocumentConfigurationViewForm extends KualiForm {
 		docTypeHierarchyList.add(documentTypeName);		
 	}
 	
-	public void setPermissionsForDocumentType( String documentTypeName, List<KimPermissionInfo> perms ) {
+	public void setPermissionsForDocumentType( String documentTypeName, List<PermissionForDisplay> perms ) {
 		permissionsByDocumentType.put(documentTypeName, perms);
 	}
 

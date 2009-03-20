@@ -6,13 +6,22 @@
 <c:set var="documentType" value="${KualiForm.documentType}" />
 <c:set var="attributeLabels" value="${KualiForm.attributeLabels}" />
 
+<style type="text/css">
+tr.overridden td {
+    text-decoration: line-through;
+    color: #909090;
+}
+tr.overridden td a {
+    color: #909090;
+}
+</style>
+
 <kul:page headerTitle="Document Configuration - ${documentType.name}" transactionalDocument="false"
 	showDocumentInfo="false" htmlFormAction="DocumentConfigurationView" docTitle="Document Configuration - ${documentType.name}">
     <c:if test="${empty documentType}">
         Unknown Document Type - <c:out value="${KualiForm.documentTypeName}" />
     </c:if>
 <%--
-    TODO: use subhead in permissions section to separate perms inherited from each document?
     TODO: remove hard coded KIM class Impl names - if anything, redirect to the action to allow the code the make the
     determiniation of how to implement
 --%>
@@ -134,21 +143,14 @@
         	              </tr>
         	            
         				<c:forEach var="perm" items="${permissions}">
-        			      <c:set var="strikeout" value="false" />
-        			      <%-- need to figure out the current logic here
-        				  <c:if test="${!empty KualiForm.seenTemplates[perm.template.name] && KualiForm.seenTemplates[perm.template.name] != perm.details.documentTypeName}">
-            			      <c:set var="strikeout" value="true" />
-        				  </c:if>
-        				  --%>
-                          <tr>
+                          <tr <c:if test="${perm.overridden}">class="overridden"</c:if>>
                             <td>
                             	<%-- TODO: update this to use the proper url for an inquiry and not use the impl class --%>
-                            	<c:if test="${strikeout}"><del></c:if>
+                            	
                                 <kul:inquiry boClassName="org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl" keyValues="permissionTemplateId=${perm.template.permissionTemplateId}" render="true">
                                 <c:out value="${perm.template.name}" />
                                 (<c:out value="${perm.template.namespaceCode}" />)
                                 </kul:inquiry>
-                            	<c:if test="${strikeout}"></del></c:if>
                             </td>
                             <td>
                             	<%-- TODO: update this to use the proper url for a detailed inquiry and not use the impl class --%>
@@ -168,6 +170,7 @@
                                     	<c:out value="${attributeLabels[dtl.key]} = ${dtl.value}" />
                                     </c:if>
                                 </c:forEach>
+                                &nbsp;
                             </td>
                             <td>
                             	<c:forEach var="role" items="${KualiForm.permissionRoles[perm.permissionId]}">
@@ -220,14 +223,13 @@
         	                </th>
         	              </tr>
         	              <c:forEach var="resp" items="${responsibilities}">
-        	                 <tr>
-                                <td>
-                                	<c:if test="${strikeout}"><del></c:if>
+        	                 <tr <c:if test="${resp.overridden}">class="overridden"</c:if>>
+        	                    <td>                                	
                                 	<c:choose>
                                 	   <c:when test="${resp.details['required']}">Yes</c:when>
                                 	   <c:otherwise>No</c:otherwise>
                                 	</c:choose>
-                                	<c:if test="${strikeout}"></del></c:if>
+                                	<c:if test="${resp.overridden}"></del></c:if>
                                 </td>
                                 <td>
                                 	<c:choose>
@@ -259,6 +261,7 @@
                                     <c:param name="businessObjectClassName" value="org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl"/>
                                     <c:param name="responsibilityId" value="${resp.responsibilityId}"/>
                                   </c:url>" target="_blank">Edit Responsibility</a>
+                                  <!-- <c:out value="${resp.responsibilityId}" /> -->
                                 </td>
         	                 </tr>
         	              </c:forEach>

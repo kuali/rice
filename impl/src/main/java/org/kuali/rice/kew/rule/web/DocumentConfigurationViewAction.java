@@ -41,6 +41,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
+import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
@@ -119,6 +120,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 		searchCriteria.put("attributeName", "documentTypeName" );
 		searchCriteria.put("active", "Y");
 		// loop over the document hierarchy
+		Set<String> seenDocumentPermissions = new HashSet<String>();
 		while ( docType != null) {
 			String documentTypeName = docType.getName();
 			searchCriteria.put("detailCriteria",
@@ -134,7 +136,22 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 			}
 			// show the section if the current document or permissions exist
 			if ( perms.size() > 0 || documentTypeName.equals( form.getDocumentTypeName() ) ) {
-				form.setPermissionsForDocumentType(documentTypeName, perms);
+				ArrayList<PermissionForDisplay> dispPerms = new ArrayList<PermissionForDisplay>( perms.size() );
+				for ( KimPermissionInfo perm : perms ) {
+					if ( perm.getDetails().size() == 1  ) { // only the document type
+						// this is a document type-specific permission, check if seen earlier
+						if ( seenDocumentPermissions.contains(perm.getTemplate().getNamespaceCode()+"|"+perm.getTemplate().getName()) ) {
+							dispPerms.add( new PermissionForDisplay( perm, true ) );
+						} else {
+							dispPerms.add( new PermissionForDisplay( perm, false ) );
+							seenDocumentPermissions.add(perm.getTemplate().getNamespaceCode()+"|"+perm.getTemplate().getName());
+						}
+					} else {
+						// other attributes, can't determine whether this is overridden at another level
+						dispPerms.add( new PermissionForDisplay( perm, false ) );						
+					}
+				}
+				form.setPermissionsForDocumentType(documentTypeName, dispPerms );
 				form.addDocumentType(documentTypeName);
 			}
 			docType = docType.getParentDocType();			
@@ -242,7 +259,38 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 		public String getResponsibilityId() {
 			return this.resp.getResponsibilityId();
 		}
+	}
 
+	public static class PermissionForDisplay {
+		private KimPermissionInfo perm;
+		private boolean overridden = false;
+		
+		public PermissionForDisplay( KimPermissionInfo perm, boolean overridden ) {
+			this.perm = perm;
+			this.overridden = overridden;
+		}
+		public boolean isOverridden() {
+			return this.overridden;
+		}
+
+		public void setOverridden(boolean overridden) {
+			this.overridden = overridden;
+		}
+		public AttributeSet getDetails() {
+			return this.perm.getDetails();
+		}
+		public String getName() {
+			return this.perm.getName();
+		}
+		public String getNamespaceCode() {
+			return this.perm.getNamespaceCode();
+		}
+		public String getPermissionId() {
+			return this.perm.getPermissionId();
+		}
+		public KimPermissionTemplateInfo getTemplate() {
+			return this.perm.getTemplate();
+		}
 		
 	}
 	

@@ -49,6 +49,7 @@
 				<value>knsClient.datasource.jndi.location</value>
 			</list>
 		</property>
+		<property name="serverDataSource" value="false"/>
 	</bean>
 
 	<bean id="knsServerDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean" lazy-init="true">
@@ -62,6 +63,7 @@
 				<value>knsServer.datasource.jndi.location</value>
 			</list>
 		</property>
+		<property name="serverDataSource" value="true"/>
 	</bean>
 
 	<bean id="knsApplicationModuleConfiguration" parent="knsApplicationModuleConfiguration-parentBean"/>

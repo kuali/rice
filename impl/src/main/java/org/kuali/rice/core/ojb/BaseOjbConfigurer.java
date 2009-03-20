@@ -44,7 +44,6 @@ import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.util.ClassLoaderUtils;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.w3c.dom.Document;

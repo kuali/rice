@@ -46,9 +46,9 @@ public class TransactionManagerFactoryBean implements FactoryBean {
 			return null;
 		}
 		
-		TransactionManager transactionManager =  (TransactionManager)ConfigContext.getCurrentContextConfig().getObject(Config.TRANSACTION_MANAGER_OBJ);
+		TransactionManager transactionManager =  (TransactionManager)ConfigContext.getCurrentContextConfig().getObject(RiceConstants.TRANSACTION_MANAGER_OBJ);
 		if (transactionManager == null) {
-			String transactionManagerJndiName = ConfigContext.getCurrentContextConfig().getProperty(Config.TRANSACTION_MANAGER_JNDI);
+			String transactionManagerJndiName = ConfigContext.getCurrentContextConfig().getProperty(RiceConstants.TRANSACTION_MANAGER_JNDI);
 			if (!StringUtils.isEmpty(transactionManagerJndiName)) {
 				if (this.jndiTemplate == null) {
 				    this.jndiTemplate = new JndiTemplate();

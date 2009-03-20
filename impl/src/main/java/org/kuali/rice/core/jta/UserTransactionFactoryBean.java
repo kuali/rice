@@ -46,9 +46,9 @@ public class UserTransactionFactoryBean implements FactoryBean {
 			return null;
 		}
 		
-		UserTransaction userTransaction = (UserTransaction)ConfigContext.getCurrentContextConfig().getObject(Config.USER_TRANSACTION_OBJ);
+		UserTransaction userTransaction = (UserTransaction)ConfigContext.getCurrentContextConfig().getObject(RiceConstants.USER_TRANSACTION_OBJ);
 		if (userTransaction == null) {
-			String userTransactionJndiName = ConfigContext.getCurrentContextConfig().getProperty(Config.USER_TRANSACTION_JNDI);
+			String userTransactionJndiName = ConfigContext.getCurrentContextConfig().getProperty(RiceConstants.USER_TRANSACTION_JNDI);
 			if (!StringUtils.isEmpty(userTransactionJndiName)) {
 				if (this.jndiTemplate == null) {
 				    this.jndiTemplate = new JndiTemplate();

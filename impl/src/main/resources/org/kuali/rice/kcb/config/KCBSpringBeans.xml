@@ -5,6 +5,16 @@
 	
     <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>
 
+	<bean id="kcbOjbConfigurer" class="org.kuali.rice.core.ojb.BaseOjbConfigurer">
+		<property name="jcdAliases">
+			<list>
+				<value>kcbDataSource</value>
+			</list>
+		</property>
+		<property name="metadataLocation" value="classpath:org/kuali/rice/kcb/config/OJB-repository-kcb.xml" />
+	</bean>
+
+
     <bean id="kcbDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean">
         <property name="preferredDataSourceParams">
             <list>
@@ -16,6 +26,7 @@
                 <value>org.kuali.rice.kcb.datasource.jndi.location</value>
             </list>
         </property>
+        <property name="serverDataSource" value="true"/>
     </bean>
 
 

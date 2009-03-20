@@ -18,7 +18,9 @@ package org.kuali.rice.kcb.config;
 import org.kuali.rice.kcb.service.GlobalKCBServiceLocator;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.quartz.JobDetail;
+import org.quartz.ObjectAlreadyExistsException;
 import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
@@ -75,12 +77,21 @@ public class KCBInitializer implements BeanFactoryAware, InitializingBean, Dispo
         Scheduler scheduler = getScheduler()==null?KSBServiceLocator.getScheduler():getScheduler();
         scheduler.addJob(messageProcessingJobDetail, true);
 
-        if (scheduler.getTrigger(messageProcessingTrigger.getName(), messageProcessingTrigger.getGroup()) != null) {
-            scheduler.rescheduleJob(messageProcessingTrigger.getName(), messageProcessingTrigger.getGroup(), messageProcessingTrigger);
-        } else {
-            scheduler.scheduleJob(messageProcessingTrigger);
-        }
+        addTriggerToScheduler(messageProcessingTrigger);
     }
+    
+    private void addTriggerToScheduler(Trigger trigger) throws SchedulerException {
+		boolean triggerExists = (getScheduler().getTrigger(trigger.getName(), trigger.getGroup()) != null);
+		if (!triggerExists) {
+			try {
+				getScheduler().scheduleJob(trigger);
+			} catch (ObjectAlreadyExistsException ex) {
+				getScheduler().rescheduleJob(trigger.getName(), trigger.getGroup(), trigger);
+			}
+		} else {
+		    getScheduler().rescheduleJob(trigger.getName(), trigger.getGroup(), trigger);
+		}
+	}
 
     public void destroy() throws Exception {
         // prevent anything from accessing our services after the module has been destroyed/shutdown

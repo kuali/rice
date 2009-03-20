@@ -43,7 +43,7 @@
 		<property name="metadataLocation" value="classpath:org/kuali/rice/ksb/config/OJB-repository-ksb.xml" />
 	</bean>
 	
-	<bean id="ksbRegistryDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean" lazy-init="true">
+	<bean id="ksbRegistryDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean">
 		<property name="preferredDataSourceParams">
 			<list>
 				<value>ksbRegistry.datasource</value>
@@ -54,9 +54,10 @@
 				<value>ksbRegistry.datasource.jndi.location</value>
 			</list>
 		</property>
+		<property name="serverDataSource" value="true"/>
 	</bean>
 
-	<bean id="ksbMessageDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean" lazy-init="true">
+	<bean id="ksbMessageDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean">
 		<property name="preferredDataSourceParams">
 			<list>
 				<value>ksbMessage.datasource</value>
@@ -67,6 +68,7 @@
 				<value>ksbMessage.datasource.jndi.location</value>
 			</list>
 		</property>
+		<property name="serverDataSource" value="false"/>
 	</bean>
 
 	<bean id="ksbMessageNonTransactionalDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean" lazy-init="true">
@@ -187,7 +189,7 @@
 		<property name="retryAttempts" value="0" />
 	</bean>
 
-	<bean id="ksbScheduler" class="org.kuali.rice.ksb.messaging.quartz.KSBSchedulerFactoryBean" lazy-init="true" destroy-method="stop">
+	<bean id="ksbScheduler" class="org.kuali.rice.ksb.messaging.quartz.KSBSchedulerFactoryBean" destroy-method="stop">
 		<property name="jobListeners">
 			<list>
 				<bean class="org.kuali.rice.ksb.messaging.quartz.MessageServiceExecutorJobListener"/>
@@ -196,7 +198,9 @@
 		<property name="quartzProperties">
 			<bean class="org.kuali.rice.ksb.messaging.quartz.QuartzConfigPropertiesFactoryBean"/>
 		</property>
-		<property name="jtaTransactionManager" ref="transactionManager"/>
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="dataSource" ref="ksbMessageDataSource"/>
+		<property name="nonTransactionalDataSource" ref="ksbMessageNonTransactionalDataSource"/>
 	</bean>
 
   <bean id="busAdminService" class="org.kuali.rice.ksb.messaging.service.impl.BusAdminServiceImpl"/>

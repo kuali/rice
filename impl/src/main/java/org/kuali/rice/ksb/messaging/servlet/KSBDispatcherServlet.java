@@ -91,8 +91,10 @@ public class KSBDispatcherServlet extends DispatcherServlet {
 		if (handler instanceof HttpRequestHandler) {
 			return new HttpRequestHandlerAdapter();
 		} else if (handler instanceof Controller) {
-			((CXFServletControllerAdapter)ClassLoaderUtils.unwrapFromProxy(handler)).setController(cxfServletController);			
-			
+			Object unwrappedHandler = ClassLoaderUtils.unwrapFromProxy(handler);
+			if (unwrappedHandler instanceof CXFServletControllerAdapter) {
+				((CXFServletControllerAdapter)unwrappedHandler).setController(cxfServletController);
+			}			
 			return new SimpleControllerHandlerAdapter();
 		}
 		throw new RiceRuntimeException("handler of type " + handler.getClass().getName() + " is not known and can't be used by " + KSBDispatcherServlet.class.getName());

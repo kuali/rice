@@ -112,17 +112,6 @@ public interface Config {
 	public static final String DATASOURCE_USERNAME = "datasource.username";
 	public static final String DATASOURCE_PASSWORD = "datasource.password";
 
-	public static final String TRANSACTION_MANAGER_JNDI = "transactionManager.jndi.location";
-	public static final String USER_TRANSACTION_JNDI = "userTransaction.jndi.location";//"transactionManager.jndi.location";
-    public static final String DATASOURCE_JNDI = "datasource.jndi.location";
-    public static final String NON_TRANSACTIONAL_DATASOURCE_JNDI = "nonTransactional.datasource.jndi.location";
-
-	// Configuration Objects
-
-	public static final String DATASOURCE_OBJ = "datasource";
-	public static final String NON_TRANSACTIONAL_DATASOURCE_OBJ = "nonTransactionalDatasource";
-	public static final String TRANSACTION_MANAGER_OBJ = "transactionManager";
-	public static final String USER_TRANSACTION_OBJ = "userTransaction";
 	public static final String DEFAULT_NOTE_CLASS = "default.note.class";
 	public static final String M_BEANS = "mBeans";
 	public static final String ALT_SPRING_FILE = "config.spring.file";

@@ -39,19 +39,5 @@ public class KCBConfigurer extends ModuleConfigurer {
         setModuleName(MODULE_NAME);
         LOG.info("KCBConfigurer constructed");
     }
-    
-	/**
-     * Registers an OjbConfigurer and ResourceLoader for the module, adding it first to the GlobalResourceLoader.
-     * @see org.kuali.rice.core.lifecycle.BaseCompositeLifecycle#loadLifecycles()
-     */
-    @Override
-    protected List<Lifecycle> loadLifecycles() throws Exception {
-    	if ( LOG.isInfoEnabled() ) {
-    		LOG.info("Loading " + getModuleName() + " module lifecycles");
-    	}
-        List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
-        lifecycles.add(new BaseOjbConfigurer(getModuleName()));
-        return lifecycles;
-    }
 
 }

@@ -26,7 +26,9 @@
                            http://www.springframework.org/schema/aop
                            http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 
-    <bean id="kimDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean" lazy-init="true"/>
+    <bean id="kimDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean" lazy-init="true">
+    	<property name="serverDataSource" value="true"/>
+    </bean>
 
 	<bean id="kimOjbConfigurer" class="org.kuali.rice.core.ojb.BaseOjbConfigurer">
 		<property name="jcdAliases">

@@ -77,11 +77,13 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
 	private String serviceNamespace;
 	private DataSource dataSource;
 	private DataSource nonTransactionalDataSource;
+	private DataSource serverDataSource;
 	private String platform;
 	private UserTransaction userTransaction;
 	private TransactionManager transactionManager;
     private String dataSourceJndiLocation;
     private String nonTransactionalDataSourceJndiLocation;
+    private String serverDataSourceJndiLocation;
 	private String userTransactionJndiLocation;
 	private String transactionManagerJndiLocation;
 	private CredentialsSourceFactory credentialsSourceFactory;
@@ -329,17 +331,22 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
 			config.getProperties().setProperty(Config.OJB_PLATFORM, this.platform);
 		}
 	}
-
+ 
 	protected void configureDataSource(Config config) {
 		if (this.dataSource != null) {
-			config.getObjects().put(Config.DATASOURCE_OBJ, this.dataSource);
+			config.getObjects().put(RiceConstants.DATASOURCE_OBJ, this.dataSource);
 		} else if (!StringUtils.isBlank(this.dataSourceJndiLocation)) {
-			config.getProperties().put(Config.DATASOURCE_JNDI, this.dataSourceJndiLocation);
+			config.getProperties().put(RiceConstants.DATASOURCE_JNDI, this.dataSourceJndiLocation);
 		}
         if (this.nonTransactionalDataSource != null) {
-            config.getObjects().put(Config.NON_TRANSACTIONAL_DATASOURCE_OBJ, this.nonTransactionalDataSource);
+            config.getObjects().put(RiceConstants.NON_TRANSACTIONAL_DATASOURCE_OBJ, this.nonTransactionalDataSource);
         } else if (!StringUtils.isBlank(this.nonTransactionalDataSourceJndiLocation)) {
-            config.getProperties().put(Config.NON_TRANSACTIONAL_DATASOURCE_JNDI, this.nonTransactionalDataSourceJndiLocation);
+            config.getProperties().put(RiceConstants.NON_TRANSACTIONAL_DATASOURCE_JNDI, this.nonTransactionalDataSourceJndiLocation);
+        }
+        if (this.serverDataSource != null) {
+        	config.getObjects().put(RiceConstants.SERVER_DATASOURCE_OBJ, this.serverDataSource);
+        }  else if (!StringUtils.isBlank(this.serverDataSourceJndiLocation)) {
+        	config.getProperties().put(RiceConstants.SERVER_DATASOURCE_JNDI, this.serverDataSourceJndiLocation);
         }
 	}
 
@@ -350,16 +357,16 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
 	 */
 	protected void configureJta(Config config) {
 		if (this.userTransaction != null) {
-			config.getObjects().put(Config.USER_TRANSACTION_OBJ, this.userTransaction);
+			config.getObjects().put(RiceConstants.USER_TRANSACTION_OBJ, this.userTransaction);
 		}
 		if (this.transactionManager != null) {
-			config.getObjects().put(Config.TRANSACTION_MANAGER_OBJ, this.transactionManager);
+			config.getObjects().put(RiceConstants.TRANSACTION_MANAGER_OBJ, this.transactionManager);
 		}
 		if (!StringUtils.isEmpty(this.userTransactionJndiLocation)) {
-			config.getProperties().put(Config.USER_TRANSACTION_JNDI, this.userTransactionJndiLocation);
+			config.getProperties().put(RiceConstants.USER_TRANSACTION_JNDI, this.userTransactionJndiLocation);
 		}
 		if (!StringUtils.isEmpty(this.transactionManagerJndiLocation)) {
-			config.getProperties().put(Config.TRANSACTION_MANAGER_JNDI, this.transactionManagerJndiLocation);
+			config.getProperties().put(RiceConstants.TRANSACTION_MANAGER_JNDI, this.transactionManagerJndiLocation);
 		}
 		boolean userTransactionConfigured = this.userTransaction != null || !StringUtils.isEmpty(this.userTransactionJndiLocation);
 		boolean transactionManagerConfigured = this.transactionManager != null || !StringUtils.isEmpty(this.transactionManagerJndiLocation);
@@ -403,7 +410,15 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
         this.nonTransactionalDataSource = nonTransactionalDataSource;
     }
 
-    public String getPlatform() {
+    public DataSource getServerDataSource() {
+		return this.serverDataSource;
+	}
+
+	public void setServerDataSource(DataSource serverDataSource) {
+		this.serverDataSource = serverDataSource;
+	}
+
+	public String getPlatform() {
 		return this.platform;
 	}
 
@@ -458,6 +473,10 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
     public void setNonTransactionalDataSourceJndiLocation(String nonTransactionalDataSourceJndiLocation) {
         this.nonTransactionalDataSourceJndiLocation = nonTransactionalDataSourceJndiLocation;
     }
+
+	public void setServerDataSourceJndiLocation(String serverDataSourceJndiLocation) {
+		this.serverDataSourceJndiLocation = serverDataSourceJndiLocation;
+	}
 
 	public String getTransactionManagerJndiLocation() {
 		return this.transactionManagerJndiLocation;

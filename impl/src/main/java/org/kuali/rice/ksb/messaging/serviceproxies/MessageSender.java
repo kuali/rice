@@ -35,7 +35,7 @@ public class MessageSender {
 	if (!new Boolean(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGING_OFF))) {
 
 	    if (ConfigContext.getCurrentContextConfig().getObject(RiceConstants.SPRING_TRANSACTION_MANAGER) != null
-		    || ConfigContext.getCurrentContextConfig().getObject(Config.TRANSACTION_MANAGER_OBJ) != null) {
+		    || ConfigContext.getCurrentContextConfig().getObject(RiceConstants.TRANSACTION_MANAGER_OBJ) != null) {
 		if (TransactionSynchronizationManager.isSynchronizationActive()) {
 		    TransactionSynchronizationManager.registerSynchronization(new MessageSendingTransactionSynchronization(
 			    message));

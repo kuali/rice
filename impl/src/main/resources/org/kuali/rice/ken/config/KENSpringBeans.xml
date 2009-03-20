@@ -31,6 +31,15 @@
 	
     <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>
 
+	<bean id="kenOjbConfigurer" class="org.kuali.rice.core.ojb.BaseOjbConfigurer">
+		<property name="jcdAliases">
+			<list>
+				<value>kenDataSource</value>
+			</list>
+		</property>
+		<property name="metadataLocation" value="classpath:org/kuali/rice/ken/config/OJB-repository-ken.xml" />
+	</bean>
+
     <bean id="kenDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean">
         <property name="preferredDataSourceParams">
             <list>
@@ -42,6 +51,7 @@
                 <value>org.kuali.ken.datasource.jndi.location</value>
             </list>
         </property>
+        <property name="serverDataSource" value="true"/>
     </bean>
 
     <!-- ken stuff -->

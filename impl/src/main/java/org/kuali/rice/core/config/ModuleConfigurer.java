@@ -179,7 +179,6 @@ public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements
     /**
      * Constructs a SpringResourceLoader from the appropriate Spring context resource and with the configured
      * resource loader name (and current context config service namespace)
-     * @see org.kuali.rice.core.config.BaseModuleConfigurer#createResourceLoader()
      */
     protected ResourceLoader createResourceLoader() throws Exception {
         String context = getSpringFileLocations();

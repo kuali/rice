@@ -41,7 +41,29 @@ public class RiceConstants {
     public static final String DEFAULT_ROOT_RESOURCE_LOADER_NAME = "RootResourceLoader";
 
     public static final String RICE_CONFIGURER_CONFIG_NAME = "riceConfigurer";
+
     
+    // Configuration Objects
+
+	public static final String DATASOURCE_OBJ = "datasource";
+	public static final String NON_TRANSACTIONAL_DATASOURCE_OBJ = "nonTransactionalDatasource";
+	public static final String SERVER_DATASOURCE_OBJ = "serverDatasource";
+	public static final String TRANSACTION_MANAGER_OBJ = "transactionManager";
+	public static final String USER_TRANSACTION_OBJ = "userTransaction";
+	public static final String DEFAULT_NOTE_CLASS = "default.note.class";
+	public static final String M_BEANS = "mBeans";
+	public static final String ALT_SPRING_FILE = "config.spring.file";
+	public static final String ALT_OJB_FILE	= "config.obj.file";
+
+	// JNDI configuration 
+	
+	public static final String TRANSACTION_MANAGER_JNDI = "transactionManager.jndi.location";
+	public static final String USER_TRANSACTION_JNDI = "userTransaction.jndi.location";//"transactionManager.jndi.location";
+    public static final String DATASOURCE_JNDI = "datasource.jndi.location";
+    public static final String NON_TRANSACTIONAL_DATASOURCE_JNDI = "nonTransactional.datasource.jndi.location";
+    public static final String SERVER_DATASOURCE_JNDI = "serverDatasource.jndi.location";
+
+	
     // Default struts mapping forward key
     public static final String MAPPING_BASIC = "basic";
 

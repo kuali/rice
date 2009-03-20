@@ -26,6 +26,7 @@ import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.core.util.RiceConstants;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 import org.springframework.jndi.JndiTemplate;
 
@@ -34,15 +35,20 @@ import org.springframework.jndi.JndiTemplate;
  * JNDI url specified by the Configuration system. By default, it loads these values from the following properties if the
  * <code>useNonTransactionalDataSource</code> param is not set or is set to false:
  * <ul>
- * <li>{@link Config#DATASOURCE_OBJ}</li>
- * <li>{@link Config#DATASOURCE_JNDI}</li>
+ * <li>{@link RiceConstants#DATASOURCE_OBJ}</li>
+ * <li>{@link RiceConstants#DATASOURCE_JNDI}</li>
  * </ul>
  * If the <code>useNonTransactionalDataSource</code> param is set to true the following properties will be used:<br>
  * <br>
  * <ul>
- * <li>{@link Config#NON_TRANSACTIONAL_DATASOURCE_OBJ}</li>
- * <li>{@link Config#NON_TRANSACTIONAL_DATASOURCE_JNDI}</li>
+ * <li>{@link RiceConstants#NON_TRANSACTIONAL_DATASOURCE_OBJ}</li>
+ * <li>{@link RiceConstants#NON_TRANSACTIONAL_DATASOURCE_JNDI}</li>
  * </ul>
+ * If the <code>server</code> param is set to true, the following properties will be added to the end of the preferred lists:<br>
+ * <br>
+ * <ul>
+ * <li>{@link RiceConstants#SERVER_DATASOURCE_OBJ}</li>
+ * <li>{@link RiceConstants#SERVER_DATASOURCE_JNDI}</li> 
  * <p>
  * The config properties checked can be overridden by setting values into the list parameters
  * <code>preferredDataSourceParams</code> and <code>preferredDataSourceJndiParams</code>
@@ -51,10 +57,12 @@ import org.springframework.jndi.JndiTemplate;
  */
 public class PrimaryDataSourceFactoryBean extends AbstractFactoryBean {
 
-    private static final String DEFAULT_DATASOURCE_PARAM = Config.DATASOURCE_OBJ;
-    private static final String DEFAULT_NONTRANSACTIONAL_DATASOURCE_PARAM = Config.NON_TRANSACTIONAL_DATASOURCE_OBJ;
-    private static final String DEFAULT_DATASOURCE_JNDI_PARAM = Config.DATASOURCE_JNDI;
-    private static final String DEFAULT_NONTRANSACTIONAL_DATASOURCE_JNDI_PARAM = Config.NON_TRANSACTIONAL_DATASOURCE_JNDI;
+    private static final String DEFAULT_DATASOURCE_PARAM = RiceConstants.DATASOURCE_OBJ;
+    private static final String DEFAULT_SERVER_DATASOURCE_PARAM = RiceConstants.SERVER_DATASOURCE_OBJ;
+    private static final String DEFAULT_NONTRANSACTIONAL_DATASOURCE_PARAM = RiceConstants.NON_TRANSACTIONAL_DATASOURCE_OBJ;
+    private static final String DEFAULT_DATASOURCE_JNDI_PARAM = RiceConstants.DATASOURCE_JNDI;
+    private static final String DEFAULT_SERVER_DATASOURCE_JNDI_PARAM = RiceConstants.SERVER_DATASOURCE_JNDI;
+    private static final String DEFAULT_NONTRANSACTIONAL_DATASOURCE_JNDI_PARAM = RiceConstants.NON_TRANSACTIONAL_DATASOURCE_JNDI;
 
     private JndiTemplate jndiTemplate;
     private boolean nonTransactionalDataSource = false;
@@ -64,7 +72,8 @@ public class PrimaryDataSourceFactoryBean extends AbstractFactoryBean {
     private String defaultNonTransactionalDataSourceJndiParam = DEFAULT_NONTRANSACTIONAL_DATASOURCE_JNDI_PARAM;
     private List<String> preferredDataSourceParams = new ArrayList<String>();
     private List<String> preferredDataSourceJndiParams = new ArrayList<String>();
-
+    private boolean serverDataSource = false;
+    
     public PrimaryDataSourceFactoryBean() {
         setSingleton(true);
     }
@@ -72,8 +81,17 @@ public class PrimaryDataSourceFactoryBean extends AbstractFactoryBean {
     public Class getObjectType() {
         return DataSource.class;
     }
-
+    
     @Override
+	public void afterPropertiesSet() throws Exception {
+    	if (serverDataSource) {
+    		getPreferredDataSourceParams().add(DEFAULT_SERVER_DATASOURCE_PARAM);
+    		getPreferredDataSourceJndiParams().add(DEFAULT_SERVER_DATASOURCE_JNDI_PARAM);
+    	}
+    	super.afterPropertiesSet();
+	}
+
+	@Override
     protected Object createInstance() throws Exception {
         Config config = ConfigContext.getCurrentContextConfig();
         DataSource dataSource = createDataSource(config);
@@ -232,4 +250,12 @@ public class PrimaryDataSourceFactoryBean extends AbstractFactoryBean {
         this.nonTransactionalDataSource = nonTransactionalDataSource;
     }
 
+	public boolean isServerDataSource() {
+		return this.serverDataSource;
+	}
+
+	public void setServerDataSource(boolean serverDataSource) {
+		this.serverDataSource = serverDataSource;
+	}
+    
 }

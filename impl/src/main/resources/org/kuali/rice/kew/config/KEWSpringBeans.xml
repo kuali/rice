@@ -34,6 +34,7 @@
 				<value>org.kuali.workflow.datasource.jndi.location</value>
 			</list>
 		</property>
+		<property name="serverDataSource" value="true"/>
     </bean>
 
 	<bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">

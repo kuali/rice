@@ -13,6 +13,7 @@
 package org.kuali.rice.ksb.messaging.quartz;
 
 import javax.sql.DataSource;
+import javax.transaction.TransactionManager;
 
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ConfigurationException;
@@ -33,9 +34,14 @@ import org.springframework.transaction.PlatformTransactionManager;
 public class KSBSchedulerFactoryBean extends SchedulerFactoryBean {
 
     private PlatformTransactionManager jtaTransactionManager;
+    private TransactionManager transactionManager;
+    private DataSource dataSource;
+    private DataSource nonTransactionalDataSource;
     private boolean transactionManagerSet = false;
-    private boolean nonTransactionalDataSourceIsNull = true;
-
+    private boolean nonTransactionalDataSourceSet = false;
+    private boolean nonTransactionalDataSourceNull = true;
+    private boolean dataSourceSet = false;
+    
     @Override
     protected Scheduler createScheduler(SchedulerFactory schedulerFactory, String schedulerName) throws SchedulerException {
         if (ConfigContext.getCurrentContextConfig().getObject(KSBConstants.INJECTED_EXCEPTION_MESSAGE_SCHEDULER_KEY) != null) {
@@ -59,29 +65,24 @@ public class KSBSchedulerFactoryBean extends SchedulerFactoryBean {
             if (jtaTransactionManager == null) {
                 throw new ConfigurationException("No jta transaction manager was configured for the KSB Quartz Scheduler");
             }
-            // since transaction manager is required... require a non transactional datasource
-            DataSource nonTransDataSource = KSBServiceLocator.getMessageNonTransactionalDataSource();
-            if (nonTransDataSource == null) {
-                throw new ConfigurationException("No non-transactional data source was found but is required for the KSB Quartz Scheduler");
-            }
             setTransactionManager(jtaTransactionManager);
-            setDataSource(KSBServiceLocator.getMessageDataSource());
-            setNonTransactionalDataSource(nonTransDataSource);
+            if (!nonTransactionalDataSourceSet) {
+            	// since transaction manager is required... require a non transactional datasource
+            	nonTransactionalDataSource = KSBServiceLocator.getMessageNonTransactionalDataSource();
+            	if (nonTransactionalDataSource == null) {
+            		throw new ConfigurationException("No non-transactional data source was found but is required for the KSB Quartz Scheduler");
+            	}
+            	setNonTransactionalDataSource(nonTransactionalDataSource);
+            }
+            if (!dataSourceSet) {
+            	dataSource = KSBServiceLocator.getMessageDataSource();
+            }
+            setDataSource(dataSource);
         }
-        if (transactionManagerSet && nonTransactionalDataSourceIsNull) {
+        if (transactionManagerSet && nonTransactionalDataSourceNull) {
             throw new ConfigurationException("A valid transaction manager was set but no non-transactional data source was found");
         }
         super.afterPropertiesSet();
-    }
-
-    /**
-     * This is to work around an issue with the GRL when you've got more than one module with a bean named
-     * "transactionManager".
-     * 
-     * @param jtaTransactionManager
-     */
-    public void setJtaTransactionManager(PlatformTransactionManager jtaTransactionManager) {
-        this.jtaTransactionManager = jtaTransactionManager;
     }
     
     /**
@@ -90,9 +91,9 @@ public class KSBSchedulerFactoryBean extends SchedulerFactoryBean {
      * @see org.springframework.scheduling.quartz.SchedulerFactoryBean#setTransactionManager(org.springframework.transaction.PlatformTransactionManager)
      */
     @Override
-    public void setTransactionManager(PlatformTransactionManager transactionManager) {
-        transactionManagerSet = transactionManager != null;
-        super.setTransactionManager(transactionManager);
+    public void setTransactionManager(PlatformTransactionManager jtaTransactionManager) {
+        transactionManagerSet = jtaTransactionManager != null;
+        this.jtaTransactionManager = jtaTransactionManager;
     }
     
     /**
@@ -102,7 +103,14 @@ public class KSBSchedulerFactoryBean extends SchedulerFactoryBean {
      */
     @Override
     public void setNonTransactionalDataSource(DataSource nonTransactionalDataSource) {
-        nonTransactionalDataSourceIsNull = nonTransactionalDataSource == null;
-        super.setNonTransactionalDataSource(nonTransactionalDataSource);
+        nonTransactionalDataSourceSet = true;
+        nonTransactionalDataSourceNull = (nonTransactionalDataSource == null);
+        this.nonTransactionalDataSource = nonTransactionalDataSource;
+    }
+    
+    @Override
+    public void setDataSource(DataSource dataSource) {
+    	dataSourceSet = true;
+    	this.dataSource = dataSource;
     }
 }

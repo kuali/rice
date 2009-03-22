@@ -47,11 +47,12 @@ public class DocumentConfigurationViewForm extends KualiForm {
     protected LinkedHashMap<String,List<PermissionForDisplay>> permissionsByDocumentType = new LinkedHashMap<String, List<PermissionForDisplay>>();
     protected Map<String,List<KimRoleInfo>> permissionRoles = new HashMap<String, List<KimRoleInfo>>();
     protected Map<String,String> attributeLabels;
-    protected Map<String,String> seenTemplates = new HashMap<String,String>();
     protected List<RouteNode> routeNodes;
     protected Map<String,List<ResponsibilityForDisplay>> responsibilityMap;
     protected Map<String,List<KimRoleInfo>> responsibilityRoles;
     protected boolean canInitiateDocumentTypeDocument = false;
+    protected boolean canInitiatePermissionDocument = false;
+    protected boolean canInitiateResponsibilityDocument = false;
 
 	public Map<String, List<KimRoleInfo>> getPermissionRoles() {
 		return this.permissionRoles;
@@ -99,14 +100,6 @@ public class DocumentConfigurationViewForm extends KualiForm {
 
 	public void setAttributeLabels(Map<String, String> attributeLabels) {
 		this.attributeLabels = attributeLabels;
-	}
-
-	public Map<String, String> getSeenTemplates() {
-		return this.seenTemplates;
-	}
-
-	public void setSeenTemplates(Map<String, String> seenTemplates) {
-		this.seenTemplates = seenTemplates;
 	}
 
 	public List<RouteNode> getRouteNodes() {
@@ -167,6 +160,24 @@ public class DocumentConfigurationViewForm extends KualiForm {
 	public void setResponsibilityRoles(
 			Map<String, List<KimRoleInfo>> responsibilityRoles) {
 		this.responsibilityRoles = responsibilityRoles;
+	}
+
+	public boolean isCanInitiatePermissionDocument() {
+		return this.canInitiatePermissionDocument;
+	}
+
+	public void setCanInitiatePermissionDocument(
+			boolean canInitiatePermissionDocument) {
+		this.canInitiatePermissionDocument = canInitiatePermissionDocument;
+	}
+
+	public boolean isCanInitiateResponsibilityDocument() {
+		return this.canInitiateResponsibilityDocument;
+	}
+
+	public void setCanInitiateResponsibilityDocument(
+			boolean canInitiateResponsibilityDocument) {
+		this.canInitiateResponsibilityDocument = canInitiateResponsibilityDocument;
 	}
 
 }

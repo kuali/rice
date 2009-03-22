@@ -5,6 +5,7 @@
 <c:set var="responsibilityAttributes" value="${DataDictionary.ResponsibilityImpl.attributes}" />
 <c:set var="documentType" value="${KualiForm.documentType}" />
 <c:set var="attributeLabels" value="${KualiForm.attributeLabels}" />
+<c:set var="kimAttributes" value="${DataDictionary.KimAttributes.attributes}" />
 
 <style type="text/css">
 tr.overridden td {
@@ -23,7 +24,8 @@ tr.overridden td a {
     </c:if>
 <%--
     TODO: remove hard coded KIM class Impl names - if anything, redirect to the action to allow the code the make the
-    determiniation of how to implement
+    determination of how to implement
+    TODO: some attributes need to 
 --%>
     <c:if test="${!empty documentType}">
 	<kul:tabTop
@@ -90,6 +92,7 @@ tr.overridden td a {
 	                		</c:if>
 		                </a>
 	                </c:if>
+                	&nbsp;
                 </td>
                 <th align="left" scope="col">
                 	Child Document Types
@@ -102,6 +105,7 @@ tr.overridden td a {
                 		</c:if>
                 		</a><br />
                 	</c:forEach>
+                	&nbsp;
                 </td>
 			  </tr>
 			</tbody>
@@ -132,38 +136,43 @@ tr.overridden td a {
                                 attributeEntry="${permissionAttributes.detailObjectsValues}" />
                             <kul:htmlAttributeHeaderCell scope="col" align="left" 
                                 attributeEntry="${permissionAttributes.assignedToRolesToDisplay}" />
-        	                <th>
-                                <a href="<c:url value="${ConfigProperties.kr.url}/${Constants.MAINTENANCE_ACTION}">
-                                <c:param name="methodToCall" value="Constants.MAINTENANCE_NEWWITHEXISTING_ACTION" />
-                                <c:param name="businessObjectClassName" value="org.kuali.rice.kim.bo.role.impl.KimPermissionImpl"/>
-                                <c:param name="detailObjects[0].kimAttributeId" value="44"/>
-                                <c:param name="detailObjects[0].attributeValue" value="${documentType.name}"/>
-                              </c:url>" target="_blank">Add Permission</a>	                
-        	                </th>
+                           	<c:if test="${KualiForm.canInitiatePermissionDocument}">
+	        	                <th>
+	                                <a href="<c:url value="${ConfigProperties.kr.url}/${Constants.MAINTENANCE_ACTION}">
+		                                <c:param name="methodToCall" value="Constants.MAINTENANCE_NEWWITHEXISTING_ACTION" />
+		                                <%-- TODO: replace this class name with the interface or maintenance class and let module service handle --%>
+		                                <c:param name="businessObjectClassName" value="org.kuali.rice.kim.bo.role.impl.KimPermissionImpl"/>
+		                                <%-- TODO: replace hard-coding of attribute ID with lookup stored on form --%>
+		                                <c:param name="detailObjects[0].kimAttributeId" value="13"/>
+		                                <c:param name="detailObjects[0].attributeValue" value="${permDocTypeName}"/>
+	                                </c:url>" target="_blank">Add Permission</a>
+	        	                </th>
+                            </c:if>
         	              </tr>
         	            
         				<c:forEach var="perm" items="${permissions}">
                           <tr <c:if test="${perm.overridden}">class="overridden"</c:if>>
                             <td>
                             	<%-- TODO: update this to use the proper url for an inquiry and not use the impl class --%>
-                            	
-                                <kul:inquiry boClassName="org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl" keyValues="permissionTemplateId=${perm.template.permissionTemplateId}" render="true">
+                                <kul:inquiry boClassName="org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl" 
+                                			 keyValues="permissionTemplateId=${perm.template.permissionTemplateId}" render="true">
                                 <c:out value="${perm.template.name}" />
                                 (<c:out value="${perm.template.namespaceCode}" />)
                                 </kul:inquiry>
                             </td>
                             <td>
                             	<%-- TODO: update this to use the proper url for a detailed inquiry and not use the impl class --%>
-                                <kul:inquiry boClassName="org.kuali.rice.kim.bo.role.impl.KimPermissionImpl" keyValues="permissionId=${perm.permissionId}" render="true">
-                                <c:if test="${empty perm.name}">
-                                    <c:out value="${perm.template.name}" />
-                                </c:if>
-                                <c:out value="${perm.name}" />
-                                (<c:out value="${perm.namespaceCode}" />)
+                                <kul:inquiry boClassName="org.kuali.rice.kim.bo.role.impl.KimPermissionImpl" 
+                                			 keyValues="permissionId=${perm.permissionId}" render="true">
+	                                <c:if test="${empty perm.name}">
+	                                    <c:out value="${perm.template.name}" />
+	                                </c:if>
+	                                <c:out value="${perm.name}" />
+	                                (<c:out value="${perm.namespaceCode}" />)
                                 </kul:inquiry>
                             </td>
                             <td>
-                            	<%-- skip output of the documentTypeName since known external to this? --%>
+                            	<%-- skip output of the documentTypeName since in subhead --%>
                                 <c:forEach var="dtl" items="${perm.details}" varStatus="status">
                                 	<c:if test="${dtl.key != 'documentTypeName'}">
                                     	<c:if test="${status.index != 0}"><br /></c:if>
@@ -174,21 +183,24 @@ tr.overridden td a {
                             </td>
                             <td>
                             	<c:forEach var="role" items="${KualiForm.permissionRoles[perm.permissionId]}">
-                            		<kul:inquiry boClassName="org.kuali.rice.kim.bo.role.impl.KimRoleImpl" keyValues="roleId=${role.roleId}" render="true">
-                            		<c:out value="${role.namespaceCode} ${role.roleName}" />
+                            		<kul:inquiry boClassName="org.kuali.rice.kim.bo.role.impl.KimRoleImpl" 
+                            					 keyValues="roleId=${role.roleId}" render="true">
+                            			<c:out value="${role.namespaceCode} ${role.roleName}" />
                             		</kul:inquiry>
                             		<br />
                             	</c:forEach>
+			                	&nbsp;
                             </td>
-                            <td>
-                                <a href="<c:url value="${ConfigProperties.kr.url}/${Constants.MAINTENANCE_ACTION}">
-                                <c:param name="methodToCall" value="edit" />
-                                <c:param name="businessObjectClassName" value="org.kuali.rice.kim.bo.role.impl.KimPermissionImpl"/>
-                                <c:param name="permissionId" value="${perm.permissionId}"/>
-                              </c:url>" target="_blank">Edit Permission</a>
-                            </td>
+                        	<c:if test="${KualiForm.canInitiatePermissionDocument}">
+	                            <td>
+                                    <a href="<c:url value="${ConfigProperties.kr.url}/${Constants.MAINTENANCE_ACTION}">
+		                                <c:param name="methodToCall" value="edit" />
+		                                <c:param name="businessObjectClassName" value="org.kuali.rice.kim.bo.role.impl.KimPermissionImpl"/>
+		                                <c:param name="permissionId" value="${perm.permissionId}"/>
+	                                </c:url>" target="_blank">Edit Permission</a>
+		                        </td>
+                            </c:if>
                           </tr>
-        			      <c:set target="${KualiForm.seenTemplates}" property="${perm.template.name}" value="perm.details.documentTypeName" />
         				</c:forEach>
         	            </tbody>
         	          </table>
@@ -196,7 +208,7 @@ tr.overridden td a {
 	          </c:forEach>
 			</div> 	  
  	    </kul:tab>
- 	    <c:set var="strikeout" value="false" />
+
  	    <kul:tab tabTitle="Workflow / Responsibilities" defaultOpen="true" >
  	      <%-- TODO: need separate section for the exception routing --%>
  	  		<div class="tab-container" style="width:auto;">
@@ -207,20 +219,30 @@ tr.overridden td a {
         	          <table class="datatable" cellspacing="0" cellpadding="0" align="center" style="text-align: left; margin-left: auto; margin-right: auto; padding-left: 5em;">
         	            <tbody>
         	              <tr>
-        	                <th style="width: 8em;">Required</th>
-        	                <th style="width: 11em;">Action Details at Role Member Level</th>
+        	                <th style="width: 8em;">
+        	                	<kul:htmlAttributeLabel attributeEntry="${kimAttributes.required}" noColon="true" />
+       	                	</th>
+        	                <th style="width: 11em;">
+        	                	<kul:htmlAttributeLabel attributeEntry="${kimAttributes.actionDetailsAtRoleMemberLevel}" noColon="true" />
+       	                	</th>
         	                <th>
                                <kul:htmlAttributeLabel attributeEntry="${responsibilityAttributes.assignedToRolesToDisplay}" noColon="true" />
                             </th>
         	                <th style="width: 20em;">Inherited</th>
-        	                <th style="width: 12em;">
-                                <a href="<c:url value="${ConfigProperties.kr.url}/${Constants.MAINTENANCE_ACTION}">
-                                <c:param name="methodToCall" value="Constants.MAINTENANCE_NEWWITHEXISTING_ACTION" />
-                                <c:param name="businessObjectClassName" value="org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl"/>
-                                <c:param name="detailObjects[0].kimAttributeId" value="44"/>
-                                <c:param name="detailObjects[0].attributeValue" value="${documentType.name}"/>
-                              </c:url>" target="_blank">Add Responsibility</a>	                
-        	                </th>
+       	                	<c:if test="${KualiForm.canInitiateResponsibilityDocument}">
+	        	                <th style="width: 12em;">
+	                                <a href="<c:url value="${ConfigProperties.kr.url}/${Constants.MAINTENANCE_ACTION}">
+		                                <c:param name="methodToCall" value="Constants.MAINTENANCE_NEWWITHEXISTING_ACTION" />
+		                                <%-- TODO: replace this class name with the interface or maintenance class and let module service handle --%>
+		                                <c:param name="businessObjectClassName" value="org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl"/>
+		                                <%-- TODO: replace hard-coding of attribute IDs with lookup stored on form --%>
+		                                <c:param name="detailObjects[0].kimAttributeId" value="13"/>
+		                                <c:param name="detailObjects[0].attributeValue" value="${documentType.name}"/>
+		                                <c:param name="detailObjects[1].kimAttributeId" value="16"/>
+		                                <c:param name="detailObjects[1].attributeValue" value="${node.routeNodeName}"/>
+	                                </c:url>" target="_blank">Add Responsibility</a>
+	        	                </th>
+                            </c:if>	                
         	              </tr>
         	              <c:forEach var="resp" items="${responsibilities}">
         	                 <tr <c:if test="${resp.overridden}">class="overridden"</c:if>>
@@ -244,6 +266,7 @@ tr.overridden td a {
                                 		</kul:inquiry>
                                 		<br />
                                 	</c:forEach>
+				                	&nbsp;
                                 </td>
                                 <td>
                                     <c:choose>
@@ -255,14 +278,15 @@ tr.overridden td a {
                                         </c:otherwise>
                                     </c:choose>
                                 </td>
-                                <td>
-                                    <a href="<c:url value="${ConfigProperties.kr.url}/${Constants.MAINTENANCE_ACTION}">
-                                    <c:param name="methodToCall" value="edit" />
-                                    <c:param name="businessObjectClassName" value="org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl"/>
-                                    <c:param name="responsibilityId" value="${resp.responsibilityId}"/>
-                                  </c:url>" target="_blank">Edit Responsibility</a>
-                                  <!-- <c:out value="${resp.responsibilityId}" /> -->
-                                </td>
+                               	<c:if test="${KualiForm.canInitiateResponsibilityDocument}">
+	                                <td>
+	                                    <a href="<c:url value="${ConfigProperties.kr.url}/${Constants.MAINTENANCE_ACTION}">
+		                                    <c:param name="methodToCall" value="edit" />
+		                                    <c:param name="businessObjectClassName" value="org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl"/>
+		                                    <c:param name="responsibilityId" value="${resp.responsibilityId}"/>
+	                                    </c:url>" target="_blank">Edit Responsibility</a>
+	                                </td>
+                                </c:if>
         	                 </tr>
         	              </c:forEach>
         	            </tbody>
@@ -274,25 +298,6 @@ tr.overridden td a {
  	    </kul:tab>
  	  <kul:panelFooter />
 	  </kul:tabTop>
-	  </c:if>
-<%-- 
-Document Summary Information
-
-document type
-document label
-help URL (link)
-service namespace
-parent document
-child documents? - drop-down
---%>
-
-<%-- 
-Permissions
---%>
-	
-	
-<%-- 
-Responsibilities
---%>
+  </c:if>
 	
 </kul:page>

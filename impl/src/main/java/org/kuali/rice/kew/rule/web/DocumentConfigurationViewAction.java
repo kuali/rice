@@ -44,6 +44,7 @@ import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
+import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PermissionService;
@@ -89,22 +90,42 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 	    		populateRelatedDocuments( form );
 	    		populatePermissions( form );
 	    		populateResponsibilities( form );
+	    		checkPermissions( form );
         	}
-            String documentTypeName = getMaintenanceDocumentDictionaryService().getDocumentTypeName(DocumentType.class);
-            try {
-	            if ((documentTypeName != null) && getDocumentHelperService().getDocumentAuthorizer(documentTypeName).canInitiate(documentTypeName, GlobalVariables.getUserSession().getPerson())) {
-	                form.setCanInitiateDocumentTypeDocument( true );
-	            }
-            } catch (Exception ex) {
-				// just skip - and don't display links
-            	LOG.error( "Unable to check initiation permission for "+ documentTypeName, ex );
-			}
 
     	}
     	
     }
-    // TODO: find most-specific responsibility
-    // TODO: override permissions??
+
+    protected void checkPermissions( DocumentConfigurationViewForm form ) {
+    	String docTypeDocumentType = getMaintenanceDocumentDictionaryService().getDocumentTypeName(DocumentType.class);
+        try {
+            if ((docTypeDocumentType != null) && getDocumentHelperService().getDocumentAuthorizer(docTypeDocumentType).canInitiate(docTypeDocumentType, GlobalVariables.getUserSession().getPerson())) {
+                form.setCanInitiateDocumentTypeDocument( true );
+            }
+        } catch (Exception ex) {
+			// just skip - and don't display links
+        	LOG.error( "Unable to check DocumentType initiation permission for "+ docTypeDocumentType, ex );
+		}
+    	String permissionDocumentType = getMaintenanceDocumentDictionaryService().getDocumentTypeName(KimPermissionImpl.class);
+        try {
+            if ((permissionDocumentType != null) && getDocumentHelperService().getDocumentAuthorizer(permissionDocumentType).canInitiate(permissionDocumentType, GlobalVariables.getUserSession().getPerson())) {
+                form.setCanInitiatePermissionDocument( true );
+            }
+        } catch (Exception ex) {
+			// just skip - and don't display links
+        	LOG.error( "Unable to check Permission initiation permission for "+ permissionDocumentType, ex );
+		}
+    	String responsibilityDocumentType = getMaintenanceDocumentDictionaryService().getDocumentTypeName(KimPermissionImpl.class);
+        try {
+            if ((responsibilityDocumentType != null) && getDocumentHelperService().getDocumentAuthorizer(responsibilityDocumentType).canInitiate(responsibilityDocumentType, GlobalVariables.getUserSession().getPerson())) {
+                form.setCanInitiateResponsibilityDocument( true );
+            }
+        } catch (Exception ex) {
+			// just skip - and don't display links
+        	LOG.error( "Unable to check Responsibility initiation permission for "+ responsibilityDocumentType, ex );
+		}
+    }
     
     @SuppressWarnings("unchecked")
 	public void populateRelatedDocuments( DocumentConfigurationViewForm form ) {
@@ -168,8 +189,8 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 	}
 	
 	public void populateResponsibilities( DocumentConfigurationViewForm form ) {
-		// TODO: pull all the responsibilities
-		// TODO: merge the data and attach to route levels
+		// pull all the responsibilities
+		// merge the data and attach to route levels
 		// pull the route levels and store on form
 		List<RouteNode> routeNodes = getRouteNodeService().getFlattenedNodes(form.getDocumentType(), true);
 		

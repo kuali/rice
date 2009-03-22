@@ -19,6 +19,7 @@ package org.kuali.rice.kns.util;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -32,12 +33,12 @@ import org.apache.commons.lang.StringUtils;
  * Holds errors due to validation. Keys of map represent property paths, and value is a TypedArrayList that contains resource string
  * keys (to retrieve the error message).
  * 
- * Note, prior to rice 0.9.4, this class implemented {@link java.util.Map}.  The implements has been removed as of rice 0.9.4
+ * 
  */
-public class ErrorMap implements Serializable {
+public class ErrorMap implements Map, Serializable {
     private static final long serialVersionUID = -2328635367656516150L;
-    private List<String> errorPath = new ArrayList<String>();
-    private Map<String, TypedArrayList> errorMessages = new LinkedHashMap<String, TypedArrayList>();
+    private List errorPath = new ArrayList();
+    private Map<String, TypedArrayList> messages = new LinkedHashMap<String, TypedArrayList>();
 
     /**
      * Adds an error to the map under the given propertyName and adds an array of message parameters. This will fully prepend the
@@ -50,7 +51,7 @@ public class ErrorMap implements Serializable {
      * @return TypedArrayList
      */
     public TypedArrayList putError(String propertyName, String errorKey, String... errorParameters) {
-        return putMessageInMap(errorMessages, propertyName, errorKey, true, errorParameters);
+        return putError(propertyName, errorKey, true, errorParameters);
     }
 
     /**
@@ -63,7 +64,7 @@ public class ErrorMap implements Serializable {
      * @return TypedArrayList
      */
     public TypedArrayList putErrorWithoutFullErrorPath(String propertyName, String errorKey, String... errorParameters) {
-        return putMessageInMap(errorMessages, propertyName, errorKey, false, errorParameters);
+        return putError(propertyName, errorKey, false, errorParameters);
     }
 
     /**
@@ -88,7 +89,7 @@ public class ErrorMap implements Serializable {
      * @param errorParameters zero or more string parameters for the displayed error message
      * @return TypeArrayList
      */
-    private TypedArrayList putMessageInMap(Map<String, TypedArrayList> messagesMap, String propertyName, String errorKey, boolean withFullErrorPath, String... errorParameters) {
+    private TypedArrayList putError(String propertyName, String errorKey, boolean withFullErrorPath, String... errorParameters) {
         if (StringUtils.isBlank(propertyName)) {
             throw new IllegalArgumentException("invalid (blank) propertyName");
         }
@@ -99,8 +100,8 @@ public class ErrorMap implements Serializable {
         // check if we have previous errors for this property
         TypedArrayList errorList = null;
         String propertyKey = getKeyPath((String) propertyName, withFullErrorPath);
-        if (messagesMap.containsKey(propertyKey)) {
-            errorList = (TypedArrayList) messagesMap.get(propertyKey);
+        if (messages.containsKey(propertyKey)) {
+            errorList = (TypedArrayList) messages.get(propertyKey);
         }
         else {
             errorList = new TypedArrayList(ErrorMessage.class);
@@ -113,7 +114,7 @@ public class ErrorMap implements Serializable {
             errorList.add(errorMessage);
         }
 
-        return (TypedArrayList) messagesMap.put(propertyKey, errorList);
+        return (TypedArrayList) messages.put(propertyKey, errorList);
     }
 
     /**
@@ -173,8 +174,8 @@ public class ErrorMap implements Serializable {
         // check if we have previous errors for this property
         TypedArrayList errorList = null;
         String propertyKey = getKeyPath((String) propertyName, withFullErrorPath);
-        if (errorMessages.containsKey(propertyKey)) {
-            errorList = (TypedArrayList) errorMessages.get(propertyKey);
+        if (messages.containsKey(propertyKey)) {
+            errorList = (TypedArrayList) messages.get(propertyKey);
 
             // look for the specific targetKey
             for (int i = 0; i < errorList.size(); ++i) {
@@ -203,7 +204,7 @@ public class ErrorMap implements Serializable {
     public boolean fieldHasMessage(String fieldName, String errorKey) {
         boolean found = false;
 
-        List fieldMessages = (List) errorMessages.get(fieldName);
+        List fieldMessages = (List) messages.get(fieldName);
         if (fieldMessages != null) {
             for (Iterator i = fieldMessages.iterator(); !found && i.hasNext();) {
                 ErrorMessage errorMessage = (ErrorMessage) i.next();
@@ -223,7 +224,7 @@ public class ErrorMap implements Serializable {
     public int countFieldMessages(String fieldName) {
         int count = 0;
 
-        List fieldMessages = (List) errorMessages.get(fieldName);
+        List fieldMessages = (List) messages.get(fieldName);
         if (fieldMessages != null) {
             count = fieldMessages.size();
         }
@@ -263,9 +264,9 @@ public class ErrorMap implements Serializable {
      */
     public int getErrorCount() {
         int errorCount = 0;
-        for (Iterator iter = errorMessages.keySet().iterator(); iter.hasNext();) {
+        for (Iterator iter = messages.keySet().iterator(); iter.hasNext();) {
             String errorKey = (String) iter.next();
-            List errors = (List) errorMessages.get(errorKey);
+            List errors = (List) messages.get(errorKey);
             errorCount += errors.size();
         }
 
@@ -277,7 +278,7 @@ public class ErrorMap implements Serializable {
      * @return Returns a List of ErrorMessages for the given path
      */
     public TypedArrayList getMessages(String path) {
-        return (TypedArrayList) errorMessages.get(path);
+        return (TypedArrayList) messages.get(path);
     }
 
     /**
@@ -294,7 +295,7 @@ public class ErrorMap implements Serializable {
      * 
      * @return List
      */
-    public List<String> getErrorPath() {
+    public List getErrorPath() {
         return errorPath;
     }
 
@@ -312,7 +313,7 @@ public class ErrorMap implements Serializable {
      * Clears the errorPath.
      */
     public void clearErrorPath() {
-        errorPath = new ArrayList<String>();
+        errorPath = new ArrayList();
     }
 
     /**
@@ -347,7 +348,7 @@ public class ErrorMap implements Serializable {
     public List getPropertiesWithErrors() {
         List properties = new ArrayList();
 
-        for (Iterator iter = errorMessages.keySet().iterator(); iter.hasNext();) {
+        for (Iterator iter = messages.keySet().iterator(); iter.hasNext();) {
             properties.add(iter.next());
         }
 
@@ -357,28 +358,16 @@ public class ErrorMap implements Serializable {
     // methods added to complete the Map interface
     /**
      * Clears the messages list.
-     * 
-     * @deprecated As of rice 0.9.4, use {@link #clearErrorMessages()} instead
      */
-    @Deprecated
     public void clear() {
-        clearErrorMessages();
+        messages.clear();
     }
 
-    public void clearErrorMessages() {
-    	errorMessages.clear();
-    }
-    
     /**
-     * @deprecated As of rice 0.9.4, use {@link #doesPropertyHaveError(String)} instead
+     * @see java.util.Map#containsKey(java.lang.Object)
      */
-    @Deprecated
     public boolean containsKey(Object key) {
-        return doesPropertyHaveError((String) key);
-    }
-    
-    public boolean doesPropertyHaveError(String key) {
-    	return errorMessages.containsKey(key);
+        return messages.containsKey(key);
     }
 
     /**
@@ -397,7 +386,7 @@ public class ErrorMap implements Serializable {
                 simplePatterns.add(s);
             }
         }
-        for (Iterator<String> keys = errorMessages.keySet().iterator(); keys.hasNext();) {
+        for (Iterator<String> keys = messages.keySet().iterator(); keys.hasNext();) {
             String key = (String) keys.next();
             if (simplePatterns.contains(key)) {
                 return true;
@@ -413,110 +402,83 @@ public class ErrorMap implements Serializable {
     }
 
     /**
-     * @deprecated As of rice 0.9.4, use {@link #getAllPropertiesAndErrors()} instead
+     * @see java.util.Map#entrySet()
      */
-    @Deprecated
     public Set entrySet() {
-        return getAllPropertiesAndErrors();
+        return messages.entrySet();
     }
 
-    public Set<Map.Entry<String, TypedArrayList>> getAllPropertiesAndErrors() {
-    	return errorMessages.entrySet();
-    }
-    
     /**
-     * @deprecated As of rice 0.9.4, use {@link #getErrorMessagesForProperty(String)} instead
+     * @see java.util.Map#get(java.lang.Object)
      */
-    @Deprecated
     public Object get(Object key) {
-        return getErrorMessagesForProperty((String) key);
+        return messages.get(key);
     }
 
-    public TypedArrayList getErrorMessagesForProperty(String propertyName) {
-    	return errorMessages.get(propertyName);
-    }
-    
     /**
-     * @deprecated As of rice 0.9.4, use {@link #hasNoErrors()} isntead
+     * @see java.util.Map#isEmpty()
      */
-    @Deprecated
     public boolean isEmpty() {
-        return hasNoErrors();
-    }
-    
-    public boolean hasErrors() {
-    	return !errorMessages.isEmpty();
-    }
-    
-    public boolean hasNoErrors() {
-    	return errorMessages.isEmpty();
+        return messages.isEmpty();
     }
 
     /**
-     * @deprecated As of rice 0.9.4, use {@link #getAllPropertiesWithErrors()} instead
+     * @see java.util.Map#keySet()
      */
-    @Deprecated
     public Set keySet() {
-        return getAllPropertiesWithErrors();
+        return messages.keySet();
     }
 
-    public Set<String> getAllPropertiesWithErrors() {
-    	return errorMessages.keySet();
-    }
-    
     /**
-     * @deprecated as of rice 0.9.4, use {@link #removeAllErrorMessagesForProperty(String)} instead
+     * @see java.util.Map#remove(java.lang.Object)
      */
-    @Deprecated
     public Object remove(Object key) {
-        return removeAllErrorMessagesForProperty((String) key);
-    }
-    
-    public TypedArrayList removeAllErrorMessagesForProperty(String property) {
-    	return errorMessages.remove(property);
+        return messages.remove(key);
     }
 
     /**
-     * @deprecated As of rice 0.9.4, use {@link #getNumberOfPropertiesWithErrors()} instead
+     * @see java.util.Map#size()
      */
-    @Deprecated
     public int size() {
-        return getNumberOfPropertiesWithErrors();
+        return messages.size();
     }
 
-    public int getNumberOfPropertiesWithErrors() {
-    	return errorMessages.size();
-    }
-    
     // forbidden-but-required operations
     /**
-     * @deprecated As of rice 0.9.4, deprecated because this method always throws an {@link UnsupportedOperationException}
+     * Prevent people from adding arbitrary objects to the messages Map
+     * 
+     * @param key
+     * @param value
+     * @return Object
      */
-    @Deprecated
     public Object put(Object key, Object value) {
         throw new UnsupportedOperationException();
     }
 
     /**
-     * @deprecated As of rice 0.9.4, deprecated because this method always throws an {@link UnsupportedOperationException}
+     * Prevent people from adding arbitrary objects to the messages Map
+     * 
+     * @param arg0
      */
-    @Deprecated
     public void putAll(Map arg0) {
         throw new UnsupportedOperationException();
     }
 
     /**
-     * @deprecated As of rice 0.9.4, this method has been deprecated since it always throws a {@link UnsupportedOperationException}
+     * Prevent people from directly accessing the values, since the input parameter isn't strongly-enough typed
+     * 
+     * @param value
+     * @return boolean
      */
-    @Deprecated
     public boolean containsValue(Object value) {
         throw new UnsupportedOperationException();
     }
 
     /**
-     * @deprecated As of rice 0.9.4, deprecated because this method always throws an {@link UnsupportedOperationException}
+     * Prevent people from directly accessing the values, since the input parameter isn't strongly-enough typed
+     * 
+     * @return Collection
      */
-    @Deprecated
     public Collection values() {
         throw new UnsupportedOperationException();
     }
@@ -528,7 +490,7 @@ public class ErrorMap implements Serializable {
      */
     @Override
     public String toString() {
-        return "ErrorMap (errorPath = " + errorPath + ", messages = " + errorMessages + ")";
+        return "ErrorMap (errorPath = " + errorPath + ", messages = " + messages + ")";
     }
 
 

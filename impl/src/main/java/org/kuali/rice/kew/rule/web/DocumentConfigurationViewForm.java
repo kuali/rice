@@ -50,6 +50,7 @@ public class DocumentConfigurationViewForm extends KualiForm {
     protected List<RouteNode> routeNodes;
     protected Map<String,List<ResponsibilityForDisplay>> responsibilityMap;
     protected Map<String,List<KimRoleInfo>> responsibilityRoles;
+    protected List<ResponsibilityForDisplay> exceptionResponsibilities;
     protected boolean canInitiateDocumentTypeDocument = false;
     protected boolean canInitiatePermissionDocument = false;
     protected boolean canInitiateResponsibilityDocument = false;
@@ -178,6 +179,21 @@ public class DocumentConfigurationViewForm extends KualiForm {
 	public void setCanInitiateResponsibilityDocument(
 			boolean canInitiateResponsibilityDocument) {
 		this.canInitiateResponsibilityDocument = canInitiateResponsibilityDocument;
+	}
+
+	/**
+	 * @return the exceptionResponsibilities
+	 */
+	public List<ResponsibilityForDisplay> getExceptionResponsibilities() {
+		return this.exceptionResponsibilities;
+	}
+
+	/**
+	 * @param exceptionResponsibilities the exceptionResponsibilities to set
+	 */
+	public void setExceptionResponsibilities(
+			List<ResponsibilityForDisplay> exceptionResponsibilities) {
+		this.exceptionResponsibilities = exceptionResponsibilities;
 	}
 
 }

@@ -89,12 +89,11 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 	    		form.setAttributeLabels( new HashMap<String, String>() );
 	    		populateRelatedDocuments( form );
 	    		populatePermissions( form );
-	    		populateResponsibilities( form );
+	    		populateRoutingResponsibilities( form );
+	    		populateRoutingExceptionResponsibility( form );
 	    		checkPermissions( form );
         	}
-
     	}
-    	
     }
 
     protected void checkPermissions( DocumentConfigurationViewForm form ) {
@@ -180,6 +179,36 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 		
 		form.setPermissionRoles( permRoles );
 	}
+	
+	protected void populateRoutingExceptionResponsibility( DocumentConfigurationViewForm form ) {	
+		Map<String,String> searchCriteria = new HashMap<String,String>();
+		searchCriteria.put("template.namespaceCode", KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE);
+		searchCriteria.put("template.name", KEWConstants.EXCEPTION_ROUTING_RESPONSIBILITY_TEMPLATE_NAME);
+		searchCriteria.put("active", "Y");
+		DocumentType docType = form.getDocumentType();
+		List<ResponsibilityForDisplay> responsibilities = new ArrayList<ResponsibilityForDisplay>();
+		while ( docType != null) {
+			// pull the responsibilities for this node
+			searchCriteria.put("detailCriteria",
+					KimAttributes.DOCUMENT_TYPE_NAME+"="+docType.getName()
+					);		
+			List<? extends KimResponsibilityInfo> resps = getResponsibilityService().lookupResponsibilityInfo( searchCriteria, false );
+			
+			for ( KimResponsibilityInfo r : resps ) {
+				if ( responsibilities.isEmpty() ) {
+					responsibilities.add( new ResponsibilityForDisplay( r, false ) );
+				} else {
+					responsibilities.add( new ResponsibilityForDisplay( r, true ) );
+				}
+			}
+			docType = docType.getParentDocType();			
+		}
+		form.setExceptionResponsibilities( responsibilities );
+		for ( ResponsibilityForDisplay responsibility : responsibilities ) {
+			List<String> roleIds = getResponsibilityService().getRoleIdsForResponsibility(responsibility.getResp(), null);
+			form.getResponsibilityRoles().put( responsibility.getResponsibilityId(), getRoleService().getRoles(roleIds) );
+		}
+	}
 
 	protected void addAttributeLabel( DocumentConfigurationViewForm form, String attributeName ) {
 		if ( !form.getAttributeLabels().containsKey(attributeName) ) {
@@ -188,7 +217,8 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 		}
 	}
 	
-	public void populateResponsibilities( DocumentConfigurationViewForm form ) {
+	@SuppressWarnings("unchecked")
+	public void populateRoutingResponsibilities( DocumentConfigurationViewForm form ) {
 		// pull all the responsibilities
 		// merge the data and attach to route levels
 		// pull the route levels and store on form
@@ -243,7 +273,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 		}
 		form.setResponsibilityRoles( respToRoleMap );
 	}
-
+	
 	/**
 	 * Internal delegate class to wrap a responsibility and add an overridden flag.
 	 */
@@ -255,6 +285,13 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 		public ResponsibilityForDisplay( KimResponsibilityInfo resp, boolean overridden ) {
 			this.resp = resp;
 			this.overridden = overridden;
+		}
+		
+		/**
+		 * @return the resp
+		 */
+		KimResponsibilityInfo getResp() {
+			return this.resp;
 		}
 		
 		public boolean isOverridden() {

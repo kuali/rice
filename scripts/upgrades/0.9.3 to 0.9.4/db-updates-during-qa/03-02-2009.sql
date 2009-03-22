@@ -1,6 +1,9 @@
 -- need to remember to go back to "action-list-helpdesk-permissions.sql" and "doc-search-permissions.sql"
 -- and reconcile related changes with these when we build the final upgrade scripts
 -- (essentially, those old scripts can be removed)
+--
+-- UPDATE - 3/21/2009 - i've removed these scripts
+-- so the deletions below won't need to be included in the finla upgrade script!!!
 
 -- first of all, delete the original setup
 

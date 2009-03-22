@@ -1116,3 +1116,7 @@ update krim_typ_t set nm = 'Ad Hoc Review', srvc_nm = 'adhocReviewPermissionType
 commit
 /
 
+-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+-- !!! STOP!  Don't put anymore SQL in this file for Rice 1.0. Instead, create files in the !!!
+-- !!! 'scripts/upgrades/0.9.3 to 0.9.4/db-updates-during-qa' directory                     !!!
+-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

@@ -112,10 +112,8 @@ FOREIGN KEY (COUNTY_CD, POSTAL_STATE_CD, POSTAL_CNTRY_CD)
 REFERENCES KR_COUNTY_T
 /
 
-ALTER TABLE KRNS_PARM_T DROP COLUMN GRP_NM;
-
-ALTER TABLE KRNS_NMSPC_T ADD (APPL_NMSPC_CD VARCHAR2(20)); 
-
+ALTER TABLE KRNS_PARM_T DROP COLUMN GRP_NM
+/
 
 INSERT INTO SH_PARM_T
 VALUES
@@ -154,4 +152,10 @@ VALUES
 
 COMMIT
 /
+
+-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+-- !!! STOP!  Don't put anymore SQL in this file for Rice 1.0. Instead, create files in the !!!
+-- !!! 'scripts/upgrades/0.9.3 to 0.9.4/db-updates-during-qa' directory                     !!!
+-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 

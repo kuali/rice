@@ -66,3 +66,8 @@ ALTER TABLE KREN_RVWER_T modify PRNCPL_ID VARCHAR2(40)
 /
 ALTER TABLE KREN_SNDR_T modify NM VARCHAR2(200)
 /
+
+-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+-- !!! STOP!  Don't put anymore SQL in this file for Rice 1.0. Instead, create files in the !!!
+-- !!! 'scripts/upgrades/0.9.3 to 0.9.4/db-updates-during-qa' directory                     !!!
+-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
@@ -42,8 +43,8 @@ public class PersonLookupableHelperServiceImpl  extends KualiLookupableHelperSer
 	@Override
 	public List<? extends BusinessObject> getSearchResults(
 			Map<String, String> fieldValues) {
-		if (fieldValues != null && StringUtils.isNotEmpty(fieldValues.get("principalName"))) {
-			fieldValues.put("principalName", fieldValues.get("principalName").toLowerCase());
+		if (fieldValues != null && StringUtils.isNotEmpty(fieldValues.get(KIMPropertyConstants.Person.PRINCIPAL_NAME))) {
+			fieldValues.put(KIMPropertyConstants.Person.PRINCIPAL_NAME, fieldValues.get(KIMPropertyConstants.Person.PRINCIPAL_NAME).toLowerCase());
 		}
 		return super.getSearchResults(fieldValues);
 	}
@@ -63,7 +64,7 @@ public class PersonLookupableHelperServiceImpl  extends KualiLookupableHelperSer
     	    int idx2 = href.indexOf("&", idx1+1);
     	    if (idx2 < 0) {
     	    	idx2 = href.length();
-    	    }
+    	    }    	    
     	    htmlData.setHref("../kim/identityManagementPersonDocument.do?methodToCall=docHandler&command=initiate&docTypeName=IdentityManagementPersonDocument"+href.substring(idx1, idx2));
     	    htmlDataList.add(htmlData);
         	//htmlDataList.add(getUrlData(businessObject, KNSConstants.MAINTENANCE_COPY_METHOD_TO_CALL, pkNames));

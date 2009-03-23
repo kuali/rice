@@ -4,34 +4,33 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-  <bean id="RoleDocumentDelegationMember" parent="RoleDocumentDelegationMember-parentBean" />
+  <bean id="DocDelegationMember" parent="DocDelegationMember-parentBean" />
 
-  <bean id="RoleDocumentDelegationMember-parentBean" abstract="true" parent="BusinessObjectEntry"
-        p:businessObjectClass="org.kuali.rice.kim.bo.ui.KimDocumentRoleMember"
-        p:titleAttribute="roleMemberId"
-        p:objectLabel="Names"
-        p:inquiryDefinition-ref="RoleDocumentDelegationMember-inquiryDefinition"
-        p:lookupDefinition-ref="RoleDocumentDelegationMember-lookupDefinition" >
+  <bean id="DocDelegationMember-parentBean" abstract="true" parent="BusinessObjectEntry"
+        p:businessObjectClass="org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember"
+        p:titleAttribute="delegationMemberId"
+        p:objectLabel="Delegation Members" >
     <property name="attributes" >
       <list>
-        <ref bean="RoleDocumentDelegationMember-roleMemberId" />
-        <ref bean="RoleDocumentDelegationMember-memberId" />
-        <!-- TODO: create entry for this  -->
-        <ref bean="RoleDocumentDelegationMember-memberTypeCode" />
-        <ref bean="RoleDocumentDelegationMember-memberName" />
-        <ref bean="RoleDocumentDelegationMember-activeFromDate" />
-        <ref bean="RoleDocumentDelegationMember-activeToDate" />
+        <ref bean="DocDelegationMember-delegationMemberId" />
+        <ref bean="DocDelegationMember-memberId" />
+        <ref bean="DocDelegationMember-memberTypeCode" />
+        <ref bean="DocDelegationMember-delegationTypeCode" />
+        <ref bean="DocDelegationMember-memberNamespaceCode" />
+        <ref bean="DocDelegationMember-memberName" />
+        <ref bean="DocDelegationMember-activeFromDate" />
+        <ref bean="DocDelegationMember-activeToDate" />
       </list>
     </property>
     
   </bean>
  
-   <bean id="RoleDocumentDelegationMember-roleMemberId" parent="RoleDocumentDelegationMember-roleMemberId-parentBean" />
-  <bean id="RoleDocumentDelegationMember-roleMemberId-parentBean" parent="AttributeDefinition" abstract="true"
-        p:name="roleMemberId"
+   <bean id="DocDelegationMember-delegationMemberId" parent="DocDelegationMember-delegationMemberId-parentBean" />
+  <bean id="DocDelegationMember-delegationMemberId-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="delegationMemberId"
         p:forceUppercase="true"
-        p:label="Member Id"
-        p:shortLabel="Member Id"
+        p:label="Delegation Member Identifier"
+        p:shortLabel="Delegation Member Id"
         p:maxLength="40"
         p:required="false" >
     <property name="control" >
@@ -39,11 +38,11 @@
     </property>
   </bean>
   
-  <bean id="RoleDocumentDelegationMember-memberId" parent="RoleDocumentDelegationMember-memberId-parentBean" />
-  <bean id="RoleDocumentDelegationMember-memberId-parentBean" parent="AttributeDefinition" abstract="true"
+  <bean id="DocDelegationMember-memberId" parent="DocDelegationMember-memberId-parentBean" />
+  <bean id="DocDelegationMember-memberId-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="memberId"
         p:forceUppercase="true"
-        p:label="Member Id"
+        p:label="Member Identifier"
         p:shortLabel="Member Id"
         p:maxLength="40"
         p:required="false" >
@@ -52,8 +51,8 @@
     </property>
   </bean>
     
-  <bean id="RoleDocumentDelegationMember-memberTypeCode" parent="RoleDocumentDelegationMember-memberTypeCode-parentBean" />
-  <bean id="RoleDocumentDelegationMember-memberTypeCode-parentBean" parent="AttributeDefinition" abstract="true"
+  <bean id="DocDelegationMember-memberTypeCode" parent="DocDelegationMember-memberTypeCode-parentBean" />
+  <bean id="DocDelegationMember-memberTypeCode-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="memberTypeCode"
         p:forceUppercase="true"
         p:label="Member Type Code"
@@ -65,8 +64,27 @@
     </property>
   </bean>
 
-  <bean id="RoleDocumentDelegationMember-memberName" parent="RoleDocumentDelegationMember-memberName-parentBean" />
-  <bean id="RoleDocumentDelegationMember-memberName-parentBean" parent="AttributeDefinition" abstract="true"
+  <bean id="DocDelegationMember-delegationTypeCode" parent="DocDelegationMember-delegationTypeCode-parentBean" />
+  <bean id="DocDelegationMember-delegationTypeCode-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="delegationTypeCode"
+        p:forceUppercase="true"
+        p:label="Delegation Type Code"
+        p:shortLabel="Delegation Type Code"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.rice.kew.rule.bo.DelegationTypeValuesFinder"/>
+    </property>
+  </bean>
+
+  <bean id="DocDelegationMember-memberNamespaceCode" parent="DocDelegationMember-memberNamespaceCode-parentBean" />
+  <bean id="DocDelegationMember-memberNamespaceCode-parentBean" parent="KimAttributes-namespaceCode" abstract="true"
+        p:name="memberNamespaceCode"
+        p:required="false"
+        p:label="Member Namespace Code" />
+
+  <bean id="DocDelegationMember-memberName" parent="DocDelegationMember-memberName-parentBean" />
+  <bean id="DocDelegationMember-memberName-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="memberName"
         p:forceUppercase="true"
         p:label="Member Name"
@@ -78,8 +96,8 @@
     </property>
   </bean>
             
-  <bean id="RoleDocumentDelegationMember-activeFromDate" parent="RoleDocumentDelegationMember-activeFromDate-parentBean" />
-  <bean id="RoleDocumentDelegationMember-activeFromDate-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
+  <bean id="DocDelegationMember-activeFromDate" parent="DocDelegationMember-activeFromDate-parentBean" />
+  <bean id="DocDelegationMember-activeFromDate-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
     <property name="name" value="activeFromDate" />
     <property name="label" value="Active From Date" />
     <property name="shortLabel" value="Active From Dt" />
@@ -88,72 +106,14 @@
     <property name="description" value="Start Date" />
   </bean>
 
-  <bean id="RoleDocumentDelegationMember-activeToDate" parent="RoleDocumentDelegationMember-activeToDate-parentBean" />
-  <bean id="RoleDocumentDelegationMember-activeToDate-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
+  <bean id="DocDelegationMember-activeToDate" parent="DocDelegationMember-activeToDate-parentBean" />
+  <bean id="DocDelegationMember-activeToDate-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
     <property name="name" value="activeToDate" />
     <property name="label" value="Active To Date" />
     <property name="shortLabel" value="Active To Dt" />
     <property name="required" value="false" />
     <property name="summary" value="End Date" />
     <property name="description" value="End Date" />
-  </bean>
-
-
-
-  
-  <bean id="RoleDocumentDelegationMember-inquiryDefinition" parent="RoleDocumentDelegationMember-inquiryDefinition-parentBean" />
-
-  <bean id="RoleDocumentDelegationMember-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition"
-        p:title="Person Group Inquiry" >
-    <property name="inquirySections" >
-      <list>
-        <bean parent="InquirySectionDefinition"
-              p:title="Person Attributes"
-              p:numberOfColumns="1" >
-          <property name="inquiryFields" >
-            <list>
-              <bean parent="FieldDefinition" p:attributeName="roleMemberId" />
-              <bean parent="FieldDefinition" p:attributeName="memberId" />
-              <bean parent="FieldDefinition" p:attributeName="activeFromDate" />
-              <bean parent="FieldDefinition" p:attributeName="activeToDate" />
-            </list>
-          </property>
-        </bean>
-      </list>
-    </property>
-  </bean>
-
-  <bean id="RoleDocumentDelegationMember-lookupDefinition" parent="RoleDocumentDelegationMember-lookupDefinition-parentBean" />
-
-  <bean id="RoleDocumentDelegationMember-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition"
-        p:title="Role Member Lookup" 
-        p:instructions="Lookup a Role Member" >
-    <property name="defaultSort" >
-      <bean parent="SortDefinition">
-        <property name="attributeNames" >
-          <list>
-            <value>roleMemberId</value>
-          </list>
-        </property>
-        <property name="sortAscending" value="true" />
-      </bean>
-    </property>
-    <property name="lookupFields" >
-      <list>
-              <bean parent="FieldDefinition" p:attributeName="roleMemberId" />
-              <bean parent="FieldDefinition" p:attributeName="memberId" />
-              <bean parent="FieldDefinition" p:attributeName="activeFromDate" />
-              <bean parent="FieldDefinition" p:attributeName="activeToDate" />
-      </list>
-    </property>
-    <property name="resultFields" >
-      <list>
-              <bean parent="FieldDefinition" p:attributeName="roleMemberId" />
-              <bean parent="FieldDefinition" p:attributeName="memberId" />
-              <bean parent="FieldDefinition" p:attributeName="activeFromDate" />
-              <bean parent="FieldDefinition" p:attributeName="activeToDate" />
-      </list>
-    </property>
   </bean>
 
 </beans>

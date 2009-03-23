@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.junit.Test;
-import org.kuali.rice.kew.actionrequest.bo.ActionRequestCodeValuesFinder;
+import org.kuali.rice.kew.actionrequest.bo.RuleMaintenanceActionRequestCodeValuesFinder;
 import org.kuali.rice.kew.document.RoutingRuleMaintainable;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
@@ -31,6 +31,7 @@ import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.MaintenanceDocumentBase;
 import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
 import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
@@ -108,7 +109,26 @@ public class RuleTemplateDefaultsTest extends KEWTestCase {
 		createNewKualiMaintenanceForm("TestRuleTemplate");
 		assertRuleTemplateHasExpectedKeyLabelPairs(
 				createExpectedKeysSet(true, true, true, true),
-				createSetOfKeyLabelPairKeys((new ActionRequestCodeValuesFinder()).getKeyValues()));
+				createSetOfKeyLabelPairKeys((new RuleMaintenanceActionRequestCodeValuesFinder()).getKeyValues()));
+	}
+
+	/**
+	 * Tests to ensure that the proper key values are returned based upon the class type of the currently-set Kuali form.
+	 * 
+	 * @throws Exception
+	 */
+	@Test public void testCorrectKeyValuesReturnedBasedOnKualiFormInstance() throws Exception {
+		// First, check that the proper values are returned when the Kuali form is *not* a KualiMaintenanceForm.
+		GlobalVariables.setKualiForm(new KualiForm());
+		assertRuleTemplateHasExpectedKeyLabelPairs(
+				createExpectedKeysSet(true, true, true, true),
+				createSetOfKeyLabelPairKeys((new RuleMaintenanceActionRequestCodeValuesFinder()).getKeyValues()));
+		// Next, check that the proper values are returned when the Kuali form is a KualiMaintenanceForm containing a given rule template.
+		loadXmlFile("RT_ValidRuleTemplatesWithVaryingDefaults.xml");
+		createNewKualiMaintenanceForm("Test_Rule_Template2");
+		assertRuleTemplateHasExpectedKeyLabelPairs(
+				createExpectedKeysSet(false, false, false, true),
+				createSetOfKeyLabelPairKeys((new RuleMaintenanceActionRequestCodeValuesFinder()).getKeyValues()));
 	}
 	
 	/**
@@ -128,7 +148,7 @@ public class RuleTemplateDefaultsTest extends KEWTestCase {
 			createNewKualiMaintenanceForm(ruleTemplates[i]);
 			assertRuleTemplateHasExpectedKeyLabelPairs(
 					createExpectedKeysSet(kSetBools[i][0], kSetBools[i][1], kSetBools[i][2], kSetBools[i][3]),
-					createSetOfKeyLabelPairKeys((new ActionRequestCodeValuesFinder()).getKeyValues()));
+					createSetOfKeyLabelPairKeys((new RuleMaintenanceActionRequestCodeValuesFinder()).getKeyValues()));
 			assertRuleTemplateHasExpectedDefaultActions(defaultActions[i]);
 		}
 	}

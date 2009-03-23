@@ -64,6 +64,7 @@ public class LookupForm extends KualiForm {
     private String lookupObjectId;
 	private boolean lookupCriteriaEnabled = true;
     private boolean supplementalActionsEnabled = true;
+    private boolean actionUrlsExist = false;
     
     /**
      * @see org.kuali.rice.kns.web.struts.form.KualiForm#addRequiredNonEditableProperties()
@@ -651,5 +652,19 @@ public class LookupForm extends KualiForm {
 	 */
 	public void setSupplementalActionsEnabled(boolean supplementalActionsEnabled) {
 		this.supplementalActionsEnabled = supplementalActionsEnabled;
+	}
+
+	/**
+	 * @param actionUrlsExist the actionUrlsExist to set
+	 */
+	public void setActionUrlsExist(boolean actionUrlsExist) {
+		this.actionUrlsExist = actionUrlsExist;
+	}
+
+	/**
+	 * @return the actionUrlsExist
+	 */
+	public boolean isActionUrlsExist() {
+		return actionUrlsExist;
 	}
 }

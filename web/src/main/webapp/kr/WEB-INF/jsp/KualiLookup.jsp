@@ -151,7 +151,7 @@
 				<display:table class="datatable-100" cellspacing="0"
 				requestURIcontext="false" cellpadding="0" name="${reqSearchResults}"
 				id="row" export="true" pagesize="100"
-				requestURI="lookup.do?methodToCall=viewResults&reqSearchResultsActualSize=${reqSearchResultsActualSize}&searchResultKey=${searchResultKey}&searchUsingOnlyPrimaryKeyValues=${KualiForm.searchUsingOnlyPrimaryKeyValues}">
+				requestURI="lookup.do?methodToCall=viewResults&reqSearchResultsActualSize=${reqSearchResultsActualSize}&searchResultKey=${searchResultKey}&searchUsingOnlyPrimaryKeyValues=${KualiForm.searchUsingOnlyPrimaryKeyValues}&actionUrlsExist=${KualiForm.actionUrlsExist}">
 
 				<%-- the param['d-16544-e'] parameter below is NOT null when we are in exporting mode, so this check disables rendering of return/action URLs when we are exporting to CSV, excel, xml, etc. --%>
 				<c:if test="${param['d-16544-e'] == null}">
@@ -162,9 +162,17 @@
 								<display:column class="infocell" property="returnUrl" media="html" title="Return Value"/>
 							</c:if>
 						</c:if>
-						<c:if test="${row.actionUrls!='' && KualiForm.suppressActions!=true && !KualiForm.multipleValues && KualiForm.showMaintenanceLinks}">
-							<display:column class="infocell" property="actionUrls"
-								title="Actions" media="html" />
+						<c:if test="${KualiForm.actionUrlsExist==true && KualiForm.suppressActions!=true && !KualiForm.multipleValues && KualiForm.showMaintenanceLinks}">
+							<c:choose>
+								<c:when test="${row.actionUrls!=''}">
+									<display:column class="infocell" property="actionUrls"
+										title="Actions" media="html" />
+								</c:when>
+								<c:otherwise>
+									<display:column class="infocell"
+										title="Actions" media="html">&nbsp;</display:column>
+								</c:otherwise>
+							</c:choose>
 						</c:if>
 					</logic:present>
 				</c:if>

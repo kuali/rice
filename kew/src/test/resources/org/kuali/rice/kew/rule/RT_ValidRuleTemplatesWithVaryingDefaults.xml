@@ -43,6 +43,25 @@
 				<supportsFYI>false</supportsFYI>
 			</ruleDefaults>
 		</ruleTemplate>
+		<ruleTemplate>
+			<name>Test_Rule_Template2</name>
+			<description>TestRuleTemplate</description>
+			<ruleDefaults>
+				<ruleInstructions>
+					This is the most custom instructions evar.
+				</ruleInstructions>
+				<description>Testy Me A Template</description>
+				<fromDate>01/11/2006</fromDate>
+				<toDate>01/01/2100</toDate>
+				<ignorePrevious>true</ignorePrevious>
+				<active>false</active>
+				<defaultActionRequested>F</defaultActionRequested>
+				<supportsComplete>false</supportsComplete>
+				<supportsApprove>false</supportsApprove>
+				<supportsAcknowledge>false</supportsAcknowledge>
+				<supportsFYI>true</supportsFYI>
+			</ruleDefaults>
+		</ruleTemplate>
 	</ruleTemplates>
 
 </data>

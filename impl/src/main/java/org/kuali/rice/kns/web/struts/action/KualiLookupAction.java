@@ -27,6 +27,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -46,6 +47,7 @@ import org.kuali.rice.kns.web.struts.form.LookupForm;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.ResultRow;
 import org.kuali.rice.kns.web.ui.Row;
+import org.springframework.web.util.HtmlUtils;
 
 /**
  * This class handles Actions for lookup flow
@@ -185,6 +187,17 @@ public class KualiLookupAction extends KualiAction {
         } else {
             request.setAttribute("reqSearchResultsActualSize", displayList.size() );
         }
+        
+        // Determine if at least one table entry has an action available. If any non-breaking space (&nbsp; or '\u00A0') characters
+        // exist in the URL's value, they will be converted to regular whitespace ('\u0020').
+        boolean hasActionUrls = false;
+        for (Iterator<ResultRow> iterator = resultTable.iterator(); !hasActionUrls && iterator.hasNext();) {
+			if (StringUtils.isNotBlank(HtmlUtils.htmlUnescape(iterator.next().getActionUrls()).replace('\u00A0', '\u0020'))) {
+				hasActionUrls = true;
+			}
+		}
+		lookupForm.setActionUrlsExist(hasActionUrls);
+        
         request.setAttribute("reqSearchResults", resultTable);
         
         if (request.getParameter(KNSConstants.SEARCH_LIST_REQUEST_KEY) != null) {

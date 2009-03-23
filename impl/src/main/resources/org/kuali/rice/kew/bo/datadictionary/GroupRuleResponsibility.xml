@@ -86,7 +86,7 @@
     </property>
     <property name="control" >
       <bean parent="SelectControlDefinition"
-            p:valuesFinderClass="org.kuali.rice.kew.actionrequest.bo.ActionRequestCodeValuesFinder"/>
+            p:valuesFinderClass="org.kuali.rice.kew.actionrequest.bo.RuleMaintenanceActionRequestCodeValuesFinder"/>
     </property>
     <property name="name" value="actionRequestedCd" />
     <property name="label" value="Action Request" />

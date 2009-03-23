@@ -18,14 +18,8 @@ package org.kuali.rice.kew.actionrequest.bo;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleTemplateOption;
-import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
 import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
 /**
@@ -35,29 +29,17 @@ import org.kuali.rice.kns.web.ui.KeyLabelPair;
  */
 public class ActionRequestCodeValuesFinder extends KeyValuesBase {
 
+	private static final List<KeyLabelPair> actionRequestCodes = new ArrayList<KeyLabelPair>();
+	static {
+		for (String actionRequestCode : KEWConstants.ACTION_REQUEST_CODES.keySet()) {
+			actionRequestCodes.add(new KeyLabelPair(actionRequestCode, KEWConstants.ACTION_REQUEST_CODES.get(actionRequestCode)));
+		}
+	}
+	
 	/**
 	 * @see org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder#getKeyValues()
 	 */
 	public List<KeyLabelPair> getKeyValues() {
-		final List<KeyLabelPair> actionRequestCodes = new ArrayList<KeyLabelPair>();
-		// Acquire the Kuali maintenance form's document and its rule template.
-		final MaintenanceDocument maintDoc = (MaintenanceDocument) ((KualiMaintenanceForm) GlobalVariables.getKualiForm()).getDocument();
-		final RuleTemplate ruleTemplate = ((RuleBaseValues) maintDoc.getNewMaintainableObject().getBusinessObject()).getRuleTemplate();
-		// Ensure that the rule template is defined.
-		if (ruleTemplate == null) {
-			throw new RuntimeException("Rule template cannot be null for document ID " + maintDoc.getDocumentNumber());
-		}
-		// get the options to check for, as well as their related KEW constants.
-		final RuleTemplateOption[] ruleOpts = {ruleTemplate.getAcknowledge(), ruleTemplate.getComplete(),
-				ruleTemplate.getApprove(), ruleTemplate.getFyi()};
-		final String[] ruleConsts = {KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_REQUEST_COMPLETE_REQ,
-				KEWConstants.ACTION_REQUEST_APPROVE_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ};
-		// Add the rule options to the list if they are not defined (true by default) or if they are explicitly set to true.
-		for (int i = 0; i < ruleOpts.length; i++) {
-			if (ruleOpts[i] == null || "true".equals(ruleOpts[i].getValue())) {
-				actionRequestCodes.add(new KeyLabelPair(ruleConsts[i], KEWConstants.ACTION_REQUEST_CODES.get(ruleConsts[i])));
-			}
-		}
 		return actionRequestCodes;
 	}
 

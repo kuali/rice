@@ -15,14 +15,17 @@
  */
 package org.kuali.rice.kim.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.role.KimRole;
+import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
+import org.kuali.rice.kns.bo.BusinessObject;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -88,4 +91,15 @@ public interface UiDocumentService {
 	 */
 	public void saveGroup(IdentityManagementGroupDocument identityManagementGroupDocument);
 
+	public BusinessObject getMember(String memberTypeCode, String memberId);
+	
+	public String getMemberName(String memberTypeCode, String memberId);
+	
+	public String getMemberNamespaceCode(String memberTypeCode, String memberId);
+
+	public String getMemberName(String memberTypeCode, BusinessObject member);
+	
+	public String getMemberNamespaceCode(String memberTypeCode, BusinessObject member);
+
+	public List<RoleResponsibilityActionImpl> getRoleMemberResponsibilityActionImpls(String roleMemberId, String roleResponsibilityId);
 }

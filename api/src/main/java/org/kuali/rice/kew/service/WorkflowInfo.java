@@ -715,4 +715,13 @@ public class WorkflowInfo implements java.io.Serializable {
             throw handleException(e);
         }
     }
+    
+    public boolean hasRouteNode(String documentTypeName, String routeNodeName) throws WorkflowException {
+    	try{
+    		return getWorkflowUtility().hasRouteNode(documentTypeName, routeNodeName);
+    	} catch (Exception e) {
+            throw handleException(e);
+        }
+    }
+    
 }

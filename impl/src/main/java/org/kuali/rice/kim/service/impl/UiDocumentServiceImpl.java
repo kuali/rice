@@ -93,6 +93,7 @@ import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
@@ -1124,16 +1125,16 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 	private List<RoleResponsibilityActionImpl> getRoleResponsibilityActionImpls(String roleResponsibilityId){
 		Map<String, String> criteria = new HashMap<String, String>();
-		criteria.put("roleMemberId", "*");
-		criteria.put("roleResponsibilityId", roleResponsibilityId);
+		criteria.put(KimConstants.PrimaryKeyConstants.ROLE_MEMBER_ID, "*");
+		criteria.put(KimConstants.PrimaryKeyConstants.ROLE_RESPONSIBILITY_ID, roleResponsibilityId);
 		return (List<RoleResponsibilityActionImpl>)
 			getBusinessObjectService().findMatching(RoleResponsibilityActionImpl.class, criteria);
 	}
 
-	private List<RoleResponsibilityActionImpl> getRoleMemberResponsibilityActionImpls(String roleMemberId, String roleResponsibilityId){
+	public List<RoleResponsibilityActionImpl> getRoleMemberResponsibilityActionImpls(String roleMemberId, String roleResponsibilityId){
 		Map<String, String> criteria = new HashMap<String, String>();
-		criteria.put("roleMemberId", roleMemberId);
-		criteria.put("roleResponsibilityId", roleResponsibilityId);
+		criteria.put(KimConstants.PrimaryKeyConstants.ROLE_MEMBER_ID, roleMemberId);
+		criteria.put(KimConstants.PrimaryKeyConstants.ROLE_RESPONSIBILITY_ID, roleResponsibilityId);
 		return (List<RoleResponsibilityActionImpl>)
 			getBusinessObjectService().findMatching(RoleResponsibilityActionImpl.class, criteria);
 	
@@ -1154,7 +1155,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		List<KimDocumentRoleResponsibilityAction> documentRoleRespActions = new ArrayList<KimDocumentRoleResponsibilityAction>();
 		KimDocumentRoleResponsibilityAction documentRoleRespAction;
 		Map<String, String> criteria = new HashMap<String, String>();
-		criteria.put("responsibilityId", responsibilityId);
+		criteria.put(KimConstants.PrimaryKeyConstants.RESPONSIBILITY_ID, responsibilityId);
 		KimResponsibilityImpl responsibilityImpl = (KimResponsibilityImpl)
 			getBusinessObjectService().findByPrimaryKey(KimResponsibilityImpl.class, criteria);
 		for(RoleResponsibilityActionImpl roleRespActionImpl: roleRespActionImpls){
@@ -1166,23 +1167,58 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return documentRoleRespActions;
 	}
 
-	private String getMemberName(String memberId, String memberTypeCode){
-		if(MemberTypeValuesFinder.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
-			KimPrincipal principal = getIdentityService().getPrincipal(memberId);
-			if(principal!=null)
-				return principal.getPrincipalName();
-		} else if(MemberTypeValuesFinder.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
-			GroupInfo group = getGroupService().getGroupInfo(memberId);
-			if(group!=null)
-				return group.getGroupName();
-		} else if(MemberTypeValuesFinder.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
-			KimRoleInfo role = getRoleService().getRole(memberId);
-			if(role!=null)
-				return role.getRoleName();
-		}
-		return "";
+    public BusinessObject getMember(String memberTypeCode, String memberId){
+        Class roleMemberTypeClass = null;
+        String roleMemberIdName = "";
+    	if(MemberTypeValuesFinder.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
+        	roleMemberTypeClass = KimPrincipalImpl.class;
+        	roleMemberIdName = KimConstants.PrimaryKeyConstants.PRINCIPAL_ID;
+        } else if(MemberTypeValuesFinder.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
+        	roleMemberTypeClass = KimGroupImpl.class;
+        	roleMemberIdName = KimConstants.PrimaryKeyConstants.GROUP_ID;
+        } else if(MemberTypeValuesFinder.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
+        	roleMemberTypeClass = KimRoleImpl.class;
+        	roleMemberIdName = KimConstants.PrimaryKeyConstants.ROLE_ID;
+        }
+        Map<String, String> criteria = new HashMap<String, String>();
+        criteria.put(roleMemberIdName, memberId);
+        return KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(roleMemberTypeClass, criteria);
+    }
+
+	public String getMemberName(String memberTypeCode, String memberId){
+		BusinessObject member = getMember(memberTypeCode, memberId);
+		return getMemberName(memberTypeCode, member);
 	}
-	
+
+	public String getMemberNamespaceCode(String memberTypeCode, String memberId){
+		BusinessObject member = getMember(memberTypeCode, memberId);
+		return getMemberNamespaceCode(memberTypeCode, member);
+	}
+
+    public String getMemberName(String memberTypeCode, BusinessObject member){
+    	String roleMemberName = "";
+        if(MemberTypeValuesFinder.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
+        	roleMemberName = ((KimPrincipalImpl)member).getPrincipalName();
+        } else if(MemberTypeValuesFinder.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
+        	roleMemberName = ((KimGroupImpl)member).getGroupName();
+        } else if(MemberTypeValuesFinder.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
+        	roleMemberName = ((KimRoleImpl)member).getRoleName();
+        }
+        return roleMemberName;
+    }
+
+    public String getMemberNamespaceCode(String memberTypeCode, BusinessObject member){
+    	String roleMemberNamespaceCode = "";
+        if(MemberTypeValuesFinder.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
+        	roleMemberNamespaceCode = "";
+        } else if(MemberTypeValuesFinder.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
+        	roleMemberNamespaceCode = ((KimGroupImpl)member).getNamespaceCode();
+        } else if(MemberTypeValuesFinder.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
+        	roleMemberNamespaceCode = ((KimRoleImpl)member).getNamespaceCode();
+        }
+        return roleMemberNamespaceCode;
+    }
+
 	private List<KimDocumentRoleQualifier> loadRoleMemberQualifiers(IdentityManagementRoleDocument identityManagementRoleDocument, 
 			List<RoleMemberAttributeDataImpl> attributeDataList){
 		List<KimDocumentRoleQualifier> pndMemberRoleQualifiers = new ArrayList<KimDocumentRoleQualifier>();
@@ -1253,7 +1289,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			pndMember.setActive(member.isActive());
 			if(pndMember.isActive()){
 				KimCommonUtils.copyProperties(pndMember, member);
-				pndMember.setMemberName(getMemberName(member.getMemberId(), member.getMemberTypeCode()));
+				pndMember.setMemberName(getMemberName(member.getMemberTypeCode(), member.getMemberId()));
 				pndMember.setEdit(true);
 				pndMember.setQualifiers(loadDelegationMemberQualifiers(member.getAttributes()));
 				pndMembers.add(pndMember);

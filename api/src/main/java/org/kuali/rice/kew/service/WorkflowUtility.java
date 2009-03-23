@@ -206,4 +206,6 @@ public interface WorkflowUtility {
     public String getDoNotReceiveFutureRequestsValue();
 
     public String getClearFutureRequestsValue();
+    
+    public boolean hasRouteNode(String documentTypeName, String routeNodeName) throws WorkflowException;
 }

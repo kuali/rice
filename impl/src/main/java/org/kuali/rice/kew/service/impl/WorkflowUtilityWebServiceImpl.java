@@ -1057,4 +1057,23 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
     public String getClearFutureRequestsValue() {
         return KEWConstants.CLEAR_FUTURE_REQUESTS_BRANCH_STATE_VALUE;
     }
+    
+    public boolean hasRouteNode(String documentTypeName, String routeNodeName) throws WorkflowException {
+        if (documentTypeName == null) {
+            LOG.error("null documentTypeName passed in.");
+            throw new RuntimeException("null documentTypeName passed in");
+        }
+        if (routeNodeName == null) {
+            LOG.error("null routeNodeName passed in.");
+            throw new RuntimeException("null routeNodeName passed in");
+        }
+    	DocumentTypeDTO docType = getDocumentTypeByName(documentTypeName);
+    	if(docType==null){
+            LOG.error("docType null for the documentTypeName passed in "+documentTypeName);
+            throw new RuntimeException("docType null for the documentTypeName passed in "+documentTypeName);
+        }
+    	RouteNode routeNode = KEWServiceLocator.getRouteNodeService().findRouteNodeByName(docType.getDocTypeId(), routeNodeName);
+    	return routeNode!=null;
+    }
+
 }

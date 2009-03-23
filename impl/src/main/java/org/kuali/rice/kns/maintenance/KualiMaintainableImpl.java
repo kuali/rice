@@ -189,7 +189,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
         newFieldValues = getPersonService().resolvePrincipalNamesToPrincipalIds(getBusinessObject(), fieldValues);
    
         Map cachedValues = FieldUtils.populateBusinessObjectFromMap(getBusinessObject(), newFieldValues);
-        getBusinessObjectDictionaryService().performForceUppercase(getBusinessObject());
+        //getBusinessObjectDictionaryService().performForceUppercase(getBusinessObject());
         return cachedValues;
     }
 

@@ -392,7 +392,9 @@
 	<c:otherwise>
 					<div class="left-errmsg">
 															<kul:errors displayRemaining="true"
-																errorTitle="Other errors:" />
+																errorTitle="Other errors:"
+																warningTitle="Other warnings:"
+																infoTitle="Other informational messages:"/>
 					</div>
 					<kul:footer feedbackKey="${feedbackKey}" />
 

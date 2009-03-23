@@ -98,9 +98,9 @@ public class ErrorContainer implements Serializable {
      */
     public ActionMessages getRequestErrors() {
         ActionMessages requestErrors = new ActionMessages();
-        for (Iterator iter = GlobalVariables.getErrorMap().keySet().iterator(); iter.hasNext();) {
+        for (Iterator iter = errorMap.keySet().iterator(); iter.hasNext();) {
             String property = (String) iter.next();
-            List errorList = (List) GlobalVariables.getErrorMap().get(property);
+            List errorList = (List) errorMap.get(property);
 
             for (Iterator iterator = errorList.iterator(); iterator.hasNext();) {
                 ErrorMessage errorMessage = (ErrorMessage) iterator.next();

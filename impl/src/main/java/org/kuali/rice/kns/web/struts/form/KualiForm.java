@@ -47,6 +47,8 @@ public class KualiForm extends PojoFormBase {
     private Map<String, String> tabStates;
     private Map actionFormUtilMap;
     private Map displayedErrors = new HashMap();
+    private Map<String, Object> displayedWarnings = new HashMap<String, Object>();
+    private Map<String, Object> displayedInfo = new HashMap<String, Object>();
     private int currentTabIndex = 0;
     private int arbitrarilyHighIndex = 1000000;
 
@@ -131,6 +133,20 @@ public class KualiForm extends PojoFormBase {
     }
 
     /**
+	 * @return the displayedWarnings
+	 */
+	public Map<String, Object> getDisplayedWarnings() {
+		return this.displayedWarnings;
+	}
+
+	/**
+	 * @return the displayedInfo
+	 */
+	public Map<String, Object> getDisplayedInfo() {
+		return this.displayedInfo;
+	}
+
+	/**
      * Used by the dispatch action to determine which action method to call into.
      *
      * @return Returns the methodToCall.

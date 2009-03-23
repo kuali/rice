@@ -38,7 +38,9 @@ public class ErrorMap implements Serializable {
     private static final long serialVersionUID = -2328635367656516150L;
     private List<String> errorPath = new ArrayList<String>();
     private Map<String, TypedArrayList> errorMessages = new LinkedHashMap<String, TypedArrayList>();
-
+    private Map<String, TypedArrayList> warningMessages = new LinkedHashMap<String, TypedArrayList>();
+    private Map<String, TypedArrayList> infoMessages = new LinkedHashMap<String, TypedArrayList>();
+    
     /**
      * Adds an error to the map under the given propertyName and adds an array of message parameters. This will fully prepend the
      * error key with any value in the errorPath list. This should be used when you do not want to add the error with the prepend
@@ -53,6 +55,14 @@ public class ErrorMap implements Serializable {
         return putMessageInMap(errorMessages, propertyName, errorKey, true, errorParameters);
     }
 
+    public TypedArrayList putWarning(String propertyName, String messageKey, String... messageParameters) {
+        return putMessageInMap(warningMessages, propertyName, messageKey, true, messageParameters);
+    }
+    
+    public TypedArrayList putInfo(String propertyName, String messageKey, String... messageParameters) {
+        return putMessageInMap(infoMessages, propertyName, messageKey, true, messageParameters);
+    }
+    
     /**
      * Adds an error to the map under the given propertyName and adds an array of message parameters. This will fully prepend the
      * error key with any value in the errorPath list.
@@ -65,7 +75,15 @@ public class ErrorMap implements Serializable {
     public TypedArrayList putErrorWithoutFullErrorPath(String propertyName, String errorKey, String... errorParameters) {
         return putMessageInMap(errorMessages, propertyName, errorKey, false, errorParameters);
     }
+    
+    public TypedArrayList putWarningWithoutFullErrorPath(String propertyName, String messageKey, String... messageParameters) {
+        return putMessageInMap(errorMessages, propertyName, messageKey, false, messageParameters);
+    }
 
+    public TypedArrayList putInfoWithoutFullErrorPath(String propertyName, String messageKey, String... messageParameters) {
+        return putMessageInMap(errorMessages, propertyName, messageKey, false, messageParameters);
+    }
+    
     /**
      * Adds an error related to a particular section identified by its section ID.  For maintenance documents, the section ID is identified
      * by calling {@link org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition#getId()} 
@@ -79,20 +97,28 @@ public class ErrorMap implements Serializable {
     	return putErrorWithoutFullErrorPath(sectionId, errorKey, errorParameters);
     }
     
+    public TypedArrayList putWarningForSectionId(String sectionId, String messageKey, String... messageParameters) {
+    	return putWarningWithoutFullErrorPath(sectionId, messageKey, messageParameters);
+    }
+
+    public TypedArrayList putInfoForSectionId(String sectionId, String messageKey, String... messageParameters) {
+    	return putInfoWithoutFullErrorPath(sectionId, messageKey, messageParameters);
+    }
+    
     /**
      * adds an error to the map under the given propertyName and adds an array of message parameters.
      * 
      * @param propertyName name of the property to add error under
-     * @param errorKey resource key used to retrieve the error text from the error message resource bundle
+     * @param messageKey resource key used to retrieve the error text from the error message resource bundle
      * @param withFullErrorPath true if you want the whole parent error path appended, false otherwise
-     * @param errorParameters zero or more string parameters for the displayed error message
+     * @param messageParameters zero or more string parameters for the displayed error message
      * @return TypeArrayList
      */
-    private TypedArrayList putMessageInMap(Map<String, TypedArrayList> messagesMap, String propertyName, String errorKey, boolean withFullErrorPath, String... errorParameters) {
+    private TypedArrayList putMessageInMap(Map<String, TypedArrayList> messagesMap, String propertyName, String messageKey, boolean withFullErrorPath, String... messageParameters) {
         if (StringUtils.isBlank(propertyName)) {
             throw new IllegalArgumentException("invalid (blank) propertyName");
         }
-        if (StringUtils.isBlank(errorKey)) {
+        if (StringUtils.isBlank(messageKey)) {
             throw new IllegalArgumentException("invalid (blank) errorKey");
         }
 
@@ -107,7 +133,7 @@ public class ErrorMap implements Serializable {
         }
 
         // add error to list
-        ErrorMessage errorMessage = new ErrorMessage(errorKey, errorParameters);
+        ErrorMessage errorMessage = new ErrorMessage(messageKey, messageParameters);
         // check if this error has already been added to the list
         if ( !errorList.contains( errorMessage ) ) {
             errorList.add(errorMessage);
@@ -256,22 +282,44 @@ public class ErrorMap implements Serializable {
     }
 
 
+    private int getMessageCount(Map<String, TypedArrayList> messageMap) {
+        int messageCount = 0;
+        for (Iterator iter = messageMap.keySet().iterator(); iter.hasNext();) {
+            String errorKey = (String) iter.next();
+            List errors = (List) messageMap.get(errorKey);
+            messageCount += errors.size();
+        }
+
+        return messageCount;
+    }
+
     /**
      * Counts the total number of error messages in the map
      * 
      * @return returns an int for the total number of errors
      */
     public int getErrorCount() {
-        int errorCount = 0;
-        for (Iterator iter = errorMessages.keySet().iterator(); iter.hasNext();) {
-            String errorKey = (String) iter.next();
-            List errors = (List) errorMessages.get(errorKey);
-            errorCount += errors.size();
-        }
-
-        return errorCount;
+    	return getMessageCount(errorMessages);
     }
-
+    
+    /**
+     * Counts the total number of warning messages in the map
+     * 
+     * @return returns an int for the total number of warnings
+     */
+    public int getWarningCount() {
+    	return getMessageCount(warningMessages);
+    }
+    
+    /**
+     * Counts the total number of info messages in the map
+     * 
+     * @return returns an int for the total number of info
+     */
+    public int getInfoCount() {
+    	return getMessageCount(infoMessages);
+    }
+    
     /**
      * @param path
      * @return Returns a List of ErrorMessages for the given path
@@ -344,13 +392,29 @@ public class ErrorMap implements Serializable {
     /**
      * @return List of the property names that have errors.
      */
-    public List getPropertiesWithErrors() {
-        List properties = new ArrayList();
+    public List<String> getPropertiesWithErrors() {
+        List<String> properties = new ArrayList<String>();
 
-        for (Iterator iter = errorMessages.keySet().iterator(); iter.hasNext();) {
+        for (Iterator<String> iter = errorMessages.keySet().iterator(); iter.hasNext();) {
             properties.add(iter.next());
         }
 
+        return properties;
+    }
+    
+    /**
+     * @return List of the property names that have warnings.
+     */
+    public List<String> getPropertiesWithWarnings() {
+        List<String> properties = new ArrayList<String>(warningMessages.keySet());
+        return properties;
+    }
+    
+    /**
+     * @return List of the property names that have info.
+     */
+    public List<String> getPropertiesWithInfo() {
+        List<String> properties = new ArrayList<String>(infoMessages.keySet());
         return properties;
     }
 
@@ -436,8 +500,16 @@ public class ErrorMap implements Serializable {
     	return errorMessages.get(propertyName);
     }
     
+    public TypedArrayList getWarningMessagesForProperty(String propertyName) {
+    	return warningMessages.get(propertyName);
+    }
+    
+    public TypedArrayList getInfoMessagesForProperty(String propertyName) {
+    	return infoMessages.get(propertyName);
+    }
+    
     /**
-     * @deprecated As of rice 0.9.4, use {@link #hasNoErrors()} isntead
+     * @deprecated As of rice 0.9.4, use {@link #hasNoErrors()} instead
      */
     @Deprecated
     public boolean isEmpty() {
@@ -452,6 +524,22 @@ public class ErrorMap implements Serializable {
     	return errorMessages.isEmpty();
     }
 
+    public boolean hasWarnings() {
+    	return !warningMessages.isEmpty();
+    }
+    
+    public boolean hasNoWarnings() {
+    	return warningMessages.isEmpty();
+    }
+    
+    public boolean hasInfo() {
+    	return !infoMessages.isEmpty();
+    }
+    
+    public boolean hasNoInfo() {
+    	return infoMessages.isEmpty();
+    }
+    
     /**
      * @deprecated As of rice 0.9.4, use {@link #getAllPropertiesWithErrors()} instead
      */
@@ -462,6 +550,14 @@ public class ErrorMap implements Serializable {
 
     public Set<String> getAllPropertiesWithErrors() {
     	return errorMessages.keySet();
+    }
+    
+    public Set<String> getAllPropertiesWithWarnings() {
+    	return warningMessages.keySet();
+    }
+
+    public Set<String> getAllPropertiesWithInfo() {
+    	return infoMessages.keySet();
     }
     
     /**

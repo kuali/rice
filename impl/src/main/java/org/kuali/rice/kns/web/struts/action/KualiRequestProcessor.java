@@ -47,11 +47,14 @@ import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.SessionDocumentService;
 import org.kuali.rice.kns.util.ErrorContainer;
+import org.kuali.rice.kns.util.ErrorMap;
 import org.kuali.rice.kns.util.ExceptionUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.Guid;
+import org.kuali.rice.kns.util.InfoContainer;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.RiceKeyConstants;
+import org.kuali.rice.kns.util.WarningContainer;
 import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
@@ -261,8 +264,8 @@ public class KualiRequestProcessor extends RequestProcessor {
 			super.processValidate(request, response, form, mapping);
 		}
 
+		publishMessages(request);
 		if (!GlobalVariables.getErrorMap().isEmpty()) {
-			publishErrorMessages(request);
 			// Special handling for multipart request
 			if (form.getMultipartRequestHandler() != null) {
 				if (LOG.isDebugEnabled()) {
@@ -459,7 +462,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 			}
 
 
-			publishErrorMessages(request);
+			publishMessages(request);
 			saveMessages(request);
 			saveAuditErrors(request);
 			
@@ -477,11 +480,11 @@ public class KualiRequestProcessor extends RequestProcessor {
 				}
 
 				// display error messages and return to originating page
-				publishErrorMessages(request);
+				publishMessages(request);
 				return mapping.findForward(RiceConstants.MAPPING_BASIC);
 			}
 
-			publishErrorMessages(request);
+			publishMessages(request);
 
 			return (processException(request, response, e, form, mapping));
 		}
@@ -545,13 +548,30 @@ public class KualiRequestProcessor extends RequestProcessor {
 	 * Checks for errors in the error map and transforms them to struts action
 	 * messages then stores in the request.
 	 */
-	private void publishErrorMessages(HttpServletRequest request) {
-		if (!GlobalVariables.getErrorMap().isEmpty()) {
-			ErrorContainer errorContainer = new ErrorContainer(GlobalVariables.getErrorMap());
+	private void publishMessages(HttpServletRequest request) {
+		ErrorMap errorMap = GlobalVariables.getErrorMap();
+		if (!errorMap.isEmpty()) {
+			ErrorContainer errorContainer = new ErrorContainer(errorMap);
 
 			request.setAttribute("ErrorContainer", errorContainer);
 			request.setAttribute(Globals.ERROR_KEY, errorContainer.getRequestErrors());
 			request.setAttribute("ErrorPropertyList", errorContainer.getErrorPropertyList());
+		}
+		
+		if (errorMap.hasWarnings()) {
+			WarningContainer warningsContainer = new WarningContainer(errorMap);
+			
+			request.setAttribute("WarningContainer", warningsContainer);
+			request.setAttribute("WarningActionMessages", warningsContainer.getRequestMessages());
+			request.setAttribute("WarningPropertyList", warningsContainer.getMessagePropertyList());
+		}
+		
+		if (errorMap.hasInfo()) {
+			InfoContainer infoContainer = new InfoContainer(errorMap);
+			
+			request.setAttribute("InfoContainer", infoContainer);
+			request.setAttribute("InfoActionMessages", infoContainer.getRequestMessages());
+			request.setAttribute("InfoPropertyList", infoContainer.getMessagePropertyList());
 		}
 	}
 

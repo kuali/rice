@@ -25,11 +25,22 @@ import org.kuali.rice.kns.util.KNSPropertyConstants;
  *
  */
 public class KIMPropertyConstants extends JSTLConstants {
+	
+	private static final long serialVersionUID = -879796178745937778L;
 
-	public static class Person {
+	public static class Entity {
 		public static final String ENTITY_ID = "entityId";
+	}
+	
+	public static class Principal {
 		public static final String PRINCIPAL_ID = "principalId";
 		public static final String PRINCIPAL_NAME = "principalName";
+	}
+
+	public static class Person {
+		public static final String ENTITY_ID = Entity.ENTITY_ID;
+		public static final String PRINCIPAL_ID = Principal.PRINCIPAL_ID;
+		public static final String PRINCIPAL_NAME = Principal.PRINCIPAL_NAME;
 		public static final String FIRST_NAME = "firstName";
 		public static final String MIDDLE_NAME = "middleName";
 		public static final String LAST_NAME = "lastName";
@@ -57,5 +68,32 @@ public class KIMPropertyConstants extends JSTLConstants {
 	
 	public static class Group {
 	    public static final String GROUP_ID = "groupId";
+	}
+	
+	public static class Role {
+		public static final String ROLE_ID = "roleId";
+		public static final String ROLE_NAME = "roleName";
+		public static final String ACTIVE = KNSPropertyConstants.ACTIVE;
+	}
+
+	public static class KimMember {
+		public static final String MEMBER_ID = "memberId";
+		public static final String MEMBER_TYPE_CODE = "memberTypeCode";
+	}
+	
+	public static class RoleMember extends KimMember {
+		public static final String ROLE_MEMBER_ID = "roleMemberId";
+		public static final String ROLE_ID = Role.ROLE_ID;
+	}
+
+	public static class DelegationMember extends KimMember {
+		public static final String DELEGATION_MEMBER_ID = "delegationMemberId";
+		public static final String DELEGATION_ID = Delegation.DELEGATION_ID;
+	}
+	
+	public static class Delegation {
+		public static final String ROLE_ID = "roleId";
+		public static final String DELEGATION_ID = "delegationId";
+		public static final String ACTIVE = KNSPropertyConstants.ACTIVE;
 	}
 }

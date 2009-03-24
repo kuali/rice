@@ -626,12 +626,12 @@ public class FieldUtils {
                     try {
                     	//convert to upperCase based on data dictionary
                     	Class businessObjectClass = bo.getClass();
-                    	boolean upperCase = getDataDictionaryService().getAttributeForceUppercase(businessObjectClass, propertyName);
+                    	//boolean upperCase = getDataDictionaryService().getAttributeForceUppercase(businessObjectClass, propertyName);
                     	Object fieldValue = fieldValues.get(propertyName);
                     	
-                    	if(upperCase && fieldValue instanceof String){
-                    		fieldValue = ((String) fieldValue).toUpperCase(); 
-                    	}
+                    	//if(upperCase && fieldValue instanceof String){
+                    	//	fieldValue = ((String) fieldValue).toUpperCase(); 
+                    	//}
                         ObjectUtils.setObjectProperty(bo, propertyName, type, fieldValue);
                     }
                     catch (FormatException e) {

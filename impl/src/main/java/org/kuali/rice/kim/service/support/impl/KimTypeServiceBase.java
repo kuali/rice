@@ -24,7 +24,6 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kim.bo.types.KimAttributesTranslator;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
@@ -45,8 +44,6 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.ErrorMessage;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.TypedArrayList;
-import org.kuali.rice.kns.web.format.Formatter;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
@@ -60,9 +57,6 @@ public class KimTypeServiceBase implements KimTypeService {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KimTypeServiceBase.class);
 
-	protected List<String> acceptedAttributeNames = new ArrayList<String>();
-
-	protected List<KimAttributesTranslator> kimAttributesTranslators = new ArrayList<KimAttributesTranslator>();
 	protected BusinessObjectService businessObjectService;
 	protected DictionaryValidationService dictionaryValidationService;
 	protected DataDictionaryService dataDictionaryService;
@@ -116,23 +110,7 @@ public class KimTypeServiceBase implements KimTypeService {
 	}
 
 	public AttributeSet translateInputAttributeSet(AttributeSet qualification){
-		if ( qualification == null ) {
-			return null;
-		}
-		if ( getKimAttributesTranslators() == null || getKimAttributesTranslators().isEmpty() ) {
-		    return qualification;
-		}
-		AttributeSet translatedQualification = new AttributeSet();
-		translatedQualification.putAll(qualification);
-		List<String> attributeNames;
-		for(KimAttributesTranslator translator: getKimAttributesTranslators()){
-			attributeNames = new ArrayList<String>();
-			attributeNames.addAll(translatedQualification.keySet());
-			if(translator.supportsTranslationOfAttributes(attributeNames)){
-				translatedQualification = translator.translateAttributes(translatedQualification);
-			}
-		}
-		return translatedQualification;
+		return qualification;
 	}
 
 	/**
@@ -376,52 +354,6 @@ public class KimTypeServiceBase implements KimTypeService {
 			attributeDefinitionCache.put( kimTypeId, definitions );
 		}
 		return definitions;
-	}
-
-	/**
-	 * @see org.kuali.rice.kim.service.support.KimTypeService#getAcceptedAttributeNames()
-	 */
-	public List<String> getAcceptedAttributeNames() {
-		return this.acceptedAttributeNames;
-	}
-
-	public void setAcceptedAttributeNames(List<String> acceptedQualificationAttributeNames) {
-		this.acceptedAttributeNames = acceptedQualificationAttributeNames;
-	}
-
-	public void addAcceptedAttributeName( String acceptedAttributeName ) {
-		acceptedAttributeNames.add( acceptedAttributeName );
-	}
-
-	/**
-	 * @see org.kuali.rice.kim.service.support.KimTypeService#supportsAttributes(java.util.List)
-	 */
-	public boolean supportsAttributes(List<String> attributeNames) {
-		for ( String attributeName : attributeNames ) {
-			if ( !acceptedAttributeNames.contains( attributeName ) ) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	/**
-	 * @return the kimAttributesTranslators
-	 */
-	public List<KimAttributesTranslator> getKimAttributesTranslators() {
-		return this.kimAttributesTranslators;
-	}
-
-	/**
-	 * @param kimAttributesTranslators the kimAttributesTranslators to set
-	 */
-	public void setKimAttributesTranslators(
-			List<KimAttributesTranslator> kimAttributesTranslators) {
-		this.kimAttributesTranslators = kimAttributesTranslators;
-	}
-
-	public void addAttributeTranslator( KimAttributesTranslator attributesTranslator ) {
-		kimAttributesTranslators.add( attributesTranslator );
 	}
 
 	protected final String COMMA_SEPARATOR = ", ";

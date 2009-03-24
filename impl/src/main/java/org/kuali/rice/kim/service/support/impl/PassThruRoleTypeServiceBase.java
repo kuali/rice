@@ -19,10 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
-import org.kuali.rice.kim.bo.types.KimAttributesTranslator;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.service.support.KimRoleTypeService;
 import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
@@ -65,10 +63,6 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
 
     public List<KeyLabelPair> getAttributeValidValues(String attributeName) {
         return new ArrayList<KeyLabelPair>(0);
-    }
-
-    public List<KimAttributesTranslator> getKimAttributesTranslators() {
-        return new ArrayList<KimAttributesTranslator>(0);
     }
 
     public String getWorkflowDocumentTypeName() {

@@ -16,10 +16,8 @@
 package org.kuali.rice.kim.service.support.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
@@ -28,9 +26,6 @@ import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.translators.PrincipalNameToPrincipalIdTranslator;
-import org.kuali.rice.kim.util.KIMPropertyConstants;
-import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -46,9 +41,6 @@ public class PrincipalDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServi
 	 * 
 	 */
 	public PrincipalDerivedRoleTypeServiceImpl() {
-		addAcceptedAttributeName( KIMPropertyConstants.Person.PRINCIPAL_ID );
-		addAcceptedAttributeName( KIMPropertyConstants.Person.PRINCIPAL_NAME );
-		addAttributeTranslator( new PrincipalNameToPrincipalIdTranslator() );
 	}
 	
 	

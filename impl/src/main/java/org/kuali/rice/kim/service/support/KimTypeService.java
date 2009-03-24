@@ -17,10 +17,8 @@ package org.kuali.rice.kim.service.support;
 
 import java.util.List;
 
-import org.kuali.rice.kim.bo.types.KimAttributesTranslator;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
 /**
@@ -49,36 +47,7 @@ public interface KimTypeService {
 	 * attributes attached to an object.
 	 */
 	AttributeSet validateAttributes( AttributeSet attributes );
-    
-    /**
-     * 
-     * This method returns the translators configured with this service.
-     * 
-     * @return
-     */
-	List<KimAttributesTranslator> getKimAttributesTranslators();
 	
-	/**
-	 * 
-	 * This method translates an input attribute set using the configured translators.
-	 * 
-	 * @param inputAttributeSet
-	 * @return
-	 */
-	AttributeSet translateInputAttributeSet(final AttributeSet inputAttributeSet);
-
-    /** 
-     * Return a list of attribute names that will be accepted by this role type.  They
-     * are either understood directly, or can be translated by this service into that
-     * required. 
-     */
-    List<String> getAcceptedAttributeNames();
-    
-    /**
-     * Given a list of attribute names, determine whether this service can convert that set of parameters.
-     */
-    boolean supportsAttributes( List<String> attributeNames );
-
     List<KeyLabelPair> getAttributeValidValues(String attributeName);
     
     AttributeDefinitionMap getAttributeDefinitions(String kimTypeId);

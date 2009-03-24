@@ -165,26 +165,26 @@ public class LookupDaoJpa implements LookupDao {
 			if (formProps.get(propertyName) instanceof Collection) {
 				Iterator iter = ((Collection) formProps.get(propertyName)).iterator();
 				while (iter.hasNext()) {
-					Boolean caseInsensitive = Boolean.FALSE;
+					Boolean caseInsensitive = Boolean.TRUE;
 					if (KNSServiceLocator.getDataDictionaryService().isAttributeDefined(example.getClass(), propertyName)) {
 						caseInsensitive = !KNSServiceLocator.getDataDictionaryService().getAttributeForceUppercase(example.getClass(), propertyName);
 					}
 					if (caseInsensitive == null) {
-						caseInsensitive = Boolean.FALSE;
+						caseInsensitive = Boolean.TRUE;
 					}
-					if (!createCriteria(example, (String) iter.next(), propertyName, caseInsensitive.booleanValue(), criteria)) {
+					if (!createCriteria(example, (String) iter.next(), propertyName, caseInsensitive, criteria)) {
 						throw new RuntimeException("Invalid value in Collection");
 					}
 				}
 			} else {
-				Boolean caseInsensitive = Boolean.FALSE;
+				Boolean caseInsensitive = Boolean.TRUE;
 				if (KNSServiceLocator.getDataDictionaryService().isAttributeDefined(example.getClass(), propertyName)) {
 					caseInsensitive = !KNSServiceLocator.getDataDictionaryService().getAttributeForceUppercase(example.getClass(), propertyName);
 				}
 				if (caseInsensitive == null) {
-					caseInsensitive = Boolean.FALSE;
+					caseInsensitive = Boolean.TRUE;
 				}
-				if (!createCriteria(example, (String) formProps.get(propertyName), propertyName, caseInsensitive.booleanValue(), criteria)) {
+				if (!createCriteria(example, (String) formProps.get(propertyName), propertyName, caseInsensitive, criteria)) {
 					continue;
 				}
 			}

@@ -37,19 +37,9 @@
 
   <!-- TODO: use campus parent bean once imported into Rice -->
   <bean id="PersonImpl-campusCode" parent="PersonImpl-campusCode-parentBean" />
-  <bean id="PersonImpl-campusCode-parentBean" parent="AttributeDefinition" abstract="true"
+  <bean id="PersonImpl-campusCode-parentBean" parent="Campus-campusCode" abstract="true"
         p:name="campusCode"
-        p:forceUppercase="true"
-        p:label="Campus Code"
-        p:shortLabel="Campus Code"
-        p:maxLength="2"
         p:required="false" >
-    <property name="validationPattern" >
-      <bean parent="AlphaNumericValidationPattern" />
-    </property>
-    <property name="control" >
-      <bean parent="TextControlDefinition" p:size="3" />
-    </property>
   </bean>
 
   <bean id="PersonImpl-emailAddress" parent="PersonImpl-emailAddress-parentBean" />
@@ -64,7 +54,7 @@
   <bean id="PersonImpl-firstName" parent="PersonImpl-firstName-parentBean" />
   <bean id="PersonImpl-firstName-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="firstName"
-        p:forceUppercase="true"
+        p:forceUppercase="false"
         p:label="First Name"
         p:shortLabel="First Name"
         p:maxLength="40"
@@ -77,7 +67,7 @@
   <bean id="PersonImpl-lastName" parent="PersonImpl-lastName-parentBean" />
   <bean id="PersonImpl-lastName-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="lastName"
-        p:forceUppercase="true"
+        p:forceUppercase="false"
         p:label="Last Name"
         p:shortLabel="Last Name"
         p:maxLength="40"
@@ -90,7 +80,7 @@
   <bean id="PersonImpl-middleName" parent="PersonImpl-middleName-parentBean" />
   <bean id="PersonImpl-middleName-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="middleName"
-        p:forceUppercase="true"
+        p:forceUppercase="false"
         p:label="Middle Name"
         p:shortLabel="Middle Name"
         p:maxLength="40"
@@ -103,7 +93,7 @@
   <bean id="PersonImpl-name" parent="PersonImpl-name-parentBean" />
   <bean id="PersonImpl-name-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="name"
-        p:forceUppercase="true"
+        p:forceUppercase="false"
         p:label="Name"
         p:shortLabel="Name"
         p:maxLength="123"

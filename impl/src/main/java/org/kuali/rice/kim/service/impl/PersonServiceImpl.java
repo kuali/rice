@@ -116,7 +116,8 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 		criteriaConversion.put( KIMPropertyConstants.Person.EMPLOYEE_STATUS_CODE, "employmentInformation.employeeStatusCode" );
 		criteriaConversion.put( KIMPropertyConstants.Person.EMPLOYEE_ID, "employmentInformation.employeeId" );
 		criteriaConversion.put( KIMPropertyConstants.Person.BASE_SALARY_AMOUNT, "employmentInformation.baseSalaryAmount" );
-		
+		criteriaConversion.put( KIMPropertyConstants.Person.PRIMARY_DEPARTMENT_CODE, "employmentInformation.primaryDepartmentCode" );
+
 		personCachePropertyNames.add( KIMPropertyConstants.Person.PRINCIPAL_ID );
 		personCachePropertyNames.add( KIMPropertyConstants.Person.PRINCIPAL_NAME );
 		personCachePropertyNames.add( KIMPropertyConstants.Person.ENTITY_ID );

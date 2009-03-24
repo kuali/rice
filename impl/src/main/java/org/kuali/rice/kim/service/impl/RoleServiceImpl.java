@@ -560,7 +560,12 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     		if ( roleType != null ) {
 	    		String serviceName = roleType.getKimTypeServiceName();
 	    		if ( serviceName != null ) {
-	    			service = (KimRoleTypeService)KIMServiceLocator.getService( serviceName );
+	    			try {
+	    				service = (KimRoleTypeService)KIMServiceLocator.getService( serviceName );
+	    			} catch ( Exception ex ) {
+	    				LOG.error( "Unable to find role type service with name: " + serviceName, ex );
+	    				service = (KimRoleTypeService)KIMServiceLocator.getService( "kimNoMembersRoleTypeService" );
+	    			}	    			
 	    		}
     		}    		
 			roleTypeServiceCache.put(roleId, service);    				
@@ -578,7 +583,12 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     		if ( delegationType != null ) {
 	    		String serviceName = delegationType.getKimTypeServiceName();
 	    		if ( serviceName != null ) {
-	    			service = (KimDelegationTypeService)KIMServiceLocator.getService( serviceName );
+	    			try {
+	    				service = (KimDelegationTypeService)KIMServiceLocator.getService( serviceName );
+	    			} catch ( Exception ex ) {
+	    				LOG.error( "Unable to find delegation type service with name: " + serviceName, ex );
+	    				service = (KimDelegationTypeService)KIMServiceLocator.getService( "kimDelegationTypeService" );
+	    			}
 	    		}
     		} else { // delegation has no type - default to role type if possible
     			KimRoleTypeService roleTypeService = getRoleTypeService( delegation.getRoleId() );

@@ -30,11 +30,9 @@ import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.dao.KimRoleDao;
-import org.kuali.rice.kim.service.support.KimRoleTypeService;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kim.web.struts.action.IdentityManagementRoleDocumentAction;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
@@ -60,6 +58,8 @@ import org.kuali.rice.kns.web.ui.Row;
  *
  */
 public class RoleLookupableHelperServiceImpl extends KualiLookupableHelperServiceImpl {
+
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RoleLookupableHelperServiceImpl.class);
 
 	// need this so kimtypeId value can be retained in 'rows'
 	// 1st pass populate the grprows
@@ -147,37 +147,39 @@ public class RoleLookupableHelperServiceImpl extends KualiLookupableHelperServic
 					// TODO what if servicename is null.  also check other places that have similar issue
 					// use default_service ?
 			        KimTypeService kimTypeService = KimCommonUtils.getKimTypeService(kimType);
-			        AttributeDefinitionMap definitions = kimTypeService.getAttributeDefinitions(kimType.getKimTypeId());
-			        setAttrDefinitions(definitions);
-		            for ( AttributeDefinition definition : definitions.values()) {
-				        List<Field> fields = new ArrayList<Field>();
-						Field typeField = new Field();
-						//String attrDefnId = mapEntry.getKey().substring(mapEntry.getKey().indexOf("."), mapEntry.getKey().length());
-//						String attrDefnId = definition.getId();
-						String attrDefnId = getAttrDefnId(definition);
-						// if it is DD, then attrDefn.getLabel() is null; has to get from DDAttrdefn
-						typeField.setFieldLabel(definition.getLabel());
-						// with suffix  in case name is the same as bo property 
-						typeField.setPropertyName(definition.getName()+"."+attrDefnId);
-						if (definition.getControl().isSelect()) {
-					        try {
-					            KeyValuesFinder finder = (KeyValuesFinder) definition.getControl().getValuesFinderClass().newInstance();
-						        typeField.setFieldValidValues(finder.getKeyValues());
-						        typeField.setFieldType(Field.DROPDOWN);
-					        }
-					        catch (InstantiationException e) {
-					            throw new RuntimeException(e.getMessage());
-					        }
-					        catch (IllegalAccessException e) {
-					            throw new RuntimeException(e.getMessage());
-					        }
-						} else {
-							typeField.setMaxLength(definition.getMaxLength());
-							typeField.setSize(definition.getControl().getSize());
-							typeField.setFieldType(Field.TEXT);
-						}
-						fields.add(typeField);
-						returnRows.add(new Row(fields));
+			        if ( kimTypeService != null ) {
+				        AttributeDefinitionMap definitions = kimTypeService.getAttributeDefinitions(kimType.getKimTypeId());
+				        setAttrDefinitions(definitions);
+			            for ( AttributeDefinition definition : definitions.values()) {
+					        List<Field> fields = new ArrayList<Field>();
+							Field typeField = new Field();
+							//String attrDefnId = mapEntry.getKey().substring(mapEntry.getKey().indexOf("."), mapEntry.getKey().length());
+	//						String attrDefnId = definition.getId();
+							String attrDefnId = getAttrDefnId(definition);
+							// if it is DD, then attrDefn.getLabel() is null; has to get from DDAttrdefn
+							typeField.setFieldLabel(definition.getLabel());
+							// with suffix  in case name is the same as bo property 
+							typeField.setPropertyName(definition.getName()+"."+attrDefnId);
+							if (definition.getControl().isSelect()) {
+						        try {
+						            KeyValuesFinder finder = (KeyValuesFinder) definition.getControl().getValuesFinderClass().newInstance();
+							        typeField.setFieldValidValues(finder.getKeyValues());
+							        typeField.setFieldType(Field.DROPDOWN);
+						        }
+						        catch (InstantiationException e) {
+						            throw new RuntimeException(e.getMessage());
+						        }
+						        catch (IllegalAccessException e) {
+						            throw new RuntimeException(e.getMessage());
+						        }
+							} else {
+								typeField.setMaxLength(definition.getMaxLength());
+								typeField.setSize(definition.getControl().getSize());
+								typeField.setFieldType(Field.TEXT);
+							}
+							fields.add(typeField);
+							returnRows.add(new Row(fields));
+			            }
 		            }
 				} else {
 					return getAttrRows();

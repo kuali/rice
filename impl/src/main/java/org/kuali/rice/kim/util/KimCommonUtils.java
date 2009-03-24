@@ -37,7 +37,9 @@ import org.kuali.rice.kns.service.ModuleService;
  * 
  */
 public class KimCommonUtils {
-	private static KualiModuleService kualiModuleService;
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KimCommonUtils.class);
+
+    private static KualiModuleService kualiModuleService;
 
 	private static KualiModuleService getKualiModuleService() {
 		if (kualiModuleService == null) {
@@ -132,7 +134,12 @@ public class KimCommonUtils {
 
 	public static final KimTypeService getKimTypeService(KimTypeImpl kimTypeImpl){
 		String serviceName = KimCommonUtils.getKimTypeServiceName(kimTypeImpl.getKimTypeServiceName());
-		return (KimTypeService)KIMServiceLocator.getService(serviceName);
+		try {
+			return (KimTypeService)KIMServiceLocator.getService(serviceName);
+		} catch ( Exception ex ) {
+			LOG.error( "Unable to find KIM type service with name: " + serviceName, ex );
+			return null;
+		}
 	}
 
 	public static void copyProperties(Object targetToCopyTo, Object sourceToCopyFrom){

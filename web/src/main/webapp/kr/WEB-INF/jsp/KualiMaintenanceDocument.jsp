@@ -32,12 +32,13 @@
 <c:set var="documentTypeName" value="${KualiForm.docTypeName}" />
 <c:set var="documentEntry" value="${DataDictionary[documentTypeName]}" />
 
-
+<c:set var="renderRequiredFieldsLabel" value="${(KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]
+||KualiForm.documentActions[Constants.KUALI_ACTION_CAN_AD_HOC_ROUTE]) && (not KualiForm.suppressAllButtons)}" />
 <kul:page showDocumentInfo="${showDocumentInfo}" docTitle="${docTitle}"
 	htmlFormAction="${htmlFormAction}" transactionalDocument="false" maintenanceDocument="true"
 	renderMultipart="${renderMultipart}" showTabButtons="${showTabButtons}"
 	defaultMethodToCall="${defaultMethodToCall}" additionalScriptFiles="${additionalScriptFiles}"
-	lookup="${lookup}" headerMenuBar="${headerMenuBar}" headerTitle="${headerTitle}" auditCount="0">
+	lookup="${lookup}" headerMenuBar="${headerMenuBar}" headerTitle="${headerTitle}" auditCount="0" renderRequiredFieldsLabel="${renderRequiredFieldsLabel}">
 
 <%-- Put the header on the page. --%>
 			<table width="100%" cellpadding="0" cellspacing="0" class="tab" id="ryansHeader">

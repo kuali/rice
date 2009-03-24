@@ -40,6 +40,7 @@
 <%@ attribute name="documentWebScope" required="false" %>
 <%@ attribute name="maintenanceDocument" required="false"%>
 <%@ attribute name="sessionDocument" required="false"%>
+<%@ attribute name="renderRequiredFieldsLabel" required = "false" %>
 
 
 <%-- Is the screen an inquiry? --%>
@@ -369,6 +370,9 @@
 				  <html:image property="methodToCall.showAllTabs" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-expandall.gif" title="show all panel content" alt="show all panel content" styleClass="tinybutton" onclick="javascript: return expandAllTab(document, tabStatesSize); " />
 				  <html:image property="methodToCall.hideAllTabs" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-collapseall.gif" title="hide all panel content" alt="hide all panel content" styleClass="tinybutton" onclick="javascript: return collapseAllTab(document, tabStatesSize); " />			  
 		       </c:if>
+			   <c:if test="${renderRequiredFieldsLabel}" >
+				<br>* required field
+			   </c:if>	
 		  	 </div>		 
 		  </div>
 		</div>

@@ -22,8 +22,3 @@
             <td align="right" class="footer-right"><img src="${ConfigProperties.kr.externalizable.images.url}pixel_clear.gif" alt="" width="12" height="14" class="br3"></td>
           </tr>
         </table>
-        <div align="right"><br>
-          * required field</div>
-        </div>
-        
-        </div>

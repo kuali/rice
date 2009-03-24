@@ -55,7 +55,11 @@
 
 	<kul:errors errorTitle="Errors found in Search Criteria:" />
 	<kul:messages/>
-
+	<div class="right">
+		<div class="excol">
+		* required field
+		</div>
+	</div>
 	<table width="100%">
 		<tr>
 			<td width="1%"><img src="${ConfigProperties.kr.externalizable.images.url}pixel_clear.gif" alt="" width="20"

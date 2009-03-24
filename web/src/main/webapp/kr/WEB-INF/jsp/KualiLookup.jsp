@@ -60,7 +60,11 @@
 		<html-el:hidden name="KualiForm" property="extraButtons[${status.index}].extraButtonSource" />
 		<html-el:hidden name="KualiForm" property="extraButtons[${status.index}].extraButtonParams" />
 	</c:forEach>
-
+	<div class="right">
+		<div class="excol">
+		* required field
+		</div>
+	</div>
     <div class="msg-excol">
       <div class="left-errmsg">
         <kul:errors errorTitle="Errors found in Search Criteria:" />

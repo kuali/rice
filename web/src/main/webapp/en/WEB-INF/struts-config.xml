@@ -8,11 +8,9 @@
       <form-bean name="PreferencesForm" type="org.kuali.rice.kew.preferences.web.PreferencesForm" />
       <form-bean name="ActionListFilterForm" type="org.kuali.rice.kew.actionlist.web.ActionListFilterForm" />
       <form-bean name="BackdoorForm" type="org.kuali.rice.kew.web.backdoor.BackdoorForm" />
-      <form-bean name="RouteLogForm" type="org.kuali.rice.kew.routelog.web.RouteLogForm" />
       <form-bean name="DocHandlerForm" type="org.kuali.rice.kew.routing.web.DocHandlerForm" />
       <form-bean name="SuperUserForm" type="org.kuali.rice.kew.superuser.web.SuperUserForm"/>
       <form-bean name="Rule2Form" type="org.kuali.rice.kew.rule.web.Rule2Form" />
-      <form-bean name="RoutingReportForm" type="org.kuali.rice.kew.rule.web.RoutingReportForm" />
       <form-bean name="FeedbackForm" type="org.kuali.rice.kew.feedback.web.FeedbackForm"/>
       <form-bean name="StatsForm" type="org.kuali.rice.kew.stats.web.StatsForm" />
       <form-bean name="QuickLinksForm" type="org.kuali.rice.kew.quicklinks.web.QuickLinksForm"/>
@@ -38,6 +36,7 @@
    	    <forward name="WorkflowError" path="/WEB-INF/jsp/Error.jsp" />
    	    <forward name="DeleteRouteHeaderConfirmation" path="/WEB-INF/jsp/DeleteRouteHeaderConfirmation.jsp" />
    	    <forward name="NotAuthorized" path="/WEB-INF/jsp/NotAuthorized.jsp" />
+   	    <!-- <forward name="route_report" path="/WEB-INF/jsp/RoutingReportForward.jsp"/>-->
    	    <forward name="ActionListNew" contextRelative="true" path="/kew/ActionList.do" redirect="true"/>
     </global-forwards>
 
@@ -49,12 +48,19 @@
 	   -->
       <action path="/RuleQuickLinks" scope="request" validate="false" type="org.apache.struts.actions.ForwardAction"
      		parameter="/kew/RuleQuickLinks.do"/>
+      <action path="/RuleQuickLinks" scope="request" validate="false" type="org.apache.struts.actions.ForwardAction"
+     		parameter="/kew/RuleQuickLinks.do"/>
+      <action path="/RoutingReport" scope="request" validate="false" type="org.apache.struts.actions.ForwardAction"
+            parameter="/kew/RoutingReport.do"/>
 	  <action path="/DocumentSearch" scope="request" validate="false" type="org.apache.struts.actions.ForwardAction"
 	  		parameter="/kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO"/>
       <action path="/ActionList" scope="request" validate="false" type="org.apache.struts.actions.ForwardAction"
      		parameter="/kew/ActionList.do"/>
       <action path="/ActionListFilter" scope="request" validate="false" type="org.apache.struts.actions.ForwardAction"
      		parameter="/kew/ActionListFilter.do"/>
+      <action path="/RouteLog" scope="request" validate="false"
+            type="org.kuali.rice.kns.web.struts.action.ForwardWithQueryParametersAction"
+     		parameter="/kew/RouteLog.do"/>
       <action path="/ActionListOld" scope="request" validate="false" parameter="methodToCall"
         type="org.kuali.rice.kew.actionlist.web.ActionListActionOld" name="ActionListForm"
         input="/WEB-INF/jsp/ActionList/ActionList.jsp" >
@@ -71,9 +77,9 @@
         <forward name="requiredStateError" path="/WEB-INF/jsp/ActionList/ActionListFilter.jsp"/>
         <forward name="finalStateError" path="/WEB-INF/jsp/ActionList/ActionListFilter.jsp"/>
       </action>
-      
+
       <!-- end temporary mappings -->
-	  		
+
       <action path="/SuperUser" type="org.kuali.rice.kew.superuser.web.SuperUserAction" input="/WEB-INF/jsp/superuser/SuperUser.jsp" name="SuperUserForm" scope="request" parameter="methodToCall">
 		 <forward name="basic" path="/WEB-INF/jsp/superuser/SuperUser.jsp" />
 		 <forward name="actionTaken" path="/WEB-INF/jsp/DocHandlerActionTaken.jsp" />
@@ -83,9 +89,6 @@
 
       <action path="/Error" scope="request" validate="false" type="org.kuali.rice.kew.web.ModuleRelativeForwardAction"
              parameter="/WEB-INF/jsp/Error.jsp"/>
-
-
-
 
       <action path="/Preferences" name="PreferencesForm" scope="request" validate="false"
         input="/WEB-INF/jsp/Preferences/Preferences.jsp" parameter="methodToCall"
@@ -124,14 +127,6 @@
           <forward name="finalStateError" path="/WEB-INF/jsp/stats/StatsReport.jsp"/>
       </action>
 
-      <action path="/RouteLog" name="RouteLogForm" attribute="KualiForm" scope="request" parameter="methodToCall"
-        input="/WEB-INF/jsp/routelog/RouteLog.jsp"
-        type="org.kuali.rice.kew.routelog.web.RouteLogAction">
-        <forward name="viewRouteLog" path="/WEB-INF/jsp/routelog/RouteLog.jsp" />
-        <!-- forward name="documentLocked" path="/WEB-INF/jsp/DocumentLocked.jsp" /-->
-        <forward name="requiredStateError" path="/WEB-INF/jsp/routelog/RouteLog.jsp"/>
-        <forward name="finalStateError" path="/WEB-INF/jsp/routelog/RouteLog.jsp"/>
-      </action>
 
       <action path="/DocHandler" name="DocHandlerForm" scope="request" parameter="methodToCall"
         type="org.kuali.rice.kew.routing.web.ClientAppDocHandlerRedirectAction" >
@@ -167,15 +162,6 @@
           <forward path="/WEB-INF/jsp/rules/RuleReport.jsp" name="report" />
           <forward name="requiredStateError" path="/WEB-INF/jsp/rules/RuleReport.jsp"/>
           <forward name="finalStateError" path="/WEB-INF/jsp/rules/RuleReport.jsp"/>
-       </action>
-
-       <action path="/RoutingReport" type="org.kuali.rice.kew.rule.web.RoutingReportAction"
-          input="/WEB-INF/jsp/routetemplate/RoutingReportCriteria.jsp"
-          name="RoutingReportForm" scope="request" parameter="methodToCall" validate="true">
-          <forward path="/WEB-INF/jsp/routetemplate/RoutingReportCriteria.jsp" name="basic" />
-          <forward path="/WEB-INF/jsp/routelog/RouteLog.jsp" name="routeLog" />
-          <forward name="requiredStateError" path="/WEB-INF/jsp/routetemplate/RoutingReportCriteria.jsp"/>
-          <forward name="finalStateError" path="/WEB-INF/jsp/routetemplate/RoutingReportCriteria.jsp"/>
        </action>
 
       <action path="/Feedback"

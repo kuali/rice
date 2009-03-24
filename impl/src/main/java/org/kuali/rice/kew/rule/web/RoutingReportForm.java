@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -35,6 +36,8 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.KeyValue;
+import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.ui.Row;
 
@@ -49,7 +52,6 @@ public class RoutingReportForm extends KualiForm {
 	private static final long serialVersionUID = 509542372934250061L;
 
     private Long ruleTemplateId;
-    private String methodToCall = "";
     private String lookupableImplServiceName;
     private String documentType;
     private String reportType;
@@ -69,9 +71,9 @@ public class RoutingReportForm extends KualiForm {
     private List ruleTemplates;
     private List actionRequests;
     private Map fields;
-    
+
     /*chb: 15Jan2009
-    ruleTemplateAttributes is set by RoutingReportAction.loadRuleTemplateOnForm(...) 
+    ruleTemplateAttributes is set by RoutingReportAction.loadRuleTemplateOnForm(...)
     */
     private List<Row> ruleTemplateAttributes;
     private List attributes;
@@ -108,14 +110,6 @@ public class RoutingReportForm extends KualiForm {
 
     public void setLookupableImplServiceName(String lookupableImplServiceName) {
         this.lookupableImplServiceName = lookupableImplServiceName;
-    }
-
-    public String getMethodToCall() {
-        return methodToCall;
-    }
-
-    public void setMethodToCall(String methodToCall) {
-        this.methodToCall = methodToCall;
     }
 
     public List<Row> getRuleTemplateAttributes() {
@@ -306,4 +300,5 @@ public class RoutingReportForm extends KualiForm {
         this.documentTypeParam = documentTypeParam;
         this.documentType = documentTypeParam;
     }
+
 }

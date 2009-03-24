@@ -1,5 +1,5 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
-
+<%System.out.println("hello jeremy"); %>
 <kul:page headerTitle="Route Log" transactionalDocument="false"
 	showDocumentInfo="false" htmlFormAction="RouteLog" docTitle="Route Log" headerMenuBar="${KualiForm.headerMenuBar}">
 

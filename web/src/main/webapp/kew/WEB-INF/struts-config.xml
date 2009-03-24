@@ -10,6 +10,8 @@
     	<!-- End required KNS forms -->
 	    <form-bean name="RuleForm" type="org.kuali.rice.kew.rule.web.RuleForm" />
 	    <form-bean name="RuleQuickLinksForm" type="org.kuali.rice.kew.rule.web.RuleQuickLinksForm" />
+	    <form-bean name="RouteLogForm" type="org.kuali.rice.kew.routelog.web.RouteLogForm" />
+	    <form-bean name="RoutingReportForm" type="org.kuali.rice.kew.rule.web.RoutingReportForm" />
 	    <form-bean name="DelegateRuleForm" type="org.kuali.rice.kew.rule.web.DelegateRuleForm" />
 	    <form-bean name="ActionListFormNew" type="org.kuali.rice.kew.actionlist.web.ActionListForm" />
 	    <form-bean name="ActionListFilterFormNew" type="org.kuali.rice.kew.actionlist.web.ActionListFilterForm" />
@@ -97,27 +99,43 @@
         <forward name="finalStateError" path="/WEB-INF/jsp/rule/RuleQuickLinks.jsp"/>
       </action>
 
+      <action path="/RouteLog" name="RouteLogForm" input="/WEB-INF/jsp/routelog/RouteLog.jsp" type="org.kuali.rice.kew.routelog.web.RouteLogAction"
+      	  scope="request" parameter="methodToCall" validate="false" attribute="KualiForm">
+        <forward name="basic" path="/WEB-INF/jsp/routelog/RouteLog.jsp" />
+        <!-- forward name="documentLocked" path="/WEB-INF/jsp/DocumentLocked.jsp" /-->
+        <forward name="requiredStateError" path="/WEB-INF/jsp/routelog/RouteLog.jsp"/>
+        <forward name="finalStateError" path="/WEB-INF/jsp/routelog/RouteLog.jsp"/>
+      </action>
+
+      <action path="/RoutingReport" name="RoutingReportForm" input="/WEB-INF/jsp/routetemplate/RoutingReportCriteria.jsp" type="org.kuali.rice.kew.rule.web.RoutingReportAction"
+          scope="request" parameter="methodToCall"  validate="true" attribute="KualiForm">
+          <forward name="basic" path="/WEB-INF/jsp/routetemplate/RoutingReportCriteria.jsp" />
+          <forward name="routeLog" path="/WEB-INF/jsp/routelog/RouteLog.jsp" />
+          <forward name="requiredStateError" path="/WEB-INF/jsp/routetemplate/RoutingReportCriteria.jsp"/>
+          <forward name="finalStateError" path="/WEB-INF/jsp/routetemplate/RoutingReportCriteria.jsp"/>
+      </action>
+
       <action path="/DocumentConfigurationView" name="DocumentConfigurationViewForm" input="/WEB-INF/jsp/rule/DocumentConfigurationView.jsp" type="org.kuali.rice.kew.rule.web.DocumentConfigurationViewAction"
           scope="request" parameter="methodToCall" validate="false" attribute="KualiForm">
         <forward name="basic" path="/WEB-INF/jsp/rule/DocumentConfigurationView.jsp" />
         <forward name="requiredStateError" path="/WEB-INF/jsp/rule/DocumentConfigurationView.jsp"/>
         <forward name="finalStateError" path="/WEB-INF/jsp/rule/DocumentConfigurationView.jsp"/>
       </action>
-      
+
       <!-- Mappings to handling forwarding over to the "en" module for the screens that haven't been moved over yet -->
-      
+
       <action path="/SuperUser" scope="request" validate="false"
             type="org.kuali.rice.kns.web.struts.action.ForwardWithQueryParametersAction"
      		parameter="/en/SuperUser.do"/>
-     		
+
       <action path="/Preferences" scope="request" validate="false"
             type="org.kuali.rice.kns.web.struts.action.ForwardWithQueryParametersAction"
      		parameter="/en/Preferences.do"/>
-      
+
       <action path="/Backdoor" scope="request" validate="false"
             type="org.kuali.rice.kns.web.struts.action.ForwardWithQueryParametersAction"
      		parameter="/en/Backdoor.do"/>
-      
+
       <action path="/Portal" scope="request" validate="false"
             type="org.kuali.rice.kns.web.struts.action.ForwardWithQueryParametersAction"
      		parameter="/en/Portal.do"/>
@@ -130,22 +148,14 @@
             type="org.kuali.rice.kns.web.struts.action.ForwardWithQueryParametersAction"
      		parameter="/en/Stats.do"/>
 
-      <action path="/RouteLog" scope="request" validate="false"
-            type="org.kuali.rice.kns.web.struts.action.ForwardWithQueryParametersAction"
-     		parameter="/en/RouteLog.do"/>
-
       <action path="/DocHandler" scope="request" validate="false"
             type="org.kuali.rice.kns.web.struts.action.ForwardWithQueryParametersAction"
      		parameter="/en/DocHandler.do"/>
 
-      <action path="/RoutingReport" scope="request" validate="false"
-            type="org.kuali.rice.kns.web.struts.action.ForwardWithQueryParametersAction"
-     		parameter="/en/RoutingReport.do"/>
-
       <action path="/Feedback" scope="request" validate="false"
             type="org.kuali.rice.kns.web.struts.action.ForwardWithQueryParametersAction"
      		parameter="/en/Feedback.do"/>
-     		
+
       <action path="/QuickLinks" scope="request" validate="false"
             type="org.kuali.rice.kns.web.struts.action.ForwardWithQueryParametersAction"
      		parameter="/en/QuickLinks.do"/>
@@ -161,7 +171,7 @@
       <action path="/Ingester" scope="request" validate="false"
             type="org.kuali.rice.kns.web.struts.action.ForwardWithQueryParametersAction"
      		parameter="/en/Ingester.do"/>
-      
+
     </action-mappings>
 
 

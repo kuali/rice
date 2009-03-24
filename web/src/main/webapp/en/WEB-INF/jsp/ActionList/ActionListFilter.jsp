@@ -8,7 +8,7 @@
 <head>
 <title>Action List Filter</title>
 <link href="css/screen.css" rel="stylesheet" type="text/css">
-<script language="javascript" src="scripts/en-common.js"></script>
+<script language="javascript" src="../en/scripts/en-common.js"></script>
 <script language="javascript" src="scripts/cal2.js">
     /*
     Xin's Popup calendar script-  Xin Yang (http://www.yxscripts.com/) Script

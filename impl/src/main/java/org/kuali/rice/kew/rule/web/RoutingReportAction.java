@@ -61,8 +61,12 @@ import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.web.WorkflowAction;
+import org.kuali.rice.kew.web.KewKualiAction;
+import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kns.exception.ValidationException;
+import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 
@@ -72,21 +76,26 @@ import org.kuali.rice.kns.web.ui.Row;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class RoutingReportAction extends WorkflowAction {
+public class RoutingReportAction extends KewKualiAction {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RoutingReportAction.class);
 
 	public static final String DOC_TYPE_REPORTING = "documentType";
 	public static final String TEMPLATE_REPORTING = "template";
 
-	public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		RoutingReportForm routingForm = (RoutingReportForm) form;
-		if (Utilities.isEmpty(routingForm.getDateRef())) {
-			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-			routingForm.setEffectiveHour("5");
-			routingForm.setEffectiveMinute("0");
-			routingForm.setAmPm("1");
-			routingForm.setDateRef(sdf.format(new Date()));
-		}
+    @Override
+    public ActionForward execute(ActionMapping mapping, ActionForm form,
+            HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        this.initiateForm(request, form);
+        RoutingReportForm routingForm = (RoutingReportForm)form;
+        if (Utilities.isEmpty(routingForm.getDateRef())) {
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+            routingForm.setEffectiveHour("5");
+            routingForm.setEffectiveMinute("0");
+            routingForm.setAmPm("1");
+            routingForm.setDateRef(sdf.format(new Date()));
+            routingForm.setReportType(TEMPLATE_REPORTING);
+        }
         if (DOC_TYPE_REPORTING.equals(routingForm.getReportType())) {
             if (Utilities.isEmpty(routingForm.getDocumentTypeParam())) {
                 throw new RuntimeException("No document type was given");
@@ -97,13 +106,12 @@ public class RoutingReportAction extends WorkflowAction {
             if (Utilities.isEmpty(routingForm.getDocumentContent())) {
                 throw new RuntimeException("No document content was given");
             }
-            return calculateRoute(mapping, form, request, response);
         } else if (!(TEMPLATE_REPORTING.equals(routingForm.getReportType()))) {
             // report type is not Document Type or Template Type... error out
             throw new RuntimeException("The Routing Report type is not set");
         }
-        return mapping.findForward("basic");
-	}
+        return super.execute(mapping, form, request, response);
+    }
 
 	public ActionForward calculateRoute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		RoutingReportForm routingForm = (RoutingReportForm) form;
@@ -111,7 +119,7 @@ public class RoutingReportAction extends WorkflowAction {
 		List errors = new ArrayList();
 
 		if (getDocumentTypeService().findByName(routingForm.getDocumentType()) == null) {
-			errors.add(new WorkflowServiceErrorImpl("Document type is required.", "doctype.documenttypeservice.doctypename.required"));
+		    GlobalVariables.getErrorMap().putError("Document type is required.", "doctype.documenttypeservice.doctypename.required");
 		}
 		Timestamp date = null;
 		if (!Utilities.isEmpty(routingForm.getDateRef())) {
@@ -125,13 +133,13 @@ public class RoutingReportAction extends WorkflowAction {
 				date = new Timestamp(calendar.getTimeInMillis());
 			} catch (Exception e) {
 				LOG.error("error parsing date", e);
-				errors.add(new WorkflowServiceErrorImpl("Invalid date.", "routereport.effectiveDate.invalid"));
+				GlobalVariables.getErrorMap().putError("Invalid date.", "routereport.effectiveDate.invalid");
 			}
 		}
 
-		if (!errors.isEmpty()) {
-			throw new WorkflowServiceErrorException("Errors populating rule attributes.", errors);
-		}
+		if (!GlobalVariables.getErrorMap().isEmpty()) {
+            throw new ValidationException("Errors populating rule attributes.");
+        }
 
 		DocumentTypeService documentTypeService = (DocumentTypeService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE);
 		DocumentType docType = documentTypeService.findByName(routingForm.getDocumentType());
@@ -193,8 +201,8 @@ public class RoutingReportAction extends WorkflowAction {
                 }
             }
 
-            if (!errors.isEmpty()) {
-                throw new WorkflowServiceErrorException("Errors populating rule attributes.", errors);
+            if (!GlobalVariables.getErrorMap().isEmpty()) {
+                throw new ValidationException("errors in search criteria");
             }
 
             DocumentContent docContent = new AttributeDocumentContent(attributes);
@@ -224,13 +232,13 @@ public class RoutingReportAction extends WorkflowAction {
 
 				if (!alreadyProcessedRuleTemplateNames.contains(ruleTemplate.getName())) {
 				    alreadyProcessedRuleTemplateNames.add(ruleTemplate.getName());
-				List actionRequests = flexRM.getActionRequests(routeHeader, routeLevel, null, ruleTemplate.getName());
+    				List actionRequests = flexRM.getActionRequests(routeHeader, routeLevel, null, ruleTemplate.getName());
 
-				numberOfActionRequests += actionRequests.size();
-				numberOfRules += flexRM.getNumberOfMatchingRules();
+    				numberOfActionRequests += actionRequests.size();
+    				numberOfRules += flexRM.getNumberOfMatchingRules();
 
-				magicCounter = populateActionRequestsWithRouteLevelInformationAndIterateMagicCounter(routeLevel, actionRequests, magicCounter);
-				routeHeader.getActionRequests().addAll(actionRequests);
+    				magicCounter = populateActionRequestsWithRouteLevelInformationAndIterateMagicCounter(routeLevel, actionRequests, magicCounter);
+    				routeHeader.getActionRequests().addAll(actionRequests);
 				}
 			} finally {
 				RouteContext.clearCurrentRouteContext();
@@ -239,15 +247,19 @@ public class RoutingReportAction extends WorkflowAction {
 
 		if (numberOfActionRequests == 0) {
 			if (numberOfRules == 0) {
-				errors.add(new WorkflowServiceErrorImpl("There are no rules.", "routereport.noRules"));
+			    GlobalVariables.getErrorMap().putError("There are no rules.", "routereport.noRules");
+				//errors.add(new WorkflowServiceErrorImpl("There are no rules.", "routereport.noRules"));
 			} else {
-				errors.add(new WorkflowServiceErrorImpl("There are rules, but no matches.", "routereport.noMatchingRules"));
+			    GlobalVariables.getErrorMap().putError("There are rules, but no matches.", "routereport.noMatchingRules");
+				//errors.add(new WorkflowServiceErrorImpl("There are rules, but no matches.", "routereport.noMatchingRules"));
 			}
-			if (!errors.isEmpty()) {
-				throw new WorkflowServiceErrorException("Errors populating rule attributes.", errors);
-			}
+			if (!GlobalVariables.getErrorMap().isEmpty()) {
+	            throw new ValidationException("errors in search criteria");
+	        }
 		}
 
+
+		// PROBLEM HERE!!!!
 		RouteLogForm routeLogForm = new RouteLogForm();
 		routeLogForm.setShowFuture(true);
         if (StringUtils.isNotBlank(routingForm.getBackUrl())) {
@@ -258,8 +270,10 @@ public class RoutingReportAction extends WorkflowAction {
         routeLogForm.setShowCloseButton(routingForm.isDisplayCloseButton());
 		request.setAttribute("routeHeader", routeHeader);
 		new RouteLogAction().populateRouteLogFormActionRequests(routeLogForm, routeHeader);
-		request.setAttribute("RouteLogForm", routeLogForm);
+		request.setAttribute("KualiForm", routeLogForm);
+		//END PROBLEM AREA
 
+		//return mapping.findForward("basic");
 		return mapping.findForward("routeLog");
 	}
 
@@ -290,12 +304,12 @@ public class RoutingReportAction extends WorkflowAction {
 	}
 
 	public ActionForward refresh(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		return mapping.findForward("basic");
+	    return mapping.findForward("basic");
 	}
 
-	public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
-		RoutingReportForm routingReportForm = (RoutingReportForm) form;
-		if (routingReportForm.getReportType() == null) {
+	private ActionMessages initiateForm(HttpServletRequest request, ActionForm form) throws Exception {
+        RoutingReportForm routingReportForm = (RoutingReportForm) form;
+        if (routingReportForm.getReportType() == null) {
             // no report type means we must check for potential setup
             if ( (!Utilities.isEmpty(routingReportForm.getDocumentTypeParam())) ||
                  (!Utilities.isEmpty(routingReportForm.getInitiatorPrincipalId())) ||
@@ -306,9 +320,9 @@ public class RoutingReportAction extends WorkflowAction {
                 // no parameters passed... default to Template Type Rreport
                 routingReportForm.setReportType(TEMPLATE_REPORTING);
             }
-		}
+        }
 
-		if (routingReportForm.getReportType().equals(DOC_TYPE_REPORTING)) {
+        if (routingReportForm.getReportType().equals(DOC_TYPE_REPORTING)) {
             if (Utilities.isEmpty(routingReportForm.getDocumentTypeParam())) {
                 throw new RuntimeException("Document Type was not given");
             } else {
@@ -326,39 +340,39 @@ public class RoutingReportAction extends WorkflowAction {
                 throw new RuntimeException("Document Content was not given");
             }
 
-			if (!Utilities.isEmpty(routingReportForm.getDocumentType())) {
-				DocumentType docType = getDocumentTypeService().findByName(routingReportForm.getDocumentType());
-				if (docType == null) {
-					throw new RuntimeException("Document Type is missing or invalid");
-				}
-				routingReportForm.getRuleTemplateAttributes().clear();
+            if (!Utilities.isEmpty(routingReportForm.getDocumentType())) {
+                DocumentType docType = getDocumentTypeService().findByName(routingReportForm.getDocumentType());
+                if (docType == null) {
+                    throw new RuntimeException("Document Type is missing or invalid");
+                }
+                routingReportForm.getRuleTemplateAttributes().clear();
                 List routeNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(docType, true);
-				for (Iterator iter = routeNodes.iterator(); iter.hasNext();) {
-					RouteNode routeNode = (RouteNode) iter.next();
-					if (routeNode.isFlexRM()) {
-						RuleTemplate ruleTemplate = getRuleTemplateService().findByRuleTemplateName(routeNode.getRouteMethodName());
-						if (ruleTemplate != null) {
-							loadRuleTemplateOnForm(ruleTemplate, routingReportForm, request, false);
-							if (ruleTemplate.getDelegationTemplate() != null) {
-								loadRuleTemplateOnForm(ruleTemplate.getDelegationTemplate(), routingReportForm, request, true);
-							}
-						}
-					}
-				}
-			}
-//			routingReportForm.setShowFields(true);
-		} else if (routingReportForm.getReportType().equals(TEMPLATE_REPORTING)) {
-			routingReportForm.setRuleTemplates(getRuleTemplateService().findAll());
-			if (routingReportForm.getRuleTemplateId() != null) {
-				RuleTemplate ruleTemplate = getRuleTemplateService().findByRuleTemplateId(routingReportForm.getRuleTemplateId());
-				routingReportForm.getRuleTemplateAttributes().clear();
-				loadRuleTemplateOnForm(ruleTemplate, routingReportForm, request, false);
-				if (ruleTemplate.getDelegationTemplate() != null) {
-					loadRuleTemplateOnForm(ruleTemplate.getDelegationTemplate(), routingReportForm, request, true);
-				}
-			}
-		}
-		return null;
+                for (Iterator iter = routeNodes.iterator(); iter.hasNext();) {
+                    RouteNode routeNode = (RouteNode) iter.next();
+                    if (routeNode.isFlexRM()) {
+                        RuleTemplate ruleTemplate = getRuleTemplateService().findByRuleTemplateName(routeNode.getRouteMethodName());
+                        if (ruleTemplate != null) {
+                            loadRuleTemplateOnForm(ruleTemplate, routingReportForm, request, false);
+                            if (ruleTemplate.getDelegationTemplate() != null) {
+                                loadRuleTemplateOnForm(ruleTemplate.getDelegationTemplate(), routingReportForm, request, true);
+                            }
+                        }
+                    }
+                }
+            }
+//          routingReportForm.setShowFields(true);
+        } else if (routingReportForm.getReportType().equals(TEMPLATE_REPORTING)) {
+            routingReportForm.setRuleTemplates(getRuleTemplateService().findAll());
+            if (routingReportForm.getRuleTemplateId() != null) {
+                RuleTemplate ruleTemplate = getRuleTemplateService().findByRuleTemplateId(routingReportForm.getRuleTemplateId());
+                routingReportForm.getRuleTemplateAttributes().clear();
+                loadRuleTemplateOnForm(ruleTemplate, routingReportForm, request, false);
+                if (ruleTemplate.getDelegationTemplate() != null) {
+                    loadRuleTemplateOnForm(ruleTemplate.getDelegationTemplate(), routingReportForm, request, true);
+                }
+            }
+        }
+        return null;
 	}
 
 	private void loadRuleTemplateOnForm(RuleTemplate ruleTemplate, RoutingReportForm routingReportForm, HttpServletRequest request, boolean isDelegate) {
@@ -394,8 +408,6 @@ public class RoutingReportAction extends WorkflowAction {
 					fields.add(field);
 					fieldValues.put(field.getPropertyName(), field.getPropertyValue());
 				}
-				// row.setFields(fields);
-				// rows.add(row);
 			}
 
 			workflowAttribute.validateRuleData(fieldValues);// populate attribute
@@ -426,78 +438,6 @@ public class RoutingReportAction extends WorkflowAction {
 		routingReportForm.setShowViewResults(true);
 	}
 
-	public ActionForward performLookup(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-
-		RoutingReportForm routingReportForm = (RoutingReportForm) form;
-
-		String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + mapping.getModuleConfig().getPrefix();
-		StringBuffer lookupUrl = new StringBuffer(basePath);
-		lookupUrl.append("/Lookup.do?methodToCall=start&docFormKey=").append(getUserSession(request).addObject(form)).append("&lookupableImplServiceName=");
-		lookupUrl.append(request.getParameter("lookupableImplServiceName"));
-
-		lookupUrl.append("&conversionFields=");
-
-		List ruleTemplateAttributes = null;
-
-		if (routingReportForm.getReportType().equals(DOC_TYPE_REPORTING)) {
-			if (!Utilities.isEmpty(routingReportForm.getDocumentType())) {
-				DocumentType docType = getDocumentTypeService().findByName(routingReportForm.getDocumentType());
-				if (docType == null) {
-					throw new RuntimeException("Document Type is null");
-				}
-				ruleTemplateAttributes = new ArrayList();
-			}
-		} else if (routingReportForm.getRuleTemplateId() != null) {
-			RuleTemplate ruleTemplate = getRuleTemplateService().findByRuleTemplateId(routingReportForm.getRuleTemplateId());
-			ruleTemplateAttributes = ruleTemplate.getActiveRuleTemplateAttributes();
-		}
-		if (ruleTemplateAttributes != null) {
-			Collections.sort(ruleTemplateAttributes);
-			for (Iterator iter = ruleTemplateAttributes.iterator(); iter.hasNext();) {
-				RuleTemplateAttribute ruleTemplateAttribute = (RuleTemplateAttribute) iter.next();
-				if (!ruleTemplateAttribute.isWorkflowAttribute()) {
-					continue;
-				}
-				WorkflowAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
-
-				RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
-				if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
-					((GenericXMLRuleAttribute) workflowAttribute).setRuleAttribute(ruleAttribute);
-				}
-				boolean foundQuickFinder = false;
-				for (Iterator iterator = workflowAttribute.getRoutingDataRows().iterator(); iterator.hasNext();) {
-					Row row = (Row) iterator.next();
-					for (Iterator iterator2 = row.getFields().iterator(); iterator2.hasNext();) {
-						Field field = (Field) iterator2.next();
-						if (field.getFieldType().equals(Field.QUICKFINDER) && field.getQuickFinderClassNameImpl().equals(request.getParameter("lookupableImplServiceName"))) {
-							foundQuickFinder = true;
-						}
-					}
-				}
-
-				if (foundQuickFinder) {
-					StringBuffer conversionFields = new StringBuffer();
-					for (Iterator iterator = workflowAttribute.getRoutingDataRows().iterator(); iterator.hasNext();) {
-						Row row = (Row) iterator.next();
-						for (Iterator iterator2 = row.getFields().iterator(); iterator2.hasNext();) {
-							Field field = (Field) iterator2.next();
-							//if (!Utilities.isEmpty(field.getDefaultLookupableName())) {
-							//	conversionFields.append(field.getDefaultLookupableName()).append(":").append(field.getPropertyName()).append(",");
-							//}
-						}
-					}
-					if (!Utilities.isEmpty(conversionFields.toString())) {
-						lookupUrl.append(conversionFields.substring(0, conversionFields.lastIndexOf(",")));
-					}
-				}
-			}
-		}
-
-		lookupUrl.append("&returnLocation=").append(basePath).append(mapping.getPath()).append(".do");
-		return new ActionForward(lookupUrl.toString(), true);
-
-	}
-
 	public ActionForward loadTemplate(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		RoutingReportForm routingReportForm = (RoutingReportForm) form;
 		if (Utilities.isEmpty(routingReportForm.getDateRef())) {
@@ -510,6 +450,11 @@ public class RoutingReportAction extends WorkflowAction {
 		return mapping.findForward("basic");
 	}
 
+	private void makeLookupPathParam(ActionMapping mapping, HttpServletRequest request) {
+        String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + mapping.getModuleConfig().getPrefix();
+        request.setAttribute("basePath", basePath);
+    }
+
 	private RuleTemplateService getRuleTemplateService() {
 		return (RuleTemplateService) KEWServiceLocator.getService(KEWServiceLocator.RULE_TEMPLATE_SERVICE);
 	}
@@ -517,4 +462,12 @@ public class RoutingReportAction extends WorkflowAction {
 	private DocumentTypeService getDocumentTypeService() {
 		return (DocumentTypeService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE);
 	}
+
+	private UserSession getUserSession(HttpServletRequest request) {
+	    return UserSession.getAuthenticatedUser();
+	}
+
+
+
+
 }

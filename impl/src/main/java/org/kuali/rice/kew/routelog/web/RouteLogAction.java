@@ -40,6 +40,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kew.web.WorkflowAction;
 import org.kuali.rice.kew.web.session.UserSession;
 
@@ -49,11 +50,11 @@ import org.kuali.rice.kew.web.session.UserSession;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class RouteLogAction extends WorkflowAction {
+public class RouteLogAction extends KewKualiAction {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RouteLogAction.class);
-    
-    public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         RouteLogForm rlForm = (RouteLogForm) form;
         Long routeHeaderId = null;
@@ -91,7 +92,7 @@ public class RouteLogAction extends WorkflowAction {
             }
         }
         request.setAttribute("routeHeader", routeHeader);
-        return mapping.findForward("viewRouteLog");
+        return super.execute(mapping, rlForm, request, response);
     }
 
     public void populateRouteLogFormActionRequests(RouteLogForm rlForm, DocumentRouteHeaderValue routeHeader) {
@@ -137,11 +138,11 @@ public class RouteLogAction extends WorkflowAction {
         rlForm.setFutureActionRequestCount(arCount);
     }
 
-    public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
-        return null;
-    }
-
     private ActionRequestService getActionRequestService() {
         return (ActionRequestService) KEWServiceLocator.getService(KEWServiceLocator.ACTION_REQUEST_SRV);
+    }
+
+    private UserSession getUserSession(HttpServletRequest request) {
+        return UserSession.getAuthenticatedUser();
     }
 }

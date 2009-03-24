@@ -155,8 +155,8 @@ public class DTOConverter {
 
     public static ValidActionsDTO convertValidActions(ValidActions validActions) {
         ValidActionsDTO validActionsVO = new ValidActionsDTO();
-        for (Iterator iter = validActions.getActionTakenCodes().iterator(); iter.hasNext();) {
-            String actionTakenCode = (String) iter.next();
+        for (Iterator<String> iter = validActions.getActionTakenCodes().iterator(); iter.hasNext();) {
+            String actionTakenCode = iter.next();
             validActionsVO.addValidActionsAllowed(actionTakenCode);
         }
         return validActionsVO;
@@ -373,12 +373,11 @@ public class DTOConverter {
 
                 // validate inputs from client application if the attribute is capable
                 if (attribute instanceof WorkflowAttributeXmlValidator) {
-                    List errors = ((WorkflowAttributeXmlValidator) attribute).validateClientRoutingData();
+                    List<WorkflowAttributeValidationError> errors = ((WorkflowAttributeXmlValidator) attribute).validateClientRoutingData();
                     if (!errors.isEmpty()) {
                         inError = true;
                         errorMessage += "Error validating attribute " + definitions[index].getAttributeName() + " ";
-                        for (Iterator iter = errors.iterator(); iter.hasNext();) {
-                            WorkflowAttributeValidationError error = (WorkflowAttributeValidationError) iter.next();
+                        for (WorkflowAttributeValidationError error : errors) {
                             errorMessage += error.getMessage() + " ";
                         }
                     }
@@ -526,8 +525,7 @@ public class DTOConverter {
         actionRequestVO.setParentActionRequestId(actionRequest.getParentActionRequestId());
         ActionRequestDTO[] childRequestVOs = new ActionRequestDTO[actionRequest.getChildrenRequests().size()];
         int index = 0;
-        for (Iterator iterator = actionRequest.getChildrenRequests().iterator(); iterator.hasNext();) {
-            ActionRequestValue childRequest = (ActionRequestValue) iterator.next();
+        for (ActionRequestValue childRequest : actionRequest.getChildrenRequests()) {
             ActionRequestDTO childRequestVO = convertActionRequest(childRequest);
             childRequestVO.setParentActionRequest(actionRequestVO);
             childRequestVOs[index++] = childRequestVO;
@@ -604,43 +602,64 @@ public class DTOConverter {
     }
 
     /**
-     * Converts an ActionRequestVO to an ActionRequest. The ActionRequestVO passed in must be the root action request in the
+     * Interface for a simple service providing RouteNodeInstanceS based on their IDs 
+     */
+    public static interface RouteNodeInstanceLoader {
+    	RouteNodeInstance load(Long routeNodeInstanceID);
+    }
+    
+    /**
+     * Converts an ActionRequestVO to an ActionRequest. The ActionRequestDTO passed in must be the root action request in the
      * graph, otherwise an IllegalArgumentException is thrown. This is to avoid potentially sticky issues with circular
      * references in the conversion. NOTE: This method's primary purpose is to convert ActionRequestVOs returned from a
-     * RouteModule. Incidentally, the VO's returned from the route module will be lacking some information (like the node
+     * RouteModule. Incidentally, the DTO's returned from the route module will be lacking some information (like the node
      * instance) so no attempts are made to convert this data since further initialization is handled by a higher level
      * component (namely ActionRequestService.initializeActionRequestGraph).
      */
-    public static ActionRequestValue convertActionRequestVO(ActionRequestDTO actionRequestVO) {
-        if (actionRequestVO == null) {
+    public static ActionRequestValue convertActionRequestDTO(ActionRequestDTO actionRequestDTO) {
+    	return convertActionRequestDTO(actionRequestDTO, null);
+    }
+    
+    /**
+     * Converts an ActionRequestVO to an ActionRequest. The ActionRequestDTO passed in must be the root action request in the
+     * graph, otherwise an IllegalArgumentException is thrown. This is to avoid potentially sticky issues with circular
+     * references in the conversion. 
+     * @param routeNodeInstanceLoader a service that will provide routeNodeInstanceS based on their IDs.
+     */
+    public static ActionRequestValue convertActionRequestDTO(ActionRequestDTO actionRequestDTO, 
+    		RouteNodeInstanceLoader routeNodeInstanceLoader) {
+    	
+        if (actionRequestDTO == null) {
             return null;
         }
-        if (actionRequestVO.getParentActionRequest() != null || actionRequestVO.getParentActionRequestId() != null) {
+        if (actionRequestDTO.getParentActionRequest() != null || actionRequestDTO.getParentActionRequestId() != null) {
             throw new IllegalArgumentException("Cannot convert a non-root ActionRequestVO");
         }
         ActionRequestValue actionRequest = new ActionRequestFactory().createBlankActionRequest();
-        populateActionRequest(actionRequest, actionRequestVO);
-        if (actionRequestVO.getChildrenRequests() != null) {
-            for (int i = 0; i < actionRequestVO.getChildrenRequests().length; i++) {
-                ActionRequestDTO childVO = actionRequestVO.getChildrenRequests()[i];
-                actionRequest.getChildrenRequests().add(convertActionRequestVO(childVO, actionRequest));
+        populateActionRequest(actionRequest, actionRequestDTO, routeNodeInstanceLoader);
+        if (actionRequestDTO.getChildrenRequests() != null) {
+            for (int i = 0; i < actionRequestDTO.getChildrenRequests().length; i++) {
+                ActionRequestDTO childVO = actionRequestDTO.getChildrenRequests()[i];
+                actionRequest.getChildrenRequests().add(convertActionRequestVO(childVO, actionRequest, routeNodeInstanceLoader));
             }
         }
         return actionRequest;
     }
 
-    public static ActionRequestValue convertActionRequestVO(ActionRequestDTO actionRequestVO, ActionRequestValue parentActionRequest) {
-        if (actionRequestVO == null) {
+    // TODO: should this be private?  If so, rename to convertActionRequestDTO for consistency.
+    public static ActionRequestValue convertActionRequestVO(ActionRequestDTO actionRequestDTO, ActionRequestValue parentActionRequest,
+    		RouteNodeInstanceLoader routeNodeInstanceLoader) {
+        if (actionRequestDTO == null) {
             return null;
         }
         ActionRequestValue actionRequest = new ActionRequestFactory().createBlankActionRequest();
-        populateActionRequest(actionRequest, actionRequestVO);
+        populateActionRequest(actionRequest, actionRequestDTO, routeNodeInstanceLoader);
         actionRequest.setParentActionRequest(parentActionRequest);
         actionRequest.setParentActionRequestId(parentActionRequest.getActionRequestId());
-        if (actionRequestVO.getChildrenRequests() != null) {
-            for (int i = 0; i < actionRequestVO.getChildrenRequests().length; i++) {
-                ActionRequestDTO childVO = actionRequestVO.getChildrenRequests()[i];
-                actionRequest.getChildrenRequests().add(convertActionRequestVO(childVO, actionRequest));
+        if (actionRequestDTO.getChildrenRequests() != null) {
+            for (int i = 0; i < actionRequestDTO.getChildrenRequests().length; i++) {
+                ActionRequestDTO childVO = actionRequestDTO.getChildrenRequests()[i];
+                actionRequest.getChildrenRequests().add(convertActionRequestVO(childVO, actionRequest, routeNodeInstanceLoader));
             }
         }
         return actionRequest;
@@ -649,41 +668,39 @@ public class DTOConverter {
     /**
      * This method converts everything except for the parent and child requests
      */
-    private static void populateActionRequest(ActionRequestValue actionRequest, ActionRequestDTO actionRequestVO) {
+    private static void populateActionRequest(ActionRequestValue actionRequest, ActionRequestDTO actionRequestDTO, 
+    		RouteNodeInstanceLoader routeNodeInstanceLoader) {
 
-        actionRequest.setActionRequested(actionRequestVO.getActionRequested());
-        actionRequest.setActionRequestId(actionRequestVO.getActionRequestId());
-        actionRequest.setActionTakenId(actionRequestVO.getActionTakenId());
-        actionRequest.setAnnotation(actionRequestVO.getAnnotation());
-        actionRequest.setApprovePolicy(actionRequestVO.getApprovePolicy());
+        actionRequest.setActionRequested(actionRequestDTO.getActionRequested());
+        actionRequest.setActionRequestId(actionRequestDTO.getActionRequestId());
+        actionRequest.setActionTakenId(actionRequestDTO.getActionTakenId());
+        actionRequest.setAnnotation(actionRequestDTO.getAnnotation());
+        actionRequest.setApprovePolicy(actionRequestDTO.getApprovePolicy());
         actionRequest.setCreateDate(new Timestamp(new Date().getTime()));
-        actionRequest.setCurrentIndicator(actionRequestVO.getCurrentIndicator());
-        actionRequest.setDelegationType(actionRequestVO.getDelegationType());
-        actionRequest.setDocVersion(actionRequestVO.getDocVersion());
-        actionRequest.setIgnorePrevAction(actionRequestVO.getIgnorePrevAction());
-        actionRequest.setPriority(actionRequestVO.getPriority());
-        actionRequest.setQualifiedRoleName(actionRequestVO.getQualifiedRoleName());
-        actionRequest.setQualifiedRoleNameLabel(actionRequestVO.getQualifiedRoleNameLabel());
-        actionRequest.setRecipientTypeCd(actionRequestVO.getRecipientTypeCd());
-        actionRequest.setResponsibilityDesc(actionRequestVO.getResponsibilityDesc());
-        actionRequest.setResponsibilityId(actionRequestVO.getResponsibilityId());
-        actionRequest.setRoleName(actionRequestVO.getRoleName());
-        Long routeHeaderId = actionRequestVO.getRouteHeaderId();
+        actionRequest.setCurrentIndicator(actionRequestDTO.getCurrentIndicator());
+        actionRequest.setDelegationType(actionRequestDTO.getDelegationType());
+        actionRequest.setDocVersion(actionRequestDTO.getDocVersion());
+        actionRequest.setIgnorePrevAction(actionRequestDTO.getIgnorePrevAction());
+        actionRequest.setPriority(actionRequestDTO.getPriority());
+        actionRequest.setQualifiedRoleName(actionRequestDTO.getQualifiedRoleName());
+        actionRequest.setQualifiedRoleNameLabel(actionRequestDTO.getQualifiedRoleNameLabel());
+        actionRequest.setRecipientTypeCd(actionRequestDTO.getRecipientTypeCd());
+        actionRequest.setResponsibilityDesc(actionRequestDTO.getResponsibilityDesc());
+        actionRequest.setResponsibilityId(actionRequestDTO.getResponsibilityId());
+        actionRequest.setRoleName(actionRequestDTO.getRoleName());
+        Long routeHeaderId = actionRequestDTO.getRouteHeaderId();
         if (routeHeaderId != null) {
             actionRequest.setRouteHeaderId(routeHeaderId);
             actionRequest.setRouteHeader(KEWServiceLocator.getRouteHeaderService().getRouteHeader(routeHeaderId));
         }
-        actionRequest.setRouteLevel(actionRequestVO.getRouteLevel());
-        // TODO add the node instance to the VO
-        // actionRequest.setRouteMethodName(actionRequestVO.getRouteMethodName());
-        actionRequest.setStatus(actionRequestVO.getStatus());
-        // TODO this should be moved to a validate somewhere's...
-        if (actionRequestVO.getPrincipalId() != null) {
-        	actionRequest.setPrincipalId(actionRequestVO.getPrincipalId());
-        } else if (actionRequestVO.getGroupId() != null) {
-        	actionRequest.setGroupId(actionRequestVO.getGroupId());
-        } else {
-        	throw new RiceRuntimeException("Post processor didn't set a user or workgroup on the request");
+        actionRequest.setRouteLevel(actionRequestDTO.getRouteLevel());
+
+        actionRequest.setStatus(actionRequestDTO.getStatus());
+        actionRequest.setPrincipalId(actionRequestDTO.getPrincipalId());
+        actionRequest.setGroupId(actionRequestDTO.getGroupId());
+        
+        if (routeNodeInstanceLoader != null && actionRequestDTO.getNodeInstanceId() != null) {
+        	actionRequest.setNodeInstance(routeNodeInstanceLoader.load(actionRequestDTO.getNodeInstanceId()));
         }
     }
 

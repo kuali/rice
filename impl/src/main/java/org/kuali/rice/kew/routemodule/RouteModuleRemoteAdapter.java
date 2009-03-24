@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.dto.DocumentContentDTO;
@@ -70,7 +71,13 @@ public class RouteModuleRemoteAdapter implements RouteModule {
                 for (Iterator iterator = rootRequests.iterator(); iterator.hasNext();) {
                     ActionRequestDTO actionRequestVO = (ActionRequestDTO) iterator.next();
                     actionRequestVO.setRouteHeaderId(routeHeader.getRouteHeaderId());
-                    actionRequests.add(DTOConverter.convertActionRequestVO(actionRequestVO));
+                    
+                    // TODO this should be moved to a validate somewhere's...
+                    if (actionRequestVO.getPrincipalId() == null && actionRequestVO.getGroupId() == null) {
+                    	throw new RiceRuntimeException("Post processor didn't set a user or workgroup on the request");
+                    }
+                    
+                    actionRequests.add(DTOConverter.convertActionRequestDTO(actionRequestVO));
                 }
             }
             return actionRequests;

@@ -16,32 +16,47 @@
  */
 package org.kuali.rice.kew.routelog.web;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.namespace.QName;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessages;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.doctype.SecuritySession;
 import org.kuali.rice.kew.doctype.service.DocumentSecurityService;
-import org.kuali.rice.kew.engine.simulation.SimulationCriteria;
-import org.kuali.rice.kew.engine.simulation.SimulationEngine;
-import org.kuali.rice.kew.engine.simulation.SimulationResults;
+import org.kuali.rice.kew.dto.ActionRequestDTO;
+import org.kuali.rice.kew.dto.DTOConverter;
+import org.kuali.rice.kew.dto.DocumentDetailDTO;
+import org.kuali.rice.kew.dto.ReportCriteriaDTO;
+import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
+import org.kuali.rice.kew.dto.StateDTO;
+import org.kuali.rice.kew.dto.DTOConverter.RouteNodeInstanceLoader;
+import org.kuali.rice.kew.engine.node.Branch;
+import org.kuali.rice.kew.engine.node.NodeState;
+import org.kuali.rice.kew.engine.node.RouteNode;
+import org.kuali.rice.kew.engine.node.RouteNodeInstance;
+import org.kuali.rice.kew.engine.node.service.RouteNodeService;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.service.WorkflowUtility;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.KewKualiAction;
-import org.kuali.rice.kew.web.WorkflowAction;
 import org.kuali.rice.kew.web.session.UserSession;
 
 
@@ -53,7 +68,7 @@ import org.kuali.rice.kew.web.session.UserSession;
 public class RouteLogAction extends KewKualiAction {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RouteLogAction.class);
-
+    
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         RouteLogForm rlForm = (RouteLogForm) form;
@@ -73,9 +88,8 @@ public class RouteLogAction extends KewKualiAction {
           return mapping.findForward("NotAuthorized");
         }
 
-        for (Iterator iter = routeHeader.getActionsTaken().iterator(); iter.hasNext();) {
-            ActionTakenValue actionTaken = (ActionTakenValue) iter.next();
-            Collections.sort((List) actionTaken.getActionRequests(), new Utilities.RouteLogActionRequestSorter());
+        for (ActionTakenValue actionTaken : routeHeader.getActionsTaken()) {
+            Collections.sort((List<ActionRequestValue>) actionTaken.getActionRequests(), new Utilities.RouteLogActionRequestSorter());
         }
 
         populateRouteLogFormActionRequests(rlForm, routeHeader);
@@ -95,6 +109,7 @@ public class RouteLogAction extends KewKualiAction {
         return super.execute(mapping, rlForm, request, response);
     }
 
+    @SuppressWarnings("unchecked")
     public void populateRouteLogFormActionRequests(RouteLogForm rlForm, DocumentRouteHeaderValue routeHeader) {
         List rootRequests = getActionRequestService().getRootRequests(routeHeader.getActionRequests());
         Collections.sort(rootRequests, new Utilities.RouteLogActionRequestSorter());
@@ -116,16 +131,27 @@ public class RouteLogAction extends KewKualiAction {
     }
 
     public void populateRouteLogFutureRequests(RouteLogForm rlForm, DocumentRouteHeaderValue document) throws Exception {
-        SimulationEngine simEngine = new SimulationEngine();
-        SimulationResults simResults = simEngine.runSimulation(new SimulationCriteria(document.getRouteHeaderId()));
-        // should now be sorted list
-        List rootRequests = getActionRequestService().getRootRequests(simResults.getSimulatedActionRequests());
-        Collections.sort(rootRequests, new Utilities.RouteLogActionRequestSorter());
-        int arCount = 0;
-        for (Iterator iterator = rootRequests.iterator(); iterator.hasNext();) {
-            ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();
+
+        ReportCriteriaDTO reportCriteria = new ReportCriteriaDTO(document.getRouteHeaderId());
+        String serviceNamespace = document.getDocumentType().getServiceNamespace();
+        WorkflowUtility workflowUtility = (WorkflowUtility)GlobalResourceLoader.getService(new QName(serviceNamespace, "WorkflowUtilityService"));
+
+        // gather the IDs for action requests that predate the simulation
+		Set<Long> preexistingActionRequestIds = getActionRequestIds(document);
+        
+		// run the simulation via WorkflowUtility
+        DocumentDetailDTO documentDetail = workflowUtility.routingReport(reportCriteria);
+
+        // fabricate our ActionRequestValueS from the results
+        List<ActionRequestValue> futureActionRequests = 
+        	reconstituteActionRequestValues(documentDetail, preexistingActionRequestIds);
+
+        Collections.sort(futureActionRequests, new Utilities.RouteLogActionRequestSorter());
+    
+        int pendingActionRequestCount = 0;
+        for (ActionRequestValue actionRequest: futureActionRequests) {
             if (actionRequest.isPending()) {
-                arCount++;
+                pendingActionRequestCount++;
 
                 if (KEWConstants.ACTION_REQUEST_INITIALIZED.equals(actionRequest.getStatus())) {
                     actionRequest.setDisplayStatus("PENDING");
@@ -134,15 +160,268 @@ public class RouteLogAction extends KewKualiAction {
                 }
             }
         }
-        rlForm.setFutureRootRequests(rootRequests);
-        rlForm.setFutureActionRequestCount(arCount);
+
+        rlForm.setFutureRootRequests(futureActionRequests);
+        rlForm.setFutureActionRequestCount(pendingActionRequestCount);
     }
 
+	/**
+	 * This utility method returns a Set of LongS containing the IDs for the ActionRequestValueS associated with 
+	 * this DocumentRouteHeaderValue. 
+	 */
+	private Set<Long> getActionRequestIds(DocumentRouteHeaderValue document) {
+		Set<Long> actionRequestIds = new HashSet<Long>();
+		if (document.getActionRequests() != null) { 
+			for (ActionRequestValue actionRequest : document.getActionRequests()) {
+				if (actionRequest.getActionRequestId() != null) {
+					actionRequestIds.add(actionRequest.getActionRequestId());
+				}
+			}
+		}
+		return actionRequestIds;
+	}
+
+	/**
+	 * This method creates ActionRequestValue objects from the DocumentDetailDTO output from 
+	 * {@link WorkflowUtility#routingReport(ReportCriteriaDTO)}Report()
+	 * 
+	 * @param documentDetail contains the DTOs from which the ActionRequestValues are reconstituted
+	 * @param preexistingActionRequestIds this is a Set of ActionRequest IDs that will not be reconstituted
+	 * @return the ActionRequestValueS that have been created
+	 */
+	private List<ActionRequestValue> reconstituteActionRequestValues(DocumentDetailDTO documentDetail,
+			Set<Long> preexistingActionRequestIds) {
+
+        RouteNodeInstanceFabricator routeNodeInstanceFabricator = 
+    		new RouteNodeInstanceFabricator(KEWServiceLocator.getRouteNodeService());
+
+        if (documentDetail.getNodeInstances() != null && documentDetail.getNodeInstances().length > 0) {
+        	for (RouteNodeInstanceDTO routeNodeInstanceVO : documentDetail.getNodeInstances()) {
+        		routeNodeInstanceFabricator.importRouteNodeInstanceDTO(routeNodeInstanceVO);
+        	}
+		}
+        
+        ActionRequestDTO[] actionRequestVOs = documentDetail.getActionRequests();
+        List<ActionRequestValue> futureActionRequests = new ArrayList<ActionRequestValue>();
+        if (actionRequestVOs != null) for (ActionRequestDTO actionRequestVO : actionRequestVOs) if (actionRequestVO != null) {
+        	if (!preexistingActionRequestIds.contains(actionRequestVO.getActionRequestId())) {
+        		ActionRequestValue converted = DTOConverter.convertActionRequestDTO(actionRequestVO, routeNodeInstanceFabricator);
+        		futureActionRequests.add(converted);
+        	}
+        }
+		return futureActionRequests;
+	}
+    
     private ActionRequestService getActionRequestService() {
         return (ActionRequestService) KEWServiceLocator.getService(KEWServiceLocator.ACTION_REQUEST_SRV);
     }
-
+    
     private UserSession getUserSession(HttpServletRequest request) {
         return UserSession.getAuthenticatedUser();
     }
+    
+    /**
+     * Creates dummy RouteNodeInstances based on imported data from RouteNodeInstanceDTOs.
+     * It is then able to vend those RouteNodeInstanceS back by their IDs.
+     * 
+     * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+     *
+     */
+    private static class RouteNodeInstanceFabricator implements RouteNodeInstanceLoader {
+
+    	private Map<Long,Branch> branches = new HashMap<Long, Branch>();;
+    	private Map<Long,RouteNodeInstance> routeNodeInstances = new HashMap<Long, RouteNodeInstance>();
+    	private Map<Long,RouteNode> routeNodes = new HashMap<Long, RouteNode>();
+    	private Map<Long,NodeState> nodeStates = new HashMap<Long, NodeState>();
+
+    	private RouteNodeService routeNodeService;
+    	
+    	/**
+		 * This constructs a FutureRouteNodeInstanceFabricator, which will generate bogus
+		 * RouteNodeInstances for SimulationEngine results
+		 * 
+		 */
+		public RouteNodeInstanceFabricator(RouteNodeService routeNodeService) {
+			this.routeNodeService = routeNodeService;
+		}
+
+		/**
+		 * 
+		 * This method looks at the given RouteNodeInstanceDTO and imports it (and all it's ancestors)
+		 * as dummy RouteNodeInstanceS
+		 * 
+		 * @param nodeInstanceDTO
+		 */
+		public void importRouteNodeInstanceDTO(RouteNodeInstanceDTO nodeInstanceDTO) {
+			_importRouteNodeInstanceDTO(nodeInstanceDTO);
+		}
+		
+		/**
+		 * helper method for {@link #importRouteNodeInstanceDTO(RouteNodeInstanceDTO)} which does all
+		 * the work.  The public method just wraps this one but hides the returned RouteNodeInstance,
+		 * which is used for the recursive call to populate the nextNodeInstanceS inside our 
+		 * RouteNodeInstanceS.
+		 * 
+		 * @param nodeInstanceDTO
+		 * @return
+		 */
+    	private RouteNodeInstance _importRouteNodeInstanceDTO(RouteNodeInstanceDTO nodeInstanceDTO) {
+    		if (nodeInstanceDTO == null) {
+    			return null;
+    		}
+    		RouteNodeInstance nodeInstance = new RouteNodeInstance();
+    		nodeInstance.setActive(nodeInstanceDTO.isActive());
+
+    		nodeInstance.setComplete(nodeInstanceDTO.isComplete());
+    		nodeInstance.setDocumentId(nodeInstanceDTO.getDocumentId());
+    		nodeInstance.setInitial(nodeInstanceDTO.isInitial());
+
+    		Branch branch = getBranch(nodeInstanceDTO.getBranchId());
+    		nodeInstance.setBranch(branch);
+
+    		if (nodeInstanceDTO.getRouteNodeId() != null) {
+    			RouteNode routeNode = routeNodeService.findRouteNodeById(nodeInstanceDTO.getRouteNodeId());
+
+    			if (routeNode == null) {
+    				routeNode = getRouteNode(nodeInstanceDTO.getRouteNodeId());
+    				routeNode.setNodeType(nodeInstanceDTO.getName());
+    			}
+
+    			nodeInstance.setRouteNode(routeNode);
+
+    			if (routeNode.getBranch() != null) {
+        			branch.setName(routeNode.getBranch().getName());
+        		} 
+    		}
+
+    		RouteNodeInstance process = getRouteNodeInstance(nodeInstanceDTO.getProcessId());
+    		nodeInstance.setProcess(process);
+
+    		nodeInstance.setRouteNodeInstanceId(nodeInstanceDTO.getRouteNodeInstanceId());
+    		DTOConverter.convertState(null);
+
+    		List<NodeState> nodeState = new ArrayList<NodeState>();
+    		if (nodeInstanceDTO.getState() != null) for (StateDTO stateDTO : nodeInstanceDTO.getState()) {
+    			NodeState state = getNodeState(stateDTO.getStateId());
+    			state.setKey(stateDTO.getKey());
+    			state.setValue(stateDTO.getValue());
+    			state.setStateId(stateDTO.getStateId());
+    			state.setNodeInstance(nodeInstance);
+    			nodeState.add(state);
+    		}
+    		nodeInstance.setState(nodeState);
+
+    		List<RouteNodeInstance> nextNodeInstances = new ArrayList<RouteNodeInstance>();
+    		nodeInstance.setNextNodeInstances(nextNodeInstances);
+
+    		for (RouteNodeInstanceDTO nextNodeInstanceVO : nodeInstanceDTO.getNextNodes()) {
+    			// recurse to populate nextNodeInstances
+    			nextNodeInstances.add(_importRouteNodeInstanceDTO(nextNodeInstanceVO));
+    		}
+
+    		routeNodeInstances.put(nodeInstance.getRouteNodeInstanceId(), nodeInstance);
+    		return nodeInstance;
+    	}
+    	
+		/**
+		 * This method returns a dummy RouteNodeInstance for the given ID, or null if it hasn't
+		 * imported from a RouteNodeInstanceDTO with that ID
+		 * 
+		 * @see org.kuali.rice.kew.dto.DTOConverter.RouteNodeInstanceLoader#load(java.lang.Long)
+		 */
+		public RouteNodeInstance load(Long routeNodeInstanceID) {
+			return routeNodeInstances.get(routeNodeInstanceID);
+		}
+
+
+    	/**
+    	 * This method creates bogus BranchES as needed
+    	 * 
+    	 * @param branchId
+    	 * @return
+    	 */
+    	private Branch getBranch(Long branchId) {
+    		Branch result = null;
+
+    		if (branchId != null) {
+    			// if branch doesn't exist, create it
+    			if (!branches.containsKey(branchId)) {
+    				result = new Branch();
+    				result.setBranchId(branchId);
+    				branches.put(branchId, result);
+    			} else {
+    				result = branches.get(branchId);
+    			}
+    		}
+    		return result;
+    	}
+
+    	/**
+    	 * This method creates bogus RouteNodeS as needed
+    	 * 
+    	 * @param routeNodeId
+    	 * @return
+    	 */
+    	private RouteNode getRouteNode(Long routeNodeId) {
+    		RouteNode result = null;
+
+    		if (routeNodeId != null) {
+    			// if RouteNode doesn't exist, create it
+    			if (!routeNodes.containsKey(routeNodeId)) {
+    				result = new RouteNode();
+    				result.setRouteNodeId(routeNodeId);
+    				routeNodes.put(routeNodeId, result);
+    			} else {
+    				result = routeNodes.get(routeNodeId);
+    			}
+    		}
+    		return result;
+    	}
+
+    	/**
+    	 * This method creates bogus RouteNodeInstanceS as needed
+    	 * 
+    	 * @param routeNodeInstanceId
+    	 * @return
+    	 */
+    	public RouteNodeInstance getRouteNodeInstance(Long routeNodeInstanceId) {
+    		RouteNodeInstance result = null;
+
+    		if (routeNodeInstanceId != null) {
+    			// if RouteNodeInstance doesn't exist, create it
+    			if (!routeNodeInstances.containsKey(routeNodeInstanceId)) {
+    				result = new RouteNodeInstance();
+    				result.setRouteNodeInstanceId(routeNodeInstanceId);
+    				routeNodeInstances.put(routeNodeInstanceId, result);
+    			} else {
+    				result = routeNodeInstances.get(routeNodeInstanceId);
+    			}
+    		}
+    		return result;
+    	}
+
+    	/**
+    	 * This method creates bogus NodeStateS as needed
+    	 * 
+    	 * @param nodeStateId
+    	 * @return
+    	 */
+    	private NodeState getNodeState(Long nodeStateId) {
+    		NodeState result = null;
+
+    		if (nodeStateId != null) {
+    			// if NodeState doesn't exist, create it
+    			if (!nodeStates.containsKey(nodeStateId)) {
+    				result = new NodeState();
+    				result.setNodeStateId(nodeStateId);
+    				nodeStates.put(nodeStateId, result);
+    			} else {
+    				result = nodeStates.get(nodeStateId);
+    			}
+    		}
+    		return result;
+    	}
+
+    } // end inner class FutureRouteNodeInstanceFabricator
+    
 }

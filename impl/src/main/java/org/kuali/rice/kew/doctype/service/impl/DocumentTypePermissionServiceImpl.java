@@ -164,9 +164,9 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 			AttributeSet permissionDetails = buildDocumentTypeDocumentStatusPermissionDetails(documentType, documentStatus);
 			AttributeSet roleQualifiers = buildRouteHeaderIdRoleDocumentTypeDocumentStatusQualifiers(documentType, documentStatus, routeHeaderId);
 			
-			if (LOG.isInfoEnabled()) {
-				LOG.info("Permission details values: " + permissionDetails.formattedDump(10));
-				LOG.info("Role qualifiers values: " + roleQualifiers.formattedDump(10));
+			if (LOG.isDebugEnabled()) {
+				LOG.debug("Permission details values: " + permissionDetails.formattedDump(10));
+				LOG.debug("Role qualifiers values: " + roleQualifiers.formattedDump(10));
 			}
 			if (useKimPermission(KEWConstants.KEW_NAMESPACE, KEWConstants.ROUTE_PERMISSION, permissionDetails)) {
 				return getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.KEW_NAMESPACE, KEWConstants.ROUTE_PERMISSION, permissionDetails, roleQualifiers);

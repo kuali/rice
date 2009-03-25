@@ -3,11 +3,11 @@ package org.kuali.rice.kim.service;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kim.bo.entity.KimEntityName;
-import org.kuali.rice.kim.bo.entity.KimEntityNamePrincipalName;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityNameInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityPrivacyPreferencesInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 
 public interface IdentityService {
 	
@@ -24,12 +24,12 @@ public interface IdentityService {
 	// KIM INTERNAL METHODS
 	
 	/** Get a KimPrincipal object based on it's unique principal ID */
-	KimPrincipal getPrincipal(String principalId);
+	KimPrincipalInfo getPrincipal(String principalId);
 	
 	/** Get a KimPrincipal object based on the principalName. */
-	KimPrincipal getPrincipalByPrincipalName(String principalName);
+	KimPrincipalInfo getPrincipalByPrincipalName(String principalName);
 
-	KimPrincipal getPrincipalByPrincipalNameAndPassword(String principalName, String password);
+	KimPrincipalInfo getPrincipalByPrincipalNameAndPassword(String principalName, String password);
 	
 	/** Find entity objects based on the given criteria. */
 //	List<KimEntity> lookupEntitys(Map<String,String> searchCriteria);
@@ -42,20 +42,20 @@ public interface IdentityService {
 	
 	KimEntityPrivacyPreferencesInfo getEntityPrivacyPreferences( String entityId );
 	
-    Map<String, KimEntityNamePrincipalName> getDefaultNamesForPrincipalIds(List<String> principalIds);
+    Map<String, KimEntityNamePrincipalNameInfo> getDefaultNamesForPrincipalIds(List<String> principalIds);
     
-    Map<String, KimEntityName> getDefaultNamesForEntityIds(List<String> entityIds);
+    Map<String, KimEntityNameInfo> getDefaultNamesForEntityIds(List<String> entityIds);
 
-	/** Return the entity ID for the given principal */
-	String getEntityIdByPrincipalId( String principalId );
-	
-	/** Return the entity ID for a given principal name */
-	String getEntityIdByPrincipalName( String principalName );
-
-	/** Return the principal ID for a given principal name */
-	String getPrincipalIdByPrincipalName( String principalName );
-
-	/** Find entity IDs based on the given criteria. */
-	List<String> lookupEntityIds(Map<String,String> searchCriteria);
+//	/** Return the entity ID for the given principal */
+//	String getEntityIdByPrincipalId( String principalId );
+//	
+//	/** Return the entity ID for a given principal name */
+//	String getEntityIdByPrincipalName( String principalName );
+//
+//	/** Return the principal ID for a given principal name */
+//	String getPrincipalIdByPrincipalName( String principalName );
+//
+//	/** Find entity IDs based on the given criteria. */
+//	List<String> lookupEntityIds(Map<String,String> searchCriteria);
     
 }

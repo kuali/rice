@@ -35,6 +35,8 @@ public class KIMPropertyConstants extends JSTLConstants {
 	public static class Principal {
 		public static final String PRINCIPAL_ID = "principalId";
 		public static final String PRINCIPAL_NAME = "principalName";
+		public static final String PASSWORD = "password";
+		public static final String ACTIVE = KNSPropertyConstants.ACTIVE;
 	}
 
 	public static class Person {

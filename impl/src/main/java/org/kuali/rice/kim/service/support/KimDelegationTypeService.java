@@ -48,20 +48,4 @@ public interface KimDelegationTypeService extends KimTypeService {
      */
     boolean doesDelegationQualifierMatchQualification( AttributeSet qualification, AttributeSet delegationQualifier );
 
-    /** Same as {@link #doesDelegationQualifierMatchQualification(AttributeSet, AttributeSet)} except that it takes a list of qualifiers to check.
-     */
-    List<DelegateInfo> doDelegationQualifiersMatchQualification( AttributeSet qualification, List<DelegateInfo> delegationMemberList );
-
-    /**
-     * Convert a set of attributes that need to be converted.  For example,
-     * this method could take [chart=BL,org=PSY] and return [campus=BLOOMINGTON]
-     * if this role was based on the campus and the role assigned to it was based 
-     * on organization.
-     * 
-     * The contents of the passed in attribute set should not be modified as they may be used in future calls by
-     * the role service.
-     * 
-     */
-    AttributeSet convertQualificationAttributesToRequired( AttributeSet qualificationAttributes );
-
 }

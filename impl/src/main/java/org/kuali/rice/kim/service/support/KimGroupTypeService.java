@@ -15,10 +15,6 @@
  */
 package org.kuali.rice.kim.service.support;
 
-import java.util.List;
-
-import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 /**
  * This is a service interface that must be used for a service related to a role type.

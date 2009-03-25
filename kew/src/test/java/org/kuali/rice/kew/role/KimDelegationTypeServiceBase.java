@@ -15,25 +15,11 @@
  */
 package org.kuali.rice.kew.role;
 
-import java.util.List;
-
-import org.kuali.rice.kim.bo.role.dto.DelegateInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.KimDelegationTypeService;
 import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
 
 public class KimDelegationTypeServiceBase extends KimTypeServiceBase implements KimDelegationTypeService {
-
-	public AttributeSet convertQualificationAttributesToRequired(
-			AttributeSet qualificationAttributes) {
-		return qualificationAttributes;
-	}
-
-	public List<DelegateInfo> doDelegationQualifiersMatchQualification(
-			AttributeSet qualification,
-			List<DelegateInfo> delegationMemberList) {
-		throw new UnsupportedOperationException("This method shouldn't be called anywhere.");
-	}
 
 	public boolean doesDelegationQualifierMatchQualification(
 			AttributeSet qualification, AttributeSet delegationQualifier) {

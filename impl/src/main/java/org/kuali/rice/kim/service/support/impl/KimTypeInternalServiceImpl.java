@@ -16,7 +16,6 @@
 package org.kuali.rice.kim.service.support.impl;
 
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
-import org.kuali.rice.kim.dao.KimPermissionDao;
 import org.kuali.rice.kim.dao.KimTypeDao;
 import org.kuali.rice.kim.service.support.KimTypeInternalService;
 

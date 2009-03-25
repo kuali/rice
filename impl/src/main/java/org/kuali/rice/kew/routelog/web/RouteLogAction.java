@@ -303,11 +303,13 @@ public class RouteLogAction extends KewKualiAction {
     		List<NodeState> nodeState = new ArrayList<NodeState>();
     		if (nodeInstanceDTO.getState() != null) for (StateDTO stateDTO : nodeInstanceDTO.getState()) {
     			NodeState state = getNodeState(stateDTO.getStateId());
-    			state.setKey(stateDTO.getKey());
-    			state.setValue(stateDTO.getValue());
-    			state.setStateId(stateDTO.getStateId());
-    			state.setNodeInstance(nodeInstance);
-    			nodeState.add(state);
+    			if (state != null) {
+    				state.setKey(stateDTO.getKey());
+    				state.setValue(stateDTO.getValue());
+    				state.setStateId(stateDTO.getStateId());
+    				state.setNodeInstance(nodeInstance);
+    				nodeState.add(state);
+    			}
     		}
     		nodeInstance.setState(nodeState);
 

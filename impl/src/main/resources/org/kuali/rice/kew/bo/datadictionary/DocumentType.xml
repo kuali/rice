@@ -41,7 +41,6 @@
 
         <!-- BELOW USED FOR INQUIRY AND LOOKUP ONLY -->
         <ref bean="DocumentType-displayableServiceNamespace" />
-        <ref bean="DocumentType-serviceNamespace" />
 
         <!-- BELOW USED FOR INQUIRY ONLY -->
         <ref bean="DocumentType-displayableUnresolvedDocHandlerUrl" />
@@ -509,8 +508,6 @@
               p:attributeName="label"/>
         <bean parent="FieldDefinition"
               p:attributeName="documentTypeId"/>
-        <bean parent="FieldDefinition"
-              p:attributeName="serviceNamespace"/>
         <bean parent="FieldDefinition"
               p:attributeName="active"/>
       </list>

@@ -78,18 +78,18 @@
   <bean id="PessimisticLock-ownedByPrincipalIdentifier" parent="PessimisticLock-ownedByPrincipalIdentifier-parentBean" />
 
   <bean id="PessimisticLock-ownedByPrincipalIdentifier-parentBean" abstract="true" parent="PersonImpl-principalId">
-    <property name="shortLabel" value="Owner Unvl ID" />
+    <property name="shortLabel" value="Owner Prncpl ID" />
     <property name="control" >
       <bean parent="HiddenControlDefinition" />
     </property>
     <property name="displayLabelAttribute" value="ownedByUser.principalName" />
     <property name="name" value="ownedByPrincipalIdentifier" />
-    <property name="label" value="Lock Owner Universal ID" />
+    <property name="label" value="Lock Owner Principal ID" />
   </bean>
   <bean id="PessimisticLock-ownedByUser.principalName" parent="PessimisticLock-ownedByUser.principalName-parentBean" />
 
   <bean id="PessimisticLock-ownedByUser.principalName-parentBean" abstract="true" parent="PersonImpl-principalName">
-    <property name="shortLabel" value="Owner User ID" />
+    <property name="shortLabel" value="Owner Prncpl Name" />
     <property name="required" value="false" />
     <property name="control" >
       <bean parent="KualiUserControlDefinition"
@@ -98,7 +98,7 @@
             p:userIdAttributeName="ownedByUser.principalName" />
     </property>
     <property name="name" value="ownedByUser.principalName" />
-    <property name="label" value="Lock Owner User ID" />
+    <property name="label" value="Lock Owner Principal Name" />
   </bean>
   
   <!--  

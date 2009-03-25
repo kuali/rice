@@ -43,51 +43,9 @@
         		</documentation>
         	</annotation>
         </element>
-        <element name="documentTypeRouting" type="dt:DocumentTypeRoutingType" minOccurs="0" maxOccurs="unbounded">
-            <annotation>
-                <documentation>
-                 A modifiable configuration parameter in the system.
-                </documentation>
-            </annotation>
-        </element>
       </sequence>
     </complexType>
   </element>
-
-  <complexType name="DocumentTypeRoutingType">
-    <all>
-
-      <element name="name" type="c:ShortStringType">
-        <annotation>
-            <documentation>
-            The name of the document type will get in the database. This is typically the primary way a document type is
-            referred to in routing.
-            </documentation>
-        </annotation>
-      </element>
-
-     <!-- Don't use -->
-      <element name="routingVersion" type="integer" minOccurs="0"/>
-
-      <element name="routePaths" type="dt:RoutePathsType" minOccurs="1" maxOccurs="1">
-        <annotation>
-            <documentation>
-                Defines the available route paths to the document type.  If none are defined the document type
-                inherits the parents route paths. More below.
-            </documentation>
-        </annotation>
-      </element>
-
-      <element name="routeNodes" type="dt:RouteNodesType" minOccurs="1" maxOccurs="1">
-        <annotation>
-            <documentation>
-             Defines the routeNodes in the route path. More below.
-            </documentation>
-        </annotation>
-      </element>
-
-    </all>
-  </complexType>
 
   <complexType name="DocumentTypeType">
     <all>
@@ -216,22 +174,6 @@
       	</annotation>
       </element>
 
-      <element name="routeLevelsInherited" type="boolean" default="false" minOccurs="0">
-      	<annotation>
-      		<documentation>
-      		 Don't use this element. It's here for historical reasons now.
-      		</documentation>
-      	</annotation>
-      </element>
-
-      <element name="attributesInherited" type="boolean" default="false" minOccurs="0">
-      	<annotation>
-      		<documentation>
-      		 Don't use this element. It's here for historical reasons now.
-      		</documentation>
-      	</annotation>
-      </element>
-
       <element name="active" type="boolean" default="false" minOccurs="0">
       	<annotation>
       		<documentation>
@@ -254,8 +196,8 @@
       <element name="attributes" type="dt:AttributesType" minOccurs="0">
       	<annotation>
       		<documentation>
-     		 Attributes associated with this document type.  Currently these are not inherited. This is
-      		 used to associated doc search and action list custom attributes at the moment.
+     		 Attributes associated with this document type. This is used to associate a wide assortment of various types
+     		 of attributes including but not limited to doc search and action list custom attributes.
       		</documentation>
       	</annotation>
       </element>
@@ -287,6 +229,14 @@
 	  </element>
 
     </all>
+    <attribute name="overwriteMode" use="optional">
+        <annotation>
+            <documentation>
+             Sets the overwrite mode (default is false). If overwrite mode is turned on a user may ingest only fields they 
+             wish to change on an existing document type
+            </documentation>
+        </annotation>
+    </attribute>
   </complexType>
 
   <!-- Defined in DocumentTypePolicyEnum class -->

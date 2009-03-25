@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionitem.OutboxItemActionListExtension;
@@ -123,6 +124,10 @@ public class ActionListServiceImpl implements ActionListService {
 
     public Collection<ActionItem> findByWorkflowUserRouteHeaderId(String workflowUserId, Long routeHeaderId) {
         return getActionItemDAO().findByWorkflowUserRouteHeaderId(workflowUserId, routeHeaderId);
+    }
+
+    public Collection<ActionItem> findByDocumentTypeName(String documentTypeName) {
+        return getActionItemDAO().findByDocumentTypeName(documentTypeName);
     }
 
     public ActionItem createActionItemForActionRequest(ActionRequestValue actionRequest) {
@@ -251,12 +256,21 @@ public class ActionListServiceImpl implements ActionListService {
                     actionItem.getActionItemId().toString()));
         }
 
-        if (actionItem.getDocHandlerURL() == null || actionItem.getDocHandlerURL().trim().equals("")) {
-            errors.add(new WorkflowServiceErrorImpl("ActionItem doc handler url empty.", "actionitem.dochdrurl.empty",
-                    actionItem.getActionItemId().toString()));
-        } else if (docType != null && !docType.getDocHandlerUrl().equals(actionItem.getDocHandlerURL())) {
-            errors.add(new WorkflowServiceErrorImpl("ActionItem doc handler url no match.", "actionitem.dochdrurl.nomatch",
-                    actionItem.getActionItemId().toString()));
+        // first check to see if the document type has an empty document handler url
+        if (StringUtils.isNotBlank(docType.getDocHandlerUrl())) {
+            if (actionItem.getDocHandlerURL() == null || actionItem.getDocHandlerURL().trim().equals("")) {
+                errors.add(new WorkflowServiceErrorImpl("ActionItem doc handler url empty.", "actionitem.dochdrurl.empty",
+                        actionItem.getActionItemId().toString()));
+            } else if (docType != null && !docType.getDocHandlerUrl().equals(actionItem.getDocHandlerURL())) {
+                errors.add(new WorkflowServiceErrorImpl("ActionItem doc handler url no match.", "actionitem.dochdrurl.nomatch",
+                        actionItem.getActionItemId().toString()));
+            }
+        } else {
+            // if the doc type doc handler url is blank, verify that the action item doc handler url is also blank
+            if (StringUtils.isNotBlank(actionItem.getDocHandlerURL())) {
+                errors.add(new WorkflowServiceErrorImpl("ActionItem doc handler url not empty.", "actionitem.dochdrurl.not.empty", 
+                        actionItem.getActionItemId().toString()));
+            }
         }
 
         if (!errors.isEmpty()) {
@@ -284,6 +298,10 @@ public class ActionListServiceImpl implements ActionListService {
      */
     public Collection<ActionItem> getOutbox(String principalId, ActionListFilter filter) {
         return this.getActionListDAO().getOutbox(principalId, filter);
+    }
+
+    public Collection<ActionItem> getOutboxItemsByDocumentType(String documentTypeName) {
+        return this.getActionItemDAO().getOutboxItemsByDocumentType(documentTypeName);
     }
 
     /**

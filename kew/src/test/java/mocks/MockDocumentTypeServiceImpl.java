@@ -141,11 +141,20 @@ public class MockDocumentTypeServiceImpl implements DocumentTypeService {
 	public void save(DocumentType documentType) {
 
 	}
+    public void save(DocumentType documentType, boolean flushCache) {
+
+    }
+    public void flushCache() {
+        
+    }
 	public void clearCacheForAttributeUpdate(RuleAttribute ruleAttribute) {
 
 	}
 	public Integer getDocumentTypeCount() {
 		return null;
 	}
+    public List<DocumentType> findPreviousInstances(String documentTypeName) {
+        return null;
+    }
 
 }

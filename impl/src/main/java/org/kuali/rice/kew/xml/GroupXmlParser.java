@@ -28,6 +28,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.kuali.rice.kew.exception.InvalidXmlException;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
@@ -103,7 +104,7 @@ public class GroupXmlParser implements XmlConstants {
                 try {
                     GroupInfo newGroupInfo =  identityManagementService.createGroup(groupInfo);
 
-                    String key = newGroupInfo.getNamespaceCode().trim() + ":" + newGroupInfo.getGroupName().trim();
+                    String key = newGroupInfo.getNamespaceCode().trim() + KEWConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER + newGroupInfo.getGroupName().trim();
                     addGroupMembers(newGroupInfo, key);
                 } catch (Exception e) {
                     throw new RuntimeException("Error creating group.", e);
@@ -119,7 +120,7 @@ public class GroupXmlParser implements XmlConstants {
                     //delete existing group members and replace with new
                     identityManagementService.removeAllGroupMembers(foundGroup.getGroupId());
 
-                    String key = groupInfo.getNamespaceCode().trim() + ":" + groupInfo.getGroupName().trim();
+                    String key = groupInfo.getNamespaceCode().trim() + KEWConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER + groupInfo.getGroupName().trim();
                     addGroupMembers(groupInfo, key);
 
                 } catch (Exception e) {
@@ -253,7 +254,7 @@ public class GroupXmlParser implements XmlConstants {
     }
 
     private void addPrincipalToGroup(String groupNamespace, String groupName, String principalId) {
-        String key = groupNamespace.trim() + ":" + groupName.trim();
+        String key = groupNamespace.trim() + KEWConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER + groupName.trim();
         List<String> principalIds = memberPrincipalIds.get(key);
         if (principalIds == null) {
             principalIds = new ArrayList<String>();
@@ -263,7 +264,7 @@ public class GroupXmlParser implements XmlConstants {
     }
 
     private void addGroupToGroup(String groupNamespace, String groupName, String groupId) {
-        String key = groupNamespace.trim() + ":" + groupName.trim();
+        String key = groupNamespace.trim() + KEWConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER + groupName.trim();
         List<String> groupIds = memberGroupIds.get(key);
         if (groupIds == null) {
             groupIds = new ArrayList<String>();
@@ -273,12 +274,12 @@ public class GroupXmlParser implements XmlConstants {
     }
 
     private void addGroupNameToGroup(String groupNamespace, String groupName, String memberGroupNamespace, String memberGroupName) {
-        String key = groupNamespace.trim() + ":" + groupName.trim();
+        String key = groupNamespace.trim() + KEWConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER + groupName.trim();
         List<String> groupNames = memberGroupNames.get(key);
         if (groupNames == null) {
             groupNames = new ArrayList<String>();
         }
-        groupNames.add(memberGroupNamespace.trim() + ":" + memberGroupName.trim());
+        groupNames.add(memberGroupNamespace.trim() + KEWConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER + memberGroupName.trim());
         memberGroupNames.put(key, groupNames);
     }
 

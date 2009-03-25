@@ -27,6 +27,7 @@ import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.apache.ojb.broker.query.ReportQueryByCriteria;
 import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.actionitem.OutboxItemActionListExtension;
 import org.kuali.rice.kew.actionitem.dao.ActionItemDAO;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
@@ -88,6 +89,20 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         Criteria crit = new Criteria();
         crit.addEqualTo("actionRequestId", actionRequestId);
         return this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionItem.class, crit));
+    }
+
+    public Collection<ActionItem> findByDocumentTypeName(String documentTypeName) {
+        return getItemsByDocumentType(ActionItem.class, documentTypeName);
+    }
+
+    public Collection<ActionItem> getOutboxItemsByDocumentType(String documentTypeName) {
+        return getItemsByDocumentType(OutboxItemActionListExtension.class, documentTypeName);
+    }
+
+    private Collection<ActionItem> getItemsByDocumentType(Class objectClass, String documentTypeName) {
+        Criteria crit = new Criteria();
+        crit.addEqualTo("docName", documentTypeName);
+        return this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(objectClass, crit));
     }
 
     public void saveActionItem(ActionItem actionItem) {
@@ -177,4 +192,5 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
 	     query.addOrderByAscending("routeHeader.routeHeaderId");
 	     return this.getPersistenceBrokerTemplate().getCollectionByQuery(query);
 	}
+
 }

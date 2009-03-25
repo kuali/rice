@@ -67,6 +67,7 @@ public class XmlDigesterServiceImpl implements XmlDigesterService {
                 // should only be set on successful loading
                 xmlDoc.setProcessed(true);
             } catch (Exception e) {
+                xmlDoc.setProcessed(false);
                 addProcessingException(xmlDoc, "Caught Exception loading xml data from " + xmlDoc + ".  Will move associated file to problem dir.", e);
                 LOG.error("Caught Exception loading xml data from " + xmlDoc + ".  Will move associated file to problem dir.", e);
                 if (e instanceof RuntimeException) {

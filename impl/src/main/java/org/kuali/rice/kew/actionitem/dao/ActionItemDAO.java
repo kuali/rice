@@ -50,8 +50,11 @@ public interface ActionItemDAO {
 	public Collection<ActionItem> findByWorkflowUserRouteHeaderId(
 			String workflowUserId, Long routeHeaderId);
 
-	public Collection<Recipient> findSecondaryDelegators(String principalId);
+    public Collection<ActionItem> findByDocumentTypeName(String documentTypeName);
+
+    public Collection<Recipient> findSecondaryDelegators(String principalId);
 
 	public Collection<Recipient> findPrimaryDelegationRecipients(String principalId);
 
+    public Collection<ActionItem> getOutboxItemsByDocumentType(String documentTypeName);
 }

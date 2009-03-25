@@ -154,7 +154,7 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
   }
 
   protected boolean isWorkgroupAuthenticated(String namespace, String workgroupName, SecuritySession session) {
-	  String key = namespace.trim() + ":" + workgroupName.trim();
+	  String key = namespace.trim() + KEWConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER + workgroupName.trim();
       Boolean existingAuth = session.getAuthenticatedWorkgroups().get(key);
 	  if (existingAuth != null) {
 		  return existingAuth;

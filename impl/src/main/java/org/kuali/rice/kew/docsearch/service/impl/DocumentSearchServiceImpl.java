@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
@@ -416,7 +417,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 	}
 
 	private void saveSearch(String principalId, DocSearchCriteriaDTO criteria) {
-		if (principalId == null || "".equals(principalId)) {
+		if (StringUtils.isBlank(principalId)) {
 			String message = "User given to save search was null.";
 			LOG.warn(message);
 			throw new IllegalArgumentException(message);

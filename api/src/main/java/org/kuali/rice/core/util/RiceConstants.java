@@ -19,7 +19,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 /**
- * This is a description of what this class does - delyea don't forget to fill this in.
+ * This is a class to hold constant values that will be used across multiple modules of Rice
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */

@@ -18,7 +18,7 @@ package org.kuali.rice.core.service;
 import java.security.GeneralSecurityException;
 
 /**
- * This is a description of what this class does - delyea don't forget to fill this in. 
+ * This is a service interface to consolidate Kuali encryption operation 
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *

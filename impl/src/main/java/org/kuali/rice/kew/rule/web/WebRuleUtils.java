@@ -214,11 +214,10 @@ public class WebRuleUtils {
 
 	public static void establishDefaultRuleValues(RuleBaseValues rule) {
 		rule.setActiveInd(true);
-		
+
         RuleBaseValues defaultRule = ((RuleService) KEWServiceLocator.getService(KEWServiceLocator.RULE_SERVICE)).findDefaultRuleByRuleTemplateId(
         		rule.getRuleTemplate().getDelegationTemplateId());
         if (defaultRule != null) {
-            //List ruleDelegations = getRuleDelegationService().findByDelegateRuleId(defaultRule.getRuleBaseValuesId());
             defaultRule.setActivationDate(null);
             defaultRule.setCurrentInd(null);
             defaultRule.setDeactivationDate(null);
@@ -236,16 +235,11 @@ public class WebRuleUtils {
 			} catch (NoSuchMethodException e) {
 				throw new RuntimeException(e);
 			}
-            //if (ruleDelegations != null && !ruleDelegations.isEmpty()) {
-            //    RuleDelegation defaultDelegation = (RuleDelegation) ruleDelegations.get(0);
-            //    ruleForm.getRuleDelegation().setDelegationType(defaultDelegation.getDelegationType());
-            //}
         }
 	}
     
 	public static List customizeSections(RuleBaseValues rule, List<Section> sections) {
 		List<Section> finalSections = new ArrayList<Section>();
-		finalSections = new ArrayList<Section>();
 		for (Section section : sections) {
 			// unfortunately, in the case of an inquiry the sectionId will always be null so we have to check section title
 			if (section.getSectionTitle().equals(RULE_ATTRIBUTES_SECTION_TITLE) || 

@@ -164,18 +164,12 @@ public class DocumentTypeXmlValidationTest extends BaseRiceTestCase {
     }
 
     /**
-     * This method tests that a document type routing only ingestion breaks with no routing data
+     * This method tests that a document type using overwrite mode is possible with just the 'name' element
      * 
      * @throws Exception
      */
     @Test public void testNoRoutePathOnly() throws Exception {
-        try {
-            XmlHelper.validate(new InputSource(getClass().getResourceAsStream("NoRoutePathOnlyDocument.xml")));
-            fail("Missing routing information passed validation");
-        } catch (SAXParseException spe) {
-            // expected
-            log.error("Missing routing information exception: " + spe);
-        }
+        XmlHelper.validate(new InputSource(getClass().getResourceAsStream("NoRoutePathOnlyDocument.xml")));
     }
 
 }

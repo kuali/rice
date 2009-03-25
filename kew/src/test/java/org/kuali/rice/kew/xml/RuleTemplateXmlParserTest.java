@@ -31,7 +31,7 @@ import org.kuali.rice.kew.xml.RuleTemplateXmlParser;
 
 
 /**
- * This is a description of what this class does - delyea don't forget to fill this in. 
+ * This is a Test class to test the rule template xml parser
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *

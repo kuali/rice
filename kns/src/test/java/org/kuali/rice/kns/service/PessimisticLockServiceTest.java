@@ -58,7 +58,7 @@ public class PessimisticLockServiceTest extends TestBase {
     @UnitTestData(
             sqlStatements = {
                     @UnitTestSql("DELETE FROM KRNS_PESSIMISTIC_LOCK_T"),
-                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (\"PESSIMISTIC_LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESC_TXT\",\"DOC_HDR_ID\",\"GNRT_DT\",\"PRNCPL_ID\") VALUES (1111, SYS_GUID(), 0, NULL, '1234', to_date('07/01/2007','mm/dd/yyyy'), 'fran')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (\"PESSIMISTIC_LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESC_TXT\",\"DOC_HDR_ID\",\"GNRT_DT\",\"PRNCPL_ID\") VALUES (1111, SYS_GUID(), 0, NULL, '1234', to_date('07/01/2007','mm/dd/yyyy'), 'employee')"),
                     @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (\"PESSIMISTIC_LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESC_TXT\",\"DOC_HDR_ID\",\"GNRT_DT\",\"PRNCPL_ID\") VALUES (1112, SYS_GUID(), 0, NULL, '1235', to_date('10/01/2007','mm/dd/yyyy'), 'frank')"),
                     @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (\"PESSIMISTIC_LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESC_TXT\",\"DOC_HDR_ID\",\"GNRT_DT\",\"PRNCPL_ID\") VALUES (1113, SYS_GUID(), 0, NULL, '1236', to_date('08/01/2007','mm/dd/yyyy'), 'fred')"),
                     @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (\"PESSIMISTIC_LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESC_TXT\",\"DOC_HDR_ID\",\"GNRT_DT\",\"PRNCPL_ID\") VALUES (1114, SYS_GUID(), 0, NULL, '1237', to_date('08/01/2007','mm/dd/yyyy'), 'fred')")
@@ -69,28 +69,30 @@ public class PessimisticLockServiceTest extends TestBase {
         List<PessimisticLock> locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be 4 locks in DB", 4, locks.size());
 
-        String userId = "fran";
+        String userId = "employee";
         String[] lockIdsToVerify = new String[]{"1112", "1113"};
-        assertFalse("User " + userId + " should not be member of pessimistic lock admin workgroup", KIMServiceLocator.getIdentityManagementService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KNSConstants.KNS_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING, null, null ) );
+        assertFalse("User " + userId + " should not be member of pessimistic lock admin permission", KIMServiceLocator.getIdentityManagementService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KNSConstants.KNS_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING, null, null ) );
         verifyDelete(userId, Arrays.asList(lockIdsToVerify), AuthorizationException.class, true);
         userId = "frank";
         lockIdsToVerify = new String[]{"1111", "1113"};
-        assertFalse("User " + userId + " should not be member of pessimistic lock admin workgroup", KIMServiceLocator.getIdentityManagementService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KNSConstants.KNS_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING, null, null ) );
+        assertFalse("User " + userId + " should not be member of pessimistic lock admin permission", KIMServiceLocator.getIdentityManagementService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KNSConstants.KNS_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING, null, null ) );
         verifyDelete(userId, Arrays.asList(lockIdsToVerify), AuthorizationException.class, true);
         userId = "fred";
         lockIdsToVerify = new String[]{"1111", "1112"};
-        assertFalse("User " + userId + " should not be member of pessimistic lock admin workgroup", KIMServiceLocator.getIdentityManagementService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KNSConstants.KNS_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING, null, null ) );
+        assertFalse("User " + userId + " should not be member of pessimistic lock admin permission", KIMServiceLocator.getIdentityManagementService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KNSConstants.KNS_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING, null, null ) );
         verifyDelete(userId, Arrays.asList(lockIdsToVerify), AuthorizationException.class, true);
 
-        verifyDelete("fran", Arrays.asList(new String[]{"1111"}), null, false);
+        verifyDelete("employee", Arrays.asList(new String[]{"1111"}), null, false);
         verifyDelete("frank", Arrays.asList(new String[]{"1112"}), null, false);
         verifyDelete("fred", Arrays.asList(new String[]{"1113"}), null, false);
         locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be 1 lock left in DB", 1, locks.size());
 
         // test admin user can delete any lock
-        userId = "supervisr";
-        assertTrue("User " + userId + " should be member of pessimistic lock admin workgroup", KIMServiceLocator.getIdentityManagementService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KNSConstants.KNS_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING, null, null ) );
+        userId = "fran";
+        assertTrue("User " + userId + " should be member of pessimistic lock admin permission", KIMServiceLocator.getIdentityManagementService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KNSConstants.KNS_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING, null, null ) );
+        userId = "admin";
+        assertTrue("User " + userId + " should be member of pessimistic lock admin permission", KIMServiceLocator.getIdentityManagementService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KNSConstants.KNS_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING, null, null ) );
         verifyDelete(userId, Arrays.asList(new String[]{"1114"}), null, false);
         locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be 0 locks left in DB", 0, locks.size());

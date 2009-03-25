@@ -110,7 +110,7 @@ public class PessimisticLockLookupableHelperServiceImpl extends AbstractLookupab
         // force criteria if not admin user
         Person currentUser = GlobalVariables.getUserSession().getPerson();
         if (!KNSServiceLocator.getPessimisticLockService().isPessimisticLockAdminUser(currentUser)) {
-            fieldValues.put(KNSPropertyConstants.OWNED_BY_PERSON_UNIVERSAL_ID,GlobalVariables.getUserSession().getPerson().getPrincipalId());
+            fieldValues.put(KNSPropertyConstants.OWNED_BY_PRINCIPAL_ID,GlobalVariables.getUserSession().getPerson().getPrincipalId());
         }
 
         setBackLocation(fieldValues.get(KNSConstants.BACK_LOCATION));

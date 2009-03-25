@@ -19,7 +19,6 @@
 package org.kuali.rice.kew.xml;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -28,13 +27,12 @@ import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.engine.node.RouteNode;
-import org.kuali.rice.kew.exception.InvalidWorkgroupException;
 import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
-
+import org.kuali.rice.kns.exception.GroupNotFoundException;
 
 public class DocumentTypeXmlParserTest extends KEWTestCase {
     private List testDoc(String docName, Class expectedException) throws Exception {
@@ -53,6 +51,15 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
                 return new ArrayList();
             }
         }
+    }
+
+    /**
+     * This method tests that the new document type with overwrite mode set to true will insert a 
+     * new document type.
+     */
+    @Test public void testLoadOverwriteDocumentType() throws Exception {
+        testDoc("OverwriteDocumentType", null);
+        assertNotNull("Document type should exist after ingestion", KEWServiceLocator.getDocumentTypeService().findByName("DocumentTypeXmlParserTestDoc_OverwriteDocumentType"));
     }
 
     @Test public void testLoadDocWithVariousActivationTypes() throws Exception {
@@ -91,15 +98,15 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
     }
 
     @Test public void testLoadDocWithBadExceptionWG() throws Exception {
-        testDoc("BadExceptionWorkgroup", InvalidWorkgroupException.class);
+        testDoc("BadExceptionWorkgroup", GroupNotFoundException.class);
     }
 
     @Test public void testLoadDocWithBadSuperUserWG() throws Exception {
-        testDoc("BadSuperUserWorkgroup", InvalidWorkgroupException.class);
+        testDoc("BadSuperUserWorkgroup", GroupNotFoundException.class);
     }
 
     @Test public void testLoadDocWithBadBlanketApproveWG() throws Exception {
-        testDoc("BadBlanketApproveWorkgroup", InvalidWorkgroupException.class);
+        testDoc("BadBlanketApproveWorkgroup", GroupNotFoundException.class);
     }
 
     @Test public void testLoadDocWithBadRuleTemplate() throws Exception {
@@ -294,10 +301,14 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
     	assertEquals("Document type has incorrect label", expectedLabel, testDocType3.getLabel());
     }
 
-    @Test public void testLoadRoutePathOnlyAdjustsDocument() throws Exception {
+    @Test public void testLoadOverwriteModeDocumentType() throws Exception {
         List documentTypes = testDoc("RoutePathAdjustment1", null);
         assertEquals("Incorrect parsed document type count", 1, documentTypes.size());
         DocumentType docType1 = (DocumentType) documentTypes.get(0);
+        assertEquals("The blanket approve workgroup name is incorrect", "TestWorkgroup", docType1.getBlanketApproveWorkgroup().getGroupName());
+        assertEquals("The blanket approve workgroup namespace is incorrect", "KR-WKFLW", docType1.getBlanketApproveWorkgroup().getNamespaceCode());
+        assertEquals("The super user workgroup name is incorrect", "TestWorkgroup", docType1.getSuperUserWorkgroup().getGroupName());
+        assertEquals("The super user workgroup namespace is incorrect", "KR-WKFLW", docType1.getSuperUserWorkgroup().getNamespaceCode());
         List routeNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(docType1, true);
         assertEquals("Incorrect document route node count", 1, routeNodes.size());
         assertEquals("Expected Route Node Name is incorrect", "First", ((RouteNode)routeNodes.get(0)).getRouteNodeName());
@@ -305,6 +316,10 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
         documentTypes = testDoc("RoutePathAdjustment2", null);
         assertEquals("Incorrect parsed document type count", 1, documentTypes.size());
         DocumentType docType2 = (DocumentType) documentTypes.get(0);
+        assertEquals("The blanket approve workgroup name is incorrect", "WorkflowAdmin", docType2.getBlanketApproveWorkgroup().getGroupName());
+        assertEquals("The blanket approve workgroup namespace is incorrect", "KR-WKFLW", docType2.getBlanketApproveWorkgroup().getNamespaceCode());
+        assertEquals("The super user workgroup name is incorrect", "TestWorkgroup", docType2.getSuperUserWorkgroup().getGroupName());
+        assertEquals("The super user workgroup namespace is incorrect", "KR-WKFLW", docType2.getSuperUserWorkgroup().getNamespaceCode());
         routeNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(docType2, true);
         assertEquals("Incorrect document route node count", 2, routeNodes.size());
         assertEquals("Expected Route Node Name is incorrect", "First", ((RouteNode)routeNodes.get(0)).getRouteNodeName());
@@ -322,7 +337,7 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
     	docTypeList = testDoc("ChildParentTestConfig1_Reordered", null);
     	assertEquals("There should be 5 document types.", 5, docTypeList.size());
     }
-    
+
     /**
      * Checks if a child routing document can be processed when it precedes its parent.
      * 
@@ -335,7 +350,7 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
     	docTypeList = testDoc("ChildParentTestConfig1_Routing", null);
     	assertEquals("There should be 5 document types.", 5, docTypeList.size());
     }
-    
+
     /**
      * Checks if the child-parent resolution works with a larger inheritance tree.
      * 
@@ -347,7 +362,7 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
     	docTypeList = testDoc("ChildParentTestConfig1_Reordered2", null);
     	assertEquals("There should be 10 document types.", 10, docTypeList.size());
     }
-    
+
     /**
      * Checks if the child-parent resolution works with a larger inheritance tree and a mix of standard & routing documents.
      * 
@@ -360,5 +375,5 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
     	docTypeList = testDoc("ChildParentTestConfig1_Routing2", null);
     	assertEquals("There should be 10 document types.", 10, docTypeList.size());
     }
-    
+
 }

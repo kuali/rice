@@ -43,7 +43,7 @@ import org.kuali.rice.ksb.security.admin.service.JavaSecurityManagementService;
 import org.springframework.beans.factory.InitializingBean;
 
 /**
- * This is a description of what this class does - delyea don't forget to fill this in. 
+ * This is an implementation of the {@link JavaSecurityManagementService} interface used by the KSB module 
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *

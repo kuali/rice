@@ -23,10 +23,13 @@ import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
- * This is a description of what this class does - delyea don't forget to fill this in. 
+ * This is a business object used to lock a document pessimistically.
+ * Pessimistic locking is more strick than optimistic locking and assumes if a
+ * lock exists that a user should only have read-only access to a document. For
+ * more information see documentation pages.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- *
+ * 
  */
 public class PessimisticLock extends PersistableBusinessObjectBase {
     
@@ -36,9 +39,8 @@ public class PessimisticLock extends PersistableBusinessObjectBase {
     
     // id is sequence number and primary key
     private Long id;
-    // how does below merge with KIM?
-    private String ownedByPersonUniversalIdentifier;
-    private String lockDescriptor; // should this be defaulted to something or 'null means whole doc'
+    private String ownedByPrincipalIdentifier;
+    private String lockDescriptor; // this will be defaulted to the value of DEFAULT_LOCK_DESCRIPTOR constant above
     private Timestamp generatedTimestamp;
     private String documentNumber; // foreign key to document
 
@@ -57,13 +59,13 @@ public class PessimisticLock extends PersistableBusinessObjectBase {
      */
     public PessimisticLock(String documentNumber, String lockDescriptor, Person user) {
         this.documentNumber = documentNumber;
-        this.ownedByPersonUniversalIdentifier = user.getPrincipalId();
+        this.ownedByPrincipalIdentifier = user.getPrincipalId();
         this.lockDescriptor = lockDescriptor;  
         this.generatedTimestamp = KNSServiceLocator.getDateTimeService().getCurrentTimestamp();
     }
     
     public boolean isOwnedByUser(Person user) {
-        return user.getPrincipalId().equals(getOwnedByPersonUniversalIdentifier());
+        return user.getPrincipalId().equals(getOwnedByPrincipalIdentifier());
     }
     
     /**
@@ -81,17 +83,17 @@ public class PessimisticLock extends PersistableBusinessObjectBase {
     }
 
     /**
-     * @return the ownedByPersonUniversalIdentifier
+     * @return the ownedByPrincipalIdentifier
      */
-    public String getOwnedByPersonUniversalIdentifier() {
-        return this.ownedByPersonUniversalIdentifier;
+    public String getOwnedByPrincipalIdentifier() {
+        return this.ownedByPrincipalIdentifier;
     }
 
     /**
-     * @param ownedByPersonUniversalIdentifier the ownedByPersonUniversalIdentifier to set
+     * @param ownedByPrincipalIdentifier the ownedByPrincipalIdentifier to set
      */
-    public void setOwnedByPersonUniversalIdentifier(String ownedByPersonUniversalIdentifier) {
-        this.ownedByPersonUniversalIdentifier = ownedByPersonUniversalIdentifier;
+    public void setOwnedByPrincipalIdentifier(String ownedByPrincipalIdentifier) {
+        this.ownedByPrincipalIdentifier = ownedByPrincipalIdentifier;
     }
 
     /**
@@ -140,7 +142,7 @@ public class PessimisticLock extends PersistableBusinessObjectBase {
      * @return the ownedByUser
      */
     public Person getOwnedByUser() {
-        ownedByUser = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().updatePersonIfNecessary(ownedByPersonUniversalIdentifier, ownedByUser);
+        ownedByUser = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().updatePersonIfNecessary(ownedByPrincipalIdentifier, ownedByUser);
         return ownedByUser;
     }
 
@@ -161,7 +163,7 @@ public class PessimisticLock extends PersistableBusinessObjectBase {
     protected LinkedHashMap toStringMapper() {
         LinkedHashMap m = new LinkedHashMap();
         m.put("id", this.id);
-        m.put("ownedByPersonUniversalIdentifier", this.ownedByPersonUniversalIdentifier);
+        m.put("ownedByPrincipalIdentifier", this.ownedByPrincipalIdentifier);
         m.put("lockDescriptor", this.lockDescriptor);
         m.put("generatedTimestamp", this.generatedTimestamp);
         m.put("documentNumber", this.documentNumber);

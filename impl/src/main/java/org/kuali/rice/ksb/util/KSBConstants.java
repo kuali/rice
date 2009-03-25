@@ -18,7 +18,7 @@ package org.kuali.rice.ksb.util;
 import org.kuali.rice.core.util.JSTLConstants;
 
 /**
- * This is a description of what this class does - delyea don't forget to fill this in.
+ * This is a file for constants used by the KSB module of Rice
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */

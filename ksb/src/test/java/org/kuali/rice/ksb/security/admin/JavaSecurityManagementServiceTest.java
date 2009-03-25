@@ -25,7 +25,7 @@ import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ksb.test.KSBTestCase;
 
 /**
- * This is a description of what this class does - delyea don't forget to fill this in. 
+ * This is a test class used to test the KSB java security operation using certificates and keystores 
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *

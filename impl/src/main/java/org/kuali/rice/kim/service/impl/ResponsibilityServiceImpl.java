@@ -205,7 +205,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService, Respons
     protected List<ResponsibilityActionInfo> getActionsForResponsibilityRoles( KimResponsibilityInfo responsibility, List<String> roleIds, AttributeSet qualification ) {
     	List<ResponsibilityActionInfo> results = new ArrayList<ResponsibilityActionInfo>();
     	Collection<RoleMembershipInfo> roleMembers = getRoleService().getRoleMembers( roleIds, qualification );
-    	for ( RoleMembershipInfo rm : roleMembers ) {    		
+    	for ( RoleMembershipInfo rm : roleMembers ) {
     		ResponsibilityActionInfo rai;
     		if ( rm.getMemberTypeCode().equals( KimRole.PRINCIPAL_MEMBER_TYPE ) ) {
     			rai = new ResponsibilityActionInfo( rm.getMemberId(), null, rm.getEmbeddedRoleId(), responsibility, rm.getRoleId(), rm.getQualifier(), rm.getDelegates() );

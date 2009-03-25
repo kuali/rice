@@ -885,7 +885,10 @@ public class KEWConstants {
 	public static final String ROUTE_PERMISSION = "Route Document";
 	public static final String SAVE_PERMISSION = "Save Document";
 
-	// system parameters
+    // signifies the delimiter character for ingested KIM groups
+    public static final String KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER = ":";
+
+    // system parameters
 	public static final String KIM_PRIORITY_ON_DOC_TYP_PERMS_IND = "KIM_PRIORITY_ON_DOC_TYP_PERMS_IND";
     public static final String ACTION_LIST_DOCUMENT_POPUP_IND = "ACTION_LIST_DOCUMENT_POPUP_IND";
     public static final String ACTION_LIST_ROUTE_LOG_POPUP_IND  = "ACTION_LIST_ROUTE_LOG_POPUP_IND";

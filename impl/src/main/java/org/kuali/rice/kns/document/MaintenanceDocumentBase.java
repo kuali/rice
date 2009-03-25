@@ -705,78 +705,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
 
 
     private void checkForLockingDocument() {
-
-        LOG.info("starting checkForLockingDocument");
-
-        // get the docHeaderId of the blocking docs, if any are locked and blocking
-        String blockingDocId = KNSServiceLocator.getMaintenanceDocumentService().getLockingDocumentId(this);
-
-        // if we got nothing, then no docs are blocking, and we're done
-        if (StringUtils.isBlank(blockingDocId)) {
-            return;
-        }
-
-        if ( LOG.isInfoEnabled() ) {
-            LOG.info("Locking document found:  docId = " + blockingDocId + ".");
-        }
-
-        // load the blocking locked document
-        org.kuali.rice.kns.document.Document lockedDocument;
-        try {
-            lockedDocument = KNSServiceLocator.getDocumentService().getByDocumentHeaderId(blockingDocId);
-        }
-        catch (WorkflowException e) {
-            throw new ValidationException("Could not load the locking document.", e);
-        }
-
-        // if we can ignore the lock (see method notes), then exit cause we're done
-        if (lockCanBeIgnored(lockedDocument)) {
-            return;
-        }
-
-        // build the link URL for the blocking document
-        Properties parameters = new Properties();
-        parameters.put(KNSConstants.PARAMETER_DOC_ID, blockingDocId);
-        parameters.put(KNSConstants.PARAMETER_COMMAND, KNSConstants.METHOD_DISPLAY_DOC_SEARCH_VIEW);
-        String blockingUrl = UrlFactory.parameterizeUrl(KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.WORKFLOW_URL_KEY) + "/" + KNSConstants.DOC_HANDLER_ACTION, parameters);
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("blockingUrl = '" + blockingUrl + "'");
-            LOG.debug("Maintenance record: " + lockedDocument.getDocumentHeader().getDocumentNumber() + "is locked.");
-        }
-
-        // post an error about the locked document
-        String[] errorParameters = { blockingUrl, blockingDocId };
-        GlobalVariables.getErrorMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_MAINTENANCE_LOCKED, errorParameters);
-
-        throw new ValidationException("Maintenance Record is locked by another document.");
-    }
-
-    /**
-     * This method guesses whether the current user should be allowed to change a document even though it is locked. It probably
-     * should use Authorization instead? See KULNRVSYS-948
-     * 
-     * @param lockedDocument
-     * @return
-     * @throws WorkflowException
-     */
-    private boolean lockCanBeIgnored(org.kuali.rice.kns.document.Document lockedDocument) {
-        // TODO: implement real authorization for Maintenance Document Save/Route - KULNRVSYS-948
-
-        DocumentHeader documentHeader = lockedDocument.getDocumentHeader();
-
-        // get the user-id. if no user-id, then we can do this test, so exit
-        String userId = GlobalVariables.getUserSession().getPrincipalId().trim();
-        if (StringUtils.isBlank(userId)) {
-            return false; // dont bypass locking
-        }
-
-        // if the current user is not the initiator of the blocking document
-        if (!userId.equalsIgnoreCase(documentHeader.getWorkflowDocument().getRouteHeader().getInitiatorPrincipalId().trim())) {
-            return false;
-        }
-
-        // if the blocking document hasn't been routed, we can ignore it
-        return documentHeader.getWorkflowDocument().stateIsInitiated();
+        MaintenanceUtils.checkForLockingDocument(this);
     }
 
     /**

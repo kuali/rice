@@ -248,11 +248,22 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 		return findAllCurrent(crit);
     }
     
-    private List findAllCurrent(Criteria crit) {
-        crit.eq("currentInd", Boolean.TRUE);
-        return (List) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
+    public List<DocumentType> findPreviousInstances(String name) {
+        Criteria crit = new Criteria(DocumentType.class.getName());
+        crit.eq("name", name);
+        crit.eq("currentInd", Boolean.FALSE);
+        return findAll(crit);
     }
     
+    private List findAllCurrent(Criteria crit) {
+        crit.eq("currentInd", Boolean.TRUE);
+        return findAll(crit);
+    }
+    
+    private List findAll(Criteria crit) {
+        return (List) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
+    }
+
     public List findDocumentTypeAttributes(RuleAttribute ruleAttribute) {
     	Criteria crit = new Criteria(DocumentTypeAttribute.class.getName());
     	crit.eq("ruleAttributeId", ruleAttribute.getRuleAttributeId());

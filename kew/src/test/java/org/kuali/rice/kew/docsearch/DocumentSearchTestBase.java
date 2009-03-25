@@ -27,7 +27,7 @@ import org.kuali.rice.kns.web.ui.Row;
 
 
 /**
- * This is a description of what this class does - delyea don't forget to fill this in.
+ * This is a base class used for document search unit test classes to consolidate some helper methods
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *

@@ -52,6 +52,8 @@ public interface DocumentTypeDAO {
     
     public List findAllCurrentByName(String name);
     
+    public List<DocumentType> findPreviousInstances(String documentTypeName);
+
     public List getChildDocumentTypeIds(Long parentDocumentTypeId);
     
     public List findDocumentTypeAttributes(RuleAttribute ruleAttribute);

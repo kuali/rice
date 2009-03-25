@@ -7,46 +7,46 @@
             <parent>PCITestChild3</parent>
             <label>PCITestChild1</label>
         </documentType>
-        <documentTypeRouting>
+        <documentType overwriteMode="true">
             <name>PCITestChild2</name>
             <parent>PCITestParent1</parent>
             <label>PCITestChild2</label>
             <postProcessorName>org.kuali.rice.kew.edl.EDocLitePostProcessor</postProcessorName>
-        </documentTypeRouting>
+        </documentType>
         <documentType>
             <name>PCITestChild3</name>
             <parent>PCITestParent2</parent>
             <label>PCITestChild3</label>
         </documentType>
-        <documentTypeRouting>
+        <documentType overwriteMode="true">
             <name>PCITestChild4</name>
             <parent>PCITestChild2</parent>
             <label>PCITestChild4</label>
-        </documentTypeRouting>
+        </documentType>
         <documentType>
             <name>PCITestChild5</name>
             <parent>PCITestChild4</parent>
             <label>PCITestChild5</label>
         </documentType>
-        <documentTypeRouting>
+        <documentType overwriteMode="true">
             <name>PCITestParent1</name>
             <label>PCITestParent1</label>
             <postProcessorName>mocks.MockPostProcessor</postProcessorName>
-        </documentTypeRouting>
-        <documentTypeRouting>
+        </documentType>
+        <documentType overwriteMode="true">
             <name>PCITestChild6</name>
             <parent>PCITestParent2</parent>
             <label>PCITestChild6</label>
-        </documentTypeRouting>
+        </documentType>
         <documentType>
             <name>PCITestChild7</name>
             <parent>PCITestChild3</parent>
             <label>PCITestChild7</label>
         </documentType>
-        <documentTypeRouting>
+        <documentType overwriteMode="true">
             <name>PCITestParent2</name>
             <label>PCITestParent2</label>
-        </documentTypeRouting>
+        </documentType>
         <documentType>
             <name>PCITestChild8</name>
             <parent>PCITestParent2</parent>

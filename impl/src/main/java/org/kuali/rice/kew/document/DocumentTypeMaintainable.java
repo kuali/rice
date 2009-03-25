@@ -15,17 +15,30 @@
  */
 package org.kuali.rice.kew.document;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.util.KEWPropertyConstants;
 import org.kuali.rice.kew.xml.DocumentTypeXmlParser;
 import org.kuali.rice.kns.bo.DocumentHeader;
+import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
+import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
+import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
+import org.kuali.rice.kns.web.ui.Section;
 
 /**
  * This class is the maintainable implementation for the Workflow {@link DocumentType} 
@@ -34,10 +47,32 @@ import org.kuali.rice.kns.util.ObjectUtils;
  *
  */
 public class DocumentTypeMaintainable extends KualiMaintainableImpl {
-
+    
     private static final long serialVersionUID = -5920808902137192662L;
 
-    
+    /**
+     * Override the getSections method on this maintainable so that the document type name field
+     * can be set to read-only for 
+     */
+    @Override
+    public List getSections(MaintenanceDocument document, Maintainable oldMaintainable) {
+        List<Section> sections = super.getSections(document, oldMaintainable);
+        // if the document isn't new then we need to make the document type name field read-only
+        if (!document.isNew()) {
+            sectionLoop: for (Section section : sections) {
+                for (Row row : section.getRows()) {
+                    for (Field field : row.getFields()) {
+                        if (KEWPropertyConstants.NAME.equals(field.getPropertyName())) {
+                            field.setReadOnly(true);
+                            break sectionLoop;
+                        }
+                    }
+                }
+            }
+        }
+        return sections;
+    }
+
     /**
      * This overridden method resets the name
      * 
@@ -58,7 +93,17 @@ public class DocumentTypeMaintainable extends KualiMaintainableImpl {
     @Override
     public void handleRouteStatusChange(DocumentHeader documentHeader) {
         super.handleRouteStatusChange(documentHeader);
-        
+    }
+    
+    private Set<String> constructUserInterfaceEditablePropertyNamesList() {
+        Set<String> propertyNames = new HashSet<String>();
+        List<MaintainableSectionDefinition> sectionDefinitions = getMaintenanceDocumentDictionaryService().getMaintainableSections(docTypeName);
+        for (MaintainableSectionDefinition maintainableSectionDefinition : sectionDefinitions) {
+            for (MaintainableItemDefinition maintainableItemDefinition : maintainableSectionDefinition.getMaintainableItems()) {
+                propertyNames.add(maintainableItemDefinition.getName());
+            }
+        }
+        return propertyNames;
     }
 
     /**
@@ -70,11 +115,12 @@ public class DocumentTypeMaintainable extends KualiMaintainableImpl {
      */
     @Override
     public void saveBusinessObject() {
+        DocumentTypeService docTypeService = KEWServiceLocator.getDocumentTypeService();
         DocumentType newDocumentType = (DocumentType) getBusinessObject();
         String documentTypeName = newDocumentType.getName();
-        DocumentType docTypeFromDatabase = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
+        DocumentType docTypeFromDatabase = docTypeService.findByName(documentTypeName);
         if (ObjectUtils.isNull(docTypeFromDatabase)) {
-            KEWServiceLocator.getDocumentTypeService().versionAndSave(newDocumentType);
+            docTypeService.versionAndSave(newDocumentType);
         }
         else {
             DocumentType newDocumentTypeFromDatabase;
@@ -85,8 +131,37 @@ public class DocumentTypeMaintainable extends KualiMaintainableImpl {
                 throw new WorkflowRuntimeException("Error while attempting to generate new document type from existing " +
                 		"database document type with name '" + documentTypeName + "'", e);
             }
-            newDocumentTypeFromDatabase.populateDataDictionaryEditableFields(newDocumentType);
-            KEWServiceLocator.getDocumentTypeService().versionAndSave(newDocumentTypeFromDatabase);
+            newDocumentTypeFromDatabase.populateDataDictionaryEditableFields(constructUserInterfaceEditablePropertyNamesList(), newDocumentType);
+            docTypeService.versionAndSave(newDocumentTypeFromDatabase);
+            if (ObjectUtils.isNotNull(newDocumentType.getApplyRetroactively()) && newDocumentType.getApplyRetroactively()) {
+                // save all previous instances of document type with the same name
+                // fields: label, description, unresolvedHelpDefinitionUrl
+                List<DocumentType> previousDocTypeInstances = docTypeService.findPreviousInstances(documentTypeName);
+                for (DocumentType prevDocType : previousDocTypeInstances) {
+                    // set up fields
+                    prevDocType.setLabel(newDocumentType.getLabel());
+                    prevDocType.setDescription(newDocumentType.getDescription());
+                    prevDocType.setUnresolvedHelpDefinitionUrl(newDocumentType.getUnresolvedHelpDefinitionUrl());
+                    docTypeService.save(prevDocType, false);
+                }
+                // TODO: delyea - do we need to call this multiple times as in "DocumentTypeServiceImpl.save(DocumentType, boolean)"
+                docTypeService.flushCache();
+                // save all former/current action items matching document type name
+                // fields: docLabel
+                ActionListService actionListService = KEWServiceLocator.getActionListService(); 
+                Collection<ActionItem> items = actionListService.findByDocumentTypeName(documentTypeName);
+                for (ActionItem actionItem : items) {
+                    actionItem.setDocLabel(newDocumentType.getLabel());
+                    actionListService.saveActionItem(actionItem);
+                }
+                // save all former/current outbox action items matching document type name
+                // fields: docLabel
+                Collection<ActionItem> outboxItems = actionListService.getOutboxItemsByDocumentType(documentTypeName);
+                for (ActionItem outboxItem : outboxItems) {
+                    outboxItem.setDocLabel(newDocumentType.getLabel());
+                    actionListService.saveActionItem(outboxItem);
+                }
+            }
         }
     }
 

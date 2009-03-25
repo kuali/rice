@@ -25,10 +25,11 @@ import java.util.List;
 import org.kuali.rice.ksb.security.admin.KeyStoreEntryDataContainer;
 
 /**
- * This is a description of what this class does - delyea don't forget to fill this in. 
+ * This is an interface for the Java Security Management piece of the KSB module
+ * of Rice. It is used for modifying and creating keystores and certificates
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- *
+ * 
  */
 public interface JavaSecurityManagementService {
  

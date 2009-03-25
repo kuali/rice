@@ -161,7 +161,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     /**
      * Flushes all DocumentTypes from the cache.
      */
-    protected void flushCache() {
+    public void flushCache() {
     	// invalidate locally because if we're doing an upload of a document hierarchy we can't wait the 5 secs for this nodes cache
 		//to be accurate-the data going in the db depends on it being accurate now.  This means the cache will be cleared multiple times
     	//over during an upload and the subsequent notification to this node.
@@ -198,7 +198,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
         		    Integer maxVersionNumber = documentTypeDAO.getMaxVersionNumber(documentType.getName());
         			documentType.setVersion((maxVersionNumber != null) ? new Integer(maxVersionNumber.intValue() + 1) : new Integer(0));
         			oldDocumentType.setCurrentInd(Boolean.FALSE);
-        			LOG.warn("Saving old document type Id " + oldDocumentType.getDocumentTypeId() + " name '" + oldDocumentType.getName() + "' (current = " + oldDocumentType.getCurrentInd() + ")");
+        			LOG.info("Saving old document type Id " + oldDocumentType.getDocumentTypeId() + " name '" + oldDocumentType.getName() + "' (current = " + oldDocumentType.getCurrentInd() + ")");
         			save(oldDocumentType, false);
         		}
     		}
@@ -212,7 +212,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
             documentType.setPreviousVersionId(existingDocTypeId);
             documentType.setCurrentInd(Boolean.TRUE);
     		save(documentType, false);
-            LOG.warn("Saved current document type Id " + documentType.getDocumentTypeId() + " name '" + documentType.getName() + "' (current = " + documentType.getCurrentInd() + ")");
+            LOG.info("Saved current document type Id " + documentType.getDocumentTypeId() + " name '" + documentType.getName() + "' (current = " + documentType.getCurrentInd() + ")");
     		//attach the children to this new parent.  cloning the children would probably be a better way to go here...
     		if (ObjectUtils.isNotNull(existingDocTypeId)) {
     		    // documentType.getPreviousVersion() should not be null at this point
@@ -221,7 +221,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     				DocumentType child = (DocumentType) iterator.next();
     				child.setDocTypeParentId(documentType.getDocumentTypeId());
     				save(child, false);
-    	            LOG.warn("Saved child document type Id " + child.getDocumentTypeId() + " name '" + child.getName() + "' (parent = " + child.getDocTypeParentId() + ", current = " + child.getCurrentInd() + ")");
+    	            LOG.info("Saved child document type Id " + child.getDocumentTypeId() + " name '" + child.getName() + "' (parent = " + child.getDocTypeParentId() + ", current = " + child.getCurrentInd() + ")");
     			}
     		}
     		// initiate a save of this document type's parent document type, this will force a
@@ -232,7 +232,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     		if (documentType.getDocTypeParentId() != null) {
     			DocumentType parent = getDocumentTypeDAO().findByDocId(documentType.getDocTypeParentId());
     			save(parent, false);
-                LOG.warn("Saved parent document type Id " + parent.getDocumentTypeId() + " name '" + parent.getName() + "' (current = " + parent.getCurrentInd() + ")");
+                LOG.info("Saved parent document type Id " + parent.getDocumentTypeId() + " name '" + parent.getName() + "' (current = " + parent.getCurrentInd() + ")");
     		}
 
     		// finally, flush the cache and notify the rule cache of the DocumentType change
@@ -252,7 +252,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     	}
     }
 
-    protected void save(DocumentType documentType, boolean flushCache) {
+    public void save(DocumentType documentType, boolean flushCache) {
     	getDocumentTypeDAO().save(documentType);
     	if (flushCache) {
     		// always clear the entire cache
@@ -296,6 +296,10 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
 
     public List findAllCurrent() {
         return getDocumentTypeDAO().findAllCurrent();
+    }
+
+    public List<DocumentType> findPreviousInstances(String documentTypeName) {
+        return getDocumentTypeDAO().findPreviousInstances(documentTypeName);
     }
 
     public DocumentType findRootDocumentType(DocumentType docType) {

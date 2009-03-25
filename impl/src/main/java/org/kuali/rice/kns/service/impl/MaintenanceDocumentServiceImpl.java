@@ -24,6 +24,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.dao.MaintenanceDocumentDao;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.MaintenanceLock;
+import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.service.MaintenanceDocumentService;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,25 +34,28 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public class MaintenanceDocumentServiceImpl implements MaintenanceDocumentService {
-    
+
     private MaintenanceDocumentDao maintenanceDocumentDao;
 
     /**
      * @see org.kuali.rice.kns.service.MaintenanceDocumentService#getLockingDocumentId(org.kuali.rice.kns.document.MaintenanceDocument)
      */
     public String getLockingDocumentId(MaintenanceDocument document) {
+        return getLockingDocumentId(document.getNewMaintainableObject(), document.getDocumentNumber());
+    }
 
+    /**
+     * @see org.kuali.rice.kns.service.MaintenanceDocumentService#getLockingDocumentId(org.kuali.rice.kns.maintenance.Maintainable, java.lang.String)
+     */
+    public String getLockingDocumentId(Maintainable maintainable, String documentNumber) {
         String lockingDocId = null;
-        String documentNumber = document.getDocumentNumber();
-
-        List<MaintenanceLock> maintenanceLocks = document.getNewMaintainableObject().generateMaintenanceLocks();
+        List<MaintenanceLock> maintenanceLocks = maintainable.generateMaintenanceLocks();
         for (MaintenanceLock maintenanceLock : maintenanceLocks) {
             lockingDocId = maintenanceDocumentDao.getLockingDocumentNumber(maintenanceLock.getLockingRepresentation(),documentNumber);
             if (StringUtils.isNotBlank(lockingDocId)) {
                 break;
             }
         }
-
         return lockingDocId;
     }
 

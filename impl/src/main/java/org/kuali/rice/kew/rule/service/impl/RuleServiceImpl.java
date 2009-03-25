@@ -949,7 +949,8 @@ public class RuleServiceImpl implements RuleService {
 
         Collection<String> workgroupIds = new ArrayList<String>();
         if (principalId != null) {
-        	if ( (workgroupMember == null) || (workgroupMember.booleanValue()) ) {
+            KEWServiceLocator.getIdentityHelperService().validatePrincipalId(principalId);
+            if ( (workgroupMember == null) || (workgroupMember.booleanValue()) ) {
         		workgroupIds = getIdentityManagementService().getGroupIdsForPrincipal(principalId);
         	} else {
         		// user was passed but workgroups should not be parsed... do nothing

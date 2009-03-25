@@ -433,7 +433,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         reportCriteriaDTO.setTargetNodeName("WorkflowDocument2");
         reportCriteriaDTO.setRoutingPrincipalId(getPrincipalIdForName("bmcgough"));
         ReportActionToTakeDTO[] actionsToTake = new ReportActionToTakeDTO[1];
-        actionsToTake[0] = new ReportActionToTakeDTO(KEWConstants.ACTION_TAKEN_APPROVED_CD,getPrincipalIdForName("rkirkend"),"WorkflowDocument");
+//        actionsToTake[0] = new ReportActionToTakeDTO(KEWConstants.ACTION_TAKEN_APPROVED_CD,getPrincipalIdForName("rkirkend"),"WorkflowDocument");
         actionsToTake[0] = new ReportActionToTakeDTO(KEWConstants.ACTION_TAKEN_APPROVED_CD,getPrincipalIdForName("pmckown"),"WorkflowDocument2");
         reportCriteriaDTO.setActionsToTake(actionsToTake);
         assertFalse("Document should not have any unfulfilled approve/complete requests",utility.documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}, false));
@@ -621,7 +621,8 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertEquals("Should be 2 action requests.", 2, actionRequests.size());
 
         // Now set up the app constant that checks ignore previous properly and try a new document
-        parameter = new Parameter(KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND, "Y", "A");
+        String parameterValue = "Y";
+        parameter = new Parameter(KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND, parameterValue, "A");
         parameter.setParameterNamespaceCode(KEWConstants.KEW_NAMESPACE);
         parameter.setParameterTypeCode("CONFG");
         parameter.setParameterDetailTypeCode(KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE);
@@ -630,7 +631,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
 
         parameter = KNSServiceLocator.getKualiConfigurationService().getParameterWithoutExceptions(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
         assertNotNull("Parameter should not be null.", parameter);
-        assertEquals("Parameter should be Y.", "Y", parameter.getParameterValue());
+        assertEquals("Parameter should be true.", parameterValue, parameter.getParameterValue());
 
 
         document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), SeqSetup.LAST_APPROVER_DOCUMENT_TYPE_NAME);
@@ -667,7 +668,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         // now, there are requests to pmckown and ewestfal here, the request to ewestfal is ingorePrevious=false and since ewestfal
         // routed the document, this request should be auto-approved.  However, it's priority is 2 so it is activated after the
         // request to pmckown which is the situation we are testing
-        assertTrue("Pmckown should be the final approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("pmckown"), SeqSetup.WORKFLOW_DOCUMENT_2_NODE));
+        assertTrue("Pmckown should be the last approver at this node.", utility.isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("pmckown"), SeqSetup.WORKFLOW_DOCUMENT_2_NODE));
         assertFalse("Ewestfal should not be the final approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("ewestfal"), SeqSetup.WORKFLOW_DOCUMENT_2_NODE));
 
         // if we approve as pmckown, the document should go into acknowledgement and become processed
@@ -831,8 +832,8 @@ public class WorkflowUtilityTest extends KEWTestCase {
         this.ruleExceptionTest(info, ruleReportCriteria, "Sending in empty RuleReportCriteriaDTO should throw Exception");
 
         ruleReportCriteria = new RuleReportCriteriaDTO();
-        ruleReportCriteria.setResponsiblePrincipalId("-1234598765");
-        this.ruleExceptionTest(info, ruleReportCriteria, "Sending in an invalid principal ID should throw Exception");
+        ruleReportCriteria.setResponsiblePrincipalId("hobo_man");
+        this.ruleExceptionTest(info, ruleReportCriteria, "Sending in an invalid principle ID should throw Exception");
 
         ruleReportCriteria = new RuleReportCriteriaDTO();
         ruleReportCriteria.setResponsibleGroupId("-1234567");

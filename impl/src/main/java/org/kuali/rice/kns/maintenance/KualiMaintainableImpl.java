@@ -82,7 +82,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     protected Map<String,PersistableBusinessObject> newCollectionLines = new HashMap<String,PersistableBusinessObject>();
     protected Map<String, Boolean> inactiveRecordDisplay = new HashMap<String, Boolean>();
     
-    private String docTypeName;
+    protected String docTypeName;
 
     private static PersistenceStructureService persistenceStructureService;
     
@@ -295,7 +295,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
                     
                 		MaintainableItemDefinition item = (MaintainableItemDefinition) iter2.next();
                 		if (item instanceof MaintainableFieldDefinition) {
-                			displayedFieldNames.add(((MaintainableFieldDefinition) item).getName());
+                		    displayedFieldNames.add(((MaintainableFieldDefinition) item).getName());
                 		}
                 	}
                 	

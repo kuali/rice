@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -71,15 +72,14 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.KEWPropertyConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.web.format.FormatException;
-import org.kuali.rice.kns.bo.Inactivateable;
 
 /**
  * Model bean mapped to ojb representing a document type.  Provides component lookup behavior that
@@ -97,9 +97,8 @@ import org.kuali.rice.kns.bo.Inactivateable;
             "WHERE drhv.initiatorWorkflowId = :initiatorWorkflowId AND drhv.documentTypeId = dt.documentTypeId AND dt.active = 1 AND dt.currentInd = 1 " +
             "ORDER BY UPPER(dt.label)")
 })
-public class DocumentType extends KewPersistableBusinessObjectBase implements Inactivateable, DocumentTypeEBO
-{
-	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentType.class);
+public class DocumentType extends KewPersistableBusinessObjectBase implements Inactivateable, DocumentTypeEBO {
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentType.class);
 
     private static final long serialVersionUID = 1312830153583125069L;
 
@@ -154,6 +153,8 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
     private String actionsUrl;
     @Transient
     private boolean descendHierarchy;
+    @Transient
+    private Boolean applyRetroactively = Boolean.FALSE;
 
     /* The default exception workgroup to apply to nodes that lack an exception workgroup definition.
      * Used at parse-time only; not stored in db.
@@ -203,13 +204,24 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
         label = null;
     }
 
-    public void populateDataDictionaryEditableFields(DocumentType dataDictionaryEditedType) {
+    public void populateDataDictionaryEditableFields(Set<String> propertyNamesEditableViaUI, DocumentType dataDictionaryEditedType) {
         String currentPropertyName = "";
         try {
-            BusinessObjectEntry boEntry = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(this.getClass().getCanonicalName());
-            for (String propertyName : boEntry.getAttributeNames()) {
-                if (!"documentTypeId".equals(propertyName)) {
-                    currentPropertyName = propertyName;
+            for (String propertyName : propertyNamesEditableViaUI) {
+                currentPropertyName = propertyName;
+                if (KEWPropertyConstants.PARENT_DOC_TYPE_NAME.equals(propertyName)) {
+                    // this is trying to set the parent document type name so lets set the entire parent document
+                    String parentDocumentTypeName = (String) ObjectUtils.getPropertyValue(dataDictionaryEditedType, propertyName);
+                    if (StringUtils.isNotBlank(parentDocumentTypeName)) {
+                        DocumentType parentDocType = KEWServiceLocator.getDocumentTypeService().findByName(parentDocumentTypeName);
+                        if (ObjectUtils.isNull(parentDocType)) {
+                            throw new WorkflowRuntimeException("Could not find valid document type for document type name '" + parentDocumentTypeName + "' to set as Parent Document Type");
+                        }
+                        setDocTypeParentId(parentDocType.getDocumentTypeId());
+                    }
+                }
+//                else if (!FIELD_PROPERTY_NAME_DOCUMENT_TYPE_ID.equals(propertyName)) {
+                else {
                     LOG.info("*** COPYING PROPERTY NAME FROM OLD BO TO NEW BO: " + propertyName);
                     ObjectUtils.setObjectProperty(this, propertyName, ObjectUtils.getPropertyValue(dataDictionaryEditedType, propertyName));
                 }
@@ -221,6 +233,8 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
         } catch (InvocationTargetException e) {
             throw new WorkflowRuntimeException("Error setting property '" + currentPropertyName + "' in Document Type", e);
         } catch (NoSuchMethodException e) {
+            throw new WorkflowRuntimeException("Error setting property '" + currentPropertyName + "' in Document Type", e);
+        } catch (Exception e) {
             throw new WorkflowRuntimeException("Error setting property '" + currentPropertyName + "' in Document Type", e);
         }
     }
@@ -381,11 +395,6 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
         return childrenDocTypes;
     }
 
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kew.doctype.bo.DocumentTypeEBO#getDocTypeParentId()
-	 */
     public java.lang.Long getDocTypeParentId() {
         return docTypeParentId;
     }
@@ -397,24 +406,6 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
     public DocumentType getParentDocType() {
         return KEWServiceLocator.getDocumentTypeService().findById(this.docTypeParentId);
     }
-
-//    private DocumentType parentDocType;
-//    /**
-//     * @return the parentDocType
-//     */
-//    public DocumentType getParentDocType() {
-//        if ( (ObjectUtils.isNotNull(this.docTypeParentId)) && (ObjectUtils.isNull(this.parentDocType)) ) {
-//            this.parentDocType = KEWServiceLocator.getDocumentTypeService().findById(this.docTypeParentId);
-//        }
-//        return this.parentDocType;
-//    }
-//    /**
-//     * @param parentDocType the parentDocType to set
-//     */
-//    public void setParentDocType(DocumentType parentDocType) {
-//        this.parentDocType = parentDocType;
-//    }
-
 
     public Collection<DocumentTypePolicy> getPolicies() {
         return policies;
@@ -495,11 +486,6 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
         this.currentInd = currentInd;
     }
 
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kew.doctype.bo.DocumentTypeEBO#getDescription()
-	 */
     public java.lang.String getDescription() {
         return description;
     }
@@ -613,8 +599,9 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
     }
 
     /**
-	 * @see org.kuali.rice.kew.doctype.bo.DocumentTypeEBO#getHelpDefinitionUrl()
-	 */
+     * This method gets the help definition url from this object and resolves any 
+     * potential variables that may be in use
+     */
     public String getHelpDefinitionUrl() {
         return resolveHelpDefinitionUrl(getUnresolvedHelpDefinitionUrl());
     }
@@ -630,11 +617,6 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
         return Utilities.substituteConfigParameters(helpDefinitionUrl);
     }
 
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kew.doctype.bo.DocumentTypeEBO#getLabel()
-	 */
     public java.lang.String getLabel() {
         return label;
     }
@@ -643,11 +625,6 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
         this.label = label;
     }
 
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kew.doctype.bo.DocumentTypeEBO#getName()
-	 */
     public java.lang.String getName() {
         return name;
     }
@@ -720,9 +697,6 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
         this.postProcessorName = postProcessorName;
     }
 
-    /**
-     *
-     */
     public String getDisplayablePostProcessorName() {
         return getInheritedPostProcessorName(true);
     }
@@ -759,11 +733,6 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
         this.version = version;
     }
 
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kew.doctype.bo.DocumentTypeEBO#getDocumentTypeId()
-	 */
     public java.lang.Long getDocumentTypeId() {
         return documentTypeId;
     }
@@ -830,9 +799,8 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
     }
 
     public void setSuperUserWorkgroupNoInheritence(KimGroup suWorkgroup) {
-        if (suWorkgroup == null) {
-            this.workgroupId = null;
-        } else {
+        this.workgroupId = null;
+        if (ObjectUtils.isNotNull(suWorkgroup)) {
             this.workgroupId = suWorkgroup.getGroupId();
         }
     }
@@ -856,7 +824,10 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
     }
 
     public void setBlanketApproveWorkgroup(KimGroup blanketApproveWorkgroup) {
-    	this.blanketApproveWorkgroupId = blanketApproveWorkgroup.getGroupId();
+        this.blanketApproveWorkgroupId = null;
+        if (ObjectUtils.isNotNull(blanketApproveWorkgroup)) {
+            this.blanketApproveWorkgroupId = blanketApproveWorkgroup.getGroupId();
+        }
     }
 
 	public String getBlanketApprovePolicy() {
@@ -923,7 +894,10 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
     }
 
     public void setReportingWorkgroup(KimGroup reportingWorkgroup) {
-    	this.reportingWorkgroupId = reportingWorkgroup.getGroupId();
+        this.reportingWorkgroupId = null;
+        if (ObjectUtils.isNotNull(reportingWorkgroup)) {
+            this.reportingWorkgroupId = reportingWorkgroup.getGroupId();
+        }
     }
 
     public KimGroup getDefaultExceptionWorkgroup() {
@@ -1074,10 +1048,6 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
             return getParentDocType().getRouteDefiningDocumentType();
         }
         return this;
-    }
-
-	public boolean isSearchableAttributesInherited() {
-        return documentTypeAttributes.isEmpty() && getParentDocType() != null;
     }
 
 	public boolean isDocTypeActive() {
@@ -1348,10 +1318,9 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
     }
 
     /**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kew.doctype.bo.DocumentTypeEBO#getServiceNamespace()
-	 */
+     * Returns the service namespace for this DocumentType which can be specified on the document type itself,
+     * inherited from the parent, or defaulted to the configured service namespace of the application.
+     */
 	public String getServiceNamespace() {
 	    return getServiceNamespace(false);
 	}
@@ -1450,7 +1419,6 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
 		this.blanketApproveWorkgroupId = blanketApproveWorkgroupId;
 	}
 
-
 	/**
 	 * @return the descendHierarchy
 	 */
@@ -1458,13 +1426,26 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
 		return this.descendHierarchy;
 	}
 
-
 	/**
 	 * @param descendHierarchy the descendHierarchy to set
 	 */
 	public void setDescendHierarchy(boolean descendHierarchy) {
 		this.descendHierarchy = descendHierarchy;
 	}
+
+    /**
+     * @return the applyRetroactively
+     */
+    public Boolean getApplyRetroactively() {
+        return this.applyRetroactively;
+    }
+
+    /**
+     * @param applyRetroactively the applyRetroactively to set
+     */
+    public void setApplyRetroactively(Boolean applyRetroactively) {
+        this.applyRetroactively = applyRetroactively;
+    }
 
     /**
      * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
@@ -1482,9 +1463,7 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
     }
 
 	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kew.doctype.bo.DocumentTypeEBO#isActive()
+	 * @see org.kuali.rice.kns.bo.Inactivateable#isActive()
 	 */
 	public boolean isActive() {
 		boolean bRet = false;
@@ -1497,8 +1476,6 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
 	}
 
 	/**
-	 * This overridden method ...
-	 *
 	 * @see org.kuali.rice.kns.bo.Inactivateable#setActive(boolean)
 	 */
 	public void setActive(boolean active) {

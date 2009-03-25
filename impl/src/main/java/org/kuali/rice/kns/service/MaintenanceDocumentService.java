@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.MaintenanceLock;
+import org.kuali.rice.kns.maintenance.Maintainable;
 
 /**
  * This interface defines methods that a Maintenance Document Service must provide.
@@ -41,6 +42,20 @@ public interface MaintenanceDocumentService {
      * 
      */
     public String getLockingDocumentId(MaintenanceDocument document);
+
+    /**
+     * This method attempts to find any other active documents that are pending on the same maintenance record.
+     * 
+     * If any are pending and locked, thereby blocking this document, then the docHeaderId/documentNumber of the blocking
+     * locked document is returned.
+     * 
+     * Otherwise, if nothing is blocking, then null is returned.
+     * 
+     * @param maintainable - maintainable representing the document to test
+     * @param documentNumber - the documentNumber/docHeaderId of the document to test
+     * @return A String representing the docHeaderId of any blocking document, or null if none are blocking
+     */
+    public String getLockingDocumentId(Maintainable maintainable, String documentNumber);
 
     /**
      * Retrieves maintenance documents locked by the given bo class name, then materializes the pending changes to objects of the

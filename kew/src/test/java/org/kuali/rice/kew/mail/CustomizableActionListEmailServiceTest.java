@@ -30,7 +30,7 @@ import org.kuali.rice.test.data.UnitTestFile;
 
 
 /**
- * This is a description of what this class does - delyea don't forget to fill this in.
+ * This is a test class to verify the action list e-mail creation and performance
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *

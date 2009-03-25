@@ -226,12 +226,23 @@ public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 	crit.addEqualTo("name", name);
 	return findAllCurrent(crit);
     }
-    
+
+    public List<DocumentType> findPreviousInstances(String documentTypeName) {
+        Criteria crit = new Criteria();
+        crit.addEqualTo("name", documentTypeName);
+        crit.addEqualTo("currentInd", Boolean.FALSE);
+        return findAll(crit);
+    }
+
     private List findAllCurrent(Criteria crit) {
         crit.addEqualTo("currentInd", Boolean.TRUE);
+        return findAll(crit);
+    }
+
+    private List findAll(Criteria crit) {
         return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(DocumentType.class, crit));
     }
-    
+
     public List findDocumentTypeAttributes(RuleAttribute ruleAttribute) {
     	Criteria crit = new Criteria();
     	crit.addEqualTo("ruleAttributeId", ruleAttribute.getRuleAttributeId());

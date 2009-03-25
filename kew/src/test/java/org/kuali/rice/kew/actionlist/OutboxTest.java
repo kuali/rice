@@ -76,7 +76,7 @@ public class OutboxTest extends KEWTestCase {
         document.saveDocument("");
 
         Collection outbox = KEWServiceLocator.getActionListService().getOutbox(rkirkendPrincipalId, new ActionListFilter());
-        assertEquals("there should be an outbox item", 0, outbox.size());
+        assertEquals("there should not be any outbox items", 0, outbox.size());
     }
 
     @Test

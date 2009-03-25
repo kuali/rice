@@ -451,7 +451,6 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
                     initiatorUser,
                     actionItem.getRouteHeader().getDocumentType().getName(),
                     actionItem.getDocTitle(), 
-                    docHandlerUrl,
                     getActionListUrl(), 
                     getPreferencesUrl(),
                     getHelpLink(documentType) 

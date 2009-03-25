@@ -89,7 +89,7 @@ public class Utilities {
         if (namespaceAndNameCombo == null) {
             return null;
         }
-        String[] groupData = namespaceAndNameCombo.split(":");
+        String[] groupData = namespaceAndNameCombo.split(KEWConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER);
         if (groupData.length == 1) {
             return KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE;
         } else if (groupData.length == 2) {
@@ -103,7 +103,7 @@ public class Utilities {
         if (namespaceAndNameCombo == null) {
             return null;
         }
-        String[] groupData = namespaceAndNameCombo.split(":");
+        String[] groupData = namespaceAndNameCombo.split(KEWConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER);
         if (groupData.length == 1) {
             return groupData[0].trim();
         } else if (groupData.length == 2) {

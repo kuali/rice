@@ -29,7 +29,7 @@
 	<param name="production.environment.code">prd</param>
 	<param name="maintain.users.locally">true</param>
 
-	<param name="log4j.reload.minutes">5</param>
+	<param name="log4j.settings.reloadInterval">5</param>
 	<param name="log4j.settings.path">classpath:log4j.properties</param>
 
 	<param name="workflow.url">${application.url}/en</param>

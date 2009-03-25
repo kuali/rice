@@ -58,7 +58,7 @@ public class ClientAppDocHandlerRedirectAction extends WorkflowAction {
             }
             docHandler = routeHeader.getDocumentType().getDocHandlerUrl();
             if (StringUtils.isBlank(docHandler)) {
-                throw new WorkflowRuntimeException("Cannot find document handler url for document id " + routeHeader.getRouteHeaderId());
+                throw new WorkflowRuntimeException("Document Type '" + routeHeader.getDocumentType().getName() + "' does not have a document handler url set (attempted to open document handler url for document id " + routeHeader.getRouteHeaderId() + ")");
             }
             if (docHandler.indexOf("?") == -1) {
                 docHandler += "?";

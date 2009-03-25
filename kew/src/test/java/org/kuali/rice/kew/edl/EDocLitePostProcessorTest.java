@@ -21,7 +21,6 @@ import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.web.jetty.JettyServer;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.edl.EDocLitePostProcessor;
 import org.kuali.rice.kew.postprocessor.ActionTakenEvent;
 import org.kuali.rice.kew.postprocessor.DeleteEvent;
 import org.kuali.rice.kew.postprocessor.DocumentRouteLevelChange;
@@ -32,7 +31,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 
 
 /**
- * This is a description of what this class does - delyea don't forget to fill this in. 
+ * This is a Test class to verify the edoc lite post processor. 
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *

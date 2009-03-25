@@ -18,7 +18,7 @@ package org.kuali.rice.kew.docsearch;
 
 
 /**
- * This is a description of what this class does - delyea don't forget to fill this in. 
+ * This is a container object used by KEW Document Search 
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *

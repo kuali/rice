@@ -30,6 +30,7 @@
         <ref bean="DocumentType-unresolvedDocHandlerUrl" /> <!-- required but inheritable from parent -->
         <ref bean="DocumentType-unresolvedHelpDefinitionUrl" /> <!-- option -->
         <ref bean="DocumentType-actualNotificationFromAddress" /> <!-- option -->
+        <ref bean="DocumentType-applyRetroactively" /> <!-- option -->
               <!-- Policies
               editable
               USE_KEW_SUPERUSER_DOCHANDLER
@@ -94,7 +95,7 @@
       <bean parent="NumericValidationPattern" />
     </property>
     <property name="control" >
-      <bean parent="TextControlDefinition" p:size="10" />
+      <bean parent="TextControlDefinition" p:size="30" />
     </property>
     <property name="name" value="documentTypeId" />
     <property name="label" value="Id" />
@@ -408,7 +409,14 @@
     </property>
   </bean>
 
-  <!-- FIELDS USED ONLY BY LOOKUP -->  
+  <bean id="DocumentType-applyRetroactively" parent="DocumentType-applyRetroactively-parentBean"/>
+
+  <bean id="DocumentType-applyRetroactively-parentBean" abstract="true" parent="AttributeReferenceDummy-genericBoolean">
+    <property name="name" value="applyRetroactively" />
+    <property name="label" value="Apply Label Change Retroactively" />
+    <property name="shortLabel" value="Apply Retroactively" />
+    <property name="description" value="Indicator to see if the label should be applied to older documents in the system" />
+  </bean>
 
   <!-- FIELDS USED ONLY BY LOOKUP -->  
 

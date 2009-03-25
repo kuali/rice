@@ -80,7 +80,7 @@ public class KNSPropertyConstants extends JSTLConstants {
 	public static final String OBJECT_ID = "objectId";
 	public static final String OLD_MAINTAINABLE_OBJECT = "oldMaintainableObject";
 	public static final String ONE_DIGIT_TEXT_CODE = "oneDigitTextCode";
-	public static final String OWNED_BY_PERSON_UNIVERSAL_ID = "ownedByPersonUniversalIdentifier";
+	public static final String OWNED_BY_PRINCIPAL_ID = "ownedByPrincipalIdentifier";
 	public static final String OWNED_BY_USER = "ownedByUser";
 	public static final String PERCENT = "percent";
 	public static final String TWO_DIGIT_TEXT_CODE = "twoDigitTextCode";

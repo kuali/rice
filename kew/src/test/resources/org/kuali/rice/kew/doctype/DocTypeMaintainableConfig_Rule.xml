@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+    <rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
+        <rule>
+            <documentType>DocumentTypeMaintainTest</documentType>
+            <ruleTemplate>RuleTemplate_1</ruleTemplate>
+            <description>RuleTemplate_1 and DocumentTypeMaintainTest</description>
+            <ignorePrevious>true</ignorePrevious>
+            <responsibilities>
+                <responsibility>
+                    <user>temay</user>
+                    <actionRequested>A</actionRequested>
+                    <priority>1</priority>
+                </responsibility>
+                <responsibility>
+                    <user>delyea</user>
+                    <actionRequested>A</actionRequested>
+                    <priority>1</priority>
+                </responsibility>
+            </responsibilities>
+        </rule>
+    </rules>
+</data>

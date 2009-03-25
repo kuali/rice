@@ -18,10 +18,13 @@ package org.kuali.rice.kns.service;
 import org.kuali.rice.kns.bo.DocumentHeader;
 
 /**
- * This is a description of what this class does - delyea don't forget to fill this in. 
+ * This is an interface to allow for Rice client applications to override the
+ * DocumentHeader class being used. Originally written to facilitate the Kuali
+ * Financial System custom document header which included a 'total amount'
+ * field.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- *
+ * 
  */
 public interface DocumentHeaderService {
 

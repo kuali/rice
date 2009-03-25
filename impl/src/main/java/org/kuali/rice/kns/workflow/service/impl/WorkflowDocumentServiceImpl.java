@@ -26,7 +26,6 @@ import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.exception.DocumentTypeNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
-import org.kuali.rice.kew.exception.InvalidWorkgroupException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -322,7 +321,6 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      * @throws InvalidActionTakenException
      * @throws InvalidRouteTypeException
      * @throws InvalidActionRequestException
-     * @throws InvalidWorkgroupException
      */
     private void handleAdHocRouteRequests(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients, String notificationLabel) throws WorkflowException {
 

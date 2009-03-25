@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
   <documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
-    <documentTypeRouting>
+    <documentType overwriteMode="true">
       <name>DocumentTypeXmlParseTest-RoutePathOnly</name>
       <routePaths>
         <routePath>
@@ -14,6 +14,6 @@
           <activationType>S</activationType>
         </start>
       </routeNodes>
-    </documentTypeRouting>
+    </documentType>
   </documentTypes>
 </data>

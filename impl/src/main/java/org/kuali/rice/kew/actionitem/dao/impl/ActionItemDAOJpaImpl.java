@@ -108,6 +108,27 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
         return removeOutBoxItems(results);
     }
 
+    public Collection<ActionItem> findByDocumentTypeName(String documentTypeName) {
+        Criteria crit = new Criteria(ActionItem.class.getName());
+        crit.eq("docName", documentTypeName);
+        List<ActionItem> results = new QueryByCriteria(entityManager, crit).toQuery().getResultList();
+
+        return removeOutBoxItems(results);
+    }
+
+    public Collection<ActionItem> getOutboxItemsByDocumentType(String documentTypeName) {
+        Criteria crit = new Criteria(ActionItem.class.getName());
+        crit.eq("docName", documentTypeName);
+        List<ActionItem> results = new QueryByCriteria(entityManager, crit).toQuery().getResultList();
+        Iterator<ActionItem> iterator = results.iterator();
+        while (iterator.hasNext()) {
+            if (!(iterator.next() instanceof OutboxItemActionListExtension)) {
+                iterator.remove();
+            }
+        }
+        return results;
+    }
+    
     public Collection<ActionItem> findByRouteHeaderId(Long routeHeaderId) {
         Criteria crit = new Criteria(ActionItem.class.getName());
         crit.eq("routeHeader.routeHeaderId", routeHeaderId);

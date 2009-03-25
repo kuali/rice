@@ -26,7 +26,7 @@ import java.security.cert.Certificate;
 import org.kuali.rice.ksb.security.admin.service.impl.JavaSecurityManagementServiceImpl;
 
 /**
- * This is a description of what this class does - delyea don't forget to fill this in. 
+ * This is a mock class used by the KSB test harness to supplant the {@link JavaSecurityManagementServiceImpl} class
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
@@ -41,6 +41,7 @@ public class MockJavaSecurityManagementServiceImpl extends JavaSecurityManagemen
 
     @Override
     public void afterPropertiesSet() throws Exception {
+        // method is empty in order to override operation of JavaSecurityManagementServiceImpl.afterPropertiesSet()
     }
     
     private void setUpService() {

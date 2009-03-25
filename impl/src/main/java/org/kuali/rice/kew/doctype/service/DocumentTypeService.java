@@ -34,9 +34,12 @@ public interface DocumentTypeService extends DocumentTypeQueryService, XmlExport
     public DocumentTypeDTO getDocumentTypeVO(Long documentTypeId);
     public DocumentTypeDTO getDocumentTypeVO(String documentTypeName);
     public void versionAndSave(DocumentType documentType);
-    public void save(DocumentType documentType); 
+    public void save(DocumentType documentType);
+    public void save(DocumentType documentType, boolean flushCache);
+    public void flushCache();
     public List findAllCurrentRootDocuments();
     public List findAllCurrent();
+    public List<DocumentType> findPreviousInstances(String documentTypeName);
     public List getChildDocumentTypes(Long documentTypeId);
     public void clearCacheForAttributeUpdate(RuleAttribute ruleAttribute);
 }

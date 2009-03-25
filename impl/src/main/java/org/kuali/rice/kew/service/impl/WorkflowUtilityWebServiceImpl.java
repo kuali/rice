@@ -86,6 +86,7 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.ObjectUtils;
 
 @SuppressWarnings({"deprecation","unchecked"})
 public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
@@ -929,13 +930,9 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
                 extensionValues.put(ruleExtension.getKey(), ruleExtension.getValue());
             }
         }
-        Collection<String> actionRequestCodes = null;
+        Collection<String> actionRequestCodes = new ArrayList<String>();
         if ( (ruleReportCriteria.getActionRequestCodes() != null) && (ruleReportCriteria.getActionRequestCodes().length != 0) ) {
             actionRequestCodes = Arrays.asList(ruleReportCriteria.getActionRequestCodes());
-        }
-        // load the principal so that we know it's valid
-        if (!StringUtils.isBlank(ruleReportCriteria.getResponsiblePrincipalId())) {
-        	KEWServiceLocator.getIdentityHelperService().getPrincipal(ruleReportCriteria.getResponsiblePrincipalId());
         }
         Collection rulesFound = KEWServiceLocator.getRuleService().search(ruleReportCriteria.getDocumentTypeName(),ruleReportCriteria.getRuleTemplateName(),
                 ruleReportCriteria.getRuleDescription(), ruleReportCriteria.getResponsibleGroupId(),

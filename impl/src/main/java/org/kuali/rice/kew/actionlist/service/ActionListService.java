@@ -60,6 +60,8 @@ public interface ActionListService {
 
     public Collection<ActionItem> findByRouteHeaderId(Long routeHeaderId);
 
+    public Collection<ActionItem> findByDocumentTypeName(String documentTypeName);
+
     public void updateActionItemsForTitleChange(Long routeHeaderId, String newTitle);
 
     public void validateActionItem(ActionItem actionItem);
@@ -83,6 +85,7 @@ public interface ActionListService {
      * @return
      */
     public Collection<ActionItem> getOutbox(String principalId, ActionListFilter filter);
+    public Collection<ActionItem> getOutboxItemsByDocumentType(String documentTypeName);
     public void removeOutboxItems(String principalId, List<Long> outboxItems);
     public void saveOutboxItem(ActionItem actionItem);
     public void saveOutboxItem(ActionItem actionItem, boolean forceIntoOutbox);

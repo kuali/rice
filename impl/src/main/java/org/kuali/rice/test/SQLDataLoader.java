@@ -65,7 +65,7 @@ public class SQLDataLoader {
                     public Object doInConnection(Connection connection) throws SQLException {
                         Statement statement = connection.createStatement();
                         LOG.info("################################");
-                        LOG.info("#" + fileLoc != null ? fileLoc : "");
+                        LOG.info(fileLoc != null ? "#" + fileLoc : "#");
                         LOG.info("#");
                         for (String sqlStatement : finalSqlStatements) {
                             if (StringUtils.isNotBlank(sqlStatement)) {

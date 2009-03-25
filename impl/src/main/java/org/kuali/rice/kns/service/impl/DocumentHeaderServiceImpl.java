@@ -23,10 +23,11 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * This is a description of what this class does - delyea don't forget to fill this in. 
+ * This is an implementation of {@link DocumentHeaderService} that facilitates
+ * document header management and customization
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- *
+ * 
  */
 @Transactional
 public class DocumentHeaderServiceImpl implements DocumentHeaderService {

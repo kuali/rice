@@ -21,24 +21,31 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
-import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions;
+import org.kuali.rice.kns.document.MaintenanceDocument;
+import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.lookup.SelectiveReferenceRefresher;
 import org.kuali.rice.kns.maintenance.Maintainable;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kns.web.ui.Section;
 
 public class MaintenanceUtils {
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MaintenanceUtils.class);
+
     /**
      * Returns the field templates defined in the maint dictionary xml files. Field templates are used in multiple value lookups.
      * When doing a MV lookup on a collection, the returned BOs are not necessarily of the same type as the elements of the
@@ -284,4 +291,96 @@ public class MaintenanceUtils {
             return true;
         }
     }
+
+    /**
+     * This method will throw a {@link ValidationException} if there is a valid locking document in existance
+     */
+    public static void checkForLockingDocument(MaintenanceDocument document) {
+        LOG.info("starting checkForLockingDocument (by MaintenanceDocument)");
+
+        // get the docHeaderId of the blocking docs, if any are locked and blocking
+        String blockingDocId = KNSServiceLocator.getMaintenanceDocumentService().getLockingDocumentId(document);
+        checkDocumentBlockingDocumentId(blockingDocId);
+    }
+
+    /**
+     * This method will throw a {@link ValidationException} if there is a valid locking document in existance
+     */
+    public static void checkForLockingDocument(Maintainable maintainable) {
+        LOG.info("starting checkForLockingDocument (by Maintainable)");
+
+        // get the docHeaderId of the blocking docs, if any are locked and blocking
+        String blockingDocId = KNSServiceLocator.getMaintenanceDocumentService().getLockingDocumentId(maintainable, null);
+        checkDocumentBlockingDocumentId(blockingDocId);
+    }
+
+    private static void checkDocumentBlockingDocumentId(String blockingDocId) {
+        // if we got nothing, then no docs are blocking, and we're done
+        if (StringUtils.isBlank(blockingDocId)) {
+            return;
+        }
+
+        if ( LOG.isInfoEnabled() ) {
+            LOG.info("Locking document found:  docId = " + blockingDocId + ".");
+        }
+
+        // load the blocking locked document
+        org.kuali.rice.kns.document.Document lockedDocument;
+        try {
+            lockedDocument = KNSServiceLocator.getDocumentService().getByDocumentHeaderId(blockingDocId);
+        }
+        catch (WorkflowException e) {
+            throw new ValidationException("Could not load the locking document.", e);
+        }
+
+        // if we can ignore the lock (see method notes), then exit cause we're done
+        if (lockCanBeIgnored(lockedDocument)) {
+            return;
+        }
+
+        // build the link URL for the blocking document
+        Properties parameters = new Properties();
+        parameters.put(KNSConstants.PARAMETER_DOC_ID, blockingDocId);
+        parameters.put(KNSConstants.PARAMETER_COMMAND, KNSConstants.METHOD_DISPLAY_DOC_SEARCH_VIEW);
+        String blockingUrl = UrlFactory.parameterizeUrl(KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.WORKFLOW_URL_KEY) + "/" + KNSConstants.DOC_HANDLER_ACTION, parameters);
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("blockingUrl = '" + blockingUrl + "'");
+            LOG.debug("Maintenance record: " + lockedDocument.getDocumentHeader().getDocumentNumber() + "is locked.");
+        }
+
+        // post an error about the locked document
+        String[] errorParameters = { blockingUrl, blockingDocId };
+        GlobalVariables.getErrorMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_MAINTENANCE_LOCKED, errorParameters);
+
+        throw new ValidationException("Maintenance Record is locked by another document.");
+    }
+
+    /**
+     * This method guesses whether the current user should be allowed to change a document even though it is locked. It probably
+     * should use Authorization instead? See KULNRVSYS-948
+     * 
+     * @param lockedDocument
+     * @return
+     * @throws WorkflowException
+     */
+    private static boolean lockCanBeIgnored(org.kuali.rice.kns.document.Document lockedDocument) {
+        // TODO: implement real authorization for Maintenance Document Save/Route - KULNRVSYS-948
+
+        DocumentHeader documentHeader = lockedDocument.getDocumentHeader();
+
+        // get the user-id. if no user-id, then we can do this test, so exit
+        String userId = GlobalVariables.getUserSession().getPrincipalId().trim();
+        if (StringUtils.isBlank(userId)) {
+            return false; // dont bypass locking
+        }
+
+        // if the current user is not the initiator of the blocking document
+        if (!userId.equalsIgnoreCase(documentHeader.getWorkflowDocument().getRouteHeader().getInitiatorPrincipalId().trim())) {
+            return false;
+        }
+
+        // if the blocking document hasn't been routed, we can ignore it
+        return documentHeader.getWorkflowDocument().stateIsInitiated();
+    }
+
 }

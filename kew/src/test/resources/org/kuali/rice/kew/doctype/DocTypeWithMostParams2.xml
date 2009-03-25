@@ -56,7 +56,13 @@
 			<label>AnotherParent</label>
 		</documentType>
 	</documentTypes>
-		<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
+    <ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
+        <ruleTemplate>
+            <name>AlwaysRouteRuleTemplateNoME</name>
+            <description>AlwaysRouteRuleTemplateNoME</description>
+        </ruleTemplate>
+    </ruleTemplates>
+	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
 		<ruleAttribute>
 			<name>AnotherSchoolSearchAttribute</name>
 			<className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>

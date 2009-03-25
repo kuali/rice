@@ -11,7 +11,7 @@
       <blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
       <active>true</active>
     </documentType>
-    <documentTypeRouting>
+    <documentType overwriteMode="true">
       <name>DocumentTypeXmlParserTestDoc_DocType2</name>
       <routePaths>
         <routePath>
@@ -24,6 +24,6 @@
           <activationType>S</activationType>
         </start>
       </routeNodes>
-    </documentTypeRouting>
+    </documentType>
   </documentTypes>
 </data>

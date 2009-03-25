@@ -43,13 +43,13 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kew.xml.export.DocumentTypeXmlExporter;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
-
 
 public class DocumentTypeTest extends KEWTestCase {
     private static final Logger LOG = Logger.getLogger(DocumentTypeTest.class);
@@ -210,7 +210,7 @@ public class DocumentTypeTest extends KEWTestCase {
     }
 
     /**
-     * verify that saved documents are impacting the documents in the rest of they're hierarhy.
+     * verify that saved documents are impacting the documents in the rest of they're hierarchy.
      * This means cache notification by document type will work.
      *
      * @throws Exception
@@ -218,7 +218,7 @@ public class DocumentTypeTest extends KEWTestCase {
     @Test public void testDocumentTypeServiceCacheInteractions() throws Exception {
     	DocumentType child = KEWServiceLocator.getDocumentTypeService().findByName("SaveTestDocumentTypeChild1");
     	DocumentType childDeux = KEWServiceLocator.getDocumentTypeService().findById(child.getDocumentTypeId());
-    	System.out.println(child == childDeux);
+//    	System.out.println(child == childDeux);
     	assertEquals("Names should be the same.", child.getName(), childDeux.getName());
     	assertEquals("Versions should be the same.", child.getVersion(), childDeux.getVersion());
 
@@ -536,7 +536,7 @@ public class DocumentTypeTest extends KEWTestCase {
      * 
      * @throws Exception
      */
-    @Ignore("delyea: complete at a later date")
+//    @Ignore("delyea: complete at a later date")
     @Test public void testUpdateOfDocTypeFields() throws Exception {
     	//Collection<DocumentTypePolicy> docPolicies = docType.getPolicies();
     	//List<DocumentTypeAttribute> docAttributes = docType.getDocumentTypeAttributes();
@@ -553,26 +553,57 @@ public class DocumentTypeTest extends KEWTestCase {
     	// Ingest each document type, and test the properties of each one.
     	for (int i = 0; i < expectedValues.length; i++) {
     		// Load the document type and store its data.
-    		loadXmlFile("DocTypeWithMostParams" + (i+1) + ".xml");
+    	    String fileToLoad = "DocTypeWithMostParams" + (i+1) + ".xml"; 
+    		loadXmlFile(fileToLoad);
     		DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName("TestWithMostParams1");
     		KimGroup baWorkgroup = docType.getBlanketApproveWorkgroup();
     		KimGroup rpWorkgroup = docType.getReportingWorkgroup();
-    		KimGroup deWorkgroup = docType.getDefaultExceptionWorkgroup();
+    		KimGroup deWorkgroup = getValidDefaultExceptionWorkgroup(docType);
         	String[] actualValues = {docType.getName(), docType.getParentDocType().getName(), docType.getDescription(),
-        			docType.getLabel(), docType.getPostProcessorName(), docType.getSuperUserWorkgroupNoInheritence().getGroupName(),
-        	    	((baWorkgroup != null) ? baWorkgroup.getGroupName() : null), docType.getBlanketApprovePolicy(),
-        	    	((rpWorkgroup != null) ? rpWorkgroup.getGroupName() :null), ((deWorkgroup != null) ? deWorkgroup.getGroupName() :null),
+        			docType.getLabel(), docType.getPostProcessorName(), constructGroupNameWithNamespace(docType.getSuperUserWorkgroupNoInheritence()),
+        			constructGroupNameWithNamespace(baWorkgroup), docType.getBlanketApprovePolicy(),
+        			constructGroupNameWithNamespace(rpWorkgroup), constructGroupNameWithNamespace(deWorkgroup),
         	    	docType.getUnresolvedDocHandlerUrl(), docType.getUnresolvedHelpDefinitionUrl(),
         	    	docType.getNotificationFromAddress(), docType.getCustomEmailStylesheet(),
         	    	docType.getServiceNamespace(), docType.getActive().toString()  			
         	};
         	// Compare the expected field values with the actual ones.
     		for (int j = 0; j < expectedValues[i].length; j++) {
-    			assertEquals("The document does not have the expected parameter value.", expectedValues[i][j], actualValues[j]);
+    			assertEquals("The document does not have the expected parameter value. (i=" + i + ",j=" + j + ")", expectedValues[i][j], actualValues[j]);
     		}
     	}
     }
-    
+
+    private KimGroup getValidDefaultExceptionWorkgroup(DocumentType documentType) {
+        List flattenedNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(documentType, false);
+        assertTrue("Document Type '" + documentType.getName() + "' should have a default exception workgroup.", hasDefaultExceptionWorkgroup(flattenedNodes));
+        return ((RouteNode)flattenedNodes.get(0)).getExceptionWorkgroup();
+    }
+
+    // this method is duplicated in the DocumentTypeXmlExporter class
+    private boolean hasDefaultExceptionWorkgroup(List flattenedNodes) {
+        boolean hasDefaultExceptionWorkgroup = true;
+        String exceptionWorkgroupName = null;
+        for (Iterator iterator = flattenedNodes.iterator(); iterator.hasNext();) {
+            RouteNode node = (RouteNode) iterator.next();
+            if (exceptionWorkgroupName == null) {
+                exceptionWorkgroupName = node.getExceptionWorkgroupName();
+            }
+            if (exceptionWorkgroupName == null || !exceptionWorkgroupName.equals(node.getExceptionWorkgroupName())) {
+                hasDefaultExceptionWorkgroup = false;
+                break;
+            }
+        }
+        return hasDefaultExceptionWorkgroup;
+    }
+
+    private String constructGroupNameWithNamespace(KimGroup group) {
+        if (ObjectUtils.isNull(group)) {
+            return null;
+        }
+        return group.getNamespaceCode() + KEWConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER + group.getGroupName();
+    }
+
     protected void verifyDocumentTypeLinking() throws Exception {
     	DocumentTypeService service = KEWServiceLocator.getDocumentTypeService();
     	List rootDocs = service.findAllCurrentRootDocuments();

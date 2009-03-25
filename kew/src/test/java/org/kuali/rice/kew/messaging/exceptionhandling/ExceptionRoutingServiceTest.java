@@ -26,7 +26,7 @@ import org.kuali.rice.kew.test.TestUtilities;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ExceptionRoutingServiceTest extends KEWTestCase {
-	
+
 	/**
 	 * Checks to make sure that the KIM routing is working.
 	 * Based upon the test method org.kuali.rice.kew.doctype.DocumentTypeTest.testFinalApproverRouting()
@@ -47,7 +47,7 @@ public class ExceptionRoutingServiceTest extends KEWTestCase {
             assertTrue("Document should be in exception routing", document.stateIsException());
         }
 	}
-	
+
 	/**
 	 * Checks to make sure that the KIM routing is working with hierarchical documents.
 	 * Based upon the test method org.kuali.rice.kew.doctype.DocumentTypeTest.testFinalApproverRouting()
@@ -73,7 +73,7 @@ public class ExceptionRoutingServiceTest extends KEWTestCase {
 	        }
 		}
 	}
-	
+
 	/**
 	 * Checks to make sure that the KIM routing is working for a RiceDocument child.
 	 * Based upon the test method org.kuali.rice.kew.doctype.DocumentTypeTest.testFinalApproverRouting()

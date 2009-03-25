@@ -61,12 +61,12 @@ public interface XmlConstants {
     public static final String KEY = "key";
     public static final String VALUE = "value";
     public static final String ACTIVE= "active";
-    public static final String INHERITED = "inherited";
     public static final String TYPE = "type";
 
     // document types
     public static final String DOCUMENT_TYPES = "documentTypes";
     public static final String DOCUMENT_TYPE = "documentType";
+    public static final String DOCUMENT_TYPE_OVERWRITE_MODE = "overwriteMode";
     public static final String PARENT = "parent";
     public static final String SERVICE_NAMESPACE = "serviceNamespace";
     public static final String POST_PROCESSOR_NAME = "postProcessorName";
@@ -79,8 +79,6 @@ public interface XmlConstants {
     public static final String HELP_DEFINITION_URL = "helpDefinitionURL";
     public static final String NOTIFICATION_FROM_ADDRESS = "notificationFromAddress";
     public static final String CUSTOM_EMAIL_STYLESHEET = "emailStylesheet";
-    public static final String ROUTE_LEVELS_INHERITED = "routeLevelsInherited";
-    public static final String ATTRIBUTES_INHERITED = "attributesInherited";
     public static final String POLICIES = "policies";
     public static final String POLICY = "policy";
     public static final String SECURITY = "security";

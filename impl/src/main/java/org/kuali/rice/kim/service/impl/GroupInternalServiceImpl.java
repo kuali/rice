@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -101,6 +102,12 @@ public class GroupInternalServiceImpl implements GroupInternalService {
     }
 
     private MembersDiff getMembersDiff(List<String> oldMemberPrincipalIds, List<String> newMemberPrincipalIds) {
+
+    	// ListUtils does not check the null case.  Which can happen when adding a new group
+    	// so, if they're null make them empty lists.
+    	if(oldMemberPrincipalIds == null) oldMemberPrincipalIds = new ArrayList<String>();
+    	if(newMemberPrincipalIds == null) newMemberPrincipalIds = new ArrayList<String>();
+
         Set<String> addedPrincipalIds = new HashSet<String>(ListUtils.subtract(newMemberPrincipalIds, oldMemberPrincipalIds));
         Set<String> removedPrincipalIds = new HashSet<String>(ListUtils.subtract(oldMemberPrincipalIds, newMemberPrincipalIds));
         return new MembersDiff(addedPrincipalIds, removedPrincipalIds);

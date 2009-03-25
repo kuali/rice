@@ -181,14 +181,14 @@ public class RuleQuickLinksAction extends KewKualiAction {
             this.flattenedNodes = flattenedNodes;
         }
         public boolean isShouldDisplay() {
-			if (flattenedNodes.isEmpty()) {
-				for (DocumentTypeQuickLinksStructure docType : childrenDocumentTypes) {
-					if (docType.isShouldDisplay()) {
-						return true;
-					}
-				}
-				return false;
-			}
+//			if (flattenedNodes.isEmpty()) {
+//				for (DocumentTypeQuickLinksStructure docType : childrenDocumentTypes) {
+//					if (docType.isShouldDisplay()) {
+//						return true;
+//					}
+//				}
+//				return false;
+//			}
 			return true;
 		}
 

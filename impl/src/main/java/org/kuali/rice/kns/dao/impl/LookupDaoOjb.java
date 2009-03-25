@@ -563,40 +563,14 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
         if (StringUtils.contains(propertyValue, "..")) {
             String[] rangeValues = StringUtils.split(propertyValue, "..");
             criteria.addBetween(propertyName, rangeValues[0], rangeValues[1]);
-
-            //To fix a bug related on number of digits issues for searching String field with range operator
-            Criteria orCriteria = new Criteria();
-            orCriteria.addGreaterThan(propertyName, rangeValues[0].length());
-            criteria.addOrCriteria(orCriteria);
-            criteria.addLessOrEqualThan(propertyName, rangeValues[1].length());
-
-        }
-        else if (propertyValue.startsWith(">")) {
+        } else if (propertyValue.startsWith(">")) {
             criteria.addGreaterThan(propertyName, ObjectUtils.clean(propertyValue));
-
-            //To fix a bug related on number of digits issues for searching String field with range operator
-            Criteria orCriteria = new Criteria();
-            orCriteria.addGreaterThan(propertyName, ObjectUtils.clean(propertyValue).length());
-            criteria.addOrCriteria(orCriteria);
-
-        }
-        else if (propertyValue.startsWith("<")) {
+        } else if (propertyValue.startsWith("<")) {
             criteria.addLessThan(propertyName, ObjectUtils.clean(propertyValue));
-
-            //To fix a bug related on number of digits issues for searching String field with range operator
-            criteria.addLessOrEqualThan(propertyName, ObjectUtils.clean(propertyValue).length());
-        }
-        else if (propertyValue.startsWith(">=")) {
+        } else if (propertyValue.startsWith(">=")) {
             criteria.addGreaterOrEqualThan(propertyName, ObjectUtils.clean(propertyValue));
-
-            //To fix a bug related on number of digits issues for searching String field with range operator
-            criteria.addGreaterOrEqualThan(propertyName, ObjectUtils.clean(propertyValue).length());
-        }
-        else if (propertyValue.startsWith("<=")) {
+        } else if (propertyValue.startsWith("<=")) {
             criteria.addLessOrEqualThan(propertyName, ObjectUtils.clean(propertyValue));
-
-            //To fix a bug related on number of digits issues for searching String field with range operator
-            criteria.addLessOrEqualThan(propertyName, ObjectUtils.clean(propertyValue).length());
         }
     }
 

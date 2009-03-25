@@ -66,17 +66,25 @@ function hideTab(doc, tabKey) {
 
 var formHasAlreadyBeenSubmitted = false;
 var excludeSubmitRestriction = false;
+
 function hasFormAlreadyBeenSubmitted() {
+//	alert( "submitting form" );
+	try {
+		// save the current scroll position
+		saveScrollPosition();
+	} catch ( ex ) {
+		// do nothing - don't want to stop submit
+	}
 
 	if ( document.getElementById( "formComplete" ) ) { 
-    if (formHasAlreadyBeenSubmitted && !excludeSubmitRestriction) {
-       alert("Page already being processed by the server.");
-       return false;
-    } else {
-       formHasAlreadyBeenSubmitted = true;
-       return true;
-    }
-    excludeSubmitRestriction = false;
+	    if (formHasAlreadyBeenSubmitted && !excludeSubmitRestriction) {
+	       alert("Page already being processed by the server.");
+	       return false;
+	    } else {
+	       formHasAlreadyBeenSubmitted = true;
+	       return true;
+	    }
+	    excludeSubmitRestriction = false;
     } else {
 	       alert("Page has not finished loading.");
 	       return false;
@@ -86,7 +94,60 @@ function hasFormAlreadyBeenSubmitted() {
 function submitForm() {
     document.forms[0].submit();
 }
-	
+
+function saveScrollPosition() {
+//	alert( document.forms[0].formKey );
+	if ( document.forms[0].formKey ) {
+		formKey = document.forms[0].formKey.value;
+		if( document.documentElement ) { 
+			x = Math.max(document.documentElement.scrollLeft, document.body.scrollLeft); 
+		  	y = Math.max(document.documentElement.scrollTop, document.body.scrollTop); 
+		} else if( document.body && typeof document.body.scrollTop != "undefined" ) { 
+			x = document.body.scrollLeft; 
+		  	y = document.body.scrollTop; 
+		} else if ( typeof window.pageXOffset != "undefined" ) { 
+			x = window.pageXOffset; 
+		  	y = window.pageYOffset; 
+		} 
+		document.cookie = "KulScrollPos"+formKey+"="+x+","+y+"; path="+document.location.pathname;
+	}
+	// test read cookie back
+//	matchResult = document.cookie.match(new RegExp("KulScrollPos"+formKey+"=([^;]+);?"));
+//	if ( matchResult ) {
+//		alert( "Cookie: " + matchResult[1] );
+//	}
+}
+
+function restoreScrollPosition() {
+    if ( document.forms[0].formKey ) {
+        formKey = document.forms[0].formKey.value;
+        var cookieName = "KulScrollPos"+formKey;
+        var matchResult = document.cookie.match(new RegExp(cookieName+"=([^;]+);?"));
+        if ( matchResult ) {
+            var coords = matchResult[1].split( ',' );
+            window.scrollTo(coords[0],coords[1]);
+            expireCookie( cookieName );
+            return true;
+        } else { // check for entry before form key set
+        	cookieName = "KulScrollPos";
+	        var matchResult = document.cookie.match(new RegExp(cookieName+"=([^;]+);?"));
+	        if ( matchResult ) {
+	            var coords = matchResult[1].split( ',' );
+	            window.scrollTo(coords[0],coords[1]);
+	            expireCookie( cookieName );
+	            return true;
+	        }
+        }
+    }
+    return false;
+}
+
+function expireCookie( cookieName ) {
+	var date = new Date();
+	date.setTime( date.getTime() - 60000 );
+	document.cookie = cookieName+"=0,0; expires="+date.toGMTString()+"; path="+document.location.pathname;
+}
+
 /* script to prevent the return key from submitting a form unless the user is on a button or on a link. fix for KULFDBCK-555 */ 
 function isReturnKeyAllowed(buttonPrefix , event) {
 	/* use IE naming first then firefox. */

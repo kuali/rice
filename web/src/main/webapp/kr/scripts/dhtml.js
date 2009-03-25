@@ -95,10 +95,8 @@ function expandAll(doit, cc) {
 // ANCHOR JAVASCRIPT METHOD
 //
 function jumpToAnchor(anchorLocation) {
-  docLoc = document.location;
-  
   if(anchorLocation != null){
-    docLoc.replace(docLoc + '#' + anchorLocation);
+	document.location.hash = anchorLocation;
   }
 }
 //

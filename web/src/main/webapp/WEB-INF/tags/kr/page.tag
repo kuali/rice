@@ -91,28 +91,6 @@
 				  }
 			   }
 			  }
-
-			  var formHasAlreadyBeenSubmitted = false;
-			  var excludeSubmitRestriction = false;
-			  function hasFormAlreadyBeenSubmitted()
-			  {
-			  
-				if ( document.getElementById( "formComplete" ) ) { 
-		  		
-				  if (formHasAlreadyBeenSubmitted && !excludeSubmitRestriction) {
-					 alert("Page already being processed by the server.");
-					 return false;
-				  } else {
-					 formHasAlreadyBeenSubmitted = true;
-					 return true;
-				  }
-				  excludeSubmitRestriction = false;
-				} else {
-	       		  alert("Page has not finished loading.");
-	       		  return false;
-				}
-				 				
-			  }
 			  </script>
 		</c:when>
 		<c:otherwise>
@@ -150,7 +128,7 @@
 					value="jumpToAnchor('${KualiForm.anchor}');" />
 			</c:if>
 		</c:if>
-		<body onload="${anchorScript}"
+		<body onload="if ( !restoreScrollPosition() ) { ${anchorScript} }"
 			onKeyPress="return isReturnKeyAllowed('${Constants.DISPATCH_REQUEST_PARAMETER}.' , event);">
 			<kul:backdoor />
 			${headerMenuBar}

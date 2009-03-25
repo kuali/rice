@@ -475,11 +475,15 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		StringBuffer sb = new StringBuffer();
 		sb.append(  '\n' );
 		sb.append( "Has Role     : " ).append( roleIds ).append( '\n' );
-		for ( String roleId : roleIds ) {
-			KimRoleInfo role = getRole( roleId );
-			sb.append( "        Name : " ).append( role.getNamespaceCode() ).append( '/').append( role.getRoleName() );
-			sb.append( " (" ).append( roleId ).append( ')' );
-			sb.append( '\n' );
+		if ( roleIds != null ) {
+			for ( String roleId : roleIds ) {
+				KimRoleInfo role = getRole( roleId );
+				if ( role != null ) {
+					sb.append( "        Name : " ).append( role.getNamespaceCode() ).append( '/').append( role.getRoleName() );
+					sb.append( " (" ).append( roleId ).append( ')' );
+					sb.append( '\n' );
+				}
+			}
 		}
 		sb.append( "   Principal : " ).append( principalId );
 		if ( principalId != null ) {

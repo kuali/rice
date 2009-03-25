@@ -497,6 +497,10 @@ public class KNSConstants extends JSTLConstants {
 
         public static final String ENABLE_DIRECT_INQUIRIES_IND = "ENABLE_DIRECT_INQUIRIES_IND";
         public static final String DEFAULT_COUNTRY = "DEFAULT_COUNTRY";
+        
+        public static final String DATE_TIME_SERVICE_SQL_DATE_FORMATS = "DATE_TIME_SERVICE_SQL_DATE_FORMATS";
+        public static final String DATE_TIME_SERVICE_STRING_DATE_FORMAT_FOR_FILE_NAME = "DATE_TIME_SERVICE_STRING_DATE_FORMAT_FOR_FILE_NAME";
+        public static final String DATE_TIME_SERVICE_STRING_TIMESTAMP_FORMAT_FOR_FILE_NAME = "DATE_TIME_SERVICE_STRING_TIMESTAMP_FORMAT_FOR_FILE_NAME";
     }
 
     public static class Maintenance {

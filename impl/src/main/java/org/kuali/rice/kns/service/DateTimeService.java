@@ -153,4 +153,7 @@ public interface DateTimeService {
      */
     public int dateDiff(Date date1, Date date2, boolean inclusive);
 
+    public String toDateStringForFilename(Date date);
+    
+    public String toDateTimeStringForFilename(Date date);
 }

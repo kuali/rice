@@ -245,4 +245,24 @@ public class DateTimeServiceImpl implements DateTimeService {
 	public void setStringDateTimeFormat(String stringDateTimeFormat) {
 		this.stringDateTimeFormat = stringDateTimeFormat;
 	}
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.service.DateTimeService#toDateStringForFilename(java.util.Date)
+	 */
+	public String toDateStringForFilename(Date date) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+		return dateFormat.format(date);
+	}
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.service.DateTimeService#toDateTimeStringForFilename(java.util.Date)
+	 */
+	public String toDateTimeStringForFilename(Date date) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HH-mm-ss-S");
+		return dateFormat.format(date);
+	}
 }

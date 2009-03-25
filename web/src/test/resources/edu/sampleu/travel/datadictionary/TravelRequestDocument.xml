@@ -10,19 +10,6 @@
     <property name="businessRulesClass" value="edu.sampleu.travel.document.rule.TravelDocumentRule"/>
     <property name="documentAuthorizerClass" value="edu.sampleu.travel.document.authorizer.TravelDocumentAuthorizer"/>
     <property name="documentPresentationControllerClass" value="edu.sampleu.travel.document.authorizer.TravelDocumentPresentationController"/>
-    <property name="authorizations">
-      <list>
-        <bean parent="AuthorizationDefinition">
-          <property name="authorizedGroups">
-            <set>
-              <value>WorkflowAdmin</value>
-            </set>
-          </property>
-          <property name="action" value="initiate"/>
-        </bean>
-      </list>
-    </property>
-    
     
     <property name="attributes">
       <list>

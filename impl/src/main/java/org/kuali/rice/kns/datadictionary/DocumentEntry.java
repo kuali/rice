@@ -63,7 +63,6 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     protected List<String> webScriptFiles = new ArrayList<String>( 3 );
 
     protected Class<? extends DocumentAuthorizer> documentAuthorizerClass;
-    protected List<AuthorizationDefinition> authorizations = new ArrayList<AuthorizationDefinition>();
     protected List<HeaderNavigation> headerNavigationList = new ArrayList<HeaderNavigation>();
 
     protected boolean allowsCopy = false;
@@ -146,14 +145,6 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
      */
     public void setPromptBeforeValidationClass(Class<? extends PromptBeforeValidation> preRulesCheckClass) {
         this.promptBeforeValidationClass = preRulesCheckClass;
-    }
-
-    /**
-     * 
-     * @return
-     */
-    public List<AuthorizationDefinition> getAuthorizationDefinitions() {
-        return authorizations;
     }
 
     /**
@@ -374,37 +365,6 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
      */
     public void setHeaderNavigationList(List<HeaderNavigation> headerNavigationList) {
         this.headerNavigationList = headerNavigationList;
-    }
-
-    public List<AuthorizationDefinition> getAuthorizations() {
-        return this.authorizations;
-    }
-
-    /**
-            The authorizations element contains authorization elements.
-            These define the workgroups that are allowed to take various
-            actions on a document.
-
-            JSTL: authorizations is a Map which is accessed by a key of "authorizations".
-            This map contains entries with the following keys:
-                * action for first authorization
-                * action for second authorization
-                etc.
-            The corresponding value for each entry is an authorization ExportMap.
-     */
-    public void setAuthorizations(List<AuthorizationDefinition> authorizations) {
-        Set<String> actions = new HashSet<String>();
-        for ( AuthorizationDefinition authorizationDefinition : authorizations ) {
-            String action = authorizationDefinition.getAction();
-            if (StringUtils.isBlank(action)) {
-                throw new IllegalArgumentException("invalid (blank) action name");
-            }
-            if (actions.contains(action)) {
-                throw new DuplicateEntryException("an authorizationDefinition with action '" + action + "' already exists for this document type");
-            }
-            actions.add(action);
-        }
-        this.authorizations = authorizations;
     }
 
     /**

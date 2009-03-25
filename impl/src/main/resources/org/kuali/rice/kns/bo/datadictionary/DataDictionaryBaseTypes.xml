@@ -14,9 +14,6 @@
 	<bean id="ZipcodeValidationPattern"
 		class="org.kuali.rice.kns.datadictionary.validation.fieldlevel.ZipcodeValidationPattern"
 		abstract="true" />
-	<bean id="AuthorizationDefinition"
-		class="org.kuali.rice.kns.datadictionary.AuthorizationDefinition"
-		abstract="true" />
 	<bean id="EmailAddressValidationPattern"
 		class="org.kuali.rice.kns.datadictionary.validation.fieldlevel.EmailAddressValidationPattern"
 		abstract="true" />

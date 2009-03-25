@@ -26,20 +26,6 @@
     <property name="businessRulesClass" value="org.kuali.rice.kns.test.document.AccountRules"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
     
-    <property name="authorizations">
-      <list>
-        <bean parent="AuthorizationDefinition">
-          <property name="authorizedGroups">
-            <set>
-              <value>WorkflowAdmin</value>
-            </set>
-          </property>
-          <property name="action" value="initiate"/>
-        </bean>
-      </list>
-    </property>
-    
-    
   </bean>
 
 <!-- Maintenance Section Definitions -->

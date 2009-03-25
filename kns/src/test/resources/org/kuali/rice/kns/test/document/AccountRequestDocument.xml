@@ -10,20 +10,6 @@
     <property name="businessRulesClass" value="org.kuali.rice.kns.test.document.AccountRequestDocumentRule"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.test.document.AccountRequestDocumentAuthorizer"/>
     
-    <property name="authorizations">
-      <list>
-        <bean parent="AuthorizationDefinition">
-          <property name="authorizedGroups">
-            <set>
-              <value>WorkflowAdmin</value>
-            </set>
-          </property>
-          <property name="action" value="initiate"/>
-        </bean>
-      </list>
-    </property>
-    
-    
     <property name="attributes">
       <list>
         <ref bean="AccountRequest-requester"/>

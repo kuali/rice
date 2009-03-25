@@ -15,11 +15,8 @@
  */
 package org.kuali.rice.kns.datadictionary.exporter;
 
-import java.util.List;
-
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kns.datadictionary.AuthorizationDefinition;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.service.DocumentHelperService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -43,7 +40,8 @@ public abstract class DocumentEntryMapper {
      * @param entry
      * @return Map containing entries for properties common to all DocumentEntry subclasses
      */
-    protected ExportMap mapEntry(DocumentEntry entry) {
+    @SuppressWarnings("unchecked")
+	protected ExportMap mapEntry(DocumentEntry entry) {
         if (entry == null) {
             throw new IllegalArgumentException("invalid (null) entry");
         }
@@ -86,41 +84,7 @@ public abstract class DocumentEntryMapper {
         entryMap.set(new AttributesMapBuilder().buildAttributesMap(entry));
         entryMap.set(new CollectionsMapBuilder().buildCollectionsMap(entry));
 
-        // complex properties
-        entryMap.setOptional(buildAuthorizationsMap(entry));
-
         return entryMap;
     }
-
-
-    private ExportMap buildAuthorizationsMap(DocumentEntry entry) {
-        ExportMap authorizationsMap = null;
-
-        List<AuthorizationDefinition> authorizationDefinitions = entry.getAuthorizationDefinitions();
-        if ((authorizationDefinitions != null) && !authorizationDefinitions.isEmpty()) {
-            authorizationsMap = new ExportMap("authorizations");
-
-            for ( AuthorizationDefinition authorizationDefinition : authorizationDefinitions ) {
-                authorizationsMap.set(buildAuthorizationMap(authorizationDefinition));
-            }
-        }
-
-        return authorizationsMap;
-    }
-
-    private ExportMap buildAuthorizationMap(AuthorizationDefinition authorizationDefinition) {
-        ExportMap authorizationMap = new ExportMap(authorizationDefinition.getAction());
-
-        int index = 0;
-        for (String groupName : authorizationDefinition.getAuthorizedGroups() ) {
-            ExportMap workgroupsMap = new ExportMap("workgroups");
-            workgroupsMap.set(Integer.toString(index++), groupName);
-
-            authorizationMap.set(workgroupsMap);
-        }
-
-        return authorizationMap;
-    }
-
 
 }

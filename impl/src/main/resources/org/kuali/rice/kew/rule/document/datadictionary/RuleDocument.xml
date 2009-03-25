@@ -17,20 +17,6 @@
       <ref bean="RuleDocument-workflowProperties" />
     </property>-->
     
-    <property name="authorizations">
-      <list>
-        <bean parent="AuthorizationDefinition">
-          <property name="action" value="initiate"/>
-          <property name="authorizedGroups">
-            <set>
-              <value>WorkflowAdmin</value>
-            </set>
-          </property>
-        </bean>
-      </list>
-    </property><!--
-    <property name="validationMap" ref="RuleDocument-validations" />
-    -->
   </bean>
 
   <!-- Exported Workflow Properties 

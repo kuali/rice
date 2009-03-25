@@ -25,20 +25,6 @@
     <property name="workflowProperties">
       <ref bean="ParameterNamespaceMaintenanceDocument-workflowProperties"/>
     </property>
-    <property name="authorizations">
-      <list>
-        <bean parent="AuthorizationDefinition">
-          <property name="authorizedGroups">
-            <set>
-              <value>WorkflowAdmin</value>
-            </set>
-          </property>
-          <property name="action" value="initiate"/>
-        </bean>
-      </list>
-    </property>
-    
-    
   </bean>
 
 <!-- Maintenance Section Definitions -->

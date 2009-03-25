@@ -194,18 +194,6 @@
 
   <bean id="SampleBOMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry" p:businessObjectClass="org.kuali.rice.kim.test.service.PersonServiceImplTest$SampleBO" p:maintainableClass="org.kuali.rice.kns.maintenance.KualiMaintainableImpl" p:documentTypeName="SampleBOMaintenanceDocument" p:businessRulesClass="org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase" p:documentAuthorizerClass="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase">
 
-    <property name="authorizations">
-      <list>
-        <bean parent="AuthorizationDefinition">
-          <property name="action" value="initiate"/>
-          <property name="authorizedGroups">
-            <set>
-              <value>SY_MAINTENANCE_USERS</value>
-            </set>
-          </property>
-        </bean>
-      </list>
-    </property>
     <property name="lockingKeys">
       <list>
         <value>anAttribute</value>

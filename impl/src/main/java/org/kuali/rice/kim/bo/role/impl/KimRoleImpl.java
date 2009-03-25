@@ -66,10 +66,6 @@ public class KimRoleImpl extends PersistableBusinessObjectBase implements KimRol
 	@Column(name="NMSPC_CD")
 	protected String namespaceCode;
 
-	@OneToMany(targetEntity=RoleRelationshipImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
-	@JoinColumn(name="ROLE_ID", insertable=false, updatable=false)
-	protected List<RoleRelationshipImpl> assignedRoles;
-
 	@OneToMany(targetEntity=RoleMemberImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
 	@JoinColumn(name="ROLE_ID", insertable=false, updatable=false)
 	protected List<RoleMemberImpl> members = new TypedArrayList(RoleMemberImpl.class);
@@ -123,14 +119,6 @@ public class KimRoleImpl extends PersistableBusinessObjectBase implements KimRol
 
 	public void setActive(boolean active) {
 		this.active = active;
-	}
-
-	public List<RoleRelationshipImpl> getAssignedRoles() {
-		return this.assignedRoles;
-	}
-
-	public void setAssignedRoles(List<RoleRelationshipImpl> assignedRoles) {
-		this.assignedRoles = assignedRoles;
 	}
 
 	public List<String> getMemberGroupIds() {

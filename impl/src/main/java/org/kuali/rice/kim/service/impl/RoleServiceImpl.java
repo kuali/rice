@@ -37,7 +37,6 @@ import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
-import org.kuali.rice.kim.bo.role.impl.RoleRelationshipImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
@@ -399,9 +398,10 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     protected List<RoleMembershipInfo> getRoleMembers(List<String> roleIds, AttributeSet qualification, boolean followDelegations ) {
     	List<RoleMembershipInfo> results = new ArrayList<RoleMembershipInfo>();
     	Set<String> allRoleIds = new HashSet<String>();
-    	// get all implying roles (this also filters to active roles only)
     	for ( String roleId : roleIds ) {
-    		allRoleIds.addAll( getImplyingRoleIds(roleId) );
+    		if ( isRoleActive(roleId) ) {
+    			allRoleIds.add(roleId);
+    		}
     	}
     	// short-circuit if no roles match
     	if ( allRoleIds.isEmpty() ) {
@@ -757,9 +757,11 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     		return false;
     	}
     	Set<String> allRoleIds = new HashSet<String>();
-    	// get all implying roles (this also filters to active roles only)
+    	// remove inactive roles
     	for ( String roleId : roleIds ) {
-    		allRoleIds.addAll( getImplyingRoleIds(roleId) );
+    		if ( isRoleActive(roleId) ) {
+    			allRoleIds.add(roleId);
+    		}
     	}
     	// short-circuit if no roles match
     	if ( allRoleIds.isEmpty() ) {
@@ -935,45 +937,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	}
     	return false;
     }
-    
-	protected List<String> getImplyingRoleIds( String roleId ) {
-		// check for a non-null result in the cache, return it if found
-		List<String> cachedResult = getImpliedRoleIdsFromCache( roleId );
-		if ( cachedResult != null ) {
-			return cachedResult;
-		}		
-		// otherwise, run the query
-		Set<String> roleIds = new HashSet<String>();
-		
-		// add the given role
-		if ( isRoleActive( roleId ) ) {
-			roleIds.add(roleId);
-			getImplyingRolesInternal(roleId, roleIds);		
-		}
-		List<String> result = new ArrayList<String>( roleIds );
-		addImpliedRoleIdsToCache( roleId, result );
-		return result;
-	}
-	
-	@SuppressWarnings("unchecked")
-	protected void getImplyingRolesInternal( String roleId, Set<String> roles ) {
-		if ( roleId == null ) {
-			return;
-		}
-		// search role relationships where the given role is the child
-		AttributeSet criteria = new AttributeSet();
-		criteria.put( "containedRoleId", roleId );
-		Collection<RoleRelationshipImpl> rels = getBusinessObjectService().findMatching(RoleRelationshipImpl.class, criteria);
-		for ( RoleRelationshipImpl rel : rels ) {
-			if ( !roles.contains(rel.getRoleId()) ) {
-				if ( isRoleActive( rel.getRoleId() ) ) { 
-					roles.add( rel.getRoleId() );
-					getImplyingRolesInternal(rel.getRoleId(), roles);
-				}
-			}
-		}
-	}
-	    
+    		    
 	/**
 	 * Gets the roles directly assigned to the given role.
 	 */

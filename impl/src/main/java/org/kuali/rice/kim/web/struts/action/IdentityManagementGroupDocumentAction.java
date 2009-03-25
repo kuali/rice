@@ -158,13 +158,13 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
     private PersistableBusinessObject getMember(String memberTypeCode, String memberId){
         Class groupMemberTypeClass = null;
         String groupMemberIdName = "";
-    	if(MemberTypeValuesFinder.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
+    	if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
         	groupMemberTypeClass = KimPrincipalImpl.class;
         	groupMemberIdName = "principalId";
-        } else if(MemberTypeValuesFinder.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
         	groupMemberTypeClass = KimGroupImpl.class;
         	groupMemberIdName = "groupId";
-        } else if(MemberTypeValuesFinder.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
         	groupMemberTypeClass = KimRoleImpl.class;
         	groupMemberIdName = "roleId";
         }
@@ -182,11 +182,11 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
     
     public String getMemberName(String memberTypeCode, BusinessObject object){
     	String groupMemberName = "";
-        if(MemberTypeValuesFinder.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
+        if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
         	groupMemberName = ((KimPrincipalImpl)object).getPrincipalName();
-        } else if(MemberTypeValuesFinder.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
         	groupMemberName = ((KimGroupImpl)object).getGroupName();
-        } else if(MemberTypeValuesFinder.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
         	groupMemberName = ((KimRoleImpl)object).getRoleName();
         }
         return groupMemberName;

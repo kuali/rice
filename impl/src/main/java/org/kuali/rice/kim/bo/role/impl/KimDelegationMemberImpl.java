@@ -31,6 +31,8 @@ import javax.persistence.Table;
 import org.kuali.rice.kim.bo.impl.KimAbstractMemberImpl;
 import org.kuali.rice.kim.bo.role.KimDelegationMember;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
+import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -52,8 +54,10 @@ public class KimDelegationMemberImpl extends KimAbstractMemberImpl implements Ki
 	
 	@OneToMany(targetEntity=KimDelegationMemberAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
 	@JoinColumn(name="DLGN_MBR_ID", referencedColumnName="TARGET_PRIMARY_KEY", insertable=false, updatable=false )
-	protected List<KimDelegationMemberAttributeDataImpl> attributes;
+	protected List<KimDelegationMemberAttributeDataImpl> attributes = new TypedArrayList(KimDelegationMemberAttributeDataImpl.class);
 	
+	protected String delegationTypeCode;
+
 	/**
 	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
 	 */
@@ -119,4 +123,19 @@ public class KimDelegationMemberImpl extends KimAbstractMemberImpl implements Ki
 		}
 		return attribs;
 	}
+	
+	/**
+	 * @return the delegationTypeCode
+	 */
+	public String getDelegationTypeCode() {
+		return this.delegationTypeCode;
+	}
+
+	/**
+	 * @param delegationTypeCode the delegationTypeCode to set
+	 */
+	public void setDelegationTypeCode(String delegationTypeCode) {
+		this.delegationTypeCode = delegationTypeCode;
+	}
+
 }

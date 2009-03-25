@@ -18,6 +18,8 @@ package org.kuali.rice.kim.util;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.kuali.rice.kew.util.KEWConstants;
+
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in.
  *
@@ -108,6 +110,21 @@ public class KimConstants {
 		public static final String PARAMETERIZED_URL_SEPARATOR = "%2F";
 		public static final String KIM_URL_KEY = "kim.url";
 		public static final String KIM_APPLICATION = "kim";
+		public static final String MEMBER_TYPE_PRINCIPAL_CODE = "P";
+		public static final String MEMBER_TYPE_GROUP_CODE = "G";
+		public static final String MEMBER_TYPE_ROLE_CODE = "R";
+		public static final String MEMBER_TYPE_PRINCIPAL = "Principal";
+		public static final String MEMBER_TYPE_GROUP = "Group";
+		public static final String MEMBER_TYPE_ROLE = "Role";
+		public static final Map<String, String> KIM_MEMBER_TYPES_MAP = getKimMemberTypesMap();
+	    private static Map<String, String> getKimMemberTypesMap() {
+	    	Map<String, String> kimDocumentActionsMap = new HashMap<String, String>();
+	    	kimDocumentActionsMap.put(MEMBER_TYPE_PRINCIPAL_CODE, MEMBER_TYPE_PRINCIPAL);
+	    	kimDocumentActionsMap.put(MEMBER_TYPE_GROUP_CODE, MEMBER_TYPE_GROUP);
+	    	kimDocumentActionsMap.put(MEMBER_TYPE_ROLE_CODE, MEMBER_TYPE_ROLE);
+	        return kimDocumentActionsMap;
+	    }
+
 		public static final String KIM_ROLE_DOCUMENT_TYPE_NAME = "IdentityManagementRoleDocument";
 		public static final String KIM_GROUP_DOCUMENT_TYPE_NAME = "IdentityManagementGroupDocument";
 		public static final String KIM_PERSON_DOCUMENT_TYPE_NAME = "IdentityManagementPersonDocument";
@@ -117,18 +134,24 @@ public class KimConstants {
 		public static final String KIM_ROLE_DOCUMENT_ACTION = "identityManagementRoleDocument.do";
 		public static final String KIM_PERSON_DOCUMENT_ACTION = "identityManagementPersonDocument.do";
 		public static final String KIM_GROUP_DOCUMENT_ACTION = "identityManagementGroupDocument.do";
-		public static final Map<String, String> KIM_DOCUMENTS_ACTION_MAP = new HashMap<String, String>();
-		static {
-			KIM_DOCUMENTS_ACTION_MAP.put(KIM_ROLE_DOCUMENT_SHORT_KEY, KIM_ROLE_DOCUMENT_ACTION);
-			KIM_DOCUMENTS_ACTION_MAP.put(KIM_GROUP_DOCUMENT_SHORT_KEY, KIM_GROUP_DOCUMENT_ACTION);
-			KIM_DOCUMENTS_ACTION_MAP.put(KIM_PERSON_DOCUMENT_SHORT_KEY, KIM_PERSON_DOCUMENT_ACTION);
-		}
-		public static final Map<String, String> KIM_DOCUMENT_TYPE_NAMES_MAP = new HashMap<String, String>();
-		static {
-			KIM_DOCUMENTS_ACTION_MAP.put(KIM_ROLE_DOCUMENT_SHORT_KEY, KIM_ROLE_DOCUMENT_TYPE_NAME);
-			KIM_DOCUMENTS_ACTION_MAP.put(KIM_GROUP_DOCUMENT_SHORT_KEY, KIM_GROUP_DOCUMENT_TYPE_NAME);
-			KIM_DOCUMENTS_ACTION_MAP.put(KIM_PERSON_DOCUMENT_SHORT_KEY, KIM_PERSON_DOCUMENT_TYPE_NAME);
-		}
+		public static final Map<String, String> KIM_DOCUMENTS_ACTIONS_MAP = getDocumentActionsMap();
+	    private static Map<String, String> getDocumentActionsMap() {
+	    	Map<String, String> kimDocumentActionsMap = new HashMap<String, String>();
+	    	kimDocumentActionsMap.put(KIM_ROLE_DOCUMENT_SHORT_KEY, KIM_ROLE_DOCUMENT_ACTION);
+	    	kimDocumentActionsMap.put(KIM_GROUP_DOCUMENT_SHORT_KEY, KIM_GROUP_DOCUMENT_ACTION);
+	    	kimDocumentActionsMap.put(KIM_PERSON_DOCUMENT_SHORT_KEY, KIM_PERSON_DOCUMENT_ACTION);
+	        return kimDocumentActionsMap;
+	    }
+
+		public static final Map<String, String> KIM_DOCUMENT_TYPE_NAMES_MAP = getDocumentTypeNamesMap();
+	    private static Map<String, String> getDocumentTypeNamesMap() {
+	    	Map<String, String> kimDocumentTypeNamesMap = new HashMap<String, String>();
+			kimDocumentTypeNamesMap.put(KIM_ROLE_DOCUMENT_SHORT_KEY, KIM_ROLE_DOCUMENT_TYPE_NAME);
+			kimDocumentTypeNamesMap.put(KIM_GROUP_DOCUMENT_SHORT_KEY, KIM_GROUP_DOCUMENT_TYPE_NAME);
+			kimDocumentTypeNamesMap.put(KIM_PERSON_DOCUMENT_SHORT_KEY, KIM_PERSON_DOCUMENT_TYPE_NAME);
+			return kimDocumentTypeNamesMap;
+	    }
+
 	}
 	
 	public static class PrimaryKeyConstants {
@@ -150,6 +173,7 @@ public class KimConstants {
 	
 	public static class UniqueKeyConstants {
 		public static final String NAMESPACE_CODE = "namespaceCode";
+		public static final String PRINCIPAL_NAME = "principalName";
 		public static final String GROUP_NAME = "groupName";
 		public static final String ROLE_NAME = "roleName";
 		public static final String PERMISSION_NAME = "name";

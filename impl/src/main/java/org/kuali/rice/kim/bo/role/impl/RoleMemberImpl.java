@@ -25,6 +25,7 @@ import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.impl.KimAbstractMemberImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -43,7 +44,7 @@ public class RoleMemberImpl extends KimAbstractMemberImpl {
 	@Column(name="ROLE_ID")
 	protected String roleId;
 	
-	protected List<RoleMemberAttributeDataImpl> attributes;
+	protected List<RoleMemberAttributeDataImpl> attributes = new TypedArrayList(RoleMemberAttributeDataImpl.class);
 	
 	protected List <RoleResponsibilityActionImpl> roleRspActions;
 	

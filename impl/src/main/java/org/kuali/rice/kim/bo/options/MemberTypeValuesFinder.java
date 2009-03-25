@@ -18,6 +18,7 @@ package org.kuali.rice.kim.bo.options;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
 import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
@@ -28,21 +29,14 @@ import org.kuali.rice.kns.web.ui.KeyLabelPair;
  */
 public class MemberTypeValuesFinder extends KeyValuesBase {
 
-	public static final String MEMBER_TYPE_PRINCIPAL_CODE = "P";
-	public static final String MEMBER_TYPE_GROUP_CODE = "G";
-	public static final String MEMBER_TYPE_ROLE_CODE = "R";
-	public static final String MEMBER_TYPE_PRINCIPAL = "Principal";
-	public static final String MEMBER_TYPE_GROUP = "Group";
-	public static final String MEMBER_TYPE_ROLE = "Role";
-	
     /*
      * @see org.kuali.keyvalues.KeyValuesFinder#getKeyValues()
      */
     public List getKeyValues() {
         List<KeyLabelPair> labels = new ArrayList<KeyLabelPair>();
-        labels.add(new KeyLabelPair(MEMBER_TYPE_PRINCIPAL_CODE, MEMBER_TYPE_PRINCIPAL));
-        labels.add(new KeyLabelPair(MEMBER_TYPE_GROUP_CODE, MEMBER_TYPE_GROUP));
-        labels.add(new KeyLabelPair(MEMBER_TYPE_ROLE_CODE, MEMBER_TYPE_ROLE));
+        labels.add(new KeyLabelPair(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE, KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL));
+        labels.add(new KeyLabelPair(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE, KimConstants.KimUIConstants.MEMBER_TYPE_GROUP));
+        labels.add(new KeyLabelPair(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, KimConstants.KimUIConstants.MEMBER_TYPE_ROLE));
         return labels;
     }    
 

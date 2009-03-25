@@ -1105,7 +1105,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				pndMember.setRoleMemberId(member.getRoleMemberId());
 				pndMember.setRoleId(member.getRoleId());
 				pndMember.setMemberId(member.getMemberId());
-				pndMember.setMemberName(getMemberName(member.getMemberId(), member.getMemberTypeCode()));
+				pndMember.setMemberName(getMemberName(member.getMemberTypeCode(), member.getMemberId()));
 				pndMember.setMemberTypeCode(member.getMemberTypeCode());
 				pndMember.setQualifiers(loadRoleMemberQualifiers(identityManagementRoleDocument, member.getAttributes()));
 				pndMember.setEdit(true);
@@ -1170,13 +1170,13 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     public BusinessObject getMember(String memberTypeCode, String memberId){
         Class roleMemberTypeClass = null;
         String roleMemberIdName = "";
-    	if(MemberTypeValuesFinder.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
+    	if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
         	roleMemberTypeClass = KimPrincipalImpl.class;
         	roleMemberIdName = KimConstants.PrimaryKeyConstants.PRINCIPAL_ID;
-        } else if(MemberTypeValuesFinder.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
         	roleMemberTypeClass = KimGroupImpl.class;
         	roleMemberIdName = KimConstants.PrimaryKeyConstants.GROUP_ID;
-        } else if(MemberTypeValuesFinder.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
         	roleMemberTypeClass = KimRoleImpl.class;
         	roleMemberIdName = KimConstants.PrimaryKeyConstants.ROLE_ID;
         }
@@ -1197,11 +1197,11 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
     public String getMemberName(String memberTypeCode, BusinessObject member){
     	String roleMemberName = "";
-        if(MemberTypeValuesFinder.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
+        if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
         	roleMemberName = ((KimPrincipalImpl)member).getPrincipalName();
-        } else if(MemberTypeValuesFinder.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
         	roleMemberName = ((KimGroupImpl)member).getGroupName();
-        } else if(MemberTypeValuesFinder.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
         	roleMemberName = ((KimRoleImpl)member).getRoleName();
         }
         return roleMemberName;
@@ -1209,11 +1209,11 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
     public String getMemberNamespaceCode(String memberTypeCode, BusinessObject member){
     	String roleMemberNamespaceCode = "";
-        if(MemberTypeValuesFinder.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
+        if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
         	roleMemberNamespaceCode = "";
-        } else if(MemberTypeValuesFinder.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
         	roleMemberNamespaceCode = ((KimGroupImpl)member).getNamespaceCode();
-        } else if(MemberTypeValuesFinder.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
         	roleMemberNamespaceCode = ((KimRoleImpl)member).getNamespaceCode();
         }
         return roleMemberNamespaceCode;
@@ -1699,7 +1699,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				pndMember.setGroupMemberId(member.getGroupMemberId());
 				pndMember.setGroupId(member.getGroupId());
 				pndMember.setMemberId(member.getMemberId());
-				pndMember.setMemberName(getMemberName(member.getMemberId(), member.getMemberTypeCode()));
+				pndMember.setMemberName(getMemberName(member.getMemberTypeCode(), member.getMemberId()));
 				pndMember.setMemberTypeCode(member.getMemberTypeCode());
 				pndMember.setEdit(true);
 				pndMembers.add(pndMember);

@@ -104,7 +104,7 @@
             </c:forEach>
           </table>
           <c:if test="${! empty documentTypeStruct.childrenDocumentTypes}">
-            <div class="tab-container" style="border-left:1px solid #999999;border-bottom:1px solid #999999;">
+            <div class="tab-container" style="border-left:1px solid #999999;border-bottom:1px solid #999999; padding-left: 3em;">
               <c:forEach items="${documentTypeStruct.childrenDocumentTypes}" var="childDocumentTypeStruct">
                 <c:set var="documentTypeStruct" value="${childDocumentTypeStruct}" scope="request"/>
                 <c:import url="RuleQuickLinksDocumentTypeLinks.jsp" />

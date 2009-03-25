@@ -14,7 +14,7 @@ public interface GroupService {
      * This will include all groups directly assigned as well as those inferred
      * by the fact that they are members of higher level groups.
      */
-    public List<GroupInfo> getGroupsForPrincipal(String principalId);
+    List<GroupInfo> getGroupsForPrincipal(String principalId);
 
     /**
      * Get all the groups within a namespace for a given principal.
@@ -22,7 +22,7 @@ public interface GroupService {
      * This is the same as the {@link #getGroupsForPrincipal(String)} method except that
      * the results will be filtered by namespace after retrieval.
      */
-    public List<GroupInfo> getGroupsForPrincipalByNamespace(String principalId, String namespaceCode);
+    List<GroupInfo> getGroupsForPrincipalByNamespace(String principalId, String namespaceCode);
 	
     List<String> lookupGroupIds(Map<String, String> searchCriteria);
     

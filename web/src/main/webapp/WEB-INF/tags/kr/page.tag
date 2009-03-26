@@ -290,7 +290,17 @@
 
 <c:choose>
 	<c:when test="${lookup}" >
-		<%-- nothing to display--%>
+		<%-- Display the expand/collapse buttons for the lookup/inquiry, if specified. --%>
+		<c:if test="${showTabButtons != '' && showTabButtons == true}">
+			<div class="right">
+				<div class="excol">
+					<div class="lookupcreatenew">
+						<html:image property="methodToCall.showAllTabs" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-expandall.gif" title="show all panel content" alt="show all panel content" styleClass="tinybutton" onclick="javascript: return expandAllTab(document, tabStatesSize); " />
+						<html:image property="methodToCall.hideAllTabs" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-collapseall.gif" title="hide all panel content" alt="hide all panel content" styleClass="tinybutton" onclick="javascript: return collapseAllTab(document, tabStatesSize); " />
+					</div>
+				</div>		 
+			</div>
+		</c:if>
 	</c:when>
 	<c:otherwise>
 
@@ -370,6 +380,8 @@
 <c:choose>
 	<c:when test="${lookup}" >
 					<kul:footer lookup="true"/>
+					<!-- So that JS expandAllTab / collapseAllTab know the tabStates size. Subtract 1 because currentTabIndex = size + 1. -->
+					<html:hidden property="tabStatesSize" value="${KualiForm.currentTabIndex - 1}" />
 	</c:when>
 	<c:otherwise>
 					<div class="left-errmsg">

@@ -234,7 +234,59 @@ public class KualiInquiryAction extends KualiAction {
         return super.toggleTab(mapping, form, request, response);
     }
     
+    
+    
     /**
+	 * @see org.kuali.rice.kns.web.struts.action.KualiAction#hideAllTabs(org.apache.struts.action.ActionMapping, org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	 */
+	@Override
+	public ActionForward hideAllTabs(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        // KULRICE-2852: Overrides hideAllTabs() so that it also calls the populateSections() method.
+		InquiryForm inquiryForm = (InquiryForm) form;
+        if (inquiryForm.getBusinessObjectClassName() == null) {
+            LOG.error("Business object name not given.");
+            throw new RuntimeException("Business object name not given.");
+        }
+        
+        BusinessObject bo = retrieveBOFromInquirable(inquiryForm);
+        if (bo == null) {
+            LOG.error("No records found in inquiry action.");
+            GlobalVariables.getErrorMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_INQUIRY);
+            request.setAttribute("backLocation", request.getParameter("returnLocation"));
+            return mapping.findForward("inquiryError");
+        }
+        
+        populateSections(mapping, request, inquiryForm, bo);
+		
+		return super.hideAllTabs(mapping, form, request, response);
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.web.struts.action.KualiAction#showAllTabs(org.apache.struts.action.ActionMapping, org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	 */
+	@Override
+	public ActionForward showAllTabs(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        // KULRICE-2852: Overrides showAllTabs() so that it also calls the populateSections() method.
+		InquiryForm inquiryForm = (InquiryForm) form;
+        if (inquiryForm.getBusinessObjectClassName() == null) {
+            LOG.error("Business object name not given.");
+            throw new RuntimeException("Business object name not given.");
+        }
+        
+        BusinessObject bo = retrieveBOFromInquirable(inquiryForm);
+        if (bo == null) {
+            LOG.error("No records found in inquiry action.");
+            GlobalVariables.getErrorMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_INQUIRY);
+            request.setAttribute("backLocation", request.getParameter("returnLocation"));
+            return mapping.findForward("inquiryError");
+        }
+        
+        populateSections(mapping, request, inquiryForm, bo);
+		
+		return super.showAllTabs(mapping, form, request, response);
+	}
+
+	/**
      * Handles exporting the BusinessObject for this Inquiry to XML if it has a custom XML exporter available.
      */
     public ActionForward export(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {

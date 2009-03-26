@@ -18,7 +18,6 @@ package org.kuali.rice.kns.service.impl;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 import org.kuali.rice.kns.util.ExternalizableBusinessObjectUtils;
 
@@ -34,14 +33,17 @@ public class KNSModuleService extends ModuleServiceBase {
 
     @Override
     public boolean isResponsibleFor(Class businessObjectClass) {
-        if (businessObjects.contains(businessObjectClass.getName())) {
-            return true;
+        if (businessObjects != null) {
+            if (businessObjects.contains(businessObjectClass.getName())) {
+                return true;
+            }
         }
         if (ExternalizableBusinessObject.class.isAssignableFrom(businessObjectClass)) {
             Class externalizableBusinessObjectInterface = ExternalizableBusinessObjectUtils.determineExternalizableBusinessObjectSubInterface(businessObjectClass);
             if (externalizableBusinessObjectInterface != null) {
-                for (String prefix : getModuleConfiguration().getPackagePrefixes()) {
-                    if (externalizableBusinessObjectInterface.getPackage().getName().startsWith(prefix)) {
+                Map<Class, Class> validEBOs = getModuleConfiguration().getExternalizableBusinessObjectImplementations();
+                if (validEBOs != null) {
+                    if (validEBOs.get(externalizableBusinessObjectInterface) != null) {
                         return true;
                     }
                 }

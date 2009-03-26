@@ -321,11 +321,11 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
             if (propertyType == null) {
                 continue;
             }
-        	Boolean caseInsensitive = Boolean.FALSE;
+        	Boolean caseInsensitive = Boolean.TRUE;
         	if ( KNSServiceLocator.getDataDictionaryService().isAttributeDefined( example.getClass(), propertyName )) {
         		caseInsensitive = !KNSServiceLocator.getDataDictionaryService().getAttributeForceUppercase( example.getClass(), propertyName );
         	}
-        	if ( caseInsensitive == null ) { caseInsensitive = Boolean.FALSE; }
+        	if ( caseInsensitive == null ) { caseInsensitive = Boolean.TRUE; }
 
             // build criteria
             addCriteria(propertyName, searchValue, propertyType, caseInsensitive, criteria);

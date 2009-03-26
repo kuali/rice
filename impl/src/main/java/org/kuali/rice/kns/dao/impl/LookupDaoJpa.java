@@ -124,12 +124,12 @@ public class LookupDaoJpa implements LookupDao {
 			if (propertyType == null) {
 				continue;
 			}
-			Boolean caseInsensitive = Boolean.FALSE;
+			Boolean caseInsensitive = Boolean.TRUE;
 			if (KNSServiceLocator.getDataDictionaryService().isAttributeDefined(example.getClass(), propertyName)) {
 				caseInsensitive = !KNSServiceLocator.getDataDictionaryService().getAttributeForceUppercase(example.getClass(), propertyName);
 			}
 			if (caseInsensitive == null) {
-				caseInsensitive = Boolean.FALSE;
+				caseInsensitive = Boolean.TRUE;
 			}
 
 			// build criteria
@@ -409,9 +409,15 @@ public class LookupDaoJpa implements LookupDao {
 				propertyName = "UPPER(__JPA_ALIAS__." + propertyName + ")";
 				propertyValue = propertyValue.toUpperCase();
 			}
-			if (StringUtils.contains(propertyValue, KNSConstants.NOT_LOGICAL_OPERATOR)) {
-				addNotCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria);
-			} else if (StringUtils.contains(propertyValue, "..") || StringUtils.contains(propertyValue, ">") || StringUtils.contains(propertyValue, "<") || StringUtils.contains(propertyValue, ">=") || StringUtils.contains(propertyValue, "<=")) {
+			if (StringUtils.contains(propertyValue,
+					KNSConstants.NOT_LOGICAL_OPERATOR)) {
+				addNotCriteria(propertyName, propertyValue, propertyType,
+						caseInsensitive, criteria);
+            } else if (
+            		propertyValue != null && (
+            				StringUtils.contains(propertyValue, "..") 
+            				|| propertyValue.startsWith(">")
+            				|| propertyValue.startsWith("<") ) ) {
 				addStringRangeCriteria(propertyName, propertyValue, criteria);
 			} else {
 				criteria.like(propertyName, propertyValue);
@@ -483,14 +489,14 @@ public class LookupDaoJpa implements LookupDao {
 		if (StringUtils.contains(propertyValue, "..")) {
 			String[] rangeValues = StringUtils.split(propertyValue, "..");
 			criteria.between(propertyName, parseDate(ObjectUtils.clean(rangeValues[0])), parseDate(ObjectUtils.clean(rangeValues[1])));
-		} else if (propertyValue.startsWith(">")) {
-			criteria.gt(propertyName, parseDate(ObjectUtils.clean(propertyValue)));
-		} else if (propertyValue.startsWith("<")) {
-			criteria.lt(propertyName, parseDate(ObjectUtils.clean(propertyValue)));
 		} else if (propertyValue.startsWith(">=")) {
 			criteria.gte(propertyName, parseDate(ObjectUtils.clean(propertyValue)));
 		} else if (propertyValue.startsWith("<=")) {
 			criteria.lte(propertyName, parseDate(ObjectUtils.clean(propertyValue)));
+		} else if (propertyValue.startsWith(">")) {
+			criteria.gt(propertyName, parseDate(ObjectUtils.clean(propertyValue)));
+		} else if (propertyValue.startsWith("<")) {
+			criteria.lt(propertyName, parseDate(ObjectUtils.clean(propertyValue)));
 		} else {
 			criteria.eq(propertyName, parseDate(ObjectUtils.clean(propertyValue)));
 		}
@@ -524,14 +530,14 @@ public class LookupDaoJpa implements LookupDao {
 		if (StringUtils.contains(propertyValue, "..")) {
 			String[] rangeValues = StringUtils.split(propertyValue, "..");
 			criteria.between(propertyName, cleanNumeric(rangeValues[0]), cleanNumeric(rangeValues[1]));
-		} else if (propertyValue.startsWith(">")) {
-			criteria.gt(propertyName, cleanNumeric(propertyValue));
-		} else if (propertyValue.startsWith("<")) {
-			criteria.lt(propertyName, cleanNumeric(propertyValue));
 		} else if (propertyValue.startsWith(">=")) {
 			criteria.gte(propertyName, cleanNumeric(propertyValue));
 		} else if (propertyValue.startsWith("<=")) {
 			criteria.lte(propertyName, cleanNumeric(propertyValue));
+		} else if (propertyValue.startsWith(">")) {
+			criteria.gt(propertyName, cleanNumeric(propertyValue));
+		} else if (propertyValue.startsWith("<")) {
+			criteria.lt(propertyName, cleanNumeric(propertyValue));
 		} else {
 			criteria.eq(propertyName, cleanNumeric(propertyValue));
 		}
@@ -542,41 +548,14 @@ public class LookupDaoJpa implements LookupDao {
 		if (StringUtils.contains(propertyValue, "..")) {
 			String[] rangeValues = StringUtils.split(propertyValue, "..");
 			criteria.between(propertyName, rangeValues[0], rangeValues[1]);
-
-			// To fix a bug related on number of digits issues for searching
-			// String field with range operator
-			Criteria orCriteria = new Criteria("N/A");
-			orCriteria.gt(propertyName, rangeValues[0].length());
-			criteria.or(orCriteria);
-			criteria.lte(propertyName, rangeValues[1].length());
-
-		} else if (propertyValue.startsWith(">")) {
-			criteria.gt(propertyName, ObjectUtils.clean(propertyValue));
-
-			// To fix a bug related on number of digits issues for searching
-			// String field with range operator
-			Criteria orCriteria = new Criteria("N/A");
-			orCriteria.gt(propertyName, ObjectUtils.clean(propertyValue).length());
-			criteria.or(orCriteria);
-
-		} else if (propertyValue.startsWith("<")) {
-			criteria.lt(propertyName, ObjectUtils.clean(propertyValue));
-
-			// To fix a bug related on number of digits issues for searching
-			// String field with range operator
-			criteria.lte(propertyName, ObjectUtils.clean(propertyValue).length());
 		} else if (propertyValue.startsWith(">=")) {
 			criteria.gte(propertyName, ObjectUtils.clean(propertyValue));
-
-			// To fix a bug related on number of digits issues for searching
-			// String field with range operator
-			criteria.gte(propertyName, ObjectUtils.clean(propertyValue).length());
 		} else if (propertyValue.startsWith("<=")) {
 			criteria.lte(propertyName, ObjectUtils.clean(propertyValue));
-
-			// To fix a bug related on number of digits issues for searching
-			// String field with range operator
-			criteria.lte(propertyName, ObjectUtils.clean(propertyValue).length());
+		} else if (propertyValue.startsWith(">")) {
+			criteria.gt(propertyName, ObjectUtils.clean(propertyValue));
+		} else if (propertyValue.startsWith("<")) {
+			criteria.lt(propertyName, ObjectUtils.clean(propertyValue));
 		}
 	}
 

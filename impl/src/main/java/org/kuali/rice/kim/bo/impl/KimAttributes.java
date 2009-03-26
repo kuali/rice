@@ -22,7 +22,7 @@ import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kns.bo.Campus;
 import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.bo.ParameterDetailType;
-import org.kuali.rice.kns.bo.ParameterNamespace;
+import org.kuali.rice.kns.bo.RiceNamespace;
 import org.kuali.rice.kns.bo.TransientBusinessObjectBase;
 
 /**
@@ -86,7 +86,7 @@ public class KimAttributes extends TransientBusinessObjectBase {
 	protected String sectionId;
 	
 	protected Campus campus;
-	protected ParameterNamespace parameterNamespace;
+	protected RiceNamespace parameterNamespace;
 	protected ParameterDetailType parameterDetailType;
 	protected Parameter parameter;
 	protected DocumentType documentType;
@@ -459,11 +459,11 @@ public class KimAttributes extends TransientBusinessObjectBase {
 		this.campus = campus;
 	}
 
-	public ParameterNamespace getParameterNamespace() {
+	public RiceNamespace getParameterNamespace() {
 		return this.parameterNamespace;
 	}
 
-	public void setParameterNamespace(ParameterNamespace parameterNamespace) {
+	public void setParameterNamespace(RiceNamespace parameterNamespace) {
 		this.parameterNamespace = parameterNamespace;
 	}
 

@@ -9,7 +9,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="KRNS_NMSPC_T")
 @AttributeOverrides({@AttributeOverride(name="code", column=@Column(name="NMSPC_CD")), @AttributeOverride(name="name", column=@Column(name="NM"))})
-public class ParameterNamespace extends KualiCodeBase {
+public class RiceNamespace extends KualiCodeBase {
 	private String applicationNamespaceCode;
 	public String getParameterNamespaceCode() {
 		return code;

@@ -125,7 +125,7 @@
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/County.xml</value>
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/Parameter.xml</value>
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/ParameterDetailType.xml</value>
-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/ParameterNamespace.xml</value>
+				<value>classpath:org/kuali/rice/kns/bo/datadictionary/RiceNamespace.xml</value>
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/ParameterType.xml</value>
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/PessimisticLock.xml</value>
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/PostalCode.xml</value>
@@ -136,7 +136,7 @@
                 <value>classpath:org/kuali/rice/kns/document/datadictionary/CountyMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/kns/document/datadictionary/ParameterDetailTypeMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/kns/document/datadictionary/ParameterMaintenanceDocument.xml</value>
-                <value>classpath:org/kuali/rice/kns/document/datadictionary/ParameterNamespaceMaintenanceDocument.xml</value>
+                <value>classpath:org/kuali/rice/kns/document/datadictionary/RiceNamespaceMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/kns/document/datadictionary/ParameterTypeMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/kns/document/datadictionary/PostalCodeMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/kns/document/datadictionary/StateMaintenanceDocument.xml</value>
@@ -230,7 +230,7 @@
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/State.xml</value>
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/PostalCode.xml</value>
 
-                <value>classpath:org/kuali/rice/kns/bo/datadictionary/ParameterNamespace.xml</value>
+                <value>classpath:org/kuali/rice/kns/bo/datadictionary/RiceNamespace.xml</value>
                 <value>classpath:org/kuali/rice/kns/bo/datadictionary/ParameterType.xml</value>
                 <value>classpath:org/kuali/rice/kns/bo/datadictionary/ParameterDetailType.xml</value>
                 <value>classpath:org/kuali/rice/kns/bo/datadictionary/Parameter.xml</value>
@@ -239,7 +239,7 @@
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/Note.xml</value>
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/NoteType.xml</value>
 
-                <value>classpath:org/kuali/rice/kns/document/datadictionary/ParameterNamespaceMaintenanceDocument.xml</value>
+                <value>classpath:org/kuali/rice/kns/document/datadictionary/RiceNamespaceMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/kns/document/datadictionary/ParameterTypeMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/kns/document/datadictionary/ParameterDetailTypeMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/kns/document/datadictionary/ParameterMaintenanceDocument.xml</value>
@@ -999,7 +999,7 @@
             <list>
                 <value>org.kuali.rice.kns.bo.Campus</value>
 				<value>org.kuali.rice.kns.bo.CampusType</value>
-				<value>org.kuali.rice.kns.bo.ParameterNamespace</value>
+				<value>org.kuali.rice.kns.bo.RiceNamespace</value>
 				<value>org.kuali.rice.kns.bo.ParameterType</value>
 				<value>org.kuali.rice.kns.bo.ParameterDetailType</value>
 				<value>org.kuali.rice.kns.bo.Parameter</value>

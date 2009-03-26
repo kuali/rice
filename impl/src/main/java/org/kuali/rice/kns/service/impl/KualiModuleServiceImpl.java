@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
-import org.kuali.rice.kns.bo.ParameterNamespace;
+import org.kuali.rice.kns.bo.RiceNamespace;
 import org.kuali.rice.kns.exception.KualiException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
@@ -132,9 +132,9 @@ public class KualiModuleServiceImpl implements KualiModuleService, InitializingB
      * @see org.kuali.core.service.KualiModuleService#getNamespaceName(java.lang.String)
      */
     public String getNamespaceName(final String namespaceCode){
-    	ParameterNamespace parameterNamespace = (ParameterNamespace) 
+    	RiceNamespace parameterNamespace = (RiceNamespace) 
 			KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(
-					ParameterNamespace.class, new HashMap() {{put(KNSPropertyConstants.CODE, namespaceCode);}});
+					RiceNamespace.class, new HashMap() {{put(KNSPropertyConstants.CODE, namespaceCode);}});
     	return parameterNamespace==null ? "" : parameterNamespace.getName();
     }
     

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?><beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-  <bean id="KualiCampusTypeMaintenanceDocument" parent="KualiCampusTypeMaintenanceDocument-parentBean"/>
+  <bean id="CampusTypeMaintenanceDocument" parent="CampusTypeMaintenanceDocument-parentBean"/>
 
-  <bean id="KualiCampusTypeMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
+  <bean id="CampusTypeMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
     <property name="businessObjectClass" value="org.kuali.rice.kns.bo.CampusTypeImpl"/>
     <property name="maintainableClass" value="org.kuali.rice.kns.maintenance.KualiMaintainableImpl"/>
     <property name="maintainableSections">
       <list>
-        <ref bean="KualiCampusTypeMaintenanceDocument-EditCampusType"/>
+        <ref bean="CampusTypeMaintenanceDocument-EditCampusType"/>
       </list>
     </property>
     <property name="lockingKeys">
@@ -26,9 +26,9 @@
 <!-- Maintenance Section Definitions -->
 
 
-  <bean id="KualiCampusTypeMaintenanceDocument-EditCampusType" parent="KualiCampusTypeMaintenanceDocument-EditCampusType-parentBean"/>
+  <bean id="CampusTypeMaintenanceDocument-EditCampusType" parent="CampusTypeMaintenanceDocument-EditCampusType-parentBean"/>
 
-  <bean id="KualiCampusTypeMaintenanceDocument-EditCampusType-parentBean" abstract="true" parent="MaintainableSectionDefinition">
+  <bean id="CampusTypeMaintenanceDocument-EditCampusType-parentBean" abstract="true" parent="MaintainableSectionDefinition">
     <property name="maintainableItems">
       <list>
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="campusTypeCode"/>

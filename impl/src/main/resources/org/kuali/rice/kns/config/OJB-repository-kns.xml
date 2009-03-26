@@ -144,7 +144,7 @@
 	</class-descriptor>
 
 
-	<class-descriptor class="org.kuali.rice.kns.bo.RiceNamespace" table="KRNS_NMSPC_T">
+	<class-descriptor class="org.kuali.rice.kns.bo.ParameterNamespace" table="KRNS_NMSPC_T">
 		<field-descriptor name="code" column="NMSPC_CD" jdbc-type="VARCHAR" primarykey="true" />
 		<field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
 
@@ -172,7 +172,7 @@
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 
-		<reference-descriptor name="parameterNamespace" class-ref="org.kuali.rice.kns.bo.RiceNamespace"
+		<reference-descriptor name="parameterNamespace" class-ref="org.kuali.rice.kns.bo.ParameterNamespace"
 			auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
 			<foreignkey field-ref="parameterNamespaceCode" />
 		</reference-descriptor>
@@ -198,7 +198,7 @@
             auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
             <foreignkey field-ref="parameterTypeCode" />
         </reference-descriptor>
-		<reference-descriptor name="parameterNamespace" class-ref="org.kuali.rice.kns.bo.RiceNamespace"
+		<reference-descriptor name="parameterNamespace" class-ref="org.kuali.rice.kns.bo.ParameterNamespace"
 			auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
 			<foreignkey field-ref="parameterNamespaceCode" />
 		</reference-descriptor>

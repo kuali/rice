@@ -1700,12 +1700,12 @@
             </routeNodes>
         </documentType>
 
-<!-- Namespace (Rice) -->
+<!-- Parameter Namespace (Rice) -->
 
         <documentType>
-      <name>RiceNamespaceMaintenanceDocument</name>
-      <description>Create/edit namespaces</description>
-      <label>Namespace Maintenance Document</label>
+      <name>ParameterNamespaceMaintenanceDocument</name>
+      <description>Create/edit parameter namespaces</description>
+      <label>Parameter Namespace Maintenance Document</label>
             <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
             <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
             <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>

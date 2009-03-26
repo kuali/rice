@@ -123,7 +123,7 @@
 		<div style="float:left; width:70px">
 	   <a
          href='<c:out value="ActionList.do?methodToCall=clearFilter" />'  title="clearFilter"><img
-         src="../en/images/tinybutton-clearfields.gif" class="tinybutton" alt="clearFilter" title="clearFilter"
+         src="../kr/images/tinybutton-clearfilter.gif" class="tinybutton" alt="clearFilter" title="clearFilter"
          border="0" /></a>
         </div>
 		</c:if>

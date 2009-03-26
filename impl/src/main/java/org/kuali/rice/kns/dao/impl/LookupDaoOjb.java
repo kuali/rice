@@ -393,12 +393,13 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
         	}
             if (StringUtils.contains(propertyValue, KNSConstants.NOT_LOGICAL_OPERATOR)) {
                 addNotCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria);
-            } else if (StringUtils.contains(propertyValue, "..") || StringUtils.contains(propertyValue, ">")
-                    || StringUtils.contains(propertyValue, "<")  || StringUtils.contains(propertyValue, ">=")
-                    || StringUtils.contains(propertyValue, "<=")){
+            } else if (
+            		propertyValue != null && (
+            				StringUtils.contains(propertyValue, "..") 
+            				|| propertyValue.startsWith(">")
+            				|| propertyValue.startsWith("<") ) ) {
                 addStringRangeCriteria(propertyName, propertyValue, criteria);
-            }
-            else {
+            } else {
                 criteria.addLike(propertyName, propertyValue);
             }
         } else if (TypeUtils.isIntegralClass(propertyType) || TypeUtils.isDecimalClass(propertyType) ) {
@@ -488,20 +489,15 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
         if (StringUtils.contains(propertyValue, "..")) {
             String[] rangeValues = StringUtils.split(propertyValue, "..");
             criteria.addBetween(propertyName, parseDate( ObjectUtils.clean(rangeValues[0] ) ), parseDate( ObjectUtils.clean(rangeValues[1] ) ) );
-        }
-        else if (propertyValue.startsWith(">")) {
-            criteria.addGreaterThan(propertyName, parseDate( ObjectUtils.clean(propertyValue) ) );
-        }
-        else if (propertyValue.startsWith("<")) {
-            criteria.addLessThan(propertyName, parseDate( ObjectUtils.clean(propertyValue) ) );
-        }
-        else if (propertyValue.startsWith(">=")) {
+        } else if (propertyValue.startsWith(">=")) {
             criteria.addGreaterOrEqualThan(propertyName, parseDate( ObjectUtils.clean(propertyValue) ) );
-        }
-        else if (propertyValue.startsWith("<=")) {
+        } else if (propertyValue.startsWith("<=")) {
             criteria.addLessOrEqualThan(propertyName, parseDate( ObjectUtils.clean(propertyValue) ) );
-        }
-        else {
+        } else if (propertyValue.startsWith(">")) {
+            criteria.addGreaterThan(propertyName, parseDate( ObjectUtils.clean(propertyValue) ) );
+        } else if (propertyValue.startsWith("<")) {
+            criteria.addLessThan(propertyName, parseDate( ObjectUtils.clean(propertyValue) ) );
+        } else {
             criteria.addEqualTo(propertyName, parseDate( ObjectUtils.clean(propertyValue) ) );
         }
     }
@@ -537,20 +533,15 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
         if (StringUtils.contains(propertyValue, "..")) {
             String[] rangeValues = StringUtils.split(propertyValue, "..");
             criteria.addBetween(propertyName, cleanNumeric( rangeValues[0] ), cleanNumeric( rangeValues[1] ));
-        }
-        else if (propertyValue.startsWith(">")) {
-            criteria.addGreaterThan(propertyName, cleanNumeric( propertyValue ) );
-        }
-        else if (propertyValue.startsWith("<")) {
-            criteria.addLessThan(propertyName, cleanNumeric(propertyValue));
-        }
-        else if (propertyValue.startsWith(">=")) {
+        } else if (propertyValue.startsWith(">=")) {
             criteria.addGreaterOrEqualThan(propertyName, cleanNumeric(propertyValue));
-        }
-        else if (propertyValue.startsWith("<=")) {
+        } else if (propertyValue.startsWith("<=")) {
             criteria.addLessOrEqualThan(propertyName, cleanNumeric(propertyValue));
-        }
-        else {
+        } else if (propertyValue.startsWith(">")) {
+            criteria.addGreaterThan(propertyName, cleanNumeric( propertyValue ) );
+        } else if (propertyValue.startsWith("<")) {
+            criteria.addLessThan(propertyName, cleanNumeric(propertyValue));
+        } else {
             criteria.addEqualTo(propertyName, cleanNumeric(propertyValue));
         }
     }
@@ -563,14 +554,16 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
         if (StringUtils.contains(propertyValue, "..")) {
             String[] rangeValues = StringUtils.split(propertyValue, "..");
             criteria.addBetween(propertyName, rangeValues[0], rangeValues[1]);
-        } else if (propertyValue.startsWith(">")) {
-            criteria.addGreaterThan(propertyName, ObjectUtils.clean(propertyValue));
-        } else if (propertyValue.startsWith("<")) {
-            criteria.addLessThan(propertyName, ObjectUtils.clean(propertyValue));
         } else if (propertyValue.startsWith(">=")) {
             criteria.addGreaterOrEqualThan(propertyName, ObjectUtils.clean(propertyValue));
         } else if (propertyValue.startsWith("<=")) {
             criteria.addLessOrEqualThan(propertyName, ObjectUtils.clean(propertyValue));
+        } else if (propertyValue.startsWith(">")) {
+            criteria.addGreaterThan(propertyName, ObjectUtils.clean(propertyValue));
+        } else if (propertyValue.startsWith("<")) {
+            criteria.addLessThan(propertyName, ObjectUtils.clean(propertyValue));
+        } else {
+        	criteria.addEqualTo(propertyName, ObjectUtils.clean(propertyValue));
         }
     }
 

@@ -18,6 +18,7 @@ package org.kuali.rice.kew.actions;
 import javax.xml.namespace.QName;
 
 import org.apache.commons.httpclient.URI;
+import org.apache.commons.lang.StringUtils;
 import org.apache.cxf.aegis.databinding.AegisDatabinding;
 import org.apache.cxf.frontend.ClientProxyFactoryBean;
 import org.apache.cxf.interceptor.LoggingInInterceptor;
@@ -66,7 +67,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		DocumentResponse dr = simpleService.create("admin","doc1", "BlanketApproveSequentialTest", "Doc1Title");
 		StandardResponse sr = simpleService.route(dr.getDocId(), "admin", "Doc1Title", "<foo>bar</foo>", "Annotation!");
 		sr = simpleService.approve(dr.getDocId(), "admin", "Doc1Title", "<foo>b</foo>", "Annotation!!!");
-		assertTrue(sr.getErrorMessage().isEmpty());		
+		assertTrue(StringUtils.isEmpty(sr.getErrorMessage()));		
 		
 	}
 }

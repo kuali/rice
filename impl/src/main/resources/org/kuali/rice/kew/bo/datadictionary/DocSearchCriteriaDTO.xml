@@ -445,5 +445,7 @@ http://rice.kuali.org/dd http://rice.kuali.org/dd/dd.xsd">
       </list>
     </property>
     <property name="title" value="Document Lookup" />
+    <property name="extraButtonSource" value="/kr-dev/kr/static/images/buttonsmall_reload.gif" />
+    <property name="extraButtonParams" value="loadSaved" />
   </bean>
 </beans>

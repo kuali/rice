@@ -25,6 +25,7 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
+import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 
 public interface LookupableHelperService extends Serializable{
@@ -298,4 +299,19 @@ public interface LookupableHelperService extends Serializable{
      * @return String displayed as title for the lookup
      */
     public String getTitle();
+    
+    /**
+     * 
+     * performs custom actions.  return true to reperform search
+     * 
+     * @param ignoreErrors
+     * @return boolean to reperform search
+     */
+    public boolean performCustomAction(boolean ignoreErrors);
+    
+    /**
+     * get an extra field
+     * @return
+     */
+    public Field getExtraField();
 }

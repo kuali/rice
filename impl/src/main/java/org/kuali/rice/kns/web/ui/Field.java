@@ -112,6 +112,9 @@ public class Field implements java.io.Serializable {
     //used by multibox/select etc
     private String[] propertyValues;
     
+    //extra field to skip blank option value (for route node)
+    private boolean skipBlankValidValue = false;
+    
     //#END DOC SEARCH RELATED
     
     private String fieldType;
@@ -1537,6 +1540,20 @@ public class Field implements java.io.Serializable {
     public void setDisplayParameters(Map<String, String> displayParameters) {
         this.displayParameters = displayParameters;
     }
+
+	/**
+	 * @return the skipBlankValidValue
+	 */
+	public boolean isSkipBlankValidValue() {
+		return this.skipBlankValidValue;
+	}
+
+	/**
+	 * @param skipBlankValidValue the skipBlankValidValue to set
+	 */
+	public void setSkipBlankValidValue(boolean skipBlankValidValue) {
+		this.skipBlankValidValue = skipBlankValidValue;
+	}
     
     //#END DOC SEARCH RELATED
 }

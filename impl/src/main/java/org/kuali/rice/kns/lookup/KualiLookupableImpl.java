@@ -27,6 +27,7 @@ import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
+import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.ResultRow;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -350,6 +351,22 @@ public class KualiLookupableImpl implements Lookupable {
 
 	protected String getCreateNewUrl(String url){
 		return "<a href=\"" + url + "\"><img src=\"images/tinybutton-createnew.gif\" alt=\"create new\" width=\"70\" height=\"15\"/></a>";
+	}
+
+	/** 
+	 * @see org.kuali.rice.kns.lookup.Lookupable#performCustomAction(boolean)
+	 */
+	public boolean performCustomAction(boolean ignoreErrors) {
+		return getLookupableHelperService().performCustomAction(ignoreErrors);
+	}
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.lookup.Lookupable#getExtraField()
+	 */
+	public Field getExtraField() {
+		return getLookupableHelperService().getExtraField();
 	}
 	
 }

@@ -1187,7 +1187,6 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	}
 
 	/**
-	 * 
 	 * @see org.kuali.rice.kns.lookup.LookupableHelperService#shouldDisplayLookupCriteria()
 	 */
 	public boolean shouldDisplayLookupCriteria() {
@@ -1195,8 +1194,6 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	}
 
 	/**
-	 * This overridden method ...
-	 * 
 	 * @see org.kuali.rice.kns.lookup.LookupableHelperService#getSupplementalMenuBar()
 	 */
 	public String getSupplementalMenuBar() {
@@ -1209,4 +1206,18 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     public String getTitle() {
     	return getBusinessObjectDictionaryService().getLookupTitle(getBusinessObjectClass());
     }
+
+    /**
+     * @see org.kuali.rice.kns.lookup.LookupableHelperService#performCustomAction(boolean)
+     */
+	public boolean performCustomAction(boolean ignoreErrors) {
+		return false;		
+	}
+	
+	/**
+	 * @see org.kuali.rice.kns.lookup.Lookupable#getExtraField()
+	 */
+	public Field getExtraField() {
+		return null;
+	}
 }

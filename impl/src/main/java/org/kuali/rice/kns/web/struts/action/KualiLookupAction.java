@@ -36,6 +36,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.exception.AuthorizationException;
+import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.service.DocumentHelperService;
@@ -222,6 +223,10 @@ public class KualiLookupAction extends KualiAction {
             throw new RuntimeException("Lookupable is null.");
         }
 
+        if(StringUtils.equals(lookupForm.getRefreshCaller(),"customLookupAction")) {
+        	return this.customLookupableMethodCall(mapping, lookupForm, request, response);
+        }
+        
         Map fieldValues = new HashMap();
         Map values = lookupForm.getFields();
 
@@ -275,7 +280,6 @@ public class KualiLookupAction extends KualiAction {
                 }
             }
         }
-
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
@@ -317,6 +321,27 @@ public class KualiLookupAction extends KualiAction {
         request.setAttribute("reqSearchResults", GlobalVariables.getUserSession().retrieveObject(request.getParameter(KNSConstants.SEARCH_LIST_REQUEST_KEY)));
         request.setAttribute("reqSearchResultsActualSize", request.getParameter("reqSearchResultsActualSize"));
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    }
+    
+    public ActionForward customLookupableMethodCall(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+//    	lookupableMethodToCall
+    	Lookupable kualiLookupable = ((LookupForm)form).getLookupable();
+    	if (kualiLookupable == null) {
+            LOG.error("Lookupable is null.");
+            throw new RuntimeException("Lookupable is null.");
+        }
+
+    	boolean ignoreErrors=false;
+		if(StringUtils.equals(((LookupForm)form).getRefreshCaller(),"customLookupAction")) {
+			ignoreErrors=true;
+    	}
+    	
+		if(kualiLookupable.performCustomAction(ignoreErrors)) {
+			//redo the search if the method comes back 
+			return search(mapping, form, request, response);
+		}
+		return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    	
     }
     
 }

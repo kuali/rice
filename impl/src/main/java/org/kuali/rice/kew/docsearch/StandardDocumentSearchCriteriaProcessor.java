@@ -80,7 +80,9 @@ public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCr
      */
 
     public List<String> getGlobalHiddenFieldKeys() {
-        return new ArrayList<String>();
+    	List<String> hiddenFieldKeys = new ArrayList<String>();
+    	hiddenFieldKeys.add(CRITERIA_KEY_WORKGROUP_VIEWER_ID);
+        return hiddenFieldKeys;
     }
 
 	/**
@@ -107,6 +109,7 @@ public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCr
     	putContainerIntoMap(containersByKey, new StandardDocSearchCriteriaFieldContainer("docSearch.DocumentSearch.criteria.label.viewerId", new StandardSearchCriteriaField(DocumentSearchCriteriaProcessor.CRITERIA_KEY_VIEWER_ID,"criteria.viewer",StandardSearchCriteriaField.TEXT,null,null,"DocSearchViewer",false,null,PERSON_LOOKUPABLE,true)));
     	putContainerIntoMap(containersByKey, new StandardDocSearchCriteriaFieldContainer("docSearch.DocumentSearch.criteria.label.approverId", new StandardSearchCriteriaField(DocumentSearchCriteriaProcessor.CRITERIA_KEY_APPROVER_ID,"criteria.approver",StandardSearchCriteriaField.TEXT,null,null,"DocSearchApprover",false,null,PERSON_LOOKUPABLE,true)));
     	putContainerIntoMap(containersByKey, new StandardDocSearchCriteriaFieldContainer("docSearch.DocumentSearch.criteria.label.workgroupViewer", new StandardSearchCriteriaField(DocumentSearchCriteriaProcessor.CRITERIA_KEY_WORKGROUP_VIEWER,"criteria.workgroupViewerName",StandardSearchCriteriaField.TEXT,null,null,"WorkgroupName",false,null,WORKGROUP_LOOKUPABLE,false)));
+    	putContainerIntoMap(containersByKey, new StandardDocSearchCriteriaFieldContainer("docSearch.DocumentSearch.criteria.label.workgroupViewerId", new StandardSearchCriteriaField(DocumentSearchCriteriaProcessor.CRITERIA_KEY_WORKGROUP_VIEWER_ID,"criteria.workgroupViewerId",StandardSearchCriteriaField.TEXT,null,null,"WorkgroupID",true,null,null,false)));
     	putContainerIntoMap(containersByKey, new StandardDocSearchCriteriaFieldContainer("docSearch.DocumentSearch.criteria.label.applicationDocumentId", new StandardSearchCriteriaField(DocumentSearchCriteriaProcessor.CRITERIA_KEY_APPLICATION_DOCUMENT_ID,"criteria.appDocId",StandardSearchCriteriaField.TEXT,null,null,"DocSearchApplicationDocId",false,null,null,false)));
     	putContainerIntoMap(containersByKey, new StandardDocSearchCriteriaFieldContainer("docSearch.DocumentSearch.criteria.label.documentTitle", new StandardSearchCriteriaField(DocumentSearchCriteriaProcessor.CRITERIA_KEY_DOCUMENT_TITLE,"criteria.docTitle",StandardSearchCriteriaField.TEXT,null,null,"DocSearchDocumentTitle",false,null,null,false)));
     	// create date
@@ -394,6 +397,7 @@ public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCr
             List<String> fieldKeys = new ArrayList<String>();
             fieldKeys.add(CRITERIA_KEY_VIEWER_ID);
             fieldKeys.add(CRITERIA_KEY_WORKGROUP_VIEWER);
+            fieldKeys.add(CRITERIA_KEY_WORKGROUP_VIEWER_ID);
             fieldKeys.add(CRITERIA_KEY_DOCUMENT_ROUTE_STATUS);
             fieldKeys.add(CRITERIA_KEY_DOCUMENT_ROUTE_NODE);
             fieldKeys.add(CRITERIA_KEY_CREATE_DATE);

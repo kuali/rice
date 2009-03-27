@@ -17,10 +17,17 @@ package org.kuali.rice.kew.docsearch;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.engine.node.RouteNode;
+import org.kuali.rice.kew.lookup.valuefinder.DocumentRouteStatusValuesFinder;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.web.KeyValue;
 import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.KeyLabelPair;
 import org.kuali.rice.kns.web.ui.Row;
@@ -85,6 +92,8 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 		} else {
 			postSearchAttFields = criteriaProcessor.getAdvancedSearchManager().getColumnsPostSearchAttributes();
 		}
+
+		
 		List<Row> postSearchAttRows = standardNonSearchAttRows(documentType,postSearchAttFields);
 		rows.addAll(postSearchAttRows);
 		//add hidden fields
@@ -122,6 +131,7 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 					Row row = new Row();
 					List<Field>knsFields = new ArrayList<Field>();
 					Field field = new Field();
+					boolean skipadd = false;
 					
 					String propertyName = "";
 					if(StringUtils.contains(standardSearchCriteriaField.getProperty(), ".")) {
@@ -130,31 +140,79 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 						propertyName = standardSearchCriteriaField.getProperty();
 					}
 
-					//TODO: make this code also handle multiple fields per row when KNS enhancement in
 					field.setPropertyName(propertyName);
 					//do we care?
 					//				field.setBusinessObjectClassName(dataDictionaryService.getattribute);
 
 					String fieldType = standardSearchCriteriaField.getFieldType();
-					//TODO: is there another way to derive this without specifying the field?
-					if(propertyName.equals("docTypeFullName")) {
-						fieldType = Field.LOOKUP_READONLY;
-						//TODO: total hack, will be removed soon - should add this field to standard criteria, which will make it work for the others
-						field.setQuickFinderClassNameImpl("org.kuali.rice.kew.doctype.bo.DocumentType");
-						field.setFieldConversions("name:docTypeFullName");
-//						field.setInquiryParameters("docTypeFullName:name");
-//						field.setLookupParameters("name:docTypeFullName");
+					
+					String lookupableImplServiceName = standardSearchCriteriaField.getLookupableImplServiceName();
+					if(lookupableImplServiceName!=null) {
+						if(StringUtils.equals("DocumentTypeLookupableImplService", lookupableImplServiceName)) {
+							fieldType = Field.LOOKUP_READONLY;
+							//TODO: instead of hardcoding these let's see about getting them from spring
+							field.setQuickFinderClassNameImpl("org.kuali.rice.kew.doctype.bo.DocumentType");
+							field.setFieldConversions("name:"+propertyName);
+						} else if (StringUtils.equals("UserLookupableImplService", lookupableImplServiceName)) {
+							fieldType = Field.TEXT;
+							field.setQuickFinderClassNameImpl("org.kuali.rice.kim.bo.impl.PersonImpl");
+							field.setFieldConversions("principalName:"+propertyName);
+						} else if (StringUtils.equals("WorkGroupLookupableImplService", lookupableImplServiceName)) {
+							field.setQuickFinderClassNameImpl("org.kuali.rice.kim.bo.group.impl.KimGroupImpl");
+							fieldType = Field.LOOKUP_READONLY;
+							field.setFieldConversions("groupName:"+propertyName+","+"groupId:"+StandardDocumentSearchCriteriaProcessor.CRITERIA_KEY_WORKGROUP_VIEWER_ID);
+						}
+					}
+					boolean fieldHidden = standardSearchCriteriaField.isHidden();
+					if(fieldHidden) {
+						fieldType = Field.HIDDEN;
+						row.setHidden(true);
 					}
 					field.setFieldType(fieldType);
 					//TODO: special processing for some field types
 					if(StringUtils.equals(StandardSearchCriteriaField.DROPDOWN,fieldType)||
 					   StringUtils.equals(StandardSearchCriteriaField.DROPDOWN_HIDE_EMPTY, fieldType)){
 						if(StringUtils.equals(StandardSearchCriteriaField.DROPDOWN_HIDE_EMPTY,fieldType)) {
+							
 							field.setFieldType(Field.DROPDOWN);
-							//TODO: anything special here?
+							field.setSkipBlankValidValue(true);
+									
 						}
-						//TODO: replace with real list
-						field.setFieldValidValues(new ArrayList<KeyLabelPair>());
+						
+						if("documentRouteStatus".equalsIgnoreCase(standardSearchCriteriaField.getOptionsCollectionProperty())) {
+							DocumentRouteStatusValuesFinder values = new DocumentRouteStatusValuesFinder();
+							field.setFieldValidValues(values.getKeyValues());
+						} else if("routeNodes".equalsIgnoreCase(standardSearchCriteriaField.getOptionsCollectionProperty())){
+							if(documentType!=null) {
+								//TODO: can these be used directly in values finder also there is an option key and value property that could probably be used by all of these
+								List<KeyLabelPair> keyValues = new ArrayList<KeyLabelPair>();
+								List routeNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(documentType, true);
+								for (RouteNode routeNode : (List<RouteNode>)routeNodes) {
+									keyValues.add(new KeyLabelPair(routeNode.getRouteNodeId()+"",routeNode.getRouteNodeName()));
+								}
+								field.setFieldValidValues(keyValues);
+								//TODO: fix this in criteria this field shouldn't be blank values otherwise have to reset this for some reason
+								field.setSkipBlankValidValue(false);
+							} else {
+								field.setFieldType(Field.READONLY);
+							}
+						} else if("qualifierLogic".equalsIgnoreCase(standardSearchCriteriaField.getOptionsCollectionProperty())){
+							if(documentType==null){
+								//FIXME: definitely not the best place for this
+								skipadd=true;
+							}
+							//TODO: move to values finder class
+							List<KeyLabelPair> keyValues = new ArrayList<KeyLabelPair>();
+							Set<String> docStatusKeys = KEWConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIERS.keySet();
+							for (String string : docStatusKeys) {
+								KeyLabelPair keyLabel = new KeyLabelPair(string,KEWConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIERS.get(string));
+								keyValues.add(keyLabel);
+							}
+							field.setFieldValidValues(keyValues);
+						}
+						else {
+							field.setFieldValidValues(new ArrayList<KeyLabelPair>());
+						}
 					}
 					
 					
@@ -169,9 +227,11 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 					//this is set to 30 in the jsp for standard fields, should this be a parameter?!
 					field.setMaxLength(30);
 					
-					knsFields.add(field);
-					row.setFields(knsFields);
-					customPreRows.add(row);
+					if(!skipadd) {
+						knsFields.add(field);
+						row.setFields(knsFields);
+						customPreRows.add(row);
+					}
 				}
 			}
 		}

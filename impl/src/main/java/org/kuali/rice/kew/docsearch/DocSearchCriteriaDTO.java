@@ -63,6 +63,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     private String docRouteNodeLogic; // exactly, before or after
     private String docVersion; // document version
     private String docTypeFullName; // the fullname for the document's docType
+    private String workgroupViewerId;
 
     //date range properties
     private String fromDateCreated; // the begin range for DateCreated
@@ -736,14 +737,17 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
 	}
 
     /**
-	 * This overridden method ...
-	 * 
+	 * @deprecated
 	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#getWorkgroupViewerNamespace()
 	 */
     public String getWorkgroupViewerNamespace() {
         return this.workgroupViewerNamespace;
     }
-
+    /**
+     * 
+     * @deprecated
+     * @param workgroupViewerNamespace
+     */
     public void setWorkgroupViewerNamespace(String workgroupViewerNamespace) {
         this.workgroupViewerNamespace = workgroupViewerNamespace;
     }
@@ -797,6 +801,20 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
 	 */
 	public void setOnlyDocTypeFilled(boolean onlyDocTypeFilled) {
 		this.onlyDocTypeFilled = onlyDocTypeFilled;
+	}
+
+	/**
+	 * @return the workgroupViewerId
+	 */
+	public String getWorkgroupViewerId() {
+		return this.workgroupViewerId;
+	}
+
+	/**
+	 * @param workgroupViewerId the workgroupViewerId to set
+	 */
+	public void setWorkgroupViewerId(String workgroupViewerId) {
+		this.workgroupViewerId = workgroupViewerId;
 	}
 
 

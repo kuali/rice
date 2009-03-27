@@ -21,12 +21,13 @@
     <c:set var="headerMenu" value="${KualiForm.lookupable.createNewUrl}   ${KualiForm.lookupable.htmlMenuBar}" />
 </c:if>
 <c:if test="${KualiForm.supplementalActionsEnabled==true}">
-    <c:set var="headerMenu" value="${headerMenu} ${KualiForm.lookupable.supplementalMenuBar}" />
+    <c:set var="headerMenu" value="" />
 </c:if>
+
 <kul:page lookup="true" showDocumentInfo="false"
 	headerMenuBar="${headerMenu}"
 	headerTitle="Lookup" docTitle="" transactionalDocument="false"
-	htmlFormAction="lookup">
+	htmlFormAction="lookup" >
 
 	<SCRIPT type="text/javascript">
     var kualiForm = document.forms['KualiForm'];
@@ -54,12 +55,37 @@
 	<html-el:hidden name="KualiForm" property="referencesToRefresh" />
 	<html-el:hidden name="KualiForm" property="hasReturnableRow" />
 	<html-el:hidden name="KualiForm" property="docNum" />
-	<html-el:hidden name="KualiForm" property="showMaintenanceLinks" />
+	<html-el:hidden name="KualiForm" property="showMaintenanceLinks" />	
+		
+
+
 
 	<c:forEach items="${KualiForm.extraButtons}" varStatus="status">
 		<html-el:hidden name="KualiForm" property="extraButtons[${status.index}].extraButtonSource" />
 		<html-el:hidden name="KualiForm" property="extraButtons[${status.index}].extraButtonParams" />
 	</c:forEach>
+		<c:if test="${KualiForm.supplementalActionsEnabled==true}" >
+		<div class="lookupcreatenew" title="Supplemental Search Actions" style="padding: 3px 30px 3px 3px;">
+			${KualiForm.lookupable.supplementalMenuBar} &nbsp;
+			<c:set var="extraField" value="${KualiForm.lookupable.extraField}"/>
+			<c:if test="${not empty extraField}">
+				<%--has to be a dropdown script for now--%>
+				<c:if test="${extraField.fieldType eq extraField.DROPDOWN_SCRIPT}">
+
+                            	${kfunc:registerEditableProperty(KualiForm, extraField.propertyName)}
+                                <select id='${extraField.propertyName}' name='${extraField.propertyName}'
+                                        onchange="${extraField.script}" style="">
+                                    <kul:fieldSelectValues field="${extraField}"/>
+                                </select>
+                        
+						&nbsp;
+						
+							<kul:fieldShowIcons isReadOnly="${true}" field="${extraField}" addHighlighting="${true}" />
+
+				</c:if>
+			</c:if>
+		</div>
+	</c:if>
 	<div class="right">
 		<div class="excol">
 		* required field
@@ -107,10 +133,16 @@
 					<!-- Optional extra buttons -->
 					<c:forEach items="${KualiForm.extraButtons}" var="extraButton" varStatus="status">
 						<c:if test="${!empty extraButton.extraButtonSource && !empty extraButton.extraButtonParams}">
-							<a href='<c:out value="${KualiForm.backLocation}?methodToCall=refresh&refreshCaller=kualiLookupable&docFormKey=${KualiForm.formKey}&anchor=${KualiForm.lookupAnchor}&docNum=${KualiForm.docNum}" /><c:out value="${extraButton.extraButtonParams}" />'><img
-							    src='<c:out value="${extraButton.extraButtonSource}" />'
-								class="tinybutton" border="0" /></a>
+							<c:if test="${not KualiForm.ddExtraButton}">
+								<a href='<c:out value="${KualiForm.backLocation}?methodToCall=refresh&refreshCaller=kualiLookupable&docFormKey=${KualiForm.formKey}&anchor=${KualiForm.lookupAnchor}&docNum=${KualiForm.docNum}" /><c:out value="${extraButton.extraButtonParams}" />'><img
+							    	src='<c:out value="${extraButton.extraButtonSource}" />'
+									class="tinybutton" border="0" /></a>
+							</c:if>
+							<c:if test="${KualiForm.ddExtraButton}">
+								<html:image src="${extraButton.extraButtonSource}" styleClass="tinybutton" property="methodToCall.customLookupableMethodCall" alt="${extraButton.extraButtonAltText}" onclick="${extraButton.extraButtonOnclick}"/> &nbsp;&nbsp;
+							</c:if>
 						</c:if>
+						
 					</c:forEach>
 					<c:if test="${KualiForm.multipleValues }">
 						<a

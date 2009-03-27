@@ -23,6 +23,7 @@ import java.util.Map;
 import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
+import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.ResultRow;
 
 /**
@@ -236,4 +237,19 @@ public interface Lookupable extends Serializable {
      *
      */
     public boolean shouldDisplayLookupCriteria();
+    
+    /**
+     * 
+     * This method is called from a custom action button or script
+     *
+     */
+    public boolean performCustomAction(boolean ignoreErrors);
+    
+    /**
+     * 
+     * get extra field
+     * 
+     * @return
+     */
+    public Field getExtraField();
 }

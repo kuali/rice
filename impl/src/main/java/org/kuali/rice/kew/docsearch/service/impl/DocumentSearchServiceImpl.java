@@ -202,7 +202,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
             }
         }
 
-        if (! validateWorkgroup(criteria.getWorkgroupViewerNamespace(), criteria.getWorkgroupViewerName())) {
+        if (! validateWorkgroup(criteria.getWorkgroupViewerId(), criteria.getWorkgroupViewerName())) {
             errors.add(new WorkflowServiceErrorImpl("Workgroup Viewer Name is not a workgroup", "docsearch.DocumentSearchService.workgroup.viewer"));
         } else {
             if (!Utilities.isEmpty(criteria.getWorkgroupViewerName())){
@@ -367,11 +367,11 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 		}
 	}
 
-    private boolean validateWorkgroup(String namespace, String workgroupName) {
+    private boolean validateWorkgroup(String id, String workgroupName) {
         if (Utilities.isEmpty(workgroupName)) {
             return true;
         }
-        KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroupByName(namespace, workgroupName);
+        KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(id);
         return group != null;
     }
 
@@ -451,6 +451,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 		savedSearchString.append(criteria.getToDateLastModified() == null || "".equals(criteria.getToDateLastModified()) ? "" : ",,toDateLastModified=" + criteria.getToDateLastModified());
         savedSearchString.append(criteria.getViewer() == null || "".equals(criteria.getViewer()) ? "" : ",,viewer=" + criteria.getViewer());
         savedSearchString.append(criteria.getWorkgroupViewerName() == null || "".equals(criteria.getWorkgroupViewerName()) ? "" : ",,workgroupViewerName=" + criteria.getWorkgroupViewerName());
+        savedSearchString.append(criteria.getWorkgroupViewerName() == null || "".equals(criteria.getWorkgroupViewerId()) ? "" : ",,workgroupViewerId=" + criteria.getWorkgroupViewerId());
 		savedSearchString.append(criteria.getNamedSearch() == null || "".equals(criteria.getNamedSearch()) ? "" : ",,namedSearch=" + criteria.getNamedSearch());
 		savedSearchString.append(criteria.getSearchableAttributes().isEmpty() ? "" : ",,searchableAttributes=" + buildSearchableAttributeString(criteria.getSearchableAttributes()));
 

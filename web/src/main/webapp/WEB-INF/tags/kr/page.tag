@@ -91,6 +91,23 @@
 				  }
 			   }
 			  }
+			  <!-- allow for custom lookup calls -->
+			  function customLookupChanged() {
+				    
+				    methodToCallElement=document.createElement("input");
+				    methodToCallElement.setAttribute("type","hidden");
+				    methodToCallElement.setAttribute("name","methodToCall");
+				    methodToCallElement.setAttribute("value","refresh");
+				    document.forms[0].appendChild(methodToCallElement);
+				    
+				    refreshCallerElement=document.createElement("input");
+				    refreshCallerElement.setAttribute("type","hidden");
+				    refreshCallerElement.setAttribute("name","refreshCaller");
+				    refreshCallerElement.setAttribute("value","customLookupAction");
+				    document.forms[0].appendChild(refreshCallerElement);
+
+				    document.forms[0].submit();
+			  }
 			  </script>
 		</c:when>
 		<c:otherwise>

@@ -29,6 +29,7 @@ import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.ExternalizableBusinessObjectUtils;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.spring.AutoPopulatingList;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 
@@ -65,6 +66,7 @@ public class LookupForm extends KualiForm {
 	private boolean lookupCriteriaEnabled = true;
     private boolean supplementalActionsEnabled = true;
     private boolean actionUrlsExist = false;
+    private boolean ddExtraButton = false;
     
     /**
      * @see org.kuali.rice.kns.web.struts.form.KualiForm#addRequiredNonEditableProperties()
@@ -205,6 +207,8 @@ public class LookupForm extends KualiForm {
                 setConversionFields(getParameter(request, "conversionFields"));
             }
             if (getParameter(request, KNSConstants.EXTRA_BUTTON_SOURCE) != null) {
+            	//these are not sourced from the DD/Lookupable
+            	ddExtraButton=false;
                 setExtraButtonSource(getParameter(request, KNSConstants.EXTRA_BUTTON_SOURCE));
             }
             if (getParameter(request, KNSConstants.EXTRA_BUTTON_PARAMS) != null) {
@@ -300,6 +304,14 @@ public class LookupForm extends KualiForm {
 
             setFieldConversions(LookupUtils.translateFieldConversions(this.conversionFields));
             localLookupable.setFieldConversions(getFieldConversions());
+            if(StringUtils.isNotEmpty(localLookupable.getExtraButtonSource())) {
+            	setExtraButtonSource(localLookupable.getExtraButtonSource());
+            	//also set the boolean so the jsp can use an action button
+            	ddExtraButton=true;
+            }
+            if(StringUtils.isNotEmpty(localLookupable.getExtraButtonParams())) {
+            	setExtraButtonParams(localLookupable.getExtraButtonParams());
+            }
             setLookupable(localLookupable);
             setFieldsForLookup(fieldValues);
 
@@ -654,6 +666,7 @@ public class LookupForm extends KualiForm {
 		this.supplementalActionsEnabled = supplementalActionsEnabled;
 	}
 
+
 	/**
 	 * @param actionUrlsExist the actionUrlsExist to set
 	 */
@@ -666,5 +679,19 @@ public class LookupForm extends KualiForm {
 	 */
 	public boolean isActionUrlsExist() {
 		return actionUrlsExist;
+	}
+
+	/**
+	 * @return the ddExtraButton
+	 */
+	public boolean isDdExtraButton() {
+		return this.ddExtraButton;
+	}
+
+	/**
+	 * @param ddExtraButton the ddExtraButton to set
+	 */
+	public void setDdExtraButton(boolean ddExtraButton) {
+		this.ddExtraButton = ddExtraButton;
 	}
 }

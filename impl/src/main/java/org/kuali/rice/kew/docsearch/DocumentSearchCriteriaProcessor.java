@@ -43,6 +43,7 @@ public interface DocumentSearchCriteriaProcessor {
     public static final String CRITERIA_KEY_VIEWER_ID = "viewerId";
     public static final String CRITERIA_KEY_APPROVER_ID = "approverId";
     public static final String CRITERIA_KEY_WORKGROUP_VIEWER = "workgroupViewer";
+    public static final String CRITERIA_KEY_WORKGROUP_VIEWER_ID = "workgroupViewerId";
     public static final String CRITERIA_KEY_APPLICATION_DOCUMENT_ID = "applicationDocumentId";
     public static final String CRITERIA_KEY_DOCUMENT_TITLE = "documentTitle";
     public static final String CRITERIA_KEY_DOCUMENT_ROUTE_STATUS = "documentRouteStatus";

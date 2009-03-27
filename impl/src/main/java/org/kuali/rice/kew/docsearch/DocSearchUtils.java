@@ -355,6 +355,7 @@ public class DocSearchUtils {
                             sacc.setRangeSearch(dsField.isMemberOfRange());
                             sacc.setSearchInclusive(dsField.isInclusive());
                             sacc.setSearchable(dsField.isIndexedForSearch());
+                            sacc.setLookupableFieldType(dsField.getFieldType());
                             sacc.setCanHoldMultipleValues(Field.MULTI_VALUE_FIELD_TYPES.contains(dsField.getFieldType()));
                             criteriaComponentsByKey.put(dsField.getPropertyName(), sacc);
                         } else {

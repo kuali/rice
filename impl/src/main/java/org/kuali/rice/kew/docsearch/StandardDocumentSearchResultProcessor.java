@@ -39,7 +39,7 @@ import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 
 /**
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class StandardDocumentSearchResultProcessor implements
@@ -131,7 +131,7 @@ public class StandardDocumentSearchResultProcessor implements
 
 	/**
 	 * Convenience method to find a specific searchable attribute
-	 * 
+	 *
 	 * @param name
 	 *            - name of search attribute savable property name
 	 * @return the SearchAttributeCriteriaComponent object related to the given
@@ -157,7 +157,7 @@ public class StandardDocumentSearchResultProcessor implements
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @seeorg.kuali.rice.kew.docsearch.DocumentSearchResultProcessor#
 	 * processIntoFinalResults(java.util.List,
 	 * org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO,
@@ -186,7 +186,7 @@ public class StandardDocumentSearchResultProcessor implements
 	/**
 	 * Method to construct a list of columns in order of how they should appear
 	 * in the search results
-	 * 
+	 *
 	 * @return a list of columns in an ordered list that will be used to
 	 *         generate the final search results
 	 */
@@ -535,7 +535,7 @@ public class StandardDocumentSearchResultProcessor implements
 	/**
 	 * Convenience method to allow child classes to use a custom value string
 	 * and wrap that string in the document handler URL
-	 * 
+	 *
 	 * @param value
 	 *            - the value that will show on screen as the clickable link
 	 * @param routeHeaderId
@@ -724,21 +724,17 @@ public class StandardDocumentSearchResultProcessor implements
 	}
 
 	public boolean isDocumentHandlerPopup() {
-		String parameterValue = Utilities.getKNSParameterValue(
-				KEWConstants.KEW_NAMESPACE,
-				KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE,
-				KEWConstants.DOCUMENT_SEARCH_DOCUMENT_POPUP_IND).trim();
-		return (KEWConstants.DOCUMENT_SEARCH_DOCUMENT_POPUP_VALUE
-				.equals(parameterValue));
+	    return Utilities.getKNSParameterBooleanValue(
+	            KEWConstants.KEW_NAMESPACE,
+	            KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE,
+	            KEWConstants.DOCUMENT_SEARCH_DOCUMENT_POPUP_IND);
 	}
 
 	public boolean isRouteLogPopup() {
-		String parameterValue = Utilities.getKNSParameterValue(
+		return Utilities.getKNSParameterBooleanValue(
 				KEWConstants.KEW_NAMESPACE,
 				KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE,
-				KEWConstants.DOCUMENT_SEARCH_ROUTE_LOG_POPUP_IND).trim();
-		return (KEWConstants.DOCUMENT_SEARCH_ROUTE_LOG_POPUP_VALUE
-				.equals(parameterValue));
+				KEWConstants.DOCUMENT_SEARCH_ROUTE_LOG_POPUP_IND);
 	}
 
 	public String getDocHandlerUrlPrefix(String routeHeaderId,

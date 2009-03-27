@@ -196,15 +196,31 @@
 								<c:choose>
 									<c:when	test="${column.multipleAnchors}">
 										<c:set var="numberOfColumnAnchors" value="${column.numberOfColumnAnchors}" />
+                                        <c:choose>
+                                          <c:when test="${empty columnAnchor.target}">
+                                            <c:set var="anchorTarget" value="_blank" />
+                                          </c:when>
+                                          <c:otherwise>
+                                            <c:set var="anchorTarget" value="${columnAnchor.target}" />
+                                          </c:otherwise>
+                                        </c:choose>
 										<logic:iterate id="columnAnchor" name="column" property="columnAnchors" indexId="ctr">
-										<a href="<c:out value="${columnAnchor.href}"/>" target="blank" title="${columnAnchor.title}"><c:out
+										<a href="<c:out value="${columnAnchor.href}"/>" target='<c:out value="${columnAnchor.target}"/>' title="${columnAnchor.title}"><c:out
 											value="${fn:substring(columnAnchor.displayText, 0, column.maxLength)}" escapeXml="${column.escapeXMLValue}"
 											/><c:if test="${column.maxLength gt 0 && fn:length(columnAnchor.displayText) gt column.maxLength}">...</c:if></a>
 											<c:if test="${ctr lt numberOfColumnAnchors-1}">,</c:if>
 										</logic:iterate>
 									</c:when>
 									<c:otherwise>
-										<a href="<c:out value="${column.columnAnchor.href}"/>" target="blank" title="${column.columnAnchor.title}"><c:out
+                                        <c:choose>
+                                          <c:when test="${empty column.columnAnchor.target}">
+                                            <c:set var="anchorTarget" value="_blank" />
+                                          </c:when>
+                                          <c:otherwise>
+                                            <c:set var="anchorTarget" value="${column.columnAnchor.target}" />
+                                          </c:otherwise>
+                                        </c:choose>
+										<a href="<c:out value="${column.columnAnchor.href}"/>" target='<c:out value="${anchorTarget}"/>' title="${column.columnAnchor.title}"><c:out
 											value="${fn:substring(column.propertyValue, 0, column.maxLength)}" escapeXml="${column.escapeXMLValue}"
 											/><c:if test="${column.maxLength gt 0 && fn:length(column.propertyValue) gt column.maxLength}">...</c:if></a>
 			                        </c:otherwise>

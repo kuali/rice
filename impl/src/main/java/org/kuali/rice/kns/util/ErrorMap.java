@@ -572,6 +572,14 @@ public class ErrorMap implements Serializable {
     	return errorMessages.remove(property);
     }
 
+    public TypedArrayList removeAllWarningMessagesForProperty(String property) {
+    	return warningMessages.remove(property);
+    }
+    
+    public TypedArrayList removeAllInfoMessagesForProperty(String property) {
+    	return infoMessages.remove(property);
+    }
+    
     /**
      * @deprecated As of rice 0.9.4, use {@link #getNumberOfPropertiesWithErrors()} instead
      */

@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.kuali.rice.kns.question.Question;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.WebUtils;
 
 /**
  * This class is the action form for all Question Prompts.
@@ -114,7 +115,7 @@ public class QuestionPromptForm extends KualiForm {
      * @return Returns the questionText.
      */
     public String getQuestionText() {
-        return questionText;
+        return WebUtils.filterHtmlAndReplaceRiceMarkup(questionText);
     }
 
     /**

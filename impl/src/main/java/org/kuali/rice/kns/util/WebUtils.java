@@ -27,12 +27,15 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.PageContext;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -554,5 +557,47 @@ public class WebUtils {
         for (String editableProperty : editableProperties) {
             kualiForm.registerEditableProperty(editableProperty);
         }
+    }
+    
+    /**
+     * Excapes out HTML to prevent XSS attacks, and replaces the following strings to allow for a limited set of HTML tags
+     * 
+     * <li> [X] and [/X], where X represents any 1 or 2 letter string may be used to specify the equivalent tag in HTML (i.e. &lt;X&gt; and &lt;/X&gt;)
+     * <li> [font COLOR], where COLOR represents any valid html color (i.e. color name or hexcode preceeded by #) will be filtered into &lt;font color="COLOR"/&gt;
+     * <li> [/font] will be filtered into &lt;/font&gt;
+     *  
+     * @param inputString
+     * @return
+     */
+    public static String filterHtmlAndReplaceRiceMarkup(String inputString) {
+    	String outputString = StringEscapeUtils.escapeHtml(inputString);
+    	// string has been escaped of all <, >, and & (and other characters)
+    	
+    	Map<String, String> findAndReplacePatterns = new HashMap<String, String>();
+    	
+    	// now replace our rice custom markup into html
+
+    	// DON'T ALLOW THE SCRIPT TAG OR ARBITRARY IMAGES/URLS/ETC. THROUGH
+    	
+    	// filter any one character tags
+    	findAndReplacePatterns.put("\\[([A-Za-z])\\]", "<$1>");
+    	findAndReplacePatterns.put("\\[/([A-Za-z])\\]", "</$1>");    	
+    	// filter any two character tags
+    	findAndReplacePatterns.put("\\[([A-Za-z]{2})\\]", "<$1>");
+    	findAndReplacePatterns.put("\\[/([A-Za-z]{2})\\]", "</$1>");
+    	// filter the font tag
+    	findAndReplacePatterns.put("\\[font (#[0-9A-Fa-f]{1,6}|[A-Za-z]+)\\]", "<font color=\"$1\">");
+    	findAndReplacePatterns.put("\\[/font\\]", "</font>");
+    	
+    	for (String findPattern : findAndReplacePatterns.keySet()) {
+    		Pattern p = Pattern.compile(findPattern);
+    		Matcher m = p.matcher(outputString);
+    		if (m.find()) {
+    			String replacePattern = findAndReplacePatterns.get(findPattern);
+    			outputString = m.replaceAll(replacePattern);
+    		}
+    	}
+    	
+    	return outputString;
     }
 }

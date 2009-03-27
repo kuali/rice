@@ -95,8 +95,7 @@ public interface DateTimeService {
     public Calendar getCalendar(Date date);
 
     /**
-     * Translates the specified string into a date without a time component, formatted according to "stringDateFormat" that the
-     * service is configured with
+     * Translates the specified string into a date without a time component, see implementation class for formatting details
      * 
      * @param dateString
      * @return the date representation of the specified dateString
@@ -153,7 +152,21 @@ public interface DateTimeService {
      */
     public int dateDiff(Date date1, Date date2, boolean inclusive);
 
+    /**
+     * Returns a String representing a date that is suitable for file names, and is preferably chronologically sortable 
+     * 
+     * @param date
+     * @return
+     */
     public String toDateStringForFilename(Date date);
     
+    /**
+     * Returns a String representing a date/time that is suitable for file names, and is preferably chronologically sortable 
+     * 
+     * @param date
+     * @return
+     */
     public String toDateTimeStringForFilename(Date date);
+    
+    public void initializeDateTimeService();
 }

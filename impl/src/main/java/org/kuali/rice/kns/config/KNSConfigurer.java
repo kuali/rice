@@ -84,6 +84,8 @@ public class KNSConfigurer extends ModuleConfigurer {
 	/**
      * Used to "poke" the Data Dictionary again after the Spring Context is initialized.  This is to
      * allow for modules loaded with KualiModule after the KNS has already been initialized to work.
+     * 
+     * Also initializes the DateTimeService
      */
     @Override
     public void onEvent(RiceConfigEvent event) throws Exception {
@@ -101,6 +103,7 @@ public class KNSConfigurer extends ModuleConfigurer {
     				dds.getDataDictionary().validateDD();
     			}
     		}
+    		KNSServiceLocator.getDateTimeService().initializeDateTimeService();
     	}
     }
 

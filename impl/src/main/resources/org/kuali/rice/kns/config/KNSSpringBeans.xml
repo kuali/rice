@@ -352,19 +352,7 @@
 	</bean>
 
 
-	<bean id="dateTimeService" class="org.kuali.rice.kns.service.impl.DateTimeServiceImpl">
-		<property name="sqlDateFormats">
-			<list>
-				<value>yyyy-MM-dd</value>
-				<value>MM/dd/yyyy</value>
-				<value>MM/dd/yy</value>
-				<value>MM-dd-yyyy</value>
-				<value>MM-dd-yy</value>
-			</list>
-		</property>
-		<property name="stringDateFormat" value="MM/dd/yyyy" />
-		<property name="stringDateTimeFormat" value="MM/dd/yyyy hh:mm a" />
-	</bean>
+	<bean id="dateTimeService" class="org.kuali.rice.kns.service.impl.DateTimeServiceImpl"/>
 
 	<bean id="businessObjectDictionaryService" class="org.kuali.rice.kns.service.impl.BusinessObjectDictionaryServiceImpl">
 		<property name="dataDictionaryService">

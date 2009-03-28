@@ -130,11 +130,20 @@ public class RouteLogAction extends KewKualiAction {
         rlForm.setPendingActionRequestCount(arCount);
     }
 
+    /**
+     * executes a simulation of the future routing, and sets the futureRootRequests and futureActionRequestCount
+     * properties on the provided RouteLogForm.
+     * 
+     * @param rlForm the RouteLogForm --used in a write-only fashion.
+     * @param document the DocumentRouteHeaderValue for the document whose future routing is being simulated.
+     * @throws Exception
+     */
     public void populateRouteLogFutureRequests(RouteLogForm rlForm, DocumentRouteHeaderValue document) throws Exception {
 
         ReportCriteriaDTO reportCriteria = new ReportCriteriaDTO(document.getRouteHeaderId());
         String serviceNamespace = document.getDocumentType().getServiceNamespace();
-        WorkflowUtility workflowUtility = (WorkflowUtility)GlobalResourceLoader.getService(new QName(serviceNamespace, "WorkflowUtilityService"));
+        WorkflowUtility workflowUtility = 
+        	(WorkflowUtility)GlobalResourceLoader.getService(new QName(serviceNamespace, "WorkflowUtilityService"));
 
         // gather the IDs for action requests that predate the simulation
 		Set<Long> preexistingActionRequestIds = getActionRequestIds(document);
@@ -169,13 +178,16 @@ public class RouteLogAction extends KewKualiAction {
 	 * This utility method returns a Set of LongS containing the IDs for the ActionRequestValueS associated with 
 	 * this DocumentRouteHeaderValue. 
 	 */
+	@SuppressWarnings("unchecked")
 	private Set<Long> getActionRequestIds(DocumentRouteHeaderValue document) {
 		Set<Long> actionRequestIds = new HashSet<Long>();
-		if (document.getActionRequests() != null) { 
-			for (ActionRequestValue actionRequest : document.getActionRequests()) {
-				if (actionRequest.getActionRequestId() != null) {
-					actionRequestIds.add(actionRequest.getActionRequestId());
-				}
+
+		List<ActionRequestValue> actionRequests = 
+			KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(document.getRouteHeaderId());
+		
+		if (actionRequests != null) for (ActionRequestValue actionRequest : actionRequests) {
+			if (actionRequest.getActionRequestId() != null) {
+				actionRequestIds.add(actionRequest.getActionRequestId());
 			}
 		}
 		return actionRequestIds;

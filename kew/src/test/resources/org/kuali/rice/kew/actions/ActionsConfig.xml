@@ -192,7 +192,7 @@
 					<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 				</requests>
 			</routeNodes>
-		</documentType>
+		</documentType>    
 		<documentType>
 			<name>BlanketApproveSequentialTest</name>
 			<parent>BlanketApproveTest</parent>
@@ -935,6 +935,65 @@
 		</documentType>
 
 		<!-- end  super user approve exception case document type -->
+
+        <documentType>
+            <name>RouteLogActionTest</name>
+            <description>RouteLogActionTest</description>
+            <label>RouteLogActionTest</label>
+            <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
+            <superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
+            <docHandler>_blank</docHandler>
+            <active>true</active>
+            <routePaths>
+                <routePath>
+                    <start name="AdHoc" nextNode="WorkflowDocument" />
+                    <requests name="WorkflowDocument" nextNode="WorkflowDocument2" />
+                    <requests name="WorkflowDocument2" nextNode="Acknowledge" />
+                    <requests name="Acknowledge"/>
+                </routePath>
+            </routePaths>
+            <routeNodes>
+                <start name="AdHoc">
+                    <activationType>P</activationType>
+                </start>
+                <requests name="WorkflowDocument">
+                    <activationType>P</activationType>
+                    <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+                </requests>
+                <requests name="WorkflowDocument2">
+                    <activationType>P</activationType>
+                    <ruleTemplate>WorkflowDocument2Template</ruleTemplate>
+                </requests>
+                <requests name="Acknowledge">
+                    <activationType>P</activationType>
+                    <ruleTemplate>Ack1Template</ruleTemplate>
+                </requests>
+            </routeNodes>
+        </documentType>
+        <documentType>
+            <name>RouteLogActionTestTrivial</name>
+            <description>RouteLogActionTestTrivial</description>
+            <label>RouteLogActionTestTrivial</label>
+            <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
+            <superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+            <docHandler>_blank</docHandler>
+            <active>true</active>
+            <routePaths>
+                <routePath>
+                    <start name="AdHoc" />
+                </routePath>
+            </routePaths>
+            <routeNodes>
+                <start name="AdHoc">
+                    <activationType>S</activationType>
+                </start>
+            </routeNodes>
+        </documentType>
+    
 	</documentTypes>
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>
@@ -1462,6 +1521,46 @@
 			</responsibilities>
 		</rule>
 		<!-- end su approve exception case rules -->
+    
+        <rule>
+            <documentType>RouteLogActionTest</documentType>
+            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+            <description>RLAT WorkflowDocumentTemplate Rule 1</description>
+            <ignorePrevious>true</ignorePrevious>
+            <responsibilities>
+                <responsibility>
+                    <user>ewestfal</user>
+                    <actionRequested>C</actionRequested>
+                    <priority>1</priority>
+                </responsibility>
+            </responsibilities>
+        </rule>
+        <rule>
+            <documentType>RouteLogActionTest</documentType>
+            <ruleTemplate>WorkflowDocument2Template</ruleTemplate>
+            <description>RLAT WorkflowDocumentTemplate Rule 2</description>
+            <ignorePrevious>true</ignorePrevious>
+            <responsibilities>
+                <responsibility>
+                    <user>user2</user>
+                    <actionRequested>C</actionRequested>
+                    <priority>1</priority>
+                </responsibility>
+            </responsibilities>
+        </rule>
+        <rule>
+            <documentType>RouteLogActionTest</documentType>
+            <ruleTemplate>Ack1Template</ruleTemplate>
+            <description>RLAT Ack1Template Rule 1</description>
+            <ignorePrevious>true</ignorePrevious>
+            <responsibilities>
+                <responsibility>
+                    <user>user3</user>
+                    <actionRequested>K</actionRequested>
+                    <priority>1</priority>
+                </responsibility>
+            </responsibilities>
+        </rule>
 	</rules>
 
 	<ruleDelegations xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">

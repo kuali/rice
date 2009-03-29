@@ -36,7 +36,6 @@ import org.kuali.rice.kew.dto.RuleReportCriteriaDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 
@@ -208,4 +207,6 @@ public interface WorkflowUtility {
     public String getClearFutureRequestsValue();
     
     public boolean hasRouteNode(String documentTypeName, String routeNodeName) throws WorkflowException;
+    
+    public boolean isCurrentActiveDocumentType(String documentTypeName) throws WorkflowException;
 }

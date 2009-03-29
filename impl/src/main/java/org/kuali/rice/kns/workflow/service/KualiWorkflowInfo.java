@@ -86,6 +86,8 @@ public interface KualiWorkflowInfo {
      */
     public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaDTO, String[] actionRequestedCodes) throws WorkflowException;
 
+    public boolean isCurrentActiveDocumentType( String documentTypeName ) throws WorkflowException;
+    
     /**
      * This method returns a list of Universal User Ids that have approval or completion requested of them for the document represented by the routeHeaderId parameter
      * 

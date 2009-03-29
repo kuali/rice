@@ -19,8 +19,6 @@ package org.kuali.rice.kew.service;
 import java.rmi.RemoteException;
 import java.util.List;
 
-import org.kuali.rice.core.config.Config;
-import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.dto.ActionItemDTO;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
@@ -66,14 +64,6 @@ public class WorkflowInfo implements java.io.Serializable {
     	}
     	return workflowUtility;
 
-    }
-
-    private boolean isLocal() {
-	Config config = ConfigContext.getCurrentContextConfig();
-	if (config != null) {
-	    return config.getProperty(Config.CLIENT_PROTOCOL).equals(KEWConstants.LOCAL_CLIENT_PROTOCOL);
-	}
-	return false;
     }
 
     /**
@@ -719,6 +709,14 @@ public class WorkflowInfo implements java.io.Serializable {
     public boolean hasRouteNode(String documentTypeName, String routeNodeName) throws WorkflowException {
     	try{
     		return getWorkflowUtility().hasRouteNode(documentTypeName, routeNodeName);
+    	} catch (Exception e) {
+            throw handleException(e);
+        }
+    }
+    
+    public boolean isCurrentActiveDocumentType(String documentTypeName) throws WorkflowException {
+    	try{
+    		return getWorkflowUtility().isCurrentActiveDocumentType(documentTypeName);
     	} catch (Exception e) {
             throw handleException(e);
         }

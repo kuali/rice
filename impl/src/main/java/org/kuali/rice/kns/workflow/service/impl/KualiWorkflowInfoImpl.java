@@ -66,8 +66,9 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
         		throw new WorkflowException("Failed to locate System User with principal name 'kr'");
         	}
             return getWorkflowUtility().getRouteHeader(principal.getPrincipalId(), routeHeaderId);
-        }
-        catch (Exception e) {
+    	} catch ( WorkflowException ex ) {
+    		throw ex;
+        } catch (Exception e) {
             throw new WorkflowException(e);
         }
     }
@@ -75,8 +76,9 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
     public DocumentTypeDTO getDocType(Long documentTypeId) throws WorkflowException {
         try {
             return getWorkflowUtility().getDocType(documentTypeId);
-        }
-        catch (Exception e) {
+    	} catch ( WorkflowException ex ) {
+    		throw ex;
+        } catch (Exception e) {
             throw new WorkflowException(e);
         }
     }
@@ -85,8 +87,9 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
         try {
             // throw new WorkflowException("not supported");
             return getWorkflowUtility().getDocType(documentTypeName);
-        }
-        catch (Exception e) {
+    	} catch ( WorkflowException ex ) {
+    		throw ex;
+        } catch (Exception e) {
             throw new WorkflowException(e);
         }
     }
@@ -94,8 +97,9 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
     public Long getNewResponsibilityId() throws WorkflowException {
         try {
             return getWorkflowUtility().getNewResponsibilityId();
-        }
-        catch (Exception e) {
+    	} catch ( WorkflowException ex ) {
+    		throw ex;
+        } catch (Exception e) {
             throw new WorkflowException(e);
         }
     }
@@ -103,8 +107,9 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
     public ActionRequestDTO[] getActionRequests(Long routeHeaderId) throws WorkflowException {
         try {
             return getWorkflowUtility().getActionRequests(routeHeaderId);
-        }
-        catch (Exception e) {
+    	} catch ( WorkflowException ex ) {
+    		throw ex;
+        } catch (Exception e) {
             throw new WorkflowException(e);
         }
     }
@@ -112,8 +117,9 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
     public ActionRequestDTO[] getActionRequests(Long routeHeaderId, String nodeName, String principalId) throws WorkflowException {
         try {
             return getWorkflowUtility().getActionRequests(routeHeaderId, nodeName, principalId);
-        }
-        catch (Exception e) {
+    	} catch ( WorkflowException ex ) {
+    		throw ex;
+        } catch (Exception e) {
             throw new WorkflowException(e);
         }
     }
@@ -121,8 +127,9 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
     public ActionTakenDTO[] getActionsTaken(Long routeHeaderId) throws WorkflowException {
         try {
             return getWorkflowUtility().getActionsTaken(routeHeaderId);
-        }
-        catch (Exception e) {
+    	} catch ( WorkflowException ex ) {
+    		throw ex;
+        } catch (Exception e) {
             throw new WorkflowException(e);
         }
     }
@@ -130,8 +137,9 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
     public void reResolveRole(String documentTypeName, String roleName, String qualifiedRoleNameLabel) throws WorkflowException {
         try {
             getWorkflowUtility().reResolveRole(documentTypeName, roleName, qualifiedRoleNameLabel);
-        }
-        catch (Exception e) {
+    	} catch ( WorkflowException ex ) {
+    		throw ex;
+        } catch (Exception e) {
             throw new WorkflowException(e);
         }
     }
@@ -139,8 +147,9 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
     public void reResolveRole(Long routeHeaderId, String roleName, String qualifiedRoleNameLabel) throws WorkflowException {
         try {
             getWorkflowUtility().reResolveRole(routeHeaderId, roleName, qualifiedRoleNameLabel);
-        }
-        catch (Exception e) {
+    	} catch ( WorkflowException ex ) {
+    		throw ex;
+        } catch (Exception e) {
             throw new WorkflowException(e);
         }
     }
@@ -185,8 +194,9 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
     public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaDTO, String[] actionRequestedCodes, boolean ignoreCurrentlyActiveRequests) throws WorkflowException {
         try {
             return getWorkflowUtility().documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, actionRequestedCodes, ignoreCurrentlyActiveRequests);
-        }
-        catch (Exception e) {
+    	} catch ( WorkflowException ex ) {
+    		throw ex;
+        } catch (Exception e) {
             throw new WorkflowException(e);
         }
     }
@@ -203,6 +213,8 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
                 users.add(actionItemVO.getPrincipalId());
             }
             return users;
+    	} catch ( WorkflowException ex ) {
+    		throw ex;
         } catch (Exception e) {
             throw new WorkflowException(e);
         }
@@ -211,6 +223,8 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
     public DocumentSearchResultDTO performDocumentSearch(DocumentSearchCriteriaDTO criteriaVO) throws WorkflowException {
         try {
             return getWorkflowUtility().performDocumentSearch(criteriaVO);
+    	} catch ( WorkflowException ex ) {
+    		throw ex;
         } catch (Exception e) {
             throw new WorkflowException(e);
         }
@@ -219,8 +233,25 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
     public DocumentSearchResultDTO performDocumentSearch(String principalId, DocumentSearchCriteriaDTO criteriaVO) throws RemoteException, WorkflowException {
         try {
             return getWorkflowUtility().performDocumentSearch(principalId, criteriaVO);
+    	} catch ( WorkflowException ex ) {
+    		throw ex;
         } catch (Exception e) {
             throw new WorkflowException(e);
         }
+    }
+    
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowInfo#isCurrentActiveDocumentType(java.lang.String)
+     */
+    public boolean isCurrentActiveDocumentType(String documentTypeName) throws WorkflowException {
+    	try {
+    		return getWorkflowUtility().isCurrentActiveDocumentType( documentTypeName );
+    	} catch ( WorkflowException ex ) {
+    		throw ex;
+    	} catch ( Exception ex ) {
+    		throw new WorkflowException( ex );
+    	}
     }
 }

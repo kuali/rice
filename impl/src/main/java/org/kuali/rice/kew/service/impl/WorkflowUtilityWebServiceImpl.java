@@ -86,7 +86,6 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.ObjectUtils;
 
 @SuppressWarnings({"deprecation","unchecked"})
 public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
@@ -1073,4 +1072,8 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
     	return routeNode!=null;
     }
 
+    public boolean isCurrentActiveDocumentType(String documentTypeName) throws WorkflowException {
+    	DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
+    	return docType != null && docType.isActive();
+    }
 }

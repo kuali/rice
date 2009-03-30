@@ -1816,7 +1816,7 @@
 
             <responsibilities>
                 <responsibility>
-                    <prinipcalName>admin</principalName>
+                    <principalName>admin</principalName>
                     <actionRequested>A</actionRequested>
                     <priority>1</priority>
                 </responsibility>
@@ -1884,7 +1884,7 @@
             </ruleExtensions>
             <responsibilities>
                 <responsibility>
-                    <prinipcalName>user4</principalName>
+                    <principalName>user4</principalName>
                     <actionRequested>A</actionRequested>
                 </responsibility>
             </responsibilities>

@@ -29,12 +29,18 @@
 		
 		<property name="oracle.driver.version" value="10.2.0.3.0"/>
 
+		<property name="default.jta.excludes" value="**/xapool*.jar, **/jotm*.jar, **/connector*.jar, **/howl*.jar, **/jta*.jar, **/jts*.jar, **/ow_carol*.jar, **/carol.properties"/>		
+				
 		<property environment="env"/>
 	    <!-- if the M2_HOME is already defined in the environment, use it -->
 		<property name="maven.home.directory" value="${env.M2_HOME}"/>
 		<mkdir dir="${dist.build.dir}"/>
 	</target>
 
+	<target name="init-jta-excludes" if="webapp.exclude.jta" depends="init" >
+		<property name="jta.excludes" value="${default.jta.excludes}"/>
+	</target>
+	
 	<target name="clean" description="Cleans the temporary build files." depends="init">
 		<delete dir="${dist.build.dir}"/>
 		<delete dir="target" includes="rice-${maven.project.version}-*"/>
@@ -127,7 +133,9 @@
 		</artifact:install>
 	</target>
 	
-	<target name="dist-server" depends="prepare-lib" description="Builds and packages the Rice server distribution">
+	<target name="dist-server" depends="init-jta-excludes, prepare-lib" description="Builds and packages the Rice server distribution">
+		<echo>jta.excludes: ${jta.excludes}</echo>
+
 		<unzip src="web/target/rice-web-${maven.project.version}.war" dest="${dist.server.dir}"/>
 		<copy todir="${dist.server.dir}">
 			<fileset dir="${server.config.src.dir}"/>
@@ -139,7 +147,7 @@
 			</fileset>
 		</replaceregexp>
 		<jar destfile="target/rice-${maven.project.version}-server.war">
-			<fileset dir="${dist.server.dir}"/>
+			<fileset dir="${dist.server.dir}" excludes="${jta.excludes}"/>
 		</jar>
 	</target>
 	
@@ -212,7 +220,7 @@
 				<fileset dir="${dist.src.dir}"/>
 			</tar>
 		</target>
-
+	
 	<target name="dist-all" depends="clean, clean-maven, dist-server, dist-binary, dist-src" description="Creates server, binary and source distributions"/>
 	
 	<!-- Used for deployments on the server -->

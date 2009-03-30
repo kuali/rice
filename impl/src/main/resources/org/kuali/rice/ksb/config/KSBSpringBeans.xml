@@ -72,6 +72,7 @@
 	</bean>
 
 	<bean id="ksbMessageNonTransactionalDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean" lazy-init="true">
+		<property name="nullAllowed" value="true"/>
 		<property name="nonTransactionalDataSource" value="true"/>
 		<property name="preferredDataSourceParams">
 			<list>
@@ -83,6 +84,7 @@
 				<value>ksbMessage.nonTransactional.datasource.jndi.location</value>
 			</list>
 		</property>
+		<property name="serverDataSource" value="false"/>
 	</bean>
 
 	<bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate" lazy-init="true">

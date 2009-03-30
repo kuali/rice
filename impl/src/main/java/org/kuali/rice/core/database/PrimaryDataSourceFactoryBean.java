@@ -73,12 +73,13 @@ public class PrimaryDataSourceFactoryBean extends AbstractFactoryBean {
     private List<String> preferredDataSourceParams = new ArrayList<String>();
     private List<String> preferredDataSourceJndiParams = new ArrayList<String>();
     private boolean serverDataSource = false;
+    private boolean nullAllowed = false;
     
     public PrimaryDataSourceFactoryBean() {
         setSingleton(true);
     }
 
-    public Class getObjectType() {
+    public Class<DataSource> getObjectType() {
         return DataSource.class;
     }
     
@@ -95,10 +96,10 @@ public class PrimaryDataSourceFactoryBean extends AbstractFactoryBean {
     protected Object createInstance() throws Exception {
         Config config = ConfigContext.getCurrentContextConfig();
         DataSource dataSource = createDataSource(config);
-        if (dataSource != null) {
-            return dataSource;
+        if (dataSource == null && !isNullAllowed()) {
+        	throw new ConfigurationException("Failed to configure the Primary Data Source.");
         }
-        throw new ConfigurationException("Failed to configure the Primary Data Source.");
+        return dataSource;
     }
 
     protected String getDefaultDataSourceParamByType() {
@@ -257,5 +258,13 @@ public class PrimaryDataSourceFactoryBean extends AbstractFactoryBean {
 	public void setServerDataSource(boolean serverDataSource) {
 		this.serverDataSource = serverDataSource;
 	}
-    
+
+	public boolean isNullAllowed() {
+		return this.nullAllowed;
+	}
+
+	public void setNullAllowed(boolean nullAllowed) {
+		this.nullAllowed = nullAllowed;
+	}
+
 }

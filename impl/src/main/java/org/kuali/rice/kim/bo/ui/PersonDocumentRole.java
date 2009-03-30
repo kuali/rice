@@ -33,6 +33,7 @@ import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
+import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
@@ -117,12 +118,12 @@ public class PersonDocumentRole extends KimDocumentBoBase {
 
 	public AttributeDefinitionMap getDefinitions() {
 		if (definitions == null || definitions.isEmpty()) {
-			String serviceName = this.getKimRoleType().getKimTypeServiceName();
-			if (StringUtils.isBlank(serviceName)) {
-				serviceName = "kimTypeService";				
-			}
-	        KimTypeService kimTypeService = (KimTypeServiceBase)KIMServiceLocator.getService(serviceName);
-			definitions = kimTypeService.getAttributeDefinitions(getKimTypeId());
+	        KimTypeService kimTypeService = KimCommonUtils.getKimTypeService( this.getKimRoleType() );
+	        if ( kimTypeService != null ) {
+	        	definitions = kimTypeService.getAttributeDefinitions(getKimTypeId());
+	        } else {
+	        	definitions = new AttributeDefinitionMap();
+	        }
 		}
 		return definitions;
 	}

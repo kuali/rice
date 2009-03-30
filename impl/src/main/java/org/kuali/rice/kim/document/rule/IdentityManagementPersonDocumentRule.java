@@ -47,6 +47,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
+import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.rules.TransactionalDocumentRuleBase;
@@ -313,16 +314,14 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
         GlobalVariables.getErrorMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
         int i = 0;
     	for(PersonDocumentRole role : roles ) {
-    		String serviceName = role.getKimRoleType().getKimTypeServiceName();
-    		if (StringUtils.isBlank(serviceName)) {
-    			serviceName = "kimTypeService";
-    		}
-	        KimTypeService kimTypeService = (KimTypeServiceBase)KIMServiceLocator.getService(serviceName);
-	        int j = 0;
-        	for ( KimDocumentRoleMember rolePrincipal : role.getRolePrncpls() ) {
-        		AttributeSet localErrors = kimTypeService.validateAttributes( convertQualifiersToMap( rolePrincipal.getQualifiers() ) );
-		        validationErrors.putAll( convertErrors("roles["+i+"].rolePrncpls["+j+"]",convertQualifiersToAttrIdxMap(rolePrincipal.getQualifiers()),localErrors) );
-		        j++;
+	        KimTypeService kimTypeService = KimCommonUtils.getKimTypeService( role.getKimRoleType() );
+	        if ( kimTypeService != null ) {
+		        int j = 0;
+	        	for ( KimDocumentRoleMember rolePrincipal : role.getRolePrncpls() ) {
+	        		AttributeSet localErrors = kimTypeService.validateAttributes( convertQualifiersToMap( rolePrincipal.getQualifiers() ) );
+			        validationErrors.putAll( convertErrors("roles["+i+"].rolePrncpls["+j+"]",convertQualifiersToAttrIdxMap(rolePrincipal.getQualifiers()),localErrors) );
+			        j++;
+		        }
 	        }
         	i++;
     	}

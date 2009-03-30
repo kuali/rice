@@ -713,7 +713,9 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
      * @param mapping
      * @param request
      */
+    @Override
     public void reset(ActionMapping mapping, HttpServletRequest request) {
+    	super.reset(mapping, request);
         this.setMethodToCall(null);
         this.setRefreshCaller(null);
         this.setAnchor(null);

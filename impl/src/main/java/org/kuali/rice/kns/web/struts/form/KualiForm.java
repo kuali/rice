@@ -20,8 +20,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.kns.datadictionary.HeaderNavigation;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.ActionFormUtilMap;
@@ -408,5 +410,27 @@ public class KualiForm extends PojoFormBase {
 	}
 	
 	public void setDerivedValuesOnForm(HttpServletRequest request) {
+	}
+
+	/**
+	 * @see org.apache.struts.action.ActionForm#reset(org.apache.struts.action.ActionMapping, javax.servlet.http.HttpServletRequest)
+	 */
+	@Override
+	public void reset(ActionMapping mapping, HttpServletRequest request) {
+		super.reset(mapping, request);
+		if (extraButtons != null) {
+			extraButtons.clear();
+		}
+	}
+
+	/**
+	 * @see org.apache.struts.action.ActionForm#reset(org.apache.struts.action.ActionMapping, javax.servlet.ServletRequest)
+	 */
+	@Override
+	public void reset(ActionMapping mapping, ServletRequest request) {
+		super.reset(mapping, request);
+		if (extraButtons != null) {
+			extraButtons.clear();
+		}
 	}
 }

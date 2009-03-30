@@ -42,8 +42,8 @@
         <bean parent="MaintainableFieldDefinition" p:name="versionNumber"/>
       </list>
     </property>
-    <property name="id" value="Edit Parameter Namespace"/>
-    <property name="title" value="Edit Parameter Namespace"/>
+    <property name="id" value="Edit Namespace"/>
+    <property name="title" value="Edit Namespace"/>
   </bean>
 
 <!-- Exported Workflow Properties -->

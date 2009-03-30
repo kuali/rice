@@ -48,7 +48,7 @@
     </property>
     <property name="summary" value="Code identifying the namespace." />
     <property name="name" value="code" />
-    <property name="label" value="Parameter Namespace Code" />
+    <property name="label" value="Namespace Code" />
     <property name="description" value="Code identifying the namespace." />
   </bean>
   <bean id="Namespace-name" parent="Namespace-name-parentBean" />
@@ -68,7 +68,7 @@
     </property>
     <property name="summary" value="The name of the namespace." />
     <property name="name" value="name" />
-    <property name="label" value="Parameter Namespace Name" />
+    <property name="label" value="Namespace Name" />
     <property name="description" value="The name of the namespace." />
   </bean>
   <bean id="Namespace-codeAndDescription" parent="Namespace-codeAndDescription-parentBean" />
@@ -88,7 +88,7 @@
     </property>
     <property name="summary" value="The name of the namespace." />
     <property name="name" value="codeAndDescription" />
-    <property name="label" value="Parameter Namespace" />
+    <property name="label" value="Namespace" />
     <property name="description" value="The name of the namespace." />
   </bean>
   <bean id="Namespace-applicationNamespaceCode" parent="Namespace-applicationNamespaceCode-parentBean" />
@@ -147,11 +147,11 @@
                     p:attributeName="active" />
             </list>
           </property>
-          <property name="title" value="Parameter Namespace Information" />
+          <property name="title" value="Namespace Information" />
         </bean>
       </list>
     </property>
-    <property name="title" value="Parameter Namespace Inquiry" />
+    <property name="title" value="Namespace Inquiry" />
   </bean>
 
 <!-- Business Object Lookup Definition -->
@@ -160,7 +160,7 @@
   <bean id="Namespace-lookupDefinition" parent="Namespace-lookupDefinition-parentBean" />
 
   <bean id="Namespace-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
-    <property name="instructions" value="Look up a Parameter Namespace." />
+    <property name="instructions" value="Look up a Namespace." />
     <property name="defaultSort" >
       <bean parent="SortDefinition">
         <property name="attributeNames" >
@@ -197,6 +197,6 @@
               p:attributeName="active" />
       </list>
     </property>
-    <property name="title" value="Parameter Namespace Lookup" />
+    <property name="title" value="Namespace Lookup" />
   </bean>
 </beans>

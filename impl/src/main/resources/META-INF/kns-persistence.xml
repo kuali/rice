@@ -16,7 +16,7 @@
     <class>org.kuali.rice.kns.bo.Note</class>
     <class>org.kuali.rice.kns.bo.NoteType</class>
     <class>org.kuali.rice.kns.bo.Attachment</class>
-    <class>org.kuali.rice.kns.bo.ParameterNamespace</class>
+    <class>org.kuali.rice.kns.bo.Namespace</class>
     <class>org.kuali.rice.kns.bo.ParameterType</class>
     <class>org.kuali.rice.kns.bo.ParameterDetailType</class>
     <class>org.kuali.rice.kns.bo.Parameter</class>

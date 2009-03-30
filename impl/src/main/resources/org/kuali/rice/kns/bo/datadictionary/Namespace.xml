@@ -4,37 +4,37 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-  <bean id="ParameterNamespace" parent="ParameterNamespace-parentBean" />
+  <bean id="Namespace" parent="Namespace-parentBean" />
 
-  <bean id="ParameterNamespace-parentBean" abstract="true" parent="BusinessObjectEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.kns.bo.ParameterNamespace" />
+  <bean id="Namespace-parentBean" abstract="true" parent="BusinessObjectEntry">
+    <property name="businessObjectClass" value="org.kuali.rice.kns.bo.Namespace" />
     <property name="inquiryDefinition" >
-      <ref bean="ParameterNamespace-inquiryDefinition" />
+      <ref bean="Namespace-inquiryDefinition" />
     </property>
     <property name="lookupDefinition" >
-      <ref bean="ParameterNamespace-lookupDefinition" />
+      <ref bean="Namespace-lookupDefinition" />
     </property>
     <property name="titleAttribute" value="name" />
     <property name="attributes" >
       <list>
-        <ref bean="ParameterNamespace-code" />
-        <ref bean="ParameterNamespace-name" />
-        <ref bean="ParameterNamespace-codeAndDescription" />
-        <ref bean="ParameterNamespace-applicationNamespaceCode" />
-        <ref bean="ParameterNamespace-active" />
-        <ref bean="ParameterNamespace-objectId" />
-        <ref bean="ParameterNamespace-versionNumber" />
+        <ref bean="Namespace-code" />
+        <ref bean="Namespace-name" />
+        <ref bean="Namespace-codeAndDescription" />
+        <ref bean="Namespace-applicationNamespaceCode" />
+        <ref bean="Namespace-active" />
+        <ref bean="Namespace-objectId" />
+        <ref bean="Namespace-versionNumber" />
       </list>
     </property>
-    <property name="objectLabel" value="org.kuali.rice.kns.bo.ParameterNamespace"/>
+    <property name="objectLabel" value="org.kuali.rice.kns.bo.Namespace"/>
   </bean>
 
 <!-- Attribute Definitions -->
 
 
-  <bean id="ParameterNamespace-code" parent="ParameterNamespace-code-parentBean" />
+  <bean id="Namespace-code" parent="Namespace-code-parentBean" />
 
-  <bean id="ParameterNamespace-code-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="Namespace-code-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="true" />
     <property name="shortLabel" value="Nmspc Cd" />
     <property name="maxLength" value="20" />
@@ -51,9 +51,9 @@
     <property name="label" value="Parameter Namespace Code" />
     <property name="description" value="Code identifying the namespace." />
   </bean>
-  <bean id="ParameterNamespace-name" parent="ParameterNamespace-name-parentBean" />
+  <bean id="Namespace-name" parent="Namespace-name-parentBean" />
 
-  <bean id="ParameterNamespace-name-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="Namespace-name-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="false" />
     <property name="shortLabel" value="Nmspc Nm" />
     <property name="maxLength" value="40" />
@@ -71,9 +71,9 @@
     <property name="label" value="Parameter Namespace Name" />
     <property name="description" value="The name of the namespace." />
   </bean>
-  <bean id="ParameterNamespace-codeAndDescription" parent="ParameterNamespace-codeAndDescription-parentBean" />
+  <bean id="Namespace-codeAndDescription" parent="Namespace-codeAndDescription-parentBean" />
 
-  <bean id="ParameterNamespace-codeAndDescription-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="Namespace-codeAndDescription-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="false" />
     <property name="shortLabel" value="Parm Nmspc" />
     <property name="maxLength" value="100" />
@@ -91,9 +91,9 @@
     <property name="label" value="Parameter Namespace" />
     <property name="description" value="The name of the namespace." />
   </bean>
-  <bean id="ParameterNamespace-applicationNamespaceCode" parent="ParameterNamespace-applicationNamespaceCode-parentBean" />
+  <bean id="Namespace-applicationNamespaceCode" parent="Namespace-applicationNamespaceCode-parentBean" />
 
-  <bean id="ParameterNamespace-applicationNamespaceCode-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="Namespace-applicationNamespaceCode-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="false" />
     <property name="shortLabel" value="Appl Nmspc" />
     <property name="maxLength" value="20" />
@@ -110,26 +110,26 @@
     <property name="label" value="Application Namespace Code" />
     <property name="description" value="The code of the application namespace." />
   </bean>
-  <bean id="ParameterNamespace-active" parent="ParameterNamespace-active-parentBean" />
+  <bean id="Namespace-active" parent="Namespace-active-parentBean" />
 
-  <bean id="ParameterNamespace-active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">
+  <bean id="Namespace-active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">
     <property name="name" value="active" />
   </bean>
-  <bean id="ParameterNamespace-objectId" parent="ParameterNamespace-objectId-parentBean" />
+  <bean id="Namespace-objectId" parent="Namespace-objectId-parentBean" />
 
-  <bean id="ParameterNamespace-objectId-parentBean" abstract="true" parent="AttributeReferenceDummy-objectId">
+  <bean id="Namespace-objectId-parentBean" abstract="true" parent="AttributeReferenceDummy-objectId">
   </bean>
-  <bean id="ParameterNamespace-versionNumber" parent="ParameterNamespace-versionNumber-parentBean" />
+  <bean id="Namespace-versionNumber" parent="Namespace-versionNumber-parentBean" />
 
-  <bean id="ParameterNamespace-versionNumber-parentBean" abstract="true" parent="AttributeReferenceDummy-versionNumber">
+  <bean id="Namespace-versionNumber-parentBean" abstract="true" parent="AttributeReferenceDummy-versionNumber">
   </bean>
 
 <!-- Business Object Inquiry Definition -->
 
 
-  <bean id="ParameterNamespace-inquiryDefinition" parent="ParameterNamespace-inquiryDefinition-parentBean" />
+  <bean id="Namespace-inquiryDefinition" parent="Namespace-inquiryDefinition-parentBean" />
 
-  <bean id="ParameterNamespace-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
+  <bean id="Namespace-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
     <property name="inquirySections" >
       <list>
         <bean parent="InquirySectionDefinition">
@@ -157,9 +157,9 @@
 <!-- Business Object Lookup Definition -->
 
 
-  <bean id="ParameterNamespace-lookupDefinition" parent="ParameterNamespace-lookupDefinition-parentBean" />
+  <bean id="Namespace-lookupDefinition" parent="Namespace-lookupDefinition-parentBean" />
 
-  <bean id="ParameterNamespace-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
+  <bean id="Namespace-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
     <property name="instructions" value="Look up a Parameter Namespace." />
     <property name="defaultSort" >
       <bean parent="SortDefinition">

@@ -753,7 +753,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		if (principal != null) {
 			return principal;
 		}
-		principal = getIdentityService().getPrincipalByPrincipalName(principalName);
+		principal = (KimPrincipal) getIdentityService().getPrincipalByPrincipalName(principalName);
     	addPrincipalToCache(principal);
     	return principal;
     }

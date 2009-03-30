@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?><beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-  <bean id="ParameterNamespaceMaintenanceDocument" parent="ParameterNamespaceMaintenanceDocument-parentBean"/>
+  <bean id="NamespaceMaintenanceDocument" parent="NamespaceMaintenanceDocument-parentBean"/>
 
-  <bean id="ParameterNamespaceMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.kns.bo.ParameterNamespace"/>
+  <bean id="NamespaceMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
+    <property name="businessObjectClass" value="org.kuali.rice.kns.bo.Namespace"/>
     <property name="maintainableClass" value="org.kuali.rice.kns.maintenance.KualiMaintainableImpl"/>
     <property name="maintainableSections">
       <list>
-        <ref bean="ParameterNamespaceMaintenanceDocument-EditParameterNamespace"/>
+        <ref bean="NamespaceMaintenanceDocument-EditNamespace"/>
       </list>
     </property>
     <property name="lockingKeys">
@@ -18,21 +18,21 @@
     
     
     
-    <property name="documentTypeName" value="ParameterNamespaceMaintenanceDocument"/>
+    <property name="documentTypeName" value="NamespaceMaintenanceDocument"/>
     <property name="businessRulesClass" value="org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
     
     <property name="workflowProperties">
-      <ref bean="ParameterNamespaceMaintenanceDocument-workflowProperties"/>
+      <ref bean="NamespaceMaintenanceDocument-workflowProperties"/>
     </property>
   </bean>
 
 <!-- Maintenance Section Definitions -->
 
 
-  <bean id="ParameterNamespaceMaintenanceDocument-EditParameterNamespace" parent="ParameterNamespaceMaintenanceDocument-EditParameterNamespace-parentBean"/>
+  <bean id="NamespaceMaintenanceDocument-EditNamespace" parent="NamespaceMaintenanceDocument-EditNamespace-parentBean"/>
 
-  <bean id="ParameterNamespaceMaintenanceDocument-EditParameterNamespace-parentBean" abstract="true" parent="MaintainableSectionDefinition">
+  <bean id="NamespaceMaintenanceDocument-EditNamespace-parentBean" abstract="true" parent="MaintainableSectionDefinition">
     <property name="maintainableItems">
       <list>
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="code"/>
@@ -49,8 +49,8 @@
 <!-- Exported Workflow Properties -->
 
 
-  <bean id="ParameterNamespaceMaintenanceDocument-workflowProperties" parent="ParameterNamespaceMaintenanceDocument-workflowProperties-parentBean"/>
+  <bean id="NamespaceMaintenanceDocument-workflowProperties" parent="NamespaceMaintenanceDocument-workflowProperties-parentBean"/>
 
-  <bean id="ParameterNamespaceMaintenanceDocument-workflowProperties-parentBean" abstract="true" parent="WorkflowProperties">
+  <bean id="NamespaceMaintenanceDocument-workflowProperties-parentBean" abstract="true" parent="WorkflowProperties">
   </bean>
 </beans>

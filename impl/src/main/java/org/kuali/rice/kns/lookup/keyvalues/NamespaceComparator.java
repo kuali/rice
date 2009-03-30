@@ -17,13 +17,13 @@ package org.kuali.rice.kns.lookup.keyvalues;
 
 import java.util.Comparator;
 
-import org.kuali.rice.kns.bo.ParameterNamespace;
+import org.kuali.rice.kns.bo.Namespace;
 
-public class ParameterNamespaceComparator implements Comparator<ParameterNamespace> {
+public class NamespaceComparator implements Comparator<Namespace> {
 
-    public int compare(ParameterNamespace o1, ParameterNamespace o2) {
+    public int compare(Namespace o1, Namespace o2) {
 
-        return o1.getParameterNamespaceCode().compareTo( o2.getParameterNamespaceCode() );
+        return o1.getNamespaceCode().compareTo( o2.getNamespaceCode() );
     }
 
 }

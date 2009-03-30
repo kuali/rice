@@ -39,7 +39,7 @@ import org.kuali.rice.kim.service.support.KimTypeInternalService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.action.IdentityManagementRoleDocumentAction;
 import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.bo.ParameterNamespace;
+import org.kuali.rice.kns.bo.Namespace;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.lookup.HtmlData.MultipleAnchorHtmlData;
@@ -76,9 +76,9 @@ public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {
     	} else if(NAMESPACE_CODE.equals(attributeName) || TEMPLATE_NAMESPACE_CODE.equals(attributeName)){
 			List<String> primaryKeys = new ArrayList<String>();
 			primaryKeys.add("code");
-			ParameterNamespace parameterNamespace = new ParameterNamespace();
+			Namespace parameterNamespace = new Namespace();
 			parameterNamespace.setCode((String)ObjectUtils.getPropertyValue(businessObject, attributeName));
-			return getInquiryUrlForPrimaryKeys(ParameterNamespace.class, parameterNamespace, primaryKeys, null);
+			return getInquiryUrlForPrimaryKeys(Namespace.class, parameterNamespace, primaryKeys, null);
         } else if(DETAIL_OBJECTS.equals(attributeName)){
         	//return getAttributesInquiryUrl(businessObject, DETAIL_OBJECTS);
         } else if(REQUIRED_ROLE_QUALIFIER_ATTRIBUTES.equals(attributeName)){

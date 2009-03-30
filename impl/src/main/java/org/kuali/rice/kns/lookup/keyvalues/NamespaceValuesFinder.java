@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.kuali.rice.kns.bo.ParameterNamespace;
+import org.kuali.rice.kns.bo.Namespace;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KeyValuesService;
 import org.kuali.rice.kns.web.ui.KeyLabelPair;
@@ -29,15 +29,15 @@ import org.kuali.rice.kns.web.ui.KeyLabelPair;
  * 
  * 
  */
-public class ParameterNamespaceValuesFinder extends KeyValuesBase {
+public class NamespaceValuesFinder extends KeyValuesBase {
 
-    private static ParameterNamespaceComparator comparator = new ParameterNamespaceComparator();
+    private static NamespaceComparator comparator = new NamespaceComparator();
     
     public List<KeyLabelPair> getKeyValues() {
 
         // get a list of all CampusTypes
         KeyValuesService boService = KNSServiceLocator.getKeyValuesService();
-        List<ParameterNamespace> bos = (List) boService.findAll(ParameterNamespace.class);
+        List<Namespace> bos = (List) boService.findAll(Namespace.class);
 
         // sort using comparator.
         Collections.sort(bos, comparator);
@@ -45,8 +45,8 @@ public class ParameterNamespaceValuesFinder extends KeyValuesBase {
         // create a new list (code, descriptive-name)
         List<KeyLabelPair> labels = new ArrayList<KeyLabelPair>( bos.size() );
         labels.add(new KeyLabelPair("", ""));
-        for ( ParameterNamespace bo : bos ) {
-            labels.add( new KeyLabelPair(bo.getParameterNamespaceCode(), bo.getCodeAndDescription() ) );
+        for ( Namespace bo : bos ) {
+            labels.add( new KeyLabelPair(bo.getNamespaceCode(), bo.getCodeAndDescription() ) );
         }
         return labels;
     }

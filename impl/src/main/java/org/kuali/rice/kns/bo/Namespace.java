@@ -9,22 +9,22 @@ import javax.persistence.Table;
 @Entity
 @Table(name="KRNS_NMSPC_T")
 @AttributeOverrides({@AttributeOverride(name="code", column=@Column(name="NMSPC_CD")), @AttributeOverride(name="name", column=@Column(name="NM"))})
-public class ParameterNamespace extends KualiCodeBase {
+public class Namespace extends KualiCodeBase {
 	private String applicationNamespaceCode;
-	public String getParameterNamespaceCode() {
+	public String getNamespaceCode() {
 		return code;
 	}
 	
-	public void setParameterNamespaceCode(String parameterNamespaceCode) {
-		code = parameterNamespaceCode;
+	public void setNamespaceCode(String namespaceCode) {
+		code = namespaceCode;
 	}
 	
-	public String getParameterNamespaceName() {
+	public String getNamespaceName() {
 		return name;
 	}
 	
-	public void setParameterNamespaceName(String parameterNamespaceName) {
-		name = parameterNamespaceName;
+	public void setNamespaceName(String namespaceName) {
+		name = namespaceName;
 	}
 
 	/**

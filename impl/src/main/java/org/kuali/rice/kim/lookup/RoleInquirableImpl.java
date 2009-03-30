@@ -21,7 +21,7 @@ import java.util.List;
 import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.web.struts.action.IdentityManagementRoleDocumentAction;
 import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.bo.ParameterNamespace;
+import org.kuali.rice.kns.bo.Namespace;
 import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
@@ -56,9 +56,9 @@ public class RoleInquirableImpl extends KualiInquirableImpl {
 		} else if(NAMESPACE_CODE.equals(attributeName)){
 			List<String> primaryKeys = new ArrayList<String>();
 			primaryKeys.add("code");
-			ParameterNamespace parameterNamespace = new ParameterNamespace();
+			Namespace parameterNamespace = new Namespace();
 			parameterNamespace.setCode((String)ObjectUtils.getPropertyValue(businessObject, attributeName));
-			return getInquiryUrlForPrimaryKeys(ParameterNamespace.class, parameterNamespace, primaryKeys, null);
+			return getInquiryUrlForPrimaryKeys(Namespace.class, parameterNamespace, primaryKeys, null);
         }
 		
         return super.getInquiryUrl(businessObject, attributeName, forceInquiry);

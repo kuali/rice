@@ -102,7 +102,7 @@
     <property name="control" >
       <bean parent="TextControlDefinition" p:size="10" />
       <!-- <bean parent="SelectControlDefinition"
-            p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.ParameterNamespaceValuesFinder"
+            p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.NamespaceValuesFinder"
             p:includeKeyInLabel="false" 
             p:keyAttribute="code"
             p:labelAttribute="codeAndDescription" /> -->

@@ -38,7 +38,7 @@ public class ParameterDetailType extends PersistableBusinessObjectBase implement
 	
 	@ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
 	@JoinColumn(name="NMSPC_CD", insertable=false, updatable=false)
-	private ParameterNamespace parameterNamespace;
+	private Namespace parameterNamespace;
 
 	public ParameterDetailType() {
 	}
@@ -82,11 +82,11 @@ public class ParameterDetailType extends PersistableBusinessObjectBase implement
 		this.active = active;
 	}
 
-	public ParameterNamespace getParameterNamespace() {
+	public Namespace getParameterNamespace() {
 		return parameterNamespace;
 	}
 
-	public void setParameterNamespace(ParameterNamespace parameterNamespace) {
+	public void setParameterNamespace(Namespace parameterNamespace) {
 		this.parameterNamespace = parameterNamespace;
 	}
 

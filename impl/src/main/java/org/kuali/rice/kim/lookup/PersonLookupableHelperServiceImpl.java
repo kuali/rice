@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.HtmlData;
@@ -55,20 +56,13 @@ public class PersonLookupableHelperServiceImpl  extends KualiLookupableHelperSer
 		return true;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public List<HtmlData> getCustomActionUrls(BusinessObject businessObject, List pkNames) {
+	public List<HtmlData> getCustomActionUrls(BusinessObject bo, List pkNames) {
     	List<HtmlData> htmlDataList = new ArrayList<HtmlData>();
-    	    AnchorHtmlData htmlData = getUrlData(businessObject, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL, pkNames);
-    	    String href = htmlData.getHref();
-    	    int idx1 = href.indexOf("&principalId=");
-    	    int idx2 = href.indexOf("&", idx1+1);
-    	    if (idx2 < 0) {
-    	    	idx2 = href.length();
-    	    }    	    
-    	    htmlData.setHref("../kim/identityManagementPersonDocument.do?methodToCall=docHandler&command=initiate&docTypeName=IdentityManagementPersonDocument"+href.substring(idx1, idx2));
-    	    htmlDataList.add(htmlData);
-        	//htmlDataList.add(getUrlData(businessObject, KNSConstants.MAINTENANCE_COPY_METHOD_TO_CALL, pkNames));
-        
+	    AnchorHtmlData htmlData = getUrlData(bo, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL, pkNames);
+	    htmlData.setHref("../kim/identityManagementPersonDocument.do?methodToCall=docHandler&command=initiate&docTypeName=IdentityManagementPersonDocument&principalId="+((Person)bo).getPrincipalId());
+	    htmlDataList.add(htmlData);
         return htmlDataList;
 	}
 
@@ -76,15 +70,7 @@ public class PersonLookupableHelperServiceImpl  extends KualiLookupableHelperSer
 	public HtmlData getInquiryUrl(BusinessObject bo, String propertyName) {
 		// TODO shyu - THIS METHOD NEEDS JAVADOCS
 		HtmlData inqUrl = super.getInquiryUrl(bo, propertyName);
-	    String href = ((AnchorHtmlData)inqUrl).getHref();
-	    if (StringUtils.isNotBlank(href)) {
-		    int idx1 = href.indexOf("&principalId=");
-		    int idx2 = href.indexOf("&", idx1+1);
-		    if (idx2 < 0) {
-		    	idx2 = href.length();
-		    }
-		    ((AnchorHtmlData)inqUrl).setHref("../kim/identityManagementPersonDocument.do?command=initiate&docTypeName=IdentityManagementPersonDocument"+href.substring(idx1, idx2));
-	    }
+	    ((AnchorHtmlData)inqUrl).setHref("../kim/identityManagementPersonDocument.do?command=initiate&docTypeName=IdentityManagementPersonDocument&principalId="+((Person)bo).getPrincipalId() );
 	    return inqUrl;
 	}
 	

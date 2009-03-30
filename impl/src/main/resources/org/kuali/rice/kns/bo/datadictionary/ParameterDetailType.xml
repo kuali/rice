@@ -26,7 +26,7 @@
         <ref bean="ParameterDetailType-versionNumber" />
       </list>
     </property>
-    <property name="objectLabel" value="Parameter Detail Type"/>
+    <property name="objectLabel" value="Parameter Component"/>
   </bean>
 
 <!-- Attribute Definitions -->
@@ -46,7 +46,7 @@
 
   <bean id="ParameterDetailType-parameterDetailTypeCode-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="false" />
-    <property name="shortLabel" value="Dtl Type Cd" />
+    <property name="shortLabel" value="Component" />
     <property name="maxLength" value="100" />
     <property name="validationPattern" >
       <bean parent="AnyCharacterValidationPattern"
@@ -57,16 +57,14 @@
       <bean parent="TextControlDefinition"
             p:size="40" />
     </property>
-    <property name="summary" value="Code identifying the parameter detail type." />
     <property name="name" value="parameterDetailTypeCode" />
-    <property name="label" value="Parameter Detail Type Code" />
-    <property name="description" value="Code identifying the parameter detail type." />
+    <property name="label" value="Parameter Component" />
   </bean>
   <bean id="ParameterDetailType-parameterDetailTypeName" parent="ParameterDetailType-parameterDetailTypeName-parentBean" />
 
   <bean id="ParameterDetailType-parameterDetailTypeName-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="false" />
-    <property name="shortLabel" value="Dtl Type Nm" />
+    <property name="shortLabel" value="Component Name" />
     <property name="maxLength" value="255" />
     <property name="validationPattern" >
       <bean parent="AnyCharacterValidationPattern"
@@ -77,10 +75,8 @@
       <bean parent="TextControlDefinition"
             p:size="50" />
     </property>
-    <property name="summary" value="The name of the parameter detail type." />
     <property name="name" value="parameterDetailTypeName" />
-    <property name="label" value="Parameter Detail Type Name" />
-    <property name="description" value="The name of the parameter detail type." />
+    <property name="label" value="Component Name" />
   </bean>
   <bean id="ParameterDetailType-parameterNamespace.codeAndDescription" parent="ParameterDetailType-parameterNamespace.codeAndDescription-parentBean" />
 
@@ -124,11 +120,11 @@
                     p:attributeName="active" />
             </list>
           </property>
-          <property name="title" value="Parameter Detail Type Information" />
+          <property name="title" value="Parameter Component Information" />
         </bean>
       </list>
     </property>
-    <property name="title" value="Parameter Detail Type Inquiry" />
+    <property name="title" value="Parameter Component Inquiry" />
   </bean>
 
 <!-- Business Object Lookup Definition -->
@@ -137,7 +133,7 @@
   <bean id="ParameterDetailType-lookupDefinition" parent="ParameterDetailType-lookupDefinition-parentBean" />
 
   <bean id="ParameterDetailType-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
-    <property name="instructions" value="Look up a Parameter Detail Type." />
+    <property name="instructions" value="Look up a Parameter Component." />
     <property name="defaultSort" >
       <bean parent="SortDefinition">
         <property name="attributeNames" >
@@ -176,6 +172,6 @@
               p:attributeName="active" />
       </list>
     </property>
-    <property name="title" value="Parameter Detail Type Lookup" />
+    <property name="title" value="Parameter Component Lookup" />
   </bean>
 </beans>

@@ -33,6 +33,40 @@
         <ref bean="PersonImpl-lookupRoleNamespaceCode" />
       </list>
     </property>
+    <property name="relationships">
+        <list>
+            <bean parent="RelationshipDefinition">
+              <property name="objectAttributeName" value="campus" />
+              <property name="primitiveAttributes" >
+                <list>
+                  <bean parent="PrimitiveAttributeDefinition"
+                        p:sourceName="campusCode"
+                        p:targetName="campusCode" />
+                </list>
+              </property>
+            </bean>
+            <bean parent="RelationshipDefinition">
+              <property name="objectAttributeName" value="employeeStatus" />
+              <property name="primitiveAttributes" >
+                <list>
+                  <bean parent="PrimitiveAttributeDefinition"
+                        p:sourceName="employeeStatusCode"
+                        p:targetName="code" />
+                </list>
+              </property>
+            </bean>
+            <bean parent="RelationshipDefinition">
+              <property name="objectAttributeName" value="employeeType" />
+              <property name="primitiveAttributes" >
+                <list>
+                  <bean parent="PrimitiveAttributeDefinition"
+                        p:sourceName="employeeTypeCode"
+                        p:targetName="code" />
+                </list>
+              </property>
+            </bean>
+        </list>
+    </property>
   </bean>
 
   <!-- TODO: use campus parent bean once imported into Rice -->
@@ -256,8 +290,8 @@
     </property>
     <property name="lookupFields" >
       <list>
-        <bean parent="FieldDefinition" p:attributeName="principalId" />
         <bean parent="FieldDefinition" p:attributeName="principalName" />
+        <bean parent="FieldDefinition" p:attributeName="principalId" />
         <bean parent="FieldDefinition" p:attributeName="entityId" />
         <bean parent="FieldDefinition" p:attributeName="firstName" />
         <bean parent="FieldDefinition" p:attributeName="middleName" />

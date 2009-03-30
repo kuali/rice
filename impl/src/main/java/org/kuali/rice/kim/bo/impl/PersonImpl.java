@@ -33,9 +33,12 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityEntityTypeDefaultInfo;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl;
+import org.kuali.rice.kim.bo.reference.impl.EmploymentStatusImpl;
+import org.kuali.rice.kim.bo.reference.impl.EmploymentTypeImpl;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
+import org.kuali.rice.kns.bo.Campus;
 import org.kuali.rice.kns.bo.TransientBusinessObjectBase;
 import org.kuali.rice.kns.util.KualiDecimal;
 
@@ -81,11 +84,14 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	protected List<? extends KimEntityAffiliation> affiliations;
 	
 	protected String campusCode = "";
+	protected Campus campus;
 	// external identifier data
 	protected Map<String,String> externalIdentifiers = null;
 	// employment data
 	protected String employeeStatusCode = "";
+	protected EmploymentStatusImpl employeeStatus;
 	protected String employeeTypeCode = "";
+	protected EmploymentTypeImpl employeeType;
 	protected String primaryDepartmentCode = "";
 	protected String employeeId = "";
 	
@@ -390,6 +396,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	/**
 	 * @return the personService
 	 */
+	@SuppressWarnings("unchecked")
 	public static PersonService<Person> getPersonService() {
 		if ( personService == null ) {
 			personService = KIMServiceLocator.getPersonService();
@@ -514,6 +521,18 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Campus getCampus() {
+		return this.campus;
+	}
+
+	public EmploymentStatusImpl getEmployeeStatus() {
+		return this.employeeStatus;
+	}
+
+	public EmploymentTypeImpl getEmployeeType() {
+		return this.employeeType;
 	}
 	
 }

@@ -92,6 +92,17 @@
                 <value>classpath:org/kuali/rice/kim/document/datadictionary/IdentityManagementPersonDocument.xml</value>
                 <value>classpath:org/kuali/rice/kim/document/datadictionary/IdentityManagementRoleDocument.xml</value>
                 <value>classpath:org/kuali/rice/kim/document/datadictionary/IdentityManagementGroupDocument.xml</value>
+
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimPhoneType.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/AffiliationType.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/CitizenshipStatus.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/EmailType.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/EmploymentStatus.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/EmploymentType.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/EntityNameType.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/EntityType.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/ExternalIdentifierType.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimAddressType.xml</value>
             </list>
     </property>
         <property name="packagePrefixes">

@@ -78,12 +78,11 @@ public class ParameterEvaluatorImpl implements ParameterEvaluator {
 		if (!evaluationSucceeds()) {
 			GlobalVariables.getErrorMap().putError(
 					userEditablePropertyName,
-					RiceKeyConstants.ERROR_DOCUMENT_INVALID_VALUE,
+					constraintIsAllow() ? RiceKeyConstants.ERROR_DOCUMENT_INVALID_VALUE_ALLOWED_VALUES_PARAMETER : RiceKeyConstants.ERROR_DOCUMENT_INVALID_VALUE_DENIED_VALUES_PARAMETER,
 					new String[] {
 							getDataDictionaryService().getAttributeLabel( businessObjectOrDocumentClass, constrainedPropertyName),
 							constrainedValue,
 							toStringForMessage(),
-							constraintIsAllow() ? "allowed" : "not allowed",
 							getParameterValuesForMessage(),
 							getDataDictionaryService().getAttributeLabel( businessObjectOrDocumentClass, userEditablePropertyName) 
 							} );
@@ -128,9 +127,9 @@ public class ParameterEvaluatorImpl implements ParameterEvaluator {
 	}
 
 	private String toStringForMessage() {
-		return new StringBuffer("parameter ").append(parameter.getParameterName())
-				.append(" (module: ").append(parameter.getParameterNamespaceCode())
-				.append(" / component: ").append(parameter.getParameterDetailTypeCode()).append(")")
+		return new StringBuffer("parameter: ").append(parameter.getParameterName())
+				.append(", module: ").append(parameter.getParameterNamespaceCode())
+				.append(", component: ").append(parameter.getParameterDetailTypeCode())
 				.toString();
 	}
 

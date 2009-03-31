@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
@@ -49,6 +50,9 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
     public void saveActionRequest(ActionRequestValue actionRequest) {
         if (actionRequest.getActionRequestId() == null) {
             loadDefaultValues(actionRequest);
+        }
+        if ( actionRequest.getAnnotation() != null && actionRequest.getAnnotation().length() > 2000 ) {
+        	actionRequest.setAnnotation( StringUtils.abbreviate(actionRequest.getAnnotation(), 2000) );
         }
         this.getPersistenceBrokerTemplate().store(actionRequest);
     }

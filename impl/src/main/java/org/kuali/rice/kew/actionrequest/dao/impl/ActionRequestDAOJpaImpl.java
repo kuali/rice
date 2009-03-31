@@ -25,6 +25,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.dao.ActionRequestDAO;
@@ -220,6 +221,9 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
     }
 
     public void saveActionRequest(ActionRequestValue actionRequest) {
+        if ( actionRequest.getAnnotation() != null && actionRequest.getAnnotation().length() > 2000 ) {
+        	actionRequest.setAnnotation( StringUtils.abbreviate(actionRequest.getAnnotation(), 2000) );
+        }
     	if(actionRequest.getActionRequestId() == null) {
         	loadDefaultValues(actionRequest);
         	entityManager.persist(actionRequest);

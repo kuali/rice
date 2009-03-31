@@ -21,7 +21,7 @@
     <c:set var="headerMenu" value="${KualiForm.lookupable.createNewUrl}   ${KualiForm.lookupable.htmlMenuBar}" />
 </c:if>
 <c:if test="${KualiForm.supplementalActionsEnabled==true}">
-    <c:set var="headerMenu" value="" />
+    <c:set var="headerMenu" value="${headerMenu} ${KualiForm.lookupable.supplementalMenuBar}" />
 </c:if>
 
 <kul:page lookup="true" showDocumentInfo="false"
@@ -55,8 +55,8 @@
 	<html-el:hidden name="KualiForm" property="referencesToRefresh" />
 	<html-el:hidden name="KualiForm" property="hasReturnableRow" />
 	<html-el:hidden name="KualiForm" property="docNum" />
-	<html-el:hidden name="KualiForm" property="showMaintenanceLinks" />	
-		
+	<html-el:hidden name="KualiForm" property="showMaintenanceLinks" />
+
 
 
 
@@ -77,9 +77,9 @@
                                         onchange="${extraField.script}" style="">
                                     <kul:fieldSelectValues field="${extraField}"/>
                                 </select>
-                        
+
 						&nbsp;
-						
+
 							<kul:fieldShowIcons isReadOnly="${true}" field="${extraField}" addHighlighting="${true}" />
 
 				</c:if>
@@ -142,7 +142,7 @@
 								<html:image src="${extraButton.extraButtonSource}" styleClass="tinybutton" property="methodToCall.customLookupableMethodCall" alt="${extraButton.extraButtonAltText}" onclick="${extraButton.extraButtonOnclick}"/> &nbsp;&nbsp;
 							</c:if>
 						</c:if>
-						
+
 					</c:forEach>
 					<c:if test="${KualiForm.multipleValues }">
 						<a

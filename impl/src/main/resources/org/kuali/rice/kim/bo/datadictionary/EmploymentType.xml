@@ -56,7 +56,7 @@
   </bean>
 
   <bean id="EmploymentType-active" parent="EmploymentType-active-parentBean" />
-  <bean id="EmploymentType-active-parentBean" abstract="true" parent="AttributeReferenceDummy-genericBoolean">
+  <bean id="EmploymentType-active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">
     <property name="name" value="active" />
   </bean>
 

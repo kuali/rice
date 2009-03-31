@@ -97,12 +97,8 @@
 	</bean>
 
 	<bean id="KimTypeImpl-active" parent="KimTypeImpl-active-parentBean" />
-	<bean id="KimTypeImpl-active-parentBean" abstract="true" parent="AttributeReferenceDummy-genericBoolean" >
+	<bean id="KimTypeImpl-active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator" >
 		<property name="name" value="active" />
-		<property name="label" value="Active Indicator" />
-		<property name="shortLabel" value="Actv Ind" />
-		<property name="summary" value="Actv Ind" />
-		<property name="description" value="Actv Ind" />
 	</bean>
 
 	<bean id="KimTypeImpl-namespaceCode" parent="KimTypeImpl-namespaceCode-parentBean" />

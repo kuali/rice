@@ -56,8 +56,10 @@
   </bean>
 
   <bean id="EmploymentStatus-active" parent="EmploymentStatus-active-parentBean" />
-  <bean id="EmploymentStatus-active-parentBean" abstract="true" parent="AttributeReferenceDummy-genericBoolean">
+  <bean id="EmploymentStatus-active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">
     <property name="name" value="active" />
+    <property name="label" value="Active" />
+    <property name="shortLabel" value="Active" />
   </bean>
 
   <bean id="EmploymentStatus-displaySortCode" parent="EmploymentStatus-displaySortCode-parentBean" />

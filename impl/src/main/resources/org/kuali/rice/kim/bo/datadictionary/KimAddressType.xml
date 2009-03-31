@@ -56,7 +56,7 @@
   </bean>
 
   <bean id="KimAddressType-active" parent="KimAddressType-active-parentBean" />
-  <bean id="KimAddressType-active-parentBean" abstract="true" parent="AttributeReferenceDummy-genericBoolean">
+  <bean id="KimAddressType-active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">
     <property name="name" value="active" />
   </bean>
 

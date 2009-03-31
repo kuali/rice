@@ -71,7 +71,7 @@
   </bean>
 
   <bean id="KimPhoneType-active" parent="KimPhoneType-active-parentBean" />
-  <bean id="KimPhoneType-active-parentBean" abstract="true" parent="AttributeReferenceDummy-genericBoolean">
+  <bean id="KimPhoneType-active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">
     <property name="name" value="active" />
   </bean>
 

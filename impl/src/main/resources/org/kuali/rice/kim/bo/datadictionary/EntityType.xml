@@ -56,7 +56,7 @@
   </bean>
 
   <bean id="EntityType-active" parent="EntityType-active-parentBean" />
-  <bean id="EntityType-active-parentBean" abstract="true" parent="AttributeReferenceDummy-genericBoolean">
+  <bean id="EntityType-active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">
     <property name="name" value="active" />
   </bean>
 

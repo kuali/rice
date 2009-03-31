@@ -71,7 +71,7 @@
   </bean>
 
   <bean id="ExternalIdentifierType-active" parent="ExternalIdentifierType-active-parentBean" />
-  <bean id="ExternalIdentifierType-active-parentBean" abstract="true" parent="AttributeReferenceDummy-genericBoolean">
+  <bean id="ExternalIdentifierType-active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">
     <property name="name" value="active" />
   </bean>
 

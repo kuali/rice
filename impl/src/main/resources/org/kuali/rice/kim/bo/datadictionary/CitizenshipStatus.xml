@@ -71,7 +71,7 @@
   </bean>
 
   <bean id="CitizenshipStatus-active" parent="CitizenshipStatus-active-parentBean" />
-  <bean id="CitizenshipStatus-active-parentBean" abstract="true" parent="AttributeReferenceDummy-genericBoolean">
+  <bean id="CitizenshipStatus-active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">
     <property name="name" value="active" />
   </bean>
 

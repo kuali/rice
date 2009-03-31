@@ -69,10 +69,8 @@
   </bean>
 
   <bean id="KimAttributeImpl-active" parent="KimAttributeImpl-active-parentBean" />
-  <bean id="KimAttributeImpl-active-parentBean" parent="AttributeReferenceDummy-genericBoolean" abstract="true" 
-	  p:name="active"
-	  p:label="Active Indicator"
-	  p:shortLabel="Active Ind" />
+  <bean id="KimAttributeImpl-active-parentBean" parent="AttributeReferenceDummy-activeIndicator" abstract="true" 
+	  p:name="active" />
   
   <bean id="KimAttributeImpl-componentName" parent="KimAttributeImpl-componentName-parentBean" />
   <bean id="KimAttributeImpl-componentName-parentBean" parent="AttributeDefinition" abstract="true"

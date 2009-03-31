@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kim.bo.role;
 
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
  * 
@@ -27,5 +29,7 @@ public interface KimDelegationMember {
 	String getDelegationId();
 	String getMemberId();
 	String getMemberTypeCode();
+	String getRoleMemberId();
+	AttributeSet getQualifier();
 	
 }

@@ -1,7 +1,3 @@
-insert into KREW_APP_CNST_T (APPL_CNST_NM, VAL, VER_NBR) values ('Workflow.AdminWorkgroup', 'WorkflowAdmin', 1)
-;
-insert into KREW_APP_CNST_T (APPL_CNST_NM, VAL, VER_NBR) values ('Workgroup.IsRouteLogPopup', 'false', 0)
-;
 insert into KRNS_NMSPC_T (NMSPC_CD, OBJ_ID, VER_NBR, NM, ACTV_IND) VALUES('KR-NS', '53680C68F595AD9BE0404F8189D80A6C', 1, 'Kuali Nervous System', 'Y')
 ;
 insert into KRNS_NMSPC_T (NMSPC_CD, OBJ_ID, VER_NBR, NM, ACTV_IND) VALUES('KR-WKFLW', '5C730C2EFF5D446AE0404F8189D85717', 0, 'Workflow', '1')

@@ -26,11 +26,15 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
  *
  */
 public class DelegateInfo implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
+	
 	protected String delegationId;
 	protected String delegationTypeCode;
 	protected String memberId;
 	protected String memberTypeCode;
 	protected AttributeSet qualifier;
+	protected String roleMemberId;
 		
 	/**
 	 * 
@@ -39,12 +43,13 @@ public class DelegateInfo implements Serializable {
 	}
 	
 	public DelegateInfo(String delegationId, String delegationTypeCode, String memberId,
-			String memberTypeCode, AttributeSet qualifier) {
+			String memberTypeCode, String roleMemberId, AttributeSet qualifier) {
 		this.delegationId = delegationId;
 		this.delegationTypeCode = delegationTypeCode;
 		this.memberId = memberId;
 		this.memberTypeCode = memberTypeCode;
 		this.qualifier = qualifier;
+		this.roleMemberId = roleMemberId;
 	}
 	
 	public String getDelegationTypeCode() {
@@ -82,6 +87,20 @@ public class DelegateInfo implements Serializable {
 
 	public void setDelegationId(String delegationId) {
 		this.delegationId = delegationId;
+	}
+
+	/**
+	 * @return the roleMemberId
+	 */
+	public String getRoleMemberId() {
+		return this.roleMemberId;
+	}
+
+	/**
+	 * @param roleMemberId the roleMemberId to set
+	 */
+	public void setRoleMemberId(String roleMemberId) {
+		this.roleMemberId = roleMemberId;
 	}
 	
 	

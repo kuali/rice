@@ -31,7 +31,6 @@ import javax.persistence.Table;
 import org.kuali.rice.kim.bo.impl.KimAbstractMemberImpl;
 import org.kuali.rice.kim.bo.role.KimDelegationMember;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
 import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
@@ -51,6 +50,8 @@ public class KimDelegationMemberImpl extends KimAbstractMemberImpl implements Ki
 	protected String delegationMemberId;
 	@Column(name="DLGN_ID")
 	protected String delegationId;	
+	@Column(name="ROLE_MBR_ID")
+	protected String roleMemberId;	
 	
 	@OneToMany(targetEntity=KimDelegationMemberAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
 	@JoinColumn(name="DLGN_MBR_ID", referencedColumnName="TARGET_PRIMARY_KEY", insertable=false, updatable=false )
@@ -136,6 +137,20 @@ public class KimDelegationMemberImpl extends KimAbstractMemberImpl implements Ki
 	 */
 	public void setDelegationTypeCode(String delegationTypeCode) {
 		this.delegationTypeCode = delegationTypeCode;
+	}
+
+	/**
+	 * @return the roleMemberId
+	 */
+	public String getRoleMemberId() {
+		return this.roleMemberId;
+	}
+
+	/**
+	 * @param roleMemberId the roleMemberId to set
+	 */
+	public void setRoleMemberId(String roleMemberId) {
+		this.roleMemberId = roleMemberId;
 	}
 
 }

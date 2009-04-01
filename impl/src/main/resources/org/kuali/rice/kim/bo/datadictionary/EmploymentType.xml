@@ -13,7 +13,8 @@
     <property name="lookupDefinition" >
       <ref bean="EmploymentType-lookupDefinition" />
     </property>
-    <property name="objectLabel" value="Employment Type" />
+    <property name="objectLabel" value="Employee Type" />
+    <property name="titleAttribute" value="code" />
     <property name="attributes" >
       <list>
         <ref bean="EmploymentType-employmentTypeCode" />
@@ -30,29 +31,25 @@
   <bean id="EmploymentType-employmentTypeCode-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="true"/>  
     <property name="name" value="code" />
-    <property name="label" value="Employment Type Code" />
-    <property name="shortLabel" value="Type Code" />
+    <property name="label" value="Employee Type Code" />
+    <property name="shortLabel" value="Emp. Type Code" />
     <property name="maxLength" value="2" />
     <property name="control" >
       <bean parent="TextControlDefinition"
-            p:size="10" />
+            p:size="3" />
     </property>
-    <property name="summary" value="The employment type code." />
-    <property name="description" value="The employment type code." />
   </bean>
 
   <bean id="EmploymentType-employmentTypeName" parent="EmploymentType-employmentTypeName-parentBean" />
   <bean id="EmploymentType-employmentTypeName-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="name" value="name" />
-    <property name="label" value="Employment Type Name" />
+    <property name="label" value="Employee Type Name" />
     <property name="shortLabel" value="Name" />
     <property name="maxLength" value="10" />
     <property name="control" >
       <bean parent="TextControlDefinition"
             p:size="10" />
     </property>
-    <property name="summary" value="Descriptive text." />
-    <property name="description" value="Descriptive text." />
   </bean>
 
   <bean id="EmploymentType-active" parent="EmploymentType-active-parentBean" />
@@ -70,15 +67,13 @@
       <bean parent="TextControlDefinition"
             p:size="10" />
     </property>
-    <property name="summary" value="Descriptive text." />
-    <property name="description" value="Descriptive text." />
   </bean>
 
 <!-- Business Object Inquiry Definition -->
 
   <bean id="EmploymentType-inquiryDefinition" parent="EmploymentType-inquiryDefinition-parentBean" />
   <bean id="EmploymentType-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
-    <property name="title" value="Entity Type" />
+    <property name="title" value="Employee Type" />
     <property name="inquirySections" >
       <list>
         <bean parent="InquirySectionDefinition">
@@ -87,9 +82,12 @@
           <property name="inquiryFields" >
             <list>
               <bean parent="FieldDefinition"
-                    p:attributeName="code" />
+                    p:attributeName="code" 
+                    p:noInquiry="true" />
               <bean parent="FieldDefinition"
                     p:attributeName="name" />
+		      <bean parent="FieldDefinition"
+		            p:attributeName="displaySortCode" />
               <bean parent="FieldDefinition"
                     p:attributeName="active" />
             </list>
@@ -103,8 +101,7 @@
 
   <bean id="EmploymentType-lookupDefinition" parent="EmploymentType-lookupDefinition-parentBean" />
   <bean id="EmploymentType-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
-    <property name="title" value="Employment Type Lookup" />
-    <property name="instructions" value="Look up Employment Types. Click &quot;Return Results&quot; to  them." />
+    <property name="title" value="Employee Type Lookup" />
     <property name="lookupFields" >
       <list>
         <bean parent="FieldDefinition"

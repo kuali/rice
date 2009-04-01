@@ -168,30 +168,14 @@
   </bean>
   
   <bean id="PersonImpl-employeeStatusCode" parent="PersonImpl-employeeStatusCode-parentBean" />
-  <bean id="PersonImpl-employeeStatusCode-parentBean" parent="AttributeDefinition" abstract="true"
+  <bean id="PersonImpl-employeeStatusCode-parentBean" parent="EmploymentStatus-employmentStatusCode" abstract="true"
         p:name="employeeStatusCode"
-        p:forceUppercase="true"
-        p:label="Employee Status Code"
-        p:shortLabel="Employee Status Code"
-        p:maxLength="40"
-        p:required="false" >
-    <property name="control" >
-      <bean parent="TextControlDefinition" p:size="3" />
-    </property>
-  </bean>
+        p:required="false" />
   
   <bean id="PersonImpl-employeeTypeCode" parent="PersonImpl-employeeTypeCode-parentBean" />
-  <bean id="PersonImpl-employeeTypeCode-parentBean" parent="AttributeDefinition" abstract="true"
+  <bean id="PersonImpl-employeeTypeCode-parentBean" parent="EmploymentType-employmentTypeCode" abstract="true"
         p:name="employeeTypeCode"
-        p:forceUppercase="true"
-        p:label="Employee Type Code"
-        p:shortLabel="Employee Type Code"
-        p:maxLength="40"
-        p:required="false" >
-    <property name="control" >
-      <bean parent="TextControlDefinition" p:size="3" />
-    </property>
-  </bean>
+        p:required="false" />
 
   <bean id="PersonImpl-employeeId" parent="PersonImpl-employeeId-parentBean" />
   <bean id="PersonImpl-employeeId-parentBean" parent="AttributeDefinition" abstract="true"

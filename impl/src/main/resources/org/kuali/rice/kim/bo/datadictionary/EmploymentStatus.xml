@@ -13,7 +13,8 @@
     <property name="lookupDefinition" >
       <ref bean="EmploymentStatus-lookupDefinition" />
     </property>
-    <property name="objectLabel" value="Employment Status" />
+    <property name="objectLabel" value="Employee Status" />
+    <property name="titleAttribute" value="code" />
     <property name="attributes" >
       <list>
         <ref bean="EmploymentStatus-employmentStatusCode" />
@@ -30,36 +31,30 @@
   <bean id="EmploymentStatus-employmentStatusCode-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="true"/>
     <property name="name" value="code" />
-    <property name="label" value="Employment Status Code" />
-    <property name="shortLabel" value="Type Code" />
+    <property name="label" value="Employee Status Code" />
+    <property name="shortLabel" value="Emp. Stat. Code" />
     <property name="maxLength" value="2" />
     <property name="control" >
       <bean parent="TextControlDefinition"
-            p:size="10" />
+            p:size="3" />
     </property>
-    <property name="summary" value="The entity type code." />
-    <property name="description" value="The entity type code." />
   </bean>
 
   <bean id="EmploymentStatus-employmentStatusName" parent="EmploymentStatus-employmentStatusName-parentBean" />
   <bean id="EmploymentStatus-employmentStatusName-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="name" value="name" />
-    <property name="label" value="Employment Status Name" />
+    <property name="label" value="Employee Status Name" />
     <property name="shortLabel" value="Name" />
     <property name="maxLength" value="10" />
     <property name="control" >
       <bean parent="TextControlDefinition"
             p:size="10" />
     </property>
-    <property name="summary" value="Descriptive text." />
-    <property name="description" value="Descriptive text." />
   </bean>
 
   <bean id="EmploymentStatus-active" parent="EmploymentStatus-active-parentBean" />
   <bean id="EmploymentStatus-active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">
     <property name="name" value="active" />
-    <property name="label" value="Active" />
-    <property name="shortLabel" value="Active" />
   </bean>
 
   <bean id="EmploymentStatus-displaySortCode" parent="EmploymentStatus-displaySortCode-parentBean" />
@@ -72,15 +67,13 @@
       <bean parent="TextControlDefinition"
             p:size="10" />
     </property>
-    <property name="summary" value="Descriptive text." />
-    <property name="description" value="Descriptive text." />
   </bean>
 
 <!-- Business Object Inquiry Definition -->
 
   <bean id="EmploymentStatus-inquiryDefinition" parent="EmploymentStatus-inquiryDefinition-parentBean" />
   <bean id="EmploymentStatus-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
-    <property name="title" value="Employment Status" />
+    <property name="title" value="Employee Status" />
     <property name="inquirySections" >
       <list>
         <bean parent="InquirySectionDefinition">
@@ -105,14 +98,16 @@
 
   <bean id="EmploymentStatus-lookupDefinition" parent="EmploymentStatus-lookupDefinition-parentBean" />
   <bean id="EmploymentStatus-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
-    <property name="title" value="Employment Status Lookup" />
-    <property name="instructions" value="Look up Employment Status. Click &quot;Return Results&quot; to  them." />
+    <property name="title" value="Employee Status Lookup" />
     <property name="lookupFields" >
       <list>
         <bean parent="FieldDefinition"
-              p:attributeName="code" />
+              p:attributeName="code" 
+              p:noInquiry="true" />
         <bean parent="FieldDefinition"
               p:attributeName="name" />
+        <bean parent="FieldDefinition"
+              p:attributeName="displaySortCode" />
         <bean parent="FieldDefinition"
               p:attributeName="active"
               p:defaultValue="Y" /> 

@@ -23,6 +23,7 @@
         <ref bean="CampusType-versionNumber" />
       </list>
     </property>
+    <property name="titleAttribute" value="campusTypeCode" />
   </bean>
 
 <!-- Attribute Definitions -->

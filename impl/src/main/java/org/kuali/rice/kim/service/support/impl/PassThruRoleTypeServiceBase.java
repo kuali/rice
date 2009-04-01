@@ -25,6 +25,9 @@ import org.kuali.rice.kim.service.support.KimRoleTypeService;
 import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
 public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService {
+
+	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(PassThruRoleTypeServiceBase.class);
+	
 	public static final String UNMATCHABLE_QUALIFICATION = "!~!~!~!~!~";
 
     public abstract AttributeSet convertQualificationForMemberRoles(String namespaceCode, String roleName, String memberRoleNamespaceCode, String memberRoleName, AttributeSet qualification);
@@ -85,4 +88,16 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
         return roleMembers;
     }
 
+	/**
+	 * This base implementation does nothing but log that the method was called.
+	 * 
+	 * @see org.kuali.rice.kim.service.support.KimRoleTypeService#principalInactivated(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	public void principalInactivated(String principalId, String namespaceCode,
+			String roleName) {
+		if ( LOG.isDebugEnabled() ) {
+			LOG.debug( "Principal Inactivated called: principalId="+principalId+" role=" + namespaceCode + "/" + roleName );
+		}
+		// base implementation - do nothing
+	}
 }

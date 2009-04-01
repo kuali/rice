@@ -27,6 +27,8 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  */
 public class RoleResponsibilityActionImpl extends PersistableBusinessObjectBase {
 
+	private static final long serialVersionUID = -2840071737863303404L;
+	
 	protected String roleResponsibilityActionId;
 	protected String roleResponsibilityId;
 	protected String roleMemberId;

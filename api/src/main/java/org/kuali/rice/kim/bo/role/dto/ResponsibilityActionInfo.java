@@ -43,7 +43,8 @@ public class ResponsibilityActionInfo implements ResponsibilityAction, Serializa
 	protected String roleId;
 	protected String actionTypeCode;
 	protected String actionPolicyCode;
-	protected String actionGroupingCode = "";
+	protected String roleResponsibilityActionId;
+	protected String parallelRoutingGroupingCode = "";
 	protected boolean ignorePrevious;
 	protected Integer priorityNumber;
 	protected AttributeSet qualifier;
@@ -213,12 +214,20 @@ public class ResponsibilityActionInfo implements ResponsibilityAction, Serializa
 	    return retValue;
 	}
 
-	public String getActionGroupingCode() {
-		return this.actionGroupingCode;
+	public String getParallelRoutingGroupingCode() {
+		return this.parallelRoutingGroupingCode;
 	}
 
-	public void setActionGroupingCode(String actionGroupingCode) {
-		this.actionGroupingCode = actionGroupingCode;
+	public void setParallelRoutingGroupingCode(String actionGroupingCode) {
+		this.parallelRoutingGroupingCode = actionGroupingCode;
+	}
+
+	public String getRoleResponsibilityActionId() {
+		return this.roleResponsibilityActionId;
+	}
+
+	public void setRoleResponsibilityActionId(String roleResponsibilityActionId) {
+		this.roleResponsibilityActionId = roleResponsibilityActionId;
 	}
 	
 	

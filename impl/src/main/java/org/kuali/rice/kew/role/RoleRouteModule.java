@@ -83,7 +83,8 @@ public class RoleRouteModule implements RouteModule {
 						for (ResponsibilityActionInfo responsibility : responsibilitySet.getResponsibilities()) {
 							arFactory.addRoleResponsibilityRequest(Collections.singletonList(responsibility), approvePolicy);
 						}
-					} else {
+					} else { // first-approve policy, pass as groups to the ActionRequestFactory so that a single
+						// approval per set will clear the action request
 						arFactory.addRoleResponsibilityRequest(responsibilitySet.getResponsibilities(), approvePolicy);
 					}
 				}
@@ -191,21 +192,24 @@ public class RoleRouteModule implements RouteModule {
 		private String actionRequestCode;
 		private String approvePolicy;
 		private Integer priorityNumber;
-		private String actionGroupingCode;
+		private String parallelRoutingGroupingCode;
+		private String roleResponsibilityActionId;
 		private List<ResponsibilityActionInfo> responsibilities = new ArrayList<ResponsibilityActionInfo>();
 
 		public ResponsibilitySet(ResponsibilityActionInfo responsibility) {
 			this.actionRequestCode = responsibility.getActionTypeCode();
 			this.approvePolicy = responsibility.getActionPolicyCode();
 			this.priorityNumber = responsibility.getPriorityNumber();
-			this.actionGroupingCode = responsibility.getActionGroupingCode();
+			this.parallelRoutingGroupingCode = responsibility.getParallelRoutingGroupingCode();
+			this.roleResponsibilityActionId = responsibility.getRoleResponsibilityActionId();
 		}
 		
 		public boolean matches(ResponsibilityActionInfo responsibility) {
 			return responsibility.getActionTypeCode().equals(actionRequestCode) &&
 				responsibility.getActionPolicyCode().equals(approvePolicy) && 
 				responsibility.getPriorityNumber().equals( priorityNumber ) &&
-				responsibility.getActionGroupingCode().equals( actionGroupingCode );
+				responsibility.getParallelRoutingGroupingCode().equals( parallelRoutingGroupingCode ) &&
+				responsibility.getRoleResponsibilityActionId().equals( roleResponsibilityActionId );
 		}
 
 		public String getActionRequestCode() {
@@ -224,8 +228,12 @@ public class RoleRouteModule implements RouteModule {
 			return this.responsibilities;
 		}
 
-		public String getActionGroupingCode() {
-			return this.actionGroupingCode;
+		public String getParallelRoutingGroupingCode() {
+			return this.parallelRoutingGroupingCode;
+		}
+
+		public String getRoleResponsibilityActionId() {
+			return this.roleResponsibilityActionId;
 		}		
 		
 	}

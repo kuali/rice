@@ -501,5 +501,12 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		}
 		LOG.debug( sb.append( RiceDebugUtils.getTruncatedStackTrace(true) ).toString() );
     }
-	
+
+    /**
+     * @see org.kuali.rice.kim.service.RoleService#principalInactivated(java.lang.String)
+     */
+    public void principalInactivated(String principalId) {
+    	getRoleService().principalInactivated(principalId);    
+    	removeCacheEntries(null, principalId);
+    }
 }

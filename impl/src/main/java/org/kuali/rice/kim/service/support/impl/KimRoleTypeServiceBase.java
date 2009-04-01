@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.kuali.rice.kim.bo.role.KimRole;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
@@ -32,6 +33,8 @@ import org.kuali.rice.kim.service.support.KimRoleTypeService;
  */
 public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRoleTypeService {
 
+	private static final Logger LOG = Logger.getLogger(KimRoleTypeServiceBase.class);
+	
 	public static final String ROLE_DOCUMENT_TYPE_NAME = "IdentityManagementRoleDocument";
 	
 	public String getWorkflowDocumentTypeName() {
@@ -144,5 +147,18 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 	 */
 	public List<RoleMembershipInfo> sortRoleMembers(List<RoleMembershipInfo> roleMembers) {
 		return roleMembers;
+	}
+	
+	/**
+	 * This base implementation does nothing but log that the method was called.
+	 * 
+	 * @see org.kuali.rice.kim.service.support.KimRoleTypeService#principalInactivated(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	public void principalInactivated(String principalId, String namespaceCode,
+			String roleName) {
+		if ( LOG.isDebugEnabled() ) {
+			LOG.debug( "Principal Inactivated called: principalId="+principalId+" role=" + namespaceCode + "/" + roleName );
+		}
+		// base implementation - do nothing
 	}
 }

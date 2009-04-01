@@ -60,7 +60,9 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 		
 		Criteria c = new Criteria();
 		
-		c.addIn(KIMPropertyConstants.RoleMember.ROLE_ID, roleIds);
+		if ( roleIds != null ) {
+			c.addIn(KIMPropertyConstants.RoleMember.ROLE_ID, roleIds);
+		}
 		c.addEqualTo(KIMPropertyConstants.RoleMember.MEMBER_ID, principalId);
 		c.addEqualTo( KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, KimRole.PRINCIPAL_MEMBER_TYPE );
 		Query query = QueryFactory.newQuery(RoleMemberImpl.class, c);

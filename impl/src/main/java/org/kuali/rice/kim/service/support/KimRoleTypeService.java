@@ -121,4 +121,10 @@ public interface KimRoleTypeService extends KimTypeService {
      */
     AttributeSet convertQualificationForMemberRoles( String namespaceCode, String roleName, String memberRoleNamespaceCode, String memberRoleName, AttributeSet qualification );
     
+    /**
+     * Called by the role service when it is notified that a principal has been inactivated.  Can be used 
+     * to perform local data cleanup by application roles.
+     */
+    void principalInactivated( String principalId, String namespaceCode, String roleName );
+    
 }

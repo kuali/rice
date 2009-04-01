@@ -1166,8 +1166,32 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 	
     public List<KimRoleImpl> getRolesSearchResults(java.util.Map<String,String> fieldValues) {
     	return roleDao.getRoles(fieldValues);
-
-    	
     }
 
+    /**
+     * @see org.kuali.rice.kim.service.RoleService#principalInactivated(java.lang.String)
+     */
+    public void principalInactivated(String principalId) {
+    	// go through all roles and post-date them
+    	List<RoleMemberImpl> roleMembers = roleDao.getRolePrincipalsForPrincipalIdAndRoleIds(null, principalId);
+    	Set<String> roleIds = new HashSet<String>( roleMembers.size() );
+    	java.sql.Timestamp yesterday = new java.sql.Timestamp( new java.util.Date().getTime() - (24*60*60*1000) );
+    	for ( RoleMemberImpl rm : roleMembers ) {
+    		rm.setActiveToDate( yesterday );
+    		roleIds.add(rm.getRoleId()); // add to the set of IDs
+    	}
+    	getBusinessObjectService().save(roleMembers);
+    	// find all distinct role IDs and type services
+    	for ( String roleId : roleIds ) {
+    		KimRoleImpl role = getRoleImpl(roleId);
+    		KimRoleTypeService roleTypeService = getRoleTypeService(roleId);
+    		try {
+	    		if ( roleTypeService != null ) {
+	    			roleTypeService.principalInactivated( principalId, role.getNamespaceCode(), role.getRoleName() );
+	    		}
+    		} catch ( Exception ex ) {
+    			LOG.error( "Problem notifying role type service of principal inactivation: " + role.getKimRoleType().getKimTypeServiceName(), ex );
+    		}
+    	}
+    }
 }

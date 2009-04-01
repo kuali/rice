@@ -126,4 +126,9 @@ public interface RoleService {
 	 * This method get search results for role lookup
 	 */
 	List<? extends KimRole> getRolesSearchResults(java.util.Map<String,String> fieldValues);
+	
+	/**
+	 * Notifies all of a principal's roles and role types that the principal has been inactivated.
+	 */
+	void principalInactivated( String principalId );
 }

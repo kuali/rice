@@ -161,9 +161,6 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		setupAddress(identityManagementPersonDocument, entityType, origEntityType.getAddresses());
 		List <GroupMemberImpl>  groupPrincipals = populateGroups(identityManagementPersonDocument);
 		List <RoleMemberImpl>  rolePrincipals = populateRoles(identityManagementPersonDocument);
-		if ( inactivatingPrincipal ) {
-			expirePrincipalRoleMemberships( rolePrincipals );
-		}
 		List <BusinessObject> bos = new ArrayList<BusinessObject>();
 		List <RoleResponsibilityActionImpl> roleRspActions = populateRoleRspActions(identityManagementPersonDocument);
 		List <RoleMemberAttributeDataImpl> blankRoleMemberAttrs = getBlankRoleMemberAttrs(rolePrincipals);
@@ -177,7 +174,9 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		if (!blankRoleMemberAttrs.isEmpty()) {
 			getBusinessObjectService().delete(blankRoleMemberAttrs);
 		}
-
+		if ( inactivatingPrincipal ) {
+			KIMServiceLocator.getRoleManagementService().principalInactivated(identityManagementPersonDocument.getPrincipalId());
+		}
 	}
 
 	/**
@@ -1854,12 +1853,5 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			}
 		}
 		return roleMemberAttributeDataList;
-	}
-
-	protected void expirePrincipalRoleMemberships( List<RoleMemberImpl> roleMembers ) {
-		// set the to date to yesterday
-		for ( RoleMemberImpl rm : roleMembers ) {
-			rm.setActiveToDate( new Timestamp( new Date().getTime() - (24*60*60*1000) ) );
-		}
 	}
 }

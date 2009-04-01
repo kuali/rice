@@ -32,6 +32,11 @@ import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
  */
 public interface KimRoleDao {
 
+	/**
+	 * Returns a list of all the active RoleMemberImpl objects for the given principal and set of role IDs.
+	 * 
+	 * If the roleIds parameter is null, all RoleMemberImpls for the principal are returned.
+	 */
 	List<RoleMemberImpl> getRolePrincipalsForPrincipalIdAndRoleIds( Collection<String> roleIds, String principalId );
 	
 	List<RoleMemberImpl> getRoleGroupsForGroupIdsAndRoleIds( Collection<String> roleIds, Collection<String> groupIds );

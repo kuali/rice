@@ -129,10 +129,11 @@ public class KualiLookupAction extends KualiAction {
 	 */
 	private void suppressNonMaintActionsIfNeeded(ActionForm form) {
 		LookupForm lookupForm = (LookupForm) form;
-		if(lookupForm.isSupplementalActionsEnabled()) {
-			 //only overide if it's enabled, if disabled don't call lookupable
-//			lookupForm.getLookupable().
-			((LookupForm)form).setSuppressActions( false );
+		if(lookupForm.getLookupable()!=null) {
+			if(StringUtils.isNotEmpty(lookupForm.getLookupable().getSupplementalMenuBar())) {
+				lookupForm.setSupplementalActionsEnabled(true);
+			}
+			
 		}
 	}
     

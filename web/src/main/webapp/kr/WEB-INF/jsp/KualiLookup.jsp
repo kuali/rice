@@ -17,11 +17,8 @@
 
 <%--NOTE: DO NOT FORMAT THIS FILE, DISPLAY:COLUMN WILL NOT WORK CORRECTLY IF IT CONTAINS LINE BREAKS --%>
 <c:set var="headerMenu" value="" />
-<c:if test="${KualiForm.suppressActions!=true}">
+<c:if test="${KualiForm.suppressActions!=true and KualiForm.supplementalActionsEnabled!=true}">
     <c:set var="headerMenu" value="${KualiForm.lookupable.createNewUrl}   ${KualiForm.lookupable.htmlMenuBar}" />
-</c:if>
-<c:if test="${KualiForm.supplementalActionsEnabled==true}">
-    <c:set var="headerMenu" value="${headerMenu} ${KualiForm.lookupable.supplementalMenuBar}" />
 </c:if>
 
 <kul:page lookup="true" showDocumentInfo="false"
@@ -34,12 +31,10 @@
     var kualiElements = kualiForm.elements;
   </SCRIPT>
 
-	<c:if test="${KualiForm.supplementalActionsEnabled==true}">
-		<div class="headerarea-small" id="headerarea-small">
-			<h1><c:out value="${KualiForm.lookupable.title}" /><kul:help
-				resourceKey="lookupHelpText" altText="lookup help" /></h1>
-		</div>
-	</c:if>
+	<div class="headerarea-small" id="headerarea-small">
+		<h1><c:out value="${KualiForm.lookupable.title}" /><kul:help
+			resourceKey="lookupHelpText" altText="lookup help" /></h1>
+	</div>
 	<kul:enterKey methodToCall="search" />
 
 	<html-el:hidden name="KualiForm" property="backLocation" />

@@ -64,7 +64,7 @@ public class LookupForm extends KualiForm {
     private String htmlDataType;
     private String lookupObjectId;
 	private boolean lookupCriteriaEnabled = true;
-    private boolean supplementalActionsEnabled = true;
+    private boolean supplementalActionsEnabled = false;
     private boolean actionUrlsExist = false;
     private boolean ddExtraButton = false;
     

@@ -3,15 +3,13 @@
 
 <c:choose>
   <c:when test="${actionRequest.approvePolicy == \"A\"}">
-    <c:set var="approvePolicy" value="ALL "/>
+    <c:set var="approvePolicy" value="All Must Approve" scope="request" />
   </c:when>
   <c:when test="${actionRequest.approvePolicy == \"F\"}">
-    <c:set var="approvePolicy" value="FIRST "/>
+    <c:set var="approvePolicy" value="Single Approval Required" scope="request" />
   </c:when>
 </c:choose>
 
-<c:choose>
-  <c:when test="${actionRequest.parentActionRequest != null && actionRequest.parentActionRequest.approvePolicy == null}">
     <c:choose>
       <c:when test="${actionRequest.delegationType == \"S\"}">
         <c:set var="delegation" value="Secondary Delegate"/>
@@ -19,9 +17,10 @@
       <c:when test="${actionRequest.delegationType == \"P\"}">
   	    <c:set var="delegation" value="Primary Delegate"/>
       </c:when>
+      <c:otherwise>
+  	    <c:set var="delegation" value=""/>
+      </c:otherwise>
     </c:choose>
-  </c:when>
-</c:choose>
 
 <c:choose>
   <c:when test="${level == 0}">
@@ -57,19 +56,19 @@
 			                           <td align="left" class="<c:out value="${headerClass}"/>">
 		                              	<c:choose>
 		                              		<c:when test="${actionRequest.userRequest}">
-                                                <kul:inquiry boClassName="org.kuali.rice.kim.bo.impl.PersonImpl"
-                                                    keyValues="principalId=${actionRequest.principalId}"
-                                                    render="true">
-                                                      <c:out value="${displayName}" />
-                                                </kul:inquiry>
-												<c:if test="${delegation != null}">
-													&nbsp;<c:out value="${delegation}" />
+												<a href="<c:url value="${ConfigProperties.kim.url}/identityManagementPersonDocument.do">
+													<c:param name="command" value="initiate"/>
+													<c:param name="docTypeName" value="IdentityManagementPersonDocument"/>
+													<c:param name="principalId" value="${actionRequest.principalId}"/>						
+												</c:url>" target="_blank"><c:out value="${displayName}" /></a>&nbsp;
+												<c:if test="${!empty delegation}">
+													&nbsp;(<c:out value="${delegation}" />)
 												</c:if>
 		                              		</c:when>
 			                              	<c:when test="${actionRequest.groupRequest}">
                                                 <kul:inquiry boClassName="org.kuali.rice.kim.bo.group.impl.KimGroupImpl" keyValues="groupId=${actionRequest.groupId}" render="true"><c:out value="${actionRequest.groupName}" /></kul:inquiry>
-												<c:if test="${delegation != null}">
-													&nbsp;<c:out value="${delegation}" />
+												<c:if test="${!empty delegation}">
+													&nbsp;(<c:out value="${delegation}" />)
 												</c:if>
 		                              		</c:when>
 		                              		<c:otherwise>
@@ -120,8 +119,7 @@
 		                              	</c:choose>
 		                              </td>
 		                              <td align="center" class="<c:out value="${headerClass}"/>">
-
-		                              	<b>&nbsp;<fmt:formatDate value="${actionRequest.createDate}" pattern="${Constants.DEFAULT_DATE_FORMAT_PATTERN}" /></b>
+		                              	<b>&nbsp;<fmt:formatDate value="${actionRequest.createDate}" pattern="${RiceConstants.DEFAULT_DATE_FORMAT_PATTERN}" /></b>
 		                              </td>
 		                              <td align="left" class="<c:out value="${headerClass}"/>">
 		                              	&nbsp;<c:out value="${actionRequest.annotation}" />
@@ -137,6 +135,7 @@
 										      </c:if>
 										    </c:forEach>
 		                              	</c:if>
+		                              	<%-- ${actionRequest} --%>
 									  </td>
 
 		                            </td>
@@ -145,7 +144,7 @@
     		                          <td  align=right class="thnormal">
 										<img src="images/pixel_clear.gif" width="<c:out value="60"/>" height="20">
                                       </td>
-									  <td colspan="4">
+									  <td colspan="4" style="padding: 0; border: 0;">
 										<jsp:include page="ActionRequests.jsp" flush="true" />
 		                              </td>
 		                            </tr>

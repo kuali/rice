@@ -1,6 +1,23 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp" %>
 
-          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+          <table width="100%" border="0" cellspacing="0" cellpadding="0" style="padding: 0; border: 0;">
+					<tr>
+						<th style="width: 10em;"><bean-el:message key="routeLog.ActionRequests.actionRequest.label.routeNode"/></th>
+						<td class="datacell1"><c:out value="${actionRequest.routeLevelName}" />&nbsp;</td>
+					</tr>
+					<tr>
+						<th><bean-el:message key="routeLog.ActionRequests.actionRequest.label.routingPriority"/></th>
+						<td class="datacell1"><c:out value="${actionRequest.priority}" />&nbsp;</td>
+					</tr>
+					<tr>
+						<th><bean-el:message key="routeLog.ActionRequests.actionRequest.label.approvePolicy"/></th>
+						<td class="datacell1"><c:out value="${approvePolicy}" />&nbsp;</td>
+					</tr>
+					<tr>
+						<th><bean-el:message key="routeLog.ActionRequests.actionRequest.label.ignorePrevious"/></th>
+						<td class="datacell1"><c:out value="${actionRequest.ignorePrevAction}" />&nbsp;</td>
+					</tr>
+					<%-- 
 					<tr>
 						<td width="20%" align=right class="thnormal"><bean-el:message key="routeLog.ActionRequests.actionRequest.label.actionRequestId"/>:</td>
 						<td class="datacell1"><c:out value="${actionRequest.actionRequestId}" />&nbsp;</td>
@@ -10,16 +27,8 @@
 						<td class="datacell1"><c:out value="${actionRequest.statusLabel}" />&nbsp;</td>
 					</tr>
 					<tr>
-						<td align=right class="thnormal"><bean-el:message key="routeLog.ActionRequests.actionRequest.label.routeNode"/>:</td>
-						<td class="datacell1"><c:out value="${actionRequest.routeLevelName}" />&nbsp;</td>
-					</tr>
-					<tr>
 						<td align=right class="thnormal"><bean-el:message key="routeLog.ActionRequests.actionRequest.label.responsibilityId"/>:</td>
 						<td class="datacell1"><c:out value="${actionRequest.responsibilityId}" />&nbsp;</td>
-					</tr>
-					<tr>
-						<td align=right class="thnormal"><bean-el:message key="routeLog.ActionRequests.actionRequest.label.routingPriority"/>:</td>
-						<td class="datacell1"><c:out value="${actionRequest.priority}" />&nbsp;</td>
 					</tr>
 					<tr>
 						<td align=right class="thnormal"><bean-el:message key="routeLog.ActionRequests.actionRequest.label.responsibility"/>:</td>
@@ -29,6 +38,7 @@
 						<td align=right class="thnormal"><bean-el:message key="routeLog.ActionRequests.actionRequest.label.annotation"/>:</td>
 						<td class="datacell1"><c:out value="${actionRequest.annotation}" />&nbsp;</td>
 					</tr>
+					--%>
 					<c:if test="${actionRequest.ruleBaseValuesId != null}">
 					<tr>
 						<td align=right class="thnormal">Rule:</td>
@@ -42,14 +52,14 @@
 					</c:if>
 				<c:if test="${! empty actionRequest.childrenRequests}">
 				<tr>
-				  <td colspan="4">
-					<table width="100%" border=0 cellspacing=0 cellpadding=0>
+				  <td colspan="4" style="padding: 0; border: 0;">
+					<table width="100%" border="0" cellspacing="0" cellpadding="0" style="padding: 0; border: 0;">
 	                  <tr>
-	                    <td class="headercell3-b-l" width="5%">&nbsp;</td>
-	  		            <td width="15%" class="headercell3-b-l"><bean-el:message key="routeLog.ActionRequests.pendingActionRequests.label.action"/></td>
-	  		            <td width="15%" class="headercell3-b-l"><bean-el:message key="routeLog.ActionRequests.pendingActionRequests.label.requestedOf"/></td>
-	  		            <td width="22%" class="headercell3-b-l"><bean-el:message key="routeLog.ActionRequests.pendingActionRequests.label.timeDate"/></td>
-	  		            <td width="40%" class="headercell3-b-l"><bean-el:message key="routeLog.ActionRequests.pendingActionRequests.label.annotation"/></td>
+	                    <th width="5%">&nbsp;</td>
+	  		            <th width="15%"><bean-el:message key="routeLog.ActionRequests.pendingActionRequests.label.action"/></th>
+	  		            <th width="15%"><bean-el:message key="routeLog.ActionRequests.pendingActionRequests.label.requestedOf"/></th>
+	  		            <th width="22%"><bean-el:message key="routeLog.ActionRequests.pendingActionRequests.label.timeDate"/></th>
+	  		            <th width="40%"><bean-el:message key="routeLog.ActionRequests.pendingActionRequests.label.annotation"/></th>
 	                  </tr>
   		              <c:set var="currentLevel" value="${level+1}" scope="page"/>
 		              <c:forEach var="actionRequest" items="${actionRequest.childrenRequests}" varStatus="arStatus">

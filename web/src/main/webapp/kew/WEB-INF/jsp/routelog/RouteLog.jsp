@@ -7,7 +7,7 @@
 		defaultOpen="true"
 		>
 		<div class="tab-container" align=center>
-		<table width="100%" border=0 cellpadding=0 cellspacing=0
+		<table width="100%" border="0" cellpadding="0" cellspacing="0"
 			class="datatable">
 			<tr>
 				<kul:htmlAttributeHeaderCell scope="col" align="left">
@@ -21,40 +21,36 @@
 			</tr>
 			<tr>
 				<kul:htmlAttributeHeaderCell scope="col" align="left">
-				<bean-el:message
-					key="routeLog.RouteLog.header.label.documentType" />
-					</kul:htmlAttributeHeaderCell>
-				<td width="25%" class="datacell"><a
-					href="
-
-               						<c:url value="../kr/inquiry.do">
-										<c:param name="documentTypeId" value="${routeHeader.documentTypeId}" />
-										<c:param name="businessObjectClassName" value="org.kuali.rice.kew.doctype.bo.DocumentType" />
-										<c:param name="methodToCall" value="start"/>
-									</c:url>"><c:out
-					value="${routeHeader.documentType.label}" /> </a>&nbsp; &nbsp;</td>
+					<bean-el:message key="routeLog.RouteLog.header.label.documentType" />
+				</kul:htmlAttributeHeaderCell>
+				<td width="25%" class="datacell">
+				      <a href="<c:url value="DocumentConfigurationView.do">
+                        <c:param name="methodToCall" value="start" />
+                        <c:param name="documentTypeName" value="${routeHeader.documentType.name}"/>
+                      </c:url>" target="_blank"><c:out
+					value="${routeHeader.documentType.label}" /></a>
+				</td>
 				<kul:htmlAttributeHeaderCell scope="col" align="left"><bean-el:message
 					key="routeLog.RouteLog.header.label.created" /></kul:htmlAttributeHeaderCell>
 				<td class="datacell" width="25%"><fmt:formatDate
 					value="${routeHeader.createDate}"
-					pattern="${Constants.DEFAULT_DATE_FORMAT_PATTERN}" />&nbsp;</td>
+					pattern="${RiceConstants.DEFAULT_DATE_FORMAT_PATTERN}" />&nbsp;</td>
 			</tr>
 			<tr>
 				<kul:htmlAttributeHeaderCell scope="col" align="left"><bean-el:message
 					key="routeLog.RouteLog.header.label.initiator" /></kul:htmlAttributeHeaderCell>
-				<td  class="datacell" width="25%"><c:set
-					var="initiatorDisplayName"
-					value="${routeHeader.initiatorDisplayName}" />
-                    <kul:inquiry boClassName="org.kuali.rice.kim.bo.impl.PersonImpl"
-                        keyValues="principalId=${routeHeader.initiatorWorkflowId}"
-                        render="true">
-                          <c:out value="${initiatorDisplayName}" />
-                    </kul:inquiry>&nbsp;</td>
+				<td  class="datacell" width="25%">
+					<a href="<c:url value="${ConfigProperties.kim.url}/identityManagementPersonDocument.do">
+						<c:param name="methodToCall" value="docHandler"/>
+						<c:param name="command" value="initiate"/>
+						<c:param name="docTypeName" value="IdentityManagementPersonDocument"/>
+						<c:param name="principalId" value="${routeHeader.initiatorWorkflowId}"/>						
+					</c:url>" target="_blank"><c:out value="${routeHeader.initiatorDisplayName}" /></a>&nbsp;</td>
 				<kul:htmlAttributeHeaderCell scope="col" align="left"><bean-el:message
 					key="routeLog.RouteLog.header.label.lastModified" /></kul:htmlAttributeHeaderCell>
 				<td  class="datacell" width="25%"><fmt:formatDate
 					value="${routeHeader.statusModDate}"
-					pattern="${Constants.DEFAULT_DATE_FORMAT_PATTERN}" />&nbsp;</td>
+					pattern="${RiceConstants.DEFAULT_DATE_FORMAT_PATTERN}" />&nbsp;</td>
 
 			</tr>
 			<tr>
@@ -66,7 +62,7 @@
 					key="routeLog.RouteLog.header.label.lastApproved" /></kul:htmlAttributeHeaderCell>
 				<td  class="datacell" width="25%"><fmt:formatDate
 					value="${routeHeader.approvedDate}"
-					pattern="${Constants.DEFAULT_DATE_FORMAT_PATTERN}" />&nbsp;</td>
+					pattern="${RiceConstants.DEFAULT_DATE_FORMAT_PATTERN}" />&nbsp;</td>
 
 			</tr>
 			<tr>
@@ -78,7 +74,7 @@
 					key="routeLog.RouteLog.header.label.finalized" /></kul:htmlAttributeHeaderCell>
 				<td class="datacell" width="25%"><fmt:formatDate
 					value="${routeHeader.finalizedDate}"
-					pattern="${Constants.DEFAULT_DATE_FORMAT_PATTERN}" />&nbsp;</td>
+					pattern="${RiceConstants.DEFAULT_DATE_FORMAT_PATTERN}" />&nbsp;</td>
 
 			</tr>
 		</table>
@@ -95,12 +91,10 @@
 		tabTitle="${actionsTakenLabel}"
 		defaultOpen="true">
 		<div class="tab-container" align=center>
-			<table width="100%" border=0 cellspacing=0 cellpadding=0>
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
                   <tr>
                     <kul:htmlAttributeHeaderCell literalLabel="&nbsp;" scope="col" align="left"/>
                     <!-- might need to remove -->
-
-
                     <kul:htmlAttributeHeaderCell scope="col" align="left"><bean-el:message key="routeLog.RouteLog.actionsTaken.label.action"/>
                     </kul:htmlAttributeHeaderCell>
                     <kul:htmlAttributeHeaderCell scope="col" align="left"><bean-el:message key="routeLog.RouteLog.actionsTaken.label.takenBy"/>
@@ -111,7 +105,6 @@
                     </kul:htmlAttributeHeaderCell>
                     <kul:htmlAttributeHeaderCell scope="col" align="left"><bean-el:message key="routeLog.RouteLog.actionsTaken.label.annotation"/>
                     </kul:htmlAttributeHeaderCell>
-
                   </tr>
 
 					<c:forEach var="actionTaken" items="${routeHeader.actionsTaken}" varStatus="atStatus">
@@ -120,7 +113,7 @@
 	                          	<kul:htmlAttributeHeaderCell scope="col" align="left">
 	                          		<c:if test="${! empty actionTaken.actionRequests}">
 	                            	<a id="A<c:out value="${atStatus.count}" />" onclick="rend(this, false)">
-		                              <img src="images/tinybutton-show.gif" alt="show" width=45 height=15 border=0
+		                              <img src="images/tinybutton-show.gif" alt="show" width=45 height=15 border="0"
 		                              align=absmiddle id="F<c:out value="${atStatus.count}" />"></a>
 		                            </c:if>&nbsp;
 		                        </kul:htmlAttributeHeaderCell>
@@ -129,22 +122,23 @@
 	                               <b><c:out value="${actionTaken.actionTakenLabel}" /></b>
 	                            </td>
 	                            <td align="left" class="datacell">
-                                   <kul:inquiry boClassName="org.kuali.rice.kim.bo.impl.PersonImpl"
-                                       keyValues="principalId=${actionTaken.principalId}"
-                                       render="true">
-                                         <c:out value="${actionTaken.principalDisplayName}" />
-                                   </kul:inquiry>
+									<a href="<c:url value="${ConfigProperties.kim.url}/identityManagementPersonDocument.do">
+										<c:param name="command" value="initiate"/>
+										<c:param name="docTypeName" value="IdentityManagementPersonDocument"/>
+										<c:param name="principalId" value="${actionTaken.principalId}"/>						
+									</c:url>" target="_blank"><c:out value="${actionTaken.principalDisplayName}" /></a>&nbsp;
 	                       		</td>
 	                       		<td align="left" class="headercell4">
 							        <c:if test="${actionTaken.forDelegator}">
-							        <c:set var="actionDisplayName" value="${actionTaken.delegatorPrincipalId}"/>
-                                        <kul:inquiry boClassName="org.kuali.rice.kim.bo.impl.PersonImpl" keyValues="principalId=${RemoveReplaceForm.replacementUser.workflowId}" render="true">
-                                          <c:out value="${actionDisplayName}" />
-                                        </kul:inquiry>
+										<a href="<c:url value="${ConfigProperties.kim.url}/identityManagementPersonDocument.do">
+											<c:param name="command" value="initiate"/>
+											<c:param name="docTypeName" value="IdentityManagementPersonDocument"/>
+											<c:param name="principalId" value="${actionTaken.delegatorPrincipalId}"/>						
+										</c:url>" target="_blank"><c:out value="${actionTaken.delegatorDisplayName}" /></a>&nbsp;
 							         </c:if>&nbsp;
 						         </td>
 						         <td align="center" class="headercell4">
-						             <b><fmt:formatDate value="${actionTaken.actionDate}" pattern="${Constants.DEFAULT_DATE_FORMAT_PATTERN}" /></b>
+						             <b><fmt:formatDate type="date" value="${actionTaken.actionDate}" pattern="${RiceConstants.DEFAULT_DATE_FORMAT_PATTERN}" /></b>
 						         </td>
 						         <td align="left" class="headercell4">
 						             <c:out value="${actionTaken.annotation}" />&nbsp;
@@ -157,7 +151,7 @@
                             	<td width=8 class="bordercell-left"><img src="images/pixel_clear.gif" alt="" width=8 height=8></td>
                             	<td>&nbsp;</td>
 								<td colspan="5">
-									<table width="100%" border=0 cellspacing=0 cellpadding=0>
+									<table width="100%" border="0" cellspacing="0" cellpadding="0">
 					                  <tr>
 					                    <td align="center" class="headercell3-b-l" width="5%">&nbsp;</td>
 					  		            <td align="center" width="15%" class="headercell3-b-l"><bean-el:message key="routeLog.ActionRequests.actionRequests.label.action"/></td>
@@ -190,7 +184,7 @@
 		tabTitle="Pending Action Requests"
 		defaultOpen="true">
 		<div class="tab-container" align=center>
-			<table width="100%" border=0 cellspacing=0 cellpadding=0>
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 			                  <tr>
 			                    <kul:htmlAttributeHeaderCell literalLabel="&nbsp;" scope="col" align="left"/>
 			  		            <kul:htmlAttributeHeaderCell scope="col" align="left"><bean-el:message key="routeLog.ActionRequests.actionRequests.label.action"/></kul:htmlAttributeHeaderCell>
@@ -237,7 +231,7 @@
 		defaultOpen="true"
 		midTabClassReplacement="${extraButton}">
 		<div class="tab-container" align=center>
-			<table width="100%" border=0 cellspacing=0 cellpadding=0>
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 
                 	<tr>
                 		<kul:htmlAttributeHeaderCell literalLabel="&nbsp;" scope="col" align="left"/>
@@ -249,7 +243,7 @@
 		                					<div class="exception-error-div"><span class="exception-error"><c:out value="${KualiForm.showFutureError}"/></span></div>
 		                				</c:when>
 		                				<c:otherwise>
-					                <table width="100%" border=0 cellspacing=0 cellpadding=0>
+					                <table width="100%" border="0" cellspacing="0" cellpadding="0">
 					                  <tr>
 					                    <kul:htmlAttributeHeaderCell literalLabel="&nbsp;" scope="col" align="left"/>
 					  		            <kul:htmlAttributeHeaderCell scope="col" align="left"><bean-el:message key="routeLog.ActionRequests.actionRequests.label.action"/></kul:htmlAttributeHeaderCell>
@@ -286,10 +280,5 @@
 		</div>
 		</kul:tab>
 		</c:if>
-
 	<kul:panelFooter />
-
-
-
-
 </kul:page>

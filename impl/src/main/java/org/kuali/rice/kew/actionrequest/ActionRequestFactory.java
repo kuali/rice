@@ -19,8 +19,10 @@ package org.kuali.rice.kew.actionrequest;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.exception.RiceRuntimeException;
@@ -35,12 +37,15 @@ import org.kuali.rice.kew.rule.ResolvedQualifiedRole;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.RoleRecipient;
 import org.kuali.rice.kew.user.UserId;
+import org.kuali.rice.kew.user.UserUtils;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.workgroup.GroupId;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.role.KimRole;
 import org.kuali.rice.kim.bo.role.dto.DelegateInfo;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
@@ -333,6 +338,8 @@ public class ActionRequestFactory {
     	// Creation of a parent graph entry for ????
     	ActionRequestValue requestGraph = null;
     	StringBuffer parentAnnotation = null;
+    	// set to allow for suppression of duplicate annotations on the parent action request
+    	Set<String> uniqueChildAnnotations = null;
     	if ( responsibilities.size() > 1 ) {
 	    	requestGraph = createActionRequest(
 	    	        actionTypeCode, 
@@ -345,7 +352,8 @@ public class ActionRequestFactory {
 	    	        null, // ruleId
 	    	        null );// annotation
 	    	requestGraphs.add(requestGraph);
-	    	parentAnnotation = new StringBuffer(); 
+	    	parentAnnotation = new StringBuffer();
+	    	uniqueChildAnnotations = new HashSet<String>( responsibilities.size() );
     	}
     	StringBuffer annotation = new StringBuffer();
     	for (ResponsibilityActionInfo responsibility : responsibilities) {
@@ -359,8 +367,6 @@ public class ActionRequestFactory {
     		AttributeSet qualifier = responsibility.getQualifier();
     		if ( qualifier != null ) {
 	    		for ( String key : qualifier.keySet() ) {	    		    
-//	        		annotation.append( '\n' );
-//	        		annotation.append( key ).append( '=' ).append( qualifier.get(key) );
 	        		annotation.append( qualifier.get( key ) ).append( ' ' );
 	    		}
     		}
@@ -371,6 +377,7 @@ public class ActionRequestFactory {
 			} else {
 				throw new RiceRuntimeException("Failed to identify a group or principal on the given ResponsibilityResolutionInfo:" + responsibility);
 			}
+			String annotationStr = annotation.toString();
 			ActionRequestValue request = createActionRequest(
 			        responsibility.getActionTypeCode(), 
 			        responsibility.getPriorityNumber(), 
@@ -380,13 +387,16 @@ public class ActionRequestFactory {
 			        responsibility.isIgnorePrevious(), 
 			        approvePolicy, 
 			        null, // ruleId
-			        annotation.toString());
+			        annotationStr);
 			// if there is only a single request, don't create the nesting structure
 			if ( responsibilities.size() > 1 ) {
 				request.setParentActionRequest(requestGraph);
 				generateRoleResponsibilityDelegationRequests(responsibility, request);
 				requestGraph.getChildrenRequests().add(request);
-				parentAnnotation.append( annotation ).append( " -- " );
+				if ( !uniqueChildAnnotations.contains(annotationStr) ) {
+					parentAnnotation.append( annotationStr ).append( " -- " );
+					uniqueChildAnnotations.add(annotationStr);
+				}
 			} else {
 				requestGraphs.add(request);
 				generateRoleResponsibilityDelegationRequests(responsibility, request);
@@ -410,20 +420,37 @@ public class ActionRequestFactory {
     		} else {
     			throw new RiceRuntimeException("Invalid DelegateInfo memberTypeCode encountered, was '" + delegate.getMemberTypeCode() + "'");
     		}
-    		String responsibilityDescription = generateRoleResponsibilityDelegateDescription(delegate, isPrincipal, isGroup);
-    		addDelegationRequest(parentRequest, recipient, new Long(delegate.getDelegationId()), parentRequest.getIgnorePrevAction(), delegate.getDelegationTypeCode(), responsibilityDescription, null);
+    		String delegationAnnotation = generateRoleResponsibilityDelegateAnnotation(delegate, isPrincipal, isGroup, parentRequest);
+    		addDelegationRequest(parentRequest, recipient, new Long(delegate.getDelegationId()), parentRequest.getIgnorePrevAction(), delegate.getDelegationTypeCode(), delegationAnnotation, null);
     	}
     }
 
-    private String generateRoleResponsibilityDelegateDescription(DelegateInfo delegate, boolean isPrincipal, boolean isGroup) {
-    	String responsibilityDescription = "Delegation generated from delegation id " + delegate.getDelegationId() + " for ";
+    private String generateRoleResponsibilityDelegateAnnotation(DelegateInfo delegate, boolean isPrincipal, boolean isGroup, ActionRequestValue parentRequest) {
+    	StringBuffer annotation = new StringBuffer( "Delegation of: " );
+    	annotation.append( parentRequest.getAnnotation() );
+    	annotation.append( " to " );
     	if (isPrincipal) {
-    		responsibilityDescription += "principal ";
+    		annotation.append( "principal " );
+    		KimPrincipalInfo principal = getIdentityManagementService().getPrincipal( delegate.getMemberId() );
+    		if ( principal != null ) {
+    			annotation.append( principal.getPrincipalName() );
+    		} else {
+    			annotation.append( delegate.getMemberId() );
+    		}
     	} else if (isGroup) {
-    		responsibilityDescription += "group ";
+    		annotation.append( "group " );
+    		GroupInfo group = getIdentityManagementService().getGroup( delegate.getMemberId() );
+    		if ( group != null ) {
+    			annotation.append( group.getNamespaceCode() ).append( '/' ).append( group.getGroupName() );
+    		} else {
+    			annotation.append( delegate.getMemberId() );
+    		}
+    	} else {
+    		annotation.append( "?????? '" );
+			annotation.append( delegate.getMemberId() );
+    		annotation.append( "'" );
     	}
-    	responsibilityDescription += "'" + delegate.getMemberId() + "'";
-    	return responsibilityDescription;
+    	return annotation.toString();
     }
 
     public ActionRequestValue addDelegationRoleRequest(ActionRequestValue parentRequest, String approvePolicy, RoleRecipient role, Long responsibilityId, Boolean ignorePrevious, String delegationType, String description, Long ruleId) {
@@ -466,14 +493,26 @@ public class ActionRequestFactory {
     	return delegationRoleRequest;
     }
 
-    public ActionRequestValue addDelegationRequest(ActionRequestValue parentRequest, Recipient recipient, Long responsibilityId, Boolean ignorePrevious, String delegationType, String description, Long ruleId) {
+    public ActionRequestValue addDelegationRequest(ActionRequestValue parentRequest, Recipient recipient, Long responsibilityId, Boolean ignorePrevious, String delegationType, String annotation, Long ruleId) {
     	if (! relatedToRoot(parentRequest)) {
     		throw new WorkflowRuntimeException("The parent request is not related to any request managed by this factory");
     	}
-    	ActionRequestValue delegationRequest = createActionRequest(parentRequest.getActionRequested(), parentRequest.getPriority(), recipient, description, responsibilityId, ignorePrevious, null, ruleId, null);
+    	ActionRequestValue delegationRequest = createActionRequest(parentRequest.getActionRequested(), parentRequest.getPriority(), recipient, parentRequest.getResponsibilityDesc(), responsibilityId, ignorePrevious, null, ruleId, annotation);
     	delegationRequest.setDelegationType(delegationType);
-    	parentRequest.getChildrenRequests().add(delegationRequest);
-    	delegationRequest.setParentActionRequest(parentRequest);
+    	if ( delegationType.equals( KEWConstants.DELEGATION_PRIMARY ) ) {
+    	    // if the action request already has a parent, replace it in the child list for the parent with
+    	    // the delegation request
+    	    if ( parentRequest.hasParent() ) {
+    	        parentRequest.getParentActionRequest().getChildrenRequests().remove(parentRequest);
+    	        parentRequest.getParentActionRequest().getChildrenRequests().add(delegationRequest);
+    	    }
+    	    // place the original request UNDER the primary delegation
+    	    delegationRequest.getChildrenRequests().add(parentRequest);
+    	    parentRequest.setParentActionRequest(delegationRequest);
+    	} else {
+        	parentRequest.getChildrenRequests().add(delegationRequest); 
+        	delegationRequest.setParentActionRequest(parentRequest);
+    	}
 
     	return delegationRequest;
     }

@@ -127,7 +127,7 @@ function setMethodToCallAndSubmit(methodToCallValue) {
 	<tr>
 		<th><div align="right"><span class="thnormal"><bean-el:message key="actionList.ActionListFilter.filter.label.documentType"/>: <bean-el:message key="general.help.documentType"/></span></div></th>
 		<td class="datacell"><span id="docTypeElementId"><c:out value="${ActionListFilterFormNew.docTypeFullName}" /></span>
-		    <kul:lookup boClassName="org.kuali.rice.kew.doctype.bo.DocumentType" fieldConversions="label:docTypeFullName"/>
+		    <kul:lookup boClassName="org.kuali.rice.kew.doctype.bo.DocumentType" fieldConversions="name:docTypeFullName"/>
 			&nbsp;<bean-el:message key="actionList.ActionListFilter.filter.label.exclude"/><html-el:checkbox property="filter.excludeDocumentType"/>
 	    </td>
 	</tr>

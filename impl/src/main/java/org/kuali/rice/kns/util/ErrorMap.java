@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 
 
@@ -52,15 +53,15 @@ public class ErrorMap implements Serializable {
      * @return TypedArrayList
      */
     public TypedArrayList putError(String propertyName, String errorKey, String... errorParameters) {
-        return putMessageInMap(errorMessages, propertyName, errorKey, true, errorParameters);
+        return putMessageInMap(errorMessages, propertyName, errorKey, true, true, errorParameters);
     }
 
     public TypedArrayList putWarning(String propertyName, String messageKey, String... messageParameters) {
-        return putMessageInMap(warningMessages, propertyName, messageKey, true, messageParameters);
+        return putMessageInMap(warningMessages, propertyName, messageKey, true, true, messageParameters);
     }
     
     public TypedArrayList putInfo(String propertyName, String messageKey, String... messageParameters) {
-        return putMessageInMap(infoMessages, propertyName, messageKey, true, messageParameters);
+        return putMessageInMap(infoMessages, propertyName, messageKey, true, true, messageParameters);
     }
     
     /**
@@ -73,15 +74,15 @@ public class ErrorMap implements Serializable {
      * @return TypedArrayList
      */
     public TypedArrayList putErrorWithoutFullErrorPath(String propertyName, String errorKey, String... errorParameters) {
-        return putMessageInMap(errorMessages, propertyName, errorKey, false, errorParameters);
+        return putMessageInMap(errorMessages, propertyName, errorKey, false, true, errorParameters);
     }
     
     public TypedArrayList putWarningWithoutFullErrorPath(String propertyName, String messageKey, String... messageParameters) {
-        return putMessageInMap(errorMessages, propertyName, messageKey, false, messageParameters);
+        return putMessageInMap(errorMessages, propertyName, messageKey, false, true, messageParameters);
     }
 
     public TypedArrayList putInfoWithoutFullErrorPath(String propertyName, String messageKey, String... messageParameters) {
-        return putMessageInMap(errorMessages, propertyName, messageKey, false, messageParameters);
+        return putMessageInMap(errorMessages, propertyName, messageKey, false, true, messageParameters);
     }
     
     /**
@@ -111,10 +112,11 @@ public class ErrorMap implements Serializable {
      * @param propertyName name of the property to add error under
      * @param messageKey resource key used to retrieve the error text from the error message resource bundle
      * @param withFullErrorPath true if you want the whole parent error path appended, false otherwise
+     * @param escapeHtmlMessageParameters whether to escape HTML characters in the message parameters, provides protection against XSS attacks
      * @param messageParameters zero or more string parameters for the displayed error message
      * @return TypeArrayList
      */
-    private TypedArrayList putMessageInMap(Map<String, TypedArrayList> messagesMap, String propertyName, String messageKey, boolean withFullErrorPath, String... messageParameters) {
+    private TypedArrayList putMessageInMap(Map<String, TypedArrayList> messagesMap, String propertyName, String messageKey, boolean withFullErrorPath, boolean escapeHtmlMessageParameters, String... messageParameters) {
         if (StringUtils.isBlank(propertyName)) {
             throw new IllegalArgumentException("invalid (blank) propertyName");
         }
@@ -132,6 +134,14 @@ public class ErrorMap implements Serializable {
             errorList = new TypedArrayList(ErrorMessage.class);
         }
 
+        if (escapeHtmlMessageParameters && messageParameters != null) {
+        	String[] filteredMessageParameters = new String[messageParameters.length];
+        	for (int i = 0; i < messageParameters.length; i++) {
+        		filteredMessageParameters[i] = StringEscapeUtils.escapeHtml(messageParameters[i]);
+        	}
+        	messageParameters = filteredMessageParameters;
+        }
+        
         // add error to list
         ErrorMessage errorMessage = new ErrorMessage(messageKey, messageParameters);
         // check if this error has already been added to the list

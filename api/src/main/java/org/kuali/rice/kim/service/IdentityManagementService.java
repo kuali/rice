@@ -5,12 +5,12 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityPrivacyPreferencesInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
-import org.kuali.rice.kim.bo.role.KimPermission;
-import org.kuali.rice.kim.bo.role.KimResponsibility;
+import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
+import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
@@ -40,9 +40,9 @@ public interface IdentityManagementService {
 //    KimEntity getEntityByPrincipalName(String principalName);
 //	KimEntity getEntity(String entityId);
 
-	KimPrincipal getPrincipal(String principalId);
-	KimPrincipal getPrincipalByPrincipalName(String principalName);
-	KimPrincipal getPrincipalByPrincipalNameAndPassword(String principalName, String password);
+	KimPrincipalInfo getPrincipal(String principalId);
+	KimPrincipalInfo getPrincipalByPrincipalName(String principalName);
+	KimPrincipalInfo getPrincipalByPrincipalNameAndPassword(String principalName, String password);
 
 //	List<KimEntity> lookupEntitys(Map<String,String> searchCriteria);
 
@@ -114,8 +114,8 @@ public interface IdentityManagementService {
     /**
      * Returns the matching permission objects for a principal.
      */
-    List<? extends KimPermission> getAuthorizedPermissions( String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification );
-    List<? extends KimPermission> getAuthorizedPermissionsByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification);
+    List<? extends KimPermissionInfo> getAuthorizedPermissions( String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification );
+    List<? extends KimPermissionInfo> getAuthorizedPermissionsByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification);
 
     List<PermissionAssigneeInfo> getPermissionAssignees(String namespaceCode,
 			String permissionName, AttributeSet permissionDetails,
@@ -130,13 +130,13 @@ public interface IdentityManagementService {
     /**
      * Get the responsibility object with the given ID.
      */
-    KimResponsibility getResponsibility(String responsibilityId);
+    KimResponsibilityInfo getResponsibility(String responsibilityId);
     
  	/** 
  	 * Return the responsibility object for the given unique combination of namespace,
  	 * component and responsibility name.
  	 */
-    List<? extends KimResponsibility> getResponsibilitiesByName( String namespaceCode, String responsibilityName );
+    List<? extends KimResponsibilityInfo> getResponsibilitiesByName( String namespaceCode, String responsibilityName );
     
     /**
      * Check whether the principal has the given responsibility within the passed qualifier.

@@ -644,7 +644,7 @@ public class FieldUtils {
                     }
                     catch (FormatException e) {
                         cachedValues.put(propertyNamePrefix + propertyName, fieldValues.get(propertyName));
-                        errorMap.putError(propertyName, e.getErrorKey(), e.getErrorArgs());
+                        errorMap.putError(propertyNamePrefix + propertyName, e.getErrorKey(), e.getErrorArgs());
                     }
                 }
             }

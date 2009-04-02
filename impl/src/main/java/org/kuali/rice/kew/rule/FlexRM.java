@@ -224,11 +224,11 @@ public class FlexRM {
 		}
 		RuleResponsibility resp = getRuleService().findRuleResponsibility(responsibilityId);
 		ResponsibleParty responsibleParty = new ResponsibleParty();
-		if (resp.isUsingRole()) {
+		if (resp!=null && resp.isUsingRole()) {
 			responsibleParty.setRoleName(resp.getResolvedRoleName());
-		} else if (resp.isUsingWorkflowUser()) {
+		} else if (resp!=null && resp.isUsingWorkflowUser()) {
 			responsibleParty.setPrincipalId(resp.getRuleResponsibilityName());
-		} else if (resp.isUsingGroup()) {
+		} else if (resp!=null && resp.isUsingGroup()) {
 			responsibleParty.setGroupId(resp.getRuleResponsibilityName());
 		} else {
 			throw new RiceRuntimeException("Failed to resolve responsibility from responsibility ID " + responsibilityId + ".  Responsibility was an invalid type: " + resp);

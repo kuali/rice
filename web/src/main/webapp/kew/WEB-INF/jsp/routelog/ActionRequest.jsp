@@ -1,5 +1,5 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp" %>
-
+<c:set var="maxRoleChildrenToDisplay" value="5" />
 <c:choose>
   <c:when test="${level == 0}">
     <c:set var="fontStyle" value="color:black"/>
@@ -19,7 +19,10 @@
 </c:choose>
 <tr>
     <td align="center" align="right" class="<c:out value="${headerClass}"/>">
-        <a id="A<c:out value="${index}" />" onclick="rend(this, false)"><img src="images/tinybutton-show.gif" alt="show" width=45 height=15 border=0 align=absmiddle id="F<c:out value="${index}" />"></a>
+        <c:if test="${level == 0 || !empty actionRequest.childrenRequests }">
+            <a id="A<c:out value="${index}" />" onclick="rend(this, false)"><img src="images/tinybutton-show.gif" alt="show" width=45 height=15 border=0 align=absmiddle id="F<c:out value="${index}" />"></a>
+        </c:if>
+        &nbsp;
     </td>
     <td align="center" class="<c:out value="${headerClass}"/>" nowrap="nowrap">
         <b><c:out value="${actionRequest.displayStatus}" />
@@ -58,6 +61,8 @@
                 </c:choose>
             </c:when>
             <c:otherwise>
+             <c:choose>
+              <c:when test="${fn:length(actionRequest.childrenRequests) <= maxRoleChildrenToDisplay}">
                <c:forEach var="roleRequest" items="${actionRequest.childrenRequests}" varStatus="arStatus">
                    <c:choose>
                       <c:when test="${roleRequest.primaryDelegator}">
@@ -76,7 +81,7 @@
                           <c:if test="${!empty primDelegateRequest.qualifiedRoleNameLabel}">
                             &nbsp;(<c:out value="${primDelegateRequest.qualifiedRoleNameLabel}" />)
                           </c:if>
-                          <c:if test="${!pDelegateArStatus.last}"><br></c:if>
+                          <c:if test="${!pDelegateArStatus.last}"><br /></c:if>
                           </c:forEach>
                        </c:when>
                        <c:when test="${roleRequest.groupRequest}">
@@ -84,15 +89,14 @@
                            <c:if test="${!empty actionRequest.qualifiedRoleNameLabel}">
                                &nbsp;(<c:out value="${actionRequest.qualifiedRoleNameLabel}" />)
                            </c:if>
-                           <c:if test="${!arStatus.last}"><br></c:if>
+                           <c:if test="${!arStatus.last}"><br /></c:if>
                        </c:when>
                        <c:otherwise>
-                           <c:set var="roleDisplayName" value="${roleRequest.displayName}"/>
                            <a href="<c:url value="${ConfigProperties.kim.url}/identityManagementPersonDocument.do">
                                 <c:param name="command" value="initiate"/>
                                 <c:param name="docTypeName" value="IdentityManagementPersonDocument"/>
                                 <c:param name="principalId" value="${roleRequest.principalId}"/>                      
-                           </c:url>" target="_blank"><c:out value="${roleDisplayName}" /></a>
+                           </c:url>" target="_blank"><c:out value="${roleRequest.displayName}" /></a>
                             &nbsp;
                             <c:choose>
                               <c:when test="${roleRequest.delegationType == KEWConstants.DELEGATION_SECONDARY}">
@@ -109,6 +113,11 @@
                      </c:otherwise>
                    </c:choose>
                </c:forEach>
+              </c:when>
+              <c:otherwise>
+                (Multiple - expand to see details)
+              </c:otherwise>
+             </c:choose>
             </c:otherwise>
         </c:choose>
     </td>
@@ -132,11 +141,13 @@
         <%-- ${actionRequest} --%>
     </td>   
 </tr>
+<c:if test="${level == 0 || !empty actionRequest.childrenRequests }">
 <tr id="G<c:out value="${index}" />" style="display: none;">
     <td align="right" class="thnormal">
-       <img src="images/pixel_clear.gif" width="<c:out value="60"/>" height="20">
+       <img src="images/pixel_clear.gif" width="60" height="20">
     </td>
     <td colspan="4" style="padding: 0; border: 0;">
        <jsp:include page="ActionRequests.jsp" flush="true" />
     </td>
 </tr>
+</c:if>

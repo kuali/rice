@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
@@ -37,7 +38,6 @@ import org.kuali.rice.kew.rule.ResolvedQualifiedRole;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.RoleRecipient;
 import org.kuali.rice.kew.user.UserId;
-import org.kuali.rice.kew.user.UserUtils;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
@@ -391,8 +391,8 @@ public class ActionRequestFactory {
 			// if there is only a single request, don't create the nesting structure
 			if ( responsibilities.size() > 1 ) {
 				request.setParentActionRequest(requestGraph);
-				generateRoleResponsibilityDelegationRequests(responsibility, request);
 				requestGraph.getChildrenRequests().add(request);
+				generateRoleResponsibilityDelegationRequests(responsibility, request);
 				if ( !uniqueChildAnnotations.contains(annotationStr) ) {
 					parentAnnotation.append( annotationStr ).append( " -- " );
 					uniqueChildAnnotations.add(annotationStr);
@@ -403,7 +403,7 @@ public class ActionRequestFactory {
 			}
 	    }
     	if ( responsibilities.size() > 1 ) {
-	    	requestGraph.setAnnotation( parentAnnotation.toString() );
+	    	requestGraph.setAnnotation( StringUtils.chomp( parentAnnotation.toString(), " -- " ) );
     	}
     }
 
@@ -503,10 +503,14 @@ public class ActionRequestFactory {
     	    // if the action request already has a parent, replace it in the child list for the parent with
     	    // the delegation request
     	    if ( parentRequest.hasParent() ) {
-    	        parentRequest.getParentActionRequest().getChildrenRequests().remove(parentRequest);
-    	        parentRequest.getParentActionRequest().getChildrenRequests().add(delegationRequest);
+    	    	ActionRequestValue parentParentActionRequest = parentRequest.getParentActionRequest();
+    	    	// remove the parent request from its parent's child list
+    	    	parentParentActionRequest.getChildrenRequests().remove(parentRequest);
+    	    	// assign this new request in that place
+        	    delegationRequest.setParentActionRequest(parentParentActionRequest);
+    	    	parentParentActionRequest.getChildrenRequests().add(delegationRequest);
     	    }
-    	    // place the original request UNDER the primary delegation
+    	    // place the original parent request UNDER the primary delegation
     	    delegationRequest.getChildrenRequests().add(parentRequest);
     	    parentRequest.setParentActionRequest(delegationRequest);
     	} else {

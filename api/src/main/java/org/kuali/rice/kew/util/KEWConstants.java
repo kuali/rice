@@ -7,9 +7,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.kuali.rice.core.util.JSTLConstants;
 import org.kuali.rice.core.util.RiceConstants;
 
-public class KEWConstants {
+public class KEWConstants extends JSTLConstants {
 
     private static final long serialVersionUID = -3897059085433394648L;
 

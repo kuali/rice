@@ -253,7 +253,7 @@ function textAreaPop(textAreaName,
   idx1=url.indexOf(pathname);
   idx2=url.indexOf("/",idx1+1);
   baseUrl=url.substr(0,idx2)
-  window.open(baseUrl+"/updateTextArea.do?&textAreaFieldName="+textAreaName+"&htmlFormAction="+htmlFormAction+"&textAreaFieldLabel="+textAreaLabel+"&docFormKey="+docFormKey+"&documentWebScope="+documentWebScope);
+  window.open(baseUrl+"/updateTextArea.do?textAreaFieldName="+textAreaName+"&htmlFormAction="+htmlFormAction+"&textAreaFieldLabel="+textAreaLabel+"&docFormKey="+docFormKey+"&documentWebScope="+documentWebScope);
 }
 
 var textAreaFieldName;

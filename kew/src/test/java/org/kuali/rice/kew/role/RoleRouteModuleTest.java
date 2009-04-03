@@ -552,7 +552,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
 		// examine the action requests
 		ActionRequestDTO[] actionRequests = new WorkflowInfo().getActionRequests(document.getRouteHeaderId());
 		// there should be 2 root action requests returned here, 1 containing the 2 requests for "BL", and one containing the request for "IN"
-		assertEquals("Should have 5 action requests.", 5, actionRequests.length);
+		assertEquals("Should have 3 action requests.", 3, actionRequests.length);
 		int numRoots = 0;
 		for (ActionRequestDTO actionRequest : actionRequests) {
 			// each of these should be "first approve"
@@ -563,7 +563,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
 				numRoots++;
 			}
 		}
-		assertEquals("There should have been 2 root requests.", 2, numRoots);
+		assertEquals("There should have been 3 root requests.", 3, numRoots);
 		
 		// let's approve as "user1" and verify the document is still ENROUTE
 		document = new WorkflowDocument(new NetworkIdDTO("user1"), document.getRouteHeaderId());
@@ -576,10 +576,14 @@ public class RoleRouteModuleTest extends KEWTestCase {
 		document = new WorkflowDocument(new NetworkIdDTO("user2"), document.getRouteHeaderId());
 		assertTrue("Approval should be requested.", document.isApprovalRequested());
 		
-		// let's approve as "user2" and verify the document has gone FINAL
+		// let's approve as "user2" and verify the document is still ENROUTE
+		document.approve("");
+		assertTrue("Document should be ENROUTE.", document.stateIsEnroute());
+		
+		// let's approve as "admin" and verify the document has gone FINAL
+		document = new WorkflowDocument(new NetworkIdDTO("admin"), document.getRouteHeaderId());
 		document.approve("");
 		assertTrue("Document should be FINAL.", document.stateIsFinal());
-		
 	}
 	
 	@Test

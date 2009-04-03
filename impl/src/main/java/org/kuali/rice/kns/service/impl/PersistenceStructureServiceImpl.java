@@ -219,5 +219,16 @@ public class PersistenceStructureServiceImpl extends PersistenceServiceImplBase 
 	public boolean hasReference(Class boClass, String referenceName) {
 		return getService(boClass).hasReference(boClass, referenceName);
 	}
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.service.PersistenceStructureService#getTableName(java.lang.Class)
+	 */
+	public String getTableName(
+			Class<? extends PersistableBusinessObject> boClass) {
+		return getService(boClass).getTableName(boClass);
+	}
+	
 	
 }

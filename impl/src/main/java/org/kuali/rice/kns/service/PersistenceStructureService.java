@@ -262,5 +262,11 @@ public interface PersistenceStructureService {
      */
     public Map<String, String> getInverseForeignKeysForCollection(Class boClass, String collectionName);
     
-
+    /**
+     * Returns the name of the table underlying the business object class
+     * 
+     * @param boClass
+     * @return
+     */
+    public String getTableName(Class<? extends PersistableBusinessObject> boClass);
 }

@@ -669,5 +669,14 @@ public class PersistenceStructureServiceJpaImpl extends PersistenceServiceImplBa
 		EntityDescriptor descriptor = MetadataManager.getEntityDescriptor(boClass);
 		return descriptor.getObjectDescriptorByName(referenceName) != null;
 	}
+
+	/**
+	 * @see org.kuali.rice.kns.service.PersistenceStructureService#getTableName(java.lang.Class)
+	 */
+	@Cached
+	public String getTableName(Class<? extends PersistableBusinessObject> boClass) {
+		EntityDescriptor descriptor = MetadataManager.getEntityDescriptor(boClass);
+		return descriptor.getTable();
+	}
 }
 

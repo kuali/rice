@@ -700,5 +700,18 @@ public class PersistenceStructureServiceOjbImpl extends PersistenceServiceImplBa
 		ClassDescriptor cd = getClassDescriptor(boClass);
 		return cd.getObjectReferenceDescriptorByName(referenceName) != null;
 	}
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.service.PersistenceStructureService#getTableName(java.lang.Class)
+	 */
+	@Cached
+	public String getTableName(Class<? extends PersistableBusinessObject> boClass) {
+		ClassDescriptor cd = getClassDescriptor(boClass);
+		return cd.getFullTableName();
+	}
+	
+	
 }
 

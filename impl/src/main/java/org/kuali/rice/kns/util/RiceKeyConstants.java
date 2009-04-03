@@ -53,6 +53,7 @@ public class RiceKeyConstants {
     public static final String ERROR_INACTIVE_ADHOC_PERSON_ID = "error.adhoc.inactive.person";
     public static final String ERROR_INVALID_ADHOC_WORKGROUP_ID = "error.adhoc.invalid.workgroup";
     public static final String ERROR_MISSING_ADHOC_WORKGROUP_ID = "error.adhoc.missing.workgroup";
+    public static final String MESSAGE_ADHOC_ANNOTATION = "message.adhoc.annotation";
 
     public static final String ERROR_SECURE_FIELD = "error.secureField";
     public static final String ERROR_SEND_NOTE_NOTIFICATION_RECIPIENT = "error.send.note.notification.recipient";
@@ -161,5 +162,7 @@ public class RiceKeyConstants {
     
     //parameter document
     public static final String AUTHORIZATION_ERROR_PARAMETER = "error.authorization.parameter";
+    
+    
 }
 

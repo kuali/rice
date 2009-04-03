@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.workflow.service.impl;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -35,7 +36,9 @@ import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.bo.AdHocRouteRecipient;
 import org.kuali.rice.kns.exception.UnknownDocumentIdException;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.Timer;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
@@ -174,7 +177,9 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      *      java.lang.String)
      */
     public void superUserApprove(KualiWorkflowDocument workflowDocument, String annotation) throws WorkflowException {
-        LOG.info("super user approve flexDoc(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
+    	if ( LOG.isInfoEnabled() ) {
+    		LOG.info("super user approve flexDoc(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
+    	}
         workflowDocument.superUserApprove(annotation);
     }
 
@@ -192,7 +197,9 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      *      java.lang.String)
      */
     public void superUserDisapprove(KualiWorkflowDocument workflowDocument, String annotation) throws WorkflowException {
-        LOG.info("super user approve flexDoc(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
+    	if ( LOG.isInfoEnabled() ) {
+    		LOG.info("super user approve flexDoc(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
+    	}
         workflowDocument.superUserDisapprove(annotation);
     }
 
@@ -343,6 +350,14 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
             for (Iterator iter = adHocRecipients.iterator(); iter.hasNext();) {
                 AdHocRouteRecipient recipient = (AdHocRouteRecipient) iter.next();
                 if (StringUtils.isNotEmpty(recipient.getId())) {
+                	if ( StringUtils.isBlank( annotation ) ) {
+                		try {
+                			String message = KNSServiceLocator.getKualiConfigurationService().getPropertyString(RiceKeyConstants.MESSAGE_ADHOC_ANNOTATION);                		
+                			annotation = MessageFormat.format(message, GlobalVariables.getUserSession().getPrincipalName() );
+                		} catch ( Exception ex ) {
+                			LOG.warn("Unable to set annotation", ex );
+                		}
+                	}
                     if (AdHocRouteRecipient.PERSON_TYPE.equals(recipient.getType())) {
                         // TODO make the 1 a constant
                     	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(recipient.getId());

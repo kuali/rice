@@ -23,6 +23,8 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kns.bo.AdHocRoutePerson;
 import org.kuali.rice.kns.bo.AdHocRouteRecipient;
 import org.kuali.rice.kns.bo.Note;
@@ -39,7 +41,6 @@ import org.kuali.rice.kns.util.KNSConstants.NoteTypeEnum;
 import org.kuali.rice.kns.workflow.service.WorkflowDocumentService;
 import org.springframework.transaction.annotation.Transactional;
 
-
 /**
  * This class is the service implementation for the Note structure.
  * 
@@ -51,7 +52,7 @@ public class NoteServiceImpl implements NoteService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(NoteServiceImpl.class);
 
     private NoteDao noteDao;
-    private org.kuali.rice.kim.service.PersonService personService;
+    private PersonService personService;
     private WorkflowDocumentService workflowDocumentService;
     private KualiConfigurationService kualiConfigurationService;
 
@@ -162,7 +163,7 @@ public class NoteServiceImpl implements NoteService {
         AdHocRouteRecipient routeRecipient = note.getAdHocRouteRecipient();
 
         // build notification request
-        Person requestedUser = personService.getPersonByPrincipalName(routeRecipient.getId());
+        Person requestedUser = this.getPersonService().getPersonByPrincipalName(routeRecipient.getId());
         String senderName = sender.getFirstName() + " " + sender.getLastName();
         String requestedName = requestedUser.getFirstName() + " " + requestedUser.getLastName();
         
@@ -184,7 +185,7 @@ public class NoteServiceImpl implements NoteService {
     /**
      * @param personService the personService to set
      */
-    public void setPersonService(org.kuali.rice.kim.service.PersonService personService) {
+    public void setPersonService(PersonService personService) {
         this.personService = personService;
     }
 
@@ -200,5 +201,12 @@ public class NoteServiceImpl implements NoteService {
      */
     public void setKualiConfigurationService(KualiConfigurationService kualiConfigurationService) {
         this.kualiConfigurationService = kualiConfigurationService;
+    }
+    
+    protected PersonService getPersonService() {
+        if ( personService == null ) {
+            personService = KIMServiceLocator.getPersonService();
+        }
+        return personService;
     }
 }

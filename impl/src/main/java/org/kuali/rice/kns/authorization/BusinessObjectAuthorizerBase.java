@@ -132,7 +132,7 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 		return getIdentityManagementService().isAuthorized(principalId,
 				namespaceCode, permissionName,
 				new AttributeSet(getPermissionDetailValues(businessObject)),
-				new AttributeSet(getRoleQualification(businessObject)));
+				new AttributeSet(getRoleQualification(businessObject, principalId)));
 	}
 
 	public final boolean isAuthorizedByTemplate(BusinessObject businessObject,
@@ -141,7 +141,7 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 		return getIdentityManagementService().isAuthorizedByTemplateName(
 				principalId, namespaceCode, permissionTemplateName,
 				new AttributeSet(getPermissionDetailValues(businessObject)),
-				new AttributeSet(getRoleQualification(businessObject)));
+				new AttributeSet(getRoleQualification(businessObject, principalId)));
 	}
 
 	public final boolean isAuthorized(BusinessObject businessObject,
@@ -152,11 +152,11 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 		AttributeSet permissionDetails = null;
 		if (collectionOrFieldLevelRoleQualification != null) {
 			roleQualifiers = new AttributeSet(
-					getRoleQualification(businessObject));
+					getRoleQualification(businessObject, principalId));
 			roleQualifiers.putAll(collectionOrFieldLevelRoleQualification);
 		} else {
 			roleQualifiers = new AttributeSet(
-					getRoleQualification(businessObject));
+					getRoleQualification(businessObject, principalId));
 		}
 		if (collectionOrFieldLevelPermissionDetails != null) {
 			permissionDetails = new AttributeSet(
@@ -177,7 +177,7 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 			Map<String, String> collectionOrFieldLevelPermissionDetails,
 			Map<String, String> collectionOrFieldLevelRoleQualification) {
 		AttributeSet roleQualifiers = new AttributeSet(
-				getRoleQualification(businessObject));
+				getRoleQualification(businessObject, principalId));
 		AttributeSet permissionDetails = new AttributeSet(
 				getPermissionDetailValues(businessObject));
 		if (collectionOrFieldLevelRoleQualification != null) {
@@ -202,20 +202,19 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 	 */
 	protected final Map<String, String> getRoleQualification(
 			BusinessObject primaryBusinessObjectOrDocument) {
-//		Map<Object, Map<String, String>> roleQualificationCache = getRoleQualificationCache();
-//		Map<String, String> roleQualification = roleQualificationCache
-//				.get(primaryBusinessObjectOrDocument);
-//		if (roleQualification == null) {
+		return getRoleQualification(primaryBusinessObjectOrDocument, GlobalVariables
+					.getUserSession().getPerson().getPrincipalId());
+	}
+	
+	protected final Map<String, String> getRoleQualification(
+			BusinessObject primaryBusinessObjectOrDocument, String principalId) {
 			Map<String, String> roleQualification = new HashMap<String, String>();
 			addRoleQualification(primaryBusinessObjectOrDocument,
 					roleQualification);
-			roleQualification.put(KimAttributes.PRINCIPAL_ID, GlobalVariables
-					.getUserSession().getPerson().getPrincipalId());
-//			roleQualificationCache.put(primaryBusinessObjectOrDocument,
-//					roleQualification);
-//		}
+			roleQualification.put(KimAttributes.PRINCIPAL_ID, principalId);
 		return roleQualification;
 	}
+
 
 	/**
 	 * @see org.kuali.rice.kns.authorization.BusinessObjectAuthorizer#getCollectionItemPermissionDetails(org.kuali.rice.kns.bo.BusinessObject)
@@ -284,28 +283,4 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 		}
 		return dataDictionaryService;
 	}
-	
-//	@SuppressWarnings("unchecked")
-//	private Map<Object, Map<String, String>> getRoleQualificationCache() {
-//		Map<Object, Map<String, String>> roleQualificationCache = (Map<Object, Map<String, String>>) GlobalVariables
-//				.getRequestCache(ROLE_QUALIFICATION_CACHE_NAME);
-//		if (roleQualificationCache == null) {
-//			roleQualificationCache = new HashMap<Object, Map<String, String>>();
-//			GlobalVariables.setRequestCache(ROLE_QUALIFICATION_CACHE_NAME,
-//					roleQualificationCache);
-//		}
-//		return roleQualificationCache;
-//	}
-//
-//	@SuppressWarnings("unchecked")
-//	private Map<Object, Map<String, String>> getPermissionDetailsCache() {
-//		Map<Object, Map<String, String>> permissionDetailsCache = (Map<Object, Map<String, String>>) GlobalVariables
-//				.getRequestCache(PERMISSION_DETAILS_CACHE_NAME);
-//		if (permissionDetailsCache == null) {
-//			permissionDetailsCache = new HashMap<Object, Map<String, String>>();
-//			GlobalVariables.setRequestCache(PERMISSION_DETAILS_CACHE_NAME,
-//					permissionDetailsCache);
-//		}
-//		return permissionDetailsCache;
-//	}
 }

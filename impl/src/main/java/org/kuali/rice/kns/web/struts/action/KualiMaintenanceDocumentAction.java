@@ -970,9 +970,6 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
     	maintenanceForm.setReadOnly(!formBase.getDocumentActions().containsKey(KNSConstants.KUALI_ACTION_CAN_EDIT));
     	MaintenanceDocumentRestrictions maintenanceDocumentAuthorizations = getBusinessObjectAuthorizationService().getMaintenanceDocumentRestrictions(maintenanceDocument, user);
     	maintenanceForm.setAuthorizations(maintenanceDocumentAuthorizations);
-    	if (maintenanceDocumentAuthorizations.hasAnyFieldRestrictions()) {
-    		maintenanceForm.getDocumentActions().remove(KNSConstants.KUALI_ACTION_CAN_BLANKET_APPROVE);
-    	}
     }
 
 	public LookupService getLookupService() {

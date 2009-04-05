@@ -22,32 +22,6 @@ package org.kuali.rice.kns.datadictionary;
  *
  */
 public class WorkflowAttributeMetadata extends DataDictionaryDefinitionBase {
-	private String businessObjectClassName; 
-	private String attributeName;
-	/**
-	 * @return the businessObjectClassName
-	 */
-	public String getBusinessObjectClassName() {
-		return this.businessObjectClassName;
-	}
-	/**
-	 * @return the attributeName
-	 */
-	public String getAttributeName() {
-		return this.attributeName;
-	}
-	/**
-	 * @param businessObjectClassName the businessObjectClassName to set
-	 */
-	public void setBusinessObjectClassName(String businessObjectClassName) {
-		this.businessObjectClassName = businessObjectClassName;
-	}
-	/**
-	 * @param attributeName the attributeName to set
-	 */
-	public void setAttributeName(String attributeName) {
-		this.attributeName = attributeName;
-	}
 	/**
 	 * This overridden method ...
 	 * 

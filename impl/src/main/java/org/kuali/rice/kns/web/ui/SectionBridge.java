@@ -562,9 +562,9 @@ public class SectionBridge {
                                         // save the simple property name
                                         String name = subCollField.getPropertyName();
 
-                                        String subCollectionFullName = collectionDefinition.getName() + "[" + i + "]" + "." + subCollectionDefinition.getName() + "[" + j + "].";
+                                        String subCollectionFullName = collectionDefinition.getName() + "[" + i + "]" + "." + subCollectionDefinition.getName();
                                         // prefix name for multi line (indexed)
-                                        subCollField.setPropertyName(subCollectionFullName + subCollField.getPropertyName());
+                                        subCollField.setPropertyName(subCollectionFullName + "[" + j + "]." + subCollField.getPropertyName());
 
                                         // commenting out codes for sub-collections show/hide for now
                                         if (fieldDefinition instanceof MaintainableFieldDefinition) {

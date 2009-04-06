@@ -19,7 +19,7 @@
 
 <c:if test="${messages != null}">
   <ul>
-    <c:forEach begin="0" end="4" var="message" items="${messages}" >
+    <c:forEach var="message" items="${messages}" >
       <li>
   	    <!-- pre makes stack traces, etc. format correctly -->
         <pre><c:out value="${message}"/></pre>

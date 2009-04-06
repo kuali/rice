@@ -421,6 +421,7 @@ public class KualiForm extends PojoFormBase {
 		if (extraButtons != null) {
 			extraButtons.clear();
 		}
+		clearDisplayedMessages();
 	}
 
 	/**
@@ -431,6 +432,19 @@ public class KualiForm extends PojoFormBase {
 		super.reset(mapping, request);
 		if (extraButtons != null) {
 			extraButtons.clear();
+		}
+		clearDisplayedMessages();
+	}
+	
+	private void clearDisplayedMessages() {
+		if (displayedErrors != null) {
+			displayedErrors.clear();
+		}
+		if (displayedWarnings != null) {
+			displayedWarnings.clear();
+		}
+		if (displayedInfo != null) {
+			displayedInfo.clear();
 		}
 	}
 }

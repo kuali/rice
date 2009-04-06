@@ -34,6 +34,12 @@
 		<property environment="env"/>
 	    <!-- if the M2_HOME is already defined in the environment, use it -->
 		<property name="maven.home.directory" value="${env.M2_HOME}"/>
+		<!-- default environment.path.variable to 'PATH' variable from the local environment -->
+		<condition property="environment.path.variable" value="${env.PATH}">
+			<isset property="${env.PATH}"/>
+		</condition>
+        <!-- if the PATH variable is not found try 'Path' for Vista/XP systems -->
+        <property name="environment.path.variable" value="${env.Path}"/>
 		<mkdir dir="${dist.build.dir}"/>
 	</target>
 
@@ -123,7 +129,7 @@
 	</target>
 
 	<target name="install-rice-jars" depends="init">
-		<echo message="${env.PATH}"/>
+		<echo message="${environment.path.variable}"/>
 		<maven goals="install" options="-e -Dmaven.test.skip=true" />
 	</target>
 
@@ -220,7 +226,7 @@
 				<fileset dir="${dist.src.dir}"/>
 			</tar>
 		</target>
-	
+
 	<target name="dist-all" depends="clean, clean-maven, dist-server, dist-binary, dist-src" description="Creates server, binary and source distributions"/>
 	
 	<!-- Used for deployments on the server -->
@@ -263,7 +269,7 @@
 		<sequential>
 			<java classname="org.codehaus.classworlds.Launcher" dir="." fork="true" failonerror="@{failonerror}">
 				<jvmarg line="-Xmx512m -XX:MaxPermSize=128m"/>
-				<env key="PATH" path="${env.PATH}:/usr/local/java/bin"/>
+				<env key="PATH" path="${environment.path.variable}:/usr/local/java/bin"/>
 				<arg line="@{options} @{goals}" />
 				<sysproperty key="classworlds.conf" value="${maven.home.directory}/bin/m2.conf" />
 				<sysproperty key="maven.home" value="${maven.home.directory}" />	

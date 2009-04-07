@@ -474,7 +474,6 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
     public ActionForward refresh(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         KualiMaintenanceForm maintenanceForm = (KualiMaintenanceForm) form;
         
-        WebUtils.reuseErrorMapFromPreviousRequest(maintenanceForm);
         maintenanceForm.setDerivedValuesOnForm(request);
         
         refreshAdHocRoutingWorkgroupLookups(request, maintenanceForm);

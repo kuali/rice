@@ -33,7 +33,7 @@
 <c:set var="documentEntry" value="${DataDictionary[documentTypeName]}" />
 
 <c:set var="renderRequiredFieldsLabel" value="${(KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]
-||KualiForm.documentActions[Constants.KUALI_ACTION_CAN_AD_HOC_ROUTE]) && (not KualiForm.suppressAllButtons)}" />
+||KualiForm.documentActions[Constants.KUALI_ACTION_CAN_SEND_ADHOC_REQUESTS]) && (not KualiForm.suppressAllButtons)}" />
 <kul:page showDocumentInfo="${showDocumentInfo}" docTitle="${docTitle}"
 	htmlFormAction="${htmlFormAction}" transactionalDocument="false" maintenanceDocument="true"
 	renderMultipart="${renderMultipart}" showTabButtons="${showTabButtons}"

@@ -129,8 +129,15 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 				&& !documentActions
 						.contains(KNSConstants.KUALI_ACTION_CAN_EDIT)) {
 			documentActions.remove(KNSConstants.KUALI_ACTION_CAN_AD_HOC_ROUTE);
+			//documentActions.remove(KNSConstants.KUALI_ACTION_CAN_SEND_ADHOC_REQUESTS);
+		}
+		
+		if (documentActions.contains(KNSConstants.KUALI_ACTION_CAN_SEND_ADHOC_REQUESTS)
+				&& !canSendAdHocRequests(document,
+						KNSConstants.BY_PASS_ACTION_REQUEST_CD_INDICATOR, user) ) {
 			documentActions.remove(KNSConstants.KUALI_ACTION_CAN_SEND_ADHOC_REQUESTS);
 		}
+		
 		if (documentActions.contains(KNSConstants.KUALI_ACTION_CAN_ANNOTATE)
 				&& !documentActions
 						.contains(KNSConstants.KUALI_ACTION_CAN_EDIT)) {
@@ -201,6 +208,18 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 		}
 		return isAuthorizedByTemplate(document, KNSConstants.KNS_NAMESPACE,
 				KimConstants.PermissionTemplateNames.VIEW_NOTE_ATTACHMENT, user
+						.getPrincipalId(), additionalPermissionDetails, null);
+	}
+	
+	public final boolean canSendAdHocRequests(Document document,
+			String actionRequestCd, Person user) {
+		Map<String, String> additionalPermissionDetails = new HashMap<String, String>();
+		if (actionRequestCd != null) {
+			additionalPermissionDetails.put(KimAttributes.ACTION_REQUEST_CD,
+					actionRequestCd);
+		}
+		return isAuthorizedByTemplate(document, KNSConstants.KNS_NAMESPACE,
+				KimConstants.PermissionTemplateNames.SEND_AD_HOC_REQUEST, user
 						.getPrincipalId(), additionalPermissionDetails, null);
 	}
 

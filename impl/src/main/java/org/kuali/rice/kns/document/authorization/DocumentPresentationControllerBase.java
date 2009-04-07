@@ -174,7 +174,7 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
     }
     
     protected boolean canSendAdhocRequests(Document document) {
-    	return canAdHocRoute(document) && document.getDocumentHeader().getWorkflowDocument().stateIsEnroute();
+    	return true;
     }
 
     /**

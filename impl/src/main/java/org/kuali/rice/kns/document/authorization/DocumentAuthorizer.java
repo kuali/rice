@@ -44,4 +44,6 @@ public interface DocumentAuthorizer extends BusinessObjectAuthorizer {
 	public boolean canDeleteNoteAttachment(Document document, String attachmentTypeCode, String createdBySelfOnly, Person user);
 	
 	public boolean canViewNoteAttachment(Document document, String attachmentTypeCode, Person user);
+	
+	public boolean canSendAdHocRequests(Document document, String actionRequestCd, Person user);
 }

@@ -83,12 +83,14 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
     protected Map editingMode;
     protected Map documentActions;
     protected boolean suppressAllButtons;
-
+    
+    protected Map adHocActionRequestCodes;
     private boolean returnToActionList;
 
     // for session enhancement
     private String formKey;
     private String docNum;
+    
 
     
     /**
@@ -359,13 +361,23 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 	public void setDocumentActions(Map documentActions) {
 		this.documentActions = documentActions;
 	}
+	
+	
+
+	/**
+	 * @param adHocActionRequestCodes the adHocActionRequestCodes to set
+	 */
+	public void setAdHocActionRequestCodes(Map adHocActionRequestCodes) {
+		this.adHocActionRequestCodes = adHocActionRequestCodes;
+	}
 
 	/**
      * @return a map of the possible action request codes that takes into account the users context on the document
      */
     public Map getAdHocActionRequestCodes() {
-        Map adHocActionRequestCodes = new HashMap();
-        if (getWorkflowDocument() != null) {
+        //Map adHocActionRequestCodes = new HashMap();
+        //KNSServiceLocator.getDocumentHelperService()
+        /*if (getWorkflowDocument() != null) {
             if (getWorkflowDocument().isFYIRequested()) {
                 adHocActionRequestCodes.put(KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ_LABEL);
             }
@@ -378,7 +390,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
                 adHocActionRequestCodes.put(KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ_LABEL);
                 adHocActionRequestCodes.put(KEWConstants.ACTION_REQUEST_APPROVE_REQ, KEWConstants.ACTION_REQUEST_APPROVE_REQ_LABEL);
             }
-        }
+        }*/
         return adHocActionRequestCodes;
     }
 

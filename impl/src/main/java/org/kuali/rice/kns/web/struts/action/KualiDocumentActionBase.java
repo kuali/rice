@@ -188,6 +188,7 @@ public class KualiDocumentActionBase extends KualiAction {
             //DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(document);
             //formBase.populateAuthorizationFields(documentAuthorizer);
              populateAuthorizationFields(formBase);
+             populateAdHocActionRequestCodes(formBase);
 
             // below used by KualiHttpSessionListener to handle lock expiration
                 request.getSession().setAttribute(KNSConstants.DOCUMENT_HTTP_SESSION_KEY, document.getDocumentNumber());
@@ -387,8 +388,14 @@ public class KualiDocumentActionBase extends KualiAction {
 
         // check authorization
         //DocumentActionFlags flags = getDocumentActionFlags(document);
-        if (!kualiDocumentFormBase.getDocumentActions().containsKey(KNSConstants.KUALI_ACTION_CAN_AD_HOC_ROUTE)) {
-            throw buildAuthorizationException("ad-hoc route", document);
+        //if (!kualiDocumentFormBase.getDocumentActions().containsKey(KNSConstants.KUALI_ACTION_CAN_AD_HOC_ROUTE)) {
+        //    throw buildAuthorizationException("ad-hoc route", document);
+        //}
+        
+        // check authorization for adding notes
+        DocumentAuthorizer documentAuthorizer = getDocumentHelperService().getDocumentAuthorizer(document);
+        if(!documentAuthorizer.canSendAdHocRequests(document, kualiDocumentFormBase.getNewAdHocRoutePerson().getActionRequested(), GlobalVariables.getUserSession().getPerson())){
+        	 throw buildAuthorizationException("ad-hoc route", document);
         }
 
         // check business rules
@@ -1547,6 +1554,26 @@ public class KualiDocumentActionBase extends KualiAction {
 
         }
     }
+    
+    protected void populateAdHocActionRequestCodes(KualiDocumentFormBase formBase){
+    	Document document = formBase.getDocument();
+    	DocumentAuthorizer documentAuthorizer = getDocumentHelperService().getDocumentAuthorizer(document);
+    	Map adHocActionRequestCodes = new HashMap();
+
+        if (documentAuthorizer.canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_FYI_REQ, GlobalVariables.getUserSession().getPerson())) {
+                adHocActionRequestCodes.put(KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ_LABEL);
+        }
+        if (documentAuthorizer.canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, GlobalVariables.getUserSession().getPerson())) {
+                adHocActionRequestCodes.put(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
+        }
+        if (documentAuthorizer.canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_APPROVE_REQ, GlobalVariables.getUserSession().getPerson())) {
+                adHocActionRequestCodes.put(KEWConstants.ACTION_REQUEST_APPROVE_REQ, KEWConstants.ACTION_REQUEST_APPROVE_REQ_LABEL);
+        }
+        
+			formBase.setAdHocActionRequestCodes(adHocActionRequestCodes);
+
+    }
+    
 
     protected Map convertSetToMap(Set s){
     	Map map = new HashMap();

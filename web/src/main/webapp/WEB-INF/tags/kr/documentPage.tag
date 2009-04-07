@@ -48,7 +48,7 @@
 	</script>
 </c:if>
 <c:set var="renderRequiredFieldsLabel" value="${(KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]
-||KualiForm.documentActions[Constants.KUALI_ACTION_CAN_AD_HOC_ROUTE]) && (not KualiForm.suppressAllButtons)}" />
+||KualiForm.documentActions[Constants.KUALI_ACTION_CAN_SEND_ADHOC_REQUESTS]) && (not KualiForm.suppressAllButtons)}" />
 <kul:page docTitle="${documentEntry.label}" transactionalDocument="${documentEntry.transactionalDocument}"
   headerMenuBar="${headerMenuBar}" showDocumentInfo="${showDocumentInfo}" headerTitle="${headerTitle}" 
   htmlFormAction="${htmlFormAction}" renderMultipart="${renderMultipart}" showTabButtons="${showTabButtons}" 

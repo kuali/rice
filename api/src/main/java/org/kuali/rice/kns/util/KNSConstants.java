@@ -206,6 +206,8 @@ public class KNSConstants extends JSTLConstants {
     public static final String NOTE_ATTACHMENT_FILE_PROPERTY_NAME = "attachmentFile";
 
     public static final String NOTE_WITHOUT_ATTACHMENT_INDICATOR ="noteWithoutAttachment";
+    
+    public static final String BY_PASS_ACTION_REQUEST_CD_INDICATOR = "byPassActionRequestCd"; 
     /**
      * Property name for enabling attachments to note, overriding the defaults defined by the document template - Value is
      * "enableNoteAttachments"

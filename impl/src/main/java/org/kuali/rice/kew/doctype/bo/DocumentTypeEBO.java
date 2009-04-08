@@ -58,4 +58,6 @@ public interface DocumentTypeEBO extends ExternalizableBusinessObject{
 	 */
 	public boolean isActive();
 
+	public Long getRouteHeaderId();
+
 }

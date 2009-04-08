@@ -33,8 +33,8 @@
 	<kim:personMembership />
 		
 	<kul:notes />
-	<kul:routeLog />
 	<kul:adHocRecipients />
+	<kul:routeLog />
 	<kul:panelFooter />
 	<kul:documentControls transactionalDocument="false" />
 

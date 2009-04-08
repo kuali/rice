@@ -53,8 +53,8 @@
   <bean id="KimResponsibilityImpl-template.namespaceCode" parent="KimResponsibilityImpl-template.namespaceCode-parentBean" />
   <bean id="KimResponsibilityImpl-template.namespaceCode-parentBean" parent="Parameter-parameterNamespaceCode" abstract="true"
         p:name="template.namespaceCode"
-        p:label="Template Namespace Code"
-        p:shortLabel="Template Namespace Code" >
+        p:label="Template Namespace"
+        p:shortLabel="Template Namespace" >
   </bean>
     
   <bean id="KimResponsibilityImpl-templateId" parent="KimResponsibilityImpl-templateId-parentBean" />

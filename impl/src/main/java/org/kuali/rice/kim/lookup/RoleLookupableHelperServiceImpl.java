@@ -325,13 +325,15 @@ public class RoleLookupableHelperServiceImpl extends KualiLookupableHelperServic
 
 	}
 	
+	private static final String ROLE_ID_URL_KEY = "&"+KimConstants.PrimaryKeyConstants.ROLE_ID+"=";
 	/**
 	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getInquiryUrl(org.kuali.rice.kns.bo.BusinessObject, java.lang.String)
 	 */
 	@Override
 	public HtmlData getInquiryUrl(BusinessObject bo, String propertyName) {
 		AnchorHtmlData inquiryHtmlData = (AnchorHtmlData)super.getInquiryUrl(bo, propertyName);
-	    inquiryHtmlData.setHref(getCustomRoleInquiryHref(getBackLocation(), inquiryHtmlData.getHref()));
+		if(inquiryHtmlData!=null && StringUtils.isNotBlank(inquiryHtmlData.getHref()) && inquiryHtmlData.getHref().contains(ROLE_ID_URL_KEY))
+			inquiryHtmlData.setHref(getCustomRoleInquiryHref(getBackLocation(), inquiryHtmlData.getHref()));
 		return inquiryHtmlData;
 	}
 
@@ -352,7 +354,7 @@ public class RoleLookupableHelperServiceImpl extends KualiLookupableHelperServic
     		docTypeName = KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_TYPE_NAME;
     		docTypeAction = KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_ACTION;
     	}
-		if (StringUtils.isNotBlank(href) && href.indexOf("&"+KimConstants.PrimaryKeyConstants.ROLE_ID+"=")!=-1) {
+		if (StringUtils.isNotBlank(href) && href.indexOf(ROLE_ID_URL_KEY)!=-1) {
 			int idx1 = href.indexOf("&"+KimConstants.PrimaryKeyConstants.ROLE_ID+"=");
 		    int idx2 = href.indexOf("&", idx1+1);
 		    if (idx2 < 0) {

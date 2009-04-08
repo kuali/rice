@@ -25,6 +25,8 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kns.bo.GlobalBusinessObject;
 import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
@@ -91,6 +93,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
     protected MaintenanceDocumentDictionaryService maintDocDictionaryService;
     protected WorkflowDocumentService workflowDocumentService;
     protected org.kuali.rice.kim.service.PersonService personService;
+    protected RoleService roleService;
     protected BusinessObjectAuthorizationService businessObjectAuthorizationService;
     
     private PersistableBusinessObject oldBo;
@@ -1583,6 +1586,13 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
 			BusinessObjectAuthorizationService businessObjectAuthorizationService) {
 		this.businessObjectAuthorizationService = businessObjectAuthorizationService;
 	}
+
+    protected RoleService getRoleService(){
+        if(this.roleService==null){
+            this.roleService = KIMServiceLocator.getRoleService();
+        }
+        return this.roleService;
+    }
 
 }
 

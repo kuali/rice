@@ -31,9 +31,9 @@ import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.role.KimDelegation;
 import org.kuali.rice.kim.bo.role.KimRole;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -65,7 +65,7 @@ public class KimDelegationImpl extends PersistableBusinessObjectBase implements 
 	
 	@OneToMany(targetEntity=KimDelegationMemberImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
 	@JoinColumn(name="DLGN_ID", insertable=false, updatable=false)
-	protected List<KimDelegationMemberImpl> members;
+	protected List<KimDelegationMemberImpl> members = new TypedArrayList(KimDelegationMemberImpl.class);
 
 	@ManyToOne(targetEntity=KimTypeImpl.class,fetch=FetchType.LAZY)
 	@JoinColumn(name="KIM_TYP_ID", insertable=false, updatable=false)

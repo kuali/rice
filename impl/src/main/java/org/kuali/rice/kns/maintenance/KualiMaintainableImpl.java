@@ -1262,6 +1262,21 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 			}
 		}
 	}
+
+	/**
+	 * By default a maintainable is not external 
+	 * 
+	 * @see org.kuali.rice.kns.maintenance.Maintainable#isExternalBusinessObject()
+	 */
+	public boolean isExternalBusinessObject(){
+		return false;
+	}
 	
-	
+	/**
+	 * @see org.kuali.rice.kns.maintenance.Maintainable#getExternalBusinessObject()
+	 */
+	public void prepareBusinessObject(BusinessObject businessObject){
+		//Do nothing by default
+	}
+
 }

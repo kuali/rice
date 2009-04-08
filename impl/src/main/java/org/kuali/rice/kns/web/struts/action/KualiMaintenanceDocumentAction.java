@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2005-2007 The Kuali Foundation.
  * 
@@ -188,10 +189,14 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         if (!(KNSConstants.MAINTENANCE_NEW_ACTION.equals(maintenanceAction)) && !(KNSConstants.MAINTENANCE_NEWWITHEXISTING_ACTION.equals(maintenanceAction))) {
             Map requestParameters = buildKeyMapFromRequest(document.getNewMaintainableObject(), request);
             PersistableBusinessObject oldBusinessObject = (PersistableBusinessObject) getLookupService().findObjectBySearch(Class.forName(maintenanceForm.getBusinessObjectClassName()), requestParameters);
-            if (oldBusinessObject == null) {
+            if (oldBusinessObject == null && !document.getOldMaintainableObject().isExternalBusinessObject()) {
                 throw new RuntimeException("Cannot retrieve old record for maintenance document, incorrect parameters passed on maint url.");
-            }
+            } 
             
+            if(document.getOldMaintainableObject().isExternalBusinessObject()){
+            	populateBOWithCopyKeyValues(request, oldBusinessObject, document.getOldMaintainableObject());
+            	document.getOldMaintainableObject().prepareBusinessObject(oldBusinessObject);
+            }
             
             // Temp solution for loading extension objects - need to find a better way
             if (OrmUtils.isJpaEnabled() && OrmUtils.isJpaAnnotated(oldBusinessObject.getClass()) && oldBusinessObject.getExtension() != null && OrmUtils.isJpaAnnotated(oldBusinessObject.getExtension().getClass())) {
@@ -265,25 +270,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
             // maybe we need a new generateDefaultValues that doesn't overwrite?
             PersistableBusinessObject newBO = document.getNewMaintainableObject().getBusinessObject();
             Map<String, String> parameters = buildKeyMapFromRequest(document.getNewMaintainableObject(), request);
-            for (String parmName : parameters.keySet()) {
-                String propertyValue = parameters.get(parmName);
-
-                if (StringUtils.isNotBlank(propertyValue)) {
-                    String propertyName = parmName;
-                    // set value of property in bo
-                    if (PropertyUtils.isWriteable(newBO, propertyName)) {
-                        Class type = ObjectUtils.easyGetPropertyType(newBO, propertyName);
-                        if (type != null && Formatter.getFormatter(type) != null) {
-                            Formatter formatter = Formatter.getFormatter(type);
-                            Object obj = formatter.convertFromPresentationFormat(propertyValue);
-                            ObjectUtils.setObjectProperty(newBO, propertyName, obj.getClass(), obj);
-                        }
-                        else {
-                            ObjectUtils.setObjectProperty(newBO, propertyName, String.class, propertyValue);
-                        }
-                    }
-                }
-            }
+            copyParametersToBO(parameters, newBO);
             newBO.refresh();
             document.getNewMaintainableObject().setupNewFromExisting( document, request.getParameterMap() );
         }
@@ -313,6 +300,43 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         document.setDisplayTopicFieldInNotes(entry.getDisplayTopicFieldInNotes());
         
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    }
+
+    private void populateBOWithCopyKeyValues(HttpServletRequest request, PersistableBusinessObject oldBusinessObject, Maintainable oldMaintainableObject) throws Exception{
+        List keyFieldNamesToCopy = new ArrayList();
+    	Map<String, String> parametersToCopy;
+        if (!StringUtils.isBlank(request.getParameter(KNSConstants.COPY_KEYS))) {
+            String[] copyKeys = request.getParameter(KNSConstants.COPY_KEYS).split(KNSConstants.FIELD_CONVERSIONS_SEPARATOR);
+            for (String copyKey: copyKeys) {
+            	keyFieldNamesToCopy.add(copyKey);
+            }
+        }
+        parametersToCopy = getRequestParameters(keyFieldNamesToCopy, oldMaintainableObject, request);
+        if(parametersToCopy!=null && parametersToCopy.size()>0){
+            copyParametersToBO(parametersToCopy, oldBusinessObject);
+        }
+    }
+
+    private void copyParametersToBO(Map<String, String> parameters, PersistableBusinessObject newBO) throws Exception{
+        for (String parmName : parameters.keySet()) {
+            String propertyValue = parameters.get(parmName);
+
+            if (StringUtils.isNotBlank(propertyValue)) {
+                String propertyName = parmName;
+                // set value of property in bo
+                if (PropertyUtils.isWriteable(newBO, propertyName)) {
+                    Class type = ObjectUtils.easyGetPropertyType(newBO, propertyName);
+                    if (type != null && Formatter.getFormatter(type) != null) {
+                        Formatter formatter = Formatter.getFormatter(type);
+                        Object obj = formatter.convertFromPresentationFormat(propertyValue);
+                        ObjectUtils.setObjectProperty(newBO, propertyName, obj.getClass(), obj);
+                    }
+                    else {
+                        ObjectUtils.setObjectProperty(newBO, propertyName, String.class, propertyValue);
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -474,6 +498,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
     public ActionForward refresh(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         KualiMaintenanceForm maintenanceForm = (KualiMaintenanceForm) form;
         
+        WebUtils.reuseErrorMapFromPreviousRequest(maintenanceForm);
         maintenanceForm.setDerivedValuesOnForm(request);
         
         refreshAdHocRoutingWorkgroupLookups(request, maintenanceForm);
@@ -564,8 +589,12 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         else {
             keyFieldNames = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(maintainable.getBusinessObject().getClass());
         }
+        return getRequestParameters(keyFieldNames, maintainable, request);
+    }
 
-        Map requestParameters = new HashMap();
+    private Map<String, String> getRequestParameters(List keyFieldNames, Maintainable maintainable, HttpServletRequest request){
+
+        Map<String, String> requestParameters = new HashMap<String, String>();
 
 
         // List of encrypted fields - Change for KFSMI-1374 -
@@ -596,6 +625,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         }
 
         return requestParameters;
+
     }
 
     /**

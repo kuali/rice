@@ -23,11 +23,11 @@ import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public interface Role extends ExternalizableBusinessObject {
+public interface Group extends ExternalizableBusinessObject {
 
-	public String getRoleId();
-	public String getRoleName();
+	public String getGroupId();
+	public String getGroupName();
 	public String getNamespaceCode();
-	//public KimTypeImpl getKimRoleType();
-	
+	//public KimTypeImpl getKimGroupType();
+
 }

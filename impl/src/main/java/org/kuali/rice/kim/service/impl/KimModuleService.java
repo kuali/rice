@@ -19,11 +19,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.management.relation.RoleInfo;
+
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.Role;
+import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
+import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kim.service.RoleService;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 import org.kuali.rice.kns.service.impl.ModuleServiceBase;
 
@@ -37,6 +43,7 @@ public class KimModuleService extends ModuleServiceBase {
 
 	private PersonService<Person> personService;
 	private RoleService kimRoleService;
+	private GroupService groupService;
 
 	/**
 	 * This overridden method ...
@@ -53,8 +60,14 @@ public class KimModuleService extends ModuleServiceBase {
 				return (T) getPersonService().getPersonByPrincipalName( (String)fieldValues.get( "principalName" ) );
 			}
 			// otherwise, fall through since critieria is not known
-		} else if ( Role.class.isAssignableFrom( businessObjectClass ) ) {
-			System.out.println( "UNHANDLED EBO CALL in KimModuleService.getExternalizableBusinessObject() for Role");
+		} else if(Role.class.isAssignableFrom(businessObjectClass)){
+			if(fieldValues.containsKey(KimConstants.PrimaryKeyConstants.ROLE_ID))
+				//KimRoleInfo roleInfo = getKimRoleService().getRole((String)fieldValues.get(KimConstants.PrimaryKeyConstants.ROLE_ID));
+				//RoleImpl roleImpl
+				return null;
+		} else if(Group.class.isAssignableFrom(businessObjectClass)){
+			if(fieldValues.containsKey(KimConstants.PrimaryKeyConstants.GROUP_ID))
+				return (T) getGroupService().getGroupInfo((String)fieldValues.get(KimConstants.PrimaryKeyConstants.GROUP_ID));
 		}
 		// otherwise, use the default implementation
 		return super.getExternalizableBusinessObject( businessObjectClass, fieldValues );
@@ -114,7 +127,12 @@ public class KimModuleService extends ModuleServiceBase {
 			List<String> pkFields = new ArrayList<String>( 1 );
 			pkFields.add( "roleId" );
 			return pkFields;
+		} else if ( Group.class.isAssignableFrom( businessObjectInterfaceClass ) ) {
+			List<String> pkFields = new ArrayList<String>( 1 );
+			pkFields.add( "groupId" );
+			return pkFields;
 		}
+
 		// otherwise, use the default implementation
 		return super.listPrimaryKeyFieldNames( businessObjectInterfaceClass );
 	}
@@ -133,5 +151,11 @@ public class KimModuleService extends ModuleServiceBase {
 		}
 		return kimRoleService;
 	}
-}
 
+	public GroupService getGroupService() {
+		if ( groupService == null ) {
+			groupService = KIMServiceLocator.getGroupService();
+		}
+		return groupService;
+	}
+}

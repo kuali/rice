@@ -131,4 +131,6 @@ public interface RoleService {
 	 * Notifies all of a principal's roles and role types that the principal has been inactivated.
 	 */
 	void principalInactivated( String principalId );
+	
+	List<RoleMembershipInfo> getFirstLevelRoleMembers(List<String> roleIds);
 }

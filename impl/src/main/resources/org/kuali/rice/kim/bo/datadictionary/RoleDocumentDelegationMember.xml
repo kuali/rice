@@ -73,7 +73,7 @@
         p:maxLength="40"
         p:required="false" >
     <property name="control" >
-      <bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.rice.kew.rule.bo.DelegationTypeValuesFinder"/>
+      <bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.rice.kim.lookup.valuefinder.DelegationTypeValuesFinder"/>
     </property>
   </bean>
 

@@ -180,7 +180,8 @@ public class KNSConstants extends JSTLConstants {
 //    public static final String GENERIC_CODE_PROPERTY_NAME = "code";
 //    public static final String STAND_IN_BUSINESS_OBJECT_FOR_ATTRIBUTES = "AttributeReferenceDummy";
     public static final String OVERRIDE_KEYS = "overrideKeys";
-
+    public static final String COPY_KEYS = "cpKys";
+    
     public static final String KNS_APPLICATION_DATASOURCE = "knsApplication.datasource";
     public static final String KNS_SERVER_DATASOURCE = "knsServer.datasource";
     public static final String KNS_APPLICATION_DATASOURCE_JNDI = "knsApplication.datasource.jndi.location";

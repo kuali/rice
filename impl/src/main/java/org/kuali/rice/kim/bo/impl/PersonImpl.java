@@ -148,116 +148,132 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	}
 	
 	protected void populateEntityInfo( KimEntityDefaultInfo entity, KimPrincipal principal, String personEntityTypeCode ) {
-		KimEntityEntityTypeDefaultInfo entityEntityType = entity.getEntityType( personEntityTypeCode );  
-		entityTypeCode = personEntityTypeCode;
-		populateNameInfo( personEntityTypeCode, entity, principal );
-		populateAddressInfo( entityEntityType );
-		populateEmailInfo( entityEntityType );
-		populatePhoneInfo( entityEntityType );
-		populateAffiliationInfo( entity );
-		populateEmploymentInfo( entity );
-		populateExternalIdentifiers( entity );
+		if(entity!=null){
+			KimEntityEntityTypeDefaultInfo entityEntityType = entity.getEntityType( personEntityTypeCode );  
+			entityTypeCode = personEntityTypeCode;
+			populateNameInfo( personEntityTypeCode, entity, principal );
+			populateAddressInfo( entityEntityType );
+			populateEmailInfo( entityEntityType );
+			populatePhoneInfo( entityEntityType );
+			populateAffiliationInfo( entity );
+			populateEmploymentInfo( entity );
+			populateExternalIdentifiers( entity );
+		}
 	}
 	
 	protected void populateNameInfo( String entityTypeCode, KimEntityDefaultInfo entity, KimPrincipal principal ) {
-		KimEntityName entityName = entity.getDefaultName();
-		if ( entityName != null ) {
-			firstName = unNullify( entityName.getFirstName() );
-			middleName = unNullify( entityName.getMiddleName() );
-			lastName = unNullify( entityName.getLastName() );
-			if ( entityTypeCode.equals( "SYSTEM" ) ) {
-				name = principal.getPrincipalName().toUpperCase();
+		if(entity!=null){
+			KimEntityName entityName = entity.getDefaultName();
+			if ( entityName != null ) {
+				firstName = unNullify( entityName.getFirstName() );
+				middleName = unNullify( entityName.getMiddleName() );
+				lastName = unNullify( entityName.getLastName() );
+				if ( entityTypeCode.equals( "SYSTEM" ) ) {
+					name = principal.getPrincipalName().toUpperCase();
+				} else {
+					name = unNullify( entityName.getFormattedName() );
+				}
 			} else {
-				name = unNullify( entityName.getFormattedName() );
-			}
-		} else {
-			firstName = "";
-			middleName = "";
-			if ( entityTypeCode.equals( "SYSTEM" ) ) {
-				name = principal.getPrincipalName().toUpperCase();
-				lastName = principal.getPrincipalName().toUpperCase();
-			} else {
-				name = "";
-				lastName = "";
+				firstName = "";
+				middleName = "";
+				if ( entityTypeCode.equals( "SYSTEM" ) ) {
+					name = principal.getPrincipalName().toUpperCase();
+					lastName = principal.getPrincipalName().toUpperCase();
+				} else {
+					name = "";
+					lastName = "";
+				}
 			}
 		}
 	}
 	
 	protected void populateAddressInfo( KimEntityEntityTypeDefaultInfo entityEntityType ) {
-		KimEntityAddress defaultAddress = entityEntityType.getDefaultAddress();
-		if ( defaultAddress != null ) {			
-			addressLine1 = unNullify( defaultAddress.getLine1() );
-			addressLine2 = unNullify( defaultAddress.getLine2() );
-			addressLine3 = unNullify( defaultAddress.getLine3() );
-			addressCityName = unNullify( defaultAddress.getCityName() );
-			addressStateCode = unNullify( defaultAddress.getStateCode() );
-			addressPostalCode = unNullify( defaultAddress.getPostalCode() );
-			addressCountryCode = unNullify( defaultAddress.getCountryCode() );
-		} else {
-			addressLine1 = "";
-			addressLine2 = "";
-			addressLine3 = "";
-			addressCityName = "";
-			addressStateCode = "";
-			addressPostalCode = "";
-			addressCountryCode = "";
+		if(entityEntityType!=null){
+			KimEntityAddress defaultAddress = entityEntityType.getDefaultAddress();
+			if ( defaultAddress != null ) {			
+				addressLine1 = unNullify( defaultAddress.getLine1() );
+				addressLine2 = unNullify( defaultAddress.getLine2() );
+				addressLine3 = unNullify( defaultAddress.getLine3() );
+				addressCityName = unNullify( defaultAddress.getCityName() );
+				addressStateCode = unNullify( defaultAddress.getStateCode() );
+				addressPostalCode = unNullify( defaultAddress.getPostalCode() );
+				addressCountryCode = unNullify( defaultAddress.getCountryCode() );
+			} else {
+				addressLine1 = "";
+				addressLine2 = "";
+				addressLine3 = "";
+				addressCityName = "";
+				addressStateCode = "";
+				addressPostalCode = "";
+				addressCountryCode = "";
+			}
 		}
 	}
 	
 	protected void populateEmailInfo( KimEntityEntityTypeDefaultInfo entityEntityType ) {
-		KimEntityEmail entityEmail = entityEntityType.getDefaultEmailAddress();
-		if ( entityEmail != null ) {
-			emailAddress = unNullify( entityEmail.getEmailAddress() );
-		} else {
-			emailAddress = "";
+		if(entityEntityType!=null){
+			KimEntityEmail entityEmail = entityEntityType.getDefaultEmailAddress();
+			if ( entityEmail != null ) {
+				emailAddress = unNullify( entityEmail.getEmailAddress() );
+			} else {
+				emailAddress = "";
+			}
 		}
 	}
 	
 	protected void populatePhoneInfo( KimEntityEntityTypeDefaultInfo entityEntityType ) {
-		KimEntityPhone entityPhone = entityEntityType.getDefaultPhoneNumber();
-		if ( entityPhone != null ) {
-			phoneNumber = unNullify( entityPhone.getFormattedPhoneNumber() );
-		} else {
-			phoneNumber = "";
+		if(entityEntityType!=null){
+			KimEntityPhone entityPhone = entityEntityType.getDefaultPhoneNumber();
+			if ( entityPhone != null ) {
+				phoneNumber = unNullify( entityPhone.getFormattedPhoneNumber() );
+			} else {
+				phoneNumber = "";
+			}
 		}
 	}
 	
 	protected void populateAffiliationInfo( KimEntityDefaultInfo entity ) {
-		affiliations = entity.getAffiliations();
-		KimEntityAffiliation defaultAffiliation = entity.getDefaultAffiliation();
-		if ( defaultAffiliation != null  ) {
-			campusCode = unNullify( defaultAffiliation.getCampusCode() );
-		} else {
-			campusCode = "";
+		if(entity!=null){
+			affiliations = entity.getAffiliations();
+			KimEntityAffiliation defaultAffiliation = entity.getDefaultAffiliation();
+			if ( defaultAffiliation != null  ) {
+				campusCode = unNullify( defaultAffiliation.getCampusCode() );
+			} else {
+				campusCode = "";
+			}
 		}
 	}
 	
 	protected void populateEmploymentInfo( KimEntityDefaultInfo entity ) {
-		KimEntityEmploymentInformation employmentInformation = entity.getPrimaryEmployment();
-		if ( employmentInformation != null ) {
-			employeeStatusCode = unNullify( employmentInformation.getEmployeeStatusCode() );
-			employeeTypeCode = unNullify( employmentInformation.getEmployeeTypeCode() );
-			primaryDepartmentCode = unNullify( employmentInformation.getPrimaryDepartmentCode() );
-			employeeId = unNullify( employmentInformation.getEmployeeId() );
-			if ( employmentInformation.getBaseSalaryAmount() != null ) {
-				baseSalaryAmount = employmentInformation.getBaseSalaryAmount();
+		if(entity!=null){
+			KimEntityEmploymentInformation employmentInformation = entity.getPrimaryEmployment();
+			if ( employmentInformation != null ) {
+				employeeStatusCode = unNullify( employmentInformation.getEmployeeStatusCode() );
+				employeeTypeCode = unNullify( employmentInformation.getEmployeeTypeCode() );
+				primaryDepartmentCode = unNullify( employmentInformation.getPrimaryDepartmentCode() );
+				employeeId = unNullify( employmentInformation.getEmployeeId() );
+				if ( employmentInformation.getBaseSalaryAmount() != null ) {
+					baseSalaryAmount = employmentInformation.getBaseSalaryAmount();
+				} else {
+					baseSalaryAmount = KualiDecimal.ZERO;
+				}
 			} else {
+				employeeStatusCode = "";
+				employeeTypeCode = "";
+				primaryDepartmentCode = "";
+				employeeId = "";
 				baseSalaryAmount = KualiDecimal.ZERO;
 			}
-		} else {
-			employeeStatusCode = "";
-			employeeTypeCode = "";
-			primaryDepartmentCode = "";
-			employeeId = "";
-			baseSalaryAmount = KualiDecimal.ZERO;
 		}
 	}
 	
 	protected void populateExternalIdentifiers( KimEntityDefaultInfo entity ) {
-		List<? extends KimEntityExternalIdentifier> externalIds = entity.getExternalIdentifiers();
-		externalIdentifiers = new HashMap<String,String>( externalIds.size() );
-		for ( KimEntityExternalIdentifier eei : externalIds ) {
-			externalIdentifiers.put( eei.getExternalIdentifierTypeCode(), eei.getExternalId() );
+		if(entity!=null){
+			List<? extends KimEntityExternalIdentifier> externalIds = entity.getExternalIdentifiers();
+			externalIdentifiers = new HashMap<String,String>( externalIds.size() );
+			for ( KimEntityExternalIdentifier eei : externalIds ) {
+				externalIdentifiers.put( eei.getExternalIdentifierTypeCode(), eei.getExternalId() );
+			}
 		}
 	}
 	

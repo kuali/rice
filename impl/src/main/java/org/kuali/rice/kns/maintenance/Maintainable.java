@@ -253,4 +253,21 @@ public interface Maintainable extends java.io.Serializable, SelectiveReferenceRe
      * @param maintenanceDocumentRestrictions
      */
     public void clearBusinessObjectOfRestrictedValues(MaintenanceDocumentRestrictions maintenanceDocumentRestrictions);
+    
+    /**
+     * For the case when we want to maintain a business object that doesn't necessarily map to 
+     * a single table in the database or may doesn't map to a database at all  
+     * 
+     * @return
+     */
+    public boolean isExternalBusinessObject();
+ 
+    /**
+     * Gives chance to a maintainable object to prepare and return a maintainable object which 
+     * might be external to the system 
+     * 
+     * @return
+     */
+    public void prepareBusinessObject(BusinessObject businessObject);
+
 }

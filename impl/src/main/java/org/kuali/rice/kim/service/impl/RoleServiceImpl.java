@@ -1194,4 +1194,13 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     		}
     	}
     }
+    
+    public List<RoleMembershipInfo> getFirstLevelRoleMembers(List<String> roleIds){
+    	List<RoleMemberImpl> rms = roleDao.getRoleMembersForRoleIds(roleIds, null );
+    	List<RoleMembershipInfo> roleMembershipInfoList = new ArrayList<RoleMembershipInfo>();
+    	for ( RoleMemberImpl rm : rms ) {
+    		roleMembershipInfoList.add(new RoleMembershipInfo( rm.getRoleId(), rm.getRoleMemberId(), rm.getMemberId(), rm.getMemberTypeCode(), rm.getQualifier()));
+    	}
+    	return roleMembershipInfoList;
+    }
 }

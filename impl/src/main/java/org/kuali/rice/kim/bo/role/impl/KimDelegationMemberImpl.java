@@ -57,8 +57,6 @@ public class KimDelegationMemberImpl extends KimAbstractMemberImpl implements Ki
 	@JoinColumn(name="DLGN_MBR_ID", referencedColumnName="TARGET_PRIMARY_KEY", insertable=false, updatable=false )
 	protected List<KimDelegationMemberAttributeDataImpl> attributes = new TypedArrayList(KimDelegationMemberAttributeDataImpl.class);
 	
-	protected String delegationTypeCode;
-
 	/**
 	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
 	 */
@@ -125,20 +123,6 @@ public class KimDelegationMemberImpl extends KimAbstractMemberImpl implements Ki
 		return attribs;
 	}
 	
-	/**
-	 * @return the delegationTypeCode
-	 */
-	public String getDelegationTypeCode() {
-		return this.delegationTypeCode;
-	}
-
-	/**
-	 * @param delegationTypeCode the delegationTypeCode to set
-	 */
-	public void setDelegationTypeCode(String delegationTypeCode) {
-		this.delegationTypeCode = delegationTypeCode;
-	}
-
 	/**
 	 * @return the roleMemberId
 	 */

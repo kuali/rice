@@ -153,6 +153,19 @@ public class KimConstants {
 			return kimDocumentTypeNamesMap;
 	    }
 
+	    public static final String DELEGATION_PRIMARY = "P";
+	    public static final String DELEGATION_SECONDARY = "S";
+	    public static final String DELEGATION_PRIMARY_LABEL = "Primary";
+	    public static final String DELEGATION_SECONDARY_LABEL = "Secondary";
+	    
+	    public static final Map<String, String> DELEGATION_TYPES = getDelegationTypesMap();
+	    private static Map<String, String> getDelegationTypesMap() {
+	    	Map<String, String> delegationTypesMap = new HashMap<String, String>();
+	    	delegationTypesMap.put(DELEGATION_PRIMARY, DELEGATION_PRIMARY_LABEL);
+	    	delegationTypesMap.put(DELEGATION_SECONDARY, DELEGATION_SECONDARY_LABEL);
+	    	return delegationTypesMap;
+	    }
+
 	}
 	
 	public static class PrimaryKeyConstants {
@@ -166,6 +179,8 @@ public class KimConstants {
 		public static final String DELEGATION_ID = "delegationId";
 		public static final String RESPONSIBILITY_TEMPLATE_ID = "responsibilityTemplateId";
 		public static final String PERMISSION_TEMPLATE_ID = "permissionTemplateId";
+		public static final String MEMBER_ID = "memberId";
+		public static final String DELEGATION_MEMBER_ID = "delegationMemberId";
 		public static final String ROLE_MEMBER_ID = "roleMemberId";
 		public static final String ROLE_RESPONSIBILITY_ID = "roleResponsibilityId";
 		public static final String ROLE_RESPONSIBILITY_ACTION_ID = "roleResponsibilityActionId";
@@ -182,7 +197,19 @@ public class KimConstants {
 		public static final String PERMISSION_TEMPLATE_NAME = "name";
 		public static final String RESPONSIBILITY_TEMPLATE_NAME = "name";
 	}
-	
+
+	public static class SequenceNames {
+		public static final String KRIM_ROLE_ID_S = "KRIM_ROLE_ID_S";
+		public static final String KRIM_GROUP_ID_S = "KRIM_GRP_ID_S";
+		public static final String KRIM_ROLE_PERM_ID_S = "KRIM_ROLE_PERM_ID_S";
+		public static final String KRIM_ROLE_RSP_ID_S = "KRIM_ROLE_RSP_ID_S";
+		public static final String KRIM_ROLE_MBR_ID_S = "KRIM_ROLE_MBR_ID_S";
+		public static final String KRIM_DLGN_MBR_ID_S = "KRIM_DLGN_MBR_ID_S";
+		public static final String KRIM_ROLE_RSP_ACTN_ID_S = "KRIM_ROLE_RSP_ACTN_ID_S";
+		public static final String KRIM_DLGN_ID_S = "KRIM_DLGN_ID_S";
+		public static final String KRIM_ATTR_DATA_ID_S = "KRIM_ATTR_DATA_ID_S";
+	}
+
 	/**
 	 * 
 	 * KimGroupS can contain other KimGroupS and KimPrincipalS. 

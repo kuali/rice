@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.kim.service;
 
+import java.util.List;
+
+import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 /**
@@ -29,5 +32,6 @@ public interface RoleUpdateService {
     void assignGroupToRole(String groupId, String namespaceCode, String roleName, AttributeSet qualifications) throws UnsupportedOperationException;
     void removePrincipalFromRole(String principalId, String namespaceCode, String roleName, AttributeSet qualifications) throws UnsupportedOperationException;
     void removeGroupFromRole(String groupId, String namespaceCode, String roleName, AttributeSet qualifications) throws UnsupportedOperationException;
+    List<RoleMembershipInfo> getFirstLevelRoleMembers(List<String> roleIds);
 
 }

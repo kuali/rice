@@ -47,7 +47,7 @@
         p:label="Member Identifier"
         p:shortLabel="Member Identifier"
         p:maxLength="40"
-        p:required="true" >
+        p:required="false" >
     <property name="control" >
       <bean parent="TextControlDefinition" p:size="10" />
     </property>

@@ -138,6 +138,9 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 	 * @return the groupId
 	 */
 	public String getGroupId() {
+		if(StringUtils.isBlank(this.groupId)){
+			this.groupId = getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_GROUP_ID_S).toString();
+		}
 		return this.groupId;
 	}
 

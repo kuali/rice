@@ -47,7 +47,7 @@ public class PersonDocumentGroup extends KimDocumentBoBase {
 	protected String namespaceCode;
 
 	protected String principalId;
-	protected KimTypeImpl kimGroupType;
+	protected KimTypeImpl kimGroupType = new KimTypeImpl();
 	protected String kimTypeId;
 	@Column(name="ACTV_FRM_DT")
 	protected Timestamp activeFromDate;

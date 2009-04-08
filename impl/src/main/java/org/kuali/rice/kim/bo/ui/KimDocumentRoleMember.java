@@ -166,5 +166,16 @@ public class KimDocumentRoleMember  extends KimDocumentBoBase {
 		this.memberNamespaceCode = memberNamespaceCode;
 	}
 
+	public boolean isRole(){
+		return getMemberTypeCode()!=null && getMemberTypeCode().equals(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE);
+	}
+	
+	public boolean isGroup(){
+		return getMemberTypeCode()!=null && getMemberTypeCode().equals(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE);
+	}
 
+	public boolean isPrincipal(){
+		return getMemberTypeCode()!=null && getMemberTypeCode().equals(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE);
+	}
+	
 }

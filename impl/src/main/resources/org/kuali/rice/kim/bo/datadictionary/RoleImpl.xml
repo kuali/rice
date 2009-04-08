@@ -16,6 +16,7 @@
       <list>
         <ref bean="RoleImpl-roleId" />
         <ref bean="RoleImpl-kimTypeId" />
+        <ref bean="RoleImpl-kimRoleType.name" />
         <ref bean="RoleImpl-roleName" />
         <ref bean="RoleImpl-namespaceCode" />
         <ref bean="RoleImpl-principalName" />
@@ -54,7 +55,7 @@
    <bean id="RoleImpl-roleId" parent="RoleImpl-roleId-parentBean" />
   <bean id="RoleImpl-roleId-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="roleId"
-        p:forceUppercase="true"
+        p:forceUppercase="false"
         p:label="Role"
         p:shortLabel="Role"
         p:maxLength="10"
@@ -64,10 +65,23 @@
     </property>
   </bean>
   
+  <bean id="RoleImpl-kimRoleType.name" parent="RoleImpl-kimRoleType.name-parentBean" />
+  <bean id="RoleImpl-kimRoleType.name-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="kimRoleType.name"
+        p:forceUppercase="false"
+        p:label="Role Type Name"
+        p:shortLabel="Role Type Name"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="10" />
+    </property>
+  </bean>
+  
   <bean id="RoleImpl-kimTypeId" parent="RoleImpl-kimTypeId-parentBean" />
   <bean id="RoleImpl-kimTypeId-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="kimTypeId"
-        p:forceUppercase="true"
+        p:forceUppercase="false"
         p:label="Role Type"
         p:shortLabel="Role Type"
         p:maxLength="40"
@@ -80,7 +94,7 @@
   <bean id="RoleImpl-roleName" parent="RoleImpl-roleName-parentBean" />
   <bean id="RoleImpl-roleName-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="roleName"
-        p:forceUppercase="true"
+        p:forceUppercase="false"
         p:label="Role Name"
         p:shortLabel="Role Name"
         p:maxLength="100"
@@ -94,7 +108,7 @@
   <bean id="RoleImpl-namespaceCode" parent="RoleImpl-namespaceCode-parentBean" />
   <bean id="RoleImpl-namespaceCode-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="namespaceCode"
-        p:forceUppercase="true"
+        p:forceUppercase="false"
         p:label="Name Space"
         p:shortLabel="Name Space"
         p:maxLength="40"
@@ -125,7 +139,7 @@
   <bean id="RoleImpl-groupNamespaceCode" parent="RoleImpl-groupNamespaceCode-parentBean" />
   <bean id="RoleImpl-groupNamespaceCode-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="groupNamespaceCode"
-        p:forceUppercase="true"
+        p:forceUppercase="false"
         p:label="Group Name Space"
         p:shortLabel="Group Name Space"
         p:maxLength="40"
@@ -138,7 +152,7 @@
   <bean id="RoleImpl-groupName" parent="RoleImpl-groupName-parentBean" />
   <bean id="RoleImpl-groupName-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="groupName"
-        p:forceUppercase="true"
+        p:forceUppercase="false"
         p:label="Group Name"
         p:shortLabel="Group Name"
         p:maxLength="100"
@@ -151,7 +165,7 @@
   <bean id="RoleImpl-permTmplNamespaceCode" parent="RoleImpl-permTmplNamespaceCode-parentBean" />
   <bean id="RoleImpl-permTmplNamespaceCode-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="permTmplNamespaceCode"
-        p:forceUppercase="true"
+        p:forceUppercase="false"
         p:label="Permission Tmpl Name Space"
         p:shortLabel="Permission Tmpl Name Space"
         p:maxLength="40"
@@ -177,7 +191,7 @@
     <bean id="RoleImpl-permNamespaceCode" parent="RoleImpl-permNamespaceCode-parentBean" />
   <bean id="RoleImpl-permNamespaceCode-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="permNamespaceCode"
-        p:forceUppercase="true"
+        p:forceUppercase="false"
         p:label="Permission Name Space"
         p:shortLabel="Permission Name Space"
         p:maxLength="40"
@@ -203,7 +217,7 @@
   <bean id="RoleImpl-respNamespaceCode" parent="RoleImpl-respNamespaceCode-parentBean" />
   <bean id="RoleImpl-respNamespaceCode-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="respNamespaceCode"
-        p:forceUppercase="true"
+        p:forceUppercase="false"
         p:label="Responsibility Name Space"
         p:shortLabel="Responsibility Name Space"
         p:maxLength="40"
@@ -229,7 +243,7 @@
   <bean id="RoleImpl-respTmplNamespaceCode" parent="RoleImpl-respTmplNamespaceCode-parentBean" />
   <bean id="RoleImpl-respTmplNamespaceCode-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="respTmplNamespaceCode"
-        p:forceUppercase="true"
+        p:forceUppercase="false"
         p:label="Responsibility Tmpl Name Space"
         p:shortLabel="Responsibility Tmpl Name Space"
         p:maxLength="40"
@@ -313,10 +327,9 @@
     </property>
     <property name="resultFields" >
       <list>
-        <bean parent="FieldDefinition" p:attributeName="roleId" />
-        <bean parent="FieldDefinition" p:attributeName="roleName" />
-        <bean parent="FieldDefinition" p:attributeName="kimTypeId" />
+        <bean parent="FieldDefinition" p:attributeName="kimRoleType.name" />
         <bean parent="FieldDefinition" p:attributeName="namespaceCode" />
+        <bean parent="FieldDefinition" p:attributeName="roleName" />
       </list>
     </property>
   </bean>

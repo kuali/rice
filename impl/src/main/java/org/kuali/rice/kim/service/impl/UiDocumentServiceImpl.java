@@ -15,9 +15,7 @@
  */
 package org.kuali.rice.kim.service.impl;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -1120,6 +1118,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				pndMember.setRoleMemberId(member.getRoleMemberId());
 				pndMember.setRoleId(member.getRoleId());
 				pndMember.setMemberId(member.getMemberId());
+				pndMember.setMemberNamespaceCode(getMemberNamespaceCode(member.getMemberTypeCode(), member.getMemberId()));
 				pndMember.setMemberName(getMemberName(member.getMemberTypeCode(), member.getMemberId()));
 				pndMember.setMemberTypeCode(member.getMemberTypeCode());
 				pndMember.setQualifiers(loadRoleMemberQualifiers(identityManagementRoleDocument, member.getAttributes()));
@@ -1269,7 +1268,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	}
 
     @SuppressWarnings("unchecked")
-	protected List<KimDelegationImpl> getRoleDelegations(String roleId){
+	public List<KimDelegationImpl> getRoleDelegations(String roleId){
 		if(roleId==null)
 			return new ArrayList<KimDelegationImpl>();
 		Map<String,String> criteria = new HashMap<String,String>(1);
@@ -1307,6 +1306,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			pndMember.setActive(member.isActive());
 			if(pndMember.isActive()){
 				KimCommonUtils.copyProperties(pndMember, member);
+				pndMember.setMemberNamespaceCode(getMemberNamespaceCode(member.getMemberTypeCode(), member.getMemberId()));
 				pndMember.setMemberName(getMemberName(member.getMemberTypeCode(), member.getMemberId()));
 				pndMember.setEdit(true);
 				pndMember.setQualifiers(loadDelegationMemberQualifiers(member.getAttributes()));
@@ -1854,4 +1854,86 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		}
 		return roleMemberAttributeDataList;
 	}
+	
+    public KimDocumentRoleMember getKimDocumentRoleMember(String memberTypeCode, String memberId, String roleId){
+    	if(StringUtils.isEmpty(memberTypeCode) || StringUtils.isEmpty(memberId) || StringUtils.isEmpty(roleId))
+    		return null;
+    	KimDocumentRoleMember documentRoleMember = new KimDocumentRoleMember();
+    	documentRoleMember.setRoleId(roleId);
+    	Map<String, String> criteria = new HashMap<String, String>();
+    	criteria.put(KimConstants.PrimaryKeyConstants.ROLE_ID, roleId);
+    	criteria.put("mbr_id", memberId);
+    	
+    	List matchingRoleMembers = (List)getBusinessObjectService().findMatching(RoleMemberImpl.class, criteria);
+    	if(matchingRoleMembers==null || matchingRoleMembers.size()<1) return null;
+
+    	RoleMemberImpl roleMemberImpl = (RoleMemberImpl)matchingRoleMembers.get(0);
+    	documentRoleMember.setRoleMemberId(roleMemberImpl.getRoleMemberId());
+    	BusinessObject member = getMember(memberTypeCode, memberId);
+    	if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
+    		documentRoleMember.setMemberId(((KimPrincipalImpl)member).getPrincipalId());
+    		documentRoleMember.setMemberName(((KimPrincipalImpl)member).getPrincipalName());
+    		documentRoleMember.setMemberTypeCode(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE);
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
+        	documentRoleMember.setMemberNamespaceCode(((KimGroupImpl)member).getNamespaceCode());
+    		documentRoleMember.setMemberId(((KimGroupImpl)member).getGroupId());
+    		documentRoleMember.setMemberName(((KimGroupImpl)member).getGroupName());
+    		documentRoleMember.setMemberTypeCode(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE);
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
+        	documentRoleMember.setMemberNamespaceCode(((KimRoleImpl)member).getNamespaceCode());
+    		documentRoleMember.setMemberId(((KimRoleImpl)member).getRoleId());
+    		documentRoleMember.setMemberName(((KimRoleImpl)member).getRoleName());
+    		documentRoleMember.setMemberTypeCode(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE);
+        }
+    	return documentRoleMember;
+    }
+
+    private KimDelegationImpl getDelegationOfType(List<KimDelegationImpl> roleDelegations, String delegationTypeCode){
+    	if(roleDelegations==null || StringUtils.isEmpty(delegationTypeCode))
+    		return null;
+		for(KimDelegationImpl delegation: roleDelegations){
+			if(delegation.getDelegationTypeCode().equals(delegationTypeCode))
+				return delegation;
+		}
+		return null;
+    }
+    
+    public RoleDocumentDelegationMember getRoleDocumentDelegationMember(
+    		String memberTypeCode, String memberId, String roleId, String delegationTypeCode){
+    	if(StringUtils.isEmpty(memberTypeCode) || StringUtils.isEmpty(memberId) || StringUtils.isEmpty(roleId) || StringUtils.isEmpty(delegationTypeCode))
+    		return null;
+    	KimDelegationImpl delegation = getDelegationOfType(getRoleDelegations(roleId), delegationTypeCode);
+    	if(delegation==null)
+    		return null;
+    	RoleDocumentDelegationMember delegationMember = new RoleDocumentDelegationMember();
+    	delegationMember.setDelegationId(delegation.getDelegationId());
+
+    	Map<String, String> criteria = new HashMap<String, String>();
+    	criteria.put(KimConstants.PrimaryKeyConstants.DELEGATION_ID, delegation.getDelegationId());
+    	criteria.put(KimConstants.PrimaryKeyConstants.MEMBER_ID, memberId);
+    	List matchingDelegationMembers = (List)getBusinessObjectService().findMatching(KimDelegationMemberImpl.class, criteria);
+    	if(matchingDelegationMembers==null || matchingDelegationMembers.size()<1) return null;
+    	
+    	KimDelegationMemberImpl delegationMemberImpl = (KimDelegationMemberImpl)matchingDelegationMembers.get(0);
+    	delegationMember.setDelegationMemberId(delegationMemberImpl.getRoleMemberId());
+    	BusinessObject member = getMember(memberTypeCode, memberId);
+    	if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
+    		delegationMember.setMemberId(((KimPrincipalImpl)member).getPrincipalId());
+    		delegationMember.setMemberName(((KimPrincipalImpl)member).getPrincipalName());
+    		delegationMember.setMemberTypeCode(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE);
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
+        	delegationMember.setMemberNamespaceCode(((KimRoleImpl)member).getNamespaceCode());
+    		delegationMember.setMemberId(((KimRoleImpl)member).getRoleId());
+    		delegationMember.setMemberName(((KimRoleImpl)member).getRoleName());
+    		delegationMember.setMemberTypeCode(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE);
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
+        	delegationMember.setMemberNamespaceCode(((KimGroupImpl)member).getNamespaceCode());
+    		delegationMember.setMemberId(((KimGroupImpl)member).getGroupId());
+    		delegationMember.setMemberName(((KimGroupImpl)member).getGroupName());
+    		delegationMember.setMemberTypeCode(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE);
+        }
+    	return delegationMember;
+    	
+    }
+
 }

@@ -509,4 +509,9 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
     	getRoleService().principalInactivated(principalId);    
     	removeCacheEntries(null, principalId);
     }
+    
+    public List<RoleMembershipInfo> getFirstLevelRoleMembers(List<String> roleIds){
+    	return getRoleService().getFirstLevelRoleMembers(roleIds);
+    }
+
 }

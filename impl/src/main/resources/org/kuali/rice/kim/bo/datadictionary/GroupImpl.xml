@@ -1,0 +1,157 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+  <bean id="GroupImpl" parent="GroupImpl-parentBean" />
+
+  <bean id="GroupImpl-parentBean" abstract="true" parent="BusinessObjectEntry"
+        p:businessObjectClass="org.kuali.rice.kim.bo.impl.GroupImpl"
+        p:titleAttribute="groupId"
+        p:objectLabel="Names"
+        p:inquiryDefinition-ref="GroupImpl-inquiryDefinition"
+        p:lookupDefinition-ref="GroupImpl-lookupDefinition" >
+    <property name="attributes" >
+      <list>
+        <ref bean="GroupImpl-groupId" />
+        <ref bean="GroupImpl-kimTypeId" />
+        <ref bean="GroupImpl-groupName" />
+        <ref bean="GroupImpl-namespaceCode" />
+      </list>
+    </property>
+    
+        <property name="relationships" >
+      <list>
+        <bean parent="RelationshipDefinition">
+          <property name="objectAttributeName" value="kimGroupType" />
+          <property name="primitiveAttributes" >
+            <list>
+              <bean parent="PrimitiveAttributeDefinition"
+                    p:sourceName="kimTypeId"
+                    p:targetName="kimTypeId" />
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+        
+  </bean>
+ 
+ 
+ 
+   <bean id="GroupImpl-groupId" parent="GroupImpl-groupId-parentBean" />
+  <bean id="GroupImpl-groupId-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="groupId"
+        p:forceUppercase="true"
+        p:label="Group"
+        p:shortLabel="Group"
+        p:maxLength="10"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="10" />
+    </property>
+  </bean>
+  
+  <bean id="GroupImpl-kimTypeId" parent="GroupImpl-kimTypeId-parentBean" />
+  <bean id="GroupImpl-kimTypeId-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="kimTypeId"
+        p:forceUppercase="true"
+        p:label="Group Type"
+        p:shortLabel="Group Type"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="10" />
+    </property>
+  </bean>
+    
+  <bean id="GroupImpl-groupName" parent="GroupImpl-groupName-parentBean" />
+  <bean id="GroupImpl-groupName-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="groupName"
+        p:forceUppercase="true"
+        p:label="Group Name"
+        p:shortLabel="Group Name"
+        p:maxLength="100"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="30" />
+    </property>
+  </bean>
+  
+  
+  <bean id="GroupImpl-namespaceCode" parent="GroupImpl-namespaceCode-parentBean" />
+  <bean id="GroupImpl-namespaceCode-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="namespaceCode"
+        p:forceUppercase="true"
+        p:label="Name Space"
+        p:shortLabel="Name Space"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="10" />
+      <!-- <bean parent="SelectControlDefinition"
+            p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.NamespaceValuesFinder"
+            p:includeKeyInLabel="false" 
+            p:keyAttribute="code"
+            p:labelAttribute="codeAndDescription" /> -->
+    </property>
+  </bean>
+  
+  <bean id="GroupImpl-inquiryDefinition" parent="GroupImpl-inquiryDefinition-parentBean" />
+
+  <bean id="GroupImpl-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition"
+        p:title="Group Impl Inquiry" >
+    <property name="inquirySections" >
+      <list>
+        <bean parent="InquirySectionDefinition"
+              p:title="Group Details"
+              p:numberOfColumns="1" >
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="FieldDefinition" p:attributeName="groupId" />
+              <bean parent="FieldDefinition" p:attributeName="groupName" />
+              <bean parent="FieldDefinition" p:attributeName="kimTypeId" />
+        	  <bean parent="FieldDefinition" p:attributeName="namespaceCode" />
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="GroupImpl-lookupDefinition" parent="GroupImpl-lookupDefinition-parentBean" />
+
+  <bean id="GroupImpl-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition"
+        p:title="Group Lookup" 
+        p:instructions="Lookup a Group" >
+    <property name="lookupableID" value="groupLookupable" />
+        
+    <property name="defaultSort" >
+      <bean parent="SortDefinition">
+        <property name="attributeNames" >
+          <list>
+            <value>groupId</value>
+          </list>
+        </property>
+        <property name="sortAscending" value="true" />
+      </bean>
+    </property>
+    <property name="lookupFields" >
+      <list>
+        <bean parent="FieldDefinition" p:attributeName="groupId" />
+        <bean parent="FieldDefinition" p:attributeName="groupName" />
+        <bean parent="FieldDefinition" p:attributeName="kimTypeId" />
+        <bean parent="FieldDefinition" p:attributeName="namespaceCode" />
+      </list>
+    </property>
+    <property name="resultFields" >
+      <list>
+        <bean parent="FieldDefinition" p:attributeName="kimGroupType.name" />
+        <bean parent="FieldDefinition" p:attributeName="namespaceCode" />
+        <bean parent="FieldDefinition" p:attributeName="groupName" />
+      </list>
+    </property>
+  </bean>
+
+</beans>

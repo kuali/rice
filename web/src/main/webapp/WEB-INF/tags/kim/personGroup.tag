@@ -8,8 +8,9 @@
      	<tr>
     		<th><div align="left">&nbsp</div></th> 
     		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docGroupAttributes.groupId}" noColon="true" /></div></th>
-    		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docGroupAttributes.kimTypeId}" noColon="true" /></div></th>
+    		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docGroupAttributes.namespaceCode}" noColon="true" /></div></th>
     		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docGroupAttributes.groupName}" noColon="true" /></div></th>
+    		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docGroupAttributes.kimTypeId}" noColon="true" /></div></th>
     		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docGroupAttributes.activeFromDate}" noColon="true" /></div></th>
     		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docGroupAttributes.activeToDate}" noColon="true" /></div></th>
            	<c:if test="${not inquiry}">	
@@ -21,16 +22,31 @@
 				<th class="infoline">
 					<c:out value="Add:" />
 				</th>
-                <td align="left" valign="middle" class="infoline" colspan=3>
+                <td align="left" valign="middle" class="infoline" >
                 	<div align="center">
-	                	<kul:htmlControlAttribute property="newGroup.groupId" attributeEntry="${docGroupAttributes.groupId}" disabled="true"/>
-	                	<kul:lookup boClassName="org.kuali.rice.kim.bo.group.impl.KimGroupImpl" fieldConversions="groupId:newGroup.groupId,kimTypeId:newGroup.groupType,groupName:newGroup.groupName,namespaceCode:newGroup.namespaceCode" anchor="${tabKey}" />
-						${KualiForm.newGroup.groupName}
+	                	<kul:htmlControlAttribute property="newGroup.groupId" attributeEntry="${docGroupAttributes.groupId}" readOnly="${readOnly}"/>
+	                	<kul:lookup boClassName="org.kuali.rice.kim.bo.group.impl.KimGroupImpl" fieldConversions="groupId:newGroup.groupId,kimTypeId:newGroup.groupType,groupName:newGroup.groupName,namespaceCode:newGroup.namespaceCode,kimGroupType.name:newGroup.kimGroupType.name" anchor="${tabKey}" />
+						<html:hidden property="newGroup.groupName" />
+						<html:hidden property="newGroup.groupType" />
+						<html:hidden property="newGroup.kimGroupType.name" />
+						<html:hidden property="newGroup.namespaceCode" />				
 					</div>
 				</td>
-				<html:hidden property="newGroup.groupName" />
-				<html:hidden property="newGroup.groupType" />
-				<html:hidden property="newGroup.namespaceCode" />				
+                <td align="left" valign="middle" class="infoline" >
+                	<div align="center">
+	                	<kul:htmlControlAttribute property="newGroup.namespaceCode" attributeEntry="${docGroupAttributes.namespaceCode}" readOnly="true"/>
+					</div>
+				</td>
+                <td align="left" valign="middle" class="infoline" >
+                	<div align="center">
+	                	<kul:htmlControlAttribute property="newGroup.groupName" attributeEntry="${docGroupAttributes.groupName}" readOnly="true"/>
+					</div>
+				</td>
+                <td align="left" valign="middle" class="infoline" >
+                	<div align="center">
+	                	<kul:htmlControlAttribute property="newGroup.kimGroupType.name" attributeEntry="${docGroupAttributes.kimGroupType.name}" readOnly="${readOnly}"/>
+					</div>
+				</td>
 	            <td align="left" valign="middle">
 	                <div align="center"> <kul:htmlControlAttribute property="newGroup.activeFromDate"  attributeEntry="${docGroupAttributes.activeFromDate}"  datePicker="true" readOnly="${readOnly}"/>
 					</div>
@@ -53,15 +69,19 @@
 					<c:out value="${status.index+1}" />
 				</th>
                 <td align="left" valign="middle">
-                	<div align="center"> <kul:htmlControlAttribute property="document.groups[${status.index}].groupId"  attributeEntry="${docGroupAttributes.groupId}"  readOnly="true" />
+                	<div align="center"> <kul:htmlControlAttribute property="document.groups[${status.index}].groupId"  attributeEntry="${docGroupAttributes.groupId}"  readOnly="${readOnly}" />
 					</div>
 				</td>
                 <td align="left" valign="middle">
-                	<div align="center"> <kul:htmlControlAttribute property="document.groups[${status.index}].kimGroupType.name"  attributeEntry="${docGroupAttributes.kimGroupType.name}" readOnly="true"  />
+                	<div align="center"> <kul:htmlControlAttribute property="document.groups[${status.index}].namespaceCode"  attributeEntry="${docGroupAttributes.namespaceCode}" readOnly="true"  />
 					</div>
 				</td>
                 <td align="left" valign="middle">
                 	<div align="center"> <kul:htmlControlAttribute property="document.groups[${status.index}].groupName"  attributeEntry="${docGroupAttributes.groupName}" readOnly="true"  />
+					</div>
+				</td>
+                <td align="left" valign="middle">
+                	<div align="center"> <kul:htmlControlAttribute property="document.groups[${status.index}].kimGroupType.name"  attributeEntry="${docGroupAttributes.kimGroupType.name}" readOnly="true"  />
 					</div>
 				</td>
                 <td align="left" valign="middle">

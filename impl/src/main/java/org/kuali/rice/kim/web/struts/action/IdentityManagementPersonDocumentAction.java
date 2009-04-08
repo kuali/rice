@@ -28,6 +28,8 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
@@ -238,7 +240,12 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
         PersonDocumentGroup newGroup = personDocumentForm.getNewGroup();
         if (getKualiRuleService().applyRules(new AddGroupEvent("",personDocumentForm.getPersonDocument(), newGroup))) {
-	        personDocumentForm.getPersonDocument().getGroups().add(newGroup);
+	        KimGroupImpl groupImpl = (KimGroupImpl)getUiDocumentService().getMember(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE, newGroup.getGroupId());
+	        newGroup.setGroupName(groupImpl.getGroupName());
+	        newGroup.setNamespaceCode(groupImpl.getNamespaceCode());
+	        newGroup.setKimGroupType(groupImpl.getKimTypeImpl());
+	        newGroup.setKimTypeId(groupImpl.getKimTypeImpl().getKimTypeId());
+        	personDocumentForm.getPersonDocument().getGroups().add(newGroup);
 	        personDocumentForm.setNewGroup(new PersonDocumentGroup());
         }
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
@@ -254,7 +261,12 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
         PersonDocumentRole newRole = personDocumentForm.getNewRole();
         if (getKualiRuleService().applyRules(new AddRoleEvent("",personDocumentForm.getPersonDocument(), newRole))) {
-	        KimTypeService kimTypeService = (KimTypeServiceBase)KIMServiceLocator.getService(getKimTypeServiceName(newRole.getKimRoleType()));
+	        KimRoleImpl roleImpl = (KimRoleImpl)getUiDocumentService().getMember(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, newRole.getRoleId());
+	        newRole.setRoleName(roleImpl.getRoleName());
+	        newRole.setNamespaceCode(roleImpl.getNamespaceCode());
+	        newRole.setKimRoleType(roleImpl.getKimRoleType());
+	        newRole.setKimTypeId(roleImpl.getKimRoleType().getKimTypeId());
+        	KimTypeService kimTypeService = (KimTypeServiceBase)KIMServiceLocator.getService(getKimTypeServiceName(newRole.getKimRoleType()));
 	        //AttributeDefinitionMap definitions = kimTypeService.getAttributeDefinitions();
 	        // role type populated from form is not a complete record
 	        newRole.getKimRoleType().setKimTypeId(newRole.getKimTypeId());

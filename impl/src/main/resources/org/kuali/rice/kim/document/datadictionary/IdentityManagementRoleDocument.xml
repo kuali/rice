@@ -55,7 +55,7 @@
   <bean id="IdentityManagementRoleDocument-roleName" parent="IdentityManagementRoleDocument-roleName-parentBean"/>
   <bean id="IdentityManagementRoleDocument-roleName-parentBean" parent="AttributeDefinition" abstract="true" p:name="roleName" p:forceUppercase="true" p:label="Role Name" p:shortLabel="Role Name" p:maxLength="100" p:required="true">
     <property name="control">
-      <bean parent="TextControlDefinition" p:size="20"/>
+      <bean parent="TextControlDefinition" p:size="40"/>
     </property>
   </bean>
 

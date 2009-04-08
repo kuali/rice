@@ -150,36 +150,38 @@ public class RoleLookupableHelperServiceImpl extends KualiLookupableHelperServic
 			        if ( kimTypeService != null ) {
 				        AttributeDefinitionMap definitions = kimTypeService.getAttributeDefinitions(kimType.getKimTypeId());
 				        setAttrDefinitions(definitions);
-			            for ( AttributeDefinition definition : definitions.values()) {
-					        List<Field> fields = new ArrayList<Field>();
-							Field typeField = new Field();
-							//String attrDefnId = mapEntry.getKey().substring(mapEntry.getKey().indexOf("."), mapEntry.getKey().length());
-	//						String attrDefnId = definition.getId();
-							String attrDefnId = getAttrDefnId(definition);
-							// if it is DD, then attrDefn.getLabel() is null; has to get from DDAttrdefn
-							typeField.setFieldLabel(definition.getLabel());
-							// with suffix  in case name is the same as bo property 
-							typeField.setPropertyName(definition.getName()+"."+attrDefnId);
-							if (definition.getControl().isSelect()) {
-						        try {
-						            KeyValuesFinder finder = (KeyValuesFinder) definition.getControl().getValuesFinderClass().newInstance();
-							        typeField.setFieldValidValues(finder.getKeyValues());
-							        typeField.setFieldType(Field.DROPDOWN);
-						        }
-						        catch (InstantiationException e) {
-						            throw new RuntimeException(e.getMessage());
-						        }
-						        catch (IllegalAccessException e) {
-						            throw new RuntimeException(e.getMessage());
-						        }
-							} else {
-								typeField.setMaxLength(definition.getMaxLength());
-								typeField.setSize(definition.getControl().getSize());
-								typeField.setFieldType(Field.TEXT);
-							}
-							fields.add(typeField);
-							returnRows.add(new Row(fields));
-			            }
+				        if(definitions!=null){
+				            for ( AttributeDefinition definition : definitions.values()) {
+						        List<Field> fields = new ArrayList<Field>();
+								Field typeField = new Field();
+								//String attrDefnId = mapEntry.getKey().substring(mapEntry.getKey().indexOf("."), mapEntry.getKey().length());
+		//						String attrDefnId = definition.getId();
+								String attrDefnId = getAttrDefnId(definition);
+								// if it is DD, then attrDefn.getLabel() is null; has to get from DDAttrdefn
+								typeField.setFieldLabel(definition.getLabel());
+								// with suffix  in case name is the same as bo property 
+								typeField.setPropertyName(definition.getName()+"."+attrDefnId);
+								if (definition.getControl().isSelect()) {
+							        try {
+							            KeyValuesFinder finder = (KeyValuesFinder) definition.getControl().getValuesFinderClass().newInstance();
+								        typeField.setFieldValidValues(finder.getKeyValues());
+								        typeField.setFieldType(Field.DROPDOWN);
+							        }
+							        catch (InstantiationException e) {
+							            throw new RuntimeException(e.getMessage());
+							        }
+							        catch (IllegalAccessException e) {
+							            throw new RuntimeException(e.getMessage());
+							        }
+								} else {
+									typeField.setMaxLength(definition.getMaxLength());
+									typeField.setSize(definition.getControl().getSize());
+									typeField.setFieldType(Field.TEXT);
+								}
+								fields.add(typeField);
+								returnRows.add(new Row(fields));
+				            }
+				        }
 		            }
 				} else {
 					return getAttrRows();

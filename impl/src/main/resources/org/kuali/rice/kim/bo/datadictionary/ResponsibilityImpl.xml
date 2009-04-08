@@ -406,7 +406,7 @@
 		  </property>
 		</bean>
         <bean parent="InquirySectionDefinition">
-          <property name="title" value="Assigned Roles" />
+          <property name="title" value="Responsibility Assigned Roles" />
           <property name="inquiryFields" >
             <list>
 				<bean parent="InquiryCollectionDefinition">

@@ -478,7 +478,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         return matchedArs;
     }
 
-    public void updateActionRequestsForResponsibilityChange(Set responsibilityIds) {
+    public void updateActionRequestsForResponsibilityChange(Set<Long> responsibilityIds) {
     	PerformanceLogger performanceLogger = null;
     	if ( LOG.isInfoEnabled() ) {
     		performanceLogger = new PerformanceLogger();

@@ -191,6 +191,7 @@
   <bean id="activePrincipalRoleTypeService" class="org.kuali.rice.kim.service.support.impl.PrincipalDerivedRoleTypeServiceImpl" />
 
   <bean id="groupInternalService" class="org.kuali.rice.kim.service.impl.GroupInternalServiceImpl" />
+  <bean id="responsibilityInternalService" class="org.kuali.rice.kim.service.impl.ResponsibilityInternalServiceImpl" />
 
   <bean id="documentEditorRoleTypeService" class="org.kuali.rice.kns.authorization.PermissionDerivedRoleTypeServiceImpl">
 	<property name="permissionTemplateNamespace" value="KR-NS" />
@@ -293,7 +294,7 @@
   <bean id="kimGroupTypeService" class="org.kuali.rice.kim.service.support.impl.KimGroupTypeServiceBase"/>
 
   <bean id="kimNoMembersRoleTypeService" class="org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase" />
-  
+
   <bean id="kimUiDocumentService" class="org.kuali.rice.kim.service.impl.UiDocumentServiceImpl" />
     <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>

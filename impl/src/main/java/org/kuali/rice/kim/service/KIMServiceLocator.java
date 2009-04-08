@@ -41,6 +41,7 @@ public final class KIMServiceLocator {
 	public static final String KIM_TYPE_INTERNAL_SERVICE = "kimTypeInternalService";
 	public static final String KIM_UI_DOCUMENT_SERVICE = "kimUiDocumentService";
 	public static final String GROUP_INTERNAL_SERVICE = "groupInternalService";
+	public static final String RESPONSIBILITY_INTERNAL_SERVICE = "responsibilityInternalService";
 
 	public static Object getService(String serviceName) {
 		return getBean(serviceName);
@@ -125,4 +126,9 @@ public final class KIMServiceLocator {
     public static GroupInternalService getGroupInternalService() {
         return (GroupInternalService)getService(GROUP_INTERNAL_SERVICE);
     }
+
+    public static ResponsibilityInternalService getResponsibilityInternalService() {
+        return (ResponsibilityInternalService)getService(RESPONSIBILITY_INTERNAL_SERVICE);
+    }
+
 }

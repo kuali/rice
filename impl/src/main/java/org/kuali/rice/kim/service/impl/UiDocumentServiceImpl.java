@@ -17,10 +17,13 @@ package org.kuali.rice.kim.service.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.entity.KimEntityAddress;
 import org.kuali.rice.kim.bo.entity.KimEntityEmail;
@@ -407,7 +410,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		criteria.put("memberTypeCode", KimRoleImpl.PRINCIPAL_MEMBER_TYPE);
 		return (List<RoleMemberImpl>)getBusinessObjectService().findMatching(RoleMemberImpl.class, criteria);
 	}
-    
+
     @SuppressWarnings("unchecked")
 	protected List<RoleResponsibilityActionImpl> getRoleRspActions(String roleId, String roleMemberId) {
 		Map<String,String> criteria = new HashMap<String,String>( 2 );
@@ -1371,6 +1374,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		kimRole.setRoleName(identityManagementRoleDocument.getRoleName());
 
 		List<BusinessObject> bos = new ArrayList<BusinessObject>();
+
 		bos.add(kimRole);
 		bos.addAll(getRolePermissions(identityManagementRoleDocument, origRolePermissions));
 		bos.addAll(getRoleResponsibilities(identityManagementRoleDocument, origRoleResponsibilities));
@@ -1382,6 +1386,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		bos.addAll(getRoleDelegations(identityManagementRoleDocument, origRoleDelegations));
 
 		getBusinessObjectService().save(bos);
+
+		KIMServiceLocator.getResponsibilityInternalService().updateActionRequestsForResponsibilityChange(getChangedRoleResponsibilityIds(identityManagementRoleDocument, origRoleResponsibilities));
 	}
 
 	protected List<RolePermissionImpl> getRolePermissions(
@@ -1430,6 +1436,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		}
 		return roleResponsibilities;
 	}
+
 
 	protected List <RoleResponsibilityActionImpl> getRoleResponsibilitiesActions(
 			IdentityManagementRoleDocument identityManagementRoleDocument){
@@ -1854,7 +1861,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		}
 		return roleMemberAttributeDataList;
 	}
-	
+
     public KimDocumentRoleMember getKimDocumentRoleMember(String memberTypeCode, String memberId, String roleId){
     	if(StringUtils.isEmpty(memberTypeCode) || StringUtils.isEmpty(memberId) || StringUtils.isEmpty(roleId))
     		return null;
@@ -1863,7 +1870,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     	Map<String, String> criteria = new HashMap<String, String>();
     	criteria.put(KimConstants.PrimaryKeyConstants.ROLE_ID, roleId);
     	criteria.put("mbr_id", memberId);
-    	
+
     	List matchingRoleMembers = (List)getBusinessObjectService().findMatching(RoleMemberImpl.class, criteria);
     	if(matchingRoleMembers==null || matchingRoleMembers.size()<1) return null;
 
@@ -1897,7 +1904,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		}
 		return null;
     }
-    
+
     public RoleDocumentDelegationMember getRoleDocumentDelegationMember(
     		String memberTypeCode, String memberId, String roleId, String delegationTypeCode){
     	if(StringUtils.isEmpty(memberTypeCode) || StringUtils.isEmpty(memberId) || StringUtils.isEmpty(roleId) || StringUtils.isEmpty(delegationTypeCode))
@@ -1913,7 +1920,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     	criteria.put(KimConstants.PrimaryKeyConstants.MEMBER_ID, memberId);
     	List matchingDelegationMembers = (List)getBusinessObjectService().findMatching(KimDelegationMemberImpl.class, criteria);
     	if(matchingDelegationMembers==null || matchingDelegationMembers.size()<1) return null;
-    	
+
     	KimDelegationMemberImpl delegationMemberImpl = (KimDelegationMemberImpl)matchingDelegationMembers.get(0);
     	delegationMember.setDelegationMemberId(delegationMemberImpl.getRoleMemberId());
     	BusinessObject member = getMember(memberTypeCode, memberId);
@@ -1933,7 +1940,24 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     		delegationMember.setMemberTypeCode(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE);
         }
     	return delegationMember;
-    	
+
     }
 
+    protected Set<String> getChangedRoleResponsibilityIds(
+			IdentityManagementRoleDocument identityManagementRoleDocument, List<RoleResponsibilityImpl> origRoleResponsibilities){
+		Set<String> lRet = new HashSet<String>();
+		List<String> newResp = new ArrayList<String>();
+		List<String> oldResp = new ArrayList<String>();
+
+		for(KimDocumentRoleResponsibility documentRoleResponsibility: identityManagementRoleDocument.getResponsibilities()){
+			newResp.add(documentRoleResponsibility.getResponsibilityId());
+		}
+		for(RoleResponsibilityImpl roleResp: origRoleResponsibilities){
+			oldResp.add(roleResp.getResponsibilityId());
+		}
+
+		lRet.addAll(ListUtils.union(newResp, oldResp));
+
+		return lRet;
+	}
 }

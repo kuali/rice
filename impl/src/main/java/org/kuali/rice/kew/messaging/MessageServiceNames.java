@@ -60,6 +60,8 @@ public class MessageServiceNames {
 
 	public static final String ACTION_INVOCATION_PROCESSOR = "ActionInvocationProcessor";
 
+	public static final String RESPONSIBILITY_CHANGE_SERVICE = "ResponsibilityChangeService";
+
 	private static QName getQName(String baseServiceName, DocumentRouteHeaderValue document) {
 		if (document != null) {
 			return new QName(document.getDocumentType().getServiceNamespace(), baseServiceName);

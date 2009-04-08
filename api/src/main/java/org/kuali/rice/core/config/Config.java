@@ -132,7 +132,6 @@ public interface Config {
 	public static final String FIRST_DAILY_EMAIL_DELIVERY_DATE = "email.daily.firstDeliveryDate";
 	public static final String FIRST_WEEKLY_EMAIL_DELIVERY_DATE = "email.weekly.firstDeliveryDate";
 
-	public static final String RUNNING_SERVER_IN_EMBEDDED = "embedded.server";
 	public static final String ENABLE_EMAIL_REMINDER_LIFECYCLE = "email.reminder.lifecycle.enabled";
 	public static final String ENABLE_XML_PIPELINE_LIFECYCLE = "xml.pipeline.lifecycle.enabled";
 	
@@ -214,8 +213,6 @@ public interface Config {
 	public String getKeystoreFile();
 
 	public String getDocumentLockTimeout();
-
-    public Boolean getRunningEmbeddedServerMode();
 
     public Boolean getEmailReminderLifecycleEnabled();
 

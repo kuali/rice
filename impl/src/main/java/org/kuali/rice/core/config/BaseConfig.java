@@ -382,11 +382,7 @@ public abstract class BaseConfig implements Config {
     public String getDocumentLockTimeout() {
         return getProperty(Config.DOCUMENT_LOCK_TIMEOUT);
     }
-
-    public Boolean getRunningEmbeddedServerMode() {
-        return new Boolean(getProperty(RUNNING_SERVER_IN_EMBEDDED));
-    }
-
+    
     public Boolean getEmailReminderLifecycleEnabled() {
         return new Boolean(getProperty(ENABLE_EMAIL_REMINDER_LIFECYCLE));
     }

@@ -8,7 +8,6 @@
 -->
 <config>
     <param name="plugin.registry.enabled">true</param>
-    <param name="embedded.server">true</param>
     <param name="xml.pipeline.lifecycle.enabled">true</param>
     <param name="email.reminder.lifecycle.enabled">true</param>
 	<param name="environment">dev</param>

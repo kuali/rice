@@ -268,7 +268,9 @@ public class ActionListAction extends KualiAction {
             int pageSize = getPageSize(preferences);
             // initialize the action list if necessary
             if (freshActionList) {
+            	plog.log("calling initializeActionList");
             	initializeActionList(actionList, preferences, errors);
+            	plog.log("done w/ initializeActionList");
             	// put this in to resolve EN-112 (http://beatles.uits.indiana.edu:8081/jira/browse/EN-112)
                 // if the action list gets "refreshed" in between page switches, we need to be sure and re-sort it, even though we don't have sort criteria on the request
             	if (sortCriterion == null) {
@@ -542,12 +544,16 @@ public class ActionListAction extends KualiAction {
     		errors.add(Globals.ERROR_KEY, new ActionMessage(errorKey, documentIdsString));
     	}
     }
+    
     private void generateActionItemErrors(List actionList) {
     	for (Iterator iterator = actionList.iterator(); iterator.hasNext();) {
     		ActionItemActionListExtension actionItem = (ActionItemActionListExtension)iterator.next();
-    		if (KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getRouteHeaderId()) == null) {
-    			GlobalVariables.getErrorMap().putError(ROUTEHEADERID, ACTIONITEM_ROUTEHEADERID_INVALID,actionItem.getActionItemId()+"");
-    		}
+    		
+    		// removing this check for the time being, it hinders action list performance. (KULRICE-2931)
+//    		if (KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getRouteHeaderId()) == null) {
+//    			GlobalVariables.getErrorMap().putError(ROUTEHEADERID, ACTIONITEM_ROUTEHEADERID_INVALID,actionItem.getActionItemId()+"");
+//    		}
+    		
     		if(!KEWConstants.ACTION_REQUEST_CODES.containsKey(actionItem.getActionRequestCd())) {
     			GlobalVariables.getErrorMap().putError(ACTIONREQUESTCD,ACTIONITEM_ACTIONREQUESTCD_INVALID,actionItem.getActionItemId()+"");
     		}

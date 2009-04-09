@@ -1753,7 +1753,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			}
 			if(!attributePresent){
 				pndGroupQualifier = new GroupDocumentQualifier();
-				pndGroupQualifier.setKimAttributeId(origAttributeId);
+				pndGroupQualifier.setKimAttrDefnId(origAttributeId);
 				pndGroupQualifiers.add(pndGroupQualifier);
 			}
 			attributePresent = false;
@@ -1794,16 +1794,15 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		kimGroup.setKimTypeId(typeImpl.getKimTypeId());
 		kimGroup.setNamespaceCode(identityManagementGroupDocument.getGroupNamespace());
 		kimGroup.setGroupName(identityManagementGroupDocument.getGroupName());
+		kimGroup.setGroupAttributes(getGroupAttributeData(identityManagementGroupDocument, kimGroup.getGroupAttributes()));
 
 		List<String> oldIds = null;
 		List<String> newIds = null;
-
 		List<BusinessObject> bos = new ArrayList<BusinessObject>();
 		oldIds = getGroupService().getMemberPrincipalIds(kimGroup.getGroupId()); // for the actionList update
 		bos.add(kimGroup);
 		List<GroupMemberImpl> newGroupMembersList = getGroupMembers(identityManagementGroupDocument, origGroupMembers);
 		bos.addAll(newGroupMembersList);
-		bos.addAll(getGroupAttributeData(identityManagementGroupDocument, origGroupAttributes));
 
 		getBusinessObjectService().save(bos);
 		newIds = getGroupService().getMemberPrincipalIds(kimGroup.getGroupId()); // for the action list update
@@ -1837,29 +1836,29 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 	protected List<GroupAttributeDataImpl> getGroupAttributeData(IdentityManagementGroupDocument identityManagementGroupDocument,
 			List<GroupAttributeDataImpl> origAttributes){
-		List<GroupAttributeDataImpl> roleMemberAttributeDataList = new ArrayList<GroupAttributeDataImpl>();
-		GroupAttributeDataImpl newRoleMemberAttributeData;
+		List<GroupAttributeDataImpl> groupAttributeDataList = new ArrayList<GroupAttributeDataImpl>();
+		GroupAttributeDataImpl newGroupAttributeData;
 		for(GroupDocumentQualifier groupQualifier: identityManagementGroupDocument.getQualifiers()){
-			if(StringUtils.isNotBlank(groupQualifier.getAttributeValue())){
-				newRoleMemberAttributeData = new GroupAttributeDataImpl();
-				newRoleMemberAttributeData.setAttributeDataId(groupQualifier.getAttributeDataId());
-				newRoleMemberAttributeData.setAttributeValue(groupQualifier.getAttributeValue());
-				newRoleMemberAttributeData.setTargetPrimaryKey(groupQualifier.getTargetPrimaryKey());
-				newRoleMemberAttributeData.setKimTypeId(groupQualifier.getKimTypeId());
-				newRoleMemberAttributeData.setKimAttributeId(groupQualifier.getKimAttributeId());
+			if(StringUtils.isNotBlank(groupQualifier.getAttrVal())){
+				newGroupAttributeData = new GroupAttributeDataImpl();
+				newGroupAttributeData.setAttributeDataId(groupQualifier.getAttrDataId());
+				newGroupAttributeData.setAttributeValue(groupQualifier.getAttrVal());
+				newGroupAttributeData.setTargetPrimaryKey(groupQualifier.getTargetPrimaryKey());
+				newGroupAttributeData.setKimTypeId(groupQualifier.getKimTypId());
+				newGroupAttributeData.setKimAttributeId(groupQualifier.getKimAttrDefnId());
 				for(GroupAttributeDataImpl origAttribute: origAttributes){
-					if(origAttribute.getKimAttributeId().equals(newRoleMemberAttributeData.getKimAttributeId()) &&
-							newRoleMemberAttributeData.getTargetPrimaryKey().equals(origAttribute.getTargetPrimaryKey())){
-						newRoleMemberAttributeData.setAttributeDataId(origAttribute.getAttributeDataId());
+					if(origAttribute.getKimAttributeId().equals(newGroupAttributeData.getKimAttributeId()) &&
+							newGroupAttributeData.getTargetPrimaryKey().equals(origAttribute.getTargetPrimaryKey())){
+						newGroupAttributeData.setAttributeDataId(origAttribute.getAttributeDataId());
 					}
-					if(origAttribute.getAttributeDataId().equals(newRoleMemberAttributeData.getAttributeDataId())){
-						newRoleMemberAttributeData.setVersionNumber(origAttribute.getVersionNumber());
+					if(origAttribute.getAttributeDataId().equals(newGroupAttributeData.getAttributeDataId())){
+						newGroupAttributeData.setVersionNumber(origAttribute.getVersionNumber());
 					}
 				}
-				roleMemberAttributeDataList.add(newRoleMemberAttributeData);
+				groupAttributeDataList.add(newGroupAttributeData);
 			}
 		}
-		return roleMemberAttributeDataList;
+		return groupAttributeDataList;
 	}
 
     public KimDocumentRoleMember getKimDocumentRoleMember(String memberTypeCode, String memberId, String roleId){

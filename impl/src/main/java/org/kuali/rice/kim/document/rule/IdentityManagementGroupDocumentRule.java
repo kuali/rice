@@ -132,7 +132,6 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
     private boolean validateGroupQualifier(List<GroupDocumentQualifier> groupQualifiers, KimTypeImpl kimType){
 		AttributeSet validationErrors = new AttributeSet();
 
-		int memberCounter = 0;
 		int attributeCounter = 0;
 		AttributeSet errorsTemp;
 		AttributeSet attributeSetToValidate;
@@ -143,10 +142,10 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
         	attribute = groupQualifier.getKimAttribute();
         	if(attribute==null){
         		Map<String, String> criteria = new HashMap<String, String>();
-        		criteria.put("kimAttributeId", groupQualifier.getKimAttributeId());
+        		criteria.put("kimAttributeId", groupQualifier.getKimAttrDefnId());
         		attribute = (KimAttributeImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimAttributeImpl.class, criteria);
         	}
-        	attributeSetToValidate.put(attribute.getAttributeName(), groupQualifier.getAttributeValue());
+        	attributeSetToValidate.put(attribute.getAttributeName(), groupQualifier.getAttrVal());
 	        errorsTemp = kimTypeService.validateAttributes(attributeSetToValidate);
 	        updateGlobalVariablesErrorKeys(
 	        		"document.qualifiers["+attributeCounter+"]", 

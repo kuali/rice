@@ -1139,7 +1139,7 @@
   <!-- GroupDocument -->
   <class-descriptor class="org.kuali.rice.kim.document.IdentityManagementGroupDocument" table="KRIM_GRP_DOCUMENT_T">
 	<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primarykey="true"  />
-    <field-descriptor name="groupId" column="grp_id" jdbc-type="VARCHAR" autoincrement="true" sequence-name="KRIM_ROLE_ID_S" />
+    <field-descriptor name="groupId" column="grp_id" jdbc-type="VARCHAR" autoincrement="true" sequence-name="KRIM_GRP_ID_S" />
     <field-descriptor name="groupTypeId" column="kim_typ_id" jdbc-type="VARCHAR"/>
     <field-descriptor name="groupNamespace" column="grp_nmspc" jdbc-type="VARCHAR"  />
     <field-descriptor name="groupName" column="grp_nm" jdbc-type="VARCHAR"  />
@@ -1149,13 +1149,13 @@
     <collection-descriptor name="members" element-class-ref="org.kuali.rice.kim.bo.ui.GroupDocumentMember" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       <inverse-foreignkey field-ref="documentNumber" />
     </collection-descriptor>
-	<collection-descriptor name="attributes" element-class-ref="org.kuali.rice.kim.bo.ui.GroupDocumentQualifier" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
+	<collection-descriptor name="qualifiers" element-class-ref="org.kuali.rice.kim.bo.ui.GroupDocumentQualifier" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       <inverse-foreignkey field-ref="documentNumber" />
     </collection-descriptor>
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.bo.ui.GroupDocumentMember" table="KRIM_PND_GRP_MBR_T">
-    <field-descriptor name="groupMemberId" column="GRP_MBR_ID" jdbc-type="VARCHAR" primarykey="true"   autoincrement="true" sequence-name="KRIM_ROLE_MBR_ID_S" />
+    <field-descriptor name="groupMemberId" column="GRP_MBR_ID" jdbc-type="VARCHAR" primarykey="true"   autoincrement="true" sequence-name="KRIM_GRP_MBR_ID_S" />
 	<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primarykey="true" />
     <field-descriptor name="groupId" column="GRP_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="memberId" column="MBR_ID" jdbc-type="VARCHAR" />

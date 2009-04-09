@@ -287,7 +287,7 @@
         <bean parent="FieldDefinition" p:attributeName="primaryDepartmentCode" />
         <bean parent="FieldDefinition" p:attributeName="employeeStatusCode" />
         <bean parent="FieldDefinition" p:attributeName="employeeTypeCode" />
-        <bean parent="FieldDefinition" p:attributeName="active" />
+        <bean parent="FieldDefinition" p:attributeName="active" p:defaultValue="Y" />
         <bean parent="FieldDefinition" p:attributeName="lookupRoleNamespaceCode" />
         <bean parent="FieldDefinition" p:attributeName="lookupRoleName" />
       </list>

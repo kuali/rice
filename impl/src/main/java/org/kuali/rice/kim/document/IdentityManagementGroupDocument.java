@@ -15,17 +15,15 @@
  */
 package org.kuali.rice.kim.document;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.bo.ui.GroupDocumentQualifier;
-import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.datadictionary.AttributeDefinition;
-import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
-import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.util.TypedArrayList;
 
 
@@ -88,18 +86,7 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 		GroupDocumentMember member = new GroupDocumentMember();
        	return member;
 	}
-    
-    private void setAttrDefnIdForDelMemberQualifier(GroupDocumentQualifier qualifier,AttributeDefinition definition) {
-    	if (definition instanceof KimDataDictionaryAttributeDefinition) {
-    		qualifier.setKimAttributeId(((KimDataDictionaryAttributeDefinition)definition).getKimAttrDefnId());
-    		//qualifier.refreshReferenceObject("kimAttribute");
-    	} else {
-    		qualifier.setKimAttributeId(((KimNonDataDictionaryAttributeDefinition)definition).getKimAttrDefnId());
-    		//qualifier.refreshReferenceObject("kimAttribute");
-
-    	}
-    }
-    
+        
 	/**
 	 * @see org.kuali.rice.kns.document.DocumentBase#handleRouteStatusChange()
 	 */
@@ -117,8 +104,9 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 		if(StringUtils.isBlank(getGroupId())){
 			groupId = getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_ID_S").toString();
 			setGroupId(groupId);
-		} else
+		} else{
 			groupId = getGroupId();
+		}
 		if(getMembers()!=null){
 			String groupMemberId;
 			for(GroupDocumentMember member: getMembers()){
@@ -127,10 +115,11 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 					groupMemberId = getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_MBR_ID_S").toString();
 					member.setGroupMemberId(groupMemberId);
 				}
-				/*for(KimDocumentGroupQualifier qualifier: member.getQualifiers()){
-					qualifier.setKimTypId(getKimType().getKimTypeId());
-				}*/
 			}
+		}
+		for(GroupDocumentQualifier qualifier: getQualifiers()){
+			qualifier.setKimTypId(getKimType().getKimTypeId());
+			qualifier.setTargetPrimaryKey(groupId);
 		}
 	}
 
@@ -245,10 +234,23 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 
 	public GroupDocumentQualifier getQualifier(String kimAttributeDefnId) {
 		for(GroupDocumentQualifier qualifier: qualifiers){
-			if(qualifier.getKimAttributeId().equals(kimAttributeDefnId))
+			if(qualifier.getKimAttrDefnId().equals(kimAttributeDefnId))
 				return qualifier;
 		}
 		return null;
+	}
+
+	public void setDefinitions(AttributeDefinitionMap definitions) {
+		super.setDefinitions(definitions);
+		if(getQualifiers()==null || getQualifiers().size()<1){
+			GroupDocumentQualifier qualifier;
+			setQualifiers(new ArrayList<GroupDocumentQualifier>());
+			for(String key : getDefinitions().keySet()) {
+				qualifier = new GroupDocumentQualifier();
+	        	qualifier.setKimAttrDefnId(getKimAttributeDefnId(getDefinitions().get(key)));
+	        	getQualifiers().add(qualifier);
+	        }
+		}
 	}
 
 }

@@ -47,7 +47,7 @@
         </c:if>
       </c:when>
       <c:when test="${field.fieldType==field.TEXT_AREA}">
-      	<pre><c:out value="${KualiForm.unconvertedValues[field.propertyName]}" default="${field.propertyValue}" /></pre>
+        <c:out value="${KualiForm.unconvertedValues[field.propertyName]}" default="${field.propertyValue}" />
 
       	<c:if test="${isLookup}">
       		<input type="hidden" name="${field.propertyName}"

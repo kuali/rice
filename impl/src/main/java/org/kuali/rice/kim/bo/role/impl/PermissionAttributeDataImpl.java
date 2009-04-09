@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.kim.bo.role.impl;
 
+import java.util.LinkedHashMap;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -26,4 +29,29 @@ import org.kuali.rice.kim.bo.types.impl.KimAttributeDataImpl;
 @Entity
 @Table(name="KRIM_PERM_ATTR_DATA_T")
 public class PermissionAttributeDataImpl extends KimAttributeDataImpl {
+    @Column(name="PERM_ID")
+    protected String permissionId;
+
+    public String getPermissionId() {
+        return this.permissionId;
+    }
+
+    public void setPermissionId(String permissionId) {
+        this.permissionId = permissionId;
+    }
+
+    /**
+     * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    protected LinkedHashMap toStringMapper() {
+        LinkedHashMap m = new LinkedHashMap();
+        m.put( "attrDataId", getAttributeDataId() );
+        m.put( "permissionId", getPermissionId() );
+        m.put( "kimTypeId", getKimTypeId() );
+        m.put( "kimAttributeId", getKimAttributeId() );
+        m.put( "attributeValue", getAttributeValue() );
+        return m;
+    }
 }

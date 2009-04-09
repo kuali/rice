@@ -43,9 +43,6 @@ public class KimAttributeDataImpl extends PersistableBusinessObjectBase implemen
 	@Column(name="ATTR_DATA_ID")
 	protected String attributeDataId;
 
-	@Column(name="TARGET_PRIMARY_KEY")
-	protected String targetPrimaryKey;
-
 	@Column(name="KIM_TYP_ID")
 	protected String kimTypeId;
 
@@ -69,12 +66,7 @@ public class KimAttributeDataImpl extends PersistableBusinessObjectBase implemen
 	public void setAttributeDataId(String attributeDataId) {
 		this.attributeDataId = attributeDataId;
 	}
-	public String getTargetPrimaryKey() {
-		return this.targetPrimaryKey;
-	}
-	public void setTargetPrimaryKey(String targetPrimaryKey) {
-		this.targetPrimaryKey = targetPrimaryKey;
-	}
+
 	public String getAttributeValue() {
 		return this.attributeValue;
 	}
@@ -114,7 +106,6 @@ public class KimAttributeDataImpl extends PersistableBusinessObjectBase implemen
 	protected LinkedHashMap toStringMapper() {
 		LinkedHashMap m = new LinkedHashMap();
 		m.put( "attributeDataId", attributeDataId );
-		m.put( "targetPrimaryKey", targetPrimaryKey );
 		m.put( "kimTypeId", kimTypeId );
 		m.put( "kimAttributeId", kimAttributeId );
 		m.put( "attributeValue", attributeValue );

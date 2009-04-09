@@ -34,8 +34,8 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
- * This is a description of what this class does - kellerj don't forget to fill this in. 
- * 
+ * This is a description of what this class does - kellerj don't forget to fill this in.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
@@ -44,19 +44,21 @@ import org.kuali.rice.kns.util.TypedArrayList;
 public class KimDelegationMemberImpl extends KimAbstractMemberImpl implements KimDelegationMember {
 
 	private static final long serialVersionUID = 6278392972043721961L;
-	
+
 	@Id
 	@Column(name="DLGN_MBR_ID")
 	protected String delegationMemberId;
 	@Column(name="DLGN_ID")
-	protected String delegationId;	
+	protected String delegationId;
 	@Column(name="ROLE_MBR_ID")
-	protected String roleMemberId;	
-	
+	protected String roleMemberId;
+
 	@OneToMany(targetEntity=KimDelegationMemberAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
-	@JoinColumn(name="DLGN_MBR_ID", referencedColumnName="TARGET_PRIMARY_KEY", insertable=false, updatable=false )
+	@JoinColumn(name="DLGN_MBR_ID", referencedColumnName="DLGN_MBR_ID", insertable=false, updatable=false )
 	protected List<KimDelegationMemberAttributeDataImpl> attributes = new TypedArrayList(KimDelegationMemberAttributeDataImpl.class);
-	
+
+
+
 	/**
 	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
 	 */
@@ -83,7 +85,7 @@ public class KimDelegationMemberImpl extends KimAbstractMemberImpl implements Ki
 	public void setActiveToDate(Timestamp to) {
 		this.activeToDate = to;
 	}
-	
+
 	public String getDelegationMemberId() {
 		return this.delegationMemberId;
 	}
@@ -107,13 +109,13 @@ public class KimDelegationMemberImpl extends KimAbstractMemberImpl implements Ki
 	public void setAttributes(List<KimDelegationMemberAttributeDataImpl> attributes) {
 		this.attributes = attributes;
 	}
-	
+
 	/**
 	 * @see org.kuali.rice.kim.bo.role.KimDelegationGroup#getQualifier()
 	 */
 	public AttributeSet getQualifier() {
 		AttributeSet attribs = new AttributeSet();
-		
+
 		if ( attributes == null ) {
 			return attribs;
 		}
@@ -122,7 +124,7 @@ public class KimDelegationMemberImpl extends KimAbstractMemberImpl implements Ki
 		}
 		return attribs;
 	}
-	
+
 	/**
 	 * @return the roleMemberId
 	 */

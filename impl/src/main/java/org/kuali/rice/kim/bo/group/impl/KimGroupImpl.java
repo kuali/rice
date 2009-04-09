@@ -78,7 +78,7 @@ public class KimGroupImpl extends PersistableBusinessObjectBase implements KimGr
 	protected List<GroupMemberImpl> members;
 
 	@OneToMany(targetEntity=GroupAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
-	@JoinColumn(name="TARGET_PRIMARY_KEY", insertable=false, updatable=false)
+	@JoinColumn(name="GRP_ID", insertable=false, updatable=false)
 	protected List<GroupAttributeDataImpl> groupAttributes = new TypedArrayList(GroupAttributeDataImpl.class);
 
 	@Transient
@@ -238,7 +238,7 @@ public class KimGroupImpl extends PersistableBusinessObjectBase implements KimGr
 
 	public GroupAttributeDataImpl getGroupAttributeById(String attributeId) {
 	    for (GroupAttributeDataImpl gad : getGroupAttributes()) {
-	        if (gad.getKimAttributeId().equals(attributeId.trim())) {
+	        if (gad.getAttributeValue().equals(attributeId.trim())) {
 	            return gad;
 	        }
 	    }

@@ -1018,7 +1018,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 			RoleMemberAttributeDataImpl a = new RoleMemberAttributeDataImpl();
 			a.setAttributeValue( qualifier.get( attributeName ) );
 			a.setKimTypeId( kimTypeId );
-			a.setTargetPrimaryKey( roleMember.getRoleMemberId() );
+			a.setRoleMemberId( roleMember.getRoleMemberId() );
 			// look up the attribute ID
 			a.setKimAttributeId( getKimAttributeId( attributeName ) );
 			// pull the next sequence number for the data ID
@@ -1098,7 +1098,6 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 
     	// When members are added to roles, clients must be notified.
     	KIMServiceLocator.getResponsibilityInternalService().saveRoleMember(newRoleMember);
-
     }
 
     public void removePrincipalFromRole(String principalId, String namespaceCode, String roleName, AttributeSet qualifier ) {

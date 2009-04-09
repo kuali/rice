@@ -26,17 +26,17 @@ INSERT INTO KRNS_PARM_T (NMSPC_CD, OBJ_ID, PARM_DTL_TYP_CD, PARM_NM, PARM_TYP_CD
 ;
 insert into KRNS_PARM_T (NMSPC_CD, PARM_DTL_TYP_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_CD, TXT, PARM_DESC_TXT, CONS_CD, GRP_NM, ACTV_IND) VALUES('KR-NS', 'Lookup', 'RESULTS_LIMIT', '53680C68F5A8AD9BE0404F8189D80A6C', 1, 'CONFG', '200', 'Maximum number of results returned in a look-up query.', 'A', 'WorkflowAdmin', 'Y')
 ;
-INSERT INTO KRNS_PARM_T (CONS_CD, NMSPC_CD, OBJ_ID, PARM_DESC_TXT, PARM_DTL_TYP_CD, PARM_NM, PARM_TYP_CD,TXT, VER_NBR) VALUES ('A', 'KR-NS', SYS_GUID(), 'A semi-colon delimted list of strings representing date formats that the DateTimeService will use to parse dates when DateTimeServiceImpl.convertToSqlDate(String) or DateTimeServiceImpl.convertToDate(String) is called. Note that patterns will be applied in the order listed (and the first applicable one will be used). For a more technical description of how characters in the parameter value will be interpreted, please consult the javadocs for java.text.SimpleDateFormat. Any changes will be applied when the application is restarted.',  'All',  'STRING_TO_DATE_FORMATS',  'CONFG',  'MM/dd/yy;MM-dd-yy;MMMM dd, yyyy;MMddyy',  1  )
-; 
-INSERT INTO KRNS_PARM_T (CONS_CD, NMSPC_CD, OBJ_ID, PARM_DESC_TXT, PARM_DTL_TYP_CD, PARM_NM, PARM_TYP_CD,TXT, VER_NBR) VALUES ('A', 'KR-NS', SYS_GUID(), 'A single date format string that the DateTimeService will use to format dates to be used in a file name when DateTimeServiceImpl.toDateStringForFilename(Date) is called. For a more technical description of how characters in the parameter value will be interpreted, please consult the javadocs for java.text.SimpleDateFormat. Any changes will be applied when the application is restarted.',  'All',  'DATE_TO_STRING_FORMAT_FOR_FILE_NAME',  'CONFG',  'yyyyMMdd',  1)  
-; 
-INSERT INTO KRNS_PARM_T (CONS_CD, NMSPC_CD, OBJ_ID, PARM_DESC_TXT, PARM_DTL_TYP_CD, PARM_NM, PARM_TYP_CD,TXT, VER_NBR) VALUES ('A', 'KR-NS', SYS_GUID(), 'A single date format string that the DateTimeService will use to format a date and time string to be used in a file name when DateTimeServiceImpl.toDateTimeStringForFilename(Date) is called.. For a more technical description of how characters in the parameter value will be interpreted, please consult the javadocs for java.text.SimpleDateFormat. Any changes will be applied when the application is restarted.',  'All',  'TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME',  'CONFG',  'yyyyMMdd-HH-mm-ss-S',  1)  
-;  
-INSERT INTO KRNS_PARM_T (CONS_CD, NMSPC_CD, OBJ_ID, PARM_DESC_TXT, PARM_DTL_TYP_CD, PARM_NM, PARM_TYP_CD,TXT, VER_NBR)  VALUES  ('A', 'KR-NS', SYS_GUID(), 'A single date format string that the DateTimeService will use to format a date to be displayed on a web page. For a more technical description of how characters in the parameter value will be interpreted, please consult the javadocs for java.text.SimpleDateFormat. Any changes will be applied when the application is restarted.',  'All',  'DATE_TO_STRING_FORMAT_FOR_USER_INTERFACE',  'CONFG',  'MM/dd/yyyy',  1)
-; 
-INSERT INTO KRNS_PARM_T (CONS_CD, NMSPC_CD, OBJ_ID, PARM_DESC_TXT, PARM_DTL_TYP_CD, PARM_NM, PARM_TYP_CD,TXT, VER_NBR)  VALUES  ('A', 'KR-NS', SYS_GUID(), 'A single date format string that the DateTimeService will use to format a date and time to be displayed on a web page. For a more technical description of how characters in the parameter value will be interpreted, please consult the javadocs for java.text.SimpleDateFormat. Any changes will be applied when the application is restarted.',  'All',  'TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE',  'CONFG',  'MM/dd/yyyy hh:mm a',  1) 
+INSERT INTO KRNS_PARM_T (CONS_CD, NMSPC_CD, OBJ_ID, PARM_DESC_TXT, PARM_DTL_TYP_CD, PARM_NM, PARM_TYP_CD,TXT, VER_NBR) VALUES ('A', 'KR-NS', 'E05A692D62E54B87901D872DC37208A2', 'A semi-colon delimted list of strings representing date formats that the DateTimeService will use to parse dates when DateTimeServiceImpl.convertToSqlDate(String) or DateTimeServiceImpl.convertToDate(String) is called. Note that patterns will be applied in the order listed (and the first applicable one will be used). For a more technical description of how characters in the parameter value will be interpreted, please consult the javadocs for java.text.SimpleDateFormat. Any changes will be applied when the application is restarted.',  'All',  'STRING_TO_DATE_FORMATS',  'CONFG',  'MM/dd/yy;MM-dd-yy;MMMM dd, yyyy;MMddyy',  1  )
 ;
-INSERT INTO KRNS_PARM_T (CONS_CD, NMSPC_CD, OBJ_ID, PARM_DESC_TXT, PARM_DTL_TYP_CD, PARM_NM, PARM_TYP_CD,TXT, VER_NBR)  VALUES  ('A', 'KR-NS', SYS_GUID(), 'A semi-colon delimted list of strings representing date formats that the DateTimeService will use to parse date and times when DateTimeServiceImpl.convertToDateTime(String) or DateTimeServiceImpl.convertToSqlTimestamp(String) is called. Note that patterns will be applied in the order listed (and the first applicable one will be used). For a more technical description of how characters in the parameter value will be interpreted, please consult the javadocs for java.text.SimpleDateFormat. Any changes will be applied when the application is restarted.',  'All',  'STRING_TO_TIMESTAMP_FORMATS',  'CONFG',  'MM/dd/yyyy hh:mm a',  1 )  
+INSERT INTO KRNS_PARM_T (CONS_CD, NMSPC_CD, OBJ_ID, PARM_DESC_TXT, PARM_DTL_TYP_CD, PARM_NM, PARM_TYP_CD,TXT, VER_NBR) VALUES ('A', 'KR-NS', 'E05A692D62E54B87901D872DC37208A3', 'A single date format string that the DateTimeService will use to format dates to be used in a file name when DateTimeServiceImpl.toDateStringForFilename(Date) is called. For a more technical description of how characters in the parameter value will be interpreted, please consult the javadocs for java.text.SimpleDateFormat. Any changes will be applied when the application is restarted.',  'All',  'DATE_TO_STRING_FORMAT_FOR_FILE_NAME',  'CONFG',  'yyyyMMdd',  1)
+;
+INSERT INTO KRNS_PARM_T (CONS_CD, NMSPC_CD, OBJ_ID, PARM_DESC_TXT, PARM_DTL_TYP_CD, PARM_NM, PARM_TYP_CD,TXT, VER_NBR) VALUES ('A', 'KR-NS', 'E05A692D62E54B87901D872DC37208A4', 'A single date format string that the DateTimeService will use to format a date and time string to be used in a file name when DateTimeServiceImpl.toDateTimeStringForFilename(Date) is called.. For a more technical description of how characters in the parameter value will be interpreted, please consult the javadocs for java.text.SimpleDateFormat. Any changes will be applied when the application is restarted.',  'All',  'TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME',  'CONFG',  'yyyyMMdd-HH-mm-ss-S',  1)
+;
+INSERT INTO KRNS_PARM_T (CONS_CD, NMSPC_CD, OBJ_ID, PARM_DESC_TXT, PARM_DTL_TYP_CD, PARM_NM, PARM_TYP_CD,TXT, VER_NBR)  VALUES  ('A', 'KR-NS', 'E05A692D62E54B87901D872DC37208A5', 'A single date format string that the DateTimeService will use to format a date to be displayed on a web page. For a more technical description of how characters in the parameter value will be interpreted, please consult the javadocs for java.text.SimpleDateFormat. Any changes will be applied when the application is restarted.',  'All',  'DATE_TO_STRING_FORMAT_FOR_USER_INTERFACE',  'CONFG',  'MM/dd/yyyy',  1)
+;
+INSERT INTO KRNS_PARM_T (CONS_CD, NMSPC_CD, OBJ_ID, PARM_DESC_TXT, PARM_DTL_TYP_CD, PARM_NM, PARM_TYP_CD,TXT, VER_NBR)  VALUES  ('A', 'KR-NS', 'E05A692D62E54B87901D872DC37208A6', 'A single date format string that the DateTimeService will use to format a date and time to be displayed on a web page. For a more technical description of how characters in the parameter value will be interpreted, please consult the javadocs for java.text.SimpleDateFormat. Any changes will be applied when the application is restarted.',  'All',  'TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE',  'CONFG',  'MM/dd/yyyy hh:mm a',  1)
+;
+INSERT INTO KRNS_PARM_T (CONS_CD, NMSPC_CD, OBJ_ID, PARM_DESC_TXT, PARM_DTL_TYP_CD, PARM_NM, PARM_TYP_CD,TXT, VER_NBR)  VALUES  ('A', 'KR-NS', 'E05A692D62E54B87901D872DC37208A7', 'A semi-colon delimted list of strings representing date formats that the DateTimeService will use to parse date and times when DateTimeServiceImpl.convertToDateTime(String) or DateTimeServiceImpl.convertToSqlTimestamp(String) is called. Note that patterns will be applied in the order listed (and the first applicable one will be used). For a more technical description of how characters in the parameter value will be interpreted, please consult the javadocs for java.text.SimpleDateFormat. Any changes will be applied when the application is restarted.',  'All',  'STRING_TO_TIMESTAMP_FORMATS',  'CONFG',  'MM/dd/yyyy hh:mm a',  1 )
 ;
 insert into KRIM_TYP_T (KIM_TYP_ID, OBJ_ID, VER_NBR, NM, SRVC_NM, ACTV_IND, NMSPC_CD) VALUES ('1', '5B97C50B02FF6110E0404F8189D85213', 1, 'Default', Null, 'Y', 'KUALI')
 ;
@@ -148,41 +148,41 @@ INSERT INTO KRIM_ROLE_PERM_T(ROLE_PERM_ID, OBJ_ID, VER_NBR, ROLE_ID, PERM_ID, AC
 INSERT INTO KRIM_ROLE_PERM_T(ROLE_PERM_ID, OBJ_ID, VER_NBR, ROLE_ID, PERM_ID, ACTV_IND)
   VALUES('213', '5C27A267EF7A7417E0404F8189D830A9', 1, '1', '168', 'Y')
 ;
-INSERT INTO KRIM_PERM_ATTR_DATA_T(ATTR_DATA_ID, OBJ_ID, VER_NBR, TARGET_PRIMARY_KEY, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ATTR_VAL)
+INSERT INTO KRIM_PERM_ATTR_DATA_T(ATTR_DATA_ID, OBJ_ID, VER_NBR, PERM_ID, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ATTR_VAL)
   VALUES('193', '5B4F09744A31EF33E0404F8189D84F24', 1, '147', '3', '13', 'RiceDocument')
 ;
-INSERT INTO KRIM_PERM_ATTR_DATA_T(ATTR_DATA_ID, OBJ_ID, VER_NBR, TARGET_PRIMARY_KEY, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ATTR_VAL)
+INSERT INTO KRIM_PERM_ATTR_DATA_T(ATTR_DATA_ID, OBJ_ID, VER_NBR, PERM_ID, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ATTR_VAL)
   VALUES('194', '5B4F09744A32EF33E0404F8189D84F24', 1, '148', '3', '13', 'RiceDocument')
 ;
-INSERT INTO KRIM_PERM_ATTR_DATA_T(ATTR_DATA_ID, OBJ_ID, VER_NBR, TARGET_PRIMARY_KEY, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ATTR_VAL)
+INSERT INTO KRIM_PERM_ATTR_DATA_T(ATTR_DATA_ID, OBJ_ID, VER_NBR, PERM_ID, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ATTR_VAL)
   VALUES('195', '5B4F09744A33EF33E0404F8189D84F24', 1, '149', '3', '13', 'RiceDocument')
 ;
-INSERT INTO KRIM_PERM_ATTR_DATA_T(ATTR_DATA_ID, OBJ_ID, VER_NBR, TARGET_PRIMARY_KEY, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ATTR_VAL)
+INSERT INTO KRIM_PERM_ATTR_DATA_T(ATTR_DATA_ID, OBJ_ID, VER_NBR, PERM_ID, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ATTR_VAL)
   VALUES('202', '5B4F09744A3AEF33E0404F8189D84F24', 1, '156', '3', '13', 'RiceDocument')
 ;
-INSERT INTO KRIM_PERM_ATTR_DATA_T(ATTR_DATA_ID, OBJ_ID, VER_NBR, TARGET_PRIMARY_KEY, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ATTR_VAL)
+INSERT INTO KRIM_PERM_ATTR_DATA_T(ATTR_DATA_ID, OBJ_ID, VER_NBR, PERM_ID, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ATTR_VAL)
   VALUES('218', '5B4F09744A4AEF33E0404F8189D84F24', 1, '165', '3', '13', 'RiceDocument')
 ;
-INSERT INTO KRIM_PERM_ATTR_DATA_T(ATTR_DATA_ID, OBJ_ID, VER_NBR, TARGET_PRIMARY_KEY, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ATTR_VAL)
+INSERT INTO KRIM_PERM_ATTR_DATA_T(ATTR_DATA_ID, OBJ_ID, VER_NBR, PERM_ID, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ATTR_VAL)
   VALUES('221', '5B4F09744A4DEF33E0404F8189D84F24', 1, '168', '3', '13', 'KualiDocument')
 ;
 INSERT INTO KRIM_RSP_TMPL_T(RSP_TMPL_ID, OBJ_ID, VER_NBR, NM, KIM_TYP_ID, DESC_TXT, ACTV_IND, NMSPC_CD)
   VALUES('2', '5B4F09744A4DEF33ED404F8189D44F24', 1, 'Resolve Exception', '54', null, 'Y', 'KR-WKFLW')
 ;
-INSERT INTO KRIM_RSP_T(RSP_ID, OBJ_ID, RSP_TMPL_ID, nm, DESC_TXT, nmspc_cd, ACTV_IND) 
+INSERT INTO KRIM_RSP_T(RSP_ID, OBJ_ID, RSP_TMPL_ID, nm, DESC_TXT, nmspc_cd, ACTV_IND)
   VALUES('93', '5B4F0974284DEF33ED404F8189D44F24', '2', null, null, 'KR-SYS', 'Y')
 ;
 INSERT INTO KRIM_ROLE_RSP_T(ROLE_RSP_ID, OBJ_ID, VER_NBR, ROLE_ID, RSP_ID, ACTV_IND)
   VALUES('1080', '5DF45238F5528846E0404F8189D840B8', 1, '63', '93', 'Y')
 ;
-INSERT INTO KRIM_RSP_ATTR_DATA_T (ATTR_DATA_ID, OBJ_ID, VER_NBR, TARGET_PRIMARY_KEY, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ATTR_VAL)
+INSERT INTO KRIM_RSP_ATTR_DATA_T (ATTR_DATA_ID, OBJ_ID, VER_NBR, RSP_ID , KIM_TYP_ID, KIM_ATTR_DEFN_ID, ATTR_VAL)
   VALUES('334', '5D8B0E3E634E96A3E0404F8189D8468D', 1, '93', '54', '13', 'RiceDocument')
 ;
 INSERT INTO KRIM_RSP_T(RSP_ID, OBJ_ID, RSP_TMPL_ID, nm, DESC_TXT, nmspc_cd, ACTV_IND) VALUES('13', '5B4F09743F4DEF33ED404F8189D44F24', '2', null, null, 'KR-SYS', 'Y')
 ;
 INSERT INTO KRIM_ROLE_RSP_T(ROLE_RSP_ID, OBJ_ID, VER_NBR, ROLE_ID, RSP_ID, ACTV_IND) VALUES('999', '5DF45238F5528FD6E0404F8189D840B8', 1, '63', '13', 'Y')
 ;
-INSERT INTO KRIM_RSP_ATTR_DATA_T (ATTR_DATA_ID, OBJ_ID, VER_NBR, TARGET_PRIMARY_KEY, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ATTR_VAL) VALUES('11', '5D8B0E3E634E96A3E02F4F8189D8468D', 1, '13', '54', '13', 'TestFinalApproverDocumentType')
+INSERT INTO KRIM_RSP_ATTR_DATA_T (ATTR_DATA_ID, OBJ_ID, VER_NBR, RSP_ID , KIM_TYP_ID, KIM_ATTR_DEFN_ID, ATTR_VAL) VALUES('11', '5D8B0E3E634E96A3E02F4F8189D8468D', 1, '13', '54', '13', 'TestFinalApproverDocumentType')
 ;
 INSERT INTO KRIM_ROLE_RSP_ACTN_T (ROLE_RSP_ACTN_ID, OBJ_ID, VER_NBR, ACTN_TYP_CD, PRIORITY_NBR, ACTN_PLCY_CD, ROLE_MBR_ID, ROLE_RSP_ID, IGNORE_PREV_IND) VALUES('200', '5D8B0E3E620096A3E0404F8189D8468D', 1, 'A', null, 'F', '*', '999', 'N')
 ;
@@ -190,7 +190,7 @@ INSERT INTO KRIM_RSP_T(RSP_ID, OBJ_ID, RSP_TMPL_ID, nm, DESC_TXT, nmspc_cd, ACTV
 ;
 INSERT INTO KRIM_ROLE_RSP_T(ROLE_RSP_ID, OBJ_ID, VER_NBR, ROLE_ID, RSP_ID, ACTV_IND) VALUES('9999', '5DF45238F5528FD6E0404F8189D840B9', 1, '63', '14', 'Y')
 ;
-INSERT INTO KRIM_RSP_ATTR_DATA_T (ATTR_DATA_ID, OBJ_ID, VER_NBR, TARGET_PRIMARY_KEY, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ATTR_VAL) VALUES('12', '5D8B0E3E634E96A3E02F4F8189D8468E', 1, '14', '54', '13', 'RiceDocument')
+INSERT INTO KRIM_RSP_ATTR_DATA_T (ATTR_DATA_ID, OBJ_ID, VER_NBR, RSP_ID , KIM_TYP_ID, KIM_ATTR_DEFN_ID, ATTR_VAL) VALUES('12', '5D8B0E3E634E96A3E02F4F8189D8468E', 1, '14', '54', '13', 'RiceDocument')
 ;
 INSERT INTO KRIM_ROLE_RSP_ACTN_T (ROLE_RSP_ACTN_ID, OBJ_ID, VER_NBR, ACTN_TYP_CD, PRIORITY_NBR, ACTN_PLCY_CD, ROLE_MBR_ID, ROLE_RSP_ID, IGNORE_PREV_IND) VALUES('201', '5D8B0E3E620096A3E0404F8189D8468E', 1, 'A', null, 'F', '*', '9999', 'N')
 ;

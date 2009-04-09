@@ -673,7 +673,7 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
             GroupAttributeDataImpl groupAttr = new GroupAttributeDataImpl();
             groupAttr.setKimAttributeId(kimAttr.getKimAttributeId());
             groupAttr.setAttributeValue(infoMap.get(key));
-            groupAttr.setTargetPrimaryKey(groupId);
+            groupAttr.setGroupId(groupId);
             groupAttr.setKimTypeId(kimTypeId);
 
             attrList.add(groupAttr);

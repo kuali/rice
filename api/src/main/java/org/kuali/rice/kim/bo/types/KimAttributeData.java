@@ -16,9 +16,9 @@
 package org.kuali.rice.kim.bo.types;
 
 /**
- * This is the generic template for a holder for the 
- * actual value of a property attached to a KIM object.  
- * 
+ * This is the generic template for a holder for the
+ * actual value of a property attached to a KIM object.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
@@ -29,17 +29,17 @@ public interface KimAttributeData {
 	 * subclasses specific to their types.
 	 */
 	String getAttributeDataId();
-	
+
 	/** The PK of the object that this data belongs to.  If this is a attached to a group
 	 * then this value is the group ID.
 	 */
-	String getTargetPrimaryKey();
-	
+	//String getTargetPrimaryKey();
+
 	String getKimTypeId();
 	String getKimAttributeId();
-	
+
 //	KimAttribute getKimAttribute();
 //	KimType getKimType();
-	
+
 	String getAttributeValue();
 }

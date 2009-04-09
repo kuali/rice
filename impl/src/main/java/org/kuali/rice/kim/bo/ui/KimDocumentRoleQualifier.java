@@ -27,31 +27,31 @@ import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 
 
 /**
- * This is a description of what this class does - shyu don't forget to fill this in. 
- * 
+ * This is a description of what this class does - shyu don't forget to fill this in.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 @Entity
 @Table(name="KRIM_PND_ROLE_MBR_ATTR_DATA_MT")
 public class KimDocumentRoleQualifier extends KimDocumentBoBase{
-	@Id 
+	@Id
 	@Column(name="ATTR_DATA_ID")
-	private String attrDataId; 
-	@Column(name="TARGET_PRIMARY_KEY")
-	private String targetPrimaryKey; 
+	private String attrDataId;
+	@Column(name="ROLE_MBR_ID")
+	private String roleMemberId;
 	@Column(name="KIM_TYP_ID")
-	private String kimTypId; 
+	private String kimTypId;
 	@Column(name="KIM_ATTR_DEFN_ID")
-	private String kimAttrDefnId; 
+	private String kimAttrDefnId;
 	@Column(name="ATTR_VAL")
-	private String attrVal; 
+	private String attrVal;
 	private KimAttributeImpl kimAttribute;
-	
+
 	// a temporary for display that matches definition key
 	@Transient
 	private String qualifierKey;
-	
+
 	public String getAttrDataId() {
 		return attrDataId;
 	}
@@ -60,12 +60,12 @@ public class KimDocumentRoleQualifier extends KimDocumentBoBase{
 		this.attrDataId = attrDataId;
 	}
 
-	public String getTargetPrimaryKey() {
-		return targetPrimaryKey;
+	public String getRoleMemberId() {
+		return roleMemberId;
 	}
 
-	public void setTargetPrimaryKey(String targetPrimaryKey) {
-		this.targetPrimaryKey = targetPrimaryKey;
+	public void setRoleMemberId(String roleMemberId) {
+		this.roleMemberId = roleMemberId;
 	}
 
 	public String getKimTypId() {
@@ -93,11 +93,11 @@ public class KimDocumentRoleQualifier extends KimDocumentBoBase{
 	}
 
 
-	@Override 
+	@Override
 	protected LinkedHashMap toStringMapper() {
 		LinkedHashMap hashMap = new LinkedHashMap();
 		hashMap.put("attrDataId", getAttrDataId());
-		hashMap.put("targetPrimaryKey", getTargetPrimaryKey());
+		hashMap.put("roleMemberId", getRoleMemberId());
 		hashMap.put("kimTypId", getKimTypId());
 		hashMap.put("kimAttrDefnId", getKimAttrDefnId());
 		hashMap.put("attrVal", getAttrVal());

@@ -28,8 +28,8 @@ import org.kuali.rice.kns.util.TypedArrayList;
 
 
 /**
- * This is a description of what this class does - bhargavp don't forget to fill this in. 
- * 
+ * This is a description of what this class does - bhargavp don't forget to fill this in.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
@@ -44,10 +44,10 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 	protected boolean active = true;
 
 	protected boolean editing;
-	
+
 	private List<GroupDocumentMember> members = new TypedArrayList(GroupDocumentMember.class);
 	private List<GroupDocumentQualifier> qualifiers = new TypedArrayList(GroupDocumentQualifier.class);
-	
+
 	public IdentityManagementGroupDocument() {
 	}
 
@@ -86,7 +86,7 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 		GroupDocumentMember member = new GroupDocumentMember();
        	return member;
 	}
-        
+
 	/**
 	 * @see org.kuali.rice.kns.document.DocumentBase#handleRouteStatusChange()
 	 */
@@ -97,7 +97,7 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 			KIMServiceLocator.getUiDocumentService().saveGroup(this);
 		}
 	}
-	
+
 	@Override
 	public void prepareForSave(){
 		String groupId;
@@ -119,7 +119,7 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 		}
 		for(GroupDocumentQualifier qualifier: getQualifiers()){
 			qualifier.setKimTypId(getKimType().getKimTypeId());
-			qualifier.setTargetPrimaryKey(groupId);
+			qualifier.setGroupId(groupId);
 		}
 	}
 

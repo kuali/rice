@@ -31,21 +31,21 @@ import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
- * This is a description of what this class does - kellerj don't forget to fill this in. 
- * 
+ * This is a description of what this class does - kellerj don't forget to fill this in.
+ *
  * @author Kuali Rice Team (kuali-rice@googleroles.com)
  *
  */
 @Entity
-@Table(name="KRIM_PND_DLGN_MT")
+@Table(name="KRIM_PND_DLGN_T")
 public class RoleDocumentDelegation extends KimDocumentBoBase {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@Column(name="DLGN_ID")
 	protected String delegationId;
-	
+
 	@Column(name="ROLE_ID")
 	protected String roleId;
 
@@ -56,18 +56,18 @@ public class RoleDocumentDelegation extends KimDocumentBoBase {
 	protected String delegationTypeCode;
 
 	private List<RoleDocumentDelegationMember> members = new TypedArrayList(RoleDocumentDelegationMember.class);
-	
+
 	private RoleDocumentDelegationMember member = new RoleDocumentDelegationMember();
-	
+
 	protected List<KimDocumentRoleQualifier> qualifiers = new TypedArrayList(KimDocumentRoleQualifier.class);
-	
+
 	@ManyToOne(targetEntity=KimTypeImpl.class,fetch=FetchType.LAZY)
 	@JoinColumn(name="KIM_TYP_ID", insertable=false, updatable=false)
-	protected KimTypeImpl kimType; 
-	
+	protected KimTypeImpl kimType;
+
 	/**
 	 * This overridden method ...
-	 * 
+	 *
 	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
 	 */
 	@SuppressWarnings("unchecked")

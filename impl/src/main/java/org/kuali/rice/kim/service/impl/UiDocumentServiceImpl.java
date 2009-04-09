@@ -460,7 +460,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		    		docRoleQualifier.setKimAttrDefnId(qualifier.getKimAttributeId());
 		    		docRoleQualifier.setKimAttribute(qualifier.getKimAttribute());
 		    		docRoleQualifier.setKimTypId(qualifier.getKimTypeId());
-		    		docRoleQualifier.setTargetPrimaryKey(qualifier.getTargetPrimaryKey());
+		    		docRoleQualifier.setRoleMemberId(qualifier.getRoleMemberId());
 		    		docRoleQualifier.setEdit(true);
 		    		docRoleQualifiers.add(docRoleQualifier);
 		    		qualifierFound = true;
@@ -901,7 +901,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 							attribute.setAttributeDataId(qualifier.getAttrDataId());
 							attribute.setAttributeValue(qualifier.getAttrVal());
 							attribute.setKimAttributeId(qualifier.getKimAttrDefnId());
-							attribute.setTargetPrimaryKey(qualifier.getTargetPrimaryKey());
+							attribute.setRoleMemberId(qualifier.getRoleMemberId());
 							attribute.setKimTypeId(qualifier.getKimTypId());
 							for (RoleMemberAttributeDataImpl origAttribute : origAttributes) {
 								if (origAttribute.getAttributeDataId().equals(qualifier.getAttrDataId())) {
@@ -1252,7 +1252,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					pndMemberRoleQualifier = new KimDocumentRoleQualifier();
 					pndMemberRoleQualifier.setAttrDataId(memberRoleQualifier.getAttributeDataId());
 					pndMemberRoleQualifier.setAttrVal(memberRoleQualifier.getAttributeValue());
-					pndMemberRoleQualifier.setTargetPrimaryKey(memberRoleQualifier.getTargetPrimaryKey());
+					pndMemberRoleQualifier.setRoleMemberId(memberRoleQualifier.getRoleMemberId());
 					pndMemberRoleQualifier.setKimTypId(memberRoleQualifier.getKimTypeId());
 					pndMemberRoleQualifier.setKimAttrDefnId(memberRoleQualifier.getKimAttributeId());
 					pndMemberRoleQualifier.setKimAttribute(memberRoleQualifier.getKimAttribute());
@@ -1326,7 +1326,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			pndMemberRoleQualifier = new RoleDocumentDelegationMemberQualifier();
 			pndMemberRoleQualifier.setAttrDataId(memberRoleQualifier.getAttributeDataId());
 			pndMemberRoleQualifier.setAttrVal(memberRoleQualifier.getAttributeValue());
-			pndMemberRoleQualifier.setTargetPrimaryKey(memberRoleQualifier.getTargetPrimaryKey());
+			pndMemberRoleQualifier.setDelegationMemberId(memberRoleQualifier.getDelegationMemberId());
 			pndMemberRoleQualifier.setKimTypId(memberRoleQualifier.getKimTypeId());
 			pndMemberRoleQualifier.setKimAttrDefnId(memberRoleQualifier.getKimAttributeId());
 			pndMemberRoleQualifiers.add(pndMemberRoleQualifier);
@@ -1580,13 +1580,13 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				newRoleMemberAttributeData = new RoleMemberAttributeDataImpl();
 				newRoleMemberAttributeData.setAttributeDataId(memberRoleQualifier.getAttrDataId());
 				newRoleMemberAttributeData.setAttributeValue(memberRoleQualifier.getAttrVal());
-				newRoleMemberAttributeData.setTargetPrimaryKey(memberRoleQualifier.getTargetPrimaryKey());
+				newRoleMemberAttributeData.setRoleMemberId(memberRoleQualifier.getRoleMemberId());
 				newRoleMemberAttributeData.setKimTypeId(memberRoleQualifier.getKimTypId());
 				newRoleMemberAttributeData.setKimAttributeId(memberRoleQualifier.getKimAttrDefnId());
 				for(RoleMemberAttributeDataImpl origAttribute: origAttributes){
 					if(activatingInactive && origAttribute.getKimAttributeId().equals(newRoleMemberAttributeData.getKimAttributeId()) &&
-							newRoleMemberAttributeData.getTargetPrimaryKey().equals(newRoleMemberIdAssigned)){
-						newRoleMemberAttributeData.setTargetPrimaryKey(origAttribute.getTargetPrimaryKey());
+							newRoleMemberAttributeData.getRoleMemberId().equals(newRoleMemberIdAssigned)){
+						newRoleMemberAttributeData.setRoleMemberId(origAttribute.getRoleMemberId());
 						newRoleMemberAttributeData.setAttributeDataId(origAttribute.getAttributeDataId());
 					}
 					if(origAttribute.getAttributeDataId().equals(newRoleMemberAttributeData.getAttributeDataId())){
@@ -1674,13 +1674,13 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				newDelegationMemberAttributeData = new KimDelegationMemberAttributeDataImpl();
 				newDelegationMemberAttributeData.setAttributeDataId(memberRoleQualifier.getAttrDataId());
 				newDelegationMemberAttributeData.setAttributeValue(memberRoleQualifier.getAttrVal());
-				newDelegationMemberAttributeData.setTargetPrimaryKey(memberRoleQualifier.getTargetPrimaryKey());
+				newDelegationMemberAttributeData.setDelegationMemberId(memberRoleQualifier.getDelegationMemberId());
 				newDelegationMemberAttributeData.setKimTypeId(memberRoleQualifier.getKimTypId());
 				newDelegationMemberAttributeData.setKimAttributeId(memberRoleQualifier.getKimAttrDefnId());
 				for(KimDelegationMemberAttributeDataImpl origAttribute: origAttributes){
 					if(activatingInactive && origAttribute.getKimAttributeId().equals(newDelegationMemberAttributeData.getKimAttributeId()) &&
-							newDelegationMemberAttributeData.getTargetPrimaryKey().equals(delegationMemberId)){
-						newDelegationMemberAttributeData.setTargetPrimaryKey(origAttribute.getTargetPrimaryKey());
+							newDelegationMemberAttributeData.getDelegationMemberId().equals(delegationMemberId)){
+						newDelegationMemberAttributeData.setDelegationMemberId(origAttribute.getDelegationMemberId());
 						newDelegationMemberAttributeData.setAttributeDataId(origAttribute.getAttributeDataId());
 					}
 					if(origAttribute.getAttributeDataId().equals(newDelegationMemberAttributeData.getAttributeDataId())){
@@ -1751,7 +1751,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					pndGroupQualifier.setAttrVal(groupQualifier.getAttributeValue());
 					pndGroupQualifier.setKimAttrDefnId(groupQualifier.getKimAttributeId());
 					pndGroupQualifier.setKimTypId(groupQualifier.getKimTypeId());
-					pndGroupQualifier.setTargetPrimaryKey(groupQualifier.getTargetPrimaryKey());
+					pndGroupQualifier.setGroupId(groupQualifier.getGroupId());
 					pndGroupQualifiers.add(pndGroupQualifier);
 					attributePresent = true;
 				}
@@ -1800,7 +1800,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		kimGroup.setNamespaceCode(identityManagementGroupDocument.getGroupNamespace());
 		kimGroup.setGroupName(identityManagementGroupDocument.getGroupName());
 		kimGroup.setGroupAttributes(getGroupAttributeData(identityManagementGroupDocument, kimGroup.getGroupAttributes()));
-
+		
 		List<String> oldIds = null;
 		List<String> newIds = null;
 		List<BusinessObject> bos = new ArrayList<BusinessObject>();
@@ -1848,16 +1848,16 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				newGroupAttributeData = new GroupAttributeDataImpl();
 				newGroupAttributeData.setAttributeDataId(groupQualifier.getAttrDataId());
 				newGroupAttributeData.setAttributeValue(groupQualifier.getAttrVal());
-				newGroupAttributeData.setTargetPrimaryKey(groupQualifier.getTargetPrimaryKey());
+				newGroupAttributeData.setGroupId(groupQualifier.getGroupId());
 				newGroupAttributeData.setKimTypeId(groupQualifier.getKimTypId());
 				newGroupAttributeData.setKimAttributeId(groupQualifier.getKimAttrDefnId());
 				for(GroupAttributeDataImpl origAttribute: origAttributes){
 					if(origAttribute.getKimAttributeId().equals(newGroupAttributeData.getKimAttributeId()) &&
-							newGroupAttributeData.getTargetPrimaryKey().equals(origAttribute.getTargetPrimaryKey())){
-						newGroupAttributeData.setAttributeDataId(origAttribute.getAttributeDataId());
+					        newGroupAttributeData.getGroupId().equals(origAttribute.getGroupId())){
+					    newGroupAttributeData.setAttributeDataId(origAttribute.getAttributeDataId());
 					}
 					if(origAttribute.getAttributeDataId().equals(newGroupAttributeData.getAttributeDataId())){
-						newGroupAttributeData.setVersionNumber(origAttribute.getVersionNumber());
+					    newGroupAttributeData.setVersionNumber(origAttribute.getVersionNumber());
 					}
 				}
 				groupAttributeDataList.add(newGroupAttributeData);

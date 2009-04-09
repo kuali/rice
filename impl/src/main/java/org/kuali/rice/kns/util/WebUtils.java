@@ -501,8 +501,7 @@ public class WebUtils {
     public static boolean canAddNoteAttachment(Document document) {
     	boolean canViewNoteAttachment = false;
     	DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentHelperService().getDocumentAuthorizer(document);
-    	//NoteWithoutAttachment is used to skip kim attachmentType match for new note (JIRA KFSMI-2849)
-    	canViewNoteAttachment = documentAuthorizer.canAddNoteAttachment(document, KNSConstants.NOTE_WITHOUT_ATTACHMENT_INDICATOR, GlobalVariables.getUserSession().getPerson());
+    	canViewNoteAttachment = documentAuthorizer.canAddNoteAttachment(document, null, GlobalVariables.getUserSession().getPerson());
     	return canViewNoteAttachment;
     }
     

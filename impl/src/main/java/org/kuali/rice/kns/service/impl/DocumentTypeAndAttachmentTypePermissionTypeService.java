@@ -34,23 +34,25 @@ public class DocumentTypeAndAttachmentTypePermissionTypeService extends
 	public List<KimPermissionInfo> performPermissionMatches(
 			AttributeSet requestedDetails,
 			List<KimPermissionInfo> permissionsList) {
-		List<KimPermissionInfo> matchingPermissions = super
-				.performPermissionMatches(requestedDetails, permissionsList);
-		List<KimPermissionInfo> returnPermissions = new ArrayList<KimPermissionInfo>();
-		for (KimPermissionInfo kimPermissionInfo : matchingPermissions) {
-			//If a note without an attachment, byPass attachment type code check. (Fix for KFSMI-2849)
-			if(KNSConstants.NOTE_WITHOUT_ATTACHMENT_INDICATOR.equals(requestedDetails.get(KimAttributes.ATTACHMENT_TYPE_CODE))){
-				returnPermissions.add(kimPermissionInfo);
-			}else{
-				if (!kimPermissionInfo.getDetails().containsKey(
-						KimAttributes.ATTACHMENT_TYPE_CODE)
-						|| kimPermissionInfo.getDetails().get(KimAttributes.ATTACHMENT_TYPE_CODE)
-							.equals(requestedDetails.get(KimAttributes.ATTACHMENT_TYPE_CODE))) 		
-				{
-					returnPermissions.add(kimPermissionInfo);
-				}
-			}
+		
+		List<KimPermissionInfo> matchingPermissions = new ArrayList<KimPermissionInfo>();
+		if (requestedDetails == null) {
+			return matchingPermissions; // empty list
 		}
-		return returnPermissions;
+		// loop over the permissions, checking the non-document-related ones
+		for (KimPermissionInfo kimPermissionInfo : permissionsList) {
+			if (!kimPermissionInfo.getDetails().containsKey(
+						KimAttributes.ATTACHMENT_TYPE_CODE)
+			  || kimPermissionInfo.getDetails().get(KimAttributes.ATTACHMENT_TYPE_CODE)
+				 .equals(requestedDetails.get(KimAttributes.ATTACHMENT_TYPE_CODE))) 		
+			{
+				matchingPermissions.add(kimPermissionInfo);
+			}
+
+		}
+		// now, filter the list to just those for the current document
+		matchingPermissions = super.performPermissionMatches(requestedDetails,
+				matchingPermissions);
+		return matchingPermissions;
 	}
 }

@@ -1172,17 +1172,10 @@ public class KualiDocumentActionBase extends KualiAction {
             // return mapping.findForward(RiceConstants.MAPPING_BASIC);
         }
         
-        
-        //Check if a note with an attachment file or not. If yes, get the attachmentTypeCode. If not, set attachmentTypeCode to noteWithoutAttachmentIndicator.
-        //The indicator is used by DocumentTypeAndAttachmentTypePermissionTypeService (fix for JIRA: KFSMI-2849)
-        if(attachmentFile!= null && !StringUtils.isBlank(attachmentFile.getFileName())){
-        	if(newNote.getAttachment() != null){
-            	attachmentTypeCode = newNote.getAttachment().getAttachmentTypeCode();
-            }
-        }else{
-        	attachmentTypeCode = KNSConstants.NOTE_WITHOUT_ATTACHMENT_INDICATOR;
+        if(newNote.getAttachment() != null){
+            attachmentTypeCode = newNote.getAttachment().getAttachmentTypeCode();
         }
-        
+             
         // check authorization for adding notes
         DocumentAuthorizer documentAuthorizer = getDocumentHelperService().getDocumentAuthorizer(document);
         if(!documentAuthorizer.canAddNoteAttachment(document, attachmentTypeCode, GlobalVariables.getUserSession().getPerson())){

@@ -1747,6 +1747,11 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				if(origAttributeId.equals(groupQualifier.getKimAttribute().getKimAttributeId())){
 					pndGroupQualifier = new GroupDocumentQualifier();
 					KimCommonUtils.copyProperties(pndGroupQualifier, groupQualifier);
+					pndGroupQualifier.setAttrDataId(groupQualifier.getAttributeDataId());
+					pndGroupQualifier.setAttrVal(groupQualifier.getAttributeValue());
+					pndGroupQualifier.setKimAttrDefnId(groupQualifier.getKimAttributeId());
+					pndGroupQualifier.setKimTypId(groupQualifier.getKimTypeId());
+					pndGroupQualifier.setTargetPrimaryKey(groupQualifier.getTargetPrimaryKey());
 					pndGroupQualifiers.add(pndGroupQualifier);
 					attributePresent = true;
 				}

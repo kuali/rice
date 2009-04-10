@@ -522,7 +522,7 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
 
         //delete old group attributes
         Map<String,String> criteria = new HashMap<String,String>();
-        criteria.put("targetPrimaryKey", group.getGroupId());
+        criteria.put("groupId", group.getGroupId());
         getBusinessObjectService().deleteMatching(GroupAttributeDataImpl.class, criteria);
 
         saveGroup(group);
